@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Button Component — Demo</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="Button.css">
+  <style>
+    body { padding: var(--ai-spacing-7); }
+    .demo-section { margin-bottom: var(--ai-spacing-7); }
+    .demo-section h2 { font-size: var(--ai-font-fixed-lg); margin-bottom: var(--ai-spacing-5); }
+    .demo-row { display: flex; align-items: center; gap: var(--ai-spacing-4); flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+  <h1>Button</h1>
+  <p>Standalone demo of the Button component using only <code>--ai-*</code> design tokens.</p>
+
+  <div class="demo-section">
+    <h2>Primary</h2>
+    <div class="demo-row">
+      <button class="btn btn--primary btn--sm">Small</button>
+      <button class="btn btn--primary">Default</button>
+      <button class="btn btn--primary btn--lg">Large</button>
+      <button class="btn btn--primary" disabled>Disabled</button>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Secondary</h2>
+    <div class="demo-row">
+      <button class="btn btn--secondary btn--sm">Small</button>
+      <button class="btn btn--secondary">Default</button>
+      <button class="btn btn--secondary btn--lg">Large</button>
+      <button class="btn btn--secondary" disabled>Disabled</button>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>As anchor</h2>
+    <div class="demo-row">
+      <a href="#" class="btn btn--primary">Link button</a>
+      <a href="#" class="btn btn--secondary">Link secondary</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,150 @@
+/**
+ * Style Dictionary v4 config — generates css/tokens.css from Figma DTCG token exports.
+ *
+ * Handles Figma's non-standard color format (objects with `hex` field) and uses
+ * each token's Figma codeSyntax.WEB value as the CSS custom property name.
+ *
+ * Run: node style-dictionary.config.mjs
+ */
+
+import StyleDictionary from 'style-dictionary';
+
+// Strip root-level $extensions (Figma mode name metadata) to avoid SD collision warnings.
+// Each token file has { "$extensions": { "com.figma.modeName": "..." } } at the root —
+// this is not a design token and causes harmless but noisy collisions when files are merged.
+StyleDictionary.registerParser({
+  name: 'figma-token-parser',
+  pattern: /\.tokens\.json$/,
+  parser: ({ contents }) => {
+    const json = JSON.parse(contents);
+    delete json['$extensions'];
+    return json;
+  },
+});
+
+const fontWeightMap = {
+  Regular: 400,
+  Medium: 500,
+  SemiBold: 600,
+  Bold: 700,
+  ExtraBold: 800,
+};
+
+// ─── Custom transforms ────────────────────────────────────────────────────────
+
+/**
+ * Extract hex color from Figma's non-standard color object format.
+ * Figma exports colors as { colorSpace, components, alpha, hex } objects.
+ * After alias resolution, referenced colors are also in this format.
+ */
+StyleDictionary.registerTransform({
+  name: 'color/figma-hex',
+  type: 'value',
+  filter: (token) => token.$type === 'color',
+  transform: (token) => {
+    const v = token.$value;
+    if (v && typeof v === 'object' && v.hex) return v.hex.toLowerCase();
+    if (typeof v === 'string') return v; // already a hex string
+    return v;
+  },
+});
+
+/**
+ * Add `px` unit to number tokens.
+ * Applies to: spacing, border radius, font sizes, line heights.
+ * Does NOT apply to font weight tokens (those have $type: "string").
+ */
+StyleDictionary.registerTransform({
+  name: 'dimension/figma-px',
+  type: 'value',
+  filter: (token) => token.$type === 'number' && typeof token.$value === 'number',
+  transform: (token) => `${token.$value}px`,
+});
+
+/**
+ * Map Figma font weight names ("Regular", "SemiBold", etc.) to CSS numeric values.
+ * Figma stores weight as a named string; CSS font-weight requires a number.
+ */
+StyleDictionary.registerTransform({
+  name: 'fontWeight/figma-numeric',
+  type: 'value',
+  filter: (token) => {
+    const path = token.path || [];
+    return path.includes('weight') && token.$type === 'string';
+  },
+  transform: (token) => fontWeightMap[token.$value] ?? token.$value,
+});
+
+/**
+ * Add a sans-serif fallback to font family tokens.
+ * Figma stores the family name as a bare string ("Inter").
+ */
+StyleDictionary.registerTransform({
+  name: 'font/figma-family',
+  type: 'value',
+  filter: (token) => {
+    const path = token.path || [];
+    return path.includes('family') && token.$type === 'string';
+  },
+  transform: (token) => `'${token.$value}', sans-serif`,
+});
+
+/**
+ * Use Figma's codeSyntax.WEB value as the CSS variable name.
+ * This ensures exact parity between what Figma calls a variable and its CSS name.
+ * Example: "--ai-surface-primary" → strips "--" → "ai-surface-primary"
+ *          CSS format adds "--" back → "--ai-surface-primary"
+ */
+StyleDictionary.registerTransform({
+  name: 'name/figma-web',
+  type: 'name',
+  transform: (token) => {
+    const web = token.$extensions?.['com.figma.codeSyntax']?.WEB;
+    if (web) return web.replace(/^--/, '');
+    // Fallback: derive from path (for tokens without codeSyntax — filtered out anyway)
+    return ['ai', ...token.path]
+      .join('-')
+      .toLowerCase()
+      .replace(/\s+/g, '-');
+  },
+});
+
+// ─── Build config ─────────────────────────────────────────────────────────────
+
+const sd = new StyleDictionary({
+  usesDtcg: true,
+  parsers: ['figma-token-parser'],
+  // Source order: Primitives first (for reference resolution), then semantic + typography
+  source: [
+    'FigmaTokens/Primitive.tokens.json',
+    'FigmaTokens/Light.tokens.json',
+    'FigmaTokens/Typography/Desktop.tokens.json',
+  ],
+  platforms: {
+    css: {
+      transforms: [
+        'color/figma-hex',        // Normalize Figma color objects → hex strings
+        'dimension/figma-px',     // Add px to number tokens
+        'fontWeight/figma-numeric', // "SemiBold" → 600
+        'font/figma-family',      // "Inter" → "'Inter', sans-serif"
+        'name/figma-web',         // Use Figma codeSyntax.WEB as variable name
+      ],
+      buildPath: 'css/',
+      files: [
+        {
+          destination: 'tokens.css',
+          format: 'css/variables',
+          // Only output tokens that have a Figma web code syntax defined.
+          // This excludes raw Primitive palette tokens (intentionally not exposed as CSS).
+          filter: (token) => !!token.$extensions?.['com.figma.codeSyntax']?.WEB,
+          options: {
+            selector: ':root',
+            outputReferences: false, // Resolve all aliases to their final values
+          },
+        },
+      ],
+    },
+  },
+});
+
+await sd.buildAllPlatforms();

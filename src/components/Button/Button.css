@@ -1,0 +1,80 @@
+/* Button component — uses only --ai-* design tokens */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ai-spacing-2);
+  padding: var(--ai-spacing-3) var(--ai-spacing-5);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-sm);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-2);
+  border-radius: var(--ai-radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: 2px;
+}
+
+/* Primary variant */
+.btn--primary {
+  background-color: var(--ai-btn-primary);
+  color: var(--ai-text-invert);
+  border-color: var(--ai-btn-primary);
+}
+
+.btn--primary:hover {
+  background-color: var(--ai-btn-primary-hover);
+  border-color: var(--ai-btn-primary-hover);
+}
+
+.btn--primary:active {
+  background-color: var(--ai-btn-primary-pressed);
+  border-color: var(--ai-btn-primary-pressed);
+}
+
+/* Secondary variant */
+.btn--secondary {
+  background-color: var(--ai-btn-secondary);
+  color: var(--ai-text-primary);
+  border-color: var(--ai-border-secondary);
+}
+
+.btn--secondary:hover {
+  background-color: var(--ai-btn-secondary-hover);
+}
+
+.btn--secondary:active {
+  background-color: var(--ai-btn-secondary-pressed);
+}
+
+/* Disabled state (applies to all variants) */
+.btn:disabled,
+.btn--disabled {
+  background-color: var(--ai-btn-disabled);
+  border-color: var(--ai-btn-disabled);
+  color: var(--ai-text-contrast);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Size modifiers */
+.btn--sm {
+  padding: var(--ai-spacing-2) var(--ai-spacing-4);
+  font-size: var(--ai-font-fixed-xs);
+  border-radius: var(--ai-radius-sm);
+}
+
+.btn--lg {
+  padding: var(--ai-spacing-4) var(--ai-spacing-6);
+  font-size: var(--ai-font-fixed-md);
+  border-radius: var(--ai-radius-lg);
+}

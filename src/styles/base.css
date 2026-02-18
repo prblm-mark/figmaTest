@@ -1,0 +1,60 @@
+/* Base styles — imports design tokens and sets global defaults using --ai-* variables */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import '../../css/tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--ai-font-body), sans-serif;
+  font-size: var(--ai-font-fixed-sm);
+  line-height: var(--ai-leading-2);
+  color: var(--ai-text-primary);
+  background-color: var(--ai-surface-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--ai-font-title), sans-serif;
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-primary);
+  margin: 0 0 var(--ai-spacing-4);
+  line-height: var(--ai-leading-3);
+}
+
+h1 { font-size: var(--ai-font-fixed-4xl); }
+h2 { font-size: var(--ai-font-fixed-3xl); }
+h3 { font-size: var(--ai-font-fixed-2xl); }
+h4 { font-size: var(--ai-font-fixed-xl); }
+h5 { font-size: var(--ai-font-fixed-lg); }
+h6 { font-size: var(--ai-font-fixed-md); }
+
+p {
+  margin: 0 0 var(--ai-spacing-5);
+  color: var(--ai-text-secondary);
+}
+
+a {
+  color: var(--ai-surface-brand);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--ai-surface-brand-light);
+  text-decoration: underline;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: 2px;
+  border-radius: var(--ai-radius-sm);
+}
