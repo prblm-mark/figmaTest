@@ -12,6 +12,6 @@ dist
 .claude
 
 # Credentials — never commit tokens or API keys
-FigmaTokens/PersonalToken.md
+FigmaTokens/*.md
 *.token
 *.secret
