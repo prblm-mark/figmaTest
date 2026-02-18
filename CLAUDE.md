@@ -355,6 +355,7 @@ All components must meet **WCAG 2.1 AA**:
 | Component | Status | Figma URL | Notes |
 |---|---|---|---|
 | Button | Built | TBD | `src/components/Button/` — primary + secondary variants |
+| SignUpForm | Built | [node 96:2429](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=96-2429) | `src/components/SignUpForm/` — header, 3× form fields, action buttons |
 
 Add rows here as components are built. Format: Component Name, Built/In Progress/Figma Only, Figma URL, Notes.
 
