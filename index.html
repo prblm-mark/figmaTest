@@ -1,33 +1,171 @@
 <!doctype html>
-<html class="no-js" lang="">
+<html class="no-js" lang="en">
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title></title>
+  <title>Affino AI — Design System</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="src/styles/base.css">
-  <meta name="description" content="">
-
-  <meta property="og:title" content="">
-  <meta property="og:type" content="">
-  <meta property="og:url" content="">
-  <meta property="og:image" content="">
-  <meta property="og:image:alt" content="">
+  <meta name="description" content="Affino AI Design System component library">
 
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" href="/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icon.png">
-
   <link rel="manifest" href="site.webmanifest">
   <meta name="theme-color" content="#fafafa">
+
+  <style>
+    body {
+      min-height: 100vh;
+      background-color: var(--ai-surface-secondary);
+      padding: var(--ai-spacing-7);
+    }
+
+    .ds-header {
+      margin-bottom: var(--ai-spacing-7);
+    }
+
+    .ds-header__eyebrow {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--ai-spacing-2);
+    }
+
+    .ds-header__title {
+      font-size: var(--ai-font-fixed-4xl);
+      font-weight: var(--ai-font-bold);
+      color: var(--ai-text-primary);
+      margin: 0 0 var(--ai-spacing-3);
+      line-height: var(--ai-leading-4);
+    }
+
+    .ds-header__subtitle {
+      font-size: var(--ai-font-fixed-sm);
+      color: var(--ai-text-secondary);
+      margin: 0;
+    }
+
+    .ds-divider {
+      border: none;
+      border-top: 1px solid var(--ai-border-secondary);
+      margin: var(--ai-spacing-6) 0;
+    }
+
+    .ds-section-label {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--ai-spacing-5);
+    }
+
+    .ds-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: var(--ai-spacing-5);
+    }
+
+    .ds-card {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-4);
+      padding: var(--ai-spacing-5);
+      background-color: var(--ai-surface-primary);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-lg);
+      text-decoration: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .ds-card:hover {
+      border-color: var(--ai-border-brand);
+      box-shadow: 0 2px 8px rgba(28, 100, 242, 0.08);
+      text-decoration: none;
+    }
+
+    .ds-card__icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background-color: var(--ai-surface-brand-contrast-extra);
+      border-radius: var(--ai-radius-md);
+      color: var(--ai-icon-brand);
+    }
+
+    .ds-card__icon [data-lucide] {
+      width: 20px;
+      height: 20px;
+    }
+
+    .ds-card__name {
+      font-size: var(--ai-font-fixed-sm);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-primary);
+      margin: 0;
+    }
+
+    .ds-card__meta {
+      font-size: var(--ai-font-fixed-xxs);
+      color: var(--ai-text-contrast);
+      margin: 0;
+      margin-top: auto;
+    }
+
+    .ds-card__arrow {
+      align-self: flex-end;
+      color: var(--ai-icon-brand);
+    }
+
+    .ds-card__arrow [data-lucide] {
+      width: 16px;
+      height: 16px;
+    }
+  </style>
 </head>
 
 <body>
 
-  <!-- Add your site or application content here -->
-  <p>Hello world!</p>
-  <script src="js/app.js"></script>
+  <header class="ds-header">
+    <p class="ds-header__eyebrow">Affino AI</p>
+    <h1 class="ds-header__title">Design System</h1>
+    <p class="ds-header__subtitle">Component library built from Figma design tokens. Click a component to open its standalone demo.</p>
+  </header>
+
+  <hr class="ds-divider">
+
+  <p class="ds-section-label">Components</p>
+
+  <nav class="ds-grid" aria-label="Component list">
+
+    <a href="src/components/Button/Button.html" class="ds-card">
+      <div class="ds-card__icon">
+        <i data-lucide="square" aria-hidden="true"></i>
+      </div>
+      <h2 class="ds-card__name">Button</h2>
+      <p class="ds-card__meta">Primary · Secondary · Sizes · Disabled</p>
+      <span class="ds-card__arrow"><i data-lucide="arrow-right" aria-hidden="true"></i></span>
+    </a>
+
+    <a href="src/components/SignUpForm/SignUpForm.html" class="ds-card">
+      <div class="ds-card__icon">
+        <i data-lucide="layout-panel-top" aria-hidden="true"></i>
+      </div>
+      <h2 class="ds-card__name">Sign Up Form</h2>
+      <p class="ds-card__meta">Header · Text inputs · Actions</p>
+      <span class="ds-card__arrow"><i data-lucide="arrow-right" aria-hidden="true"></i></span>
+    </a>
+
+  </nav>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
 
 </body>
 
