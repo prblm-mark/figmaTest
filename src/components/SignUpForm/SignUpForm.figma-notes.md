@@ -40,6 +40,15 @@ All other tokens are owned by sub-components.
 | Error border | `--ai-text-error` in Figma | Using `--ai-border-error` (user to update Figma) |
 | Label container gap | `--size-2-5` (0px) | Updated to `--ai-spacing-5` in Figma (confirmed) |
 
+## Contextual Overrides
+
+| Component | Property | Base value | Override | Reason |
+|---|---|---|---|---|
+| Header | `.header__title` | `flex-shrink: 0` | `flex: 1` | Title fills space, pushes InfoLabel far right |
+| Header | `.header__info` | `flex: 1` | `flex: none` | InfoLabel shrinks to content width |
+
+This is a **Case B contextual override** — Figma sets the title to fill-container within the SignUpForm frame. No equivalent variant exists in the Header component set. Override is scoped to `.signup-form .header__title` / `.signup-form .header__info` in SignUpForm.css.
+
 ## Notes
 - SignUpForm.css contains layout only — sub-component styles live in their own files
 - Refactored from monolithic to composed: Header, Input, Button are now independent components

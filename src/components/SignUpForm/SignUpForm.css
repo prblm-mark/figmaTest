@@ -14,6 +14,18 @@
   max-width: 100%;
 }
 
+/* ── Header override (contextual — Case B) ───────────── */
+/* Figma amends the Header instance: title fills container,
+   pushing InfoLabel to the far right. Not a formal Header variant. */
+
+.signup-form .header__title {
+  flex: 1;
+}
+
+.signup-form .header__info {
+  flex: none;
+}
+
 /* ── Actions row ─────────────────────────────────────── */
 
 .signup-form__actions {
