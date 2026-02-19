@@ -1,0 +1,39 @@
+/* InfoLabel component
+ * Figma node: 68:4410 — "InfoLabel / No Label=False"
+ * Variant: No Label (False = text + icon, True = icon only)
+ */
+
+.info-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);        /* 8px — VariableID --ai-spacing-3 */
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.info-label__text {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xxs);    /* 12px — title/xxs */
+  font-weight: var(--ai-font-semibold);   /* 600 */
+  line-height: var(--ai-leading-1);       /* 16px */
+  color: var(--ai-text-primary);          /* --ai-text-primary */
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 2px;
+  white-space: nowrap;
+}
+
+.info-label__icon {
+  width: 16px;
+  height: 16px;
+  color: var(--ai-icon-primary);          /* --ai-icon-primary */
+  flex-shrink: 0;
+}
+
+/* ── No Label variant (icon only) ───────────────────── */
+
+.info-label--no-label .info-label__text {
+  display: none;
+}

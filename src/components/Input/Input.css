@@ -1,0 +1,129 @@
+/* Input component
+ * Figma node: 78:2016 — "Input"
+ * Sizes: Base (40px), sm (32px)
+ * States: Default, Hover, Active, Focus, Error
+ */
+
+/* ── Container ───────────────────────────────────────── */
+
+.input {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);             /* 8px */
+}
+
+/* ── Label ───────────────────────────────────────────── */
+
+.input__label {
+  display: block;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);   /* 14px — title/xs */
+  font-weight: var(--ai-font-semibold); /* 600 */
+  line-height: var(--ai-leading-1);     /* 16px */
+  color: var(--ai-text-primary);
+}
+
+/* ── Field wrapper ───────────────────────────────────── */
+
+.input__wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);             /* 8px */
+  min-height: var(--ai-spacing-8);      /* 40px */
+  padding: 0 var(--ai-spacing-5);       /* 0 16px */
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  transition: border-color 0.15s ease;
+}
+
+.input__wrap:hover,
+.input__wrap:focus-within {
+  border-color: var(--ai-border-brand);
+  outline: none;
+}
+
+/* ── Icon ────────────────────────────────────────────── */
+
+.input__icon {
+  width: 16px;
+  height: 16px;
+  color: var(--ai-icon-contrast);
+  flex-shrink: 0;
+}
+
+/* ── Control (input element) ─────────────────────────── */
+
+.input__control {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);   /* 14px — body/xs */
+  font-weight: var(--ai-font-regular);  /* 400 */
+  line-height: var(--ai-leading-2);     /* 24px */
+  color: var(--ai-text-primary);
+}
+
+.input__control::placeholder {
+  color: var(--ai-text-contrast);       /* --text/contrast-2 resolved to --ai-text-contrast */
+}
+
+/* ── Clear button ────────────────────────────────────── */
+
+.input__clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--ai-icon-contrast);
+  flex-shrink: 0;
+  line-height: 0;
+  visibility: hidden;
+}
+
+.input__wrap:has(.input__control:not(:placeholder-shown)) .input__clear {
+  visibility: visible;
+}
+
+.input__clear [data-lucide] {
+  width: 16px;
+  height: 16px;
+}
+
+/* ── Help text ───────────────────────────────────────── */
+
+.input__help {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);  /* 12px */
+  font-weight: var(--ai-font-regular);  /* 400 */
+  line-height: var(--ai-leading-1);     /* 16px */
+  color: var(--ai-text-secondary);
+}
+
+/* ── Error state ─────────────────────────────────────── */
+
+.input--error .input__wrap {
+  border-color: var(--ai-border-error);
+}
+
+.input--error .input__wrap:hover,
+.input--error .input__wrap:focus-within {
+  border-color: var(--ai-border-error);
+}
+
+.input--error .input__help {
+  color: var(--ai-text-error);
+}
+
+/* ── Size: sm ────────────────────────────────────────── */
+
+.input--sm .input__wrap {
+  min-height: var(--ai-spacing-7);      /* 32px */
+  padding: 0 var(--ai-spacing-4);       /* 0 12px */
+}

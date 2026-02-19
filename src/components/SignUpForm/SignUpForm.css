@@ -1,193 +1,23 @@
-/* Sign Up Form component
+/* SignUpForm component
  * Figma node: 96:2429 — "Sign Up form"
- * All values mapped from bound variables in the Figma file.
+ * Composes: Header, InfoLabel, Input, Button
+ * Sub-component styles live in their own files — only layout here.
  */
 
-/* ── Container ─────────────────────────────────────────── */
+/* ── Container ───────────────────────────────────────── */
 
 .signup-form {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-6);       /* 24px — VariableID:1:960 itemSpacing */
+  gap: var(--ai-spacing-6);             /* 24px — itemSpacing */
   width: 371px;
   max-width: 100%;
 }
 
-/* ── Header ────────────────────────────────────────────── */
-
-.signup-form__header {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: var(--ai-spacing-5);       /* 16px — VariableID:1:963 itemSpacing */
-}
-
-.signup-form__title {
-  flex: 1;
-  margin: 0;
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fluid-xl);     /* 22px — VariableID:61:2033 fontSize */
-  font-weight: var(--ai-font-bold);       /* 700  — fontStyle Bold */
-  line-height: var(--ai-leading-3);       /* 32px — VariableID:1:991 lineHeight */
-  color: var(--ai-text-primary);          /* VariableID:1:920 fills */
-}
-
-.signup-form__info-label {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--ai-spacing-3);       /* 8px — InfoLabel itemSpacing */
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  flex-shrink: 0;
-  text-decoration: none;
-}
-
-.signup-form__info-label span {
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);    /* 12px — VariableID:1:979 fontSize */
-  font-weight: var(--ai-font-semibold);   /* 600  — fontStyle SemiBold */
-  line-height: var(--ai-leading-1);       /* 16px — VariableID:1:989 lineHeight */
-  color: var(--ai-text-secondary);        /* VariableID:1:921 fills */
-  text-decoration: underline;
-  text-decoration-style: dotted;
-  text-underline-offset: 2px;
-}
-
-.signup-form__info-label [data-lucide] {
-  width: 16px;
-  height: 16px;
-  color: var(--ai-icon-secondary);        /* VariableID:1:938 fills */
-  flex-shrink: 0;
-}
-
-/* ── Form field (label + input + help) ─────────────────── */
-
-.form-field {
-  display: flex;
-  flex-direction: column;
-  gap: var(--ai-spacing-3);       /* 8px — VariableID:1:957 itemSpacing */
-}
-
-.form-field__label {
-  display: block;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);     /* 14px — VariableID:1:980 fontSize */
-  font-weight: var(--ai-font-semibold);   /* 600  — fontStyle SemiBold */
-  line-height: var(--ai-leading-1);       /* 16px — VariableID:1:989 lineHeight */
-  color: var(--ai-text-primary);          /* VariableID:1:920 fills */
-}
-
-.form-field__input-wrap {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: var(--ai-spacing-3);       /* 8px — Field content itemSpacing */
-  height: 40px;
-  padding: 0 var(--ai-spacing-5); /* 0 16px — VariableID:1:963 paddingLeft/Right */
-  background-color: var(--ai-surface-primary);  /* VariableID:1:916 fills */
-  border: 1px solid var(--ai-border-secondary); /* VariableID:50:1769 strokes */
-  border-radius: var(--ai-radius-md);           /* 8px — VariableID:2:292 cornerRadius */
-  transition: border-color 0.15s ease;
-}
-
-.form-field__input-wrap:focus-within {
-  border-color: var(--ai-border-brand);
-  outline: none;
-}
-
-.form-field__icon {
-  width: 16px;
-  height: 16px;
-  color: var(--ai-icon-contrast);         /* VariableID:1:922 fills */
-  flex-shrink: 0;
-}
-
-.form-field__control {
-  flex: 1;
-  min-width: 0;
-  border: none;
-  outline: none;
-  background: transparent;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xs);     /* 14px — VariableID:1:980 fontSize */
-  font-weight: var(--ai-font-regular);    /* 400  — fontStyle Regular */
-  line-height: var(--ai-leading-2);       /* 24px — VariableID:1:990 lineHeight */
-  color: var(--ai-text-primary);          /* filled text — primary color */
-}
-
-.form-field__control::placeholder {
-  color: var(--ai-text-contrast);         /* VariableID:1:922 — placeholder text */
-}
-
-.form-field__clear {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  color: var(--ai-icon-contrast);
-  flex-shrink: 0;
-  line-height: 0;
-  visibility: hidden;                     /* hidden when input is empty */
-}
-
-.form-field__input-wrap:has(.form-field__control:not(:placeholder-shown)) .form-field__clear {
-  visibility: visible;                    /* shown when input has a value */
-}
-
-.form-field__clear [data-lucide] {
-  width: 16px;
-  height: 16px;
-}
-
-.form-field__help {
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);    /* 12px — VariableID:1:979 fontSize */
-  font-weight: var(--ai-font-regular);    /* 400  — fontStyle Regular */
-  line-height: var(--ai-leading-1);       /* 16px — VariableID:1:989 lineHeight */
-  color: var(--ai-text-secondary);        /* VariableID:1:921 fills */
-}
-
-/* ── Error state ────────────────────────────────────────── */
-
-.form-field--error .form-field__input-wrap {
-  border-color: var(--ai-border-error);
-}
-
-.form-field--error .form-field__help {
-  color: var(--ai-text-error);
-}
-
-/* ── Disabled state ─────────────────────────────────────── */
-
-.form-field--disabled .form-field__label {
-  color: var(--ai-text-contrast);
-}
-
-.form-field--disabled .form-field__input-wrap {
-  background-color: var(--ai-surface-secondary);
-  cursor: not-allowed;
-}
-
-.form-field--disabled .form-field__icon {
-  color: var(--ai-icon-contrast);
-}
-
-.form-field--disabled .form-field__control {
-  color: var(--ai-text-contrast);
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-/* ── Actions row ────────────────────────────────────────── */
+/* ── Actions row ─────────────────────────────────────── */
 
 .signup-form__actions {
   display: flex;
-  flex-direction: row;
   justify-content: flex-end;
-  gap: var(--ai-spacing-3);       /* 8px — Frame 221 itemSpacing */
+  gap: var(--ai-spacing-3);             /* 8px */
 }

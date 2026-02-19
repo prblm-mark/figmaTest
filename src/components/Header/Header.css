@@ -1,0 +1,44 @@
+/* Header component
+ * Figma node: 68:5444 — "Header"
+ * Composes: InfoLabel, Button
+ * Variants: showButtons (bool), state (Default | Tooltip)
+ */
+
+/* ── Container ───────────────────────────────────────── */
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-5);             /* 16px */
+  width: 100%;
+}
+
+/* ── Title ───────────────────────────────────────────── */
+
+.header__title {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fluid-xl);   /* 22px — title/xl */
+  font-weight: var(--ai-font-bold);     /* 700 */
+  line-height: var(--ai-leading-3);     /* 32px */
+  color: var(--ai-text-primary);
+  flex-shrink: 0;
+}
+
+/* ── InfoLabel slot (fills remaining space) ──────────── */
+
+.header__info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+/* ── Actions slot (right-aligned) ────────────────────── */
+
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);             /* 8px */
+  flex-shrink: 0;
+}

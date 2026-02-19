@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Input — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="Input.css">
+  <style>
+    body { padding: var(--ai-spacing-7); background: var(--ai-surface-secondary); }
+    .demo-section {
+      padding: var(--ai-spacing-6);
+      background: var(--ai-surface-primary);
+      border-radius: var(--ai-radius-lg);
+      margin-bottom: var(--ai-spacing-5);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-5);
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0;
+    }
+    .demo-row {
+      display: grid;
+      grid-template-columns: 120px 1fr 1fr;
+      gap: var(--ai-spacing-5);
+      align-items: start;
+    }
+    .demo-row__label {
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-contrast);
+      padding-top: var(--ai-spacing-5);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Base size -->
+  <div class="demo-section">
+    <p class="demo-section__title">Base (40px)</p>
+
+    <div class="demo-row">
+      <span class="demo-row__label">Default</span>
+      <div class="input">
+        <label class="input__label" for="base-default">First Name</label>
+        <div class="input__wrap">
+          <i data-lucide="user" class="input__icon" aria-hidden="true"></i>
+          <input id="base-default" type="text" class="input__control" placeholder="i.e Tom">
+          <button type="button" class="input__clear" aria-label="Clear">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <div class="input">
+        <label class="input__label" for="base-filled">Last Name</label>
+        <div class="input__wrap">
+          <i data-lucide="user" class="input__icon" aria-hidden="true"></i>
+          <input id="base-filled" type="text" class="input__control" placeholder="i.e Jones" value="Jones">
+          <button type="button" class="input__clear" aria-label="Clear">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-row">
+      <span class="demo-row__label">Error</span>
+      <div class="input input--error">
+        <label class="input__label" for="base-error">Email</label>
+        <div class="input__wrap">
+          <i data-lucide="mail" class="input__icon" aria-hidden="true"></i>
+          <input id="base-error" type="email" class="input__control" placeholder="name@company.com" value="not-an-email">
+          <button type="button" class="input__clear" aria-label="Clear">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+        <span class="input__help" role="alert">Please enter a valid email address</span>
+      </div>
+      <div class="input">
+        <label class="input__label" for="base-help">First Name</label>
+        <div class="input__wrap">
+          <i data-lucide="user" class="input__icon" aria-hidden="true"></i>
+          <input id="base-help" type="text" class="input__control" placeholder="i.e Tom">
+          <button type="button" class="input__clear" aria-label="Clear">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+        <span class="input__help">This field is mandatory</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- sm size -->
+  <div class="demo-section">
+    <p class="demo-section__title">Small (32px)</p>
+
+    <div class="demo-row">
+      <span class="demo-row__label">Default</span>
+      <div class="input input--sm">
+        <label class="input__label" for="sm-default">First Name</label>
+        <div class="input__wrap">
+          <i data-lucide="user" class="input__icon" aria-hidden="true"></i>
+          <input id="sm-default" type="text" class="input__control" placeholder="i.e Tom">
+          <button type="button" class="input__clear" aria-label="Clear">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <div class="input input--sm">
+        <label class="input__label" for="sm-filled">Last Name</label>
+        <div class="input__wrap">
+          <i data-lucide="user" class="input__icon" aria-hidden="true"></i>
+          <input id="sm-filled" type="text" class="input__control" placeholder="i.e Jones" value="Jones">
+          <button type="button" class="input__clear" aria-label="Clear">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-row">
+      <span class="demo-row__label">Error</span>
+      <div class="input input--sm input--error">
+        <label class="input__label" for="sm-error">Email</label>
+        <div class="input__wrap">
+          <i data-lucide="mail" class="input__icon" aria-hidden="true"></i>
+          <input id="sm-error" type="email" class="input__control" placeholder="name@company.com" value="not-an-email">
+          <button type="button" class="input__clear" aria-label="Clear">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+        <span class="input__help" role="alert">Please enter a valid email address</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>
