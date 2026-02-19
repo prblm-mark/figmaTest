@@ -12,6 +12,10 @@
 | Secondary base | `53:2506` |
 | Tertiary base | `57:1790` |
 | Alert base | `60:2407` |
+| Alert Outline base (Default) | `60:2423` |
+| Alert Outline base (Hover) | `60:2426` |
+| Alert Outline base (Focus) | `60:2429` |
+| Alert Outline base (Pressed) | `60:2432` |
 | Icon Only (Default, base) | `57:1809` |
 
 ## Variant × Size × State Matrix

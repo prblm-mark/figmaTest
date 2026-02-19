@@ -124,6 +124,7 @@
 }
 
 /* ── Alert Outline ───────────────────────────────────── */
+/* Default: outlined red. Hover/focus/pressed: flips to solid red (same as alert). */
 
 .btn--alert-outline {
   background-color: var(--ai-surface-primary);
@@ -132,16 +133,20 @@
 }
 
 .btn--alert-outline:hover {
-  background-color: var(--ai-surface-error-contrast);
-  border-color: #f87171; /* Red/400 — primitive, approved */
+  background-color: #f87171; /* Red/400 — primitive, approved */
+  border-color: #f87171;
+  color: var(--ai-text-invert);
 }
 
 .btn--alert-outline:active {
-  background-color: var(--ai-surface-error-contrast);
-  border-color: #dc2626; /* Red/600 — primitive, approved */
+  background-color: #dc2626; /* Red/600 — primitive, approved */
+  border-color: #dc2626;
+  color: var(--ai-text-invert);
 }
 
 .btn--alert-outline:focus-visible {
+  background-color: #f87171; /* Red/400 — primitive, approved */
+  color: var(--ai-text-invert);
   border: 2px solid var(--ai-surface-primary);
   box-shadow: 0 0 0 2px #f87171; /* Red/400 — primitive, approved */
   outline: none;
