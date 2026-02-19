@@ -10,7 +10,8 @@
     body { padding: var(--ai-spacing-7); }
     .demo-section { margin-bottom: var(--ai-spacing-7); }
     .demo-section h2 { font-size: var(--ai-font-fixed-lg); margin-bottom: var(--ai-spacing-5); }
-    .demo-row { display: flex; align-items: center; gap: var(--ai-spacing-4); flex-wrap: wrap; }
+    .demo-row { display: flex; align-items: center; gap: var(--ai-spacing-4); flex-wrap: wrap; margin-bottom: var(--ai-spacing-3); }
+    .demo-row-label { font-size: var(--ai-font-fixed-xxs); font-weight: var(--ai-font-semibold); color: var(--ai-text-contrast); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--ai-spacing-2); }
   </style>
 </head>
 <body>
@@ -19,64 +20,77 @@
 
   <div class="demo-section">
     <h2>Primary</h2>
+    <p class="demo-row-label">With icon</p>
     <div class="demo-row">
-      <button class="btn btn--primary btn--sm">
-        Small <i data-lucide="arrow-right" aria-hidden="true"></i>
-      </button>
-      <button class="btn btn--primary">
-        Default <i data-lucide="arrow-right" aria-hidden="true"></i>
-      </button>
+      <button class="btn btn--primary btn--sm">Small <i data-lucide="arrow-right" aria-hidden="true"></i></button>
+      <button class="btn btn--primary">Default <i data-lucide="arrow-right" aria-hidden="true"></i></button>
+      <button class="btn btn--primary" disabled>Disabled</button>
+    </div>
+    <p class="demo-row-label">Text only</p>
+    <div class="demo-row">
+      <button class="btn btn--primary btn--sm">Small</button>
+      <button class="btn btn--primary">Default</button>
       <button class="btn btn--primary" disabled>Disabled</button>
     </div>
   </div>
 
   <div class="demo-section">
     <h2>Secondary</h2>
+    <p class="demo-row-label">With icon</p>
     <div class="demo-row">
-      <button class="btn btn--secondary btn--sm">
-        Small <i data-lucide="arrow-right" aria-hidden="true"></i>
-      </button>
-      <button class="btn btn--secondary">
-        Default <i data-lucide="arrow-right" aria-hidden="true"></i>
-      </button>
+      <button class="btn btn--secondary btn--sm">Small <i data-lucide="arrow-right" aria-hidden="true"></i></button>
+      <button class="btn btn--secondary">Default <i data-lucide="arrow-right" aria-hidden="true"></i></button>
+      <button class="btn btn--secondary" disabled>Disabled</button>
+    </div>
+    <p class="demo-row-label">Text only</p>
+    <div class="demo-row">
+      <button class="btn btn--secondary btn--sm">Small</button>
+      <button class="btn btn--secondary">Default</button>
       <button class="btn btn--secondary" disabled>Disabled</button>
     </div>
   </div>
 
   <div class="demo-section">
     <h2>Tertiary</h2>
+    <p class="demo-row-label">With icon</p>
     <div class="demo-row">
-      <button class="btn btn--tertiary btn--sm">
-        Small <i data-lucide="arrow-right" aria-hidden="true"></i>
-      </button>
-      <button class="btn btn--tertiary">
-        Default <i data-lucide="arrow-right" aria-hidden="true"></i>
-      </button>
+      <button class="btn btn--tertiary btn--sm">Small <i data-lucide="arrow-right" aria-hidden="true"></i></button>
+      <button class="btn btn--tertiary">Default <i data-lucide="arrow-right" aria-hidden="true"></i></button>
+      <button class="btn btn--tertiary" disabled>Disabled</button>
+    </div>
+    <p class="demo-row-label">Text only</p>
+    <div class="demo-row">
+      <button class="btn btn--tertiary btn--sm">Small</button>
+      <button class="btn btn--tertiary">Default</button>
       <button class="btn btn--tertiary" disabled>Disabled</button>
     </div>
   </div>
 
   <div class="demo-section">
     <h2>Alert</h2>
+    <p class="demo-row-label">With icon</p>
     <div class="demo-row">
-      <button class="btn btn--alert btn--sm">
-        Delete <i data-lucide="trash-2" aria-hidden="true"></i>
-      </button>
-      <button class="btn btn--alert">
-        Delete <i data-lucide="trash-2" aria-hidden="true"></i>
-      </button>
+      <button class="btn btn--alert btn--sm">Delete <i data-lucide="trash-2" aria-hidden="true"></i></button>
+      <button class="btn btn--alert">Delete <i data-lucide="trash-2" aria-hidden="true"></i></button>
+    </div>
+    <p class="demo-row-label">Text only</p>
+    <div class="demo-row">
+      <button class="btn btn--alert btn--sm">Delete</button>
+      <button class="btn btn--alert">Delete</button>
     </div>
   </div>
 
   <div class="demo-section">
     <h2>Alert Outline</h2>
+    <p class="demo-row-label">With icon</p>
     <div class="demo-row">
-      <button class="btn btn--alert-outline btn--sm">
-        Cancel <i data-lucide="x" aria-hidden="true"></i>
-      </button>
-      <button class="btn btn--alert-outline">
-        Cancel <i data-lucide="x" aria-hidden="true"></i>
-      </button>
+      <button class="btn btn--alert-outline btn--sm">Cancel <i data-lucide="x" aria-hidden="true"></i></button>
+      <button class="btn btn--alert-outline">Cancel <i data-lucide="x" aria-hidden="true"></i></button>
+    </div>
+    <p class="demo-row-label">Text only</p>
+    <div class="demo-row">
+      <button class="btn btn--alert-outline btn--sm">Cancel</button>
+      <button class="btn btn--alert-outline">Cancel</button>
     </div>
   </div>
 
