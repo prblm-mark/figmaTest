@@ -1,16 +1,26 @@
 /* Header component
- * Figma node: 68:5444 — "Header"
+ * Figma node: 68:5443 — "Header" component set
+ * Variants: State (Default | Tooltip | Discard) × Device (Default | Mobile)
  * Composes: InfoLabel, Button
- * Variants: showButtons (bool), state (Default | Tooltip)
  */
 
 /* ── Container ───────────────────────────────────────── */
 
 .header {
+  position: relative;
   display: flex;
   align-items: center;
   gap: var(--ai-spacing-5);             /* 16px */
   width: 100%;
+}
+
+/* ── Title group ─────────────────────────────────────── */
+/* display:contents makes this wrapper invisible to the desktop
+   flex layout — title and info slot appear as direct flex children.
+   Switched to flex-col by .header--mobile below.               */
+
+.header__title-group {
+  display: contents;
 }
 
 /* ── Title ───────────────────────────────────────────── */
@@ -18,14 +28,14 @@
 .header__title {
   margin: 0;
   font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fluid-xl);   /* 22px — title/xl */
+  font-size: var(--ai-font-fluid-xl);   /* 22px desktop / 20px mobile — fluid */
   font-weight: var(--ai-font-bold);     /* 700 */
   line-height: var(--ai-leading-3);     /* 32px */
   color: var(--ai-text-primary);
   flex-shrink: 0;
 }
 
-/* ── InfoLabel slot (fills remaining space) ──────────── */
+/* ── InfoLabel slot (fills remaining space on desktop) ── */
 
 .header__info {
   flex: 1;
@@ -41,4 +51,51 @@
   align-items: center;
   gap: var(--ai-spacing-3);             /* 8px */
   flex-shrink: 0;
+}
+
+/* ── Tooltip panel ───────────────────────────────────── */
+
+.header__tooltip {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 351px;
+  background-color: var(--ai-surface-invert);
+  border-radius: var(--ai-radius-lg);
+  padding: var(--ai-spacing-5);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.header__tooltip__text {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);  /* 12px — body/xxs */
+  font-weight: var(--ai-font-regular);  /* 400 */
+  line-height: var(--ai-leading-1);     /* 16px */
+  color: var(--ai-text-invert);
+}
+
+/* ── Mobile layout ───────────────────────────────────── */
+
+.header--mobile {
+  align-items: flex-end;
+  gap: var(--ai-spacing-3);             /* 8px */
+}
+
+.header--mobile .header__title-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-1);             /* 4px */
+  flex: 1;
+  min-width: 0;
+}
+
+.header--mobile .header__info {
+  flex: initial;
+}
+
+.header--mobile .header__actions {
+  align-self: stretch;
+  align-items: flex-end;
 }

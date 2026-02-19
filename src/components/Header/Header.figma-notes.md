@@ -2,15 +2,28 @@
 
 ## Figma Node
 - File: `8OAAokH2JXhIvGZFrlzeKT`
-- Component: node `68:5444` — [open in Figma](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=68-5444)
+- Component set: node `68:5443` — [open in Figma](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=68-5443)
 
 ## Variant Matrix
 
-| Prop | Values | CSS |
-|---|---|---|
-| `showButtons` | true / false | Presence of `.header__actions` in HTML |
-| `state` | Default / Tooltip | Tooltip state not yet defined in design context — deferred |
-| `device` | Default | Single breakpoint |
+| Node | State | Device | Description |
+|---|---|---|---|
+| 68:5444 | Default | Default | Desktop row layout, disabled Make Live button |
+| 68:5488 | Tooltip | Default | Desktop + absolute tooltip panel below header |
+| 68:5498 | Discard | Default | Desktop, two active buttons: Discard Changes + Make Live |
+| 68:5452 | Default | Mobile | Stacked layout (title+info column), sm disabled button |
+| 68:5463 | Info | Mobile | Stacked + tooltip panel (top: 63px) |
+| 68:5476 | Discard | Mobile | Stacked, two active sm buttons: Discard + Make Live |
+
+## CSS Class Mapping
+
+| Figma property | CSS |
+|---|---|
+| Device=Default | `.header` (default) |
+| Device=Mobile | `.header.header--mobile` |
+| State=Tooltip | `.header__tooltip` present in DOM |
+| State=Discard | Different button content in `.header__actions` |
+| showButtons=false | `.header__actions` omitted |
 
 ## Dependencies
 - `InfoLabel` — `src/components/InfoLabel/`
@@ -20,18 +33,32 @@
 
 | Property | Figma variable | CSS variable |
 |---|---|---|
-| Container gap | `--ai-spacing-5` | `--ai-spacing-5` |
-| Title font family | `--ai-font-title` | `--ai-font-title` |
-| Title font size | `--ai-font-fluid-xl` | `--ai-font-fluid-xl` |
-| Title font weight | `--ai-font-bold` | `--ai-font-bold` |
-| Title line height | `--ai-leading-3` | `--ai-leading-3` |
+| Desktop gap | `--ai-spacing-5` | `--ai-spacing-5` |
+| Mobile outer gap | `--ai-spacing-3` | `--ai-spacing-3` |
+| Mobile title/info gap | `--ai-spacing-1` | `--ai-spacing-1` |
+| Title font | `--ai-font-fluid-xl`, `--ai-font-bold`, `--ai-leading-3` | same |
 | Title color | `--ai-text-primary` | `--ai-text-primary` |
 | Actions gap | `--ai-spacing-3` | `--ai-spacing-3` |
+| Tooltip bg | `--ai-surface-invert` | `--ai-surface-invert` |
+| Tooltip radius | `--ai-radius-lg` | `--ai-radius-lg` |
+| Tooltip padding | `--ai-spacing-5` | `--ai-spacing-5` |
+| Tooltip text color | `--ai-text-invert` | `--ai-text-invert` |
+| Tooltip text font | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xxs`, `--ai-leading-1` | same |
 
 ## Token Gaps
 None — all design values map to `--ai-*` semantic tokens.
+Tooltip box-shadow (`0 2px 10px rgba(0,0,0,0.15)`) is structural CSS, not tokenised.
 
 ## Notes
-- InfoLabel takes `flex: 1` — fills space between title and actions
-- "Make Live" button in Figma is shown in disabled state (`--ai-btn-disabled`) — rendered as `<button disabled>` using existing Button component
-- `state=Tooltip` variant exists in Figma but design context is not defined — implement when tooltip component is available
+- `header__title-group` uses `display: contents` on desktop — makes the wrapper transparent to
+  the flex layout so title and info slot appear as direct flex children. Switched to `flex-col`
+  by `.header--mobile`.
+- Mobile title renders at 20px (vs 22px desktop) via `--ai-font-fluid-xl` — the fluid token
+  handles the breakpoint automatically, no override needed.
+- Tooltip is shown/hidden by presence of `.header__tooltip` in the DOM (JS-driven in production).
+  `top: 100%` positions it flush below the header regardless of height.
+- Discard state: "Discard Changes" uses `btn--alert-outline` (desktop) / `btn--alert-outline btn--sm`
+  (mobile). "Make Live" uses `btn--primary` / `btn--primary btn--sm`.
+- Desktop Make Live (Default state) is always shown `disabled` per Figma.
+- Previously built from node 68:5444 only — missed 5 variants. Fixed by calling `get_metadata`
+  on component set 68:5443 first.
