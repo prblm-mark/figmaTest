@@ -106,9 +106,22 @@
   border-color: var(--ai-surface-error);
 }
 
-/* ⚠ TOKEN GAP: Alert hover/focus use Figma primitive Red/400 (#f87171).
-   No --ai-* token exists yet. States deferred.
-   Fix: add --ai-btn-alert-hover / --ai-btn-alert-focus-ring to Figma, re-export. */
+.btn--alert:hover {
+  background-color: #f87171; /* Red/400 — primitive, approved */
+  border-color: #f87171;     /* Red/400 — primitive, approved */
+}
+
+.btn--alert:active {
+  background-color: #dc2626; /* Red/600 — primitive, approved */
+  border-color: #dc2626;     /* Red/600 — primitive, approved */
+}
+
+.btn--alert:focus-visible {
+  background-color: #f87171; /* Red/400 — primitive, approved */
+  border: 2px solid var(--ai-surface-primary);
+  box-shadow: 0 0 0 2px #f87171; /* Red/400 — primitive, approved */
+  outline: none;
+}
 
 /* ── Alert Outline ───────────────────────────────────── */
 
@@ -118,9 +131,21 @@
   border-color: var(--ai-border-error);
 }
 
-/* ⚠ TOKEN GAP: Alert Outline hover/focus use Figma primitive Red/400 (#f87171).
-   No --ai-* token exists yet. States deferred.
-   Fix: same as Alert above — add tokens to Figma first. */
+.btn--alert-outline:hover {
+  background-color: var(--ai-surface-error-contrast);
+  border-color: #f87171; /* Red/400 — primitive, approved */
+}
+
+.btn--alert-outline:active {
+  background-color: var(--ai-surface-error-contrast);
+  border-color: #dc2626; /* Red/600 — primitive, approved */
+}
+
+.btn--alert-outline:focus-visible {
+  border: 2px solid var(--ai-surface-primary);
+  box-shadow: 0 0 0 2px #f87171; /* Red/400 — primitive, approved */
+  outline: none;
+}
 
 /* ── Disabled state (all variants) ──────────────────── */
 

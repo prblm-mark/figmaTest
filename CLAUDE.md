@@ -364,7 +364,7 @@ All components must meet **WCAG 2.1 AA**:
 
 | Component | Status | Figma URL | Notes |
 |---|---|---|---|
-| Button | Built | [node 53:2489](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=53-2489) | `src/components/Button/` — primary, secondary, tertiary, alert, alert-outline, icon-only variants. ⚠ Alert hover/pressed tokens missing (Red/400, Red/600 not in --ai-* set) |
+| Button | Built | [node 53:2489](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=53-2489) | `src/components/Button/` — primary, secondary, tertiary, alert, alert-outline, icon-only variants. Alert hover/pressed use Red/400+600 primitives (approved). |
 | SignUpForm | Built | [node 96:2429](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=96-2429) | `src/components/SignUpForm/` — header, 3× form fields (default/focus/filled/error/disabled states), action buttons |
 
 Add rows here as components are built. Format: Component Name, Built/In Progress/Figma Only, Figma URL, Notes.

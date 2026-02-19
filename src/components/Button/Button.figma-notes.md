@@ -72,11 +72,11 @@
 | State | Figma Primitive | Value | Token Needed | Affected Variants | Status |
 |---|---|---|---|---|---|
 | Primary focus ring | `--ai-surface-brand-light` | `#3f83f8` | ✓ resolved | Primary | ✅ Implemented |
-| Alert hover bg | `Red/400` | `#f87171` | `--ai-btn-alert-hover` | Alert, Alert Outline | ⚠ Pending |
-| Alert focus ring | `Red/400` | `#f87171` | `--ai-btn-alert-focus-ring` | Alert, Alert Outline | ⚠ Pending |
-| Alert pressed | `Red/600` | `#dc2626` | `--ai-btn-alert-pressed` | Alert | ⚠ Pending |
+| Alert hover bg | `Red/400` | `#f87171` | `--ai-btn-alert-hover` | Alert, Alert Outline | ✅ Primitive approved |
+| Alert focus ring | `Red/400` | `#f87171` | `--ai-btn-alert-focus-ring` | Alert, Alert Outline | ✅ Primitive approved |
+| Alert pressed | `Red/600` | `#dc2626` | `--ai-btn-alert-pressed` | Alert | ✅ Primitive approved |
 
-**Pending:** Add Alert token variables to Figma → re-export to `FigmaTokens/` → run `npm run tokens` → update `Button.css`.
+**Note:** Alert hover/pressed/focus states implemented using Figma primitives directly (approved). If semantic tokens are added to Figma in future, update `Button.css` to use `--ai-*` variables.
 
 ## Notes
 
