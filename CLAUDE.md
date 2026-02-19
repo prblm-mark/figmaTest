@@ -88,8 +88,8 @@ named colors in component CSS.** Every visual value must come from the list belo
 | `--ai-btn-primary-focus` | `#3F83F8` | Primary focus |
 | `--ai-btn-primary-pressed` | `#1A56DB` | Primary pressed |
 | `--ai-btn-secondary` | `#FFFFFF` | Secondary button bg |
-| `--ai-btn-secondary-hover` | `#F9F9FB` | Secondary hover |
-| `--ai-btn-secondary-focus` | `#F9F9FB` | Secondary focus |
+| `--ai-btn-secondary-hover` | `#F3F4F6` | Secondary hover |
+| `--ai-btn-secondary-focus` | `#F3F4F6` | Secondary focus |
 | `--ai-btn-secondary-pressed` | `#F3F4F6` | Secondary pressed |
 | `--ai-btn-disabled` | `#D1D5DB` | Disabled state (all variants) |
 
