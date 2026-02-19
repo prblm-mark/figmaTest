@@ -367,7 +367,8 @@ All components must meet **WCAG 2.1 AA**:
 | Button | Built | [node 53:2489](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=53-2489) | `src/components/Button/` — primary, secondary, tertiary, alert, alert-outline, icon-only variants. Alert hover/pressed use Red/400+600 primitives (approved). |
 | InfoLabel | Built | [node 68:4410](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=68-4410) | `src/components/InfoLabel/` — No Label=False (text+icon), No Label=True (icon only) |
 | Input | Built | [node 78:2016](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=78-2016) | `src/components/Input/` — Base + sm sizes, Default/Hover/Focus/Active/Error states |
-| Header | Built | [node 68:5443](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=68-5443) | `src/components/Header/` — State (Default/Tooltip/Discard) × Device (Default/Mobile). Tooltip panel, mobile stacked layout, Discard 2-button state. |
+| Tooltip | Built | [node 68:4490](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=68-4490) | `src/components/Tooltip/` — single variant, dark panel. Positioning owned by parent. |
+| Header | Built | [node 68:5443](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=68-5443) | `src/components/Header/` — State (Default/Tooltip/Discard) × Device (Default/Mobile). Composes Tooltip, InfoLabel, Button. |
 | SignUpForm | Built | [node 96:2429](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=96-2429) | `src/components/SignUpForm/` — composes Header, InfoLabel, Input, Button. Layout only. |
 
 Add rows here as components are built. Format: Component Name, Built/In Progress/Figma Only, Figma URL, Notes.

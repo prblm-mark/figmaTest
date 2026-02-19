@@ -53,27 +53,14 @@
   flex-shrink: 0;
 }
 
-/* ── Tooltip panel ───────────────────────────────────── */
+/* ── Tooltip positioning ─────────────────────────────── */
+/* Visual styles live in Tooltip.css — Header only owns placement */
 
-.header__tooltip {
+.header .tooltip {
   position: absolute;
   top: 100%;
   left: 0;
-  width: 351px;
-  background-color: var(--ai-surface-invert);
-  border-radius: var(--ai-radius-lg);
-  padding: var(--ai-spacing-5);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
   z-index: 10;
-}
-
-.header__tooltip__text {
-  margin: 0;
-  font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);  /* 12px — body/xxs */
-  font-weight: var(--ai-font-regular);  /* 400 */
-  line-height: var(--ai-leading-1);     /* 16px */
-  color: var(--ai-text-invert);
 }
 
 /* ── Mobile layout ───────────────────────────────────── */
