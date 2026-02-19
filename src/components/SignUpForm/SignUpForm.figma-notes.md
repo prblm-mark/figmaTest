@@ -75,8 +75,30 @@ Sign Up form  [COMPONENT, VERTICAL, gap: spacing-6]
 | Header | State | `Default` | |
 | Header | Device | `Default` | |
 
+## Form Field States
+
+| State | CSS Modifier | Visual Changes |
+|---|---|---|
+| Default | _(none)_ | White bg, `--ai-border-secondary` border, placeholder in `--ai-text-contrast` |
+| Focus | `:focus-within` (auto) | Border changes to `--ai-border-brand` |
+| Filled | _(auto via `:not(:placeholder-shown)`)_ | Text in `--ai-text-primary`; clear (×) button visible |
+| Error | `.form-field--error` | Border + help text in `--ai-text-error` / `--ai-border-error` |
+| Disabled | `.form-field--disabled` | Bg `--ai-surface-secondary`, text/icon in `--ai-text-contrast`, pointer-events none |
+
+## Fixes Applied (v2 refinement)
+
+| What | Before | After | Why |
+|---|---|---|---|
+| Input text color | `--ai-text-contrast` | `--ai-text-primary` | Filled text should be primary, not muted |
+| Input placeholder | same as text | `--ai-text-contrast` (via `::placeholder`) | Placeholder is muted, filled text is dark |
+| Clear button visibility | always visible | hidden/shown via `:has()` | Only show when field has a value |
+| Disabled state | missing | `.form-field--disabled` added | Required state from Figma |
+| Info label text-decoration | none | `underline dotted` | Figma design context shows dotted underline |
+| Input icon token | `--ai-text-contrast` | `--ai-icon-contrast` | Corrected to icon token (same value, proper semantic) |
+
 ## Notes
 
-- Input icon color uses `--ai-text-contrast` (not `--ai-icon-contrast`) — the Figma variable bound is `text/contrast` (VariableID:1:922), matching the placeholder text color intentionally
+- Input icon color uses `--ai-icon-contrast` (VariableID:1:922 — same hex as `text/contrast` but semantically correct token)
 - The "Make Live" button exists in the Figma component tree but is hidden via `Show Buttons: false` — it is not rendered in the HTML implementation
 - The `form-field` pattern (label + input wrap + help text) appears 3 times — a candidate for extraction into its own `FormField` component
+- Clear button visibility uses CSS `:has()` — supported in all modern browsers (Chrome 105+, Firefox 121+, Safari 15.4+)

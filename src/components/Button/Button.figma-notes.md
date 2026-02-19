@@ -2,63 +2,88 @@
 
 ## Figma Node
 
-> Right-click the Button component in Figma → "Copy link" to get the URL.
-> Paste it here after connecting to the Figma file.
+**File:** `8OAAokH2JXhIvGZFrlzeKT` — Affino AI Design System
+**Components page:** node `1:769`
+**Button frame (all variants):** node `53:2489`
 
-**Component URL:** _(update when Figma file is shared)_
+| Variant | Node ID |
+|---|---|
+| Default (Primary) base | `53:2488` |
+| Secondary base | `53:2506` |
+| Tertiary base | `57:1790` |
+| Alert base | `60:2407` |
+| Icon Only (Default, base) | `57:1809` |
 
-## Property Mapping
+## Variant × Size × State Matrix
 
-| Figma Property | Values | CSS Implementation |
+| Type | Sizes | States |
 |---|---|---|
-| `Variant` | Primary, Secondary | `.btn--primary`, `.btn--secondary` |
-| `Size` | Small, Default, Large | `.btn--sm`, _(none)_, `.btn--lg` |
-| `State` | Default, Hover, Pressed, Disabled | CSS pseudo-classes + `:disabled` |
-| `Label` | text string | element text content |
+| Default (Primary) | base, sm | Default, Hover, Focus, Pressed, Disabled |
+| Secondary | base, sm | Default, Hover, Focus, Pressed, Disabled |
+| Tertiary | base, sm | Default, Hover, Focus, Pressed, Disabled |
+| Alert | base, sm | Default, Hover, Focus, Pressed |
+| Alert Outline | base, sm | Default, Hover, Focus, Pressed |
+| Icon Only | base, sm | Default, Hover, Focus, Pressed, Disabled |
+
+## CSS Class Mapping
+
+| Figma Property | Values | CSS Class |
+|---|---|---|
+| `Type` | Default | `.btn--primary` |
+| `Type` | Secondary | `.btn--secondary` |
+| `Type` | Tertiary | `.btn--tertiary` |
+| `Type` | Alert | `.btn--alert` |
+| `Type` | Alert Outline | `.btn--alert-outline` |
+| `Size` | base | _(none — default)_ |
+| `Size` | sm | `.btn--sm` |
+| `Icon Only` | True | `.btn--icon` |
+| `State` | Disabled | `disabled` attr / `.btn--disabled` |
 
 ## Token Mapping
 
 | Figma Variable | CSS Variable | Role |
 |---|---|---|
-| `compnonents/button/primary` | `--ai-btn-primary` | Primary background |
-| `compnonents/button/primary-hover` | `--ai-btn-primary-hover` | Primary hover background |
-| `compnonents/button/primary-pressed` | `--ai-btn-primary-pressed` | Primary active background |
-| `compnonents/button/secondary` | `--ai-btn-secondary` | Secondary background |
-| `compnonents/button/secondary-hover` | `--ai-btn-secondary-hover` | Secondary hover background |
-| `compnonents/button/secondary-pressed` | `--ai-btn-secondary-pressed` | Secondary active background |
-| `compnonents/button/all disabled` | `--ai-btn-disabled` | Disabled background |
-| `text/invert` | `--ai-text-invert` | Primary button text |
-| `text/primary` | `--ai-text-primary` | Secondary button text |
-| `border/secondary` | `--ai-border-secondary` | Secondary button border |
-| `border/radius-md` | `--ai-radius-md` | Default corner radius |
-| `border/radius-sm` | `--ai-radius-sm` | Small button corner radius |
-| `border/radius-lg` | `--ai-radius-lg` | Large button corner radius |
+| `--ai-btn-primary` | `--ai-btn-primary` | Primary bg |
+| `--ai-btn-primary-hover` | `--ai-btn-primary-hover` | Primary hover bg |
+| `--ai-btn-primary-pressed` | `--ai-btn-primary-pressed` | Primary active bg |
+| `--ai-btn-secondary` | `--ai-btn-secondary` | Secondary/Tertiary bg |
+| `--ai-btn-secondary-hover` | `--ai-btn-secondary-hover` | Secondary/Tertiary hover bg |
+| `--ai-btn-secondary-pressed` | `--ai-btn-secondary-pressed` | Secondary/Tertiary active bg |
+| `--ai-btn-disabled` | `--ai-btn-disabled` | Disabled bg (all variants) |
+| `--ai-text-invert` | `--ai-text-invert` | Primary/Alert button text |
+| `--ai-text-primary` | `--ai-text-primary` | Secondary/Tertiary text |
+| `--ai-text-contrast` | `--ai-text-contrast` | Disabled text |
+| `--ai-text-error` | `--ai-text-error` | Alert Outline text |
+| `--ai-border-secondary` | `--ai-border-secondary` | Secondary border |
+| `--ai-border-error` | `--ai-border-error` | Alert Outline border |
+| `--ai-surface-error` | `--ai-surface-error` | Alert bg (maps from Figma `Red/500`) |
+| `--ai-surface-error-contrast` | `--ai-surface-error-contrast` | Alert Outline hover bg |
+| `--ai-surface-primary` | `--ai-surface-primary` | Alert Outline bg |
+| `--ai-radius-md` | `--ai-radius-md` | Default corner radius (8px) |
+| `--ai-radius-sm` | `--ai-radius-sm` | Small button corner radius (4px) |
+| `--ai-spacing-8` | `--ai-spacing-8` | Base height (40px) |
+| `--ai-spacing-7` | `--ai-spacing-7` | Small height (32px) |
+| `--ai-font-fluid-xs` | `--ai-font-fluid-xs` | Base font size (14px) |
+| `--ai-font-fluid-xxs` | `--ai-font-fluid-xxs` | Small font size (12px) |
+| `--ai-leading-1` | `--ai-leading-1` | Line height (16px) |
 
-## Code Connect Path Forward
+## Token Gaps — Action Required in Figma
 
-When the team upgrades to a Figma Org/Enterprise plan, create `Button.figma.js`:
+| State | Figma Primitive | Value | Token Needed | Affected Variants | Status |
+|---|---|---|---|---|---|
+| Primary focus ring | `--ai-surface-brand-light` | `#3f83f8` | ✓ resolved | Primary | ✅ Implemented |
+| Alert hover bg | `Red/400` | `#f87171` | `--ai-btn-alert-hover` | Alert, Alert Outline | ⚠ Pending |
+| Alert focus ring | `Red/400` | `#f87171` | `--ai-btn-alert-focus-ring` | Alert, Alert Outline | ⚠ Pending |
+| Alert pressed | `Red/600` | `#dc2626` | `--ai-btn-alert-pressed` | Alert | ⚠ Pending |
 
-```js
-import figma from '@figma/code-connect';
-import { Button } from './Button'; // or adjust for vanilla JS
-
-figma.connect(Button, '<FIGMA_NODE_URL>', {
-  props: {
-    variant: figma.enum('Variant', { Primary: 'primary', Secondary: 'secondary' }),
-    size: figma.enum('Size', { Small: 'sm', Default: undefined, Large: 'lg' }),
-    disabled: figma.boolean('State', { Disabled: true }),
-    label: figma.string('Label'),
-  },
-  example: ({ variant, size, disabled, label }) => `
-    <button class="btn btn--${variant}${size ? ` btn--${size}` : ''}"${disabled ? ' disabled' : ''}>
-      ${label}
-    </button>
-  `,
-});
-```
+**Pending:** Add Alert token variables to Figma → re-export to `FigmaTokens/` → run `npm run tokens` → update `Button.css`.
 
 ## Notes
 
-- Figma exports the component collection key as `compnonents` (typo in source — do not fix in tokens to avoid breaking aliases)
-- Font weight `SemiBold` maps to CSS `font-weight: 600`
-- Border radius uses `--ai-radius-md` (8px) for default, not `--ai-border-radius-md`
+- `button/base` typography: `--ai-font-fluid-xs` (14px), `--ai-font-semibold` (600), `--ai-leading-1` (16px)
+- `button/sm` typography: `--ai-font-fluid-xxs` (12px), `--ai-font-semibold` (600), `--ai-leading-1` (16px)
+- Tertiary = white bg + **no border** (visually a ghost/text button)
+- Secondary = white bg + `--ai-border-secondary` (visually outlined)
+- Alert background uses Figma primitive `Red/500` → maps to `--ai-surface-error` (#ef4444)
+- `.btn--lg` does **not** exist in Figma — removed from implementation
+- Figma exports the component collection key as `compnonents` (typo — do not fix in tokens)

@@ -12,6 +12,7 @@ dist
 .claude
 
 # Credentials — never commit tokens or API keys
+.env
 FigmaTokens/*.md
 *.token
 *.secret

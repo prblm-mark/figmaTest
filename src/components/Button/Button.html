@@ -20,9 +20,12 @@
   <div class="demo-section">
     <h2>Primary</h2>
     <div class="demo-row">
-      <button class="btn btn--primary btn--sm">Small</button>
-      <button class="btn btn--primary">Default</button>
-      <button class="btn btn--primary btn--lg">Large</button>
+      <button class="btn btn--primary btn--sm">
+        Small <i data-lucide="arrow-right" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn--primary">
+        Default <i data-lucide="arrow-right" aria-hidden="true"></i>
+      </button>
       <button class="btn btn--primary" disabled>Disabled</button>
     </div>
   </div>
@@ -30,19 +33,76 @@
   <div class="demo-section">
     <h2>Secondary</h2>
     <div class="demo-row">
-      <button class="btn btn--secondary btn--sm">Small</button>
-      <button class="btn btn--secondary">Default</button>
-      <button class="btn btn--secondary btn--lg">Large</button>
+      <button class="btn btn--secondary btn--sm">
+        Small <i data-lucide="arrow-right" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn--secondary">
+        Default <i data-lucide="arrow-right" aria-hidden="true"></i>
+      </button>
       <button class="btn btn--secondary" disabled>Disabled</button>
     </div>
   </div>
 
   <div class="demo-section">
-    <h2>As anchor</h2>
+    <h2>Tertiary</h2>
     <div class="demo-row">
-      <a href="#" class="btn btn--primary">Link button</a>
-      <a href="#" class="btn btn--secondary">Link secondary</a>
+      <button class="btn btn--tertiary btn--sm">
+        Small <i data-lucide="arrow-right" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn--tertiary">
+        Default <i data-lucide="arrow-right" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn--tertiary" disabled>Disabled</button>
     </div>
   </div>
+
+  <div class="demo-section">
+    <h2>Alert</h2>
+    <div class="demo-row">
+      <button class="btn btn--alert btn--sm">
+        Delete <i data-lucide="trash-2" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn--alert">
+        Delete <i data-lucide="trash-2" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Alert Outline</h2>
+    <div class="demo-row">
+      <button class="btn btn--alert-outline btn--sm">
+        Cancel <i data-lucide="x" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn--alert-outline">
+        Cancel <i data-lucide="x" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Icon Only</h2>
+    <div class="demo-row">
+      <button class="btn btn--primary btn--icon btn--sm" aria-label="Next">
+        <i data-lucide="arrow-right" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn--primary btn--icon" aria-label="Next">
+        <i data-lucide="arrow-right" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn--secondary btn--icon" aria-label="Settings">
+        <i data-lucide="settings" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn--tertiary btn--icon" aria-label="Menu">
+        <i data-lucide="menu" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn--primary btn--icon" disabled aria-label="Next">
+        <i data-lucide="arrow-right" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Lucide via CDN for standalone demo (webpack handles this in the full build) -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
 </body>
 </html>

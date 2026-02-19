@@ -9,98 +9,165 @@
   <link rel="stylesheet" href="SignUpForm.css">
   <style>
     body {
-      display: grid;
-      place-items: center;
-      min-height: 100vh;
       padding: var(--ai-spacing-7);
       background-color: var(--ai-surface-secondary);
+    }
+    .demo-card {
+      background: var(--ai-surface-primary);
+      border-radius: var(--ai-radius-lg);
+      padding: var(--ai-spacing-7);
+      margin-bottom: var(--ai-spacing-7);
+      max-width: 480px;
+    }
+    .demo-card h2 {
+      margin: 0 0 var(--ai-spacing-6);
+      font-size: var(--ai-font-fixed-lg);
+      font-weight: var(--ai-font-bold);
+      color: var(--ai-text-primary);
     }
   </style>
 </head>
 <body>
 
-  <form class="signup-form" novalidate>
+  <!-- Main form (Figma default state) -->
+  <div class="demo-card">
+    <form class="signup-form" novalidate>
 
-    <!-- Header: title + info label (Make Live button hidden — Show Buttons: false) -->
-    <header class="signup-form__header">
-      <h2 class="signup-form__title">Sign Up</h2>
-      <button type="button" class="signup-form__info-label" aria-label="What is this?">
-        <span>What's this?</span>
-        <i data-lucide="info"></i>
-      </button>
-    </header>
+      <!-- Header: title + info label -->
+      <header class="signup-form__header">
+        <h2 class="signup-form__title">Sign Up</h2>
+        <button type="button" class="signup-form__info-label" aria-label="What is this?">
+          <span>What's this?</span>
+          <i data-lucide="info"></i>
+        </button>
+      </header>
 
-    <!-- First Name -->
-    <div class="form-field">
-      <label class="form-field__label" for="first-name">First Name</label>
+      <!-- First Name -->
+      <div class="form-field">
+        <label class="form-field__label" for="first-name">First Name</label>
+        <div class="form-field__input-wrap">
+          <i data-lucide="user" class="form-field__icon" aria-hidden="true"></i>
+          <input
+            id="first-name"
+            type="text"
+            class="form-field__control"
+            placeholder="i.e Tom"
+            autocomplete="given-name"
+          >
+          <button type="button" class="form-field__clear" aria-label="Clear first name">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+        <span class="form-field__help" id="first-name-help">This field is mandatory</span>
+      </div>
+
+      <!-- Last Name -->
+      <div class="form-field">
+        <label class="form-field__label" for="last-name">Last Name</label>
+        <div class="form-field__input-wrap">
+          <i data-lucide="user" class="form-field__icon" aria-hidden="true"></i>
+          <input
+            id="last-name"
+            type="text"
+            class="form-field__control"
+            placeholder="i.e Jones"
+            autocomplete="family-name"
+          >
+          <button type="button" class="form-field__clear" aria-label="Clear last name">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+        <span class="form-field__help" id="last-name-help">This field is mandatory</span>
+      </div>
+
+      <!-- Email -->
+      <div class="form-field">
+        <label class="form-field__label" for="email">Email</label>
+        <div class="form-field__input-wrap">
+          <i data-lucide="mail" class="form-field__icon" aria-hidden="true"></i>
+          <input
+            id="email"
+            type="email"
+            class="form-field__control"
+            placeholder="name@company.com"
+            autocomplete="email"
+          >
+          <button type="button" class="form-field__clear" aria-label="Clear email">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+        <span class="form-field__help" id="email-help">This field is mandatory</span>
+      </div>
+
+      <!-- Actions -->
+      <div class="signup-form__actions">
+        <button type="button" class="btn btn--secondary">Cancel</button>
+        <button type="submit" class="btn btn--primary">
+          Get Started
+          <i data-lucide="arrow-right" aria-hidden="true"></i>
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- Field states reference -->
+  <div class="demo-card">
+    <h2>Form Field States</h2>
+
+    <!-- Default -->
+    <div class="form-field" style="margin-bottom: var(--ai-spacing-5);">
+      <label class="form-field__label" for="state-default">Default</label>
       <div class="form-field__input-wrap">
         <i data-lucide="user" class="form-field__icon" aria-hidden="true"></i>
-        <input
-          id="first-name"
-          type="text"
-          class="form-field__control"
-          placeholder="i.e Tom"
-          autocomplete="given-name"
-        >
-        <button type="button" class="form-field__clear" aria-label="Clear first name">
+        <input id="state-default" type="text" class="form-field__control" placeholder="Placeholder text">
+        <button type="button" class="form-field__clear" aria-label="Clear">
           <i data-lucide="x" aria-hidden="true"></i>
         </button>
       </div>
-      <span class="form-field__help" id="first-name-help">This field is mandatory</span>
+      <span class="form-field__help">Helper text</span>
     </div>
 
-    <!-- Last Name -->
-    <div class="form-field">
-      <label class="form-field__label" for="last-name">Last Name</label>
+    <!-- Filled (pre-filled value) -->
+    <div class="form-field" style="margin-bottom: var(--ai-spacing-5);">
+      <label class="form-field__label" for="state-filled">Filled</label>
       <div class="form-field__input-wrap">
         <i data-lucide="user" class="form-field__icon" aria-hidden="true"></i>
-        <input
-          id="last-name"
-          type="text"
-          class="form-field__control"
-          placeholder="i.e Jones"
-          autocomplete="family-name"
-        >
-        <button type="button" class="form-field__clear" aria-label="Clear last name">
+        <input id="state-filled" type="text" class="form-field__control" placeholder="Placeholder" value="Tom Jones">
+        <button type="button" class="form-field__clear" aria-label="Clear">
           <i data-lucide="x" aria-hidden="true"></i>
         </button>
       </div>
-      <span class="form-field__help" id="last-name-help">This field is mandatory</span>
+      <span class="form-field__help">Clear button appears when field has a value</span>
     </div>
 
-    <!-- Email -->
-    <div class="form-field">
-      <label class="form-field__label" for="email">Email</label>
+    <!-- Error -->
+    <div class="form-field form-field--error" style="margin-bottom: var(--ai-spacing-5);">
+      <label class="form-field__label" for="state-error">Error</label>
       <div class="form-field__input-wrap">
-        <!-- Figma: Icon/16px/Envelope → Lucide: mail (see figma-notes.md for naming note) -->
-        <i data-lucide="mail" class="form-field__icon" aria-hidden="true"></i>
-        <input
-          id="email"
-          type="email"
-          class="form-field__control"
-          placeholder="name@company.com"
-          autocomplete="email"
-        >
-        <button type="button" class="form-field__clear" aria-label="Clear email">
+        <i data-lucide="user" class="form-field__icon" aria-hidden="true"></i>
+        <input id="state-error" type="text" class="form-field__control" placeholder="Placeholder" value="bad input">
+        <button type="button" class="form-field__clear" aria-label="Clear">
           <i data-lucide="x" aria-hidden="true"></i>
         </button>
       </div>
-      <span class="form-field__help" id="email-help">This field is mandatory</span>
+      <span class="form-field__help" role="alert">This field contains an error</span>
     </div>
 
-    <!-- Actions -->
-    <div class="signup-form__actions">
-      <button type="button" class="btn btn--secondary">
-        Cancel
-        <i data-lucide="arrow-right" aria-hidden="true"></i>
-      </button>
-      <button type="submit" class="btn btn--primary">
-        Get Started
-        <i data-lucide="arrow-right" aria-hidden="true"></i>
-      </button>
+    <!-- Disabled -->
+    <div class="form-field form-field--disabled">
+      <label class="form-field__label" for="state-disabled">Disabled</label>
+      <div class="form-field__input-wrap">
+        <i data-lucide="user" class="form-field__icon" aria-hidden="true"></i>
+        <input id="state-disabled" type="text" class="form-field__control" placeholder="Not available" disabled>
+        <button type="button" class="form-field__clear" aria-label="Clear" disabled>
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+      <span class="form-field__help">This field is disabled</span>
     </div>
 
-  </form>
+  </div>
 
   <!-- Lucide via CDN for standalone demo (webpack handles this in the full build) -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
