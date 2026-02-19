@@ -34,12 +34,23 @@
   background-color: var(--ai-surface-primary);
   border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-md);
-  transition: border-color 0.15s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.input__wrap:hover,
+.input__wrap:hover {
+  border-color: var(--ai-border-brand);
+}
+
 .input__wrap:focus-within {
   border-color: var(--ai-border-brand);
+  box-shadow: 0 0 0 1px var(--ai-surface-primary),
+              0 0 0 3px var(--ai-surface-brand-contrast); /* --ai-surface-brand-contrast */
+  outline: none;
+}
+
+/* Suppress global :focus-visible outline from base.css on child elements */
+.input__control:focus-visible,
+.input__clear:focus-visible {
   outline: none;
 }
 
