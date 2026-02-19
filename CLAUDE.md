@@ -314,11 +314,21 @@ For Code Connect (Org/Enterprise plan only):
 
 ---
 
-## 8. Forbidden Practices
+## 8. Token Usage Rules
 
-**NEVER do these:**
+### Priority order when mapping a Figma property to CSS
 
-- `color: #1C64F2` → use `color: var(--ai-surface-brand)`
+1. **Semantic token exists** → always use the `--ai-*` CSS variable. No exceptions.
+2. **Anything else** — no `--ai-*` semantic token maps to this value (whether it's a Figma
+   primitive, an arbitrary hex, or anything unknown) → **STOP. Do not write CSS for that
+   property. Ask the user how to proceed before continuing the build.**
+
+Report what was found: the property name, the Figma value, and the primitive name if
+identifiable (e.g. "alert hover uses Red/400 = `#f87171` — no semantic token exists, ok to use primitive?"). The user decides: add a semantic token, approve using the primitive, or handle it another way.
+
+### Forbidden
+
+- `color: #1C64F2` → use `color: var(--ai-surface-brand)` *(semantic token exists)*
 - `padding: 16px` → use `padding: var(--ai-spacing-5)`
 - `font-size: 14px` → use `font-size: var(--ai-font-fixed-xs)`
 - `border-radius: 8px` → use `border-radius: var(--ai-radius-md)`
