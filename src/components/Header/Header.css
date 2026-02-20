@@ -17,7 +17,7 @@
 /* ── Title group ─────────────────────────────────────── */
 /* display:contents makes this wrapper invisible to the desktop
    flex layout — title and info slot appear as direct flex children.
-   Switched to flex-col by .header--mobile below.               */
+   Switched to flex-col at mobile via @media (max-width: 767px) below. */
 
 .header__title-group {
   display: contents;
@@ -65,24 +65,33 @@
 
 /* ── Mobile layout ───────────────────────────────────── */
 
-.header--mobile {
-  align-items: flex-end;
-  gap: var(--ai-spacing-3);             /* 8px */
-}
+@media (max-width: 767px) {
+  .header {
+    align-items: flex-end;
+    gap: var(--ai-spacing-3);           /* 8px */
+  }
 
-.header--mobile .header__title-group {
-  display: flex;
-  flex-direction: column;
-  gap: var(--ai-spacing-1);             /* 4px */
-  flex: 1;
-  min-width: 0;
-}
+  .header__title-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ai-spacing-1);           /* 4px */
+    flex: 1;
+    min-width: 0;
+  }
 
-.header--mobile .header__info {
-  flex: initial;
-}
+  .header__info {
+    flex: initial;
+  }
 
-.header--mobile .header__actions {
-  align-self: stretch;
-  align-items: flex-end;
+  .header__actions {
+    align-self: stretch;
+    align-items: flex-end;
+  }
+
+  /* Buttons shrink to sm size at mobile (Figma: h=32px, px=12px, text=fluid-xxs) */
+  .header__actions .btn {
+    min-height: var(--ai-spacing-7);      /* 32px */
+    padding: 0 var(--ai-spacing-4);       /* 12px */
+    font-size: var(--ai-font-fluid-xxs);  /* 12px */
+  }
 }

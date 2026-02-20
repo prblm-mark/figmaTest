@@ -1,6 +1,7 @@
 /* Base styles — imports design tokens and sets global defaults using --ai-* variables */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 @import '../../css/tokens.css';
+@import '../../css/tokens-mobile.css';
 
 *,
 *::before,

@@ -109,6 +109,18 @@ StyleDictionary.registerTransform({
   },
 });
 
+// ─── Mobile media-query formatter ─────────────────────────────────────────────
+
+StyleDictionary.registerFormat({
+  name: 'css/variables-media-query',
+  format: ({ dictionary }) => {
+    const vars = dictionary.allTokens
+      .map(t => `    --${t.name}: ${t.$value};`)
+      .join('\n');
+    return `@media (max-width: 767px) {\n  :root {\n${vars}\n  }\n}\n`;
+  },
+});
+
 // ─── Build config ─────────────────────────────────────────────────────────────
 
 const sd = new StyleDictionary({
@@ -148,3 +160,37 @@ const sd = new StyleDictionary({
 });
 
 await sd.buildAllPlatforms();
+
+// ─── Mobile token build (wraps fluid tokens in @media max-width: 767px) ───────
+
+const sdMobile = new StyleDictionary({
+  usesDtcg: true,
+  parsers: ['figma-token-parser'],
+  source: [
+    'FigmaTokens/Primitive.tokens.json',
+    'FigmaTokens/Light.tokens.json',
+    'FigmaTokens/Typography/Mobile.tokens.json',
+  ],
+  platforms: {
+    css: {
+      transforms: [
+        'color/figma-hex',
+        'dimension/figma-px',
+        'fontWeight/figma-numeric',
+        'font/figma-family',
+        'name/figma-web',
+      ],
+      buildPath: 'css/',
+      files: [
+        {
+          destination: 'tokens-mobile.css',
+          format: 'css/variables-media-query',
+          filter: (token) => !!token.$extensions?.['com.figma.codeSyntax']?.WEB,
+          options: { outputReferences: false },
+        },
+      ],
+    },
+  },
+});
+
+await sdMobile.buildAllPlatforms();

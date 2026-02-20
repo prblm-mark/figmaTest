@@ -19,9 +19,9 @@
 
 | Figma property | CSS |
 |---|---|
-| Device=Default | `.header` (default) |
-| Device=Mobile | `.header.header--mobile` |
-| State=Tooltip | `.header__tooltip` present in DOM |
+| Device=Default | `.header` (default, ≥768px) |
+| Device=Mobile | `.header` at `@media (max-width: 767px)` — no modifier class needed |
+| State=Tooltip | `.tooltip` present in DOM |
 | State=Discard | Different button content in `.header__actions` |
 | showButtons=false | `.header__actions` omitted |
 
@@ -39,6 +39,9 @@
 | Title font | `--ai-font-fluid-xl`, `--ai-font-bold`, `--ai-leading-3` | same |
 | Title color | `--ai-text-primary` | `--ai-text-primary` |
 | Actions gap | `--ai-spacing-3` | `--ai-spacing-3` |
+| Mobile button height | `h-[32px]` = `--ai-spacing-7` | `.header__actions .btn` at `@media max-width:767px` |
+| Mobile button padding | `--ai-spacing-4` | same |
+| Mobile button font | `--ai-font-fluid-xxs` | same |
 | Tooltip bg | `--ai-surface-invert` | `--ai-surface-invert` |
 | Tooltip radius | `--ai-radius-lg` | `--ai-radius-lg` |
 | Tooltip padding | `--ai-spacing-5` | `--ai-spacing-5` |
@@ -52,7 +55,7 @@ Tooltip box-shadow (`0 2px 10px rgba(0,0,0,0.15)`) is structural CSS, not tokeni
 ## Notes
 - `header__title-group` uses `display: contents` on desktop — makes the wrapper transparent to
   the flex layout so title and info slot appear as direct flex children. Switched to `flex-col`
-  by `.header--mobile`.
+  automatically at `@media (max-width: 767px)` — no `.header--mobile` modifier needed.
 - Mobile title renders at 20px (vs 22px desktop) via `--ai-font-fluid-xl` — the fluid token
   handles the breakpoint automatically, no override needed.
 - Tooltip is shown/hidden by presence of `.header__tooltip` in the DOM (JS-driven in production).

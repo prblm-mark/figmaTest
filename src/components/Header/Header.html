@@ -32,19 +32,15 @@
       color: var(--ai-text-contrast);
       margin: var(--ai-spacing-5) 0 var(--ai-spacing-3);
     }
-    /* Constrain mobile demos to 359px */
-    .demo-mobile {
-      max-width: 359px;
-    }
-  </style>
+</style>
 </head>
 <body>
 
   <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-6);">Header</h1>
 
-  <!-- Desktop variants -->
+  <!-- Variants — resize viewport below 768px to see mobile layout -->
   <div class="demo-section">
-    <p class="demo-section__title">Desktop</p>
+    <p class="demo-section__title">Desktop / Mobile (responsive)</p>
 
     <p class="demo-section__subtitle">Default — with actions</p>
     <header class="header">
@@ -108,76 +104,6 @@
       <div class="header__actions">
         <button type="button" class="btn btn--alert-outline">Discard Changes</button>
         <button type="button" class="btn btn--primary">Make Live</button>
-      </div>
-    </header>
-  </div>
-
-  <!-- Mobile variants -->
-  <div class="demo-section">
-    <p class="demo-section__title">Mobile</p>
-
-    <p class="demo-section__subtitle">Default — with actions</p>
-    <header class="header header--mobile demo-mobile">
-      <div class="header__title-group">
-        <h2 class="header__title">System Role</h2>
-        <div class="header__info">
-          <button type="button" class="info-label" aria-label="What's this?">
-            <span class="info-label__text">What's this?</span>
-            <i data-lucide="info" class="info-label__icon" aria-hidden="true"></i>
-          </button>
-        </div>
-      </div>
-      <div class="header__actions">
-        <button type="button" class="btn btn--primary btn--sm" disabled>Make Live</button>
-      </div>
-    </header>
-
-    <p class="demo-section__subtitle">Default — no actions</p>
-    <header class="header header--mobile demo-mobile">
-      <div class="header__title-group">
-        <h2 class="header__title">System Role</h2>
-        <div class="header__info">
-          <button type="button" class="info-label" aria-label="What's this?">
-            <span class="info-label__text">What's this?</span>
-            <i data-lucide="info" class="info-label__icon" aria-hidden="true"></i>
-          </button>
-        </div>
-      </div>
-    </header>
-
-    <p class="demo-section__subtitle">Tooltip (info label active)</p>
-    <header class="header header--mobile demo-mobile">
-      <div class="header__title-group">
-        <h2 class="header__title">System Role</h2>
-        <div class="header__info">
-          <button type="button" class="info-label" aria-expanded="true" aria-label="What's this?">
-            <span class="info-label__text">What's this?</span>
-            <i data-lucide="info" class="info-label__icon" aria-hidden="true"></i>
-          </button>
-        </div>
-      </div>
-      <div class="header__actions">
-        <button type="button" class="btn btn--primary btn--sm" disabled>Make Live</button>
-      </div>
-      <div class="tooltip" role="tooltip">
-        <p class="tooltip__text">Enter the prompt used to initiate the conversation with the AI Large Language Model (LLM). Note: Please be aware that this will directly instruct the LLM how to retrieve and present the answer. For more details, contact the Affino team to customise your system role.</p>
-      </div>
-    </header>
-
-    <p class="demo-section__subtitle" style="margin-top: var(--ai-spacing-8);">Discard — unsaved changes</p>
-    <header class="header header--mobile demo-mobile">
-      <div class="header__title-group">
-        <h2 class="header__title">System Role</h2>
-        <div class="header__info">
-          <button type="button" class="info-label" aria-label="What's this?">
-            <span class="info-label__text">What's this?</span>
-            <i data-lucide="info" class="info-label__icon" aria-hidden="true"></i>
-          </button>
-        </div>
-      </div>
-      <div class="header__actions">
-        <button type="button" class="btn btn--alert-outline btn--sm">Discard</button>
-        <button type="button" class="btn btn--primary btn--sm">Make Live</button>
       </div>
     </header>
   </div>
