@@ -8,8 +8,11 @@ dist
 # IDE
 .idea
 
-# Claude Code local settings (machine-specific, may contain personal permissions)
-.claude
+# Claude Code local settings — machine-specific files are ignored,
+# but .claude/commands/ (shared slash-command skills) is tracked.
+.claude/*
+!.claude/commands/
+!.claude/commands/**
 
 # Credentials — never commit tokens or API keys
 .env
