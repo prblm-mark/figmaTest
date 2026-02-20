@@ -71,7 +71,24 @@
       </div>
     </header>
 
-    <p class="demo-section__subtitle">Tooltip (info label active)</p>
+    <p class="demo-section__subtitle">Discard — unsaved changes</p>
+    <header class="header">
+      <div class="header__title-group">
+        <h2 class="header__title">System Role</h2>
+        <div class="header__info">
+          <button type="button" class="info-label" aria-label="What's this?">
+            <span class="info-label__text">What's this?</span>
+            <i data-lucide="info" class="info-label__icon" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <div class="header__actions">
+        <button type="button" class="btn btn--alert-outline">Discard Changes</button>
+        <button type="button" class="btn btn--primary">Make Live</button>
+      </div>
+    </header>
+
+    <p class="demo-section__subtitle" style="margin-top: var(--ai-spacing-8);">Tooltip (info label active)</p>
     <header class="header">
       <div class="header__title-group">
         <h2 class="header__title">System Role</h2>
@@ -87,23 +104,6 @@
       </div>
       <div class="tooltip" role="tooltip">
         <p class="tooltip__text">Enter the prompt used to initiate the conversation with the AI Large Language Model (LLM). Note: Please be aware that this will directly instruct the LLM how to retrieve and present the answer. For more details, contact the Affino team to customise your system role.</p>
-      </div>
-    </header>
-
-    <p class="demo-section__subtitle" style="margin-top: var(--ai-spacing-8);">Discard — unsaved changes</p>
-    <header class="header">
-      <div class="header__title-group">
-        <h2 class="header__title">System Role</h2>
-        <div class="header__info">
-          <button type="button" class="info-label" aria-label="What's this?">
-            <span class="info-label__text">What's this?</span>
-            <i data-lucide="info" class="info-label__icon" aria-hidden="true"></i>
-          </button>
-        </div>
-      </div>
-      <div class="header__actions">
-        <button type="button" class="btn btn--alert-outline">Discard Changes</button>
-        <button type="button" class="btn btn--primary">Make Live</button>
       </div>
     </header>
   </div>
