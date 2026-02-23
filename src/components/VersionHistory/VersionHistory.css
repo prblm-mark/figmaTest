@@ -13,6 +13,16 @@
   background-color: var(--ai-surface-primary);
 }
 
+/* ── Contextual override: Header fills panel width ──
+ * Figma: Header frame width explicitly set to "fill container" in this
+ * VersionHistory usage (vs. 960px default in the Header component set).
+ * Case B contextual override — not a Header variant. See figma-notes.md. */
+
+.version-history .header {
+  width: 100%;
+  min-width: 0;
+}
+
 /* ── Footer — right-aligned "Show older versions" ── */
 
 .version-history__footer {

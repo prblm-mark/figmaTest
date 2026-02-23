@@ -15,10 +15,11 @@ Single variant (no Figma props). Rows inside are VersionHistoryRow instances.
 | Footer (button row) | `.version-history__footer` |
 
 ## Dependencies
-- `Header` — `src/components/Header/` (no-actions state)
+- `Header` — `src/components/Header/` (no-actions state; full-width override applied — see Notes)
 - `InfoLabel` — `src/components/InfoLabel/` (via Header)
-- `Button` — `src/components/Button/` (secondary sm, via Header + footer)
+- `Button` — `src/components/Button/` (tertiary sm in footer; via Header)
 - `Tooltip` — `src/components/Tooltip/` (via Header)
+- `Avatar` — `src/components/Avatar/` (Size=1, Checked=False and Checked=True)
 - `Pill` — `src/components/Pill/`
 - `VersionHistoryRow` — `src/components/VersionHistoryRow/`
 

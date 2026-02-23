@@ -21,13 +21,14 @@
 | Row (Live) | `.version-history-row.version-history-row--live` |
 | Row (Selected) | `.version-history-row.version-history-row--selected` |
 | Row (Selected & Live) | `.version-history-row.version-history-row--selected.version-history-row--live` |
-| Avatar circle | `.version-history-row__avatar` |
-| Check circle (Selected states) | `.version-history-row__check` |
+| Avatar (Default/Live rows) | `.avatar` (from Avatar component) |
+| Check circle (Selected rows) | `.avatar.avatar--checked` (from Avatar component) |
 | Name + date group | `.version-history-row__content` |
 | Name text | `.version-history-row__name` |
 | Date text | `.version-history-row__date` |
 
 ## Dependencies
+- `Avatar` — `src/components/Avatar/` (Size=1 default circle; Checked=True check circle)
 - `Pill` — `src/components/Pill/`
 
 ## Token Mapping
@@ -65,5 +66,5 @@ None — all design values map to `--ai-*` semantic tokens. `--ai-surface-succes
 ## Notes
 - **Check icon colour:** Uses `--ai-btn-primary-text` (always `#ffffff`) rather than `--ai-icon-invert`, because `--ai-surface-success` is theme-invariant (same green in both themes) and `--ai-icon-invert` would flip to near-black in dark mode.
 - **Selected & Live gap:** Figma uses `--ai-spacing-5` (wider) for this variant vs `--ai-spacing-4` for the others — always check per-variant gap in Figma rather than assuming uniform spacing.
-- **Avatar placeholder:** Demo uses `--ai-surface-brand` as a placeholder bg. In production, replace `.version-history-row__avatar` content with an `<img>` tag or initials-based avatar.
+- **Avatar component:** Default/Live rows use `<div class="avatar">` (placeholder circle from `Avatar.css`); Selected rows use `<div class="avatar avatar--checked"><i data-lucide="check"></i></div>`. In production, replace the default avatar with `<img>` or initials markup inside `.avatar`.
 - **Border on Selected:** Adds 2px to the rendered row dimensions vs the other variants. Not compensated with a transparent border on base — the rows stack vertically and the 1px shift is not visually disruptive.

@@ -7,6 +7,7 @@
   <title>VersionHistoryRow — Design System</title>
   <link rel="stylesheet" href="../../styles/base.css">
   <!-- Dependencies -->
+  <link rel="stylesheet" href="../Avatar/Avatar.css">
   <link rel="stylesheet" href="../Pill/Pill.css">
   <!-- Component -->
   <link rel="stylesheet" href="VersionHistoryRow.css">
@@ -40,7 +41,7 @@
 
     <!-- Default -->
     <div class="version-history-row">
-      <div class="version-history-row__avatar" aria-hidden="true"></div>
+      <div class="avatar" aria-hidden="true"></div>
       <div class="version-history-row__content">
         <span class="version-history-row__name">Adam Ainsworth</span>
         <span class="version-history-row__date">15 Jan 2025, 4:42 PM</span>
@@ -49,7 +50,7 @@
 
     <!-- Live -->
     <div class="version-history-row version-history-row--live">
-      <div class="version-history-row__avatar" aria-hidden="true"></div>
+      <div class="avatar" aria-hidden="true"></div>
       <div class="version-history-row__content">
         <span class="version-history-row__name">Adam Ainsworth</span>
         <span class="version-history-row__date">15 Jan 2025, 4:42 PM</span>
@@ -59,7 +60,7 @@
 
     <!-- Selected -->
     <div class="version-history-row version-history-row--selected">
-      <div class="version-history-row__check" aria-label="Selected">
+      <div class="avatar avatar--checked" aria-label="Selected">
         <i data-lucide="check" aria-hidden="true"></i>
       </div>
       <div class="version-history-row__content">
@@ -70,7 +71,7 @@
 
     <!-- Selected & Live -->
     <div class="version-history-row version-history-row--selected version-history-row--live">
-      <div class="version-history-row__check" aria-label="Selected">
+      <div class="avatar avatar--checked" aria-label="Selected">
         <i data-lucide="check" aria-hidden="true"></i>
       </div>
       <div class="version-history-row__content">

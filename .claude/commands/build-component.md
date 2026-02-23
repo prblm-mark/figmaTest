@@ -79,6 +79,8 @@ For each named nested component found:
 Never implement a named Figma component as scoped CSS inside the parent (e.g. `.header__tooltip`).
 That duplicates what should be a standalone reusable component.
 
+- **Avatar is a standalone component:** Any `data-name="Avatars"` or `data-name="Avatar"` element in design context is a Figma component and must become `src/components/Avatar/` — NOT an inline placeholder div with a background colour. A placeholder div is acceptable only during the VersionHistoryRow build if Avatar hasn't been built yet, but the Avatar component must be built and substituted before the parent is considered complete.
+
 **Critical — flag contextual overrides before implementing.**
 When fetching design context for a parent component, if a child component instance has a property
 set differently from the child's base design (e.g. title width set to fill-container, padding
@@ -245,6 +247,8 @@ Full token reference: CLAUDE.md Section 2 & 3.
 - Alert background (`Red/500`) → `--ai-surface-error` (#ef4444) IS a semantic token ✓. The gaps are hover/pressed: Red/400 (`#f87171`) and Red/600 (`#dc2626`) have no semantic token yet
 - **Alert-outline interactive states are NOT "subtle tint + border shift"** — Figma flips them to fully solid red (Red/400 hover/focus, Red/600 pressed) with white text (`--ai-text-invert`), identical to the alert (solid) variant. The "outline" appearance only exists in the default state.
 - `.btn--lg` does not exist in Figma — never assume a "large" size exists
+- **Button variant identification:** When a Button instance appears in design context, ALWAYS check the Figma component `type` property or variant name (visible in `get_metadata` as `Type=Primary`, `Type=Secondary`, `Type=Tertiary` etc.) in addition to checking for a `border` class in the design context. Secondary and tertiary buttons share the same white bg. Background colour alone is never sufficient to identify the variant.
+- **Font family rule:** Map font-style names from design context directly: `title/*` → `--ai-font-title`; `body/*` → `--ai-font-body`. Never assume text content uses `--ai-font-body` — always read the font style name from the design context output.
 - Icon SVGs use `currentColor` → set color via `color:` property using `--ai-icon-*` tokens
 - Form field filled text = `--ai-text-primary`; placeholder = `--ai-text-contrast` (different tokens!)
 - Clear button visibility: use `visibility: hidden` + `:has(:not(:placeholder-shown))` — no JS needed

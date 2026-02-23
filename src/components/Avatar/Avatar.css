@@ -1,0 +1,67 @@
+/* Avatar component
+ * Figma node: 68:5042 — "Avatars" (component set)
+ * Variants: Size (1–5) × Checked (False/True)
+ * Show Notification variants exist in Figma but are not yet built.
+ */
+
+/* ── Base (Size=1 default, circular photo container) ── */
+
+.avatar {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-6);              /* 1.5rem (24px) — Size=1 */
+  height: var(--ai-spacing-6);
+  border-radius: var(--ai-radius-full);
+  overflow: hidden;                        /* clips photo to circle */
+  flex-shrink: 0;
+  background-color: var(--ai-surface-contrast); /* placeholder when no image */
+}
+
+/* ── Photo image ──────────────────────────────────── */
+
+.avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── Sizes ────────────────────────────────────────── */
+
+.avatar--size-2 {
+  width: var(--ai-spacing-7);              /* 2rem (32px) */
+  height: var(--ai-spacing-7);
+}
+
+.avatar--size-3 {
+  width: var(--ai-spacing-9);              /* 3rem (48px) */
+  height: var(--ai-spacing-9);
+}
+
+.avatar--size-4 {
+  width: var(--ai-spacing-11);             /* 4rem (64px) */
+  height: var(--ai-spacing-11);
+}
+
+.avatar--size-5 {
+  width: var(--ai-spacing-13);             /* 5rem (80px) */
+  height: var(--ai-spacing-13);
+}
+
+/* ── Checked variant (Figma: Checked=True) ────────── */
+/* Used in VersionHistoryRow Selected state — replaces photo with
+   a green success circle and a tick icon. */
+
+.avatar--checked {
+  background-color: var(--ai-surface-success);
+  border: 1px solid var(--ai-surface-primary); /* white ring separates from row bg */
+}
+
+.avatar--checked [data-lucide] {
+  width: var(--ai-spacing-5);              /* 1rem (16px) */
+  height: var(--ai-spacing-5);
+  color: var(--ai-btn-primary-text);       /* always white — surface-success is theme-invariant */
+  flex-shrink: 0;
+}

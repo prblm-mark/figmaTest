@@ -29,43 +29,10 @@
   gap: var(--ai-spacing-5);                  /* 1rem (16px) — wider than other variants */
 }
 
-/* ── Avatar ──────────────────────────────────── */
-
-.version-history-row__avatar {
-  width: var(--ai-spacing-6);               /* 1.5rem (24px) */
-  height: var(--ai-spacing-6);
-  border-radius: var(--ai-radius-full);
-  overflow: hidden;
-  flex-shrink: 0;
-  background-color: var(--ai-surface-brand); /* placeholder tint for demo */
-}
-
-.version-history-row__avatar img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* ── Check circle (Selected states) ─────────── */
-
-.version-history-row__check {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--ai-spacing-6);               /* 1.5rem (24px) */
-  height: var(--ai-spacing-6);
-  border-radius: var(--ai-radius-full);
-  background-color: var(--ai-surface-success);
-  border: 1px solid var(--ai-surface-primary); /* ring to separate from bg */
-  flex-shrink: 0;
-}
-
-.version-history-row__check [data-lucide] {
-  width: var(--ai-spacing-5);               /* 1rem (16px) */
-  height: var(--ai-spacing-5);
-  color: var(--ai-btn-primary-text);  /* always white — surface-success is theme-invariant */
-}
+/* ── Avatar / Check circle ───────────────────── */
+/* Handled by Avatar component (Avatar.css).
+ * Default rows use <div class="avatar">.
+ * Selected rows use <div class="avatar avatar--checked"><i data-lucide="check"></i></div>. */
 
 /* ── Text content ────────────────────────────── */
 

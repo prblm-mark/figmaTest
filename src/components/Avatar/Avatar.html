@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>Avatar — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="Avatar.css">
+  <style>
+    body { padding: var(--ai-spacing-7); background: var(--ai-surface-secondary); }
+    .demo-section {
+      padding: var(--ai-spacing-6);
+      background: var(--ai-surface-primary);
+      border-radius: var(--ai-radius-lg);
+      margin-bottom: var(--ai-spacing-5);
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 var(--ai-spacing-5);
+    }
+    .demo-row {
+      display: flex;
+      align-items: flex-end;
+      gap: var(--ai-spacing-5);
+      flex-wrap: wrap;
+    }
+    .demo-label {
+      font-size: var(--ai-font-fixed-xxs);
+      color: var(--ai-text-contrast);
+      margin-top: var(--ai-spacing-2);
+      text-align: center;
+    }
+    .demo-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-6);">Avatar</h1>
+
+  <!-- Photo avatars — all sizes (placeholder, no image) -->
+  <div class="demo-section">
+    <p class="demo-section__title">Sizes (placeholder — no image)</p>
+    <div class="demo-row">
+      <div class="demo-item">
+        <div class="avatar"></div>
+        <p class="demo-label">Size 1 · 24px</p>
+      </div>
+      <div class="demo-item">
+        <div class="avatar avatar--size-2"></div>
+        <p class="demo-label">Size 2 · 32px</p>
+      </div>
+      <div class="demo-item">
+        <div class="avatar avatar--size-3"></div>
+        <p class="demo-label">Size 3 · 48px</p>
+      </div>
+      <div class="demo-item">
+        <div class="avatar avatar--size-4"></div>
+        <p class="demo-label">Size 4 · 64px</p>
+      </div>
+      <div class="demo-item">
+        <div class="avatar avatar--size-5"></div>
+        <p class="demo-label">Size 5 · 80px</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checked variant -->
+  <div class="demo-section">
+    <p class="demo-section__title">Checked=True (Selected state)</p>
+    <div class="demo-row">
+      <div class="demo-item">
+        <div class="avatar avatar--checked">
+          <i data-lucide="check" aria-hidden="true"></i>
+        </div>
+        <p class="demo-label">Size 1</p>
+      </div>
+      <div class="demo-item">
+        <div class="avatar avatar--size-2 avatar--checked">
+          <i data-lucide="check" aria-hidden="true"></i>
+        </div>
+        <p class="demo-label">Size 2</p>
+      </div>
+      <div class="demo-item">
+        <div class="avatar avatar--size-3 avatar--checked">
+          <i data-lucide="check" aria-hidden="true"></i>
+        </div>
+        <p class="demo-label">Size 3</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

@@ -165,6 +165,8 @@ When the parent component HTML references a child component:
   Device=Mobile variant, flag any existing `.component--mobile` modifier class as `⚠ Outdated`.
   The correct implementation is `@media (max-width: 767px)` rules in the component CSS.
   Breakpoint: `max-width: 767px` = mobile, 768px+ = desktop.
+- **Button variant identification:** When auditing a component that contains a Button instance, always verify the button's Figma variant (`Type=Primary`, `Type=Secondary`, `Type=Tertiary` etc.) via `get_metadata` on the Button component set — not just the background colour. Secondary and tertiary both use white bg; absence of a `border` class in design context is a secondary signal, but the variant name is definitive. Flag as `⚠ Outdated` if the wrong variant class is used.
+- **Font family audit rule:** When reviewing component CSS, cross-check every `font-family` token against the font-style name in design context: `title/*` → `--ai-font-title`; `body/*` → `--ai-font-body`. Flag any element using `--ai-font-body` where the design context shows a `title/*` style as `⚠ Outdated`.
 - **Dimension values use `rem`** — all spacing, sizing, font-size, line-height, and border-radius values are `rem` via `--ai-*` tokens (16px = 1rem). Border widths (`1px`, `2px`) and box-shadow pixel offsets stay as `px`. Flag any hardcoded `px` dimension value (that is NOT a border-width or shadow offset) as `⚠ Outdated`. If the value cannot be expressed as an `--ai-*` token, apply the hardcoded dimension stop rule: report it to the user before continuing.
 - **Fluid tokens are automatically responsive** — `--ai-font-fluid-*` tokens change value at
   ≤767px via `tokens-mobile.css`. If a component has hardcoded font-size overrides in a mobile
