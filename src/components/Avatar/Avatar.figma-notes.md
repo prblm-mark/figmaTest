@@ -49,9 +49,23 @@
 ## Token Gaps
 None — all design values map to `--ai-*` semantic tokens.
 
+## Dependencies
+- **Portraits** (`src/components/Portraits/`) — portrait photo component used inside the avatar circle.
+  Link `Portraits.css` before `Avatar.css` on any page that shows photo avatars.
+
 ## Notes
-- **Photo clipping:** Figma uses a clipping mask to show the profile photo as a circle. In CSS this is achieved with `border-radius: --ai-radius-full` + `overflow: hidden`. Place an `<img src="..." alt="...">` inside `.avatar` for a real photo.
-- **Placeholder bg:** The demo uses `--ai-surface-contrast` (light gray) as a placeholder. In production, supply a real image or initials-based fallback.
-- **Checked icon colour:** Uses `--ai-btn-primary-text` (always `#ffffff`) rather than `--ai-icon-invert` because `--ai-surface-success` is theme-invariant (same green in both themes) and `--ai-icon-invert` would flip to near-black in dark mode.
-- **Show Notification variants** (nodes 68:5041, 68:5047, 68:5054, 68:5061, 68:5068): not yet built — no current component uses them.
+- **Photo clipping:** Figma uses a clipping mask to show the profile photo as a circle. In CSS
+  this is achieved with `border-radius: --ai-radius-full` + `overflow: hidden`. Place
+  `<img class="portrait" src="..." alt="...">` inside `.avatar` for a real photo.
+  The `.portrait` class (from `Portraits.css`) sets `width:100%; height:100%; object-fit:cover`.
+- **Clip relationship:** Avatar clips; Portrait fills. Avatar owns `overflow:hidden` and
+  `border-radius:full`. Portrait owns `object-fit:cover` and `width/height:100%`.
+- **Placeholder bg:** The demo uses `--ai-surface-contrast` (light gray) as a placeholder
+  when no `<img>` is present. In production, supply a `<img class="portrait">` or
+  initials-based fallback.
+- **Checked icon colour:** Uses `--ai-btn-primary-text` (always `#ffffff`) rather than
+  `--ai-icon-invert` because `--ai-surface-success` is theme-invariant (same green in both
+  themes) and `--ai-icon-invert` would flip to near-black in dark mode.
+- **Show Notification variants** (nodes 68:5041, 68:5047, 68:5054, 68:5061, 68:5068): not
+  yet built — no current component uses them.
 - **Used in:** VersionHistoryRow (Size=1, Checked=False and Checked=True)

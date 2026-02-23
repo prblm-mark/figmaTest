@@ -66,9 +66,12 @@ token (e.g. the sm button uses `--ai-radius-md`, not `--ai-radius-sm`). Call `ge
 on each size node individually and read the exact tokens.
 
 **Critical — scan for nested components in design context output.** After fetching design context,
-scan every `data-name="..."` attribute in the output. Any named element that is not a standard
-HTML primitive (e.g. `data-name="Tooltip"`, `data-name="Badge"`, `data-name="Avatar"`) is a
-Figma component and must be treated as a dependency — NOT implemented inline in the parent's CSS.
+scan every `data-name="..."` attribute in the output. **Any element with a `data-name` attribute
+IS a Figma component — regardless of what HTML element it renders as.** A `data-name="Female 1"`
+that renders as an `<img>` is a Figma component just as much as a `data-name="Tooltip"` that
+renders as a `<div>`. The rendered HTML type is NOT the signal — the `data-name` attribute is.
+No exceptions for elements that appear "too simple" to be a component (this mistake caused
+`data-name="Female 1"` to be implemented as a raw `<img>` instead of the Portraits component).
 
 For each named nested component found:
 1. Check `src/components/` — does it exist?
