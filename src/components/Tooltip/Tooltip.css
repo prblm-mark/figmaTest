@@ -6,7 +6,7 @@
 /* ── Container ───────────────────────────────────────── */
 
 .tooltip {
-  width: 351px;                          /* fixed design width — no --ai-* token */
+  width: 21.9375rem;                     /* 351px ÷ 16 — fixed design width, no --ai-* token */
   background-color: #0c121c;             /* Neutral/950 — approved primitive; intentionally fixed dark in both themes */
   border-radius: var(--ai-radius-lg);
   padding: var(--ai-spacing-5);

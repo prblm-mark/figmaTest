@@ -165,6 +165,7 @@ When the parent component HTML references a child component:
   Device=Mobile variant, flag any existing `.component--mobile` modifier class as `⚠ Outdated`.
   The correct implementation is `@media (max-width: 767px)` rules in the component CSS.
   Breakpoint: `max-width: 767px` = mobile, 768px+ = desktop.
+- **Dimension values use `rem`** — all spacing, sizing, font-size, line-height, and border-radius values are `rem` via `--ai-*` tokens (16px = 1rem). Border widths (`1px`, `2px`) and box-shadow pixel offsets stay as `px`. Flag any hardcoded `px` dimension value (that is NOT a border-width or shadow offset) as `⚠ Outdated`. If the value cannot be expressed as an `--ai-*` token, apply the hardcoded dimension stop rule: report it to the user before continuing.
 - **Fluid tokens are automatically responsive** — `--ai-font-fluid-*` tokens change value at
   ≤767px via `tokens-mobile.css`. If a component has hardcoded font-size overrides in a mobile
   block for fluid token values, flag those as spurious — they are already handled by the token layer.

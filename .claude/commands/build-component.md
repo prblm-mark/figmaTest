@@ -152,7 +152,9 @@ Write the component files following project conventions:
 - BEM naming: `.component`, `.component__element`, `.component--modifier`
 - Only `--ai-*` semantic variables, or primitives explicitly approved by the user in Step 5
 - Approved primitives: use the hex value with a comment citing the primitive name (e.g. `/* Red/400 */`)
-- Never hardcode arbitrary hex, px values, or named colors
+- Never hardcode arbitrary hex values or named colors
+- **Dimension values (spacing, sizing, font-size, line-height, border-radius) → always use `rem` via `--ai-*` tokens.** Border widths (`1px`, `2px`) and box-shadow pixel offsets stay as `px` — they are optical units, not scaled with font-size.
+- **Hardcoded dimension stop rule:** If a dimension value in component CSS (or any nested sub-component) is NOT a border-width or box-shadow offset and cannot be expressed as an `--ai-*` token, STOP. Do not write or leave the value. Report the property name, the component, and the Figma value. Ask the user how to handle it (add a token, approve a rem conversion, etc.) before continuing. This mirrors the token gap stop rule.
 - Base state first, then variant modifiers, then size modifiers, then combined (`.variant.size`)
 - Include `:hover`, `:active`, `:focus-visible`, `:disabled` pseudo-classes
 - Add `min-height` (not just padding) when Figma specifies a fixed height

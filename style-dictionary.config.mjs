@@ -50,15 +50,16 @@ StyleDictionary.registerTransform({
 });
 
 /**
- * Add `px` unit to number tokens.
+ * Convert number tokens to rem units (16px = 1rem baseline).
  * Applies to: spacing, border radius, font sizes, line heights.
  * Does NOT apply to font weight tokens (those have $type: "string").
+ * Border widths (1px, 2px) and box-shadow offsets are NOT tokens — keep them as px in component CSS.
  */
 StyleDictionary.registerTransform({
-  name: 'dimension/figma-px',
+  name: 'dimension/figma-rem',
   type: 'value',
   filter: (token) => token.$type === 'number' && typeof token.$value === 'number',
-  transform: (token) => `${token.$value}px`,
+  transform: (token) => `${token.$value / 16}rem`,
 });
 
 /**
@@ -151,7 +152,7 @@ const sd = new StyleDictionary({
     css: {
       transforms: [
         'color/figma-hex',        // Normalize Figma color objects → hex strings
-        'dimension/figma-px',     // Add px to number tokens
+        'dimension/figma-rem',    // Convert number tokens → rem (÷16)
         'fontWeight/figma-numeric', // "SemiBold" → 600
         'font/figma-family',      // "Inter" → "'Inter', sans-serif"
         'name/figma-web',         // Use Figma codeSyntax.WEB as variable name
@@ -190,7 +191,7 @@ const sdMobile = new StyleDictionary({
     css: {
       transforms: [
         'color/figma-hex',
-        'dimension/figma-px',
+        'dimension/figma-rem',
         'fontWeight/figma-numeric',
         'font/figma-family',
         'name/figma-web',
@@ -225,7 +226,7 @@ const sdDark = new StyleDictionary({
     css: {
       transforms: [
         'color/figma-hex',
-        'dimension/figma-px',
+        'dimension/figma-rem',
         'fontWeight/figma-numeric',
         'font/figma-family',
         'name/figma-web',

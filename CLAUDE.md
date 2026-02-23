@@ -63,11 +63,11 @@ named colors in component CSS.** Every visual value must come from the list belo
 
 | Variable | Value | Use |
 |---|---|---|
-| `--ai-radius-sm` | `4px` | Tags, badges, small inputs |
-| `--ai-radius-md` | `8px` | Buttons, cards, inputs |
-| `--ai-radius-lg` | `16px` | Large cards, modals |
-| `--ai-radius-xl` | `24px` | Drawers, bottom sheets |
-| `--ai-radius-full` | `100px` | Pills, avatars |
+| `--ai-radius-sm` | `0.25rem` | Tags, badges, small inputs |
+| `--ai-radius-md` | `0.5rem` | Buttons, cards, inputs |
+| `--ai-radius-lg` | `1rem` | Large cards, modals |
+| `--ai-radius-xl` | `1.5rem` | Drawers, bottom sheets |
+| `--ai-radius-full` | `6.25rem` | Pills, avatars |
 
 ### Icon
 
@@ -98,19 +98,19 @@ named colors in component CSS.** Every visual value must come from the list belo
 
 | Variable | Value | Use |
 |---|---|---|
-| `--ai-spacing-1` | `4px` | Micro gaps |
-| `--ai-spacing-2` | `6px` | Tight padding |
-| `--ai-spacing-3` | `8px` | Small padding |
-| `--ai-spacing-4` | `12px` | Medium-small padding |
-| `--ai-spacing-5` | `16px` | Standard padding |
-| `--ai-spacing-6` | `24px` | Section padding |
-| `--ai-spacing-7` | `32px` | Large section gap |
-| `--ai-spacing-8` | `40px` | XL gap |
-| `--ai-spacing-9` | `48px` | 2XL gap |
-| `--ai-spacing-10` | `56px` | 3XL gap |
-| `--ai-spacing-11` | `64px` | Section break |
-| `--ai-spacing-12` | `72px` | Page section |
-| `--ai-spacing-13` | `80px` | Hero gap |
+| `--ai-spacing-1` | `0.25rem` | Micro gaps |
+| `--ai-spacing-2` | `0.375rem` | Tight padding |
+| `--ai-spacing-3` | `0.5rem` | Small padding |
+| `--ai-spacing-4` | `0.75rem` | Medium-small padding |
+| `--ai-spacing-5` | `1rem` | Standard padding |
+| `--ai-spacing-6` | `1.5rem` | Section padding |
+| `--ai-spacing-7` | `2rem` | Large section gap |
+| `--ai-spacing-8` | `2.5rem` | XL gap |
+| `--ai-spacing-9` | `3rem` | 2XL gap |
+| `--ai-spacing-10` | `3.5rem` | 3XL gap |
+| `--ai-spacing-11` | `4rem` | Section break |
+| `--ai-spacing-12` | `4.5rem` | Page section |
+| `--ai-spacing-13` | `5rem` | Hero gap |
 
 ---
 
@@ -180,39 +180,39 @@ Font: **Inter** (loaded via Google Fonts in `src/styles/base.css`).
 
 | Variable | Value | Use |
 |---|---|---|
-| `--ai-font-fixed-xxs` | `12px` | Labels, captions |
-| `--ai-font-fixed-xs` | `14px` | Small body, metadata |
-| `--ai-font-fixed-sm` | `16px` | Body text (default) |
-| `--ai-font-fixed-md` | `18px` | Large body |
-| `--ai-font-fixed-lg` | `20px` | Small heading |
-| `--ai-font-fixed-xl` | `22px` | Heading 5/4 |
-| `--ai-font-fixed-2xl` | `26px` | Heading 3 |
-| `--ai-font-fixed-3xl` | `28px` | Heading 2 |
-| `--ai-font-fixed-4xl` | `32px` | Heading 1 |
+| `--ai-font-fixed-xxs` | `0.75rem` | Labels, captions |
+| `--ai-font-fixed-xs` | `0.875rem` | Small body, metadata |
+| `--ai-font-fixed-sm` | `1rem` | Body text (default) |
+| `--ai-font-fixed-md` | `1.125rem` | Large body |
+| `--ai-font-fixed-lg` | `1.25rem` | Small heading |
+| `--ai-font-fixed-xl` | `1.375rem` | Heading 5/4 |
+| `--ai-font-fixed-2xl` | `1.625rem` | Heading 3 |
+| `--ai-font-fixed-3xl` | `1.75rem` | Heading 2 |
+| `--ai-font-fixed-4xl` | `2rem` | Heading 1 |
 
 ### Font Sizes (Fluid — responsive, desktop values)
 
 | Variable | Desktop | Mobile |
 |---|---|---|
-| `--ai-font-fluid-xxs` | `12px` | `12px` |
-| `--ai-font-fluid-xs` | `14px` | `14px` |
-| `--ai-font-fluid-sm` | `16px` | `14px` |
-| `--ai-font-fluid-md` | `18px` | `16px` |
-| `--ai-font-fluid-lg` | `20px` | `18px` |
-| `--ai-font-fluid-xl` | `22px` | `20px` |
-| `--ai-font-fluid-2xl` | `26px` | `24px` |
-| `--ai-font-fluid-3xl` | `28px` | `26px` |
-| `--ai-font-fluid-4xl` | `32px` | `30px` |
+| `--ai-font-fluid-xxs` | `0.75rem` | `0.75rem` |
+| `--ai-font-fluid-xs` | `0.875rem` | `0.875rem` |
+| `--ai-font-fluid-sm` | `1rem` | `0.875rem` |
+| `--ai-font-fluid-md` | `1.125rem` | `1rem` |
+| `--ai-font-fluid-lg` | `1.25rem` | `1.125rem` |
+| `--ai-font-fluid-xl` | `1.375rem` | `1.25rem` |
+| `--ai-font-fluid-2xl` | `1.625rem` | `1.5rem` |
+| `--ai-font-fluid-3xl` | `1.75rem` | `1.625rem` |
+| `--ai-font-fluid-4xl` | `2rem` | `1.875rem` |
 
 ### Line Heights
 
 | Variable | Value | Use |
 |---|---|---|
-| `--ai-leading-1` | `16px` | Caption/label |
-| `--ai-leading-2` | `24px` | Body default |
-| `--ai-leading-3` | `32px` | Heading |
-| `--ai-leading-4` | `40px` | Large heading |
-| `--ai-leading-5` | `48px` | Display |
+| `--ai-leading-1` | `1rem` | Caption/label |
+| `--ai-leading-2` | `1.5rem` | Body default |
+| `--ai-leading-3` | `2rem` | Heading |
+| `--ai-leading-4` | `2.5rem` | Large heading |
+| `--ai-leading-5` | `3rem` | Display |
 
 ---
 

@@ -57,8 +57,8 @@
 /* ── Icon ────────────────────────────────────────────── */
 
 .input__icon {
-  width: 16px;
-  height: 16px;
+  width: var(--ai-spacing-5);
+  height: var(--ai-spacing-5);
   color: var(--ai-icon-contrast);
   flex-shrink: 0;
 }
@@ -103,8 +103,8 @@
 }
 
 .input__clear [data-lucide] {
-  width: 16px;
-  height: 16px;
+  width: var(--ai-spacing-5);
+  height: var(--ai-spacing-5);
 }
 
 /* ── Help text ───────────────────────────────────────── */
