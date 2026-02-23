@@ -74,7 +74,7 @@ named colors in component CSS.** Every visual value must come from the list belo
 | Variable | Value | Use |
 |---|---|---|
 | `--ai-icon-primary` | `#1F2A37` | Default icon color |
-| `--ai-icon-secondary` | `#4B5563` | Secondary icon |
+| `--ai-icon-secondary` | `#6B7280` | Secondary icon |
 | `--ai-icon-contrast` | `#9CA3AF` | Muted/disabled icon |
 | `--ai-icon-invert` | `#FFFFFF` | Icon on dark background |
 | `--ai-icon-brand` | `#1C64F2` | Brand-colored icon |
@@ -110,6 +110,47 @@ named colors in component CSS.** Every visual value must come from the list belo
 | `--ai-spacing-11` | `64px` | Section break |
 | `--ai-spacing-12` | `72px` | Page section |
 | `--ai-spacing-13` | `80px` | Hero gap |
+
+---
+
+## 2a. Dark Mode
+
+**Activation:** Add `data-theme="dark"` to `<html>` or `<body>`.
+
+**Generated file:** `css/tokens-dark.css` (rebuilt by `npm run tokens`; do not edit manually).
+
+All `--ai-*` variables continue to work in dark mode — the override file replaces their values
+under the `[data-theme="dark"]` selector. Brand, error, border, spacing, radius, and typography
+tokens are **theme-invariant** (same in both themes).
+
+### Tokens that change in dark mode
+
+| Variable | Light value | Dark value |
+|---|---|---|
+| `--ai-surface-primary` | `#FFFFFF` | `#111928` |
+| `--ai-surface-secondary` | `#F3F4F6` | `#1F2A37` |
+| `--ai-surface-contrast` | `#E5E7EB` | `#374151` |
+| `--ai-surface-invert` | `#111928` | `#F3F4F6` |
+| `--ai-text-primary` | `#1F2A37` | `#FFFFFF` |
+| `--ai-text-secondary` | `#4B5563` | `#E5E7EB` |
+| `--ai-text-contrast` | `#6B7280` | `#9CA3AF` |
+| `--ai-text-invert` | `#FFFFFF` | `#111928` |
+| `--ai-border-primary` | `#111928` | `#F3F4F6` |
+| `--ai-border-secondary` | `#E5E7EB` | `#374151` |
+| `--ai-border-contrast` | `#E5E7EB` | `#374151` |
+| `--ai-icon-primary` | `#1F2A37` | `#F3F4F6` |
+| `--ai-icon-secondary` | `#6B7280` | `#9CA3AF` |
+| `--ai-icon-invert` | `#FFFFFF` | `#111928` |
+| `--ai-btn-secondary` | `#FFFFFF` | `#111928` |
+| `--ai-btn-secondary-hover` | `#F3F4F6` | `#1F2A37` |
+| `--ai-btn-secondary-focus` | `#F3F4F6` | `#1F2A37` |
+| `--ai-btn-secondary-pressed` | `#F3F4F6` | `#1F2A37` |
+| `--ai-btn-disabled` | `#D1D5DB` | `#6B7280` |
+
+### Component dark-mode notes
+
+- **Tooltip:** Fixed dark panel (`#0c121c` = Neutral/950) in both themes. Does **not** invert.
+  Uses approved primitives for background and text — see `Tooltip.figma-notes.md`.
 
 ---
 

@@ -7,10 +7,10 @@
 
 .tooltip {
   width: 351px;                          /* fixed design width — no --ai-* token */
-  background-color: var(--ai-surface-invert);
+  background-color: #0c121c;             /* Neutral/950 — approved primitive; intentionally fixed dark in both themes */
   border-radius: var(--ai-radius-lg);
   padding: var(--ai-spacing-5);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15); /* approved primitive — no shadow token */
 }
 
 /* ── Text ────────────────────────────────────────────── */
@@ -21,5 +21,5 @@
   font-size: var(--ai-font-fixed-xxs);   /* 12px — body/xxs */
   font-weight: var(--ai-font-regular);   /* 400 */
   line-height: var(--ai-leading-1);      /* 16px */
-  color: var(--ai-text-invert);
+  color: #ffffff;                        /* Neutral/0 — approved primitive; always white on dark panel */
 }

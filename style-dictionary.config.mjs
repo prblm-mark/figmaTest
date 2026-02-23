@@ -121,6 +121,21 @@ StyleDictionary.registerFormat({
   },
 });
 
+// ─── Selector-scoped variable formatter ───────────────────────────────────────
+// Used for dark mode: outputs variables under an arbitrary CSS selector
+// (e.g. `[data-theme="dark"]`) instead of `:root`.
+
+StyleDictionary.registerFormat({
+  name: 'css/variables-selector',
+  format: ({ dictionary, options }) => {
+    const selector = options?.selector ?? ':root';
+    const vars = dictionary.allTokens
+      .map(t => `  --${t.name}: ${t.$value};`)
+      .join('\n');
+    return `${selector} {\n${vars}\n}\n`;
+  },
+});
+
 // ─── Build config ─────────────────────────────────────────────────────────────
 
 const sd = new StyleDictionary({
@@ -128,7 +143,7 @@ const sd = new StyleDictionary({
   parsers: ['figma-token-parser'],
   // Source order: Primitives first (for reference resolution), then semantic + typography
   source: [
-    'FigmaTokens/Primitive.tokens.json',
+    'FigmaTokens/Primitive.tokens[old].json',
     'FigmaTokens/Light.tokens.json',
     'FigmaTokens/Typography/Desktop.tokens.json',
   ],
@@ -167,7 +182,7 @@ const sdMobile = new StyleDictionary({
   usesDtcg: true,
   parsers: ['figma-token-parser'],
   source: [
-    'FigmaTokens/Primitive.tokens.json',
+    'FigmaTokens/Primitive.tokens[old].json',
     'FigmaTokens/Light.tokens.json',
     'FigmaTokens/Typography/Mobile.tokens.json',
   ],
@@ -194,3 +209,39 @@ const sdMobile = new StyleDictionary({
 });
 
 await sdMobile.buildAllPlatforms();
+
+// ─── Dark theme token build ────────────────────────────────────────────────────
+// Outputs [data-theme="dark"] { ... } overrides for surface/text/icon/button tokens.
+// Typography tokens are theme-invariant and are not included.
+
+const sdDark = new StyleDictionary({
+  usesDtcg: true,
+  parsers: ['figma-token-parser'],
+  source: [
+    'FigmaTokens/Primitive.tokens.json',
+    'FigmaTokens/Dark.tokens.json',
+  ],
+  platforms: {
+    css: {
+      transforms: [
+        'color/figma-hex',
+        'dimension/figma-px',
+        'fontWeight/figma-numeric',
+        'font/figma-family',
+        'name/figma-web',
+      ],
+      buildPath: 'css/',
+      files: [{
+        destination: 'tokens-dark.css',
+        format: 'css/variables-selector',
+        filter: (token) => !!token.$extensions?.['com.figma.codeSyntax']?.WEB,
+        options: {
+          selector: '[data-theme="dark"]',
+          outputReferences: false,
+        },
+      }],
+    },
+  },
+});
+
+await sdDark.buildAllPlatforms();

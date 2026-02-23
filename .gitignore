@@ -5,6 +5,11 @@ node_modules
 dist
 .cache
 
+# Generated CSS (rebuilt by `npm run tokens`)
+css/tokens.css
+css/tokens-mobile.css
+css/tokens-dark.css
+
 # IDE
 .idea
 
