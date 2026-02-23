@@ -64,7 +64,7 @@
 .version-history-row__check [data-lucide] {
   width: var(--ai-spacing-5);               /* 1rem (16px) */
   height: var(--ai-spacing-5);
-  color: var(--ai-icon-invert);
+  color: var(--ai-btn-primary-text);  /* always white — surface-success is theme-invariant */
 }
 
 /* ── Text content ────────────────────────────── */

@@ -48,7 +48,7 @@
 | Check circle bg | `--ai-surface-success` | `--ai-surface-success` |
 | Check circle border | `1px solid --ai-surface-primary` | `--ai-surface-primary` |
 | Check icon size | `16×16px` = `--ai-spacing-5` | `--ai-spacing-5` |
-| Check icon color | `icon/invert` | `--ai-icon-invert` |
+| Check icon color | `icon/invert` | `--ai-btn-primary-text` (always white; overrides invert flip in dark mode) |
 | Name font size | `--ai-font-fixed-xs` | `--ai-font-fixed-xs` |
 | Name font weight | `--ai-font-semibold` | `--ai-font-semibold` |
 | Name line height | `--ai-leading-1` | `--ai-leading-1` |
@@ -63,7 +63,7 @@
 None — all design values map to `--ai-*` semantic tokens. `--ai-surface-success` (`#30cb90`) was added to the token pipeline in this session.
 
 ## Notes
-- **Check icon dark mode:** `--ai-icon-invert` flips to near-black (`#111928`) in dark mode. Since `--ai-surface-success` is theme-invariant (same green in both themes), dark mode contrast may need review. If insufficient, replace with `--ai-btn-primary-text` (always white).
+- **Check icon colour:** Uses `--ai-btn-primary-text` (always `#ffffff`) rather than `--ai-icon-invert`, because `--ai-surface-success` is theme-invariant (same green in both themes) and `--ai-icon-invert` would flip to near-black in dark mode.
 - **Selected & Live gap:** Figma uses `--ai-spacing-5` (wider) for this variant vs `--ai-spacing-4` for the others — always check per-variant gap in Figma rather than assuming uniform spacing.
 - **Avatar placeholder:** Demo uses `--ai-surface-brand` as a placeholder bg. In production, replace `.version-history-row__avatar` content with an `<img>` tag or initials-based avatar.
 - **Border on Selected:** Adds 2px to the rendered row dimensions vs the other variants. Not compensated with a transparent border on base — the rows stack vertically and the 1px shift is not visually disruptive.
