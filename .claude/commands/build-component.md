@@ -182,6 +182,16 @@ Write the component files following project conventions:
 
 ### 9. Document (`<Name>.figma-notes.md`)
 
+**figma-notes.md is a live record — keep it in sync with code changes.**
+Any time CSS class names, HTML structure, or component dependencies change (e.g. refactoring
+inline elements into a standalone child component), the `figma-notes.md` CSS Class Mapping
+and Dependencies sections MUST be updated in the **same commit**. Do not defer this to later.
+An outdated figma-notes.md is a mistake: it misleads the next session about what classes and
+dependencies are actually in use.
+
+The same applies to `CLAUDE.md §10` — if a component's composition changes, update its row
+atomically (e.g. add "Composes Avatar" when Avatar is substituted for an inline placeholder).
+
 Write a complete notes file containing:
 
 ```markdown

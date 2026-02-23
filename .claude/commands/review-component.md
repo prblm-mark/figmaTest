@@ -183,3 +183,11 @@ When the parent component HTML references a child component:
   for as a variant, STOP and ask the user before continuing the audit: "I see a mobile mode
   referenced but no Device=Mobile variant in the component set — should this component have a
   mobile layout variant?" Do not assume fluid tokens alone are sufficient.
+- **figma-notes.md must stay in sync with code changes.** When executing updates to a component
+  (Step 6), any change to CSS class names, HTML structure, or dependencies MUST be reflected in
+  the component's `figma-notes.md` CSS Class Mapping and Dependencies sections in the **same
+  commit** — not deferred to a later session. The same applies to `CLAUDE.md §10`: if a
+  component's composition changes, update its row atomically. Concrete mistake: after refactoring
+  VersionHistoryRow to use `.avatar`/`.avatar--checked`, the figma-notes still listed the old
+  `.version-history-row__avatar`/`.version-history-row__check` classes and omitted Avatar as a
+  dependency — the stale docs were not caught until the following session.
