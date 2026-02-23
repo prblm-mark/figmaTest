@@ -76,6 +76,19 @@ propose which case it is:
 
 Wait for confirmation before including it in the build plan.
 
+**Critical — check for token drift.** Before marking a component as current, cross-reference
+every `--ai-*` token used in the component's CSS against the current `css/tokens.css` and
+`css/tokens-dark.css`. Flag as `⚠ Outdated` if:
+- The component uses a semantic token (e.g. `--ai-text-invert`) where a more specific token
+  now exists for that role (e.g. `--ai-btn-primary-text` was added specifically so primary
+  button text stays white in dark mode, rather than inverting with `--ai-text-invert`)
+- A new `--ai-*` token has been added to the token files that the component should be using
+  but isn't — run `npm run tokens` first to ensure the generated CSS is current, then grep
+  the token files for any variables not yet referenced in the component CSS
+
+This applies to **all nested components** too — a parent component being audited should
+trigger a token drift check on every child component it composes.
+
 Mark the component as:
 - `✓ Current` — matches Figma, no action needed
 - `⚠ Outdated` — exists but has discrepancies (list each one)

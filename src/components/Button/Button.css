@@ -32,7 +32,7 @@
 
 .btn--primary {
   background-color: var(--ai-btn-primary);
-  color: var(--ai-text-invert);
+  color: var(--ai-btn-primary-text);
   border-color: var(--ai-btn-primary);
 }
 
@@ -102,7 +102,7 @@
 
 .btn--alert {
   background-color: var(--ai-surface-error);
-  color: var(--ai-text-invert);
+  color: var(--ai-btn-primary-text);
   border-color: var(--ai-surface-error);
 }
 
@@ -135,18 +135,18 @@
 .btn--alert-outline:hover {
   background-color: #f87171; /* Red/400 — primitive, approved */
   border-color: #f87171;
-  color: var(--ai-text-invert);
+  color: var(--ai-btn-primary-text);
 }
 
 .btn--alert-outline:active {
   background-color: #dc2626; /* Red/600 — primitive, approved */
   border-color: #dc2626;
-  color: var(--ai-text-invert);
+  color: var(--ai-btn-primary-text);
 }
 
 .btn--alert-outline:focus-visible {
   background-color: #f87171; /* Red/400 — primitive, approved */
-  color: var(--ai-text-invert);
+  color: var(--ai-btn-primary-text);
   border: 2px solid var(--ai-surface-primary);
   box-shadow: 0 0 0 2px #f87171; /* Red/400 — primitive, approved */
   outline: none;

@@ -84,6 +84,7 @@ named colors in component CSS.** Every visual value must come from the list belo
 | Variable | Value | Use |
 |---|---|---|
 | `--ai-btn-primary` | `#1C64F2` | Primary button bg |
+| `--ai-btn-primary-text` | `#FFFFFF` | Primary button text (stays white in dark mode) |
 | `--ai-btn-primary-hover` | `#3F83F8` | Primary hover |
 | `--ai-btn-primary-focus` | `#3F83F8` | Primary focus |
 | `--ai-btn-primary-pressed` | `#1A56DB` | Primary pressed |

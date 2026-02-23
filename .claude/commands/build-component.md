@@ -125,6 +125,10 @@ Call `get_code_connect_map` on the root node to check if this component already 
 - If **mapping exists** (audit/refine mode): read the existing CSS and HTML files, then compare
   against what Figma now shows — list any tokens, variants, or states that are missing, outdated,
   or incorrect before making any changes
+- In either case: cross-reference every `--ai-*` token in the component CSS against the current
+  `css/tokens.css` and `css/tokens-dark.css`. Check for newly added tokens that the component
+  should be using but isn't (e.g. a new `--ai-btn-primary-text` that supersedes `--ai-text-invert`
+  for primary button text). Run `npm run tokens` first to ensure the generated CSS is current.
 
 ### 7. State × size × variant matrix
 
