@@ -34,6 +34,13 @@ Build a variant table before writing any code:
 | 68:5488 | State=Tooltip, Device=Default | — |
 | … | … | … |
 
+**Every variant in this table MUST be built. No exceptions for "unused" variants.**
+- "Unused by current components" is not a valid reason to skip a variant.
+- "Looks identical to another variant" is not a valid reason — fetch its design context and confirm.
+- If a user explicitly instructs you to skip a specific variant, note it in the table and figma-notes.md with a reason. Otherwise build it.
+
+The variant table is a **contract** — every row must be represented in the CSS, the demo HTML, and the figma-notes.md variant matrix. A row absent from any of those three means the build is incomplete.
+
 ### 2. Screenshot
 
 Call `get_screenshot` on the **parent frame** (the one containing all variants/states).
@@ -64,6 +71,14 @@ Inferring interactive states is the same as hardcoding — always fetch and read
 **Critical — fetch every size variant separately.** Never assume a smaller size uses a smaller
 token (e.g. the sm button uses `--ai-radius-md`, not `--ai-radius-sm`). Call `get_design_context`
 on each size node individually and read the exact tokens.
+
+**Critical — check ALL properties on EACH variant independently, not just layout or colour.**
+When a component has multiple sizes or states, do NOT carry a property value from one variant to
+another without checking. For each size/variant independently verify: icon sizes, border widths,
+nested child-component sizing (buttons, avatars, inputs). Concrete mistake: Avatar's checked icon
+was read as 16px on Size=1/2 and silently applied to all sizes — Figma actually uses 24px for
+Size=3/4/5. The only way to catch this is to call `get_design_context` on each size variant and
+compare every property, not just the ones expected to change.
 
 **Critical — scan for nested components in design context output.** After fetching design context,
 scan every `data-name="..."` attribute in the output. **Any element with a `data-name` attribute
