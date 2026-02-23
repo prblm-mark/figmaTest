@@ -78,7 +78,7 @@
 }
 
 .version-history-row__name {
-  font-family: var(--ai-font-body);
+  font-family: var(--ai-font-title);
   font-size: var(--ai-font-fixed-xs);       /* 0.875rem (14px) */
   font-weight: var(--ai-font-semibold);     /* 600 */
   line-height: var(--ai-leading-1);         /* 1rem (16px) — title/xs style */
