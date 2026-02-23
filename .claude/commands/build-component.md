@@ -199,6 +199,13 @@ Write the component files following project conventions:
 
 ### 9. Document (`<Name>.figma-notes.md`)
 
+**Cascade child updates to all parent demos.** After building or updating any child component,
+search the codebase for every parent demo that uses it (`grep -r "class=\"<component>"` across
+`src/components/`) and verify that each parent demo reflects the current child markup. A parent
+demo showing stale child HTML is a broken demo. Concrete mistake: after Avatar was corrected to
+use `<img class="portrait">` inside `.avatar`, VersionHistoryRow and VersionHistory demos still
+used empty `<div class="avatar">` divs showing grey fallback circles — requiring a separate fix.
+
 **figma-notes.md is a live record — keep it in sync with code changes.**
 Any time CSS class names, HTML structure, or component dependencies change (e.g. refactoring
 inline elements into a standalone child component), the `figma-notes.md` CSS Class Mapping

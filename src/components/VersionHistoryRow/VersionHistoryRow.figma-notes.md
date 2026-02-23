@@ -66,5 +66,5 @@ None — all design values map to `--ai-*` semantic tokens. `--ai-surface-succes
 ## Notes
 - **Check icon colour:** Uses `--ai-btn-primary-text` (always `#ffffff`) rather than `--ai-icon-invert`, because `--ai-surface-success` is theme-invariant (same green in both themes) and `--ai-icon-invert` would flip to near-black in dark mode.
 - **Selected & Live gap:** Figma uses `--ai-spacing-5` (wider) for this variant vs `--ai-spacing-4` for the others — always check per-variant gap in Figma rather than assuming uniform spacing.
-- **Avatar component:** Default/Live rows use `<div class="avatar">` (placeholder circle from `Avatar.css`); Selected rows use `<div class="avatar avatar--checked"><i data-lucide="check"></i></div>`. In production, replace the default avatar with `<img>` or initials markup inside `.avatar`.
+- **Avatar component:** Default/Live rows use `<div class="avatar"><img class="portrait" src="..." alt="..."></div>`; Selected rows use `<div class="avatar avatar--checked"><i data-lucide="check"></i></div>`. Always include a portrait image in non-checked rows — the empty `.avatar` fallback shows a grey circle.
 - **Border on Selected:** Adds 2px to the rendered row dimensions vs the other variants. Not compensated with a transparent border on base — the rows stack vertically and the 1px shift is not visually disruptive.

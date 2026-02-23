@@ -40,5 +40,5 @@ None — all design values map to `--ai-*` semantic tokens.
 - **Header (showButtons=false):** The Header instance inside VersionHistory has no actions slot. In HTML, simply omit `.header__actions` from the Header markup — no extra modifier class needed.
 - **Row data in production:** The VersionHistoryRow instances shown in the demo use placeholder names/dates. In production, these are dynamic and populated from API data.
 - **"Show older versions" button:** Tertiary sm button (`btn btn--tertiary btn--sm`) with trailing `chevron-right` icon. Right-aligned via `.version-history__footer { justify-content: flex-end }`. Figma design context shows no `border` class on this button — both secondary and tertiary use white bg (`--ai-btn-secondary`), so absence of border is the distinguishing signal for tertiary.
-- **Avatar placeholder:** Demo uses `--ai-surface-brand` as a placeholder bg circle. In production, replace with actual user photos or initials avatars.
+- **Avatar in rows:** Non-checked rows use `<div class="avatar"><img class="portrait" src="..." alt="..."></div>`; selected rows use `<div class="avatar avatar--checked"><i data-lucide="check"></i></div>`. Always include a portrait image in non-checked rows.
 - **Pill label in Live row:** The Pill label is dynamic (e.g. "2 minutes ago", "Live"). The Figma demo shows "2 minutes ago" as the Live row label.
