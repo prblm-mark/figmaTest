@@ -1,0 +1,21 @@
+/* VersionHistory component
+ * Figma node: 132:3365 — "VersionHistory"
+ * Composite: Header (no actions) + VersionHistoryRow list + "Show older versions" button
+ */
+
+.version-history {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);                 /* 0.5rem (8px) between rows */
+  padding: var(--ai-spacing-5);             /* 1rem (16px) */
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-lg);
+  background-color: var(--ai-surface-primary);
+}
+
+/* ── Footer — right-aligned "Show older versions" ── */
+
+.version-history__footer {
+  display: flex;
+  justify-content: flex-end;
+}

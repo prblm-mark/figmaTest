@@ -18,7 +18,7 @@
   font-size: var(--ai-font-fixed-xxs);    /* 12px — title/xxs */
   font-weight: var(--ai-font-semibold);   /* 600 */
   line-height: var(--ai-leading-1);       /* 16px */
-  color: var(--ai-text-primary);          /* --ai-text-primary */
+  color: var(--ai-text-secondary);        /* --ai-text-secondary */
   text-decoration: underline;
   text-decoration-style: dotted;
   text-underline-offset: 2px;

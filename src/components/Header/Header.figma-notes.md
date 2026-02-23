@@ -23,6 +23,7 @@
 | Device=Mobile | `.header` at `@media (max-width: 767px)` — no modifier class needed |
 | State=Tooltip | `.tooltip` present in DOM |
 | State=Discard | Different button content in `.header__actions` |
+| State=Info | Mobile tooltip-open state — same HTML as Tooltip but with `.header__actions .btn--sm` disabled Make Live |
 | showButtons=false | `.header__actions` omitted |
 
 ## Dependencies

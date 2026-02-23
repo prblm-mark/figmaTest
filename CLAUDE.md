@@ -412,6 +412,9 @@ All components must meet **WCAG 2.1 AA**:
 | Tooltip | Built | [node 68:4490](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=68-4490) | `src/components/Tooltip/` — single variant, dark panel. Positioning owned by parent. |
 | Header | Built | [node 68:5443](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=68-5443) | `src/components/Header/` — State (Default/Tooltip/Discard) × Device (Default/Mobile). Composes Tooltip, InfoLabel, Button. |
 | SignUpForm | Built | [node 96:2429](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=96-2429) | `src/components/SignUpForm/` — composes Header, InfoLabel, Input, Button. Layout only. |
+| Pill | Built | [node 78:2994](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=78-2994) | `src/components/Pill/` — single variant, success-coloured status pill. Uses `--ai-surface-success`. |
+| VersionHistoryRow | Built | [node 78:2957](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=78-2957) | `src/components/VersionHistoryRow/` — Default, Live, Selected, Selected & Live variants. Composes Pill. |
+| VersionHistory | Built | [node 132:3365](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=132-3365) | `src/components/VersionHistory/` — composite panel. Composes Header (no-actions), VersionHistoryRow, Pill, Button. |
 
 Add rows here as components are built. Format: Component Name, Built/In Progress/Figma Only, Figma URL, Notes.
 

@@ -1,0 +1,101 @@
+/* VersionHistoryRow component
+ * Figma node: 78:2957 — "Version History" (component set)
+ * Variants: Default, Live, Selected, Selected & Live
+ */
+
+.version-history-row {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-4);                  /* 0.75rem (12px) */
+  padding: var(--ai-spacing-3) var(--ai-spacing-5); /* 0.5rem 1rem (8px 16px) */
+  border-radius: var(--ai-radius-lg);
+}
+
+/* Live variant — secondary background */
+.version-history-row--live {
+  background-color: var(--ai-surface-secondary);
+}
+
+/* Selected variant — primary bg + border */
+.version-history-row--selected {
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-primary);
+}
+
+/* Selected & Live — secondary bg, no border, wider gap */
+.version-history-row--selected.version-history-row--live {
+  background-color: var(--ai-surface-secondary);
+  border: none;
+  gap: var(--ai-spacing-5);                  /* 1rem (16px) — wider than other variants */
+}
+
+/* ── Avatar ──────────────────────────────────── */
+
+.version-history-row__avatar {
+  width: var(--ai-spacing-6);               /* 1.5rem (24px) */
+  height: var(--ai-spacing-6);
+  border-radius: var(--ai-radius-full);
+  overflow: hidden;
+  flex-shrink: 0;
+  background-color: var(--ai-surface-brand); /* placeholder tint for demo */
+}
+
+.version-history-row__avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── Check circle (Selected states) ─────────── */
+
+.version-history-row__check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-6);               /* 1.5rem (24px) */
+  height: var(--ai-spacing-6);
+  border-radius: var(--ai-radius-full);
+  background-color: var(--ai-surface-success);
+  border: 1px solid var(--ai-surface-primary); /* ring to separate from bg */
+  flex-shrink: 0;
+}
+
+.version-history-row__check [data-lucide] {
+  width: var(--ai-spacing-5);               /* 1rem (16px) */
+  height: var(--ai-spacing-5);
+  color: var(--ai-icon-invert);
+}
+
+/* ── Text content ────────────────────────────── */
+
+.version-history-row__content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-1);                 /* 0.25rem (4px) between name and date */
+}
+
+.version-history-row__name {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);       /* 0.875rem (14px) */
+  font-weight: var(--ai-font-semibold);     /* 600 */
+  line-height: var(--ai-leading-1);         /* 1rem (16px) — title/xs style */
+  color: var(--ai-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.version-history-row__date {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);      /* 0.75rem (12px) */
+  font-weight: var(--ai-font-regular);      /* 400 */
+  line-height: var(--ai-leading-1);         /* 1rem (16px) */
+  color: var(--ai-text-contrast);
+  letter-spacing: 0.12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

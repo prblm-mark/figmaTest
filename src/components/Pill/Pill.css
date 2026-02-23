@@ -1,0 +1,25 @@
+/* Pill component
+ * Figma node: 78:2994 — "Pill"
+ * Single variant: success-coloured status pill
+ */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--ai-spacing-6);           /* 24px */
+  padding: 0 var(--ai-spacing-3);        /* 0 8px */
+  background-color: var(--ai-surface-success);
+  border-radius: var(--ai-radius-full);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.pill__label {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);   /* 12px — body/xxs/medium */
+  font-weight: var(--ai-font-medium);    /* 500 */
+  line-height: var(--ai-leading-1);      /* 16px */
+  color: var(--ai-text-invert);
+  letter-spacing: 0.12px;
+}

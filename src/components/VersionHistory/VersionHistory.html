@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>VersionHistory — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <!-- Dependencies -->
+  <link rel="stylesheet" href="../InfoLabel/InfoLabel.css">
+  <link rel="stylesheet" href="../Button/Button.css">
+  <link rel="stylesheet" href="../Tooltip/Tooltip.css">
+  <link rel="stylesheet" href="../Header/Header.css">
+  <link rel="stylesheet" href="../Pill/Pill.css">
+  <link rel="stylesheet" href="../VersionHistoryRow/VersionHistoryRow.css">
+  <!-- Component -->
+  <link rel="stylesheet" href="VersionHistory.css">
+  <style>
+    body { padding: var(--ai-spacing-7); background: var(--ai-surface-secondary); }
+    .demo-section {
+      max-width: 352px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-6);">VersionHistory</h1>
+
+  <div class="demo-section">
+    <div class="version-history">
+
+      <!-- Header (no actions — showButtons=false) -->
+      <header class="header">
+        <div class="header__title-group">
+          <h2 class="header__title">System Role</h2>
+          <div class="header__info">
+            <button type="button" class="info-label" aria-label="What's this?">
+              <span class="info-label__text">What's this?</span>
+              <i data-lucide="info" class="info-label__icon" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Live row -->
+      <div class="version-history-row version-history-row--live">
+        <div class="version-history-row__avatar" aria-hidden="true"></div>
+        <div class="version-history-row__content">
+          <span class="version-history-row__name">Sally Jones</span>
+          <span class="version-history-row__date">08 Jan 2026, 17:52</span>
+        </div>
+        <span class="pill" aria-label="Live version"><span class="pill__label">2 minutes ago</span></span>
+      </div>
+
+      <!-- Default row -->
+      <div class="version-history-row">
+        <div class="version-history-row__avatar" aria-hidden="true"></div>
+        <div class="version-history-row__content">
+          <span class="version-history-row__name">Gayle Stevens</span>
+          <span class="version-history-row__date">05 Jan 2026, 18:50</span>
+        </div>
+      </div>
+
+      <!-- Selected row -->
+      <div class="version-history-row version-history-row--selected">
+        <div class="version-history-row__check" aria-label="Selected">
+          <i data-lucide="check" aria-hidden="true"></i>
+        </div>
+        <div class="version-history-row__content">
+          <span class="version-history-row__name">Chris Bristow</span>
+          <span class="version-history-row__date">04 Jan 2026, 11:02</span>
+        </div>
+      </div>
+
+      <!-- Default row -->
+      <div class="version-history-row">
+        <div class="version-history-row__avatar" aria-hidden="true"></div>
+        <div class="version-history-row__content">
+          <span class="version-history-row__name">Chris Bristow</span>
+          <span class="version-history-row__date">04 Jan 2026, 10:02</span>
+        </div>
+      </div>
+
+      <!-- Default row -->
+      <div class="version-history-row">
+        <div class="version-history-row__avatar" aria-hidden="true"></div>
+        <div class="version-history-row__content">
+          <span class="version-history-row__name">Chris Bristow</span>
+          <span class="version-history-row__date">02 Jan 2026, 10:12</span>
+        </div>
+      </div>
+
+      <!-- Footer — "Show older versions" -->
+      <div class="version-history__footer">
+        <button type="button" class="btn btn--secondary btn--sm">
+          Show older versions
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>
