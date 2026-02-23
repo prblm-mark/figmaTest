@@ -79,7 +79,6 @@ For each named nested component found:
 Never implement a named Figma component as scoped CSS inside the parent (e.g. `.header__tooltip`).
 That duplicates what should be a standalone reusable component.
 
-- **Avatar is a standalone component:** Any `data-name="Avatars"` or `data-name="Avatar"` element in design context is a Figma component and must become `src/components/Avatar/` — NOT an inline placeholder div with a background colour. A placeholder div is acceptable only during the VersionHistoryRow build if Avatar hasn't been built yet, but the Avatar component must be built and substituted before the parent is considered complete.
 
 **Critical — flag contextual overrides before implementing.**
 When fetching design context for a parent component, if a child component instance has a property
