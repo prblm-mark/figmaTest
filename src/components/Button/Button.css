@@ -15,8 +15,10 @@
   border: 1px solid transparent;
   cursor: pointer;
   text-decoration: none;
-  transition: background-color 0.15s ease, border-color 0.15s ease,
-              color 0.15s ease, box-shadow 0.15s ease;
+  transition: background-color var(--ai-transition-default),
+              border-color var(--ai-transition-default),
+              color var(--ai-transition-default),
+              box-shadow var(--ai-transition-default);
   white-space: nowrap;
   user-select: none;
 }

@@ -4,6 +4,14 @@
 @import '../../css/tokens-mobile.css';
 @import '../../css/tokens-dark.css';
 
+/* ── Transition presets ──────────────────────── */
+:root {
+  --ai-transition-fast:    100ms ease;
+  --ai-transition-default: 150ms ease;
+  --ai-transition-slow:    250ms ease;
+  --ai-transition-spring:  200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
 *,
 *::before,
 *::after {

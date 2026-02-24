@@ -9,6 +9,7 @@
 | Node | Type | Description |
 |---|---|---|
 | 78:2958 | Default | No background; avatar circle + name/date |
+| 142:3427 | Hover | `--ai-surface-secondary` bg on mouseover; same layout as Default |
 | 78:2963 | Live | `--ai-surface-secondary` bg; avatar + name/date + Pill |
 | 78:2978 | Selected | `--ai-surface-primary` bg + `--ai-border-primary` border; check circle replaces avatar |
 | 78:2970 | Selected & Live | `--ai-surface-secondary` bg; check circle + Pill; gap widens to `--ai-spacing-5` |
@@ -18,6 +19,7 @@
 | Element | CSS class |
 |---|---|
 | Row (Default) | `.version-history-row` |
+| Row (Hover) | `.version-history-row:hover` |
 | Row (Live) | `.version-history-row.version-history-row--live` |
 | Row (Selected) | `.version-history-row.version-history-row--selected` |
 | Row (Selected & Live) | `.version-history-row.version-history-row--selected.version-history-row--live` |
@@ -41,6 +43,7 @@
 | Name/date gap | `--ai-spacing-1` | `--ai-spacing-1` |
 | Gap (Default / Live / Selected) | `--ai-spacing-4` | `--ai-spacing-4` |
 | Gap (Selected & Live) | `--ai-spacing-5` | `--ai-spacing-5` |
+| Hover bg | `--ai-surface-secondary` | `--ai-surface-secondary` |
 | Live bg | `--ai-surface-secondary` | `--ai-surface-secondary` |
 | Selected bg | `--ai-surface-primary` | `--ai-surface-primary` |
 | Selected border | `1px solid` `--ai-border-primary` | `--ai-border-primary` |

@@ -335,6 +335,8 @@ css/
 5. If new: create `src/components/<Name>/<Name>.css` and `<Name>.html`
 6. If existing: update the existing files
 7. Generate HTML using semantic elements; CSS using only `--ai-*` variables
+7a. If the component has interactive states: ask the user whether to animate the transition
+    and which preset to use (fast/default/slow/spring — see §12).
 8. Write `<Name>.figma-notes.md` with the node URL and property mapping table
 
 **Never** add inline styles. **Never** hardcode values (see Section 7).
@@ -430,3 +432,29 @@ Add rows here as components are built. Format: Component Name, Built/In Progress
 4. Update Section 2 or 3 of this file with the new token
 
 Do **not** manually edit `FigmaTokens/*.json` — they are the source of truth from Figma.
+
+---
+
+## 12. Transitions
+
+All interactive state changes (hover, focus, active/pressed) should use a named transition
+preset from the library below rather than hardcoded timing values.
+
+### Transition Presets
+
+| Variable | Value | Use |
+|---|---|---|
+| `--ai-transition-fast` | `100ms ease` | Quick micro-interactions (toggles, checkboxes) |
+| `--ai-transition-default` | `150ms ease` | Standard hover / focus state changes |
+| `--ai-transition-slow` | `250ms ease` | More deliberate transitions (panel reveals) |
+| `--ai-transition-spring` | `200ms cubic-bezier(0.34, 1.56, 0.64, 1)` | Bouncy/playful interactions |
+
+### Usage
+
+Single property: `transition: background-color var(--ai-transition-default);`
+Multiple: `transition: background-color var(--ai-transition-default), box-shadow var(--ai-transition-default);`
+
+### Workflow rule
+
+When implementing any component interactive state (hover, focus, active/pressed), always ask
+the user which transition preset to use — or none. Do not add transitions silently.

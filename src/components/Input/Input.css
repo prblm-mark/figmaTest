@@ -34,7 +34,8 @@
   background-color: var(--ai-surface-primary);
   border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-md);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition: border-color var(--ai-transition-default),
+              box-shadow var(--ai-transition-default);
 }
 
 .input__wrap:hover {
