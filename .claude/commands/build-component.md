@@ -297,6 +297,14 @@ Full token reference: CLAUDE.md Section 2 & 3.
   }
   ```
   Placing `transition` on the base `.component` selector leaks animation onto all variants including those without a Figma hover state.
+- **Expand/collapse toggle pattern:** When a component has show/hide row lists toggled by a button (e.g. "Show older" / "Show less"):
+  - Add `.component__row-extra` to rows that should be hidden when collapsed
+  - CSS: `.component:not(.component--expanded) .component__row-extra { display: none; }`
+  - Chevron rotation: `.component--expanded .component__chevron { transform: rotate(90deg); }`
+  - JS: toggle `.component--expanded` on container, update `aria-expanded`, swap button label
+  - The expand/collapse trigger counts as an interactive state — ask about transition before implementing
+- **Vertical timeline line pattern:** Absolutely positioned inside a `.component__rows` wrapper (NOT the outer container — so it doesn't overlap the footer). Center behind Size=1 avatars: `left: calc(var(--ai-spacing-5) + var(--ai-spacing-6) / 2)` = 28px. Set `top: 0; bottom: 0; width: 1px; background-color: var(--ai-border-secondary)`. A 1px decorative line is treated as an optical width (like border-width) — keep as `px`.
+- **`Neutral/200` primitive** (`#e5e7eb`) maps to `--ai-border-secondary`. Not a token gap.
 - Icon SVGs use `currentColor` → set color via `color:` property using `--ai-icon-*` tokens
 - Form field filled text = `--ai-text-primary`; placeholder = `--ai-text-contrast` (different tokens!)
 - Clear button visibility: use `visibility: hidden` + `:has(:not(:placeholder-shown))` — no JS needed
