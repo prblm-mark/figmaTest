@@ -2,44 +2,84 @@
 
 ## Figma Node
 - File: `8OAAokH2JXhIvGZFrlzeKT`
-- Component instance: node `132:3365` — [open in Figma](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=132-3365)
+- Component set: node `157:4227` — [open in Figma](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=157-4227)
 
 ## Variant Matrix
-Single variant (no Figma props). Rows inside are VersionHistoryRow instances.
+
+| Node | Variant | Description |
+|---|---|---|
+| 132:3365 | Property 1=Default | Collapsed: heading + 5 rows (1 Live, 4 Default) + "Show older" footer |
+| 157:4282 | Property 1=Expanded | Expanded: heading + 12 rows (1 Live, 11 Default) + "Show less" footer |
+
+### What changes between variants
+
+| Element | Default | Expanded |
+|---|---|---|
+| Row count | 5 (rows 6–12 hidden) | 12 (all rows visible) |
+| Chevron direction | Right (`chevron-right`, no rotation) | Down (`chevron-right` rotated 90°) |
+| Footer label | "Show older" | "Show less" |
+| Footer `aria-expanded` | `false` | `true` |
+| Timeline line height | Spans first 5 rows | Spans all 12 rows |
 
 ## CSS Class Mapping
 
 | Element | CSS class |
 |---|---|
-| Outer panel | `.version-history` |
-| Footer (button row) | `.version-history__footer` |
+| Outer container | `.version-history` |
+| Expanded state modifier | `.version-history.version-history--expanded` |
+| Heading section | `.version-history__heading` |
+| Title row (icon + title text) | `.version-history__heading-title` |
+| History icon | `.version-history__icon-history` (Lucide `history`, 24px) |
+| Title text | `.version-history__heading-title-text` |
+| Subtitle row (text + chevron) | `.version-history__heading-subtitle` |
+| Subtitle text | `.version-history__heading-subtitle-text` |
+| Chevron icon | `.version-history__chevron` (Lucide `chevron-right`, 16px, rotates 90° when expanded) |
+| Row list wrapper | `.version-history__rows` |
+| Timeline line (decoration) | `.version-history__timeline` |
+| Standard rows (always visible) | `.version-history-row` (from VersionHistoryRow component) |
+| Extra rows (hidden when collapsed) | `.version-history-row.version-history__row-extra` |
+| Footer toggle button | `.version-history__footer` |
+| Footer label text | `.version-history__footer-label` |
 
 ## Dependencies
-- `Header` — `src/components/Header/` (no-actions state; full-width override applied — see Notes)
-- `InfoLabel` — `src/components/InfoLabel/` (via Header)
-- `Button` — `src/components/Button/` (tertiary sm in footer; via Header)
-- `Tooltip` — `src/components/Tooltip/` (via Header)
-- `Avatar` — `src/components/Avatar/` (Size=1, Checked=False and Checked=True)
-- `Pill` — `src/components/Pill/`
+- `Avatar` — `src/components/Avatar/` (Size=1, Checked=False in Default/Live rows)
+- `Pill` — `src/components/Pill/` (in the Live row)
 - `VersionHistoryRow` — `src/components/VersionHistoryRow/`
 
 ## Token Mapping
 
 | Property | Figma variable | CSS variable |
 |---|---|---|
-| Panel padding | `--ai-spacing-5` | `--ai-spacing-5` |
-| Gap between rows | `--ai-spacing-3` | `--ai-spacing-3` |
-| Panel border | `1px solid --ai-border-secondary` | `--ai-border-secondary` |
-| Panel border radius | `--ai-radius-lg` | `--ai-radius-lg` |
-| Panel background | (implied) `--ai-surface-primary` | `--ai-surface-primary` |
+| Outer container gap | `--ai-spacing-1` | `--ai-spacing-1` |
+| Outer container radius | `--ai-radius-lg` | `--ai-radius-lg` |
+| Heading internal gap | `--ai-spacing-2` | `--ai-spacing-2` |
+| Heading bottom padding | `--ai-spacing-2` | `--ai-spacing-2` |
+| Title row gap | `--ai-spacing-3` | `--ai-spacing-3` |
+| History icon size | `24px` (= `--ai-spacing-6`) | `--ai-spacing-6` |
+| History icon color | `--ai-icon-primary` | `--ai-icon-primary` |
+| Title font | `title/base` | `--ai-font-title`, `--ai-font-bold`, `--ai-font-fixed-sm`, `--ai-leading-1` |
+| Title color | `--ai-text-primary` | `--ai-text-primary` |
+| Subtitle font | `body/xs` | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xs`, `--ai-leading-2` |
+| Subtitle color | `--ai-text-contrast` | `--ai-text-contrast` |
+| Chevron icon size | `16px` (= `--ai-spacing-5`) | `--ai-spacing-5` |
+| Chevron icon color | `--ai-icon-contrast` | `--ai-icon-contrast` |
+| Row list gap | `--ai-spacing-1` | `--ai-spacing-1` |
+| Timeline line color | `Neutral/200` = `#e5e7eb` | `--ai-border-secondary` |
+| Footer padding | `--ai-spacing-3` × `--ai-spacing-5` | `--ai-spacing-3` × `--ai-spacing-5` |
+| Footer label font | `body/xxs` | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xxs`, `--ai-leading-1` |
+| Footer label color | `--ai-text-primary` | `--ai-text-primary` |
+| Footer label tracking | `0.12px` | `0.12px` (optical, px) |
 
 ## Token Gaps
 None — all design values map to `--ai-*` semantic tokens.
+`Neutral/200 = #e5e7eb` maps to `--ai-border-secondary`.
 
 ## Notes
-- **Header (showButtons=false):** The Header instance inside VersionHistory has no actions slot. In HTML, simply omit `.header__actions` from the Header markup — no extra modifier class needed.
-- **Header title fill-container (Case B contextual override):** In Figma, the Header title is set to `fill-container` inside VersionHistory, pushing the InfoLabel to the far right. This is not a formal Header variant — it is scoped to VersionHistory via `.version-history .header__title { flex: 1 }` and `.version-history .header__info { flex: initial }` in `VersionHistory.css`. The Header component itself is unchanged.
-- **Row data in production:** The VersionHistoryRow instances shown in the demo use placeholder names/dates. In production, these are dynamic and populated from API data.
-- **"Show older versions" button:** Tertiary sm button (`btn btn--tertiary btn--sm`) with trailing `chevron-right` icon. Right-aligned via `.version-history__footer { justify-content: flex-end }`. Figma design context shows no `border` class on this button — both secondary and tertiary use white bg (`--ai-btn-secondary`), so absence of border is the distinguishing signal for tertiary.
-- **Avatar in rows:** Non-checked rows use `<div class="avatar"><img class="portrait" src="..." alt="..."></div>`; selected rows use `<div class="avatar avatar--checked"><i data-lucide="check"></i></div>`. Always include a portrait image in non-checked rows.
-- **Pill label in Live row:** The Pill label is dynamic (e.g. "2 minutes ago", "Live"). The Figma demo shows "2 minutes ago" as the Live row label.
+- **No Header component:** The new VersionHistory uses a custom heading section ("Prompt Template Heading" in Figma), NOT the Header component. All previous Header/InfoLabel/Button/Tooltip dependencies are removed.
+- **History icon:** `data-name="Icon/24px/History"` → Lucide `history` icon. Rendered 24px, `--ai-icon-primary` colour.
+- **Chevron:** `data-name="Icon/16px/ChevronRight"` in both variants. In Default: no rotation. In Expanded: Figma wraps it in a `rotate-90` container → CSS `transform: rotate(90deg)` on `.version-history--expanded .version-history__chevron`.
+- **No transition on chevron:** User confirmed no animation for the expand/collapse toggle.
+- **Timeline line:** Absolute-positioned 1px vertical line inside `.version-history__rows`. Centered at `calc(--ai-spacing-5 + --ai-spacing-6 / 2)` = 28px from left (aligns with avatar centres). Spans top-to-bottom of the rows wrapper (excludes footer).
+- **Extra rows:** Rows 6–12 carry both `.version-history-row` and `.version-history__row-extra` classes. CSS hides `.version-history__row-extra` on the collapsed variant. JS toggles `.version-history--expanded` on the container.
+- **Footer:** Plain-text toggle button (`<button>` for accessibility). No hover state — none defined in Figma. `aria-expanded` is toggled by JS.
+- **Nested component audit (this session):** VersionHistoryRow, Avatar, and Pill were all verified against current Figma — no changes found. The only updated component is VersionHistory itself.

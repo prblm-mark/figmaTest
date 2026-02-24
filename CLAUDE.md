@@ -418,7 +418,7 @@ All components must meet **WCAG 2.1 AA**:
 | Portraits | Built | [node 68:4785](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=68-4785) | `src/components/Portraits/` — Single `.portrait` class; fills container with `object-fit:cover`. Variants: Female 1/3/4/5, Male 2 (Female 2 + Male 1 not yet located). Clipping is Avatar's responsibility. |
 | Avatar | Built | [node 68:5042](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=68-5042) | `src/components/Avatar/` — Size 1–5 (24–80px circles); Checked=True check-circle variant. Show Notification variants not yet built. Composes Portraits. |
 | VersionHistoryRow | Built | [node 78:2957](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=78-2957) | `src/components/VersionHistoryRow/` — Default, Live, Selected, Selected & Live variants. Composes Avatar, Pill. |
-| VersionHistory | Built | [node 132:3365](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=132-3365) | `src/components/VersionHistory/` — composite panel. Composes Header (no-actions, full-width override), VersionHistoryRow, Avatar, Pill, Button. |
+| VersionHistory | Built | [node 157:4227](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=157-4227) | `src/components/VersionHistory/` — 2 variants: Default (collapsed, 5 rows) + Expanded (12 rows). Custom heading with `history` icon + `chevron-right` toggle. Composes VersionHistoryRow, Avatar, Pill. No Header/Button dependency. |
 
 Add rows here as components are built. Format: Component Name, Built/In Progress/Figma Only, Figma URL, Notes.
 

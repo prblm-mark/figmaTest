@@ -7,10 +7,6 @@
   <title>VersionHistory — Design System</title>
   <link rel="stylesheet" href="../../styles/base.css">
   <!-- Dependencies -->
-  <link rel="stylesheet" href="../InfoLabel/InfoLabel.css">
-  <link rel="stylesheet" href="../Button/Button.css">
-  <link rel="stylesheet" href="../Tooltip/Tooltip.css">
-  <link rel="stylesheet" href="../Header/Header.css">
   <link rel="stylesheet" href="../Portraits/Portraits.css">
   <link rel="stylesheet" href="../Avatar/Avatar.css">
   <link rel="stylesheet" href="../Pill/Pill.css">
@@ -19,8 +15,15 @@
   <link rel="stylesheet" href="VersionHistory.css">
   <style>
     body { padding: var(--ai-spacing-7); background: var(--ai-surface-secondary); }
-    .demo-section {
-      max-width: 352px;
+    .demo-section { max-width: 352px; }
+    .demo-gap { margin-top: var(--ai-spacing-8); }
+    .demo-label {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      margin: 0 0 var(--ai-spacing-3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
     }
   </style>
 </head>
@@ -28,90 +31,325 @@
 
   <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-6);">VersionHistory</h1>
 
+  <!-- ── Default (collapsed) ── -->
   <div class="demo-section">
-    <div class="version-history">
+    <p class="demo-label">Default — collapsed (click "Show older" to expand)</p>
 
-      <!-- Header (no actions — showButtons=false) -->
-      <header class="header">
-        <div class="header__title-group">
-          <h2 class="header__title">System Role</h2>
-          <div class="header__info">
-            <button type="button" class="info-label" aria-label="What's this?">
-              <span class="info-label__text">What's this?</span>
-              <i data-lucide="info" class="info-label__icon" aria-hidden="true"></i>
-            </button>
+    <div class="version-history">
+      <!-- Heading -->
+      <div class="version-history__heading">
+        <div class="version-history__heading-title">
+          <i data-lucide="history" class="version-history__icon-history" aria-hidden="true"></i>
+          <span class="version-history__heading-title-text">Version History</span>
+        </div>
+        <div class="version-history__heading-subtitle">
+          <span class="version-history__heading-subtitle-text">12 previous system roles saved</span>
+          <i data-lucide="chevron-right" class="version-history__chevron" aria-hidden="true"></i>
+        </div>
+      </div>
+
+      <!-- Row list -->
+      <div class="version-history__rows">
+        <div class="version-history__timeline" aria-hidden="true"></div>
+
+        <!-- Row 1 — Live -->
+        <div class="version-history-row version-history-row--live">
+          <div class="avatar">
+            <img class="portrait" src="https://picsum.photos/seed/female4/300" alt="Sally Jones">
+          </div>
+          <div class="version-history-row__content">
+            <span class="version-history-row__name">Sally Jones</span>
+            <span class="version-history-row__date">08 Jan 2026, 17:52</span>
+          </div>
+          <span class="pill" aria-label="Live version"><span class="pill__label">2 minutes ago</span></span>
+        </div>
+
+        <!-- Row 2 — Default -->
+        <div class="version-history-row">
+          <div class="avatar">
+            <img class="portrait" src="https://picsum.photos/seed/female5/300" alt="Gayle Stevens">
+          </div>
+          <div class="version-history-row__content">
+            <span class="version-history-row__name">Gayle Stevens</span>
+            <span class="version-history-row__date">05 Jan 2026, 18:50</span>
           </div>
         </div>
-      </header>
 
-      <!-- Live row -->
-      <div class="version-history-row version-history-row--live">
-        <div class="avatar">
-          <img class="portrait" src="https://picsum.photos/seed/female4/300" alt="Sally Jones">
+        <!-- Row 3 — Default -->
+        <div class="version-history-row">
+          <div class="avatar">
+            <img class="portrait" src="https://picsum.photos/seed/male2/300" alt="Chris Bristow">
+          </div>
+          <div class="version-history-row__content">
+            <span class="version-history-row__name">Chris Bristow</span>
+            <span class="version-history-row__date">04 Jan 2026, 11:02</span>
+          </div>
         </div>
-        <div class="version-history-row__content">
-          <span class="version-history-row__name">Sally Jones</span>
-          <span class="version-history-row__date">08 Jan 2026, 17:52</span>
+
+        <!-- Row 4 — Default -->
+        <div class="version-history-row">
+          <div class="avatar">
+            <img class="portrait" src="https://picsum.photos/seed/male3/300" alt="Chris Bristow">
+          </div>
+          <div class="version-history-row__content">
+            <span class="version-history-row__name">Chris Bristow</span>
+            <span class="version-history-row__date">04 Jan 2026, 10:02</span>
+          </div>
         </div>
-        <span class="pill" aria-label="Live version"><span class="pill__label">2 minutes ago</span></span>
+
+        <!-- Row 5 — Default -->
+        <div class="version-history-row">
+          <div class="avatar">
+            <img class="portrait" src="https://picsum.photos/seed/male4/300" alt="Chris Bristow">
+          </div>
+          <div class="version-history-row__content">
+            <span class="version-history-row__name">Chris Bristow</span>
+            <span class="version-history-row__date">02 Jan 2026, 10:12</span>
+          </div>
+        </div>
+
+        <!-- Rows 6–12 — visible only when expanded -->
+        <div class="version-history-row version-history__row-extra">
+          <div class="avatar">
+            <img class="portrait" src="https://picsum.photos/seed/male5/300" alt="Chris Bristow">
+          </div>
+          <div class="version-history-row__content">
+            <span class="version-history-row__name">Chris Bristow</span>
+            <span class="version-history-row__date">02 Jan 2026, 10:12</span>
+          </div>
+        </div>
+
+        <div class="version-history-row version-history__row-extra">
+          <div class="avatar">
+            <img class="portrait" src="https://picsum.photos/seed/female3/300" alt="Gayle Stevens">
+          </div>
+          <div class="version-history-row__content">
+            <span class="version-history-row__name">Gayle Stevens</span>
+            <span class="version-history-row__date">02 Jan 2026, 10:12</span>
+          </div>
+        </div>
+
+        <div class="version-history-row version-history__row-extra">
+          <div class="avatar">
+            <img class="portrait" src="https://picsum.photos/seed/male6/300" alt="Chris Bristow">
+          </div>
+          <div class="version-history-row__content">
+            <span class="version-history-row__name">Chris Bristow</span>
+            <span class="version-history-row__date">02 Jan 2026, 10:12</span>
+          </div>
+        </div>
+
+        <div class="version-history-row version-history__row-extra">
+          <div class="avatar">
+            <img class="portrait" src="https://picsum.photos/seed/female6/300" alt="Gayle Stevens">
+          </div>
+          <div class="version-history-row__content">
+            <span class="version-history-row__name">Gayle Stevens</span>
+            <span class="version-history-row__date">02 Jan 2026, 10:12</span>
+          </div>
+        </div>
+
+        <div class="version-history-row version-history__row-extra">
+          <div class="avatar">
+            <img class="portrait" src="https://picsum.photos/seed/male7/300" alt="Chris Bristow">
+          </div>
+          <div class="version-history-row__content">
+            <span class="version-history-row__name">Chris Bristow</span>
+            <span class="version-history-row__date">02 Jan 2026, 10:12</span>
+          </div>
+        </div>
+
+        <div class="version-history-row version-history__row-extra">
+          <div class="avatar">
+            <img class="portrait" src="https://picsum.photos/seed/male8/300" alt="Chris Bristow">
+          </div>
+          <div class="version-history-row__content">
+            <span class="version-history-row__name">Chris Bristow</span>
+            <span class="version-history-row__date">02 Jan 2026, 10:12</span>
+          </div>
+        </div>
+
+        <div class="version-history-row version-history__row-extra">
+          <div class="avatar">
+            <img class="portrait" src="https://picsum.photos/seed/male9/300" alt="Chris Bristow">
+          </div>
+          <div class="version-history-row__content">
+            <span class="version-history-row__name">Chris Bristow</span>
+            <span class="version-history-row__date">02 Jan 2026, 10:12</span>
+          </div>
+        </div>
       </div>
 
-      <!-- Default row -->
-      <div class="version-history-row">
-        <div class="avatar">
-          <img class="portrait" src="https://picsum.photos/seed/female5/300" alt="Gayle Stevens">
+      <!-- Footer toggle -->
+      <button type="button" class="version-history__footer" aria-expanded="false">
+        <span class="version-history__footer-label">Show older</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Expanded (static reference) ── -->
+  <div class="demo-section demo-gap">
+    <p class="demo-label">Expanded</p>
+
+    <div class="version-history version-history--expanded">
+      <!-- Heading -->
+      <div class="version-history__heading">
+        <div class="version-history__heading-title">
+          <i data-lucide="history" class="version-history__icon-history" aria-hidden="true"></i>
+          <span class="version-history__heading-title-text">Version History</span>
         </div>
-        <div class="version-history-row__content">
-          <span class="version-history-row__name">Gayle Stevens</span>
-          <span class="version-history-row__date">05 Jan 2026, 18:50</span>
+        <div class="version-history__heading-subtitle">
+          <span class="version-history__heading-subtitle-text">12 previous system roles saved</span>
+          <i data-lucide="chevron-right" class="version-history__chevron" aria-hidden="true"></i>
         </div>
       </div>
 
-      <!-- Selected row -->
-      <div class="version-history-row version-history-row--selected">
-        <div class="avatar avatar--checked" aria-label="Selected">
-          <i data-lucide="check" aria-hidden="true"></i>
+      <!-- Row list -->
+      <div class="version-history__rows">
+        <div class="version-history__timeline" aria-hidden="true"></div>
+
+        <div class="version-history-row version-history-row--live">
+          <div class="avatar">
+            <img class="portrait" src="https://picsum.photos/seed/female4/300" alt="Sally Jones">
+          </div>
+          <div class="version-history-row__content">
+            <span class="version-history-row__name">Sally Jones</span>
+            <span class="version-history-row__date">08 Jan 2026, 17:52</span>
+          </div>
+          <span class="pill" aria-label="Live version"><span class="pill__label">2 minutes ago</span></span>
         </div>
-        <div class="version-history-row__content">
-          <span class="version-history-row__name">Chris Bristow</span>
-          <span class="version-history-row__date">04 Jan 2026, 11:02</span>
+
+        <div class="version-history-row">
+          <div class="avatar">
+            <img class="portrait" src="https://picsum.photos/seed/female5/300" alt="Gayle Stevens">
+          </div>
+          <div class="version-history-row__content">
+            <span class="version-history-row__name">Gayle Stevens</span>
+            <span class="version-history-row__date">05 Jan 2026, 18:50</span>
+          </div>
+        </div>
+
+        <div class="version-history-row">
+          <div class="avatar">
+            <img class="portrait" src="https://picsum.photos/seed/male2/300" alt="Chris Bristow">
+          </div>
+          <div class="version-history-row__content">
+            <span class="version-history-row__name">Chris Bristow</span>
+            <span class="version-history-row__date">04 Jan 2026, 11:02</span>
+          </div>
+        </div>
+
+        <div class="version-history-row">
+          <div class="avatar">
+            <img class="portrait" src="https://picsum.photos/seed/male3/300" alt="Chris Bristow">
+          </div>
+          <div class="version-history-row__content">
+            <span class="version-history-row__name">Chris Bristow</span>
+            <span class="version-history-row__date">04 Jan 2026, 10:02</span>
+          </div>
+        </div>
+
+        <div class="version-history-row">
+          <div class="avatar">
+            <img class="portrait" src="https://picsum.photos/seed/male4/300" alt="Chris Bristow">
+          </div>
+          <div class="version-history-row__content">
+            <span class="version-history-row__name">Chris Bristow</span>
+            <span class="version-history-row__date">02 Jan 2026, 10:12</span>
+          </div>
+        </div>
+
+        <div class="version-history-row version-history__row-extra">
+          <div class="avatar">
+            <img class="portrait" src="https://picsum.photos/seed/male5/300" alt="Chris Bristow">
+          </div>
+          <div class="version-history-row__content">
+            <span class="version-history-row__name">Chris Bristow</span>
+            <span class="version-history-row__date">02 Jan 2026, 10:12</span>
+          </div>
+        </div>
+
+        <div class="version-history-row version-history__row-extra">
+          <div class="avatar">
+            <img class="portrait" src="https://picsum.photos/seed/female3/300" alt="Gayle Stevens">
+          </div>
+          <div class="version-history-row__content">
+            <span class="version-history-row__name">Gayle Stevens</span>
+            <span class="version-history-row__date">02 Jan 2026, 10:12</span>
+          </div>
+        </div>
+
+        <div class="version-history-row version-history__row-extra">
+          <div class="avatar">
+            <img class="portrait" src="https://picsum.photos/seed/male6/300" alt="Chris Bristow">
+          </div>
+          <div class="version-history-row__content">
+            <span class="version-history-row__name">Chris Bristow</span>
+            <span class="version-history-row__date">02 Jan 2026, 10:12</span>
+          </div>
+        </div>
+
+        <div class="version-history-row version-history__row-extra">
+          <div class="avatar">
+            <img class="portrait" src="https://picsum.photos/seed/female6/300" alt="Gayle Stevens">
+          </div>
+          <div class="version-history-row__content">
+            <span class="version-history-row__name">Gayle Stevens</span>
+            <span class="version-history-row__date">02 Jan 2026, 10:12</span>
+          </div>
+        </div>
+
+        <div class="version-history-row version-history__row-extra">
+          <div class="avatar">
+            <img class="portrait" src="https://picsum.photos/seed/male7/300" alt="Chris Bristow">
+          </div>
+          <div class="version-history-row__content">
+            <span class="version-history-row__name">Chris Bristow</span>
+            <span class="version-history-row__date">02 Jan 2026, 10:12</span>
+          </div>
+        </div>
+
+        <div class="version-history-row version-history__row-extra">
+          <div class="avatar">
+            <img class="portrait" src="https://picsum.photos/seed/male8/300" alt="Chris Bristow">
+          </div>
+          <div class="version-history-row__content">
+            <span class="version-history-row__name">Chris Bristow</span>
+            <span class="version-history-row__date">02 Jan 2026, 10:12</span>
+          </div>
+        </div>
+
+        <div class="version-history-row version-history__row-extra">
+          <div class="avatar">
+            <img class="portrait" src="https://picsum.photos/seed/male9/300" alt="Chris Bristow">
+          </div>
+          <div class="version-history-row__content">
+            <span class="version-history-row__name">Chris Bristow</span>
+            <span class="version-history-row__date">02 Jan 2026, 10:12</span>
+          </div>
         </div>
       </div>
 
-      <!-- Default row -->
-      <div class="version-history-row">
-        <div class="avatar">
-          <img class="portrait" src="https://picsum.photos/seed/male2/300" alt="Chris Bristow">
-        </div>
-        <div class="version-history-row__content">
-          <span class="version-history-row__name">Chris Bristow</span>
-          <span class="version-history-row__date">04 Jan 2026, 10:02</span>
-        </div>
-      </div>
-
-      <!-- Default row -->
-      <div class="version-history-row">
-        <div class="avatar">
-          <img class="portrait" src="https://picsum.photos/seed/male2/300" alt="Chris Bristow">
-        </div>
-        <div class="version-history-row__content">
-          <span class="version-history-row__name">Chris Bristow</span>
-          <span class="version-history-row__date">02 Jan 2026, 10:12</span>
-        </div>
-      </div>
-
-      <!-- Footer — "Show older versions" -->
-      <div class="version-history__footer">
-        <button type="button" class="btn btn--tertiary btn--sm">
-          Show older versions
-          <i data-lucide="chevron-right" aria-hidden="true"></i>
-        </button>
-      </div>
-
+      <!-- Footer toggle -->
+      <button type="button" class="version-history__footer" aria-expanded="true">
+        <span class="version-history__footer-label">Show less</span>
+      </button>
     </div>
   </div>
 
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <script>lucide.createIcons();</script>
+  <script>
+    lucide.createIcons();
+
+    // Toggle expand/collapse on footer button click
+    document.querySelectorAll('.version-history__footer').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var panel = this.closest('.version-history');
+        var isExpanded = panel.classList.toggle('version-history--expanded');
+        this.setAttribute('aria-expanded', isExpanded);
+        this.querySelector('.version-history__footer-label').textContent = isExpanded ? 'Show less' : 'Show older';
+      });
+    });
+  </script>
 </body>
 </html>
