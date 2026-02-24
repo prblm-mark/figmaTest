@@ -111,7 +111,9 @@ changed, colour overridden), STOP before writing any code. Report the anomaly to
   - **Case B — Contextual override:** a one-off usage not formalised as a variant → scope it
     to the parent with a modifier/override class, document in the parent's `figma-notes.md`
 
-Wait for the user to confirm the case before implementing anything.
+Wait for the user to confirm the case before implementing anything. This means **zero code written** until the user responds — no CSS, no HTML, not even a placeholder. The stop is absolute.
+
+Concrete mistake: VersionHistory used a Header with its title set to `fill-container` (pushing InfoLabel to the far right). This was a contextual override — it was silently implemented without flagging, producing the wrong layout, and required a separate fix session. "I can see what it should do" is not a reason to skip the stop.
 
 ### 5. Variables
 

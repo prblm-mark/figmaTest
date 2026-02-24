@@ -38,6 +38,7 @@ None — all design values map to `--ai-*` semantic tokens.
 
 ## Notes
 - **Header (showButtons=false):** The Header instance inside VersionHistory has no actions slot. In HTML, simply omit `.header__actions` from the Header markup — no extra modifier class needed.
+- **Header title fill-container (Case B contextual override):** In Figma, the Header title is set to `fill-container` inside VersionHistory, pushing the InfoLabel to the far right. This is not a formal Header variant — it is scoped to VersionHistory via `.version-history .header__title { flex: 1 }` and `.version-history .header__info { flex: initial }` in `VersionHistory.css`. The Header component itself is unchanged.
 - **Row data in production:** The VersionHistoryRow instances shown in the demo use placeholder names/dates. In production, these are dynamic and populated from API data.
 - **"Show older versions" button:** Tertiary sm button (`btn btn--tertiary btn--sm`) with trailing `chevron-right` icon. Right-aligned via `.version-history__footer { justify-content: flex-end }`. Figma design context shows no `border` class on this button — both secondary and tertiary use white bg (`--ai-btn-secondary`), so absence of border is the distinguishing signal for tertiary.
 - **Avatar in rows:** Non-checked rows use `<div class="avatar"><img class="portrait" src="..." alt="..."></div>`; selected rows use `<div class="avatar avatar--checked"><i data-lucide="check"></i></div>`. Always include a portrait image in non-checked rows.

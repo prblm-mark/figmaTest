@@ -13,14 +13,22 @@
   background-color: var(--ai-surface-primary);
 }
 
-/* ── Contextual override: Header fills panel width ──
- * Figma: Header frame width explicitly set to "fill container" in this
- * VersionHistory usage (vs. 960px default in the Header component set).
+/* ── Contextual override: Header title fill-container ──
+ * Figma: Header title set to "fill container" in this VersionHistory usage,
+ * pushing the InfoLabel to the far right. Base Header has title as hug-width.
  * Case B contextual override — not a Header variant. See figma-notes.md. */
 
 .version-history .header {
   width: 100%;
   min-width: 0;
+}
+
+.version-history .header__title {
+  flex: 1;                                  /* fill available space */
+}
+
+.version-history .header__info {
+  flex: initial;                            /* override Header.css flex:1; shrink to natural width */
 }
 
 /* ── Footer — right-aligned "Show older versions" ── */
