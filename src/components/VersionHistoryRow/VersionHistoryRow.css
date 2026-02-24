@@ -9,7 +9,6 @@
   gap: var(--ai-spacing-4);                  /* 0.75rem (12px) */
   padding: var(--ai-spacing-3) var(--ai-spacing-5); /* 0.5rem 1rem (8px 16px) */
   border-radius: var(--ai-radius-lg);
-  transition: background-color var(--ai-transition-default);
 }
 
 /* Live variant — secondary background */
@@ -30,8 +29,13 @@
   gap: var(--ai-spacing-5);                  /* 1rem (16px) — wider than other variants */
 }
 
-/* Hover state */
-.version-history-row:hover {
+/* Default variant only — transition in both directions */
+.version-history-row:not(.version-history-row--live):not(.version-history-row--selected) {
+  transition: background-color var(--ai-transition-default);
+}
+
+/* Hover state — Default variant only */
+.version-history-row:not(.version-history-row--live):not(.version-history-row--selected):hover {
   background-color: var(--ai-surface-secondary);
 }
 

@@ -285,6 +285,18 @@ Full token reference: CLAUDE.md Section 2 & 3.
 - `.btn--lg` does not exist in Figma — never assume a "large" size exists
 - **Button variant identification:** When a Button instance appears in design context, ALWAYS check the Figma component `type` property or variant name (visible in `get_metadata` as `Type=Primary`, `Type=Secondary`, `Type=Tertiary` etc.) in addition to checking for a `border` class in the design context. Secondary and tertiary buttons share the same white bg. Background colour alone is never sufficient to identify the variant.
 - **Font family rule:** Map font-style names from design context directly: `title/*` → `--ai-font-title`; `body/*` → `--ai-font-body`. Never assume text content uses `--ai-font-body` — always read the font style name from the design context output.
+- **Hover scoping:** When a hover state exists only on specific Figma variants (e.g. Default, not Live/Selected), scope BOTH the `transition` and the `:hover` rule to those variants using `:not()`. The `transition` must live on a companion rest-state rule (NOT inside the `:hover` rule) so it animates both entry and exit. Pattern:
+  ```css
+  /* Rest state — transition both ways */
+  .component:not(.component--live):not(.component--selected) {
+    transition: background-color var(--ai-transition-default);
+  }
+  /* Hover — only on variants that have it in Figma */
+  .component:not(.component--live):not(.component--selected):hover {
+    background-color: var(--ai-surface-secondary);
+  }
+  ```
+  Placing `transition` on the base `.component` selector leaks animation onto all variants including those without a Figma hover state.
 - Icon SVGs use `currentColor` → set color via `color:` property using `--ai-icon-*` tokens
 - Form field filled text = `--ai-text-primary`; placeholder = `--ai-text-contrast` (different tokens!)
 - Clear button visibility: use `visibility: hidden` + `:has(:not(:placeholder-shown))` — no JS needed

@@ -9,7 +9,7 @@
 | Node | Type | Description |
 |---|---|---|
 | 78:2958 | Default | No background; avatar circle + name/date |
-| 142:3427 | Hover | `--ai-surface-secondary` bg on mouseover; same layout as Default |
+| 142:3427 | Hover | **Default variant only.** `--ai-surface-secondary` bg on mouseover; Live/Selected/Selected & Live have no hover interaction in Figma. |
 | 78:2963 | Live | `--ai-surface-secondary` bg; avatar + name/date + Pill |
 | 78:2978 | Selected | `--ai-surface-primary` bg + `--ai-border-primary` border; check circle replaces avatar |
 | 78:2970 | Selected & Live | `--ai-surface-secondary` bg; check circle + Pill; gap widens to `--ai-spacing-5` |
