@@ -18,6 +18,8 @@ css/tokens-dark.css
 .claude/*
 !.claude/commands/
 !.claude/commands/**
+!.claude/memory/
+!.claude/memory/**
 
 # Credentials — never commit tokens or API keys
 .env
