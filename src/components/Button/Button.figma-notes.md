@@ -70,6 +70,7 @@
 | `--ai-font-fluid-xs` | `--ai-font-fluid-xs` | Base font size (14px) |
 | `--ai-font-fluid-xxs` | `--ai-font-fluid-xxs` | Small font size (12px) |
 | `--ai-leading-1` | `--ai-leading-1` | Line height (16px) |
+| `--ai-icon-size-sm` | `--ai-icon-size-sm` | Icon size inside buttons (16px) |
 
 ## Token Gaps — Action Required in Figma
 

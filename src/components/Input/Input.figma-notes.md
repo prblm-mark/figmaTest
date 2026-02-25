@@ -48,7 +48,7 @@ Hover, Active, and Focus all share the same visual treatment (brand border) — 
 | Field border (hover/focus) | `--ai-border-brand` | `--ai-border-brand` |
 | Field border (error) | `--ai-border-error` | `--ai-border-error` |
 | Content gap | `--ai-spacing-3` | `--ai-spacing-3` |
-| Icon size | — | 16×16px |
+| Icon size | — | `--ai-icon-size-sm` (16px) |
 | Icon color | `--ai-icon-contrast` | `--ai-icon-contrast` |
 | Input font | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xs`, `--ai-leading-2` | same |
 | Input color (filled) | `--ai-text-primary` | `--ai-text-primary` |

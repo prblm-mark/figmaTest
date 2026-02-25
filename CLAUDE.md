@@ -79,6 +79,16 @@ named colors in component CSS.** Every visual value must come from the list belo
 | `--ai-icon-invert` | `#FFFFFF` | Icon on dark background |
 | `--ai-icon-brand` | `#1C64F2` | Brand-colored icon |
 
+### Icon Sizes
+
+| Variable | Value | Use |
+|---|---|---|
+| `--ai-icon-size-sm` | `1rem` (16px) | Small icons — buttons, labels, inputs, chevrons |
+| `--ai-icon-size-md` | `1.25rem` (20px) | Medium icons — panel headings |
+| `--ai-icon-size-lg` | `1.5rem` (24px) | Large icons — avatar checks (size 3–5), Lucide default |
+
+**Rule:** Always use `--ai-icon-size-sm/md/lg` for icon `width`/`height` — never `--ai-spacing-*`.
+
 ### Button Component
 
 | Variable | Value | Use |

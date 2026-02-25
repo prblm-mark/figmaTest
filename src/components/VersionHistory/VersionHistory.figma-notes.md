@@ -17,8 +17,8 @@
 |---|---|---|
 | Row count | 5 (rows 6–12 hidden) | 12 (all rows visible) |
 | Chevron direction | Right (`chevron-right`, no rotation) | Down (`chevron-right` rotated 90°) |
+| Subtitle `aria-expanded` | `false` | `true` |
 | Footer label | "Show older" | "Show less" |
-| Footer `aria-expanded` | `false` | `true` |
 | Timeline line height | Spans first 5 rows | Spans all 12 rows |
 
 ## CSS Class Mapping
@@ -31,14 +31,14 @@
 | Title row (icon + title text) | `.version-history__heading-title` |
 | History icon | `.version-history__icon-history` (Lucide `history`, 24px) |
 | Title text | `.version-history__heading-title-text` |
-| Subtitle row (text + chevron) | `.version-history__heading-subtitle` |
+| Subtitle button (toggle trigger) | `.version-history__heading-subtitle` — `<button>` with `aria-expanded` |
 | Subtitle text | `.version-history__heading-subtitle-text` |
 | Chevron icon | `.version-history__chevron` (Lucide `chevron-right`, 16px, rotates 90° when expanded) |
 | Row list wrapper | `.version-history__rows` |
 | Timeline line (decoration) | `.version-history__timeline` |
 | Standard rows (always visible) | `.version-history-row` (from VersionHistoryRow component) |
 | Extra rows (hidden when collapsed) | `.version-history-row.version-history__row-extra` |
-| Footer toggle button | `.version-history__footer` |
+| Footer toggle button | `.version-history__footer` — `<button>` (secondary toggle trigger) |
 | Footer label text | `.version-history__footer-label` |
 
 ## Dependencies
@@ -55,13 +55,13 @@
 | Heading internal gap | `--ai-spacing-2` | `--ai-spacing-2` |
 | Heading bottom padding | `--ai-spacing-2` | `--ai-spacing-2` |
 | Title row gap | `--ai-spacing-3` | `--ai-spacing-3` |
-| History icon size | `24px` (= `--ai-spacing-6`) | `--ai-spacing-6` |
+| History icon size | `20px` (= `--ai-icon-size-md`) | `--ai-icon-size-md` |
 | History icon color | `--ai-icon-primary` | `--ai-icon-primary` |
 | Title font | `title/base` | `--ai-font-title`, `--ai-font-bold`, `--ai-font-fixed-sm`, `--ai-leading-1` |
 | Title color | `--ai-text-primary` | `--ai-text-primary` |
 | Subtitle font | `body/xs` | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xs`, `--ai-leading-2` |
 | Subtitle color | `--ai-text-contrast` | `--ai-text-contrast` |
-| Chevron icon size | `16px` (= `--ai-spacing-5`) | `--ai-spacing-5` |
+| Chevron icon size | `16px` (= `--ai-icon-size-sm`) | `--ai-icon-size-sm` |
 | Chevron icon color | `--ai-icon-contrast` | `--ai-icon-contrast` |
 | Row list gap | `--ai-spacing-1` | `--ai-spacing-1` |
 | Timeline line color | `Neutral/200` = `#e5e7eb` | `--ai-border-secondary` |
@@ -81,5 +81,6 @@ None — all design values map to `--ai-*` semantic tokens.
 - **No transition on chevron:** User confirmed no animation for the expand/collapse toggle.
 - **Timeline line:** Absolute-positioned 1px vertical line inside `.version-history__rows`. Centered at `calc(--ai-spacing-5 + --ai-spacing-6 / 2)` = 28px from left (aligns with avatar centres). Spans top-to-bottom of the rows wrapper (excludes footer).
 - **Extra rows:** Rows 6–12 carry both `.version-history-row` and `.version-history__row-extra` classes. CSS hides `.version-history__row-extra` on the collapsed variant. JS toggles `.version-history--expanded` on the container.
-- **Footer:** Plain-text toggle button (`<button>` for accessibility). No hover state — none defined in Figma. `aria-expanded` is toggled by JS.
+- **Two toggle triggers:** Both the subtitle row (`"12 previous system roles saved"` + chevron) AND the footer ("Show older"/"Show less") are `<button>` elements that independently toggle expand/collapse. Clicking either syncs `aria-expanded` on both. JS uses a shared `toggleVersionHistory()` helper.
+- **Design context shows layout only, not interactions.** The footer nodes appeared as `<div>` in design context output — but Figma prototype interactions exist separately from visual structure. User confirmed both triggers remain interactive. Always verify interaction model with the user or Figma prototype panel, not from design context element types alone.
 - **Nested component audit (this session):** VersionHistoryRow, Avatar, and Pill were all verified against current Figma — no changes found. The only updated component is VersionHistory itself.

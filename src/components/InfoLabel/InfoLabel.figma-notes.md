@@ -22,7 +22,7 @@
 | Text font weight | `--ai-font-semibold` | `--ai-font-semibold` | 600 |
 | Text line height | `--ai-leading-1` | `--ai-leading-1` | 16px |
 | Text color | `--ai-text-primary` | `--ai-text-primary` | #1f2a37 |
-| Icon size | — | 16×16px (fixed) | — |
+| Icon size | — | `--ai-icon-size-sm` (16px) | — |
 | Icon color | `--ai-icon-primary` | `--ai-icon-primary` | #1f2a37 |
 
 ## Token Gaps

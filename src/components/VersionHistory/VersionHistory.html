@@ -33,7 +33,7 @@
 
   <!-- ── Default (collapsed) ── -->
   <div class="demo-section">
-    <p class="demo-label">Default — collapsed (click "Show older" to expand)</p>
+    <p class="demo-label">Default — collapsed (click subtitle row or "Show older" to expand)</p>
 
     <div class="version-history">
       <!-- Heading -->
@@ -42,10 +42,10 @@
           <i data-lucide="history" class="version-history__icon-history" aria-hidden="true"></i>
           <span class="version-history__heading-title-text">Version History</span>
         </div>
-        <div class="version-history__heading-subtitle">
+        <button type="button" class="version-history__heading-subtitle" aria-expanded="false">
           <span class="version-history__heading-subtitle-text">12 previous system roles saved</span>
           <i data-lucide="chevron-right" class="version-history__chevron" aria-hidden="true"></i>
-        </div>
+        </button>
       </div>
 
       <!-- Row list -->
@@ -198,10 +198,10 @@
           <i data-lucide="history" class="version-history__icon-history" aria-hidden="true"></i>
           <span class="version-history__heading-title-text">Version History</span>
         </div>
-        <div class="version-history__heading-subtitle">
+        <button type="button" class="version-history__heading-subtitle" aria-expanded="true">
           <span class="version-history__heading-subtitle-text">12 previous system roles saved</span>
           <i data-lucide="chevron-right" class="version-history__chevron" aria-hidden="true"></i>
-        </div>
+        </button>
       </div>
 
       <!-- Row list -->
@@ -341,13 +341,26 @@
   <script>
     lucide.createIcons();
 
-    // Toggle expand/collapse on footer button click
+    // Toggle expand/collapse — both subtitle button and footer button trigger it
+    function toggleVersionHistory(panel) {
+      var isExpanded = panel.classList.toggle('version-history--expanded');
+      var subtitle = panel.querySelector('.version-history__heading-subtitle');
+      var footer = panel.querySelector('.version-history__footer');
+      var footerLabel = panel.querySelector('.version-history__footer-label');
+      if (subtitle) subtitle.setAttribute('aria-expanded', isExpanded);
+      if (footer) footer.setAttribute('aria-expanded', isExpanded);
+      if (footerLabel) footerLabel.textContent = isExpanded ? 'Show less' : 'Show older';
+    }
+
+    document.querySelectorAll('.version-history__heading-subtitle').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        toggleVersionHistory(this.closest('.version-history'));
+      });
+    });
+
     document.querySelectorAll('.version-history__footer').forEach(function(btn) {
       btn.addEventListener('click', function() {
-        var panel = this.closest('.version-history');
-        var isExpanded = panel.classList.toggle('version-history--expanded');
-        this.setAttribute('aria-expanded', isExpanded);
-        this.querySelector('.version-history__footer-label').textContent = isExpanded ? 'Show less' : 'Show older';
+        toggleVersionHistory(this.closest('.version-history'));
       });
     });
   </script>

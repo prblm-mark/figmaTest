@@ -48,8 +48,8 @@
 | Border radius | `--ai-radius-full` | `--ai-radius-full` |
 | Checked bg | `Aqua/500` → `--ai-surface-success` | `--ai-surface-success` |
 | Checked border | `1px solid --ai-surface-primary` | `--ai-surface-primary` |
-| Checked icon (Size=1, Size=2) | `size-[16px]` = `--ai-spacing-5` | `--ai-spacing-5` |
-| Checked icon (Size=3, Size=4, Size=5) | `size-[24px]` = `--ai-spacing-6` | `--ai-spacing-6` |
+| Checked icon (Size=1, Size=2) | `size-[16px]` = `--ai-icon-size-sm` | `--ai-icon-size-sm` |
+| Checked icon (Size=3, Size=4, Size=5) | `size-[24px]` = `--ai-icon-size-lg` | `--ai-icon-size-lg` |
 | Checked icon color | `--ai-btn-primary-text` | `--ai-btn-primary-text` |
 | Notification dot bg | `Aqua/500` → `--ai-surface-success` | `--ai-surface-success` |
 | Notification dot border | `--ai-surface-primary` | `--ai-surface-primary` |

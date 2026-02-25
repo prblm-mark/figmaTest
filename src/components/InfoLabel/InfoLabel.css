@@ -26,8 +26,8 @@
 }
 
 .info-label__icon {
-  width: var(--ai-spacing-5);
-  height: var(--ai-spacing-5);
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
   color: var(--ai-icon-primary);          /* --ai-icon-primary */
   flex-shrink: 0;
 }

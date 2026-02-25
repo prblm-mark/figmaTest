@@ -58,8 +58,8 @@
 /* ── Icon ────────────────────────────────────────────── */
 
 .input__icon {
-  width: var(--ai-spacing-5);
-  height: var(--ai-spacing-5);
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
   color: var(--ai-icon-contrast);
   flex-shrink: 0;
 }
@@ -104,8 +104,8 @@
 }
 
 .input__clear [data-lucide] {
-  width: var(--ai-spacing-5);
-  height: var(--ai-spacing-5);
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
 }
 
 /* ── Help text ───────────────────────────────────────── */

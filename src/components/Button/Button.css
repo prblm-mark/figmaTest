@@ -25,8 +25,8 @@
 
 /* Lucide icons inside buttons default to 24×24 — override to 16×16 */
 .btn [data-lucide] {
-  width: var(--ai-spacing-5);
-  height: var(--ai-spacing-5);
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
   flex-shrink: 0;
 }
 

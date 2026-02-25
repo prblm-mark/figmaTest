@@ -261,6 +261,7 @@ Add a row to **CLAUDE.md Section 10** component tracker:
 | Backgrounds | `--ai-surface-*` |
 | Text colors | `--ai-text-*` |
 | Icon colors | `--ai-icon-*` |
+| Icon sizes | `--ai-icon-size-sm` (16px) / `--ai-icon-size-md` (20px) / `--ai-icon-size-lg` (24px) — **never `--ai-spacing-*` for icon width/height** |
 | Border colors | `--ai-border-*` |
 | Border radius | `--ai-radius-sm/md/lg/xl/full` |
 | Spacing / size | `--ai-spacing-1` … `--ai-spacing-13` |
@@ -306,6 +307,9 @@ Full token reference: CLAUDE.md Section 2 & 3.
 - **Vertical timeline line pattern:** Absolutely positioned inside a `.component__rows` wrapper (NOT the outer container — so it doesn't overlap the footer). Center behind Size=1 avatars: `left: calc(var(--ai-spacing-5) + var(--ai-spacing-6) / 2)` = 28px. Set `top: 0; bottom: 0; width: 1px; background-color: var(--ai-border-secondary)`. A 1px decorative line is treated as an optical width (like border-width) — keep as `px`.
 - **`Neutral/200` primitive** (`#e5e7eb`) maps to `--ai-border-secondary`. Not a token gap.
 - Icon SVGs use `currentColor` → set color via `color:` property using `--ai-icon-*` tokens
+- **Icon sizes:** always use `--ai-icon-size-sm/md/lg` for icon `width`/`height` — never `--ai-spacing-*`. Sizes: sm=1rem (16px), md=1.25rem (20px), lg=1.5rem (24px)
+- **Design context reports base component size, not placed size.** An icon named `Icon/24px/History` placed at 20px will show `size-[24px]` in design context (the component's intrinsic size). The actual rendered size comes from the parent's `w-[...]`/`h-[...]` tokens on the placed instance. Always verify with `get_metadata` on the specific placed instance node if unsure.
+- **Design context shows visual/layout structure only — NOT interaction behavior.** Figma prototype interactions are stored separately and never appear in `get_design_context` output. An element that renders as a `<div>` (no `cursor-pointer`) in design context can still be a clickable prototype trigger. NEVER remove or demote an existing interactive element (e.g. `<button>` → `<div>`) based on design context output alone. If an interaction appears to have been removed, confirm with the user before changing anything. Concrete mistake: VersionHistory footer showed as `<div>` in design context — it was downgraded to a non-interactive div in code, breaking the "Show older" toggle. The user confirmed both triggers still exist in the Figma prototype.
 - Form field filled text = `--ai-text-primary`; placeholder = `--ai-text-contrast` (different tokens!)
 - Clear button visibility: use `visibility: hidden` + `:has(:not(:placeholder-shown))` — no JS needed
 - **Always use the exact token from Figma** — never substitute a different token based on personal judgement (e.g. swapping `--ai-text-invert` for `--ai-text-contrast` because it "looks better"). If a Figma token seems wrong, flag it to the user instead of silently changing it.
