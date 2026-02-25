@@ -95,7 +95,7 @@
 
 /* ─── Hover ───────────────────────────────────────────────────────────────── */
 
-.prompt-template-item:hover .prompt-template-item__chevron-btn {
+.prompt-template-item__chevron-btn:hover {
   background-color: var(--ai-surface-secondary);
 }
 

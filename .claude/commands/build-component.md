@@ -8,6 +8,13 @@ Usage: `/build-component <Figma URL or node description>`
 
 ## Process (follow every step in order)
 
+> **Plan mode is read-only.** Steps 1–7 may be run during planning. Step 8 (Implement) and
+> Step 9–10 (Document / Register) MUST NOT run until the user approves the plan and asks to
+> implement. Never write, edit, or create files during planning — not even for a "trivial" fix.
+> A plan marked "Status: COMPLETE" before user approval means code was changed during planning,
+> which is a violation. Concrete mistake: a one-line CSS selector fix was applied in plan mode;
+> when the user said "implement the plan" there was nothing left to do.
+
 ### 1. Locate
 
 **Step 1a — find the component set:**
