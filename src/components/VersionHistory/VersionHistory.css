@@ -94,6 +94,12 @@
   width: 1px;
   background-color: var(--ai-border-secondary);
   pointer-events: none;
+  z-index: 0;
+}
+
+.version-history__rows .version-history-row {
+  position: relative;
+  z-index: 1;
 }
 
 /* Extra rows hidden in collapsed (Default) state */

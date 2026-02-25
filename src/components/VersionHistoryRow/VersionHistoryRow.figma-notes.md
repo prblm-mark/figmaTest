@@ -49,6 +49,7 @@
 | Selected border | `1px solid` `--ai-border-primary` | `--ai-border-primary` |
 | Selected & Live bg | `--ai-surface-secondary` | `--ai-surface-secondary` |
 | Avatar / check circle size | `size-[24px]` = `--ai-spacing-6` | `--ai-spacing-6` |
+| Avatar ring (Default variant only — contextual override) | `box-shadow: 0 0 0 2px --ai-surface-primary` | `--ai-surface-primary` |
 | Check circle bg | `--ai-surface-success` | `--ai-surface-success` |
 | Check circle border | `1px solid --ai-surface-primary` | `--ai-surface-primary` |
 | Check icon size | `16×16px` = `--ai-spacing-5` | `--ai-spacing-5` |
@@ -69,5 +70,6 @@ None — all design values map to `--ai-*` semantic tokens. `--ai-surface-succes
 ## Notes
 - **Check icon colour:** Uses `--ai-btn-primary-text` (always `#ffffff`) rather than `--ai-icon-invert`, because `--ai-surface-success` is theme-invariant (same green in both themes) and `--ai-icon-invert` would flip to near-black in dark mode.
 - **Selected & Live gap:** Figma uses `--ai-spacing-5` (wider) for this variant vs `--ai-spacing-4` for the others — always check per-variant gap in Figma rather than assuming uniform spacing.
+- **Avatar ring:** A `box-shadow: 0 0 0 2px var(--ai-surface-primary)` ring is applied to avatars in the **Default variant only** via a scoped `:not()` rule in `VersionHistoryRow.css`. Uses `box-shadow` rather than `border` so it doesn't reduce the avatar's visible size. This is a **Case B contextual override** — it is NOT on the Avatar component itself in Figma. Live and Selected variants do not have this ring.
 - **Avatar component:** Default/Live rows use `<div class="avatar"><img class="portrait" src="..." alt="..."></div>`; Selected rows use `<div class="avatar avatar--checked"><i data-lucide="check"></i></div>`. Always include a portrait image in non-checked rows — the empty `.avatar` fallback shows a grey circle.
 - **Border on Selected:** Adds 2px to the rendered row dimensions vs the other variants. Not compensated with a transparent border on base — the rows stack vertically and the 1px shift is not visually disruptive.

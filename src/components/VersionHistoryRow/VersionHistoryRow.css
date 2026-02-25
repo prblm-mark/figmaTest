@@ -9,6 +9,7 @@
   gap: var(--ai-spacing-4);                  /* 0.75rem (12px) */
   padding: var(--ai-spacing-3) var(--ai-spacing-5); /* 0.5rem 1rem (8px 16px) */
   border-radius: var(--ai-radius-lg);
+  cursor: pointer;
 }
 
 /* Live variant — secondary background */
@@ -42,7 +43,16 @@
 /* ── Avatar / Check circle ───────────────────── */
 /* Handled by Avatar component (Avatar.css).
  * Default rows use <div class="avatar">.
- * Selected rows use <div class="avatar avatar--checked"><i data-lucide="check"></i></div>. */
+ * Selected rows use <div class="avatar avatar--checked"><i data-lucide="check"></i></div>.
+ *
+ * Contextual override (Case B): VersionHistoryRow applies a 2px white border to all
+ * avatars — not defined on the Avatar component itself in Figma. Separates the circle
+ * from the row background on any surface colour. */
+
+/* Ring visible in resting Default state only — hidden on hover (row bg matches surface-secondary) */
+.version-history-row:not(.version-history-row--live):not(.version-history-row--selected):not(:hover) .avatar {
+  box-shadow: 0 0 0 2px var(--ai-surface-primary);
+}
 
 /* ── Text content ────────────────────────────── */
 

@@ -46,6 +46,7 @@
 | Size=4 width/height | `size-[64px]` = `--ai-spacing-11` | `--ai-spacing-11` |
 | Size=5 width/height | `size-[80px]` = `--ai-spacing-13` | `--ai-spacing-13` |
 | Border radius | `--ai-radius-full` | `--ai-radius-full` |
+| Fallback background | `--ai-surface-secondary` | `--ai-surface-secondary` |
 | Checked bg | `Aqua/500` → `--ai-surface-success` | `--ai-surface-success` |
 | Checked border | `1px solid --ai-surface-primary` | `--ai-surface-primary` |
 | Checked icon (Size=1, Size=2) | `size-[16px]` = `--ai-icon-size-sm` | `--ai-icon-size-sm` |
@@ -66,6 +67,8 @@ None — all design values map to `--ai-*` semantic tokens.
   Link `Portraits.css` before `Avatar.css` on any page that shows photo avatars.
 
 ## Notes
+- **Fallback background:** `.avatar` uses `--ai-surface-secondary` as a background — confirmed in Figma.
+  Visible only when no portrait image is provided. Adapts correctly in dark mode (`#1F2A37`).
 - **Photo clipping:** Uses `clip-path: circle(50%)` on `.portrait` (not `overflow: hidden` on `.avatar`).
   This keeps the circular crop on the photo while allowing the notification dot to sit outside the
   circular clip at `top: 0; right: 0` of the square bounding box.

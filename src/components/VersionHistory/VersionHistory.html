@@ -17,6 +17,11 @@
     body { padding: var(--ai-spacing-7); background: var(--ai-surface-secondary); }
     .demo-section { max-width: 352px; }
     .demo-gap { margin-top: var(--ai-spacing-8); }
+    .demo-surface {
+      background: var(--ai-surface-primary);
+      padding: var(--ai-spacing-5);
+      border-radius: var(--ai-radius-lg);
+    }
     .demo-label {
       font-size: var(--ai-font-fixed-xs);
       font-weight: var(--ai-font-semibold);
@@ -35,6 +40,7 @@
   <div class="demo-section">
     <p class="demo-label">Default — collapsed (click subtitle row or "Show older" to expand)</p>
 
+    <div class="demo-surface">
     <div class="version-history">
       <!-- Heading -->
       <div class="version-history__heading">
@@ -185,12 +191,14 @@
         <span class="version-history__footer-label">Show older</span>
       </button>
     </div>
+    </div><!-- /.demo-surface -->
   </div>
 
   <!-- ── Expanded (static reference) ── -->
   <div class="demo-section demo-gap">
     <p class="demo-label">Expanded</p>
 
+    <div class="demo-surface">
     <div class="version-history version-history--expanded">
       <!-- Heading -->
       <div class="version-history__heading">
@@ -335,6 +343,7 @@
         <span class="version-history__footer-label">Show less</span>
       </button>
     </div>
+    </div><!-- /.demo-surface -->
   </div>
 
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>

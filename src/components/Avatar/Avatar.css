@@ -14,7 +14,7 @@
   height: var(--ai-spacing-6);
   border-radius: var(--ai-radius-full);
   flex-shrink: 0;
-  background-color: var(--ai-surface-contrast); /* fallback bg */
+  background-color: var(--ai-surface-secondary); /* fallback when no portrait provided */
 }
 
 /* ── Photo image ──────────────────────────────────── */
