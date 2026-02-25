@@ -28,8 +28,9 @@ named colors in component CSS.** Every visual value must come from the list belo
 | Variable | Value | Use |
 |---|---|---|
 | `--ai-surface-primary` | `#FFFFFF` | Page/card background |
-| `--ai-surface-secondary` | `#F3F4F6` | Subtle section background |
-| `--ai-surface-contrast` | `#E5E7EB` | Divider areas, table stripes |
+| `--ai-surface-minimal` | `#F9F9FB` | Very subtle background (Neutral/50) |
+| `--ai-surface-secondary` | `#E5E7EB` | Subtle section background (Neutral/200) |
+| `--ai-surface-contrast` | `#D1D5DB` | Divider areas, table stripes (Neutral/300) |
 | `--ai-surface-invert` | `#111928` | Dark backgrounds |
 | `--ai-surface-brand` | `#1C64F2` | Brand/primary action bg |
 | `--ai-surface-brand-light` | `#3F83F8` | Hover state on brand |
@@ -38,6 +39,7 @@ named colors in component CSS.** Every visual value must come from the list belo
 | `--ai-surface-brand-contrast-extra` | `#EBF5FF` | Very light brand tint |
 | `--ai-surface-error` | `#EF4444` | Error backgrounds |
 | `--ai-surface-error-contrast` | `#FBD5D5` | Error tint background |
+| `--ai-surface-success` | `#30CB90` | Success backgrounds — theme-invariant |
 
 ### Text
 
@@ -55,8 +57,8 @@ named colors in component CSS.** Every visual value must come from the list belo
 |---|---|---|
 | `--ai-border-brand` | `#1C64F2` | Brand-colored borders |
 | `--ai-border-primary` | `#111928` | Strong dividers |
-| `--ai-border-secondary` | `#E5E7EB` | Default input/card borders |
-| `--ai-border-contrast` | `#E5E7EB` | Same as secondary |
+| `--ai-border-secondary` | `#D1D5DB` | Default input/card borders (Neutral/300) |
+| `--ai-border-contrast` | `#D1D5DB` | Same as secondary (Neutral/300) |
 | `--ai-border-error` | `#EF4444` | Error state borders |
 
 ### Border Radius
@@ -139,16 +141,17 @@ tokens are **theme-invariant** (same in both themes).
 | Variable | Light value | Dark value |
 |---|---|---|
 | `--ai-surface-primary` | `#FFFFFF` | `#111928` |
-| `--ai-surface-secondary` | `#F3F4F6` | `#1F2A37` |
-| `--ai-surface-contrast` | `#E5E7EB` | `#374151` |
+| `--ai-surface-minimal` | `#F9F9FB` | `#1F2A37` |
+| `--ai-surface-secondary` | `#E5E7EB` | `#1F2A37` |
+| `--ai-surface-contrast` | `#D1D5DB` | `#374151` |
 | `--ai-surface-invert` | `#111928` | `#F3F4F6` |
 | `--ai-text-primary` | `#1F2A37` | `#FFFFFF` |
 | `--ai-text-secondary` | `#4B5563` | `#E5E7EB` |
 | `--ai-text-contrast` | `#6B7280` | `#9CA3AF` |
 | `--ai-text-invert` | `#FFFFFF` | `#111928` |
 | `--ai-border-primary` | `#111928` | `#F3F4F6` |
-| `--ai-border-secondary` | `#E5E7EB` | `#374151` |
-| `--ai-border-contrast` | `#E5E7EB` | `#374151` |
+| `--ai-border-secondary` | `#D1D5DB` | `#374151` |
+| `--ai-border-contrast` | `#D1D5DB` | `#374151` |
 | `--ai-icon-primary` | `#1F2A37` | `#F3F4F6` |
 | `--ai-icon-secondary` | `#6B7280` | `#9CA3AF` |
 | `--ai-icon-invert` | `#FFFFFF` | `#111928` |
@@ -162,6 +165,35 @@ tokens are **theme-invariant** (same in both themes).
 
 - **Tooltip:** Fixed dark panel (`#0c121c` = Neutral/950) in both themes. Does **not** invert.
   Uses approved primitives for background and text — see `Tooltip.figma-notes.md`.
+
+---
+
+## 2b. Minimised Layout Mode
+
+**Activation:** Add `data-layout="minimised"` to any container element (e.g. `<div data-layout="minimised">`).
+
+**Generated file:** `css/tokens-minimised.css` (rebuilt by `npm run tokens`; do not edit manually).
+
+This is a **CSS selector override**, NOT a media query. It targets a deliberate layout density choice
+(e.g. a compact panel or sidebar), independent of screen width.
+
+All `--ai-*` variables continue to work in minimised mode. Only `--ai-font-fluid-*` values differ:
+
+| Variable | Desktop value | Minimised value |
+|---|---|---|
+| `--ai-font-fluid-sm` | `1rem` | `0.875rem` |
+| `--ai-font-fluid-md` | `1.125rem` | `1rem` |
+| `--ai-font-fluid-lg` | `1.25rem` | `1.125rem` |
+| `--ai-font-fluid-xl` | `1.375rem` | `1.25rem` |
+| `--ai-font-fluid-2xl` | `1.625rem` | `1.5rem` |
+| `--ai-font-fluid-3xl` | `1.75rem` | `1.625rem` |
+| `--ai-font-fluid-4xl` | `2rem` | `1.875rem` |
+
+`--ai-font-fluid-xxs` and `--ai-font-fluid-xs` are unchanged (both 0.75rem and 0.875rem).
+
+**Rule:** Components using `--ai-font-fluid-*` tokens respond automatically to this attribute.
+No per-component CSS needed. Only override fixed-size tokens (`--ai-font-fixed-*`) explicitly
+if a component specifically requires it.
 
 ---
 

@@ -246,3 +246,42 @@ const sdDark = new StyleDictionary({
 });
 
 await sdDark.buildAllPlatforms();
+
+// ─── Minimised layout token build ─────────────────────────────────────────────
+// Outputs [data-layout="minimised"] { ... } overrides for typography tokens.
+// Activation: add data-layout="minimised" to any container element.
+// Applies compact fluid font sizes (same values as mobile) via a CSS selector,
+// NOT a media query — this is a deliberate layout density choice, not a device breakpoint.
+
+const sdMinimised = new StyleDictionary({
+  usesDtcg: true,
+  parsers: ['figma-token-parser'],
+  source: [
+    'FigmaTokens/Primitive.tokens.json',
+    'FigmaTokens/Light.tokens.json',
+    'FigmaTokens/Typography/Minimised.tokens.json',
+  ],
+  platforms: {
+    css: {
+      transforms: [
+        'color/figma-hex',
+        'dimension/figma-rem',
+        'fontWeight/figma-numeric',
+        'font/figma-family',
+        'name/figma-web',
+      ],
+      buildPath: 'css/',
+      files: [{
+        destination: 'tokens-minimised.css',
+        format: 'css/variables-selector',
+        filter: (token) => !!token.$extensions?.['com.figma.codeSyntax']?.WEB,
+        options: {
+          selector: '[data-layout="minimised"]',
+          outputReferences: false,
+        },
+      }],
+    },
+  },
+});
+
+await sdMinimised.buildAllPlatforms();

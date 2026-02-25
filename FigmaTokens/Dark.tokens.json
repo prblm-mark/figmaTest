@@ -29,6 +29,35 @@
         "com.figma.isOverride": true
       }
     },
+    "minimal": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.12156862765550613,
+          0.16470588743686676,
+          0.21568627655506134
+        ],
+        "alpha": 1,
+        "hex": "#1F2A37"
+      },
+      "$extensions": {
+        "com.figma.variableId": "VariableID:166:4101",
+        "com.figma.scopes": [
+          "ALL_SCOPES"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "--ai-surface-minimal"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:a2c8f9a53d72aad0ee4d88561462728258ef9341/-1:-1",
+          "targetVariableName": "Neutral/800",
+          "targetVariableSetId": "VariableCollectionId:63a59cd5e2f64b9fca889922b3922174e6005aac/-1:-1",
+          "targetVariableSetName": "Primitives"
+        },
+        "com.figma.isOverride": true
+      }
+    },
     "secondary": {
       "$type": "color",
       "$value": {

@@ -10,8 +10,9 @@ Status: Token pipeline + component scaffold implemented. Bi-directional Figma �
 - Generated CSS: `css/tokens.css` (auto-generated, do NOT edit manually)
 - Generated CSS: `css/tokens-mobile.css` (auto-generated — `@media (max-width: 767px)` overrides for `--ai-font-fluid-*` tokens)
 - Generated CSS: `css/tokens-dark.css` (auto-generated — `[data-theme="dark"]` overrides; activate with `data-theme="dark"` on `<html>`)
+- Generated CSS: `css/tokens-minimised.css` (auto-generated — `[data-layout="minimised"]` overrides for compact typography; NOT a media query)
 - Styles: `css/style.css` (HTML5 Boilerplate base, imports tokens.css)
-- Base styles: `src/styles/base.css` (imports tokens.css + tokens-mobile.css + tokens-dark.css, sets global defaults using --ai-* vars)
+- Base styles: `src/styles/base.css` (imports tokens.css + tokens-mobile.css + tokens-dark.css + tokens-minimised.css, sets global defaults using --ai-* vars)
 - Components: `src/components/<Name>/` — three files each (BEM CSS, demo HTML, figma-notes.md)
 - HTML: `index.html` (links css/style.css + src/styles/base.css)
 - Governance: `CLAUDE.md` (complete token tables + workflow rules — read every session)
@@ -21,7 +22,7 @@ Status: Token pipeline + component scaffold implemented. Bi-directional Figma �
 - Build output: `dist/`
 
 ## Build & Scripts
-- `npm run tokens` → generates THREE CSS files: `css/tokens.css` (desktop), `css/tokens-mobile.css` (mobile), `css/tokens-dark.css` (dark theme) from FigmaTokens/
+- `npm run tokens` → generates FOUR CSS files: `css/tokens.css` (desktop), `css/tokens-mobile.css` (mobile), `css/tokens-dark.css` (dark theme), `css/tokens-minimised.css` (compact layout) from FigmaTokens/
 - `npm start` → webpack dev server (hot reload, opens browser)
 - `npm run build` → production bundle to `dist/`
 - Webpack 5 with dev/prod configs split via webpack-merge
@@ -40,10 +41,12 @@ Status: Token pipeline + component scaffold implemented. Bi-directional Figma �
 - Only tokens with `$extensions['com.figma.codeSyntax']['WEB']` are output to CSS
 - Font weights map: Regular→400, Medium→500, SemiBold→600, Bold→700, ExtraBold→800
 - **Dimension transform:** `dimension/figma-rem` — divides token value by 16, outputs `rem`. 16px = 1rem baseline. Border widths (1px, 2px) and box-shadow offsets are NOT tokens — keep as `px` in component CSS.
-- **Three SD instances:** `sd` (desktop) → `css/tokens.css`; `sdMobile` → `css/tokens-mobile.css`; `sdDark` sources Primitive + Dark.tokens.json → `css/tokens-dark.css`
+- **Four SD instances:** `sd` (desktop) → `css/tokens.css`; `sdMobile` → `css/tokens-mobile.css`; `sdDark` sources Primitive + Dark.tokens.json → `css/tokens-dark.css`; `sdMinimised` sources Primitive + Light + Minimised.tokens.json → `css/tokens-minimised.css`
 - Do NOT source Desktop.tokens.json AND Mobile.tokens.json in the **same** SD instance — same variable IDs cause collisions. Use separate instances.
-- Mobile.tokens.json contains all typography tokens with **direct values** (no aliases to Primitive) — `sdMobile` does not need Primitive-only sourcing for alias resolution, but currently sources Primitive + Light + Mobile for consistency
+- Mobile.tokens.json and Minimised.tokens.json both contain typography tokens with **direct values** (no aliases to Primitive)
 - `css/variables-media-query` custom formatter wraps output in `@media (max-width: 767px) { :root { ... } }`
+- `css/variables-selector` custom formatter wraps output in an arbitrary selector (used for dark: `[data-theme="dark"]` and minimised: `[data-layout="minimised"]`)
+- All 4 generated CSS files are in `.gitignore` — regenerate with `npm run tokens`
 
 ## Dimension Units (post-px→rem migration)
 - All dimension tokens output `rem` via `dimension/figma-rem` transform (÷16, 16px = 1rem base)
@@ -52,7 +55,23 @@ Status: Token pipeline + component scaffold implemented. Bi-directional Figma �
 - Hardcoded `px` dimension in component CSS is a stop — report to user before continuing
 
 ## Additional Tokens
-- `--ai-surface-success: #30cb90` — Aqua/500, theme-invariant (same in light and dark). Used for success states (Pill bg, check circle bg in VersionHistoryRow). Added this session.
+- `--ai-surface-success: #30cb90` — Aqua/500, theme-invariant (same in light and dark). Used for success states (Pill bg, check circle bg in VersionHistoryRow).
+- `--ai-surface-minimal: #f9f9fb` light / `#1f2a37` dark — Neutral/50 alias. Very subtle background. New token added in Light.tokens.json + Dark.tokens.json.
+
+## Token Value Reference (actual current values — supersedes CLAUDE.md if different)
+- `--ai-surface-secondary: #E5E7EB` (Neutral/200) — NOT #F3F4F6 (that was the old value)
+- `--ai-surface-contrast: #D1D5DB` (Neutral/300) — NOT #E5E7EB (that was the old value)
+- `--ai-border-secondary: #D1D5DB` (= surface.contrast, Neutral/300)
+- `--ai-border-contrast: #D1D5DB` (= surface.contrast, Neutral/300)
+- `--ai-btn-disabled: #D1D5DB` — same as border-secondary in light mode
+- Note: old memory entry "`Neutral/200` primitive = `#e5e7eb` → maps to `--ai-border-secondary`" is OBSOLETE. Neutral/200 now maps to `--ai-surface-secondary`. Neutral/300 (`#D1D5DB`) maps to border-secondary/contrast.
+
+## Minimised Layout System
+- Activate: `data-layout="minimised"` on a container element
+- Effect: compact fluid font sizes (same values as mobile breakpoint, applied via CSS selector not media query)
+- Generated by `sdMinimised` instance in style-dictionary.config.mjs
+- Source: Primitive.tokens.json + Light.tokens.json + Typography/Minimised.tokens.json
+- Key: Minimised.tokens.json fluid sizes = same as Mobile.tokens.json (designed this way intentionally)
 
 ## Tech Stack
 - Vanilla JS (no frontend framework)
