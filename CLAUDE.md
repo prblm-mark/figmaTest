@@ -429,6 +429,8 @@ All components must meet **WCAG 2.1 AA**:
 | Avatar | Built | [node 68:5042](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=68-5042) | `src/components/Avatar/` — Size 1–5 (24–80px circles); Checked=True check-circle variant. Show Notification variants not yet built. Composes Portraits. |
 | VersionHistoryRow | Built | [node 78:2957](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=78-2957) | `src/components/VersionHistoryRow/` — Default, Live, Selected, Selected & Live variants. Composes Avatar, Pill. |
 | VersionHistory | Built | [node 157:4227](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=157-4227) | `src/components/VersionHistory/` — 2 variants: Default (collapsed, 5 rows) + Expanded (12 rows). Custom heading with `history` icon + `chevron-right` toggle. Composes VersionHistoryRow, Avatar, Pill. No Header/Button dependency. |
+| PromptTemplateItem | Built | [node 78:2868](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=78-2868) | `src/components/PromptTemplateItem/` — Default, Hover, Selected (radio toggle), Expanded (chevron-triggered, independent of selection). Custom icon-per-item via Lucide. |
+| PromptTemplates | Built | [node 163:3565](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=163-3565) | `src/components/PromptTemplates/` — single variant panel: heading + list of PromptTemplateItem rows. Composes PromptTemplateItem. |
 
 Add rows here as components are built. Format: Component Name, Built/In Progress/Figma Only, Figma URL, Notes.
 

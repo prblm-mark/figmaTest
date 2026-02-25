@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>PromptTemplateItem — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="PromptTemplateItem.css">
+  <style>
+    body { padding: var(--ai-spacing-7); background: var(--ai-surface-secondary); }
+    .demo-section { max-width: 400px; }
+    .demo-gap { margin-top: var(--ai-spacing-8); }
+    .demo-label {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      margin: 0 0 var(--ai-spacing-3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .demo-surface {
+      background: var(--ai-surface-primary);
+      padding: var(--ai-spacing-5);
+      border-radius: var(--ai-radius-lg);
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-6);">PromptTemplateItem</h1>
+
+  <!-- ── Default ── -->
+  <div class="demo-section">
+    <p class="demo-label">Default</p>
+    <div class="demo-surface">
+      <div class="prompt-template-item" role="option" aria-selected="false" tabindex="0">
+        <div class="prompt-template-item__header">
+          <i data-lucide="headset" class="prompt-template-item__icon" aria-hidden="true"></i>
+          <span class="prompt-template-item__title">Support Assistant</span>
+          <button class="prompt-template-item__chevron-btn" aria-expanded="false" aria-label="Show details">
+            <i data-lucide="chevron-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Hover (CSS — hover the item to see) ── -->
+  <div class="demo-section demo-gap">
+    <p class="demo-label">Hover (hover the item)</p>
+    <div class="demo-surface">
+      <div class="prompt-template-item" role="option" aria-selected="false" tabindex="0">
+        <div class="prompt-template-item__header">
+          <i data-lucide="headset" class="prompt-template-item__icon" aria-hidden="true"></i>
+          <span class="prompt-template-item__title">Support Assistant</span>
+          <button class="prompt-template-item__chevron-btn" aria-expanded="false" aria-label="Show details">
+            <i data-lucide="chevron-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Selected ── -->
+  <div class="demo-section demo-gap">
+    <p class="demo-label">Selected</p>
+    <div class="demo-surface">
+      <div class="prompt-template-item prompt-template-item--selected" role="option" aria-selected="true" tabindex="0">
+        <div class="prompt-template-item__header">
+          <i data-lucide="headset" class="prompt-template-item__icon" aria-hidden="true"></i>
+          <span class="prompt-template-item__title">Support Assistant</span>
+          <button class="prompt-template-item__chevron-btn" aria-expanded="false" aria-label="Show details">
+            <i data-lucide="chevron-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Expanded ── -->
+  <div class="demo-section demo-gap">
+    <p class="demo-label">Expanded</p>
+    <div class="demo-surface">
+      <div class="prompt-template-item prompt-template-item--expanded" role="option" aria-selected="false" tabindex="0">
+        <div class="prompt-template-item__header">
+          <i data-lucide="headset" class="prompt-template-item__icon" aria-hidden="true"></i>
+          <span class="prompt-template-item__title">Support Assistant</span>
+          <button class="prompt-template-item__chevron-btn" aria-expanded="true" aria-label="Hide details">
+            <i data-lucide="chevron-right" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="prompt-template-item__details">
+          <p class="prompt-template-item__description">This assistant helps manage customer service conversations by answering common enquiries, explaining policies and procedures, and providing reliable easy-to-understand guidance.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Selected + Expanded ── -->
+  <div class="demo-section demo-gap">
+    <p class="demo-label">Selected + Expanded</p>
+    <div class="demo-surface">
+      <div class="prompt-template-item prompt-template-item--selected prompt-template-item--expanded" role="option" aria-selected="true" tabindex="0">
+        <div class="prompt-template-item__header">
+          <i data-lucide="headset" class="prompt-template-item__icon" aria-hidden="true"></i>
+          <span class="prompt-template-item__title">Support Assistant</span>
+          <button class="prompt-template-item__chevron-btn" aria-expanded="true" aria-label="Hide details">
+            <i data-lucide="chevron-right" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="prompt-template-item__details">
+          <p class="prompt-template-item__description">This assistant helps manage customer service conversations by answering common enquiries, explaining policies and procedures, and providing reliable easy-to-understand guidance.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Interactive demo ── -->
+  <div class="demo-section demo-gap">
+    <p class="demo-label">Interactive — click body to select, chevron to expand</p>
+    <div class="demo-surface">
+      <div class="prompt-templates__list" role="listbox" aria-label="Prompt templates" id="item-demo-list">
+
+        <div class="prompt-template-item" role="option" aria-selected="false" tabindex="0">
+          <div class="prompt-template-item__header">
+            <i data-lucide="headset" class="prompt-template-item__icon" aria-hidden="true"></i>
+            <span class="prompt-template-item__title">Support Assistant</span>
+            <button class="prompt-template-item__chevron-btn" aria-expanded="false" aria-label="Show details">
+              <i data-lucide="chevron-right" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="prompt-template-item__details">
+            <p class="prompt-template-item__description">This assistant helps manage customer service conversations by answering common enquiries, explaining policies and procedures, and providing reliable easy-to-understand guidance.</p>
+          </div>
+        </div>
+
+        <div class="prompt-template-item" role="option" aria-selected="false" tabindex="0">
+          <div class="prompt-template-item__header">
+            <i data-lucide="message-square" class="prompt-template-item__icon" aria-hidden="true"></i>
+            <span class="prompt-template-item__title">Customer Services Assistant</span>
+            <button class="prompt-template-item__chevron-btn" aria-expanded="false" aria-label="Show details">
+              <i data-lucide="chevron-right" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="prompt-template-item__details">
+            <p class="prompt-template-item__description">Handles inbound customer queries with empathy and accuracy — covering returns, billing, account issues, and escalation paths.</p>
+          </div>
+        </div>
+
+        <div class="prompt-template-item" role="option" aria-selected="false" tabindex="0">
+          <div class="prompt-template-item__header">
+            <i data-lucide="newspaper" class="prompt-template-item__icon" aria-hidden="true"></i>
+            <span class="prompt-template-item__title">News Chat</span>
+            <button class="prompt-template-item__chevron-btn" aria-expanded="false" aria-label="Show details">
+              <i data-lucide="chevron-right" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="prompt-template-item__details">
+            <p class="prompt-template-item__description">Discusses and summarises current events, helping users stay informed with concise, balanced news briefings.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    // Scan all data-lucide attributes on the page and replace each element
+    // with an inline SVG from the Lucide icon set. Must run after the DOM is
+    // ready — placing the script at the bottom of <body> guarantees this.
+    lucide.createIcons();
+
+    // ─── Selection (radio, toggleable) ────────────────────────────────────────
+    //
+    // Clicking the item body (anywhere except the chevron button) toggles
+    // selection on that item. Only one item can be selected at a time (radio).
+    // Clicking the already-selected item deselects it.
+    //
+    // The chevron button stops propagation so its click doesn't also trigger
+    // the selection handler on the outer item.
+
+    function handleItemClick(e, list) {
+      // If the click originated from the chevron button (or its icon child),
+      // do not treat it as a selection click — the chevron has its own handler.
+      if (e.target.closest('.prompt-template-item__chevron-btn')) return;
+
+      var item = e.target.closest('.prompt-template-item');
+      if (!item) return;
+
+      var isSelected = item.classList.contains('prompt-template-item--selected');
+
+      // Deselect all items in this list.
+      list.querySelectorAll('.prompt-template-item').forEach(function(i) {
+        i.classList.remove('prompt-template-item--selected');
+        i.setAttribute('aria-selected', 'false');
+      });
+
+      // Re-select the clicked item unless it was already selected (toggle off).
+      if (!isSelected) {
+        item.classList.add('prompt-template-item--selected');
+        item.setAttribute('aria-selected', 'true');
+      }
+    }
+
+    // ─── Expansion (toggle, click-outside to collapse) ─────────────────────────
+    //
+    // Clicking the chevron button toggles the expanded state on that item.
+    // Only one item can be expanded at a time — expanding a new one collapses
+    // the previously expanded one.
+    // Clicking anywhere outside all items also collapses the open item.
+
+    function collapseItem(item) {
+      item.classList.remove('prompt-template-item--expanded');
+      var btn = item.querySelector('.prompt-template-item__chevron-btn');
+      if (btn) {
+        btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-label', 'Show details');
+      }
+    }
+
+    function handleChevronClick(e, list) {
+      // Stop propagation so the outer item click handler doesn't also fire.
+      e.stopPropagation();
+
+      var item = e.currentTarget.closest('.prompt-template-item');
+      if (!item) return;
+
+      var isExpanded = item.classList.contains('prompt-template-item--expanded');
+
+      // Collapse any currently expanded sibling first.
+      list.querySelectorAll('.prompt-template-item--expanded').forEach(function(i) {
+        if (i !== item) collapseItem(i);
+      });
+
+      if (isExpanded) {
+        collapseItem(item);
+      } else {
+        item.classList.add('prompt-template-item--expanded');
+        e.currentTarget.setAttribute('aria-expanded', 'true');
+        e.currentTarget.setAttribute('aria-label', 'Hide details');
+      }
+    }
+
+    // Attach listeners to the interactive demo list only.
+    var demoList = document.getElementById('item-demo-list');
+
+    demoList.addEventListener('click', function(e) {
+      handleItemClick(e, demoList);
+    });
+
+    demoList.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        // Only handle Enter/Space on the item itself, not on the chevron button
+        // (the button handles its own keyboard events natively).
+        if (!e.target.closest('.prompt-template-item__chevron-btn')) {
+          e.preventDefault();
+          handleItemClick(e, demoList);
+        }
+      }
+    });
+
+    demoList.querySelectorAll('.prompt-template-item__chevron-btn').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        handleChevronClick(e, demoList);
+      });
+    });
+
+    // Collapse open items when clicking outside the list.
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.prompt-template-item')) {
+        demoList.querySelectorAll('.prompt-template-item--expanded').forEach(collapseItem);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+/* ── PromptTemplateItem ──────────────────────────────────────────────────────
+   Figma node: 78:2868 (component set)
+   Variants: Default · Hover · Selected · Expanded
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* ─── Card (outer shell) ──────────────────────────────────────────────────── */
+
+.prompt-template-item {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-lg);
+  cursor: pointer;
+  transition: border-color var(--ai-transition-default);
+}
+
+.prompt-template-item:focus-visible {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: 2px;
+}
+
+/* ─── Header row ──────────────────────────────────────────────────────────── */
+
+.prompt-template-item__header {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-5);
+  padding: var(--ai-spacing-5);
+}
+
+/* 24px prompt icon (left) */
+.prompt-template-item__icon[data-lucide] {
+  flex-shrink: 0;
+  width: var(--ai-icon-size-lg);
+  height: var(--ai-icon-size-lg);
+  color: var(--ai-icon-primary);
+}
+
+/* Title label */
+.prompt-template-item__title {
+  flex: 1;
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-semibold);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-1);
+  color: var(--ai-text-primary);
+}
+
+/* Chevron button — 24×24 container, 16px icon
+   Note: --ai-spacing-6 (1.5rem = 24px) is used for the container dimensions;
+   the icon inside uses --ai-icon-size-sm (1rem = 16px). */
+.prompt-template-item__chevron-btn {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-6);
+  height: var(--ai-spacing-6);
+  padding: 0;
+  border: none;
+  border-radius: var(--ai-radius-md);
+  background: none;
+  cursor: pointer;
+  color: var(--ai-icon-contrast);
+  transition: background-color var(--ai-transition-default);
+}
+
+.prompt-template-item__chevron-btn:focus-visible {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: 2px;
+}
+
+.prompt-template-item__chevron-btn [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  transition: transform var(--ai-transition-default);
+}
+
+/* ─── Description section (hidden until expanded) ─────────────────────────── */
+
+.prompt-template-item__details {
+  display: none;
+  border-top: 1px solid var(--ai-surface-contrast);
+  padding: var(--ai-spacing-5);
+}
+
+.prompt-template-item__description {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-2);
+  color: var(--ai-text-secondary);
+}
+
+/* ─── Hover ───────────────────────────────────────────────────────────────── */
+
+.prompt-template-item:hover .prompt-template-item__chevron-btn {
+  background-color: var(--ai-surface-secondary);
+}
+
+/* ─── Selected ────────────────────────────────────────────────────────────── */
+
+.prompt-template-item--selected {
+  border-color: var(--ai-border-primary);
+}
+
+/* ─── Expanded ────────────────────────────────────────────────────────────── */
+
+.prompt-template-item--expanded .prompt-template-item__details {
+  display: block;
+}
+
+.prompt-template-item--expanded .prompt-template-item__chevron-btn [data-lucide] {
+  transform: rotate(90deg);
+}
