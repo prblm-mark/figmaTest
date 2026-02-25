@@ -69,7 +69,7 @@
             <span class="version-history-row__name">Sally Jones</span>
             <span class="version-history-row__date">08 Jan 2026, 17:52</span>
           </div>
-          <span class="pill" aria-label="Live version"><span class="pill__label">2 minutes ago</span></span>
+          <span class="pill" aria-label="Live version"><span class="pill__label">Live</span></span>
         </div>
 
         <!-- Row 2 — Default -->
@@ -228,7 +228,7 @@
             <span class="version-history-row__name">Sally Jones</span>
             <span class="version-history-row__date">08 Jan 2026, 17:52</span>
           </div>
-          <span class="pill" aria-label="Live version"><span class="pill__label">2 minutes ago</span></span>
+          <span class="pill" aria-label="Live version"><span class="pill__label">Live</span></span>
         </div>
 
         <div class="version-history-row" role="option" aria-selected="false" tabindex="0">
@@ -352,88 +352,191 @@
 
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>
+    // Initialise all Lucide icons on the page by scanning for data-lucide attributes
+    // and replacing them with inline SVGs. Called once at page load; also called
+    // per-node after DOM mutations (e.g. swapping an avatar to a check icon).
     lucide.createIcons();
 
-    // Toggle expand/collapse — both subtitle button and footer button trigger it
+    // ─── Expand / Collapse ────────────────────────────────────────────────────
+    //
+    // The panel has two visual states controlled by the CSS class
+    // `version-history--expanded` on the root `.version-history` element:
+    //
+    //   Collapsed (default): shows rows 1–5; "Show older" footer button;
+    //                         chevron points right (→).
+    //   Expanded:            shows all 12 rows; "Show less" footer button;
+    //                         chevron rotates 90° to point down (↓).
+    //
+    // Two separate triggers both call this same function:
+    //   1. The subtitle button in the heading ("12 previous system roles saved")
+    //   2. The "Show older" / "Show less" footer button
+    //
+    // aria-expanded is kept in sync on both buttons so assistive technology
+    // announces the correct state regardless of which trigger was used.
+
     function toggleVersionHistory(panel) {
+      // Toggle the expanded class and capture the new boolean state.
+      // classList.toggle() returns true if the class was added, false if removed.
       var isExpanded = panel.classList.toggle('version-history--expanded');
-      var subtitle = panel.querySelector('.version-history__heading-subtitle');
-      var footer = panel.querySelector('.version-history__footer');
+
+      // Locate the two trigger elements within this specific panel so that
+      // multiple independent panels on the same page don't interfere with each other.
+      var subtitle   = panel.querySelector('.version-history__heading-subtitle');
+      var footer     = panel.querySelector('.version-history__footer');
       var footerLabel = panel.querySelector('.version-history__footer-label');
-      if (subtitle) subtitle.setAttribute('aria-expanded', isExpanded);
-      if (footer) footer.setAttribute('aria-expanded', isExpanded);
+
+      // Keep aria-expanded in sync so screen readers announce "expanded" / "collapsed".
+      if (subtitle)    subtitle.setAttribute('aria-expanded', isExpanded);
+      if (footer)      footer.setAttribute('aria-expanded', isExpanded);
+
+      // Swap the visible footer label text to match the new state.
       if (footerLabel) footerLabel.textContent = isExpanded ? 'Show less' : 'Show older';
     }
 
+    // Attach click listener to every heading subtitle button.
+    // Uses closest() so the handler still works if the click lands on a child
+    // element (e.g. the chevron icon) rather than the button element itself.
     document.querySelectorAll('.version-history__heading-subtitle').forEach(function(btn) {
       btn.addEventListener('click', function() {
         toggleVersionHistory(this.closest('.version-history'));
       });
     });
 
+    // Attach click listener to every footer button (same toggle logic).
     document.querySelectorAll('.version-history__footer').forEach(function(btn) {
       btn.addEventListener('click', function() {
         toggleVersionHistory(this.closest('.version-history'));
       });
     });
 
-    // Row selection — radio behaviour (always exactly one row selected)
+    // ─── Row Selection (radio behaviour) ─────────────────────────────────────
+    //
+    // Exactly one row is selected at all times — this mirrors a radio group,
+    // not a checkbox group. The rules are:
+    //
+    //   • Clicking an already-selected row → no-op (selection cannot be cleared
+    //     by clicking the same row again).
+    //   • Clicking the Live row → deselect any currently-selected default row,
+    //     reselect the Live row. The Live row's avatar is always a check icon
+    //     (it never shows a portrait even when unselected in the Figma design).
+    //   • Clicking any default row → deselect every row (including Live if it was
+    //     selected), then select the clicked row.
+    //
+    // Visual change on selection: the avatar switches from a portrait photo to a
+    // green check-circle (Avatar component's `avatar--checked` variant). The
+    // portrait src is stashed in `data-portrait-src` before it is replaced so it
+    // can be restored if that row is later deselected.
+    //
+    // The row list uses role="listbox" + role="option" + aria-selected so that
+    // the selection state is communicated to assistive technology without needing
+    // a native <select> element.
+
     function selectRow(clickedRow, rowsContainer) {
+      // Find the persistent Live row within this panel. It always exists and
+      // always carries version-history-row--live.
       var liveRow = rowsContainer.querySelector('.version-history-row--live');
+
+      // Collect all rows (both visible and collapsed extra rows) so we can
+      // iterate them when clearing selection.
       var allRows = rowsContainer.querySelectorAll('.version-history-row');
 
-      // No-op if already selected
+      // Guard: if the clicked row is already selected, do nothing. This prevents
+      // a redundant DOM mutation and a visual flicker from swapping the avatar
+      // out and back in again.
       if (clickedRow.classList.contains('version-history-row--selected')) return;
 
-      // Helper: add selected visual state
+      // ── applySelected ──────────────────────────────────────────────────────
+      // Marks a row as visually and semantically selected:
+      //   1. Adds the --selected CSS modifier (background, border, etc.)
+      //   2. Stashes the portrait <img> src in data-portrait-src so we can
+      //      restore it later when the row is deselected.
+      //   3. Replaces the avatar's <img> with a Lucide check icon and switches
+      //      the avatar to its --checked variant (green circle bg).
+      //   4. Calls lucide.createIcons({ nodes }) scoped to just this avatar so
+      //      we don't re-process every icon on the page.
       function applySelected(row) {
         row.classList.add('version-history-row--selected');
         row.setAttribute('aria-selected', 'true');
-        var avatar = row.querySelector('.avatar');
+
+        var avatar  = row.querySelector('.avatar');
         var portrait = avatar && avatar.querySelector('.portrait');
+
+        // Save the portrait URL before overwriting innerHTML so it survives the swap.
         if (portrait) row.dataset.portraitSrc = portrait.src;
+
         if (avatar) {
           avatar.classList.add('avatar--checked');
-          avatar.setAttribute('aria-label', 'Selected');
+          avatar.setAttribute('aria-label', 'Selected'); // describes the check icon to screen readers
           avatar.innerHTML = '<i data-lucide="check" aria-hidden="true"></i>';
+          // Re-run icon replacement scoped to just this avatar node.
           lucide.createIcons({ nodes: [avatar] });
         }
       }
 
-      // Helper: remove selected visual state (restores portrait from data-portrait-src)
+      // ── removeSelected ─────────────────────────────────────────────────────
+      // Reverses applySelected for a row that is currently selected:
+      //   1. Removes the --selected CSS modifier.
+      //   2. Restores the portrait <img> from the previously stashed data-portrait-src.
+      //   3. Removes the --checked avatar modifier.
+      //   4. Cleans up data-portrait-src so the attribute doesn't linger.
+      //
+      // If the row isn't currently selected this is a safe no-op, which lets us
+      // call it on every row during a sweep without checking first.
       function removeSelected(row) {
         if (!row.classList.contains('version-history-row--selected')) return;
+
         row.classList.remove('version-history-row--selected');
         row.setAttribute('aria-selected', 'false');
-        var avatar = row.querySelector('.avatar');
-        var storedSrc = row.dataset.portraitSrc;
+
+        var avatar    = row.querySelector('.avatar');
+        var storedSrc = row.dataset.portraitSrc; // may be undefined for rows that never had a portrait
+
         if (avatar && storedSrc) {
           avatar.classList.remove('avatar--checked');
           avatar.removeAttribute('aria-label');
+          // Restore the portrait image using the stashed src.
           avatar.innerHTML = '<img class="portrait" src="' + storedSrc + '" alt="">';
+          // Remove the stashed src now that it has been restored.
           delete row.dataset.portraitSrc;
         }
       }
 
       if (clickedRow.classList.contains('version-history-row--live')) {
-        // Live row clicked — deselect all default rows, ensure live is selected
+        // ── Live row clicked ─────────────────────────────────────────────────
+        // The Live row is always selected when it is active — clear any other
+        // rows that may currently hold selection (default rows only), then apply
+        // selection to the Live row. We skip the Live row itself in the sweep
+        // to avoid an unnecessary remove→apply cycle.
         allRows.forEach(function(row) {
           if (!row.classList.contains('version-history-row--live')) removeSelected(row);
         });
         applySelected(liveRow);
       } else {
-        // Default row clicked — deselect everyone (including live), select this row
+        // ── Default row clicked ──────────────────────────────────────────────
+        // Clear selection from every row (including Live, which restores normally
+        // — though visually the Live row's avatar stays a check icon per Figma
+        // since its portrait src was stashed at page load). Then select the
+        // clicked row.
         allRows.forEach(function(row) { removeSelected(row); });
         applySelected(clickedRow);
       }
     }
 
+    // Attach pointer and keyboard handlers to every row-list container.
+    // Scoping to the container (event delegation) means we don't need to attach
+    // individual listeners to each row, and it works automatically for rows that
+    // are hidden/shown by the expand toggle.
     document.querySelectorAll('.version-history__rows[role="listbox"]').forEach(function(rowsContainer) {
+
+      // Mouse / touch: find the nearest row ancestor of the click target.
+      // closest() handles clicks on child elements (avatar, name text, date, pill).
       rowsContainer.addEventListener('click', function(e) {
         var row = e.target.closest('.version-history-row');
         if (row) selectRow(row, rowsContainer);
       });
 
+      // Keyboard: Enter or Space activates the focused row, matching native
+      // listbox behaviour. preventDefault() stops Space from scrolling the page.
       rowsContainer.addEventListener('keydown', function(e) {
         if (e.key === 'Enter' || e.key === ' ') {
           var row = e.target.closest('.version-history-row');

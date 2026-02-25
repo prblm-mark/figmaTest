@@ -89,53 +89,104 @@
 
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>
+    // Initialise all Lucide icons on the page by scanning for data-lucide attributes
+    // and replacing them with inline SVGs. Called once at page load; also called
+    // per-node after DOM mutations (e.g. swapping an avatar to a check icon).
     lucide.createIcons();
 
+    // ─── Row Selection ────────────────────────────────────────────────────────
+    //
+    // This demo uses a toggleable selection model (different from the full
+    // VersionHistory panel which enforces radio behaviour). Rules:
+    //
+    //   • Clicking an unselected row → deselect any currently-selected row,
+    //     then select the clicked row.
+    //   • Clicking the already-selected row → deselect it (toggle off). This
+    //     allows the demo to show all four Figma variants: Default, Live,
+    //     Selected, and Selected & Live.
+    //
+    // Visual change on selection: the avatar swaps from a portrait photo to a
+    // green check-circle (the Avatar component's `avatar--checked` variant).
+    // The portrait src is stashed in `data-portrait-src` on the row element
+    // before innerHTML is overwritten, so it can be restored on deselection.
+    //
+    // The list uses role="listbox" / role="option" / aria-selected so that
+    // selection state is communicated to assistive technology.
+
     function selectRow(clickedRow, container) {
+      // Collect all rows in the container so we can sweep them when clearing selection.
       var rows = container.querySelectorAll('.version-history-row');
+
+      // Capture current selection state BEFORE the sweep so we can decide
+      // whether to re-select at the end (toggle-off vs toggle-on).
       var isAlreadySelected = clickedRow.classList.contains('version-history-row--selected');
 
-      // Deselect all rows
+      // ── Deselect all currently-selected rows ───────────────────────────────
+      // We only modify rows that are actually selected to avoid unnecessary DOM work.
+      // For each selected row:
+      //   1. Remove the --selected CSS modifier (resets background, border, etc.)
+      //   2. Update aria-selected for assistive technology.
+      //   3. Restore the portrait <img> from the stashed data-portrait-src URL.
+      //   4. Remove the --checked modifier from the avatar and clean up the stash.
       rows.forEach(function(row) {
         if (row.classList.contains('version-history-row--selected')) {
           row.classList.remove('version-history-row--selected');
           row.setAttribute('aria-selected', 'false');
-          var avatar = row.querySelector('.avatar');
-          var storedSrc = row.dataset.portraitSrc;
+
+          var avatar    = row.querySelector('.avatar');
+          var storedSrc = row.dataset.portraitSrc; // URL saved before the check icon replaced it
+
           if (avatar && storedSrc) {
             avatar.classList.remove('avatar--checked');
-            avatar.removeAttribute('aria-label');
+            avatar.removeAttribute('aria-label'); // was "Selected" — no longer meaningful
+            // Rebuild the portrait <img> from the saved URL.
             avatar.innerHTML = '<img class="portrait" src="' + storedSrc + '" alt="">';
+            // Remove the stash now that the portrait has been restored.
             delete row.dataset.portraitSrc;
           }
         }
       });
 
-      // Select the clicked row (unless it was already selected — toggle off)
+      // ── Select the clicked row (unless it was already selected — toggle off) ─
+      // If isAlreadySelected is true the sweep above already cleared it, so we
+      // just leave the row deselected. If false, apply selection now.
       if (!isAlreadySelected) {
         clickedRow.classList.add('version-history-row--selected');
         clickedRow.setAttribute('aria-selected', 'true');
-        var avatar = clickedRow.querySelector('.avatar');
+
+        var avatar  = clickedRow.querySelector('.avatar');
         var portrait = avatar && avatar.querySelector('.portrait');
+
+        // Stash the portrait src BEFORE overwriting innerHTML so it survives the swap.
         if (portrait) {
           clickedRow.dataset.portraitSrc = portrait.src;
         }
+
         if (avatar) {
           avatar.classList.add('avatar--checked');
-          avatar.setAttribute('aria-label', 'Selected');
+          avatar.setAttribute('aria-label', 'Selected'); // describes the check icon to screen readers
+          // Replace the portrait with the Lucide check icon markup.
           avatar.innerHTML = '<i data-lucide="check" aria-hidden="true"></i>';
+          // Re-run icon replacement scoped to just this avatar node so we don't
+          // re-process every icon on the page.
           lucide.createIcons({ nodes: [avatar] });
         }
       }
     }
 
+    // Scope the listener to the interactive demo section only (the static
+    // reference rows below it are not interactive and have no role="listbox").
     var container = document.querySelector('.demo-section[role="listbox"]');
 
+    // Mouse / touch: find the nearest row ancestor of the click target.
+    // closest() handles clicks on child elements (avatar, name text, date, pill).
     container.addEventListener('click', function(e) {
       var row = e.target.closest('.version-history-row');
       if (row) selectRow(row, container);
     });
 
+    // Keyboard: Enter or Space activates the focused row, matching native
+    // listbox behaviour. preventDefault() stops Space from scrolling the page.
     container.addEventListener('keydown', function(e) {
       if (e.key === 'Enter' || e.key === ' ') {
         var row = e.target.closest('.version-history-row');

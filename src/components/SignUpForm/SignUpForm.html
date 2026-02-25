@@ -94,6 +94,11 @@
   </div>
 
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <script>lucide.createIcons();</script>
+  <script>
+    // Scan all data-lucide attributes on the page and replace each element
+    // with an inline SVG from the Lucide icon set. Must run after the DOM is
+    // ready — placing the script at the bottom of <body> guarantees this.
+    lucide.createIcons();
+  </script>
 </body>
 </html>
