@@ -37,11 +37,11 @@
 
   <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-6);">VersionHistoryRow</h1>
 
-  <div class="demo-section">
-    <p class="demo-section__title">All Variants — hover any Default row to see hover state</p>
+  <div class="demo-section" role="listbox" aria-label="Version history">
+    <p class="demo-section__title">All Variants — click any row to select/deselect</p>
 
     <!-- Default -->
-    <div class="version-history-row">
+    <div class="version-history-row" role="option" aria-selected="false" tabindex="0">
       <div class="avatar">
         <img class="portrait" src="https://picsum.photos/seed/female3/300" alt="Adam Ainsworth">
       </div>
@@ -52,35 +52,35 @@
     </div>
 
     <!-- Live -->
-    <div class="version-history-row version-history-row--live">
+    <div class="version-history-row version-history-row--live" role="option" aria-selected="false" tabindex="0">
       <div class="avatar">
-        <img class="portrait" src="https://picsum.photos/seed/female3/300" alt="Adam Ainsworth">
+        <img class="portrait" src="https://picsum.photos/seed/male2/300" alt="Chris Bristow">
       </div>
       <div class="version-history-row__content">
-        <span class="version-history-row__name">Adam Ainsworth</span>
+        <span class="version-history-row__name">Chris Bristow</span>
         <span class="version-history-row__date">15 Jan 2025, 4:42 PM</span>
       </div>
       <span class="pill" aria-label="Live version"><span class="pill__label">Live</span></span>
     </div>
 
     <!-- Selected -->
-    <div class="version-history-row version-history-row--selected">
+    <div class="version-history-row version-history-row--selected" role="option" aria-selected="true" tabindex="0" data-portrait-src="https://picsum.photos/seed/female4/300">
       <div class="avatar avatar--checked" aria-label="Selected">
         <i data-lucide="check" aria-hidden="true"></i>
       </div>
       <div class="version-history-row__content">
-        <span class="version-history-row__name">Adam Ainsworth</span>
+        <span class="version-history-row__name">Sally Jones</span>
         <span class="version-history-row__date">15 Jan 2025, 4:42 PM</span>
       </div>
     </div>
 
     <!-- Selected & Live -->
-    <div class="version-history-row version-history-row--selected version-history-row--live">
+    <div class="version-history-row version-history-row--selected version-history-row--live" role="option" aria-selected="true" tabindex="0" data-portrait-src="https://picsum.photos/seed/female5/300">
       <div class="avatar avatar--checked" aria-label="Selected">
         <i data-lucide="check" aria-hidden="true"></i>
       </div>
       <div class="version-history-row__content">
-        <span class="version-history-row__name">Adam Ainsworth</span>
+        <span class="version-history-row__name">Gayle Stevens</span>
         <span class="version-history-row__date">15 Jan 2025, 4:42 PM</span>
       </div>
       <span class="pill" aria-label="Live version"><span class="pill__label">Live</span></span>
@@ -88,6 +88,60 @@
   </div>
 
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <script>lucide.createIcons();</script>
+  <script>
+    lucide.createIcons();
+
+    function selectRow(clickedRow, container) {
+      var rows = container.querySelectorAll('.version-history-row');
+      var isAlreadySelected = clickedRow.classList.contains('version-history-row--selected');
+
+      // Deselect all rows
+      rows.forEach(function(row) {
+        if (row.classList.contains('version-history-row--selected')) {
+          row.classList.remove('version-history-row--selected');
+          row.setAttribute('aria-selected', 'false');
+          var avatar = row.querySelector('.avatar');
+          var storedSrc = row.dataset.portraitSrc;
+          if (avatar && storedSrc) {
+            avatar.classList.remove('avatar--checked');
+            avatar.removeAttribute('aria-label');
+            avatar.innerHTML = '<img class="portrait" src="' + storedSrc + '" alt="">';
+            delete row.dataset.portraitSrc;
+          }
+        }
+      });
+
+      // Select the clicked row (unless it was already selected — toggle off)
+      if (!isAlreadySelected) {
+        clickedRow.classList.add('version-history-row--selected');
+        clickedRow.setAttribute('aria-selected', 'true');
+        var avatar = clickedRow.querySelector('.avatar');
+        var portrait = avatar && avatar.querySelector('.portrait');
+        if (portrait) {
+          clickedRow.dataset.portraitSrc = portrait.src;
+        }
+        if (avatar) {
+          avatar.classList.add('avatar--checked');
+          avatar.setAttribute('aria-label', 'Selected');
+          avatar.innerHTML = '<i data-lucide="check" aria-hidden="true"></i>';
+          lucide.createIcons({ nodes: [avatar] });
+        }
+      }
+    }
+
+    var container = document.querySelector('.demo-section[role="listbox"]');
+
+    container.addEventListener('click', function(e) {
+      var row = e.target.closest('.version-history-row');
+      if (row) selectRow(row, container);
+    });
+
+    container.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        var row = e.target.closest('.version-history-row');
+        if (row) { e.preventDefault(); selectRow(row, container); }
+      }
+    });
+  </script>
 </body>
 </html>

@@ -55,13 +55,15 @@
       </div>
 
       <!-- Row list -->
-      <div class="version-history__rows">
+      <div class="version-history__rows" role="listbox" aria-label="Version history">
         <div class="version-history__timeline" aria-hidden="true"></div>
 
-        <!-- Row 1 — Live -->
-        <div class="version-history-row version-history-row--live">
-          <div class="avatar">
-            <img class="portrait" src="https://picsum.photos/seed/female4/300" alt="Sally Jones">
+        <!-- Row 1 — Live (starts selected) -->
+        <div class="version-history-row version-history-row--live version-history-row--selected"
+             role="option" aria-selected="true" tabindex="0"
+             data-portrait-src="https://picsum.photos/seed/female4/300">
+          <div class="avatar avatar--checked" aria-label="Selected">
+            <i data-lucide="check" aria-hidden="true"></i>
           </div>
           <div class="version-history-row__content">
             <span class="version-history-row__name">Sally Jones</span>
@@ -71,7 +73,7 @@
         </div>
 
         <!-- Row 2 — Default -->
-        <div class="version-history-row">
+        <div class="version-history-row" role="option" aria-selected="false" tabindex="0">
           <div class="avatar">
             <img class="portrait" src="https://picsum.photos/seed/female5/300" alt="Gayle Stevens">
           </div>
@@ -82,7 +84,7 @@
         </div>
 
         <!-- Row 3 — Default -->
-        <div class="version-history-row">
+        <div class="version-history-row" role="option" aria-selected="false" tabindex="0">
           <div class="avatar">
             <img class="portrait" src="https://picsum.photos/seed/male2/300" alt="Chris Bristow">
           </div>
@@ -93,7 +95,7 @@
         </div>
 
         <!-- Row 4 — Default -->
-        <div class="version-history-row">
+        <div class="version-history-row" role="option" aria-selected="false" tabindex="0">
           <div class="avatar">
             <img class="portrait" src="https://picsum.photos/seed/male3/300" alt="Chris Bristow">
           </div>
@@ -104,7 +106,7 @@
         </div>
 
         <!-- Row 5 — Default -->
-        <div class="version-history-row">
+        <div class="version-history-row" role="option" aria-selected="false" tabindex="0">
           <div class="avatar">
             <img class="portrait" src="https://picsum.photos/seed/male4/300" alt="Chris Bristow">
           </div>
@@ -115,7 +117,7 @@
         </div>
 
         <!-- Rows 6–12 — visible only when expanded -->
-        <div class="version-history-row version-history__row-extra">
+        <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
           <div class="avatar">
             <img class="portrait" src="https://picsum.photos/seed/male5/300" alt="Chris Bristow">
           </div>
@@ -125,7 +127,7 @@
           </div>
         </div>
 
-        <div class="version-history-row version-history__row-extra">
+        <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
           <div class="avatar">
             <img class="portrait" src="https://picsum.photos/seed/female3/300" alt="Gayle Stevens">
           </div>
@@ -135,7 +137,7 @@
           </div>
         </div>
 
-        <div class="version-history-row version-history__row-extra">
+        <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
           <div class="avatar">
             <img class="portrait" src="https://picsum.photos/seed/male6/300" alt="Chris Bristow">
           </div>
@@ -145,7 +147,7 @@
           </div>
         </div>
 
-        <div class="version-history-row version-history__row-extra">
+        <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
           <div class="avatar">
             <img class="portrait" src="https://picsum.photos/seed/female6/300" alt="Gayle Stevens">
           </div>
@@ -155,7 +157,7 @@
           </div>
         </div>
 
-        <div class="version-history-row version-history__row-extra">
+        <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
           <div class="avatar">
             <img class="portrait" src="https://picsum.photos/seed/male7/300" alt="Chris Bristow">
           </div>
@@ -165,7 +167,7 @@
           </div>
         </div>
 
-        <div class="version-history-row version-history__row-extra">
+        <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
           <div class="avatar">
             <img class="portrait" src="https://picsum.photos/seed/male8/300" alt="Chris Bristow">
           </div>
@@ -175,7 +177,7 @@
           </div>
         </div>
 
-        <div class="version-history-row version-history__row-extra">
+        <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
           <div class="avatar">
             <img class="portrait" src="https://picsum.photos/seed/male9/300" alt="Chris Bristow">
           </div>
@@ -213,12 +215,14 @@
       </div>
 
       <!-- Row list -->
-      <div class="version-history__rows">
+      <div class="version-history__rows" role="listbox" aria-label="Version history">
         <div class="version-history__timeline" aria-hidden="true"></div>
 
-        <div class="version-history-row version-history-row--live">
-          <div class="avatar">
-            <img class="portrait" src="https://picsum.photos/seed/female4/300" alt="Sally Jones">
+        <div class="version-history-row version-history-row--live version-history-row--selected"
+             role="option" aria-selected="true" tabindex="0"
+             data-portrait-src="https://picsum.photos/seed/female4/300">
+          <div class="avatar avatar--checked" aria-label="Selected">
+            <i data-lucide="check" aria-hidden="true"></i>
           </div>
           <div class="version-history-row__content">
             <span class="version-history-row__name">Sally Jones</span>
@@ -227,7 +231,7 @@
           <span class="pill" aria-label="Live version"><span class="pill__label">2 minutes ago</span></span>
         </div>
 
-        <div class="version-history-row">
+        <div class="version-history-row" role="option" aria-selected="false" tabindex="0">
           <div class="avatar">
             <img class="portrait" src="https://picsum.photos/seed/female5/300" alt="Gayle Stevens">
           </div>
@@ -237,7 +241,7 @@
           </div>
         </div>
 
-        <div class="version-history-row">
+        <div class="version-history-row" role="option" aria-selected="false" tabindex="0">
           <div class="avatar">
             <img class="portrait" src="https://picsum.photos/seed/male2/300" alt="Chris Bristow">
           </div>
@@ -247,7 +251,7 @@
           </div>
         </div>
 
-        <div class="version-history-row">
+        <div class="version-history-row" role="option" aria-selected="false" tabindex="0">
           <div class="avatar">
             <img class="portrait" src="https://picsum.photos/seed/male3/300" alt="Chris Bristow">
           </div>
@@ -257,7 +261,7 @@
           </div>
         </div>
 
-        <div class="version-history-row">
+        <div class="version-history-row" role="option" aria-selected="false" tabindex="0">
           <div class="avatar">
             <img class="portrait" src="https://picsum.photos/seed/male4/300" alt="Chris Bristow">
           </div>
@@ -267,7 +271,7 @@
           </div>
         </div>
 
-        <div class="version-history-row version-history__row-extra">
+        <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
           <div class="avatar">
             <img class="portrait" src="https://picsum.photos/seed/male5/300" alt="Chris Bristow">
           </div>
@@ -277,7 +281,7 @@
           </div>
         </div>
 
-        <div class="version-history-row version-history__row-extra">
+        <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
           <div class="avatar">
             <img class="portrait" src="https://picsum.photos/seed/female3/300" alt="Gayle Stevens">
           </div>
@@ -287,7 +291,7 @@
           </div>
         </div>
 
-        <div class="version-history-row version-history__row-extra">
+        <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
           <div class="avatar">
             <img class="portrait" src="https://picsum.photos/seed/male6/300" alt="Chris Bristow">
           </div>
@@ -297,7 +301,7 @@
           </div>
         </div>
 
-        <div class="version-history-row version-history__row-extra">
+        <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
           <div class="avatar">
             <img class="portrait" src="https://picsum.photos/seed/female6/300" alt="Gayle Stevens">
           </div>
@@ -307,7 +311,7 @@
           </div>
         </div>
 
-        <div class="version-history-row version-history__row-extra">
+        <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
           <div class="avatar">
             <img class="portrait" src="https://picsum.photos/seed/male7/300" alt="Chris Bristow">
           </div>
@@ -317,7 +321,7 @@
           </div>
         </div>
 
-        <div class="version-history-row version-history__row-extra">
+        <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
           <div class="avatar">
             <img class="portrait" src="https://picsum.photos/seed/male8/300" alt="Chris Bristow">
           </div>
@@ -327,7 +331,7 @@
           </div>
         </div>
 
-        <div class="version-history-row version-history__row-extra">
+        <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
           <div class="avatar">
             <img class="portrait" src="https://picsum.photos/seed/male9/300" alt="Chris Bristow">
           </div>
@@ -370,6 +374,71 @@
     document.querySelectorAll('.version-history__footer').forEach(function(btn) {
       btn.addEventListener('click', function() {
         toggleVersionHistory(this.closest('.version-history'));
+      });
+    });
+
+    // Row selection — radio behaviour (always exactly one row selected)
+    function selectRow(clickedRow, rowsContainer) {
+      var liveRow = rowsContainer.querySelector('.version-history-row--live');
+      var allRows = rowsContainer.querySelectorAll('.version-history-row');
+
+      // No-op if already selected
+      if (clickedRow.classList.contains('version-history-row--selected')) return;
+
+      // Helper: add selected visual state
+      function applySelected(row) {
+        row.classList.add('version-history-row--selected');
+        row.setAttribute('aria-selected', 'true');
+        var avatar = row.querySelector('.avatar');
+        var portrait = avatar && avatar.querySelector('.portrait');
+        if (portrait) row.dataset.portraitSrc = portrait.src;
+        if (avatar) {
+          avatar.classList.add('avatar--checked');
+          avatar.setAttribute('aria-label', 'Selected');
+          avatar.innerHTML = '<i data-lucide="check" aria-hidden="true"></i>';
+          lucide.createIcons({ nodes: [avatar] });
+        }
+      }
+
+      // Helper: remove selected visual state (restores portrait from data-portrait-src)
+      function removeSelected(row) {
+        if (!row.classList.contains('version-history-row--selected')) return;
+        row.classList.remove('version-history-row--selected');
+        row.setAttribute('aria-selected', 'false');
+        var avatar = row.querySelector('.avatar');
+        var storedSrc = row.dataset.portraitSrc;
+        if (avatar && storedSrc) {
+          avatar.classList.remove('avatar--checked');
+          avatar.removeAttribute('aria-label');
+          avatar.innerHTML = '<img class="portrait" src="' + storedSrc + '" alt="">';
+          delete row.dataset.portraitSrc;
+        }
+      }
+
+      if (clickedRow.classList.contains('version-history-row--live')) {
+        // Live row clicked — deselect all default rows, ensure live is selected
+        allRows.forEach(function(row) {
+          if (!row.classList.contains('version-history-row--live')) removeSelected(row);
+        });
+        applySelected(liveRow);
+      } else {
+        // Default row clicked — deselect everyone (including live), select this row
+        allRows.forEach(function(row) { removeSelected(row); });
+        applySelected(clickedRow);
+      }
+    }
+
+    document.querySelectorAll('.version-history__rows[role="listbox"]').forEach(function(rowsContainer) {
+      rowsContainer.addEventListener('click', function(e) {
+        var row = e.target.closest('.version-history-row');
+        if (row) selectRow(row, rowsContainer);
+      });
+
+      rowsContainer.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          var row = e.target.closest('.version-history-row');
+          if (row) { e.preventDefault(); selectRow(row, rowsContainer); }
+        }
       });
     });
   </script>

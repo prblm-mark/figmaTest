@@ -41,6 +41,36 @@ Build a variant table before writing any code:
 
 The variant table is a **contract** — every row must be represented in the CSS, the demo HTML, and the figma-notes.md variant matrix. A row absent from any of those three means the build is incomplete.
 
+**Step 1c — identify interactions:**
+Scan every variant name in the table for states that imply user-triggered interaction —
+clicks, selections, toggles, expansions, activations.
+
+Signal words (non-exhaustive): Selected, Checked, Expanded, Active, Open, Closed,
+Toggled, Highlighted, Pressed, Focused (when a JS focus manager is needed).
+
+Pure CSS states (hover, :focus-visible, :disabled) do NOT need to be asked about here —
+they are handled in Step 4/8 per normal. Ask only about states that require JS to add/remove
+a class or change DOM structure.
+
+If any such variants exist: **STOP before Step 2.** List them and ask the user:
+
+> "I see these variants that imply JavaScript-driven interaction:
+> - [variant name] — [brief observation, e.g. 'avatar changes to check icon']
+> - ...
+>
+> Can you describe the expected behavior for each? e.g.:
+> - Single-select (radio) vs multi-select (checkbox)?
+> - Click to toggle on/off, or click to select only?
+> - Does clicking outside deselect?
+> - Any keyboard behavior beyond Enter/Space?"
+
+Do not proceed to Step 2 until the user has answered. Do not infer or assume the behavior
+from the variant names alone — the same visual variant (e.g. "Selected") can map to very
+different interaction models depending on the product context.
+
+Concrete mistake: VersionHistoryRow had "Selected" and "Selected & Live" variants. No
+interaction was ever implemented. The user had to ask sessions later.
+
 ### 2. Screenshot
 
 Call `get_screenshot` on the **parent frame** (the one containing all variants/states).
