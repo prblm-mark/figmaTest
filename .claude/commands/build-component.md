@@ -367,3 +367,15 @@ Full token reference: CLAUDE.md Section 2 & 3.
   .component__control:focus-visible,
   .component__clear:focus-visible { outline: none; }
   ```
+- **Error focus ring pattern:** When a component has an error state, the focus ring color changes from brand-blue to error-red — `--ai-surface-error-contrast` replaces `--ai-surface-brand-contrast`. The error state's `:hover` and `:focus-within` must BOTH be written as separate rules (not combined), and the focus-within rule must explicitly override the box-shadow:
+  ```css
+  .component--error .component__wrap:hover {
+    border-color: var(--ai-border-error);
+  }
+  .component--error .component__wrap:focus-within {
+    border-color: var(--ai-border-error);
+    box-shadow: 0 0 0 1px var(--ai-surface-primary),
+                0 0 0 3px var(--ai-surface-error-contrast); /* red ring, not blue */
+  }
+  ```
+  Combining error hover + focus-within into one rule prevents the box-shadow from being set, causing the default blue ring to bleed through. Concrete mistake: Input error focus used `--ai-surface-brand-contrast` (blue) instead of `--ai-surface-error-contrast` (red tint) because the error hover/focus rules were combined.

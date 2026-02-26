@@ -124,9 +124,14 @@
   border-color: var(--ai-border-error);
 }
 
-.input--error .input__wrap:hover,
+.input--error .input__wrap:hover {
+  border-color: var(--ai-border-error);
+}
+
 .input--error .input__wrap:focus-within {
   border-color: var(--ai-border-error);
+  box-shadow: 0 0 0 1px var(--ai-surface-primary),
+              0 0 0 3px var(--ai-surface-error-contrast); /* red ring, not blue */
 }
 
 .input--error .input__help {
