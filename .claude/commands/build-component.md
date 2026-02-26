@@ -129,6 +129,12 @@ For each named nested component found:
 1. Check `src/components/` — does it exist?
 2. If **missing** → STOP. Do not write any code for the parent. Report the missing dependency
    and follow the bottom-up build order (build the child first, then return to the parent).
+   **Critical:** when building the child, restart from Step 1a — call `get_metadata` on the
+   PAGE to find the child's component set node. **Do NOT use the instance node ID visible in
+   the parent's design context.** That instance ID is a single variant; the component set
+   contains all variants. Concrete mistake: Pill was built from instance node `78:2994`
+   (found in VersionHistoryRow's design context) rather than component set `68:4503` — 4 of
+   5 variants were silently missed and required a dedicated fix session.
 3. If **existing** → audit it (Steps 3–6 of `/review-component`) before using it.
 
 Never implement a named Figma component as scoped CSS inside the parent (e.g. `.header__tooltip`).
