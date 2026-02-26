@@ -59,7 +59,8 @@
 | Sidebar panels gap | `--ai-spacing-6` | `1.5rem` (24px) |
 | Prompt border color | `--ai-surface-contrast` | `#D1D5DB` |
 | Prompt border-radius | `--ai-radius-lg` | `1rem` |
-| Prompt padding | `--ai-spacing-6` | `1.5rem` (24px) |
+| Prompt padding (Default) | `--ai-spacing-6` | `1.5rem` (24px) |
+| Prompt padding (Minimised) | `--ai-spacing-5` | `1rem` (16px) — updated in Figma |
 | Textarea text | `--ai-text-primary` | `#1F2A37` |
 | Textarea font-size | `--ai-font-fixed-xs` | `0.875rem` (14px, fixed — never responsive) |
 | Textarea line-height | `--ai-leading-2` | `1.5rem` |

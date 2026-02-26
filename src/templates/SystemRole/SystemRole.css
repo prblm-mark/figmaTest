@@ -224,7 +224,7 @@
 .system-role--minimised .system-role__top {
   flex-direction: column;
   align-items: flex-end;
-  gap: var(--ai-spacing-3);
+  gap: 0;
 }
 
 /* Controls jump above header, span full width */
@@ -295,7 +295,7 @@
 /* Prompt area gets natural height */
 .system-role--minimised .system-role__prompt {
   height: auto;
-  overflow: visible;
+  overflow: hidden;               /* keep border-radius clipping — visible was bleeding textarea bg over corners */
   flex: none;
 }
 
@@ -304,6 +304,7 @@
   height: 160px;
   min-height: 160px;
   flex: none;
+  padding: var(--ai-spacing-5);           /* 16px — updated in Figma (was 24px) */
 }
 
 /* Sidebar resets to full panel width */
