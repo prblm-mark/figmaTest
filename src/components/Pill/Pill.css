@@ -1,6 +1,6 @@
 /* Pill component
- * Figma node: 78:2994 — "Pill"
- * Single variant: success-coloured status pill
+ * Figma component set: 68:4503 — "Pill"
+ * Variants: Success (base), Default, Contrast, Warning, Brand
  */
 
 .pill {
@@ -22,4 +22,36 @@
   line-height: var(--ai-leading-1);      /* 16px */
   color: var(--ai-btn-primary-text);  /* always white — surface-success is theme-invariant */
   letter-spacing: 0.12px;
+}
+
+/* ── Type=Default — dark/inverted pill ──────────── */
+.pill--default {
+  background-color: var(--ai-surface-invert);
+}
+.pill--default .pill__label {
+  color: var(--ai-text-invert);
+}
+
+/* ── Type=Contrast — grey pill, dark text ───────── */
+.pill--contrast {
+  background-color: var(--ai-surface-contrast);
+}
+.pill--contrast .pill__label {
+  color: var(--ai-text-primary);
+}
+
+/* ── Type=Warning — red pill ─────────────────────── */
+.pill--warning {
+  background-color: var(--ai-surface-error);
+}
+.pill--warning .pill__label {
+  color: var(--ai-btn-primary-text); /* Figma: --ai-text-invert; overridden — see figma-notes */
+}
+
+/* ── Type=Brand — blue pill ──────────────────────── */
+.pill--brand {
+  background-color: var(--ai-surface-brand);
+}
+.pill--brand .pill__label {
+  color: var(--ai-btn-primary-text); /* Figma: --ai-text-invert; overridden — see figma-notes */
 }
