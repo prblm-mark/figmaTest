@@ -90,11 +90,18 @@
   border-color: var(--ai-border-secondary);
 }
 
+/* Icon-only tertiary hover: subtle fill instead of border (Figma: 57:1848) */
+.btn--tertiary.btn--icon:hover {
+  background-color: var(--ai-surface-minimal);
+  border-color: transparent;
+}
+
 .btn--tertiary:active {
   background-color: var(--ai-btn-secondary-pressed);
 }
 
 .btn--tertiary:focus-visible {
+  background-color: var(--ai-btn-secondary);
   border-color: var(--ai-surface-primary);
   box-shadow: 0 0 0 2px var(--ai-border-secondary);
   outline: none;

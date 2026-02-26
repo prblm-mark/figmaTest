@@ -11,6 +11,10 @@
 | Default (Primary) base | `53:2488` |
 | Secondary base | `53:2506` |
 | Tertiary base | `57:1790` |
+| Tertiary Hover (text, base) | `57:1794` |
+| Tertiary Hover (icon-only, base) | `57:1848` |
+| Tertiary Focus (text, base) | `57:1798` |
+| Tertiary Focus (icon-only, base) | `57:1845` |
 | Alert base | `60:2407` |
 | Alert Outline base (Default) | `60:2423` |
 | Alert Outline base (Hover) | `60:2426` |
@@ -50,8 +54,9 @@
 | `--ai-btn-primary` | `--ai-btn-primary` | Primary bg |
 | `--ai-btn-primary-hover` | `--ai-btn-primary-hover` | Primary hover bg |
 | `--ai-btn-primary-pressed` | `--ai-btn-primary-pressed` | Primary active bg |
-| `--ai-btn-secondary` | `--ai-btn-secondary` | Secondary/Tertiary bg |
-| `--ai-btn-secondary-hover` | `--ai-btn-secondary-hover` | Secondary/Tertiary hover bg |
+| `--ai-btn-secondary` | `--ai-btn-secondary` | Secondary/Tertiary bg; also explicit on Tertiary focus |
+| `--ai-btn-secondary-hover` | `--ai-btn-secondary-hover` | Secondary hover bg |
+| `--ai-surface-minimal` | `--ai-surface-minimal` | Tertiary icon-only hover bg (57:1848) |
 | `--ai-btn-secondary-pressed` | `--ai-btn-secondary-pressed` | Secondary/Tertiary active bg |
 | `--ai-btn-disabled` | `--ai-btn-disabled` | Disabled bg (all variants) |
 | `--ai-text-invert` | `--ai-text-invert` | Primary/Alert button text |
@@ -88,6 +93,9 @@
 - `button/base` typography: `--ai-font-fluid-xs` (14px), `--ai-font-semibold` (600), `--ai-leading-1` (16px)
 - `button/sm` typography: `--ai-font-fluid-xxs` (12px), `--ai-font-semibold` (600), `--ai-leading-1` (16px)
 - Tertiary = white bg + **no border** (visually a ghost/text button)
+- Tertiary hover (text): border-secondary appears; bg unchanged
+- Tertiary hover (icon-only): `--ai-surface-minimal` bg; no border (separate scoped rule `.btn--tertiary.btn--icon:hover`)
+- Tertiary focus: explicit `background-color: --ai-btn-secondary` + border-primary + `box-shadow: 0 0 0 2px --ai-border-secondary`
 - Secondary = white bg + `--ai-border-secondary` (visually outlined)
 - Alert background uses Figma primitive `Red/500` → maps to `--ai-surface-error` (#ef4444)
 - `.btn--lg` does **not** exist in Figma — removed from implementation
