@@ -346,14 +346,35 @@ createIcons({ icons: { ArrowRight, ChevronDown, X, Check } });
 
 ```
 src/
-└── components/
-    └── <ComponentName>/
-        ├── <ComponentName>.html       standalone demo page
-        ├── <ComponentName>.css        component styles (--ai-* only)
-        └── <ComponentName>.figma-notes.md  Figma node URL + property mapping
-src/
-└── styles/
-    └── base.css                       global base; imports css/tokens.css
+├── components/           ← atomic/leaf components (Tier: component)
+│   ├── Avatar/
+│   ├── Button/
+│   ├── InfoLabel/
+│   ├── Input/
+│   ├── Pill/
+│   ├── Portraits/
+│   ├── PromptTemplateItem/
+│   ├── Tooltip/
+│   └── dark-mode-toggle.js
+├── patterns/             ← composed components (Tier: pattern)
+│   ├── Header/
+│   ├── PromptTemplates/
+│   ├── VersionHistory/
+│   └── VersionHistoryRow/
+├── styles/               ← global base styles
+│   └── base.css                       global base; imports css/tokens.css
+└── templates/            ← full UI screens/sections (Tier: template)
+    └── SignUpForm/
+```
+
+Each `<ComponentName>/` folder contains:
+```
+├── <ComponentName>.html       standalone demo page
+├── <ComponentName>.css        component styles (--ai-* only)
+└── <ComponentName>.figma-notes.md  Figma node URL + property mapping
+```
+
+```
 css/
 └── tokens.css                         GENERATED — do not edit manually
 ```
@@ -361,6 +382,8 @@ css/
 **Rules:**
 - Every `<ComponentName>.css` file imports nothing — it assumes `base.css` and `tokens.css` are loaded by the page
 - Every `<ComponentName>.html` links `../../styles/base.css` then `<ComponentName>.css`
+- New atomic components → `src/components/`; composed multi-component patterns → `src/patterns/`; full screens → `src/templates/`
+- Peer-component CSS references from `patterns/` or `templates/` use `../../components/<Name>/<Name>.css` (for component-tier deps) or `../../patterns/<Name>/<Name>.css` (for pattern-tier deps)
 - Class names use BEM: `.component`, `.component__element`, `.component--modifier`
 - Modifier classes follow the token vocabulary: `--primary`, `--secondary`, `--sm`, `--lg`, etc.
 
@@ -448,23 +471,23 @@ All components must meet **WCAG 2.1 AA**:
 
 ## 10. Current Components
 
-| Component | Status | Figma URL | Notes |
-|---|---|---|---|
-| Button | Built | [node 53:2489](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=53-2489) | `src/components/Button/` — primary, secondary, tertiary, alert, alert-outline, icon-only variants. Alert hover/pressed use Red/400+600 primitives (approved). |
-| InfoLabel | Built | [node 68:4410](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=68-4410) | `src/components/InfoLabel/` — No Label=False (text+icon), No Label=True (icon only) |
-| Input | Built | [node 78:2016](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=78-2016) | `src/components/Input/` — Base + sm sizes, Default/Hover/Focus/Active/Error states |
-| Tooltip | Built | [node 68:4490](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=68-4490) | `src/components/Tooltip/` — single variant, dark panel. Positioning owned by parent. |
-| Header | Built | [node 68:5443](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=68-5443) | `src/components/Header/` — State (Default/Tooltip/Discard) × Device (Default/Mobile). Composes Tooltip, InfoLabel, Button. |
-| SignUpForm | Built | [node 96:2429](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=96-2429) | `src/components/SignUpForm/` — composes Header, InfoLabel, Input, Button. Layout only. |
-| Pill | Built | [node 78:2994](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=78-2994) | `src/components/Pill/` — single variant, success-coloured status pill. Uses `--ai-surface-success`. |
-| Portraits | Built | [node 68:4785](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=68-4785) | `src/components/Portraits/` — Single `.portrait` class; fills container with `object-fit:cover`. Variants: Female 1/3/4/5, Male 2 (Female 2 + Male 1 not yet located). Clipping is Avatar's responsibility. |
-| Avatar | Built | [node 68:5042](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=68-5042) | `src/components/Avatar/` — Size 1–5 (24–80px circles); Checked=True check-circle variant. Show Notification variants not yet built. Composes Portraits. |
-| VersionHistoryRow | Built | [node 78:2957](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=78-2957) | `src/components/VersionHistoryRow/` — Default, Live, Selected, Selected & Live variants. Composes Avatar, Pill. |
-| VersionHistory | Built | [node 157:4227](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=157-4227) | `src/components/VersionHistory/` — 2 variants: Default (collapsed, 5 rows) + Expanded (12 rows). Custom heading with `history` icon + `chevron-right` toggle. Composes VersionHistoryRow, Avatar, Pill. No Header/Button dependency. |
-| PromptTemplateItem | Built | [node 78:2868](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=78-2868) | `src/components/PromptTemplateItem/` — Default, Hover, Selected (radio toggle), Expanded (chevron-triggered, independent of selection). Custom icon-per-item via Lucide. |
-| PromptTemplates | Built | [node 163:3565](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=163-3565) | `src/components/PromptTemplates/` — single variant panel: heading + list of PromptTemplateItem rows. Composes PromptTemplateItem. |
+| Component | Tier | Status | Figma URL | Notes |
+|---|---|---|---|---|
+| Button | component | Built | [node 53:2489](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=53-2489) | `src/components/Button/` — primary, secondary, tertiary, alert, alert-outline, icon-only variants. Alert hover/pressed use Red/400+600 primitives (approved). |
+| InfoLabel | component | Built | [node 68:4410](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=68-4410) | `src/components/InfoLabel/` — No Label=False (text+icon), No Label=True (icon only) |
+| Input | component | Built | [node 78:2016](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=78-2016) | `src/components/Input/` — Base + sm sizes, Default/Hover/Focus/Active/Error states |
+| Tooltip | component | Built | [node 68:4490](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=68-4490) | `src/components/Tooltip/` — single variant, dark panel. Positioning owned by parent. |
+| Pill | component | Built | [node 78:2994](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=78-2994) | `src/components/Pill/` — single variant, success-coloured status pill. Uses `--ai-surface-success`. |
+| Portraits | component | Built | [node 68:4785](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=68-4785) | `src/components/Portraits/` — Single `.portrait` class; fills container with `object-fit:cover`. Variants: Female 1/3/4/5, Male 2 (Female 2 + Male 1 not yet located). Clipping is Avatar's responsibility. |
+| Avatar | component | Built | [node 68:5042](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=68-5042) | `src/components/Avatar/` — Size 1–5 (24–80px circles); Checked=True check-circle variant. Show Notification variants not yet built. Composes Portraits. |
+| PromptTemplateItem | component | Built | [node 78:2868](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=78-2868) | `src/components/PromptTemplateItem/` — Default, Hover, Selected (radio toggle), Expanded (chevron-triggered, independent of selection). Custom icon-per-item via Lucide. |
+| Header | pattern | Built | [node 68:5443](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=68-5443) | `src/patterns/Header/` — State (Default/Tooltip/Discard) × Device (Default/Mobile). Composes Tooltip, InfoLabel, Button. |
+| VersionHistoryRow | pattern | Built | [node 78:2957](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=78-2957) | `src/patterns/VersionHistoryRow/` — Default, Live, Selected, Selected & Live variants. Composes Avatar, Pill. |
+| VersionHistory | pattern | Built | [node 157:4227](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=157-4227) | `src/patterns/VersionHistory/` — 2 variants: Default (collapsed, 5 rows) + Expanded (12 rows). Custom heading with `history` icon + `chevron-right` toggle. Composes VersionHistoryRow, Avatar, Pill. No Header/Button dependency. |
+| PromptTemplates | pattern | Built | [node 163:3565](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=163-3565) | `src/patterns/PromptTemplates/` — single variant panel: heading + list of PromptTemplateItem rows. Composes PromptTemplateItem. |
+| SignUpForm | template | Built | [node 96:2429](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=96-2429) | `src/templates/SignUpForm/` — composes Header, InfoLabel, Input, Button. Layout only. |
 
-Add rows here as components are built. Format: Component Name, Built/In Progress/Figma Only, Figma URL, Notes.
+Add rows here as components are built. Format: Component Name, Tier (component/pattern/template), Built/In Progress/Figma Only, Figma URL, Notes.
 
 ---
 
