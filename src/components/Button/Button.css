@@ -87,13 +87,7 @@
 }
 
 .btn--tertiary:hover {
-  border-color: var(--ai-border-secondary);
-}
-
-/* Icon-only tertiary hover: subtle fill instead of border (Figma: 57:1848) */
-.btn--tertiary.btn--icon:hover {
   background-color: var(--ai-surface-minimal);
-  border-color: transparent;
 }
 
 .btn--tertiary:active {
