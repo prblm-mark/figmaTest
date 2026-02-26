@@ -282,6 +282,10 @@
   align-items: flex-end;
 }
 
+/* Shorten "Discard Changes" → "Discard" in compact mode (Case B contextual override) */
+.system-role--minimised .header__discard-full { display: none; }
+.system-role--minimised .header__discard-short { display: inline; }
+
 /* Header action buttons shrink to sm size in Minimised */
 .system-role--minimised .header__actions .btn {
   min-height: var(--ai-spacing-7);       /* 32px */

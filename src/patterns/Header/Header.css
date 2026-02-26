@@ -63,6 +63,15 @@
   z-index: 10;
 }
 
+/* ── Discard button text truncation ──────────────────── */
+
+.header__discard-short { display: none; }
+
+@media (max-width: 767px) {
+  .header__discard-full { display: none; }
+  .header__discard-short { display: inline; }
+}
+
 /* ── Mobile layout ───────────────────────────────────── */
 
 @media (max-width: 767px) {
