@@ -203,6 +203,21 @@
   max-height: calc(100vh - var(--ai-spacing-5) * 2);
   padding: var(--ai-spacing-5) var(--ai-spacing-6) var(--ai-spacing-6); /* pt-16 px-24 pb-24 */
   overflow: hidden auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ai-surface-secondary) transparent;
+}
+
+.system-role--minimised::-webkit-scrollbar {
+  width: 6px;
+}
+
+.system-role--minimised::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.system-role--minimised::-webkit-scrollbar-thumb {
+  background-color: var(--ai-surface-secondary);
+  border-radius: var(--ai-radius-full);
 }
 
 /* Top bar becomes a column: controls row first, header row below */
