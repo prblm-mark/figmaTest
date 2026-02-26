@@ -36,7 +36,9 @@
 | Prompt area | `.system-role__prompt` | `flex: 1`; bordered with `--ai-surface-contrast` |
 | Textarea | `.system-role__textarea` | `flex: 1`; no border/outline |
 | Sidebar | `.system-role__sidebar` | `width: 400px` (Default) → `width: 100%` (Minimised) |
-| Resize handle | `.system-role__resize-handle` | `display: none` (Default) → `display: block` (Minimised) |
+| Resize handle (left edge) | `.system-role__resize-handle` | `display: none` (Default) → `display: block` (Minimised) |
+| Resize handle (bottom edge) | `.system-role__resize-handle-bottom` | `display: none` (Default) → `display: block` (Minimised); `cursor: ns-resize` |
+| Textarea resize handle | `.system-role__textarea-resize-handle` | `display: none` (Default) → `display: block` (Minimised); sits between textarea and sidebar |
 
 ### Header button states
 
@@ -90,7 +92,10 @@
 | Close | Click `.system-role__close-btn` | Removes `--open`, hides overlay, shows "Open" button |
 | Re-open | Click `#openBtn` | Adds `--open`, restores overlay (if Default mode) |
 | Drag | Mousedown on `.system-role__top` (Minimised only, not on buttons) | Updates `left`/`top` inline styles; suppresses transition with `--no-transition` |
-| Resize | Mousedown on `.system-role__resize-handle` (Minimised only) | Updates `width` + `left` inline styles; right edge stays fixed; min-width 400px |
+| Resize (width) | Mousedown on `.system-role__resize-handle` (Minimised only) | Updates `width` + `left` inline styles; right edge stays fixed; min-width 400px |
+| Minimise heights | Click `.system-role__minimize-btn` | Sets `modal.style.height = 75vh`; sets `textarea.style.height = panelHeight/3` |
+| Textarea resize | Mousedown on `.system-role__textarea-resize-handle` (Minimised only) | Drags bottom of prompt area; updates `textarea.style.height`; min 80px |
+| Panel height resize | Mousedown on `.system-role__resize-handle-bottom` (Minimised only) | Drags bottom edge of panel; updates `modal.style.height`; min 200px, max = viewport bottom minus 16px |
 
 ## Minimised Layout Details
 
@@ -130,3 +135,6 @@ Header variant in Figma.
 - Box-shadow token gap noted for future Figma work: `--ai-shadow-modal` or similar.
 - Drag and resize use `--no-transition` class to suppress CSS transitions during pointer events. Transitions resume on `mouseup`.
 - The right edge of the panel stays fixed during left-edge resize (the panel grows leftward).
+- On minimise, JS sets `modal.style.height = 75vh` and `textarea.style.height = panelHeight/3` to give a concrete starting layout. Both heights are independently resizable afterward.
+- On maximise, `modal.style.cssText = ''` clears all inline styles; `textarea.style.height = ''` is also cleared so it fills the flex prompt area naturally.
+- The bottom resize handle grows the panel downward; sidebar fills remaining body height via `flex: 1` and scrolls internally.
