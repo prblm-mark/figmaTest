@@ -201,7 +201,9 @@ const sdMobile = new StyleDictionary({
         {
           destination: 'tokens-mobile.css',
           format: 'css/variables-media-query',
-          filter: (token) => !!token.$extensions?.['com.figma.codeSyntax']?.WEB,
+          filter: (token) =>
+            !!token.$extensions?.['com.figma.codeSyntax']?.WEB &&
+            token.filePath.includes('Mobile.tokens.json'),
           options: { outputReferences: false },
         },
       ],
@@ -274,7 +276,9 @@ const sdMinimised = new StyleDictionary({
       files: [{
         destination: 'tokens-minimised.css',
         format: 'css/variables-selector',
-        filter: (token) => !!token.$extensions?.['com.figma.codeSyntax']?.WEB,
+        filter: (token) =>
+          !!token.$extensions?.['com.figma.codeSyntax']?.WEB &&
+          token.filePath.includes('Minimised.tokens.json'),
         options: {
           selector: '[data-layout="minimised"]',
           outputReferences: false,
