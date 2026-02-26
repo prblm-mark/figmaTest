@@ -9,7 +9,7 @@
 | Node | Type | Description |
 |---|---|---|
 | 78:2958 | Default | No background; avatar circle + name/date |
-| 142:3427 | Hover | **Default variant only.** `1px solid --ai-border-primary` border on mouseover (no bg change); Live/Selected/Selected & Live have no hover interaction in Figma. |
+| 142:3427 | Hover | **Default variant only.** `--ai-surface-primary` bg + `1px solid --ai-border-primary` border on mouseover; Live/Selected/Selected & Live have no hover interaction in Figma. |
 | 78:2963 | Live | `--ai-surface-secondary` bg; avatar + name/date + Pill |
 | 78:2978 | Selected | `--ai-surface-primary` bg + `--ai-border-primary` border; check circle replaces avatar |
 | 78:2970 | Selected & Live | `--ai-surface-secondary` bg; check circle + Pill; gap widens to `--ai-spacing-5` |
@@ -43,6 +43,7 @@
 | Name/date gap | `--ai-spacing-1` | `--ai-spacing-1` |
 | Gap (Default / Live / Selected) | `--ai-spacing-4` | `--ai-spacing-4` |
 | Gap (Selected & Live) | `--ai-spacing-5` | `--ai-spacing-5` |
+| Hover bg | `--ai-surface-primary` | `--ai-surface-primary` |
 | Hover border | `1px solid` `--ai-border-primary` | `--ai-border-primary` |
 | Live bg | `--ai-surface-secondary` | `--ai-surface-secondary` |
 | Selected bg | `--ai-surface-primary` | `--ai-surface-primary` |
