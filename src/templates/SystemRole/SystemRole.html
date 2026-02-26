@@ -1,0 +1,776 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>SystemRole — Design System</title>
+
+  <!-- Atomic components -->
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Portraits/Portraits.css">
+  <link rel="stylesheet" href="../../components/Avatar/Avatar.css">
+  <link rel="stylesheet" href="../../components/Pill/Pill.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/InfoLabel/InfoLabel.css">
+  <link rel="stylesheet" href="../../components/Tooltip/Tooltip.css">
+  <link rel="stylesheet" href="../../components/PromptTemplateItem/PromptTemplateItem.css">
+  <!-- Patterns -->
+  <link rel="stylesheet" href="../../patterns/VersionHistoryRow/VersionHistoryRow.css">
+  <link rel="stylesheet" href="../../patterns/VersionHistory/VersionHistory.css">
+  <link rel="stylesheet" href="../../patterns/Header/Header.css">
+  <link rel="stylesheet" href="../../patterns/PromptTemplates/PromptTemplates.css">
+  <!-- Template -->
+  <link rel="stylesheet" href="SystemRole.css">
+
+  <style>
+    body {
+      min-height: 100vh;
+      background-color: var(--ai-surface-secondary);
+      padding: var(--ai-spacing-7);
+      font-family: var(--ai-font-body);
+    }
+
+    /* Mock app content visible behind the overlay */
+    .demo-app {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .demo-app__heading {
+      font-size: var(--ai-font-fixed-2xl);
+      font-weight: var(--ai-font-bold);
+      color: var(--ai-text-primary);
+      margin: 0 0 var(--ai-spacing-5);
+    }
+
+    .demo-app__body {
+      font-size: var(--ai-font-fixed-sm);
+      color: var(--ai-text-secondary);
+      line-height: var(--ai-leading-2);
+      margin: 0 0 var(--ai-spacing-5);
+    }
+
+    .demo-controls {
+      display: flex;
+      align-items: center;
+      gap: var(--ai-spacing-4);
+      margin-bottom: var(--ai-spacing-6);
+    }
+
+    .demo-note {
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-contrast);
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Mock app content (visible behind overlay) ──── -->
+  <div class="demo-app">
+    <p class="demo-app__heading">Affino AI — Chat Interface</p>
+    <p class="demo-app__body">
+      This is mock application content shown behind the System Role modal to demonstrate the
+      blurred overlay effect. The backdrop dims and blurs this content when the modal is open
+      in Default (full-screen) mode. In Minimised mode, the overlay disappears and this
+      content becomes fully interactive again.
+    </p>
+    <p class="demo-app__body">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt
+      ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+      laboris nisi ut aliquip ex ea commodo consequat.
+    </p>
+
+    <div class="demo-controls">
+      <button id="openBtn" type="button" class="btn btn--primary">
+        <i data-lucide="settings" aria-hidden="true"></i>
+        Open System Role
+      </button>
+      <span class="demo-note">Modal starts open — click X to close, then re-open here</span>
+    </div>
+
+    <p class="demo-note">
+      Minimised mode: drag the header to reposition · drag the left edge to resize wider than 400px
+    </p>
+  </div>
+
+  <!-- ── Backdrop overlay ────────────────────────────── -->
+  <div class="system-role-overlay system-role-overlay--open" id="systemRoleOverlay" aria-hidden="true"></div>
+
+  <!-- ── System Role Modal ───────────────────────────── -->
+  <div class="system-role system-role--open" id="systemRole"
+       role="dialog" aria-modal="true" aria-labelledby="systemRoleTitle">
+
+    <!-- Top bar: header + window controls -->
+    <div class="system-role__top">
+
+      <!-- Window controls (sidebar/maximize + close) -->
+      <div class="system-role__controls">
+        <button type="button" class="btn btn--tertiary btn--icon system-role__minimize-btn"
+                aria-label="Minimise to floating panel">
+          <i data-lucide="sidebar" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn--tertiary btn--icon system-role__maximize-btn"
+                aria-label="Expand to full modal">
+          <i data-lucide="maximize-2" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn--tertiary btn--icon system-role__close-btn"
+                aria-label="Close System Role">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <!-- Header (reuses .header pattern) -->
+      <header class="header">
+        <div class="header__title-group">
+          <h2 class="header__title" id="systemRoleTitle">System Role</h2>
+          <div class="header__info">
+            <button type="button" class="info-label" aria-label="What's this?">
+              <span class="info-label__text">What's this?</span>
+              <i data-lucide="info" class="info-label__icon" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <div class="header__actions">
+          <!-- Default (clean): disabled Make Live -->
+          <button type="button" class="btn btn--primary system-role__btn-default"
+                  disabled aria-disabled="true">Make Live</button>
+          <!-- Dirty: Discard + enabled Make Live (hidden until textarea edited) -->
+          <button type="button" class="btn btn--alert-outline system-role__btn-discard">
+            Discard Changes
+          </button>
+          <button type="button" class="btn btn--primary system-role__btn-save">
+            Make Live
+          </button>
+        </div>
+      </header>
+    </div>
+
+    <!-- Body: prompt editor + sidebar panels -->
+    <div class="system-role__body">
+
+      <!-- Prompt textarea -->
+      <div class="system-role__prompt">
+        <textarea class="system-role__textarea"
+                  spellcheck="false"
+                  aria-label="System prompt — edit to define how the AI behaves">You are a helpful AI assistant for Affino. Your role is to assist users by answering questions accurately and concisely, drawing from the content and context available on the platform.
+
+Always respond in a professional, friendly tone. If you are unsure about something, say so clearly rather than guessing. Do not make up information or reference content that is not available to you.
+
+When users ask about specific topics, focus your answers on what is directly relevant to their query. Avoid unnecessary preamble or padding. Be helpful, honest, and direct.</textarea>
+      </div>
+
+      <!-- Sidebar: Version History + Prompt Templates -->
+      <div class="system-role__sidebar">
+
+        <!-- Version History panel -->
+        <div class="version-history" id="vhPanel">
+          <div class="version-history__heading">
+            <div class="version-history__heading-title">
+              <i data-lucide="history" class="version-history__icon-history" aria-hidden="true"></i>
+              <span class="version-history__heading-title-text">Version History</span>
+            </div>
+            <button type="button" class="version-history__heading-subtitle" aria-expanded="false">
+              <span class="version-history__heading-subtitle-text">12 previous system roles saved</span>
+              <i data-lucide="chevron-right" class="version-history__chevron" aria-hidden="true"></i>
+            </button>
+          </div>
+
+          <div class="version-history__rows" role="listbox" aria-label="Version history">
+            <div class="version-history__timeline" aria-hidden="true"></div>
+
+            <!-- Row 1 — Live + Selected -->
+            <div class="version-history-row version-history-row--live version-history-row--selected"
+                 role="option" aria-selected="true" tabindex="0"
+                 data-portrait-src="https://picsum.photos/seed/female4/300">
+              <div class="avatar avatar--checked" aria-label="Selected">
+                <i data-lucide="check" aria-hidden="true"></i>
+              </div>
+              <div class="version-history-row__content">
+                <span class="version-history-row__name">Sally Jones</span>
+                <span class="version-history-row__date">08 Jan 2026, 17:52</span>
+              </div>
+              <span class="pill" aria-label="Live version"><span class="pill__label">Live</span></span>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="version-history-row" role="option" aria-selected="false" tabindex="0">
+              <div class="avatar">
+                <img class="portrait" src="https://picsum.photos/seed/female5/300" alt="Gayle Stevens">
+              </div>
+              <div class="version-history-row__content">
+                <span class="version-history-row__name">Gayle Stevens</span>
+                <span class="version-history-row__date">05 Jan 2026, 18:50</span>
+              </div>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="version-history-row" role="option" aria-selected="false" tabindex="0">
+              <div class="avatar">
+                <img class="portrait" src="https://picsum.photos/seed/male2/300" alt="Chris Bristow">
+              </div>
+              <div class="version-history-row__content">
+                <span class="version-history-row__name">Chris Bristow</span>
+                <span class="version-history-row__date">04 Jan 2026, 11:02</span>
+              </div>
+            </div>
+
+            <!-- Row 4 -->
+            <div class="version-history-row" role="option" aria-selected="false" tabindex="0">
+              <div class="avatar">
+                <img class="portrait" src="https://picsum.photos/seed/male3/300" alt="Chris Bristow">
+              </div>
+              <div class="version-history-row__content">
+                <span class="version-history-row__name">Chris Bristow</span>
+                <span class="version-history-row__date">04 Jan 2026, 10:02</span>
+              </div>
+            </div>
+
+            <!-- Row 5 -->
+            <div class="version-history-row" role="option" aria-selected="false" tabindex="0">
+              <div class="avatar">
+                <img class="portrait" src="https://picsum.photos/seed/male4/300" alt="Chris Bristow">
+              </div>
+              <div class="version-history-row__content">
+                <span class="version-history-row__name">Chris Bristow</span>
+                <span class="version-history-row__date">02 Jan 2026, 10:12</span>
+              </div>
+            </div>
+
+            <!-- Rows 6–12 (expanded only) -->
+            <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
+              <div class="avatar">
+                <img class="portrait" src="https://picsum.photos/seed/male5/300" alt="Chris Bristow">
+              </div>
+              <div class="version-history-row__content">
+                <span class="version-history-row__name">Chris Bristow</span>
+                <span class="version-history-row__date">02 Jan 2026, 10:12</span>
+              </div>
+            </div>
+
+            <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
+              <div class="avatar">
+                <img class="portrait" src="https://picsum.photos/seed/female3/300" alt="Gayle Stevens">
+              </div>
+              <div class="version-history-row__content">
+                <span class="version-history-row__name">Gayle Stevens</span>
+                <span class="version-history-row__date">02 Jan 2026, 10:12</span>
+              </div>
+            </div>
+
+            <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
+              <div class="avatar">
+                <img class="portrait" src="https://picsum.photos/seed/male6/300" alt="Chris Bristow">
+              </div>
+              <div class="version-history-row__content">
+                <span class="version-history-row__name">Chris Bristow</span>
+                <span class="version-history-row__date">02 Jan 2026, 10:12</span>
+              </div>
+            </div>
+
+            <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
+              <div class="avatar">
+                <img class="portrait" src="https://picsum.photos/seed/female6/300" alt="Gayle Stevens">
+              </div>
+              <div class="version-history-row__content">
+                <span class="version-history-row__name">Gayle Stevens</span>
+                <span class="version-history-row__date">02 Jan 2026, 10:12</span>
+              </div>
+            </div>
+
+            <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
+              <div class="avatar">
+                <img class="portrait" src="https://picsum.photos/seed/male7/300" alt="Chris Bristow">
+              </div>
+              <div class="version-history-row__content">
+                <span class="version-history-row__name">Chris Bristow</span>
+                <span class="version-history-row__date">02 Jan 2026, 10:12</span>
+              </div>
+            </div>
+
+            <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
+              <div class="avatar">
+                <img class="portrait" src="https://picsum.photos/seed/male8/300" alt="Chris Bristow">
+              </div>
+              <div class="version-history-row__content">
+                <span class="version-history-row__name">Chris Bristow</span>
+                <span class="version-history-row__date">02 Jan 2026, 10:12</span>
+              </div>
+            </div>
+
+            <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
+              <div class="avatar">
+                <img class="portrait" src="https://picsum.photos/seed/male9/300" alt="Chris Bristow">
+              </div>
+              <div class="version-history-row__content">
+                <span class="version-history-row__name">Chris Bristow</span>
+                <span class="version-history-row__date">02 Jan 2026, 10:12</span>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="version-history__footer" aria-expanded="false">
+            <span class="version-history__footer-label">Show older</span>
+          </button>
+        </div><!-- /.version-history -->
+
+        <!-- Prompt Templates panel -->
+        <div class="prompt-templates" id="ptPanel">
+          <div class="prompt-templates__heading">
+            <p class="prompt-templates__title">Prompt Templates</p>
+            <p class="prompt-templates__description">Select a prompt to define your AI's role, tone, and behaviour. Each option is tailored for a different use case and gives your chat a clear goal.</p>
+          </div>
+
+          <ul class="prompt-templates__list" role="listbox" aria-label="Prompt templates">
+
+            <li>
+              <div class="prompt-template-item" role="option" aria-selected="false" tabindex="0">
+                <div class="prompt-template-item__header">
+                  <i data-lucide="headset" class="prompt-template-item__icon" aria-hidden="true"></i>
+                  <span class="prompt-template-item__title">Support Assistant</span>
+                  <button class="prompt-template-item__chevron-btn" aria-expanded="false" aria-label="Show details">
+                    <i data-lucide="chevron-right" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="prompt-template-item__details">
+                  <p class="prompt-template-item__description">This assistant helps manage customer service conversations by answering common enquiries, explaining policies and procedures, and providing reliable easy-to-understand guidance.</p>
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="prompt-template-item" role="option" aria-selected="false" tabindex="0">
+                <div class="prompt-template-item__header">
+                  <i data-lucide="messages-square" class="prompt-template-item__icon" aria-hidden="true"></i>
+                  <span class="prompt-template-item__title">Customer Services Assistant</span>
+                  <button class="prompt-template-item__chevron-btn" aria-expanded="false" aria-label="Show details">
+                    <i data-lucide="chevron-right" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="prompt-template-item__details">
+                  <p class="prompt-template-item__description">Handles inbound customer queries with empathy and accuracy — covering returns, billing, account issues, and escalation paths.</p>
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="prompt-template-item" role="option" aria-selected="false" tabindex="0">
+                <div class="prompt-template-item__header">
+                  <i data-lucide="newspaper" class="prompt-template-item__icon" aria-hidden="true"></i>
+                  <span class="prompt-template-item__title">News Chat</span>
+                  <button class="prompt-template-item__chevron-btn" aria-expanded="false" aria-label="Show details">
+                    <i data-lucide="chevron-right" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="prompt-template-item__details">
+                  <p class="prompt-template-item__description">Discusses and summarises current events, helping users stay informed with concise, balanced news briefings.</p>
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="prompt-template-item" role="option" aria-selected="false" tabindex="0">
+                <div class="prompt-template-item__header">
+                  <i data-lucide="circle-pound-sterling" class="prompt-template-item__icon" aria-hidden="true"></i>
+                  <span class="prompt-template-item__title">Sales Helper</span>
+                  <button class="prompt-template-item__chevron-btn" aria-expanded="false" aria-label="Show details">
+                    <i data-lucide="chevron-right" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="prompt-template-item__details">
+                  <p class="prompt-template-item__description">Guides sales conversations by surfacing product benefits, handling objections, and helping move prospects through the funnel.</p>
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="prompt-template-item" role="option" aria-selected="false" tabindex="0">
+                <div class="prompt-template-item__header">
+                  <i data-lucide="atom" class="prompt-template-item__icon" aria-hidden="true"></i>
+                  <span class="prompt-template-item__title">Tech Monkey</span>
+                  <button class="prompt-template-item__chevron-btn" aria-expanded="false" aria-label="Show details">
+                    <i data-lucide="chevron-right" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="prompt-template-item__details">
+                  <p class="prompt-template-item__description">A technical assistant fluent in code, APIs, and system design — ideal for developer Q&amp;A, debugging, and architecture discussions.</p>
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="prompt-template-item" role="option" aria-selected="false" tabindex="0">
+                <div class="prompt-template-item__header">
+                  <i data-lucide="gem" class="prompt-template-item__icon" aria-hidden="true"></i>
+                  <span class="prompt-template-item__title">Fortune Teller</span>
+                  <button class="prompt-template-item__chevron-btn" aria-expanded="false" aria-label="Show details">
+                    <i data-lucide="chevron-right" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="prompt-template-item__details">
+                  <p class="prompt-template-item__description">A playful, mystical persona that responds with flair — perfect for creative, light-hearted, or entertainment-focused chat experiences.</p>
+                </div>
+              </div>
+            </li>
+
+          </ul>
+        </div><!-- /.prompt-templates -->
+
+      </div><!-- /.system-role__sidebar -->
+    </div><!-- /.system-role__body -->
+
+    <!-- Resize handle — left edge drag (Minimised only) -->
+    <div class="system-role__resize-handle" aria-hidden="true"></div>
+
+  </div><!-- /.system-role -->
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    // Replace all data-lucide attributes with inline SVGs
+    lucide.createIcons();
+
+    // ─── Element refs ──────────────────────────────────────────────────────────
+    var modal        = document.getElementById('systemRole');
+    var overlay      = document.getElementById('systemRoleOverlay');
+    var openBtn      = document.getElementById('openBtn');
+    var minimiseBtn  = modal.querySelector('.system-role__minimize-btn');
+    var maximiseBtn  = modal.querySelector('.system-role__maximize-btn');
+    var closeBtn     = modal.querySelector('.system-role__close-btn');
+    var textarea     = modal.querySelector('.system-role__textarea');
+    var discardBtn   = modal.querySelector('.system-role__btn-discard');
+    var saveBtn      = modal.querySelector('.system-role__btn-save');
+    var resizeHandle = modal.querySelector('.system-role__resize-handle');
+
+    // ─── Open / Close ──────────────────────────────────────────────────────────
+    openBtn.addEventListener('click', function () {
+      modal.classList.add('system-role--open');
+      // Only restore overlay if not in Minimised mode
+      if (!modal.classList.contains('system-role--minimised')) {
+        overlay.classList.add('system-role-overlay--open');
+      }
+      openBtn.style.display = 'none';
+    });
+
+    closeBtn.addEventListener('click', function () {
+      modal.classList.remove('system-role--open');
+      overlay.classList.remove('system-role-overlay--open');
+      openBtn.style.display = '';
+    });
+
+    // ─── Dirty detection ───────────────────────────────────────────────────────
+    //
+    // Tracks whether the textarea content has changed from the last-saved value.
+    // When dirty: header shows Discard + enabled Make Live buttons.
+    // When clean: header shows the disabled Make Live button.
+
+    var savedValue = textarea.value;
+
+    textarea.addEventListener('input', function () {
+      var isDirty = textarea.value !== savedValue;
+      modal.classList.toggle('system-role--dirty', isDirty);
+    });
+
+    discardBtn.addEventListener('click', function () {
+      textarea.value = savedValue;
+      modal.classList.remove('system-role--dirty');
+    });
+
+    saveBtn.addEventListener('click', function () {
+      // Simulate a save — update the reference value and clear the dirty state
+      savedValue = textarea.value;
+      modal.classList.remove('system-role--dirty');
+    });
+
+    // ─── Minimise / Maximise ───────────────────────────────────────────────────
+
+    function resetPositionMinimised() {
+      // On first switch to Minimised, position panel in top-right corner
+      var offset = 20;
+      modal.style.top = offset + 'px';
+      modal.style.right = offset + 'px';
+      modal.style.left = 'auto';
+      modal.style.transform = 'none';
+    }
+
+    minimiseBtn.addEventListener('click', function () {
+      modal.classList.add('system-role--minimised');
+      modal.setAttribute('data-layout', 'minimised'); // activates tokens-minimised.css
+      overlay.classList.remove('system-role-overlay--open');
+      resetPositionMinimised();
+      // Re-run createIcons in case icons inside were not rendered
+      lucide.createIcons();
+    });
+
+    maximiseBtn.addEventListener('click', function () {
+      modal.classList.remove('system-role--minimised');
+      modal.removeAttribute('data-layout');
+      // Clear all positional inline styles — restores CSS transform: translate(-50%,-50%)
+      modal.style.cssText = '';
+      overlay.classList.add('system-role-overlay--open');
+      // Restore open state (cssText reset also cleared opacity/pointer-events if they were inline)
+      // These are actually CSS-class controlled, so the modal is still visually open
+    });
+
+    // ─── Drag to move (Minimised only) ────────────────────────────────────────
+    //
+    // Mousedown on the top bar (anywhere except buttons) starts a drag.
+    // Position is updated by directly setting left/top inline styles.
+    // Transition is suppressed during drag to avoid lag.
+
+    var isDragging   = false;
+    var dragStartX   = 0;
+    var dragStartY   = 0;
+    var modalOriginLeft = 0;
+    var modalOriginTop  = 0;
+
+    modal.querySelector('.system-role__top').addEventListener('mousedown', function (e) {
+      if (!modal.classList.contains('system-role--minimised')) return;
+      if (e.target.closest('button')) return; // don't start drag from buttons
+
+      isDragging = true;
+      modal.classList.add('system-role--no-transition');
+
+      dragStartX = e.clientX;
+      dragStartY = e.clientY;
+
+      var rect = modal.getBoundingClientRect();
+      modalOriginLeft = rect.left;
+      modalOriginTop  = rect.top;
+
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', function (e) {
+      if (!isDragging) return;
+
+      var dx = e.clientX - dragStartX;
+      var dy = e.clientY - dragStartY;
+
+      modal.style.left      = (modalOriginLeft + dx) + 'px';
+      modal.style.top       = (modalOriginTop  + dy) + 'px';
+      modal.style.right     = 'auto';
+      modal.style.transform = 'none';
+    });
+
+    document.addEventListener('mouseup', function () {
+      if (!isDragging) return;
+      isDragging = false;
+      modal.classList.remove('system-role--no-transition');
+    });
+
+    // ─── Resize (left edge, Minimised only) ───────────────────────────────────
+    //
+    // Dragging the left edge grows the panel leftward; the right edge stays fixed.
+    // Minimum width: 400px.
+
+    var isResizing         = false;
+    var resizeStartX       = 0;
+    var resizeStartWidth   = 0;
+    var resizeInitialRight = 0;
+
+    resizeHandle.addEventListener('mousedown', function (e) {
+      if (!modal.classList.contains('system-role--minimised')) return;
+
+      isResizing = true;
+      modal.classList.add('system-role--no-transition');
+
+      resizeStartX       = e.clientX;
+      var rect           = modal.getBoundingClientRect();
+      resizeStartWidth   = rect.width;
+      resizeInitialRight = rect.right;
+
+      e.preventDefault();
+      e.stopPropagation(); // don't also start a drag
+    });
+
+    document.addEventListener('mousemove', function (e) {
+      if (!isResizing) return;
+
+      // Moving mouse left (x decreasing) increases width
+      var dx       = resizeStartX - e.clientX;        // positive = moved left
+      var newWidth = Math.max(400, resizeStartWidth + dx);
+      var newLeft  = resizeInitialRight - newWidth;
+
+      modal.style.width     = newWidth + 'px';
+      modal.style.left      = newLeft + 'px';
+      modal.style.right     = 'auto';
+      modal.style.transform = 'none';
+    });
+
+    document.addEventListener('mouseup', function () {
+      if (!isResizing) return;
+      isResizing = false;
+      modal.classList.remove('system-role--no-transition');
+    });
+
+    // ─── Version History — expand/collapse ────────────────────────────────────
+
+    function toggleVersionHistory(panel) {
+      var isExpanded  = panel.classList.toggle('version-history--expanded');
+      var subtitle    = panel.querySelector('.version-history__heading-subtitle');
+      var footer      = panel.querySelector('.version-history__footer');
+      var footerLabel = panel.querySelector('.version-history__footer-label');
+
+      if (subtitle)    subtitle.setAttribute('aria-expanded', isExpanded);
+      if (footer)      footer.setAttribute('aria-expanded', isExpanded);
+      if (footerLabel) footerLabel.textContent = isExpanded ? 'Show less' : 'Show older';
+    }
+
+    document.querySelectorAll('.version-history__heading-subtitle').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        toggleVersionHistory(this.closest('.version-history'));
+      });
+    });
+
+    document.querySelectorAll('.version-history__footer').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        toggleVersionHistory(this.closest('.version-history'));
+      });
+    });
+
+    // ─── Version History — row selection (radio) ───────────────────────────────
+
+    function selectVHRow(clickedRow, rowsContainer) {
+      var liveRow = rowsContainer.querySelector('.version-history-row--live');
+      var allRows = rowsContainer.querySelectorAll('.version-history-row');
+
+      if (clickedRow.classList.contains('version-history-row--selected')) return;
+
+      function applySelected(row) {
+        row.classList.add('version-history-row--selected');
+        row.setAttribute('aria-selected', 'true');
+
+        var avatar  = row.querySelector('.avatar');
+        var portrait = avatar && avatar.querySelector('.portrait');
+        if (portrait) row.dataset.portraitSrc = portrait.src;
+
+        if (avatar) {
+          avatar.classList.add('avatar--checked');
+          avatar.setAttribute('aria-label', 'Selected');
+          avatar.innerHTML = '<i data-lucide="check" aria-hidden="true"></i>';
+          lucide.createIcons({ nodes: [avatar] });
+        }
+      }
+
+      function removeSelected(row) {
+        if (!row.classList.contains('version-history-row--selected')) return;
+        row.classList.remove('version-history-row--selected');
+        row.setAttribute('aria-selected', 'false');
+
+        var avatar    = row.querySelector('.avatar');
+        var storedSrc = row.dataset.portraitSrc;
+
+        if (avatar && storedSrc) {
+          avatar.classList.remove('avatar--checked');
+          avatar.removeAttribute('aria-label');
+          avatar.innerHTML = '<img class="portrait" src="' + storedSrc + '" alt="">';
+          delete row.dataset.portraitSrc;
+        }
+      }
+
+      if (clickedRow.classList.contains('version-history-row--live')) {
+        allRows.forEach(function (row) {
+          if (!row.classList.contains('version-history-row--live')) removeSelected(row);
+        });
+        applySelected(liveRow);
+      } else {
+        allRows.forEach(function (row) { removeSelected(row); });
+        applySelected(clickedRow);
+      }
+    }
+
+    document.querySelectorAll('.version-history__rows[role="listbox"]').forEach(function (rowsContainer) {
+      rowsContainer.addEventListener('click', function (e) {
+        var row = e.target.closest('.version-history-row');
+        if (row) selectVHRow(row, rowsContainer);
+      });
+
+      rowsContainer.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          var row = e.target.closest('.version-history-row');
+          if (row) { e.preventDefault(); selectVHRow(row, rowsContainer); }
+        }
+      });
+    });
+
+    // ─── Prompt Templates — selection (radio, toggleable) ─────────────────────
+
+    function handlePTItemClick(e, list) {
+      if (e.target.closest('.prompt-template-item__chevron-btn')) return;
+
+      var item = e.target.closest('.prompt-template-item');
+      if (!item) return;
+
+      var isSelected = item.classList.contains('prompt-template-item--selected');
+
+      list.querySelectorAll('.prompt-template-item').forEach(function (i) {
+        i.classList.remove('prompt-template-item--selected');
+        i.setAttribute('aria-selected', 'false');
+      });
+
+      if (!isSelected) {
+        item.classList.add('prompt-template-item--selected');
+        item.setAttribute('aria-selected', 'true');
+      }
+    }
+
+    function collapsePTItem(item) {
+      item.classList.remove('prompt-template-item--expanded');
+      var btn = item.querySelector('.prompt-template-item__chevron-btn');
+      if (btn) {
+        btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-label', 'Show details');
+      }
+    }
+
+    function handlePTChevronClick(e, list) {
+      e.stopPropagation();
+      var item = e.currentTarget.closest('.prompt-template-item');
+      if (!item) return;
+
+      var isExpanded = item.classList.contains('prompt-template-item--expanded');
+
+      list.querySelectorAll('.prompt-template-item--expanded').forEach(function (i) {
+        if (i !== item) collapsePTItem(i);
+      });
+
+      if (isExpanded) {
+        collapsePTItem(item);
+      } else {
+        item.classList.add('prompt-template-item--expanded');
+        e.currentTarget.setAttribute('aria-expanded', 'true');
+        e.currentTarget.setAttribute('aria-label', 'Hide details');
+      }
+    }
+
+    var ptPanel = document.getElementById('ptPanel');
+    var ptList  = ptPanel.querySelector('.prompt-templates__list');
+
+    ptList.addEventListener('click', function (e) {
+      handlePTItemClick(e, ptList);
+    });
+
+    ptList.addEventListener('keydown', function (e) {
+      if ((e.key === 'Enter' || e.key === ' ') &&
+          !e.target.closest('.prompt-template-item__chevron-btn')) {
+        e.preventDefault();
+        handlePTItemClick(e, ptList);
+      }
+    });
+
+    ptPanel.querySelectorAll('.prompt-template-item__chevron-btn').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        handlePTChevronClick(e, ptList);
+      });
+    });
+
+    // Collapse expanded PT item when clicking outside the panel
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('#ptPanel')) {
+        ptList.querySelectorAll('.prompt-template-item--expanded').forEach(collapsePTItem);
+      }
+    });
+  </script>
+</body>
+</html>

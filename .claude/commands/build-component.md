@@ -17,6 +17,22 @@ Usage: `/build-component <Figma URL or node description>`
 
 ### 1. Locate
 
+**Step 1a — Tier=Template check (before everything else):**
+Before locating the component set, check whether the target is a `Tier=Template` component
+(i.e. a full UI screen or modal that composes multiple patterns, rather than an atomic or
+pattern-tier component). Signals: the Figma node is a full-screen frame, it contains Header +
+multiple patterns, the URL points to a template-level node.
+
+If the target is Tier=Template: **STOP before Step 1b.** Ask the user:
+
+> "This looks like a Tier=Template component — a full UI screen rather than an atomic component.
+> Before I begin analysis, could you share any context about how it should work?
+> For example: interactions, use cases, constraints, which existing components it composes,
+> or any behaviours that aren't visible from the Figma design alone."
+
+Wait for the user's response before continuing. This context shapes the variant table, the
+interaction model, and the JS requirements — capturing it upfront avoids costly re-work.
+
 **Step 1a — find the component set:**
 Call `get_metadata` on the **Figma file page** to see the full layer tree and locate the target
 component frame. Note the component set node ID (the parent frame, e.g. `68:5443`).
@@ -330,6 +346,7 @@ Full token reference: CLAUDE.md Section 2 & 3.
 - **Alert-outline interactive states are NOT "subtle tint + border shift"** — Figma flips them to fully solid red (Red/400 hover/focus, Red/600 pressed) with white text (`--ai-text-invert`), identical to the alert (solid) variant. The "outline" appearance only exists in the default state.
 - `.btn--lg` does not exist in Figma — never assume a "large" size exists
 - **Button variant identification:** When a Button instance appears in design context, ALWAYS check the Figma component `type` property or variant name (visible in `get_metadata` as `Type=Primary`, `Type=Secondary`, `Type=Tertiary` etc.) in addition to checking for a `border` class in the design context. Secondary and tertiary buttons share the same white bg. Background colour alone is never sufficient to identify the variant.
+- **`btn--icon` is a size modifier, not a type — icon-only buttons still need a type check.** Never default icon-only buttons to `btn--secondary btn--icon`. They can be `btn--secondary btn--icon` (bordered) or `btn--tertiary btn--icon` (no border). Always verify the Figma variant name. Concrete mistake: SystemRole window controls were written as `btn--secondary btn--icon` when Figma specifies `btn--tertiary btn--icon`.
 - **Font family rule:** Map font-style names from design context directly: `title/*` → `--ai-font-title`; `body/*` → `--ai-font-body`. Never assume text content uses `--ai-font-body` — always read the font style name from the design context output.
 - **Hover scoping:** When a hover state exists only on specific Figma variants (e.g. Default, not Live/Selected), scope BOTH the `transition` and the `:hover` rule to those variants using `:not()`. The `transition` must live on a companion rest-state rule (NOT inside the `:hover` rule) so it animates both entry and exit. Pattern:
   ```css
@@ -360,6 +377,9 @@ Full token reference: CLAUDE.md Section 2 & 3.
 - Form field filled text = `--ai-text-primary`; placeholder = `--ai-text-contrast` (different tokens!)
 - Clear button visibility: use `visibility: hidden` + `:has(:not(:placeholder-shown))` — no JS needed
 - **Always use the exact token from Figma** — never substitute a different token based on personal judgement (e.g. swapping `--ai-text-invert` for `--ai-text-contrast` because it "looks better"). If a Figma token seems wrong, flag it to the user instead of silently changing it.
+- **Multi-row column alignment: gaps must match across rows.** When a layout has stacked flex rows sharing the same column structure (e.g. top bar with header | controls above a body with prompt | sidebar), both rows must use the same `gap` value. Always read `gap` for every row from `get_design_context` — never set one row's gap independently. Concrete mistake: SystemRole top bar gap was `--ai-spacing-3` (8px) while body was `--ai-spacing-7` (32px), misaligning the columns.
+- **Layout alignment widths must be fetched from Figma, not assumed.** When a flex-row element sits above a fixed-width sibling panel (e.g. a sidebar), check whether Figma also constrains the element's width to match that panel — creating precise column alignment between the top bar and the panel beneath it. This is easy to miss because the component *functions* without it; the misalignment is only visible on close inspection. Always read `w-[...]` and `max-w-[...]` from `get_design_context` for every flex child in a multi-column layout. Concrete mistake: SystemRole `system-role__controls` was missing `width: 100%; max-width: 400px`, which Figma sets to align the controls column over the 400px sidebar below.
+- **Plan documents are not complete token specs.** When implementing from a plan, any CSS property not explicitly listed with an exact `--ai-*` token is NOT approved to infer. Treat the gap the same as a token gap (Step 5): call `get_design_context` and read the exact token before writing that CSS line. Concrete mistake: SystemRole's plan did not state the textarea `font-size`; `--ai-font-fluid-sm` was assumed instead of the correct `--ai-font-fixed-xs`. Rule: **plan gap = Figma fetch required, always.**
 - **Focus ring pattern:** Figma focus states use a double box-shadow ring, NOT an outline. Write `:hover` and `:focus-within` as **separate rules** — never combine them or focus will never receive its shadow. Suppress the global `:focus-visible` outline (from `base.css` line 56) on child interactive elements inside the component wrap:
   ```css
   .component__wrap:hover { border-color: var(--ai-border-brand); }
