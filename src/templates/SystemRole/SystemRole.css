@@ -115,6 +115,10 @@
   overflow: hidden;
 }
 
+.system-role__prompt:focus-within {
+  border-color: var(--ai-border-primary);
+}
+
 .system-role__textarea {
   flex: 1;
   width: 100%;
@@ -129,10 +133,25 @@
   color: var(--ai-text-primary);          /* Figma: text-black — approved substitution */
   background-color: var(--ai-surface-primary);
   resize: none;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ai-surface-secondary) transparent;
 }
 
 .system-role__textarea:focus-visible {
   outline: none;
+}
+
+.system-role__textarea::-webkit-scrollbar {
+  width: 6px;
+}
+
+.system-role__textarea::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.system-role__textarea::-webkit-scrollbar-thumb {
+  background-color: var(--ai-surface-secondary);
+  border-radius: var(--ai-radius-full);
 }
 
 /* ── Sidebar ──────────────────────────────────────────── */
@@ -200,7 +219,7 @@
   width: 400px;
   max-width: calc(100vw - var(--ai-spacing-5) * 2);
   height: calc(100vh - var(--ai-spacing-5) * 2);
-  max-height: calc(100vh - var(--ai-spacing-5) * 2);
+  max-height: calc(100vh - var(--ai-spacing-10) * 2);
   padding: var(--ai-spacing-5) var(--ai-spacing-6) var(--ai-spacing-6); /* pt-16 px-24 pb-24 */
   overflow: hidden;
 }
@@ -210,6 +229,7 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 0;
+  cursor: move;
 }
 
 /* Controls jump above header, span full width */
