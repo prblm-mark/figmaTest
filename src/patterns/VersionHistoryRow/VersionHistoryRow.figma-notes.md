@@ -9,7 +9,7 @@
 | Node | Type | Description |
 |---|---|---|
 | 78:2958 | Default | No background; avatar circle + name/date |
-| 142:3427 | Hover | **Default variant only.** `--ai-surface-secondary` bg on mouseover; Live/Selected/Selected & Live have no hover interaction in Figma. |
+| 142:3427 | Hover | **Default variant only.** `1px solid --ai-border-primary` border on mouseover (no bg change); Live/Selected/Selected & Live have no hover interaction in Figma. |
 | 78:2963 | Live | `--ai-surface-secondary` bg; avatar + name/date + Pill |
 | 78:2978 | Selected | `--ai-surface-primary` bg + `--ai-border-primary` border; check circle replaces avatar |
 | 78:2970 | Selected & Live | `--ai-surface-secondary` bg; check circle + Pill; gap widens to `--ai-spacing-5` |
@@ -43,7 +43,7 @@
 | Name/date gap | `--ai-spacing-1` | `--ai-spacing-1` |
 | Gap (Default / Live / Selected) | `--ai-spacing-4` | `--ai-spacing-4` |
 | Gap (Selected & Live) | `--ai-spacing-5` | `--ai-spacing-5` |
-| Hover bg | `--ai-surface-secondary` | `--ai-surface-secondary` |
+| Hover border | `1px solid` `--ai-border-primary` | `--ai-border-primary` |
 | Live bg | `--ai-surface-secondary` | `--ai-surface-secondary` |
 | Selected bg | `--ai-surface-primary` | `--ai-surface-primary` |
 | Selected border | `1px solid` `--ai-border-primary` | `--ai-border-primary` |
@@ -72,4 +72,5 @@ None — all design values map to `--ai-*` semantic tokens. `--ai-surface-succes
 - **Selected & Live gap:** Figma uses `--ai-spacing-5` (wider) for this variant vs `--ai-spacing-4` for the others — always check per-variant gap in Figma rather than assuming uniform spacing.
 - **Avatar ring:** A `box-shadow: 0 0 0 2px var(--ai-surface-primary)` ring is applied to avatars in the **Default variant only** via a scoped `:not()` rule in `VersionHistoryRow.css`. Uses `box-shadow` rather than `border` so it doesn't reduce the avatar's visible size. This is a **Case B contextual override** — it is NOT on the Avatar component itself in Figma. Live and Selected variants do not have this ring.
 - **Avatar component:** Default/Live rows use `<div class="avatar"><img class="portrait" src="..." alt="..."></div>`; Selected rows use `<div class="avatar avatar--checked"><i data-lucide="check"></i></div>`. Always include a portrait image in non-checked rows — the empty `.avatar` fallback shows a grey circle.
-- **Border on Selected:** Adds 2px to the rendered row dimensions vs the other variants. Not compensated with a transparent border on base — the rows stack vertically and the 1px shift is not visually disruptive.
+- **Border on Selected:** The base `.version-history-row` rule now includes `border: 1px solid transparent` — this means Selected/Live/Default rows all have the same box dimensions (no layout shift on hover or selection). Selected & Live overrides with `border: none`.
+- **Hover redesign (post-Figma-redesign):** Hover state changed from `background-color: --ai-surface-secondary` to `border-color: --ai-border-primary` (node 142:3427). Avatar ring is now always visible on Default rows (no `:not(:hover)` condition needed since bg never changes).

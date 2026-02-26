@@ -7,7 +7,7 @@
   | Node ID | Variant name |
   |---|---|
   | 78:2869 | Property 1=Default |
-  | 78:2879 | Property 1=Hover |
+  | 178:3388 | Property 1=Hover |
   | 78:2874 | Property 1=Selected |
   | 78:2884 | Property 1=Expanded |
 
@@ -16,7 +16,7 @@
 | Variant | CSS approach | Key visual |
 |---|---|---|
 | Default | `.prompt-template-item` | `--ai-border-secondary` 1px border |
-| Hover | `.prompt-template-item:hover` | Chevron container gets `--ai-surface-secondary` bg |
+| Hover | `.prompt-template-item:hover` | Whole card border darkens to `--ai-border-primary`; chevron container also gets `--ai-surface-secondary` bg (separate rule) |
 | Selected | `.prompt-template-item--selected` | Border flips to `--ai-border-primary` |
 | Expanded | `.prompt-template-item--expanded` | Details section revealed; chevron rotates 90° |
 
@@ -61,7 +61,8 @@ Selected and Expanded are independent JS-toggled states and can be combined.
 | `--ai-font-fixed-xs` | `--ai-font-fixed-xs` | Title + description font size |
 | `--ai-leading-1` | `--ai-leading-1` | Title line height |
 | `--ai-text-primary` | `--ai-text-primary` | Title colour |
-| `--ai-surface-secondary` | `--ai-surface-secondary` | Chevron container bg on hover |
+| `--ai-border-primary` | `--ai-border-primary` | Whole-item border on hover (node 178:3388) |
+| `--ai-surface-secondary` | `--ai-surface-secondary` | Chevron container bg on hover (node 78:2879) |
 | `--ai-surface-contrast` | `--ai-surface-contrast` | Divider border between header and details |
 | `--ai-font-body` | `--ai-font-body` | Description font family |
 | `--ai-font-regular` | `--ai-font-regular` | Description weight |

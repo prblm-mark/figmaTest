@@ -95,6 +95,12 @@
 
 /* ─── Hover ───────────────────────────────────────────────────────────────── */
 
+/* Whole-item hover: border darkens to primary (Figma: Type=Hover, node 178:3388) */
+.prompt-template-item:hover {
+  border-color: var(--ai-border-primary);
+}
+
+/* Chevron-only hover: expand button gets a grey bg (Figma: Chevron Hover, node 78:2879) */
 .prompt-template-item__chevron-btn:hover {
   background-color: var(--ai-surface-secondary);
 }
