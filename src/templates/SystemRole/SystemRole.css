@@ -475,11 +475,13 @@
     display: inline;
   }
 
-  /* Body: vertical stack, natural height (.system-role scrolls via @media) */
+  /* Body: vertical stack; body itself scrolls so stacked content is always reachable */
   .system-role:not(.system-role--minimised) .system-role__body {
     flex-direction: column;
-    overflow: visible;
-    flex: none;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   /* Prompt: natural height */
