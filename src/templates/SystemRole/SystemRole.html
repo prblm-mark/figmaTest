@@ -181,12 +181,16 @@ When users ask about specific topics, focus your answers on what is directly rel
           <div class="version-history__rows" role="listbox" aria-label="Version history">
             <div class="version-history__timeline" aria-hidden="true"></div>
 
-            <!-- Row 1 — Live + Selected -->
-            <div class="version-history-row version-history-row--live version-history-row--selected"
-                 role="option" aria-selected="true" tabindex="0"
-                 data-portrait-src="https://picsum.photos/seed/female4/300">
-              <div class="avatar avatar--checked" aria-label="Selected">
-                <i data-lucide="check" aria-hidden="true"></i>
+            <!-- Row 1 — Live -->
+            <div class="version-history-row version-history-row--live"
+                 role="option" aria-selected="false" tabindex="0"
+                 data-prompt="You are a helpful AI assistant for Affino. Your role is to assist users by answering questions accurately and concisely, drawing from the content and context available on the platform.
+
+Always respond in a professional, friendly tone. If you are unsure about something, say so clearly rather than guessing. Do not make up information or reference content that is not available to you.
+
+When users ask about specific topics, focus your answers on what is directly relevant to their query. Avoid unnecessary preamble or padding. Be helpful, honest, and direct.">
+              <div class="avatar">
+                <img class="portrait" src="https://picsum.photos/seed/female4/300" alt="Sally Jones">
               </div>
               <div class="version-history-row__content">
                 <span class="version-history-row__name">Sally Jones</span>
@@ -196,7 +200,8 @@ When users ask about specific topics, focus your answers on what is directly rel
             </div>
 
             <!-- Row 2 -->
-            <div class="version-history-row" role="option" aria-selected="false" tabindex="0">
+            <div class="version-history-row" role="option" aria-selected="false" tabindex="0"
+                 data-prompt="You are a concise AI assistant for Affino. Answer questions directly using available platform context. Keep responses brief and accurate. If unsure, acknowledge it rather than guessing. Prioritise clarity over completeness.">
               <div class="avatar">
                 <img class="portrait" src="https://picsum.photos/seed/female5/300" alt="Gayle Stevens">
               </div>
@@ -207,7 +212,8 @@ When users ask about specific topics, focus your answers on what is directly rel
             </div>
 
             <!-- Row 3 -->
-            <div class="version-history-row" role="option" aria-selected="false" tabindex="0">
+            <div class="version-history-row" role="option" aria-selected="false" tabindex="0"
+                 data-prompt="Act as a knowledgeable assistant for Affino users. Provide clear, factual answers based on platform content. Use a neutral professional tone. Acknowledge uncertainty when it arises and avoid speculation.">
               <div class="avatar">
                 <img class="portrait" src="https://picsum.photos/seed/male2/300" alt="Chris Bristow">
               </div>
@@ -218,7 +224,8 @@ When users ask about specific topics, focus your answers on what is directly rel
             </div>
 
             <!-- Row 4 -->
-            <div class="version-history-row" role="option" aria-selected="false" tabindex="0">
+            <div class="version-history-row" role="option" aria-selected="false" tabindex="0"
+                 data-prompt="You assist Affino platform users. Respond with accuracy and brevity. Keep answers relevant to the user's query. Do not add unnecessary context or padding. Always be honest about the limits of your knowledge.">
               <div class="avatar">
                 <img class="portrait" src="https://picsum.photos/seed/male3/300" alt="Chris Bristow">
               </div>
@@ -229,7 +236,8 @@ When users ask about specific topics, focus your answers on what is directly rel
             </div>
 
             <!-- Row 5 -->
-            <div class="version-history-row" role="option" aria-selected="false" tabindex="0">
+            <div class="version-history-row" role="option" aria-selected="false" tabindex="0"
+                 data-prompt="Answer user queries on the Affino platform. Be concise, accurate, and professional. Refer only to available content. Do not speculate or fabricate information.">
               <div class="avatar">
                 <img class="portrait" src="https://picsum.photos/seed/male4/300" alt="Chris Bristow">
               </div>
@@ -240,7 +248,8 @@ When users ask about specific topics, focus your answers on what is directly rel
             </div>
 
             <!-- Rows 6–12 (expanded only) -->
-            <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
+            <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0"
+                 data-prompt="You are an Affino assistant. Respond helpfully and accurately to all user queries.">
               <div class="avatar">
                 <img class="portrait" src="https://picsum.photos/seed/male5/300" alt="Chris Bristow">
               </div>
@@ -250,7 +259,8 @@ When users ask about specific topics, focus your answers on what is directly rel
               </div>
             </div>
 
-            <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
+            <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0"
+                 data-prompt="Assist Affino users with clear, factual answers. Stay on topic and avoid speculation.">
               <div class="avatar">
                 <img class="portrait" src="https://picsum.photos/seed/female3/300" alt="Gayle Stevens">
               </div>
@@ -260,7 +270,8 @@ When users ask about specific topics, focus your answers on what is directly rel
               </div>
             </div>
 
-            <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
+            <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0"
+                 data-prompt="Provide accurate, concise assistance to Affino users. Maintain a professional tone throughout.">
               <div class="avatar">
                 <img class="portrait" src="https://picsum.photos/seed/male6/300" alt="Chris Bristow">
               </div>
@@ -270,7 +281,8 @@ When users ask about specific topics, focus your answers on what is directly rel
               </div>
             </div>
 
-            <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
+            <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0"
+                 data-prompt="You support Affino users. Answer questions clearly and only reference available platform content.">
               <div class="avatar">
                 <img class="portrait" src="https://picsum.photos/seed/female6/300" alt="Gayle Stevens">
               </div>
@@ -280,7 +292,8 @@ When users ask about specific topics, focus your answers on what is directly rel
               </div>
             </div>
 
-            <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
+            <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0"
+                 data-prompt="Help users navigate Affino by answering questions directly and honestly.">
               <div class="avatar">
                 <img class="portrait" src="https://picsum.photos/seed/male7/300" alt="Chris Bristow">
               </div>
@@ -290,7 +303,8 @@ When users ask about specific topics, focus your answers on what is directly rel
               </div>
             </div>
 
-            <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
+            <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0"
+                 data-prompt="Respond to user queries with accuracy. Keep answers short and relevant to the platform.">
               <div class="avatar">
                 <img class="portrait" src="https://picsum.photos/seed/male8/300" alt="Chris Bristow">
               </div>
@@ -300,7 +314,8 @@ When users ask about specific topics, focus your answers on what is directly rel
               </div>
             </div>
 
-            <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0">
+            <div class="version-history-row version-history__row-extra" role="option" aria-selected="false" tabindex="0"
+                 data-prompt="You are a helpful assistant. Be clear, concise, and accurate in all responses.">
               <div class="avatar">
                 <img class="portrait" src="https://picsum.photos/seed/male9/300" alt="Chris Bristow">
               </div>
@@ -447,6 +462,7 @@ When users ask about specific topics, focus your answers on what is directly rel
     var promptWrap   = modal.querySelector('.system-role__prompt');
     var sidebarWrap  = modal.querySelector('.system-role__sidebar');
     var activeTemplate = null;   // currently linked .prompt-template-item element
+    var activeVHRow    = null;   // currently linked .version-history-row element
     var resizeHandle          = modal.querySelector('.system-role__resize-handle');
     var bottomResizeHandle    = modal.querySelector('.system-role__resize-handle-bottom');
     var textareaResizeHandle  = modal.querySelector('.system-role__textarea-resize-handle');
@@ -488,11 +504,17 @@ When users ask about specific topics, focus your answers on what is directly rel
     });
 
     discardBtn.addEventListener('click', function () {
-      // Clear template link first (before savedValue revert)
+      // Clear PT link
       if (activeTemplate) {
         activeTemplate.classList.remove('prompt-template-item--selected');
         activeTemplate.setAttribute('aria-selected', 'false');
         activeTemplate = null;
+        promptWrap.classList.remove('system-role__prompt--template-linked');
+      }
+      // Clear VH link
+      if (activeVHRow) {
+        removeVHSelected(activeVHRow);
+        activeVHRow = null;
         promptWrap.classList.remove('system-role__prompt--template-linked');
       }
       textarea.value = savedValue;
@@ -717,54 +739,86 @@ When users ask about specific topics, focus your answers on what is directly rel
       });
     });
 
-    // ─── Version History — row selection (radio) ───────────────────────────────
+    // ─── Version History — row selection helpers ───────────────────────────────
+
+    function applyVHSelected(row) {
+      row.classList.add('version-history-row--selected');
+      row.setAttribute('aria-selected', 'true');
+      var avatar   = row.querySelector('.avatar');
+      var portrait = avatar && avatar.querySelector('.portrait');
+      if (portrait) row.dataset.portraitSrc = portrait.src;
+      if (avatar) {
+        avatar.classList.add('avatar--checked');
+        avatar.setAttribute('aria-label', 'Selected');
+        avatar.innerHTML = '<i data-lucide="check" aria-hidden="true"></i>';
+        lucide.createIcons({ nodes: [avatar] });
+      }
+    }
+
+    function removeVHSelected(row) {
+      if (!row.classList.contains('version-history-row--selected')) return;
+      row.classList.remove('version-history-row--selected');
+      row.setAttribute('aria-selected', 'false');
+      var avatar    = row.querySelector('.avatar');
+      var storedSrc = row.dataset.portraitSrc;
+      if (avatar && storedSrc) {
+        avatar.classList.remove('avatar--checked');
+        avatar.removeAttribute('aria-label');
+        avatar.innerHTML = '<img class="portrait" src="' + storedSrc + '" alt="">';
+        delete row.dataset.portraitSrc;
+      }
+    }
+
+    function applyVHLink(row) {
+      var prompt = row.dataset.prompt;
+      if (!prompt) return;
+      textarea.value = prompt;
+      promptWrap.classList.add('system-role__prompt--template-linked');
+      activeVHRow = row;
+      textarea.dispatchEvent(new Event('input'));
+      textarea.focus();
+    }
+
+    function clearVHLink() {
+      if (!activeVHRow) return;
+      var row = activeVHRow;
+      activeVHRow = null;
+      removeVHSelected(row);
+      textarea.value = savedValue;
+      promptWrap.classList.remove('system-role__prompt--template-linked');
+      textarea.dispatchEvent(new Event('input'));
+    }
+
+    // ─── Version History — row selection (radio, toggleable) ──────────────────
 
     function selectVHRow(clickedRow, rowsContainer) {
       var liveRow = rowsContainer.querySelector('.version-history-row--live');
       var allRows = rowsContainer.querySelectorAll('.version-history-row');
 
-      if (clickedRow.classList.contains('version-history-row--selected')) return;
+      var isAlreadySelected = clickedRow.classList.contains('version-history-row--selected');
 
-      function applySelected(row) {
-        row.classList.add('version-history-row--selected');
-        row.setAttribute('aria-selected', 'true');
+      // Mutual exclusivity — clear any active PT link
+      clearTemplate();
 
-        var avatar  = row.querySelector('.avatar');
-        var portrait = avatar && avatar.querySelector('.portrait');
-        if (portrait) row.dataset.portraitSrc = portrait.src;
-
-        if (avatar) {
-          avatar.classList.add('avatar--checked');
-          avatar.setAttribute('aria-label', 'Selected');
-          avatar.innerHTML = '<i data-lucide="check" aria-hidden="true"></i>';
-          lucide.createIcons({ nodes: [avatar] });
-        }
+      if (isAlreadySelected) {
+        // Toggle off: remove visual selection + clear prompt link
+        removeVHSelected(clickedRow);
+        activeVHRow = null;
+        textarea.value = savedValue;
+        promptWrap.classList.remove('system-role__prompt--template-linked');
+        textarea.dispatchEvent(new Event('input'));
+        return;
       }
 
-      function removeSelected(row) {
-        if (!row.classList.contains('version-history-row--selected')) return;
-        row.classList.remove('version-history-row--selected');
-        row.setAttribute('aria-selected', 'false');
-
-        var avatar    = row.querySelector('.avatar');
-        var storedSrc = row.dataset.portraitSrc;
-
-        if (avatar && storedSrc) {
-          avatar.classList.remove('avatar--checked');
-          avatar.removeAttribute('aria-label');
-          avatar.innerHTML = '<img class="portrait" src="' + storedSrc + '" alt="">';
-          delete row.dataset.portraitSrc;
-        }
-      }
+      // Switch to a new row: deselect all, then select + link clicked row
+      allRows.forEach(function (row) { removeVHSelected(row); });
 
       if (clickedRow.classList.contains('version-history-row--live')) {
-        allRows.forEach(function (row) {
-          if (!row.classList.contains('version-history-row--live')) removeSelected(row);
-        });
-        applySelected(liveRow);
+        applyVHSelected(liveRow);
+        applyVHLink(liveRow);
       } else {
-        allRows.forEach(function (row) { removeSelected(row); });
-        applySelected(clickedRow);
+        applyVHSelected(clickedRow);
+        applyVHLink(clickedRow);
       }
     }
 
@@ -785,6 +839,7 @@ When users ask about specific topics, focus your answers on what is directly rel
     // ─── Prompt Templates — selection (radio, toggleable) ─────────────────────
 
     function applyTemplate(item) {
+      clearVHLink();   // deselect any active VH row
       var desc = item.querySelector('.prompt-template-item__description');
       if (!desc) return;
       textarea.value = desc.textContent.trim();
@@ -883,11 +938,12 @@ When users ask about specific topics, focus your answers on what is directly rel
       }
     });
 
-    // Clear template link when clicking outside both the prompt and sidebar panels
+    // Clear template/VH link when clicking outside both the prompt and sidebar panels
     document.addEventListener('click', function (e) {
-      if (!activeTemplate) return;
+      if (!activeTemplate && !activeVHRow) return;
       if (promptWrap.contains(e.target) || sidebarWrap.contains(e.target)) return;
       clearTemplate();
+      clearVHLink();
     });
   </script>
 </body>
