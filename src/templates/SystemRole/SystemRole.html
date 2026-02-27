@@ -464,6 +464,13 @@ When users ask about specific topics, focus your answers on what is directly rel
       openBtn.style.display = '';
     });
 
+    // Click outside modal (on overlay) also closes — desktop only
+    overlay.addEventListener('click', function () {
+      modal.classList.remove('system-role--open');
+      overlay.classList.remove('system-role-overlay--open');
+      openBtn.style.display = '';
+    });
+
     // ─── Dirty detection ───────────────────────────────────────────────────────
     //
     // Tracks whether the textarea content has changed from the last-saved value.
