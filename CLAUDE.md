@@ -109,9 +109,11 @@ named colors in component CSS.** Every visual value must come from the list belo
 | `--ai-btn-secondary-border-hover` | `#D1D5DB` | Secondary hover border |
 | `--ai-btn-secondary-text` | `#1F2A37` | Secondary text |
 | `--ai-btn-secondary-text-hover` | `#1F2A37` | Secondary hover text |
-| `--ai-btn-tertiary-bg` | `transparent` | Tertiary background + focus background |
-| `--ai-btn-tertiary-bg-hover` | `#F9F9FB` | Tertiary hover background |
+| `--ai-btn-tertiary-bg` | `transparent` | Tertiary background |
+| `--ai-btn-tertiary-bg-hover` | `#F9F9FB` | Tertiary hover + focus background |
 | `--ai-btn-tertiary-bg-pressed` | `#F9F9FB` | Tertiary pressed background |
+| `--ai-btn-tertiary-border` | `rgba(0,0,0,0)` | Tertiary default border |
+| `--ai-btn-tertiary-border-hover` | `rgba(0,0,0,0)` | Tertiary hover border |
 | `--ai-btn-tertiary-text` | `#1F2A37` | Tertiary text |
 | `--ai-btn-tertiary-text-hover` | `#1F2A37` | Tertiary hover text |
 | `--ai-btn-bg-disabled` | `#D1D5DB` | Disabled background (all variants) |

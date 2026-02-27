@@ -79,6 +79,7 @@
   background-color: var(--ai-btn-secondary-bg-hover);
   border-color: var(--ai-surface-primary);
   box-shadow: 0 0 0 2px var(--ai-btn-secondary-border);
+  color: var(--ai-btn-secondary-text-hover);
   outline: none;
 }
 
@@ -87,11 +88,12 @@
 .btn--tertiary {
   background-color: var(--ai-btn-tertiary-bg);
   color: var(--ai-btn-tertiary-text);
-  border-color: transparent;
+  border-color: var(--ai-btn-tertiary-border);
 }
 
 .btn--tertiary:hover {
   background-color: var(--ai-btn-tertiary-bg-hover);
+  border-color: var(--ai-btn-tertiary-border-hover);
   color: var(--ai-btn-tertiary-text-hover);
 }
 
@@ -100,8 +102,9 @@
 }
 
 .btn--tertiary:focus-visible {
-  background-color: var(--ai-btn-tertiary-bg);
+  background-color: var(--ai-btn-tertiary-bg-hover);
   box-shadow: 0 0 0 2px var(--ai-border-secondary);
+  color: var(--ai-btn-tertiary-text-hover);
   outline: none;
 }
 
