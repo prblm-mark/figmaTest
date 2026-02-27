@@ -100,6 +100,8 @@ named colors in component CSS.** Every visual value must come from the list belo
 | `--ai-btn-primary-bg-pressed` | `#1A56DB` | Primary pressed background |
 | `--ai-btn-primary-text` | `#FFFFFF` | Primary text (theme-invariant) |
 | `--ai-btn-primary-text-hover` | `#FFFFFF` | Primary hover text |
+| `--ai-btn-primary-border` | `rgba(0,0,0,0)` | Primary default + hover border |
+| `--ai-btn-primary-border-hover` | `rgba(0,0,0,0)` | Primary hover border |
 | `--ai-btn-secondary-bg` | `transparent` | Secondary button background |
 | `--ai-btn-secondary-bg-hover` | `#F9F9FB` | Secondary hover + focus background |
 | `--ai-btn-secondary-bg-pressed` | `#E5E7EB` | Secondary pressed background |

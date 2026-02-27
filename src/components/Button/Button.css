@@ -35,11 +35,12 @@
 .btn--primary {
   background-color: var(--ai-btn-primary-bg);
   color: var(--ai-btn-primary-text);
-  border-color: transparent;
+  border-color: var(--ai-btn-primary-border);
 }
 
 .btn--primary:hover {
   background-color: var(--ai-btn-primary-bg-hover);
+  border-color: var(--ai-btn-primary-border-hover);
   color: var(--ai-btn-primary-text-hover);
 }
 
@@ -51,6 +52,7 @@
   background-color: var(--ai-btn-primary-bg-hover);
   border: 2px solid var(--ai-surface-primary);
   box-shadow: 0 0 0 2px var(--ai-btn-primary-bg-hover);
+  color: var(--ai-btn-primary-text-hover);
   outline: none;
 }
 
