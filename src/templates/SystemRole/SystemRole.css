@@ -70,23 +70,23 @@
   flex-shrink: 0;
 }
 
-/* Header fills available space, sits on left */
+/* Header fills available space first — mirrors .system-role__prompt */
 .system-role__top .header {
   order: 0;
-  flex: 1;
+  flex: 9999 1 0;
+  max-width: 960px;
   min-width: 0;
 }
 
-/* Controls sit on right — width matches sidebar (400px) so columns align */
+/* Controls absorb excess when header is capped — mirrors .system-role__sidebar */
 .system-role__controls {
   order: 1;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 0;                                 /* no gap between icon buttons in Default */
-  flex-shrink: 0;
-  width: 100%;
-  max-width: 368px;
+  flex: 1 1 368px;
+  min-width: 0;
 }
 
 /* Default mode: hide maximize button */
