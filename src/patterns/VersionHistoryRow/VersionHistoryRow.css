@@ -1,0 +1,90 @@
+/* VersionHistoryRow component
+ * Figma node: 78:2957 — "Version History" (component set)
+ * Variants: Default, Live, Selected, Selected & Live
+ */
+
+.version-history-row {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-4);                  /* 0.75rem (12px) */
+  padding: var(--ai-spacing-3) var(--ai-spacing-5); /* 0.5rem 1rem (8px 16px) */
+  border-radius: var(--ai-radius-lg);
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+/* Live variant — secondary background */
+.version-history-row--live {
+  background-color: var(--ai-surface-secondary);
+}
+
+/* Selected variant — primary bg + border */
+.version-history-row--selected {
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-primary);
+}
+
+/* Selected & Live — secondary bg, no border, wider gap */
+.version-history-row--selected.version-history-row--live {
+  background-color: var(--ai-surface-secondary);
+  border: none;
+  gap: var(--ai-spacing-5);                  /* 1rem (16px) — wider than other variants */
+}
+
+/* Default variant only — transition in both directions */
+.version-history-row:not(.version-history-row--live):not(.version-history-row--selected) {
+  transition: border-color var(--ai-transition-default), background-color var(--ai-transition-default);
+}
+
+/* Hover state — Default variant only */
+.version-history-row:not(.version-history-row--live):not(.version-history-row--selected):hover {
+  border-color: var(--ai-border-primary);
+  background-color: var(--ai-surface-primary);
+}
+
+/* ── Avatar / Check circle ───────────────────── */
+/* Handled by Avatar component (Avatar.css).
+ * Default rows use <div class="avatar">.
+ * Selected rows use <div class="avatar avatar--checked"><i data-lucide="check"></i></div>.
+ *
+ * Contextual override (Case B): VersionHistoryRow applies a 2px white border to all
+ * avatars — not defined on the Avatar component itself in Figma. Separates the circle
+ * from the row background on any surface colour. */
+
+/* Ring visible in resting Default state — always shown (bg never changes on hover now) */
+.version-history-row:not(.version-history-row--live):not(.version-history-row--selected) .avatar {
+  box-shadow: 0 0 0 2px var(--ai-surface-primary);
+}
+
+/* ── Text content ────────────────────────────── */
+
+.version-history-row__content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-1);                 /* 0.25rem (4px) between name and date */
+}
+
+.version-history-row__name {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);       /* 0.875rem (14px) */
+  font-weight: var(--ai-font-semibold);     /* 600 */
+  line-height: var(--ai-leading-1);         /* 1rem (16px) — title/xs style */
+  color: var(--ai-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.version-history-row__date {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);      /* 0.75rem (12px) */
+  font-weight: var(--ai-font-regular);      /* 400 */
+  line-height: var(--ai-leading-1);         /* 1rem (16px) */
+  color: var(--ai-text-contrast);
+  letter-spacing: 0.12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

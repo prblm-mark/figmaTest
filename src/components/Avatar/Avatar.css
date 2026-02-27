@@ -1,0 +1,109 @@
+/* Avatar component
+ * Figma node: 68:5042 — "Avatars" (component set)
+ * Variants: Size (1–5) × Show Notification (True/False) × Checked (True/False)
+ */
+
+/* ── Base (Size=1 default, circular photo container) ── */
+
+.avatar {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-6);              /* 1.5rem (24px) — Size=1 */
+  height: var(--ai-spacing-6);
+  border-radius: var(--ai-radius-full);
+  flex-shrink: 0;
+  background-color: var(--ai-surface-secondary); /* fallback when no portrait provided */
+}
+
+/* ── Photo image ──────────────────────────────────── */
+/* clip-path keeps the circular mask on the photo only,
+   allowing notification dot to sit outside the circle */
+
+.avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar .portrait {
+  clip-path: circle(50%);
+}
+
+/* ── Sizes ────────────────────────────────────────── */
+
+.avatar--size-2 {
+  width: var(--ai-spacing-7);              /* 2rem (32px) */
+  height: var(--ai-spacing-7);
+}
+
+.avatar--size-3 {
+  width: var(--ai-spacing-9);              /* 3rem (48px) */
+  height: var(--ai-spacing-9);
+}
+
+.avatar--size-4 {
+  width: var(--ai-spacing-11);             /* 4rem (64px) */
+  height: var(--ai-spacing-11);
+}
+
+.avatar--size-5 {
+  width: var(--ai-spacing-13);             /* 5rem (80px) */
+  height: var(--ai-spacing-13);
+}
+
+/* ── Notification dot (Figma: Show Notification=True) ── */
+/* Dot sits at top-right of the avatar's square bounding box,
+   outside the circular photo clip. */
+
+.avatar__dot {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--ai-spacing-3);              /* 0.5rem (8px) — Size=1, Size=2 */
+  height: var(--ai-spacing-3);
+  border-radius: var(--ai-radius-full);
+  background-color: var(--ai-surface-success);
+  border: 1px solid var(--ai-surface-primary);
+}
+
+/* Size=3, Size=4: 16px dot, 1.5px border */
+.avatar--size-3 .avatar__dot,
+.avatar--size-4 .avatar__dot {
+  width: var(--ai-spacing-5);              /* 1rem (16px) */
+  height: var(--ai-spacing-5);
+  border-width: 1.5px;
+}
+
+/* Size=5: 24px dot, 2px border */
+.avatar--size-5 .avatar__dot {
+  width: var(--ai-spacing-6);              /* 1.5rem (24px) */
+  height: var(--ai-spacing-6);
+  border-width: 2px;
+}
+
+/* ── Checked variant (Figma: Checked=True) ────────── */
+/* Used in VersionHistoryRow Selected state — replaces photo with
+   a green success circle and a tick icon. */
+
+.avatar--checked {
+  background-color: var(--ai-surface-success);
+  border: 1px solid var(--ai-surface-primary); /* white ring separates from row bg */
+}
+
+.avatar--checked [data-lucide] {
+  width: var(--ai-icon-size-sm);           /* 1rem (16px) — Size=1, Size=2 */
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-btn-primary-text);       /* always white — surface-success is theme-invariant */
+  flex-shrink: 0;
+}
+
+/* Size=3/4/5: larger check icon (24px) */
+.avatar--size-3.avatar--checked [data-lucide],
+.avatar--size-4.avatar--checked [data-lucide],
+.avatar--size-5.avatar--checked [data-lucide] {
+  width: var(--ai-icon-size-lg);           /* 1.5rem (24px) */
+  height: var(--ai-icon-size-lg);
+}

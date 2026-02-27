@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>Button Component — Demo</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="Button.css">
+  <style>
+    body { padding: var(--ai-spacing-7); }
+    .demo-section { margin-bottom: var(--ai-spacing-7); }
+    .demo-section h2 { font-size: var(--ai-font-fixed-lg); margin-bottom: var(--ai-spacing-5); }
+    .demo-row { display: flex; align-items: center; gap: var(--ai-spacing-4); flex-wrap: wrap; margin-bottom: var(--ai-spacing-3); }
+    .demo-row-label { font-size: var(--ai-font-fixed-xxs); font-weight: var(--ai-font-semibold); color: var(--ai-text-contrast); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--ai-spacing-2); }
+  </style>
+</head>
+<body>
+  <h1>Button</h1>
+  <p>Standalone demo of the Button component using only <code>--ai-*</code> design tokens.</p>
+
+  <div class="demo-section">
+    <h2>Primary</h2>
+    <p class="demo-row-label">With icon</p>
+    <div class="demo-row">
+      <button class="btn btn--primary btn--sm">Small <i data-lucide="arrow-right" aria-hidden="true"></i></button>
+      <button class="btn btn--primary">Default <i data-lucide="arrow-right" aria-hidden="true"></i></button>
+      <button class="btn btn--primary" disabled>Disabled <i data-lucide="arrow-right" aria-hidden="true"></i></button>
+    </div>
+    <p class="demo-row-label">Text only</p>
+    <div class="demo-row">
+      <button class="btn btn--primary btn--sm">Small</button>
+      <button class="btn btn--primary">Default</button>
+      <button class="btn btn--primary" disabled>Disabled</button>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Secondary</h2>
+    <p class="demo-row-label">With icon</p>
+    <div class="demo-row">
+      <button class="btn btn--secondary btn--sm">Small <i data-lucide="arrow-right" aria-hidden="true"></i></button>
+      <button class="btn btn--secondary">Default <i data-lucide="arrow-right" aria-hidden="true"></i></button>
+      <button class="btn btn--secondary" disabled>Disabled <i data-lucide="arrow-right" aria-hidden="true"></i></button>
+    </div>
+    <p class="demo-row-label">Text only</p>
+    <div class="demo-row">
+      <button class="btn btn--secondary btn--sm">Small</button>
+      <button class="btn btn--secondary">Default</button>
+      <button class="btn btn--secondary" disabled>Disabled</button>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Tertiary</h2>
+    <p class="demo-row-label">With icon</p>
+    <div class="demo-row">
+      <button class="btn btn--tertiary btn--sm">Small <i data-lucide="arrow-right" aria-hidden="true"></i></button>
+      <button class="btn btn--tertiary">Default <i data-lucide="arrow-right" aria-hidden="true"></i></button>
+      <button class="btn btn--tertiary" disabled>Disabled <i data-lucide="arrow-right" aria-hidden="true"></i></button>
+    </div>
+    <p class="demo-row-label">Text only</p>
+    <div class="demo-row">
+      <button class="btn btn--tertiary btn--sm">Small</button>
+      <button class="btn btn--tertiary">Default</button>
+      <button class="btn btn--tertiary" disabled>Disabled</button>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Alert</h2>
+    <p class="demo-row-label">With icon</p>
+    <div class="demo-row">
+      <button class="btn btn--alert btn--sm">Delete <i data-lucide="trash-2" aria-hidden="true"></i></button>
+      <button class="btn btn--alert">Delete <i data-lucide="trash-2" aria-hidden="true"></i></button>
+    </div>
+    <p class="demo-row-label">Text only</p>
+    <div class="demo-row">
+      <button class="btn btn--alert btn--sm">Delete</button>
+      <button class="btn btn--alert">Delete</button>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Alert Outline</h2>
+    <p class="demo-row-label">With icon</p>
+    <div class="demo-row">
+      <button class="btn btn--alert-outline btn--sm">Cancel <i data-lucide="x" aria-hidden="true"></i></button>
+      <button class="btn btn--alert-outline">Cancel <i data-lucide="x" aria-hidden="true"></i></button>
+    </div>
+    <p class="demo-row-label">Text only</p>
+    <div class="demo-row">
+      <button class="btn btn--alert-outline btn--sm">Cancel</button>
+      <button class="btn btn--alert-outline">Cancel</button>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Icon Only</h2>
+    <div class="demo-row">
+      <button class="btn btn--primary btn--icon btn--sm" aria-label="Next">
+        <i data-lucide="arrow-right" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn--primary btn--icon" aria-label="Next">
+        <i data-lucide="arrow-right" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn--secondary btn--icon" aria-label="Settings">
+        <i data-lucide="settings" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn--tertiary btn--icon" aria-label="Menu">
+        <i data-lucide="menu" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn--primary btn--icon" disabled aria-label="Next">
+        <i data-lucide="arrow-right" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Lucide via CDN for standalone demo (webpack handles this in the full build) -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    // Scan all data-lucide attributes on the page and replace each element
+    // with an inline SVG from the Lucide icon set. Must run after the DOM is
+    // ready — placing the script at the bottom of <body> guarantees this.
+    lucide.createIcons();
+  </script>
+</body>
+</html>

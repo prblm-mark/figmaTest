@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>VersionHistoryRow — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <!-- Dependencies -->
+  <link rel="stylesheet" href="../../components/Portraits/Portraits.css">
+  <link rel="stylesheet" href="../../components/Avatar/Avatar.css">
+  <link rel="stylesheet" href="../../components/Pill/Pill.css">
+  <!-- Component -->
+  <link rel="stylesheet" href="VersionHistoryRow.css">
+  <style>
+    body { padding: var(--ai-spacing-7); background: var(--ai-surface-secondary); }
+    .demo-section {
+      padding: var(--ai-spacing-6);
+      background: var(--ai-surface-primary);
+      border-radius: var(--ai-radius-lg);
+      margin-bottom: var(--ai-spacing-5);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-2);
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 var(--ai-spacing-3);
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-6);">VersionHistoryRow</h1>
+
+  <div class="demo-section" role="listbox" aria-label="Version history">
+    <p class="demo-section__title">All Variants — click any row to select/deselect</p>
+
+    <!-- Default -->
+    <div class="version-history-row" role="option" aria-selected="false" tabindex="0">
+      <div class="avatar">
+        <img class="portrait" src="https://picsum.photos/seed/female3/300" alt="Adam Ainsworth">
+      </div>
+      <div class="version-history-row__content">
+        <span class="version-history-row__name">Adam Ainsworth</span>
+        <span class="version-history-row__date">15 Jan 2025, 4:42 PM</span>
+      </div>
+    </div>
+
+    <!-- Live -->
+    <div class="version-history-row version-history-row--live" role="option" aria-selected="false" tabindex="0">
+      <div class="avatar">
+        <img class="portrait" src="https://picsum.photos/seed/male2/300" alt="Chris Bristow">
+      </div>
+      <div class="version-history-row__content">
+        <span class="version-history-row__name">Chris Bristow</span>
+        <span class="version-history-row__date">15 Jan 2025, 4:42 PM</span>
+      </div>
+      <span class="pill" aria-label="Live version"><span class="pill__label">Live</span></span>
+    </div>
+
+    <!-- Selected -->
+    <div class="version-history-row version-history-row--selected" role="option" aria-selected="true" tabindex="0" data-portrait-src="https://picsum.photos/seed/female4/300">
+      <div class="avatar avatar--checked" aria-label="Selected">
+        <i data-lucide="check" aria-hidden="true"></i>
+      </div>
+      <div class="version-history-row__content">
+        <span class="version-history-row__name">Sally Jones</span>
+        <span class="version-history-row__date">15 Jan 2025, 4:42 PM</span>
+      </div>
+    </div>
+
+    <!-- Selected & Live -->
+    <div class="version-history-row version-history-row--selected version-history-row--live" role="option" aria-selected="true" tabindex="0" data-portrait-src="https://picsum.photos/seed/female5/300">
+      <div class="avatar avatar--checked" aria-label="Selected">
+        <i data-lucide="check" aria-hidden="true"></i>
+      </div>
+      <div class="version-history-row__content">
+        <span class="version-history-row__name">Gayle Stevens</span>
+        <span class="version-history-row__date">15 Jan 2025, 4:42 PM</span>
+      </div>
+      <span class="pill" aria-label="Live version"><span class="pill__label">Live</span></span>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    // Initialise all Lucide icons on the page by scanning for data-lucide attributes
+    // and replacing them with inline SVGs. Called once at page load; also called
+    // per-node after DOM mutations (e.g. swapping an avatar to a check icon).
+    lucide.createIcons();
+
+    // ─── Row Selection ────────────────────────────────────────────────────────
+    //
+    // This demo uses a toggleable selection model (different from the full
+    // VersionHistory panel which enforces radio behaviour). Rules:
+    //
+    //   • Clicking an unselected row → deselect any currently-selected row,
+    //     then select the clicked row.
+    //   • Clicking the already-selected row → deselect it (toggle off). This
+    //     allows the demo to show all four Figma variants: Default, Live,
+    //     Selected, and Selected & Live.
+    //
+    // Visual change on selection: the avatar swaps from a portrait photo to a
+    // green check-circle (the Avatar component's `avatar--checked` variant).
+    // The portrait src is stashed in `data-portrait-src` on the row element
+    // before innerHTML is overwritten, so it can be restored on deselection.
+    //
+    // The list uses role="listbox" / role="option" / aria-selected so that
+    // selection state is communicated to assistive technology.
+
+    function selectRow(clickedRow, container) {
+      // Collect all rows in the container so we can sweep them when clearing selection.
+      var rows = container.querySelectorAll('.version-history-row');
+
+      // Capture current selection state BEFORE the sweep so we can decide
+      // whether to re-select at the end (toggle-off vs toggle-on).
+      var isAlreadySelected = clickedRow.classList.contains('version-history-row--selected');
+
+      // ── Deselect all currently-selected rows ───────────────────────────────
+      // We only modify rows that are actually selected to avoid unnecessary DOM work.
+      // For each selected row:
+      //   1. Remove the --selected CSS modifier (resets background, border, etc.)
+      //   2. Update aria-selected for assistive technology.
+      //   3. Restore the portrait <img> from the stashed data-portrait-src URL.
+      //   4. Remove the --checked modifier from the avatar and clean up the stash.
+      rows.forEach(function(row) {
+        if (row.classList.contains('version-history-row--selected')) {
+          row.classList.remove('version-history-row--selected');
+          row.setAttribute('aria-selected', 'false');
+
+          var avatar    = row.querySelector('.avatar');
+          var storedSrc = row.dataset.portraitSrc; // URL saved before the check icon replaced it
+
+          if (avatar && storedSrc) {
+            avatar.classList.remove('avatar--checked');
+            avatar.removeAttribute('aria-label'); // was "Selected" — no longer meaningful
+            // Rebuild the portrait <img> from the saved URL.
+            avatar.innerHTML = '<img class="portrait" src="' + storedSrc + '" alt="">';
+            // Remove the stash now that the portrait has been restored.
+            delete row.dataset.portraitSrc;
+          }
+        }
+      });
+
+      // ── Select the clicked row (unless it was already selected — toggle off) ─
+      // If isAlreadySelected is true the sweep above already cleared it, so we
+      // just leave the row deselected. If false, apply selection now.
+      if (!isAlreadySelected) {
+        clickedRow.classList.add('version-history-row--selected');
+        clickedRow.setAttribute('aria-selected', 'true');
+
+        var avatar  = clickedRow.querySelector('.avatar');
+        var portrait = avatar && avatar.querySelector('.portrait');
+
+        // Stash the portrait src BEFORE overwriting innerHTML so it survives the swap.
+        if (portrait) {
+          clickedRow.dataset.portraitSrc = portrait.src;
+        }
+
+        if (avatar) {
+          avatar.classList.add('avatar--checked');
+          avatar.setAttribute('aria-label', 'Selected'); // describes the check icon to screen readers
+          // Replace the portrait with the Lucide check icon markup.
+          avatar.innerHTML = '<i data-lucide="check" aria-hidden="true"></i>';
+          // Re-run icon replacement scoped to just this avatar node so we don't
+          // re-process every icon on the page.
+          lucide.createIcons({ nodes: [avatar] });
+        }
+      }
+    }
+
+    // Scope the listener to the interactive demo section only (the static
+    // reference rows below it are not interactive and have no role="listbox").
+    var container = document.querySelector('.demo-section[role="listbox"]');
+
+    // Mouse / touch: find the nearest row ancestor of the click target.
+    // closest() handles clicks on child elements (avatar, name text, date, pill).
+    container.addEventListener('click', function(e) {
+      var row = e.target.closest('.version-history-row');
+      if (row) selectRow(row, container);
+    });
+
+    // Keyboard: Enter or Space activates the focused row, matching native
+    // listbox behaviour. preventDefault() stops Space from scrolling the page.
+    container.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        var row = e.target.closest('.version-history-row');
+        if (row) { e.preventDefault(); selectRow(row, container); }
+      }
+    });
+  </script>
+</body>
+</html>

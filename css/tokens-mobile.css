@@ -1,0 +1,34 @@
+@media (max-width: 767px) {
+  :root {
+    --ai-font-title: 'Inter', sans-serif;
+    --ai-font-body: 'Inter', sans-serif;
+    --ai-font-regular: 400;
+    --ai-font-medium: 500;
+    --ai-font-semibold: 600;
+    --ai-font-bold: 700;
+    --ai-font-extrabold: 800;
+    --ai-font-fixed-xxs: 0.75rem;
+    --ai-font-fixed-xs: 0.875rem;
+    --ai-font-fixed-sm: 1rem;
+    --ai-font-fixed-md: 1.125rem;
+    --ai-font-fixed-lg: 1.25rem;
+    --ai-font-fixed-xl: 1.375rem;
+    --ai-font-fixed-2xl: 1.625rem;
+    --ai-font-fixed-3xl: 1.75rem;
+    --ai-font-fixed-4xl: 2rem;
+    --ai-font-fluid-xxs: 0.75rem;
+    --ai-font-fluid-xs: 0.875rem;
+    --ai-font-fluid-sm: 0.875rem;
+    --ai-font-fluid-md: 1rem;
+    --ai-font-fluid-lg: 1.125rem;
+    --ai-font-fluid-xl: 1.25rem;
+    --ai-font-fluid-2xl: 1.5rem;
+    --ai-font-fluid-3xl: 1.625rem;
+    --ai-font-fluid-4xl: 1.875rem;
+    --ai-leading-1: 1rem;
+    --ai-leading-2: 1.5rem;
+    --ai-leading-3: 2rem;
+    --ai-leading-4: 2.5rem;
+    --ai-leading-5: 3rem;
+  }
+}

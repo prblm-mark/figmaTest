@@ -1,0 +1,197 @@
+/* Button component — uses only --ai-* design tokens */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ai-spacing-3);
+  padding: 0 var(--ai-spacing-5);
+  min-height: var(--ai-spacing-8);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fluid-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-1);
+  border-radius: var(--ai-radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color var(--ai-transition-default),
+              border-color var(--ai-transition-default),
+              color var(--ai-transition-default),
+              box-shadow var(--ai-transition-default);
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* Lucide icons inside buttons default to 24×24 — override to 16×16 */
+.btn [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  flex-shrink: 0;
+}
+
+/* ── Primary ─────────────────────────────────────────── */
+
+.btn--primary {
+  background-color: var(--ai-btn-primary-bg);
+  color: var(--ai-btn-primary-text);
+  border-color: var(--ai-btn-primary-border);
+}
+
+.btn--primary:hover {
+  background-color: var(--ai-btn-primary-bg-hover);
+  border-color: var(--ai-btn-primary-border-hover);
+  color: var(--ai-btn-primary-text-hover);
+}
+
+.btn--primary:active {
+  background-color: var(--ai-btn-primary-bg-pressed);
+}
+
+.btn--primary:focus-visible {
+  background-color: var(--ai-btn-primary-bg-hover);
+  border: 2px solid var(--ai-surface-primary);
+  box-shadow: 0 0 0 2px var(--ai-btn-primary-bg-hover);
+  color: var(--ai-btn-primary-text-hover);
+  outline: none;
+}
+
+/* ── Secondary ───────────────────────────────────────── */
+
+.btn--secondary {
+  background-color: var(--ai-btn-secondary-bg);
+  color: var(--ai-btn-secondary-text);
+  border-color: var(--ai-btn-secondary-border);
+}
+
+.btn--secondary:hover {
+  background-color: var(--ai-btn-secondary-bg-hover);
+  border-color: var(--ai-btn-secondary-border-hover);
+  color: var(--ai-btn-secondary-text-hover);
+}
+
+.btn--secondary:active {
+  background-color: var(--ai-btn-secondary-bg-pressed);
+  border-color: var(--ai-btn-secondary-border);
+}
+
+.btn--secondary:focus-visible {
+  background-color: var(--ai-btn-secondary-bg-hover);
+  border-color: var(--ai-surface-primary);
+  box-shadow: 0 0 0 2px var(--ai-btn-secondary-border);
+  color: var(--ai-btn-secondary-text-hover);
+  outline: none;
+}
+
+/* ── Tertiary (ghost — transparent bg, no border) ──── */
+
+.btn--tertiary {
+  background-color: var(--ai-btn-tertiary-bg);
+  color: var(--ai-btn-tertiary-text);
+  border-color: var(--ai-btn-tertiary-border);
+}
+
+.btn--tertiary:hover {
+  background-color: var(--ai-btn-tertiary-bg-hover);
+  border-color: var(--ai-btn-tertiary-border-hover);
+  color: var(--ai-btn-tertiary-text-hover);
+}
+
+.btn--tertiary:active {
+  background-color: var(--ai-btn-tertiary-bg-pressed);
+}
+
+.btn--tertiary:focus-visible {
+  background-color: var(--ai-btn-tertiary-bg-hover);
+  box-shadow: 0 0 0 2px var(--ai-border-secondary);
+  color: var(--ai-btn-tertiary-text-hover);
+  outline: none;
+}
+
+/* ── Alert (destructive — solid red) ─────────────────── */
+
+.btn--alert {
+  background-color: var(--ai-surface-error);
+  color: var(--ai-btn-primary-text);
+  border-color: var(--ai-surface-error);
+}
+
+.btn--alert:hover {
+  background-color: #f87171; /* Red/400 — primitive, approved */
+  border-color: #f87171;     /* Red/400 — primitive, approved */
+}
+
+.btn--alert:active {
+  background-color: #dc2626; /* Red/600 — primitive, approved */
+  border-color: #dc2626;     /* Red/600 — primitive, approved */
+}
+
+.btn--alert:focus-visible {
+  background-color: #f87171; /* Red/400 — primitive, approved */
+  border: 2px solid var(--ai-surface-primary);
+  box-shadow: 0 0 0 2px #f87171; /* Red/400 — primitive, approved */
+  outline: none;
+}
+
+/* ── Alert Outline ───────────────────────────────────── */
+/* Default: outlined red. Hover/focus/pressed: flips to solid red (same as alert). */
+
+.btn--alert-outline {
+  background-color: var(--ai-surface-primary);
+  color: var(--ai-text-error);
+  border-color: var(--ai-border-error);
+}
+
+.btn--alert-outline:hover {
+  background-color: #f87171; /* Red/400 — primitive, approved */
+  border-color: #f87171;
+  color: var(--ai-btn-primary-text);
+}
+
+.btn--alert-outline:active {
+  background-color: #dc2626; /* Red/600 — primitive, approved */
+  border-color: #dc2626;
+  color: var(--ai-btn-primary-text);
+}
+
+.btn--alert-outline:focus-visible {
+  background-color: #f87171; /* Red/400 — primitive, approved */
+  color: var(--ai-btn-primary-text);
+  border: 2px solid var(--ai-surface-primary);
+  box-shadow: 0 0 0 2px #f87171; /* Red/400 — primitive, approved */
+  outline: none;
+}
+
+/* ── Disabled state (all variants) ──────────────────── */
+
+.btn:disabled,
+.btn--disabled {
+  background-color: var(--ai-btn-bg-disabled);
+  border-color: var(--ai-btn-bg-disabled);
+  color: var(--ai-btn-text-disabled);
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+/* ── Size: small ─────────────────────────────────────── */
+
+.btn--sm {
+  padding: 0 var(--ai-spacing-4);
+  min-height: var(--ai-spacing-7);
+  font-size: var(--ai-font-fluid-xxs);
+  border-radius: var(--ai-radius-md);
+}
+
+/* ── Icon-only variant (square button, no text) ──────── */
+
+.btn--icon {
+  padding: 0;
+  width: var(--ai-spacing-8);
+  min-height: var(--ai-spacing-8);
+}
+
+.btn--icon.btn--sm {
+  width: var(--ai-spacing-7);
+  min-height: var(--ai-spacing-7);
+  padding: 0;
+}

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Sign Up Form — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <!-- Dependencies -->
+  <link rel="stylesheet" href="../../components/InfoLabel/InfoLabel.css">
+  <link rel="stylesheet" href="../../components/Tooltip/Tooltip.css">
+  <link rel="stylesheet" href="../../components/Input/Input.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../patterns/Header/Header.css">
+  <!-- Component -->
+  <link rel="stylesheet" href="SignUpForm.css">
+  <style>
+    body { padding: var(--ai-spacing-7); background: var(--ai-surface-secondary); }
+    .demo-section {
+      padding: var(--ai-spacing-6);
+      background: var(--ai-surface-primary);
+      border-radius: var(--ai-radius-lg);
+      margin-bottom: var(--ai-spacing-5);
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 var(--ai-spacing-5);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Figma spec: Sign Up form -->
+  <div class="demo-section">
+    <p class="demo-section__title">Sign Up Form</p>
+    <form class="signup-form" novalidate>
+
+      <header class="header">
+        <h2 class="header__title">Sign Up</h2>
+        <div class="header__info">
+          <button type="button" class="info-label" aria-label="What's this?">
+            <span class="info-label__text">What's this?</span>
+            <i data-lucide="info" class="info-label__icon" aria-hidden="true"></i>
+          </button>
+        </div>
+      </header>
+
+      <div class="input">
+        <label class="input__label" for="first-name">First Name</label>
+        <div class="input__wrap">
+          <i data-lucide="user" class="input__icon" aria-hidden="true"></i>
+          <input id="first-name" type="text" class="input__control" placeholder="i.e Tom" autocomplete="given-name">
+          <button type="button" class="input__clear" aria-label="Clear first name">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="input">
+        <label class="input__label" for="last-name">Last Name</label>
+        <div class="input__wrap">
+          <i data-lucide="user" class="input__icon" aria-hidden="true"></i>
+          <input id="last-name" type="text" class="input__control" placeholder="i.e Jones" autocomplete="family-name">
+          <button type="button" class="input__clear" aria-label="Clear last name">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="input">
+        <label class="input__label" for="email">Email</label>
+        <div class="input__wrap">
+          <i data-lucide="mail" class="input__icon" aria-hidden="true"></i>
+          <input id="email" type="email" class="input__control" placeholder="name@company.com" autocomplete="email">
+          <button type="button" class="input__clear" aria-label="Clear email">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="signup-form__actions">
+        <button type="button" class="btn btn--secondary">Cancel</button>
+        <button type="submit" class="btn btn--primary">
+          Get Started
+          <i data-lucide="arrow-right" aria-hidden="true"></i>
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    // Scan all data-lucide attributes on the page and replace each element
+    // with an inline SVG from the Lucide icon set. Must run after the DOM is
+    // ready — placing the script at the bottom of <body> guarantees this.
+    lucide.createIcons();
+  </script>
+</body>
+</html>

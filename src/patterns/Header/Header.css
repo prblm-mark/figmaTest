@@ -1,0 +1,106 @@
+/* Header component
+ * Figma node: 68:5443 — "Header" component set
+ * Variants: State (Default | Tooltip | Discard) × Device (Default | Mobile)
+ * Composes: InfoLabel, Button
+ */
+
+/* ── Container ───────────────────────────────────────── */
+
+.header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-5);             /* 16px */
+  width: 100%;
+}
+
+/* ── Title group ─────────────────────────────────────── */
+/* display:contents makes this wrapper invisible to the desktop
+   flex layout — title and info slot appear as direct flex children.
+   Switched to flex-col at mobile via @media (max-width: 767px) below. */
+
+.header__title-group {
+  display: contents;
+}
+
+/* ── Title ───────────────────────────────────────────── */
+
+.header__title {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fluid-xl);   /* 22px desktop / 20px mobile — fluid */
+  font-weight: var(--ai-font-bold);     /* 700 */
+  line-height: var(--ai-leading-3);     /* 32px */
+  color: var(--ai-text-primary);
+  flex-shrink: 0;
+}
+
+/* ── InfoLabel slot (fills remaining space on desktop) ── */
+
+.header__info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+/* ── Actions slot (right-aligned) ────────────────────── */
+
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);             /* 8px */
+  flex-shrink: 0;
+}
+
+/* ── Tooltip positioning ─────────────────────────────── */
+/* Visual styles live in Tooltip.css — Header only owns placement */
+
+.header .tooltip {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 10;
+}
+
+/* ── Discard button text truncation ──────────────────── */
+
+.header__discard-short { display: none; }
+
+@media (max-width: 767px) {
+  .header__discard-full { display: none; }
+  .header__discard-short { display: inline; }
+}
+
+/* ── Mobile layout ───────────────────────────────────── */
+
+@media (max-width: 767px) {
+  .header {
+    align-items: flex-end;
+    gap: var(--ai-spacing-3);           /* 8px */
+  }
+
+  .header__title-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ai-spacing-1);           /* 4px */
+    flex: 1;
+    min-width: 0;
+  }
+
+  .header__info {
+    flex: initial;
+  }
+
+  .header__actions {
+    align-self: stretch;
+    align-items: flex-end;
+  }
+
+  /* Buttons shrink to sm size at mobile (Figma: h=32px, px=12px, text=fluid-xxs) */
+  .header__actions .btn {
+    min-height: var(--ai-spacing-7);      /* 32px */
+    padding: 0 var(--ai-spacing-4);       /* 12px */
+    font-size: var(--ai-font-fluid-xxs);  /* 12px */
+  }
+}

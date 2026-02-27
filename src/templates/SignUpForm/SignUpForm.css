@@ -1,0 +1,35 @@
+/* SignUpForm component
+ * Figma node: 96:2429 — "Sign Up form"
+ * Composes: Header, InfoLabel, Input, Button
+ * Sub-component styles live in their own files — only layout here.
+ */
+
+/* ── Container ───────────────────────────────────────── */
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-6);             /* 24px — itemSpacing */
+  width: 371px;
+  max-width: 100%;
+}
+
+/* ── Header override (contextual — Case B) ───────────── */
+/* Figma amends the Header instance: title fills container,
+   pushing InfoLabel to the far right. Not a formal Header variant. */
+
+.signup-form .header__title {
+  flex: 1;
+}
+
+.signup-form .header__info {
+  flex: none;
+}
+
+/* ── Actions row ─────────────────────────────────────── */
+
+.signup-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--ai-spacing-3);             /* 8px */
+}

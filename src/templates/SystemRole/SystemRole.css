@@ -1,0 +1,534 @@
+/* SystemRole template
+ * Figma nodes: Default 163:3894, Minimised 169:2466
+ * Variants: Default (full-screen modal) | Minimised (400px floating panel, draggable/resizable)
+ * Composes: Header, VersionHistory, PromptTemplates, Button, InfoLabel
+ */
+
+/* ── Backdrop overlay ─────────────────────────────────── */
+
+.system-role-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(17, 25, 40, 0.5); /* --ai-surface-invert hue at 50% opacity — approved */
+  backdrop-filter: blur(4px);              /* approved — no --ai-blur-* token */
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--ai-transition-default);
+}
+
+.system-role-overlay--open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── Modal container ──────────────────────────────────── */
+
+.system-role {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 101;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);               /* 16px between top bar and body */
+  width: calc(100vw - var(--ai-spacing-7) * 2);
+  max-width: 1512px;
+  height: calc(100vh - var(--ai-spacing-7) * 2);
+  max-height: 973px;
+  padding: var(--ai-spacing-8);           /* 40px all sides — Default variant */
+  background-color: var(--ai-surface-primary);
+  border-radius: var(--ai-radius-xl);
+  box-shadow: 0 0 20px rgba(0,0,0,0.05), 0 2px 2px rgba(0,0,0,0.1); /* approved — no --ai-shadow-* token */
+  overflow: hidden;
+  container-type: inline-size;                      /* enable container queries */
+  container-name: system-role;                      /* named to avoid ambiguity */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--ai-transition-default); /* layout switch (min/max) is instant */
+}
+
+.system-role--open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Suppress transition during JS drag/resize */
+.system-role--no-transition {
+  transition: none !important;
+}
+
+/* ── Top bar (header + controls) ─────────────────────── */
+
+.system-role__top {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--ai-spacing-7);               /* 32px — matches body gap so columns align */
+  flex-shrink: 0;
+}
+
+/* Header fills available space first — mirrors .system-role__prompt */
+.system-role__top .header {
+  order: 0;
+  flex: 9999 1 0;
+  max-width: 960px;
+  min-width: 0;
+}
+
+/* Controls absorb excess when header is capped — mirrors .system-role__sidebar */
+.system-role__controls {
+  order: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0;                                 /* no gap between icon buttons in Default */
+  flex: 1 1 368px;
+  min-width: 0;
+}
+
+/* Default mode: hide maximize button */
+.system-role__maximize-btn {
+  display: none;
+}
+
+/* ── Body (prompt + sidebar) ──────────────────────────── */
+
+.system-role__body {
+  display: flex;
+  flex-direction: row;
+  gap: var(--ai-spacing-7);               /* 32px */
+  flex: 1;
+  min-height: 0;                          /* allow flex children to use scroll */
+  overflow: hidden;
+}
+
+/* ── Prompt area ──────────────────────────────────────── */
+
+.system-role__prompt {
+  flex: 9999 1 540px;
+  max-width: 960px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background-color: var(--ai-surface-primary);
+  border-radius: var(--ai-radius-lg);
+  box-shadow: inset 0 0 0 1px var(--ai-border-secondary); /* inset shadow avoids border+overflow:hidden aliasing */
+  overflow: hidden;
+}
+
+.system-role__prompt:focus-within {
+  box-shadow: inset 0 0 0 1px var(--ai-border-primary);
+}
+
+.system-role__prompt--template-linked {
+  box-shadow: inset 0 0 0 1px var(--ai-border-primary);
+}
+
+.system-role__textarea {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  border: none;
+  outline: none;
+  padding: var(--ai-spacing-6);           /* 24px */
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-2);
+  color: var(--ai-text-primary);          /* Figma: text-black — approved substitution */
+  background-color: transparent;          /* prompt sets bg; transparent exposes inset box-shadow */
+  resize: none;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ai-surface-secondary) transparent;
+}
+
+.system-role__textarea:focus-visible {
+  outline: none;
+}
+
+.system-role__textarea::-webkit-scrollbar {
+  width: 6px;
+}
+
+.system-role__textarea::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.system-role__textarea::-webkit-scrollbar-thumb {
+  background-color: var(--ai-surface-secondary);
+  border-radius: var(--ai-radius-full);
+}
+
+/* ── Sidebar ──────────────────────────────────────────── */
+
+.system-role__sidebar {
+  flex: 1 1 368px;                                  /* grow to absorb prompt overflow; basis 368px */
+  min-width: 0;                                     /* allow full shrink (CQ fires first) */
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-6);               /* 24px between VersionHistory and PromptTemplates */
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ai-surface-secondary) transparent;
+}
+
+.system-role__sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.system-role__sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.system-role__sidebar::-webkit-scrollbar-thumb {
+  background-color: var(--ai-surface-secondary);
+  border-radius: var(--ai-radius-full);
+}
+
+/* ── Body scrollbar (stacked/CQ layout) ──────────────── */
+
+.system-role__body {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ai-surface-secondary) transparent;
+}
+
+.system-role__body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.system-role__body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.system-role__body::-webkit-scrollbar-thumb {
+  background-color: var(--ai-surface-secondary);
+  border-radius: var(--ai-radius-full);
+}
+
+/* ── Resize handle (Minimised only — left edge drag) ─── */
+
+.system-role__resize-handle {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  cursor: ew-resize;
+  border-radius: var(--ai-radius-xl) 0 0 var(--ai-radius-xl);
+  z-index: 2;
+}
+
+/* ── Dirty state — header button swap ─────────────────── */
+
+.system-role__btn-discard,
+.system-role__btn-save {
+  display: none;
+}
+
+.system-role--dirty .system-role__btn-default {
+  display: none;
+}
+
+.system-role--dirty .system-role__btn-discard,
+.system-role--dirty .system-role__btn-save {
+  display: inline-flex;
+}
+
+/* ═══════════════════════════════════════════════════════
+   Minimised mode overrides
+   ═══════════════════════════════════════════════════════ */
+
+/* Dimensions (JS sets left/top/transform when switching to Minimised) */
+.system-role--minimised {
+  width: 368px;
+  max-width: calc(100vw - var(--ai-spacing-5) * 2);
+  height: calc(100vh - var(--ai-spacing-5) * 2);
+  max-height: calc(100vh - var(--ai-spacing-10) * 2);
+  padding: var(--ai-spacing-5) var(--ai-spacing-6) var(--ai-spacing-6); /* pt-16 px-24 pb-24 */
+  overflow: hidden;
+}
+
+/* Top bar becomes a column: controls row first, header row below */
+.system-role--minimised .system-role__top {
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0;
+  cursor: move;
+}
+
+/* Controls jump above header, span full width */
+.system-role--minimised .system-role__controls {
+  order: -1;
+  justify-content: flex-end;
+  flex: none;                            /* reset flex-basis so it doesn't become a height in column layout */
+  width: 100%;
+  gap: var(--ai-spacing-2);              /* 6px gap between icon buttons in Minimised */
+}
+
+/* Icon buttons shrink from 40px to 32px in Minimised */
+.system-role--minimised .system-role__controls .btn--icon {
+  width: var(--ai-spacing-7);            /* 32px */
+  min-height: var(--ai-spacing-7);       /* 32px */
+}
+
+/* Swap minimize/maximize icon visibility */
+.system-role--minimised .system-role__minimize-btn {
+  display: none;
+}
+
+.system-role--minimised .system-role__maximize-btn {
+  display: inline-flex;
+}
+
+/* Header gets full width with mobile-style bottom alignment */
+.system-role--minimised .system-role__top .header {
+  order: 0;
+  flex: none;
+  align-items: flex-end;
+  gap: var(--ai-spacing-3);
+  width: 100%;
+}
+
+/* Title group stacks title + info-label vertically (mirrors mobile Header layout) */
+.system-role--minimised .header__title-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-1);              /* 4px */
+  flex: 1;
+  min-width: 0;
+}
+
+.system-role--minimised .header__info {
+  flex: initial;
+}
+
+.system-role--minimised .header__actions {
+  align-self: stretch;
+  align-items: flex-end;
+}
+
+/* Shorten "Discard Changes" → "Discard" in compact mode (Case B contextual override) */
+.system-role--minimised .header__discard-full { display: none; }
+.system-role--minimised .header__discard-short { display: inline; }
+
+/* Header action buttons shrink to sm size in Minimised */
+.system-role--minimised .header__actions .btn {
+  min-height: var(--ai-spacing-7);       /* 32px */
+  padding: 0 var(--ai-spacing-4);        /* 12px */
+  font-size: var(--ai-font-fluid-xxs);
+}
+
+/* Body stacks vertically: prompt above sidebar; fills panel height */
+.system-role--minimised .system-role__body {
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Prompt area gets natural height */
+.system-role--minimised .system-role__prompt {
+  height: auto;
+  overflow: hidden;               /* keep border-radius clipping — visible was bleeding textarea bg over corners */
+  flex: none;
+}
+
+/* Textarea: JS sets height on minimise (1/3 panel); 80px floor prevents collapse */
+.system-role--minimised .system-role__textarea {
+  min-height: var(--ai-spacing-13);       /* 5rem / 80px floor */
+  flex: none;
+  padding: var(--ai-spacing-5);           /* 16px — updated in Figma (was 24px) */
+}
+
+/* Sidebar resets to full panel width; fills remaining body height and scrolls */
+.system-role--minimised .system-role__sidebar {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Resize handle appears in Minimised mode */
+.system-role--minimised .system-role__resize-handle {
+  display: block;
+}
+
+/* ── Bottom panel resize handle (Minimised only) ───── */
+
+.system-role__resize-handle-bottom {
+  display: none;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  cursor: ns-resize;
+  border-radius: 0 0 var(--ai-radius-xl) var(--ai-radius-xl);
+  z-index: 2;
+}
+
+.system-role--minimised .system-role__resize-handle-bottom {
+  display: block;
+}
+
+/* ── Textarea bottom drag handle (Minimised only) ───── */
+
+.system-role__textarea-resize-handle {
+  display: none;
+  height: 6px;
+  cursor: ns-resize;
+  flex-shrink: 0;
+  background: transparent;
+}
+
+.system-role--minimised .system-role__textarea-resize-handle {
+  display: block;
+}
+
+/* ═══════════════════════════════════════════════════════
+   Mobile shell (≤767px)
+   Shell-only — container queries handle internal layout.
+   Overlay, modal position/size, and resize handles only.
+   ═══════════════════════════════════════════════════════ */
+
+@media (max-width: 767px) {
+
+  /* Sibling element — container queries cannot target siblings */
+  .system-role-overlay {
+    display: none;
+  }
+
+  /* Container itself — container queries cannot self-target */
+  .system-role {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transform: none;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    border-radius: 0;
+    padding: var(--ai-spacing-5) var(--ai-spacing-6) var(--ai-spacing-6);
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  /* Resize handles — kept here (shell-level interaction concern) */
+  .system-role .system-role__resize-handle,
+  .system-role .system-role__resize-handle-bottom,
+  .system-role .system-role__textarea-resize-handle {
+    display: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   Container query — stacked layout when .system-role__prompt ≤ 540px
+   Threshold = 540 (prompt) + 32 (gap) + 368 (sidebar) = 940px content-box.
+   Fires at ~1084px viewport (modal = calc(100vw - 64px), padding = 80px).
+   All rules scoped to exclude .system-role--minimised.
+   ═══════════════════════════════════════════════════════ */
+
+@container system-role (max-width: 940px) {
+
+  /* Top bar: column stack — controls above, header below */
+  .system-role:not(.system-role--minimised) .system-role__top {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0;
+    cursor: default;
+  }
+
+  /* Controls: full-width row above header, no gap between buttons */
+  .system-role:not(.system-role--minimised) .system-role__controls {
+    order: -1;
+    justify-content: flex-end;
+    flex: none;                          /* reset flex-basis so it doesn't become a height in column layout */
+    width: 100%;
+    max-width: none;
+    gap: 0;
+  }
+
+  /* Icon buttons: 32px */
+  .system-role:not(.system-role--minimised) .system-role__controls .btn--icon {
+    width: var(--ai-spacing-7);
+    min-height: var(--ai-spacing-7);
+  }
+
+  /* Header: full width, bottom-aligned */
+  .system-role:not(.system-role--minimised) .system-role__top .header {
+    order: 0;
+    flex: none;
+    align-items: flex-end;
+    gap: var(--ai-spacing-3);
+    width: 100%;
+  }
+
+  /* Title group: stack title + InfoLabel vertically */
+  .system-role:not(.system-role--minimised) .system-role__top .header__title-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ai-spacing-1);
+    flex: 1;
+    min-width: 0;
+  }
+
+  .system-role:not(.system-role--minimised) .system-role__top .header__info {
+    flex: initial;
+  }
+
+  .system-role:not(.system-role--minimised) .system-role__top .header__actions {
+    align-self: stretch;
+    align-items: flex-end;
+  }
+
+  /* Header action buttons: 32px height, compact */
+  .system-role:not(.system-role--minimised) .system-role__top .header__actions .btn {
+    min-height: var(--ai-spacing-7);
+    padding: 0 var(--ai-spacing-4);
+    font-size: var(--ai-font-fluid-xxs);
+  }
+
+  /* "Discard Changes" → "Discard" */
+  .system-role:not(.system-role--minimised) .system-role__top .header__discard-full {
+    display: none;
+  }
+  .system-role:not(.system-role--minimised) .system-role__top .header__discard-short {
+    display: inline;
+  }
+
+  /* Body: vertical stack; body itself scrolls so stacked content is always reachable */
+  .system-role:not(.system-role--minimised) .system-role__body {
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  /* Prompt: natural height */
+  .system-role:not(.system-role--minimised) .system-role__prompt {
+    flex: none;
+    height: auto;
+  }
+
+  /* Textarea: compact padding, floor height */
+  .system-role:not(.system-role--minimised) .system-role__textarea {
+    padding: var(--ai-spacing-5);
+    min-height: 12rem;
+    flex: none;
+    height: auto;
+  }
+
+  /* Sidebar: full width, natural height; clear max-width constraint */
+  .system-role:not(.system-role--minimised) .system-role__sidebar {
+    width: 100%;
+    max-width: none;
+    overflow: visible;
+  }
+}

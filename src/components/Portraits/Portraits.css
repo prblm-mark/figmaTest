@@ -1,0 +1,13 @@
+/* Portrait component
+ * Figma: "Portraits" component set — see Portraits.figma-notes.md for variant nodes
+ * Renders a photo that fills its containing element.
+ * Clipping to a circle shape is the parent Avatar's responsibility (overflow:hidden + border-radius).
+ */
+
+.portrait {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}

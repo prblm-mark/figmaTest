@@ -1,0 +1,130 @@
+/* VersionHistory component
+ * Figma node: 157:4227 — "VersionHistory" (component set)
+ * Variants: Property 1=Default (5 rows, collapsed), Property 1=Expanded (12 rows)
+ * Composes: VersionHistoryRow, Avatar, Pill
+ */
+
+.version-history {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-1);                 /* 0.25rem (4px) between sections */
+  border-radius: var(--ai-radius-lg);
+  position: relative;
+}
+
+/* ── Heading section ──────────────────────────── */
+
+.version-history__heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-2);                 /* 0.375rem (6px) between title row and subtitle row */
+  padding-bottom: var(--ai-spacing-2);
+  width: 100%;
+}
+
+.version-history__heading-title {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);                 /* 0.5rem (8px) between icon and title */
+}
+
+.version-history__icon-history {
+  width: var(--ai-icon-size-md);           /* 1.25rem (20px) — BUG FIX: was --ai-spacing-6 (24px) */
+  height: var(--ai-icon-size-md);
+  color: var(--ai-icon-primary);
+  flex-shrink: 0;
+}
+
+.version-history__heading-title-text {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-sm);       /* 1rem (16px) */
+  font-weight: var(--ai-font-bold);         /* 700 */
+  line-height: var(--ai-leading-1);         /* 1rem (16px) */
+  color: var(--ai-text-primary);
+}
+
+.version-history__heading-subtitle {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.version-history__heading-subtitle-text {
+  flex: 1;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);       /* 0.875rem (14px) */
+  font-weight: var(--ai-font-regular);      /* 400 */
+  line-height: var(--ai-leading-2);         /* 1.5rem (24px) */
+  color: var(--ai-text-contrast);
+}
+
+.version-history__chevron {
+  width: var(--ai-icon-size-sm);           /* 1rem (16px) */
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-contrast);
+  flex-shrink: 0;
+}
+
+/* Expanded — chevron points down (no transition per design) */
+.version-history--expanded .version-history__chevron {
+  transform: rotate(90deg);
+}
+
+/* ── Row list (with vertical timeline line) ───── */
+
+.version-history__rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-1);                 /* 0.25rem (4px) */
+  position: relative;
+}
+
+/* Vertical timeline line — centered behind avatars
+ * calc: 16px (row h-padding) + 12px (half of 24px avatar) = 28px */
+.version-history__timeline {
+  position: absolute;
+  left: calc(var(--ai-spacing-5) + var(--ai-spacing-6) / 2);
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: var(--ai-border-secondary);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.version-history__rows .version-history-row {
+  position: relative;
+  z-index: 1;
+}
+
+/* Extra rows hidden in collapsed (Default) state */
+.version-history:not(.version-history--expanded) .version-history__row-extra {
+  display: none;
+}
+
+/* ── Footer ("Show older" / "Show less") ──────── */
+
+.version-history__footer {
+  display: flex;
+  align-items: center;
+  padding: var(--ai-spacing-3) var(--ai-spacing-5); /* 8px 16px — matches row padding */
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
+.version-history__footer-label {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);      /* 0.75rem (12px) */
+  font-weight: var(--ai-font-regular);      /* 400 */
+  line-height: var(--ai-leading-1);         /* 1rem (16px) */
+  color: var(--ai-text-primary);
+  letter-spacing: 0.12px;                   /* optical, kept as px */
+}

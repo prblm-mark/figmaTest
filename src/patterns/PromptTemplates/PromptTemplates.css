@@ -1,0 +1,50 @@
+/* ── PromptTemplates ─────────────────────────────────────────────────────────
+   Figma node: 163:3565
+   Single variant — heading + scrollable list of PromptTemplateItem rows
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* ─── Panel shell ─────────────────────────────────────────────────────────── */
+
+.prompt-templates {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+  width: 100%;
+}
+
+/* ─── Heading block ───────────────────────────────────────────────────────── */
+
+.prompt-templates__heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+}
+
+.prompt-templates__title {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-bold);
+  font-size: var(--ai-font-fixed-sm);
+  line-height: var(--ai-leading-1);
+  color: var(--ai-text-primary);
+}
+
+.prompt-templates__description {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-2);
+  color: var(--ai-text-contrast);
+}
+
+/* ─── Item list ───────────────────────────────────────────────────────────── */
+
+.prompt-templates__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
