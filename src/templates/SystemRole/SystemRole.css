@@ -359,3 +359,128 @@
 .system-role--minimised .system-role__textarea-resize-handle {
   display: block;
 }
+
+/* ═══════════════════════════════════════════════════════
+   Mobile layout (≤767px)
+   CSS-only — media query replaces JS class toggle.
+   No drag/resize handles. Overlay hidden.
+   ═══════════════════════════════════════════════════════ */
+
+@media (max-width: 767px) {
+
+  /* Hide backdrop — modal fills viewport */
+  .system-role-overlay {
+    display: none;
+  }
+
+  /* Full-viewport panel: remove centered float, fill screen */
+  .system-role {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transform: none;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    padding: var(--ai-spacing-5) var(--ai-spacing-6) var(--ai-spacing-6); /* pt-16 px-24 pb-24 */
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  /* Top bar: controls above, header below (column layout — same as Minimised) */
+  .system-role .system-role__top {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0;
+    cursor: default;          /* not draggable on mobile */
+  }
+
+  /* Controls: above header, no gap between buttons */
+  .system-role .system-role__controls {
+    order: -1;
+    justify-content: flex-end;
+    width: 100%;
+    max-width: none;
+    gap: 0;
+  }
+
+  /* Icon buttons: 32px (down from 40px) */
+  .system-role .system-role__controls .btn--icon {
+    width: var(--ai-spacing-7);
+    min-height: var(--ai-spacing-7);
+  }
+
+  /* Header: full width, bottom-aligned */
+  .system-role .system-role__top .header {
+    order: 0;
+    flex: none;
+    align-items: flex-end;
+    gap: var(--ai-spacing-3);  /* 8px */
+    width: 100%;
+  }
+
+  /* Title group: stack title + InfoLabel vertically */
+  .system-role .system-role__top .header__title-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ai-spacing-1);  /* 4px */
+    flex: 1;
+    min-width: 0;
+  }
+
+  .system-role .system-role__top .header__info {
+    flex: initial;
+  }
+
+  .system-role .system-role__top .header__actions {
+    align-self: stretch;
+    align-items: flex-end;
+  }
+
+  /* Header action buttons: 32px height, compact */
+  .system-role .system-role__top .header__actions .btn {
+    min-height: var(--ai-spacing-7);
+    padding: 0 var(--ai-spacing-4);
+    font-size: var(--ai-font-fluid-xxs);
+  }
+
+  /* "Discard Changes" → "Discard" in compact header */
+  .system-role .system-role__top .header__discard-full { display: none; }
+  .system-role .system-role__top .header__discard-short { display: inline; }
+
+  /* Body: vertical stack, natural height (parent .system-role scrolls) */
+  .system-role .system-role__body {
+    flex-direction: column;
+    overflow: visible;
+    flex: none;
+  }
+
+  /* Prompt area: natural height */
+  .system-role .system-role__prompt {
+    flex: none;
+    height: auto;
+  }
+
+  /* Textarea: compact padding, floor height */
+  .system-role .system-role__textarea {
+    padding: var(--ai-spacing-5);  /* 16px — same as Minimised */
+    min-height: 12rem;
+    flex: none;
+    height: auto;
+  }
+
+  /* Sidebar: full width, natural height */
+  .system-role .system-role__sidebar {
+    width: 100%;
+    overflow: visible;
+  }
+
+  /* Resize handles: hidden on mobile (not draggable/resizable) */
+  .system-role .system-role__resize-handle,
+  .system-role .system-role__resize-handle-bottom,
+  .system-role .system-role__textarea-resize-handle {
+    display: none;
+  }
+}

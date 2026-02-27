@@ -6,13 +6,15 @@
 - **Page node:** `1:769` (Components page)
 - **Default variant:** `163:3894`
 - **Minimised variant:** `169:2466`
+- **Mobile variant:** `176:3242`
 
 ## Variant Matrix
 
-| Variant | Node | Size | Padding | Controls | Notes |
-|---|---|---|---|---|---|
-| Default | 163:3894 | 1512×973px | 40px all (`--ai-spacing-8`) | `sidebar` + `x` (40×40px) | Full-screen modal with blurred backdrop |
-| Minimised | 169:2466 | 400px w × 1360px h | pt-16 px-24 pb-24 | `maximize-2` + `x` (32×32px) | Floating compact panel, draggable, left-edge resizable |
+| Variant | Node | Size | Padding | Controls | Activation | Notes |
+|---|---|---|---|---|---|---|
+| Default | 163:3894 | 1512×973px | 40px all (`--ai-spacing-8`) | `panel-right-dashed` + `x` (40×40px) | JS `.system-role--open` | Full-screen modal with blurred backdrop |
+| Minimised | 169:2466 | 400px w × 1360px h | pt-16 px-24 pb-24 | `maximize-2` + `x` (32×32px) | JS `.system-role--minimised` | Floating compact panel, draggable, left-edge resizable |
+| Mobile | 176:3242 | Full viewport | pt-16 px-24 pb-24 | `panel-right-dashed` + `x` (32×32px) | CSS `@media (max-width: 767px)` | Full-viewport CSS-only layout, no resize/drag, no overlay |
 
 ## CSS Class Mapping
 
@@ -138,3 +140,4 @@ Header variant in Figma.
 - On minimise, JS sets `modal.style.height = 75vh` and `textarea.style.height = panelHeight/3` to give a concrete starting layout. Both heights are independently resizable afterward.
 - On maximise, `modal.style.cssText = ''` clears all inline styles; `textarea.style.height = ''` is also cleared so it fills the flex prompt area naturally.
 - The bottom resize handle grows the panel downward; sidebar fills remaining body height via `flex: 1` and scrolls internally.
+- **Mobile variant (176:3242):** CSS-only — no additional JS. The `panel-right-dashed` minimize button visible in Default mode is also the correct button for mobile (Figma updated to match). Resize handles, drag, and overlay are suppressed via `@media (max-width: 767px)`. The modal fills the full viewport and scrolls vertically. Layout mirrors Minimised visually but is activated by screen width rather than a JS class toggle.
