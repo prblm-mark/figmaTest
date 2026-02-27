@@ -111,7 +111,7 @@ named colors in component CSS.** Every visual value must come from the list belo
 | `--ai-btn-secondary-text-hover` | `#1F2A37` | Secondary hover text |
 | `--ai-btn-tertiary-bg` | `transparent` | Tertiary background |
 | `--ai-btn-tertiary-bg-hover` | `#F9F9FB` | Tertiary hover + focus background |
-| `--ai-btn-tertiary-bg-pressed` | `#F9F9FB` | Tertiary pressed background |
+| `--ai-btn-tertiary-bg-pressed` | `#E5E7EB` | Tertiary pressed background |
 | `--ai-btn-tertiary-border` | `rgba(0,0,0,0)` | Tertiary default border |
 | `--ai-btn-tertiary-border-hover` | `rgba(0,0,0,0)` | Tertiary hover border |
 | `--ai-btn-tertiary-text` | `#1F2A37` | Tertiary text |
@@ -175,7 +175,7 @@ tokens are **theme-invariant** (same in both themes).
 | `--ai-btn-secondary-text` | `#1F2A37` | `#FFFFFF` |
 | `--ai-btn-secondary-text-hover` | `#1F2A37` | `#FFFFFF` |
 | `--ai-btn-tertiary-bg-hover` | `#F9F9FB` | `#1F2A37` |
-| `--ai-btn-tertiary-bg-pressed` | `#F9F9FB` | `#1F2A37` |
+| `--ai-btn-tertiary-bg-pressed` | `#E5E7EB` | `#1F2A37` |
 | `--ai-btn-tertiary-text` | `#1F2A37` | `#FFFFFF` |
 | `--ai-btn-tertiary-text-hover` | `#1F2A37` | `#FFFFFF` |
 | `--ai-btn-bg-disabled` | `#D1D5DB` | `#6B7280` |

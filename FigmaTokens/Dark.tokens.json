@@ -1253,7 +1253,7 @@
       },
       "tertiary-bg-pressed": {
         "$type": "color",
-        "$value": "{surface.minimal}",
+        "$value": "{surface.secondary}",
         "$extensions": {
           "com.figma.variableId": "VariableID:184:3430",
           "com.figma.scopes": [
