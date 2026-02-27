@@ -43,7 +43,13 @@ StyleDictionary.registerTransform({
   filter: (token) => token.$type === 'color',
   transform: (token) => {
     const v = token.$value;
-    if (v && typeof v === 'object' && v.hex) return v.hex.toLowerCase();
+    if (v && typeof v === 'object' && v.hex) {
+      if (v.alpha != null && v.alpha < 1) {
+        const [r, g, b] = v.components;
+        return `rgba(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)}, ${v.alpha})`;
+      }
+      return v.hex.toLowerCase();
+    }
     if (typeof v === 'string') return v; // already a hex string
     return v;
   },
