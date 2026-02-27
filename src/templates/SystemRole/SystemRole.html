@@ -444,6 +444,9 @@ When users ask about specific topics, focus your answers on what is directly rel
     var textarea     = modal.querySelector('.system-role__textarea');
     var discardBtn   = modal.querySelector('.system-role__btn-discard');
     var saveBtn      = modal.querySelector('.system-role__btn-save');
+    var promptWrap   = modal.querySelector('.system-role__prompt');
+    var sidebarWrap  = modal.querySelector('.system-role__sidebar');
+    var activeTemplate = null;   // currently linked .prompt-template-item element
     var resizeHandle          = modal.querySelector('.system-role__resize-handle');
     var bottomResizeHandle    = modal.querySelector('.system-role__resize-handle-bottom');
     var textareaResizeHandle  = modal.querySelector('.system-role__textarea-resize-handle');
@@ -485,6 +488,13 @@ When users ask about specific topics, focus your answers on what is directly rel
     });
 
     discardBtn.addEventListener('click', function () {
+      // Clear template link first (before savedValue revert)
+      if (activeTemplate) {
+        activeTemplate.classList.remove('prompt-template-item--selected');
+        activeTemplate.setAttribute('aria-selected', 'false');
+        activeTemplate = null;
+        promptWrap.classList.remove('system-role__prompt--template-linked');
+      }
       textarea.value = savedValue;
       modal.classList.remove('system-role--dirty');
     });
@@ -774,22 +784,45 @@ When users ask about specific topics, focus your answers on what is directly rel
 
     // ─── Prompt Templates — selection (radio, toggleable) ─────────────────────
 
-    function handlePTItemClick(e, list) {
-      if (e.target.closest('.prompt-template-item__chevron-btn')) return;
+    function applyTemplate(item) {
+      var desc = item.querySelector('.prompt-template-item__description');
+      if (!desc) return;
+      textarea.value = desc.textContent.trim();
+      promptWrap.classList.add('system-role__prompt--template-linked');
+      activeTemplate = item;
+      textarea.dispatchEvent(new Event('input'));  // re-sync dirty state
+      textarea.focus();
+    }
 
+    function clearTemplate() {
+      if (!activeTemplate) return;
+      activeTemplate.classList.remove('prompt-template-item--selected');
+      activeTemplate.setAttribute('aria-selected', 'false');
+      activeTemplate = null;
+      textarea.value = savedValue;
+      promptWrap.classList.remove('system-role__prompt--template-linked');
+      textarea.dispatchEvent(new Event('input'));  // re-sync dirty state
+    }
+
+    function handlePTItemClick(e) {
+      if (e.target.closest('.prompt-template-item__chevron-btn')) return;
       var item = e.target.closest('.prompt-template-item');
       if (!item) return;
 
-      var isSelected = item.classList.contains('prompt-template-item--selected');
+      var isAlreadySelected = item.classList.contains('prompt-template-item--selected');
 
-      list.querySelectorAll('.prompt-template-item').forEach(function (i) {
+      // Deselect all items first
+      modal.querySelectorAll('.prompt-template-item').forEach(function (i) {
         i.classList.remove('prompt-template-item--selected');
         i.setAttribute('aria-selected', 'false');
       });
 
-      if (!isSelected) {
+      if (isAlreadySelected) {
+        clearTemplate();           // toggle off — revert prompt
+      } else {
         item.classList.add('prompt-template-item--selected');
         item.setAttribute('aria-selected', 'true');
+        applyTemplate(item);       // load content + link prompt
       }
     }
 
@@ -826,14 +859,14 @@ When users ask about specific topics, focus your answers on what is directly rel
     var ptList  = ptPanel.querySelector('.prompt-templates__list');
 
     ptList.addEventListener('click', function (e) {
-      handlePTItemClick(e, ptList);
+      handlePTItemClick(e);
     });
 
     ptList.addEventListener('keydown', function (e) {
       if ((e.key === 'Enter' || e.key === ' ') &&
           !e.target.closest('.prompt-template-item__chevron-btn')) {
         e.preventDefault();
-        handlePTItemClick(e, ptList);
+        handlePTItemClick(e);
       }
     });
 
@@ -848,6 +881,13 @@ When users ask about specific topics, focus your answers on what is directly rel
       if (!e.target.closest('#ptPanel')) {
         ptList.querySelectorAll('.prompt-template-item--expanded').forEach(collapsePTItem);
       }
+    });
+
+    // Clear template link when clicking outside both the prompt and sidebar panels
+    document.addEventListener('click', function (e) {
+      if (!activeTemplate) return;
+      if (promptWrap.contains(e.target) || sidebarWrap.contains(e.target)) return;
+      clearTemplate();
     });
   </script>
 </body>
