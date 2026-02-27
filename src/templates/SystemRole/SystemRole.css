@@ -259,6 +259,7 @@
 .system-role--minimised .system-role__controls {
   order: -1;
   justify-content: flex-end;
+  flex: none;                            /* reset flex-basis so it doesn't become a height in column layout */
   width: 100%;
   gap: var(--ai-spacing-2);              /* 6px gap between icon buttons in Minimised */
 }
@@ -442,6 +443,7 @@
   .system-role:not(.system-role--minimised) .system-role__controls {
     order: -1;
     justify-content: flex-end;
+    flex: none;                          /* reset flex-basis so it doesn't become a height in column layout */
     width: 100%;
     max-width: none;
     gap: 0;
