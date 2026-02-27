@@ -86,7 +86,7 @@
   gap: 0;                                 /* no gap between icon buttons in Default */
   flex-shrink: 0;
   width: 100%;
-  max-width: 336px;
+  max-width: 368px;
 }
 
 /* Default mode: hide maximize button */
@@ -108,7 +108,8 @@
 /* ── Prompt area ──────────────────────────────────────── */
 
 .system-role__prompt {
-  flex: 1 1 540px;
+  flex: 9999 1 540px;
+  max-width: 960px;
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -159,8 +160,7 @@
 /* ── Sidebar ──────────────────────────────────────────── */
 
 .system-role__sidebar {
-  flex: 0 1 400px;                                  /* don't grow, do shrink, basis 400px */
-  max-width: 336px;                                 /* never wider than 336px */
+  flex: 1 1 368px;                                  /* grow to absorb prompt overflow; basis 368px */
   min-width: 0;                                     /* allow full shrink (CQ fires first) */
   display: flex;
   flex-direction: column;
@@ -423,12 +423,12 @@
 
 /* ═══════════════════════════════════════════════════════
    Container query — stacked layout when .system-role__prompt ≤ 540px
-   Threshold = 540 (prompt) + 32 (gap) + 336 (sidebar) = 908px content-box.
-   Fires at ~1052px viewport (modal = calc(100vw - 64px), padding = 80px).
+   Threshold = 540 (prompt) + 32 (gap) + 368 (sidebar) = 940px content-box.
+   Fires at ~1084px viewport (modal = calc(100vw - 64px), padding = 80px).
    All rules scoped to exclude .system-role--minimised.
    ═══════════════════════════════════════════════════════ */
 
-@container system-role (max-width: 908px) {
+@container system-role (max-width: 940px) {
 
   /* Top bar: column stack — controls above, header below */
   .system-role:not(.system-role--minimised) .system-role__top {
