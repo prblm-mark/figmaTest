@@ -91,7 +91,7 @@
     </div>
 
     <p class="demo-note">
-      Minimised mode: drag the header to reposition · drag the left edge to resize wider than 400px
+      Minimised mode: drag the header to reposition · drag the left edge to resize wider than 368px
     </p>
   </div>
 
@@ -578,7 +578,7 @@ When users ask about specific topics, focus your answers on what is directly rel
     // ─── Resize (left edge, Minimised only) ───────────────────────────────────
     //
     // Dragging the left edge grows the panel leftward; the right edge stays fixed.
-    // Minimum width: 400px.
+    // Minimum width: 368px.
 
     var isResizing         = false;
     var resizeStartX       = 0;
@@ -636,7 +636,7 @@ When users ask about specific topics, focus your answers on what is directly rel
 
       // Moving mouse left (x decreasing) increases width
       var dx       = resizeStartX - e.clientX;        // positive = moved left
-      var newWidth = Math.max(400, resizeStartWidth + dx);
+      var newWidth = Math.max(368, resizeStartWidth + dx);
       var newLeft  = resizeInitialRight - newWidth;
 
       modal.style.width     = newWidth + 'px';

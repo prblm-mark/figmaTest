@@ -239,7 +239,7 @@
 
 /* Dimensions (JS sets left/top/transform when switching to Minimised) */
 .system-role--minimised {
-  width: 400px;
+  width: 368px;
   max-width: calc(100vw - var(--ai-spacing-5) * 2);
   height: calc(100vh - var(--ai-spacing-5) * 2);
   max-height: calc(100vh - var(--ai-spacing-10) * 2);
