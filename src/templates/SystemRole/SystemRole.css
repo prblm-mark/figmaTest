@@ -113,13 +113,13 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
-  border: 1px solid var(--ai-surface-contrast);
   border-radius: var(--ai-radius-lg);
+  box-shadow: inset 0 0 0 1px var(--ai-border-secondary); /* inset shadow avoids border+overflow:hidden aliasing */
   overflow: hidden;
 }
 
 .system-role__prompt:focus-within {
-  border-color: var(--ai-border-primary);
+  box-shadow: inset 0 0 0 1px var(--ai-border-primary);
 }
 
 .system-role__textarea {
