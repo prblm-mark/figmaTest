@@ -183,6 +183,26 @@
   border-radius: var(--ai-radius-full);
 }
 
+/* ── Body scrollbar (stacked/CQ layout) ──────────────── */
+
+.system-role__body {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ai-surface-secondary) transparent;
+}
+
+.system-role__body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.system-role__body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.system-role__body::-webkit-scrollbar-thumb {
+  background-color: var(--ai-surface-secondary);
+  border-radius: var(--ai-radius-full);
+}
+
 /* ── Resize handle (Minimised only — left edge drag) ─── */
 
 .system-role__resize-handle {
