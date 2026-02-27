@@ -51,23 +51,30 @@
 
 | Figma Variable | CSS Variable | Role |
 |---|---|---|
-| `--ai-btn-primary` | `--ai-btn-primary` | Primary bg |
-| `--ai-btn-primary-hover` | `--ai-btn-primary-hover` | Primary hover bg |
-| `--ai-btn-primary-pressed` | `--ai-btn-primary-pressed` | Primary active bg |
-| `--ai-btn-secondary` | `--ai-btn-secondary` | Secondary/Tertiary bg; also explicit on Tertiary focus |
-| `--ai-btn-secondary-hover` | `--ai-btn-secondary-hover` | Secondary hover bg |
-| `--ai-surface-minimal` | `--ai-surface-minimal` | Tertiary hover bg — all variants (57:1794, 57:1848) |
-| `--ai-btn-secondary-pressed` | `--ai-btn-secondary-pressed` | Secondary/Tertiary active bg |
-| `--ai-btn-disabled` | `--ai-btn-disabled` | Disabled bg (all variants) |
-| `--ai-text-invert` | `--ai-text-invert` | Primary/Alert button text |
-| `--ai-text-primary` | `--ai-text-primary` | Secondary/Tertiary text |
-| `--ai-text-contrast` | `--ai-text-contrast` | Disabled text |
+| `--ai-btn-primary-bg` | `--ai-btn-primary-bg` | Primary bg |
+| `--ai-btn-primary-bg-hover` | `--ai-btn-primary-bg-hover` | Primary hover + focus bg |
+| `--ai-btn-primary-bg-pressed` | `--ai-btn-primary-bg-pressed` | Primary active bg |
+| `--ai-btn-primary-text` | `--ai-btn-primary-text` | Primary text (theme-invariant) |
+| `--ai-btn-primary-text-hover` | `--ai-btn-primary-text-hover` | Primary hover text |
+| `--ai-btn-secondary-bg` | `--ai-btn-secondary-bg` | Secondary bg (transparent) |
+| `--ai-btn-secondary-bg-hover` | `--ai-btn-secondary-bg-hover` | Secondary hover + focus bg |
+| `--ai-btn-secondary-bg-pressed` | `--ai-btn-secondary-bg-pressed` | Secondary active bg |
+| `--ai-btn-secondary-border` | `--ai-btn-secondary-border` | Secondary border (default + pressed + focus ring) |
+| `--ai-btn-secondary-border-hover` | `--ai-btn-secondary-border-hover` | Secondary hover border |
+| `--ai-btn-secondary-text` | `--ai-btn-secondary-text` | Secondary text |
+| `--ai-btn-secondary-text-hover` | `--ai-btn-secondary-text-hover` | Secondary hover text |
+| `--ai-btn-tertiary-bg` | `--ai-btn-tertiary-bg` | Tertiary bg (transparent); also focus bg |
+| `--ai-btn-tertiary-bg-hover` | `--ai-btn-tertiary-bg-hover` | Tertiary hover bg |
+| `--ai-btn-tertiary-bg-pressed` | `--ai-btn-tertiary-bg-pressed` | Tertiary active bg |
+| `--ai-btn-tertiary-text` | `--ai-btn-tertiary-text` | Tertiary text |
+| `--ai-btn-tertiary-text-hover` | `--ai-btn-tertiary-text-hover` | Tertiary hover text |
+| `--ai-btn-bg-disabled` | `--ai-btn-bg-disabled` | Disabled bg (all variants) |
+| `--ai-btn-text-disabled` | `--ai-btn-text-disabled` | Disabled text (all variants) |
+| `--ai-border-secondary` | `--ai-border-secondary` | Tertiary focus ring |
 | `--ai-text-error` | `--ai-text-error` | Alert Outline text |
-| `--ai-border-secondary` | `--ai-border-secondary` | Secondary border |
 | `--ai-border-error` | `--ai-border-error` | Alert Outline border |
 | `--ai-surface-error` | `--ai-surface-error` | Alert bg (maps from Figma `Red/500`) |
-| `--ai-surface-error-contrast` | `--ai-surface-error-contrast` | Alert Outline hover bg |
-| `--ai-surface-primary` | `--ai-surface-primary` | Alert Outline bg |
+| `--ai-surface-primary` | `--ai-surface-primary` | Alert Outline bg; inner border on primary/secondary focus |
 | `--ai-radius-md` | `--ai-radius-md` | Default corner radius (8px) |
 | `--ai-radius-sm` | `--ai-radius-sm` | Small button corner radius (4px) |
 | `--ai-spacing-8` | `--ai-spacing-8` | Base height (40px) |
@@ -92,10 +99,11 @@
 
 - `button/base` typography: `--ai-font-fluid-xs` (14px), `--ai-font-semibold` (600), `--ai-leading-1` (16px)
 - `button/sm` typography: `--ai-font-fluid-xxs` (12px), `--ai-font-semibold` (600), `--ai-leading-1` (16px)
-- Tertiary = white bg + **no border** (visually a ghost/text button)
-- Tertiary hover (all variants): `--ai-surface-minimal` bg; no border — unified under `.btn--tertiary:hover` (Figma: 57:1794, 57:1848)
-- Tertiary focus: explicit `background-color: --ai-btn-secondary` + border-primary + `box-shadow: 0 0 0 2px --ai-border-secondary`
-- Secondary = white bg + `--ai-border-secondary` (visually outlined)
+- Secondary = **transparent** bg + `--ai-btn-secondary-border` (visually outlined)
+- Tertiary = **transparent** bg + **no border** (ghost/text button); uses dedicated `--ai-btn-tertiary-*` tokens
+- Tertiary hover bg: `--ai-btn-tertiary-bg-hover` (#F9F9FB); focus ring: `0 0 0 2px --ai-border-secondary` (no inner white border)
+- Secondary and tertiary now have dedicated token sets — no longer sharing `--ai-btn-secondary-*`
+- Disabled: `--ai-btn-bg-disabled` for bg/border, `--ai-btn-text-disabled` for text (separate tokens)
 - Alert background uses Figma primitive `Red/500` → maps to `--ai-surface-error` (#ef4444)
 - `.btn--lg` does **not** exist in Figma — removed from implementation
 - Figma exports the component collection key as `compnonents` (typo — do not fix in tokens)

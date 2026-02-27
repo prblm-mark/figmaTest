@@ -33,70 +33,72 @@
 /* ── Primary ─────────────────────────────────────────── */
 
 .btn--primary {
-  background-color: var(--ai-btn-primary);
+  background-color: var(--ai-btn-primary-bg);
   color: var(--ai-btn-primary-text);
-  border-color: var(--ai-btn-primary);
+  border-color: transparent;
 }
 
 .btn--primary:hover {
-  background-color: var(--ai-btn-primary-hover);
-  border-color: var(--ai-btn-primary-hover);
+  background-color: var(--ai-btn-primary-bg-hover);
+  color: var(--ai-btn-primary-text-hover);
 }
 
 .btn--primary:active {
-  background-color: var(--ai-btn-primary-pressed);
-  border-color: var(--ai-btn-primary-pressed);
+  background-color: var(--ai-btn-primary-bg-pressed);
 }
 
 .btn--primary:focus-visible {
-  background-color: var(--ai-btn-primary-hover);
+  background-color: var(--ai-btn-primary-bg-hover);
   border: 2px solid var(--ai-surface-primary);
-  box-shadow: 0 0 0 2px var(--ai-surface-brand-light);
+  box-shadow: 0 0 0 2px var(--ai-btn-primary-bg-hover);
   outline: none;
 }
 
 /* ── Secondary ───────────────────────────────────────── */
 
 .btn--secondary {
-  background-color: var(--ai-btn-secondary);
-  color: var(--ai-text-primary);
-  border-color: var(--ai-border-secondary);
+  background-color: var(--ai-btn-secondary-bg);
+  color: var(--ai-btn-secondary-text);
+  border-color: var(--ai-btn-secondary-border);
 }
 
 .btn--secondary:hover {
-  background-color: var(--ai-btn-secondary-hover);
+  background-color: var(--ai-btn-secondary-bg-hover);
+  border-color: var(--ai-btn-secondary-border-hover);
+  color: var(--ai-btn-secondary-text-hover);
 }
 
 .btn--secondary:active {
-  background-color: var(--ai-btn-secondary-pressed);
+  background-color: var(--ai-btn-secondary-bg-pressed);
+  border-color: var(--ai-btn-secondary-border);
 }
 
 .btn--secondary:focus-visible {
-  background-color: var(--ai-btn-secondary-hover);
+  background-color: var(--ai-btn-secondary-bg-hover);
   border-color: var(--ai-surface-primary);
-  box-shadow: 0 0 0 2px var(--ai-border-secondary);
+  box-shadow: 0 0 0 2px var(--ai-btn-secondary-border);
   outline: none;
 }
 
-/* ── Tertiary (ghost — white bg, no visible border) ──── */
+/* ── Tertiary (ghost — transparent bg, no border) ──── */
 
 .btn--tertiary {
-  background-color: var(--ai-btn-secondary);
-  color: var(--ai-text-primary);
+  background-color: var(--ai-btn-tertiary-bg);
+  color: var(--ai-btn-tertiary-text);
   border-color: transparent;
 }
 
 .btn--tertiary:hover {
-  background-color: var(--ai-surface-minimal);
+  background-color: var(--ai-btn-tertiary-bg-hover);
+  color: var(--ai-btn-tertiary-text-hover);
 }
 
 .btn--tertiary:active {
-  background-color: var(--ai-btn-secondary-pressed);
+  background-color: var(--ai-btn-tertiary-bg-pressed);
 }
 
 .btn--tertiary:focus-visible {
-  background-color: var(--ai-btn-secondary);
-  border-color: var(--ai-surface-primary);
+  background-color: var(--ai-btn-tertiary-bg);
   box-shadow: 0 0 0 2px var(--ai-border-secondary);
   outline: none;
 }
@@ -159,9 +161,9 @@
 
 .btn:disabled,
 .btn--disabled {
-  background-color: var(--ai-btn-disabled);
-  border-color: var(--ai-btn-disabled);
-  color: var(--ai-text-contrast);
+  background-color: var(--ai-btn-bg-disabled);
+  border-color: var(--ai-btn-bg-disabled);
+  color: var(--ai-btn-text-disabled);
   opacity: 0.8;
   cursor: not-allowed;
 }

@@ -95,16 +95,25 @@ named colors in component CSS.** Every visual value must come from the list belo
 
 | Variable | Value | Use |
 |---|---|---|
-| `--ai-btn-primary` | `#1C64F2` | Primary button bg |
-| `--ai-btn-primary-text` | `#FFFFFF` | Primary button text (stays white in dark mode) |
-| `--ai-btn-primary-hover` | `#3F83F8` | Primary hover |
-| `--ai-btn-primary-focus` | `#3F83F8` | Primary focus |
-| `--ai-btn-primary-pressed` | `#1A56DB` | Primary pressed |
-| `--ai-btn-secondary` | `#FFFFFF` | Secondary button bg |
-| `--ai-btn-secondary-hover` | `#F3F4F6` | Secondary hover |
-| `--ai-btn-secondary-focus` | `#F3F4F6` | Secondary focus |
-| `--ai-btn-secondary-pressed` | `#F3F4F6` | Secondary pressed |
-| `--ai-btn-disabled` | `#D1D5DB` | Disabled state (all variants) |
+| `--ai-btn-primary-bg` | `#1C64F2` | Primary button background |
+| `--ai-btn-primary-bg-hover` | `#3F83F8` | Primary hover + focus background |
+| `--ai-btn-primary-bg-pressed` | `#1A56DB` | Primary pressed background |
+| `--ai-btn-primary-text` | `#FFFFFF` | Primary text (theme-invariant) |
+| `--ai-btn-primary-text-hover` | `#FFFFFF` | Primary hover text |
+| `--ai-btn-secondary-bg` | `transparent` | Secondary button background |
+| `--ai-btn-secondary-bg-hover` | `#F9F9FB` | Secondary hover + focus background |
+| `--ai-btn-secondary-bg-pressed` | `#E5E7EB` | Secondary pressed background |
+| `--ai-btn-secondary-border` | `#D1D5DB` | Secondary default + pressed border; focus ring |
+| `--ai-btn-secondary-border-hover` | `#D1D5DB` | Secondary hover border |
+| `--ai-btn-secondary-text` | `#1F2A37` | Secondary text |
+| `--ai-btn-secondary-text-hover` | `#1F2A37` | Secondary hover text |
+| `--ai-btn-tertiary-bg` | `transparent` | Tertiary background + focus background |
+| `--ai-btn-tertiary-bg-hover` | `#F9F9FB` | Tertiary hover background |
+| `--ai-btn-tertiary-bg-pressed` | `#F9F9FB` | Tertiary pressed background |
+| `--ai-btn-tertiary-text` | `#1F2A37` | Tertiary text |
+| `--ai-btn-tertiary-text-hover` | `#1F2A37` | Tertiary hover text |
+| `--ai-btn-bg-disabled` | `#D1D5DB` | Disabled background (all variants) |
+| `--ai-btn-text-disabled` | `#6B7280` | Disabled text (all variants) |
 
 ### Spacing
 
@@ -155,11 +164,18 @@ tokens are **theme-invariant** (same in both themes).
 | `--ai-icon-primary` | `#1F2A37` | `#F3F4F6` |
 | `--ai-icon-secondary` | `#6B7280` | `#9CA3AF` |
 | `--ai-icon-invert` | `#FFFFFF` | `#111928` |
-| `--ai-btn-secondary` | `#FFFFFF` | `#111928` |
-| `--ai-btn-secondary-hover` | `#F3F4F6` | `#1F2A37` |
-| `--ai-btn-secondary-focus` | `#F3F4F6` | `#1F2A37` |
-| `--ai-btn-secondary-pressed` | `#F3F4F6` | `#1F2A37` |
-| `--ai-btn-disabled` | `#D1D5DB` | `#6B7280` |
+| `--ai-btn-secondary-bg-hover` | `#F9F9FB` | `#1F2A37` |
+| `--ai-btn-secondary-bg-pressed` | `#E5E7EB` | `#1F2A37` |
+| `--ai-btn-secondary-border` | `#D1D5DB` | `#374151` |
+| `--ai-btn-secondary-border-hover` | `#D1D5DB` | `#374151` |
+| `--ai-btn-secondary-text` | `#1F2A37` | `#FFFFFF` |
+| `--ai-btn-secondary-text-hover` | `#1F2A37` | `#FFFFFF` |
+| `--ai-btn-tertiary-bg-hover` | `#F9F9FB` | `#1F2A37` |
+| `--ai-btn-tertiary-bg-pressed` | `#F9F9FB` | `#1F2A37` |
+| `--ai-btn-tertiary-text` | `#1F2A37` | `#FFFFFF` |
+| `--ai-btn-tertiary-text-hover` | `#1F2A37` | `#FFFFFF` |
+| `--ai-btn-bg-disabled` | `#D1D5DB` | `#6B7280` |
+| `--ai-btn-text-disabled` | `#6B7280` | `#D1D5DB` |
 
 ### Component dark-mode notes
 
