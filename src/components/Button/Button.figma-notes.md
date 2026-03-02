@@ -47,6 +47,18 @@
 | `Icon Only` | True | `.btn--icon` |
 | `State` | Disabled | `disabled` attr / `.btn--disabled` |
 
+## Icon Slots (text-button variants)
+
+Figma default for all text-button variants has `showLeftIcon=true` — both slots are visible.
+
+| Slot | Placement | Default Lucide icon | HTML |
+|---|---|---|---|
+| Left / leading | Before label text | `chevron-right` | `<i data-lucide="chevron-right" aria-hidden="true"></i>` |
+| Right / trailing | After label text | `arrow-right` | `<i data-lucide="arrow-right" aria-hidden="true"></i>` |
+
+- **Figma default (both icons):** `<i chevron-right>` Label `<i arrow-right>` — use this in parent components unless Figma shows otherwise
+- **Icon-only buttons (`btn--icon`):** single centred icon only, no left or right slot
+
 ## Token Mapping
 
 | Figma Variable | CSS Variable | Role |
