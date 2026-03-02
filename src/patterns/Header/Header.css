@@ -72,6 +72,16 @@
   .header__discard-short { display: inline; }
 }
 
+/* ── Discard "Make Live" leading icon (mobile only) ───── */
+/* Figma: Desktop Discard has text-only "Make Live"; Mobile Discard has
+   chevron-right leading icon before the label (node 78:2447). */
+
+.header__make-live-icon { display: none; }
+
+@media (max-width: 767px) {
+  .header__make-live-icon { display: block; }
+}
+
 /* ── Mobile layout ───────────────────────────────────── */
 
 @media (max-width: 767px) {
