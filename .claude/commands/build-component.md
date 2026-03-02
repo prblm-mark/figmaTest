@@ -335,12 +335,15 @@ Add a row to **CLAUDE.md Section 10** component tracker:
 
 Full token reference: CLAUDE.md Section 2 & 3.
 
-**Gradient backgrounds:** When `get_design_context` outputs `bg-gradient-to-*` Tailwind
-classes or a style name like `gradient/surface/secondary`, map it to
-`--ai-gradient-surface-secondary`. If the token doesn't exist yet, create it in
-`css/tokens-gradients.css` following the naming convention in CLAUDE.md §2 Gradient, then
-use `background: var(--ai-gradient-…)` in component CSS.
-**Never hardcode rgba gradient values in component CSS.**
+**Gradient backgrounds:** `get_design_context` does NOT expose gradient fills — they are
+invisible in its output (no Tailwind gradient classes, no Color Style name, no raw stops).
+Detection is screenshot-based:
+- If a gradient fade/overlay is visible in the Step 2 screenshot...
+- ...but the element has no `bg-[...]` class in design context...
+- → STOP and ask: "I see a gradient on [element] in the screenshot — which gradient style
+  is this? (e.g. `gradient/surface/secondary`)"
+Once identified, map to `--ai-gradient-surface-*` and use `background: var(--ai-gradient-…)`.
+Never hardcode rgba gradient values in component CSS.
 
 ---
 

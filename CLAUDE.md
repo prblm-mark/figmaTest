@@ -485,11 +485,18 @@ identifiable (e.g. "alert hover uses Red/400 = `#f87171` — no semantic token e
 
 ### Gradient token rule
 
-If a component's background uses a gradient style in Figma design context (look for
-`bg-gradient-to-*` Tailwind classes or a style name like `gradient/surface/secondary`),
-map the style name to the `--ai-gradient-*` variable following §2 Gradient naming convention.
-If no token exists yet for that gradient, add it to `css/tokens-gradients.css` first (following
-the convention), then use `background: var(--ai-gradient-…)` in component CSS.
+`get_design_context` does NOT expose gradient fills — no Tailwind gradient classes, no Color
+Style names, and no raw stop values appear in its output. Gradients are only visible in
+`get_screenshot`.
+
+**Detection rule:** If a gradient fade or overlay is visible in the screenshot (Step 2) but
+the element has no `bg-[...]` class in design context output, STOP and ask the user:
+
+> "I can see a gradient on [element] in the screenshot but design context exposes no fill data
+> for it. Is this `gradient/surface/secondary`, or a different gradient style?"
+
+Once identified: map the style name to the `--ai-gradient-*` variable (§2 Gradient). If no
+token exists yet, add it to `css/tokens-gradients.css` following the naming convention.
 **Never hardcode `rgba()` gradient values in component CSS.**
 
 ### Forbidden
