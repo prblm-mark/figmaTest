@@ -137,6 +137,34 @@ named colors in component CSS.** Every visual value must come from the list belo
 | `--ai-spacing-12` | `4.5rem` | Page section |
 | `--ai-spacing-13` | `5rem` | Hero gap |
 
+### Gradient
+
+| Variable | Pattern | Use |
+|---|---|---|
+| `--ai-gradient-surface-secondary` | `transparent(secondary) → secondary` | Fade overlay, edge fade |
+
+**Source:** `css/tokens-gradients.css` (static, manually maintained — Figma gradients cannot be
+exported as DTCG variables).
+
+**Naming convention:**
+
+| Figma style name | CSS variable | Formula |
+|---|---|---|
+| `gradient/surface/NAME` | `--ai-gradient-surface-NAME` | `linear-gradient(to right, rgb(from var(--ai-surface-NAME) r g b / 0), var(--ai-surface-NAME))` |
+| `gradient/surface/A-B` | `--ai-gradient-surface-A-B` | `linear-gradient(to right, var(--ai-surface-A), var(--ai-surface-B))` |
+
+- Single token name → **fade-out gradient**: transparent version on the left, full-opacity on the right. Direction: `to right`.
+- Hyphenated name → **solid-to-solid gradient**: first token left, second token right. Direction: `to right`.
+- Default direction is always `to right`. Other directions need a case-by-case design decision.
+
+**Dark mode:** Gradient tokens use CSS Relative Color Syntax (`rgb(from var(--ai-surface-X) r g b / 0)`)
+so the transparent stop is derived at runtime from the semantic token. No dark-mode override needed.
+
+**Adding a new gradient:**
+1. Name it in Figma as `gradient/<group>/<name>` following the convention above
+2. Add the `--ai-gradient-<group>-<name>` CSS property to `css/tokens-gradients.css`
+3. Add a row to this table
+
 ---
 
 ## 2a. Dark Mode
@@ -454,6 +482,15 @@ For Code Connect (Org/Enterprise plan only):
 
 Report what was found: the property name, the Figma value, and the primitive name if
 identifiable (e.g. "alert hover uses Red/400 = `#f87171` — no semantic token exists, ok to use primitive?"). The user decides: add a semantic token, approve using the primitive, or handle it another way.
+
+### Gradient token rule
+
+If a component's background uses a gradient style in Figma design context (look for
+`bg-gradient-to-*` Tailwind classes or a style name like `gradient/surface/secondary`),
+map the style name to the `--ai-gradient-*` variable following §2 Gradient naming convention.
+If no token exists yet for that gradient, add it to `css/tokens-gradients.css` first (following
+the convention), then use `background: var(--ai-gradient-…)` in component CSS.
+**Never hardcode `rgba()` gradient values in component CSS.**
 
 ### Forbidden
 

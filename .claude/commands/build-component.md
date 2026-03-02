@@ -331,8 +331,16 @@ Add a row to **CLAUDE.md Section 10** component tracker:
 | Font weight | `--ai-font-regular/medium/semibold/bold/extrabold` |
 | Line height | `--ai-leading-1` … `--ai-leading-5` |
 | Button-specific | `--ai-btn-primary/secondary/disabled` + hover/focus/pressed |
+| Gradient backgrounds | `--ai-gradient-surface-*` — see CLAUDE.md §2 Gradient |
 
 Full token reference: CLAUDE.md Section 2 & 3.
+
+**Gradient backgrounds:** When `get_design_context` outputs `bg-gradient-to-*` Tailwind
+classes or a style name like `gradient/surface/secondary`, map it to
+`--ai-gradient-surface-secondary`. If the token doesn't exist yet, create it in
+`css/tokens-gradients.css` following the naming convention in CLAUDE.md §2 Gradient, then
+use `background: var(--ai-gradient-…)` in component CSS.
+**Never hardcode rgba gradient values in component CSS.**
 
 ---
 
