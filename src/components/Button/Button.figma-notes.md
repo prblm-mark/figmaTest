@@ -100,7 +100,7 @@ Figma default for all text-button variants has `showLeftIcon=true` — both slot
 
 | State | Figma Primitive | Value | Token Needed | Affected Variants | Status |
 |---|---|---|---|---|---|
-| Primary focus ring | `--ai-surface-brand-light` | `#3f83f8` | ✓ resolved | Primary | ✅ Implemented |
+| Primary focus ring | `--ai-surface-brand-light` | `#3a8fff` | ✓ resolved | Primary | ✅ Implemented |
 | Alert hover bg | `Red/400` | `#f87171` | `--ai-btn-alert-hover` | Alert, Alert Outline | ✅ Primitive approved |
 | Alert focus ring | `Red/400` | `#f87171` | `--ai-btn-alert-focus-ring` | Alert, Alert Outline | ✅ Primitive approved |
 | Alert pressed | `Red/600` | `#dc2626` | `--ai-btn-alert-pressed` | Alert | ✅ Primitive approved |
@@ -113,7 +113,7 @@ Figma default for all text-button variants has `showLeftIcon=true` — both slot
 - `button/sm` typography: `--ai-font-fluid-xxs` (12px), `--ai-font-semibold` (600), `--ai-leading-1` (16px)
 - Secondary = **transparent** bg + `--ai-btn-secondary-border` (visually outlined)
 - Tertiary = **transparent** bg + **no border** (ghost/text button); uses dedicated `--ai-btn-tertiary-*` tokens
-- Tertiary hover bg: `--ai-btn-tertiary-bg-hover` (#F9F9FB); focus ring: `0 0 0 2px --ai-border-secondary` (no inner white border)
+- Tertiary hover bg: `--ai-btn-tertiary-bg-hover` (#F3F4F6); focus ring: `0 0 0 2px --ai-border-secondary` (no inner white border)
 - Secondary and tertiary now have dedicated token sets — no longer sharing `--ai-btn-secondary-*`
 - Disabled: `--ai-btn-bg-disabled` for bg/border, `--ai-btn-text-disabled` for text (separate tokens)
 - Alert background uses Figma primitive `Red/500` → maps to `--ai-surface-error` (#ef4444)

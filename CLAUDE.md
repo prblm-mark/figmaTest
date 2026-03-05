@@ -28,15 +28,15 @@ named colors in component CSS.** Every visual value must come from the list belo
 | Variable | Value | Use |
 |---|---|---|
 | `--ai-surface-primary` | `#FFFFFF` | Page/card background |
-| `--ai-surface-minimal` | `#F9F9FB` | Very subtle background (Neutral/50) |
+| `--ai-surface-minimal` | `#F3F4F6` | Very subtle background (Neutral/100) |
 | `--ai-surface-secondary` | `#E5E7EB` | Subtle section background (Neutral/200) |
 | `--ai-surface-contrast` | `#D1D5DB` | Divider areas, table stripes (Neutral/300) |
 | `--ai-surface-invert` | `#111928` | Dark backgrounds |
-| `--ai-surface-brand` | `#1C64F2` | Brand/primary action bg |
-| `--ai-surface-brand-light` | `#3F83F8` | Hover state on brand |
-| `--ai-surface-brand-dark` | `#1A56DB` | Pressed state on brand |
-| `--ai-surface-brand-contrast` | `#C3DDFD` | Light brand tint |
-| `--ai-surface-brand-contrast-extra` | `#EBF5FF` | Very light brand tint |
+| `--ai-surface-brand` | `#0071D8` | Brand/primary action bg |
+| `--ai-surface-brand-light` | `#3A8FFF` | Hover state on brand |
+| `--ai-surface-brand-dark` | `#0054A3` | Pressed state on brand |
+| `--ai-surface-brand-contrast` | `#BFD1FF` | Light brand tint |
+| `--ai-surface-brand-contrast-extra` | `#F0F3FF` | Very light brand tint |
 | `--ai-surface-error` | `#EF4444` | Error backgrounds |
 | `--ai-surface-error-contrast` | `#FBD5D5` | Error tint background |
 | `--ai-surface-success` | `#30CB90` | Success backgrounds — theme-invariant |
@@ -55,7 +55,7 @@ named colors in component CSS.** Every visual value must come from the list belo
 
 | Variable | Value | Use |
 |---|---|---|
-| `--ai-border-brand` | `#1C64F2` | Brand-colored borders |
+| `--ai-border-brand` | `#0071D8` | Brand-colored borders |
 | `--ai-border-primary` | `#111928` | Strong dividers |
 | `--ai-border-secondary` | `#D1D5DB` | Default input/card borders (Neutral/300) |
 | `--ai-border-contrast` | `#D1D5DB` | Same as secondary (Neutral/300) |
@@ -79,7 +79,7 @@ named colors in component CSS.** Every visual value must come from the list belo
 | `--ai-icon-secondary` | `#6B7280` | Secondary icon |
 | `--ai-icon-contrast` | `#9CA3AF` | Muted/disabled icon |
 | `--ai-icon-invert` | `#FFFFFF` | Icon on dark background |
-| `--ai-icon-brand` | `#1C64F2` | Brand-colored icon |
+| `--ai-icon-brand` | `#0071D8` | Brand-colored icon |
 
 ### Icon Sizes
 
@@ -95,22 +95,22 @@ named colors in component CSS.** Every visual value must come from the list belo
 
 | Variable | Value | Use |
 |---|---|---|
-| `--ai-btn-primary-bg` | `#1C64F2` | Primary button background |
-| `--ai-btn-primary-bg-hover` | `#3F83F8` | Primary hover + focus background |
-| `--ai-btn-primary-bg-pressed` | `#1A56DB` | Primary pressed background |
+| `--ai-btn-primary-bg` | `#0071D8` | Primary button background |
+| `--ai-btn-primary-bg-hover` | `#3A8FFF` | Primary hover + focus background |
+| `--ai-btn-primary-bg-pressed` | `#0054A3` | Primary pressed background |
 | `--ai-btn-primary-text` | `#FFFFFF` | Primary text (theme-invariant) |
 | `--ai-btn-primary-text-hover` | `#FFFFFF` | Primary hover text |
 | `--ai-btn-primary-border` | `rgba(0,0,0,0)` | Primary default + hover border |
 | `--ai-btn-primary-border-hover` | `rgba(0,0,0,0)` | Primary hover border |
 | `--ai-btn-secondary-bg` | `transparent` | Secondary button background |
-| `--ai-btn-secondary-bg-hover` | `#F9F9FB` | Secondary hover + focus background |
+| `--ai-btn-secondary-bg-hover` | `#F3F4F6` | Secondary hover + focus background |
 | `--ai-btn-secondary-bg-pressed` | `#E5E7EB` | Secondary pressed background |
 | `--ai-btn-secondary-border` | `#D1D5DB` | Secondary default + pressed border; focus ring |
 | `--ai-btn-secondary-border-hover` | `#D1D5DB` | Secondary hover border |
 | `--ai-btn-secondary-text` | `#1F2A37` | Secondary text |
 | `--ai-btn-secondary-text-hover` | `#1F2A37` | Secondary hover text |
 | `--ai-btn-tertiary-bg` | `transparent` | Tertiary background |
-| `--ai-btn-tertiary-bg-hover` | `#F9F9FB` | Tertiary hover + focus background |
+| `--ai-btn-tertiary-bg-hover` | `#F3F4F6` | Tertiary hover + focus background |
 | `--ai-btn-tertiary-bg-pressed` | `#E5E7EB` | Tertiary pressed background |
 | `--ai-btn-tertiary-border` | `rgba(0,0,0,0)` | Tertiary default border |
 | `--ai-btn-tertiary-border-hover` | `rgba(0,0,0,0)` | Tertiary hover border |
@@ -136,6 +136,50 @@ named colors in component CSS.** Every visual value must come from the list belo
 | `--ai-spacing-11` | `4rem` | Section break |
 | `--ai-spacing-12` | `4.5rem` | Page section |
 | `--ai-spacing-13` | `5rem` | Hero gap |
+
+### Size Scale
+
+Fixed-dimension tokens for component and layout widths/heights (not spacing).
+
+| Variable | Value | px equiv |
+|---|---|---|
+| `--ai-size-1` | `8rem` | 128px |
+| `--ai-size-2` | `10rem` | 160px |
+| `--ai-size-3` | `12rem` | 192px |
+| `--ai-size-4` | `15rem` | 240px |
+| `--ai-size-5` | `17.5rem` | 280px |
+| `--ai-size-6` | `20rem` | 320px |
+| `--ai-size-7` | `24rem` | 384px |
+| `--ai-size-8` | `28rem` | 448px |
+| `--ai-size-9` | `32rem` | 512px |
+| `--ai-size-10` | `40rem` | 640px |
+| `--ai-size-11` | `48rem` | 768px |
+| `--ai-size-12` | `60rem` | 960px |
+| `--ai-size-13` | `70rem` | 1120px |
+| `--ai-size-14` | `80rem` | 1280px |
+
+### Chat Component
+
+Component-specific tokens for the chat UI. Only relevant when building chat-related components.
+
+| Variable | Light value | Dark value |
+|---|---|---|
+| `--ai-chat-bg` | `#FFFFFF` | `#1F2A37` |
+| `--ai-chat-primary-text` | `#1F2A37` | `#FFFFFF` |
+| `--ai-chat-input` | `#FFFFFF` | `#374151` |
+| `--ai-chat-question-bg` | `#1F2A37` | `#FFFFFF` |
+| `--ai-chat-sidebar-bg` | `#FFFFFF` | `#1F2A37` |
+| `--ai-chat-sidebar-text` | `#1F2A37` | `#E5E7EB` |
+| `--ai-chat-sidebar-text-bg` | `#E5E7EB` | `#111928` |
+| `--ai-chat-btn-primary-bg` | `#0071D8` | `#0071D8` |
+| `--ai-chat-btn-primary-bg-hover` | `#3A8FFF` | `#3A8FFF` |
+| `--ai-chat-btn-primary-bg-pressed` | `#0054A3` | `#0054A3` |
+| `--ai-chat-btn-primary-text` | `#FFFFFF` | `#FFFFFF` |
+| `--ai-chat-btn-secondary-bg` | `transparent` | `transparent` |
+| `--ai-chat-btn-secondary-bg-hover` | `#F3F4F6` | `#1F2A37` |
+| `--ai-chat-btn-secondary-bg-active` | `#E5E7EB` | `#374151` |
+| `--ai-chat-btn-secondary-text` | `#1F2A37` | `#FFFFFF` |
+| `--ai-chat-btn-secondary-border` | `#D1D5DB` | `#4B5563` |
 
 ### Gradient
 
@@ -182,28 +226,30 @@ tokens are **theme-invariant** (same in both themes).
 | Variable | Light value | Dark value |
 |---|---|---|
 | `--ai-surface-primary` | `#FFFFFF` | `#111928` |
-| `--ai-surface-minimal` | `#F9F9FB` | `#1F2A37` |
-| `--ai-surface-secondary` | `#E5E7EB` | `#1F2A37` |
-| `--ai-surface-contrast` | `#D1D5DB` | `#374151` |
+| `--ai-surface-minimal` | `#F3F4F6` | `#1F2A37` |
+| `--ai-surface-secondary` | `#E5E7EB` | `#374151` |
+| `--ai-surface-contrast` | `#D1D5DB` | `#4B5563` |
 | `--ai-surface-invert` | `#111928` | `#F3F4F6` |
+| `--ai-surface-brand-contrast` | `#BFD1FF` | `#75A5FF` |
+| `--ai-surface-brand-contrast-extra` | `#F0F3FF` | `#BFD1FF` |
 | `--ai-text-primary` | `#1F2A37` | `#FFFFFF` |
 | `--ai-text-secondary` | `#4B5563` | `#E5E7EB` |
 | `--ai-text-contrast` | `#6B7280` | `#9CA3AF` |
 | `--ai-text-invert` | `#FFFFFF` | `#111928` |
 | `--ai-border-primary` | `#111928` | `#F3F4F6` |
-| `--ai-border-secondary` | `#D1D5DB` | `#374151` |
-| `--ai-border-contrast` | `#D1D5DB` | `#374151` |
+| `--ai-border-secondary` | `#D1D5DB` | `#4B5563` |
+| `--ai-border-contrast` | `#D1D5DB` | `#4B5563` |
 | `--ai-icon-primary` | `#1F2A37` | `#F3F4F6` |
 | `--ai-icon-secondary` | `#6B7280` | `#9CA3AF` |
 | `--ai-icon-invert` | `#FFFFFF` | `#111928` |
-| `--ai-btn-secondary-bg-hover` | `#F9F9FB` | `#1F2A37` |
-| `--ai-btn-secondary-bg-pressed` | `#E5E7EB` | `#1F2A37` |
-| `--ai-btn-secondary-border` | `#D1D5DB` | `#374151` |
-| `--ai-btn-secondary-border-hover` | `#D1D5DB` | `#374151` |
+| `--ai-btn-secondary-bg-hover` | `#F3F4F6` | `#1F2A37` |
+| `--ai-btn-secondary-bg-pressed` | `#E5E7EB` | `#374151` |
+| `--ai-btn-secondary-border` | `#D1D5DB` | `#4B5563` |
+| `--ai-btn-secondary-border-hover` | `#D1D5DB` | `#4B5563` |
 | `--ai-btn-secondary-text` | `#1F2A37` | `#FFFFFF` |
 | `--ai-btn-secondary-text-hover` | `#1F2A37` | `#FFFFFF` |
-| `--ai-btn-tertiary-bg-hover` | `#F9F9FB` | `#1F2A37` |
-| `--ai-btn-tertiary-bg-pressed` | `#E5E7EB` | `#1F2A37` |
+| `--ai-btn-tertiary-bg-hover` | `#F3F4F6` | `#1F2A37` |
+| `--ai-btn-tertiary-bg-pressed` | `#E5E7EB` | `#374151` |
 | `--ai-btn-tertiary-text` | `#1F2A37` | `#FFFFFF` |
 | `--ai-btn-tertiary-text-hover` | `#1F2A37` | `#FFFFFF` |
 | `--ai-btn-bg-disabled` | `#D1D5DB` | `#6B7280` |
