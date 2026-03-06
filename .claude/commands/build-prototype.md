@@ -15,9 +15,14 @@ No Figma source is needed — start from a written description and use existing 
 - **Reuse, don't build.** Every UI element must come from the existing component library
   (`src/components/` and `src/patterns/`). If a required element doesn't exist as a component,
   stop and use `/build-component` to build it first.
-- **Tokens only.** All CSS values must use `--ai-*` tokens. Same rules as component building.
-  The one standing exception: card drop-shadows may use the pre-approved raw value
-  `0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1)` until shadow tokens exist.
+- **Never add new design system tokens.** Prototype CSS may only use `--ai-*` tokens that
+  already exist in the design system. Do not add new `--ai-*` CSS variables to support prototype
+  elements. For prototype-specific values (layout dimensions, pixel offsets, overlay colours),
+  hardcode the value directly — e.g. `width: 288px`, `rgba(0,0,0,0.1)`. This keeps the token
+  system clean and avoids polluting the design system with prototype-only variables.
+- **Tokens only for component styles.** All CSS values that map to a design token must use
+  the `--ai-*` token. The one standing exception: card drop-shadows may use the pre-approved raw
+  value `0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1)` until shadow tokens exist.
 - **Real screens, not demos.** Prototype pages look like product screens — centred card or
   full-page layout — not the component-demo wrapper style used in `<Name>.html` demo files.
 - **One file per screen.** Each screen in the flow gets its own `.html` file. Shared layout
