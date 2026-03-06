@@ -2,7 +2,7 @@
 
 ## Figma Node
 
-**File:** `8OAAokH2JXhIvGZFrlzeKT` — Affino AI Design System
+**File:** `Lus07xi8pPXLN87sQIyrEt` — Affino AI Design System
 **Components page:** node `1:769`
 **Button frame (all variants):** node `53:2489`
 

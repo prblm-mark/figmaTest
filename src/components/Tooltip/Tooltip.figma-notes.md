@@ -1,8 +1,8 @@
 # Tooltip — Figma Notes
 
 ## Figma Node
-- File: `8OAAokH2JXhIvGZFrlzeKT`
-- Component set: node `68:4490` — [open in Figma](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=68-4490)
+- File: `Lus07xi8pPXLN87sQIyrEt`
+- Component set: node `68:4490` — [open in Figma](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=68-4490)
 
 ## Variant Matrix
 Single variant — no props.

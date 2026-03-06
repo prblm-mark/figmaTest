@@ -1,8 +1,8 @@
 # SignUpForm — Figma Notes
 
 ## Figma Node
-- File: `8OAAokH2JXhIvGZFrlzeKT`
-- Component: node `96:2429` — [open in Figma](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=96-2429)
+- File: `Lus07xi8pPXLN87sQIyrEt`
+- Component: node `96:2429` — [open in Figma](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=96-2429)
 
 ## Component Tree
 

@@ -1,8 +1,8 @@
 # Input — Figma Notes
 
 ## Figma Node
-- File: `8OAAokH2JXhIvGZFrlzeKT`
-- Component: node `78:2016` — [open in Figma](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=78-2016)
+- File: `Lus07xi8pPXLN87sQIyrEt`
+- Component: node `78:2016` — [open in Figma](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=78-2016)
 
 ## Variant × Size × State Matrix
 
