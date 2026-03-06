@@ -1,9 +1,9 @@
 # InfoLabel — Figma Notes
 
 ## Figma Node
-- File: `8OAAokH2JXhIvGZFrlzeKT`
+- File: `Lus07xi8pPXLN87sQIyrEt`
 - Component set: node `68:4425`
-- Variant (No Label=False): node `68:4410` — [open in Figma](https://www.figma.com/design/8OAAokH2JXhIvGZFrlzeKT/Affino-AI---Design-System?node-id=68-4410)
+- Variant (No Label=False): node `68:4410` — [open in Figma](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=68-4410)
 
 ## Variant Matrix
 

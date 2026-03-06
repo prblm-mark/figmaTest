@@ -37,7 +37,7 @@ interaction model, and the JS requirements — capturing it upfront avoids costl
 Call `get_metadata` on the **Figma file page** to see the full layer tree and locate the target
 component frame. Note the component set node ID (the parent frame, e.g. `68:5443`).
 
-- File key: extract from URL (e.g. `8OAAokH2JXhIvGZFrlzeKT`)
+- File key: extract from URL (e.g. `Lus07xi8pPXLN87sQIyrEt`)
 - Page node: usually `1:769` for the Components page — confirm from URL `node-id` param
 
 **Step 1b — enumerate ALL variants:**
