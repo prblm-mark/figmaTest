@@ -11,10 +11,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tokens": "node style-dictionary.config.mjs",
+    "code-connect:publish": "figma connect publish",
+    "code-connect:unpublish": "figma connect unpublish",
     "start": "webpack serve --open --config webpack.config.dev.js",
     "build": "webpack --config webpack.config.prod.js"
   },
   "devDependencies": {
+    "@figma/code-connect": "^1.4.1",
     "copy-webpack-plugin": "^11.0.0",
     "html-webpack-plugin": "^5.6.0",
     "style-dictionary": "^4.4.0",
