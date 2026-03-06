@@ -597,7 +597,6 @@ All components must meet **WCAG 2.1 AA**:
 | PromptTemplates | pattern | Built | [node 163:3565](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=163-3565) | `src/patterns/PromptTemplates/` — single variant panel: heading + list of PromptTemplateItem rows. Composes PromptTemplateItem. |
 | SignUpForm | template | Built | [node 96:2429](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=96-2429) | `src/templates/SignUpForm/` — composes Header, InfoLabel, Input, Button. Layout only. |
 | SystemRole | template | Built | [node 163:3894](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=163-3894) | `src/templates/SystemRole/` — Default (full modal, blurred overlay) + Minimised (400px panel, draggable, left-edge resizable) + Mobile variant (176:3242): full-viewport CSS-only layout at ≤767px, no resize/drag. Composes Header, VersionHistory, PromptTemplates, Button, InfoLabel. Box-shadow token gap noted for future work. |
-
 Add rows here as components are built. Format: Component Name, Tier (component/pattern/template), Built/In Progress/Figma Only, Figma URL, Notes.
 
 ---
