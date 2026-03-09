@@ -12,17 +12,21 @@ No Figma source is needed — start from a written description and use existing 
 
 ## Key principles
 
-- **Reuse, don't build.** Every UI element must come from the existing component library
-  (`src/components/` and `src/patterns/`). If a required element doesn't exist as a component,
-  stop and use `/build-component` to build it first.
+- **Reuse first, then build with tokens.** Check `src/components/` and `src/patterns/` for
+  existing components. If one exists, use it. If it doesn't exist and this is a **full component
+  build**, stop and use `/build-component`. If this is a **prototype-only build** (quick
+  exploration, not a production component), build the element inline in the prototype CSS
+  using design system tokens — do not create files in `src/components/`.
+- **Design system tokens for ALL visual properties — no exceptions.** Every colour, spacing,
+  radius, font size, font weight, font family, line height, and icon size in prototype CSS
+  **must** use an `--ai-*` token. This applies to both reused components AND new prototype-only
+  elements. If no `--ai-*` token exists for a value, STOP and ask the user before writing CSS.
+  The only exceptions:
+  - Layout dimensions with no token match (e.g. `width: 288px`) — hardcode with a comment
+  - Card drop-shadows: use `0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1)`
+  - Border widths (`1px`, `2px`) — optical values, keep as `px`
 - **Never add new design system tokens.** Prototype CSS may only use `--ai-*` tokens that
-  already exist in the design system. Do not add new `--ai-*` CSS variables to support prototype
-  elements. For prototype-specific values (layout dimensions, pixel offsets, overlay colours),
-  hardcode the value directly — e.g. `width: 288px`, `rgba(0,0,0,0.1)`. This keeps the token
-  system clean and avoids polluting the design system with prototype-only variables.
-- **Tokens only for component styles.** All CSS values that map to a design token must use
-  the `--ai-*` token. The one standing exception: card drop-shadows may use the pre-approved raw
-  value `0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1)` until shadow tokens exist.
+  already exist. Do not add new `--ai-*` CSS variables to support prototype elements.
 - **Real screens, not demos.** Prototype pages look like product screens — centred card or
   full-page layout — not the component-demo wrapper style used in `<Name>.html` demo files.
 - **One file per screen.** Each screen in the flow gets its own `.html` file. Shared layout
@@ -109,7 +113,8 @@ loads with a 200 response before proceeding.
 **Step 5a — Generate one capture ID per screen (all upfront):**
 
 Call `generate_figma_design` once per screen with `outputMode: "existingFile"` and
-`fileKey: "Lus07xi8pPXLN87sQIyrEt"` (the Affino AI / Design System file).
+`fileKey: "Lus07xi8pPXLN87sQIyrEt"` (the Affino AI / Design System file),
+`nodeId: "2025:803"` (the dedicated Prototypes page).
 
 Each call returns a unique `captureId`. Record all of them before proceeding.
 Never reuse a capture ID across screens.

@@ -1,0 +1,11 @@
+{
+  "name": "Re-tokenise",
+  "id": "retokenise-affino-ds",
+  "api": "1.0.0",
+  "editorType": ["figma"],
+  "main": "code.js",
+  "documentAccess": "dynamic-page",
+  "networkAccess": {
+    "allowedDomains": ["none"]
+  }
+}
