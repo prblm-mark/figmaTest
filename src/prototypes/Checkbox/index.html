@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="Checkbox.css">
+  <title>Checkbox — Prototype</title>
+</head>
+<body>
+
+  <div class="proto-card">
+    <h1 class="proto-card__title">Checkbox</h1>
+
+    <!-- Initial -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Initial</p>
+      <div class="checkbox-group">
+        <label class="checkbox">
+          <input class="checkbox__input" type="checkbox" name="demo-initial-1">
+          <span class="checkbox__box"><i data-lucide="check" aria-hidden="true"></i></span>
+          <span class="checkbox__text">
+            <span class="checkbox__label">Write label text here</span>
+            <span class="checkbox__helper">Some helper text here</span>
+          </span>
+        </label>
+        <label class="checkbox">
+          <input class="checkbox__input" type="checkbox" name="demo-initial-2">
+          <span class="checkbox__box"><i data-lucide="check" aria-hidden="true"></i></span>
+          <span class="checkbox__text">
+            <span class="checkbox__label">Another option label</span>
+            <span class="checkbox__helper">Some helper text here</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Checked -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Checked</p>
+      <div class="checkbox-group">
+        <label class="checkbox">
+          <input class="checkbox__input" type="checkbox" name="demo-checked-1" checked>
+          <span class="checkbox__box"><i data-lucide="check" aria-hidden="true"></i></span>
+          <span class="checkbox__text">
+            <span class="checkbox__label">Write label text here</span>
+            <span class="checkbox__helper">Some helper text here</span>
+          </span>
+        </label>
+        <label class="checkbox">
+          <input class="checkbox__input" type="checkbox" name="demo-checked-2">
+          <span class="checkbox__box"><i data-lucide="check" aria-hidden="true"></i></span>
+          <span class="checkbox__text">
+            <span class="checkbox__label">Another option label</span>
+            <span class="checkbox__helper">Some helper text here</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Disabled -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Disabled</p>
+      <div class="checkbox-group">
+        <label class="checkbox checkbox--disabled">
+          <input class="checkbox__input" type="checkbox" name="demo-disabled-1" disabled>
+          <span class="checkbox__box"><i data-lucide="check" aria-hidden="true"></i></span>
+          <span class="checkbox__text">
+            <span class="checkbox__label">Write label text here</span>
+            <span class="checkbox__helper">Some helper text here</span>
+          </span>
+        </label>
+        <label class="checkbox checkbox--disabled">
+          <input class="checkbox__input" type="checkbox" name="demo-disabled-2" disabled checked>
+          <span class="checkbox__box"><i data-lucide="check" aria-hidden="true"></i></span>
+          <span class="checkbox__text">
+            <span class="checkbox__label">Checked & disabled</span>
+            <span class="checkbox__helper">Some helper text here</span>
+          </span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>
