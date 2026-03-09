@@ -34,6 +34,7 @@
 
   const colorVars = await figma.variables.getLocalVariablesAsync("COLOR");
   const floatVars = await figma.variables.getLocalVariablesAsync("FLOAT");
+  const stringVars = await figma.variables.getLocalVariablesAsync("STRING");
 
   const hexToColorVars = new Map();
   for (const v of colorVars) {
@@ -55,7 +56,19 @@
     floatToVars.get(key)[tier].push(v);
   }
 
-  console.log(`[re-tokenise] ${hexToColorVars.size} unique colors, ${floatToVars.size} unique floats indexed`);
+  // String value → { preferred: Variable[], other: Variable[] }
+  // Used for fontFamily and fontStyle
+  const stringToVars = new Map();
+  for (const v of stringVars) {
+    const tier = preferredCollectionIds.has(v.variableCollectionId) ? "preferred" : "other";
+    const resolvedVal = await resolveStringValue(v);
+    if (!resolvedVal) continue;
+    const key = resolvedVal.toLowerCase();
+    if (!stringToVars.has(key)) stringToVars.set(key, { preferred: [], other: [] });
+    stringToVars.get(key)[tier].push(v);
+  }
+
+  console.log(`[re-tokenise] ${hexToColorVars.size} unique colors, ${floatToVars.size} unique floats, ${stringToVars.size} unique strings indexed`);
 
   // ── 3. Traverse and rebind ─────────────────────────────────────────────
 
@@ -65,7 +78,7 @@
     const nodes = "findAll" in root ? [root, ...root.findAll(() => true)] : [root];
     for (const node of nodes) {
       stats.nodes++;
-      await processNode(node, hexToColorVars, floatToVars, preferredCollectionIds, stats);
+      await processNode(node, hexToColorVars, floatToVars, stringToVars, preferredCollectionIds, stats);
     }
   }
 
@@ -81,7 +94,7 @@
 
 // ── Process a single node ────────────────────────────────────────────────
 
-async function processNode(node, hexToColorVars, floatToVars, preferredCollectionIds, stats) {
+async function processNode(node, hexToColorVars, floatToVars, stringToVars, preferredCollectionIds, stats) {
   if ("fills" in node && Array.isArray(node.fills)) {
     await rebindPaints(node, "fills", hexToColorVars, preferredCollectionIds, stats);
   }
@@ -90,7 +103,7 @@ async function processNode(node, hexToColorVars, floatToVars, preferredCollectio
   }
   await rebindScalars(node, floatToVars, preferredCollectionIds, stats);
   if (node.type === "TEXT") {
-    await rebindTypography(node, floatToVars, preferredCollectionIds, stats);
+    await rebindTypography(node, floatToVars, stringToVars, preferredCollectionIds, stats);
   }
 }
 
@@ -112,12 +125,19 @@ async function rebindScalars(node, floatToVars, preferredCollectionIds, stats) {
 
 // ── Typography rebinding ─────────────────────────────────────────────────
 
-async function rebindTypography(node, floatToVars, preferredCollectionIds, stats) {
+async function rebindTypography(node, floatToVars, stringToVars, preferredCollectionIds, stats) {
+  // Float-based typography fields
   await tryBindFloat(node, "fontSize", floatToVars, preferredCollectionIds, stats, "typoBindings");
   await tryBindFloat(node, "lineHeight", floatToVars, preferredCollectionIds, stats, "typoBindings");
   await tryBindFloat(node, "letterSpacing", floatToVars, preferredCollectionIds, stats, "typoBindings");
-  await tryBindFloat(node, "fontWeight", floatToVars, preferredCollectionIds, stats, "typoBindings");
   await tryBindFloat(node, "paragraphSpacing", floatToVars, preferredCollectionIds, stats, "typoBindings");
+
+  // fontWeight — try as FLOAT first (numeric 400/500/600), then as STRING
+  await tryBindFloat(node, "fontWeight", floatToVars, preferredCollectionIds, stats, "typoBindings");
+
+  // String-based typography fields (fontFamily, fontStyle)
+  await tryBindString(node, "fontFamily", stringToVars, preferredCollectionIds, stats);
+  await tryBindString(node, "fontStyle", stringToVars, preferredCollectionIds, stats);
 }
 
 
@@ -173,6 +193,70 @@ async function tryBindFloat(node, field, floatToVars, preferredCollectionIds, st
     } else {
       stats.skipped++;
       console.log(`  [SKIP] ${node.name}.${field} = ${value} — ${candidates.length}: ${candidates.map(c => c.name).join(", ")}`);
+    }
+  }
+}
+
+
+// ── String-binding logic (fontFamily, fontStyle) ─────────────────────────
+
+async function tryBindString(node, field, stringToVars, preferredCollectionIds, stats) {
+  // Skip if already bound to preferred
+  if (node.boundVariables && node.boundVariables[field]) {
+    const existing = node.boundVariables[field];
+    const existingVar = await figma.variables.getVariableByIdAsync(existing.id);
+    if (existingVar && preferredCollectionIds.has(existingVar.variableCollectionId)) {
+      return;
+    }
+  }
+
+  // Read the raw string value from the node
+  let value;
+  try {
+    // fontFamily and fontStyle are part of fontName = { family, style }
+    if (field === "fontFamily") {
+      value = node.fontName !== figma.mixed ? node.fontName.family : null;
+    } else if (field === "fontStyle") {
+      value = node.fontName !== figma.mixed ? node.fontName.style : null;
+    } else {
+      value = node[field];
+    }
+  } catch (_) {
+    return;
+  }
+
+  if (!value || typeof value !== "string") return;
+
+  const key = value.toLowerCase();
+  const bucket = stringToVars.get(key);
+  if (!bucket) {
+    console.log(`  [string] ${node.name}.${field} = "${value}" — no variable match`);
+    return;
+  }
+
+  const candidates = bucket.preferred.length > 0 ? bucket.preferred : bucket.other;
+  if (candidates.length === 0) return;
+
+  // For fontFamily, prefer variables with "family" in name
+  // For fontStyle/fontWeight, prefer variables with "weight" or "style" in name
+  let picked = null;
+  if (candidates.length === 1) {
+    picked = candidates[0];
+  } else {
+    const keyword = field === "fontFamily" ? "family" : (field === "fontStyle" ? "style" : "weight");
+    const matches = candidates.filter(v => v.name.toLowerCase().includes(keyword));
+    if (matches.length === 1) picked = matches[0];
+    else if (matches.length > 1) picked = matches[0]; // pick first
+    else picked = candidates[0]; // fallback to first
+  }
+
+  if (picked) {
+    try {
+      node.setBoundVariable(field, picked);
+      stats.typoBindings++;
+      console.log(`  [typoBindings] ${node.name}.${field} = "${value}" → ${picked.name}`);
+    } catch (e) {
+      console.log(`  [string] ERROR ${node.name}.${field}: ${e.message}`);
     }
   }
 }
@@ -376,6 +460,26 @@ async function resolveFloatValue(variable) {
   }
 
   if (typeof val === "number") return val;
+  return null;
+}
+
+async function resolveStringValue(variable) {
+  const modeIds = Object.keys(variable.valuesByMode);
+  if (modeIds.length === 0) return null;
+
+  let val = variable.valuesByMode[modeIds[0]];
+  let depth = 0;
+
+  while (val && typeof val === "object" && "type" in val && val.type === "VARIABLE_ALIAS" && depth < 10) {
+    const aliasedVar = await figma.variables.getVariableByIdAsync(val.id);
+    if (!aliasedVar) return null;
+    const aliasModes = Object.keys(aliasedVar.valuesByMode);
+    if (aliasModes.length === 0) return null;
+    val = aliasedVar.valuesByMode[aliasModes[0]];
+    depth++;
+  }
+
+  if (typeof val === "string") return val;
   return null;
 }
 

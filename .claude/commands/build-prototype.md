@@ -157,7 +157,7 @@ Do this for ALL screens in a single operation. Do not leave capture scripts in t
 
 ### 7. Report
 
-Output a summary:
+Output a summary and remind the user to re-tokenise:
 ```
 Prototype: Registration (2 screens)
 
@@ -167,6 +167,9 @@ Step 1 — Account         https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt?n
 Step 2 — Profile         https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt?node-id=YYYY
 
 Files: src/prototypes/Registration/
+
+⚠ Run the Re-tokenise plugin in Figma to rebind captured values to
+  design system variables: select the frame → Plugins → Development → Re-tokenise
 ```
 
 ---
