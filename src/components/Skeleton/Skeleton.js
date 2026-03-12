@@ -19,6 +19,7 @@ export function initSkeleton(el) {
       duration: 1.8,
       ease: 'none',
       repeat: -1,
+      repeatDelay: 0.4,
       stagger: { each: 0.1 },
     }
   );

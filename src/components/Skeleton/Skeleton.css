@@ -7,7 +7,7 @@
 }
 
 .skeleton__line {
-  height: 1rem;
+  height: var(--ai-spacing-5);
   border-radius: var(--ai-radius-sm);
   background: var(--ai-chat-card-bg);
 }
