@@ -27,10 +27,10 @@
     linear-gradient(
       90deg,
       var(--ai-chat-card-bg) 0%,
-      var(--ai-chat-card-bg) 40%,
+      var(--ai-chat-card-bg) 30%,
       var(--ai-chat-input) 50%,
-      var(--ai-chat-card-bg) 60%,
+      var(--ai-chat-card-bg) 70%,
       var(--ai-chat-card-bg) 100%
     );
-  background-size: 200% 100%;
+  background-size: 300% 100%;
 }
