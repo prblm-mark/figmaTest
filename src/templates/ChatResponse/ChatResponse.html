@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>ChatResponse — Template Demo</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/Skeleton/Skeleton.css">
+  <link rel="stylesheet" href="../../components/WorkingIntro/WorkingIntro.css">
+  <link rel="stylesheet" href="../../patterns/SourcesCarousel/SourcesCarousel.css">
+  <link rel="stylesheet" href="ChatResponse.css">
+  <style>
+    body {
+      padding: var(--ai-spacing-7);
+      background-color: var(--ai-surface-primary);
+    }
+    .demo-controls {
+      max-width: 48rem;
+      margin: 0 auto var(--ai-spacing-7);
+      display: flex;
+      gap: var(--ai-spacing-3);
+    }
+    .demo-controls button {
+      padding: var(--ai-spacing-2) var(--ai-spacing-4);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-md);
+      background: var(--ai-surface-primary);
+      color: var(--ai-text-primary);
+      cursor: pointer;
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xs);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-controls">
+    <button type="button" id="btn-play">Play</button>
+    <button type="button" id="btn-reset">Reset</button>
+  </div>
+
+  <div class="chat-response" id="chat-response">
+
+    <!-- WorkingIntro -->
+    <div class="working-intro">
+      <div class="working-intro__title-row">
+        <div class="working-intro__logo">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22 5.64227C22 3.07837 19.9972 1 17.5265 1C15.0558 1 13.053 3.07837 13.053 5.64227V10.0322L10.8036 6.12507C9.46186 3.79465 6.55383 3.03413 4.30787 4.42654C2.06218 5.81922 1.32958 8.8367 2.6711 11.1674C4.01262 13.4981 6.92066 14.2581 9.16687 12.8662L12.7851 10.6223L10.4552 14.8037C9.00004 17.4148 9.86 20.755 12.3765 22.2652C14.8929 23.7755 18.1117 22.8831 19.5672 20.2714C21.0222 17.6603 20.1624 14.3198 17.6457 12.8099L13.4383 10.2845H17.5262C19.9972 10.2845 22 8.2059 22 5.64227ZM8.49217 11.6936C6.87276 12.6977 4.76838 12.1472 3.80079 10.467C2.83346 8.78673 3.36344 6.60268 4.98284 5.59858C6.60225 4.59448 8.70663 5.145 9.67422 6.82523C10.6415 8.50546 10.1113 10.6895 8.49217 11.6936ZM16.9873 13.9915C18.8715 15.1223 19.518 17.6333 18.4286 19.5879C17.3389 21.5431 14.9193 22.2138 13.0354 21.0836C11.1513 19.9525 10.505 17.4418 11.5944 15.4872C12.6838 13.5314 15.1032 12.8605 16.9873 13.9915ZM14.3688 5.64227C14.3688 3.83534 15.7853 2.36537 17.5265 2.36537C19.2677 2.36537 20.6843 3.83534 20.6843 5.64227C20.6843 7.44921 19.2677 8.91917 17.5265 8.91917C15.7853 8.91917 14.3688 7.44893 14.3688 5.64227Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <h2 class="working-intro__title">Working on it</h2>
+      </div>
+      <p class="working-intro__subtitle">&nbsp;</p>
+    </div>
+
+    <!-- SourcesCarousel -->
+    <div class="sources-carousel chat-response__sources">
+      <div class="sources-carousel__track">
+
+        <a href="#" class="sources-card">
+          <div class="sources-card__text">
+            <p class="sources-card__category">Technology</p>
+            <p class="sources-card__title">Understanding Neural Network Architecture in Modern AI Systems</p>
+          </div>
+          <img class="sources-card__thumb" src="https://picsum.photos/seed/c1/112/112" alt="">
+        </a>
+
+        <a href="#" class="sources-card">
+          <div class="sources-card__text">
+            <p class="sources-card__category">Research</p>
+            <p class="sources-card__title">Advances in Natural Language Processing for Enterprise Search</p>
+          </div>
+          <img class="sources-card__thumb" src="https://picsum.photos/seed/c2/112/112" alt="">
+        </a>
+
+        <a href="#" class="sources-card">
+          <div class="sources-card__text">
+            <p class="sources-card__category">Data Science</p>
+            <p class="sources-card__title">Building Scalable Data Pipelines with Real-Time Processing</p>
+          </div>
+          <img class="sources-card__thumb" src="https://picsum.photos/seed/c3/112/112" alt="">
+        </a>
+
+        <a href="#" class="sources-card">
+          <div class="sources-card__text">
+            <p class="sources-card__category">Engineering</p>
+            <p class="sources-card__title">Best Practices for Distributed Systems at Scale</p>
+          </div>
+          <img class="sources-card__thumb" src="https://picsum.photos/seed/c4/112/112" alt="">
+        </a>
+
+      </div>
+
+      <button type="button" class="btn btn--secondary btn--sm btn--icon sources-carousel__nav sources-carousel__nav--prev" aria-label="Previous">
+        <i data-lucide="chevron-left"></i>
+      </button>
+      <button type="button" class="btn btn--secondary btn--sm btn--icon sources-carousel__nav sources-carousel__nav--next" aria-label="Next">
+        <i data-lucide="chevron-right"></i>
+      </button>
+    </div>
+
+    <!-- Skeletons -->
+    <div class="chat-response__skeletons">
+      <div class="skeleton">
+        <div class="skeleton__line"></div>
+        <div class="skeleton__line"></div>
+        <div class="skeleton__line"></div>
+        <div class="skeleton__line"></div>
+        <div class="skeleton__line"></div>
+      </div>
+      <div class="skeleton">
+        <div class="skeleton__line"></div>
+        <div class="skeleton__line"></div>
+        <div class="skeleton__line"></div>
+        <div class="skeleton__line"></div>
+        <div class="skeleton__line"></div>
+      </div>
+    </div>
+
+    <!-- Answer (hidden until animation completes) -->
+    <div class="chat-response__answer">
+      <p>Neural networks are computing systems inspired by biological neural networks. They consist of layers of interconnected nodes that process information using connectionist approaches to computation. Modern architectures like transformers have revolutionized the field by introducing attention mechanisms that allow models to weigh the importance of different parts of the input data.</p>
+      <p>The key innovation in recent years has been the scaling of these architectures to billions of parameters, trained on vast datasets. This scaling has led to emergent capabilities in language understanding, reasoning, and generation that were not present in smaller models. Enterprise applications now leverage these models for search, summarization, and decision support across diverse data sources.</p>
+    </div>
+
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+
+  <!-- GSAP CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrambleTextPlugin.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+
+  <script type="module">
+    import { createChatResponseTimeline } from './ChatResponse.js';
+
+    const el = document.getElementById('chat-response');
+    let ctrl = null;
+
+    function play() {
+      if (ctrl) ctrl.reset();
+      ctrl = createChatResponseTimeline(el);
+    }
+
+    document.getElementById('btn-play').addEventListener('click', play);
+    document.getElementById('btn-reset').addEventListener('click', () => {
+      if (ctrl) { ctrl.reset(); ctrl = null; }
+    });
+
+    // Auto-play on load
+    play();
+  </script>
+</body>
+</html>

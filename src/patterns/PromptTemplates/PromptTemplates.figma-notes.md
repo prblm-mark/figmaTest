@@ -27,12 +27,12 @@ Single variant only.
 | `--ai-font-title` | `--ai-font-title` | Title font family |
 | `--ai-font-bold` | `--ai-font-bold` | Title weight |
 | `--ai-font-fixed-sm` | `--ai-font-fixed-sm` | Title font size |
-| `--ai-leading-1` | `--ai-leading-1` | Title line height |
+| `--ai-leading-xs` | `--ai-leading-xs` | Title line height |
 | `--ai-text-primary` | `--ai-text-primary` | Title colour |
 | `--ai-font-body` | `--ai-font-body` | Description font family |
 | `--ai-font-regular` | `--ai-font-regular` | Description weight |
 | `--ai-font-fixed-xs` | `--ai-font-fixed-xs` | Description font size |
-| `--ai-leading-2` | `--ai-leading-2` | Description line height |
+| `--ai-leading-md` | `--ai-leading-md` | Description line height |
 | `--ai-text-contrast` | `--ai-text-contrast` | Description colour |
 
 ## Token Gaps

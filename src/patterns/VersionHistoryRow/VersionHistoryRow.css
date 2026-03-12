@@ -70,7 +70,7 @@
   font-family: var(--ai-font-title);
   font-size: var(--ai-font-fixed-xs);       /* 0.875rem (14px) */
   font-weight: var(--ai-font-semibold);     /* 600 */
-  line-height: var(--ai-leading-1);         /* 1rem (16px) — title/xs style */
+  line-height: var(--ai-leading-xs);         /* 1rem (16px) — title/xs style */
   color: var(--ai-text-primary);
   white-space: nowrap;
   overflow: hidden;
@@ -81,7 +81,7 @@
   font-family: var(--ai-font-body);
   font-size: var(--ai-font-fixed-xxs);      /* 0.75rem (12px) */
   font-weight: var(--ai-font-regular);      /* 400 */
-  line-height: var(--ai-leading-1);         /* 1rem (16px) */
+  line-height: var(--ai-leading-xs);         /* 1rem (16px) */
   color: var(--ai-text-contrast);
   letter-spacing: 0.12px;
   white-space: nowrap;

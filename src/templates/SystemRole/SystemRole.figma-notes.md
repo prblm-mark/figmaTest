@@ -67,7 +67,7 @@
 | Prompt padding (Minimised) | `--ai-spacing-5` | `1rem` (16px) — updated in Figma |
 | Textarea text | `--ai-text-primary` | `#1F2A37` |
 | Textarea font-size | `--ai-font-fixed-xs` | `0.875rem` (14px, fixed — never responsive) |
-| Textarea line-height | `--ai-leading-2` | `1.5rem` |
+| Textarea line-height | `--ai-leading-md` | `1.5rem` |
 | Minimised icon btn size | `--ai-spacing-7` | `2rem` (32px) |
 | Minimised header btn height | `--ai-spacing-7` | `2rem` (32px) |
 | Minimised header btn padding | `--ai-spacing-4` | `0.75rem` (12px) |

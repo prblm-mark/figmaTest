@@ -93,7 +93,7 @@ Figma default for all text-button variants has `showLeftIcon=true` — both slot
 | `--ai-spacing-7` | `--ai-spacing-7` | Small height (32px) |
 | `--ai-font-fluid-xs` | `--ai-font-fluid-xs` | Base font size (14px) |
 | `--ai-font-fluid-xxs` | `--ai-font-fluid-xxs` | Small font size (12px) |
-| `--ai-leading-1` | `--ai-leading-1` | Line height (16px) |
+| `--ai-leading-xs` | `--ai-leading-xs` | Line height (16px) |
 | `--ai-icon-size-sm` | `--ai-icon-size-sm` | Icon size inside buttons (16px) |
 
 ## Token Gaps — Action Required in Figma
@@ -109,8 +109,8 @@ Figma default for all text-button variants has `showLeftIcon=true` — both slot
 
 ## Notes
 
-- `button/base` typography: `--ai-font-fluid-xs` (14px), `--ai-font-semibold` (600), `--ai-leading-1` (16px)
-- `button/sm` typography: `--ai-font-fluid-xxs` (12px), `--ai-font-semibold` (600), `--ai-leading-1` (16px)
+- `button/base` typography: `--ai-font-fluid-xs` (14px), `--ai-font-semibold` (600), `--ai-leading-xs` (16px)
+- `button/sm` typography: `--ai-font-fluid-xxs` (12px), `--ai-font-semibold` (600), `--ai-leading-xs` (16px)
 - Secondary = **transparent** bg + `--ai-btn-secondary-border` (visually outlined)
 - Tertiary = **transparent** bg + **no border** (ghost/text button); uses dedicated `--ai-btn-tertiary-*` tokens
 - Tertiary hover bg: `--ai-btn-tertiary-bg-hover` (#F3F4F6); focus ring: `0 0 0 2px --ai-border-secondary` (no inner white border)

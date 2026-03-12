@@ -1,0 +1,1 @@
+export function initSkeleton(e){return e.classList.add("skeleton--active"),{stop(){e.classList.remove("skeleton--active")}}}

@@ -36,7 +36,7 @@ Hover, Active, and Focus all share the same visual treatment (brand border) — 
 | Property | Figma variable | CSS variable |
 |---|---|---|
 | Container gap | `--ai-spacing-3` | `--ai-spacing-3` |
-| Label font | `--ai-font-title`, `--ai-font-semibold`, `--ai-font-fixed-xs`, `--ai-leading-1` | same |
+| Label font | `--ai-font-title`, `--ai-font-semibold`, `--ai-font-fixed-xs`, `--ai-leading-xs` | same |
 | Label color | `--ai-text-primary` | `--ai-text-primary` |
 | Label container gap | `--ai-spacing-5` | `--ai-spacing-5` |
 | Field height (base) | `--ai-spacing-8` | `--ai-spacing-8` |
@@ -50,10 +50,10 @@ Hover, Active, and Focus all share the same visual treatment (brand border) — 
 | Content gap | `--ai-spacing-3` | `--ai-spacing-3` |
 | Icon size | — | `--ai-icon-size-sm` (16px) |
 | Icon color | `--ai-icon-contrast` | `--ai-icon-contrast` |
-| Input font | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xs`, `--ai-leading-2` | same |
+| Input font | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xs`, `--ai-leading-md` | same |
 | Input color (filled) | `--ai-text-primary` | `--ai-text-primary` |
 | Placeholder color | `--text/contrast-2` | `--ai-text-contrast` |
-| Help text font | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xxs`, `--ai-leading-1` | same |
+| Help text font | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xxs`, `--ai-leading-xs` | same |
 | Help text color | `--ai-text-secondary` | `--ai-text-secondary` |
 | Error help color | `--ai-text-error` | `--ai-text-error` |
 

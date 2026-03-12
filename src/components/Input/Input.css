@@ -19,7 +19,7 @@
   font-family: var(--ai-font-title);
   font-size: var(--ai-font-fixed-xs);   /* 14px — title/xs */
   font-weight: var(--ai-font-semibold); /* 600 */
-  line-height: var(--ai-leading-1);     /* 16px */
+  line-height: var(--ai-leading-xs);     /* 16px */
   color: var(--ai-text-primary);
 }
 
@@ -75,7 +75,7 @@
   font-family: var(--ai-font-body);
   font-size: var(--ai-font-fixed-xs);   /* 14px — body/xs */
   font-weight: var(--ai-font-regular);  /* 400 */
-  line-height: var(--ai-leading-2);     /* 24px */
+  line-height: var(--ai-leading-md);     /* 24px */
   color: var(--ai-text-primary);
 }
 
@@ -114,7 +114,7 @@
   font-family: var(--ai-font-body);
   font-size: var(--ai-font-fixed-xxs);  /* 12px */
   font-weight: var(--ai-font-regular);  /* 400 */
-  line-height: var(--ai-leading-1);     /* 16px */
+  line-height: var(--ai-leading-xs);     /* 16px */
   color: var(--ai-text-secondary);
 }
 

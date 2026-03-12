@@ -25,10 +25,18 @@
     --ai-font-fluid-2xl: 1.5rem;
     --ai-font-fluid-3xl: 1.625rem;
     --ai-font-fluid-4xl: 1.875rem;
-    --ai-leading-1: 1rem;
-    --ai-leading-2: 1.5rem;
-    --ai-leading-3: 2rem;
-    --ai-leading-4: 2.5rem;
-    --ai-leading-5: 3rem;
+    --ai-leading-xs: 1rem;
+    --ai-leading-sm: 1.25rem;
+    --ai-leading-md: 1.5rem;
+    --ai-leading-lg: 2rem;
+    --ai-leading-xl: 2.5rem;
+    --ai-leading-2xl: 3rem;
+    --ai-tracking-1: -0.05em;
+    --ai-tracking-2: -0.025em;
+    --ai-tracking-3: -0.0125em;
+    --ai-tracking-4: 0em;
+    --ai-tracking-5: 0.0125em;
+    --ai-tracking-6: 0.025em;
+    --ai-tracking-7: 0.05em;
   }
 }

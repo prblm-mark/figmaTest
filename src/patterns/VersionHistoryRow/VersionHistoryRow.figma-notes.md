@@ -57,11 +57,11 @@
 | Check icon color | `icon/invert` | `--ai-btn-primary-text` (always white; overrides invert flip in dark mode) |
 | Name font size | `--ai-font-fixed-xs` | `--ai-font-fixed-xs` |
 | Name font weight | `--ai-font-semibold` | `--ai-font-semibold` |
-| Name line height | `--ai-leading-1` | `--ai-leading-1` |
+| Name line height | `--ai-leading-xs` | `--ai-leading-xs` |
 | Name color | `--ai-text-primary` | `--ai-text-primary` |
 | Date font size | `--ai-font-fixed-xxs` | `--ai-font-fixed-xxs` |
 | Date font weight | `--ai-font-regular` | `--ai-font-regular` |
-| Date line height | `--ai-leading-1` | `--ai-leading-1` |
+| Date line height | `--ai-leading-xs` | `--ai-leading-xs` |
 | Date color | `--ai-text-contrast` | `--ai-text-contrast` |
 | Date letter-spacing | `0.12px` | `0.12px` (optical, kept as px) |
 

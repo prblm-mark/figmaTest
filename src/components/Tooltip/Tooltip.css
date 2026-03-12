@@ -20,6 +20,6 @@
   font-family: var(--ai-font-body);
   font-size: var(--ai-font-fixed-xxs);   /* 12px — body/xxs */
   font-weight: var(--ai-font-regular);   /* 400 */
-  line-height: var(--ai-leading-1);      /* 16px */
+  line-height: var(--ai-leading-xs);      /* 16px */
   color: #ffffff;                        /* Neutral/0 — approved primitive; always white on dark panel */
 }

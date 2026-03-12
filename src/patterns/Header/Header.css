@@ -30,7 +30,7 @@
   font-family: var(--ai-font-title);
   font-size: var(--ai-font-fluid-xl);   /* 22px desktop / 20px mobile — fluid */
   font-weight: var(--ai-font-bold);     /* 700 */
-  line-height: var(--ai-leading-3);     /* 32px */
+  line-height: var(--ai-leading-lg);     /* 32px */
   color: var(--ai-text-primary);
   flex-shrink: 0;
 }

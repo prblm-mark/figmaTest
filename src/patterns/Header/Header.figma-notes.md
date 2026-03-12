@@ -37,7 +37,7 @@
 | Desktop gap | `--ai-spacing-5` | `--ai-spacing-5` |
 | Mobile outer gap | `--ai-spacing-3` | `--ai-spacing-3` |
 | Mobile title/info gap | `--ai-spacing-1` | `--ai-spacing-1` |
-| Title font | `--ai-font-fluid-xl`, `--ai-font-bold`, `--ai-leading-3` | same |
+| Title font | `--ai-font-fluid-xl`, `--ai-font-bold`, `--ai-leading-lg` | same |
 | Title color | `--ai-text-primary` | `--ai-text-primary` |
 | Actions gap | `--ai-spacing-3` | `--ai-spacing-3` |
 | Mobile button height | `h-[32px]` = `--ai-spacing-7` | `.header__actions .btn` at `@media max-width:767px` |
@@ -47,7 +47,7 @@
 | Tooltip radius | `--ai-radius-lg` | `--ai-radius-lg` |
 | Tooltip padding | `--ai-spacing-5` | `--ai-spacing-5` |
 | Tooltip text color | `--ai-text-invert` | `--ai-text-invert` |
-| Tooltip text font | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xxs`, `--ai-leading-1` | same |
+| Tooltip text font | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xxs`, `--ai-leading-xs` | same |
 
 ## Token Gaps
 None — all design values map to `--ai-*` semantic tokens.

@@ -33,8 +33,9 @@
   --ai-icon-invert: #111928;
   --ai-icon-brand: #0071d8;
   --ai-chat-bg: #1f2a37;
-  --ai-chat-primary-text: #ffffff;
+  --ai-chat-card-bg: #111928;
   --ai-chat-input: #374151;
+  --ai-chat-primary-text: #ffffff;
   --ai-chat-question-bg: #ffffff;
   --ai-chat-sidebar-bg: #1f2a37;
   --ai-chat-sidebar-text: #e5e7eb;
@@ -45,12 +46,6 @@
   --ai-chat-btn-primary-text: #ffffff;
   --ai-chat-btn-primary-text-hover: #ffffff;
   --ai-chat-btn-primary-text-active: #ffffff;
-  --ai-chat-btn-secondary-bg: rgba(0, 0, 0, 0);
-  --ai-chat-btn-secondary-bg-hover: #1f2a37;
-  --ai-chat-btn-secondary-bg-active: #374151;
-  --ai-chat-btn-secondary-text: #ffffff;
-  --ai-chat-btn-secondary-text-hover: #ffffff;
-  --ai-chat-btn-secondary-text-active: #ffffff;
   --ai-chat-btn-secondary-border: #4b5563;
   --ai-chat-btn-secondary-border-hover: #4b5563;
   --ai-chat-btn-secondary-border-active: #4b5563;
@@ -108,4 +103,5 @@
   --ai-icon-size-sm: 1rem;
   --ai-icon-size-md: 1.25rem;
   --ai-icon-size-lg: 1.5rem;
+  --ai-icon-size-xl: 2rem;
 }

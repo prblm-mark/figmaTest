@@ -15,7 +15,7 @@ Single variant — no props.
 | Border radius | `--ai-radius-lg` | `var(--ai-radius-lg)` |
 | Padding | `--ai-spacing-5` | `var(--ai-spacing-5)` |
 | Text color | `Neutral/0` | `#ffffff` — approved primitive |
-| Text font | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xxs`, `--ai-leading-1` | same |
+| Text font | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xxs`, `--ai-leading-xs` | same |
 
 ## Token Gaps / Approved Primitives
 

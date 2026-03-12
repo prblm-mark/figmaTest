@@ -59,14 +59,14 @@ Selected and Expanded are independent JS-toggled states and can be combined.
 | `--ai-font-title` | `--ai-font-title` | Title font family |
 | `--ai-font-semibold` | `--ai-font-semibold` | Title weight |
 | `--ai-font-fixed-xs` | `--ai-font-fixed-xs` | Title + description font size |
-| `--ai-leading-1` | `--ai-leading-1` | Title line height |
+| `--ai-leading-xs` | `--ai-leading-xs` | Title line height |
 | `--ai-text-primary` | `--ai-text-primary` | Title colour |
 | `--ai-border-primary` | `--ai-border-primary` | Whole-item border on hover (node 178:3388) |
 | `--ai-surface-secondary` | `--ai-surface-secondary` | Chevron container bg on hover (node 78:2879) |
 | `--ai-surface-contrast` | `--ai-surface-contrast` | Divider border between header and details |
 | `--ai-font-body` | `--ai-font-body` | Description font family |
 | `--ai-font-regular` | `--ai-font-regular` | Description weight |
-| `--ai-leading-2` | `--ai-leading-2` | Description line height |
+| `--ai-leading-md` | `--ai-leading-md` | Description line height |
 | `--ai-text-secondary` | `--ai-text-secondary` | Description colour |
 
 ## Transitions (defaults used — confirm with user)

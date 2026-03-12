@@ -1,0 +1,31 @@
+/* ChatResponse — master orchestrator layout */
+
+.chat-response {
+  max-width: 48rem;
+  margin: 0 auto;
+}
+
+.chat-response__sources {
+  margin-top: var(--ai-spacing-5);
+}
+
+.chat-response__skeletons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-6);
+  margin-top: var(--ai-spacing-8);
+}
+
+.chat-response__answer {
+  margin-top: var(--ai-spacing-7);
+  opacity: 0;
+  display: none;
+}
+
+.chat-response__answer p {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-sm);
+  color: var(--ai-text-primary);
+  line-height: var(--ai-leading-md);
+  margin: 0 0 var(--ai-spacing-5);
+}
