@@ -57,16 +57,16 @@
 | Title row gap | `--ai-spacing-3` | `--ai-spacing-3` |
 | History icon size | `20px` (= `--ai-icon-size-md`) | `--ai-icon-size-md` |
 | History icon color | `--ai-icon-primary` | `--ai-icon-primary` |
-| Title font | `title/base` | `--ai-font-title`, `--ai-font-bold`, `--ai-font-fixed-sm`, `--ai-leading-1` |
+| Title font | `title/base` | `--ai-font-title`, `--ai-font-bold`, `--ai-font-fixed-sm`, `--ai-leading-xs` |
 | Title color | `--ai-text-primary` | `--ai-text-primary` |
-| Subtitle font | `body/xs` | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xs`, `--ai-leading-2` |
+| Subtitle font | `body/xs` | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xs`, `--ai-leading-md` |
 | Subtitle color | `--ai-text-contrast` | `--ai-text-contrast` |
 | Chevron icon size | `16px` (= `--ai-icon-size-sm`) | `--ai-icon-size-sm` |
 | Chevron icon color | `--ai-icon-contrast` | `--ai-icon-contrast` |
 | Row list gap | `--ai-spacing-1` | `--ai-spacing-1` |
 | Timeline line color | `Neutral/200` = `#e5e7eb` | `--ai-border-secondary` |
 | Footer padding | `--ai-spacing-3` × `--ai-spacing-5` | `--ai-spacing-3` × `--ai-spacing-5` |
-| Footer label font | `body/xxs` | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xxs`, `--ai-leading-1` |
+| Footer label font | `body/xxs` | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xxs`, `--ai-leading-xs` |
 | Footer label color | `--ai-text-primary` | `--ai-text-primary` |
 | Footer label tracking | `0.12px` | `0.12px` (optical, px) |
 

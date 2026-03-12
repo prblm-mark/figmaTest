@@ -1,0 +1,57 @@
+/* WorkingIntro — animated status indicator with brand avatar + title + subtitle */
+
+.working-intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+}
+
+/* ── Title row (logo + heading) ──────────────────────── */
+
+.working-intro__title-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+}
+
+.working-intro__logo {
+  width: var(--ai-icon-size-md);
+  height: var(--ai-icon-size-md);
+  flex-shrink: 0;
+  color: var(--ai-icon-brand);
+}
+
+.working-intro__logo svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.working-intro__title {
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-bold);
+  font-size: var(--ai-font-fixed-md);
+  color: var(--ai-text-primary);
+  line-height: var(--ai-leading-md);
+  letter-spacing: var(--ai-tracking-3);
+  margin: 0;
+  overflow: hidden;
+  clip-path: inset(0);
+}
+
+/* ── Subtitle ────────────────────────────────────────── */
+
+.working-intro__subtitle {
+  font-family: var(--ai-font-body);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-sm);
+  color: var(--ai-text-secondary);
+  line-height: var(--ai-leading-md);
+  letter-spacing: var(--ai-tracking-4);
+  margin: 0;
+}
+
+.working-intro__subtitle--medium {
+  font-weight: var(--ai-font-medium);
+}

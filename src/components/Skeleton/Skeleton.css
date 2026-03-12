@@ -1,0 +1,47 @@
+/* Skeleton — loading placeholder with shimmer animation */
+
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-4);
+}
+
+.skeleton__line {
+  height: 1rem;
+  border-radius: var(--ai-radius-sm);
+  background: var(--ai-chat-card-bg);
+}
+
+/* ── Line widths ─────────────────────────────────────── */
+
+.skeleton__line:nth-child(1) { width: 100%; }
+.skeleton__line:nth-child(2) { width: 50%; }
+.skeleton__line:nth-child(3) { width: 84%; }
+.skeleton__line:nth-child(4) { width: 73%; }
+.skeleton__line:nth-child(5) { width: 36%; }
+
+/* ── Shimmer animation ───────────────────────────────── */
+
+@keyframes skeleton-shimmer {
+  from { background-position: 200% 0; }
+  to   { background-position: -200% 0; }
+}
+
+.skeleton--active .skeleton__line {
+  background:
+    linear-gradient(
+      90deg,
+      var(--ai-chat-card-bg) 0%,
+      var(--ai-chat-card-bg) 32%,
+      var(--ai-chat-input) 50%,
+      var(--ai-chat-card-bg) 67%,
+      var(--ai-chat-card-bg) 100%
+    );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s linear infinite;
+}
+
+.skeleton--active .skeleton__line:nth-child(2) { animation-delay: 0.1s; }
+.skeleton--active .skeleton__line:nth-child(3) { animation-delay: 0.2s; }
+.skeleton--active .skeleton__line:nth-child(4) { animation-delay: 0.3s; }
+.skeleton--active .skeleton__line:nth-child(5) { animation-delay: 0.4s; }

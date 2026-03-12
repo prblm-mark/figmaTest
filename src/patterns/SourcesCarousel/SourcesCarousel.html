@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>SourcesCarousel — Pattern Demo</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="SourcesCarousel.css">
+  <style>
+    body {
+      padding: var(--ai-spacing-7);
+      background-color: var(--ai-surface-secondary);
+    }
+    .demo-section {
+      margin-bottom: var(--ai-spacing-7);
+    }
+    .demo-label {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--ai-spacing-5);
+    }
+    .demo-container {
+      max-width: 640px;
+      padding: var(--ai-spacing-7) var(--ai-spacing-8);
+      background-color: var(--ai-surface-primary);
+      border-radius: var(--ai-radius-lg);
+    }
+    .demo-controls {
+      margin-top: var(--ai-spacing-5);
+      display: flex;
+      gap: var(--ai-spacing-3);
+    }
+    .demo-controls button {
+      padding: var(--ai-spacing-2) var(--ai-spacing-4);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-md);
+      background: var(--ai-surface-primary);
+      color: var(--ai-text-primary);
+      cursor: pointer;
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xs);
+    }
+  </style>
+</head>
+<body>
+  <h1>SourcesCarousel</h1>
+  <p>Horizontal scrolling carousel of article source cards with GSAP entrance animation. Arrows hidden below 768px.</p>
+
+  <div class="demo-section">
+    <p class="demo-label">Animated carousel</p>
+    <div class="demo-container">
+      <div class="sources-carousel" id="carousel">
+        <div class="sources-carousel__track">
+
+          <a href="#" class="sources-card">
+            <div class="sources-card__text">
+              <p class="sources-card__category">Technology</p>
+              <p class="sources-card__title">Understanding Neural Network Architecture in Modern AI Systems</p>
+            </div>
+            <img class="sources-card__thumb" src="https://picsum.photos/seed/a1/112/112" alt="">
+          </a>
+
+          <a href="#" class="sources-card">
+            <div class="sources-card__text">
+              <p class="sources-card__category">Research</p>
+              <p class="sources-card__title">Advances in Natural Language Processing for Enterprise Search</p>
+            </div>
+            <img class="sources-card__thumb" src="https://picsum.photos/seed/a2/112/112" alt="">
+          </a>
+
+          <a href="#" class="sources-card">
+            <div class="sources-card__text">
+              <p class="sources-card__category">Data Science</p>
+              <p class="sources-card__title">Building Scalable Data Pipelines with Real-Time Processing</p>
+            </div>
+            <img class="sources-card__thumb" src="https://picsum.photos/seed/a3/112/112" alt="">
+          </a>
+
+          <a href="#" class="sources-card">
+            <div class="sources-card__text">
+              <p class="sources-card__category">Engineering</p>
+              <p class="sources-card__title">Best Practices for Distributed Systems at Scale</p>
+            </div>
+            <img class="sources-card__thumb" src="https://picsum.photos/seed/a4/112/112" alt="">
+          </a>
+
+        </div>
+
+        <button type="button" class="btn btn--secondary btn--sm btn--icon sources-carousel__nav sources-carousel__nav--prev" aria-label="Previous">
+          <i data-lucide="chevron-left"></i>
+        </button>
+        <button type="button" class="btn btn--secondary btn--sm btn--icon sources-carousel__nav sources-carousel__nav--next" aria-label="Next">
+          <i data-lucide="chevron-right"></i>
+        </button>
+      </div>
+
+      <div class="demo-controls">
+        <button type="button" id="btn-replay">Replay entrance</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+
+  <!-- GSAP CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+
+  <script type="module">
+    import { createCarouselTimeline, initCarouselScroll } from './SourcesCarousel.js';
+
+    const el = document.getElementById('carousel');
+    let tl = createCarouselTimeline(el);
+    initCarouselScroll(el);
+
+    document.getElementById('btn-replay').addEventListener('click', () => {
+      if (tl) tl.kill();
+      gsap.set(el.querySelectorAll('.sources-card'), { y: 40, opacity: 0 });
+      gsap.set(el.querySelectorAll('.sources-carousel__nav'), { opacity: 0 });
+      tl = createCarouselTimeline(el);
+    });
+  </script>
+</body>
+</html>

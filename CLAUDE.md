@@ -344,11 +344,26 @@ Font: **Inter** (loaded via Google Fonts in `src/styles/base.css`).
 
 | Variable | Value | Use |
 |---|---|---|
-| `--ai-leading-1` | `1rem` | Caption/label |
-| `--ai-leading-2` | `1.5rem` | Body default |
-| `--ai-leading-3` | `2rem` | Heading |
-| `--ai-leading-4` | `2.5rem` | Large heading |
-| `--ai-leading-5` | `3rem` | Display |
+| `--ai-leading-xs` | `1rem` | Caption/label |
+| `--ai-leading-sm` | `1.25rem` | Small body |
+| `--ai-leading-md` | `1.5rem` | Body default |
+| `--ai-leading-lg` | `2rem` | Heading |
+| `--ai-leading-xl` | `2.5rem` | Large heading |
+| `--ai-leading-2xl` | `3rem` | Display |
+
+### Letter Spacing (Tracking)
+
+| Variable | Value | Figma px | Use |
+|---|---|---|---|
+| `--ai-tracking-1` | `-0.05em` | -0.8px | Tightest (display headings) |
+| `--ai-tracking-2` | `-0.025em` | -0.4px | Tight |
+| `--ai-tracking-3` | `-0.0125em` | -0.2px | Slightly tight |
+| `--ai-tracking-4` | `0em` | 0 | Normal (default) |
+| `--ai-tracking-5` | `0.0125em` | 0.2px | Slightly loose |
+| `--ai-tracking-6` | `0.025em` | 0.4px | Loose |
+| `--ai-tracking-7` | `0.05em` | 0.8px | Loosest (labels, captions) |
+
+Tracking tokens use `em` units (relative to element font size), not `rem`.
 
 ---
 
@@ -650,6 +665,10 @@ All components must meet **WCAG 2.1 AA**:
 | PromptTemplates | pattern | Built | [node 163:3565](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=163-3565) | `src/patterns/PromptTemplates/` — single variant panel: heading + list of PromptTemplateItem rows. Composes PromptTemplateItem. |
 | SignUpForm | template | Built | [node 96:2429](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=96-2429) | `src/templates/SignUpForm/` — composes Header, InfoLabel, Input, Button. Layout only. |
 | SystemRole | template | Built | [node 163:3894](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=163-3894) | `src/templates/SystemRole/` — Default (full modal, blurred overlay) + Minimised (400px panel, draggable, left-edge resizable) + Mobile variant (176:3242): full-viewport CSS-only layout at ≤767px, no resize/drag. Composes Header, VersionHistory, PromptTemplates, Button, InfoLabel. Box-shadow token gap noted for future work. |
+| Skeleton | component | Built | [node 2077:1526](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2077-1526) | `src/components/Skeleton/` — CSS-only shimmer animation, 5 lines of varying widths. Uses `--ai-chat-card-bg` + `--ai-chat-input`. |
+| WorkingIntro | component | Built | [node 2077:1486](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2077-1486) | `src/components/WorkingIntro/` — 3 stages: logo pulse, title SplitText reveal, subtitle ScrambleText. GSAP SplitText + ScrambleTextPlugin. |
+| SourcesCarousel | pattern | Built | [node 2089:6582](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2089-6582) | `src/patterns/SourcesCarousel/` — Horizontal card carousel with scroll snap, GSAP entrance stagger, arrow nav. Composes Button. |
+| ChatResponse | template | Built | [node 2089:6577](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2089-6577) | `src/templates/ChatResponse/` — 8s master GSAP timeline. Composes WorkingIntro, SourcesCarousel, Skeleton. |
 Add rows here as components are built. Format: Component Name, Tier (component/pattern/template), Built/In Progress/Figma Only, Figma URL, Notes.
 
 ---

@@ -237,7 +237,7 @@
         }
       }
     },
-    "size-can we push": {
+    "size-fluid": {
       "xxs": {
         "$type": "number",
         "$value": 12,
@@ -367,7 +367,7 @@
     }
   },
   "line height": {
-    "1": {
+    "xs": {
       "$type": "number",
       "$value": 16,
       "$extensions": {
@@ -376,12 +376,26 @@
           "ALL_SCOPES"
         ],
         "com.figma.codeSyntax": {
-          "WEB": "--ai-leading-1"
+          "WEB": "--ai-leading-xs"
         },
         "com.figma.isOverride": true
       }
     },
-    "2": {
+    "sm": {
+      "$type": "number",
+      "$value": 20,
+      "$extensions": {
+        "com.figma.variableId": "VariableID:2073:1395",
+        "com.figma.scopes": [
+          "ALL_SCOPES"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "--ai-leading-sm"
+        },
+        "com.figma.isOverride": true
+      }
+    },
+    "md": {
       "$type": "number",
       "$value": 24,
       "$extensions": {
@@ -390,12 +404,12 @@
           "ALL_SCOPES"
         ],
         "com.figma.codeSyntax": {
-          "WEB": "--ai-leading-2"
+          "WEB": "--ai-leading-md"
         },
         "com.figma.isOverride": true
       }
     },
-    "3": {
+    "lg": {
       "$type": "number",
       "$value": 32,
       "$extensions": {
@@ -404,12 +418,12 @@
           "ALL_SCOPES"
         ],
         "com.figma.codeSyntax": {
-          "WEB": "--ai-leading-3"
+          "WEB": "--ai-leading-lg"
         },
         "com.figma.isOverride": true
       }
     },
-    "4": {
+    "xl": {
       "$type": "number",
       "$value": 40,
       "$extensions": {
@@ -418,12 +432,12 @@
           "ALL_SCOPES"
         ],
         "com.figma.codeSyntax": {
-          "WEB": "--ai-leading-4"
+          "WEB": "--ai-leading-xl"
         },
         "com.figma.isOverride": true
       }
     },
-    "5": {
+    "2xl": {
       "$type": "number",
       "$value": 48,
       "$extensions": {
@@ -432,7 +446,107 @@
           "ALL_SCOPES"
         ],
         "com.figma.codeSyntax": {
-          "WEB": "--ai-leading-5"
+          "WEB": "--ai-leading-2xl"
+        },
+        "com.figma.isOverride": true
+      }
+    }
+  },
+  "tracking": {
+    "1": {
+      "$type": "number",
+      "$value": -0.800000011920929,
+      "$extensions": {
+        "com.figma.variableId": "VariableID:2093:3803",
+        "com.figma.scopes": [
+          "ALL_SCOPES"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "--ai-tracking-1"
+        },
+        "com.figma.isOverride": true
+      }
+    },
+    "2": {
+      "$type": "number",
+      "$value": -0.4000000059604645,
+      "$extensions": {
+        "com.figma.variableId": "VariableID:2093:3804",
+        "com.figma.scopes": [
+          "ALL_SCOPES"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "--ai-tracking-2"
+        },
+        "com.figma.isOverride": true
+      }
+    },
+    "3": {
+      "$type": "number",
+      "$value": -0.20000000298023224,
+      "$extensions": {
+        "com.figma.variableId": "VariableID:2095:3809",
+        "com.figma.scopes": [
+          "ALL_SCOPES"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "--ai-tracking-3"
+        },
+        "com.figma.isOverride": true
+      }
+    },
+    "4": {
+      "$type": "number",
+      "$value": 0,
+      "$extensions": {
+        "com.figma.variableId": "VariableID:2093:3805",
+        "com.figma.scopes": [
+          "ALL_SCOPES"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "--ai-tracking-4"
+        },
+        "com.figma.isOverride": true
+      }
+    },
+    "5": {
+      "$type": "number",
+      "$value": 0.20000000298023224,
+      "$extensions": {
+        "com.figma.variableId": "VariableID:2093:3806",
+        "com.figma.scopes": [
+          "ALL_SCOPES"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "--ai-tracking-5"
+        },
+        "com.figma.isOverride": true
+      }
+    },
+    "6": {
+      "$type": "number",
+      "$value": 0.4000000059604645,
+      "$extensions": {
+        "com.figma.variableId": "VariableID:2093:3807",
+        "com.figma.scopes": [
+          "ALL_SCOPES"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "--ai-tracking-6"
+        },
+        "com.figma.isOverride": true
+      }
+    },
+    "7": {
+      "$type": "number",
+      "$value": 0.800000011920929,
+      "$extensions": {
+        "com.figma.variableId": "VariableID:2093:3808",
+        "com.figma.scopes": [
+          "ALL_SCOPES"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "--ai-tracking-7"
         },
         "com.figma.isOverride": true
       }

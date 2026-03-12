@@ -56,15 +56,41 @@ StyleDictionary.registerTransform({
 });
 
 /**
+ * Convert tracking (letter-spacing) tokens from Figma px to em.
+ * Figma stores letter-spacing as absolute px values (e.g. -0.8, 0.4, 1.6).
+ * CSS letter-spacing should use `em` so it scales with the element's font size.
+ * Conversion: divide by 16 (base font size) to get em.
+ * Must be registered BEFORE dimension/figma-rem so tracking tokens are handled here, not there.
+ */
+StyleDictionary.registerTransform({
+  name: 'tracking/figma-em',
+  type: 'value',
+  filter: (token) => {
+    const path = token.path || [];
+    return path.includes('tracking') && token.$type === 'number' && typeof token.$value === 'number';
+  },
+  transform: (token) => {
+    const em = token.$value / 16;
+    // Clean up floating-point noise: round to 4 decimal places
+    const rounded = Math.round(em * 10000) / 10000;
+    return `${rounded}em`;
+  },
+});
+
+/**
  * Convert number tokens to rem units (16px = 1rem baseline).
  * Applies to: spacing, border radius, font sizes, line heights.
  * Does NOT apply to font weight tokens (those have $type: "string").
+ * Does NOT apply to tracking tokens (handled by tracking/figma-em above).
  * Border widths (1px, 2px) and box-shadow offsets are NOT tokens — keep them as px in component CSS.
  */
 StyleDictionary.registerTransform({
   name: 'dimension/figma-rem',
   type: 'value',
-  filter: (token) => token.$type === 'number' && typeof token.$value === 'number',
+  filter: (token) => {
+    const path = token.path || [];
+    return token.$type === 'number' && typeof token.$value === 'number' && !path.includes('tracking');
+  },
   transform: (token) => `${token.$value / 16}rem`,
 });
 
@@ -158,6 +184,7 @@ const sd = new StyleDictionary({
     css: {
       transforms: [
         'color/figma-hex',        // Normalize Figma color objects → hex strings
+        'tracking/figma-em',      // Convert tracking (letter-spacing) → em
         'dimension/figma-rem',    // Convert number tokens → rem (÷16)
         'fontWeight/figma-numeric', // "SemiBold" → 600
         'font/figma-family',      // "Inter" → "'Inter', sans-serif"
@@ -197,6 +224,7 @@ const sdMobile = new StyleDictionary({
     css: {
       transforms: [
         'color/figma-hex',
+        'tracking/figma-em',
         'dimension/figma-rem',
         'fontWeight/figma-numeric',
         'font/figma-family',
@@ -234,6 +262,7 @@ const sdDark = new StyleDictionary({
     css: {
       transforms: [
         'color/figma-hex',
+        'tracking/figma-em',
         'dimension/figma-rem',
         'fontWeight/figma-numeric',
         'font/figma-family',
@@ -273,6 +302,7 @@ const sdMinimised = new StyleDictionary({
     css: {
       transforms: [
         'color/figma-hex',
+        'tracking/figma-em',
         'dimension/figma-rem',
         'fontWeight/figma-numeric',
         'font/figma-family',

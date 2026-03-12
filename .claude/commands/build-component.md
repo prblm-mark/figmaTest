@@ -233,6 +233,7 @@ Write the component files following project conventions:
 - Only `--ai-*` semantic variables, or primitives explicitly approved by the user in Step 5
 - Approved primitives: use the hex value with a comment citing the primitive name (e.g. `/* Red/400 */`)
 - Never hardcode arbitrary hex values or named colors
+- **Never use arbitrary values when a `--ai-*` token exists — in CSS or JS.** Always use `var(--ai-token)`, never the raw px/rem/numeric equivalent. Even when a plan states "24×24px" alongside a token name, write `var(--ai-icon-size-lg)` — the pixel value is documentation, the token var is the code. This applies to all property types: spacing, sizing, font-size, font-weight, radius, icon dimensions, line-height. **This extends to JavaScript inline styles** — GSAP `.set()`, `.to()`, `.fromTo()`, and `element.style` must use the CSS custom property string (e.g. `{ fontWeight: 'var(--ai-font-medium)' }`) not the raw value (e.g. `{ fontWeight: 500 }`). Concrete mistake: WorkingIntro Stage 3 used `fontWeight: 600` in GSAP `.set()` instead of `'var(--ai-font-medium)'`.
 - **Dimension values (spacing, sizing, font-size, line-height, border-radius) → always use `rem` via `--ai-*` tokens.** Border widths (`1px`, `2px`) and box-shadow pixel offsets stay as `px` — they are optical units, not scaled with font-size.
 - **Hardcoded dimension stop rule:** If a dimension value in component CSS (or any nested sub-component) is NOT a border-width or box-shadow offset and cannot be expressed as an `--ai-*` token, STOP. Do not write or leave the value. Report the property name, the component, and the Figma value. Ask the user how to handle it (add a token, approve a rem conversion, etc.) before continuing. This mirrors the token gap stop rule.
 - Base state first, then variant modifiers, then size modifiers, then combined (`.variant.size`)
@@ -329,7 +330,7 @@ Add a row to **CLAUDE.md Section 10** component tracker:
 | Font size (fixed) | `--ai-font-fixed-xxs` … `--ai-font-fixed-4xl` |
 | Font size (fluid) | `--ai-font-fluid-xxs` … `--ai-font-fluid-4xl` — **genuinely responsive** via `tokens-mobile.css`; desktop value at ≥768px, smaller mobile value at ≤767px. No component CSS needed for typography responsiveness. |
 | Font weight | `--ai-font-regular/medium/semibold/bold/extrabold` |
-| Line height | `--ai-leading-1` … `--ai-leading-5` |
+| Line height | `--ai-leading-xs` … `--ai-leading-2xl` |
 | Button-specific | `--ai-btn-primary/secondary/disabled` + hover/focus/pressed |
 | Gradient backgrounds | `--ai-gradient-surface-*` — see CLAUDE.md §2 Gradient |
 
@@ -349,7 +350,7 @@ Never hardcode rgba gradient values in component CSS.
 
 ## Common pitfalls (learned from Button audit)
 
-- `button/base` typography in Figma → `--ai-font-fluid-xs` (14px) + `--ai-leading-1` (16px), NOT fixed-sm + leading-2
+- `button/base` typography in Figma → `--ai-font-fluid-xs` (14px) + `--ai-leading-xs` (16px), NOT fixed-sm + leading-md
 - `button/sm` → `--ai-font-fluid-xxs` (12px), NOT fixed-xs
 - Figma sets fixed heights (40px base, 32px sm) — add `min-height`, not just padding
 - Tertiary = white bg + **no border** (distinct from Secondary which has `--ai-border-secondary`)

@@ -23,7 +23,7 @@
 html {
   font-family: var(--ai-font-body), sans-serif;
   font-size: var(--ai-font-fixed-sm);
-  line-height: var(--ai-leading-2);
+  line-height: var(--ai-leading-md);
   color: var(--ai-text-primary);
   background-color: var(--ai-surface-primary);
   -webkit-font-smoothing: antialiased;
@@ -40,7 +40,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: var(--ai-font-semibold);
   color: var(--ai-text-primary);
   margin: 0 0 var(--ai-spacing-4);
-  line-height: var(--ai-leading-3);
+  line-height: var(--ai-leading-lg);
 }
 
 h1 { font-size: var(--ai-font-fixed-4xl); }

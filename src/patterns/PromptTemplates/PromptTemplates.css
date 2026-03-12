@@ -25,7 +25,7 @@
   font-family: var(--ai-font-title);
   font-weight: var(--ai-font-bold);
   font-size: var(--ai-font-fixed-sm);
-  line-height: var(--ai-leading-1);
+  line-height: var(--ai-leading-xs);
   color: var(--ai-text-primary);
 }
 
@@ -34,7 +34,7 @@
   font-family: var(--ai-font-body);
   font-weight: var(--ai-font-regular);
   font-size: var(--ai-font-fixed-xs);
-  line-height: var(--ai-leading-2);
+  line-height: var(--ai-leading-md);
   color: var(--ai-text-contrast);
 }
 

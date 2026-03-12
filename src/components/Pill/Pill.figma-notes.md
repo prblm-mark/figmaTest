@@ -44,7 +44,7 @@
 | Border radius | `--ai-radius-full` | `--ai-radius-full` |
 | Font size | `--ai-font-fixed-xxs` | `--ai-font-fixed-xxs` |
 | Font weight | `--ai-font-medium` | `--ai-font-medium` |
-| Line height | `--ai-leading-1` | `--ai-leading-1` |
+| Line height | `--ai-leading-xs` | `--ai-leading-xs` |
 
 ## Token Gaps / Substitutions
 

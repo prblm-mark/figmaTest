@@ -102,7 +102,7 @@ body {
   font-family: var(--ai-font-title);
   font-size: var(--ai-font-fluid-xl);
   font-weight: var(--ai-font-bold);
-  line-height: var(--ai-leading-3);
+  line-height: var(--ai-leading-lg);
   color: var(--ai-text-primary);
   margin: 0 0 var(--ai-spacing-2);
 }
@@ -111,7 +111,7 @@ body {
   font-family: var(--ai-font-body);
   font-size: var(--ai-font-fixed-xs);
   font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-2);
+  line-height: var(--ai-leading-md);
   color: var(--ai-text-secondary);
   margin: 0;
 }

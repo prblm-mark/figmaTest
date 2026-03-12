@@ -137,7 +137,7 @@
   font-family: var(--ai-font-body);
   font-size: var(--ai-font-fixed-xs);
   font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-2);
+  line-height: var(--ai-leading-md);
   color: var(--ai-text-primary);          /* Figma: text-black — approved substitution */
   background-color: transparent;          /* prompt sets bg; transparent exposes inset box-shadow */
   resize: none;
