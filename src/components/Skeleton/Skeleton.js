@@ -16,7 +16,7 @@ export function initSkeleton(el) {
     {
       backgroundPosition: '-200% 0',
       duration: 1.4,
-      ease: 'none',
+      ease: 'sine.inOut',
       repeat: -1,
       stagger: { each: 0.1 },
     }
