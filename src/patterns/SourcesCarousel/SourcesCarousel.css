@@ -28,6 +28,7 @@
   flex: 0 0 calc((100% / 1.5) - (var(--ai-spacing-3) * (0.5 / 1.5)));
   scroll-snap-align: start;
   min-width: 0;
+  overflow: hidden;
   text-decoration: none;
   color: inherit;
 }
@@ -89,7 +90,7 @@
 
 /* ── Container query: wide card → horizontal layout (Device=Desktop) ── */
 
-@container (min-width: 12rem) {
+@container (min-width: 14em) {
   .sources-card__inner {
     flex-direction: row;
     gap: var(--ai-spacing-5);
@@ -125,7 +126,7 @@
 
 /* ── Responsive: tablet — 2.5 columns ────────────────── */
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   .sources-card {
     flex: 0 0 calc((100% / 2.5) - (var(--ai-spacing-3) * (1.5 / 2.5)));
   }

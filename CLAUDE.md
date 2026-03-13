@@ -211,13 +211,20 @@ so the transparent stop is derived at runtime from the semantic token. No dark-m
 
 ### Breakpoints
 
-| Name | Variable | Value | @media equivalent | Use |
-|---|---|---|---|---|
-| Mobile | `--ai-bp-mobile` | `30rem` (480px) | `max-width: 479px` | Small phone layouts |
-| Tablet | `--ai-bp-tablet` | `48rem` (768px) | `max-width: 767px` | Tablet / large phone — primary responsive breakpoint |
-| Desktop | `--ai-bp-desktop` | `64rem` (1024px) | `min-width: 1024px` | Full desktop layouts |
+Mobile-first scale (mirrors Tailwind defaults). All `@media` queries use `min-width`.
 
-**Rule:** `@media` queries must use the px equivalent (CSS vars not supported in `@media`). `@container` queries CAN use the var. All components should use these values for consistency.
+| Name | Variable | Value | @media usage |
+|---|---|---|---|
+| sm | `--ai-bp-sm` | `40rem` (640px) | `@media (min-width: 640px)` |
+| md | `--ai-bp-md` | `48rem` (768px) | `@media (min-width: 768px)` |
+| lg | `--ai-bp-lg` | `64rem` (1024px) | `@media (min-width: 1024px)` |
+| xl | `--ai-bp-xl` | `80rem` (1280px) | `@media (min-width: 1280px)` |
+| 2xl | `--ai-bp-2xl` | `96rem` (1536px) | `@media (min-width: 1536px)` |
+
+**Rules:**
+- Always mobile-first: base styles = mobile, add complexity via `min-width` queries.
+- `@media` queries must use the px equivalent (CSS vars not supported in `@media`). `@container` queries CAN use the var.
+- All components should use these breakpoint values for consistency.
 
 ---
 
