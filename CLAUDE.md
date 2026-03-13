@@ -334,9 +334,9 @@ background — they flip with the global theme. Use fixed RGB values instead.
 | Derived property | Light sidebar | Dark sidebar |
 |---|---|---|
 | Text | `rgb(31 42 55)` (fixed dark) | `rgb(229 231 235)` (fixed light) |
-| Selected text | 15% lighter — `color-mix(in srgb, text 85%, white)` | same formula |
-| Hover bg | 8% overlay — `color-mix(in srgb, bg 92%, rgb(31 42 55))` | `color-mix(in srgb, bg 92%, white)` |
-| Selected bg | 12% overlay — `color-mix(in srgb, bg 88%, rgb(31 42 55))` | `color-mix(in srgb, bg 88%, white)` |
+| Selected text | 15% darker — `color-mix(in srgb, text 85%, black)` | 15% lighter — `color-mix(in srgb, text 85%, white)` |
+| Hover bg | 8% overlay — `color-mix(in srgb, bg 92%, rgb(38 55 88))` | `color-mix(in srgb, bg 92%, white)` |
+| Selected bg | 12% overlay — `color-mix(in srgb, bg 88%, rgb(38 55 88))` | `color-mix(in srgb, bg 88%, white)` |
 | Muted text (labels) | `color: var(--ai-chat-sidebar-text); opacity: 0.6` | same |
 
 ### Current computed tokens
