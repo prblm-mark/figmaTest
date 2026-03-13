@@ -1,12 +1,12 @@
 /* ChatListItem — sidebar menu item with computed hover/selected states */
 
 /* ── Computed overlay variables ─────────────────────── */
-/* Light sidebar: dark text, darken for states */
+/* Light sidebar: dark text, darken selected text */
 [data-sidebar-theme="light"] {
   --ai-chat-sidebar-text: rgb(31 42 55);
-  --ai-chat-sidebar-selected-text: color-mix(in srgb, var(--ai-chat-sidebar-text) 85%, white);
-  --ai-chat-sidebar-hover-bg: color-mix(in srgb, var(--ai-chat-sidebar-bg) 92%, rgb(31 42 55));
-  --ai-chat-sidebar-active-bg: color-mix(in srgb, var(--ai-chat-sidebar-bg) 88%, rgb(31 42 55));
+  --ai-chat-sidebar-selected-text: color-mix(in srgb, var(--ai-chat-sidebar-text) 85%, black);
+  --ai-chat-sidebar-hover-bg: color-mix(in srgb, var(--ai-chat-sidebar-bg) 92%, rgb(38 55 88));
+  --ai-chat-sidebar-active-bg: color-mix(in srgb, var(--ai-chat-sidebar-bg) 88%, rgb(38 55 88));
 }
 
 /* Dark sidebar: light text, lighten for states */
