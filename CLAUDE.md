@@ -209,6 +209,16 @@ so the transparent stop is derived at runtime from the semantic token. No dark-m
 2. Add the `--ai-gradient-<group>-<name>` CSS property to `css/tokens-gradients.css`
 3. Add a row to this table
 
+### Breakpoints
+
+| Name | Variable | Value | @media equivalent | Use |
+|---|---|---|---|---|
+| Mobile | `--ai-bp-mobile` | `30rem` (480px) | `max-width: 479px` | Small phone layouts |
+| Tablet | `--ai-bp-tablet` | `48rem` (768px) | `max-width: 767px` | Tablet / large phone — primary responsive breakpoint |
+| Desktop | `--ai-bp-desktop` | `64rem` (1024px) | `min-width: 1024px` | Full desktop layouts |
+
+**Rule:** `@media` queries must use the px equivalent (CSS vars not supported in `@media`). `@container` queries CAN use the var. All components should use these values for consistency.
+
 ---
 
 ## 2a. Dark Mode

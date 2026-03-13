@@ -25,17 +25,17 @@ export function createCarouselTimeline(el) {
   tl.to(cards, {
     y: 0,
     opacity: 1,
-    duration: 0.3,
-    stagger: 0.05,
-    ease: 'back.out(1.4)',
+    duration: 0.6,
+    stagger: 0.08,
+    ease: 'power2.out',
   });
 
   // Nav buttons fade in after cards (desktop only)
   tl.to(navBtns, {
     opacity: 1,
-    duration: 0.3,
+    duration: 0.4,
     ease: 'power1.out',
-  }, '-=0.1');
+  }, '-=0.2');
 
   return tl;
 }
