@@ -87,8 +87,11 @@ export function createWorkingIntroTimeline(el) {
  * @returns {gsap.core.Tween}
  */
 export function scrambleTitleFinal(introTl, finalText) {
-  const { title, logoPulse } = introTl.data;
+  const { title, logo, logoPulse } = introTl.data;
   logoPulse.kill();
+
+  // Reset logo to original size
+  gsap.to(logo, { scale: 1, opacity: 1, duration: 0.4, ease: 'power2.out' });
 
   return gsap.to(title, {
     scrambleText: { ...SCRAMBLE_DEFAULTS, text: finalText },

@@ -42,21 +42,28 @@ export function createCarouselTimeline(el) {
 
 /**
  * Initializes carousel scroll behavior — arrow click handlers + scroll state.
+ * Safe to call multiple times; only binds listeners once per element.
  *
  * @param {HTMLElement} el  .sources-carousel element
  */
 export function initCarouselScroll(el) {
+  if (el._carouselScrollInit) return;
+  el._carouselScrollInit = true;
+
   const track = el.querySelector('.sources-carousel__track');
   const prevBtn = el.querySelector('.sources-carousel__nav--prev');
   const nextBtn = el.querySelector('.sources-carousel__nav--next');
 
   if (!track || !prevBtn || !nextBtn) return;
 
-  function getScrollAmount() {
+  // Cache scroll amount; invalidate on resize
+  let cachedScrollAmount = 0;
+
+  function computeScrollAmount() {
     const card = track.querySelector('.sources-card');
     if (!card) return 0;
     const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
-    return card.offsetWidth + gap;
+    cachedScrollAmount = card.offsetWidth + gap;
   }
 
   function updateButtons() {
@@ -67,12 +74,25 @@ export function initCarouselScroll(el) {
     nextBtn.disabled = scrollLeft >= maxScroll - 2;
   }
 
+  // Compute initial value
+  computeScrollAmount();
+
+  // Recalculate on resize (debounced via rAF)
+  let resizeRaf = 0;
+  window.addEventListener('resize', () => {
+    cancelAnimationFrame(resizeRaf);
+    resizeRaf = requestAnimationFrame(() => {
+      computeScrollAmount();
+      updateButtons();
+    });
+  }, { passive: true });
+
   nextBtn.addEventListener('click', () => {
-    track.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+    track.scrollBy({ left: cachedScrollAmount, behavior: 'smooth' });
   });
 
   prevBtn.addEventListener('click', () => {
-    track.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+    track.scrollBy({ left: -cachedScrollAmount, behavior: 'smooth' });
   });
 
   track.addEventListener('scroll', updateButtons, { passive: true });

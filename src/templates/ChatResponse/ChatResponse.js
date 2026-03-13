@@ -19,14 +19,18 @@ import { initSkeleton } from '../../components/Skeleton/Skeleton.js';
 export function createChatResponseTimeline(el) {
   const introEl = el.querySelector('.working-intro');
   const carouselEl = el.querySelector('.sources-carousel');
+  const skeletonsWrap = el.querySelector('.chat-response__skeletons');
   const skeletonEls = el.querySelectorAll('.skeleton');
   const answerEl = el.querySelector('.chat-response__answer');
+
+  // Track standalone tweens for cleanup
+  const tweens = [];
 
   // Initialize skeletons
   const skeletonCtrls = Array.from(skeletonEls).map(s => initSkeleton(s));
 
-  // Initialize carousel scroll behavior
-  initCarouselScroll(carouselEl);
+  // Carousel scroll behavior is initialized when the carousel becomes visible (2.0s)
+  let scrollInitialized = false;
 
   // Component timelines
   const introTl = createWorkingIntroTimeline(introEl);
@@ -38,37 +42,45 @@ export function createChatResponseTimeline(el) {
   // 0.0s — WorkingIntro starts (logo pulse + title reveal + subtitle scrambles)
   master.add(introTl, 0);
 
-  // 2.0s — Carousel cards slide in
+  // 2.0s — Reveal carousel in DOM, then cards slide in
+  master.call(() => {
+    carouselEl.style.display = 'block';
+    if (!scrollInitialized) {
+      initCarouselScroll(carouselEl);
+      scrollInitialized = true;
+    }
+  }, null, 2.0);
   master.add(carouselTl, 2.0);
 
   // 7.5s — Skeleton stops + fades out, title scrambles to final, logo pulse stops
   master.call(() => {
-    // Stop skeletons
     skeletonCtrls.forEach(c => c.stop());
 
-    // Fade out skeletons
-    gsap.to(el.querySelector('.chat-response__skeletons'), {
+    tweens.push(gsap.to(skeletonsWrap, {
       opacity: 0,
       duration: 0.5,
       ease: 'power1.out',
-    });
+      onComplete: () => { skeletonsWrap.style.display = 'none'; },
+    }));
 
-    // Final title scramble
-    scrambleTitleFinal(introTl, 'Please find your explanation below:');
+    tweens.push(scrambleTitleFinal(introTl, 'Please find your explanation below:'));
   }, null, 7.5);
 
   // 8.0s — Answer content fades in
   master.call(() => {
     answerEl.style.display = 'block';
-    gsap.to(answerEl, {
+    tweens.push(gsap.to(answerEl, {
       opacity: 1,
       duration: 0.8,
       ease: 'sine.inOut',
       delay: 0.2,
-    });
+    }));
   }, null, 8.0);
 
   function reset() {
+    // Kill all tweens — master + standalone
+    tweens.forEach(t => t && t.kill());
+    tweens.length = 0;
     master.kill();
 
     // Reset WorkingIntro (reverts SplitText, clears inline styles)
@@ -76,15 +88,15 @@ export function createChatResponseTimeline(el) {
     introEl.querySelector('.working-intro__title').textContent = 'Working on it';
     introEl.querySelector('.working-intro__subtitle').innerHTML = '&nbsp;';
 
-    // Reset carousel
+    // Reset carousel (hide again so skeletons sit beneath intro)
+    carouselEl.style.display = 'none';
     gsap.set(carouselEl.querySelectorAll('.sources-card'), { clearProps: 'all' });
     gsap.set(carouselEl.querySelectorAll('.sources-carousel__nav'), { clearProps: 'all' });
 
     // Reset skeletons
-    skeletonEls.forEach(s => {
-      s.classList.remove('skeleton--active');
-    });
-    gsap.set(el.querySelector('.chat-response__skeletons'), { clearProps: 'all' });
+    skeletonEls.forEach(s => { s.classList.remove('skeleton--active'); });
+    skeletonsWrap.style.display = '';
+    gsap.set(skeletonsWrap, { clearProps: 'all' });
 
     // Reset answer
     answerEl.style.display = 'none';

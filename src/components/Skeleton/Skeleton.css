@@ -33,4 +33,5 @@
       var(--ai-chat-card-bg) 100%
     );
   background-size: 300% 100%;
+  will-change: background-position;
 }
