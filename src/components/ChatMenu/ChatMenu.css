@@ -1,0 +1,71 @@
+/* ChatMenu — context menu dropdown for sidebar chat items */
+
+.chat-menu {
+  position: absolute;
+  top: var(--ai-spacing-6);
+  left: calc(100% - var(--ai-spacing-7));
+  z-index: 10;
+  display: none;
+  flex-direction: column;
+  min-width: max-content;
+  padding: var(--ai-spacing-3);
+  border-radius: var(--ai-radius-lg);
+  background: var(--ai-chat-sidebar-bg);
+}
+
+.chat-menu--open {
+  display: flex;
+}
+
+/* Shadow — no --ai-shadow-* tokens exist yet; raw values (same precedent as SystemRole) */
+[data-sidebar-theme="light"] .chat-menu {
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+
+[data-sidebar-theme="dark"] .chat-menu {
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+/* ── Menu items ─────────────────────────────────────── */
+
+.chat-menu__item {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  width: 100%;
+  min-height: var(--ai-spacing-7);
+  padding: 0 var(--ai-spacing-3);
+  border: none;
+  border-radius: var(--ai-radius-md);
+  background: transparent;
+  color: var(--ai-chat-sidebar-text);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fluid-xxs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  cursor: pointer;
+  white-space: nowrap;
+  text-align: left;
+  transition: background-color var(--ai-transition-default);
+}
+
+.chat-menu__item:hover {
+  background: var(--ai-chat-sidebar-hover-bg);
+}
+
+.chat-menu__item:active {
+  background: var(--ai-chat-sidebar-active-bg);
+}
+
+.chat-menu__item [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  flex-shrink: 0;
+}
+
+/* ── Focus ──────────────────────────────────────────── */
+
+.chat-menu__item:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--ai-chat-sidebar-bg), 0 0 0 3px var(--ai-surface-brand-contrast);
+}

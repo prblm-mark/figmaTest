@@ -7,6 +7,7 @@
   <title>Sidebar Test — Prototype</title>
   <link rel="stylesheet" href="../../styles/base.css">
   <link rel="stylesheet" href="../../components/ChatListItem/ChatListItem.css">
+  <link rel="stylesheet" href="../../components/ChatMenu/ChatMenu.css">
   <link rel="stylesheet" href="SidebarTest.css">
   <style>
     body {
@@ -29,34 +30,228 @@
 <body>
   <aside class="sidebar" id="sidebar">
     <span class="sidebar__label">Today</span>
-    <button class="chat-list-item" type="button">What is machine learning?</button>
-    <button class="chat-list-item chat-list-item--selected" type="button">Help me write a poem about the sea</button>
-    <button class="chat-list-item" type="button">Explain quantum computing</button>
-    <button class="chat-list-item" type="button">Best practices for React hooks</button>
+
+    <div class="chat-list-item" tabindex="0">
+      <i data-lucide="pin" class="chat-list-item__pin" aria-hidden="true"></i>
+      <span class="chat-list-item__text">What is machine learning?</span>
+      <div class="chat-list-item__actions">
+        <div class="chat-list-item__fade"></div>
+        <button class="chat-list-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+          <i data-lucide="ellipsis" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="chat-menu">
+        <button class="chat-menu__item" type="button"><i data-lucide="bookmark" aria-hidden="true"></i> Save</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+      </div>
+    </div>
+
+    <div class="chat-list-item chat-list-item--selected chat-list-item--pinned" tabindex="0">
+      <i data-lucide="pin" class="chat-list-item__pin" aria-hidden="true"></i>
+      <span class="chat-list-item__text">Help me write a poem about the sea</span>
+      <div class="chat-list-item__actions">
+        <div class="chat-list-item__fade"></div>
+        <button class="chat-list-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+          <i data-lucide="ellipsis" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="chat-menu">
+        <button class="chat-menu__item" type="button"><i data-lucide="bookmark" aria-hidden="true"></i> Save</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+      </div>
+    </div>
+
+    <div class="chat-list-item" tabindex="0">
+      <i data-lucide="pin" class="chat-list-item__pin" aria-hidden="true"></i>
+      <span class="chat-list-item__text">Explain quantum computing</span>
+      <div class="chat-list-item__actions">
+        <div class="chat-list-item__fade"></div>
+        <button class="chat-list-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+          <i data-lucide="ellipsis" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="chat-menu">
+        <button class="chat-menu__item" type="button"><i data-lucide="bookmark" aria-hidden="true"></i> Save</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+      </div>
+    </div>
+
+    <div class="chat-list-item chat-list-item--pinned" tabindex="0">
+      <i data-lucide="pin" class="chat-list-item__pin" aria-hidden="true"></i>
+      <span class="chat-list-item__text">Best practices for React hooks</span>
+      <div class="chat-list-item__actions">
+        <div class="chat-list-item__fade"></div>
+        <button class="chat-list-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+          <i data-lucide="ellipsis" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="chat-menu">
+        <button class="chat-menu__item" type="button"><i data-lucide="bookmark" aria-hidden="true"></i> Save</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+      </div>
+    </div>
 
     <span class="sidebar__label">Yesterday</span>
-    <button class="chat-list-item" type="button">Recipe for chocolate cake</button>
-    <button class="chat-list-item" type="button">Travel tips for Japan</button>
-    <button class="chat-list-item" type="button">How to learn guitar</button>
+
+    <div class="chat-list-item" tabindex="0">
+      <i data-lucide="pin" class="chat-list-item__pin" aria-hidden="true"></i>
+      <span class="chat-list-item__text">Recipe for chocolate cake</span>
+      <div class="chat-list-item__actions">
+        <div class="chat-list-item__fade"></div>
+        <button class="chat-list-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+          <i data-lucide="ellipsis" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="chat-menu">
+        <button class="chat-menu__item" type="button"><i data-lucide="bookmark" aria-hidden="true"></i> Save</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+      </div>
+    </div>
+
+    <div class="chat-list-item" tabindex="0">
+      <i data-lucide="pin" class="chat-list-item__pin" aria-hidden="true"></i>
+      <span class="chat-list-item__text">Travel tips for Japan</span>
+      <div class="chat-list-item__actions">
+        <div class="chat-list-item__fade"></div>
+        <button class="chat-list-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+          <i data-lucide="ellipsis" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="chat-menu">
+        <button class="chat-menu__item" type="button"><i data-lucide="bookmark" aria-hidden="true"></i> Save</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+      </div>
+    </div>
+
+    <div class="chat-list-item" tabindex="0">
+      <i data-lucide="pin" class="chat-list-item__pin" aria-hidden="true"></i>
+      <span class="chat-list-item__text">How to learn guitar</span>
+      <div class="chat-list-item__actions">
+        <div class="chat-list-item__fade"></div>
+        <button class="chat-list-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+          <i data-lucide="ellipsis" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="chat-menu">
+        <button class="chat-menu__item" type="button"><i data-lucide="bookmark" aria-hidden="true"></i> Save</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+      </div>
+    </div>
 
     <span class="sidebar__label">Previous 7 days</span>
-    <button class="chat-list-item" type="button">Python vs JavaScript comparison</button>
-    <button class="chat-list-item" type="button">Summarise this article</button>
-    <button class="chat-list-item" type="button">Write a cover letter</button>
-    <button class="chat-list-item" type="button">Debugging CSS grid layouts</button>
-    <button class="chat-list-item" type="button">Plan a birthday party</button>
+
+    <div class="chat-list-item" tabindex="0">
+      <i data-lucide="pin" class="chat-list-item__pin" aria-hidden="true"></i>
+      <span class="chat-list-item__text">Python vs JavaScript comparison</span>
+      <div class="chat-list-item__actions">
+        <div class="chat-list-item__fade"></div>
+        <button class="chat-list-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+          <i data-lucide="ellipsis" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="chat-menu">
+        <button class="chat-menu__item" type="button"><i data-lucide="bookmark" aria-hidden="true"></i> Save</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+      </div>
+    </div>
+
+    <div class="chat-list-item" tabindex="0">
+      <i data-lucide="pin" class="chat-list-item__pin" aria-hidden="true"></i>
+      <span class="chat-list-item__text">Summarise this article</span>
+      <div class="chat-list-item__actions">
+        <div class="chat-list-item__fade"></div>
+        <button class="chat-list-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+          <i data-lucide="ellipsis" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="chat-menu">
+        <button class="chat-menu__item" type="button"><i data-lucide="bookmark" aria-hidden="true"></i> Save</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+      </div>
+    </div>
+
+    <div class="chat-list-item" tabindex="0">
+      <i data-lucide="pin" class="chat-list-item__pin" aria-hidden="true"></i>
+      <span class="chat-list-item__text">Write a cover letter</span>
+      <div class="chat-list-item__actions">
+        <div class="chat-list-item__fade"></div>
+        <button class="chat-list-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+          <i data-lucide="ellipsis" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="chat-menu">
+        <button class="chat-menu__item" type="button"><i data-lucide="bookmark" aria-hidden="true"></i> Save</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+      </div>
+    </div>
+
+    <div class="chat-list-item" tabindex="0">
+      <i data-lucide="pin" class="chat-list-item__pin" aria-hidden="true"></i>
+      <span class="chat-list-item__text">Debugging CSS grid layouts</span>
+      <div class="chat-list-item__actions">
+        <div class="chat-list-item__fade"></div>
+        <button class="chat-list-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+          <i data-lucide="ellipsis" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="chat-menu">
+        <button class="chat-menu__item" type="button"><i data-lucide="bookmark" aria-hidden="true"></i> Save</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+      </div>
+    </div>
+
+    <div class="chat-list-item" tabindex="0">
+      <i data-lucide="pin" class="chat-list-item__pin" aria-hidden="true"></i>
+      <span class="chat-list-item__text">Plan a birthday party</span>
+      <div class="chat-list-item__actions">
+        <div class="chat-list-item__fade"></div>
+        <button class="chat-list-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+          <i data-lucide="ellipsis" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="chat-menu">
+        <button class="chat-menu__item" type="button"><i data-lucide="bookmark" aria-hidden="true"></i> Save</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+        <button class="chat-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+      </div>
+    </div>
   </aside>
 
   <main class="main">
     <h1>Sidebar Test</h1>
     <p class="main__note">
       This prototype demonstrates the ChatListItem component inside a sidebar container.
-      Hover and selected states use computed <code>color-mix()</code> overlays based on
-      the sidebar background luminance. Toggle dark mode to see the sidebar switch between
-      light and dark themes automatically.
+      Hover items to see the ellipsis button with fade gradient. Click the ellipsis to open
+      the ChatMenu dropdown. Click an item to select it. Toggle dark mode to see the sidebar
+      switch between light and dark themes automatically.
     </p>
   </main>
 
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
   <script type="module">
     import { initSidebarTheme } from '../../utils/sidebar-colors.js';
 
@@ -72,13 +267,59 @@
       attributeFilter: ['data-theme'],
     });
 
-    // Click to select — toggle selected state
+    // Click handling
     sidebar.addEventListener('click', (e) => {
+      // Ellipsis button — toggle menu
+      const menuBtn = e.target.closest('.chat-list-item__menu-btn');
+      if (menuBtn) {
+        e.stopPropagation();
+        const item = menuBtn.closest('.chat-list-item');
+        const menu = item.querySelector('.chat-menu');
+        const isOpen = item.classList.toggle('chat-list-item--menu-open');
+        menu.classList.toggle('chat-menu--open', isOpen);
+        menuBtn.setAttribute('aria-expanded', isOpen);
+        return;
+      }
+
+      // Menu item — close menu
+      const menuItem = e.target.closest('.chat-menu__item');
+      if (menuItem) {
+        const item = menuItem.closest('.chat-list-item');
+        item.classList.remove('chat-list-item--menu-open');
+        item.querySelector('.chat-menu').classList.remove('chat-menu--open');
+        item.querySelector('.chat-list-item__menu-btn').setAttribute('aria-expanded', 'false');
+        return;
+      }
+
+      // Item click — select
       const item = e.target.closest('.chat-list-item');
       if (!item) return;
       sidebar.querySelectorAll('.chat-list-item--selected')
         .forEach(el => el.classList.remove('chat-list-item--selected'));
       item.classList.add('chat-list-item--selected');
+    });
+
+    // Close menus on click outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.chat-list-item')) {
+        document.querySelectorAll('.chat-list-item--menu-open').forEach(item => {
+          item.classList.remove('chat-list-item--menu-open');
+          item.querySelector('.chat-menu').classList.remove('chat-menu--open');
+          item.querySelector('.chat-list-item__menu-btn').setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+
+    // Close menus on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.chat-list-item--menu-open').forEach(item => {
+          item.classList.remove('chat-list-item--menu-open');
+          item.querySelector('.chat-menu').classList.remove('chat-menu--open');
+          item.querySelector('.chat-list-item__menu-btn').setAttribute('aria-expanded', 'false');
+          item.querySelector('.chat-list-item__menu-btn').focus();
+        });
+      }
     });
   </script>
 </body>
