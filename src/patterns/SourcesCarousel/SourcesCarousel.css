@@ -24,17 +24,27 @@
 /* ── Card ────────────────────────────────────────────── */
 
 .sources-card {
-  flex: 0 0 calc((100% / 2.5) - var(--ai-spacing-3));
+  container-type: inline-size;
+  flex: 0 0 calc((100% / 1.5) - (var(--ai-spacing-3) * (0.5 / 1.5)));
+  scroll-snap-align: start;
+  min-width: 0;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+}
+
+.sources-card:hover {
+  text-decoration: none;
+}
+
+.sources-card__inner {
   display: flex;
-  flex-direction: row;
-  gap: var(--ai-spacing-5);
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
   padding: var(--ai-spacing-4);
   background-color: var(--ai-chat-card-bg);
   border-radius: var(--ai-radius-md);
-  scroll-snap-align: start;
-  min-width: 0;
-  text-decoration: none;
-  color: inherit;
+  height: 100%;
 }
 
 /* ── Card text column ────────────────────────────────── */
@@ -52,7 +62,7 @@
   font-family: var(--ai-font-body);
   font-weight: var(--ai-font-medium);
   font-size: var(--ai-font-fixed-xxs);
-  color: var(--ai-text-secondary);
+  color: var(--ai-text-contrast);
   margin: 0;
 }
 
@@ -71,16 +81,31 @@
 /* ── Card thumbnail ──────────────────────────────────── */
 
 .sources-card__thumb {
-  width: 56px;
-  height: 56px;
+  width: var(--ai-spacing-10);
+  height: var(--ai-spacing-10);
   border-radius: var(--ai-radius-sm);
   object-fit: cover;
   flex-shrink: 0;
 }
 
+/* ── Container query: wide card → horizontal layout (Device=Desktop) ── */
+
+@container (min-width: 14em) {
+  .sources-card__inner {
+    flex-direction: row;
+    gap: var(--ai-spacing-5);
+    align-items: center;
+  }
+
+  .sources-card__thumb {
+    order: 1;
+  }
+}
+
 /* ── Navigation arrows ───────────────────────────────── */
 
 .sources-carousel__nav {
+  display: none;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -96,22 +121,25 @@
 }
 
 .sources-carousel__nav[disabled] {
-  opacity: 0.3;
-  pointer-events: none;
+  display: none;
 }
 
-/* ── Responsive: wider cards at desktop ──────────────── */
+/* ── Responsive: tablet — 2.5 columns ────────────────── */
 
-@media (min-width: 799px) {
+@media (min-width: 640px) {
   .sources-card {
-    flex: 0 0 calc((100% / 3) - var(--ai-spacing-3));
+    flex: 0 0 calc((100% / 2.5) - (var(--ai-spacing-3) * (1.5 / 2.5)));
   }
 }
 
-/* ── Responsive: hide arrows on mobile ───────────────── */
+/* ── Responsive: desktop — 3 columns + arrows ────────── */
 
-@media (max-width: 768px) {
+@media (min-width: 1024px) {
+  .sources-card {
+    flex: 0 0 calc((100% / 3) - (var(--ai-spacing-3) * (2 / 3)));
+  }
+
   .sources-carousel__nav {
-    display: none;
+    display: flex;
   }
 }

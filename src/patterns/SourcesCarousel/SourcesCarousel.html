@@ -11,6 +11,15 @@
   <style>
     body {
       padding: var(--ai-spacing-7);
+      background-color: var(--ai-surface-primary);
+    }
+    @media (min-width: 1024px) {
+      body {
+        padding-left: var(--ai-spacing-9);
+        padding-right: var(--ai-spacing-9);
+      }
+    }
+    [data-theme="dark"] body {
       background-color: var(--ai-surface-secondary);
     }
     .demo-section {
@@ -23,12 +32,6 @@
       text-transform: uppercase;
       letter-spacing: 0.08em;
       margin-bottom: var(--ai-spacing-5);
-    }
-    .demo-container {
-      max-width: 640px;
-      padding: var(--ai-spacing-7) var(--ai-spacing-8);
-      background-color: var(--ai-surface-primary);
-      border-radius: var(--ai-radius-lg);
     }
     .demo-controls {
       margin-top: var(--ai-spacing-5);
@@ -49,59 +52,65 @@
 </head>
 <body>
   <h1>SourcesCarousel</h1>
-  <p>Horizontal scrolling carousel of article source cards with GSAP entrance animation. Arrows hidden below 768px.</p>
+  <p>Horizontal scrolling carousel of article source cards with GSAP entrance animation. Cards switch from vertical (image top) to horizontal (image right) layout via container query at ~240px card width. Resize viewport below 768px for mobile (1.5 cols), 768–1023px for tablet (2.5 cols), 1024px+ for desktop (3 cols + arrows).</p>
 
   <div class="demo-section">
     <p class="demo-label">Animated carousel</p>
-    <div class="demo-container">
-      <div class="sources-carousel" id="carousel">
-        <div class="sources-carousel__track">
+    <div class="sources-carousel" id="carousel">
+      <div class="sources-carousel__track">
 
-          <a href="#" class="sources-card">
+        <a href="#" class="sources-card">
+          <div class="sources-card__inner">
+            <img class="sources-card__thumb" src="https://picsum.photos/seed/a1/112/112" alt="">
             <div class="sources-card__text">
               <p class="sources-card__category">Technology</p>
               <p class="sources-card__title">Understanding Neural Network Architecture in Modern AI Systems</p>
             </div>
-            <img class="sources-card__thumb" src="https://picsum.photos/seed/a1/112/112" alt="">
-          </a>
+          </div>
+        </a>
 
-          <a href="#" class="sources-card">
+        <a href="#" class="sources-card">
+          <div class="sources-card__inner">
+            <img class="sources-card__thumb" src="https://picsum.photos/seed/a2/112/112" alt="">
             <div class="sources-card__text">
               <p class="sources-card__category">Research</p>
               <p class="sources-card__title">Advances in Natural Language Processing for Enterprise Search</p>
             </div>
-            <img class="sources-card__thumb" src="https://picsum.photos/seed/a2/112/112" alt="">
-          </a>
+          </div>
+        </a>
 
-          <a href="#" class="sources-card">
+        <a href="#" class="sources-card">
+          <div class="sources-card__inner">
+            <img class="sources-card__thumb" src="https://picsum.photos/seed/a3/112/112" alt="">
             <div class="sources-card__text">
               <p class="sources-card__category">Data Science</p>
               <p class="sources-card__title">Building Scalable Data Pipelines with Real-Time Processing</p>
             </div>
-            <img class="sources-card__thumb" src="https://picsum.photos/seed/a3/112/112" alt="">
-          </a>
+          </div>
+        </a>
 
-          <a href="#" class="sources-card">
+        <a href="#" class="sources-card">
+          <div class="sources-card__inner">
+            <img class="sources-card__thumb" src="https://picsum.photos/seed/a4/112/112" alt="">
             <div class="sources-card__text">
               <p class="sources-card__category">Engineering</p>
               <p class="sources-card__title">Best Practices for Distributed Systems at Scale</p>
             </div>
-            <img class="sources-card__thumb" src="https://picsum.photos/seed/a4/112/112" alt="">
-          </a>
+          </div>
+        </a>
 
-        </div>
-
-        <button type="button" class="btn btn--secondary btn--sm btn--icon sources-carousel__nav sources-carousel__nav--prev" aria-label="Previous">
-          <i data-lucide="chevron-left"></i>
-        </button>
-        <button type="button" class="btn btn--secondary btn--sm btn--icon sources-carousel__nav sources-carousel__nav--next" aria-label="Next">
-          <i data-lucide="chevron-right"></i>
-        </button>
       </div>
 
-      <div class="demo-controls">
-        <button type="button" id="btn-replay">Replay entrance</button>
-      </div>
+      <button type="button" class="btn btn--secondary btn--sm btn--icon sources-carousel__nav sources-carousel__nav--prev" aria-label="Previous">
+        <i data-lucide="chevron-left"></i>
+      </button>
+      <button type="button" class="btn btn--secondary btn--sm btn--icon sources-carousel__nav sources-carousel__nav--next" aria-label="Next">
+        <i data-lucide="chevron-right"></i>
+      </button>
+    </div>
+
+    <div class="demo-controls">
+      <button type="button" id="btn-replay">Replay entrance</button>
     </div>
   </div>
 
