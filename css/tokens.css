@@ -38,21 +38,12 @@
   --ai-icon-brand: #0071d8;
   --ai-chat-bg: #ffffff;
   --ai-chat-card-bg: #f3f4f6;
-  --ai-chat-input: #ffffff;
-  --ai-chat-primary-text: #1f2a37;
-  --ai-chat-question-bg: #1f2a37;
+  --ai-chat-input-bg: #ffffff;
   --ai-chat-sidebar-bg: #ffffff;
   --ai-chat-sidebar-text: #1f2a37;
-  --ai-chat-sidebar-text-bg: #e5e7eb;
-  --ai-chat-btn-primary-bg: #0071d8;
-  --ai-chat-btn-primary-bg-hover: #3a8fff;
-  --ai-chat-btn-primary-bg-pressed: #0054a3;
-  --ai-chat-btn-primary-text: #ffffff;
-  --ai-chat-btn-primary-text-hover: #ffffff;
-  --ai-chat-btn-primary-text-active: #ffffff;
-  --ai-chat-btn-secondary-border: #d1d5db;
-  --ai-chat-btn-secondary-border-hover: #d1d5db;
-  --ai-chat-btn-secondary-border-active: #d1d5db;
+  --ai-chat-msg-bg: #f3f4f6; /** Editable by user */
+  --ai-chat-msg-text: #1f2a37; /** Editable by user */
+  --ai-chat-brand: #1f2a37; /** Editable by user */
   --ai-btn-primary-bg: #0071d8;
   --ai-btn-primary-bg-hover: #3a8fff;
   --ai-btn-primary-bg-pressed: #0054a3;
@@ -108,6 +99,11 @@
   --ai-icon-size-md: 1.25rem;
   --ai-icon-size-lg: 1.5rem;
   --ai-icon-size-xl: 2rem;
+  --ai-bp-sm: 40rem;
+  --ai-bp-md: 48rem;
+  --ai-bp-lg: 64rem;
+  --ai-bp-xl: 80rem;
+  --ai-bp-2xl: 96rem;
   --ai-font-title: 'Inter', sans-serif;
   --ai-font-body: 'Inter', sans-serif;
   --ai-font-regular: 400;

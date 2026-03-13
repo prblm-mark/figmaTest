@@ -1,12 +1,5 @@
 @media (max-width: 767px) {
   :root {
-    --ai-font-title: 'Inter', sans-serif;
-    --ai-font-body: 'Inter', sans-serif;
-    --ai-font-regular: 400;
-    --ai-font-medium: 500;
-    --ai-font-semibold: 600;
-    --ai-font-bold: 700;
-    --ai-font-extrabold: 800;
     --ai-font-fixed-xxs: 0.75rem;
     --ai-font-fixed-xs: 0.875rem;
     --ai-font-fixed-sm: 1rem;

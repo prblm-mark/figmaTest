@@ -34,21 +34,12 @@
   --ai-icon-brand: #0071d8;
   --ai-chat-bg: #1f2a37;
   --ai-chat-card-bg: #111928;
-  --ai-chat-input: #374151;
-  --ai-chat-primary-text: #ffffff;
-  --ai-chat-question-bg: #ffffff;
-  --ai-chat-sidebar-bg: #1f2a37;
+  --ai-chat-input-bg: #374151;
+  --ai-chat-sidebar-bg: #18222f;
   --ai-chat-sidebar-text: #e5e7eb;
-  --ai-chat-sidebar-text-bg: #111928;
-  --ai-chat-btn-primary-bg: #0071d8;
-  --ai-chat-btn-primary-bg-hover: #3a8fff;
-  --ai-chat-btn-primary-bg-pressed: #0054a3;
-  --ai-chat-btn-primary-text: #ffffff;
-  --ai-chat-btn-primary-text-hover: #ffffff;
-  --ai-chat-btn-primary-text-active: #ffffff;
-  --ai-chat-btn-secondary-border: #4b5563;
-  --ai-chat-btn-secondary-border-hover: #4b5563;
-  --ai-chat-btn-secondary-border-active: #4b5563;
+  --ai-chat-msg-bg: #111928;
+  --ai-chat-msg-text: #ffffff;
+  --ai-chat-brand: #ffffff;
   --ai-btn-primary-bg: #0071d8;
   --ai-btn-primary-bg-hover: #3a8fff;
   --ai-btn-primary-bg-pressed: #0054a3;
@@ -104,4 +95,9 @@
   --ai-icon-size-md: 1.25rem;
   --ai-icon-size-lg: 1.5rem;
   --ai-icon-size-xl: 2rem;
+  --ai-bp-sm: 40rem;
+  --ai-bp-md: 48rem;
+  --ai-bp-lg: 64rem;
+  --ai-bp-xl: 80rem;
+  --ai-bp-2xl: 96rem;
 }
