@@ -7,6 +7,7 @@
 
 .chat-response__sources {
   margin-top: var(--ai-spacing-5);
+  display: none;
 }
 
 .chat-response__skeletons {
@@ -17,9 +18,15 @@
 }
 
 .chat-response__answer {
-  margin-top: var(--ai-spacing-7);
+  margin-top: var(--ai-spacing-6);
   opacity: 0;
   display: none;
+}
+
+@media (min-width: 640px) {
+  .chat-response__answer {
+    margin-top: var(--ai-spacing-7);
+  }
 }
 
 .chat-response__answer p {

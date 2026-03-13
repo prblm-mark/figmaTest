@@ -10,9 +10,16 @@
 
 .working-intro__title-row {
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   gap: var(--ai-spacing-3);
+}
+
+@media (min-width: 640px) {
+  .working-intro__title-row {
+    flex-direction: row;
+    align-items: center;
+  }
 }
 
 .working-intro__logo {
