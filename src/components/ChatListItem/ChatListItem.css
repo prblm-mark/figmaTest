@@ -1,0 +1,59 @@
+/* ChatListItem — sidebar menu item with computed hover/selected states */
+
+/* ── Computed overlay variables ─────────────────────── */
+/* Light sidebar: darken for states */
+[data-sidebar-theme="light"] {
+  --ai-chat-sidebar-hover-bg: color-mix(in srgb, var(--ai-chat-sidebar-bg) 92%, rgb(31 42 55));
+  --ai-chat-sidebar-active-bg: color-mix(in srgb, var(--ai-chat-sidebar-bg) 88%, rgb(31 42 55));
+}
+
+/* Dark sidebar: lighten for states */
+[data-sidebar-theme="dark"] {
+  --ai-chat-sidebar-hover-bg: color-mix(in srgb, var(--ai-chat-sidebar-bg) 92%, white);
+  --ai-chat-sidebar-active-bg: color-mix(in srgb, var(--ai-chat-sidebar-bg) 88%, white);
+}
+
+/* ── Base ────────────────────────────────────────────── */
+
+.chat-list-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: var(--ai-spacing-7);
+  padding: 0 var(--ai-spacing-3);
+  border: none;
+  border-radius: var(--ai-radius-md);
+  background: transparent;
+  color: var(--ai-chat-sidebar-text);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  text-align: left;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background-color var(--ai-transition-default);
+}
+
+/* ── States ──────────────────────────────────────────── */
+
+.chat-list-item:hover {
+  background: var(--ai-chat-sidebar-hover-bg);
+}
+
+.chat-list-item--selected {
+  background: var(--ai-chat-sidebar-active-bg);
+}
+
+.chat-list-item--selected:hover {
+  background: var(--ai-chat-sidebar-active-bg);
+}
+
+/* ── Focus ───────────────────────────────────────────── */
+
+.chat-list-item:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--ai-chat-sidebar-bg), 0 0 0 3px var(--ai-surface-brand-contrast);
+}

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Sidebar Test — Prototype</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/ChatListItem/ChatListItem.css">
+  <link rel="stylesheet" href="SidebarTest.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      background-color: var(--ai-surface-secondary);
+    }
+    .main {
+      flex: 1;
+      padding: var(--ai-spacing-7);
+    }
+    .main__note {
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-contrast);
+      max-width: 480px;
+    }
+  </style>
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <span class="sidebar__label">Today</span>
+    <button class="chat-list-item" type="button">What is machine learning?</button>
+    <button class="chat-list-item chat-list-item--selected" type="button">Help me write a poem about the sea</button>
+    <button class="chat-list-item" type="button">Explain quantum computing</button>
+    <button class="chat-list-item" type="button">Best practices for React hooks</button>
+
+    <span class="sidebar__label">Yesterday</span>
+    <button class="chat-list-item" type="button">Recipe for chocolate cake</button>
+    <button class="chat-list-item" type="button">Travel tips for Japan</button>
+    <button class="chat-list-item" type="button">How to learn guitar</button>
+
+    <span class="sidebar__label">Previous 7 days</span>
+    <button class="chat-list-item" type="button">Python vs JavaScript comparison</button>
+    <button class="chat-list-item" type="button">Summarise this article</button>
+    <button class="chat-list-item" type="button">Write a cover letter</button>
+    <button class="chat-list-item" type="button">Debugging CSS grid layouts</button>
+    <button class="chat-list-item" type="button">Plan a birthday party</button>
+  </aside>
+
+  <main class="main">
+    <h1>Sidebar Test</h1>
+    <p class="main__note">
+      This prototype demonstrates the ChatListItem component inside a sidebar container.
+      Hover and selected states use computed <code>color-mix()</code> overlays based on
+      the sidebar background luminance. Toggle dark mode to see the sidebar switch between
+      light and dark themes automatically.
+    </p>
+  </main>
+
+  <script type="module">
+    import { initSidebarTheme } from '../../utils/sidebar-colors.js';
+
+    const sidebar = document.getElementById('sidebar');
+    initSidebarTheme(sidebar);
+
+    // Re-initialise on dark mode toggle
+    const observer = new MutationObserver(() => {
+      initSidebarTheme(sidebar);
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+
+    // Click to select — toggle selected state
+    sidebar.addEventListener('click', (e) => {
+      const item = e.target.closest('.chat-list-item');
+      if (!item) return;
+      sidebar.querySelectorAll('.chat-list-item--selected')
+        .forEach(el => el.classList.remove('chat-list-item--selected'));
+      item.classList.add('chat-list-item--selected');
+    });
+  </script>
+</body>
+</html>

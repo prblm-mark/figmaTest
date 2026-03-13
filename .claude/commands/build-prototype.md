@@ -1,12 +1,18 @@
 # /build-prototype
 
-Build a multi-screen prototype from a written description using the design system, then push
+Build a prototype from a description (or reference image) using the design system, then push
 all screens as frames to Figma.
+
+**Figma push is MANDATORY — never skip it, never wait for the user to ask.**
 
 Usage: `/build-prototype <description of the flow>`
 
 This is the **Code → Figma** direction. It is the opposite of `/build-component` (Figma → Code).
 No Figma source is needed — start from a written description and use existing components + tokens.
+
+**This process also applies to ad-hoc prototype builds** (e.g. user asks "build me a duration
+picker prototype" without invoking the skill). If you are building any prototype in
+`src/prototypes/`, follow this process — especially Steps 4–7 (Figma push).
 
 ---
 

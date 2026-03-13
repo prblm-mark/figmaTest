@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>ChatListItem — Component Demo</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="ChatListItem.css">
+  <style>
+    body {
+      padding: var(--ai-spacing-7);
+      background-color: var(--ai-surface-secondary);
+    }
+    .demo-section {
+      margin-bottom: var(--ai-spacing-7);
+    }
+    .demo-label {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--ai-spacing-5);
+    }
+    .demo-sidebar {
+      width: var(--ai-size-5);
+      padding: var(--ai-spacing-4);
+      background-color: var(--ai-chat-sidebar-bg);
+      border-radius: var(--ai-radius-lg);
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .demo-sidebar__label {
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xxs);
+      font-weight: var(--ai-font-regular);
+      line-height: var(--ai-leading-xs);
+      color: var(--ai-text-contrast);
+      padding: var(--ai-spacing-2) var(--ai-spacing-3);
+    }
+  </style>
+</head>
+<body>
+  <h1>ChatListItem</h1>
+  <p>Sidebar menu item with computed hover/selected states based on sidebar background luminance.</p>
+
+  <div class="demo-section">
+    <p class="demo-label">Light sidebar (default)</p>
+    <div class="demo-sidebar" id="sidebar-light">
+      <span class="demo-sidebar__label">Today</span>
+      <button class="chat-list-item" type="button">What is machine learning?</button>
+      <button class="chat-list-item chat-list-item--selected" type="button">Help me write a poem</button>
+      <button class="chat-list-item" type="button">Explain quantum computing</button>
+      <span class="demo-sidebar__label">Yesterday</span>
+      <button class="chat-list-item" type="button">Recipe for chocolate cake</button>
+      <button class="chat-list-item" type="button">Travel tips for Japan</button>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <p class="demo-label">Dark sidebar (mirrors dark theme default)</p>
+    <div class="demo-sidebar" id="sidebar-dark" style="--ai-chat-sidebar-bg: #18222F; --ai-chat-sidebar-text: #E5E7EB;">
+      <span class="demo-sidebar__label" style="color: #9CA3AF;">Today</span>
+      <button class="chat-list-item" type="button">What is machine learning?</button>
+      <button class="chat-list-item chat-list-item--selected" type="button">Help me write a poem</button>
+      <button class="chat-list-item" type="button">Explain quantum computing</button>
+      <span class="demo-sidebar__label" style="color: #9CA3AF;">Yesterday</span>
+      <button class="chat-list-item" type="button">Recipe for chocolate cake</button>
+      <button class="chat-list-item" type="button">Travel tips for Japan</button>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <p class="demo-label">Custom brand sidebar (teal)</p>
+    <div class="demo-sidebar" id="sidebar-custom" style="--ai-chat-sidebar-bg: #0D9488; --ai-chat-sidebar-text: #FFFFFF;">
+      <span class="demo-sidebar__label" style="color: rgba(255,255,255,0.6);">Today</span>
+      <button class="chat-list-item" type="button">What is machine learning?</button>
+      <button class="chat-list-item chat-list-item--selected" type="button">Help me write a poem</button>
+      <button class="chat-list-item" type="button">Explain quantum computing</button>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initSidebarTheme } from '../../utils/sidebar-colors.js';
+
+    // Initialise all sidebar demos
+    document.querySelectorAll('.demo-sidebar').forEach(el => {
+      initSidebarTheme(el);
+    });
+
+    // Re-initialise on dark mode toggle (theme change)
+    const observer = new MutationObserver(() => {
+      document.querySelectorAll('.demo-sidebar').forEach(el => {
+        initSidebarTheme(el);
+      });
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+  </script>
+</body>
+</html>

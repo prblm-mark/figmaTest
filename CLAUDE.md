@@ -165,21 +165,15 @@ Component-specific tokens for the chat UI. Only relevant when building chat-rela
 | Variable | Light value | Dark value |
 |---|---|---|
 | `--ai-chat-bg` | `#FFFFFF` | `#1F2A37` |
-| `--ai-chat-primary-text` | `#1F2A37` | `#FFFFFF` |
-| `--ai-chat-input` | `#FFFFFF` | `#374151` |
-| `--ai-chat-question-bg` | `#1F2A37` | `#FFFFFF` |
-| `--ai-chat-sidebar-bg` | `#FFFFFF` | `#1F2A37` |
+| `--ai-chat-card-bg` | `#F3F4F6` | `#111928` |
+| `--ai-chat-input-bg` | `#FFFFFF` | `#374151` |
+| `--ai-chat-sidebar-bg` | `#FFFFFF` | `#18222F` |
 | `--ai-chat-sidebar-text` | `#1F2A37` | `#E5E7EB` |
-| `--ai-chat-sidebar-text-bg` | `#E5E7EB` | `#111928` |
-| `--ai-chat-btn-primary-bg` | `#0071D8` | `#0071D8` |
-| `--ai-chat-btn-primary-bg-hover` | `#3A8FFF` | `#3A8FFF` |
-| `--ai-chat-btn-primary-bg-pressed` | `#0054A3` | `#0054A3` |
-| `--ai-chat-btn-primary-text` | `#FFFFFF` | `#FFFFFF` |
-| `--ai-chat-btn-secondary-bg` | `transparent` | `transparent` |
-| `--ai-chat-btn-secondary-bg-hover` | `#F3F4F6` | `#1F2A37` |
-| `--ai-chat-btn-secondary-bg-active` | `#E5E7EB` | `#374151` |
-| `--ai-chat-btn-secondary-text` | `#1F2A37` | `#FFFFFF` |
-| `--ai-chat-btn-secondary-border` | `#D1D5DB` | `#4B5563` |
+| `--ai-chat-msg-bg` | `#F3F4F6` | `#111928` |
+| `--ai-chat-msg-text` | `#1F2A37` | `#FFFFFF` |
+| `--ai-chat-brand` | `#1F2A37` | `#FFFFFF` |
+| `--ai-chat-sidebar-hover-bg` | — | — | computed (see §2c) |
+| `--ai-chat-sidebar-active-bg` | — | — | computed (see §2c) |
 
 ### Gradient
 
@@ -305,6 +299,34 @@ All `--ai-*` variables continue to work in minimised mode. Only `--ai-font-fluid
 **Rule:** Components using `--ai-font-fluid-*` tokens respond automatically to this attribute.
 No per-component CSS needed. Only override fixed-size tokens (`--ai-font-fixed-*`) explicitly
 if a component specifically requires it.
+
+---
+
+## 2c. Computed Tokens
+
+Some design tokens cannot be expressed as static colour values because they depend on runtime
+context (e.g. a client-customisable sidebar background). Figma represents these as
+`$type: "string"` variables with a behavioural description as the value (e.g. "slightly darkened").
+
+**Convention:**
+
+1. **Figma:** Variable has `$type: "string"`, a descriptive `$value`, and a `codeSyntax.WEB`
+   name (e.g. `--ai-chat-sidebar-hover-bg`).
+2. **Style Dictionary:** A path-aware filter excludes `$type: "string"` tokens that are NOT
+   font family or weight (those are legitimate string tokens handled by custom transforms).
+3. **JS utility:** A runtime script reads the base token, computes derived values, and sets a
+   data attribute on the container so CSS can pick the correct formula.
+4. **CSS:** `color-mix()` rules scoped to the data attribute compute the final value.
+
+### Current computed tokens
+
+| Token | Base | Technique |
+|---|---|---|
+| `--ai-chat-sidebar-hover-bg` | `--ai-chat-sidebar-bg` | 8% overlay via `color-mix()` (dark tint on light bg, white tint on dark bg) |
+| `--ai-chat-sidebar-active-bg` | `--ai-chat-sidebar-bg` | 16% overlay via `color-mix()` (same direction logic) |
+
+**Utility:** `src/utils/sidebar-colors.js` — call `initSidebarTheme(sidebarEl)` to detect
+luminance and set `data-sidebar-theme="light|dark"`. Re-run after theme changes.
 
 ---
 
@@ -686,6 +708,7 @@ All components must meet **WCAG 2.1 AA**:
 | WorkingIntro | component | Built | [node 2077:1486](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2077-1486) | `src/components/WorkingIntro/` — 3 stages: logo pulse, title SplitText reveal, subtitle ScrambleText. GSAP SplitText + ScrambleTextPlugin. |
 | SourcesCarousel | pattern | Built | [node 2089:6582](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2089-6582) | `src/patterns/SourcesCarousel/` — Horizontal card carousel with scroll snap, GSAP entrance stagger, arrow nav. Composes Button. |
 | ChatResponse | template | Built | [node 2089:6577](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2089-6577) | `src/templates/ChatResponse/` — 8s master GSAP timeline. Composes WorkingIntro, SourcesCarousel, Skeleton. |
+| ChatListItem | component | Built | [node 2110:3000](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2110-3000) | `src/components/ChatListItem/` — Default, Hover, Selected states. Computed overlay bg via `color-mix()` + `sidebar-colors.js`. |
 Add rows here as components are built. Format: Component Name, Tier (component/pattern/template), Built/In Progress/Figma Only, Figma URL, Notes.
 
 ---

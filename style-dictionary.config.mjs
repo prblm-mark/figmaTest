@@ -197,7 +197,10 @@ const sd = new StyleDictionary({
           format: 'css/variables',
           // Only output tokens that have a Figma web code syntax defined.
           // This excludes raw Primitive palette tokens (intentionally not exposed as CSS).
-          filter: (token) => !!token.$extensions?.['com.figma.codeSyntax']?.WEB,
+          // Also exclude $type: "string" tokens (computed tokens — handled by JS, not CSS).
+          filter: (token) =>
+            !!token.$extensions?.['com.figma.codeSyntax']?.WEB &&
+            !(token.$type === 'string' && !token.path?.includes('family') && !token.path?.includes('weight')),
           options: {
             selector: ':root',
             outputReferences: false, // Resolve all aliases to their final values
@@ -237,6 +240,7 @@ const sdMobile = new StyleDictionary({
           format: 'css/variables-media-query',
           filter: (token) =>
             !!token.$extensions?.['com.figma.codeSyntax']?.WEB &&
+            token.$type !== 'string' &&
             token.filePath.includes('Mobile.tokens.json'),
           options: { outputReferences: false },
         },
@@ -272,7 +276,9 @@ const sdDark = new StyleDictionary({
       files: [{
         destination: 'tokens-dark.css',
         format: 'css/variables-selector',
-        filter: (token) => !!token.$extensions?.['com.figma.codeSyntax']?.WEB,
+        filter: (token) =>
+          !!token.$extensions?.['com.figma.codeSyntax']?.WEB &&
+          !(token.$type === 'string' && !token.path?.includes('family') && !token.path?.includes('weight')),
         options: {
           selector: '[data-theme="dark"]',
           outputReferences: false,
@@ -314,6 +320,7 @@ const sdMinimised = new StyleDictionary({
         format: 'css/variables-selector',
         filter: (token) =>
           !!token.$extensions?.['com.figma.codeSyntax']?.WEB &&
+          token.$type !== 'string' &&
           token.filePath.includes('Minimised.tokens.json'),
         options: {
           selector: '[data-layout="minimised"]',
