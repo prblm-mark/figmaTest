@@ -16,6 +16,7 @@
   font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-regular);
   line-height: var(--ai-leading-xs);
-  color: var(--ai-text-contrast);
+  color: var(--ai-chat-sidebar-text);
+  opacity: 0.6;
   padding: var(--ai-spacing-2) var(--ai-spacing-3);
 }

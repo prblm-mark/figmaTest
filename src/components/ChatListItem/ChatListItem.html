@@ -37,7 +37,8 @@
       font-size: var(--ai-font-fixed-xxs);
       font-weight: var(--ai-font-regular);
       line-height: var(--ai-leading-xs);
-      color: var(--ai-text-contrast);
+      color: var(--ai-chat-sidebar-text);
+      opacity: 0.6;
       padding: var(--ai-spacing-2) var(--ai-spacing-3);
     }
   </style>
@@ -61,12 +62,12 @@
 
   <div class="demo-section">
     <p class="demo-label">Dark sidebar (mirrors dark theme default)</p>
-    <div class="demo-sidebar" id="sidebar-dark" style="--ai-chat-sidebar-bg: #18222F; --ai-chat-sidebar-text: #E5E7EB;">
-      <span class="demo-sidebar__label" style="color: #9CA3AF;">Today</span>
+    <div class="demo-sidebar" id="sidebar-dark" style="--ai-chat-sidebar-bg: #18222F;">
+      <span class="demo-sidebar__label">Today</span>
       <button class="chat-list-item" type="button">What is machine learning?</button>
       <button class="chat-list-item chat-list-item--selected" type="button">Help me write a poem</button>
       <button class="chat-list-item" type="button">Explain quantum computing</button>
-      <span class="demo-sidebar__label" style="color: #9CA3AF;">Yesterday</span>
+      <span class="demo-sidebar__label">Yesterday</span>
       <button class="chat-list-item" type="button">Recipe for chocolate cake</button>
       <button class="chat-list-item" type="button">Travel tips for Japan</button>
     </div>
@@ -74,8 +75,8 @@
 
   <div class="demo-section">
     <p class="demo-label">Custom brand sidebar (teal)</p>
-    <div class="demo-sidebar" id="sidebar-custom" style="--ai-chat-sidebar-bg: #0D9488; --ai-chat-sidebar-text: #FFFFFF;">
-      <span class="demo-sidebar__label" style="color: rgba(255,255,255,0.6);">Today</span>
+    <div class="demo-sidebar" id="sidebar-custom" style="--ai-chat-sidebar-bg: #0D9488;">
+      <span class="demo-sidebar__label">Today</span>
       <button class="chat-list-item" type="button">What is machine learning?</button>
       <button class="chat-list-item chat-list-item--selected" type="button">Help me write a poem</button>
       <button class="chat-list-item" type="button">Explain quantum computing</button>
