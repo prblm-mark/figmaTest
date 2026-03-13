@@ -318,12 +318,35 @@ context (e.g. a client-customisable sidebar background). Figma represents these 
    data attribute on the container so CSS can pick the correct formula.
 4. **CSS:** `color-mix()` rules scoped to the data attribute compute the final value.
 
+### Dynamic background pattern
+
+When a component's background is client-customisable, ALL derived colours (text, hover, selected)
+must adapt to the actual background luminance — not follow the global theme.
+
+1. **JS:** `initSidebarTheme(el)` reads the bg token, computes luminance, sets
+   `data-sidebar-theme="light|dark"` on the element.
+2. **CSS:** `[data-sidebar-theme]` blocks set computed variables via `color-mix()`.
+3. **Re-run** after theme toggles or bg customisation (use MutationObserver on `data-theme`).
+
+**Key rule:** Never use semantic tokens (e.g. `--ai-text-primary`) for text on a dynamic
+background — they flip with the global theme. Use fixed RGB values instead.
+
+| Derived property | Light sidebar | Dark sidebar |
+|---|---|---|
+| Text | `rgb(31 42 55)` (fixed dark) | `rgb(229 231 235)` (fixed light) |
+| Selected text | 15% lighter — `color-mix(in srgb, text 85%, white)` | same formula |
+| Hover bg | 8% overlay — `color-mix(in srgb, bg 92%, rgb(31 42 55))` | `color-mix(in srgb, bg 92%, white)` |
+| Selected bg | 12% overlay — `color-mix(in srgb, bg 88%, rgb(31 42 55))` | `color-mix(in srgb, bg 88%, white)` |
+| Muted text (labels) | `color: var(--ai-chat-sidebar-text); opacity: 0.6` | same |
+
 ### Current computed tokens
 
 | Token | Base | Technique |
 |---|---|---|
-| `--ai-chat-sidebar-hover-bg` | `--ai-chat-sidebar-bg` | 8% overlay via `color-mix()` (dark tint on light bg, white tint on dark bg) |
-| `--ai-chat-sidebar-active-bg` | `--ai-chat-sidebar-bg` | 16% overlay via `color-mix()` (same direction logic) |
+| `--ai-chat-sidebar-text` | `--ai-chat-sidebar-bg` | Fixed RGB based on luminance detection |
+| `--ai-chat-sidebar-selected-text` | `--ai-chat-sidebar-text` | 15% lighter via `color-mix()` |
+| `--ai-chat-sidebar-hover-bg` | `--ai-chat-sidebar-bg` | 8% overlay via `color-mix()` |
+| `--ai-chat-sidebar-active-bg` | `--ai-chat-sidebar-bg` | 12% overlay via `color-mix()` |
 
 **Utility:** `src/utils/sidebar-colors.js` — call `initSidebarTheme(sidebarEl)` to detect
 luminance and set `data-sidebar-theme="light|dark"`. Re-run after theme changes.

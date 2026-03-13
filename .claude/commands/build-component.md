@@ -198,6 +198,15 @@ accurate and up to date.
 Wait for the user to decide: add a semantic token to Figma, approve using the primitive, or skip the state.
 Only continue once every gap has a resolution.
 
+**Computed tokens (`$type: "string"`):** If a Figma variable has `$type: "string"` with a
+behavioural description (e.g. "slightly darkened"), it is a **computed token** — not output by
+Style Dictionary. These require runtime JS + CSS `color-mix()`. See CLAUDE.md §2c for the full
+pattern. When a component sits on a client-customisable background:
+- ALL derived colours (text, hover, selected, labels) must adapt to the bg luminance
+- Use `src/utils/sidebar-colors.js` as the reference implementation
+- Never use semantic tokens (e.g. `--ai-text-primary`) for text on a dynamic bg — use fixed RGB
+  values set by `[data-sidebar-theme]` CSS rules
+
 ### 6. Code Connect check
 
 Call `get_code_connect_map` on the root node to check if this component already exists in the codebase.
