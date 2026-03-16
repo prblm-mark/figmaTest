@@ -105,6 +105,17 @@
       border-color: var(--ai-border-brand);
       box-shadow: 0 0 0 2px var(--ai-surface-brand-contrast);
     }
+    .preset-btn--reset {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--ai-surface-minimal);
+      color: var(--ai-icon-secondary);
+    }
+    .preset-btn--reset [data-lucide] {
+      width: 16px;
+      height: 16px;
+    }
 
     /* ── Debug info ─────────────────────────────── */
     .debug {
@@ -317,8 +328,9 @@
       <button class="preset-btn" data-color="#f0fdf4" title="Mint (light)" style="background: #f0fdf4"></button>
       <button class="preset-btn" data-color="#fef3c7" title="Cream (light)" style="background: #fef3c7"></button>
       <button class="preset-btn" data-color="#ede9fe" title="Lavender (light)" style="background: #ede9fe"></button>
-      <button class="preset-btn" data-color="#ffffff" title="White (default)" style="background: #ffffff"></button>
-      <button class="preset-btn" data-color="#18222f" title="Dark (default)" style="background: #18222f"></button>
+      <button class="preset-btn preset-btn--reset" data-color="reset" title="Reset to default">
+        <i data-lucide="rotate-ccw" aria-hidden="true"></i>
+      </button>
     </div>
 
     <!-- Color picker -->
@@ -387,10 +399,18 @@
     const presetBtns = document.querySelectorAll('.preset-btn');
 
     function applyColor(hex) {
-      sidebar.style.setProperty('--ai-chat-sidebar-bg', hex);
-      initSidebarTheme(sidebar);
-      picker.value = hex;
-      hexLabel.textContent = hex;
+      if (hex === 'reset') {
+        sidebar.style.removeProperty('--ai-chat-sidebar-bg');
+        initSidebarTheme(sidebar);
+        var resolved = getComputedStyle(sidebar).getPropertyValue('--ai-chat-sidebar-bg').trim();
+        picker.value = resolved;
+        hexLabel.textContent = resolved + ' (default)';
+      } else {
+        sidebar.style.setProperty('--ai-chat-sidebar-bg', hex);
+        initSidebarTheme(sidebar);
+        picker.value = hex;
+        hexLabel.textContent = hex;
+      }
       updateDebug();
       // Update active preset
       presetBtns.forEach(btn => {
