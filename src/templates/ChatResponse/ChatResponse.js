@@ -42,15 +42,15 @@ export function createChatResponseTimeline(el) {
   // 0.0s — WorkingIntro starts (logo pulse + title reveal + subtitle scrambles)
   master.add(introTl, 0);
 
-  // 2.0s — Reveal carousel in DOM, then cards slide in
+  // 2.9s — Reveal carousel in sync with subtitle stage 3 ("Here are your quick answers")
   master.call(() => {
     carouselEl.style.display = 'block';
     if (!scrollInitialized) {
       initCarouselScroll(carouselEl);
       scrollInitialized = true;
     }
-  }, null, 2.0);
-  master.add(carouselTl, 2.0);
+  }, null, 2.9);
+  master.add(carouselTl, 2.9);
 
   // 7.5s — Skeleton stops + fades out, title scrambles to final, logo pulse stops
   master.call(() => {
