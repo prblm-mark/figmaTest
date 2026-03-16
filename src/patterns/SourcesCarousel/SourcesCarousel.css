@@ -42,7 +42,7 @@
   flex-direction: column;
   gap: var(--ai-spacing-3);
   padding: var(--ai-spacing-4);
-  background-color: var(--ai-chat-card-bg);
+  background-color: var(--ai-src-carousel-card-bg);
   border-radius: var(--ai-radius-md);
   height: 100%;
 }

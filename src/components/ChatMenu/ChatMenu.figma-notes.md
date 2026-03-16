@@ -1,10 +1,10 @@
 # ChatMenu — Figma Notes
 
-**Figma URL:** [node 2110:3001](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2110-3001) (nested within ChatListItem component set)
+**Figma URL:** [node 2110:3001](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2110-3001) (nested within ChatSidebarItem component set)
 
 ## Component set
 
-ChatMenu appears as `data-name="ChatMenu"` inside the ChatListItem Hover/Menu and Selected/Menu variants. It is a context menu dropdown containing 4 action buttons.
+ChatMenu appears as `data-name="ChatMenu"` inside the ChatSidebarItem Hover/Menu and Selected/Menu variants. It is a context menu dropdown containing 4 action buttons.
 
 ## Token mapping
 
@@ -49,12 +49,12 @@ ChatMenu appears as `data-name="ChatMenu"` inside the ChatListItem Hover/Menu an
 
 ## Dependencies
 
-- Inherits computed sidebar-theme variables from ChatListItem.css `[data-sidebar-theme]` rules
+- Inherits computed sidebar-theme variables from ChatSidebarItem.css `[data-sidebar-theme]` rules
 - Requires `initSidebarTheme()` from `src/utils/sidebar-colors.js` on the sidebar container
 
 ## Notes
 
 - Menu bg uses base sidebar color (`--ai-chat-sidebar-bg`) — shadow provides visual separation
 - Menu items use sidebar-computed colors instead of `btn--tertiary` tokens, because tertiary tokens flip with the global theme and would mismatch the sidebar context
-- Positioned absolutely relative to the parent ChatListItem (`top: --ai-spacing-6, right: 0`)
+- Positioned absolutely relative to the parent ChatSidebarItem (`top: --ai-spacing-6, right: 0`)
 - Menu width is content-driven (`min-width: max-content`) — Figma shows 122px which is the natural content width

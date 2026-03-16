@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="../dark-mode-toggle.js"></script>
-  <title>ChatListItem — Component Demo</title>
+  <title>ChatSidebarItem — Component Demo</title>
   <link rel="stylesheet" href="../../styles/base.css">
-  <link rel="stylesheet" href="ChatListItem.css">
+  <link rel="stylesheet" href="ChatSidebarItem.css">
   <link rel="stylesheet" href="../ChatMenu/ChatMenu.css">
   <style>
     body {
@@ -45,21 +45,29 @@
   </style>
 </head>
 <body>
-  <h1>ChatListItem</h1>
-  <p>Sidebar menu item with pin, ellipsis menu, and computed hover/selected states. Hover items to see the ellipsis button; click ellipsis to toggle the ChatMenu dropdown.</p>
+  <h1>ChatSidebarItem</h1>
+  <p>Sidebar menu item with two types: Thread (with pin, ellipsis menu, fade gradient) and Action (icon + label). Hover items to see the ellipsis button; click ellipsis to toggle the ChatMenu dropdown.</p>
 
   <!-- ── Light sidebar ──────────────────────────────── -->
   <div class="demo-section">
     <p class="demo-label">Light sidebar (default)</p>
     <div class="demo-sidebar" id="sidebar-light">
+
+      <!-- Action items -->
+      <div class="chat-sidebar-item chat-sidebar-item--action" tabindex="0">
+        <i data-lucide="message-square" class="chat-sidebar-item__icon" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">New Chat</span>
+      </div>
+
       <span class="demo-sidebar__label">Today</span>
 
-      <div class="chat-list-item" tabindex="0">
-        <i data-lucide="pin" class="chat-list-item__pin" aria-hidden="true"></i>
-        <span class="chat-list-item__text">What is machine learning?</span>
-        <div class="chat-list-item__actions">
-          <div class="chat-list-item__fade"></div>
-          <button class="chat-list-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+      <!-- Thread items -->
+      <div class="chat-sidebar-item" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">What is machine learning?</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
             <i data-lucide="ellipsis" aria-hidden="true"></i>
           </button>
         </div>
@@ -71,12 +79,12 @@
         </div>
       </div>
 
-      <div class="chat-list-item chat-list-item--pinned" tabindex="0">
-        <i data-lucide="pin" class="chat-list-item__pin" aria-hidden="true"></i>
-        <span class="chat-list-item__text">Help me write a poem about the sea</span>
-        <div class="chat-list-item__actions">
-          <div class="chat-list-item__fade"></div>
-          <button class="chat-list-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+      <div class="chat-sidebar-item chat-sidebar-item--pinned" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">Help me write a poem about the sea</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
             <i data-lucide="ellipsis" aria-hidden="true"></i>
           </button>
         </div>
@@ -88,12 +96,12 @@
         </div>
       </div>
 
-      <div class="chat-list-item chat-list-item--selected" tabindex="0">
-        <i data-lucide="pin" class="chat-list-item__pin" aria-hidden="true"></i>
-        <span class="chat-list-item__text">Explain quantum computing basics</span>
-        <div class="chat-list-item__actions">
-          <div class="chat-list-item__fade"></div>
-          <button class="chat-list-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+      <div class="chat-sidebar-item chat-sidebar-item--selected" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">Explain quantum computing basics</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
             <i data-lucide="ellipsis" aria-hidden="true"></i>
           </button>
         </div>
@@ -105,12 +113,12 @@
         </div>
       </div>
 
-      <div class="chat-list-item chat-list-item--selected chat-list-item--pinned" tabindex="0">
-        <i data-lucide="pin" class="chat-list-item__pin" aria-hidden="true"></i>
-        <span class="chat-list-item__text">Best practices for React hooks</span>
-        <div class="chat-list-item__actions">
-          <div class="chat-list-item__fade"></div>
-          <button class="chat-list-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+      <div class="chat-sidebar-item chat-sidebar-item--selected chat-sidebar-item--pinned" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">Best practices for React hooks</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
             <i data-lucide="ellipsis" aria-hidden="true"></i>
           </button>
         </div>
@@ -124,12 +132,12 @@
 
       <span class="demo-sidebar__label">Yesterday</span>
 
-      <div class="chat-list-item" tabindex="0">
-        <i data-lucide="pin" class="chat-list-item__pin" aria-hidden="true"></i>
-        <span class="chat-list-item__text">Recipe for chocolate cake</span>
-        <div class="chat-list-item__actions">
-          <div class="chat-list-item__fade"></div>
-          <button class="chat-list-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+      <div class="chat-sidebar-item" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">Recipe for chocolate cake</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
             <i data-lucide="ellipsis" aria-hidden="true"></i>
           </button>
         </div>
@@ -141,12 +149,12 @@
         </div>
       </div>
 
-      <div class="chat-list-item" tabindex="0">
-        <i data-lucide="pin" class="chat-list-item__pin" aria-hidden="true"></i>
-        <span class="chat-list-item__text">Travel tips for Japan</span>
-        <div class="chat-list-item__actions">
-          <div class="chat-list-item__fade"></div>
-          <button class="chat-list-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+      <div class="chat-sidebar-item" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">Travel tips for Japan</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
             <i data-lucide="ellipsis" aria-hidden="true"></i>
           </button>
         </div>
@@ -164,14 +172,20 @@
   <div class="demo-section">
     <p class="demo-label">Dark sidebar (mirrors dark theme default)</p>
     <div class="demo-sidebar" id="sidebar-dark" style="--ai-chat-sidebar-bg: #18222F;">
+      <!-- Action items -->
+      <div class="chat-sidebar-item chat-sidebar-item--action" tabindex="0">
+        <i data-lucide="message-square" class="chat-sidebar-item__icon" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">New Chat</span>
+      </div>
+
       <span class="demo-sidebar__label">Today</span>
 
-      <div class="chat-list-item" tabindex="0">
-        <i data-lucide="pin" class="chat-list-item__pin" aria-hidden="true"></i>
-        <span class="chat-list-item__text">What is machine learning?</span>
-        <div class="chat-list-item__actions">
-          <div class="chat-list-item__fade"></div>
-          <button class="chat-list-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+      <div class="chat-sidebar-item" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">What is machine learning?</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
             <i data-lucide="ellipsis" aria-hidden="true"></i>
           </button>
         </div>
@@ -183,12 +197,12 @@
         </div>
       </div>
 
-      <div class="chat-list-item chat-list-item--pinned" tabindex="0">
-        <i data-lucide="pin" class="chat-list-item__pin" aria-hidden="true"></i>
-        <span class="chat-list-item__text">Help me write a poem about the sea</span>
-        <div class="chat-list-item__actions">
-          <div class="chat-list-item__fade"></div>
-          <button class="chat-list-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+      <div class="chat-sidebar-item chat-sidebar-item--pinned" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">Help me write a poem about the sea</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
             <i data-lucide="ellipsis" aria-hidden="true"></i>
           </button>
         </div>
@@ -200,12 +214,12 @@
         </div>
       </div>
 
-      <div class="chat-list-item chat-list-item--selected" tabindex="0">
-        <i data-lucide="pin" class="chat-list-item__pin" aria-hidden="true"></i>
-        <span class="chat-list-item__text">Explain quantum computing basics</span>
-        <div class="chat-list-item__actions">
-          <div class="chat-list-item__fade"></div>
-          <button class="chat-list-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+      <div class="chat-sidebar-item chat-sidebar-item--selected" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">Explain quantum computing basics</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
             <i data-lucide="ellipsis" aria-hidden="true"></i>
           </button>
         </div>
@@ -217,12 +231,12 @@
         </div>
       </div>
 
-      <div class="chat-list-item chat-list-item--selected chat-list-item--pinned" tabindex="0">
-        <i data-lucide="pin" class="chat-list-item__pin" aria-hidden="true"></i>
-        <span class="chat-list-item__text">Best practices for React hooks</span>
-        <div class="chat-list-item__actions">
-          <div class="chat-list-item__fade"></div>
-          <button class="chat-list-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+      <div class="chat-sidebar-item chat-sidebar-item--selected chat-sidebar-item--pinned" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">Best practices for React hooks</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
             <i data-lucide="ellipsis" aria-hidden="true"></i>
           </button>
         </div>
@@ -236,12 +250,12 @@
 
       <span class="demo-sidebar__label">Yesterday</span>
 
-      <div class="chat-list-item" tabindex="0">
-        <i data-lucide="pin" class="chat-list-item__pin" aria-hidden="true"></i>
-        <span class="chat-list-item__text">Recipe for chocolate cake</span>
-        <div class="chat-list-item__actions">
-          <div class="chat-list-item__fade"></div>
-          <button class="chat-list-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+      <div class="chat-sidebar-item" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">Recipe for chocolate cake</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
             <i data-lucide="ellipsis" aria-hidden="true"></i>
           </button>
         </div>
@@ -259,14 +273,26 @@
   <div class="demo-section">
     <p class="demo-label">Custom brand sidebar (teal)</p>
     <div class="demo-sidebar" id="sidebar-custom" style="--ai-chat-sidebar-bg: #0D9488;">
+
+      <!-- Action items -->
+      <div class="chat-sidebar-item chat-sidebar-item--action" tabindex="0">
+        <i data-lucide="message-square" class="chat-sidebar-item__icon" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">New Chat</span>
+      </div>
+
+      <div class="chat-sidebar-item chat-sidebar-item--action chat-sidebar-item--selected" tabindex="0">
+        <i data-lucide="message-square" class="chat-sidebar-item__icon" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">New Chat (selected)</span>
+      </div>
+
       <span class="demo-sidebar__label">Today</span>
 
-      <div class="chat-list-item" tabindex="0">
-        <i data-lucide="pin" class="chat-list-item__pin" aria-hidden="true"></i>
-        <span class="chat-list-item__text">What is machine learning?</span>
-        <div class="chat-list-item__actions">
-          <div class="chat-list-item__fade"></div>
-          <button class="chat-list-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+      <div class="chat-sidebar-item" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">What is machine learning?</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
             <i data-lucide="ellipsis" aria-hidden="true"></i>
           </button>
         </div>
@@ -278,12 +304,12 @@
         </div>
       </div>
 
-      <div class="chat-list-item chat-list-item--selected chat-list-item--pinned" tabindex="0">
-        <i data-lucide="pin" class="chat-list-item__pin" aria-hidden="true"></i>
-        <span class="chat-list-item__text">Help me write a poem</span>
-        <div class="chat-list-item__actions">
-          <div class="chat-list-item__fade"></div>
-          <button class="chat-list-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+      <div class="chat-sidebar-item chat-sidebar-item--selected chat-sidebar-item--pinned" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">Help me write a poem</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
             <i data-lucide="ellipsis" aria-hidden="true"></i>
           </button>
         </div>
@@ -295,12 +321,12 @@
         </div>
       </div>
 
-      <div class="chat-list-item" tabindex="0">
-        <i data-lucide="pin" class="chat-list-item__pin" aria-hidden="true"></i>
-        <span class="chat-list-item__text">Explain quantum computing</span>
-        <div class="chat-list-item__actions">
-          <div class="chat-list-item__fade"></div>
-          <button class="chat-list-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+      <div class="chat-sidebar-item" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">Explain quantum computing</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
             <i data-lucide="ellipsis" aria-hidden="true"></i>
           </button>
         </div>
@@ -339,12 +365,12 @@
     document.querySelectorAll('.demo-sidebar').forEach(sidebar => {
       sidebar.addEventListener('click', (e) => {
         // If clicking on the menu button, toggle menu
-        const menuBtn = e.target.closest('.chat-list-item__menu-btn');
+        const menuBtn = e.target.closest('.chat-sidebar-item__menu-btn');
         if (menuBtn) {
           e.stopPropagation();
-          const item = menuBtn.closest('.chat-list-item');
+          const item = menuBtn.closest('.chat-sidebar-item');
           const menu = item.querySelector('.chat-menu');
-          const isOpen = item.classList.toggle('chat-list-item--menu-open');
+          const isOpen = item.classList.toggle('chat-sidebar-item--menu-open');
           menu.classList.toggle('chat-menu--open', isOpen);
           menuBtn.setAttribute('aria-expanded', isOpen);
           return;
@@ -353,29 +379,29 @@
         // If clicking on a menu item, close the menu
         const menuItem = e.target.closest('.chat-menu__item');
         if (menuItem) {
-          const item = menuItem.closest('.chat-list-item');
-          item.classList.remove('chat-list-item--menu-open');
+          const item = menuItem.closest('.chat-sidebar-item');
+          item.classList.remove('chat-sidebar-item--menu-open');
           item.querySelector('.chat-menu').classList.remove('chat-menu--open');
-          item.querySelector('.chat-list-item__menu-btn').setAttribute('aria-expanded', 'false');
+          item.querySelector('.chat-sidebar-item__menu-btn').setAttribute('aria-expanded', 'false');
           return;
         }
 
         // Click on the item itself — toggle selected
-        const item = e.target.closest('.chat-list-item');
+        const item = e.target.closest('.chat-sidebar-item');
         if (!item) return;
-        sidebar.querySelectorAll('.chat-list-item--selected')
-          .forEach(el => el.classList.remove('chat-list-item--selected'));
-        item.classList.add('chat-list-item--selected');
+        sidebar.querySelectorAll('.chat-sidebar-item--selected')
+          .forEach(el => el.classList.remove('chat-sidebar-item--selected'));
+        item.classList.add('chat-sidebar-item--selected');
       });
     });
 
     // Close menus on click outside
     document.addEventListener('click', (e) => {
-      if (!e.target.closest('.chat-list-item')) {
-        document.querySelectorAll('.chat-list-item--menu-open').forEach(item => {
-          item.classList.remove('chat-list-item--menu-open');
+      if (!e.target.closest('.chat-sidebar-item')) {
+        document.querySelectorAll('.chat-sidebar-item--menu-open').forEach(item => {
+          item.classList.remove('chat-sidebar-item--menu-open');
           item.querySelector('.chat-menu').classList.remove('chat-menu--open');
-          item.querySelector('.chat-list-item__menu-btn').setAttribute('aria-expanded', 'false');
+          item.querySelector('.chat-sidebar-item__menu-btn').setAttribute('aria-expanded', 'false');
         });
       }
     });
@@ -383,11 +409,11 @@
     // Close menus on Escape
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        document.querySelectorAll('.chat-list-item--menu-open').forEach(item => {
-          item.classList.remove('chat-list-item--menu-open');
+        document.querySelectorAll('.chat-sidebar-item--menu-open').forEach(item => {
+          item.classList.remove('chat-sidebar-item--menu-open');
           item.querySelector('.chat-menu').classList.remove('chat-menu--open');
-          item.querySelector('.chat-list-item__menu-btn').setAttribute('aria-expanded', 'false');
-          item.querySelector('.chat-list-item__menu-btn').focus();
+          item.querySelector('.chat-sidebar-item__menu-btn').setAttribute('aria-expanded', 'false');
+          item.querySelector('.chat-sidebar-item__menu-btn').focus();
         });
       }
     });

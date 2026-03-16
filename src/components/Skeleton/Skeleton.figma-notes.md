@@ -14,8 +14,8 @@ Single variant — loading placeholder with 5 lines.
 | Line gap | `--ai-spacing-4` | 12px |
 | Line height | `1rem` | 16px |
 | Line border-radius | `--ai-radius-sm` | 4px |
-| Shimmer base color | `--ai-chat-card-bg` | #f3f4f6 / #111928 |
-| Shimmer highlight | `--ai-chat-input-bg` | #ffffff / #374151 |
+| Shimmer base color | `--ai-skeleton-base` | #e5e7eb / #111928 |
+| Shimmer highlight | `--ai-skeleton-highlight` | #ffffff / #2b3644 |
 
 ## Line widths
 
