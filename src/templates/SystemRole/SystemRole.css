@@ -41,7 +41,7 @@
   padding: var(--ai-spacing-8);           /* 40px all sides — Default variant */
   background-color: var(--ai-surface-primary);
   border-radius: var(--ai-radius-xl);
-  box-shadow: 0 0 20px rgba(0,0,0,0.05), 0 2px 2px rgba(0,0,0,0.1); /* approved — no --ai-shadow-* token */
+  box-shadow: var(--ai-shadow-lg);
   overflow: hidden;
   container-type: inline-size;                      /* enable container queries */
   container-name: system-role;                      /* named to avoid ambiguity */

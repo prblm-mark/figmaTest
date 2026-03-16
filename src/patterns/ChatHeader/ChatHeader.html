@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>ChatHeader — Demo</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="ChatHeader.css">
+  <style>
+    body { padding: var(--ai-spacing-6); }
+    .demo-page { max-width: 1280px; margin: 0 auto; }
+    .demo-page h1 {
+      font-family: var(--ai-font-title);
+      font-size: var(--ai-font-fixed-2xl);
+      font-weight: var(--ai-font-bold);
+      line-height: var(--ai-leading-lg);
+      color: var(--ai-text-primary);
+      margin-bottom: var(--ai-spacing-3);
+    }
+    .demo-page > p {
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-contrast);
+      margin-bottom: var(--ai-spacing-7);
+    }
+    .demo-section {
+      margin-bottom: var(--ai-spacing-8);
+    }
+    .demo-section h2 {
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-sm);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-primary);
+      margin-bottom: var(--ai-spacing-4);
+    }
+    .demo-frame {
+      overflow: visible;
+    }
+    .demo-frame--compact {
+      max-width: 392px;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-page">
+    <h1>ChatHeader</h1>
+    <p>Chat UI header bar with assistant selector, dropdown, and admin controls. Resize below 768px for mobile layout.</p>
+
+    <!-- ── Default — Admin Hidden ───────────────────── -->
+    <section class="demo-section">
+      <h2>Default — Admin Hidden</h2>
+      <div class="demo-frame">
+        <div class="chat-header">
+          <div class="chat-header__container">
+            <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Toggle sidebar">
+              <i data-lucide="panel-left" aria-hidden="true"></i>
+            </button>
+            <div class="chat-header__selector-wrap">
+              <div class="chat-header__selector-group">
+                <button class="chat-header__selector" aria-expanded="false" aria-haspopup="listbox">
+                  <span class="chat-header__selector-text">Support Assistant</span>
+                  <span class="chat-header__selector-chevron">
+                    <i data-lucide="chevron-down" aria-hidden="true"></i>
+                  </span>
+                </button>
+                <div class="chat-header__dropdown" role="listbox">
+                  <div class="chat-header__dropdown-item" role="option" aria-selected="false">Customer Services</div>
+                  <div class="chat-header__dropdown-item chat-header__dropdown-item--selected" role="option" aria-selected="true">Support Assistant</div>
+                  <div class="chat-header__dropdown-item" role="option" aria-selected="false">Tech Monkey</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="chat-header__admin">
+            <button class="btn btn--secondary btn--sm btn--icon" aria-label="Debug" aria-pressed="false">
+              <i data-lucide="bug" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn--secondary btn--sm btn--icon" aria-label="Cache" aria-pressed="false">
+              <i data-lucide="database-zap" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn--secondary btn--sm" aria-pressed="false">
+              <i data-lucide="swatch-book" aria-hidden="true"></i>
+              Style
+            </button>
+            <button class="btn btn--secondary btn--sm" aria-pressed="false">
+              <i data-lucide="settings" aria-hidden="true"></i>
+              System Role
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Default — Admin Visible ──────────────────── -->
+    <section class="demo-section">
+      <h2>Default — Admin Visible</h2>
+      <div class="demo-frame">
+        <div class="chat-header">
+          <div class="chat-header__container">
+            <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Toggle sidebar">
+              <i data-lucide="panel-left" aria-hidden="true"></i>
+            </button>
+            <div class="chat-header__selector-wrap">
+              <div class="chat-header__selector-group">
+                <button class="chat-header__selector" aria-expanded="false" aria-haspopup="listbox">
+                  <span class="chat-header__selector-text">Support Assistant</span>
+                  <span class="chat-header__selector-chevron">
+                    <i data-lucide="chevron-down" aria-hidden="true"></i>
+                  </span>
+                </button>
+                <div class="chat-header__dropdown" role="listbox">
+                  <div class="chat-header__dropdown-item" role="option" aria-selected="false">Customer Services</div>
+                  <div class="chat-header__dropdown-item chat-header__dropdown-item--selected" role="option" aria-selected="true">Support Assistant</div>
+                  <div class="chat-header__dropdown-item" role="option" aria-selected="false">Tech Monkey</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="chat-header__admin chat-header__admin--visible">
+            <button class="btn btn--secondary btn--sm btn--icon" aria-label="Debug" aria-pressed="false">
+              <i data-lucide="bug" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn--secondary btn--sm btn--icon" aria-label="Cache" aria-pressed="false">
+              <i data-lucide="database-zap" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn--secondary btn--sm" aria-pressed="false">
+              <i data-lucide="swatch-book" aria-hidden="true"></i>
+              Style
+            </button>
+            <button class="btn btn--secondary btn--sm" aria-pressed="false">
+              <i data-lucide="settings" aria-hidden="true"></i>
+              System Role
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Default — Dropdown Open ──────────────────── -->
+    <section class="demo-section">
+      <h2>Default — Dropdown Open (click selector to toggle)</h2>
+      <div class="demo-frame">
+        <div class="chat-header">
+          <div class="chat-header__container">
+            <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Toggle sidebar">
+              <i data-lucide="panel-left" aria-hidden="true"></i>
+            </button>
+            <div class="chat-header__selector-wrap">
+              <div class="chat-header__selector-group">
+                <button class="chat-header__selector" aria-expanded="true" aria-haspopup="listbox">
+                  <span class="chat-header__selector-text">Support Assistant</span>
+                  <span class="chat-header__selector-chevron">
+                    <i data-lucide="chevron-down" aria-hidden="true"></i>
+                  </span>
+                </button>
+                <div class="chat-header__dropdown chat-header__dropdown--open" role="listbox">
+                  <div class="chat-header__dropdown-item" role="option" aria-selected="false">Customer Services</div>
+                  <div class="chat-header__dropdown-item chat-header__dropdown-item--selected" role="option" aria-selected="true">Support Assistant</div>
+                  <div class="chat-header__dropdown-item" role="option" aria-selected="false">Tech Monkey</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="chat-header__admin chat-header__admin--visible">
+            <button class="btn btn--secondary btn--sm btn--icon" aria-label="Debug" aria-pressed="false">
+              <i data-lucide="bug" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn--secondary btn--sm btn--icon" aria-label="Cache" aria-pressed="false">
+              <i data-lucide="database-zap" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn--secondary btn--sm" aria-pressed="false">
+              <i data-lucide="swatch-book" aria-hidden="true"></i>
+              Style
+            </button>
+            <button class="btn btn--secondary btn--sm" aria-pressed="false">
+              <i data-lucide="settings" aria-hidden="true"></i>
+              System Role
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Default — Align Left ─────────────────────── -->
+    <section class="demo-section">
+      <h2>Default — Align Left</h2>
+      <div class="demo-frame">
+        <div class="chat-header chat-header--align-left">
+          <div class="chat-header__container">
+            <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Toggle sidebar">
+              <i data-lucide="panel-left" aria-hidden="true"></i>
+            </button>
+            <div class="chat-header__selector-wrap">
+              <div class="chat-header__selector-group">
+                <button class="chat-header__selector" aria-expanded="false" aria-haspopup="listbox">
+                  <span class="chat-header__selector-text">Support Assistant</span>
+                  <span class="chat-header__selector-chevron">
+                    <i data-lucide="chevron-down" aria-hidden="true"></i>
+                  </span>
+                </button>
+                <div class="chat-header__dropdown" role="listbox">
+                  <div class="chat-header__dropdown-item" role="option" aria-selected="false">Customer Services</div>
+                  <div class="chat-header__dropdown-item chat-header__dropdown-item--selected" role="option" aria-selected="true">Support Assistant</div>
+                  <div class="chat-header__dropdown-item" role="option" aria-selected="false">Tech Monkey</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="chat-header__admin chat-header__admin--visible">
+            <button class="btn btn--secondary btn--sm btn--icon" aria-label="Debug" aria-pressed="false">
+              <i data-lucide="bug" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn--secondary btn--sm btn--icon" aria-label="Cache" aria-pressed="false">
+              <i data-lucide="database-zap" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn--secondary btn--sm" aria-pressed="false">
+              <i data-lucide="swatch-book" aria-hidden="true"></i>
+              Style
+            </button>
+            <button class="btn btn--secondary btn--sm" aria-pressed="false">
+              <i data-lucide="settings" aria-hidden="true"></i>
+              System Role
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Default — No Border ──────────────────────── -->
+    <section class="demo-section">
+      <h2>Default — No Border</h2>
+      <div class="demo-frame">
+        <div class="chat-header chat-header--no-border">
+          <div class="chat-header__container">
+            <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Toggle sidebar">
+              <i data-lucide="panel-left" aria-hidden="true"></i>
+            </button>
+            <div class="chat-header__selector-wrap">
+              <div class="chat-header__selector-group">
+                <button class="chat-header__selector" aria-expanded="false" aria-haspopup="listbox">
+                  <span class="chat-header__selector-text">Support Assistant</span>
+                  <span class="chat-header__selector-chevron">
+                    <i data-lucide="chevron-down" aria-hidden="true"></i>
+                  </span>
+                </button>
+                <div class="chat-header__dropdown" role="listbox">
+                  <div class="chat-header__dropdown-item" role="option" aria-selected="false">Customer Services</div>
+                  <div class="chat-header__dropdown-item chat-header__dropdown-item--selected" role="option" aria-selected="true">Support Assistant</div>
+                  <div class="chat-header__dropdown-item" role="option" aria-selected="false">Tech Monkey</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="chat-header__admin chat-header__admin--visible">
+            <button class="btn btn--secondary btn--sm btn--icon" aria-label="Debug" aria-pressed="false">
+              <i data-lucide="bug" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn--secondary btn--sm btn--icon" aria-label="Cache" aria-pressed="false">
+              <i data-lucide="database-zap" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn--secondary btn--sm" aria-pressed="false">
+              <i data-lucide="swatch-book" aria-hidden="true"></i>
+              Style
+            </button>
+            <button class="btn btn--secondary btn--sm" aria-pressed="false">
+              <i data-lucide="settings" aria-hidden="true"></i>
+              System Role
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Minimised ────────────────────────────────── -->
+    <section class="demo-section">
+      <h2>Minimised</h2>
+      <div class="demo-frame demo-frame--compact">
+        <div class="chat-header chat-header--minimised">
+          <div class="chat-header__container">
+            <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Toggle sidebar">
+              <i data-lucide="panel-left" aria-hidden="true"></i>
+            </button>
+            <div class="chat-header__selector-wrap">
+              <div class="chat-header__selector-group">
+                <button class="chat-header__selector" aria-expanded="false" aria-haspopup="listbox">
+                  <span class="chat-header__selector-text">Support Assistant</span>
+                  <span class="chat-header__selector-chevron">
+                    <i data-lucide="chevron-down" aria-hidden="true"></i>
+                  </span>
+                </button>
+                <div class="chat-header__dropdown" role="listbox">
+                  <div class="chat-header__dropdown-item" role="option" aria-selected="false">Customer Services</div>
+                  <div class="chat-header__dropdown-item chat-header__dropdown-item--selected" role="option" aria-selected="true">Support Assistant</div>
+                  <div class="chat-header__dropdown-item" role="option" aria-selected="false">Tech Monkey</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="chat-header__window-buttons">
+            <button class="btn btn--tertiary btn--sm btn--icon chat-header__maximize" aria-label="Maximize">
+              <i data-lucide="maximize" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Close">
+              <i data-lucide="x" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Minimised — Dropdown Open ────────────────── -->
+    <section class="demo-section">
+      <h2>Minimised — Dropdown Open</h2>
+      <div class="demo-frame demo-frame--compact">
+        <div class="chat-header chat-header--minimised">
+          <div class="chat-header__container">
+            <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Toggle sidebar">
+              <i data-lucide="panel-left" aria-hidden="true"></i>
+            </button>
+            <div class="chat-header__selector-wrap">
+              <div class="chat-header__selector-group">
+                <button class="chat-header__selector" aria-expanded="true" aria-haspopup="listbox">
+                  <span class="chat-header__selector-text">Support Assistant</span>
+                  <span class="chat-header__selector-chevron">
+                    <i data-lucide="chevron-down" aria-hidden="true"></i>
+                  </span>
+                </button>
+                <div class="chat-header__dropdown chat-header__dropdown--open" role="listbox">
+                  <div class="chat-header__dropdown-item" role="option" aria-selected="false">Customer Services</div>
+                  <div class="chat-header__dropdown-item chat-header__dropdown-item--selected" role="option" aria-selected="true">Support Assistant</div>
+                  <div class="chat-header__dropdown-item" role="option" aria-selected="false">Tech Monkey</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="chat-header__window-buttons">
+            <button class="btn btn--tertiary btn--sm btn--icon chat-header__maximize" aria-label="Maximize">
+              <i data-lucide="maximize" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Close">
+              <i data-lucide="x" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Mobile ───────────────────────────────────── -->
+    <section class="demo-section">
+      <h2>Mobile</h2>
+      <div class="demo-frame demo-frame--compact">
+        <div class="chat-header chat-header--mobile">
+          <div class="chat-header__container">
+            <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Toggle sidebar">
+              <i data-lucide="panel-left" aria-hidden="true"></i>
+            </button>
+            <div class="chat-header__selector-wrap">
+              <div class="chat-header__selector-group">
+                <button class="chat-header__selector" aria-expanded="false" aria-haspopup="listbox">
+                  <span class="chat-header__selector-text">Support Assistant</span>
+                  <span class="chat-header__selector-chevron">
+                    <i data-lucide="chevron-down" aria-hidden="true"></i>
+                  </span>
+                </button>
+                <div class="chat-header__dropdown" role="listbox">
+                  <div class="chat-header__dropdown-item" role="option" aria-selected="false">Customer Services</div>
+                  <div class="chat-header__dropdown-item chat-header__dropdown-item--selected" role="option" aria-selected="true">Support Assistant</div>
+                  <div class="chat-header__dropdown-item" role="option" aria-selected="false">Tech Monkey</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="chat-header__window-buttons">
+            <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Close">
+              <i data-lucide="x" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Mobile — Dropdown Open ───────────────────── -->
+    <section class="demo-section">
+      <h2>Mobile — Dropdown Open</h2>
+      <div class="demo-frame demo-frame--compact">
+        <div class="chat-header chat-header--mobile">
+          <div class="chat-header__container">
+            <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Toggle sidebar">
+              <i data-lucide="panel-left" aria-hidden="true"></i>
+            </button>
+            <div class="chat-header__selector-wrap">
+              <div class="chat-header__selector-group">
+                <button class="chat-header__selector" aria-expanded="true" aria-haspopup="listbox">
+                  <span class="chat-header__selector-text">Support Assistant</span>
+                  <span class="chat-header__selector-chevron">
+                    <i data-lucide="chevron-down" aria-hidden="true"></i>
+                  </span>
+                </button>
+                <div class="chat-header__dropdown chat-header__dropdown--open" role="listbox">
+                  <div class="chat-header__dropdown-item" role="option" aria-selected="false">Customer Services</div>
+                  <div class="chat-header__dropdown-item chat-header__dropdown-item--selected" role="option" aria-selected="true">Support Assistant</div>
+                  <div class="chat-header__dropdown-item" role="option" aria-selected="false">Tech Monkey</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="chat-header__window-buttons">
+            <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Close">
+              <i data-lucide="x" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      lucide.createIcons();
+
+      /* ── Dropdown toggle ──────────────────────────── */
+      document.querySelectorAll('.chat-header__selector').forEach(function (selector) {
+        selector.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var group = selector.closest('.chat-header__selector-group');
+          var dropdown = group.querySelector('.chat-header__dropdown');
+          var isOpen = dropdown.classList.contains('chat-header__dropdown--open');
+
+          // Close all open dropdowns first
+          closeAllDropdowns();
+
+          if (!isOpen) {
+            dropdown.classList.add('chat-header__dropdown--open');
+            selector.setAttribute('aria-expanded', 'true');
+          }
+        });
+      });
+
+      /* ── Dropdown item selection ──────────────────── */
+      document.querySelectorAll('.chat-header__dropdown-item').forEach(function (item) {
+        item.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var group = item.closest('.chat-header__selector-group');
+          var dropdown = item.closest('.chat-header__dropdown');
+          var selector = group.querySelector('.chat-header__selector');
+          var textEl = selector.querySelector('.chat-header__selector-text');
+
+          // Update selected state
+          dropdown.querySelectorAll('.chat-header__dropdown-item').forEach(function (i) {
+            i.classList.remove('chat-header__dropdown-item--selected');
+            i.setAttribute('aria-selected', 'false');
+          });
+          item.classList.add('chat-header__dropdown-item--selected');
+          item.setAttribute('aria-selected', 'true');
+
+          // Update selector text
+          textEl.textContent = item.textContent;
+
+          // Close dropdown
+          dropdown.classList.remove('chat-header__dropdown--open');
+          selector.setAttribute('aria-expanded', 'false');
+        });
+      });
+
+      /* ── Close on outside click ───────────────────── */
+      document.addEventListener('click', function (e) {
+        if (!e.target.closest('.chat-header__selector-group')) {
+          closeAllDropdowns();
+        }
+      });
+
+      /* ── Admin toggle buttons ─────────────────────── */
+      document.querySelectorAll('.chat-header__admin .btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var pressed = btn.getAttribute('aria-pressed') === 'true';
+          btn.setAttribute('aria-pressed', String(!pressed));
+        });
+      });
+
+      function closeAllDropdowns() {
+        document.querySelectorAll('.chat-header__dropdown--open').forEach(function (d) {
+          d.classList.remove('chat-header__dropdown--open');
+          var group = d.closest('.chat-header__selector-group');
+          if (group) {
+            group.querySelector('.chat-header__selector').setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

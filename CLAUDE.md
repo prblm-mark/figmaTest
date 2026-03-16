@@ -171,8 +171,8 @@ Component-specific tokens for the chat UI. Only relevant when building chat-rela
 | `--ai-chat-surface-minimal` | `#E5E7EB` | `#374151` |
 | `--ai-chat-sidebar-bg` | `#FFFFFF` | `#18222F` |
 | `--ai-chat-sidebar-text` | `#1F2A37` | `#E5E7EB` |
-| `--ai-chat-msg-bg` | `#F3F4F6` | `#111928` |
-| `--ai-chat-msg-text` | `#1F2A37` | `#FFFFFF` |
+| `--ai-chat-msg-bg` | `#F0F3FF` | `#0054A3` |
+| `--ai-chat-msg-text` | `#0F406B` | `#F0F3FF` |
 | `--ai-chat-brand` | `#1F2A37` | `#FFFFFF` |
 | `--ai-chat-sidebar-hover-bg` | — | — | computed (see §2c) |
 | `--ai-chat-sidebar-active-bg` | — | — | computed (see §2c) |
@@ -189,6 +189,17 @@ Component-specific tokens for the chat UI. Only relevant when building chat-rela
 | Variable | Light value | Dark value |
 |---|---|---|
 | `--ai-src-carousel-card-bg` | `#F3F4F6` | `#111928` |
+
+### Shadow
+
+| Variable | Light value | Dark value | Use |
+|---|---|---|---|
+| `--ai-shadow-sm` | `0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06)` | `0 1px 3px rgba(0,0,0,0.25), 0 1px 2px rgba(0,0,0,0.15)` | Small dropdowns, toggle thumbs |
+| `--ai-shadow-md` | `0 2px 10px rgba(0,0,0,0.1)` | `0 2px 10px rgba(0,0,0,0.25)` | Tooltips, inputs, menus |
+| `--ai-shadow-lg` | `0 0 20px rgba(0,0,0,0.05), 0 2px 2px rgba(0,0,0,0.1)` | `0 0 20px rgba(0,0,0,0.15), 0 2px 2px rgba(0,0,0,0.25)` | Modals, cards, panels |
+
+**Source:** `css/tokens-shadows.css` (static, manually maintained — Figma shadows cannot be
+exported as DTCG variables). Dark mode uses stronger opacities to maintain visible depth.
 
 ### Gradient
 
@@ -748,7 +759,10 @@ All components must meet **WCAG 2.1 AA**:
 | ChatResponse | template | Built | [node 2089:6577](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2089-6577) | `src/templates/ChatResponse/` — 8s master GSAP timeline. Composes WorkingIntro, SourcesCarousel, Skeleton. |
 | ChatSidebarItem | component | Built | [node 2110:3001](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2110-3001) | `src/components/ChatSidebarItem/` — Type=Thread (Default, Hover, Menu, Selected + Pinned) + Type=Action (icon+label, Default/Hover/Selected). Computed overlay bg via `color-mix()` + `sidebar-colors.js`. Composes ChatSidebarMenu. |
 | ChatSidebarMenu | component | Built | [node 2110:3001](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2110-3001) | `src/components/ChatSidebarMenu/` — Context menu dropdown for ChatSidebarItem. Save, Copy, Copy Link, Delete. Uses computed sidebar-theme colors. Shadow raw values (no shadow tokens yet). |
-| ChatSidebar | pattern | Built | [node 2122:4936](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2122-4936) | `src/patterns/ChatSidebar/` — Sidebar navigation panel with logo, action items, scrollable sections (Saved/Recent/Older). Composes ChatSidebarItem, ChatSidebarMenu. |
+| ChatSidebar | pattern | Built | [node 2122:4936](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2122-4936) | `src/patterns/ChatSidebar/` — Sidebar navigation panel with logo, action items, scrollable sections (Pinned/Recent/Older). Composes ChatSidebarItem, ChatSidebarMenu. |
+| ChatHeader | pattern | Built | [node 2124:3686](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2124-3686) | `src/patterns/ChatHeader/` — Header bar with assistant selector dropdown, admin toggle buttons, window controls. Type=Default/Minimised/Mobile, Options=Center/Align Left/No Border. Composes Button. |
+| MessageBubble | component | Built | [node 2126:4901](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2126-4901) | `src/components/MessageBubble/` — User question bubble, right-aligned. Default + Hover (copy/link action buttons). Uses `--ai-chat-msg-bg/text`. Composes Button. |
+| MessageInput | pattern | Built | [node 2126:5007](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2126-5007) | `src/patterns/MessageInput/` — Chat input bar with textarea, filter button + duration popover, send button, disclaimer. Desktop/Mobile/Minimised. Active state via JS. Composes Button, Tooltip. |
 Add rows here as components are built. Format: Component Name, Tier (component/pattern/template), Built/In Progress/Figma Only, Figma URL, Notes.
 
 ---

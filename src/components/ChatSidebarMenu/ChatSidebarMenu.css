@@ -15,13 +15,9 @@
   display: flex;
 }
 
-/* Shadow — no --ai-shadow-* tokens exist yet; raw values (same precedent as SystemRole) */
-[data-sidebar-theme="light"] .chat-sidebar-menu {
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
-}
-
-[data-sidebar-theme="dark"] .chat-sidebar-menu {
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+/* Shadow — uses token; dark mode override handled by tokens-shadows.css */
+.chat-sidebar-menu {
+  box-shadow: var(--ai-shadow-sm);
 }
 
 /* ── Menu items ─────────────────────────────────────── */

@@ -1,0 +1,242 @@
+/* MessageInput — chat input bar with filter, send, tooltips, and duration filter
+ * Figma node: 2126:5007
+ * Tier: Pattern
+ * Variants: Desktop/Mobile/Minimised × Default/Active/Data Tooltip/Recent Content Tooltip/Duration Filter
+ * Composes: Button, Tooltip
+ */
+
+/* ── Outer wrapper ────────────────────────────────────── */
+
+.msg-input {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  max-width: var(--ai-size-11);
+  position: relative;
+}
+
+/* ── Input box ────────────────────────────────────────── */
+
+.msg-input__box {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  padding: var(--ai-spacing-6);
+  background-color: var(--ai-chat-surface-secondary);
+  border: 1px solid rgb(from var(--ai-border-secondary) r g b / 0.6);
+  border-radius: var(--ai-radius-lg);
+  box-shadow: var(--ai-shadow-md);
+  position: relative;
+  transition: border-color var(--ai-transition-default);
+}
+
+.msg-input__box:focus-within {
+  border-color: var(--ai-border-secondary);
+}
+
+/* ── Textarea / placeholder ───────────────────────────── */
+
+.msg-input__textarea {
+  width: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  font-family: var(--ai-font-body);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-sm);
+  line-height: normal;
+  color: var(--ai-text-primary);
+  font-feature-settings: 'ss04' 1, 'cv01' 1, 'calt' 0, 'kern' 0;
+}
+
+.msg-input__textarea::placeholder {
+  color: var(--ai-text-contrast);
+}
+
+/* ── Actions row ──────────────────────────────────────── */
+
+.msg-input__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* ── Filter button container ──────────────────────────── */
+
+.msg-input__filter-container {
+  display: flex;
+  align-items: center;
+  border-radius: var(--ai-radius-md);
+  position: relative;
+}
+
+/* ── Send button disabled state ───────────────────────── */
+
+.msg-input__send-btn[disabled] {
+  background-color: var(--ai-btn-bg-disabled);
+  border-color: transparent;
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+/* ── Active state (input has content) ─────────────────── */
+
+.msg-input--active .msg-input__send-btn[disabled] {
+  background-color: var(--ai-btn-primary-bg);
+  border-color: transparent;
+  color: var(--ai-btn-primary-text);
+  opacity: 1;
+  cursor: pointer;
+}
+
+/* ── Disclaimer row ───────────────────────────────────── */
+
+.msg-input__disclaimer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: var(--ai-spacing-3) var(--ai-spacing-6);
+  position: relative;
+}
+
+.msg-input__disclaimer-text {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-xs);
+  letter-spacing: var(--ai-tracking-5);
+  color: var(--ai-text-contrast);
+  font-feature-settings: 'case' 1;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* ── Duration filter popover ──────────────────────────── */
+
+.msg-input__filter-popover {
+  display: none;
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  width: var(--ai-size-1);
+  padding: 1px;
+  margin-bottom: var(--ai-spacing-3);
+  background-color: var(--ai-chat-surface-secondary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  box-shadow: var(--ai-shadow-lg);
+  z-index: 30;
+  overflow: hidden;
+}
+
+.msg-input__filter-popover--open {
+  display: flex;
+}
+
+.msg-input__filter-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: var(--ai-spacing-7);
+  padding: 0 var(--ai-spacing-4);
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-primary);
+  cursor: pointer;
+  background: none;
+  border: none;
+  transition: background-color var(--ai-transition-default);
+}
+
+.msg-input__filter-item:hover {
+  background-color: var(--ai-surface-minimal);
+}
+
+.msg-input__filter-item--selected {
+  font-weight: var(--ai-font-medium);
+}
+
+.msg-input__filter-item [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* ── Tooltip positioning ──────────────────────────────── */
+
+.msg-input__tooltip {
+  display: none;
+  position: absolute;
+  z-index: 20;
+}
+
+.msg-input__tooltip--data {
+  bottom: calc(100% + var(--ai-spacing-3));
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.msg-input__disclaimer-text:hover + .msg-input__tooltip--data,
+.msg-input__tooltip--data:hover {
+  display: block;
+}
+
+.msg-input__tooltip--filter {
+  bottom: calc(100% + var(--ai-spacing-3));
+  left: 0;
+}
+
+.msg-input__tooltip--filter .tooltip {
+  width: auto;
+  white-space: nowrap;
+}
+
+.msg-input:not(:has(.msg-input__filter-popover--open)) .msg-input__filter-btn:hover ~ .msg-input__tooltip--filter,
+.msg-input:not(:has(.msg-input__filter-popover--open)) .msg-input__tooltip--filter:hover {
+  display: block;
+}
+
+/* ── Mobile ───────────────────────────────────────────── */
+
+@media (max-width: 767px) {
+  .msg-input__box {
+    padding: var(--ai-spacing-5);
+  }
+
+  .msg-input__textarea {
+    font-size: var(--ai-font-fluid-sm);
+  }
+
+  .msg-input__send-btn {
+    display: none;
+  }
+
+  .msg-input--active .msg-input__send-btn {
+    display: inline-flex;
+  }
+}
+
+/* ── Minimised layout ─────────────────────────────────── */
+
+[data-layout="minimised"] .msg-input__box {
+  padding: var(--ai-spacing-5);
+}
+
+[data-layout="minimised"] .msg-input__textarea {
+  font-size: var(--ai-font-fluid-sm);
+}

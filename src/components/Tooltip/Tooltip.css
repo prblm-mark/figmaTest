@@ -10,7 +10,7 @@
   background-color: #0c121c;             /* Neutral/950 — approved primitive; intentionally fixed dark in both themes */
   border-radius: var(--ai-radius-lg);
   padding: var(--ai-spacing-5);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15); /* approved primitive — no shadow token */
+  box-shadow: var(--ai-shadow-md);
 }
 
 /* ── Text ────────────────────────────────────────────── */
