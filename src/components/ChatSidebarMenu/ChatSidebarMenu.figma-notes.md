@@ -1,10 +1,10 @@
-# ChatMenu — Figma Notes
+# ChatSidebarMenu — Figma Notes
 
 **Figma URL:** [node 2110:3001](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2110-3001) (nested within ChatSidebarItem component set)
 
 ## Component set
 
-ChatMenu appears as `data-name="ChatMenu"` inside the ChatSidebarItem Hover/Menu and Selected/Menu variants. It is a context menu dropdown containing 4 action buttons.
+ChatSidebarMenu appears as `data-name="ChatSidebarMenu"` inside the ChatSidebarItem Hover/Menu and Selected/Menu variants. It is a context menu dropdown containing 4 action buttons.
 
 ## Token mapping
 
@@ -34,9 +34,9 @@ ChatMenu appears as `data-name="ChatMenu"` inside the ChatSidebarItem Hover/Menu
 
 | Figma state | CSS class |
 |---|---|
-| Hidden (default) | `.chat-menu` (display: none) |
-| Visible | `.chat-menu.chat-menu--open` |
-| Menu item | `.chat-menu__item` |
+| Hidden (default) | `.chat-sidebar-menu` (display: none) |
+| Visible | `.chat-sidebar-menu.chat-sidebar-menu--open` |
+| Menu item | `.chat-sidebar-menu__item` |
 
 ## Menu items
 
@@ -54,6 +54,7 @@ ChatMenu appears as `data-name="ChatMenu"` inside the ChatSidebarItem Hover/Menu
 
 ## Notes
 
+- Renamed from ChatMenu (Mar 2026)
 - Menu bg uses base sidebar color (`--ai-chat-sidebar-bg`) — shadow provides visual separation
 - Menu items use sidebar-computed colors instead of `btn--tertiary` tokens, because tertiary tokens flip with the global theme and would mismatch the sidebar context
 - Positioned absolutely relative to the parent ChatSidebarItem (`top: --ai-spacing-6, right: 0`)
