@@ -1,0 +1,112 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>Message Bubble — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../Button/Button.css">
+  <link rel="stylesheet" href="MessageBubble.css">
+  <style>
+    body {
+      min-height: 100vh;
+      background-color: var(--ai-chat-bg, var(--ai-surface-primary));
+      padding: var(--ai-spacing-7);
+    }
+
+    .demo-section {
+      margin-bottom: var(--ai-spacing-8);
+    }
+
+    .demo-label {
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xxs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--ai-spacing-5);
+    }
+
+    .demo-frame {
+      max-width: 719px;
+      padding: var(--ai-spacing-7);
+      padding-bottom: var(--ai-spacing-11);
+      background-color: var(--ai-chat-bg, var(--ai-surface-primary));
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── Default ─────────────────────────────── -->
+  <section class="demo-section">
+    <p class="demo-label">Default</p>
+    <div class="demo-frame">
+      <div class="msg-bubble">
+        <div class="msg-bubble__question">
+          <p class="msg-bubble__text">Can you explain page views, and how they are saved in Affino?</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Hover (action buttons visible) ──────── -->
+  <section class="demo-section">
+    <p class="demo-label">Hover (hover over bubble to see actions)</p>
+    <div class="demo-frame">
+      <div class="msg-bubble">
+        <div class="msg-bubble__question">
+          <p class="msg-bubble__text">Can you explain page views, and how they are saved in Affino?</p>
+        </div>
+        <div class="msg-bubble__actions">
+          <button
+            class="btn btn--tertiary btn--sm btn--icon"
+            aria-label="Copy message"
+          >
+            <i data-lucide="copy" aria-hidden="true"></i>
+          </button>
+          <button
+            class="btn btn--tertiary btn--sm btn--icon"
+            aria-label="Copy link"
+          >
+            <i data-lucide="link" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Multi-line ──────────────────────────── -->
+  <section class="demo-section">
+    <p class="demo-label">Multi-line message</p>
+    <div class="demo-frame">
+      <div class="msg-bubble">
+        <div class="msg-bubble__question">
+          <p class="msg-bubble__text">I need to understand how the analytics tracking works across different page types. Can you walk me through the lifecycle of a page view event from when a user first loads the page?</p>
+        </div>
+        <div class="msg-bubble__actions">
+          <button
+            class="btn btn--tertiary btn--sm btn--icon"
+            aria-label="Copy message"
+          >
+            <i data-lucide="copy" aria-hidden="true"></i>
+          </button>
+          <button
+            class="btn btn--tertiary btn--sm btn--icon"
+            aria-label="Copy link"
+          >
+            <i data-lucide="link" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+
+</body>
+</html>
