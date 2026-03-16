@@ -57,5 +57,5 @@ ChatSidebarMenu appears as `data-name="ChatSidebarMenu"` inside the ChatSidebarI
 - Renamed from ChatMenu (Mar 2026)
 - Menu bg uses base sidebar color (`--ai-chat-sidebar-bg`) — shadow provides visual separation
 - Menu items use sidebar-computed colors instead of `btn--tertiary` tokens, because tertiary tokens flip with the global theme and would mismatch the sidebar context
-- Positioned absolutely relative to the parent ChatSidebarItem (`top: --ai-spacing-6, right: 0`)
+- Uses `position: fixed` to escape overflow clipping from scrollable sidebar containers. JS sets `top`/`left` from the trigger button's `getBoundingClientRect()` when opened.
 - Menu width is content-driven (`min-width: max-content`) — Figma shows 122px which is the natural content width

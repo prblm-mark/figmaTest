@@ -748,6 +748,7 @@ All components must meet **WCAG 2.1 AA**:
 | ChatResponse | template | Built | [node 2089:6577](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2089-6577) | `src/templates/ChatResponse/` — 8s master GSAP timeline. Composes WorkingIntro, SourcesCarousel, Skeleton. |
 | ChatSidebarItem | component | Built | [node 2110:3001](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2110-3001) | `src/components/ChatSidebarItem/` — Type=Thread (Default, Hover, Menu, Selected + Pinned) + Type=Action (icon+label, Default/Hover/Selected). Computed overlay bg via `color-mix()` + `sidebar-colors.js`. Composes ChatSidebarMenu. |
 | ChatSidebarMenu | component | Built | [node 2110:3001](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2110-3001) | `src/components/ChatSidebarMenu/` — Context menu dropdown for ChatSidebarItem. Save, Copy, Copy Link, Delete. Uses computed sidebar-theme colors. Shadow raw values (no shadow tokens yet). |
+| ChatSidebar | pattern | Built | [node 2122:4936](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2122-4936) | `src/patterns/ChatSidebar/` — Sidebar navigation panel with logo, action items, scrollable sections (Saved/Recent/Older). Composes ChatSidebarItem, ChatSidebarMenu. |
 Add rows here as components are built. Format: Component Name, Tier (component/pattern/template), Built/In Progress/Figma Only, Figma URL, Notes.
 
 ---

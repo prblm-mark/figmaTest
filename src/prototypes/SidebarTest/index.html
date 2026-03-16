@@ -285,6 +285,11 @@
         const isOpen = item.classList.toggle('chat-sidebar-item--menu-open');
         menu.classList.toggle('chat-sidebar-menu--open', isOpen);
         menuBtn.setAttribute('aria-expanded', isOpen);
+        if (isOpen) {
+          const rect = menuBtn.getBoundingClientRect();
+          menu.style.top = rect.bottom + 'px';
+          menu.style.left = (rect.left - 8) + 'px';
+        }
         return;
       }
 
