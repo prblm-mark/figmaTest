@@ -125,7 +125,7 @@ The hover and selected backgrounds are **computed tokens** — Figma defines the
       <i data-lucide="ellipsis" aria-hidden="true"></i>
     </button>
   </div>
-  <div class="chat-menu"><!-- ChatMenu component --></div>
+  <div class="chat-sidebar-menu"><!-- ChatSidebarMenu component --></div>
 </div>
 ```
 
@@ -141,7 +141,7 @@ The hover and selected backgrounds are **computed tokens** — Figma defines the
 
 ### Thread type
 1. **Hover:** Shows ellipsis button with fade gradient (CSS `:hover`)
-2. **Ellipsis click:** Toggles `.chat-sidebar-item--menu-open` + `.chat-menu--open`, updates `aria-expanded`
+2. **Ellipsis click:** Toggles `.chat-sidebar-item--menu-open` + `.chat-sidebar-menu--open`, updates `aria-expanded`
 3. **Menu item click:** Closes menu
 4. **Click outside / Escape:** Closes any open menu
 5. **Item click (non-button area):** Selects the item
@@ -152,7 +152,7 @@ The hover and selected backgrounds are **computed tokens** — Figma defines the
 
 ## Dependencies
 
-- **ChatMenu** (`src/components/ChatMenu/`) — context menu dropdown (Thread type only)
+- **ChatSidebarMenu** (`src/components/ChatSidebarMenu/`) — context menu dropdown (Thread type only)
 - **sidebar-colors.js** (`src/utils/`) — luminance detection
 - **Lucide icons:** `pin`, `ellipsis` (Thread); `message-square` (Action)
 
@@ -167,6 +167,6 @@ Actions opacity: `--ai-transition-default` (150ms ease).
 - Pin icon uses `opacity: 0.6` for subtle de-emphasis
 - Fade gradient matches the current state bg
 - Ellipsis button bg uses hover-bg (8% overlay)
-- `overflow: visible` on container allows ChatMenu dropdown to render outside bounds
+- `overflow: visible` on container allows ChatSidebarMenu dropdown to render outside bounds
 - Action type has no ellipsis, no fade, no pin, no menu — simpler structure
 - Action type uses `button/sm` typography (semibold 12px) vs Thread's regular 14px

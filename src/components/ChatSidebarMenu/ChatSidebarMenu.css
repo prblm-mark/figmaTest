@@ -1,6 +1,6 @@
-/* ChatMenu — context menu dropdown for sidebar chat items */
+/* ChatSidebarMenu — context menu dropdown for sidebar chat items */
 
-.chat-menu {
+.chat-sidebar-menu {
   position: absolute;
   top: var(--ai-spacing-6);
   left: calc(100% - var(--ai-spacing-8));
@@ -13,22 +13,22 @@
   background: var(--ai-chat-sidebar-bg);
 }
 
-.chat-menu--open {
+.chat-sidebar-menu--open {
   display: flex;
 }
 
 /* Shadow — no --ai-shadow-* tokens exist yet; raw values (same precedent as SystemRole) */
-[data-sidebar-theme="light"] .chat-menu {
+[data-sidebar-theme="light"] .chat-sidebar-menu {
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
 }
 
-[data-sidebar-theme="dark"] .chat-menu {
+[data-sidebar-theme="dark"] .chat-sidebar-menu {
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 /* ── Menu items ─────────────────────────────────────── */
 
-.chat-menu__item {
+.chat-sidebar-menu__item {
   display: flex;
   align-items: center;
   gap: var(--ai-spacing-3);
@@ -49,15 +49,15 @@
   transition: background-color var(--ai-transition-default);
 }
 
-.chat-menu__item:hover {
+.chat-sidebar-menu__item:hover {
   background: var(--ai-chat-sidebar-hover-bg);
 }
 
-.chat-menu__item:active {
+.chat-sidebar-menu__item:active {
   background: var(--ai-chat-sidebar-active-bg);
 }
 
-.chat-menu__item [data-lucide] {
+.chat-sidebar-menu__item [data-lucide] {
   width: var(--ai-icon-size-sm);
   height: var(--ai-icon-size-sm);
   flex-shrink: 0;
@@ -65,7 +65,7 @@
 
 /* ── Focus ──────────────────────────────────────────── */
 
-.chat-menu__item:focus-visible {
+.chat-sidebar-menu__item:focus-visible {
   outline: none;
   box-shadow: 0 0 0 1px var(--ai-chat-sidebar-bg), 0 0 0 3px var(--ai-surface-brand-contrast);
 }
