@@ -42,7 +42,8 @@ ChatSidebarMenu appears as `data-name="ChatSidebarMenu"` inside the ChatSidebarI
 
 | Label | Lucide icon | Notes |
 |---|---|---|
-| Save | `bookmark` | Icon name provisional — verify against Figma |
+| Pin | `pin` | Default for unpinned items |
+| Unpin | `pin-off` | Shown for items with `--pinned` modifier |
 | Copy | `copy` | |
 | Copy Link | `link` | |
 | Delete | `trash-2` | |

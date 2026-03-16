@@ -53,7 +53,7 @@ Dark Mode handled by `data-sidebar-theme="light|dark"` via `sidebar-colors.js`, 
 - **ChatSidebarItem** (`src/components/ChatSidebarItem/`) — Action + Thread types
 - **ChatSidebarMenu** (`src/components/ChatSidebarMenu/`) — context menu dropdown
 - **sidebar-colors.js** (`src/utils/`) — luminance detection + `data-sidebar-theme` setter
-- **Lucide icons:** `message-square`, `search`, `pin`, `ellipsis`, `bookmark`, `copy`, `link`, `trash-2`
+- **Lucide icons:** `message-square`, `search`, `pin`, `pin-off`, `ellipsis`, `copy`, `link`, `trash-2`
 
 ## HTML structure
 
@@ -67,7 +67,7 @@ Dark Mode handled by `data-sidebar-theme="light|dark"` via `sidebar-colors.js`, 
   </div>
   <div class="chat-sidebar__sections">
     <div class="chat-sidebar__section">
-      <span class="chat-sidebar__section-label">Saved</span>
+      <span class="chat-sidebar__section-label">Pinned</span>
       <!-- ChatSidebarItem (thread) × N -->
     </div>
     <!-- more sections -->
@@ -80,5 +80,5 @@ Dark Mode handled by `data-sidebar-theme="light|dark"` via `sidebar-colors.js`, 
 - Sidebar height is `100%` (fills parent) — Figma frame uses 953px as a design-time height
 - Sections container is scrollable (`overflow-y: auto; flex: 1; min-height: 0`)
 - Logo slot is a simple `<img>` — consuming application provides the logo asset
-- Saved items use `--pinned` modifier to show the pin icon
+- Pinned items use `--pinned` modifier to show the pin icon
 - The 1px gap between section items is an optical separator (same precedent as VersionHistory timeline line)
