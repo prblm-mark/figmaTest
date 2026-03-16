@@ -3,7 +3,7 @@
 .chat-menu {
   position: absolute;
   top: var(--ai-spacing-6);
-  left: calc(100% - var(--ai-spacing-7));
+  left: calc(100% - var(--ai-spacing-8));
   z-index: 10;
   display: none;
   flex-direction: column;
