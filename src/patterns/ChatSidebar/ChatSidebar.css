@@ -26,6 +26,17 @@
   display: block;
   max-width: 100%;
   height: auto;
+  transition: filter var(--ai-transition-default);
+}
+
+/* Dark sidebar: make logo white */
+[data-sidebar-theme="dark"] .chat-sidebar__logo img {
+  filter: brightness(0) invert(1);
+}
+
+/* Light sidebar: keep original brand color */
+[data-sidebar-theme="light"] .chat-sidebar__logo img {
+  filter: none;
 }
 
 /* ── Actions (New Chat, Search) ─────────────────────── */
