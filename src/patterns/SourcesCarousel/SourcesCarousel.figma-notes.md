@@ -19,7 +19,7 @@ Layout switching is handled by a **container query** (`@container (min-width: 15
 
 | Figma property | CSS token | Value |
 |---|---|---|
-| Card background | `--ai-chat-card-bg` | #f3f4f6 / #111928 |
+| Card background | `--ai-src-carousel-card-bg` | #f3f4f6 / #111928 |
 | Card padding | `--ai-spacing-4` | 12px |
 | Card border-radius | `--ai-radius-md` | 8px |
 | Internal gap (default/narrow) | `--ai-spacing-3` | 8px |

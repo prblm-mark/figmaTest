@@ -1,4 +1,4 @@
-/* ChatListItem — sidebar menu item with computed hover/selected states */
+/* ChatSidebarItem — sidebar menu item with computed hover/selected states */
 
 /* ── Computed overlay variables ─────────────────────── */
 /* Light sidebar: dark text, darken selected text */
@@ -17,9 +17,9 @@
   --ai-chat-sidebar-active-bg: color-mix(in srgb, var(--ai-chat-sidebar-bg) 88%, white);
 }
 
-/* ── Base ────────────────────────────────────────────── */
+/* ── Base (Type=Thread) ─────────────────────────────── */
 
-.chat-list-item {
+.chat-sidebar-item {
   position: relative;
   display: flex;
   align-items: center;
@@ -43,7 +43,7 @@
 
 /* ── Pin icon ───────────────────────────────────────── */
 
-.chat-list-item__pin {
+.chat-sidebar-item__pin {
   display: none;
   flex-shrink: 0;
   width: var(--ai-icon-size-sm);
@@ -52,13 +52,13 @@
   opacity: 0.6;
 }
 
-.chat-list-item--pinned .chat-list-item__pin {
+.chat-sidebar-item--pinned .chat-sidebar-item__pin {
   display: block;
 }
 
 /* ── Text label ─────────────────────────────────────── */
 
-.chat-list-item__text {
+.chat-sidebar-item__text {
   flex: 1;
   min-width: 0;
   white-space: nowrap;
@@ -68,7 +68,7 @@
 
 /* ── Actions (fade + ellipsis button) ───────────────── */
 
-.chat-list-item__actions {
+.chat-sidebar-item__actions {
   position: absolute;
   right: 0;
   top: 0;
@@ -80,34 +80,34 @@
   transition: opacity var(--ai-transition-default);
 }
 
-.chat-list-item:hover .chat-list-item__actions,
-.chat-list-item--menu-open .chat-list-item__actions {
+.chat-sidebar-item:hover .chat-sidebar-item__actions,
+.chat-sidebar-item--menu-open .chat-sidebar-item__actions {
   opacity: 1;
   pointer-events: auto;
 }
 
 /* Fade gradient — fades from transparent to the item's current bg */
-.chat-list-item__fade {
+.chat-sidebar-item__fade {
   width: var(--ai-spacing-10);
   height: 100%;
   pointer-events: none;
 }
 
-.chat-list-item:hover .chat-list-item__fade {
+.chat-sidebar-item:hover .chat-sidebar-item__fade {
   background: linear-gradient(to right, transparent, var(--ai-chat-sidebar-hover-bg));
 }
 
-.chat-list-item--selected .chat-list-item__fade,
-.chat-list-item--selected:hover .chat-list-item__fade {
+.chat-sidebar-item--selected .chat-sidebar-item__fade,
+.chat-sidebar-item--selected:hover .chat-sidebar-item__fade {
   background: linear-gradient(to right, transparent, var(--ai-chat-sidebar-active-bg));
 }
 
-.chat-list-item--menu-open:not(.chat-list-item--selected) .chat-list-item__fade {
+.chat-sidebar-item--menu-open:not(.chat-sidebar-item--selected) .chat-sidebar-item__fade {
   background: linear-gradient(to right, transparent, var(--ai-chat-sidebar-hover-bg));
 }
 
 /* Ellipsis menu trigger button */
-.chat-list-item__menu-btn {
+.chat-sidebar-item__menu-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -122,50 +122,67 @@
   transition: background-color var(--ai-transition-default);
 }
 
-.chat-list-item__menu-btn:hover {
+.chat-sidebar-item__menu-btn:hover {
   background: var(--ai-chat-sidebar-active-bg);
 }
 
-.chat-list-item--selected .chat-list-item__menu-btn {
+.chat-sidebar-item--selected .chat-sidebar-item__menu-btn {
   background: var(--ai-chat-sidebar-hover-bg);
 }
 
-.chat-list-item__menu-btn [data-lucide] {
+.chat-sidebar-item__menu-btn [data-lucide] {
   width: var(--ai-icon-size-sm);
   height: var(--ai-icon-size-sm);
 }
 
 /* ── States ──────────────────────────────────────────── */
 
-.chat-list-item:hover {
+.chat-sidebar-item:hover {
   background: var(--ai-chat-sidebar-hover-bg);
 }
 
-.chat-list-item--selected {
+.chat-sidebar-item--selected {
   background: var(--ai-chat-sidebar-active-bg);
   color: var(--ai-chat-sidebar-selected-text);
 }
 
-.chat-list-item--selected:hover {
+.chat-sidebar-item--selected:hover {
   background: var(--ai-chat-sidebar-active-bg);
 }
 
-.chat-list-item--menu-open {
+.chat-sidebar-item--menu-open {
   background: var(--ai-chat-sidebar-hover-bg);
 }
 
-.chat-list-item--selected.chat-list-item--menu-open {
+.chat-sidebar-item--selected.chat-sidebar-item--menu-open {
   background: var(--ai-chat-sidebar-active-bg);
 }
 
 /* ── Focus ───────────────────────────────────────────── */
 
-.chat-list-item:focus-visible {
+.chat-sidebar-item:focus-visible {
   outline: none;
   box-shadow: 0 0 0 1px var(--ai-chat-sidebar-bg), 0 0 0 3px var(--ai-surface-brand-contrast);
 }
 
-.chat-list-item__menu-btn:focus-visible {
+.chat-sidebar-item__menu-btn:focus-visible {
   outline: none;
   box-shadow: 0 0 0 1px var(--ai-chat-sidebar-bg), 0 0 0 3px var(--ai-surface-brand-contrast);
+}
+
+/* ── Type=Action modifier ────────────────────────────── */
+
+.chat-sidebar-item--action {
+  gap: var(--ai-spacing-3);
+  padding: 0 var(--ai-spacing-4);
+  font-size: var(--ai-font-fluid-xxs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+}
+
+.chat-sidebar-item--action .chat-sidebar-item__icon {
+  flex-shrink: 0;
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-chat-sidebar-text);
 }

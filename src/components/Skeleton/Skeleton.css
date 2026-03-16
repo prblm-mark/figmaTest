@@ -9,7 +9,7 @@
 .skeleton__line {
   height: var(--ai-spacing-5);
   border-radius: var(--ai-radius-sm);
-  background: var(--ai-chat-card-bg);
+  background: var(--ai-skeleton-base);
 }
 
 /* ── Line widths ─────────────────────────────────────── */
@@ -26,11 +26,11 @@
   background:
     linear-gradient(
       90deg,
-      var(--ai-chat-card-bg) 0%,
-      var(--ai-chat-card-bg) 30%,
-      var(--ai-chat-input-bg) 50%,
-      var(--ai-chat-card-bg) 70%,
-      var(--ai-chat-card-bg) 100%
+      var(--ai-skeleton-base) 0%,
+      var(--ai-skeleton-base) 30%,
+      var(--ai-skeleton-highlight) 50%,
+      var(--ai-skeleton-base) 70%,
+      var(--ai-skeleton-base) 100%
     );
   background-size: 300% 100%;
   will-change: background-position;

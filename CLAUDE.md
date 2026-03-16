@@ -88,6 +88,7 @@ named colors in component CSS.** Every visual value must come from the list belo
 | `--ai-icon-size-sm` | `1rem` (16px) | Small icons — buttons, labels, inputs, chevrons |
 | `--ai-icon-size-md` | `1.25rem` (20px) | Medium icons — panel headings |
 | `--ai-icon-size-lg` | `1.5rem` (24px) | Large icons — avatar checks (size 3–5), Lucide default |
+| `--ai-icon-size-xl` | `2rem` (32px) | Extra-large icons |
 
 **Rule:** Always use `--ai-icon-size-sm/md/lg` for icon `width`/`height` — never `--ai-spacing-*`.
 
@@ -164,9 +165,10 @@ Component-specific tokens for the chat UI. Only relevant when building chat-rela
 
 | Variable | Light value | Dark value |
 |---|---|---|
-| `--ai-chat-bg` | `#FFFFFF` | `#1F2A37` |
-| `--ai-chat-card-bg` | `#F3F4F6` | `#111928` |
-| `--ai-chat-input-bg` | `#FFFFFF` | `#374151` |
+| `--ai-chat-surface-primary` | `#FFFFFF` | `#1F2A37` |
+| `--ai-chat-surface-secondary` | `#FFFFFF` | `#2B3644` |
+| `--ai-chat-surface-tertiary` | `#F3F4F6` | `#111928` |
+| `--ai-chat-surface-minimal` | `#E5E7EB` | `#374151` |
 | `--ai-chat-sidebar-bg` | `#FFFFFF` | `#18222F` |
 | `--ai-chat-sidebar-text` | `#1F2A37` | `#E5E7EB` |
 | `--ai-chat-msg-bg` | `#F3F4F6` | `#111928` |
@@ -174,6 +176,19 @@ Component-specific tokens for the chat UI. Only relevant when building chat-rela
 | `--ai-chat-brand` | `#1F2A37` | `#FFFFFF` |
 | `--ai-chat-sidebar-hover-bg` | — | — | computed (see §2c) |
 | `--ai-chat-sidebar-active-bg` | — | — | computed (see §2c) |
+
+### Skeleton Component
+
+| Variable | Light value | Dark value |
+|---|---|---|
+| `--ai-skeleton-base` | `#E5E7EB` | `#111928` |
+| `--ai-skeleton-highlight` | `#FFFFFF` | `#2B3644` |
+
+### SourcesCarousel Component
+
+| Variable | Light value | Dark value |
+|---|---|---|
+| `--ai-src-carousel-card-bg` | `#F3F4F6` | `#111928` |
 
 ### Gradient
 
@@ -727,12 +742,12 @@ All components must meet **WCAG 2.1 AA**:
 | PromptTemplates | pattern | Built | [node 163:3565](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=163-3565) | `src/patterns/PromptTemplates/` — single variant panel: heading + list of PromptTemplateItem rows. Composes PromptTemplateItem. |
 | SignUpForm | template | Built | [node 96:2429](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=96-2429) | `src/templates/SignUpForm/` — composes Header, InfoLabel, Input, Button. Layout only. |
 | SystemRole | template | Built | [node 163:3894](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=163-3894) | `src/templates/SystemRole/` — Default (full modal, blurred overlay) + Minimised (400px panel, draggable, left-edge resizable) + Mobile variant (176:3242): full-viewport CSS-only layout at ≤767px, no resize/drag. Composes Header, VersionHistory, PromptTemplates, Button, InfoLabel. Box-shadow token gap noted for future work. |
-| Skeleton | component | Built | [node 2077:1526](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2077-1526) | `src/components/Skeleton/` — CSS-only shimmer animation, 5 lines of varying widths. Uses `--ai-chat-card-bg` + `--ai-chat-input`. |
+| Skeleton | component | Built | [node 2077:1526](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2077-1526) | `src/components/Skeleton/` — CSS-only shimmer animation, 5 lines of varying widths. Uses `--ai-skeleton-base` + `--ai-skeleton-highlight`. |
 | WorkingIntro | component | Built | [node 2077:1486](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2077-1486) | `src/components/WorkingIntro/` — 3 stages: logo pulse, title SplitText reveal, subtitle ScrambleText. GSAP SplitText + ScrambleTextPlugin. |
 | SourcesCarousel | pattern | Built | [node 2089:6582](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2089-6582) | `src/patterns/SourcesCarousel/` — Horizontal card carousel with scroll snap, GSAP entrance stagger, arrow nav. Composes Button. |
 | ChatResponse | template | Built | [node 2089:6577](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2089-6577) | `src/templates/ChatResponse/` — 8s master GSAP timeline. Composes WorkingIntro, SourcesCarousel, Skeleton. |
-| ChatListItem | component | Built | [node 2110:3001](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2110-3001) | `src/components/ChatListItem/` — Default, Hover, Hover/Menu, Selected, Selected/Hover, Selected/Menu + Pinned boolean. Pin icon, ellipsis menu trigger, fade gradient. Computed overlay bg via `color-mix()` + `sidebar-colors.js`. Composes ChatMenu. |
-| ChatMenu | component | Built | [node 2110:3001](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2110-3001) | `src/components/ChatMenu/` — Context menu dropdown for ChatListItem. Save, Copy, Copy Link, Delete. Uses computed sidebar-theme colors. Shadow raw values (no shadow tokens yet). |
+| ChatSidebarItem | component | Built | [node 2110:3001](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2110-3001) | `src/components/ChatSidebarItem/` — Type=Thread (Default, Hover, Menu, Selected + Pinned) + Type=Action (icon+label, Default/Hover/Selected). Computed overlay bg via `color-mix()` + `sidebar-colors.js`. Composes ChatMenu. |
+| ChatMenu | component | Built | [node 2110:3001](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2110-3001) | `src/components/ChatMenu/` — Context menu dropdown for ChatSidebarItem. Save, Copy, Copy Link, Delete. Uses computed sidebar-theme colors. Shadow raw values (no shadow tokens yet). |
 Add rows here as components are built. Format: Component Name, Tier (component/pattern/template), Built/In Progress/Figma Only, Figma URL, Notes.
 
 ---
