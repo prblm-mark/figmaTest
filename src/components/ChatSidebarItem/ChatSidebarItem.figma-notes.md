@@ -167,6 +167,6 @@ Actions opacity: `--ai-transition-default` (150ms ease).
 - Pin icon uses `opacity: 0.6` for subtle de-emphasis
 - Fade gradient matches the current state bg
 - Ellipsis button bg uses hover-bg (8% overlay)
-- `overflow: visible` on container allows ChatSidebarMenu dropdown to render outside bounds
+- ChatSidebarMenu uses `position: fixed` to escape scrollable overflow containers
 - Action type has no ellipsis, no fade, no pin, no menu — simpler structure
 - Action type uses `button/sm` typography (semibold 12px) vs Thread's regular 14px

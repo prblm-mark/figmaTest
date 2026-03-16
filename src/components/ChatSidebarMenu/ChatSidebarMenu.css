@@ -1,9 +1,7 @@
 /* ChatSidebarMenu — context menu dropdown for sidebar chat items */
 
 .chat-sidebar-menu {
-  position: absolute;
-  top: var(--ai-spacing-6);
-  left: calc(100% - var(--ai-spacing-8));
+  position: fixed;
   z-index: 10;
   display: none;
   flex-direction: column;

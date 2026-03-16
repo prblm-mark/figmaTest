@@ -37,7 +37,6 @@
   line-height: var(--ai-leading-md);
   text-align: left;
   cursor: pointer;
-  overflow: visible;
   transition: background-color var(--ai-transition-default);
 }
 
