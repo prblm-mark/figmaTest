@@ -58,7 +58,7 @@
   overflow-y: auto;
 }
 
-/* ── Individual section (Saved, Recent, Older…) ─────── */
+/* ── Individual section (Pinned, Recent, Older…) ─────── */
 
 .chat-sidebar__section {
   display: flex;
