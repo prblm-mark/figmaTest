@@ -1,0 +1,97 @@
+/* AiChat — full-page AI chat template
+ * Figma node: 2140:3614
+ * Tier: Template
+ * Variants: Type=Default (mobile) / Desktop, Sidebar Open=True/False
+ * Composes: ChatSidebar, ChatHeader, ChatMain
+ */
+
+/* ── Root layout ─────────────────────────────────────── */
+
+.ai-chat {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background-color: var(--ai-chat-surface-primary);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Sidebar ─────────────────────────────────────────── */
+
+.ai-chat__sidebar {
+  flex-shrink: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 20;
+  transform: translateX(-100%);
+  transition: transform var(--ai-transition-slow), box-shadow var(--ai-transition-slow);
+  box-shadow: none;
+}
+
+/* Mobile: sidebar slides in */
+.ai-chat--sidebar-open .ai-chat__sidebar {
+  transform: translateX(0);
+  box-shadow: var(--ai-shadow-lg);
+}
+
+/* Desktop (≥1024px): sidebar inline, visible by default */
+@media (min-width: 1024px) {
+  .ai-chat__sidebar {
+    position: static;
+    transform: none;
+    width: auto;
+    margin-left: 0;
+    transition: margin-left var(--ai-transition-slow), width var(--ai-transition-slow);
+  }
+
+  /* Desktop: toggle button collapses sidebar via negative margin */
+  .ai-chat--sidebar-closed .ai-chat__sidebar {
+    margin-left: calc(-1 * var(--ai-size-5));
+  }
+}
+
+/* ── Mobile overlay backdrop ─────────────────────────── */
+
+.ai-chat__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--ai-transition-slow);
+}
+
+.ai-chat--sidebar-open .ai-chat__overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (min-width: 1024px) {
+  .ai-chat__overlay {
+    display: none;
+  }
+}
+
+/* ── Admin actions: hidden below lg ──────────────────── */
+
+.ai-chat .chat-header__admin {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .ai-chat .chat-header__admin--visible {
+    display: flex;
+  }
+}
+
+/* ── Main content area ───────────────────────────────── */
+
+.ai-chat__main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+}

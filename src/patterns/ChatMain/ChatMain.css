@@ -1,0 +1,368 @@
+/* ChatMain — scrollable chat content area with multi-view support
+ * Figma node: 2139:2759
+ * Tier: Pattern
+ * Views: Initial (welcome), Processing (ChatResponse), Response (full answer)
+ * Composes: MessageBubble, MessageInput, SuggestedQuestion, WorkingIntro, SourcesCarousel, Skeleton, Button, Tooltip
+ */
+
+/* ── Outer wrapper ────────────────────────────────────── */
+
+.chat-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-color: var(--ai-chat-surface-primary);
+}
+
+/* ══════════════════════════════════════════════════════════
+   VIEW STATE VISIBILITY
+   ══════════════════════════════════════════════════════════ */
+
+/* Initial view: show welcome, hide scroll area */
+.chat-main--initial .chat-main__initial { display: flex; }
+.chat-main--initial .chat-main__scroll { display: none; }
+
+/* Processing + Response views: hide welcome, show scroll area */
+.chat-main--processing .chat-main__initial,
+.chat-main--response .chat-main__initial { display: none; }
+.chat-main--processing .chat-main__scroll,
+.chat-main--response .chat-main__scroll { display: flex; }
+
+/* Processing view: show processing components, hide final response prose */
+.chat-main--processing .chat-main__processing { display: block; }
+.chat-main--processing .chat-main__response { display: none; }
+
+/* Response view: hide processing components, show final response prose */
+.chat-main--response .chat-main__processing { display: none; }
+.chat-main--response .chat-main__response { display: block; }
+
+/* ══════════════════════════════════════════════════════════
+   INITIAL VIEW — Welcome screen
+   ══════════════════════════════════════════════════════════ */
+
+.chat-main__initial {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+.chat-main__initial-inner {
+  width: 100%;
+  max-width: var(--ai-size-11);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-6);
+  padding: var(--ai-spacing-8) 0;
+}
+
+@media (min-width: 640px) {
+  .chat-main__initial-inner {
+    gap: var(--ai-spacing-5);
+    padding: var(--ai-spacing-8) var(--ai-spacing-6);
+  }
+}
+
+/* ── Intro: title + subtitle ──────────────────────────── */
+
+.chat-main__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--ai-spacing-5);
+  padding: 0 var(--ai-spacing-5) var(--ai-spacing-5);
+}
+
+@media (min-width: 640px) {
+  .chat-main__intro {
+    padding: 0 0 var(--ai-spacing-7);
+  }
+}
+
+.chat-main__title {
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-bold);
+  font-size: var(--ai-font-fluid-2xl);
+  line-height: var(--ai-leading-lg);
+  color: var(--ai-text-primary);
+  margin: 0;
+}
+
+@media (min-width: 640px) {
+  .chat-main__title {
+    font-size: var(--ai-font-fluid-4xl);
+    line-height: var(--ai-leading-xl);
+  }
+}
+
+.chat-main__subtitle {
+  font-family: var(--ai-font-body);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fluid-sm);
+  line-height: 1.5;
+  color: var(--ai-text-contrast);
+  margin: 0;
+}
+
+@media (min-width: 640px) {
+  .chat-main__subtitle {
+    font-size: var(--ai-font-fluid-md);
+  }
+}
+
+/* ── Input wrapper (inline in initial view, not sticky) ── */
+
+.chat-main__input-wrap {
+  width: 100%;
+  padding: 0 var(--ai-spacing-5);
+}
+
+@media (min-width: 640px) {
+  .chat-main__input-wrap {
+    padding: 0;
+  }
+}
+
+/* ── Suggestions grid ─────────────────────────────────── */
+
+.chat-main__suggestions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--ai-spacing-4);
+  width: 100%;
+  padding: 0 var(--ai-spacing-5);
+}
+
+@media (min-width: 640px) {
+  .chat-main__suggestions {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--ai-spacing-5);
+    padding: 0;
+  }
+}
+
+/* Mobile: hide third suggested question (Figma mobile shows only 2) */
+.chat-main__suggestions .suggested-question:nth-child(3) {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .chat-main__suggestions .suggested-question:nth-child(3) {
+    display: flex;
+  }
+}
+
+.chat-main__feedback {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-xs);
+  letter-spacing: 0.12px;
+  color: var(--ai-text-contrast);
+  margin: 0;
+  font-feature-settings: 'case' 1;
+}
+
+/* ══════════════════════════════════════════════════════════
+   SCROLL AREA — Processing + Response views
+   ══════════════════════════════════════════════════════════ */
+
+.chat-main__scroll {
+  --_scroll-track: color-mix(in srgb, var(--ai-chat-surface-primary) 92%, rgb(38 55 88));
+  --_scroll-thumb: color-mix(in srgb, var(--ai-chat-surface-primary) 75%, rgb(38 55 88));
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  scrollbar-color: var(--_scroll-thumb) var(--_scroll-track);
+  scrollbar-width: auto;
+}
+
+[data-theme="dark"] .chat-main__scroll {
+  --_scroll-track: color-mix(in srgb, var(--ai-chat-surface-primary) 95%, white);
+  --_scroll-thumb: color-mix(in srgb, var(--ai-chat-surface-primary) 80%, white);
+}
+
+.chat-main__scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-main__scroll::-webkit-scrollbar-track {
+  background: var(--_scroll-track);
+}
+
+.chat-main__scroll::-webkit-scrollbar-thumb {
+  background-color: var(--_scroll-thumb);
+  border-radius: var(--ai-radius-full);
+}
+
+/* ── Centered container ───────────────────────────────── */
+
+.chat-main__container {
+  width: 100%;
+  max-width: var(--ai-size-11);
+  padding: var(--ai-spacing-8) var(--ai-spacing-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-8);
+  flex: 1 0 auto;
+  min-height: min-content;
+}
+
+/* Carousel nav arrows: pull inside container bounds (parent overflow clips them otherwise) */
+.chat-main__container .sources-carousel__nav--prev {
+  left: 0;
+}
+
+.chat-main__container .sources-carousel__nav--next {
+  right: 0;
+}
+
+/* ── Response prose ───────────────────────────────────── */
+
+.chat-main__response {
+  width: 100%;
+  font-family: var(--ai-font-body);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fluid-xs);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  font-feature-settings: 'case' 1;
+}
+
+@media (min-width: 640px) {
+  .chat-main__response {
+    font-size: var(--ai-font-fluid-sm);
+  }
+}
+
+.chat-main__response p,
+.chat-main__response ul,
+.chat-main__response ol,
+.chat-main__response li,
+.chat-main__response strong,
+.chat-main__response b,
+.chat-main__response span {
+  color: var(--ai-text-primary);
+}
+
+.chat-main__response p {
+  margin: 0 0 var(--ai-leading-md);
+}
+
+.chat-main__response p:last-child {
+  margin-bottom: 0;
+}
+
+.chat-main__response strong,
+.chat-main__response b {
+  font-weight: var(--ai-font-medium);
+}
+
+.chat-main__response ul {
+  list-style: disc;
+  margin: 0 0 var(--ai-leading-md);
+  padding-left: var(--ai-spacing-6);
+}
+
+.chat-main__response ul:last-child {
+  margin-bottom: 0;
+}
+
+.chat-main__response li {
+  margin-bottom: var(--ai-spacing-3);
+}
+
+.chat-main__response li:last-child {
+  margin-bottom: 0;
+}
+
+/* ── Footer: fade + sticky input ──────────────────────── */
+
+.chat-main__footer {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.chat-main__fade {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: var(--ai-size-11);
+  height: var(--ai-size-2);
+  background: var(--ai-gradient-chat-surface-primary);
+  pointer-events: none;
+}
+
+.chat-main__input {
+  width: 100%;
+  max-width: var(--ai-size-11);
+  padding: 0 var(--ai-spacing-2);
+  background-color: var(--ai-chat-surface-primary);
+  pointer-events: auto;
+}
+
+@media (min-width: 768px) {
+  .chat-main__input {
+    padding: 0;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   PROCESSING VIEW — ChatResponse components
+   ══════════════════════════════════════════════════════════ */
+
+.chat-main__processing {
+  width: 100%;
+}
+
+.chat-main__processing .sources-carousel {
+  margin-top: var(--ai-spacing-5);
+  display: none;
+}
+
+.chat-main__processing .chat-response__skeletons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-6);
+  margin-top: var(--ai-spacing-8);
+}
+
+.chat-main__processing .chat-response__answer {
+  margin-top: var(--ai-spacing-6);
+  opacity: 0;
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .chat-main__processing .chat-response__answer {
+    margin-top: var(--ai-spacing-7);
+  }
+}
+
+.chat-main__processing .chat-response__answer p {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-sm);
+  color: var(--ai-text-primary);
+  line-height: var(--ai-leading-md);
+  margin: 0 0 var(--ai-spacing-5);
+}

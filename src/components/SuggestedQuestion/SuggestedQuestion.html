@@ -1,0 +1,73 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>SuggestedQuestion — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="SuggestedQuestion.css">
+  <style>
+    body {
+      padding: var(--ai-spacing-7);
+      background-color: var(--ai-chat-surface-primary);
+    }
+    .demo-label {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--ai-spacing-5);
+    }
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--ai-spacing-5);
+      max-width: var(--ai-size-11);
+      margin-bottom: var(--ai-spacing-7);
+    }
+    @media (max-width: 639px) {
+      .demo-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <p class="demo-label">SuggestedQuestion — Resize viewport to see mobile (title only) vs desktop (title + subtitle)</p>
+
+  <div class="demo-grid">
+    <button class="suggested-question" type="button">
+      <i data-lucide="message-circle-question" aria-hidden="true"></i>
+      <div class="suggested-question__body">
+        <p class="suggested-question__text">What can i do to get started using Affino?</p>
+        <p class="suggested-question__subtext">I need to know the basics to get up and running</p>
+      </div>
+    </button>
+
+    <button class="suggested-question" type="button">
+      <i data-lucide="message-circle-question" aria-hidden="true"></i>
+      <div class="suggested-question__body">
+        <p class="suggested-question__text">How do I set up Ad campaigns in Affino?</p>
+        <p class="suggested-question__subtext">Walk me through the campaign setup process</p>
+      </div>
+    </button>
+
+    <button class="suggested-question" type="button">
+      <i data-lucide="message-circle-question" aria-hidden="true"></i>
+      <div class="suggested-question__body">
+        <p class="suggested-question__text">What content types does Affino support?</p>
+        <p class="suggested-question__subtext">I want to understand what I can publish</p>
+      </div>
+    </button>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+
+</body>
+</html>
