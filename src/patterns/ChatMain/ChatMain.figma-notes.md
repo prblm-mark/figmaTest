@@ -1,75 +1,118 @@
 # ChatMain — Figma Notes
 
-**Figma URL:** [node 2061:5762](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2061-5762)
+**Figma URL:** [node 2139:2759](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2139-2759)
+
+## Variant Matrix
+
+| Node ID | Type | View | Show Suggested Questions |
+|---|---|---|---|
+| `2139:2758` | Desktop | Initial | True |
+| `2139:2849` | Desktop | Initial | False |
+| `2139:2933` | Desktop | Processing Response | False |
+| `2139:3159` | Desktop | Full response | False |
+| `2139:2760` | Default (mobile) | Initial | True |
+| `2139:2861` | Default (mobile) | Initial | False |
+| `2139:2940` | Default (mobile) | Processing Response | False |
+| `2139:3150` | Default (mobile) | Full response | False |
+
+## View States
+
+| View | CSS modifier | Description |
+|---|---|---|
+| Initial | `.chat-main--initial` | Welcome screen with greeting, inline MessageInput, suggested question cards |
+| Processing | `.chat-main--processing` | User submitted; WorkingIntro + SourcesCarousel + Skeleton animation |
+| Response | `.chat-main--response` | Full AI answer with MessageBubble, prose, sticky MessageInput |
 
 ## Component Structure
 
-ChatMain is a pattern-tier component. It is the main chat content area containing a user message bubble, an AI response block, a fade gradient overlay, and a sticky MessageInput at the bottom.
-
 | Node | Element | Notes |
 |---|---|---|
-| `2061:5762` | Main | Outer wrapper, fills parent, flex column centered |
-| `2061:5763` | Container | Max-width 768px, padded, scrollable content |
-| `2126:4958` | Message Bubble | User question (existing component) |
-| `2061:5767` | Response | AI response prose block |
-| `2061:5769` | Fade | Gradient overlay above input |
-| `2061:5770` | Container (input) | Sticky MessageInput wrapper |
-| `2133:2747` | MessageInput | Chat input bar (existing pattern) |
+| `2139:2759` | Main | Outer wrapper, fills parent, flex column centered |
+| — | Initial section | Welcome view with intro text + inline input + suggestions |
+| — | Scroll area | Scrollable content for processing + response views |
+| — | Container | Max-width 768px, padded content |
+| — | Processing | WorkingIntro + SourcesCarousel + Skeleton (ChatResponse) |
+| — | Response | AI prose block |
+| — | Footer | Sticky fade + MessageInput |
 
 ## CSS Class Mapping
 
 | Element | CSS class |
 |---|---|
 | Outer wrapper | `.chat-main` |
+| Initial view | `.chat-main__initial` |
+| Initial inner | `.chat-main__initial-inner` |
+| Welcome intro | `.chat-main__intro` |
+| Welcome title | `.chat-main__title` |
+| Welcome subtitle | `.chat-main__subtitle` |
+| Input wrapper (initial) | `.chat-main__input-wrap` |
+| Suggestions grid | `.chat-main__suggestions` |
+| Feedback text | `.chat-main__feedback` |
 | Scrollable area | `.chat-main__scroll` |
 | Content container | `.chat-main__container` |
+| Processing section | `.chat-main__processing` |
 | AI response text | `.chat-main__response` |
 | Footer (fade + input) | `.chat-main__footer` |
 | Fade gradient | `.chat-main__fade` |
-| Input wrapper | `.chat-main__input` |
+| Input wrapper (footer) | `.chat-main__input` |
 
-## Token Mapping
+## Token Mapping — Initial View
 
 | Property | Token | Value |
 |---|---|---|
 | Background | `--ai-chat-surface-primary` | #ffffff |
 | Container max-width | `--ai-size-11` | 768px |
 | Container padding (vertical) | `--ai-spacing-8` | 40px |
-| Container padding (horizontal) | `--ai-spacing-6` | 24px |
-| Container gap | `--ai-spacing-9` | 48px |
+| Container padding (horizontal) | `--ai-spacing-6` | 24px (desktop only) |
+| Container gap (mobile) | `--ai-spacing-6` | 24px |
+| Container gap (desktop) | `--ai-spacing-5` | 16px |
+| Title font | `--ai-font-title`, `--ai-font-bold` | Inter 700 |
+| Title size (mobile) | `--ai-font-fluid-2xl` | responsive |
+| Title size (desktop) | `--ai-font-fluid-4xl` | responsive |
+| Title leading (mobile) | `--ai-leading-lg` | 2rem |
+| Title leading (desktop) | `--ai-leading-xl` | 2.5rem |
+| Title color | `--ai-text-primary` | #1F2A37 |
+| Subtitle font | `--ai-font-body`, `--ai-font-regular` | Inter 400 |
+| Subtitle size (mobile) | `--ai-font-fluid-sm` | responsive |
+| Subtitle size (desktop) | `--ai-font-fluid-md` | responsive |
+| Subtitle color | `--ai-text-contrast` | #6B7280 |
+| Intro gap | `--ai-spacing-5` | 16px |
+| Intro padding-bottom (mobile) | `--ai-spacing-5` | 16px |
+| Intro padding-bottom (desktop) | `--ai-spacing-7` | 32px |
+| Suggestions grid (mobile) | `repeat(2, 1fr)` | 2 cols |
+| Suggestions grid (desktop) | `repeat(3, 1fr)` | 3 cols |
+| Suggestions gap | `--ai-spacing-5` | 16px |
+| Feedback font-size | `--ai-font-fixed-xxs` | 12px |
+| Feedback color | `--ai-text-contrast` | #6B7280 |
+
+## Token Mapping — Scroll Area (Processing + Response)
+
+| Property | Token | Value |
+|---|---|---|
+| Container max-width | `--ai-size-11` | 768px |
+| Container padding | `--ai-spacing-8` `--ai-spacing-6` | 40px 24px |
+| Container gap | `--ai-spacing-8` | 40px |
 | Response font-family | `--ai-font-body` | Inter |
-| Response font-weight | `--ai-font-regular` | 400 |
 | Response font-size | `--ai-font-fluid-sm` | 16px (responsive) |
 | Response line-height | `--ai-leading-md` | 24px |
-| Response text color | `--ai-text-primary` | #1f2a37 |
-| Response bold weight | `--ai-font-medium` | 500 |
-| Response font-feature | `'case' 1` | OpenType |
-| List item spacing | `--ai-spacing-3` | 8px |
-| List padding-left | `--ai-spacing-6` | 24px |
-| Paragraph spacing | `--ai-leading-md` | 24px (= 1 line height) |
 | Fade height | `--ai-size-2` | 160px |
-| Fade gradient | `--ai-gradient-chat-surface-primary` | to bottom, transparent → full |
-| Input wrapper padding (h) | `--ai-spacing-6` | 24px |
-| Input wrapper bg | `--ai-chat-surface-primary` | #ffffff |
-
-## Token Gaps
-
-| Property | Figma value | Resolution |
-|---|---|---|
-| Fade height | 163px | Approved: use `--ai-size-2` (160px) — closest token |
+| Fade gradient | `--ai-gradient-chat-surface-primary` | to bottom |
 
 ## Dependencies
 
-- Composes **MessageBubble** (`src/components/MessageBubble/MessageBubble.css`)
-- Composes **MessageInput** (`src/patterns/MessageInput/MessageInput.css`) — includes Button, Tooltip
-- Composes **Button** (`src/components/Button/Button.css`)
-- Composes **Tooltip** (`src/components/Tooltip/Tooltip.css`)
+- Composes **SuggestedQuestion** (`src/components/SuggestedQuestion/`)
+- Composes **MessageBubble** (`src/components/MessageBubble/`)
+- Composes **MessageInput** (`src/patterns/MessageInput/`)
+- Composes **WorkingIntro** (`src/components/WorkingIntro/`)
+- Composes **SourcesCarousel** (`src/patterns/SourcesCarousel/`)
+- Composes **Skeleton** (`src/components/Skeleton/`)
+- Composes **Button** (`src/components/Button/`)
+- Composes **Tooltip** (`src/components/Tooltip/`)
+- Uses **ChatResponse** JS timeline (`src/templates/ChatResponse/ChatResponse.js`)
 
-## Notes
+## Interaction
 
-- Scroll area fills available height; MessageInput sticks to bottom via `position: sticky`
-- Fade gradient uses new `--ai-gradient-chat-surface-primary` token (vertical, `to bottom`) added to `css/tokens-gradients.css`
-- Response text uses `--ai-font-fluid-sm` (responsive) — scales down at mobile breakpoint automatically
-- The pattern grows to fill available width (sits alongside ChatSidebar or full viewport when sidebar closed)
-- Message Bubble right-aligned with `--ai-spacing-11` (64px) left padding
-- `font-feature-settings: 'case' 1` on response text matches Figma
+- Initial → Processing: GSAP fade-out of intro/suggestions, input slides to footer, ChatResponse timeline plays
+- Processing → Response: ChatResponse timeline completes, switches to response view
+- SuggestedQuestion click: auto-submits the question text
+- Transition: `--ai-transition-default` (150ms ease) for hover states
