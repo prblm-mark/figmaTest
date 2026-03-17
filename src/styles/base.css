@@ -36,8 +36,13 @@ html {
   line-height: var(--ai-leading-md);
   color: var(--ai-text-primary);
   background-color: var(--ai-surface-primary);
+  color-scheme: light;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
 }
 
 body {

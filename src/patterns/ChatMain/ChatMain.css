@@ -19,6 +19,8 @@
 /* ── Scrollable content area ──────────────────────────── */
 
 .chat-main__scroll {
+  --_scroll-track: color-mix(in srgb, var(--ai-chat-surface-primary) 92%, rgb(38 55 88));
+  --_scroll-thumb: color-mix(in srgb, var(--ai-chat-surface-primary) 75%, rgb(38 55 88));
   flex: 1;
   min-height: 0;
   overflow-y: auto;
@@ -26,8 +28,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  scrollbar-color: var(--ai-chat-surface-minimal) transparent;
+  scrollbar-color: var(--_scroll-thumb) var(--_scroll-track);
   scrollbar-width: auto;
+}
+
+[data-theme="dark"] .chat-main__scroll {
+  --_scroll-track: color-mix(in srgb, var(--ai-chat-surface-primary) 95%, white);
+  --_scroll-thumb: color-mix(in srgb, var(--ai-chat-surface-primary) 80%, white);
 }
 
 .chat-main__scroll::-webkit-scrollbar {
@@ -35,11 +42,11 @@
 }
 
 .chat-main__scroll::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--_scroll-track);
 }
 
 .chat-main__scroll::-webkit-scrollbar-thumb {
-  background-color: var(--ai-chat-surface-minimal);
+  background-color: var(--_scroll-thumb);
   border-radius: var(--ai-radius-full);
 }
 
@@ -154,7 +161,7 @@
   pointer-events: auto;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 768px) {
   .chat-main__input {
     padding: 0;
   }
