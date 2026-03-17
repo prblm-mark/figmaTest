@@ -8,6 +8,10 @@ figma.connect(
         Default: '',
         Hover: 'hover',
       }),
+      type: figma.enum('Type', {
+        Default: '',
+        Desktop: 'desktop',
+      }),
     },
     example: ({ state }) => html`
       <div class="msg-bubble">

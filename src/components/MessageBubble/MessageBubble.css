@@ -1,6 +1,8 @@
 /* MessageBubble — user's question bubble in chat UI
  * Figma node: 2126:4901
- * Variants: Default, Hover (action buttons)
+ * Tier: Component
+ * Variants: State=Default/Hover × Type=Default(mobile)/Desktop
+ * Composes: Button
  */
 
 /* ── Outer container (right-aligns the bubble) ────────── */
@@ -9,8 +11,14 @@
   display: flex;
   align-items: flex-start;
   justify-content: flex-end;
-  padding-left: var(--ai-spacing-11);
+  padding-left: var(--ai-spacing-8);
   position: relative;
+}
+
+@media (min-width: 640px) {
+  .msg-bubble {
+    padding-left: var(--ai-spacing-11);
+  }
 }
 
 /* ── Question bubble ──────────────────────────────────── */
@@ -31,10 +39,16 @@
   margin: 0;
   font-family: var(--ai-font-body);
   font-weight: var(--ai-font-medium);
-  font-size: var(--ai-font-fixed-sm);
+  font-size: var(--ai-font-fixed-xs);
   line-height: var(--ai-leading-md);
   color: var(--ai-chat-msg-text);
   font-feature-settings: 'case' 1;
+}
+
+@media (min-width: 640px) {
+  .msg-bubble__text {
+    font-size: var(--ai-font-fixed-sm);
+  }
 }
 
 /* ── Hover action buttons ─────────────────────────────── */
@@ -45,7 +59,7 @@
   top: 100%;
   right: 0;
   align-items: center;
-  margin-top: var(--ai-spacing-2);
+  padding-top: var(--ai-spacing-2);
 }
 
 .msg-bubble:hover .msg-bubble__actions {

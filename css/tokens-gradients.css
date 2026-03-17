@@ -18,4 +18,12 @@
     rgb(from var(--ai-surface-secondary) r g b / 0),
     var(--ai-surface-secondary)
   );
+
+  /* gradient/chat-surface/primary — Figma node 2061:5769
+   * Fade: transparent chat-surface-primary → full (top → bottom) */
+  --ai-gradient-chat-surface-primary: linear-gradient(
+    to bottom,
+    rgb(from var(--ai-chat-surface-primary) r g b / 0),
+    var(--ai-chat-surface-primary)
+  );
 }

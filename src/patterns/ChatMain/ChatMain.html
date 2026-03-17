@@ -1,0 +1,218 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>ChatMain — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/Tooltip/Tooltip.css">
+  <link rel="stylesheet" href="../../components/MessageBubble/MessageBubble.css">
+  <link rel="stylesheet" href="../MessageInput/MessageInput.css">
+  <link rel="stylesheet" href="ChatMain.css">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    body {
+      background-color: var(--ai-chat-surface-primary);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="chat-main">
+    <!-- Scrollable content -->
+    <div class="chat-main__scroll">
+      <div class="chat-main__container">
+
+        <!-- User message -->
+        <div class="msg-bubble">
+          <div class="msg-bubble__question">
+            <p class="msg-bubble__text">Can you explain page views, and how they are saved in Affino?</p>
+          </div>
+          <div class="msg-bubble__actions">
+            <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Copy message">
+              <i data-lucide="copy" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Copy link">
+              <i data-lucide="link" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- AI response -->
+        <div class="chat-main__response">
+          <p>Page views refer to the total number of times pages on your site are viewed by users. In Affino, page views are counted each time a page loads and are tracked as part of your site analytics. Multiple views of the same page by the same user are counted separately.</p>
+
+          <p><strong>Key points about page views in Affino</strong></p>
+
+          <ul>
+            <li><strong>Page views</strong> are recorded under the Stats function within each article or page.</li>
+            <li>They include views by both registered and guest users.</li>
+            <li>If a user clicks on an article but encounters a paywall, it still counts as a page view.</li>
+            <li>Page views are used in various reports and dashboards, such as the Analysis Dashboard, to provide insights into user engagement.</li>
+            <li>Affino distinguishes between simple page views (impressions) and content consumption, where consumption indicates the user has actively engaged with the content beyond just loading the page.</li>
+          </ul>
+
+          <p><strong>You can view page view statistics in Affino via:</strong></p>
+
+          <ul>
+            <li>Control &gt; Publish &gt; Articles + Stats</li>
+            <li>Control &gt; Analyse &gt; Articles Report</li>
+            <li>The Analysis Dashboard for broader site metrics including page views over time</li>
+          </ul>
+
+          <p>This tracking helps you understand how often your content is accessed and supports optimizing engagement and conversion strategies.</p>
+
+          <p>Page views refer to the total number of times pages on your site are viewed by users. In Affino, page views are counted each time a page loads and are tracked as part of your site analytics. Multiple views of the same page by the same user are counted separately.</p>
+
+          <p><strong>Key points about page views in Affino:</strong></p>
+
+          <ul>
+            <li>Page views are recorded under the Stats function within each article or page.</li>
+            <li>They include views by both registered and guest users.</li>
+            <li>If a user clicks on an article but encounters a paywall, it still counts as a page view.</li>
+            <li>Page views are used in various reports and dashboards, such as the Analysis Dashboard, to provide insights into user engagement.</li>
+            <li>Affino distinguishes between simple page views (impressions) and content consumption, where consumption indicates the user has actively engaged with the content beyond just loading the page.</li>
+          </ul>
+
+          <p><strong>You can view page view statistics in Affino via:</strong></p>
+
+          <ul>
+            <li>Control &gt; Publish &gt; Articles + Stats</li>
+            <li>Control &gt; Analyse &gt; Articles Report</li>
+            <li>The Analysis Dashboard for broader site metrics including page views over time</li>
+          </ul>
+
+          <p>This tracking helps you understand how often your content is accessed and supports optimizing engagement and conversion strategies.</p>
+        </div>
+
+      </div>
+
+      <!-- Sticky footer: fade + input -->
+      <div class="chat-main__footer">
+      <div class="chat-main__fade"></div>
+      <div class="chat-main__input">
+        <div class="msg-input msg-input--active">
+          <div class="msg-input__box">
+            <textarea
+              class="msg-input__textarea"
+              rows="1"
+              placeholder="Send a question"
+            >Can you explain</textarea>
+            <div class="msg-input__actions">
+              <div class="msg-input__filter-container">
+                <button
+                  class="btn btn--tertiary btn--sm btn--icon msg-input__filter-btn"
+                  aria-label="Filter by recent content"
+                >
+                  <i data-lucide="funnel" aria-hidden="true"></i>
+                </button>
+                <div class="msg-input__tooltip msg-input__tooltip--filter">
+                  <div class="tooltip" role="tooltip">
+                    <p class="tooltip__text">Filter by recent content</p>
+                  </div>
+                </div>
+                <div class="msg-input__filter-popover">
+                  <button class="msg-input__filter-item" role="option">
+                    30 Days
+                  </button>
+                  <button class="msg-input__filter-item" role="option">
+                    6 Months
+                  </button>
+                  <button class="msg-input__filter-item msg-input__filter-item--selected" role="option" aria-selected="true">
+                    1 Year
+                    <i data-lucide="check" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+              <button
+                class="btn btn--primary btn--sm btn--icon msg-input__send-btn"
+                aria-label="Send message"
+                disabled
+              >
+                <i data-lucide="move-up" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <div class="msg-input__disclaimer">
+            <p class="msg-input__disclaimer-text">How we collect data</p>
+            <div class="msg-input__tooltip msg-input__tooltip--data">
+              <div class="tooltip" role="tooltip">
+                <p class="tooltip__text">Note any help the AI provides may be used to further improve the quality of replies and assistance provided.<br><br>AIs can make mistakes. Check important info.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    lucide.createIcons();
+
+    // ── Active state: detect input change ──────────
+    document.querySelectorAll('.msg-input__textarea').forEach(textarea => {
+      const wrapper = textarea.closest('.msg-input');
+      textarea.addEventListener('input', () => {
+        if (textarea.value.trim().length > 0) {
+          wrapper.classList.add('msg-input--active');
+        } else {
+          wrapper.classList.remove('msg-input--active');
+        }
+      });
+    });
+
+    // ── Duration filter: toggle popover on click ───
+    document.querySelectorAll('.msg-input__filter-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const wrapper = btn.closest('.msg-input');
+        const popover = wrapper.querySelector('.msg-input__filter-popover');
+        if (popover) {
+          popover.classList.toggle('msg-input__filter-popover--open');
+        }
+      });
+    });
+
+    // ── Duration filter: select item ───────────────
+    document.querySelectorAll('.msg-input__filter-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const popover = item.closest('.msg-input__filter-popover');
+        popover.querySelectorAll('.msg-input__filter-item').forEach(i => {
+          i.classList.remove('msg-input__filter-item--selected');
+          i.removeAttribute('aria-selected');
+          const svg = i.querySelector('svg');
+          if (svg) svg.remove();
+        });
+        item.classList.add('msg-input__filter-item--selected');
+        item.setAttribute('aria-selected', 'true');
+        const checkEl = document.createElement('i');
+        checkEl.setAttribute('data-lucide', 'check');
+        checkEl.setAttribute('aria-hidden', 'true');
+        item.appendChild(checkEl);
+        lucide.createIcons();
+        popover.classList.remove('msg-input__filter-popover--open');
+      });
+    });
+
+    // ── Close popover on outside click ─────────────
+    document.addEventListener('click', (e) => {
+      document.querySelectorAll('.msg-input__filter-popover--open').forEach(popover => {
+        const wrapper = popover.closest('.msg-input');
+        const filterBtn = wrapper.querySelector('.msg-input__filter-btn');
+        if (!popover.contains(e.target) && e.target !== filterBtn && !filterBtn.contains(e.target)) {
+          popover.classList.remove('msg-input__filter-popover--open');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

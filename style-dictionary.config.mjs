@@ -150,7 +150,7 @@ StyleDictionary.registerFormat({
     const vars = dictionary.allTokens
       .map(t => `    --${t.name}: ${t.$value};`)
       .join('\n');
-    return `@media (max-width: 767px) {\n  :root {\n${vars}\n  }\n}\n`;
+    return `@media (max-width: 639px) {\n  :root {\n${vars}\n  }\n}\n`;
   },
 });
 

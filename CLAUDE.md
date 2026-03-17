@@ -206,6 +206,7 @@ exported as DTCG variables). Dark mode uses stronger opacities to maintain visib
 | Variable | Pattern | Use |
 |---|---|---|
 | `--ai-gradient-surface-secondary` | `transparent(secondary) → secondary` | Fade overlay, edge fade |
+| `--ai-gradient-chat-surface-primary` | `transparent(chat-surface-primary) → chat-surface-primary` (to bottom) | Chat content fade above input |
 
 **Source:** `css/tokens-gradients.css` (static, manually maintained — Figma gradients cannot be
 exported as DTCG variables).
@@ -763,6 +764,7 @@ All components must meet **WCAG 2.1 AA**:
 | ChatHeader | pattern | Built | [node 2124:3686](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2124-3686) | `src/patterns/ChatHeader/` — Header bar with assistant selector dropdown, admin toggle buttons, window controls. Type=Default/Minimised/Mobile, Options=Center/Align Left/No Border. Composes Button. |
 | MessageBubble | component | Built | [node 2126:4901](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2126-4901) | `src/components/MessageBubble/` — User question bubble, right-aligned. Default + Hover (copy/link action buttons). Uses `--ai-chat-msg-bg/text`. Composes Button. |
 | MessageInput | pattern | Built | [node 2126:5007](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2126-5007) | `src/patterns/MessageInput/` — Chat input bar with textarea, filter button + duration popover, send button, disclaimer. Desktop/Mobile/Minimised. Active state via JS. Composes Button, Tooltip. |
+| ChatMain | pattern | Built | [node 2061:5762](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2061-5762) | `src/patterns/ChatMain/` — Scrollable chat content area: MessageBubble + AI response prose + fade gradient + sticky MessageInput. Grows to fill available width. Composes MessageBubble, MessageInput. |
 Add rows here as components are built. Format: Component Name, Tier (component/pattern/template), Built/In Progress/Figma Only, Figma URL, Notes.
 
 ---

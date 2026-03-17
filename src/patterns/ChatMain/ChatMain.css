@@ -1,0 +1,161 @@
+/* ChatMain — scrollable chat content area with message bubble, AI response, and sticky input
+ * Figma node: 2061:5762
+ * Tier: Pattern
+ * Composes: MessageBubble, MessageInput, Button, Tooltip
+ */
+
+/* ── Outer wrapper ────────────────────────────────────── */
+
+.chat-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-color: var(--ai-chat-surface-primary);
+}
+
+/* ── Scrollable content area ──────────────────────────── */
+
+.chat-main__scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  scrollbar-color: var(--ai-chat-surface-minimal) transparent;
+  scrollbar-width: auto;
+}
+
+.chat-main__scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-main__scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-main__scroll::-webkit-scrollbar-thumb {
+  background-color: var(--ai-chat-surface-minimal);
+  border-radius: var(--ai-radius-full);
+}
+
+/* ── Centered container ───────────────────────────────── */
+
+.chat-main__container {
+  width: 100%;
+  max-width: var(--ai-size-11);
+  padding: var(--ai-spacing-8) var(--ai-spacing-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-8);
+  flex: 1 0 auto;
+  min-height: min-content;
+}
+
+@media (min-width: 640px) {
+  .chat-main__container {
+    padding: var(--ai-spacing-8) var(--ai-spacing-6);
+  }
+}
+
+/* ── Response prose ───────────────────────────────────── */
+
+.chat-main__response {
+  width: 100%;
+  font-family: var(--ai-font-body);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fluid-xs);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  font-feature-settings: 'case' 1;
+}
+
+@media (min-width: 640px) {
+  .chat-main__response {
+    font-size: var(--ai-font-fluid-sm);
+  }
+}
+
+.chat-main__response p,
+.chat-main__response ul,
+.chat-main__response ol,
+.chat-main__response li,
+.chat-main__response strong,
+.chat-main__response b,
+.chat-main__response span {
+  color: var(--ai-text-primary);
+}
+
+.chat-main__response p {
+  margin: 0 0 var(--ai-leading-md);
+}
+
+.chat-main__response p:last-child {
+  margin-bottom: 0;
+}
+
+.chat-main__response strong,
+.chat-main__response b {
+  font-weight: var(--ai-font-medium);
+}
+
+.chat-main__response ul {
+  list-style: disc;
+  margin: 0 0 var(--ai-leading-md);
+  padding-left: var(--ai-spacing-6);
+}
+
+.chat-main__response ul:last-child {
+  margin-bottom: 0;
+}
+
+.chat-main__response li {
+  margin-bottom: var(--ai-spacing-3);
+}
+
+.chat-main__response li:last-child {
+  margin-bottom: 0;
+}
+
+/* ── Footer: fade + sticky input ──────────────────────── */
+
+.chat-main__footer {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.chat-main__fade {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: var(--ai-size-11);
+  height: var(--ai-size-2);
+  background: var(--ai-gradient-chat-surface-primary);
+  pointer-events: none;
+}
+
+.chat-main__input {
+  width: 100%;
+  max-width: var(--ai-size-11);
+  padding: 0 var(--ai-spacing-2);
+  background-color: var(--ai-chat-surface-primary);
+  pointer-events: auto;
+}
+
+@media (min-width: 640px) {
+  .chat-main__input {
+    padding: 0;
+  }
+}
