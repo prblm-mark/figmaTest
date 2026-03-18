@@ -67,13 +67,28 @@ export function initAiChat(el) {
   }
   document.addEventListener('keydown', handleEscape);
 
-  // On resize: clean up stale classes from the other breakpoint
+  // On resize: clean up stale classes and suppress transition flash
+  const sidebarWrapEl = el.querySelector('.ai-chat__sidebar');
+  let wasDesktop = isDesktop();
+
   function handleResize() {
-    if (isDesktop()) {
+    const nowDesktop = isDesktop();
+
+    // Crossing a breakpoint — suppress the sidebar transition
+    if (nowDesktop !== wasDesktop && sidebarWrapEl) {
+      sidebarWrapEl.style.transition = 'none';
+      requestAnimationFrame(() => {
+        sidebarWrapEl.style.transition = '';
+      });
+    }
+
+    if (nowDesktop) {
       el.classList.remove('ai-chat--sidebar-open');
     } else {
       el.classList.remove('ai-chat--sidebar-closed');
     }
+
+    wasDesktop = nowDesktop;
   }
   window.addEventListener('resize', handleResize);
 

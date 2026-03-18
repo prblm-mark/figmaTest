@@ -361,8 +361,14 @@
 
 .chat-main__processing .chat-response__answer p {
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-sm);
+  font-size: var(--ai-font-fluid-xs);
   color: var(--ai-text-primary);
   line-height: var(--ai-leading-md);
   margin: 0 0 var(--ai-spacing-5);
+}
+
+@media (min-width: 640px) {
+  .chat-main__processing .chat-response__answer p {
+    font-size: var(--ai-font-fluid-sm);
+  }
 }

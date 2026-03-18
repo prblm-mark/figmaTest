@@ -617,7 +617,21 @@
     const aiChat = initAiChat(root);
 
     // ── Init ChatMain (view states + ChatResponse animation) ──
-    const chatMain = initChatMain(chatMainEl);
+    const chatMain = initChatMain(chatMainEl, {
+      onViewChange: (view) => {
+        if (window.demoToolbar) window.demoToolbar.setActive(view);
+      },
+    });
+
+    // ── Register view controls in toolbar popover ─────
+    if (window.demoToolbar) {
+      window.demoToolbar.addControls([
+        { label: 'Initial', id: 'initial', active: true, onClick: () => chatMain.setView('initial') },
+        { label: 'Processing', id: 'processing', onClick: () => chatMain.startProcessing() },
+        { label: 'Response', id: 'response', onClick: () => chatMain.setView('response') },
+        { label: 'Reset', id: 'reset', onClick: () => { chatMain.destroy(); chatMain.setView('initial'); } },
+      ]);
+    }
 
     // ── ChatHeader dropdown toggle ────────────────────
     document.querySelectorAll('.chat-header__selector').forEach(selector => {

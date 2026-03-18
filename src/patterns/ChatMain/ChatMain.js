@@ -30,6 +30,7 @@ export function initChatMain(el, opts = {}) {
   const bubbleTextEl = el.querySelector('.msg-bubble__text');
 
   let chatResponseCtrl = null;
+  let responseDelayedCall = null;
 
   function setView(view) {
     el.classList.remove('chat-main--initial', 'chat-main--processing', 'chat-main--response');
@@ -86,7 +87,11 @@ export function initChatMain(el, opts = {}) {
     if (suggestionsEl) gsap.set(suggestionsEl, { clearProps: 'all' });
     if (inputWrapEl) gsap.set(inputWrapEl, { clearProps: 'all' });
 
-    // Kill any previous timeline
+    // Kill any previous timeline / delayed call
+    if (responseDelayedCall) {
+      responseDelayedCall.kill();
+      responseDelayedCall = null;
+    }
     if (chatResponseCtrl) {
       chatResponseCtrl.reset();
       chatResponseCtrl = null;
@@ -101,8 +106,10 @@ export function initChatMain(el, opts = {}) {
     if (processingContainer && typeof gsap !== 'undefined') {
       chatResponseCtrl = createChatResponseTimeline(processingContainer);
 
-      // When the master timeline completes, transition to response view
-      chatResponseCtrl.master.eventCallback('onComplete', () => {
+      // Auto-transition to response view after the answer fade-in completes (~9s).
+      // Cannot use master.onComplete because infinite-repeat tweens (logo pulse,
+      // char shimmer) prevent the timeline from ever completing.
+      responseDelayedCall = gsap.delayedCall(9.2, () => {
         setView('response');
       });
     }
@@ -189,6 +196,10 @@ export function initChatMain(el, opts = {}) {
   });
 
   function destroy() {
+    if (responseDelayedCall) {
+      responseDelayedCall.kill();
+      responseDelayedCall = null;
+    }
     if (chatResponseCtrl) {
       chatResponseCtrl.reset();
       chatResponseCtrl = null;
