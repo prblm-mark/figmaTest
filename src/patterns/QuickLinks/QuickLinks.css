@@ -1,0 +1,26 @@
+/* QuickLinks — heading + flex-wrap row of SourcesLink pills */
+
+.quick-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-4);
+  align-items: flex-start;
+}
+
+.quick-links__heading {
+  font-family: var(--ai-font-body);
+  font-weight: var(--ai-font-semibold);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  font-feature-settings: 'case' 1;
+  margin: 0;
+}
+
+.quick-links__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ai-spacing-3);
+  align-items: center;
+  width: 100%;
+}

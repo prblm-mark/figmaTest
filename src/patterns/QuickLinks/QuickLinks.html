@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>QuickLinks — Pattern Demo</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/SourcesLink/SourcesLink.css">
+  <link rel="stylesheet" href="QuickLinks.css">
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--ai-chat-surface-primary);
+      padding: var(--ai-spacing-7);
+    }
+    .demo {
+      width: var(--ai-size-11);
+      max-width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-7);
+    }
+    .demo__brand-input {
+      display: flex;
+      align-items: center;
+      gap: var(--ai-spacing-3);
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-secondary);
+    }
+    .demo__brand-input input {
+      width: 3rem;
+      height: 2rem;
+      border: none;
+      cursor: pointer;
+    }
+    .demo__label {
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xxs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo">
+
+    <!-- Brand color picker -->
+    <div>
+      <span class="demo__label">Test brand color</span>
+      <div class="demo__brand-input">
+        <input type="color" id="brand-picker" value="#0071d8">
+        <span id="brand-value">#0071d8</span>
+      </div>
+    </div>
+
+    <!-- QuickLinks pattern -->
+    <div class="quick-links">
+      <h3 class="quick-links__heading">Quick links</h3>
+      <div class="quick-links__list">
+        <a href="#" class="sources-link sources-link--primary">
+          <i data-lucide="file-text"></i>
+          <span class="sources-link__text">The Analysis Dashboard Guide</span>
+        </a>
+        <a href="#" class="sources-link sources-link--link">
+          <i data-lucide="link"></i>
+          <span class="sources-link__text">How are Article Views counted?</span>
+        </a>
+        <a href="#" class="sources-link sources-link--link">
+          <i data-lucide="link"></i>
+          <span class="sources-link__text">Why are Site Analysis stats different?</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <script type="module">
+    import { createIcons } from 'lucide';
+    import { initBrandTheme } from '../../utils/brand-colors.js';
+
+    createIcons();
+    initBrandTheme(document.documentElement);
+
+    const observer = new MutationObserver(() => {
+      initBrandTheme(document.documentElement);
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+
+    const picker = document.getElementById('brand-picker');
+    const valueEl = document.getElementById('brand-value');
+    picker.addEventListener('input', (e) => {
+      const color = e.target.value;
+      valueEl.textContent = color;
+      document.documentElement.style.setProperty('--ai-chat-brand', color);
+      initBrandTheme(document.documentElement);
+    });
+  </script>
+</body>
+</html>

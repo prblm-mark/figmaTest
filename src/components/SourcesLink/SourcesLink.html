@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>SourcesLink — Component Demo</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="SourcesLink.css">
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--ai-chat-surface-primary);
+      padding: var(--ai-spacing-7);
+    }
+    .demo {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-7);
+      width: var(--ai-size-10);
+      max-width: 100%;
+    }
+    .demo__section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-4);
+    }
+    .demo__label {
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xxs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .demo__row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--ai-spacing-3);
+      align-items: center;
+    }
+    .demo__note {
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xxs);
+      color: var(--ai-text-contrast);
+      margin-top: var(--ai-spacing-3);
+    }
+    .demo__brand-input {
+      display: flex;
+      align-items: center;
+      gap: var(--ai-spacing-3);
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-secondary);
+    }
+    .demo__brand-input input {
+      width: 3rem;
+      height: 2rem;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo">
+
+    <!-- Brand color picker for testing -->
+    <div class="demo__section">
+      <span class="demo__label">Test brand color</span>
+      <div class="demo__brand-input">
+        <input type="color" id="brand-picker" value="#0071d8">
+        <span id="brand-value">#0071d8</span>
+      </div>
+    </div>
+
+    <!-- Primary variant -->
+    <div class="demo__section">
+      <span class="demo__label">Primary</span>
+      <div class="demo__row">
+        <a href="#" class="sources-link sources-link--primary">
+          <i data-lucide="file-text"></i>
+          <span class="sources-link__text">The Analysis Dashboard Guide</span>
+        </a>
+        <a href="#" class="sources-link sources-link--primary">
+          <i data-lucide="file-text"></i>
+          <span class="sources-link__text">Short title</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Link variant -->
+    <div class="demo__section">
+      <span class="demo__label">Link</span>
+      <div class="demo__row">
+        <a href="#" class="sources-link sources-link--link">
+          <i data-lucide="link"></i>
+          <span class="sources-link__text">How are Article Views counted?</span>
+        </a>
+        <a href="#" class="sources-link sources-link--link">
+          <i data-lucide="link"></i>
+          <span class="sources-link__text">Short link</span>
+        </a>
+      </div>
+    </div>
+
+    <p class="demo__note">Toggle dark mode with the button in the corner. Use the color picker above to test dynamic brand colors.</p>
+  </div>
+
+  <script type="module">
+    import { createIcons } from 'lucide';
+    import { initBrandTheme } from '../../utils/brand-colors.js';
+
+    createIcons();
+    initBrandTheme(document.documentElement);
+
+    // Re-run brand detection on theme toggle
+    const observer = new MutationObserver(() => {
+      initBrandTheme(document.documentElement);
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+
+    // Brand color picker for testing
+    const picker = document.getElementById('brand-picker');
+    const valueEl = document.getElementById('brand-value');
+    picker.addEventListener('input', (e) => {
+      const color = e.target.value;
+      valueEl.textContent = color;
+      document.documentElement.style.setProperty('--ai-chat-brand', color);
+      initBrandTheme(document.documentElement);
+    });
+  </script>
+</body>
+</html>

@@ -18,9 +18,11 @@
   <link rel="stylesheet" href="../../components/Skeleton/Skeleton.css">
   <link rel="stylesheet" href="../../components/ChatSidebarItem/ChatSidebarItem.css">
   <link rel="stylesheet" href="../../components/ChatSidebarMenu/ChatSidebarMenu.css">
+  <link rel="stylesheet" href="../../components/SourcesLink/SourcesLink.css">
 
   <!-- Pattern CSS -->
   <link rel="stylesheet" href="../../patterns/SourcesCarousel/SourcesCarousel.css">
+  <link rel="stylesheet" href="../../patterns/QuickLinks/QuickLinks.css">
   <link rel="stylesheet" href="../../patterns/MessageInput/MessageInput.css">
   <link rel="stylesheet" href="../../patterns/ChatSidebar/ChatSidebar.css">
   <link rel="stylesheet" href="../../patterns/ChatHeader/ChatHeader.css">
@@ -509,6 +511,25 @@
 
             <!-- Response view: full AI answer -->
             <div class="chat-main__response">
+              <!-- QuickLinks -->
+              <div class="quick-links">
+                <h3 class="quick-links__heading">Quick links</h3>
+                <div class="quick-links__list">
+                  <a href="#" class="sources-link sources-link--primary">
+                    <i data-lucide="file-text"></i>
+                    <span class="sources-link__text">The Analysis Dashboard Guide</span>
+                  </a>
+                  <a href="#" class="sources-link sources-link--link">
+                    <i data-lucide="link"></i>
+                    <span class="sources-link__text">How are Article Views counted?</span>
+                  </a>
+                  <a href="#" class="sources-link sources-link--link">
+                    <i data-lucide="link"></i>
+                    <span class="sources-link__text">Why are Site Analysis stats different?</span>
+                  </a>
+                </div>
+              </div>
+
               <p>Page views refer to the total number of times pages on your site are viewed by users. In Affino, page views are counted each time a page loads and are tracked as part of your site analytics. Multiple views of the same page by the same user are counted separately.</p>
 
               <p><strong>Key points about page views in Affino</strong></p>
@@ -613,7 +634,7 @@
     const root = document.getElementById('ai-chat');
     const chatMainEl = document.getElementById('chat-main');
 
-    // ── Init AiChat (sidebar toggle + theme) ──────────
+    // ── Init AiChat (sidebar toggle + theme + brand) ──
     const aiChat = initAiChat(root);
 
     // ── Init ChatMain (view states + ChatResponse animation) ──

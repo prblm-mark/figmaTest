@@ -6,6 +6,7 @@
  */
 
 import { initSidebarTheme } from '../../utils/sidebar-colors.js';
+import { initBrandTheme } from '../../utils/brand-colors.js';
 
 /**
  * Initializes the AiChat template.
@@ -24,6 +25,9 @@ export function initAiChat(el) {
   if (sidebarEl) {
     initSidebarTheme(sidebarEl);
   }
+
+  // ── Brand theme (SourcesLink dynamic colors) ────────
+  initBrandTheme(document.documentElement);
 
   // ── Sidebar toggle ───────────────────────────────────
 
@@ -95,6 +99,7 @@ export function initAiChat(el) {
   // ── Dark mode: re-init sidebar theme ─────────────────
   const themeObserver = new MutationObserver(() => {
     if (sidebarEl) initSidebarTheme(sidebarEl);
+    initBrandTheme(document.documentElement);
   });
   themeObserver.observe(document.documentElement, {
     attributes: true,

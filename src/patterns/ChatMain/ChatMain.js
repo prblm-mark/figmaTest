@@ -106,12 +106,8 @@ export function initChatMain(el, opts = {}) {
     if (processingContainer && typeof gsap !== 'undefined') {
       chatResponseCtrl = createChatResponseTimeline(processingContainer);
 
-      // Auto-transition to response view after the answer fade-in completes (~9s).
-      // Cannot use master.onComplete because infinite-repeat tweens (logo pulse,
-      // char shimmer) prevent the timeline from ever completing.
-      responseDelayedCall = gsap.delayedCall(9.2, () => {
-        setView('response');
-      });
+      // Stay on processing view after animation completes.
+      // Navigate to response view manually via the toolbar menu.
     }
   }
 
