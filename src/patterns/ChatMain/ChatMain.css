@@ -184,8 +184,8 @@
    ══════════════════════════════════════════════════════════ */
 
 .chat-main__scroll {
-  --_scroll-track: color-mix(in srgb, var(--ai-chat-surface-primary) 92%, rgb(38 55 88));
-  --_scroll-thumb: color-mix(in srgb, var(--ai-chat-surface-primary) 75%, rgb(38 55 88));
+  --_scroll-track: color-mix(in srgb, var(--ai-chat-surface-primary) 94%, rgb(38 55 88));
+  --_scroll-thumb: color-mix(in srgb, var(--ai-chat-surface-primary) 82%, rgb(38 55 88));
   flex: 1;
   min-height: 0;
   overflow-y: auto;
