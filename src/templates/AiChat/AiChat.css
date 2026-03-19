@@ -8,6 +8,7 @@
 /* ── Root layout ─────────────────────────────────────── */
 
 .ai-chat {
+  --_header-h: calc(var(--ai-spacing-4) * 2 + 32px + 1px);
   display: flex;
   width: 100%;
   height: 100%;
@@ -21,7 +22,7 @@
 .ai-chat__sidebar {
   flex-shrink: 0;
   position: absolute;
-  top: 0;
+  top: var(--_header-h);
   left: 0;
   bottom: 0;
   z-index: 20;
@@ -72,7 +73,7 @@
 
 .ai-chat__overlay {
   position: absolute;
-  inset: 0;
+  inset: var(--_header-h) 0 0 0;
   z-index: 15;
   opacity: 0;
   pointer-events: none;

@@ -78,13 +78,13 @@
   align-items: center;
   text-align: center;
   gap: var(--ai-spacing-3);
-  padding: 0 var(--ai-spacing-5) var(--ai-spacing-5);
+  padding: 0 var(--ai-spacing-5) 0;
 }
 
 @media (min-width: 640px) {
   .chat-main__intro {
     gap: var(--ai-spacing-5);
-    padding: 0 0 var(--ai-spacing-7);
+    padding: 0 0 var(--ai-spacing-5);
   }
 }
 

@@ -147,7 +147,7 @@
 
 .ai-chat-min .chat-main__intro {
   gap: var(--ai-spacing-3);
-  padding: 0 var(--ai-spacing-5) var(--ai-spacing-5);
+  padding: 0 var(--ai-spacing-5) 0;
 }
 
 /* ── ChatMain: title — pinned to base ─────────────────── */
@@ -183,6 +183,30 @@
   padding: var(--ai-spacing-6);
 }
 
+/* ── SourcesCarousel: pin to mobile layout ────────────── */
+
+.ai-chat-min .sources-card {
+  flex: 0 0 calc((100% / 1.5) - (var(--ai-spacing-3) * (0.5 / 1.5)));
+}
+
+.ai-chat-min .sources-card__inner {
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+  align-items: stretch;
+}
+
+.ai-chat-min .sources-card__thumb {
+  order: 0;
+}
+
+.ai-chat-min .sources-carousel {
+  padding: 0;
+}
+
+.ai-chat-min .sources-carousel__nav {
+  display: none;
+}
+
 /* ── ChatMain: response — fixed font ──────────────────── */
 
 .ai-chat-min .chat-main__response {
@@ -197,6 +221,36 @@
 
 .ai-chat-min .chat-main__processing .chat-response__answer p {
   font-size: var(--ai-font-fixed-xs);
+}
+
+/* ── ChatMain: scrollbar — transparent track, sidebar-active thumb ── */
+
+.ai-chat-min .chat-main__initial,
+.ai-chat-min .chat-main__scroll {
+  --_min-scroll-thumb: color-mix(in srgb, var(--ai-chat-surface-primary) 88%, rgb(38 55 88));
+  scrollbar-color: var(--_min-scroll-thumb) transparent;
+  scrollbar-width: thin;
+}
+
+[data-theme="dark"] .ai-chat-min .chat-main__initial,
+[data-theme="dark"] .ai-chat-min .chat-main__scroll {
+  --_min-scroll-thumb: color-mix(in srgb, var(--ai-chat-surface-primary) 88%, white);
+}
+
+.ai-chat-min .chat-main__initial::-webkit-scrollbar,
+.ai-chat-min .chat-main__scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ai-chat-min .chat-main__initial::-webkit-scrollbar-track,
+.ai-chat-min .chat-main__scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ai-chat-min .chat-main__initial::-webkit-scrollbar-thumb,
+.ai-chat-min .chat-main__scroll::-webkit-scrollbar-thumb {
+  background-color: var(--_min-scroll-thumb);
+  border-radius: var(--ai-radius-full);
 }
 
 /* ── ChatMain: footer input — mobile padding ──────────── */
