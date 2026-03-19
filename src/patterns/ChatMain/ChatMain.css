@@ -437,7 +437,13 @@
   display: flex;
   flex-direction: column;
   gap: var(--ai-spacing-6);
-  margin-top: var(--ai-spacing-8);
+  margin-top: var(--ai-spacing-6);
+}
+
+@media (min-width: 640px) {
+  .chat-main__processing .chat-response__skeletons {
+    margin-top: var(--ai-spacing-8);
+  }
 }
 
 .chat-main__processing .chat-response__answer {

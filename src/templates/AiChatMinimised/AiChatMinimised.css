@@ -215,6 +215,10 @@
 
 /* ── ChatMain: processing answer — mobile spacing ─────── */
 
+.ai-chat-min .chat-main__processing .chat-response__skeletons {
+  margin-top: var(--ai-spacing-6);
+}
+
 .ai-chat-min .chat-main__processing .chat-response__answer {
   margin-top: var(--ai-spacing-6);
 }
@@ -239,18 +243,20 @@
 
 .ai-chat-min .chat-main__initial::-webkit-scrollbar,
 .ai-chat-min .chat-main__scroll::-webkit-scrollbar {
-  width: 6px;
+  width: 10px;
 }
 
 .ai-chat-min .chat-main__initial::-webkit-scrollbar-track,
 .ai-chat-min .chat-main__scroll::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--ai-chat-surface-primary);
 }
 
 .ai-chat-min .chat-main__initial::-webkit-scrollbar-thumb,
 .ai-chat-min .chat-main__scroll::-webkit-scrollbar-thumb {
   background-color: var(--_min-scroll-thumb);
   border-radius: var(--ai-radius-full);
+  border: 2px solid transparent;
+  background-clip: padding-box;
 }
 
 /* ── ChatMain: footer input — mobile padding ──────────── */
