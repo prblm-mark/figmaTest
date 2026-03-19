@@ -51,7 +51,7 @@
   align-items: center;
   gap: var(--ai-spacing-3);
   padding: var(--ai-spacing-3) var(--ai-spacing-5);
-  max-width: 12rem;
+  max-width: 100%;
   border: 1px solid;
   border-radius: var(--ai-radius-full);
   font-family: var(--ai-font-title);
@@ -77,6 +77,12 @@
   width: var(--ai-icon-size-sm);
   height: var(--ai-icon-size-sm);
   flex-shrink: 0;
+}
+
+@media (min-width: 1024px) {
+  .sources-link {
+    max-width: 12rem;
+  }
 }
 
 a.sources-link:hover {

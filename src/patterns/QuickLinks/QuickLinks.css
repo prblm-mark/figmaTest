@@ -24,3 +24,17 @@
   align-items: center;
   width: 100%;
 }
+
+/* ── Full-width variant (Guides / FAQs sections) ────── */
+/* Items expand to natural text width instead of capped 12rem,
+   but stay within the container so text truncates. */
+
+.quick-links--full .sources-link {
+  max-width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .quick-links--full .sources-link {
+    max-width: 100%;
+  }
+}

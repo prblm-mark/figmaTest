@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="../../components/ChatSidebarItem/ChatSidebarItem.css">
   <link rel="stylesheet" href="../../components/ChatSidebarMenu/ChatSidebarMenu.css">
   <link rel="stylesheet" href="../../components/SourcesLink/SourcesLink.css">
+  <link rel="stylesheet" href="../../components/ChatResponseTable/ChatResponseTable.css">
 
   <!-- Pattern CSS -->
   <link rel="stylesheet" href="../../patterns/SourcesCarousel/SourcesCarousel.css">
@@ -283,6 +284,32 @@
                 <div class="chat-header__dropdown-item" role="option" aria-selected="false">Tech Monkey</div>
               </div>
             </div>
+            <!-- Mobile admin gear button + dropdown -->
+            <div class="chat-header__gear-wrap">
+              <button class="chat-header__gear btn btn--secondary btn--sm btn--icon" aria-label="Admin actions" aria-expanded="false">
+                <i data-lucide="settings" aria-hidden="true"></i>
+              </button>
+              <div class="chat-header__admin-menu">
+                <div class="chat-header__admin-menu-inner">
+                  <button class="btn btn--tertiary btn--sm" aria-pressed="false">
+                    <i data-lucide="bug" aria-hidden="true"></i>
+                    Debug
+                  </button>
+                  <button class="btn btn--tertiary btn--sm" aria-pressed="false">
+                    <i data-lucide="database-zap" aria-hidden="true"></i>
+                    Cache Off
+                  </button>
+                  <button class="btn btn--tertiary btn--sm" aria-pressed="false">
+                    <i data-lucide="swatch-book" aria-hidden="true"></i>
+                    Style
+                  </button>
+                  <button class="btn btn--tertiary btn--sm" aria-pressed="false">
+                    <i data-lucide="settings" aria-hidden="true"></i>
+                    System Role
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="chat-header__admin chat-header__admin--visible">
@@ -511,7 +538,8 @@
 
             <!-- Response view: full AI answer -->
             <div class="chat-main__response">
-              <!-- QuickLinks -->
+
+              <!-- Quick links -->
               <div class="quick-links">
                 <h3 class="quick-links__heading">Quick links</h3>
                 <div class="quick-links__list">
@@ -535,22 +563,106 @@
               <p><strong>Key points about page views in Affino</strong></p>
 
               <ul>
-                <li><strong>Page views</strong> are recorded under the Stats function within each article or page.</li>
+                <li><strong>Page views</strong> are recorded under the Stats function within each <a href="#">article or page <i data-lucide="arrow-up-right" aria-hidden="true"></i></a></li>
                 <li>They include views by both registered and guest users.</li>
-                <li>If a user clicks on an article but encounters a paywall, it still counts as a page view.</li>
-                <li>Page views are used in various reports and dashboards, such as the Analysis Dashboard, to provide insights into user engagement.</li>
+                <li>If a user clicks on an article but encounters a <strong>paywall</strong>, it still counts as a page view.</li>
+                <li>Page views are used in various reports and dashboards, such as the Analysis Dashboard, to provide insights into user <code>section-margin</code></li>
                 <li>Affino distinguishes between simple page views (impressions) and content consumption, where consumption indicates the user has actively engaged with the content beyond just loading the page.</li>
               </ul>
 
-              <p><strong>You can view page view statistics in Affino via:</strong></p>
+              <!-- Data table -->
+              <div class="chat-response-table-scroll">
+                <table class="chat-response-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Sessions</th>
+                      <th>Last active</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="chat-response-table__text">olivia.chen@acme.io</td>
+                      <td class="chat-response-table__text">Olivia Chen</td>
+                      <td>342</td>
+                      <td>2 hours ago</td>
+                    </tr>
+                    <tr>
+                      <td class="chat-response-table__text">Marcus Webb</td>
+                      <td class="chat-response-table__text">m.webb@acme.io</td>
+                      <td>198</td>
+                      <td>4 hours ago</td>
+                    </tr>
+                    <tr>
+                      <td class="chat-response-table__text">Priya Sharma</td>
+                      <td class="chat-response-table__text">priya.s@acme.io</td>
+                      <td>87</td>
+                      <td>Yesterday</td>
+                    </tr>
+                    <tr>
+                      <td class="chat-response-table__text">James Kofi</td>
+                      <td class="chat-response-table__text">j.kofi@acme.io</td>
+                      <td>156</td>
+                      <td>3 days ago</td>
+                    </tr>
+                    <tr>
+                      <td class="chat-response-table__text">Emma Lindqvist</td>
+                      <td class="chat-response-table__text">emma.l@acme.io</td>
+                      <td>421</td>
+                      <td>Just now</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
 
-              <ul>
-                <li>Control &gt; Publish &gt; Articles + Stats</li>
-                <li>Control &gt; Analyse &gt; Articles Report</li>
-                <li>The Analysis Dashboard for broader site metrics including page views over time</li>
-              </ul>
+              <!-- Guides -->
+              <div class="quick-links quick-links--full">
+                <h3 class="quick-links__heading">Guides</h3>
+                <div class="quick-links__list">
+                  <a href="#" class="sources-link sources-link--primary">
+                    <i data-lucide="file-text"></i>
+                    <span class="sources-link__text">The Analysis Dashboard Guide</span>
+                  </a>
+                </div>
+              </div>
 
-              <p>This tracking helps you understand how often your content is accessed and supports optimizing engagement and conversion strategies.</p>
+              <!-- FAQs -->
+              <div class="quick-links quick-links--full">
+                <h3 class="quick-links__heading">FAQs</h3>
+                <div class="quick-links__list">
+                  <a href="#" class="sources-link sources-link--link">
+                    <i data-lucide="link"></i>
+                    <span class="sources-link__text">How are Article Views counted?</span>
+                  </a>
+                  <a href="#" class="sources-link sources-link--link">
+                    <i data-lucide="link"></i>
+                    <span class="sources-link__text">Why are Site Analysis stats different to third party platforms stats?</span>
+                  </a>
+                  <a href="#" class="sources-link sources-link--link">
+                    <i data-lucide="link"></i>
+                    <span class="sources-link__text">When a user hits the metering wall, does that count as a page view?</span>
+                  </a>
+                  <a href="#" class="sources-link sources-link--link">
+                    <i data-lucide="link"></i>
+                    <span class="sources-link__text">Site Analysis: What is the difference between Impressions / Views vs Consumed?</span>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Feedback actions -->
+              <div class="chat-main__response-actions">
+                <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Copy response">
+                  <i data-lucide="copy" aria-hidden="true"></i>
+                </button>
+                <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Thumbs up">
+                  <i data-lucide="thumbs-up" aria-hidden="true"></i>
+                </button>
+                <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Thumbs down">
+                  <i data-lucide="thumbs-down" aria-hidden="true"></i>
+                </button>
+              </div>
+
             </div>
 
           </div>
@@ -701,12 +813,29 @@
     });
 
     // ── ChatHeader admin toggle buttons ───────────────
-    document.querySelectorAll('.chat-header__admin .btn').forEach(btn => {
+    document.querySelectorAll('.chat-header__admin .btn, .chat-header__admin-menu-inner .btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const pressed = btn.getAttribute('aria-pressed') === 'true';
         btn.setAttribute('aria-pressed', String(!pressed));
       });
     });
+
+    // ── ChatHeader gear button (mobile admin menu) ────
+    const gearBtn = document.querySelector('.chat-header__gear');
+    const adminMenu = document.querySelector('.chat-header__admin-menu');
+    if (gearBtn && adminMenu) {
+      gearBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = adminMenu.classList.toggle('chat-header__admin-menu--open');
+        gearBtn.setAttribute('aria-expanded', String(isOpen));
+      });
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.chat-header__gear-wrap')) {
+          adminMenu.classList.remove('chat-header__admin-menu--open');
+          gearBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
 
     // ── ChatSidebar interactions ──────────────────────
     const sidebar = document.getElementById('sidebar');

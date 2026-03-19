@@ -31,6 +31,7 @@
 | AiChat | template | Built | [node 2140:3614](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2140-3614) | `src/templates/AiChat/` — Full-page AI chat template. Sidebar hidden on mobile, inline at >=1024px (lg). Toggle via panel-left button. Composes ChatSidebar, ChatHeader, ChatMain. |
 
 | SourcesLink | component | Built | [node 2133:2733](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2133-2733) | `src/components/SourcesLink/` — Pill-shaped link. Type=Primary (brand-colored, dynamic via `color-mix()` + `data-brand-theme` luminance detection) + Type=Link (neutral). Composes nothing. |
-| QuickLinks | pattern | Built | [node 2156:3180](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2156-3180) | `src/patterns/QuickLinks/` — Heading + flex-wrap row of SourcesLink pills. Composes SourcesLink. |
+| QuickLinks | pattern | Built | [node 2156:3180](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2156-3180) | `src/patterns/QuickLinks/` — Heading + flex-wrap row of SourcesLink pills. Composes SourcesLink. `--full` modifier for Guides/FAQs (uncapped width). |
+| ChatResponseTable | component | Built | [node 2160:3648](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2160-3648) | `src/components/ChatResponseTable/` — Inline data table for chat responses. Default (mobile) + Desktop variants. Responsive font sizing at 640px. |
 
 Add rows here as components are built. Format: Component Name, Tier (component/pattern/template), Built/In Progress/Figma Only, Figma URL, Notes.

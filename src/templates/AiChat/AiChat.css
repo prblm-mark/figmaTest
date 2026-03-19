@@ -80,15 +80,19 @@
   }
 }
 
-/* ── Admin actions: hidden below lg ──────────────────── */
+/* ── Admin actions: gear below xl, inline at xl ─────── */
 
 .ai-chat .chat-header__admin {
   display: none;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
   .ai-chat .chat-header__admin--visible {
     display: flex;
+  }
+
+  .ai-chat .chat-header:has(.chat-header__admin--visible) .chat-header__gear-wrap {
+    display: none;
   }
 }
 
