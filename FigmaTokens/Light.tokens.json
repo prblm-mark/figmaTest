@@ -979,7 +979,7 @@
         },
         "chat-sidebar-bg": {
           "$type": "color",
-          "$value": "{surface.primary}",
+          "$value": "{surface.minimal}",
           "$extensions": {
             "com.figma.variableId": "VariableID:205:616",
             "com.figma.scopes": [

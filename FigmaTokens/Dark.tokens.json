@@ -846,7 +846,16 @@
       },
       "chat-surface-tertiary": {
         "$type": "color",
-        "$value": "{surface.primary}",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.0941176488995552,
+            0.13333334028720856,
+            0.18431372940540314
+          ],
+          "alpha": 1,
+          "hex": "#18222F"
+        },
         "$extensions": {
           "com.figma.variableId": "VariableID:2086:4118",
           "com.figma.scopes": [
@@ -854,6 +863,12 @@
           ],
           "com.figma.codeSyntax": {
             "WEB": "--ai-chat-surface-tertiary"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:190c471809797090517ae21f68783a837c2afbf4/-1:-1",
+            "targetVariableName": "Neutral/850",
+            "targetVariableSetId": "VariableCollectionId:8f6c1c1faabbdf0817d5304f220b65ab37368977/-1:-1",
+            "targetVariableSetName": "Primitives"
           },
           "com.figma.isOverride": true
         }
@@ -937,12 +952,12 @@
           "$value": {
             "colorSpace": "srgb",
             "components": [
-              0,
-              0.3294117748737335,
-              0.6392157077789307
+              0.05882352963089943,
+              0.250980406999588,
+              0.41960784792900085
             ],
             "alpha": 1,
-            "hex": "#0054A3"
+            "hex": "#0F406B"
           },
           "$description": "Editable by user",
           "$extensions": {
@@ -954,8 +969,8 @@
               "WEB": "--ai-chat-msg-bg"
             },
             "com.figma.aliasData": {
-              "targetVariableId": "VariableID:ab113b48bcf5981f391caa3cf93d58974f666b06/-1:-1",
-              "targetVariableName": "Blue/FB/700",
+              "targetVariableId": "VariableID:fa6d64ac270288e82d3437ab26ba7ace93456fad/-1:-1",
+              "targetVariableName": "Blue/FB/900",
               "targetVariableSetId": "VariableCollectionId:8f6c1c1faabbdf0817d5304f220b65ab37368977/-1:-1",
               "targetVariableSetName": "Primitives"
             },
@@ -1680,7 +1695,7 @@
     "skeleton": {
       "base": {
         "$type": "color",
-        "$value": "{compnonents.chat.chat-surface-tertiary}",
+        "$value": "{surface.primary}",
         "$extensions": {
           "com.figma.variableId": "VariableID:2122:3954",
           "com.figma.scopes": [

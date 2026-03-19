@@ -261,6 +261,9 @@
       </div>
     </aside>
 
+    <!-- Sidebar resize handle (desktop only) -->
+    <div class="ai-chat__resize-handle" aria-hidden="true"></div>
+
     <!-- ═══ MAIN CONTENT ═════════════════════════════ -->
     <div class="ai-chat__main">
 
@@ -835,6 +838,43 @@
           gearBtn.setAttribute('aria-expanded', 'false');
         }
       });
+    }
+
+    // ── Sidebar resize handle ──────────────────────────
+    {
+      const handle = document.querySelector('.ai-chat__resize-handle');
+      const chatRoot = document.getElementById('ai-chat');
+      const sidebarPane = document.querySelector('.ai-chat__sidebar');
+
+      if (handle && chatRoot && sidebarPane) {
+        let startX, startWidth;
+
+        handle.addEventListener('mousedown', (e) => {
+          e.preventDefault();
+          startX = e.clientX;
+          startWidth = sidebarPane.getBoundingClientRect().width;
+          chatRoot.classList.add('ai-chat--resizing');
+          document.body.style.cursor = 'col-resize';
+          document.body.style.userSelect = 'none';
+
+          const onMouseMove = (ev) => {
+            const delta = ev.clientX - startX;
+            const newWidth = Math.max(240, Math.min(448, startWidth + delta));
+            chatRoot.style.setProperty('--_sidebar-width', newWidth + 'px');
+          };
+
+          const onMouseUp = () => {
+            chatRoot.classList.remove('ai-chat--resizing');
+            document.body.style.cursor = '';
+            document.body.style.userSelect = '';
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+          };
+
+          document.addEventListener('mousemove', onMouseMove);
+          document.addEventListener('mouseup', onMouseUp);
+        });
+      }
     }
 
     // ── ChatSidebar interactions ──────────────────────
