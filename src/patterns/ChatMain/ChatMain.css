@@ -322,12 +322,12 @@
 
 .chat-main__fade {
   position: absolute;
-  bottom: 100%;
+  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
   max-width: var(--ai-size-11);
-  height: var(--ai-size-2);
+  height: calc(100% + var(--ai-spacing-8));
   background: var(--ai-gradient-chat-surface-primary);
   pointer-events: none;
 }

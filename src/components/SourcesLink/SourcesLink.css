@@ -10,6 +10,13 @@
   --_brand-border: color-mix(in srgb, var(--ai-chat-brand) 30%, var(--ai-chat-surface-primary));
   --_brand-bg-hover: color-mix(in srgb, var(--ai-chat-brand) 15%, var(--ai-chat-surface-primary));
   --_brand-border-hover: color-mix(in srgb, var(--ai-chat-brand) 50%, var(--ai-chat-surface-primary));
+
+  /* TODO [brand-override]: msg bubble colors derived from brand.
+     Currently set directly — revisit with explicit user-override pattern
+     (e.g. var(--ai-chat-msg-bg-override, var(--_brand-msg-bg))) when
+     client customisation ships. */
+  --ai-chat-msg-bg: color-mix(in srgb, var(--ai-chat-brand) 8%, var(--ai-chat-surface-primary));
+  --ai-chat-msg-text: color-mix(in srgb, var(--ai-chat-brand) 50%, black);
 }
 
 [data-brand-theme="light"] {
@@ -18,11 +25,23 @@
   --_brand-border: var(--ai-chat-brand);
   --_brand-bg-hover: color-mix(in srgb, var(--ai-chat-brand) 25%, var(--ai-chat-surface-primary));
   --_brand-border-hover: color-mix(in srgb, var(--ai-chat-brand) 80%, black);
+
+  /* TODO [brand-override]: see note above */
+  --ai-chat-msg-bg: color-mix(in srgb, var(--ai-chat-brand) 15%, var(--ai-chat-surface-primary));
+  --ai-chat-msg-text: color-mix(in srgb, var(--ai-chat-brand) 35%, black);
 }
 
-/* Dark mode: lighten dark brand text for readability on dark surface */
+/* Dark mode: stronger brand tint + lighter text for readability */
 [data-theme="dark"][data-brand-theme="dark"] {
-  --_brand-text: color-mix(in srgb, var(--ai-chat-brand) 60%, white);
+  --_brand-text: color-mix(in srgb, var(--ai-chat-brand) 45%, white);
+  --_brand-bg: color-mix(in srgb, var(--ai-chat-brand) 15%, var(--ai-chat-surface-primary));
+  --_brand-border: color-mix(in srgb, var(--ai-chat-brand) 40%, var(--ai-chat-surface-primary));
+  --_brand-bg-hover: color-mix(in srgb, var(--ai-chat-brand) 22%, var(--ai-chat-surface-primary));
+  --_brand-border-hover: color-mix(in srgb, var(--ai-chat-brand) 55%, var(--ai-chat-surface-primary));
+
+  /* TODO [brand-override]: see note above */
+  --ai-chat-msg-bg: color-mix(in srgb, var(--ai-chat-brand) 50%, var(--ai-chat-surface-primary));
+  --ai-chat-msg-text: var(--ai-text-primary);
 }
 
 /* ── Base ──────────────────────────────────────────────── */
@@ -62,7 +81,14 @@
 
 a.sources-link:hover {
   text-decoration: none;
-  color: inherit;
+}
+
+a.sources-link--primary:hover {
+  color: var(--_brand-text);
+}
+
+a.sources-link--link:hover {
+  color: var(--ai-text-secondary);
 }
 
 /* ── Primary variant (brand-colored, dynamic) ─────────── */
@@ -70,6 +96,10 @@ a.sources-link:hover {
 .sources-link--primary {
   background: var(--_brand-bg);
   border-color: var(--_brand-border);
+  color: var(--_brand-text);
+}
+
+.sources-link--primary .sources-link__text {
   color: var(--_brand-text);
 }
 
@@ -81,9 +111,9 @@ a.sources-link:hover {
 /* ── Link variant (neutral) ───────────────────────────── */
 
 .sources-link--link {
-  background: var(--ai-chat-surface-tertiary);
+  background: var(--ai-surface-minimal);
   border-color: var(--ai-border-secondary);
-  color: var(--ai-text-primary);
+  color: var(--ai-text-secondary);
 }
 
 .sources-link--link [data-lucide] {
