@@ -50,10 +50,16 @@
   background: transparent;
   font-family: var(--ai-font-body);
   font-weight: var(--ai-font-regular);
-  font-size: var(--ai-font-fixed-sm);
+  font-size: var(--ai-font-fixed-xs);
   line-height: normal;
   color: var(--ai-text-primary);
   font-feature-settings: 'ss04' 1, 'cv01' 1, 'calt' 0, 'kern' 0;
+}
+
+@media (min-width: 640px) {
+  .msg-input__textarea {
+    font-size: var(--ai-font-fixed-sm);
+  }
 }
 
 .msg-input__textarea::placeholder {
@@ -218,10 +224,6 @@
     padding: var(--ai-spacing-5);
   }
 
-  .msg-input__textarea {
-    font-size: var(--ai-font-fluid-sm);
-  }
-
   .msg-input__send-btn {
     display: none;
   }
@@ -238,5 +240,5 @@
 }
 
 [data-layout="minimised"] .msg-input__textarea {
-  font-size: var(--ai-font-fluid-sm);
+  font-size: var(--ai-font-fixed-xs);
 }

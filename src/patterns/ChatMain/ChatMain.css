@@ -91,7 +91,7 @@
 .chat-main__title {
   font-family: var(--ai-font-title);
   font-weight: var(--ai-font-bold);
-  font-size: var(--ai-font-fluid-2xl);
+  font-size: var(--ai-font-fixed-xl);
   line-height: var(--ai-leading-lg);
   color: var(--ai-text-primary);
   margin: 0;
@@ -99,7 +99,7 @@
 
 @media (min-width: 640px) {
   .chat-main__title {
-    font-size: var(--ai-font-fluid-4xl);
+    font-size: var(--ai-font-fixed-3xl);
     line-height: var(--ai-leading-xl);
   }
 }
@@ -107,7 +107,7 @@
 .chat-main__subtitle {
   font-family: var(--ai-font-body);
   font-weight: var(--ai-font-regular);
-  font-size: var(--ai-font-fluid-sm);
+  font-size: var(--ai-font-fixed-xs);
   line-height: 1.5;
   color: var(--ai-text-contrast);
   margin: 0;
@@ -115,7 +115,13 @@
 
 @media (min-width: 640px) {
   .chat-main__subtitle {
-    font-size: var(--ai-font-fluid-md);
+    font-size: var(--ai-font-fixed-sm);
+  }
+}
+
+@media (min-width: 768px) {
+  .chat-main__subtitle {
+    font-size: var(--ai-font-fixed-md);
   }
 }
 

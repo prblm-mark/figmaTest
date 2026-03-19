@@ -1,0 +1,266 @@
+/* AiChatMinimised — floating popup chat widget
+ * Figma node: 2160:4810
+ * Tier: Template
+ * Composes: ChatHeader (--minimised), ChatMain
+ *
+ * The popup is 384px wide — always mobile-width — but lives on a desktop
+ * viewport where min-width media queries fire. Every desktop escalation
+ * from child components is pinned back to the mobile base value here.
+ */
+
+/* ── Popup container ────────────────────────────────── */
+
+.ai-chat-min {
+  position: fixed;
+  bottom: var(--ai-spacing-6);
+  right: var(--ai-spacing-6);
+  width: var(--ai-size-7);
+  max-width: calc(100vw - var(--ai-spacing-5) * 2);
+  height: var(--_panel-height, 668px);
+  max-height: calc(100vh - var(--ai-spacing-6) * 2);
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--ai-chat-surface-primary);
+  border-radius: var(--ai-radius-xl);
+  overflow: clip;
+  box-shadow: var(--ai-shadow-lg);
+}
+
+/* ── Top-edge resize handle ─────────────────────────── */
+
+.ai-chat-min__resize-handle {
+  position: absolute;
+  top: -3px;
+  left: var(--ai-spacing-6);
+  right: var(--ai-spacing-6);
+  height: 6px;
+  cursor: ns-resize;
+  z-index: 5;
+  border-radius: var(--ai-radius-full);
+}
+
+.ai-chat-min__resize-handle:hover,
+.ai-chat-min--resizing .ai-chat-min__resize-handle {
+  background-color: var(--ai-border-secondary);
+}
+
+/* ── Sidebar overlay ─────────────────────────────────── */
+
+.ai-chat-min__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--ai-transition-slow);
+}
+
+.ai-chat-min--sidebar-open .ai-chat-min__overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── Sidebar (slide-in from left) ────────────────────── */
+
+.ai-chat-min__sidebar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 20;
+  width: var(--ai-size-5);
+  max-width: calc(100% - var(--ai-spacing-9));
+  border-radius: var(--ai-radius-xl) 0 0 var(--ai-radius-xl);
+  transform: translateX(-100%);
+  transition: transform var(--ai-transition-slow), box-shadow var(--ai-transition-slow);
+  box-shadow: none;
+  overflow: hidden;
+}
+
+.ai-chat-min__sidebar .chat-sidebar {
+  width: 100%;
+  height: 100%;
+  border-right: none;
+}
+
+.ai-chat-min--sidebar-open .ai-chat-min__sidebar {
+  transform: translateX(0);
+  box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* ── Hidden state (close button) ────────────────────── */
+
+.ai-chat-min--hidden {
+  display: none;
+}
+
+/* ── Suppress transitions during drag ───────────────── */
+
+.ai-chat-min--no-transition,
+.ai-chat-min--no-transition * {
+  transition: none !important;
+}
+
+/* ── Drag handle: header acts as drag surface ───────── */
+
+.ai-chat-min .chat-header {
+  cursor: move;
+}
+
+.ai-chat-min .chat-header button {
+  cursor: pointer;
+}
+
+/* ── Main content fills remaining space ─────────────── */
+
+.ai-chat-min__main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ══════════════════════════════════════════════════════════
+   MOBILE OVERRIDES — pin child components to base (mobile)
+   values so desktop min-width breakpoints have no effect.
+   ══════════════════════════════════════════════════════════ */
+
+/* ── ChatMain: initial-inner ──────────────────────────── */
+
+.ai-chat-min .chat-main__initial-inner {
+  gap: var(--ai-spacing-6);
+  padding: var(--ai-spacing-8) 0;
+}
+
+/* ── ChatMain: intro ──────────────────────────────────── */
+
+.ai-chat-min .chat-main__intro {
+  gap: var(--ai-spacing-3);
+  padding: 0 var(--ai-spacing-5) var(--ai-spacing-5);
+}
+
+/* ── ChatMain: title — pinned to base ─────────────────── */
+
+.ai-chat-min .chat-main__title {
+  font-size: var(--ai-font-fixed-xl);
+  line-height: var(--ai-leading-lg);
+}
+
+/* ── ChatMain: subtitle — pinned to base ──────────────── */
+
+.ai-chat-min .chat-main__subtitle {
+  font-size: var(--ai-font-fixed-xs);
+}
+
+/* ── ChatMain: input wrap — mobile padding ────────────── */
+
+.ai-chat-min .chat-main__input-wrap {
+  padding: 0 var(--ai-spacing-5);
+}
+
+/* ── ChatMain: suggestions — 2-column, mobile gaps ────── */
+
+.ai-chat-min .chat-main__suggestions {
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--ai-spacing-4);
+  padding: 0 var(--ai-spacing-5);
+}
+
+/* ── ChatMain: container — mobile padding ─────────────── */
+
+.ai-chat-min .chat-main__container {
+  padding: var(--ai-spacing-6);
+}
+
+/* ── ChatMain: response — fixed font ──────────────────── */
+
+.ai-chat-min .chat-main__response {
+  font-size: var(--ai-font-fixed-xs);
+}
+
+/* ── ChatMain: processing answer — mobile spacing ─────── */
+
+.ai-chat-min .chat-main__processing .chat-response__answer {
+  margin-top: var(--ai-spacing-6);
+}
+
+.ai-chat-min .chat-main__processing .chat-response__answer p {
+  font-size: var(--ai-font-fixed-xs);
+}
+
+/* ── ChatMain: footer input — mobile padding ──────────── */
+
+.ai-chat-min .chat-main__input {
+  padding: 0 var(--ai-spacing-2);
+}
+
+/* ── SuggestedQuestion: icon — mobile size ────────────── */
+
+.ai-chat-min .suggested-question [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* ── SuggestedQuestion: text — mobile font ────────────── */
+
+.ai-chat-min .suggested-question__text {
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-xs);
+}
+
+/* ── SuggestedQuestion: subtext hidden (mobile) ───────── */
+
+.ai-chat-min .suggested-question__subtext {
+  display: none;
+}
+
+/* ── WorkingIntro: gap — mobile ───────────────────────── */
+
+.ai-chat-min .working-intro {
+  gap: var(--ai-spacing-1);
+}
+
+/* ── WorkingIntro: title row — stacked (mobile) ───────── */
+
+.ai-chat-min .working-intro__title-row {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ai-spacing-3);
+}
+
+/* ── WorkingIntro: title — mobile font ────────────────── */
+
+.ai-chat-min .working-intro__title {
+  font-size: var(--ai-font-fixed-sm);
+}
+
+/* ── WorkingIntro: subtitle — mobile font ─────────────── */
+
+.ai-chat-min .working-intro__subtitle {
+  font-size: var(--ai-font-fixed-xs);
+}
+
+/* ── MessageBubble: padding — mobile ──────────────────── */
+
+.ai-chat-min .msg-bubble {
+  padding-left: var(--ai-spacing-8);
+}
+
+/* ── MessageBubble: text — mobile font ────────────────── */
+
+.ai-chat-min .msg-bubble__text {
+  font-size: var(--ai-font-fixed-xs);
+}
+
+/* ── MessageInput: box padding — mobile ───────────────── */
+
+.ai-chat-min .msg-input__box {
+  padding: var(--ai-spacing-5);
+}
+
+/* ── MessageInput: textarea — pinned to base ──────────── */
+
+.ai-chat-min .msg-input__textarea {
+  font-size: var(--ai-font-fixed-xs);
+}
