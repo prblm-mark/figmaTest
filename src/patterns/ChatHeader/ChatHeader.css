@@ -159,7 +159,11 @@
 
 .chat-header__gear-wrap {
   display: none;
-  position: relative;
+  position: absolute;
+  right: var(--ai-spacing-4);
+  top: 0;
+  bottom: 0;
+  align-items: center;
 }
 
 .chat-header:has(.chat-header__admin--visible) .chat-header__gear-wrap {
@@ -171,9 +175,8 @@
   position: absolute;
   top: 100%;
   right: 0;
-  margin-top: var(--ai-spacing-3);
+  margin-top: calc(-1 * var(--ai-spacing-2));
   z-index: 10;
-  background-color: var(--ai-chat-surface-primary);
 }
 
 .chat-header__admin-menu--open {
@@ -185,6 +188,7 @@
   flex-direction: column;
   gap: 1px;
   padding: var(--ai-spacing-3);
+  background-color: var(--ai-chat-surface-primary);
   border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-md);
 }
