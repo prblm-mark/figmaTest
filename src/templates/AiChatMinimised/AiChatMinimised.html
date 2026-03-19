@@ -18,8 +18,12 @@
   <link rel="stylesheet" href="../../components/SuggestedQuestion/SuggestedQuestion.css">
   <link rel="stylesheet" href="../../components/WorkingIntro/WorkingIntro.css">
   <link rel="stylesheet" href="../../components/Skeleton/Skeleton.css">
+  <link rel="stylesheet" href="../../components/SourcesLink/SourcesLink.css">
+  <link rel="stylesheet" href="../../components/ChatResponseTable/ChatResponseTable.css">
+
   <!-- Pattern CSS -->
   <link rel="stylesheet" href="../../patterns/SourcesCarousel/SourcesCarousel.css">
+  <link rel="stylesheet" href="../../patterns/QuickLinks/QuickLinks.css">
   <link rel="stylesheet" href="../../patterns/MessageInput/MessageInput.css">
   <link rel="stylesheet" href="../../patterns/ChatSidebar/ChatSidebar.css">
   <link rel="stylesheet" href="../../patterns/ChatHeader/ChatHeader.css">
@@ -495,29 +499,119 @@
 
             </div>
 
-            <!-- Response view: simple prose (mobile-appropriate) -->
+            <!-- Response view: full AI answer -->
             <div class="chat-main__response">
+
+              <!-- Quick links -->
+              <div class="quick-links">
+                <h3 class="quick-links__heading">Quick links</h3>
+                <div class="quick-links__list">
+                  <a href="#" class="sources-link sources-link--primary">
+                    <i data-lucide="file-text"></i>
+                    <span class="sources-link__text">The Analysis Dashboard Guide</span>
+                  </a>
+                  <a href="#" class="sources-link sources-link--link">
+                    <i data-lucide="link"></i>
+                    <span class="sources-link__text">How are Article Views counted?</span>
+                  </a>
+                  <a href="#" class="sources-link sources-link--link">
+                    <i data-lucide="link"></i>
+                    <span class="sources-link__text">Why are Site Analysis stats different?</span>
+                  </a>
+                </div>
+              </div>
+
               <p>Page views refer to the total number of times pages on your site are viewed by users. In Affino, page views are counted each time a page loads and are tracked as part of your site analytics. Multiple views of the same page by the same user are counted separately.</p>
 
               <p><strong>Key points about page views in Affino</strong></p>
 
               <ul>
-                <li><strong>Page views</strong> are recorded under the Stats function within each article or page.</li>
+                <li><strong>Page views</strong> are recorded under the Stats function within each <a href="#">article or page <i data-lucide="arrow-up-right" aria-hidden="true"></i></a></li>
                 <li>They include views by both registered and guest users.</li>
                 <li>If a user clicks on an article but encounters a <strong>paywall</strong>, it still counts as a page view.</li>
-                <li>Page views are used in various reports and dashboards, such as the Analysis Dashboard, to provide insights into user engagement.</li>
+                <li>Page views are used in various reports and dashboards, such as the Analysis Dashboard, to provide insights into user <code>section-margin</code></li>
                 <li>Affino distinguishes between simple page views (impressions) and content consumption, where consumption indicates the user has actively engaged with the content beyond just loading the page.</li>
               </ul>
 
-              <p><strong>You can view page view statistics in Affino via:</strong></p>
+              <!-- Data table -->
+              <div class="chat-response-table-scroll">
+                <table class="chat-response-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Sessions</th>
+                      <th>Last active</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="chat-response-table__text">olivia.chen@acme.io</td>
+                      <td class="chat-response-table__text">Olivia Chen</td>
+                      <td>342</td>
+                      <td>2 hours ago</td>
+                    </tr>
+                    <tr>
+                      <td class="chat-response-table__text">Marcus Webb</td>
+                      <td class="chat-response-table__text">m.webb@acme.io</td>
+                      <td>198</td>
+                      <td>4 hours ago</td>
+                    </tr>
+                    <tr>
+                      <td class="chat-response-table__text">Priya Sharma</td>
+                      <td class="chat-response-table__text">priya.s@acme.io</td>
+                      <td>87</td>
+                      <td>Yesterday</td>
+                    </tr>
+                    <tr>
+                      <td class="chat-response-table__text">James Kofi</td>
+                      <td class="chat-response-table__text">j.kofi@acme.io</td>
+                      <td>156</td>
+                      <td>3 days ago</td>
+                    </tr>
+                    <tr>
+                      <td class="chat-response-table__text">Emma Lindqvist</td>
+                      <td class="chat-response-table__text">emma.l@acme.io</td>
+                      <td>421</td>
+                      <td>Just now</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
 
-              <ul>
-                <li>Control &gt; Publish &gt; Articles + Stats</li>
-                <li>Control &gt; Analyse &gt; Articles Report</li>
-                <li>The Analysis Dashboard for broader site metrics including page views over time</li>
-              </ul>
+              <!-- Guides -->
+              <div class="quick-links quick-links--full">
+                <h3 class="quick-links__heading">Guides</h3>
+                <div class="quick-links__list">
+                  <a href="#" class="sources-link sources-link--primary">
+                    <i data-lucide="file-text"></i>
+                    <span class="sources-link__text">The Analysis Dashboard Guide</span>
+                  </a>
+                </div>
+              </div>
 
-              <p>This tracking helps you understand how often your content is accessed and supports optimizing engagement and conversion strategies.</p>
+              <!-- FAQs -->
+              <div class="quick-links quick-links--full">
+                <h3 class="quick-links__heading">FAQs</h3>
+                <div class="quick-links__list">
+                  <a href="#" class="sources-link sources-link--link">
+                    <i data-lucide="link"></i>
+                    <span class="sources-link__text">How are Article Views counted?</span>
+                  </a>
+                  <a href="#" class="sources-link sources-link--link">
+                    <i data-lucide="link"></i>
+                    <span class="sources-link__text">Why are Site Analysis stats different to third party platforms stats?</span>
+                  </a>
+                  <a href="#" class="sources-link sources-link--link">
+                    <i data-lucide="link"></i>
+                    <span class="sources-link__text">When a user hits the metering wall, does that count as a page view?</span>
+                  </a>
+                  <a href="#" class="sources-link sources-link--link">
+                    <i data-lucide="link"></i>
+                    <span class="sources-link__text">Site Analysis: What is the difference between Impressions / Views vs Consumed?</span>
+                  </a>
+                </div>
+              </div>
 
               <!-- Feedback actions -->
               <div class="chat-main__response-actions">

@@ -207,6 +207,22 @@
   display: none;
 }
 
+/* ── SourcesLink: pin to mobile (full width, no cap) ──── */
+
+.ai-chat-min .sources-link {
+  max-width: 100%;
+}
+
+/* ── ChatResponseTable: pin to mobile font sizes ─────── */
+
+.ai-chat-min .chat-response-table {
+  font-size: var(--ai-font-fixed-xs);
+}
+
+.ai-chat-min .chat-response-table th {
+  font-size: var(--ai-font-fixed-xxs);
+}
+
 /* ── ChatMain: response — fixed font ──────────────────── */
 
 .ai-chat-min .chat-main__response {
