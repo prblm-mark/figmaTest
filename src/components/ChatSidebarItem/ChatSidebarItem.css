@@ -5,7 +5,7 @@
 [data-sidebar-theme="light"] {
   --ai-chat-sidebar-text: rgb(31 42 55);
   --ai-chat-sidebar-selected-text: color-mix(in srgb, var(--ai-chat-sidebar-text) 85%, black);
-  --ai-chat-sidebar-hover-bg: color-mix(in srgb, var(--ai-chat-sidebar-bg) 92%, rgb(38 55 88));
+  --ai-chat-sidebar-hover-bg: color-mix(in srgb, var(--ai-chat-sidebar-bg) 94%, rgb(38 55 88));
   --ai-chat-sidebar-active-bg: color-mix(in srgb, var(--ai-chat-sidebar-bg) 88%, rgb(38 55 88));
 }
 

@@ -56,6 +56,21 @@
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  scrollbar-color: var(--ai-chat-sidebar-active-bg) transparent;
+  scrollbar-width: thin;
+}
+
+.chat-sidebar__sections::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-sidebar__sections::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-sidebar__sections::-webkit-scrollbar-thumb {
+  background-color: var(--ai-chat-sidebar-active-bg);
+  border-radius: var(--ai-radius-full);
 }
 
 /* ── Individual section (Pinned, Recent, Older…) ─────── */

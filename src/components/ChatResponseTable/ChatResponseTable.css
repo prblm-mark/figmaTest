@@ -1,0 +1,96 @@
+/* ChatResponseTable — inline data table for chat responses
+ * Figma node: 2160:3648 (Default/Mobile), 2160:3996 (Desktop)
+ * Tier: Component
+ * Variants: Default (mobile), Desktop
+ */
+
+/* ── Scroll wrapper ──────────────────────────────────── */
+
+.chat-response-table-scroll {
+  --_scroll-thumb: color-mix(in srgb, var(--ai-chat-surface-primary) 75%, rgb(38 55 88));
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  width: 100%;
+  scrollbar-color: var(--_scroll-thumb) transparent;
+  scrollbar-width: auto;
+}
+
+[data-theme="dark"] .chat-response-table-scroll {
+  --_scroll-thumb: color-mix(in srgb, var(--ai-chat-surface-primary) 80%, white);
+}
+
+.chat-response-table-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.chat-response-table-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-response-table-scroll::-webkit-scrollbar-thumb {
+  background-color: var(--_scroll-thumb);
+  border-radius: var(--ai-radius-full);
+}
+
+/* ── Table base ──────────────────────────────────────── */
+
+.chat-response-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+}
+
+@media (min-width: 640px) {
+  .chat-response-table {
+    font-size: var(--ai-font-fixed-sm);
+  }
+}
+
+/* ── Header ──────────────────────────────────────────── */
+
+.chat-response-table th {
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-semibold);
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-secondary);
+  text-align: left;
+  padding: var(--ai-spacing-4) var(--ai-spacing-5);
+  border-bottom: 1px solid var(--ai-border-secondary);
+  white-space: nowrap;
+}
+
+@media (min-width: 640px) {
+  .chat-response-table th {
+    font-size: var(--ai-font-fixed-xs);
+  }
+}
+
+/* ── Body cells ──────────────────────────────────────── */
+
+.chat-response-table td {
+  padding: var(--ai-spacing-4) var(--ai-spacing-5);
+  border-bottom: 1px solid var(--ai-surface-minimal);
+  vertical-align: middle;
+  white-space: nowrap;
+  min-width: var(--ai-size-2);
+}
+
+.chat-response-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Text cells (Name, Email): truncate overflow */
+.chat-response-table__text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 0;
+  width: 25%;
+}

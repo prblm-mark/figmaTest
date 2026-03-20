@@ -1,0 +1,132 @@
+/* SourcesLink — pill-shaped link with icon + text.
+   Variants: --primary (brand-colored, dynamic) and --link (neutral). */
+
+/* ── Computed brand variables ──────────────────────────── */
+/* Set on the container with data-brand-theme (detected by brand-colors.js) */
+
+[data-brand-theme="dark"] {
+  --_brand-text: var(--ai-chat-brand);
+  --_brand-bg: color-mix(in srgb, var(--ai-chat-brand) 8%, var(--ai-chat-surface-primary));
+  --_brand-border: color-mix(in srgb, var(--ai-chat-brand) 30%, var(--ai-chat-surface-primary));
+  --_brand-bg-hover: color-mix(in srgb, var(--ai-chat-brand) 15%, var(--ai-chat-surface-primary));
+  --_brand-border-hover: color-mix(in srgb, var(--ai-chat-brand) 50%, var(--ai-chat-surface-primary));
+
+  /* TODO [brand-override]: msg bubble colors derived from brand.
+     Currently set directly — revisit with explicit user-override pattern
+     (e.g. var(--ai-chat-msg-bg-override, var(--_brand-msg-bg))) when
+     client customisation ships. */
+  --ai-chat-msg-bg: color-mix(in srgb, var(--ai-chat-brand) 8%, var(--ai-chat-surface-primary));
+  --ai-chat-msg-text: color-mix(in srgb, var(--ai-chat-brand) 50%, black);
+}
+
+[data-brand-theme="light"] {
+  --_brand-text: color-mix(in srgb, var(--ai-chat-brand) 50%, black);
+  --_brand-bg: color-mix(in srgb, var(--ai-chat-brand) 15%, var(--ai-chat-surface-primary));
+  --_brand-border: var(--ai-chat-brand);
+  --_brand-bg-hover: color-mix(in srgb, var(--ai-chat-brand) 25%, var(--ai-chat-surface-primary));
+  --_brand-border-hover: color-mix(in srgb, var(--ai-chat-brand) 80%, black);
+
+  /* TODO [brand-override]: see note above */
+  --ai-chat-msg-bg: color-mix(in srgb, var(--ai-chat-brand) 15%, var(--ai-chat-surface-primary));
+  --ai-chat-msg-text: color-mix(in srgb, var(--ai-chat-brand) 35%, black);
+}
+
+/* Dark mode: stronger brand tint + lighter text for readability */
+[data-theme="dark"][data-brand-theme="dark"] {
+  --_brand-text: color-mix(in srgb, var(--ai-chat-brand) 45%, white);
+  --_brand-bg: color-mix(in srgb, var(--ai-chat-brand) 15%, var(--ai-chat-surface-primary));
+  --_brand-border: color-mix(in srgb, var(--ai-chat-brand) 40%, var(--ai-chat-surface-primary));
+  --_brand-bg-hover: color-mix(in srgb, var(--ai-chat-brand) 22%, var(--ai-chat-surface-primary));
+  --_brand-border-hover: color-mix(in srgb, var(--ai-chat-brand) 55%, var(--ai-chat-surface-primary));
+
+  /* TODO [brand-override]: see note above */
+  --ai-chat-msg-bg: color-mix(in srgb, var(--ai-chat-brand) 50%, var(--ai-chat-surface-primary));
+  --ai-chat-msg-text: var(--ai-text-primary);
+}
+
+/* ── Base ──────────────────────────────────────────────── */
+
+.sources-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  padding: var(--ai-spacing-3) var(--ai-spacing-5);
+  max-width: 100%;
+  border: 1px solid;
+  border-radius: var(--ai-radius-full);
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-medium);
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-xs);
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color var(--ai-transition-default),
+              border-color var(--ai-transition-default);
+}
+
+.sources-link__text {
+  flex: 1 0 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sources-link [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  flex-shrink: 0;
+}
+
+@media (min-width: 1024px) {
+  .sources-link {
+    max-width: 12rem;
+  }
+}
+
+a.sources-link:hover {
+  text-decoration: none;
+}
+
+a.sources-link--primary:hover {
+  color: var(--_brand-text);
+}
+
+a.sources-link--link:hover {
+  color: var(--ai-text-secondary);
+}
+
+/* ── Primary variant (brand-colored, dynamic) ─────────── */
+
+.sources-link--primary {
+  background: var(--_brand-bg);
+  border-color: var(--_brand-border);
+  color: var(--_brand-text);
+}
+
+.sources-link--primary .sources-link__text {
+  color: var(--_brand-text);
+}
+
+.sources-link--primary:hover {
+  background: var(--_brand-bg-hover);
+  border-color: var(--_brand-border-hover);
+}
+
+/* ── Link variant (neutral) ───────────────────────────── */
+
+.sources-link--link {
+  background: var(--ai-surface-minimal);
+  border-color: var(--ai-border-secondary);
+  color: var(--ai-text-secondary);
+}
+
+.sources-link--link [data-lucide] {
+  color: var(--ai-icon-secondary);
+}
+
+.sources-link--link:hover {
+  background: var(--ai-surface-secondary);
+  border-color: var(--ai-border-secondary);
+}

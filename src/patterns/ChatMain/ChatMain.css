@@ -12,7 +12,8 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  height: 100%;
+  flex: 1;
+  min-height: 0;
   position: relative;
   background-color: var(--ai-chat-surface-primary);
 }
@@ -76,20 +77,21 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: var(--ai-spacing-5);
-  padding: 0 var(--ai-spacing-5) var(--ai-spacing-5);
+  gap: var(--ai-spacing-3);
+  padding: 0 var(--ai-spacing-5) 0;
 }
 
 @media (min-width: 640px) {
   .chat-main__intro {
-    padding: 0 0 var(--ai-spacing-7);
+    gap: var(--ai-spacing-5);
+    padding: 0 0 var(--ai-spacing-5);
   }
 }
 
 .chat-main__title {
   font-family: var(--ai-font-title);
   font-weight: var(--ai-font-bold);
-  font-size: var(--ai-font-fluid-2xl);
+  font-size: var(--ai-font-fixed-xl);
   line-height: var(--ai-leading-lg);
   color: var(--ai-text-primary);
   margin: 0;
@@ -97,7 +99,7 @@
 
 @media (min-width: 640px) {
   .chat-main__title {
-    font-size: var(--ai-font-fluid-4xl);
+    font-size: var(--ai-font-fixed-3xl);
     line-height: var(--ai-leading-xl);
   }
 }
@@ -105,7 +107,7 @@
 .chat-main__subtitle {
   font-family: var(--ai-font-body);
   font-weight: var(--ai-font-regular);
-  font-size: var(--ai-font-fluid-sm);
+  font-size: var(--ai-font-fixed-xs);
   line-height: 1.5;
   color: var(--ai-text-contrast);
   margin: 0;
@@ -113,7 +115,13 @@
 
 @media (min-width: 640px) {
   .chat-main__subtitle {
-    font-size: var(--ai-font-fluid-md);
+    font-size: var(--ai-font-fixed-sm);
+  }
+}
+
+@media (min-width: 768px) {
+  .chat-main__subtitle {
+    font-size: var(--ai-font-fixed-md);
   }
 }
 
@@ -176,8 +184,8 @@
    ══════════════════════════════════════════════════════════ */
 
 .chat-main__scroll {
-  --_scroll-track: color-mix(in srgb, var(--ai-chat-surface-primary) 92%, rgb(38 55 88));
-  --_scroll-thumb: color-mix(in srgb, var(--ai-chat-surface-primary) 75%, rgb(38 55 88));
+  --_scroll-track: color-mix(in srgb, var(--ai-chat-surface-primary) 94%, rgb(38 55 88));
+  --_scroll-thumb: color-mix(in srgb, var(--ai-chat-surface-primary) 82%, rgb(38 55 88));
   flex: 1;
   min-height: 0;
   overflow-y: auto;
@@ -212,7 +220,7 @@
 .chat-main__container {
   width: 100%;
   max-width: var(--ai-size-11);
-  padding: var(--ai-spacing-8) var(--ai-spacing-6);
+  padding: var(--ai-spacing-6);
   display: flex;
   flex-direction: column;
   gap: var(--ai-spacing-8);
@@ -220,14 +228,12 @@
   min-height: min-content;
 }
 
-/* Carousel nav arrows: pull inside container bounds (parent overflow clips them otherwise) */
-.chat-main__container .sources-carousel__nav--prev {
-  left: 0;
+@media (min-width: 640px) {
+  .chat-main__container {
+    padding: var(--ai-spacing-8) var(--ai-spacing-6);
+  }
 }
 
-.chat-main__container .sources-carousel__nav--next {
-  right: 0;
-}
 
 /* ── Response prose ───────────────────────────────────── */
 
@@ -281,11 +287,83 @@
 }
 
 .chat-main__response li {
-  margin-bottom: var(--ai-spacing-3);
+  margin-bottom: var(--ai-spacing-4);
 }
 
 .chat-main__response li:last-child {
   margin-bottom: 0;
+}
+
+.chat-main__response .quick-links {
+  margin-bottom: var(--ai-spacing-6);
+}
+
+/* ── Response subheadings ────────────────────────────── */
+
+.chat-main__response h3 {
+  font-family: var(--ai-font-body);
+  font-weight: var(--ai-font-semibold);
+  font-size: inherit;
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  margin: 0;
+  font-feature-settings: 'case' 1;
+}
+
+/* ── Inline link annotations ─────────────────────────── */
+
+.chat-main__response a:not(.sources-link) {
+  color: var(--ai-text-primary);
+  font-weight: var(--ai-font-medium);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 4px;
+  white-space: nowrap;
+}
+
+.chat-main__response a:not(.sources-link) [data-lucide] {
+  display: inline-block;
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  vertical-align: middle;
+  margin-left: var(--ai-spacing-1);
+  color: var(--ai-icon-secondary);
+}
+
+.chat-main__response a:not(.sources-link):hover {
+  color: var(--ai-text-secondary);
+}
+
+/* ── Inline code badge ───────────────────────────────── */
+
+.chat-main__response code {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--ai-spacing-1);
+  background: var(--ai-surface-minimal);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-sm);
+  font-family: 'Dank Mono', monospace;
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-chat-brand);
+  letter-spacing: var(--ai-tracking-3);
+  white-space: nowrap;
+  vertical-align: baseline;
+}
+
+/* ── Table spacing inside response ───────────────────── */
+
+.chat-main__response .chat-response-table-scroll {
+  margin-bottom: var(--ai-spacing-6);
+}
+
+/* ── Feedback / response actions ─────────────────────── */
+
+.chat-main__response-actions {
+  display: flex;
+  align-items: center;
 }
 
 /* ── Footer: fade + sticky input ──────────────────────── */
@@ -303,12 +381,12 @@
 
 .chat-main__fade {
   position: absolute;
-  bottom: 100%;
+  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
   max-width: var(--ai-size-11);
-  height: var(--ai-size-2);
+  height: calc(100% + var(--ai-spacing-8));
   background: var(--ai-gradient-chat-surface-primary);
   pointer-events: none;
 }
@@ -344,7 +422,13 @@
   display: flex;
   flex-direction: column;
   gap: var(--ai-spacing-6);
-  margin-top: var(--ai-spacing-8);
+  margin-top: var(--ai-spacing-6);
+}
+
+@media (min-width: 640px) {
+  .chat-main__processing .chat-response__skeletons {
+    margin-top: var(--ai-spacing-8);
+  }
 }
 
 .chat-main__processing .chat-response__answer {
@@ -361,8 +445,14 @@
 
 .chat-main__processing .chat-response__answer p {
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-sm);
+  font-size: var(--ai-font-fluid-xs);
   color: var(--ai-text-primary);
   line-height: var(--ai-leading-md);
   margin: 0 0 var(--ai-spacing-5);
+}
+
+@media (min-width: 640px) {
+  .chat-main__processing .chat-response__answer p {
+    font-size: var(--ai-font-fluid-sm);
+  }
 }

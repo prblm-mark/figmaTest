@@ -8,7 +8,7 @@
   min-width: max-content;
   padding: var(--ai-spacing-3);
   border-radius: var(--ai-radius-lg);
-  background: var(--ai-chat-sidebar-bg);
+  background: var(--ai-chat-sidebar-hover-bg);
 }
 
 .chat-sidebar-menu--open {
@@ -44,10 +44,6 @@
 }
 
 .chat-sidebar-menu__item:hover {
-  background: var(--ai-chat-sidebar-hover-bg);
-}
-
-.chat-sidebar-menu__item:active {
   background: var(--ai-chat-sidebar-active-bg);
 }
 
