@@ -1,0 +1,70 @@
+/* SegmentedControl — segmented toggle (radio-style, single select)
+ * Figma node: 2162:5079 (ThemeToggle)
+ * Tier: Component
+ * Variants: State=Light / State=Dark (which button is active)
+ */
+
+/* ── Container ───────────────────────────────────────── */
+
+.seg-control {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-0);
+  height: var(--ai-spacing-8);
+  padding: 0 var(--ai-spacing-1);
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+}
+
+/* ── Button ──────────────────────────────────────────── */
+
+.seg-control__btn {
+  display: flex;
+  flex: 1 0 0;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ai-spacing-3);
+  height: 32px;
+  min-width: 0;
+  padding: 0 var(--ai-spacing-4);
+  background: transparent;
+  border: none;
+  border-radius: var(--ai-radius-md);
+  font-family: var(--ai-font-body);
+  font-weight: var(--ai-font-semibold);
+  font-size: var(--ai-font-fluid-xxs);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-btn-tertiary-text);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color var(--ai-transition-default);
+  font-feature-settings: 'case' 1;
+}
+
+.seg-control__btn:hover:not(.seg-control__btn--active) {
+  background-color: var(--ai-surface-minimal);
+}
+
+/* ── Active button ───────────────────────────────────── */
+
+.seg-control__btn--active {
+  background-color: var(--ai-chat-surface-minimal);
+  cursor: default;
+}
+
+/* ── Icon ────────────────────────────────────────────── */
+
+.seg-control__btn [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  flex-shrink: 0;
+}
+
+/* ── Focus ───────────────────────────────────────────── */
+
+.seg-control__btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--ai-surface-primary),
+              0 0 0 3px var(--ai-surface-brand-contrast);
+}

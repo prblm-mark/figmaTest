@@ -1,0 +1,236 @@
+/* StyleSettings — modal settings panel for chat UI customisation
+ * Figma node: 2175:4400
+ * Tier: Pattern
+ * Variants: State=Default / State=Title Tooltip
+ * Composes: SegmentedControl, Toggle, ColorPickerInput, Button, Tooltip, Input
+ */
+
+/* ── Panel container ─────────────────────────────────── */
+
+.style-settings {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+  width: 400px;
+  max-width: calc(100vw - var(--ai-spacing-5) * 2);
+  padding: var(--ai-spacing-5) var(--ai-spacing-6);
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-xl);
+  box-shadow: var(--ai-shadow-lg);
+  overflow: clip;
+}
+
+/* ── Header ──────────────────────────────────────────── */
+
+.style-settings__header {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+}
+
+.style-settings__title {
+  flex: 1;
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-bold);
+  font-size: var(--ai-font-fluid-xl);
+  line-height: var(--ai-leading-lg);
+  color: var(--ai-text-primary);
+  margin: 0;
+  font-feature-settings: 'case' 1;
+}
+
+/* ── Subtitle row ────────────────────────────────────── */
+
+.style-settings__subtitle-row {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+}
+
+.style-settings__subtitle {
+  flex: 1;
+  font-family: var(--ai-font-body);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-contrast);
+  margin: 0;
+  font-feature-settings: 'case' 1;
+}
+
+/* ── Form body ───────────────────────────────────────── */
+
+.style-settings__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+  padding-bottom: var(--ai-spacing-5);
+  overflow: clip;
+}
+
+/* ── Form row (label + control) ──────────────────────── */
+
+.style-settings__row {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+}
+
+.style-settings__row--toggle {
+  min-height: 40px;
+}
+
+/* ── Label ───────────────────────────────────────────── */
+
+.style-settings__label-wrap {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  min-width: 0;
+  position: relative;
+}
+
+.style-settings__label {
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-semibold);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-primary);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 4px;
+  font-feature-settings: 'case' 1;
+  cursor: default;
+}
+
+/* ── Label tooltip ───────────────────────────────────── */
+
+.style-settings__tooltip {
+  display: none;
+  position: absolute;
+  top: calc(100% + var(--ai-spacing-3));
+  left: 0;
+  z-index: 10;
+}
+
+.style-settings__label:hover + .style-settings__tooltip {
+  display: block;
+}
+
+/* ── Control column ──────────────────────────────────── */
+
+.style-settings__control {
+  flex-shrink: 0;
+  width: 172px;
+}
+
+/* ── Divider ─────────────────────────────────────────── */
+
+.style-settings__divider {
+  border: none;
+  border-top: 1px solid var(--ai-border-secondary);
+  margin: 0;
+}
+
+/* ── Custom select (dropdown) ────────────────────────── */
+
+.style-settings__select-wrap {
+  position: relative;
+  width: 172px;
+  flex-shrink: 0;
+}
+
+.style-settings__select {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 40px;
+  padding: 0 var(--ai-spacing-5);
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  font-family: var(--ai-font-body);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  cursor: pointer;
+  transition: border-color var(--ai-transition-default);
+  font-feature-settings: 'case' 1;
+}
+
+.style-settings__select:hover {
+  border-color: var(--ai-border-brand);
+}
+
+.style-settings__select:focus-visible {
+  outline: none;
+  border-color: var(--ai-border-brand);
+  box-shadow: 0 0 0 1px var(--ai-surface-primary),
+              0 0 0 3px var(--ai-surface-brand-contrast);
+}
+
+.style-settings__select [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-secondary);
+  flex-shrink: 0;
+}
+
+.style-settings__select-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Dropdown menu ───────────────────────────────────── */
+
+.style-settings__dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + var(--ai-spacing-2));
+  left: 0;
+  right: 0;
+  flex-direction: column;
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  box-shadow: var(--ai-shadow-md);
+  z-index: 20;
+  overflow: hidden;
+}
+
+.style-settings__dropdown--open {
+  display: flex;
+}
+
+.style-settings__option {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: var(--ai-spacing-3) var(--ai-spacing-5);
+  background: none;
+  border: none;
+  font-family: var(--ai-font-body);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  cursor: pointer;
+  text-align: left;
+  transition: background-color var(--ai-transition-default);
+  font-feature-settings: 'case' 1;
+}
+
+.style-settings__option:hover {
+  background-color: var(--ai-surface-minimal);
+}
+
+.style-settings__option--selected {
+  background-color: var(--ai-surface-minimal);
+  font-weight: var(--ai-font-medium);
+}

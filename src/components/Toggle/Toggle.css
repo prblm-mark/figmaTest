@@ -1,0 +1,105 @@
+/* Toggle — on/off switch control
+ * Figma node: 2025:1080
+ * Tier: Component
+ * Variants: State=Initial/Active/Disabled × Size=SM (only SM built)
+ */
+
+/* ── Base ────────────────────────────────────────────── */
+
+.toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ai-spacing-3);
+  padding: 1px 0;
+  cursor: pointer;
+}
+
+/* ── Track ───────────────────────────────────────────── */
+
+.toggle__track {
+  position: relative;
+  width: 40px;
+  height: 20px;
+  flex-shrink: 0;
+  background-color: var(--ai-surface-secondary);
+  border-radius: var(--ai-radius-full);
+  transition: background-color var(--ai-transition-default);
+}
+
+/* ── Knob ────────────────────────────────────────────── */
+
+.toggle__knob {
+  position: absolute;
+  top: 2px;
+  left: 2.5px;
+  width: 16px;
+  height: 16px;
+  background-color: var(--ai-surface-primary);
+  border-radius: var(--ai-radius-full);
+  transition: left var(--ai-transition-default);
+}
+
+/* ── Active state ────────────────────────────────────── */
+
+.toggle--active .toggle__track {
+  background-color: var(--ai-chat-brand);
+}
+
+.toggle--active .toggle__knob {
+  left: calc(100% - 16px - 2.5px);
+}
+
+/* ── Disabled state ──────────────────────────────────── */
+
+.toggle--disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.toggle--disabled .toggle__track {
+  background-color: var(--ai-surface-secondary);
+}
+
+/* ── Label ───────────────────────────────────────────── */
+
+.toggle__label {
+  display: flex;
+  flex-direction: column;
+}
+
+.toggle__label-text {
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-medium);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: 1.25;
+  color: var(--ai-text-primary);
+  margin: 0;
+}
+
+.toggle--disabled .toggle__label-text {
+  color: var(--ai-icon-contrast);
+}
+
+.toggle__helper {
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: 1.5;
+  color: var(--ai-text-contrast);
+  margin: 0;
+}
+
+.toggle--disabled .toggle__helper {
+  color: var(--ai-icon-contrast);
+}
+
+/* ── Focus ───────────────────────────────────────────── */
+
+.toggle:focus-visible {
+  outline: none;
+}
+
+.toggle:focus-visible .toggle__track {
+  box-shadow: 0 0 0 1px var(--ai-surface-primary),
+              0 0 0 3px var(--ai-surface-brand-contrast);
+}

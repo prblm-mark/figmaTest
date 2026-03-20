@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>ColorPickerInput — Component Demo</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="ColorPickerInput.css">
+  <style>
+    body {
+      padding: var(--ai-spacing-7);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-7);
+      background-color: var(--ai-surface-secondary);
+    }
+    .demo-section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-5);
+      padding: var(--ai-spacing-6);
+      background-color: var(--ai-surface-primary);
+      border-radius: var(--ai-radius-lg);
+    }
+    .demo-section h2 {
+      font-family: var(--ai-font-title);
+      font-weight: var(--ai-font-bold);
+      font-size: var(--ai-font-fixed-sm);
+      color: var(--ai-text-primary);
+      margin: 0;
+    }
+    .demo-row {
+      display: flex;
+      align-items: center;
+      gap: var(--ai-spacing-6);
+    }
+    .demo-label {
+      font-size: var(--ai-font-fixed-xxs);
+      color: var(--ai-text-contrast);
+      min-width: 100px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-section">
+    <h2>ColorPickerInput</h2>
+    <div class="demo-row">
+      <span class="demo-label">Accent Color</span>
+      <div class="color-picker-input" style="width: 172px;">
+        <span class="color-picker-input__swatch" style="background-color: #1A56DB;"></span>
+        <span class="color-picker-input__value">#1A56DB</span>
+        <input type="color" class="color-picker-input__native" value="#1A56DB" aria-label="Accent color">
+      </div>
+    </div>
+    <div class="demo-row">
+      <span class="demo-label">Sidebar Color</span>
+      <div class="color-picker-input" style="width: 172px;">
+        <span class="color-picker-input__swatch" style="background-color: #09235B;"></span>
+        <span class="color-picker-input__value">#09235B</span>
+        <input type="color" class="color-picker-input__native" value="#09235B" aria-label="Sidebar color">
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Interactive (updates swatch + text on pick)</h2>
+    <div class="demo-row">
+      <div class="color-picker-input" style="width: 172px;" id="demo-picker">
+        <span class="color-picker-input__swatch" style="background-color: #1A56DB;"></span>
+        <span class="color-picker-input__value">#1A56DB</span>
+        <input type="color" class="color-picker-input__native" value="#1A56DB" aria-label="Pick a color">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.color-picker-input__native').forEach(function (input) {
+      input.addEventListener('input', function () {
+        var container = input.closest('.color-picker-input');
+        var swatch = container.querySelector('.color-picker-input__swatch');
+        var valueEl = container.querySelector('.color-picker-input__value');
+        swatch.style.backgroundColor = input.value;
+        valueEl.textContent = input.value.toUpperCase();
+      });
+    });
+  </script>
+
+</body>
+</html>

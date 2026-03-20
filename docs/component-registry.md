@@ -35,4 +35,9 @@
 | QuickLinks | pattern | Built | [node 2156:3180](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2156-3180) | `src/patterns/QuickLinks/` — Heading + flex-wrap row of SourcesLink pills. Composes SourcesLink. `--full` modifier for Guides/FAQs (uncapped width). |
 | ChatResponseTable | component | Built | [node 2160:3648](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2160-3648) | `src/components/ChatResponseTable/` — Inline data table for chat responses. Default (mobile) + Desktop variants. Responsive font sizing at 640px. |
 
+| Toggle | component | Built | [node 2025:1080](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2025-1080) | `src/components/Toggle/` — On/off switch. State=Initial/Active/Disabled, Size=SM. Track uses `--ai-chat-brand` (active). |
+| SegmentedControl | component | Built | [node 2162:5079](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2162-5079) | `src/components/SegmentedControl/` — Radio-style toggle. State=Light/Dark. Active bg `--ai-chat-surface-minimal`. Lucide icons. |
+| ColorPickerInput | component | Built | [node 2160:5471](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2160-5471) | `src/components/ColorPickerInput/` — Color swatch + hex display. Native `<input type="color">` picker. |
+| StyleSettings | pattern | Built | [node 2175:4400](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2175-4400) | `src/patterns/StyleSettings/` — Modal settings panel. Theme toggle, color pickers, font/layout dropdowns, border/question toggles. Composes Toggle, SegmentedControl, ColorPickerInput, Button, Tooltip. |
+
 Add rows here as components are built. Format: Component Name, Tier (component/pattern/template), Built/In Progress/Figma Only, Figma URL, Notes.
