@@ -131,6 +131,12 @@
   overflow: hidden;
 }
 
+/* ── Dark mode: tertiary button hover on chat surface ── */
+
+[data-theme="dark"] .ai-chat-min .btn--tertiary:hover {
+  background-color: var(--ai-chat-surface-minimal);
+}
+
 /* ══════════════════════════════════════════════════════════
    MOBILE OVERRIDES — pin child components to base (mobile)
    values so desktop min-width breakpoints have no effect.
@@ -220,6 +226,12 @@
 }
 
 .ai-chat-min .chat-response-table th {
+  font-size: var(--ai-font-fixed-xxs);
+}
+
+/* ── ChatMain: code block — pinned to mobile ──────────── */
+
+.ai-chat-min .chat-main__response code {
   font-size: var(--ai-font-fixed-xxs);
 }
 

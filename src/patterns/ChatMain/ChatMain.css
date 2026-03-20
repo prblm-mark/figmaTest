@@ -340,17 +340,23 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0 var(--ai-spacing-1);
-  background: var(--ai-surface-minimal);
+  padding: 2px var(--ai-spacing-1);
+  background: var(--ai-chat-surface-tertiary);
   border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-sm);
-  font-family: 'Dank Mono', monospace;
-  font-size: var(--ai-font-fixed-xs);
+  font-family: 'Geist Mono', monospace;
+  font-size: var(--ai-font-fixed-xxs);
   line-height: var(--ai-leading-sm);
-  color: var(--ai-chat-brand);
+  color: var(--ai-text-primary);
   letter-spacing: var(--ai-tracking-3);
   white-space: nowrap;
   vertical-align: baseline;
+}
+
+@media (min-width: 640px) {
+  .chat-main__response code {
+    font-size: var(--ai-font-fixed-xs);
+  }
 }
 
 /* ── Table spacing inside response ───────────────────── */
