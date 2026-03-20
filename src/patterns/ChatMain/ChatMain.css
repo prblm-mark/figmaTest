@@ -234,21 +234,6 @@
   }
 }
 
-/* Carousel nav arrows: keep inside container (scroll parent clips negative offsets).
-   Add horizontal padding to carousel so arrows sit beside the track, not over cards. */
-@media (min-width: 1024px) {
-  .chat-main__container .sources-carousel {
-    padding: 0 var(--ai-spacing-8);
-  }
-
-  .chat-main__container .sources-carousel__nav--prev {
-    left: 0;
-  }
-
-  .chat-main__container .sources-carousel__nav--next {
-    right: 0;
-  }
-}
 
 /* ── Response prose ───────────────────────────────────── */
 
