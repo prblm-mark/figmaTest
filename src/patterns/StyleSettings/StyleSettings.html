@@ -91,7 +91,7 @@
           </div>
         </div>
         <div class="color-picker-input style-settings__control" id="accent-picker">
-          <span class="color-picker-input__swatch" style="background-color: #1A56DB;"></span>
+          <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #1A56DB;"></span></span>
           <span class="color-picker-input__value">#1A56DB</span>
           <input type="color" class="color-picker-input__native" value="#1A56DB" aria-label="Accent color">
         </div>
@@ -108,7 +108,7 @@
           </div>
         </div>
         <div class="color-picker-input style-settings__control" id="sidebar-picker">
-          <span class="color-picker-input__swatch" style="background-color: #09235B;"></span>
+          <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #09235B;"></span></span>
           <span class="color-picker-input__value">#09235B</span>
           <input type="color" class="color-picker-input__native" value="#09235B" aria-label="Sidebar color">
         </div>
@@ -231,6 +231,53 @@
   <script>lucide.createIcons();</script>
 
   <script>
+    // ── Drag to move ──────────────────────────────────────
+    {
+      var panel = document.getElementById('style-settings');
+      var dragHandle = document.querySelector('.style-settings__header');
+      var isDragging = false;
+      var dragStartX = 0;
+      var dragStartY = 0;
+      var panelOriginLeft = 0;
+      var panelOriginTop = 0;
+
+      dragHandle.addEventListener('mousedown', function (e) {
+        if (e.target.closest('button')) return;
+
+        isDragging = true;
+        panel.classList.add('style-settings--no-transition');
+        document.body.style.userSelect = 'none';
+
+        dragStartX = e.clientX;
+        dragStartY = e.clientY;
+
+        var rect = panel.getBoundingClientRect();
+        panelOriginLeft = rect.left;
+        panelOriginTop = rect.top;
+
+        e.preventDefault();
+      });
+
+      document.addEventListener('mousemove', function (e) {
+        if (!isDragging) return;
+
+        var dx = e.clientX - dragStartX;
+        var dy = e.clientY - dragStartY;
+
+        panel.style.left = (panelOriginLeft + dx) + 'px';
+        panel.style.top = (panelOriginTop + dy) + 'px';
+        panel.style.right = 'auto';
+        panel.style.bottom = 'auto';
+      });
+
+      document.addEventListener('mouseup', function () {
+        if (!isDragging) return;
+        isDragging = false;
+        panel.classList.remove('style-settings--no-transition');
+        document.body.style.userSelect = '';
+      });
+    }
+
     // ── Theme toggle (SegmentedControl) ─────────────────
     var themeToggle = document.getElementById('theme-toggle');
     themeToggle.addEventListener('click', function (e) {
@@ -267,7 +314,7 @@
     document.querySelectorAll('.color-picker-input__native').forEach(function (input) {
       input.addEventListener('input', function () {
         var container = input.closest('.color-picker-input');
-        container.querySelector('.color-picker-input__swatch').style.backgroundColor = input.value;
+        container.querySelector('.color-picker-input__swatch-inner').style.backgroundColor = input.value;
         container.querySelector('.color-picker-input__value').textContent = input.value.toUpperCase();
       });
     });
@@ -342,12 +389,12 @@
       // Reset color pickers
       var accentPicker = document.getElementById('accent-picker');
       accentPicker.querySelector('.color-picker-input__native').value = '#1A56DB';
-      accentPicker.querySelector('.color-picker-input__swatch').style.backgroundColor = '#1A56DB';
+      accentPicker.querySelector('.color-picker-input__swatch-inner').style.backgroundColor = '#1A56DB';
       accentPicker.querySelector('.color-picker-input__value').textContent = '#1A56DB';
 
       var sidebarPicker = document.getElementById('sidebar-picker');
       sidebarPicker.querySelector('.color-picker-input__native').value = '#09235B';
-      sidebarPicker.querySelector('.color-picker-input__swatch').style.backgroundColor = '#09235B';
+      sidebarPicker.querySelector('.color-picker-input__swatch-inner').style.backgroundColor = '#09235B';
       sidebarPicker.querySelector('.color-picker-input__value').textContent = '#09235B';
 
       // Reset dropdowns to defaults

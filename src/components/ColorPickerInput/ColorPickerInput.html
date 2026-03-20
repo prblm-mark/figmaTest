@@ -49,7 +49,7 @@
     <div class="demo-row">
       <span class="demo-label">Accent Color</span>
       <div class="color-picker-input" style="width: 172px;">
-        <span class="color-picker-input__swatch" style="background-color: #1A56DB;"></span>
+        <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #1A56DB;"></span></span>
         <span class="color-picker-input__value">#1A56DB</span>
         <input type="color" class="color-picker-input__native" value="#1A56DB" aria-label="Accent color">
       </div>
@@ -57,7 +57,7 @@
     <div class="demo-row">
       <span class="demo-label">Sidebar Color</span>
       <div class="color-picker-input" style="width: 172px;">
-        <span class="color-picker-input__swatch" style="background-color: #09235B;"></span>
+        <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #09235B;"></span></span>
         <span class="color-picker-input__value">#09235B</span>
         <input type="color" class="color-picker-input__native" value="#09235B" aria-label="Sidebar color">
       </div>
@@ -68,7 +68,7 @@
     <h2>Interactive (updates swatch + text on pick)</h2>
     <div class="demo-row">
       <div class="color-picker-input" style="width: 172px;" id="demo-picker">
-        <span class="color-picker-input__swatch" style="background-color: #1A56DB;"></span>
+        <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #1A56DB;"></span></span>
         <span class="color-picker-input__value">#1A56DB</span>
         <input type="color" class="color-picker-input__native" value="#1A56DB" aria-label="Pick a color">
       </div>
@@ -79,9 +79,9 @@
     document.querySelectorAll('.color-picker-input__native').forEach(function (input) {
       input.addEventListener('input', function () {
         var container = input.closest('.color-picker-input');
-        var swatch = container.querySelector('.color-picker-input__swatch');
+        var swatchInner = container.querySelector('.color-picker-input__swatch-inner');
         var valueEl = container.querySelector('.color-picker-input__value');
-        swatch.style.backgroundColor = input.value;
+        swatchInner.style.backgroundColor = input.value;
         valueEl.textContent = input.value.toUpperCase();
       });
     });

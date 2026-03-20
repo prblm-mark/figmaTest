@@ -11,6 +11,8 @@
   align-items: flex-start;
   gap: var(--ai-spacing-3);
   padding: 1px 0;
+  background: none;
+  border: none;
   cursor: pointer;
 }
 

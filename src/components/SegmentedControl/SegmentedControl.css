@@ -42,10 +42,6 @@
   font-feature-settings: 'case' 1;
 }
 
-.seg-control__btn:hover:not(.seg-control__btn--active) {
-  background-color: var(--ai-surface-minimal);
-}
-
 /* ── Active button ───────────────────────────────────── */
 
 .seg-control__btn--active {
