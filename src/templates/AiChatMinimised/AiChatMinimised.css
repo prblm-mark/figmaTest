@@ -131,6 +131,12 @@
   overflow: hidden;
 }
 
+/* ── Dark mode: tertiary button hover on chat surface ── */
+
+[data-theme="dark"] .ai-chat-min .btn--tertiary:hover {
+  background-color: var(--ai-chat-surface-minimal);
+}
+
 /* ══════════════════════════════════════════════════════════
    MOBILE OVERRIDES — pin child components to base (mobile)
    values so desktop min-width breakpoints have no effect.
