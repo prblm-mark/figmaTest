@@ -9,7 +9,7 @@
 
 .style-settings {
   position: fixed;
-  bottom: var(--ai-spacing-6);
+  top: var(--ai-spacing-12);
   right: var(--ai-spacing-6);
   display: flex;
   flex-direction: column;

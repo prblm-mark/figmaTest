@@ -20,6 +20,9 @@
   <link rel="stylesheet" href="../../components/ChatSidebarMenu/ChatSidebarMenu.css">
   <link rel="stylesheet" href="../../components/SourcesLink/SourcesLink.css">
   <link rel="stylesheet" href="../../components/ChatResponseTable/ChatResponseTable.css">
+  <link rel="stylesheet" href="../../components/Toggle/Toggle.css">
+  <link rel="stylesheet" href="../../components/SegmentedControl/SegmentedControl.css">
+  <link rel="stylesheet" href="../../components/ColorPickerInput/ColorPickerInput.css">
 
   <!-- Pattern CSS -->
   <link rel="stylesheet" href="../../patterns/SourcesCarousel/SourcesCarousel.css">
@@ -28,6 +31,7 @@
   <link rel="stylesheet" href="../../patterns/ChatSidebar/ChatSidebar.css">
   <link rel="stylesheet" href="../../patterns/ChatHeader/ChatHeader.css">
   <link rel="stylesheet" href="../../patterns/ChatMain/ChatMain.css">
+  <link rel="stylesheet" href="../../patterns/StyleSettings/StyleSettings.css">
 
   <!-- Template CSS -->
   <link rel="stylesheet" href="../ChatResponse/ChatResponse.css">
@@ -302,7 +306,7 @@
                     <i data-lucide="database-zap" aria-hidden="true"></i>
                     Cache Off
                   </button>
-                  <button class="btn btn--tertiary btn--sm" aria-pressed="false">
+                  <button class="btn btn--tertiary btn--sm" aria-pressed="false" data-action="style">
                     <i data-lucide="swatch-book" aria-hidden="true"></i>
                     Style
                   </button>
@@ -322,7 +326,7 @@
           <button class="btn btn--secondary btn--sm btn--icon" aria-label="Cache" aria-pressed="false">
             <i data-lucide="database-zap" aria-hidden="true"></i>
           </button>
-          <button class="btn btn--secondary btn--sm" aria-pressed="false">
+          <button class="btn btn--secondary btn--sm" aria-pressed="false" data-action="style">
             <i data-lucide="swatch-book" aria-hidden="true"></i>
             Style
           </button>
@@ -732,6 +736,179 @@
       </div>
     </div>
 
+    <!-- ═══ STYLE SETTINGS PANEL ═══════════════════════ -->
+    <div class="style-settings" id="style-settings" style="display: none;">
+
+      <!-- Header -->
+      <div class="style-settings__header">
+        <h2 class="style-settings__title">Styling</h2>
+        <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Close" id="style-close">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <!-- Subtitle -->
+      <div class="style-settings__subtitle-row">
+        <p class="style-settings__subtitle">Customise the settings to best fit your app.</p>
+        <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Reset to defaults" id="style-reset">
+          <i data-lucide="refresh-cw" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <!-- Form body -->
+      <div class="style-settings__body">
+
+        <!-- Theme -->
+        <div class="style-settings__row">
+          <div class="style-settings__label-wrap">
+            <span class="style-settings__label">Theme</span>
+            <div class="style-settings__tooltip">
+              <div class="tooltip" role="tooltip">
+                <p class="tooltip__text">Toggle between light and dark theme</p>
+              </div>
+            </div>
+          </div>
+          <div class="style-settings__control">
+            <div class="seg-control" role="radiogroup" aria-label="Theme" id="style-theme-toggle">
+              <button class="seg-control__btn seg-control__btn--active" type="button" role="radio" aria-checked="true" data-value="light">
+                <i data-lucide="sun" aria-hidden="true"></i>
+                Light
+              </button>
+              <button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="dark">
+                <i data-lucide="moon" aria-hidden="true"></i>
+                Dark
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accent Color -->
+        <div class="style-settings__row">
+          <div class="style-settings__label-wrap">
+            <span class="style-settings__label">Accent Color</span>
+            <div class="style-settings__tooltip">
+              <div class="tooltip" role="tooltip">
+                <p class="tooltip__text">Sets the brand accent color used across the chat UI</p>
+              </div>
+            </div>
+          </div>
+          <div class="color-picker-input style-settings__control" id="style-accent-picker">
+            <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #1A56DB;"></span></span>
+            <span class="color-picker-input__value">#1A56DB</span>
+            <input type="color" class="color-picker-input__native" value="#1A56DB" aria-label="Accent color">
+          </div>
+        </div>
+
+        <!-- Sidebar Color -->
+        <div class="style-settings__row">
+          <div class="style-settings__label-wrap">
+            <span class="style-settings__label">Sidebar Color</span>
+            <div class="style-settings__tooltip">
+              <div class="tooltip" role="tooltip">
+                <p class="tooltip__text">Sets the sidebar background color</p>
+              </div>
+            </div>
+          </div>
+          <div class="color-picker-input style-settings__control" id="style-sidebar-picker">
+            <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #09235B;"></span></span>
+            <span class="color-picker-input__value">#09235B</span>
+            <input type="color" class="color-picker-input__native" value="#09235B" aria-label="Sidebar color">
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <hr class="style-settings__divider">
+
+        <!-- Title Font -->
+        <div class="style-settings__row">
+          <div class="style-settings__label-wrap">
+            <span class="style-settings__label">Title Font</span>
+          </div>
+          <div class="style-settings__select-wrap">
+            <button class="style-settings__select" type="button" aria-expanded="false" aria-haspopup="listbox">
+              <span class="style-settings__select-text">Inter</span>
+              <i data-lucide="chevron-down" aria-hidden="true"></i>
+            </button>
+            <div class="style-settings__dropdown" role="listbox">
+              <button class="style-settings__option style-settings__option--selected" role="option" aria-selected="true">Inter</button>
+              <button class="style-settings__option" role="option" aria-selected="false">Roboto</button>
+              <button class="style-settings__option" role="option" aria-selected="false">Open Sans</button>
+              <button class="style-settings__option" role="option" aria-selected="false">Lato</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Body Font -->
+        <div class="style-settings__row">
+          <div class="style-settings__label-wrap">
+            <span class="style-settings__label">Body Font</span>
+          </div>
+          <div class="style-settings__select-wrap">
+            <button class="style-settings__select" type="button" aria-expanded="false" aria-haspopup="listbox">
+              <span class="style-settings__select-text">Inter</span>
+              <i data-lucide="chevron-down" aria-hidden="true"></i>
+            </button>
+            <div class="style-settings__dropdown" role="listbox">
+              <button class="style-settings__option style-settings__option--selected" role="option" aria-selected="true">Inter</button>
+              <button class="style-settings__option" role="option" aria-selected="false">Roboto</button>
+              <button class="style-settings__option" role="option" aria-selected="false">Open Sans</button>
+              <button class="style-settings__option" role="option" aria-selected="false">Lato</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <hr class="style-settings__divider">
+
+        <!-- Header Layout -->
+        <div class="style-settings__row">
+          <div class="style-settings__label-wrap">
+            <span class="style-settings__label">Header Layout</span>
+            <div class="style-settings__tooltip">
+              <div class="tooltip" role="tooltip">
+                <p class="tooltip__text">Aligns the agent selector to be centered, or left</p>
+              </div>
+            </div>
+          </div>
+          <div class="style-settings__select-wrap">
+            <button class="style-settings__select" type="button" aria-expanded="false" aria-haspopup="listbox" id="style-header-layout-btn">
+              <span class="style-settings__select-text">Center</span>
+              <i data-lucide="chevron-down" aria-hidden="true"></i>
+            </button>
+            <div class="style-settings__dropdown" role="listbox" id="style-header-layout-dropdown">
+              <button class="style-settings__option style-settings__option--selected" role="option" aria-selected="true" data-value="center">Center</button>
+              <button class="style-settings__option" role="option" aria-selected="false" data-value="left">Left</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Show Borders -->
+        <div class="style-settings__row style-settings__row--toggle">
+          <div class="style-settings__label-wrap">
+            <span class="style-settings__label">Show Borders</span>
+          </div>
+          <div class="style-settings__control">
+            <button class="toggle toggle--active" type="button" role="switch" aria-checked="true" aria-label="Show Borders" id="style-toggle-borders">
+              <span class="toggle__track"><span class="toggle__knob"></span></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Show Questions -->
+        <div class="style-settings__row style-settings__row--toggle">
+          <div class="style-settings__label-wrap">
+            <span class="style-settings__label">Show Questions</span>
+          </div>
+          <div class="style-settings__control">
+            <button class="toggle toggle--active" type="button" role="switch" aria-checked="true" aria-label="Show Questions" id="style-toggle-questions">
+              <span class="toggle__track"><span class="toggle__knob"></span></span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
@@ -815,8 +992,9 @@
       if (!e.target.closest('.chat-header__selector-group')) closeAllDropdowns();
     });
 
-    // ── ChatHeader admin toggle buttons ───────────────
+    // ── ChatHeader admin toggle buttons (exclude Style — managed by panel) ──
     document.querySelectorAll('.chat-header__admin .btn, .chat-header__admin-menu-inner .btn').forEach(btn => {
+      if (btn.hasAttribute('data-action')) return;
       btn.addEventListener('click', () => {
         const pressed = btn.getAttribute('aria-pressed') === 'true';
         btn.setAttribute('aria-pressed', String(!pressed));
@@ -995,6 +1173,263 @@
           popover.classList.remove('msg-input__filter-popover--open');
         }
       });
+    });
+
+    // ══════════════════════════════════════════════════════
+    // STYLE SETTINGS PANEL
+    // ══════════════════════════════════════════════════════
+
+    const stylePanel = document.getElementById('style-settings');
+    const chatHeader = document.querySelector('.ai-chat__main .chat-header');
+
+    // ── Open/close via Style buttons ────────────────────
+    const styleBtns = document.querySelectorAll('[data-action="style"]');
+
+    function setStylePanelOpen(open) {
+      stylePanel.style.display = open ? '' : 'none';
+      styleBtns.forEach(b => b.setAttribute('aria-pressed', String(open)));
+      if (open) lucide.createIcons();
+    }
+
+    styleBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isVisible = stylePanel.style.display !== 'none';
+        setStylePanelOpen(!isVisible);
+      });
+    });
+
+    document.getElementById('style-close').addEventListener('click', () => {
+      setStylePanelOpen(false);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && stylePanel.style.display !== 'none') {
+        setStylePanelOpen(false);
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (stylePanel.style.display === 'none') return;
+      if (stylePanel.contains(e.target)) return;
+      if (e.target.closest('[data-action="style"]')) return;
+      setStylePanelOpen(false);
+    });
+
+    // ── Drag to move ────────────────────────────────────
+    {
+      const dragHandle = stylePanel.querySelector('.style-settings__header');
+      let isDragging = false;
+      let dragStartX = 0;
+      let dragStartY = 0;
+      let panelOriginLeft = 0;
+      let panelOriginTop = 0;
+
+      dragHandle.addEventListener('mousedown', (e) => {
+        if (e.target.closest('button')) return;
+        isDragging = true;
+        stylePanel.classList.add('style-settings--no-transition');
+        document.body.style.userSelect = 'none';
+        dragStartX = e.clientX;
+        dragStartY = e.clientY;
+        const rect = stylePanel.getBoundingClientRect();
+        panelOriginLeft = rect.left;
+        panelOriginTop = rect.top;
+        e.preventDefault();
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        stylePanel.style.left = (panelOriginLeft + (e.clientX - dragStartX)) + 'px';
+        stylePanel.style.top = (panelOriginTop + (e.clientY - dragStartY)) + 'px';
+        stylePanel.style.right = 'auto';
+        stylePanel.style.bottom = 'auto';
+      });
+
+      document.addEventListener('mouseup', () => {
+        if (!isDragging) return;
+        isDragging = false;
+        stylePanel.classList.remove('style-settings--no-transition');
+        document.body.style.userSelect = '';
+      });
+    }
+
+    // ── Theme toggle ────────────────────────────────────
+    {
+      const themeToggle = document.getElementById('style-theme-toggle');
+
+      // Sync with current theme on load
+      if (document.documentElement.getAttribute('data-theme') === 'dark') {
+        themeToggle.querySelectorAll('.seg-control__btn').forEach(b => {
+          const isDark = b.getAttribute('data-value') === 'dark';
+          b.classList.toggle('seg-control__btn--active', isDark);
+          b.setAttribute('aria-checked', String(isDark));
+        });
+      }
+
+      themeToggle.addEventListener('click', (e) => {
+        const btn = e.target.closest('.seg-control__btn');
+        if (!btn || btn.classList.contains('seg-control__btn--active')) return;
+        themeToggle.querySelectorAll('.seg-control__btn').forEach(b => {
+          b.classList.remove('seg-control__btn--active');
+          b.setAttribute('aria-checked', 'false');
+        });
+        btn.classList.add('seg-control__btn--active');
+        btn.setAttribute('aria-checked', 'true');
+
+        if (btn.getAttribute('data-value') === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('demo-theme', 'dark');
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.removeItem('demo-theme');
+        }
+      });
+    }
+
+    // ── Color picker inputs ─────────────────────────────
+    stylePanel.querySelectorAll('.color-picker-input__native').forEach(input => {
+      input.addEventListener('input', () => {
+        const container = input.closest('.color-picker-input');
+        container.querySelector('.color-picker-input__swatch-inner').style.backgroundColor = input.value;
+        container.querySelector('.color-picker-input__value').textContent = input.value.toUpperCase();
+      });
+    });
+
+    // ── Custom dropdowns ────────────────────────────────
+    stylePanel.querySelectorAll('.style-settings__select').forEach(selectBtn => {
+      selectBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const wrap = selectBtn.closest('.style-settings__select-wrap');
+        const dropdown = wrap.querySelector('.style-settings__dropdown');
+        const isOpen = dropdown.classList.toggle('style-settings__dropdown--open');
+        selectBtn.setAttribute('aria-expanded', String(isOpen));
+
+        // Close others
+        stylePanel.querySelectorAll('.style-settings__dropdown--open').forEach(d => {
+          if (d !== dropdown) {
+            d.classList.remove('style-settings__dropdown--open');
+            d.closest('.style-settings__select-wrap').querySelector('.style-settings__select').setAttribute('aria-expanded', 'false');
+          }
+        });
+      });
+    });
+
+    stylePanel.querySelectorAll('.style-settings__option').forEach(option => {
+      option.addEventListener('click', () => {
+        const wrap = option.closest('.style-settings__select-wrap');
+        const dropdown = option.closest('.style-settings__dropdown');
+        const selectBtn = wrap.querySelector('.style-settings__select');
+        const textEl = selectBtn.querySelector('.style-settings__select-text');
+
+        dropdown.querySelectorAll('.style-settings__option').forEach(o => {
+          o.classList.remove('style-settings__option--selected');
+          o.setAttribute('aria-selected', 'false');
+        });
+        option.classList.add('style-settings__option--selected');
+        option.setAttribute('aria-selected', 'true');
+        textEl.textContent = option.textContent;
+        dropdown.classList.remove('style-settings__dropdown--open');
+        selectBtn.setAttribute('aria-expanded', 'false');
+
+        // Header Layout: apply align-left modifier
+        if (option.hasAttribute('data-value')) {
+          const value = option.getAttribute('data-value');
+          if (value === 'left') {
+            chatHeader.classList.add('chat-header--align-left');
+          } else {
+            chatHeader.classList.remove('chat-header--align-left');
+          }
+        }
+      });
+    });
+
+    // Close dropdowns on outside click
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.style-settings__select-wrap')) {
+        stylePanel.querySelectorAll('.style-settings__dropdown--open').forEach(d => {
+          d.classList.remove('style-settings__dropdown--open');
+          d.closest('.style-settings__select-wrap').querySelector('.style-settings__select').setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+
+    // ── Toggle switches ─────────────────────────────────
+    // Show Borders
+    document.getElementById('style-toggle-borders').addEventListener('click', function () {
+      const isActive = this.classList.toggle('toggle--active');
+      this.setAttribute('aria-checked', String(isActive));
+      // Toggle no-border modifier on header + sidebar border
+      document.querySelectorAll('.chat-header').forEach(el => {
+        el.classList.toggle('chat-header--no-border', !isActive);
+      });
+      document.querySelectorAll('.chat-sidebar').forEach(el => {
+        el.style.borderRightColor = isActive ? '' : 'transparent';
+      });
+    });
+
+    // Show Questions
+    document.getElementById('style-toggle-questions').addEventListener('click', function () {
+      const isActive = this.classList.toggle('toggle--active');
+      this.setAttribute('aria-checked', String(isActive));
+      document.querySelectorAll('.chat-main__suggestions').forEach(el => {
+        el.style.display = isActive ? '' : 'none';
+      });
+    });
+
+    // ── Reset button ────────────────────────────────────
+    document.getElementById('style-reset').addEventListener('click', () => {
+      // Reset theme to light
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.removeItem('demo-theme');
+      const themeToggle = document.getElementById('style-theme-toggle');
+      themeToggle.querySelectorAll('.seg-control__btn').forEach(b => {
+        const isLight = b.getAttribute('data-value') === 'light';
+        b.classList.toggle('seg-control__btn--active', isLight);
+        b.setAttribute('aria-checked', String(isLight));
+      });
+
+      // Reset color pickers
+      const accentPicker = document.getElementById('style-accent-picker');
+      accentPicker.querySelector('.color-picker-input__native').value = '#1A56DB';
+      accentPicker.querySelector('.color-picker-input__swatch-inner').style.backgroundColor = '#1A56DB';
+      accentPicker.querySelector('.color-picker-input__value').textContent = '#1A56DB';
+
+      const sidebarPicker = document.getElementById('style-sidebar-picker');
+      sidebarPicker.querySelector('.color-picker-input__native').value = '#09235B';
+      sidebarPicker.querySelector('.color-picker-input__swatch-inner').style.backgroundColor = '#09235B';
+      sidebarPicker.querySelector('.color-picker-input__value').textContent = '#09235B';
+
+      // Reset dropdowns
+      stylePanel.querySelectorAll('.style-settings__select-wrap').forEach(wrap => {
+        const textEl = wrap.querySelector('.style-settings__select-text');
+        wrap.querySelectorAll('.style-settings__option').forEach((o, i) => {
+          if (i === 0) {
+            o.classList.add('style-settings__option--selected');
+            o.setAttribute('aria-selected', 'true');
+            textEl.textContent = o.textContent;
+          } else {
+            o.classList.remove('style-settings__option--selected');
+            o.setAttribute('aria-selected', 'false');
+          }
+        });
+      });
+
+      // Reset header layout
+      chatHeader.classList.remove('chat-header--align-left');
+
+      // Reset toggles to active
+      stylePanel.querySelectorAll('.toggle').forEach(toggle => {
+        toggle.classList.add('toggle--active');
+        toggle.setAttribute('aria-checked', 'true');
+      });
+
+      // Restore borders
+      document.querySelectorAll('.chat-header').forEach(el => { el.classList.remove('chat-header--no-border'); });
+      document.querySelectorAll('.chat-sidebar').forEach(el => { el.style.borderRightColor = ''; });
+
+      // Restore questions
+      document.querySelectorAll('.chat-main__suggestions').forEach(el => { el.style.display = ''; });
     });
   </script>
 

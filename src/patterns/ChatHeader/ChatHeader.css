@@ -222,6 +222,10 @@
   }
 }
 
+.chat-header--no-border .chat-header__admin {
+  right: var(--ai-spacing-6);
+}
+
 .chat-header__admin .btn {
   font-feature-settings: 'case' 1;
 }

@@ -223,6 +223,12 @@
   font-size: var(--ai-font-fixed-xxs);
 }
 
+/* ── ChatMain: code block — pinned to mobile ──────────── */
+
+.ai-chat-min .chat-main__response code {
+  font-size: var(--ai-font-fixed-xxs);
+}
+
 /* ── ChatMain: response — fixed font ──────────────────── */
 
 .ai-chat-min .chat-main__response {
