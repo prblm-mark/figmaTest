@@ -14,7 +14,12 @@
     "code-connect:publish": "figma connect publish",
     "code-connect:unpublish": "figma connect unpublish",
     "start": "webpack serve --open --config webpack.config.dev.js",
-    "build": "webpack --config webpack.config.prod.js"
+    "build": "webpack --config webpack.config.prod.js",
+    "docs:generate": "node docs-site/.vitepress/scripts/generate-pages.mjs",
+    "docs:copy-demos": "node docs-site/.vitepress/scripts/copy-demos.mjs",
+    "docs:dev": "npm run docs:generate && npm run docs:copy-demos && cd docs-site && npx vitepress dev",
+    "docs:build": "npm run docs:generate && npm run docs:copy-demos && cd docs-site && npx vitepress build",
+    "docs:preview": "cd docs-site && npx vitepress preview"
   },
   "devDependencies": {
     "@figma/code-connect": "^1.4.1",

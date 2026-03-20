@@ -14,6 +14,16 @@ css/tokens-minimised.css
 # IDE
 .idea
 
+# Docs site — generated content (rebuilt by `npm run docs:generate`)
+docs-site/components/
+docs-site/patterns/
+docs-site/templates/
+docs-site/.vitepress/sidebar-data.json
+docs-site/.vitepress/dist/
+docs-site/.vitepress/cache/
+docs-site/public/demos/
+docs-site/node_modules
+
 # Claude Code local settings — machine-specific files are ignored,
 # but .claude/commands/ (shared slash-command skills) is tracked.
 .claude/*

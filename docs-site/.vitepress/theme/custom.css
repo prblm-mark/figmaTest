@@ -1,0 +1,70 @@
+/* Import design system tokens so doc pages can reference --ai-* vars */
+@import '../../../css/tokens.css';
+@import '../../../css/tokens-dark.css';
+@import '../../../css/tokens-shadows.css';
+@import '../../../css/tokens-gradients.css';
+
+/* Map VitePress dark mode class to our data-theme attribute */
+html.dark {
+  color-scheme: dark;
+}
+
+/* Override VitePress brand colors with our design system */
+:root {
+  --vp-c-brand-1: var(--ai-surface-brand);
+  --vp-c-brand-2: var(--ai-surface-brand-light);
+  --vp-c-brand-3: var(--ai-surface-brand-dark);
+  --vp-c-brand-soft: var(--ai-surface-brand-contrast-extra);
+}
+
+/* Component demo iframe styling */
+.component-demo {
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 16px 0;
+}
+
+.component-demo__frame {
+  width: 100%;
+  border: none;
+  display: block;
+  background: #fff;
+}
+
+html.dark .component-demo__frame {
+  background: #1a1a1a;
+}
+
+.component-demo__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  border-top: 1px solid var(--vp-c-divider);
+  background: var(--vp-c-bg-soft);
+  font-size: 13px;
+}
+
+.component-demo__toolbar a {
+  color: var(--vp-c-brand-1);
+  text-decoration: none;
+}
+
+.component-demo__toolbar a:hover {
+  text-decoration: underline;
+}
+
+.component-demo__toolbar button {
+  padding: 4px 8px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 4px;
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-1);
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.component-demo__toolbar button:hover {
+  background: var(--vp-c-bg-soft);
+}

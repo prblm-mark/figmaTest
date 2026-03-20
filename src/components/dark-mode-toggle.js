@@ -9,10 +9,17 @@
  *   <script src="../dark-mode-toggle.js"></script>
  */
 (function () {
-  // Apply saved theme synchronously before CSS renders to prevent flash
-  var saved = localStorage.getItem('demo-theme');
-  if (saved === 'dark') {
+  // Apply theme from URL query param (for iframe embedding in docs site)
+  var urlParams = new URLSearchParams(window.location.search);
+  var urlTheme = urlParams.get('theme');
+  if (urlTheme === 'dark') {
     document.documentElement.setAttribute('data-theme', 'dark');
+  } else if (!urlTheme) {
+    // No URL override — apply saved theme from localStorage
+    var saved = localStorage.getItem('demo-theme');
+    if (saved === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
   }
 
   // Inline SVG icons (from Lucide)
