@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   padding: var(--ai-spacing-4);
-  border-bottom: 1px solid var(--ai-border-contrast);
+  border-bottom: 1px solid var(--ai-border-secondary);
   position: relative;
 }
 
