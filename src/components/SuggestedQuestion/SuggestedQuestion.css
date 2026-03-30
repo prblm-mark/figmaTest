@@ -10,7 +10,7 @@
   align-items: flex-start;
   gap: var(--ai-spacing-3);
   padding: var(--ai-spacing-5);
-  background-color: var(--ai-chat-surface-tertiary);
+  background-color: var(--ai-chat-surface-contrast);
   border: none;
   border-radius: var(--ai-radius-lg);
   cursor: pointer;

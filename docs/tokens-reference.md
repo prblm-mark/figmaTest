@@ -146,15 +146,17 @@ Component-specific tokens for the chat UI. Only relevant when building chat-rela
 
 | Variable | Light value | Dark value |
 |---|---|---|
-| `--ai-chat-surface-primary` | `#FFFFFF` | `#1F2A37` |
-| `--ai-chat-surface-secondary` | `#FFFFFF` | `#2B3644` |
-| `--ai-chat-surface-tertiary` | `#F3F4F6` | `#111928` |
-| `--ai-chat-surface-minimal` | `#E5E7EB` | `#374151` |
-| `--ai-chat-sidebar-bg` | `#FFFFFF` | `#18222F` |
-| `--ai-chat-sidebar-text` | `#1F2A37` | `#E5E7EB` |
+| `--ai-chat-surface-primary` | `#FFFFFF` | `#212123` |
+| `--ai-chat-surface-secondary` | `#FFFFFF` | `#2E2E32` |
+| `--ai-chat-surface-contrast` | `#F6F6F7` | `#1B1B1F` |
+| `--ai-chat-surface-minimal` | `#E2E2E3` | `#2E2E32` |
+| `--ai-chat-surface-invert` | `#1B1B1F` | `#F6F6F7` |
+| `--ai-chat-border` | `#E2E2E3` | `#3C3C3F` |
+| `--ai-chat-sidebar-bg` | `#F6F6F7` | (alias: `surface-primary`) |
+| `--ai-chat-sidebar-text` | `#212123` | (alias: `text-primary`) |
 | `--ai-chat-msg-bg` | `#F0F3FF` | `#0054A3` |
 | `--ai-chat-msg-text` | `#0F406B` | `#F0F3FF` |
-| `--ai-chat-brand` | `#1F2A37` | `#FFFFFF` |
+| `--ai-chat-brand` | `#0071D8` | `#0071D8` |
 | `--ai-chat-sidebar-hover-bg` | — | — | computed (see §Computed Tokens) |
 | `--ai-chat-sidebar-active-bg` | — | — | computed (see §Computed Tokens) |
 
