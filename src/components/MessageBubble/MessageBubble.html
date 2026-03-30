@@ -8,6 +8,7 @@
   <title>Message Bubble — Design System</title>
   <link rel="stylesheet" href="../../styles/base.css">
   <link rel="stylesheet" href="../Button/Button.css">
+  <link rel="stylesheet" href="../SourcesLink/SourcesLink.css">
   <link rel="stylesheet" href="MessageBubble.css">
   <style>
     body {
@@ -18,6 +19,39 @@
 
     .demo-section {
       margin-bottom: var(--ai-spacing-8);
+    }
+
+    .demo-brand {
+      margin-bottom: var(--ai-spacing-7);
+    }
+
+    .demo-brand-input {
+      display: flex;
+      align-items: center;
+      gap: var(--ai-spacing-3);
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-secondary);
+      margin-top: var(--ai-spacing-3);
+    }
+
+    .demo-brand-input input[type="color"] {
+      width: 3rem;
+      height: 2rem;
+      border: none;
+      cursor: pointer;
+    }
+
+    .demo-reset {
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xxs);
+      font-weight: var(--ai-font-medium);
+      color: var(--ai-text-contrast);
+      background: var(--ai-surface-minimal);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-sm);
+      padding: var(--ai-spacing-1) var(--ai-spacing-3);
+      cursor: pointer;
     }
 
     .demo-label {
@@ -40,6 +74,16 @@
 </head>
 
 <body>
+
+  <!-- ── Brand color picker ──────────────────── -->
+  <div class="demo-brand">
+    <p class="demo-label">Test brand color</p>
+    <div class="demo-brand-input">
+      <input type="color" id="brand-picker" value="#0071d8">
+      <span id="brand-value">#0071d8</span>
+      <button type="button" id="brand-reset" class="demo-reset">Reset</button>
+    </div>
+  </div>
 
   <!-- ── Default ─────────────────────────────── -->
   <section class="demo-section">
@@ -106,7 +150,48 @@
   </section>
 
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <script>lucide.createIcons();</script>
+  <script>
+    function initBrandTheme(el) {
+      var brand = getComputedStyle(el).getPropertyValue('--ai-chat-brand').trim();
+      var hex = brand.replace(/^#/, '');
+      var r = parseInt(hex.slice(0, 2), 16) / 255;
+      var g = parseInt(hex.slice(2, 4), 16) / 255;
+      var b = parseInt(hex.slice(4, 6), 16) / 255;
+      r = r <= 0.03928 ? r / 12.92 : Math.pow((r + 0.055) / 1.055, 2.4);
+      g = g <= 0.03928 ? g / 12.92 : Math.pow((g + 0.055) / 1.055, 2.4);
+      b = b <= 0.03928 ? b / 12.92 : Math.pow((b + 0.055) / 1.055, 2.4);
+      var lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+      el.setAttribute('data-brand-theme', lum > 0.5 ? 'light' : 'dark');
+    }
+
+    lucide.createIcons();
+    initBrandTheme(document.documentElement);
+
+    new MutationObserver(function() {
+      initBrandTheme(document.documentElement);
+    }).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+
+    var DEFAULT_BRAND = '#0071d8';
+    var picker = document.getElementById('brand-picker');
+    var valueEl = document.getElementById('brand-value');
+
+    picker.addEventListener('input', function(e) {
+      var color = e.target.value;
+      valueEl.textContent = color;
+      document.documentElement.style.setProperty('--ai-chat-brand', color);
+      initBrandTheme(document.documentElement);
+    });
+
+    document.getElementById('brand-reset').addEventListener('click', function() {
+      picker.value = DEFAULT_BRAND;
+      valueEl.textContent = DEFAULT_BRAND;
+      document.documentElement.style.removeProperty('--ai-chat-brand');
+      initBrandTheme(document.documentElement);
+    });
+  </script>
 
 </body>
 </html>
