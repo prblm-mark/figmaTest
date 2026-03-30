@@ -94,7 +94,7 @@ a.sources-link--primary:hover {
 }
 
 a.sources-link--link:hover {
-  color: var(--ai-text-secondary);
+  color: var(--ai-text-primary);
 }
 
 /* ── Primary variant (brand-colored, dynamic) ─────────── */
@@ -117,9 +117,9 @@ a.sources-link--link:hover {
 /* ── Link variant (neutral) ───────────────────────────── */
 
 .sources-link--link {
-  background: var(--ai-surface-minimal);
+  background: var(--ai-surface-contrast);
   border-color: var(--ai-border-secondary);
-  color: var(--ai-text-secondary);
+  color: var(--ai-text-primary);
 }
 
 .sources-link--link [data-lucide] {
@@ -127,6 +127,6 @@ a.sources-link--link:hover {
 }
 
 .sources-link--link:hover {
-  background: var(--ai-surface-secondary);
+  background: var(--ai-surface-minimal);
   border-color: var(--ai-border-secondary);
 }
