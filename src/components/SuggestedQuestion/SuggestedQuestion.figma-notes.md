@@ -24,7 +24,7 @@
 
 | Property | Token | Value |
 |---|---|---|
-| Background | `--ai-chat-surface-contrast` | #F6F6F7 |
+| Background | `--ai-surface-contrast` | #F6F6F7 |
 | Border radius | `--ai-radius-lg` | 1rem |
 | Padding | `--ai-spacing-5` | 1rem |
 | Icon-to-text gap | `--ai-spacing-3` | 0.5rem |
@@ -51,7 +51,7 @@
 
 ## Interaction
 
-- Hover: background transitions to `--ai-chat-surface-minimal`
+- Hover: background transitions to `--ai-surface-minimal`
 - Click: populates MessageInput and auto-submits (handled by parent ChatMain JS)
 - Transition: `--ai-transition-default` (150ms ease)
 

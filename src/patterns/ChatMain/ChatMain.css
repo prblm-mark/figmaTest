@@ -15,7 +15,7 @@
   flex: 1;
   min-height: 0;
   position: relative;
-  background-color: var(--ai-chat-surface-primary);
+  background-color: var(--ai-surface-primary);
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -184,8 +184,8 @@
    ══════════════════════════════════════════════════════════ */
 
 .chat-main__scroll {
-  --_scroll-track: color-mix(in srgb, var(--ai-chat-surface-primary) 94%, rgb(38 55 88));
-  --_scroll-thumb: color-mix(in srgb, var(--ai-chat-surface-primary) 82%, rgb(38 55 88));
+  --_scroll-track: color-mix(in srgb, var(--ai-surface-primary) 94%, rgb(38 55 88));
+  --_scroll-thumb: color-mix(in srgb, var(--ai-surface-primary) 82%, rgb(38 55 88));
   flex: 1;
   min-height: 0;
   overflow-y: auto;
@@ -198,8 +198,8 @@
 }
 
 [data-theme="dark"] .chat-main__scroll {
-  --_scroll-track: color-mix(in srgb, var(--ai-chat-surface-primary) 95%, white);
-  --_scroll-thumb: color-mix(in srgb, var(--ai-chat-surface-primary) 80%, white);
+  --_scroll-track: color-mix(in srgb, var(--ai-surface-primary) 95%, white);
+  --_scroll-thumb: color-mix(in srgb, var(--ai-surface-primary) 80%, white);
 }
 
 .chat-main__scroll::-webkit-scrollbar {
@@ -341,8 +341,8 @@
   align-items: center;
   justify-content: center;
   padding: 2px var(--ai-spacing-1);
-  background: var(--ai-chat-surface-contrast);
-  border: 1px solid var(--ai-chat-border);
+  background: var(--ai-surface-contrast);
+  border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-sm);
   font-family: 'Geist Mono', monospace;
   font-size: var(--ai-font-fixed-xxs);
@@ -401,7 +401,7 @@
   width: 100%;
   max-width: var(--ai-size-11);
   padding: 0 var(--ai-spacing-2);
-  background-color: var(--ai-chat-surface-primary);
+  background-color: var(--ai-surface-primary);
   pointer-events: auto;
 }
 

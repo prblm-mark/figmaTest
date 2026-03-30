@@ -12,7 +12,7 @@
   display: flex;
   width: 100%;
   height: 100%;
-  background-color: var(--ai-chat-surface-primary);
+  background-color: var(--ai-surface-primary);
   position: relative;
   overflow: hidden;
 }
@@ -152,7 +152,7 @@
 [data-theme="dark"] .ai-chat .btn--tertiary:hover,
 [data-theme="dark"] .ai-chat .chat-header__admin .btn:hover,
 [data-theme="dark"] .ai-chat .chat-header__admin .btn[aria-pressed="true"] {
-  background-color: var(--ai-chat-surface-minimal);
+  background-color: var(--ai-surface-minimal);
 }
 
 /* ── Main content area ───────────────────────────────── */

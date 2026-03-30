@@ -15,10 +15,10 @@
 
 | Figma property | CSS token / technique |
 |---|---|
-| Background (Primary) | `color-mix(in srgb, var(--ai-chat-brand) 8%, var(--ai-chat-surface-primary))` |
-| Border (Primary) | `color-mix(in srgb, var(--ai-chat-brand) 30%, var(--ai-chat-surface-primary))` |
+| Background (Primary) | `color-mix(in srgb, var(--ai-chat-brand) 8%, var(--ai-surface-primary))` |
+| Border (Primary) | `color-mix(in srgb, var(--ai-chat-brand) 30%, var(--ai-surface-primary))` |
 | Text (Primary) | `var(--ai-chat-brand)` — adjusted via `data-brand-theme` for readability |
-| Background (Link) | `--ai-chat-surface-contrast` |
+| Background (Link) | `--ai-surface-contrast` |
 | Border (Link) | `--ai-border-secondary` |
 | Text (Link) | `--ai-text-primary` |
 | Border radius | `--ai-radius-full` |

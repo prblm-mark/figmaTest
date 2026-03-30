@@ -174,10 +174,11 @@ StyleDictionary.registerFormat({
 const sd = new StyleDictionary({
   usesDtcg: true,
   parsers: ['figma-token-parser'],
-  // Source order: Primitives first (for reference resolution), then semantic + typography
+  // Source order: Primitives first (for reference resolution), then semantic + scale + typography
   source: [
-    'FigmaTokens/Primitive.tokens[old].json',
-    'FigmaTokens/Light.tokens.json',
+    'FigmaTokens/Primitive.tokens.json',
+    'FigmaTokens/Semantic/Light.tokens.json',
+    'FigmaTokens/Scale/Scale.tokens.json',
     'FigmaTokens/Typography/Desktop.tokens.json',
   ],
   platforms: {
@@ -219,8 +220,9 @@ const sdMobile = new StyleDictionary({
   usesDtcg: true,
   parsers: ['figma-token-parser'],
   source: [
-    'FigmaTokens/Primitive.tokens[old].json',
-    'FigmaTokens/Light.tokens.json',
+    'FigmaTokens/Primitive.tokens.json',
+    'FigmaTokens/Semantic/Light.tokens.json',
+    'FigmaTokens/Scale/Scale.tokens.json',
     'FigmaTokens/Typography/Mobile.tokens.json',
   ],
   platforms: {
@@ -260,7 +262,7 @@ const sdDark = new StyleDictionary({
   parsers: ['figma-token-parser'],
   source: [
     'FigmaTokens/Primitive.tokens.json',
-    'FigmaTokens/Dark.tokens.json',
+    'FigmaTokens/Semantic/Dark.tokens.json',
   ],
   platforms: {
     css: {
@@ -301,7 +303,8 @@ const sdMinimised = new StyleDictionary({
   parsers: ['figma-token-parser'],
   source: [
     'FigmaTokens/Primitive.tokens.json',
-    'FigmaTokens/Light.tokens.json',
+    'FigmaTokens/Semantic/Light.tokens.json',
+    'FigmaTokens/Scale/Scale.tokens.json',
     'FigmaTokens/Typography/Minimised.tokens.json',
   ],
   platforms: {
@@ -332,3 +335,83 @@ const sdMinimised = new StyleDictionary({
 });
 
 await sdMinimised.buildAllPlatforms();
+
+// ─── Chat Light token build ──────────────────────────────────────────────────
+// Outputs [data-surface="chat"] { ... } overrides for chat-context colours.
+// Activation: add data-surface="chat" to a container element.
+// Chat uses a pure neutral palette distinct from the core semantic colours.
+
+const sdChatLight = new StyleDictionary({
+  usesDtcg: true,
+  parsers: ['figma-token-parser'],
+  source: [
+    'FigmaTokens/Primitive.tokens.json',
+    'FigmaTokens/Semantic/ChatLight.tokens.json',
+  ],
+  platforms: {
+    css: {
+      transforms: [
+        'color/figma-hex',
+        'tracking/figma-em',
+        'dimension/figma-rem',
+        'fontWeight/figma-numeric',
+        'font/figma-family',
+        'name/figma-web',
+      ],
+      buildPath: 'css/',
+      files: [{
+        destination: 'tokens-chat.css',
+        format: 'css/variables-selector',
+        filter: (token) =>
+          !!token.$extensions?.['com.figma.codeSyntax']?.WEB &&
+          !(token.$type === 'string' && !token.path?.includes('family') && !token.path?.includes('weight')),
+        options: {
+          selector: '[data-surface="chat"]',
+          outputReferences: false,
+        },
+      }],
+    },
+  },
+});
+
+await sdChatLight.buildAllPlatforms();
+
+// ─── Chat Dark token build ───────────────────────────────────────────────────
+// Outputs [data-surface="chat"][data-theme="dark"] { ... } overrides.
+// Higher specificity than both [data-theme="dark"] and [data-surface="chat"]
+// ensures correct cascade when both attributes are present.
+
+const sdChatDark = new StyleDictionary({
+  usesDtcg: true,
+  parsers: ['figma-token-parser'],
+  source: [
+    'FigmaTokens/Primitive.tokens.json',
+    'FigmaTokens/Semantic/ChatDark.tokens.json',
+  ],
+  platforms: {
+    css: {
+      transforms: [
+        'color/figma-hex',
+        'tracking/figma-em',
+        'dimension/figma-rem',
+        'fontWeight/figma-numeric',
+        'font/figma-family',
+        'name/figma-web',
+      ],
+      buildPath: 'css/',
+      files: [{
+        destination: 'tokens-chat-dark.css',
+        format: 'css/variables-selector',
+        filter: (token) =>
+          !!token.$extensions?.['com.figma.codeSyntax']?.WEB &&
+          !(token.$type === 'string' && !token.path?.includes('family') && !token.path?.includes('weight')),
+        options: {
+          selector: '[data-surface="chat"][data-theme="dark"]',
+          outputReferences: false,
+        },
+      }],
+    },
+  },
+});
+
+await sdChatDark.buildAllPlatforms();

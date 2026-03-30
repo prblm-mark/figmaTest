@@ -37,7 +37,7 @@ MessageInput is a pattern-tier component. It is the chat input bar containing a 
 
 | Property | Token | Value |
 |---|---|---|
-| Input box bg | `--ai-chat-surface-secondary` | #ffffff |
+| Input box bg | `--ai-surface-secondary` | #ffffff |
 | Input box border | `--ai-border-secondary` | #d1d5db |
 | Input box padding (desktop) | `--ai-spacing-6` | 24px |
 | Input box padding (mobile/min) | `--ai-spacing-5` | 16px |
@@ -59,7 +59,7 @@ MessageInput is a pattern-tier component. It is the chat input bar containing a 
 | Disclaimer tracking | `--ai-tracking-5` | 0.0125em |
 | Disclaimer feature | `'case' 1` | OpenType |
 | Disclaimer padding | `--ai-spacing-3` v / `--ai-spacing-6` h | 8px / 24px |
-| Filter popover bg | `--ai-chat-surface-secondary` | #ffffff |
+| Filter popover bg | `--ai-surface-secondary` | #ffffff |
 | Filter popover border | `--ai-border-secondary` | #d1d5db |
 | Filter popover radius | `--ai-radius-md` | 8px |
 | Filter popover shadow | `--ai-shadow-lg` | card elevation |

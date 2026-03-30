@@ -45,7 +45,7 @@
 /* ── Active button ───────────────────────────────────── */
 
 .seg-control__btn--active {
-  background-color: var(--ai-chat-surface-minimal);
+  background-color: var(--ai-surface-minimal);
   cursor: default;
 }
 

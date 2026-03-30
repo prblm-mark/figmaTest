@@ -10,7 +10,7 @@
   align-items: flex-start;
   gap: var(--ai-spacing-3);
   padding: var(--ai-spacing-5);
-  background-color: var(--ai-chat-surface-contrast);
+  background-color: var(--ai-surface-contrast);
   border: none;
   border-radius: var(--ai-radius-lg);
   cursor: pointer;
@@ -20,12 +20,12 @@
 }
 
 .suggested-question:hover {
-  background-color: var(--ai-chat-surface-minimal);
+  background-color: var(--ai-surface-minimal);
 }
 
 .suggested-question:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 1px var(--ai-chat-surface-primary), 0 0 0 3px var(--ai-surface-brand-contrast);
+  box-shadow: 0 0 0 1px var(--ai-surface-primary), 0 0 0 3px var(--ai-surface-brand-contrast);
 }
 
 /* ── Icon ─────────────────────────────────────────────── */
