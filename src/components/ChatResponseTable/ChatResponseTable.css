@@ -10,7 +10,7 @@
   --_scroll-thumb: color-mix(in srgb, var(--ai-chat-surface-primary) 75%, rgb(38 55 88));
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  border: 1px solid var(--ai-border-secondary);
+  border: 1px solid var(--ai-chat-border);
   border-radius: var(--ai-radius-md);
   width: 100%;
   scrollbar-color: var(--_scroll-thumb) transparent;
@@ -62,7 +62,7 @@
   color: var(--ai-text-secondary);
   text-align: left;
   padding: var(--ai-spacing-4) var(--ai-spacing-5);
-  border-bottom: 1px solid var(--ai-border-secondary);
+  border-bottom: 1px solid var(--ai-chat-border);
   white-space: nowrap;
 }
 
