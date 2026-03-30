@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="../../components/dark-mode-toggle.js"></script>
+  <script src="../dark-mode-toggle.js"></script>
   <title>ChatResponseTable — Component Demo</title>
 
   <!-- Base + tokens -->
@@ -19,8 +19,8 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 3rem;
-      padding: 2rem;
+      gap: var(--ai-spacing-10);
+      padding: var(--ai-spacing-7);
       background: var(--ai-surface-primary);
     }
     .demo-label {
@@ -30,7 +30,7 @@
       color: var(--ai-text-contrast);
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      margin: 0 0 0.5rem;
+      margin: 0 0 var(--ai-spacing-2);
     }
     .demo-section {
       width: 100%;
