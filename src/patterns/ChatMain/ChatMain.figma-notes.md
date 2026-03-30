@@ -60,7 +60,7 @@
 
 | Property | Token | Value |
 |---|---|---|
-| Background | `--ai-chat-surface-primary` | #ffffff |
+| Background | `--ai-surface-primary` | #ffffff |
 | Container max-width | `--ai-size-11` | 768px |
 | Container padding (vertical) | `--ai-spacing-8` | 40px |
 | Container padding (horizontal) | `--ai-spacing-6` | 24px (desktop only) |

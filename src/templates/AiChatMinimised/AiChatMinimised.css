@@ -21,7 +21,7 @@
   min-height: 320px;
   display: flex;
   flex-direction: column;
-  background-color: var(--ai-chat-surface-primary);
+  background-color: var(--ai-surface-primary);
   border-radius: var(--ai-radius-xl);
   overflow: clip;
   box-shadow: var(--ai-shadow-lg);
@@ -134,7 +134,7 @@
 /* ── Dark mode: tertiary button hover on chat surface ── */
 
 [data-theme="dark"] .ai-chat-min .btn--tertiary:hover {
-  background-color: var(--ai-chat-surface-minimal);
+  background-color: var(--ai-surface-minimal);
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -259,16 +259,16 @@
 
 .ai-chat-min .chat-main__initial,
 .ai-chat-min .chat-main__scroll {
-  --_min-scroll-track: color-mix(in srgb, var(--ai-chat-surface-primary) 94%, rgb(38 55 88));
-  --_min-scroll-thumb: color-mix(in srgb, var(--ai-chat-surface-primary) 82%, rgb(38 55 88));
+  --_min-scroll-track: color-mix(in srgb, var(--ai-surface-primary) 94%, rgb(38 55 88));
+  --_min-scroll-thumb: color-mix(in srgb, var(--ai-surface-primary) 82%, rgb(38 55 88));
   scrollbar-color: var(--_min-scroll-thumb) var(--_min-scroll-track);
   scrollbar-width: thin;
 }
 
 [data-theme="dark"] .ai-chat-min .chat-main__initial,
 [data-theme="dark"] .ai-chat-min .chat-main__scroll {
-  --_min-scroll-track: color-mix(in srgb, var(--ai-chat-surface-primary) 95%, white);
-  --_min-scroll-thumb: color-mix(in srgb, var(--ai-chat-surface-primary) 80%, white);
+  --_min-scroll-track: color-mix(in srgb, var(--ai-surface-primary) 95%, white);
+  --_min-scroll-thumb: color-mix(in srgb, var(--ai-surface-primary) 80%, white);
 }
 
 .ai-chat-min .chat-main__initial::-webkit-scrollbar,

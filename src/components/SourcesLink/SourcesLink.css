@@ -6,41 +6,41 @@
 
 [data-brand-theme="dark"] {
   --_brand-text: var(--ai-chat-brand);
-  --_brand-bg: color-mix(in srgb, var(--ai-chat-brand) 8%, var(--ai-chat-surface-primary));
-  --_brand-border: color-mix(in srgb, var(--ai-chat-brand) 30%, var(--ai-chat-surface-primary));
-  --_brand-bg-hover: color-mix(in srgb, var(--ai-chat-brand) 15%, var(--ai-chat-surface-primary));
-  --_brand-border-hover: color-mix(in srgb, var(--ai-chat-brand) 50%, var(--ai-chat-surface-primary));
+  --_brand-bg: color-mix(in srgb, var(--ai-chat-brand) 8%, var(--ai-surface-primary));
+  --_brand-border: color-mix(in srgb, var(--ai-chat-brand) 30%, var(--ai-surface-primary));
+  --_brand-bg-hover: color-mix(in srgb, var(--ai-chat-brand) 15%, var(--ai-surface-primary));
+  --_brand-border-hover: color-mix(in srgb, var(--ai-chat-brand) 50%, var(--ai-surface-primary));
 
   /* TODO [brand-override]: msg bubble colors derived from brand.
      Currently set directly — revisit with explicit user-override pattern
      (e.g. var(--ai-chat-msg-bg-override, var(--_brand-msg-bg))) when
      client customisation ships. */
-  --ai-chat-msg-bg: color-mix(in srgb, var(--ai-chat-brand) 8%, var(--ai-chat-surface-primary));
+  --ai-chat-msg-bg: color-mix(in srgb, var(--ai-chat-brand) 8%, var(--ai-surface-primary));
   --ai-chat-msg-text: color-mix(in srgb, var(--ai-chat-brand) 50%, black);
 }
 
 [data-brand-theme="light"] {
   --_brand-text: color-mix(in srgb, var(--ai-chat-brand) 50%, black);
-  --_brand-bg: color-mix(in srgb, var(--ai-chat-brand) 15%, var(--ai-chat-surface-primary));
+  --_brand-bg: color-mix(in srgb, var(--ai-chat-brand) 15%, var(--ai-surface-primary));
   --_brand-border: var(--ai-chat-brand);
-  --_brand-bg-hover: color-mix(in srgb, var(--ai-chat-brand) 25%, var(--ai-chat-surface-primary));
+  --_brand-bg-hover: color-mix(in srgb, var(--ai-chat-brand) 25%, var(--ai-surface-primary));
   --_brand-border-hover: color-mix(in srgb, var(--ai-chat-brand) 80%, black);
 
   /* TODO [brand-override]: see note above */
-  --ai-chat-msg-bg: color-mix(in srgb, var(--ai-chat-brand) 15%, var(--ai-chat-surface-primary));
+  --ai-chat-msg-bg: color-mix(in srgb, var(--ai-chat-brand) 15%, var(--ai-surface-primary));
   --ai-chat-msg-text: color-mix(in srgb, var(--ai-chat-brand) 35%, black);
 }
 
 /* Dark mode: stronger brand tint + lighter text for readability */
 [data-theme="dark"][data-brand-theme="dark"] {
   --_brand-text: color-mix(in srgb, var(--ai-chat-brand) 45%, white);
-  --_brand-bg: color-mix(in srgb, var(--ai-chat-brand) 15%, var(--ai-chat-surface-primary));
-  --_brand-border: color-mix(in srgb, var(--ai-chat-brand) 40%, var(--ai-chat-surface-primary));
-  --_brand-bg-hover: color-mix(in srgb, var(--ai-chat-brand) 22%, var(--ai-chat-surface-primary));
-  --_brand-border-hover: color-mix(in srgb, var(--ai-chat-brand) 55%, var(--ai-chat-surface-primary));
+  --_brand-bg: color-mix(in srgb, var(--ai-chat-brand) 15%, var(--ai-surface-primary));
+  --_brand-border: color-mix(in srgb, var(--ai-chat-brand) 40%, var(--ai-surface-primary));
+  --_brand-bg-hover: color-mix(in srgb, var(--ai-chat-brand) 22%, var(--ai-surface-primary));
+  --_brand-border-hover: color-mix(in srgb, var(--ai-chat-brand) 55%, var(--ai-surface-primary));
 
   /* TODO [brand-override]: see note above */
-  --ai-chat-msg-bg: color-mix(in srgb, var(--ai-chat-brand) 50%, var(--ai-chat-surface-primary));
+  --ai-chat-msg-bg: color-mix(in srgb, var(--ai-chat-brand) 50%, var(--ai-surface-primary));
   --ai-chat-msg-text: var(--ai-text-primary);
 }
 

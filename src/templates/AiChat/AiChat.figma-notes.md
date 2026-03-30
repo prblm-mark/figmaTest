@@ -25,7 +25,7 @@
 | Property | Token |
 |---|---|
 | Display | `flex` (row) |
-| Background | `--ai-chat-surface-primary` |
+| Background | `--ai-surface-primary` |
 | Width/Height | `100%` / `100%` |
 | Overflow | `hidden` |
 | Position | `relative` |
