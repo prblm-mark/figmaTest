@@ -377,9 +377,9 @@ const sdChatLight = new StyleDictionary({
 await sdChatLight.buildAllPlatforms();
 
 // ─── Chat Dark token build ───────────────────────────────────────────────────
-// Outputs [data-surface="chat"][data-theme="dark"] { ... } overrides.
-// Higher specificity than both [data-theme="dark"] and [data-surface="chat"]
-// ensures correct cascade when both attributes are present.
+// Outputs [data-theme="dark"] [data-surface="chat"] { ... } overrides.
+// Descendant selector: data-theme on <html>, data-surface on a child element.
+// Specificity 0,2,0 — wins over both [data-theme="dark"] and [data-surface="chat"].
 
 const sdChatDark = new StyleDictionary({
   usesDtcg: true,
@@ -406,7 +406,7 @@ const sdChatDark = new StyleDictionary({
           !!token.$extensions?.['com.figma.codeSyntax']?.WEB &&
           !(token.$type === 'string' && !token.path?.includes('family') && !token.path?.includes('weight')),
         options: {
-          selector: '[data-surface="chat"][data-theme="dark"]',
+          selector: '[data-theme="dark"] [data-surface="chat"]',
           outputReferences: false,
         },
       }],
