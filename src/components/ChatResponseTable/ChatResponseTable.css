@@ -76,7 +76,7 @@
 
 .chat-response-table td {
   padding: var(--ai-spacing-4) var(--ai-spacing-5);
-  border-bottom: 1px solid var(--ai-surface-secondary);
+  border-bottom: 1px solid var(--ai-border-secondary);
   vertical-align: middle;
   white-space: nowrap;
   min-width: var(--ai-size-2);
