@@ -8,7 +8,7 @@
   padding: var(--ai-spacing-4);
   gap: var(--ai-spacing-4);
   background-color: var(--ai-chat-sidebar-bg);
-  border-right: 1px solid var(--ai-border-secondary);
+  border-right: 1px solid var(--ai-chat-border);
 }
 
 /* ── Logo area ──────────────────────────────────────── */

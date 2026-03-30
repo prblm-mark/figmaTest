@@ -341,8 +341,8 @@
   align-items: center;
   justify-content: center;
   padding: 2px var(--ai-spacing-1);
-  background: var(--ai-chat-surface-tertiary);
-  border: 1px solid var(--ai-border-secondary);
+  background: var(--ai-chat-surface-contrast);
+  border: 1px solid var(--ai-chat-border);
   border-radius: var(--ai-radius-sm);
   font-family: 'Geist Mono', monospace;
   font-size: var(--ai-font-fixed-xxs);

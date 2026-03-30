@@ -27,7 +27,7 @@
   width: 100%;
   padding: var(--ai-spacing-6);
   background-color: var(--ai-chat-surface-secondary);
-  border: 1px solid rgb(from var(--ai-border-secondary) r g b / 0.6);
+  border: 1px solid rgb(from var(--ai-chat-border) r g b / 0.6);
   border-radius: var(--ai-radius-lg);
   box-shadow: var(--ai-shadow-md);
   position: relative;
@@ -35,7 +35,7 @@
 }
 
 .msg-input__box:focus-within {
-  border-color: var(--ai-border-secondary);
+  border-color: var(--ai-chat-border);
 }
 
 /* ── Textarea / placeholder ───────────────────────────── */
@@ -141,7 +141,7 @@
   padding: 1px;
   margin-bottom: var(--ai-spacing-3);
   background-color: var(--ai-chat-surface-secondary);
-  border: 1px solid var(--ai-border-secondary);
+  border: 1px solid var(--ai-chat-border);
   border-radius: var(--ai-radius-md);
   box-shadow: var(--ai-shadow-lg);
   z-index: 30;
@@ -171,7 +171,7 @@
 }
 
 .msg-input__filter-item:hover {
-  background-color: var(--ai-surface-minimal);
+  background-color: var(--ai-chat-surface-minimal);
 }
 
 .msg-input__filter-item--selected {

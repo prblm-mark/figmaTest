@@ -16,8 +16,8 @@
   --ai-surface-error: #ef4444;
   --ai-surface-error-contrast: #fbd5d5;
   --ai-surface-success: #30cb90;
-  --ai-text-primary: #202127;
-  --ai-text-secondary: #3c3f44;
+  --ai-text-primary: #212123;
+  --ai-text-secondary: #3c3c3f;
   --ai-text-contrast: #67676c;
   --ai-text-invert: #ffffff;
   --ai-text-error: #ef4444;
@@ -31,16 +31,18 @@
   --ai-radius-lg: 1rem;
   --ai-radius-xl: 1.5rem;
   --ai-radius-full: 6.25rem;
-  --ai-icon-primary: #202127;
+  --ai-icon-primary: #212123;
   --ai-icon-secondary: #67676c;
   --ai-icon-contrast: #929295;
   --ai-icon-invert: #ffffff;
   --ai-icon-brand: #0071d8;
   --ai-chat-surface-primary: #ffffff;
-  --ai-chat-surface-secondary: #ffffff;
-  --ai-chat-surface-tertiary: #f6f6f7;
   --ai-chat-surface-minimal: #e2e2e3;
-  --ai-chat-sidebar-text: #202127;
+  --ai-chat-surface-secondary: #ffffff;
+  --ai-chat-surface-contrast: #f6f6f7;
+  --ai-chat-surface-invert: #1b1b1f;
+  --ai-chat-sidebar-text: #212123;
+  --ai-chat-border: #e2e2e3;
   --ai-chat-brand: #0071d8; /** Editable by user */
   --ai-chat-msg-bg: #f0f3ff; /** Editable by user */
   --ai-chat-msg-text: #0f406b; /** Editable by user */
@@ -57,15 +59,15 @@
   --ai-btn-secondary-bg-pressed: #e2e2e3;
   --ai-btn-secondary-border: #c2c2c4;
   --ai-btn-secondary-border-hover: #c2c2c4;
-  --ai-btn-secondary-text: #202127;
-  --ai-btn-secondary-text-hover: #202127;
+  --ai-btn-secondary-text: #212123;
+  --ai-btn-secondary-text-hover: #212123;
   --ai-btn-tertiary-bg: rgba(0, 0, 0, 0);
   --ai-btn-tertiary-bg-hover: #f6f6f7;
   --ai-btn-tertiary-bg-pressed: #e2e2e3;
   --ai-btn-tertiary-border: rgba(0, 0, 0, 0);
   --ai-btn-tertiary-border-hover: rgba(0, 0, 0, 0);
-  --ai-btn-tertiary-text: #202127;
-  --ai-btn-tertiary-text-hover: #202127;
+  --ai-btn-tertiary-text: #212123;
+  --ai-btn-tertiary-text-hover: #212123;
   --ai-btn-bg-disabled: #c2c2c4;
   --ai-btn-text-disabled: #67676c;
   --ai-skeleton-base: #e2e2e3;

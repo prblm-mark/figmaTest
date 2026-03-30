@@ -24,7 +24,7 @@
 
 | Property | Token | Value |
 |---|---|---|
-| Background | `--ai-chat-surface-tertiary` | #F3F4F6 |
+| Background | `--ai-chat-surface-contrast` | #F6F6F7 |
 | Border radius | `--ai-radius-lg` | 1rem |
 | Padding | `--ai-spacing-5` | 1rem |
 | Icon-to-text gap | `--ai-spacing-3` | 0.5rem |

@@ -9,7 +9,7 @@
 .system-role-overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(17, 25, 40, 0.5); /* --ai-surface-invert hue at 50% opacity — approved */
+  background-color: rgba(27, 27, 31, 0.5); /* Neutral/900 at 50% opacity */
   backdrop-filter: blur(4px);              /* approved — no --ai-blur-* token */
   -webkit-backdrop-filter: blur(4px);
   z-index: 100;
