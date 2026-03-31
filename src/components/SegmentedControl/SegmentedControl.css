@@ -46,6 +46,7 @@
 
 .seg-control__btn--active {
   background-color: var(--ai-surface-minimal);
+  border-radius: var(--ai-radius-sm);
   cursor: default;
 }
 
