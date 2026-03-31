@@ -97,7 +97,7 @@
 
 /* Whole-item hover: border darkens to primary (Figma: Type=Hover, node 178:3388) */
 .prompt-template-item:hover {
-  border-color: var(--ai-border-primary);
+  border-color: var(--ai-border-invert);
 }
 
 /* Chevron-only hover: expand button gets a grey bg (Figma: Chevron Hover, node 78:2879) */
@@ -108,7 +108,7 @@
 /* ─── Selected ────────────────────────────────────────────────────────────── */
 
 .prompt-template-item--selected {
-  border-color: var(--ai-border-primary);
+  border-color: var(--ai-border-invert);
 }
 
 /* ─── Expanded ────────────────────────────────────────────────────────────── */

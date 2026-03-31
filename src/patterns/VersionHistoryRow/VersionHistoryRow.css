@@ -13,20 +13,20 @@
   cursor: pointer;
 }
 
-/* Live variant — secondary background */
+/* Live variant — elevated-2 background */
 .version-history-row--live {
-  background-color: var(--ai-surface-secondary);
+  background-color: var(--ai-surface-elevated-2);
 }
 
-/* Selected variant — primary bg + border */
+/* Selected variant — elevated-1 bg + invert border */
 .version-history-row--selected {
-  background-color: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-primary);
+  background-color: var(--ai-surface-elevated-1);
+  border: 1px solid var(--ai-border-invert);
 }
 
-/* Selected & Live — secondary bg, no border, wider gap */
+/* Selected & Live — elevated-2 bg, no border, wider gap */
 .version-history-row--selected.version-history-row--live {
-  background-color: var(--ai-surface-secondary);
+  background-color: var(--ai-surface-elevated-2);
   border: none;
   gap: var(--ai-spacing-5);                  /* 1rem (16px) — wider than other variants */
 }
@@ -38,7 +38,7 @@
 
 /* Hover state — Default variant only */
 .version-history-row:not(.version-history-row--live):not(.version-history-row--selected):hover {
-  border-color: var(--ai-border-primary);
+  border-color: var(--ai-border-invert);
   background-color: var(--ai-surface-primary);
 }
 
@@ -53,7 +53,7 @@
 
 /* Ring visible in resting Default state — always shown (bg never changes on hover now) */
 .version-history-row:not(.version-history-row--live):not(.version-history-row--selected) .avatar {
-  box-shadow: 0 0 0 2px var(--ai-surface-primary);
+  box-shadow: 0 0 0 2px var(--ai-surface-elevated-1);
 }
 
 /* ── Text content ────────────────────────────── */
