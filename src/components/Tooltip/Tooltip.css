@@ -8,7 +8,7 @@
 .tooltip {
   width: 100%;
   max-width: 21.9375rem;                 /* 351px ÷ 16 — fixed design width, no --ai-* token */
-  background-color: #0c121c;             /* Neutral/950 — approved primitive; intentionally fixed dark in both themes */
+  background-color: #0b0b0c;             /* Neutral/1000 — approved primitive; intentionally fixed dark in both themes */
   border-radius: var(--ai-radius-lg);
   padding: var(--ai-spacing-5);
   box-shadow: var(--ai-shadow-md);
