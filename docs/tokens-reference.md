@@ -9,10 +9,12 @@ Complete token tables for the Affino AI design system. All CSS variables use the
 | Variable | Value | Use |
 |---|---|---|
 | `--ai-surface-primary` | `#FFFFFF` | Page/card background |
-| `--ai-surface-minimal` | `#F3F4F6` | Very subtle background (Neutral/100) |
-| `--ai-surface-secondary` | `#E5E7EB` | Subtle section background (Neutral/200) |
-| `--ai-surface-contrast` | `#D1D5DB` | Divider areas, table stripes (Neutral/300) |
-| `--ai-surface-invert` | `#111928` | Dark backgrounds |
+| `--ai-surface-elevated-1` | `#FFFFFF` | Cards, dropdowns, popovers (steps up in dark) |
+| `--ai-surface-elevated-2` | `#FFFFFF` | Modals, dialogs (steps up further in dark) |
+| `--ai-surface-minimal` | `#F6F6F7` | Very subtle background (Neutral/50) |
+| `--ai-surface-secondary` | `#E2E2E3` | Subtle section background (Neutral/200) |
+| `--ai-surface-contrast` | `#C2C2C4` | Divider areas, table stripes (Neutral/300) |
+| `--ai-surface-invert` | `#1B1B1F` | Dark backgrounds (Neutral/900) |
 | `--ai-surface-brand` | `#0071D8` | Brand/primary action bg |
 | `--ai-surface-brand-light` | `#3A8FFF` | Hover state on brand |
 | `--ai-surface-brand-dark` | `#0054A3` | Pressed state on brand |
@@ -26,9 +28,9 @@ Complete token tables for the Affino AI design system. All CSS variables use the
 
 | Variable | Value | Use |
 |---|---|---|
-| `--ai-text-primary` | `#1F2A37` | Body text, headings |
-| `--ai-text-secondary` | `#4B5563` | Secondary/supporting text |
-| `--ai-text-contrast` | `#6B7280` | Placeholder, captions |
+| `--ai-text-primary` | `#212123` | Body text, headings (Neutral/800) |
+| `--ai-text-secondary` | `#3C3C3F` | Secondary/supporting text (Neutral/700) |
+| `--ai-text-contrast` | `#67676C` | Placeholder, captions (Neutral/500) |
 | `--ai-text-invert` | `#FFFFFF` | Text on dark/brand backgrounds |
 | `--ai-text-error` | `#EF4444` | Error messages |
 
@@ -37,9 +39,10 @@ Complete token tables for the Affino AI design system. All CSS variables use the
 | Variable | Value | Use |
 |---|---|---|
 | `--ai-border-brand` | `#0071D8` | Brand-colored borders |
-| `--ai-border-primary` | `#111928` | Strong dividers |
-| `--ai-border-secondary` | `#D1D5DB` | Default input/card borders (Neutral/300) |
-| `--ai-border-contrast` | `#D1D5DB` | Same as secondary (Neutral/300) |
+| `--ai-border-primary` | `#1B1B1F` | Strong dividers (Neutral/900) |
+| `--ai-border-secondary` | `#E2E2E3` | Default input/card borders (Neutral/200) |
+| `--ai-border-contrast` | `#C2C2C4` | Stronger borders (Neutral/300) |
+| `--ai-border-invert` | `#1B1B1F` | Borders on inverted/dark surfaces (Neutral/900) |
 | `--ai-border-error` | `#EF4444` | Error state borders |
 
 ## Border Radius
@@ -56,9 +59,9 @@ Complete token tables for the Affino AI design system. All CSS variables use the
 
 | Variable | Value | Use |
 |---|---|---|
-| `--ai-icon-primary` | `#1F2A37` | Default icon color |
-| `--ai-icon-secondary` | `#6B7280` | Secondary icon |
-| `--ai-icon-contrast` | `#9CA3AF` | Muted/disabled icon |
+| `--ai-icon-primary` | `#212123` | Default icon color (Neutral/800) |
+| `--ai-icon-secondary` | `#67676C` | Secondary icon (Neutral/500) |
+| `--ai-icon-contrast` | `#929295` | Muted/disabled icon (Neutral/400) |
 | `--ai-icon-invert` | `#FFFFFF` | Icon on dark background |
 | `--ai-icon-brand` | `#0071D8` | Brand-colored icon |
 
@@ -85,21 +88,21 @@ Complete token tables for the Affino AI design system. All CSS variables use the
 | `--ai-btn-primary-border` | `rgba(0,0,0,0)` | Primary default + hover border |
 | `--ai-btn-primary-border-hover` | `rgba(0,0,0,0)` | Primary hover border |
 | `--ai-btn-secondary-bg` | `transparent` | Secondary button background |
-| `--ai-btn-secondary-bg-hover` | `#F3F4F6` | Secondary hover + focus background |
-| `--ai-btn-secondary-bg-pressed` | `#E5E7EB` | Secondary pressed background |
-| `--ai-btn-secondary-border` | `#D1D5DB` | Secondary default + pressed border; focus ring |
-| `--ai-btn-secondary-border-hover` | `#D1D5DB` | Secondary hover border |
-| `--ai-btn-secondary-text` | `#1F2A37` | Secondary text |
-| `--ai-btn-secondary-text-hover` | `#1F2A37` | Secondary hover text |
+| `--ai-btn-secondary-bg-hover` | `#F6F6F7` | Secondary hover + focus background |
+| `--ai-btn-secondary-bg-pressed` | `#E2E2E3` | Secondary pressed background |
+| `--ai-btn-secondary-border` | `#C2C2C4` | Secondary default + pressed border; focus ring |
+| `--ai-btn-secondary-border-hover` | `#C2C2C4` | Secondary hover border |
+| `--ai-btn-secondary-text` | `#212123` | Secondary text |
+| `--ai-btn-secondary-text-hover` | `#212123` | Secondary hover text |
 | `--ai-btn-tertiary-bg` | `transparent` | Tertiary background |
-| `--ai-btn-tertiary-bg-hover` | `#F3F4F6` | Tertiary hover + focus background |
-| `--ai-btn-tertiary-bg-pressed` | `#E5E7EB` | Tertiary pressed background |
+| `--ai-btn-tertiary-bg-hover` | `#F6F6F7` | Tertiary hover + focus background |
+| `--ai-btn-tertiary-bg-pressed` | `#E2E2E3` | Tertiary pressed background |
 | `--ai-btn-tertiary-border` | `rgba(0,0,0,0)` | Tertiary default border |
 | `--ai-btn-tertiary-border-hover` | `rgba(0,0,0,0)` | Tertiary hover border |
-| `--ai-btn-tertiary-text` | `#1F2A37` | Tertiary text |
-| `--ai-btn-tertiary-text-hover` | `#1F2A37` | Tertiary hover text |
-| `--ai-btn-bg-disabled` | `#D1D5DB` | Disabled background (all variants) |
-| `--ai-btn-text-disabled` | `#6B7280` | Disabled text (all variants) |
+| `--ai-btn-tertiary-text` | `#212123` | Tertiary text |
+| `--ai-btn-tertiary-text-hover` | `#212123` | Tertiary hover text |
+| `--ai-btn-bg-disabled` | `#C2C2C4` | Disabled background (all variants) |
+| `--ai-btn-text-disabled` | `#67676C` | Disabled text (all variants) |
 
 ## Spacing
 
@@ -142,36 +145,32 @@ Fixed-dimension tokens for component and layout widths/heights (not spacing).
 
 ## Chat Component
 
-Component-specific tokens for the chat UI. Only relevant when building chat-related components.
+Chat UI uses a **context mode** (`data-surface="chat"`) that remaps core semantic tokens to chat-neutral values. The dedicated `--ai-chat-surface-*` and `--ai-chat-border` tokens have been removed; components inside a `[data-surface="chat"]` container automatically receive the correct surface, text, border, and button values via the remapped core tokens. See the **Chat Context Mode** section below for full details.
 
-| Variable | Light value | Dark value |
-|---|---|---|
-| `--ai-chat-surface-primary` | `#FFFFFF` | `#212123` |
-| `--ai-chat-surface-secondary` | `#FFFFFF` | `#2E2E32` |
-| `--ai-chat-surface-contrast` | `#F6F6F7` | `#1B1B1F` |
-| `--ai-chat-surface-minimal` | `#E2E2E3` | `#2E2E32` |
-| `--ai-chat-surface-invert` | `#1B1B1F` | `#F6F6F7` |
-| `--ai-chat-border` | `#E2E2E3` | `#3C3C3F` |
-| `--ai-chat-sidebar-bg` | `#F6F6F7` | (alias: `surface-primary`) |
-| `--ai-chat-sidebar-text` | `#212123` | (alias: `text-primary`) |
-| `--ai-chat-msg-bg` | `#F0F3FF` | `#0054A3` |
-| `--ai-chat-msg-text` | `#0F406B` | `#F0F3FF` |
-| `--ai-chat-brand` | `#0071D8` | `#0071D8` |
-| `--ai-chat-sidebar-hover-bg` | — | — | computed (see §Computed Tokens) |
-| `--ai-chat-sidebar-active-bg` | — | — | computed (see §Computed Tokens) |
+The following tokens remain as explicit chat-specific values:
+
+| Variable | Light value | Dark value | Use |
+|---|---|---|---|
+| `--ai-chat-brand` | `#0071D8` | `#0071D8` | Chat brand accent (theme-invariant) |
+| `--ai-chat-msg-bg` | `#F0F3FF` | `#0F406B` | User message bubble background |
+| `--ai-chat-msg-text` | `#0F406B` | `#F0F3FF` | User message bubble text |
+| `--ai-chat-sidebar-bg` | `#F6F6F7` | `#1B1B1F` | Sidebar background (editable by user) |
+| `--ai-chat-sidebar-text` | `#212123` | `#E2E2E3` | Sidebar text (editable by user) |
+| `--ai-chat-sidebar-hover-bg` | -- | -- | Computed (see Computed Tokens) |
+| `--ai-chat-sidebar-active-bg` | -- | -- | Computed (see Computed Tokens) |
 
 ## Skeleton Component
 
 | Variable | Light value | Dark value |
 |---|---|---|
-| `--ai-skeleton-base` | `#E5E7EB` | `#111928` |
-| `--ai-skeleton-highlight` | `#FFFFFF` | `#2B3644` |
+| `--ai-skeleton-base` | `#E2E2E3` | `#1B1B1F` |
+| `--ai-skeleton-highlight` | `#FFFFFF` | `#2E2E32` |
 
 ## SourcesCarousel Component
 
 | Variable | Light value | Dark value |
 |---|---|---|
-| `--ai-src-carousel-card-bg` | `#F3F4F6` | `#111928` |
+| `--ai-src-carousel-card-bg` | `#F6F6F7` | `#2E2E32` |
 
 ## Shadow
 
@@ -187,8 +186,8 @@ Component-specific tokens for the chat UI. Only relevant when building chat-rela
 
 | Variable | Pattern | Use |
 |---|---|---|
-| `--ai-gradient-surface-secondary` | `transparent(secondary) -> secondary` | Fade overlay, edge fade |
-| `--ai-gradient-chat-surface-primary` | `transparent(chat-surface-primary) -> chat-surface-primary` (to bottom) | Chat content fade above input |
+| `--ai-gradient-surface-secondary` | `transparent(secondary) -> secondary` (to right) | Fade overlay, edge fade |
+| `--ai-gradient-surface-primary` | `transparent(surface-primary) -> surface-primary` (to bottom) | Content fade above input. Re-declared under `[data-surface="chat"]` so it resolves to the chat-context value of `--ai-surface-primary`. |
 
 **Source:** `css/tokens-gradients.css` (static, manually maintained).
 
@@ -238,39 +237,100 @@ All `--ai-*` variables continue to work in dark mode. Brand, error, border, spac
 
 | Variable | Light value | Dark value |
 |---|---|---|
-| `--ai-surface-primary` | `#FFFFFF` | `#111928` |
-| `--ai-surface-minimal` | `#F3F4F6` | `#1F2A37` |
-| `--ai-surface-secondary` | `#E5E7EB` | `#374151` |
-| `--ai-surface-contrast` | `#D1D5DB` | `#4B5563` |
-| `--ai-surface-invert` | `#111928` | `#F3F4F6` |
+| `--ai-surface-primary` | `#FFFFFF` | `#1B1B1F` |
+| `--ai-surface-elevated-1` | `#FFFFFF` | `#212123` |
+| `--ai-surface-elevated-2` | `#FFFFFF` | `#2E2E32` |
+| `--ai-surface-minimal` | `#F6F6F7` | `#212123` |
+| `--ai-surface-secondary` | `#E2E2E3` | `#2E2E32` |
+| `--ai-surface-contrast` | `#C2C2C4` | `#3C3C3F` |
+| `--ai-surface-invert` | `#1B1B1F` | `#F6F6F7` |
 | `--ai-surface-brand-contrast` | `#BFD1FF` | `#75A5FF` |
 | `--ai-surface-brand-contrast-extra` | `#F0F3FF` | `#BFD1FF` |
-| `--ai-text-primary` | `#1F2A37` | `#FFFFFF` |
-| `--ai-text-secondary` | `#4B5563` | `#E5E7EB` |
-| `--ai-text-contrast` | `#6B7280` | `#9CA3AF` |
-| `--ai-text-invert` | `#FFFFFF` | `#111928` |
-| `--ai-border-primary` | `#111928` | `#F3F4F6` |
-| `--ai-border-secondary` | `#D1D5DB` | `#4B5563` |
-| `--ai-border-contrast` | `#D1D5DB` | `#4B5563` |
-| `--ai-icon-primary` | `#1F2A37` | `#F3F4F6` |
-| `--ai-icon-secondary` | `#6B7280` | `#9CA3AF` |
-| `--ai-icon-invert` | `#FFFFFF` | `#111928` |
-| `--ai-btn-secondary-bg-hover` | `#F3F4F6` | `#1F2A37` |
-| `--ai-btn-secondary-bg-pressed` | `#E5E7EB` | `#374151` |
-| `--ai-btn-secondary-border` | `#D1D5DB` | `#4B5563` |
-| `--ai-btn-secondary-border-hover` | `#D1D5DB` | `#4B5563` |
-| `--ai-btn-secondary-text` | `#1F2A37` | `#FFFFFF` |
-| `--ai-btn-secondary-text-hover` | `#1F2A37` | `#FFFFFF` |
-| `--ai-btn-tertiary-bg-hover` | `#F3F4F6` | `#1F2A37` |
-| `--ai-btn-tertiary-bg-pressed` | `#E5E7EB` | `#374151` |
-| `--ai-btn-tertiary-text` | `#1F2A37` | `#FFFFFF` |
-| `--ai-btn-tertiary-text-hover` | `#1F2A37` | `#FFFFFF` |
-| `--ai-btn-bg-disabled` | `#D1D5DB` | `#6B7280` |
-| `--ai-btn-text-disabled` | `#6B7280` | `#D1D5DB` |
+| `--ai-text-primary` | `#212123` | `#F6F6F7` |
+| `--ai-text-secondary` | `#3C3C3F` | `#E2E2E3` |
+| `--ai-text-contrast` | `#67676C` | `#929295` |
+| `--ai-text-invert` | `#FFFFFF` | `#1B1B1F` |
+| `--ai-border-primary` | `#1B1B1F` | `#F6F6F7` |
+| `--ai-border-secondary` | `#E2E2E3` | `#2E2E32` |
+| `--ai-border-contrast` | `#C2C2C4` | `#3C3C3F` |
+| `--ai-border-invert` | `#1B1B1F` | `#F6F6F7` |
+| `--ai-icon-primary` | `#212123` | `#F6F6F7` |
+| `--ai-icon-secondary` | `#67676C` | `#929295` |
+| `--ai-icon-contrast` | `#929295` | `#929295` |
+| `--ai-icon-invert` | `#FFFFFF` | `#1B1B1F` |
+| `--ai-chat-msg-bg` | `#F0F3FF` | `#0F406B` |
+| `--ai-chat-msg-text` | `#0F406B` | `#F0F3FF` |
+| `--ai-chat-sidebar-bg` | `#F6F6F7` | `#1B1B1F` |
+| `--ai-chat-sidebar-text` | `#212123` | `#E2E2E3` |
+| `--ai-btn-secondary-bg-hover` | `#F6F6F7` | `#212123` |
+| `--ai-btn-secondary-bg-pressed` | `#E2E2E3` | `#2E2E32` |
+| `--ai-btn-secondary-border` | `#C2C2C4` | `#3C3C3F` |
+| `--ai-btn-secondary-border-hover` | `#C2C2C4` | `#3C3C3F` |
+| `--ai-btn-secondary-text` | `#212123` | `#F6F6F7` |
+| `--ai-btn-secondary-text-hover` | `#212123` | `#F6F6F7` |
+| `--ai-btn-tertiary-bg-hover` | `#F6F6F7` | `#212123` |
+| `--ai-btn-tertiary-bg-pressed` | `#E2E2E3` | `#2E2E32` |
+| `--ai-btn-tertiary-text` | `#212123` | `#F6F6F7` |
+| `--ai-btn-tertiary-text-hover` | `#212123` | `#F6F6F7` |
+| `--ai-btn-bg-disabled` | `#C2C2C4` | `#67676C` |
+| `--ai-btn-text-disabled` | `#67676C` | `#C2C2C4` |
+| `--ai-skeleton-base` | `#E2E2E3` | `#1B1B1F` |
+| `--ai-skeleton-highlight` | `#FFFFFF` | `#2E2E32` |
+| `--ai-src-carousel-card-bg` | `#F6F6F7` | `#2E2E32` |
+
+**Elevation in dark mode:** In light mode, all elevation surfaces are `#FFFFFF`. In dark mode, each level steps up the neutral scale: `elevated-1` = `#212123` (Neutral/800), `elevated-2` = `#2E2E32` (Neutral/700). This creates visible depth separation on dark backgrounds.
 
 ### Component dark-mode notes
 
-- **Tooltip:** Fixed dark panel (`#0c121c` = Neutral/950) in both themes. Does **not** invert.
+- **Tooltip:** Fixed dark panel (`#0B0B0C` = Neutral/950) in both themes. Does **not** invert.
+
+---
+
+## Chat Context Mode
+
+**Activation:** Add `data-surface="chat"` to a container element. All descendants automatically receive remapped semantic tokens.
+
+**Generated files:**
+- `css/tokens-chat.css` -- `[data-surface="chat"]` selector (rebuilt by `npm run tokens`)
+- `css/tokens-chat-dark.css` -- `[data-theme="dark"] [data-surface="chat"]` descendant selector (rebuilt by `npm run tokens`)
+
+Both files are auto-generated; do not edit manually.
+
+### How it works
+
+Instead of dedicated `--ai-chat-surface-*` tokens, the chat context remaps the **core semantic tokens** (`--ai-surface-*`, `--ai-border-*`, etc.) to chat-neutral values. Components inside a `[data-surface="chat"]` container use the same `--ai-surface-primary`, `--ai-border-secondary`, etc. variables as everywhere else -- they just resolve to different values.
+
+### Key differences from default context (light mode)
+
+| Token | Default | Chat context | Notes |
+|---|---|---|---|
+| `--ai-surface-primary` | `#FFFFFF` | `#FFFFFF` | Same in light |
+| `--ai-surface-elevated-2` | `#FFFFFF` | `#F6F6F7` | Chat elevates to minimal |
+| `--ai-surface-secondary` | `#E2E2E3` | `#FFFFFF` | Flips to white |
+| `--ai-surface-contrast` | `#C2C2C4` | `#F6F6F7` | Much lighter in chat |
+| `--ai-surface-minimal` | `#F6F6F7` | `#E2E2E3` | Shifts one step darker |
+| `--ai-border-contrast` | `#C2C2C4` | `#F6F6F7` | Lighter borders |
+
+### Key differences from default context (dark mode)
+
+| Token | Default dark | Chat dark | Notes |
+|---|---|---|---|
+| `--ai-surface-primary` | `#1B1B1F` | `#212123` | One step lighter |
+| `--ai-surface-elevated-1` | `#212123` | `#2E2E32` | Steps up further |
+| `--ai-surface-elevated-2` | `#2E2E32` | `#3C3C3F` | Steps up further |
+| `--ai-surface-secondary` | `#2E2E32` | `#2E2E32` | Same |
+| `--ai-surface-contrast` | `#3C3C3F` | `#1B1B1F` | Inverts to darkest |
+| `--ai-border-secondary` | `#2E2E32` | `#3C3C3F` | One step lighter |
+| `--ai-border-contrast` | `#3C3C3F` | `#1B1B1F` | Inverts to darkest |
+
+### CSS specificity
+
+| Selector | Specificity |
+|---|---|
+| `[data-surface="chat"]` | `0,1,0` |
+| `[data-theme="dark"] [data-surface="chat"]` | `0,2,0` |
+
+The chat context selector has the same specificity as `[data-theme="dark"]` (`0,1,0`). Because `tokens-chat.css` is loaded after `tokens-dark.css` in `base.css`, the chat context wins when both are active -- which is correct because the dark chat file (`0,2,0`) handles the dark+chat combination explicitly.
 
 ---
 
