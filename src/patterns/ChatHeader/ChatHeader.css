@@ -231,7 +231,7 @@
 }
 
 .chat-header__admin .btn[aria-pressed="true"] {
-  background-color: var(--ai-surface-minimal);
+  background-color: var(--ai-btn-secondary-bg-pressed);
 }
 
 /* ── Window buttons (Minimised / Mobile) ─────────────── */

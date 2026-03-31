@@ -1831,27 +1831,107 @@ When users ask about specific topics, focus your answers on what is directly rel
       });
     });
 
-    // ── Prompt Template interactions ─────────────────────
-    srModal.querySelectorAll('.prompt-template-item').forEach(item => {
-      // Chevron expand/collapse
-      const chevronBtn = item.querySelector('.prompt-template-item__chevron-btn');
-      if (chevronBtn) {
-        chevronBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const isExpanded = item.classList.toggle('prompt-template-item--expanded');
-          chevronBtn.setAttribute('aria-expanded', String(isExpanded));
-        });
-      }
+    // ── Prompt Template — helpers ──────────────────────────
+    var srActiveTemplate = null;
+    var srPromptWrap = srModal.querySelector('.system-role__prompt');
 
-      // Select template
-      item.addEventListener('click', () => {
-        srModal.querySelectorAll('.prompt-template-item--selected').forEach(i => {
-          i.classList.remove('prompt-template-item--selected');
-          i.setAttribute('aria-selected', 'false');
-        });
+    function srApplyTemplate(item) {
+      // Deselect any active VH row first (mutual exclusivity)
+      srModal.querySelectorAll('.version-history-row--selected').forEach(function (r) {
+        srRemoveVHSelected(r);
+      });
+      var desc = item.querySelector('.prompt-template-item__description');
+      if (!desc) return;
+      srTextarea.value = desc.textContent.trim();
+      if (srPromptWrap) srPromptWrap.classList.add('system-role__prompt--template-linked');
+      srActiveTemplate = item;
+      srModal.classList.toggle('system-role--dirty', srTextarea.value !== srSavedValue);
+    }
+
+    function srClearTemplate() {
+      if (!srActiveTemplate) return;
+      srActiveTemplate.classList.remove('prompt-template-item--selected');
+      srActiveTemplate.setAttribute('aria-selected', 'false');
+      srActiveTemplate = null;
+      srTextarea.value = srSavedValue;
+      if (srPromptWrap) srPromptWrap.classList.remove('system-role__prompt--template-linked');
+      srModal.classList.toggle('system-role--dirty', srTextarea.value !== srSavedValue);
+    }
+
+    function srHandlePTItemClick(e) {
+      if (e.target.closest('.prompt-template-item__chevron-btn')) return;
+      var item = e.target.closest('.prompt-template-item');
+      if (!item) return;
+
+      var isAlreadySelected = item.classList.contains('prompt-template-item--selected');
+
+      srModal.querySelectorAll('.prompt-template-item').forEach(function (i) {
+        i.classList.remove('prompt-template-item--selected');
+        i.setAttribute('aria-selected', 'false');
+      });
+
+      if (isAlreadySelected) {
+        srClearTemplate();
+      } else {
         item.classList.add('prompt-template-item--selected');
         item.setAttribute('aria-selected', 'true');
+        srApplyTemplate(item);
+      }
+    }
+
+    function srCollapsePTItem(item) {
+      item.classList.remove('prompt-template-item--expanded');
+      var btn = item.querySelector('.prompt-template-item__chevron-btn');
+      if (btn) {
+        btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-label', 'Show details');
+      }
+    }
+
+    // ── Prompt Template — event listeners ────────────────
+    var srPTList = srModal.querySelector('.prompt-templates__list');
+    if (srPTList) {
+      srPTList.addEventListener('click', function (e) {
+        srHandlePTItemClick(e);
       });
+
+      srPTList.addEventListener('keydown', function (e) {
+        if ((e.key === 'Enter' || e.key === ' ') &&
+            !e.target.closest('.prompt-template-item__chevron-btn')) {
+          e.preventDefault();
+          srHandlePTItemClick(e);
+        }
+      });
+
+      srPTList.querySelectorAll('.prompt-template-item__chevron-btn').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var item = btn.closest('.prompt-template-item');
+          if (!item) return;
+          var isExpanded = item.classList.contains('prompt-template-item--expanded');
+
+          srPTList.querySelectorAll('.prompt-template-item--expanded').forEach(function (i) {
+            if (i !== item) srCollapsePTItem(i);
+          });
+
+          if (isExpanded) {
+            srCollapsePTItem(item);
+          } else {
+            item.classList.add('prompt-template-item--expanded');
+            btn.setAttribute('aria-expanded', 'true');
+            btn.setAttribute('aria-label', 'Hide details');
+          }
+        });
+      });
+    }
+
+    // ── Also update VH row selection to clear template ───
+    // (Add mutual exclusivity: selecting a VH row clears any active template)
+    srModal.querySelectorAll('.version-history__rows[role="listbox"]').forEach(function (rowsContainer) {
+      var origHandler = rowsContainer.onclick;
+      rowsContainer.addEventListener('click', function () {
+        if (srActiveTemplate) srClearTemplate();
+      }, true); // capture phase — runs before the row selection handler
     });
 
     // ── Version History expand/collapse ──────────────────

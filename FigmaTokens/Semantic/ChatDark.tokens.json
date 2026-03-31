@@ -1270,7 +1270,16 @@
       },
       "secondary-border": {
         "$type": "color",
-        "$value": "{surface.contrast}",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.23529411852359772,
+            0.23529411852359772,
+            0.24705882370471954
+          ],
+          "alpha": 1,
+          "hex": "#3C3C3F"
+        },
         "$extensions": {
           "com.figma.variableId": "VariableID:184:3421",
           "com.figma.scopes": [
@@ -1279,12 +1288,27 @@
           "com.figma.codeSyntax": {
             "WEB": "--ai-btn-secondary-border"
           },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:abdfc97c923a8f708193fd962b0f0add9c07d10f/-1:-1",
+            "targetVariableName": "Neutral/600",
+            "targetVariableSetId": "VariableCollectionId:8f6c1c1faabbdf0817d5304f220b65ab37368977/-1:-1",
+            "targetVariableSetName": "Primitives"
+          },
           "com.figma.isOverride": true
         }
       },
       "secondary-border-hover": {
         "$type": "color",
-        "$value": "{surface.contrast}",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.23529411852359772,
+            0.23529411852359772,
+            0.24705882370471954
+          ],
+          "alpha": 1,
+          "hex": "#3C3C3F"
+        },
         "$extensions": {
           "com.figma.variableId": "VariableID:184:3422",
           "com.figma.scopes": [
@@ -1292,6 +1316,12 @@
           ],
           "com.figma.codeSyntax": {
             "WEB": "--ai-btn-secondary-border-hover"
+          },
+          "com.figma.aliasData": {
+            "targetVariableId": "VariableID:abdfc97c923a8f708193fd962b0f0add9c07d10f/-1:-1",
+            "targetVariableName": "Neutral/600",
+            "targetVariableSetId": "VariableCollectionId:8f6c1c1faabbdf0817d5304f220b65ab37368977/-1:-1",
+            "targetVariableSetName": "Primitives"
           },
           "com.figma.isOverride": true
         }
