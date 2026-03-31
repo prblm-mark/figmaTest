@@ -169,7 +169,7 @@
   min-width: 0;                                     /* allow full shrink (CQ fires first) */
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-6);               /* 24px between VersionHistory and PromptTemplates */
+  gap: var(--ai-spacing-7);               /* 32px between VersionHistory and PromptTemplates */
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--ai-surface-secondary) transparent;
