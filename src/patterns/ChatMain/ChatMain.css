@@ -393,7 +393,7 @@
   width: 100%;
   max-width: var(--ai-size-11);
   height: calc(100% + var(--ai-spacing-8));
-  background: var(--ai-gradient-chat-surface-primary);
+  background: var(--ai-gradient-surface-primary);
   pointer-events: none;
 }
 
