@@ -27,18 +27,13 @@
   --ai-border-primary: #1b1b1f;
   --ai-border-secondary: #e2e2e3;
   --ai-border-contrast: #c2c2c4;
+  --ai-border-invert: #1b1b1f;
   --ai-border-error: #ef4444;
   --ai-icon-primary: #212123;
   --ai-icon-secondary: #67676c;
   --ai-icon-contrast: #929295;
   --ai-icon-invert: #ffffff;
   --ai-icon-brand: #0071d8;
-  --ai-chat-surface-primary: #ffffff;
-  --ai-chat-surface-minimal: #e2e2e3;
-  --ai-chat-surface-secondary: #ffffff;
-  --ai-chat-surface-contrast: #f6f6f7;
-  --ai-chat-surface-invert: #1b1b1f;
-  --ai-chat-border: #e2e2e3;
   --ai-chat-brand: #0071d8; /** Editable by user */
   --ai-chat-msg-bg: #f0f3ff; /** Editable by user */
   --ai-chat-msg-text: #0f406b; /** Editable by user */

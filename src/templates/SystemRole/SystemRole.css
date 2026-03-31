@@ -39,7 +39,7 @@
   height: calc(100vh - var(--ai-spacing-7) * 2);
   max-height: 973px;
   padding: var(--ai-spacing-8);           /* 40px all sides — Default variant */
-  background-color: var(--ai-surface-primary);
+  background-color: var(--ai-surface-elevated-1);
   border-radius: var(--ai-radius-xl);
   box-shadow: var(--ai-shadow-lg);
   overflow: hidden;
