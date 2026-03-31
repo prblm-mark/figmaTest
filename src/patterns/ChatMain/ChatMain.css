@@ -344,8 +344,8 @@
   background: var(--ai-surface-contrast);
   border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-sm);
-  font-family: 'Geist Mono', monospace;
-  font-size: var(--ai-font-fixed-xxs);
+  font-family: 'Dank Mono', monospace;
+  font-size: var(--ai-font-fixed-xs);
   line-height: var(--ai-leading-sm);
   color: var(--ai-text-primary);
   letter-spacing: var(--ai-tracking-3);
@@ -355,7 +355,7 @@
 
 @media (min-width: 640px) {
   .chat-main__response code {
-    font-size: var(--ai-font-fixed-xs);
+    font-size: var(--ai-font-fixed-sm);
   }
 }
 
