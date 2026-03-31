@@ -96,7 +96,7 @@
 | Response font-size | `--ai-font-fluid-sm` | 16px (responsive) |
 | Response line-height | `--ai-leading-md` | 24px |
 | Fade height | `--ai-size-2` | 160px |
-| Fade gradient | `--ai-gradient-chat-surface-primary` | to bottom |
+| Fade gradient | `--ai-gradient-surface-primary` | to bottom |
 
 ## Dependencies
 

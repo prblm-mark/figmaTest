@@ -19,9 +19,27 @@
     var(--ai-surface-secondary)
   );
 
-  /* gradient/chat-surface/primary — Figma node 2061:5769
-   * Fade: transparent chat-surface-primary → full (top → bottom) */
-  --ai-gradient-chat-surface-primary: linear-gradient(
+  /* gradient/surface/primary — Figma node 2061:5769
+   * Fade: transparent surface-primary → full (top → bottom)
+   * Re-declared under [data-surface="chat"] so the gradient resolves
+   * to the chat-context value of --ai-surface-primary. */
+  --ai-gradient-surface-primary: linear-gradient(
+    to bottom,
+    rgb(from var(--ai-surface-primary) r g b / 0),
+    var(--ai-surface-primary)
+  );
+}
+
+[data-surface="chat"] {
+  --ai-gradient-surface-primary: linear-gradient(
+    to bottom,
+    rgb(from var(--ai-surface-primary) r g b / 0),
+    var(--ai-surface-primary)
+  );
+}
+
+[data-theme="dark"] [data-surface="chat"] {
+  --ai-gradient-surface-primary: linear-gradient(
     to bottom,
     rgb(from var(--ai-surface-primary) r g b / 0),
     var(--ai-surface-primary)
