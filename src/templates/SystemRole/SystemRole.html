@@ -181,16 +181,17 @@ When users ask about specific topics, focus your answers on what is directly rel
           <div class="version-history__rows" role="listbox" aria-label="Version history">
             <div class="version-history__timeline" aria-hidden="true"></div>
 
-            <!-- Row 1 — Live -->
-            <div class="version-history-row version-history-row--live"
-                 role="option" aria-selected="false" tabindex="0"
+            <!-- Row 1 — Live (starts selected) -->
+            <div class="version-history-row version-history-row--live version-history-row--selected"
+                 role="option" aria-selected="true" tabindex="0"
+                 data-portrait-src="https://picsum.photos/seed/female4/300"
                  data-prompt="You are a helpful AI assistant for Affino. Your role is to assist users by answering questions accurately and concisely, drawing from the content and context available on the platform.
 
 Always respond in a professional, friendly tone. If you are unsure about something, say so clearly rather than guessing. Do not make up information or reference content that is not available to you.
 
 When users ask about specific topics, focus your answers on what is directly relevant to their query. Avoid unnecessary preamble or padding. Be helpful, honest, and direct.">
-              <div class="avatar">
-                <img class="portrait" src="https://picsum.photos/seed/female4/300" alt="Sally Jones">
+              <div class="avatar avatar--checked" aria-label="Selected">
+                <i data-lucide="check" aria-hidden="true"></i>
               </div>
               <div class="version-history-row__content">
                 <span class="version-history-row__name">Sally Jones</span>

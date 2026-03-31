@@ -39,7 +39,7 @@
 /* Hover state — Default variant only */
 .version-history-row:not(.version-history-row--live):not(.version-history-row--selected):hover {
   border-color: var(--ai-border-invert);
-  background-color: var(--ai-surface-primary);
+  background-color: var(--ai-surface-elevated-1);
 }
 
 /* ── Avatar / Check circle ───────────────────── */
