@@ -998,11 +998,12 @@ When users ask about specific topics, focus your answers on what is directly rel
           <div class="version-history__rows" role="listbox" aria-label="Version history">
             <div class="version-history__timeline" aria-hidden="true"></div>
 
-            <div class="version-history-row version-history-row--live"
-                 role="option" aria-selected="false" tabindex="0"
+            <div class="version-history-row version-history-row--live version-history-row--selected"
+                 role="option" aria-selected="true" tabindex="0"
+                 data-portrait-src="https://picsum.photos/seed/female4/300"
                  data-prompt="You are a helpful AI assistant for Affino. Your role is to assist users by answering questions accurately and concisely.">
-              <div class="avatar">
-                <img class="portrait" src="https://picsum.photos/seed/female4/300" alt="Sally Jones">
+              <div class="avatar avatar--checked" aria-label="Selected">
+                <i data-lucide="check" aria-hidden="true"></i>
               </div>
               <div class="version-history-row__content">
                 <span class="version-history-row__name">Sally Jones</span>
@@ -1774,16 +1775,55 @@ When users ask about specific topics, focus your answers on what is directly rel
       });
     }
 
-    // ── Version History interactions ─────────────────────
-    srModal.querySelectorAll('.version-history-row').forEach(row => {
-      row.addEventListener('click', () => {
-        srModal.querySelectorAll('.version-history-row--selected').forEach(r => {
-          r.classList.remove('version-history-row--selected');
-          r.setAttribute('aria-selected', 'false');
-        });
-        row.classList.add('version-history-row--selected');
-        row.setAttribute('aria-selected', 'true');
-        const prompt = row.getAttribute('data-prompt');
+    // ── Version History — row selection helpers ───────────
+    function srApplyVHSelected(row) {
+      row.classList.add('version-history-row--selected');
+      row.setAttribute('aria-selected', 'true');
+      var avatar   = row.querySelector('.avatar');
+      var portrait = avatar && avatar.querySelector('.portrait');
+      if (portrait) row.dataset.portraitSrc = portrait.src;
+      if (avatar) {
+        avatar.classList.add('avatar--checked');
+        avatar.setAttribute('aria-label', 'Selected');
+        avatar.innerHTML = '<i data-lucide="check" aria-hidden="true"></i>';
+        lucide.createIcons({ nodes: [avatar] });
+      }
+    }
+
+    function srRemoveVHSelected(row) {
+      if (!row.classList.contains('version-history-row--selected')) return;
+      row.classList.remove('version-history-row--selected');
+      row.setAttribute('aria-selected', 'false');
+      var avatar    = row.querySelector('.avatar');
+      var storedSrc = row.dataset.portraitSrc;
+      if (avatar && storedSrc) {
+        avatar.classList.remove('avatar--checked');
+        avatar.removeAttribute('aria-label');
+        avatar.innerHTML = '<img class="portrait" src="' + storedSrc + '" alt="">';
+        delete row.dataset.portraitSrc;
+      }
+    }
+
+    // ── Version History — row click (radio, toggleable) ──
+    srModal.querySelectorAll('.version-history__rows[role="listbox"]').forEach(function (rowsContainer) {
+      rowsContainer.addEventListener('click', function (e) {
+        var clickedRow = e.target.closest('.version-history-row');
+        if (!clickedRow) return;
+
+        var allRows = rowsContainer.querySelectorAll('.version-history-row');
+        var isAlreadySelected = clickedRow.classList.contains('version-history-row--selected');
+
+        if (isAlreadySelected) {
+          srRemoveVHSelected(clickedRow);
+          srTextarea.value = srSavedValue;
+          srModal.classList.toggle('system-role--dirty', srTextarea.value !== srSavedValue);
+          return;
+        }
+
+        allRows.forEach(function (row) { srRemoveVHSelected(row); });
+        srApplyVHSelected(clickedRow);
+
+        var prompt = clickedRow.getAttribute('data-prompt');
         if (prompt) {
           srTextarea.value = prompt;
           srModal.classList.toggle('system-role--dirty', srTextarea.value !== srSavedValue);
