@@ -1,0 +1,187 @@
+/* ChatSidebarItem — sidebar menu item with computed hover/selected states */
+
+/* ── Computed overlay variables ─────────────────────── */
+/* Light sidebar: dark text, darken selected text */
+[data-sidebar-theme="light"] {
+  --ai-chat-sidebar-text: rgb(31 42 55);
+  --ai-chat-sidebar-selected-text: color-mix(in srgb, var(--ai-chat-sidebar-text) 85%, black);
+  --ai-chat-sidebar-hover-bg: color-mix(in srgb, var(--ai-chat-sidebar-bg) 92%, rgb(38 55 88));
+  --ai-chat-sidebar-active-bg: color-mix(in srgb, var(--ai-chat-sidebar-bg) 88%, rgb(38 55 88));
+}
+
+/* Dark sidebar: light text, lighten for states */
+[data-sidebar-theme="dark"] {
+  --ai-chat-sidebar-text: rgb(229 231 235);
+  --ai-chat-sidebar-selected-text: color-mix(in srgb, var(--ai-chat-sidebar-text) 85%, white);
+  --ai-chat-sidebar-hover-bg: color-mix(in srgb, var(--ai-chat-sidebar-bg) 92%, white);
+  --ai-chat-sidebar-active-bg: color-mix(in srgb, var(--ai-chat-sidebar-bg) 88%, white);
+}
+
+/* ── Base (Type=Thread) ─────────────────────────────── */
+
+.chat-sidebar-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  width: 100%;
+  min-height: var(--ai-spacing-7);
+  padding: 0 var(--ai-spacing-3);
+  border: none;
+  border-radius: var(--ai-radius-md);
+  background: transparent;
+  color: var(--ai-chat-sidebar-text);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--ai-transition-default);
+}
+
+/* ── Pin icon ───────────────────────────────────────── */
+
+.chat-sidebar-item__pin {
+  display: none;
+  flex-shrink: 0;
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-chat-sidebar-text);
+  opacity: 0.6;
+}
+
+.chat-sidebar-item--pinned .chat-sidebar-item__pin {
+  display: block;
+}
+
+/* ── Text label ─────────────────────────────────────── */
+
+.chat-sidebar-item__text {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Actions (fade + ellipsis button) ───────────────── */
+
+.chat-sidebar-item__actions {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--ai-transition-default);
+}
+
+.chat-sidebar-item:hover .chat-sidebar-item__actions,
+.chat-sidebar-item--menu-open .chat-sidebar-item__actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Fade gradient — fades from transparent to the item's current bg */
+.chat-sidebar-item__fade {
+  width: var(--ai-spacing-10);
+  height: 100%;
+  pointer-events: none;
+}
+
+.chat-sidebar-item:hover .chat-sidebar-item__fade {
+  background: linear-gradient(to right, transparent, var(--ai-chat-sidebar-hover-bg));
+}
+
+.chat-sidebar-item--selected .chat-sidebar-item__fade,
+.chat-sidebar-item--selected:hover .chat-sidebar-item__fade {
+  background: linear-gradient(to right, transparent, var(--ai-chat-sidebar-active-bg));
+}
+
+.chat-sidebar-item--menu-open:not(.chat-sidebar-item--selected) .chat-sidebar-item__fade {
+  background: linear-gradient(to right, transparent, var(--ai-chat-sidebar-hover-bg));
+}
+
+/* Ellipsis menu trigger button */
+.chat-sidebar-item__menu-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-7);
+  height: var(--ai-spacing-7);
+  border: none;
+  border-radius: var(--ai-radius-md);
+  background: var(--ai-chat-sidebar-hover-bg);
+  color: var(--ai-chat-sidebar-text);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color var(--ai-transition-default);
+}
+
+.chat-sidebar-item__menu-btn:hover {
+  background: var(--ai-chat-sidebar-active-bg);
+}
+
+.chat-sidebar-item--selected .chat-sidebar-item__menu-btn {
+  background: var(--ai-chat-sidebar-hover-bg);
+}
+
+.chat-sidebar-item__menu-btn [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* ── States ──────────────────────────────────────────── */
+
+.chat-sidebar-item:hover {
+  background: var(--ai-chat-sidebar-hover-bg);
+}
+
+.chat-sidebar-item--selected {
+  background: var(--ai-chat-sidebar-active-bg);
+  color: var(--ai-chat-sidebar-selected-text);
+}
+
+.chat-sidebar-item--selected:hover {
+  background: var(--ai-chat-sidebar-active-bg);
+}
+
+.chat-sidebar-item--menu-open {
+  background: var(--ai-chat-sidebar-hover-bg);
+}
+
+.chat-sidebar-item--selected.chat-sidebar-item--menu-open {
+  background: var(--ai-chat-sidebar-active-bg);
+}
+
+/* ── Focus ───────────────────────────────────────────── */
+
+.chat-sidebar-item:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--ai-chat-sidebar-bg), 0 0 0 3px var(--ai-surface-brand-contrast);
+}
+
+.chat-sidebar-item__menu-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--ai-chat-sidebar-bg), 0 0 0 3px var(--ai-surface-brand-contrast);
+}
+
+/* ── Type=Action modifier ────────────────────────────── */
+
+.chat-sidebar-item--action {
+  gap: var(--ai-spacing-3);
+  padding: 0 var(--ai-spacing-4);
+  font-size: var(--ai-font-fluid-xxs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+}
+
+.chat-sidebar-item--action .chat-sidebar-item__icon {
+  flex-shrink: 0;
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-chat-sidebar-text);
+}

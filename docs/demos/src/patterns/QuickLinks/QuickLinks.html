@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>QuickLinks — Pattern Demo</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/SourcesLink/SourcesLink.css">
+  <link rel="stylesheet" href="QuickLinks.css">
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--ai-surface-primary);
+      padding: var(--ai-spacing-7);
+    }
+    .demo {
+      width: var(--ai-size-11);
+      max-width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-7);
+    }
+    .demo__brand-input {
+      display: flex;
+      align-items: center;
+      gap: var(--ai-spacing-3);
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-secondary);
+    }
+    .demo__brand-input input[type="color"] {
+      width: 3rem;
+      height: 2rem;
+      border: none;
+      cursor: pointer;
+    }
+    .demo__reset {
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xxs);
+      font-weight: var(--ai-font-medium);
+      color: var(--ai-text-contrast);
+      background: var(--ai-surface-minimal);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-sm);
+      padding: var(--ai-spacing-1) var(--ai-spacing-3);
+      cursor: pointer;
+    }
+    .demo__label {
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xxs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo">
+
+    <!-- Brand color picker -->
+    <div>
+      <span class="demo__label">Test brand color</span>
+      <div class="demo__brand-input">
+        <input type="color" id="brand-picker" value="#0071d8">
+        <span id="brand-value">#0071d8</span>
+        <button type="button" id="brand-reset" class="demo__reset">Reset</button>
+      </div>
+    </div>
+
+    <!-- QuickLinks pattern -->
+    <div class="quick-links">
+      <h3 class="quick-links__heading">Quick links</h3>
+      <div class="quick-links__list">
+        <a href="#" class="sources-link sources-link--primary">
+          <i data-lucide="file-text"></i>
+          <span class="sources-link__text">The Analysis Dashboard Guide</span>
+        </a>
+        <a href="#" class="sources-link sources-link--link">
+          <i data-lucide="link"></i>
+          <span class="sources-link__text">How are Article Views counted?</span>
+        </a>
+        <a href="#" class="sources-link sources-link--link">
+          <i data-lucide="link"></i>
+          <span class="sources-link__text">Why are Site Analysis stats different?</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    // Inline brand theme detection (same logic as src/utils/brand-colors.js)
+    function initBrandTheme(el) {
+      var brand = getComputedStyle(el).getPropertyValue('--ai-chat-brand').trim();
+      var hex = brand.replace(/^#/, '');
+      var r = parseInt(hex.slice(0, 2), 16) / 255;
+      var g = parseInt(hex.slice(2, 4), 16) / 255;
+      var b = parseInt(hex.slice(4, 6), 16) / 255;
+      r = r <= 0.03928 ? r / 12.92 : Math.pow((r + 0.055) / 1.055, 2.4);
+      g = g <= 0.03928 ? g / 12.92 : Math.pow((g + 0.055) / 1.055, 2.4);
+      b = b <= 0.03928 ? b / 12.92 : Math.pow((b + 0.055) / 1.055, 2.4);
+      var lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+      el.setAttribute('data-brand-theme', lum > 0.5 ? 'light' : 'dark');
+    }
+
+    lucide.createIcons();
+    initBrandTheme(document.documentElement);
+
+    new MutationObserver(function() {
+      initBrandTheme(document.documentElement);
+    }).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+
+    var picker = document.getElementById('brand-picker');
+    var valueEl = document.getElementById('brand-value');
+    var DEFAULT_BRAND = '#0071d8';
+
+    picker.addEventListener('input', function(e) {
+      var color = e.target.value;
+      valueEl.textContent = color;
+      document.documentElement.style.setProperty('--ai-chat-brand', color);
+      initBrandTheme(document.documentElement);
+    });
+
+    document.getElementById('brand-reset').addEventListener('click', function() {
+      picker.value = DEFAULT_BRAND;
+      valueEl.textContent = DEFAULT_BRAND;
+      document.documentElement.style.removeProperty('--ai-chat-brand');
+      initBrandTheme(document.documentElement);
+    });
+  </script>
+</body>
+</html>

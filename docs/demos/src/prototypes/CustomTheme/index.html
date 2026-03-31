@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Custom Theme Sidebar — Prototype</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/ChatSidebarItem/ChatSidebarItem.css">
+  <link rel="stylesheet" href="../../components/ChatSidebarMenu/ChatSidebarMenu.css">
+  <link rel="stylesheet" href="../../patterns/ChatSidebar/ChatSidebar.css">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    body {
+      display: flex;
+      background-color: var(--ai-surface-secondary);
+    }
+    .main {
+      flex: 1;
+      padding: var(--ai-spacing-7);
+      overflow-y: auto;
+    }
+    .main h1 {
+      margin-bottom: var(--ai-spacing-3);
+    }
+    .main__note {
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-contrast);
+      max-width: 480px;
+      margin-bottom: var(--ai-spacing-7);
+    }
+
+    /* ── Color picker controls ─────────────────── */
+    .theme-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--ai-spacing-4);
+      align-items: center;
+      margin-bottom: var(--ai-spacing-7);
+    }
+    .theme-controls__group {
+      display: flex;
+      align-items: center;
+      gap: var(--ai-spacing-3);
+    }
+    .theme-controls__label {
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xxs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .theme-controls__input {
+      width: 40px;
+      height: 40px;
+      border: 2px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-md);
+      cursor: pointer;
+      padding: 0;
+      background: none;
+    }
+    .theme-controls__input::-webkit-color-swatch-wrapper { padding: 2px; }
+    .theme-controls__input::-webkit-color-swatch { border-radius: 4px; border: none; }
+    .theme-controls__hex {
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-primary);
+      min-width: 70px;
+    }
+
+    /* ── Preset swatches ───────────────────────── */
+    .presets {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--ai-spacing-3);
+      margin-bottom: var(--ai-spacing-7);
+    }
+    .presets__label {
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xxs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      width: 100%;
+    }
+    .preset-btn {
+      width: 40px;
+      height: 40px;
+      border: 2px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-md);
+      cursor: pointer;
+      transition: border-color var(--ai-transition-default),
+                  transform var(--ai-transition-default);
+    }
+    .preset-btn:hover {
+      border-color: var(--ai-border-brand);
+      transform: scale(1.1);
+    }
+    .preset-btn--active {
+      border-color: var(--ai-border-brand);
+      box-shadow: 0 0 0 2px var(--ai-surface-brand-contrast);
+    }
+    .preset-btn--reset {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--ai-surface-minimal);
+      color: var(--ai-icon-secondary);
+    }
+    .preset-btn--reset [data-lucide] {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* ── Debug info ─────────────────────────────── */
+    .debug {
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xxs);
+      line-height: var(--ai-leading-sm);
+      color: var(--ai-text-contrast);
+      background: var(--ai-surface-minimal);
+      border-radius: var(--ai-radius-md);
+      padding: var(--ai-spacing-4);
+      max-width: 400px;
+    }
+    .debug__row {
+      display: flex;
+      justify-content: space-between;
+      padding: var(--ai-spacing-1) 0;
+    }
+    .debug__label { font-weight: var(--ai-font-semibold); }
+    .debug__value { font-family: monospace; }
+    .debug__swatch {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      border: 1px solid var(--ai-border-secondary);
+      vertical-align: middle;
+      margin-right: 4px;
+    }
+  </style>
+</head>
+<body>
+  <aside class="chat-sidebar" id="sidebar">
+
+    <!-- Logo -->
+    <div class="chat-sidebar__logo">
+      <img src="../../../img/affinoLogo.svg" alt="Affino" width="167" height="38">
+    </div>
+
+    <!-- Actions -->
+    <div class="chat-sidebar__actions">
+      <div class="chat-sidebar-item chat-sidebar-item--action" tabindex="0">
+        <i data-lucide="message-square" class="chat-sidebar-item__icon" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">New Chat</span>
+      </div>
+      <div class="chat-sidebar-item chat-sidebar-item--action" tabindex="0">
+        <i data-lucide="search" class="chat-sidebar-item__icon" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">Search</span>
+      </div>
+    </div>
+
+    <!-- Sections -->
+    <div class="chat-sidebar__sections">
+
+      <!-- Pinned -->
+      <div class="chat-sidebar__section">
+        <span class="chat-sidebar__section-label">Pinned</span>
+
+        <div class="chat-sidebar-item chat-sidebar-item--pinned" tabindex="0">
+          <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+          <span class="chat-sidebar-item__text">Here's how to set up a themable gradient in Figma</span>
+          <div class="chat-sidebar-item__actions">
+            <div class="chat-sidebar-item__fade"></div>
+            <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+              <i data-lucide="ellipsis" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="chat-sidebar-menu">
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin-off" aria-hidden="true"></i> Unpin</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+          </div>
+        </div>
+
+        <div class="chat-sidebar-item chat-sidebar-item--pinned" tabindex="0">
+          <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+          <span class="chat-sidebar-item__text">Both fills reference your design tokens</span>
+          <div class="chat-sidebar-item__actions">
+            <div class="chat-sidebar-item__fade"></div>
+            <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+              <i data-lucide="ellipsis" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="chat-sidebar-menu">
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin-off" aria-hidden="true"></i> Unpin</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent -->
+      <div class="chat-sidebar__section">
+        <span class="chat-sidebar__section-label">Recent</span>
+
+        <div class="chat-sidebar-item" tabindex="0">
+          <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+          <span class="chat-sidebar-item__text">Here's how to set up a themable gradient</span>
+          <div class="chat-sidebar-item__actions">
+            <div class="chat-sidebar-item__fade"></div>
+            <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+              <i data-lucide="ellipsis" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="chat-sidebar-menu">
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+          </div>
+        </div>
+
+        <div class="chat-sidebar-item chat-sidebar-item--selected" tabindex="0">
+          <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+          <span class="chat-sidebar-item__text">The bottom fill shows through where the top fill is transparent</span>
+          <div class="chat-sidebar-item__actions">
+            <div class="chat-sidebar-item__fade"></div>
+            <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+              <i data-lucide="ellipsis" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="chat-sidebar-menu">
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+          </div>
+        </div>
+
+        <div class="chat-sidebar-item" tabindex="0">
+          <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+          <span class="chat-sidebar-item__text">How do I go about setting up a sitemap channel</span>
+          <div class="chat-sidebar-item__actions">
+            <div class="chat-sidebar-item__fade"></div>
+            <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+              <i data-lucide="ellipsis" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="chat-sidebar-menu">
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Older -->
+      <div class="chat-sidebar__section">
+        <span class="chat-sidebar__section-label">Older</span>
+
+        <div class="chat-sidebar-item" tabindex="0">
+          <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+          <span class="chat-sidebar-item__text">Figma added support for variables in gradient stops</span>
+          <div class="chat-sidebar-item__actions">
+            <div class="chat-sidebar-item__fade"></div>
+            <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+              <i data-lucide="ellipsis" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="chat-sidebar-menu">
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+          </div>
+        </div>
+
+        <div class="chat-sidebar-item" tabindex="0">
+          <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+          <span class="chat-sidebar-item__text">Write a cover letter for a design role</span>
+          <div class="chat-sidebar-item__actions">
+            <div class="chat-sidebar-item__fade"></div>
+            <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+              <i data-lucide="ellipsis" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="chat-sidebar-menu">
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+  <main class="main">
+    <h1>Custom Theme Sidebar</h1>
+    <p class="main__note">
+      Demonstrates the computed sidebar color system. The sidebar background is set via
+      <code>--ai-chat-sidebar-bg</code> — hover, selected, and text colors are computed
+      at runtime based on luminance detection. Pick a color or use the presets below.
+    </p>
+
+    <!-- Preset swatches -->
+    <div class="presets">
+      <span class="presets__label">Presets</span>
+      <button class="preset-btn" data-color="#0d9488" title="Teal" style="background: #0d9488"></button>
+      <button class="preset-btn" data-color="#155e75" title="Dark Cyan" style="background: #155e75"></button>
+      <button class="preset-btn" data-color="#1e3a5f" title="Navy" style="background: #1e3a5f"></button>
+      <button class="preset-btn" data-color="#7c3aed" title="Violet" style="background: #7c3aed"></button>
+      <button class="preset-btn" data-color="#be185d" title="Pink" style="background: #be185d"></button>
+      <button class="preset-btn" data-color="#b91c1c" title="Red" style="background: #b91c1c"></button>
+      <button class="preset-btn" data-color="#92400e" title="Amber" style="background: #92400e"></button>
+      <button class="preset-btn" data-color="#166534" title="Green" style="background: #166534"></button>
+      <button class="preset-btn" data-color="#f0fdf4" title="Mint (light)" style="background: #f0fdf4"></button>
+      <button class="preset-btn" data-color="#fef3c7" title="Cream (light)" style="background: #fef3c7"></button>
+      <button class="preset-btn" data-color="#ede9fe" title="Lavender (light)" style="background: #ede9fe"></button>
+      <button class="preset-btn preset-btn--reset" data-color="reset" title="Reset to default">
+        <i data-lucide="rotate-ccw" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <!-- Color picker -->
+    <div class="theme-controls">
+      <div class="theme-controls__group">
+        <span class="theme-controls__label">Sidebar BG</span>
+        <input type="color" class="theme-controls__input" id="colorPicker" value="#0d9488">
+        <span class="theme-controls__hex" id="hexLabel">#0d9488</span>
+      </div>
+    </div>
+
+    <!-- Debug computed values -->
+    <div class="debug" id="debug">
+      <div class="debug__row">
+        <span class="debug__label">data-sidebar-theme</span>
+        <span class="debug__value" id="dbgTheme">—</span>
+      </div>
+      <div class="debug__row">
+        <span class="debug__label">text</span>
+        <span class="debug__value" id="dbgText">—</span>
+      </div>
+      <div class="debug__row">
+        <span class="debug__label">hover-bg</span>
+        <span class="debug__value" id="dbgHover">—</span>
+      </div>
+      <div class="debug__row">
+        <span class="debug__label">active-bg</span>
+        <span class="debug__value" id="dbgActive">—</span>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script>
+    // Inline sidebar-colors.js (ES module import fails over file://)
+    function getLuminance(r, g, b) {
+      var vals = [r, g, b].map(function (c) {
+        c /= 255;
+        return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+      });
+      return 0.2126 * vals[0] + 0.7152 * vals[1] + 0.0722 * vals[2];
+    }
+    function parseColor(str) {
+      var hex = str.replace(/^#/, '');
+      if (hex.length === 3) return { r: parseInt(hex[0]+hex[0],16), g: parseInt(hex[1]+hex[1],16), b: parseInt(hex[2]+hex[2],16) };
+      if (hex.length === 6) return { r: parseInt(hex.slice(0,2),16), g: parseInt(hex.slice(2,4),16), b: parseInt(hex.slice(4,6),16) };
+      var m = str.match(/rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/);
+      if (m) return { r: +m[1], g: +m[2], b: +m[3] };
+      return { r: 0, g: 0, b: 0 };
+    }
+    function initSidebarTheme(el) {
+      var bg = getComputedStyle(el).getPropertyValue('--ai-chat-sidebar-bg').trim();
+      var c = parseColor(bg);
+      var lum = getLuminance(c.r, c.g, c.b);
+      el.setAttribute('data-sidebar-theme', lum > 0.5 ? 'light' : 'dark');
+    }
+
+    const sidebar = document.getElementById('sidebar');
+    const picker = document.getElementById('colorPicker');
+    const hexLabel = document.getElementById('hexLabel');
+    const dbgTheme = document.getElementById('dbgTheme');
+    const dbgText = document.getElementById('dbgText');
+    const dbgHover = document.getElementById('dbgHover');
+    const dbgActive = document.getElementById('dbgActive');
+    const presetBtns = document.querySelectorAll('.preset-btn');
+
+    function applyColor(hex) {
+      if (hex === 'reset') {
+        sidebar.style.removeProperty('--ai-chat-sidebar-bg');
+        initSidebarTheme(sidebar);
+        var resolved = getComputedStyle(sidebar).getPropertyValue('--ai-chat-sidebar-bg').trim();
+        picker.value = resolved;
+        hexLabel.textContent = resolved + ' (default)';
+      } else {
+        sidebar.style.setProperty('--ai-chat-sidebar-bg', hex);
+        initSidebarTheme(sidebar);
+        picker.value = hex;
+        hexLabel.textContent = hex;
+      }
+      updateDebug();
+      // Update active preset
+      presetBtns.forEach(btn => {
+        btn.classList.toggle('preset-btn--active',
+          btn.dataset.color.toLowerCase() === hex.toLowerCase());
+      });
+    }
+
+    function updateDebug() {
+      const cs = getComputedStyle(sidebar);
+      dbgTheme.textContent = sidebar.getAttribute('data-sidebar-theme');
+      dbgText.innerHTML = swatch(cs.getPropertyValue('--ai-chat-sidebar-text').trim())
+        + cs.getPropertyValue('--ai-chat-sidebar-text').trim();
+      dbgHover.innerHTML = swatch(cs.getPropertyValue('--ai-chat-sidebar-hover-bg').trim())
+        + cs.getPropertyValue('--ai-chat-sidebar-hover-bg').trim();
+      dbgActive.innerHTML = swatch(cs.getPropertyValue('--ai-chat-sidebar-active-bg').trim())
+        + cs.getPropertyValue('--ai-chat-sidebar-active-bg').trim();
+    }
+
+    function swatch(color) {
+      return `<span class="debug__swatch" style="background:${color}"></span>`;
+    }
+
+    // Color picker
+    picker.addEventListener('input', (e) => applyColor(e.target.value));
+
+    // Presets
+    presetBtns.forEach(btn => {
+      btn.addEventListener('click', () => applyColor(btn.dataset.color));
+    });
+
+    // Re-init on dark mode toggle
+    const observer = new MutationObserver(() => {
+      initSidebarTheme(sidebar);
+      updateDebug();
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+
+    // Init with teal
+    applyColor('#0d9488');
+
+    // ── Sidebar interaction (same as ChatSidebar demo) ──
+    sidebar.addEventListener('click', (e) => {
+      const menuBtn = e.target.closest('.chat-sidebar-item__menu-btn');
+      if (menuBtn) {
+        e.stopPropagation();
+        const item = menuBtn.closest('.chat-sidebar-item');
+        const menu = item.querySelector('.chat-sidebar-menu');
+        const isOpen = item.classList.toggle('chat-sidebar-item--menu-open');
+        menu.classList.toggle('chat-sidebar-menu--open', isOpen);
+        menuBtn.setAttribute('aria-expanded', isOpen);
+        if (isOpen) {
+          const rect = menuBtn.getBoundingClientRect();
+          menu.style.top = rect.bottom + 'px';
+          menu.style.left = (rect.left - 8) + 'px';
+        }
+        return;
+      }
+
+      const menuItem = e.target.closest('.chat-sidebar-menu__item');
+      if (menuItem) {
+        const item = menuItem.closest('.chat-sidebar-item');
+        item.classList.remove('chat-sidebar-item--menu-open');
+        item.querySelector('.chat-sidebar-menu').classList.remove('chat-sidebar-menu--open');
+        item.querySelector('.chat-sidebar-item__menu-btn').setAttribute('aria-expanded', 'false');
+        return;
+      }
+
+      const item = e.target.closest('.chat-sidebar-item');
+      if (!item) return;
+      sidebar.querySelectorAll('.chat-sidebar-item--selected')
+        .forEach(el => el.classList.remove('chat-sidebar-item--selected'));
+      item.classList.add('chat-sidebar-item--selected');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.chat-sidebar-item')) {
+        document.querySelectorAll('.chat-sidebar-item--menu-open').forEach(item => {
+          item.classList.remove('chat-sidebar-item--menu-open');
+          item.querySelector('.chat-sidebar-menu').classList.remove('chat-sidebar-menu--open');
+          item.querySelector('.chat-sidebar-item__menu-btn').setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.chat-sidebar-item--menu-open').forEach(item => {
+          item.classList.remove('chat-sidebar-item--menu-open');
+          item.querySelector('.chat-sidebar-menu').classList.remove('chat-sidebar-menu--open');
+          item.querySelector('.chat-sidebar-item__menu-btn').setAttribute('aria-expanded', 'false');
+          item.querySelector('.chat-sidebar-item__menu-btn').focus();
+        });
+      }
+    });
+  </script>
+</body>
+</html>

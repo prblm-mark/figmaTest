@@ -1,0 +1,1950 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>AiChat — Template Demo</title>
+
+  <!-- Base + tokens -->
+  <link rel="stylesheet" href="../../styles/base.css">
+
+  <!-- Component CSS -->
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/Tooltip/Tooltip.css">
+  <link rel="stylesheet" href="../../components/MessageBubble/MessageBubble.css">
+  <link rel="stylesheet" href="../../components/SuggestedQuestion/SuggestedQuestion.css">
+  <link rel="stylesheet" href="../../components/WorkingIntro/WorkingIntro.css">
+  <link rel="stylesheet" href="../../components/Skeleton/Skeleton.css">
+  <link rel="stylesheet" href="../../components/ChatSidebarItem/ChatSidebarItem.css">
+  <link rel="stylesheet" href="../../components/ChatSidebarMenu/ChatSidebarMenu.css">
+  <link rel="stylesheet" href="../../components/SourcesLink/SourcesLink.css">
+  <link rel="stylesheet" href="../../components/ChatResponseTable/ChatResponseTable.css">
+  <link rel="stylesheet" href="../../components/Portraits/Portraits.css">
+  <link rel="stylesheet" href="../../components/Avatar/Avatar.css">
+  <link rel="stylesheet" href="../../components/Pill/Pill.css">
+  <link rel="stylesheet" href="../../components/InfoLabel/InfoLabel.css">
+  <link rel="stylesheet" href="../../components/PromptTemplateItem/PromptTemplateItem.css">
+  <link rel="stylesheet" href="../../components/Toggle/Toggle.css">
+  <link rel="stylesheet" href="../../components/SegmentedControl/SegmentedControl.css">
+  <link rel="stylesheet" href="../../components/ColorPickerInput/ColorPickerInput.css">
+
+  <!-- Pattern CSS -->
+  <link rel="stylesheet" href="../../patterns/SourcesCarousel/SourcesCarousel.css">
+  <link rel="stylesheet" href="../../patterns/QuickLinks/QuickLinks.css">
+  <link rel="stylesheet" href="../../patterns/MessageInput/MessageInput.css">
+  <link rel="stylesheet" href="../../patterns/ChatSidebar/ChatSidebar.css">
+  <link rel="stylesheet" href="../../patterns/ChatHeader/ChatHeader.css">
+  <link rel="stylesheet" href="../../patterns/ChatMain/ChatMain.css">
+  <link rel="stylesheet" href="../../patterns/VersionHistoryRow/VersionHistoryRow.css">
+  <link rel="stylesheet" href="../../patterns/VersionHistory/VersionHistory.css">
+  <link rel="stylesheet" href="../../patterns/Header/Header.css">
+  <link rel="stylesheet" href="../../patterns/PromptTemplates/PromptTemplates.css">
+  <link rel="stylesheet" href="../../patterns/StyleSettings/StyleSettings.css">
+
+  <!-- Template CSS -->
+  <link rel="stylesheet" href="../ChatResponse/ChatResponse.css">
+  <link rel="stylesheet" href="../SystemRole/SystemRole.css">
+  <link rel="stylesheet" href="AiChat.css">
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="ai-chat" id="ai-chat" data-surface="chat">
+
+    <!-- ═══ OVERLAY (mobile sidebar backdrop) ══════════ -->
+    <div class="ai-chat__overlay"></div>
+
+    <!-- ═══ SIDEBAR ═══════════════════════════════════ -->
+    <aside class="ai-chat__sidebar">
+      <div class="chat-sidebar" id="sidebar">
+
+        <!-- Logo -->
+        <div class="chat-sidebar__logo">
+          <img src="../../../img/affinoLogo.svg" alt="Affino" width="167" height="38">
+        </div>
+
+        <!-- Actions -->
+        <div class="chat-sidebar__actions">
+          <div class="chat-sidebar-item chat-sidebar-item--action" tabindex="0">
+            <i data-lucide="message-square" class="chat-sidebar-item__icon" aria-hidden="true"></i>
+            <span class="chat-sidebar-item__text">New Chat</span>
+          </div>
+          <div class="chat-sidebar-item chat-sidebar-item--action" tabindex="0">
+            <i data-lucide="search" class="chat-sidebar-item__icon" aria-hidden="true"></i>
+            <span class="chat-sidebar-item__text">Search</span>
+          </div>
+        </div>
+
+        <!-- Sections -->
+        <div class="chat-sidebar__sections">
+
+          <!-- Pinned -->
+          <div class="chat-sidebar__section">
+            <span class="chat-sidebar__section-label">Pinned</span>
+
+            <div class="chat-sidebar-item chat-sidebar-item--pinned" tabindex="0">
+              <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+              <span class="chat-sidebar-item__text">Here's how to set up a themable gradient in Figma using your surface color tokens</span>
+              <div class="chat-sidebar-item__actions">
+                <div class="chat-sidebar-item__fade"></div>
+                <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                  <i data-lucide="ellipsis" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="chat-sidebar-menu">
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin-off" aria-hidden="true"></i> Unpin</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+              </div>
+            </div>
+
+            <div class="chat-sidebar-item chat-sidebar-item--pinned" tabindex="0">
+              <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+              <span class="chat-sidebar-item__text">Both fills reference your design tokens, so when you swap themes, the gradient updates automatically.</span>
+              <div class="chat-sidebar-item__actions">
+                <div class="chat-sidebar-item__fade"></div>
+                <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                  <i data-lucide="ellipsis" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="chat-sidebar-menu">
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin-off" aria-hidden="true"></i> Unpin</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent -->
+          <div class="chat-sidebar__section">
+            <span class="chat-sidebar__section-label">Recent</span>
+
+            <div class="chat-sidebar-item" tabindex="0">
+              <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+              <span class="chat-sidebar-item__text">Here's how to set up a themable gradient in Figma using your surface color tokens</span>
+              <div class="chat-sidebar-item__actions">
+                <div class="chat-sidebar-item__fade"></div>
+                <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                  <i data-lucide="ellipsis" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="chat-sidebar-menu">
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+              </div>
+            </div>
+
+            <div class="chat-sidebar-item chat-sidebar-item--selected" tabindex="0">
+              <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+              <span class="chat-sidebar-item__text">This way, the bottom fill shows through where the top fill is transparent,</span>
+              <div class="chat-sidebar-item__actions">
+                <div class="chat-sidebar-item__fade"></div>
+                <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                  <i data-lucide="ellipsis" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="chat-sidebar-menu">
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+              </div>
+            </div>
+
+            <div class="chat-sidebar-item" tabindex="0">
+              <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+              <span class="chat-sidebar-item__text">Both fills reference your design tokens, so when you swap themes, the gradient updates automatically.</span>
+              <div class="chat-sidebar-item__actions">
+                <div class="chat-sidebar-item__fade"></div>
+                <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                  <i data-lucide="ellipsis" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="chat-sidebar-menu">
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+              </div>
+            </div>
+
+            <div class="chat-sidebar-item" tabindex="0">
+              <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+              <span class="chat-sidebar-item__text">As of late 2024, Figma added support for variables in gradient stops.</span>
+              <div class="chat-sidebar-item__actions">
+                <div class="chat-sidebar-item__fade"></div>
+                <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                  <i data-lucide="ellipsis" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="chat-sidebar-menu">
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+              </div>
+            </div>
+
+            <div class="chat-sidebar-item" tabindex="0">
+              <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+              <span class="chat-sidebar-item__text">How do i go about setting up a sitemap channel</span>
+              <div class="chat-sidebar-item__actions">
+                <div class="chat-sidebar-item__fade"></div>
+                <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                  <i data-lucide="ellipsis" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="chat-sidebar-menu">
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Older -->
+          <div class="chat-sidebar__section">
+            <span class="chat-sidebar__section-label">Older</span>
+
+            <div class="chat-sidebar-item" tabindex="0">
+              <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+              <span class="chat-sidebar-item__text">Here's how to set up a themable gradient in Figma using your surface color tokens</span>
+              <div class="chat-sidebar-item__actions">
+                <div class="chat-sidebar-item__fade"></div>
+                <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                  <i data-lucide="ellipsis" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="chat-sidebar-menu">
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+              </div>
+            </div>
+
+            <div class="chat-sidebar-item" tabindex="0">
+              <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+              <span class="chat-sidebar-item__text">This way, the bottom fill shows through where the top fill is transparent,</span>
+              <div class="chat-sidebar-item__actions">
+                <div class="chat-sidebar-item__fade"></div>
+                <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                  <i data-lucide="ellipsis" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="chat-sidebar-menu">
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+              </div>
+            </div>
+
+            <div class="chat-sidebar-item" tabindex="0">
+              <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+              <span class="chat-sidebar-item__text">Both fills reference your design tokens, so when you swap themes, the gradient updates automatically.</span>
+              <div class="chat-sidebar-item__actions">
+                <div class="chat-sidebar-item__fade"></div>
+                <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                  <i data-lucide="ellipsis" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="chat-sidebar-menu">
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </aside>
+
+    <!-- Sidebar resize handle (desktop only) -->
+    <div class="ai-chat__resize-handle" aria-hidden="true"></div>
+
+    <!-- ═══ MAIN CONTENT ═════════════════════════════ -->
+    <div class="ai-chat__main">
+
+      <!-- ChatHeader -->
+      <div class="chat-header">
+        <div class="chat-header__container">
+          <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Toggle sidebar" data-sidebar-toggle>
+            <i data-lucide="panel-left" aria-hidden="true"></i>
+          </button>
+          <div class="chat-header__selector-wrap">
+            <div class="chat-header__selector-group">
+              <button class="chat-header__selector" aria-expanded="false" aria-haspopup="listbox">
+                <span class="chat-header__selector-text">Support Assistant</span>
+                <span class="chat-header__selector-chevron">
+                  <i data-lucide="chevron-down" aria-hidden="true"></i>
+                </span>
+              </button>
+              <div class="chat-header__dropdown" role="listbox">
+                <div class="chat-header__dropdown-item" role="option" aria-selected="false">Customer Services</div>
+                <div class="chat-header__dropdown-item chat-header__dropdown-item--selected" role="option" aria-selected="true">Support Assistant</div>
+                <div class="chat-header__dropdown-item" role="option" aria-selected="false">Tech Monkey</div>
+              </div>
+            </div>
+            <!-- Mobile admin gear button + dropdown -->
+            <div class="chat-header__gear-wrap">
+              <button class="chat-header__gear btn btn--secondary btn--sm btn--icon" aria-label="Admin actions" aria-expanded="false">
+                <i data-lucide="settings" aria-hidden="true"></i>
+              </button>
+              <div class="chat-header__admin-menu">
+                <div class="chat-header__admin-menu-inner">
+                  <button class="btn btn--tertiary btn--sm" aria-pressed="false">
+                    <i data-lucide="bug" aria-hidden="true"></i>
+                    Debug
+                  </button>
+                  <button class="btn btn--tertiary btn--sm" aria-pressed="false">
+                    <i data-lucide="database-zap" aria-hidden="true"></i>
+                    Cache Off
+                  </button>
+                  <button class="btn btn--tertiary btn--sm" aria-pressed="false" data-action="style">
+                    <i data-lucide="swatch-book" aria-hidden="true"></i>
+                    Style
+                  </button>
+                  <button class="btn btn--tertiary btn--sm" aria-pressed="false" data-action="system-role">
+                    <i data-lucide="settings" aria-hidden="true"></i>
+                    System Role
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chat-header__admin chat-header__admin--visible">
+          <button class="btn btn--secondary btn--sm btn--icon" aria-label="Debug" aria-pressed="false">
+            <i data-lucide="bug" aria-hidden="true"></i>
+          </button>
+          <button class="btn btn--secondary btn--sm btn--icon" aria-label="Cache" aria-pressed="false">
+            <i data-lucide="database-zap" aria-hidden="true"></i>
+          </button>
+          <button class="btn btn--secondary btn--sm" aria-pressed="false" data-action="style">
+            <i data-lucide="swatch-book" aria-hidden="true"></i>
+            Style
+          </button>
+          <button class="btn btn--secondary btn--sm" aria-pressed="false" data-action="system-role">
+            <i data-lucide="settings" aria-hidden="true"></i>
+            System Role
+          </button>
+        </div>
+      </div>
+
+      <!-- ChatMain -->
+      <div class="chat-main chat-main--initial" id="chat-main">
+
+        <!-- ═══ INITIAL VIEW ═════════════════════════ -->
+        <div class="chat-main__initial">
+          <div class="chat-main__initial-inner">
+
+            <!-- Welcome intro -->
+            <div class="chat-main__intro">
+              <h1 class="chat-main__title">Welcome to our Support Assistant</h1>
+              <p class="chat-main__subtitle">Ask one question at a time for the best response, and ask full questions, for important questions check the guides or the forums.</p>
+            </div>
+
+            <!-- MessageInput (inline, not sticky) -->
+            <div class="chat-main__input-wrap">
+              <div class="msg-input">
+                <div class="msg-input__box">
+                  <textarea
+                    class="msg-input__textarea"
+                    rows="1"
+                    placeholder="Send a question"
+                  ></textarea>
+                  <div class="msg-input__actions">
+                    <div class="msg-input__filter-container">
+                      <button
+                        class="btn btn--tertiary btn--sm btn--icon msg-input__filter-btn"
+                        aria-label="Filter by recent content"
+                      >
+                        <i data-lucide="funnel" aria-hidden="true"></i>
+                      </button>
+                      <div class="msg-input__tooltip msg-input__tooltip--filter">
+                        <div class="tooltip" role="tooltip">
+                          <p class="tooltip__text">Filter by recent content</p>
+                        </div>
+                      </div>
+                      <div class="msg-input__filter-popover">
+                        <button class="msg-input__filter-item" role="option">
+                          30 Days
+                        </button>
+                        <button class="msg-input__filter-item" role="option">
+                          6 Months
+                        </button>
+                        <button class="msg-input__filter-item msg-input__filter-item--selected" role="option" aria-selected="true">
+                          1 Year
+                          <i data-lucide="check" aria-hidden="true"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <button
+                      class="btn btn--primary btn--sm btn--icon msg-input__send-btn"
+                      aria-label="Send message"
+                      disabled
+                    >
+                      <i data-lucide="move-up" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="msg-input__disclaimer">
+                  <p class="msg-input__disclaimer-text">How we collect data</p>
+                  <div class="msg-input__tooltip msg-input__tooltip--data">
+                    <div class="tooltip" role="tooltip">
+                      <p class="tooltip__text">Note any help the AI provides may be used to further improve the quality of replies and assistance provided.<br><br>AIs can make mistakes. Check important info.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Suggested questions -->
+            <div class="chat-main__suggestions">
+              <button class="suggested-question" type="button">
+                <i data-lucide="message-circle-question" aria-hidden="true"></i>
+                <div class="suggested-question__body">
+                  <p class="suggested-question__text">What can i do to get started using Affino?</p>
+                  <p class="suggested-question__subtext">I need to know the basics to get up and running</p>
+                </div>
+              </button>
+              <button class="suggested-question" type="button">
+                <i data-lucide="message-circle-question" aria-hidden="true"></i>
+                <div class="suggested-question__body">
+                  <p class="suggested-question__text">How do I set up Ad campaigns in Affino?</p>
+                  <p class="suggested-question__subtext">Walk me through the campaign setup process</p>
+                </div>
+              </button>
+              <button class="suggested-question" type="button">
+                <i data-lucide="message-circle-question" aria-hidden="true"></i>
+                <div class="suggested-question__body">
+                  <p class="suggested-question__text">What content types does Affino support?</p>
+                  <p class="suggested-question__subtext">I want to understand what I can publish</p>
+                </div>
+              </button>
+              <p class="chat-main__feedback">If you don't get the answers you are looking for please let us know through the feedback thumbs up and down.</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ═══ SCROLL AREA (Processing + Response) ═══ -->
+        <div class="chat-main__scroll">
+          <div class="chat-main__container">
+
+            <!-- User message bubble -->
+            <div class="msg-bubble">
+              <div class="msg-bubble__question">
+                <p class="msg-bubble__text">Can you explain page views, and how they are saved in Affino?</p>
+              </div>
+              <div class="msg-bubble__actions">
+                <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Copy message">
+                  <i data-lucide="copy" aria-hidden="true"></i>
+                </button>
+                <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Copy link">
+                  <i data-lucide="link" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Processing view: ChatResponse components -->
+            <div class="chat-main__processing">
+
+              <!-- WorkingIntro -->
+              <div class="working-intro">
+                <div class="working-intro__title-row">
+                  <div class="working-intro__logo">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M22 5.64227C22 3.07837 19.9972 1 17.5265 1C15.0558 1 13.053 3.07837 13.053 5.64227V10.0322L10.8036 6.12507C9.46186 3.79465 6.55383 3.03413 4.30787 4.42654C2.06218 5.81922 1.32958 8.8367 2.6711 11.1674C4.01262 13.4981 6.92066 14.2581 9.16687 12.8662L12.7851 10.6223L10.4552 14.8037C9.00004 17.4148 9.86 20.755 12.3765 22.2652C14.8929 23.7755 18.1117 22.8831 19.5672 20.2714C21.0222 17.6603 20.1624 14.3198 17.6457 12.8099L13.4383 10.2845H17.5262C19.9972 10.2845 22 8.2059 22 5.64227ZM8.49217 11.6936C6.87276 12.6977 4.76838 12.1472 3.80079 10.467C2.83346 8.78673 3.36344 6.60268 4.98284 5.59858C6.60225 4.59448 8.70663 5.145 9.67422 6.82523C10.6415 8.50546 10.1113 10.6895 8.49217 11.6936ZM16.9873 13.9915C18.8715 15.1223 19.518 17.6333 18.4286 19.5879C17.3389 21.5431 14.9193 22.2138 13.0354 21.0836C11.1513 19.9525 10.505 17.4418 11.5944 15.4872C12.6838 13.5314 15.1032 12.8605 16.9873 13.9915ZM14.3688 5.64227C14.3688 3.83534 15.7853 2.36537 17.5265 2.36537C19.2677 2.36537 20.6843 3.83534 20.6843 5.64227C20.6843 7.44921 19.2677 8.91917 17.5265 8.91917C15.7853 8.91917 14.3688 7.44893 14.3688 5.64227Z" fill="currentColor"/>
+                    </svg>
+                  </div>
+                  <h2 class="working-intro__title">Working on it</h2>
+                </div>
+                <p class="working-intro__subtitle">&nbsp;</p>
+              </div>
+
+              <!-- SourcesCarousel -->
+              <div class="sources-carousel">
+                <div class="sources-carousel__track">
+                  <a href="#" class="sources-card">
+                    <div class="sources-card__inner">
+                      <img class="sources-card__thumb" src="https://picsum.photos/seed/c1/112/112" alt="">
+                      <div class="sources-card__text">
+                        <p class="sources-card__category">Technology</p>
+                        <p class="sources-card__title">Understanding Neural Network Architecture in Modern AI Systems</p>
+                      </div>
+                    </div>
+                  </a>
+                  <a href="#" class="sources-card">
+                    <div class="sources-card__inner">
+                      <img class="sources-card__thumb" src="https://picsum.photos/seed/c2/112/112" alt="">
+                      <div class="sources-card__text">
+                        <p class="sources-card__category">Research</p>
+                        <p class="sources-card__title">Advances in Natural Language Processing for Enterprise Search</p>
+                      </div>
+                    </div>
+                  </a>
+                  <a href="#" class="sources-card">
+                    <div class="sources-card__inner">
+                      <img class="sources-card__thumb" src="https://picsum.photos/seed/c3/112/112" alt="">
+                      <div class="sources-card__text">
+                        <p class="sources-card__category">Data Science</p>
+                        <p class="sources-card__title">Building Scalable Data Pipelines with Real-Time Processing</p>
+                      </div>
+                    </div>
+                  </a>
+                  <a href="#" class="sources-card">
+                    <div class="sources-card__inner">
+                      <img class="sources-card__thumb" src="https://picsum.photos/seed/c4/112/112" alt="">
+                      <div class="sources-card__text">
+                        <p class="sources-card__category">Engineering</p>
+                        <p class="sources-card__title">Best Practices for Distributed Systems at Scale</p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon sources-carousel__nav sources-carousel__nav--prev" aria-label="Previous">
+                  <i data-lucide="chevron-left"></i>
+                </button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon sources-carousel__nav sources-carousel__nav--next" aria-label="Next">
+                  <i data-lucide="chevron-right"></i>
+                </button>
+              </div>
+
+              <!-- Skeletons -->
+              <div class="chat-response__skeletons">
+                <div class="skeleton">
+                  <div class="skeleton__line"></div>
+                  <div class="skeleton__line"></div>
+                  <div class="skeleton__line"></div>
+                  <div class="skeleton__line"></div>
+                  <div class="skeleton__line"></div>
+                </div>
+                <div class="skeleton">
+                  <div class="skeleton__line"></div>
+                  <div class="skeleton__line"></div>
+                  <div class="skeleton__line"></div>
+                  <div class="skeleton__line"></div>
+                  <div class="skeleton__line"></div>
+                </div>
+              </div>
+
+              <!-- Answer (hidden until animation completes) -->
+              <div class="chat-response__answer">
+                <p>Page views refer to the total number of times pages on your site are viewed by users. In Affino, page views are counted each time a page loads and are tracked as part of your site analytics. Multiple views of the same page by the same user are counted separately.</p>
+                <p>The key innovation in recent years has been the scaling of these architectures to billions of parameters, trained on vast datasets. This scaling has led to emergent capabilities in language understanding, reasoning, and generation that were not present in smaller models.</p>
+              </div>
+
+            </div>
+
+            <!-- Response view: full AI answer -->
+            <div class="chat-main__response">
+
+              <!-- Quick links -->
+              <div class="quick-links">
+                <h3 class="quick-links__heading">Quick links</h3>
+                <div class="quick-links__list">
+                  <a href="#" class="sources-link sources-link--primary">
+                    <i data-lucide="file-text"></i>
+                    <span class="sources-link__text">The Analysis Dashboard Guide</span>
+                  </a>
+                  <a href="#" class="sources-link sources-link--link">
+                    <i data-lucide="link"></i>
+                    <span class="sources-link__text">How are Article Views counted?</span>
+                  </a>
+                  <a href="#" class="sources-link sources-link--link">
+                    <i data-lucide="link"></i>
+                    <span class="sources-link__text">Why are Site Analysis stats different?</span>
+                  </a>
+                </div>
+              </div>
+
+              <p>Page views refer to the total number of times pages on your site are viewed by users. In Affino, page views are counted each time a page loads and are tracked as part of your site analytics. Multiple views of the same page by the same user are counted separately.</p>
+
+              <p><strong>Key points about page views in Affino</strong></p>
+
+              <ul>
+                <li><strong>Page views</strong> are recorded under the Stats function within each <a href="#">article or page <i data-lucide="arrow-up-right" aria-hidden="true"></i></a></li>
+                <li>They include views by both registered and guest users.</li>
+                <li>If a user clicks on an article but encounters a <strong>paywall</strong>, it still counts as a page view.</li>
+                <li>Page views are used in various reports and dashboards, such as the Analysis Dashboard, to provide insights into user <code>section-margin</code></li>
+                <li>Affino distinguishes between simple page views (impressions) and content consumption, where consumption indicates the user has actively engaged with the content beyond just loading the page.</li>
+              </ul>
+
+              <!-- Data table -->
+              <div class="chat-response-table-scroll">
+                <table class="chat-response-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Sessions</th>
+                      <th>Last active</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="chat-response-table__text">olivia.chen@acme.io</td>
+                      <td class="chat-response-table__text">Olivia Chen</td>
+                      <td>342</td>
+                      <td>2 hours ago</td>
+                    </tr>
+                    <tr>
+                      <td class="chat-response-table__text">Marcus Webb</td>
+                      <td class="chat-response-table__text">m.webb@acme.io</td>
+                      <td>198</td>
+                      <td>4 hours ago</td>
+                    </tr>
+                    <tr>
+                      <td class="chat-response-table__text">Priya Sharma</td>
+                      <td class="chat-response-table__text">priya.s@acme.io</td>
+                      <td>87</td>
+                      <td>Yesterday</td>
+                    </tr>
+                    <tr>
+                      <td class="chat-response-table__text">James Kofi</td>
+                      <td class="chat-response-table__text">j.kofi@acme.io</td>
+                      <td>156</td>
+                      <td>3 days ago</td>
+                    </tr>
+                    <tr>
+                      <td class="chat-response-table__text">Emma Lindqvist</td>
+                      <td class="chat-response-table__text">emma.l@acme.io</td>
+                      <td>421</td>
+                      <td>Just now</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Guides -->
+              <div class="quick-links quick-links--full">
+                <h3 class="quick-links__heading">Guides</h3>
+                <div class="quick-links__list">
+                  <a href="#" class="sources-link sources-link--primary">
+                    <i data-lucide="file-text"></i>
+                    <span class="sources-link__text">The Analysis Dashboard Guide</span>
+                  </a>
+                </div>
+              </div>
+
+              <!-- FAQs -->
+              <div class="quick-links quick-links--full">
+                <h3 class="quick-links__heading">FAQs</h3>
+                <div class="quick-links__list">
+                  <a href="#" class="sources-link sources-link--link">
+                    <i data-lucide="link"></i>
+                    <span class="sources-link__text">How are Article Views counted?</span>
+                  </a>
+                  <a href="#" class="sources-link sources-link--link">
+                    <i data-lucide="link"></i>
+                    <span class="sources-link__text">Why are Site Analysis stats different to third party platforms stats?</span>
+                  </a>
+                  <a href="#" class="sources-link sources-link--link">
+                    <i data-lucide="link"></i>
+                    <span class="sources-link__text">When a user hits the metering wall, does that count as a page view?</span>
+                  </a>
+                  <a href="#" class="sources-link sources-link--link">
+                    <i data-lucide="link"></i>
+                    <span class="sources-link__text">Site Analysis: What is the difference between Impressions / Views vs Consumed?</span>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Feedback actions -->
+              <div class="chat-main__response-actions">
+                <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Copy response">
+                  <i data-lucide="copy" aria-hidden="true"></i>
+                </button>
+                <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Thumbs up">
+                  <i data-lucide="thumbs-up" aria-hidden="true"></i>
+                </button>
+                <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Thumbs down">
+                  <i data-lucide="thumbs-down" aria-hidden="true"></i>
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- Sticky footer: fade + input -->
+          <div class="chat-main__footer">
+            <div class="chat-main__fade"></div>
+            <div class="chat-main__input">
+              <div class="msg-input msg-input--active">
+                <div class="msg-input__box">
+                  <textarea
+                    class="msg-input__textarea"
+                    rows="1"
+                    placeholder="Send a question"
+                  >Can you explain</textarea>
+                  <div class="msg-input__actions">
+                    <div class="msg-input__filter-container">
+                      <button
+                        class="btn btn--tertiary btn--sm btn--icon msg-input__filter-btn"
+                        aria-label="Filter by recent content"
+                      >
+                        <i data-lucide="funnel" aria-hidden="true"></i>
+                      </button>
+                      <div class="msg-input__tooltip msg-input__tooltip--filter">
+                        <div class="tooltip" role="tooltip">
+                          <p class="tooltip__text">Filter by recent content</p>
+                        </div>
+                      </div>
+                      <div class="msg-input__filter-popover">
+                        <button class="msg-input__filter-item" role="option">
+                          30 Days
+                        </button>
+                        <button class="msg-input__filter-item" role="option">
+                          6 Months
+                        </button>
+                        <button class="msg-input__filter-item msg-input__filter-item--selected" role="option" aria-selected="true">
+                          1 Year
+                          <i data-lucide="check" aria-hidden="true"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <button
+                      class="btn btn--primary btn--sm btn--icon msg-input__send-btn"
+                      aria-label="Send message"
+                      disabled
+                    >
+                      <i data-lucide="move-up" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="msg-input__disclaimer">
+                  <p class="msg-input__disclaimer-text">How we collect data</p>
+                  <div class="msg-input__tooltip msg-input__tooltip--data">
+                    <div class="tooltip" role="tooltip">
+                      <p class="tooltip__text">Note any help the AI provides may be used to further improve the quality of replies and assistance provided.<br><br>AIs can make mistakes. Check important info.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ═══ STYLE SETTINGS PANEL ═══════════════════════ -->
+    <div class="style-settings" id="style-settings" style="display: none;">
+
+      <!-- Header -->
+      <div class="style-settings__header">
+        <h2 class="style-settings__title">Styling</h2>
+        <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Close" id="style-close">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <!-- Subtitle -->
+      <div class="style-settings__subtitle-row">
+        <p class="style-settings__subtitle">Customise the settings to best fit your app.</p>
+        <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Reset to defaults" id="style-reset">
+          <i data-lucide="refresh-cw" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <!-- Form body -->
+      <div class="style-settings__body">
+
+        <!-- Theme -->
+        <div class="style-settings__row">
+          <div class="style-settings__label-wrap">
+            <span class="style-settings__label">Theme</span>
+            <div class="style-settings__tooltip">
+              <div class="tooltip" role="tooltip">
+                <p class="tooltip__text">Toggle between light and dark theme</p>
+              </div>
+            </div>
+          </div>
+          <div class="style-settings__control">
+            <div class="seg-control" role="radiogroup" aria-label="Theme" id="style-theme-toggle">
+              <button class="seg-control__btn seg-control__btn--active" type="button" role="radio" aria-checked="true" data-value="light">
+                <i data-lucide="sun" aria-hidden="true"></i>
+                Light
+              </button>
+              <button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="dark">
+                <i data-lucide="moon" aria-hidden="true"></i>
+                Dark
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accent Color -->
+        <div class="style-settings__row">
+          <div class="style-settings__label-wrap">
+            <span class="style-settings__label">Accent Color</span>
+            <div class="style-settings__tooltip">
+              <div class="tooltip" role="tooltip">
+                <p class="tooltip__text">Sets the brand accent color used across the chat UI</p>
+              </div>
+            </div>
+          </div>
+          <div class="color-picker-input style-settings__control" id="style-accent-picker">
+            <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #1A56DB;"></span></span>
+            <span class="color-picker-input__value">#1A56DB</span>
+            <input type="color" class="color-picker-input__native" value="#1A56DB" aria-label="Accent color">
+          </div>
+        </div>
+
+        <!-- Sidebar Color -->
+        <div class="style-settings__row">
+          <div class="style-settings__label-wrap">
+            <span class="style-settings__label">Sidebar Color</span>
+            <div class="style-settings__tooltip">
+              <div class="tooltip" role="tooltip">
+                <p class="tooltip__text">Sets the sidebar background color</p>
+              </div>
+            </div>
+          </div>
+          <div class="color-picker-input style-settings__control" id="style-sidebar-picker">
+            <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #09235B;"></span></span>
+            <span class="color-picker-input__value">#09235B</span>
+            <input type="color" class="color-picker-input__native" value="#09235B" aria-label="Sidebar color">
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <hr class="style-settings__divider">
+
+        <!-- Title Font -->
+        <div class="style-settings__row">
+          <div class="style-settings__label-wrap">
+            <span class="style-settings__label">Title Font</span>
+          </div>
+          <div class="style-settings__select-wrap">
+            <button class="style-settings__select" type="button" aria-expanded="false" aria-haspopup="listbox">
+              <span class="style-settings__select-text">Inter</span>
+              <i data-lucide="chevron-down" aria-hidden="true"></i>
+            </button>
+            <div class="style-settings__dropdown" role="listbox">
+              <button class="style-settings__option style-settings__option--selected" role="option" aria-selected="true">Inter</button>
+              <button class="style-settings__option" role="option" aria-selected="false">Roboto</button>
+              <button class="style-settings__option" role="option" aria-selected="false">Open Sans</button>
+              <button class="style-settings__option" role="option" aria-selected="false">Lato</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Body Font -->
+        <div class="style-settings__row">
+          <div class="style-settings__label-wrap">
+            <span class="style-settings__label">Body Font</span>
+          </div>
+          <div class="style-settings__select-wrap">
+            <button class="style-settings__select" type="button" aria-expanded="false" aria-haspopup="listbox">
+              <span class="style-settings__select-text">Inter</span>
+              <i data-lucide="chevron-down" aria-hidden="true"></i>
+            </button>
+            <div class="style-settings__dropdown" role="listbox">
+              <button class="style-settings__option style-settings__option--selected" role="option" aria-selected="true">Inter</button>
+              <button class="style-settings__option" role="option" aria-selected="false">Roboto</button>
+              <button class="style-settings__option" role="option" aria-selected="false">Open Sans</button>
+              <button class="style-settings__option" role="option" aria-selected="false">Lato</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <hr class="style-settings__divider">
+
+        <!-- Header Layout -->
+        <div class="style-settings__row">
+          <div class="style-settings__label-wrap">
+            <span class="style-settings__label">Header Layout</span>
+            <div class="style-settings__tooltip">
+              <div class="tooltip" role="tooltip">
+                <p class="tooltip__text">Aligns the agent selector to be centered, or left</p>
+              </div>
+            </div>
+          </div>
+          <div class="style-settings__select-wrap">
+            <button class="style-settings__select" type="button" aria-expanded="false" aria-haspopup="listbox" id="style-header-layout-btn">
+              <span class="style-settings__select-text">Center</span>
+              <i data-lucide="chevron-down" aria-hidden="true"></i>
+            </button>
+            <div class="style-settings__dropdown" role="listbox" id="style-header-layout-dropdown">
+              <button class="style-settings__option style-settings__option--selected" role="option" aria-selected="true" data-value="center">Center</button>
+              <button class="style-settings__option" role="option" aria-selected="false" data-value="left">Left</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Show Borders -->
+        <div class="style-settings__row style-settings__row--toggle">
+          <div class="style-settings__label-wrap">
+            <span class="style-settings__label">Show Borders</span>
+          </div>
+          <div class="style-settings__control">
+            <button class="toggle toggle--active" type="button" role="switch" aria-checked="true" aria-label="Show Borders" id="style-toggle-borders">
+              <span class="toggle__track"><span class="toggle__knob"></span></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Show Questions -->
+        <div class="style-settings__row style-settings__row--toggle">
+          <div class="style-settings__label-wrap">
+            <span class="style-settings__label">Show Questions</span>
+          </div>
+          <div class="style-settings__control">
+            <button class="toggle toggle--active" type="button" role="switch" aria-checked="true" aria-label="Show Questions" id="style-toggle-questions">
+              <span class="toggle__track"><span class="toggle__knob"></span></span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══ SYSTEM ROLE MODAL (outside .ai-chat for z-index layering) ═══ -->
+  <div class="system-role-overlay" id="systemRoleOverlay" aria-hidden="true"></div>
+  <div class="system-role" id="systemRole"
+       role="dialog" aria-modal="true" aria-labelledby="systemRoleTitle">
+
+    <!-- Top bar: header + window controls -->
+    <div class="system-role__top">
+      <div class="system-role__controls">
+        <button type="button" class="btn btn--tertiary btn--icon system-role__minimize-btn"
+                aria-label="Minimise to floating panel">
+          <i data-lucide="panel-right-dashed" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn--tertiary btn--icon system-role__maximize-btn"
+                aria-label="Expand to full modal">
+          <i data-lucide="maximize-2" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn--tertiary btn--icon system-role__close-btn"
+                aria-label="Close System Role">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <header class="header">
+        <div class="header__title-group">
+          <h2 class="header__title" id="systemRoleTitle">System Role</h2>
+          <div class="header__info">
+            <button type="button" class="info-label" aria-label="What's this?">
+              <span class="info-label__text">What's this?</span>
+              <i data-lucide="info" class="info-label__icon" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <div class="header__actions">
+          <button type="button" class="btn btn--primary system-role__btn-default"
+                  disabled aria-disabled="true">Make Live</button>
+          <button type="button" class="btn btn--alert-outline system-role__btn-discard">
+            <span class="header__discard-full">Discard Changes</span><span class="header__discard-short">Discard</span>
+          </button>
+          <button type="button" class="btn btn--primary system-role__btn-save">Make Live</button>
+        </div>
+      </header>
+    </div>
+
+    <!-- Body: prompt editor + sidebar panels -->
+    <div class="system-role__body">
+
+      <!-- Prompt textarea -->
+      <div class="system-role__prompt">
+        <textarea class="system-role__textarea"
+                  spellcheck="false"
+                  aria-label="System prompt — edit to define how the AI behaves">You are a helpful AI assistant for Affino. Your role is to assist users by answering questions accurately and concisely, drawing from the content and context available on the platform.
+
+Always respond in a professional, friendly tone. If you are unsure about something, say so clearly rather than guessing. Do not make up information or reference content that is not available to you.
+
+When users ask about specific topics, focus your answers on what is directly relevant to their query. Avoid unnecessary preamble or padding. Be helpful, honest, and direct.</textarea>
+        <div class="system-role__textarea-resize-handle" aria-hidden="true"></div>
+      </div>
+
+      <!-- Sidebar: Version History + Prompt Templates -->
+      <div class="system-role__sidebar">
+
+        <!-- Version History panel -->
+        <div class="version-history" id="sr-vhPanel">
+          <div class="version-history__heading">
+            <div class="version-history__heading-title">
+              <i data-lucide="history" class="version-history__icon-history" aria-hidden="true"></i>
+              <span class="version-history__heading-title-text">Version History</span>
+            </div>
+            <button type="button" class="version-history__heading-subtitle" aria-expanded="false">
+              <span class="version-history__heading-subtitle-text">12 previous system roles saved</span>
+              <i data-lucide="chevron-right" class="version-history__chevron" aria-hidden="true"></i>
+            </button>
+          </div>
+
+          <div class="version-history__rows" role="listbox" aria-label="Version history">
+            <div class="version-history__timeline" aria-hidden="true"></div>
+
+            <div class="version-history-row version-history-row--live version-history-row--selected"
+                 role="option" aria-selected="true" tabindex="0"
+                 data-portrait-src="https://picsum.photos/seed/female4/300"
+                 data-prompt="You are a helpful AI assistant for Affino. Your role is to assist users by answering questions accurately and concisely.">
+              <div class="avatar avatar--checked" aria-label="Selected">
+                <i data-lucide="check" aria-hidden="true"></i>
+              </div>
+              <div class="version-history-row__content">
+                <span class="version-history-row__name">Sally Jones</span>
+                <span class="version-history-row__date">08 Jan 2026, 17:52</span>
+              </div>
+              <span class="pill" aria-label="Live version"><span class="pill__label">Live</span></span>
+            </div>
+
+            <div class="version-history-row" role="option" aria-selected="false" tabindex="0"
+                 data-prompt="You are a concise AI assistant for Affino. Answer questions directly using available platform context.">
+              <div class="avatar">
+                <img class="portrait" src="https://picsum.photos/seed/female5/300" alt="Gayle Stevens">
+              </div>
+              <div class="version-history-row__content">
+                <span class="version-history-row__name">Gayle Stevens</span>
+                <span class="version-history-row__date">05 Jan 2026, 18:50</span>
+              </div>
+            </div>
+
+            <div class="version-history-row" role="option" aria-selected="false" tabindex="0"
+                 data-prompt="Act as a knowledgeable assistant for Affino users. Provide clear, factual answers based on platform content.">
+              <div class="avatar">
+                <img class="portrait" src="https://picsum.photos/seed/male2/300" alt="Chris Bristow">
+              </div>
+              <div class="version-history-row__content">
+                <span class="version-history-row__name">Chris Bristow</span>
+                <span class="version-history-row__date">04 Jan 2026, 11:02</span>
+              </div>
+            </div>
+
+            <div class="version-history-row" role="option" aria-selected="false" tabindex="0"
+                 data-prompt="You assist Affino platform users. Respond with accuracy and brevity.">
+              <div class="avatar">
+                <img class="portrait" src="https://picsum.photos/seed/male3/300" alt="Chris Bristow">
+              </div>
+              <div class="version-history-row__content">
+                <span class="version-history-row__name">Chris Bristow</span>
+                <span class="version-history-row__date">04 Jan 2026, 10:02</span>
+              </div>
+            </div>
+
+            <div class="version-history-row" role="option" aria-selected="false" tabindex="0"
+                 data-prompt="Answer user queries on the Affino platform. Be concise, accurate, and professional.">
+              <div class="avatar">
+                <img class="portrait" src="https://picsum.photos/seed/male4/300" alt="Chris Bristow">
+              </div>
+              <div class="version-history-row__content">
+                <span class="version-history-row__name">Chris Bristow</span>
+                <span class="version-history-row__date">02 Jan 2026, 10:12</span>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="version-history__footer" aria-expanded="false">
+            <span class="version-history__footer-label">Show older</span>
+          </button>
+        </div>
+
+        <!-- Prompt Templates panel -->
+        <div class="prompt-templates" id="sr-ptPanel">
+          <div class="prompt-templates__heading">
+            <p class="prompt-templates__title">Prompt Templates</p>
+            <p class="prompt-templates__description">Select a prompt to define your AI's role, tone, and behaviour.</p>
+          </div>
+
+          <ul class="prompt-templates__list" role="listbox" aria-label="Prompt templates">
+            <li>
+              <div class="prompt-template-item" role="option" aria-selected="false" tabindex="0">
+                <div class="prompt-template-item__header">
+                  <i data-lucide="headset" class="prompt-template-item__icon" aria-hidden="true"></i>
+                  <span class="prompt-template-item__title">Support Assistant</span>
+                  <button class="prompt-template-item__chevron-btn" aria-expanded="false" aria-label="Show details">
+                    <i data-lucide="chevron-right" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="prompt-template-item__details">
+                  <p class="prompt-template-item__description">This assistant helps manage customer service conversations.</p>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="prompt-template-item" role="option" aria-selected="false" tabindex="0">
+                <div class="prompt-template-item__header">
+                  <i data-lucide="messages-square" class="prompt-template-item__icon" aria-hidden="true"></i>
+                  <span class="prompt-template-item__title">Customer Services</span>
+                  <button class="prompt-template-item__chevron-btn" aria-expanded="false" aria-label="Show details">
+                    <i data-lucide="chevron-right" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="prompt-template-item__details">
+                  <p class="prompt-template-item__description">Handles inbound customer queries with empathy and accuracy.</p>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="prompt-template-item" role="option" aria-selected="false" tabindex="0">
+                <div class="prompt-template-item__header">
+                  <i data-lucide="newspaper" class="prompt-template-item__icon" aria-hidden="true"></i>
+                  <span class="prompt-template-item__title">News Chat</span>
+                  <button class="prompt-template-item__chevron-btn" aria-expanded="false" aria-label="Show details">
+                    <i data-lucide="chevron-right" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="prompt-template-item__details">
+                  <p class="prompt-template-item__description">Discusses and summarises current events.</p>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="prompt-template-item" role="option" aria-selected="false" tabindex="0">
+                <div class="prompt-template-item__header">
+                  <i data-lucide="atom" class="prompt-template-item__icon" aria-hidden="true"></i>
+                  <span class="prompt-template-item__title">Tech Monkey</span>
+                  <button class="prompt-template-item__chevron-btn" aria-expanded="false" aria-label="Show details">
+                    <i data-lucide="chevron-right" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="prompt-template-item__details">
+                  <p class="prompt-template-item__description">A technical assistant for developer Q&amp;A and debugging.</p>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="system-role__resize-handle" aria-hidden="true"></div>
+    <div class="system-role__resize-handle-bottom" aria-hidden="true"></div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+
+  <!-- GSAP CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrambleTextPlugin.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+
+  <script type="module">
+    import { initAiChat } from './AiChat.js';
+    import { initChatMain } from '../../patterns/ChatMain/ChatMain.js';
+
+    const root = document.getElementById('ai-chat');
+    const chatMainEl = document.getElementById('chat-main');
+
+    // ── Init AiChat (sidebar toggle + theme + brand) ──
+    const aiChat = initAiChat(root);
+
+    // ── Init ChatMain (view states + ChatResponse animation) ──
+    const chatMain = initChatMain(chatMainEl, {
+      onViewChange: (view) => {
+        if (window.demoToolbar) window.demoToolbar.setActive(view);
+      },
+    });
+
+    // ── Register view controls in toolbar popover ─────
+    if (window.demoToolbar) {
+      window.demoToolbar.addControls([
+        { label: 'Initial', id: 'initial', active: true, onClick: () => chatMain.setView('initial') },
+        { label: 'Processing', id: 'processing', onClick: () => chatMain.startProcessing() },
+        { label: 'Response', id: 'response', onClick: () => chatMain.setView('response') },
+        { label: 'Reset', id: 'reset', onClick: () => { chatMain.destroy(); chatMain.setView('initial'); } },
+      ]);
+    }
+
+    // ── ChatHeader dropdown toggle ────────────────────
+    document.querySelectorAll('.chat-header__selector').forEach(selector => {
+      selector.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const group = selector.closest('.chat-header__selector-group');
+        const dropdown = group.querySelector('.chat-header__dropdown');
+        const isOpen = dropdown.classList.contains('chat-header__dropdown--open');
+        closeAllDropdowns();
+        if (!isOpen) {
+          dropdown.classList.add('chat-header__dropdown--open');
+          selector.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    document.querySelectorAll('.chat-header__dropdown-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const group = item.closest('.chat-header__selector-group');
+        const dropdown = item.closest('.chat-header__dropdown');
+        const selector = group.querySelector('.chat-header__selector');
+        const textEl = selector.querySelector('.chat-header__selector-text');
+        dropdown.querySelectorAll('.chat-header__dropdown-item').forEach(i => {
+          i.classList.remove('chat-header__dropdown-item--selected');
+          i.setAttribute('aria-selected', 'false');
+        });
+        item.classList.add('chat-header__dropdown-item--selected');
+        item.setAttribute('aria-selected', 'true');
+        textEl.textContent = item.textContent;
+        dropdown.classList.remove('chat-header__dropdown--open');
+        selector.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    function closeAllDropdowns() {
+      document.querySelectorAll('.chat-header__dropdown--open').forEach(d => {
+        d.classList.remove('chat-header__dropdown--open');
+        const group = d.closest('.chat-header__selector-group');
+        if (group) group.querySelector('.chat-header__selector').setAttribute('aria-expanded', 'false');
+      });
+    }
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.chat-header__selector-group')) closeAllDropdowns();
+    });
+
+    // ── ChatHeader admin toggle buttons (exclude Style — managed by panel) ──
+    document.querySelectorAll('.chat-header__admin .btn, .chat-header__admin-menu-inner .btn').forEach(btn => {
+      if (btn.hasAttribute('data-action')) return;
+      btn.addEventListener('click', () => {
+        const pressed = btn.getAttribute('aria-pressed') === 'true';
+        btn.setAttribute('aria-pressed', String(!pressed));
+      });
+    });
+
+    // ── ChatHeader gear button (mobile admin menu) ────
+    const gearBtn = document.querySelector('.chat-header__gear');
+    const adminMenu = document.querySelector('.chat-header__admin-menu');
+    if (gearBtn && adminMenu) {
+      gearBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = adminMenu.classList.toggle('chat-header__admin-menu--open');
+        gearBtn.setAttribute('aria-expanded', String(isOpen));
+      });
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.chat-header__gear-wrap')) {
+          adminMenu.classList.remove('chat-header__admin-menu--open');
+          gearBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    // ── Sidebar resize handle ──────────────────────────
+    {
+      const handle = document.querySelector('.ai-chat__resize-handle');
+      const chatRoot = document.getElementById('ai-chat');
+      const sidebarPane = document.querySelector('.ai-chat__sidebar');
+
+      if (handle && chatRoot && sidebarPane) {
+        let startX, startWidth;
+
+        handle.addEventListener('mousedown', (e) => {
+          e.preventDefault();
+          startX = e.clientX;
+          startWidth = sidebarPane.getBoundingClientRect().width;
+          chatRoot.classList.add('ai-chat--resizing');
+          document.body.style.cursor = 'col-resize';
+          document.body.style.userSelect = 'none';
+
+          const onMouseMove = (ev) => {
+            const delta = ev.clientX - startX;
+            const newWidth = Math.max(240, Math.min(448, startWidth + delta));
+            chatRoot.style.setProperty('--_sidebar-width', newWidth + 'px');
+          };
+
+          const onMouseUp = () => {
+            chatRoot.classList.remove('ai-chat--resizing');
+            document.body.style.cursor = '';
+            document.body.style.userSelect = '';
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+          };
+
+          document.addEventListener('mousemove', onMouseMove);
+          document.addEventListener('mouseup', onMouseUp);
+        });
+      }
+    }
+
+    // ── ChatSidebar interactions ──────────────────────
+    const sidebar = document.getElementById('sidebar');
+
+    sidebar.addEventListener('click', (e) => {
+      // Ellipsis button — toggle menu
+      const menuBtn = e.target.closest('.chat-sidebar-item__menu-btn');
+      if (menuBtn) {
+        e.stopPropagation();
+        const item = menuBtn.closest('.chat-sidebar-item');
+        const menu = item.querySelector('.chat-sidebar-menu');
+        const isOpen = item.classList.toggle('chat-sidebar-item--menu-open');
+        menu.classList.toggle('chat-sidebar-menu--open', isOpen);
+        menuBtn.setAttribute('aria-expanded', isOpen);
+        if (isOpen) {
+          const rect = menuBtn.getBoundingClientRect();
+          menu.style.top = rect.bottom + 'px';
+          menu.style.left = (rect.left - 8) + 'px';
+        }
+        return;
+      }
+
+      // Menu item — close menu
+      const menuItem = e.target.closest('.chat-sidebar-menu__item');
+      if (menuItem) {
+        const item = menuItem.closest('.chat-sidebar-item');
+        item.classList.remove('chat-sidebar-item--menu-open');
+        item.querySelector('.chat-sidebar-menu').classList.remove('chat-sidebar-menu--open');
+        item.querySelector('.chat-sidebar-item__menu-btn').setAttribute('aria-expanded', 'false');
+        return;
+      }
+
+      // Item click — select
+      const item = e.target.closest('.chat-sidebar-item');
+      if (!item) return;
+      sidebar.querySelectorAll('.chat-sidebar-item--selected')
+        .forEach(el => el.classList.remove('chat-sidebar-item--selected'));
+      item.classList.add('chat-sidebar-item--selected');
+    });
+
+    // Close sidebar menus on click outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.chat-sidebar-item')) {
+        document.querySelectorAll('.chat-sidebar-item--menu-open').forEach(item => {
+          item.classList.remove('chat-sidebar-item--menu-open');
+          item.querySelector('.chat-sidebar-menu').classList.remove('chat-sidebar-menu--open');
+          item.querySelector('.chat-sidebar-item__menu-btn').setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+
+    // Close sidebar menus on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.chat-sidebar-item--menu-open').forEach(item => {
+          item.classList.remove('chat-sidebar-item--menu-open');
+          item.querySelector('.chat-sidebar-menu').classList.remove('chat-sidebar-menu--open');
+          item.querySelector('.chat-sidebar-item__menu-btn').setAttribute('aria-expanded', 'false');
+          item.querySelector('.chat-sidebar-item__menu-btn').focus();
+        });
+      }
+    });
+
+    // ── Active state: detect input changes on all textareas ──
+    document.querySelectorAll('.msg-input__textarea').forEach(textarea => {
+      const wrapper = textarea.closest('.msg-input');
+      textarea.addEventListener('input', () => {
+        if (textarea.value.trim().length > 0) {
+          wrapper.classList.add('msg-input--active');
+          const sendBtn = wrapper.querySelector('.msg-input__send-btn');
+          if (sendBtn) sendBtn.disabled = false;
+        } else {
+          wrapper.classList.remove('msg-input--active');
+          const sendBtn = wrapper.querySelector('.msg-input__send-btn');
+          if (sendBtn) sendBtn.disabled = true;
+        }
+      });
+    });
+
+    // ── Duration filter: toggle popover on click ──────
+    document.querySelectorAll('.msg-input__filter-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const wrapper = btn.closest('.msg-input');
+        const popover = wrapper.querySelector('.msg-input__filter-popover');
+        if (popover) popover.classList.toggle('msg-input__filter-popover--open');
+      });
+    });
+
+    // ── Duration filter: select item ──────────────────
+    document.querySelectorAll('.msg-input__filter-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const popover = item.closest('.msg-input__filter-popover');
+        popover.querySelectorAll('.msg-input__filter-item').forEach(i => {
+          i.classList.remove('msg-input__filter-item--selected');
+          i.removeAttribute('aria-selected');
+          const svg = i.querySelector('svg');
+          if (svg) svg.remove();
+        });
+        item.classList.add('msg-input__filter-item--selected');
+        item.setAttribute('aria-selected', 'true');
+        const checkEl = document.createElement('i');
+        checkEl.setAttribute('data-lucide', 'check');
+        checkEl.setAttribute('aria-hidden', 'true');
+        item.appendChild(checkEl);
+        lucide.createIcons();
+        popover.classList.remove('msg-input__filter-popover--open');
+      });
+    });
+
+    // ── Close popover on outside click ────────────────
+    document.addEventListener('click', (e) => {
+      document.querySelectorAll('.msg-input__filter-popover--open').forEach(popover => {
+        const wrapper = popover.closest('.msg-input');
+        const filterBtn = wrapper.querySelector('.msg-input__filter-btn');
+        if (!popover.contains(e.target) && e.target !== filterBtn && !filterBtn.contains(e.target)) {
+          popover.classList.remove('msg-input__filter-popover--open');
+        }
+      });
+    });
+
+    // ══════════════════════════════════════════════════════
+    // STYLE SETTINGS PANEL
+    // ══════════════════════════════════════════════════════
+
+    const stylePanel = document.getElementById('style-settings');
+    const chatHeader = document.querySelector('.ai-chat__main .chat-header');
+
+    // ── Open/close via Style buttons ────────────────────
+    const styleBtns = document.querySelectorAll('[data-action="style"]');
+
+    function setStylePanelOpen(open) {
+      stylePanel.style.display = open ? '' : 'none';
+      styleBtns.forEach(b => b.setAttribute('aria-pressed', String(open)));
+      if (open) lucide.createIcons();
+    }
+
+    styleBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isVisible = stylePanel.style.display !== 'none';
+        setStylePanelOpen(!isVisible);
+      });
+    });
+
+    document.getElementById('style-close').addEventListener('click', () => {
+      setStylePanelOpen(false);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && stylePanel.style.display !== 'none') {
+        setStylePanelOpen(false);
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (stylePanel.style.display === 'none') return;
+      if (stylePanel.contains(e.target)) return;
+      if (e.target.closest('[data-action="style"]')) return;
+      setStylePanelOpen(false);
+    });
+
+    // ── Drag to move ────────────────────────────────────
+    {
+      const dragHandle = stylePanel.querySelector('.style-settings__header');
+      let isDragging = false;
+      let dragStartX = 0;
+      let dragStartY = 0;
+      let panelOriginLeft = 0;
+      let panelOriginTop = 0;
+
+      dragHandle.addEventListener('mousedown', (e) => {
+        if (e.target.closest('button')) return;
+        isDragging = true;
+        stylePanel.classList.add('style-settings--no-transition');
+        document.body.style.userSelect = 'none';
+        dragStartX = e.clientX;
+        dragStartY = e.clientY;
+        const rect = stylePanel.getBoundingClientRect();
+        panelOriginLeft = rect.left;
+        panelOriginTop = rect.top;
+        e.preventDefault();
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        stylePanel.style.left = (panelOriginLeft + (e.clientX - dragStartX)) + 'px';
+        stylePanel.style.top = (panelOriginTop + (e.clientY - dragStartY)) + 'px';
+        stylePanel.style.right = 'auto';
+        stylePanel.style.bottom = 'auto';
+      });
+
+      document.addEventListener('mouseup', () => {
+        if (!isDragging) return;
+        isDragging = false;
+        stylePanel.classList.remove('style-settings--no-transition');
+        document.body.style.userSelect = '';
+      });
+    }
+
+    // ── Theme toggle ────────────────────────────────────
+    {
+      const themeToggle = document.getElementById('style-theme-toggle');
+
+      // Sync with current theme on load
+      if (document.documentElement.getAttribute('data-theme') === 'dark') {
+        themeToggle.querySelectorAll('.seg-control__btn').forEach(b => {
+          const isDark = b.getAttribute('data-value') === 'dark';
+          b.classList.toggle('seg-control__btn--active', isDark);
+          b.setAttribute('aria-checked', String(isDark));
+        });
+      }
+
+      themeToggle.addEventListener('click', (e) => {
+        const btn = e.target.closest('.seg-control__btn');
+        if (!btn || btn.classList.contains('seg-control__btn--active')) return;
+        themeToggle.querySelectorAll('.seg-control__btn').forEach(b => {
+          b.classList.remove('seg-control__btn--active');
+          b.setAttribute('aria-checked', 'false');
+        });
+        btn.classList.add('seg-control__btn--active');
+        btn.setAttribute('aria-checked', 'true');
+
+        if (btn.getAttribute('data-value') === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('demo-theme', 'dark');
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.removeItem('demo-theme');
+        }
+      });
+    }
+
+    // ── Color picker inputs ─────────────────────────────
+    stylePanel.querySelectorAll('.color-picker-input__native').forEach(input => {
+      input.addEventListener('input', () => {
+        const container = input.closest('.color-picker-input');
+        container.querySelector('.color-picker-input__swatch-inner').style.backgroundColor = input.value;
+        container.querySelector('.color-picker-input__value').textContent = input.value.toUpperCase();
+      });
+    });
+
+    // ── Custom dropdowns ────────────────────────────────
+    stylePanel.querySelectorAll('.style-settings__select').forEach(selectBtn => {
+      selectBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const wrap = selectBtn.closest('.style-settings__select-wrap');
+        const dropdown = wrap.querySelector('.style-settings__dropdown');
+        const isOpen = dropdown.classList.toggle('style-settings__dropdown--open');
+        selectBtn.setAttribute('aria-expanded', String(isOpen));
+
+        // Close others
+        stylePanel.querySelectorAll('.style-settings__dropdown--open').forEach(d => {
+          if (d !== dropdown) {
+            d.classList.remove('style-settings__dropdown--open');
+            d.closest('.style-settings__select-wrap').querySelector('.style-settings__select').setAttribute('aria-expanded', 'false');
+          }
+        });
+      });
+    });
+
+    stylePanel.querySelectorAll('.style-settings__option').forEach(option => {
+      option.addEventListener('click', () => {
+        const wrap = option.closest('.style-settings__select-wrap');
+        const dropdown = option.closest('.style-settings__dropdown');
+        const selectBtn = wrap.querySelector('.style-settings__select');
+        const textEl = selectBtn.querySelector('.style-settings__select-text');
+
+        dropdown.querySelectorAll('.style-settings__option').forEach(o => {
+          o.classList.remove('style-settings__option--selected');
+          o.setAttribute('aria-selected', 'false');
+        });
+        option.classList.add('style-settings__option--selected');
+        option.setAttribute('aria-selected', 'true');
+        textEl.textContent = option.textContent;
+        dropdown.classList.remove('style-settings__dropdown--open');
+        selectBtn.setAttribute('aria-expanded', 'false');
+
+        // Header Layout: apply align-left modifier
+        if (option.hasAttribute('data-value')) {
+          const value = option.getAttribute('data-value');
+          if (value === 'left') {
+            chatHeader.classList.add('chat-header--align-left');
+          } else {
+            chatHeader.classList.remove('chat-header--align-left');
+          }
+        }
+      });
+    });
+
+    // Close dropdowns on outside click
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.style-settings__select-wrap')) {
+        stylePanel.querySelectorAll('.style-settings__dropdown--open').forEach(d => {
+          d.classList.remove('style-settings__dropdown--open');
+          d.closest('.style-settings__select-wrap').querySelector('.style-settings__select').setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+
+    // ── Toggle switches ─────────────────────────────────
+    // Show Borders
+    document.getElementById('style-toggle-borders').addEventListener('click', function () {
+      const isActive = this.classList.toggle('toggle--active');
+      this.setAttribute('aria-checked', String(isActive));
+      // Toggle no-border modifier on header + sidebar border
+      document.querySelectorAll('.chat-header').forEach(el => {
+        el.classList.toggle('chat-header--no-border', !isActive);
+      });
+      document.querySelectorAll('.chat-sidebar').forEach(el => {
+        el.style.borderRightColor = isActive ? '' : 'transparent';
+      });
+    });
+
+    // Show Questions
+    document.getElementById('style-toggle-questions').addEventListener('click', function () {
+      const isActive = this.classList.toggle('toggle--active');
+      this.setAttribute('aria-checked', String(isActive));
+      document.querySelectorAll('.chat-main__suggestions').forEach(el => {
+        el.style.display = isActive ? '' : 'none';
+      });
+    });
+
+    // ── Reset button ────────────────────────────────────
+    document.getElementById('style-reset').addEventListener('click', () => {
+      // Reset theme to light
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.removeItem('demo-theme');
+      const themeToggle = document.getElementById('style-theme-toggle');
+      themeToggle.querySelectorAll('.seg-control__btn').forEach(b => {
+        const isLight = b.getAttribute('data-value') === 'light';
+        b.classList.toggle('seg-control__btn--active', isLight);
+        b.setAttribute('aria-checked', String(isLight));
+      });
+
+      // Reset color pickers
+      const accentPicker = document.getElementById('style-accent-picker');
+      accentPicker.querySelector('.color-picker-input__native').value = '#1A56DB';
+      accentPicker.querySelector('.color-picker-input__swatch-inner').style.backgroundColor = '#1A56DB';
+      accentPicker.querySelector('.color-picker-input__value').textContent = '#1A56DB';
+
+      const sidebarPicker = document.getElementById('style-sidebar-picker');
+      sidebarPicker.querySelector('.color-picker-input__native').value = '#09235B';
+      sidebarPicker.querySelector('.color-picker-input__swatch-inner').style.backgroundColor = '#09235B';
+      sidebarPicker.querySelector('.color-picker-input__value').textContent = '#09235B';
+
+      // Reset dropdowns
+      stylePanel.querySelectorAll('.style-settings__select-wrap').forEach(wrap => {
+        const textEl = wrap.querySelector('.style-settings__select-text');
+        wrap.querySelectorAll('.style-settings__option').forEach((o, i) => {
+          if (i === 0) {
+            o.classList.add('style-settings__option--selected');
+            o.setAttribute('aria-selected', 'true');
+            textEl.textContent = o.textContent;
+          } else {
+            o.classList.remove('style-settings__option--selected');
+            o.setAttribute('aria-selected', 'false');
+          }
+        });
+      });
+
+      // Reset header layout
+      chatHeader.classList.remove('chat-header--align-left');
+
+      // Reset toggles to active
+      stylePanel.querySelectorAll('.toggle').forEach(toggle => {
+        toggle.classList.add('toggle--active');
+        toggle.setAttribute('aria-checked', 'true');
+      });
+
+      // Restore borders
+      document.querySelectorAll('.chat-header').forEach(el => { el.classList.remove('chat-header--no-border'); });
+      document.querySelectorAll('.chat-sidebar').forEach(el => { el.style.borderRightColor = ''; });
+
+      // Restore questions
+      document.querySelectorAll('.chat-main__suggestions').forEach(el => { el.style.display = ''; });
+    });
+
+    // ══════════════════════════════════════════════════════
+    // SYSTEM ROLE MODAL
+    // ══════════════════════════════════════════════════════
+
+    const srModal = document.getElementById('systemRole');
+    const srOverlay = document.getElementById('systemRoleOverlay');
+    const srBtns = document.querySelectorAll('[data-action="system-role"]');
+    const srCloseBtn = srModal.querySelector('.system-role__close-btn');
+    const srMinBtn = srModal.querySelector('.system-role__minimize-btn');
+    const srMaxBtn = srModal.querySelector('.system-role__maximize-btn');
+    const srTextarea = srModal.querySelector('.system-role__textarea');
+    const srDiscardBtn = srModal.querySelector('.system-role__btn-discard');
+    const srSaveBtn = srModal.querySelector('.system-role__btn-save');
+
+    // ── Open / Close ────────────────────────────────────
+    function setSROpen(open) {
+      if (open) {
+        srModal.classList.add('system-role--open');
+        if (!srModal.classList.contains('system-role--minimised')) {
+          srOverlay.classList.add('system-role-overlay--open');
+        }
+        lucide.createIcons();
+      } else {
+        srModal.classList.remove('system-role--open');
+        srOverlay.classList.remove('system-role-overlay--open');
+      }
+      srBtns.forEach(b => b.setAttribute('aria-pressed', String(open)));
+    }
+
+    srBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = srModal.classList.contains('system-role--open');
+        setSROpen(!isOpen);
+      });
+    });
+
+    srCloseBtn.addEventListener('click', () => setSROpen(false));
+    srOverlay.addEventListener('click', () => setSROpen(false));
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && srModal.classList.contains('system-role--open')) {
+        setSROpen(false);
+      }
+    });
+
+    // ── Minimise / Maximise ─────────────────────────────
+    srMinBtn.addEventListener('click', () => {
+      srModal.classList.add('system-role--minimised');
+      srModal.setAttribute('data-layout', 'minimised');
+      srOverlay.classList.remove('system-role-overlay--open');
+      // Position top-right
+      srModal.style.top = '20px';
+      srModal.style.right = '20px';
+      srModal.style.left = 'auto';
+      srModal.style.transform = 'none';
+      srTextarea.style.height = Math.round(srModal.getBoundingClientRect().height / 3) + 'px';
+      lucide.createIcons();
+    });
+
+    srMaxBtn.addEventListener('click', () => {
+      srModal.classList.remove('system-role--minimised');
+      srModal.removeAttribute('data-layout');
+      srModal.style.cssText = '';
+      srTextarea.style.height = '';
+      srOverlay.classList.add('system-role-overlay--open');
+    });
+
+    // ── Dirty detection ─────────────────────────────────
+    let srSavedValue = srTextarea.value;
+
+    srTextarea.addEventListener('input', () => {
+      srModal.classList.toggle('system-role--dirty', srTextarea.value !== srSavedValue);
+    });
+
+    srDiscardBtn.addEventListener('click', () => {
+      srTextarea.value = srSavedValue;
+      srModal.classList.remove('system-role--dirty');
+    });
+
+    srSaveBtn.addEventListener('click', () => {
+      srSavedValue = srTextarea.value;
+      srModal.classList.remove('system-role--dirty');
+    });
+
+    // ── Drag to move (Minimised only) ───────────────────
+    {
+      const srDragHandle = srModal.querySelector('.system-role__top');
+      let srDragging = false, srDragX = 0, srDragY = 0, srOriginL = 0, srOriginT = 0;
+
+      srDragHandle.addEventListener('mousedown', (e) => {
+        if (!srModal.classList.contains('system-role--minimised')) return;
+        if (e.target.closest('button')) return;
+        srDragging = true;
+        document.body.style.userSelect = 'none';
+        srDragX = e.clientX;
+        srDragY = e.clientY;
+        const rect = srModal.getBoundingClientRect();
+        srOriginL = rect.left;
+        srOriginT = rect.top;
+        e.preventDefault();
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!srDragging) return;
+        srModal.style.left = (srOriginL + (e.clientX - srDragX)) + 'px';
+        srModal.style.top = (srOriginT + (e.clientY - srDragY)) + 'px';
+        srModal.style.right = 'auto';
+        srModal.style.transform = 'none';
+      });
+
+      document.addEventListener('mouseup', () => {
+        if (!srDragging) return;
+        srDragging = false;
+        document.body.style.userSelect = '';
+      });
+    }
+
+    // ── Version History — row selection helpers ───────────
+    function srApplyVHSelected(row) {
+      row.classList.add('version-history-row--selected');
+      row.setAttribute('aria-selected', 'true');
+      var avatar   = row.querySelector('.avatar');
+      var portrait = avatar && avatar.querySelector('.portrait');
+      if (portrait) row.dataset.portraitSrc = portrait.src;
+      if (avatar) {
+        avatar.classList.add('avatar--checked');
+        avatar.setAttribute('aria-label', 'Selected');
+        avatar.innerHTML = '<i data-lucide="check" aria-hidden="true"></i>';
+        lucide.createIcons({ nodes: [avatar] });
+      }
+    }
+
+    function srRemoveVHSelected(row) {
+      if (!row.classList.contains('version-history-row--selected')) return;
+      row.classList.remove('version-history-row--selected');
+      row.setAttribute('aria-selected', 'false');
+      var avatar    = row.querySelector('.avatar');
+      var storedSrc = row.dataset.portraitSrc;
+      if (avatar && storedSrc) {
+        avatar.classList.remove('avatar--checked');
+        avatar.removeAttribute('aria-label');
+        avatar.innerHTML = '<img class="portrait" src="' + storedSrc + '" alt="">';
+        delete row.dataset.portraitSrc;
+      }
+    }
+
+    // ── Version History — row click (radio, toggleable) ──
+    srModal.querySelectorAll('.version-history__rows[role="listbox"]').forEach(function (rowsContainer) {
+      rowsContainer.addEventListener('click', function (e) {
+        var clickedRow = e.target.closest('.version-history-row');
+        if (!clickedRow) return;
+
+        var allRows = rowsContainer.querySelectorAll('.version-history-row');
+        var isAlreadySelected = clickedRow.classList.contains('version-history-row--selected');
+
+        if (isAlreadySelected) {
+          srRemoveVHSelected(clickedRow);
+          srTextarea.value = srSavedValue;
+          srModal.classList.toggle('system-role--dirty', srTextarea.value !== srSavedValue);
+          return;
+        }
+
+        allRows.forEach(function (row) { srRemoveVHSelected(row); });
+        srApplyVHSelected(clickedRow);
+
+        var prompt = clickedRow.getAttribute('data-prompt');
+        if (prompt) {
+          srTextarea.value = prompt;
+          srModal.classList.toggle('system-role--dirty', srTextarea.value !== srSavedValue);
+        }
+      });
+    });
+
+    // ── Prompt Template — helpers ──────────────────────────
+    var srActiveTemplate = null;
+    var srPromptWrap = srModal.querySelector('.system-role__prompt');
+
+    function srApplyTemplate(item) {
+      // Deselect any active VH row first (mutual exclusivity)
+      srModal.querySelectorAll('.version-history-row--selected').forEach(function (r) {
+        srRemoveVHSelected(r);
+      });
+      var desc = item.querySelector('.prompt-template-item__description');
+      if (!desc) return;
+      srTextarea.value = desc.textContent.trim();
+      if (srPromptWrap) srPromptWrap.classList.add('system-role__prompt--template-linked');
+      srActiveTemplate = item;
+      srModal.classList.toggle('system-role--dirty', srTextarea.value !== srSavedValue);
+    }
+
+    function srClearTemplate() {
+      if (!srActiveTemplate) return;
+      srActiveTemplate.classList.remove('prompt-template-item--selected');
+      srActiveTemplate.setAttribute('aria-selected', 'false');
+      srActiveTemplate = null;
+      srTextarea.value = srSavedValue;
+      if (srPromptWrap) srPromptWrap.classList.remove('system-role__prompt--template-linked');
+      srModal.classList.toggle('system-role--dirty', srTextarea.value !== srSavedValue);
+    }
+
+    function srHandlePTItemClick(e) {
+      if (e.target.closest('.prompt-template-item__chevron-btn')) return;
+      var item = e.target.closest('.prompt-template-item');
+      if (!item) return;
+
+      var isAlreadySelected = item.classList.contains('prompt-template-item--selected');
+
+      srModal.querySelectorAll('.prompt-template-item').forEach(function (i) {
+        i.classList.remove('prompt-template-item--selected');
+        i.setAttribute('aria-selected', 'false');
+      });
+
+      if (isAlreadySelected) {
+        srClearTemplate();
+      } else {
+        item.classList.add('prompt-template-item--selected');
+        item.setAttribute('aria-selected', 'true');
+        srApplyTemplate(item);
+      }
+    }
+
+    function srCollapsePTItem(item) {
+      item.classList.remove('prompt-template-item--expanded');
+      var btn = item.querySelector('.prompt-template-item__chevron-btn');
+      if (btn) {
+        btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-label', 'Show details');
+      }
+    }
+
+    // ── Prompt Template — event listeners ────────────────
+    var srPTList = srModal.querySelector('.prompt-templates__list');
+    if (srPTList) {
+      srPTList.addEventListener('click', function (e) {
+        srHandlePTItemClick(e);
+      });
+
+      srPTList.addEventListener('keydown', function (e) {
+        if ((e.key === 'Enter' || e.key === ' ') &&
+            !e.target.closest('.prompt-template-item__chevron-btn')) {
+          e.preventDefault();
+          srHandlePTItemClick(e);
+        }
+      });
+
+      srPTList.querySelectorAll('.prompt-template-item__chevron-btn').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var item = btn.closest('.prompt-template-item');
+          if (!item) return;
+          var isExpanded = item.classList.contains('prompt-template-item--expanded');
+
+          srPTList.querySelectorAll('.prompt-template-item--expanded').forEach(function (i) {
+            if (i !== item) srCollapsePTItem(i);
+          });
+
+          if (isExpanded) {
+            srCollapsePTItem(item);
+          } else {
+            item.classList.add('prompt-template-item--expanded');
+            btn.setAttribute('aria-expanded', 'true');
+            btn.setAttribute('aria-label', 'Hide details');
+          }
+        });
+      });
+    }
+
+    // ── Also update VH row selection to clear template ───
+    // (Add mutual exclusivity: selecting a VH row clears any active template)
+    srModal.querySelectorAll('.version-history__rows[role="listbox"]').forEach(function (rowsContainer) {
+      var origHandler = rowsContainer.onclick;
+      rowsContainer.addEventListener('click', function () {
+        if (srActiveTemplate) srClearTemplate();
+      }, true); // capture phase — runs before the row selection handler
+    });
+
+    // ── Version History expand/collapse ──────────────────
+    const srVHFooter = srModal.querySelector('.version-history__footer');
+    if (srVHFooter) {
+      srVHFooter.addEventListener('click', () => {
+        const vh = srVHFooter.closest('.version-history');
+        const isExpanded = vh.classList.toggle('version-history--expanded');
+        srVHFooter.setAttribute('aria-expanded', String(isExpanded));
+        srVHFooter.querySelector('.version-history__footer-label').textContent = isExpanded ? 'Show less' : 'Show older';
+      });
+    }
+  </script>
+
+</body>
+</html>

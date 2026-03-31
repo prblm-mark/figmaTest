@@ -1,0 +1,154 @@
+/* Registration prototype
+ * Two-step registration flow
+ * Uses: Input, Button components
+ */
+
+/* ── Page ─────────────────────────────────────────────── */
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ai-surface-secondary);
+  padding: var(--ai-spacing-6);
+}
+
+/* ── Card ─────────────────────────────────────────────── */
+
+.reg-card {
+  background: var(--ai-surface-primary);
+  border-radius: var(--ai-radius-lg);
+  padding: var(--ai-spacing-7);
+  width: var(--ai-size-7);              /* 384px */
+  max-width: 100%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* ── Step indicator ───────────────────────────────────── */
+
+.reg-steps {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: var(--ai-spacing-7);
+}
+
+.reg-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+}
+
+.reg-step__dot {
+  width: var(--ai-spacing-7);           /* 32px */
+  height: var(--ai-spacing-7);
+  border-radius: var(--ai-radius-full);
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-contrast);
+}
+
+.reg-step__dot [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+.reg-step--active .reg-step__dot {
+  background: var(--ai-surface-brand);
+  border-color: var(--ai-surface-brand);
+  color: var(--ai-btn-primary-text);
+}
+
+.reg-step--complete .reg-step__dot {
+  background: var(--ai-surface-success);
+  border-color: var(--ai-surface-success);
+  color: var(--ai-btn-primary-text);
+}
+
+.reg-step__label {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-contrast);
+  white-space: nowrap;
+}
+
+.reg-step--active .reg-step__label,
+.reg-step--complete .reg-step__label {
+  color: var(--ai-text-primary);
+}
+
+.reg-steps__line {
+  flex: 1;
+  height: 1px;
+  background: var(--ai-border-secondary);
+  margin-top: var(--ai-spacing-5);      /* 16px = half of 32px dot height */
+}
+
+/* ── Heading ──────────────────────────────────────────── */
+
+.reg-heading {
+  margin-bottom: var(--ai-spacing-6);
+}
+
+.reg-heading__title {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fluid-xl);
+  font-weight: var(--ai-font-bold);
+  line-height: var(--ai-leading-lg);
+  color: var(--ai-text-primary);
+  margin: 0 0 var(--ai-spacing-2);
+}
+
+.reg-heading__subtitle {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-secondary);
+  margin: 0;
+}
+
+/* ── Form ─────────────────────────────────────────────── */
+
+.reg-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+}
+
+/* ── Actions ──────────────────────────────────────────── */
+
+.reg-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--ai-spacing-3);
+  margin-top: var(--ai-spacing-2);
+}
+
+/* ── Sign-in link ─────────────────────────────────────── */
+
+.reg-signin {
+  text-align: center;
+  margin-top: var(--ai-spacing-5);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-secondary);
+}
+
+.reg-signin a {
+  color: var(--ai-surface-brand);
+  text-decoration: none;
+  font-weight: var(--ai-font-medium);
+}
+
+.reg-signin a:hover {
+  text-decoration: underline;
+}

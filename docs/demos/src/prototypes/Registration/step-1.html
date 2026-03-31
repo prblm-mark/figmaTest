@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Registration — Step 1 of 2</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Input/Input.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="Registration.css">
+</head>
+<body>
+
+  <div class="reg-card">
+
+    <!-- Step indicator -->
+    <nav class="reg-steps" aria-label="Registration progress">
+      <div class="reg-step reg-step--active">
+        <div class="reg-step__dot" aria-current="step">1</div>
+        <span class="reg-step__label">Account</span>
+      </div>
+      <div class="reg-steps__line" aria-hidden="true"></div>
+      <div class="reg-step">
+        <div class="reg-step__dot">2</div>
+        <span class="reg-step__label">Profile</span>
+      </div>
+    </nav>
+
+    <!-- Heading -->
+    <div class="reg-heading">
+      <h1 class="reg-heading__title">Create your account</h1>
+      <p class="reg-heading__subtitle">Enter your credentials to get started.</p>
+    </div>
+
+    <!-- Form -->
+    <form class="reg-form" novalidate>
+
+      <div class="input">
+        <label class="input__label" for="email">Email address</label>
+        <div class="input__wrap">
+          <i data-lucide="mail" class="input__icon" aria-hidden="true"></i>
+          <input id="email" type="email" class="input__control" placeholder="name@company.com" autocomplete="email">
+          <button type="button" class="input__clear" aria-label="Clear email">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="input">
+        <label class="input__label" for="password">Password</label>
+        <div class="input__wrap">
+          <i data-lucide="lock" class="input__icon" aria-hidden="true"></i>
+          <input id="password" type="password" class="input__control" placeholder="8+ characters" autocomplete="new-password">
+          <button type="button" class="input__clear" aria-label="Clear password">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="input">
+        <label class="input__label" for="confirm-password">Confirm password</label>
+        <div class="input__wrap">
+          <i data-lucide="lock" class="input__icon" aria-hidden="true"></i>
+          <input id="confirm-password" type="password" class="input__control" placeholder="Re-enter password" autocomplete="new-password">
+          <button type="button" class="input__clear" aria-label="Clear confirm password">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="reg-actions">
+        <button type="submit" class="btn btn--primary" onclick="location.href='step-2.html'; return false;">
+          Continue
+          <i data-lucide="arrow-right" aria-hidden="true"></i>
+        </button>
+      </div>
+
+    </form>
+
+    <p class="reg-signin">Already have an account? <a href="#">Sign in</a></p>
+
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

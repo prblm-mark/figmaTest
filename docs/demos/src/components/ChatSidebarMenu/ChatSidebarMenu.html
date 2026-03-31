@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>ChatSidebarMenu — Component Demo</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../ChatSidebarItem/ChatSidebarItem.css">
+  <link rel="stylesheet" href="ChatSidebarMenu.css">
+  <style>
+    body {
+      padding: var(--ai-spacing-7);
+      background-color: var(--ai-surface-secondary);
+    }
+    .demo-section {
+      margin-bottom: var(--ai-spacing-7);
+    }
+    .demo-label {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--ai-spacing-5);
+    }
+    .demo-sidebar {
+      width: var(--ai-size-5);
+      padding: var(--ai-spacing-4);
+      background-color: var(--ai-chat-sidebar-bg);
+      border-radius: var(--ai-radius-lg);
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .demo-menu-wrap {
+      position: relative;
+      padding: var(--ai-spacing-7) 0;
+    }
+  </style>
+</head>
+<body data-surface="chat">
+  <h1>ChatSidebarMenu</h1>
+  <p>Context menu dropdown for sidebar chat items. Uses computed sidebar-theme colors.</p>
+
+  <div class="demo-section">
+    <p class="demo-label">Light sidebar</p>
+    <div class="demo-sidebar" id="sidebar-light">
+      <div class="demo-menu-wrap">
+        <div class="chat-sidebar-menu chat-sidebar-menu--open">
+          <button class="chat-sidebar-menu__item" type="button">
+            <i data-lucide="pin" aria-hidden="true"></i>
+            Pin
+          </button>
+          <button class="chat-sidebar-menu__item" type="button">
+            <i data-lucide="copy" aria-hidden="true"></i>
+            Copy
+          </button>
+          <button class="chat-sidebar-menu__item" type="button">
+            <i data-lucide="link" aria-hidden="true"></i>
+            Copy Link
+          </button>
+          <button class="chat-sidebar-menu__item" type="button">
+            <i data-lucide="trash-2" aria-hidden="true"></i>
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <p class="demo-label">Dark sidebar</p>
+    <div class="demo-sidebar" id="sidebar-dark" style="--ai-chat-sidebar-bg: #18222F;">
+      <div class="demo-menu-wrap">
+        <div class="chat-sidebar-menu chat-sidebar-menu--open">
+          <button class="chat-sidebar-menu__item" type="button">
+            <i data-lucide="pin" aria-hidden="true"></i>
+            Pin
+          </button>
+          <button class="chat-sidebar-menu__item" type="button">
+            <i data-lucide="copy" aria-hidden="true"></i>
+            Copy
+          </button>
+          <button class="chat-sidebar-menu__item" type="button">
+            <i data-lucide="link" aria-hidden="true"></i>
+            Copy Link
+          </button>
+          <button class="chat-sidebar-menu__item" type="button">
+            <i data-lucide="trash-2" aria-hidden="true"></i>
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script type="module">
+    import { initSidebarTheme } from '../../utils/sidebar-colors.js';
+
+    document.querySelectorAll('.demo-sidebar').forEach(el => {
+      initSidebarTheme(el);
+    });
+
+    const observer = new MutationObserver(() => {
+      document.querySelectorAll('.demo-sidebar').forEach(el => {
+        initSidebarTheme(el);
+      });
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+  </script>
+</body>
+</html>

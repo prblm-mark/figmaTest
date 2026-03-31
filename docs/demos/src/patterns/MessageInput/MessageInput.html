@@ -1,0 +1,175 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>MessageInput — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/Tooltip/Tooltip.css">
+  <link rel="stylesheet" href="MessageInput.css">
+  <style>
+    body {
+      min-height: 100vh;
+      background-color: var(--ai-surface-primary);
+      padding: var(--ai-spacing-7);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .demo-section {
+      width: 100%;
+      max-width: 768px;
+      margin-bottom: var(--ai-spacing-9);
+    }
+
+    .demo-label {
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xxs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--ai-spacing-5);
+    }
+
+    .demo-note {
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xxs);
+      color: var(--ai-text-contrast);
+      margin-top: var(--ai-spacing-3);
+    }
+  </style>
+</head>
+
+<body data-surface="chat">
+
+  <!-- ── Interactive demo ────────────────────── -->
+  <section class="demo-section">
+    <p class="demo-label">Interactive Demo</p>
+    <p class="demo-note" style="margin-top: 0; margin-bottom: var(--ai-spacing-5);">
+      Type to activate send button. Hover funnel for tooltip, click it for duration filter. Hover "How we collect data" for data tooltip.
+    </p>
+    <div class="msg-input">
+      <div class="msg-input__box">
+        <textarea
+          class="msg-input__textarea"
+          rows="1"
+          placeholder="Send a question"
+        ></textarea>
+        <div class="msg-input__actions">
+          <div class="msg-input__filter-container">
+            <button
+              class="btn btn--tertiary btn--sm btn--icon msg-input__filter-btn"
+              aria-label="Filter by recent content"
+            >
+              <i data-lucide="funnel" aria-hidden="true"></i>
+            </button>
+            <div class="msg-input__tooltip msg-input__tooltip--filter">
+              <div class="tooltip" role="tooltip">
+                <p class="tooltip__text">Filter by recent content</p>
+              </div>
+            </div>
+            <div class="msg-input__filter-popover">
+              <button class="msg-input__filter-item" role="option">
+                30 Days
+              </button>
+              <button class="msg-input__filter-item" role="option">
+                6 Months
+              </button>
+              <button class="msg-input__filter-item msg-input__filter-item--selected" role="option" aria-selected="true">
+                1 Year
+                <i data-lucide="check" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <button
+            class="btn btn--primary btn--sm btn--icon msg-input__send-btn"
+            aria-label="Send message"
+            disabled
+          >
+            <i data-lucide="move-up" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <div class="msg-input__disclaimer">
+        <p class="msg-input__disclaimer-text">How we collect data</p>
+        <div class="msg-input__tooltip msg-input__tooltip--data">
+          <div class="tooltip" role="tooltip">
+            <p class="tooltip__text">Note any help the AI provides may be used to further improve the quality of replies and assistance provided.<br><br>AIs can make mistakes. Check important info.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="demo-note">Resize viewport below 768px to see mobile layout (send button hidden until typing).</p>
+  </section>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    lucide.createIcons();
+
+    // ── Active state: detect input change ──────────
+    document.querySelectorAll('.msg-input__textarea').forEach(textarea => {
+      const wrapper = textarea.closest('.msg-input');
+      textarea.addEventListener('input', () => {
+        if (textarea.value.trim().length > 0) {
+          wrapper.classList.add('msg-input--active');
+        } else {
+          wrapper.classList.remove('msg-input--active');
+        }
+      });
+    });
+
+    // ── Duration filter: toggle popover on click ───
+    document.querySelectorAll('.msg-input__filter-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const wrapper = btn.closest('.msg-input');
+        const popover = wrapper.querySelector('.msg-input__filter-popover');
+        if (popover) {
+          popover.classList.toggle('msg-input__filter-popover--open');
+        }
+      });
+    });
+
+    // ── Duration filter: select item ───────────────
+    document.querySelectorAll('.msg-input__filter-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const popover = item.closest('.msg-input__filter-popover');
+        // Clear all selections
+        popover.querySelectorAll('.msg-input__filter-item').forEach(i => {
+          i.classList.remove('msg-input__filter-item--selected');
+          i.removeAttribute('aria-selected');
+          const svg = i.querySelector('svg');
+          if (svg) svg.remove();
+        });
+        // Set new selection
+        item.classList.add('msg-input__filter-item--selected');
+        item.setAttribute('aria-selected', 'true');
+        const checkEl = document.createElement('i');
+        checkEl.setAttribute('data-lucide', 'check');
+        checkEl.setAttribute('aria-hidden', 'true');
+        item.appendChild(checkEl);
+        lucide.createIcons();
+        // Close popover
+        popover.classList.remove('msg-input__filter-popover--open');
+      });
+    });
+
+    // ── Close popover on outside click ─────────────
+    document.addEventListener('click', (e) => {
+      document.querySelectorAll('.msg-input__filter-popover--open').forEach(popover => {
+        const wrapper = popover.closest('.msg-input');
+        const filterBtn = wrapper.querySelector('.msg-input__filter-btn');
+        if (!popover.contains(e.target) && e.target !== filterBtn && !filterBtn.contains(e.target)) {
+          popover.classList.remove('msg-input__filter-popover--open');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

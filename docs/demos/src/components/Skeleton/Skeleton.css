@@ -1,0 +1,37 @@
+/* Skeleton — loading placeholder with shimmer animation */
+
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-4);
+}
+
+.skeleton__line {
+  height: var(--ai-spacing-5);
+  border-radius: var(--ai-radius-sm);
+  background: var(--ai-skeleton-base);
+}
+
+/* ── Line widths ─────────────────────────────────────── */
+
+.skeleton__line:nth-child(1) { width: 100%; }
+.skeleton__line:nth-child(2) { width: 50%; }
+.skeleton__line:nth-child(3) { width: 84%; }
+.skeleton__line:nth-child(4) { width: 73%; }
+.skeleton__line:nth-child(5) { width: 36%; }
+
+/* ── Shimmer gradient (applied by JS, animated by GSAP) ── */
+
+.skeleton--active .skeleton__line {
+  background:
+    linear-gradient(
+      90deg,
+      var(--ai-skeleton-base) 0%,
+      var(--ai-skeleton-base) 30%,
+      var(--ai-skeleton-highlight) 50%,
+      var(--ai-skeleton-base) 70%,
+      var(--ai-skeleton-base) 100%
+    );
+  background-size: 300% 100%;
+  will-change: background-position;
+}

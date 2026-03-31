@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>ChatSidebar — Pattern Demo</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/ChatSidebarItem/ChatSidebarItem.css">
+  <link rel="stylesheet" href="../../components/ChatSidebarMenu/ChatSidebarMenu.css">
+  <link rel="stylesheet" href="ChatSidebar.css">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    body {
+      display: flex;
+      background-color: var(--ai-surface-secondary);
+    }
+    .main {
+      flex: 1;
+      padding: var(--ai-spacing-7);
+    }
+    .main__note {
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-contrast);
+      max-width: 480px;
+    }
+  </style>
+</head>
+<body data-surface="chat">
+  <aside class="chat-sidebar" id="sidebar">
+
+    <!-- Logo -->
+    <div class="chat-sidebar__logo">
+      <img src="../../../img/affinoLogo.svg" alt="Affino" width="167" height="38">
+    </div>
+
+    <!-- Actions -->
+    <div class="chat-sidebar__actions">
+      <div class="chat-sidebar-item chat-sidebar-item--action" tabindex="0">
+        <i data-lucide="message-square" class="chat-sidebar-item__icon" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">New Chat</span>
+      </div>
+      <div class="chat-sidebar-item chat-sidebar-item--action" tabindex="0">
+        <i data-lucide="search" class="chat-sidebar-item__icon" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">Search</span>
+      </div>
+    </div>
+
+    <!-- Sections -->
+    <div class="chat-sidebar__sections">
+
+      <!-- Pinned -->
+      <div class="chat-sidebar__section">
+        <span class="chat-sidebar__section-label">Pinned</span>
+
+        <div class="chat-sidebar-item chat-sidebar-item--pinned" tabindex="0">
+          <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+          <span class="chat-sidebar-item__text">Here's how to set up a themable gradient in Figma using your surface color tokens</span>
+          <div class="chat-sidebar-item__actions">
+            <div class="chat-sidebar-item__fade"></div>
+            <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+              <i data-lucide="ellipsis" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="chat-sidebar-menu">
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin-off" aria-hidden="true"></i> Unpin</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+          </div>
+        </div>
+
+        <div class="chat-sidebar-item chat-sidebar-item--pinned" tabindex="0">
+          <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+          <span class="chat-sidebar-item__text">Both fills reference your design tokens, so when you swap themes, the gradient updates automatically.</span>
+          <div class="chat-sidebar-item__actions">
+            <div class="chat-sidebar-item__fade"></div>
+            <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+              <i data-lucide="ellipsis" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="chat-sidebar-menu">
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin-off" aria-hidden="true"></i> Unpin</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent -->
+      <div class="chat-sidebar__section">
+        <span class="chat-sidebar__section-label">Recent</span>
+
+        <div class="chat-sidebar-item" tabindex="0">
+          <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+          <span class="chat-sidebar-item__text">Here's how to set up a themable gradient in Figma using your surface color tokens</span>
+          <div class="chat-sidebar-item__actions">
+            <div class="chat-sidebar-item__fade"></div>
+            <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+              <i data-lucide="ellipsis" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="chat-sidebar-menu">
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+          </div>
+        </div>
+
+        <div class="chat-sidebar-item chat-sidebar-item--selected" tabindex="0">
+          <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+          <span class="chat-sidebar-item__text">This way, the bottom fill shows through where the top fill is transparent,</span>
+          <div class="chat-sidebar-item__actions">
+            <div class="chat-sidebar-item__fade"></div>
+            <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+              <i data-lucide="ellipsis" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="chat-sidebar-menu">
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+          </div>
+        </div>
+
+        <div class="chat-sidebar-item" tabindex="0">
+          <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+          <span class="chat-sidebar-item__text">Both fills reference your design tokens, so when you swap themes, the gradient updates automatically.</span>
+          <div class="chat-sidebar-item__actions">
+            <div class="chat-sidebar-item__fade"></div>
+            <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+              <i data-lucide="ellipsis" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="chat-sidebar-menu">
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+          </div>
+        </div>
+
+        <div class="chat-sidebar-item" tabindex="0">
+          <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+          <span class="chat-sidebar-item__text">As of late 2024, Figma added support for variables in gradient stops. If you're on a plan that supports this</span>
+          <div class="chat-sidebar-item__actions">
+            <div class="chat-sidebar-item__fade"></div>
+            <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+              <i data-lucide="ellipsis" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="chat-sidebar-menu">
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+          </div>
+        </div>
+
+        <div class="chat-sidebar-item" tabindex="0">
+          <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+          <span class="chat-sidebar-item__text">How do i go about setting up a sitemap channel</span>
+          <div class="chat-sidebar-item__actions">
+            <div class="chat-sidebar-item__fade"></div>
+            <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+              <i data-lucide="ellipsis" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="chat-sidebar-menu">
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Older -->
+      <div class="chat-sidebar__section">
+        <span class="chat-sidebar__section-label">Older</span>
+
+        <div class="chat-sidebar-item" tabindex="0">
+          <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+          <span class="chat-sidebar-item__text">Here's how to set up a themable gradient in Figma using your surface color tokens</span>
+          <div class="chat-sidebar-item__actions">
+            <div class="chat-sidebar-item__fade"></div>
+            <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+              <i data-lucide="ellipsis" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="chat-sidebar-menu">
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+          </div>
+        </div>
+
+        <div class="chat-sidebar-item" tabindex="0">
+          <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+          <span class="chat-sidebar-item__text">This way, the bottom fill shows through where the top fill is transparent,</span>
+          <div class="chat-sidebar-item__actions">
+            <div class="chat-sidebar-item__fade"></div>
+            <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+              <i data-lucide="ellipsis" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="chat-sidebar-menu">
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+          </div>
+        </div>
+
+        <div class="chat-sidebar-item" tabindex="0">
+          <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+          <span class="chat-sidebar-item__text">Both fills reference your design tokens, so when you swap themes, the gradient updates automatically.</span>
+          <div class="chat-sidebar-item__actions">
+            <div class="chat-sidebar-item__fade"></div>
+            <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+              <i data-lucide="ellipsis" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="chat-sidebar-menu">
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+          </div>
+        </div>
+
+        <div class="chat-sidebar-item" tabindex="0">
+          <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+          <span class="chat-sidebar-item__text">As of late 2024, Figma added support for variables in gradient stops. If you're on a plan that supports this</span>
+          <div class="chat-sidebar-item__actions">
+            <div class="chat-sidebar-item__fade"></div>
+            <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+              <i data-lucide="ellipsis" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="chat-sidebar-menu">
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+          </div>
+        </div>
+
+        <div class="chat-sidebar-item" tabindex="0">
+          <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+          <span class="chat-sidebar-item__text">How do i go about setting up a sitemap channel</span>
+          <div class="chat-sidebar-item__actions">
+            <div class="chat-sidebar-item__fade"></div>
+            <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+              <i data-lucide="ellipsis" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="chat-sidebar-menu">
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+            <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+  <main class="main">
+    <h1>ChatSidebar</h1>
+    <p class="main__note">
+      Sidebar navigation panel composing ChatSidebarItem (Action + Thread types) with
+      section groups (Pinned, Recent, Older). Toggle dark mode to see the sidebar adapt
+      via luminance detection. Hover thread items for the ellipsis menu; click to select.
+    </p>
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script type="module">
+    import { initSidebarTheme } from '../../utils/sidebar-colors.js';
+
+    const sidebar = document.getElementById('sidebar');
+    initSidebarTheme(sidebar);
+
+    // Re-initialise on dark mode toggle
+    const observer = new MutationObserver(() => {
+      initSidebarTheme(sidebar);
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+
+    // Click handling
+    sidebar.addEventListener('click', (e) => {
+      // Ellipsis button — toggle menu
+      const menuBtn = e.target.closest('.chat-sidebar-item__menu-btn');
+      if (menuBtn) {
+        e.stopPropagation();
+        const item = menuBtn.closest('.chat-sidebar-item');
+        const menu = item.querySelector('.chat-sidebar-menu');
+        const isOpen = item.classList.toggle('chat-sidebar-item--menu-open');
+        menu.classList.toggle('chat-sidebar-menu--open', isOpen);
+        menuBtn.setAttribute('aria-expanded', isOpen);
+        if (isOpen) {
+          const rect = menuBtn.getBoundingClientRect();
+          menu.style.top = rect.bottom + 'px';
+          menu.style.left = (rect.left - 8) + 'px';
+        }
+        return;
+      }
+
+      // Menu item — close menu
+      const menuItem = e.target.closest('.chat-sidebar-menu__item');
+      if (menuItem) {
+        const item = menuItem.closest('.chat-sidebar-item');
+        item.classList.remove('chat-sidebar-item--menu-open');
+        item.querySelector('.chat-sidebar-menu').classList.remove('chat-sidebar-menu--open');
+        item.querySelector('.chat-sidebar-item__menu-btn').setAttribute('aria-expanded', 'false');
+        return;
+      }
+
+      // Item click — select
+      const item = e.target.closest('.chat-sidebar-item');
+      if (!item) return;
+      sidebar.querySelectorAll('.chat-sidebar-item--selected')
+        .forEach(el => el.classList.remove('chat-sidebar-item--selected'));
+      item.classList.add('chat-sidebar-item--selected');
+    });
+
+    // Close menus on click outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.chat-sidebar-item')) {
+        document.querySelectorAll('.chat-sidebar-item--menu-open').forEach(item => {
+          item.classList.remove('chat-sidebar-item--menu-open');
+          item.querySelector('.chat-sidebar-menu').classList.remove('chat-sidebar-menu--open');
+          item.querySelector('.chat-sidebar-item__menu-btn').setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+
+    // Close menus on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.chat-sidebar-item--menu-open').forEach(item => {
+          item.classList.remove('chat-sidebar-item--menu-open');
+          item.querySelector('.chat-sidebar-menu').classList.remove('chat-sidebar-menu--open');
+          item.querySelector('.chat-sidebar-item__menu-btn').setAttribute('aria-expanded', 'false');
+          item.querySelector('.chat-sidebar-item__menu-btn').focus();
+        });
+      }
+    });
+  </script>
+</body>
+</html>

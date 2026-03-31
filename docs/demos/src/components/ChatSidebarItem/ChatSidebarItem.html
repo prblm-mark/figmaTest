@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>ChatSidebarItem — Component Demo</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="ChatSidebarItem.css">
+  <link rel="stylesheet" href="../ChatSidebarMenu/ChatSidebarMenu.css">
+  <style>
+    body {
+      padding: var(--ai-spacing-7);
+      background-color: var(--ai-surface-secondary);
+    }
+    .demo-section {
+      margin-bottom: var(--ai-spacing-7);
+    }
+    .demo-label {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--ai-spacing-5);
+    }
+    .demo-sidebar {
+      width: var(--ai-size-5);
+      padding: var(--ai-spacing-4);
+      background-color: var(--ai-chat-sidebar-bg);
+      border-radius: var(--ai-radius-lg);
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .demo-sidebar__label {
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xxs);
+      font-weight: var(--ai-font-regular);
+      line-height: var(--ai-leading-xs);
+      color: var(--ai-chat-sidebar-text);
+      opacity: 0.6;
+      padding: var(--ai-spacing-2) var(--ai-spacing-3);
+    }
+  </style>
+</head>
+<body data-surface="chat">
+  <h1>ChatSidebarItem</h1>
+  <p>Sidebar menu item with two types: Thread (with pin, ellipsis menu, fade gradient) and Action (icon + label). Hover items to see the ellipsis button; click ellipsis to toggle the ChatSidebarMenu dropdown.</p>
+
+  <!-- ── Light sidebar ──────────────────────────────── -->
+  <div class="demo-section">
+    <p class="demo-label">Light sidebar (default)</p>
+    <div class="demo-sidebar" id="sidebar-light">
+
+      <!-- Action items -->
+      <div class="chat-sidebar-item chat-sidebar-item--action" tabindex="0">
+        <i data-lucide="message-square" class="chat-sidebar-item__icon" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">New Chat</span>
+      </div>
+
+      <span class="demo-sidebar__label">Today</span>
+
+      <!-- Thread items -->
+      <div class="chat-sidebar-item" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">What is machine learning?</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+            <i data-lucide="ellipsis" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="chat-sidebar-menu">
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+        </div>
+      </div>
+
+      <div class="chat-sidebar-item chat-sidebar-item--pinned" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">Help me write a poem about the sea</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+            <i data-lucide="ellipsis" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="chat-sidebar-menu">
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin-off" aria-hidden="true"></i> Unpin</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+        </div>
+      </div>
+
+      <div class="chat-sidebar-item chat-sidebar-item--selected" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">Explain quantum computing basics</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+            <i data-lucide="ellipsis" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="chat-sidebar-menu">
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+        </div>
+      </div>
+
+      <div class="chat-sidebar-item chat-sidebar-item--selected chat-sidebar-item--pinned" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">Best practices for React hooks</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+            <i data-lucide="ellipsis" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="chat-sidebar-menu">
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin-off" aria-hidden="true"></i> Unpin</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+        </div>
+      </div>
+
+      <span class="demo-sidebar__label">Yesterday</span>
+
+      <div class="chat-sidebar-item" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">Recipe for chocolate cake</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+            <i data-lucide="ellipsis" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="chat-sidebar-menu">
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+        </div>
+      </div>
+
+      <div class="chat-sidebar-item" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">Travel tips for Japan</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+            <i data-lucide="ellipsis" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="chat-sidebar-menu">
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Dark sidebar ───────────────────────────────── -->
+  <div class="demo-section">
+    <p class="demo-label">Dark sidebar (mirrors dark theme default)</p>
+    <div class="demo-sidebar" id="sidebar-dark" style="--ai-chat-sidebar-bg: #18222F;">
+      <!-- Action items -->
+      <div class="chat-sidebar-item chat-sidebar-item--action" tabindex="0">
+        <i data-lucide="message-square" class="chat-sidebar-item__icon" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">New Chat</span>
+      </div>
+
+      <span class="demo-sidebar__label">Today</span>
+
+      <div class="chat-sidebar-item" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">What is machine learning?</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+            <i data-lucide="ellipsis" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="chat-sidebar-menu">
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+        </div>
+      </div>
+
+      <div class="chat-sidebar-item chat-sidebar-item--pinned" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">Help me write a poem about the sea</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+            <i data-lucide="ellipsis" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="chat-sidebar-menu">
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin-off" aria-hidden="true"></i> Unpin</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+        </div>
+      </div>
+
+      <div class="chat-sidebar-item chat-sidebar-item--selected" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">Explain quantum computing basics</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+            <i data-lucide="ellipsis" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="chat-sidebar-menu">
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+        </div>
+      </div>
+
+      <div class="chat-sidebar-item chat-sidebar-item--selected chat-sidebar-item--pinned" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">Best practices for React hooks</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+            <i data-lucide="ellipsis" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="chat-sidebar-menu">
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin-off" aria-hidden="true"></i> Unpin</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+        </div>
+      </div>
+
+      <span class="demo-sidebar__label">Yesterday</span>
+
+      <div class="chat-sidebar-item" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">Recipe for chocolate cake</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+            <i data-lucide="ellipsis" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="chat-sidebar-menu">
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Custom brand sidebar ───────────────────────── -->
+  <div class="demo-section">
+    <p class="demo-label">Custom brand sidebar (teal)</p>
+    <div class="demo-sidebar" id="sidebar-custom" style="--ai-chat-sidebar-bg: #0D9488;">
+
+      <!-- Action items -->
+      <div class="chat-sidebar-item chat-sidebar-item--action" tabindex="0">
+        <i data-lucide="message-square" class="chat-sidebar-item__icon" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">New Chat</span>
+      </div>
+
+      <div class="chat-sidebar-item chat-sidebar-item--action chat-sidebar-item--selected" tabindex="0">
+        <i data-lucide="message-square" class="chat-sidebar-item__icon" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">New Chat (selected)</span>
+      </div>
+
+      <span class="demo-sidebar__label">Today</span>
+
+      <div class="chat-sidebar-item" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">What is machine learning?</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+            <i data-lucide="ellipsis" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="chat-sidebar-menu">
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+        </div>
+      </div>
+
+      <div class="chat-sidebar-item chat-sidebar-item--selected chat-sidebar-item--pinned" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">Help me write a poem</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+            <i data-lucide="ellipsis" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="chat-sidebar-menu">
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin-off" aria-hidden="true"></i> Unpin</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+        </div>
+      </div>
+
+      <div class="chat-sidebar-item" tabindex="0">
+        <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+        <span class="chat-sidebar-item__text">Explain quantum computing</span>
+        <div class="chat-sidebar-item__actions">
+          <div class="chat-sidebar-item__fade"></div>
+          <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+            <i data-lucide="ellipsis" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="chat-sidebar-menu">
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+          <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script type="module">
+    import { initSidebarTheme } from '../../utils/sidebar-colors.js';
+
+    // Initialise all sidebar demos
+    document.querySelectorAll('.demo-sidebar').forEach(el => {
+      initSidebarTheme(el);
+    });
+
+    // Re-initialise on dark mode toggle (theme change)
+    const observer = new MutationObserver(() => {
+      document.querySelectorAll('.demo-sidebar').forEach(el => {
+        initSidebarTheme(el);
+      });
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+
+    // Click to select — toggle selected state
+    document.querySelectorAll('.demo-sidebar').forEach(sidebar => {
+      sidebar.addEventListener('click', (e) => {
+        // If clicking on the menu button, toggle menu
+        const menuBtn = e.target.closest('.chat-sidebar-item__menu-btn');
+        if (menuBtn) {
+          e.stopPropagation();
+          const item = menuBtn.closest('.chat-sidebar-item');
+          const menu = item.querySelector('.chat-sidebar-menu');
+          const isOpen = item.classList.toggle('chat-sidebar-item--menu-open');
+          menu.classList.toggle('chat-sidebar-menu--open', isOpen);
+          menuBtn.setAttribute('aria-expanded', isOpen);
+          if (isOpen) {
+            const rect = menuBtn.getBoundingClientRect();
+            menu.style.top = rect.bottom + 'px';
+            menu.style.left = (rect.left - 8) + 'px';
+          }
+          return;
+        }
+
+        // If clicking on a menu item, close the menu
+        const menuItem = e.target.closest('.chat-sidebar-menu__item');
+        if (menuItem) {
+          const item = menuItem.closest('.chat-sidebar-item');
+          item.classList.remove('chat-sidebar-item--menu-open');
+          item.querySelector('.chat-sidebar-menu').classList.remove('chat-sidebar-menu--open');
+          item.querySelector('.chat-sidebar-item__menu-btn').setAttribute('aria-expanded', 'false');
+          return;
+        }
+
+        // Click on the item itself — toggle selected
+        const item = e.target.closest('.chat-sidebar-item');
+        if (!item) return;
+        sidebar.querySelectorAll('.chat-sidebar-item--selected')
+          .forEach(el => el.classList.remove('chat-sidebar-item--selected'));
+        item.classList.add('chat-sidebar-item--selected');
+      });
+    });
+
+    // Close menus on click outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.chat-sidebar-item')) {
+        document.querySelectorAll('.chat-sidebar-item--menu-open').forEach(item => {
+          item.classList.remove('chat-sidebar-item--menu-open');
+          item.querySelector('.chat-sidebar-menu').classList.remove('chat-sidebar-menu--open');
+          item.querySelector('.chat-sidebar-item__menu-btn').setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+
+    // Close menus on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.chat-sidebar-item--menu-open').forEach(item => {
+          item.classList.remove('chat-sidebar-item--menu-open');
+          item.querySelector('.chat-sidebar-menu').classList.remove('chat-sidebar-menu--open');
+          item.querySelector('.chat-sidebar-item__menu-btn').setAttribute('aria-expanded', 'false');
+          item.querySelector('.chat-sidebar-item__menu-btn').focus();
+        });
+      }
+    });
+  </script>
+</body>
+</html>

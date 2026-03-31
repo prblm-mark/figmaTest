@@ -1,0 +1,26 @@
+/* Tooltip component
+ * Figma node: 68:4490 — "Tooltip"
+ * Single variant
+ */
+
+/* ── Container ───────────────────────────────────────── */
+
+.tooltip {
+  width: 100%;
+  max-width: 21.9375rem;                 /* 351px ÷ 16 — fixed design width, no --ai-* token */
+  background-color: #0b0b0c;             /* Neutral/1000 — approved primitive; intentionally fixed dark in both themes */
+  border-radius: var(--ai-radius-lg);
+  padding: var(--ai-spacing-5);
+  box-shadow: var(--ai-shadow-md);
+}
+
+/* ── Text ────────────────────────────────────────────── */
+
+.tooltip__text {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);   /* 12px — body/xxs */
+  font-weight: var(--ai-font-regular);   /* 400 */
+  line-height: var(--ai-leading-xs);      /* 16px */
+  color: #ffffff;                        /* Neutral/0 — approved primitive; always white on dark panel */
+}

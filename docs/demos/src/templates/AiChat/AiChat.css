@@ -1,0 +1,165 @@
+/* AiChat — full-page AI chat template
+ * Figma node: 2140:3614
+ * Tier: Template
+ * Variants: Type=Default (mobile) / Desktop, Sidebar Open=True/False
+ * Composes: ChatSidebar, ChatHeader, ChatMain
+ */
+
+/* ── Root layout ─────────────────────────────────────── */
+
+.ai-chat {
+  --_header-h: calc(var(--ai-spacing-4) * 2 + 32px + 1px);
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background-color: var(--ai-surface-primary);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Sidebar ─────────────────────────────────────────── */
+
+.ai-chat__sidebar {
+  flex-shrink: 0;
+  position: absolute;
+  top: var(--_header-h);
+  left: 0;
+  bottom: 0;
+  z-index: 20;
+  max-width: calc(100vw - var(--ai-spacing-9));
+  transform: translateX(-100%);
+  transition: transform var(--ai-transition-slow), box-shadow var(--ai-transition-slow);
+  box-shadow: none;
+}
+
+.ai-chat__sidebar .chat-sidebar {
+  max-width: 100%;
+}
+
+/* Mobile: sidebar slides in */
+.ai-chat--sidebar-open .ai-chat__sidebar {
+  transform: translateX(0);
+  box-shadow: 8px 0 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Desktop (≥1024px): sidebar inline, visible by default */
+@media (min-width: 1024px) {
+  .ai-chat__sidebar {
+    position: static;
+    transform: none;
+    width: var(--_sidebar-width, var(--ai-size-5));
+    min-width: var(--ai-size-4);
+    max-width: var(--ai-size-8);
+    margin-left: 0;
+    transition: margin-left var(--ai-transition-slow), width var(--ai-transition-slow);
+  }
+
+  .ai-chat .chat-sidebar {
+    width: 100%;
+  }
+
+  /* Disable transition while dragging */
+  .ai-chat--resizing .ai-chat__sidebar {
+    transition: none;
+  }
+
+  /* Desktop: toggle button collapses sidebar via negative margin */
+  .ai-chat--sidebar-closed .ai-chat__sidebar {
+    margin-left: calc(-1 * var(--_sidebar-width, var(--ai-size-5)));
+  }
+}
+
+/* ── Mobile overlay backdrop ─────────────────────────── */
+
+.ai-chat__overlay {
+  position: absolute;
+  inset: var(--_header-h) 0 0 0;
+  z-index: 15;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--ai-transition-slow);
+}
+
+.ai-chat--sidebar-open .ai-chat__overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (min-width: 1024px) {
+  .ai-chat__overlay {
+    display: none;
+  }
+}
+
+/* ── Admin actions: gear below xl, inline at xl ─────── */
+
+.ai-chat .chat-header__admin {
+  display: none;
+}
+
+@media (min-width: 1280px) {
+  .ai-chat .chat-header__admin--visible {
+    display: flex;
+  }
+
+  .ai-chat .chat-header:has(.chat-header__admin--visible) .chat-header__gear-wrap {
+    display: none;
+  }
+}
+
+/* ── Sidebar resize handle (desktop only) ────────────── */
+
+.ai-chat__resize-handle {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .ai-chat__resize-handle {
+    display: block;
+    width: 4px;
+    flex-shrink: 0;
+    cursor: col-resize;
+    background: transparent;
+    transition: background-color var(--ai-transition-default);
+    position: relative;
+    z-index: 5;
+    margin-left: -2px;
+    margin-right: -2px;
+  }
+
+  .ai-chat__resize-handle::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -4px;
+    right: -4px;
+  }
+
+  .ai-chat__resize-handle:hover,
+  .ai-chat--resizing .ai-chat__resize-handle {
+    background-color: var(--ai-border-secondary);
+  }
+
+  /* Hide handle when sidebar is closed */
+  .ai-chat--sidebar-closed .ai-chat__resize-handle {
+    display: none;
+  }
+}
+
+/* ── Dark mode: tertiary button hover on chat surface ── */
+
+[data-theme="dark"] .ai-chat .btn--tertiary:hover,
+[data-theme="dark"] .ai-chat .chat-header__admin .btn:hover {
+  background-color: var(--ai-surface-minimal);
+}
+
+/* ── Main content area ───────────────────────────────── */
+
+.ai-chat__main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+}

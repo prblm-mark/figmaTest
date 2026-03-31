@@ -1,0 +1,1035 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>AiChat Minimised — Template Demo</title>
+
+  <!-- Base + tokens -->
+  <link rel="stylesheet" href="../../styles/base.css">
+
+  <!-- Component CSS -->
+  <link rel="stylesheet" href="../../components/ChatSidebarItem/ChatSidebarItem.css">
+  <link rel="stylesheet" href="../../components/ChatSidebarMenu/ChatSidebarMenu.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/Tooltip/Tooltip.css">
+  <link rel="stylesheet" href="../../components/MessageBubble/MessageBubble.css">
+  <link rel="stylesheet" href="../../components/SuggestedQuestion/SuggestedQuestion.css">
+  <link rel="stylesheet" href="../../components/WorkingIntro/WorkingIntro.css">
+  <link rel="stylesheet" href="../../components/Skeleton/Skeleton.css">
+  <link rel="stylesheet" href="../../components/SourcesLink/SourcesLink.css">
+  <link rel="stylesheet" href="../../components/ChatResponseTable/ChatResponseTable.css">
+
+  <!-- Pattern CSS -->
+  <link rel="stylesheet" href="../../patterns/SourcesCarousel/SourcesCarousel.css">
+  <link rel="stylesheet" href="../../patterns/QuickLinks/QuickLinks.css">
+  <link rel="stylesheet" href="../../patterns/MessageInput/MessageInput.css">
+  <link rel="stylesheet" href="../../patterns/ChatSidebar/ChatSidebar.css">
+  <link rel="stylesheet" href="../../patterns/ChatHeader/ChatHeader.css">
+  <link rel="stylesheet" href="../../patterns/ChatMain/ChatMain.css">
+
+  <!-- Template CSS -->
+  <link rel="stylesheet" href="../ChatResponse/ChatResponse.css">
+  <link rel="stylesheet" href="AiChatMinimised.css">
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    body {
+      background-color: var(--ai-surface-secondary);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="ai-chat-min" id="ai-chat-min" data-surface="chat">
+
+    <!-- Top-edge resize handle -->
+    <div class="ai-chat-min__resize-handle" id="resize-handle" aria-hidden="true"></div>
+
+    <!-- ═══ ChatHeader (minimised type) ══════════════ -->
+    <div class="chat-header chat-header--minimised" id="drag-handle">
+      <div class="chat-header__container">
+        <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Toggle sidebar" id="sidebar-toggle">
+          <i data-lucide="panel-left" aria-hidden="true"></i>
+        </button>
+        <div class="chat-header__selector-wrap">
+          <div class="chat-header__selector-group">
+            <button class="chat-header__selector" aria-expanded="false" aria-haspopup="listbox">
+              <span class="chat-header__selector-text">Support Assistant</span>
+              <span class="chat-header__selector-chevron">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </span>
+            </button>
+            <div class="chat-header__dropdown" role="listbox">
+              <div class="chat-header__dropdown-item" role="option" aria-selected="false">Customer Services</div>
+              <div class="chat-header__dropdown-item chat-header__dropdown-item--selected" role="option" aria-selected="true">Support Assistant</div>
+              <div class="chat-header__dropdown-item" role="option" aria-selected="false">Tech Monkey</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Window buttons: expand + close -->
+      <div class="chat-header__window-buttons">
+        <button class="btn btn--tertiary btn--sm btn--icon chat-header__maximize" aria-label="Expand" id="expand-btn">
+          <i data-lucide="maximize" aria-hidden="true"></i>
+        </button>
+        <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Close" id="close-btn">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══ MAIN CONTENT ═════════════════════════════ -->
+    <div class="ai-chat-min__main">
+
+      <!-- ═══ SIDEBAR (overlay, slides in below header) ═══ -->
+      <div class="ai-chat-min__overlay" id="sidebar-overlay"></div>
+      <aside class="ai-chat-min__sidebar">
+        <div class="chat-sidebar" id="sidebar">
+
+          <!-- Logo -->
+          <div class="chat-sidebar__logo">
+            <img src="../../../img/affinoLogo.svg" alt="Affino" width="167" height="38">
+          </div>
+
+          <!-- Actions -->
+          <div class="chat-sidebar__actions">
+            <div class="chat-sidebar-item chat-sidebar-item--action" tabindex="0">
+              <i data-lucide="message-square" class="chat-sidebar-item__icon" aria-hidden="true"></i>
+              <span class="chat-sidebar-item__text">New Chat</span>
+            </div>
+            <div class="chat-sidebar-item chat-sidebar-item--action" tabindex="0">
+              <i data-lucide="search" class="chat-sidebar-item__icon" aria-hidden="true"></i>
+              <span class="chat-sidebar-item__text">Search</span>
+            </div>
+          </div>
+
+          <!-- Sections -->
+          <div class="chat-sidebar__sections">
+
+            <!-- Pinned -->
+            <div class="chat-sidebar__section">
+              <span class="chat-sidebar__section-label">Pinned</span>
+
+              <div class="chat-sidebar-item chat-sidebar-item--pinned" tabindex="0">
+                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+                <span class="chat-sidebar-item__text">Here's how to set up a themable gradient in Figma using your surface color tokens</span>
+                <div class="chat-sidebar-item__actions">
+                  <div class="chat-sidebar-item__fade"></div>
+                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                    <i data-lucide="ellipsis" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="chat-sidebar-menu">
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin-off" aria-hidden="true"></i> Unpin</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+                </div>
+              </div>
+
+              <div class="chat-sidebar-item chat-sidebar-item--pinned" tabindex="0">
+                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+                <span class="chat-sidebar-item__text">Both fills reference your design tokens, so when you swap themes, the gradient updates automatically.</span>
+                <div class="chat-sidebar-item__actions">
+                  <div class="chat-sidebar-item__fade"></div>
+                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                    <i data-lucide="ellipsis" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="chat-sidebar-menu">
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin-off" aria-hidden="true"></i> Unpin</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent -->
+            <div class="chat-sidebar__section">
+              <span class="chat-sidebar__section-label">Recent</span>
+
+              <div class="chat-sidebar-item" tabindex="0">
+                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+                <span class="chat-sidebar-item__text">Here's how to set up a themable gradient in Figma using your surface color tokens</span>
+                <div class="chat-sidebar-item__actions">
+                  <div class="chat-sidebar-item__fade"></div>
+                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                    <i data-lucide="ellipsis" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="chat-sidebar-menu">
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+                </div>
+              </div>
+
+              <div class="chat-sidebar-item chat-sidebar-item--selected" tabindex="0">
+                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+                <span class="chat-sidebar-item__text">This way, the bottom fill shows through where the top fill is transparent,</span>
+                <div class="chat-sidebar-item__actions">
+                  <div class="chat-sidebar-item__fade"></div>
+                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                    <i data-lucide="ellipsis" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="chat-sidebar-menu">
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+                </div>
+              </div>
+
+              <div class="chat-sidebar-item" tabindex="0">
+                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+                <span class="chat-sidebar-item__text">Both fills reference your design tokens, so when you swap themes, the gradient updates automatically.</span>
+                <div class="chat-sidebar-item__actions">
+                  <div class="chat-sidebar-item__fade"></div>
+                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                    <i data-lucide="ellipsis" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="chat-sidebar-menu">
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+                </div>
+              </div>
+
+              <div class="chat-sidebar-item" tabindex="0">
+                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+                <span class="chat-sidebar-item__text">As of late 2024, Figma added support for variables in gradient stops.</span>
+                <div class="chat-sidebar-item__actions">
+                  <div class="chat-sidebar-item__fade"></div>
+                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                    <i data-lucide="ellipsis" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="chat-sidebar-menu">
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+                </div>
+              </div>
+
+              <div class="chat-sidebar-item" tabindex="0">
+                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+                <span class="chat-sidebar-item__text">How do i go about setting up a sitemap channel</span>
+                <div class="chat-sidebar-item__actions">
+                  <div class="chat-sidebar-item__fade"></div>
+                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                    <i data-lucide="ellipsis" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="chat-sidebar-menu">
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Older -->
+            <div class="chat-sidebar__section">
+              <span class="chat-sidebar__section-label">Older</span>
+
+              <div class="chat-sidebar-item" tabindex="0">
+                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+                <span class="chat-sidebar-item__text">Here's how to set up a themable gradient in Figma using your surface color tokens</span>
+                <div class="chat-sidebar-item__actions">
+                  <div class="chat-sidebar-item__fade"></div>
+                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                    <i data-lucide="ellipsis" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="chat-sidebar-menu">
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+                </div>
+              </div>
+
+              <div class="chat-sidebar-item" tabindex="0">
+                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+                <span class="chat-sidebar-item__text">This way, the bottom fill shows through where the top fill is transparent,</span>
+                <div class="chat-sidebar-item__actions">
+                  <div class="chat-sidebar-item__fade"></div>
+                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                    <i data-lucide="ellipsis" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="chat-sidebar-menu">
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+                </div>
+              </div>
+
+              <div class="chat-sidebar-item" tabindex="0">
+                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+                <span class="chat-sidebar-item__text">Both fills reference your design tokens, so when you swap themes, the gradient updates automatically.</span>
+                <div class="chat-sidebar-item__actions">
+                  <div class="chat-sidebar-item__fade"></div>
+                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                    <i data-lucide="ellipsis" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="chat-sidebar-menu">
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </aside>
+
+      <div class="chat-main chat-main--initial" id="chat-main">
+
+        <!-- ═══ INITIAL VIEW ═════════════════════════ -->
+        <div class="chat-main__initial">
+          <div class="chat-main__initial-inner">
+
+            <!-- Welcome intro -->
+            <div class="chat-main__intro">
+              <h1 class="chat-main__title">Welcome to our Support Assistant</h1>
+              <p class="chat-main__subtitle">Ask one question at a time for the best response, and ask full questions, for important questions check the guides or the forums.</p>
+            </div>
+
+            <!-- MessageInput (inline, not sticky) -->
+            <div class="chat-main__input-wrap">
+              <div class="msg-input">
+                <div class="msg-input__box">
+                  <textarea
+                    class="msg-input__textarea"
+                    rows="1"
+                    placeholder="Send a question"
+                  ></textarea>
+                  <div class="msg-input__actions">
+                    <div class="msg-input__filter-container">
+                      <button
+                        class="btn btn--tertiary btn--sm btn--icon msg-input__filter-btn"
+                        aria-label="Filter by recent content"
+                      >
+                        <i data-lucide="funnel" aria-hidden="true"></i>
+                      </button>
+                      <div class="msg-input__tooltip msg-input__tooltip--filter">
+                        <div class="tooltip" role="tooltip">
+                          <p class="tooltip__text">Filter by recent content</p>
+                        </div>
+                      </div>
+                      <div class="msg-input__filter-popover">
+                        <button class="msg-input__filter-item" role="option">
+                          30 Days
+                        </button>
+                        <button class="msg-input__filter-item" role="option">
+                          6 Months
+                        </button>
+                        <button class="msg-input__filter-item msg-input__filter-item--selected" role="option" aria-selected="true">
+                          1 Year
+                          <i data-lucide="check" aria-hidden="true"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <button
+                      class="btn btn--primary btn--sm btn--icon msg-input__send-btn"
+                      aria-label="Send message"
+                      disabled
+                    >
+                      <i data-lucide="move-up" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="msg-input__disclaimer">
+                  <p class="msg-input__disclaimer-text">How we collect data</p>
+                  <div class="msg-input__tooltip msg-input__tooltip--data">
+                    <div class="tooltip" role="tooltip">
+                      <p class="tooltip__text">Note any help the AI provides may be used to further improve the quality of replies and assistance provided.<br><br>AIs can make mistakes. Check important info.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Suggested questions -->
+            <div class="chat-main__suggestions">
+              <button class="suggested-question" type="button">
+                <i data-lucide="message-circle-question" aria-hidden="true"></i>
+                <div class="suggested-question__body">
+                  <p class="suggested-question__text">What can i do to get started using Affino?</p>
+                  <p class="suggested-question__subtext">I need to know the basics to get up and running</p>
+                </div>
+              </button>
+              <button class="suggested-question" type="button">
+                <i data-lucide="message-circle-question" aria-hidden="true"></i>
+                <div class="suggested-question__body">
+                  <p class="suggested-question__text">How do I set up Ad campaigns in Affino?</p>
+                  <p class="suggested-question__subtext">Walk me through the campaign setup process</p>
+                </div>
+              </button>
+              <p class="chat-main__feedback">If you don't get the answers you are looking for please let us know through the feedback thumbs up and down.</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ═══ SCROLL AREA (Processing + Response) ═══ -->
+        <div class="chat-main__scroll">
+          <div class="chat-main__container">
+
+            <!-- User message bubble -->
+            <div class="msg-bubble">
+              <div class="msg-bubble__question">
+                <p class="msg-bubble__text">Can you explain page views, and how they are saved in Affino?</p>
+              </div>
+              <div class="msg-bubble__actions">
+                <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Copy message">
+                  <i data-lucide="copy" aria-hidden="true"></i>
+                </button>
+                <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Copy link">
+                  <i data-lucide="link" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Processing view: ChatResponse components -->
+            <div class="chat-main__processing">
+
+              <!-- WorkingIntro -->
+              <div class="working-intro">
+                <div class="working-intro__title-row">
+                  <div class="working-intro__logo">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M22 5.64227C22 3.07837 19.9972 1 17.5265 1C15.0558 1 13.053 3.07837 13.053 5.64227V10.0322L10.8036 6.12507C9.46186 3.79465 6.55383 3.03413 4.30787 4.42654C2.06218 5.81922 1.32958 8.8367 2.6711 11.1674C4.01262 13.4981 6.92066 14.2581 9.16687 12.8662L12.7851 10.6223L10.4552 14.8037C9.00004 17.4148 9.86 20.755 12.3765 22.2652C14.8929 23.7755 18.1117 22.8831 19.5672 20.2714C21.0222 17.6603 20.1624 14.3198 17.6457 12.8099L13.4383 10.2845H17.5262C19.9972 10.2845 22 8.2059 22 5.64227ZM8.49217 11.6936C6.87276 12.6977 4.76838 12.1472 3.80079 10.467C2.83346 8.78673 3.36344 6.60268 4.98284 5.59858C6.60225 4.59448 8.70663 5.145 9.67422 6.82523C10.6415 8.50546 10.1113 10.6895 8.49217 11.6936ZM16.9873 13.9915C18.8715 15.1223 19.518 17.6333 18.4286 19.5879C17.3389 21.5431 14.9193 22.2138 13.0354 21.0836C11.1513 19.9525 10.505 17.4418 11.5944 15.4872C12.6838 13.5314 15.1032 12.8605 16.9873 13.9915ZM14.3688 5.64227C14.3688 3.83534 15.7853 2.36537 17.5265 2.36537C19.2677 2.36537 20.6843 3.83534 20.6843 5.64227C20.6843 7.44921 19.2677 8.91917 17.5265 8.91917C15.7853 8.91917 14.3688 7.44893 14.3688 5.64227Z" fill="currentColor"/>
+                    </svg>
+                  </div>
+                  <h2 class="working-intro__title">Working on it</h2>
+                </div>
+                <p class="working-intro__subtitle">&nbsp;</p>
+              </div>
+
+              <!-- SourcesCarousel -->
+              <div class="sources-carousel">
+                <div class="sources-carousel__track">
+                  <a href="#" class="sources-card">
+                    <div class="sources-card__inner">
+                      <img class="sources-card__thumb" src="https://picsum.photos/seed/c1/112/112" alt="">
+                      <div class="sources-card__text">
+                        <p class="sources-card__category">Technology</p>
+                        <p class="sources-card__title">Understanding Neural Network Architecture in Modern AI Systems</p>
+                      </div>
+                    </div>
+                  </a>
+                  <a href="#" class="sources-card">
+                    <div class="sources-card__inner">
+                      <img class="sources-card__thumb" src="https://picsum.photos/seed/c2/112/112" alt="">
+                      <div class="sources-card__text">
+                        <p class="sources-card__category">Research</p>
+                        <p class="sources-card__title">Advances in Natural Language Processing for Enterprise Search</p>
+                      </div>
+                    </div>
+                  </a>
+                  <a href="#" class="sources-card">
+                    <div class="sources-card__inner">
+                      <img class="sources-card__thumb" src="https://picsum.photos/seed/c3/112/112" alt="">
+                      <div class="sources-card__text">
+                        <p class="sources-card__category">Data Science</p>
+                        <p class="sources-card__title">Building Scalable Data Pipelines with Real-Time Processing</p>
+                      </div>
+                    </div>
+                  </a>
+                  <a href="#" class="sources-card">
+                    <div class="sources-card__inner">
+                      <img class="sources-card__thumb" src="https://picsum.photos/seed/c4/112/112" alt="">
+                      <div class="sources-card__text">
+                        <p class="sources-card__category">Engineering</p>
+                        <p class="sources-card__title">Best Practices for Distributed Systems at Scale</p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon sources-carousel__nav sources-carousel__nav--prev" aria-label="Previous">
+                  <i data-lucide="chevron-left"></i>
+                </button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon sources-carousel__nav sources-carousel__nav--next" aria-label="Next">
+                  <i data-lucide="chevron-right"></i>
+                </button>
+              </div>
+
+              <!-- Skeletons -->
+              <div class="chat-response__skeletons">
+                <div class="skeleton">
+                  <div class="skeleton__line"></div>
+                  <div class="skeleton__line"></div>
+                  <div class="skeleton__line"></div>
+                  <div class="skeleton__line"></div>
+                  <div class="skeleton__line"></div>
+                </div>
+                <div class="skeleton">
+                  <div class="skeleton__line"></div>
+                  <div class="skeleton__line"></div>
+                  <div class="skeleton__line"></div>
+                  <div class="skeleton__line"></div>
+                  <div class="skeleton__line"></div>
+                </div>
+              </div>
+
+              <!-- Answer (hidden until animation completes) -->
+              <div class="chat-response__answer">
+                <p>Page views refer to the total number of times pages on your site are viewed by users. In Affino, page views are counted each time a page loads and are tracked as part of your site analytics. Multiple views of the same page by the same user are counted separately.</p>
+                <p>The key innovation in recent years has been the scaling of these architectures to billions of parameters, trained on vast datasets. This scaling has led to emergent capabilities in language understanding, reasoning, and generation that were not present in smaller models.</p>
+              </div>
+
+            </div>
+
+            <!-- Response view: full AI answer -->
+            <div class="chat-main__response">
+
+              <!-- Quick links -->
+              <div class="quick-links">
+                <h3 class="quick-links__heading">Quick links</h3>
+                <div class="quick-links__list">
+                  <a href="#" class="sources-link sources-link--primary">
+                    <i data-lucide="file-text"></i>
+                    <span class="sources-link__text">The Analysis Dashboard Guide</span>
+                  </a>
+                  <a href="#" class="sources-link sources-link--link">
+                    <i data-lucide="link"></i>
+                    <span class="sources-link__text">How are Article Views counted?</span>
+                  </a>
+                  <a href="#" class="sources-link sources-link--link">
+                    <i data-lucide="link"></i>
+                    <span class="sources-link__text">Why are Site Analysis stats different?</span>
+                  </a>
+                </div>
+              </div>
+
+              <p>Page views refer to the total number of times pages on your site are viewed by users. In Affino, page views are counted each time a page loads and are tracked as part of your site analytics. Multiple views of the same page by the same user are counted separately.</p>
+
+              <p><strong>Key points about page views in Affino</strong></p>
+
+              <ul>
+                <li><strong>Page views</strong> are recorded under the Stats function within each <a href="#">article or page <i data-lucide="arrow-up-right" aria-hidden="true"></i></a></li>
+                <li>They include views by both registered and guest users.</li>
+                <li>If a user clicks on an article but encounters a <strong>paywall</strong>, it still counts as a page view.</li>
+                <li>Page views are used in various reports and dashboards, such as the Analysis Dashboard, to provide insights into user <code>section-margin</code></li>
+                <li>Affino distinguishes between simple page views (impressions) and content consumption, where consumption indicates the user has actively engaged with the content beyond just loading the page.</li>
+              </ul>
+
+              <!-- Data table -->
+              <div class="chat-response-table-scroll">
+                <table class="chat-response-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Sessions</th>
+                      <th>Last active</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="chat-response-table__text">olivia.chen@acme.io</td>
+                      <td class="chat-response-table__text">Olivia Chen</td>
+                      <td>342</td>
+                      <td>2 hours ago</td>
+                    </tr>
+                    <tr>
+                      <td class="chat-response-table__text">Marcus Webb</td>
+                      <td class="chat-response-table__text">m.webb@acme.io</td>
+                      <td>198</td>
+                      <td>4 hours ago</td>
+                    </tr>
+                    <tr>
+                      <td class="chat-response-table__text">Priya Sharma</td>
+                      <td class="chat-response-table__text">priya.s@acme.io</td>
+                      <td>87</td>
+                      <td>Yesterday</td>
+                    </tr>
+                    <tr>
+                      <td class="chat-response-table__text">James Kofi</td>
+                      <td class="chat-response-table__text">j.kofi@acme.io</td>
+                      <td>156</td>
+                      <td>3 days ago</td>
+                    </tr>
+                    <tr>
+                      <td class="chat-response-table__text">Emma Lindqvist</td>
+                      <td class="chat-response-table__text">emma.l@acme.io</td>
+                      <td>421</td>
+                      <td>Just now</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Guides -->
+              <div class="quick-links quick-links--full">
+                <h3 class="quick-links__heading">Guides</h3>
+                <div class="quick-links__list">
+                  <a href="#" class="sources-link sources-link--primary">
+                    <i data-lucide="file-text"></i>
+                    <span class="sources-link__text">The Analysis Dashboard Guide</span>
+                  </a>
+                </div>
+              </div>
+
+              <!-- FAQs -->
+              <div class="quick-links quick-links--full">
+                <h3 class="quick-links__heading">FAQs</h3>
+                <div class="quick-links__list">
+                  <a href="#" class="sources-link sources-link--link">
+                    <i data-lucide="link"></i>
+                    <span class="sources-link__text">How are Article Views counted?</span>
+                  </a>
+                  <a href="#" class="sources-link sources-link--link">
+                    <i data-lucide="link"></i>
+                    <span class="sources-link__text">Why are Site Analysis stats different to third party platforms stats?</span>
+                  </a>
+                  <a href="#" class="sources-link sources-link--link">
+                    <i data-lucide="link"></i>
+                    <span class="sources-link__text">When a user hits the metering wall, does that count as a page view?</span>
+                  </a>
+                  <a href="#" class="sources-link sources-link--link">
+                    <i data-lucide="link"></i>
+                    <span class="sources-link__text">Site Analysis: What is the difference between Impressions / Views vs Consumed?</span>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Feedback actions -->
+              <div class="chat-main__response-actions">
+                <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Copy response">
+                  <i data-lucide="copy" aria-hidden="true"></i>
+                </button>
+                <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Thumbs up">
+                  <i data-lucide="thumbs-up" aria-hidden="true"></i>
+                </button>
+                <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Thumbs down">
+                  <i data-lucide="thumbs-down" aria-hidden="true"></i>
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- Sticky footer: fade + input -->
+          <div class="chat-main__footer">
+            <div class="chat-main__fade"></div>
+            <div class="chat-main__input">
+              <div class="msg-input msg-input--active">
+                <div class="msg-input__box">
+                  <textarea
+                    class="msg-input__textarea"
+                    rows="1"
+                    placeholder="Send a question"
+                  >Can you explain</textarea>
+                  <div class="msg-input__actions">
+                    <div class="msg-input__filter-container">
+                      <button
+                        class="btn btn--tertiary btn--sm btn--icon msg-input__filter-btn"
+                        aria-label="Filter by recent content"
+                      >
+                        <i data-lucide="funnel" aria-hidden="true"></i>
+                      </button>
+                      <div class="msg-input__tooltip msg-input__tooltip--filter">
+                        <div class="tooltip" role="tooltip">
+                          <p class="tooltip__text">Filter by recent content</p>
+                        </div>
+                      </div>
+                      <div class="msg-input__filter-popover">
+                        <button class="msg-input__filter-item" role="option">
+                          30 Days
+                        </button>
+                        <button class="msg-input__filter-item" role="option">
+                          6 Months
+                        </button>
+                        <button class="msg-input__filter-item msg-input__filter-item--selected" role="option" aria-selected="true">
+                          1 Year
+                          <i data-lucide="check" aria-hidden="true"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <button
+                      class="btn btn--primary btn--sm btn--icon msg-input__send-btn"
+                      aria-label="Send message"
+                      disabled
+                    >
+                      <i data-lucide="move-up" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="msg-input__disclaimer">
+                  <p class="msg-input__disclaimer-text">How we collect data</p>
+                  <div class="msg-input__tooltip msg-input__tooltip--data">
+                    <div class="tooltip" role="tooltip">
+                      <p class="tooltip__text">Note any help the AI provides may be used to further improve the quality of replies and assistance provided.<br><br>AIs can make mistakes. Check important info.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+
+  <!-- GSAP CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrambleTextPlugin.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+
+  <script type="module">
+    import { initSidebarTheme } from '../../utils/sidebar-colors.js';
+    import { initBrandTheme } from '../../utils/brand-colors.js';
+    import { initChatMain } from '../../patterns/ChatMain/ChatMain.js';
+
+    const panel = document.getElementById('ai-chat-min');
+    const chatMainEl = document.getElementById('chat-main');
+    const sidebarEl = document.querySelector('#sidebar');
+
+    // ── Sidebar + brand theme ─────────────────────────
+    if (sidebarEl) initSidebarTheme(sidebarEl);
+    initBrandTheme(document.documentElement);
+
+    // Re-init on theme change
+    new MutationObserver(() => {
+      if (sidebarEl) initSidebarTheme(sidebarEl);
+      initBrandTheme(document.documentElement);
+    }).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+
+    // ── Sidebar toggle ────────────────────────────────
+    {
+      const sidebarToggle = document.getElementById('sidebar-toggle');
+      const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+      function toggleSidebar() {
+        panel.classList.toggle('ai-chat-min--sidebar-open');
+      }
+
+      function closeSidebar() {
+        panel.classList.remove('ai-chat-min--sidebar-open');
+      }
+
+      sidebarToggle.addEventListener('click', toggleSidebar);
+      sidebarOverlay.addEventListener('click', closeSidebar);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeSidebar();
+      });
+    }
+
+    // ── ChatSidebar interactions ──────────────────────
+    if (sidebarEl) {
+      sidebarEl.addEventListener('click', (e) => {
+        // Ellipsis button — toggle menu
+        const menuBtn = e.target.closest('.chat-sidebar-item__menu-btn');
+        if (menuBtn) {
+          e.stopPropagation();
+          const item = menuBtn.closest('.chat-sidebar-item');
+          const menu = item.querySelector('.chat-sidebar-menu');
+          const isOpen = item.classList.toggle('chat-sidebar-item--menu-open');
+          menu.classList.toggle('chat-sidebar-menu--open', isOpen);
+          menuBtn.setAttribute('aria-expanded', isOpen);
+          if (isOpen) {
+            const rect = menuBtn.getBoundingClientRect();
+            menu.style.top = rect.bottom + 'px';
+            menu.style.left = (rect.left - 8) + 'px';
+          }
+          return;
+        }
+
+        // Menu item — close menu
+        const menuItem = e.target.closest('.chat-sidebar-menu__item');
+        if (menuItem) {
+          const item = menuItem.closest('.chat-sidebar-item');
+          item.classList.remove('chat-sidebar-item--menu-open');
+          item.querySelector('.chat-sidebar-menu').classList.remove('chat-sidebar-menu--open');
+          item.querySelector('.chat-sidebar-item__menu-btn').setAttribute('aria-expanded', 'false');
+          return;
+        }
+
+        // Item click — select
+        const item = e.target.closest('.chat-sidebar-item');
+        if (!item) return;
+        sidebarEl.querySelectorAll('.chat-sidebar-item--selected')
+          .forEach(el => el.classList.remove('chat-sidebar-item--selected'));
+        item.classList.add('chat-sidebar-item--selected');
+      });
+
+      // Close sidebar menus on click outside
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.chat-sidebar-item')) {
+          document.querySelectorAll('.chat-sidebar-item--menu-open').forEach(item => {
+            item.classList.remove('chat-sidebar-item--menu-open');
+            item.querySelector('.chat-sidebar-menu').classList.remove('chat-sidebar-menu--open');
+            item.querySelector('.chat-sidebar-item__menu-btn').setAttribute('aria-expanded', 'false');
+          });
+        }
+      });
+
+      // Close sidebar menus on Escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          document.querySelectorAll('.chat-sidebar-item--menu-open').forEach(item => {
+            item.classList.remove('chat-sidebar-item--menu-open');
+            item.querySelector('.chat-sidebar-menu').classList.remove('chat-sidebar-menu--open');
+            item.querySelector('.chat-sidebar-item__menu-btn').setAttribute('aria-expanded', 'false');
+            item.querySelector('.chat-sidebar-item__menu-btn').focus();
+          });
+        }
+      });
+    }
+
+    // ── Init ChatMain (view states + ChatResponse animation) ──
+    const chatMain = initChatMain(chatMainEl, {
+      onViewChange: (view) => {
+        if (window.demoToolbar) window.demoToolbar.setActive(view);
+      },
+    });
+
+    // ── Register view controls in toolbar popover ─────
+    if (window.demoToolbar) {
+      window.demoToolbar.addControls([
+        { label: 'Initial', id: 'initial', active: true, onClick: () => chatMain.setView('initial') },
+        { label: 'Processing', id: 'processing', onClick: () => chatMain.startProcessing() },
+        { label: 'Response', id: 'response', onClick: () => chatMain.setView('response') },
+        { label: 'Reset', id: 'reset', onClick: () => { chatMain.destroy(); chatMain.setView('initial'); } },
+      ]);
+    }
+
+    // ── ChatHeader dropdown toggle ────────────────────
+    document.querySelectorAll('.chat-header__selector').forEach(selector => {
+      selector.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const group = selector.closest('.chat-header__selector-group');
+        const dropdown = group.querySelector('.chat-header__dropdown');
+        const isOpen = dropdown.classList.contains('chat-header__dropdown--open');
+        closeAllDropdowns();
+        if (!isOpen) {
+          dropdown.classList.add('chat-header__dropdown--open');
+          selector.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    document.querySelectorAll('.chat-header__dropdown-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const group = item.closest('.chat-header__selector-group');
+        const dropdown = item.closest('.chat-header__dropdown');
+        const selector = group.querySelector('.chat-header__selector');
+        const textEl = selector.querySelector('.chat-header__selector-text');
+        dropdown.querySelectorAll('.chat-header__dropdown-item').forEach(i => {
+          i.classList.remove('chat-header__dropdown-item--selected');
+          i.setAttribute('aria-selected', 'false');
+        });
+        item.classList.add('chat-header__dropdown-item--selected');
+        item.setAttribute('aria-selected', 'true');
+        textEl.textContent = item.textContent;
+        dropdown.classList.remove('chat-header__dropdown--open');
+        selector.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    function closeAllDropdowns() {
+      document.querySelectorAll('.chat-header__dropdown--open').forEach(d => {
+        d.classList.remove('chat-header__dropdown--open');
+        const group = d.closest('.chat-header__selector-group');
+        if (group) group.querySelector('.chat-header__selector').setAttribute('aria-expanded', 'false');
+      });
+    }
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.chat-header__selector-group')) closeAllDropdowns();
+    });
+
+    // ── Active state: detect input changes on all textareas ──
+    document.querySelectorAll('.msg-input__textarea').forEach(textarea => {
+      const wrapper = textarea.closest('.msg-input');
+      textarea.addEventListener('input', () => {
+        if (textarea.value.trim().length > 0) {
+          wrapper.classList.add('msg-input--active');
+          const sendBtn = wrapper.querySelector('.msg-input__send-btn');
+          if (sendBtn) sendBtn.disabled = false;
+        } else {
+          wrapper.classList.remove('msg-input--active');
+          const sendBtn = wrapper.querySelector('.msg-input__send-btn');
+          if (sendBtn) sendBtn.disabled = true;
+        }
+      });
+    });
+
+    // ── Duration filter: toggle popover on click ──────
+    document.querySelectorAll('.msg-input__filter-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const wrapper = btn.closest('.msg-input');
+        const popover = wrapper.querySelector('.msg-input__filter-popover');
+        if (popover) popover.classList.toggle('msg-input__filter-popover--open');
+      });
+    });
+
+    // ── Duration filter: select item ──────────────────
+    document.querySelectorAll('.msg-input__filter-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const popover = item.closest('.msg-input__filter-popover');
+        popover.querySelectorAll('.msg-input__filter-item').forEach(i => {
+          i.classList.remove('msg-input__filter-item--selected');
+          i.removeAttribute('aria-selected');
+          const svg = i.querySelector('svg');
+          if (svg) svg.remove();
+        });
+        item.classList.add('msg-input__filter-item--selected');
+        item.setAttribute('aria-selected', 'true');
+        const checkEl = document.createElement('i');
+        checkEl.setAttribute('data-lucide', 'check');
+        checkEl.setAttribute('aria-hidden', 'true');
+        item.appendChild(checkEl);
+        lucide.createIcons();
+        popover.classList.remove('msg-input__filter-popover--open');
+      });
+    });
+
+    // ── Close popover on outside click ────────────────
+    document.addEventListener('click', (e) => {
+      document.querySelectorAll('.msg-input__filter-popover--open').forEach(popover => {
+        const wrapper = popover.closest('.msg-input');
+        const filterBtn = wrapper.querySelector('.msg-input__filter-btn');
+        if (!popover.contains(e.target) && e.target !== filterBtn && !filterBtn.contains(e.target)) {
+          popover.classList.remove('msg-input__filter-popover--open');
+        }
+      });
+    });
+
+    // ── Drag to move ──────────────────────────────────
+    {
+      const dragHandle = document.getElementById('drag-handle');
+      let isDragging = false;
+      let dragStartX = 0;
+      let dragStartY = 0;
+      let panelOriginLeft = 0;
+      let panelOriginTop = 0;
+
+      dragHandle.addEventListener('mousedown', (e) => {
+        if (e.target.closest('button')) return;
+
+        isDragging = true;
+        panel.classList.add('ai-chat-min--no-transition');
+        document.body.style.userSelect = 'none';
+
+        dragStartX = e.clientX;
+        dragStartY = e.clientY;
+
+        const rect = panel.getBoundingClientRect();
+        panelOriginLeft = rect.left;
+        panelOriginTop = rect.top;
+
+        e.preventDefault();
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+
+        const dx = e.clientX - dragStartX;
+        const dy = e.clientY - dragStartY;
+
+        panel.style.left = (panelOriginLeft + dx) + 'px';
+        panel.style.top = (panelOriginTop + dy) + 'px';
+        panel.style.right = 'auto';
+        panel.style.bottom = 'auto';
+      });
+
+      document.addEventListener('mouseup', () => {
+        if (!isDragging) return;
+        isDragging = false;
+        panel.classList.remove('ai-chat-min--no-transition');
+        document.body.style.userSelect = '';
+      });
+    }
+
+    // ── Resize height (top edge) ──────────────────────
+    {
+      const resizeHandle = document.getElementById('resize-handle');
+      let isResizing = false;
+      let resizeStartY = 0;
+      let resizeStartHeight = 0;
+      let resizeStartTop = 0;
+
+      resizeHandle.addEventListener('mousedown', (e) => {
+        isResizing = true;
+        panel.classList.add('ai-chat-min--no-transition', 'ai-chat-min--resizing');
+        document.body.style.userSelect = 'none';
+        document.body.style.cursor = 'ns-resize';
+
+        resizeStartY = e.clientY;
+        const rect = panel.getBoundingClientRect();
+        resizeStartHeight = rect.height;
+        resizeStartTop = rect.top;
+
+        e.preventDefault();
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isResizing) return;
+
+        const dy = resizeStartY - e.clientY;
+        const newHeight = Math.max(320, resizeStartHeight + dy);
+
+        panel.style.setProperty('--_panel-height', newHeight + 'px');
+
+        // If panel was positioned via bottom, the growth is automatic.
+        // If it was dragged (has inline top), adjust top to grow upward.
+        if (panel.style.top) {
+          panel.style.top = (resizeStartTop - dy) + 'px';
+        }
+      });
+
+      document.addEventListener('mouseup', () => {
+        if (!isResizing) return;
+        isResizing = false;
+        panel.classList.remove('ai-chat-min--no-transition', 'ai-chat-min--resizing');
+        document.body.style.userSelect = '';
+        document.body.style.cursor = '';
+      });
+    }
+
+    // ── Close button ──────────────────────────────────
+    document.getElementById('close-btn').addEventListener('click', () => {
+      panel.classList.add('ai-chat-min--hidden');
+    });
+
+    // ── Expand button (placeholder: link to full AiChat) ──
+    document.getElementById('expand-btn').addEventListener('click', () => {
+      window.location.href = '../AiChat/AiChat.html';
+    });
+  </script>
+
+</body>
+</html>

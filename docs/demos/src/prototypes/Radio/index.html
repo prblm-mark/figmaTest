@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="Radio.css">
+  <title>Radio — Prototype</title>
+</head>
+<body>
+
+  <div class="proto-card">
+    <h1 class="proto-card__title">Radio Button</h1>
+
+    <!-- Initial -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Initial</p>
+      <div class="radio-group">
+        <label class="radio">
+          <input class="radio__input" type="radio" name="demo-initial" value="option-1">
+          <span class="radio__circle"></span>
+          <span class="radio__text">
+            <span class="radio__label">Write label text here</span>
+            <span class="radio__helper">Some helper text here</span>
+          </span>
+        </label>
+        <label class="radio">
+          <input class="radio__input" type="radio" name="demo-initial" value="option-2">
+          <span class="radio__circle"></span>
+          <span class="radio__text">
+            <span class="radio__label">Another option label</span>
+            <span class="radio__helper">Some helper text here</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Checked -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Checked</p>
+      <div class="radio-group">
+        <label class="radio">
+          <input class="radio__input" type="radio" name="demo-checked" value="option-1" checked>
+          <span class="radio__circle"></span>
+          <span class="radio__text">
+            <span class="radio__label">Write label text here</span>
+            <span class="radio__helper">Some helper text here</span>
+          </span>
+        </label>
+        <label class="radio">
+          <input class="radio__input" type="radio" name="demo-checked" value="option-2">
+          <span class="radio__circle"></span>
+          <span class="radio__text">
+            <span class="radio__label">Another option label</span>
+            <span class="radio__helper">Some helper text here</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Disabled -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Disabled</p>
+      <div class="radio-group">
+        <label class="radio radio--disabled">
+          <input class="radio__input" type="radio" name="demo-disabled" value="option-1" disabled>
+          <span class="radio__circle"></span>
+          <span class="radio__text">
+            <span class="radio__label">Write label text here</span>
+            <span class="radio__helper">Some helper text here</span>
+          </span>
+        </label>
+        <label class="radio radio--disabled">
+          <input class="radio__input" type="radio" name="demo-disabled" value="option-2" disabled checked>
+          <span class="radio__circle"></span>
+          <span class="radio__text">
+            <span class="radio__label">Checked & disabled</span>
+            <span class="radio__helper">Some helper text here</span>
+          </span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

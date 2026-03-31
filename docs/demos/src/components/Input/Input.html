@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>Input — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="Input.css">
+  <style>
+    body { padding: var(--ai-spacing-7); background: var(--ai-surface-secondary); }
+    .demo-section {
+      padding: var(--ai-spacing-6);
+      background: var(--ai-surface-primary);
+      border-radius: var(--ai-radius-lg);
+      margin-bottom: var(--ai-spacing-5);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-5);
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0;
+    }
+    .demo-row {
+      display: grid;
+      grid-template-columns: 120px 1fr 1fr;
+      gap: var(--ai-spacing-7);
+      align-items: start;
+      padding-bottom: var(--ai-spacing-6);
+    }
+    .demo-row__label {
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-contrast);
+      padding-top: var(--ai-spacing-5);
+    }
+    .demo-col-header {
+      font-size: var(--ai-font-fixed-xxs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    /* Simulates :focus-within for static demo purposes */
+    .is-focused {
+      border-color: var(--ai-border-brand);
+      box-shadow: 0 0 0 1px var(--ai-surface-primary),
+                  0 0 0 3px var(--ai-surface-brand-contrast);
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-6);">Inputs</h1>
+
+  <div class="demo-section">
+    <div class="demo-row">
+      <span></span>
+      <span class="demo-col-header">Base</span>
+      <span class="demo-col-header">sm</span>
+    </div>
+
+    <div class="demo-row">
+      <span class="demo-row__label">No label</span>
+      <div class="input">
+        <div class="input__wrap">
+          <input id="config-nolabel" type="text" class="input__control" placeholder="i.e Tom">
+          <button type="button" class="input__clear" aria-label="Clear">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <div class="input input--sm">
+        <div class="input__wrap">
+          <input id="config-nolabel-sm" type="text" class="input__control" placeholder="i.e Tom">
+          <button type="button" class="input__clear" aria-label="Clear">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-row">
+      <span class="demo-row__label">No icons</span>
+      <div class="input">
+        <label class="input__label" for="config-none">First Name</label>
+        <div class="input__wrap">
+          <input id="config-none" type="text" class="input__control" placeholder="i.e Tom">
+        </div>
+      </div>
+      <div class="input input--sm">
+        <label class="input__label" for="config-none-sm">First Name</label>
+        <div class="input__wrap">
+          <input id="config-none-sm" type="text" class="input__control" placeholder="i.e Tom">
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-row">
+      <span class="demo-row__label">Left icon only</span>
+      <div class="input">
+        <label class="input__label" for="config-left">First Name</label>
+        <div class="input__wrap">
+          <i data-lucide="user" class="input__icon" aria-hidden="true"></i>
+          <input id="config-left" type="text" class="input__control" placeholder="i.e Tom">
+        </div>
+      </div>
+      <div class="input input--sm">
+        <label class="input__label" for="config-left-sm">First Name</label>
+        <div class="input__wrap">
+          <i data-lucide="user" class="input__icon" aria-hidden="true"></i>
+          <input id="config-left-sm" type="text" class="input__control" placeholder="i.e Tom">
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-row">
+      <span class="demo-row__label">Right icon only</span>
+      <div class="input">
+        <label class="input__label" for="config-right">First Name</label>
+        <div class="input__wrap">
+          <input id="config-right" type="text" class="input__control" placeholder="i.e Tom" value="Tom">
+          <button type="button" class="input__clear" aria-label="Clear">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <div class="input input--sm">
+        <label class="input__label" for="config-right-sm">First Name</label>
+        <div class="input__wrap">
+          <input id="config-right-sm" type="text" class="input__control" placeholder="i.e Tom" value="Tom">
+          <button type="button" class="input__clear" aria-label="Clear">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-row">
+      <span class="demo-row__label">Help text</span>
+      <div class="input">
+        <label class="input__label" for="config-help">First Name</label>
+        <div class="input__wrap">
+          <i data-lucide="user" class="input__icon" aria-hidden="true"></i>
+          <input id="config-help" type="text" class="input__control" placeholder="i.e Tom">
+          <button type="button" class="input__clear" aria-label="Clear">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+        <span class="input__help">This field is mandatory</span>
+      </div>
+      <div class="input input--sm">
+        <label class="input__label" for="config-help-sm">First Name</label>
+        <div class="input__wrap">
+          <i data-lucide="user" class="input__icon" aria-hidden="true"></i>
+          <input id="config-help-sm" type="text" class="input__control" placeholder="i.e Tom">
+          <button type="button" class="input__clear" aria-label="Clear">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+        <span class="input__help">This field is mandatory</span>
+      </div>
+    </div>
+
+    <div class="demo-row">
+      <span class="demo-row__label">Error</span>
+      <div class="input input--error">
+        <label class="input__label" for="config-error">First Name</label>
+        <div class="input__wrap">
+          <i data-lucide="user" class="input__icon" aria-hidden="true"></i>
+          <input id="config-error" type="text" class="input__control" placeholder="i.e Tom" value="bad input">
+          <button type="button" class="input__clear" aria-label="Clear">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+        <span class="input__help" role="alert">This field contains an error</span>
+      </div>
+      <div class="input input--sm input--error">
+        <label class="input__label" for="config-error-sm">First Name</label>
+        <div class="input__wrap">
+          <i data-lucide="user" class="input__icon" aria-hidden="true"></i>
+          <input id="config-error-sm" type="text" class="input__control" placeholder="i.e Tom" value="bad input">
+          <button type="button" class="input__clear" aria-label="Clear">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+        <span class="input__help" role="alert">This field contains an error</span>
+      </div>
+    </div>
+
+    <div class="demo-row">
+      <span class="demo-row__label">Focus</span>
+      <div class="input">
+        <label class="input__label" for="config-focus">First Name</label>
+        <div class="input__wrap is-focused">
+          <i data-lucide="user" class="input__icon" aria-hidden="true"></i>
+          <input id="config-focus" type="text" class="input__control" placeholder="i.e Tom">
+          <button type="button" class="input__clear" aria-label="Clear">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <div class="input input--sm">
+        <label class="input__label" for="config-focus-sm">First Name</label>
+        <div class="input__wrap is-focused">
+          <i data-lucide="user" class="input__icon" aria-hidden="true"></i>
+          <input id="config-focus-sm" type="text" class="input__control" placeholder="i.e Tom">
+          <button type="button" class="input__clear" aria-label="Clear">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    // Scan all data-lucide attributes on the page and replace each element
+    // with an inline SVG from the Lucide icon set. Must run after the DOM is
+    // ready — placing the script at the bottom of <body> guarantees this.
+    lucide.createIcons();
+  </script>
+</body>
+</html>

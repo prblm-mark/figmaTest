@@ -1,0 +1,89 @@
+/* SuggestedQuestion — clickable question card for initial chat view
+ * Figma node: 2139:2674
+ * Tier: Component
+ * Variants: Type=Default (mobile, title only), Type=Desktop (title + subtitle)
+ */
+
+.suggested-question {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ai-spacing-3);
+  padding: var(--ai-spacing-5);
+  background-color: var(--ai-surface-contrast);
+  border: none;
+  border-radius: var(--ai-radius-lg);
+  cursor: pointer;
+  text-align: left;
+  color: var(--ai-text-primary);
+  transition: background-color var(--ai-transition-default);
+}
+
+.suggested-question:hover {
+  background-color: var(--ai-surface-minimal);
+}
+
+.suggested-question:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--ai-surface-primary), 0 0 0 3px var(--ai-surface-brand-contrast);
+}
+
+/* ── Icon ─────────────────────────────────────────────── */
+
+.suggested-question [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  flex-shrink: 0;
+  color: var(--ai-icon-primary);
+}
+
+@media (min-width: 640px) {
+  .suggested-question [data-lucide] {
+    width: var(--ai-icon-size-md);
+    height: var(--ai-icon-size-md);
+  }
+}
+
+/* ── Text group (title + optional subtitle) ───────────── */
+
+.suggested-question__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-1);
+  width: 100%;
+}
+
+.suggested-question__text {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-semibold);
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-primary);
+  font-feature-settings: 'dlig' 1;
+}
+
+@media (min-width: 640px) {
+  .suggested-question__text {
+    font-size: var(--ai-font-fixed-xs);
+    line-height: var(--ai-leading-sm);
+  }
+}
+
+.suggested-question__subtext {
+  display: none;
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: 1.5;
+  color: var(--ai-text-contrast);
+  font-feature-settings: 'dlig' 1;
+}
+
+/* Desktop: show subtitle */
+@media (min-width: 640px) {
+  .suggested-question__subtext {
+    display: block;
+  }
+}

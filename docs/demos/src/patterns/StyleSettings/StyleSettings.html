@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>StyleSettings — Pattern Demo</title>
+
+  <!-- Base + tokens -->
+  <link rel="stylesheet" href="../../styles/base.css">
+
+  <!-- Component CSS -->
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/Tooltip/Tooltip.css">
+  <link rel="stylesheet" href="../../components/Toggle/Toggle.css">
+  <link rel="stylesheet" href="../../components/SegmentedControl/SegmentedControl.css">
+  <link rel="stylesheet" href="../../components/ColorPickerInput/ColorPickerInput.css">
+
+  <!-- Pattern CSS -->
+  <link rel="stylesheet" href="StyleSettings.css">
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--ai-surface-secondary);
+      padding: var(--ai-spacing-7);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="style-settings" id="style-settings">
+
+    <!-- Header -->
+    <div class="style-settings__header">
+      <h2 class="style-settings__title">Styling</h2>
+      <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Close" id="close-btn">
+        <i data-lucide="x" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <!-- Subtitle -->
+    <div class="style-settings__subtitle-row">
+      <p class="style-settings__subtitle">Customise the settings to best fit your app.</p>
+      <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Reset to defaults" id="reset-btn">
+        <i data-lucide="refresh-cw" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <!-- Form body -->
+    <div class="style-settings__body">
+
+      <!-- Theme -->
+      <div class="style-settings__row">
+        <div class="style-settings__label-wrap">
+          <span class="style-settings__label">Theme</span>
+          <div class="style-settings__tooltip">
+            <div class="tooltip" role="tooltip">
+              <p class="tooltip__text">Toggle between light and dark theme</p>
+            </div>
+          </div>
+        </div>
+        <div class="style-settings__control">
+          <div class="seg-control" role="radiogroup" aria-label="Theme" id="theme-toggle">
+            <button class="seg-control__btn seg-control__btn--active" type="button" role="radio" aria-checked="true" data-value="light">
+              <i data-lucide="sun" aria-hidden="true"></i>
+              Light
+            </button>
+            <button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="dark">
+              <i data-lucide="moon" aria-hidden="true"></i>
+              Dark
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accent Color -->
+      <div class="style-settings__row">
+        <div class="style-settings__label-wrap">
+          <span class="style-settings__label">Accent Color</span>
+          <div class="style-settings__tooltip">
+            <div class="tooltip" role="tooltip">
+              <p class="tooltip__text">Sets the brand accent color used across the chat UI</p>
+            </div>
+          </div>
+        </div>
+        <div class="color-picker-input style-settings__control" id="accent-picker">
+          <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #1A56DB;"></span></span>
+          <span class="color-picker-input__value">#1A56DB</span>
+          <input type="color" class="color-picker-input__native" value="#1A56DB" aria-label="Accent color">
+        </div>
+      </div>
+
+      <!-- Sidebar Color -->
+      <div class="style-settings__row">
+        <div class="style-settings__label-wrap">
+          <span class="style-settings__label">Sidebar Color</span>
+          <div class="style-settings__tooltip">
+            <div class="tooltip" role="tooltip">
+              <p class="tooltip__text">Sets the sidebar background color</p>
+            </div>
+          </div>
+        </div>
+        <div class="color-picker-input style-settings__control" id="sidebar-picker">
+          <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #09235B;"></span></span>
+          <span class="color-picker-input__value">#09235B</span>
+          <input type="color" class="color-picker-input__native" value="#09235B" aria-label="Sidebar color">
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <hr class="style-settings__divider">
+
+      <!-- Title Font -->
+      <div class="style-settings__row">
+        <div class="style-settings__label-wrap">
+          <span class="style-settings__label">Title Font</span>
+          <div class="style-settings__tooltip">
+            <div class="tooltip" role="tooltip">
+              <p class="tooltip__text">Font used for headings and titles</p>
+            </div>
+          </div>
+        </div>
+        <div class="style-settings__select-wrap">
+          <button class="style-settings__select" type="button" aria-expanded="false" aria-haspopup="listbox">
+            <span class="style-settings__select-text">Inter</span>
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </button>
+          <div class="style-settings__dropdown" role="listbox">
+            <button class="style-settings__option style-settings__option--selected" role="option" aria-selected="true">Inter</button>
+            <button class="style-settings__option" role="option" aria-selected="false">Roboto</button>
+            <button class="style-settings__option" role="option" aria-selected="false">Open Sans</button>
+            <button class="style-settings__option" role="option" aria-selected="false">Lato</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Body Font -->
+      <div class="style-settings__row">
+        <div class="style-settings__label-wrap">
+          <span class="style-settings__label">Body Font</span>
+          <div class="style-settings__tooltip">
+            <div class="tooltip" role="tooltip">
+              <p class="tooltip__text">Font used for body text and paragraphs</p>
+            </div>
+          </div>
+        </div>
+        <div class="style-settings__select-wrap">
+          <button class="style-settings__select" type="button" aria-expanded="false" aria-haspopup="listbox">
+            <span class="style-settings__select-text">Inter</span>
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </button>
+          <div class="style-settings__dropdown" role="listbox">
+            <button class="style-settings__option style-settings__option--selected" role="option" aria-selected="true">Inter</button>
+            <button class="style-settings__option" role="option" aria-selected="false">Roboto</button>
+            <button class="style-settings__option" role="option" aria-selected="false">Open Sans</button>
+            <button class="style-settings__option" role="option" aria-selected="false">Lato</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <hr class="style-settings__divider">
+
+      <!-- Header Layout -->
+      <div class="style-settings__row">
+        <div class="style-settings__label-wrap">
+          <span class="style-settings__label">Header Layout</span>
+          <div class="style-settings__tooltip">
+            <div class="tooltip" role="tooltip">
+              <p class="tooltip__text">Aligns the agent selector to be centered, or left</p>
+            </div>
+          </div>
+        </div>
+        <div class="style-settings__select-wrap">
+          <button class="style-settings__select" type="button" aria-expanded="false" aria-haspopup="listbox" id="header-layout-btn">
+            <span class="style-settings__select-text">Center</span>
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </button>
+          <div class="style-settings__dropdown" role="listbox" id="header-layout-dropdown">
+            <button class="style-settings__option style-settings__option--selected" role="option" aria-selected="true" data-value="center">Center</button>
+            <button class="style-settings__option" role="option" aria-selected="false" data-value="left">Left</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Show Borders -->
+      <div class="style-settings__row style-settings__row--toggle">
+        <div class="style-settings__label-wrap">
+          <span class="style-settings__label">Show Borders</span>
+          <div class="style-settings__tooltip">
+            <div class="tooltip" role="tooltip">
+              <p class="tooltip__text">Toggle header and sidebar border visibility</p>
+            </div>
+          </div>
+        </div>
+        <div class="style-settings__control">
+          <button class="toggle toggle--active" type="button" role="switch" aria-checked="true" aria-label="Show Borders" id="toggle-borders">
+            <span class="toggle__track"><span class="toggle__knob"></span></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Show Questions -->
+      <div class="style-settings__row style-settings__row--toggle">
+        <div class="style-settings__label-wrap">
+          <span class="style-settings__label">Show Questions</span>
+          <div class="style-settings__tooltip">
+            <div class="tooltip" role="tooltip">
+              <p class="tooltip__text">Show or hide suggested questions on the initial view</p>
+            </div>
+          </div>
+        </div>
+        <div class="style-settings__control">
+          <button class="toggle toggle--active" type="button" role="switch" aria-checked="true" aria-label="Show Questions" id="toggle-questions">
+            <span class="toggle__track"><span class="toggle__knob"></span></span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+
+  <script>
+    // ── Drag to move ──────────────────────────────────────
+    {
+      var panel = document.getElementById('style-settings');
+      var dragHandle = document.querySelector('.style-settings__header');
+      var isDragging = false;
+      var dragStartX = 0;
+      var dragStartY = 0;
+      var panelOriginLeft = 0;
+      var panelOriginTop = 0;
+
+      dragHandle.addEventListener('mousedown', function (e) {
+        if (e.target.closest('button')) return;
+
+        isDragging = true;
+        panel.classList.add('style-settings--no-transition');
+        document.body.style.userSelect = 'none';
+
+        dragStartX = e.clientX;
+        dragStartY = e.clientY;
+
+        var rect = panel.getBoundingClientRect();
+        panelOriginLeft = rect.left;
+        panelOriginTop = rect.top;
+
+        e.preventDefault();
+      });
+
+      document.addEventListener('mousemove', function (e) {
+        if (!isDragging) return;
+
+        var dx = e.clientX - dragStartX;
+        var dy = e.clientY - dragStartY;
+
+        panel.style.left = (panelOriginLeft + dx) + 'px';
+        panel.style.top = (panelOriginTop + dy) + 'px';
+        panel.style.right = 'auto';
+        panel.style.bottom = 'auto';
+      });
+
+      document.addEventListener('mouseup', function () {
+        if (!isDragging) return;
+        isDragging = false;
+        panel.classList.remove('style-settings--no-transition');
+        document.body.style.userSelect = '';
+      });
+    }
+
+    // ── Theme toggle (SegmentedControl) ─────────────────
+    var themeToggle = document.getElementById('theme-toggle');
+    themeToggle.addEventListener('click', function (e) {
+      var btn = e.target.closest('.seg-control__btn');
+      if (!btn || btn.classList.contains('seg-control__btn--active')) return;
+      themeToggle.querySelectorAll('.seg-control__btn').forEach(function (b) {
+        b.classList.remove('seg-control__btn--active');
+        b.setAttribute('aria-checked', 'false');
+      });
+      btn.classList.add('seg-control__btn--active');
+      btn.setAttribute('aria-checked', 'true');
+
+      // Apply theme
+      var value = btn.getAttribute('data-value');
+      if (value === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('demo-theme', 'dark');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.removeItem('demo-theme');
+      }
+    });
+
+    // Sync segmented control with current theme on load
+    if (document.documentElement.getAttribute('data-theme') === 'dark') {
+      themeToggle.querySelectorAll('.seg-control__btn').forEach(function (b) {
+        var isDark = b.getAttribute('data-value') === 'dark';
+        b.classList.toggle('seg-control__btn--active', isDark);
+        b.setAttribute('aria-checked', String(isDark));
+      });
+    }
+
+    // ── Color picker inputs ─────────────────────────────
+    document.querySelectorAll('.color-picker-input__native').forEach(function (input) {
+      input.addEventListener('input', function () {
+        var container = input.closest('.color-picker-input');
+        container.querySelector('.color-picker-input__swatch-inner').style.backgroundColor = input.value;
+        container.querySelector('.color-picker-input__value').textContent = input.value.toUpperCase();
+      });
+    });
+
+    // ── Custom dropdowns ────────────────────────────────
+    document.querySelectorAll('.style-settings__select').forEach(function (selectBtn) {
+      selectBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var wrap = selectBtn.closest('.style-settings__select-wrap');
+        var dropdown = wrap.querySelector('.style-settings__dropdown');
+        var isOpen = dropdown.classList.toggle('style-settings__dropdown--open');
+        selectBtn.setAttribute('aria-expanded', String(isOpen));
+
+        // Close others
+        document.querySelectorAll('.style-settings__dropdown--open').forEach(function (d) {
+          if (d !== dropdown) {
+            d.classList.remove('style-settings__dropdown--open');
+            d.closest('.style-settings__select-wrap').querySelector('.style-settings__select').setAttribute('aria-expanded', 'false');
+          }
+        });
+      });
+    });
+
+    document.querySelectorAll('.style-settings__option').forEach(function (option) {
+      option.addEventListener('click', function () {
+        var wrap = option.closest('.style-settings__select-wrap');
+        var dropdown = option.closest('.style-settings__dropdown');
+        var selectBtn = wrap.querySelector('.style-settings__select');
+        var textEl = selectBtn.querySelector('.style-settings__select-text');
+
+        dropdown.querySelectorAll('.style-settings__option').forEach(function (o) {
+          o.classList.remove('style-settings__option--selected');
+          o.setAttribute('aria-selected', 'false');
+        });
+        option.classList.add('style-settings__option--selected');
+        option.setAttribute('aria-selected', 'true');
+        textEl.textContent = option.textContent;
+        dropdown.classList.remove('style-settings__dropdown--open');
+        selectBtn.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Close dropdowns on outside click
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.style-settings__select-wrap')) {
+        document.querySelectorAll('.style-settings__dropdown--open').forEach(function (d) {
+          d.classList.remove('style-settings__dropdown--open');
+          d.closest('.style-settings__select-wrap').querySelector('.style-settings__select').setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+
+    // ── Toggle switches ─────────────────────────────────
+    document.querySelectorAll('.toggle:not(.toggle--disabled)').forEach(function (toggle) {
+      toggle.addEventListener('click', function () {
+        var isActive = toggle.classList.toggle('toggle--active');
+        toggle.setAttribute('aria-checked', String(isActive));
+      });
+    });
+
+    // ── Reset button ────────────────────────────────────
+    document.getElementById('reset-btn').addEventListener('click', function () {
+      // Reset theme to light
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.removeItem('demo-theme');
+      themeToggle.querySelectorAll('.seg-control__btn').forEach(function (b) {
+        var isLight = b.getAttribute('data-value') === 'light';
+        b.classList.toggle('seg-control__btn--active', isLight);
+        b.setAttribute('aria-checked', String(isLight));
+      });
+
+      // Reset color pickers
+      var accentPicker = document.getElementById('accent-picker');
+      accentPicker.querySelector('.color-picker-input__native').value = '#1A56DB';
+      accentPicker.querySelector('.color-picker-input__swatch-inner').style.backgroundColor = '#1A56DB';
+      accentPicker.querySelector('.color-picker-input__value').textContent = '#1A56DB';
+
+      var sidebarPicker = document.getElementById('sidebar-picker');
+      sidebarPicker.querySelector('.color-picker-input__native').value = '#09235B';
+      sidebarPicker.querySelector('.color-picker-input__swatch-inner').style.backgroundColor = '#09235B';
+      sidebarPicker.querySelector('.color-picker-input__value').textContent = '#09235B';
+
+      // Reset dropdowns to defaults
+      document.querySelectorAll('.style-settings__select-wrap').forEach(function (wrap) {
+        var textEl = wrap.querySelector('.style-settings__select-text');
+        var options = wrap.querySelectorAll('.style-settings__option');
+        options.forEach(function (o, i) {
+          if (i === 0) {
+            o.classList.add('style-settings__option--selected');
+            o.setAttribute('aria-selected', 'true');
+            textEl.textContent = o.textContent;
+          } else {
+            o.classList.remove('style-settings__option--selected');
+            o.setAttribute('aria-selected', 'false');
+          }
+        });
+      });
+
+      // Reset toggles to active
+      document.querySelectorAll('.style-settings .toggle').forEach(function (toggle) {
+        toggle.classList.add('toggle--active');
+        toggle.setAttribute('aria-checked', 'true');
+      });
+    });
+
+    // ── Close button ────────────────────────────────────
+    document.getElementById('close-btn').addEventListener('click', function () {
+      document.getElementById('style-settings').style.display = 'none';
+    });
+  </script>
+
+</body>
+</html>

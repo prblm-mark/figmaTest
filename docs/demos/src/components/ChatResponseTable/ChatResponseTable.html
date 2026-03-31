@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>ChatResponseTable — Component Demo</title>
+
+  <!-- Base + tokens -->
+  <link rel="stylesheet" href="../../styles/base.css">
+
+  <!-- Component CSS -->
+  <link rel="stylesheet" href="ChatResponseTable.css">
+
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--ai-spacing-10);
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-primary);
+    }
+    .demo-label {
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xxs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 0 0 var(--ai-spacing-2);
+    }
+    .demo-section {
+      width: 100%;
+      max-width: 48rem;
+    }
+  </style>
+</head>
+<body data-surface="chat">
+
+  <div class="demo-section">
+    <p class="demo-label">ChatResponseTable — resize viewport below 640px to see mobile variant</p>
+    <div class="chat-response-table-scroll">
+      <table class="chat-response-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Sessions</th>
+            <th>Last active</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="chat-response-table__text">olivia.chen@acme.io</td>
+            <td class="chat-response-table__text">Olivia Chen</td>
+            <td>342</td>
+            <td>2 hours ago</td>
+          </tr>
+          <tr>
+            <td class="chat-response-table__text">Marcus Webb</td>
+            <td class="chat-response-table__text">m.webb@acme.io</td>
+            <td>198</td>
+            <td>4 hours ago</td>
+          </tr>
+          <tr>
+            <td class="chat-response-table__text">Priya Sharma</td>
+            <td class="chat-response-table__text">priya.s@acme.io</td>
+            <td>87</td>
+            <td>Yesterday</td>
+          </tr>
+          <tr>
+            <td class="chat-response-table__text">James Kofi</td>
+            <td class="chat-response-table__text">j.kofi@acme.io</td>
+            <td>156</td>
+            <td>3 days ago</td>
+          </tr>
+          <tr>
+            <td class="chat-response-table__text">Emma Lindqvist</td>
+            <td class="chat-response-table__text">emma.l@acme.io</td>
+            <td>421</td>
+            <td>Just now</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</body>
+</html>

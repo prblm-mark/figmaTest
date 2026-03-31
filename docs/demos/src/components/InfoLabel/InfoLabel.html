@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>InfoLabel — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="InfoLabel.css">
+  <style>
+    body { padding: var(--ai-spacing-7); background: var(--ai-surface-secondary); }
+    .demo-row {
+      display: flex;
+      align-items: center;
+      gap: var(--ai-spacing-6);
+      padding: var(--ai-spacing-6);
+      background: var(--ai-surface-primary);
+      border-radius: var(--ai-radius-lg);
+      margin-bottom: var(--ai-spacing-5);
+    }
+    .demo-label {
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-contrast);
+      min-width: 120px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-row">
+    <span class="demo-label">Default</span>
+    <button type="button" class="info-label" aria-label="What's this?">
+      <span class="info-label__text">What's this?</span>
+      <i data-lucide="info" class="info-label__icon" aria-hidden="true"></i>
+    </button>
+  </div>
+
+  <div class="demo-row">
+    <span class="demo-label">No Label (icon only)</span>
+    <button type="button" class="info-label info-label--no-label" aria-label="More information">
+      <span class="info-label__text">What's this?</span>
+      <i data-lucide="info" class="info-label__icon" aria-hidden="true"></i>
+    </button>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

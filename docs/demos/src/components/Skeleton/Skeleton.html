@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>Skeleton — Component Demo</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="Skeleton.css">
+  <style>
+    body {
+      padding: var(--ai-spacing-7);
+      background-color: var(--ai-surface-secondary);
+    }
+    .demo-section {
+      margin-bottom: var(--ai-spacing-7);
+    }
+    .demo-label {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--ai-spacing-5);
+    }
+    .demo-container {
+      max-width: 480px;
+      padding: var(--ai-spacing-6);
+      background-color: var(--ai-surface-primary);
+    }
+    [data-theme="dark"] .demo-container {
+      background-color: var(--ai-surface-minimal);
+      border-radius: var(--ai-radius-lg);
+    }
+  </style>
+</head>
+<body data-surface="chat">
+  <h1>Skeleton</h1>
+  <p>Loading placeholder with shimmer animation. 5 lines of varying widths.</p>
+
+  <div class="demo-section">
+    <p class="demo-label">Active (shimmer)</p>
+    <div class="demo-container">
+      <div class="skeleton" id="skeleton-active">
+        <div class="skeleton__line"></div>
+        <div class="skeleton__line"></div>
+        <div class="skeleton__line"></div>
+        <div class="skeleton__line"></div>
+        <div class="skeleton__line"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GSAP CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+
+  <script type="module">
+    import { initSkeleton } from './Skeleton.js';
+    initSkeleton(document.getElementById('skeleton-active'));
+  </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+/* QuickLinks — heading + flex-wrap row of SourcesLink pills */
+
+.quick-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-4);
+  align-items: flex-start;
+}
+
+.quick-links__heading {
+  font-family: var(--ai-font-body);
+  font-weight: var(--ai-font-semibold);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  font-feature-settings: 'case' 1;
+  margin: 0;
+}
+
+.quick-links__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ai-spacing-3);
+  align-items: center;
+  width: 100%;
+}
+
+/* ── Full-width variant (Guides / FAQs sections) ────── */
+/* Items expand to natural text width instead of capped 12rem,
+   but stay within the container so text truncates. */
+
+.quick-links--full .sources-link {
+  max-width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .quick-links--full .sources-link {
+    max-width: 100%;
+  }
+}

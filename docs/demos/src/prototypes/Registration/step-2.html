@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Registration — Step 2 of 2</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Input/Input.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="Registration.css">
+</head>
+<body>
+
+  <div class="reg-card">
+
+    <!-- Step indicator -->
+    <nav class="reg-steps" aria-label="Registration progress">
+      <div class="reg-step reg-step--complete">
+        <div class="reg-step__dot">
+          <i data-lucide="check" aria-hidden="true"></i>
+        </div>
+        <span class="reg-step__label">Account</span>
+      </div>
+      <div class="reg-steps__line" aria-hidden="true"></div>
+      <div class="reg-step reg-step--active">
+        <div class="reg-step__dot" aria-current="step">2</div>
+        <span class="reg-step__label">Profile</span>
+      </div>
+    </nav>
+
+    <!-- Heading -->
+    <div class="reg-heading">
+      <h1 class="reg-heading__title">Tell us about yourself</h1>
+      <p class="reg-heading__subtitle">Help us personalise your experience.</p>
+    </div>
+
+    <!-- Form -->
+    <form class="reg-form" novalidate>
+
+      <div class="input">
+        <label class="input__label" for="first-name">First name</label>
+        <div class="input__wrap">
+          <i data-lucide="user" class="input__icon" aria-hidden="true"></i>
+          <input id="first-name" type="text" class="input__control" placeholder="i.e. Tom" autocomplete="given-name">
+          <button type="button" class="input__clear" aria-label="Clear first name">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="input">
+        <label class="input__label" for="last-name">Last name</label>
+        <div class="input__wrap">
+          <i data-lucide="user" class="input__icon" aria-hidden="true"></i>
+          <input id="last-name" type="text" class="input__control" placeholder="i.e. Jones" autocomplete="family-name">
+          <button type="button" class="input__clear" aria-label="Clear last name">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="input">
+        <label class="input__label" for="company">Company</label>
+        <div class="input__wrap">
+          <i data-lucide="building-2" class="input__icon" aria-hidden="true"></i>
+          <input id="company" type="text" class="input__control" placeholder="Acme Ltd" autocomplete="organization">
+          <button type="button" class="input__clear" aria-label="Clear company">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="input">
+        <label class="input__label" for="role">Job title</label>
+        <div class="input__wrap">
+          <i data-lucide="briefcase" class="input__icon" aria-hidden="true"></i>
+          <input id="role" type="text" class="input__control" placeholder="Product Designer" autocomplete="organization-title">
+          <button type="button" class="input__clear" aria-label="Clear job title">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="reg-actions">
+        <button type="button" class="btn btn--tertiary" onclick="location.href='step-1.html'">
+          <i data-lucide="arrow-left" aria-hidden="true"></i>
+          Back
+        </button>
+        <button type="submit" class="btn btn--primary">
+          Create account
+          <i data-lucide="arrow-right" aria-hidden="true"></i>
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

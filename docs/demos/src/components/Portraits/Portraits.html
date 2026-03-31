@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>Portraits — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../Avatar/Avatar.css">
+  <link rel="stylesheet" href="Portraits.css">
+  <style>
+    body { padding: var(--ai-spacing-7); background: var(--ai-surface-secondary); }
+    .demo-section {
+      padding: var(--ai-spacing-6);
+      background: var(--ai-surface-primary);
+      border-radius: var(--ai-radius-lg);
+      margin-bottom: var(--ai-spacing-5);
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 var(--ai-spacing-5);
+    }
+    .demo-row {
+      display: flex;
+      align-items: flex-end;
+      gap: var(--ai-spacing-5);
+      flex-wrap: wrap;
+    }
+    .demo-label {
+      font-size: var(--ai-font-fixed-xxs);
+      color: var(--ai-text-contrast);
+      margin-top: var(--ai-spacing-2);
+      text-align: center;
+    }
+    .demo-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .demo-note {
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-secondary);
+      margin: 0 0 var(--ai-spacing-5);
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-6);">Portraits</h1>
+
+  <p style="font-size: var(--ai-font-fixed-sm); color: var(--ai-text-secondary); margin: 0 0 var(--ai-spacing-6);">
+    A Portrait is a photo component that fills its container. On its own it is a square image;
+    clipping to a circle is the parent Avatar's responsibility.
+  </p>
+
+  <!-- Portrait variants at Size=1 (24px) -->
+  <div class="demo-section">
+    <p class="demo-section__title">Size=1 (24px — inside Avatar)</p>
+    <p class="demo-note">Portraits clipped to circle by Avatar's <code>overflow:hidden</code> + <code>border-radius:full</code></p>
+    <div class="demo-row">
+      <div class="demo-item">
+        <div class="avatar">
+          <img class="portrait" src="https://picsum.photos/seed/female1/300" alt="Female 1">
+        </div>
+        <p class="demo-label">Female 1</p>
+      </div>
+      <div class="demo-item">
+        <div class="avatar">
+          <img class="portrait" src="https://picsum.photos/seed/female3/300" alt="Female 3">
+        </div>
+        <p class="demo-label">Female 3</p>
+      </div>
+      <div class="demo-item">
+        <div class="avatar">
+          <img class="portrait" src="https://picsum.photos/seed/female4/300" alt="Female 4">
+        </div>
+        <p class="demo-label">Female 4</p>
+      </div>
+      <div class="demo-item">
+        <div class="avatar">
+          <img class="portrait" src="https://picsum.photos/seed/female5/300" alt="Female 5">
+        </div>
+        <p class="demo-label">Female 5</p>
+      </div>
+      <div class="demo-item">
+        <div class="avatar">
+          <img class="portrait" src="https://picsum.photos/seed/male2/300" alt="Male 2">
+        </div>
+        <p class="demo-label">Male 2</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Portrait variants at Size=3 (48px) -->
+  <div class="demo-section">
+    <p class="demo-section__title">Size=3 (48px — inside Avatar)</p>
+    <div class="demo-row">
+      <div class="demo-item">
+        <div class="avatar avatar--size-3">
+          <img class="portrait" src="https://picsum.photos/seed/female1/300" alt="Female 1">
+        </div>
+        <p class="demo-label">Female 1</p>
+      </div>
+      <div class="demo-item">
+        <div class="avatar avatar--size-3">
+          <img class="portrait" src="https://picsum.photos/seed/female3/300" alt="Female 3">
+        </div>
+        <p class="demo-label">Female 3</p>
+      </div>
+      <div class="demo-item">
+        <div class="avatar avatar--size-3">
+          <img class="portrait" src="https://picsum.photos/seed/female4/300" alt="Female 4">
+        </div>
+        <p class="demo-label">Female 4</p>
+      </div>
+      <div class="demo-item">
+        <div class="avatar avatar--size-3">
+          <img class="portrait" src="https://picsum.photos/seed/female5/300" alt="Female 5">
+        </div>
+        <p class="demo-label">Female 5</p>
+      </div>
+      <div class="demo-item">
+        <div class="avatar avatar--size-3">
+          <img class="portrait" src="https://picsum.photos/seed/male2/300" alt="Male 2">
+        </div>
+        <p class="demo-label">Male 2</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checked variant with portrait underneath -->
+  <div class="demo-section">
+    <p class="demo-section__title">Avatar Checked=True (portrait replaced by check icon)</p>
+    <p class="demo-note">In the Selected state the Avatar shows the check icon — no Portrait needed.</p>
+    <div class="demo-row">
+      <div class="demo-item">
+        <div class="avatar avatar--size-3 avatar--checked">
+          <i data-lucide="check" aria-hidden="true"></i>
+        </div>
+        <p class="demo-label">Checked</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

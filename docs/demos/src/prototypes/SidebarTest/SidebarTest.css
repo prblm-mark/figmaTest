@@ -1,0 +1,22 @@
+/* SidebarTest — prototype sidebar container */
+
+.sidebar {
+  width: var(--ai-size-5);
+  padding: var(--ai-spacing-4);
+  background-color: var(--ai-chat-sidebar-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sidebar__label {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-chat-sidebar-text);
+  opacity: 0.6;
+  padding: var(--ai-spacing-2) var(--ai-spacing-3);
+}
