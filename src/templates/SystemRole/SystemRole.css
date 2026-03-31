@@ -10,12 +10,16 @@
   position: fixed;
   inset: 0;
   background-color: rgba(27, 27, 31, 0.5); /* Neutral/900 at 50% opacity */
-  backdrop-filter: blur(4px);              /* approved — no --ai-blur-* token */
-  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(2px);              /* approved — no --ai-blur-* token */
+  -webkit-backdrop-filter: blur(2px);
   z-index: 100;
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--ai-transition-default);
+}
+
+[data-theme="dark"] .system-role-overlay {
+  background-color: rgba(0, 0, 0, 0.6);   /* true black in dark mode */
 }
 
 .system-role-overlay--open {
@@ -40,6 +44,7 @@
   max-height: 973px;
   padding: var(--ai-spacing-8);           /* 40px all sides — Default variant */
   background-color: var(--ai-surface-elevated-1);
+  border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-xl);
   box-shadow: var(--ai-shadow-lg);
   overflow: hidden;

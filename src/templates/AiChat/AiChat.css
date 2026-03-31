@@ -150,8 +150,7 @@
 /* ── Dark mode: tertiary button hover on chat surface ── */
 
 [data-theme="dark"] .ai-chat .btn--tertiary:hover,
-[data-theme="dark"] .ai-chat .chat-header__admin .btn:hover,
-[data-theme="dark"] .ai-chat .chat-header__admin .btn[aria-pressed="true"] {
+[data-theme="dark"] .ai-chat .chat-header__admin .btn:hover {
   background-color: var(--ai-surface-minimal);
 }
 
