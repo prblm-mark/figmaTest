@@ -4,6 +4,7 @@ import sidebarData from './sidebar-data.json' with { type: 'json' }
 export default defineConfig({
   title: 'Affino AI Design System',
   description: 'Component library built from Figma design tokens',
+  base: process.env.DOCS_BASE || '/',
 
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],

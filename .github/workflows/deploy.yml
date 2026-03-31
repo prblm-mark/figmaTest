@@ -25,8 +25,14 @@ jobs:
       - name: Generate token CSS
         run: npm run tokens
 
-      - name: Build
+      - name: Build demos
         run: npm run build
+
+      - name: Build docs
+        run: DOCS_BASE=/figmaTest/docs/ npm run docs:build
+
+      - name: Copy docs into dist
+        run: cp -r docs-site/.vitepress/dist dist/docs
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
