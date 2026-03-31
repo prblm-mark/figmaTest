@@ -17,7 +17,7 @@
   width: 400px;
   max-width: calc(100vw - var(--ai-spacing-5) * 2);
   padding: var(--ai-spacing-5) var(--ai-spacing-6);
-  background-color: var(--ai-surface-primary);
+  background-color: var(--ai-surface-elevated-1);
   border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-xl);
   box-shadow: var(--ai-shadow-lg);
