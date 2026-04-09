@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
-import { useData } from 'vitepress'
+import { useData, withBase } from 'vitepress'
 
 const props = defineProps({
   src: { type: String, required: true },
@@ -10,7 +10,7 @@ const props = defineProps({
 const { isDark } = useData()
 
 const iframeSrc = computed(() => {
-  const base = props.src
+  const base = withBase(props.src)
   const sep = base.includes('?') ? '&' : '?'
   return isDark.value ? `${base}${sep}theme=dark` : base
 })
@@ -35,7 +35,7 @@ watch(isDark, () => {
       loading="lazy"
     />
     <div class="component-demo__toolbar">
-      <a :href="src" target="_blank">Open standalone</a>
+      <a :href="withBase(src)" target="_blank">Open standalone</a>
     </div>
   </div>
 </template>
