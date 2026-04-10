@@ -37,7 +37,6 @@ html {
   font-size: var(--ai-font-fixed-sm);
   line-height: var(--ai-leading-md);
   color: var(--ai-text-primary);
-  background-color: var(--ai-surface-primary);
   color-scheme: light;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -50,6 +49,7 @@ html {
 body {
   margin: 0;
   padding: 0;
+  background-color: var(--ai-surface-primary);
 }
 
 h1, h2, h3, h4, h5, h6 {
