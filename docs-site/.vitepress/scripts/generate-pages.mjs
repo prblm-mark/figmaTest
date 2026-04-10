@@ -137,6 +137,21 @@ function generatePage(name, tierInfo, sections, registryEntry) {
     md += `## Notes\n\n${sections['Notes']}\n\n`
   }
 
+  // Pass through any remaining sections not already handled above
+  const handledSections = new Set([
+    '_header', 'Variant × Size × State Matrix', 'Variant Matrix',
+    'CSS Class Mapping', 'Token Mapping', 'Token Gaps',
+    'Token Gaps — Action Required in Figma',
+    'Icon Slots (text-button variants)', 'Notes',
+    // Skip these — they're metadata, not display content
+    'Dependencies', 'Interaction',
+  ])
+  for (const [sectionName, content] of Object.entries(sections)) {
+    if (!handledSections.has(sectionName) && content.trim()) {
+      md += `## ${sectionName}\n\n${content}\n\n`
+    }
+  }
+
   // Figma link
   if (figmaUrl) {
     md += `## Figma\n\n[Open in Figma](${figmaUrl})\n`
