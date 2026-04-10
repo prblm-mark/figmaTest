@@ -32,6 +32,19 @@ export default defineConfig({
         ],
       },
       {
+        text: 'Tokens',
+        collapsed: false,
+        items: [
+          { text: 'Primitives', link: '/tokens/primitives' },
+          { text: 'Theme Colours', link: '/tokens/theme-colours' },
+          { text: 'Spacing & Sizing', link: '/tokens/spacing-sizing' },
+          { text: 'Typography', link: '/tokens/typography' },
+          { text: 'Elevation & Shadows', link: '/tokens/elevation-shadows' },
+          { text: 'Breakpoints', link: '/tokens/breakpoints' },
+          { text: 'Full Reference', link: '/tokens/' },
+        ],
+      },
+      {
         text: `Design System (${dsCount})`,
         collapsed: false,
         items: [
@@ -71,19 +84,6 @@ export default defineConfig({
             collapsed: false,
             items: sidebarData.aiChat?.templates || [],
           },
-        ],
-      },
-      {
-        text: 'Tokens',
-        collapsed: false,
-        items: [
-          { text: 'Primitives', link: '/tokens/primitives' },
-          { text: 'Theme Colours', link: '/tokens/theme-colours' },
-          { text: 'Spacing & Sizing', link: '/tokens/spacing-sizing' },
-          { text: 'Typography', link: '/tokens/typography' },
-          { text: 'Elevation & Shadows', link: '/tokens/elevation-shadows' },
-          { text: 'Breakpoints', link: '/tokens/breakpoints' },
-          { text: 'Full Reference', link: '/tokens/' },
         ],
       },
       {
