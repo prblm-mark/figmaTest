@@ -1,6 +1,13 @@
 import { defineConfig } from 'vitepress'
 import sidebarData from './sidebar-data.json' with { type: 'json' }
 
+// Count totals for sidebar labels
+const dsCount = sidebarData.designSystem?.components?.length || 0
+const chatComponents = sidebarData.aiChat?.components?.length || 0
+const chatPatterns = sidebarData.aiChat?.patterns?.length || 0
+const chatTemplates = sidebarData.aiChat?.templates?.length || 0
+const chatCount = chatComponents + chatPatterns + chatTemplates
+
 export default defineConfig({
   title: 'Affino AI Design System',
   description: 'Component library built from Figma design tokens',
@@ -22,19 +29,30 @@ export default defineConfig({
         ],
       },
       {
-        text: `Components (${sidebarData.components?.length || 0})`,
+        text: `Design System (${dsCount})`,
         collapsed: false,
-        items: sidebarData.components || [],
+        items: sidebarData.designSystem?.components || [],
       },
       {
-        text: `Patterns (${sidebarData.patterns?.length || 0})`,
+        text: `AI Chat (${chatCount})`,
         collapsed: false,
-        items: sidebarData.patterns || [],
-      },
-      {
-        text: `Templates (${sidebarData.templates?.length || 0})`,
-        collapsed: false,
-        items: sidebarData.templates || [],
+        items: [
+          {
+            text: `Components (${chatComponents})`,
+            collapsed: false,
+            items: sidebarData.aiChat?.components || [],
+          },
+          {
+            text: `Patterns (${chatPatterns})`,
+            collapsed: false,
+            items: sidebarData.aiChat?.patterns || [],
+          },
+          {
+            text: `Templates (${chatTemplates})`,
+            collapsed: false,
+            items: sidebarData.aiChat?.templates || [],
+          },
+        ],
       },
       {
         text: 'Tokens',
@@ -57,7 +75,8 @@ export default defineConfig({
     outline: { level: [2, 3] },
 
     nav: [
-      { text: 'Components', link: sidebarData.components?.[0]?.link || '/components/' },
+      { text: 'Design System', link: sidebarData.designSystem?.components?.[0]?.link || '/components/' },
+      { text: 'AI Chat', link: sidebarData.aiChat?.components?.[0]?.link || '/components/' },
       { text: 'Tokens', link: '/tokens/' },
       { text: 'Guidelines', link: '/guidelines/icons' },
     ],
