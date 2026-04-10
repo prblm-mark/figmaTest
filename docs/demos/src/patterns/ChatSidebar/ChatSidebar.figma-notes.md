@@ -2,9 +2,9 @@
 
 ## Figma Node
 
-- **File key:** `Lus07xi8pPXLN87sQIyrEt`
-- **Component set:** `2122:4936`
-- **URL:** [node 2122:4936](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2122-4936)
+- **File key:** `Ikv8jxb5dcRH8ff4q4dR11`
+- **Component set:** `2:2006`
+- **URL:** [node 2:2006](https://www.figma.com/design/Ikv8jxb5dcRH8ff4q4dR11/Affino-AI---AI-Chat?node-id=2-2006)
 
 ## Variant table
 

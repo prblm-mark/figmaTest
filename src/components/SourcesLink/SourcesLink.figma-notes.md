@@ -2,7 +2,7 @@
 
 ## Figma URL
 
-[SourceLink component set](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2133-2733)
+[SourceLink component set](https://www.figma.com/design/Ikv8jxb5dcRH8ff4q4dR11/Affino-AI---AI-Chat?node-id=2-80)
 
 ## Variant Matrix
 

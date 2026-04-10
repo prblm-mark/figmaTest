@@ -1,8 +1,8 @@
 # PromptTemplateItem — Figma Notes
 
 ## Figma Node
-- File key: `Lus07xi8pPXLN87sQIyrEt`
-- Component set: `78:2868` (frame named "Prompt Template Item")
+- File key: `Ikv8jxb5dcRH8ff4q4dR11`
+- Component set: `2:7446` (frame named "Prompt Template Item")
 - Variants:
   | Node ID | Variant name |
   |---|---|

@@ -1,6 +1,6 @@
 # ChatMain — Figma Notes
 
-**Figma URL:** [node 2139:2759](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2139-2759)
+**Figma URL:** [node 2139:2759](https://www.figma.com/design/Ikv8jxb5dcRH8ff4q4dR11/Affino-AI---AI-Chat?node-id=2-3752)
 
 ## Variant Matrix
 

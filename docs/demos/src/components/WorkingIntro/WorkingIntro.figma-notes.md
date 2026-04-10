@@ -1,9 +1,9 @@
 # WorkingIntro — Figma Notes
 
 **Figma URLs:**
-- Stage 1: [node 2077:1486](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2077-1486)
-- Stage 2: [node 2077:1492](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2077-1492)
-- Stage 3: [node 2077:1498](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2077-1498)
+- Stage 1: [node 2077:1486](https://www.figma.com/design/Ikv8jxb5dcRH8ff4q4dR11/Affino-AI---AI-Chat?node-id=2077-1486)
+- Stage 2: [node 2077:1492](https://www.figma.com/design/Ikv8jxb5dcRH8ff4q4dR11/Affino-AI---AI-Chat?node-id=2077-1492)
+- Stage 3: [node 2077:1498](https://www.figma.com/design/Ikv8jxb5dcRH8ff4q4dR11/Affino-AI---AI-Chat?node-id=2077-1498)
 
 ## Stages
 

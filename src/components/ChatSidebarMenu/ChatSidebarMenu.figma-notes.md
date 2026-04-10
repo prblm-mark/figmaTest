@@ -1,6 +1,6 @@
 # ChatSidebarMenu — Figma Notes
 
-**Figma URL:** [node 2110:3001](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2110-3001) (nested within ChatSidebarItem component set)
+**Figma URL:** [node 2110:3001](https://www.figma.com/design/Ikv8jxb5dcRH8ff4q4dR11/Affino-AI---AI-Chat?node-id=2-1668) (nested within ChatSidebarItem component set)
 
 ## Component set
 

@@ -1,6 +1,6 @@
 # AiChat — Figma Notes
 
-**Figma component set:** [node 2140:3614](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2140-3614)
+**Figma component set:** [node 2140:3614](https://www.figma.com/design/Ikv8jxb5dcRH8ff4q4dR11/Affino-AI---AI-Chat?node-id=2-9299)
 
 **Tier:** Template
 

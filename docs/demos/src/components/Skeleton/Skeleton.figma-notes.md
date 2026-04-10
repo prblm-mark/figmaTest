@@ -1,6 +1,6 @@
 # Skeleton — Figma Notes
 
-**Figma URL:** [node 2077:1526](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2077-1526)
+**Figma URL:** [node 2077:1526](https://www.figma.com/design/Ikv8jxb5dcRH8ff4q4dR11/Affino-AI---AI-Chat?node-id=2077-1526)
 
 ## Component set
 
