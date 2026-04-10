@@ -6,7 +6,7 @@ import figma, { html } from '@figma/code-connect/html'
 // - Tooltip/Info: tooltip panel visible in DOM
 // Device=Mobile layout is handled by @media (max-width: 767px) — no modifier class.
 figma.connect(
-  'https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=68-5443',
+  'https://www.figma.com/design/Ikv8jxb5dcRH8ff4q4dR11/Affino-AI---AI-Chat?node-id=2-6854',
   {
     props: {
       state: figma.enum('State', {

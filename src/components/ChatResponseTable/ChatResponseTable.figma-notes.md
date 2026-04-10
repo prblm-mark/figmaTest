@@ -1,6 +1,6 @@
 # ChatResponseTable
 
-**Figma URL:** [node 2160:3648](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2160-3648) (Default), [node 2160:3996](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2160-3996) (Desktop)
+**Figma URL:** [node 2160:3648](https://www.figma.com/design/Ikv8jxb5dcRH8ff4q4dR11/Affino-AI---AI-Chat?node-id=2-1434) (Default), [node 2160:3996](https://www.figma.com/design/Ikv8jxb5dcRH8ff4q4dR11/Affino-AI---AI-Chat?node-id=2-1434) (Desktop)
 
 **Tier:** Component
 

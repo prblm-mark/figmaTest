@@ -31,7 +31,7 @@ Token scopes required: `file_content:read`, `code_connect:write`.
 ```typescript
 import figma, { html } from '@figma/code-connect/html'
 
-figma.connect('https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/...?node-id=XX-YY', {
+figma.connect('https://www.figma.com/design/FILE_KEY/...?node-id=XX-YY', {
   props: {
     type: figma.enum('Type', {
       Default: 'btn--primary',

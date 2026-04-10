@@ -5,7 +5,7 @@ import figma, { html } from '@figma/code-connect/html'
 // - Minimised (169:2466): 400px floating panel, JS adds .system-role--minimised + data-layout="minimised"
 // - Mobile (176:3242): full-viewport layout, activated by CSS @media (max-width: 767px)
 figma.connect(
-  'https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=163-3895',
+  'https://www.figma.com/design/Ikv8jxb5dcRH8ff4q4dR11/Affino-AI---AI-Chat?node-id=2-9344',
   {
     props: {
       variant: figma.enum('Type', {

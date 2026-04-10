@@ -1,8 +1,8 @@
 # Header — Figma Notes
 
 ## Figma Node
-- File: `Lus07xi8pPXLN87sQIyrEt`
-- Component set: node `68:5443` — [open in Figma](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=68-5443)
+- File: `Ikv8jxb5dcRH8ff4q4dR11`
+- Component set: node `2:6854` — [open in Figma](https://www.figma.com/design/Ikv8jxb5dcRH8ff4q4dR11/Affino-AI---AI-Chat?node-id=2-6854)
 
 ## Variant Matrix
 

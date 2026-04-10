@@ -1,6 +1,6 @@
 # MessageBubble — Figma Notes
 
-**Figma URL:** [node 2126:4901](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2126-4901)
+**Figma URL:** [node 2126:4901](https://www.figma.com/design/Ikv8jxb5dcRH8ff4q4dR11/Affino-AI---AI-Chat?node-id=2-1313)
 
 ## Component Set
 

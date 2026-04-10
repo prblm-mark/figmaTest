@@ -1,8 +1,8 @@
 # VersionHistoryRow — Figma Notes
 
 ## Figma Node
-- File: `Lus07xi8pPXLN87sQIyrEt`
-- Component set: node `78:2957` — "Version History"
+- File: `Ikv8jxb5dcRH8ff4q4dR11`
+- Component set: node `2:7693` — "Version History"
 
 ## Variant Matrix
 

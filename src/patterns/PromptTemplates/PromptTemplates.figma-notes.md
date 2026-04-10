@@ -1,8 +1,8 @@
 # PromptTemplates — Figma Notes
 
 ## Figma Node
-- File key: `Lus07xi8pPXLN87sQIyrEt`
-- Frame node: `163:3565` (single variant — no component set with multiple variants found)
+- File key: `Ikv8jxb5dcRH8ff4q4dR11`
+- Frame node: `2:7662` (single variant — no component set with multiple variants found)
 
 ## Variant Matrix
 Single variant only.
