@@ -195,7 +195,7 @@ const registry = parseRegistry()
 
 // Grouped sidebar: { designSystem: { components: [] }, aiChat: { components: [], patterns: [], templates: [] } }
 const sidebarData = {
-  designSystem: { components: [] },
+  designSystem: { components: [], patterns: [], templates: [] },
   aiChat: { components: [], patterns: [], templates: [] },
 }
 
@@ -243,8 +243,8 @@ for (const tierInfo of TIERS) {
     }
 
     if (product?.product === 'designSystem') {
-      // Design System only has components (no patterns/templates)
-      sidebarData.designSystem.components.push(sidebarItem)
+      const tierKey = tierInfo.outDir
+      sidebarData.designSystem[tierKey].push(sidebarItem)
     } else {
       // AI Chat (or unknown) — group by tier
       const tierKey = tierInfo.outDir  // 'components', 'patterns', 'templates'
@@ -257,7 +257,7 @@ for (const tierInfo of TIERS) {
 const sidebarPath = join(DOCS_SITE, '.vitepress', 'sidebar-data.json')
 writeFileSync(sidebarPath, JSON.stringify(sidebarData, null, 2), 'utf-8')
 
-const dsCount = sidebarData.designSystem.components.length
+const dsCount = sidebarData.designSystem.components.length + sidebarData.designSystem.patterns.length + sidebarData.designSystem.templates.length
 const chatCount = sidebarData.aiChat.components.length + sidebarData.aiChat.patterns.length + sidebarData.aiChat.templates.length
 console.log(`Generated ${totalPages} pages:`)
 console.log(`  Design System: ${dsCount} components`)

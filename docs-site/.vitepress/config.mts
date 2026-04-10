@@ -2,7 +2,10 @@ import { defineConfig } from 'vitepress'
 import sidebarData from './sidebar-data.json' with { type: 'json' }
 
 // Count totals for sidebar labels
-const dsCount = sidebarData.designSystem?.components?.length || 0
+const dsComponents = sidebarData.designSystem?.components?.length || 0
+const dsPatterns = sidebarData.designSystem?.patterns?.length || 0
+const dsTemplates = sidebarData.designSystem?.templates?.length || 0
+const dsCount = dsComponents + dsPatterns + dsTemplates
 const chatComponents = sidebarData.aiChat?.components?.length || 0
 const chatPatterns = sidebarData.aiChat?.patterns?.length || 0
 const chatTemplates = sidebarData.aiChat?.templates?.length || 0
@@ -31,7 +34,23 @@ export default defineConfig({
       {
         text: `Design System (${dsCount})`,
         collapsed: false,
-        items: sidebarData.designSystem?.components || [],
+        items: [
+          ...(dsComponents > 0 ? [{
+            text: `Components (${dsComponents})`,
+            collapsed: false,
+            items: sidebarData.designSystem?.components || [],
+          }] : []),
+          ...(dsPatterns > 0 ? [{
+            text: `Patterns (${dsPatterns})`,
+            collapsed: false,
+            items: sidebarData.designSystem?.patterns || [],
+          }] : []),
+          ...(dsTemplates > 0 ? [{
+            text: `Templates (${dsTemplates})`,
+            collapsed: false,
+            items: sidebarData.designSystem?.templates || [],
+          }] : []),
+        ],
       },
       {
         text: `AI Chat (${chatCount})`,
