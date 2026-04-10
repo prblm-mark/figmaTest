@@ -75,8 +75,12 @@ export default defineConfig({
       },
       {
         text: 'Tokens',
+        collapsed: false,
         items: [
-          { text: 'Token Reference', link: '/tokens/' },
+          { text: 'Primitives', link: '/tokens/primitives' },
+          { text: 'Theme Colours', link: '/tokens/theme-colours' },
+          { text: 'Spacing & Sizing', link: '/tokens/spacing-sizing' },
+          { text: 'Full Reference', link: '/tokens/' },
         ],
       },
       {
