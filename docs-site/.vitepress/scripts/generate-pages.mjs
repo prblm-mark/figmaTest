@@ -105,6 +105,28 @@ function generatePage(name, tierInfo, sections, registryEntry) {
 
   md += `<ComponentDemo src="${demoPath}" />\n\n`
 
+  // Structured sections that go into the "Reference" group at the bottom
+  const structuredSections = new Set([
+    'Variant × Size × State Matrix', 'Variant Matrix',
+    'CSS Class Mapping', 'Token Mapping', 'Token Gaps',
+    'Token Gaps — Action Required in Figma',
+    'Icon Slots (text-button variants)', 'Notes',
+  ])
+
+  // Sections to skip entirely (metadata, not display content)
+  const skipSections = new Set([
+    '_header', 'Dependencies', 'Interaction', 'Figma Node',
+  ])
+
+  // ── Pass-through sections first (Overview, behaviour docs, etc.) ──
+  for (const [sectionName, content] of Object.entries(sections)) {
+    if (!structuredSections.has(sectionName) && !skipSections.has(sectionName) && content.trim()) {
+      md += `## ${sectionName}\n\n${content}\n\n`
+    }
+  }
+
+  // ── Structured reference sections ──
+
   // Variant matrix
   if (sections['Variant × Size × State Matrix'] || sections['Variant Matrix']) {
     const matrixContent = sections['Variant × Size × State Matrix'] || sections['Variant Matrix']
@@ -135,21 +157,6 @@ function generatePage(name, tierInfo, sections, registryEntry) {
   // Notes
   if (sections['Notes']) {
     md += `## Notes\n\n${sections['Notes']}\n\n`
-  }
-
-  // Pass through any remaining sections not already handled above
-  const handledSections = new Set([
-    '_header', 'Variant × Size × State Matrix', 'Variant Matrix',
-    'CSS Class Mapping', 'Token Mapping', 'Token Gaps',
-    'Token Gaps — Action Required in Figma',
-    'Icon Slots (text-button variants)', 'Notes',
-    // Skip these — they're metadata, not display content
-    'Dependencies', 'Interaction',
-  ])
-  for (const [sectionName, content] of Object.entries(sections)) {
-    if (!handledSections.has(sectionName) && content.trim()) {
-      md += `## ${sectionName}\n\n${content}\n\n`
-    }
   }
 
   // Figma link
