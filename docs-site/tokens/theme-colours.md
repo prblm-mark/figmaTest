@@ -32,11 +32,11 @@ Elevation tokens convey depth — surfaces that float above other surfaces.
 - **Light mode:** All elevated surfaces are white (shadows handle depth)
 - **Dark mode:** Elevated surfaces step up the neutral palette (shadows alone are invisible on dark)
 
-| Level | Use | Light | Dark |
-|---|---|---|---|
-| Base (`surface-primary`) | Page background | `#FFFFFF` | `#1B1B1F` |
-| `surface-elevated-1` | Cards, dropdowns, modals (StyleSettings, SystemRole) | `#FFFFFF` | `#212123` |
-| `surface-elevated-2` | Content on elevated surfaces (VersionHistoryRow Live) | `#FFFFFF` | `#2E2E32` |
+| Swatch | Level | Use | Light | Dark |
+|---|---|---|---|---|
+| <span style="display:inline-block;width:24px;height:24px;border-radius:4px;background:#ffffff;border:1px solid #e2e2e3;vertical-align:middle"></span> | Base (`surface-primary`) | Page background | `#FFFFFF` | `#1B1B1F` |
+| <span style="display:inline-block;width:24px;height:24px;border-radius:4px;background:#ffffff;border:1px solid #e2e2e3;vertical-align:middle"></span> | `surface-elevated-1` | Cards, dropdowns, modals (StyleSettings, SystemRole) | `#FFFFFF` | `#212123` |
+| <span style="display:inline-block;width:24px;height:24px;border-radius:4px;background:#ffffff;border:1px solid #e2e2e3;vertical-align:middle"></span> | `surface-elevated-2` | Content on elevated surfaces (VersionHistoryRow Live) | `#FFFFFF` | `#2E2E32` |
 
 ### Brand surfaces
 
