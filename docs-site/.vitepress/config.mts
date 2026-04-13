@@ -29,6 +29,7 @@ export default defineConfig({
         items: [
           { text: 'Introduction', link: '/' },
           { text: 'Setup', link: '/getting-started' },
+          { text: 'Figma Workflow', link: '/guidelines/workflow' },
         ],
       },
       {
@@ -91,7 +92,6 @@ export default defineConfig({
         items: [
           { text: 'Icon System', link: '/guidelines/icons' },
           { text: 'Accessibility', link: '/guidelines/accessibility' },
-          { text: 'Figma Workflow', link: '/guidelines/workflow' },
         ],
       },
     ],
