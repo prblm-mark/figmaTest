@@ -400,11 +400,11 @@
     </div>
     <div class="ds-sidebar__section">
       <p class="ds-sidebar__heading">Design System</p>
-      <button class="ds-sidebar__item" data-filter="ds">Components <span class="ds-sidebar__count" id="sidebarDsCount"></span></button>
+      <button class="ds-sidebar__item" data-filter="ds">All <span class="ds-sidebar__count" id="sidebarDsCount"></span></button>
     </div>
     <div class="ds-sidebar__section">
       <p class="ds-sidebar__heading">AI Chat</p>
-      <button class="ds-sidebar__item" data-filter="chat">Components <span class="ds-sidebar__count" id="sidebarChatCount"></span></button>
+      <button class="ds-sidebar__item" data-filter="chat">All <span class="ds-sidebar__count" id="sidebarChatCount"></span></button>
     </div>
     <div class="ds-sidebar__section">
       <p class="ds-sidebar__heading">Explore</p>
@@ -544,38 +544,86 @@
       <p class="ds-section__label">AI Chat <span class="ds-section__label-count" id="chatCount"></span></p>
 
       <div class="ds-subsection">
-        <p class="ds-subsection__label">Templates</p>
-        <nav class="ds-grid" aria-label="AI Chat templates">
+        <p class="ds-subsection__label">Components</p>
+        <nav class="ds-grid" aria-label="AI Chat components">
 
-          <a href="src/templates/AiChat/AiChat.html" class="ds-card" data-category="chat" data-name="AI Chat">
-            <div class="ds-card__icon"><i data-lucide="layout-dashboard" aria-hidden="true"></i></div>
+          <a href="src/components/ChatSidebarItem/ChatSidebarItem.html" class="ds-card" data-category="chat" data-name="Chat Sidebar Item">
+            <div class="ds-card__icon"><i data-lucide="message-square-text" aria-hidden="true"></i></div>
             <div class="ds-card__body">
               <p class="ds-card__label">AI Chat</p>
-              <h3 class="ds-card__name">AI Chat</h3>
+              <h3 class="ds-card__name">Chat Sidebar Item</h3>
             </div>
           </a>
 
-          <a href="src/templates/AiChatMinimised/AiChatMinimised.html" class="ds-card" data-category="chat" data-name="AI Chat Minimised">
-            <div class="ds-card__icon"><i data-lucide="picture-in-picture-2" aria-hidden="true"></i></div>
+          <a href="src/components/ChatSidebarMenu/ChatSidebarMenu.html" class="ds-card" data-category="chat" data-name="Chat Sidebar Menu">
+            <div class="ds-card__icon"><i data-lucide="more-horizontal" aria-hidden="true"></i></div>
             <div class="ds-card__body">
               <p class="ds-card__label">AI Chat</p>
-              <h3 class="ds-card__name">AI Chat Minimised</h3>
+              <h3 class="ds-card__name">Chat Sidebar Menu</h3>
             </div>
           </a>
 
-          <a href="src/templates/ChatResponse/ChatResponse.html" class="ds-card" data-category="chat" data-name="Chat Response">
+          <a href="src/components/ChatResponseTable/ChatResponseTable.html" class="ds-card" data-category="chat" data-name="Chat Response Table">
+            <div class="ds-card__icon"><i data-lucide="table" aria-hidden="true"></i></div>
+            <div class="ds-card__body">
+              <p class="ds-card__label">AI Chat</p>
+              <h3 class="ds-card__name">Chat Response Table</h3>
+            </div>
+          </a>
+
+          <a href="src/components/ColorPickerInput/ColorPickerInput.html" class="ds-card" data-category="chat" data-name="Color Picker Input">
+            <div class="ds-card__icon"><i data-lucide="pipette" aria-hidden="true"></i></div>
+            <div class="ds-card__body">
+              <p class="ds-card__label">AI Chat</p>
+              <h3 class="ds-card__name">Color Picker Input</h3>
+            </div>
+          </a>
+
+          <a href="src/components/MessageBubble/MessageBubble.html" class="ds-card" data-category="chat" data-name="Message Bubble">
             <div class="ds-card__icon"><i data-lucide="message-circle" aria-hidden="true"></i></div>
             <div class="ds-card__body">
               <p class="ds-card__label">AI Chat</p>
-              <h3 class="ds-card__name">Chat Response</h3>
+              <h3 class="ds-card__name">Message Bubble</h3>
             </div>
           </a>
 
-          <a href="src/templates/SystemRole/SystemRole.html" class="ds-card" data-category="chat" data-name="System Role">
-            <div class="ds-card__icon"><i data-lucide="bot" aria-hidden="true"></i></div>
+          <a href="src/components/PromptTemplateItem/PromptTemplateItem.html" class="ds-card" data-category="chat" data-name="Prompt Template Item">
+            <div class="ds-card__icon"><i data-lucide="list" aria-hidden="true"></i></div>
             <div class="ds-card__body">
               <p class="ds-card__label">AI Chat</p>
-              <h3 class="ds-card__name">System Role</h3>
+              <h3 class="ds-card__name">Prompt Template Item</h3>
+            </div>
+          </a>
+
+          <a href="src/components/SegmentedControl/SegmentedControl.html" class="ds-card" data-category="chat" data-name="Segmented Control">
+            <div class="ds-card__icon"><i data-lucide="columns-2" aria-hidden="true"></i></div>
+            <div class="ds-card__body">
+              <p class="ds-card__label">AI Chat</p>
+              <h3 class="ds-card__name">Segmented Control</h3>
+            </div>
+          </a>
+
+          <a href="src/components/SourcesLink/SourcesLink.html" class="ds-card" data-category="chat" data-name="Sources Link">
+            <div class="ds-card__icon"><i data-lucide="file-text" aria-hidden="true"></i></div>
+            <div class="ds-card__body">
+              <p class="ds-card__label">AI Chat</p>
+              <h3 class="ds-card__name">Sources Link</h3>
+            </div>
+          </a>
+
+          <a href="src/components/SuggestedQuestion/SuggestedQuestion.html" class="ds-card" data-category="chat" data-name="Suggested Question">
+            <div class="ds-card__icon"><i data-lucide="message-circle-question" aria-hidden="true"></i></div>
+            <div class="ds-card__body">
+              <p class="ds-card__label">AI Chat</p>
+              <h3 class="ds-card__name">Suggested Question</h3>
+            </div>
+          </a>
+
+          <a href="src/components/Toggle/Toggle.html" class="ds-card" data-category="chat" data-name="Toggle">
+            <div class="ds-card__icon"><i data-lucide="toggle-right" aria-hidden="true"></i></div>
+            <div class="ds-card__body">
+              <p class="ds-card__label">AI Chat</p>
+              <h3 class="ds-card__name">Toggle</h3>
             </div>
           </a>
 
@@ -670,86 +718,38 @@
       </div>
 
       <div class="ds-subsection">
-        <p class="ds-subsection__label">Components</p>
-        <nav class="ds-grid" aria-label="AI Chat components">
+        <p class="ds-subsection__label">Templates</p>
+        <nav class="ds-grid" aria-label="AI Chat templates">
 
-          <a href="src/components/ChatSidebarItem/ChatSidebarItem.html" class="ds-card" data-category="chat" data-name="Chat Sidebar Item">
-            <div class="ds-card__icon"><i data-lucide="message-square-text" aria-hidden="true"></i></div>
+          <a href="src/templates/AiChat/AiChat.html" class="ds-card" data-category="chat" data-name="AI Chat">
+            <div class="ds-card__icon"><i data-lucide="layout-dashboard" aria-hidden="true"></i></div>
             <div class="ds-card__body">
               <p class="ds-card__label">AI Chat</p>
-              <h3 class="ds-card__name">Chat Sidebar Item</h3>
+              <h3 class="ds-card__name">AI Chat</h3>
             </div>
           </a>
 
-          <a href="src/components/ChatSidebarMenu/ChatSidebarMenu.html" class="ds-card" data-category="chat" data-name="Chat Sidebar Menu">
-            <div class="ds-card__icon"><i data-lucide="more-horizontal" aria-hidden="true"></i></div>
+          <a href="src/templates/AiChatMinimised/AiChatMinimised.html" class="ds-card" data-category="chat" data-name="AI Chat Minimised">
+            <div class="ds-card__icon"><i data-lucide="picture-in-picture-2" aria-hidden="true"></i></div>
             <div class="ds-card__body">
               <p class="ds-card__label">AI Chat</p>
-              <h3 class="ds-card__name">Chat Sidebar Menu</h3>
+              <h3 class="ds-card__name">AI Chat Minimised</h3>
             </div>
           </a>
 
-          <a href="src/components/ChatResponseTable/ChatResponseTable.html" class="ds-card" data-category="chat" data-name="Chat Response Table">
-            <div class="ds-card__icon"><i data-lucide="table" aria-hidden="true"></i></div>
-            <div class="ds-card__body">
-              <p class="ds-card__label">AI Chat</p>
-              <h3 class="ds-card__name">Chat Response Table</h3>
-            </div>
-          </a>
-
-          <a href="src/components/ColorPickerInput/ColorPickerInput.html" class="ds-card" data-category="chat" data-name="Color Picker Input">
-            <div class="ds-card__icon"><i data-lucide="pipette" aria-hidden="true"></i></div>
-            <div class="ds-card__body">
-              <p class="ds-card__label">AI Chat</p>
-              <h3 class="ds-card__name">Color Picker Input</h3>
-            </div>
-          </a>
-
-          <a href="src/components/MessageBubble/MessageBubble.html" class="ds-card" data-category="chat" data-name="Message Bubble">
+          <a href="src/templates/ChatResponse/ChatResponse.html" class="ds-card" data-category="chat" data-name="Chat Response">
             <div class="ds-card__icon"><i data-lucide="message-circle" aria-hidden="true"></i></div>
             <div class="ds-card__body">
               <p class="ds-card__label">AI Chat</p>
-              <h3 class="ds-card__name">Message Bubble</h3>
+              <h3 class="ds-card__name">Chat Response</h3>
             </div>
           </a>
 
-          <a href="src/components/PromptTemplateItem/PromptTemplateItem.html" class="ds-card" data-category="chat" data-name="Prompt Template Item">
-            <div class="ds-card__icon"><i data-lucide="list" aria-hidden="true"></i></div>
+          <a href="src/templates/SystemRole/SystemRole.html" class="ds-card" data-category="chat" data-name="System Role">
+            <div class="ds-card__icon"><i data-lucide="bot" aria-hidden="true"></i></div>
             <div class="ds-card__body">
               <p class="ds-card__label">AI Chat</p>
-              <h3 class="ds-card__name">Prompt Template Item</h3>
-            </div>
-          </a>
-
-          <a href="src/components/SegmentedControl/SegmentedControl.html" class="ds-card" data-category="chat" data-name="Segmented Control">
-            <div class="ds-card__icon"><i data-lucide="columns-2" aria-hidden="true"></i></div>
-            <div class="ds-card__body">
-              <p class="ds-card__label">AI Chat</p>
-              <h3 class="ds-card__name">Segmented Control</h3>
-            </div>
-          </a>
-
-          <a href="src/components/SourcesLink/SourcesLink.html" class="ds-card" data-category="chat" data-name="Sources Link">
-            <div class="ds-card__icon"><i data-lucide="file-text" aria-hidden="true"></i></div>
-            <div class="ds-card__body">
-              <p class="ds-card__label">AI Chat</p>
-              <h3 class="ds-card__name">Sources Link</h3>
-            </div>
-          </a>
-
-          <a href="src/components/SuggestedQuestion/SuggestedQuestion.html" class="ds-card" data-category="chat" data-name="Suggested Question">
-            <div class="ds-card__icon"><i data-lucide="message-circle-question" aria-hidden="true"></i></div>
-            <div class="ds-card__body">
-              <p class="ds-card__label">AI Chat</p>
-              <h3 class="ds-card__name">Suggested Question</h3>
-            </div>
-          </a>
-
-          <a href="src/components/Toggle/Toggle.html" class="ds-card" data-category="chat" data-name="Toggle">
-            <div class="ds-card__icon"><i data-lucide="toggle-right" aria-hidden="true"></i></div>
-            <div class="ds-card__body">
-              <p class="ds-card__label">AI Chat</p>
-              <h3 class="ds-card__name">Toggle</h3>
+              <h3 class="ds-card__name">System Role</h3>
             </div>
           </a>
 
