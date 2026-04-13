@@ -86,22 +86,69 @@ Open `src/components/<Name>/<Name>.html` to see the standalone component demo.
 
 ---
 
-## Part 2: Code → Figma
+## Part 2: Code → Figma (Prototypes)
 
-### Push built UI back to Figma
+The Code → Figma direction is for **prototypes** — new screens or flows built from code using
+existing components and tokens. This is **not** for pushing back a component that was already
+built from Figma (that would be pointless — it already exists there).
 
-Once you're happy with the built component, you can push it back to Figma as an editable frame:
+### When to use this
 
-1. Ask Claude Code:
-   ```
-   Use generate_figma_design to push the Button component back to Figma.
-   Here's the component HTML and CSS: [paste or reference the files]
-   ```
-2. Claude calls `generate_figma_design` via the Figma MCP tool
-3. A new frame appears in your current Figma file/page
-4. Share the frame URL with the designer for review
+- Exploring a new UI flow (e.g. registration, settings, onboarding)
+- Building a screen layout that doesn't exist in Figma yet
+- Creating a quick visual for designer review
 
-This closes the loop: design refines, exports again, you run `npm run tokens` and rebuild.
+### Step 1: Build the prototype with /build-prototype
+
+```
+/build-prototype Two-step registration flow with email/password then profile details
+```
+
+Claude Code will:
+1. Plan the screens and check for existing components
+2. Build HTML/CSS in `src/prototypes/<Name>/` using only `--ai-*` tokens
+3. Capture each screen to Figma via `generate_figma_design`
+4. Push frames to the **Prototypes page** in the Design System file
+
+### Step 2: Designer runs Re-tokenise plugin
+
+The captured frames arrive in Figma with **raw hex values and px dimensions** — the capture
+process cannot preserve CSS variable bindings. The designer must rebind them to Figma variables:
+
+1. Select the captured frame in Figma
+2. Run **Plugins → Development → Re-tokenise**
+3. The plugin maps hex colours to the nearest Semantic variable, px font sizes to Typography
+   variables, and applies the correct variable bindings
+
+> **Plugin location:** `figma-plugin-retokenise/` in the repo. Import via Figma Desktop →
+> Plugins → Development → Import plugin from manifest.
+
+### Step 3: Designer converts to component
+
+Once re-tokenised, the designer:
+1. Reviews the frame and adjusts any missed bindings
+2. Converts it to a Figma component (if it should become reusable)
+3. Adds to the appropriate page in the Design System or AI Chat file
+4. Sets up variants, auto-layout, and constraints
+
+### The loop
+
+```
+Developer describes flow
+  │
+  │  /build-prototype
+  ▼
+Code (src/prototypes/) → captured to Figma (Prototypes page)
+  │
+  │  Designer runs Re-tokenise plugin
+  │  Designer converts to component
+  ▼
+Figma component (ready for production)
+  │
+  │  /build-component (if needed as production code)
+  ▼
+Code (src/components/ or src/patterns/)
+```
 
 ---
 
