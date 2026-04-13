@@ -324,6 +324,39 @@ Add a row to **CLAUDE.md Section 10** component tracker:
 | ComponentName | Built | [Figma URL](url) | Notes |
 ```
 
+### 11. Add to demo index and docs
+
+Once the component is built, QA'd, and registered, ask the user:
+
+> "The component is built and registered. Would you like me to:
+> 1. **Add it to the demo index page** (`index.html`) — adds a card in the correct category
+>    (Design System or AI Chat) with an appropriate Lucide icon
+> 2. **Regenerate the docs** (`npm run docs:generate`) — the new figma-notes.md will be
+>    picked up automatically and a docs page created
+> 3. **Both**
+> 4. **Neither** (I'll do it later)"
+
+If the user says yes to the demo index:
+- Determine the category from the Figma file key:
+  - `Lus07xi8pPXLN87sQIyrEt` → Design System section, label "System"
+  - `Ikv8jxb5dcRH8ff4q4dR11` → AI Chat section, label "AI Chat"
+- Add a card in the correct `<nav class="ds-grid">` section of `index.html`:
+  ```html
+  <a href="src/components/<Name>/<Name>.html" class="ds-card" data-category="ds|chat" data-name="Component Name">
+    <div class="ds-card__icon"><i data-lucide="icon-name" aria-hidden="true"></i></div>
+    <div class="ds-card__body">
+      <p class="ds-card__label">System|AI Chat</p>
+      <h3 class="ds-card__name">Component Name</h3>
+    </div>
+  </a>
+  ```
+- Choose an appropriate Lucide icon that represents the component's purpose
+
+If the user says yes to docs:
+- Run `npm run docs:generate` to pick up the new figma-notes.md
+- The component will appear in the correct sidebar group (Design System or AI Chat)
+  based on its Figma URL in `docs/component-registry.md`
+
 ---
 
 ## Quick reference: token categories
