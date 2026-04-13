@@ -152,7 +152,77 @@ Code (src/components/ or src/patterns/)
 
 ---
 
-## Part 3: Token Updates
+## Part 3: QA — Reviewing Components
+
+### Why review?
+
+Tokens change. The designer updates a colour, spacing value, or adds a new variant. Components
+built weeks ago may now be using outdated values — but nothing breaks visually until someone
+compares against Figma. The `/review-component` skill automates this comparison.
+
+### When to use this
+
+- **After a token migration** — bulk-check all components against updated Figma values
+- **After a designer updates components** — verify code matches the new Figma state
+- **Before a release** — QA pass to catch any token drift
+- **When something looks "off"** — compare a specific component against its Figma source
+
+### How to use it
+
+Paste the Figma component set URL:
+
+```
+/review-component https://www.figma.com/design/...?node-id=123-456
+```
+
+Claude Code will:
+
+1. **Map the component tree** — fetch metadata to identify all variants and nested dependencies
+2. **Check each component against the codebase** — verify it exists in `src/components/` or `src/patterns/`
+3. **Audit every variant** — fetch `get_design_context` for each state/size/device variant
+4. **Compare tokens** — flag any mismatch between Figma token values and the CSS
+5. **Check for token drift** — cross-reference component CSS against current generated tokens
+6. **Flag contextual overrides** — identify where a parent uses a child differently from the child's base design
+7. **Present a build plan** — summary table showing each component as Current, Outdated, or Missing
+
+### What it checks
+
+| Check | Example issue |
+|---|---|
+| Token mismatch | CSS uses `--ai-surface-minimal` but Figma shows `--ai-surface-contrast` |
+| Missing variant | Figma has a Hover state that CSS doesn't implement |
+| Stale token | Component uses `--ai-chat-surface-primary` (removed) instead of `--ai-surface-primary` |
+| Wrong value | `border-radius: --ai-radius-sm` but Figma shows `--ai-radius-md` |
+| Font drift | CSS uses `--ai-font-body` where Figma style is `title/*` |
+| Hardcoded value | CSS has a hex colour that should be a token |
+
+### The output
+
+```
+Component       | Status      | Action
+----------------|-------------|------------------------------------------
+SuggestedQuestion | ✓ Current  | No action needed
+SourcesLink     | ⚠ Outdated  | Link variant bg: surface-minimal → surface-contrast
+ChatHeader      | ⚠ Outdated  | Dropdown bg: surface-primary → surface-secondary
+MessageInput    | ✓ Current  | No action needed
+```
+
+You then approve the plan and Claude applies only the listed fixes — no unnecessary rewrites.
+
+### Batch review
+
+To review multiple components at once, provide several Figma URLs:
+
+```
+/review-component https://figma.com/...?node-id=A https://figma.com/...?node-id=B https://figma.com/...?node-id=C
+```
+
+Or review an entire composed component — `/review-component` automatically walks the full
+dependency tree, so reviewing a template like AiChat will audit every nested child.
+
+---
+
+## Part 4: Token Updates
 
 ### How the token pipeline works
 
