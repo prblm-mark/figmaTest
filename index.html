@@ -23,8 +23,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 var(--ai-spacing-6);
-      background-color: var(--ai-surface-primary);
+      padding: 0 var(--ai-leading-md);
+      background-color: var(--ai-surface-minimal);
       border-bottom: 1px solid var(--ai-border-secondary);
       z-index: 50;
     }
@@ -108,10 +108,10 @@
       left: 0;
       bottom: 0;
       width: var(--ds-sidebar-w);
-      padding: var(--ai-spacing-5);
+      padding: var(--ai-spacing-5) var(--ai-spacing-5) var(--ai-spacing-5) var(--ai-spacing-5);
       overflow-y: auto;
       border-right: 1px solid var(--ai-border-secondary);
-      background-color: var(--ai-surface-primary);
+      background-color: var(--ai-surface-minimal);
       z-index: 40;
     }
 
@@ -151,8 +151,8 @@
     }
 
     .ds-sidebar__item--active {
-      background: var(--ai-surface-brand-contrast-extra);
-      color: var(--ai-surface-brand);
+      background: var(--ai-surface-secondary);
+      color: var(--ai-text-primary);
       font-weight: var(--ai-font-medium);
     }
 
@@ -167,26 +167,34 @@
     .ds-main {
       margin-left: var(--ds-sidebar-w);
       margin-top: var(--ds-header-h);
-      padding: var(--ai-spacing-6);
+      padding: var(--ai-spacing-8);
       min-height: calc(100vh - var(--ds-header-h));
-      background-color: var(--ai-surface-secondary);
+      background-color: var(--ai-surface-primary);
     }
 
     .ds-main__header {
-      margin-bottom: var(--ai-spacing-6);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-2);
+      margin-bottom: var(--ai-spacing-7);
     }
 
     .ds-main__title {
-      font-size: var(--ai-font-fixed-3xl);
+      font-family: var(--ai-font-title);
+      font-size: var(--ai-font-fixed-4xl);
       font-weight: var(--ai-font-bold);
       color: var(--ai-text-primary);
-      margin: 0 0 var(--ai-spacing-2);
+      margin: 0;
       line-height: var(--ai-leading-xl);
+      letter-spacing: -0.32px;
     }
 
     .ds-main__subtitle {
+      font-family: var(--ai-font-title);
       font-size: var(--ai-font-fixed-sm);
-      color: var(--ai-text-secondary);
+      font-weight: var(--ai-font-regular);
+      line-height: var(--ai-leading-md);
+      color: var(--ai-text-contrast);
       margin: 0;
     }
 
@@ -198,10 +206,10 @@
 
     .ds-search__input {
       width: 100%;
-      max-width: 400px;
+      max-width: 371px;
       height: 40px;
       padding: 0 var(--ai-spacing-5);
-      background-color: var(--ai-surface-primary);
+      background-color: var(--ai-surface-minimal);
       border: 1px solid var(--ai-border-secondary);
       border-radius: var(--ai-radius-md);
       font-family: var(--ai-font-body);
@@ -216,21 +224,28 @@
     /* ── Section label ──────────────────────── */
 
     .ds-section {
-      margin-bottom: var(--ai-spacing-6);
+      margin-bottom: var(--ai-spacing-7);
     }
 
     .ds-section__label {
-      font-size: var(--ai-font-fixed-xs);
+      display: flex;
+      align-items: center;
+      gap: var(--ai-spacing-3);
+      font-family: var(--ai-font-title);
+      font-size: var(--ai-font-fixed-lg);
       font-weight: var(--ai-font-semibold);
-      color: var(--ai-text-contrast);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: var(--ai-spacing-4);
+      color: var(--ai-text-secondary);
+      margin-bottom: var(--ai-spacing-6);
     }
 
     .ds-section__label-count {
+      font-family: var(--ai-font-title);
+      font-size: var(--ai-font-fixed-xs);
       font-weight: var(--ai-font-regular);
+      color: var(--ai-text-contrast);
       opacity: 0.6;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
     }
 
     /* ── Grid ───────────────────────────────── */
@@ -238,16 +253,16 @@
     .ds-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: var(--ai-spacing-4);
+      gap: var(--ai-spacing-6);
     }
 
     .ds-card {
       display: flex;
       flex-direction: column;
-      gap: var(--ai-spacing-3);
+      gap: var(--ai-spacing-4);
       padding: var(--ai-spacing-5);
-      background-color: var(--ai-surface-primary);
-      border: 1px solid var(--ai-border-secondary);
+      background-color: var(--ai-surface-minimal);
+      border: 1px solid var(--ai-surface-elevated-2);
       border-radius: var(--ai-radius-lg);
       text-decoration: none;
       transition: border-color 0.15s, box-shadow 0.15s;
@@ -271,34 +286,32 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 36px;
-      height: 36px;
-      background-color: var(--ai-surface-brand-contrast-extra);
+      width: 32px;
+      height: 32px;
+      background-color: var(--ai-surface-elevated-2);
       border-radius: var(--ai-radius-md);
       color: var(--ai-icon-brand);
       flex-shrink: 0;
     }
 
-    .ds-card__icon [data-lucide] { width: 20px; height: 20px; }
+    .ds-card__icon [data-lucide] { width: 16px; height: 16px; }
 
     .ds-card__badge {
+      font-family: var(--ai-font-title);
       font-size: 10px;
       font-weight: var(--ai-font-semibold);
-      padding: 2px var(--ai-spacing-2);
+      padding: 2px var(--ai-spacing-3);
       border-radius: var(--ai-radius-sm);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.5px;
+      background: var(--ai-surface-elevated-2);
+      color: var(--ai-text-contrast);
     }
 
-    .ds-card__badge--ds { background: var(--ai-surface-brand-contrast-extra); color: var(--ai-surface-brand); }
-    .ds-card__badge--chat { background: #dcfce7; color: #16a34a; }
-    [data-theme="dark"] .ds-card__badge--chat { background: #14532d; color: #4ade80; }
-    .ds-card__badge--proto { background: #fef3c7; color: #d97706; }
-    [data-theme="dark"] .ds-card__badge--proto { background: #451a03; color: #fbbf24; }
-
     .ds-card__name {
+      font-family: var(--ai-font-title);
       font-size: var(--ai-font-fixed-sm);
       font-weight: var(--ai-font-semibold);
+      line-height: var(--ai-leading-lg);
       color: var(--ai-text-primary);
       margin: 0;
     }
