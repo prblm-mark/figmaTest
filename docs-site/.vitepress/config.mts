@@ -104,7 +104,7 @@ export default defineConfig({
       { text: 'Design System', link: sidebarData.designSystem?.components?.[0]?.link || '/components/' },
       { text: 'AI Chat', link: sidebarData.aiChat?.components?.[0]?.link || '/components/' },
       { text: 'Tokens', link: '/tokens/primitives' },
-      { text: 'Demos', link: `${(process.env.DOCS_BASE || '/').replace(/docs\/?$/, '')}` || '/' },
+      { text: 'Demos', link: 'https://prblm-mark.github.io/figmaTest/' },
     ],
   },
 
