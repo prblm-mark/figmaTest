@@ -125,36 +125,48 @@
       left: 0;
       bottom: 0;
       width: var(--ds-sidebar-w);
-      padding: var(--ai-spacing-5) var(--ai-spacing-5) var(--ai-spacing-5) var(--ai-spacing-5);
+      padding: 16px 17px 0 16px;
       overflow-y: auto;
       border-right: 1px solid var(--ai-border-secondary);
       background-color: var(--ai-surface-minimal);
       z-index: 40;
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-5);
     }
 
     .ds-sidebar__section {
-      margin-bottom: var(--ai-spacing-5);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-1);
     }
 
     .ds-sidebar__heading {
+      font-family: var(--ai-font-title);
       font-size: var(--ai-font-fixed-xxs);
-      font-weight: var(--ai-font-semibold);
-      color: var(--ai-text-contrast);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: var(--ai-spacing-2) var(--ai-spacing-3);
-      margin: 0 0 var(--ai-spacing-1);
+      font-weight: var(--ai-font-medium);
+      color: var(--ai-icon-contrast);
+      line-height: var(--ai-leading-md);
+      padding: 6px 8px;
+      margin: 0;
+      height: 32px;
+      display: flex;
+      align-items: center;
     }
 
     .ds-sidebar__item {
-      display: block;
-      padding: var(--ai-spacing-2) var(--ai-spacing-3);
+      display: flex;
+      align-items: center;
+      gap: var(--ai-spacing-3);
+      height: 32px;
+      padding: 6px 8px;
+      font-family: inherit;
       font-size: var(--ai-font-fixed-xs);
-      font-weight: var(--ai-font-regular);
-      color: var(--ai-text-secondary);
+      font-weight: var(--ai-font-medium);
+      color: var(--ai-text-primary);
       text-decoration: none;
       border-radius: var(--ai-radius-md);
-      transition: background 0.15s, color 0.15s;
+      transition: background 0.15s;
       cursor: pointer;
       border: none;
       background: none;
@@ -163,14 +175,11 @@
     }
 
     .ds-sidebar__item:hover {
-      background: var(--ai-surface-minimal);
-      color: var(--ai-text-primary);
+      background: var(--ai-surface-secondary);
     }
 
     .ds-sidebar__item--active {
       background: var(--ai-surface-secondary);
-      color: var(--ai-text-primary);
-      font-weight: var(--ai-font-medium);
     }
 
     .ds-sidebar__count {
