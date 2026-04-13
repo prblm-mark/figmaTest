@@ -6,11 +6,11 @@ hero:
   tagline: Component library built from Figma design tokens. Token-driven, accessible, dark mode ready.
   actions:
     - theme: brand
-      text: Browse Components
-      link: /components/button
+      text: Get Started
+      link: /getting-started
     - theme: alt
-      text: Token Reference
-      link: /tokens/
+      text: Browse Components
+      link: /components/avatar
 
 features:
   - title: Token-Driven

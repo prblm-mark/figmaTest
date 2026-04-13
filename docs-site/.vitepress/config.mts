@@ -27,7 +27,6 @@ export default defineConfig({
       {
         text: 'Getting Started',
         items: [
-          { text: 'Introduction', link: '/' },
           { text: 'Setup', link: '/getting-started' },
           { text: 'Team Setup', link: '/team-setup' },
           { text: 'Figma Workflow', link: '/guidelines/workflow' },
