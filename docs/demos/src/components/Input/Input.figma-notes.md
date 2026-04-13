@@ -4,6 +4,69 @@
 - File: `Lus07xi8pPXLN87sQIyrEt`
 - Component: node `78:2016` — [open in Figma](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=78-2016)
 
+## Configurations
+
+### Sizes
+
+| Size | Class | Height | Padding | Use |
+|---|---|---|---|---|
+| Base (default) | `.input` | 40px (`--ai-spacing-8`) | 16px (`--ai-spacing-5`) | Standard form inputs |
+| Small | `.input.input--sm` | 32px (`--ai-spacing-7`) | 12px (`--ai-spacing-4`) | Compact forms, inline filters |
+
+### States
+
+| State | Trigger | Border colour | Notes |
+|---|---|---|---|
+| Default | — | `--ai-border-secondary` | Resting state |
+| Hover | `:hover` | `--ai-border-brand` | Mouse over the field |
+| Focus | `:focus-within` | `--ai-border-brand` + focus ring | Keyboard or click into field |
+| Error | `.input--error` | `--ai-border-error` + red focus ring | Validation failed — add class via JS |
+| Disabled | `disabled` attribute | — | Not yet implemented in Figma |
+
+### Optional elements
+
+| Element | Class | Visibility | Notes |
+|---|---|---|---|
+| Label | `.input__label` | Always shown | Remove from HTML to hide |
+| Left icon | `.input__icon` | Optional | Lucide icon, `--ai-icon-contrast` |
+| Clear button | `.input__clear` | Auto — shown when input has value | Uses `:has(:not(:placeholder-shown))`, no JS |
+| Help text | `.input__help` | Optional | Below the field. Turns `--ai-text-error` in error state |
+
+### Usage examples
+
+**Standard input with label and help text:**
+```html
+<div class="input">
+  <label class="input__label">First Name</label>
+  <div class="input__wrap">
+    <input class="input__control" type="text" placeholder="Enter name">
+  </div>
+  <p class="input__help">Required field</p>
+</div>
+```
+
+**Small input without label:**
+```html
+<div class="input input--sm">
+  <div class="input__wrap">
+    <input class="input__control" type="text" placeholder="Search...">
+  </div>
+</div>
+```
+
+**Error state:**
+```html
+<div class="input input--error">
+  <label class="input__label">Email</label>
+  <div class="input__wrap">
+    <input class="input__control" type="email" placeholder="Email" value="invalid">
+  </div>
+  <p class="input__help">Please enter a valid email address</p>
+</div>
+```
+
+---
+
 ## Variant × Size × State Matrix
 
 | Size | State | Border token | Height |

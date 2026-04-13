@@ -6,6 +6,93 @@
 - **File:** Affino AI — Design System
 - **Node:** `2043:2985`
 
+## Configurations
+
+### States
+
+| State | Trigger | Visual | Notes |
+|---|---|---|---|
+| Initial | — | `--ai-border-secondary` border, `--ai-surface-minimal` bg, `--ai-radius-sm` | Unchecked resting state |
+| Checked | Native `checked` attribute | `--ai-surface-brand` bg, `--ai-border-brand` border, white check icon | Lucide `check` icon (14x14) in `--ai-text-invert` |
+| Disabled | Native `disabled` attribute | 50% opacity, `cursor: not-allowed` | Works with both checked and unchecked |
+
+### Optional elements
+
+| Element | Class | Visibility | Notes |
+|---|---|---|---|
+| Label text | `.checkbox__label` | Always shown | `--ai-text-primary`, `--ai-font-fixed-xs` |
+| Helper text | `.checkbox__helper` | Optional | `--ai-text-contrast`, `--ai-font-fixed-xxs`. Remove from HTML to hide |
+
+### Usage examples
+
+**Single checkbox:**
+```html
+<label class="checkbox">
+  <input class="checkbox__input" type="checkbox">
+  <span class="checkbox__indicator">
+    <i data-lucide="check"></i>
+  </span>
+  <span class="checkbox__text">
+    <span class="checkbox__label">Accept terms</span>
+  </span>
+</label>
+```
+
+**Checkbox group:**
+```html
+<fieldset class="checkbox-group">
+  <label class="checkbox">
+    <input class="checkbox__input" type="checkbox" name="features" value="notifications">
+    <span class="checkbox__indicator">
+      <i data-lucide="check"></i>
+    </span>
+    <span class="checkbox__text">
+      <span class="checkbox__label">Email notifications</span>
+      <span class="checkbox__helper">Receive updates by email</span>
+    </span>
+  </label>
+  <label class="checkbox">
+    <input class="checkbox__input" type="checkbox" name="features" value="analytics">
+    <span class="checkbox__indicator">
+      <i data-lucide="check"></i>
+    </span>
+    <span class="checkbox__text">
+      <span class="checkbox__label">Usage analytics</span>
+      <span class="checkbox__helper">Help us improve the product</span>
+    </span>
+  </label>
+</fieldset>
+```
+
+**Pre-checked checkbox:**
+```html
+<label class="checkbox">
+  <input class="checkbox__input" type="checkbox" checked>
+  <span class="checkbox__indicator">
+    <i data-lucide="check"></i>
+  </span>
+  <span class="checkbox__text">
+    <span class="checkbox__label">Remember me</span>
+  </span>
+</label>
+```
+
+**Disabled checkbox:**
+```html
+<label class="checkbox">
+  <input class="checkbox__input" type="checkbox" disabled>
+  <span class="checkbox__indicator">
+    <i data-lucide="check"></i>
+  </span>
+  <span class="checkbox__text">
+    <span class="checkbox__label">Premium feature</span>
+    <span class="checkbox__helper">Upgrade to access this feature</span>
+  </span>
+</label>
+```
+
+---
+
 ## Variant Matrix
 
 | Variant  | Description                       |
