@@ -6,6 +6,90 @@
 - **File:** Affino AI — Design System
 - **Node:** `2025:1080`
 
+## Configurations
+
+### Sizes
+
+| Size | Class | Track | Knob | Use |
+|---|---|---|---|---|
+| SM (default) | `.toggle-ds` | 40x20px | 16px | Compact UI, inline settings |
+| Default | `.toggle-ds.toggle-ds--default` | 44x24px | 19px | Standard form toggles |
+| LG | `.toggle-ds.toggle-ds--lg` | 56x28px | 22px | Prominent feature toggles |
+
+### States
+
+| State | Trigger | Visual | Notes |
+|---|---|---|---|
+| Initial | — | `--ai-surface-contrast` track, knob left | Inactive resting state |
+| Active | `.toggle-ds--active` class + `aria-pressed="true"` | `--ai-surface-brand` track, knob slides right | Toggled via JS click handler |
+| Disabled | `.toggle-ds--disabled` class | 50% opacity, `cursor: not-allowed` | Works with both active and inactive |
+
+### Optional elements
+
+| Element | Class | Visibility | Notes |
+|---|---|---|---|
+| Label text | `.toggle-ds__label` | Always shown | SM: `--ai-font-fixed-xs`; Default/LG: `--ai-font-fixed-sm` |
+| Helper text | `.toggle-ds__helper` | Optional | SM: `--ai-font-fixed-xxs`; Default/LG: `--ai-font-fixed-xs`. Remove from HTML to hide |
+
+### Usage examples
+
+**Basic toggle (SM, default size):**
+```html
+<div class="toggle-ds__wrapper">
+  <button class="toggle-ds" type="button" role="switch" aria-pressed="false">
+    <span class="toggle-ds__knob"></span>
+  </button>
+  <span class="toggle-ds__text">
+    <span class="toggle-ds__label">Dark mode</span>
+  </span>
+</div>
+```
+
+**Active toggle:**
+```html
+<div class="toggle-ds__wrapper">
+  <button class="toggle-ds toggle-ds--active" type="button" role="switch" aria-pressed="true">
+    <span class="toggle-ds__knob"></span>
+  </button>
+  <span class="toggle-ds__text">
+    <span class="toggle-ds__label">Notifications</span>
+  </span>
+</div>
+```
+
+**With label and helper text (Default size):**
+```html
+<div class="toggle-ds__wrapper">
+  <button class="toggle-ds toggle-ds--default" type="button" role="switch" aria-pressed="false">
+    <span class="toggle-ds__knob"></span>
+  </button>
+  <span class="toggle-ds__text">
+    <span class="toggle-ds__label">Auto-save</span>
+    <span class="toggle-ds__helper">Automatically save changes every 5 minutes</span>
+  </span>
+</div>
+```
+
+**Different sizes:**
+```html
+<!-- SM (base) -->
+<button class="toggle-ds" type="button" role="switch" aria-pressed="false">
+  <span class="toggle-ds__knob"></span>
+</button>
+
+<!-- Default -->
+<button class="toggle-ds toggle-ds--default" type="button" role="switch" aria-pressed="false">
+  <span class="toggle-ds__knob"></span>
+</button>
+
+<!-- LG -->
+<button class="toggle-ds toggle-ds--lg" type="button" role="switch" aria-pressed="false">
+  <span class="toggle-ds__knob"></span>
+</button>
+```
+
+---
+
 ## Variant Matrix
 
 | Size    | State    | Description                           |
