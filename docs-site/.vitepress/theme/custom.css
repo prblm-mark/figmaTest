@@ -17,6 +17,12 @@ html.dark {
   --vp-c-brand-soft: var(--ai-surface-brand-contrast-extra);
 }
 
+/* Align home hero width with feature cards */
+.VPHero .container {
+  max-width: 1152px;
+  margin: 0 auto;
+}
+
 /* Component demo iframe styling */
 .component-demo {
   border: 1px solid var(--vp-c-divider);
