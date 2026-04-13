@@ -10,6 +10,26 @@ The 16px browser default (`1rem`) serves as the baseline — all tokens output `
 
 Used for padding, margin, and gap. 13 steps from 4px to 80px.
 
+### Visual reference
+
+<div style="display:flex;flex-direction:column;gap:6px;margin:16px 0 24px">
+  <div style="display:flex;align-items:center;gap:12px"><code style="width:120px;flex-shrink:0;font-size:12px">spacing-1</code><span style="display:block;height:12px;width:4px;background:var(--vp-c-brand-1,#0071d8);border-radius:2px"></span><span style="font-size:11px;color:var(--vp-c-text-3)">4px</span></div>
+  <div style="display:flex;align-items:center;gap:12px"><code style="width:120px;flex-shrink:0;font-size:12px">spacing-2</code><span style="display:block;height:12px;width:6px;background:var(--vp-c-brand-1,#0071d8);border-radius:2px"></span><span style="font-size:11px;color:var(--vp-c-text-3)">6px</span></div>
+  <div style="display:flex;align-items:center;gap:12px"><code style="width:120px;flex-shrink:0;font-size:12px">spacing-3</code><span style="display:block;height:12px;width:8px;background:var(--vp-c-brand-1,#0071d8);border-radius:2px"></span><span style="font-size:11px;color:var(--vp-c-text-3)">8px</span></div>
+  <div style="display:flex;align-items:center;gap:12px"><code style="width:120px;flex-shrink:0;font-size:12px">spacing-4</code><span style="display:block;height:12px;width:12px;background:var(--vp-c-brand-1,#0071d8);border-radius:2px"></span><span style="font-size:11px;color:var(--vp-c-text-3)">12px</span></div>
+  <div style="display:flex;align-items:center;gap:12px"><code style="width:120px;flex-shrink:0;font-size:12px">spacing-5</code><span style="display:block;height:12px;width:16px;background:var(--vp-c-brand-1,#0071d8);border-radius:2px"></span><span style="font-size:11px;color:var(--vp-c-text-3)">16px</span></div>
+  <div style="display:flex;align-items:center;gap:12px"><code style="width:120px;flex-shrink:0;font-size:12px">spacing-6</code><span style="display:block;height:12px;width:24px;background:var(--vp-c-brand-1,#0071d8);border-radius:2px"></span><span style="font-size:11px;color:var(--vp-c-text-3)">24px</span></div>
+  <div style="display:flex;align-items:center;gap:12px"><code style="width:120px;flex-shrink:0;font-size:12px">spacing-7</code><span style="display:block;height:12px;width:32px;background:var(--vp-c-brand-1,#0071d8);border-radius:2px"></span><span style="font-size:11px;color:var(--vp-c-text-3)">32px</span></div>
+  <div style="display:flex;align-items:center;gap:12px"><code style="width:120px;flex-shrink:0;font-size:12px">spacing-8</code><span style="display:block;height:12px;width:40px;background:var(--vp-c-brand-1,#0071d8);border-radius:2px"></span><span style="font-size:11px;color:var(--vp-c-text-3)">40px</span></div>
+  <div style="display:flex;align-items:center;gap:12px"><code style="width:120px;flex-shrink:0;font-size:12px">spacing-9</code><span style="display:block;height:12px;width:48px;background:var(--vp-c-brand-1,#0071d8);border-radius:2px"></span><span style="font-size:11px;color:var(--vp-c-text-3)">48px</span></div>
+  <div style="display:flex;align-items:center;gap:12px"><code style="width:120px;flex-shrink:0;font-size:12px">spacing-10</code><span style="display:block;height:12px;width:56px;background:var(--vp-c-brand-1,#0071d8);border-radius:2px"></span><span style="font-size:11px;color:var(--vp-c-text-3)">56px</span></div>
+  <div style="display:flex;align-items:center;gap:12px"><code style="width:120px;flex-shrink:0;font-size:12px">spacing-11</code><span style="display:block;height:12px;width:64px;background:var(--vp-c-brand-1,#0071d8);border-radius:2px"></span><span style="font-size:11px;color:var(--vp-c-text-3)">64px</span></div>
+  <div style="display:flex;align-items:center;gap:12px"><code style="width:120px;flex-shrink:0;font-size:12px">spacing-12</code><span style="display:block;height:12px;width:72px;background:var(--vp-c-brand-1,#0071d8);border-radius:2px"></span><span style="font-size:11px;color:var(--vp-c-text-3)">72px</span></div>
+  <div style="display:flex;align-items:center;gap:12px"><code style="width:120px;flex-shrink:0;font-size:12px">spacing-13</code><span style="display:block;height:12px;width:80px;background:var(--vp-c-brand-1,#0071d8);border-radius:2px"></span><span style="font-size:11px;color:var(--vp-c-text-3)">80px</span></div>
+</div>
+
+### Token reference
+
 | Token | rem | px | Grid | Use |
 |---|---|---|---|---|
 | `--ai-spacing-0` | `0rem` | 0 | — | Zero spacing |
