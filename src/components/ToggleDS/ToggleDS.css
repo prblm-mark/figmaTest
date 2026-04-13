@@ -1,0 +1,151 @@
+/* ToggleDS component (Design System version)
+ * Figma node: 2025:1080 — "Toggle"
+ * Sizes: SM (default), Default, LG
+ * States: Initial, Active, Disabled
+ * Distinct from src/components/Toggle/ (AI Chat version)
+ */
+
+/* ── Outer wrapper ──────────────────────────────────── */
+
+.toggle-ds {
+  display: flex;
+  gap: var(--ai-spacing-3);               /* 8px */
+  align-items: flex-start;
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 1px 0;
+}
+
+/* ── Track (SM — default size) ──────────────────────── */
+
+.toggle-ds__track {
+  position: relative;
+  width: 40px;
+  height: 20px;
+  flex-shrink: 0;
+  background: var(--ai-surface-contrast);
+  border-radius: var(--ai-radius-full);
+  transition: background var(--ai-transition-default);
+}
+
+/* ── Knob (SM) ──────────────────────────────────────── */
+
+.toggle-ds__knob {
+  position: absolute;
+  top: 2px;
+  left: 2.5px;
+  width: 16px;
+  height: 16px;
+  background: var(--ai-surface-primary);
+  border-radius: var(--ai-radius-full);
+  transition: left var(--ai-transition-default);
+}
+
+/* ── Active state ───────────────────────────────────── */
+
+.toggle-ds--active .toggle-ds__track {
+  background: var(--ai-surface-brand);
+}
+
+.toggle-ds--active .toggle-ds__knob {
+  left: calc(100% - 16px - 2.5px);
+}
+
+/* ── Disabled state ─────────────────────────────────── */
+
+.toggle-ds--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Focus ring ─────────────────────────────────────── */
+
+.toggle-ds:focus-visible .toggle-ds__track {
+  box-shadow: 0 0 0 1px var(--ai-surface-primary),
+              0 0 0 3px var(--ai-surface-brand-contrast);
+  outline: none;
+}
+
+/* ── Label wrapper ──────────────────────────────────── */
+
+.toggle-ds__label {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Label text (SM) ────────────────────────────────── */
+
+.toggle-ds__label-text {
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-medium);
+  font-size: var(--ai-font-fixed-xs);     /* 14px */
+  line-height: 1.25;
+  color: var(--ai-text-primary);
+  margin: 0;
+}
+
+/* ── Helper text (SM) ───────────────────────────────── */
+
+.toggle-ds__helper {
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-xxs);    /* 12px */
+  line-height: 1.5;
+  color: var(--ai-text-contrast);
+  margin: 0;
+}
+
+/* ── Size: Default ──────────────────────────────────── */
+
+.toggle-ds--default .toggle-ds__track {
+  width: 44px;
+  height: 24px;
+}
+
+.toggle-ds--default .toggle-ds__knob {
+  width: 19px;
+  height: 19px;
+  top: 2.5px;
+  left: 2.75px;
+}
+
+.toggle-ds--default.toggle-ds--active .toggle-ds__knob {
+  left: calc(100% - 19px - 2.75px);
+}
+
+.toggle-ds--default .toggle-ds__label-text {
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-sm);     /* 16px */
+}
+
+.toggle-ds--default .toggle-ds__helper {
+  font-size: var(--ai-font-fixed-xs);     /* 14px */
+}
+
+/* ── Size: LG ───────────────────────────────────────── */
+
+.toggle-ds--lg .toggle-ds__track {
+  width: 56px;
+  height: 28px;
+}
+
+.toggle-ds--lg .toggle-ds__knob {
+  width: 22px;
+  height: 22px;
+  top: 3px;
+  left: 3.5px;
+}
+
+.toggle-ds--lg.toggle-ds--active .toggle-ds__knob {
+  left: calc(100% - 22px - 3.5px);
+}
+
+.toggle-ds--lg .toggle-ds__label-text {
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-sm);     /* 16px */
+}
+
+.toggle-ds--lg .toggle-ds__helper {
+  font-size: var(--ai-font-fixed-xs);     /* 14px */
+}
