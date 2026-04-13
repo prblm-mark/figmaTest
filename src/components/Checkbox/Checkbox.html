@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>Checkbox — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="Checkbox.css">
+  <style>
+    body { padding: var(--ai-spacing-7); background: var(--ai-surface-primary); min-height: 100vh; }
+    .demo-section {
+      padding: var(--ai-spacing-6);
+      background: var(--ai-surface-primary);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-lg);
+      margin-bottom: var(--ai-spacing-5);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-5);
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-6);">Checkbox</h1>
+
+  <!-- Initial state -->
+  <div class="demo-section">
+    <h2 class="demo-section__title">Initial</h2>
+    <label class="checkbox">
+      <input type="checkbox" class="checkbox__input">
+      <span class="checkbox__indicator">
+        <i data-lucide="check" aria-hidden="true"></i>
+      </span>
+      <span class="checkbox__label">
+        <span class="checkbox__label-text">Label</span>
+        <span class="checkbox__helper">Helper text</span>
+      </span>
+    </label>
+  </div>
+
+  <!-- Checked state -->
+  <div class="demo-section">
+    <h2 class="demo-section__title">Checked</h2>
+    <label class="checkbox">
+      <input type="checkbox" class="checkbox__input" checked>
+      <span class="checkbox__indicator">
+        <i data-lucide="check" aria-hidden="true"></i>
+      </span>
+      <span class="checkbox__label">
+        <span class="checkbox__label-text">Label</span>
+        <span class="checkbox__helper">Helper text</span>
+      </span>
+    </label>
+  </div>
+
+  <!-- Disabled state -->
+  <div class="demo-section">
+    <h2 class="demo-section__title">Disabled</h2>
+    <label class="checkbox">
+      <input type="checkbox" class="checkbox__input" disabled>
+      <span class="checkbox__indicator">
+        <i data-lucide="check" aria-hidden="true"></i>
+      </span>
+      <span class="checkbox__label">
+        <span class="checkbox__label-text">Disabled unchecked</span>
+        <span class="checkbox__helper">Helper text</span>
+      </span>
+    </label>
+    <label class="checkbox">
+      <input type="checkbox" class="checkbox__input" checked disabled>
+      <span class="checkbox__indicator">
+        <i data-lucide="check" aria-hidden="true"></i>
+      </span>
+      <span class="checkbox__label">
+        <span class="checkbox__label-text">Disabled checked</span>
+        <span class="checkbox__helper">Helper text</span>
+      </span>
+    </label>
+  </div>
+
+  <!-- Checkbox group -->
+  <div class="demo-section">
+    <h2 class="demo-section__title">Group</h2>
+    <label class="checkbox">
+      <input type="checkbox" class="checkbox__input" name="demo-group" value="option-1" checked>
+      <span class="checkbox__indicator">
+        <i data-lucide="check" aria-hidden="true"></i>
+      </span>
+      <span class="checkbox__label">
+        <span class="checkbox__label-text">Option 1</span>
+        <span class="checkbox__helper">Description for option 1</span>
+      </span>
+    </label>
+    <label class="checkbox">
+      <input type="checkbox" class="checkbox__input" name="demo-group" value="option-2">
+      <span class="checkbox__indicator">
+        <i data-lucide="check" aria-hidden="true"></i>
+      </span>
+      <span class="checkbox__label">
+        <span class="checkbox__label-text">Option 2</span>
+        <span class="checkbox__helper">Description for option 2</span>
+      </span>
+    </label>
+    <label class="checkbox">
+      <input type="checkbox" class="checkbox__input" name="demo-group" value="option-3">
+      <span class="checkbox__indicator">
+        <i data-lucide="check" aria-hidden="true"></i>
+      </span>
+      <span class="checkbox__label">
+        <span class="checkbox__label-text">Option 3</span>
+        <span class="checkbox__helper">Description for option 3</span>
+      </span>
+    </label>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

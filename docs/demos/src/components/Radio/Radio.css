@@ -1,0 +1,95 @@
+/* Radio component
+ * Figma node: 2030:1622 — "Radio"
+ * States: Initial, Checked, Disabled
+ */
+
+/* ── Outer wrapper ──────────────────────────────────── */
+
+.radio {
+  display: flex;
+  gap: var(--ai-spacing-3);               /* 8px */
+  align-items: flex-start;
+  cursor: pointer;
+}
+
+/* ── Hidden native input ────────────────────────────── */
+
+.radio__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* ── Visual circle ──────────────────────────────────── */
+
+.radio__indicator {
+  width: 16px;
+  height: 16px;
+  border-radius: var(--ai-radius-full);
+  flex-shrink: 0;
+  background: var(--ai-surface-minimal);
+  border: 1px solid var(--ai-border-secondary);
+  transition: border-color var(--ai-transition-default),
+              background var(--ai-transition-default);
+}
+
+/* ── Checked state ──────────────────────────────────── */
+
+.radio__input:checked + .radio__indicator {
+  background: var(--ai-surface-primary);
+  border: var(--ai-spacing-1) solid var(--ai-border-brand);  /* 4px — creates filled ring */
+}
+
+/* ── Disabled state ─────────────────────────────────── */
+
+.radio__input:disabled {
+  cursor: not-allowed;
+}
+
+.radio__input:disabled ~ * {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.radio:has(.radio__input:disabled) {
+  cursor: not-allowed;
+}
+
+/* ── Focus ring ─────────────────────────────────────── */
+
+.radio__input:focus-visible + .radio__indicator {
+  box-shadow: 0 0 0 1px var(--ai-surface-primary),
+              0 0 0 3px var(--ai-surface-brand-contrast);
+  outline: none;
+}
+
+/* ── Label wrapper ──────────────────────────────────── */
+
+.radio__label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-1);               /* 4px */
+}
+
+/* ── Label text ─────────────────────────────────────── */
+
+.radio__label-text {
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-medium);
+  font-size: var(--ai-font-fixed-xs);     /* 14px */
+  line-height: var(--ai-leading-xs);       /* 16px */
+  color: var(--ai-text-primary);
+  margin: 0;
+}
+
+/* ── Helper text ────────────────────────────────────── */
+
+.radio__helper {
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-xxs);    /* 12px */
+  line-height: var(--ai-leading-xs);       /* 16px */
+  color: var(--ai-text-contrast);
+  margin: 0;
+}

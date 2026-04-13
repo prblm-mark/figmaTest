@@ -1,0 +1,111 @@
+/* Checkbox component
+ * Figma node: 2043:2985 — "Checkbox"
+ * States: Initial, Checked, Disabled
+ */
+
+/* ── Outer wrapper ──────────────────────────────────── */
+
+.checkbox {
+  display: flex;
+  gap: var(--ai-spacing-3);               /* 8px */
+  align-items: flex-start;
+  cursor: pointer;
+}
+
+/* ── Hidden native input ────────────────────────────── */
+
+.checkbox__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* ── Visual indicator ───────────────────────────────── */
+
+.checkbox__indicator {
+  width: 16px;
+  height: 16px;
+  border-radius: var(--ai-radius-sm);     /* 4px — rounded square */
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ai-surface-minimal);
+  border: 1px solid var(--ai-border-secondary);
+  transition: border-color var(--ai-transition-default),
+              background var(--ai-transition-default);
+}
+
+/* ── Check icon (hidden by default) ─────────────────── */
+
+.checkbox__indicator [data-lucide] {
+  width: 14px;
+  height: 14px;
+  color: var(--ai-text-invert);
+  display: none;
+}
+
+/* ── Checked state ──────────────────────────────────── */
+
+.checkbox__input:checked + .checkbox__indicator {
+  background: var(--ai-surface-brand);
+  border-color: var(--ai-border-brand);
+}
+
+.checkbox__input:checked + .checkbox__indicator [data-lucide] {
+  display: block;
+}
+
+/* ── Disabled state ─────────────────────────────────── */
+
+.checkbox__input:disabled {
+  cursor: not-allowed;
+}
+
+.checkbox__input:disabled ~ * {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.checkbox:has(.checkbox__input:disabled) {
+  cursor: not-allowed;
+}
+
+/* ── Focus ring ─────────────────────────────────────── */
+
+.checkbox__input:focus-visible + .checkbox__indicator {
+  box-shadow: 0 0 0 1px var(--ai-surface-primary),
+              0 0 0 3px var(--ai-surface-brand-contrast);
+  outline: none;
+}
+
+/* ── Label wrapper ──────────────────────────────────── */
+
+.checkbox__label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-1);               /* 4px */
+}
+
+/* ── Label text ─────────────────────────────────────── */
+
+.checkbox__label-text {
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-medium);
+  font-size: var(--ai-font-fixed-xs);     /* 14px */
+  line-height: var(--ai-leading-xs);       /* 16px */
+  color: var(--ai-text-primary);
+  margin: 0;
+}
+
+/* ── Helper text ────────────────────────────────────── */
+
+.checkbox__helper {
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-xxs);    /* 12px */
+  line-height: var(--ai-leading-xs);       /* 16px */
+  color: var(--ai-text-contrast);
+  margin: 0;
+}

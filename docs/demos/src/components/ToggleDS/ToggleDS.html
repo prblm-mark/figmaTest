@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>Toggle DS — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="ToggleDS.css">
+  <style>
+    body { padding: var(--ai-spacing-7); background: var(--ai-surface-primary); min-height: 100vh; }
+    .demo-section {
+      padding: var(--ai-spacing-6);
+      background: var(--ai-surface-primary);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-lg);
+      margin-bottom: var(--ai-spacing-5);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-5);
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0;
+    }
+    .demo-row {
+      display: flex;
+      gap: var(--ai-spacing-7);
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-6);">Toggle DS</h1>
+
+  <!-- SM size -->
+  <div class="demo-section">
+    <h2 class="demo-section__title">SM (default)</h2>
+    <div class="demo-row">
+      <button type="button" class="toggle-ds" aria-pressed="false">
+        <span class="toggle-ds__track">
+          <span class="toggle-ds__knob"></span>
+        </span>
+        <span class="toggle-ds__label">
+          <span class="toggle-ds__label-text">Initial</span>
+          <span class="toggle-ds__helper">Helper text</span>
+        </span>
+      </button>
+
+      <button type="button" class="toggle-ds toggle-ds--active" aria-pressed="true">
+        <span class="toggle-ds__track">
+          <span class="toggle-ds__knob"></span>
+        </span>
+        <span class="toggle-ds__label">
+          <span class="toggle-ds__label-text">Active</span>
+          <span class="toggle-ds__helper">Helper text</span>
+        </span>
+      </button>
+
+      <button type="button" class="toggle-ds toggle-ds--disabled" aria-pressed="false" aria-disabled="true" disabled>
+        <span class="toggle-ds__track">
+          <span class="toggle-ds__knob"></span>
+        </span>
+        <span class="toggle-ds__label">
+          <span class="toggle-ds__label-text">Disabled</span>
+          <span class="toggle-ds__helper">Helper text</span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Default size -->
+  <div class="demo-section">
+    <h2 class="demo-section__title">Default</h2>
+    <div class="demo-row">
+      <button type="button" class="toggle-ds toggle-ds--default" aria-pressed="false">
+        <span class="toggle-ds__track">
+          <span class="toggle-ds__knob"></span>
+        </span>
+        <span class="toggle-ds__label">
+          <span class="toggle-ds__label-text">Initial</span>
+          <span class="toggle-ds__helper">Helper text</span>
+        </span>
+      </button>
+
+      <button type="button" class="toggle-ds toggle-ds--default toggle-ds--active" aria-pressed="true">
+        <span class="toggle-ds__track">
+          <span class="toggle-ds__knob"></span>
+        </span>
+        <span class="toggle-ds__label">
+          <span class="toggle-ds__label-text">Active</span>
+          <span class="toggle-ds__helper">Helper text</span>
+        </span>
+      </button>
+
+      <button type="button" class="toggle-ds toggle-ds--default toggle-ds--disabled" aria-pressed="false" aria-disabled="true" disabled>
+        <span class="toggle-ds__track">
+          <span class="toggle-ds__knob"></span>
+        </span>
+        <span class="toggle-ds__label">
+          <span class="toggle-ds__label-text">Disabled</span>
+          <span class="toggle-ds__helper">Helper text</span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- LG size -->
+  <div class="demo-section">
+    <h2 class="demo-section__title">LG</h2>
+    <div class="demo-row">
+      <button type="button" class="toggle-ds toggle-ds--lg" aria-pressed="false">
+        <span class="toggle-ds__track">
+          <span class="toggle-ds__knob"></span>
+        </span>
+        <span class="toggle-ds__label">
+          <span class="toggle-ds__label-text">Initial</span>
+          <span class="toggle-ds__helper">Helper text</span>
+        </span>
+      </button>
+
+      <button type="button" class="toggle-ds toggle-ds--lg toggle-ds--active" aria-pressed="true">
+        <span class="toggle-ds__track">
+          <span class="toggle-ds__knob"></span>
+        </span>
+        <span class="toggle-ds__label">
+          <span class="toggle-ds__label-text">Active</span>
+          <span class="toggle-ds__helper">Helper text</span>
+        </span>
+      </button>
+
+      <button type="button" class="toggle-ds toggle-ds--lg toggle-ds--disabled" aria-pressed="false" aria-disabled="true" disabled>
+        <span class="toggle-ds__track">
+          <span class="toggle-ds__knob"></span>
+        </span>
+        <span class="toggle-ds__label">
+          <span class="toggle-ds__label-text">Disabled</span>
+          <span class="toggle-ds__helper">Helper text</span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    lucide.createIcons();
+
+    // Toggle active state on click
+    document.querySelectorAll('.toggle-ds:not(.toggle-ds--disabled)').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.classList.toggle('toggle-ds--active');
+        const isActive = btn.classList.contains('toggle-ds--active');
+        btn.setAttribute('aria-pressed', isActive);
+      });
+    });
+  </script>
+</body>
+</html>

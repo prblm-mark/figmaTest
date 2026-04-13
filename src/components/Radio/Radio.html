@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>Radio — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="Radio.css">
+  <style>
+    body { padding: var(--ai-spacing-7); background: var(--ai-surface-primary); min-height: 100vh; }
+    .demo-section {
+      padding: var(--ai-spacing-6);
+      background: var(--ai-surface-primary);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-lg);
+      margin-bottom: var(--ai-spacing-5);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-5);
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-6);">Radio</h1>
+
+  <!-- Initial state -->
+  <div class="demo-section">
+    <h2 class="demo-section__title">Initial</h2>
+    <label class="radio">
+      <input type="radio" class="radio__input" name="demo-initial">
+      <span class="radio__indicator"></span>
+      <span class="radio__label">
+        <span class="radio__label-text">Label</span>
+        <span class="radio__helper">Helper text</span>
+      </span>
+    </label>
+  </div>
+
+  <!-- Checked state -->
+  <div class="demo-section">
+    <h2 class="demo-section__title">Checked</h2>
+    <label class="radio">
+      <input type="radio" class="radio__input" name="demo-checked" checked>
+      <span class="radio__indicator"></span>
+      <span class="radio__label">
+        <span class="radio__label-text">Label</span>
+        <span class="radio__helper">Helper text</span>
+      </span>
+    </label>
+  </div>
+
+  <!-- Disabled state -->
+  <div class="demo-section">
+    <h2 class="demo-section__title">Disabled</h2>
+    <label class="radio">
+      <input type="radio" class="radio__input" name="demo-disabled-unchecked" disabled>
+      <span class="radio__indicator"></span>
+      <span class="radio__label">
+        <span class="radio__label-text">Disabled unchecked</span>
+        <span class="radio__helper">Helper text</span>
+      </span>
+    </label>
+    <label class="radio">
+      <input type="radio" class="radio__input" name="demo-disabled-checked" checked disabled>
+      <span class="radio__indicator"></span>
+      <span class="radio__label">
+        <span class="radio__label-text">Disabled checked</span>
+        <span class="radio__helper">Helper text</span>
+      </span>
+    </label>
+  </div>
+
+  <!-- Radio group -->
+  <div class="demo-section">
+    <h2 class="demo-section__title">Radio Group</h2>
+    <label class="radio">
+      <input type="radio" class="radio__input" name="demo-group" value="option-1" checked>
+      <span class="radio__indicator"></span>
+      <span class="radio__label">
+        <span class="radio__label-text">Option 1</span>
+        <span class="radio__helper">Description for option 1</span>
+      </span>
+    </label>
+    <label class="radio">
+      <input type="radio" class="radio__input" name="demo-group" value="option-2">
+      <span class="radio__indicator"></span>
+      <span class="radio__label">
+        <span class="radio__label-text">Option 2</span>
+        <span class="radio__helper">Description for option 2</span>
+      </span>
+    </label>
+    <label class="radio">
+      <input type="radio" class="radio__input" name="demo-group" value="option-3">
+      <span class="radio__indicator"></span>
+      <span class="radio__label">
+        <span class="radio__label-text">Option 3</span>
+        <span class="radio__helper">Description for option 3</span>
+      </span>
+    </label>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
