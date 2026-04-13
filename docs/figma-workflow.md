@@ -44,24 +44,24 @@ FIGMA (via generate_figma_design MCP tool)
 > **Tip:** Link to the component itself (in the component library), not an instance on the canvas,
 > for the most accurate variable data.
 
-### Step 2: Prompt Claude Code
+### Step 2: Use the /build-component skill
 
-Paste the URL into Claude Code with a prompt like:
-
-```
-Build the Button component from this Figma URL:
-https://www.figma.com/design/...
-
-Use only --ai-* CSS variables. Create the files in src/components/Button/.
-```
-
-Or for a more specific ask:
+Paste the Figma node URL and invoke the build skill:
 
 ```
-Here's the Card component from Figma: [URL]
-Generate src/components/Card/Card.css and Card.html following our component
-architecture from CLAUDE.md.
+/build-component https://www.figma.com/design/...?node-id=123-456
 ```
+
+This triggers a structured process that:
+1. Fetches metadata to enumerate all variants
+2. Fetches design context for each variant
+3. Scans for nested component dependencies
+4. Maps Figma variables to `--ai-*` tokens
+5. Generates HTML, CSS, and figma-notes.md following the project's component architecture
+
+> **Do not use a freeform prompt.** The `/build-component` skill enforces the full variant audit,
+> token gap checks, and bottom-up dependency resolution defined in CLAUDE.md. A freeform prompt
+> risks skipping variants or hardcoding values.
 
 ### Step 3: What Claude does internally
 
@@ -110,22 +110,36 @@ This closes the loop: design refines, exports again, you run `npm run tokens` an
 ### How the token pipeline works
 
 ```
-FIGMA (Variables panel)
+FIGMA
+  ├── Design System library (Primitives, Scale, Semantic Light/Dark, Typography)
+  └── AI Chat file (Semantic Chat Light/Chat Dark)
   │
   │  Designer exports variables as DTCG JSON
   ▼
 FigmaTokens/          ← JSON files (source of truth, never edit manually)
   ├── Primitive.tokens.json
-  ├── Light.tokens.json
+  ├── Scale/Scale.tokens.json
+  ├── Semantic/
+  │   ├── Light.tokens.json       (from Design System library)
+  │   ├── Dark.tokens.json        (from Design System library)
+  │   ├── ChatLight.tokens.json   (from AI Chat file)
+  │   └── ChatDark.tokens.json    (from AI Chat file)
   └── Typography/
       ├── Desktop.tokens.json
-      └── Mobile.tokens.json
+      ├── Mobile.tokens.json
+      └── Minimised.tokens.json
   │
   │  npm run tokens
   ▼
-css/tokens.css        ← Generated CSS custom properties (--ai-* variables)
+css/
+  ├── tokens.css              ← :root (light)
+  ├── tokens-dark.css         ← [data-theme="dark"]
+  ├── tokens-chat.css         ← [data-surface="chat"]
+  ├── tokens-chat-dark.css    ← [data-theme="dark"] [data-surface="chat"]
+  ├── tokens-mobile.css       ← @media (max-width: 639px)
+  └── tokens-minimised.css    ← [data-layout="minimised"]
   │
-  │  All components reference these automatically
+  │  All components reference --ai-* variables automatically
   ▼
 Browser / Build
 ```
@@ -168,12 +182,24 @@ The export produces DTCG JSON with Figma's proprietary extensions (`com.figma.va
 4. Unzip it — you'll find JSON files named after each variable collection
 5. **Replace** the matching files in `FigmaTokens/`:
 
+   **From the Design System library:**
+
    | Figma collection | File in repo |
    |---|---|
    | Primitives | `FigmaTokens/Primitive.tokens.json` |
-   | Light | `FigmaTokens/Light.tokens.json` |
+   | Scale | `FigmaTokens/Scale/Scale.tokens.json` |
+   | Semantic (Light mode) | `FigmaTokens/Semantic/Light.tokens.json` |
+   | Semantic (Dark mode) | `FigmaTokens/Semantic/Dark.tokens.json` |
    | Typography (Desktop) | `FigmaTokens/Typography/Desktop.tokens.json` |
    | Typography (Mobile) | `FigmaTokens/Typography/Mobile.tokens.json` |
+   | Typography (Minimised) | `FigmaTokens/Typography/Minimised.tokens.json` |
+
+   **From the AI Chat file:**
+
+   | Figma collection | File in repo |
+   |---|---|
+   | Semantic (Chat Light mode) | `FigmaTokens/Semantic/ChatLight.tokens.json` |
+   | Semantic (Chat Dark mode) | `FigmaTokens/Semantic/ChatDark.tokens.json` |
 
 6. Run the pipeline:
    ```bash
