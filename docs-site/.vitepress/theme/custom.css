@@ -17,8 +17,9 @@ html.dark {
   --vp-c-brand-soft: var(--ai-surface-brand-contrast-extra);
 }
 
-/* Align home hero width with feature cards */
-.VPHero .container {
+/* Align home hero and navbar width with feature cards */
+.VPHero .container,
+.VPNav .container {
   max-width: 1152px;
   margin: 0 auto;
 }

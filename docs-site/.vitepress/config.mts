@@ -103,8 +103,8 @@ export default defineConfig({
     nav: [
       { text: 'Design System', link: sidebarData.designSystem?.components?.[0]?.link || '/components/' },
       { text: 'AI Chat', link: sidebarData.aiChat?.components?.[0]?.link || '/components/' },
-      { text: 'Tokens', link: '/tokens/' },
-      { text: 'Guidelines', link: '/guidelines/icons' },
+      { text: 'Tokens', link: '/tokens/primitives' },
+      { text: 'Demos', link: `${(process.env.DOCS_BASE || '/').replace(/docs\/?$/, '')}` || '/' },
     ],
   },
 
