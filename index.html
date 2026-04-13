@@ -193,7 +193,7 @@
     .ds-main {
       margin-left: var(--ds-sidebar-w);
       margin-top: var(--ds-header-h);
-      padding: var(--ai-spacing-8);
+      padding: var(--ai-spacing-6);
       min-height: calc(100vh - var(--ds-header-h));
       background-color: var(--ai-surface-primary);
     }
@@ -279,7 +279,7 @@
     .ds-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: var(--ai-spacing-6);
+      gap: var(--ai-spacing-4);
     }
 
     .ds-card {
@@ -348,9 +348,17 @@
 
     /* ── Mobile ─────────────────────────────── */
 
+    @media (min-width: 768px) {
+      .ds-main { padding: var(--ai-spacing-8); }
+      .ds-grid { gap: var(--ai-spacing-6); }
+    }
+
     @media (max-width: 767px) {
       .ds-sidebar { display: none; }
       .ds-main { margin-left: 0; }
+      .ds-navbar { padding: 0 var(--ai-spacing-5); }
+      .ds-navbar__title span { display: none; }
+      .ds-navbar__logo { height: 20px; }
     }
   </style>
 </head>
