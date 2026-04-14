@@ -9,10 +9,16 @@
  *   <script src="../dark-mode-toggle.js"></script>
  */
 (function () {
+  // Force light mode during Figma capture (capture script uses hash fragment)
+  var isCapture = window.location.hash.indexOf('figmacapture') !== -1;
+
   // Apply theme from URL query param (for iframe embedding in docs site)
   var urlParams = new URLSearchParams(window.location.search);
   var urlTheme = urlParams.get('theme');
-  if (urlTheme === 'dark') {
+  if (isCapture) {
+    // Always capture in light mode — dark tokens don't map correctly in re-tokenise plugin
+    document.documentElement.removeAttribute('data-theme');
+  } else if (urlTheme === 'dark') {
     document.documentElement.setAttribute('data-theme', 'dark');
   } else if (!urlTheme) {
     // No URL override — apply saved theme from localStorage
