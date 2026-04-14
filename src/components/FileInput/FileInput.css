@@ -1,0 +1,185 @@
+/* FileInput component
+ * Figma node: 2043:3128 — "FileInput"
+ * Sizes: Base (40px), sm (32px)
+ * Types: Default, Brand, Error
+ * States: Initial, Selected
+ */
+
+/* ── Container ───────────────────────────────────────── */
+
+.file-input {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);               /* 8px */
+  width: 100%;
+}
+
+/* ── Label ───────────────────────────────────────────── */
+
+.file-input__label {
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-semibold);   /* 600 */
+  font-size: var(--ai-font-fixed-xs);     /* 14px */
+  line-height: var(--ai-leading-xs);       /* 16px */
+  color: var(--ai-text-primary);
+  margin: 0;
+}
+
+/* ── Field wrapper (btn + field row) ─────────────────── */
+
+.file-input__wrap {
+  display: flex;
+  width: 100%;
+  height: 40px;
+}
+
+/* ── Choose-file button (left) ───────────────────────── */
+
+.file-input__btn {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);               /* 8px */
+  padding: 0 var(--ai-spacing-5);         /* 0 16px */
+  background: var(--ai-surface-secondary);
+  border: 1px solid transparent;
+  border-radius: var(--ai-radius-md) 0 0 var(--ai-radius-md);
+  flex-shrink: 0;
+  cursor: pointer;
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-semibold);   /* 600 */
+  font-size: var(--ai-font-fixed-xs);     /* 14px */
+  line-height: var(--ai-leading-xs);       /* 16px */
+  color: var(--ai-text-secondary);
+  white-space: nowrap;
+}
+
+.file-input__btn [data-lucide] {
+  width: var(--ai-icon-size-sm);           /* 16px */
+  height: var(--ai-icon-size-sm);
+}
+
+/* ── File display field (right) ──────────────────────── */
+
+.file-input__field {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--ai-spacing-5);         /* 0 16px */
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-left: none;
+  border-radius: 0 var(--ai-radius-md) var(--ai-radius-md) 0;
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-regular);    /* 400 */
+  font-size: var(--ai-font-fixed-xs);     /* 14px */
+  line-height: var(--ai-leading-md);       /* 24px */
+  color: var(--ai-text-contrast);
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* ── Filename text ───────────────────────────────────── */
+
+.file-input__filename {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Selected state ──────────────────────────────────── */
+
+.file-input--selected .file-input__field {
+  color: var(--ai-text-primary);
+}
+
+/* ── Clear button ────────────────────────────────────── */
+
+.file-input__clear {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--ai-icon-contrast);
+  flex-shrink: 0;
+}
+
+.file-input__clear [data-lucide] {
+  width: var(--ai-icon-size-sm);           /* 16px */
+  height: var(--ai-icon-size-sm);
+}
+
+.file-input--selected .file-input__clear {
+  display: flex;
+}
+
+/* ── Help text ───────────────────────────────────────── */
+
+.file-input__help {
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-regular);    /* 400 */
+  font-size: var(--ai-font-fixed-xxs);    /* 12px */
+  line-height: var(--ai-leading-xs);       /* 16px */
+  color: var(--ai-text-secondary);
+  margin: 0;
+}
+
+/* ── Hidden native file input ────────────────────────── */
+
+.file-input__native {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* ── Type: Brand ─────────────────────────────────────── */
+
+.file-input--brand .file-input__btn {
+  background: var(--ai-surface-brand);
+  color: var(--ai-btn-primary-text);
+}
+
+/* ── Type: Error ─────────────────────────────────────── */
+
+.file-input--error .file-input__btn {
+  background: var(--ai-surface-error);
+  color: var(--ai-btn-primary-text);
+}
+
+.file-input--error .file-input__field {
+  border-color: var(--ai-border-error);
+}
+
+.file-input--error .file-input__help {
+  color: var(--ai-text-error);
+}
+
+/* ── Size: sm ────────────────────────────────────────── */
+
+.file-input--sm .file-input__wrap {
+  height: 32px;
+}
+
+.file-input--sm .file-input__btn {
+  padding: 0 var(--ai-spacing-4);         /* 0 12px */
+  font-size: var(--ai-font-fixed-xxs);    /* 12px */
+}
+
+.file-input--sm .file-input__field {
+  padding: 0 var(--ai-spacing-4);         /* 0 12px */
+}
+
+/* ── Focus state ─────────────────────────────────────── */
+
+.file-input:focus-within .file-input__field {
+  border-color: var(--ai-border-brand);
+}
+
+.file-input--error:focus-within .file-input__field {
+  border-color: var(--ai-border-error);
+}

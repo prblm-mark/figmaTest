@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>DragDropFile — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="DragDropFile.css">
+  <link rel="stylesheet" href="../Button/Button.css">
+  <style>
+    body {
+      background-color: var(--ai-surface-secondary);
+      min-height: 100vh;
+      padding: var(--ai-spacing-7);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--ai-spacing-7);
+    }
+    body > h1 {
+      align-self: flex-start;
+      max-width: 640px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    .demo-section {
+      width: 100%;
+      max-width: 640px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-5);
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0;">Drag & Drop File</h1>
+
+  <!-- Default -->
+  <div class="demo-section">
+    <h2 class="demo-section__title">Default</h2>
+    <div class="drag-drop" data-drag-drop>
+      <div class="drag-drop__icon-wrap">
+        <i data-lucide="upload-cloud" aria-hidden="true"></i>
+      </div>
+      <div class="drag-drop__text">
+        <p class="drag-drop__title"><strong>Click to upload</strong> or drag and drop</p>
+        <p class="drag-drop__subtitle">SVG, PNG, JPG or GIF (max. 800x400px)</p>
+      </div>
+      <input type="file" class="drag-drop__native" data-drag-native>
+    </div>
+  </div>
+
+  <!-- Active (drag-over) -->
+  <div class="demo-section">
+    <h2 class="demo-section__title">Active (drag-over)</h2>
+    <div class="drag-drop drag-drop--active">
+      <div class="drag-drop__icon-wrap">
+        <i data-lucide="upload-cloud" aria-hidden="true"></i>
+      </div>
+      <div class="drag-drop__text">
+        <p class="drag-drop__title"><strong>Click to upload</strong> or drag and drop</p>
+        <p class="drag-drop__subtitle">SVG, PNG, JPG or GIF (max. 800x400px)</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- With Button -->
+  <div class="demo-section">
+    <h2 class="demo-section__title">With Button</h2>
+    <div class="drag-drop drag-drop--with-btn" data-drag-drop>
+      <div class="drag-drop__icon-wrap">
+        <i data-lucide="upload-cloud" aria-hidden="true"></i>
+      </div>
+      <div class="drag-drop__text">
+        <p class="drag-drop__title"><strong>Click to upload</strong> or drag and drop</p>
+        <p class="drag-drop__subtitle">SVG, PNG, JPG or GIF (max. 800x400px)</p>
+      </div>
+      <button type="button" class="btn btn--primary btn--sm" data-drag-browse>
+        <i data-lucide="search" aria-hidden="true"></i>
+        Browse files
+      </button>
+      <input type="file" class="drag-drop__native" data-drag-native>
+    </div>
+  </div>
+
+  <!-- Error -->
+  <div class="demo-section">
+    <h2 class="demo-section__title">Error</h2>
+    <div class="drag-drop drag-drop--error" data-drag-drop>
+      <div class="drag-drop__icon-wrap">
+        <i data-lucide="upload-cloud" aria-hidden="true"></i>
+      </div>
+      <div class="drag-drop__text">
+        <p class="drag-drop__title"><strong>Upload failed</strong> — please try again</p>
+        <p class="drag-drop__subtitle">SVG, PNG, JPG or GIF (max. 800x400px)</p>
+      </div>
+      <input type="file" class="drag-drop__native" data-drag-native>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    lucide.createIcons();
+
+    document.querySelectorAll('[data-drag-drop]').forEach(function (zone) {
+      var native = zone.querySelector('[data-drag-native]');
+      var browse = zone.querySelector('[data-drag-browse]');
+
+      /* Click zone to open file picker */
+      zone.addEventListener('click', function (e) {
+        if (native && e.target.closest('[data-drag-browse]') === null) {
+          native.click();
+        }
+      });
+
+      /* Browse button also opens file picker */
+      if (browse && native) {
+        browse.addEventListener('click', function (e) {
+          e.stopPropagation();
+          native.click();
+        });
+      }
+
+      /* Drag events */
+      zone.addEventListener('dragenter', function (e) {
+        e.preventDefault();
+        zone.classList.add('drag-drop--active');
+      });
+
+      zone.addEventListener('dragover', function (e) {
+        e.preventDefault();
+      });
+
+      zone.addEventListener('dragleave', function (e) {
+        e.preventDefault();
+        zone.classList.remove('drag-drop--active');
+      });
+
+      zone.addEventListener('drop', function (e) {
+        e.preventDefault();
+        zone.classList.remove('drag-drop--active');
+        /* Files available via e.dataTransfer.files */
+      });
+    });
+  </script>
+</body>
+</html>

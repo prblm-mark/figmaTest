@@ -1,0 +1,109 @@
+/* DragDropFile component
+ * Figma node: 2043:3377 — "DragDropFile"
+ * Variants: Default, Active (drag-over), With Button, Error
+ */
+
+/* ── Drop zone ───────────────────────────────────────── */
+
+.drag-drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ai-spacing-5);               /* 16px */
+  min-height: 280px;                       /* fixed design height, no token */
+  padding: var(--ai-spacing-7);            /* 32px */
+  background: var(--ai-surface-primary);
+  border: 2px dashed var(--ai-border-secondary);
+  border-radius: var(--ai-radius-lg);
+  cursor: pointer;
+  transition: border-color var(--ai-transition-default);
+}
+
+/* ── Icon circle ─────────────────────────────────────── */
+
+.drag-drop__icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: var(--ai-surface-brand-contrast-extra);
+  border-radius: var(--ai-radius-full);
+}
+
+.drag-drop__icon-wrap [data-lucide] {
+  width: var(--ai-icon-size-lg);           /* 24px */
+  height: var(--ai-icon-size-lg);
+  color: var(--ai-icon-brand);
+}
+
+/* ── Text group ──────────────────────────────────────── */
+
+.drag-drop__text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ai-spacing-3);               /* 8px */
+}
+
+/* ── Title ───────────────────────────────────────────── */
+
+.drag-drop__title {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);     /* 14px */
+  line-height: var(--ai-leading-md);       /* 24px */
+  color: var(--ai-text-secondary);
+  text-align: center;
+  margin: 0;
+}
+
+.drag-drop__title strong {
+  font-weight: var(--ai-font-semibold);   /* 600 */
+  color: var(--ai-text-primary);
+}
+
+/* ── Subtitle ────────────────────────────────────────── */
+
+.drag-drop__subtitle {
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-regular);    /* 400 */
+  font-size: var(--ai-font-fixed-xxs);    /* 12px */
+  line-height: var(--ai-leading-xs);       /* 16px */
+  color: var(--ai-text-contrast);
+  text-align: center;
+  margin: 0;
+}
+
+/* ── Active state (drag-over) ────────────────────────── */
+
+.drag-drop--active {
+  border-color: var(--ai-border-brand);
+}
+
+/* ── Error state ─────────────────────────────────────── */
+
+.drag-drop--error {
+  border-color: var(--ai-border-error);
+}
+
+.drag-drop--error .drag-drop__icon-wrap {
+  background: var(--ai-surface-error-contrast);
+}
+
+.drag-drop--error .drag-drop__icon-wrap [data-lucide] {
+  color: var(--ai-text-error);
+}
+
+.drag-drop--error .drag-drop__title strong {
+  color: var(--ai-text-primary);
+}
+
+/* ── Hidden native input ─────────────────────────────── */
+
+.drag-drop__native {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}

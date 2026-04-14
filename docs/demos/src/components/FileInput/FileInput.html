@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>FileInput — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="FileInput.css">
+  <style>
+    body {
+      background-color: var(--ai-surface-primary);
+      min-height: 100vh;
+      padding: var(--ai-spacing-7);
+    }
+    .demo-section {
+      padding: var(--ai-spacing-6);
+      background: var(--ai-surface-secondary);
+      border-radius: var(--ai-radius-lg);
+      margin-bottom: var(--ai-spacing-5);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-5);
+      max-width: 480px;
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-6);">File Input</h1>
+
+  <!-- Default / Initial -->
+  <div class="demo-section">
+    <h2 class="demo-section__title">Default / Initial</h2>
+    <div class="file-input" data-file-input>
+      <label class="file-input__label">Upload file</label>
+      <div class="file-input__wrap">
+        <button type="button" class="file-input__btn" data-file-trigger>
+          <i data-lucide="upload" aria-hidden="true"></i>
+          Choose file
+        </button>
+        <div class="file-input__field">
+          <span class="file-input__filename">No file chosen</span>
+          <button type="button" class="file-input__clear" aria-label="Clear file" data-file-clear>
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <span class="file-input__help">Accepted formats: PNG, JPG, PDF</span>
+      <input type="file" class="file-input__native" data-file-native>
+    </div>
+  </div>
+
+  <!-- Default / Selected -->
+  <div class="demo-section">
+    <h2 class="demo-section__title">Default / Selected</h2>
+    <div class="file-input file-input--selected" data-file-input>
+      <label class="file-input__label">Upload file</label>
+      <div class="file-input__wrap">
+        <button type="button" class="file-input__btn" data-file-trigger>
+          <i data-lucide="upload" aria-hidden="true"></i>
+          Choose file
+        </button>
+        <div class="file-input__field">
+          <span class="file-input__filename">annual-report-2026.pdf</span>
+          <button type="button" class="file-input__clear" aria-label="Clear file" data-file-clear>
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <span class="file-input__help">Accepted formats: PNG, JPG, PDF</span>
+      <input type="file" class="file-input__native" data-file-native>
+    </div>
+  </div>
+
+  <!-- Brand / Initial -->
+  <div class="demo-section">
+    <h2 class="demo-section__title">Brand / Initial</h2>
+    <div class="file-input file-input--brand" data-file-input>
+      <label class="file-input__label">Upload file</label>
+      <div class="file-input__wrap">
+        <button type="button" class="file-input__btn" data-file-trigger>
+          <i data-lucide="upload" aria-hidden="true"></i>
+          Choose file
+        </button>
+        <div class="file-input__field">
+          <span class="file-input__filename">No file chosen</span>
+          <button type="button" class="file-input__clear" aria-label="Clear file" data-file-clear>
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <span class="file-input__help">Accepted formats: PNG, JPG, PDF</span>
+      <input type="file" class="file-input__native" data-file-native>
+    </div>
+  </div>
+
+  <!-- Brand / Selected -->
+  <div class="demo-section">
+    <h2 class="demo-section__title">Brand / Selected</h2>
+    <div class="file-input file-input--brand file-input--selected" data-file-input>
+      <label class="file-input__label">Upload file</label>
+      <div class="file-input__wrap">
+        <button type="button" class="file-input__btn" data-file-trigger>
+          <i data-lucide="upload" aria-hidden="true"></i>
+          Choose file
+        </button>
+        <div class="file-input__field">
+          <span class="file-input__filename">logo-final-v3.png</span>
+          <button type="button" class="file-input__clear" aria-label="Clear file" data-file-clear>
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <span class="file-input__help">Accepted formats: PNG, JPG, PDF</span>
+      <input type="file" class="file-input__native" data-file-native>
+    </div>
+  </div>
+
+  <!-- Error -->
+  <div class="demo-section">
+    <h2 class="demo-section__title">Error</h2>
+    <div class="file-input file-input--error file-input--selected" data-file-input>
+      <label class="file-input__label">Upload file</label>
+      <div class="file-input__wrap">
+        <button type="button" class="file-input__btn" data-file-trigger>
+          <i data-lucide="upload" aria-hidden="true"></i>
+          Choose file
+        </button>
+        <div class="file-input__field">
+          <span class="file-input__filename">corrupted-file.exe</span>
+          <button type="button" class="file-input__clear" aria-label="Clear file" data-file-clear>
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <span class="file-input__help" role="alert">File type not supported</span>
+      <input type="file" class="file-input__native" data-file-native>
+    </div>
+  </div>
+
+  <!-- Small / Default -->
+  <div class="demo-section">
+    <h2 class="demo-section__title">Small / Default</h2>
+    <div class="file-input file-input--sm" data-file-input>
+      <label class="file-input__label">Upload file</label>
+      <div class="file-input__wrap">
+        <button type="button" class="file-input__btn" data-file-trigger>
+          <i data-lucide="upload" aria-hidden="true"></i>
+          Choose file
+        </button>
+        <div class="file-input__field">
+          <span class="file-input__filename">No file chosen</span>
+          <button type="button" class="file-input__clear" aria-label="Clear file" data-file-clear>
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <input type="file" class="file-input__native" data-file-native>
+    </div>
+  </div>
+
+  <!-- Small / Brand -->
+  <div class="demo-section">
+    <h2 class="demo-section__title">Small / Brand</h2>
+    <div class="file-input file-input--sm file-input--brand" data-file-input>
+      <label class="file-input__label">Upload file</label>
+      <div class="file-input__wrap">
+        <button type="button" class="file-input__btn" data-file-trigger>
+          <i data-lucide="upload" aria-hidden="true"></i>
+          Choose file
+        </button>
+        <div class="file-input__field">
+          <span class="file-input__filename">No file chosen</span>
+          <button type="button" class="file-input__clear" aria-label="Clear file" data-file-clear>
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <input type="file" class="file-input__native" data-file-native>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    lucide.createIcons();
+
+    document.querySelectorAll('[data-file-input]').forEach(function (root) {
+      var trigger = root.querySelector('[data-file-trigger]');
+      var native  = root.querySelector('[data-file-native]');
+      var nameEl  = root.querySelector('.file-input__filename');
+      var clear   = root.querySelector('[data-file-clear]');
+
+      trigger.addEventListener('click', function () {
+        native.click();
+      });
+
+      native.addEventListener('change', function () {
+        if (native.files && native.files.length > 0) {
+          nameEl.textContent = native.files[0].name;
+          root.classList.add('file-input--selected');
+        }
+      });
+
+      clear.addEventListener('click', function () {
+        native.value = '';
+        nameEl.textContent = 'No file chosen';
+        root.classList.remove('file-input--selected');
+      });
+    });
+  </script>
+</body>
+</html>
