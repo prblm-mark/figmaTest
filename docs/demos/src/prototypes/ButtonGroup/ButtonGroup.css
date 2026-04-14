@@ -1,0 +1,226 @@
+/* ButtonGroup — prototype-only styles for grouped button patterns */
+
+/* ── Page layout ─────────────────────────── */
+
+body {
+  min-height: 100vh;
+  background-color: var(--ai-surface-primary);
+  padding: var(--ai-spacing-7);
+}
+
+.proto-page {
+  max-width: var(--ai-size-11);
+  margin: 0 auto;
+}
+
+.proto-page__title {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-4xl);
+  font-weight: var(--ai-font-bold);
+  line-height: var(--ai-leading-xl);
+  color: var(--ai-text-primary);
+  margin: 0 0 var(--ai-spacing-2);
+}
+
+.proto-page__subtitle {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-sm);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-contrast);
+  margin: 0 0 var(--ai-spacing-8);
+}
+
+/* ── Section ─────────────────────────────── */
+
+.proto-section {
+  margin-bottom: var(--ai-spacing-8);
+}
+
+.proto-section__label {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-contrast);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 var(--ai-spacing-5);
+}
+
+.proto-section__desc {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+  margin: 0 0 var(--ai-spacing-5);
+}
+
+/* ── Button Group — horizontal ───────────── */
+
+.btn-group {
+  display: inline-flex;
+}
+
+/* Remove inner border-radius — only first and last get rounded */
+.btn-group .btn {
+  border-radius: 0;
+  position: relative;
+}
+
+/* Collapse borders between buttons */
+.btn-group .btn + .btn {
+  margin-left: -1px;
+}
+
+/* First button: round left corners */
+.btn-group .btn:first-child {
+  border-radius: var(--ai-radius-md) 0 0 var(--ai-radius-md);
+}
+
+/* Last button: round right corners */
+.btn-group .btn:last-child {
+  border-radius: 0 var(--ai-radius-md) var(--ai-radius-md) 0;
+}
+
+/* Single button in group (first and last) */
+.btn-group .btn:only-child {
+  border-radius: var(--ai-radius-md);
+}
+
+/* Hover z-index so border shows above neighbours */
+.btn-group .btn:hover,
+.btn-group .btn:focus-visible {
+  z-index: 1;
+}
+
+/* ── Button Group — vertical ─────────────── */
+
+.btn-group--vertical {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.btn-group--vertical .btn {
+  border-radius: 0;
+  width: 100%;
+}
+
+.btn-group--vertical .btn + .btn {
+  margin-left: 0;
+  margin-top: -1px;
+}
+
+.btn-group--vertical .btn:first-child {
+  border-radius: var(--ai-radius-md) var(--ai-radius-md) 0 0;
+}
+
+.btn-group--vertical .btn:last-child {
+  border-radius: 0 0 var(--ai-radius-md) var(--ai-radius-md);
+}
+
+/* ── Outline variant ─────────────────────── */
+
+.btn-group--outline .btn {
+  background-color: var(--ai-surface-primary);
+  border-color: var(--ai-border-secondary);
+  color: var(--ai-text-primary);
+}
+
+.btn-group--outline .btn:hover {
+  background-color: var(--ai-surface-minimal);
+}
+
+/* ── Colour variant helpers ──────────────── */
+
+.btn-group--brand .btn {
+  background-color: var(--ai-btn-primary-bg);
+  border-color: var(--ai-btn-primary-border);
+  color: var(--ai-btn-primary-text);
+}
+
+.btn-group--brand .btn:hover {
+  background-color: var(--ai-btn-primary-bg-hover);
+}
+
+.btn-group--brand .btn + .btn {
+  border-left: 1px solid var(--ai-surface-brand-dark);
+}
+
+.btn-group--alert .btn {
+  background-color: var(--ai-surface-error);
+  border-color: var(--ai-surface-error);
+  color: var(--ai-btn-primary-text);
+}
+
+.btn-group--alert .btn:hover {
+  background-color: #f87171; /* Red/400 — approved primitive */
+}
+
+.btn-group--alert .btn + .btn {
+  border-left: 1px solid #dc2626; /* Red/600 — approved primitive */
+}
+
+.btn-group--success .btn {
+  background-color: var(--ai-surface-success);
+  border-color: var(--ai-surface-success);
+  color: var(--ai-btn-primary-text);
+}
+
+.btn-group--success .btn + .btn {
+  border-left: 1px solid #22a77a; /* darker green — hardcoded, no token */
+}
+
+/* ── Dropdown ────────────────────────────── */
+
+.btn-group__dropdown {
+  position: relative;
+}
+
+.btn-group__menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + var(--ai-spacing-2));
+  right: 0;
+  min-width: 160px;
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  box-shadow: var(--ai-shadow-md);
+  z-index: 10;
+  overflow: hidden;
+}
+
+.btn-group__menu--open {
+  display: flex;
+  flex-direction: column;
+}
+
+.btn-group__menu-item {
+  display: block;
+  width: 100%;
+  padding: var(--ai-spacing-3) var(--ai-spacing-5);
+  background: none;
+  border: none;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--ai-transition-default);
+}
+
+.btn-group__menu-item:hover {
+  background-color: var(--ai-surface-minimal);
+}
+
+/* ── Demo row spacing ────────────────────── */
+
+.proto-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ai-spacing-5);
+  align-items: flex-start;
+}
