@@ -247,6 +247,44 @@
     .ds-search__input::placeholder { color: var(--ai-text-contrast); }
     .ds-search__input:focus { outline: none; border-color: var(--ai-border-brand); }
 
+    /* ── Tier filter tabs ───────────────── */
+
+    .ds-tier-filters {
+      display: flex;
+      gap: var(--ai-spacing-2);
+      margin-bottom: var(--ai-spacing-8);
+    }
+
+    .ds-tier-btn {
+      padding: var(--ai-spacing-2) var(--ai-spacing-4);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-full);
+      background: none;
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xxs);
+      font-weight: var(--ai-font-medium);
+      color: var(--ai-text-secondary);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .ds-tier-btn:hover {
+      border-color: var(--ai-border-brand);
+      color: var(--ai-text-primary);
+    }
+
+    .ds-tier-btn--active {
+      background: var(--ai-surface-brand);
+      border-color: var(--ai-surface-brand);
+      color: var(--ai-text-invert);
+    }
+
+    .ds-tier-btn--active:hover {
+      background: var(--ai-surface-brand-light);
+      border-color: var(--ai-surface-brand-light);
+      color: var(--ai-text-invert);
+    }
+
     /* ── Section label ──────────────────────── */
 
     .ds-section {
@@ -395,25 +433,11 @@
   <!-- ═══ SIDEBAR ═══ -->
   <aside class="ds-sidebar">
     <div class="ds-sidebar__section">
-      <p class="ds-sidebar__heading">Filter</p>
-      <button class="ds-sidebar__item ds-sidebar__item--active" data-filter="all" data-tier-filter="all">All <span class="ds-sidebar__count" id="sidebarAllCount"></span></button>
-    </div>
-    <div class="ds-sidebar__section">
-      <p class="ds-sidebar__heading">Design System</p>
-      <button class="ds-sidebar__item" data-filter="ds" data-tier-filter="all">All <span class="ds-sidebar__count" id="sidebarDsCount"></span></button>
-      <button class="ds-sidebar__item" data-filter="ds" data-tier-filter="component">Components</button>
-      <button class="ds-sidebar__item" data-filter="ds" data-tier-filter="pattern">Patterns</button>
-    </div>
-    <div class="ds-sidebar__section">
-      <p class="ds-sidebar__heading">AI Chat</p>
-      <button class="ds-sidebar__item" data-filter="chat" data-tier-filter="all">All <span class="ds-sidebar__count" id="sidebarChatCount"></span></button>
-      <button class="ds-sidebar__item" data-filter="chat" data-tier-filter="component">Components</button>
-      <button class="ds-sidebar__item" data-filter="chat" data-tier-filter="pattern">Patterns</button>
-      <button class="ds-sidebar__item" data-filter="chat" data-tier-filter="template">Templates</button>
-    </div>
-    <div class="ds-sidebar__section">
-      <p class="ds-sidebar__heading">Explore</p>
-      <button class="ds-sidebar__item" data-filter="proto" data-tier-filter="all">Prototypes <span class="ds-sidebar__count" id="sidebarProtoCount"></span></button>
+      <p class="ds-sidebar__heading">Products</p>
+      <button class="ds-sidebar__item ds-sidebar__item--active" data-filter="all">All <span class="ds-sidebar__count" id="sidebarAllCount"></span></button>
+      <button class="ds-sidebar__item" data-filter="ds">Design System <span class="ds-sidebar__count" id="sidebarDsCount"></span></button>
+      <button class="ds-sidebar__item" data-filter="chat">AI Chat <span class="ds-sidebar__count" id="sidebarChatCount"></span></button>
+      <button class="ds-sidebar__item" data-filter="proto">Prototypes <span class="ds-sidebar__count" id="sidebarProtoCount"></span></button>
     </div>
   </aside>
 
@@ -426,6 +450,13 @@
 
     <div class="ds-search">
       <input type="text" class="ds-search__input" id="searchInput" placeholder="Search components..." aria-label="Search components">
+    </div>
+
+    <div class="ds-tier-filters" role="tablist" aria-label="Filter by type">
+      <button class="ds-tier-btn ds-tier-btn--active" data-tier-filter="all" role="tab" aria-selected="true">All</button>
+      <button class="ds-tier-btn" data-tier-filter="component" role="tab" aria-selected="false">Components</button>
+      <button class="ds-tier-btn" data-tier-filter="pattern" role="tab" aria-selected="false">Patterns</button>
+      <button class="ds-tier-btn" data-tier-filter="template" role="tab" aria-selected="false">Templates</button>
     </div>
 
     <!-- Design System -->
@@ -806,15 +837,23 @@
     var searchInput = document.getElementById('searchInput');
     var cards = document.querySelectorAll('.ds-card');
     var sidebarItems = document.querySelectorAll('.ds-sidebar__item');
+    var tierBtns = document.querySelectorAll('.ds-tier-btn');
     var mainTitle = document.getElementById('mainTitle');
     var activeFilter = 'all';
     var activeTierFilter = 'all';
 
     var titles = {
-      'all': 'All Components',
+      'all': 'All',
       'ds': 'Design System',
       'chat': 'AI Chat',
       'proto': 'Prototypes'
+    };
+
+    var tierLabels = {
+      'all': '',
+      'component': 'Components',
+      'pattern': 'Patterns',
+      'template': 'Templates'
     };
 
     function updateCounts() {
@@ -858,18 +897,13 @@
 
       document.querySelectorAll('.ds-subsection').forEach(function (sub) {
         var hasVisible = sub.querySelector('.ds-card:not([hidden])');
-        if (hasVisible) {
-          sub.hidden = false;
-        } else {
-          sub.hidden = true;
-        }
+        sub.hidden = !hasVisible;
       });
 
       // Update title
-      var title = titles[activeFilter] || 'All Components';
+      var title = titles[activeFilter] || 'All';
       if (activeTierFilter !== 'all') {
-        var tierLabel = activeTierFilter.charAt(0).toUpperCase() + activeTierFilter.slice(1) + 's';
-        title += ' \u00b7 ' + tierLabel;
+        title += ' · ' + tierLabels[activeTierFilter];
       }
       mainTitle.textContent = title;
 
@@ -878,12 +912,26 @@
 
     searchInput.addEventListener('input', applyFilters);
 
+    // Sidebar: product filter
     sidebarItems.forEach(function (btn) {
       btn.addEventListener('click', function () {
         sidebarItems.forEach(function (b) { b.classList.remove('ds-sidebar__item--active'); });
         btn.classList.add('ds-sidebar__item--active');
         activeFilter = btn.dataset.filter;
-        activeTierFilter = btn.dataset.tierFilter || 'all';
+        applyFilters();
+      });
+    });
+
+    // Tier tabs: type filter
+    tierBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        tierBtns.forEach(function (b) {
+          b.classList.remove('ds-tier-btn--active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        btn.classList.add('ds-tier-btn--active');
+        btn.setAttribute('aria-selected', 'true');
+        activeTierFilter = btn.dataset.tierFilter;
         applyFilters();
       });
     });
