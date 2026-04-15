@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>ButtonGroup — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../Button/Button.css">
+  <link rel="stylesheet" href="ButtonGroup.css">
+  <style>
+    body {
+      background-color: var(--ai-surface-primary);
+      min-height: 100vh;
+      padding: var(--ai-spacing-7);
+    }
+    .demo-page {
+      max-width: var(--ai-size-11);
+      margin: 0 auto;
+    }
+    .demo-page__title {
+      font-family: var(--ai-font-title);
+      font-size: var(--ai-font-fixed-4xl);
+      font-weight: var(--ai-font-bold);
+      line-height: var(--ai-leading-xl);
+      color: var(--ai-text-primary);
+      margin: 0 0 var(--ai-spacing-2);
+    }
+    .demo-page__subtitle {
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-sm);
+      font-weight: var(--ai-font-regular);
+      line-height: var(--ai-leading-md);
+      color: var(--ai-text-contrast);
+      margin: 0 0 var(--ai-spacing-8);
+    }
+    .demo-section {
+      margin-bottom: var(--ai-spacing-8);
+    }
+    .demo-section__label {
+      font-family: var(--ai-font-title);
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 var(--ai-spacing-5);
+    }
+    .demo-section__desc {
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xxs);
+      font-weight: var(--ai-font-regular);
+      line-height: var(--ai-leading-xs);
+      color: var(--ai-text-contrast);
+      margin: 0 0 var(--ai-spacing-5);
+    }
+    .demo-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--ai-spacing-5);
+      align-items: flex-start;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-page">
+    <h1 class="demo-page__title">Button Group</h1>
+    <p class="demo-page__subtitle">Grouped button patterns for toolbars, navigation, and actions. Composes the Button component with collapsed borders and shared radius.</p>
+
+    <!-- ═══ 1. Standard / Base / Horizontal ═══ -->
+    <div class="demo-section">
+      <p class="demo-section__label">Standard — Base</p>
+      <p class="demo-section__desc">Three secondary buttons merged horizontally. Inner corners removed, borders collapsed.</p>
+      <div class="btn-group">
+        <button class="btn btn--secondary">Profile</button>
+        <button class="btn btn--secondary">Settings</button>
+        <button class="btn btn--secondary">Messages</button>
+      </div>
+    </div>
+
+    <!-- ═══ 2. Standard / sm / Horizontal ═══ -->
+    <div class="demo-section">
+      <p class="demo-section__label">Standard — Small</p>
+      <div class="btn-group">
+        <button class="btn btn--secondary btn--sm">Profile</button>
+        <button class="btn btn--secondary btn--sm">Settings</button>
+        <button class="btn btn--secondary btn--sm">Messages</button>
+      </div>
+    </div>
+
+    <!-- ═══ 3. With Icons / Base / Horizontal ═══ -->
+    <div class="demo-section">
+      <p class="demo-section__label">With Icons — Base</p>
+      <p class="demo-section__desc">Icons paired with labels for clarity. Uses Lucide icons at 16px.</p>
+      <div class="btn-group">
+        <button class="btn btn--secondary">
+          <i data-lucide="user" aria-hidden="true"></i> Profile
+        </button>
+        <button class="btn btn--secondary">
+          <i data-lucide="settings" aria-hidden="true"></i> Settings
+        </button>
+        <button class="btn btn--secondary">
+          <i data-lucide="mail" aria-hidden="true"></i> Messages
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══ 4. With Icons / sm / Horizontal ═══ -->
+    <div class="demo-section">
+      <p class="demo-section__label">With Icons — Small</p>
+      <div class="btn-group">
+        <button class="btn btn--secondary btn--sm">
+          <i data-lucide="user" aria-hidden="true"></i> Profile
+        </button>
+        <button class="btn btn--secondary btn--sm">
+          <i data-lucide="settings" aria-hidden="true"></i> Settings
+        </button>
+        <button class="btn btn--secondary btn--sm">
+          <i data-lucide="mail" aria-hidden="true"></i> Messages
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══ 5. Dropdown / Base ═══ -->
+    <div class="demo-section">
+      <p class="demo-section__label">Dropdown — Base</p>
+      <p class="demo-section__desc">Last button triggers a dropdown menu. Click the chevron to toggle.</p>
+      <div class="btn-group btn-group__dropdown">
+        <button class="btn btn--secondary">Save</button>
+        <button class="btn btn--secondary">Save as</button>
+        <button class="btn btn--secondary btn--icon" id="dropdownTrigger" aria-label="More options" aria-expanded="false">
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <div class="btn-group__menu" id="dropdownMenu">
+          <button class="btn-group__menu-item">Save as PDF</button>
+          <button class="btn-group__menu-item">Save as DOCX</button>
+          <button class="btn-group__menu-item">Save as TXT</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ 6. Dropdown / sm ═══ -->
+    <div class="demo-section">
+      <p class="demo-section__label">Dropdown — Small</p>
+      <div class="btn-group btn-group__dropdown">
+        <button class="btn btn--secondary btn--sm">Save</button>
+        <button class="btn btn--secondary btn--sm">Save as</button>
+        <button class="btn btn--secondary btn--sm btn--icon" id="dropdownTriggerSm" aria-label="More options" aria-expanded="false">
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <div class="btn-group__menu" id="dropdownMenuSm">
+          <button class="btn-group__menu-item">Save as PDF</button>
+          <button class="btn-group__menu-item">Save as DOCX</button>
+          <button class="btn-group__menu-item">Save as TXT</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ 7. Icon Only / Base / Default ═══ -->
+    <div class="demo-section">
+      <p class="demo-section__label">Icon Only — Base</p>
+      <p class="demo-section__desc">Compact toolbar-style group. Each button is icon-only with an aria-label.</p>
+      <div class="btn-group">
+        <button class="btn btn--secondary btn--icon" aria-label="Previous">
+          <i data-lucide="chevron-left" aria-hidden="true"></i>
+        </button>
+        <button class="btn btn--secondary btn--icon" aria-label="Next">
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══ 8. Icon Only / sm / Default ═══ -->
+    <div class="demo-section">
+      <p class="demo-section__label">Icon Only — Small</p>
+      <div class="btn-group">
+        <button class="btn btn--secondary btn--sm btn--icon" aria-label="Previous">
+          <i data-lucide="chevron-left" aria-hidden="true"></i>
+        </button>
+        <button class="btn btn--secondary btn--sm btn--icon" aria-label="Next">
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══ 9. Icon Only / Base / Brand ═══ -->
+    <div class="demo-section">
+      <p class="demo-section__label">Icon Only — Base — Brand</p>
+      <p class="demo-section__desc">Brand colour override applied at the group level.</p>
+      <div class="btn-group btn-group--brand">
+        <button class="btn btn--icon" aria-label="Previous">
+          <i data-lucide="chevron-left" aria-hidden="true"></i>
+        </button>
+        <button class="btn btn--icon" aria-label="Next">
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══ 10. Icon Only / sm / Brand ═══ -->
+    <div class="demo-section">
+      <p class="demo-section__label">Icon Only — Small — Brand</p>
+      <div class="btn-group btn-group--brand">
+        <button class="btn btn--sm btn--icon" aria-label="Previous">
+          <i data-lucide="chevron-left" aria-hidden="true"></i>
+        </button>
+        <button class="btn btn--sm btn--icon" aria-label="Next">
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══ 11–16. Vertical variants ═══ -->
+    <div class="demo-section">
+      <p class="demo-section__label">Vertical</p>
+      <p class="demo-section__desc">Stacked layout for sidebar actions or mobile toolbars. Base and small sizes shown for Standard, With Icons, and Icon Only.</p>
+      <div class="demo-row">
+
+        <!-- Standard / Base / Vertical -->
+        <div class="btn-group--vertical">
+          <button class="btn btn--secondary">Profile</button>
+          <button class="btn btn--secondary">Settings</button>
+          <button class="btn btn--secondary">Messages</button>
+        </div>
+
+        <!-- Standard / sm / Vertical -->
+        <div class="btn-group--vertical">
+          <button class="btn btn--secondary btn--sm">Profile</button>
+          <button class="btn btn--secondary btn--sm">Settings</button>
+          <button class="btn btn--secondary btn--sm">Messages</button>
+        </div>
+
+        <!-- With Icons / Base / Vertical -->
+        <div class="btn-group--vertical">
+          <button class="btn btn--secondary">
+            <i data-lucide="user" aria-hidden="true"></i> Profile
+          </button>
+          <button class="btn btn--secondary">
+            <i data-lucide="settings" aria-hidden="true"></i> Settings
+          </button>
+          <button class="btn btn--secondary">
+            <i data-lucide="mail" aria-hidden="true"></i> Messages
+          </button>
+        </div>
+
+        <!-- With Icons / sm / Vertical -->
+        <div class="btn-group--vertical">
+          <button class="btn btn--secondary btn--sm">
+            <i data-lucide="user" aria-hidden="true"></i> Profile
+          </button>
+          <button class="btn btn--secondary btn--sm">
+            <i data-lucide="settings" aria-hidden="true"></i> Settings
+          </button>
+          <button class="btn btn--secondary btn--sm">
+            <i data-lucide="mail" aria-hidden="true"></i> Messages
+          </button>
+        </div>
+
+        <!-- Icon Only / Base / Vertical -->
+        <div class="btn-group--vertical">
+          <button class="btn btn--secondary btn--icon" aria-label="Up">
+            <i data-lucide="chevron-up" aria-hidden="true"></i>
+          </button>
+          <button class="btn btn--secondary btn--icon" aria-label="Down">
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <!-- Icon Only / sm / Vertical -->
+        <div class="btn-group--vertical">
+          <button class="btn btn--secondary btn--sm btn--icon" aria-label="Up">
+            <i data-lucide="chevron-up" aria-hidden="true"></i>
+          </button>
+          <button class="btn btn--secondary btn--sm btn--icon" aria-label="Down">
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    lucide.createIcons();
+
+    // Dropdown toggle — base
+    var trigger = document.getElementById('dropdownTrigger');
+    var menu = document.getElementById('dropdownMenu');
+    trigger.addEventListener('click', function () {
+      var isOpen = menu.classList.toggle('btn-group__menu--open');
+      trigger.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    // Dropdown toggle — small
+    var triggerSm = document.getElementById('dropdownTriggerSm');
+    var menuSm = document.getElementById('dropdownMenuSm');
+    triggerSm.addEventListener('click', function () {
+      var isOpen = menuSm.classList.toggle('btn-group__menu--open');
+      triggerSm.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    // Close dropdowns on outside click
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.btn-group__dropdown')) {
+        menu.classList.remove('btn-group__menu--open');
+        trigger.setAttribute('aria-expanded', 'false');
+        menuSm.classList.remove('btn-group__menu--open');
+        triggerSm.setAttribute('aria-expanded', 'false');
+      }
+    });
+  </script>
+
+</body>
+</html>
