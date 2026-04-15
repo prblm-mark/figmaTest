@@ -3,6 +3,7 @@
 | Component | Tier | Status | Figma URL | Notes |
 |---|---|---|---|---|
 | Button | component | Built | [node 53:2489](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=53-2489) | `src/components/Button/` — primary, secondary, tertiary, alert, alert-outline, icon-only variants. Alert hover/pressed use Red/400+600 primitives (approved). |
+| ButtonGroup | component | Built | [node 2440:945](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2440-945) | `src/components/ButtonGroup/` — 16 variants: Type (Standard/With Icons/Dropdown/Icon Only) × Size (Base/sm) × Color (Default/Brand) × Direction (Horizontal/Vertical). Composes Button. |
 | InfoLabel | component | Built | [node 68:4410](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=68-4410) | `src/components/InfoLabel/` — No Label=False (text+icon), No Label=True (icon only) |
 | Input | component | Built | [node 78:2016](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=78-2016) | `src/components/Input/` — Base + sm sizes, Default/Hover/Focus/Active/Error states |
 | Tooltip | component | Built | [node 68:4490](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=68-4490) | `src/components/Tooltip/` — single variant, dark panel. Positioning owned by parent. |

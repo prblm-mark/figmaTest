@@ -1,6 +1,6 @@
 // Re-tokenise — Figma Plugin v4
 // Walks selected frames and rebinds raw values to Figma variables.
-// Prioritises "Tokens" and "Typography" collections over "Primitives".
+// Prioritises "Tokens", "Typography", "Scale", and "Semantic" collections over "Primitives".
 // Replaces existing primitive bindings with preferred-collection bindings.
 
 (async function main() {
@@ -16,7 +16,7 @@
 
   const collections = await figma.variables.getLocalVariableCollectionsAsync();
   const preferredCollectionIds = new Set();
-  const PREFERRED_NAMES = ["tokens", "typography", "components", "semantic"];
+  const PREFERRED_NAMES = ["tokens", "typography", "components", "semantic", "scale"];
 
   for (const col of collections) {
     const nameLower = col.name.toLowerCase().trim();

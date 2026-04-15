@@ -1,0 +1,165 @@
+/* ButtonGroup — groups buttons with collapsed borders and shared radius */
+
+/* ── Horizontal (default) ───────────────── */
+
+.btn-group {
+  display: inline-flex;
+}
+
+.btn-group .btn {
+  border-radius: 0;
+  position: relative;
+}
+
+/* Collapse borders between adjacent buttons */
+.btn-group .btn + .btn {
+  margin-left: -1px;
+}
+
+/* First button: round left corners */
+.btn-group .btn:first-child {
+  border-radius: var(--ai-radius-md) 0 0 var(--ai-radius-md);
+}
+
+/* Last button: round right corners */
+.btn-group .btn:last-child {
+  border-radius: 0 var(--ai-radius-md) var(--ai-radius-md) 0;
+}
+
+/* Single button (first + last) */
+.btn-group .btn:only-child {
+  border-radius: var(--ai-radius-md);
+}
+
+/* Hover/focus z-index so border shows above neighbours */
+.btn-group .btn:hover,
+.btn-group .btn:focus-visible {
+  z-index: 1;
+}
+
+/* ── Vertical ───────────────────────────── */
+
+.btn-group--vertical {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.btn-group--vertical .btn {
+  border-radius: 0;
+  width: 100%;
+  position: relative;
+}
+
+/* Icon-only buttons in vertical groups keep their fixed size */
+.btn-group--vertical .btn--icon {
+  width: var(--ai-spacing-8);
+}
+
+.btn-group--vertical .btn--icon.btn--sm {
+  width: var(--ai-spacing-7);
+}
+
+.btn-group--vertical .btn + .btn {
+  margin-top: -1px;
+}
+
+.btn-group--vertical .btn:first-child {
+  border-radius: var(--ai-radius-md) var(--ai-radius-md) 0 0;
+}
+
+.btn-group--vertical .btn:last-child {
+  border-radius: 0 0 var(--ai-radius-md) var(--ai-radius-md);
+}
+
+.btn-group--vertical .btn:only-child {
+  border-radius: var(--ai-radius-md);
+}
+
+.btn-group--vertical .btn:hover,
+.btn-group--vertical .btn:focus-visible {
+  z-index: 1;
+}
+
+/* ── Brand colour variant ───────────────── */
+
+.btn-group--brand .btn {
+  background-color: var(--ai-btn-primary-bg);
+  border-color: var(--ai-btn-primary-border);
+  color: var(--ai-btn-primary-text);
+}
+
+.btn-group--brand .btn:hover {
+  background-color: var(--ai-btn-primary-bg-hover);
+}
+
+.btn-group--brand .btn:active {
+  background-color: var(--ai-btn-primary-bg-pressed);
+}
+
+.btn-group--brand .btn:focus-visible {
+  background-color: var(--ai-btn-primary-bg-hover);
+  border: 2px solid var(--ai-surface-primary);
+  box-shadow: 0 0 0 2px var(--ai-btn-primary-bg-hover);
+  color: var(--ai-btn-primary-text);
+  outline: none;
+}
+
+/* Inner border separator for brand variant */
+.btn-group--brand .btn + .btn {
+  border-left: 1px solid var(--ai-surface-brand-dark);
+}
+
+.btn-group--brand.btn-group--vertical .btn + .btn {
+  border-left-color: var(--ai-btn-primary-border);
+  border-top: 1px solid var(--ai-surface-brand-dark);
+}
+
+/* ── Dropdown ───────────────────────────── */
+
+/* Last .btn before the menu gets right-side radius */
+.btn-group__dropdown .btn:last-of-type {
+  border-radius: 0 var(--ai-radius-md) var(--ai-radius-md) 0;
+}
+
+.btn-group__dropdown {
+  position: relative;
+}
+
+.btn-group__menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + var(--ai-spacing-2));
+  right: 0;
+  min-width: 160px;
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  box-shadow: var(--ai-shadow-md);
+  z-index: 10;
+  overflow: hidden;
+}
+
+.btn-group__menu--open {
+  display: flex;
+  flex-direction: column;
+}
+
+.btn-group__menu-item {
+  display: block;
+  width: 100%;
+  padding: var(--ai-spacing-3) var(--ai-spacing-5);
+  background: none;
+  border: none;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--ai-transition-default);
+}
+
+.btn-group__menu-item:hover {
+  background-color: var(--ai-surface-minimal);
+}
