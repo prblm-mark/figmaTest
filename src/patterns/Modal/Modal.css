@@ -8,7 +8,7 @@
 /* ── Base modal ──────────────────────────── */
 
 .modal {
-  background: var(--ai-surface-primary);
+  background: var(--ai-surface-elevated-1);
   border-radius: var(--ai-radius-lg);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
   width: var(--ai-size-9); /* 512px — default */
@@ -183,7 +183,7 @@
 .modal--confirm .modal__footer {
   justify-content: center;
   border-top: none;
-  padding: 0 var(--ai-spacing-6) var(--ai-spacing-5);
+  padding: 0 var(--ai-spacing-6) var(--ai-spacing-6);
 }
 
 /* ── Form layout ─────────────────────────── */
