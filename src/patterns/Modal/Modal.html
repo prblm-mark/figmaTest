@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Modal — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/Input/Input.css">
+  <link rel="stylesheet" href="../../components/Textarea/Textarea.css">
+  <link rel="stylesheet" href="../../components/Checkbox/Checkbox.css">
+  <link rel="stylesheet" href="Modal.css">
+  <style>
+    body {
+      background-color: var(--ai-surface-primary);
+      min-height: 100vh;
+      padding: var(--ai-spacing-7);
+    }
+    .demo-page {
+      max-width: var(--ai-size-13);
+      margin: 0 auto;
+    }
+    .demo-page__title {
+      font-size: var(--ai-font-fixed-4xl);
+      font-weight: var(--ai-font-bold);
+      font-family: var(--ai-font-title);
+      color: var(--ai-text-primary);
+      margin: 0 0 var(--ai-spacing-2);
+    }
+    .demo-page__subtitle {
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-sm);
+      font-weight: var(--ai-font-regular);
+      line-height: var(--ai-leading-md);
+      color: var(--ai-text-contrast);
+      margin: 0 0 var(--ai-spacing-8);
+    }
+    .demo-section {
+      margin-bottom: var(--ai-spacing-8);
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      font-family: var(--ai-font-title);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 var(--ai-spacing-5);
+    }
+    .demo-triggers {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--ai-spacing-4);
+      margin-bottom: var(--ai-spacing-8);
+    }
+    .demo-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--ai-spacing-7);
+      align-items: flex-start;
+    }
+    /* Static modals for visual reference */
+    .demo-grid .modal { position: static; }
+  </style>
+</head>
+<body>
+
+  <div class="demo-page">
+    <h1 class="demo-page__title">Modal</h1>
+    <p class="demo-page__subtitle">Dialog patterns for alerts, confirmations, forms, feedback, and content. Click buttons to test interactive overlays.</p>
+
+    <!-- Interactive triggers -->
+    <div class="demo-triggers">
+      <button class="btn btn--secondary" onclick="openModal('default')">Default</button>
+      <button class="btn btn--secondary" onclick="openModal('small')">Small</button>
+      <button class="btn btn--secondary" onclick="openModal('large')">Large</button>
+      <button class="btn btn--secondary" onclick="openModal('form')">Form</button>
+      <button class="btn btn--secondary" onclick="openModal('scroll')">Scrollable</button>
+      <button class="btn btn--alert" onclick="openModal('confirm')">Confirmation</button>
+      <button class="btn btn--primary" onclick="openModal('feedback-pos')">Positive Feedback</button>
+      <button class="btn btn--primary" onclick="openModal('feedback-neg')">Negative Feedback</button>
+    </div>
+
+    <!-- ═══ Static variants ═══ -->
+
+    <!-- Row 1: Default + Small + Confirmation -->
+    <div class="demo-section">
+      <h2 class="demo-section__title">Default / Small / Confirmation</h2>
+      <div class="demo-grid">
+
+        <!-- Default -->
+        <div class="modal">
+          <div class="modal__header">
+            <h2 class="modal__title">Terms of Service</h2>
+            <button class="modal__close" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
+          </div>
+          <div class="modal__body">
+            <p>With less than a month to go before the European Union enacts new consumer privacy laws for its citizens, companies around the world are updating their terms of service agreements to comply.</p>
+            <p>The European Union's General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant to ensure a common set of data rights in the European Union.</p>
+          </div>
+          <div class="modal__footer">
+            <button class="btn btn--secondary">Decline</button>
+            <button class="btn btn--primary">I accept</button>
+          </div>
+        </div>
+
+        <!-- Small -->
+        <div class="modal modal--sm">
+          <div class="modal__header">
+            <h2 class="modal__title">Small Modal</h2>
+            <button class="modal__close" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
+          </div>
+          <div class="modal__body">
+            <p>This is a smaller modal dialog, ideal for brief messages or simple confirmations.</p>
+          </div>
+          <div class="modal__footer">
+            <button class="btn btn--secondary">Close</button>
+            <button class="btn btn--primary">Got it</button>
+          </div>
+        </div>
+
+        <!-- Confirmation -->
+        <div class="modal modal--confirm">
+          <div class="modal__body">
+            <div class="modal__icon-wrap">
+              <i data-lucide="alert-triangle" aria-hidden="true"></i>
+            </div>
+            <h2 class="modal__confirm-title">Are you sure?</h2>
+            <p class="modal__confirm-desc">This action cannot be undone. This will permanently delete your account and remove all associated data.</p>
+          </div>
+          <div class="modal__footer">
+            <button class="btn btn--secondary">Cancel</button>
+            <button class="btn btn--alert"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Row 2: Form -->
+    <div class="demo-section">
+      <h2 class="demo-section__title">Form</h2>
+      <div class="demo-grid">
+        <div class="modal">
+          <div class="modal__header">
+            <h2 class="modal__title">Sign up for newsletter</h2>
+            <button class="modal__close" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
+          </div>
+          <div class="modal__body">
+            <div class="modal__form">
+              <div class="modal__form-group">
+                <label class="modal__form-label">Your email</label>
+                <div class="input">
+                  <div class="input__wrap">
+                    <i data-lucide="mail" class="input__icon" aria-hidden="true"></i>
+                    <input type="email" class="input__control" placeholder="name@company.com">
+                  </div>
+                </div>
+              </div>
+              <div class="modal__form-group">
+                <label class="modal__form-label">Your password</label>
+                <div class="input">
+                  <div class="input__wrap">
+                    <i data-lucide="lock" class="input__icon" aria-hidden="true"></i>
+                    <input type="password" class="input__control" placeholder="••••••••">
+                  </div>
+                </div>
+              </div>
+              <label class="checkbox">
+                <input type="checkbox" class="checkbox__input">
+                <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+                <span class="checkbox__label"><span class="checkbox__label-text">Remember me</span></span>
+              </label>
+              <button class="btn btn--primary" style="width: 100%;">Sign up</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: Large -->
+    <div class="demo-section">
+      <h2 class="demo-section__title">Large</h2>
+      <div class="demo-grid">
+        <div class="modal modal--lg">
+          <div class="modal__header">
+            <h2 class="modal__title">Large Modal</h2>
+            <button class="modal__close" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
+          </div>
+          <div class="modal__body">
+            <p>This is a larger modal dialog, suitable for detailed content, multi-column layouts, or data-heavy interfaces. The wider format gives breathing room for tables, images, or longer form content.</p>
+            <p>Large modals work well when users need to review substantial information before making a decision, such as comparing plans, reviewing detailed reports, or editing complex forms with many fields.</p>
+          </div>
+          <div class="modal__footer">
+            <button class="btn btn--secondary">Cancel</button>
+            <button class="btn btn--primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 4: Scrollable -->
+    <div class="demo-section">
+      <h2 class="demo-section__title">Scrollable</h2>
+      <div class="demo-grid">
+        <div class="modal">
+          <div class="modal__header">
+            <h2 class="modal__title">Terms &amp; Conditions</h2>
+            <button class="modal__close" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
+          </div>
+          <div class="modal__body modal__body--scroll">
+            <p><strong>1. Introduction</strong></p>
+            <p>These Website Standard Terms and Conditions shall manage your use of our website. By using our website, you accept these terms and conditions in full.</p>
+            <p><strong>2. Intellectual Property Rights</strong></p>
+            <p>Other than the content you own, the Company and/or its licensors own all the intellectual property rights and materials contained in this website.</p>
+            <p><strong>3. Restrictions</strong></p>
+            <p>You are specifically restricted from: publishing any website material in any other media; selling, sublicensing and/or otherwise commercialising any website material.</p>
+            <p><strong>4. Your Content</strong></p>
+            <p>"Your Content" shall mean any audio, video text, images or other material you choose to display on this website.</p>
+            <p><strong>5. No Warranties</strong></p>
+            <p>This website is provided "as is," with all faults, and the Company expresses no representations or warranties of any kind.</p>
+            <p><strong>6. Limitation of Liability</strong></p>
+            <p>In no event shall the Company be held liable for anything arising out of or in any way connected with your use of this website.</p>
+          </div>
+          <div class="modal__footer">
+            <button class="btn btn--secondary">Decline</button>
+            <button class="btn btn--primary">I accept</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 5: Feedback Positive + Negative -->
+    <div class="demo-section">
+      <h2 class="demo-section__title">Feedback Positive / Negative</h2>
+      <div class="demo-grid">
+
+        <!-- Feedback Positive -->
+        <div class="modal modal--feedback">
+          <div class="modal__header">
+            <div class="modal__header-icon modal__header-icon--positive">
+              <i data-lucide="thumbs-up" aria-hidden="true"></i>
+            </div>
+            <h2 class="modal__title">Provide additional Feedback</h2>
+            <button class="modal__close" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
+          </div>
+          <div class="modal__body">
+            <div class="textarea">
+              <textarea class="textarea__control" placeholder="What do you like about the response?"></textarea>
+            </div>
+          </div>
+          <div class="modal__footer">
+            <button class="btn btn--secondary">Cancel</button>
+            <button class="btn btn--primary">Submit feedback</button>
+          </div>
+        </div>
+
+        <!-- Positive Negative (negative feedback) -->
+        <div class="modal modal--feedback">
+          <div class="modal__header">
+            <div class="modal__header-icon modal__header-icon--negative">
+              <i data-lucide="thumbs-down" aria-hidden="true"></i>
+            </div>
+            <h2 class="modal__title">Provide additional Feedback</h2>
+            <button class="modal__close" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
+          </div>
+          <div class="modal__body">
+            <div class="textarea">
+              <textarea class="textarea__control" placeholder="What was the issue with the response? How could it be improved?"></textarea>
+            </div>
+            <div class="modal__check-list">
+              <label class="checkbox">
+                <input type="checkbox" class="checkbox__input" checked>
+                <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+                <span class="checkbox__label"><span class="checkbox__label-text">This is harmful / unsafe</span></span>
+              </label>
+              <label class="checkbox">
+                <input type="checkbox" class="checkbox__input">
+                <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+                <span class="checkbox__label"><span class="checkbox__label-text">This isn't true</span></span>
+              </label>
+              <label class="checkbox">
+                <input type="checkbox" class="checkbox__input">
+                <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+                <span class="checkbox__label"><span class="checkbox__label-text">This isn't helpful</span></span>
+              </label>
+            </div>
+          </div>
+          <div class="modal__footer">
+            <button class="btn btn--secondary">Cancel</button>
+            <button class="btn btn--primary">Submit feedback</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══ Interactive overlays ═══ -->
+
+  <div class="modal-overlay" id="modal-default" aria-modal="true" role="dialog">
+    <div class="modal">
+      <div class="modal__header"><h2 class="modal__title">Terms of Service</h2><button class="modal__close" aria-label="Close" onclick="closeModal('default')"><i data-lucide="x" aria-hidden="true"></i></button></div>
+      <div class="modal__body"><p>With less than a month to go before the European Union enacts new consumer privacy laws for its citizens, companies around the world are updating their terms of service agreements to comply.</p><p>The European Union's General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant to ensure a common set of data rights in the European Union.</p></div>
+      <div class="modal__footer"><button class="btn btn--secondary" onclick="closeModal('default')">Decline</button><button class="btn btn--primary" onclick="closeModal('default')">I accept</button></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-small" aria-modal="true" role="dialog">
+    <div class="modal modal--sm">
+      <div class="modal__header"><h2 class="modal__title">Small Modal</h2><button class="modal__close" aria-label="Close" onclick="closeModal('small')"><i data-lucide="x" aria-hidden="true"></i></button></div>
+      <div class="modal__body"><p>This is a smaller modal dialog, ideal for brief messages or simple confirmations.</p></div>
+      <div class="modal__footer"><button class="btn btn--secondary" onclick="closeModal('small')">Close</button><button class="btn btn--primary" onclick="closeModal('small')">Got it</button></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-large" aria-modal="true" role="dialog">
+    <div class="modal modal--lg">
+      <div class="modal__header"><h2 class="modal__title">Large Modal</h2><button class="modal__close" aria-label="Close" onclick="closeModal('large')"><i data-lucide="x" aria-hidden="true"></i></button></div>
+      <div class="modal__body"><p>This is a larger modal dialog, suitable for detailed content, multi-column layouts, or data-heavy interfaces.</p><p>Large modals work well when users need to review substantial information before making a decision.</p></div>
+      <div class="modal__footer"><button class="btn btn--secondary" onclick="closeModal('large')">Cancel</button><button class="btn btn--primary" onclick="closeModal('large')">Save changes</button></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-form" aria-modal="true" role="dialog">
+    <div class="modal">
+      <div class="modal__header"><h2 class="modal__title">Sign up for newsletter</h2><button class="modal__close" aria-label="Close" onclick="closeModal('form')"><i data-lucide="x" aria-hidden="true"></i></button></div>
+      <div class="modal__body">
+        <form class="modal__form" onsubmit="event.preventDefault(); closeModal('form');">
+          <div class="modal__form-group"><label class="modal__form-label">Your email</label><div class="input"><div class="input__wrap"><i data-lucide="mail" class="input__icon" aria-hidden="true"></i><input type="email" class="input__control" placeholder="name@company.com"></div></div></div>
+          <div class="modal__form-group"><label class="modal__form-label">Your password</label><div class="input"><div class="input__wrap"><i data-lucide="lock" class="input__icon" aria-hidden="true"></i><input type="password" class="input__control" placeholder="••••••••"></div></div></div>
+          <label class="checkbox"><input type="checkbox" class="checkbox__input"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span><span class="checkbox__label"><span class="checkbox__label-text">Remember me</span></span></label>
+          <button class="btn btn--primary" type="submit" style="width: 100%;">Sign up</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-scroll" aria-modal="true" role="dialog">
+    <div class="modal">
+      <div class="modal__header"><h2 class="modal__title">Terms &amp; Conditions</h2><button class="modal__close" aria-label="Close" onclick="closeModal('scroll')"><i data-lucide="x" aria-hidden="true"></i></button></div>
+      <div class="modal__body modal__body--scroll"><p><strong>1. Introduction</strong></p><p>These Website Standard Terms and Conditions shall manage your use of our website.</p><p><strong>2. Intellectual Property Rights</strong></p><p>Other than the content you own, the Company owns all intellectual property rights.</p><p><strong>3. Restrictions</strong></p><p>You are restricted from publishing any website material in any other media.</p><p><strong>4. Your Content</strong></p><p>"Your Content" shall mean any audio, video, text, images or other material.</p><p><strong>5. No Warranties</strong></p><p>This website is provided "as is," with all faults.</p><p><strong>6. Limitation of Liability</strong></p><p>In no event shall the Company be held liable for anything arising out of your use of this website.</p></div>
+      <div class="modal__footer"><button class="btn btn--secondary" onclick="closeModal('scroll')">Decline</button><button class="btn btn--primary" onclick="closeModal('scroll')">I accept</button></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-confirm" aria-modal="true" role="dialog">
+    <div class="modal modal--confirm">
+      <div class="modal__body"><div class="modal__icon-wrap"><i data-lucide="alert-triangle" aria-hidden="true"></i></div><h2 class="modal__confirm-title">Are you sure?</h2><p class="modal__confirm-desc">This action cannot be undone. This will permanently delete your account and remove all associated data.</p></div>
+      <div class="modal__footer"><button class="btn btn--secondary" onclick="closeModal('confirm')">Cancel</button><button class="btn btn--alert" onclick="closeModal('confirm')"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-feedback-pos" aria-modal="true" role="dialog">
+    <div class="modal modal--feedback">
+      <div class="modal__header"><div class="modal__header-icon modal__header-icon--positive"><i data-lucide="thumbs-up" aria-hidden="true"></i></div><h2 class="modal__title">Provide additional Feedback</h2><button class="modal__close" aria-label="Close" onclick="closeModal('feedback-pos')"><i data-lucide="x" aria-hidden="true"></i></button></div>
+      <div class="modal__body"><div class="textarea"><textarea class="textarea__control" placeholder="What do you like about the response?"></textarea></div></div>
+      <div class="modal__footer"><button class="btn btn--secondary" onclick="closeModal('feedback-pos')">Cancel</button><button class="btn btn--primary" onclick="closeModal('feedback-pos')">Submit feedback</button></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-feedback-neg" aria-modal="true" role="dialog">
+    <div class="modal modal--feedback">
+      <div class="modal__header"><div class="modal__header-icon modal__header-icon--negative"><i data-lucide="thumbs-down" aria-hidden="true"></i></div><h2 class="modal__title">Provide additional Feedback</h2><button class="modal__close" aria-label="Close" onclick="closeModal('feedback-neg')"><i data-lucide="x" aria-hidden="true"></i></button></div>
+      <div class="modal__body">
+        <div class="textarea"><textarea class="textarea__control" placeholder="What was the issue with the response? How could it be improved?"></textarea></div>
+        <div class="modal__check-list">
+          <label class="checkbox"><input type="checkbox" class="checkbox__input"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span><span class="checkbox__label"><span class="checkbox__label-text">This is harmful / unsafe</span></span></label>
+          <label class="checkbox"><input type="checkbox" class="checkbox__input"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span><span class="checkbox__label"><span class="checkbox__label-text">This isn't true</span></span></label>
+          <label class="checkbox"><input type="checkbox" class="checkbox__input"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span><span class="checkbox__label"><span class="checkbox__label-text">This isn't helpful</span></span></label>
+        </div>
+      </div>
+      <div class="modal__footer"><button class="btn btn--secondary" onclick="closeModal('feedback-neg')">Cancel</button><button class="btn btn--primary" onclick="closeModal('feedback-neg')">Submit feedback</button></div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    lucide.createIcons();
+
+    function openModal(id) {
+      document.getElementById('modal-' + id).classList.add('modal-overlay--open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(id) {
+      document.getElementById('modal-' + id).classList.remove('modal-overlay--open');
+      document.body.style.overflow = '';
+    }
+    document.querySelectorAll('.modal-overlay').forEach(function (overlay) {
+      overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) { overlay.classList.remove('modal-overlay--open'); document.body.style.overflow = ''; }
+      });
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { document.querySelectorAll('.modal-overlay--open').forEach(function (o) { o.classList.remove('modal-overlay--open'); }); document.body.style.overflow = ''; }
+    });
+  </script>
+
+</body>
+</html>
