@@ -233,18 +233,18 @@
   height: var(--ai-icon-size-md);
 }
 
-/* Positive feedback icon: Aqua/50 bg, success icon */
+/* Positive feedback icon: success at 15% opacity */
 .modal__header-icon--positive {
-  background: #dcfeec; /* Aqua/50 — primitive, approved */
+  background: rgba(48, 203, 144, 0.15); /* --ai-surface-success at 15% — approved */
 }
 
 .modal__header-icon--positive [data-lucide] {
   color: var(--ai-surface-success);
 }
 
-/* Negative feedback icon: Red/50 bg, error icon */
+/* Negative feedback icon: error at 15% opacity */
 .modal__header-icon--negative {
-  background: #fef3f3; /* Red/50 — primitive, approved */
+  background: rgba(239, 68, 68, 0.15); /* --ai-surface-error at 15% — approved */
 }
 
 .modal__header-icon--negative [data-lucide] {
