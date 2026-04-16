@@ -88,7 +88,7 @@ body {
   height: var(--ai-icon-size-sm);
   flex-shrink: 0;
   border-radius: var(--ai-radius-md);
-  background: var(--ai-surface-minimal);
+  background: var(--ai-surface-primary);
   border: 0.5px solid var(--ai-border-secondary);
   display: flex;
   align-items: center;

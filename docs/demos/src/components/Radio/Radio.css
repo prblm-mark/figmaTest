@@ -28,7 +28,7 @@
   height: 16px;
   border-radius: var(--ai-radius-full);
   flex-shrink: 0;
-  background: var(--ai-surface-minimal);
+  background: var(--ai-surface-primary);
   border: 1px solid var(--ai-border-secondary);
   transition: border-color var(--ai-transition-default),
               background var(--ai-transition-default);

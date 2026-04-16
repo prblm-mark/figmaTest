@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Modals — Prototype</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/Input/Input.css">
+  <link rel="stylesheet" href="../../components/Checkbox/Checkbox.css">
+  <link rel="stylesheet" href="Modal.css">
+</head>
+<body>
+
+  <div class="proto-page">
+    <h1 class="proto-page__title">Modals</h1>
+    <p class="proto-page__subtitle">Dialog patterns for alerts, confirmations, forms, and content. Built with design system tokens.</p>
+
+    <div class="proto-triggers">
+      <button class="btn btn--secondary" onclick="openModal('default')">Default</button>
+      <button class="btn btn--secondary" onclick="openModal('small')">Small</button>
+      <button class="btn btn--secondary" onclick="openModal('large')">Large</button>
+      <button class="btn btn--secondary" onclick="openModal('form')">Form</button>
+      <button class="btn btn--secondary" onclick="openModal('scroll')">Scrollable</button>
+      <button class="btn btn--alert" onclick="openModal('confirm')">Confirmation</button>
+    </div>
+  </div>
+
+  <!-- ═══ 1. Default Modal ═══ -->
+  <div class="modal-overlay" id="modal-default" aria-modal="true" role="dialog" aria-labelledby="title-default">
+    <div class="modal">
+      <div class="modal__header">
+        <h2 class="modal__title" id="title-default">Terms of Service</h2>
+        <button class="modal__close" aria-label="Close" onclick="closeModal('default')">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="modal__body">
+        <p>With less than a month to go before the European Union enacts new consumer privacy laws for its citizens, companies around the world are updating their terms of service agreements to comply.</p>
+        <p>The European Union's General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant to ensure a common set of data rights in the European Union. It requires organisations to notify users as soon as possible of high-risk data breaches that could personally affect them.</p>
+      </div>
+      <div class="modal__footer">
+        <button class="btn btn--secondary" onclick="closeModal('default')">Decline</button>
+        <button class="btn btn--primary" onclick="closeModal('default')">I accept</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 2. Small Modal ═══ -->
+  <div class="modal-overlay" id="modal-small" aria-modal="true" role="dialog" aria-labelledby="title-small">
+    <div class="modal modal--sm">
+      <div class="modal__header">
+        <h2 class="modal__title" id="title-small">Small Modal</h2>
+        <button class="modal__close" aria-label="Close" onclick="closeModal('small')">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="modal__body">
+        <p>This is a smaller modal dialog, ideal for brief messages or simple confirmations that don't require much content space.</p>
+      </div>
+      <div class="modal__footer">
+        <button class="btn btn--secondary" onclick="closeModal('small')">Close</button>
+        <button class="btn btn--primary" onclick="closeModal('small')">Got it</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 3. Large Modal ═══ -->
+  <div class="modal-overlay" id="modal-large" aria-modal="true" role="dialog" aria-labelledby="title-large">
+    <div class="modal modal--lg">
+      <div class="modal__header">
+        <h2 class="modal__title" id="title-large">Large Modal</h2>
+        <button class="modal__close" aria-label="Close" onclick="closeModal('large')">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="modal__body">
+        <p>This is a larger modal dialog, suitable for detailed content, multi-column layouts, or data-heavy interfaces. The wider format gives breathing room for tables, images, or longer form content.</p>
+        <p>Large modals work well when users need to review substantial information before making a decision, such as comparing plans, reviewing detailed reports, or editing complex forms with many fields.</p>
+        <p>The maximum width ensures the modal remains readable and doesn't stretch uncomfortably wide on large displays, while the responsive max-width constraint keeps it usable on smaller viewports.</p>
+      </div>
+      <div class="modal__footer">
+        <button class="btn btn--secondary" onclick="closeModal('large')">Cancel</button>
+        <button class="btn btn--primary" onclick="closeModal('large')">Save changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 4. Form Modal ═══ -->
+  <div class="modal-overlay" id="modal-form" aria-modal="true" role="dialog" aria-labelledby="title-form">
+    <div class="modal">
+      <div class="modal__header">
+        <h2 class="modal__title" id="title-form">Sign up for newsletter</h2>
+        <button class="modal__close" aria-label="Close" onclick="closeModal('form')">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="modal__body">
+        <form class="modal__form" onsubmit="event.preventDefault(); closeModal('form');">
+          <div class="modal__form-group">
+            <label class="modal__form-label" for="form-email">Your email</label>
+            <div class="input">
+              <div class="input__wrap">
+                <i data-lucide="mail" class="input__icon" aria-hidden="true"></i>
+                <input type="email" class="input__control" id="form-email" placeholder="name@company.com">
+              </div>
+            </div>
+          </div>
+          <div class="modal__form-group">
+            <label class="modal__form-label" for="form-password">Your password</label>
+            <div class="input">
+              <div class="input__wrap">
+                <i data-lucide="lock" class="input__icon" aria-hidden="true"></i>
+                <input type="password" class="input__control" id="form-password" placeholder="••••••••">
+              </div>
+            </div>
+          </div>
+          <div class="modal__form-check">
+            <label class="checkbox">
+              <input type="checkbox" class="checkbox__input">
+              <span class="checkbox__indicator">
+                <i data-lucide="check" aria-hidden="true"></i>
+              </span>
+              <span class="checkbox__label">
+                <span class="checkbox__label-text">Remember me</span>
+              </span>
+            </label>
+          </div>
+          <button class="btn btn--primary" type="submit" style="width: 100%;">Sign up</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 5. Scrollable Modal ═══ -->
+  <div class="modal-overlay" id="modal-scroll" aria-modal="true" role="dialog" aria-labelledby="title-scroll">
+    <div class="modal">
+      <div class="modal__header">
+        <h2 class="modal__title" id="title-scroll">Terms &amp; Conditions</h2>
+        <button class="modal__close" aria-label="Close" onclick="closeModal('scroll')">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="modal__body modal__body--scroll">
+        <p><strong>1. Introduction</strong></p>
+        <p>These Website Standard Terms and Conditions written on this webpage shall manage your use of our website accessible at flowbite.com. By using our website, you accept these terms and conditions in full. If you disagree with these terms, you must not use this website.</p>
+        <p><strong>2. Intellectual Property Rights</strong></p>
+        <p>Other than the content you own, under these terms, the Company and/or its licensors own all the intellectual property rights and materials contained in this website. You are granted a limited licence only for purposes of viewing the material contained on this website.</p>
+        <p><strong>3. Restrictions</strong></p>
+        <p>You are specifically restricted from all of the following: publishing any website material in any other media; selling, sublicensing and/or otherwise commercialising any website material; publicly performing and/or showing any website material; using this website in any way that is or may be damaging to this website.</p>
+        <p><strong>4. Your Content</strong></p>
+        <p>In these Website Standard Terms and Conditions, "Your Content" shall mean any audio, video text, images or other material you choose to display on this website. By displaying Your Content, you grant the Company a non-exclusive, worldwide irrevocable, sub-licensable licence to use, reproduce, adapt, publish, translate and distribute it.</p>
+        <p><strong>5. No Warranties</strong></p>
+        <p>This website is provided "as is," with all faults, and the Company expresses no representations or warranties of any kind related to this website or the materials contained on this website.</p>
+        <p><strong>6. Limitation of Liability</strong></p>
+        <p>In no event shall the Company, nor any of its officers, directors and employees, be held liable for anything arising out of or in any way connected with your use of this website. The Company, including its officers, directors and employees shall not be held liable for any indirect, consequential or special liability arising out of or in any way related to your use of this website.</p>
+        <p><strong>7. Indemnification</strong></p>
+        <p>You hereby indemnify to the fullest extent the Company from and against any and/or all liabilities, costs, demands, causes of action, damages and expenses arising in any way related to your breach of any of the provisions of these Terms.</p>
+      </div>
+      <div class="modal__footer">
+        <button class="btn btn--secondary" onclick="closeModal('scroll')">Decline</button>
+        <button class="btn btn--primary" onclick="closeModal('scroll')">I accept</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 6. Confirmation Modal ═══ -->
+  <div class="modal-overlay" id="modal-confirm" aria-modal="true" role="dialog" aria-labelledby="title-confirm">
+    <div class="modal modal--confirm">
+      <div class="modal__body">
+        <div class="modal__icon-wrap">
+          <i data-lucide="alert-triangle" aria-hidden="true"></i>
+        </div>
+        <h2 class="modal__confirm-title" id="title-confirm">Are you sure?</h2>
+        <p class="modal__confirm-desc">This action cannot be undone. This will permanently delete your account and remove all associated data from our servers.</p>
+        <div class="modal__footer">
+          <button class="btn btn--secondary" onclick="closeModal('confirm')">Cancel</button>
+          <button class="btn btn--alert" onclick="closeModal('confirm')">
+            <i data-lucide="trash-2" aria-hidden="true"></i> Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    lucide.createIcons();
+
+    function openModal(id) {
+      document.getElementById('modal-' + id).classList.add('modal-overlay--open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(id) {
+      document.getElementById('modal-' + id).classList.remove('modal-overlay--open');
+      document.body.style.overflow = '';
+    }
+
+    // Close on overlay click
+    document.querySelectorAll('.modal-overlay').forEach(function (overlay) {
+      overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) {
+          overlay.classList.remove('modal-overlay--open');
+          document.body.style.overflow = '';
+        }
+      });
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay--open').forEach(function (overlay) {
+          overlay.classList.remove('modal-overlay--open');
+        });
+        document.body.style.overflow = '';
+      }
+    });
+  </script>
+
+</body>
+</html>
