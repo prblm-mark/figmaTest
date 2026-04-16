@@ -136,10 +136,12 @@
 }
 
 /* ── Confirmation variant ────────────────── */
+/* Figma uses a single container — no separate header/footer sections */
 
 .modal--confirm .modal__body {
   align-items: center;
-  padding-bottom: 0;
+  padding: var(--ai-spacing-6);
+  gap: var(--ai-spacing-3);
 }
 
 .modal__icon-wrap {
@@ -181,7 +183,7 @@
 .modal--confirm .modal__footer {
   justify-content: center;
   border-top: none;
-  padding-top: 0;
+  padding: 0 var(--ai-spacing-6) var(--ai-spacing-5);
 }
 
 /* ── Form layout ─────────────────────────── */
