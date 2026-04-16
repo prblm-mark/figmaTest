@@ -241,6 +241,66 @@ body {
   align-items: center;
 }
 
+/* ── Feedback variant ────────────────────── */
+
+.modal--feedback .modal__header {
+  gap: var(--ai-spacing-4);
+  justify-content: flex-start;
+}
+
+.modal__header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-8);
+  height: var(--ai-spacing-8);
+  border-radius: var(--ai-radius-full);
+  background: var(--ai-surface-brand);
+  flex-shrink: 0;
+}
+
+.modal__header-icon [data-lucide] {
+  width: var(--ai-icon-size-md);
+  height: var(--ai-icon-size-md);
+  color: var(--ai-btn-primary-text);
+}
+
+.modal--feedback .modal__title {
+  color: var(--ai-surface-brand);
+  flex: 1;
+}
+
+.modal__textarea {
+  width: 100%;
+  min-height: 120px; /* hardcoded — no token match */
+  padding: var(--ai-spacing-4);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  background: var(--ai-surface-primary);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  resize: vertical;
+  transition: border-color var(--ai-transition-default);
+}
+
+.modal__textarea::placeholder {
+  color: var(--ai-text-contrast);
+}
+
+.modal__textarea:focus {
+  border-color: var(--ai-border-brand);
+  outline: none;
+}
+
+.modal__check-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-4);
+}
+
 /* ── Scrollbar styling ───────────────────── */
 
 .modal__body--scroll::-webkit-scrollbar {

@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>Textarea — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="Textarea.css">
+  <style>
+    body {
+      background-color: var(--ai-surface-primary);
+      min-height: 100vh;
+      padding: var(--ai-spacing-7);
+    }
+    .demo-page {
+      max-width: var(--ai-size-10);
+      margin: 0 auto;
+    }
+    .demo-page__title {
+      font-size: var(--ai-font-fixed-4xl);
+      font-weight: var(--ai-font-bold);
+      font-family: var(--ai-font-title);
+      color: var(--ai-text-primary);
+      margin: 0 0 var(--ai-spacing-2);
+    }
+    .demo-page__subtitle {
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-sm);
+      font-weight: var(--ai-font-regular);
+      line-height: var(--ai-leading-md);
+      color: var(--ai-text-contrast);
+      margin: 0 0 var(--ai-spacing-8);
+    }
+    .demo-section {
+      margin-bottom: var(--ai-spacing-8);
+      max-width: 480px;
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      font-family: var(--ai-font-title);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 var(--ai-spacing-5);
+    }
+    .demo-row {
+      display: flex;
+      gap: var(--ai-spacing-5);
+      align-items: flex-start;
+    }
+    .demo-row > * { flex: 1; }
+  </style>
+</head>
+<body>
+
+  <div class="demo-page">
+    <h1 class="demo-page__title">Textarea</h1>
+    <p class="demo-page__subtitle">Multi-line text input for longer form content. Mirrors Input component tokens for form consistency.</p>
+
+    <!-- Default with label + help text -->
+    <div class="demo-section">
+      <h2 class="demo-section__title">Default</h2>
+      <div class="textarea">
+        <label class="textarea__label" for="ta-default">Your message</label>
+        <textarea class="textarea__control" id="ta-default" placeholder="Write your thoughts here..."></textarea>
+        <span class="textarea__help">Maximum 500 characters</span>
+      </div>
+    </div>
+
+    <!-- No label -->
+    <div class="demo-section">
+      <h2 class="demo-section__title">No Label</h2>
+      <div class="textarea">
+        <textarea class="textarea__control" placeholder="Write your thoughts here..."></textarea>
+      </div>
+    </div>
+
+    <!-- With character count -->
+    <div class="demo-section">
+      <h2 class="demo-section__title">With Character Count</h2>
+      <div class="textarea">
+        <label class="textarea__label" for="ta-count">Description</label>
+        <textarea class="textarea__control" id="ta-count" placeholder="Describe your project..." maxlength="200" oninput="updateCount(this)"></textarea>
+        <div class="textarea__footer">
+          <span class="textarea__char-count"><span id="charCurrent">0</span> / 200</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error state -->
+    <div class="demo-section">
+      <h2 class="demo-section__title">Error</h2>
+      <div class="textarea textarea--error">
+        <label class="textarea__label" for="ta-error">Feedback</label>
+        <textarea class="textarea__control" id="ta-error" placeholder="Tell us what went wrong..."></textarea>
+        <span class="textarea__help" role="alert">This field is required</span>
+      </div>
+    </div>
+
+    <!-- Disabled -->
+    <div class="demo-section">
+      <h2 class="demo-section__title">Disabled</h2>
+      <div class="textarea">
+        <label class="textarea__label" for="ta-disabled">Notes</label>
+        <textarea class="textarea__control" id="ta-disabled" disabled placeholder="This field is not available">This content cannot be edited.</textarea>
+      </div>
+    </div>
+
+    <!-- Small size -->
+    <div class="demo-section">
+      <h2 class="demo-section__title">Small</h2>
+      <div class="textarea textarea--sm">
+        <label class="textarea__label" for="ta-sm">Quick note</label>
+        <textarea class="textarea__control" id="ta-sm" placeholder="Add a short note..."></textarea>
+      </div>
+    </div>
+
+    <!-- Side by side: Default vs Small -->
+    <div class="demo-section" style="max-width: 100%;">
+      <h2 class="demo-section__title">Size Comparison</h2>
+      <div class="demo-row">
+        <div class="textarea">
+          <label class="textarea__label" for="ta-cmp-base">Base</label>
+          <textarea class="textarea__control" id="ta-cmp-base" placeholder="Base size textarea..."></textarea>
+          <span class="textarea__help">Default size with help text</span>
+        </div>
+        <div class="textarea textarea--sm">
+          <label class="textarea__label" for="ta-cmp-sm">Small</label>
+          <textarea class="textarea__control" id="ta-cmp-sm" placeholder="Small size textarea..."></textarea>
+          <span class="textarea__help">Small size with help text</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function updateCount(el) {
+      document.getElementById('charCurrent').textContent = el.value.length;
+    }
+  </script>
+
+</body>
+</html>

@@ -24,6 +24,8 @@
       <button class="btn btn--secondary" onclick="openModal('form')">Form</button>
       <button class="btn btn--secondary" onclick="openModal('scroll')">Scrollable</button>
       <button class="btn btn--alert" onclick="openModal('confirm')">Confirmation</button>
+      <button class="btn btn--primary" onclick="openModal('feedback-pos')">Positive Feedback</button>
+      <button class="btn btn--primary" onclick="openModal('feedback-neg')">Negative Feedback</button>
     </div>
   </div>
 
@@ -180,6 +182,79 @@
             <i data-lucide="trash-2" aria-hidden="true"></i> Delete
           </button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 7. Positive Feedback Modal ═══ -->
+  <div class="modal-overlay" id="modal-feedback-pos" aria-modal="true" role="dialog" aria-labelledby="title-feedback-pos">
+    <div class="modal modal--feedback">
+      <div class="modal__header">
+        <div class="modal__header-icon">
+          <i data-lucide="thumbs-up" aria-hidden="true"></i>
+        </div>
+        <h2 class="modal__title" id="title-feedback-pos">Provide additional Feedback</h2>
+        <button class="modal__close" aria-label="Close" onclick="closeModal('feedback-pos')">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="modal__body">
+        <textarea class="modal__textarea" placeholder="What do you like about the response?"></textarea>
+      </div>
+      <div class="modal__footer">
+        <button class="btn btn--secondary" onclick="closeModal('feedback-pos')">Cancel</button>
+        <button class="btn btn--primary" onclick="closeModal('feedback-pos')">Submit feedback</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 8. Negative Feedback Modal ═══ -->
+  <div class="modal-overlay" id="modal-feedback-neg" aria-modal="true" role="dialog" aria-labelledby="title-feedback-neg">
+    <div class="modal modal--feedback">
+      <div class="modal__header">
+        <div class="modal__header-icon">
+          <i data-lucide="thumbs-down" aria-hidden="true"></i>
+        </div>
+        <h2 class="modal__title" id="title-feedback-neg">Provide additional Feedback</h2>
+        <button class="modal__close" aria-label="Close" onclick="closeModal('feedback-neg')">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="modal__body">
+        <textarea class="modal__textarea" placeholder="What was the issue with the response? How could it be improved?"></textarea>
+        <div class="modal__check-list">
+          <label class="checkbox">
+            <input type="checkbox" class="checkbox__input">
+            <span class="checkbox__indicator">
+              <i data-lucide="check" aria-hidden="true"></i>
+            </span>
+            <span class="checkbox__label">
+              <span class="checkbox__label-text">This is harmful / unsafe</span>
+            </span>
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" class="checkbox__input">
+            <span class="checkbox__indicator">
+              <i data-lucide="check" aria-hidden="true"></i>
+            </span>
+            <span class="checkbox__label">
+              <span class="checkbox__label-text">This isn't true</span>
+            </span>
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" class="checkbox__input">
+            <span class="checkbox__indicator">
+              <i data-lucide="check" aria-hidden="true"></i>
+            </span>
+            <span class="checkbox__label">
+              <span class="checkbox__label-text">This isn't helpful</span>
+            </span>
+          </label>
+        </div>
+      </div>
+      <div class="modal__footer">
+        <button class="btn btn--secondary" onclick="closeModal('feedback-neg')">Cancel</button>
+        <button class="btn btn--primary" onclick="closeModal('feedback-neg')">Submit feedback</button>
       </div>
     </div>
   </div>
