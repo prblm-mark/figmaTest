@@ -1,0 +1,273 @@
+/* Modal pattern
+ * Figma node: 2464:763 — "Modal"
+ * Tier: Pattern
+ * Types: Default, Small, Confirmation, Form, Large, Scrollable, Feedback Positive, Positive Negative
+ * Composes: Button, Input, Textarea, Checkbox
+ */
+
+/* ── Base modal ──────────────────────────── */
+
+.modal {
+  background: var(--ai-surface-primary);
+  border-radius: var(--ai-radius-lg);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
+  width: var(--ai-size-9); /* 512px — default */
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Size modifiers ──────────────────────── */
+
+.modal--sm {
+  width: var(--ai-size-7); /* 384px */
+}
+
+.modal--lg {
+  width: var(--ai-size-11); /* 768px */
+}
+
+.modal--confirm {
+  width: var(--ai-size-8); /* 448px */
+  text-align: center;
+}
+
+/* ── Header ──────────────────────────────── */
+
+.modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--ai-spacing-5) var(--ai-spacing-6);
+  border-bottom: 1px solid var(--ai-border-secondary);
+  flex-shrink: 0;
+}
+
+.modal__title {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-md);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  margin: 0;
+}
+
+.modal__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-7);
+  height: var(--ai-spacing-7);
+  border: none;
+  border-radius: var(--ai-radius-md);
+  background: transparent;
+  color: var(--ai-icon-secondary);
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: var(--ai-spacing-2);
+  transition: background-color var(--ai-transition-default),
+              color var(--ai-transition-default);
+}
+
+.modal__close:hover {
+  background: var(--ai-surface-minimal);
+  color: var(--ai-icon-primary);
+}
+
+.modal__close:focus-visible {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: 2px;
+}
+
+.modal__close [data-lucide] {
+  width: var(--ai-icon-size-md);
+  height: var(--ai-icon-size-md);
+}
+
+/* ── Body ────────────────────────────────── */
+
+.modal__body {
+  padding: var(--ai-spacing-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+}
+
+.modal__body p {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-secondary);
+  margin: 0;
+}
+
+/* Scrollable body variant */
+.modal__body--scroll {
+  max-height: 360px; /* layout dimension — no token match */
+  overflow-y: auto;
+}
+
+.modal__body--scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal__body--scroll::-webkit-scrollbar-track {
+  background: var(--ai-surface-minimal);
+  border-radius: var(--ai-radius-full);
+}
+
+.modal__body--scroll::-webkit-scrollbar-thumb {
+  background: var(--ai-border-secondary);
+  border-radius: var(--ai-radius-full);
+}
+
+/* ── Footer ──────────────────────────────── */
+
+.modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--ai-spacing-3);
+  padding: var(--ai-spacing-5) var(--ai-spacing-6);
+  border-top: 1px solid var(--ai-border-secondary);
+  flex-shrink: 0;
+}
+
+/* ── Confirmation variant ────────────────── */
+
+.modal--confirm .modal__body {
+  align-items: center;
+  padding-bottom: 0;
+}
+
+.modal__icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px; /* layout dimension — no token match */
+  height: 56px;
+  border-radius: var(--ai-radius-full);
+  background: var(--ai-surface-minimal);
+  padding: var(--ai-spacing-5);
+}
+
+.modal__icon-wrap [data-lucide] {
+  width: var(--ai-icon-size-lg);
+  height: var(--ai-icon-size-lg);
+  color: var(--ai-text-error);
+}
+
+.modal__confirm-title {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-md);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  margin: 0;
+}
+
+.modal__confirm-desc {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-secondary);
+  margin: 0;
+  text-align: center;
+}
+
+.modal--confirm .modal__footer {
+  justify-content: center;
+  border-top: none;
+  padding-top: 0;
+}
+
+/* ── Form layout ─────────────────────────── */
+
+.modal__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+}
+
+.modal__form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-2);
+}
+
+.modal__form-label {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-primary);
+}
+
+/* ── Feedback variants ───────────────────── */
+
+.modal--feedback .modal__header {
+  gap: var(--ai-spacing-4);
+  justify-content: flex-start;
+}
+
+.modal--feedback .modal__title {
+  flex: 1;
+}
+
+.modal__header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-8);
+  height: var(--ai-spacing-8);
+  border-radius: var(--ai-radius-full);
+  flex-shrink: 0;
+}
+
+.modal__header-icon [data-lucide] {
+  width: var(--ai-icon-size-md);
+  height: var(--ai-icon-size-md);
+}
+
+/* Positive feedback icon: Aqua/50 bg, success icon */
+.modal__header-icon--positive {
+  background: #dcfeec; /* Aqua/50 — primitive, approved */
+}
+
+.modal__header-icon--positive [data-lucide] {
+  color: var(--ai-surface-success);
+}
+
+/* Negative feedback icon: Red/50 bg, error icon */
+.modal__header-icon--negative {
+  background: #fef3f3; /* Red/50 — primitive, approved */
+}
+
+.modal__header-icon--negative [data-lucide] {
+  color: var(--ai-text-error);
+}
+
+.modal__check-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-4);
+}
+
+/* ── Overlay (for interactive demo) ──────── */
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ai-spacing-6);
+}
+
+.modal-overlay--open {
+  display: flex;
+}
