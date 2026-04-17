@@ -389,6 +389,30 @@ When a component's background is client-customisable, ALL derived colours must a
 
 **Utility:** `src/utils/sidebar-colors.js`
 
+### Chat brand-derived colours (message bubble, sources link)
+
+Chat UI colours (`--ai-chat-msg-bg`, `--ai-chat-msg-text`) are **computed at runtime** from `--ai-chat-brand` via `color-mix()`. The static hex values in `tokens-chat.css` (`#f0f3ff` / `#0f406b`) exist for designer reference in Figma only — **do not use them as the source of truth in code**.
+
+**Setup:** Set `data-brand-theme` on the chat container element. Without it, the static fallback tokens win. The `sidebar-colors.js` utility calculates brand luminance and sets the attribute automatically.
+
+**Three luminance tiers:**
+
+| Attribute | Brand luminance | `--ai-chat-msg-bg` | `--ai-chat-msg-text` |
+|---|---|---|---|
+| `[data-brand-theme]` | Light | `color-mix(in srgb, var(--ai-chat-brand) 8%, var(--ai-surface-primary))` | `color-mix(in srgb, var(--ai-chat-brand) 50%, black)` |
+| `[data-brand-theme="medium"]` | Medium | `color-mix(in srgb, var(--ai-chat-brand) 15%, var(--ai-surface-primary))` | `color-mix(in srgb, var(--ai-chat-brand) 35%, black)` |
+| `[data-brand-theme="dark"]` | Dark | `color-mix(in srgb, var(--ai-chat-brand) 50%, var(--ai-surface-primary))` | `var(--ai-text-primary)` |
+
+**Reference implementation:** `src/components/SourcesLink/SourcesLink.css` — the `[data-brand-theme]` blocks redefine the tokens.
+
+**Components affected:** MessageBubble, SourcesLink, and any future chat element using brand-derived colours.
+
+**Future override pattern:** When client customisation ships, refactor to:
+```css
+--ai-chat-msg-bg: var(--ai-chat-msg-bg-override, var(--_brand-msg-bg));
+```
+This lets users override the computed default. Grep `TODO [brand-override]` in SourcesLink.css for the 3 locations.
+
 ---
 
 ## Typography
