@@ -24,7 +24,7 @@
   width: 40px;
   height: 20px;
   flex-shrink: 0;
-  background: var(--ai-surface-contrast);
+  background: var(--ai-border-secondary);
   border-radius: var(--ai-radius-full);
   transition: background var(--ai-transition-default);
 }
