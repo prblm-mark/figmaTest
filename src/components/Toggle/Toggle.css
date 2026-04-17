@@ -23,7 +23,7 @@
   width: 40px;
   height: 20px;
   flex-shrink: 0;
-  background-color: var(--ai-surface-secondary);
+  background-color: var(--ai-border-secondary);
   border-radius: var(--ai-radius-full);
   transition: background-color var(--ai-transition-default);
 }
@@ -59,7 +59,7 @@
 }
 
 .toggle--disabled .toggle__track {
-  background-color: var(--ai-surface-secondary);
+  background-color: var(--ai-border-secondary);
 }
 
 /* ── Label ───────────────────────────────────────────── */
