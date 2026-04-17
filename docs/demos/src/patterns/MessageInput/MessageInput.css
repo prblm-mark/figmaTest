@@ -96,7 +96,7 @@
 /* ── Active state (input has content) ─────────────────── */
 
 .msg-input--active .msg-input__send-btn[disabled] {
-  background-color: var(--ai-btn-primary-bg);
+  background-color: var(--ai-chat-brand);
   border-color: transparent;
   color: var(--ai-btn-primary-text);
   opacity: 1;

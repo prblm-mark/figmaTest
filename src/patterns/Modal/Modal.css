@@ -257,6 +257,22 @@
   gap: var(--ai-spacing-4);
 }
 
+/* Feedback modals use --ai-chat-brand for primary buttons and checked checkboxes
+   (accent colour adapts to Style Settings, not fixed brand) */
+.modal--feedback .btn--primary {
+  background-color: var(--ai-chat-brand);
+  border-color: var(--ai-chat-brand);
+}
+
+.modal--feedback .btn--primary:hover {
+  background-color: color-mix(in srgb, var(--ai-chat-brand) 85%, black);
+}
+
+.modal--feedback .checkbox__input:checked + .checkbox__indicator {
+  background: var(--ai-chat-brand);
+  border-color: var(--ai-chat-brand);
+}
+
 /* ── Overlay (for interactive demo) ──────── */
 
 .modal-overlay {
