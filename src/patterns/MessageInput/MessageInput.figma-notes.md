@@ -12,11 +12,13 @@ MessageInput is a pattern-tier component. It is the chat input bar containing a 
 |---|---|---|---|
 | `2126:5022` | Desktop | Default | Placeholder + disabled send button |
 | `2128:5300` | Desktop | Active | Enabled send button (JS: input change) |
+| `31:12784` | Desktop | Filtered | Filter button shows funnel + selected duration label on subtle grey bg |
 | `2126:5070` | Desktop | Data Tooltip | Tooltip on disclaimer "How we collect data" |
 | `2126:5141` | Desktop | Recent Content Tooltip | Tooltip on filter button |
 | `2126:5198` | Desktop | Duration Filter | Filter popover open with 3 options |
 | `2126:5006` | Mobile | Default | Smaller padding, NO send button |
 | `2128:5282` | Mobile | Active | Both buttons visible |
+| `31:12741` | Mobile | Filtered | Filter button expanded with label; send button visible (disabled) |
 | `2126:5056` | Minimised | Default | Same sizing as mobile, both buttons visible |
 
 ## CSS Class Mapping
@@ -28,6 +30,7 @@ MessageInput is a pattern-tier component. It is the chat input bar containing a 
 | Type=Minimised | `[data-layout="minimised"]` |
 | State=Default | `.msg-input` (base) |
 | State=Active | `.msg-input--active` (JS adds on input) |
+| State=Filtered | `.msg-input--filtered` (JS adds on filter-item click, fills `.msg-input__filter-label`) |
 | State=Duration Filter | `.msg-input__filter-popover--open` |
 | State=Data Tooltip | `.msg-input__tooltip--data` (positioned via CSS) |
 | State=Recent Content Tooltip | `.msg-input__tooltip--filter` (positioned via CSS) |
@@ -98,9 +101,10 @@ MessageInput is a pattern-tier component. It is the chat input bar containing a 
 
 ## Notes
 
-- Mobile layout via `@media (max-width: 767px)`: padding shrinks to `--ai-spacing-5`, placeholder uses `--ai-font-fluid-sm`, send button hidden in default (visible when active via `.msg-input--active`)
+- Mobile layout via `@media (max-width: 767px)`: padding shrinks to `--ai-spacing-5`, placeholder uses `--ai-font-fluid-sm`, send button hidden in default (visible when `.msg-input--active` or `.msg-input--filtered`)
 - Minimised layout via `[data-layout="minimised"]`: same sizing as mobile but both buttons always visible
 - Active state: JS listens for `input` event on textarea, adds `.msg-input--active` when non-empty
+- Filtered state: when a duration is selected from the popover, JS adds `.msg-input--filtered` to the wrapper and writes the selected label into `.msg-input__filter-label`. The filter button expands from icon-only to icon + label with the tertiary hover background to signal an active filter
 - Duration filter: popover positioned absolutely above the filter button container, 3 options (30 Days, 6 Months, 1 Year), selected item shows `check` icon + medium weight
 - Data tooltip: positioned centered below the disclaimer text
 - Filter tooltip: positioned above the filter button

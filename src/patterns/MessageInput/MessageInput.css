@@ -84,6 +84,27 @@
   position: relative;
 }
 
+/* ── Filter label (visible only when .msg-input--filtered) ── */
+
+.msg-input__filter-label {
+  display: none;
+  font-feature-settings: 'case' 1;
+  white-space: nowrap;
+}
+
+/* ── Filtered state: filter button expands to show selected duration ── */
+
+.msg-input--filtered .msg-input__filter-label {
+  display: inline;
+}
+
+/* Override .btn--icon.btn--sm square sizing so label can render */
+.msg-input--filtered .msg-input__filter-btn.btn--icon {
+  width: auto;
+  padding: 0 var(--ai-spacing-4);
+  background-color: var(--ai-btn-tertiary-bg-hover);
+}
+
 /* ── Send button disabled state ───────────────────────── */
 
 .msg-input__send-btn[disabled] {
@@ -228,7 +249,8 @@
     display: none;
   }
 
-  .msg-input--active .msg-input__send-btn {
+  .msg-input--active .msg-input__send-btn,
+  .msg-input--filtered .msg-input__send-btn {
     display: inline-flex;
   }
 }

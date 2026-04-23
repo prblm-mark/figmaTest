@@ -51,7 +51,7 @@
   <section class="demo-section">
     <p class="demo-label">Interactive Demo</p>
     <p class="demo-note" style="margin-top: 0; margin-bottom: var(--ai-spacing-5);">
-      Type to activate send button. Hover funnel for tooltip, click it for duration filter. Hover "How we collect data" for data tooltip.
+      Type to activate send button. Hover funnel for tooltip, click it for duration filter — selecting a duration applies the Filtered state. Hover "How we collect data" for data tooltip.
     </p>
     <div class="msg-input">
       <div class="msg-input__box">
@@ -67,6 +67,7 @@
               aria-label="Filter by recent content"
             >
               <i data-lucide="funnel" aria-hidden="true"></i>
+              <span class="msg-input__filter-label"></span>
             </button>
             <div class="msg-input__tooltip msg-input__tooltip--filter">
               <div class="tooltip" role="tooltip">
@@ -80,9 +81,8 @@
               <button class="msg-input__filter-item" role="option">
                 6 Months
               </button>
-              <button class="msg-input__filter-item msg-input__filter-item--selected" role="option" aria-selected="true">
+              <button class="msg-input__filter-item" role="option">
                 1 Year
-                <i data-lucide="check" aria-hidden="true"></i>
               </button>
             </div>
           </div>
@@ -139,6 +139,7 @@
     document.querySelectorAll('.msg-input__filter-item').forEach(item => {
       item.addEventListener('click', () => {
         const popover = item.closest('.msg-input__filter-popover');
+        const wrapper = item.closest('.msg-input');
         // Clear all selections
         popover.querySelectorAll('.msg-input__filter-item').forEach(i => {
           i.classList.remove('msg-input__filter-item--selected');
@@ -154,6 +155,10 @@
         checkEl.setAttribute('aria-hidden', 'true');
         item.appendChild(checkEl);
         lucide.createIcons();
+        // Apply Filtered state on wrapper + update label
+        const label = wrapper.querySelector('.msg-input__filter-label');
+        if (label) label.textContent = item.firstChild.textContent.trim();
+        wrapper.classList.add('msg-input--filtered');
         // Close popover
         popover.classList.remove('msg-input__filter-popover--open');
       });
