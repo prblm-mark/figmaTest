@@ -1,0 +1,148 @@
+/* Chart pattern
+ * Figma node: 2527:2215 (file: Lus07xi8pPXLN87sQIyrEt)
+ * Tier: Pattern (composes Chart.js for visualisation)
+ * Types: Multiple Lines, Single Line, Bar Chart, Doughnut
+ *
+ * Card chrome (header + canvas + footer) styled here in tokens.
+ * Chart visualisation rendered via Chart.js on a <canvas> — colours pulled
+ * from --ai-* tokens via getComputedStyle so the chart stays brand-aligned.
+ */
+
+/* ── Card ─────────────────────────────────────────── */
+
+.chart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+  padding: var(--ai-spacing-6);
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+}
+
+/* ── Header ───────────────────────────────────────── */
+
+.chart__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--ai-spacing-3);
+}
+
+.chart__title {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-1);
+  min-width: 0;
+}
+
+.chart__big {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-2xl);
+  font-weight: var(--ai-font-bold);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-primary);
+}
+
+.chart__sub {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-contrast);
+}
+
+/* Delta pill (Multiple Lines / Single Line variants) */
+
+.chart__delta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-1);
+  flex-shrink: 0;
+  padding: var(--ai-spacing-1) var(--ai-spacing-3);
+  background-color: var(--ai-surface-success);
+  border-radius: var(--ai-radius-full);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-invert);
+}
+
+.chart__delta [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* ── Canvas wrap (chart fills the available space) ─── */
+
+.chart__canvas {
+  flex: 1;
+  min-height: 12rem;
+  position: relative;
+}
+
+.chart__canvas canvas {
+  max-width: 100%;
+}
+
+/* ── Footer ────────────────────────────────────────── */
+
+.chart__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ai-spacing-3);
+  padding-top: var(--ai-spacing-5);
+  border-top: 1px solid var(--ai-border-secondary);
+}
+
+.chart__filter {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  background: transparent;
+  border: 0;
+  padding: var(--ai-spacing-2) var(--ai-spacing-3);
+  border-radius: var(--ai-radius-md);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-contrast);
+  cursor: pointer;
+  transition: background-color var(--ai-transition-default),
+              color var(--ai-transition-default);
+}
+
+.chart__filter:hover {
+  background-color: var(--ai-surface-minimal);
+  color: var(--ai-text-primary);
+}
+
+.chart__filter [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+.chart__report-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-brand);
+  text-decoration: none;
+}
+
+.chart__report-link:hover {
+  text-decoration: underline;
+}
+
+.chart__report-link [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}

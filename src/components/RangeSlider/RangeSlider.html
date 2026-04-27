@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>RangeSlider — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="RangeSlider.css">
+  <style>
+    body {
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-secondary);
+      min-height: 100vh;
+      max-width: 60rem;
+      margin: 0 auto;
+    }
+    .demo-section {
+      margin-bottom: var(--ai-spacing-9);
+      background: var(--ai-surface-primary);
+      padding: var(--ai-spacing-6);
+      border-radius: var(--ai-radius-md);
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 var(--ai-spacing-5);
+    }
+    .demo-stack {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-6);
+    }
+    h1 {
+      font-size: var(--ai-font-fixed-4xl);
+      font-weight: var(--ai-font-bold);
+      color: var(--ai-text-primary);
+      margin: 0 0 var(--ai-spacing-7);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>RangeSlider</h1>
+
+  <!-- 1 · Counter -->
+  <section class="demo-section">
+    <p class="demo-section__title">Type=Counter · Size=Default</p>
+    <div class="rs">
+      <div class="rs__head">
+        <label class="rs__label" for="rs1">Volume</label>
+        <span class="rs__value" data-rs-value="rs1">50</span>
+      </div>
+      <div class="rs__wrap">
+        <input id="rs1" class="rs__input" type="range" min="0" max="100" value="50">
+        <span class="rs__thumb"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · Default — sm / Default / lg -->
+  <section class="demo-section">
+    <p class="demo-section__title">Type=Default · Sizes</p>
+    <div class="demo-stack">
+      <div class="rs rs--sm">
+        <div class="rs__head"><label class="rs__label" for="rs2-sm">Small</label></div>
+        <div class="rs__wrap">
+          <input id="rs2-sm" class="rs__input" type="range" min="0" max="100" value="25">
+          <span class="rs__thumb"></span>
+        </div>
+      </div>
+      <div class="rs">
+        <div class="rs__head"><label class="rs__label" for="rs2-md">Default</label></div>
+        <div class="rs__wrap">
+          <input id="rs2-md" class="rs__input" type="range" min="0" max="100" value="50">
+          <span class="rs__thumb"></span>
+        </div>
+      </div>
+      <div class="rs rs--lg">
+        <div class="rs__head"><label class="rs__label" for="rs2-lg">Large</label></div>
+        <div class="rs__wrap">
+          <input id="rs2-lg" class="rs__input" type="range" min="0" max="100" value="75">
+          <span class="rs__thumb"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · Disabled -->
+  <section class="demo-section">
+    <p class="demo-section__title">Type=Disabled · Size=Default</p>
+    <div class="rs rs--disabled">
+      <div class="rs__head">
+        <label class="rs__label" for="rs3">Brightness</label>
+        <span class="rs__value">60</span>
+      </div>
+      <div class="rs__wrap">
+        <input id="rs3" class="rs__input" type="range" min="0" max="100" value="60" disabled>
+        <span class="rs__thumb"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · Steps -->
+  <section class="demo-section">
+    <p class="demo-section__title">Type=Steps · Size=Default</p>
+    <div class="rs">
+      <div class="rs__head">
+        <label class="rs__label" for="rs4">Rating</label>
+        <span class="rs__value" data-rs-value="rs4">2.5</span>
+      </div>
+      <div class="rs__wrap">
+        <input id="rs4" class="rs__input" type="range" min="0" max="5" step="0.5" value="2.5">
+        <span class="rs__thumb"></span>
+      </div>
+      <div class="rs__steps" aria-hidden="true">
+        <span class="rs__step"><span class="rs__step-mark"></span><span>0</span></span>
+        <span class="rs__step"><span class="rs__step-mark"></span><span>1</span></span>
+        <span class="rs__step"><span class="rs__step-mark"></span><span>2</span></span>
+        <span class="rs__step"><span class="rs__step-mark"></span><span>3</span></span>
+        <span class="rs__step"><span class="rs__step-mark"></span><span>4</span></span>
+        <span class="rs__step"><span class="rs__step-mark"></span><span>5</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · Labels -->
+  <section class="demo-section">
+    <p class="demo-section__title">Type=Labels · Size=Default</p>
+    <div class="rs">
+      <div class="rs__head">
+        <label class="rs__label" for="rs5">Budget</label>
+        <span class="rs__value" data-rs-value="rs5" data-rs-format="currency">£1,000</span>
+      </div>
+      <div class="rs__wrap">
+        <input id="rs5" class="rs__input" type="range" min="0" max="2000" step="100" value="1000">
+        <span class="rs__thumb"></span>
+      </div>
+      <div class="rs__labels" aria-hidden="true">
+        <span class="rs__label-min">Min (£0)</span>
+        <span class="rs__milestone" style="left: 25%"><span class="rs__milestone-mark"></span><span>£500</span></span>
+        <span class="rs__milestone" style="left: 50%"><span class="rs__milestone-mark"></span><span>£1,000</span></span>
+        <span class="rs__milestone" style="left: 75%"><span class="rs__milestone-mark"></span><span>£1,500</span></span>
+        <span class="rs__label-max">Max (£2,000)</span>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    lucide.createIcons();
+
+    function paintFill(input) {
+      const min = Number(input.min) || 0;
+      const max = Number(input.max) || 100;
+      const value = Number(input.value);
+      const pct = ((value - min) / (max - min)) * 100;
+      const cs = getComputedStyle(input);
+      const fill = cs.getPropertyValue('--ai-surface-brand').trim() || '#0071d8';
+      const track = cs.getPropertyValue('--ai-surface-minimal').trim() || '#f6f6f7';
+      input.style.background = `linear-gradient(to right, ${fill} 0% ${pct}%, ${track} ${pct}% 100%)`;
+    }
+
+    function positionThumb(input) {
+      const wrap = input.closest('.rs__wrap');
+      if (!wrap) return;
+      const thumb = wrap.querySelector('.rs__thumb');
+      if (!thumb) return;
+      const min = Number(input.min) || 0;
+      const max = Number(input.max) || 100;
+      const value = Number(input.value);
+      const pct = ((value - min) / (max - min)) * 100;
+      const thumbW = thumb.offsetWidth || 16;
+      const offset = (thumbW / 2) - (pct / 100) * thumbW;
+      thumb.style.left = `calc(${pct}% + ${offset}px)`;
+    }
+
+    document.querySelectorAll('.rs__input').forEach(input => {
+      paintFill(input);
+      positionThumb(input);
+      input.addEventListener('input', () => {
+        paintFill(input);
+        positionThumb(input);
+        const valueEl = document.querySelector(`[data-rs-value="${input.id}"]`);
+        if (valueEl) {
+          const fmt = valueEl.dataset.rsFormat;
+          if (fmt === 'currency') {
+            valueEl.textContent = `£${Number(input.value).toLocaleString('en-GB')}`;
+          } else {
+            valueEl.textContent = input.value;
+          }
+        }
+      });
+    });
+
+    window.addEventListener('resize', () => {
+      document.querySelectorAll('.rs__input').forEach(positionThumb);
+    });
+  </script>
+</body>
+</html>

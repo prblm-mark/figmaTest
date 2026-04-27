@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>Accordion — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="Accordion.css">
+  <style>
+    body {
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-secondary);
+      min-height: 100vh;
+      max-width: 60rem;
+      margin: 0 auto;
+    }
+    .demo-section {
+      margin-bottom: var(--ai-spacing-9);
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 var(--ai-spacing-5);
+    }
+    h1 {
+      font-size: var(--ai-font-fixed-4xl);
+      font-weight: var(--ai-font-bold);
+      color: var(--ai-text-primary);
+      margin: 0 0 var(--ai-spacing-7);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Accordion</h1>
+
+  <!-- 1 · Default -->
+  <section class="demo-section">
+    <p class="demo-section__title">Default · Size=Default</p>
+    <div class="acc" data-acc="single">
+      <div class="acc__item acc__item--open">
+        <h3 class="acc__heading">
+          <button type="button" class="acc__trigger" data-acc-trigger>
+            <span>What is Affino?</span>
+            <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+          </button>
+        </h3>
+        <div class="acc__panel">
+          <p>Affino is a unified business platform combining CRM, commerce, content, and AI capabilities for publishers, professional services, and event organisers.</p>
+        </div>
+      </div>
+      <div class="acc__item">
+        <h3 class="acc__heading">
+          <button type="button" class="acc__trigger" data-acc-trigger>
+            <span>Is there a free trial?</span>
+            <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+          </button>
+        </h3>
+        <div class="acc__panel">
+          <p>We offer guided demos rather than open trials — schedule a session to see the platform in action.</p>
+        </div>
+      </div>
+      <div class="acc__item">
+        <h3 class="acc__heading">
+          <button type="button" class="acc__trigger" data-acc-trigger>
+            <span>What integrations are supported?</span>
+            <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+          </button>
+        </h3>
+        <div class="acc__panel">
+          <p>Affino integrates with major email, payment, analytics, and identity providers out of the box, with extension points for custom systems.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · Default · sm -->
+  <section class="demo-section">
+    <p class="demo-section__title">Default · Size=sm</p>
+    <div class="acc acc--sm" data-acc="single">
+      <div class="acc__item acc__item--open">
+        <h3 class="acc__heading">
+          <button type="button" class="acc__trigger" data-acc-trigger>
+            <span>What is Affino?</span>
+            <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+          </button>
+        </h3>
+        <div class="acc__panel">
+          <p>Affino is a unified business platform combining CRM, commerce, content, and AI capabilities for publishers, professional services, and event organisers.</p>
+        </div>
+      </div>
+      <div class="acc__item">
+        <h3 class="acc__heading">
+          <button type="button" class="acc__trigger" data-acc-trigger>
+            <span>Is there a free trial?</span>
+            <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+          </button>
+        </h3>
+        <div class="acc__panel">
+          <p>We offer guided demos rather than open trials — schedule a session to see the platform in action.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · Separated cards · Default -->
+  <section class="demo-section">
+    <p class="demo-section__title">Separated Cards · Size=Default</p>
+    <div class="acc acc--separated" data-acc="single">
+      <div class="acc__item acc__item--open">
+        <h3 class="acc__heading">
+          <button type="button" class="acc__trigger" data-acc-trigger>
+            <span>Account &amp; billing</span>
+            <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+          </button>
+        </h3>
+        <div class="acc__panel">
+          <p>Manage your subscription, payment methods, and billing history from the Account screen.</p>
+        </div>
+      </div>
+      <div class="acc__item">
+        <h3 class="acc__heading">
+          <button type="button" class="acc__trigger" data-acc-trigger>
+            <span>Content &amp; publishing</span>
+            <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+          </button>
+        </h3>
+        <div class="acc__panel">
+          <p>Article drafts, scheduling, and editorial workflows live under Publish.</p>
+        </div>
+      </div>
+      <div class="acc__item">
+        <h3 class="acc__heading">
+          <button type="button" class="acc__trigger" data-acc-trigger>
+            <span>Permissions &amp; roles</span>
+            <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+          </button>
+        </h3>
+        <div class="acc__panel">
+          <p>Define what each team member can see and do — granular per module.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · Separated cards · sm -->
+  <section class="demo-section">
+    <p class="demo-section__title">Separated Cards · Size=sm</p>
+    <div class="acc acc--separated acc--sm" data-acc="single">
+      <div class="acc__item acc__item--open">
+        <h3 class="acc__heading">
+          <button type="button" class="acc__trigger" data-acc-trigger>
+            <span>Account &amp; billing</span>
+            <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+          </button>
+        </h3>
+        <div class="acc__panel">
+          <p>Manage your subscription, payment methods, and billing history.</p>
+        </div>
+      </div>
+      <div class="acc__item">
+        <h3 class="acc__heading">
+          <button type="button" class="acc__trigger" data-acc-trigger>
+            <span>Content &amp; publishing</span>
+            <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+          </button>
+        </h3>
+        <div class="acc__panel">
+          <p>Editorial workflows live under Publish.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · All open · Default -->
+  <section class="demo-section">
+    <p class="demo-section__title">All Open · Size=Default</p>
+    <div class="acc" data-acc="multi">
+      <div class="acc__item acc__item--open">
+        <h3 class="acc__heading">
+          <button type="button" class="acc__trigger" data-acc-trigger>
+            <span>Step 1 · Connect your data source</span>
+            <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+          </button>
+        </h3>
+        <div class="acc__panel">
+          <p>Link your CRM, CMS, or commerce data via a provided connector or webhook.</p>
+        </div>
+      </div>
+      <div class="acc__item acc__item--open">
+        <h3 class="acc__heading">
+          <button type="button" class="acc__trigger" data-acc-trigger>
+            <span>Step 2 · Map your fields</span>
+            <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+          </button>
+        </h3>
+        <div class="acc__panel">
+          <p>Define the field mapping between source data and Affino entities.</p>
+        </div>
+      </div>
+      <div class="acc__item">
+        <h3 class="acc__heading">
+          <button type="button" class="acc__trigger" data-acc-trigger>
+            <span>Step 3 · Test and validate</span>
+            <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+          </button>
+        </h3>
+        <div class="acc__panel">
+          <p>Run a test sync and verify counts before going live.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · All open · sm -->
+  <section class="demo-section">
+    <p class="demo-section__title">All Open · Size=sm</p>
+    <div class="acc acc--sm" data-acc="multi">
+      <div class="acc__item acc__item--open">
+        <h3 class="acc__heading">
+          <button type="button" class="acc__trigger" data-acc-trigger>
+            <span>Step 1 · Connect your data</span>
+            <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+          </button>
+        </h3>
+        <div class="acc__panel">
+          <p>Link your CRM, CMS, or commerce data.</p>
+        </div>
+      </div>
+      <div class="acc__item acc__item--open">
+        <h3 class="acc__heading">
+          <button type="button" class="acc__trigger" data-acc-trigger>
+            <span>Step 2 · Map your fields</span>
+            <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+          </button>
+        </h3>
+        <div class="acc__panel">
+          <p>Define the field mapping.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · Flush · Default -->
+  <section class="demo-section">
+    <p class="demo-section__title">Flush · Size=Default</p>
+    <div class="acc acc--flush" data-acc="single">
+      <div class="acc__item">
+        <h3 class="acc__heading">
+          <button type="button" class="acc__trigger" data-acc-trigger>
+            <span>What is Affino?</span>
+            <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+          </button>
+        </h3>
+        <div class="acc__panel">
+          <p>A unified business platform.</p>
+        </div>
+      </div>
+      <div class="acc__item">
+        <h3 class="acc__heading">
+          <button type="button" class="acc__trigger" data-acc-trigger>
+            <span>How does pricing work?</span>
+            <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+          </button>
+        </h3>
+        <div class="acc__panel">
+          <p>Pricing is based on modules used and seats. Talk to us for a custom quote.</p>
+        </div>
+      </div>
+      <div class="acc__item">
+        <h3 class="acc__heading">
+          <button type="button" class="acc__trigger" data-acc-trigger>
+            <span>Where is data hosted?</span>
+            <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+          </button>
+        </h3>
+        <div class="acc__panel">
+          <p>Data is hosted in EU or US regions depending on your account.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 · Flush · sm -->
+  <section class="demo-section">
+    <p class="demo-section__title">Flush · Size=sm</p>
+    <div class="acc acc--flush acc--sm" data-acc="single">
+      <div class="acc__item">
+        <h3 class="acc__heading">
+          <button type="button" class="acc__trigger" data-acc-trigger>
+            <span>What is Affino?</span>
+            <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+          </button>
+        </h3>
+        <div class="acc__panel">
+          <p>A unified business platform.</p>
+        </div>
+      </div>
+      <div class="acc__item">
+        <h3 class="acc__heading">
+          <button type="button" class="acc__trigger" data-acc-trigger>
+            <span>How does pricing work?</span>
+            <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+          </button>
+        </h3>
+        <div class="acc__panel">
+          <p>Modules + seats based.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 · Nested · Default -->
+  <section class="demo-section">
+    <p class="demo-section__title">Nested · Size=Default</p>
+    <div class="acc" data-acc="single">
+      <div class="acc__item acc__item--open">
+        <h3 class="acc__heading">
+          <button type="button" class="acc__trigger" data-acc-trigger>
+            <span>Setup overview</span>
+            <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+          </button>
+        </h3>
+        <div class="acc__panel">
+          <p>Setup is split into three phases — expand any phase to see the steps within.</p>
+          <div class="acc" data-acc="single">
+            <div class="acc__item acc__item--open">
+              <h4 class="acc__heading">
+                <button type="button" class="acc__trigger" data-acc-trigger>
+                  <span>Phase 1 · Foundation</span>
+                  <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+              </h4>
+              <div class="acc__panel">
+                <p>Provision tenant, add team members, configure SSO.</p>
+              </div>
+            </div>
+            <div class="acc__item">
+              <h4 class="acc__heading">
+                <button type="button" class="acc__trigger" data-acc-trigger>
+                  <span>Phase 2 · Data</span>
+                  <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+              </h4>
+              <div class="acc__panel">
+                <p>Connect data sources and map fields.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="acc__item">
+        <h3 class="acc__heading">
+          <button type="button" class="acc__trigger" data-acc-trigger>
+            <span>Customisation</span>
+            <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+          </button>
+        </h3>
+        <div class="acc__panel">
+          <p>Brand, themes, custom fields, and workflow rules.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 · Nested · sm -->
+  <section class="demo-section">
+    <p class="demo-section__title">Nested · Size=sm</p>
+    <div class="acc acc--sm" data-acc="single">
+      <div class="acc__item acc__item--open">
+        <h3 class="acc__heading">
+          <button type="button" class="acc__trigger" data-acc-trigger>
+            <span>Setup overview</span>
+            <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+          </button>
+        </h3>
+        <div class="acc__panel">
+          <p>Setup is split into three phases.</p>
+          <div class="acc acc--sm" data-acc="single">
+            <div class="acc__item acc__item--open">
+              <h4 class="acc__heading">
+                <button type="button" class="acc__trigger" data-acc-trigger>
+                  <span>Phase 1 · Foundation</span>
+                  <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+              </h4>
+              <div class="acc__panel">
+                <p>Provision tenant, add team members.</p>
+              </div>
+            </div>
+            <div class="acc__item">
+              <h4 class="acc__heading">
+                <button type="button" class="acc__trigger" data-acc-trigger>
+                  <span>Phase 2 · Data</span>
+                  <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+              </h4>
+              <div class="acc__panel">
+                <p>Connect data sources.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    lucide.createIcons();
+
+    // Toggle items. data-acc="single" closes siblings; data-acc="multi" allows several open at once.
+    document.querySelectorAll('[data-acc-trigger]').forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const item = trigger.closest('.acc__item');
+        const acc = trigger.closest('.acc');
+        const mode = acc.dataset.acc;
+        if (mode === 'single') {
+          acc.querySelectorAll(':scope > .acc__item').forEach(i => {
+            if (i !== item) i.classList.remove('acc__item--open');
+          });
+        }
+        item.classList.toggle('acc__item--open');
+        const expanded = item.classList.contains('acc__item--open');
+        trigger.setAttribute('aria-expanded', String(expanded));
+      });
+      // Initialise aria-expanded
+      const item = trigger.closest('.acc__item');
+      trigger.setAttribute('aria-expanded', String(item.classList.contains('acc__item--open')));
+    });
+  </script>
+</body>
+</html>

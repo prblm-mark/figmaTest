@@ -1,0 +1,244 @@
+/* TimePicker component
+ * Figma node: 2522:1532 (file: Lus07xi8pPXLN87sQIyrEt)
+ * Tier: Component
+ * Types: Single input, Duration, Timezone, Range, Range Reveal, Slots
+ * Sizes: single (no size axis on this component set)
+ */
+
+/* ── Base time-input field ─────────────────────────── */
+
+.tp {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+}
+
+.tp__label {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-primary);
+}
+
+.tp__field {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  padding: 0 var(--ai-spacing-5);
+  min-height: var(--ai-spacing-8);
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  transition: border-color var(--ai-transition-default),
+              box-shadow var(--ai-transition-default);
+}
+
+.tp__field:focus-within {
+  border-color: var(--ai-border-brand);
+  box-shadow: 0 0 0 1px var(--ai-surface-primary),
+              0 0 0 3px var(--ai-surface-brand-contrast);
+  outline: none;
+}
+
+.tp__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-contrast);
+}
+
+.tp__icon [data-lucide] {
+  width: 100%;
+  height: 100%;
+}
+
+.tp__control {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  padding: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+}
+
+.tp__control:focus-visible {
+  outline: none;
+}
+
+/* ── Type=Single input — uses base above, fixed width ── */
+.tp--single .tp__field {
+  width: var(--ai-size-1); /* 128px */
+}
+
+/* ── Type=Duration / Timezone — segmented (input + dropdown) ── */
+
+.tp--segmented .tp__field {
+  padding: 0;
+  overflow: clip;
+}
+
+.tp__inner {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  padding: 0 var(--ai-spacing-5);
+  min-width: 0;
+}
+
+.tp__dropdown {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  padding: 0 var(--ai-spacing-4);
+  min-height: var(--ai-spacing-8);
+  background-color: var(--ai-surface-minimal);
+  border: 0;
+  border-left: 1px solid var(--ai-border-secondary);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-primary);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--ai-transition-default);
+}
+
+.tp__dropdown:hover {
+  background-color: var(--ai-surface-secondary);
+}
+
+.tp__dropdown [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-contrast);
+  flex-shrink: 0;
+}
+
+.tp--duration .tp__field { width: var(--ai-size-3); /* 192px */ }
+.tp--timezone .tp__field { width: var(--ai-size-5); /* 280px */ }
+
+/* ── Type=Range — two single inputs side by side ────── */
+
+.tp-range {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--ai-spacing-5);
+}
+
+/* ── Type=Range Reveal — single + reveal button ─────── */
+
+.tp-reveal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+  width: var(--ai-size-1);
+}
+
+.tp-reveal__add {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  background: transparent;
+  border: 0;
+  padding: var(--ai-spacing-2) 0;
+  align-self: flex-start;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-surface-brand);
+  cursor: pointer;
+  transition: color var(--ai-transition-default);
+}
+
+.tp-reveal__add:hover {
+  color: var(--ai-btn-primary-bg-hover);
+}
+
+.tp-reveal__add [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+.tp-reveal__second {
+  display: none;
+}
+
+.tp-reveal--open .tp-reveal__second { display: block; }
+.tp-reveal--open .tp-reveal__add { display: none; }
+
+/* ── Type=Slots — grid of selectable time pills ─────── */
+
+.tp-slots {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--ai-spacing-3);
+}
+
+.tp-slot {
+  position: relative;
+  display: flex;
+}
+
+.tp-slot__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.tp-slot__label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: var(--ai-spacing-8);
+  padding: 0 var(--ai-spacing-4);
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  cursor: pointer;
+  transition: background-color var(--ai-transition-default),
+              border-color var(--ai-transition-default),
+              color var(--ai-transition-default);
+}
+
+.tp-slot__input:hover ~ .tp-slot__label {
+  border-color: var(--ai-border-brand);
+}
+
+.tp-slot__input:focus-visible ~ .tp-slot__label {
+  box-shadow: 0 0 0 1px var(--ai-surface-primary),
+              0 0 0 3px var(--ai-surface-brand-contrast);
+}
+
+.tp-slot__input:checked ~ .tp-slot__label {
+  background-color: var(--ai-surface-brand);
+  border-color: var(--ai-border-brand);
+  color: var(--ai-btn-primary-text);
+}
+
+.tp-slot__input:disabled ~ .tp-slot__label {
+  background-color: var(--ai-surface-minimal);
+  border-color: var(--ai-border-secondary);
+  color: var(--ai-text-contrast);
+  cursor: not-allowed;
+  text-decoration: line-through;
+}

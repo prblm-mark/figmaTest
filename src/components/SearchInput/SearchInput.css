@@ -1,0 +1,341 @@
+/* SearchInput component
+ * Figma node: 2522:711 (file: Lus07xi8pPXLN87sQIyrEt)
+ * Tier: Component
+ * Types: Basic, Basic Icon Only, Category Dropdown Search, Split, Split Icon Only,
+ *        Locations Search, Voice Search, Advanced
+ * Sizes: Default (40px height), sm (32px height) — only Category Dropdown Search,
+ *        Split, Split Icon Only have an sm size
+ */
+
+/* ── Base wrapper ──────────────────────────────────── */
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  width: 100%;
+  min-height: var(--ai-spacing-8);
+  padding: 0 var(--ai-spacing-1) 0 var(--ai-spacing-4);
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  transition: border-color var(--ai-transition-default),
+              box-shadow var(--ai-transition-default);
+}
+
+.search:focus-within {
+  border-color: var(--ai-border-brand);
+  box-shadow: 0 0 0 1px var(--ai-surface-primary),
+              0 0 0 3px var(--ai-surface-brand-contrast);
+  outline: none;
+}
+
+.search__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-contrast);
+}
+
+.search__icon [data-lucide] {
+  width: 100%;
+  height: 100%;
+}
+
+.search__input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  padding: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+}
+
+.search__input::placeholder {
+  color: var(--ai-text-contrast);
+}
+
+/* ── Inset action button (Basic / Voice / Basic Icon Only) ── */
+
+.search__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ai-spacing-2);
+  flex-shrink: 0;
+  height: var(--ai-spacing-7); /* 32px — sits inset inside the 40px wrap */
+  padding: 0 var(--ai-spacing-4);
+  background-color: var(--ai-surface-brand);
+  border: 0;
+  border-radius: var(--ai-radius-md);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-btn-primary-text);
+  cursor: pointer;
+  transition: background-color var(--ai-transition-default);
+  white-space: nowrap;
+}
+
+.search__action:hover {
+  background-color: var(--ai-btn-primary-bg-hover);
+}
+
+.search__action--icon-only {
+  width: var(--ai-spacing-7); /* 32px square */
+  padding: 0;
+}
+
+.search__action [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* Borderless mic-style icon button inside the field */
+.search__icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--ai-spacing-7);
+  height: var(--ai-spacing-7);
+  background: transparent;
+  border: 0;
+  border-radius: var(--ai-radius-md);
+  color: var(--ai-icon-contrast);
+  cursor: pointer;
+  transition: background-color var(--ai-transition-default),
+              color var(--ai-transition-default);
+}
+
+.search__icon-btn:hover {
+  background-color: var(--ai-surface-minimal);
+  color: var(--ai-text-primary);
+}
+
+.search__icon-btn [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* ── Type=Split — input + spaced standalone button ── */
+
+.search-split {
+  display: flex;
+  align-items: stretch;
+  gap: var(--ai-spacing-3);
+  width: 100%;
+}
+
+.search-split .search {
+  flex: 1;
+}
+
+.search-split__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ai-spacing-3);
+  flex-shrink: 0;
+  min-height: var(--ai-spacing-8);
+  padding: 0 var(--ai-spacing-5);
+  background-color: var(--ai-surface-brand);
+  border: 0;
+  border-radius: var(--ai-radius-md);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-btn-primary-text);
+  cursor: pointer;
+  transition: background-color var(--ai-transition-default);
+  white-space: nowrap;
+}
+
+.search-split__btn:hover {
+  background-color: var(--ai-btn-primary-bg-hover);
+}
+
+.search-split__btn [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+.search-split__btn--icon-only {
+  width: var(--ai-spacing-8);
+  padding: 0;
+}
+
+/* ── Type=Category Dropdown Search / Locations Search / Advanced — segmented ─── */
+
+.search-group {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  overflow: clip;
+  transition: border-color var(--ai-transition-default),
+              box-shadow var(--ai-transition-default);
+}
+
+.search-group:focus-within {
+  border-color: var(--ai-border-brand);
+  box-shadow: 0 0 0 1px var(--ai-surface-primary),
+              0 0 0 3px var(--ai-surface-brand-contrast);
+}
+
+.search-group__dropdown {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  flex-shrink: 0;
+  padding: 0 var(--ai-spacing-4);
+  min-height: var(--ai-spacing-8);
+  background-color: var(--ai-surface-minimal);
+  border: 0;
+  border-right: 1px solid var(--ai-border-secondary);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-primary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color var(--ai-transition-default);
+}
+
+.search-group__dropdown:hover {
+  background-color: var(--ai-surface-secondary);
+}
+
+.search-group__dropdown--right {
+  border-right: 0;
+  border-left: 1px solid var(--ai-border-secondary);
+}
+
+.search-group__dropdown [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-contrast);
+  flex-shrink: 0;
+}
+
+.search-group__flag {
+  font-size: var(--ai-font-fixed-md);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.search-group__field {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  padding: 0 var(--ai-spacing-5);
+  min-width: 0;
+}
+
+.search-group__icon {
+  flex-shrink: 0;
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-contrast);
+}
+
+.search-group__icon [data-lucide] {
+  width: 100%;
+  height: 100%;
+}
+
+.search-group__input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+}
+
+.search-group__input::placeholder {
+  color: var(--ai-text-contrast);
+}
+
+.search-group__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ai-spacing-2);
+  flex-shrink: 0;
+  padding: 0 var(--ai-spacing-5);
+  min-height: var(--ai-spacing-8);
+  background-color: var(--ai-surface-brand);
+  border: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-btn-primary-text);
+  cursor: pointer;
+  transition: background-color var(--ai-transition-default);
+  white-space: nowrap;
+}
+
+.search-group__action:hover {
+  background-color: var(--ai-btn-primary-bg-hover);
+}
+
+.search-group__action [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* ── Size: sm ──────────────────────────────────────── */
+
+.search--sm {
+  min-height: var(--ai-spacing-7);
+  padding-left: var(--ai-spacing-3);
+}
+
+.search--sm .search__action {
+  height: calc(var(--ai-spacing-7) - 4px);
+  padding: 0 var(--ai-spacing-3);
+  font-size: var(--ai-font-fixed-xxs);
+}
+
+.search--sm .search__action--icon-only {
+  width: calc(var(--ai-spacing-7) - 4px);
+  padding: 0;
+}
+
+.search-split--sm .search-split__btn {
+  min-height: var(--ai-spacing-7);
+  padding: 0 var(--ai-spacing-4);
+  font-size: var(--ai-font-fixed-xxs);
+}
+
+.search-split--sm .search-split__btn--icon-only {
+  width: var(--ai-spacing-7);
+  padding: 0;
+}
+
+.search-group--sm .search-group__dropdown,
+.search-group--sm .search-group__action {
+  min-height: var(--ai-spacing-7);
+  font-size: var(--ai-font-fixed-xxs);
+  padding: 0 var(--ai-spacing-3);
+}
+
+.search-group--sm .search-group__field {
+  padding: 0 var(--ai-spacing-4);
+}

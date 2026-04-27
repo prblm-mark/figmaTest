@@ -1,0 +1,250 @@
+/* RangeSlider component
+ * Figma node: 2527:1876 (file: Lus07xi8pPXLN87sQIyrEt)
+ * Tier: Component
+ * Types: Counter, Default, Disabled, Steps, Labels
+ * Sizes: Default (8px track), sm (4px), lg (12px)
+ *
+ * The native ::-webkit-slider-thumb is rendered transparent (still drag-interactive)
+ * and a real DOM element (.rs__thumb) is overlaid via JS so the thumb captures as a
+ * proper shape in Figma and remains stylable via design tokens.
+ */
+
+/* ── Field — label + value + slider stacked ────────── */
+
+.rs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+  width: 100%;
+}
+
+.rs__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--ai-spacing-3);
+}
+
+.rs__label {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-primary);
+}
+
+.rs__value {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-sm);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-surface-brand);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Slider wrap (positioning context for the visible thumb) ── */
+
+.rs__wrap {
+  position: relative;
+}
+
+/* ── Native input — sized track, transparent thumb ──── */
+
+.rs__input {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: var(--ai-spacing-3); /* 8px default */
+  margin: 0;
+  background-color: var(--ai-surface-minimal);
+  border-radius: var(--ai-radius-full);
+  cursor: pointer;
+}
+
+.rs__input:focus-visible {
+  outline: none;
+}
+
+.rs__input::-webkit-slider-runnable-track {
+  height: var(--ai-spacing-3);
+  background: transparent;
+  border-radius: var(--ai-radius-full);
+}
+
+.rs__input::-moz-range-track {
+  height: var(--ai-spacing-3);
+  background: var(--ai-surface-minimal);
+  border-radius: var(--ai-radius-full);
+}
+
+.rs__input::-moz-range-progress {
+  height: var(--ai-spacing-3);
+  background: var(--ai-surface-brand);
+  border-radius: var(--ai-radius-full);
+}
+
+/* Native thumb — invisible, still interactive */
+.rs__input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--ai-icon-size-sm); /* 16px */
+  height: var(--ai-icon-size-sm);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.rs__input::-moz-range-thumb {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+/* ── Visible DOM thumb (overlaid via JS) ────────────── */
+
+.rs__thumb {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--ai-icon-size-sm); /* 16px */
+  height: var(--ai-icon-size-sm);
+  background-color: var(--ai-surface-brand);
+  border: 2px solid var(--ai-surface-primary);
+  border-radius: var(--ai-radius-full);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  transition: box-shadow var(--ai-transition-default);
+}
+
+.rs__wrap:hover .rs__thumb,
+.rs__wrap:focus-within .rs__thumb {
+  box-shadow: 0 0 0 4px var(--ai-surface-brand-contrast);
+}
+
+/* ── Size: sm (4px track / 12px thumb) ──────────────── */
+
+.rs--sm .rs__input {
+  height: var(--ai-spacing-1); /* 4px */
+}
+
+.rs--sm .rs__input::-webkit-slider-runnable-track,
+.rs--sm .rs__input::-moz-range-track,
+.rs--sm .rs__input::-moz-range-progress {
+  height: var(--ai-spacing-1);
+}
+
+.rs--sm .rs__input::-webkit-slider-thumb,
+.rs--sm .rs__input::-moz-range-thumb {
+  width: var(--ai-spacing-4); /* 12px */
+  height: var(--ai-spacing-4);
+}
+
+.rs--sm .rs__thumb {
+  width: var(--ai-spacing-4);
+  height: var(--ai-spacing-4);
+}
+
+/* ── Size: lg (12px track / 24px thumb / 3px border) ── */
+
+.rs--lg .rs__input {
+  height: var(--ai-spacing-4); /* 12px */
+}
+
+.rs--lg .rs__input::-webkit-slider-runnable-track,
+.rs--lg .rs__input::-moz-range-track,
+.rs--lg .rs__input::-moz-range-progress {
+  height: var(--ai-spacing-4);
+}
+
+.rs--lg .rs__input::-webkit-slider-thumb,
+.rs--lg .rs__input::-moz-range-thumb {
+  width: var(--ai-icon-size-lg); /* 24px */
+  height: var(--ai-icon-size-lg);
+}
+
+.rs--lg .rs__thumb {
+  width: var(--ai-icon-size-lg);
+  height: var(--ai-icon-size-lg);
+  border-width: 3px;
+}
+
+/* ── Type: Disabled ────────────────────────────────── */
+
+.rs--disabled .rs__input {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.rs--disabled .rs__thumb {
+  background-color: var(--ai-btn-bg-disabled);
+  opacity: 0.7;
+}
+
+.rs--disabled .rs__value {
+  color: var(--ai-text-contrast);
+}
+
+/* ── Type: Steps — tick marks below track ──────────── */
+
+.rs__steps {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 var(--ai-spacing-2);
+  padding: 0 calc(var(--ai-icon-size-sm) / 2); /* offset by half a thumb */
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xxs);
+  color: var(--ai-text-contrast);
+}
+
+.rs__step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ai-spacing-1);
+}
+
+.rs__step-mark {
+  width: 1px;
+  height: var(--ai-spacing-2);
+  background-color: var(--ai-border-secondary);
+}
+
+/* ── Type: Labels — Min/Max + interval milestones ─── */
+
+.rs__labels {
+  position: relative;
+  height: var(--ai-spacing-7);
+  margin: 0 var(--ai-spacing-2);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xxs);
+  color: var(--ai-text-contrast);
+}
+
+.rs__label-min,
+.rs__label-max {
+  position: absolute;
+  top: 0;
+}
+
+.rs__label-min { left: 0; }
+.rs__label-max { right: 0; }
+
+.rs__milestone {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ai-spacing-1);
+}
+
+.rs__milestone-mark {
+  width: 1px;
+  height: var(--ai-spacing-2);
+  background-color: var(--ai-border-secondary);
+  margin-top: calc(-1 * var(--ai-spacing-3));
+}
