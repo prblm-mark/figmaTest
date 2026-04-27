@@ -1,0 +1,259 @@
+/* Select component
+ * Figma node: 2527:1995 (file: Lus07xi8pPXLN87sQIyrEt)
+ * Tier: Component
+ * Types: Default, Multiselect, Disabled, Category Dropdown, Underline
+ * Sizes: Default (40px), sm (32px) — only Default, Disabled, Category Dropdown have sm
+ *
+ * Trigger is rendered as <button> showing the value as text + Lucide chevron.
+ * Native <select> isn't used so the value renders cleanly in Figma capture.
+ */
+
+/* ── Field wrapper (label + control) ──────────────── */
+
+.sel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+}
+
+.sel__label {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-primary);
+}
+
+/* ── Trigger button (Default / Disabled / Underline) ── */
+
+.sel__control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ai-spacing-3);
+  width: 100%;
+  min-height: var(--ai-spacing-8);
+  padding: 0 var(--ai-spacing-4) 0 var(--ai-spacing-5);
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--ai-transition-default),
+              box-shadow var(--ai-transition-default);
+}
+
+.sel__control:hover {
+  border-color: var(--ai-border-brand);
+}
+
+.sel__control:focus-visible {
+  border-color: var(--ai-border-brand);
+  box-shadow: 0 0 0 1px var(--ai-surface-primary),
+              0 0 0 3px var(--ai-surface-brand-contrast);
+  outline: none;
+}
+
+.sel__value {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sel__chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-contrast);
+}
+
+.sel__chevron [data-lucide] {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Size: sm ─────────────────────────────────────── */
+
+.sel__control--sm {
+  min-height: var(--ai-spacing-7);  /* 32px */
+  padding: 0 var(--ai-spacing-3) 0 var(--ai-spacing-4);
+  font-size: var(--ai-font-fixed-xxs);
+}
+
+/* ── Type: Disabled ────────────────────────────────── */
+
+.sel__control:disabled,
+.sel__control--disabled {
+  background-color: var(--ai-surface-minimal);
+  color: var(--ai-text-contrast);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.sel__control:disabled:hover,
+.sel__control--disabled:hover {
+  border-color: var(--ai-border-secondary);
+}
+
+/* ── Type: Underline ──────────────────────────────── */
+
+.sel__control--underline {
+  background-color: transparent;
+  border: 0;
+  border-bottom: 2px solid var(--ai-border-secondary);
+  border-radius: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.sel__control--underline:hover {
+  border-color: transparent;
+  border-bottom-color: var(--ai-border-brand);
+}
+
+.sel__control--underline:focus-visible {
+  border-color: transparent;
+  border-bottom-color: var(--ai-border-brand);
+  box-shadow: none;
+}
+
+/* ── Type: Multiselect — list view ────────────────── */
+
+.sel__list {
+  list-style: none;
+  margin: 0;
+  padding: var(--ai-spacing-2);
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.sel__list-item {
+  display: flex;
+  align-items: center;
+  min-height: var(--ai-spacing-8);
+  padding: var(--ai-spacing-2) var(--ai-spacing-3);
+  background-color: transparent;
+  border: 0;
+  border-radius: var(--ai-radius-sm);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  cursor: pointer;
+  transition: background-color var(--ai-transition-default);
+}
+
+.sel__list-item:hover {
+  background-color: var(--ai-surface-minimal);
+}
+
+.sel__list-item--selected {
+  background-color: var(--ai-surface-minimal);
+  font-weight: var(--ai-font-medium);
+}
+
+/* ── Type: Category Dropdown — segmented (left + right) ── */
+
+.sel-category {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  overflow: clip;
+  transition: border-color var(--ai-transition-default),
+              box-shadow var(--ai-transition-default);
+}
+
+.sel-category:focus-within {
+  border-color: var(--ai-border-brand);
+  box-shadow: 0 0 0 1px var(--ai-surface-primary),
+              0 0 0 3px var(--ai-surface-brand-contrast);
+}
+
+.sel-category__category,
+.sel-category__value {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  min-height: var(--ai-spacing-8);
+  background: transparent;
+  border: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-primary);
+  cursor: pointer;
+}
+
+.sel-category__category {
+  background-color: var(--ai-surface-minimal);
+  border-right: 1px solid var(--ai-border-secondary);
+  padding: 0 var(--ai-spacing-4);
+  font-weight: var(--ai-font-medium);
+}
+
+.sel-category__category:hover {
+  background-color: var(--ai-surface-secondary);
+}
+
+.sel-category__flag {
+  font-size: var(--ai-font-fixed-md);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.sel-category__category [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-contrast);
+  flex-shrink: 0;
+}
+
+.sel-category__value {
+  flex: 1;
+  justify-content: space-between;
+  padding: 0 var(--ai-spacing-4) 0 var(--ai-spacing-5);
+  font-weight: var(--ai-font-regular);
+}
+
+.sel-category__value [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-contrast);
+  flex-shrink: 0;
+}
+
+/* sm: tighten heights and font sizes on segmented */
+.sel-category--sm {
+  /* outer height handled by inner min-height */
+}
+
+.sel-category--sm .sel-category__category,
+.sel-category--sm .sel-category__value {
+  min-height: var(--ai-spacing-7);
+  font-size: var(--ai-font-fixed-xxs);
+}
+
+.sel-category--sm .sel-category__category {
+  padding: 0 var(--ai-spacing-3);
+}
+
+.sel-category--sm .sel-category__value {
+  padding: 0 var(--ai-spacing-3) 0 var(--ai-spacing-4);
+}

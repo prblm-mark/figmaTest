@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>SearchInput — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="SearchInput.css">
+  <style>
+    body {
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-secondary);
+      min-height: 100vh;
+      max-width: 60rem;
+      margin: 0 auto;
+    }
+    .demo-section {
+      margin-bottom: var(--ai-spacing-9);
+      background: var(--ai-surface-primary);
+      padding: var(--ai-spacing-6);
+      border-radius: var(--ai-radius-md);
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 var(--ai-spacing-5);
+    }
+    h1 {
+      font-size: var(--ai-font-fixed-4xl);
+      font-weight: var(--ai-font-bold);
+      color: var(--ai-text-primary);
+      margin: 0 0 var(--ai-spacing-7);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>SearchInput</h1>
+
+  <!-- 1 · Basic -->
+  <section class="demo-section">
+    <p class="demo-section__title">Type=Basic · Size=Default</p>
+    <div class="search">
+      <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+      <input class="search__input" type="search" placeholder="Search">
+      <button type="submit" class="search__action">Search</button>
+    </div>
+  </section>
+
+  <!-- 2 · Basic Icon Only -->
+  <section class="demo-section">
+    <p class="demo-section__title">Type=Basic Icon Only · Size=Default</p>
+    <div class="search">
+      <input class="search__input" type="search" placeholder="Search">
+      <button type="submit" class="search__action search__action--icon-only" aria-label="Search">
+        <i data-lucide="search" aria-hidden="true"></i>
+      </button>
+    </div>
+  </section>
+
+  <!-- 3 · Category Dropdown Search · Default -->
+  <section class="demo-section">
+    <p class="demo-section__title">Type=Category Dropdown Search · Size=Default</p>
+    <div class="search-group">
+      <button type="button" class="search-group__dropdown">
+        <span>All categories</span>
+        <i data-lucide="chevron-down" aria-hidden="true"></i>
+      </button>
+      <div class="search-group__field">
+        <input class="search-group__input" type="search" placeholder="Search Mockups, Logos, Design Templates...">
+      </div>
+      <button type="submit" class="search-group__action">
+        <i data-lucide="search" aria-hidden="true"></i>
+        <span>Search</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- 4 · Category Dropdown Search · sm -->
+  <section class="demo-section">
+    <p class="demo-section__title">Type=Category Dropdown Search · Size=sm</p>
+    <div class="search-group search-group--sm">
+      <button type="button" class="search-group__dropdown">
+        <span>All categories</span>
+        <i data-lucide="chevron-down" aria-hidden="true"></i>
+      </button>
+      <div class="search-group__field">
+        <input class="search-group__input" type="search" placeholder="Search…">
+      </div>
+      <button type="submit" class="search-group__action">
+        <i data-lucide="search" aria-hidden="true"></i>
+        <span>Search</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- 5 · Split · Default -->
+  <section class="demo-section">
+    <p class="demo-section__title">Type=Split · Size=Default</p>
+    <div class="search-split">
+      <div class="search">
+        <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+        <input class="search__input" type="search" placeholder="Search…">
+      </div>
+      <button type="submit" class="search-split__btn">
+        <i data-lucide="search" aria-hidden="true"></i>
+        <span>Search</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- 6 · Split · sm -->
+  <section class="demo-section">
+    <p class="demo-section__title">Type=Split · Size=sm</p>
+    <div class="search-split search-split--sm">
+      <div class="search search--sm">
+        <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+        <input class="search__input" type="search" placeholder="Search…">
+      </div>
+      <button type="submit" class="search-split__btn">
+        <i data-lucide="search" aria-hidden="true"></i>
+        <span>Search</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- 7 · Split Icon Only · Default -->
+  <section class="demo-section">
+    <p class="demo-section__title">Type=Split Icon Only · Size=Default</p>
+    <div class="search-split">
+      <div class="search">
+        <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+        <input class="search__input" type="search" placeholder="Search…">
+      </div>
+      <button type="submit" class="search-split__btn search-split__btn--icon-only" aria-label="Search">
+        <i data-lucide="search" aria-hidden="true"></i>
+      </button>
+    </div>
+  </section>
+
+  <!-- 8 · Split Icon Only · sm -->
+  <section class="demo-section">
+    <p class="demo-section__title">Type=Split Icon Only · Size=sm</p>
+    <div class="search-split search-split--sm">
+      <div class="search search--sm">
+        <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+        <input class="search__input" type="search" placeholder="Search…">
+      </div>
+      <button type="submit" class="search-split__btn search-split__btn--icon-only" aria-label="Search">
+        <i data-lucide="search" aria-hidden="true"></i>
+      </button>
+    </div>
+  </section>
+
+  <!-- 9 · Locations Search -->
+  <section class="demo-section">
+    <p class="demo-section__title">Type=Locations Search · Size=Default</p>
+    <div class="search-group">
+      <button type="button" class="search-group__dropdown">
+        <span class="search-group__flag" aria-hidden="true">🇬🇧</span>
+        <span>UK</span>
+        <i data-lucide="chevron-down" aria-hidden="true"></i>
+      </button>
+      <div class="search-group__field">
+        <span class="search-group__icon"><i data-lucide="map-pin" aria-hidden="true"></i></span>
+        <input class="search-group__input" type="search" placeholder="Postcode or address">
+      </div>
+      <button type="submit" class="search-group__action">
+        <i data-lucide="search" aria-hidden="true"></i>
+        <span>Search</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- 10 · Voice Search -->
+  <section class="demo-section">
+    <p class="demo-section__title">Type=Voice Search · Size=Default</p>
+    <div class="search">
+      <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+      <input class="search__input" type="search" placeholder="Search">
+      <button type="button" class="search__icon-btn" aria-label="Search with voice">
+        <i data-lucide="mic" aria-hidden="true"></i>
+      </button>
+      <button type="submit" class="search__action">Search</button>
+    </div>
+  </section>
+
+  <!-- 11 · Advanced -->
+  <section class="demo-section">
+    <p class="demo-section__title">Type=Advanced · Size=Default</p>
+    <div class="search-group">
+      <button type="button" class="search-group__dropdown">
+        <span>https://</span>
+        <i data-lucide="chevron-down" aria-hidden="true"></i>
+      </button>
+      <div class="search-group__field">
+        <input class="search-group__input" type="search" placeholder="example">
+      </div>
+      <button type="button" class="search-group__dropdown search-group__dropdown--right">
+        <span>.com</span>
+        <i data-lucide="chevron-down" aria-hidden="true"></i>
+      </button>
+      <button type="submit" class="search-group__action">
+        <i data-lucide="search" aria-hidden="true"></i>
+        <span>Search</span>
+      </button>
+    </div>
+  </section>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

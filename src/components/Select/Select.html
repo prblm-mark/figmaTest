@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>Select — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="Select.css">
+  <style>
+    body {
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-secondary);
+      min-height: 100vh;
+      max-width: 60rem;
+      margin: 0 auto;
+    }
+    .demo-section {
+      margin-bottom: var(--ai-spacing-9);
+      background: var(--ai-surface-primary);
+      padding: var(--ai-spacing-6);
+      border-radius: var(--ai-radius-md);
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 var(--ai-spacing-5);
+    }
+    h1 {
+      font-size: var(--ai-font-fixed-4xl);
+      font-weight: var(--ai-font-bold);
+      color: var(--ai-text-primary);
+      margin: 0 0 var(--ai-spacing-7);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Select</h1>
+
+  <!-- 1 · Default -->
+  <section class="demo-section">
+    <p class="demo-section__title">Type=Default · Size=Default</p>
+    <div class="sel">
+      <label class="sel__label" for="sel1">Country</label>
+      <button id="sel1" class="sel__control" type="button">
+        <span class="sel__value">United Kingdom</span>
+        <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- 2 · Default sm -->
+  <section class="demo-section">
+    <p class="demo-section__title">Type=Default · Size=sm</p>
+    <div class="sel">
+      <label class="sel__label" for="sel1-sm">Country</label>
+      <button id="sel1-sm" class="sel__control sel__control--sm" type="button">
+        <span class="sel__value">United Kingdom</span>
+        <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- 3 · Multiselect -->
+  <section class="demo-section">
+    <p class="demo-section__title">Type=Multiselect · Size=Default</p>
+    <div class="sel">
+      <span class="sel__label">Tags</span>
+      <ul class="sel__list" role="listbox" aria-multiselectable="true" aria-label="Tags">
+        <li class="sel__list-item" role="option">Design</li>
+        <li class="sel__list-item sel__list-item--selected" role="option" aria-selected="true">Engineering</li>
+        <li class="sel__list-item sel__list-item--selected" role="option" aria-selected="true">Product</li>
+        <li class="sel__list-item" role="option">Marketing</li>
+        <li class="sel__list-item" role="option">Sales</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4 · Disabled -->
+  <section class="demo-section">
+    <p class="demo-section__title">Type=Disabled · Size=Default</p>
+    <div class="sel">
+      <label class="sel__label" for="sel4">Plan</label>
+      <button id="sel4" class="sel__control" type="button" disabled>
+        <span class="sel__value">Enterprise</span>
+        <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- 5 · Disabled sm -->
+  <section class="demo-section">
+    <p class="demo-section__title">Type=Disabled · Size=sm</p>
+    <div class="sel">
+      <label class="sel__label" for="sel4-sm">Plan</label>
+      <button id="sel4-sm" class="sel__control sel__control--sm" type="button" disabled>
+        <span class="sel__value">Enterprise</span>
+        <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- 6 · Underline -->
+  <section class="demo-section">
+    <p class="demo-section__title">Type=Underline · Size=Default</p>
+    <div class="sel">
+      <label class="sel__label" for="sel5">Sort by</label>
+      <button id="sel5" class="sel__control sel__control--underline" type="button">
+        <span class="sel__value">Most recent</span>
+        <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- 7 · Category Dropdown -->
+  <section class="demo-section">
+    <p class="demo-section__title">Type=Category Dropdown · Size=Default</p>
+    <div class="sel-category">
+      <button type="button" class="sel-category__category">
+        <span class="sel-category__flag" aria-hidden="true">🇬🇧</span>
+        <span>United Kingdom</span>
+        <i data-lucide="chevron-down" aria-hidden="true"></i>
+      </button>
+      <button type="button" class="sel-category__value">
+        <span>England</span>
+        <i data-lucide="chevron-down" aria-hidden="true"></i>
+      </button>
+    </div>
+  </section>
+
+  <!-- 8 · Category Dropdown sm -->
+  <section class="demo-section">
+    <p class="demo-section__title">Type=Category Dropdown · Size=sm</p>
+    <div class="sel-category sel-category--sm">
+      <button type="button" class="sel-category__category">
+        <span class="sel-category__flag" aria-hidden="true">🇬🇧</span>
+        <span>United Kingdom</span>
+        <i data-lucide="chevron-down" aria-hidden="true"></i>
+      </button>
+      <button type="button" class="sel-category__value">
+        <span>England</span>
+        <i data-lucide="chevron-down" aria-hidden="true"></i>
+      </button>
+    </div>
+  </section>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>
