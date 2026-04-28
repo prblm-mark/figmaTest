@@ -131,8 +131,8 @@
 
 .tp-range {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--ai-spacing-5);
+  grid-template-columns: var(--ai-size-1) var(--ai-size-1);
+  gap: var(--ai-spacing-3);
 }
 
 /* ── Type=Range Reveal — single + reveal button ─────── */
