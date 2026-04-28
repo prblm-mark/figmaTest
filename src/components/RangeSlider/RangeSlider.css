@@ -43,9 +43,14 @@
 }
 
 /* ── Slider wrap (positioning context for the visible thumb) ── */
+/* Fixed 24px height matches Figma's slider container so the track + thumb
+   share a single vertical centring axis regardless of size variant. */
 
 .rs__wrap {
   position: relative;
+  display: flex;
+  align-items: center;
+  height: var(--ai-spacing-6); /* 24px */
 }
 
 /* ── Native input — sized track, transparent thumb ──── */
@@ -53,6 +58,7 @@
 .rs__input {
   -webkit-appearance: none;
   appearance: none;
+  display: block;
   width: 100%;
   height: var(--ai-spacing-3); /* 8px default */
   margin: 0;
@@ -172,15 +178,17 @@
 }
 
 /* ── Type: Disabled ────────────────────────────────── */
+/* Per Figma: solid `--ai-surface-secondary` track at 50% opacity, no brand
+   fill gradient. Thumb uses `--ai-surface-contrast`. */
 
 .rs--disabled .rs__input {
   cursor: not-allowed;
+  background: var(--ai-surface-secondary);
   opacity: 0.5;
 }
 
 .rs--disabled .rs__thumb {
-  background-color: var(--ai-btn-bg-disabled);
-  opacity: 0.7;
+  background-color: var(--ai-surface-contrast);
 }
 
 .rs--disabled .rs__value {

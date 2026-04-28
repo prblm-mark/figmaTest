@@ -154,6 +154,11 @@
     lucide.createIcons();
 
     function paintFill(input) {
+      // Disabled sliders show a solid grey track — no brand fill — per Figma
+      if (input.disabled) {
+        input.style.background = '';
+        return;
+      }
       const min = Number(input.min) || 0;
       const max = Number(input.max) || 100;
       const value = Number(input.value);
