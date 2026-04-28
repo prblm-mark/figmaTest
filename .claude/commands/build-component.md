@@ -133,6 +133,45 @@ was read as 16px on Size=1/2 and silently applied to all sizes — Figma actuall
 Size=3/4/5. The only way to catch this is to call `get_design_context` on each size variant and
 compare every property, not just the ones expected to change.
 
+**Critical — never use a prototype, plan, or related component as a spec substitute.**
+If a related artifact exists in `src/prototypes/<Name>/`, in a planning doc, or in a sibling
+component's CSS, treat it as a starting **layout reference only**, never as the source of truth
+for tokens, dimensions, or interactive states. Figma is the only spec. The `get_design_context`
+fetch on each variant must happen regardless of whether a related prototype "looks right" — the
+prototype was almost certainly built before the Figma component was finalised, so its colour and
+state choices may be wrong, missing, or carry over patterns (e.g. capture-fidelity workarounds)
+that don't belong in production. Specifically:
+
+- **Re-fetch every interactive state from Figma** even when a prototype shows the same state.
+  The prototype's Disabled / Active / Selected / Open visuals may not match.
+- **Don't carry over prototype-only patterns** into the production component without questioning
+  them. Patterns added for Figma capture fidelity (e.g. invisible-native-thumb + DOM-thumb
+  overlays, `<input type="text">` instead of `<input type="time">` so values render in capture)
+  are workarounds for the prototype-to-Figma flow only — production components don't need them
+  and they introduce avoidable complexity / fragility.
+- **Don't lean on a planning doc's token list as exhaustive.** A plan that lists "use
+  `--ai-spacing-5` for padding" is not a complete spec; every property not explicitly listed in
+  the plan still needs a Figma fetch (this is already covered by the plan-gap rule below, but
+  it's worth restating here because prototypes have the same trap).
+
+Concrete mistakes:
+- RangeSlider Disabled was carried over from the prototype with a brand-coloured fill at 50%
+  opacity (because the prototype painted brand fill regardless of disabled state). Figma actually
+  specifies a solid `--ai-surface-secondary` track at 50% opacity with NO brand gradient and a
+  `--ai-surface-contrast` thumb. Took a separate fix session to discover and correct.
+- RangeSlider's invisible-native-thumb + visible-DOM-thumb overlay was a Figma-capture workaround
+  for the prototype phase. It was carried into the production component verbatim, where it added
+  complexity and produced a vertical-alignment fragility (the wrap was sized to the input, so the
+  thumb's centring axis shifted with each size variant). Figma's design is far simpler — a
+  `h-[24px]` slider container with track and thumb both vertically centred inside.
+- TimePicker used `<input type="text">` instead of `<input type="time">` because the prototype
+  needed visible value text for Figma capture. The production component doesn't have that
+  constraint and could / should have used the native time picker.
+
+The general rule: **when porting from prototype to production, re-do Steps 1b → 7 from Figma as
+if the prototype didn't exist.** Use the prototype to remember what the layout looks like, but
+not to set any tokens, dimensions, or interactive-state visuals.
+
 **Critical — scan for nested components in design context output.** After fetching design context,
 scan every `data-name="..."` attribute in the output. **Any element with a `data-name` attribute
 IS a Figma component — regardless of what HTML element it renders as.** A `data-name="Female 1"`
