@@ -66,10 +66,20 @@
   <section class="demo-section">
     <p class="demo-section__title">Type=Category Dropdown Search · Size=Default</p>
     <div class="search-group">
-      <button type="button" class="search-group__dropdown">
-        <span>All categories</span>
-        <i data-lucide="chevron-down" aria-hidden="true"></i>
-      </button>
+      <div class="search-group__dropdown-wrap" data-search-dropdown>
+        <button type="button" class="search-group__dropdown" data-search-trigger>
+          <span class="search-group__dropdown-label">All categories</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <ul class="search-group__menu" role="listbox">
+          <li><button type="button" class="search-group__menu-item search-group__menu-item--selected" role="option" aria-selected="true">All categories <i data-lucide="check"></i></button></li>
+          <li><button type="button" class="search-group__menu-item" role="option">Mockups</button></li>
+          <li><button type="button" class="search-group__menu-item" role="option">Logos</button></li>
+          <li><button type="button" class="search-group__menu-item" role="option">Design Templates</button></li>
+          <li><button type="button" class="search-group__menu-item" role="option">Icons</button></li>
+          <li><button type="button" class="search-group__menu-item" role="option">Illustrations</button></li>
+        </ul>
+      </div>
       <div class="search-group__field">
         <input class="search-group__input" type="search" placeholder="Search Mockups, Logos, Design Templates...">
       </div>
@@ -84,10 +94,18 @@
   <section class="demo-section">
     <p class="demo-section__title">Type=Category Dropdown Search · Size=sm</p>
     <div class="search-group search-group--sm">
-      <button type="button" class="search-group__dropdown">
-        <span>All categories</span>
-        <i data-lucide="chevron-down" aria-hidden="true"></i>
-      </button>
+      <div class="search-group__dropdown-wrap" data-search-dropdown>
+        <button type="button" class="search-group__dropdown" data-search-trigger>
+          <span class="search-group__dropdown-label">All categories</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <ul class="search-group__menu" role="listbox">
+          <li><button type="button" class="search-group__menu-item search-group__menu-item--selected" role="option" aria-selected="true">All categories <i data-lucide="check"></i></button></li>
+          <li><button type="button" class="search-group__menu-item" role="option">Mockups</button></li>
+          <li><button type="button" class="search-group__menu-item" role="option">Logos</button></li>
+          <li><button type="button" class="search-group__menu-item" role="option">Design Templates</button></li>
+        </ul>
+      </div>
       <div class="search-group__field">
         <input class="search-group__input" type="search" placeholder="Search…">
       </div>
@@ -212,6 +230,50 @@
   </section>
 
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <script>lucide.createIcons();</script>
+  <script>
+    lucide.createIcons();
+
+    // ── Category Dropdown Search popover ──
+    document.querySelectorAll('[data-search-trigger]').forEach(trigger => {
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const wrap = trigger.closest('[data-search-dropdown]');
+        document.querySelectorAll('[data-search-dropdown].search-group__dropdown-wrap--open').forEach(w => {
+          if (w !== wrap) w.classList.remove('search-group__dropdown-wrap--open');
+        });
+        wrap.classList.toggle('search-group__dropdown-wrap--open');
+      });
+    });
+
+    document.querySelectorAll('.search-group__menu-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const wrap = item.closest('[data-search-dropdown]');
+        const menu = item.closest('.search-group__menu');
+        const labelEl = wrap.querySelector('.search-group__dropdown-label');
+        const labelText = item.firstChild ? item.firstChild.textContent.trim() : item.textContent.trim();
+        if (labelEl) labelEl.textContent = labelText;
+        menu.querySelectorAll('.search-group__menu-item').forEach(i => {
+          i.classList.remove('search-group__menu-item--selected');
+          i.removeAttribute('aria-selected');
+          const check = i.querySelector('[data-lucide="check"], svg.lucide-check');
+          if (check) check.remove();
+        });
+        item.classList.add('search-group__menu-item--selected');
+        item.setAttribute('aria-selected', 'true');
+        const checkEl = document.createElement('i');
+        checkEl.setAttribute('data-lucide', 'check');
+        item.appendChild(checkEl);
+        lucide.createIcons();
+        wrap.classList.remove('search-group__dropdown-wrap--open');
+      });
+    });
+
+    // Click outside closes any open category dropdown
+    document.addEventListener('click', (e) => {
+      document.querySelectorAll('[data-search-dropdown].search-group__dropdown-wrap--open').forEach(wrap => {
+        if (!wrap.contains(e.target)) wrap.classList.remove('search-group__dropdown-wrap--open');
+      });
+    });
+  </script>
 </body>
 </html>
