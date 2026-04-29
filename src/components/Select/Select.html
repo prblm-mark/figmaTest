@@ -136,15 +136,33 @@
   <section class="demo-section">
     <p class="demo-section__title">Type=Category Dropdown · Size=Default</p>
     <div class="sel-category">
-      <button type="button" class="sel-category__category">
-        <span class="sel-category__flag" aria-hidden="true">🇬🇧</span>
-        <span>United Kingdom</span>
-        <i data-lucide="chevron-down" aria-hidden="true"></i>
-      </button>
-      <button type="button" class="sel-category__value">
-        <span>England</span>
-        <i data-lucide="chevron-down" aria-hidden="true"></i>
-      </button>
+      <div class="sel-category__group" data-cat-group>
+        <button type="button" class="sel-category__category" data-cat-trigger>
+          <span class="sel-category__flag" aria-hidden="true">🇬🇧</span>
+          <span class="sel-category__label">United Kingdom</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <ul class="sel-category__menu" role="listbox">
+          <li><button type="button" class="sel-category__menu-item sel-category__menu-item--selected" role="option" aria-selected="true" data-flag="🇬🇧"><span><span class="sel-category__menu-flag">🇬🇧</span>United Kingdom</span><i data-lucide="check"></i></button></li>
+          <li><button type="button" class="sel-category__menu-item" role="option" data-flag="🇺🇸"><span><span class="sel-category__menu-flag">🇺🇸</span>United States</span></button></li>
+          <li><button type="button" class="sel-category__menu-item" role="option" data-flag="🇨🇦"><span><span class="sel-category__menu-flag">🇨🇦</span>Canada</span></button></li>
+          <li><button type="button" class="sel-category__menu-item" role="option" data-flag="🇩🇪"><span><span class="sel-category__menu-flag">🇩🇪</span>Germany</span></button></li>
+          <li><button type="button" class="sel-category__menu-item" role="option" data-flag="🇫🇷"><span><span class="sel-category__menu-flag">🇫🇷</span>France</span></button></li>
+          <li><button type="button" class="sel-category__menu-item" role="option" data-flag="🇦🇺"><span><span class="sel-category__menu-flag">🇦🇺</span>Australia</span></button></li>
+        </ul>
+      </div>
+      <div class="sel-category__group" data-cat-group>
+        <button type="button" class="sel-category__value" data-cat-trigger>
+          <span class="sel-category__label">England</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <ul class="sel-category__menu sel-category__menu--right" role="listbox">
+          <li><button type="button" class="sel-category__menu-item sel-category__menu-item--selected" role="option" aria-selected="true">England <i data-lucide="check"></i></button></li>
+          <li><button type="button" class="sel-category__menu-item" role="option">Scotland</button></li>
+          <li><button type="button" class="sel-category__menu-item" role="option">Wales</button></li>
+          <li><button type="button" class="sel-category__menu-item" role="option">Northern Ireland</button></li>
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -152,15 +170,29 @@
   <section class="demo-section">
     <p class="demo-section__title">Type=Category Dropdown · Size=sm</p>
     <div class="sel-category sel-category--sm">
-      <button type="button" class="sel-category__category">
-        <span class="sel-category__flag" aria-hidden="true">🇬🇧</span>
-        <span>United Kingdom</span>
-        <i data-lucide="chevron-down" aria-hidden="true"></i>
-      </button>
-      <button type="button" class="sel-category__value">
-        <span>England</span>
-        <i data-lucide="chevron-down" aria-hidden="true"></i>
-      </button>
+      <div class="sel-category__group" data-cat-group>
+        <button type="button" class="sel-category__category" data-cat-trigger>
+          <span class="sel-category__flag" aria-hidden="true">🇬🇧</span>
+          <span class="sel-category__label">United Kingdom</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <ul class="sel-category__menu" role="listbox">
+          <li><button type="button" class="sel-category__menu-item sel-category__menu-item--selected" role="option" aria-selected="true" data-flag="🇬🇧"><span><span class="sel-category__menu-flag">🇬🇧</span>United Kingdom</span><i data-lucide="check"></i></button></li>
+          <li><button type="button" class="sel-category__menu-item" role="option" data-flag="🇺🇸"><span><span class="sel-category__menu-flag">🇺🇸</span>United States</span></button></li>
+          <li><button type="button" class="sel-category__menu-item" role="option" data-flag="🇨🇦"><span><span class="sel-category__menu-flag">🇨🇦</span>Canada</span></button></li>
+        </ul>
+      </div>
+      <div class="sel-category__group" data-cat-group>
+        <button type="button" class="sel-category__value" data-cat-trigger>
+          <span class="sel-category__label">England</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <ul class="sel-category__menu sel-category__menu--right" role="listbox">
+          <li><button type="button" class="sel-category__menu-item sel-category__menu-item--selected" role="option" aria-selected="true">England <i data-lucide="check"></i></button></li>
+          <li><button type="button" class="sel-category__menu-item" role="option">Scotland</button></li>
+          <li><button type="button" class="sel-category__menu-item" role="option">Wales</button></li>
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -210,6 +242,9 @@
       document.querySelectorAll('[data-sel].sel--open').forEach(sel => {
         if (!sel.contains(e.target)) sel.classList.remove('sel--open');
       });
+      document.querySelectorAll('[data-cat-group].sel-category__group--open').forEach(group => {
+        if (!group.contains(e.target)) group.classList.remove('sel-category__group--open');
+      });
     });
 
     // ── Multi-select (toggle on click, no auto-close) ──
@@ -221,6 +256,54 @@
         } else {
           item.removeAttribute('aria-selected');
         }
+      });
+    });
+
+    // ── Category Dropdown segments (each has its own menu) ──
+    document.querySelectorAll('[data-cat-trigger]').forEach(trigger => {
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const group = trigger.closest('[data-cat-group]');
+        // Close other open category groups (and any single-select dropdowns)
+        document.querySelectorAll('[data-cat-group].sel-category__group--open').forEach(g => {
+          if (g !== group) g.classList.remove('sel-category__group--open');
+        });
+        document.querySelectorAll('[data-sel].sel--open').forEach(s => s.classList.remove('sel--open'));
+        group.classList.toggle('sel-category__group--open');
+      });
+    });
+
+    document.querySelectorAll('.sel-category__menu-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const group = item.closest('[data-cat-group]');
+        const menu = item.closest('.sel-category__menu');
+        const trigger = group.querySelector('[data-cat-trigger]');
+        const labelEl = trigger.querySelector('.sel-category__label');
+        const flagEl = trigger.querySelector('.sel-category__flag');
+        // The visible button text — first child span of the menu item is the rich label
+        const itemFirstSpan = item.querySelector('span');
+        const itemFlag = item.dataset.flag;
+        const labelText = itemFirstSpan
+          ? Array.from(itemFirstSpan.childNodes)
+              .filter(n => n.nodeType === Node.TEXT_NODE || (n.nodeType === Node.ELEMENT_NODE && !n.classList.contains('sel-category__menu-flag')))
+              .map(n => n.textContent).join('').trim()
+          : item.firstChild.textContent.trim();
+        if (labelEl) labelEl.textContent = labelText;
+        if (flagEl && itemFlag) flagEl.textContent = itemFlag;
+        // Mark selection
+        menu.querySelectorAll('.sel-category__menu-item').forEach(i => {
+          i.classList.remove('sel-category__menu-item--selected');
+          i.removeAttribute('aria-selected');
+          const check = i.querySelector('[data-lucide="check"], svg.lucide-check');
+          if (check) check.remove();
+        });
+        item.classList.add('sel-category__menu-item--selected');
+        item.setAttribute('aria-selected', 'true');
+        const checkEl = document.createElement('i');
+        checkEl.setAttribute('data-lucide', 'check');
+        item.appendChild(checkEl);
+        lucide.createIcons();
+        group.classList.remove('sel-category__group--open');
       });
     });
   </script>
