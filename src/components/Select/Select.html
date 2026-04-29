@@ -10,16 +10,13 @@
   <style>
     body {
       padding: var(--ai-spacing-7);
-      background: var(--ai-surface-secondary);
+      background: var(--ai-surface-primary);
       min-height: 100vh;
       max-width: 60rem;
       margin: 0 auto;
     }
     .demo-section {
       margin-bottom: var(--ai-spacing-9);
-      background: var(--ai-surface-primary);
-      padding: var(--ai-spacing-6);
-      border-radius: var(--ai-radius-md);
     }
     .demo-section__title {
       font-size: var(--ai-font-fixed-xs);
@@ -44,38 +41,51 @@
   <!-- 1 · Default -->
   <section class="demo-section">
     <p class="demo-section__title">Type=Default · Size=Default</p>
-    <div class="sel">
+    <div class="sel" data-sel>
       <label class="sel__label" for="sel1">Country</label>
-      <button id="sel1" class="sel__control" type="button">
+      <button id="sel1" class="sel__control" type="button" data-sel-trigger>
         <span class="sel__value">United Kingdom</span>
         <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
       </button>
+      <ul class="sel__menu" role="listbox">
+        <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">United Kingdom <i data-lucide="check"></i></button></li>
+        <li><button type="button" class="sel__menu-item" role="option">United States</button></li>
+        <li><button type="button" class="sel__menu-item" role="option">Canada</button></li>
+        <li><button type="button" class="sel__menu-item" role="option">Germany</button></li>
+        <li><button type="button" class="sel__menu-item" role="option">France</button></li>
+        <li><button type="button" class="sel__menu-item" role="option">Australia</button></li>
+      </ul>
     </div>
   </section>
 
   <!-- 2 · Default sm -->
   <section class="demo-section">
     <p class="demo-section__title">Type=Default · Size=sm</p>
-    <div class="sel">
+    <div class="sel" data-sel>
       <label class="sel__label" for="sel1-sm">Country</label>
-      <button id="sel1-sm" class="sel__control sel__control--sm" type="button">
+      <button id="sel1-sm" class="sel__control sel__control--sm" type="button" data-sel-trigger>
         <span class="sel__value">United Kingdom</span>
         <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
       </button>
+      <ul class="sel__menu" role="listbox">
+        <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">United Kingdom <i data-lucide="check"></i></button></li>
+        <li><button type="button" class="sel__menu-item" role="option">United States</button></li>
+        <li><button type="button" class="sel__menu-item" role="option">Canada</button></li>
+      </ul>
     </div>
   </section>
 
-  <!-- 3 · Multiselect -->
+  <!-- 3 · Multiselect (interactive — click to toggle) -->
   <section class="demo-section">
     <p class="demo-section__title">Type=Multiselect · Size=Default</p>
     <div class="sel">
-      <span class="sel__label">Tags</span>
+      <span class="sel__label">Tags <small style="font-weight:var(--ai-font-regular);color:var(--ai-text-contrast);font-size:var(--ai-font-fixed-xxs);">(click to toggle)</small></span>
       <ul class="sel__list" role="listbox" aria-multiselectable="true" aria-label="Tags">
-        <li class="sel__list-item" role="option">Design</li>
-        <li class="sel__list-item sel__list-item--selected" role="option" aria-selected="true">Engineering</li>
-        <li class="sel__list-item sel__list-item--selected" role="option" aria-selected="true">Product</li>
-        <li class="sel__list-item" role="option">Marketing</li>
-        <li class="sel__list-item" role="option">Sales</li>
+        <li class="sel__list-item" role="option" data-multi>Design</li>
+        <li class="sel__list-item sel__list-item--selected" role="option" aria-selected="true" data-multi>Engineering</li>
+        <li class="sel__list-item sel__list-item--selected" role="option" aria-selected="true" data-multi>Product</li>
+        <li class="sel__list-item" role="option" data-multi>Marketing</li>
+        <li class="sel__list-item" role="option" data-multi>Sales</li>
       </ul>
     </div>
   </section>
@@ -107,12 +117,18 @@
   <!-- 6 · Underline -->
   <section class="demo-section">
     <p class="demo-section__title">Type=Underline · Size=Default</p>
-    <div class="sel">
+    <div class="sel" data-sel>
       <label class="sel__label" for="sel5">Sort by</label>
-      <button id="sel5" class="sel__control sel__control--underline" type="button">
+      <button id="sel5" class="sel__control sel__control--underline" type="button" data-sel-trigger>
         <span class="sel__value">Most recent</span>
         <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
       </button>
+      <ul class="sel__menu" role="listbox">
+        <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">Most recent <i data-lucide="check"></i></button></li>
+        <li><button type="button" class="sel__menu-item" role="option">Oldest first</button></li>
+        <li><button type="button" class="sel__menu-item" role="option">Most popular</button></li>
+        <li><button type="button" class="sel__menu-item" role="option">Highest rated</button></li>
+      </ul>
     </div>
   </section>
 
@@ -149,6 +165,64 @@
   </section>
 
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <script>lucide.createIcons();</script>
+  <script>
+    lucide.createIcons();
+
+    // ── Single-select dropdown (Default / Underline) ──
+    document.querySelectorAll('[data-sel-trigger]').forEach(trigger => {
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const sel = trigger.closest('[data-sel]');
+        // Close other open selects
+        document.querySelectorAll('[data-sel].sel--open').forEach(s => {
+          if (s !== sel) s.classList.remove('sel--open');
+        });
+        sel.classList.toggle('sel--open');
+      });
+    });
+
+    document.querySelectorAll('.sel__menu-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const sel = item.closest('[data-sel]');
+        const menu = item.closest('.sel__menu');
+        const valueEl = sel.querySelector('.sel__value');
+        const label = item.firstChild ? item.firstChild.textContent.trim() : item.textContent.trim();
+        if (valueEl) valueEl.textContent = label;
+        // Mark selection: clear siblings, add to clicked
+        menu.querySelectorAll('.sel__menu-item').forEach(i => {
+          i.classList.remove('sel__menu-item--selected');
+          i.removeAttribute('aria-selected');
+          const check = i.querySelector('[data-lucide], svg');
+          if (check) check.remove();
+        });
+        item.classList.add('sel__menu-item--selected');
+        item.setAttribute('aria-selected', 'true');
+        const checkEl = document.createElement('i');
+        checkEl.setAttribute('data-lucide', 'check');
+        item.appendChild(checkEl);
+        lucide.createIcons();
+        sel.classList.remove('sel--open');
+      });
+    });
+
+    // Click outside closes any open select
+    document.addEventListener('click', (e) => {
+      document.querySelectorAll('[data-sel].sel--open').forEach(sel => {
+        if (!sel.contains(e.target)) sel.classList.remove('sel--open');
+      });
+    });
+
+    // ── Multi-select (toggle on click, no auto-close) ──
+    document.querySelectorAll('[data-multi]').forEach(item => {
+      item.addEventListener('click', () => {
+        const selected = item.classList.toggle('sel__list-item--selected');
+        if (selected) {
+          item.setAttribute('aria-selected', 'true');
+        } else {
+          item.removeAttribute('aria-selected');
+        }
+      });
+    });
+  </script>
 </body>
 </html>
