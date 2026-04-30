@@ -1,0 +1,299 @@
+/* Banners — Flowbite-inspired gallery */
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--ai-surface-secondary);
+  padding: var(--ai-spacing-8) var(--ai-spacing-6);
+  font-family: var(--ai-font-body);
+}
+
+.bn-page {
+  width: 100%;
+  max-width: 60rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-8);
+}
+
+.bn-page__title {
+  margin: 0;
+  font-size: var(--ai-font-fluid-2xl);
+  font-weight: var(--ai-font-bold);
+  color: var(--ai-text-primary);
+  line-height: var(--ai-leading-md);
+}
+
+.bn-page__intro {
+  margin: 0;
+  font-size: var(--ai-font-fixed-sm);
+  color: var(--ai-text-contrast);
+  line-height: var(--ai-leading-md);
+}
+
+.bn-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+}
+
+.bn-section__label {
+  margin: 0;
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-contrast);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.bn-section__caption {
+  margin: 0 0 var(--ai-spacing-2) 0;
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-secondary);
+  line-height: var(--ai-leading-sm);
+}
+
+/* ── Top / bottom announcement banner ───────────── */
+
+.banner {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-4);
+  padding: var(--ai-spacing-4) var(--ai-spacing-6);
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+}
+
+.banner--bottom {
+  border-color: var(--ai-border-secondary);
+}
+
+.banner__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-8);
+  height: var(--ai-spacing-8);
+  background: var(--ai-surface-brand-soft-extra);
+  color: var(--ai-surface-brand-dark);
+  border-radius: var(--ai-radius-full);
+  flex-shrink: 0;
+}
+
+.banner__icon [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+.banner__text {
+  flex: 1;
+  margin: 0;
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-primary);
+  line-height: var(--ai-leading-md);
+}
+
+.banner__link {
+  color: var(--ai-surface-brand);
+  text-decoration: underline;
+  font-weight: var(--ai-font-semibold);
+}
+
+.banner__close {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-7);
+  height: var(--ai-spacing-7);
+  background: transparent;
+  border: 0;
+  border-radius: var(--ai-radius-md);
+  color: var(--ai-icon-contrast);
+  cursor: pointer;
+  transition: background-color var(--ai-transition-default),
+              color var(--ai-transition-default);
+}
+
+.banner__close:hover {
+  background: var(--ai-surface-minimal);
+  color: var(--ai-text-primary);
+}
+
+.banner__close [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* ── Newsletter ─────────────────────────────────── */
+
+.banner-news {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-5);
+  padding: var(--ai-spacing-5) var(--ai-spacing-6);
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  flex-wrap: wrap;
+}
+
+.banner-news__label {
+  flex: 1 1 16rem;
+  margin: 0;
+  font-size: var(--ai-font-fixed-sm);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-primary);
+}
+
+.banner-news__form {
+  display: flex;
+  gap: var(--ai-spacing-3);
+  flex: 1 1 18rem;
+}
+
+.banner-news__form .input {
+  flex: 1;
+}
+
+/* ── Marketing CTA ──────────────────────────────── */
+
+.banner-cta {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-7);
+  padding: var(--ai-spacing-7);
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-lg);
+  position: relative;
+}
+
+.banner-cta__logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-10);
+  height: var(--ai-spacing-10);
+  background: var(--ai-surface-brand);
+  color: var(--ai-btn-primary-text);
+  border-radius: var(--ai-radius-md);
+  flex-shrink: 0;
+  font-size: var(--ai-font-fixed-xl);
+  font-weight: var(--ai-font-bold);
+}
+
+.banner-cta__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-2);
+  min-width: 0;
+}
+
+.banner-cta__title {
+  margin: 0;
+  font-size: var(--ai-font-fixed-md);
+  font-weight: var(--ai-font-bold);
+  color: var(--ai-text-primary);
+  line-height: var(--ai-leading-sm);
+}
+
+.banner-cta__text {
+  margin: 0;
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-contrast);
+  line-height: var(--ai-leading-md);
+}
+
+.banner-cta__actions {
+  display: flex;
+  gap: var(--ai-spacing-3);
+  flex-shrink: 0;
+}
+
+.banner-cta__close {
+  position: absolute;
+  top: var(--ai-spacing-3);
+  right: var(--ai-spacing-3);
+  width: var(--ai-spacing-7);
+  height: var(--ai-spacing-7);
+  background: transparent;
+  border: 0;
+  border-radius: var(--ai-radius-md);
+  color: var(--ai-icon-contrast);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner-cta__close:hover {
+  background: var(--ai-surface-minimal);
+  color: var(--ai-text-primary);
+}
+
+.banner-cta__close [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* ── Mobile phone-frame variant ─────────────────────────────
+   Renders the same banner gallery inside a 24rem phone-width
+   frame so Figma captures get a clean mobile layout. Applied
+   via the .bn-page--mobile modifier on the page wrapper.
+*/
+
+.bn-page--mobile {
+  max-width: 24rem;
+}
+
+.bn-page--mobile .banner {
+  padding: var(--ai-spacing-4) var(--ai-spacing-5);
+  gap: var(--ai-spacing-3);
+}
+
+.bn-page--mobile .banner__icon {
+  width: var(--ai-spacing-7);
+  height: var(--ai-spacing-7);
+}
+
+.bn-page--mobile .banner-news {
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--ai-spacing-4);
+  padding: var(--ai-spacing-5);
+}
+
+.bn-page--mobile .banner-news__form {
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+}
+
+.bn-page--mobile .banner-news__form .btn {
+  width: 100%;
+  justify-content: center;
+}
+
+.bn-page--mobile .banner-cta {
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--ai-spacing-5);
+  padding: var(--ai-spacing-6);
+}
+
+.bn-page--mobile .banner-cta__title {
+  padding-right: var(--ai-spacing-8);
+}
+
+.bn-page--mobile .banner-cta__actions {
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+}
+
+.bn-page--mobile .banner-cta__actions .btn {
+  width: 100%;
+  justify-content: center;
+}
