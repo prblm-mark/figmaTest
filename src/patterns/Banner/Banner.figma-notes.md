@@ -92,7 +92,7 @@ None — every design value maps to an existing `--ai-*` token.
   - Marketing: always absolute top-right.
   - Information: inline at end of row on desktop; absolute top-right on mobile.
 - **Marketing mobile drops "Learn more".** The mobile variant only shows Sign Up (full-width). The CSS hides `.btn--tertiary` inside `.banner--marketing .banner__actions` at mobile widths so the same HTML works for both desktop and mobile.
-- **Marketing logo content is flexible.** The `.banner__logo` slot accepts either a Lucide icon (sized at `--ai-icon-size-xl`/32px), a single letter, or a small image. The demo uses a Lucide `award` icon as a placeholder for the brand mark in Figma.
+- **Marketing logo uses the Affino brand SVG** — a 24×24 inline SVG with `currentColor` fill, identical to the one used by the `WorkingIntro` component. The `.banner__logo` slot accepts either an inline SVG or a Lucide icon, both sized at `--ai-icon-size-xl` (32px) via the CSS selector.
 - **Fixed height.** Figma marks Announcement at `h-[66px]`. The component lets natural padding + content height drive the height instead — this avoids hardcoding a non-token pixel value and the result is visually equivalent (~64–66px depending on borders).
 - **Subpixel padding values in Figma** (e.g. `pb-[13px]`/`pt-[12px]`) are sub-pixel rounding artefacts of the bound `--ai-spacing-4` token (12px). The CSS uses the canonical token value.
 - **Announcement Mobile uses `--ai-leading-sm` (20px)** instead of `--ai-leading-md` (24px) for the body text — a deliberate Figma-specified difference, applied via the `@media (max-width: 767px)` block.
@@ -100,4 +100,5 @@ None — every design value maps to an existing `--ai-*` token.
 ## Dependencies
 
 - `Button` (`src/components/Button/`) — used inside `.banner__actions` for the Sign Up / Learn more CTAs.
-- Lucide icons via CDN — `megaphone` (announcement), `award` (marketing logo placeholder), `x` (close).
+- Lucide icons via CDN — `megaphone` (announcement), `x` (close).
+- Affino brand SVG — inline in HTML (Marketing logo). Single 24×24 path using `currentColor` fill so the Marketing logo colour follows `--ai-btn-primary-text` from the parent `.banner__logo`. Same SVG markup as `WorkingIntro`.
