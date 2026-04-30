@@ -47,7 +47,7 @@ Select is a Tier=Component design-system component for picking from a list of va
 | Trigger padding-right (sm) | `--ai-spacing-3` | 8px |
 | Trigger gap | `--ai-spacing-3` | 8px |
 | Hover/focus border | `--ai-border-brand` | #0071d8 |
-| Focus halo | `--ai-surface-brand-contrast` | brand contrast |
+| Focus halo | `--ai-surface-brand-soft` | brand contrast |
 | Label font | `--ai-font-title` semibold + `--ai-font-fixed-xs` | Inter 600 / 14px |
 | Value font (Default) | `--ai-font-title` regular + `--ai-font-fixed-xs` | Inter 400 / 14px |
 | Value font (sm) | `--ai-font-title` regular + `--ai-font-fixed-xxs` | Inter 400 / 12px |

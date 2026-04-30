@@ -57,5 +57,5 @@
 
 .chat-sidebar-menu__item:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 1px var(--ai-chat-sidebar-bg), 0 0 0 3px var(--ai-surface-brand-contrast);
+  box-shadow: 0 0 0 1px var(--ai-chat-sidebar-bg), 0 0 0 3px var(--ai-surface-brand-soft);
 }

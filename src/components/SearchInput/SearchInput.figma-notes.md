@@ -71,7 +71,7 @@ SearchInput is a Tier=Component design-system component for search-style input c
 | Icon size | `--ai-icon-size-sm` | 16px |
 | Icon color | `--ai-icon-contrast` | #929295 |
 | Flag font | `--ai-font-fixed-md` | 18px |
-| Focus halo | `--ai-surface-brand-contrast` | brand contrast |
+| Focus halo | `--ai-surface-brand-soft` | brand contrast |
 | Split gap | `--ai-spacing-3` | 8px |
 
 ## Token Gaps

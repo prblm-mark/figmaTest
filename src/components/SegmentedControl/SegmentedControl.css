@@ -63,5 +63,5 @@
 .seg-control__btn:focus-visible {
   outline: none;
   box-shadow: 0 0 0 1px var(--ai-surface-primary),
-              0 0 0 3px var(--ai-surface-brand-contrast);
+              0 0 0 3px var(--ai-surface-brand-soft);
 }

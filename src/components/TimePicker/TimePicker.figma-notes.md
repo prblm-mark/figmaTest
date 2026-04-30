@@ -62,7 +62,7 @@ TimePicker is a Tier=Component design-system component for time entry. The set b
 | Slot selected text | `--ai-btn-primary-text` | #ffffff |
 | Slot disabled bg | `--ai-surface-minimal` | #f6f6f7 |
 | Slot disabled text | `--ai-text-contrast` | #67676c |
-| Focus ring | `--ai-surface-brand-contrast` | brand contrast |
+| Focus ring | `--ai-surface-brand-soft` | brand contrast |
 
 ## Token Gaps
 

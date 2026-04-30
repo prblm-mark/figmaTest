@@ -135,7 +135,7 @@
 | Knob bg              | `--ai-surface-primary`           |
 | Track/knob radius    | `--ai-radius-full`               |
 | Focus ring inner     | `--ai-surface-primary`           |
-| Focus ring outer     | `--ai-surface-brand-contrast`    |
+| Focus ring outer     | `--ai-surface-brand-soft`    |
 | Label text color     | `--ai-text-primary`              |
 | Helper text color    | `--ai-text-contrast`             |
 | SM label font size   | `--ai-font-fixed-xs`             |

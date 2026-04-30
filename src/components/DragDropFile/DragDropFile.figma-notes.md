@@ -64,8 +64,8 @@
 | Zone radius               | `--ai-radius-lg`                     |
 | Zone padding              | `--ai-spacing-7`                     |
 | Zone gap                  | `--ai-spacing-5`                     |
-| Icon circle bg            | `--ai-surface-brand-contrast-extra`  |
-| Icon circle bg (error)    | `--ai-surface-error-contrast`        |
+| Icon circle bg            | `--ai-surface-brand-soft-extra`  |
+| Icon circle bg (error)    | `--ai-surface-error-soft`        |
 | Icon circle radius        | `--ai-radius-full`                   |
 | Icon colour               | `--ai-icon-brand`                    |
 | Icon colour (error)       | `--ai-text-error`                    |

@@ -127,7 +127,7 @@
 
 .rs__wrap:hover .rs__thumb,
 .rs__wrap:focus-within .rs__thumb {
-  box-shadow: 0 0 0 4px var(--ai-surface-brand-contrast);
+  box-shadow: 0 0 0 4px var(--ai-surface-brand-soft);
 }
 
 /* ── Size: sm (4px track / 12px thumb) ──────────────── */

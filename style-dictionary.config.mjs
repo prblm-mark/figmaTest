@@ -176,7 +176,7 @@ const sd = new StyleDictionary({
   parsers: ['figma-token-parser'],
   // Source order: Primitives first (for reference resolution), then semantic + scale + typography
   source: [
-    'FigmaTokens/Primitive.tokens.json',
+    'FigmaTokens/Primitives/Primitive.tokens.json',
     'FigmaTokens/Semantic/Light.tokens.json',
     'FigmaTokens/Scale/Scale.tokens.json',
     'FigmaTokens/Typography/Desktop.tokens.json',
@@ -220,7 +220,7 @@ const sdMobile = new StyleDictionary({
   usesDtcg: true,
   parsers: ['figma-token-parser'],
   source: [
-    'FigmaTokens/Primitive.tokens.json',
+    'FigmaTokens/Primitives/Primitive.tokens.json',
     'FigmaTokens/Semantic/Light.tokens.json',
     'FigmaTokens/Scale/Scale.tokens.json',
     'FigmaTokens/Typography/Mobile.tokens.json',
@@ -261,7 +261,7 @@ const sdDark = new StyleDictionary({
   usesDtcg: true,
   parsers: ['figma-token-parser'],
   source: [
-    'FigmaTokens/Primitive.tokens.json',
+    'FigmaTokens/Primitives/Primitive.tokens.json',
     'FigmaTokens/Semantic/Dark.tokens.json',
   ],
   platforms: {
@@ -302,7 +302,7 @@ const sdMinimised = new StyleDictionary({
   usesDtcg: true,
   parsers: ['figma-token-parser'],
   source: [
-    'FigmaTokens/Primitive.tokens.json',
+    'FigmaTokens/Primitives/Primitive.tokens.json',
     'FigmaTokens/Semantic/Light.tokens.json',
     'FigmaTokens/Scale/Scale.tokens.json',
     'FigmaTokens/Typography/Minimised.tokens.json',
@@ -345,7 +345,7 @@ const sdChatLight = new StyleDictionary({
   usesDtcg: true,
   parsers: ['figma-token-parser'],
   source: [
-    'FigmaTokens/Primitive.tokens.json',
+    'FigmaTokens/Primitives/Primitive.tokens.json',
     'FigmaTokens/Semantic/ChatLight.tokens.json',
   ],
   platforms: {
@@ -385,7 +385,7 @@ const sdChatDark = new StyleDictionary({
   usesDtcg: true,
   parsers: ['figma-token-parser'],
   source: [
-    'FigmaTokens/Primitive.tokens.json',
+    'FigmaTokens/Primitives/Primitive.tokens.json',
     'FigmaTokens/Semantic/ChatDark.tokens.json',
   ],
   platforms: {

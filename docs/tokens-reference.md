@@ -18,11 +18,12 @@ Complete token tables for the Affino AI design system. All CSS variables use the
 | `--ai-surface-brand` | `#0071D8` | Brand/primary action bg |
 | `--ai-surface-brand-light` | `#3A8FFF` | Hover state on brand |
 | `--ai-surface-brand-dark` | `#0054A3` | Pressed state on brand |
-| `--ai-surface-brand-contrast` | `#BFD1FF` | Light brand tint |
-| `--ai-surface-brand-contrast-extra` | `#F0F3FF` | Very light brand tint |
-| `--ai-surface-error` | `#EF4444` | Error backgrounds |
-| `--ai-surface-error-contrast` | `#FBD5D5` | Error tint background |
-| `--ai-surface-success` | `#30CB90` | Success backgrounds — theme-invariant |
+| `--ai-surface-brand-soft` | `#BFD1FF` | Light brand tint (focus rings, active backgrounds) |
+| `--ai-surface-brand-soft-extra` | `#F0F3FF` | Very light brand tint (chat msg bubbles, soft backgrounds) |
+
+> **Renamed Apr 2026:** `--ai-surface-brand-contrast` → `--ai-surface-brand-soft`,
+> `--ai-surface-brand-contrast-extra` → `--ai-surface-brand-soft-extra`,
+> `--ai-surface-error-contrast` → `--ai-surface-error-soft`. These tokens act as soft tinted backgrounds; the new name describes what they do. The `-contrast` suffix is now reserved for muted/mid-grey neutrals (`--ai-text-contrast`, `--ai-icon-contrast`, `--ai-border-contrast`, `--ai-surface-contrast`).
 
 ## Text
 
@@ -32,7 +33,8 @@ Complete token tables for the Affino AI design system. All CSS variables use the
 | `--ai-text-secondary` | `#3C3C3F` | Secondary/supporting text (Neutral/700) |
 | `--ai-text-contrast` | `#67676C` | Placeholder, captions (Neutral/500) |
 | `--ai-text-invert` | `#FFFFFF` | Text on dark/brand backgrounds |
-| `--ai-text-error` | `#EF4444` | Error messages |
+
+See **Status / feedback** below for `--ai-text-info`, `--ai-text-success`, `--ai-text-warning`, `--ai-text-error`, `--ai-text-neutral`.
 
 ## Border / Color
 
@@ -43,7 +45,44 @@ Complete token tables for the Affino AI design system. All CSS variables use the
 | `--ai-border-secondary` | `#E2E2E3` | Default input/card borders (Neutral/200) |
 | `--ai-border-contrast` | `#C2C2C4` | Stronger borders (Neutral/300) |
 | `--ai-border-invert` | `#1B1B1F` | Borders on inverted/dark surfaces (Neutral/900) |
-| `--ai-border-error` | `#EF4444` | Error state borders |
+
+See **Status / feedback** below for `--ai-border-info`, `--ai-border-success`, `--ai-border-warning`, `--ai-border-error`, `--ai-border-neutral`.
+
+## Status / feedback
+
+Theme-aware semantic tokens for alerts, banners, badges, and any UI that signals state. Each status (`info`, `success`, `warning`, `error`, `neutral`) provides four slots — `surface`, `surface-soft` (tinted bg), `text`, and `border` — in both light and dark mode.
+
+**Light mode values:**
+
+| Status | `surface-{status}` | `surface-{status}-soft` | `text-{status}` | `border-{status}` |
+|---|---|---|---|---|
+| info | `#0071D8` | `#F0F3FF` | `#0B4C81` | `#BFD1FF` |
+| success | `#239E6F` | `#EFFFF7` | `#0F5C3F` | `#3EFCB4` |
+| warning | `#F0A326` | `#FFF5EE` | `#7F4609` | `#FDC793` |
+| error | `#DC2626` | `#FEF3F3` | `#B91C1C` | `#FBD5D5` |
+| neutral | `#2E2E32` | `#F6F6F7` | `#212123` | `#E2E2E3` |
+
+**Dark mode values:**
+
+| Status | `surface-{status}` | `surface-{status}-soft` | `text-{status}` | `border-{status}` |
+|---|---|---|---|---|
+| info | `#3A8FFF` | `#0A2947` | `#75A5FF` | `#0054A3` |
+| success | `#30CB90` | `#052E20` | `#34DA9B` | `#0F5C3F` |
+| warning | `#F0A326` | `#2A1607` | `#FDB24F` | `#7F4609` |
+| error | `#EF4444` | `#450A0A` | `#F87171` | `#991B1B` |
+| neutral | `#525256` | `#2E2E32` | `#E2E2E3` | `#525256` |
+
+**Usage:** combine slots for a complete tinted block. Example for an alert:
+
+```css
+.alert--success {
+  background: var(--ai-surface-success-soft);
+  color: var(--ai-text-success);
+  border-color: var(--ai-border-success);
+}
+```
+
+Soft backgrounds use a tinted dark in dark mode (e.g. Aqua/950 for success), keeping the same hue family as the light variant.
 
 ## Border Radius
 
@@ -244,8 +283,8 @@ All `--ai-*` variables continue to work in dark mode. Brand, error, border, spac
 | `--ai-surface-secondary` | `#E2E2E3` | `#2E2E32` |
 | `--ai-surface-contrast` | `#C2C2C4` | `#3C3C3F` |
 | `--ai-surface-invert` | `#1B1B1F` | `#F6F6F7` |
-| `--ai-surface-brand-contrast` | `#BFD1FF` | `#75A5FF` |
-| `--ai-surface-brand-contrast-extra` | `#F0F3FF` | `#BFD1FF` |
+| `--ai-surface-brand-soft` | `#BFD1FF` | `#75A5FF` |
+| `--ai-surface-brand-soft-extra` | `#F0F3FF` | `#BFD1FF` |
 | `--ai-text-primary` | `#212123` | `#F6F6F7` |
 | `--ai-text-secondary` | `#3C3C3F` | `#E2E2E3` |
 | `--ai-text-contrast` | `#67676C` | `#929295` |
