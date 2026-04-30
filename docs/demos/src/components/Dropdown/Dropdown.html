@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>Dropdown — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <!-- Dependencies -->
+  <link rel="stylesheet" href="../Button/Button.css">
+  <link rel="stylesheet" href="../Checkbox/Checkbox.css">
+  <!-- Component -->
+  <link rel="stylesheet" href="Dropdown.css">
+  <style>
+    body { padding: var(--ai-spacing-7); background: var(--ai-surface-secondary); min-height: 100vh; }
+    .demo-section {
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-primary);
+      border-radius: var(--ai-radius-lg);
+      margin-bottom: var(--ai-spacing-5);
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 var(--ai-spacing-5);
+    }
+    .demo-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--ai-spacing-7);
+      align-items: flex-start;
+    }
+    /* Give the demo enough vertical room for open panels */
+    .demo-section { min-height: 22rem; }
+  </style>
+</head>
+<body>
+
+  <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-6);">Dropdown</h1>
+  <p style="font-size: var(--ai-font-fixed-sm); color: var(--ai-text-contrast); margin: 0 0 var(--ai-spacing-7);">
+    Click any trigger to open. Click outside or press Escape to close. The Checkbox variant stays open on item click; the Search variant filters its list as you type.
+  </p>
+
+  <div class="demo-section">
+    <p class="demo-section__title">Type=Basic, With Header, Actions, Checkbox, Search</p>
+    <div class="demo-row">
+
+      <!-- Basic -->
+      <div class="dropdown">
+        <button class="btn btn--secondary dropdown__trigger" aria-haspopup="menu" aria-expanded="false">
+          <span>Dropdown</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown__panel" role="menu" aria-label="Dropdown">
+          <ul class="dropdown__list">
+            <li role="none"><button type="button" class="dropdown__item" role="menuitem">Dashboard</button></li>
+            <li role="none"><button type="button" class="dropdown__item dropdown__item--selected" role="menuitem" aria-current="page">Settings</button></li>
+            <li role="none"><button type="button" class="dropdown__item" role="menuitem">Earnings</button></li>
+            <li role="none"><button type="button" class="dropdown__item" role="menuitem">Sign out</button></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- With Header -->
+      <div class="dropdown">
+        <button class="btn btn--secondary dropdown__trigger" aria-haspopup="menu" aria-expanded="false">
+          <span>Profile</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown__panel" role="menu" aria-label="Profile menu">
+          <ul class="dropdown__list dropdown__list--header">
+            <li role="none">
+              <div class="dropdown__profile">
+                <img class="dropdown__profile-avatar" src="https://i.pravatar.cc/80?u=derrick" alt="">
+                <div class="dropdown__profile-body">
+                  <p class="dropdown__profile-name">Derrick Jefferson</p>
+                  <p class="dropdown__profile-email">derrick@affino.com</p>
+                </div>
+              </div>
+            </li>
+            <li role="none"><button type="button" class="dropdown__item" role="menuitem"><i data-lucide="user" aria-hidden="true"></i><span>My profile</span></button></li>
+            <li role="none"><button type="button" class="dropdown__item dropdown__item--selected" role="menuitem" aria-current="page"><i data-lucide="settings" aria-hidden="true"></i><span>Account settings</span></button></li>
+            <li role="none"><button type="button" class="dropdown__item" role="menuitem"><i data-lucide="help-circle" aria-hidden="true"></i><span>Help</span></button></li>
+            <li role="none"><hr class="dropdown__divider"></li>
+            <li role="none"><button type="button" class="dropdown__item dropdown__item--compact" role="menuitem"><i data-lucide="log-out" aria-hidden="true"></i><span>Sign out</span></button></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="dropdown">
+        <button class="btn btn--secondary dropdown__trigger" aria-haspopup="menu" aria-expanded="false">
+          <span>Actions</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown__panel dropdown__panel--actions" role="menu" aria-label="Actions">
+          <ul class="dropdown__list">
+            <li role="none"><button type="button" class="dropdown__item" role="menuitem"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button></li>
+            <li role="none"><button type="button" class="dropdown__item" role="menuitem"><i data-lucide="copy" aria-hidden="true"></i><span>Duplicate</span></button></li>
+            <li role="none"><button type="button" class="dropdown__item" role="menuitem"><i data-lucide="archive" aria-hidden="true"></i><span>Archive</span></button></li>
+          </ul>
+          <hr class="dropdown__divider">
+          <button type="button" class="btn btn--alert">
+            <i data-lucide="trash-2" aria-hidden="true"></i>
+            <span>Delete</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Checkbox (stays open on click) -->
+      <div class="dropdown" data-dropdown="stay-open">
+        <button class="btn btn--secondary dropdown__trigger" aria-haspopup="menu" aria-expanded="false">
+          <span>Filter by status</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown__panel dropdown__panel--checkbox" role="menu" aria-label="Filter by status">
+          <ul class="dropdown__list">
+            <li role="none">
+              <label class="checkbox">
+                <input type="checkbox" class="checkbox__input">
+                <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+                <span class="checkbox__label"><span class="checkbox__label-text">Default Checkbox</span></span>
+              </label>
+            </li>
+            <li role="none">
+              <label class="checkbox">
+                <input type="checkbox" class="checkbox__input" checked>
+                <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+                <span class="checkbox__label"><span class="checkbox__label-text">Checked State</span></span>
+              </label>
+            </li>
+            <li role="none">
+              <label class="checkbox">
+                <input type="checkbox" class="checkbox__input">
+                <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+                <span class="checkbox__label"><span class="checkbox__label-text">Default Checkbox</span></span>
+              </label>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Search -->
+      <div class="dropdown">
+        <button class="btn btn--secondary dropdown__trigger" aria-haspopup="menu" aria-expanded="false">
+          <span>Country</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown__panel dropdown__panel--search" role="menu" aria-label="Country">
+          <div class="dropdown__search">
+            <i data-lucide="search" aria-hidden="true"></i>
+            <input type="text" class="dropdown__search-input" placeholder="Search…" aria-label="Search countries">
+          </div>
+          <ul class="dropdown__list">
+            <li role="none"><button type="button" class="dropdown__item" role="menuitem">United Kingdom</button></li>
+            <li role="none"><button type="button" class="dropdown__item" role="menuitem">United States</button></li>
+            <li role="none"><button type="button" class="dropdown__item" role="menuitem">Canada</button></li>
+            <li role="none"><button type="button" class="dropdown__item" role="menuitem">Australia</button></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script type="module" src="./Dropdown.js"></script>
+</body>
+</html>
