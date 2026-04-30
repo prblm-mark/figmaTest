@@ -1,0 +1,249 @@
+/* Banner pattern
+ * Figma node: 2550:2225 (component set) — Tier=Pattern
+ * Variants: Type (Announcement | Marketing | Information) × Position (Floating | Fixed) × Device (Desktop | Mobile)
+ * 12 variants — Device handled responsively via @media (max-width: 767px)
+ * Composes: Button (btn--primary, btn--tertiary)
+ */
+
+/* ── Base ─────────────────────────────────────────────── */
+
+.banner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-4);
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  font-family: var(--ai-font-body);
+}
+
+/* ── Position: Floating ───────────────────────────────── */
+/* Rounded, drop-shadow, full border. Self-contained card. */
+
+.banner--floating {
+  border-radius: var(--ai-radius-md);
+  box-shadow: var(--ai-shadow-md);
+}
+
+/* Marketing + Information use the larger 16px radius when floating */
+.banner--marketing.banner--floating,
+.banner--information.banner--floating {
+  border-radius: var(--ai-radius-lg);
+}
+
+/* ── Position: Fixed ──────────────────────────────────── */
+/* Square corners, bottom-border only, no shadow.
+ * Used pinned to the top of the viewport. */
+
+.banner--fixed {
+  border-radius: 0;
+  border-width: 0 0 1px 0;
+  box-shadow: none;
+}
+
+/* ── Type: Announcement ───────────────────────────────── */
+/* Single row: icon-bubble + text (with link) + close. */
+
+.banner--announcement {
+  padding: var(--ai-spacing-4) var(--ai-spacing-6);
+}
+
+.banner--announcement .banner__icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-8);
+  height: var(--ai-spacing-8);
+  background-color: var(--ai-surface-brand-soft-extra);
+  border-radius: var(--ai-radius-full);
+  color: var(--ai-icon-brand);
+}
+
+.banner--announcement .banner__icon [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+.banner--announcement .banner__text {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+}
+
+.banner--announcement .banner__link {
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-brand);
+  text-decoration: underline;
+}
+
+/* ── Type: Marketing ──────────────────────────────────── */
+/* Logo + heading/paragraph + dual CTAs + close (top-right). */
+
+.banner--marketing {
+  align-items: center;
+  gap: var(--ai-spacing-7);
+  padding: var(--ai-spacing-7);
+  /* close button is absolute top-right; pad-right keeps actions clear of it */
+  padding-right: calc(var(--ai-spacing-7) + var(--ai-spacing-3));
+}
+
+.banner--marketing .banner__logo {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-10);
+  height: var(--ai-spacing-10);
+  background-color: var(--ai-surface-brand);
+  border-radius: var(--ai-radius-md);
+  color: var(--ai-text-invert);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xl);
+  font-weight: var(--ai-font-bold);
+}
+
+.banner--marketing .banner__logo [data-lucide] {
+  width: var(--ai-icon-size-xl);
+  height: var(--ai-icon-size-xl);
+}
+
+/* Marketing — close button always absolute top-right */
+.banner--marketing .banner__close {
+  position: absolute;
+  top: var(--ai-spacing-3);
+  right: var(--ai-spacing-3);
+}
+
+/* ── Type: Information ────────────────────────────────── */
+/* Heading/paragraph + Sign Up + close (inline on desktop, absolute on mobile). */
+
+.banner--information {
+  align-items: center;
+  gap: var(--ai-spacing-4);
+  padding: var(--ai-spacing-6);
+  padding-left: var(--ai-spacing-7);
+}
+
+/* ── Body (heading + paragraph) — Marketing & Information */
+
+.banner__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-2);
+}
+
+.banner__title {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-md);
+  font-weight: var(--ai-font-bold);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-primary);
+}
+
+.banner__body .banner__text {
+  margin: 0;
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-contrast);
+}
+
+/* ── Actions ──────────────────────────────────────────── */
+
+.banner__actions {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+}
+
+/* ── Close button ─────────────────────────────────────── */
+/* Default: inline (Announcement, Information desktop). */
+
+.banner__close {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-7);
+  height: var(--ai-spacing-7);
+  padding: 0 var(--ai-spacing-3);
+  background-color: transparent;
+  border: 0;
+  border-radius: var(--ai-radius-md);
+  color: var(--ai-icon-contrast);
+  cursor: pointer;
+  transition: background-color var(--ai-transition-default),
+              color var(--ai-transition-default);
+}
+
+.banner__close:hover {
+  background-color: var(--ai-surface-secondary);
+  color: var(--ai-text-primary);
+}
+
+.banner__close [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* ── Mobile (≤767px) ──────────────────────────────────── */
+
+@media (max-width: 767px) {
+  /* Announcement — tighter padding, slightly smaller line-height */
+  .banner--announcement {
+    padding: var(--ai-spacing-4) var(--ai-spacing-3) var(--ai-spacing-4) var(--ai-spacing-5);
+  }
+
+  .banner--announcement .banner__text {
+    line-height: var(--ai-leading-sm);
+  }
+
+  /* Marketing — column stack with full-width Sign Up; Learn more is hidden */
+  .banner--marketing {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--ai-spacing-4);
+    padding: var(--ai-spacing-5);
+  }
+
+  .banner--marketing .banner__actions {
+    width: 100%;
+  }
+
+  .banner--marketing .banner__actions .btn {
+    flex: 1;
+  }
+
+  /* Marketing mobile only shows the primary CTA */
+  .banner--marketing .banner__actions .btn--tertiary {
+    display: none;
+  }
+
+  /* Information — column stack with close button absolute top-right */
+  .banner--information {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--ai-spacing-4);
+    padding: var(--ai-spacing-5);
+    padding-right: var(--ai-spacing-6);
+  }
+
+  .banner--information .banner__close {
+    position: absolute;
+    top: var(--ai-spacing-3);
+    right: var(--ai-spacing-3);
+  }
+
+  .banner--information .banner__actions {
+    align-self: flex-start;
+  }
+}
