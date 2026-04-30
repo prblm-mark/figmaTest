@@ -63,8 +63,7 @@
 | `spacing/3` (8px) | `--ai-spacing-3` | Item py, profile gap, search gap |
 | `spacing/4` (12px) | `--ai-spacing-4` | Panel padding, item px |
 | `spacing/5` (16px) | `--ai-spacing-5` | Checkbox panel px |
-| `spacing/8` (40px) | `--ai-spacing-8` | Trigger height, profile avatar size, search height |
-| `spacing/9` (48px-ish) | `--ai-spacing-9` | Default item min-height |
+| `spacing/8` (40px) | `--ai-spacing-8` | Trigger height, profile avatar size, search height, default item min-height |
 | `font/title` | `--ai-font-title` | All text |
 | `font/fixed-xs` (14px) | `--ai-font-fixed-xs` | Trigger label, item text |
 | `font/fixed-xxs` (12px) | `--ai-font-fixed-xxs` | Profile email |
