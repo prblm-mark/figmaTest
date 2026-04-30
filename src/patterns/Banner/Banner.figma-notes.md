@@ -50,14 +50,14 @@ Device variants are handled responsively in CSS — there are no `.banner--mobil
 
 | Figma variable | CSS variable | Used for |
 |---|---|---|
-| `surface/primary` | `--ai-surface-primary` | Banner background |
+| `surface/elevated-1` | `--ai-surface-elevated-1` | Banner background (steps up properly in dark mode vs `surface/primary`) |
 | `border/secondary` | `--ai-border-secondary` | Border (full when Floating, bottom-only when Fixed) |
 | `surface/brand-soft-extra` | `--ai-surface-brand-soft-extra` | Announcement icon bubble background |
-| `surface/brand` | `--ai-surface-brand` | Marketing logo background |
+| `surface/brand` | `--ai-surface-brand` | Marketing logo background AND announcement icon fill (Figma binds the icon stroke to surface-brand, not icon-brand) |
 | `text/primary` | `--ai-text-primary` | Heading + announcement body text |
 | `text/contrast` | `--ai-text-contrast` | Marketing/Information paragraph |
 | `text/brand` | `--ai-text-brand` | Announcement inline link |
-| `text/invert` | `--ai-text-invert` | Marketing logo content (icon/letter) |
+| `btn/primary-text` | `--ai-btn-primary-text` | Marketing logo content (icon/letter) — supersedes the older `text/invert` binding |
 | `icon/contrast` | `--ai-icon-contrast` | Close button icon |
 | `radius/md` | `--ai-radius-md` | Announcement floating, button corners, close button |
 | `radius/lg` | `--ai-radius-lg` | Marketing/Information floating |

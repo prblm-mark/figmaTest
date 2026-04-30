@@ -12,7 +12,7 @@
   display: flex;
   align-items: center;
   gap: var(--ai-spacing-4);
-  background-color: var(--ai-surface-primary);
+  background-color: var(--ai-surface-elevated-1);
   border: 1px solid var(--ai-border-secondary);
   font-family: var(--ai-font-body);
 }
@@ -57,7 +57,7 @@
   height: var(--ai-spacing-8);
   background-color: var(--ai-surface-brand-soft-extra);
   border-radius: var(--ai-radius-full);
-  color: var(--ai-icon-brand);
+  color: var(--ai-surface-brand);
 }
 
 .banner--announcement .banner__icon [data-lucide] {
@@ -101,7 +101,7 @@
   height: var(--ai-spacing-10);
   background-color: var(--ai-surface-brand);
   border-radius: var(--ai-radius-md);
-  color: var(--ai-text-invert);
+  color: var(--ai-btn-primary-text);
   font-family: var(--ai-font-title);
   font-size: var(--ai-font-fixed-xl);
   font-weight: var(--ai-font-bold);
