@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Banners · Prototype</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Input/Input.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="Banners.css">
+</head>
+<body>
+
+  <div class="bn-page">
+    <div>
+      <h1 class="bn-page__title">Banners</h1>
+      <p class="bn-page__intro">Four banner compositions modelled on Flowbite's reference. In production these would be sticky to the top/bottom of the viewport — here they're stacked for review.</p>
+    </div>
+
+    <!-- 1. Top announcement -->
+    <section class="bn-section">
+      <p class="bn-section__label">1 · Top announcement</p>
+      <p class="bn-section__caption">Pinned to the top of the page; icon, message with link, dismiss.</p>
+      <div class="banner">
+        <span class="banner__icon"><i data-lucide="megaphone" aria-hidden="true"></i></span>
+        <p class="banner__text">New: Affino 9.0.11 ships next week with brand-new chat-style settings. <a href="#" class="banner__link">Read what's coming</a>.</p>
+        <button type="button" class="banner__close" aria-label="Dismiss banner">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- 2. Bottom partner banner -->
+    <section class="bn-section">
+      <p class="bn-section__label">2 · Bottom partner banner</p>
+      <p class="bn-section__caption">Pinned to the bottom — promotional with a link CTA.</p>
+      <div class="banner banner--bottom">
+        <span class="banner__icon"><i data-lucide="gift" aria-hidden="true"></i></span>
+        <p class="banner__text">Refer a partner and earn 20% commission. <a href="#" class="banner__link">Become a partner →</a></p>
+        <button type="button" class="banner__close" aria-label="Dismiss banner">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- 3. Newsletter signup -->
+    <section class="bn-section">
+      <p class="bn-section__label">3 · Newsletter sign-up</p>
+      <p class="bn-section__caption">Inline subscribe form — collects email without leaving the page.</p>
+      <div class="banner-news">
+        <p class="banner-news__label">Sign up for our weekly newsletter</p>
+        <form class="banner-news__form">
+          <div class="input">
+            <div class="input__wrap">
+              <i data-lucide="mail" class="input__icon" aria-hidden="true"></i>
+              <input class="input__control" type="email" placeholder="you@example.com">
+            </div>
+          </div>
+          <button type="submit" class="btn btn--primary">Subscribe</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- 4. Marketing CTA -->
+    <section class="bn-section">
+      <p class="bn-section__label">4 · Marketing CTA</p>
+      <p class="bn-section__caption">Logo + heading + body + dual CTA — for trial / early-access promos.</p>
+      <div class="banner-cta">
+        <div class="banner-cta__logo">A</div>
+        <div class="banner-cta__body">
+          <h2 class="banner-cta__title">Affino Innovation Briefing 2025</h2>
+          <p class="banner-cta__text">Dive into the insights, tools, and AI features shaping tomorrow's digital experiences.</p>
+        </div>
+        <div class="banner-cta__actions">
+          <button type="button" class="btn btn--primary">Sign Up</button>
+          <button type="button" class="btn btn--tertiary">Learn more</button>
+        </div>
+        <button type="button" class="banner-cta__close" aria-label="Dismiss banner">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>
