@@ -107,7 +107,8 @@
   font-weight: var(--ai-font-bold);
 }
 
-.banner--marketing .banner__logo [data-lucide] {
+.banner--marketing .banner__logo [data-lucide],
+.banner--marketing .banner__logo svg {
   width: var(--ai-icon-size-xl);
   height: var(--ai-icon-size-xl);
 }
