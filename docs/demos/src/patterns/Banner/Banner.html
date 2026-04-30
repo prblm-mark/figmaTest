@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Banner — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <!-- Dependencies -->
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <!-- Component -->
+  <link rel="stylesheet" href="Banner.css">
+  <style>
+    body { padding: var(--ai-spacing-7); background: var(--ai-surface-secondary); min-height: 100vh; }
+    .demo-section {
+      padding: var(--ai-spacing-6);
+      background: var(--ai-surface-primary);
+      border-radius: var(--ai-radius-lg);
+      margin-bottom: var(--ai-spacing-5);
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 var(--ai-spacing-5);
+    }
+    .demo-section__subtitle {
+      font-size: var(--ai-font-fixed-xxs);
+      color: var(--ai-text-contrast);
+      margin: var(--ai-spacing-5) 0 var(--ai-spacing-3);
+    }
+    .demo-stack {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-5);
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-6);">Banner</h1>
+  <p style="font-size: var(--ai-font-fixed-sm); color: var(--ai-text-contrast); margin: 0 0 var(--ai-spacing-7);">
+    Pattern with three Types (Announcement, Marketing, Information) and two Positions (Floating, Fixed).
+    Resize the viewport below 768px to see the mobile layout — Marketing and Information stack vertically.
+  </p>
+
+  <!-- Type=Announcement -->
+  <div class="demo-section">
+    <p class="demo-section__title">Type=Announcement</p>
+
+    <p class="demo-section__subtitle">Position=Floating</p>
+    <div class="banner banner--announcement banner--floating">
+      <span class="banner__icon" aria-hidden="true">
+        <i data-lucide="megaphone"></i>
+      </span>
+      <p class="banner__text">
+        New: Affino 9.0.11 ships next week with brand-new chat-style settings.
+        <a href="#" class="banner__link">Read what's coming</a>.
+      </p>
+      <button type="button" class="banner__close" aria-label="Dismiss banner">
+        <i data-lucide="x" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <p class="demo-section__subtitle">Position=Fixed</p>
+    <div class="banner banner--announcement banner--fixed">
+      <span class="banner__icon" aria-hidden="true">
+        <i data-lucide="megaphone"></i>
+      </span>
+      <p class="banner__text">
+        New: Affino 9.0.11 ships next week with brand-new chat-style settings.
+        <a href="#" class="banner__link">Read what's coming</a>.
+      </p>
+      <button type="button" class="banner__close" aria-label="Dismiss banner">
+        <i data-lucide="x" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Type=Marketing -->
+  <div class="demo-section">
+    <p class="demo-section__title">Type=Marketing</p>
+
+    <p class="demo-section__subtitle">Position=Floating</p>
+    <div class="banner banner--marketing banner--floating">
+      <div class="banner__logo" aria-hidden="true">
+        <i data-lucide="award"></i>
+      </div>
+      <div class="banner__body">
+        <h3 class="banner__title">Affino Innovation Briefing 2025</h3>
+        <p class="banner__text">Dive into the insights, tools, and AI features shaping tomorrow's digital experiences.</p>
+      </div>
+      <div class="banner__actions">
+        <button type="button" class="btn btn--primary">Sign Up</button>
+        <button type="button" class="btn btn--tertiary">Learn more</button>
+      </div>
+      <button type="button" class="banner__close" aria-label="Dismiss banner">
+        <i data-lucide="x" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <p class="demo-section__subtitle">Position=Fixed</p>
+    <div class="banner banner--marketing banner--fixed">
+      <div class="banner__logo" aria-hidden="true">
+        <i data-lucide="award"></i>
+      </div>
+      <div class="banner__body">
+        <h3 class="banner__title">Affino Innovation Briefing 2025</h3>
+        <p class="banner__text">Dive into the insights, tools, and AI features shaping tomorrow's digital experiences.</p>
+      </div>
+      <div class="banner__actions">
+        <button type="button" class="btn btn--primary">Sign Up</button>
+        <button type="button" class="btn btn--tertiary">Learn more</button>
+      </div>
+      <button type="button" class="banner__close" aria-label="Dismiss banner">
+        <i data-lucide="x" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Type=Information -->
+  <div class="demo-section">
+    <p class="demo-section__title">Type=Information</p>
+
+    <p class="demo-section__subtitle">Position=Floating</p>
+    <div class="banner banner--information banner--floating">
+      <div class="banner__body">
+        <h3 class="banner__title">Affino Innovation Briefing 2025</h3>
+        <p class="banner__text">Dive into the insights, tools, and AI features shaping tomorrow's digital experiences.</p>
+      </div>
+      <div class="banner__actions">
+        <button type="button" class="btn btn--primary">Sign Up</button>
+      </div>
+      <button type="button" class="banner__close" aria-label="Dismiss banner">
+        <i data-lucide="x" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <p class="demo-section__subtitle">Position=Fixed</p>
+    <div class="banner banner--information banner--fixed">
+      <div class="banner__body">
+        <h3 class="banner__title">Affino Innovation Briefing 2025</h3>
+        <p class="banner__text">Dive into the insights, tools, and AI features shaping tomorrow's digital experiences.</p>
+      </div>
+      <div class="banner__actions">
+        <button type="button" class="btn btn--primary">Sign Up</button>
+      </div>
+      <button type="button" class="banner__close" aria-label="Dismiss banner">
+        <i data-lucide="x" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>
