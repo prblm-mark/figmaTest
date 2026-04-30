@@ -66,7 +66,7 @@ Chart is a Tier=Pattern component (in `src/patterns/Chart/`) because it composes
 | Chart line color | `--ai-surface-brand` | #0071d8 |
 | Chart secondary line | `--ai-surface-success` | #30cb90 |
 | Chart bar 3rd colour | `#75A5FF` | (Blue/FB/400 primitive — explicitly approved) |
-| Chart bar 4th colour | `--ai-surface-brand-contrast` | #bfd1ff |
+| Chart bar 4th colour | `--ai-surface-brand-soft` | #bfd1ff |
 | Chart grid lines | `--ai-border-secondary` | #e2e2e3 |
 | Chart axis text | `--ai-text-contrast` | #67676c |
 | Chart tooltip bg | `--ai-text-primary` | #212123 (dark tooltip) |

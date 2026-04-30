@@ -50,7 +50,7 @@ RangeSlider is a Tier=Component design-system component for selecting a numeric 
 | Thumb bg | `--ai-surface-brand` | #0071d8 |
 | Thumb border | `--ai-surface-primary` | white, 2px (3px on lg) |
 | Thumb shadow | `0 1px 3px rgba(0,0,0,0.1)` | static (raw — optical) |
-| Thumb hover/focus halo | `--ai-surface-brand-contrast` | 4px ring |
+| Thumb hover/focus halo | `--ai-surface-brand-soft` | 4px ring |
 | Thumb (disabled) | `--ai-btn-bg-disabled` | grey |
 | Label font | `--ai-font-title` semibold + `--ai-font-fixed-xs` | Inter 600 / 14px |
 | Value font | `--ai-font-title` semibold + `--ai-font-fixed-sm` | Inter 600 / 16px |

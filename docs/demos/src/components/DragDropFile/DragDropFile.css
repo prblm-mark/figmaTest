@@ -28,7 +28,7 @@
   justify-content: center;
   width: 48px;
   height: 48px;
-  background: var(--ai-surface-brand-contrast-extra);
+  background: var(--ai-surface-brand-soft-extra);
   border-radius: var(--ai-radius-full);
 }
 
@@ -88,7 +88,7 @@
 }
 
 .drag-drop--error .drag-drop__icon-wrap {
-  background: var(--ai-surface-error-contrast);
+  background: var(--ai-surface-error-soft);
 }
 
 .drag-drop--error .drag-drop__icon-wrap [data-lucide] {

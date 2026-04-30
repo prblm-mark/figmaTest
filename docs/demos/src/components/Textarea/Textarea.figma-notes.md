@@ -43,9 +43,9 @@ Multi-line text input for longer form content. Mirrors the Input component's tok
 | Border | `--ai-border-secondary` | Yes |
 | Border radius | `--ai-radius-md` | Yes |
 | Hover border | `--ai-border-brand` | Yes |
-| Focus ring | `--ai-surface-brand-contrast` (3px) | Yes |
+| Focus ring | `--ai-surface-brand-soft` (3px) | Yes |
 | Error border | `--ai-border-error` | Yes |
-| Error ring | `--ai-surface-error-contrast` (3px) | Yes |
+| Error ring | `--ai-surface-error-soft` (3px) | Yes |
 | Disabled bg | `--ai-surface-minimal` | Yes |
 | Label font | `--ai-font-title` / `--ai-font-fixed-xs` / `--ai-font-semibold` | Yes |
 | Control font | `--ai-font-body` / `--ai-font-fixed-xs` / `--ai-font-regular` | Yes |

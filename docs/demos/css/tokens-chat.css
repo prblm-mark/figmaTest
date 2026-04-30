@@ -1,10 +1,10 @@
 [data-surface="chat"] {
   --ai-surface-primary: #ffffff;
   --ai-surface-elevated-1: #ffffff;
-  --ai-surface-brand-contrast: #bfd1ff;
-  --ai-surface-brand-contrast-extra: #f0f3ff;
+  --ai-surface-brand-soft: #bfd1ff;
+  --ai-surface-brand-soft-extra: #f0f3ff;
   --ai-surface-error: #ef4444;
-  --ai-surface-error-contrast: #fbd5d5;
+  --ai-surface-error-soft: #fbd5d5;
   --ai-surface-success: #30cb90;
   --ai-surface-elevated-2: #f6f6f7;
   --ai-surface-minimal: #e2e2e3;

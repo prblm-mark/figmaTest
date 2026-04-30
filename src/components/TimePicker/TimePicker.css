@@ -37,7 +37,7 @@
 .tp__field:focus-within {
   border-color: var(--ai-border-brand);
   box-shadow: 0 0 0 1px var(--ai-surface-primary),
-              0 0 0 3px var(--ai-surface-brand-contrast);
+              0 0 0 3px var(--ai-surface-brand-soft);
   outline: none;
 }
 
@@ -226,7 +226,7 @@
 
 .tp-slot__input:focus-visible ~ .tp-slot__label {
   box-shadow: 0 0 0 1px var(--ai-surface-primary),
-              0 0 0 3px var(--ai-surface-brand-contrast);
+              0 0 0 3px var(--ai-surface-brand-soft);
 }
 
 .tp-slot__input:checked ~ .tp-slot__label {

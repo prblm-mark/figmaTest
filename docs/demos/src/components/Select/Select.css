@@ -58,7 +58,7 @@
 .sel__control:focus {
   border-color: var(--ai-border-brand);
   box-shadow: 0 0 0 1px var(--ai-surface-primary),
-              0 0 0 3px var(--ai-surface-brand-contrast);
+              0 0 0 3px var(--ai-surface-brand-soft);
   outline: none;
 }
 
@@ -66,7 +66,7 @@
 .sel--open .sel__control {
   border-color: var(--ai-border-brand);
   box-shadow: 0 0 0 1px var(--ai-surface-primary),
-              0 0 0 3px var(--ai-surface-brand-contrast);
+              0 0 0 3px var(--ai-surface-brand-soft);
 }
 
 .sel--open .sel__chevron {
@@ -262,7 +262,7 @@
 .sel-category:focus-within {
   border-color: var(--ai-border-brand);
   box-shadow: 0 0 0 1px var(--ai-surface-primary),
-              0 0 0 3px var(--ai-surface-brand-contrast);
+              0 0 0 3px var(--ai-surface-brand-soft);
 }
 
 /* Group wraps each segment + its menu, providing the popover anchor */

@@ -120,7 +120,7 @@
 | Checked border         | `--ai-border-brand`              |
 | Check icon color       | `--ai-text-invert`               |
 | Focus ring inner       | `--ai-surface-primary`           |
-| Focus ring outer       | `--ai-surface-brand-contrast`    |
+| Focus ring outer       | `--ai-surface-brand-soft`    |
 | Label text color       | `--ai-text-primary`              |
 | Helper text color      | `--ai-text-contrast`             |
 | Label font size        | `--ai-font-fixed-xs`             |
