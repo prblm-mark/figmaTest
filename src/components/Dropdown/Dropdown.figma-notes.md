@@ -28,8 +28,7 @@
 | Panel — Actions variant | `.dropdown__panel .dropdown__panel--actions` | Adds vertical gap between item list and Delete CTA |
 | Panel — Checkbox variant | `.dropdown__panel .dropdown__panel--checkbox` | Different padding (16px x, 12px y) per Figma |
 | List | `.dropdown__list` | Flex column. `--header` modifier adds 4px gap (used in With Header) |
-| Item (action / link) | `.dropdown__item` | Default 36px min-height, 12/8 padding, radius-md. `.dropdown__item--selected` applies bg + medium weight. `aria-selected="true"` and `aria-current="page"` produce the same styling |
-| Item — Sign out (compact) | `.dropdown__item.dropdown__item--compact` | Reduces py to 6px and applies radius-sm — matches the With Header sign-out spec |
+| Item (action / link) | `.dropdown__item` | 40px min-height, 12/8 padding, radius-md. `.dropdown__item--selected` applies bg + medium weight. `aria-selected="true"` and `aria-current="page"` produce the same styling |
 | Divider | `.dropdown__divider` | 1px line, `--ai-surface-secondary` |
 | Profile block | `.dropdown__profile` | Avatar + name + email — used only by With Header. Always rendered with `--ai-surface-secondary` bg |
 | Avatar image | `.dropdown__profile-avatar` | 40px, `--ai-radius-full`, `object-fit: cover` |
@@ -56,7 +55,6 @@
 | `icon/primary` | `--ai-icon-primary` | Item leading icons |
 | `icon/contrast` | `--ai-icon-contrast` | Search input leading icon |
 | `radius/md` (8px) | `--ai-radius-md` | Panel, items, profile, trigger |
-| `radius/sm` (4px) | `--ai-radius-sm` | Non-selected items in With Header (link rows) |
 | `radius/full` | `--ai-radius-full` | Profile avatar |
 | `spacing/1` (4px) | `--ai-spacing-1` | With Header list gap |
 | `spacing/2` (6px) | `--ai-spacing-2` | Item icon-to-label gap |
@@ -98,7 +96,7 @@ Auto-binds on `DOMContentLoaded` to every `.dropdown` on the page.
 - **Checkbox variant composes the existing Checkbox component.** No checkbox markup is duplicated — the same `.checkbox / .checkbox__input / .checkbox__indicator / .checkbox__label / .checkbox__label-text` classes are used. Dropdown only adds `padding: var(--ai-spacing-3) 0` to each row via a scoped rule.
 - **Profile avatar** uses a plain `<img class="dropdown__profile-avatar">` rather than the Avatar component — Avatar is sized at 24/32/40/56/80px and clips with a circle. The dropdown profile shows only a 40px circular image (no checkmark, no notification dot, no portrait wrapping), so an `<img>` is sufficient and lighter.
 - **Search variant 2px item gap** was collapsed to 0 in the build — see Token Gaps.
-- **Sign out item** in With Header uses `--compact` for 6px py + radius-sm; this matches the Figma value but the design's intent isn't documented. The other With Header items use radius-sm too (only the selected one gets radius-md).
+- **Sign out item** in With Header is a standard `.dropdown__item` — same 8px py, 12px px, and `--ai-radius-md` as every other row. (Earlier Figma revisions had this row at 6px py + radius-sm; the current design unifies it.)
 
 ## Dependencies
 

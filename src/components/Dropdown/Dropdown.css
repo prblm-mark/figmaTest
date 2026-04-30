@@ -116,20 +116,6 @@
   color: var(--ai-icon-primary);
 }
 
-/* Sign out item in With Header — Figma sets py:6px (vs 8px elsewhere)
- * and a smaller radius when not selected. */
-.dropdown__item--compact {
-  min-height: 0;
-  padding: var(--ai-spacing-2) var(--ai-spacing-4);
-  border-radius: var(--ai-radius-sm);
-}
-
-/* With Header non-highlighted items use radius-sm; Account settings
- * (highlighted) reverts to radius-md via --selected. */
-.dropdown__list--header .dropdown__item:not(.dropdown__item--selected) {
-  border-radius: var(--ai-radius-sm);
-}
-
 /* ── Divider ──────────────────────────────────────────── */
 
 .dropdown__divider {
