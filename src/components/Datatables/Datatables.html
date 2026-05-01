@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>Datatables — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <!-- Dependencies -->
+  <link rel="stylesheet" href="../Button/Button.css">
+  <link rel="stylesheet" href="../Input/Input.css">
+  <link rel="stylesheet" href="../Table/Table.css">
+  <!-- Component -->
+  <link rel="stylesheet" href="Datatables.css">
+  <style>
+    body { padding: var(--ai-spacing-7); background: var(--ai-surface-secondary); min-height: 100vh; }
+    .demo-section {
+      margin-bottom: var(--ai-spacing-7);
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 var(--ai-spacing-3);
+    }
+    .demo-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--ai-spacing-7);
+      align-items: flex-start;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-6);">Datatables</h1>
+  <p style="font-size: var(--ai-font-fixed-sm); color: var(--ai-text-contrast); margin: 0 0 var(--ai-spacing-7);">
+    Composes the Table component with toolbar, sortable headers, pagination footer and a kebab-row-expand mobile pattern.
+  </p>
+
+  <!-- 1. Pagination · Desktop (Scroll) -->
+  <div class="demo-section">
+    <p class="demo-section__title">Type=Pagination · Device=Desktop · Overflow=Scroll</p>
+    <div class="datatables">
+      <div class="datatables__toolbar">
+        <span class="datatables__meta">
+          <span>Show</span>
+          <button type="button" class="datatables__select" aria-label="Rows per page">
+            <span>10</span>
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </button>
+          <span>of <strong>1,289</strong></span>
+        </span>
+        <div class="datatables__actions">
+          <button type="button" class="btn btn--tertiary btn--sm">
+            <i data-lucide="filter" aria-hidden="true"></i>
+            <span>Filter</span>
+          </button>
+          <button type="button" class="btn btn--tertiary btn--sm">
+            <i data-lucide="download" aria-hidden="true"></i>
+            <span>Export</span>
+          </button>
+        </div>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th><button class="datatables__sort datatables__sort--active">Product <i data-lucide="arrow-up-narrow-wide" aria-hidden="true"></i></button></th>
+            <th><button class="datatables__sort">Category <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+            <th><button class="datatables__sort">Stock <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+            <th><button class="datatables__sort">Price <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Apple MacBook Pro 17"</td><td>Laptop</td><td>14</td><td>£2,999</td></tr>
+          <tr><td>Apple Watch 5</td><td>Wearables</td><td>22</td><td>£399</td></tr>
+          <tr><td>Google Pixel Phone</td><td>Phone</td><td>27</td><td>£799</td></tr>
+          <tr><td>Magic Mouse 2</td><td>Accessories</td><td>89</td><td>£99</td></tr>
+          <tr><td>Microsoft Surface Pro</td><td>Laptop PC</td><td>6</td><td>£1,999</td></tr>
+        </tbody>
+      </table>
+      <div class="datatables__footer">
+        <span>Showing <strong>1–5</strong> of <strong>1,289</strong> results</span>
+        <div class="datatables__pagination" role="group" aria-label="Pagination">
+          <button class="datatables__page-btn" aria-label="Previous"><i data-lucide="chevron-left" aria-hidden="true"></i></button>
+          <button class="datatables__page-btn datatables__page-btn--active">1</button>
+          <button class="datatables__page-btn">2</button>
+          <button class="datatables__page-btn">3</button>
+          <button class="datatables__page-btn" aria-label="Next"><i data-lucide="chevron-right" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Pagination · Mobile · Scroll -->
+  <div class="demo-section">
+    <p class="demo-section__title">Type=Pagination · Device=Mobile · Overflow=Scroll</p>
+    <div class="datatables datatables--mobile-scroll">
+      <div class="datatables__toolbar">
+        <span class="datatables__meta">
+          <button type="button" class="datatables__select" aria-label="Rows per page">
+            <span>10</span>
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </button>
+          <span>of 1,289</span>
+        </span>
+        <div class="datatables__actions">
+          <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Filter">
+            <i data-lucide="filter" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Export">
+            <i data-lucide="download" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th><button class="datatables__sort datatables__sort--active">Product <i data-lucide="arrow-up-narrow-wide" aria-hidden="true"></i></button></th>
+            <th><button class="datatables__sort">Category <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+            <th><button class="datatables__sort">Stock <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+            <th><button class="datatables__sort">Price <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Apple MacBook Pro 17"</td><td>Laptop</td><td>14</td><td>£2,999</td></tr>
+          <tr><td>Apple Watch 5</td><td>Wearables</td><td>22</td><td>£399</td></tr>
+          <tr><td>Google Pixel Phone</td><td>Phone</td><td>27</td><td>£799</td></tr>
+          <tr><td>Magic Mouse 2</td><td>Accessories</td><td>89</td><td>£99</td></tr>
+          <tr><td>Microsoft Surface Pro</td><td>Laptop PC</td><td>6</td><td>£1,999</td></tr>
+        </tbody>
+      </table>
+      <div class="datatables__footer">
+        <span>1–5 of 1,289</span>
+        <div class="datatables__pagination" role="group" aria-label="Pagination">
+          <button class="datatables__page-btn" aria-label="Previous"><i data-lucide="chevron-left" aria-hidden="true"></i></button>
+          <button class="datatables__page-btn datatables__page-btn--active">1</button>
+          <button class="datatables__page-btn">2</button>
+          <button class="datatables__page-btn" aria-label="Next"><i data-lucide="chevron-right" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Pagination · Mobile · Trigger -->
+  <div class="demo-section">
+    <p class="demo-section__title">Type=Pagination · Device=Mobile · Overflow=Trigger</p>
+    <div class="datatables" style="max-width: 24rem;">
+      <div class="datatables__toolbar">
+        <span class="datatables__meta">10 of 1,289</span>
+        <div class="datatables__actions">
+          <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Filter">
+            <i data-lucide="filter" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Export">
+            <i data-lucide="download" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th><button class="datatables__sort datatables__sort--active">Product <i data-lucide="arrow-up-narrow-wide" aria-hidden="true"></i></button></th>
+            <th><button class="datatables__sort">Price <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+            <th class="datatables__kebab-cell" aria-hidden="true"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="datatables__row">
+            <td>Apple MacBook Pro 17"</td>
+            <td>£2,999</td>
+            <td class="datatables__kebab-cell">
+              <label class="datatables__kebab" aria-label="Show row details">
+                <input type="checkbox" class="datatables__kebab__input">
+                <i data-lucide="more-vertical" aria-hidden="true"></i>
+              </label>
+            </td>
+          </tr>
+          <tr class="datatables__row-detail">
+            <td colspan="3" class="datatables__row-detail__cell">
+              <dl class="datatables__detail-list">
+                <dt>Category</dt><dd>Laptop</dd>
+                <dt>Stock</dt><dd>14</dd>
+              </dl>
+            </td>
+          </tr>
+          <tr class="datatables__row">
+            <td>Apple Watch 5</td>
+            <td>£399</td>
+            <td class="datatables__kebab-cell">
+              <label class="datatables__kebab" aria-label="Show row details">
+                <input type="checkbox" class="datatables__kebab__input" checked>
+                <i data-lucide="more-vertical" aria-hidden="true"></i>
+              </label>
+            </td>
+          </tr>
+          <tr class="datatables__row-detail">
+            <td colspan="3" class="datatables__row-detail__cell">
+              <dl class="datatables__detail-list">
+                <dt>Category</dt><dd>Wearables</dd>
+                <dt>Stock</dt><dd>22</dd>
+              </dl>
+            </td>
+          </tr>
+          <tr class="datatables__row">
+            <td>Google Pixel Phone</td>
+            <td>£799</td>
+            <td class="datatables__kebab-cell">
+              <label class="datatables__kebab" aria-label="Show row details">
+                <input type="checkbox" class="datatables__kebab__input">
+                <i data-lucide="more-vertical" aria-hidden="true"></i>
+              </label>
+            </td>
+          </tr>
+          <tr class="datatables__row-detail">
+            <td colspan="3" class="datatables__row-detail__cell">
+              <dl class="datatables__detail-list">
+                <dt>Category</dt><dd>Phone</dd>
+                <dt>Stock</dt><dd>27</dd>
+              </dl>
+            </td>
+          </tr>
+          <tr class="datatables__row">
+            <td>Magic Mouse 2</td>
+            <td>£99</td>
+            <td class="datatables__kebab-cell">
+              <label class="datatables__kebab" aria-label="Show row details">
+                <input type="checkbox" class="datatables__kebab__input">
+                <i data-lucide="more-vertical" aria-hidden="true"></i>
+              </label>
+            </td>
+          </tr>
+          <tr class="datatables__row-detail">
+            <td colspan="3" class="datatables__row-detail__cell">
+              <dl class="datatables__detail-list">
+                <dt>Category</dt><dd>Accessories</dd>
+                <dt>Stock</dt><dd>89</dd>
+              </dl>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="datatables__footer">
+        <span>1–4 of 1,289</span>
+        <div class="datatables__pagination" role="group" aria-label="Pagination">
+          <button class="datatables__page-btn" aria-label="Previous"><i data-lucide="chevron-left" aria-hidden="true"></i></button>
+          <button class="datatables__page-btn datatables__page-btn--active">1</button>
+          <button class="datatables__page-btn">2</button>
+          <button class="datatables__page-btn" aria-label="Next"><i data-lucide="chevron-right" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Search · Desktop · Scroll -->
+  <div class="demo-section">
+    <p class="demo-section__title">Type=Search · Device=Desktop · Overflow=Scroll</p>
+    <div class="datatables">
+      <div class="datatables__toolbar">
+        <div class="datatables__search input">
+          <div class="input__wrap">
+            <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
+            <input class="input__control" type="search" placeholder="Search products…" value="Apple">
+          </div>
+        </div>
+        <div class="datatables__actions">
+          <button type="button" class="btn btn--secondary">
+            <i data-lucide="eye" aria-hidden="true"></i>
+            <span>View</span>
+          </button>
+          <button type="button" class="btn btn--primary">
+            <i data-lucide="download" aria-hidden="true"></i>
+            <span>Export</span>
+          </button>
+        </div>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th><button class="datatables__sort datatables__sort--active">Product <i data-lucide="arrow-up-narrow-wide" aria-hidden="true"></i></button></th>
+            <th><button class="datatables__sort">Category <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+            <th><button class="datatables__sort">Stock <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+            <th><button class="datatables__sort">Price <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Apple iPad Air</td><td>Tablet</td><td>34</td><td>£599</td></tr>
+          <tr><td>Apple MacBook Pro 17"</td><td>Laptop</td><td>14</td><td>£2,999</td></tr>
+          <tr><td>Apple Watch 5</td><td>Wearables</td><td>22</td><td>£399</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 5. Search · Mobile · Scroll -->
+  <div class="demo-section">
+    <p class="demo-section__title">Type=Search · Device=Mobile · Overflow=Scroll</p>
+    <div class="datatables datatables--mobile-scroll">
+      <div class="datatables__toolbar">
+        <div class="datatables__search input" style="max-width: none;">
+          <div class="input__wrap input--sm">
+            <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
+            <input class="input__control" type="search" placeholder="Search…" value="Apple">
+          </div>
+        </div>
+        <div class="datatables__actions">
+          <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="View">
+            <i data-lucide="eye" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="btn btn--primary btn--sm btn--icon" aria-label="Export">
+            <i data-lucide="download" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th><button class="datatables__sort datatables__sort--active">Product <i data-lucide="arrow-up-narrow-wide" aria-hidden="true"></i></button></th>
+            <th><button class="datatables__sort">Category <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+            <th><button class="datatables__sort">Stock <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+            <th><button class="datatables__sort">Price <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Apple iPad Air</td><td>Tablet</td><td>34</td><td>£599</td></tr>
+          <tr><td>Apple MacBook Pro 17"</td><td>Laptop</td><td>14</td><td>£2,999</td></tr>
+          <tr><td>Apple Watch 5</td><td>Wearables</td><td>22</td><td>£399</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 6. Search · Mobile · Trigger -->
+  <div class="demo-section">
+    <p class="demo-section__title">Type=Search · Device=Mobile · Overflow=Trigger</p>
+    <div class="datatables" style="max-width: 24rem;">
+      <div class="datatables__toolbar">
+        <div class="datatables__search input" style="max-width: none;">
+          <div class="input__wrap input--sm">
+            <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
+            <input class="input__control" type="search" placeholder="Search…" value="Apple">
+          </div>
+        </div>
+        <div class="datatables__actions">
+          <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="View">
+            <i data-lucide="eye" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="btn btn--primary btn--sm btn--icon" aria-label="Export">
+            <i data-lucide="download" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th><button class="datatables__sort datatables__sort--active">Product <i data-lucide="arrow-up-narrow-wide" aria-hidden="true"></i></button></th>
+            <th><button class="datatables__sort">Price <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+            <th class="datatables__kebab-cell" aria-hidden="true"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="datatables__row">
+            <td>Apple iPad Air</td>
+            <td>£599</td>
+            <td class="datatables__kebab-cell">
+              <label class="datatables__kebab" aria-label="Show row details">
+                <input type="checkbox" class="datatables__kebab__input">
+                <i data-lucide="more-vertical" aria-hidden="true"></i>
+              </label>
+            </td>
+          </tr>
+          <tr class="datatables__row-detail">
+            <td colspan="3" class="datatables__row-detail__cell">
+              <dl class="datatables__detail-list">
+                <dt>Category</dt><dd>Tablet</dd>
+                <dt>Stock</dt><dd>34</dd>
+              </dl>
+            </td>
+          </tr>
+          <tr class="datatables__row">
+            <td>Apple MacBook Pro 17"</td>
+            <td>£2,999</td>
+            <td class="datatables__kebab-cell">
+              <label class="datatables__kebab" aria-label="Show row details">
+                <input type="checkbox" class="datatables__kebab__input" checked>
+                <i data-lucide="more-vertical" aria-hidden="true"></i>
+              </label>
+            </td>
+          </tr>
+          <tr class="datatables__row-detail">
+            <td colspan="3" class="datatables__row-detail__cell">
+              <dl class="datatables__detail-list">
+                <dt>Category</dt><dd>Laptop</dd>
+                <dt>Stock</dt><dd>14</dd>
+              </dl>
+            </td>
+          </tr>
+          <tr class="datatables__row">
+            <td>Apple Watch 5</td>
+            <td>£399</td>
+            <td class="datatables__kebab-cell">
+              <label class="datatables__kebab" aria-label="Show row details">
+                <input type="checkbox" class="datatables__kebab__input">
+                <i data-lucide="more-vertical" aria-hidden="true"></i>
+              </label>
+            </td>
+          </tr>
+          <tr class="datatables__row-detail">
+            <td colspan="3" class="datatables__row-detail__cell">
+              <dl class="datatables__detail-list">
+                <dt>Category</dt><dd>Wearables</dd>
+                <dt>Stock</dt><dd>22</dd>
+              </dl>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>
