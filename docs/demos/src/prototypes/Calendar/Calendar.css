@@ -1,0 +1,401 @@
+/* Calendar — datepicker dropdown prototype */
+/* All visual values use --ai-* tokens */
+
+/* ── Page layout ────────────────────────────────────────────────────────── */
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ai-surface-secondary);
+  padding: var(--ai-spacing-6);
+}
+
+.proto-card {
+  background: var(--ai-surface-primary);
+  border-radius: var(--ai-radius-lg);
+  padding: var(--ai-spacing-7);
+  width: var(--ai-size-11); /* 768px — room for side-by-side calendars */
+  max-width: 100%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.proto-card__title {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fluid-xl);
+  font-weight: var(--ai-font-bold);
+  line-height: var(--ai-leading-lg);
+  color: var(--ai-text-primary);
+  margin: 0 0 var(--ai-spacing-7) 0;
+}
+
+.proto-card__subtitle {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-sm);
+  font-weight: var(--ai-font-bold);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  margin: 0 0 var(--ai-spacing-5) 0;
+  padding-bottom: var(--ai-spacing-3);
+  border-bottom: 1px solid var(--ai-border-secondary);
+}
+
+.proto-card__section {
+  margin-bottom: var(--ai-spacing-7);
+}
+
+.proto-card__section:last-child {
+  margin-bottom: 0;
+}
+
+.proto-card__label {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 var(--ai-spacing-4) 0;
+}
+
+/* ── Calendar panel ─────────────────────────────────────────────────────── */
+
+.cal {
+  display: inline-flex;
+  flex-direction: column;
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-lg);
+  padding: var(--ai-spacing-5);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
+  gap: var(--ai-spacing-3);
+}
+
+/* ── Header (month + nav arrows) ────────────────────────────────────────── */
+
+.cal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--ai-spacing-2);
+  margin-bottom: var(--ai-spacing-2);
+}
+
+.cal__month {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+}
+
+.cal__nav {
+  display: flex;
+  gap: var(--ai-spacing-1);
+}
+
+.cal__nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-7);
+  height: var(--ai-spacing-7);
+  border: none;
+  background: none;
+  border-radius: var(--ai-radius-md);
+  color: var(--ai-icon-secondary);
+  cursor: pointer;
+}
+
+.cal__nav-btn:hover {
+  background: var(--ai-surface-minimal);
+  color: var(--ai-icon-primary);
+}
+
+.cal__nav-btn [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* ── Day-of-week headers ────────────────────────────────────────────────── */
+
+.cal__weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  margin-bottom: var(--ai-spacing-1);
+}
+
+.cal__weekday {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+  padding: var(--ai-spacing-2) 0;
+}
+
+/* ── Day grid ───────────────────────────────────────────────────────────── */
+
+.cal__days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--ai-spacing-1);
+}
+
+.cal__day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-7);
+  height: var(--ai-spacing-7);
+  border: none;
+  background: none;
+  border-radius: var(--ai-radius-md);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-primary);
+  cursor: pointer;
+}
+
+.cal__day:hover {
+  background: var(--ai-surface-minimal);
+}
+
+/* Outside current month */
+.cal__day--muted {
+  color: var(--ai-text-contrast);
+}
+
+.cal__day--muted:hover {
+  background: var(--ai-surface-minimal);
+  color: var(--ai-text-secondary);
+}
+
+/* Today */
+.cal__day--today {
+  font-weight: var(--ai-font-bold);
+  background: var(--ai-surface-minimal);
+  color: var(--ai-surface-brand);
+}
+
+/* Selected */
+.cal__day--selected {
+  background: var(--ai-surface-brand);
+  color: var(--ai-btn-primary-text);
+  font-weight: var(--ai-font-semibold);
+}
+
+.cal__day--selected:hover {
+  background: var(--ai-surface-brand-light);
+  color: var(--ai-btn-primary-text);
+}
+
+/* Range: start */
+.cal__day--range-start {
+  background: var(--ai-surface-brand);
+  color: var(--ai-btn-primary-text);
+  font-weight: var(--ai-font-semibold);
+  border-radius: var(--ai-radius-md) 0 0 var(--ai-radius-md);
+}
+
+/* Range: end */
+.cal__day--range-end {
+  background: var(--ai-surface-brand);
+  color: var(--ai-btn-primary-text);
+  font-weight: var(--ai-font-semibold);
+  border-radius: 0 var(--ai-radius-md) var(--ai-radius-md) 0;
+}
+
+/* Range: in between */
+.cal__day--in-range {
+  background: var(--ai-surface-brand-soft-extra);
+  color: var(--ai-surface-brand);
+  border-radius: 0;
+  font-weight: var(--ai-font-medium);
+}
+
+.cal__day--in-range:hover {
+  background: var(--ai-surface-brand-soft);
+}
+
+/* Today inside a range */
+.cal__day--in-range.cal__day--today {
+  background: var(--ai-surface-brand-soft-extra);
+  color: var(--ai-surface-brand);
+  font-weight: var(--ai-font-bold);
+  border-radius: var(--ai-radius-md);
+}
+
+/* Disabled */
+.cal__day--disabled {
+  color: var(--ai-text-contrast);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cal__day--disabled:hover {
+  background: none;
+}
+
+/* ── Footer (quick actions) ─────────────────────────────────────────────── */
+
+.cal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--ai-spacing-3);
+  border-top: 1px solid var(--ai-border-secondary);
+  margin-top: var(--ai-spacing-2);
+}
+
+.cal__footer-text {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-secondary);
+}
+
+.cal__footer-link {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-surface-brand);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.cal__footer-link:hover {
+  color: var(--ai-surface-brand-light);
+}
+
+/* ── Dual-month layout (for range picker) ───────────────────────────────── */
+
+.cal-range {
+  display: inline-flex;
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-lg);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.cal-range .cal {
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.cal-range .cal + .cal {
+  border-left: 1px solid var(--ai-border-secondary);
+}
+
+/* ── Input + calendar composite ─────────────────────────────────────────── */
+
+.datepicker-demo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+}
+
+.datepicker-demo__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+}
+
+.datepicker-demo__label {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-primary);
+}
+
+.datepicker-demo__input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.datepicker-demo__input {
+  width: 100%;
+  min-height: var(--ai-spacing-8);
+  padding: 0 var(--ai-spacing-8) 0 var(--ai-spacing-5);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-brand);
+  border-radius: var(--ai-radius-md);
+  box-shadow: 0 0 0 1px var(--ai-surface-primary), 0 0 0 3px var(--ai-surface-brand-soft);
+}
+
+.datepicker-demo__input::placeholder {
+  color: var(--ai-text-contrast);
+}
+
+.datepicker-demo__input-wrap [data-lucide] {
+  position: absolute;
+  right: var(--ai-spacing-4);
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-brand);
+  pointer-events: none;
+}
+
+/* ── Year/month quick select ────────────────────────────────────────────── */
+
+.cal__year-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--ai-spacing-2);
+  padding: var(--ai-spacing-2) 0;
+}
+
+.cal__year-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--ai-spacing-7);
+  border: none;
+  background: none;
+  border-radius: var(--ai-radius-md);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-primary);
+  cursor: pointer;
+}
+
+.cal__year-btn:hover {
+  background: var(--ai-surface-minimal);
+}
+
+.cal__year-btn--selected {
+  background: var(--ai-surface-brand);
+  color: var(--ai-btn-primary-text);
+  font-weight: var(--ai-font-semibold);
+}
+
+.cal__year-btn--selected:hover {
+  background: var(--ai-surface-brand-light);
+  color: var(--ai-btn-primary-text);
+}
+
+.cal__year-btn--current {
+  font-weight: var(--ai-font-bold);
+  color: var(--ai-surface-brand);
+  background: var(--ai-surface-minimal);
+}

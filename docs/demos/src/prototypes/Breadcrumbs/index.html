@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Breadcrumbs · Prototype</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="Breadcrumbs.css">
+</head>
+<body>
+
+  <div class="bc-page">
+    <div>
+      <h1 class="bc-page__title">Breadcrumbs</h1>
+      <p class="bc-page__intro">Five breadcrumb compositions modelled on Flowbite's reference, built with our design tokens.</p>
+    </div>
+
+    <!-- 1. Default -->
+    <section class="bc-section">
+      <p class="bc-section__label">1 · Default</p>
+      <p class="bc-section__caption">Transparent background, chevron separators.</p>
+      <nav aria-label="Breadcrumb">
+        <ol class="crumbs">
+          <li class="crumbs__item">
+            <a href="#" class="crumbs__link">Affino</a>
+          </li>
+          <li class="crumbs__sep" aria-hidden="true"><i data-lucide="chevron-right"></i></li>
+          <li class="crumbs__item">
+            <a href="#" class="crumbs__link">Solutions</a>
+          </li>
+          <li class="crumbs__sep" aria-hidden="true"><i data-lucide="chevron-right"></i></li>
+          <li class="crumbs__item">
+            <span class="crumbs__current" aria-current="page">For Event Organisers</span>
+          </li>
+        </ol>
+      </nav>
+    </section>
+
+    <!-- 2. With home icon -->
+    <section class="bc-section">
+      <p class="bc-section__label">2 · With home icon</p>
+      <p class="bc-section__caption">First crumb uses an icon instead of a label.</p>
+      <nav aria-label="Breadcrumb">
+        <ol class="crumbs">
+          <li class="crumbs__item">
+            <a href="#" class="crumbs__link" aria-label="Home"><i data-lucide="home" aria-hidden="true"></i></a>
+          </li>
+          <li class="crumbs__sep" aria-hidden="true"><i data-lucide="chevron-right"></i></li>
+          <li class="crumbs__item">
+            <a href="#" class="crumbs__link">Insights</a>
+          </li>
+          <li class="crumbs__sep" aria-hidden="true"><i data-lucide="chevron-right"></i></li>
+          <li class="crumbs__item">
+            <a href="#" class="crumbs__link">Blog</a>
+          </li>
+          <li class="crumbs__sep" aria-hidden="true"><i data-lucide="chevron-right"></i></li>
+          <li class="crumbs__item">
+            <span class="crumbs__current" aria-current="page">Customer experience</span>
+          </li>
+        </ol>
+      </nav>
+    </section>
+
+    <!-- 3. Solid background -->
+    <section class="bc-section">
+      <p class="bc-section__label">3 · Solid background</p>
+      <p class="bc-section__caption">Filled card with border — sits as a discrete strip on dense pages.</p>
+      <nav aria-label="Breadcrumb">
+        <ol class="crumbs crumbs--solid">
+          <li class="crumbs__item">
+            <a href="#" class="crumbs__link" aria-label="Home"><i data-lucide="home" aria-hidden="true"></i></a>
+          </li>
+          <li class="crumbs__sep" aria-hidden="true"><i data-lucide="chevron-right"></i></li>
+          <li class="crumbs__item">
+            <a href="#" class="crumbs__link">Settings</a>
+          </li>
+          <li class="crumbs__sep" aria-hidden="true"><i data-lucide="chevron-right"></i></li>
+          <li class="crumbs__item">
+            <span class="crumbs__current" aria-current="page">Permissions</span>
+          </li>
+        </ol>
+      </nav>
+    </section>
+
+    <!-- 4. With dropdown -->
+    <section class="bc-section">
+      <p class="bc-section__label">4 · With dropdown segments</p>
+      <p class="bc-section__caption">Crumb segments can be dropdown triggers — click "Affino Project" or "Production database" to switch.</p>
+      <nav aria-label="Breadcrumb">
+        <ol class="crumbs">
+          <li class="crumbs__item">
+            <a href="#" class="crumbs__link" aria-label="Home"><i data-lucide="home" aria-hidden="true"></i></a>
+          </li>
+          <li class="crumbs__sep" aria-hidden="true"><i data-lucide="chevron-right"></i></li>
+          <li class="crumbs__item">
+            <div class="crumbs__dropdown" data-crumb-dropdown>
+              <button type="button" class="crumbs__dropdown-btn" data-crumb-trigger>
+                <span>Affino Project</span>
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+              <ul class="crumbs__menu" role="menu">
+                <li><button type="button" class="crumbs__menu-item crumbs__menu-item--selected" role="menuitem">Affino Project<i data-lucide="check"></i></button></li>
+                <li><button type="button" class="crumbs__menu-item" role="menuitem">Beta Sandbox</button></li>
+                <li><button type="button" class="crumbs__menu-item" role="menuitem">Internal Demo</button></li>
+                <li><button type="button" class="crumbs__menu-item" role="menuitem">Archive</button></li>
+              </ul>
+            </div>
+          </li>
+          <li class="crumbs__sep" aria-hidden="true"><i data-lucide="chevron-right"></i></li>
+          <li class="crumbs__item">
+            <div class="crumbs__dropdown" data-crumb-dropdown>
+              <button type="button" class="crumbs__dropdown-btn" data-crumb-trigger>
+                <span>Production database</span>
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+              <ul class="crumbs__menu" role="menu">
+                <li><button type="button" class="crumbs__menu-item crumbs__menu-item--selected" role="menuitem">Production database<i data-lucide="check"></i></button></li>
+                <li><button type="button" class="crumbs__menu-item" role="menuitem">Staging database</button></li>
+                <li><button type="button" class="crumbs__menu-item" role="menuitem">Read-replica</button></li>
+              </ul>
+            </div>
+          </li>
+          <li class="crumbs__sep" aria-hidden="true"><i data-lucide="chevron-right"></i></li>
+          <li class="crumbs__item">
+            <span class="crumbs__current" aria-current="page">attendees</span>
+          </li>
+        </ol>
+      </nav>
+    </section>
+
+    <!-- 5. With prev/next pager -->
+    <section class="bc-section">
+      <p class="bc-section__label">5 · With prev/next nav</p>
+      <p class="bc-section__caption">Breadcrumb on the left, paired prev/next button group on the right.</p>
+      <div class="crumbs-row">
+        <nav aria-label="Breadcrumb">
+          <ol class="crumbs">
+            <li class="crumbs__item">
+              <a href="#" class="crumbs__link" aria-label="Home"><i data-lucide="home" aria-hidden="true"></i></a>
+            </li>
+            <li class="crumbs__sep" aria-hidden="true"><i data-lucide="chevron-right"></i></li>
+            <li class="crumbs__item">
+              <a href="#" class="crumbs__link">Articles</a>
+            </li>
+            <li class="crumbs__sep" aria-hidden="true"><i data-lucide="chevron-right"></i></li>
+            <li class="crumbs__item">
+              <span class="crumbs__current" aria-current="page">Item #142</span>
+            </li>
+          </ol>
+        </nav>
+        <div class="crumbs-pager" role="group" aria-label="Sibling navigation">
+          <button type="button" class="crumbs-pager__btn" aria-label="Previous"><i data-lucide="chevron-left"></i></button>
+          <button type="button" class="crumbs-pager__btn" aria-label="Next"><i data-lucide="chevron-right"></i></button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    lucide.createIcons();
+
+    // Breadcrumb dropdown — toggle on trigger, close on outside click + selection
+    document.querySelectorAll('[data-crumb-trigger]').forEach(trigger => {
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const dropdown = trigger.closest('[data-crumb-dropdown]');
+        // Close any other open dropdowns
+        document.querySelectorAll('[data-crumb-dropdown]').forEach(d => {
+          if (d !== dropdown) d.classList.remove('crumbs__dropdown--open');
+        });
+        dropdown.classList.toggle('crumbs__dropdown--open');
+      });
+    });
+
+    // Selection — update label, mark selected, close
+    document.querySelectorAll('.crumbs__menu-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const dropdown = item.closest('[data-crumb-dropdown]');
+        const label = dropdown.querySelector('.crumbs__dropdown-btn span');
+        if (label) label.textContent = item.firstChild.textContent.trim();
+        // Mark selection: clear siblings, add to clicked
+        dropdown.querySelectorAll('.crumbs__menu-item').forEach(i => {
+          i.classList.remove('crumbs__menu-item--selected');
+          const check = i.querySelector('[data-lucide], svg');
+          if (check) check.remove();
+        });
+        item.classList.add('crumbs__menu-item--selected');
+        const checkEl = document.createElement('i');
+        checkEl.setAttribute('data-lucide', 'check');
+        item.appendChild(checkEl);
+        lucide.createIcons();
+        dropdown.classList.remove('crumbs__dropdown--open');
+      });
+    });
+
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+      document.querySelectorAll('[data-crumb-dropdown].crumbs__dropdown--open').forEach(d => {
+        if (!d.contains(e.target)) d.classList.remove('crumbs__dropdown--open');
+      });
+    });
+  </script>
+</body>
+</html>

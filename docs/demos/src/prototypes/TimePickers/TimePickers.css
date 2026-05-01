@@ -1,0 +1,257 @@
+/* Time Pickers — Flowbite-inspired gallery built with our tokens
+ * Reference: https://flowbite.com/docs/forms/timepicker/
+ */
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--ai-surface-secondary);
+  padding: var(--ai-spacing-8) var(--ai-spacing-6);
+  font-family: var(--ai-font-body);
+}
+
+.tp-page {
+  width: 100%;
+  max-width: 45rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-8);
+}
+
+.tp-page__title {
+  margin: 0;
+  font-size: var(--ai-font-fluid-2xl);
+  font-weight: var(--ai-font-bold);
+  color: var(--ai-text-primary);
+  line-height: var(--ai-leading-md);
+}
+
+.tp-page__intro {
+  margin: 0;
+  font-size: var(--ai-font-fixed-sm);
+  color: var(--ai-text-contrast);
+  line-height: var(--ai-leading-md);
+}
+
+.tp-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+}
+
+.tp-section__label {
+  margin: 0;
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-contrast);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.tp-section__caption {
+  margin: 0 0 var(--ai-spacing-2) 0;
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-secondary);
+  line-height: var(--ai-leading-sm);
+}
+
+/* ── Variant 1: Single time input with clock icon ───── */
+/* Uses .input + .input__wrap directly. Native time picker on click. */
+
+/* ── Segmented group (variants 2 + 3) ─────────────────── */
+
+.tp-group {
+  display: flex;
+  align-items: stretch;
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  overflow: hidden;
+  transition: border-color var(--ai-transition-default),
+              box-shadow var(--ai-transition-default);
+}
+
+.tp-group:focus-within {
+  border-color: var(--ai-border-brand);
+  box-shadow: 0 0 0 1px var(--ai-surface-primary),
+              0 0 0 3px var(--ai-surface-brand-soft);
+}
+
+.tp-group__input-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  padding: 0 var(--ai-spacing-5);
+  min-width: 0;
+}
+
+.tp-group__icon {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-contrast);
+  flex-shrink: 0;
+}
+
+.tp-group__input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  color: var(--ai-text-primary);
+  height: var(--ai-spacing-8);
+}
+
+.tp-group__input::placeholder {
+  color: var(--ai-text-contrast);
+}
+
+.tp-group__dropdown {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  padding: 0 var(--ai-spacing-4);
+  background: var(--ai-surface-minimal);
+  border: 0;
+  border-left: 1px solid var(--ai-border-secondary);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-primary);
+  cursor: pointer;
+  white-space: nowrap;
+  min-height: var(--ai-spacing-8);
+  transition: background-color var(--ai-transition-default);
+}
+
+.tp-group__dropdown:hover {
+  background: var(--ai-surface-secondary);
+}
+
+.tp-group__dropdown [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-contrast);
+}
+
+/* ── Variant 4: Time range (two inputs) ───────────────── */
+
+.tp-range {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--ai-spacing-5);
+}
+
+/* ── Variant 5: Range with toggle (collapsible second input) ── */
+
+.tp-toggle__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+}
+
+.tp-toggle__reveal {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  background: transparent;
+  border: 0;
+  padding: var(--ai-spacing-2) 0;
+  align-self: flex-start;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-surface-brand);
+  cursor: pointer;
+}
+
+.tp-toggle__reveal:hover {
+  color: var(--ai-btn-primary-bg-hover);
+}
+
+.tp-toggle__reveal [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+.tp-toggle__second {
+  display: none;
+}
+
+.tp-toggle--open .tp-toggle__second {
+  display: block;
+}
+
+.tp-toggle--open .tp-toggle__reveal {
+  display: none;
+}
+
+/* ── Variant 6: Time slot grid (radio buttons styled as pills) ── */
+
+.tp-slots {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--ai-spacing-3);
+}
+
+.tp-slot {
+  position: relative;
+  display: flex;
+}
+
+.tp-slot__input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+}
+
+.tp-slot__label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: var(--ai-spacing-8);
+  padding: 0 var(--ai-spacing-4);
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-primary);
+  cursor: pointer;
+  transition: background-color var(--ai-transition-default),
+              border-color var(--ai-transition-default),
+              color var(--ai-transition-default);
+}
+
+.tp-slot__input:hover ~ .tp-slot__label {
+  border-color: var(--ai-border-brand);
+}
+
+.tp-slot__input:checked ~ .tp-slot__label {
+  background: var(--ai-surface-brand);
+  border-color: var(--ai-surface-brand);
+  color: var(--ai-btn-primary-text);
+}
+
+.tp-slot__input:focus-visible ~ .tp-slot__label {
+  box-shadow: 0 0 0 1px var(--ai-surface-primary),
+              0 0 0 3px var(--ai-surface-brand-soft);
+}
+
+.tp-slot__input:disabled ~ .tp-slot__label {
+  background: var(--ai-surface-minimal);
+  border-color: var(--ai-border-secondary);
+  color: var(--ai-text-contrast);
+  cursor: not-allowed;
+  text-decoration: line-through;
+}

@@ -1,0 +1,357 @@
+/* Attendee Check-in Listing — prototype layout
+ * Source: Affino CC Event Attendees (file zXuDIeZJaQyzkBo1SdIGRN, node 2006:146571)
+ * Currently covers only the header strip above the table.
+ */
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--ai-surface-secondary);
+  padding: var(--ai-spacing-7);
+  font-family: var(--ai-font-body);
+}
+
+.listing {
+  width: 100%;
+  max-width: 80rem; /* 1280px — matches Figma content width */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+}
+
+/* ── Page heading ─────────────────────────────────────── */
+
+.listing__page-title {
+  margin: 0;
+  font-size: var(--ai-font-fluid-lg);
+  font-weight: var(--ai-font-bold);
+  color: var(--ai-text-primary);
+  line-height: var(--ai-leading-md);
+}
+
+/* ── Header strip (Frame 205) ─────────────────────────── */
+
+.listing-header {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-5);
+  padding: var(--ai-spacing-6);
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+}
+
+.listing-header__counts {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-6);
+  min-width: 0;
+}
+
+.listing-header__total {
+  margin: 0;
+  font-size: var(--ai-font-fluid-md);
+  font-weight: var(--ai-font-bold);
+  color: var(--ai-text-primary);
+  line-height: var(--ai-leading-md);
+}
+
+.listing-header__checked-in {
+  margin: 0;
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-contrast);
+  line-height: var(--ai-leading-sm);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.listing-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  flex-shrink: 0;
+}
+
+/* QR-code icon size inside Button — default btn icon size works (16px) */
+
+/* ── Table placeholder (empty state while table is not built) ── */
+
+.listing__placeholder {
+  padding: var(--ai-spacing-9) var(--ai-spacing-6);
+  background: var(--ai-surface-primary);
+  border: 1px dashed var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  text-align: center;
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-contrast);
+}
+
+/* ─────────────────────────────────────────────────────── */
+/* ── Alt A — Stat cards with progress bar ───────────── */
+/* ─────────────────────────────────────────────────────── */
+
+.alt-a-row {
+  display: flex;
+  align-items: stretch;
+  gap: var(--ai-spacing-5);
+}
+
+.alt-a-stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-2);
+  padding: var(--ai-spacing-6);
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+}
+
+.alt-a-stat__label {
+  margin: 0;
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-contrast);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.alt-a-stat__value {
+  margin: 0;
+  font-size: var(--ai-font-fluid-2xl);
+  font-weight: var(--ai-font-bold);
+  color: var(--ai-text-primary);
+  line-height: var(--ai-leading-md);
+}
+
+.alt-a-stat__meta {
+  margin: 0;
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-regular);
+  color: var(--ai-text-contrast);
+}
+
+.alt-a-stat__bar {
+  width: 100%;
+  height: var(--ai-spacing-2);
+  background: var(--ai-surface-minimal);
+  border-radius: var(--ai-radius-full);
+  overflow: hidden;
+  margin-top: var(--ai-spacing-3);
+}
+
+.alt-a-stat__fill {
+  height: 100%;
+  background: var(--ai-surface-success);
+  border-radius: var(--ai-radius-full);
+}
+
+.alt-a-cta {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.alt-a-cta .btn {
+  min-height: 100%;
+  padding: 0 var(--ai-spacing-6);
+}
+
+/* ─────────────────────────────────────────────────────── */
+/* ── Alt B — Title + inline counter, no card ────────── */
+/* ─────────────────────────────────────────────────────── */
+
+.alt-b-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--ai-spacing-6);
+  padding-bottom: var(--ai-spacing-6);
+  border-bottom: 1px solid var(--ai-border-secondary);
+}
+
+.alt-b-header__titles {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-2);
+  min-width: 0;
+}
+
+.alt-b-header__title {
+  margin: 0;
+  font-size: var(--ai-font-fluid-2xl);
+  font-weight: var(--ai-font-bold);
+  color: var(--ai-text-primary);
+  line-height: var(--ai-leading-md);
+}
+
+.alt-b-header__subtitle {
+  margin: 0;
+  font-size: var(--ai-font-fixed-sm);
+  font-weight: var(--ai-font-regular);
+  color: var(--ai-text-contrast);
+  line-height: var(--ai-leading-sm);
+}
+
+.alt-b-header__subtitle strong {
+  color: var(--ai-text-primary);
+  font-weight: var(--ai-font-semibold);
+}
+
+.alt-b-header__divider {
+  display: inline-block;
+  margin: 0 var(--ai-spacing-3);
+  color: var(--ai-border-secondary);
+}
+
+/* ─────────────────────────────────────────────────────── */
+/* ── Alt C — Hero with circular progress ring ───────── */
+/* ─────────────────────────────────────────────────────── */
+
+.alt-c-hero {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-6);
+  padding: var(--ai-spacing-6);
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+}
+
+.alt-c-ring-wrap {
+  position: relative;
+  width: var(--ai-spacing-13);
+  height: var(--ai-spacing-13);
+  flex-shrink: 0;
+}
+
+.alt-c-ring {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.alt-c-ring__track,
+.alt-c-ring__fill {
+  fill: none;
+  stroke-width: 8;
+}
+
+.alt-c-ring__track {
+  stroke: var(--ai-surface-minimal);
+}
+
+.alt-c-ring__fill {
+  stroke: var(--ai-surface-success);
+  stroke-linecap: round;
+  /* circumference of r=32 ≈ 201 — dasharray first value = 44 ≈ 22% (27/123) */
+  stroke-dasharray: 44 201;
+}
+
+.alt-c-ring__label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--ai-font-fixed-sm);
+  font-weight: var(--ai-font-bold);
+  color: var(--ai-text-primary);
+}
+
+.alt-c-hero__text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-1);
+  min-width: 0;
+}
+
+.alt-c-hero__total {
+  margin: 0;
+  font-size: var(--ai-font-fluid-xl);
+  font-weight: var(--ai-font-bold);
+  color: var(--ai-text-primary);
+  line-height: var(--ai-leading-sm);
+}
+
+.alt-c-hero__meta {
+  margin: 0;
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  color: var(--ai-text-contrast);
+  line-height: var(--ai-leading-sm);
+}
+
+.alt-c-hero__meta strong {
+  color: var(--ai-text-primary);
+  font-weight: var(--ai-font-semibold);
+}
+
+/* ─────────────────────────────────────────────────────── */
+/* ── Mobile phone-frame wrapper (for mobile alts) ────── */
+/* ─────────────────────────────────────────────────────── */
+
+body.page--mobile {
+  align-items: flex-start;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: var(--ai-spacing-6);
+}
+
+.listing--mobile {
+  width: 100%;
+  max-width: 24rem; /* 384px phone frame */
+  min-height: 44rem;
+  margin: 0;
+  padding: var(--ai-spacing-6);
+  background: var(--ai-surface-primary);
+  border-radius: var(--ai-radius-lg);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
+  gap: var(--ai-spacing-5);
+}
+
+/* ── Alt A mobile: stack stat cards vertically, full-width CTA ── */
+
+.listing--mobile .alt-a-row {
+  flex-direction: column;
+  gap: var(--ai-spacing-4);
+}
+
+.listing--mobile .alt-a-stat {
+  padding: var(--ai-spacing-5);
+}
+
+.listing--mobile .alt-a-stat__value {
+  font-size: var(--ai-font-fluid-xl);
+}
+
+.listing--mobile .alt-a-cta .btn {
+  width: 100%;
+  min-height: var(--ai-spacing-9);
+  justify-content: center;
+  padding: 0 var(--ai-spacing-5);
+}
+
+/* ── Alt B mobile: stack title/subtitle above full-width CTA ── */
+
+.listing--mobile .alt-b-header {
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--ai-spacing-5);
+  padding-bottom: var(--ai-spacing-5);
+}
+
+.listing--mobile .alt-b-header__title {
+  font-size: var(--ai-font-fluid-xl);
+}
+
+.listing--mobile .alt-b-header .btn {
+  width: 100%;
+  min-height: var(--ai-spacing-9);
+  justify-content: center;
+}

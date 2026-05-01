@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Range Sliders · Prototype</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="RangeSliders.css">
+</head>
+<body>
+
+  <div class="rng-page">
+    <div>
+      <h1 class="rng-page__title">Range Sliders</h1>
+      <p class="rng-page__intro">Five range-input compositions modelled on Flowbite's reference, built with native `&lt;input type="range"&gt;` styled to match our design tokens.</p>
+    </div>
+
+    <!-- ─── 1. Default with value display ─── -->
+    <section class="rng-section">
+      <p class="rng-section__label">1 · Default with value</p>
+      <p class="rng-section__caption">Standard 0–100 slider. Live value display updates on drag.</p>
+      <div class="rng-field">
+        <div class="rng-field__head">
+          <label class="rng-field__label" for="rng1">Volume</label>
+          <span class="rng-field__value" data-rng-value="rng1">50</span>
+        </div>
+        <div class="rng-wrap"><input id="rng1" class="rng" type="range" min="0" max="100" value="50"><span class="rng-thumb"></span></div>
+      </div>
+    </section>
+
+    <!-- ─── 2. Sizes ─── -->
+    <section class="rng-section">
+      <p class="rng-section__label">2 · Sizes</p>
+      <p class="rng-section__caption">Small (4px), default (8px), large (12px) track heights for varying visual weight.</p>
+      <div class="rng-sizes">
+        <div class="rng-field">
+          <div class="rng-field__head">
+            <label class="rng-field__label" for="rng2-sm">Small</label>
+          </div>
+          <div class="rng-wrap rng-wrap--sm"><input id="rng2-sm" class="rng rng--sm" type="range" min="0" max="100" value="25"><span class="rng-thumb"></span></div>
+        </div>
+        <div class="rng-field">
+          <div class="rng-field__head">
+            <label class="rng-field__label" for="rng2-md">Default</label>
+          </div>
+          <div class="rng-wrap"><input id="rng2-md" class="rng" type="range" min="0" max="100" value="50"><span class="rng-thumb"></span></div>
+        </div>
+        <div class="rng-field">
+          <div class="rng-field__head">
+            <label class="rng-field__label" for="rng2-lg">Large</label>
+          </div>
+          <div class="rng-wrap rng-wrap--lg"><input id="rng2-lg" class="rng rng--lg" type="range" min="0" max="100" value="75"><span class="rng-thumb"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 3. Disabled ─── -->
+    <section class="rng-section">
+      <p class="rng-section__label">3 · Disabled</p>
+      <p class="rng-section__caption">Greyed-out, no interaction. Useful when the value is contextually fixed.</p>
+      <div class="rng-field">
+        <div class="rng-field__head">
+          <label class="rng-field__label" for="rng3">Brightness</label>
+          <span class="rng-field__value" style="color: var(--ai-text-contrast)">60</span>
+        </div>
+        <div class="rng-wrap rng-wrap--disabled"><input id="rng3" class="rng" type="range" min="0" max="100" value="60" disabled><span class="rng-thumb"></span></div>
+      </div>
+    </section>
+
+    <!-- ─── 4. Steps ─── -->
+    <section class="rng-section">
+      <p class="rng-section__label">4 · Steps</p>
+      <p class="rng-section__caption">Snaps to 0.5 increments between 0–5. Tick marks indicate snap positions.</p>
+      <div class="rng-field">
+        <div class="rng-field__head">
+          <label class="rng-field__label" for="rng4">Rating</label>
+          <span class="rng-field__value" data-rng-value="rng4">2.5</span>
+        </div>
+        <div class="rng-wrap"><input id="rng4" class="rng" type="range" min="0" max="5" step="0.5" value="2.5"><span class="rng-thumb"></span></div>
+        <div class="rng-steps" aria-hidden="true">
+          <span class="rng-steps__tick"><span class="rng-steps__mark"></span><span>0</span></span>
+          <span class="rng-steps__tick"><span class="rng-steps__mark"></span><span>1</span></span>
+          <span class="rng-steps__tick"><span class="rng-steps__mark"></span><span>2</span></span>
+          <span class="rng-steps__tick"><span class="rng-steps__mark"></span><span>3</span></span>
+          <span class="rng-steps__tick"><span class="rng-steps__mark"></span><span>4</span></span>
+          <span class="rng-steps__tick"><span class="rng-steps__mark"></span><span>5</span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 5. Min/Max + milestone labels ─── -->
+    <section class="rng-section">
+      <p class="rng-section__label">5 · Labels</p>
+      <p class="rng-section__caption">Min/Max labels at extremes plus interval milestones — for budget-style filters where values benefit from named anchors.</p>
+      <div class="rng-field">
+        <div class="rng-field__head">
+          <label class="rng-field__label" for="rng5">Budget</label>
+          <span class="rng-field__value" data-rng-value="rng5" data-rng-format="currency">£1,000</span>
+        </div>
+        <div class="rng-wrap"><input id="rng5" class="rng" type="range" min="0" max="2000" step="100" value="1000"><span class="rng-thumb"></span></div>
+        <div class="rng-labels" aria-hidden="true">
+          <span class="rng-labels__min">Min (£0)</span>
+          <span class="rng-labels__milestone" style="left: 25%"><span class="rng-labels__mark"></span><span>£500</span></span>
+          <span class="rng-labels__milestone" style="left: 50%"><span class="rng-labels__mark"></span><span>£1,000</span></span>
+          <span class="rng-labels__milestone" style="left: 75%"><span class="rng-labels__mark"></span><span>£1,500</span></span>
+          <span class="rng-labels__max">Max (£2,000)</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    lucide.createIcons();
+
+    // Brand-fill effect for WebKit: paint a linear-gradient on the track from 0 → value
+    function paintFill(input) {
+      const min = Number(input.min) || 0;
+      const max = Number(input.max) || 100;
+      const value = Number(input.value);
+      const pct = ((value - min) / (max - min)) * 100;
+      const fill = getComputedStyle(input).getPropertyValue('--ai-surface-brand').trim() || '#0071d8';
+      const track = getComputedStyle(input).getPropertyValue('--ai-surface-minimal').trim() || '#f6f6f7';
+      input.style.background = `linear-gradient(to right, ${fill} 0% ${pct}%, ${track} ${pct}% 100%)`;
+    }
+
+    function positionThumb(input) {
+      const wrap = input.closest('.rng-wrap');
+      if (!wrap) return;
+      const thumb = wrap.querySelector('.rng-thumb');
+      if (!thumb) return;
+      const min = Number(input.min) || 0;
+      const max = Number(input.max) || 100;
+      const value = Number(input.value);
+      const pct = ((value - min) / (max - min)) * 100;
+      // Account for thumb width so it stays inside the track at extremes
+      const thumbW = thumb.offsetWidth || 16;
+      const trackW = input.offsetWidth || wrap.offsetWidth;
+      const offset = (thumbW / 2) - (pct / 100) * thumbW;
+      thumb.style.left = `calc(${pct}% + ${offset}px)`;
+    }
+
+    document.querySelectorAll('.rng').forEach(input => {
+      paintFill(input);
+      positionThumb(input);
+      input.addEventListener('input', () => {
+        paintFill(input);
+        positionThumb(input);
+        const valueEl = document.querySelector(`[data-rng-value="${input.id}"]`);
+        if (valueEl) {
+          const fmt = valueEl.dataset.rngFormat;
+          if (fmt === 'currency') {
+            valueEl.textContent = `£${Number(input.value).toLocaleString('en-GB')}`;
+          } else {
+            valueEl.textContent = input.value;
+          }
+        }
+      });
+    });
+
+    // Re-position on resize since percentages change
+    window.addEventListener('resize', () => {
+      document.querySelectorAll('.rng').forEach(positionThumb);
+    });
+  </script>
+</body>
+</html>

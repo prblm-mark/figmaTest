@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Attendee Check-in · Listing Header (Alt C — Progress Ring)</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="AttendeeCheckInListing.css">
+</head>
+<body>
+
+  <div class="listing">
+    <h1 class="listing__page-title">Attendee Check-in</h1>
+
+    <div class="alt-c-hero">
+      <div class="alt-c-ring-wrap">
+        <svg class="alt-c-ring" viewBox="0 0 80 80" aria-hidden="true">
+          <circle class="alt-c-ring__track" cx="40" cy="40" r="32"></circle>
+          <circle class="alt-c-ring__fill" cx="40" cy="40" r="32"></circle>
+        </svg>
+        <span class="alt-c-ring__label">22%</span>
+      </div>
+
+      <div class="alt-c-hero__text">
+        <p class="alt-c-hero__total">127 Attendees</p>
+        <p class="alt-c-hero__meta">
+          <strong>27</strong> checked in · <strong>96</strong> remaining
+        </p>
+      </div>
+
+      <div class="listing-header__actions">
+        <button type="button" class="btn btn--primary">
+          <i data-lucide="qr-code" aria-hidden="true"></i>
+          <span>Send QR Codes</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="listing__placeholder">Attendee table — to be built</div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

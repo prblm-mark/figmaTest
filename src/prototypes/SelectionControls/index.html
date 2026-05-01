@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="SelectionControls.css">
+  <title>Selection Controls — Prototype</title>
+</head>
+<body>
+
+  <div class="proto-card">
+    <h1 class="proto-card__title">Selection Controls</h1>
+
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+    <!-- RADIO BUTTONS                                                      -->
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+
+    <h2 class="proto-card__subtitle">Radio Buttons</h2>
+
+    <!-- Default -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Default</p>
+      <div class="control-group">
+        <label class="control">
+          <input class="control__input" type="radio" name="radio-default" value="1">
+          <span class="control__radio"></span>
+          <span class="control__text">
+            <span class="control__label">Email notifications</span>
+            <span class="control__helper">Receive updates via email</span>
+          </span>
+        </label>
+        <label class="control">
+          <input class="control__input" type="radio" name="radio-default" value="2">
+          <span class="control__radio"></span>
+          <span class="control__text">
+            <span class="control__label">Push notifications</span>
+            <span class="control__helper">Receive updates on your device</span>
+          </span>
+        </label>
+        <label class="control">
+          <input class="control__input" type="radio" name="radio-default" value="3">
+          <span class="control__radio"></span>
+          <span class="control__text">
+            <span class="control__label">No notifications</span>
+            <span class="control__helper">Only check manually</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Selected -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Selected</p>
+      <div class="control-group">
+        <label class="control">
+          <input class="control__input" type="radio" name="radio-selected" value="1" checked>
+          <span class="control__radio"></span>
+          <span class="control__text">
+            <span class="control__label">Monthly billing</span>
+            <span class="control__helper">Pay as you go, cancel anytime</span>
+          </span>
+        </label>
+        <label class="control">
+          <input class="control__input" type="radio" name="radio-selected" value="2">
+          <span class="control__radio"></span>
+          <span class="control__text">
+            <span class="control__label">Annual billing</span>
+            <span class="control__helper">Save 20% with yearly commitment</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Disabled -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Disabled</p>
+      <div class="control-group">
+        <label class="control control--disabled">
+          <input class="control__input" type="radio" name="radio-disabled" value="1" disabled>
+          <span class="control__radio"></span>
+          <span class="control__text">
+            <span class="control__label">Standard plan</span>
+          </span>
+        </label>
+        <label class="control control--disabled">
+          <input class="control__input" type="radio" name="radio-disabled" value="2" disabled checked>
+          <span class="control__radio"></span>
+          <span class="control__text">
+            <span class="control__label">Enterprise plan (current)</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Card-style radio -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Card selection</p>
+      <div class="control-group">
+        <label class="control control--card">
+          <input class="control__input" type="radio" name="radio-card" value="1" checked>
+          <span class="control__radio"></span>
+          <span class="control__text">
+            <span class="control__label">Starter</span>
+            <span class="control__helper">For individuals and small projects</span>
+          </span>
+        </label>
+        <label class="control control--card">
+          <input class="control__input" type="radio" name="radio-card" value="2">
+          <span class="control__radio"></span>
+          <span class="control__text">
+            <span class="control__label">Professional</span>
+            <span class="control__helper">For growing teams with advanced needs</span>
+          </span>
+        </label>
+        <label class="control control--card">
+          <input class="control__input" type="radio" name="radio-card" value="3">
+          <span class="control__radio"></span>
+          <span class="control__text">
+            <span class="control__label">Enterprise</span>
+            <span class="control__helper">Dedicated support and custom integrations</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Inline radio -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Inline</p>
+      <div class="control-group control-group--inline">
+        <label class="control">
+          <input class="control__input" type="radio" name="radio-inline" value="1" checked>
+          <span class="control__radio"></span>
+          <span class="control__text">
+            <span class="control__label">Light</span>
+          </span>
+        </label>
+        <label class="control">
+          <input class="control__input" type="radio" name="radio-inline" value="2">
+          <span class="control__radio"></span>
+          <span class="control__text">
+            <span class="control__label">Dark</span>
+          </span>
+        </label>
+        <label class="control">
+          <input class="control__input" type="radio" name="radio-inline" value="3">
+          <span class="control__radio"></span>
+          <span class="control__text">
+            <span class="control__label">System</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+    <!-- CHECKBOXES                                                         -->
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+
+    <h2 class="proto-card__subtitle">Checkboxes</h2>
+
+    <!-- Default -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Default</p>
+      <div class="control-group">
+        <label class="control">
+          <input class="control__input" type="checkbox" name="cb-default-1">
+          <span class="control__checkbox"><i data-lucide="check" aria-hidden="true"></i></span>
+          <span class="control__text">
+            <span class="control__label">Marketing emails</span>
+            <span class="control__helper">Product news and feature updates</span>
+          </span>
+        </label>
+        <label class="control">
+          <input class="control__input" type="checkbox" name="cb-default-2">
+          <span class="control__checkbox"><i data-lucide="check" aria-hidden="true"></i></span>
+          <span class="control__text">
+            <span class="control__label">Security alerts</span>
+            <span class="control__helper">Unusual sign-in activity</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Checked -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Checked</p>
+      <div class="control-group">
+        <label class="control">
+          <input class="control__input" type="checkbox" name="cb-checked-1" checked>
+          <span class="control__checkbox"><i data-lucide="check" aria-hidden="true"></i></span>
+          <span class="control__text">
+            <span class="control__label">Terms and conditions</span>
+            <span class="control__helper">I agree to the terms of service</span>
+          </span>
+        </label>
+        <label class="control">
+          <input class="control__input" type="checkbox" name="cb-checked-2" checked>
+          <span class="control__checkbox"><i data-lucide="check" aria-hidden="true"></i></span>
+          <span class="control__text">
+            <span class="control__label">Privacy policy</span>
+            <span class="control__helper">I have read the privacy policy</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Indeterminate -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Indeterminate</p>
+      <div class="control-group">
+        <label class="control">
+          <input class="control__input" type="checkbox" name="cb-indeterminate" id="cb-parent">
+          <span class="control__checkbox"><i data-lucide="minus" aria-hidden="true"></i></span>
+          <span class="control__text">
+            <span class="control__label">Select all permissions</span>
+          </span>
+        </label>
+        <label class="control" style="margin-left: var(--ai-spacing-7);">
+          <input class="control__input" type="checkbox" name="cb-child-1" checked>
+          <span class="control__checkbox"><i data-lucide="check" aria-hidden="true"></i></span>
+          <span class="control__text">
+            <span class="control__label">Read access</span>
+          </span>
+        </label>
+        <label class="control" style="margin-left: var(--ai-spacing-7);">
+          <input class="control__input" type="checkbox" name="cb-child-2">
+          <span class="control__checkbox"><i data-lucide="check" aria-hidden="true"></i></span>
+          <span class="control__text">
+            <span class="control__label">Write access</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Disabled -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Disabled</p>
+      <div class="control-group">
+        <label class="control control--disabled">
+          <input class="control__input" type="checkbox" name="cb-dis-1" disabled>
+          <span class="control__checkbox"><i data-lucide="check" aria-hidden="true"></i></span>
+          <span class="control__text">
+            <span class="control__label">Two-factor authentication</span>
+          </span>
+        </label>
+        <label class="control control--disabled">
+          <input class="control__input" type="checkbox" name="cb-dis-2" disabled checked>
+          <span class="control__checkbox"><i data-lucide="check" aria-hidden="true"></i></span>
+          <span class="control__text">
+            <span class="control__label">SSO enabled (managed by admin)</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Card-style checkbox -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Card selection</p>
+      <div class="control-group">
+        <label class="control control--card">
+          <input class="control__input" type="checkbox" name="cb-card-1" checked>
+          <span class="control__checkbox"><i data-lucide="check" aria-hidden="true"></i></span>
+          <span class="control__text">
+            <span class="control__label">Analytics</span>
+            <span class="control__helper">Track page views and engagement</span>
+          </span>
+        </label>
+        <label class="control control--card">
+          <input class="control__input" type="checkbox" name="cb-card-2">
+          <span class="control__checkbox"><i data-lucide="check" aria-hidden="true"></i></span>
+          <span class="control__text">
+            <span class="control__label">A/B Testing</span>
+            <span class="control__helper">Run experiments on content variants</span>
+          </span>
+        </label>
+        <label class="control control--card">
+          <input class="control__input" type="checkbox" name="cb-card-3" checked>
+          <span class="control__checkbox"><i data-lucide="check" aria-hidden="true"></i></span>
+          <span class="control__text">
+            <span class="control__label">Heatmaps</span>
+            <span class="control__helper">Visualise click and scroll patterns</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+    <!-- TOGGLES                                                            -->
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+
+    <h2 class="proto-card__subtitle">Toggles</h2>
+
+    <!-- Default -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Default</p>
+      <div class="control-group">
+        <label class="control control--row">
+          <input class="control__input" type="checkbox" name="toggle-1">
+          <span class="control__toggle"></span>
+          <span class="control__text">
+            <span class="control__label">Dark mode</span>
+            <span class="control__helper">Use dark colour scheme</span>
+          </span>
+        </label>
+        <label class="control control--row">
+          <input class="control__input" type="checkbox" name="toggle-2" checked>
+          <span class="control__toggle"></span>
+          <span class="control__text">
+            <span class="control__label">Auto-save</span>
+            <span class="control__helper">Save changes automatically</span>
+          </span>
+        </label>
+        <label class="control control--row">
+          <input class="control__input" type="checkbox" name="toggle-3">
+          <span class="control__toggle"></span>
+          <span class="control__text">
+            <span class="control__label">Compact view</span>
+            <span class="control__helper">Show more content with less spacing</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Large toggle -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Large</p>
+      <div class="control-group">
+        <label class="control control--row">
+          <input class="control__input" type="checkbox" name="toggle-lg-1" checked>
+          <span class="control__toggle control__toggle--lg"></span>
+          <span class="control__text">
+            <span class="control__label">Publish to live</span>
+            <span class="control__helper">Make content visible to all users</span>
+          </span>
+        </label>
+        <label class="control control--row">
+          <input class="control__input" type="checkbox" name="toggle-lg-2">
+          <span class="control__toggle control__toggle--lg"></span>
+          <span class="control__text">
+            <span class="control__label">Maintenance mode</span>
+            <span class="control__helper">Show a maintenance page to visitors</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Disabled toggles -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Disabled</p>
+      <div class="control-group">
+        <label class="control control--row control--disabled">
+          <input class="control__input" type="checkbox" name="toggle-dis-1" disabled>
+          <span class="control__toggle"></span>
+          <span class="control__text">
+            <span class="control__label">API access</span>
+            <span class="control__helper">Upgrade to enable API access</span>
+          </span>
+        </label>
+        <label class="control control--row control--disabled">
+          <input class="control__input" type="checkbox" name="toggle-dis-2" disabled checked>
+          <span class="control__toggle"></span>
+          <span class="control__text">
+            <span class="control__label">Email verification</span>
+            <span class="control__helper">Required — cannot be disabled</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Settings-style panel -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Settings panel</p>
+      <div class="control-group">
+        <label class="control control--card control--row">
+          <input class="control__input" type="checkbox" name="toggle-card-1" checked>
+          <span class="control__toggle"></span>
+          <span class="control__text">
+            <span class="control__label">Two-factor authentication</span>
+            <span class="control__helper">Add an extra layer of security to your account</span>
+          </span>
+        </label>
+        <label class="control control--card control--row">
+          <input class="control__input" type="checkbox" name="toggle-card-2">
+          <span class="control__toggle"></span>
+          <span class="control__text">
+            <span class="control__label">Activity log</span>
+            <span class="control__helper">Track all account actions for auditing</span>
+          </span>
+        </label>
+        <label class="control control--card control--row">
+          <input class="control__input" type="checkbox" name="toggle-card-3" checked>
+          <span class="control__toggle"></span>
+          <span class="control__text">
+            <span class="control__label">Session timeout</span>
+            <span class="control__helper">Automatically sign out after 30 minutes of inactivity</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    lucide.createIcons();
+    // Set indeterminate state on parent checkbox
+    document.getElementById('cb-parent').indeterminate = true;
+  </script>
+</body>
+</html>

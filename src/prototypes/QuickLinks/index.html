@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="QuickLinks.css">
+  <title>Quick Links — Prototype</title>
+</head>
+<body>
+
+  <div class="proto-card">
+    <h1 class="proto-card__title">Quick Links</h1>
+
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+    <!-- STANDALONE TAGS                                                    -->
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+
+    <h2 class="proto-card__subtitle">Tag Variants</h2>
+
+    <!-- Brand (default) -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Brand (small)</p>
+      <div class="quicklinks">
+        <a class="quicklink" href="#">
+          <i data-lucide="file-text" aria-hidden="true"></i>
+          Page views guide
+        </a>
+      </div>
+    </div>
+
+    <!-- Brand medium -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Brand (medium)</p>
+      <div class="quicklinks">
+        <a class="quicklink quicklink--md" href="#">
+          <i data-lucide="file-text" aria-hidden="true"></i>
+          Page views guide
+        </a>
+      </div>
+    </div>
+
+    <!-- Outline -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Outline</p>
+      <div class="quicklinks">
+        <a class="quicklink quicklink--outline" href="#">
+          <i data-lucide="book-open" aria-hidden="true"></i>
+          Getting started
+        </a>
+      </div>
+    </div>
+
+    <!-- Neutral -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Neutral</p>
+      <div class="quicklinks">
+        <a class="quicklink quicklink--neutral" href="#">
+          <i data-lucide="link" aria-hidden="true"></i>
+          API reference
+        </a>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+    <!-- STATES                                                             -->
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+
+    <h2 class="proto-card__subtitle">States</h2>
+
+    <!-- Brand states -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Brand — Default / Hover</p>
+      <div class="quicklinks">
+        <a class="quicklink" href="#">
+          <i data-lucide="file-text" aria-hidden="true"></i>
+          Default
+        </a>
+        <a class="quicklink quicklink--hover" href="#">
+          <i data-lucide="file-text" aria-hidden="true"></i>
+          Hover
+        </a>
+      </div>
+    </div>
+
+    <!-- Brand medium states -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Brand Medium — Default / Hover</p>
+      <div class="quicklinks">
+        <a class="quicklink quicklink--md" href="#">
+          <i data-lucide="file-text" aria-hidden="true"></i>
+          Default
+        </a>
+        <a class="quicklink quicklink--md quicklink--hover" href="#">
+          <i data-lucide="file-text" aria-hidden="true"></i>
+          Hover
+        </a>
+      </div>
+    </div>
+
+    <!-- Outline states -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Outline — Default / Hover</p>
+      <div class="quicklinks">
+        <a class="quicklink quicklink--outline" href="#">
+          <i data-lucide="book-open" aria-hidden="true"></i>
+          Default
+        </a>
+        <a class="quicklink quicklink--outline quicklink--hover" href="#">
+          <i data-lucide="book-open" aria-hidden="true"></i>
+          Hover
+        </a>
+      </div>
+    </div>
+
+    <!-- Neutral states -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Neutral — Default / Hover</p>
+      <div class="quicklinks">
+        <a class="quicklink quicklink--neutral" href="#">
+          <i data-lucide="link" aria-hidden="true"></i>
+          Default
+        </a>
+        <a class="quicklink quicklink--neutral quicklink--hover" href="#">
+          <i data-lucide="link" aria-hidden="true"></i>
+          Hover
+        </a>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+    <!-- MULTIPLE TAGS                                                      -->
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+
+    <h2 class="proto-card__subtitle">Multiple Links</h2>
+
+    <!-- Brand group -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Brand group</p>
+      <div class="quicklinks">
+        <a class="quicklink" href="#">
+          <i data-lucide="file-text" aria-hidden="true"></i>
+          Page views guide
+        </a>
+        <a class="quicklink" href="#">
+          <i data-lucide="bar-chart-2" aria-hidden="true"></i>
+          Analytics overview
+        </a>
+        <a class="quicklink" href="#">
+          <i data-lucide="settings" aria-hidden="true"></i>
+          Tracking setup
+        </a>
+      </div>
+    </div>
+
+    <!-- Neutral group -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Neutral group</p>
+      <div class="quicklinks">
+        <a class="quicklink quicklink--neutral" href="#">
+          <i data-lucide="book-open" aria-hidden="true"></i>
+          Getting started
+        </a>
+        <a class="quicklink quicklink--neutral" href="#">
+          <i data-lucide="code" aria-hidden="true"></i>
+          API reference
+        </a>
+        <a class="quicklink quicklink--neutral" href="#">
+          <i data-lucide="life-buoy" aria-hidden="true"></i>
+          Support centre
+        </a>
+        <a class="quicklink quicklink--neutral" href="#">
+          <i data-lucide="message-circle" aria-hidden="true"></i>
+          Community forum
+        </a>
+      </div>
+    </div>
+
+    <!-- Outline group (wrapping) -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Outline group (wrapping)</p>
+      <div class="quicklinks">
+        <a class="quicklink quicklink--outline" href="#">
+          <i data-lucide="file-text" aria-hidden="true"></i>
+          Page views guide
+        </a>
+        <a class="quicklink quicklink--outline" href="#">
+          <i data-lucide="users" aria-hidden="true"></i>
+          User segmentation
+        </a>
+        <a class="quicklink quicklink--outline" href="#">
+          <i data-lucide="trending-up" aria-hidden="true"></i>
+          Conversion tracking
+        </a>
+        <a class="quicklink quicklink--outline" href="#">
+          <i data-lucide="zap" aria-hidden="true"></i>
+          Real-time events
+        </a>
+        <a class="quicklink quicklink--outline" href="#">
+          <i data-lucide="pie-chart" aria-hidden="true"></i>
+          Custom dashboards
+        </a>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+    <!-- IN CHAT CONTEXT                                                    -->
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+
+    <h2 class="proto-card__subtitle">In Chat Context</h2>
+
+    <!-- Single link after response -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Single link</p>
+      <div class="chat-msg">
+        <p class="chat-msg__text">Page views track each time a user loads a page on your site. You can find the full breakdown in your Analytics dashboard under the Engagement tab.</p>
+        <div>
+          <span class="chat-msg__label">Related</span>
+          <div class="quicklinks" style="margin-top: var(--ai-spacing-3);">
+            <a class="quicklink" href="#">
+              <i data-lucide="file-text" aria-hidden="true"></i>
+              Page views guide
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Multiple links after response -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Multiple links</p>
+      <div class="chat-msg">
+        <p class="chat-msg__text">To set up conversion tracking, you'll need to define your goals in the Analytics settings, then add the tracking snippet to your confirmation pages. Here are some resources to help:</p>
+        <div>
+          <span class="chat-msg__label">Related articles</span>
+          <div class="quicklinks" style="margin-top: var(--ai-spacing-3);">
+            <a class="quicklink" href="#">
+              <i data-lucide="settings" aria-hidden="true"></i>
+              Tracking setup
+            </a>
+            <a class="quicklink" href="#">
+              <i data-lucide="trending-up" aria-hidden="true"></i>
+              Conversion tracking
+            </a>
+            <a class="quicklink" href="#">
+              <i data-lucide="code" aria-hidden="true"></i>
+              Snippet integration
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Neutral in chat -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Neutral in chat</p>
+      <div class="chat-msg">
+        <p class="chat-msg__text">I found several articles that might help with your question about user segmentation and audience targeting.</p>
+        <div>
+          <span class="chat-msg__label">Suggested reading</span>
+          <div class="quicklinks" style="margin-top: var(--ai-spacing-3);">
+            <a class="quicklink quicklink--neutral" href="#">
+              <i data-lucide="users" aria-hidden="true"></i>
+              User segmentation
+            </a>
+            <a class="quicklink quicklink--neutral" href="#">
+              <i data-lucide="target" aria-hidden="true"></i>
+              Audience targeting
+            </a>
+            <a class="quicklink quicklink--neutral" href="#">
+              <i data-lucide="filter" aria-hidden="true"></i>
+              Advanced filters
+            </a>
+            <a class="quicklink quicklink--neutral" href="#">
+              <i data-lucide="download" aria-hidden="true"></i>
+              Export segments
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

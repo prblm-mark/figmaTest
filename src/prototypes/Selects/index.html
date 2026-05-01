@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Selects · Prototype</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="Selects.css">
+</head>
+<body>
+
+  <div class="sel-page">
+    <div>
+      <h1 class="sel-page__title">Selects</h1>
+      <p class="sel-page__intro">Six select-control compositions modelled on Flowbite's reference. Triggers are buttons with explicit icon DOM elements so Figma captures both the value text and chevron correctly.</p>
+    </div>
+
+    <!-- ─── 1. Default select ─── -->
+    <section class="sel-section">
+      <p class="sel-section__label">1 · Default select</p>
+      <p class="sel-section__caption">Single-select trigger with chevron on the right. Selected value shown as text.</p>
+      <div class="sel">
+        <label class="sel__label" for="sel1">Country</label>
+        <button id="sel1" class="sel__control" type="button">
+          <span class="sel__value">United Kingdom</span>
+          <i class="sel__chevron" data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- ─── 2. Sizes ─── -->
+    <section class="sel-section">
+      <p class="sel-section__label">2 · Sizes</p>
+      <p class="sel-section__caption">Three sizes — small (32px), default (40px), large (48px). Match the Input size scale.</p>
+      <div class="sel-sizes">
+        <div class="sel">
+          <label class="sel__label" for="sel2-sm">Small</label>
+          <button id="sel2-sm" class="sel__control sel__control--sm" type="button">
+            <span class="sel__value">Option A</span>
+            <i class="sel__chevron" data-lucide="chevron-down" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="sel">
+          <label class="sel__label" for="sel2-md">Default</label>
+          <button id="sel2-md" class="sel__control" type="button">
+            <span class="sel__value">Option A</span>
+            <i class="sel__chevron" data-lucide="chevron-down" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="sel">
+          <label class="sel__label" for="sel2-lg">Large</label>
+          <button id="sel2-lg" class="sel__control sel__control--lg" type="button">
+            <span class="sel__value">Option A</span>
+            <i class="sel__chevron" data-lucide="chevron-down" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 3. Multi-select ─── -->
+    <section class="sel-section">
+      <p class="sel-section__label">3 · Multiple select</p>
+      <p class="sel-section__caption">Scrollable list — selected items highlighted with brand background. Hold ⌘ / Ctrl to add to the selection.</p>
+      <div class="sel">
+        <label class="sel__label">Tags</label>
+        <ul class="sel__list" role="listbox" aria-multiselectable="true">
+          <li class="sel__list-item" role="option">Design</li>
+          <li class="sel__list-item sel__list-item--selected" role="option" aria-selected="true">Engineering</li>
+          <li class="sel__list-item sel__list-item--selected" role="option" aria-selected="true">Product</li>
+          <li class="sel__list-item" role="option">Marketing</li>
+          <li class="sel__list-item" role="option">Sales</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ─── 4. Disabled ─── -->
+    <section class="sel-section">
+      <p class="sel-section__label">4 · Disabled</p>
+      <p class="sel-section__caption">Greyed-out, no interaction. Communicates "value locked" — used when a select is contextually fixed.</p>
+      <div class="sel">
+        <label class="sel__label" for="sel4">Plan</label>
+        <button id="sel4" class="sel__control" type="button" disabled>
+          <span class="sel__value">Enterprise</span>
+          <i class="sel__chevron" data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- ─── 5. Underline style ─── -->
+    <section class="sel-section">
+      <p class="sel-section__label">5 · Underline style</p>
+      <p class="sel-section__caption">Minimal — bottom border only, transparent background. For tight inline forms or table-cell selects.</p>
+      <div class="sel">
+        <label class="sel__label" for="sel5">Sort by</label>
+        <button id="sel5" class="sel__control sel__control--underline" type="button">
+          <span class="sel__value">Most recent</span>
+          <i class="sel__chevron" data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- ─── 6. Country picker ─── -->
+    <section class="sel-section">
+      <p class="sel-section__label">6 · Country picker</p>
+      <p class="sel-section__caption">Custom flag trigger joined to a region select — one segmented control.</p>
+      <div class="sel-country">
+        <button type="button" class="sel-country__trigger">
+          <span class="sel-country__flag" aria-hidden="true">🇬🇧</span>
+          <span>United Kingdom</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="sel-country__select">
+          <span class="sel__value">England</span>
+          <i class="sel__chevron" data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="DurationPicker.css">
+  <title>Duration Picker — Prototype</title>
+</head>
+<body>
+
+  <div class="proto-card">
+    <h1 class="proto-card__title">Duration Picker</h1>
+
+    <!-- Closed state -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Closed</p>
+      <div class="duration-picker" data-duration-picker>
+        <button class="duration-picker__trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+          <i data-lucide="clock"></i>
+          <span class="duration-picker__value">1 Year</span>
+          <i data-lucide="chevron-down" class="duration-picker__trigger-chevron"></i>
+        </button>
+        <div class="duration-picker__dropdown" role="listbox" aria-label="Duration">
+          <button class="duration-picker__option" role="option" data-value="30d">
+            <span>30 Days</span>
+            <span class="duration-picker__option-check"><i data-lucide="check"></i></span>
+          </button>
+          <button class="duration-picker__option" role="option" data-value="6m">
+            <span>6 Months</span>
+            <span class="duration-picker__option-check"><i data-lucide="check"></i></span>
+          </button>
+          <button class="duration-picker__option is-selected" role="option" aria-selected="true" data-value="1y">
+            <span>1 Year</span>
+            <span class="duration-picker__option-check"><i data-lucide="check"></i></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Open state -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Open</p>
+      <div class="duration-picker is-open" data-duration-picker>
+        <button class="duration-picker__trigger" type="button" aria-haspopup="listbox" aria-expanded="true">
+          <i data-lucide="clock"></i>
+          <span class="duration-picker__value">1 Year</span>
+          <i data-lucide="chevron-down" class="duration-picker__trigger-chevron"></i>
+        </button>
+        <div class="duration-picker__dropdown" role="listbox" aria-label="Duration">
+          <button class="duration-picker__option" role="option" data-value="30d">
+            <span>30 Days</span>
+            <span class="duration-picker__option-check"><i data-lucide="check"></i></span>
+          </button>
+          <button class="duration-picker__option" role="option" data-value="6m">
+            <span>6 Months</span>
+            <span class="duration-picker__option-check"><i data-lucide="check"></i></span>
+          </button>
+          <button class="duration-picker__option is-selected" role="option" aria-selected="true" data-value="1y">
+            <span>1 Year</span>
+            <span class="duration-picker__option-check"><i data-lucide="check"></i></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Interactive</p>
+      <div class="duration-picker" data-duration-picker>
+        <button class="duration-picker__trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+          <i data-lucide="clock"></i>
+          <span class="duration-picker__value">30 Days</span>
+          <i data-lucide="chevron-down" class="duration-picker__trigger-chevron"></i>
+        </button>
+        <div class="duration-picker__dropdown" role="listbox" aria-label="Duration">
+          <button class="duration-picker__option is-selected" role="option" aria-selected="true" data-value="30d">
+            <span>30 Days</span>
+            <span class="duration-picker__option-check"><i data-lucide="check"></i></span>
+          </button>
+          <button class="duration-picker__option" role="option" data-value="6m">
+            <span>6 Months</span>
+            <span class="duration-picker__option-check"><i data-lucide="check"></i></span>
+          </button>
+          <button class="duration-picker__option" role="option" data-value="1y">
+            <span>1 Year</span>
+            <span class="duration-picker__option-check"><i data-lucide="check"></i></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    lucide.createIcons();
+
+    document.querySelectorAll('[data-duration-picker]').forEach(picker => {
+      const trigger = picker.querySelector('.duration-picker__trigger');
+      const valueEl = picker.querySelector('.duration-picker__value');
+      const options = picker.querySelectorAll('.duration-picker__option');
+
+      trigger.addEventListener('click', () => {
+        const isOpen = picker.classList.toggle('is-open');
+        trigger.setAttribute('aria-expanded', isOpen);
+      });
+
+      options.forEach(option => {
+        option.addEventListener('click', () => {
+          options.forEach(o => {
+            o.classList.remove('is-selected');
+            o.removeAttribute('aria-selected');
+          });
+          option.classList.add('is-selected');
+          option.setAttribute('aria-selected', 'true');
+          valueEl.textContent = option.querySelector('span').textContent;
+          picker.classList.remove('is-open');
+          trigger.setAttribute('aria-expanded', 'false');
+        });
+      });
+    });
+
+    // Close on outside click
+    document.addEventListener('click', e => {
+      document.querySelectorAll('[data-duration-picker]').forEach(picker => {
+        if (!picker.contains(e.target)) {
+          picker.classList.remove('is-open');
+          picker.querySelector('.duration-picker__trigger').setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
+
+    // Keyboard: Escape to close
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('[data-duration-picker].is-open').forEach(picker => {
+          picker.classList.remove('is-open');
+          picker.querySelector('.duration-picker__trigger').setAttribute('aria-expanded', 'false');
+          picker.querySelector('.duration-picker__trigger').focus();
+        });
+      }
+    });
+  </script>
+</body>
+</html>

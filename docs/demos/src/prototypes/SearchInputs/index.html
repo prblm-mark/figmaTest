@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Search Inputs · Prototype</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Input/Input.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="SearchInputs.css">
+</head>
+<body>
+
+  <div class="search-page">
+    <div>
+      <h1 class="search-page__title">Search Inputs</h1>
+      <p class="search-page__intro">Six search-input compositions modelled on Flowbite's reference, built using Affino Design System tokens and existing Input + Button components.</p>
+    </div>
+
+    <!-- ─── 1. Basic with overlaid button ─── -->
+    <section class="search-section">
+      <p class="search-section__label">1 · Basic search · button overlaid</p>
+      <p class="search-section__caption">Standard search bar — leading icon, primary CTA tucked inside the trailing edge of the field.</p>
+      <div class="input search-overlay">
+        <div class="input__wrap">
+          <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
+          <input class="input__control" type="search" placeholder="Search">
+          <button type="submit" class="btn btn--primary btn--sm search-overlay__btn">Search</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 2. Category dropdown + search ─── -->
+    <section class="search-section">
+      <p class="search-section__label">2 · Search with category dropdown</p>
+      <p class="search-section__caption">Segmented control — category selector on the left, joined input, search button on the right.</p>
+      <div class="search-group" role="search">
+        <button type="button" class="search-group__dropdown">
+          <span>All categories</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <div class="search-group__input-wrap">
+          <input class="search-group__input" type="search" placeholder="Search Mockups, Logos, Design Templates...">
+        </div>
+        <button type="submit" class="search-group__action">
+          <i data-lucide="search" aria-hidden="true"></i>
+          <span>Search</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ─── 3. Split — input + adjacent button ─── -->
+    <section class="search-section">
+      <p class="search-section__label">3 · Split · input and button separate</p>
+      <p class="search-section__caption">Input and submit are visually separate — gap between them, both pick up the primary focus ring on interaction.</p>
+      <div class="search-split">
+        <div class="input">
+          <div class="input__wrap">
+            <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
+            <input class="input__control" type="search" placeholder="Search…">
+          </div>
+        </div>
+        <button type="submit" class="btn btn--primary">
+          <i data-lucide="search" aria-hidden="true"></i>
+          <span>Search</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ─── 4. Location search ─── -->
+    <section class="search-section">
+      <p class="search-section__label">4 · Location search</p>
+      <p class="search-section__caption">Region/flag selector + address input + submit. Useful for postcode lookups or geo-scoped queries.</p>
+      <div class="search-group" role="search">
+        <button type="button" class="search-group__dropdown">
+          <span class="search-group__flag" aria-hidden="true">🇬🇧</span>
+          <span>UK</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <div class="search-group__input-wrap">
+          <i data-lucide="map-pin" class="search-group__input-icon" aria-hidden="true"></i>
+          <input class="search-group__input" type="search" placeholder="Postcode or address">
+        </div>
+        <button type="submit" class="search-group__action">
+          <i data-lucide="search" aria-hidden="true"></i>
+          <span>Search</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ─── 5. Voice search ─── -->
+    <section class="search-section">
+      <p class="search-section__label">5 · Voice search</p>
+      <p class="search-section__caption">Leading magnifier, optional mic for voice input, primary submit. Mic acts as a tertiary action — same height as the field.</p>
+      <div class="input search-voice">
+        <div class="input__wrap">
+          <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
+          <input class="input__control" type="search" placeholder="Search">
+          <button type="button" class="search-voice__mic-btn" aria-label="Search with voice">
+            <i data-lucide="mic" aria-hidden="true"></i>
+          </button>
+          <button type="submit" class="btn btn--primary btn--sm search-voice__action">Search</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 6. Advanced — two flanking dropdowns ─── -->
+    <section class="search-section">
+      <p class="search-section__label">6 · Advanced · two flanking dropdowns</p>
+      <p class="search-section__caption">Pre-/post-input dropdowns — protocol on the left, TLD on the right. Useful for URL- or schema-style inputs.</p>
+      <div class="search-group" role="search">
+        <button type="button" class="search-group__dropdown">
+          <span>https://</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <div class="search-group__input-wrap">
+          <input class="search-group__input" type="search" placeholder="example">
+        </div>
+        <button type="button" class="search-group__dropdown search-group__dropdown--right">
+          <span>.com</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <button type="submit" class="search-group__action">
+          <i data-lucide="search" aria-hidden="true"></i>
+          <span>Search</span>
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

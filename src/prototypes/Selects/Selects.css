@@ -1,0 +1,295 @@
+/* Selects — Flowbite-inspired gallery built with our tokens
+ * Reference: https://flowbite.com/docs/forms/select/
+ */
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--ai-surface-secondary);
+  padding: var(--ai-spacing-8) var(--ai-spacing-6);
+  font-family: var(--ai-font-body);
+}
+
+.sel-page {
+  width: 100%;
+  max-width: 45rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-8);
+}
+
+.sel-page__title {
+  margin: 0;
+  font-size: var(--ai-font-fluid-2xl);
+  font-weight: var(--ai-font-bold);
+  color: var(--ai-text-primary);
+  line-height: var(--ai-leading-md);
+}
+
+.sel-page__intro {
+  margin: 0;
+  font-size: var(--ai-font-fixed-sm);
+  color: var(--ai-text-contrast);
+  line-height: var(--ai-leading-md);
+}
+
+.sel-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+}
+
+.sel-section__label {
+  margin: 0;
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-contrast);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.sel-section__caption {
+  margin: 0 0 var(--ai-spacing-2) 0;
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-secondary);
+  line-height: var(--ai-leading-sm);
+}
+
+/* ── Select wrapper (mirrors .input structure) ──────── */
+
+.sel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+}
+
+.sel__label {
+  display: block;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-primary);
+}
+
+/* Trigger styled to match .input__wrap */
+.sel__control {
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ai-spacing-3);
+  width: 100%;
+  min-height: var(--ai-spacing-8);
+  padding: 0 var(--ai-spacing-4) 0 var(--ai-spacing-5);
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color var(--ai-transition-default),
+              box-shadow var(--ai-transition-default);
+}
+
+.sel__value {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sel__chevron {
+  flex-shrink: 0;
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-contrast);
+}
+
+.sel__control:hover {
+  border-color: var(--ai-border-brand);
+}
+
+.sel__control:focus-visible {
+  border-color: var(--ai-border-brand);
+  box-shadow: 0 0 0 1px var(--ai-surface-primary),
+              0 0 0 3px var(--ai-surface-brand-soft);
+  outline: none;
+}
+
+/* ── Trigger as a styled button (so Figma capture sees real text) ─ */
+
+.sel__control {
+  text-align: left;
+}
+
+.sel__control--placeholder {
+  color: var(--ai-text-contrast);
+}
+
+/* ── Multi-select list (renders as div, not native <select>) ─── */
+
+.sel__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: var(--ai-spacing-2);
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  list-style: none;
+  margin: 0;
+}
+
+.sel__list-item {
+  padding: var(--ai-spacing-2) var(--ai-spacing-3);
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-primary);
+  border-radius: var(--ai-radius-sm);
+  cursor: pointer;
+  transition: background-color var(--ai-transition-default);
+}
+
+.sel__list-item:hover {
+  background: var(--ai-surface-minimal);
+}
+
+.sel__list-item--selected {
+  background: var(--ai-surface-brand);
+  color: var(--ai-btn-primary-text);
+  font-weight: var(--ai-font-medium);
+}
+
+.sel__list-item--selected:hover {
+  background: var(--ai-btn-primary-bg-hover);
+}
+
+/* ── Sizes ───────────────────────────────────────────── */
+
+.sel__control--sm {
+  min-height: var(--ai-spacing-7);
+  padding: 0 var(--ai-spacing-3) 0 var(--ai-spacing-4);
+  font-size: var(--ai-font-fixed-xxs);
+}
+
+.sel__control--lg {
+  min-height: var(--ai-spacing-9);
+  padding: 0 var(--ai-spacing-5);
+  font-size: var(--ai-font-fixed-sm);
+}
+
+/* ── Disabled ────────────────────────────────────────── */
+
+.sel__control:disabled {
+  background-color: var(--ai-surface-minimal);
+  border-color: var(--ai-border-secondary);
+  color: var(--ai-text-contrast);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* ── Underline style ─────────────────────────────────── */
+
+.sel__control--underline {
+  background-color: transparent;
+  border: 0;
+  border-bottom: 2px solid var(--ai-border-secondary);
+  border-radius: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.sel__control--underline:hover {
+  border-bottom-color: var(--ai-border-brand);
+}
+
+.sel__control--underline:focus-visible {
+  border-bottom-color: var(--ai-border-brand);
+  box-shadow: none;
+}
+
+/* ── Sizes row layout (variant 2) ────────────────────── */
+
+.sel-sizes {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--ai-spacing-5);
+}
+
+/* ── Country picker (variant 6) ──────────────────────── */
+
+.sel-country {
+  display: flex;
+  align-items: stretch;
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  overflow: hidden;
+  transition: border-color var(--ai-transition-default),
+              box-shadow var(--ai-transition-default);
+}
+
+.sel-country:focus-within {
+  border-color: var(--ai-border-brand);
+  box-shadow: 0 0 0 1px var(--ai-surface-primary),
+              0 0 0 3px var(--ai-surface-brand-soft);
+}
+
+.sel-country__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  padding: 0 var(--ai-spacing-4);
+  background: var(--ai-surface-minimal);
+  border: 0;
+  border-right: 1px solid var(--ai-border-secondary);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-primary);
+  cursor: pointer;
+  white-space: nowrap;
+  min-height: var(--ai-spacing-8);
+  transition: background-color var(--ai-transition-default);
+}
+
+.sel-country__trigger:hover {
+  background: var(--ai-surface-secondary);
+}
+
+.sel-country__flag {
+  font-size: var(--ai-font-fixed-md);
+  line-height: 1;
+}
+
+.sel-country__trigger [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-contrast);
+}
+
+.sel-country__select {
+  flex: 1;
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ai-spacing-3);
+  border: 0;
+  outline: none;
+  background-color: transparent;
+  padding: 0 var(--ai-spacing-4) 0 var(--ai-spacing-5);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-primary);
+  cursor: pointer;
+  text-align: left;
+}

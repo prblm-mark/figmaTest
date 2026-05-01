@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Attendee Check-in · Listing Header (Alt A — Stat Cards)</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="AttendeeCheckInListing.css">
+</head>
+<body>
+
+  <div class="listing">
+    <h1 class="listing__page-title">Attendee Check-in</h1>
+
+    <div class="alt-a-row">
+      <div class="alt-a-stat">
+        <p class="alt-a-stat__label">Total Attendees</p>
+        <p class="alt-a-stat__value">127</p>
+        <p class="alt-a-stat__meta">Registered for this event</p>
+      </div>
+      <div class="alt-a-stat">
+        <p class="alt-a-stat__label">Checked In</p>
+        <p class="alt-a-stat__value">27 <span style="font-weight: var(--ai-font-regular); font-size: var(--ai-font-fluid-md); color: var(--ai-text-contrast);">/ 123</span></p>
+        <div class="alt-a-stat__bar" role="progressbar" aria-valuenow="22" aria-valuemin="0" aria-valuemax="100" aria-label="Check-in progress">
+          <div class="alt-a-stat__fill" style="width: 22%"></div>
+        </div>
+      </div>
+      <div class="alt-a-cta">
+        <button type="button" class="btn btn--primary">
+          <i data-lucide="qr-code" aria-hidden="true"></i>
+          <span>Send QR Codes</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="listing__placeholder">Attendee table — to be built</div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

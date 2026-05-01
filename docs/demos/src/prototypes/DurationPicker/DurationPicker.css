@@ -1,0 +1,175 @@
+/* DurationPicker prototype — all visual values use --ai-* tokens */
+
+/* ── Page layout ────────────────────────────────────── */
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ai-surface-secondary);
+  padding: var(--ai-spacing-6);
+}
+
+.proto-card {
+  background: var(--ai-surface-primary);
+  border-radius: var(--ai-radius-lg);
+  padding: var(--ai-spacing-7);
+  width: var(--ai-size-6);
+  max-width: 100%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.proto-card__title {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fluid-xl);
+  font-weight: var(--ai-font-bold);
+  line-height: var(--ai-leading-lg);
+  color: var(--ai-text-primary);
+  margin: 0 0 var(--ai-spacing-6) 0;
+}
+
+.proto-card__section {
+  margin-bottom: var(--ai-spacing-6);
+}
+
+.proto-card__section:last-child {
+  margin-bottom: 0;
+}
+
+.proto-card__label {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 var(--ai-spacing-4) 0;
+}
+
+/* ── Duration picker ────────────────────────────────── */
+
+.duration-picker {
+  position: relative;
+  display: inline-flex;
+}
+
+/* ── Trigger button ─────────────────────────────────── */
+
+.duration-picker__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  padding: var(--ai-spacing-3) var(--ai-spacing-4);
+  background: var(--ai-surface-minimal);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-full);
+  cursor: pointer;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-primary);
+  transition: background-color var(--ai-transition-default),
+              border-color var(--ai-transition-default);
+}
+
+.duration-picker__trigger:hover {
+  background: var(--ai-surface-secondary);
+}
+
+.duration-picker__trigger:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--ai-surface-primary), 0 0 0 3px var(--ai-surface-brand-soft);
+}
+
+.duration-picker__trigger [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-secondary);
+  flex-shrink: 0;
+}
+
+.duration-picker__trigger-chevron {
+  transition: transform var(--ai-transition-default);
+}
+
+.duration-picker.is-open .duration-picker__trigger-chevron {
+  transform: rotate(180deg);
+}
+
+/* ── Dropdown ───────────────────────────────────────── */
+
+.duration-picker__dropdown {
+  position: absolute;
+  top: calc(100% + var(--ai-spacing-2));
+  left: 0;
+  min-width: 100%;
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
+  padding: var(--ai-spacing-2) 0;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition: opacity var(--ai-transition-default),
+              transform var(--ai-transition-default);
+}
+
+.duration-picker.is-open .duration-picker__dropdown {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* ── Option ─────────────────────────────────────────── */
+
+.duration-picker__option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ai-spacing-5);
+  width: 100%;
+  padding: var(--ai-spacing-3) var(--ai-spacing-4);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-primary);
+  text-align: left;
+  white-space: nowrap;
+  transition: background-color var(--ai-transition-default);
+}
+
+.duration-picker__option:hover {
+  background: var(--ai-surface-minimal);
+}
+
+.duration-picker__option:focus-visible {
+  outline: none;
+  background: var(--ai-surface-minimal);
+}
+
+.duration-picker__option.is-selected {
+  font-weight: var(--ai-font-medium);
+}
+
+.duration-picker__option-check {
+  color: var(--ai-icon-brand);
+  opacity: 0;
+}
+
+.duration-picker__option.is-selected .duration-picker__option-check {
+  opacity: 1;
+}
+
+.duration-picker__option-check [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}

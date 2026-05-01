@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="Calendar.css">
+  <title>Calendar — Prototype</title>
+</head>
+<body>
+
+  <div class="proto-card">
+    <h1 class="proto-card__title">Calendar</h1>
+
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+    <!-- SINGLE DATE                                                        -->
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+
+    <h2 class="proto-card__subtitle">Single Date</h2>
+
+    <!-- With input field (active state) -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Active (with input)</p>
+      <div class="datepicker-demo">
+        <div class="datepicker-demo__field">
+          <label class="datepicker-demo__label">Start date</label>
+          <div class="datepicker-demo__input-wrap">
+            <input class="datepicker-demo__input" type="text" value="11 Mar 2026" readonly>
+            <i data-lucide="calendar" aria-hidden="true"></i>
+          </div>
+        </div>
+        <div class="cal">
+          <div class="cal__header">
+            <span class="cal__month">March 2026</span>
+            <div class="cal__nav">
+              <button class="cal__nav-btn" type="button" aria-label="Previous month">
+                <i data-lucide="chevron-left" aria-hidden="true"></i>
+              </button>
+              <button class="cal__nav-btn" type="button" aria-label="Next month">
+                <i data-lucide="chevron-right" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <div class="cal__weekdays">
+            <span class="cal__weekday">Mo</span>
+            <span class="cal__weekday">Tu</span>
+            <span class="cal__weekday">We</span>
+            <span class="cal__weekday">Th</span>
+            <span class="cal__weekday">Fr</span>
+            <span class="cal__weekday">Sa</span>
+            <span class="cal__weekday">Su</span>
+          </div>
+          <div class="cal__days">
+            <!-- Prev month -->
+            <button class="cal__day cal__day--muted" type="button">23</button>
+            <button class="cal__day cal__day--muted" type="button">24</button>
+            <button class="cal__day cal__day--muted" type="button">25</button>
+            <button class="cal__day cal__day--muted" type="button">26</button>
+            <button class="cal__day cal__day--muted" type="button">27</button>
+            <button class="cal__day cal__day--muted" type="button">28</button>
+            <!-- March -->
+            <button class="cal__day" type="button">1</button>
+            <button class="cal__day" type="button">2</button>
+            <button class="cal__day" type="button">3</button>
+            <button class="cal__day" type="button">4</button>
+            <button class="cal__day" type="button">5</button>
+            <button class="cal__day" type="button">6</button>
+            <button class="cal__day" type="button">7</button>
+            <button class="cal__day" type="button">8</button>
+            <button class="cal__day" type="button">9</button>
+            <button class="cal__day" type="button">10</button>
+            <button class="cal__day cal__day--selected" type="button">11</button>
+            <button class="cal__day" type="button">12</button>
+            <button class="cal__day" type="button">13</button>
+            <button class="cal__day" type="button">14</button>
+            <button class="cal__day" type="button">15</button>
+            <button class="cal__day" type="button">16</button>
+            <button class="cal__day" type="button">17</button>
+            <button class="cal__day" type="button">18</button>
+            <button class="cal__day" type="button">19</button>
+            <button class="cal__day" type="button">20</button>
+            <button class="cal__day" type="button">21</button>
+            <button class="cal__day" type="button">22</button>
+            <button class="cal__day" type="button">23</button>
+            <button class="cal__day" type="button">24</button>
+            <button class="cal__day" type="button">25</button>
+            <button class="cal__day" type="button">26</button>
+            <button class="cal__day" type="button">27</button>
+            <button class="cal__day" type="button">28</button>
+            <button class="cal__day" type="button">29</button>
+            <button class="cal__day" type="button">30</button>
+            <button class="cal__day" type="button">31</button>
+            <!-- Next month -->
+            <button class="cal__day cal__day--muted" type="button">1</button>
+            <button class="cal__day cal__day--muted" type="button">2</button>
+            <button class="cal__day cal__day--muted" type="button">3</button>
+            <button class="cal__day cal__day--muted" type="button">4</button>
+            <button class="cal__day cal__day--muted" type="button">5</button>
+          </div>
+          <div class="cal__footer">
+            <span class="cal__footer-text">Selected: 11 Mar 2026</span>
+            <button class="cal__footer-link" type="button">Today</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Standalone with today highlight -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">No selection (today highlighted)</p>
+      <div class="cal">
+        <div class="cal__header">
+          <span class="cal__month">March 2026</span>
+          <div class="cal__nav">
+            <button class="cal__nav-btn" type="button" aria-label="Previous month">
+              <i data-lucide="chevron-left" aria-hidden="true"></i>
+            </button>
+            <button class="cal__nav-btn" type="button" aria-label="Next month">
+              <i data-lucide="chevron-right" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <div class="cal__weekdays">
+          <span class="cal__weekday">Mo</span>
+          <span class="cal__weekday">Tu</span>
+          <span class="cal__weekday">We</span>
+          <span class="cal__weekday">Th</span>
+          <span class="cal__weekday">Fr</span>
+          <span class="cal__weekday">Sa</span>
+          <span class="cal__weekday">Su</span>
+        </div>
+        <div class="cal__days">
+          <button class="cal__day cal__day--muted" type="button">23</button>
+          <button class="cal__day cal__day--muted" type="button">24</button>
+          <button class="cal__day cal__day--muted" type="button">25</button>
+          <button class="cal__day cal__day--muted" type="button">26</button>
+          <button class="cal__day cal__day--muted" type="button">27</button>
+          <button class="cal__day cal__day--muted" type="button">28</button>
+          <button class="cal__day" type="button">1</button>
+          <button class="cal__day" type="button">2</button>
+          <button class="cal__day" type="button">3</button>
+          <button class="cal__day" type="button">4</button>
+          <button class="cal__day" type="button">5</button>
+          <button class="cal__day" type="button">6</button>
+          <button class="cal__day" type="button">7</button>
+          <button class="cal__day" type="button">8</button>
+          <button class="cal__day" type="button">9</button>
+          <button class="cal__day" type="button">10</button>
+          <button class="cal__day cal__day--today" type="button">11</button>
+          <button class="cal__day" type="button">12</button>
+          <button class="cal__day" type="button">13</button>
+          <button class="cal__day" type="button">14</button>
+          <button class="cal__day" type="button">15</button>
+          <button class="cal__day" type="button">16</button>
+          <button class="cal__day" type="button">17</button>
+          <button class="cal__day" type="button">18</button>
+          <button class="cal__day" type="button">19</button>
+          <button class="cal__day" type="button">20</button>
+          <button class="cal__day" type="button">21</button>
+          <button class="cal__day" type="button">22</button>
+          <button class="cal__day" type="button">23</button>
+          <button class="cal__day" type="button">24</button>
+          <button class="cal__day" type="button">25</button>
+          <button class="cal__day" type="button">26</button>
+          <button class="cal__day" type="button">27</button>
+          <button class="cal__day" type="button">28</button>
+          <button class="cal__day" type="button">29</button>
+          <button class="cal__day" type="button">30</button>
+          <button class="cal__day" type="button">31</button>
+          <button class="cal__day cal__day--muted" type="button">1</button>
+          <button class="cal__day cal__day--muted" type="button">2</button>
+          <button class="cal__day cal__day--muted" type="button">3</button>
+          <button class="cal__day cal__day--muted" type="button">4</button>
+          <button class="cal__day cal__day--muted" type="button">5</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- With disabled days -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">With disabled past dates</p>
+      <div class="cal">
+        <div class="cal__header">
+          <span class="cal__month">March 2026</span>
+          <div class="cal__nav">
+            <button class="cal__nav-btn" type="button" aria-label="Previous month">
+              <i data-lucide="chevron-left" aria-hidden="true"></i>
+            </button>
+            <button class="cal__nav-btn" type="button" aria-label="Next month">
+              <i data-lucide="chevron-right" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <div class="cal__weekdays">
+          <span class="cal__weekday">Mo</span>
+          <span class="cal__weekday">Tu</span>
+          <span class="cal__weekday">We</span>
+          <span class="cal__weekday">Th</span>
+          <span class="cal__weekday">Fr</span>
+          <span class="cal__weekday">Sa</span>
+          <span class="cal__weekday">Su</span>
+        </div>
+        <div class="cal__days">
+          <button class="cal__day cal__day--muted cal__day--disabled" type="button" disabled>23</button>
+          <button class="cal__day cal__day--muted cal__day--disabled" type="button" disabled>24</button>
+          <button class="cal__day cal__day--muted cal__day--disabled" type="button" disabled>25</button>
+          <button class="cal__day cal__day--muted cal__day--disabled" type="button" disabled>26</button>
+          <button class="cal__day cal__day--muted cal__day--disabled" type="button" disabled>27</button>
+          <button class="cal__day cal__day--muted cal__day--disabled" type="button" disabled>28</button>
+          <button class="cal__day cal__day--disabled" type="button" disabled>1</button>
+          <button class="cal__day cal__day--disabled" type="button" disabled>2</button>
+          <button class="cal__day cal__day--disabled" type="button" disabled>3</button>
+          <button class="cal__day cal__day--disabled" type="button" disabled>4</button>
+          <button class="cal__day cal__day--disabled" type="button" disabled>5</button>
+          <button class="cal__day cal__day--disabled" type="button" disabled>6</button>
+          <button class="cal__day cal__day--disabled" type="button" disabled>7</button>
+          <button class="cal__day cal__day--disabled" type="button" disabled>8</button>
+          <button class="cal__day cal__day--disabled" type="button" disabled>9</button>
+          <button class="cal__day cal__day--disabled" type="button" disabled>10</button>
+          <button class="cal__day cal__day--today" type="button">11</button>
+          <button class="cal__day" type="button">12</button>
+          <button class="cal__day" type="button">13</button>
+          <button class="cal__day" type="button">14</button>
+          <button class="cal__day cal__day--selected" type="button">15</button>
+          <button class="cal__day" type="button">16</button>
+          <button class="cal__day" type="button">17</button>
+          <button class="cal__day" type="button">18</button>
+          <button class="cal__day" type="button">19</button>
+          <button class="cal__day" type="button">20</button>
+          <button class="cal__day" type="button">21</button>
+          <button class="cal__day" type="button">22</button>
+          <button class="cal__day" type="button">23</button>
+          <button class="cal__day" type="button">24</button>
+          <button class="cal__day" type="button">25</button>
+          <button class="cal__day" type="button">26</button>
+          <button class="cal__day" type="button">27</button>
+          <button class="cal__day" type="button">28</button>
+          <button class="cal__day" type="button">29</button>
+          <button class="cal__day" type="button">30</button>
+          <button class="cal__day" type="button">31</button>
+          <button class="cal__day cal__day--muted" type="button">1</button>
+          <button class="cal__day cal__day--muted" type="button">2</button>
+          <button class="cal__day cal__day--muted" type="button">3</button>
+          <button class="cal__day cal__day--muted" type="button">4</button>
+          <button class="cal__day cal__day--muted" type="button">5</button>
+        </div>
+        <div class="cal__footer">
+          <span class="cal__footer-text">Selected: 15 Mar 2026</span>
+          <button class="cal__footer-link" type="button">Today</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+    <!-- DATE RANGE                                                         -->
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+
+    <h2 class="proto-card__subtitle">Date Range</h2>
+
+    <!-- Single-month range -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Single month range</p>
+      <div class="cal">
+        <div class="cal__header">
+          <span class="cal__month">March 2026</span>
+          <div class="cal__nav">
+            <button class="cal__nav-btn" type="button" aria-label="Previous month">
+              <i data-lucide="chevron-left" aria-hidden="true"></i>
+            </button>
+            <button class="cal__nav-btn" type="button" aria-label="Next month">
+              <i data-lucide="chevron-right" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <div class="cal__weekdays">
+          <span class="cal__weekday">Mo</span>
+          <span class="cal__weekday">Tu</span>
+          <span class="cal__weekday">We</span>
+          <span class="cal__weekday">Th</span>
+          <span class="cal__weekday">Fr</span>
+          <span class="cal__weekday">Sa</span>
+          <span class="cal__weekday">Su</span>
+        </div>
+        <div class="cal__days">
+          <button class="cal__day cal__day--muted" type="button">23</button>
+          <button class="cal__day cal__day--muted" type="button">24</button>
+          <button class="cal__day cal__day--muted" type="button">25</button>
+          <button class="cal__day cal__day--muted" type="button">26</button>
+          <button class="cal__day cal__day--muted" type="button">27</button>
+          <button class="cal__day cal__day--muted" type="button">28</button>
+          <button class="cal__day" type="button">1</button>
+          <button class="cal__day" type="button">2</button>
+          <button class="cal__day" type="button">3</button>
+          <button class="cal__day" type="button">4</button>
+          <button class="cal__day" type="button">5</button>
+          <button class="cal__day" type="button">6</button>
+          <button class="cal__day" type="button">7</button>
+          <button class="cal__day" type="button">8</button>
+          <button class="cal__day cal__day--range-start" type="button">9</button>
+          <button class="cal__day cal__day--in-range" type="button">10</button>
+          <button class="cal__day cal__day--in-range cal__day--today" type="button">11</button>
+          <button class="cal__day cal__day--in-range" type="button">12</button>
+          <button class="cal__day cal__day--in-range" type="button">13</button>
+          <button class="cal__day cal__day--in-range" type="button">14</button>
+          <button class="cal__day cal__day--in-range" type="button">15</button>
+          <button class="cal__day cal__day--in-range" type="button">16</button>
+          <button class="cal__day cal__day--in-range" type="button">17</button>
+          <button class="cal__day cal__day--in-range" type="button">18</button>
+          <button class="cal__day cal__day--in-range" type="button">19</button>
+          <button class="cal__day cal__day--in-range" type="button">20</button>
+          <button class="cal__day cal__day--range-end" type="button">21</button>
+          <button class="cal__day" type="button">22</button>
+          <button class="cal__day" type="button">23</button>
+          <button class="cal__day" type="button">24</button>
+          <button class="cal__day" type="button">25</button>
+          <button class="cal__day" type="button">26</button>
+          <button class="cal__day" type="button">27</button>
+          <button class="cal__day" type="button">28</button>
+          <button class="cal__day" type="button">29</button>
+          <button class="cal__day" type="button">30</button>
+          <button class="cal__day" type="button">31</button>
+          <button class="cal__day cal__day--muted" type="button">1</button>
+          <button class="cal__day cal__day--muted" type="button">2</button>
+          <button class="cal__day cal__day--muted" type="button">3</button>
+          <button class="cal__day cal__day--muted" type="button">4</button>
+          <button class="cal__day cal__day--muted" type="button">5</button>
+        </div>
+        <div class="cal__footer">
+          <span class="cal__footer-text">9 Mar — 21 Mar 2026</span>
+          <button class="cal__footer-link" type="button">Today</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="proto-card__section">
+      <p class="proto-card__label">Dual month range</p>
+      <div class="cal-range">
+        <!-- March -->
+        <div class="cal">
+          <div class="cal__header">
+            <span class="cal__month">March 2026</span>
+            <div class="cal__nav">
+              <button class="cal__nav-btn" type="button" aria-label="Previous month">
+                <i data-lucide="chevron-left" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <div class="cal__weekdays">
+            <span class="cal__weekday">Mo</span>
+            <span class="cal__weekday">Tu</span>
+            <span class="cal__weekday">We</span>
+            <span class="cal__weekday">Th</span>
+            <span class="cal__weekday">Fr</span>
+            <span class="cal__weekday">Sa</span>
+            <span class="cal__weekday">Su</span>
+          </div>
+          <div class="cal__days">
+            <button class="cal__day cal__day--muted" type="button">23</button>
+            <button class="cal__day cal__day--muted" type="button">24</button>
+            <button class="cal__day cal__day--muted" type="button">25</button>
+            <button class="cal__day cal__day--muted" type="button">26</button>
+            <button class="cal__day cal__day--muted" type="button">27</button>
+            <button class="cal__day cal__day--muted" type="button">28</button>
+            <button class="cal__day" type="button">1</button>
+            <button class="cal__day" type="button">2</button>
+            <button class="cal__day" type="button">3</button>
+            <button class="cal__day" type="button">4</button>
+            <button class="cal__day" type="button">5</button>
+            <button class="cal__day" type="button">6</button>
+            <button class="cal__day" type="button">7</button>
+            <button class="cal__day" type="button">8</button>
+            <button class="cal__day" type="button">9</button>
+            <button class="cal__day" type="button">10</button>
+            <button class="cal__day" type="button">11</button>
+            <button class="cal__day" type="button">12</button>
+            <button class="cal__day" type="button">13</button>
+            <button class="cal__day" type="button">14</button>
+            <button class="cal__day" type="button">15</button>
+            <button class="cal__day cal__day--range-start" type="button">16</button>
+            <button class="cal__day cal__day--in-range" type="button">17</button>
+            <button class="cal__day cal__day--in-range" type="button">18</button>
+            <button class="cal__day cal__day--in-range" type="button">19</button>
+            <button class="cal__day cal__day--in-range" type="button">20</button>
+            <button class="cal__day cal__day--in-range" type="button">21</button>
+            <button class="cal__day cal__day--in-range" type="button">22</button>
+            <button class="cal__day cal__day--in-range" type="button">23</button>
+            <button class="cal__day cal__day--in-range" type="button">24</button>
+            <button class="cal__day cal__day--in-range" type="button">25</button>
+            <button class="cal__day cal__day--in-range" type="button">26</button>
+            <button class="cal__day cal__day--in-range" type="button">27</button>
+            <button class="cal__day cal__day--in-range" type="button">28</button>
+            <button class="cal__day cal__day--in-range" type="button">29</button>
+            <button class="cal__day cal__day--in-range" type="button">30</button>
+            <button class="cal__day cal__day--in-range" type="button">31</button>
+            <button class="cal__day cal__day--muted cal__day--in-range" type="button">1</button>
+            <button class="cal__day cal__day--muted cal__day--in-range" type="button">2</button>
+            <button class="cal__day cal__day--muted cal__day--in-range" type="button">3</button>
+            <button class="cal__day cal__day--muted cal__day--in-range" type="button">4</button>
+            <button class="cal__day cal__day--muted cal__day--in-range" type="button">5</button>
+          </div>
+        </div>
+        <!-- April -->
+        <div class="cal">
+          <div class="cal__header">
+            <span class="cal__month">April 2026</span>
+            <div class="cal__nav">
+              <button class="cal__nav-btn" type="button" aria-label="Next month">
+                <i data-lucide="chevron-right" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <div class="cal__weekdays">
+            <span class="cal__weekday">Mo</span>
+            <span class="cal__weekday">Tu</span>
+            <span class="cal__weekday">We</span>
+            <span class="cal__weekday">Th</span>
+            <span class="cal__weekday">Fr</span>
+            <span class="cal__weekday">Sa</span>
+            <span class="cal__weekday">Su</span>
+          </div>
+          <div class="cal__days">
+            <button class="cal__day cal__day--muted cal__day--in-range" type="button">30</button>
+            <button class="cal__day cal__day--muted cal__day--in-range" type="button">31</button>
+            <button class="cal__day cal__day--in-range" type="button">1</button>
+            <button class="cal__day cal__day--in-range" type="button">2</button>
+            <button class="cal__day cal__day--in-range" type="button">3</button>
+            <button class="cal__day cal__day--in-range" type="button">4</button>
+            <button class="cal__day cal__day--in-range" type="button">5</button>
+            <button class="cal__day cal__day--in-range" type="button">6</button>
+            <button class="cal__day cal__day--in-range" type="button">7</button>
+            <button class="cal__day cal__day--in-range" type="button">8</button>
+            <button class="cal__day cal__day--in-range" type="button">9</button>
+            <button class="cal__day cal__day--range-end" type="button">10</button>
+            <button class="cal__day" type="button">11</button>
+            <button class="cal__day" type="button">12</button>
+            <button class="cal__day" type="button">13</button>
+            <button class="cal__day" type="button">14</button>
+            <button class="cal__day" type="button">15</button>
+            <button class="cal__day" type="button">16</button>
+            <button class="cal__day" type="button">17</button>
+            <button class="cal__day" type="button">18</button>
+            <button class="cal__day" type="button">19</button>
+            <button class="cal__day" type="button">20</button>
+            <button class="cal__day" type="button">21</button>
+            <button class="cal__day" type="button">22</button>
+            <button class="cal__day" type="button">23</button>
+            <button class="cal__day" type="button">24</button>
+            <button class="cal__day" type="button">25</button>
+            <button class="cal__day" type="button">26</button>
+            <button class="cal__day" type="button">27</button>
+            <button class="cal__day" type="button">28</button>
+            <button class="cal__day" type="button">29</button>
+            <button class="cal__day" type="button">30</button>
+            <button class="cal__day cal__day--muted" type="button">1</button>
+            <button class="cal__day cal__day--muted" type="button">2</button>
+            <button class="cal__day cal__day--muted" type="button">3</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+    <!-- MONTH SELECT                                                       -->
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+
+    <h2 class="proto-card__subtitle">Month Select</h2>
+
+    <div class="proto-card__section">
+      <p class="proto-card__label">Month picker view</p>
+      <div class="cal">
+        <div class="cal__header">
+          <span class="cal__month">2026</span>
+          <div class="cal__nav">
+            <button class="cal__nav-btn" type="button" aria-label="Previous year">
+              <i data-lucide="chevron-left" aria-hidden="true"></i>
+            </button>
+            <button class="cal__nav-btn" type="button" aria-label="Next year">
+              <i data-lucide="chevron-right" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <div class="cal__year-grid">
+          <button class="cal__year-btn" type="button">Jan</button>
+          <button class="cal__year-btn" type="button">Feb</button>
+          <button class="cal__year-btn cal__year-btn--selected" type="button">Mar</button>
+          <button class="cal__year-btn" type="button">Apr</button>
+          <button class="cal__year-btn" type="button">May</button>
+          <button class="cal__year-btn" type="button">Jun</button>
+          <button class="cal__year-btn" type="button">Jul</button>
+          <button class="cal__year-btn" type="button">Aug</button>
+          <button class="cal__year-btn" type="button">Sep</button>
+          <button class="cal__year-btn" type="button">Oct</button>
+          <button class="cal__year-btn" type="button">Nov</button>
+          <button class="cal__year-btn" type="button">Dec</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+    <!-- YEAR SELECT                                                        -->
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+
+    <h2 class="proto-card__subtitle">Year Select</h2>
+
+    <div class="proto-card__section">
+      <p class="proto-card__label">Year picker view</p>
+      <div class="cal">
+        <div class="cal__header">
+          <span class="cal__month">2020 — 2031</span>
+          <div class="cal__nav">
+            <button class="cal__nav-btn" type="button" aria-label="Previous range">
+              <i data-lucide="chevron-left" aria-hidden="true"></i>
+            </button>
+            <button class="cal__nav-btn" type="button" aria-label="Next range">
+              <i data-lucide="chevron-right" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <div class="cal__year-grid">
+          <button class="cal__year-btn" type="button">2020</button>
+          <button class="cal__year-btn" type="button">2021</button>
+          <button class="cal__year-btn" type="button">2022</button>
+          <button class="cal__year-btn" type="button">2023</button>
+          <button class="cal__year-btn" type="button">2024</button>
+          <button class="cal__year-btn" type="button">2025</button>
+          <button class="cal__year-btn cal__year-btn--current" type="button">2026</button>
+          <button class="cal__year-btn" type="button">2027</button>
+          <button class="cal__year-btn" type="button">2028</button>
+          <button class="cal__year-btn" type="button">2029</button>
+          <button class="cal__year-btn" type="button">2030</button>
+          <button class="cal__year-btn" type="button">2031</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

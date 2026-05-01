@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Bottom Navigation · Prototype</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="BottomNavigation.css">
+</head>
+<body>
+
+  <div class="bn-page">
+    <div>
+      <h1 class="bn-page__title">Bottom Navigation</h1>
+      <p class="bn-page__intro">Four bottom-nav compositions modelled on Flowbite's reference. In production these would be sticky to the viewport bottom.</p>
+    </div>
+
+    <!-- 1. Default labels -->
+    <section class="bn-section">
+      <p class="bn-section__label">1 · Default · icons + labels</p>
+      <p class="bn-section__caption">Equal-width buttons, vertical icon + label stack. Active state uses brand colour.</p>
+      <nav class="botnav" aria-label="Bottom navigation">
+        <a href="#" class="botnav__item botnav__item--active">
+          <i data-lucide="home" aria-hidden="true"></i>
+          <span>Home</span>
+        </a>
+        <a href="#" class="botnav__item">
+          <i data-lucide="search" aria-hidden="true"></i>
+          <span>Search</span>
+        </a>
+        <a href="#" class="botnav__item">
+          <i data-lucide="bookmark" aria-hidden="true"></i>
+          <span>Saved</span>
+        </a>
+        <a href="#" class="botnav__item">
+          <i data-lucide="bell" aria-hidden="true"></i>
+          <span>Inbox</span>
+        </a>
+        <a href="#" class="botnav__item">
+          <i data-lucide="user" aria-hidden="true"></i>
+          <span>Profile</span>
+        </a>
+      </nav>
+    </section>
+
+    <!-- 2. With dividers -->
+    <section class="bn-section">
+      <p class="bn-section__label">2 · With dividers</p>
+      <p class="bn-section__caption">Vertical lines between items add visual separation.</p>
+      <nav class="botnav botnav--dividers" aria-label="Bottom navigation">
+        <a href="#" class="botnav__item botnav__item--active">
+          <i data-lucide="home" aria-hidden="true"></i>
+          <span>Home</span>
+        </a>
+        <a href="#" class="botnav__item">
+          <i data-lucide="message-circle" aria-hidden="true"></i>
+          <span>Messages</span>
+        </a>
+        <a href="#" class="botnav__item">
+          <i data-lucide="bell" aria-hidden="true"></i>
+          <span>Alerts</span>
+        </a>
+        <a href="#" class="botnav__item">
+          <i data-lucide="settings" aria-hidden="true"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
+    </section>
+
+    <!-- 3. Floating with centre CTA -->
+    <section class="bn-section">
+      <p class="bn-section__label">3 · Floating · centre CTA</p>
+      <p class="bn-section__caption">Pill-shaped floating bar with a primary action button anchored centrally.</p>
+      <div class="botnav-floating" role="navigation" aria-label="Floating navigation">
+        <button class="botnav-floating__icon-btn botnav-floating__icon-btn--active" aria-label="Home">
+          <i data-lucide="home" aria-hidden="true"></i>
+        </button>
+        <button class="botnav-floating__icon-btn" aria-label="Search">
+          <i data-lucide="search" aria-hidden="true"></i>
+        </button>
+        <button class="botnav-floating__cta" aria-label="Create">
+          <i data-lucide="plus" aria-hidden="true"></i>
+        </button>
+        <button class="botnav-floating__icon-btn" aria-label="Activity">
+          <i data-lucide="activity" aria-hidden="true"></i>
+        </button>
+        <button class="botnav-floating__icon-btn" aria-label="Profile">
+          <i data-lucide="user" aria-hidden="true"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- 4. With pagination -->
+    <section class="bn-section">
+      <p class="bn-section__label">4 · With pagination</p>
+      <p class="bn-section__caption">Previous/next on the edges with a page count in the middle — for paginated content.</p>
+      <nav class="botnav-pager" aria-label="Pagination">
+        <button type="button" class="botnav-pager__nav">
+          <i data-lucide="chevron-left" aria-hidden="true"></i>
+          <span>Previous</span>
+        </button>
+        <span class="botnav-pager__pages">Page 4 of 12</span>
+        <button type="button" class="botnav-pager__nav botnav-pager__nav--end">
+          <span>Next</span>
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+      </nav>
+    </section>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

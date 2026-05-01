@@ -1,0 +1,319 @@
+/* Range Sliders — Flowbite-inspired gallery built with our tokens
+ * Reference: https://flowbite.com/docs/forms/range/
+ */
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--ai-surface-secondary);
+  padding: var(--ai-spacing-8) var(--ai-spacing-6);
+  font-family: var(--ai-font-body);
+}
+
+.rng-page {
+  width: 100%;
+  max-width: 45rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-8);
+}
+
+.rng-page__title {
+  margin: 0;
+  font-size: var(--ai-font-fluid-2xl);
+  font-weight: var(--ai-font-bold);
+  color: var(--ai-text-primary);
+  line-height: var(--ai-leading-md);
+}
+
+.rng-page__intro {
+  margin: 0;
+  font-size: var(--ai-font-fixed-sm);
+  color: var(--ai-text-contrast);
+  line-height: var(--ai-leading-md);
+}
+
+.rng-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+}
+
+.rng-section__label {
+  margin: 0;
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-contrast);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.rng-section__caption {
+  margin: 0 0 var(--ai-spacing-2) 0;
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-secondary);
+  line-height: var(--ai-leading-sm);
+}
+
+/* ── Field with label + value ──────────────────────── */
+
+.rng-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+}
+
+.rng-field__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--ai-spacing-3);
+}
+
+.rng-field__label {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-primary);
+}
+
+.rng-field__value {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-sm);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-surface-brand);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Slider — base ──────────────────────────────────── */
+
+.rng {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: var(--ai-spacing-3); /* 8px track default */
+  margin: 0;
+  background: var(--ai-surface-minimal);
+  border-radius: var(--ai-radius-full);
+  cursor: pointer;
+}
+
+/* WebKit track — kept transparent so the gradient applied to the input
+   element by JS shows through (gives us a brand-coloured fill on Chrome/Safari). */
+.rng::-webkit-slider-runnable-track {
+  height: var(--ai-spacing-3);
+  background: transparent;
+  border-radius: var(--ai-radius-full);
+}
+
+/* Firefox track */
+.rng::-moz-range-track {
+  height: var(--ai-spacing-3);
+  background: var(--ai-surface-minimal);
+  border-radius: var(--ai-radius-full);
+}
+
+/* Firefox progress (filled portion) */
+.rng::-moz-range-progress {
+  height: var(--ai-spacing-3);
+  background: var(--ai-surface-brand);
+  border-radius: var(--ai-radius-full);
+}
+
+/* Native thumb — invisible, but still interactive (drag still works).
+   The visible thumb is a real DOM element (.rng-thumb) overlaid via JS so
+   Figma captures it as a distinct shape. */
+.rng::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--ai-spacing-5);
+  height: var(--ai-spacing-5);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.rng::-moz-range-thumb {
+  width: var(--ai-spacing-5);
+  height: var(--ai-spacing-5);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+/* Wrapper that positions the visible thumb */
+.rng-wrap {
+  position: relative;
+}
+
+.rng-thumb {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--ai-spacing-5); /* 16px */
+  height: var(--ai-spacing-5);
+  background: var(--ai-surface-brand);
+  border: 2px solid var(--ai-surface-primary);
+  border-radius: var(--ai-radius-full);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  transition: box-shadow var(--ai-transition-default);
+}
+
+.rng-wrap:hover .rng-thumb,
+.rng-wrap:focus-within .rng-thumb {
+  box-shadow: 0 0 0 4px var(--ai-surface-brand-soft);
+}
+
+.rng-wrap--sm .rng-thumb {
+  width: var(--ai-spacing-4);
+  height: var(--ai-spacing-4);
+}
+
+.rng-wrap--lg .rng-thumb {
+  width: var(--ai-spacing-6);
+  height: var(--ai-spacing-6);
+}
+
+.rng-wrap--disabled .rng-thumb {
+  background: var(--ai-btn-bg-disabled);
+  opacity: 0.7;
+}
+
+.rng:focus-visible {
+  outline: none;
+}
+
+/* WebKit needs JS-driven background for fill — done via inline style */
+
+/* ── Sizes ──────────────────────────────────────────── */
+
+.rng--sm {
+  height: var(--ai-spacing-1); /* 4px */
+}
+
+.rng--sm::-webkit-slider-runnable-track,
+.rng--sm::-moz-range-track,
+.rng--sm::-moz-range-progress {
+  height: var(--ai-spacing-1);
+}
+
+.rng--sm::-webkit-slider-thumb {
+  width: var(--ai-spacing-4);
+  height: var(--ai-spacing-4);
+  margin-top: calc((var(--ai-spacing-1) - var(--ai-spacing-4)) / 2);
+}
+
+.rng--sm::-moz-range-thumb {
+  width: var(--ai-spacing-4);
+  height: var(--ai-spacing-4);
+}
+
+.rng--lg {
+  height: var(--ai-spacing-4); /* 12px */
+}
+
+.rng--lg::-webkit-slider-runnable-track,
+.rng--lg::-moz-range-track,
+.rng--lg::-moz-range-progress {
+  height: var(--ai-spacing-4);
+}
+
+.rng--lg::-webkit-slider-thumb {
+  width: var(--ai-spacing-6);
+  height: var(--ai-spacing-6);
+  margin-top: calc((var(--ai-spacing-4) - var(--ai-spacing-6)) / 2);
+}
+
+.rng--lg::-moz-range-thumb {
+  width: var(--ai-spacing-6);
+  height: var(--ai-spacing-6);
+}
+
+/* ── Disabled ───────────────────────────────────────── */
+
+.rng:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.rng:disabled::-webkit-slider-thumb {
+  background: var(--ai-btn-bg-disabled);
+}
+
+.rng:disabled::-moz-range-thumb {
+  background: var(--ai-btn-bg-disabled);
+}
+
+/* ── Sizes row layout ───────────────────────────────── */
+
+.rng-sizes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+}
+
+/* ── Steps tick marks ───────────────────────────────── */
+
+.rng-steps {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 var(--ai-spacing-2);
+  padding: 0 calc(var(--ai-spacing-5) / 2); /* offset by half thumb */
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  color: var(--ai-text-contrast);
+}
+
+.rng-steps__tick {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ai-spacing-1);
+}
+
+.rng-steps__mark {
+  width: 1px;
+  height: var(--ai-spacing-2);
+  background: var(--ai-border-secondary);
+}
+
+/* ── Milestone labels (variant 5) ───────────────────── */
+
+.rng-labels {
+  position: relative;
+  height: var(--ai-spacing-7);
+  margin: 0 var(--ai-spacing-2);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  color: var(--ai-text-contrast);
+}
+
+.rng-labels__min,
+.rng-labels__max {
+  position: absolute;
+  top: 0;
+}
+
+.rng-labels__min { left: 0; }
+.rng-labels__max { right: 0; }
+
+.rng-labels__milestone {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ai-spacing-1);
+}
+
+.rng-labels__mark {
+  width: 1px;
+  height: var(--ai-spacing-2);
+  background: var(--ai-border-secondary);
+  margin-top: calc(-1 * var(--ai-spacing-3));
+}
