@@ -25,14 +25,14 @@ figma.connect(
               <th>Product name</th>
               <th>Colour</th>
               <th>Category</th>
-              <th class="table__cell--right">Price</th>
+              <th>Price</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td>Apple MacBook Pro 17"</td><td>Silver</td><td>Laptop</td><td class="table__cell--right">£2,999</td></tr>
-            <tr><td>Microsoft Surface Pro</td><td>White</td><td>Laptop PC</td><td class="table__cell--right">£1,999</td></tr>
-            <tr><td>Magic Mouse 2</td><td>Black</td><td>Accessories</td><td class="table__cell--right">£99</td></tr>
-            <tr><td>Google Pixel Phone</td><td>Gray</td><td>Phone</td><td class="table__cell--right">£799</td></tr>
+            <tr><td>Apple MacBook Pro 17"</td><td>Silver</td><td>Laptop</td><td>£2,999</td></tr>
+            <tr><td>Microsoft Surface Pro</td><td>White</td><td>Laptop PC</td><td>£1,999</td></tr>
+            <tr><td>Magic Mouse 2</td><td>Black</td><td>Accessories</td><td>£99</td></tr>
+            <tr><td>Google Pixel Phone</td><td>Gray</td><td>Phone</td><td>£799</td></tr>
           </tbody>
         </table>
       </div>

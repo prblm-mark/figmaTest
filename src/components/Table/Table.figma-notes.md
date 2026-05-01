@@ -32,7 +32,7 @@ Properties: **Type** × **Device** = 3 × 2 = 6 (intended).
 | Type=Border | `.table.table--bordered` | Vertical cell borders on every column except the last |
 | Header cell | `<th>` (default styling) | Padding `8/16`, uppercase, `--ai-font-fixed-xxs`, semibold |
 | Body cell | `<td>` (default styling) | Padding `12/16`, regular `--ai-font-fixed-xs` |
-| Right-aligned cell | `.table__cell--right` | Use on `<th>` and `<td>` for price-style columns |
+| Right-aligned cell utility | `.table__cell--right` | Optional helper — apply on `<th>` and `<td>` to right-align a column. Not used in the default Table demo (numeric columns left-align like all other cells). |
 
 ## Token Mapping
 
