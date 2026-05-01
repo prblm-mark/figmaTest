@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="../../styles/base.css">
   <link rel="stylesheet" href="../../components/Input/Input.css">
   <link rel="stylesheet" href="../../components/Button/Button.css">
-  <link rel="stylesheet" href="../Tables/Tables.css">
+  <link rel="stylesheet" href="../../components/Table/Table.css">
   <link rel="stylesheet" href="DataTables.css">
 </head>
 <body>
@@ -16,17 +16,18 @@
   <div class="dt-page">
     <div>
       <h1 class="dt-page__title">Data Tables</h1>
-      <p class="dt-page__intro">Four data-table compositions that build on the Tables prototype — adding sortable columns + pagination, search, per-column filters, and bulk row actions.</p>
+      <p class="dt-page__intro">Two desktop compositions — sortable + paginated, and global search (also sortable) — each with a horizontal-scroll mobile and a kebab-row-expand mobile.</p>
     </div>
 
-    <!-- 1. Sortable + paginated -->
+    <!-- ─────────────────────────────── 1. Sortable + paginated ─────────────────────────────── -->
+
     <section class="dt-section">
-      <p class="dt-section__label">1 · Sortable + paginated</p>
-      <p class="dt-section__caption">Toolbar with row-count selector, sortable columns, paginated footer.</p>
-      <div class="tbl-wrap">
-        <div class="tbl-toolbar">
-          <span style="font-size: var(--ai-font-fixed-xs); color: var(--ai-text-contrast);">Show <strong>10</strong> of <strong>1,289</strong></span>
-          <div class="tbl-toolbar__actions">
+      <p class="dt-section__label">1 · Sortable + paginated · Desktop</p>
+      <p class="dt-section__caption">Toolbar with row-count meta, sortable column headers, pagination footer.</p>
+      <div class="table-wrap">
+        <div class="dt-toolbar">
+          <span class="dt-toolbar__meta">Show <strong>10</strong> of <strong>1,289</strong></span>
+          <div class="dt-toolbar__actions">
             <button type="button" class="btn btn--tertiary btn--sm">
               <i data-lucide="filter" aria-hidden="true"></i>
               <span>Filter</span>
@@ -37,44 +38,197 @@
             </button>
           </div>
         </div>
-        <table class="tbl tbl--hover">
+        <table class="table table--hover">
           <thead>
             <tr>
-              <th><button class="tbl__sort tbl__sort--active">Product <i data-lucide="arrow-up-narrow-wide"></i></button></th>
-              <th><button class="tbl__sort">Category <i data-lucide="chevrons-up-down"></i></button></th>
-              <th><button class="tbl__sort">Stock <i data-lucide="chevrons-up-down"></i></button></th>
-              <th style="text-align:right"><button class="tbl__sort">Price <i data-lucide="chevrons-up-down"></i></button></th>
+              <th><button class="dt-sort dt-sort--active">Product <i data-lucide="arrow-up-narrow-wide" aria-hidden="true"></i></button></th>
+              <th><button class="dt-sort">Category <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="dt-sort">Stock <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="dt-sort">Price <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
             </tr>
           </thead>
           <tbody>
-            <tr><td>Apple MacBook Pro 17"</td><td>Laptop</td><td>14</td><td style="text-align:right">£2,999</td></tr>
-            <tr><td>Google Pixel Phone</td><td>Phone</td><td>27</td><td style="text-align:right">£799</td></tr>
-            <tr><td>Magic Mouse 2</td><td>Accessories</td><td>89</td><td style="text-align:right">£99</td></tr>
-            <tr><td>Microsoft Surface Pro</td><td>Laptop PC</td><td>6</td><td style="text-align:right">£1,999</td></tr>
-            <tr><td>Apple Watch 5</td><td>Wearables</td><td>22</td><td style="text-align:right">£399</td></tr>
+            <tr><td>Apple MacBook Pro 17"</td><td>Laptop</td><td>14</td><td>£2,999</td></tr>
+            <tr><td>Apple Watch 5</td><td>Wearables</td><td>22</td><td>£399</td></tr>
+            <tr><td>Google Pixel Phone</td><td>Phone</td><td>27</td><td>£799</td></tr>
+            <tr><td>Magic Mouse 2</td><td>Accessories</td><td>89</td><td>£99</td></tr>
+            <tr><td>Microsoft Surface Pro</td><td>Laptop PC</td><td>6</td><td>£1,999</td></tr>
           </tbody>
         </table>
-        <div class="tbl-pagination">
+        <div class="dt-pagination">
           <span>Showing <strong>1–5</strong> of <strong>1,289</strong> results</span>
-          <div class="tbl-pagination__pages" role="group" aria-label="Pagination">
-            <button class="tbl-pagination__btn" aria-label="Previous"><i data-lucide="chevron-left"></i></button>
-            <button class="tbl-pagination__btn tbl-pagination__btn--active">1</button>
-            <button class="tbl-pagination__btn">2</button>
-            <button class="tbl-pagination__btn">3</button>
-            <button class="tbl-pagination__btn" aria-label="Next"><i data-lucide="chevron-right"></i></button>
+          <div class="dt-pagination__pages" role="group" aria-label="Pagination">
+            <button class="dt-pagination__btn" aria-label="Previous"><i data-lucide="chevron-left" aria-hidden="true"></i></button>
+            <button class="dt-pagination__btn dt-pagination__btn--active">1</button>
+            <button class="dt-pagination__btn">2</button>
+            <button class="dt-pagination__btn">3</button>
+            <button class="dt-pagination__btn" aria-label="Next"><i data-lucide="chevron-right" aria-hidden="true"></i></button>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 2. Global search -->
+    <!-- 1a. Sortable + paginated — Mobile (scroll) -->
+
     <section class="dt-section">
-      <p class="dt-section__label">2 · Global search</p>
-      <p class="dt-section__caption">Toolbar search filters across every column at once.</p>
-      <div class="tbl-wrap">
-        <div class="tbl-toolbar">
-          <div class="tbl-toolbar__search input">
-            <div class="input__wrap input--sm" style="min-height: var(--ai-spacing-7)">
+      <p class="dt-section__label">1a · Sortable + paginated · Mobile (scroll)</p>
+      <p class="dt-section__caption">Phone-width frame with horizontal scroll. All columns visible; swipe to reach off-screen ones.</p>
+      <div class="table-wrap table-wrap--mobile">
+        <div class="dt-toolbar">
+          <span class="dt-toolbar__meta">10 of 1,289</span>
+          <div class="dt-toolbar__actions">
+            <button type="button" class="btn btn--tertiary btn--sm" aria-label="Filter">
+              <i data-lucide="filter" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <table class="table table--hover">
+          <thead>
+            <tr>
+              <th><button class="dt-sort dt-sort--active">Product <i data-lucide="arrow-up-narrow-wide" aria-hidden="true"></i></button></th>
+              <th><button class="dt-sort">Category <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="dt-sort">Stock <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="dt-sort">Price <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Apple MacBook Pro 17"</td><td>Laptop</td><td>14</td><td>£2,999</td></tr>
+            <tr><td>Apple Watch 5</td><td>Wearables</td><td>22</td><td>£399</td></tr>
+            <tr><td>Google Pixel Phone</td><td>Phone</td><td>27</td><td>£799</td></tr>
+            <tr><td>Magic Mouse 2</td><td>Accessories</td><td>89</td><td>£99</td></tr>
+            <tr><td>Microsoft Surface Pro</td><td>Laptop PC</td><td>6</td><td>£1,999</td></tr>
+          </tbody>
+        </table>
+        <div class="dt-pagination">
+          <span>1–5 of 1,289</span>
+          <div class="dt-pagination__pages" role="group" aria-label="Pagination">
+            <button class="dt-pagination__btn" aria-label="Previous"><i data-lucide="chevron-left" aria-hidden="true"></i></button>
+            <button class="dt-pagination__btn dt-pagination__btn--active">1</button>
+            <button class="dt-pagination__btn">2</button>
+            <button class="dt-pagination__btn" aria-label="Next"><i data-lucide="chevron-right" aria-hidden="true"></i></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1b. Sortable + paginated — Mobile (kebab expand) -->
+
+    <section class="dt-section">
+      <p class="dt-section__label">1b · Sortable + paginated · Mobile (kebab reveal)</p>
+      <p class="dt-section__caption">Product + Price visible. Click the ⋮ to expand the row and reveal Category + Stock. Pure CSS toggle.</p>
+      <div class="table-wrap" style="max-width: 24rem; margin: 0 auto;">
+        <div class="dt-toolbar">
+          <span class="dt-toolbar__meta">10 of 1,289</span>
+          <div class="dt-toolbar__actions">
+            <button type="button" class="btn btn--tertiary btn--sm" aria-label="Filter">
+              <i data-lucide="filter" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <table class="table table--hover">
+          <thead>
+            <tr>
+              <th><button class="dt-sort dt-sort--active">Product <i data-lucide="arrow-up-narrow-wide" aria-hidden="true"></i></button></th>
+              <th><button class="dt-sort">Price <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th class="dt-kebab__cell" aria-hidden="true"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="dt-row">
+              <td>Apple MacBook Pro 17"</td>
+              <td>£2,999</td>
+              <td class="dt-kebab__cell">
+                <label class="dt-kebab" aria-label="Show row details">
+                  <input type="checkbox" class="dt-kebab__input">
+                  <i data-lucide="more-vertical" aria-hidden="true"></i>
+                </label>
+              </td>
+            </tr>
+            <tr class="dt-row-detail">
+              <td colspan="3" class="dt-row-detail__cell">
+                <dl class="dt-row-detail__list">
+                  <dt>Category</dt><dd>Laptop</dd>
+                  <dt>Stock</dt><dd>14</dd>
+                </dl>
+              </td>
+            </tr>
+            <tr class="dt-row">
+              <td>Apple Watch 5</td>
+              <td>£399</td>
+              <td class="dt-kebab__cell">
+                <label class="dt-kebab" aria-label="Show row details">
+                  <input type="checkbox" class="dt-kebab__input" checked>
+                  <i data-lucide="more-vertical" aria-hidden="true"></i>
+                </label>
+              </td>
+            </tr>
+            <tr class="dt-row-detail">
+              <td colspan="3" class="dt-row-detail__cell">
+                <dl class="dt-row-detail__list">
+                  <dt>Category</dt><dd>Wearables</dd>
+                  <dt>Stock</dt><dd>22</dd>
+                </dl>
+              </td>
+            </tr>
+            <tr class="dt-row">
+              <td>Google Pixel Phone</td>
+              <td>£799</td>
+              <td class="dt-kebab__cell">
+                <label class="dt-kebab" aria-label="Show row details">
+                  <input type="checkbox" class="dt-kebab__input">
+                  <i data-lucide="more-vertical" aria-hidden="true"></i>
+                </label>
+              </td>
+            </tr>
+            <tr class="dt-row-detail">
+              <td colspan="3" class="dt-row-detail__cell">
+                <dl class="dt-row-detail__list">
+                  <dt>Category</dt><dd>Phone</dd>
+                  <dt>Stock</dt><dd>27</dd>
+                </dl>
+              </td>
+            </tr>
+            <tr class="dt-row">
+              <td>Magic Mouse 2</td>
+              <td>£99</td>
+              <td class="dt-kebab__cell">
+                <label class="dt-kebab" aria-label="Show row details">
+                  <input type="checkbox" class="dt-kebab__input">
+                  <i data-lucide="more-vertical" aria-hidden="true"></i>
+                </label>
+              </td>
+            </tr>
+            <tr class="dt-row-detail">
+              <td colspan="3" class="dt-row-detail__cell">
+                <dl class="dt-row-detail__list">
+                  <dt>Category</dt><dd>Accessories</dd>
+                  <dt>Stock</dt><dd>89</dd>
+                </dl>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="dt-pagination">
+          <span>1–4 of 1,289</span>
+          <div class="dt-pagination__pages" role="group" aria-label="Pagination">
+            <button class="dt-pagination__btn" aria-label="Previous"><i data-lucide="chevron-left" aria-hidden="true"></i></button>
+            <button class="dt-pagination__btn dt-pagination__btn--active">1</button>
+            <button class="dt-pagination__btn">2</button>
+            <button class="dt-pagination__btn" aria-label="Next"><i data-lucide="chevron-right" aria-hidden="true"></i></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────── 2. Global search ─────────────────────────────── -->
+
+    <section class="dt-section">
+      <p class="dt-section__label">2 · Global search · Desktop</p>
+      <p class="dt-section__caption">Toolbar search filters across every column. Headers are still sortable.</p>
+      <div class="table-wrap">
+        <div class="dt-toolbar">
+          <div class="dt-toolbar__search input">
+            <div class="input__wrap input--sm">
               <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
               <input class="input__control" type="search" placeholder="Search products…" value="Apple">
             </div>
@@ -84,81 +238,138 @@
             <span>Add product</span>
           </button>
         </div>
-        <table class="tbl tbl--hover">
+        <table class="table table--hover">
           <thead>
-            <tr><th>Product</th><th>Category</th><th>Stock</th><th style="text-align:right">Price</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Apple MacBook Pro 17"</td><td>Laptop</td><td>14</td><td style="text-align:right">£2,999</td></tr>
-            <tr><td>Apple Watch 5</td><td>Wearables</td><td>22</td><td style="text-align:right">£399</td></tr>
-            <tr><td>Apple iPad Air</td><td>Tablet</td><td>34</td><td style="text-align:right">£599</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- 3. Per-column filters -->
-    <section class="dt-section">
-      <p class="dt-section__label">3 · Per-column filters</p>
-      <p class="dt-section__caption">Each column has its own filter input under the header — independent narrowing.</p>
-      <div class="tbl-wrap">
-        <table class="tbl tbl--hover">
-          <thead>
-            <tr><th>Product</th><th>Category</th><th>Stock</th><th style="text-align:right">Price</th></tr>
             <tr>
-              <td class="dt-col-filter"><input type="search" placeholder="Filter…"></td>
-              <td class="dt-col-filter"><input type="search" placeholder="Filter…"></td>
-              <td class="dt-col-filter"><input type="search" placeholder="Filter…"></td>
-              <td class="dt-col-filter"><input type="search" placeholder="Filter…"></td>
+              <th><button class="dt-sort dt-sort--active">Product <i data-lucide="arrow-up-narrow-wide" aria-hidden="true"></i></button></th>
+              <th><button class="dt-sort">Category <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="dt-sort">Stock <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="dt-sort">Price <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
             </tr>
           </thead>
           <tbody>
-            <tr><td>Apple MacBook Pro 17"</td><td>Laptop</td><td>14</td><td style="text-align:right">£2,999</td></tr>
-            <tr><td>Microsoft Surface Pro</td><td>Laptop PC</td><td>6</td><td style="text-align:right">£1,999</td></tr>
-            <tr><td>Magic Mouse 2</td><td>Accessories</td><td>89</td><td style="text-align:right">£99</td></tr>
+            <tr><td>Apple iPad Air</td><td>Tablet</td><td>34</td><td>£599</td></tr>
+            <tr><td>Apple MacBook Pro 17"</td><td>Laptop</td><td>14</td><td>£2,999</td></tr>
+            <tr><td>Apple Watch 5</td><td>Wearables</td><td>22</td><td>£399</td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <!-- 4. Row selection + bulk actions -->
+    <!-- 2a. Global search — Mobile (scroll) -->
+
     <section class="dt-section">
-      <p class="dt-section__label">4 · Row selection · bulk actions</p>
-      <p class="dt-section__caption">Bulk-action bar appears when rows are selected — shows count and offers shared actions.</p>
-      <div class="tbl-wrap">
-        <div class="dt-bulk">
-          <span><strong>2</strong> rows selected</span>
-          <div class="dt-bulk__actions">
-            <button type="button" class="btn btn--tertiary btn--sm">
-              <i data-lucide="archive" aria-hidden="true"></i>
-              <span>Archive</span>
-            </button>
-            <button type="button" class="btn btn--tertiary btn--sm">
-              <i data-lucide="download" aria-hidden="true"></i>
-              <span>Export</span>
-            </button>
-            <button type="button" class="btn btn--alert-outline btn--sm">
-              <i data-lucide="trash-2" aria-hidden="true"></i>
-              <span>Delete</span>
-            </button>
+      <p class="dt-section__label">2a · Global search · Mobile (scroll)</p>
+      <p class="dt-section__caption">Toolbar wraps; table scrolls horizontally inside the phone-width frame.</p>
+      <div class="table-wrap table-wrap--mobile">
+        <div class="dt-toolbar">
+          <div class="dt-toolbar__search input">
+            <div class="input__wrap input--sm">
+              <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
+              <input class="input__control" type="search" placeholder="Search…" value="Apple">
+            </div>
           </div>
         </div>
-        <table class="tbl tbl--hover">
+        <table class="table table--hover">
           <thead>
             <tr>
-              <th class="tbl__check-cell"><input type="checkbox" aria-label="Select all"></th>
-              <th>Product</th><th>Category</th><th>Stock</th><th style="text-align:right">Price</th>
+              <th><button class="dt-sort dt-sort--active">Product <i data-lucide="arrow-up-narrow-wide" aria-hidden="true"></i></button></th>
+              <th><button class="dt-sort">Category <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="dt-sort">Stock <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="dt-sort">Price <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
             </tr>
           </thead>
           <tbody>
-            <tr style="background: var(--ai-surface-brand-soft-extra)"><td class="tbl__check-cell"><input type="checkbox" checked></td><td>Apple MacBook Pro 17"</td><td>Laptop</td><td>14</td><td style="text-align:right">£2,999</td></tr>
-            <tr style="background: var(--ai-surface-brand-soft-extra)"><td class="tbl__check-cell"><input type="checkbox" checked></td><td>Microsoft Surface Pro</td><td>Laptop PC</td><td>6</td><td style="text-align:right">£1,999</td></tr>
-            <tr><td class="tbl__check-cell"><input type="checkbox"></td><td>Magic Mouse 2</td><td>Accessories</td><td>89</td><td style="text-align:right">£99</td></tr>
-            <tr><td class="tbl__check-cell"><input type="checkbox"></td><td>Google Pixel Phone</td><td>Phone</td><td>27</td><td style="text-align:right">£799</td></tr>
+            <tr><td>Apple iPad Air</td><td>Tablet</td><td>34</td><td>£599</td></tr>
+            <tr><td>Apple MacBook Pro 17"</td><td>Laptop</td><td>14</td><td>£2,999</td></tr>
+            <tr><td>Apple Watch 5</td><td>Wearables</td><td>22</td><td>£399</td></tr>
           </tbody>
         </table>
       </div>
     </section>
+
+    <!-- 2b. Global search — Mobile (kebab expand) -->
+
+    <section class="dt-section">
+      <p class="dt-section__label">2b · Global search · Mobile (kebab reveal)</p>
+      <p class="dt-section__caption">Search + Product + Price visible; expand the row to see Category + Stock.</p>
+      <div class="table-wrap" style="max-width: 24rem; margin: 0 auto;">
+        <div class="dt-toolbar">
+          <div class="dt-toolbar__search input" style="max-width: none;">
+            <div class="input__wrap input--sm">
+              <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
+              <input class="input__control" type="search" placeholder="Search…" value="Apple">
+            </div>
+          </div>
+        </div>
+        <table class="table table--hover">
+          <thead>
+            <tr>
+              <th><button class="dt-sort dt-sort--active">Product <i data-lucide="arrow-up-narrow-wide" aria-hidden="true"></i></button></th>
+              <th><button class="dt-sort">Price <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th class="dt-kebab__cell" aria-hidden="true"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="dt-row">
+              <td>Apple iPad Air</td>
+              <td>£599</td>
+              <td class="dt-kebab__cell">
+                <label class="dt-kebab" aria-label="Show row details">
+                  <input type="checkbox" class="dt-kebab__input">
+                  <i data-lucide="more-vertical" aria-hidden="true"></i>
+                </label>
+              </td>
+            </tr>
+            <tr class="dt-row-detail">
+              <td colspan="3" class="dt-row-detail__cell">
+                <dl class="dt-row-detail__list">
+                  <dt>Category</dt><dd>Tablet</dd>
+                  <dt>Stock</dt><dd>34</dd>
+                </dl>
+              </td>
+            </tr>
+            <tr class="dt-row">
+              <td>Apple MacBook Pro 17"</td>
+              <td>£2,999</td>
+              <td class="dt-kebab__cell">
+                <label class="dt-kebab" aria-label="Show row details">
+                  <input type="checkbox" class="dt-kebab__input" checked>
+                  <i data-lucide="more-vertical" aria-hidden="true"></i>
+                </label>
+              </td>
+            </tr>
+            <tr class="dt-row-detail">
+              <td colspan="3" class="dt-row-detail__cell">
+                <dl class="dt-row-detail__list">
+                  <dt>Category</dt><dd>Laptop</dd>
+                  <dt>Stock</dt><dd>14</dd>
+                </dl>
+              </td>
+            </tr>
+            <tr class="dt-row">
+              <td>Apple Watch 5</td>
+              <td>£399</td>
+              <td class="dt-kebab__cell">
+                <label class="dt-kebab" aria-label="Show row details">
+                  <input type="checkbox" class="dt-kebab__input">
+                  <i data-lucide="more-vertical" aria-hidden="true"></i>
+                </label>
+              </td>
+            </tr>
+            <tr class="dt-row-detail">
+              <td colspan="3" class="dt-row-detail__cell">
+                <dl class="dt-row-detail__list">
+                  <dt>Category</dt><dd>Wearables</dd>
+                  <dt>Stock</dt><dd>22</dd>
+                </dl>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
   </div>
 
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>

@@ -1,4 +1,8 @@
-/* DataTables — extends Tables patterns with data-table specifics */
+/* DataTables prototype — sortable + paginated and global-search variants
+ * with two mobile patterns each (horizontal scroll, kebab-row-expand).
+ * Composes the production Table component (.table-wrap, .table, etc.)
+ * and adds DataTable-specific styling here.
+ */
 
 body {
   margin: 0;
@@ -54,49 +58,234 @@ body {
   line-height: var(--ai-leading-sm);
 }
 
-/* Bulk-action bar (shown when rows selected) */
+/* Mobile-frame wrap — constrains to phone width without needing a viewport resize */
+.table-wrap--mobile {
+  max-width: 24rem;
+  overflow-x: auto;
+}
 
-.dt-bulk {
+.table-wrap--mobile .table {
+  width: max-content;
+  min-width: 100%;
+}
+
+.table-wrap--mobile .table thead th,
+.table-wrap--mobile .table tbody td {
+  white-space: nowrap;
+}
+
+/* ── Hover highlight on rows (data tables only) ─────── */
+
+.table--hover tbody tr {
+  transition: background-color var(--ai-transition-default);
+}
+
+.table--hover tbody tr:hover {
+  background: var(--ai-surface-minimal);
+}
+
+/* ── Sortable headers ────────────────────────────────── */
+
+.dt-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+}
+
+.dt-sort [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-contrast);
+}
+
+.dt-sort--active [data-lucide] {
+  color: var(--ai-text-primary);
+}
+
+/* ── Toolbar (above the table) ───────────────────────── */
+
+.dt-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ai-spacing-3);
+  padding: var(--ai-spacing-4) var(--ai-spacing-5);
+  background: var(--ai-surface-primary);
+  border-bottom: 1px solid var(--ai-border-secondary);
+}
+
+.dt-toolbar__meta {
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-contrast);
+}
+
+.dt-toolbar__actions {
+  display: flex;
+  gap: var(--ai-spacing-3);
+}
+
+.dt-toolbar__search {
+  flex: 1;
+  max-width: 18rem;
+}
+
+.dt-toolbar__search .input__wrap {
+  min-height: var(--ai-spacing-7);
+}
+
+/* ── Pagination footer ───────────────────────────────── */
+
+.dt-pagination {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--ai-spacing-3);
   padding: var(--ai-spacing-3) var(--ai-spacing-5);
-  background: var(--ai-surface-brand-soft-extra);
-  border-bottom: 1px solid var(--ai-surface-brand-soft);
-  font-size: var(--ai-font-fixed-xs);
-  color: var(--ai-surface-brand-dark);
-}
-
-.dt-bulk__actions {
-  display: flex;
-  gap: var(--ai-spacing-3);
-}
-
-/* Per-column filter row */
-
-.dt-col-filter {
-  padding: var(--ai-spacing-2) var(--ai-spacing-5);
   background: var(--ai-surface-primary);
+  border-top: 1px solid var(--ai-border-secondary);
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-contrast);
+}
+
+.dt-pagination__pages {
+  display: inline-flex;
+  align-items: stretch;
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  overflow: hidden;
+}
+
+.dt-pagination__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--ai-spacing-8);
+  height: var(--ai-spacing-8);
+  padding: 0 var(--ai-spacing-3);
+  background: transparent;
+  border: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-primary);
+  cursor: pointer;
+  transition: background-color var(--ai-transition-default);
+}
+
+.dt-pagination__btn:hover {
+  background: var(--ai-surface-minimal);
+}
+
+.dt-pagination__btn + .dt-pagination__btn {
+  border-left: 1px solid var(--ai-border-secondary);
+}
+
+.dt-pagination__btn--active {
+  background: var(--ai-surface-brand);
+  color: var(--ai-btn-primary-text);
+}
+
+.dt-pagination__btn--active:hover {
+  background: var(--ai-btn-primary-bg-hover);
+}
+
+.dt-pagination__btn [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* ── Mobile kebab-row-expand pattern ────────────────────
+ * Pure CSS via :has(:checked). Each row pair is:
+ *   <tr class="dt-row">       — visible (Product + Price + kebab toggle)
+ *   <tr class="dt-row-detail"> — hidden by default; revealed when its
+ *                                preceding row's checkbox is :checked.
+ * The kebab is a <label> wrapping a hidden checkbox + the dots icon.
+ */
+
+.dt-kebab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-7);
+  height: var(--ai-spacing-7);
+  border-radius: var(--ai-radius-md);
+  cursor: pointer;
+  color: var(--ai-icon-contrast);
+  transition: background-color var(--ai-transition-default),
+              color var(--ai-transition-default);
+}
+
+.dt-kebab:hover {
+  background: var(--ai-surface-minimal);
+  color: var(--ai-text-primary);
+}
+
+.dt-kebab__input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+  height: 0;
+}
+
+.dt-kebab [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+.dt-kebab__cell {
+  width: var(--ai-spacing-8);
+  text-align: right;
+}
+
+.dt-row-detail {
+  display: none;
+}
+
+/* Reveal the detail row when its sibling-up row has a checked kebab */
+.dt-row:has(.dt-kebab__input:checked) + .dt-row-detail {
+  display: table-row;
+}
+
+/* Indicate active toggle (subtle bg + slight rotation could go here) */
+.dt-row:has(.dt-kebab__input:checked) {
+  background: var(--ai-surface-minimal);
+}
+
+.dt-row-detail__cell {
+  padding: 0 !important;
+  background: var(--ai-surface-minimal);
   border-bottom: 1px solid var(--ai-border-secondary);
 }
 
-.dt-col-filter input {
-  width: 100%;
-  padding: var(--ai-spacing-2) var(--ai-spacing-3);
-  background: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-sm);
-  font-family: var(--ai-font-body);
+.dt-row-detail__list {
+  margin: 0;
+  padding: var(--ai-spacing-3) var(--ai-spacing-5);
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: var(--ai-spacing-5);
+  row-gap: var(--ai-spacing-2);
+  font-size: var(--ai-font-fixed-xs);
+}
+
+.dt-row-detail__list dt {
   font-size: var(--ai-font-fixed-xxs);
-  color: var(--ai-text-primary);
-  outline: none;
-}
-
-.dt-col-filter input:focus-visible {
-  border-color: var(--ai-border-brand);
-}
-
-.dt-col-filter input::placeholder {
+  font-weight: var(--ai-font-semibold);
   color: var(--ai-text-contrast);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  align-self: center;
 }
+
+.dt-row-detail__list dd {
+  margin: 0;
+  color: var(--ai-text-primary);
+}
+
