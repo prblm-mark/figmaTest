@@ -22,23 +22,30 @@
   overflow: hidden;
 }
 
-/* When the user wraps with .datatables--mobile we constrain to
- * phone-frame width and let the inner table scroll horizontally.
+/* Inner wrap that holds ONLY the <table>. Scroll lives here, not on
+ * the outer .datatables — so the toolbar above and pagination footer
+ * below stay fixed while the table content scrolls horizontally. */
+
+.datatables__body {
+  overflow-x: auto;
+}
+
+/* When the user wraps with .datatables--mobile-scroll we constrain to
+ * phone-frame width. Inner __body still handles the scroll.
  * Mobile-Trigger does NOT use this — it shows fewer columns inside
  * the same narrow frame and uses kebab expand instead of scroll. */
 
 .datatables--mobile-scroll {
   max-width: 24rem;
-  overflow-x: auto;
 }
 
-.datatables--mobile-scroll .table {
+.datatables--mobile-scroll .datatables__body .table {
   width: max-content;
   min-width: 100%;
 }
 
-.datatables--mobile-scroll .table thead th,
-.datatables--mobile-scroll .table tbody td {
+.datatables--mobile-scroll .datatables__body .table thead th,
+.datatables--mobile-scroll .datatables__body .table tbody td {
   white-space: nowrap;
 }
 
@@ -305,10 +312,5 @@
   /* Trim toolbar gap and stack action labels behind icons */
   .datatables__toolbar {
     gap: var(--ai-spacing-2);
-  }
-
-  /* Auto-collapse table to horizontal-scroll inside its wrap */
-  .datatables {
-    overflow-x: auto;
   }
 }

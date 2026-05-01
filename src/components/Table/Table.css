@@ -8,12 +8,23 @@
  */
 
 /* ── Wrap ────────────────────────────────────────────── */
+/* Outer chrome — bg, border, radius, overflow:hidden so the inner
+ * scroll wrap respects the rounded corners. */
 
 .table-wrap {
   background-color: var(--ai-surface-primary);
   border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-md);
   overflow: hidden;
+}
+
+/* Inner scroll wrapper — holds ONLY the <table>. Putting overflow-x
+ * here (not on .table-wrap) means consumers can place chrome (toolbar,
+ * pagination footer) inside .table-wrap without it scrolling along
+ * with the table content. */
+
+.table-wrap__scroll {
+  overflow-x: auto;
 }
 
 /* ── Base table ──────────────────────────────────────── */
@@ -73,13 +84,7 @@
 }
 
 /* ── Mobile / narrow-viewport overflow ────────────────
- * When the wrap is narrower than the table's content width
- * (whether via @media at <= 767px or via a fixed-width wrap),
- * scroll horizontally and let the user swipe across columns.
+ * .table-wrap__scroll already has overflow-x: auto, so when the wrap
+ * is narrower than the table content (via fixed-width wrap or narrow
+ * viewport) the scroll naturally engages. No media query needed.
  */
-
-@media (max-width: 767px) {
-  .table-wrap {
-    overflow-x: auto;
-  }
-}

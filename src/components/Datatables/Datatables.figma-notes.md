@@ -27,7 +27,8 @@ Type × Device are pure layout/style differences. Overflow Content is a markup d
 | Figma element | CSS class | Notes |
 |---|---|---|
 | Outer container | `.datatables` | White bg, secondary border, `--ai-radius-md`, `overflow: hidden`. Replaces `.table-wrap` from the Table component. |
-| Mobile-scroll wrap | `.datatables.datatables--mobile-scroll` | Adds `max-width: 24rem` + `overflow-x: auto`; inner `.table` grows to `width: max-content` with `nowrap` cells |
+| Body scroll wrapper | `.datatables__body` | Inner div around the `<table>` only. `overflow-x: auto` lives here, so the toolbar above and pagination footer below stay fixed while the table content scrolls horizontally. |
+| Mobile-scroll wrap | `.datatables.datatables--mobile-scroll` | Adds `max-width: 24rem`; the inner `.datatables__body` handles the scroll. Inner `.table` grows to `width: max-content` with `nowrap` cells |
 | Toolbar | `.datatables__toolbar` | Flex row, white bg, bottom border. Padding `12/16` (vertical/horizontal) |
 | Toolbar meta (left side) | `.datatables__meta` | Inline flex with text + `.datatables__select` for the row-count picker |
 | Page-size select | `.datatables__select` | Button styled as a small select (32px tall, `--ai-radius-md`, chevron-down). Native `<select>` doesn't capture cleanly in Figma so this is a button |
