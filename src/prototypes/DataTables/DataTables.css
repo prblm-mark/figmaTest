@@ -188,12 +188,12 @@ body {
 }
 
 .dt-pagination__btn--active {
-  background: var(--ai-surface-brand);
-  color: var(--ai-btn-primary-text);
+  background: var(--ai-surface-secondary);
+  color: var(--ai-text-primary);
 }
 
 .dt-pagination__btn--active:hover {
-  background: var(--ai-btn-primary-bg-hover);
+  background: var(--ai-surface-secondary);
 }
 
 .dt-pagination__btn [data-lucide] {
