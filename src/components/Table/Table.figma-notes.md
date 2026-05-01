@@ -26,7 +26,8 @@ Properties: **Type** × **Device** = 3 × 2 = 6 (intended).
 
 | Figma element | CSS class | Notes |
 |---|---|---|
-| Outer container | `.table-wrap` | White bg, `--ai-border-secondary` border, `--ai-radius-md`, `overflow: hidden`. At `<= 767px` adds `overflow-x: auto` for horizontal scroll |
+| Outer container | `.table-wrap` | White bg, `--ai-border-secondary` border, `--ai-radius-md`, `overflow: hidden` |
+| Scroll wrapper (inner) | `.table-wrap__scroll` | Holds the `<table>`. `overflow-x: auto` lives here — so consumers can place chrome (toolbar, pagination footer) inside `.table-wrap` without it scrolling along with the table content |
 | `<table>` | `.table` | `border-collapse: collapse`, `width: 100%`, `--ai-font-title` family |
 | Type=Striped | `.table.table--striped` | Alternating row bgs (`tbody tr:nth-child(even)` → `--ai-surface-minimal`) |
 | Type=Border | `.table.table--bordered` | Vertical cell borders on every column except the last |
