@@ -52,9 +52,10 @@
   border-bottom: 0;
 }
 
-/* Right-aligned cells (e.g. price columns) — use this on both <th> and <td> */
+/* Right-aligned cells (e.g. price columns) — use on both <th> and <td>.
+ * Scoped under .table to outweigh `.table thead th { text-align: left }`. */
 
-.table__cell--right {
+.table .table__cell--right {
   text-align: right;
 }
 
