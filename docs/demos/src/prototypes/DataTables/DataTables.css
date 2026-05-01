@@ -123,8 +123,40 @@ body {
 }
 
 .dt-toolbar__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
   font-size: var(--ai-font-fixed-xs);
   color: var(--ai-text-contrast);
+}
+
+/* Page-size select — button styled like a sm select. Native <select> doesn't
+ * render its value cleanly in Figma capture, so this is a button trigger. */
+.dt-toolbar__select {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  height: var(--ai-spacing-7);
+  padding: 0 var(--ai-spacing-3);
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-primary);
+  cursor: pointer;
+  transition: border-color var(--ai-transition-default);
+}
+
+.dt-toolbar__select:hover {
+  border-color: var(--ai-border-contrast);
+}
+
+.dt-toolbar__select [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-contrast);
 }
 
 .dt-toolbar__actions {
