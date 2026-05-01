@@ -1,0 +1,84 @@
+/* Table component
+ * Figma node: 2557:6203 — Tier=Component
+ * Variants: Type (Default | Striped | Border) × Device (Desktop | Mobile)
+ *
+ * Mobile is a responsive overlay — the wrap gets overflow-x: auto and
+ * cells stay nowrap, so a desktop-width table inside a phone-width
+ * frame scrolls horizontally. No --mobile modifier class.
+ */
+
+/* ── Wrap ────────────────────────────────────────────── */
+
+.table-wrap {
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  overflow: hidden;
+}
+
+/* ── Base table ──────────────────────────────────────── */
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--ai-font-title);
+}
+
+.table thead th {
+  padding: var(--ai-spacing-3) var(--ai-spacing-5);
+  background-color: var(--ai-surface-minimal);
+  border-bottom: 1px solid var(--ai-border-secondary);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-secondary);
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: var(--ai-tracking-7);
+  white-space: nowrap;
+}
+
+.table tbody td {
+  padding: var(--ai-spacing-4) var(--ai-spacing-5);
+  border-bottom: 1px solid var(--ai-border-secondary);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  white-space: nowrap;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Right-aligned cells (e.g. price columns) — use this on both <th> and <td> */
+
+.table__cell--right {
+  text-align: right;
+}
+
+/* ── Type=Striped ─────────────────────────────────────── */
+
+.table--striped tbody tr:nth-child(even) {
+  background-color: var(--ai-surface-minimal);
+}
+
+/* ── Type=Border (vertical cell separators) ──────────── */
+
+.table--bordered thead th:not(:last-child),
+.table--bordered tbody td:not(:last-child) {
+  border-right: 1px solid var(--ai-border-secondary);
+}
+
+/* ── Mobile / narrow-viewport overflow ────────────────
+ * When the wrap is narrower than the table's content width
+ * (whether via @media at <= 767px or via a fixed-width wrap),
+ * scroll horizontally and let the user swipe across columns.
+ */
+
+@media (max-width: 767px) {
+  .table-wrap {
+    overflow-x: auto;
+  }
+}
