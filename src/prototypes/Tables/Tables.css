@@ -63,11 +63,24 @@ body {
   overflow: hidden;
 }
 
-/* Mobile-frame wrapper — constrains to phone width so the card-stack
- * layout reads as mobile in the gallery without needing a viewport resize.
+/* Mobile-frame wrapper — constrains to phone width and switches the
+ * inner table to horizontal scroll. Table keeps its native column
+ * widths; cells are no-wrap so the row stays on one line. The user
+ * swipes left/right to read the off-screen columns.
  */
 .tbl-wrap--mobile {
   max-width: 24rem;
+  overflow-x: auto;
+}
+
+.tbl-wrap--mobile .tbl {
+  width: max-content;
+  min-width: 100%;
+}
+
+.tbl-wrap--mobile .tbl thead th,
+.tbl-wrap--mobile .tbl tbody td {
+  white-space: nowrap;
 }
 
 /* ── Base table ──────────────────────────────── */
@@ -115,66 +128,3 @@ body {
   border-right: 1px solid var(--ai-border-secondary);
 }
 
-/* ── Mobile card-stack (.tbl--mobile) ────────
- * Header hides; each tr becomes a card; each td renders its
- * `data-label` attribute as an inline uppercase label, with the
- * value flush right via flex space-between. The first td is treated
- * as the card title (full width, semibold, no label).
- */
-
-.tbl--mobile,
-.tbl--mobile thead,
-.tbl--mobile tbody,
-.tbl--mobile tr,
-.tbl--mobile th,
-.tbl--mobile td {
-  display: block;
-}
-
-.tbl--mobile thead {
-  display: none;
-}
-
-.tbl--mobile tbody tr {
-  padding: var(--ai-spacing-4) var(--ai-spacing-5);
-  border-bottom: 1px solid var(--ai-border-secondary);
-}
-
-.tbl--mobile tbody tr:last-child {
-  border-bottom: 0;
-}
-
-.tbl--mobile tbody td {
-  padding: var(--ai-spacing-2) 0;
-  border: 0;
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--ai-spacing-3);
-  text-align: left;
-}
-
-.tbl--mobile tbody td::before {
-  content: attr(data-label);
-  font-size: var(--ai-font-fixed-xxs);
-  font-weight: var(--ai-font-semibold);
-  color: var(--ai-text-contrast);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* Card title — first cell, full width, no inline label */
-.tbl--mobile tbody td:first-child {
-  display: block;
-  margin-bottom: var(--ai-spacing-2);
-  font-size: var(--ai-font-fixed-sm);
-  font-weight: var(--ai-font-semibold);
-}
-
-.tbl--mobile tbody td:first-child::before {
-  display: none;
-}
-
-/* Striped + mobile — alternating card backgrounds work with
- * tr being block-level (background applies to the card box).
- */
