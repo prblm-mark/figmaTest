@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Charts · Prototype</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="Charts.css">
+</head>
+<body>
+
+  <div class="ch-page">
+    <div>
+      <h1 class="ch-page__title">Charts</h1>
+      <p class="ch-page__intro">Four chart compositions modelled on Flowbite's reference. Built with ApexCharts (CDN) and styled with our brand palette + tokens for the surrounding card UI.</p>
+    </div>
+
+    <div class="ch-grid">
+      <!-- 1. Line chart -->
+      <div class="ch-card">
+        <div class="ch-card__head">
+          <div class="ch-card__title-block">
+            <p class="ch-card__big">42,389</p>
+            <p class="ch-card__subtitle">Total clicks this month</p>
+          </div>
+          <span class="ch-card__delta">
+            <i data-lucide="trending-up" aria-hidden="true"></i>
+            <span>12.4%</span>
+          </span>
+        </div>
+        <div class="ch-card__chart"><canvas id="line-chart"></canvas></div>
+        <div class="ch-card__foot">
+          <button type="button" class="ch-card__filter">
+            <span>Last 7 days</span>
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </button>
+          <a href="#" class="ch-card__report-link">
+            <span>Clicks Report</span>
+            <i data-lucide="arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 2. Area chart -->
+      <div class="ch-card">
+        <div class="ch-card__head">
+          <div class="ch-card__title-block">
+            <p class="ch-card__big">£12,840</p>
+            <p class="ch-card__subtitle">Revenue this quarter</p>
+          </div>
+          <span class="ch-card__delta">
+            <i data-lucide="trending-up" aria-hidden="true"></i>
+            <span>8.2%</span>
+          </span>
+        </div>
+        <div class="ch-card__chart"><canvas id="area-chart"></canvas></div>
+        <div class="ch-card__foot">
+          <button type="button" class="ch-card__filter">
+            <span>Last 30 days</span>
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </button>
+          <a href="#" class="ch-card__report-link">
+            <span>Revenue Report</span>
+            <i data-lucide="arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 3. Column chart -->
+      <div class="ch-card">
+        <div class="ch-card__head">
+          <div class="ch-card__title-block">
+            <p class="ch-card__big">128 / 92</p>
+            <p class="ch-card__subtitle">Organic vs Social signups</p>
+          </div>
+        </div>
+        <div class="ch-card__chart"><canvas id="column-chart"></canvas></div>
+        <div class="ch-card__foot">
+          <button type="button" class="ch-card__filter">
+            <span>Last 6 months</span>
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </button>
+          <a href="#" class="ch-card__report-link">
+            <span>Channel Report</span>
+            <i data-lucide="arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 4. Donut chart -->
+      <div class="ch-card">
+        <div class="ch-card__head">
+          <div class="ch-card__title-block">
+            <p class="ch-card__big">88,400</p>
+            <p class="ch-card__subtitle">Sessions by device</p>
+          </div>
+        </div>
+        <div class="ch-card__chart"><canvas id="donut-chart"></canvas></div>
+        <div class="ch-card__foot">
+          <button type="button" class="ch-card__filter">
+            <span>Last 7 days</span>
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </button>
+          <a href="#" class="ch-card__report-link">
+            <span>Devices Report</span>
+            <i data-lucide="arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    lucide.createIcons();
+
+    // Pull tokens from CSS so charts share design system colours
+    const cs = getComputedStyle(document.documentElement);
+    const tok = (n, fb) => (cs.getPropertyValue(n).trim() || fb);
+    const brand = tok('--ai-surface-brand', '#0071d8');
+    const success = tok('--ai-surface-success', '#30cb90');
+    const contrast = tok('--ai-surface-brand-soft', '#bfd1ff');
+    const text = tok('--ai-text-contrast', '#67676c');
+    const grid = tok('--ai-border-secondary', '#e2e2e3');
+
+    // Chart.js global defaults — apply our font + axis colour
+    Chart.defaults.font.family = 'Inter, sans-serif';
+    Chart.defaults.font.size = 12;
+    Chart.defaults.color = text;
+    Chart.defaults.borderColor = grid;
+
+    // Plugin: paint a gradient fill below the line for the area chart
+    function gradientFill(color) {
+      return (ctx) => {
+        const chart = ctx.chart;
+        const { ctx: c, chartArea } = chart;
+        if (!chartArea) return color;
+        const g = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+        g.addColorStop(0, color + 'aa'); // ~67% alpha at top
+        g.addColorStop(1, color + '00'); // transparent at bottom
+        return g;
+      };
+    }
+
+    const sharedScales = {
+      x: { grid: { display: false }, border: { display: false } },
+      y: { grid: { color: grid, drawBorder: false, borderDash: [4, 4] }, border: { display: false } },
+    };
+    const sharedPlugins = {
+      legend: { display: false },
+      tooltip: { backgroundColor: '#212123', titleFont: { weight: '600' }, padding: 10, cornerRadius: 6 },
+    };
+
+    // 1. Line — two series
+    new Chart(document.getElementById('line-chart'), {
+      type: 'line',
+      data: {
+        labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+        datasets: [
+          { label: 'Clicks', data: [3000, 4200, 3800, 5100, 4900, 6100, 5800],
+            borderColor: brand, backgroundColor: brand, tension: 0.4, borderWidth: 3, pointRadius: 0, pointHoverRadius: 5 },
+          { label: 'CPC',    data: [1800, 2400, 2200, 2900, 2800, 3300, 3100],
+            borderColor: success, backgroundColor: success, tension: 0.4, borderWidth: 3, pointRadius: 0, pointHoverRadius: 5 },
+        ],
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: sharedPlugins, scales: sharedScales },
+    });
+
+    // 2. Area — single series, gradient fill
+    new Chart(document.getElementById('area-chart'), {
+      type: 'line',
+      data: {
+        labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug'],
+        datasets: [{
+          label: 'Revenue', data: [6500, 6200, 7400, 8800, 9100, 10200, 11400, 12840],
+          borderColor: brand, backgroundColor: gradientFill(brand),
+          tension: 0.4, borderWidth: 3, fill: true, pointRadius: 0, pointHoverRadius: 5,
+        }],
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: sharedPlugins, scales: sharedScales },
+    });
+
+    // 3. Column — two series side-by-side
+    new Chart(document.getElementById('column-chart'), {
+      type: 'bar',
+      data: {
+        labels: ['Nov','Dec','Jan','Feb','Mar','Apr'],
+        datasets: [
+          { label: 'Organic', data: [44, 55, 41, 67, 22, 43], backgroundColor: brand,   borderRadius: 4, borderSkipped: false },
+          { label: 'Social',  data: [13, 23, 20,  8, 13, 27], backgroundColor: success, borderRadius: 4, borderSkipped: false },
+        ],
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { ...sharedPlugins, legend: { display: true, position: 'bottom', labels: { boxWidth: 12, boxHeight: 12, padding: 12 } } },
+        scales: sharedScales,
+      },
+    });
+
+    // 4. Donut — 4 segments
+    new Chart(document.getElementById('donut-chart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Desktop','Mobile','Tablet','Email'],
+        datasets: [{
+          data: [44, 28, 18, 10],
+          backgroundColor: [brand, success, '#75A5FF', contrast],
+          borderWidth: 0,
+        }],
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, cutout: '65%',
+        plugins: {
+          legend: { display: true, position: 'bottom', labels: { boxWidth: 12, boxHeight: 12, padding: 12 } },
+          tooltip: sharedPlugins.tooltip,
+        },
+      },
+    });
+  </script>
+</body>
+</html>

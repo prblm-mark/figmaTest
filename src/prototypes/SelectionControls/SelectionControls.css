@@ -1,0 +1,309 @@
+/* SelectionControls — Radio, Checkbox, Toggle prototype */
+/* All visual values use --ai-* tokens */
+
+/* ── Page layout ────────────────────────────────────────────────────────── */
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ai-surface-secondary);
+  padding: var(--ai-spacing-6);
+}
+
+.proto-card {
+  background: var(--ai-surface-primary);
+  border-radius: var(--ai-radius-lg);
+  padding: var(--ai-spacing-7);
+  width: var(--ai-size-10); /* 640px */
+  max-width: 100%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.proto-card__title {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fluid-xl);
+  font-weight: var(--ai-font-bold);
+  line-height: var(--ai-leading-lg);
+  color: var(--ai-text-primary);
+  margin: 0 0 var(--ai-spacing-7) 0;
+}
+
+.proto-card__subtitle {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-sm);
+  font-weight: var(--ai-font-bold);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  margin: 0 0 var(--ai-spacing-5) 0;
+  padding-bottom: var(--ai-spacing-3);
+  border-bottom: 1px solid var(--ai-border-secondary);
+}
+
+.proto-card__section {
+  margin-bottom: var(--ai-spacing-7);
+}
+
+.proto-card__section:last-child {
+  margin-bottom: 0;
+}
+
+.proto-card__label {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 var(--ai-spacing-4) 0;
+}
+
+/* ── Shared control row ─────────────────────────────────────────────────── */
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+}
+
+.control {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ai-spacing-4);
+  cursor: pointer;
+}
+
+.control--disabled {
+  cursor: not-allowed;
+}
+
+.control__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+  pointer-events: none;
+}
+
+.control__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-1);
+  flex: 1;
+}
+
+.control__label {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  margin: 0;
+}
+
+.control__helper {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-secondary);
+  margin: 0;
+}
+
+.control--disabled .control__label,
+.control--disabled .control__helper {
+  color: var(--ai-text-contrast);
+}
+
+/* ── Radio ──────────────────────────────────────────────────────────────── */
+
+.control__radio {
+  width: var(--ai-spacing-5);
+  height: var(--ai-spacing-5);
+  flex-shrink: 0;
+  border-radius: var(--ai-radius-full);
+  background: var(--ai-surface-primary);
+  border: 2px solid var(--ai-border-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: var(--ai-spacing-1);
+}
+
+.control__input:checked + .control__radio {
+  background: var(--ai-surface-brand);
+  border-color: var(--ai-surface-brand);
+}
+
+.control__input:checked + .control__radio::after {
+  content: "";
+  width: 6px; /* inner dot — optical size */
+  height: 6px;
+  border-radius: var(--ai-radius-full);
+  background: var(--ai-surface-primary);
+}
+
+.control__input:focus-visible + .control__radio {
+  box-shadow: 0 0 0 1px var(--ai-surface-primary), 0 0 0 3px var(--ai-surface-brand-soft);
+}
+
+.control--disabled .control__radio {
+  opacity: 0.5;
+}
+
+/* ── Checkbox ───────────────────────────────────────────────────────────── */
+
+.control__checkbox {
+  width: var(--ai-spacing-5);
+  height: var(--ai-spacing-5);
+  flex-shrink: 0;
+  border-radius: var(--ai-radius-sm);
+  background: var(--ai-surface-primary);
+  border: 2px solid var(--ai-border-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ai-btn-primary-text);
+  margin-top: var(--ai-spacing-1);
+}
+
+.control__checkbox [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  display: none;
+  stroke-width: 3;
+}
+
+.control__input:checked + .control__checkbox {
+  background: var(--ai-surface-brand);
+  border-color: var(--ai-surface-brand);
+}
+
+.control__input:checked + .control__checkbox [data-lucide] {
+  display: block;
+}
+
+.control__input:focus-visible + .control__checkbox {
+  box-shadow: 0 0 0 1px var(--ai-surface-primary), 0 0 0 3px var(--ai-surface-brand-soft);
+}
+
+.control--disabled .control__checkbox {
+  opacity: 0.5;
+}
+
+/* Indeterminate checkbox */
+.control__input:indeterminate + .control__checkbox {
+  background: var(--ai-surface-brand);
+  border-color: var(--ai-surface-brand);
+}
+
+.control__input:indeterminate + .control__checkbox [data-lucide] {
+  display: block;
+}
+
+/* ── Toggle switch ──────────────────────────────────────────────────────── */
+
+.control__toggle {
+  width: var(--ai-spacing-8);
+  height: var(--ai-spacing-5);
+  flex-shrink: 0;
+  border-radius: var(--ai-radius-full);
+  background: var(--ai-surface-contrast);
+  border: none;
+  position: relative;
+  margin-top: var(--ai-spacing-1);
+}
+
+.control__toggle::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px; /* knob — optical size */
+  height: 12px;
+  border-radius: var(--ai-radius-full);
+  background: var(--ai-surface-primary);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.control__input:checked + .control__toggle {
+  background: var(--ai-surface-brand);
+}
+
+.control__input:checked + .control__toggle::after {
+  left: auto;
+  right: 2px;
+}
+
+.control__input:focus-visible + .control__toggle {
+  box-shadow: 0 0 0 1px var(--ai-surface-primary), 0 0 0 3px var(--ai-surface-brand-soft);
+}
+
+.control--disabled .control__toggle {
+  opacity: 0.5;
+}
+
+/* ── Toggle — large variant ─────────────────────────────────────────────── */
+
+.control__toggle--lg {
+  width: var(--ai-spacing-9);
+  height: var(--ai-spacing-6);
+}
+
+.control__toggle--lg::after {
+  width: var(--ai-spacing-5);
+  height: var(--ai-spacing-5);
+  top: 2px;
+  left: 2px;
+}
+
+.control__input:checked + .control__toggle--lg::after {
+  left: auto;
+  right: 2px;
+}
+
+/* ── Card-style radio (bordered selection) ──────────────────────────────── */
+
+.control--card {
+  padding: var(--ai-spacing-5);
+  border: 2px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  gap: var(--ai-spacing-4);
+}
+
+.control--card:has(.control__input:checked) {
+  border-color: var(--ai-border-brand);
+  background: var(--ai-surface-brand-soft-extra);
+}
+
+.control--card:has(.control__input:focus-visible) {
+  box-shadow: 0 0 0 1px var(--ai-surface-primary), 0 0 0 3px var(--ai-surface-brand-soft);
+}
+
+.control--card .control__radio,
+.control--card .control__checkbox {
+  margin-top: 0;
+}
+
+/* ── Inline row layout ──────────────────────────────────────────────────── */
+
+.control-group--inline {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--ai-spacing-6);
+}
+
+/* ── Toggle row (label left, toggle right) ──────────────────────────────── */
+
+.control--row {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.control--row .control__text {
+  order: -1;
+}

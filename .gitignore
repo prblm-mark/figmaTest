@@ -16,6 +16,10 @@ css/tokens-chat-dark.css
 # IDE
 .idea
 
+# Local workspace — reference screenshots and scratch scripts
+refs/
+tmp/
+
 # Docs site — generated content (rebuilt by `npm run docs:generate`)
 docs-site/components/
 docs-site/patterns/

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Attendee Check-in · Listing Header</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="AttendeeCheckInListing.css">
+</head>
+<body>
+
+  <div class="listing">
+    <h1 class="listing__page-title">Attendee Check-in</h1>
+
+    <header class="listing-header">
+      <div class="listing-header__counts">
+        <p class="listing-header__total">127 Attendees</p>
+      </div>
+      <p class="listing-header__checked-in">Checked in 27/123</p>
+      <div class="listing-header__actions">
+        <button type="button" class="btn btn--primary">
+          <i data-lucide="qr-code" aria-hidden="true"></i>
+          <span>Send QR Codes</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="listing__placeholder">Attendee table — to be built</div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

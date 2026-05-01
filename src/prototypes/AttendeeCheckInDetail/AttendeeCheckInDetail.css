@@ -1,0 +1,296 @@
+/* Attendee Check-in Detail — prototype layout (mobile + desktop) */
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--ai-surface-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ai-spacing-6);
+  font-family: var(--ai-font-body);
+}
+
+/* Desktop variant uses top-aligned layout so back bar + card stack naturally */
+body.page--desktop {
+  align-items: flex-start;
+  padding: var(--ai-spacing-8) var(--ai-spacing-6);
+}
+
+.attendee-phone {
+  width: 100%;
+  max-width: 24rem; /* 384px phone frame */
+  min-height: 44rem; /* 704px — approx phone viewport */
+  background: var(--ai-surface-primary);
+  border-radius: var(--ai-radius-lg);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.attendee-topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-4);
+  padding: var(--ai-spacing-5) var(--ai-spacing-6);
+  border-bottom: 1px solid var(--ai-border-secondary);
+}
+
+.attendee-topbar__back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  background: transparent;
+  border: 0;
+  padding: var(--ai-spacing-2) 0;
+  color: var(--ai-text-contrast);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-medium);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.attendee-topbar__back:hover {
+  color: var(--ai-text-primary);
+}
+
+.attendee-topbar__back [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+.attendee-topbar__title {
+  margin: 0;
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-primary);
+  letter-spacing: 0.02em;
+}
+
+.attendee-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--ai-spacing-8) var(--ai-spacing-6) var(--ai-spacing-6);
+  gap: var(--ai-spacing-6);
+}
+
+.attendee-identity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ai-spacing-5);
+  text-align: center;
+}
+
+.attendee-identity__name {
+  margin: 0;
+  font-size: var(--ai-font-fluid-xl);
+  font-weight: var(--ai-font-bold);
+  color: var(--ai-text-primary);
+  line-height: var(--ai-leading-sm);
+}
+
+.attendee-fields {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-6);
+  padding-top: var(--ai-spacing-5);
+  border-top: 1px solid var(--ai-border-secondary);
+}
+
+.attendee-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-2);
+}
+
+.attendee-field__label {
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-contrast);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+
+.attendee-field__value {
+  font-size: var(--ai-font-fluid-md);
+  font-weight: var(--ai-font-regular);
+  color: var(--ai-text-primary);
+  line-height: var(--ai-leading-sm);
+  margin: 0;
+  word-break: break-word;
+}
+
+.attendee-action {
+  padding: var(--ai-spacing-6);
+  border-top: 1px solid var(--ai-border-secondary);
+  background: var(--ai-surface-primary);
+}
+
+/* Full-width, extra-tall Check In button for thumb-reach at event venue */
+.attendee-action .btn {
+  width: 100%;
+  min-height: var(--ai-spacing-10); /* 56px touch target */
+  font-size: var(--ai-font-fluid-md);
+  border-radius: var(--ai-radius-md);
+}
+
+.attendee-action .btn [data-lucide] {
+  width: var(--ai-icon-size-md);
+  height: var(--ai-icon-size-md);
+}
+
+/* Checked-in confirmation block (replaces the Check In button) */
+.attendee-confirmed {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-4);
+  padding: var(--ai-spacing-5) var(--ai-spacing-6);
+  background: var(--ai-surface-minimal);
+  border-radius: var(--ai-radius-md);
+}
+
+.attendee-confirmed__icon {
+  width: var(--ai-spacing-9);
+  height: var(--ai-spacing-9);
+  border-radius: var(--ai-radius-full);
+  background: var(--ai-surface-success);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--ai-text-invert);
+}
+
+.attendee-confirmed__icon [data-lucide] {
+  width: var(--ai-icon-size-md);
+  height: var(--ai-icon-size-md);
+}
+
+.attendee-confirmed__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-1);
+}
+
+.attendee-confirmed__label {
+  margin: 0;
+  font-size: var(--ai-font-fluid-sm);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-primary);
+  line-height: var(--ai-leading-sm);
+}
+
+.attendee-confirmed__time {
+  margin: 0;
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  color: var(--ai-text-contrast);
+  line-height: var(--ai-leading-sm);
+}
+
+/* ── Desktop layout ───────────────────────────────────────
+   Full-width shell with a breadcrumb bar above a wide content card.
+   Avatar + identity sit inline as a header; fields use a 2-column grid.
+*/
+
+.attendee-shell {
+  width: 100%;
+  max-width: 45rem; /* 720px content column */
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-6);
+}
+
+.attendee-shell__breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: var(--ai-text-contrast);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-medium);
+  cursor: pointer;
+  text-decoration: none;
+  align-self: flex-start;
+}
+
+.attendee-shell__breadcrumb:hover {
+  color: var(--ai-text-primary);
+}
+
+.attendee-shell__breadcrumb [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+.attendee-card {
+  background: var(--ai-surface-primary);
+  border-radius: var(--ai-radius-lg);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.attendee-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-6);
+  padding: var(--ai-spacing-7);
+  border-bottom: 1px solid var(--ai-border-secondary);
+}
+
+.attendee-card__identity {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-2);
+}
+
+.attendee-card__eyebrow {
+  margin: 0;
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-contrast);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.attendee-card__name {
+  margin: 0;
+  font-size: var(--ai-font-fluid-2xl);
+  font-weight: var(--ai-font-bold);
+  color: var(--ai-text-primary);
+  line-height: var(--ai-leading-md);
+}
+
+.attendee-card__fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--ai-spacing-6) var(--ai-spacing-7);
+  padding: var(--ai-spacing-7);
+  margin: 0;
+}
+
+.attendee-card__fields .attendee-field:first-child {
+  grid-column: 1 / -1; /* Email spans full width */
+}
+
+.attendee-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--ai-spacing-5);
+  padding: var(--ai-spacing-6) var(--ai-spacing-7);
+  border-top: 1px solid var(--ai-border-secondary);
+  background: var(--ai-surface-minimal);
+}
+
+/* Footer buttons use the standard Button component sizing — no overrides */

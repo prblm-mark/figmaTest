@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Attendee Check-in · Detail (Desktop)</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Portraits/Portraits.css">
+  <link rel="stylesheet" href="../../components/Avatar/Avatar.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="AttendeeCheckInDetail.css">
+</head>
+<body class="page--desktop">
+
+  <div class="attendee-shell">
+    <button type="button" class="attendee-shell__breadcrumb" aria-label="Go to listing">
+      <i data-lucide="arrow-left" aria-hidden="true"></i>
+      <span>Go to listing</span>
+    </button>
+
+    <main class="attendee-card" aria-labelledby="attendee-name">
+      <header class="attendee-card__header">
+        <div class="avatar avatar--size-5">
+          <img class="portrait" src="https://picsum.photos/seed/sarah-mitchell/300" alt="">
+        </div>
+        <div class="attendee-card__identity">
+          <p class="attendee-card__eyebrow">Attendee Check-in</p>
+          <h1 id="attendee-name" class="attendee-card__name">Sarah Mitchell</h1>
+        </div>
+      </header>
+
+      <dl class="attendee-card__fields">
+        <div class="attendee-field">
+          <dt class="attendee-field__label">Email</dt>
+          <dd class="attendee-field__value">sarah.mitchell@northwell.com</dd>
+        </div>
+        <div class="attendee-field">
+          <dt class="attendee-field__label">Company</dt>
+          <dd class="attendee-field__value">Northwell Publishing</dd>
+        </div>
+        <div class="attendee-field">
+          <dt class="attendee-field__label">Business Phone</dt>
+          <dd class="attendee-field__value">+44 20 7946 0123</dd>
+        </div>
+      </dl>
+
+      <footer class="attendee-card__footer">
+        <button type="button" class="btn btn--primary" onclick="location.href='detail-desktop-checked-in.html'">
+          <i data-lucide="check" aria-hidden="true"></i>
+          <span>Check In</span>
+        </button>
+      </footer>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

@@ -1,0 +1,249 @@
+/* Breadcrumbs — Flowbite-inspired gallery */
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--ai-surface-secondary);
+  padding: var(--ai-spacing-8) var(--ai-spacing-6);
+  font-family: var(--ai-font-body);
+}
+
+.bc-page {
+  width: 100%;
+  max-width: 45rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-8);
+}
+
+.bc-page__title {
+  margin: 0;
+  font-size: var(--ai-font-fluid-2xl);
+  font-weight: var(--ai-font-bold);
+  color: var(--ai-text-primary);
+  line-height: var(--ai-leading-md);
+}
+
+.bc-page__intro {
+  margin: 0;
+  font-size: var(--ai-font-fixed-sm);
+  color: var(--ai-text-contrast);
+  line-height: var(--ai-leading-md);
+}
+
+.bc-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+}
+
+.bc-section__label {
+  margin: 0;
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-contrast);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.bc-section__caption {
+  margin: 0 0 var(--ai-spacing-2) 0;
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-secondary);
+  line-height: var(--ai-leading-sm);
+}
+
+/* ── Breadcrumb base ───────────────────────────── */
+
+.crumbs {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--ai-spacing-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--ai-font-fixed-xs);
+}
+
+.crumbs__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+}
+
+.crumbs__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  color: var(--ai-text-contrast);
+  text-decoration: none;
+  font-weight: var(--ai-font-medium);
+  transition: color var(--ai-transition-default);
+}
+
+.crumbs__link:hover {
+  color: var(--ai-surface-brand);
+}
+
+.crumbs__link [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+.crumbs__current {
+  color: var(--ai-text-primary);
+  font-weight: var(--ai-font-semibold);
+}
+
+.crumbs__sep {
+  color: var(--ai-icon-contrast);
+  display: inline-flex;
+}
+
+.crumbs__sep [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* ── Solid background ──────────────────────────── */
+
+.crumbs--solid {
+  padding: var(--ai-spacing-3) var(--ai-spacing-5);
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+}
+
+/* ── Dropdown trigger inside crumb ────────────── */
+
+.crumbs__dropdown {
+  position: relative;
+  display: inline-flex;
+}
+
+.crumbs__dropdown-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-contrast);
+  cursor: pointer;
+}
+
+.crumbs__dropdown-btn:hover {
+  color: var(--ai-surface-brand);
+}
+
+.crumbs__dropdown-btn [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  transition: transform var(--ai-transition-default);
+}
+
+.crumbs__dropdown--open .crumbs__dropdown-btn [data-lucide] {
+  transform: rotate(180deg);
+}
+
+.crumbs__menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + var(--ai-spacing-2));
+  left: 0;
+  z-index: 10;
+  min-width: 12rem;
+  padding: var(--ai-spacing-2);
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  list-style: none;
+  margin: 0;
+}
+
+.crumbs__dropdown--open .crumbs__menu {
+  display: block;
+}
+
+.crumbs__menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ai-spacing-3);
+  width: 100%;
+  padding: var(--ai-spacing-2) var(--ai-spacing-3);
+  background: transparent;
+  border: 0;
+  border-radius: var(--ai-radius-sm);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  color: var(--ai-text-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--ai-transition-default);
+}
+
+.crumbs__menu-item:hover {
+  background: var(--ai-surface-minimal);
+}
+
+.crumbs__menu-item--selected {
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-surface-brand);
+}
+
+.crumbs__menu-item [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* ── With prev/next nav buttons ──────────────── */
+
+.crumbs-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ai-spacing-5);
+}
+
+.crumbs-pager {
+  display: inline-flex;
+  align-items: stretch;
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  overflow: hidden;
+}
+
+.crumbs-pager__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-8);
+  height: var(--ai-spacing-8);
+  background: transparent;
+  border: 0;
+  color: var(--ai-text-primary);
+  cursor: pointer;
+  transition: background-color var(--ai-transition-default);
+}
+
+.crumbs-pager__btn:hover {
+  background: var(--ai-surface-minimal);
+}
+
+.crumbs-pager__btn + .crumbs-pager__btn {
+  border-left: 1px solid var(--ai-border-secondary);
+}
+
+.crumbs-pager__btn [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}

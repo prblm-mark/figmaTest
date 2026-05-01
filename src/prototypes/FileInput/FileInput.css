@@ -1,0 +1,256 @@
+/* FileInput — prototype-only styles (all tokens from design system) */
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ai-surface-secondary);
+  padding: var(--ai-spacing-6);
+}
+
+.proto-card {
+  background: var(--ai-surface-primary);
+  border-radius: var(--ai-radius-lg);
+  padding: var(--ai-spacing-7);
+  width: var(--ai-size-10); /* 640px */
+  max-width: 100%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.proto-card__title {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fluid-xl);
+  font-weight: var(--ai-font-bold);
+  line-height: var(--ai-leading-lg);
+  color: var(--ai-text-primary);
+  margin-bottom: var(--ai-spacing-7);
+}
+
+.proto-card__section {
+  margin-bottom: var(--ai-spacing-7);
+}
+
+.proto-card__section:last-child {
+  margin-bottom: 0;
+}
+
+.proto-card__label {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-contrast);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--ai-spacing-4);
+}
+
+/* ── Inline file input ──────────────────────────────────────────────────── */
+
+.file-input {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+}
+
+.file-input__label {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-primary);
+}
+
+.file-input__row {
+  display: flex;
+  align-items: stretch;
+  min-height: var(--ai-spacing-8);
+}
+
+.file-input__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ai-spacing-3);
+  background: var(--ai-btn-primary-bg);
+  color: var(--ai-btn-primary-text);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fluid-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  padding: 0 var(--ai-spacing-5);
+  border: 1px solid var(--ai-btn-primary-border);
+  border-radius: var(--ai-radius-md) 0 0 var(--ai-radius-md);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.file-input__btn [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+.file-input__field {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-left: none;
+  border-radius: 0 var(--ai-radius-md) var(--ai-radius-md) 0;
+  padding: 0 var(--ai-spacing-5);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-contrast);
+}
+
+.file-input__helper {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-secondary);
+}
+
+/* ── File selected state ────────────────────────────────────────────────── */
+
+.file-input__field--selected {
+  color: var(--ai-text-primary);
+}
+
+.file-input__field--selected .file-input__filename {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-input__field--selected .file-input__remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: var(--ai-spacing-3);
+  color: var(--ai-icon-contrast);
+  cursor: pointer;
+}
+
+.file-input__field--selected .file-input__remove [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* ── SM size variant ────────────────────────────────────────────────────── */
+
+.file-input--sm .file-input__row {
+  min-height: var(--ai-spacing-7);
+}
+
+.file-input--sm .file-input__btn {
+  font-size: var(--ai-font-fluid-xxs);
+  padding: 0 var(--ai-spacing-4);
+}
+
+.file-input--sm .file-input__field {
+  padding: 0 var(--ai-spacing-4);
+}
+
+/* ── Drag & drop dropzone ───────────────────────────────────────────────── */
+
+.file-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--ai-surface-primary);
+  border: 2px dashed var(--ai-border-secondary);
+  border-radius: var(--ai-radius-lg);
+  padding: var(--ai-spacing-8) var(--ai-spacing-7);
+  gap: var(--ai-spacing-3);
+  cursor: pointer;
+}
+
+.file-dropzone__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-9);
+  height: var(--ai-spacing-9);
+  border-radius: var(--ai-radius-full);
+  background: var(--ai-surface-brand-soft-extra);
+  color: var(--ai-icon-brand);
+  margin-bottom: var(--ai-spacing-2);
+}
+
+.file-dropzone__icon [data-lucide] {
+  width: var(--ai-icon-size-lg);
+  height: var(--ai-icon-size-lg);
+}
+
+.file-dropzone__text {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-secondary);
+  text-align: center;
+}
+
+.file-dropzone__text strong {
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-primary);
+}
+
+.file-dropzone__hint {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+  text-align: center;
+}
+
+/* ── Drag & drop + button variant ───────────────────────────────────────── */
+
+.file-dropzone--with-btn {
+  gap: var(--ai-spacing-5);
+}
+
+.file-dropzone__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+}
+
+/* ── Error state ────────────────────────────────────────────────────────── */
+
+.file-input--error .file-input__row {
+  border-color: var(--ai-border-error);
+}
+
+.file-input--error .file-input__btn {
+  background: var(--ai-surface-error);
+  border-color: var(--ai-surface-error);
+}
+
+.file-input--error .file-input__field {
+  border-color: var(--ai-border-error);
+}
+
+.file-input--error .file-input__helper {
+  color: var(--ai-text-error);
+}
+
+.file-dropzone--error {
+  border-color: var(--ai-border-error);
+}
+
+.file-dropzone--error .file-dropzone__icon {
+  background: var(--ai-surface-error-soft);
+  color: var(--ai-surface-error);
+}

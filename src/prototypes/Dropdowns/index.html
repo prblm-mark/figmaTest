@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Dropdowns · Prototype</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Input/Input.css">
+  <link rel="stylesheet" href="../../components/Avatar/Avatar.css">
+  <link rel="stylesheet" href="../../components/Portraits/Portraits.css">
+  <link rel="stylesheet" href="Dropdowns.css">
+</head>
+<body>
+
+  <div class="dd-page">
+    <div>
+      <h1 class="dd-page__title">Dropdowns</h1>
+      <p class="dd-page__intro">Six dropdown patterns. Triggers + menus shown in their open state for review — in production they'd toggle via JS.</p>
+    </div>
+
+    <div class="dd-grid">
+      <!-- 1. Default -->
+      <div class="dd-card">
+        <p class="dd-card__label">1 · Default</p>
+        <p class="dd-card__caption">Button trigger with chevron, basic menu of links.</p>
+        <button type="button" class="dd-trigger">
+          <span>Dropdown</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <ul class="dd-menu">
+          <li><a href="#" class="dd-menu__item">Dashboard</a></li>
+          <li><a href="#" class="dd-menu__item">Settings</a></li>
+          <li><a href="#" class="dd-menu__item">Earnings</a></li>
+          <li><a href="#" class="dd-menu__item">Sign out</a></li>
+        </ul>
+      </div>
+
+      <!-- 2. With dividers -->
+      <div class="dd-card">
+        <p class="dd-card__label">2 · With dividers</p>
+        <p class="dd-card__caption">Sections separated by dividers — group destructive actions.</p>
+        <button type="button" class="dd-trigger">
+          <span>Actions</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <ul class="dd-menu">
+          <li><a href="#" class="dd-menu__item"><i data-lucide="edit"></i> Edit</a></li>
+          <li><a href="#" class="dd-menu__item"><i data-lucide="copy"></i> Duplicate</a></li>
+          <li><a href="#" class="dd-menu__item"><i data-lucide="archive"></i> Archive</a></li>
+          <li class="dd-menu__divider" aria-hidden="true"></li>
+          <li><a href="#" class="dd-menu__item dd-menu__item--danger"><i data-lucide="trash-2"></i> Delete</a></li>
+        </ul>
+      </div>
+
+      <!-- 3. With header -->
+      <div class="dd-card">
+        <p class="dd-card__label">3 · With header</p>
+        <p class="dd-card__caption">User profile menu — avatar + name + meta inside a header section.</p>
+        <button type="button" class="dd-trigger">
+          <span>Profile</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <ul class="dd-menu">
+          <li class="dd-menu__header">
+            <div class="avatar avatar--size-3">
+              <img class="portrait" src="https://picsum.photos/seed/derrick/200" alt="">
+            </div>
+            <div class="dd-menu__header-text">
+              <p class="dd-menu__header-name">Derrick Jefferson</p>
+              <p class="dd-menu__header-meta">derrick@affino.com</p>
+            </div>
+          </li>
+          <li><a href="#" class="dd-menu__item"><i data-lucide="user"></i> My profile</a></li>
+          <li><a href="#" class="dd-menu__item"><i data-lucide="settings"></i> Account settings</a></li>
+          <li><a href="#" class="dd-menu__item"><i data-lucide="help-circle"></i> Help</a></li>
+          <li class="dd-menu__divider" aria-hidden="true"></li>
+          <li><a href="#" class="dd-menu__item"><i data-lucide="log-out"></i> Sign out</a></li>
+        </ul>
+      </div>
+
+      <!-- 4. With checkboxes -->
+      <div class="dd-card">
+        <p class="dd-card__label">4 · With checkboxes</p>
+        <p class="dd-card__caption">Multi-select — apply multiple filters at once.</p>
+        <button type="button" class="dd-trigger">
+          <span>Filter by status</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <ul class="dd-menu">
+          <li><label class="dd-menu__check-row"><input type="checkbox" checked> Active</label></li>
+          <li><label class="dd-menu__check-row"><input type="checkbox" checked> Pending</label></li>
+          <li><label class="dd-menu__check-row"><input type="checkbox"> Cancelled</label></li>
+          <li><label class="dd-menu__check-row"><input type="checkbox"> Archived</label></li>
+        </ul>
+      </div>
+
+      <!-- 5. With search -->
+      <div class="dd-card">
+        <p class="dd-card__label">5 · With search</p>
+        <p class="dd-card__caption">Filterable list — search input above scrollable items.</p>
+        <button type="button" class="dd-trigger">
+          <span>Country</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <ul class="dd-menu">
+          <li class="dd-menu__search">
+            <div class="input">
+              <div class="input__wrap">
+                <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
+                <input type="search" class="input__control" placeholder="Search…">
+              </div>
+            </div>
+          </li>
+          <li><a href="#" class="dd-menu__item">United Kingdom</a></li>
+          <li><a href="#" class="dd-menu__item">United States</a></li>
+          <li><a href="#" class="dd-menu__item">Canada</a></li>
+          <li><a href="#" class="dd-menu__item">Australia</a></li>
+        </ul>
+      </div>
+
+      <!-- 6. Icon trigger -->
+      <div class="dd-card">
+        <p class="dd-card__label">6 · Icon trigger</p>
+        <p class="dd-card__caption">Three-dot menu — context actions on a row or card.</p>
+        <button type="button" class="dd-icon-trigger" aria-label="Actions">
+          <i data-lucide="more-vertical" aria-hidden="true"></i>
+        </button>
+        <ul class="dd-menu dd-menu--narrow">
+          <li><a href="#" class="dd-menu__item"><i data-lucide="eye"></i> View</a></li>
+          <li><a href="#" class="dd-menu__item"><i data-lucide="edit"></i> Edit</a></li>
+          <li><a href="#" class="dd-menu__item"><i data-lucide="share-2"></i> Share</a></li>
+          <li class="dd-menu__divider" aria-hidden="true"></li>
+          <li><a href="#" class="dd-menu__item dd-menu__item--danger"><i data-lucide="trash-2"></i> Delete</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

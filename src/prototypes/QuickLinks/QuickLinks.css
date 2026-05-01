@@ -1,0 +1,171 @@
+/* QuickLinks — tag-style chatbot quicklinks prototype */
+/* All visual values use --ai-* tokens */
+
+/* ── Page layout ────────────────────────────────────────────────────────── */
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ai-surface-secondary);
+  padding: var(--ai-spacing-6);
+}
+
+.proto-card {
+  background: var(--ai-surface-primary);
+  border-radius: var(--ai-radius-lg);
+  padding: var(--ai-spacing-7);
+  width: var(--ai-size-10); /* 640px */
+  max-width: 100%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.proto-card__title {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fluid-xl);
+  font-weight: var(--ai-font-bold);
+  line-height: var(--ai-leading-lg);
+  color: var(--ai-text-primary);
+  margin: 0 0 var(--ai-spacing-7) 0;
+}
+
+.proto-card__subtitle {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-sm);
+  font-weight: var(--ai-font-bold);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  margin: 0 0 var(--ai-spacing-5) 0;
+  padding-bottom: var(--ai-spacing-3);
+  border-bottom: 1px solid var(--ai-border-secondary);
+}
+
+.proto-card__section {
+  margin-bottom: var(--ai-spacing-7);
+}
+
+.proto-card__section:last-child {
+  margin-bottom: 0;
+}
+
+.proto-card__label {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 var(--ai-spacing-4) 0;
+}
+
+/* ── Quick link tag ─────────────────────────────────────────────────────── */
+
+.quicklink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  padding: var(--ai-spacing-2) var(--ai-spacing-4);
+  background: var(--ai-surface-brand-soft-extra);
+  border: 1px solid var(--ai-surface-brand-soft);
+  border-radius: var(--ai-radius-full);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-surface-brand);
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.quicklink:hover,
+.quicklink--hover {
+  background: var(--ai-surface-brand-soft);
+  border-color: var(--ai-surface-brand);
+}
+
+.quicklink [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  flex-shrink: 0;
+}
+
+/* ── Size: default (slightly larger) ────────────────────────────────────── */
+
+.quicklink--md {
+  padding: var(--ai-spacing-3) var(--ai-spacing-5);
+  font-size: var(--ai-font-fixed-xs);
+  gap: var(--ai-spacing-3);
+}
+
+/* ── Neutral variant ────────────────────────────────────────────────────── */
+
+.quicklink--neutral {
+  background: var(--ai-surface-minimal);
+  border-color: var(--ai-border-secondary);
+  color: var(--ai-text-primary);
+}
+
+.quicklink--neutral:hover,
+.quicklink--neutral.quicklink--hover {
+  background: var(--ai-surface-secondary);
+  border-color: var(--ai-border-brand);
+  color: var(--ai-surface-brand);
+}
+
+.quicklink--neutral [data-lucide] {
+  color: var(--ai-icon-secondary);
+}
+
+.quicklink--neutral:hover [data-lucide],
+.quicklink--neutral.quicklink--hover [data-lucide] {
+  color: var(--ai-surface-brand);
+}
+
+/* ── Outline variant ────────────────────────────────────────────────────── */
+
+.quicklink--outline {
+  background: var(--ai-surface-primary);
+  border-color: var(--ai-surface-brand-soft);
+  color: var(--ai-surface-brand);
+}
+
+.quicklink--outline:hover,
+.quicklink--outline.quicklink--hover {
+  background: var(--ai-surface-brand-soft-extra);
+  border-color: var(--ai-surface-brand);
+}
+
+/* ── Quicklink group (wrapping row) ─────────────────────────────────────── */
+
+.quicklinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ai-spacing-3);
+}
+
+/* ── Chat message context ───────────────────────────────────────────────── */
+
+.chat-msg {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+}
+
+.chat-msg__text {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+}
+
+.chat-msg__label {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-secondary);
+}

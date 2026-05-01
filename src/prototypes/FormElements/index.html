@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="FormElements.css">
+  <title>Form Elements — Prototype</title>
+</head>
+<body>
+
+  <div class="proto-card">
+    <h1 class="proto-card__title">Form Elements</h1>
+
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+    <!-- TEXTAREA                                                           -->
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+
+    <h2 class="proto-card__subtitle">Textarea</h2>
+
+    <!-- Default -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Default</p>
+      <div class="field">
+        <label class="field__label" for="ta-default">Description</label>
+        <textarea class="field__textarea" id="ta-default" placeholder="Enter a description..."></textarea>
+        <span class="field__help">Brief summary of the item</span>
+      </div>
+    </div>
+
+    <!-- Filled -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Filled with character count</p>
+      <div class="field">
+        <label class="field__label" for="ta-filled">Bio</label>
+        <textarea class="field__textarea" id="ta-filled">Product designer with 8 years of experience building design systems, component libraries, and scalable UI patterns for enterprise SaaS platforms.</textarea>
+        <div style="display: flex; justify-content: space-between;">
+          <span class="field__help">Tell us about yourself</span>
+          <span class="field__char-count">148 / 280</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Error</p>
+      <div class="field field--error">
+        <label class="field__label" for="ta-error">Feedback</label>
+        <textarea class="field__textarea" id="ta-error">x</textarea>
+        <div style="display: flex; justify-content: space-between;">
+          <span class="field__help">Minimum 20 characters required</span>
+          <span class="field__char-count">1 / 20</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Disabled -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Disabled</p>
+      <div class="field">
+        <label class="field__label" for="ta-disabled">System notes</label>
+        <textarea class="field__textarea" id="ta-disabled" disabled>Auto-generated content cannot be edited manually.</textarea>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+    <!-- SELECT                                                             -->
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+
+    <h2 class="proto-card__subtitle">Select</h2>
+
+    <div class="proto-card__section">
+      <div class="proto-card__row">
+        <!-- Default -->
+        <div class="field">
+          <label class="field__label" for="sel-default">Country</label>
+          <div class="field__select-wrap">
+            <select class="field__select" id="sel-default">
+              <option value="" disabled selected>Select a country</option>
+              <option>United Kingdom</option>
+              <option>United States</option>
+              <option>Germany</option>
+              <option>France</option>
+              <option>Japan</option>
+            </select>
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </div>
+          <span class="field__help">Where is your organisation based?</span>
+        </div>
+
+        <!-- Selected -->
+        <div class="field">
+          <label class="field__label" for="sel-filled">Timezone</label>
+          <div class="field__select-wrap">
+            <select class="field__select" id="sel-filled">
+              <option>UTC+0 — London</option>
+              <option selected>UTC+1 — Berlin</option>
+              <option>UTC-5 — New York</option>
+              <option>UTC+9 — Tokyo</option>
+            </select>
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="proto-card__section">
+      <div class="proto-card__row">
+        <!-- Error -->
+        <div class="field field--error">
+          <label class="field__label" for="sel-error">Department</label>
+          <div class="field__select-wrap">
+            <select class="field__select" id="sel-error">
+              <option value="" disabled selected>Select department</option>
+            </select>
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </div>
+          <span class="field__help">Please select a department</span>
+        </div>
+
+        <!-- Disabled -->
+        <div class="field">
+          <label class="field__label" for="sel-disabled">Role</label>
+          <div class="field__select-wrap">
+            <select class="field__select" id="sel-disabled" disabled>
+              <option selected>Administrator</option>
+            </select>
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </div>
+          <span class="field__help">Managed by organisation admin</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+    <!-- DATE PICKER                                                        -->
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+
+    <h2 class="proto-card__subtitle">Date Picker</h2>
+
+    <div class="proto-card__section">
+      <div class="proto-card__row">
+        <!-- Single date -->
+        <div class="field">
+          <label class="field__label" for="date-single">Start date</label>
+          <div class="field__date-wrap">
+            <input class="field__date" type="date" id="date-single" value="2026-03-09">
+            <i data-lucide="calendar" aria-hidden="true"></i>
+          </div>
+        </div>
+
+        <!-- Empty -->
+        <div class="field">
+          <label class="field__label" for="date-empty">Due date</label>
+          <div class="field__date-wrap">
+            <input class="field__date" type="date" id="date-empty">
+            <i data-lucide="calendar" aria-hidden="true"></i>
+          </div>
+          <span class="field__help">Optional — leave blank for no deadline</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Date range -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Date range</p>
+      <div class="field">
+        <label class="field__label">Reporting period</label>
+        <div class="field__date-range">
+          <div class="field__date-wrap">
+            <input class="field__date" type="date" value="2026-01-01">
+            <i data-lucide="calendar" aria-hidden="true"></i>
+          </div>
+          <span class="field__date-separator">to</span>
+          <div class="field__date-wrap">
+            <input class="field__date" type="date" value="2026-03-31">
+            <i data-lucide="calendar" aria-hidden="true"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Date + time -->
+    <div class="proto-card__section">
+      <div class="proto-card__row">
+        <div class="field">
+          <label class="field__label" for="datetime-single">Event date & time</label>
+          <div class="field__date-wrap">
+            <input class="field__date" type="datetime-local" id="datetime-single" value="2026-04-15T09:00">
+            <i data-lucide="clock" aria-hidden="true"></i>
+          </div>
+        </div>
+
+        <!-- Disabled -->
+        <div class="field">
+          <label class="field__label" for="date-disabled">Created at</label>
+          <div class="field__date-wrap">
+            <input class="field__date" type="date" id="date-disabled" value="2025-11-20" disabled>
+            <i data-lucide="calendar" aria-hidden="true"></i>
+          </div>
+          <span class="field__help">System-generated, cannot be changed</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+    <!-- RANGE SLIDER                                                       -->
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+
+    <h2 class="proto-card__subtitle">Range Slider</h2>
+
+    <!-- Default -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Default</p>
+      <div class="field">
+        <label class="field__label">Volume</label>
+        <div class="field__range-wrap">
+          <input class="field__range" type="range" min="0" max="100" value="65">
+          <div class="field__range-labels">
+            <span>0</span>
+            <span>100</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- With value badge -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">With value badge</p>
+      <div class="field">
+        <div class="field__range-header">
+          <label class="field__label">Quality</label>
+          <span class="field__range-badge">75%</span>
+        </div>
+        <div class="field__range-wrap">
+          <input class="field__range" type="range" min="0" max="100" value="75">
+          <div class="field__range-labels">
+            <span>Low</span>
+            <span>High</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stepped -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Stepped</p>
+      <div class="field">
+        <div class="field__range-header">
+          <label class="field__label">Team size</label>
+          <span class="field__range-badge">10</span>
+        </div>
+        <div class="field__range-wrap">
+          <input class="field__range" type="range" min="1" max="50" value="10" step="1">
+          <div class="field__range-labels">
+            <span>1</span>
+            <span>25</span>
+            <span>50</span>
+          </div>
+        </div>
+        <span class="field__help">Number of seats in your plan</span>
+      </div>
+    </div>
+
+    <!-- Disabled -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Disabled</p>
+      <div class="field">
+        <label class="field__label">Storage used</label>
+        <div class="field__range-wrap">
+          <input class="field__range" type="range" min="0" max="100" value="42" disabled>
+          <div class="field__range-labels">
+            <span>0 GB</span>
+            <span>42 GB used</span>
+            <span>100 GB</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+    <!-- NUMBER STEPPER                                                     -->
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+
+    <h2 class="proto-card__subtitle">Number Stepper</h2>
+
+    <div class="proto-card__section">
+      <div class="proto-card__row">
+        <div class="field">
+          <label class="field__label">Quantity</label>
+          <div class="field__stepper">
+            <button class="field__stepper-btn" type="button" aria-label="Decrease">
+              <i data-lucide="minus" aria-hidden="true"></i>
+            </button>
+            <span class="field__stepper-value">3</span>
+            <button class="field__stepper-btn" type="button" aria-label="Increase">
+              <i data-lucide="plus" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field__label">Priority</label>
+          <div class="field__stepper">
+            <button class="field__stepper-btn" type="button" aria-label="Decrease">
+              <i data-lucide="minus" aria-hidden="true"></i>
+            </button>
+            <span class="field__stepper-value">1</span>
+            <button class="field__stepper-btn" type="button" aria-label="Increase">
+              <i data-lucide="plus" aria-hidden="true"></i>
+            </button>
+          </div>
+          <span class="field__help">1 = highest priority</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+    <!-- COLOR PICKER                                                       -->
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+
+    <h2 class="proto-card__subtitle">Color Picker</h2>
+
+    <div class="proto-card__section">
+      <div class="proto-card__row">
+        <div class="field">
+          <label class="field__label">Brand colour</label>
+          <div class="field__color-wrap">
+            <input class="field__color-swatch" type="color" value="#0071D8">
+            <input class="field__color-hex" type="text" value="#0071D8">
+          </div>
+        </div>
+        <div class="field">
+          <label class="field__label">Accent colour</label>
+          <div class="field__color-wrap">
+            <input class="field__color-swatch" type="color" value="#30CB90">
+            <input class="field__color-hex" type="text" value="#30CB90">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

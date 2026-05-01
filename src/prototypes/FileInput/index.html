@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="FileInput.css">
+  <title>File Input — Prototype</title>
+</head>
+<body>
+
+  <div class="proto-card">
+    <h1 class="proto-card__title">File Input</h1>
+
+    <!-- Default -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Default</p>
+      <div class="file-input">
+        <label class="file-input__label">Upload file</label>
+        <div class="file-input__row">
+          <span class="file-input__btn">
+            <i data-lucide="upload" aria-hidden="true"></i>
+            Choose file
+          </span>
+          <span class="file-input__field">No file chosen</span>
+        </div>
+        <p class="file-input__helper">SVG, PNG, JPG or GIF (max. 5MB)</p>
+      </div>
+    </div>
+
+    <!-- Default — file selected -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">File selected</p>
+      <div class="file-input">
+        <label class="file-input__label">Upload file</label>
+        <div class="file-input__row">
+          <span class="file-input__btn">
+            <i data-lucide="upload" aria-hidden="true"></i>
+            Choose file
+          </span>
+          <span class="file-input__field file-input__field--selected">
+            <span class="file-input__filename">quarterly-report-2026.pdf</span>
+            <button class="file-input__remove" type="button" aria-label="Remove file">
+              <i data-lucide="x" aria-hidden="true"></i>
+            </button>
+          </span>
+        </div>
+        <p class="file-input__helper">SVG, PNG, JPG or GIF (max. 5MB)</p>
+      </div>
+    </div>
+
+    <!-- Small -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Small</p>
+      <div class="file-input file-input--sm">
+        <label class="file-input__label">Attachment</label>
+        <div class="file-input__row">
+          <span class="file-input__btn">
+            <i data-lucide="upload" aria-hidden="true"></i>
+            Choose file
+          </span>
+          <span class="file-input__field">No file chosen</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Error</p>
+      <div class="file-input file-input--error">
+        <label class="file-input__label">Upload file</label>
+        <div class="file-input__row">
+          <span class="file-input__btn">
+            <i data-lucide="upload" aria-hidden="true"></i>
+            Choose file
+          </span>
+          <span class="file-input__field file-input__field--selected">
+            <span class="file-input__filename">oversized-image.png</span>
+            <button class="file-input__remove" type="button" aria-label="Remove file">
+              <i data-lucide="x" aria-hidden="true"></i>
+            </button>
+          </span>
+        </div>
+        <p class="file-input__helper">File exceeds maximum size of 5MB</p>
+      </div>
+    </div>
+
+    <!-- Drag & Drop -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Drag & Drop</p>
+      <div class="file-dropzone">
+        <div class="file-dropzone__icon">
+          <i data-lucide="upload-cloud" aria-hidden="true"></i>
+        </div>
+        <p class="file-dropzone__text"><strong>Click to upload</strong> or drag and drop</p>
+        <p class="file-dropzone__hint">SVG, PNG, JPG or GIF (max. 800×400px)</p>
+      </div>
+    </div>
+
+    <!-- Drag & Drop + Button -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Drag & Drop + Button</p>
+      <div class="file-dropzone file-dropzone--with-btn">
+        <div class="file-dropzone__inner">
+          <div class="file-dropzone__icon">
+            <i data-lucide="upload-cloud" aria-hidden="true"></i>
+          </div>
+          <p class="file-dropzone__text"><strong>Click to upload</strong> or drag and drop</p>
+          <p class="file-dropzone__hint">Max. file size: 30MB</p>
+        </div>
+        <button class="btn btn--primary btn--sm" type="button">
+          <i data-lucide="search" aria-hidden="true"></i>
+          Browse files
+        </button>
+      </div>
+    </div>
+
+    <!-- Drag & Drop — Error -->
+    <div class="proto-card__section">
+      <p class="proto-card__label">Drag & Drop — Error</p>
+      <div class="file-dropzone file-dropzone--error">
+        <div class="file-dropzone__icon">
+          <i data-lucide="upload-cloud" aria-hidden="true"></i>
+        </div>
+        <p class="file-dropzone__text"><strong>Upload failed</strong> — file type not supported</p>
+        <p class="file-dropzone__hint">SVG, PNG, JPG or GIF only</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

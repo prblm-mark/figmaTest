@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Alerts · Prototype</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="Alerts.css">
+</head>
+<body>
+
+  <div class="al-page">
+    <div>
+      <h1 class="al-page__title">Alerts</h1>
+      <p class="al-page__intro">Six alert compositions modelled on Flowbite's reference. Three colour variants — info, success, danger. Warning omitted (no <code>--ai-surface-warning</code> token yet).</p>
+    </div>
+
+    <!-- 1. Default -->
+    <section class="al-section">
+      <p class="al-section__label">1 · Default · colour variants</p>
+      <p class="al-section__caption">Three colour states for inline messages.</p>
+      <div class="al-stack">
+        <div class="alert alert--info" role="status">
+          <p class="alert__text"><strong>Info alert!</strong> Your changes are saved automatically.</p>
+        </div>
+        <div class="alert alert--success" role="status">
+          <p class="alert__text"><strong>Success alert!</strong> Your file has been uploaded.</p>
+        </div>
+        <div class="alert alert--danger" role="alert">
+          <p class="alert__text"><strong>Danger alert!</strong> Something went wrong — please retry.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. With icon -->
+    <section class="al-section">
+      <p class="al-section__label">2 · With icon</p>
+      <p class="al-section__caption">Leading icon clarifies the alert category.</p>
+      <div class="al-stack">
+        <div class="alert alert--info" role="status">
+          <span class="alert__icon"><i data-lucide="info" aria-hidden="true"></i></span>
+          <p class="alert__text"><strong>Info!</strong> A new system update is available.</p>
+        </div>
+        <div class="alert alert--success" role="status">
+          <span class="alert__icon"><i data-lucide="check-circle" aria-hidden="true"></i></span>
+          <p class="alert__text"><strong>Success!</strong> Your account is verified.</p>
+        </div>
+        <div class="alert alert--danger" role="alert">
+          <span class="alert__icon"><i data-lucide="alert-circle" aria-hidden="true"></i></span>
+          <p class="alert__text"><strong>Error!</strong> Could not connect to the database.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Bordered -->
+    <section class="al-section">
+      <p class="al-section__label">3 · Bordered</p>
+      <p class="al-section__caption">Same colours, with a border for additional emphasis.</p>
+      <div class="alert alert--info alert--bordered" role="status">
+        <span class="alert__icon"><i data-lucide="info" aria-hidden="true"></i></span>
+        <p class="alert__text"><strong>Heads up!</strong> Your trial expires in 5 days.</p>
+      </div>
+    </section>
+
+    <!-- 4. With list -->
+    <section class="al-section">
+      <p class="al-section__label">4 · With list</p>
+      <p class="al-section__caption">Structured content — heading + body + bullet list.</p>
+      <div class="alert alert--danger" role="alert">
+        <span class="alert__icon"><i data-lucide="alert-triangle" aria-hidden="true"></i></span>
+        <div class="alert__body">
+          <h3 class="alert__title">Ensure that these requirements are met:</h3>
+          <ul class="alert__list">
+            <li>At least 10 characters (and up to 100 characters)</li>
+            <li>At least one lowercase character</li>
+            <li>Inclusion of at least one special character: ! @ # ? ]</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Dismissible -->
+    <section class="al-section">
+      <p class="al-section__label">5 · Dismissible</p>
+      <p class="al-section__caption">Trailing close button removes the alert. Try clicking ×.</p>
+      <div class="alert alert--info" role="status" data-dismiss>
+        <span class="alert__icon"><i data-lucide="info" aria-hidden="true"></i></span>
+        <p class="alert__text"><strong>Info!</strong> A new build is being deployed.</p>
+        <button type="button" class="alert__close" data-dismiss-trigger aria-label="Close alert">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- 6. Top-border accent + actions -->
+    <section class="al-section">
+      <p class="al-section__label">6 · Top-border accent · with actions</p>
+      <p class="al-section__caption">Top-border colour cue plus heading, body and dual actions.</p>
+      <div class="alert alert--info alert--top-border" role="status" data-dismiss>
+        <span class="alert__icon"><i data-lucide="info" aria-hidden="true"></i></span>
+        <div class="alert__body">
+          <h3 class="alert__title">Improve your workflow</h3>
+          <p class="alert__text">Connect your CRM data to unlock contextual AI suggestions across the platform.</p>
+          <div class="alert__actions">
+            <button type="button" class="btn btn--primary btn--sm">View more</button>
+            <button type="button" class="btn btn--tertiary btn--sm" data-dismiss-trigger>Dismiss</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Announcement -->
+    <section class="al-section">
+      <p class="al-section__label">7 · Announcement</p>
+      <p class="al-section__caption">Compact pill-shaped link with badge — fits in headers or above hero sections.</p>
+      <a href="#" class="announce">
+        <span class="announce__badge">New</span>
+        <span class="announce__divider"></span>
+        <span>Affino 9.0.11 is here — see what's changed</span>
+        <i data-lucide="arrow-right" class="announce__arrow" aria-hidden="true"></i>
+      </a>
+    </section>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    lucide.createIcons();
+    document.querySelectorAll('[data-dismiss-trigger]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const alert = btn.closest('[data-dismiss]');
+        if (alert) alert.style.display = 'none';
+      });
+    });
+  </script>
+</body>
+</html>

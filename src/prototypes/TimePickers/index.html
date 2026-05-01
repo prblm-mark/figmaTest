@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Time Pickers · Prototype</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Input/Input.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="TimePickers.css">
+</head>
+<body>
+
+  <div class="tp-page">
+    <div>
+      <h1 class="tp-page__title">Time Pickers</h1>
+      <p class="tp-page__intro">Six time-input compositions modelled on Flowbite's reference, built with our Input + Button components and design tokens.</p>
+    </div>
+
+    <!-- ─── 1. Single time input with clock icon ─── -->
+    <section class="tp-section">
+      <p class="tp-section__label">1 · Single time input</p>
+      <p class="tp-section__caption">Native time picker — leading clock icon clarifies the field type.</p>
+      <div class="input">
+        <label class="input__label" for="tp1">Pick a time</label>
+        <div class="input__wrap">
+          <i data-lucide="clock" class="input__icon" aria-hidden="true"></i>
+          <input id="tp1" class="input__control" type="text" value="11:30">
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 2. Time + duration dropdown ─── -->
+    <section class="tp-section">
+      <p class="tp-section__label">2 · Time with duration</p>
+      <p class="tp-section__caption">Time field paired with a duration selector — schedule a meeting in one segmented control.</p>
+      <div class="tp-group">
+        <div class="tp-group__input-wrap">
+          <i data-lucide="clock" class="tp-group__icon" aria-hidden="true"></i>
+          <input class="tp-group__input" type="text" value="11:30">
+        </div>
+        <button type="button" class="tp-group__dropdown">
+          <span>1 hour</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- ─── 3. Time + timezone select ─── -->
+    <section class="tp-section">
+      <p class="tp-section__label">3 · Time with timezone</p>
+      <p class="tp-section__caption">Time and timezone together — useful when the audience spans regions.</p>
+      <div class="tp-group">
+        <div class="tp-group__input-wrap">
+          <i data-lucide="clock" class="tp-group__icon" aria-hidden="true"></i>
+          <input class="tp-group__input" type="text" value="09:00">
+        </div>
+        <button type="button" class="tp-group__dropdown">
+          <i data-lucide="globe" aria-hidden="true"></i>
+          <span>Europe/London</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- ─── 4. Time range — two inputs side-by-side ─── -->
+    <section class="tp-section">
+      <p class="tp-section__label">4 · Time range</p>
+      <p class="tp-section__caption">Start and end on equal footing — best for fixed event windows.</p>
+      <div class="tp-range">
+        <div class="input">
+          <label class="input__label" for="tp4-start">Start</label>
+          <div class="input__wrap">
+            <i data-lucide="clock" class="input__icon" aria-hidden="true"></i>
+            <input id="tp4-start" class="input__control" type="text" value="09:00">
+          </div>
+        </div>
+        <div class="input">
+          <label class="input__label" for="tp4-end">End</label>
+          <div class="input__wrap">
+            <i data-lucide="clock" class="input__icon" aria-hidden="true"></i>
+            <input id="tp4-end" class="input__control" type="text" value="17:30">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 5. Range with toggle (collapsible second input) ─── -->
+    <section class="tp-section">
+      <p class="tp-section__label">5 · Range with reveal</p>
+      <p class="tp-section__caption">Starts compact — single time input plus a "+ Add end time" link that reveals the second field on demand.</p>
+      <div class="tp-toggle" id="tp5">
+        <div class="tp-toggle__field">
+          <div class="input">
+            <label class="input__label" for="tp5-start">Time</label>
+            <div class="input__wrap">
+              <i data-lucide="clock" class="input__icon" aria-hidden="true"></i>
+              <input id="tp5-start" class="input__control" type="text" value="14:00">
+            </div>
+          </div>
+          <button type="button" class="tp-toggle__reveal" data-tp-reveal>
+            <i data-lucide="plus" aria-hidden="true"></i>
+            <span>Add end time</span>
+          </button>
+          <div class="tp-toggle__second">
+            <div class="input">
+              <label class="input__label" for="tp5-end">End time</label>
+              <div class="input__wrap">
+                <i data-lucide="clock" class="input__icon" aria-hidden="true"></i>
+                <input id="tp5-end" class="input__control" type="text" value="15:00">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 6. Time slot grid ─── -->
+    <section class="tp-section">
+      <p class="tp-section__label">6 · Available slots</p>
+      <p class="tp-section__caption">Pre-set slots as selectable buttons — disabled slots strike through to indicate unavailable.</p>
+      <div class="tp-slots" role="radiogroup" aria-label="Available time slots">
+        <label class="tp-slot">
+          <input type="radio" name="tp6-slot" class="tp-slot__input" value="09:00">
+          <span class="tp-slot__label">09:00</span>
+        </label>
+        <label class="tp-slot">
+          <input type="radio" name="tp6-slot" class="tp-slot__input" value="09:30" disabled>
+          <span class="tp-slot__label">09:30</span>
+        </label>
+        <label class="tp-slot">
+          <input type="radio" name="tp6-slot" class="tp-slot__input" value="10:00">
+          <span class="tp-slot__label">10:00</span>
+        </label>
+        <label class="tp-slot">
+          <input type="radio" name="tp6-slot" class="tp-slot__input" value="10:30" checked>
+          <span class="tp-slot__label">10:30</span>
+        </label>
+        <label class="tp-slot">
+          <input type="radio" name="tp6-slot" class="tp-slot__input" value="11:00">
+          <span class="tp-slot__label">11:00</span>
+        </label>
+        <label class="tp-slot">
+          <input type="radio" name="tp6-slot" class="tp-slot__input" value="11:30">
+          <span class="tp-slot__label">11:30</span>
+        </label>
+        <label class="tp-slot">
+          <input type="radio" name="tp6-slot" class="tp-slot__input" value="12:00">
+          <span class="tp-slot__label">12:00</span>
+        </label>
+        <label class="tp-slot">
+          <input type="radio" name="tp6-slot" class="tp-slot__input" value="12:30" disabled>
+          <span class="tp-slot__label">12:30</span>
+        </label>
+        <label class="tp-slot">
+          <input type="radio" name="tp6-slot" class="tp-slot__input" value="13:00">
+          <span class="tp-slot__label">13:00</span>
+        </label>
+        <label class="tp-slot">
+          <input type="radio" name="tp6-slot" class="tp-slot__input" value="13:30">
+          <span class="tp-slot__label">13:30</span>
+        </label>
+        <label class="tp-slot">
+          <input type="radio" name="tp6-slot" class="tp-slot__input" value="14:00">
+          <span class="tp-slot__label">14:00</span>
+        </label>
+        <label class="tp-slot">
+          <input type="radio" name="tp6-slot" class="tp-slot__input" value="14:30">
+          <span class="tp-slot__label">14:30</span>
+        </label>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    lucide.createIcons();
+    // Variant 5 — reveal second time input
+    document.querySelectorAll('[data-tp-reveal]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.closest('.tp-toggle').classList.add('tp-toggle--open');
+      });
+    });
+  </script>
+</body>
+</html>
