@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>Breadcrumb — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <!-- Dependencies -->
+  <link rel="stylesheet" href="../Dropdown/Dropdown.css">
+  <!-- Component -->
+  <link rel="stylesheet" href="Breadcrumb.css">
+  <style>
+    body { padding: var(--ai-spacing-7); background: var(--ai-surface-secondary); min-height: 100vh; }
+    .demo-section {
+      padding: var(--ai-spacing-6);
+      background: var(--ai-surface-primary);
+      border-radius: var(--ai-radius-lg);
+      margin-bottom: var(--ai-spacing-5);
+    }
+    /* Give the Dropdown demo enough vertical room for open panels */
+    .demo-section--dropdown { min-height: 18rem; }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 var(--ai-spacing-3);
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-6);">Breadcrumb</h1>
+  <p style="font-size: var(--ai-font-fixed-sm); color: var(--ai-text-contrast); margin: 0 0 var(--ai-spacing-7);">
+    Four type variants — Default, Home Icon, Solid Background, Dropdown. Last item indicates the current page (text-primary, semibold). Chevron-right separators use icon-contrast; home icon uses icon-secondary.
+  </p>
+
+  <!-- Type=Default -->
+  <div class="demo-section">
+    <p class="demo-section__title">Type=Default</p>
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <ol class="breadcrumb__list">
+        <li class="breadcrumb__item">
+          <a href="#" class="breadcrumb__link">Affino</a>
+        </li>
+        <li class="breadcrumb__separator" aria-hidden="true">
+          <i data-lucide="chevron-right"></i>
+        </li>
+        <li class="breadcrumb__item">
+          <a href="#" class="breadcrumb__link">Solutions</a>
+        </li>
+        <li class="breadcrumb__separator" aria-hidden="true">
+          <i data-lucide="chevron-right"></i>
+        </li>
+        <li class="breadcrumb__item breadcrumb__item--current" aria-current="page">For Event Organisers</li>
+      </ol>
+    </nav>
+  </div>
+
+  <!-- Type=Home Icon -->
+  <div class="demo-section">
+    <p class="demo-section__title">Type=Home Icon</p>
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <ol class="breadcrumb__list">
+        <li class="breadcrumb__item">
+          <a href="#" class="breadcrumb__link breadcrumb__link--home" aria-label="Home">
+            <i data-lucide="house"></i>
+          </a>
+        </li>
+        <li class="breadcrumb__separator" aria-hidden="true">
+          <i data-lucide="chevron-right"></i>
+        </li>
+        <li class="breadcrumb__item">
+          <a href="#" class="breadcrumb__link">Insights</a>
+        </li>
+        <li class="breadcrumb__separator" aria-hidden="true">
+          <i data-lucide="chevron-right"></i>
+        </li>
+        <li class="breadcrumb__item">
+          <a href="#" class="breadcrumb__link">Blog</a>
+        </li>
+        <li class="breadcrumb__separator" aria-hidden="true">
+          <i data-lucide="chevron-right"></i>
+        </li>
+        <li class="breadcrumb__item breadcrumb__item--current" aria-current="page">Customer experience</li>
+      </ol>
+    </nav>
+  </div>
+
+  <!-- Type=Solid Background -->
+  <div class="demo-section">
+    <p class="demo-section__title">Type=Solid Background</p>
+    <nav class="breadcrumb breadcrumb--solid" aria-label="Breadcrumb">
+      <ol class="breadcrumb__list">
+        <li class="breadcrumb__item">
+          <a href="#" class="breadcrumb__link breadcrumb__link--home" aria-label="Home">
+            <i data-lucide="house"></i>
+          </a>
+        </li>
+        <li class="breadcrumb__separator" aria-hidden="true">
+          <i data-lucide="chevron-right"></i>
+        </li>
+        <li class="breadcrumb__item">
+          <a href="#" class="breadcrumb__link">Settings</a>
+        </li>
+        <li class="breadcrumb__separator" aria-hidden="true">
+          <i data-lucide="chevron-right"></i>
+        </li>
+        <li class="breadcrumb__item breadcrumb__item--current" aria-current="page">Permissions</li>
+      </ol>
+    </nav>
+  </div>
+
+  <!-- Type=Dropdown — composes the Dropdown component for each trigger -->
+  <div class="demo-section demo-section--dropdown">
+    <p class="demo-section__title">Type=Dropdown</p>
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <ol class="breadcrumb__list">
+        <li class="breadcrumb__item">
+          <a href="#" class="breadcrumb__link breadcrumb__link--home" aria-label="Home">
+            <i data-lucide="house"></i>
+          </a>
+        </li>
+        <li class="breadcrumb__separator" aria-hidden="true">
+          <i data-lucide="chevron-right"></i>
+        </li>
+        <li class="breadcrumb__item">
+          <div class="dropdown">
+            <button type="button" class="breadcrumb__dropdown dropdown__trigger" aria-haspopup="menu" aria-expanded="false">
+              <span>Affino Project</span>
+              <i data-lucide="chevron-down"></i>
+            </button>
+            <div class="dropdown__panel" role="menu" aria-label="Project">
+              <ul class="dropdown__list">
+                <li role="none"><button type="button" class="dropdown__item dropdown__item--selected" role="menuitem" aria-current="true">Affino Project</button></li>
+                <li role="none"><button type="button" class="dropdown__item" role="menuitem">Marketing Site</button></li>
+                <li role="none"><button type="button" class="dropdown__item" role="menuitem">Internal Tools</button></li>
+                <li role="none"><button type="button" class="dropdown__item" role="menuitem">Sandbox</button></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li class="breadcrumb__separator" aria-hidden="true">
+          <i data-lucide="chevron-right"></i>
+        </li>
+        <li class="breadcrumb__item">
+          <div class="dropdown">
+            <button type="button" class="breadcrumb__dropdown dropdown__trigger" aria-haspopup="menu" aria-expanded="false">
+              <span>Production database</span>
+              <i data-lucide="chevron-down"></i>
+            </button>
+            <div class="dropdown__panel" role="menu" aria-label="Database">
+              <ul class="dropdown__list">
+                <li role="none"><button type="button" class="dropdown__item dropdown__item--selected" role="menuitem" aria-current="true">Production database</button></li>
+                <li role="none"><button type="button" class="dropdown__item" role="menuitem">Staging database</button></li>
+                <li role="none"><button type="button" class="dropdown__item" role="menuitem">Development database</button></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li class="breadcrumb__separator" aria-hidden="true">
+          <i data-lucide="chevron-right"></i>
+        </li>
+        <li class="breadcrumb__item breadcrumb__item--current" aria-current="page">attendees</li>
+      </ol>
+    </nav>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script type="module" src="../Dropdown/Dropdown.js"></script>
+</body>
+</html>
