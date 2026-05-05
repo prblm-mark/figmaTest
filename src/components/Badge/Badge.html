@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>Badge — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="Badge.css">
+  <style>
+    body { padding: var(--ai-spacing-7); background: var(--ai-surface-secondary); min-height: 100vh; }
+    .demo-section {
+      padding: var(--ai-spacing-6);
+      background: var(--ai-surface-primary);
+      border-radius: var(--ai-radius-lg);
+      margin-bottom: var(--ai-spacing-5);
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 var(--ai-spacing-3);
+    }
+    .demo-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--ai-spacing-3);
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-6);">Badge</h1>
+  <p style="font-size: var(--ai-font-fixed-sm); color: var(--ai-text-contrast); margin: 0 0 var(--ai-spacing-7);">
+    Six type variants × five status states × three sizes. State maps to a status colour pair (filled-soft bg + text). Type controls layout decoration. State=Default is reserved for the size demonstration row.
+  </p>
+
+  <!-- Type=Default (5 states; Default state only used for size demo below) -->
+  <div class="demo-section">
+    <p class="demo-section__title">Type=Default</p>
+    <div class="demo-row">
+      <span class="badge badge--neutral">Neutral</span>
+      <span class="badge badge--success">Success</span>
+      <span class="badge badge--warning">Warning</span>
+      <span class="badge badge--danger">Danger</span>
+      <span class="badge badge--info">Info</span>
+    </div>
+  </div>
+
+  <!-- Type=Border (no Default state in Figma) -->
+  <div class="demo-section">
+    <p class="demo-section__title">Type=Border</p>
+    <div class="demo-row">
+      <span class="badge badge--border badge--neutral">Neutral</span>
+      <span class="badge badge--border badge--success">Success</span>
+      <span class="badge badge--border badge--warning">Warning</span>
+      <span class="badge badge--border badge--danger">Danger</span>
+      <span class="badge badge--border badge--info">Info</span>
+    </div>
+  </div>
+
+  <!-- Type=Pill (no Default state in Figma) -->
+  <div class="demo-section">
+    <p class="demo-section__title">Type=Pill</p>
+    <div class="demo-row">
+      <span class="badge badge--pill badge--neutral">Neutral</span>
+      <span class="badge badge--pill badge--success">Success</span>
+      <span class="badge badge--pill badge--warning">Warning</span>
+      <span class="badge badge--pill badge--danger">Danger</span>
+      <span class="badge badge--pill badge--info">Info</span>
+    </div>
+  </div>
+
+  <!-- Type=Icon Left -->
+  <div class="demo-section">
+    <p class="demo-section__title">Type=Icon Left</p>
+    <div class="demo-row">
+      <span class="badge badge--success">
+        <i data-lucide="check" aria-hidden="true"></i>
+        <span>Verified</span>
+      </span>
+      <span class="badge badge--warning">
+        <i data-lucide="triangle-alert" aria-hidden="true"></i>
+        <span>Caution</span>
+      </span>
+      <span class="badge badge--danger">
+        <i data-lucide="circle-x" aria-hidden="true"></i>
+        <span>Failed</span>
+      </span>
+      <span class="badge badge--info">
+        <i data-lucide="info" aria-hidden="true"></i>
+        <span>Information</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- Type=Indicator -->
+  <div class="demo-section">
+    <p class="demo-section__title">Type=Indicator</p>
+    <div class="demo-row">
+      <span class="badge badge--pill badge--success">
+        <span class="badge__dot"></span>
+        <span>Online</span>
+      </span>
+      <span class="badge badge--pill badge--neutral">
+        <span class="badge__dot"></span>
+        <span>Idle</span>
+      </span>
+      <span class="badge badge--pill badge--warning">
+        <span class="badge__dot"></span>
+        <span>Away</span>
+      </span>
+      <span class="badge badge--pill badge--danger">
+        <span class="badge__dot"></span>
+        <span>Offline</span>
+      </span>
+      <span class="badge badge--pill badge--info">
+        <span class="badge__dot"></span>
+        <span>Beta</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- Type=Dismissible -->
+  <div class="demo-section">
+    <p class="demo-section__title">Type=Dismissible</p>
+    <div class="demo-row">
+      <span class="badge badge--info">
+        <span>Design</span>
+        <button type="button" class="badge__close" aria-label="Remove Design">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </span>
+      <span class="badge badge--success">
+        <span>Active</span>
+        <button type="button" class="badge__close" aria-label="Remove Active">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </span>
+      <span class="badge badge--warning">
+        <span>Pending review</span>
+        <button type="button" class="badge__close" aria-label="Remove Pending review">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </span>
+      <span class="badge badge--danger">
+        <span>Blocked</span>
+        <button type="button" class="badge__close" aria-label="Remove Blocked">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </span>
+      <span class="badge badge--neutral">
+        <span>Tag</span>
+        <button type="button" class="badge__close" aria-label="Remove Tag">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </span>
+    </div>
+  </div>
+
+  <!-- Sizes -->
+  <div class="demo-section">
+    <p class="demo-section__title">Sizes</p>
+    <div class="demo-row">
+      <span class="badge badge--default badge--sm">Small</span>
+      <span class="badge badge--default">Default</span>
+      <span class="badge badge--default badge--lg">Large</span>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script type="module" src="./Badge.js"></script>
+</body>
+</html>

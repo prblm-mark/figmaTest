@@ -1,0 +1,1 @@
+function init(){document.addEventListener("click",e=>{const t=e.target.closest(".badge__close");if(!t)return;const n=t.closest(".badge");n&&n.remove()})}"undefined"!=typeof document&&("loading"===document.readyState?document.addEventListener("DOMContentLoaded",init):init());export{init};

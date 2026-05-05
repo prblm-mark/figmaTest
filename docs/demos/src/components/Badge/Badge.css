@@ -1,0 +1,154 @@
+/* Badge component
+ * Figma node: 2580:8904 — Tier=Component
+ * Variants: Type (Default | Border | Pill | Icon Left | Indicator | Dismissible)
+ *           × State (Default | Neutral | Success | Warning | Danger | Info)
+ *           × Size (sm | Default | lg)
+ *
+ * State maps to a status palette pair (bg + text, plus optional border).
+ * Type controls structural layout (filled vs bordered, square vs pill,
+ * with/without icon/dot/close).
+ */
+
+/* ── Base ─────────────────────────────────────────────── */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  padding: var(--ai-spacing-1) var(--ai-spacing-3);
+  border: 1px solid var(--ai-btn-primary-border);
+  border-radius: var(--ai-radius-md);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.badge [data-lucide] {
+  flex-shrink: 0;
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* ── State (colour pair) ──────────────────────────────── */
+
+.badge--default {
+  background-color: var(--ai-surface-info-soft);
+  color: var(--ai-text-info);
+}
+
+.badge--neutral {
+  background-color: var(--ai-surface-neutral-soft);
+  color: var(--ai-text-neutral);
+}
+
+.badge--success {
+  background-color: var(--ai-surface-success-soft);
+  color: var(--ai-text-success);
+}
+
+.badge--warning {
+  background-color: var(--ai-surface-warning-soft);
+  color: var(--ai-text-warning);
+}
+
+.badge--danger {
+  background-color: var(--ai-surface-error-soft);
+  color: var(--ai-text-error);
+}
+
+.badge--info {
+  /* Figma binds Info bg to surface-brand-soft-extra and text to text-info.
+   * Note: State=Default uses surface-info-soft / surface-info — different
+   * tokens, slightly different visual treatment. */
+  background-color: var(--ai-surface-brand-soft-extra);
+  color: var(--ai-text-info);
+}
+
+/* ── Type=Border (transparent bg, coloured border) ───── */
+
+.badge--border {
+  background-color: transparent;
+}
+
+/* Figma defines Border with 5 states: Neutral, Success, Warning, Danger, Info — no Default. */
+.badge--border.badge--neutral { border-color: var(--ai-border-neutral); }
+.badge--border.badge--success { border-color: var(--ai-border-success); }
+.badge--border.badge--warning { border-color: var(--ai-border-warning); }
+.badge--border.badge--danger  { border-color: var(--ai-border-error); }
+.badge--border.badge--info    { border-color: var(--ai-border-info); }
+
+/* ── Type=Pill (full-radius corners) ──────────────────── */
+
+.badge--pill {
+  border-radius: var(--ai-radius-full);
+}
+
+/* ── Type=Indicator (leading dot) ─────────────────────── */
+/* The dot inherits text colour via currentColor. */
+
+.badge__dot {
+  flex-shrink: 0;
+  width: var(--ai-spacing-2);
+  height: var(--ai-spacing-2);
+  border-radius: var(--ai-radius-full);
+  background-color: currentColor;
+}
+
+/* ── Type=Dismissible (trailing X close button) ──────── */
+
+.badge__close {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-icon-size-md);
+  height: var(--ai-icon-size-md);
+  background: transparent;
+  border: 0;
+  border-radius: var(--ai-radius-full);
+  color: inherit;
+  opacity: 0.7;
+  cursor: pointer;
+  transition: opacity var(--ai-transition-default);
+}
+
+.badge__close:hover {
+  opacity: 1;
+}
+
+.badge__close [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* ── Sizes ────────────────────────────────────────────── */
+
+.badge--sm {
+  padding: 0 var(--ai-spacing-2);
+}
+
+.badge--lg {
+  padding: var(--ai-spacing-2) var(--ai-spacing-4);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-sm);
+}
+
+.badge--lg [data-lucide] {
+  width: var(--ai-icon-size-md);
+  height: var(--ai-icon-size-md);
+}
+
+/* ── Link badges (anchor as badge) ───────────────────── */
+/* Subtle hover dim — same pattern as Flowbite. */
+
+a.badge {
+  cursor: pointer;
+  transition: filter var(--ai-transition-default);
+}
+
+a.badge:hover {
+  filter: brightness(0.96);
+}
