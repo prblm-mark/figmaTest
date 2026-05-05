@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Badges · Prototype</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="Badges.css">
+</head>
+<body>
+
+  <div class="bg-page">
+    <div>
+      <h1 class="bg-page__title">Badges</h1>
+      <p class="bg-page__intro">A gallery of badge styles modelled on Flowbite's reference. All variants use design system status tokens (`--ai-surface-{status}-soft`, `--ai-text-{status}`, `--ai-border-{status}`).</p>
+    </div>
+
+    <!-- 1. Default (filled-soft) colour variants -->
+    <section class="bg-section">
+      <p class="bg-section__label">1 · Default colour variants</p>
+      <p class="bg-section__caption">Soft-tinted background + status text colour. Theme-aware in dark mode.</p>
+      <div class="bg-row">
+        <span class="badge badge--primary">Primary</span>
+        <span class="badge badge--neutral">Neutral</span>
+        <span class="badge badge--success">Success</span>
+        <span class="badge badge--warning">Warning</span>
+        <span class="badge badge--error">Danger</span>
+        <span class="badge badge--info">Info</span>
+      </div>
+    </section>
+
+    <!-- 2. Outlined / bordered -->
+    <section class="bg-section">
+      <p class="bg-section__label">2 · Outlined</p>
+      <p class="bg-section__caption">Transparent fill with a coloured border for a quieter visual weight.</p>
+      <div class="bg-row">
+        <span class="badge badge--primary badge--outline">Primary</span>
+        <span class="badge badge--neutral badge--outline">Neutral</span>
+        <span class="badge badge--success badge--outline">Success</span>
+        <span class="badge badge--warning badge--outline">Warning</span>
+        <span class="badge badge--error badge--outline">Danger</span>
+        <span class="badge badge--info badge--outline">Info</span>
+      </div>
+    </section>
+
+    <!-- 3. Pills (full radius) -->
+    <section class="bg-section">
+      <p class="bg-section__label">3 · Pills</p>
+      <p class="bg-section__caption">Full-radius corners for a softer, rounded look.</p>
+      <div class="bg-row">
+        <span class="badge badge--primary badge--pill">Primary</span>
+        <span class="badge badge--neutral badge--pill">Neutral</span>
+        <span class="badge badge--success badge--pill">Success</span>
+        <span class="badge badge--warning badge--pill">Warning</span>
+        <span class="badge badge--error badge--pill">Danger</span>
+        <span class="badge badge--info badge--pill">Info</span>
+      </div>
+    </section>
+
+    <!-- 4. Sizes -->
+    <section class="bg-section">
+      <p class="bg-section__label">4 · Sizes</p>
+      <p class="bg-section__caption">Three sizes: <code>--sm</code>, default, <code>--lg</code>.</p>
+      <div class="bg-row">
+        <span class="badge badge--primary badge--sm">Small</span>
+        <span class="badge badge--primary">Default</span>
+        <span class="badge badge--primary badge--lg">Large</span>
+      </div>
+    </section>
+
+    <!-- 5. With leading icons -->
+    <section class="bg-section">
+      <p class="bg-section__label">5 · With leading icons</p>
+      <p class="bg-section__caption">Lucide icon at the start; same gap and sizing as the badge.</p>
+      <div class="bg-row">
+        <span class="badge badge--success">
+          <i data-lucide="check" aria-hidden="true"></i>
+          <span>Verified</span>
+        </span>
+        <span class="badge badge--warning">
+          <i data-lucide="triangle-alert" aria-hidden="true"></i>
+          <span>Caution</span>
+        </span>
+        <span class="badge badge--error">
+          <i data-lucide="circle-x" aria-hidden="true"></i>
+          <span>Failed</span>
+        </span>
+        <span class="badge badge--info">
+          <i data-lucide="info" aria-hidden="true"></i>
+          <span>Information</span>
+        </span>
+        <span class="badge badge--primary badge--lg">
+          <i data-lucide="sparkles" aria-hidden="true"></i>
+          <span>New feature</span>
+        </span>
+      </div>
+    </section>
+
+    <!-- 6. With dot indicator (status badges) -->
+    <section class="bg-section">
+      <p class="bg-section__label">6 · With dot indicator</p>
+      <p class="bg-section__caption">Small leading dot — useful for live / status pills.</p>
+      <div class="bg-row">
+        <span class="badge badge--success badge--pill">
+          <span class="badge__dot"></span>
+          <span>Online</span>
+        </span>
+        <span class="badge badge--neutral badge--pill">
+          <span class="badge__dot"></span>
+          <span>Idle</span>
+        </span>
+        <span class="badge badge--warning badge--pill">
+          <span class="badge__dot"></span>
+          <span>Away</span>
+        </span>
+        <span class="badge badge--error badge--pill">
+          <span class="badge__dot"></span>
+          <span>Offline</span>
+        </span>
+        <span class="badge badge--info badge--pill">
+          <span class="badge__dot"></span>
+          <span>Beta</span>
+        </span>
+      </div>
+    </section>
+
+    <!-- 7. Dismissible -->
+    <section class="bg-section">
+      <p class="bg-section__label">7 · Dismissible</p>
+      <p class="bg-section__caption">Trailing X button removes the badge. Useful for filter chips.</p>
+      <div class="bg-row">
+        <span class="badge badge--primary">
+          <span>Design</span>
+          <button type="button" class="badge__close" aria-label="Remove Design">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </span>
+        <span class="badge badge--success">
+          <span>Active</span>
+          <button type="button" class="badge__close" aria-label="Remove Active">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </span>
+        <span class="badge badge--warning">
+          <span>Pending review</span>
+          <button type="button" class="badge__close" aria-label="Remove Pending review">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </span>
+        <span class="badge badge--error">
+          <span>Blocked</span>
+          <button type="button" class="badge__close" aria-label="Remove Blocked">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </span>
+        <span class="badge badge--neutral badge--pill">
+          <span>Tag</span>
+          <button type="button" class="badge__close" aria-label="Remove Tag">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </span>
+      </div>
+    </section>
+
+    <!-- 8. Link badges -->
+    <section class="bg-section">
+      <p class="bg-section__label">8 · Link badges</p>
+      <p class="bg-section__caption">Anchor-as-badge — clickable, with subtle hover dim.</p>
+      <div class="bg-row">
+        <a href="#" class="badge badge--primary">Documentation</a>
+        <a href="#" class="badge badge--success badge--pill">
+          <i data-lucide="external-link" aria-hidden="true"></i>
+          <span>Changelog</span>
+        </a>
+        <a href="#" class="badge badge--info badge--outline">
+          <span>Read more</span>
+          <i data-lucide="arrow-right" aria-hidden="true"></i>
+        </a>
+      </div>
+    </section>
+
+    <!-- 9. Notification overlay -->
+    <section class="bg-section">
+      <p class="bg-section__label">9 · Notification overlay</p>
+      <p class="bg-section__caption">Tiny count badge anchored to an icon — for unread counts and statuses.</p>
+      <div class="bg-row">
+        <span class="bg-notify" aria-label="Inbox, 3 unread">
+          <i data-lucide="inbox" aria-hidden="true"></i>
+          <span class="bg-notify__badge">3</span>
+        </span>
+        <span class="bg-notify" aria-label="Notifications, 12 unread">
+          <i data-lucide="bell" aria-hidden="true"></i>
+          <span class="bg-notify__badge">12</span>
+        </span>
+        <span class="bg-notify" aria-label="Messages, 99+ unread">
+          <i data-lucide="message-square" aria-hidden="true"></i>
+          <span class="bg-notify__badge">99+</span>
+        </span>
+        <span class="bg-notify" aria-label="User, online">
+          <i data-lucide="user" aria-hidden="true"></i>
+          <span class="bg-notify__dot" title="Online"></span>
+        </span>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>
