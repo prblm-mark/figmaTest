@@ -1,0 +1,121 @@
+/* Breadcrumb component
+ * Figma node: 2580:11309 (frame mislabelled "Numbered List" in Figma — the
+ * variants are Default | Home Icon | Solid Background | Dropdown, all
+ * breadcrumb patterns).
+ *
+ * Single axis: Type. The component is a horizontal list of links/items
+ * separated by chevron-right icons; the last item is the current page.
+ */
+
+/* ── Base ─────────────────────────────────────────────── */
+
+.breadcrumb {
+  display: inline-block;
+  font-family: var(--ai-font-title);
+}
+
+.breadcrumb__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.breadcrumb__item {
+  display: inline-flex;
+  align-items: center;
+  height: var(--ai-leading-md);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-md);
+}
+
+/* Link items (clickable crumbs) */
+.breadcrumb__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  color: var(--ai-text-secondary);
+  font-weight: var(--ai-font-medium);
+  text-decoration: none;
+  transition: color var(--ai-transition-default);
+}
+
+.breadcrumb__link:hover {
+  color: var(--ai-text-primary);
+}
+
+/* Current page (last item, non-clickable) */
+.breadcrumb__item--current {
+  color: var(--ai-text-primary);
+  font-weight: var(--ai-font-semibold);
+}
+
+/* Separator (chevron-right between items) */
+.breadcrumb__separator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-contrast);
+}
+
+.breadcrumb__separator [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* Home icon link */
+.breadcrumb__link--home {
+  color: var(--ai-icon-secondary);
+}
+
+.breadcrumb__link--home [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+.breadcrumb__link--home:hover {
+  color: var(--ai-text-primary);
+}
+
+/* Dropdown trigger button (Type=Dropdown) — text + chevron-down */
+.breadcrumb__dropdown {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: var(--ai-text-secondary);
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: var(--ai-font-medium);
+  line-height: inherit;
+  cursor: pointer;
+  transition: color var(--ai-transition-default);
+}
+
+.breadcrumb__dropdown:hover {
+  color: var(--ai-text-primary);
+}
+
+.breadcrumb__dropdown [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* ── Type=Solid Background ────────────────────────────── */
+
+.breadcrumb--solid .breadcrumb__list {
+  background-color: var(--ai-surface-minimal);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  padding: var(--ai-spacing-3) var(--ai-spacing-5);
+}
+
+/* ── Focus ────────────────────────────────────────────── */
+/* Keyboard focus uses the global outline from base.css. */
