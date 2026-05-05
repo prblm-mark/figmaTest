@@ -6,6 +6,52 @@ Usage: `/build-component <Figma URL or node description>`
 
 ---
 
+## Source-of-truth rules (always apply)
+
+These are absolute. Violating any of them turns a clean component build into rework.
+
+1. **Figma is the only spec.** Build from `get_metadata` + `get_design_context` +
+   `get_variable_defs` on the Figma component set. Never substitute as a spec:
+   - a prototype in `src/prototypes/`
+   - a planning doc
+   - a sibling component's CSS
+   - **the component's own existing `<Name>.css` / `<Name>.html`** when they were written in
+     a prior session, before compaction, or before the Figma component was finalised
+   See feedback memory `feedback_no_prototype_spec_substitute.md`.
+2. **Existing component files do NOT short-circuit Figma fetches.** When `src/components/<Name>/`
+   already contains files (audit/refine mode, or files left over from a prior session),
+   ALWAYS run `get_metadata` on the component set + `get_design_context` per variant +
+   `get_variable_defs` BEFORE producing `figma-notes.md` or `<Name>.figma.ts`. The existing
+   CSS class names and structure are NOT proof that the component matches Figma — they may
+   be stale, derived from a prototype, or invented. Verify, don't trust.
+3. **The component's own demo HTML (`<Name>.html`) IS the gallery.** When the build is done,
+   the demo HTML and the `index.html` card are the testbed — that is the "publish to demo"
+   step. **Never build a parallel `src/prototypes/<Name>s/` gallery for an already-built
+   component.** A plural-of-component prototype directory is the warning sign. (See feedback
+   memory `feedback_no_prototype_after_component.md`.)
+4. **Every `/build-component` finishes by registering in `index.html`.** Step 10 below — the
+   component must appear as a card in the Design System grid. This is mandatory; the build is
+   not complete until this card exists.
+
+## Pre-flight checklist (run before ANY documentation or Code Connect output)
+
+Before writing `figma-notes.md`, `<Name>.figma.ts`, or any other artefact that describes the
+variant matrix or token mapping, you MUST have completed:
+
+- [ ] `get_metadata` on the Figma component set (gives the full variant inventory)
+- [ ] `get_design_context` on at least one variant per Type axis (verifies tokens, sizing,
+      structural differences)
+- [ ] `get_variable_defs` on the root or a representative variant (verifies which `--ai-*`
+      tokens are actually bound)
+- [ ] If existing component files were present: confirmed they match Figma, or fixed them
+
+If any of these are missing, STOP. Producing `figma-notes.md` from existing CSS alone is
+documenting an unverified guess as truth. Concrete mistake: Badge `figma-notes.md` (2026-05-05)
+documented a 6-state Icon Left axis derived from the existing CSS — Figma actually defines
+only 4 Icon Left states (Success/Warning/Danger/Info).
+
+---
+
 ## Process (follow every step in order)
 
 > **Plan mode is read-only.** Steps 1–7 may be run during planning. Step 8 (Implement) and

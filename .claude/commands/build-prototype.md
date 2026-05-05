@@ -16,6 +16,48 @@ picker prototype" without invoking the skill). If you are building any prototype
 
 ---
 
+## Step 0 — HARD STOP: Is this actually a prototype request?
+
+**Before doing ANYTHING else, check whether the request is for a prototype at all.**
+
+A prototype is a **flow / screen / composition** that combines two or more components into a
+real product context. A prototype is **NOT** a gallery of one component's variants — that is
+what the component's own `<Name>.html` demo file is for.
+
+**Hard stop rule — refuse to proceed if any of these are true:**
+
+1. **The request names a single component that already exists in `src/components/<Name>/`.**
+   The component's `<Name>.html` IS the gallery. Building a parallel
+   `src/prototypes/<Name>s/` (often pluralised) duplicates work, drifts CSS, and will be
+   rejected. Examples that should trigger the stop: "build a Badges prototype" (Badge exists),
+   "build a Buttons gallery" (Button exists), "build an Alerts prototype" (Alert exists).
+
+2. **The proposed prototype directory name is the plural of a component name.**
+   `src/prototypes/Badges/`, `src/prototypes/Buttons/`, `src/prototypes/Modals/` — the
+   plural-of-component name is itself the warning sign.
+
+3. **The brief is a list of variants of one component** (e.g. "show all the colour/size/icon/
+   dismissible variations") rather than a flow/screen/composition.
+
+If any of the above are true, **STOP and ask the user**:
+
+> "The {ComponentName} component already exists at `src/components/{ComponentName}/` — its
+> `{ComponentName}.html` demo IS the variant gallery. A separate `src/prototypes/{Plural}/`
+> would duplicate that work. Do you want me to:
+> - **Update the existing component demo** (`src/components/{ComponentName}/{ComponentName}.html`)?
+> - **Build a real prototype** that composes {ComponentName} alongside other components into a flow/screen?
+> - Something else?"
+
+Wait for confirmation. Never silently build a prototype that mirrors an existing component.
+
+**This rule has been broken more than once** — most recently, a `src/prototypes/Badges/`
+gallery was built right after the Badge component itself, exactly duplicating the Badge demo.
+Saved as feedback memory `feedback_no_prototype_after_component.md`.
+
+If a prototype request passes Step 0, continue to Key principles below.
+
+---
+
 ## Key principles
 
 - **Reuse first, then build with tokens.** Check `src/components/` and `src/patterns/` for
