@@ -396,26 +396,51 @@ function pickBestColor(node, prop, candidates) {
   // If filtering leaves candidates, use them; otherwise fall back to full list
   const pool = base.length > 0 ? base : candidates;
 
-  // Step 2: Pick by context
+  // Step 2: Pick by context — within each context, prefer status semantics
+  // (success / warning / error / danger / info / neutral) over generic
+  // context tokens (minimal / contrast / primary / secondary).
   if (prop === "strokes") {
     const matches = pool.filter(v => v.name.toLowerCase().includes("border"));
-    if (matches.length >= 1) return matches[0]; // Pick first border token
+    if (matches.length >= 1) return preferStatusToken(matches);
   }
 
   if (prop === "fills" && node.type === "TEXT") {
     const matches = pool.filter(v => v.name.toLowerCase().startsWith("text/"));
-    if (matches.length >= 1) return matches[0]; // Pick first text/ token
+    if (matches.length >= 1) return preferStatusToken(matches);
   }
 
   if (prop === "fills" && node.type !== "TEXT") {
     const matches = pool.filter(v => v.name.toLowerCase().startsWith("surface/"));
-    if (matches.length >= 1) return matches[0]; // Pick first surface/ token
+    if (matches.length >= 1) return preferStatusToken(matches);
   }
 
   // Step 3: If only 1 base token left after filtering, use it
   if (pool.length === 1) return pool[0];
 
   return null;
+}
+
+
+// When multiple candidates share the same hex (e.g. surface-neutral-soft
+// and surface-minimal both = #F6F6F7), prefer the one whose name contains
+// a status keyword. Reasoning: status semantics carry intent; generic
+// context tokens (minimal/contrast/primary/secondary) collide with too
+// many bg-tinted slots to be reliable winners.
+const STATUS_KEYWORDS = ["success", "warning", "error", "danger", "info", "neutral"];
+
+function preferStatusToken(matches) {
+  if (matches.length <= 1) return matches[0] || null;
+  const status = matches.filter(v => {
+    const n = v.name.toLowerCase();
+    return STATUS_KEYWORDS.some(kw => n.includes(kw));
+  });
+  if (status.length >= 1) {
+    if (matches.length > status.length) {
+      console.log(`  [picker] preferred status token "${status[0].name}" over ${matches.length - status.length} non-status candidate(s): ${matches.filter(v => !status.includes(v)).map(v => v.name).join(", ")}`);
+    }
+    return status[0];
+  }
+  return matches[0]; // no status match — first regular
 }
 
 
