@@ -415,3 +415,90 @@ const sdChatDark = new StyleDictionary({
 });
 
 await sdChatDark.buildAllPlatforms();
+
+// ─── CC Light token build ───────────────────────────────────────────────────
+// Outputs [data-brand="cc"] { ... } overrides for the Conference & Co brand.
+// CC uses Muted Teal as its primary brand colour (vs AI's blue) plus its own
+// component-specific tokens (--cc-header-*, --cc-mainmenu-*).
+// Activation: add data-brand="cc" to a top-level element (typically <html>).
+//
+// CC tokens differ from Light in ~41 of 102 semantic colour roles. We emit ALL
+// CC tokens (not just the differences) so the cascade is unambiguous when both
+// data-brand="cc" and data-theme="dark" are set — the compound CC-dark
+// selector then wins on (0,2,0) specificity.
+
+const sdCCLight = new StyleDictionary({
+  usesDtcg: true,
+  parsers: ['figma-token-parser'],
+  source: [
+    'FigmaTokens/Primitives/Primitive.tokens.json',
+    'FigmaTokens/Semantic/CCLight.tokens.json',
+  ],
+  platforms: {
+    css: {
+      transforms: [
+        'color/figma-hex',
+        'tracking/figma-em',
+        'dimension/figma-rem',
+        'fontWeight/figma-numeric',
+        'font/figma-family',
+        'name/figma-web',
+      ],
+      buildPath: 'css/',
+      files: [{
+        destination: 'tokens-cc.css',
+        format: 'css/variables-selector',
+        filter: (token) =>
+          !!token.$extensions?.['com.figma.codeSyntax']?.WEB &&
+          !(token.$type === 'string' && !token.path?.includes('family') && !token.path?.includes('weight')),
+        options: {
+          selector: '[data-brand="cc"]',
+          outputReferences: false,
+        },
+      }],
+    },
+  },
+});
+
+await sdCCLight.buildAllPlatforms();
+
+// ─── CC Dark token build ────────────────────────────────────────────────────
+// Outputs [data-brand="cc"][data-theme="dark"] { ... } — compound selector with
+// (0,2,0) specificity so it wins over both [data-brand="cc"] and
+// [data-theme="dark"] regardless of cascade order. Compound (not descendant)
+// because data-brand and data-theme are typically siblings on <html>.
+
+const sdCCDark = new StyleDictionary({
+  usesDtcg: true,
+  parsers: ['figma-token-parser'],
+  source: [
+    'FigmaTokens/Primitives/Primitive.tokens.json',
+    'FigmaTokens/Semantic/CCDark.tokens.json',
+  ],
+  platforms: {
+    css: {
+      transforms: [
+        'color/figma-hex',
+        'tracking/figma-em',
+        'dimension/figma-rem',
+        'fontWeight/figma-numeric',
+        'font/figma-family',
+        'name/figma-web',
+      ],
+      buildPath: 'css/',
+      files: [{
+        destination: 'tokens-cc-dark.css',
+        format: 'css/variables-selector',
+        filter: (token) =>
+          !!token.$extensions?.['com.figma.codeSyntax']?.WEB &&
+          !(token.$type === 'string' && !token.path?.includes('family') && !token.path?.includes('weight')),
+        options: {
+          selector: '[data-brand="cc"][data-theme="dark"]',
+          outputReferences: false,
+        },
+      }],
+    },
+  },
+});
+
+await sdCCDark.buildAllPlatforms();
