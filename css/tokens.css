@@ -4,12 +4,12 @@
 
 :root {
   --ai-surface-primary: #ffffff;
-  --ai-surface-elevated-1: #ffffff;
-  --ai-surface-elevated-2: #ffffff;
   --ai-surface-minimal: #f6f6f7;
   --ai-surface-secondary: #ececed;
   --ai-surface-contrast: #c2c2c4;
   --ai-surface-invert: #1b1b1f;
+  --ai-surface-elevated-1: #ffffff;
+  --ai-surface-elevated-2: #ffffff;
   --ai-surface-brand: #0071d8;
   --ai-surface-brand-light: #3a8fff;
   --ai-surface-brand-dark: #0054a3;
@@ -37,7 +37,7 @@
   --ai-text-neutral: #212123;
   --ai-border-brand: #0071d8;
   --ai-border-primary: #1b1b1f;
-  --ai-border-secondary: #ececed;
+  --ai-border-secondary: #e2e2e3;
   --ai-border-contrast: #c2c2c4;
   --ai-border-invert: #1b1b1f;
   --ai-border-error: #fbd5d5;
@@ -54,10 +54,15 @@
   --ai-icon-secondary: #67676c;
   --ai-icon-contrast: #929295;
   --ai-icon-invert: #ffffff;
+  --ai-icon-invert: #e2e2e3;
   --ai-icon-brand: #0071d8;
+  --cc-header-primary-bg: #0f3b53;
+  --cc-header-secondary-bg: #ffffff;
+  --cc-mainmenu-primary-bg: #0f3b53;
+  --cc-mainmenu-secondary-bg: #0b2c3e;
   --ai-chat-brand: #0071d8; /** Editable by user */
-  --ai-chat-msg-bg: #f0f3ff; /** Editable by user */
-  --ai-chat-msg-text: #0f406b; /** Editable by user */
+  --ai-chat-msg-bg: #eff6ff; /** Editable by user */
+  --ai-chat-msg-text: #1e3a8a; /** Editable by user */
   --ai-chat-sidebar-bg: #f6f6f7;
   --ai-chat-sidebar-text: #212123;
   --ai-btn-primary-bg: #0071d8;
@@ -83,6 +88,12 @@
   --ai-btn-tertiary-text-hover: #212123;
   --ai-btn-bg-disabled: #c2c2c4;
   --ai-btn-text-disabled: #67676c;
+  --ai-datatable-table-bg: #ffffff;
+  --ai-datatable-table-header-bg: #f6f6f7;
+  --ai-datatable-table-subheader-bg: #ffffff;
+  --ai-datatable-table-footer-bg: #f6f6f7;
+  --ai-datatable-table-border: #e2e2e3;
+  --ai-datatable-table-expanded-bg: #f6f6f7;
   --ai-skeleton-base: #e2e2e3;
   --ai-skeleton-highlight: #ffffff;
   --ai-src-carousel-card-bg: #f6f6f7;

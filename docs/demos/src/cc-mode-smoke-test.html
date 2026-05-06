@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CC mode smoke test</title>
+  <link rel="stylesheet" href="styles/base.css">
+  <!-- A few component CSS files so we can visually sanity-check rendered components -->
+  <link rel="stylesheet" href="components/Button/Button.css">
+  <link rel="stylesheet" href="components/Badge/Badge.css">
+  <style>
+    body {
+      margin: 0;
+      padding: var(--ai-spacing-7);
+      min-height: 100vh;
+      background: var(--ai-surface-secondary);
+      font-family: var(--ai-font-body);
+      color: var(--ai-text-primary);
+    }
+
+    /* Mode toggle bar */
+    .modes {
+      display: flex;
+      gap: var(--ai-spacing-2);
+      padding: var(--ai-spacing-3);
+      background: var(--ai-surface-elevated-1);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-md);
+      margin-bottom: var(--ai-spacing-6);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .modes__label {
+      font-size: var(--ai-font-fixed-xxs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-right: var(--ai-spacing-3);
+    }
+    .modes__current {
+      margin-left: auto;
+      font-family: var(--ai-font-mono, monospace);
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-secondary);
+    }
+
+    h1 {
+      font-size: var(--ai-font-fluid-2xl);
+      font-weight: var(--ai-font-bold);
+      color: var(--ai-text-primary);
+      margin: 0 0 var(--ai-spacing-2);
+    }
+    h2 {
+      font-size: var(--ai-font-fixed-sm);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: var(--ai-spacing-6) 0 var(--ai-spacing-3);
+    }
+    p {
+      margin: 0 0 var(--ai-spacing-5);
+      color: var(--ai-text-secondary);
+      max-width: 60ch;
+    }
+
+    .swatches {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: var(--ai-spacing-3);
+      padding: var(--ai-spacing-5);
+      background: var(--ai-surface-primary);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-md);
+    }
+    .swatch {
+      display: flex;
+      align-items: center;
+      gap: var(--ai-spacing-3);
+      padding: var(--ai-spacing-2);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-sm, 4px);
+      background: var(--ai-surface-elevated-1);
+    }
+    .swatch__chip {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--ai-radius-sm, 4px);
+      border: 1px solid var(--ai-border-secondary);
+    }
+    .swatch__meta {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .swatch__name {
+      font-family: var(--ai-font-mono, monospace);
+      font-size: var(--ai-font-fixed-xxs);
+      color: var(--ai-text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .swatch__value {
+      font-family: var(--ai-font-mono, monospace);
+      font-size: var(--ai-font-fixed-xxs);
+      color: var(--ai-text-contrast);
+    }
+
+    .demo-row {
+      display: flex;
+      gap: var(--ai-spacing-3);
+      align-items: center;
+      flex-wrap: wrap;
+      padding: var(--ai-spacing-5);
+      background: var(--ai-surface-primary);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-md);
+    }
+  </style>
+</head>
+<body>
+  <h1>CC mode smoke test</h1>
+  <p>Click a mode below. The <code>data-theme</code> and <code>data-brand</code> attributes on
+  <code>&lt;html&gt;</code> change; every swatch and component below should re-resolve via
+  CSS custom properties — no JS re-render.</p>
+
+  <div class="modes" role="tablist" aria-label="Mode">
+    <span class="modes__label">Mode</span>
+    <button type="button" class="btn btn--secondary" data-mode="ai-light">AI Light</button>
+    <button type="button" class="btn btn--secondary" data-mode="ai-dark">AI Dark</button>
+    <button type="button" class="btn btn--secondary" data-mode="cc-light">CC Light</button>
+    <button type="button" class="btn btn--secondary" data-mode="cc-dark">CC Dark</button>
+    <span class="modes__current" id="modeCurrent"></span>
+  </div>
+
+  <h2>Surface + brand swatches</h2>
+  <div class="swatches" id="surfaceSwatches"></div>
+
+  <h2>Text + border swatches</h2>
+  <div class="swatches" id="textSwatches"></div>
+
+  <h2>Button tokens</h2>
+  <div class="swatches" id="buttonSwatches"></div>
+
+  <h2>CC-specific tokens (<code>--cc-*</code>)</h2>
+  <div class="swatches" id="ccSwatches"></div>
+
+  <h2>Rendered components</h2>
+  <div class="demo-row">
+    <button type="button" class="btn btn--primary">Primary button</button>
+    <button type="button" class="btn btn--secondary">Secondary</button>
+    <span class="badge badge--default">Default</span>
+    <span class="badge badge--success">Success</span>
+    <span class="badge badge--danger">Danger</span>
+    <span class="badge badge--info">Info</span>
+  </div>
+
+  <script>
+    // ── Mode toggle wiring ──
+    const modes = {
+      'ai-light': { theme: null,    brand: null  },
+      'ai-dark':  { theme: 'dark',  brand: null  },
+      'cc-light': { theme: null,    brand: 'cc'  },
+      'cc-dark':  { theme: 'dark',  brand: 'cc'  },
+    };
+
+    function applyMode(name) {
+      const m = modes[name];
+      if (!m) return;
+      const html = document.documentElement;
+      if (m.theme) html.setAttribute('data-theme', m.theme); else html.removeAttribute('data-theme');
+      if (m.brand) html.setAttribute('data-brand', m.brand); else html.removeAttribute('data-brand');
+      // Update display + persist
+      localStorage.setItem('cc-smoke-mode', name);
+      const cur = document.getElementById('modeCurrent');
+      const t = m.theme ? `data-theme="${m.theme}"` : '(no theme)';
+      const b = m.brand ? `data-brand="${m.brand}"` : '(no brand)';
+      cur.textContent = `${t}  ${b}`;
+      // Refresh swatch values
+      requestAnimationFrame(refreshAll);
+    }
+
+    document.querySelectorAll('[data-mode]').forEach((btn) => {
+      btn.addEventListener('click', () => applyMode(btn.dataset.mode));
+    });
+
+    // Restore on load (default to ai-light)
+    const stored = localStorage.getItem('cc-smoke-mode') || 'ai-light';
+
+    // ── Swatch panels ──
+    const SURFACE_TOKENS = [
+      '--ai-surface-primary',
+      '--ai-surface-secondary',
+      '--ai-surface-contrast',
+      '--ai-surface-minimal',
+      '--ai-surface-elevated-1',
+      '--ai-surface-elevated-2',
+      '--ai-surface-invert',
+      '--ai-surface-brand',
+      '--ai-surface-brand-light',
+      '--ai-surface-brand-dark',
+      '--ai-surface-brand-soft',
+      '--ai-surface-brand-soft-extra',
+    ];
+
+    const TEXT_TOKENS = [
+      '--ai-text-primary',
+      '--ai-text-secondary',
+      '--ai-text-contrast',
+      '--ai-text-invert',
+      '--ai-text-success',
+      '--ai-text-warning',
+      '--ai-text-error',
+      '--ai-text-info',
+      '--ai-border-primary',
+      '--ai-border-secondary',
+      '--ai-border-contrast',
+      '--ai-border-brand',
+    ];
+
+    const BUTTON_TOKENS = [
+      '--ai-btn-primary-bg',
+      '--ai-btn-primary-bg-hover',
+      '--ai-btn-primary-text',
+      '--ai-btn-secondary-bg',
+      '--ai-btn-secondary-border',
+      '--ai-btn-secondary-text',
+      '--ai-btn-bg-disabled',
+      '--ai-btn-text-disabled',
+    ];
+
+    const CC_TOKENS = [
+      '--cc-header-primary-bg',
+      '--cc-header-secondary-bg',
+      '--cc-mainmenu-primary-bg',
+      '--cc-mainmenu-secondary-bg',
+    ];
+
+    function renderSwatches(target, tokens) {
+      const el = document.getElementById(target);
+      el.innerHTML = '';
+      const cs = getComputedStyle(document.documentElement);
+      tokens.forEach((name) => {
+        const value = cs.getPropertyValue(name).trim() || '(unset)';
+        const row = document.createElement('div');
+        row.className = 'swatch';
+        row.innerHTML = `
+          <span class="swatch__chip" style="background:${value}"></span>
+          <span class="swatch__meta">
+            <span class="swatch__name">${name}</span>
+            <span class="swatch__value">${value}</span>
+          </span>`;
+        el.appendChild(row);
+      });
+    }
+
+    function refreshAll() {
+      renderSwatches('surfaceSwatches', SURFACE_TOKENS);
+      renderSwatches('textSwatches', TEXT_TOKENS);
+      renderSwatches('buttonSwatches', BUTTON_TOKENS);
+      renderSwatches('ccSwatches', CC_TOKENS);
+    }
+
+    applyMode(stored);
+    refreshAll();
+  </script>
+</body>
+</html>

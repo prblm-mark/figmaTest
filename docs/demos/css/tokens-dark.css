@@ -1,11 +1,11 @@
 [data-theme="dark"] {
   --ai-surface-primary: #1b1b1f;
-  --ai-surface-elevated-1: #212123;
-  --ai-surface-elevated-2: #2e2e32;
   --ai-surface-minimal: #262629;
   --ai-surface-secondary: #2e2e32;
   --ai-surface-contrast: #3c3c3f;
   --ai-surface-invert: #f6f6f7;
+  --ai-surface-elevated-1: #212123;
+  --ai-surface-elevated-2: #2e2e32;
   --ai-surface-brand: #0071d8;
   --ai-surface-brand-light: #3a8fff;
   --ai-surface-brand-dark: #0054a3;
@@ -45,10 +45,15 @@
   --ai-icon-secondary: #929295;
   --ai-icon-contrast: #929295;
   --ai-icon-invert: #1b1b1f;
+  --ai-icon-invert: #262629;
   --ai-icon-brand: #0071d8;
+  --cc-header-primary-bg: #1e293b;
+  --cc-header-secondary-bg: #334155;
+  --cc-mainmenu-primary-bg: #334155;
+  --cc-mainmenu-secondary-bg: #1e293b;
   --ai-chat-brand: #0071d8;
-  --ai-chat-msg-bg: #0f406b;
-  --ai-chat-msg-text: #f0f3ff;
+  --ai-chat-msg-bg: #172554;
+  --ai-chat-msg-text: #eff6ff;
   --ai-chat-sidebar-bg: #1b1b1f;
   --ai-chat-sidebar-text: #e2e2e3;
   --ai-btn-primary-bg: #0071d8;
@@ -74,6 +79,12 @@
   --ai-btn-tertiary-text-hover: #f6f6f7;
   --ai-btn-bg-disabled: #67676c;
   --ai-btn-text-disabled: #c2c2c4;
+  --ai-datatable-table-bg: #1b1b1f;
+  --ai-datatable-table-header-bg: #262629;
+  --ai-datatable-table-subheader-bg: #1b1b1f;
+  --ai-datatable-table-footer-bg: #262629;
+  --ai-datatable-table-border: #353538;
+  --ai-datatable-table-expanded-bg: #262629;
   --ai-skeleton-base: #1b1b1f;
   --ai-skeleton-highlight: #2e2e32;
   --ai-src-carousel-card-bg: #2e2e32;
