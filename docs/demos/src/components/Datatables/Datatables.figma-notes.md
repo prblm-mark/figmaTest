@@ -37,7 +37,7 @@ Type × Device are pure layout/style differences. Overflow Content is a markup d
 | Sortable column header | `<button class="datatables__sort">` | Slots inside `<th>`; `--active` modifier flips the chevron icon to dark |
 | Footer (pagination) | `.datatables__footer` | Flex row, white bg, top border. Padding `8-9/16` |
 | Pagination button group | `.datatables__pagination` | Connected segmented buttons inside a single radius-md outline |
-| Pagination button | `.datatables__page-btn` | 40×40 cells. `--active` modifier paints `--ai-surface-secondary` background with bold text |
+| Pagination button | `.datatables__page-btn` | 40×40 cells. `--active` modifier paints `--ai-datatable-table-footer-bg` background with bold text |
 | Kebab toggle (Trigger only) | `<label class="datatables__kebab">` | Wraps a hidden checkbox + `more-vertical` icon |
 | Kebab cell | `.datatables__kebab-cell` | Last `<th>`/`<td>` column, fixed 48px wide |
 | Visible row | `<tr class="datatables__row">` | Pairs with the next sibling row |
@@ -54,12 +54,20 @@ Datatables **wraps the Table component** — the inner `<table class="table">…
 
 ## Token Mapping
 
+The Datatables chrome moved to a dedicated `--ai-datatable-*` token namespace
+(`components/global/datatable` in the Figma Semantic mode files) on 2026-05-07. The base
+Table component (`.table`) still uses generic semantic tokens; Datatables overrides the
+column-header bg and cell borders inside `.datatables .table` to switch to the namespaced
+tokens.
+
 | Figma value | CSS variable | Role |
 |---|---|---|
-| `surface/elevated-1` | `--ai-surface-elevated-1` | Container bg, toolbar bg, footer bg, select bg |
-| `surface/minimal` | `--ai-surface-minimal` | Page-btn hover, expanded row bg, detail-row bg |
-| `surface/secondary` | `--ai-surface-secondary` | Active pagination button bg |
-| `border/secondary` | `--ai-border-secondary` | All container/toolbar/footer borders, divider lines |
+| `components/global/datatable/table-bg` | `--ai-datatable-table-bg` | Outer container bg, page-size select bg, pagination wrap bg |
+| `components/global/datatable/table-header-bg` | `--ai-datatable-table-header-bg` | Toolbar bg (above the table) |
+| `components/global/datatable/table-subheader-bg` | `--ai-datatable-table-subheader-bg` | Column-header row bg (inside `.datatables .table thead th`) |
+| `components/global/datatable/table-footer-bg` | `--ai-datatable-table-footer-bg` | Pagination footer bg, active page-btn bg, page-btn hover bg |
+| `components/global/datatable/table-expanded-bg` | `--ai-datatable-table-expanded-bg` | Expanded row bg + detail-row bg + kebab hover bg |
+| `components/global/datatable/table-border` | `--ai-datatable-table-border` | All chrome borders: container, toolbar, footer, pagination dividers, cell borders |
 | `text/primary` | `--ai-text-primary` | Body text, page-btn label, sort-active icon |
 | `text/secondary` | `--ai-text-secondary` | (inherited via Table) Header text |
 | `text/contrast` | `--ai-text-contrast` | Toolbar meta text, footer text, detail-list `<dt>` |

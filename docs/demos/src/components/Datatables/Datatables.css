@@ -8,6 +8,14 @@
  * expand chrome around it. Mobile is responsive via @media; the
  * Trigger overflow pattern (kebab to reveal hidden columns) is markup-
  * driven and works at any viewport.
+ *
+ * Token namespace (added 2026-05-07): chrome uses the new
+ * `--ai-datatable-*` tokens (table-bg / table-header-bg /
+ * table-subheader-bg / table-footer-bg / table-expanded-bg /
+ * table-border) sourced from the Figma `components/global/datatable`
+ * subtree. Table cells inside Datatables are scoped via
+ * `.datatables .table` so the namespaced tokens apply without forcing
+ * the standalone Table component to use them.
  */
 
 /* ── Outer container ─────────────────────────────────── */
@@ -16,10 +24,24 @@
  * The inner <table> uses .table from the Table component. */
 
 .datatables {
-  background-color: var(--ai-surface-elevated-1);
-  border: 1px solid var(--ai-border-secondary);
+  background-color: var(--ai-datatable-table-bg);
+  border: 1px solid var(--ai-datatable-table-border);
   border-radius: var(--ai-radius-md);
   overflow: hidden;
+}
+
+/* Table chrome overrides when Table is composed inside Datatables.
+ * Table itself uses generic semantic tokens; here we scope it to the
+ * datatable namespace so the column-header bg and cell borders match
+ * the new Figma tokens (subheader-bg = white, border = #e2e2e3). */
+
+.datatables .table thead th {
+  background-color: var(--ai-datatable-table-subheader-bg);
+  border-bottom-color: var(--ai-datatable-table-border);
+}
+
+.datatables .table tbody td {
+  border-bottom-color: var(--ai-datatable-table-border);
 }
 
 /* Inner wrap that holds ONLY the <table>. Scroll lives here, not on
@@ -57,8 +79,8 @@
   justify-content: space-between;
   gap: var(--ai-spacing-4);
   padding: var(--ai-spacing-4) var(--ai-spacing-5);
-  background-color: var(--ai-surface-elevated-1);
-  border-bottom: 1px solid var(--ai-border-secondary);
+  background-color: var(--ai-datatable-table-header-bg);
+  border-bottom: 1px solid var(--ai-datatable-table-border);
 }
 
 .datatables__meta {
@@ -93,8 +115,8 @@
   gap: var(--ai-spacing-2);
   height: var(--ai-spacing-7);
   padding: 0 var(--ai-spacing-3);
-  background-color: var(--ai-surface-elevated-1);
-  border: 1px solid var(--ai-border-secondary);
+  background-color: var(--ai-datatable-table-bg);
+  border: 1px solid var(--ai-datatable-table-border);
   border-radius: var(--ai-radius-md);
   font-family: var(--ai-font-title);
   font-size: var(--ai-font-fixed-xs);
@@ -161,8 +183,8 @@
   justify-content: space-between;
   gap: var(--ai-spacing-3);
   padding: var(--ai-spacing-3) var(--ai-spacing-5);
-  background-color: var(--ai-surface-elevated-1);
-  border-top: 1px solid var(--ai-border-secondary);
+  background-color: var(--ai-datatable-table-footer-bg);
+  border-top: 1px solid var(--ai-datatable-table-border);
   font-family: var(--ai-font-title);
   font-size: var(--ai-font-fixed-xs);
   color: var(--ai-text-contrast);
@@ -175,7 +197,8 @@
 .datatables__pagination {
   display: inline-flex;
   align-items: stretch;
-  border: 1px solid var(--ai-border-secondary);
+  background-color: var(--ai-datatable-table-bg);
+  border: 1px solid var(--ai-datatable-table-border);
   border-radius: var(--ai-radius-md);
   overflow: hidden;
 }
@@ -197,21 +220,21 @@
 }
 
 .datatables__page-btn:hover {
-  background-color: var(--ai-surface-minimal);
+  background-color: var(--ai-datatable-table-footer-bg);
 }
 
 .datatables__page-btn + .datatables__page-btn {
-  border-left: 1px solid var(--ai-border-secondary);
+  border-left: 1px solid var(--ai-datatable-table-border);
 }
 
 .datatables__page-btn--active {
-  background-color: var(--ai-surface-secondary);
+  background-color: var(--ai-datatable-table-footer-bg);
   color: var(--ai-text-primary);
   font-weight: var(--ai-font-bold);
 }
 
 .datatables__page-btn--active:hover {
-  background-color: var(--ai-surface-secondary);
+  background-color: var(--ai-datatable-table-footer-bg);
 }
 
 .datatables__page-btn [data-lucide] {
@@ -240,7 +263,7 @@
 }
 
 .datatables__kebab:hover {
-  background-color: var(--ai-surface-minimal);
+  background-color: var(--ai-datatable-table-expanded-bg);
   color: var(--ai-text-primary);
 }
 
@@ -271,13 +294,13 @@
 }
 
 .datatables__row:has(.datatables__kebab__input:checked) {
-  background-color: var(--ai-surface-minimal);
+  background-color: var(--ai-datatable-table-expanded-bg);
 }
 
 .datatables__row-detail__cell {
   padding: 0;
-  background-color: var(--ai-surface-minimal);
-  border-bottom: 1px solid var(--ai-border-secondary);
+  background-color: var(--ai-datatable-table-expanded-bg);
+  border-bottom: 1px solid var(--ai-datatable-table-border);
 }
 
 .datatables__detail-list {

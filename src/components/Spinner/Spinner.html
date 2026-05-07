@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>Spinner — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <!-- Composition deps (used by some demos) -->
+  <link rel="stylesheet" href="../Button/Button.css">
+  <!-- Component -->
+  <link rel="stylesheet" href="Spinner.css">
+  <style>
+    body { padding: var(--ai-spacing-7); background: var(--ai-surface-secondary); min-height: 100vh; }
+    .demo-section {
+      padding: var(--ai-spacing-6);
+      background: var(--ai-surface-primary);
+      border-radius: var(--ai-radius-lg);
+      margin-bottom: var(--ai-spacing-5);
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 var(--ai-spacing-5);
+    }
+    .demo-row {
+      display: flex;
+      align-items: center;
+      gap: var(--ai-spacing-7);
+      flex-wrap: wrap;
+    }
+    .demo-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--ai-spacing-2);
+    }
+    .demo-label {
+      font-size: var(--ai-font-fixed-xxs);
+      color: var(--ai-text-contrast);
+    }
+    .demo-inline {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--ai-spacing-3);
+      font-size: var(--ai-font-fixed-sm);
+      color: var(--ai-text-secondary);
+    }
+    /* Inverted demo — show on a brand-coloured panel so the white spinner reads */
+    .demo-inverted-panel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-brand);
+      border-radius: var(--ai-radius-md);
+      gap: var(--ai-spacing-3);
+      color: var(--ai-btn-primary-text);
+    }
+    /* Centred-in-card demo */
+    .demo-centred {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 8rem;
+      background: var(--ai-surface-elevated-1);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-md);
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-6);">Spinner</h1>
+  <p style="font-size: var(--ai-font-fixed-sm); color: var(--ai-text-contrast); margin: 0 0 var(--ai-spacing-7);">
+    Pure-CSS rotating ring. Four sizes, six status colours plus an inverted (white) variant for use on coloured backgrounds. Wrap in <code>&lt;span role="status"&gt;</code> with a visually-hidden text label for screen readers. Honours <code>prefers-reduced-motion</code> — animation pauses if requested.
+  </p>
+
+  <!-- Sizes -->
+  <div class="demo-section">
+    <p class="demo-section__title">Sizes</p>
+    <div class="demo-row">
+      <div class="demo-item">
+        <span class="spinner spinner--sm" role="status"><span class="spinner__label">Loading…</span></span>
+        <p class="demo-label">sm · 16px</p>
+      </div>
+      <div class="demo-item">
+        <span class="spinner" role="status"><span class="spinner__label">Loading…</span></span>
+        <p class="demo-label">default · 20px</p>
+      </div>
+      <div class="demo-item">
+        <span class="spinner spinner--lg" role="status"><span class="spinner__label">Loading…</span></span>
+        <p class="demo-label">lg · 24px</p>
+      </div>
+      <div class="demo-item">
+        <span class="spinner spinner--xl" role="status"><span class="spinner__label">Loading…</span></span>
+        <p class="demo-label">xl · 32px</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Colours -->
+  <div class="demo-section">
+    <p class="demo-section__title">Status colours</p>
+    <div class="demo-row">
+      <div class="demo-item">
+        <span class="spinner spinner--lg spinner--brand" role="status"><span class="spinner__label">Loading…</span></span>
+        <p class="demo-label">brand</p>
+      </div>
+      <div class="demo-item">
+        <span class="spinner spinner--lg spinner--success" role="status"><span class="spinner__label">Loading…</span></span>
+        <p class="demo-label">success</p>
+      </div>
+      <div class="demo-item">
+        <span class="spinner spinner--lg spinner--warning" role="status"><span class="spinner__label">Loading…</span></span>
+        <p class="demo-label">warning</p>
+      </div>
+      <div class="demo-item">
+        <span class="spinner spinner--lg spinner--danger" role="status"><span class="spinner__label">Loading…</span></span>
+        <p class="demo-label">danger</p>
+      </div>
+      <div class="demo-item">
+        <span class="spinner spinner--lg spinner--info" role="status"><span class="spinner__label">Loading…</span></span>
+        <p class="demo-label">info</p>
+      </div>
+      <div class="demo-item">
+        <span class="spinner spinner--lg spinner--neutral" role="status"><span class="spinner__label">Loading…</span></span>
+        <p class="demo-label">neutral</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- With status text -->
+  <div class="demo-section">
+    <p class="demo-section__title">With status text</p>
+    <div class="demo-row">
+      <span class="demo-inline">
+        <span class="spinner spinner--sm" role="status" aria-label="Loading"></span>
+        <span>Loading…</span>
+      </span>
+      <span class="demo-inline">
+        <span class="spinner" role="status" aria-label="Saving"></span>
+        <span>Saving your changes…</span>
+      </span>
+      <span class="demo-inline">
+        <span class="spinner spinner--lg spinner--success" role="status" aria-label="Uploading"></span>
+        <span>Uploading 3 files…</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- Inside a button -->
+  <div class="demo-section">
+    <p class="demo-section__title">Inside a button</p>
+    <div class="demo-row">
+      <button type="button" class="btn btn--primary" disabled aria-busy="true">
+        <span class="spinner spinner--sm spinner--inverted" role="status" aria-hidden="true"></span>
+        <span>Processing…</span>
+      </button>
+      <button type="button" class="btn btn--secondary" disabled aria-busy="true">
+        <span class="spinner spinner--sm spinner--brand" role="status" aria-hidden="true"></span>
+        <span>Loading</span>
+      </button>
+      <button type="button" class="btn btn--alert" disabled aria-busy="true">
+        <span class="spinner spinner--sm spinner--inverted" role="status" aria-hidden="true"></span>
+        <span>Deleting…</span>
+      </button>
+      <button type="button" class="btn btn--primary btn--sm" disabled aria-busy="true">
+        <span class="spinner spinner--sm spinner--inverted" role="status" aria-hidden="true"></span>
+        <span>Saving</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Inverted (on a coloured surface) -->
+  <div class="demo-section">
+    <p class="demo-section__title">Inverted (on coloured surfaces)</p>
+    <div class="demo-inverted-panel">
+      <span class="spinner spinner--lg spinner--inverted" role="status" aria-label="Loading"></span>
+      <span>Working…</span>
+    </div>
+  </div>
+
+  <!-- Centred in a card -->
+  <div class="demo-section">
+    <p class="demo-section__title">Centred in a panel (page-load placeholder)</p>
+    <div class="demo-centred">
+      <span class="spinner spinner--xl" role="status"><span class="spinner__label">Loading…</span></span>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>
