@@ -1,35 +1,43 @@
 /* Avatar component
- * Figma node: 68:5042 — "Avatars" (component set)
+ * Figma node: 68:5042 — "Avatars" component set (80 variants)
  *
- * Figma-sourced variants:
- *   Size (1–5) × Show Notification (True/False) × Checked (True/False)
+ * Variant axes:
+ *   Size                — 1 (24px) | 2 (32px) | 3 (48px) | 4 (64px) | 5 (80px)
+ *   Shape               — Round (radius-full) | Rounded (radius-md)
+ *   Type                — Default | Bordered | Placeholder | Initials
+ *   Show Notification   — True | False        (only valid with Type=Default)
+ *   Notification Color  — Green | Red | Orange (only valid with Show Notification=True)
+ *   Checked             — True | False        (only valid with Type=Default + no notification)
  *
- * Code-first additions (Flowbite-inspired, awaiting Figma adoption):
- *   - Shape=Rounded    — `.avatar--rounded`      (radius-md instead of full circle)
- *   - Type=Bordered    — `.avatar--bordered`     (2px contrast ring on any shape)
- *   - Type=Placeholder — `.avatar--placeholder`  (silhouette icon, no photo)
- *   - Type=Initials    — `.avatar--initials`     (uppercase letters)
- *   - Status dot colour modifiers — `.avatar__dot--{online,away,busy,offline}`
+ * Constraint matrix in Figma:
+ *   - Default + Show Notification + each colour × all sizes × both shapes  = 30
+ *   - Default + Show Notification=False + Checked=False × all sizes × both shapes  = 10
+ *   - Default + Show Notification=False + Checked=True  × all sizes × both shapes  = 10
+ *   - Bordered + all sizes × both shapes  = 10
+ *   - Placeholder + all sizes × both shapes = 10
+ *   - Initials + all sizes × both shapes = 10
+ *   Total = 80 symbols.
+ *
+ * Composes the Portraits component for photo content. The notification dot
+ * lives outside the photo's circular clip (clip-path is on `.portrait`,
+ * not on `.avatar` itself) so it can sit at the corner without being
+ * truncated.
  */
 
-/* ── Base (Size=1 default, circular photo container) ── */
+/* ── Base ─────────────────────────────────────────────── */
 
 .avatar {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--ai-spacing-6);              /* 1.5rem (24px) — Size=1 */
-  height: var(--ai-spacing-6);
-  border-radius: var(--ai-radius-full);
   flex-shrink: 0;
-  background-color: var(--ai-surface-secondary); /* fallback when no portrait provided */
+  width: var(--ai-spacing-6);              /* 24px — Size 1 default */
+  height: var(--ai-spacing-6);
+  border-radius: var(--ai-radius-full);    /* Round shape (default) */
 }
 
-/* ── Photo image ──────────────────────────────────── */
-/* clip-path keeps the circular mask on the photo only,
-   allowing notification dot to sit outside the circle */
-
+/* Photo */
 .avatar img {
   display: block;
   width: 100%;
@@ -37,156 +45,168 @@
   object-fit: cover;
 }
 
+/* Round shape: clip the photo to a circle so the corners of the <img> rect
+   don't show. Notification dot is a sibling and is NOT clipped. */
 .avatar .portrait {
   clip-path: circle(50%);
 }
 
-/* ── Sizes ────────────────────────────────────────── */
+/* ── Sizes ───────────────────────────────────────────── */
 
-.avatar--size-2 {
-  width: var(--ai-spacing-7);              /* 2rem (32px) */
-  height: var(--ai-spacing-7);
+.avatar--size-2 { width: var(--ai-spacing-7);  height: var(--ai-spacing-7);  }   /* 32 */
+.avatar--size-3 { width: var(--ai-spacing-9);  height: var(--ai-spacing-9);  }   /* 48 */
+.avatar--size-4 { width: var(--ai-spacing-11); height: var(--ai-spacing-11); }   /* 64 */
+.avatar--size-5 { width: var(--ai-spacing-13); height: var(--ai-spacing-13); }   /* 80 */
+
+/* ── Shape=Rounded (radius-md squircle) ─────────────── */
+
+.avatar--rounded {
+  border-radius: var(--ai-radius-md);
 }
 
-.avatar--size-3 {
-  width: var(--ai-spacing-9);              /* 3rem (48px) */
-  height: var(--ai-spacing-9);
+.avatar--rounded .portrait {
+  /* Match the wrapper's radius rather than circle */
+  clip-path: inset(0 round var(--ai-radius-md));
 }
 
-.avatar--size-4 {
-  width: var(--ai-spacing-11);             /* 4rem (64px) */
-  height: var(--ai-spacing-11);
+/* ── Type=Bordered (outer ring at +4px gap) ─────────── */
+/* Figma: 1px solid --ai-border-secondary outside the photo with a 4px
+ * visual gap. Implemented with `outline` so the avatar's box dimensions
+ * stay clean (the ring extends beyond bounds and consumers don't have to
+ * compensate for an inner padding). Outline is rounded automatically on
+ * elements with border-radius in modern browsers. */
+
+.avatar--bordered {
+  outline: 1px solid var(--ai-border-secondary);
+  outline-offset: 3px;
 }
 
-.avatar--size-5 {
-  width: var(--ai-spacing-13);             /* 5rem (80px) */
-  height: var(--ai-spacing-13);
+/* ── Type=Placeholder (silhouette icon, neutral bg) ─── */
+
+.avatar--placeholder {
+  background-color: var(--ai-surface-secondary);
+  color: var(--ai-icon-secondary);
+  overflow: hidden;
 }
 
-/* ── Notification dot (Figma: Show Notification=True) ── */
-/* Dot sits at top-right of the avatar's square bounding box,
-   outside the circular photo clip. */
+/* Placeholder user-icon sizes (explicit per Figma — NOT proportional):
+ *   Size 1 → 16px,  Size 2 → 20px,  Size 3 → 24px,  Size 4 → 32px,  Size 5 → 40px */
+.avatar--placeholder [data-lucide] {
+  width: var(--ai-icon-size-sm);                 /* 16 — Size 1 */
+  height: var(--ai-icon-size-sm);
+  flex-shrink: 0;
+}
+.avatar--size-2.avatar--placeholder [data-lucide] {
+  width: var(--ai-icon-size-md);                 /* 20 */
+  height: var(--ai-icon-size-md);
+}
+.avatar--size-3.avatar--placeholder [data-lucide] {
+  width: var(--ai-icon-size-lg);                 /* 24 */
+  height: var(--ai-icon-size-lg);
+}
+.avatar--size-4.avatar--placeholder [data-lucide] {
+  width: var(--ai-icon-size-xl);                 /* 32 */
+  height: var(--ai-icon-size-xl);
+}
+.avatar--size-5.avatar--placeholder [data-lucide] {
+  /* 40px — no `--ai-icon-size-2xl` token exists; flagged in figma-notes
+     for designer to add. Hardcoded optical size for now. */
+  width: 40px;
+  height: 40px;
+}
+
+/* ── Type=Initials (text label, info palette) ───────── */
+
+.avatar--initials {
+  background-color: var(--ai-surface-info-soft);
+  color: var(--ai-text-info);
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-semibold);
+  font-size: var(--ai-font-fixed-xxs);     /* 12px — Size 1 */
+  line-height: 1;
+  text-transform: uppercase;
+  user-select: none;
+  overflow: hidden;
+}
+
+.avatar--size-2.avatar--initials { font-size: var(--ai-font-fixed-xs);  }   /* 14px */
+.avatar--size-3.avatar--initials { font-size: var(--ai-font-fixed-md);  }   /* 18px */
+.avatar--size-4.avatar--initials { font-size: var(--ai-font-fixed-xl);  }   /* 22px */
+.avatar--size-5.avatar--initials { font-size: var(--ai-font-fixed-3xl); }   /* 28px */
+
+/* ── Checked=True (Selected — replaces photo with success tick) ── */
+
+.avatar--checked {
+  background-color: var(--ai-surface-success);
+  color: var(--ai-btn-primary-text);       /* tick stays white in light + dark */
+  overflow: hidden;
+}
+
+/* Checked tick sizes (explicit per Figma — NOT proportional):
+ *   Sizes 1-2 → 16px,  Sizes 3-5 → 24px */
+.avatar--checked [data-lucide] {
+  width: var(--ai-icon-size-sm);           /* 16 */
+  height: var(--ai-icon-size-sm);
+  flex-shrink: 0;
+}
+
+.avatar--size-3.avatar--checked [data-lucide],
+.avatar--size-4.avatar--checked [data-lucide],
+.avatar--size-5.avatar--checked [data-lucide] {
+  width: var(--ai-icon-size-lg);           /* 24 */
+  height: var(--ai-icon-size-lg);
+}
+
+/* ── Notification dot ────────────────────────────────── */
+/* Sibling of the photo, not affected by the photo's clip-path. Sits at
+ * top-right corner with a white ring separating it from the photo. */
 
 .avatar__dot {
   position: absolute;
   top: 0;
   right: 0;
-  width: var(--ai-spacing-3);              /* 0.5rem (8px) — Size=1, Size=2 */
+  width: var(--ai-spacing-3);              /* 8px — Sizes 1 + 2 */
   height: var(--ai-spacing-3);
   border-radius: var(--ai-radius-full);
-  background-color: var(--ai-surface-success);
+  background-color: var(--ai-surface-success);   /* Notification Color=Green default */
   border: 1px solid var(--ai-surface-primary);
 }
 
-/* Size=3, Size=4: 16px dot, 1.5px border */
+/* Sizes 3, 4 — 16px dot, 1.5px ring */
 .avatar--size-3 .avatar__dot,
 .avatar--size-4 .avatar__dot {
-  width: var(--ai-spacing-5);              /* 1rem (16px) */
+  width: var(--ai-spacing-5);              /* 16px */
   height: var(--ai-spacing-5);
   border-width: 1.5px;
 }
 
-/* Size=5: 24px dot, 2px border */
+/* Size 5 — 24px dot, 2px ring */
 .avatar--size-5 .avatar__dot {
-  width: var(--ai-spacing-6);              /* 1.5rem (24px) */
+  width: var(--ai-spacing-6);              /* 24px */
   height: var(--ai-spacing-6);
   border-width: 2px;
 }
 
-/* ── Checked variant (Figma: Checked=True) ────────── */
-/* Used in VersionHistoryRow Selected state — replaces photo with
-   a green success circle and a tick icon. */
+/* ── Notification Color modifiers ───────────────────── */
+/* Match Figma's Notification Color enum: Green | Red | Orange. */
 
-.avatar--checked {
-  background-color: var(--ai-surface-success);
-  border: 1px solid var(--ai-surface-primary); /* white ring separates from row bg */
-}
+.avatar__dot--green  { background-color: var(--ai-surface-success); }
+.avatar__dot--red    { background-color: var(--ai-surface-error); }
+.avatar__dot--orange { background-color: var(--ai-surface-warning); }
 
-.avatar--checked [data-lucide] {
-  width: var(--ai-icon-size-sm);           /* 1rem (16px) — Size=1, Size=2 */
-  height: var(--ai-icon-size-sm);
-  color: var(--ai-btn-primary-text);       /* always white — surface-success is theme-invariant */
-  flex-shrink: 0;
-}
+/* ── Notification dot — Shape=Rounded offsets ──────────
+ * On Round avatars the dot sits at top-right of the bounding box
+ * (top: 0, right: 0). On Rounded (squircle) avatars the dot is
+ * pulled OUTSIDE the bounds with negative offsets so it clears the
+ * radius-md corner cleanly. Offsets are explicit per Figma:
+ *   Size 1: top -3px, right -2px
+ *   Size 2: top -2px, right -2px
+ *   Sizes 3-5: top -8px, right -8px
+ * (Optical pixel offsets — kept as `px` per project convention for
+ * non-tokenised dimension values.) */
 
-/* Size=3/4/5: larger check icon (24px) */
-.avatar--size-3.avatar--checked [data-lucide],
-.avatar--size-4.avatar--checked [data-lucide],
-.avatar--size-5.avatar--checked [data-lucide] {
-  width: var(--ai-icon-size-lg);           /* 1.5rem (24px) */
-  height: var(--ai-icon-size-lg);
-}
-
-/* ── Rounded (Shape=Rounded — squircle, not full circle) ──── */
-/* Code-first; flag for designer to formalise as a Figma variant. */
-/* Overrides the default circular clip-path on the photo and uses a
-   radius-md container with overflow:hidden instead. */
-
-.avatar--rounded {
-  border-radius: var(--ai-radius-md);
-  overflow: hidden;
-}
-
-.avatar--rounded .portrait {
-  clip-path: none;
-  border-radius: inherit;
-}
-
-/* ── Bordered (visible 2px ring) ──────────────────────────── */
-/* Code-first; flag for designer to formalise as a Figma variant.
- * Uses surface-contrast (a visible neutral) so the ring reads against
- * any standard surface. Outline (not border) so it doesn't affect the
- * box dimensions and works equally on circular and rounded shapes. */
-
-.avatar--bordered {
-  outline: 2px solid var(--ai-surface-contrast);
-  outline-offset: -2px;
-}
-
-/* ── Placeholder (silhouette icon, no photo) ──────── */
-/* Used when no portrait is available. Flowbite-style. */
-
-.avatar--placeholder {
-  background-color: var(--ai-surface-contrast);
-  color: var(--ai-text-invert);
-  overflow: hidden;
-}
-
-.avatar--placeholder [data-lucide] {
-  width: 75%;
-  height: 75%;
-  flex-shrink: 0;
-  /* Position low so the silhouette's shoulders are partly clipped at the
-     bottom of the circle — a closer match to Flowbite's grey user icon. */
-  margin-top: 25%;
-}
-
-/* ── Initials (text-based, no photo) ──────────────── */
-/* Two uppercase letters centred. Background uses brand-soft to avoid
-   competing with photo avatars in the same grid. */
-
-.avatar--initials {
-  background-color: var(--ai-surface-brand-soft);
-  color: var(--ai-surface-brand-dark);
-  font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-semibold);
-  font-size: var(--ai-font-fixed-xxs);     /* Size=1 — 12px */
-  line-height: 1;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  user-select: none;
-}
-
-.avatar--size-2.avatar--initials { font-size: var(--ai-font-fixed-xs);  }   /* 14px */
-.avatar--size-3.avatar--initials { font-size: var(--ai-font-fixed-md);  }   /* 16px */
-.avatar--size-4.avatar--initials { font-size: var(--ai-font-fixed-xl);  }   /* 22px */
-.avatar--size-5.avatar--initials { font-size: var(--ai-font-fixed-2xl); }   /* 28px */
-
-/* ── Status dot colour modifiers ──────────────────── */
-/* Default `.avatar__dot` is success-coloured. These modifier classes
-   re-paint the dot for online-status patterns (online/away/busy/offline). */
-
-.avatar__dot--online  { background-color: var(--ai-surface-success); }
-.avatar__dot--away    { background-color: var(--ai-surface-warning); }
-.avatar__dot--busy    { background-color: var(--ai-surface-error); }
-.avatar__dot--offline { background-color: var(--ai-surface-contrast); }
+.avatar--rounded .avatar__dot                     { top: -3px; right: -2px; }
+.avatar--rounded.avatar--size-2 .avatar__dot      { top: -2px; right: -2px; }
+.avatar--rounded.avatar--size-3 .avatar__dot,
+.avatar--rounded.avatar--size-4 .avatar__dot,
+.avatar--rounded.avatar--size-5 .avatar__dot      { top: -8px; right: -8px; }

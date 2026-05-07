@@ -2,13 +2,13 @@
  *
  * Reference: https://flowbite.com/docs/components/spinner/
  *
- * Pure-CSS rotating ring with a faded "track" (rest of the circle at
- * 20% opacity of the active colour) and a solid leading arc. The
- * border-trick is more compact than an SVG and scales cleanly with
- * any size + colour modifier.
+ * Inline SVG (track circle + leading 90° arc) animated via CSS rotation.
+ * SVG instead of a border-trick because Figma's html-to-design capture
+ * parses source CSS and can't resolve color-mix() — using SVG keeps the
+ * spinner visible in pushed Figma frames.
  *
- * Status: code-first; no Figma source yet. Push the Spinner.html demo
- * to Figma after build so the designer can incorporate it.
+ * Status: code-first; no Figma source yet. Spinner.html is pushed to
+ * Figma after build so the designer can incorporate it.
  *
  * Variants:
  *   Size  — `.spinner--sm`, default, `.spinner--lg`, `.spinner--xl`
@@ -16,11 +16,11 @@
  *            `--info`, `--neutral`, `--inverted` (white)
  *
  * Accessibility:
- *   - Wrap in `<span role="status">` so screen readers announce the
- *     loading state.
- *   - Provide a visually-hidden text label inside (e.g. "Loading…").
- *   - Honours `prefers-reduced-motion` — animation is paused, the
- *     ring is shown statically.
+ *   - Wrap the SVG in `<span role="status">` so SR announce it.
+ *   - Provide a visually-hidden text label (`<span class="spinner__label">`)
+ *     OR an `aria-label` on the wrapper.
+ *   - Honours `prefers-reduced-motion` — animation pauses, the ring is
+ *     shown statically.
  */
 
 /* ── Base ─────────────────────────────────────────────── */
@@ -29,23 +29,24 @@
   display: inline-block;
   width: var(--ai-icon-size-md);    /* 20px default */
   height: var(--ai-icon-size-md);
-  border: 2px solid;
-  border-radius: var(--ai-radius-full);
-  /* Track = currentColor at 20% opacity, leading arc = full currentColor.
-     color-mix is widely supported in evergreen browsers. */
-  border-color: color-mix(in srgb, currentColor 20%, transparent);
-  border-top-color: currentColor;
-  animation: ai-spinner-spin 750ms linear infinite;
-  /* Default colour comes from .spinner--brand below; consumers may
-     also set `color: …` directly on the element to drive currentColor. */
-  color: var(--ai-surface-brand);
+  color: var(--ai-surface-brand);   /* drives currentColor inside the SVG */
   flex-shrink: 0;
+  vertical-align: middle;
 }
 
-/* Visually-hidden label inside the spinner for screen-reader users.
- * Use the same convention as base.css `.sr-only`, but scoped here so
- * the component is self-contained. */
+.spinner__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  animation: ai-spinner-spin 750ms linear infinite;
+}
 
+/* Track = full ring at 20% opacity; arc = leading ~90° at full opacity. */
+.spinner__track {
+  opacity: 0.2;
+}
+
+/* Visually-hidden label inside the spinner for screen-reader users. */
 .spinner__label {
   position: absolute;
   width: 1px;
@@ -59,30 +60,26 @@
 }
 
 /* ── Sizes ─────────────────────────────────────────────── */
-/* Border width scales with diameter so the visual weight stays right. */
 
 .spinner--sm {
   width: var(--ai-icon-size-sm);    /* 16px */
   height: var(--ai-icon-size-sm);
-  border-width: 2px;
 }
 
 .spinner--lg {
   width: var(--ai-icon-size-lg);    /* 24px */
   height: var(--ai-icon-size-lg);
-  border-width: 3px;
 }
 
 .spinner--xl {
   width: var(--ai-icon-size-xl);    /* 32px */
   height: var(--ai-icon-size-xl);
-  border-width: 4px;
 }
 
 /* ── Colour modifiers ─────────────────────────────────── */
-/* Each modifier just sets the `color` property; the ring inherits
- * via `currentColor`. Consumers can also set `color: …` inline if
- * none of the presets fit. */
+/* Each modifier sets `color` on the wrapper; the SVG paths use
+ * `stroke="currentColor"` so they inherit. Consumers can also set
+ * `color: …` directly for one-off tinting. */
 
 .spinner--brand    { color: var(--ai-surface-brand); }
 .spinner--success  { color: var(--ai-surface-success); }
@@ -99,7 +96,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .spinner {
+  .spinner__svg {
     animation: none;
   }
 }

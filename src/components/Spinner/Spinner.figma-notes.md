@@ -62,16 +62,27 @@ Duration `750ms`, `linear`, `infinite`. Single keyframe rotation.
 
 `prefers-reduced-motion: reduce` pauses the animation — the ring is shown statically (still visible as a ring with a leading arc, just not spinning).
 
-## Track effect
+## Markup — inline SVG (track + leading arc)
 
-The "rest of the ring" is rendered as `currentColor` at 20% opacity using `color-mix()`:
+Each spinner instance contains the same SVG; copy this template:
 
-```css
-border-color: color-mix(in srgb, currentColor 20%, transparent);
-border-top-color: currentColor;
+```html
+<svg class="spinner__svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+  <circle class="spinner__track" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
+  <path   class="spinner__arc"   d="M12 2 a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+</svg>
 ```
 
-This produces a faded full ring with a solid leading arc (mimicking Flowbite's track + arc SVG) using a single border declaration. `color-mix()` is supported in all evergreen browsers (Chrome 111+, Firefox 113+, Safari 16.2+).
+- `circle` is the full ring at 20% opacity (`.spinner__track { opacity: 0.2 }`).
+- `path` is the leading 90° arc at full opacity, drawn from the top-centre.
+- Both use `stroke="currentColor"` so the colour modifier on the wrapper drives both.
+- Animation lives on the SVG element (`.spinner__svg { animation: ai-spinner-spin … }`).
+
+**Why SVG instead of a CSS border trick:** an earlier draft used `border` +
+`color-mix(in srgb, currentColor 20%, transparent)` to produce the faded track. That works
+in browsers but Figma's html-to-design capture script parses source CSS strings and can't
+resolve `color-mix()` — the captured frame rendered no spinners at all. Inline SVG is
+captured natively as a vector and survives the round-trip cleanly.
 
 ## Accessibility
 

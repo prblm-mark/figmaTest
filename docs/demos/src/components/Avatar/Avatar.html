@@ -27,7 +27,7 @@
     .demo-row {
       display: flex;
       align-items: flex-end;
-      gap: var(--ai-spacing-5);
+      gap: var(--ai-spacing-7);
       flex-wrap: wrap;
     }
     .demo-label {
@@ -46,296 +46,159 @@
 <body>
 
   <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-6);">Avatar</h1>
+  <p style="font-size: var(--ai-font-fixed-sm); color: var(--ai-text-contrast); margin: 0 0 var(--ai-spacing-7);">
+    Five sizes × two shapes × four types (Default · Bordered · Placeholder · Initials), with optional Notification dot in three colours and a Checked state for selection. 80 variants in the Figma component set.
+  </p>
 
-  <!-- Default — portrait (all sizes) -->
+  <!-- ───────── Round shape ───────── -->
+
+  <!-- Default — photo, all sizes -->
   <div class="demo-section">
-    <p class="demo-section__title">Default — portrait (all sizes)</p>
+    <p class="demo-section__title">Round · Default — photo (all sizes)</p>
     <div class="demo-row">
-      <div class="demo-item">
-        <div class="avatar">
-          <img class="portrait" src="https://picsum.photos/seed/female1/300" alt="Female 1">
-        </div>
-        <p class="demo-label">Size 1 · 24px</p>
-      </div>
-      <div class="demo-item">
-        <div class="avatar avatar--size-2">
-          <img class="portrait" src="https://picsum.photos/seed/female1/300" alt="Female 1">
-        </div>
-        <p class="demo-label">Size 2 · 32px</p>
-      </div>
-      <div class="demo-item">
-        <div class="avatar avatar--size-3">
-          <img class="portrait" src="https://picsum.photos/seed/female1/300" alt="Female 1">
-        </div>
-        <p class="demo-label">Size 3 · 48px</p>
-      </div>
-      <div class="demo-item">
-        <div class="avatar avatar--size-4">
-          <img class="portrait" src="https://picsum.photos/seed/female1/300" alt="Female 1">
-        </div>
-        <p class="demo-label">Size 4 · 64px</p>
-      </div>
-      <div class="demo-item">
-        <div class="avatar avatar--size-5">
-          <img class="portrait" src="https://picsum.photos/seed/female1/300" alt="Female 1">
-        </div>
-        <p class="demo-label">Size 5 · 80px</p>
-      </div>
+      <div class="demo-item"><div class="avatar"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""></div><p class="demo-label">Size 1 · 24px</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-2"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""></div><p class="demo-label">Size 2 · 32px</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-3"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""></div><p class="demo-label">Size 3 · 48px</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-4"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""></div><p class="demo-label">Size 4 · 64px</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-5"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""></div><p class="demo-label">Size 5 · 80px</p></div>
     </div>
   </div>
 
-  <!-- Show Notification — all 5 sizes -->
+  <!-- Show Notification = Green -->
   <div class="demo-section">
-    <p class="demo-section__title">Show Notification (all sizes)</p>
+    <p class="demo-section__title">Round · Show Notification = Green</p>
     <div class="demo-row">
-      <div class="demo-item">
-        <div class="avatar">
-          <img class="portrait" src="https://picsum.photos/seed/female1/300" alt="Female 1">
-          <span class="avatar__dot" aria-hidden="true"></span>
-        </div>
-        <p class="demo-label">Size 1 · 24px</p>
-      </div>
-      <div class="demo-item">
-        <div class="avatar avatar--size-2">
-          <img class="portrait" src="https://picsum.photos/seed/female1/300" alt="Female 1">
-          <span class="avatar__dot" aria-hidden="true"></span>
-        </div>
-        <p class="demo-label">Size 2 · 32px</p>
-      </div>
-      <div class="demo-item">
-        <div class="avatar avatar--size-3">
-          <img class="portrait" src="https://picsum.photos/seed/female1/300" alt="Female 1">
-          <span class="avatar__dot" aria-hidden="true"></span>
-        </div>
-        <p class="demo-label">Size 3 · 48px</p>
-      </div>
-      <div class="demo-item">
-        <div class="avatar avatar--size-4">
-          <img class="portrait" src="https://picsum.photos/seed/female1/300" alt="Female 1">
-          <span class="avatar__dot" aria-hidden="true"></span>
-        </div>
-        <p class="demo-label">Size 4 · 64px</p>
-      </div>
-      <div class="demo-item">
-        <div class="avatar avatar--size-5">
-          <img class="portrait" src="https://picsum.photos/seed/female1/300" alt="Female 1">
-          <span class="avatar__dot" aria-hidden="true"></span>
-        </div>
-        <p class="demo-label">Size 5 · 80px</p>
-      </div>
+      <div class="demo-item"><div class="avatar"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--green" aria-hidden="true"></span></div><p class="demo-label">Size 1</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-2"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--green" aria-hidden="true"></span></div><p class="demo-label">Size 2</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-3"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--green" aria-hidden="true"></span></div><p class="demo-label">Size 3</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-4"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--green" aria-hidden="true"></span></div><p class="demo-label">Size 4</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-5"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--green" aria-hidden="true"></span></div><p class="demo-label">Size 5</p></div>
     </div>
   </div>
 
-  <!-- Checked variant — all 5 sizes -->
+  <!-- Show Notification = Red -->
   <div class="demo-section">
-    <p class="demo-section__title">Checked=True (Selected state)</p>
+    <p class="demo-section__title">Round · Show Notification = Red</p>
     <div class="demo-row">
-      <div class="demo-item">
-        <div class="avatar avatar--checked">
-          <i data-lucide="check" aria-hidden="true"></i>
-        </div>
-        <p class="demo-label">Size 1</p>
-      </div>
-      <div class="demo-item">
-        <div class="avatar avatar--size-2 avatar--checked">
-          <i data-lucide="check" aria-hidden="true"></i>
-        </div>
-        <p class="demo-label">Size 2</p>
-      </div>
-      <div class="demo-item">
-        <div class="avatar avatar--size-3 avatar--checked">
-          <i data-lucide="check" aria-hidden="true"></i>
-        </div>
-        <p class="demo-label">Size 3</p>
-      </div>
-      <div class="demo-item">
-        <div class="avatar avatar--size-4 avatar--checked">
-          <i data-lucide="check" aria-hidden="true"></i>
-        </div>
-        <p class="demo-label">Size 4</p>
-      </div>
-      <div class="demo-item">
-        <div class="avatar avatar--size-5 avatar--checked">
-          <i data-lucide="check" aria-hidden="true"></i>
-        </div>
-        <p class="demo-label">Size 5</p>
-      </div>
+      <div class="demo-item"><div class="avatar"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--red" aria-hidden="true"></span></div><p class="demo-label">Size 1</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-2"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--red" aria-hidden="true"></span></div><p class="demo-label">Size 2</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-3"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--red" aria-hidden="true"></span></div><p class="demo-label">Size 3</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-4"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--red" aria-hidden="true"></span></div><p class="demo-label">Size 4</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-5"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--red" aria-hidden="true"></span></div><p class="demo-label">Size 5</p></div>
     </div>
   </div>
 
-  <!-- Code-first additions (Flowbite-inspired, not yet in the Figma component set) -->
-
-  <!-- Bordered (all sizes) -->
+  <!-- Show Notification = Orange -->
   <div class="demo-section">
-    <p class="demo-section__title">Bordered (code-first)</p>
+    <p class="demo-section__title">Round · Show Notification = Orange</p>
     <div class="demo-row">
-      <div class="demo-item">
-        <div class="avatar avatar--bordered">
-          <img class="portrait" src="https://picsum.photos/seed/female1/300" alt="">
-        </div>
-        <p class="demo-label">Size 1 · 24px</p>
-      </div>
-      <div class="demo-item">
-        <div class="avatar avatar--size-2 avatar--bordered">
-          <img class="portrait" src="https://picsum.photos/seed/female1/300" alt="">
-        </div>
-        <p class="demo-label">Size 2 · 32px</p>
-      </div>
-      <div class="demo-item">
-        <div class="avatar avatar--size-3 avatar--bordered">
-          <img class="portrait" src="https://picsum.photos/seed/male1/300" alt="">
-        </div>
-        <p class="demo-label">Size 3 · 48px</p>
-      </div>
-      <div class="demo-item">
-        <div class="avatar avatar--size-4 avatar--bordered">
-          <img class="portrait" src="https://picsum.photos/seed/female2/300" alt="">
-        </div>
-        <p class="demo-label">Size 4 · 64px</p>
-      </div>
-      <div class="demo-item">
-        <div class="avatar avatar--size-5 avatar--bordered">
-          <img class="portrait" src="https://picsum.photos/seed/male2/300" alt="">
-        </div>
-        <p class="demo-label">Size 5 · 80px</p>
-      </div>
+      <div class="demo-item"><div class="avatar"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--orange" aria-hidden="true"></span></div><p class="demo-label">Size 1</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-2"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--orange" aria-hidden="true"></span></div><p class="demo-label">Size 2</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-3"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--orange" aria-hidden="true"></span></div><p class="demo-label">Size 3</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-4"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--orange" aria-hidden="true"></span></div><p class="demo-label">Size 4</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-5"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--orange" aria-hidden="true"></span></div><p class="demo-label">Size 5</p></div>
     </div>
   </div>
 
-  <!-- Placeholder (silhouette) -->
+  <!-- Checked = True -->
   <div class="demo-section">
-    <p class="demo-section__title">Placeholder — silhouette (code-first)</p>
+    <p class="demo-section__title">Round · Checked = True (Selected state)</p>
     <div class="demo-row">
-      <div class="demo-item">
-        <div class="avatar avatar--placeholder" aria-label="No portrait">
-          <i data-lucide="user" aria-hidden="true"></i>
-        </div>
-        <p class="demo-label">Size 1</p>
-      </div>
-      <div class="demo-item">
-        <div class="avatar avatar--size-2 avatar--placeholder" aria-label="No portrait">
-          <i data-lucide="user" aria-hidden="true"></i>
-        </div>
-        <p class="demo-label">Size 2</p>
-      </div>
-      <div class="demo-item">
-        <div class="avatar avatar--size-3 avatar--placeholder" aria-label="No portrait">
-          <i data-lucide="user" aria-hidden="true"></i>
-        </div>
-        <p class="demo-label">Size 3</p>
-      </div>
-      <div class="demo-item">
-        <div class="avatar avatar--size-4 avatar--placeholder" aria-label="No portrait">
-          <i data-lucide="user" aria-hidden="true"></i>
-        </div>
-        <p class="demo-label">Size 4</p>
-      </div>
-      <div class="demo-item">
-        <div class="avatar avatar--size-5 avatar--placeholder" aria-label="No portrait">
-          <i data-lucide="user" aria-hidden="true"></i>
-        </div>
-        <p class="demo-label">Size 5</p>
-      </div>
+      <div class="demo-item"><div class="avatar avatar--checked"><i data-lucide="check" aria-hidden="true"></i></div><p class="demo-label">Size 1</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-2 avatar--checked"><i data-lucide="check" aria-hidden="true"></i></div><p class="demo-label">Size 2</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-3 avatar--checked"><i data-lucide="check" aria-hidden="true"></i></div><p class="demo-label">Size 3</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-4 avatar--checked"><i data-lucide="check" aria-hidden="true"></i></div><p class="demo-label">Size 4</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-5 avatar--checked"><i data-lucide="check" aria-hidden="true"></i></div><p class="demo-label">Size 5</p></div>
     </div>
   </div>
 
-  <!-- Initials -->
+  <!-- Type = Bordered -->
   <div class="demo-section">
-    <p class="demo-section__title">Initials (code-first)</p>
+    <p class="demo-section__title">Round · Type = Bordered</p>
     <div class="demo-row">
-      <div class="demo-item">
-        <div class="avatar avatar--initials" aria-label="Mark Foster">MF</div>
-        <p class="demo-label">Size 1</p>
-      </div>
-      <div class="demo-item">
-        <div class="avatar avatar--size-2 avatar--initials" aria-label="Derrick Jefferson">DJ</div>
-        <p class="demo-label">Size 2</p>
-      </div>
-      <div class="demo-item">
-        <div class="avatar avatar--size-3 avatar--initials" aria-label="Sarah Khan">SK</div>
-        <p class="demo-label">Size 3</p>
-      </div>
-      <div class="demo-item">
-        <div class="avatar avatar--size-4 avatar--initials" aria-label="Marco Reyes">MR</div>
-        <p class="demo-label">Size 4</p>
-      </div>
-      <div class="demo-item">
-        <div class="avatar avatar--size-5 avatar--initials" aria-label="Tomas Lebrun">TL</div>
-        <p class="demo-label">Size 5</p>
-      </div>
+      <div class="demo-item"><div class="avatar avatar--bordered"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""></div><p class="demo-label">Size 1</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-2 avatar--bordered"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""></div><p class="demo-label">Size 2</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-3 avatar--bordered"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""></div><p class="demo-label">Size 3</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-4 avatar--bordered"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""></div><p class="demo-label">Size 4</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-5 avatar--bordered"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""></div><p class="demo-label">Size 5</p></div>
     </div>
   </div>
 
-  <!-- Status dot — all sizes per status -->
+  <!-- Type = Placeholder -->
   <div class="demo-section">
-    <p class="demo-section__title">Status dot — Online (all sizes, code-first)</p>
+    <p class="demo-section__title">Round · Type = Placeholder</p>
     <div class="demo-row">
-      <div class="demo-item"><div class="avatar"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--online" aria-hidden="true"></span></div><p class="demo-label">Size 1</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-2"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--online" aria-hidden="true"></span></div><p class="demo-label">Size 2</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-3"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--online" aria-hidden="true"></span></div><p class="demo-label">Size 3</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-4"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--online" aria-hidden="true"></span></div><p class="demo-label">Size 4</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-5"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--online" aria-hidden="true"></span></div><p class="demo-label">Size 5</p></div>
+      <div class="demo-item"><div class="avatar avatar--placeholder" aria-label="No portrait"><i data-lucide="user" aria-hidden="true"></i></div><p class="demo-label">Size 1</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-2 avatar--placeholder" aria-label="No portrait"><i data-lucide="user" aria-hidden="true"></i></div><p class="demo-label">Size 2</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-3 avatar--placeholder" aria-label="No portrait"><i data-lucide="user" aria-hidden="true"></i></div><p class="demo-label">Size 3</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-4 avatar--placeholder" aria-label="No portrait"><i data-lucide="user" aria-hidden="true"></i></div><p class="demo-label">Size 4</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-5 avatar--placeholder" aria-label="No portrait"><i data-lucide="user" aria-hidden="true"></i></div><p class="demo-label">Size 5</p></div>
     </div>
   </div>
 
+  <!-- Type = Initials -->
   <div class="demo-section">
-    <p class="demo-section__title">Status dot — Away (all sizes, code-first)</p>
+    <p class="demo-section__title">Round · Type = Initials</p>
     <div class="demo-row">
-      <div class="demo-item"><div class="avatar"><img class="portrait" src="https://picsum.photos/seed/male1/300" alt=""><span class="avatar__dot avatar__dot--away" aria-hidden="true"></span></div><p class="demo-label">Size 1</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-2"><img class="portrait" src="https://picsum.photos/seed/male1/300" alt=""><span class="avatar__dot avatar__dot--away" aria-hidden="true"></span></div><p class="demo-label">Size 2</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-3"><img class="portrait" src="https://picsum.photos/seed/male1/300" alt=""><span class="avatar__dot avatar__dot--away" aria-hidden="true"></span></div><p class="demo-label">Size 3</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-4"><img class="portrait" src="https://picsum.photos/seed/male1/300" alt=""><span class="avatar__dot avatar__dot--away" aria-hidden="true"></span></div><p class="demo-label">Size 4</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-5"><img class="portrait" src="https://picsum.photos/seed/male1/300" alt=""><span class="avatar__dot avatar__dot--away" aria-hidden="true"></span></div><p class="demo-label">Size 5</p></div>
+      <div class="demo-item"><div class="avatar avatar--initials" aria-label="Mark Foster">MF</div><p class="demo-label">Size 1</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-2 avatar--initials" aria-label="Derrick Jefferson">DJ</div><p class="demo-label">Size 2</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-3 avatar--initials" aria-label="Sarah Khan">SK</div><p class="demo-label">Size 3</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-4 avatar--initials" aria-label="Marco Reyes">MR</div><p class="demo-label">Size 4</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-5 avatar--initials" aria-label="Tomas Lebrun">TL</div><p class="demo-label">Size 5</p></div>
     </div>
   </div>
 
+  <!-- ───────── Rounded shape ───────── -->
+
+  <!-- Rounded · Default photo -->
   <div class="demo-section">
-    <p class="demo-section__title">Status dot — Busy (all sizes, code-first)</p>
+    <p class="demo-section__title">Rounded · Default — photo (all sizes)</p>
     <div class="demo-row">
-      <div class="demo-item"><div class="avatar"><img class="portrait" src="https://picsum.photos/seed/female2/300" alt=""><span class="avatar__dot avatar__dot--busy" aria-hidden="true"></span></div><p class="demo-label">Size 1</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-2"><img class="portrait" src="https://picsum.photos/seed/female2/300" alt=""><span class="avatar__dot avatar__dot--busy" aria-hidden="true"></span></div><p class="demo-label">Size 2</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-3"><img class="portrait" src="https://picsum.photos/seed/female2/300" alt=""><span class="avatar__dot avatar__dot--busy" aria-hidden="true"></span></div><p class="demo-label">Size 3</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-4"><img class="portrait" src="https://picsum.photos/seed/female2/300" alt=""><span class="avatar__dot avatar__dot--busy" aria-hidden="true"></span></div><p class="demo-label">Size 4</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-5"><img class="portrait" src="https://picsum.photos/seed/female2/300" alt=""><span class="avatar__dot avatar__dot--busy" aria-hidden="true"></span></div><p class="demo-label">Size 5</p></div>
+      <div class="demo-item"><div class="avatar avatar--rounded"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""></div><p class="demo-label">Size 1 · 24px</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-2 avatar--rounded"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""></div><p class="demo-label">Size 2 · 32px</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-3 avatar--rounded"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""></div><p class="demo-label">Size 3 · 48px</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-4 avatar--rounded"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""></div><p class="demo-label">Size 4 · 64px</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-5 avatar--rounded"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""></div><p class="demo-label">Size 5 · 80px</p></div>
     </div>
   </div>
 
+  <!-- Rounded · Show Notification -->
   <div class="demo-section">
-    <p class="demo-section__title">Status dot — Offline (all sizes, code-first)</p>
+    <p class="demo-section__title">Rounded · Show Notification (Green / Red / Orange × Size 3)</p>
     <div class="demo-row">
-      <div class="demo-item"><div class="avatar"><img class="portrait" src="https://picsum.photos/seed/male2/300" alt=""><span class="avatar__dot avatar__dot--offline" aria-hidden="true"></span></div><p class="demo-label">Size 1</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-2"><img class="portrait" src="https://picsum.photos/seed/male2/300" alt=""><span class="avatar__dot avatar__dot--offline" aria-hidden="true"></span></div><p class="demo-label">Size 2</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-3"><img class="portrait" src="https://picsum.photos/seed/male2/300" alt=""><span class="avatar__dot avatar__dot--offline" aria-hidden="true"></span></div><p class="demo-label">Size 3</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-4"><img class="portrait" src="https://picsum.photos/seed/male2/300" alt=""><span class="avatar__dot avatar__dot--offline" aria-hidden="true"></span></div><p class="demo-label">Size 4</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-5"><img class="portrait" src="https://picsum.photos/seed/male2/300" alt=""><span class="avatar__dot avatar__dot--offline" aria-hidden="true"></span></div><p class="demo-label">Size 5</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-3 avatar--rounded"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--green" aria-hidden="true"></span></div><p class="demo-label">Green</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-3 avatar--rounded"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--red" aria-hidden="true"></span></div><p class="demo-label">Red</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-3 avatar--rounded"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--orange" aria-hidden="true"></span></div><p class="demo-label">Orange</p></div>
     </div>
   </div>
 
-  <!-- Rounded (squircle) — composes with all sub-types, all sizes -->
+  <!-- Rounded · Checked -->
   <div class="demo-section">
-    <p class="demo-section__title">Rounded — photo (all sizes, code-first)</p>
+    <p class="demo-section__title">Rounded · Checked = True</p>
     <div class="demo-row">
-      <div class="demo-item"><div class="avatar avatar--rounded"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""></div><p class="demo-label">Size 1</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-2 avatar--rounded"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""></div><p class="demo-label">Size 2</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-3 avatar--rounded"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""></div><p class="demo-label">Size 3</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-4 avatar--rounded"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""></div><p class="demo-label">Size 4</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-5 avatar--rounded"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""></div><p class="demo-label">Size 5</p></div>
+      <div class="demo-item"><div class="avatar avatar--rounded avatar--checked"><i data-lucide="check" aria-hidden="true"></i></div><p class="demo-label">Size 1</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-2 avatar--rounded avatar--checked"><i data-lucide="check" aria-hidden="true"></i></div><p class="demo-label">Size 2</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-3 avatar--rounded avatar--checked"><i data-lucide="check" aria-hidden="true"></i></div><p class="demo-label">Size 3</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-4 avatar--rounded avatar--checked"><i data-lucide="check" aria-hidden="true"></i></div><p class="demo-label">Size 4</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-5 avatar--rounded avatar--checked"><i data-lucide="check" aria-hidden="true"></i></div><p class="demo-label">Size 5</p></div>
     </div>
   </div>
 
+  <!-- Rounded · Bordered -->
   <div class="demo-section">
-    <p class="demo-section__title">Rounded — bordered (all sizes, code-first)</p>
+    <p class="demo-section__title">Rounded · Type = Bordered</p>
     <div class="demo-row">
-      <div class="demo-item"><div class="avatar avatar--rounded avatar--bordered"><img class="portrait" src="https://picsum.photos/seed/male1/300" alt=""></div><p class="demo-label">Size 1</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-2 avatar--rounded avatar--bordered"><img class="portrait" src="https://picsum.photos/seed/male1/300" alt=""></div><p class="demo-label">Size 2</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-3 avatar--rounded avatar--bordered"><img class="portrait" src="https://picsum.photos/seed/male1/300" alt=""></div><p class="demo-label">Size 3</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-4 avatar--rounded avatar--bordered"><img class="portrait" src="https://picsum.photos/seed/male1/300" alt=""></div><p class="demo-label">Size 4</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-5 avatar--rounded avatar--bordered"><img class="portrait" src="https://picsum.photos/seed/male1/300" alt=""></div><p class="demo-label">Size 5</p></div>
+      <div class="demo-item"><div class="avatar avatar--rounded avatar--bordered"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""></div><p class="demo-label">Size 1</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-2 avatar--rounded avatar--bordered"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""></div><p class="demo-label">Size 2</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-3 avatar--rounded avatar--bordered"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""></div><p class="demo-label">Size 3</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-4 avatar--rounded avatar--bordered"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""></div><p class="demo-label">Size 4</p></div>
+      <div class="demo-item"><div class="avatar avatar--size-5 avatar--rounded avatar--bordered"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""></div><p class="demo-label">Size 5</p></div>
     </div>
   </div>
 
+  <!-- Rounded · Placeholder -->
   <div class="demo-section">
-    <p class="demo-section__title">Rounded — placeholder (all sizes, code-first)</p>
+    <p class="demo-section__title">Rounded · Type = Placeholder</p>
     <div class="demo-row">
       <div class="demo-item"><div class="avatar avatar--rounded avatar--placeholder" aria-label="No portrait"><i data-lucide="user" aria-hidden="true"></i></div><p class="demo-label">Size 1</p></div>
       <div class="demo-item"><div class="avatar avatar--size-2 avatar--rounded avatar--placeholder" aria-label="No portrait"><i data-lucide="user" aria-hidden="true"></i></div><p class="demo-label">Size 2</p></div>
@@ -345,8 +208,9 @@
     </div>
   </div>
 
+  <!-- Rounded · Initials -->
   <div class="demo-section">
-    <p class="demo-section__title">Rounded — initials (all sizes, code-first)</p>
+    <p class="demo-section__title">Rounded · Type = Initials</p>
     <div class="demo-row">
       <div class="demo-item"><div class="avatar avatar--rounded avatar--initials" aria-label="Mark Foster">MF</div><p class="demo-label">Size 1</p></div>
       <div class="demo-item"><div class="avatar avatar--size-2 avatar--rounded avatar--initials" aria-label="Derrick Jefferson">DJ</div><p class="demo-label">Size 2</p></div>
@@ -356,23 +220,7 @@
     </div>
   </div>
 
-  <div class="demo-section">
-    <p class="demo-section__title">Rounded — with status dot (all sizes, code-first)</p>
-    <div class="demo-row">
-      <div class="demo-item"><div class="avatar avatar--rounded"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--online" aria-hidden="true"></span></div><p class="demo-label">Size 1</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-2 avatar--rounded"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--online" aria-hidden="true"></span></div><p class="demo-label">Size 2</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-3 avatar--rounded"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--online" aria-hidden="true"></span></div><p class="demo-label">Size 3</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-4 avatar--rounded"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--online" aria-hidden="true"></span></div><p class="demo-label">Size 4</p></div>
-      <div class="demo-item"><div class="avatar avatar--size-5 avatar--rounded"><img class="portrait" src="https://picsum.photos/seed/female1/300" alt=""><span class="avatar__dot avatar__dot--online" aria-hidden="true"></span></div><p class="demo-label">Size 5</p></div>
-    </div>
-  </div>
-
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <script>
-    // Scan all data-lucide attributes on the page and replace each element
-    // with an inline SVG from the Lucide icon set. Must run after the DOM is
-    // ready — placing the script at the bottom of <body> guarantees this.
-    lucide.createIcons();
-  </script>
+  <script>lucide.createIcons();</script>
 </body>
 </html>

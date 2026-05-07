@@ -11,17 +11,32 @@ figma.connect(
         '4': 'avatar--size-4',
         '5': 'avatar--size-5',
       }),
+      shape: figma.enum('Shape', {
+        Round: '',
+        Rounded: 'avatar--rounded',
+      }),
+      type: figma.enum('Type', {
+        Default: '',
+        Bordered: 'avatar--bordered',
+        Placeholder: 'avatar--placeholder',
+        Initials: 'avatar--initials',
+      }),
       checked: figma.boolean('Checked', {
         true: 'avatar--checked',
         false: '',
       }),
-      // Show Notification=True: add <span class="avatar__dot" aria-hidden="true"> inside .avatar
+      // Show Notification=True: add <span class="avatar__dot avatar__dot--{green|red|orange}" aria-hidden="true"> inside .avatar
       showNotification: figma.boolean('Show Notification'),
+      notificationColor: figma.enum('Notification Color', {
+        Green: 'avatar__dot--green',
+        Red: 'avatar__dot--red',
+        Orange: 'avatar__dot--orange',
+      }),
     },
-    example: ({ size, checked }) => html`
-      <div class="avatar ${size} ${checked}">
+    example: ({ size, shape, type, checked }) => html`
+      <div class="avatar ${size} ${shape} ${type} ${checked}">
         <img class="portrait" src="portrait.jpg" alt="User">
-        <!-- Add <span class="avatar__dot" aria-hidden="true"> for Show Notification=True -->
+        <!-- For Show Notification=True, add: <span class="avatar__dot avatar__dot--green" aria-hidden="true"></span> -->
       </div>
     `,
   }
