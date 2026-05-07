@@ -1,6 +1,15 @@
 /* Avatar component
  * Figma node: 68:5042 — "Avatars" (component set)
- * Variants: Size (1–5) × Show Notification (True/False) × Checked (True/False)
+ *
+ * Figma-sourced variants:
+ *   Size (1–5) × Show Notification (True/False) × Checked (True/False)
+ *
+ * Code-first additions (Flowbite-inspired, awaiting Figma adoption):
+ *   - Shape=Rounded    — `.avatar--rounded`      (radius-md instead of full circle)
+ *   - Type=Bordered    — `.avatar--bordered`     (2px contrast ring on any shape)
+ *   - Type=Placeholder — `.avatar--placeholder`  (silhouette icon, no photo)
+ *   - Type=Initials    — `.avatar--initials`     (uppercase letters)
+ *   - Status dot colour modifiers — `.avatar__dot--{online,away,busy,offline}`
  */
 
 /* ── Base (Size=1 default, circular photo container) ── */
@@ -107,3 +116,77 @@
   width: var(--ai-icon-size-lg);           /* 1.5rem (24px) */
   height: var(--ai-icon-size-lg);
 }
+
+/* ── Rounded (Shape=Rounded — squircle, not full circle) ──── */
+/* Code-first; flag for designer to formalise as a Figma variant. */
+/* Overrides the default circular clip-path on the photo and uses a
+   radius-md container with overflow:hidden instead. */
+
+.avatar--rounded {
+  border-radius: var(--ai-radius-md);
+  overflow: hidden;
+}
+
+.avatar--rounded .portrait {
+  clip-path: none;
+  border-radius: inherit;
+}
+
+/* ── Bordered (visible 2px ring) ──────────────────────────── */
+/* Code-first; flag for designer to formalise as a Figma variant.
+ * Uses surface-contrast (a visible neutral) so the ring reads against
+ * any standard surface. Outline (not border) so it doesn't affect the
+ * box dimensions and works equally on circular and rounded shapes. */
+
+.avatar--bordered {
+  outline: 2px solid var(--ai-surface-contrast);
+  outline-offset: -2px;
+}
+
+/* ── Placeholder (silhouette icon, no photo) ──────── */
+/* Used when no portrait is available. Flowbite-style. */
+
+.avatar--placeholder {
+  background-color: var(--ai-surface-contrast);
+  color: var(--ai-text-invert);
+  overflow: hidden;
+}
+
+.avatar--placeholder [data-lucide] {
+  width: 75%;
+  height: 75%;
+  flex-shrink: 0;
+  /* Position low so the silhouette's shoulders are partly clipped at the
+     bottom of the circle — a closer match to Flowbite's grey user icon. */
+  margin-top: 25%;
+}
+
+/* ── Initials (text-based, no photo) ──────────────── */
+/* Two uppercase letters centred. Background uses brand-soft to avoid
+   competing with photo avatars in the same grid. */
+
+.avatar--initials {
+  background-color: var(--ai-surface-brand-soft);
+  color: var(--ai-surface-brand-dark);
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-semibold);
+  font-size: var(--ai-font-fixed-xxs);     /* Size=1 — 12px */
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+.avatar--size-2.avatar--initials { font-size: var(--ai-font-fixed-xs);  }   /* 14px */
+.avatar--size-3.avatar--initials { font-size: var(--ai-font-fixed-md);  }   /* 16px */
+.avatar--size-4.avatar--initials { font-size: var(--ai-font-fixed-xl);  }   /* 22px */
+.avatar--size-5.avatar--initials { font-size: var(--ai-font-fixed-2xl); }   /* 28px */
+
+/* ── Status dot colour modifiers ──────────────────── */
+/* Default `.avatar__dot` is success-coloured. These modifier classes
+   re-paint the dot for online-status patterns (online/away/busy/offline). */
+
+.avatar__dot--online  { background-color: var(--ai-surface-success); }
+.avatar__dot--away    { background-color: var(--ai-surface-warning); }
+.avatar__dot--busy    { background-color: var(--ai-surface-error); }
+.avatar__dot--offline { background-color: var(--ai-surface-contrast); }
