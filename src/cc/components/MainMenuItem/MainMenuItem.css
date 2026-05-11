@@ -21,7 +21,7 @@
   display: flex;
   align-items: center;
   gap: var(--ai-spacing-3);                  /* 8 */
-  width: 100%;                                /* fill the parent list/container */
+  width: 100%;                                /* fills the parent list/container */
   min-height: var(--ai-spacing-8);           /* 40 */
   padding: var(--ai-spacing-3) var(--ai-spacing-4);   /* 8 / 12 */
   border: 0;

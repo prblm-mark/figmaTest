@@ -24,9 +24,9 @@ Type controls layout; State controls which item is selected/expanded and whether
 
 | Element | Class |
 |---|---|
-| Panel container | `<nav class="cc-menu">` |
+| Panel container | `<nav class="cc-menu">` (`align-items: center` so children centre horizontally) |
 | CRM layout modifier | `.cc-menu--crm` (10px gap + padding instead of 12) |
-| Affino wordmark strip | `.cc-menu__brand` (CSS `mask` paints the wordmark in `--cc-mainmenu-icon`) |
+| Affino wordmark strip | `.cc-menu__brand` — 167 × 72 cell, centred horizontally by the panel's `align-items: center`. CSS `mask` paints the wordmark in `--cc-mainmenu-icon`, vertically centred inside the taller 72 slot. |
 | Search input | `<label class="cc-menu__search">` containing search icon + input |
 | Items list | `<ul class="cc-menu__items">` |
 | Submenu list (under an expanded item) | `<ul class="cc-menu__submenu">` |
@@ -56,13 +56,18 @@ Type controls layout; State controls which item is selected/expanded and whether
 | Submenu padding | `--ai-spacing-3` `--ai-spacing-4` (8 / 12) |
 | Submenu item gap | `--ai-spacing-2` (6) |
 | Submenu item colour | `--ai-text-invert-secondary` |
-| Submenu action icon (pin / trash) | `--cc-mainmenu-icon`, opacity 0 → 0.7 on row hover → 1 on icon hover |
+| Submenu action icon (pin / trash) | rest: `--ai-icon-invert-secondary`, opacity 0 → 0.7 on row hover → 1 + `--cc-mainmenu-icon` on icon hover |
 | CRM `md-btn` width | 240 |
 | CRM `md-btn` icon size | `--ai-icon-size-md` (20) |
+| CRM `md-btn` icon colour | rest: `--ai-icon-invert-secondary`, hover: `--cc-mainmenu-icon` (label hover: `--ai-text-invert`) |
 | CRM Recent heading colour | `--ai-text-invert` (white, bold) |
-| CRM Recent item colour | `--ai-text-invert-secondary` |
+| CRM Recent item colour | rest: `--ai-text-invert-secondary`, hover: `--ai-text-invert` |
+| CRM Recent chevron colour | rest: `--ai-icon-invert-secondary`, hover (on row): `--cc-mainmenu-icon` |
 | CRM Recent chevron rotation | `rotate(-90deg)` so chevron-down points right |
 | CRM `show-toggle` font | `--ai-font-fixed-xxs` (12) |
+| CRM `show-toggle` colours | label rest: `--ai-text-invert-secondary`, hover: `--ai-text-invert`; icon rest: `--ai-icon-invert-secondary`, hover: `--cc-mainmenu-icon` |
+
+**Duotone rule (applies to all Types):** every icon inside the Menu panel uses `--ai-icon-invert-secondary` at rest and promotes to `--cc-mainmenu-icon` on its hover/active state; every label uses `--ai-text-invert-secondary` at rest and promotes to `--ai-text-invert` on hover. This matches the MainMenuItem and Sidebar contrast convention so the navy chrome reads as a single coherent system.
 
 The MainMenuItem rows inside `.cc-menu__items` (Control / Analysis) compose the `.cc-main-menu-item` component documented separately.
 

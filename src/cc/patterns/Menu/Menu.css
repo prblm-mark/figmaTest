@@ -28,15 +28,17 @@
 }
 
 /* ── Brand strip ───────────────────────────────────── */
+/* Figma cell is 167×72: a 167-wide wordmark in a 72-tall slot, centred
+ * horizontally by the panel's `align-items: center`. The mask renders
+ * the wordmark centred inside that taller cell. */
 .cc-menu__brand {
   flex-shrink: 0;
   width: 167px;
-  height: 38px;
-  align-self: flex-start;
-  margin: var(--ai-spacing-4) 0 var(--ai-spacing-3) var(--ai-spacing-3);
+  height: 72px;
+  min-height: 72px;
   background-color: var(--cc-mainmenu-icon);
-  -webkit-mask: url('../../../../img/affinoLogo.svg') no-repeat center / contain;
-  mask: url('../../../../img/affinoLogo.svg') no-repeat center / contain;
+  -webkit-mask: url('../../../../img/affinoLogo.svg') no-repeat center center / 167px auto;
+  mask: url('../../../../img/affinoLogo.svg') no-repeat center center / 167px auto;
 }
 
 /* ── Search input ──────────────────────────────────── */
@@ -76,10 +78,14 @@
 }
 
 /* ── Main items list (Control / Analysis) ──────────── */
+/* `align-items: stretch` so each <li> spans the full items list width.
+ * The MainMenuItem button inside the <li> is `width: 100%` and therefore
+ * fills the row. Without stretch, <li> shrinks to content and the button
+ * collapses with it. */
 .cc-menu__items {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch;
   gap: var(--ai-spacing-1);                       /* 4 */
   width: 100%;
   margin: 0;
@@ -121,13 +127,14 @@
   flex-shrink: 0;
   width: var(--ai-icon-size-sm);
   height: var(--ai-icon-size-sm);
-  color: var(--cc-mainmenu-icon);
+  /* Dusty by default; brightens when the row reveals it on hover. */
+  color: var(--ai-icon-invert-secondary);
   background: transparent;
   border: 0;
   padding: 0;
   cursor: pointer;
   opacity: 0;
-  transition: opacity var(--ai-transition-default);
+  transition: opacity var(--ai-transition-default), color var(--ai-transition-default);
 }
 
 .cc-menu__submenu-item:hover .cc-menu__submenu-item__action {
@@ -136,6 +143,7 @@
 
 .cc-menu__submenu-item__action:hover {
   opacity: 1 !important;
+  color: var(--cc-mainmenu-icon);
 }
 
 /* ── Type=CRM-specific list (plus-icon menu buttons + Recent) ── */
@@ -181,6 +189,15 @@
   color: var(--ai-text-invert-secondary);
   text-align: left;
   cursor: pointer;
+  transition: color var(--ai-transition-default);
+}
+
+.cc-menu__md-btn:hover {
+  color: var(--ai-text-invert);
+}
+
+.cc-menu__md-btn:hover .cc-menu__md-btn__icon {
+  color: var(--cc-mainmenu-icon);
 }
 
 .cc-menu__md-btn__label {
@@ -196,7 +213,8 @@
   flex-shrink: 0;
   width: var(--ai-icon-size-md);                  /* 20 — CRM uses 20 */
   height: var(--ai-icon-size-md);
-  color: var(--cc-mainmenu-icon);
+  color: var(--ai-icon-invert-secondary);
+  transition: color var(--ai-transition-default);
 }
 
 .cc-menu__md-btn__icon [data-lucide] {
@@ -229,6 +247,15 @@
   color: var(--ai-text-invert-secondary);
   text-align: left;
   cursor: pointer;
+  transition: color var(--ai-transition-default);
+}
+
+.cc-menu__recent-item:hover {
+  color: var(--ai-text-invert);
+}
+
+.cc-menu__recent-item:hover .cc-menu__recent-item__chevron {
+  color: var(--cc-mainmenu-icon);
 }
 
 .cc-menu__recent-item__label {
@@ -244,7 +271,8 @@
   flex-shrink: 0;
   width: var(--ai-icon-size-sm);
   height: var(--ai-icon-size-sm);
-  color: var(--cc-mainmenu-icon);
+  color: var(--ai-icon-invert-secondary);
+  transition: color var(--ai-transition-default);
   /* In Figma the chevron is rotated 90° (right-pointing) on recent rows. */
   transform: rotate(-90deg);
 }
@@ -267,10 +295,20 @@
   font-size: var(--ai-font-fixed-xxs);
   color: var(--ai-text-invert-secondary);
   cursor: pointer;
+  transition: color var(--ai-transition-default);
+}
+
+.cc-menu__show-toggle:hover {
+  color: var(--ai-text-invert);
 }
 
 .cc-menu__show-toggle [data-lucide] {
   width: var(--ai-icon-size-sm);
   height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-invert-secondary);
+  transition: color var(--ai-transition-default);
+}
+
+.cc-menu__show-toggle:hover [data-lucide] {
   color: var(--cc-mainmenu-icon);
 }

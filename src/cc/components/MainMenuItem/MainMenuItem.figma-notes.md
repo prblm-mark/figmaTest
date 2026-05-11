@@ -30,7 +30,7 @@
 
 | Property | Token |
 |---|---|
-| Container width | `100%` — fills the parent list/container |
+| Container width | `100%` — fills the parent list/container so the hover/selected bg spans the full row. |
 | Container min-height | `--ai-spacing-8` (40) |
 | Padding | `--ai-spacing-3` `--ai-spacing-4` (8 / 12) |
 | Gap (icon ↔ label / label ↔ chevron) | `--ai-spacing-3` (8) |
