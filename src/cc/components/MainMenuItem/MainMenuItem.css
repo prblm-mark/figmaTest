@@ -30,7 +30,7 @@
   font-family: var(--ai-font-body);
   font-size: var(--ai-font-fixed-xs);         /* 14 */
   font-weight: var(--ai-font-medium);
-  line-height: 1;
+  line-height: normal;                        /* allow descender room — `1` clipped p/g/y */
   text-align: left;
   cursor: pointer;
   transition: background-color var(--ai-transition-default);
@@ -65,9 +65,18 @@
   flex-shrink: 0;
   width: var(--ai-icon-size-sm);
   height: var(--ai-icon-size-sm);
-  /* Chevron tracks the icon colour rule — dusty by default, promoted on Selected/Expanded. */
+  /* Chevron tracks the icon colour rule — dusty by default, promoted on Selected/Expanded.
+   * Hidden in Default state; revealed on Hover, Selected, Expanded. */
   color: var(--ai-icon-invert-secondary);
-  transition: transform var(--ai-transition-default);
+  opacity: 0;
+  transition: transform var(--ai-transition-default), opacity var(--ai-transition-default), color var(--ai-transition-default);
+}
+
+.cc-main-menu-item:hover .cc-main-menu-item__chevron,
+.cc-main-menu-item--selected .cc-main-menu-item__chevron,
+.cc-main-menu-item--expanded .cc-main-menu-item__chevron,
+.cc-main-menu-item[aria-expanded="true"] .cc-main-menu-item__chevron {
+  opacity: 1;
 }
 
 .cc-main-menu-item__chevron [data-lucide] {

@@ -33,9 +33,13 @@
  * the wordmark centred inside that taller cell. */
 .cc-menu__brand {
   flex-shrink: 0;
+  /* Wordmark cell. Width tracks the wordmark asset's intrinsic 167×38; height
+   * is the taller 72-slot from Figma. Mask sized so the wordmark renders
+   * at its natural width and is vertically centred inside the cell.
+   * Logo/brand asset dimensions are an allowed exception to the no-px rule. */
   width: 167px;
-  height: 72px;
-  min-height: 72px;
+  height: var(--ai-spacing-12);                  /* 72 */
+  min-height: var(--ai-spacing-12);
   background-color: var(--cc-mainmenu-icon);
   -webkit-mask: url('../../../../img/affinoLogo.svg') no-repeat center center / 167px auto;
   mask: url('../../../../img/affinoLogo.svg') no-repeat center center / 167px auto;
@@ -48,7 +52,7 @@
   gap: var(--ai-spacing-3);                       /* 8 */
   width: 100%;
   height: var(--ai-spacing-8);                    /* 40 */
-  padding: 0 var(--ai-spacing-5);                 /* 16 horizontal */
+  padding: 0 var(--ai-spacing-5) 0 var(--ai-spacing-3);   /* 8 left, 16 right */
   background-color: var(--ai-surface-primary);
   border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-md);
@@ -98,9 +102,9 @@
 .cc-menu__submenu {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-2);                       /* 6 */
+  gap: var(--ai-spacing-1);                       /* 4 */
   width: 100%;
-  padding: var(--ai-spacing-3) var(--ai-spacing-4); /* 8 / 12 */
+  padding: var(--ai-spacing-4) 0;                 /* 12 vertical, 0 horizontal */
   list-style: none;
   margin: 0;
 }
@@ -110,9 +114,18 @@
   align-items: center;
   gap: var(--ai-spacing-2);
   width: 100%;
+  padding: var(--ai-spacing-1) var(--ai-spacing-4);   /* 4 / 12 */
+  border-radius: var(--ai-radius-md);
   font-size: var(--ai-font-fixed-xs);
   line-height: var(--ai-leading-md);
   color: var(--ai-text-invert-secondary);
+  cursor: pointer;
+  transition: background-color var(--ai-transition-default), color var(--ai-transition-default);
+}
+
+.cc-menu__submenu-item:hover {
+  background-color: var(--cc-mainmenu-primary-bg);
+  color: var(--ai-text-invert);
 }
 
 .cc-menu__submenu-item-label {
@@ -124,6 +137,9 @@
 }
 
 .cc-menu__submenu-item__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
   width: var(--ai-icon-size-sm);
   height: var(--ai-icon-size-sm);
@@ -137,6 +153,11 @@
   transition: opacity var(--ai-transition-default), color var(--ai-transition-default);
 }
 
+.cc-menu__submenu-item__action [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
 .cc-menu__submenu-item:hover .cc-menu__submenu-item__action {
   opacity: 0.7;
 }
@@ -148,12 +169,11 @@
 
 /* ── Type=CRM-specific list (plus-icon menu buttons + Recent) ── */
 .cc-menu--crm {
-  gap: 10px;
-  padding: 10px;
+  gap: var(--ai-spacing-3);
+  padding: var(--ai-spacing-3);
 }
 
 .cc-menu--crm .cc-menu__brand {
-  /* CRM type uses 10px padding; the brand cell sits centred at top. */
   align-self: center;
   margin: 0;
 }
@@ -162,45 +182,48 @@
   display: flex;
   flex-direction: column;
   gap: var(--ai-spacing-6);                       /* 24 */
-  align-items: flex-start;
+  align-items: stretch;
+  width: 100%;
   padding-top: var(--ai-spacing-2);
 }
 
 .cc-menu__crm-group {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
+  align-items: stretch;
+  width: 100%;
+  gap: var(--ai-spacing-1);
 }
 
-/* MD/Menu Button — a CRM-specific row: text + plus icon (or chevron). */
-.cc-menu__md-btn {
+/* CRM menu button — row: text + plus icon (or chevron). Sibling of crm-groups/crm-group. */
+.cc-menu__crm-btn {
   display: flex;
   align-items: center;
-  gap: 10px;
-  width: 240px;
-  padding: 0;
+  gap: var(--ai-spacing-3);
+  width: 100%;
+  padding: var(--ai-spacing-2) var(--ai-spacing-3);   /* 6 / 8 — gives the hover bg presence */
   border: 0;
   background: transparent;
-  border-radius: 5px;
+  border-radius: var(--ai-radius-md);
   font-family: inherit;
   font-size: var(--ai-font-fixed-xs);
   font-weight: var(--ai-font-medium);
   color: var(--ai-text-invert-secondary);
   text-align: left;
   cursor: pointer;
-  transition: color var(--ai-transition-default);
+  transition: background-color var(--ai-transition-default), color var(--ai-transition-default);
 }
 
-.cc-menu__md-btn:hover {
+.cc-menu__crm-btn:hover {
+  background-color: var(--cc-mainmenu-primary-bg);
   color: var(--ai-text-invert);
 }
 
-.cc-menu__md-btn:hover .cc-menu__md-btn__icon {
+.cc-menu__crm-btn:hover .cc-menu__crm-btn__icon {
   color: var(--cc-mainmenu-icon);
 }
 
-.cc-menu__md-btn__label {
+.cc-menu__crm-btn__label {
   flex: 1 0 0;
   min-width: 0;
   overflow: hidden;
@@ -208,16 +231,16 @@
   white-space: nowrap;
 }
 
-.cc-menu__md-btn__icon {
+.cc-menu__crm-btn__icon {
   display: inline-flex;
   flex-shrink: 0;
-  width: var(--ai-icon-size-md);                  /* 20 — CRM uses 20 */
-  height: var(--ai-icon-size-md);
+  width: var(--ai-icon-size-sm);                  /* 16 */
+  height: var(--ai-icon-size-sm);
   color: var(--ai-icon-invert-secondary);
   transition: color var(--ai-transition-default);
 }
 
-.cc-menu__md-btn__icon [data-lucide] {
+.cc-menu__crm-btn__icon [data-lucide] {
   width: 100%;
   height: 100%;
 }
@@ -225,7 +248,8 @@
 /* Recent section header */
 .cc-menu__recent-heading {
   margin: 0;
-  width: 240px;
+  width: 100%;
+  padding-left: var(--ai-spacing-3);
   font-weight: var(--ai-font-bold);
   font-size: var(--ai-font-fixed-xs);
   letter-spacing: 0.42px;
@@ -236,21 +260,24 @@
 .cc-menu__recent-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  width: 240px;
-  padding: var(--ai-spacing-1) 0;
+  gap: var(--ai-spacing-3);
+  width: 100%;
+  min-height: var(--ai-spacing-7);
+  padding: var(--ai-spacing-1) var(--ai-spacing-3);   /* 4 / 8 — bg hover presence */
   border: 0;
   background: transparent;
+  border-radius: var(--ai-radius-md);
   font-family: inherit;
   font-size: var(--ai-font-fixed-xs);
   font-weight: var(--ai-font-medium);
   color: var(--ai-text-invert-secondary);
   text-align: left;
   cursor: pointer;
-  transition: color var(--ai-transition-default);
+  transition: background-color var(--ai-transition-default), color var(--ai-transition-default);
 }
 
 .cc-menu__recent-item:hover {
+  background-color: var(--cc-mainmenu-primary-bg);
   color: var(--ai-text-invert);
 }
 
@@ -287,18 +314,22 @@
   display: flex;
   align-items: center;
   gap: var(--ai-spacing-1);
-  padding-top: var(--ai-spacing-1);
+  min-height: var(--ai-spacing-7);
+  padding: var(--ai-spacing-1) var(--ai-spacing-3);   /* 4 / 8 */
+  margin-top: var(--ai-spacing-1);
   width: 100%;
   background: transparent;
   border: 0;
+  border-radius: var(--ai-radius-md);
   font-family: inherit;
   font-size: var(--ai-font-fixed-xxs);
   color: var(--ai-text-invert-secondary);
   cursor: pointer;
-  transition: color var(--ai-transition-default);
+  transition: background-color var(--ai-transition-default), color var(--ai-transition-default);
 }
 
 .cc-menu__show-toggle:hover {
+  background-color: var(--cc-mainmenu-primary-bg);
   color: var(--ai-text-invert);
 }
 

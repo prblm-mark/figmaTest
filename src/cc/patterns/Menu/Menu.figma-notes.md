@@ -34,7 +34,7 @@ Type controls layout; State controls which item is selected/expanded and whether
 | Submenu item trailing icon | `<button class="cc-menu__submenu-item__action">` (e.g. pin, trash) |
 | CRM type — groups wrapper | `.cc-menu__crm-groups` |
 | CRM type — group | `.cc-menu__crm-group` |
-| CRM type — menu button (text + plus icon) | `<button class="cc-menu__md-btn">` |
+| CRM type — menu button (text + plus icon) | `<button class="cc-menu__crm-btn">` |
 | CRM type — Recent heading | `<p class="cc-menu__recent-heading">` (bold + white) |
 | CRM type — Recent item | `<button class="cc-menu__recent-item">` (label + right-pointing chevron) |
 | CRM type — show more/less toggle | `<button class="cc-menu__show-toggle">` |
@@ -57,9 +57,9 @@ Type controls layout; State controls which item is selected/expanded and whether
 | Submenu item gap | `--ai-spacing-2` (6) |
 | Submenu item colour | `--ai-text-invert-secondary` |
 | Submenu action icon (pin / trash) | rest: `--ai-icon-invert-secondary`, opacity 0 → 0.7 on row hover → 1 + `--cc-mainmenu-icon` on icon hover |
-| CRM `md-btn` width | 240 |
-| CRM `md-btn` icon size | `--ai-icon-size-md` (20) |
-| CRM `md-btn` icon colour | rest: `--ai-icon-invert-secondary`, hover: `--cc-mainmenu-icon` (label hover: `--ai-text-invert`) |
+| CRM `crm-btn` width | 100% (fills its `crm-group` parent) |
+| CRM `crm-btn` icon size | `--ai-icon-size-md` (20) |
+| CRM `crm-btn` icon colour | rest: `--ai-icon-invert-secondary`, hover: `--cc-mainmenu-icon` (label hover: `--ai-text-invert`) |
 | CRM Recent heading colour | `--ai-text-invert` (white, bold) |
 | CRM Recent item colour | rest: `--ai-text-invert-secondary`, hover: `--ai-text-invert` |
 | CRM Recent chevron colour | rest: `--ai-icon-invert-secondary`, hover (on row): `--cc-mainmenu-icon` |
