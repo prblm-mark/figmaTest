@@ -29,6 +29,7 @@
   --ai-text-secondary: #3c3c3f;
   --ai-text-contrast: #67676c;
   --ai-text-invert: #ffffff;
+  --ai-text-invert-secondary: #ececed;
   --ai-text-error: #b91c1c;
   --ai-text-brand: #0071d8;
   --ai-text-success: #065f46;
@@ -54,12 +55,14 @@
   --ai-icon-secondary: #67676c;
   --ai-icon-contrast: #929295;
   --ai-icon-invert: #ffffff;
-  --ai-icon-invert: #e2e2e3;
+  --ai-icon-invert-secondary: #e2e2e3;
   --ai-icon-brand: #0071d8;
   --cc-header-primary-bg: #0f3b53;
   --cc-header-secondary-bg: #ffffff;
+  --cc-header-icon: #ffffff;
   --cc-mainmenu-primary-bg: #0f3b53;
   --cc-mainmenu-secondary-bg: #0b2c3e;
+  --cc-mainmenu-icon: #ffffff;
   --ai-chat-brand: #0071d8; /** Editable by user */
   --ai-chat-msg-bg: #eff6ff; /** Editable by user */
   --ai-chat-msg-text: #1e3a8a; /** Editable by user */

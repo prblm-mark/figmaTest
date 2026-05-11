@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en" data-brand="cc">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../../components/dark-mode-toggle.js"></script>
+  <title>SidebarMenu — Control Centre</title>
+  <link rel="stylesheet" href="../../../styles/base.css">
+  <!-- Composes MainMenuItem + Sidebar + Menu -->
+  <link rel="stylesheet" href="../../components/MainMenuItem/MainMenuItem.css">
+  <link rel="stylesheet" href="../Sidebar/Sidebar.css">
+  <link rel="stylesheet" href="../Menu/Menu.css">
+  <!-- Composite layout -->
+  <link rel="stylesheet" href="SidebarMenu.css">
+  <style>
+    body {
+      margin: 0;
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-secondary);
+      min-height: 100vh;
+      color: var(--ai-text-primary);
+      font-family: var(--ai-font-body);
+    }
+    .demo-section {
+      padding: var(--ai-spacing-6);
+      background: var(--ai-surface-primary);
+      border-radius: var(--ai-radius-lg);
+      margin-bottom: var(--ai-spacing-5);
+      border: 1px solid var(--ai-border-secondary);
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 var(--ai-spacing-3);
+    }
+    .demo-section__lead {
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-contrast);
+      margin: 0 0 var(--ai-spacing-5);
+      max-width: 60ch;
+    }
+    .demo-frame {
+      display: flex;
+      align-items: stretch;
+      height: 720px;
+      background: var(--ai-surface-elevated-1);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-md);
+      overflow: hidden;
+    }
+    .demo-frame__placeholder {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ai-text-contrast);
+      font-size: var(--ai-font-fixed-sm);
+      background:
+        repeating-linear-gradient(45deg,
+          transparent 0 12px,
+          var(--ai-surface-secondary) 12px 13px);
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-3);">SidebarMenu</h1>
+  <p style="font-size: var(--ai-font-fixed-sm); color: var(--ai-text-contrast); margin: 0 0 var(--ai-spacing-7); max-width: 60ch;">
+    The Control Centre app chrome — Sidebar rail + Menu panel side-by-side. Pure composition; both child patterns are independently documented (see Sidebar and Menu pattern pages). 2 device variants — Desktop and Mobile.
+  </p>
+
+  <!-- Desktop -->
+  <div class="demo-section">
+    <p class="demo-section__title">Device = Desktop</p>
+    <p class="demo-section__lead">Desktop rail (56) + Menu panel (280). The Menu Type shown below is Control / State=Default — swap in any other Type from the Menu pattern doc for a different app section.</p>
+    <div class="demo-frame">
+
+      <div class="cc-sidebar-menu" aria-label="Affino Control Centre">
+        <!-- Sidebar (Desktop / Default — SlidersVertical highlighted) -->
+        <nav class="cc-sidebar" role="toolbar" aria-label="Workspace switcher">
+          <div class="cc-sidebar__brand" role="img" aria-label="Affino"></div>
+          <button type="button" class="cc-sidebar__btn cc-sidebar__btn--active" aria-current="true" aria-label="Workspace settings"><i data-lucide="sliders-vertical" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Account"><i data-lucide="user-cog" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Saved"><i data-lucide="star" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Organisation"><i data-lucide="network" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Profile"><i data-lucide="circle-user" aria-hidden="true"></i></button>
+        </nav>
+
+        <!-- Menu (Control / Default) -->
+        <nav class="cc-menu" aria-label="Control menu">
+          <div class="cc-menu__brand" role="img" aria-label="Affino"></div>
+          <label class="cc-menu__search">
+            <i data-lucide="search" aria-hidden="true"></i>
+            <input class="cc-menu__search-input" type="search" placeholder="Search Control" aria-label="Search Control">
+          </label>
+          <ul class="cc-menu__items">
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="user-cog"></i></span><span class="cc-main-menu-item__label">CRM</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="file-text"></i></span><span class="cc-main-menu-item__label">Content</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="megaphone"></i></span><span class="cc-main-menu-item__label">Marketing</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="shopping-cart"></i></span><span class="cc-main-menu-item__label">Commerce</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="sparkles"></i></span><span class="cc-main-menu-item__label">AI</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="images"></i></span><span class="cc-main-menu-item__label">Media</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="layout-panel-top"></i></span><span class="cc-main-menu-item__label">Structure</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="palette"></i></span><span class="cc-main-menu-item__label">Design</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="settings"></i></span><span class="cc-main-menu-item__label">Settings</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="square-code"></i></span><span class="cc-main-menu-item__label">Custom</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="demo-frame__placeholder">main app content area</div>
+    </div>
+  </div>
+
+  <!-- Mobile -->
+  <div class="demo-section">
+    <p class="demo-section__title">Device = Mobile</p>
+    <p class="demo-section__lead">Mobile rail (52) + Menu panel (280). Tighter rail spacing, brand cell is 40×40, EllipsisVertical sits immediately after the CircleUser button with the standard gap.</p>
+    <div class="demo-frame" style="width: 360px;">
+
+      <div class="cc-sidebar-menu" aria-label="Affino Control Centre (mobile)">
+        <nav class="cc-sidebar cc-sidebar--mobile" role="toolbar" aria-label="Workspace switcher">
+          <div class="cc-sidebar__brand" role="img" aria-label="Affino"></div>
+          <button type="button" class="cc-sidebar__btn cc-sidebar__btn--active" aria-current="true" aria-label="Workspace settings"><i data-lucide="sliders-vertical" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Account"><i data-lucide="user-cog" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Saved"><i data-lucide="star" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Organisation"><i data-lucide="network" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Profile"><i data-lucide="circle-user" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="More"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
+        </nav>
+
+        <nav class="cc-menu" aria-label="Control menu (mobile)">
+          <div class="cc-menu__brand" role="img" aria-label="Affino"></div>
+          <label class="cc-menu__search">
+            <i data-lucide="search" aria-hidden="true"></i>
+            <input class="cc-menu__search-input" type="search" placeholder="Search Control" aria-label="Search Control">
+          </label>
+          <ul class="cc-menu__items">
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="user-cog"></i></span><span class="cc-main-menu-item__label">CRM</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="file-text"></i></span><span class="cc-main-menu-item__label">Content</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="megaphone"></i></span><span class="cc-main-menu-item__label">Marketing</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="shopping-cart"></i></span><span class="cc-main-menu-item__label">Commerce</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="sparkles"></i></span><span class="cc-main-menu-item__label">AI</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="images"></i></span><span class="cc-main-menu-item__label">Media</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="layout-panel-top"></i></span><span class="cc-main-menu-item__label">Structure</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="palette"></i></span><span class="cc-main-menu-item__label">Design</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

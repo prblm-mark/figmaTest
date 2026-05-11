@@ -1,0 +1,96 @@
+/* CC Sidebar pattern (Tier=Pattern)
+ * Figma node: 4055:10681 — CC Hybrid file. 5 variants:
+ *   Device=Desktop × State=Default | Selected
+ *   Device=Mobile  × State=Default | Selected | Expanded
+ *
+ * Desktop Default and Selected are visually identical (the same workspace
+ * button shows the active highlight). On Mobile, Default has no highlight,
+ * Selected adds the active highlight, and Expanded extends the rail with
+ * 5 additional secondary buttons (Astroid / Info / Star / ALargeSmall /
+ * Minimize2) anchored below the primary nav.
+ *
+ * Rail width is deterministic, not content-derived:
+ *   Desktop = 40 (button) + 8×2 (padding) = 56
+ *   Mobile  = 40 (button) + 6×2 (padding) = 52
+ *
+ * Default icon colour is the dusty `--ai-icon-invert-secondary`. Only the
+ * Selected/Active workspace button promotes its icon to `--cc-mainmenu-icon`.
+ */
+
+.cc-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: var(--ai-spacing-10);                    /* 56 — 40 button + 8 padding × 2 */
+  gap: var(--ai-spacing-3);                       /* 8 — Desktop */
+  padding: var(--ai-spacing-4) var(--ai-spacing-3); /* 12 / 8 — Desktop */
+  background-color: var(--cc-mainmenu-primary-bg);
+  flex-shrink: 0;
+  height: 100%;
+}
+
+/* Mobile: 52 wide (40 + 6 × 2), tighter gap (6) and tighter horizontal padding (6). */
+.cc-sidebar--mobile {
+  width: calc(var(--ai-spacing-8) + var(--ai-spacing-2) * 2);  /* 52 — no direct token */
+  gap: var(--ai-spacing-2);
+  padding-left: var(--ai-spacing-2);
+  padding-right: var(--ai-spacing-2);
+}
+
+/* ── Brand cell at top of the rail ─────────────────── */
+/* Desktop: 40 wide × 72 tall (Affino mark in a taller slot).
+   Mobile:  40 × 40 (mark only).
+   The CSS `mask` paints the affinoMark.svg in --cc-mainmenu-icon. */
+.cc-sidebar__brand {
+  flex-shrink: 0;
+  width: var(--ai-spacing-8);                     /* 40 */
+  min-height: var(--ai-spacing-12);               /* 72 — Desktop */
+  background-color: var(--cc-mainmenu-icon);
+  -webkit-mask: url('../../../../img/affinoMark.svg') no-repeat center center;
+  mask: url('../../../../img/affinoMark.svg') no-repeat center center;
+  /* Brand mark — asset-derived size (28). Logo/brand dimensions are an
+   * allowed exception to the no-px rule. */
+  -webkit-mask-size: 28px auto;
+  mask-size: 28px auto;
+}
+
+.cc-sidebar--mobile .cc-sidebar__brand {
+  min-height: var(--ai-spacing-8);                /* 40 — Mobile */
+  -webkit-mask-size: 24px auto;                   /* brand asset size — allowed */
+  mask-size: 24px auto;
+}
+
+/* ── Rail button — 40×40 icon button ───────────────── */
+.cc-sidebar__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-8);                     /* 40 */
+  height: var(--ai-spacing-8);
+  border: 0;
+  background: transparent;
+  border-radius: var(--ai-radius-md);
+  /* Default icon colour: dusty --ai-icon-invert-secondary. The active
+   * workspace button below promotes this to --cc-mainmenu-icon. */
+  color: var(--ai-icon-invert-secondary);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color var(--ai-transition-default), color var(--ai-transition-default);
+}
+
+.cc-sidebar__btn:hover {
+  background-color: var(--cc-mainmenu-secondary-bg);
+  color: var(--cc-mainmenu-icon);
+}
+
+/* Active workspace button — bg highlight + brightened icon. */
+.cc-sidebar__btn--active,
+.cc-sidebar__btn[aria-current="true"] {
+  background-color: var(--cc-mainmenu-secondary-bg);
+  color: var(--cc-mainmenu-icon);
+}
+
+.cc-sidebar__btn [data-lucide] {
+  width: var(--ai-icon-size-md);                  /* 20 */
+  height: var(--ai-icon-size-md);
+}

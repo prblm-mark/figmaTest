@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en" data-brand="cc">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../../components/dark-mode-toggle.js"></script>
+  <title>MainMenuItem — Control Centre</title>
+  <link rel="stylesheet" href="../../../styles/base.css">
+  <link rel="stylesheet" href="MainMenuItem.css">
+  <style>
+    body {
+      margin: 0;
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-secondary);
+      min-height: 100vh;
+      color: var(--ai-text-primary);
+      font-family: var(--ai-font-body);
+    }
+    .demo-section {
+      padding: var(--ai-spacing-6);
+      background: var(--ai-surface-primary);
+      border-radius: var(--ai-radius-lg);
+      margin-bottom: var(--ai-spacing-5);
+      border: 1px solid var(--ai-border-secondary);
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 var(--ai-spacing-5);
+    }
+    /* Place items on the CC menu-panel-dark bg so the visible colours match
+       what a consumer will see in context. */
+    .menu-bg {
+      background: var(--cc-mainmenu-secondary-bg);
+      padding: var(--ai-spacing-4);
+      border-radius: var(--ai-radius-md);
+      width: 280px;
+    }
+    .stack { display: flex; flex-direction: column; gap: var(--ai-spacing-1); }
+  </style>
+</head>
+<body>
+
+  <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-3);">MainMenuItem</h1>
+  <p style="font-size: var(--ai-font-fixed-sm); color: var(--ai-text-contrast); margin: 0 0 var(--ai-spacing-7); max-width: 60ch;">
+    The atomic row used inside the Menu panel. 4 component states from Figma — Default, Hover, Selected, Expanded. Rows always fill their parent container's width.
+  </p>
+
+  <div class="demo-section">
+    <p class="demo-section__title">State = Default</p>
+    <p style="font-size: var(--ai-font-fixed-xs); color: var(--ai-text-contrast); margin: 0 0 var(--ai-spacing-3);">
+      Transparent bg. Label uses <code>--ai-text-invert-secondary</code>; icon uses <code>--ai-icon-invert-secondary</code> (the dusty pair).
+    </p>
+    <div class="menu-bg">
+      <div class="stack">
+        <button type="button" class="cc-main-menu-item">
+          <span class="cc-main-menu-item__icon"><i data-lucide="file-text" aria-hidden="true"></i></span>
+          <span class="cc-main-menu-item__label">Content</span>
+        </button>
+        <button type="button" class="cc-main-menu-item">
+          <span class="cc-main-menu-item__icon"><i data-lucide="user-cog" aria-hidden="true"></i></span>
+          <span class="cc-main-menu-item__label">CRM</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <p class="demo-section__title">State = Hover</p>
+    <p style="font-size: var(--ai-font-fixed-xs); color: var(--ai-text-contrast); margin: 0 0 var(--ai-spacing-3);">
+      Pinned via inline style so the static showcase captures it. In app, this kicks in via <code>:hover</code>. Bg goes to <code>--cc-mainmenu-primary-bg</code>; label and icon colours stay at the Default duotone. Items with a submenu carry a trailing chevron-down.
+    </p>
+    <div class="menu-bg">
+      <button type="button" class="cc-main-menu-item" style="background-color: var(--cc-mainmenu-primary-bg);">
+        <span class="cc-main-menu-item__icon"><i data-lucide="file-text" aria-hidden="true"></i></span>
+        <span class="cc-main-menu-item__label">Publish</span>
+        <span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <p class="demo-section__title">State = Selected</p>
+    <p style="font-size: var(--ai-font-fixed-xs); color: var(--ai-text-contrast); margin: 0 0 var(--ai-spacing-3);">
+      Bg <code>--cc-mainmenu-primary-bg</code>. Label brightens to <code>--ai-text-invert</code> and icon to <code>--cc-mainmenu-icon</code>. No chevron rotation — this is a terminal item, not a submenu trigger.
+    </p>
+    <div class="menu-bg">
+      <button type="button" class="cc-main-menu-item cc-main-menu-item--selected">
+        <span class="cc-main-menu-item__icon"><i data-lucide="file-text" aria-hidden="true"></i></span>
+        <span class="cc-main-menu-item__label">Content</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <p class="demo-section__title">State = Expanded</p>
+    <p style="font-size: var(--ai-font-fixed-xs); color: var(--ai-text-contrast); margin: 0 0 var(--ai-spacing-3);">
+      Same colour treatment as Selected, plus the chevron is flipped (<code>scaleY(-1)</code>) so chevron-down points up — signalling the submenu below is open.
+    </p>
+    <div class="menu-bg">
+      <button type="button" class="cc-main-menu-item cc-main-menu-item--expanded" aria-expanded="true">
+        <span class="cc-main-menu-item__icon"><i data-lucide="file-text" aria-hidden="true"></i></span>
+        <span class="cc-main-menu-item__label">Publish</span>
+        <span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+      </button>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

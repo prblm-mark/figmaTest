@@ -1,0 +1,119 @@
+/* MainMenuItem component (Tier=Component)
+ * Figma node: 4057:2802 — "Main Menu" component set in the CC Hybrid file
+ *
+ * The atomic row that lives inside the Menu panel. 4 states from Figma:
+ *   - Default   (4057:2801): no bg, label --ai-text-invert-secondary, icon --ai-icon-invert-secondary
+ *   - Hover     (4057:2811): primary-bg, labels/icons stay default, chevron-down trailing
+ *   - Selected  (4057:2830): primary-bg, label --ai-text-invert, icon --cc-mainmenu-icon
+ *   - Expanded  (4057:2830): same as Selected + chevron flipped (scaleY(-1))
+ *
+ * Default vs Selected:
+ *   - Default icon is the DUSTY `--ai-icon-invert-secondary` (a1b7c3). Use of
+ *     `--cc-mainmenu-icon` (white-ish, f3f6f7) is reserved for the Selected /
+ *     Expanded states only.
+ *   - Default label is `--ai-text-invert-secondary` (ccd4d8). Selected /
+ *     Expanded brighten the label to `--ai-text-invert` (white).
+ *
+ * The chevron is structural — only present when an item has a submenu.
+ */
+
+.cc-main-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);                  /* 8 */
+  width: 100%;                                /* fills the parent list/container */
+  min-height: var(--ai-spacing-8);           /* 40 */
+  padding: var(--ai-spacing-3) var(--ai-spacing-4);   /* 8 / 12 */
+  border: 0;
+  background: transparent;
+  border-radius: var(--ai-radius-md);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);         /* 14 */
+  font-weight: var(--ai-font-medium);
+  line-height: normal;                        /* allow descender room — `1` clipped p/g/y */
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--ai-transition-default);
+}
+
+.cc-main-menu-item__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: var(--ai-icon-size-sm);              /* 16 */
+  height: var(--ai-icon-size-sm);
+  /* Default: dusty secondary icon colour. Only the Selected/Expanded
+   * states promote to --cc-mainmenu-icon below. */
+  color: var(--ai-icon-invert-secondary);
+}
+
+.cc-main-menu-item__icon [data-lucide] {
+  width: 100%;
+  height: 100%;
+}
+
+.cc-main-menu-item__label {
+  flex: 1 0 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ai-text-invert-secondary);
+}
+
+.cc-main-menu-item__chevron {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  /* Chevron tracks the icon colour rule — dusty by default, promoted on Selected/Expanded.
+   * Hidden in Default state; revealed on Hover, Selected, Expanded. */
+  color: var(--ai-icon-invert-secondary);
+  opacity: 0;
+  transition: transform var(--ai-transition-default), opacity var(--ai-transition-default), color var(--ai-transition-default);
+}
+
+.cc-main-menu-item:hover .cc-main-menu-item__chevron,
+.cc-main-menu-item--selected .cc-main-menu-item__chevron,
+.cc-main-menu-item--expanded .cc-main-menu-item__chevron,
+.cc-main-menu-item[aria-expanded="true"] .cc-main-menu-item__chevron {
+  opacity: 1;
+}
+
+.cc-main-menu-item__chevron [data-lucide] {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── States ─────────────────────────────────────────── */
+/* Hover: primary-bg highlight only. Labels/icons stay at defaults. */
+.cc-main-menu-item:hover {
+  background-color: var(--cc-mainmenu-primary-bg);
+}
+
+/* Selected / Expanded: primary-bg + brighten label & icon. */
+.cc-main-menu-item--selected,
+.cc-main-menu-item--expanded,
+.cc-main-menu-item[aria-expanded="true"] {
+  background-color: var(--cc-mainmenu-primary-bg);
+}
+
+.cc-main-menu-item--selected .cc-main-menu-item__label,
+.cc-main-menu-item--expanded .cc-main-menu-item__label,
+.cc-main-menu-item[aria-expanded="true"] .cc-main-menu-item__label {
+  color: var(--ai-text-invert);
+}
+
+.cc-main-menu-item--selected .cc-main-menu-item__icon,
+.cc-main-menu-item--expanded .cc-main-menu-item__icon,
+.cc-main-menu-item[aria-expanded="true"] .cc-main-menu-item__icon,
+.cc-main-menu-item--selected .cc-main-menu-item__chevron,
+.cc-main-menu-item--expanded .cc-main-menu-item__chevron,
+.cc-main-menu-item[aria-expanded="true"] .cc-main-menu-item__chevron {
+  color: var(--cc-mainmenu-icon);
+}
+
+/* Expanded only — flip the chevron so it points up. */
+.cc-main-menu-item--expanded .cc-main-menu-item__chevron,
+.cc-main-menu-item[aria-expanded="true"] .cc-main-menu-item__chevron {
+  transform: scaleY(-1);
+}

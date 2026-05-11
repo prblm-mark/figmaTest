@@ -25,6 +25,7 @@
   --ai-text-secondary: #e2e2e3;
   --ai-text-contrast: #929295;
   --ai-text-invert: #1b1b1f;
+  --ai-text-invert-secondary: #262629;
   --ai-text-error: #f87171;
   --ai-text-brand: #0071d8;
   --ai-text-success: #34da9b;
@@ -45,12 +46,14 @@
   --ai-icon-secondary: #929295;
   --ai-icon-contrast: #929295;
   --ai-icon-invert: #1b1b1f;
-  --ai-icon-invert: #262629;
+  --ai-icon-invert-secondary: #262629;
   --ai-icon-brand: #0071d8;
   --cc-header-primary-bg: #1e293b;
   --cc-header-secondary-bg: #334155;
+  --cc-header-icon: #334155;
   --cc-mainmenu-primary-bg: #334155;
   --cc-mainmenu-secondary-bg: #1e293b;
+  --cc-mainmenu-icon: #334155;
   --ai-chat-brand: #0071d8;
   --ai-chat-msg-bg: #172554;
   --ai-chat-msg-text: #eff6ff;
