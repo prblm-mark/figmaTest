@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en" data-brand="cc">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../../components/dark-mode-toggle.js"></script>
+  <title>Menu — Control Centre</title>
+  <link rel="stylesheet" href="../../../styles/base.css">
+  <link rel="stylesheet" href="../../components/MainMenuItem/MainMenuItem.css">
+  <link rel="stylesheet" href="Menu.css">
+  <style>
+    body {
+      margin: 0;
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-secondary);
+      min-height: 100vh;
+      color: var(--ai-text-primary);
+      font-family: var(--ai-font-body);
+    }
+    .demo-section {
+      padding: var(--ai-spacing-6);
+      background: var(--ai-surface-primary);
+      border-radius: var(--ai-radius-lg);
+      margin-bottom: var(--ai-spacing-5);
+      border: 1px solid var(--ai-border-secondary);
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 var(--ai-spacing-3);
+    }
+    .demo-section__lead {
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-contrast);
+      margin: 0 0 var(--ai-spacing-5);
+      max-width: 60ch;
+    }
+    .demo-row {
+      display: flex;
+      gap: var(--ai-spacing-5);
+      align-items: stretch;
+      height: 720px;
+      flex-wrap: wrap;
+    }
+    .demo-card {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-3);
+    }
+    .demo-card__caption {
+      font-size: var(--ai-font-fixed-xxs);
+      color: var(--ai-text-contrast);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-3);">Menu</h1>
+  <p style="font-size: var(--ai-font-fixed-sm); color: var(--ai-text-contrast); margin: 0 0 var(--ai-spacing-7); max-width: 60ch;">
+    The 280-wide panel that pairs with the Sidebar rail. 8 Figma variants — 4 Types × multiple States. Type controls layout (Control/Analysis/Favourites use the MainMenuItem row format, CRM uses plus-icon buttons + a Recent contacts list).
+  </p>
+
+  <!-- Type=Control -->
+  <div class="demo-section">
+    <p class="demo-section__title">Type = Control</p>
+    <p class="demo-section__lead">Standard product navigation tree. Default lists all 10 Affino sections; Selected expands "Content" to show its child pages; Scrolled is the same Selected state with the search/logo hidden (user has scrolled past).</p>
+    <div class="demo-row">
+
+      <div class="demo-card">
+        <nav class="cc-menu" aria-label="Control menu (default)">
+          <div class="cc-menu__brand" role="img" aria-label="Affino"></div>
+          <label class="cc-menu__search">
+            <i data-lucide="search" aria-hidden="true"></i>
+            <input class="cc-menu__search-input" type="search" placeholder="Search Control" aria-label="Search Control">
+          </label>
+          <ul class="cc-menu__items">
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="user-cog"></i></span><span class="cc-main-menu-item__label">CRM</span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="file-text"></i></span><span class="cc-main-menu-item__label">Content</span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="megaphone"></i></span><span class="cc-main-menu-item__label">Marketing</span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="shopping-cart"></i></span><span class="cc-main-menu-item__label">Commerce</span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="sparkles"></i></span><span class="cc-main-menu-item__label">AI</span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="images"></i></span><span class="cc-main-menu-item__label">Media</span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="layout-panel-top"></i></span><span class="cc-main-menu-item__label">Structure</span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="palette"></i></span><span class="cc-main-menu-item__label">Design</span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="settings"></i></span><span class="cc-main-menu-item__label">Settings</span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="square-code"></i></span><span class="cc-main-menu-item__label">Custom</span></button></li>
+          </ul>
+        </nav>
+        <p class="demo-card__caption">State = Default</p>
+      </div>
+
+      <div class="demo-card">
+        <nav class="cc-menu" aria-label="Control menu (selected)">
+          <div class="cc-menu__brand" role="img" aria-label="Affino"></div>
+          <label class="cc-menu__search">
+            <i data-lucide="search" aria-hidden="true"></i>
+            <input class="cc-menu__search-input" type="search" placeholder="Search Control" aria-label="Search Control">
+          </label>
+          <ul class="cc-menu__items">
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="user-cog"></i></span><span class="cc-main-menu-item__label">CRM</span></button></li>
+            <li>
+              <button class="cc-main-menu-item cc-main-menu-item--expanded" aria-expanded="true">
+                <span class="cc-main-menu-item__icon"><i data-lucide="file-text"></i></span>
+                <span class="cc-main-menu-item__label">Content</span>
+                <span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span>
+              </button>
+              <ul class="cc-menu__submenu">
+                <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Analysis Dashboard</span></li>
+                <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Analysis Dashboard Settings</span></li>
+                <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Archive</span></li>
+                <li class="cc-menu__submenu-item">
+                  <span class="cc-menu__submenu-item-label">Article Archive Profiles</span>
+                  <button class="cc-menu__submenu-item__action" aria-label="Pin"><i data-lucide="pin"></i></button>
+                </li>
+                <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Attributes</span></li>
+                <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Batch Delete</span></li>
+                <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Export</span></li>
+                <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Icons</span></li>
+              </ul>
+            </li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="megaphone"></i></span><span class="cc-main-menu-item__label">Marketing</span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="shopping-cart"></i></span><span class="cc-main-menu-item__label">Commerce</span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="sparkles"></i></span><span class="cc-main-menu-item__label">AI</span></button></li>
+          </ul>
+        </nav>
+        <p class="demo-card__caption">State = Selected (Content expanded)</p>
+      </div>
+
+      <div class="demo-card">
+        <nav class="cc-menu" aria-label="Control menu (scrolled)">
+          <!-- No brand / search — scrolled away -->
+          <ul class="cc-menu__items">
+            <li>
+              <button class="cc-main-menu-item cc-main-menu-item--expanded" aria-expanded="true">
+                <span class="cc-main-menu-item__icon"><i data-lucide="file-text"></i></span>
+                <span class="cc-main-menu-item__label">Content</span>
+                <span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span>
+              </button>
+              <ul class="cc-menu__submenu">
+                <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Archive Profiles</span></li>
+                <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Attributes</span></li>
+                <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Batch Delete</span></li>
+                <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Export</span></li>
+                <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Icons</span></li>
+              </ul>
+            </li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="megaphone"></i></span><span class="cc-main-menu-item__label">Marketing</span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="shopping-cart"></i></span><span class="cc-main-menu-item__label">Commerce</span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="users"></i></span><span class="cc-main-menu-item__label">AI</span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="images"></i></span><span class="cc-main-menu-item__label">Media</span></button></li>
+          </ul>
+        </nav>
+        <p class="demo-card__caption">State = Scrolled (search hidden)</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Type=Analysis -->
+  <div class="demo-section">
+    <p class="demo-section__title">Type = Analysis</p>
+    <p class="demo-section__lead">Different navigation tree starting with "Dashboards". No Search input in this Type.</p>
+    <div class="demo-row">
+
+      <div class="demo-card">
+        <nav class="cc-menu" aria-label="Analysis menu (default)">
+          <div class="cc-menu__brand" role="img" aria-label="Affino"></div>
+          <ul class="cc-menu__items">
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="layout-dashboard"></i></span><span class="cc-main-menu-item__label">Dashboards</span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="user-cog"></i></span><span class="cc-main-menu-item__label">CRM</span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="file-text"></i></span><span class="cc-main-menu-item__label">Content</span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="megaphone"></i></span><span class="cc-main-menu-item__label">Marketing</span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="shopping-cart"></i></span><span class="cc-main-menu-item__label">Commerce</span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="sparkles"></i></span><span class="cc-main-menu-item__label">AI</span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="layout-panel-top"></i></span><span class="cc-main-menu-item__label">Structure</span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="settings"></i></span><span class="cc-main-menu-item__label">System</span></button></li>
+          </ul>
+        </nav>
+        <p class="demo-card__caption">State = Default</p>
+      </div>
+
+      <div class="demo-card">
+        <nav class="cc-menu" aria-label="Analysis menu (selected)">
+          <div class="cc-menu__brand" role="img" aria-label="Affino"></div>
+          <ul class="cc-menu__items">
+            <li>
+              <button class="cc-main-menu-item cc-main-menu-item--expanded" aria-expanded="true">
+                <span class="cc-main-menu-item__icon"><i data-lucide="layout-dashboard"></i></span>
+                <span class="cc-main-menu-item__label">Dashboards</span>
+                <span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span>
+              </button>
+              <ul class="cc-menu__submenu">
+                <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Analysis Dashboard</span></li>
+                <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Audience Dashboard</span></li>
+                <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Campaign Dashboards</span></li>
+                <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Live Dashboard</span></li>
+                <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Subscription Dashboard</span></li>
+              </ul>
+            </li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="user-cog"></i></span><span class="cc-main-menu-item__label">CRM</span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="file-text"></i></span><span class="cc-main-menu-item__label">Content</span></button></li>
+            <li><button class="cc-main-menu-item"><span class="cc-main-menu-item__icon"><i data-lucide="megaphone"></i></span><span class="cc-main-menu-item__label">Marketing</span></button></li>
+          </ul>
+        </nav>
+        <p class="demo-card__caption">State = Selected (Dashboards expanded)</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Type=Favourites -->
+  <div class="demo-section">
+    <p class="demo-section__title">Type = Favourites</p>
+    <p class="demo-section__lead">Simple list of pinned items with trash icons. No main nav.</p>
+    <div class="demo-row">
+
+      <div class="demo-card">
+        <nav class="cc-menu" aria-label="Favourites menu">
+          <div class="cc-menu__brand" role="img" aria-label="Affino"></div>
+          <label class="cc-menu__search">
+            <i data-lucide="search" aria-hidden="true"></i>
+            <input class="cc-menu__search-input" type="search" placeholder="Search Favourites" aria-label="Search Favourites">
+          </label>
+          <ul class="cc-menu__submenu" style="padding: var(--ai-spacing-3) 0;">
+            <li class="cc-menu__submenu-item">
+              <span class="cc-menu__submenu-item-label">Analysis Dashboard</span>
+              <button class="cc-menu__submenu-item__action" aria-label="Remove from favourites"><i data-lucide="trash-2"></i></button>
+            </li>
+            <li class="cc-menu__submenu-item">
+              <span class="cc-menu__submenu-item-label">Articles</span>
+              <button class="cc-menu__submenu-item__action" aria-label="Remove from favourites"><i data-lucide="trash-2"></i></button>
+            </li>
+            <li class="cc-menu__submenu-item">
+              <span class="cc-menu__submenu-item-label">CRM</span>
+              <button class="cc-menu__submenu-item__action" aria-label="Remove from favourites"><i data-lucide="trash-2"></i></button>
+            </li>
+          </ul>
+        </nav>
+        <p class="demo-card__caption">State = Selected</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Type=CRM -->
+  <div class="demo-section">
+    <p class="demo-section__title">Type = CRM</p>
+    <p class="demo-section__lead">Different layout — plus-icon "menu buttons" for CRM actions, then a "Recent" contacts list with chevron-right indicators. Default shows 5 recents + "show more"; Expanded shows 8 + "show less".</p>
+    <div class="demo-row">
+
+      <div class="demo-card">
+        <nav class="cc-menu cc-menu--crm" aria-label="CRM menu (default)">
+          <div class="cc-menu__brand" role="img" aria-label="Affino"></div>
+          <label class="cc-menu__search">
+            <i data-lucide="search" aria-hidden="true"></i>
+            <input class="cc-menu__search-input" type="search" placeholder="Search CRM" aria-label="Search CRM">
+          </label>
+          <div class="cc-menu__crm-groups">
+            <div class="cc-menu__crm-group">
+              <button class="cc-menu__md-btn"><span class="cc-menu__md-btn__label">Contacts</span><span class="cc-menu__md-btn__icon"><i data-lucide="square-plus"></i></span></button>
+              <button class="cc-menu__md-btn"><span class="cc-menu__md-btn__label">Accounts</span><span class="cc-menu__md-btn__icon"><i data-lucide="square-plus"></i></span></button>
+              <button class="cc-menu__md-btn"><span class="cc-menu__md-btn__label">Opportunities</span><span class="cc-menu__md-btn__icon"><i data-lucide="square-plus"></i></span></button>
+              <button class="cc-menu__md-btn"><span class="cc-menu__md-btn__label">Contact Lists</span><span class="cc-menu__md-btn__icon"><i data-lucide="square-plus"></i></span></button>
+              <button class="cc-menu__md-btn"><span class="cc-menu__md-btn__label">Contact Notes</span><span class="cc-menu__md-btn__icon"><i data-lucide="square-plus"></i></span></button>
+              <button class="cc-menu__md-btn"><span class="cc-menu__md-btn__label">Tasks</span><span class="cc-menu__md-btn__icon"><i data-lucide="square-plus"></i></span></button>
+            </div>
+            <div class="cc-menu__crm-group">
+              <p class="cc-menu__recent-heading">Recent</p>
+              <button class="cc-menu__recent-item"><span class="cc-menu__recent-item__label">Daisy Smith, Jacobs Media</span><span class="cc-menu__recent-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <button class="cc-menu__recent-item"><span class="cc-menu__recent-item__label">Keisha Grant, Nova Designs</span><span class="cc-menu__recent-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <button class="cc-menu__recent-item"><span class="cc-menu__recent-item__label">Dev Sharma, Quantum Dynamics</span><span class="cc-menu__recent-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <button class="cc-menu__recent-item"><span class="cc-menu__recent-item__label">Aisha Khan, Stellar Tech</span><span class="cc-menu__recent-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <button class="cc-menu__recent-item"><span class="cc-menu__recent-item__label">Lena Petrova, United Networks</span><span class="cc-menu__recent-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <button class="cc-menu__show-toggle"><i data-lucide="chevrons-up-down" aria-hidden="true"></i><span>show more</span></button>
+            </div>
+          </div>
+        </nav>
+        <p class="demo-card__caption">State = Default (5 recents)</p>
+      </div>
+
+      <div class="demo-card">
+        <nav class="cc-menu cc-menu--crm" aria-label="CRM menu (expanded)">
+          <div class="cc-menu__brand" role="img" aria-label="Affino"></div>
+          <label class="cc-menu__search">
+            <i data-lucide="search" aria-hidden="true"></i>
+            <input class="cc-menu__search-input" type="search" placeholder="Search CRM" aria-label="Search CRM">
+          </label>
+          <div class="cc-menu__crm-groups">
+            <div class="cc-menu__crm-group">
+              <button class="cc-menu__md-btn"><span class="cc-menu__md-btn__label">Contacts</span><span class="cc-menu__md-btn__icon"><i data-lucide="square-plus"></i></span></button>
+              <button class="cc-menu__md-btn"><span class="cc-menu__md-btn__label">Accounts</span><span class="cc-menu__md-btn__icon"><i data-lucide="square-plus"></i></span></button>
+              <button class="cc-menu__md-btn"><span class="cc-menu__md-btn__label">Opportunities</span><span class="cc-menu__md-btn__icon"><i data-lucide="square-plus"></i></span></button>
+              <button class="cc-menu__md-btn"><span class="cc-menu__md-btn__label">Contact Lists</span><span class="cc-menu__md-btn__icon"><i data-lucide="square-plus"></i></span></button>
+              <button class="cc-menu__md-btn"><span class="cc-menu__md-btn__label">Contact Notes</span><span class="cc-menu__md-btn__icon"><i data-lucide="square-plus"></i></span></button>
+              <button class="cc-menu__md-btn"><span class="cc-menu__md-btn__label">Tasks</span><span class="cc-menu__md-btn__icon"><i data-lucide="square-plus"></i></span></button>
+            </div>
+            <div class="cc-menu__crm-group">
+              <p class="cc-menu__recent-heading">Recent</p>
+              <button class="cc-menu__recent-item"><span class="cc-menu__recent-item__label">Daisy Smith, Jacobs Media</span><span class="cc-menu__recent-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <button class="cc-menu__recent-item"><span class="cc-menu__recent-item__label">Kenji Tanaka, Global Reach</span><span class="cc-menu__recent-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <button class="cc-menu__recent-item"><span class="cc-menu__recent-item__label">Priya Patel, Zenith Systems</span><span class="cc-menu__recent-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <button class="cc-menu__recent-item"><span class="cc-menu__recent-item__label">Omar Hassan, Apex Innovations</span><span class="cc-menu__recent-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <button class="cc-menu__recent-item"><span class="cc-menu__recent-item__label">Carlos Alvarez, Summit Group</span><span class="cc-menu__recent-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <button class="cc-menu__recent-item"><span class="cc-menu__recent-item__label">Mei Lin, Infinity Enterprises</span><span class="cc-menu__recent-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <button class="cc-menu__recent-item"><span class="cc-menu__recent-item__label">Rajesh Kapoor, Vanguard Corp</span><span class="cc-menu__recent-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <button class="cc-menu__recent-item"><span class="cc-menu__recent-item__label">Nadia Silva, Titan Industries</span><span class="cc-menu__recent-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <button class="cc-menu__show-toggle"><i data-lucide="chevrons-down-up" aria-hidden="true"></i><span>show less</span></button>
+            </div>
+          </div>
+        </nav>
+        <p class="demo-card__caption">State = Expanded (8 recents)</p>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

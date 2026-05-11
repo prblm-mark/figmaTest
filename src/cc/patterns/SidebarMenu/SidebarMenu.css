@@ -1,0 +1,15 @@
+/* CC SidebarMenu composite (Tier=Pattern)
+ * Figma node: 4053:6183 — "SidebarMenu" frame; deliverables 4066:18918
+ * (Desktop) + 4066:18916 (Mobile).
+ *
+ * This is purely a LAYOUT pattern — it composes the Sidebar rail and the
+ * Menu panel into a single flex row. No styling of its own beyond the
+ * composition; all visuals come from Sidebar.css and Menu.css.
+ */
+
+.cc-sidebar-menu {
+  display: inline-flex;
+  align-items: stretch;
+  height: 100%;
+  font-family: var(--ai-font-body);
+}

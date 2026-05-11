@@ -18,15 +18,25 @@ const ROOT = resolve(import.meta.dirname, '..', '..', '..')
 const DOCS_SITE = resolve(ROOT, 'docs-site')
 
 const TIERS = [
+  // Design System / AI Chat (bucketed by Figma URL — CC and AI share the
+  // same DS Figma file, so URL alone can't tell them apart; they sit in
+  // different src/ subtrees instead, see the next group).
   { dir: 'src/components', tier: 'component', outDir: 'components' },
   { dir: 'src/patterns', tier: 'pattern', outDir: 'patterns' },
   { dir: 'src/templates', tier: 'template', outDir: 'templates' },
+  // Control Centre (CC) — components live under src/cc/* and are forced
+  // into the `cc` sidebar bucket regardless of which Figma file their
+  // notes link to.
+  { dir: 'src/cc/components', tier: 'component', outDir: 'cc-components', product: 'cc' },
+  { dir: 'src/cc/patterns', tier: 'pattern', outDir: 'cc-patterns', product: 'cc' },
+  { dir: 'src/cc/templates', tier: 'template', outDir: 'cc-templates', product: 'cc' },
 ]
 
 // ── Figma file key → product mapping ───────────────────
 const FILE_KEY_MAP = {
   'Lus07xi8pPXLN87sQIyrEt': { product: 'designSystem', label: 'Design System', badgeType: 'info' },
   'Ikv8jxb5dcRH8ff4q4dR11': { product: 'aiChat', label: 'AI Chat', badgeType: 'tip' },
+  'ETKqleZdpertwFEo40YB5n': { product: 'cc', label: 'Control Centre', badgeType: 'warning' },
 }
 
 function getProductFromUrl(figmaUrl) {
@@ -193,10 +203,11 @@ function generatePage(name, tierInfo, sections, registryEntry) {
 // ── Main ────────────────────────────────────────────────
 const registry = parseRegistry()
 
-// Grouped sidebar: { designSystem: { components: [] }, aiChat: { components: [], patterns: [], templates: [] } }
+// Grouped sidebar: { designSystem, aiChat, cc }, each with components/patterns/templates
 const sidebarData = {
   designSystem: { components: [], patterns: [], templates: [] },
   aiChat: { components: [], patterns: [], templates: [] },
+  cc: { components: [], patterns: [], templates: [] },
 }
 
 let totalPages = 0
@@ -235,20 +246,21 @@ for (const tierInfo of TIERS) {
     writeFileSync(outPath, md, 'utf-8')
     totalPages++
 
-    // Determine product group from Figma URL
-    const product = getProductFromUrl(registryEntry?.figmaUrl)
+    // Determine product group: tier override (CC) wins over Figma-URL-based detection
+    const productKey =
+      tierInfo.product
+        ?? getProductFromUrl(registryEntry?.figmaUrl)?.product
+        ?? 'aiChat' // fallback for unknown URLs
     const sidebarItem = {
       text: name.replace(/([a-z])([A-Z])/g, '$1 $2'),
       link: `/${tierInfo.outDir}/${kebab}`,
     }
 
-    if (product?.product === 'designSystem') {
-      const tierKey = tierInfo.outDir
-      sidebarData.designSystem[tierKey].push(sidebarItem)
-    } else {
-      // AI Chat (or unknown) — group by tier
-      const tierKey = tierInfo.outDir  // 'components', 'patterns', 'templates'
-      sidebarData.aiChat[tierKey].push(sidebarItem)
+    // tierInfo.outDir is 'components' | 'patterns' | 'templates' for AI;
+    // for CC it's 'cc-components' etc., so derive the tier key from `tier`.
+    const tierKey = `${tierInfo.tier}s`  // 'components' | 'patterns' | 'templates'
+    if (sidebarData[productKey] && sidebarData[productKey][tierKey]) {
+      sidebarData[productKey][tierKey].push(sidebarItem)
     }
   }
 }
@@ -259,7 +271,9 @@ writeFileSync(sidebarPath, JSON.stringify(sidebarData, null, 2), 'utf-8')
 
 const dsCount = sidebarData.designSystem.components.length + sidebarData.designSystem.patterns.length + sidebarData.designSystem.templates.length
 const chatCount = sidebarData.aiChat.components.length + sidebarData.aiChat.patterns.length + sidebarData.aiChat.templates.length
+const ccCount = sidebarData.cc.components.length + sidebarData.cc.patterns.length + sidebarData.cc.templates.length
 console.log(`Generated ${totalPages} pages:`)
-console.log(`  Design System: ${dsCount} components`)
-console.log(`  AI Chat:       ${sidebarData.aiChat.components.length} components, ${sidebarData.aiChat.patterns.length} patterns, ${sidebarData.aiChat.templates.length} templates`)
+console.log(`  Design System:  ${dsCount} (${sidebarData.designSystem.components.length}c · ${sidebarData.designSystem.patterns.length}p · ${sidebarData.designSystem.templates.length}t)`)
+console.log(`  AI Chat:        ${chatCount} (${sidebarData.aiChat.components.length}c · ${sidebarData.aiChat.patterns.length}p · ${sidebarData.aiChat.templates.length}t)`)
+console.log(`  Control Centre: ${ccCount} (${sidebarData.cc.components.length}c · ${sidebarData.cc.patterns.length}p · ${sidebarData.cc.templates.length}t)`)
 console.log(`Sidebar data: ${sidebarPath}`)

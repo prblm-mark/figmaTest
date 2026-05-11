@@ -437,6 +437,7 @@
       <button class="ds-sidebar__item ds-sidebar__item--active" data-filter="all">All <span class="ds-sidebar__count" id="sidebarAllCount"></span></button>
       <button class="ds-sidebar__item" data-filter="ds">Design System <span class="ds-sidebar__count" id="sidebarDsCount"></span></button>
       <button class="ds-sidebar__item" data-filter="chat">AI Chat <span class="ds-sidebar__count" id="sidebarChatCount"></span></button>
+      <button class="ds-sidebar__item" data-filter="cc">Control Centre <span class="ds-sidebar__count" id="sidebarCcCount"></span></button>
       <button class="ds-sidebar__item" data-filter="proto">Prototypes <span class="ds-sidebar__count" id="sidebarProtoCount"></span></button>
     </div>
   </aside>
@@ -938,6 +939,66 @@
 
     </div>
 
+    <!-- Control Centre -->
+    <div class="ds-section" data-section="cc">
+      <p class="ds-section__label">Control Centre <span class="ds-section__label-count" id="ccCount"></span></p>
+
+      <div class="ds-subsection">
+        <p class="ds-subsection__label">Components</p>
+        <nav class="ds-grid" aria-label="Control Centre components">
+
+          <a href="src/cc/components/MainMenuItem/MainMenuItem.html" class="ds-card" data-category="cc" data-tier="component" data-name="Main Menu Item">
+            <div class="ds-card__icon"><i data-lucide="menu" aria-hidden="true"></i></div>
+            <div class="ds-card__body">
+              <p class="ds-card__label">Control Centre</p>
+              <h3 class="ds-card__name">Main Menu Item</h3>
+            </div>
+          </a>
+
+        </nav>
+      </div>
+
+      <div class="ds-subsection">
+        <p class="ds-subsection__label">Patterns</p>
+        <nav class="ds-grid" aria-label="Control Centre patterns">
+
+          <a href="src/cc/patterns/Sidebar/Sidebar.html" class="ds-card" data-category="cc" data-tier="pattern" data-name="Sidebar">
+            <div class="ds-card__icon"><i data-lucide="panel-left-close" aria-hidden="true"></i></div>
+            <div class="ds-card__body">
+              <p class="ds-card__label">Control Centre</p>
+              <h3 class="ds-card__name">Sidebar</h3>
+            </div>
+          </a>
+
+          <a href="src/cc/patterns/Menu/Menu.html" class="ds-card" data-category="cc" data-tier="pattern" data-name="Menu">
+            <div class="ds-card__icon"><i data-lucide="list" aria-hidden="true"></i></div>
+            <div class="ds-card__body">
+              <p class="ds-card__label">Control Centre</p>
+              <h3 class="ds-card__name">Menu</h3>
+            </div>
+          </a>
+
+          <a href="src/cc/patterns/SidebarMenu/SidebarMenu.html" class="ds-card" data-category="cc" data-tier="pattern" data-name="Sidebar Menu">
+            <div class="ds-card__icon"><i data-lucide="panel-left" aria-hidden="true"></i></div>
+            <div class="ds-card__body">
+              <p class="ds-card__label">Control Centre</p>
+              <h3 class="ds-card__name">Sidebar Menu</h3>
+            </div>
+          </a>
+
+        </nav>
+      </div>
+
+      <div class="ds-subsection">
+        <p class="ds-subsection__label">Templates</p>
+        <nav class="ds-grid" aria-label="Control Centre templates">
+          <!-- CC templates will appear here.
+               Pattern: data-category="cc" data-tier="template" -->
+        </nav>
+      </div>
+
+    </div>
+
     <!-- Prototypes -->
     <div class="ds-section" data-section="proto">
       <p class="ds-section__label">Prototypes <span class="ds-section__label-count" id="protoCount"></span></p>
@@ -1006,6 +1067,7 @@
       'all': 'All',
       'ds': 'Design System',
       'chat': 'AI Chat',
+      'cc': 'Control Centre',
       'proto': 'Prototypes'
     };
 
@@ -1017,20 +1079,23 @@
     };
 
     function updateCounts() {
-      var ds = 0, chat = 0, proto = 0;
+      var ds = 0, chat = 0, cc = 0, proto = 0;
       cards.forEach(function (c) {
         if (!c.hidden) {
           if (c.dataset.category === 'ds') ds++;
           else if (c.dataset.category === 'chat') chat++;
+          else if (c.dataset.category === 'cc') cc++;
           else if (c.dataset.category === 'proto') proto++;
         }
       });
       document.getElementById('dsCount').textContent = '(' + ds + ')';
       document.getElementById('chatCount').textContent = '(' + chat + ')';
+      document.getElementById('ccCount').textContent = '(' + cc + ')';
       document.getElementById('protoCount').textContent = '(' + proto + ')';
-      document.getElementById('sidebarAllCount').textContent = '(' + (ds + chat + proto) + ')';
+      document.getElementById('sidebarAllCount').textContent = '(' + (ds + chat + cc + proto) + ')';
       document.getElementById('sidebarDsCount').textContent = '(' + ds + ')';
       document.getElementById('sidebarChatCount').textContent = '(' + chat + ')';
+      document.getElementById('sidebarCcCount').textContent = '(' + cc + ')';
       document.getElementById('sidebarProtoCount').textContent = '(' + proto + ')';
     }
 

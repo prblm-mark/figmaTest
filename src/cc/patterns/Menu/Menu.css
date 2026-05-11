@@ -1,0 +1,276 @@
+/* CC Menu panel pattern (Tier=Pattern)
+ * Figma node: 4061:16921 — "Menu" pattern set, CC Hybrid file. 8 variants:
+ *   Type=Control × State=Default | Selected | Scrolled
+ *   Type=Analysis × State=Default | Selected
+ *   Type=Favourites × State=Selected
+ *   Type=CRM × State=Default | Expanded
+ *
+ * The 280-wide column that pairs with the Sidebar rail. Holds the Affino
+ * wordmark, an optional Search input, and a list of menu items. Layout
+ * differs between Types:
+ *   Control / Analysis : search + MainMenuItem rows
+ *   Favourites         : search + simple text rows with trash icons
+ *   CRM                : search + plus-icon menu buttons + "Recent" section
+ */
+
+.cc-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ai-spacing-3);                       /* 8 */
+  padding: var(--ai-spacing-4);                   /* 12 */
+  width: var(--ai-size-5);                        /* 280 */
+  flex-shrink: 0;
+  height: 100%;
+  background-color: var(--cc-mainmenu-secondary-bg);
+  font-family: var(--ai-font-body);
+  color: var(--ai-text-invert-secondary);
+}
+
+/* ── Brand strip ───────────────────────────────────── */
+.cc-menu__brand {
+  flex-shrink: 0;
+  width: 167px;
+  height: 38px;
+  align-self: flex-start;
+  margin: var(--ai-spacing-4) 0 var(--ai-spacing-3) var(--ai-spacing-3);
+  background-color: var(--cc-mainmenu-icon);
+  -webkit-mask: url('../../../../img/affinoLogo.svg') no-repeat center / contain;
+  mask: url('../../../../img/affinoLogo.svg') no-repeat center / contain;
+}
+
+/* ── Search input ──────────────────────────────────── */
+.cc-menu__search {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);                       /* 8 */
+  width: 100%;
+  height: var(--ai-spacing-8);                    /* 40 */
+  padding: 0 var(--ai-spacing-5);                 /* 16 horizontal */
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  flex-shrink: 0;
+}
+
+.cc-menu__search-input {
+  flex: 1 0 0;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  font-family: inherit;
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-primary);
+  outline: none;
+}
+
+.cc-menu__search-input::placeholder {
+  color: var(--ai-text-contrast);
+}
+
+.cc-menu__search [data-lucide] {
+  flex-shrink: 0;
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-text-contrast);
+}
+
+/* ── Main items list (Control / Analysis) ──────────── */
+.cc-menu__items {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ai-spacing-1);                       /* 4 */
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ── Expanded sub-list under a Selected MainMenuItem ── */
+/* The sub-items live in a non-bg sub-container, indented inside the panel. */
+.cc-menu__submenu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-2);                       /* 6 */
+  width: 100%;
+  padding: var(--ai-spacing-3) var(--ai-spacing-4); /* 8 / 12 */
+  list-style: none;
+  margin: 0;
+}
+
+.cc-menu__submenu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  width: 100%;
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-invert-secondary);
+}
+
+.cc-menu__submenu-item-label {
+  flex: 1 0 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cc-menu__submenu-item__action {
+  flex-shrink: 0;
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--cc-mainmenu-icon);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--ai-transition-default);
+}
+
+.cc-menu__submenu-item:hover .cc-menu__submenu-item__action {
+  opacity: 0.7;
+}
+
+.cc-menu__submenu-item__action:hover {
+  opacity: 1 !important;
+}
+
+/* ── Type=CRM-specific list (plus-icon menu buttons + Recent) ── */
+.cc-menu--crm {
+  gap: 10px;
+  padding: 10px;
+}
+
+.cc-menu--crm .cc-menu__brand {
+  /* CRM type uses 10px padding; the brand cell sits centred at top. */
+  align-self: center;
+  margin: 0;
+}
+
+.cc-menu__crm-groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-6);                       /* 24 */
+  align-items: flex-start;
+  padding-top: var(--ai-spacing-2);
+}
+
+.cc-menu__crm-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+/* MD/Menu Button — a CRM-specific row: text + plus icon (or chevron). */
+.cc-menu__md-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 240px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-invert-secondary);
+  text-align: left;
+  cursor: pointer;
+}
+
+.cc-menu__md-btn__label {
+  flex: 1 0 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cc-menu__md-btn__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: var(--ai-icon-size-md);                  /* 20 — CRM uses 20 */
+  height: var(--ai-icon-size-md);
+  color: var(--cc-mainmenu-icon);
+}
+
+.cc-menu__md-btn__icon [data-lucide] {
+  width: 100%;
+  height: 100%;
+}
+
+/* Recent section header */
+.cc-menu__recent-heading {
+  margin: 0;
+  width: 240px;
+  font-weight: var(--ai-font-bold);
+  font-size: var(--ai-font-fixed-xs);
+  letter-spacing: 0.42px;
+  color: var(--ai-text-invert);
+}
+
+/* Recent item — text + small chevron */
+.cc-menu__recent-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 240px;
+  padding: var(--ai-spacing-1) 0;
+  border: 0;
+  background: transparent;
+  font-family: inherit;
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-invert-secondary);
+  text-align: left;
+  cursor: pointer;
+}
+
+.cc-menu__recent-item__label {
+  flex: 1 0 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cc-menu__recent-item__chevron {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--cc-mainmenu-icon);
+  /* In Figma the chevron is rotated 90° (right-pointing) on recent rows. */
+  transform: rotate(-90deg);
+}
+
+.cc-menu__recent-item__chevron [data-lucide] {
+  width: 100%;
+  height: 100%;
+}
+
+/* "Show more / less" toggle row */
+.cc-menu__show-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-1);
+  padding-top: var(--ai-spacing-1);
+  width: 100%;
+  background: transparent;
+  border: 0;
+  font-family: inherit;
+  font-size: var(--ai-font-fixed-xxs);
+  color: var(--ai-text-invert-secondary);
+  cursor: pointer;
+}
+
+.cc-menu__show-toggle [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--cc-mainmenu-icon);
+}

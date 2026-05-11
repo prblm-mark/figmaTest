@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en" data-brand="cc">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../../components/dark-mode-toggle.js"></script>
+  <title>Sidebar — Control Centre</title>
+  <link rel="stylesheet" href="../../../styles/base.css">
+  <link rel="stylesheet" href="Sidebar.css">
+  <style>
+    body {
+      margin: 0;
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-secondary);
+      min-height: 100vh;
+      color: var(--ai-text-primary);
+      font-family: var(--ai-font-body);
+    }
+    .demo-section {
+      padding: var(--ai-spacing-6);
+      background: var(--ai-surface-primary);
+      border-radius: var(--ai-radius-lg);
+      margin-bottom: var(--ai-spacing-5);
+      border: 1px solid var(--ai-border-secondary);
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 var(--ai-spacing-3);
+    }
+    .demo-section__lead {
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-contrast);
+      margin: 0 0 var(--ai-spacing-5);
+      max-width: 60ch;
+    }
+    .demo-rails {
+      display: flex;
+      align-items: stretch;
+      gap: var(--ai-spacing-5);
+      height: 720px;
+    }
+    .demo-rail-card {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-3);
+    }
+    .demo-rail-card__caption {
+      font-size: var(--ai-font-fixed-xxs);
+      color: var(--ai-text-contrast);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-3);">Sidebar</h1>
+  <p style="font-size: var(--ai-font-fixed-sm); color: var(--ai-text-contrast); margin: 0 0 var(--ai-spacing-7); max-width: 60ch;">
+    Narrow icon rail for CC. 5 variants — Desktop × {Default, Selected} and Mobile × {Default, Selected, Expanded}. Pairs with the Menu panel inside the SidebarMenu composite.
+  </p>
+
+  <!-- Desktop variants -->
+  <div class="demo-section">
+    <p class="demo-section__title">Device = Desktop</p>
+    <p class="demo-section__lead">Desktop Default and Selected are visually identical — the workspace button (SlidersVertical) is highlighted in both. Brand cell is 40×72 (taller slot fits the wordmark mark).</p>
+    <div class="demo-rails">
+
+      <div class="demo-rail-card">
+        <nav class="cc-sidebar" role="toolbar" aria-label="Workspace switcher">
+          <div class="cc-sidebar__brand" role="img" aria-label="Affino"></div>
+          <button type="button" class="cc-sidebar__btn cc-sidebar__btn--active" aria-current="true" aria-label="Workspace settings">
+            <i data-lucide="sliders-vertical" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Account"><i data-lucide="user-cog" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Saved"><i data-lucide="star" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Organisation"><i data-lucide="network" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Profile"><i data-lucide="circle-user" aria-hidden="true"></i></button>
+        </nav>
+        <p class="demo-rail-card__caption">State = Default</p>
+      </div>
+
+      <div class="demo-rail-card">
+        <nav class="cc-sidebar" role="toolbar" aria-label="Workspace switcher (selected)">
+          <div class="cc-sidebar__brand" role="img" aria-label="Affino"></div>
+          <button type="button" class="cc-sidebar__btn cc-sidebar__btn--active" aria-current="true" aria-label="Workspace settings"><i data-lucide="sliders-vertical" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Account"><i data-lucide="user-cog" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Saved"><i data-lucide="star" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Organisation"><i data-lucide="network" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Profile"><i data-lucide="circle-user" aria-hidden="true"></i></button>
+        </nav>
+        <p class="demo-rail-card__caption">State = Selected</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Mobile variants -->
+  <div class="demo-section">
+    <p class="demo-section__title">Device = Mobile</p>
+    <p class="demo-section__lead">Mobile rail is 4 px narrower (52 vs 56) with tighter gap. Brand cell shrinks to 40×40. Default has no active highlight; Selected highlights SlidersVertical; Expanded adds 5 secondary tool buttons after the EllipsisVertical separator.</p>
+    <div class="demo-rails">
+
+      <div class="demo-rail-card">
+        <nav class="cc-sidebar cc-sidebar--mobile" role="toolbar" aria-label="Workspace switcher (mobile)">
+          <div class="cc-sidebar__brand" role="img" aria-label="Affino"></div>
+          <button type="button" class="cc-sidebar__btn" aria-label="Workspace settings"><i data-lucide="sliders-vertical" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Account"><i data-lucide="user-cog" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Saved"><i data-lucide="star" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Organisation"><i data-lucide="network" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Profile"><i data-lucide="circle-user" aria-hidden="true"></i></button>
+          <span class="cc-sidebar__spacer"></span>
+          <button type="button" class="cc-sidebar__btn" aria-label="More"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
+        </nav>
+        <p class="demo-rail-card__caption">State = Default</p>
+      </div>
+
+      <div class="demo-rail-card">
+        <nav class="cc-sidebar cc-sidebar--mobile" role="toolbar" aria-label="Workspace switcher (mobile selected)">
+          <div class="cc-sidebar__brand" role="img" aria-label="Affino"></div>
+          <button type="button" class="cc-sidebar__btn cc-sidebar__btn--active" aria-current="true" aria-label="Workspace settings"><i data-lucide="sliders-vertical" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Account"><i data-lucide="user-cog" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Saved"><i data-lucide="star" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Organisation"><i data-lucide="network" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Profile"><i data-lucide="circle-user" aria-hidden="true"></i></button>
+          <span class="cc-sidebar__spacer"></span>
+          <button type="button" class="cc-sidebar__btn" aria-label="More"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
+        </nav>
+        <p class="demo-rail-card__caption">State = Selected</p>
+      </div>
+
+      <div class="demo-rail-card">
+        <nav class="cc-sidebar cc-sidebar--mobile" role="toolbar" aria-label="Workspace switcher (mobile expanded)">
+          <div class="cc-sidebar__brand" role="img" aria-label="Affino"></div>
+          <button type="button" class="cc-sidebar__btn cc-sidebar__btn--active" aria-current="true" aria-label="Workspace settings"><i data-lucide="sliders-vertical" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Account"><i data-lucide="user-cog" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Saved"><i data-lucide="star" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Organisation"><i data-lucide="network" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Profile"><i data-lucide="circle-user" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn cc-sidebar__btn--active" aria-label="More options"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
+          <!-- Expanded extras — secondary tool buttons revealed below the more-menu -->
+          <button type="button" class="cc-sidebar__btn" aria-label="AI"><i data-lucide="sparkles" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Info"><i data-lucide="info" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Saved"><i data-lucide="star" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Text size"><i data-lucide="a-large-small" aria-hidden="true"></i></button>
+          <button type="button" class="cc-sidebar__btn" aria-label="Minimise"><i data-lucide="minimize-2" aria-hidden="true"></i></button>
+        </nav>
+        <p class="demo-rail-card__caption">State = Expanded</p>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>
