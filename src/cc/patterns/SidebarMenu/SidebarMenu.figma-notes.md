@@ -39,6 +39,6 @@ This composite owns no tokens of its own. All tokens are resolved by the child p
 
 ## Notes
 
-- The Mobile composite uses `.cc-sidebar--mobile` on the rail, which switches the rail to 52px width, tighter spacing, and a 40×40 brand cell. It also adds an EllipsisVertical button pinned to the bottom via `.cc-sidebar__spacer`.
+- The Mobile composite uses `.cc-sidebar--mobile` on the rail, which switches the rail to 52px width, tighter spacing (6px gap / horizontal padding), and a 40×40 brand cell. An EllipsisVertical button sits immediately after CircleUser as the next sibling in the flex column — no spacer.
 - The host application is responsible for swapping the Menu Type to match the active Sidebar button (e.g. clicking the SlidersVertical button on the rail shows Control; clicking the User button shows Account, etc.). Wiring that interaction is a follow-up — v1 ships the layout only.
 - For a different app section, swap the Menu Type by changing the demo block — e.g. add `cc-menu--crm` for the CRM panel layout (which has its own bespoke content shape, not MainMenuItem rows).
