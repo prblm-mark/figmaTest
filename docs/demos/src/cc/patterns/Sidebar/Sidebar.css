@@ -60,6 +60,19 @@
   mask-size: 24px auto;
 }
 
+/* When any menu panel is open in a Desktop composite, fade the rail
+ * brand — the open Desktop menu shows the Affino wordmark and the rail
+ * mark would be a duplicate. The 72px cell stays in place so the rail
+ * buttons remain aligned with the menu content. Mobile menus drop the
+ * wordmark already, so the mobile rail mark stays. */
+.cc-sidebar__brand {
+  transition: opacity var(--ai-transition-default);
+}
+
+.cc-sidebar-menu:has(.cc-menu[data-cc-panel]:not([hidden])) .cc-sidebar:not(.cc-sidebar--mobile) .cc-sidebar__brand {
+  opacity: 0;
+}
+
 /* ── Rail button — 40×40 icon button ───────────────── */
 .cc-sidebar__btn {
   display: inline-flex;
