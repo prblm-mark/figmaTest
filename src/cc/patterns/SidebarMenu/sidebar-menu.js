@@ -11,7 +11,10 @@
  *   4. MainMenuItem click → toggle submenu (single-open within its <ul>)
  *   5. Search input       → live-filter rows inside the current panel
  *   6. CRM show-toggle    → reveal/hide [data-cc-recent-extra] items
- *   7. Items scroll       → toggle .cc-menu--scrolled on the parent panel
+ *
+ * Scrolled state is handled purely in CSS — brand + search sit above the
+ * scrolling items list and the expanded MainMenuItem is `position: sticky`
+ * so it pins to the top of the scroll area while submenu rows scroll under.
  */
 (function () {
   'use strict';
@@ -35,7 +38,6 @@
     initMainMenuItems(root);
     initSearch(root);
     initShowToggle(root);
-    initScrolled(root);
   }
 
   /* 1. Rail button click → swap panel ──────────────────────────── */
@@ -52,17 +54,20 @@
     const target = btn.dataset.ccTarget;
     if (!target) return;
 
+    // Toggle off if the clicked button is already active → close the panel.
+    const isAlreadyActive = btn.classList.contains('cc-sidebar__btn--active');
+
     // Update rail active state.
     root.querySelectorAll('.cc-sidebar__btn[data-cc-target]').forEach((b) => {
-      const isActive = b === btn;
+      const isActive = !isAlreadyActive && b === btn;
       b.classList.toggle('cc-sidebar__btn--active', isActive);
       if (isActive) b.setAttribute('aria-current', 'true');
       else b.removeAttribute('aria-current');
     });
 
-    // Show matching panel, hide siblings.
+    // Show matching panel (or hide all when toggling off).
     root.querySelectorAll('.cc-menu[data-cc-panel]').forEach((panel) => {
-      const isMatch = panel.dataset.ccPanel === target;
+      const isMatch = !isAlreadyActive && panel.dataset.ccPanel === target;
       panel.hidden = !isMatch;
       panel.setAttribute('aria-hidden', String(!isMatch));
     });
@@ -139,16 +144,17 @@
     const li = btn.parentElement;
     if (!li) return;
     const submenu = li.querySelector(':scope > .cc-menu__submenu');
-    // No submenu → just toggle selected (visual highlight only).
+    // No submenu → toggle selected state. Clicking another item deselects
+    // the previous; clicking the same item again deselects it (nothing selected).
     if (!submenu) {
-      // Single-select among siblings inside the same ul.
+      const wasSelected = btn.classList.contains('cc-main-menu-item--selected');
       const list = li.parentElement;
       if (list) {
         list
           .querySelectorAll(':scope > li > .cc-main-menu-item')
           .forEach((sib) => sib.classList.remove('cc-main-menu-item--selected'));
       }
-      btn.classList.add('cc-main-menu-item--selected');
+      if (!wasSelected) btn.classList.add('cc-main-menu-item--selected');
       return;
     }
     const wasExpanded = btn.getAttribute('aria-expanded') === 'true';
@@ -237,16 +243,4 @@
     });
   }
 
-  /* 7. Items scroll → toggle .cc-menu--scrolled ───────────────── */
-  function initScrolled(root) {
-    root.querySelectorAll('.cc-menu').forEach((panel) => {
-      const list = panel.querySelector('.cc-menu__items');
-      if (!list) return;
-      const update = () => {
-        panel.classList.toggle('cc-menu--scrolled', list.scrollTop > 4);
-      };
-      list.addEventListener('scroll', update, { passive: true });
-      update();
-    });
-  }
 })();

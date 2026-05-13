@@ -28,12 +28,10 @@
   color: var(--ai-text-invert-secondary);
 }
 
-/* Scrolled state — hides the brand + search chrome when the items list
- * has scrolled past the top. JS toggles this class on scroll. */
-.cc-menu--scrolled > .cc-menu__brand,
-.cc-menu--scrolled > .cc-menu__search {
-  display: none;
-}
+/* Scrolled state — brand + search stay above the scrolling items list at
+ * all times (they sit outside `.cc-menu__items`). When a MainMenuItem is
+ * expanded, that parent row stays sticky at the top of the items list
+ * while its submenu rows scroll beneath it (see MainMenuItem.css). */
 
 /* ── Brand strip ───────────────────────────────────── */
 /* Figma cell is 167×72: a 167-wide wordmark in a 72-tall slot, centred

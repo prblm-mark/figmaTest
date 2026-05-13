@@ -98,33 +98,151 @@
 
         <!-- Panel: Control -->
         <nav class="cc-menu" id="cc-m-control" data-cc-panel="control" aria-label="Control menu (mobile)" hidden aria-hidden="true">
-          <div class="cc-menu__brand" role="img" aria-label="Affino"></div>
           <label class="cc-menu__search">
             <i data-lucide="search" aria-hidden="true"></i>
             <input class="cc-menu__search-input" type="search" placeholder="Search Control" aria-label="Search Control">
           </label>
           <ul class="cc-menu__items">
-            <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="user-cog"></i></span><span class="cc-main-menu-item__label">CRM</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
+            <li>
+              <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="user-cog"></i></span><span class="cc-main-menu-item__label">CRM</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Accounts</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Account Lists</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Contacts</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Contact Lists</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Contact Notes</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Opportunities</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Tasks</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Forums</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Awards</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Sales Teams</span></li>
+              </ul>
+            </li>
             <li>
               <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="file-text"></i></span><span class="cc-main-menu-item__label">Content</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
               <ul class="cc-menu__submenu" hidden>
-                <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Analysis Dashboard</span></li>
-                <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Archive</span></li>
-                <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Attributes</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Analysis Dashboard</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Analysis Dashboard Settings</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Archive</span></li>
+              <li class="cc-menu__submenu-item">
+                <span class="cc-menu__submenu-item-label">Article Archive Profiles</span>
+                <button class="cc-menu__submenu-item__action" aria-label="Pin"><i data-lucide="pin"></i></button>
+              </li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Attributes</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Batch Delete</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Export</span></li>
+              <li class="cc-menu__submenu-item">
+                <span class="cc-menu__submenu-item-label">Article Step Export</span>
+                <button class="cc-menu__submenu-item__action" aria-label="Pin"><i data-lucide="pin"></i></button>
+              </li>
               </ul>
             </li>
-            <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="megaphone"></i></span><span class="cc-main-menu-item__label">Marketing</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
-            <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="shopping-cart"></i></span><span class="cc-main-menu-item__label">Commerce</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
-            <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="sparkles"></i></span><span class="cc-main-menu-item__label">AI</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
-            <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="images"></i></span><span class="cc-main-menu-item__label">Media</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
-            <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="layout-panel-top"></i></span><span class="cc-main-menu-item__label">Structure</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
-            <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="palette"></i></span><span class="cc-main-menu-item__label">Design</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
+            <li>
+              <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="megaphone"></i></span><span class="cc-main-menu-item__label">Marketing</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Ad Campaigns</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Mailing Lists</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Messages</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Message Campaigns</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Message Templates</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Customer Lifecycles</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Customer Signals</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Magic Links</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Campaign Dashboards</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">UTM Link Builder</span></li>
+              </ul>
+            </li>
+            <li>
+              <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="shopping-cart"></i></span><span class="cc-main-menu-item__label">Commerce</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Catalogue Items</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Orders</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Subscriptions</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Currencies</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Discounts</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Coupons</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Payment Methods</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Tax Rules</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Sales Report</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Shopping Baskets</span></li>
+              </ul>
+            </li>
+            <li>
+              <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="sparkles"></i></span><span class="cc-main-menu-item__label">AI</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">AI Analyst</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">AI Report</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Questions</span></li>
+              </ul>
+            </li>
+            <li>
+              <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="images"></i></span><span class="cc-main-menu-item__label">Media</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Media Items</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Media Inbox</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Media Image Profiles</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Media Library Profiles</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Media Provider Profiles</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Media Upload Profiles</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Media Workflow Profiles</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Media Image Export</span></li>
+              </ul>
+            </li>
+            <li>
+              <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="layout-panel-top"></i></span><span class="cc-main-menu-item__label">Structure</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Channels</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Channel Analysis</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Sections</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Section Import</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Zones</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Deleted Item</span></li>
+              </ul>
+            </li>
+            <li>
+              <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="palette"></i></span><span class="cc-main-menu-item__label">Design</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Cascading Style Sheets</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Design Frames</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Design Images</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Design Objects</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Design Scripts</span></li>
+              <li class="cc-menu__submenu-item">
+                <span class="cc-menu__submenu-item-label">Design Styles</span>
+                <button class="cc-menu__submenu-item__action" aria-label="Pin"><i data-lucide="pin"></i></button>
+              </li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Fonts</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Skins</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Standard Templates</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Template Management</span></li>
+              </ul>
+            </li>
+            <li>
+              <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="settings"></i></span><span class="cc-main-menu-item__label">System</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">System Settings</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">About</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">API Profiles</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Email Settings</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Lookups</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Redirects</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Search Profiles</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Storage Analysis</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Update</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Web Service Profiles</span></li>
+              </ul>
+            </li>
+            <li>
+              <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="square-code"></i></span><span class="cc-main-menu-item__label">Custom</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Remote Error Log</span></li>
+              </ul>
+            </li>
           </ul>
         </nav>
 
         <!-- Panel: Analysis -->
         <nav class="cc-menu" id="cc-m-analysis" data-cc-panel="analysis" aria-label="Analysis menu (mobile)" hidden aria-hidden="true">
-          <div class="cc-menu__brand" role="img" aria-label="Affino"></div>
           <ul class="cc-menu__items">
             <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="layout-dashboard"></i></span><span class="cc-main-menu-item__label">Dashboards</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
             <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="user-cog"></i></span><span class="cc-main-menu-item__label">CRM</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
@@ -136,7 +254,6 @@
 
         <!-- Panel: CRM -->
         <nav class="cc-menu cc-menu--crm" id="cc-m-crm" data-cc-panel="crm" aria-label="CRM menu (mobile)" hidden aria-hidden="true">
-          <div class="cc-menu__brand" role="img" aria-label="Affino"></div>
           <label class="cc-menu__search">
             <i data-lucide="search" aria-hidden="true"></i>
             <input class="cc-menu__search-input" type="search" placeholder="Search CRM" aria-label="Search CRM">
@@ -193,31 +310,141 @@
             <input class="cc-menu__search-input" type="search" placeholder="Search Control" aria-label="Search Control">
           </label>
           <ul class="cc-menu__items">
-            <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="user-cog"></i></span><span class="cc-main-menu-item__label">CRM</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
+            <li>
+              <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="user-cog"></i></span><span class="cc-main-menu-item__label">CRM</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Accounts</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Account Lists</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Contacts</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Contact Lists</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Contact Notes</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Opportunities</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Tasks</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Forums</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Awards</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Sales Teams</span></li>
+              </ul>
+            </li>
             <li>
               <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="file-text"></i></span><span class="cc-main-menu-item__label">Content</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
               <ul class="cc-menu__submenu" hidden>
-                <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Analysis Dashboard</span></li>
-                <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Analysis Dashboard Settings</span></li>
-                <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Archive</span></li>
-                <li class="cc-menu__submenu-item">
-                  <span class="cc-menu__submenu-item-label">Article Archive Profiles</span>
-                  <button class="cc-menu__submenu-item__action" aria-label="Pin"><i data-lucide="pin"></i></button>
-                </li>
-                <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Attributes</span></li>
-                <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Batch Delete</span></li>
-                <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Export</span></li>
-                <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Icons</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Analysis Dashboard</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Analysis Dashboard Settings</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Archive</span></li>
+              <li class="cc-menu__submenu-item">
+                <span class="cc-menu__submenu-item-label">Article Archive Profiles</span>
+                <button class="cc-menu__submenu-item__action" aria-label="Pin"><i data-lucide="pin"></i></button>
+              </li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Attributes</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Batch Delete</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Export</span></li>
+              <li class="cc-menu__submenu-item">
+                <span class="cc-menu__submenu-item-label">Article Step Export</span>
+                <button class="cc-menu__submenu-item__action" aria-label="Pin"><i data-lucide="pin"></i></button>
+              </li>
               </ul>
             </li>
-            <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="megaphone"></i></span><span class="cc-main-menu-item__label">Marketing</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
-            <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="shopping-cart"></i></span><span class="cc-main-menu-item__label">Commerce</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
-            <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="sparkles"></i></span><span class="cc-main-menu-item__label">AI</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
-            <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="images"></i></span><span class="cc-main-menu-item__label">Media</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
-            <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="layout-panel-top"></i></span><span class="cc-main-menu-item__label">Structure</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
-            <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="palette"></i></span><span class="cc-main-menu-item__label">Design</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
-            <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="settings"></i></span><span class="cc-main-menu-item__label">Settings</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
-            <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="square-code"></i></span><span class="cc-main-menu-item__label">Custom</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button></li>
+            <li>
+              <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="megaphone"></i></span><span class="cc-main-menu-item__label">Marketing</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Ad Campaigns</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Mailing Lists</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Messages</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Message Campaigns</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Message Templates</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Customer Lifecycles</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Customer Signals</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Magic Links</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Campaign Dashboards</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">UTM Link Builder</span></li>
+              </ul>
+            </li>
+            <li>
+              <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="shopping-cart"></i></span><span class="cc-main-menu-item__label">Commerce</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Catalogue Items</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Orders</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Subscriptions</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Currencies</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Discounts</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Coupons</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Payment Methods</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Tax Rules</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Sales Report</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Shopping Baskets</span></li>
+              </ul>
+            </li>
+            <li>
+              <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="sparkles"></i></span><span class="cc-main-menu-item__label">AI</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">AI Analyst</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">AI Report</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Questions</span></li>
+              </ul>
+            </li>
+            <li>
+              <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="images"></i></span><span class="cc-main-menu-item__label">Media</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Media Items</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Media Inbox</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Media Image Profiles</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Media Library Profiles</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Media Provider Profiles</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Media Upload Profiles</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Media Workflow Profiles</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Media Image Export</span></li>
+              </ul>
+            </li>
+            <li>
+              <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="layout-panel-top"></i></span><span class="cc-main-menu-item__label">Structure</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Channels</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Channel Analysis</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Sections</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Section Import</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Zones</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Deleted Item</span></li>
+              </ul>
+            </li>
+            <li>
+              <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="palette"></i></span><span class="cc-main-menu-item__label">Design</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Cascading Style Sheets</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Design Frames</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Design Images</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Design Objects</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Design Scripts</span></li>
+              <li class="cc-menu__submenu-item">
+                <span class="cc-menu__submenu-item-label">Design Styles</span>
+                <button class="cc-menu__submenu-item__action" aria-label="Pin"><i data-lucide="pin"></i></button>
+              </li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Fonts</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Skins</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Standard Templates</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Template Management</span></li>
+              </ul>
+            </li>
+            <li>
+              <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="settings"></i></span><span class="cc-main-menu-item__label">System</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">System Settings</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">About</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">API Profiles</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Email Settings</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Lookups</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Redirects</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Search Profiles</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Storage Analysis</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Update</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Web Service Profiles</span></li>
+              </ul>
+            </li>
+            <li>
+              <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="square-code"></i></span><span class="cc-main-menu-item__label">Custom</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+              <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Remote Error Log</span></li>
+              </ul>
+            </li>
           </ul>
         </nav>
 
