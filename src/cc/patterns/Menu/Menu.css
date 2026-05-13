@@ -22,9 +22,17 @@
   width: var(--ai-size-5);                        /* 280 */
   flex-shrink: 0;
   height: 100%;
+  min-height: 0;                                  /* allow inner list to scroll */
   background-color: var(--cc-mainmenu-secondary-bg);
   font-family: var(--ai-font-body);
   color: var(--ai-text-invert-secondary);
+}
+
+/* Scrolled state — hides the brand + search chrome when the items list
+ * has scrolled past the top. JS toggles this class on scroll. */
+.cc-menu--scrolled > .cc-menu__brand,
+.cc-menu--scrolled > .cc-menu__search {
+  display: none;
 }
 
 /* ── Brand strip ───────────────────────────────────── */
@@ -95,6 +103,11 @@
   margin: 0;
   padding: 0;
   list-style: none;
+  /* Fill remaining vertical space and scroll inside the panel — triggers
+   * the Scrolled state which hides brand/search. */
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 /* ── Expanded sub-list under a Selected MainMenuItem ── */
