@@ -34,6 +34,16 @@
   box-sizing: border-box;
 }
 
+/* The HTML `hidden` attribute is an accessibility primitive — it must
+ * always hide the element regardless of any author `display` rule. UA
+ * `[hidden] { display: none }` has the same specificity (0,1,0) as any
+ * class-based `display: flex` and loses to later author rules, so we
+ * raise the priority globally. !important is allowed for utility /
+ * accessibility classes per project rules. */
+[hidden] {
+  display: none !important;
+}
+
 html {
   font-family: var(--ai-font-body), sans-serif;
   font-size: var(--ai-font-fixed-sm);

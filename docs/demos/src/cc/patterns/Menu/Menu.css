@@ -22,10 +22,16 @@
   width: var(--ai-size-5);                        /* 280 */
   flex-shrink: 0;
   height: 100%;
+  min-height: 0;                                  /* allow inner list to scroll */
   background-color: var(--cc-mainmenu-secondary-bg);
   font-family: var(--ai-font-body);
   color: var(--ai-text-invert-secondary);
 }
+
+/* Scrolled state — brand + search stay above the scrolling items list at
+ * all times (they sit outside `.cc-menu__items`). When a MainMenuItem is
+ * expanded, that parent row stays sticky at the top of the items list
+ * while its submenu rows scroll beneath it (see MainMenuItem.css). */
 
 /* ── Brand strip ───────────────────────────────────── */
 /* Figma cell is 167×72: a 167-wide wordmark in a 72-tall slot, centred
@@ -95,6 +101,29 @@
   margin: 0;
   padding: 0;
   list-style: none;
+  /* Fill remaining vertical space and scroll inside the panel — the
+   * expanded MainMenuItem sticks at the top while submenu rows scroll. */
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  /* Custom scrollbar — thin width, transparent track, primary-bg thumb.
+   * `scrollbar-*` is the standard (Firefox); the `::-webkit-scrollbar`
+   * pseudos cover Chromium / WebKit. */
+  scrollbar-width: thin;
+  scrollbar-color: var(--cc-mainmenu-primary-bg) transparent;
+}
+
+.cc-menu__items::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cc-menu__items::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.cc-menu__items::-webkit-scrollbar-thumb {
+  background-color: var(--cc-mainmenu-primary-bg);
+  border-radius: var(--ai-radius-sm);
 }
 
 /* ── Expanded sub-list under a Selected MainMenuItem ── */
