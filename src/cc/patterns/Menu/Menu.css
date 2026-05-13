@@ -101,11 +101,29 @@
   margin: 0;
   padding: 0;
   list-style: none;
-  /* Fill remaining vertical space and scroll inside the panel — triggers
-   * the Scrolled state which hides brand/search. */
+  /* Fill remaining vertical space and scroll inside the panel — the
+   * expanded MainMenuItem sticks at the top while submenu rows scroll. */
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
+  /* Custom scrollbar — thin width, transparent track, primary-bg thumb.
+   * `scrollbar-*` is the standard (Firefox); the `::-webkit-scrollbar`
+   * pseudos cover Chromium / WebKit. */
+  scrollbar-width: thin;
+  scrollbar-color: var(--cc-mainmenu-primary-bg) transparent;
+}
+
+.cc-menu__items::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cc-menu__items::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.cc-menu__items::-webkit-scrollbar-thumb {
+  background-color: var(--cc-mainmenu-primary-bg);
+  border-radius: var(--ai-radius-sm);
 }
 
 /* ── Expanded sub-list under a Selected MainMenuItem ── */
