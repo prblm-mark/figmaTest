@@ -179,6 +179,19 @@
     btn.setAttribute('aria-expanded', String(!wasExpanded));
     btn.classList.toggle('cc-main-menu-item--expanded', !wasExpanded);
     submenu.hidden = wasExpanded;
+
+    // When opening, smooth-scroll the new parent to the top of the items
+    // list so it becomes the sticky header (rather than snapping into place
+    // when sticky kicks in).
+    if (!wasExpanded) {
+      const itemsList = li.closest('.cc-menu__items');
+      if (itemsList) {
+        const liRect = li.getBoundingClientRect();
+        const listRect = itemsList.getBoundingClientRect();
+        const target = itemsList.scrollTop + (liRect.top - listRect.top);
+        itemsList.scrollTo({ top: target, behavior: 'smooth' });
+      }
+    }
   }
 
   /* 5. Search input → filter visible rows ──────────────────────── */
