@@ -12,4 +12,6 @@
   align-items: stretch;
   height: 100%;
   font-family: var(--ai-font-body);
+  /* Positioning context for the hover-flyout menu (.cc-menu--floating). */
+  position: relative;
 }
