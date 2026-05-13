@@ -11,6 +11,10 @@
  *   4. MainMenuItem click → toggle submenu (single-open within its <ul>)
  *   5. Search input       → live-filter rows inside the current panel
  *   6. CRM show-toggle    → reveal/hide [data-cc-recent-extra] items
+ *   7. Desktop hover-flyout → hover a rail target on Desktop shows the
+ *      matching menu as a floating overlay; suppressed when the target
+ *      panel is already docked-active. 150ms grace on mouse-leave so the
+ *      mouse can travel from the rail button into the flyout.
  *
  * Scrolled state is handled purely in CSS — brand + search sit above the
  * scrolling items list and the expanded MainMenuItem is `position: sticky`
@@ -38,6 +42,7 @@
     initMainMenuItems(root);
     initSearch(root);
     initShowToggle(root);
+    initHoverFlyout(root);
   }
 
   /* 1. Rail button click → swap panel ──────────────────────────── */
@@ -65,11 +70,13 @@
       else b.removeAttribute('aria-current');
     });
 
-    // Show matching panel (or hide all when toggling off).
+    // Show matching panel (or hide all when toggling off). Clicking always
+    // transitions to docked mode — clear any floating-flyout class.
     root.querySelectorAll('.cc-menu[data-cc-panel]').forEach((panel) => {
       const isMatch = !isAlreadyActive && panel.dataset.ccPanel === target;
       panel.hidden = !isMatch;
       panel.setAttribute('aria-hidden', String(!isMatch));
+      panel.classList.remove('cc-menu--floating');
     });
   }
 
@@ -256,4 +263,83 @@
     });
   }
 
+  /* 7. Desktop hover-flyout ─────────────────────────────────────
+   * Hovering a rail button on Desktop shows the matching menu as a
+   * floating overlay (`.cc-menu--floating`). The flyout is suppressed
+   * when the hovered target is already docked-active. A 150ms grace
+   * timer on mouse-leave lets the mouse travel from the rail button
+   * into the flyout without dismissing.
+   *
+   * Same DOM nodes are used for both docked and floating modes — the
+   * `.cc-menu--floating` class toggles the visual treatment. Clicking
+   * a rail button strips the class (see activateTarget) so a hover
+   * preview cleanly transitions into a docked panel. */
+  function initHoverFlyout(root) {
+    // Desktop only — mobile rails ignore hover.
+    const rail = root.querySelector('.cc-sidebar:not(.cc-sidebar--mobile)');
+    if (!rail) return;
+
+    const buttons = rail.querySelectorAll('.cc-sidebar__btn[data-cc-target]');
+    const panels = root.querySelectorAll('.cc-menu[data-cc-panel]');
+    if (buttons.length === 0 || panels.length === 0) return;
+
+    let hideTimer = null;
+    let floatingPanel = null;
+
+    const cancelHide = () => {
+      if (hideTimer) {
+        clearTimeout(hideTimer);
+        hideTimer = null;
+      }
+    };
+
+    const dismissFlyout = () => {
+      if (floatingPanel && floatingPanel.classList.contains('cc-menu--floating')) {
+        floatingPanel.classList.remove('cc-menu--floating');
+        floatingPanel.hidden = true;
+        floatingPanel.setAttribute('aria-hidden', 'true');
+      }
+      floatingPanel = null;
+    };
+
+    const scheduleHide = () => {
+      cancelHide();
+      hideTimer = setTimeout(dismissFlyout, 150);
+    };
+
+    const showFlyout = (target) => {
+      cancelHide();
+      // Suppress when this target is already docked-active.
+      const activeBtn = root.querySelector('.cc-sidebar__btn--active[data-cc-target]');
+      if (activeBtn && activeBtn.dataset.ccTarget === target) {
+        dismissFlyout();
+        return;
+      }
+      const panel = root.querySelector(`.cc-menu[data-cc-panel="${target}"]`);
+      if (!panel) return;
+      // If this panel is the current floating one, keep as-is.
+      if (panel === floatingPanel) return;
+      // Hide any previous floating panel before showing the new one.
+      dismissFlyout();
+      panel.classList.add('cc-menu--floating');
+      panel.hidden = false;
+      panel.setAttribute('aria-hidden', 'false');
+      floatingPanel = panel;
+    };
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('mouseenter', () => showFlyout(btn.dataset.ccTarget));
+      btn.addEventListener('mouseleave', scheduleHide);
+    });
+
+    // Keep the flyout open while the cursor is over it; dismiss on leave.
+    panels.forEach((panel) => {
+      panel.addEventListener('mouseenter', () => {
+        if (panel.classList.contains('cc-menu--floating')) cancelHide();
+      });
+      panel.addEventListener('mouseleave', () => {
+        if (panel.classList.contains('cc-menu--floating')) scheduleHide();
+      });
+    });
+  }
 })();
