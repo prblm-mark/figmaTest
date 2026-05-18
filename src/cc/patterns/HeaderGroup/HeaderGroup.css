@@ -1,0 +1,25 @@
+/* CCHeaderGroup — compiled assembly stacking CCTopNavigation above CCHeader.
+ * Figma: ETKqleZdpertwFEo40YB5n (CC Hybrid). Component set 4105:4238.
+ *
+ * Two variants in Figma — Desktop (1280×96) and Mobile (390×130). Figma
+ * variant names are swapped vs their widths (see figma-notes.md); width is
+ * treated as the source of truth.
+ *
+ * This pattern owns no significant CSS — it's a thin vertical-stack wrapper.
+ * The only contextual rule: when CCHeader is composed inside CCHeaderGroup
+ * on mobile, its min-height is 48px (not the standalone 56px).
+ */
+
+.cc-header-group {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+}
+
+/* Contextual override: composed CCHeader on mobile is shorter than standalone. */
+@media (max-width: 767px) {
+  .cc-header-group .cc-header {
+    min-height: var(--ai-spacing-9); /* 48px composed, vs 56px standalone */
+  }
+}
