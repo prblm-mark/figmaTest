@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en" data-brand="cc">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NotificationBadge — Affino AI Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css" />
+  <link rel="stylesheet" href="../Button/Button.css" />
+  <link rel="stylesheet" href="NotificationBadge.css" />
+  <style>
+    body { padding: var(--ai-spacing-7); }
+    .demo-section { margin-bottom: var(--ai-spacing-9); }
+    .demo-section h2 { margin: 0 0 var(--ai-spacing-5); font-size: var(--ai-font-fluid-lg); }
+    .demo-row { display: flex; align-items: center; gap: var(--ai-spacing-5); margin-bottom: var(--ai-spacing-5); }
+    .demo-label { min-width: 120px; color: var(--ai-text-contrast); font-size: var(--ai-font-fixed-xs); }
+    .demo-on-dark {
+      background-color: var(--cc-header-primary-bg);
+      padding: var(--ai-spacing-5);
+      border-radius: var(--ai-radius-md);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>NotificationBadge</h1>
+  <p>Bell trigger with overlaid count badge. Used in the CCHeader Actions zone.</p>
+
+  <section class="demo-section">
+    <h2>Default (40px)</h2>
+    <div class="demo-row">
+      <span class="demo-label">With count</span>
+      <span class="notification-badge">
+        <button class="btn btn--tertiary btn--icon" type="button" aria-label="Notifications, 2 unread">
+          <i data-lucide="bell" aria-hidden="true"></i>
+        </button>
+        <span class="notification-badge__count" aria-hidden="true">2</span>
+      </span>
+    </div>
+    <div class="demo-row">
+      <span class="demo-label">No count</span>
+      <span class="notification-badge">
+        <button class="btn btn--tertiary btn--icon" type="button" aria-label="Notifications">
+          <i data-lucide="bell" aria-hidden="true"></i>
+        </button>
+      </span>
+    </div>
+    <div class="demo-row">
+      <span class="demo-label">Disabled</span>
+      <span class="notification-badge">
+        <button class="btn btn--tertiary btn--icon" type="button" aria-label="Notifications" disabled>
+          <i data-lucide="bell" aria-hidden="true"></i>
+        </button>
+      </span>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Small (32px)</h2>
+    <div class="demo-row">
+      <span class="demo-label">With count</span>
+      <span class="notification-badge">
+        <button class="btn btn--tertiary btn--icon btn--sm" type="button" aria-label="Notifications, 2 unread">
+          <i data-lucide="bell" aria-hidden="true"></i>
+        </button>
+        <span class="notification-badge__count" aria-hidden="true">2</span>
+      </span>
+    </div>
+    <div class="demo-row">
+      <span class="demo-label">No count</span>
+      <span class="notification-badge">
+        <button class="btn btn--tertiary btn--icon btn--sm" type="button" aria-label="Notifications">
+          <i data-lucide="bell" aria-hidden="true"></i>
+        </button>
+      </span>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>On dark background</h2>
+    <p>The badge border uses <code>--ai-surface-primary</code> (page bg). On dark backgrounds, the border halo blends with the page surface, not the parent button.</p>
+    <div class="demo-row demo-on-dark">
+      <span class="notification-badge">
+        <button class="btn btn--tertiary btn--icon" type="button" aria-label="Notifications, 2 unread">
+          <i data-lucide="bell" aria-hidden="true"></i>
+        </button>
+        <span class="notification-badge__count" aria-hidden="true">2</span>
+      </span>
+      <span class="notification-badge">
+        <button class="btn btn--tertiary btn--icon btn--sm" type="button" aria-label="Notifications, 9 unread">
+          <i data-lucide="bell" aria-hidden="true"></i>
+        </button>
+        <span class="notification-badge__count" aria-hidden="true">9</span>
+      </span>
+    </div>
+  </section>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

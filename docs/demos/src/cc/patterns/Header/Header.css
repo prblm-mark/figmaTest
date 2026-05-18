@@ -1,0 +1,240 @@
+/* CCHeader — main page header (white bar) for the CC product.
+ * Figma: ETKqleZdpertwFEo40YB5n (CC Hybrid). Component set 4105:3641.
+ *
+ * Three Type axes:
+ *   - Default:  title only
+ *   - Sub Text: title + subtitle row
+ *   - Control:  avatar + greeting + user details (Affino, Job title)
+ * Device responsiveness via @media (max-width: 767px). The Control variant
+ * also changes content on mobile: the "Hi " greeting prefix and the user
+ * details (Affino / Job title rows) hide, leaving avatar + name only.
+ */
+
+.cc-header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: var(--ai-spacing-11); /* 64px desktop */
+  padding: var(--ai-spacing-5);
+  background-color: var(--cc-header-secondary-bg);
+}
+
+/* ── Title block (flex-1) ────────────────────────────── */
+
+.cc-header__title-block {
+  flex: 1 0 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+
+.cc-header__title-block-text {
+  flex: 1 0 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.cc-header__title {
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-bold);
+  font-size: var(--ai-font-fixed-xl); /* 22px desktop */
+  line-height: 1;
+  color: var(--ai-text-primary);
+  letter-spacing: var(--ai-tracking-3);
+  font-feature-settings: 'calt' 0;
+  white-space: nowrap;
+  margin: 0;
+}
+
+.cc-header__subtitle {
+  font-family: var(--ai-font-body);
+  font-weight: var(--ai-font-medium);
+  font-size: var(--ai-font-fixed-xs); /* 14px */
+  line-height: var(--ai-leading-sm); /* 20px */
+  color: var(--ai-text-contrast);
+  letter-spacing: var(--ai-tracking-4);
+  font-feature-settings: 'calt' 0;
+  white-space: nowrap;
+  margin: 0;
+}
+
+/* ── Right-hand actions ──────────────────────────────── */
+
+.cc-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3); /* 8px desktop */
+  flex-shrink: 0;
+}
+
+/* Wrapping label so we can hide it on mobile to collapse text+icon buttons
+ * to icon-only sized buttons. */
+.cc-header__btn-label {
+  display: inline;
+}
+
+/* Contextual override — NotificationBadge inside CCHeader uses the header bg
+ * for its halo border so the badge separates cleanly from whatever colour the
+ * header is rendering in (light/dark CC mode). Case B per CLAUDE.md. */
+.cc-header .notification-badge__count {
+  border-color: var(--cc-header-secondary-bg);
+}
+
+/* Contextual override — tertiary button icons (the bell inside NotificationBadge)
+ * render at 20px in the header, vs the default 16px. Case B per CLAUDE.md. */
+.cc-header .btn--tertiary [data-lucide] {
+  width: var(--ai-icon-size-md);
+  height: var(--ai-icon-size-md);
+}
+
+/* Contextual override — tertiary buttons in the header render with no background
+ * on default and hover (active/focus keep their states for visual feedback). */
+.cc-header .btn--tertiary,
+.cc-header .btn--tertiary:hover {
+  background-color: transparent;
+}
+
+/* ── Kebab menu (overflow trigger) ───────────────────── */
+
+.cc-header__kebab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-icon-size-lg); /* 24px */
+  height: var(--ai-icon-size-lg);
+  padding: 0;
+  background: transparent;
+  border: 0;
+  color: var(--ai-icon-secondary);
+  cursor: pointer;
+  transition: color var(--ai-transition-default);
+}
+
+.cc-header__kebab:hover {
+  color: var(--ai-text-primary);
+}
+
+.cc-header__kebab [data-lucide] {
+  width: var(--ai-icon-size-lg);
+  height: var(--ai-icon-size-lg);
+}
+
+/* ── Type=Sub Text ───────────────────────────────────── */
+
+.cc-header--sub-text .cc-header__title-block-text {
+  gap: var(--ai-spacing-1); /* 4px between title and subtitle */
+}
+
+/* ── Type=Control ────────────────────────────────────── */
+
+.cc-header--control .cc-header__title-block {
+  gap: var(--ai-spacing-4); /* 12px desktop between avatar and text column */
+}
+
+.cc-header--control .cc-header__title-block-text {
+  gap: var(--ai-spacing-3); /* 8px between title and user details */
+  height: 100%;
+}
+
+.cc-header--control .portrait {
+  width: var(--ai-spacing-9); /* 48px desktop */
+  height: var(--ai-spacing-9);
+  flex-shrink: 0;
+  display: block;
+  border-radius: var(--ai-radius-full);
+  object-fit: cover;
+}
+
+.cc-header__user-details {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-5); /* 16px */
+}
+
+.cc-header__user-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2); /* 6px */
+  font-family: var(--ai-font-body);
+  font-weight: var(--ai-font-medium);
+  font-size: var(--ai-font-fixed-xs); /* 14px */
+  line-height: var(--ai-leading-sm); /* 20px */
+  color: var(--ai-text-contrast);
+  letter-spacing: var(--ai-tracking-4);
+  font-feature-settings: 'calt' 0;
+}
+
+.cc-header__user-item [data-lucide] {
+  width: var(--ai-icon-size-sm); /* 16px */
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-secondary);
+  flex-shrink: 0;
+}
+
+/* ── Mobile (≤767px) ─────────────────────────────────── */
+
+@media (max-width: 767px) {
+  .cc-header {
+    min-height: var(--ai-spacing-10); /* 56px */
+    padding: var(--ai-spacing-3) var(--ai-spacing-4); /* 8px / 12px */
+  }
+
+  .cc-header__title {
+    font-size: var(--ai-font-fixed-sm); /* 16px on mobile */
+  }
+
+  .cc-header__subtitle {
+    line-height: var(--ai-leading-xs); /* 16px on mobile */
+  }
+
+  .cc-header__actions {
+    gap: var(--ai-spacing-2); /* 6px on mobile */
+  }
+
+  .cc-header .notification-badge__count {
+    top: var(--ai-spacing-1);
+    right: var(--ai-spacing-1);
+  }
+
+  /* Collapse text+icon buttons to icon-only 32px square on mobile.
+   * Pattern per CLAUDE.md "Mobile child-component sizing":
+   * scoped override to force btn--sm + btn--icon dimensions. */
+  .cc-header__actions .btn {
+    padding: 0;
+    width: var(--ai-spacing-7); /* 32px */
+    min-height: var(--ai-spacing-7);
+    gap: 0;
+  }
+
+  .cc-header__actions .cc-header__btn-label {
+    display: none;
+  }
+
+  /* Type=Control mobile adjustments */
+  .cc-header--control .cc-header__title-block {
+    gap: var(--ai-spacing-3); /* 8px on mobile */
+  }
+
+  .cc-header--control .portrait {
+    width: var(--ai-spacing-7); /* 32px on mobile */
+    height: var(--ai-spacing-7);
+  }
+
+  .cc-header--control .cc-header__title {
+    line-height: 1.1; /* matches Figma Mobile Control */
+  }
+
+  /* Hide greeting prefix and user details on mobile Control */
+  .cc-header--control .cc-header__title-greeting,
+  .cc-header--control .cc-header__user-details {
+    display: none;
+  }
+
+  /* Tighter gap for Control mobile actions */
+  .cc-header--control .cc-header__actions {
+    gap: var(--ai-spacing-1); /* 4px on Control mobile per Figma */
+  }
+}

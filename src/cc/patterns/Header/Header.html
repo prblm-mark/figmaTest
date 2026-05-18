@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en" data-brand="cc">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Header (CC) — Affino AI Design System</title>
+  <link rel="stylesheet" href="../../../styles/base.css" />
+  <link rel="stylesheet" href="../../../components/Button/Button.css" />
+  <link rel="stylesheet" href="../../../components/Dropdown/Dropdown.css" />
+  <link rel="stylesheet" href="../../../components/Portraits/Portraits.css" />
+  <link rel="stylesheet" href="../../../components/NotificationBadge/NotificationBadge.css" />
+  <link rel="stylesheet" href="Header.css" />
+  <style>
+    body { padding: var(--ai-spacing-7); background: var(--ai-surface-minimal); }
+    .demo-section { margin-bottom: var(--ai-spacing-9); }
+    .demo-section h2 { margin: 0 0 var(--ai-spacing-3); font-size: var(--ai-font-fluid-lg); }
+    .demo-section > p { margin: 0 0 var(--ai-spacing-5); color: var(--ai-text-contrast); }
+    .demo-frame {
+      border-radius: var(--ai-radius-md);
+      overflow: hidden;
+      box-shadow: var(--ai-shadow-sm);
+    }
+    /* Demo-only — forces the mobile collapse so QA can compare it side-by-side
+       with the desktop layout without resizing the viewport. Mirrors the
+       @media (max-width: 767px) rules in Header.css. NOT production CSS. */
+    .demo-frame--mobile {
+      max-width: 390px;
+    }
+    .demo-frame--mobile .cc-header {
+      min-height: var(--ai-spacing-10);
+      padding: var(--ai-spacing-3) var(--ai-spacing-4);
+    }
+    .demo-frame--mobile .cc-header__title {
+      font-size: var(--ai-font-fixed-sm);
+    }
+    .demo-frame--mobile .cc-header__subtitle {
+      line-height: var(--ai-leading-xs);
+    }
+    .demo-frame--mobile .cc-header__actions {
+      gap: var(--ai-spacing-2);
+    }
+    .demo-frame--mobile .cc-header .notification-badge__count {
+      top: var(--ai-spacing-1);
+      right: var(--ai-spacing-1);
+    }
+    .demo-frame--mobile .cc-header__actions .btn {
+      padding: 0;
+      width: var(--ai-spacing-7);
+      min-height: var(--ai-spacing-7);
+      gap: 0;
+    }
+    .demo-frame--mobile .cc-header__actions .cc-header__btn-label {
+      display: none;
+    }
+    .demo-frame--mobile .cc-header--control .cc-header__title-block {
+      gap: var(--ai-spacing-3);
+    }
+    .demo-frame--mobile .cc-header--control .portrait {
+      width: var(--ai-spacing-7);
+      height: var(--ai-spacing-7);
+    }
+    .demo-frame--mobile .cc-header--control .cc-header__title {
+      line-height: 1.1;
+    }
+    .demo-frame--mobile .cc-header--control .cc-header__title-greeting,
+    .demo-frame--mobile .cc-header--control .cc-header__user-details {
+      display: none;
+    }
+    .demo-frame--mobile .cc-header--control .cc-header__actions {
+      gap: var(--ai-spacing-1);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Header (CC)</h1>
+  <p>Main page header for the CC product. <strong>Resize viewport below 768px to see mobile layout</strong> — title font shrinks, buttons collapse to icon-only, Control variant hides greeting and user details.</p>
+
+  <section class="demo-section">
+    <h2>Type=Default</h2>
+    <p>Title + Actions (Notification, Edit, Add, kebab).</p>
+    <div class="demo-frame">
+      <header class="cc-header">
+        <div class="cc-header__title-block">
+          <h1 class="cc-header__title">Page name</h1>
+        </div>
+        <div class="cc-header__actions">
+          <span class="notification-badge">
+            <button class="btn btn--tertiary btn--icon" type="button" aria-label="Notifications, 2 unread">
+              <i data-lucide="bell" aria-hidden="true"></i>
+            </button>
+            <span class="notification-badge__count" aria-hidden="true">2</span>
+          </span>
+          <button class="btn btn--secondary" type="button">
+            <i data-lucide="pencil" aria-hidden="true"></i>
+            <span class="cc-header__btn-label">Edit</span>
+          </button>
+          <button class="btn btn--primary" type="button">
+            <i data-lucide="plus" aria-hidden="true"></i>
+            <span class="cc-header__btn-label">Add</span>
+          </button>
+          <div class="dropdown">
+            <button class="cc-header__kebab dropdown__trigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="More actions">
+              <i data-lucide="ellipsis-vertical" aria-hidden="true"></i>
+            </button>
+            <div class="dropdown__panel" role="menu" aria-label="More actions">
+              <ul class="dropdown__list">
+                <li role="none"><button type="button" class="dropdown__item" role="menuitem">Duplicate</button></li>
+                <li role="none"><button type="button" class="dropdown__item" role="menuitem">Archive</button></li>
+                <li role="none"><button type="button" class="dropdown__item" role="menuitem">Delete</button></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </header>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Type=Sub Text</h2>
+    <p>Title + Sub text + Actions. The sub-text row sits below the title.</p>
+    <div class="demo-frame">
+      <header class="cc-header cc-header--sub-text">
+        <div class="cc-header__title-block">
+          <div class="cc-header__title-block-text">
+            <h1 class="cc-header__title">Page name</h1>
+            <p class="cc-header__subtitle">Sub text</p>
+          </div>
+        </div>
+        <div class="cc-header__actions">
+          <span class="notification-badge">
+            <button class="btn btn--tertiary btn--icon" type="button" aria-label="Notifications, 2 unread">
+              <i data-lucide="bell" aria-hidden="true"></i>
+            </button>
+            <span class="notification-badge__count" aria-hidden="true">2</span>
+          </span>
+          <button class="btn btn--secondary" type="button">
+            <i data-lucide="pencil" aria-hidden="true"></i>
+            <span class="cc-header__btn-label">Edit</span>
+          </button>
+          <button class="btn btn--primary" type="button">
+            <i data-lucide="plus" aria-hidden="true"></i>
+            <span class="cc-header__btn-label">Add</span>
+          </button>
+          <div class="dropdown">
+            <button class="cc-header__kebab dropdown__trigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="More actions">
+              <i data-lucide="ellipsis-vertical" aria-hidden="true"></i>
+            </button>
+            <div class="dropdown__panel" role="menu" aria-label="More actions">
+              <ul class="dropdown__list">
+                <li role="none"><button type="button" class="dropdown__item" role="menuitem">Duplicate</button></li>
+                <li role="none"><button type="button" class="dropdown__item" role="menuitem">Archive</button></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </header>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Type=Control</h2>
+    <p>Avatar + greeting "Hi {Name}" + user details (Affino / Lead Project Manager) + actions. On mobile (≤767px), the "Hi " prefix and user details hide, leaving avatar + name only.</p>
+    <div class="demo-frame">
+      <header class="cc-header cc-header--control">
+        <div class="cc-header__title-block">
+          <img class="portrait" src="https://i.pravatar.cc/96?u=susan" alt="Susan Kerrigan" />
+          <div class="cc-header__title-block-text">
+            <h1 class="cc-header__title">
+              <span class="cc-header__title-greeting">Hi </span>Susan Kerrigan
+            </h1>
+            <div class="cc-header__user-details">
+              <span class="cc-header__user-item">
+                <i data-lucide="building" aria-hidden="true"></i>
+                Affino
+              </span>
+              <span class="cc-header__user-item">
+                <i data-lucide="briefcase-business" aria-hidden="true"></i>
+                Lead Project Manager
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="cc-header__actions">
+          <span class="notification-badge">
+            <button class="btn btn--tertiary btn--icon" type="button" aria-label="Notifications, 2 unread">
+              <i data-lucide="bell" aria-hidden="true"></i>
+            </button>
+            <span class="notification-badge__count" aria-hidden="true">2</span>
+          </span>
+          <button class="btn btn--secondary" type="button">
+            <i data-lucide="log-out" aria-hidden="true"></i>
+            <span class="cc-header__btn-label">Logout</span>
+          </button>
+          <button class="btn btn--primary" type="button">
+            <i data-lucide="external-link" aria-hidden="true"></i>
+            <span class="cc-header__btn-label">View Site</span>
+          </button>
+          <div class="dropdown">
+            <button class="cc-header__kebab dropdown__trigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="More actions">
+              <i data-lucide="ellipsis-vertical" aria-hidden="true"></i>
+            </button>
+            <div class="dropdown__panel" role="menu" aria-label="More actions">
+              <ul class="dropdown__list">
+                <li role="none"><button type="button" class="dropdown__item" role="menuitem">Profile</button></li>
+                <li role="none"><button type="button" class="dropdown__item" role="menuitem">Settings</button></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </header>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Mobile preview — Type=Default</h2>
+    <p>Forced 390px width. Title shrinks to 16px; buttons collapse to icon-only 32px squares.</p>
+    <div class="demo-frame demo-frame--mobile">
+      <header class="cc-header">
+        <div class="cc-header__title-block">
+          <h1 class="cc-header__title">Page name</h1>
+        </div>
+        <div class="cc-header__actions">
+          <span class="notification-badge">
+            <button class="btn btn--tertiary btn--icon" type="button" aria-label="Notifications, 2 unread">
+              <i data-lucide="bell" aria-hidden="true"></i>
+            </button>
+            <span class="notification-badge__count" aria-hidden="true">2</span>
+          </span>
+          <button class="btn btn--secondary" type="button">
+            <i data-lucide="pencil" aria-hidden="true"></i>
+            <span class="cc-header__btn-label">Edit</span>
+          </button>
+          <button class="btn btn--primary" type="button">
+            <i data-lucide="plus" aria-hidden="true"></i>
+            <span class="cc-header__btn-label">Add</span>
+          </button>
+          <div class="dropdown">
+            <button class="cc-header__kebab dropdown__trigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="More actions">
+              <i data-lucide="ellipsis-vertical" aria-hidden="true"></i>
+            </button>
+            <div class="dropdown__panel" role="menu" aria-label="More actions">
+              <ul class="dropdown__list">
+                <li role="none"><button type="button" class="dropdown__item" role="menuitem">Duplicate</button></li>
+                <li role="none"><button type="button" class="dropdown__item" role="menuitem">Archive</button></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </header>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Mobile preview — Type=Sub Text</h2>
+    <p>Forced 390px width with subtitle row.</p>
+    <div class="demo-frame demo-frame--mobile">
+      <header class="cc-header cc-header--sub-text">
+        <div class="cc-header__title-block">
+          <div class="cc-header__title-block-text">
+            <h1 class="cc-header__title">Page name</h1>
+            <p class="cc-header__subtitle">Sub text</p>
+          </div>
+        </div>
+        <div class="cc-header__actions">
+          <span class="notification-badge">
+            <button class="btn btn--tertiary btn--icon" type="button" aria-label="Notifications, 2 unread">
+              <i data-lucide="bell" aria-hidden="true"></i>
+            </button>
+            <span class="notification-badge__count" aria-hidden="true">2</span>
+          </span>
+          <button class="btn btn--secondary" type="button">
+            <i data-lucide="pencil" aria-hidden="true"></i>
+            <span class="cc-header__btn-label">Edit</span>
+          </button>
+          <button class="btn btn--primary" type="button">
+            <i data-lucide="plus" aria-hidden="true"></i>
+            <span class="cc-header__btn-label">Add</span>
+          </button>
+          <div class="dropdown">
+            <button class="cc-header__kebab dropdown__trigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="More actions">
+              <i data-lucide="ellipsis-vertical" aria-hidden="true"></i>
+            </button>
+            <div class="dropdown__panel" role="menu" aria-label="More actions">
+              <ul class="dropdown__list">
+                <li role="none"><button type="button" class="dropdown__item" role="menuitem">Duplicate</button></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </header>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Mobile preview — Type=Control</h2>
+    <p>Forced 390px width. Portrait shrinks to 32px; "Hi " greeting and user details hide; tighter actions gap.</p>
+    <div class="demo-frame demo-frame--mobile">
+      <header class="cc-header cc-header--control">
+        <div class="cc-header__title-block">
+          <img class="portrait" src="https://i.pravatar.cc/96?u=susan" alt="Susan Kerrigan" />
+          <div class="cc-header__title-block-text">
+            <h1 class="cc-header__title">
+              <span class="cc-header__title-greeting">Hi </span>Susan Kerrigan
+            </h1>
+            <div class="cc-header__user-details">
+              <span class="cc-header__user-item">
+                <i data-lucide="building" aria-hidden="true"></i>
+                Affino
+              </span>
+              <span class="cc-header__user-item">
+                <i data-lucide="briefcase-business" aria-hidden="true"></i>
+                Lead Project Manager
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="cc-header__actions">
+          <span class="notification-badge">
+            <button class="btn btn--tertiary btn--icon" type="button" aria-label="Notifications, 2 unread">
+              <i data-lucide="bell" aria-hidden="true"></i>
+            </button>
+            <span class="notification-badge__count" aria-hidden="true">2</span>
+          </span>
+          <button class="btn btn--secondary" type="button">
+            <i data-lucide="log-out" aria-hidden="true"></i>
+            <span class="cc-header__btn-label">Logout</span>
+          </button>
+          <button class="btn btn--primary" type="button">
+            <i data-lucide="external-link" aria-hidden="true"></i>
+            <span class="cc-header__btn-label">View Site</span>
+          </button>
+        </div>
+      </header>
+    </div>
+  </section>
+
+  <script src="../../../components/Dropdown/Dropdown.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+/* CCTopNavigation — dark utility bar above the main Header.
+ * Figma: ETKqleZdpertwFEo40YB5n (CC Hybrid). Component set 4099:3634.
+ *
+ * Two Type axes:
+ *   - Default:   "Zone name > Level 1"
+ *   - Multizone: "Zone Selector ▾ > Level 1 > Level 2" (with Dropdown)
+ * Device responsiveness via @media (max-width: 767px): mobile hides the user
+ * name and chevron, leaving only the portrait.
+ */
+
+.cc-top-navigation {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-5);
+  width: 100%;
+  min-height: var(--ai-spacing-9);
+  padding: 0 var(--ai-spacing-5);
+  background-color: var(--cc-header-primary-bg);
+  overflow: hidden;
+}
+
+/* ── Breadcrumb (flex-1, fills space) ────────────────── */
+
+.cc-top-navigation .breadcrumb {
+  flex: 1 0 0;
+  min-width: 0;
+  display: block;
+}
+
+/* Contextual override — Breadcrumb is dark-bg here (Case B per CLAUDE.md).
+ * Existing Breadcrumb uses --ai-text-secondary/primary; flip to invert tokens. */
+.cc-top-navigation .breadcrumb__link,
+.cc-top-navigation .breadcrumb__dropdown {
+  color: var(--ai-text-invert-secondary);
+}
+
+.cc-top-navigation .breadcrumb__link:hover,
+.cc-top-navigation .breadcrumb__dropdown:hover {
+  color: var(--ai-text-invert);
+}
+
+.cc-top-navigation .breadcrumb__item--current {
+  color: var(--ai-text-invert);
+}
+
+.cc-top-navigation .breadcrumb__separator {
+  color: var(--ai-icon-invert-secondary);
+}
+
+/* ── Right-hand actions cluster ──────────────────────── */
+
+.cc-top-navigation__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-5);
+  flex-shrink: 0;
+}
+
+/* ── User block (portrait + name + chevron) ──────────── */
+
+.cc-top-navigation__user {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+}
+
+.cc-top-navigation__user .portrait {
+  width: var(--ai-spacing-6);
+  height: var(--ai-spacing-6);
+  flex-shrink: 0;
+  border-radius: var(--ai-radius-full);
+  object-fit: cover;
+}
+
+.cc-top-navigation__user-name {
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-medium);
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-invert-secondary);
+  letter-spacing: 0.28px; /* optical tracking from Figma — letter-spacing is a documented px exception */
+  font-feature-settings: 'salt' 1;
+  white-space: nowrap;
+}
+
+.cc-top-navigation__user-chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-icon-size-lg);
+  height: var(--ai-icon-size-lg);
+  color: var(--ai-icon-invert-secondary);
+}
+
+.cc-top-navigation__user-chevron [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* ── Preview button (monitor icon) ───────────────────── */
+
+.cc-top-navigation__preview {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  padding: 0;
+  background: transparent;
+  border: 0;
+  color: var(--cc-header-icon);
+  cursor: pointer;
+  transition: color var(--ai-transition-default);
+}
+
+.cc-top-navigation__preview:hover {
+  color: var(--ai-text-invert);
+}
+
+.cc-top-navigation__preview [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* ── Mobile (≤767px) ─────────────────────────────────── */
+
+@media (max-width: 767px) {
+  .cc-top-navigation {
+    min-height: var(--ai-spacing-8); /* 40px on mobile */
+  }
+
+  .cc-top-navigation__user-name,
+  .cc-top-navigation__user-chevron {
+    display: none;
+  }
+}

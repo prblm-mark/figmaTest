@@ -1,0 +1,17 @@
+/* CCHeaderGroup — compiled assembly stacking CCTopNavigation above CCHeader.
+ * Figma: ETKqleZdpertwFEo40YB5n (CC Hybrid). Component set 4105:4238.
+ *
+ * Two variants in Figma — Desktop (1280×96) and Mobile (390×130). Figma
+ * variant names are swapped vs their widths (see figma-notes.md); width is
+ * treated as the source of truth.
+ *
+ * This pattern owns no CSS beyond the vertical-stack wrapper. The composed
+ * children retain their standalone CSS (TopNavigation + Header).
+ */
+
+.cc-header-group {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+}
