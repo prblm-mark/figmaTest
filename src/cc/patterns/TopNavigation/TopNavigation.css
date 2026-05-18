@@ -130,6 +130,10 @@
 /* ── Mobile (≤767px) ─────────────────────────────────── */
 
 @media (max-width: 767px) {
+  .cc-top-navigation {
+    min-height: var(--ai-spacing-8); /* 40px on mobile */
+  }
+
   .cc-top-navigation__user-name,
   .cc-top-navigation__user-chevron {
     display: none;

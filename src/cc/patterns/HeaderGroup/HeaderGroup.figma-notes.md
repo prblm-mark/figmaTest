@@ -43,21 +43,13 @@ existing patterns.
 | Width | `100%` |
 | Item alignment | `stretch` |
 
-### Contextual override — composed CCHeader mobile height
+### Notes on composed height
 
-Per Figma, the CCHeader inside CCHeaderGroup is **48px** tall on mobile, vs the
-standalone CCHeader's **56px**.
-
-```css
-@media (max-width: 767px) {
-  .cc-header-group .cc-header {
-    min-height: var(--ai-spacing-9); /* 48px composed, vs 56px standalone */
-  }
-}
-```
-
-This is a Case B contextual override per CLAUDE.md — scoped to the composed context
-without modifying CCHeader.
+Figma shows the CCHeader nested inside CCHeaderGroup Mobile at `min-h-[48px]`, vs the
+standalone CCHeader Mobile at `min-h-[56px]`. **By project decision the composed
+Header uses the standalone 56px** — the original 48px contextual override was removed
+(Figma may have been authored inconsistently). The composed children retain their
+standalone CSS unchanged.
 
 ---
 
@@ -87,10 +79,8 @@ patterns (CCTopNavigation Zone Selector dropdown, CCHeader kebab dropdown, etc.)
 
 ## Responsive behaviour
 
-`@media (max-width: 767px)`:
-- Composed CCHeader min-height: 56px (standalone) → 48px (composed in group)
-- All child-pattern collapses run their own mobile rules (see CCTopNavigation and
-  CCHeader figma-notes).
+CCHeaderGroup owns no responsive CSS — all responsive behaviour comes from the
+child patterns (see CCTopNavigation and CCHeader figma-notes).
 
 ---
 
@@ -110,5 +100,6 @@ Include the children's CSS + JS files in any page using CCHeaderGroup.
 - 2026-05-15: Initial compiled pattern scaffold. Built from Figma component set
   `4105:4238` (CC Hybrid Design System). 2 variants reduced to a single responsive
   HTML structure. Figma authoring bug noted (variant names swapped vs widths) —
-  width treated as truth. Contextual override added for composed CCHeader mobile
-  height (48px vs standalone 56px).
+  width treated as truth. A contextual mobile-height override (48px composed vs
+  56px standalone) was initially added per Figma, then removed on 2026-05-18 —
+  composed Header now inherits the standalone 56px.

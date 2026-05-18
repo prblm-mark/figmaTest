@@ -5,9 +5,8 @@
  * variant names are swapped vs their widths (see figma-notes.md); width is
  * treated as the source of truth.
  *
- * This pattern owns no significant CSS — it's a thin vertical-stack wrapper.
- * The only contextual rule: when CCHeader is composed inside CCHeaderGroup
- * on mobile, its min-height is 48px (not the standalone 56px).
+ * This pattern owns no CSS beyond the vertical-stack wrapper. The composed
+ * children retain their standalone CSS (TopNavigation + Header).
  */
 
 .cc-header-group {
@@ -15,11 +14,4 @@
   flex-direction: column;
   align-items: stretch;
   width: 100%;
-}
-
-/* Contextual override: composed CCHeader on mobile is shorter than standalone. */
-@media (max-width: 767px) {
-  .cc-header-group .cc-header {
-    min-height: var(--ai-spacing-9); /* 48px composed, vs 56px standalone */
-  }
 }

@@ -23,6 +23,65 @@
       overflow: hidden;
       box-shadow: var(--ai-shadow-sm);
     }
+    /* Demo-only — forces the mobile collapse on both child patterns and the
+       HeaderGroup composition rule so QA can compare without resizing. Mirrors
+       the @media (max-width: 767px) rules in TopNavigation.css, Header.css,
+       and HeaderGroup.css. NOT production CSS. */
+    .demo-frame--mobile {
+      max-width: 390px;
+    }
+    /* TopNavigation mobile collapses */
+    .demo-frame--mobile .cc-top-navigation {
+      min-height: var(--ai-spacing-8);
+    }
+    .demo-frame--mobile .cc-top-navigation__user-name,
+    .demo-frame--mobile .cc-top-navigation__user-chevron {
+      display: none;
+    }
+    /* Header mobile collapses */
+    .demo-frame--mobile .cc-header {
+      min-height: var(--ai-spacing-10);
+      padding: var(--ai-spacing-3) var(--ai-spacing-4);
+    }
+    .demo-frame--mobile .cc-header__title {
+      font-size: var(--ai-font-fixed-sm);
+    }
+    .demo-frame--mobile .cc-header__subtitle {
+      line-height: var(--ai-leading-xs);
+    }
+    .demo-frame--mobile .cc-header__actions {
+      gap: var(--ai-spacing-2);
+    }
+    .demo-frame--mobile .cc-header .notification-badge__count {
+      top: var(--ai-spacing-1);
+      right: var(--ai-spacing-1);
+    }
+    .demo-frame--mobile .cc-header__actions .btn {
+      padding: 0;
+      width: var(--ai-spacing-7);
+      min-height: var(--ai-spacing-7);
+      gap: 0;
+    }
+    .demo-frame--mobile .cc-header__actions .cc-header__btn-label {
+      display: none;
+    }
+    .demo-frame--mobile .cc-header--control .cc-header__title-block {
+      gap: var(--ai-spacing-3);
+    }
+    .demo-frame--mobile .cc-header--control .portrait {
+      width: var(--ai-spacing-7);
+      height: var(--ai-spacing-7);
+    }
+    .demo-frame--mobile .cc-header--control .cc-header__title {
+      line-height: 1.1;
+    }
+    .demo-frame--mobile .cc-header--control .cc-header__title-greeting,
+    .demo-frame--mobile .cc-header--control .cc-header__user-details {
+      display: none;
+    }
+    .demo-frame--mobile .cc-header--control .cc-header__actions {
+      gap: var(--ai-spacing-1);
+    }
   </style>
 </head>
 <body>
@@ -124,6 +183,246 @@
                   <li role="none"><button type="button" class="dropdown__item" role="menuitem">Settings</button></li>
                 </ul>
               </div>
+            </div>
+          </div>
+        </header>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Compiled — Multizone topNav + Default header</h2>
+    <p>Same Multizone topNav with a Default Header (title-only) underneath.</p>
+    <div class="demo-frame">
+      <div class="cc-header-group">
+
+        <header class="cc-top-navigation">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <ol class="breadcrumb__list">
+              <li class="breadcrumb__item"><a class="breadcrumb__link" href="#">Zone name</a></li>
+              <li class="breadcrumb__separator" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
+              <li class="breadcrumb__item breadcrumb__item--current" aria-current="page">Level 1</li>
+            </ol>
+          </nav>
+          <div class="cc-top-navigation__actions">
+            <button class="cc-top-navigation__user" type="button" aria-label="User menu" aria-haspopup="true">
+              <img class="portrait" src="https://i.pravatar.cc/64?u=derrick" alt="Derrick Jefferson" />
+              <span class="cc-top-navigation__user-name">Derrick Jefferson</span>
+              <span class="cc-top-navigation__user-chevron" aria-hidden="true"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+            </button>
+            <button class="cc-top-navigation__preview" type="button" aria-label="Preview as desktop"><i data-lucide="monitor" aria-hidden="true"></i></button>
+          </div>
+        </header>
+
+        <header class="cc-header">
+          <div class="cc-header__title-block"><h1 class="cc-header__title">Page name</h1></div>
+          <div class="cc-header__actions">
+            <span class="notification-badge">
+              <button class="btn btn--tertiary btn--icon" type="button" aria-label="Notifications, 2 unread"><i data-lucide="bell" aria-hidden="true"></i></button>
+              <span class="notification-badge__count" aria-hidden="true">2</span>
+            </span>
+            <button class="btn btn--secondary" type="button"><i data-lucide="pencil" aria-hidden="true"></i><span class="cc-header__btn-label">Edit</span></button>
+            <button class="btn btn--primary" type="button"><i data-lucide="plus" aria-hidden="true"></i><span class="cc-header__btn-label">Add</span></button>
+            <div class="dropdown">
+              <button class="cc-header__kebab dropdown__trigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
+              <div class="dropdown__panel" role="menu"><ul class="dropdown__list"><li role="none"><button type="button" class="dropdown__item" role="menuitem">Duplicate</button></li></ul></div>
+            </div>
+          </div>
+        </header>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Compiled — Multizone topNav + Sub Text header</h2>
+    <p>Same Multizone topNav with a Sub Text Header (title + subtitle) underneath.</p>
+    <div class="demo-frame">
+      <div class="cc-header-group">
+
+        <header class="cc-top-navigation">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <ol class="breadcrumb__list">
+              <li class="breadcrumb__item"><a class="breadcrumb__link" href="#">Zone name</a></li>
+              <li class="breadcrumb__separator" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
+              <li class="breadcrumb__item breadcrumb__item--current" aria-current="page">Level 1</li>
+            </ol>
+          </nav>
+          <div class="cc-top-navigation__actions">
+            <button class="cc-top-navigation__user" type="button" aria-label="User menu" aria-haspopup="true">
+              <img class="portrait" src="https://i.pravatar.cc/64?u=derrick" alt="Derrick Jefferson" />
+              <span class="cc-top-navigation__user-name">Derrick Jefferson</span>
+              <span class="cc-top-navigation__user-chevron" aria-hidden="true"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+            </button>
+            <button class="cc-top-navigation__preview" type="button" aria-label="Preview as desktop"><i data-lucide="monitor" aria-hidden="true"></i></button>
+          </div>
+        </header>
+
+        <header class="cc-header cc-header--sub-text">
+          <div class="cc-header__title-block">
+            <div class="cc-header__title-block-text">
+              <h1 class="cc-header__title">Page name</h1>
+              <p class="cc-header__subtitle">Sub text</p>
+            </div>
+          </div>
+          <div class="cc-header__actions">
+            <span class="notification-badge">
+              <button class="btn btn--tertiary btn--icon" type="button" aria-label="Notifications, 2 unread"><i data-lucide="bell" aria-hidden="true"></i></button>
+              <span class="notification-badge__count" aria-hidden="true">2</span>
+            </span>
+            <button class="btn btn--secondary" type="button"><i data-lucide="pencil" aria-hidden="true"></i><span class="cc-header__btn-label">Edit</span></button>
+            <button class="btn btn--primary" type="button"><i data-lucide="plus" aria-hidden="true"></i><span class="cc-header__btn-label">Add</span></button>
+            <div class="dropdown">
+              <button class="cc-header__kebab dropdown__trigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
+              <div class="dropdown__panel" role="menu"><ul class="dropdown__list"><li role="none"><button type="button" class="dropdown__item" role="menuitem">Duplicate</button></li></ul></div>
+            </div>
+          </div>
+        </header>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Mobile preview — Multizone + Control</h2>
+    <p>Forced 390px. Composed Header is 48px tall (vs 56px standalone).</p>
+    <div class="demo-frame demo-frame--mobile">
+      <div class="cc-header-group">
+
+        <header class="cc-top-navigation">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <ol class="breadcrumb__list">
+              <li class="breadcrumb__item">
+                <div class="dropdown">
+                  <button class="breadcrumb__dropdown dropdown__trigger" type="button" aria-haspopup="menu" aria-expanded="false">Zone Selector<i data-lucide="chevron-down" aria-hidden="true"></i></button>
+                  <div class="dropdown__panel" role="menu"><ul class="dropdown__list"><li role="none"><button type="button" class="dropdown__item" role="menuitem">Zone A</button></li></ul></div>
+                </div>
+              </li>
+              <li class="breadcrumb__separator" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
+              <li class="breadcrumb__item breadcrumb__item--current" aria-current="page">Level 1</li>
+            </ol>
+          </nav>
+          <div class="cc-top-navigation__actions">
+            <button class="cc-top-navigation__user" type="button" aria-label="User menu" aria-haspopup="true">
+              <img class="portrait" src="https://i.pravatar.cc/64?u=derrick" alt="Derrick Jefferson" />
+              <span class="cc-top-navigation__user-name">Derrick Jefferson</span>
+              <span class="cc-top-navigation__user-chevron" aria-hidden="true"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+            </button>
+            <button class="cc-top-navigation__preview" type="button" aria-label="Preview as desktop"><i data-lucide="monitor" aria-hidden="true"></i></button>
+          </div>
+        </header>
+
+        <header class="cc-header cc-header--control">
+          <div class="cc-header__title-block">
+            <img class="portrait" src="https://i.pravatar.cc/96?u=susan" alt="Susan Kerrigan" />
+            <div class="cc-header__title-block-text">
+              <h1 class="cc-header__title"><span class="cc-header__title-greeting">Hi </span>Susan Kerrigan</h1>
+              <div class="cc-header__user-details">
+                <span class="cc-header__user-item"><i data-lucide="building" aria-hidden="true"></i>Affino</span>
+                <span class="cc-header__user-item"><i data-lucide="briefcase-business" aria-hidden="true"></i>Lead Project Manager</span>
+              </div>
+            </div>
+          </div>
+          <div class="cc-header__actions">
+            <span class="notification-badge">
+              <button class="btn btn--tertiary btn--icon" type="button" aria-label="Notifications, 2 unread"><i data-lucide="bell" aria-hidden="true"></i></button>
+              <span class="notification-badge__count" aria-hidden="true">2</span>
+            </span>
+            <button class="btn btn--secondary" type="button"><i data-lucide="log-out" aria-hidden="true"></i><span class="cc-header__btn-label">Logout</span></button>
+            <button class="btn btn--primary" type="button"><i data-lucide="external-link" aria-hidden="true"></i><span class="cc-header__btn-label">View Site</span></button>
+          </div>
+        </header>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Mobile preview — Multizone + Default</h2>
+    <p>Forced 390px with a Default Header (title only).</p>
+    <div class="demo-frame demo-frame--mobile">
+      <div class="cc-header-group">
+
+        <header class="cc-top-navigation">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <ol class="breadcrumb__list">
+              <li class="breadcrumb__item"><a class="breadcrumb__link" href="#">Zone name</a></li>
+              <li class="breadcrumb__separator" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
+              <li class="breadcrumb__item breadcrumb__item--current" aria-current="page">Level 1</li>
+            </ol>
+          </nav>
+          <div class="cc-top-navigation__actions">
+            <button class="cc-top-navigation__user" type="button" aria-label="User menu" aria-haspopup="true">
+              <img class="portrait" src="https://i.pravatar.cc/64?u=derrick" alt="Derrick Jefferson" />
+              <span class="cc-top-navigation__user-name">Derrick Jefferson</span>
+              <span class="cc-top-navigation__user-chevron" aria-hidden="true"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+            </button>
+            <button class="cc-top-navigation__preview" type="button" aria-label="Preview as desktop"><i data-lucide="monitor" aria-hidden="true"></i></button>
+          </div>
+        </header>
+
+        <header class="cc-header">
+          <div class="cc-header__title-block"><h1 class="cc-header__title">Page name</h1></div>
+          <div class="cc-header__actions">
+            <span class="notification-badge">
+              <button class="btn btn--tertiary btn--icon" type="button" aria-label="Notifications, 2 unread"><i data-lucide="bell" aria-hidden="true"></i></button>
+              <span class="notification-badge__count" aria-hidden="true">2</span>
+            </span>
+            <button class="btn btn--secondary" type="button"><i data-lucide="pencil" aria-hidden="true"></i><span class="cc-header__btn-label">Edit</span></button>
+            <button class="btn btn--primary" type="button"><i data-lucide="plus" aria-hidden="true"></i><span class="cc-header__btn-label">Add</span></button>
+            <div class="dropdown">
+              <button class="cc-header__kebab dropdown__trigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
+              <div class="dropdown__panel" role="menu"><ul class="dropdown__list"><li role="none"><button type="button" class="dropdown__item" role="menuitem">Duplicate</button></li></ul></div>
+            </div>
+          </div>
+        </header>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Mobile preview — Multizone + Sub Text</h2>
+    <p>Forced 390px with a Sub Text Header (title + subtitle).</p>
+    <div class="demo-frame demo-frame--mobile">
+      <div class="cc-header-group">
+
+        <header class="cc-top-navigation">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <ol class="breadcrumb__list">
+              <li class="breadcrumb__item"><a class="breadcrumb__link" href="#">Zone name</a></li>
+              <li class="breadcrumb__separator" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
+              <li class="breadcrumb__item breadcrumb__item--current" aria-current="page">Level 1</li>
+            </ol>
+          </nav>
+          <div class="cc-top-navigation__actions">
+            <button class="cc-top-navigation__user" type="button" aria-label="User menu" aria-haspopup="true">
+              <img class="portrait" src="https://i.pravatar.cc/64?u=derrick" alt="Derrick Jefferson" />
+              <span class="cc-top-navigation__user-name">Derrick Jefferson</span>
+              <span class="cc-top-navigation__user-chevron" aria-hidden="true"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+            </button>
+            <button class="cc-top-navigation__preview" type="button" aria-label="Preview as desktop"><i data-lucide="monitor" aria-hidden="true"></i></button>
+          </div>
+        </header>
+
+        <header class="cc-header cc-header--sub-text">
+          <div class="cc-header__title-block">
+            <div class="cc-header__title-block-text">
+              <h1 class="cc-header__title">Page name</h1>
+              <p class="cc-header__subtitle">Sub text</p>
+            </div>
+          </div>
+          <div class="cc-header__actions">
+            <span class="notification-badge">
+              <button class="btn btn--tertiary btn--icon" type="button" aria-label="Notifications, 2 unread"><i data-lucide="bell" aria-hidden="true"></i></button>
+              <span class="notification-badge__count" aria-hidden="true">2</span>
+            </span>
+            <button class="btn btn--secondary" type="button"><i data-lucide="pencil" aria-hidden="true"></i><span class="cc-header__btn-label">Edit</span></button>
+            <button class="btn btn--primary" type="button"><i data-lucide="plus" aria-hidden="true"></i><span class="cc-header__btn-label">Add</span></button>
+            <div class="dropdown">
+              <button class="cc-header__kebab dropdown__trigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
+              <div class="dropdown__panel" role="menu"><ul class="dropdown__list"><li role="none"><button type="button" class="dropdown__item" role="menuitem">Duplicate</button></li></ul></div>
             </div>
           </div>
         </header>

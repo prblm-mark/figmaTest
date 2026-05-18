@@ -186,8 +186,17 @@
     font-size: var(--ai-font-fixed-sm); /* 16px on mobile */
   }
 
+  .cc-header__subtitle {
+    line-height: var(--ai-leading-xs); /* 16px on mobile */
+  }
+
   .cc-header__actions {
     gap: var(--ai-spacing-2); /* 6px on mobile */
+  }
+
+  .cc-header .notification-badge__count {
+    top: var(--ai-spacing-1);
+    right: var(--ai-spacing-1);
   }
 
   /* Collapse text+icon buttons to icon-only 32px square on mobile.
