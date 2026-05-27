@@ -256,3 +256,12 @@
   background-color: var(--ai-surface-minimal);
   font-weight: var(--ai-font-medium);
 }
+
+/* ── Contextual override: Toggle in Chat uses --ai-chat-brand ────────
+ * The Toggle component switched its default Active track colour to
+ * --ai-surface-brand (per Figma Dropdown User Menu spec). StyleSettings
+ * sits in the Chat context and should retain the chat-customisable brand,
+ * so we override the track colour back to --ai-chat-brand here. */
+.style-settings .toggle--active .toggle__track {
+  background-color: var(--ai-chat-brand);
+}

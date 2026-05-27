@@ -7,7 +7,7 @@
 - **Tier:** `Component` → built into `src/components/Dropdown/`
 - URL: https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2553-3676
 
-## Variant matrix (5 variants)
+## Variant matrix (7 variants)
 
 | Node ID | Type | Notes | Built |
 |---|---|---|---|
@@ -16,6 +16,14 @@
 | 2553:3673 | Actions | Items with leading icons + divider + Delete CTA (alert button) | ✅ |
 | 2553:3671 | Checkbox | Checkbox items (composes existing Checkbox component) | ✅ |
 | 2553:3672 | Search | Search input + filterable item list | ✅ |
+| 2699:1976 | User menu | ThemeToggle + Icon Navigation Toggle + DropdownItems + Sign Out (Warning type) | ✅ (added 2026-05-27) |
+| 2705:2491 | User Menu Icon Nav | Same as User menu, but Icon Navigation toggled ON reveals Hide Labels row | ✅ (added 2026-05-27 — same `.dropdown--user-menu` markup, JS reveals the hidden row when the linked Toggle becomes active) |
+
+**Sign Out composition note:** in both User menu variants, the Sign Out item is a
+**Default Warning DropdownItem** (visually identical to Default Default at rest, but
+hovers to the destructive red treatment). Detect this in design context by the icon's
+inner node ID — `I<instance>;2699:2156` references the Warning-variant icon, vs
+`I<instance>;2699:2138` for the Default-variant icon. Apply `.dropdown-item--warning`.
 
 ## CSS Class Mapping
 
@@ -28,7 +36,10 @@
 | Panel — Actions variant | `.dropdown__panel .dropdown__panel--actions` | Adds vertical gap between item list and Delete CTA |
 | Panel — Checkbox variant | `.dropdown__panel .dropdown__panel--checkbox` | Different padding (16px x, 12px y) per Figma |
 | List | `.dropdown__list` | Flex column. `--header` modifier adds 4px gap (used in With Header) |
-| Item (action / link) | `.dropdown__item` | 40px min-height, 12/8 padding, radius-md. `.dropdown__item--selected` applies bg + medium weight. `aria-selected="true"` and `aria-current="page"` produce the same styling |
+| Item (action / link) | `.dropdown-item` | Extracted to **DropdownItem** component on 2026-05-27 — see `src/components/DropdownItem/`. Has Default and Warning Types, with State=Hover. The legacy `.dropdown__item` class still works via a back-compat alias in `Dropdown.css` (deprecated — prefer `.dropdown-item`). |
+| User menu — toggle list wrapper | `.dropdown__toggle-list` | Used only by `.dropdown--user-menu`. Vertical flex stack for Toggle rows. Padding `8px / 6px`. |
+| User menu — single toggle row | `.dropdown__toggle-row` | Flex row, gap 12px, py 1px. Holds a `.toggle` and a `.toggle__label`. |
+| User menu — reveal-on-active row | `.dropdown__toggle-row.dropdown__toggle-row--reveal` | Hidden by default. `data-reveal-by="<toggle-id>"` links it to a source `.toggle`. When that toggle becomes `.toggle--active`, the JS hook adds `.is-revealed` to show this row. Used for Hide Labels under Icon Navigation. |
 | Divider | `.dropdown__divider` | 1px line, `--ai-surface-secondary` |
 | Profile block | `.dropdown__profile` | Avatar + name + email — used only by With Header. Always rendered with `--ai-surface-secondary` bg |
 | Avatar image | `.dropdown__profile-avatar` | 40px, `--ai-radius-full`, `object-fit: cover` |

@@ -46,7 +46,37 @@
 <body>
 
   <div class="demo-section">
-    <h2>Toggle — SM (no label)</h2>
+    <h2>Toggle — xs (32×16)</h2>
+    <div class="demo-row">
+      <span class="demo-label">Initial</span>
+      <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" aria-label="Toggle">
+        <span class="toggle__track"><span class="toggle__knob"></span></span>
+      </button>
+    </div>
+    <div class="demo-row">
+      <span class="demo-label">Active</span>
+      <button class="toggle toggle--xs toggle--active" type="button" role="switch" aria-checked="true" aria-label="Toggle">
+        <span class="toggle__track"><span class="toggle__knob"></span></span>
+      </button>
+    </div>
+    <div class="demo-row">
+      <span class="demo-label">Disabled</span>
+      <button class="toggle toggle--xs toggle--disabled" type="button" role="switch" aria-checked="false" aria-disabled="true" aria-label="Toggle">
+        <span class="toggle__track"><span class="toggle__knob"></span></span>
+      </button>
+    </div>
+    <div class="demo-row">
+      <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false">
+        <span class="toggle__track"><span class="toggle__knob"></span></span>
+        <span class="toggle__label">
+          <span class="toggle__label-text">Icon Navigation</span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Toggle — SM (40×20, default size)</h2>
     <div class="demo-row">
       <span class="demo-label">Initial</span>
       <button class="toggle" type="button" role="switch" aria-checked="false" aria-label="Toggle">
@@ -65,10 +95,6 @@
         <span class="toggle__track"><span class="toggle__knob"></span></span>
       </button>
     </div>
-  </div>
-
-  <div class="demo-section">
-    <h2>Toggle — SM (with label)</h2>
     <div class="demo-row">
       <button class="toggle" type="button" role="switch" aria-checked="false">
         <span class="toggle__track"><span class="toggle__knob"></span></span>
@@ -78,20 +104,33 @@
         </span>
       </button>
     </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Toggle — Default (44×24)</h2>
     <div class="demo-row">
-      <button class="toggle toggle--active" type="button" role="switch" aria-checked="true">
+      <span class="demo-label">Initial</span>
+      <button class="toggle toggle--default" type="button" role="switch" aria-checked="false" aria-label="Toggle">
         <span class="toggle__track"><span class="toggle__knob"></span></span>
-        <span class="toggle__label">
-          <span class="toggle__label-text">Show Borders</span>
-          <span class="toggle__helper">Some helper text here</span>
-        </span>
       </button>
     </div>
     <div class="demo-row">
-      <button class="toggle toggle--disabled" type="button" role="switch" aria-checked="false" aria-disabled="true">
+      <span class="demo-label">Active</span>
+      <button class="toggle toggle--default toggle--active" type="button" role="switch" aria-checked="true" aria-label="Toggle">
+        <span class="toggle__track"><span class="toggle__knob"></span></span>
+      </button>
+    </div>
+    <div class="demo-row">
+      <span class="demo-label">Disabled</span>
+      <button class="toggle toggle--default toggle--disabled" type="button" role="switch" aria-checked="false" aria-disabled="true" aria-label="Toggle">
+        <span class="toggle__track"><span class="toggle__knob"></span></span>
+      </button>
+    </div>
+    <div class="demo-row">
+      <button class="toggle toggle--default" type="button" role="switch" aria-checked="false">
         <span class="toggle__track"><span class="toggle__knob"></span></span>
         <span class="toggle__label">
-          <span class="toggle__label-text">Show Borders</span>
+          <span class="toggle__label-text">Write label text here</span>
           <span class="toggle__helper">Some helper text here</span>
         </span>
       </button>
@@ -99,7 +138,38 @@
   </div>
 
   <div class="demo-section">
-    <h2>Interactive Toggle</h2>
+    <h2>Toggle — LG (56×28)</h2>
+    <div class="demo-row">
+      <span class="demo-label">Initial</span>
+      <button class="toggle toggle--lg" type="button" role="switch" aria-checked="false" aria-label="Toggle">
+        <span class="toggle__track"><span class="toggle__knob"></span></span>
+      </button>
+    </div>
+    <div class="demo-row">
+      <span class="demo-label">Active</span>
+      <button class="toggle toggle--lg toggle--active" type="button" role="switch" aria-checked="true" aria-label="Toggle">
+        <span class="toggle__track"><span class="toggle__knob"></span></span>
+      </button>
+    </div>
+    <div class="demo-row">
+      <span class="demo-label">Disabled</span>
+      <button class="toggle toggle--lg toggle--disabled" type="button" role="switch" aria-checked="false" aria-disabled="true" aria-label="Toggle">
+        <span class="toggle__track"><span class="toggle__knob"></span></span>
+      </button>
+    </div>
+    <div class="demo-row">
+      <button class="toggle toggle--lg" type="button" role="switch" aria-checked="false">
+        <span class="toggle__track"><span class="toggle__knob"></span></span>
+        <span class="toggle__label">
+          <span class="toggle__label-text">Write label text here</span>
+          <span class="toggle__helper">Some helper text here</span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Interactive (click to toggle)</h2>
     <div class="demo-row">
       <button class="toggle toggle--active" type="button" role="switch" aria-checked="true" id="demo-toggle">
         <span class="toggle__track"><span class="toggle__knob"></span></span>

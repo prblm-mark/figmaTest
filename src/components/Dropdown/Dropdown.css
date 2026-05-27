@@ -1,11 +1,18 @@
 /* Dropdown component
  * Figma node: 2553:3676 — Tier=Component
- * Variants: Type (Basic | With Header | Actions | Checkbox | Search)
- * Composes: Button (trigger + Delete CTA), Checkbox (Checkbox variant)
+ * Variants: Type (Basic | With Header | Actions | Checkbox | Search | User menu | User Menu Icon Nav)
+ * Composes: Button (trigger + Delete CTA), Checkbox (Checkbox variant),
+ *           DropdownItem (every row in every variant — extracted 2026-05-27),
+ *           ThemeToggle (User menu variants), Toggle (User menu variants).
  *
  * Each variant changes the panel content structure but shares trigger,
- * panel chrome, and item styling. Type modifiers are not required —
- * markup determines the variant.
+ * panel chrome, and item styling. Type modifiers are only required for the
+ * User menu variant (which has bespoke section layout); other variants are
+ * structural-markup-only.
+ *
+ * Note on row CSS: the old `.dropdown__item` selectors were extracted into
+ * the DropdownItem component (`src/components/DropdownItem/`). Existing
+ * Dropdown demos now reference `.dropdown-item` instead of `.dropdown__item`.
  */
 
 /* ── Container ────────────────────────────────────────── */
@@ -73,47 +80,6 @@
 /* With Header variant: small gap between profile block and link group */
 .dropdown__list--header {
   gap: var(--ai-spacing-1);
-}
-
-/* ── Item (anchor or button) ──────────────────────────── */
-
-.dropdown__item {
-  display: flex;
-  align-items: center;
-  gap: var(--ai-spacing-2);
-  width: 100%;
-  min-height: var(--ai-spacing-8);
-  padding: var(--ai-spacing-3) var(--ai-spacing-4);
-  background-color: transparent;
-  border: 0;
-  border-radius: var(--ai-radius-md);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xs);
-  font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-md);
-  color: var(--ai-text-primary);
-  text-align: left;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background-color var(--ai-transition-default);
-}
-
-.dropdown__item:hover {
-  background-color: var(--ai-surface-secondary);
-}
-
-.dropdown__item--selected,
-.dropdown__item[aria-selected="true"],
-.dropdown__item[aria-current="page"] {
-  background-color: var(--ai-surface-secondary);
-  font-weight: var(--ai-font-medium);
-}
-
-.dropdown__item [data-lucide] {
-  flex-shrink: 0;
-  width: var(--ai-icon-size-sm);
-  height: var(--ai-icon-size-sm);
-  color: var(--ai-icon-primary);
 }
 
 /* ── Divider ──────────────────────────────────────────── */
@@ -245,4 +211,89 @@
 
 .dropdown__panel .btn--alert {
   width: 100%;
+}
+
+/* ── Type=User menu ───────────────────────────────────── */
+/* Embeds a ThemeToggle, a list of Toggle rows (Icon Navigation / Hide Labels),
+ * and DropdownItem sections separated by dividers. Hide Labels row is
+ * conditionally revealed by JS when Icon Navigation is active. */
+
+.dropdown--user-menu .dropdown__panel {
+  gap: var(--ai-spacing-3); /* 8px between sections */
+  min-width: var(--ai-size-3); /* 192px */
+}
+
+/* Wrapper around the toggle-row list — Figma uses px-6/py-8 inside the panel. */
+.dropdown__toggle-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-4); /* 12px between toggle rows */
+  width: 100%;
+  padding: var(--ai-spacing-3) var(--ai-spacing-2); /* 8px / 6px */
+}
+
+/* A single toggle row inside the dropdown panel. */
+.dropdown__toggle-row {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-4); /* 12px between toggle and label */
+  padding: 1px 0;
+  width: 100%;
+}
+
+/* Hide Labels (or any reveal-target row) hidden by default; the JS hook
+ * adds .is-revealed when its linked Toggle becomes active. */
+.dropdown__toggle-row--reveal {
+  display: none;
+}
+
+.dropdown__toggle-row--reveal.is-revealed {
+  display: flex;
+}
+
+/* ── Legacy alias — .dropdown__item ───────────────────── */
+/* Row styling was extracted to the DropdownItem component (.dropdown-item)
+ * on 2026-05-27. Several consumers (Breadcrumb, CC patterns) still reference
+ * the old `.dropdown__item` class name. The selectors below keep those
+ * working without needing every consumer to include DropdownItem.css.
+ *
+ * Prefer `.dropdown-item` in new code. */
+
+.dropdown__item {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  width: 100%;
+  min-height: var(--ai-spacing-8);
+  padding: var(--ai-spacing-3) var(--ai-spacing-4);
+  background-color: transparent;
+  border: 0;
+  border-radius: var(--ai-radius-md);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--ai-transition-default);
+}
+
+.dropdown__item:hover {
+  background-color: var(--ai-surface-secondary);
+}
+
+.dropdown__item--selected,
+.dropdown__item[aria-selected="true"],
+.dropdown__item[aria-current="page"] {
+  background-color: var(--ai-surface-secondary);
+  font-weight: var(--ai-font-medium);
+}
+
+.dropdown__item [data-lucide] {
+  flex-shrink: 0;
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-primary);
 }

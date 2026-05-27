@@ -1,13 +1,22 @@
 /* Toggle — on/off switch control
  * Figma node: 2025:1080
  * Tier: Component
- * Variants: State=Initial/Active/Disabled × Size=SM (only SM built)
+ *
+ * Variants: State=Initial/Active/Disabled × Size=xs/SM/Default/LG
+ *
+ * SM is the implicit default (no modifier). Active track uses
+ * `--ai-surface-brand` (system blue). For Chat / StyleSettings, a contextual
+ * override in StyleSettings.css repaints the track with `--ai-chat-brand`.
+ *
+ * Track / thumb dimensions are sub-token optical sizes (some sizes like
+ * 20px, 28px, 44px, 20px-thumb don't map to --ai-spacing-* tokens). They
+ * are kept as raw px with comments — same exception class as letter-spacing.
  */
 
 /* ── Base ────────────────────────────────────────────── */
 
 .toggle {
-  display: flex;
+  display: inline-flex;
   align-items: flex-start;
   gap: var(--ai-spacing-3);
   padding: 1px 0;
@@ -16,26 +25,26 @@
   cursor: pointer;
 }
 
-/* ── Track ───────────────────────────────────────────── */
+/* ── Track (SM default — 40×20) ──────────────────────── */
 
 .toggle__track {
   position: relative;
-  width: 40px;
-  height: 20px;
+  width: var(--ai-spacing-8); /* 40px */
+  height: 20px; /* sub-token optical */
   flex-shrink: 0;
   background-color: var(--ai-border-secondary);
   border-radius: var(--ai-radius-full);
   transition: background-color var(--ai-transition-default);
 }
 
-/* ── Knob ────────────────────────────────────────────── */
+/* ── Thumb / knob (SM default — 16×16) ───────────────── */
 
 .toggle__knob {
   position: absolute;
   top: 2px;
   left: 2.5px;
-  width: 16px;
-  height: 16px;
+  width: var(--ai-spacing-5); /* 16px */
+  height: var(--ai-spacing-5);
   background-color: var(--ai-surface-primary);
   border-radius: var(--ai-radius-full);
   transition: left var(--ai-transition-default);
@@ -44,11 +53,11 @@
 /* ── Active state ────────────────────────────────────── */
 
 .toggle--active .toggle__track {
-  background-color: var(--ai-chat-brand);
+  background-color: var(--ai-surface-brand);
 }
 
 .toggle--active .toggle__knob {
-  left: calc(100% - 16px - 2.5px);
+  left: calc(100% - var(--ai-spacing-5) - 2.5px);
 }
 
 /* ── Disabled state ──────────────────────────────────── */
@@ -60,6 +69,72 @@
 
 .toggle--disabled .toggle__track {
   background-color: var(--ai-border-secondary);
+}
+
+/* ── Size: xs (32×16 track, 12px thumb) ─────────────── */
+
+.toggle--xs .toggle__track {
+  width: var(--ai-spacing-7); /* 32px */
+  height: var(--ai-spacing-5); /* 16px */
+}
+
+.toggle--xs .toggle__knob {
+  width: var(--ai-spacing-4); /* 12px */
+  height: var(--ai-spacing-4);
+}
+
+.toggle--xs.toggle--active .toggle__knob {
+  left: calc(100% - var(--ai-spacing-4) - 2.5px);
+}
+
+/* ── Size: Default (44×24 track, 20px thumb) ────────── */
+
+.toggle--default .toggle__track {
+  width: 44px; /* sub-token optical */
+  height: var(--ai-spacing-6); /* 24px */
+}
+
+.toggle--default .toggle__knob {
+  width: 20px; /* sub-token optical */
+  height: 20px; /* sub-token optical */
+}
+
+.toggle--default.toggle--active .toggle__knob {
+  left: calc(100% - 20px - 2.5px);
+}
+
+.toggle--default .toggle__label-text {
+  font-size: var(--ai-font-fixed-sm); /* 16px on Default */
+  font-weight: var(--ai-font-regular);
+}
+
+.toggle--default .toggle__helper {
+  font-size: var(--ai-font-fixed-xs); /* 14px on Default */
+}
+
+/* ── Size: LG (56×28 track, 24px thumb) ─────────────── */
+
+.toggle--lg .toggle__track {
+  width: var(--ai-spacing-10); /* 56px */
+  height: 28px; /* sub-token optical */
+}
+
+.toggle--lg .toggle__knob {
+  width: var(--ai-spacing-6); /* 24px */
+  height: var(--ai-spacing-6);
+}
+
+.toggle--lg.toggle--active .toggle__knob {
+  left: calc(100% - var(--ai-spacing-6) - 2.5px);
+}
+
+.toggle--lg .toggle__label-text {
+  font-size: var(--ai-font-fixed-sm); /* 16px on LG */
+  font-weight: var(--ai-font-regular);
+}
+
+.toggle--lg .toggle__helper {
+  font-size: var(--ai-font-fixed-xs); /* 14px on LG */
 }
 
 /* ── Label ───────────────────────────────────────────── */

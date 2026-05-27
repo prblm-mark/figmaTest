@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>DropdownItem — Component Demo</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="DropdownItem.css">
+  <style>
+    body {
+      padding: var(--ai-spacing-7);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-7);
+      background-color: var(--ai-surface-secondary);
+      min-height: 100vh;
+    }
+    .demo-section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-3);
+      padding: var(--ai-spacing-5);
+      background-color: var(--ai-surface-primary);
+      border-radius: var(--ai-radius-md);
+      max-width: 220px;
+    }
+    .demo-section h2 {
+      font-family: var(--ai-font-title);
+      font-weight: var(--ai-font-bold);
+      font-size: var(--ai-font-fixed-sm);
+      color: var(--ai-text-primary);
+      margin: 0 0 var(--ai-spacing-3);
+    }
+    .demo-label {
+      font-size: var(--ai-font-fixed-xxs);
+      color: var(--ai-text-contrast);
+      margin-bottom: var(--ai-spacing-1);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-section">
+    <h2>Type=Default</h2>
+
+    <p class="demo-label">Default (rest)</p>
+    <button class="dropdown-item" type="button">
+      <i data-lucide="star" aria-hidden="true"></i>
+      <span>My Favourites</span>
+    </button>
+
+    <p class="demo-label">Hover (forced via .is-hover)</p>
+    <button class="dropdown-item is-hover" type="button">
+      <i data-lucide="star" aria-hidden="true"></i>
+      <span>My Favourites</span>
+    </button>
+
+    <p class="demo-label">Selected</p>
+    <button class="dropdown-item dropdown-item--selected" type="button" aria-current="page">
+      <i data-lucide="star" aria-hidden="true"></i>
+      <span>My Favourites</span>
+    </button>
+
+    <p class="demo-label">Disabled</p>
+    <button class="dropdown-item" type="button" disabled>
+      <i data-lucide="star" aria-hidden="true"></i>
+      <span>My Favourites</span>
+    </button>
+  </div>
+
+  <div class="demo-section">
+    <h2>Type=Warning</h2>
+
+    <p class="demo-label">Default (rest — identical to Default Default)</p>
+    <button class="dropdown-item dropdown-item--warning" type="button">
+      <i data-lucide="trash-2" aria-hidden="true"></i>
+      <span>Delete</span>
+    </button>
+
+    <p class="demo-label">Hover (red bg, white semibold text)</p>
+    <button class="dropdown-item dropdown-item--warning is-hover" type="button">
+      <i data-lucide="trash-2" aria-hidden="true"></i>
+      <span>Delete</span>
+    </button>
+  </div>
+
+  <div class="demo-section">
+    <h2>Live hover (no .is-hover class — hover with mouse)</h2>
+    <button class="dropdown-item" type="button">
+      <i data-lucide="star" aria-hidden="true"></i>
+      <span>My Favourites</span>
+    </button>
+    <button class="dropdown-item" type="button">
+      <i data-lucide="circle-user" aria-hidden="true"></i>
+      <span>My Profile</span>
+    </button>
+    <button class="dropdown-item dropdown-item--warning" type="button">
+      <i data-lucide="trash-2" aria-hidden="true"></i>
+      <span>Delete account</span>
+    </button>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

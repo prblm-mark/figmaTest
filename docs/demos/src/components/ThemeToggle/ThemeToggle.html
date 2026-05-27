@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ThemeToggle — Component Demo</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="ThemeToggle.css">
+  <style>
+    body {
+      padding: var(--ai-spacing-7);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-7);
+      background-color: var(--ai-surface-secondary);
+      min-height: 100vh;
+    }
+    .demo-section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-5);
+      padding: var(--ai-spacing-6);
+      background-color: var(--ai-surface-primary);
+      border-radius: var(--ai-radius-md);
+    }
+    .demo-section h2 {
+      font-family: var(--ai-font-title);
+      font-weight: var(--ai-font-bold);
+      font-size: var(--ai-font-fixed-sm);
+      color: var(--ai-text-primary);
+      margin: 0;
+    }
+    .demo-section > p {
+      margin: 0;
+      color: var(--ai-text-contrast);
+      font-size: var(--ai-font-fixed-xs);
+    }
+    .demo-fill {
+      width: 320px;
+      padding: var(--ai-spacing-4);
+      background: var(--ai-surface-primary);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-md);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-section">
+    <h2>Standalone (172px fixed width)</h2>
+    <p>Click Light or Dark — flips <code>data-theme</code> on <code>&lt;html&gt;</code> and persists to <code>localStorage</code>.</p>
+    <div class="theme-toggle">
+      <button class="theme-toggle__btn" type="button" data-theme-value="light" aria-pressed="true">
+        <i data-lucide="sun" aria-hidden="true"></i>
+        <span>Light</span>
+      </button>
+      <button class="theme-toggle__btn" type="button" data-theme-value="dark" aria-pressed="false">
+        <i data-lucide="moon" aria-hidden="true"></i>
+        <span>Dark</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Fill container (used inside dropdowns)</h2>
+    <p>Add <code>.theme-toggle--fill</code> to remove the 172px width and let the toggle fill its parent.</p>
+    <div class="demo-fill">
+      <div class="theme-toggle theme-toggle--fill">
+        <button class="theme-toggle__btn" type="button" data-theme-value="light" aria-pressed="true">
+          <i data-lucide="sun" aria-hidden="true"></i>
+          <span>Light</span>
+        </button>
+        <button class="theme-toggle__btn" type="button" data-theme-value="dark" aria-pressed="false">
+          <i data-lucide="moon" aria-hidden="true"></i>
+          <span>Dark</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Multiple instances stay in sync</h2>
+    <p>Both toggles read / write the same theme. Clicking one updates the other.</p>
+    <div class="theme-toggle">
+      <button class="theme-toggle__btn" type="button" data-theme-value="light" aria-pressed="true">
+        <i data-lucide="sun" aria-hidden="true"></i>
+        <span>Light</span>
+      </button>
+      <button class="theme-toggle__btn" type="button" data-theme-value="dark" aria-pressed="false">
+        <i data-lucide="moon" aria-hidden="true"></i>
+        <span>Dark</span>
+      </button>
+    </div>
+    <div class="theme-toggle">
+      <button class="theme-toggle__btn" type="button" data-theme-value="light" aria-pressed="true">
+        <i data-lucide="sun" aria-hidden="true"></i>
+        <span>Light</span>
+      </button>
+      <button class="theme-toggle__btn" type="button" data-theme-value="dark" aria-pressed="false">
+        <i data-lucide="moon" aria-hidden="true"></i>
+        <span>Dark</span>
+      </button>
+    </div>
+  </div>
+
+  <script src="ThemeToggle.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

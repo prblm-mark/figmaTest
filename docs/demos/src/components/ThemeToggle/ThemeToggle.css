@@ -1,0 +1,77 @@
+/* ThemeToggle — inline segmented Light | Dark control.
+ * Figma node: 2699:2052
+ * Tier: Component
+ *
+ * Two variants (State=Light | Dark) that mirror each other — the active
+ * button is highlighted with --ai-surface-minimal + --ai-radius-sm; the
+ * inactive button is transparent. The whole wrapper is bordered + rounded.
+ *
+ * Distinct from `src/components/dark-mode-toggle.js` (which is the demo-page
+ * floating gear toolbar). ThemeToggle is for app-level inline use inside
+ * dropdowns / settings panels. ThemeToggle.js writes the same localStorage
+ * key ('demo-theme') so the two stay in sync if a page uses both.
+ */
+
+/* ── Wrapper ─────────────────────────────────────────── */
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  height: var(--ai-spacing-8); /* 40px */
+  padding: 0 var(--ai-spacing-1); /* 0 4px */
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  gap: 0;
+}
+
+/* ── Segment buttons ─────────────────────────────────── */
+
+.theme-toggle__btn {
+  display: inline-flex;
+  flex: 1 0 0;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ai-spacing-3); /* 8px */
+  height: var(--ai-spacing-7); /* 32px */
+  padding: 0 var(--ai-spacing-4); /* 0 12px */
+  background: transparent;
+  border: 0;
+  border-radius: var(--ai-radius-md);
+  color: var(--ai-text-primary);
+  font-family: var(--ai-font-body);
+  font-weight: var(--ai-font-semibold);
+  font-size: var(--ai-font-fluid-xxs); /* 12px */
+  line-height: var(--ai-leading-xs); /* 16px */
+  cursor: pointer;
+  font-feature-settings: 'case' 1;
+  transition: background-color var(--ai-transition-default);
+  white-space: nowrap;
+}
+
+.theme-toggle__btn [data-lucide] {
+  flex-shrink: 0;
+  width: var(--ai-icon-size-sm); /* 16px */
+  height: var(--ai-icon-size-sm);
+}
+
+/* ── Active segment ──────────────────────────────────── */
+
+.theme-toggle__btn[aria-pressed="true"] {
+  background-color: var(--ai-surface-minimal);
+  border-radius: var(--ai-radius-sm);
+}
+
+/* ── Focus ───────────────────────────────────────────── */
+
+.theme-toggle__btn:focus-visible {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: -2px;
+}
+
+/* ── Default width (standalone use) ──────────────────── */
+
+.theme-toggle:not(.theme-toggle--fill) {
+  width: 172px; /* Figma standalone width — sub-token optical */
+}
