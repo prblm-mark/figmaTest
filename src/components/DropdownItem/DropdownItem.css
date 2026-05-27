@@ -43,6 +43,35 @@
   color: var(--ai-icon-secondary);
 }
 
+/* ── Stable-width label ───────────────────────────────── */
+/* Hover bumps font-weight (Regular → Medium for Default, → Semibold for
+ * Warning). Medium glyphs are wider than Regular, so the cell would reflow
+ * on hover ("jank"). Wrap the label in <span data-text="<label>"> and the
+ * ::before pseudo pre-reserves the heavier width via a column flex layout —
+ * the visible text renders at the current weight, the cell width stays
+ * pinned to the heaviest reservation. Zero reflow. */
+
+.dropdown-item span[data-text] {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.dropdown-item span[data-text]::before {
+  content: attr(data-text);
+  font-weight: var(--ai-font-medium);
+  height: 0;
+  visibility: hidden;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Warning items hover to Semibold (heavier than Medium) — reserve that width. */
+.dropdown-item--warning span[data-text]::before {
+  font-weight: var(--ai-font-semibold);
+}
+
 /* ── Hover (Default type) ────────────────────────────── */
 
 .dropdown-item:hover,

@@ -36,8 +36,27 @@ The Hover state is achieved either via:
 | State=Default | (no modifier) |
 | State=Hover | `:hover` or `.is-hover` |
 | Icon | `<i data-lucide="…">` directly inside `.dropdown-item` |
-| Label | `<span>` directly inside (or just text node) |
+| Label | `<span data-text="<label>">` (see Stable-width label below) |
 | Selected (existing) | `.dropdown-item--selected` or `aria-current="page"` |
+
+### Stable-width label
+
+Hover bumps font-weight (Regular → Medium for Default, → Semibold for Warning).
+Because the heavier glyphs are wider, the row would reflow on hover.
+
+The label uses a `::before` pseudo to pre-reserve the heaviest width: render
+the label text inside a `<span data-text="<label>">` and the component CSS will
+stack an invisible duplicate at the hover weight inside a column-flex span, so
+the cell width stays pinned regardless of state. Zero reflow.
+
+```html
+<button class="dropdown-item">
+  <i data-lucide="star"></i>
+  <span data-text="My Favourites">My Favourites</span>
+</button>
+```
+
+Items without `data-text` work too — they just reflow on hover like normal text.
 
 ---
 

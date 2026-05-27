@@ -16,7 +16,7 @@ figma.connect(
     example: ({ type, state }) => html`
       <button class="dropdown-item ${type} ${state}" type="button">
         <i data-lucide="star" aria-hidden="true"></i>
-        <span>Item label</span>
+        <span data-text="Item label">Item label</span>
       </button>
     `,
   }

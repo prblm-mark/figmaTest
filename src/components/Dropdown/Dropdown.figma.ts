@@ -30,7 +30,7 @@ figma.connect(
           <!-- For User menu: include ThemeToggle, .dropdown__toggle-list with toggles,
                .dropdown__divider, and .dropdown-item rows. See Dropdown.html demos. -->
           <ul class="dropdown__list">
-            <li role="none"><button type="button" class="dropdown-item" role="menuitem">Item</button></li>
+            <li role="none"><button type="button" class="dropdown-item" role="menuitem"><span data-text="Item">Item</span></button></li>
           </ul>
         </div>
       </div>

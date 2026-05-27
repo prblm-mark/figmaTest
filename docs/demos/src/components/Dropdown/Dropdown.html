@@ -59,10 +59,10 @@
         </button>
         <div class="dropdown__panel" role="menu" aria-label="Dropdown">
           <ul class="dropdown__list">
-            <li role="none"><button type="button" class="dropdown-item" role="menuitem">Dashboard</button></li>
-            <li role="none"><button type="button" class="dropdown-item dropdown-item--selected" role="menuitem" aria-current="page">Settings</button></li>
-            <li role="none"><button type="button" class="dropdown-item" role="menuitem">Earnings</button></li>
-            <li role="none"><button type="button" class="dropdown-item" role="menuitem">Sign out</button></li>
+            <li role="none"><button type="button" class="dropdown-item" role="menuitem"><span data-text="Dashboard">Dashboard</span></button></li>
+            <li role="none"><button type="button" class="dropdown-item dropdown-item--selected" role="menuitem" aria-current="page"><span data-text="Settings">Settings</span></button></li>
+            <li role="none"><button type="button" class="dropdown-item" role="menuitem"><span data-text="Earnings">Earnings</span></button></li>
+            <li role="none"><button type="button" class="dropdown-item" role="menuitem"><span data-text="Sign out">Sign out</span></button></li>
           </ul>
         </div>
       </div>
@@ -84,11 +84,11 @@
                 </div>
               </div>
             </li>
-            <li role="none"><button type="button" class="dropdown-item" role="menuitem"><i data-lucide="user" aria-hidden="true"></i><span>My profile</span></button></li>
-            <li role="none"><button type="button" class="dropdown-item dropdown-item--selected" role="menuitem" aria-current="page"><i data-lucide="settings" aria-hidden="true"></i><span>Account settings</span></button></li>
-            <li role="none"><button type="button" class="dropdown-item" role="menuitem"><i data-lucide="help-circle" aria-hidden="true"></i><span>Help</span></button></li>
+            <li role="none"><button type="button" class="dropdown-item" role="menuitem"><i data-lucide="user" aria-hidden="true"></i><span data-text="My profile">My profile</span></button></li>
+            <li role="none"><button type="button" class="dropdown-item dropdown-item--selected" role="menuitem" aria-current="page"><i data-lucide="settings" aria-hidden="true"></i><span data-text="Account settings">Account settings</span></button></li>
+            <li role="none"><button type="button" class="dropdown-item" role="menuitem"><i data-lucide="help-circle" aria-hidden="true"></i><span data-text="Help">Help</span></button></li>
             <li role="none"><hr class="dropdown__divider"></li>
-            <li role="none"><button type="button" class="dropdown-item" role="menuitem"><i data-lucide="log-out" aria-hidden="true"></i><span>Sign out</span></button></li>
+            <li role="none"><button type="button" class="dropdown-item" role="menuitem"><i data-lucide="log-out" aria-hidden="true"></i><span data-text="Sign out">Sign out</span></button></li>
           </ul>
         </div>
       </div>
@@ -101,9 +101,9 @@
         </button>
         <div class="dropdown__panel dropdown__panel--actions" role="menu" aria-label="Actions">
           <ul class="dropdown__list">
-            <li role="none"><button type="button" class="dropdown-item" role="menuitem"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button></li>
-            <li role="none"><button type="button" class="dropdown-item" role="menuitem"><i data-lucide="copy" aria-hidden="true"></i><span>Duplicate</span></button></li>
-            <li role="none"><button type="button" class="dropdown-item" role="menuitem"><i data-lucide="archive" aria-hidden="true"></i><span>Archive</span></button></li>
+            <li role="none"><button type="button" class="dropdown-item" role="menuitem"><i data-lucide="pencil" aria-hidden="true"></i><span data-text="Edit">Edit</span></button></li>
+            <li role="none"><button type="button" class="dropdown-item" role="menuitem"><i data-lucide="copy" aria-hidden="true"></i><span data-text="Duplicate">Duplicate</span></button></li>
+            <li role="none"><button type="button" class="dropdown-item" role="menuitem"><i data-lucide="archive" aria-hidden="true"></i><span data-text="Archive">Archive</span></button></li>
           </ul>
           <hr class="dropdown__divider">
           <button type="button" class="btn btn--alert">
@@ -158,10 +158,10 @@
             <input type="text" class="dropdown__search-input" placeholder="Search…" aria-label="Search countries">
           </div>
           <ul class="dropdown__list">
-            <li role="none"><button type="button" class="dropdown-item" role="menuitem">United Kingdom</button></li>
-            <li role="none"><button type="button" class="dropdown-item" role="menuitem">United States</button></li>
-            <li role="none"><button type="button" class="dropdown-item" role="menuitem">Canada</button></li>
-            <li role="none"><button type="button" class="dropdown-item" role="menuitem">Australia</button></li>
+            <li role="none"><button type="button" class="dropdown-item" role="menuitem"><span data-text="United Kingdom">United Kingdom</span></button></li>
+            <li role="none"><button type="button" class="dropdown-item" role="menuitem"><span data-text="United States">United States</span></button></li>
+            <li role="none"><button type="button" class="dropdown-item" role="menuitem"><span data-text="Canada">Canada</span></button></li>
+            <li role="none"><button type="button" class="dropdown-item" role="menuitem"><span data-text="Australia">Australia</span></button></li>
           </ul>
         </div>
       </div>
@@ -224,13 +224,13 @@
             <li role="none">
               <button type="button" class="dropdown-item" role="menuitem">
                 <i data-lucide="star" aria-hidden="true"></i>
-                <span>My Favourites</span>
+                <span data-text="My Favourites">My Favourites</span>
               </button>
             </li>
             <li role="none">
               <button type="button" class="dropdown-item" role="menuitem">
                 <i data-lucide="circle-user" aria-hidden="true"></i>
-                <span>My Content</span>
+                <span data-text="My Content">My Content</span>
               </button>
             </li>
           </ul>
@@ -240,7 +240,7 @@
           <!-- Sign out (Warning type — destructive hover) -->
           <button type="button" class="dropdown-item dropdown-item--warning" role="menuitem">
             <i data-lucide="log-out" aria-hidden="true"></i>
-            <span>Sign Out</span>
+            <span data-text="Sign Out">Sign Out</span>
           </button>
         </div>
       </div>
