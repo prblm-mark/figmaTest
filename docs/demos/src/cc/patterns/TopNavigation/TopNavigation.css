@@ -47,6 +47,13 @@
   color: var(--ai-icon-invert-secondary);
 }
 
+/* Zone Selector dropdown panel uses the narrower --ai-size-2 (160px) instead
+ * of the Dropdown component's default --ai-size-4. Per Figma spec — the zone
+ * list is short labels so the wider default looks oversized. */
+.cc-top-navigation .breadcrumb .dropdown__panel {
+  min-width: var(--ai-size-2);
+}
+
 /* ── Right-hand actions cluster ──────────────────────── */
 
 .cc-top-navigation__actions {

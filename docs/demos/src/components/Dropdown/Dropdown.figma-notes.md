@@ -53,7 +53,7 @@ inner node ID — `I<instance>;2699:2156` references the Warning-variant icon, v
 
 | Figma variable | CSS variable | Role |
 |---|---|---|
-| `surface/elevated-1` | `--ai-surface-elevated-1` | Panel background |
+| `surface/primary` | `--ai-surface-primary` | Panel background (was `--ai-surface-elevated-1` — corrected 2026-05-27 per Figma) |
 | `surface/primary` | `--ai-surface-primary` | Trigger bg, search input bg |
 | `surface/secondary` | `--ai-surface-secondary` | Selected/hover item bg, profile bg, divider colour |
 | `surface/brand` | `--ai-surface-brand` | Checked-checkbox bg (via Checkbox component) |

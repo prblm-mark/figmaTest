@@ -1,7 +1,7 @@
 [data-brand="cc"] {
-  --ai-surface-primary: #e7edf0;
+  --ai-surface-primary: #ffffff;
   --ai-surface-minimal: #f3f6f7;
-  --ai-surface-secondary: #ffffff;
+  --ai-surface-secondary: #e7edf0;
   --ai-surface-contrast: #d0dbe1;
   --ai-surface-invert: #0b2c3e;
   --ai-surface-elevated-1: #ffffff;
@@ -54,6 +54,8 @@
   --cc-mainmenu-primary-bg: #0f3b53;
   --cc-mainmenu-secondary-bg: #0b2c3e;
   --cc-mainmenu-icon: #f3f6f7;
+  --cc-ui-primary-bg: #e7edf0;
+  --cc-ui-secondary-bg: #ffffff;
   --ai-chat-brand: #3391a4;
   --ai-chat-msg-bg: #f2f8f9;
   --ai-chat-msg-text: #004655;
@@ -70,7 +72,7 @@
   --ai-btn-secondary-bg-hover: #f3f6f7;
   --ai-btn-secondary-bg-pressed: #e5e9eb;
   --ai-btn-secondary-border: #ccd4d8;
-  --ai-btn-secondary-border-hover: #99aab1;
+  --ai-btn-secondary-border-hover: #ccd4d8;
   --ai-btn-secondary-text: #00222f;
   --ai-btn-secondary-text-hover: #00222f;
   --ai-btn-tertiary-bg: #e5e9eb;
