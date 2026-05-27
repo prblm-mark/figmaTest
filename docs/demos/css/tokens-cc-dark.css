@@ -43,7 +43,7 @@
   --ai-border-warning: #9a3412;
   --ai-border-neutral: #64748b;
   --ai-icon-primary: #f1f5f9;
-  --ai-icon-secondary: #94a3b8;
+  --ai-icon-secondary: #cbd5e1;
   --ai-icon-contrast: #94a3b8;
   --ai-icon-invert: #0f172a;
   --ai-icon-invert-secondary: #94a3b8;
@@ -56,6 +56,10 @@
   --cc-mainmenu-icon: #e2e8f0;
   --cc-ui-primary-bg: #0f172a;
   --cc-ui-secondary-bg: #1e293b;
+  --cc-actions-menu-primary-bg: #334155;
+  --cc-actions-menu-secondary-bg: #1e293b;
+  --cc-actions-menu-icon: #94a3b8;
+  --cc-actions-menu-icon: #cbd5e1;
   --ai-chat-brand: #33bfcb;
   --ai-chat-msg-bg: #f2fbfc;
   --ai-chat-msg-text: #00464c;

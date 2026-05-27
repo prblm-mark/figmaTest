@@ -1,0 +1,70 @@
+/* CC ActionsMenu — vertical icon-only action bar (56px wide).
+ * Figma: ETKqleZdpertwFEo40YB5n (CC Hybrid). Component 4146:6684.
+ *
+ * A standalone right-side action menu containing a stack of 40px icon-only
+ * buttons (Sparkles, Info, Star, A-Large-Small, Minimize-2, Printer in the
+ * Figma reference — actual icon set varies per context).
+ *
+ * Uses the new --cc-actions-menu-* token family added 2026-05-27:
+ *   --cc-actions-menu-primary-bg    container bg (light grey in CC light)
+ *   --cc-actions-menu-secondary-bg  hover/active button bg
+ *   --cc-actions-menu-icon          icon colour
+ *
+ * The width is implicit: 40px button + 2 × 8px horizontal padding = 56px.
+ * No explicit width property — wrapper sizes to content.
+ */
+
+.actions-menu {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ai-spacing-3); /* 8px between buttons */
+  padding: var(--ai-spacing-4) var(--ai-spacing-3); /* 12px / 8px */
+  background-color: var(--cc-actions-menu-primary-bg);
+}
+
+/* ── Button ──────────────────────────────────────────── */
+
+.actions-menu__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-8); /* 40px */
+  height: var(--ai-spacing-8);
+  flex-shrink: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: var(--ai-radius-md);
+  color: var(--cc-actions-menu-icon);
+  cursor: pointer;
+  transition: background-color var(--ai-transition-default),
+              color var(--ai-transition-default);
+}
+
+.actions-menu__btn [data-lucide] {
+  width: var(--ai-icon-size-md); /* 20px */
+  height: var(--ai-icon-size-md);
+}
+
+/* ── Hover (also force-able via .is-hover for demos) ─── */
+
+.actions-menu__btn:hover,
+.actions-menu__btn.is-hover {
+  background-color: var(--cc-actions-menu-secondary-bg);
+}
+
+/* ── Focus ───────────────────────────────────────────── */
+
+.actions-menu__btn:focus-visible {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: -2px;
+}
+
+/* ── Disabled ────────────────────────────────────────── */
+
+.actions-menu__btn:disabled,
+.actions-menu__btn[aria-disabled="true"] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
