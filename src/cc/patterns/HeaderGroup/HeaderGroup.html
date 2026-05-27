@@ -85,15 +85,15 @@
     .demo-frame--mobile .cc-header--control .cc-header__actions {
       gap: var(--ai-spacing-1);
     }
-    /* Demo-only — these variants overlay a dropdown panel that needs to
-       escape the demo-frame's overflow:hidden. Move the visual chrome
-       (border-radius, shadow) onto the children so the wrapper can stay
-       overflow:visible. */
+    /* Demo-only — let dropdown panels (Zone Selector in topNav, kebab in
+       Header, User Menu) escape the demo-frame's overflow:hidden. Move the
+       visual chrome (border-radius, shadow) onto the children so the wrapper
+       can stay overflow:visible. Applied to every HeaderGroup demo so its
+       interactive dropdowns render correctly when opened. */
     .demo-frame--dropdown {
       overflow: visible;
       border-radius: 0;
       box-shadow: none;
-      padding-bottom: 18rem;
     }
     .demo-frame--dropdown .cc-header-group {
       position: relative;
@@ -103,15 +103,15 @@
       border-top-left-radius: var(--ai-radius-md);
       border-top-right-radius: var(--ai-radius-md);
       /* TopNavigation.css normally clips with overflow:hidden — release that
-         here so the Zone Selector / User Menu dropdown panels can escape. */
+         here so the Zone Selector dropdown panel can escape. */
       overflow: visible;
     }
     .demo-frame--dropdown .cc-header:last-child {
       border-bottom-left-radius: var(--ai-radius-md);
       border-bottom-right-radius: var(--ai-radius-md);
     }
-    /* Make sure the dropdown panel sits above the Header underneath. */
-    .demo-frame--dropdown .cc-top-navigation .dropdown__panel {
+    /* Dropdown panels sit above the Header / next section underneath. */
+    .demo-frame--dropdown .dropdown__panel {
       z-index: 20;
     }
     /* User-menu dropdown sits on the right side of the topNav — right-align
@@ -119,6 +119,11 @@
     .demo-frame--dropdown .cc-top-navigation__actions .dropdown__panel {
       left: auto;
       right: 0;
+    }
+    /* Showcase variants render the dropdown as STATIC OPEN. Reserve space
+       below so it doesn't overlap the next demo section visually. */
+    .demo-frame--dropdown-open {
+      padding-bottom: 18rem;
     }
   </style>
 </head>
@@ -130,7 +135,7 @@
   <section class="demo-section">
     <h2>Compiled (Multizone topNav + Control header)</h2>
     <p>The default composition shown in Figma: Multizone topNav (Zone Selector dropdown) above the Control header (avatar + greeting + user details).</p>
-    <div class="demo-frame">
+    <div class="demo-frame demo-frame--dropdown">
       <div class="cc-header-group">
 
         <header class="cc-top-navigation">
@@ -232,7 +237,7 @@
   <section class="demo-section">
     <h2>Compiled — Multizone topNav + Default header</h2>
     <p>Same Multizone topNav with a Default Header (title-only) underneath.</p>
-    <div class="demo-frame">
+    <div class="demo-frame demo-frame--dropdown">
       <div class="cc-header-group">
 
         <header class="cc-top-navigation">
@@ -276,7 +281,7 @@
   <section class="demo-section">
     <h2>Compiled — Multizone topNav + Sub Text header</h2>
     <p>Same Multizone topNav with a Sub Text Header (title + subtitle) underneath.</p>
-    <div class="demo-frame">
+    <div class="demo-frame demo-frame--dropdown">
       <div class="cc-header-group">
 
         <header class="cc-top-navigation">
@@ -325,7 +330,7 @@
   <section class="demo-section">
     <h2>Mobile preview — Multizone + Control</h2>
     <p>Forced 390px. Composed Header is 48px tall (vs 56px standalone).</p>
-    <div class="demo-frame demo-frame--mobile">
+    <div class="demo-frame demo-frame--dropdown demo-frame--mobile">
       <div class="cc-header-group">
 
         <header class="cc-top-navigation">
@@ -379,7 +384,7 @@
   <section class="demo-section">
     <h2>Mobile preview — Multizone + Default</h2>
     <p>Forced 390px with a Default Header (title only).</p>
-    <div class="demo-frame demo-frame--mobile">
+    <div class="demo-frame demo-frame--dropdown demo-frame--mobile">
       <div class="cc-header-group">
 
         <header class="cc-top-navigation">
@@ -423,7 +428,7 @@
   <section class="demo-section">
     <h2>Mobile preview — Multizone + Sub Text</h2>
     <p>Forced 390px with a Sub Text Header (title + subtitle).</p>
-    <div class="demo-frame demo-frame--mobile">
+    <div class="demo-frame demo-frame--dropdown demo-frame--mobile">
       <div class="cc-header-group">
 
         <header class="cc-top-navigation">
@@ -478,7 +483,7 @@
   <section class="demo-section">
     <h2>Compiled — Zone Selector (Desktop)</h2>
     <p>Multizone topNav with the <strong>Zone Selector</strong> breadcrumb dropdown forced open. Panel lists available zones.</p>
-    <div class="demo-frame demo-frame--dropdown">
+    <div class="demo-frame demo-frame--dropdown demo-frame--dropdown-open">
       <div class="cc-header-group">
 
         <header class="cc-top-navigation">
@@ -545,7 +550,7 @@
   <section class="demo-section">
     <h2>Compiled — Zone Selector (Mobile preview)</h2>
     <p>Forced 390px width. Same dropdown panel showing zone list.</p>
-    <div class="demo-frame demo-frame--dropdown demo-frame--mobile">
+    <div class="demo-frame demo-frame--dropdown demo-frame--dropdown-open demo-frame--mobile">
       <div class="cc-header-group">
 
         <header class="cc-top-navigation">
@@ -605,7 +610,7 @@
   <section class="demo-section">
     <h2>Compiled — User Menu (Desktop)</h2>
     <p>Multizone topNav with the <strong>user block</strong> wrapped as a User-menu Dropdown trigger, forced open. Panel shows the ThemeToggle, Icon Navigation Toggle, profile DropdownItems, and a Warning Sign Out.</p>
-    <div class="demo-frame demo-frame--dropdown">
+    <div class="demo-frame demo-frame--dropdown demo-frame--dropdown-open">
       <div class="cc-header-group">
 
         <header class="cc-top-navigation">
@@ -617,7 +622,12 @@
                     Zone Selector
                     <i data-lucide="chevron-down" aria-hidden="true"></i>
                   </button>
-                  <div class="dropdown__panel" role="menu"><ul class="dropdown__list"></ul></div>
+                  <div class="dropdown__panel" role="menu" aria-label="Zone selector">
+                    <ul class="dropdown__list">
+                      <li role="none"><button type="button" class="dropdown-item" role="menuitem"><span data-text="Zone Name 1">Zone Name 1</span></button></li>
+                      <li role="none"><button type="button" class="dropdown-item" role="menuitem"><span data-text="Zone name 2">Zone name 2</span></button></li>
+                    </ul>
+                  </div>
                 </div>
               </li>
               <li class="breadcrumb__separator" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
@@ -719,7 +729,7 @@
   <section class="demo-section">
     <h2>Compiled — User Menu (Mobile preview)</h2>
     <p>Forced 390px width. Same User-menu Dropdown panel anchored to the user block.</p>
-    <div class="demo-frame demo-frame--dropdown demo-frame--mobile">
+    <div class="demo-frame demo-frame--dropdown demo-frame--dropdown-open demo-frame--mobile">
       <div class="cc-header-group">
 
         <header class="cc-top-navigation">
@@ -731,7 +741,12 @@
                     Zone Selector
                     <i data-lucide="chevron-down" aria-hidden="true"></i>
                   </button>
-                  <div class="dropdown__panel" role="menu"><ul class="dropdown__list"></ul></div>
+                  <div class="dropdown__panel" role="menu" aria-label="Zone selector">
+                    <ul class="dropdown__list">
+                      <li role="none"><button type="button" class="dropdown-item" role="menuitem"><span data-text="Zone Name 1">Zone Name 1</span></button></li>
+                      <li role="none"><button type="button" class="dropdown-item" role="menuitem"><span data-text="Zone name 2">Zone name 2</span></button></li>
+                    </ul>
+                  </div>
                 </div>
               </li>
               <li class="breadcrumb__separator" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
@@ -823,13 +838,115 @@
     </div>
   </section>
 
-  <!-- Toggle click handler: flip .toggle--active so the visible state changes when clicked -->
+  <!-- ───────────────────────────────────────────────────────────────
+       User-menu auto-wrap (demo helper). Every .cc-top-navigation__user
+       button that isn't already inside a .dropdown gets wrapped so the
+       Dropdown.js picks it up. Source template is the <template id="..."
+       above, with placeholder ids/refs that get a unique suffix per
+       instance. Keeps the demo markup minimal.
+       ─────────────────────────────────────────────────────────────── -->
+
+  <template id="cc-user-menu-panel">
+    <div class="dropdown__panel" role="menu" aria-label="User menu">
+      <div class="theme-toggle theme-toggle--fill">
+        <button class="theme-toggle__btn" type="button" data-theme-value="light" aria-pressed="true">
+          <i data-lucide="sun" aria-hidden="true"></i>
+          <span>Light</span>
+        </button>
+        <button class="theme-toggle__btn" type="button" data-theme-value="dark" aria-pressed="false">
+          <i data-lucide="moon" aria-hidden="true"></i>
+          <span>Dark</span>
+        </button>
+      </div>
+      <div class="dropdown__toggle-list">
+        <div class="dropdown__toggle-row">
+          <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" data-tpl-id="icon-nav">
+            <span class="toggle__track"><span class="toggle__knob"></span></span>
+          </button>
+          <label data-tpl-for="icon-nav" class="toggle__label">
+            <span class="toggle__label-text">Icon Navigation</span>
+          </label>
+        </div>
+        <div class="dropdown__toggle-row dropdown__toggle-row--reveal" data-tpl-reveal-by="icon-nav">
+          <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" data-tpl-id="hide-labels">
+            <span class="toggle__track"><span class="toggle__knob"></span></span>
+          </button>
+          <label data-tpl-for="hide-labels" class="toggle__label">
+            <span class="toggle__label-text">Hide Labels</span>
+          </label>
+        </div>
+      </div>
+      <hr class="dropdown__divider">
+      <ul class="dropdown__list">
+        <li role="none">
+          <button type="button" class="dropdown-item" role="menuitem">
+            <i data-lucide="star" aria-hidden="true"></i>
+            <span data-text="My Favourites">My Favourites</span>
+          </button>
+        </li>
+        <li role="none">
+          <button type="button" class="dropdown-item" role="menuitem">
+            <i data-lucide="circle-user" aria-hidden="true"></i>
+            <span data-text="My Content">My Content</span>
+          </button>
+        </li>
+      </ul>
+      <hr class="dropdown__divider">
+      <button type="button" class="dropdown-item dropdown-item--warning" role="menuitem">
+        <i data-lucide="log-out" aria-hidden="true"></i>
+        <span data-text="Sign Out">Sign Out</span>
+      </button>
+    </div>
+  </template>
+
   <script>
-    document.querySelectorAll('.toggle:not(.toggle--disabled)').forEach(function (toggle) {
-      toggle.addEventListener('click', function () {
-        var isActive = toggle.classList.toggle('toggle--active');
-        toggle.setAttribute('aria-checked', String(isActive));
+    (function () {
+      var template = document.getElementById('cc-user-menu-panel');
+      if (!template) return;
+      var counter = 0;
+      document.querySelectorAll('.cc-top-navigation__user').forEach(function (btn) {
+        // Skip buttons already inside a .dropdown (the new showcase demos).
+        if (btn.closest('.dropdown')) return;
+        counter += 1;
+        var prefix = 'user-menu-auto-' + counter;
+
+        // Wrap the existing button in a .dropdown.dropdown--user-menu container.
+        var wrap = document.createElement('div');
+        wrap.className = 'dropdown dropdown--user-menu';
+        btn.parentNode.insertBefore(wrap, btn);
+        btn.classList.add('dropdown__trigger');
+        btn.setAttribute('aria-haspopup', 'menu');
+        btn.setAttribute('aria-expanded', 'false');
+        wrap.appendChild(btn);
+
+        // Clone the panel template, rewriting placeholder ids/refs to be unique.
+        var clone = template.content.cloneNode(true);
+        clone.querySelectorAll('[data-tpl-id]').forEach(function (el) {
+          el.id = prefix + '-' + el.dataset.tplId;
+          el.removeAttribute('data-tpl-id');
+        });
+        clone.querySelectorAll('[data-tpl-for]').forEach(function (el) {
+          el.setAttribute('for', prefix + '-' + el.dataset.tplFor);
+          el.removeAttribute('data-tpl-for');
+        });
+        clone.querySelectorAll('[data-tpl-reveal-by]').forEach(function (el) {
+          el.setAttribute('data-reveal-by', prefix + '-' + el.dataset.tplRevealBy);
+          el.removeAttribute('data-tpl-reveal-by');
+        });
+        wrap.appendChild(clone);
       });
+    })();
+  </script>
+
+  <!-- Toggle click handler — event-delegated so it works for both existing
+       and dynamically-injected .toggle elements (the user-menu wrap above
+       creates new toggles after page parse). -->
+  <script>
+    document.addEventListener('click', function (e) {
+      var toggle = e.target.closest('.toggle:not(.toggle--disabled)');
+      if (!toggle) return;
+      var isActive = toggle.classList.toggle('toggle--active');
+      toggle.setAttribute('aria-checked', String(isActive));
     });
   </script>
   <script src="../../../components/ThemeToggle/ThemeToggle.js"></script>
