@@ -1,5 +1,6 @@
 /* Dropdown — open/close behaviour, click-outside dismiss, Escape to close,
- * search filtering. Auto-binds to every `.dropdown` on the page.
+ * search filtering, and linked-toggle reveals. Auto-binds to every `.dropdown`
+ * on the page.
  *
  * Markup contract:
  *   <div class="dropdown" data-dropdown>
@@ -9,9 +10,16 @@
  *
  * Behaviour modifiers via data attributes on the root `.dropdown`:
  *   data-dropdown="stay-open"   — keep panel open when an item is clicked
- *                                 (Checkbox variant uses this)
+ *                                 (Checkbox variant and User menu use this)
  *   data-dropdown-search        — enable search-input filtering of items
  *                                 inside the panel
+ *
+ * Linked-toggle reveal (User menu Icon Navigation → Hide Labels):
+ *   A `.toggle` inside the panel can reveal another row when active. Pattern:
+ *     <button class="toggle" id="icon-nav-toggle" …>…</button>
+ *     <div class="dropdown__toggle-row dropdown__toggle-row--reveal"
+ *          data-reveal-by="icon-nav-toggle">…</div>
+ *   When the toggle gains `.toggle--active`, the reveal row gets `.is-revealed`.
  *
  * Open class on the root: `.is-open`. Trigger's aria-expanded mirrors it.
  */
@@ -52,9 +60,34 @@ function init(root) {
 
   // Close when an item is clicked (unless stay-open)
   panel.addEventListener('click', (e) => {
-    const item = e.target.closest('.dropdown__item, .btn--alert');
+    const item = e.target.closest('.dropdown__item, .dropdown-item, .btn--alert');
     if (!item) return;
+    // Toggle rows inside the panel must not close the dropdown.
+    if (e.target.closest('.toggle, .dropdown__toggle-row')) return;
     if (!stayOpen) close();
+  });
+
+  // Linked-toggle reveals: wire up any reveal rows to their source toggle.
+  const revealRows = panel.querySelectorAll('.dropdown__toggle-row--reveal[data-reveal-by]');
+  revealRows.forEach((row) => {
+    const sourceId = row.getAttribute('data-reveal-by');
+    if (!sourceId) return;
+    const source = panel.querySelector('#' + sourceId);
+    if (!source) return;
+
+    const sync = () => {
+      row.classList.toggle('is-revealed', source.classList.contains('toggle--active'));
+    };
+
+    sync();
+    source.addEventListener('click', () => {
+      // The Toggle's own click handler flips .toggle--active synchronously
+      // before this listener fires (event listeners attached later run later),
+      // so reading the class here gives the post-click state. We re-sync next
+      // tick to be safe against any other handler order.
+      sync();
+      setTimeout(sync, 0);
+    });
   });
 
   // Click outside closes

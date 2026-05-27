@@ -9,6 +9,9 @@
   <!-- Dependencies -->
   <link rel="stylesheet" href="../Button/Button.css">
   <link rel="stylesheet" href="../Checkbox/Checkbox.css">
+  <link rel="stylesheet" href="../Toggle/Toggle.css">
+  <link rel="stylesheet" href="../DropdownItem/DropdownItem.css">
+  <link rel="stylesheet" href="../ThemeToggle/ThemeToggle.css">
   <!-- Component -->
   <link rel="stylesheet" href="Dropdown.css">
   <style>
@@ -41,7 +44,7 @@
 
   <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-6);">Dropdown</h1>
   <p style="font-size: var(--ai-font-fixed-sm); color: var(--ai-text-contrast); margin: 0 0 var(--ai-spacing-7);">
-    Click any trigger to open. Click outside or press Escape to close. The Checkbox variant stays open on item click; the Search variant filters its list as you type.
+    Click any trigger to open. Click outside or press Escape to close. The Checkbox variant stays open on item click; the Search variant filters its list as you type. The User menu variant embeds a ThemeToggle and Toggle rows; toggling "Icon Navigation" reveals the "Hide Labels" row.
   </p>
 
   <div class="demo-section">
@@ -56,10 +59,10 @@
         </button>
         <div class="dropdown__panel" role="menu" aria-label="Dropdown">
           <ul class="dropdown__list">
-            <li role="none"><button type="button" class="dropdown__item" role="menuitem">Dashboard</button></li>
-            <li role="none"><button type="button" class="dropdown__item dropdown__item--selected" role="menuitem" aria-current="page">Settings</button></li>
-            <li role="none"><button type="button" class="dropdown__item" role="menuitem">Earnings</button></li>
-            <li role="none"><button type="button" class="dropdown__item" role="menuitem">Sign out</button></li>
+            <li role="none"><button type="button" class="dropdown-item" role="menuitem">Dashboard</button></li>
+            <li role="none"><button type="button" class="dropdown-item dropdown-item--selected" role="menuitem" aria-current="page">Settings</button></li>
+            <li role="none"><button type="button" class="dropdown-item" role="menuitem">Earnings</button></li>
+            <li role="none"><button type="button" class="dropdown-item" role="menuitem">Sign out</button></li>
           </ul>
         </div>
       </div>
@@ -81,16 +84,16 @@
                 </div>
               </div>
             </li>
-            <li role="none"><button type="button" class="dropdown__item" role="menuitem"><i data-lucide="user" aria-hidden="true"></i><span>My profile</span></button></li>
-            <li role="none"><button type="button" class="dropdown__item dropdown__item--selected" role="menuitem" aria-current="page"><i data-lucide="settings" aria-hidden="true"></i><span>Account settings</span></button></li>
-            <li role="none"><button type="button" class="dropdown__item" role="menuitem"><i data-lucide="help-circle" aria-hidden="true"></i><span>Help</span></button></li>
+            <li role="none"><button type="button" class="dropdown-item" role="menuitem"><i data-lucide="user" aria-hidden="true"></i><span>My profile</span></button></li>
+            <li role="none"><button type="button" class="dropdown-item dropdown-item--selected" role="menuitem" aria-current="page"><i data-lucide="settings" aria-hidden="true"></i><span>Account settings</span></button></li>
+            <li role="none"><button type="button" class="dropdown-item" role="menuitem"><i data-lucide="help-circle" aria-hidden="true"></i><span>Help</span></button></li>
             <li role="none"><hr class="dropdown__divider"></li>
-            <li role="none"><button type="button" class="dropdown__item" role="menuitem"><i data-lucide="log-out" aria-hidden="true"></i><span>Sign out</span></button></li>
+            <li role="none"><button type="button" class="dropdown-item" role="menuitem"><i data-lucide="log-out" aria-hidden="true"></i><span>Sign out</span></button></li>
           </ul>
         </div>
       </div>
 
-      <!-- Actions -->
+      <!-- Actions (includes a Warning item) -->
       <div class="dropdown">
         <button class="btn btn--secondary dropdown__trigger" aria-haspopup="menu" aria-expanded="false">
           <span>Actions</span>
@@ -98,9 +101,9 @@
         </button>
         <div class="dropdown__panel dropdown__panel--actions" role="menu" aria-label="Actions">
           <ul class="dropdown__list">
-            <li role="none"><button type="button" class="dropdown__item" role="menuitem"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button></li>
-            <li role="none"><button type="button" class="dropdown__item" role="menuitem"><i data-lucide="copy" aria-hidden="true"></i><span>Duplicate</span></button></li>
-            <li role="none"><button type="button" class="dropdown__item" role="menuitem"><i data-lucide="archive" aria-hidden="true"></i><span>Archive</span></button></li>
+            <li role="none"><button type="button" class="dropdown-item" role="menuitem"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button></li>
+            <li role="none"><button type="button" class="dropdown-item" role="menuitem"><i data-lucide="copy" aria-hidden="true"></i><span>Duplicate</span></button></li>
+            <li role="none"><button type="button" class="dropdown-item" role="menuitem"><i data-lucide="archive" aria-hidden="true"></i><span>Archive</span></button></li>
           </ul>
           <hr class="dropdown__divider">
           <button type="button" class="btn btn--alert">
@@ -155,11 +158,90 @@
             <input type="text" class="dropdown__search-input" placeholder="Search…" aria-label="Search countries">
           </div>
           <ul class="dropdown__list">
-            <li role="none"><button type="button" class="dropdown__item" role="menuitem">United Kingdom</button></li>
-            <li role="none"><button type="button" class="dropdown__item" role="menuitem">United States</button></li>
-            <li role="none"><button type="button" class="dropdown__item" role="menuitem">Canada</button></li>
-            <li role="none"><button type="button" class="dropdown__item" role="menuitem">Australia</button></li>
+            <li role="none"><button type="button" class="dropdown-item" role="menuitem">United Kingdom</button></li>
+            <li role="none"><button type="button" class="dropdown-item" role="menuitem">United States</button></li>
+            <li role="none"><button type="button" class="dropdown-item" role="menuitem">Canada</button></li>
+            <li role="none"><button type="button" class="dropdown-item" role="menuitem">Australia</button></li>
           </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <p class="demo-section__title">Type=User menu (with ThemeToggle + Toggle reveal)</p>
+    <p style="margin: 0 0 var(--ai-spacing-5); font-size: var(--ai-font-fixed-xs); color: var(--ai-text-contrast);">
+      Click <strong>Icon Navigation</strong> to reveal the <strong>Hide Labels</strong> row.
+      ThemeToggle (Light / Dark) inside the panel switches <code>data-theme</code> on
+      <code>&lt;html&gt;</code>.
+    </p>
+    <div class="demo-row">
+
+      <div class="dropdown dropdown--user-menu" data-dropdown="stay-open">
+        <button class="btn btn--secondary dropdown__trigger" aria-haspopup="menu" aria-expanded="false">
+          <span>Profile</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown__panel" role="menu" aria-label="User menu">
+
+          <!-- Theme toggle -->
+          <div class="theme-toggle theme-toggle--fill">
+            <button class="theme-toggle__btn" type="button" data-theme-value="light" aria-pressed="true">
+              <i data-lucide="sun" aria-hidden="true"></i>
+              <span>Light</span>
+            </button>
+            <button class="theme-toggle__btn" type="button" data-theme-value="dark" aria-pressed="false">
+              <i data-lucide="moon" aria-hidden="true"></i>
+              <span>Dark</span>
+            </button>
+          </div>
+
+          <!-- Toggle rows (Icon Navigation, Hide Labels) -->
+          <div class="dropdown__toggle-list">
+            <div class="dropdown__toggle-row">
+              <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" id="user-menu-icon-nav">
+                <span class="toggle__track"><span class="toggle__knob"></span></span>
+              </button>
+              <label for="user-menu-icon-nav" class="toggle__label">
+                <span class="toggle__label-text">Icon Navigation</span>
+              </label>
+            </div>
+            <div class="dropdown__toggle-row dropdown__toggle-row--reveal" data-reveal-by="user-menu-icon-nav">
+              <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" id="user-menu-hide-labels">
+                <span class="toggle__track"><span class="toggle__knob"></span></span>
+              </button>
+              <label for="user-menu-hide-labels" class="toggle__label">
+                <span class="toggle__label-text">Hide Labels</span>
+              </label>
+            </div>
+          </div>
+
+          <hr class="dropdown__divider">
+
+          <!-- Section: favourites + content -->
+          <ul class="dropdown__list">
+            <li role="none">
+              <button type="button" class="dropdown-item" role="menuitem">
+                <i data-lucide="star" aria-hidden="true"></i>
+                <span>My Favourites</span>
+              </button>
+            </li>
+            <li role="none">
+              <button type="button" class="dropdown-item" role="menuitem">
+                <i data-lucide="circle-user" aria-hidden="true"></i>
+                <span>My Content</span>
+              </button>
+            </li>
+          </ul>
+
+          <hr class="dropdown__divider">
+
+          <!-- Sign out (Warning type — destructive hover) -->
+          <button type="button" class="dropdown-item dropdown-item--warning" role="menuitem">
+            <i data-lucide="log-out" aria-hidden="true"></i>
+            <span>Sign Out</span>
+          </button>
         </div>
       </div>
 
@@ -168,6 +250,16 @@
 
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>lucide.createIcons();</script>
+  <!-- Toggle click handler so .toggle--active flips and the linked reveal fires -->
+  <script>
+    document.querySelectorAll('.toggle:not(.toggle--disabled)').forEach(function (toggle) {
+      toggle.addEventListener('click', function () {
+        var isActive = toggle.classList.toggle('toggle--active');
+        toggle.setAttribute('aria-checked', String(isActive));
+      });
+    });
+  </script>
+  <script src="../ThemeToggle/ThemeToggle.js"></script>
   <script type="module" src="./Dropdown.js"></script>
 </body>
 </html>
