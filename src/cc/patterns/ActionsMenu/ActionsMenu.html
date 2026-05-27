@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en" data-brand="cc">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../../../components/dark-mode-toggle.js"></script>
+  <title>ActionsMenu (CC) — Affino AI Design System</title>
+  <link rel="stylesheet" href="../../../styles/base.css" />
+  <link rel="stylesheet" href="ActionsMenu.css" />
+  <style>
+    body {
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-minimal);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-7);
+      min-height: 100vh;
+    }
+    .demo-section {
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-primary);
+      border-radius: var(--ai-radius-md);
+      box-shadow: var(--ai-shadow-sm);
+    }
+    .demo-section h2 {
+      margin: 0 0 var(--ai-spacing-3);
+      font-size: var(--ai-font-fluid-lg);
+    }
+    .demo-section > p {
+      margin: 0 0 var(--ai-spacing-5);
+      color: var(--ai-text-contrast);
+    }
+    .demo-row {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--ai-spacing-7);
+    }
+    .demo-row__label {
+      font-size: var(--ai-font-fixed-xxs);
+      color: var(--ai-text-contrast);
+      min-width: 9rem;
+      padding-top: var(--ai-spacing-4);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>ActionsMenu (CC)</h1>
+  <p>Vertical icon-only action bar (56px wide). Used as a right-side action rail in CC chat / content surfaces.</p>
+
+  <div class="demo-section">
+    <h2>Default — all buttons at rest</h2>
+    <p>Hover any button to see the highlight (light grey bg).</p>
+    <div class="demo-row">
+      <span class="demo-row__label">Default</span>
+      <div class="actions-menu">
+        <button class="actions-menu__btn" type="button" aria-label="AI suggestions">
+          <i data-lucide="sparkles" aria-hidden="true"></i>
+        </button>
+        <button class="actions-menu__btn" type="button" aria-label="Info">
+          <i data-lucide="info" aria-hidden="true"></i>
+        </button>
+        <button class="actions-menu__btn" type="button" aria-label="Favourite">
+          <i data-lucide="star" aria-hidden="true"></i>
+        </button>
+        <button class="actions-menu__btn" type="button" aria-label="Text size">
+          <i data-lucide="a-large-small" aria-hidden="true"></i>
+        </button>
+        <button class="actions-menu__btn" type="button" aria-label="Minimise">
+          <i data-lucide="minimize-2" aria-hidden="true"></i>
+        </button>
+        <button class="actions-menu__btn" type="button" aria-label="Print">
+          <i data-lucide="printer" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Hover state — forced on the first button</h2>
+    <p>Matches the Figma reference: the first button shows the hover treatment via <code>.is-hover</code>. Real <code>:hover</code> on any button gives the same visual.</p>
+    <div class="demo-row">
+      <span class="demo-row__label">First button hover</span>
+      <div class="actions-menu">
+        <button class="actions-menu__btn is-hover" type="button" aria-label="AI suggestions">
+          <i data-lucide="sparkles" aria-hidden="true"></i>
+        </button>
+        <button class="actions-menu__btn" type="button" aria-label="Info">
+          <i data-lucide="info" aria-hidden="true"></i>
+        </button>
+        <button class="actions-menu__btn" type="button" aria-label="Favourite">
+          <i data-lucide="star" aria-hidden="true"></i>
+        </button>
+        <button class="actions-menu__btn" type="button" aria-label="Text size">
+          <i data-lucide="a-large-small" aria-hidden="true"></i>
+        </button>
+        <button class="actions-menu__btn" type="button" aria-label="Minimise">
+          <i data-lucide="minimize-2" aria-hidden="true"></i>
+        </button>
+        <button class="actions-menu__btn" type="button" aria-label="Print">
+          <i data-lucide="printer" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Disabled — last button</h2>
+    <p>Disabled buttons render at 40% opacity with <code>cursor: not-allowed</code>.</p>
+    <div class="demo-row">
+      <span class="demo-row__label">Print disabled</span>
+      <div class="actions-menu">
+        <button class="actions-menu__btn" type="button" aria-label="AI suggestions">
+          <i data-lucide="sparkles" aria-hidden="true"></i>
+        </button>
+        <button class="actions-menu__btn" type="button" aria-label="Info">
+          <i data-lucide="info" aria-hidden="true"></i>
+        </button>
+        <button class="actions-menu__btn" type="button" aria-label="Favourite">
+          <i data-lucide="star" aria-hidden="true"></i>
+        </button>
+        <button class="actions-menu__btn" type="button" aria-label="Text size">
+          <i data-lucide="a-large-small" aria-hidden="true"></i>
+        </button>
+        <button class="actions-menu__btn" type="button" aria-label="Minimise">
+          <i data-lucide="minimize-2" aria-hidden="true"></i>
+        </button>
+        <button class="actions-menu__btn" type="button" aria-label="Print" disabled>
+          <i data-lucide="printer" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>
