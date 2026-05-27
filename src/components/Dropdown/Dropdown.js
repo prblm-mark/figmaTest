@@ -26,12 +26,48 @@
 
 const OPEN_CLASS = 'is-open';
 
+/* Wire up linked-toggle reveals on a panel. Idempotent (skips if already
+ * wired via data-reveal-init). Lives OUTSIDE the open/close init() so it
+ * still runs when a dropdown is rendered as a static showcase
+ * (data-dropdown-init="1" — used by the HeaderGroup demo). */
+function initReveals(panel) {
+  const revealRows = panel.querySelectorAll('.dropdown__toggle-row--reveal[data-reveal-by]');
+  revealRows.forEach((row) => {
+    if (row.dataset.revealInit === '1') return;
+    row.dataset.revealInit = '1';
+
+    const sourceId = row.getAttribute('data-reveal-by');
+    if (!sourceId) return;
+    const source = panel.querySelector('#' + sourceId);
+    if (!source) return;
+
+    const sync = () => {
+      row.classList.toggle('is-revealed', source.classList.contains('toggle--active'));
+    };
+
+    sync();
+    source.addEventListener('click', () => {
+      // The Toggle's own click handler flips .toggle--active synchronously
+      // before this listener fires (event listeners attached later run later),
+      // so reading the class here gives the post-click state. We re-sync next
+      // tick to be safe against any other handler order.
+      sync();
+      setTimeout(sync, 0);
+    });
+  });
+}
+
 function init(root) {
+  const panel = root.querySelector('.dropdown__panel');
+
+  // Reveal wiring runs for every dropdown (including static showcases), so
+  // do it before the dropdown-init early-return below.
+  if (panel) initReveals(panel);
+
   if (root.dataset.dropdownInit === '1') return;
   root.dataset.dropdownInit = '1';
 
   const trigger = root.querySelector('.dropdown__trigger');
-  const panel = root.querySelector('.dropdown__panel');
   if (!trigger || !panel) return;
 
   const stayOpen = root.dataset.dropdown === 'stay-open';
@@ -65,29 +101,6 @@ function init(root) {
     // Toggle rows inside the panel must not close the dropdown.
     if (e.target.closest('.toggle, .dropdown__toggle-row')) return;
     if (!stayOpen) close();
-  });
-
-  // Linked-toggle reveals: wire up any reveal rows to their source toggle.
-  const revealRows = panel.querySelectorAll('.dropdown__toggle-row--reveal[data-reveal-by]');
-  revealRows.forEach((row) => {
-    const sourceId = row.getAttribute('data-reveal-by');
-    if (!sourceId) return;
-    const source = panel.querySelector('#' + sourceId);
-    if (!source) return;
-
-    const sync = () => {
-      row.classList.toggle('is-revealed', source.classList.contains('toggle--active'));
-    };
-
-    sync();
-    source.addEventListener('click', () => {
-      // The Toggle's own click handler flips .toggle--active synchronously
-      // before this listener fires (event listeners attached later run later),
-      // so reading the class here gives the post-click state. We re-sync next
-      // tick to be safe against any other handler order.
-      sync();
-      setTimeout(sync, 0);
-    });
   });
 
   // Click outside closes
