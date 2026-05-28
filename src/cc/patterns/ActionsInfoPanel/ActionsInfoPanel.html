@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" data-brand="cc">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../../../components/dark-mode-toggle.js"></script>
+  <title>ActionsInfoPanel (CC) — Affino AI Design System</title>
+  <link rel="stylesheet" href="../../../styles/base.css" />
+  <link rel="stylesheet" href="../../../components/Button/Button.css" />
+  <link rel="stylesheet" href="ActionsInfoPanel.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-secondary);
+      min-height: 100vh;
+      color: var(--ai-text-primary);
+      font-family: var(--ai-font-body);
+    }
+    .demo-section {
+      max-width: var(--ai-size-9);
+      margin-bottom: var(--ai-spacing-7);
+    }
+    .demo-section h2 {
+      margin: 0 0 var(--ai-spacing-3) 0;
+      font-family: var(--ai-font-title);
+      font-size: var(--ai-font-fixed-sm);
+      font-weight: var(--ai-font-semibold);
+    }
+    .demo-section p.demo-note {
+      margin: 0 0 var(--ai-spacing-5) 0;
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-secondary);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-section">
+    <h2>ActionsInfoPanel — single variant</h2>
+    <p class="demo-note">Companion info card for the CC ActionsMenu. Toggle theme via the cog (top right) to verify dark.</p>
+
+    <div class="cc-actions-info-panel">
+
+      <section class="cc-actions-info-panel__section">
+        <h3 class="cc-actions-info-panel__heading">Description</h3>
+        <p class="cc-actions-info-panel__body">Assign one or more Creative to Ad Campaign, control Targeting and select Advertiser</p>
+      </section>
+
+      <section class="cc-actions-info-panel__section">
+        <h3 class="cc-actions-info-panel__heading">Related</h3>
+        <div class="cc-actions-info-panel__pills">
+          <button type="button" class="btn btn--tertiary btn--sm">Advertisers</button>
+          <button type="button" class="btn btn--tertiary btn--sm">Ad Campaign Analysis</button>
+        </div>
+      </section>
+
+      <section class="cc-actions-info-panel__section">
+        <h3 class="cc-actions-info-panel__heading">System Security Right</h3>
+        <div class="cc-actions-info-panel__pills">
+          <button type="button" class="btn btn--tertiary btn--sm">Campaign Management</button>
+          <button type="button" class="btn btn--tertiary btn--sm">Campaign Statistics</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+
+</body>
+</html>

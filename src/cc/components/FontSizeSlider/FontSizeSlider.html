@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en" data-brand="cc">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../../components/dark-mode-toggle.js"></script>
+  <title>FontSizeSlider — CC</title>
+  <link rel="stylesheet" href="../../../styles/base.css">
+  <link rel="stylesheet" href="FontSizeSlider.css">
+  <style>
+    body {
+      margin: 0;
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-secondary);
+      min-height: 100vh;
+      color: var(--ai-text-primary);
+      font-family: var(--ai-font-body);
+    }
+    .demo-section {
+      max-width: var(--ai-size-9);
+      margin-bottom: var(--ai-spacing-7);
+    }
+    .demo-section h2 {
+      margin: 0 0 var(--ai-spacing-3) 0;
+      font-family: var(--ai-font-title);
+      font-size: var(--ai-font-fixed-sm);
+      font-weight: var(--ai-font-semibold);
+    }
+    .demo-section p {
+      margin: 0 0 var(--ai-spacing-5) 0;
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-secondary);
+    }
+    .demo-row {
+      display: flex;
+      align-items: center;
+      gap: var(--ai-spacing-5);
+      margin-bottom: var(--ai-spacing-5);
+    }
+    .demo-row__value {
+      font-family: var(--ai-font-body);
+      font-weight: var(--ai-font-medium);
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-secondary);
+      min-width: var(--ai-spacing-9);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-section">
+    <h2>FontSizeSlider — default (value: M)</h2>
+    <p>4-step discrete slider: <strong>S / M / L / XL</strong>. Toggle the theme via the cog → dark mode to verify CC dark.</p>
+    <div class="demo-row">
+      <div class="font-size-slider">
+        <input
+          id="fs-default"
+          class="font-size-slider__input"
+          type="range"
+          min="1"
+          max="4"
+          step="1"
+          value="2"
+          aria-label="Font size"
+          aria-valuetext="M"
+        >
+      </div>
+      <span class="demo-row__value" data-fs-label-for="fs-default">M</span>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>All 4 positions</h2>
+    <p>Same slider, demoed at each discrete value.</p>
+
+    <div class="demo-row">
+      <div class="font-size-slider">
+        <input class="font-size-slider__input" type="range" min="1" max="4" step="1" value="1" aria-label="Font size — S">
+      </div>
+      <span class="demo-row__value">S (1)</span>
+    </div>
+
+    <div class="demo-row">
+      <div class="font-size-slider">
+        <input class="font-size-slider__input" type="range" min="1" max="4" step="1" value="2" aria-label="Font size — M">
+      </div>
+      <span class="demo-row__value">M (2)</span>
+    </div>
+
+    <div class="demo-row">
+      <div class="font-size-slider">
+        <input class="font-size-slider__input" type="range" min="1" max="4" step="1" value="3" aria-label="Font size — L">
+      </div>
+      <span class="demo-row__value">L (3)</span>
+    </div>
+
+    <div class="demo-row">
+      <div class="font-size-slider">
+        <input class="font-size-slider__input" type="range" min="1" max="4" step="1" value="4" aria-label="Font size — XL">
+      </div>
+      <span class="demo-row__value">XL (4)</span>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initFontSizeSlider } from './FontSizeSlider.js';
+
+    // Init every slider on the page
+    document.querySelectorAll('.font-size-slider__input').forEach(initFontSizeSlider);
+
+    // Live label for the first demo (1=S, 2=M, 3=L, 4=XL)
+    const labels = { 1: 'S', 2: 'M', 3: 'L', 4: 'XL' };
+    const liveInput = document.getElementById('fs-default');
+    const liveLabel = document.querySelector('[data-fs-label-for="fs-default"]');
+    if (liveInput && liveLabel) {
+      const sync = () => {
+        const label = labels[liveInput.value] || liveInput.value;
+        liveLabel.textContent = label;
+        liveInput.setAttribute('aria-valuetext', label);
+      };
+      liveInput.addEventListener('input', sync);
+    }
+  </script>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+
+</body>
+</html>

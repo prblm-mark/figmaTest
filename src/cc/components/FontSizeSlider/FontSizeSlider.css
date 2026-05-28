@@ -1,0 +1,105 @@
+/* FontSizeSlider — small 4-step (S/M/L/XL) range slider for CC contexts
+ *
+ * Figma:
+ *   Light — node 4146:6685
+ *   Dark  — node 4146:6687
+ *   File  — ETKqleZdpertwFEo40YB5n (Affino CC Hybrid)
+ *
+ * Standalone build (not a wrapper around RangeSlider) — the markup is
+ * small enough (single native input + styled thumb pseudo-element) that
+ * a dedicated implementation is cleaner than overriding most of `.rs`.
+ * Theme is handled via existing [data-theme] + [data-brand="cc"]
+ * cascade — one stylesheet covers light and dark.
+ */
+
+/* ── Wrapper ─────────────────────────────────────────── */
+
+.font-size-slider {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--ai-spacing-8);
+  padding: 0 var(--ai-spacing-4);
+  background-color: var(--cc-actions-menu-primary-bg);
+  border-radius: var(--ai-radius-md);
+  /* Width is intrinsic: inner input (--ai-size-1 = 128px) + horizontal
+   * padding (var(--ai-spacing-4) × 2 = 24px) = 152px, matching Figma. */
+}
+
+/* ── Track + thumb ───────────────────────────────────── */
+
+.font-size-slider__input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: var(--ai-size-1);
+  height: var(--ai-spacing-3);
+  margin: 0;
+  background-color: var(--cc-actions-menu-secondary-bg);
+  border-radius: var(--ai-radius-full);
+  outline: none;
+  cursor: pointer;
+  /* Filled portion painted by JS via background-image gradient */
+}
+
+/* Webkit thumb */
+.font-size-slider__input::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  background-color: var(--ai-surface-brand);
+  border: 2px solid var(--cc-actions-menu-secondary-bg);
+  border-radius: var(--ai-radius-full);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  cursor: grab;
+  transition: transform var(--ai-transition-default);
+}
+
+.font-size-slider__input:active::-webkit-slider-thumb {
+  cursor: grabbing;
+}
+
+/* Firefox thumb */
+.font-size-slider__input::-moz-range-thumb {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  background-color: var(--ai-surface-brand);
+  border: 2px solid var(--cc-actions-menu-secondary-bg);
+  border-radius: var(--ai-radius-full);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  cursor: grab;
+  transition: transform var(--ai-transition-default);
+}
+
+.font-size-slider__input:active::-moz-range-thumb {
+  cursor: grabbing;
+}
+
+/* Firefox-native filled track (Webkit uses JS-painted gradient) */
+.font-size-slider__input::-moz-range-progress {
+  height: var(--ai-spacing-3);
+  background-color: var(--ai-surface-brand);
+  border-radius: var(--ai-radius-full);
+}
+
+.font-size-slider__input::-moz-range-track {
+  height: var(--ai-spacing-3);
+  background-color: var(--cc-actions-menu-secondary-bg);
+  border-radius: var(--ai-radius-full);
+}
+
+/* Focus ring on thumb */
+.font-size-slider__input:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1),
+              0 0 0 4px var(--ai-surface-brand-soft);
+}
+
+.font-size-slider__input:focus-visible::-moz-range-thumb {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1),
+              0 0 0 4px var(--ai-surface-brand-soft);
+}
+
+/* Suppress base.css global :focus-visible outline (handled via thumb halo) */
+.font-size-slider__input:focus-visible {
+  outline: none;
+}

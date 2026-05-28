@@ -1,0 +1,63 @@
+/* ActionsInfoPanel (CC) — info card with Description + Related + System
+ * Security Right sections. Pairs with the CC ActionsMenu pattern.
+ *
+ * Figma node: 4164:8667 — single variant (Tier=Pattern)
+ * File:       ETKqleZdpertwFEo40YB5n (Affino CC Hybrid)
+ *
+ * Composes: Button (btn--tertiary btn--sm) for the related/security pills.
+ */
+
+/* ── Card ─────────────────────────────────────────── */
+
+.cc-actions-info-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-6);
+  width: var(--ai-size-5);
+  padding: var(--ai-spacing-5);
+  background-color: var(--ai-surface-primary);
+  border-radius: var(--ai-radius-lg);
+  box-shadow: var(--ai-shadow-md);
+}
+
+/* ── Section (Description / Related / System Security Right) ── */
+
+.cc-actions-info-panel__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-1);
+  width: 100%;
+}
+
+.cc-actions-info-panel__section:not(:first-of-type) {
+  gap: var(--ai-spacing-2);
+}
+
+.cc-actions-info-panel__heading {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-weight: var(--ai-font-semibold);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+}
+
+.cc-actions-info-panel__body {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-secondary);
+  word-break: break-word;
+}
+
+/* ── Pills row ───────────────────────────────────── */
+
+.cc-actions-info-panel__pills {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ai-spacing-1);
+  width: 100%;
+}
