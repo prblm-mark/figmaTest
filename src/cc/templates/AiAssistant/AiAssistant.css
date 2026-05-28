@@ -23,8 +23,8 @@
   position: fixed;
   bottom: var(--ai-spacing-6);
   right: var(--ai-spacing-6);
-  width: var(--ai-size-6);
-  max-width: calc(100vw - var(--ai-spacing-5) * 2);
+  width: var(--_panel-width, var(--ai-size-6));
+  max-width: min(var(--ai-size-9), calc(100vw - var(--ai-spacing-5) * 2));
   height: var(--_panel-height, 668px);
   max-height: calc(100vh - var(--ai-spacing-6) * 2);
   min-height: 320px;
@@ -36,17 +36,44 @@
   box-shadow: var(--ai-shadow-lg);
 }
 
-/* ── Top-edge resize handle ─────────────────────────── */
+/* ── Resize handles (top edge + left edge) ──────────── */
 
 .ai-assistant__resize-handle {
   position: absolute;
+  z-index: 5;
+  border-radius: var(--ai-radius-full);
+}
+
+.ai-assistant__resize-handle--top {
   top: -3px;
   left: var(--ai-spacing-6);
   right: var(--ai-spacing-6);
   height: 6px;
   cursor: ns-resize;
-  z-index: 5;
-  border-radius: var(--ai-radius-full);
+}
+
+.ai-assistant__resize-handle--bottom {
+  bottom: -3px;
+  left: var(--ai-spacing-6);
+  right: var(--ai-spacing-6);
+  height: 6px;
+  cursor: ns-resize;
+}
+
+.ai-assistant__resize-handle--left {
+  left: -3px;
+  top: var(--ai-spacing-6);
+  bottom: var(--ai-spacing-6);
+  width: 6px;
+  cursor: ew-resize;
+}
+
+.ai-assistant__resize-handle--right {
+  right: -3px;
+  top: var(--ai-spacing-6);
+  bottom: var(--ai-spacing-6);
+  width: 6px;
+  cursor: ew-resize;
 }
 
 .ai-assistant__resize-handle:hover,
