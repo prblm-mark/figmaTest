@@ -23,8 +23,8 @@
   position: fixed;
   bottom: var(--ai-spacing-6);
   right: var(--ai-spacing-6);
-  width: var(--ai-size-6);
-  max-width: calc(100vw - var(--ai-spacing-5) * 2);
+  width: var(--_panel-width, var(--ai-size-6));
+  max-width: min(var(--ai-size-9), calc(100vw - var(--ai-spacing-5) * 2));
   height: var(--_panel-height, 668px);
   max-height: calc(100vh - var(--ai-spacing-6) * 2);
   min-height: 320px;
@@ -36,17 +36,44 @@
   box-shadow: var(--ai-shadow-lg);
 }
 
-/* ── Top-edge resize handle ─────────────────────────── */
+/* ── Resize handles (top edge + left edge) ──────────── */
 
 .ai-assistant__resize-handle {
   position: absolute;
+  z-index: 5;
+  border-radius: var(--ai-radius-full);
+}
+
+.ai-assistant__resize-handle--top {
   top: -3px;
   left: var(--ai-spacing-6);
   right: var(--ai-spacing-6);
   height: 6px;
   cursor: ns-resize;
-  z-index: 5;
-  border-radius: var(--ai-radius-full);
+}
+
+.ai-assistant__resize-handle--bottom {
+  bottom: -3px;
+  left: var(--ai-spacing-6);
+  right: var(--ai-spacing-6);
+  height: 6px;
+  cursor: ns-resize;
+}
+
+.ai-assistant__resize-handle--left {
+  left: -3px;
+  top: var(--ai-spacing-6);
+  bottom: var(--ai-spacing-6);
+  width: 6px;
+  cursor: ew-resize;
+}
+
+.ai-assistant__resize-handle--right {
+  right: -3px;
+  top: var(--ai-spacing-6);
+  bottom: var(--ai-spacing-6);
+  width: 6px;
+  cursor: ew-resize;
 }
 
 .ai-assistant__resize-handle:hover,
@@ -245,7 +272,7 @@
 /* ── ChatMain: container — mobile padding ─────────────── */
 
 .ai-assistant .chat-main__container {
-  padding: var(--ai-spacing-6);
+  padding: var(--ai-spacing-5);
 }
 
 /* ── SourcesCarousel: pin to mobile layout ────────────── */
@@ -307,7 +334,7 @@
 }
 
 .ai-assistant .chat-main__processing .chat-response__answer {
-  margin-top: var(--ai-spacing-6);
+  margin-top: var(--ai-spacing-5);
 }
 
 .ai-assistant .chat-main__processing .chat-response__answer p {
@@ -351,7 +378,7 @@
 /* ── ChatMain: footer input — mobile padding ──────────── */
 
 .ai-assistant .chat-main__input {
-  padding: 0 var(--ai-spacing-2);
+  padding: 0 var(--ai-spacing-5) var(--ai-spacing-5);
 }
 
 /* ── SuggestedQuestion: icon — mobile size ────────────── */
@@ -410,12 +437,13 @@
 
 .ai-assistant .msg-bubble__text {
   font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-sm);
 }
 
 /* ── MessageInput: box padding — mobile ───────────────── */
 
 .ai-assistant .msg-input__box {
-  padding: var(--ai-spacing-5);
+  padding: var(--ai-spacing-4);
   background-color: var(--ai-surface-elevated-1);
   border-color: var(--ai-border-secondary);
   box-shadow: none;
@@ -438,18 +466,82 @@
   font-size: var(--ai-font-fixed-xs);
 }
 
-/* ── MessageInput: hide filter button in CC AiAssistant ── */
+/* ── MessageInput: hide filter button + disclaimer in CC AiAssistant ── */
 
-.ai-assistant .msg-input__filter-btn {
+.ai-assistant .msg-input__filter-btn,
+.ai-assistant .msg-input__disclaimer {
   display: none;
 }
 
-/* ── ChatHeader: tertiary buttons transparent until hover ── */
+/* ── Tertiary btns transparent until hover (header + msg actions) ── */
 
-.ai-assistant .chat-header .btn--tertiary {
+.ai-assistant .chat-header .btn--tertiary,
+.ai-assistant .msg-bubble__actions .btn--tertiary,
+.ai-assistant .chat-main__response-actions .btn--tertiary {
   background-color: transparent;
 }
 
-.ai-assistant .chat-header .btn--tertiary:hover {
+.ai-assistant .chat-header .btn--tertiary:hover,
+.ai-assistant .msg-bubble__actions .btn--tertiary:hover,
+.ai-assistant .chat-main__response-actions .btn--tertiary:hover {
   background-color: var(--ai-btn-tertiary-bg);
+}
+
+/* ── SourcesLink (link variant): invert default/hover bg ── */
+
+.ai-assistant .sources-link--link {
+  background: var(--ai-surface-minimal);
+}
+
+.ai-assistant .sources-link--link:hover {
+  background: transparent;
+}
+
+/* ── Inline code + table scroll thumb: secondary surface ── */
+
+.ai-assistant .chat-main__response code {
+  background-color: var(--ai-surface-secondary);
+}
+
+.ai-assistant .chat-response-table-scroll::-webkit-scrollbar-thumb {
+  background-color: var(--ai-surface-secondary);
+}
+
+/* ── SourcesCarousel: hide card thumbnail in CC AiAssistant ── */
+
+.ai-assistant .sources-card__thumb {
+  display: none;
+}
+
+/* Bleed carousel to right edge of chat container (cancels the
+ * .chat-main__container right padding so cards overflow to the edge). */
+.ai-assistant .sources-carousel {
+  margin-right: calc(var(--ai-spacing-5) * -1);
+}
+
+/* Drag-to-scroll affordance for desktop (JS-wired in AiAssistant.html) */
+.ai-assistant .sources-carousel__track,
+.ai-assistant .sources-carousel__track .sources-card {
+  cursor: grab;
+}
+
+/* ── Scroll fade above input ─────────────────────────────
+ * The base .chat-main__fade covers the full footer (input wrapper + 40px
+ * above), so the transparent→solid gradient is mostly hidden behind the
+ * opaque input. We re-position it as a thin band *above* the footer so the
+ * full gradient renders in the visible area. Theme-safe: the gradient is
+ * built from --ai-surface-primary via Relative Color Syntax, so it
+ * resolves correctly across light / dark / CC / CC-dark. */
+
+.ai-assistant .chat-main__fade {
+  bottom: 100%;
+  height: var(--ai-spacing-10);
+}
+
+.ai-assistant .sources-card__text {
+  gap: var(--ai-spacing-2);
+}
+
+.ai-assistant .sources-card__title {
+  line-height: var(--ai-leading-sm);
 }

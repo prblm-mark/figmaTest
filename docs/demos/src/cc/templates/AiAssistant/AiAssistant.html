@@ -48,8 +48,11 @@
 
   <div class="ai-assistant" id="ai-assistant">
 
-    <!-- Top-edge resize handle -->
-    <div class="ai-assistant__resize-handle" id="resize-handle" aria-hidden="true"></div>
+    <!-- Resize handles: 4 edges -->
+    <div class="ai-assistant__resize-handle ai-assistant__resize-handle--top" id="resize-handle-top" aria-hidden="true"></div>
+    <div class="ai-assistant__resize-handle ai-assistant__resize-handle--bottom" id="resize-handle-bottom" aria-hidden="true"></div>
+    <div class="ai-assistant__resize-handle ai-assistant__resize-handle--left" id="resize-handle-left" aria-hidden="true"></div>
+    <div class="ai-assistant__resize-handle ai-assistant__resize-handle--right" id="resize-handle-right" aria-hidden="true"></div>
 
     <!-- ═══ ChatHeader — simplified for CC (no selector dropdown) ═══ -->
     <div class="chat-header chat-header--minimised ai-assistant__header" id="drag-handle">
@@ -757,6 +760,99 @@
       },
     });
 
+    // ── AiAssistant tweak: hide WorkingIntro logo + title at final stage ──
+    // The standard ChatResponse timeline scrambles the title to "Please find
+    // your explanation below:" at 7.5s. In the AiAssistant we collapse the
+    // whole title-row (logo + title) so only the subtitle "Here are your
+    // quick answers" remains, and the answer reveals smoothly into the space.
+    {
+      const titleRowEl = chatMainEl.querySelector('.working-intro__title-row');
+      let finalCleanup = null;
+
+      function resetTitleRow() {
+        if (finalCleanup) { finalCleanup.kill(); finalCleanup = null; }
+        gsap.killTweensOf(titleRowEl);
+        gsap.set(titleRowEl, { clearProps: 'all' });
+        titleRowEl.style.display = '';
+        titleRowEl.style.overflow = '';
+      }
+
+      const origStartProcessing = chatMain.startProcessing;
+      chatMain.startProcessing = function () {
+        resetTitleRow();
+        origStartProcessing.call(chatMain);
+        finalCleanup = gsap.delayedCall(7.5, () => {
+          titleRowEl.style.overflow = 'hidden';
+          gsap.to(titleRowEl, {
+            height: 0,
+            opacity: 0,
+            marginTop: 0,
+            marginBottom: 0,
+            duration: 0.5,
+            ease: 'power2.inOut',
+            onComplete: () => { titleRowEl.style.display = 'none'; },
+          });
+        });
+      };
+
+      const origDestroy = chatMain.destroy;
+      chatMain.destroy = function () {
+        resetTitleRow();
+        origDestroy.call(chatMain);
+      };
+    }
+
+    // ── Drag-to-scroll on the SourcesCarousel (desktop affordance) ──
+    // Nav arrows + scrollbar are hidden in the AiAssistant, so without
+    // this a desktop mouse user has no way to scroll the carousel.
+    {
+      const trackEl = chatMainEl.querySelector('.sources-carousel__track');
+      if (trackEl) {
+        let isDown = false;
+        let startX = 0;
+        let startScroll = 0;
+        let moved = false;
+
+        trackEl.addEventListener('pointerdown', (e) => {
+          if (e.button !== 0) return; // primary button only
+          isDown = true;
+          moved = false;
+          startX = e.clientX;
+          startScroll = trackEl.scrollLeft;
+          trackEl.setPointerCapture(e.pointerId);
+          trackEl.style.cursor = 'grabbing';
+          trackEl.style.scrollBehavior = 'auto';
+        });
+
+        trackEl.addEventListener('pointermove', (e) => {
+          if (!isDown) return;
+          const dx = e.clientX - startX;
+          if (Math.abs(dx) > 4) moved = true;
+          trackEl.scrollLeft = startScroll - dx;
+        });
+
+        function endDrag(e) {
+          if (!isDown) return;
+          isDown = false;
+          try { trackEl.releasePointerCapture(e.pointerId); } catch (_) {}
+          trackEl.style.cursor = '';
+          trackEl.style.scrollBehavior = '';
+        }
+
+        trackEl.addEventListener('pointerup', endDrag);
+        trackEl.addEventListener('pointercancel', endDrag);
+
+        // Suppress card-link clicks at the end of a drag
+        trackEl.addEventListener('click', (e) => {
+          if (moved) {
+            e.preventDefault();
+            e.stopPropagation();
+            moved = false;
+          }
+        }, true);
+      }
+    }
+
     // ── Register view controls in toolbar popover ─────
     if (window.demoToolbar) {
       window.demoToolbar.addControls([
@@ -917,50 +1013,94 @@
       });
     }
 
-    // ── Resize height (top edge) ──────────────────────
+    // ── Resize from any edge ──────────────────────────
+    // Each handle pins the opposite edge in place and grows the dragged
+    // edge to follow the cursor. On first interaction the panel is
+    // converted from bottom/right anchored to inline top/left so the
+    // anchor math is consistent across all 4 edges.
+    //
+    // Constraints (also enforced via CSS max-width / max-height):
+    //   width  : --ai-size-6 (320px) … --ai-size-9 (512px)
+    //   height : 320px … 100vh − (--ai-spacing-6 × 2)
     {
-      const resizeHandle = document.getElementById('resize-handle');
-      let isResizing = false;
-      let resizeStartY = 0;
-      let resizeStartHeight = 0;
-      let resizeStartTop = 0;
+      function attachResize(handleId, edge) {
+        const handle = document.getElementById(handleId);
+        if (!handle) return;
 
-      resizeHandle.addEventListener('mousedown', (e) => {
-        isResizing = true;
-        panel.classList.add('ai-assistant--no-transition', 'ai-assistant--resizing');
-        document.body.style.userSelect = 'none';
-        document.body.style.cursor = 'ns-resize';
+        const horizontal = edge === 'left' || edge === 'right';
+        const cursor = horizontal ? 'ew-resize' : 'ns-resize';
 
-        resizeStartY = e.clientY;
-        const rect = panel.getBoundingClientRect();
-        resizeStartHeight = rect.height;
-        resizeStartTop = rect.top;
+        let active = false;
+        let startX = 0, startY = 0;
+        let startRect = null;
+        let minW = 0, maxW = 0, maxH = 0;
+        const minH = 320;
 
-        e.preventDefault();
-      });
+        handle.addEventListener('mousedown', (e) => {
+          active = true;
+          panel.classList.add('ai-assistant--no-transition', 'ai-assistant--resizing');
+          document.body.style.userSelect = 'none';
+          document.body.style.cursor = cursor;
 
-      document.addEventListener('mousemove', (e) => {
-        if (!isResizing) return;
+          startX = e.clientX;
+          startY = e.clientY;
+          startRect = panel.getBoundingClientRect();
 
-        const dy = resizeStartY - e.clientY;
-        const newHeight = Math.max(320, resizeStartHeight + dy);
+          // Pin to inline top/left so opposite-edge math works
+          panel.style.top = startRect.top + 'px';
+          panel.style.left = startRect.left + 'px';
+          panel.style.right = 'auto';
+          panel.style.bottom = 'auto';
 
-        panel.style.setProperty('--_panel-height', newHeight + 'px');
+          const styles = getComputedStyle(panel);
+          const rootFont = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+          minW = parseFloat(styles.getPropertyValue('--ai-size-6')) * rootFont;
+          maxW = parseFloat(styles.getPropertyValue('--ai-size-9')) * rootFont;
+          const spacing6 = parseFloat(styles.getPropertyValue('--ai-spacing-6')) * rootFont;
+          maxH = window.innerHeight - spacing6 * 2;
 
-        // If panel was positioned via bottom, the growth is automatic.
-        // If it was dragged (has inline top), adjust top to grow upward.
-        if (panel.style.top) {
-          panel.style.top = (resizeStartTop - dy) + 'px';
-        }
-      });
+          e.preventDefault();
+        });
 
-      document.addEventListener('mouseup', () => {
-        if (!isResizing) return;
-        isResizing = false;
-        panel.classList.remove('ai-assistant--no-transition', 'ai-assistant--resizing');
-        document.body.style.userSelect = '';
-        document.body.style.cursor = '';
-      });
+        document.addEventListener('mousemove', (e) => {
+          if (!active) return;
+
+          if (edge === 'top') {
+            const dy = startY - e.clientY;
+            const newH = Math.min(maxH, Math.max(minH, startRect.height + dy));
+            panel.style.setProperty('--_panel-height', newH + 'px');
+            panel.style.top = (startRect.bottom - newH) + 'px';
+          } else if (edge === 'bottom') {
+            const dy = e.clientY - startY;
+            const newH = Math.min(maxH, Math.max(minH, startRect.height + dy));
+            panel.style.setProperty('--_panel-height', newH + 'px');
+            // top stays at startRect.top (already pinned)
+          } else if (edge === 'left') {
+            const dx = startX - e.clientX;
+            const newW = Math.min(maxW, Math.max(minW, startRect.width + dx));
+            panel.style.setProperty('--_panel-width', newW + 'px');
+            panel.style.left = (startRect.right - newW) + 'px';
+          } else if (edge === 'right') {
+            const dx = e.clientX - startX;
+            const newW = Math.min(maxW, Math.max(minW, startRect.width + dx));
+            panel.style.setProperty('--_panel-width', newW + 'px');
+            // left stays at startRect.left (already pinned)
+          }
+        });
+
+        document.addEventListener('mouseup', () => {
+          if (!active) return;
+          active = false;
+          panel.classList.remove('ai-assistant--no-transition', 'ai-assistant--resizing');
+          document.body.style.userSelect = '';
+          document.body.style.cursor = '';
+        });
+      }
+
+      attachResize('resize-handle-top', 'top');
+      attachResize('resize-handle-bottom', 'bottom');
+      attachResize('resize-handle-left', 'left');
+      attachResize('resize-handle-right', 'right');
     }
 
     // ── Close button ──────────────────────────────────
