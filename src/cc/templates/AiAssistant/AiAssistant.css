@@ -307,7 +307,7 @@
 }
 
 .ai-assistant .chat-main__processing .chat-response__answer {
-  margin-top: var(--ai-spacing-6);
+  margin-top: var(--ai-spacing-5);
 }
 
 .ai-assistant .chat-main__processing .chat-response__answer p {
@@ -496,6 +496,19 @@
 .ai-assistant .sources-carousel__track,
 .ai-assistant .sources-carousel__track .sources-card {
   cursor: grab;
+}
+
+/* ── Scroll fade above input ─────────────────────────────
+ * The base .chat-main__fade covers the full footer (input wrapper + 40px
+ * above), so the transparent→solid gradient is mostly hidden behind the
+ * opaque input. We re-position it as a thin band *above* the footer so the
+ * full gradient renders in the visible area. Theme-safe: the gradient is
+ * built from --ai-surface-primary via Relative Color Syntax, so it
+ * resolves correctly across light / dark / CC / CC-dark. */
+
+.ai-assistant .chat-main__fade {
+  bottom: 100%;
+  height: var(--ai-spacing-10);
 }
 
 .ai-assistant .sources-card__text {
