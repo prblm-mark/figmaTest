@@ -416,6 +416,20 @@
 
 .ai-assistant .msg-input__box {
   padding: var(--ai-spacing-5);
+  background-color: var(--ai-surface-elevated-1);
+  border-color: var(--ai-border-secondary);
+  box-shadow: none;
+}
+
+.ai-assistant .msg-input__box:focus-within {
+  border-color: var(--ai-border-brand);
+  box-shadow: 0 0 0 1px var(--ai-surface-primary),
+              0 0 0 3px var(--ai-surface-brand-soft);
+  outline: none;
+}
+
+.ai-assistant .msg-input__textarea:focus-visible {
+  outline: none;
 }
 
 /* ── MessageInput: textarea — pinned to base ──────────── */
@@ -428,4 +442,14 @@
 
 .ai-assistant .msg-input__filter-btn {
   display: none;
+}
+
+/* ── ChatHeader: tertiary buttons transparent until hover ── */
+
+.ai-assistant .chat-header .btn--tertiary {
+  background-color: transparent;
+}
+
+.ai-assistant .chat-header .btn--tertiary:hover {
+  background-color: var(--ai-btn-tertiary-bg);
 }
