@@ -142,10 +142,11 @@
 /* ── Welcome paragraphs (Initial state) ──────────────── */
 /* Replaces the standard ChatMain suggestion grid with a 3-paragraph intro. */
 
-.ai-assistant__initial-inner {
+.ai-assistant .ai-assistant__initial-inner {
   /* Override the standard chat-main__initial-inner gap so the welcome
    * paragraphs sit tight to the input. */
   justify-content: flex-end;
+  height: 100%;
   padding: var(--ai-spacing-5) 0;
   gap: var(--ai-spacing-5);
 }
@@ -153,12 +154,13 @@
 .ai-assistant__welcome {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
   gap: var(--ai-spacing-5);
   width: 100%;
   padding: 0 var(--ai-spacing-5);
   font-family: var(--ai-font-body);
   font-weight: var(--ai-font-regular);
-  font-size: var(--ai-font-fluid-sm);
+  font-size: var(--ai-font-fixed-xs);
   line-height: 1.5;
   color: var(--ai-text-secondary);
 }
@@ -202,8 +204,8 @@
 /* ── ChatMain: initial-inner ──────────────────────────── */
 
 .ai-assistant .chat-main__initial-inner {
-  gap: var(--ai-spacing-6);
-  padding: var(--ai-spacing-8) 0;
+  gap: var(--ai-spacing-5);
+  padding: var(--ai-spacing-5) 0;
 }
 
 /* ── ChatMain: intro ──────────────────────────────────── */
@@ -420,4 +422,10 @@
 
 .ai-assistant .msg-input__textarea {
   font-size: var(--ai-font-fixed-xs);
+}
+
+/* ── MessageInput: hide filter button in CC AiAssistant ── */
+
+.ai-assistant .msg-input__filter-btn {
+  display: none;
 }
