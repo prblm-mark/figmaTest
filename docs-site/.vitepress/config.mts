@@ -11,6 +11,11 @@ const chatPatterns = sidebarData.aiChat?.patterns?.length || 0
 const chatTemplates = sidebarData.aiChat?.templates?.length || 0
 const chatCount = chatComponents + chatPatterns + chatTemplates
 
+const ccComponents = sidebarData.cc?.components?.length || 0
+const ccPatterns = sidebarData.cc?.patterns?.length || 0
+const ccTemplates = sidebarData.cc?.templates?.length || 0
+const ccCount = ccComponents + ccPatterns + ccTemplates
+
 export default defineConfig({
   title: 'Affino AI Design System',
   description: 'Component library built from Figma design tokens',
@@ -88,6 +93,27 @@ export default defineConfig({
         ],
       },
       {
+        text: `Control Centre (${ccCount})`,
+        collapsed: false,
+        items: [
+          ...(ccComponents > 0 ? [{
+            text: `Components (${ccComponents})`,
+            collapsed: false,
+            items: sidebarData.cc?.components || [],
+          }] : []),
+          ...(ccPatterns > 0 ? [{
+            text: `Patterns (${ccPatterns})`,
+            collapsed: false,
+            items: sidebarData.cc?.patterns || [],
+          }] : []),
+          ...(ccTemplates > 0 ? [{
+            text: `Templates (${ccTemplates})`,
+            collapsed: false,
+            items: sidebarData.cc?.templates || [],
+          }] : []),
+        ],
+      },
+      {
         text: 'Guidelines',
         items: [
           { text: 'Icon System', link: '/guidelines/icons' },
@@ -103,6 +129,7 @@ export default defineConfig({
     nav: [
       { text: 'Design System', link: sidebarData.designSystem?.components?.[0]?.link || '/components/' },
       { text: 'AI Chat', link: sidebarData.aiChat?.components?.[0]?.link || '/components/' },
+      { text: 'Control Centre', link: sidebarData.cc?.components?.[0]?.link || sidebarData.cc?.patterns?.[0]?.link || '/cc-components/' },
       { text: 'Tokens', link: '/tokens/primitives' },
       { text: 'Demos', link: 'https://prblm-mark.github.io/figmaTest/' },
     ],
