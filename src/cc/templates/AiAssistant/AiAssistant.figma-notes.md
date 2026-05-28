@@ -76,7 +76,7 @@ custom Initial content.
 | Header border-bottom | `1px solid var(--ai-border-secondary)` | |
 | Title font | `var(--ai-font-body)` semibold, `var(--ai-font-fixed-xs)` (14px), `var(--ai-leading-md)` | |
 | Title colour | `var(--ai-text-primary)` | |
-| Welcome paragraphs | `var(--ai-font-body)` regular, `var(--ai-font-fluid-sm)` (14px), line-height 1.5 | |
+| Welcome paragraphs | `var(--ai-font-body)` regular, `var(--ai-font-fixed-xs)` (14px), line-height 1.5 | |
 | Welcome colour | `var(--ai-text-secondary)` | |
 
 All values come from existing `--ai-*` semantic tokens. No token gaps — the CC

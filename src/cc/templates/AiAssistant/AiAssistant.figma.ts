@@ -14,7 +14,7 @@ figma.connect(
       }),
     },
     example: ({ type }) => html`
-      <div class="ai-assistant" data-surface="chat">
+      <div class="ai-assistant">
         <div class="ai-assistant__resize-handle" aria-hidden="true"></div>
         <div class="chat-header chat-header--minimised ai-assistant__header">
           <div class="chat-header__container">
