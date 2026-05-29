@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="../Button/Button.css">
   <link rel="stylesheet" href="../Input/Input.css">
   <link rel="stylesheet" href="../Table/Table.css">
+  <link rel="stylesheet" href="../Portraits/Portraits.css">
+  <link rel="stylesheet" href="../Avatar/Avatar.css">
   <!-- Component -->
   <link rel="stylesheet" href="Datatables.css">
   <style>
@@ -428,6 +430,360 @@
           </tr>
         </tbody>
       </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Whos Online · Desktop · Scroll -->
+  <div class="demo-section">
+    <p class="demo-section__title">Type=Whos Online · Device=Desktop · Overflow=Scroll</p>
+    <div class="datatables">
+      <div class="datatables__toolbar">
+        <span class="datatables__meta">
+          <span>Show</span>
+          <button type="button" class="datatables__select" aria-label="Rows per page">
+            <span>10</span>
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </button>
+          <span>of <strong>14</strong></span>
+        </span>
+        <div class="datatables__search input" style="max-width: 18rem;">
+          <div class="input__wrap">
+            <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
+            <input class="input__control" type="search" placeholder="Search" aria-label="Search">
+          </div>
+        </div>
+      </div>
+      <div class="datatables__body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th><button class="datatables__sort">User <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="datatables__sort">Account <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="datatables__sort">Login <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th>Touch</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="datatables__user-cell">
+                  <div class="avatar avatar--size-2"><img class="portrait" src="https://i.pravatar.cc/64?img=47" alt=""></div>
+                  <div class="datatables__user-text">
+                    <span class="datatables__user-name">Maria Mellor</span>
+                    <span class="datatables__user-role">Digital Project Manager</span>
+                  </div>
+                </div>
+              </td>
+              <td><button type="button" class="btn btn--tertiary btn--sm">Acme Co</button></td>
+              <td>09:04</td>
+              <td><span class="datatables__icon-cell" aria-label="Touch login"><i data-lucide="fingerprint" aria-hidden="true"></i></span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="datatables__user-cell">
+                  <div class="avatar avatar--size-2"><img class="portrait" src="https://i.pravatar.cc/64?img=32" alt=""></div>
+                  <div class="datatables__user-text">
+                    <span class="datatables__user-name">James Park</span>
+                    <span class="datatables__user-role">Senior Designer</span>
+                  </div>
+                </div>
+              </td>
+              <td><button type="button" class="btn btn--tertiary btn--sm">Globex Inc</button></td>
+              <td>09:11</td>
+              <td><span class="datatables__icon-cell" aria-label="Touch login"><i data-lucide="fingerprint" aria-hidden="true"></i></span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="datatables__user-cell">
+                  <div class="avatar avatar--size-2"><img class="portrait" src="https://i.pravatar.cc/64?img=28" alt=""></div>
+                  <div class="datatables__user-text">
+                    <span class="datatables__user-name">Priya Shah</span>
+                    <span class="datatables__user-role">Account Director</span>
+                  </div>
+                </div>
+              </td>
+              <td><button type="button" class="btn btn--tertiary btn--sm">Initech</button></td>
+              <td>09:17</td>
+              <td><span class="datatables__icon-cell" aria-label="Touch login"><i data-lucide="fingerprint" aria-hidden="true"></i></span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="datatables__user-cell">
+                  <div class="avatar avatar--size-2"><img class="portrait" src="https://i.pravatar.cc/64?img=55" alt=""></div>
+                  <div class="datatables__user-text">
+                    <span class="datatables__user-name">Adam Webb</span>
+                    <span class="datatables__user-role">Engineering Lead</span>
+                  </div>
+                </div>
+              </td>
+              <td><button type="button" class="btn btn--tertiary btn--sm">Stark Industries</button></td>
+              <td>09:23</td>
+              <td><span class="datatables__icon-cell" aria-label="Touch login"><i data-lucide="fingerprint" aria-hidden="true"></i></span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="datatables__user-cell">
+                  <div class="avatar avatar--size-2"><img class="portrait" src="https://i.pravatar.cc/64?img=21" alt=""></div>
+                  <div class="datatables__user-text">
+                    <span class="datatables__user-name">Sofia Martinez</span>
+                    <span class="datatables__user-role">Marketing Manager</span>
+                  </div>
+                </div>
+              </td>
+              <td><button type="button" class="btn btn--tertiary btn--sm">Wonka Co</button></td>
+              <td>09:29</td>
+              <td><span class="datatables__icon-cell" aria-label="Touch login"><i data-lucide="fingerprint" aria-hidden="true"></i></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="datatables__footer">
+        <span>Showing <strong>1–5</strong> of <strong>14</strong> results</span>
+        <div class="datatables__pagination" role="group" aria-label="Pagination">
+          <button class="datatables__page-btn" aria-label="Previous"><i data-lucide="chevron-left" aria-hidden="true"></i></button>
+          <button class="datatables__page-btn datatables__page-btn--active">1</button>
+          <button class="datatables__page-btn">2</button>
+          <button class="datatables__page-btn">3</button>
+          <button class="datatables__page-btn" aria-label="Next"><i data-lucide="chevron-right" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Whos Online · Mobile · Scroll -->
+  <div class="demo-section">
+    <p class="demo-section__title">Type=Whos Online · Device=Mobile · Overflow=Scroll</p>
+    <div class="datatables datatables--mobile-scroll">
+      <div class="datatables__toolbar">
+        <span class="datatables__meta">
+          <button type="button" class="datatables__select" aria-label="Rows per page">
+            <span>10</span>
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </button>
+          <span>of <strong>14</strong></span>
+        </span>
+        <div class="datatables__search input" style="max-width: none;">
+          <div class="input__wrap input--sm">
+            <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
+            <input class="input__control" type="search" placeholder="Search" aria-label="Search">
+          </div>
+        </div>
+      </div>
+      <div class="datatables__body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th><button class="datatables__sort">User <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="datatables__sort">Account <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="datatables__sort">Login <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th>Touch</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="datatables__user-cell">
+                  <div class="avatar avatar--size-2"><img class="portrait" src="https://i.pravatar.cc/64?img=47" alt=""></div>
+                  <div class="datatables__user-text">
+                    <span class="datatables__user-name">Maria Mellor</span>
+                    <span class="datatables__user-role">Digital Project Manager</span>
+                  </div>
+                </div>
+              </td>
+              <td><button type="button" class="btn btn--tertiary btn--sm">Acme Co</button></td>
+              <td>09:04</td>
+              <td><span class="datatables__icon-cell" aria-label="Touch login"><i data-lucide="fingerprint" aria-hidden="true"></i></span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="datatables__user-cell">
+                  <div class="avatar avatar--size-2"><img class="portrait" src="https://i.pravatar.cc/64?img=32" alt=""></div>
+                  <div class="datatables__user-text">
+                    <span class="datatables__user-name">James Park</span>
+                    <span class="datatables__user-role">Senior Designer</span>
+                  </div>
+                </div>
+              </td>
+              <td><button type="button" class="btn btn--tertiary btn--sm">Globex Inc</button></td>
+              <td>09:11</td>
+              <td><span class="datatables__icon-cell" aria-label="Touch login"><i data-lucide="fingerprint" aria-hidden="true"></i></span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="datatables__user-cell">
+                  <div class="avatar avatar--size-2"><img class="portrait" src="https://i.pravatar.cc/64?img=28" alt=""></div>
+                  <div class="datatables__user-text">
+                    <span class="datatables__user-name">Priya Shah</span>
+                    <span class="datatables__user-role">Account Director</span>
+                  </div>
+                </div>
+              </td>
+              <td><button type="button" class="btn btn--tertiary btn--sm">Initech</button></td>
+              <td>09:17</td>
+              <td><span class="datatables__icon-cell" aria-label="Touch login"><i data-lucide="fingerprint" aria-hidden="true"></i></span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="datatables__user-cell">
+                  <div class="avatar avatar--size-2"><img class="portrait" src="https://i.pravatar.cc/64?img=55" alt=""></div>
+                  <div class="datatables__user-text">
+                    <span class="datatables__user-name">Adam Webb</span>
+                    <span class="datatables__user-role">Engineering Lead</span>
+                  </div>
+                </div>
+              </td>
+              <td><button type="button" class="btn btn--tertiary btn--sm">Stark Industries</button></td>
+              <td>09:23</td>
+              <td><span class="datatables__icon-cell" aria-label="Touch login"><i data-lucide="fingerprint" aria-hidden="true"></i></span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="datatables__user-cell">
+                  <div class="avatar avatar--size-2"><img class="portrait" src="https://i.pravatar.cc/64?img=21" alt=""></div>
+                  <div class="datatables__user-text">
+                    <span class="datatables__user-name">Sofia Martinez</span>
+                    <span class="datatables__user-role">Marketing Manager</span>
+                  </div>
+                </div>
+              </td>
+              <td><button type="button" class="btn btn--tertiary btn--sm">Wonka Co</button></td>
+              <td>09:29</td>
+              <td><span class="datatables__icon-cell" aria-label="Touch login"><i data-lucide="fingerprint" aria-hidden="true"></i></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="datatables__footer">
+        <span><strong>1–5</strong> of <strong>14</strong></span>
+        <div class="datatables__pagination" role="group" aria-label="Pagination">
+          <button class="datatables__page-btn" aria-label="Previous"><i data-lucide="chevron-left" aria-hidden="true"></i></button>
+          <button class="datatables__page-btn datatables__page-btn--active">1</button>
+          <button class="datatables__page-btn">2</button>
+          <button class="datatables__page-btn" aria-label="Next"><i data-lucide="chevron-right" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. Whos Online · Mobile · Trigger -->
+  <div class="demo-section">
+    <p class="demo-section__title">Type=Whos Online · Device=Mobile · Overflow=Trigger</p>
+    <div class="datatables" style="max-width: 24rem;">
+      <div class="datatables__toolbar">
+        <span class="datatables__meta">
+          <button type="button" class="datatables__select" aria-label="Rows per page">
+            <span>10</span>
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </button>
+          <span>of <strong>14</strong></span>
+        </span>
+        <div class="datatables__search input" style="max-width: none;">
+          <div class="input__wrap input--sm">
+            <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
+            <input class="input__control" type="search" placeholder="Search" aria-label="Search">
+          </div>
+        </div>
+      </div>
+      <div class="datatables__body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th><button class="datatables__sort">User <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="datatables__sort">Login <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th class="datatables__kebab-cell" aria-label="Row actions"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="datatables__row">
+              <td>
+                <div class="datatables__user-cell">
+                  <div class="avatar avatar--size-2"><img class="portrait" src="https://i.pravatar.cc/64?img=47" alt=""></div>
+                  <div class="datatables__user-text">
+                    <span class="datatables__user-name">Maria Mellor</span>
+                    <span class="datatables__user-role">Digital Project Manager</span>
+                  </div>
+                </div>
+              </td>
+              <td>09:04</td>
+              <td class="datatables__kebab-cell">
+                <label class="datatables__kebab" aria-label="Toggle row details">
+                  <input type="checkbox" class="datatables__kebab__input">
+                  <i data-lucide="more-vertical" aria-hidden="true"></i>
+                </label>
+              </td>
+            </tr>
+            <tr class="datatables__row-detail">
+              <td colspan="3" class="datatables__row-detail__cell">
+                <dl class="datatables__detail-list">
+                  <dt>Account</dt><dd>Acme Co</dd>
+                  <dt>Touch</dt><dd>Yes</dd>
+                </dl>
+              </td>
+            </tr>
+            <tr class="datatables__row">
+              <td>
+                <div class="datatables__user-cell">
+                  <div class="avatar avatar--size-2"><img class="portrait" src="https://i.pravatar.cc/64?img=32" alt=""></div>
+                  <div class="datatables__user-text">
+                    <span class="datatables__user-name">James Park</span>
+                    <span class="datatables__user-role">Senior Designer</span>
+                  </div>
+                </div>
+              </td>
+              <td>09:11</td>
+              <td class="datatables__kebab-cell">
+                <label class="datatables__kebab" aria-label="Toggle row details">
+                  <input type="checkbox" class="datatables__kebab__input">
+                  <i data-lucide="more-vertical" aria-hidden="true"></i>
+                </label>
+              </td>
+            </tr>
+            <tr class="datatables__row-detail">
+              <td colspan="3" class="datatables__row-detail__cell">
+                <dl class="datatables__detail-list">
+                  <dt>Account</dt><dd>Globex Inc</dd>
+                  <dt>Touch</dt><dd>Yes</dd>
+                </dl>
+              </td>
+            </tr>
+            <tr class="datatables__row">
+              <td>
+                <div class="datatables__user-cell">
+                  <div class="avatar avatar--size-2"><img class="portrait" src="https://i.pravatar.cc/64?img=28" alt=""></div>
+                  <div class="datatables__user-text">
+                    <span class="datatables__user-name">Priya Shah</span>
+                    <span class="datatables__user-role">Account Director</span>
+                  </div>
+                </div>
+              </td>
+              <td>09:17</td>
+              <td class="datatables__kebab-cell">
+                <label class="datatables__kebab" aria-label="Toggle row details">
+                  <input type="checkbox" class="datatables__kebab__input">
+                  <i data-lucide="more-vertical" aria-hidden="true"></i>
+                </label>
+              </td>
+            </tr>
+            <tr class="datatables__row-detail">
+              <td colspan="3" class="datatables__row-detail__cell">
+                <dl class="datatables__detail-list">
+                  <dt>Account</dt><dd>Initech</dd>
+                  <dt>Touch</dt><dd>Yes</dd>
+                </dl>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="datatables__footer">
+        <span><strong>1–3</strong> of <strong>14</strong></span>
+        <div class="datatables__pagination" role="group" aria-label="Pagination">
+          <button class="datatables__page-btn" aria-label="Previous"><i data-lucide="chevron-left" aria-hidden="true"></i></button>
+          <button class="datatables__page-btn datatables__page-btn--active">1</button>
+          <button class="datatables__page-btn">2</button>
+          <button class="datatables__page-btn" aria-label="Next"><i data-lucide="chevron-right" aria-hidden="true"></i></button>
+        </div>
       </div>
     </div>
   </div>
