@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>Alert — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../Button/Button.css">
+  <link rel="stylesheet" href="Alert.css">
+  <style>
+    body {
+      margin: 0;
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-secondary);
+      min-height: 100vh;
+      color: var(--ai-text-primary);
+      font-family: var(--ai-font-body);
+    }
+    .demo-section {
+      max-width: 45rem;
+      margin: 0 auto var(--ai-spacing-7);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-3);
+    }
+    .demo-section h2 {
+      margin: var(--ai-spacing-5) 0 0;
+      font-family: var(--ai-font-title);
+      font-size: var(--ai-font-fixed-sm);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .demo-section p.demo-note {
+      margin: 0 0 var(--ai-spacing-3) 0;
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-secondary);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-section">
+    <h2>Style = Default — 5 types</h2>
+    <p class="demo-note">Card with header (icon + title + body + close) and optional list + CTA button below.</p>
+
+    <div class="alert alert--info">
+      <div class="alert__header">
+        <span class="alert__icon"><i data-lucide="info" aria-hidden="true"></i></span>
+        <div class="alert__text">
+          <span class="alert__title">Info alert!</span>
+          <span class="alert__message"> Your changes are saved automatically.</span>
+        </div>
+        <button type="button" class="alert__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+      <div class="alert__body">
+        <ul class="alert__list">
+          <li>At least 10 characters (and up to 100 characters)</li>
+          <li>At least one lowercase character</li>
+          <li>Inclusion of at least one special character, e.g., ! @ # ?</li>
+        </ul>
+        <button type="button" class="btn btn--primary btn--sm alert__cta-btn">
+          <i data-lucide="arrow-right" aria-hidden="true"></i>
+          Get Started
+        </button>
+      </div>
+    </div>
+
+    <div class="alert alert--success">
+      <div class="alert__header">
+        <span class="alert__icon"><i data-lucide="check-circle-2" aria-hidden="true"></i></span>
+        <div class="alert__text">
+          <span class="alert__title">Success alert!</span>
+          <span class="alert__message"> Your file has been uploaded.</span>
+        </div>
+        <button type="button" class="alert__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+      <div class="alert__body">
+        <ul class="alert__list">
+          <li>At least 10 characters (and up to 100 characters)</li>
+          <li>At least one lowercase character</li>
+          <li>Inclusion of at least one special character, e.g., ! @ # ?</li>
+        </ul>
+        <button type="button" class="btn btn--primary btn--sm alert__cta-btn">
+          <i data-lucide="arrow-right" aria-hidden="true"></i>
+          Get Started
+        </button>
+      </div>
+    </div>
+
+    <div class="alert alert--danger" role="alert">
+      <div class="alert__header">
+        <span class="alert__icon"><i data-lucide="alert-circle" aria-hidden="true"></i></span>
+        <div class="alert__text">
+          <span class="alert__title">Danger alert!</span>
+          <span class="alert__message"> Something went wrong — please retry.</span>
+        </div>
+        <button type="button" class="alert__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+      <div class="alert__body">
+        <ul class="alert__list">
+          <li>At least 10 characters (and up to 100 characters)</li>
+          <li>At least one lowercase character</li>
+          <li>Inclusion of at least one special character, e.g., ! @ # ?</li>
+        </ul>
+        <button type="button" class="btn btn--primary btn--sm alert__cta-btn">
+          <i data-lucide="arrow-right" aria-hidden="true"></i>
+          Get Started
+        </button>
+      </div>
+    </div>
+
+    <div class="alert alert--warning">
+      <div class="alert__header">
+        <span class="alert__icon"><i data-lucide="alert-triangle" aria-hidden="true"></i></span>
+        <div class="alert__text">
+          <span class="alert__title">Warning alert!</span>
+          <span class="alert__message"> Something needs your attention.</span>
+        </div>
+        <button type="button" class="alert__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+      <div class="alert__body">
+        <ul class="alert__list">
+          <li>At least 10 characters (and up to 100 characters)</li>
+          <li>At least one lowercase character</li>
+          <li>Inclusion of at least one special character, e.g., ! @ # ?</li>
+        </ul>
+        <button type="button" class="btn btn--primary btn--sm alert__cta-btn">
+          <i data-lucide="arrow-right" aria-hidden="true"></i>
+          Get Started
+        </button>
+      </div>
+    </div>
+
+    <div class="alert alert--neutral">
+      <div class="alert__header">
+        <span class="alert__icon"><i data-lucide="info" aria-hidden="true"></i></span>
+        <div class="alert__text">
+          <span class="alert__title">Neutral alert!</span>
+          <span class="alert__message"> Heads up — just so you know.</span>
+        </div>
+        <button type="button" class="alert__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+      <div class="alert__body">
+        <ul class="alert__list">
+          <li>At least 10 characters (and up to 100 characters)</li>
+          <li>At least one lowercase character</li>
+          <li>Inclusion of at least one special character, e.g., ! @ # ?</li>
+        </ul>
+        <button type="button" class="btn btn--primary btn--sm alert__cta-btn">
+          <i data-lucide="arrow-right" aria-hidden="true"></i>
+          Get Started
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Style = Floating — 3 types (Info / Success / Neutral)</h2>
+    <p class="demo-note">Pill-shaped product-announcement variant. Danger + Warning are intentionally absent per Figma.</p>
+
+    <div class="alert alert--floating alert--info">
+      <span class="alert__badge">New</span>
+      <div class="alert__text">Affino 9.0.11 is here — see what's changed</div>
+      <span class="alert__arrow"><i data-lucide="arrow-right" aria-hidden="true"></i></span>
+    </div>
+
+    <div class="alert alert--floating alert--success">
+      <span class="alert__badge">New</span>
+      <div class="alert__text">Affino 9.0.11 is here — see what's changed</div>
+      <span class="alert__arrow"><i data-lucide="arrow-right" aria-hidden="true"></i></span>
+    </div>
+
+    <div class="alert alert--floating alert--neutral">
+      <span class="alert__badge">New</span>
+      <div class="alert__text">Affino 9.0.11 is here — see what's changed</div>
+      <span class="alert__arrow"><i data-lucide="arrow-right" aria-hidden="true"></i></span>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Style = Fixed — 5 types</h2>
+    <p class="demo-note">Full-width bar with 3px top border, no rounded corners. Sits at the top of a viewport region.</p>
+
+    <div class="alert alert--fixed alert--info">
+      <div class="alert__header">
+        <span class="alert__icon"><i data-lucide="info" aria-hidden="true"></i></span>
+        <div class="alert__text">
+          <span class="alert__title">Info alert!</span>
+          <span class="alert__message"> Your changes are saved automatically.</span>
+        </div>
+        <button type="button" class="alert__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+    </div>
+
+    <div class="alert alert--fixed alert--success">
+      <div class="alert__header">
+        <span class="alert__icon"><i data-lucide="check-circle-2" aria-hidden="true"></i></span>
+        <div class="alert__text">
+          <span class="alert__title">Success alert!</span>
+          <span class="alert__message"> Your file has been uploaded.</span>
+        </div>
+        <button type="button" class="alert__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+    </div>
+
+    <div class="alert alert--fixed alert--danger" role="alert">
+      <div class="alert__header">
+        <span class="alert__icon"><i data-lucide="alert-circle" aria-hidden="true"></i></span>
+        <div class="alert__text">
+          <span class="alert__title">Danger alert!</span>
+          <span class="alert__message"> Something went wrong — please retry.</span>
+        </div>
+        <button type="button" class="alert__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+    </div>
+
+    <div class="alert alert--fixed alert--warning">
+      <div class="alert__header">
+        <span class="alert__icon"><i data-lucide="alert-triangle" aria-hidden="true"></i></span>
+        <div class="alert__text">
+          <span class="alert__title">Warning alert!</span>
+          <span class="alert__message"> Something needs your attention.</span>
+        </div>
+        <button type="button" class="alert__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+    </div>
+
+    <div class="alert alert--fixed alert--neutral">
+      <div class="alert__header">
+        <span class="alert__icon"><i data-lucide="info" aria-hidden="true"></i></span>
+        <div class="alert__text">
+          <span class="alert__title">Neutral alert!</span>
+          <span class="alert__message"> Heads up — just so you know.</span>
+        </div>
+        <button type="button" class="alert__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Style = CTA — 5 types</h2>
+    <p class="demo-note">Inline CTA button; row layout on desktop, stacks on mobile (resize below 768px).</p>
+
+    <div class="alert alert--cta alert--info">
+      <div class="alert__header">
+        <span class="alert__icon"><i data-lucide="info" aria-hidden="true"></i></span>
+        <div class="alert__cta-area">
+          <div class="alert__text">
+            <span class="alert__title">Info alert!</span>
+            <span class="alert__message"> Your changes are saved automatically.</span>
+          </div>
+          <button type="button" class="btn btn--primary btn--sm alert__cta-btn">
+            <i data-lucide="arrow-right" aria-hidden="true"></i>
+            Get Started
+          </button>
+        </div>
+        <button type="button" class="alert__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+    </div>
+
+    <div class="alert alert--cta alert--success">
+      <div class="alert__header">
+        <span class="alert__icon"><i data-lucide="check-circle-2" aria-hidden="true"></i></span>
+        <div class="alert__cta-area">
+          <div class="alert__text">
+            <span class="alert__title">Success alert!</span>
+            <span class="alert__message"> Your file has been uploaded.</span>
+          </div>
+          <button type="button" class="btn btn--primary btn--sm alert__cta-btn">
+            <i data-lucide="arrow-right" aria-hidden="true"></i>
+            Get Started
+          </button>
+        </div>
+        <button type="button" class="alert__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+    </div>
+
+    <div class="alert alert--cta alert--danger" role="alert">
+      <div class="alert__header">
+        <span class="alert__icon"><i data-lucide="alert-circle" aria-hidden="true"></i></span>
+        <div class="alert__cta-area">
+          <div class="alert__text">
+            <span class="alert__title">Danger alert!</span>
+            <span class="alert__message"> Something went wrong — please retry.</span>
+          </div>
+          <button type="button" class="btn btn--primary btn--sm alert__cta-btn">
+            <i data-lucide="arrow-right" aria-hidden="true"></i>
+            Get Started
+          </button>
+        </div>
+        <button type="button" class="alert__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+    </div>
+
+    <div class="alert alert--cta alert--warning">
+      <div class="alert__header">
+        <span class="alert__icon"><i data-lucide="alert-triangle" aria-hidden="true"></i></span>
+        <div class="alert__cta-area">
+          <div class="alert__text">
+            <span class="alert__title">Warning alert!</span>
+            <span class="alert__message"> Something needs your attention.</span>
+          </div>
+          <button type="button" class="btn btn--primary btn--sm alert__cta-btn">
+            <i data-lucide="arrow-right" aria-hidden="true"></i>
+            Get Started
+          </button>
+        </div>
+        <button type="button" class="alert__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+    </div>
+
+    <div class="alert alert--cta alert--neutral">
+      <div class="alert__header">
+        <span class="alert__icon"><i data-lucide="info" aria-hidden="true"></i></span>
+        <div class="alert__cta-area">
+          <div class="alert__text">
+            <span class="alert__title">Neutral alert!</span>
+            <span class="alert__message"> Heads up — just so you know.</span>
+          </div>
+          <button type="button" class="btn btn--primary btn--sm alert__cta-btn">
+            <i data-lucide="arrow-right" aria-hidden="true"></i>
+            Get Started
+          </button>
+        </div>
+        <button type="button" class="alert__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>
