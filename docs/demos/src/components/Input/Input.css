@@ -140,7 +140,10 @@
 
 /* ── Size: sm ────────────────────────────────────────── */
 
-.input--sm .input__wrap {
+.input--sm .input__wrap,
+.input__wrap.input--sm {
   min-height: var(--ai-spacing-7);      /* 32px */
-  padding: 0 var(--ai-spacing-4);       /* 0 12px */
+  padding: 0 var(--ai-spacing-3);       /* 0 8px */
+  gap: var(--ai-spacing-2);              /* 6px */
+  max-width: var(--ai-size-3);           /* 192px */
 }

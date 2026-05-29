@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../../../src/components/dark-mode-toggle.js"></script>
+  <title>UpgradeCard — Affino AI Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css" />
+  <link rel="stylesheet" href="../../components/Button/Button.css" />
+  <link rel="stylesheet" href="UpgradeCard.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-secondary);
+      min-height: 100vh;
+      color: var(--ai-text-primary);
+      font-family: var(--ai-font-body);
+    }
+    .demo-section {
+      max-width: var(--ai-size-5);
+      margin-bottom: var(--ai-spacing-7);
+    }
+    .demo-section h2 {
+      margin: 0 0 var(--ai-spacing-3) 0;
+      font-family: var(--ai-font-title);
+      font-size: var(--ai-font-fixed-sm);
+      font-weight: var(--ai-font-semibold);
+    }
+    .demo-section p.demo-note {
+      margin: 0 0 var(--ai-spacing-5) 0;
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-secondary);
+    }
+    .demo-stack {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-4);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-section">
+    <h2>Base — 2 types</h2>
+    <p class="demo-note">Width is consumer-controlled (100% of parent).</p>
+
+    <div class="demo-stack">
+
+      <div class="upgrade-card">
+        <div class="upgrade-card__text">
+          <p class="upgrade-card__version">Version 8.0.33.10</p>
+          <p class="upgrade-card__status">Update available</p>
+        </div>
+        <button type="button" class="btn btn--primary btn--sm">Update</button>
+      </div>
+
+      <div class="upgrade-card">
+        <div class="upgrade-card__text">
+          <p class="upgrade-card__version">Version 8.0.33.10</p>
+          <p class="upgrade-card__status">No updates available</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Lg — 2 types</h2>
+    <p class="demo-note">Same types, larger padding + typography. Button stays at btn--sm.</p>
+
+    <div class="demo-stack">
+
+      <div class="upgrade-card upgrade-card--lg">
+        <div class="upgrade-card__text">
+          <p class="upgrade-card__version">Version 8.0.33.10</p>
+          <p class="upgrade-card__status">Update available</p>
+        </div>
+        <button type="button" class="btn btn--primary btn--sm">Update</button>
+      </div>
+
+      <div class="upgrade-card upgrade-card--lg">
+        <div class="upgrade-card__text">
+          <p class="upgrade-card__version">Version 8.0.33.10</p>
+          <p class="upgrade-card__status">No updates available</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+
+</body>
+</html>

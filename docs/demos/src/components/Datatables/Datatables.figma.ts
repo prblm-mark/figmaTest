@@ -1,10 +1,11 @@
 import figma, { html } from '@figma/code-connect/html'
 
 // Type controls toolbar content (Pagination = row-count select + Filter/Export;
-// Search = search input + View/Export). Device variants are responsive — the
-// .datatables--mobile-scroll modifier constrains to 24rem and triggers
-// horizontal scroll. Overflow=Trigger uses kebab-row-expand markup with the
-// hidden detail row revealed via :has(:checked) — pure CSS, no JS.
+// Search = search input + View/Export; Whos Online = combined page-size + search,
+// no action buttons, body rows compose Avatar + tertiary Button). Device variants
+// are responsive — the .datatables--mobile-scroll modifier constrains to 24rem and
+// triggers horizontal scroll. Overflow=Trigger uses kebab-row-expand markup with
+// the hidden detail row revealed via :has(:checked) — pure CSS, no JS.
 figma.connect(
   'https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2562-8289',
   {
@@ -12,6 +13,7 @@ figma.connect(
       type: figma.enum('Type', {
         Pagination: 'pagination',
         Search: 'search',
+        'Whos Online': 'whos-online',
       }),
       overflowContent: figma.enum('Overflow Content', {
         Scroll: 'scroll',

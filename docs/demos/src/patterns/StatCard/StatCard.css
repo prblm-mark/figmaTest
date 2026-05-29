@@ -1,0 +1,126 @@
+/* StatCard — small stat tile with brand-coloured icon block, label,
+ * and value. 2 sizes × 5 type variants (Default / Chevron Down /
+ * Chevron Right / No card / Number First).
+ *
+ * Figma: nodes 2758:3019..3102 (Affino AI Design System — Tier=Pattern)
+ *
+ * Width is consumer-controlled (100% of parent). The icon block keeps
+ * a fixed square footprint per size; the text column fills the rest.
+ */
+
+/* ── Card wrapper ─────────────────────────────────── */
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-4);
+  width: 100%;
+  min-height: var(--ai-spacing-11);
+  padding: var(--ai-spacing-4);
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  box-shadow: var(--ai-shadow-md);
+}
+
+/* ── Icon block (brand square with Lucide icon centred) ── */
+
+.stat-card__icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--ai-spacing-8);
+  height: var(--ai-spacing-8);
+  background-color: #2563eb; /* Blue/600 primitive — user-approved (no --ai-* token) */
+  border-radius: var(--ai-radius-md);
+  color: var(--ai-text-invert);
+}
+
+.stat-card__icon-wrap [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* ── Text column ───────────────────────────────── */
+
+.stat-card__text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  gap: var(--ai-spacing-1);
+}
+
+.stat-card__title {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-weight: var(--ai-font-medium);
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-contrast);
+}
+
+.stat-card__value {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-bold);
+  font-size: var(--ai-font-fixed-sm);
+  color: var(--ai-text-primary);
+}
+
+/* ── Chevron (right-aligned, optional) ─────────── */
+
+.stat-card__chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--ai-icon-secondary);
+}
+
+.stat-card__chevron [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* ── Variant: Lg ──────────────────────────────── */
+
+.stat-card--lg {
+  gap: var(--ai-spacing-5);
+  min-height: var(--ai-spacing-13);
+  padding: var(--ai-spacing-5);
+}
+
+.stat-card--lg .stat-card__icon-wrap {
+  width: var(--ai-spacing-9);
+  height: var(--ai-spacing-9);
+}
+
+.stat-card--lg .stat-card__icon-wrap [data-lucide] {
+  width: var(--ai-icon-size-md);
+  height: var(--ai-icon-size-md);
+}
+
+/* ── Variant: No card (transparent — no border, no shadow, no pad) ── */
+
+.stat-card--no-card {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  min-height: var(--ai-spacing-8);
+}
+
+.stat-card--no-card.stat-card--lg {
+  min-height: var(--ai-spacing-9);
+}
+
+/* ── Variant: Number First (swap title/value order) ── */
+
+.stat-card--number-first .stat-card__title {
+  order: 2;
+}
+
+.stat-card--number-first .stat-card__value {
+  order: 1;
+}

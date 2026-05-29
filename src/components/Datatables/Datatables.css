@@ -44,6 +44,14 @@
   border-bottom-color: var(--ai-datatable-table-border);
 }
 
+/* Trigger variant: when the last <tr> is a paired (hidden) detail row,
+ * the visible .datatables__row above it would otherwise leave a border
+ * that doubles against the footer's top border. Strip it. */
+
+.datatables__row:has(+ .datatables__row-detail:last-child) > td {
+  border-bottom: 0;
+}
+
 /* Inner wrap that holds ONLY the <table>. Scroll lives here, not on
  * the outer .datatables — so the toolbar above and pagination footer
  * below stay fixed while the table content scrolls horizontally. */
@@ -113,7 +121,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--ai-spacing-2);
-  height: var(--ai-spacing-7);
+  height: var(--ai-spacing-8);
   padding: 0 var(--ai-spacing-3);
   background-color: var(--ai-datatable-table-bg);
   border: 1px solid var(--ai-datatable-table-border);
@@ -141,6 +149,7 @@
 .datatables__search {
   flex: 1;
   max-width: 18rem;
+  align-items: flex-end;
 }
 
 .datatables__search .input__wrap {
@@ -336,4 +345,63 @@
   .datatables__toolbar {
     gap: var(--ai-spacing-2);
   }
+}
+
+/* ── Body cell content patterns (used by Whos Online variants) ──
+ * The Whos Online Type composes Avatar + Portraits in the USER cell,
+ * a tertiary Button in the ACCOUNT cell, and a Lucide fingerprint
+ * icon in the TOUCH cell. Classes live on the cell content, not the
+ * <td>, so consumers can opt into them per cell. */
+
+.datatables__user-cell {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--ai-spacing-3);
+}
+
+.datatables__user-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-0);
+  min-width: 0;
+}
+
+.datatables__user-name,
+.datatables__user-role {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.datatables__user-name {
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-bold);
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-primary);
+  line-height: var(--ai-leading-sm);
+}
+
+.datatables__user-role {
+  font-family: var(--ai-font-body);
+  font-weight: var(--ai-font-medium);
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-contrast);
+  line-height: var(--ai-leading-sm);
+}
+
+/* Cell that centres a Lucide icon (e.g. fingerprint TOUCH column). */
+
+.datatables__icon-cell {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ai-icon-secondary);
+}
+
+.datatables__icon-cell [data-lucide] {
+  width: var(--ai-icon-size-md);
+  height: var(--ai-icon-size-md);
 }

@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../../../src/components/dark-mode-toggle.js"></script>
+  <title>StatCard — Affino AI Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css" />
+  <link rel="stylesheet" href="StatCard.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-secondary);
+      min-height: 100vh;
+      color: var(--ai-text-primary);
+      font-family: var(--ai-font-body);
+    }
+    .demo-section {
+      max-width: var(--ai-size-6);
+      margin-bottom: var(--ai-spacing-7);
+    }
+    .demo-section h2 {
+      margin: 0 0 var(--ai-spacing-3) 0;
+      font-family: var(--ai-font-title);
+      font-size: var(--ai-font-fixed-sm);
+      font-weight: var(--ai-font-semibold);
+    }
+    .demo-section p.demo-note {
+      margin: 0 0 var(--ai-spacing-5) 0;
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-secondary);
+    }
+    .demo-stack {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-4);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-section">
+    <h2>Base — 5 types</h2>
+    <p class="demo-note">Width is consumer-controlled (100% of parent).</p>
+
+    <div class="demo-stack">
+
+      <div class="stat-card">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Message Opens</p>
+          <p class="stat-card__value">330</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Message Opens</p>
+          <p class="stat-card__value">330</p>
+        </div>
+        <div class="stat-card__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Message Opens</p>
+          <p class="stat-card__value">330</p>
+        </div>
+        <div class="stat-card__chevron"><i data-lucide="chevron-right" aria-hidden="true"></i></div>
+      </div>
+
+      <div class="stat-card stat-card--no-card">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Message Opens</p>
+          <p class="stat-card__value">330</p>
+        </div>
+      </div>
+
+      <div class="stat-card stat-card--number-first">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Message Opens</p>
+          <p class="stat-card__value">330</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Lg — 5 types</h2>
+    <p class="demo-note">Same types, larger spacing + icon block. Typography unchanged.</p>
+
+    <div class="demo-stack">
+
+      <div class="stat-card stat-card--lg">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Message Opens</p>
+          <p class="stat-card__value">330</p>
+        </div>
+      </div>
+
+      <div class="stat-card stat-card--lg">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Message Opens</p>
+          <p class="stat-card__value">330</p>
+        </div>
+        <div class="stat-card__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></div>
+      </div>
+
+      <div class="stat-card stat-card--lg">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Message Opens</p>
+          <p class="stat-card__value">330</p>
+        </div>
+        <div class="stat-card__chevron"><i data-lucide="chevron-right" aria-hidden="true"></i></div>
+      </div>
+
+      <div class="stat-card stat-card--lg stat-card--no-card">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Message Opens</p>
+          <p class="stat-card__value">330</p>
+        </div>
+      </div>
+
+      <div class="stat-card stat-card--lg stat-card--number-first">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Message Opens</p>
+          <p class="stat-card__value">330</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+
+</body>
+</html>

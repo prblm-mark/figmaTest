@@ -7,7 +7,7 @@
 - **Tier:** `Component` → built into `src/components/Datatables/`
 - URL: https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2562-8289
 
-## Variant matrix (6 variants)
+## Variant matrix (9 variants)
 
 Properties: **Type × Device × Overflow Content**.
 
@@ -19,8 +19,13 @@ Properties: **Type × Device × Overflow Content**.
 | 2562:8287 | Search | Desktop | Scroll | ✅ via base `.datatables` (toolbar swapped for search input + View/Export buttons) |
 | 2562:8285 | Search | Mobile | Scroll | ✅ via `.datatables.datatables--mobile-scroll` |
 | 2562:8283 | Search | Mobile | Trigger | ✅ via kebab row markup |
+| 2764:2397 | Whos Online | Desktop | Scroll | ✅ via Avatar + Button cells in body rows |
+| 2764:2715 | Whos Online | Mobile | Scroll | ✅ via `.datatables--mobile-scroll` + 2-column row (User, Account) |
+| 2764:2980 | Whos Online | Mobile | Trigger | ✅ via 2-column row (User, Login) + kebab expand for Account/Touch |
 
 Type × Device are pure layout/style differences. Overflow Content is a markup difference: Scroll uses normal table rows; Trigger uses paired `<tr>` rows where the second row holds a hidden `<dl>` revealed when its sibling row's kebab checkbox is checked.
+
+The **Whos Online** type combines the page-size selector AND the search input in a single toolbar (no action buttons). Body rows compose Avatar + Portraits in the USER cell and a tertiary Button in the ACCOUNT cell; the TOUCH column (Desktop only) shows a centred Lucide `fingerprint` icon and is **not sortable**.
 
 ## CSS Class Mapping
 
@@ -43,14 +48,22 @@ Type × Device are pure layout/style differences. Overflow Content is a markup d
 | Visible row | `<tr class="datatables__row">` | Pairs with the next sibling row |
 | Detail row | `<tr class="datatables__row-detail">` | Hidden by default; revealed when the prev row's kebab input is `:checked` |
 | Detail definition list | `<dl class="datatables__detail-list">` | 2-column grid of `<dt>` (uppercase label) / `<dd>` (value) pairs |
+| User cell (Whos Online USER column) | `<div class="datatables__user-cell">` | Avatar + 2-line name/role stack |
+| User text wrap | `<div class="datatables__user-text">` | Inside `.datatables__user-cell` — column of name + role |
+| User name | `<span class="datatables__user-name">` | Title bold fixed-xs text-primary |
+| User role / subtitle | `<span class="datatables__user-role">` | Body medium fixed-xs text-contrast |
+| Centred icon cell (Whos Online TOUCH) | `<span class="datatables__icon-cell">` | Inline-flex; uses `--ai-icon-secondary` |
 
 ## Composition
 
 Datatables **wraps the Table component** — the inner `<table class="table">…</table>` uses the production Table CSS for cell padding, header bg, dividers, etc. Datatables only adds the surrounding chrome:
 
-- `Button` (`src/components/Button/`) — toolbar actions and Delete-style buttons
+- `Button` (`src/components/Button/`) — toolbar actions, Delete-style buttons, and Whos Online row CTAs
 - `Input` (`src/components/Input/`) — search field
 - `Table` (`src/components/Table/`) — base table presentation
+- `Avatar` (`src/components/Avatar/`) — Whos Online USER cell avatar (size 2)
+- `Portraits` (`src/components/Portraits/`) — `<img class="portrait">` inside the Avatar
+- Lucide icon `fingerprint` — Whos Online TOUCH column (Desktop only)
 
 ## Token Mapping
 
@@ -107,6 +120,7 @@ None — every value maps to an existing `--ai-*` token.
 ## Dependencies
 
 - `Table` (`src/components/Table/`) — inner `<table class="table">` styling
-- `Button` (`src/components/Button/`) — toolbar actions
+- `Button` (`src/components/Button/`) — toolbar actions + Whos Online row CTAs
 - `Input` (`src/components/Input/`) — Search variant's search field
-- Lucide icons — `chevron-down`, `chevron-left`, `chevron-right`, `chevrons-up-down`, `arrow-up-narrow-wide`, `more-vertical`, `filter`, `download`, `search`, `eye`
+- `Avatar` + `Portraits` (`src/components/Avatar/`, `src/components/Portraits/`) — Whos Online USER cell (size-2 avatar with portrait image)
+- Lucide icons — `chevron-down`, `chevron-left`, `chevron-right`, `chevrons-up-down`, `arrow-up-narrow-wide`, `more-vertical`, `filter`, `download`, `search`, `eye`, `fingerprint`
