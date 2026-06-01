@@ -39,13 +39,37 @@
   flex-direction: column;
   min-width: 0;
   min-height: 0;
-  overflow: hidden;
+  /* No `overflow: hidden` here — it would clip dropdown panels opening
+   * from the top chrome (Zone Selector, User Menu). The scroll lives
+   * one level deeper on `.control-screen__page`. */
 }
 
 .control-screen__chrome {
   flex: 0 0 auto;
   background: var(--ai-surface-primary);
   border-bottom: 1px solid var(--ai-border-secondary);
+  /* Stacking + position so dropdown panels anchored inside (Zone
+   * Selector, User Menu) layer above the scrolling page content. */
+  position: relative;
+  z-index: 1;
+}
+
+/* Dropdown escape overrides — mirror the HeaderGroup demo's
+ * `.demo-frame--dropdown` scoped overrides. TopNavigation.css normally
+ * sets `overflow: hidden` on the bar; release it here so dropdown
+ * panels (Zone Selector in the breadcrumb, User Menu in the actions)
+ * can extend downward into the page area below. */
+.control-screen__chrome .cc-top-navigation {
+  overflow: visible;
+}
+.control-screen__chrome .dropdown__panel {
+  z-index: 20;
+}
+/* Right-anchor the User Menu panel so it extends LEFTWARD inside the
+ * topNav width, not off-screen to the right. */
+.control-screen__chrome .cc-top-navigation__actions .dropdown__panel {
+  left: auto;
+  right: 0;
 }
 
 .control-screen__page {
