@@ -75,7 +75,7 @@
 .control-screen__page {
   flex: 1 1 auto;
   overflow-y: auto;
-  padding: var(--ai-spacing-4);
+  padding: var(--ai-spacing-6);
   display: flex;
   flex-direction: column;
   gap: var(--ai-spacing-7);
@@ -169,10 +169,13 @@
  * goes "mobile" the moment the docked SidebarMenu (rail + 280px panel)
  * eats enough horizontal room, even on a wide desktop. */
 @container cs-page (max-width: 767px) {
-  /* Page wrapper padding + gap match the desktop base — Figma binds the
-   * same `--ai-spacing-4` padding and `--ai-spacing-7` gap on the page
-   * frame at both breakpoints (node 4183:14661). Leaving the rule off
-   * keeps the base values. */
+  /* Mobile page padding scales down — Figma node 4183:14661 binds
+   * `--ai-spacing-4` (12px) on the mobile page-content wrapper, vs
+   * desktop's `--ai-spacing-6` (24px) on the base rule above. Gap
+   * stays at `--ai-spacing-7` on both breakpoints. */
+  .control-screen__page {
+    padding: var(--ai-spacing-4);
+  }
   .control-screen__cards,
   .control-screen__charts {
     grid-template-columns: 1fr;
