@@ -28,6 +28,7 @@
   min-height: var(--ai-spacing-9);
   padding: var(--ai-spacing-4) var(--ai-spacing-5);
   border: 1px solid var(--ai-border-info);
+  container-type: inline-size;
   border-radius: var(--ai-radius-md);
   background-color: var(--ai-surface-info-soft);
   color: var(--ai-text-info);
@@ -162,7 +163,7 @@
   gap: var(--ai-spacing-3);
 }
 
-@media (max-width: 767px) {
+@container (max-width: 767px) {
   .alert--cta .alert__header {
     align-items: flex-start;
   }
