@@ -99,6 +99,15 @@
   container-name: cs-page;
 }
 
+/* Alert + card row share one container (Figma Frame 229, node 4183:14662):
+   stacked vertically with a --ai-spacing-5 (16px) gap — tighter than the
+   spacing-7 page gap that separates the other top-level blocks. */
+.control-screen__alert-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+}
+
 /* 3-col card row: StatCard / StatCard / UpgradeCard at desktop. */
 .control-screen__cards {
   display: grid;
@@ -139,6 +148,18 @@
   .control-screen__cards .upgrade-card__status {
     font-size: var(--ai-font-fixed-xs);
   }
+}
+
+/* CC brand: the two StatCard icon squares use teal hues (Figma node
+   4183:14664) rather than the component default Blue/600. `teal/500` and
+   `muted-teal/600` are Figma primitives with no --ai-* semantic token —
+   used here on explicit instruction, scoped per-card to the template
+   (not a StatCard variant). */
+.control-screen__cards .stat-card:nth-of-type(1) .stat-card__icon-wrap {
+  background-color: #14b8a6; /* teal/500 */
+}
+.control-screen__cards .stat-card:nth-of-type(2) .stat-card__icon-wrap {
+  background-color: #3391a4; /* muted-teal/600 */
 }
 
 /* Zone row: Select Zone (left) + Analysis Dashboard link (right). */
