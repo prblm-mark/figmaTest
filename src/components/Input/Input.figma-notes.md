@@ -10,7 +10,7 @@
 
 | Size | Class | Height | Padding | Use |
 |---|---|---|---|---|
-| Base (default) | `.input` | 40px (`--ai-spacing-8`) | 16px (`--ai-spacing-5`) | Standard form inputs |
+| Base (default) | `.input` | 40px (`--ai-spacing-8`) | 12px (`--ai-spacing-4`) | Standard form inputs |
 | Small | `.input.input--sm` | 32px (`--ai-spacing-7`) | 12px (`--ai-spacing-4`) | Compact forms, inline filters |
 
 ### States
@@ -104,7 +104,7 @@ Hover, Active, and Focus all share the same visual treatment (brand border) — 
 | Label container gap | `--ai-spacing-5` | `--ai-spacing-5` |
 | Field height (base) | `--ai-spacing-8` | `--ai-spacing-8` |
 | Field height (sm) | `--ai-spacing-7` | `--ai-spacing-7` |
-| Field padding-x (base) | `--ai-spacing-5` | `--ai-spacing-5` |
+| Field padding-x (base) | `--ai-spacing-5` | `--ai-spacing-4` (user-directed change, 2026-06-01) |
 | Field padding-x (sm) | `--ai-spacing-4` | `--ai-spacing-4` |
 | Field bg | `--ai-surface-primary` | `--ai-surface-primary` |
 | Field border (default) | `--ai-border-secondary` | `--ai-border-secondary` |

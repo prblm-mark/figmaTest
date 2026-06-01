@@ -195,11 +195,11 @@
   gap: var(--ai-spacing-6);
 }
 
-/* Section wrapper (heading + body), used for Whos Online. */
+/* Section wrapper (heading + body), used for Whos Online (datatable). */
 .control-screen__section {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-5);
+  gap: var(--ai-spacing-4);
 }
 
 .control-screen__section-head {
@@ -220,7 +220,12 @@
 .control-screen__section-meta {
   margin: 0;
   font-size: var(--ai-font-fixed-xs);
-  color: var(--ai-text-contrast);
+  color: var(--ai-text-secondary);
+}
+
+.control-screen__section-meta-strong {
+  font-weight: var(--ai-font-bold);
+  color: var(--ai-text-primary);
 }
 
 /* Mobile-only sidebar overlay container: the SidebarMenu mobile composite

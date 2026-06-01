@@ -238,13 +238,13 @@
 }
 
 .datatables__page-btn--active {
-  background-color: var(--ai-datatable-table-footer-bg);
+  background-color: var(--ai-datatable-table-border);
   color: var(--ai-text-primary);
   font-weight: var(--ai-font-bold);
 }
 
 .datatables__page-btn--active:hover {
-  background-color: var(--ai-datatable-table-footer-bg);
+  background-color: var(--ai-datatable-table-border);
 }
 
 .datatables__page-btn [data-lucide] {
