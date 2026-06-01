@@ -1312,12 +1312,12 @@
           "$value": {
             "colorSpace": "srgb",
             "components": [
-              0.05882352963089943,
-              0.23137255012989044,
-              0.32549020648002625
+              0.04313725605607033,
+              0.1725490242242813,
+              0.24313725531101227
             ],
             "alpha": 1,
-            "hex": "#0F3B53"
+            "hex": "#0B2C3E"
           },
           "$extensions": {
             "com.figma.variableId": "VariableID:2596:997",
@@ -1328,8 +1328,8 @@
               "WEB": "--cc-header-primary-bg"
             },
             "com.figma.aliasData": {
-              "targetVariableId": "VariableID:2e54b458733ee7cf140a417df3abd51539651f8f/-1:-1",
-              "targetVariableName": "MId Blue/800",
+              "targetVariableId": "VariableID:b52b3857e3c1bda157c83aac12464843d7805deb/-1:-1",
+              "targetVariableName": "MId Blue/900",
               "targetVariableSetId": "VariableCollectionId:8f6c1c1faabbdf0817d5304f220b65ab37368977/-1:-1",
               "targetVariableSetName": "Primitives"
             }
@@ -2143,7 +2143,7 @@
         },
         "secondary-text": {
           "$type": "color",
-          "$value": "{text.primary}",
+          "$value": "{text.secondary}",
           "$extensions": {
             "com.figma.variableId": "VariableID:184:3425",
             "com.figma.scopes": [
@@ -2156,7 +2156,7 @@
         },
         "secondary-text-hover": {
           "$type": "color",
-          "$value": "{text.primary}",
+          "$value": "{text.secondary}",
           "$extensions": {
             "com.figma.variableId": "VariableID:184:3426",
             "com.figma.scopes": [

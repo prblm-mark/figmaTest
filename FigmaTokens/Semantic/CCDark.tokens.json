@@ -2113,7 +2113,7 @@
         },
         "secondary-text": {
           "$type": "color",
-          "$value": "{text.primary}",
+          "$value": "{text.secondary}",
           "$extensions": {
             "com.figma.variableId": "VariableID:184:3425",
             "com.figma.scopes": [
@@ -2126,7 +2126,7 @@
         },
         "secondary-text-hover": {
           "$type": "color",
-          "$value": "{text.primary}",
+          "$value": "{text.secondary}",
           "$extensions": {
             "com.figma.variableId": "VariableID:184:3426",
             "com.figma.scopes": [
