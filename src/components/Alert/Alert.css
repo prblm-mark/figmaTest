@@ -25,7 +25,6 @@
   flex-direction: column;
   gap: var(--ai-spacing-4);
   width: 100%;
-  min-height: var(--ai-spacing-9);
   padding: var(--ai-spacing-4) var(--ai-spacing-5);
   border: 1px solid var(--ai-border-info);
   container-type: inline-size;
@@ -33,6 +32,13 @@
   background-color: var(--ai-surface-info-soft);
   color: var(--ai-text-info);
   font-family: var(--ai-font-body);
+  /* Figma binds `min-h-[48px]` (raw, not a token) on the wrapper. We drop
+   * it here because `container-type: inline-size` on the alert causes
+   * Chromium to resolve the intrinsic block-size as if the element had no
+   * children — turning `min-height` into an effective `max-height` and
+   * clipping content. Content always exceeds 48px in practice (any
+   * variant with a 32px button or wrapped text + 24px padding + 2px
+   * border lands at ≥58px), so the floor is moot. */
 }
 
 /* ── Header row (icon + title/body + close) ───── */
