@@ -36,12 +36,17 @@ docs-site/public/demos/
 docs-site/node_modules
 
 # Claude Code local settings — machine-specific files are ignored,
-# but .claude/commands/ (shared slash-command skills) is tracked.
+# but .claude/commands/ (shared slash-command skills), .claude/hooks/
+# (harness enforcement scripts), and .claude/settings.json (team-shared
+# harness config) are tracked.
 .claude/*
 !.claude/commands/
 !.claude/commands/**
 !.claude/memory/
 !.claude/memory/**
+!.claude/hooks/
+!.claude/hooks/**
+!.claude/settings.json
 
 # Credentials — never commit tokens or API keys
 .env
