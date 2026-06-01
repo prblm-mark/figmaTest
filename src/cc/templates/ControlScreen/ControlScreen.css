@@ -61,6 +61,11 @@
   z-index: 1;
 }
 
+/* Dark mode: hairline horizontal padding inside the chrome wrapper. */
+[data-theme="dark"] .control-screen__chrome {
+  padding: 0 var(--ai-spacing-px);
+}
+
 /* Dropdown escape overrides — mirror the HeaderGroup demo's
  * `.demo-frame--dropdown` scoped overrides. TopNavigation.css normally
  * sets `overflow: hidden` on the bar; release it here so dropdown
