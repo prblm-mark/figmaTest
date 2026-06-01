@@ -15,3 +15,12 @@
   /* Positioning context for the hover-flyout menu (.cc-menu--floating). */
   position: relative;
 }
+
+/* Right-edge drop shadow — only when a menu panel is docked open.
+ * Figma node 4167:4735 (SidebarMenu, light mode). The :has() selector
+ * lights up the shadow only while at least one `.cc-menu` panel is
+ * NOT [hidden]; rail-only state stays shadowless. Dark mode overrides
+ * the token to `none` in css/tokens-shadows.css. */
+.cc-sidebar-menu:has(.cc-menu:not([hidden])) {
+  box-shadow: var(--ai-shadow-cc-rail);
+}
