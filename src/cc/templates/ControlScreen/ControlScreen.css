@@ -234,6 +234,19 @@
 .control-screen__sidebar--desktop { display: flex; }
 .control-screen__sidebar--mobile { display: none; }
 
+/* Right-edge action rail (ActionsMenu, Figma node 4167:4879). Full-height
+   rail docked to the right of the shell — the rightmost flex child of
+   .control-screen, mirroring the left sidebar. Desktop only; hidden below
+   768px (device-class swap, like the sidebar). */
+.control-screen__actions {
+  flex: 0 0 auto;
+  display: flex;
+}
+
+.control-screen__actions .actions-menu {
+  height: 100%;   /* fill the 100vh shell row → full-height rail */
+}
+
 /* ───── Template-level reflow — driven by main column width ─────
  *
  * @container cs-page (max-width: 767px) fires when .control-screen__page
@@ -290,4 +303,6 @@
 @media (max-width: 767px) {
   .control-screen__sidebar--desktop { display: none; }
   .control-screen__sidebar--mobile { display: flex; }
+  /* Right action rail is desktop-only per Figma — hidden on mobile. */
+  .control-screen__actions { display: none; }
 }

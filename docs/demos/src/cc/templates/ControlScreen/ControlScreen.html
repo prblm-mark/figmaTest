@@ -38,6 +38,7 @@
   <link rel="stylesheet" href="../../patterns/TopNavigation/TopNavigation.css">
   <link rel="stylesheet" href="../../patterns/Header/Header.css">
   <link rel="stylesheet" href="../../patterns/HeaderGroup/HeaderGroup.css">
+  <link rel="stylesheet" href="../../patterns/ActionsMenu/ActionsMenu.css">
 
   <!-- Template -->
   <link rel="stylesheet" href="ControlScreen.css">
@@ -655,6 +656,33 @@
 
     </div>
   </main>
+
+  <!-- ━━━ Right action rail (ActionsMenu) ━━━━━━━━━━━━━━━━━━━━━
+       Figma node 4167:4879 — full-height rail docked to the right edge of
+       the Desktop Menu Open variant (4187:21253). Desktop only; hidden
+       below 768px per design (matches the sidebar device-class swap). -->
+  <div class="control-screen__actions">
+    <div class="actions-menu">
+      <button class="actions-menu__btn" type="button" aria-label="AI suggestions">
+        <i data-lucide="sparkles" aria-hidden="true"></i>
+      </button>
+      <button class="actions-menu__btn" type="button" aria-label="Info">
+        <i data-lucide="info" aria-hidden="true"></i>
+      </button>
+      <button class="actions-menu__btn" type="button" aria-label="Favourite">
+        <i data-lucide="star" aria-hidden="true"></i>
+      </button>
+      <button class="actions-menu__btn" type="button" aria-label="Text size">
+        <i data-lucide="a-large-small" aria-hidden="true"></i>
+      </button>
+      <button class="actions-menu__btn" type="button" aria-label="Minimise">
+        <i data-lucide="minimize-2" aria-hidden="true"></i>
+      </button>
+      <button class="actions-menu__btn" type="button" aria-label="Print">
+        <i data-lucide="printer" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
 
   <!-- ━━━ Scripts ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
