@@ -394,54 +394,61 @@
     <!-- Page content (scrolling area) -->
     <div class="control-screen__page">
 
-      <!-- 1. Development-mode alert (Alert · Style=CTA · Type=Warning).
-           Figma CC instance: 4168:5316. Two contextual overrides vs the
-           base Alert component:
-            - alert icon is "info" (Figma uses Icon/24px/Info), not the
-              warning alert-triangle that Alert.html demos
-            - Switch Mode button has no leading arrow icon (instance
-              clears the Button's default icon-left slot) -->
-      <div class="alert alert--cta alert--warning">
-        <div class="alert__header">
-          <span class="alert__icon"><i data-lucide="info" aria-hidden="true"></i></span>
-          <div class="alert__cta-area">
-            <div class="alert__text">
-              <span class="alert__title">You are in development mode!</span>
-              <span class="alert__message"> Switch mode for Default</span>
+      <!-- 1. Alert + card row share one container (Figma Frame 229,
+           node 4183:14662) — stacked with a --ai-spacing-5 (16px) gap,
+           tighter than the spacing-7 page gap between top-level blocks. -->
+      <div class="control-screen__alert-cards">
+
+        <!-- Development-mode alert (Alert · Style=CTA · Type=Warning).
+             Figma CC instance: 4168:5316. Two contextual overrides vs the
+             base Alert component:
+              - alert icon is "info" (Figma uses Icon/24px/Info), not the
+                warning alert-triangle that Alert.html demos
+              - Switch Mode button has no leading arrow icon (instance
+                clears the Button's default icon-left slot) -->
+        <div class="alert alert--cta alert--warning">
+          <div class="alert__header">
+            <span class="alert__icon"><i data-lucide="info" aria-hidden="true"></i></span>
+            <div class="alert__cta-area">
+              <div class="alert__text">
+                <span class="alert__title">You are in development mode!</span>
+                <span class="alert__message"> Switch mode for Default</span>
+              </div>
+              <button type="button" class="btn btn--primary btn--sm alert__cta-btn">
+                Switch Mode
+              </button>
             </div>
-            <button type="button" class="btn btn--primary btn--sm alert__cta-btn">
-              Switch Mode
-            </button>
-          </div>
-          <button type="button" class="alert__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>
-        </div>
-      </div>
-
-      <!-- 2. Three-card row: StatCard / StatCard / UpgradeCard -->
-      <div class="control-screen__cards">
-
-        <div class="stat-card stat-card--number-first">
-          <div class="stat-card__icon-wrap"><i data-lucide="star" aria-hidden="true"></i></div>
-          <div class="stat-card__text">
-            <p class="stat-card__title">What Affino has to offer</p>
-            <p class="stat-card__value">Key Features</p>
+            <button type="button" class="alert__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>
           </div>
         </div>
 
-        <div class="stat-card stat-card--number-first">
-          <div class="stat-card__icon-wrap"><i data-lucide="file-question-mark" aria-hidden="true"></i></div>
-          <div class="stat-card__text">
-            <p class="stat-card__title">The latest documentation</p>
-            <p class="stat-card__value">Help Guides</p>
-          </div>
-        </div>
+        <!-- Three-card row: StatCard / StatCard / UpgradeCard -->
+        <div class="control-screen__cards">
 
-        <div class="upgrade-card">
-          <div class="upgrade-card__text">
-            <p class="upgrade-card__version">Version 8.0.33.10</p>
-            <p class="upgrade-card__status">Update available</p>
+          <div class="stat-card stat-card--number-first">
+            <div class="stat-card__icon-wrap"><i data-lucide="spotlight" aria-hidden="true"></i></div>
+            <div class="stat-card__text">
+              <p class="stat-card__title">What Affino has to offer</p>
+              <p class="stat-card__value">Key Features</p>
+            </div>
           </div>
-          <button type="button" class="btn btn--primary btn--sm">Update</button>
+
+          <div class="stat-card stat-card--number-first">
+            <div class="stat-card__icon-wrap"><i data-lucide="file-question-mark" aria-hidden="true"></i></div>
+            <div class="stat-card__text">
+              <p class="stat-card__title">The latest documentation</p>
+              <p class="stat-card__value">Help Guides</p>
+            </div>
+          </div>
+
+          <div class="upgrade-card">
+            <div class="upgrade-card__text">
+              <p class="upgrade-card__version">Version 8.0.33.10</p>
+              <p class="upgrade-card__status">Update available</p>
+            </div>
+            <button type="button" class="btn btn--primary btn--sm">Update</button>
+          </div>
+
         </div>
 
       </div>
