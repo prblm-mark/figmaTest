@@ -27,6 +27,14 @@
   flex: 0 0 auto;
   height: 100vh;
   min-width: 0;
+  /* Stack above .control-screen__main so the cc-sidebar-menu's right-
+   * edge drop shadow (var(--ai-shadow-cc-rail), applied when the menu
+   * panel is docked open) paints over the chrome + page backgrounds
+   * instead of being obscured by them. Sidebar and main are flex
+   * siblings under .control-screen; without z-index, main paints last
+   * in DOM order and its opaque backgrounds cover the sidebar shadow. */
+  position: relative;
+  z-index: 2;
 }
 
 .control-screen__sidebar .cc-sidebar-menu {
