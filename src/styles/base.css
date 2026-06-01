@@ -28,6 +28,15 @@
   --ai-bp-2xl: 96rem;   /* 1536px */
 }
 
+/* ── Sub-rem optical spacing ──────────────────── */
+/* Single 1px slot for hairline padding / inset alignment use cases
+ * that fall below the smallest rem-based --ai-spacing-* step. Not
+ * sourced from Figma (the scale starts at 4px) — defined here next
+ * to the other static custom properties. */
+:root {
+  --ai-spacing-px: 1px;
+}
+
 *,
 *::before,
 *::after {
