@@ -75,10 +75,10 @@
 .control-screen__page {
   flex: 1 1 auto;
   overflow-y: auto;
-  padding: var(--ai-spacing-5);
+  padding: var(--ai-spacing-4);
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-8);
+  gap: var(--ai-spacing-7);
   /* Container query context — template-level reflow rules below use
      @container cs-page so the layout responds to the actual content
      column width, not the viewport. This matters because the docked
@@ -169,10 +169,10 @@
  * goes "mobile" the moment the docked SidebarMenu (rail + 280px panel)
  * eats enough horizontal room, even on a wide desktop. */
 @container cs-page (max-width: 767px) {
-  .control-screen__page {
-    padding: var(--ai-spacing-4);
-    gap: var(--ai-spacing-7);
-  }
+  /* Page wrapper padding + gap match the desktop base — Figma binds the
+   * same `--ai-spacing-4` padding and `--ai-spacing-7` gap on the page
+   * frame at both breakpoints (node 4183:14661). Leaving the rule off
+   * keeps the base values. */
   .control-screen__cards,
   .control-screen__charts {
     grid-template-columns: 1fr;
