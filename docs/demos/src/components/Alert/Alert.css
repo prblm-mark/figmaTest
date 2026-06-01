@@ -147,8 +147,18 @@
 /* Visual difference vs Default: no body block; CTA button sits in the
  * header row between text and close. Mobile stacks. */
 
+/* Wrapper centers the (single) paragraph vertically when content is
+ * shorter than min-height. Figma binds `justify-center` on the CTA root
+ * (e.g. node 4168:5316). Default style stays top-aligned. */
+.alert--cta {
+  justify-content: center;
+}
+
 .alert--cta .alert__header {
   align-items: center;
+  /* CTA gap between icon | text-area | close = --ai-spacing-4 (12px).
+   * Default style uses --ai-spacing-3 (8px) — kept on the base rule. */
+  gap: var(--ai-spacing-4);
 }
 
 .alert--cta .alert__text {

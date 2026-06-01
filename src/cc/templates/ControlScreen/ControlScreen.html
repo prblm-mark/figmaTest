@@ -339,17 +339,22 @@
     <!-- Page content (scrolling area) -->
     <div class="control-screen__page">
 
-      <!-- 1. Development-mode alert (Alert · Style=CTA · Type=Warning) -->
+      <!-- 1. Development-mode alert (Alert · Style=CTA · Type=Warning).
+           Figma CC instance: 4168:5316. Two contextual overrides vs the
+           base Alert component:
+            - alert icon is "info" (Figma uses Icon/24px/Info), not the
+              warning alert-triangle that Alert.html demos
+            - Switch Mode button has no leading arrow icon (instance
+              clears the Button's default icon-left slot) -->
       <div class="alert alert--cta alert--warning">
         <div class="alert__header">
-          <span class="alert__icon"><i data-lucide="alert-triangle" aria-hidden="true"></i></span>
+          <span class="alert__icon"><i data-lucide="info" aria-hidden="true"></i></span>
           <div class="alert__cta-area">
             <div class="alert__text">
               <span class="alert__title">You are in development mode!</span>
               <span class="alert__message"> Switch mode for Default</span>
             </div>
             <button type="button" class="btn btn--primary btn--sm alert__cta-btn">
-              <i data-lucide="arrow-right" aria-hidden="true"></i>
               Switch Mode
             </button>
           </div>
