@@ -287,11 +287,66 @@
             </ol>
           </nav>
           <div class="cc-top-navigation__actions">
-            <button class="cc-top-navigation__user" type="button" aria-label="User menu" aria-haspopup="true">
-              <img class="portrait" src="https://i.pravatar.cc/64?u=derrick" alt="Derrick Jefferson" />
-              <span class="cc-top-navigation__user-name">Derrick Jefferson</span>
-              <span class="cc-top-navigation__user-chevron" aria-hidden="true"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
-            </button>
+            <!-- User Menu dropdown — mirrors HeaderGroup's "User Menu"
+                 Desktop variant (node 4146:6685). Composes ThemeToggle
+                 + Toggle rows + DropdownItem entries + Sign Out. -->
+            <div class="dropdown dropdown--user-menu">
+              <button class="cc-top-navigation__user dropdown__trigger" type="button" aria-haspopup="menu" aria-expanded="false">
+                <img class="portrait" src="https://i.pravatar.cc/64?u=derrick" alt="Derrick Jefferson" />
+                <span class="cc-top-navigation__user-name">Derrick Jefferson</span>
+                <span class="cc-top-navigation__user-chevron" aria-hidden="true"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <div class="dropdown__panel" role="menu" aria-label="User menu">
+                <div class="theme-toggle theme-toggle--fill">
+                  <button class="theme-toggle__btn" type="button" data-theme-value="light" aria-pressed="true">
+                    <i data-lucide="sun" aria-hidden="true"></i>
+                    <span>Light</span>
+                  </button>
+                  <button class="theme-toggle__btn" type="button" data-theme-value="dark" aria-pressed="false">
+                    <i data-lucide="moon" aria-hidden="true"></i>
+                    <span>Dark</span>
+                  </button>
+                </div>
+                <div class="dropdown__toggle-list">
+                  <div class="dropdown__toggle-row">
+                    <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" id="cs-user-menu-icon-nav">
+                      <span class="toggle__track"><span class="toggle__knob"></span></span>
+                    </button>
+                    <label for="cs-user-menu-icon-nav" class="toggle__label">
+                      <span class="toggle__label-text">Icon Navigation</span>
+                    </label>
+                  </div>
+                  <div class="dropdown__toggle-row dropdown__toggle-row--reveal" data-reveal-by="cs-user-menu-icon-nav">
+                    <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" id="cs-user-menu-hide-labels">
+                      <span class="toggle__track"><span class="toggle__knob"></span></span>
+                    </button>
+                    <label for="cs-user-menu-hide-labels" class="toggle__label">
+                      <span class="toggle__label-text">Hide Labels</span>
+                    </label>
+                  </div>
+                </div>
+                <hr class="dropdown__divider">
+                <ul class="dropdown__list">
+                  <li role="none">
+                    <button type="button" class="dropdown-item" role="menuitem">
+                      <i data-lucide="star" aria-hidden="true"></i>
+                      <span data-text="My Favourites">My Favourites</span>
+                    </button>
+                  </li>
+                  <li role="none">
+                    <button type="button" class="dropdown-item" role="menuitem">
+                      <i data-lucide="circle-user" aria-hidden="true"></i>
+                      <span data-text="My Content">My Content</span>
+                    </button>
+                  </li>
+                </ul>
+                <hr class="dropdown__divider">
+                <button type="button" class="dropdown-item dropdown-item--warning" role="menuitem">
+                  <i data-lucide="log-out" aria-hidden="true"></i>
+                  <span data-text="Sign Out">Sign Out</span>
+                </button>
+              </div>
+            </div>
             <button class="cc-top-navigation__preview" type="button" aria-label="Preview as desktop"><i data-lucide="monitor" aria-hidden="true"></i></button>
           </div>
         </header>
@@ -601,6 +656,8 @@
 
   <!-- Existing auto-binding interaction scripts -->
   <script src="../../patterns/SidebarMenu/sidebar-menu.js"></script>
+  <script src="../../../components/ThemeToggle/ThemeToggle.js"></script>
+  <script type="module" src="../../../components/Dropdown/Dropdown.js"></script>
 
   <!-- Chart.js initialisation — Page Views (multi-line) + Users (single-line) -->
   <script>

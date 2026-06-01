@@ -100,6 +100,21 @@ No new JS module is authored by the template.
 - **No component CSS overrides:** the template uses every composed component verbatim with no scoped customisations. Future Figma changes to any composed component will surface here automatically.
 - **Demo content sourcing:** every block reuses copy from its own demo for now — to be amended later with Figma-faithful labels (Susan Kerrigan / Maria Mellor / 78 Members / Version 8.0.33.10 etc. already match; chart numbers + StatCard icon choice may be refined).
 
+## Contextual overrides (Case B) — chrome dropdowns
+
+The CC `TopNavigation.css` sets `overflow: hidden` on `.cc-top-navigation`, which clips dropdown panels (Zone Selector breadcrumb + User Menu) trying to extend downward from the bar. The HeaderGroup demo handles this with its `.demo-frame--dropdown` scoped overrides; the template replicates the same three rules:
+
+```css
+.control-screen__chrome .cc-top-navigation { overflow: visible; }
+.control-screen__chrome .dropdown__panel { z-index: 20; }
+.control-screen__chrome .cc-top-navigation__actions .dropdown__panel {
+  left: auto;
+  right: 0;
+}
+```
+
+`.control-screen__main` has no `overflow: hidden` for the same reason (would clip the chrome's dropdowns into the page area).
+
 ## Contextual overrides (Case B) — Alert
 
 The CC ControlScreen instance of the Warning CTA Alert (Figma `4168:5316`) applies two overrides vs the base Alert component:
