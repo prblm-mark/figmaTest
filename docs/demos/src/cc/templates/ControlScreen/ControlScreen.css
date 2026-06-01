@@ -103,8 +103,42 @@
 .control-screen__cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--ai-spacing-5);
+  gap: var(--ai-spacing-3);
   align-items: stretch;
+}
+
+/* Card size: base by default (mobile / narrow column), upgrading to the
+   Lg size variant once the page container is ≥768px. The component `--lg`
+   modifier can't be toggled by CSS, so these rules mirror `.stat-card--lg`
+   (StatCard.css) and `.upgrade-card--lg` (UpgradeCard.css) exactly, scoped
+   to the cs-page container-query context. */
+@container cs-page (min-width: 768px) {
+  .control-screen__cards {
+    gap: var(--ai-spacing-5);
+  }
+  .control-screen__cards .stat-card {
+    gap: var(--ai-spacing-5);
+    min-height: var(--ai-spacing-13);
+    padding: var(--ai-spacing-5);
+  }
+  .control-screen__cards .stat-card__icon-wrap {
+    width: var(--ai-spacing-9);
+    height: var(--ai-spacing-9);
+  }
+  .control-screen__cards .stat-card__icon-wrap [data-lucide] {
+    width: var(--ai-icon-size-md);
+    height: var(--ai-icon-size-md);
+  }
+  .control-screen__cards .upgrade-card {
+    min-height: var(--ai-spacing-13);
+    padding: var(--ai-spacing-5);
+  }
+  .control-screen__cards .upgrade-card__version {
+    font-size: var(--ai-font-fixed-sm);
+  }
+  .control-screen__cards .upgrade-card__status {
+    font-size: var(--ai-font-fixed-xs);
+  }
 }
 
 /* Zone row: Select Zone (left) + Analysis Dashboard link (right). */

@@ -25,7 +25,7 @@ ControlScreen owns **only the app-shell layout**. Every visual block is rendered
 | `src/cc/patterns/SidebarMenu/` + `sidebar-menu.js` | Left app rail + menu panel. Desktop + Mobile composites both included in DOM, swapped via `@media (max-width: 767px)`. Both auto-bind on DOMContentLoaded. |
 | `src/cc/patterns/HeaderGroup/` (composes `TopNavigation` + `Header`) | Top chrome. Uses the `cc-header--control` modifier — greeting + Logout/View Site CTAs. |
 | `src/components/Alert/` (`alert--cta` + `alert--warning`) | Development-mode banner with Switch Mode CTA. |
-| `src/patterns/StatCard/` × 2 | "Key Features" + "Help Guides" cards in the 3-col row. |
+| `src/patterns/StatCard/` × 2 (`stat-card--number-first`) | "Key Features" + "Help Guides" cards in the 3-col row. Number First type — the bold label (`__value`) sits above the muted description (`__title`). |
 | `src/patterns/UpgradeCard/` | Version + Update CTA — third cell of the 3-col row. |
 | `src/components/Select/` (`sel sel__control--sm`) | "Select Zone" dropdown. |
 | `src/patterns/Chart/` × 2 + Chart.js CDN | "Page Views" (multi-line) + "Users" (single-line area). |
@@ -97,7 +97,8 @@ No new JS module is authored by the template.
 - **Device-class swap stays on `@media`:** which SidebarMenu composite (`--desktop` vs `--mobile`) is rendered is a device-class decision (the mobile rail has structurally different children — Ellipsis-toggled extras), so the swap is keyed off viewport `@media (max-width: 767px)`. Even when the desktop column shrinks to <768px because its own menu panel is docked, the desktop rail stays.
 - **Sidebar composite swap:** Desktop and Mobile SidebarMenu composites are both in the DOM with unique panel IDs (`cc-d-*` vs `cc-m-*`) so the auto-bound JS doesn't clash; CSS shows one and hides the other based on viewport.
 - **Mobile content order:** UpgradeCard precedes the two StatCards on mobile per Figma (visible in `cs-mobile-collapsed.png`). Implemented via `order: -1` on `.control-screen__cards .upgrade-card` so the HTML order stays semantic.
-- **No component CSS overrides:** the template uses every composed component verbatim with no scoped customisations. Future Figma changes to any composed component will surface here automatically.
+- **Card size is container-responsive:** both StatCards and the UpgradeCard render at **base** size by default (mobile / narrow column) and upgrade to the **Lg** size variant at `@container cs-page (min-width: 768px)`. Because a component size modifier (`--lg`) can't be toggled by CSS, the min-width block in `ControlScreen.css` mirrors the `.stat-card--lg` / `.upgrade-card--lg` rules exactly (same `--ai-*` tokens) rather than adding the class in markup. This keeps the base/mobile size as the safe no-CQ fallback.
+- **Scoped component CSS overrides:** the only template-scoped customisation is the container-query card-size block above. Otherwise the template uses every composed component verbatim. Future Figma changes to any composed component surface here automatically.
 - **Demo content sourcing:** every block reuses copy from its own demo for now — to be amended later with Figma-faithful labels (Susan Kerrigan / Maria Mellor / 78 Members / Version 8.0.33.10 etc. already match; chart numbers + StatCard icon choice may be refined).
 
 ## Contextual overrides (Case B) — chrome dropdowns

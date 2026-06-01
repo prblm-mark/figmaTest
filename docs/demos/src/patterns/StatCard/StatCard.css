@@ -20,7 +20,6 @@
   background-color: var(--ai-surface-primary);
   border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-md);
-  box-shadow: var(--ai-shadow-md);
 }
 
 /* ── Icon block (brand square with Lucide icon centred) ── */
@@ -103,12 +102,11 @@
   height: var(--ai-icon-size-md);
 }
 
-/* ── Variant: No card (transparent — no border, no shadow, no pad) ── */
+/* ── Variant: No card (transparent — no border, no pad) ── */
 
 .stat-card--no-card {
   background: transparent;
   border: none;
-  box-shadow: none;
   padding: 0;
   min-height: var(--ai-spacing-8);
 }
