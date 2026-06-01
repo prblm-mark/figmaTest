@@ -54,7 +54,6 @@
 
 .control-screen__chrome {
   flex: 0 0 auto;
-  background: var(--ai-surface-primary);
   border-bottom: 1px solid var(--ai-border-secondary);
   /* Stacking + position so dropdown panels anchored inside (Zone
    * Selector, User Menu) layer above the scrolling page content. */
