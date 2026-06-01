@@ -30,6 +30,7 @@ ControlScreen owns **only the app-shell layout**. Every visual block is rendered
 | `src/components/Select/` (`sel sel__control--sm`) | "Select Zone" dropdown. |
 | `src/patterns/Chart/` × 2 + Chart.js CDN | "Page Views" (multi-line) + "Users" (single-line area). |
 | `src/components/Datatables/` (Whos Online variant — base `.datatables`, no `--mobile-scroll`) | Members table. `--mobile-scroll` modifier is for fixed-width mobile mockups and pins `max-width: 24rem`; base `.datatables` fills 100% of its container and the inner `.datatables__body` auto-scrolls horizontally when the table is wider than the viewport. |
+| `src/cc/patterns/ActionsMenu/` | Full-height right-edge action rail (Figma node `4167:4879`, docked at `left: 1340px` of the 1396px Desktop frame). Wrapped in `.control-screen__actions` as the rightmost flex child of `.control-screen`. **Desktop only** — `display: none` below 768px (device-class swap, like the sidebar). |
 
 Transitive deps loaded via `<link>`: Button, Breadcrumb, Dropdown, DropdownItem, Portraits, Avatar, NotificationBadge, Toggle, ThemeToggle, Input, Table, MainMenuItem.
 
@@ -50,6 +51,7 @@ Template-owned classes only (every other class belongs to a composed component):
 | `.control-screen__zone-row` | Select Zone + Analysis Dashboard link, space-between. |
 | `.control-screen__analysis-link` | Right-side text link (brand colour + arrow icon). Two copies in the DOM — `--desktop` (inside `.control-screen__zone-row`, visible ≥768px) and `--mobile` (standalone block after `.control-screen__charts`, visible <768px), matching the Figma's mobile placement (between charts and Whos Online). |
 | `.control-screen__charts` | 2-col → 1-col grid for Chart cards. |
+| `.control-screen__actions` | Wrapper for the right-edge ActionsMenu rail; rightmost flex child of `.control-screen`, full-height, `display: none` below 768px. |
 | `.control-screen__section` | Wrapper frame: section heading + section body. |
 | `.control-screen__section-head` | Flex row: title left, meta right (stacks on mobile). |
 | `.control-screen__section-title` | h2 — "Who's Online". |
