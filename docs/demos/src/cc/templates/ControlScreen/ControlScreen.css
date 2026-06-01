@@ -1,0 +1,186 @@
+/* ControlScreen — CC home/landing dashboard template (Tier=Template)
+ * Figma: ETKqleZdpertwFEo40YB5n / 4187:21254
+ *
+ * App-shell ONLY. No component styles defined here — every visual block
+ * comes from an existing component's CSS (Alert / StatCard / UpgradeCard /
+ * Select / Chart / Datatables / cc-sidebar-menu / cc-header-group, etc.).
+ *
+ * Layout:
+ *   .control-screen          flex row, viewport-filling
+ *   ├─ .control-screen__sidebar    cc-sidebar-menu lives here (fixed left)
+ *   └─ .control-screen__main       flex column, fills remainder
+ *      ├─ .control-screen__chrome  cc-header-group (top, non-scrolling)
+ *      └─ .control-screen__page    scroll container for page content
+ */
+
+.control-screen {
+  display: flex;
+  align-items: stretch;
+  min-height: 100vh;
+  height: 100vh;
+  margin: 0;
+  background: var(--ai-surface-secondary);
+  font-family: var(--ai-font-body);
+}
+
+.control-screen__sidebar {
+  flex: 0 0 auto;
+  height: 100vh;
+  min-width: 0;
+}
+
+.control-screen__sidebar .cc-sidebar-menu {
+  height: 100%;
+}
+
+.control-screen__main {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.control-screen__chrome {
+  flex: 0 0 auto;
+  background: var(--ai-surface-primary);
+  border-bottom: 1px solid var(--ai-border-secondary);
+}
+
+.control-screen__page {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: var(--ai-spacing-7);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-7);
+  /* Container query context — template-level reflow rules below use
+     @container cs-page so the layout responds to the actual content
+     column width, not the viewport. This matters because the docked
+     SidebarMenu can shrink the column far below 768px on a wide screen. */
+  container-type: inline-size;
+  container-name: cs-page;
+}
+
+/* 3-col card row: StatCard / StatCard / UpgradeCard at desktop. */
+.control-screen__cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--ai-spacing-5);
+  align-items: stretch;
+}
+
+/* Zone row: Select Zone (left) + Analysis Dashboard link (right). */
+.control-screen__zone-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--ai-spacing-5);
+}
+
+.control-screen__analysis-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  color: var(--ai-text-brand);
+  font-size: var(--ai-font-fixed-sm);
+  font-weight: var(--ai-font-semibold);
+  text-decoration: none;
+}
+
+.control-screen__analysis-link:hover { text-decoration: underline; }
+
+/* Two copies in the DOM — one inside the zone-row (desktop), one as a
+   standalone block after the charts row (mobile). CSS swaps which is
+   visible at the breakpoint. */
+.control-screen__analysis-link--desktop { display: inline-flex; }
+.control-screen__analysis-link--mobile { display: none; }
+
+/* 2-col chart row. */
+.control-screen__charts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--ai-spacing-6);
+}
+
+/* Section wrapper (heading + body), used for Whos Online. */
+.control-screen__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+}
+
+.control-screen__section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--ai-spacing-4);
+}
+
+.control-screen__section-title {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fluid-lg);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-primary);
+}
+
+.control-screen__section-meta {
+  margin: 0;
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-contrast);
+}
+
+/* Mobile-only sidebar overlay container: the SidebarMenu mobile composite
+   sits in a fixed left column on phones too. The Menu panel's existing CSS
+   handles overlay behaviour via its own width / position rules. */
+.control-screen__sidebar--desktop { display: flex; }
+.control-screen__sidebar--mobile { display: none; }
+
+/* ───── Template-level reflow — driven by main column width ─────
+ *
+ * @container cs-page (max-width: 767px) fires when .control-screen__page
+ * itself shrinks below 768px — independent of viewport. So the page
+ * goes "mobile" the moment the docked SidebarMenu (rail + 280px panel)
+ * eats enough horizontal room, even on a wide desktop. */
+@container cs-page (max-width: 767px) {
+  .control-screen__page {
+    padding: var(--ai-spacing-5);
+    gap: var(--ai-spacing-5);
+  }
+  .control-screen__cards,
+  .control-screen__charts {
+    grid-template-columns: 1fr;
+  }
+  /* Figma mobile order: UpgradeCard stacks ABOVE the two StatCards. */
+  .control-screen__cards .upgrade-card { order: -1; }
+  /* Stack Select + (mobile-only Analysis link is rendered elsewhere) */
+  .control-screen__zone-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .control-screen__section-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ai-spacing-2);
+  }
+  /* Swap which Analysis Dashboard link copy is visible. */
+  .control-screen__analysis-link--desktop { display: none; }
+  .control-screen__analysis-link--mobile {
+    display: inline-flex;
+    align-self: flex-end;
+  }
+}
+
+/* ───── Device-class swap — stays on viewport @media ─────
+ *
+ * The Desktop and Mobile SidebarMenu composites are structurally
+ * different rails (Mobile adds the Ellipsis-toggled extras row), so
+ * swapping them is a device-class decision, not a column-width one.
+ * Even when the desktop column shrinks because its own menu is docked,
+ * we still want the desktop rail. */
+@media (max-width: 767px) {
+  .control-screen__sidebar--desktop { display: none; }
+  .control-screen__sidebar--mobile { display: flex; }
+}
