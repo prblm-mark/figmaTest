@@ -124,7 +124,9 @@ No raw primitives used. All colour, spacing, radius, typography values map to ex
 
 - **Old prototype removed.** `src/prototypes/Alerts/` was a Flowbite-inspired sketch that pre-dated the formal Figma variants. Deleted as part of this build per `feedback_no_prototype_after_component.md`.
 - **Width is consumer-controlled** (`width: 100%`). Figma's 720px / 320px frame widths are layout artifacts.
-- **Mobile CTA stacking** is handled by `@media (max-width: 767px)` — no `--mobile` modifier. The same `.alert.alert--cta` markup renders row-layout above 768px and column-layout below.
+- **CTA stacking is container-query driven.** `.alert` declares `container-type: inline-size`; the `.alert--cta` mobile rules live under `@container (max-width: 767px)`. Each alert reflows based on its own width — important when an alert sits in a narrow column on a wide viewport (e.g. ControlScreen with the docked sidebar). The container query is set on `.alert` itself so anonymous `@container` queries resolve to the alert's own width.
+- **CTA wrapper centres content vertically.** `.alert--cta` adds `justify-content: center` so the single Paragraph row centres inside the flex column when content is shorter than `min-height: var(--ai-spacing-9)`. Default style stays top-aligned.
+- **CTA inter-column gap is `--ai-spacing-4` (12px), not `--ai-spacing-3` (8px) like Default.** Override lives on `.alert--cta .alert__header`. Confirmed against Figma `2753:2250` (Warning CTA Desktop) which binds `gap-[var(--ai-spacing-4)]` on the inner Paragraph.
 - **Floating badge bg** is type-specific via a small set of overrides on `.alert--floating.alert--{success,neutral}`. (Info inherits the base badge colour.)
 - **Fixed top border colour** is overridden per Type using `.alert--fixed.alert--{success,danger,warning,neutral}`. (Info inherits the base.)
 - **No JS** — Alert is presentational. Consumer wires the close button to whatever dismissal behaviour they need.

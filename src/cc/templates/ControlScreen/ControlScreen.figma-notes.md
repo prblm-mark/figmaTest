@@ -100,6 +100,15 @@ No new JS module is authored by the template.
 - **No component CSS overrides:** the template uses every composed component verbatim with no scoped customisations. Future Figma changes to any composed component will surface here automatically.
 - **Demo content sourcing:** every block reuses copy from its own demo for now — to be amended later with Figma-faithful labels (Susan Kerrigan / Maria Mellor / 78 Members / Version 8.0.33.10 etc. already match; chart numbers + StatCard icon choice may be refined).
 
+## Contextual overrides (Case B) — Alert
+
+The CC ControlScreen instance of the Warning CTA Alert (Figma `4168:5316`) applies two overrides vs the base Alert component:
+
+1. **Alert left icon = `info`** (Lucide), not `alert-triangle`. Figma binds `Icon/24px/Info` on the warning CTA. Applied inline in the template's HTML by setting `data-lucide="info"`.
+2. **Switch Mode button has no leading icon.** The base Button has icon slots; this instance clears the icon-left/icon-right. Applied by omitting the `<i data-lucide="…">` element from the button markup.
+
+Both are HTML-only overrides — no new CSS in `ControlScreen.css`.
+
 ## Known limitations (composed-component carryover)
 
 - **StatCard icon-wrap colour does not theme to CC brand.** `StatCard.css` hardcodes the icon-square background to `#2563eb` (Blue/600 primitive, user-approved gap on the StatCard build). Figma's Control Screen renders the same square in a CC teal hue. Fixing this needs a StatCard-side change (replace the primitive with a `--ai-surface-brand`-aware token or introduce a `[data-brand="cc"]` override) — out of scope for the template build. Flagged here so the next StatCard review can address.
