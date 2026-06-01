@@ -168,14 +168,22 @@
  * itself shrinks below 768px — independent of viewport. So the page
  * goes "mobile" the moment the docked SidebarMenu (rail + 280px panel)
  * eats enough horizontal room, even on a wide desktop. */
-@container cs-page (max-width: 767px) {
-  /* Mobile page padding scales down — Figma node 4183:14661 binds
-   * `--ai-spacing-4` (12px) on the mobile page-content wrapper, vs
-   * desktop's `--ai-spacing-6` (24px) on the base rule above. Gap
-   * stays at `--ai-spacing-7` on both breakpoints. */
+/* Page padding scales at the 768px VIEWPORT breakpoint — not the
+ * container breakpoint. The container query below queries `cs-page`,
+ * which IS `.control-screen__page` itself; per the CSS Containment
+ * spec an element cannot query its own container, so a
+ * `@container cs-page` rule targeting `.control-screen__page` never
+ * applies. Use viewport `@media` instead for the page's own padding.
+ * Descendants (cards, charts, zone-row, section-head) still use
+ * `@container cs-page` correctly because for them cs-page is an
+ * ancestor, not themselves. */
+@media (max-width: 767px) {
   .control-screen__page {
     padding: var(--ai-spacing-4);
   }
+}
+
+@container cs-page (max-width: 767px) {
   .control-screen__cards,
   .control-screen__charts {
     grid-template-columns: 1fr;
