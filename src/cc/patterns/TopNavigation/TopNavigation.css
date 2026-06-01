@@ -17,6 +17,7 @@
   padding: 0 var(--ai-spacing-5);
   background-color: var(--cc-header-primary-bg);
   overflow: hidden;
+  container-type: inline-size;
 }
 
 /* ── Breadcrumb (flex-1, fills space) ────────────────── */
@@ -134,9 +135,13 @@
   height: var(--ai-icon-size-sm);
 }
 
-/* ── Mobile (≤767px) ─────────────────────────────────── */
+/* ── Mobile (≤767px container width) ─────────────────────
+ *
+ * Container-query based so the bar collapses to compact mobile dress
+ * whenever the bar itself is narrower than 768px — even on a wide
+ * viewport where it sits next to a docked sidebar. */
 
-@media (max-width: 767px) {
+@container (max-width: 767px) {
   .cc-top-navigation {
     min-height: var(--ai-spacing-8); /* 40px on mobile */
   }

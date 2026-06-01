@@ -17,6 +17,7 @@
   min-height: var(--ai-spacing-11); /* 64px desktop */
   padding: var(--ai-spacing-5);
   background-color: var(--cc-header-secondary-bg);
+  container-type: inline-size;
 }
 
 /* ── Title block (flex-1) ────────────────────────────── */
@@ -174,9 +175,13 @@
   flex-shrink: 0;
 }
 
-/* ── Mobile (≤767px) ─────────────────────────────────── */
+/* ── Mobile (≤767px container width) ─────────────────────
+ *
+ * Container-query based so the header collapses to compact mobile
+ * dress whenever the header itself is narrower than 768px — even on a
+ * wide viewport where it sits next to a docked sidebar. */
 
-@media (max-width: 767px) {
+@container (max-width: 767px) {
   .cc-header {
     min-height: var(--ai-spacing-10); /* 56px */
     padding: var(--ai-spacing-3) var(--ai-spacing-4); /* 8px / 12px */

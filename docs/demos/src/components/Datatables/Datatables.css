@@ -28,6 +28,7 @@
   border: 1px solid var(--ai-datatable-table-border);
   border-radius: var(--ai-radius-md);
   overflow: hidden;
+  container-type: inline-size;
 }
 
 /* Table chrome overrides when Table is composed inside Datatables.
@@ -336,11 +337,11 @@
   color: var(--ai-text-primary);
 }
 
-/* ── Mobile responsive (≤767px) ──────────────────────── */
-/* When the consumer doesn't apply a fixed-width modifier, fall back
- * to viewport-driven responsive behaviour. */
+/* ── Mobile responsive (≤767px container width) ─────────
+ * Container-query based — the table compacts whenever its own width
+ * drops below 768px, not just when the viewport does. */
 
-@media (max-width: 767px) {
+@container (max-width: 767px) {
   /* Trim toolbar gap and stack action labels behind icons */
   .datatables__toolbar {
     gap: var(--ai-spacing-2);
