@@ -23,6 +23,18 @@ def main() -> int:
         r"\bsrc/(components|patterns|templates)/",
     ]
 
+    # Stronger reminder for template builds: the "layout-only" framing
+    # makes it easy to skip the get_design_context fetch on the template
+    # root and write shell paint values (bg / padding / gap) from
+    # intuition. Concrete mistake: ControlScreen body bg + page padding
+    # (2026-06-01).
+    template_triggers = [
+        r"\btemplate\b",
+        r"\b(screen|dashboard|landing|home page|home screen)\b",
+        r"\bsrc/(cc/)?templates/",
+    ]
+    is_template = any(re.search(p, prompt, re.IGNORECASE) for p in template_triggers)
+
     if any(re.search(p, prompt, re.IGNORECASE) for p in triggers):
         msg = (
             "[harness reminder] Component-build trigger detected. You MUST invoke "
@@ -33,6 +45,18 @@ def main() -> int:
             "src/(components|patterns|templates)/ are DENIED by "
             ".claude/hooks/build-component-guard.py until the skill is invoked."
         )
+        if is_template:
+            msg += (
+                "\n\n[template-shell rule] This looks like a Tier=Template build. "
+                "Source-of-truth rule #5 + Step 3a apply: the template SHELL "
+                "(body bg, page-content bg/padding/gap, section frames) is "
+                "Figma-bound exactly like any component property. Call "
+                "`get_design_context` on the template root frame and build the "
+                "shell-paint-values table BEFORE writing any shell CSS. Values "
+                "written from a plan-mode write-up or visual intuition are "
+                "unverified by definition. See memory: "
+                "feedback_template_shell_is_figma_too.md."
+            )
         print(json.dumps({
             "hookSpecificOutput": {
                 "hookEventName": "UserPromptSubmit",

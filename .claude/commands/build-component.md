@@ -32,6 +32,17 @@ These are absolute. Violating any of them turns a clean component build into rew
 4. **Every `/build-component` finishes by registering in `index.html`.** Step 10 below — the
    component must appear as a card in the Design System grid. This is mandatory; the build is
    not complete until this card exists.
+5. **Template shells are Figma-bound, not "layout only".** When building a Tier=Template, the
+   shell wrapper itself (body bg, page-content bg/padding/gap, section frames) carries paint
+   values that are bound to Figma variables exactly like any component. The "this is just
+   layout" framing is NOT license to write background/padding/gap from intuition or from a
+   plan-mode write-up. Every shell CSS property requires the same Figma fetch as any
+   component property. Concrete mistake: ControlScreen wrapper bg was set to
+   `--ai-surface-secondary` (intuition: "page bg looks light grey") when Figma binds
+   `cc/ui/primary-bg` → `--cc-ui-primary-bg`; page padding was set to `--ai-spacing-7`
+   (intuition: "32px feels comfortable") when Figma binds `--ai-spacing-6` (24px). All three
+   errors share a single root: never called `get_design_context` on the template root frame
+   before writing the shell. See `feedback_template_shell_is_figma_too.md`.
 
 ## Pre-flight checklist (run before ANY documentation or Code Connect output)
 
@@ -153,6 +164,35 @@ Extract from the output:
 - Exact CSS variable names used (pattern: `var(--ai-*,fallback)`)
 - Explicit dimensions (height, width, padding — especially any fixed `h-[...]`)
 - Typography tokens (font-size, line-height, font-weight variables)
+
+**Step 3a — Template shell paint values (Tier=Template only).**
+
+If this is a Tier=Template build, the root frame's design context also carries the SHELL'S
+OWN paint values — background, padding, gap, border, radius on the body wrapper, on the
+page-content wrapper, on every named section frame. These are bound to Figma variables
+exactly like any component property. Before writing the first line of template CSS,
+explicitly record every shell paint binding:
+
+| Wrapper | Property | Figma class | Token |
+|---|---|---|---|
+| Body / template root | background | `bg-[var(--…)]` | (record token name) |
+| Body / template root | padding | `px-[var(--…)] py-[var(--…)]` | (record token names) |
+| Page-content wrapper | background | `bg-[…]` (if set) | (record) |
+| Page-content wrapper | padding + gap | `px-[…] py-[…] gap-[…]` | (record per breakpoint) |
+| Section frames | bg + padding + gap | (per frame) | (record per frame) |
+
+**Hard rule:** every shell CSS property in your final template CSS must trace to a row in
+this table. A property without a token-name citation from `get_design_context` output is
+unverified — STOP and re-fetch before writing.
+
+This rule exists because the "template is layout-only" framing makes it tempting to write
+shell values from intuition or from your own plan-mode write-up. Both are unverified.
+Source-of-truth rule #5 above + `feedback_template_shell_is_figma_too.md` are the same
+lesson at different scopes — this is the workflow step that catches it.
+
+For Mobile / Desktop responsive shells, fetch BOTH variants (or the Mobile mode if the
+template uses Figma modes for breakpoints) and record padding/gap per breakpoint — the
+mobile value is rarely a simple step-down from desktop.
 
 ### 4. Design context — child nodes
 
@@ -321,6 +361,16 @@ Rules:
 ### 8. Implement
 
 Write the component files following project conventions:
+
+**Template-shell pre-write check (Tier=Template only).**
+Before writing the first line of template CSS, open your Step 3a table and confirm:
+every shell property you're about to write (body bg, page-content bg/padding/gap, every
+section frame's bg/padding/gap, every wrapper border/radius) has a token-name entry from
+a real `get_design_context` fetch — not from your plan document, not from a sibling
+template's CSS, not from visual intuition ("looks like the standard light-grey surface
+token"). If any row is missing or filled in from inference rather than a Figma fetch:
+STOP and re-fetch before writing. Plan-document values are unverified by definition; this
+is the workflow step that catches them. See `feedback_template_shell_is_figma_too.md`.
 
 **CSS (`<Name>.css`):**
 - BEM naming: `.component`, `.component__element`, `.component--modifier`

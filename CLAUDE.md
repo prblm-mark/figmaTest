@@ -18,7 +18,14 @@ This file is read by Claude Code at the start of every session. All rules here a
 > Enforced by `.claude/hooks/build-component-guard.py` — edits are **denied** until the
 > skill is invoked. The skill at `.claude/commands/build-component.md` is the source of
 > truth for every step; do not skip STOPs (Tier=Template, interaction, contextual override,
-> token gap, gradient, hardcoded dimension).
+> token gap, gradient, hardcoded dimension, **template-shell paint values**).
+>
+> **Tier=Template additional rule:** the template SHELL (body bg, page-content
+> bg/padding/gap, section frames) is Figma-bound, not "layout-only" — call
+> `get_design_context` on the template root frame and record every shell paint binding
+> (see skill Step 3a) BEFORE writing any shell CSS. Source-of-truth rule #5 +
+> `feedback_template_shell_is_figma_too.md`. The trigger hook adds an extra reminder when
+> the prompt names a template / screen / dashboard.
 
 ---
 
