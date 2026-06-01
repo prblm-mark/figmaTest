@@ -657,6 +657,17 @@
   <!-- Existing auto-binding interaction scripts -->
   <script src="../../patterns/SidebarMenu/sidebar-menu.js"></script>
   <script src="../../../components/ThemeToggle/ThemeToggle.js"></script>
+  <!-- Toggle has no standalone JS file; consumers wire .toggle clicks
+       inline. Event-delegated at the document so it works for toggles
+       inside dynamically-shown panels (the User Menu Dropdown). -->
+  <script>
+    document.addEventListener('click', function (e) {
+      var toggle = e.target.closest('.toggle:not(.toggle--disabled)');
+      if (!toggle) return;
+      var isActive = toggle.classList.toggle('toggle--active');
+      toggle.setAttribute('aria-checked', String(isActive));
+    });
+  </script>
   <script type="module" src="../../../components/Dropdown/Dropdown.js"></script>
 
   <!-- Chart.js initialisation — Page Views (multi-line) + Users (single-line) -->
