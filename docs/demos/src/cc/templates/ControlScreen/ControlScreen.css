@@ -291,6 +291,11 @@
   }
   /* Figma mobile order: UpgradeCard stacks ABOVE the two StatCards. */
   .control-screen__cards .upgrade-card { order: -1; }
+  /* Mobile-only StatCard type sizing (template override — the component keeps
+     16/14 at all sizes). Standard sizes return at >=768px (MD), where this
+     block no longer applies. */
+  .control-screen__cards .stat-card__value { font-size: var(--ai-font-fixed-xs); }   /* 16 -> 14 */
+  .control-screen__cards .stat-card__title { font-size: var(--ai-font-fixed-xxs); }  /* 14 -> 12 */
   /* Stack Select + (mobile-only Analysis link is rendered elsewhere) */
   .control-screen__zone-row {
     flex-direction: column;
