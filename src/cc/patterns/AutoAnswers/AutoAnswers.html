@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en" data-brand="cc">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../../components/dark-mode-toggle.js"></script>
+  <title>AutoAnswers — Control Centre</title>
+  <link rel="stylesheet" href="../../../styles/base.css">
+  <link rel="stylesheet" href="AutoAnswers.css">
+  <style>
+    body {
+      margin: 0;
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-secondary);
+      min-height: 100vh;
+      color: var(--ai-text-primary);
+      font-family: var(--ai-font-body);
+    }
+    .demo-section { margin-bottom: var(--ai-spacing-8); }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 var(--ai-spacing-3);
+    }
+    .demo-section__lead {
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-contrast);
+      margin: 0 0 var(--ai-spacing-5);
+      max-width: 70ch;
+    }
+    .aa-stack {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-6);
+    }
+    .demo-card {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-3);
+    }
+    .demo-card__caption {
+      font-size: var(--ai-font-fixed-xxs);
+      color: var(--ai-text-contrast);
+    }
+
+    /* QA: one resizable container holds ALL variants so the toggle reflows them together */
+    .aa-qa__controls {
+      display: flex;
+      gap: var(--ai-spacing-3);
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: var(--ai-spacing-4);
+    }
+    .aa-qa__btn {
+      padding: var(--ai-spacing-2) var(--ai-spacing-4);
+      background: var(--ai-surface-primary);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-md);
+      color: var(--ai-text-secondary);
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xs);
+      cursor: pointer;
+    }
+    .aa-qa__btn--active {
+      background: var(--ai-surface-brand);
+      border-color: var(--ai-surface-brand);
+      color: var(--ai-btn-primary-text);
+    }
+    .aa-qa__badge {
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xxs);
+      color: var(--ai-text-contrast);
+    }
+    .aa-qa__frame {
+      box-sizing: border-box;
+      width: 900px;
+      max-width: 100%;
+      min-width: 280px;
+      resize: horizontal;
+      overflow: auto;
+      padding: var(--ai-spacing-5);
+      border: 1px dashed var(--ai-border-secondary);
+      border-radius: var(--ai-radius-lg);
+    }
+    .aa-reset {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--ai-spacing-2);
+      padding: var(--ai-spacing-2) var(--ai-spacing-4);
+      background: var(--ai-surface-primary);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-md);
+      color: var(--ai-text-secondary);
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xs);
+      cursor: pointer;
+    }
+    .aa-reset svg { width: var(--ai-icon-size-sm); height: var(--ai-icon-size-sm); }
+  </style>
+</head>
+<body>
+
+  <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-3);">AutoAnswers</h1>
+  <p style="font-size: var(--ai-font-fixed-sm); color: var(--ai-text-contrast); margin: 0 0 var(--ai-spacing-7); max-width: 70ch;">
+    AI auto-answer card for support forums. Six states across the answer lifecycle —
+    Processing → Suggested → (Complete / Partial / Inadequate), plus a No&nbsp;Answer fallback.
+    Theme-agnostic <code>--ai-*</code> tokens; rendered here under <code>data-brand="cc"</code>.
+    Responsive via <strong>container queries</strong> — each card adapts to its container width
+    (MD breakpoint = 768px), not the viewport.
+  </p>
+
+  <!-- All variants inside one resizable, container-responsive frame -->
+  <div class="demo-section">
+    <p class="demo-section__title">All variants — container-responsive</p>
+    <p class="demo-section__lead">
+      Every variant below shares one resizable container. Drag the frame's right edge or use the
+      presets to move the whole set across the MD breakpoint (768px): below it the header stacks,
+      type shrinks, and buttons drop to the small size and stack. The SuggestedAnswer card is live —
+      its three feedback buttons resolve it to a terminal marked state; use Reset to replay.
+    </p>
+    <div class="aa-qa__controls">
+      <button type="button" class="aa-qa__btn aa-qa__btn--active" data-w="900">Desktop · 900</button>
+      <button type="button" class="aa-qa__btn" data-w="600">Narrow · 600</button>
+      <button type="button" class="aa-qa__btn" data-w="375">Mobile · 375</button>
+      <span class="aa-qa__badge" id="aa-badge">—</span>
+      <button type="button" class="aa-reset" id="aa-reset"><i data-lucide="rotate-ccw" aria-hidden="true"></i>Reset live card</button>
+    </div>
+
+    <div class="aa-qa__frame" id="aa-frame">
+      <div class="aa-stack">
+
+        <div class="demo-card">
+          <div class="cc-auto-answer cc-auto-answer--processing">
+            <div class="cc-auto-answer__card">
+              <div class="cc-auto-answer__header">
+                <div class="cc-auto-answer__heading">
+                  <span class="cc-auto-answer__icon"><i data-lucide="sparkles" aria-hidden="true"></i></span>
+                  <p class="cc-auto-answer__title cc-auto-answer__title--gradient">AI Assistant is thinking...</p>
+                </div>
+              </div>
+              <div class="cc-auto-answer__processing">
+                <span class="cc-auto-answer__spinner"><i data-lucide="loader-circle" aria-hidden="true"></i></span>
+                <p class="cc-auto-answer__processing-text">Analysing the question and searching for a solution...</p>
+              </div>
+            </div>
+          </div>
+          <p class="demo-card__caption">Type = ProcessingAnswer</p>
+        </div>
+
+        <div class="demo-card">
+          <div id="aa-host">
+            <div class="cc-auto-answer cc-auto-answer--suggested">
+              <div class="cc-auto-answer__card">
+                <div class="cc-auto-answer__header">
+                  <div class="cc-auto-answer__heading">
+                    <span class="cc-auto-answer__icon"><i data-lucide="sparkles" aria-hidden="true"></i></span>
+                    <p class="cc-auto-answer__title">AI Suggested Answer</p>
+                  </div>
+                  <span class="cc-auto-answer__pill">Awaiting Feedback</span>
+                </div>
+                <div class="cc-auto-answer__body">
+                  <p class="cc-auto-answer__text">Based on similar cases, here's a recommended approach:</p>
+                  <ol class="cc-auto-answer__list">
+                    <li>Add a "Stop Retry" button in the customer's account dashboard under subscription settings</li>
+                    <li>Configure a webhook in Stripe to automatically update the subscription status when payment fails</li>
+                    <li>Send an automated email to customers with a direct link to manage their retry settings</li>
+                  </ol>
+                  <code class="cc-auto-answer__code">payment_behavior: 'allow_incomplete'</code>
+                  <p class="cc-auto-answer__text">You can implement this using Stripe</p>
+                </div>
+                <div class="cc-auto-answer__actions">
+                  <button type="button" class="cc-auto-answer__action cc-auto-answer__action--positive" data-result="positive">
+                    <i data-lucide="circle-check" aria-hidden="true"></i>Mark as Answer
+                  </button>
+                  <button type="button" class="cc-auto-answer__action cc-auto-answer__action--caution" data-result="caution">
+                    <i data-lucide="thumbs-up" aria-hidden="true"></i>Helpful, still need assistance
+                  </button>
+                  <button type="button" class="cc-auto-answer__action cc-auto-answer__action--negative" data-result="negative">
+                    <i data-lucide="thumbs-down" aria-hidden="true"></i>Not Helpful
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="demo-card__caption">Type = SuggestedAnswer (live)</p>
+        </div>
+
+        <div class="demo-card">
+          <div class="cc-auto-answer cc-auto-answer--no-answer">
+            <div class="cc-auto-answer__card">
+              <div class="cc-auto-answer__header">
+                <div class="cc-auto-answer__heading">
+                  <span class="cc-auto-answer__icon"><i data-lucide="sparkles" aria-hidden="true"></i></span>
+                  <p class="cc-auto-answer__title">AI Assistant</p>
+                </div>
+              </div>
+              <div class="cc-auto-answer__body">
+                <p class="cc-auto-answer__text">I don't have enough information to provide a reliable answer to this question. A human expert response would be more appropriate.</p>
+              </div>
+            </div>
+          </div>
+          <p class="demo-card__caption">Type = NoAnswer</p>
+        </div>
+
+        <div class="demo-card">
+          <div class="cc-auto-answer cc-auto-answer--complete">
+            <div class="cc-auto-answer__card">
+              <div class="cc-auto-answer__header">
+                <div class="cc-auto-answer__heading">
+                  <span class="cc-auto-answer__icon"><i data-lucide="sparkles" aria-hidden="true"></i></span>
+                  <p class="cc-auto-answer__title">AI Answer (Marked as Complete)</p>
+                </div>
+              </div>
+              <div class="cc-auto-answer__body">
+                <p class="cc-auto-answer__text">Based on similar cases, here's a recommended approach:</p>
+                <ol class="cc-auto-answer__list">
+                  <li>Add a "Stop Retry" button in the customer's account dashboard under subscription settings</li>
+                  <li>Configure a webhook in Stripe to automatically update the subscription status when payment fails</li>
+                  <li>Send an automated email to customers with a direct link to manage their retry settings</li>
+                </ol>
+                <code class="cc-auto-answer__code">payment_behavior: 'allow_incomplete'</code>
+                <p class="cc-auto-answer__text">You can implement this using Stripe</p>
+              </div>
+              <div class="cc-auto-answer__status">
+                <span class="cc-auto-answer__status-icon"><i data-lucide="circle-check" aria-hidden="true"></i></span>
+                <p class="cc-auto-answer__status-text">This answer was marked as helpful</p>
+              </div>
+            </div>
+          </div>
+          <p class="demo-card__caption">Type = CompleteAnswer</p>
+        </div>
+
+        <div class="demo-card">
+          <div class="cc-auto-answer cc-auto-answer--partial">
+            <div class="cc-auto-answer__card">
+              <div class="cc-auto-answer__header">
+                <div class="cc-auto-answer__heading">
+                  <span class="cc-auto-answer__icon"><i data-lucide="sparkles" aria-hidden="true"></i></span>
+                  <p class="cc-auto-answer__title">AI Answer (Marked as Partial Answer)</p>
+                </div>
+              </div>
+              <div class="cc-auto-answer__body">
+                <p class="cc-auto-answer__text">Based on similar cases, here's a recommended approach:</p>
+                <ol class="cc-auto-answer__list">
+                  <li>Add a "Stop Retry" button in the customer's account dashboard under subscription settings</li>
+                  <li>Configure a webhook in Stripe to automatically update the subscription status when payment fails</li>
+                  <li>Send an automated email to customers with a direct link to manage their retry settings</li>
+                </ol>
+                <code class="cc-auto-answer__code">payment_behavior: 'allow_incomplete'</code>
+                <p class="cc-auto-answer__text">You can implement this using Stripe</p>
+              </div>
+              <div class="cc-auto-answer__status">
+                <span class="cc-auto-answer__status-icon"><i data-lucide="thumbs-up" aria-hidden="true"></i></span>
+                <p class="cc-auto-answer__status-text">This answer was marked as helpful, with further assistance required</p>
+              </div>
+            </div>
+          </div>
+          <p class="demo-card__caption">Type = PartialAnswer</p>
+        </div>
+
+        <div class="demo-card">
+          <div class="cc-auto-answer cc-auto-answer--inadequate">
+            <div class="cc-auto-answer__card">
+              <div class="cc-auto-answer__header">
+                <div class="cc-auto-answer__heading">
+                  <span class="cc-auto-answer__icon"><i data-lucide="sparkles" aria-hidden="true"></i></span>
+                  <p class="cc-auto-answer__title">AI Answer (Marked as inadequate)</p>
+                </div>
+              </div>
+              <div class="cc-auto-answer__body">
+                <p class="cc-auto-answer__text">Based on similar cases, here's a recommended approach:</p>
+                <ol class="cc-auto-answer__list">
+                  <li>Add a "Stop Retry" button in the customer's account dashboard under subscription settings</li>
+                  <li>Configure a webhook in Stripe to automatically update the subscription status when payment fails</li>
+                  <li>Send an automated email to customers with a direct link to manage their retry settings</li>
+                </ol>
+                <code class="cc-auto-answer__code">payment_behavior: 'allow_incomplete'</code>
+                <p class="cc-auto-answer__text">You can implement this using Stripe</p>
+              </div>
+              <div class="cc-auto-answer__status">
+                <span class="cc-auto-answer__status-icon"><i data-lucide="thumbs-down" aria-hidden="true"></i></span>
+                <p class="cc-auto-answer__status-text">This answer was marked as not helpful</p>
+              </div>
+            </div>
+          </div>
+          <p class="demo-card__caption">Type = InadequateAnswer</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    lucide.createIcons();
+
+    (function () {
+      var RESULTS = {
+        positive: { mod: 'complete',   title: 'AI Answer (Marked as Complete)',        icon: 'circle-check', text: 'This answer was marked as helpful' },
+        caution:  { mod: 'partial',    title: 'AI Answer (Marked as Partial Answer)',  icon: 'thumbs-up',    text: 'This answer was marked as helpful, with further assistance required' },
+        negative: { mod: 'inadequate', title: 'AI Answer (Marked as inadequate)',      icon: 'thumbs-down',  text: 'This answer was marked as not helpful' }
+      };
+      var host  = document.getElementById('aa-host');
+      var frame = document.getElementById('aa-frame');
+      var badge = document.getElementById('aa-badge');
+      if (!frame) return;
+
+      // Report the CONTAINER width (every card shares the frame width; observe the first)
+      var ro = new ResizeObserver(function (entries) {
+        var w = Math.round(entries[0].contentRect.width);
+        badge.textContent = 'Container: ' + w + 'px · ' + (w < 768 ? 'mobile (< MD)' : 'desktop (≥ MD)');
+      });
+      var probe = frame.querySelector('.cc-auto-answer');
+      if (probe) ro.observe(probe); // not the live card, so it survives Reset
+
+      // ── Live SuggestedAnswer → terminal marked state ──
+      var template = host ? host.innerHTML : '';
+
+      function resolve(card, result) {
+        var r = RESULTS[result];
+        if (!r) return;
+        card.className = 'cc-auto-answer cc-auto-answer--' + r.mod;
+        card.querySelector('.cc-auto-answer__title').textContent = r.title;
+        var pill = card.querySelector('.cc-auto-answer__pill');
+        if (pill) pill.remove();
+        var actions = card.querySelector('.cc-auto-answer__actions');
+        var status = document.createElement('div');
+        status.className = 'cc-auto-answer__status';
+        status.innerHTML =
+          '<span class="cc-auto-answer__status-icon"><i data-lucide="' + r.icon + '" aria-hidden="true"></i></span>' +
+          '<p class="cc-auto-answer__status-text"></p>';
+        status.querySelector('.cc-auto-answer__status-text').textContent = r.text;
+        actions.replaceWith(status);
+        lucide.createIcons();
+      }
+
+      function bind() {
+        var card = host.querySelector('.cc-auto-answer');
+        card.querySelectorAll('.cc-auto-answer__action').forEach(function (btn) {
+          btn.addEventListener('click', function () { resolve(card, btn.dataset.result); });
+        });
+      }
+
+      // ── Width presets ──
+      var presetBtns = document.querySelectorAll('.aa-qa__btn');
+      presetBtns.forEach(function (b) {
+        b.addEventListener('click', function () {
+          frame.style.width = b.dataset.w + 'px';
+          presetBtns.forEach(function (x) { x.classList.toggle('aa-qa__btn--active', x === b); });
+        });
+      });
+
+      if (host) {
+        document.getElementById('aa-reset').addEventListener('click', function () {
+          host.innerHTML = template;
+          bind();
+          lucide.createIcons();
+        });
+        bind();
+      }
+    })();
+  </script>
+</body>
+</html>

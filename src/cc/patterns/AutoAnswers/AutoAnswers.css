@@ -1,0 +1,395 @@
+/* AutoAnswers — AI auto-answer card for support forums (Tier: pattern)
+ *
+ * Theme-agnostic: built entirely with --ai-* semantic tokens so it adapts to
+ * whatever brand wrapper it sits under (currently Control Centre via
+ * [data-brand="cc"], which resolves the --ai-* tokens to the teal palette).
+ *
+ * Assumes base.css + tokens.css are already loaded by the page.
+ *
+ * 6 states (Figma "Type" axis), each set via a --<state> modifier on the root:
+ *   processing · suggested · no-answer · complete · partial · inadequate
+ *
+ * RESPONSIVE = CONTAINER-QUERY based (Figma "Device" axis). The root
+ * `.cc-auto-answer` is the query container; `.cc-auto-answer__card` (and its
+ * descendants) read its width. Below the MD breakpoint (container < 768px) the
+ * card adopts the mobile layout — independent of viewport width, so it works in
+ * any column it's dropped into. (The container element cannot query itself, so
+ * the card MUST be a descendant of the container, never the same element.)
+ *
+ * --cc-aa-surface / --cc-aa-border / --cc-aa-accent carry the per-state palette.
+ */
+
+/* ── Root = query container (no visuals) ────────────── */
+.cc-auto-answer {
+  display: block;
+  width: 100%;
+  container-type: inline-size;
+  container-name: cc-auto-answer;
+}
+
+/* ── State themes (set palette custom props) ────────── */
+.cc-auto-answer--processing,
+.cc-auto-answer--suggested {
+  --cc-aa-surface: var(--ai-surface-info-soft);
+  --cc-aa-border: var(--ai-border-info);
+  --cc-aa-accent: var(--ai-text-info);
+}
+
+.cc-auto-answer--no-answer,
+.cc-auto-answer--inadequate {
+  --cc-aa-surface: var(--ai-surface-neutral-soft);
+  --cc-aa-border: var(--ai-border-neutral);
+  --cc-aa-accent: var(--ai-text-neutral);
+}
+
+.cc-auto-answer--complete {
+  --cc-aa-surface: var(--ai-surface-success-soft);
+  --cc-aa-border: var(--ai-border-success);
+  --cc-aa-accent: var(--ai-text-success);
+}
+
+.cc-auto-answer--partial {
+  --cc-aa-surface: var(--ai-surface-warning-soft);
+  --cc-aa-border: var(--ai-border-warning);
+  --cc-aa-accent: var(--ai-text-warning);
+}
+
+/* ── Card (the visible surface) ─────────────────────── */
+/* Figma authored the variants with inconsistent radii/padding (10px vs 16px,
+ * 18px vs 24px, 26px); normalised to the dominant tokens per user decision. */
+.cc-auto-answer__card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--ai-spacing-6);
+  background-color: var(--cc-aa-surface);
+  border: 1px solid var(--cc-aa-border);
+  border-radius: var(--ai-radius-lg);
+  font-family: var(--ai-font-title);
+  color: var(--ai-text-primary);
+}
+
+/* ── Header (icon + title [+ pill]) ─────────────────── */
+.cc-auto-answer__header {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  width: 100%;
+}
+
+.cc-auto-answer__heading {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.cc-auto-answer__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--cc-aa-accent);
+}
+
+.cc-auto-answer__icon svg {
+  width: var(--ai-icon-size-md);
+  height: var(--ai-icon-size-md);
+}
+
+.cc-auto-answer__title {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-semibold);
+  font-size: var(--ai-font-fixed-sm);
+  line-height: var(--ai-leading-md);
+  color: var(--cc-aa-accent);
+}
+
+/* ProcessingAnswer: gradient text "AI Assistant is thinking…" */
+.cc-auto-answer__title--gradient {
+  background-image: linear-gradient(
+    to right,
+    var(--ai-surface-info),
+    #2dc0df /* approved cyan gradient stop — no semantic token (user-approved) */
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* "Awaiting Feedback" chip — info-themed, SuggestedAnswer only.
+ * Figma fill = border-info @ 50% alpha; reproduced with color-mix. */
+.cc-auto-answer__pill {
+  flex-shrink: 0;
+  padding: var(--ai-spacing-1) var(--ai-spacing-4);
+  border-radius: var(--ai-radius-full);
+  background-color: color-mix(in srgb, var(--ai-border-info) 50%, transparent);
+  color: var(--ai-text-info);
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-medium);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-sm);
+  white-space: nowrap;
+}
+
+/* ── Body (white inner box) ─────────────────────────── */
+.cc-auto-answer__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-4);
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--ai-spacing-6);
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+}
+
+.cc-auto-answer__text {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-sm);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+}
+
+/* NoAnswer paragraph carries an optical tracking value in Figma (both breakpoints) */
+.cc-auto-answer--no-answer .cc-auto-answer__text {
+  letter-spacing: -0.3125px; /* optical, from Figma */
+}
+
+.cc-auto-answer__list {
+  margin: 0;
+  padding-inline-start: var(--ai-spacing-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+  list-style: decimal;
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-sm);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+}
+
+/* Inline code snippet. Figma uses Inter Medium (title), not monospace.
+ * Font-size normalised 15px → fixed-xs (matches the mobile value). */
+.cc-auto-answer__code {
+  align-self: flex-start;
+  max-width: 100%;
+  margin: 0;
+  padding: var(--ai-spacing-1) var(--ai-spacing-3);
+  border-radius: var(--ai-radius-sm);
+  background-color: var(--ai-surface-secondary);
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-medium);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-secondary);
+  overflow-wrap: anywhere;
+}
+
+/* ── Action buttons (SuggestedAnswer only) ──────────── */
+/* Local to AutoAnswers (not Button variants) per user decision:
+ * positive = solid success · caution = soft warning · negative = soft error. */
+.cc-auto-answer__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-4);
+  width: 100%;
+}
+
+.cc-auto-answer__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ai-spacing-3);
+  min-height: var(--ai-spacing-8); /* 40px fixed height from Figma */
+  padding: 0 var(--ai-spacing-5);
+  border: 1px solid transparent;
+  border-radius: var(--ai-radius-md);
+  font-family: var(--ai-font-body);
+  font-weight: var(--ai-font-semibold);
+  font-size: var(--ai-font-fluid-xs);
+  line-height: var(--ai-leading-xs);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: filter var(--ai-transition-default),
+              background-color var(--ai-transition-default),
+              border-color var(--ai-transition-default);
+}
+
+.cc-auto-answer__action svg {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+.cc-auto-answer__action:hover {
+  filter: brightness(0.96);
+}
+
+.cc-auto-answer__action:active {
+  filter: brightness(0.92);
+}
+
+.cc-auto-answer__action:focus-visible {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: 2px;
+}
+
+.cc-auto-answer__action--positive {
+  background-color: var(--ai-surface-success);
+  border-color: var(--ai-btn-primary-border);
+  color: var(--ai-btn-primary-text);
+}
+
+.cc-auto-answer__action--caution {
+  background-color: var(--ai-surface-warning-soft);
+  border-color: var(--ai-border-warning);
+  color: var(--ai-text-warning);
+}
+
+.cc-auto-answer__action--negative {
+  background-color: var(--ai-surface-error-soft);
+  border-color: var(--ai-border-error);
+  color: var(--ai-text-error);
+}
+
+/* ── Status footer (complete / partial / inadequate) ── */
+.cc-auto-answer__status {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  width: 100%;
+  color: var(--cc-aa-accent);
+}
+
+.cc-auto-answer__status-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.cc-auto-answer__status-icon svg {
+  width: var(--ai-icon-size-md);
+  height: var(--ai-icon-size-md);
+}
+
+.cc-auto-answer__status-text {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-sm);
+  letter-spacing: -0.1504px; /* optical, from Figma */
+  color: inherit;
+}
+
+/* ── ProcessingAnswer working row (spinner + status text) ── */
+.cc-auto-answer__processing {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ai-spacing-3);
+  width: 100%;
+}
+
+.cc-auto-answer__spinner {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--ai-surface-brand); /* info-theme accent; Figma asset colour not exposed */
+  animation: cc-auto-answer-spin 1s linear infinite;
+}
+
+.cc-auto-answer__spinner svg {
+  width: var(--ai-icon-size-md);
+  height: var(--ai-icon-size-md);
+}
+
+.cc-auto-answer__processing-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-sm);
+  line-height: var(--ai-leading-md);
+  letter-spacing: -0.3125px; /* optical, from Figma */
+  color: var(--ai-text-primary);
+}
+
+@keyframes cc-auto-answer-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cc-auto-answer__spinner {
+    animation: none;
+  }
+}
+
+/* ── Mobile (container < MD breakpoint, 768px) ──────── */
+/* Queries the .cc-auto-answer container; rules target its DESCENDANTS only. */
+@container cc-auto-answer (max-width: 767px) {
+  .cc-auto-answer__card {
+    padding: var(--ai-spacing-5);
+  }
+
+  /* Header stacks: icon+title row above, pill below (Figma 2802:6351) */
+  .cc-auto-answer__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ai-spacing-4);
+  }
+
+  .cc-auto-answer__heading {
+    width: 100%;
+  }
+
+  .cc-auto-answer__title {
+    font-size: var(--ai-font-fixed-xs);
+  }
+
+  .cc-auto-answer__body {
+    padding: var(--ai-spacing-5);
+  }
+
+  .cc-auto-answer__text,
+  .cc-auto-answer__list {
+    font-size: var(--ai-font-fixed-xs);
+  }
+
+  .cc-auto-answer__list {
+    line-height: var(--ai-leading-sm);
+  }
+
+  /* NoAnswer paragraph tightens to leading-sm below MD (Figma 2802:6340) */
+  .cc-auto-answer--no-answer .cc-auto-answer__text {
+    line-height: var(--ai-leading-sm);
+  }
+
+  .cc-auto-answer__pill {
+    font-size: var(--ai-font-fixed-xxs);
+  }
+
+  .cc-auto-answer__processing-text {
+    font-size: var(--ai-font-fixed-xs);
+    line-height: var(--ai-leading-sm);
+  }
+
+  /* Action buttons stack vertically + drop to the sm size (Figma button/sm) */
+  .cc-auto-answer__actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ai-spacing-3);
+  }
+
+  .cc-auto-answer__action {
+    min-height: var(--ai-spacing-7);
+    padding: 0 var(--ai-spacing-4);
+    font-size: var(--ai-font-fluid-xxs);
+  }
+}
