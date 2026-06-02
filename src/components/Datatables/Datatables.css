@@ -5,9 +5,11 @@
  *
  * Composes the production Table component (`.table` + `.table-wrap`)
  * and adds toolbar / pagination footer / sortable headers / kebab-row-
- * expand chrome around it. Mobile is responsive via @media; the
- * Trigger overflow pattern (kebab to reveal hidden columns) is markup-
- * driven and works at any viewport.
+ * expand chrome around it. Mobile is responsive via @container (the
+ * .datatables is a container-type: inline-size context) — below 768px
+ * container width the chrome padding compacts to spacing-3. The Trigger
+ * overflow pattern (kebab to reveal hidden columns) is markup-driven and
+ * works at any viewport.
  *
  * Token namespace (added 2026-05-07): chrome uses the new
  * `--ai-datatable-*` tokens (table-bg / table-header-bg /
@@ -291,8 +293,15 @@
 }
 
 .datatables__kebab-cell {
-  width: var(--ai-spacing-9);
+  width: var(--ai-spacing-7);
   text-align: right;
+}
+
+/* Kebab column hugs its right-aligned dots icon — no left padding. Specificity
+   raised above the base `.table` cell padding (and the mobile compaction). */
+.datatables .table thead th.datatables__kebab-cell,
+.datatables .table tbody td.datatables__kebab-cell {
+  padding-left: 0;
 }
 
 .datatables__row-detail {
@@ -345,6 +354,28 @@
   /* Trim toolbar gap and stack action labels behind icons */
   .datatables__toolbar {
     gap: var(--ai-spacing-2);
+  }
+
+  /* Compact padding below 768px container width: every element that uses
+   * spacing-5 / spacing-4 padding at desktop drops to a uniform
+   * spacing-3 (8px) on both axes. Covers the toolbar, footer, detail list,
+   * and the header/body cells (Table cell rules scoped to .datatables so
+   * the base Table component elsewhere is unaffected). */
+  .datatables__toolbar,
+  .datatables__footer,
+  .datatables__detail-list,
+  .datatables .table thead th,
+  .datatables .table tbody td {
+    padding: var(--ai-spacing-3) var(--ai-spacing-3);
+  }
+
+  /* Tight column: drops right padding so the column collapses toward its
+   * content, handing the freed width to its neighbour. Used on the Login
+   * column of the Whos Online · Trigger variant. Specificity is raised
+   * above the compaction rule's `.datatables .table tbody td`. */
+  .datatables .table thead th.datatables__col--tight,
+  .datatables .table tbody td.datatables__col--tight {
+    padding-right: 0;
   }
 }
 
