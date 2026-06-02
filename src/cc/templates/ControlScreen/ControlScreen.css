@@ -97,6 +97,22 @@
      SidebarMenu can shrink the column far below 768px on a wide screen. */
   container-type: inline-size;
   container-name: cs-page;
+  /* Scrollbar: thin, transparent track, thumb in the CC action-rail grey. */
+  scrollbar-width: thin;
+  scrollbar-color: var(--cc-actions-menu-primary-bg) transparent;
+}
+
+.control-screen__page::-webkit-scrollbar {
+  width: var(--ai-spacing-3);
+}
+
+.control-screen__page::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.control-screen__page::-webkit-scrollbar-thumb {
+  background-color: var(--cc-actions-menu-primary-bg);
+  border-radius: var(--ai-radius-full);
 }
 
 /* Alert + card row share one container (Figma Frame 229, node 4183:14662):
@@ -305,4 +321,19 @@
   .control-screen__sidebar--mobile { display: flex; }
   /* Right action rail is desktop-only per Figma — hidden on mobile. */
   .control-screen__actions { display: none; }
+
+  /* Mobile menu = OVERLAY, not push (Figma mobile Menu Open 4187:21247).
+   * The docked panel's default behaviour is an in-flow flex sibling of the
+   * rail (correct on desktop — it widens the shell and pushes main aside).
+   * On mobile the panel must float OVER .control-screen__main instead: lift
+   * it out of flow and anchor it to the rail's right edge (left: 100% of the
+   * now rail-width .cc-sidebar-menu). The rail stays in flow at the left;
+   * main content fills the full remaining width beneath the panel. */
+  .control-screen__sidebar--mobile .cc-menu:not(.cc-menu--floating) {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    height: 100%;
+    z-index: 5;
+  }
 }

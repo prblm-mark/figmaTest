@@ -13,7 +13,7 @@
 |---|---|---|---|
 | 4187:21253 | Menu Open | Desktop | Default state on page load — Control panel docked open via `data-cc-target="control"` rail button carrying `cc-sidebar__btn--active` and the matching panel `aria-hidden="false"`. |
 | 4187:21249 | Menu Collapsed | Desktop | User clicks the active rail button again → SidebarMenu collapses to rail-only. Handled by existing `sidebar-menu.js`. |
-| 4187:21247 | Menu Open | Mobile | User taps a rail icon → menu panel slides in as overlay over the page content. Handled by existing `sidebar-menu.js`. |
+| 4187:21247 | Menu Open | Mobile | User taps a rail icon → `sidebar-menu.js` un-hides the panel; below 768px the panel is lifted out of flow (`position: absolute; left: 100%`) so it **overlays** `.control-screen__main` instead of widening the rail and pushing content aside (the desktop docked behaviour). Rail stays in flow at the left. |
 | 4187:21248 | Menu Collapsed | Mobile | Default mobile state — rail-only, no panel docked. |
 
 ## Composed components
@@ -43,7 +43,7 @@ Template-owned classes only (every other class belongs to a composed component):
 | `.control-screen` | Body root. `display: flex; height: 100vh`. |
 | `.control-screen__sidebar` | Wrapper for a SidebarMenu composite. `flex: 0 0 auto; height: 100vh`. |
 | `.control-screen__sidebar--desktop` | Visible at ≥768px. |
-| `.control-screen__sidebar--mobile` | Visible at <768px. |
+| `.control-screen__sidebar--mobile` | Visible at <768px. Its `.cc-menu` panel is `position: absolute; left: 100%` so the open menu overlays the page content rather than pushing it. |
 | `.control-screen__main` | Flex column filling remainder. `overflow: hidden`. |
 | `.control-screen__chrome` | Sticky-equivalent top band hosting `cc-header-group`. |
 | `.control-screen__page` | Scroll container. `flex: 1 1 auto; overflow-y: auto`. |
