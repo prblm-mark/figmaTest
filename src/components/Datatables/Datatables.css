@@ -377,6 +377,18 @@
   .datatables .table tbody td.datatables__col--tight {
     padding-right: 0;
   }
+
+  /* Toolbar search fills the available space below 768px. At desktop the
+   * search uses `align-items: flex-end` (content-width, right-aligned) and
+   * the Input `--sm` wrap caps at --ai-size-3 (192px) — on a narrow toolbar
+   * that fixed width overflows. Stretch the wrap to the search column and
+   * lift the cap so it shrinks/grows with the toolbar instead. */
+  .datatables__search {
+    align-items: stretch;
+  }
+  .datatables__search .input__wrap {
+    max-width: none;
+  }
 }
 
 /* ── Body cell content patterns (used by Whos Online variants) ──

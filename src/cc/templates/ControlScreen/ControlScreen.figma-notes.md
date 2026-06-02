@@ -54,8 +54,8 @@ Template-owned classes only (every other class belongs to a composed component):
 | `.control-screen__actions` | Wrapper for the right-edge ActionsMenu rail; rightmost flex child of `.control-screen`, full-height, `display: none` below 768px. |
 | `.control-screen__section` | Wrapper frame: section heading + section body. |
 | `.control-screen__section-head` | Flex row: title left, meta right (stacks on mobile). |
-| `.control-screen__section-title` | h2 — "Who's Online". |
-| `.control-screen__section-meta` | Subtitle — "78 Members Online (…)". |
+| `.control-screen__section-title` | h2 — "Who's Online". Bold (`--ai-font-bold`). |
+| `.control-screen__section-meta` | Subtitle — "78 Members Online (…)" at `--ai-font-fixed-xxs`. The count is wrapped in `.control-screen__section-meta-strong` (bold, `--ai-text-primary`), inline with the guest/bot breakdown. |
 
 ## Token Mapping
 
