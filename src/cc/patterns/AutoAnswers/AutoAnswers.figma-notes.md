@@ -23,7 +23,7 @@ Centre component (`[data-brand="cc"]`), but built theme-agnostically with
 
 | State (modifier) | Theme | Header | Body | Footer / extra | Mobile delta |
 |---|---|---|---|---|---|
-| `--processing` | info | sparkles + **gradient** title | — (no body box) | spinner + status line | type 16→14; padding 24→16 |
+| `--processing` | info | **spinner** (replaces sparkles) + **shimmer gradient** title | status text only | — | type 16→14; padding 24→16 |
 | `--suggested` | info | sparkles + title + "Awaiting Feedback" pill | full answer | 3 action buttons | header stacks (column); pill below title; type 16→14; pill 14→12; buttons → sm (h32, px12, 12px) + stack |
 | `--no-answer` | neutral | sparkles + title | single paragraph (tracking -0.3125px) | — | type 16→14; padding 24→16; paragraph line-height → leading-sm |
 | `--complete` | success | sparkles + title | full answer | circle-check + "marked as helpful" | type 16→14; padding 24→16 |
@@ -33,8 +33,16 @@ Centre component (`[data-brand="cc"]`), but built theme-agnostically with
 Interactive states (Pure CSS): action buttons `:hover` (brightness 0.96),
 `:active` (0.92), `:focus-visible` (brand outline). JS: SuggestedAnswer's three
 buttons resolve the card to a terminal marked state (Complete/Partial/Inadequate)
-— single-shot, no undo (Reset in demo only). Spinner animates (respects
-`prefers-reduced-motion`).
+— single-shot, no undo (Reset in demo only).
+
+**ProcessingAnswer** (Figma 2802:6343): a `loader-circle` spinner sits in the
+header heading **in place of** the sparkles icon while loading; the sparkles
+returns in every loaded state (it's only authored in non-processing headers).
+The body row is the status text only. Animations (all CSS, halted by
+`prefers-reduced-motion: reduce`): the spinner spins (`cc-auto-answer-spin` 1s)
+and the "AI Assistant is thinking…" title runs a left→right shimmer — a brighter
+`#2dc0df` band sweeping across the `--ai-surface-info` base via animated
+`background-position` + text clip (`cc-auto-answer-shimmer` 2.4s).
 
 **Responsive = container-query based.** The root `.cc-auto-answer` is the query
 container (`container-type: inline-size; container-name: cc-auto-answer`); the
@@ -75,8 +83,8 @@ transitions together, without resizing the viewport.
 | Status footer | `.cc-auto-answer__status` |
 | Footer icon (CircleCheck / ThumbUp / ThumbDown) | `.cc-auto-answer__status-icon` |
 | Footer text | `.cc-auto-answer__status-text` |
-| Processing working row | `.cc-auto-answer__processing` |
-| Spinner | `.cc-auto-answer__spinner` (Lucide `loader-circle`) |
+| Spinner (in header, processing only) | `.cc-auto-answer__spinner` (Lucide `loader-circle`) |
+| Processing status row | `.cc-auto-answer__processing` |
 | Processing status text | `.cc-auto-answer__processing-text` |
 
 ## Token Mapping

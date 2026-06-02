@@ -107,16 +107,26 @@
   color: var(--cc-aa-accent);
 }
 
-/* ProcessingAnswer: gradient text "AI Assistant is thinking…" */
+/* ProcessingAnswer: gradient text "AI Assistant is thinking…" with a brighter
+ * cyan highlight band that sweeps left→right on a loop (shimmer), using the
+ * current info→cyan colours. */
 .cc-auto-answer__title--gradient {
   background-image: linear-gradient(
-    to right,
-    var(--ai-surface-info),
-    #2dc0df /* approved cyan gradient stop — no semantic token (user-approved) */
+    90deg,
+    var(--ai-surface-info) 25%,
+    #2dc0df 50%, /* approved cyan gradient stop — no semantic token (user-approved) */
+    var(--ai-surface-info) 75%
   );
+  background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  animation: cc-auto-answer-shimmer 2.4s linear infinite;
+}
+
+@keyframes cc-auto-answer-shimmer {
+  from { background-position: 200% center; }
+  to   { background-position: 0% center; }
 }
 
 /* "Awaiting Feedback" chip — info-themed, SuggestedAnswer only.
@@ -287,7 +297,7 @@
   color: inherit;
 }
 
-/* ── ProcessingAnswer working row (spinner + status text) ── */
+/* ── ProcessingAnswer status row (text only; spinner lives in the header) ── */
 .cc-auto-answer__processing {
   display: flex;
   align-items: flex-start;
@@ -295,6 +305,9 @@
   width: 100%;
 }
 
+/* ProcessingAnswer: the spinner sits in the header heading, replacing the
+ * sparkles icon while loading. The sparkles returns in every loaded state
+ * (Figma 2802:6343). */
 .cc-auto-answer__spinner {
   display: inline-flex;
   flex-shrink: 0;
@@ -326,7 +339,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cc-auto-answer__spinner {
+  .cc-auto-answer__spinner,
+  .cc-auto-answer__title--gradient {
     animation: none;
   }
 }
