@@ -324,6 +324,11 @@
   background-color: var(--cc-actions-menu-secondary-bg);
 }
 
+/* Favourites panel list (top-level submenu used as the favourites menu) */
+.cc-control__fav-list {
+  padding: var(--ai-spacing-3) 0;
+}
+
 /* ───── Template-level reflow — driven by main column width ─────
  *
  * @container cs-page (max-width: 767px) fires when .cc-control__page
