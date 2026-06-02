@@ -39,6 +39,7 @@
   <link rel="stylesheet" href="../../patterns/Header/Header.css">
   <link rel="stylesheet" href="../../patterns/HeaderGroup/HeaderGroup.css">
   <link rel="stylesheet" href="../../patterns/ActionsMenu/ActionsMenu.css">
+  <link rel="stylesheet" href="../../patterns/ActionsInfoPanel/ActionsInfoPanel.css">
 
   <!-- Template -->
   <link rel="stylesheet" href="ControlScreen.css">
@@ -842,9 +843,33 @@
       <button class="actions-menu__btn" type="button" aria-label="AI suggestions">
         <i data-lucide="sparkles" aria-hidden="true"></i>
       </button>
-      <button class="actions-menu__btn" type="button" aria-label="Info">
-        <i data-lucide="info" aria-hidden="true"></i>
-      </button>
+      <span class="cc-control__rail-item">
+        <button class="actions-menu__btn" type="button" aria-label="Info" aria-haspopup="dialog" aria-expanded="false" aria-controls="cc-rail-info" data-aa-toggle="info">
+          <i data-lucide="info" aria-hidden="true"></i>
+        </button>
+        <div class="cc-control__rail-popover" id="cc-rail-info" data-aa-panel="info" role="dialog" aria-label="Information" hidden>
+          <div class="cc-actions-info-panel">
+            <section class="cc-actions-info-panel__section">
+              <h3 class="cc-actions-info-panel__heading">Description</h3>
+              <p class="cc-actions-info-panel__body">Your Control Centre home — monitor live activity, jump into key features, and switch zones from one place.</p>
+            </section>
+            <section class="cc-actions-info-panel__section">
+              <h3 class="cc-actions-info-panel__heading">Related</h3>
+              <div class="cc-actions-info-panel__pills">
+                <button type="button" class="btn btn--tertiary btn--sm">Analysis Dashboard</button>
+                <button type="button" class="btn btn--tertiary btn--sm">Zone Settings</button>
+              </div>
+            </section>
+            <section class="cc-actions-info-panel__section">
+              <h3 class="cc-actions-info-panel__heading">System Security Right</h3>
+              <div class="cc-actions-info-panel__pills">
+                <button type="button" class="btn btn--tertiary btn--sm">Control Access</button>
+                <button type="button" class="btn btn--tertiary btn--sm">Member Management</button>
+              </div>
+            </section>
+          </div>
+        </div>
+      </span>
       <button class="actions-menu__btn" type="button" aria-label="Favourite">
         <i data-lucide="star" aria-hidden="true"></i>
       </button>
@@ -880,6 +905,44 @@
     });
   </script>
   <script type="module" src="../../../components/Dropdown/Dropdown.js"></script>
+
+  <!-- ActionsMenu rail popovers (Info, …). Generic toggle: one open at a time,
+       closes on Esc / click-outside. Add more by pairing a button
+       [data-aa-toggle="X"] with a panel [data-aa-panel="X"]. -->
+  <script>
+    (function () {
+      function panelFor(key) { return document.querySelector('[data-aa-panel="' + key + '"]'); }
+      function toggleFor(key) { return document.querySelector('[data-aa-toggle="' + key + '"]'); }
+      function close(panel) {
+        if (!panel || panel.hidden) return;
+        panel.hidden = true;
+        var t = toggleFor(panel.dataset.aaPanel);
+        if (t) t.setAttribute('aria-expanded', 'false');
+      }
+      function closeAll(except) {
+        document.querySelectorAll('[data-aa-panel]').forEach(function (p) { if (p !== except) close(p); });
+      }
+      document.querySelectorAll('[data-aa-toggle]').forEach(function (btn) {
+        var panel = panelFor(btn.dataset.aaToggle);
+        if (!panel) return;
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var willOpen = panel.hidden;
+          closeAll(willOpen ? panel : null);
+          panel.hidden = !willOpen;
+          btn.setAttribute('aria-expanded', String(willOpen));
+          if (willOpen && window.lucide) lucide.createIcons();
+        });
+      });
+      document.addEventListener('click', function (e) {
+        document.querySelectorAll('[data-aa-panel]:not([hidden])').forEach(function (p) {
+          var t = toggleFor(p.dataset.aaPanel);
+          if (!p.contains(e.target) && !(t && t.contains(e.target))) close(p);
+        });
+      });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(null); });
+    })();
+  </script>
 
   <!-- Chart.js initialisation — Page Views (multi-line) + Users (single-line) -->
   <script>

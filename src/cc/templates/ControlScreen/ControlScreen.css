@@ -166,16 +166,17 @@
   }
 }
 
-/* CC brand: the two StatCard icon squares use teal hues (Figma node
+/* CC brand: the two StatCard icon squares use distinct teal hues (Figma node
    4183:14664) rather than the component default Blue/600. `teal/500` and
-   `muted-teal/600` are Figma primitives with no --ai-* semantic token —
-   used here on explicit instruction, scoped per-card to the template
-   (not a StatCard variant). */
+   `muted-teal/600` are Figma primitives with no --ai-* semantic token.
+   USER-APPROVED (2026-06) as scoped, per-card template overrides — the two-tone
+   look is intentional and kept as primitives (NOT tokenised, NOT a StatCard
+   variant). Do not re-flag in audits. */
 .cc-control__cards .stat-card:nth-of-type(1) .stat-card__icon-wrap {
-  background-color: #14b8a6; /* teal/500 */
+  background-color: #14b8a6; /* teal/500 primitive — user-approved */
 }
 .cc-control__cards .stat-card:nth-of-type(2) .stat-card__icon-wrap {
-  background-color: #3391a4; /* muted-teal/600 */
+  background-color: #3391a4; /* muted-teal/600 primitive — user-approved */
 }
 
 /* Zone row: Select Zone (left) + Analysis Dashboard link (right). */
@@ -278,6 +279,29 @@
 
 .cc-control__actions .actions-menu {
   height: 100%;   /* fill the 100vh shell row → full-height rail */
+}
+
+/* Rail popovers (Info, etc.) — open inward (left of the rail), anchored to the
+   triggering button. The hosted card supplies its own bg/border/radius. */
+.cc-control__rail-item {
+  position: relative;
+  display: inline-flex;
+}
+
+.cc-control__rail-popover {
+  position: absolute;
+  top: 0;
+  right: calc(100% + var(--ai-spacing-3));
+  z-index: 50;
+}
+
+.cc-control__rail-popover .cc-actions-info-panel {
+  box-shadow: var(--ai-shadow-lg);
+}
+
+/* Active look on the rail button while its popover is open */
+.cc-control__actions .actions-menu__btn[aria-expanded="true"] {
+  background-color: var(--cc-actions-menu-secondary-bg);
 }
 
 /* ───── Template-level reflow — driven by main column width ─────
