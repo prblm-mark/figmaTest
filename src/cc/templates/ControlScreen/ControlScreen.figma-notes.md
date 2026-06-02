@@ -13,7 +13,7 @@
 |---|---|---|---|
 | 4187:21253 | Menu Open | Desktop | Default state on page load — Control panel docked open via `data-cc-target="control"` rail button carrying `cc-sidebar__btn--active` and the matching panel `aria-hidden="false"`. |
 | 4187:21249 | Menu Collapsed | Desktop | User clicks the active rail button again → SidebarMenu collapses to rail-only. Handled by existing `sidebar-menu.js`. |
-| 4187:21247 | Menu Open | Mobile | User taps a rail icon → `sidebar-menu.js` un-hides the panel; below 768px the panel is lifted out of flow (`position: absolute; left: 100%`) so it **overlays** `.control-screen__main` instead of widening the rail and pushing content aside (the desktop docked behaviour). Rail stays in flow at the left. |
+| 4187:21247 | Menu Open | Mobile | User taps a rail icon → `sidebar-menu.js` un-hides the panel; below 768px the panel is lifted out of flow (`position: absolute; left: 100%`) so it **overlays** `.cc-control__main` instead of widening the rail and pushing content aside (the desktop docked behaviour). Rail stays in flow at the left. |
 | 4187:21248 | Menu Collapsed | Mobile | Default mobile state — rail-only, no panel docked. |
 
 ## Composed components
@@ -29,8 +29,8 @@ ControlScreen owns **only the app-shell layout**. Every visual block is rendered
 | `src/patterns/UpgradeCard/` | Version + Update CTA — third cell of the 3-col row. |
 | `src/components/Select/` (`sel sel__control--sm`) | "Select Zone" dropdown. |
 | `src/patterns/Chart/` × 2 + Chart.js CDN | "Page Views" (multi-line) + "Users" (single-line area). |
-| `src/components/Datatables/` (Whos Online — **two instances swapped at the cs-page breakpoint**) | Members table. **Desktop** (`.control-screen__table--desktop`, ≥768px): Whos Online · Scroll — 4 columns (User, Account, Login, Touch). **Mobile** (`.control-screen__table--mobile`, <768px): Whos Online · **Trigger** — User + Login + a kebab that expands a detail row holding Account + Touch (Figma mobile node `4183:14675` / instance `4183:14681`, component variant `2764:2980`). Both instances are in the DOM; `@container cs-page (max-width: 767px)` hides one and shows the other — the same device-swap pattern as the SidebarMenu composites. Scroll↔Trigger is a markup-level variant (different DOM), not a CSS toggle, so each is a verbatim use of its component variant rather than one responsive markup. Kebab reveal is pure CSS (`:has(.datatables__kebab__input:checked)`). |
-| `src/cc/patterns/ActionsMenu/` | Full-height right-edge action rail (Figma node `4167:4879`, docked at `left: 1340px` of the 1396px Desktop frame). Wrapped in `.control-screen__actions` as the rightmost flex child of `.control-screen`. **Desktop only** — `display: none` below 768px (device-class swap, like the sidebar). |
+| `src/components/Datatables/` (Whos Online — **two instances swapped at the cs-page breakpoint**) | Members table. **Desktop** (`.cc-control__table--desktop`, ≥768px): Whos Online · Scroll — 4 columns (User, Account, Login, Touch). **Mobile** (`.cc-control__table--mobile`, <768px): Whos Online · **Trigger** — User + Login + a kebab that expands a detail row holding Account + Touch (Figma mobile node `4183:14675` / instance `4183:14681`, component variant `2764:2980`). Both instances are in the DOM; `@container cs-page (max-width: 767px)` hides one and shows the other — the same device-swap pattern as the SidebarMenu composites. Scroll↔Trigger is a markup-level variant (different DOM), not a CSS toggle, so each is a verbatim use of its component variant rather than one responsive markup. Kebab reveal is pure CSS (`:has(.datatables__kebab__input:checked)`). |
+| `src/cc/patterns/ActionsMenu/` | Full-height right-edge action rail (Figma node `4167:4879`, docked at `left: 1340px` of the 1396px Desktop frame). Wrapped in `.cc-control__actions` as the rightmost flex child of `.cc-control`. **Desktop only** — `display: none` below 768px (device-class swap, like the sidebar). |
 
 Transitive deps loaded via `<link>`: Button, Breadcrumb, Dropdown, DropdownItem, Portraits, Avatar, NotificationBadge, Toggle, ThemeToggle, Input, Table, MainMenuItem.
 
@@ -40,22 +40,22 @@ Template-owned classes only (every other class belongs to a composed component):
 
 | Class | Role |
 |---|---|
-| `.control-screen` | Body root. `display: flex; height: 100vh`. |
-| `.control-screen__sidebar` | Wrapper for a SidebarMenu composite. `flex: 0 0 auto; height: 100vh`. |
-| `.control-screen__sidebar--desktop` | Visible at ≥768px. |
-| `.control-screen__sidebar--mobile` | Visible at <768px. Its `.cc-menu` panel is `position: absolute; left: 100%` so the open menu overlays the page content rather than pushing it. |
-| `.control-screen__main` | Flex column filling remainder. `overflow: hidden`. |
-| `.control-screen__chrome` | Sticky-equivalent top band hosting `cc-header-group`. |
-| `.control-screen__page` | Scroll container. `flex: 1 1 auto; overflow-y: auto`. |
-| `.control-screen__cards` | 3-col → 1-col grid. UpgradeCard `order: -1` at mobile. |
-| `.control-screen__zone-row` | Select Zone + Analysis Dashboard link, space-between. |
-| `.control-screen__analysis-link` | Right-side text link (brand colour + arrow icon). Two copies in the DOM — `--desktop` (inside `.control-screen__zone-row`, visible ≥768px) and `--mobile` (standalone block after `.control-screen__charts`, visible <768px), matching the Figma's mobile placement (between charts and Whos Online). |
-| `.control-screen__charts` | 2-col → 1-col grid for Chart cards. |
-| `.control-screen__actions` | Wrapper for the right-edge ActionsMenu rail; rightmost flex child of `.control-screen`, full-height, `display: none` below 768px. |
-| `.control-screen__section` | Wrapper frame: section heading + section body. |
-| `.control-screen__section-head` | Flex row: title left, meta right (stacks on mobile). |
-| `.control-screen__section-title` | h2 — "Who's Online". Bold (`--ai-font-bold`). |
-| `.control-screen__section-meta` | Subtitle — "78 Members Online (…)" at `--ai-font-fixed-xxs`. The count is wrapped in `.control-screen__section-meta-strong` (bold, `--ai-text-primary`), inline with the guest/bot breakdown. |
+| `.cc-control` | Body root. `display: flex; height: 100vh`. |
+| `.cc-control__sidebar` | Wrapper for a SidebarMenu composite. `flex: 0 0 auto; height: 100vh`. |
+| `.cc-control__sidebar--desktop` | Visible at ≥768px. |
+| `.cc-control__sidebar--mobile` | Visible at <768px. Its `.cc-menu` panel is `position: absolute; left: 100%` so the open menu overlays the page content rather than pushing it. |
+| `.cc-control__main` | Flex column filling remainder. `overflow: hidden`. |
+| `.cc-control__chrome` | Sticky-equivalent top band hosting `cc-header-group`. |
+| `.cc-control__page` | Scroll container. `flex: 1 1 auto; overflow-y: auto`. |
+| `.cc-control__cards` | 3-col → 1-col grid. UpgradeCard `order: -1` at mobile. |
+| `.cc-control__zone-row` | Select Zone + Analysis Dashboard link, space-between. |
+| `.cc-control__analysis-link` | Right-side text link (brand colour + arrow icon). Two copies in the DOM — `--desktop` (inside `.cc-control__zone-row`, visible ≥768px) and `--mobile` (standalone block after `.cc-control__charts`, visible <768px), matching the Figma's mobile placement (between charts and Whos Online). |
+| `.cc-control__charts` | 2-col → 1-col grid for Chart cards. |
+| `.cc-control__actions` | Wrapper for the right-edge ActionsMenu rail; rightmost flex child of `.cc-control`, full-height, `display: none` below 768px. |
+| `.cc-control__section` | Wrapper frame: section heading + section body. |
+| `.cc-control__section-head` | Flex row: title left, meta right (stacks on mobile). |
+| `.cc-control__section-title` | h2 — "Who's Online". Bold (`--ai-font-bold`). |
+| `.cc-control__section-meta` | Subtitle — "78 Members Online (…)" at `--ai-font-fixed-xxs`. The count is wrapped in `.cc-control__section-meta-strong` (bold, `--ai-text-primary`), inline with the guest/bot breakdown. |
 
 ## Token Mapping
 
@@ -63,9 +63,9 @@ The template introduces no new tokens. Tokens used at template scope:
 
 | Token | Where |
 |---|---|
-| `--ai-surface-secondary` | `.control-screen` body bg |
-| `--ai-surface-primary` | `.control-screen__chrome` bg |
-| `--ai-border-secondary` | `.control-screen__chrome` bottom border |
+| `--ai-surface-secondary` | `.cc-control` body bg |
+| `--ai-surface-primary` | `.cc-control__chrome` bg |
+| `--ai-border-secondary` | `.cc-control__chrome` bottom border |
 | `--ai-spacing-7` | Default page padding + gap (desktop) |
 | `--ai-spacing-5` | Card row gap + mobile page padding/gap |
 | `--ai-spacing-6` | Charts row gap |
@@ -98,11 +98,11 @@ No new JS module is authored by the template.
 - **Responsive breakpoint:** template-level layout reflow uses **`@container cs-page (max-width: 767px)`** — the page reacts to the actual content column's width, not the viewport. This matters because the docked SidebarMenu (rail + 280px panel ≈ 336px) can shrink the main column below 768px on a wide screen, and the page should still reflow.
 - **Device-class swap stays on `@media`:** which SidebarMenu composite (`--desktop` vs `--mobile`) is rendered is a device-class decision (the mobile rail has structurally different children — Ellipsis-toggled extras), so the swap is keyed off viewport `@media (max-width: 767px)`. Even when the desktop column shrinks to <768px because its own menu panel is docked, the desktop rail stays.
 - **Sidebar composite swap:** Desktop and Mobile SidebarMenu composites are both in the DOM with unique panel IDs (`cc-d-*` vs `cc-m-*`) so the auto-bound JS doesn't clash; CSS shows one and hides the other based on viewport.
-- **Alert + cards share a container:** per Figma Frame 229 (node `4183:14662`) the dev-mode Alert and the three-card row sit inside one wrapper (`.control-screen__alert-cards`), stacked with a `--ai-spacing-5` (16px) gap — tighter than the `--ai-spacing-7` (32px) gap between other top-level blocks in `.control-screen__page`.
-- **Mobile content order:** UpgradeCard precedes the two StatCards on mobile per Figma (visible in `cs-mobile-collapsed.png`). Implemented via `order: -1` on `.control-screen__cards .upgrade-card` so the HTML order stays semantic.
+- **Alert + cards share a container:** per Figma Frame 229 (node `4183:14662`) the dev-mode Alert and the three-card row sit inside one wrapper (`.cc-control__alert-cards`), stacked with a `--ai-spacing-5` (16px) gap — tighter than the `--ai-spacing-7` (32px) gap between other top-level blocks in `.cc-control__page`.
+- **Mobile content order:** UpgradeCard precedes the two StatCards on mobile per Figma (visible in `cs-mobile-collapsed.png`). Implemented via `order: -1` on `.cc-control__cards .upgrade-card` so the HTML order stays semantic.
 - **Card size is container-responsive:** both StatCards and the UpgradeCard render at **base** size by default (mobile / narrow column) and upgrade to the **Lg** size variant at `@container cs-page (min-width: 768px)`. Because a component size modifier (`--lg`) can't be toggled by CSS, the min-width block in `ControlScreen.css` mirrors the `.stat-card--lg` / `.upgrade-card--lg` rules exactly (same `--ai-*` tokens) rather than adding the class in markup. This keeps the base/mobile size as the safe no-CQ fallback.
 - **Mobile-only StatCard type sizing:** in `@container cs-page (max-width: 767px)` the StatCard text steps down — `__value` 16px → `--ai-font-fixed-xs` (14px), `__title` 14px → `--ai-font-fixed-xxs` (12px). This is a template override (the StatCard component keeps 16/14 at all sizes); standard sizes return at ≥768px where the block no longer applies.
-- **Scoped component CSS overrides:** template-scoped customisations are limited to the card row — the container-query card-size block, the mobile-only StatCard font sizing, the per-card teal icon-square colours, and the `.control-screen__alert-cards` wrapper. Every composed component is otherwise used verbatim, so future Figma changes to any of them surface here automatically.
+- **Scoped component CSS overrides:** template-scoped customisations are limited to the card row — the container-query card-size block, the mobile-only StatCard font sizing, the per-card teal icon-square colours, and the `.cc-control__alert-cards` wrapper. Every composed component is otherwise used verbatim, so future Figma changes to any of them surface here automatically.
 - **Demo content sourcing:** every block reuses copy from its own demo for now — to be amended later with Figma-faithful labels (Susan Kerrigan / Maria Mellor / 78 Members / Version 8.0.33.10 etc. already match; chart numbers + StatCard icon choice may be refined).
 
 ## Contextual overrides (Case B) — chrome dropdowns
@@ -110,15 +110,15 @@ No new JS module is authored by the template.
 The CC `TopNavigation.css` sets `overflow: hidden` on `.cc-top-navigation`, which clips dropdown panels (Zone Selector breadcrumb + User Menu) trying to extend downward from the bar. The HeaderGroup demo handles this with its `.demo-frame--dropdown` scoped overrides; the template replicates the same three rules:
 
 ```css
-.control-screen__chrome .cc-top-navigation { overflow: visible; }
-.control-screen__chrome .dropdown__panel { z-index: 20; }
-.control-screen__chrome .cc-top-navigation__actions .dropdown__panel {
+.cc-control__chrome .cc-top-navigation { overflow: visible; }
+.cc-control__chrome .dropdown__panel { z-index: 20; }
+.cc-control__chrome .cc-top-navigation__actions .dropdown__panel {
   left: auto;
   right: 0;
 }
 ```
 
-`.control-screen__main` has no `overflow: hidden` for the same reason (would clip the chrome's dropdowns into the page area).
+`.cc-control__main` has no `overflow: hidden` for the same reason (would clip the chrome's dropdowns into the page area).
 
 ## Contextual overrides (Case B) — Alert
 
@@ -131,6 +131,6 @@ Both are HTML-only overrides — no new CSS in `ControlScreen.css`.
 
 ## Known limitations (composed-component carryover)
 
-- **StatCard icon-wrap colour — overridden per-card in the template.** The component default is `#2563eb` (Blue/600, user-approved gap on the StatCard build), but Figma's Control Screen (node `4183:14664`) renders the two squares in CC teal hues: card 1 = `teal/500` (#14b8a6), card 2 = `muted-teal/600` (#3391a4). These are scoped overrides in `ControlScreen.css` (`.control-screen__cards .stat-card:nth-of-type(n) .stat-card__icon-wrap`). Both are Figma primitives with no `--ai-*` token — used on explicit instruction, with primitive-citing comments. A future StatCard-side brand-aware token could replace these.
+- **StatCard icon-wrap colour — overridden per-card in the template.** The component default is `#2563eb` (Blue/600, user-approved gap on the StatCard build), but Figma's Control Screen (node `4183:14664`) renders the two squares in CC teal hues: card 1 = `teal/500` (#14b8a6), card 2 = `muted-teal/600` (#3391a4). These are scoped overrides in `ControlScreen.css` (`.cc-control__cards .stat-card:nth-of-type(n) .stat-card__icon-wrap`). Both are Figma primitives with no `--ai-*` token — used on explicit instruction, with primitive-citing comments. A future StatCard-side brand-aware token could replace these.
 - **Icons:** card 1 uses Lucide `spotlight` ("Key Features", Figma `Icon/24px/Spotlight`); card 2 uses `file-question-mark` ("Help Guides").
 - **Select label-above-control on mobile.** Figma mobile shows the Select Zone label INLINE with the dropdown (label-left, control-right on the same row). The current Select component renders label above control. Matching the Figma exactly would require overriding the Select layout — kept default per "use built versions, no deviating".

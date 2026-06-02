@@ -6,14 +6,14 @@
  * Select / Chart / Datatables / cc-sidebar-menu / cc-header-group, etc.).
  *
  * Layout:
- *   .control-screen          flex row, viewport-filling
- *   ├─ .control-screen__sidebar    cc-sidebar-menu lives here (fixed left)
- *   └─ .control-screen__main       flex column, fills remainder
- *      ├─ .control-screen__chrome  cc-header-group (top, non-scrolling)
- *      └─ .control-screen__page    scroll container for page content
+ *   .cc-control          flex row, viewport-filling
+ *   ├─ .cc-control__sidebar    cc-sidebar-menu lives here (fixed left)
+ *   └─ .cc-control__main       flex column, fills remainder
+ *      ├─ .cc-control__chrome  cc-header-group (top, non-scrolling)
+ *      └─ .cc-control__page    scroll container for page content
  */
 
-.control-screen {
+.cc-control {
   display: flex;
   align-items: stretch;
   min-height: 100vh;
@@ -23,25 +23,25 @@
   font-family: var(--ai-font-body);
 }
 
-.control-screen__sidebar {
+.cc-control__sidebar {
   flex: 0 0 auto;
   height: 100vh;
   min-width: 0;
-  /* Stack above .control-screen__main so the cc-sidebar-menu's right-
+  /* Stack above .cc-control__main so the cc-sidebar-menu's right-
    * edge drop shadow (var(--ai-shadow-cc-rail), applied when the menu
    * panel is docked open) paints over the chrome + page backgrounds
    * instead of being obscured by them. Sidebar and main are flex
-   * siblings under .control-screen; without z-index, main paints last
+   * siblings under .cc-control; without z-index, main paints last
    * in DOM order and its opaque backgrounds cover the sidebar shadow. */
   position: relative;
   z-index: 2;
 }
 
-.control-screen__sidebar .cc-sidebar-menu {
+.cc-control__sidebar .cc-sidebar-menu {
   height: 100%;
 }
 
-.control-screen__main {
+.cc-control__main {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
@@ -49,10 +49,10 @@
   min-height: 0;
   /* No `overflow: hidden` here — it would clip dropdown panels opening
    * from the top chrome (Zone Selector, User Menu). The scroll lives
-   * one level deeper on `.control-screen__page`. */
+   * one level deeper on `.cc-control__page`. */
 }
 
-.control-screen__chrome {
+.cc-control__chrome {
   flex: 0 0 auto;
   border-bottom: 1px solid var(--ai-border-secondary);
   /* Stacking + position so dropdown panels anchored inside (Zone
@@ -62,7 +62,7 @@
 }
 
 /* Dark mode: hairline horizontal padding inside the chrome wrapper. */
-[data-theme="dark"] .control-screen__chrome {
+[data-theme="dark"] .cc-control__chrome {
   padding: 0 var(--ai-spacing-px);
 }
 
@@ -71,20 +71,20 @@
  * sets `overflow: hidden` on the bar; release it here so dropdown
  * panels (Zone Selector in the breadcrumb, User Menu in the actions)
  * can extend downward into the page area below. */
-.control-screen__chrome .cc-top-navigation {
+.cc-control__chrome .cc-top-navigation {
   overflow: visible;
 }
-.control-screen__chrome .dropdown__panel {
+.cc-control__chrome .dropdown__panel {
   z-index: 20;
 }
 /* Right-anchor the User Menu panel so it extends LEFTWARD inside the
  * topNav width, not off-screen to the right. */
-.control-screen__chrome .cc-top-navigation__actions .dropdown__panel {
+.cc-control__chrome .cc-top-navigation__actions .dropdown__panel {
   left: auto;
   right: 0;
 }
 
-.control-screen__page {
+.cc-control__page {
   flex: 1 1 auto;
   overflow-y: auto;
   padding: var(--ai-spacing-6);
@@ -102,15 +102,15 @@
   scrollbar-color: var(--cc-actions-menu-primary-bg) transparent;
 }
 
-.control-screen__page::-webkit-scrollbar {
+.cc-control__page::-webkit-scrollbar {
   width: var(--ai-spacing-3);
 }
 
-.control-screen__page::-webkit-scrollbar-track {
+.cc-control__page::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.control-screen__page::-webkit-scrollbar-thumb {
+.cc-control__page::-webkit-scrollbar-thumb {
   background-color: var(--cc-actions-menu-primary-bg);
   border-radius: var(--ai-radius-full);
 }
@@ -118,14 +118,14 @@
 /* Alert + card row share one container (Figma Frame 229, node 4183:14662):
    stacked vertically with a --ai-spacing-5 (16px) gap — tighter than the
    spacing-7 page gap that separates the other top-level blocks. */
-.control-screen__alert-cards {
+.cc-control__alert-cards {
   display: flex;
   flex-direction: column;
   gap: var(--ai-spacing-5);
 }
 
 /* 3-col card row: StatCard / StatCard / UpgradeCard at desktop. */
-.control-screen__cards {
+.cc-control__cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--ai-spacing-3);
@@ -138,30 +138,30 @@
    (StatCard.css) and `.upgrade-card--lg` (UpgradeCard.css) exactly, scoped
    to the cs-page container-query context. */
 @container cs-page (min-width: 768px) {
-  .control-screen__cards {
+  .cc-control__cards {
     gap: var(--ai-spacing-5);
   }
-  .control-screen__cards .stat-card {
+  .cc-control__cards .stat-card {
     gap: var(--ai-spacing-5);
     min-height: var(--ai-spacing-13);
     padding: var(--ai-spacing-5);
   }
-  .control-screen__cards .stat-card__icon-wrap {
+  .cc-control__cards .stat-card__icon-wrap {
     width: var(--ai-spacing-9);
     height: var(--ai-spacing-9);
   }
-  .control-screen__cards .stat-card__icon-wrap [data-lucide] {
+  .cc-control__cards .stat-card__icon-wrap [data-lucide] {
     width: var(--ai-icon-size-md);
     height: var(--ai-icon-size-md);
   }
-  .control-screen__cards .upgrade-card {
+  .cc-control__cards .upgrade-card {
     min-height: var(--ai-spacing-13);
     padding: var(--ai-spacing-5);
   }
-  .control-screen__cards .upgrade-card__version {
+  .cc-control__cards .upgrade-card__version {
     font-size: var(--ai-font-fixed-sm);
   }
-  .control-screen__cards .upgrade-card__status {
+  .cc-control__cards .upgrade-card__status {
     font-size: var(--ai-font-fixed-xs);
   }
 }
@@ -171,22 +171,22 @@
    `muted-teal/600` are Figma primitives with no --ai-* semantic token —
    used here on explicit instruction, scoped per-card to the template
    (not a StatCard variant). */
-.control-screen__cards .stat-card:nth-of-type(1) .stat-card__icon-wrap {
+.cc-control__cards .stat-card:nth-of-type(1) .stat-card__icon-wrap {
   background-color: #14b8a6; /* teal/500 */
 }
-.control-screen__cards .stat-card:nth-of-type(2) .stat-card__icon-wrap {
+.cc-control__cards .stat-card:nth-of-type(2) .stat-card__icon-wrap {
   background-color: #3391a4; /* muted-teal/600 */
 }
 
 /* Zone row: Select Zone (left) + Analysis Dashboard link (right). */
-.control-screen__zone-row {
+.cc-control__zone-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: var(--ai-spacing-5);
 }
 
-.control-screen__analysis-link {
+.cc-control__analysis-link {
   display: inline-flex;
   align-items: center;
   gap: var(--ai-spacing-2);
@@ -196,29 +196,29 @@
   text-decoration: none;
 }
 
-.control-screen__analysis-link:hover { text-decoration: underline; }
+.cc-control__analysis-link:hover { text-decoration: underline; }
 
 /* Two copies in the DOM — one inside the zone-row (desktop), one as a
    standalone block after the charts row (mobile). CSS swaps which is
    visible at the breakpoint. */
-.control-screen__analysis-link--desktop { display: inline-flex; }
-.control-screen__analysis-link--mobile { display: none; }
+.cc-control__analysis-link--desktop { display: inline-flex; }
+.cc-control__analysis-link--mobile { display: none; }
 
 /* 2-col chart row. */
-.control-screen__charts {
+.cc-control__charts {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--ai-spacing-6);
 }
 
 /* Section wrapper (heading + body), used for Whos Online (datatable). */
-.control-screen__section {
+.cc-control__section {
   display: flex;
   flex-direction: column;
   gap: var(--ai-spacing-4);
 }
 
-.control-screen__section-head {
+.cc-control__section-head {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -229,9 +229,9 @@
    breakpoint: the 4-column Scroll table on desktop, the User+Login+kebab
    Trigger table on mobile (Figma mobile node 4183:14675). Desktop is the
    default; the mobile instance is hidden until the container narrows. */
-.control-screen__table--mobile { display: none; }
+.cc-control__table--mobile { display: none; }
 
-.control-screen__section-title {
+.cc-control__section-title {
   margin: 0;
   font-family: var(--ai-font-title);
   font-size: var(--ai-font-fluid-lg);
@@ -239,13 +239,13 @@
   color: var(--ai-text-primary);
 }
 
-.control-screen__section-meta {
+.cc-control__section-meta {
   margin: 0;
   font-size: var(--ai-font-fixed-xxs);
   color: var(--ai-text-secondary);
 }
 
-.control-screen__section-meta-strong {
+.cc-control__section-meta-strong {
   font-weight: var(--ai-font-bold);
   color: var(--ai-text-primary);
 }
@@ -253,10 +253,10 @@
 /* MD (>=768px page-container width): section heading + meta step up to fixed
    sizes. Below the breakpoint the title stays fluid-lg and the meta fixed-xxs. */
 @container cs-page (min-width: 768px) {
-  .control-screen__section-title {
+  .cc-control__section-title {
     font-size: var(--ai-font-fixed-lg);
   }
-  .control-screen__section-meta {
+  .cc-control__section-meta {
     font-size: var(--ai-font-fixed-xs);
   }
 }
@@ -264,73 +264,73 @@
 /* Mobile-only sidebar overlay container: the SidebarMenu mobile composite
    sits in a fixed left column on phones too. The Menu panel's existing CSS
    handles overlay behaviour via its own width / position rules. */
-.control-screen__sidebar--desktop { display: flex; }
-.control-screen__sidebar--mobile { display: none; }
+.cc-control__sidebar--desktop { display: flex; }
+.cc-control__sidebar--mobile { display: none; }
 
 /* Right-edge action rail (ActionsMenu, Figma node 4167:4879). Full-height
    rail docked to the right of the shell — the rightmost flex child of
-   .control-screen, mirroring the left sidebar. Desktop only; hidden below
+   .cc-control, mirroring the left sidebar. Desktop only; hidden below
    768px (device-class swap, like the sidebar). */
-.control-screen__actions {
+.cc-control__actions {
   flex: 0 0 auto;
   display: flex;
 }
 
-.control-screen__actions .actions-menu {
+.cc-control__actions .actions-menu {
   height: 100%;   /* fill the 100vh shell row → full-height rail */
 }
 
 /* ───── Template-level reflow — driven by main column width ─────
  *
- * @container cs-page (max-width: 767px) fires when .control-screen__page
+ * @container cs-page (max-width: 767px) fires when .cc-control__page
  * itself shrinks below 768px — independent of viewport. So the page
  * goes "mobile" the moment the docked SidebarMenu (rail + 280px panel)
  * eats enough horizontal room, even on a wide desktop. */
 /* Page padding scales at the 768px VIEWPORT breakpoint — not the
  * container breakpoint. The container query below queries `cs-page`,
- * which IS `.control-screen__page` itself; per the CSS Containment
+ * which IS `.cc-control__page` itself; per the CSS Containment
  * spec an element cannot query its own container, so a
- * `@container cs-page` rule targeting `.control-screen__page` never
+ * `@container cs-page` rule targeting `.cc-control__page` never
  * applies. Use viewport `@media` instead for the page's own padding.
  * Descendants (cards, charts, zone-row, section-head) still use
  * `@container cs-page` correctly because for them cs-page is an
  * ancestor, not themselves. */
 @media (max-width: 767px) {
-  .control-screen__page {
+  .cc-control__page {
     padding: var(--ai-spacing-4);
   }
 }
 
 @container cs-page (max-width: 767px) {
-  .control-screen__cards,
-  .control-screen__charts {
+  .cc-control__cards,
+  .cc-control__charts {
     grid-template-columns: 1fr;
   }
   /* Figma mobile order: UpgradeCard stacks ABOVE the two StatCards. */
-  .control-screen__cards .upgrade-card { order: -1; }
+  .cc-control__cards .upgrade-card { order: -1; }
   /* Mobile-only StatCard type sizing (template override — the component keeps
      16/14 at all sizes). Standard sizes return at >=768px (MD), where this
      block no longer applies. */
-  .control-screen__cards .stat-card__value { font-size: var(--ai-font-fixed-xs); }   /* 16 -> 14 */
-  .control-screen__cards .stat-card__title { font-size: var(--ai-font-fixed-xxs); }  /* 14 -> 12 */
+  .cc-control__cards .stat-card__value { font-size: var(--ai-font-fixed-xs); }   /* 16 -> 14 */
+  .cc-control__cards .stat-card__title { font-size: var(--ai-font-fixed-xxs); }  /* 14 -> 12 */
   /* Stack Select + (mobile-only Analysis link is rendered elsewhere) */
-  .control-screen__zone-row {
+  .cc-control__zone-row {
     flex-direction: column;
     align-items: stretch;
   }
-  .control-screen__section-head {
+  .cc-control__section-head {
     flex-direction: column;
     align-items: flex-start;
   }
   /* Swap which Analysis Dashboard link copy is visible. */
-  .control-screen__analysis-link--desktop { display: none; }
-  .control-screen__analysis-link--mobile {
+  .cc-control__analysis-link--desktop { display: none; }
+  .cc-control__analysis-link--mobile {
     display: inline-flex;
     align-self: flex-end;
   }
   /* Whos Online: swap the 4-column Scroll table for the Trigger table. */
-  .control-screen__table--desktop { display: none; }
-  .control-screen__table--mobile { display: block; }
+  .cc-control__table--desktop { display: none; }
+  .cc-control__table--mobile { display: block; }
 }
 
 /* ───── Device-class swap — stays on viewport @media ─────
@@ -341,19 +341,19 @@
  * Even when the desktop column shrinks because its own menu is docked,
  * we still want the desktop rail. */
 @media (max-width: 767px) {
-  .control-screen__sidebar--desktop { display: none; }
-  .control-screen__sidebar--mobile { display: flex; }
+  .cc-control__sidebar--desktop { display: none; }
+  .cc-control__sidebar--mobile { display: flex; }
   /* Right action rail is desktop-only per Figma — hidden on mobile. */
-  .control-screen__actions { display: none; }
+  .cc-control__actions { display: none; }
 
   /* Mobile menu = OVERLAY, not push (Figma mobile Menu Open 4187:21247).
    * The docked panel's default behaviour is an in-flow flex sibling of the
    * rail (correct on desktop — it widens the shell and pushes main aside).
-   * On mobile the panel must float OVER .control-screen__main instead: lift
+   * On mobile the panel must float OVER .cc-control__main instead: lift
    * it out of flow and anchor it to the rail's right edge (left: 100% of the
    * now rail-width .cc-sidebar-menu). The rail stays in flow at the left;
    * main content fills the full remaining width beneath the panel. */
-  .control-screen__sidebar--mobile .cc-menu:not(.cc-menu--floating) {
+  .cc-control__sidebar--mobile .cc-menu:not(.cc-menu--floating) {
     position: absolute;
     top: 0;
     left: 100%;
