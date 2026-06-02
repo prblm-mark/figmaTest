@@ -150,4 +150,22 @@
   .cc-top-navigation__user-chevron {
     display: none;
   }
+
+  /* Breadcrumb collapses to max 2 items below the MD (768px) breakpoint.
+   * Multizone shows "Zone Selector > Level 1" (Figma mobile variant
+   * 4099:3630): the trailing crumb(s) + their separators carry `--collapse`
+   * and hide here, leaving zone selector + 1 level (or 2 levels when there
+   * is no zone selector). At >=768px all three items show. */
+  .cc-top-navigation .breadcrumb__item--collapse,
+  .cc-top-navigation .breadcrumb__separator--collapse {
+    display: none;
+  }
+
+  /* The crumb that becomes the last visible one (immediately before the
+   * collapsed separator) takes the current-page colour, so the collapsed
+   * breadcrumb reads "Zone Selector > Level 1" with Level 1 active — matching
+   * the Figma mobile variant (4099:3630). */
+  .cc-top-navigation .breadcrumb__item:has(+ .breadcrumb__separator--collapse) .breadcrumb__link {
+    color: var(--ai-text-invert);
+  }
 }

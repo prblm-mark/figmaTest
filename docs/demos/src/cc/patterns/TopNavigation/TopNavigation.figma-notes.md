@@ -18,8 +18,18 @@ Two axes: **Type** × **Device** = 4 variants.
 | `4099:3632` | Mobile | Default | 390 | "Zone name > Level 1", avatar-only user |
 | `4099:3630` | Mobile | Multizone | 390 | "Zone Selector ▾ > Level 1", avatar-only user |
 
-Mobile responsiveness handled via `@media (max-width: 767px)` — single HTML structure
-collapses to the mobile layout. No `--mobile` modifier class.
+Mobile responsiveness handled via `@container (max-width: 767px)` (the bar is a
+`container-type: inline-size` context) — single HTML structure collapses to the mobile
+layout. No `--mobile` modifier class.
+
+**Breadcrumb item budget:** max **2 items** below MD (768px), **3 items** at ≥768px. The
+breadcrumb keeps the zone selector + 1 level (or 2 levels when there's no zone selector).
+Any trailing crumb beyond that budget carries `breadcrumb__item--collapse` (and its leading
+separator `breadcrumb__separator--collapse`); the `@container (max-width: 767px)` block hides
+them, and the crumb that becomes last is promoted to the current-page colour. So Multizone
+renders "Zone Selector > Level 1 > Level 2" at ≥768px and collapses to "Zone Selector >
+Level 1" below it (Figma 4099:3630). The 2-item Default variant carries no `--collapse`
+markers, so it is unaffected.
 
 ---
 
