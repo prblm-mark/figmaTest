@@ -40,6 +40,7 @@
   <link rel="stylesheet" href="../../patterns/HeaderGroup/HeaderGroup.css">
   <link rel="stylesheet" href="../../patterns/ActionsMenu/ActionsMenu.css">
   <link rel="stylesheet" href="../../patterns/ActionsInfoPanel/ActionsInfoPanel.css">
+  <link rel="stylesheet" href="../../components/FontSizeSlider/FontSizeSlider.css">
 
   <!-- Template -->
   <link rel="stylesheet" href="ControlScreen.css">
@@ -873,9 +874,17 @@
       <button class="actions-menu__btn" type="button" aria-label="Favourite">
         <i data-lucide="star" aria-hidden="true"></i>
       </button>
-      <button class="actions-menu__btn" type="button" aria-label="Text size">
-        <i data-lucide="a-large-small" aria-hidden="true"></i>
-      </button>
+      <span class="cc-control__rail-item">
+        <button class="actions-menu__btn" type="button" aria-label="Text size" aria-haspopup="dialog" aria-expanded="false" aria-controls="cc-rail-textsize" data-aa-toggle="text-size">
+          <i data-lucide="a-large-small" aria-hidden="true"></i>
+        </button>
+        <div class="cc-control__rail-popover cc-control__rail-popover--card" id="cc-rail-textsize" data-aa-panel="text-size" role="dialog" aria-label="Text size" hidden>
+          <p class="cc-control__rail-popover-label">Text size</p>
+          <div class="font-size-slider">
+            <input class="font-size-slider__input" type="range" min="1" max="4" step="1" value="2" aria-label="Text size">
+          </div>
+        </div>
+      </span>
       <button class="actions-menu__btn" type="button" aria-label="Minimise">
         <i data-lucide="minimize-2" aria-hidden="true"></i>
       </button>
@@ -905,6 +914,8 @@
     });
   </script>
   <script type="module" src="../../../components/Dropdown/Dropdown.js"></script>
+  <!-- FontSizeSlider auto-inits its inputs (paints the track fill) on load -->
+  <script type="module" src="../../components/FontSizeSlider/FontSizeSlider.js"></script>
 
   <!-- ActionsMenu rail popovers (Info, …). Generic toggle: one open at a time,
        closes on Esc / click-outside. Add more by pairing a button

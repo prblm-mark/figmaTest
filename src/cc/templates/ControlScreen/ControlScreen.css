@@ -299,6 +299,26 @@
   box-shadow: var(--ai-shadow-lg);
 }
 
+/* Popover variant that supplies its own surface card (for hosted controls that
+   aren't already a card, e.g. the FontSizeSlider). */
+.cc-control__rail-popover--card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+  padding: var(--ai-spacing-4);
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-lg);
+  box-shadow: var(--ai-shadow-lg);
+}
+
+.cc-control__rail-popover-label {
+  margin: 0;
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-secondary);
+}
+
 /* Active look on the rail button while its popover is open */
 .cc-control__actions .actions-menu__btn[aria-expanded="true"] {
   background-color: var(--cc-actions-menu-secondary-bg);
