@@ -540,7 +540,8 @@
           <p class="control-screen__section-meta"><strong class="control-screen__section-meta-strong">78 Members Online</strong> (15 Guest Users / 2 Bots)</p>
         </header>
 
-        <div class="datatables">
+        <!-- Desktop: Whos Online · Scroll (4 columns). Hidden below 768px. -->
+        <div class="datatables control-screen__table--desktop">
           <div class="datatables__toolbar">
             <span class="datatables__meta">
               <span>Show</span>
@@ -648,6 +649,180 @@
               <button class="datatables__page-btn datatables__page-btn--active">1</button>
               <button class="datatables__page-btn">2</button>
               <button class="datatables__page-btn">3</button>
+              <button class="datatables__page-btn" aria-label="Next"><i data-lucide="chevron-right" aria-hidden="true"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile: Whos Online · Trigger (User + Login + kebab-expand for
+             Account + Touch). Figma mobile node 4183:14675 / 4183:14681.
+             Shown below 768px; hidden at desktop. Kebab reveal is pure CSS
+             (Datatables :has(.datatables__kebab__input:checked)). -->
+        <div class="datatables control-screen__table--mobile">
+          <div class="datatables__toolbar">
+            <span class="datatables__meta">
+              <button type="button" class="datatables__select" aria-label="Rows per page">
+                <span>10</span>
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+              <span>of <strong>14</strong></span>
+            </span>
+            <div class="datatables__search input" style="max-width: none;">
+              <div class="input__wrap input--sm">
+                <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
+                <input class="input__control" type="search" placeholder="Search" aria-label="Search">
+              </div>
+            </div>
+          </div>
+          <div class="datatables__body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th><button class="datatables__sort">User <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+                  <th class="datatables__col--tight"><button class="datatables__sort">Login <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+                  <th class="datatables__kebab-cell" aria-label="Row actions"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="datatables__row">
+                  <td>
+                    <div class="datatables__user-cell">
+                      <div class="avatar avatar--size-2"><img class="portrait" src="https://i.pravatar.cc/64?img=47" alt=""></div>
+                      <div class="datatables__user-text">
+                        <span class="datatables__user-name">Maria Mellor</span>
+                        <span class="datatables__user-role">Digital Project Manager</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="datatables__col--tight">09:04</td>
+                  <td class="datatables__kebab-cell">
+                    <label class="datatables__kebab" aria-label="Toggle row details">
+                      <input type="checkbox" class="datatables__kebab__input">
+                      <i data-lucide="more-vertical" aria-hidden="true"></i>
+                    </label>
+                  </td>
+                </tr>
+                <tr class="datatables__row-detail">
+                  <td colspan="3" class="datatables__row-detail__cell">
+                    <dl class="datatables__detail-list">
+                      <dt>Account</dt><dd>Acme Co</dd>
+                      <dt>Touch</dt><dd>Yes</dd>
+                    </dl>
+                  </td>
+                </tr>
+                <tr class="datatables__row">
+                  <td>
+                    <div class="datatables__user-cell">
+                      <div class="avatar avatar--size-2"><img class="portrait" src="https://i.pravatar.cc/64?img=32" alt=""></div>
+                      <div class="datatables__user-text">
+                        <span class="datatables__user-name">James Park</span>
+                        <span class="datatables__user-role">Senior Designer</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="datatables__col--tight">09:11</td>
+                  <td class="datatables__kebab-cell">
+                    <label class="datatables__kebab" aria-label="Toggle row details">
+                      <input type="checkbox" class="datatables__kebab__input">
+                      <i data-lucide="more-vertical" aria-hidden="true"></i>
+                    </label>
+                  </td>
+                </tr>
+                <tr class="datatables__row-detail">
+                  <td colspan="3" class="datatables__row-detail__cell">
+                    <dl class="datatables__detail-list">
+                      <dt>Account</dt><dd>Globex Inc</dd>
+                      <dt>Touch</dt><dd>Yes</dd>
+                    </dl>
+                  </td>
+                </tr>
+                <tr class="datatables__row">
+                  <td>
+                    <div class="datatables__user-cell">
+                      <div class="avatar avatar--size-2"><img class="portrait" src="https://i.pravatar.cc/64?img=28" alt=""></div>
+                      <div class="datatables__user-text">
+                        <span class="datatables__user-name">Priya Shah</span>
+                        <span class="datatables__user-role">Account Director</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="datatables__col--tight">09:17</td>
+                  <td class="datatables__kebab-cell">
+                    <label class="datatables__kebab" aria-label="Toggle row details">
+                      <input type="checkbox" class="datatables__kebab__input">
+                      <i data-lucide="more-vertical" aria-hidden="true"></i>
+                    </label>
+                  </td>
+                </tr>
+                <tr class="datatables__row-detail">
+                  <td colspan="3" class="datatables__row-detail__cell">
+                    <dl class="datatables__detail-list">
+                      <dt>Account</dt><dd>Initech</dd>
+                      <dt>Touch</dt><dd>Yes</dd>
+                    </dl>
+                  </td>
+                </tr>
+                <tr class="datatables__row">
+                  <td>
+                    <div class="datatables__user-cell">
+                      <div class="avatar avatar--size-2"><img class="portrait" src="https://i.pravatar.cc/64?img=55" alt=""></div>
+                      <div class="datatables__user-text">
+                        <span class="datatables__user-name">Adam Webb</span>
+                        <span class="datatables__user-role">Engineering Lead</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="datatables__col--tight">09:23</td>
+                  <td class="datatables__kebab-cell">
+                    <label class="datatables__kebab" aria-label="Toggle row details">
+                      <input type="checkbox" class="datatables__kebab__input">
+                      <i data-lucide="more-vertical" aria-hidden="true"></i>
+                    </label>
+                  </td>
+                </tr>
+                <tr class="datatables__row-detail">
+                  <td colspan="3" class="datatables__row-detail__cell">
+                    <dl class="datatables__detail-list">
+                      <dt>Account</dt><dd>Stark Industries</dd>
+                      <dt>Touch</dt><dd>Yes</dd>
+                    </dl>
+                  </td>
+                </tr>
+                <tr class="datatables__row">
+                  <td>
+                    <div class="datatables__user-cell">
+                      <div class="avatar avatar--size-2"><img class="portrait" src="https://i.pravatar.cc/64?img=21" alt=""></div>
+                      <div class="datatables__user-text">
+                        <span class="datatables__user-name">Sofia Martinez</span>
+                        <span class="datatables__user-role">Marketing Manager</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="datatables__col--tight">09:29</td>
+                  <td class="datatables__kebab-cell">
+                    <label class="datatables__kebab" aria-label="Toggle row details">
+                      <input type="checkbox" class="datatables__kebab__input">
+                      <i data-lucide="more-vertical" aria-hidden="true"></i>
+                    </label>
+                  </td>
+                </tr>
+                <tr class="datatables__row-detail">
+                  <td colspan="3" class="datatables__row-detail__cell">
+                    <dl class="datatables__detail-list">
+                      <dt>Account</dt><dd>Wonka Co</dd>
+                      <dt>Touch</dt><dd>Yes</dd>
+                    </dl>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="datatables__footer">
+            <span>Showing <strong>1–5</strong> of <strong>14</strong> results</span>
+            <div class="datatables__pagination" role="group" aria-label="Pagination">
+              <button class="datatables__page-btn" aria-label="Previous"><i data-lucide="chevron-left" aria-hidden="true"></i></button>
+              <button class="datatables__page-btn datatables__page-btn--active">1</button>
+              <button class="datatables__page-btn">2</button>
               <button class="datatables__page-btn" aria-label="Next"><i data-lucide="chevron-right" aria-hidden="true"></i></button>
             </div>
           </div>

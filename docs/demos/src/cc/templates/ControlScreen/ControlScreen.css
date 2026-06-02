@@ -225,6 +225,12 @@
   gap: var(--ai-spacing-4);
 }
 
+/* Whos Online table — two Datatables variants swapped at the cs-page
+   breakpoint: the 4-column Scroll table on desktop, the User+Login+kebab
+   Trigger table on mobile (Figma mobile node 4183:14675). Desktop is the
+   default; the mobile instance is hidden until the container narrows. */
+.control-screen__table--mobile { display: none; }
+
 .control-screen__section-title {
   margin: 0;
   font-family: var(--ai-font-title);
@@ -312,6 +318,9 @@
     display: inline-flex;
     align-self: flex-end;
   }
+  /* Whos Online: swap the 4-column Scroll table for the Trigger table. */
+  .control-screen__table--desktop { display: none; }
+  .control-screen__table--mobile { display: block; }
 }
 
 /* ───── Device-class swap — stays on viewport @media ─────
