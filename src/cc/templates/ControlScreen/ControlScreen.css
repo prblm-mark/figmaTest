@@ -234,7 +234,7 @@
 .cc-control__section-title {
   margin: 0;
   font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fluid-lg);
+  font-size: var(--ai-font-fixed-md); /* 18px below MD; steps to fixed-lg (20px) at >=768 */
   font-weight: var(--ai-font-bold);
   color: var(--ai-text-primary);
 }
@@ -250,8 +250,8 @@
   color: var(--ai-text-primary);
 }
 
-/* MD (>=768px page-container width): section heading + meta step up to fixed
-   sizes. Below the breakpoint the title stays fluid-lg and the meta fixed-xxs. */
+/* MD (>=768px page-container width): section heading + meta step up to larger
+   fixed sizes. Below the breakpoint the title is fixed-md (18px) and meta fixed-xxs. */
 @container cs-page (min-width: 768px) {
   .cc-control__section-title {
     font-size: var(--ai-font-fixed-lg);

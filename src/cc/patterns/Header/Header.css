@@ -5,10 +5,23 @@
  *   - Default:  title only
  *   - Sub Text: title + subtitle row
  *   - Control:  avatar + greeting + user details (Affino, Job title)
- * Device responsiveness via @media (max-width: 767px). The Control variant
- * also changes content on mobile: the "Hi " greeting prefix and the user
- * details (Affino / Job title rows) hide, leaving avatar + name only.
+ * Device responsiveness is CONTAINER-QUERY based: markup wraps the header in
+ * `.cc-header-cq` (container: cc-header / inline-size) and rules use
+ * `@container cc-header (max-width: 767px)`, so the header reflows on its own
+ * column width, not the viewport. The Control variant also changes content on
+ * mobile: the "Hi " greeting prefix and the user details (Affino / Job title
+ * rows) hide, leaving avatar + name only.
  */
+
+/* Container-query wrapper. The container MUST be a separate ancestor: an element
+ * cannot query its own container, so .cc-header (and its descendants) read the
+ * width of this wrapper instead. This lets the header reflow on its own column
+ * width rather than the viewport (e.g. ControlScreen's docked-sidebar layout). */
+.cc-header-cq {
+  display: block;
+  width: 100%;
+  container: cc-header / inline-size;
+}
 
 .cc-header {
   display: flex;
@@ -17,7 +30,6 @@
   min-height: var(--ai-spacing-11); /* 64px desktop */
   padding: var(--ai-spacing-5);
   background-color: var(--cc-header-secondary-bg);
-  container-type: inline-size;
 }
 
 /* ── Title block (flex-1) ────────────────────────────── */
@@ -181,7 +193,7 @@
  * dress whenever the header itself is narrower than 768px — even on a
  * wide viewport where it sits next to a docked sidebar. */
 
-@container (max-width: 767px) {
+@container cc-header (max-width: 767px) {
   .cc-header {
     min-height: var(--ai-spacing-10); /* 56px */
     padding: var(--ai-spacing-3) var(--ai-spacing-4); /* 8px / 12px */

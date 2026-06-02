@@ -8,7 +8,7 @@ figma.connect(
         <!-- See CCTopNavigation.figma.ts for the topNav snippet -->
         <header class="cc-top-navigation"></header>
         <!-- See CCHeader.figma.ts for the header snippet (Control type) -->
-        <header class="cc-header cc-header--control"></header>
+        <div class="cc-header-cq"><header class="cc-header cc-header--control"></header></div>
       </div>
     `,
   }
