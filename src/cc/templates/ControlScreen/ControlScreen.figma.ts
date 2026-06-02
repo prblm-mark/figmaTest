@@ -21,36 +21,36 @@ figma.connect(
     },
     example: () => html`
       <html data-brand="cc">
-      <body class="control-screen">
-        <aside class="control-screen__sidebar control-screen__sidebar--desktop">
+      <body class="cc-control">
+        <aside class="cc-control__sidebar cc-control__sidebar--desktop">
           <div class="cc-sidebar-menu"><!-- Sidebar rail + Menu panels --></div>
         </aside>
-        <aside class="control-screen__sidebar control-screen__sidebar--mobile">
+        <aside class="cc-control__sidebar cc-control__sidebar--mobile">
           <div class="cc-sidebar-menu"><!-- Mobile rail + Menu panels --></div>
         </aside>
-        <main class="control-screen__main">
-          <div class="control-screen__chrome">
+        <main class="cc-control__main">
+          <div class="cc-control__chrome">
             <div class="cc-header-group"><!-- TopNavigation + cc-header--control --></div>
           </div>
-          <div class="control-screen__page">
+          <div class="cc-control__page">
             <div class="alert alert--cta alert--warning"><!-- … --></div>
-            <div class="control-screen__cards">
+            <div class="cc-control__cards">
               <div class="stat-card"><!-- Key Features --></div>
               <div class="stat-card"><!-- Help Guides --></div>
               <div class="upgrade-card"><!-- Version + Update --></div>
             </div>
-            <div class="control-screen__zone-row">
+            <div class="cc-control__zone-row">
               <div class="sel"><!-- Select Zone --></div>
-              <a class="control-screen__analysis-link" href="#">Analysis Dashboard</a>
+              <a class="cc-control__analysis-link" href="#">Analysis Dashboard</a>
             </div>
-            <div class="control-screen__charts">
+            <div class="cc-control__charts">
               <div class="chart"><!-- Page Views --></div>
               <div class="chart"><!-- Users --></div>
             </div>
-            <section class="control-screen__section">
-              <header class="control-screen__section-head">
-                <h2 class="control-screen__section-title">Who's Online</h2>
-                <p class="control-screen__section-meta">78 Members Online (15 Guest Users / 2 Bots)</p>
+            <section class="cc-control__section">
+              <header class="cc-control__section-head">
+                <h2 class="cc-control__section-title">Who's Online</h2>
+                <p class="cc-control__section-meta">78 Members Online (15 Guest Users / 2 Bots)</p>
               </header>
               <div class="datatables datatables--mobile-scroll"><!-- Whos Online --></div>
             </section>

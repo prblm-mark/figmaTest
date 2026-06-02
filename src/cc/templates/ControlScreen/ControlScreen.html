@@ -43,10 +43,10 @@
   <!-- Template -->
   <link rel="stylesheet" href="ControlScreen.css">
 </head>
-<body class="control-screen">
+<body class="cc-control">
 
   <!-- ━━━ Sidebar (Desktop composite) ━━━━━━━━━━━━━━━━━━━━━━━━━ -->
-  <aside class="control-screen__sidebar control-screen__sidebar--desktop">
+  <aside class="cc-control__sidebar cc-control__sidebar--desktop">
     <div class="cc-sidebar-menu" aria-label="Affino Control Centre">
 
       <nav class="cc-sidebar" role="toolbar" aria-label="Workspace switcher">
@@ -196,7 +196,7 @@
   </aside>
 
   <!-- ━━━ Sidebar (Mobile composite) ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
-  <aside class="control-screen__sidebar control-screen__sidebar--mobile">
+  <aside class="cc-control__sidebar cc-control__sidebar--mobile">
     <div class="cc-sidebar-menu" aria-label="Affino Control Centre (mobile)">
 
       <nav class="cc-sidebar cc-sidebar--mobile" role="toolbar" aria-label="Workspace switcher">
@@ -260,10 +260,10 @@
   </aside>
 
   <!-- ━━━ Main column ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
-  <main class="control-screen__main">
+  <main class="cc-control__main">
 
     <!-- Top chrome: CC HeaderGroup (TopNavigation + Header) -->
-    <div class="control-screen__chrome">
+    <div class="cc-control__chrome">
       <div class="cc-header-group">
 
         <header class="cc-top-navigation">
@@ -393,12 +393,12 @@
     </div>
 
     <!-- Page content (scrolling area) -->
-    <div class="control-screen__page">
+    <div class="cc-control__page">
 
       <!-- 1. Alert + card row share one container (Figma Frame 229,
            node 4183:14662) — stacked with a --ai-spacing-5 (16px) gap,
            tighter than the spacing-7 page gap between top-level blocks. -->
-      <div class="control-screen__alert-cards">
+      <div class="cc-control__alert-cards">
 
         <!-- Development-mode alert (Alert · Style=CTA · Type=Warning).
              Figma CC instance: 4168:5316. Two contextual overrides vs the
@@ -424,7 +424,7 @@
         </div>
 
         <!-- Three-card row: StatCard / StatCard / UpgradeCard -->
-        <div class="control-screen__cards">
+        <div class="cc-control__cards">
 
           <div class="stat-card stat-card--number-first">
             <div class="stat-card__icon-wrap"><i data-lucide="spotlight" aria-hidden="true"></i></div>
@@ -455,7 +455,7 @@
       </div>
 
       <!-- 3. Zone row: Select Zone (left) + Analysis Dashboard link (right on desktop) -->
-      <div class="control-screen__zone-row">
+      <div class="cc-control__zone-row">
         <div class="sel" data-sel>
           <label class="sel__label" for="cs-zone">Select Zone</label>
           <button id="cs-zone" class="sel__control sel__control--sm" type="button" data-sel-trigger>
@@ -468,14 +468,14 @@
             <li><button type="button" class="sel__menu-item" role="option">Zone B</button></li>
           </ul>
         </div>
-        <a href="#" class="control-screen__analysis-link control-screen__analysis-link--desktop">
+        <a href="#" class="cc-control__analysis-link cc-control__analysis-link--desktop">
           <span>Analysis Dashboard</span>
           <i data-lucide="arrow-right" aria-hidden="true"></i>
         </a>
       </div>
 
       <!-- 4. Two-chart row: Page Views · Users -->
-      <div class="control-screen__charts">
+      <div class="cc-control__charts">
 
         <div class="chart">
           <div class="chart__head">
@@ -528,20 +528,20 @@
       </div>
 
       <!-- Analysis Dashboard link (mobile-only — placed between charts and Whos Online per Figma) -->
-      <a href="#" class="control-screen__analysis-link control-screen__analysis-link--mobile">
+      <a href="#" class="cc-control__analysis-link cc-control__analysis-link--mobile">
         <span>Analysis Dashboard</span>
         <i data-lucide="arrow-right" aria-hidden="true"></i>
       </a>
 
       <!-- 5. Whos Online section (template wrapper + Datatables) -->
-      <section class="control-screen__section">
-        <header class="control-screen__section-head">
-          <h2 class="control-screen__section-title">Who's Online</h2>
-          <p class="control-screen__section-meta"><strong class="control-screen__section-meta-strong">78 Members Online</strong> (15 Guest Users / 2 Bots)</p>
+      <section class="cc-control__section">
+        <header class="cc-control__section-head">
+          <h2 class="cc-control__section-title">Who's Online</h2>
+          <p class="cc-control__section-meta"><strong class="cc-control__section-meta-strong">78 Members Online</strong> (15 Guest Users / 2 Bots)</p>
         </header>
 
         <!-- Desktop: Whos Online · Scroll (4 columns). Hidden below 768px. -->
-        <div class="datatables control-screen__table--desktop">
+        <div class="datatables cc-control__table--desktop">
           <div class="datatables__toolbar">
             <span class="datatables__meta">
               <span>Show</span>
@@ -658,7 +658,7 @@
              Account + Touch). Figma mobile node 4183:14675 / 4183:14681.
              Shown below 768px; hidden at desktop. Kebab reveal is pure CSS
              (Datatables :has(.datatables__kebab__input:checked)). -->
-        <div class="datatables control-screen__table--mobile">
+        <div class="datatables cc-control__table--mobile">
           <div class="datatables__toolbar">
             <span class="datatables__meta">
               <button type="button" class="datatables__select" aria-label="Rows per page">
@@ -836,7 +836,7 @@
        Figma node 4167:4879 — full-height rail docked to the right edge of
        the Desktop Menu Open variant (4187:21253). Desktop only; hidden
        below 768px per design (matches the sidebar device-class swap). -->
-  <div class="control-screen__actions">
+  <div class="cc-control__actions">
     <div class="actions-menu">
       <button class="actions-menu__btn" type="button" aria-label="AI suggestions">
         <i data-lucide="sparkles" aria-hidden="true"></i>
