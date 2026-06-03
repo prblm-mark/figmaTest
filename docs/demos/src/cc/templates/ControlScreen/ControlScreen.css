@@ -187,6 +187,11 @@
   border: 1px solid var(--ai-datatable-table-border);
   border-radius: var(--ai-radius-md);
   overflow: hidden;
+  /* .cc-control__page is a fixed-height flex column; without this the panel
+     gets flex-shrunk below its content height and `overflow: hidden` (kept
+     for the rounded corners) then crops the charts. Don't shrink — let the
+     page scroll instead. */
+  flex-shrink: 0;
 }
 
 /* Header bar — Select Zone (left) + Analysis Dashboard button (right),
@@ -229,6 +234,12 @@
   grid-template-columns: repeat(2, 1fr);
   gap: var(--ai-spacing-5);
   padding: var(--ai-spacing-5);
+}
+
+/* ControlScreen-scoped: hide the Chart footer (filter + report link) in both
+   chart cards. Shared Chart pattern/demo keeps its footer. */
+.cc-control__charts .chart__foot {
+  display: none;
 }
 
 /* Section wrapper (heading + body), used for Whos Online (datatable). */

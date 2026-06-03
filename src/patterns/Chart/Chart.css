@@ -84,8 +84,13 @@
   position: relative;
 }
 
+/* Take the Chart.js canvas out of flow so its rendered height can't feed back
+   into the wrapper height (responsive + maintainAspectRatio:false otherwise
+   balloons the card). The wrapper settles at its min-height; the canvas fills
+   it via inset:0, so the card still hugs its content — no fixed height needed. */
 .chart__canvas canvas {
-  max-width: 100%;
+  position: absolute;
+  inset: 0;
 }
 
 /* ── Footer ────────────────────────────────────────── */
