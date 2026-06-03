@@ -392,20 +392,34 @@
      block no longer applies. */
   .cc-control__cards .stat-card__value { font-size: var(--ai-font-fixed-xs); }   /* 16 -> 14 */
   .cc-control__cards .stat-card__title { font-size: var(--ai-font-fixed-xxs); }  /* 14 -> 12 */
-  /* Stack the header bar contents (mobile Analysis button is rendered elsewhere). */
+  /* Stack the header bar contents (Select keeps its 280px max-width cap). */
   .cc-control__panel-head {
     flex-direction: column;
     align-items: stretch;
+  }
+  /* The Analysis Dashboard button now lives inside the card below the charts —
+     pad the card's bottom edge to house it (Figma 4183:14668: card pb-5). */
+  .cc-control__panel {
+    padding-bottom: var(--ai-spacing-5);
+  }
+  /* Mobile chart card: tighter padding + smaller title (Figma 4183:14673). */
+  .cc-control__charts .chart {
+    padding: var(--ai-spacing-4);
+  }
+  .cc-control__charts .chart__big {
+    font-size: var(--ai-font-fixed-sm);
   }
   .cc-control__section-head {
     flex-direction: column;
     align-items: flex-start;
   }
-  /* Swap which Analysis Dashboard button copy is visible. */
+  /* Swap which Analysis Dashboard button copy is visible; the mobile copy is
+     centered inside the card, below the charts. */
   .cc-control__dash-btn--desktop { display: none; }
   .cc-control__dash-btn--mobile {
-    display: inline-flex;
-    align-self: flex-end;
+    display: flex;
+    width: fit-content;
+    margin-inline: auto;
   }
   /* Whos Online: swap the 4-column Scroll table for the Trigger table. */
   .cc-control__table--desktop { display: none; }
