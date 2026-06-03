@@ -117,6 +117,7 @@ No raw primitives used. All colour, spacing, radius, typography values map to ex
 
 - `Button` (`src/components/Button/`) — `btn btn--primary btn--sm` for CTA buttons (with Case B bg override per type)
 - Lucide icons — `info`, `check-circle-2`, `alert-circle`, `alert-triangle`, `x`, `arrow-right`
+- `Alert.js` (optional) — document-delegated dismiss: clicking `.alert__close` removes its `.alert`. Include on pages where the close icon should be functional; the component renders fine without it (button is inert).
 
 ---
 
@@ -130,7 +131,11 @@ No raw primitives used. All colour, spacing, radius, typography values map to ex
 - **CTA inter-column gap is `--ai-spacing-4` (12px), not `--ai-spacing-3` (8px) like Default.** Override lives on `.alert--cta .alert__header`. Confirmed against Figma `2753:2250` (Warning CTA Desktop) which binds `gap-[var(--ai-spacing-4)]` on the inner Paragraph.
 - **Floating badge bg** is type-specific via a small set of overrides on `.alert--floating.alert--{success,neutral}`. (Info inherits the base badge colour.)
 - **Fixed top border colour** is overridden per Type using `.alert--fixed.alert--{success,danger,warning,neutral}`. (Info inherits the base.)
-- **No JS** — Alert is presentational. Consumer wires the close button to whatever dismissal behaviour they need.
+- **Dismiss JS (`Alert.js`, added 2026-06-03).** Clicking `.alert__close` removes the closest
+  `.alert` from the DOM. Document-delegated (covers dynamically-added alerts); no markup change
+  beyond the existing close button. Optional include — without it the close button is inert, so
+  consumers that want a different dismissal behaviour (animate out, persist a flag, re-show later)
+  can omit `Alert.js` and wire their own.
 
 ---
 
