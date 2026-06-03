@@ -171,3 +171,26 @@ top-right beside the rail: `top: var(--ai-spacing-6)`,
 `right: calc(var(--ai-spacing-10) + var(--ai-spacing-3))` (clears the 56px rail + 8px gap),
 `z-index: 60` (above chrome/rail-popovers, below the fav modal). Position stays `fixed` so the
 shared drag/resize math is unchanged.
+
+## AssistantPopover coachmark (rail call-out)
+
+The `AssistantPopover` pattern (`src/cc/patterns/AssistantPopover/`, Figma `4218:5304`) is
+mounted in ControlScreen as a **bottom-right coachmark** promoting the Affino Assistant. Spec
+agreed 2026-06-03:
+
+- **Show:** first visit only — slides up into view after a brief delay (`SHOW_DELAY_MS`, 500ms)
+  with a slow ease-out glide (600ms). Once dismissed it persists via
+  `localStorage['cc-assistant-popover-dismissed']` and does not return. If the key is already
+  set on load, the markup is removed immediately.
+- **Position:** `position: fixed`, bottom-right (`bottom/right: var(--ai-spacing-6)`),
+  `z-index: 55` (above chrome/rail-popovers, below the AiAssistant panel z-60 and fav modal
+  z-100). Scoped under `.cc-control` in ControlScreen.css so the pattern's own demo stays a
+  static card.
+- **Fade:** hidden + `pointer-events:none` (`opacity:0`, `translateY(var(--ai-spacing-3))`)
+  until JS adds `.cc-assistant-popover--visible`; dismissal removes the class (fade out) then
+  removes the node on `transitionend`.
+- **✕ and Launch** both dismiss + persist. **Launch** additionally opens the AiAssistant panel
+  via the shared `openAssistant()` helper (same open path as the rail button).
+- Wired in the end-of-body module (alongside the AiAssistant wiring) — **not**
+  `AssistantPopover.js`, whose instant DOM-removal would fight the fade-out. The standalone
+  pattern demo still uses AssistantPopover.js.

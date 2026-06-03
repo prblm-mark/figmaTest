@@ -52,6 +52,7 @@
   <link rel="stylesheet" href="../../../patterns/ChatHeader/ChatHeader.css">
   <link rel="stylesheet" href="../../../patterns/ChatMain/ChatMain.css">
   <link rel="stylesheet" href="../AiAssistant/AiAssistant.css">
+  <link rel="stylesheet" href="../../patterns/AssistantPopover/AssistantPopover.css">
 
   <!-- Template -->
   <link rel="stylesheet" href="ControlScreen.css">
@@ -1260,6 +1261,35 @@
     </div>
   </div>
 
+  <!-- ━━━ AI Assistant coachmark (AssistantPopover) ━━━━━━━━━━━━━━━━━━
+       Bottom-right call-out promoting the Affino Assistant. Fades in a few
+       seconds after load on first visit; dismissing it (✕ or Launch) persists
+       via localStorage so it won't return. Launch opens the AiAssistant panel.
+       Behaviour wired in the end-of-body module; not AssistantPopover.js. -->
+  <div class="cc-assistant-popover" aria-label="Affino Assistant">
+    <div class="cc-assistant-popover__header">
+      <div class="cc-assistant-popover__brand">
+        <span class="cc-assistant-popover__badge">
+          <i data-lucide="sparkles" aria-hidden="true"></i>
+        </span>
+        <p class="cc-assistant-popover__title">Affino Assistant</p>
+      </div>
+      <button class="btn btn--tertiary btn--sm btn--icon cc-assistant-popover__close" type="button" aria-label="Close">
+        <i data-lucide="x" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="cc-assistant-popover__body">
+      <div class="cc-assistant-popover__intro">
+        <p>Affino’s Assistant is great at providing in context support whilst you work in the control center.</p>
+        <p>Stuck on screen? Launch the Affino Assistant from the Actions Menu to get moving.</p>
+      </div>
+      <button class="btn btn--primary cc-assistant-popover__launch" type="button">
+        Launch
+        <i data-lucide="arrow-right" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
   <!-- ━━━ "Save favourite as" modal (opened by the rail Favourite button) ━━━ -->
   <div class="modal-overlay" id="modal-fav" role="dialog" aria-modal="true" aria-labelledby="modal-fav-title">
     <div class="modal modal--sm">
@@ -1486,25 +1516,61 @@
         onClose: () => setExpanded(false),
       });
 
+      // Open the panel (idempotent): close any open rail popover, reveal, sync
+      // aria. Shared by the rail button and the coachmark's Launch button.
+      const openAssistant = () => {
+        document.querySelectorAll('[data-aa-panel]:not([hidden])').forEach((p) => {
+          p.hidden = true;
+          const t = document.querySelector('[data-aa-toggle="' + p.dataset.aaPanel + '"]');
+          if (t) t.setAttribute('aria-expanded', 'false');
+        });
+        panel.classList.remove('ai-assistant--hidden');
+        setExpanded(true);
+        if (window.lucide) lucide.createIcons();
+      };
+
       // Rail button toggles the panel. Deliberately NOT a generic
       // [data-aa-toggle] popover: a large draggable panel shouldn't vanish on an
       // outside click, so it is wired separately and exempt from the rail
       // popovers' click-outside handler.
       aiBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        const willOpen = panel.classList.contains('ai-assistant--hidden');
-        if (willOpen) {
-          // Close any open rail popover (Info / Text size) as the assistant opens.
-          document.querySelectorAll('[data-aa-panel]:not([hidden])').forEach((p) => {
-            p.hidden = true;
-            const t = document.querySelector('[data-aa-toggle="' + p.dataset.aaPanel + '"]');
-            if (t) t.setAttribute('aria-expanded', 'false');
-          });
+        if (panel.classList.contains('ai-assistant--hidden')) {
+          openAssistant();
+        } else {
+          panel.classList.add('ai-assistant--hidden');
+          setExpanded(false);
         }
-        panel.classList.toggle('ai-assistant--hidden', !willOpen);
-        setExpanded(willOpen);
-        if (willOpen && window.lucide) lucide.createIcons();
       });
+
+      // ── AssistantPopover coachmark ──────────────────────────────────
+      // First visit only: slides up into view on load. ✕ or Launch dismiss it
+      // and persist the dismissal via localStorage so it won't return. Launch
+      // also opens the assistant. (No AssistantPopover.js here — that script's
+      // instant DOM-removal would fight the slide-out.)
+      const popover = document.querySelector('.cc-assistant-popover');
+      const DISMISS_KEY = 'cc-assistant-popover-dismissed';
+      if (popover) {
+        let dismissed = false;
+        try { dismissed = localStorage.getItem(DISMISS_KEY) === '1'; } catch (_) {}
+
+        if (dismissed) {
+          popover.remove();
+        } else {
+          const dismiss = () => {
+            try { localStorage.setItem(DISMISS_KEY, '1'); } catch (_) {}
+            popover.classList.remove('cc-assistant-popover--visible');
+            popover.addEventListener('transitionend', () => popover.remove(), { once: true });
+          };
+          // Reveal after a short beat so the slide-up transition plays.
+          const SHOW_DELAY_MS = 500; // brief delay before the coachmark slides up
+          setTimeout(() => popover.classList.add('cc-assistant-popover--visible'), SHOW_DELAY_MS);
+          popover.querySelector('.cc-assistant-popover__close')
+            .addEventListener('click', dismiss);
+          popover.querySelector('.cc-assistant-popover__launch')
+            .addEventListener('click', () => { openAssistant(); dismiss(); });
+        }
+      }
     }
   </script>
 </body>
