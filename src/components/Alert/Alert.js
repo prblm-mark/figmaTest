@@ -1,0 +1,1 @@
+document.addEventListener("click",function(e){var t=e.target.closest(".alert__close");if(t){var c=t.closest(".alert");c&&c.remove()}});

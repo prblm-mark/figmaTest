@@ -90,6 +90,8 @@ None at template scope. Composed components carry their own approved gaps (see e
 | Chart.js (CDN) | Renders the two chart canvases. | Inline init in the template footer. |
 | Lucide (CDN) | Icon rendering. | `lucide.createIcons()` after load. |
 | `dark-mode-toggle.js` | Wires the `data-theme` toggle if any UI surfaces it. | Auto-init from head script. |
+| `src/cc/patterns/HeaderGroup/HeaderGroup.js` | User Menu "Icon Navigation" / "Hide Labels" toggles → show/hide the IconNavigation strip. | Document-delegated. |
+| `src/components/Alert/Alert.js` | Alert close icon (`.alert__close`) removes the alert. | Document-delegated. |
 
 No new JS module is authored by the template.
 
