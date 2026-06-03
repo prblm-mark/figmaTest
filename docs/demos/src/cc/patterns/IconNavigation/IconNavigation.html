@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en" data-brand="cc">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../../components/dark-mode-toggle.js"></script>
+  <title>IconNavigation — Control Centre</title>
+  <link rel="stylesheet" href="../../../styles/base.css">
+  <link rel="stylesheet" href="IconNavigation.css">
+  <style>
+    body {
+      margin: 0;
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-secondary);
+      min-height: 100vh;
+      color: var(--ai-text-primary);
+      font-family: var(--ai-font-body);
+    }
+    .demo-section {
+      background: var(--ai-surface-primary);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-lg);
+      overflow: hidden;
+      margin-bottom: var(--ai-spacing-5);
+    }
+    .demo-section__head {
+      padding: var(--ai-spacing-6) var(--ai-spacing-6) 0;
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 var(--ai-spacing-3);
+    }
+    .demo-section__lead {
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-contrast);
+      margin: 0 0 var(--ai-spacing-6);
+      max-width: 70ch;
+    }
+  </style>
+</head>
+<body>
+  <section class="demo-section">
+    <div class="demo-section__head">
+      <p class="demo-section__title">CC IconNavigation — Pattern</p>
+      <p class="demo-section__lead">
+        Nine module shortcuts distributed across a 768-wide centred row on the
+        minimal surface. Each item is a link; hover darkens the glyph and label.
+        Toggle dark mode (top-right) to see the brand glyphs re-paint.
+      </p>
+    </div>
+
+    <nav class="cc-icon-nav" aria-label="Module navigation">
+      <ul class="cc-icon-nav__list">
+        <li class="cc-icon-nav__item">
+          <a class="cc-icon-nav__link" href="#">
+            <span class="cc-icon-nav__icon-box">
+              <span class="cc-icon-nav__icon cc-icon-nav__icon--publish" aria-hidden="true"></span>
+            </span>
+            <span class="cc-icon-nav__label">Publish</span>
+          </a>
+        </li>
+        <li class="cc-icon-nav__item">
+          <a class="cc-icon-nav__link" href="#">
+            <span class="cc-icon-nav__icon-box">
+              <span class="cc-icon-nav__icon cc-icon-nav__icon--promote" aria-hidden="true"></span>
+            </span>
+            <span class="cc-icon-nav__label">Promote</span>
+          </a>
+        </li>
+        <li class="cc-icon-nav__item">
+          <a class="cc-icon-nav__link" href="#">
+            <span class="cc-icon-nav__icon-box">
+              <span class="cc-icon-nav__icon cc-icon-nav__icon--social" aria-hidden="true"></span>
+            </span>
+            <span class="cc-icon-nav__label">Social</span>
+          </a>
+        </li>
+        <li class="cc-icon-nav__item">
+          <a class="cc-icon-nav__link" href="#">
+            <span class="cc-icon-nav__icon-box">
+              <span class="cc-icon-nav__icon cc-icon-nav__icon--media" aria-hidden="true"></span>
+            </span>
+            <span class="cc-icon-nav__label">Media</span>
+          </a>
+        </li>
+        <li class="cc-icon-nav__item">
+          <a class="cc-icon-nav__link" href="#">
+            <span class="cc-icon-nav__icon-box">
+              <span class="cc-icon-nav__icon cc-icon-nav__icon--structure" aria-hidden="true"></span>
+            </span>
+            <span class="cc-icon-nav__label">Structure</span>
+          </a>
+        </li>
+        <li class="cc-icon-nav__item">
+          <a class="cc-icon-nav__link" href="#">
+            <span class="cc-icon-nav__icon-box">
+              <span class="cc-icon-nav__icon cc-icon-nav__icon--design" aria-hidden="true"></span>
+            </span>
+            <span class="cc-icon-nav__label">Design</span>
+          </a>
+        </li>
+        <li class="cc-icon-nav__item">
+          <a class="cc-icon-nav__link" href="#">
+            <span class="cc-icon-nav__icon-box">
+              <span class="cc-icon-nav__icon cc-icon-nav__icon--commerce" aria-hidden="true"></span>
+            </span>
+            <span class="cc-icon-nav__label">Commerce</span>
+          </a>
+        </li>
+        <li class="cc-icon-nav__item">
+          <a class="cc-icon-nav__link" href="#">
+            <span class="cc-icon-nav__icon-box">
+              <span class="cc-icon-nav__icon cc-icon-nav__icon--analyse" aria-hidden="true"></span>
+            </span>
+            <span class="cc-icon-nav__label">Analyse</span>
+          </a>
+        </li>
+        <li class="cc-icon-nav__item">
+          <a class="cc-icon-nav__link" href="#">
+            <span class="cc-icon-nav__icon-box">
+              <span class="cc-icon-nav__icon cc-icon-nav__icon--settings" aria-hidden="true"></span>
+            </span>
+            <span class="cc-icon-nav__label">Settings</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </section>
+</body>
+</html>
