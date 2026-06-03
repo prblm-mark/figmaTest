@@ -8,7 +8,8 @@
  * Uses the new --cc-actions-menu-* token family added 2026-05-27:
  *   --cc-actions-menu-primary-bg    container bg (light grey in CC light)
  *   --cc-actions-menu-secondary-bg  hover/active button bg
- *   --cc-actions-menu-icon          icon colour
+ *   --cc-actions-menu-icon          icon colour (rest)
+ *   --cc-actions-menu-icon-active   icon colour (hover/active)
  *
  * The width is implicit: 40px button + 2 × 8px horizontal padding = 56px.
  * No explicit width property — wrapper sizes to content.
@@ -47,11 +48,13 @@
   height: var(--ai-icon-size-md);
 }
 
-/* ── Hover (also force-able via .is-hover for demos) ─── */
+/* ── Hover / active (also force-able via .is-hover for demos) ─── */
 
 .actions-menu__btn:hover,
-.actions-menu__btn.is-hover {
+.actions-menu__btn.is-hover,
+.actions-menu__btn:active {
   background-color: var(--cc-actions-menu-secondary-bg);
+  color: var(--cc-actions-menu-icon-active);
 }
 
 /* ── Focus ───────────────────────────────────────────── */
