@@ -26,6 +26,7 @@
   <link rel="stylesheet" href="../../../components/Datatables/Datatables.css">
 
   <!-- DS-tier patterns -->
+  <link rel="stylesheet" href="../../../patterns/Modal/Modal.css">
   <link rel="stylesheet" href="../../../patterns/StatCard/StatCard.css">
   <link rel="stylesheet" href="../../../patterns/UpgradeCard/UpgradeCard.css">
   <link rel="stylesheet" href="../../../patterns/Chart/Chart.css">
@@ -39,6 +40,8 @@
   <link rel="stylesheet" href="../../patterns/Header/Header.css">
   <link rel="stylesheet" href="../../patterns/HeaderGroup/HeaderGroup.css">
   <link rel="stylesheet" href="../../patterns/ActionsMenu/ActionsMenu.css">
+  <link rel="stylesheet" href="../../patterns/ActionsInfoPanel/ActionsInfoPanel.css">
+  <link rel="stylesheet" href="../../components/FontSizeSlider/FontSizeSlider.css">
 
   <!-- Template -->
   <link rel="stylesheet" href="ControlScreen.css">
@@ -54,7 +57,7 @@
         <button type="button" class="cc-sidebar__btn cc-sidebar__btn--active" data-cc-target="control" aria-controls="cc-d-control" aria-current="true" aria-label="Workspace settings"><i data-lucide="sliders-vertical" aria-hidden="true"></i></button>
         <button type="button" class="cc-sidebar__btn" data-cc-target="crm" aria-controls="cc-d-crm" aria-label="CRM"><i data-lucide="user-cog" aria-hidden="true"></i></button>
         <button type="button" class="cc-sidebar__btn" data-cc-target="analysis" aria-controls="cc-d-analysis" aria-label="Analysis"><i data-lucide="chart-no-axes-combined" aria-hidden="true"></i></button>
-        <button type="button" class="cc-sidebar__btn" aria-label="Favourites"><i data-lucide="star" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" data-cc-target="favourites" aria-controls="cc-d-favourites" aria-label="Favourites"><i data-lucide="star" aria-hidden="true"></i></button>
         <button type="button" class="cc-sidebar__btn" aria-label="Organisation"><i data-lucide="network" aria-hidden="true"></i></button>
         <button type="button" class="cc-sidebar__btn" aria-label="Profile"><i data-lucide="circle-user" aria-hidden="true"></i></button>
       </nav>
@@ -170,6 +173,21 @@
         </ul>
       </nav>
 
+      <!-- Panel: Favourites (opened by the ★ rail button; populated by the rail Favourite modal) -->
+      <nav class="cc-menu" id="cc-d-favourites" data-cc-panel="favourites" aria-label="Favourites menu" hidden aria-hidden="true">
+        <div class="cc-menu__brand" role="img" aria-label="Affino"></div>
+        <label class="cc-menu__search">
+          <i data-lucide="search" aria-hidden="true"></i>
+          <input class="cc-menu__search-input" type="search" placeholder="Search Favourites" aria-label="Search Favourites">
+        </label>
+        <ul class="cc-menu__submenu cc-control__fav-list">
+          <li class="cc-menu__submenu-item">
+            <span class="cc-menu__submenu-item-label">Analysis Dashboard</span>
+            <button class="cc-menu__submenu-item__action" type="button" aria-label="Remove from favourites"><i data-lucide="trash-2" aria-hidden="true"></i></button>
+          </li>
+        </ul>
+      </nav>
+
       <!-- Panel: CRM -->
       <nav class="cc-menu cc-menu--crm" id="cc-d-crm" data-cc-panel="crm" aria-label="CRM menu" hidden aria-hidden="true">
         <div class="cc-menu__brand" role="img" aria-label="Affino"></div>
@@ -204,7 +222,7 @@
         <button type="button" class="cc-sidebar__btn" data-cc-target="control" aria-controls="cc-m-control" aria-label="Workspace settings"><i data-lucide="sliders-vertical" aria-hidden="true"></i></button>
         <button type="button" class="cc-sidebar__btn" data-cc-target="crm" aria-controls="cc-m-crm" aria-label="CRM"><i data-lucide="user-cog" aria-hidden="true"></i></button>
         <button type="button" class="cc-sidebar__btn" data-cc-target="analysis" aria-controls="cc-m-analysis" aria-label="Analysis"><i data-lucide="chart-no-axes-combined" aria-hidden="true"></i></button>
-        <button type="button" class="cc-sidebar__btn" aria-label="Favourites"><i data-lucide="star" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" data-cc-target="favourites" aria-controls="cc-m-favourites" aria-label="Favourites"><i data-lucide="star" aria-hidden="true"></i></button>
         <button type="button" class="cc-sidebar__btn" aria-label="Organisation"><i data-lucide="network" aria-hidden="true"></i></button>
         <button type="button" class="cc-sidebar__btn" aria-label="Profile"><i data-lucide="circle-user" aria-hidden="true"></i></button>
         <button type="button" class="cc-sidebar__btn" data-cc-toggle-extras aria-expanded="false" aria-label="More options"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
@@ -239,6 +257,21 @@
       <nav class="cc-menu" id="cc-m-analysis" data-cc-panel="analysis" aria-label="Analysis menu (mobile)" hidden aria-hidden="true">
         <ul class="cc-menu__items">
           <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="layout-dashboard"></i></span><span class="cc-main-menu-item__label">Dashboards</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button><ul class="cc-menu__submenu" hidden><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Analysis Dashboard</span></li></ul></li>
+        </ul>
+      </nav>
+
+      <!-- Panel: Favourites (mobile) -->
+      <nav class="cc-menu" id="cc-m-favourites" data-cc-panel="favourites" aria-label="Favourites menu (mobile)" hidden aria-hidden="true">
+        <div class="cc-menu__brand" role="img" aria-label="Affino"></div>
+        <label class="cc-menu__search">
+          <i data-lucide="search" aria-hidden="true"></i>
+          <input class="cc-menu__search-input" type="search" placeholder="Search Favourites" aria-label="Search Favourites">
+        </label>
+        <ul class="cc-menu__submenu cc-control__fav-list">
+          <li class="cc-menu__submenu-item">
+            <span class="cc-menu__submenu-item-label">Analysis Dashboard</span>
+            <button class="cc-menu__submenu-item__action" type="button" aria-label="Remove from favourites"><i data-lucide="trash-2" aria-hidden="true"></i></button>
+          </li>
         </ul>
       </nav>
 
@@ -352,6 +385,7 @@
           </div>
         </header>
 
+        <div class="cc-header-cq">
         <header class="cc-header cc-header--control">
           <div class="cc-header__title-block">
             <img class="portrait" src="https://i.pravatar.cc/96?u=susan" alt="Susan Kerrigan" />
@@ -388,6 +422,7 @@
             </button>
           </div>
         </header>
+        </div>
 
       </div>
     </div>
@@ -454,28 +489,33 @@
 
       </div>
 
-      <!-- 3. Zone row: Select Zone (left) + Analysis Dashboard link (right on desktop) -->
-      <div class="cc-control__zone-row">
-        <div class="sel" data-sel>
-          <label class="sel__label" for="cs-zone">Select Zone</label>
-          <button id="cs-zone" class="sel__control sel__control--sm" type="button" data-sel-trigger>
-            <span class="sel__value">Affino</span>
-            <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
-          </button>
-          <ul class="sel__menu" role="listbox">
-            <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">Affino <i data-lucide="check"></i></button></li>
-            <li><button type="button" class="sel__menu-item" role="option">Zone A</button></li>
-            <li><button type="button" class="sel__menu-item" role="option">Zone B</button></li>
-          </ul>
+      <!-- 3 + 4. Analysis panel: header bar (Select Zone + Analysis Dashboard) over the two-chart row (Figma node 4186:21107) -->
+      <div class="cc-control__panel">
+        <div class="cc-control__panel-head">
+          <div class="sel sel--label-left" data-sel>
+            <label class="sel__label" for="cs-zone">Select Zone</label>
+            <div class="sel__field">
+              <button id="cs-zone" class="sel__control" type="button" data-sel-trigger>
+                <span class="sel__value">Affino</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">Affino <i data-lucide="check"></i></button></li>
+                <li><button type="button" class="sel__menu-item" role="option">Staging</button></li>
+                <li><button type="button" class="sel__menu-item" role="option">Production</button></li>
+                <li><button type="button" class="sel__menu-item" role="option">Development</button></li>
+                <li><button type="button" class="sel__menu-item" role="option">Sandbox</button></li>
+              </ul>
+            </div>
+          </div>
+          <a href="#" class="btn btn--secondary cc-control__dash-btn cc-control__dash-btn--desktop">
+            <span>Analysis Dashboard</span>
+            <i data-lucide="arrow-right" aria-hidden="true"></i>
+          </a>
         </div>
-        <a href="#" class="cc-control__analysis-link cc-control__analysis-link--desktop">
-          <span>Analysis Dashboard</span>
-          <i data-lucide="arrow-right" aria-hidden="true"></i>
-        </a>
-      </div>
 
-      <!-- 4. Two-chart row: Page Views · Users -->
-      <div class="cc-control__charts">
+        <!-- Two-chart row: Page Views · Users -->
+        <div class="cc-control__charts">
 
         <div class="chart">
           <div class="chart__head">
@@ -526,9 +566,10 @@
         </div>
 
       </div>
+      </div><!-- /cc-control__panel -->
 
-      <!-- Analysis Dashboard link (mobile-only — placed between charts and Whos Online per Figma) -->
-      <a href="#" class="cc-control__analysis-link cc-control__analysis-link--mobile">
+      <!-- Analysis Dashboard button (mobile-only — placed between charts and Whos Online per Figma) -->
+      <a href="#" class="btn btn--secondary cc-control__dash-btn cc-control__dash-btn--mobile">
         <span>Analysis Dashboard</span>
         <i data-lucide="arrow-right" aria-hidden="true"></i>
       </a>
@@ -643,12 +684,11 @@
             </table>
           </div>
           <div class="datatables__footer">
-            <span>Showing <strong>1–5</strong> of <strong>14</strong> results</span>
+            <span>Showing <strong>1–10</strong> of <strong>14</strong> results</span>
             <div class="datatables__pagination" role="group" aria-label="Pagination">
               <button class="datatables__page-btn" aria-label="Previous"><i data-lucide="chevron-left" aria-hidden="true"></i></button>
               <button class="datatables__page-btn datatables__page-btn--active">1</button>
               <button class="datatables__page-btn">2</button>
-              <button class="datatables__page-btn">3</button>
               <button class="datatables__page-btn" aria-label="Next"><i data-lucide="chevron-right" aria-hidden="true"></i></button>
             </div>
           </div>
@@ -818,7 +858,7 @@
             </table>
           </div>
           <div class="datatables__footer">
-            <span><strong>1–5</strong> of <strong>14</strong></span>
+            <span><strong>1–10</strong> of <strong>14</strong></span>
             <div class="datatables__pagination" role="group" aria-label="Pagination">
               <button class="datatables__page-btn" aria-label="Previous"><i data-lucide="chevron-left" aria-hidden="true"></i></button>
               <button class="datatables__page-btn datatables__page-btn--active">1</button>
@@ -841,21 +881,74 @@
       <button class="actions-menu__btn" type="button" aria-label="AI suggestions">
         <i data-lucide="sparkles" aria-hidden="true"></i>
       </button>
-      <button class="actions-menu__btn" type="button" aria-label="Info">
-        <i data-lucide="info" aria-hidden="true"></i>
-      </button>
-      <button class="actions-menu__btn" type="button" aria-label="Favourite">
+      <span class="cc-control__rail-item">
+        <button class="actions-menu__btn" type="button" aria-label="Info" aria-haspopup="dialog" aria-expanded="false" aria-controls="cc-rail-info" data-aa-toggle="info">
+          <i data-lucide="info" aria-hidden="true"></i>
+        </button>
+        <div class="cc-control__rail-popover" id="cc-rail-info" data-aa-panel="info" role="dialog" aria-label="Information" hidden>
+          <div class="cc-actions-info-panel">
+            <section class="cc-actions-info-panel__section">
+              <h3 class="cc-actions-info-panel__heading">Description</h3>
+              <p class="cc-actions-info-panel__body">Your Control Centre home — monitor live activity, jump into key features, and switch zones from one place.</p>
+            </section>
+            <section class="cc-actions-info-panel__section">
+              <h3 class="cc-actions-info-panel__heading">Related</h3>
+              <div class="cc-actions-info-panel__pills">
+                <button type="button" class="btn btn--tertiary btn--sm">Analysis Dashboard</button>
+                <button type="button" class="btn btn--tertiary btn--sm">Zone Settings</button>
+              </div>
+            </section>
+            <section class="cc-actions-info-panel__section">
+              <h3 class="cc-actions-info-panel__heading">System Security Right</h3>
+              <div class="cc-actions-info-panel__pills">
+                <button type="button" class="btn btn--tertiary btn--sm">Control Access</button>
+                <button type="button" class="btn btn--tertiary btn--sm">Member Management</button>
+              </div>
+            </section>
+          </div>
+        </div>
+      </span>
+      <button class="actions-menu__btn" type="button" aria-label="Add to favourites" aria-haspopup="dialog" data-aa-modal="fav">
         <i data-lucide="star" aria-hidden="true"></i>
       </button>
-      <button class="actions-menu__btn" type="button" aria-label="Text size">
-        <i data-lucide="a-large-small" aria-hidden="true"></i>
-      </button>
+      <span class="cc-control__rail-item">
+        <button class="actions-menu__btn" type="button" aria-label="Text size" aria-haspopup="dialog" aria-expanded="false" aria-controls="cc-rail-textsize" data-aa-toggle="text-size">
+          <i data-lucide="a-large-small" aria-hidden="true"></i>
+        </button>
+        <div class="cc-control__rail-popover cc-control__rail-popover--card" id="cc-rail-textsize" data-aa-panel="text-size" role="dialog" aria-label="Text size" hidden>
+          <p class="cc-control__rail-popover-label">Text size</p>
+          <div class="font-size-slider">
+            <input class="font-size-slider__input" type="range" min="1" max="4" step="1" value="2" aria-label="Text size">
+          </div>
+        </div>
+      </span>
+      <!-- Minimise: visual-only for now (behaviour TBD) -->
       <button class="actions-menu__btn" type="button" aria-label="Minimise">
         <i data-lucide="minimize-2" aria-hidden="true"></i>
       </button>
-      <button class="actions-menu__btn" type="button" aria-label="Print">
+      <button class="actions-menu__btn" type="button" aria-label="Print" data-aa-action="print">
         <i data-lucide="printer" aria-hidden="true"></i>
       </button>
+    </div>
+  </div>
+
+  <!-- ━━━ "Save favourite as" modal (opened by the rail Favourite button) ━━━ -->
+  <div class="modal-overlay" id="modal-fav" role="dialog" aria-modal="true" aria-labelledby="modal-fav-title">
+    <div class="modal modal--sm">
+      <div class="modal__header">
+        <h2 class="modal__title" id="modal-fav-title">Save favourite as</h2>
+        <button class="modal__close" type="button" aria-label="Close" data-aa-modal-close><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+      <div class="modal__body">
+        <div class="input">
+          <div class="input__wrap">
+            <input id="cc-fav-name" type="text" class="input__control" placeholder="e.g. Q3 Campaign View" aria-label="Favourite name">
+          </div>
+        </div>
+      </div>
+      <div class="modal__footer">
+        <button class="btn btn--primary" type="button" data-aa-fav-save>Save favourite</button>
+      </div>
     </div>
   </div>
 
@@ -879,6 +972,102 @@
     });
   </script>
   <script type="module" src="../../../components/Dropdown/Dropdown.js"></script>
+  <!-- FontSizeSlider auto-inits its inputs (paints the track fill) on load -->
+  <script type="module" src="../../components/FontSizeSlider/FontSizeSlider.js"></script>
+
+  <!-- ActionsMenu rail popovers (Info, …). Generic toggle: one open at a time,
+       closes on Esc / click-outside. Add more by pairing a button
+       [data-aa-toggle="X"] with a panel [data-aa-panel="X"]. -->
+  <script>
+    (function () {
+      function panelFor(key) { return document.querySelector('[data-aa-panel="' + key + '"]'); }
+      function toggleFor(key) { return document.querySelector('[data-aa-toggle="' + key + '"]'); }
+      function close(panel) {
+        if (!panel || panel.hidden) return;
+        panel.hidden = true;
+        var t = toggleFor(panel.dataset.aaPanel);
+        if (t) t.setAttribute('aria-expanded', 'false');
+      }
+      function closeAll(except) {
+        document.querySelectorAll('[data-aa-panel]').forEach(function (p) { if (p !== except) close(p); });
+      }
+      document.querySelectorAll('[data-aa-toggle]').forEach(function (btn) {
+        var panel = panelFor(btn.dataset.aaToggle);
+        if (!panel) return;
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var willOpen = panel.hidden;
+          closeAll(willOpen ? panel : null);
+          panel.hidden = !willOpen;
+          btn.setAttribute('aria-expanded', String(willOpen));
+          if (willOpen && window.lucide) lucide.createIcons();
+        });
+      });
+      document.addEventListener('click', function (e) {
+        document.querySelectorAll('[data-aa-panel]:not([hidden])').forEach(function (p) {
+          var t = toggleFor(p.dataset.aaPanel);
+          if (!p.contains(e.target) && !(t && t.contains(e.target))) close(p);
+        });
+      });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeAll(null); closeFav(); } });
+
+      // Print action
+      document.querySelectorAll('[data-aa-action="print"]').forEach(function (btn) {
+        btn.addEventListener('click', function () { window.print(); });
+      });
+
+      // ── Favourite → "Save favourite as" modal → Favourites sidebar panel ──
+      var favModal = document.getElementById('modal-fav');
+      var favInput = document.getElementById('cc-fav-name');
+      function openFav() {
+        if (!favModal) return;
+        closeAll(null);                       // close any open rail popover first
+        favModal.classList.add('modal-overlay--open');
+        document.body.style.overflow = 'hidden';
+        if (favInput) { favInput.value = ''; favInput.focus(); }
+      }
+      function closeFav() {
+        if (!favModal) return;
+        favModal.classList.remove('modal-overlay--open');
+        document.body.style.overflow = '';
+      }
+      function saveFav() {
+        var name = (favInput.value || '').trim();
+        if (!name) { favInput.focus(); return; }
+        document.querySelectorAll('.cc-control__fav-list').forEach(function (list) {
+          var li = document.createElement('li');
+          li.className = 'cc-menu__submenu-item';
+          li.innerHTML =
+            '<span class="cc-menu__submenu-item-label"></span>' +
+            '<button class="cc-menu__submenu-item__action" type="button" aria-label="Remove from favourites"><i data-lucide="trash-2" aria-hidden="true"></i></button>';
+          li.querySelector('.cc-menu__submenu-item-label').textContent = name; // textContent = safe
+          list.appendChild(li);
+        });
+        if (window.lucide) lucide.createIcons();
+        closeFav();
+        // reveal the Favourites panel on the desktop sidebar so the new item shows
+        var favBtn = document.querySelector('.cc-control__sidebar--desktop .cc-sidebar__btn[data-cc-target="favourites"]');
+        if (favBtn && !favBtn.classList.contains('cc-sidebar__btn--active')) favBtn.click();
+      }
+      document.querySelectorAll('[data-aa-modal="fav"]').forEach(function (b) { b.addEventListener('click', openFav); });
+      if (favModal) {
+        favModal.querySelector('[data-aa-modal-close]').addEventListener('click', closeFav);
+        favModal.querySelector('[data-aa-fav-save]').addEventListener('click', saveFav);
+        favModal.addEventListener('click', function (e) { if (e.target === favModal) closeFav(); });
+        if (favInput) favInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') saveFav(); });
+      }
+      // Remove-from-favourites (delegated, both panels)
+      document.querySelectorAll('.cc-control__fav-list').forEach(function (list) {
+        list.addEventListener('click', function (e) {
+          var rm = e.target.closest('.cc-menu__submenu-item__action');
+          if (rm) rm.closest('.cc-menu__submenu-item').remove();
+        });
+      });
+    })();
+  </script>
+
+  <!-- Select Zone dropdown — shared Select behaviour (open/choose/close). -->
+  <script src="../../../components/Select/Select.js"></script>
 
   <!-- Chart.js initialisation — Page Views (multi-line) + Users (single-line) -->
   <script>

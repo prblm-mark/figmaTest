@@ -196,116 +196,30 @@
     </div>
   </section>
 
+  <!-- 9 · Label Left -->
+  <section class="demo-section">
+    <p class="demo-section__title">Type=Label Left · Size=Default</p>
+    <div class="sel sel--label-left" data-sel>
+      <label class="sel__label" for="sel9">Country</label>
+      <div class="sel__field">
+        <button id="sel9" class="sel__control" type="button" data-sel-trigger>
+          <span class="sel__value">United Kingdom</span>
+          <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+        </button>
+        <ul class="sel__menu" role="listbox">
+          <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">United Kingdom <i data-lucide="check"></i></button></li>
+          <li><button type="button" class="sel__menu-item" role="option">United States</button></li>
+          <li><button type="button" class="sel__menu-item" role="option">Canada</button></li>
+          <li><button type="button" class="sel__menu-item" role="option">Germany</button></li>
+          <li><button type="button" class="sel__menu-item" role="option">France</button></li>
+          <li><button type="button" class="sel__menu-item" role="option">Australia</button></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <script>
-    lucide.createIcons();
-
-    // ── Single-select dropdown (Default / Underline) ──
-    document.querySelectorAll('[data-sel-trigger]').forEach(trigger => {
-      trigger.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const sel = trigger.closest('[data-sel]');
-        // Close other open selects
-        document.querySelectorAll('[data-sel].sel--open').forEach(s => {
-          if (s !== sel) s.classList.remove('sel--open');
-        });
-        sel.classList.toggle('sel--open');
-      });
-    });
-
-    document.querySelectorAll('.sel__menu-item').forEach(item => {
-      item.addEventListener('click', () => {
-        const sel = item.closest('[data-sel]');
-        const menu = item.closest('.sel__menu');
-        const valueEl = sel.querySelector('.sel__value');
-        const label = item.firstChild ? item.firstChild.textContent.trim() : item.textContent.trim();
-        if (valueEl) valueEl.textContent = label;
-        // Mark selection: clear siblings, add to clicked
-        menu.querySelectorAll('.sel__menu-item').forEach(i => {
-          i.classList.remove('sel__menu-item--selected');
-          i.removeAttribute('aria-selected');
-          const check = i.querySelector('[data-lucide], svg');
-          if (check) check.remove();
-        });
-        item.classList.add('sel__menu-item--selected');
-        item.setAttribute('aria-selected', 'true');
-        const checkEl = document.createElement('i');
-        checkEl.setAttribute('data-lucide', 'check');
-        item.appendChild(checkEl);
-        lucide.createIcons();
-        sel.classList.remove('sel--open');
-      });
-    });
-
-    // Click outside closes any open select
-    document.addEventListener('click', (e) => {
-      document.querySelectorAll('[data-sel].sel--open').forEach(sel => {
-        if (!sel.contains(e.target)) sel.classList.remove('sel--open');
-      });
-      document.querySelectorAll('[data-cat-group].sel-category__group--open').forEach(group => {
-        if (!group.contains(e.target)) group.classList.remove('sel-category__group--open');
-      });
-    });
-
-    // ── Multi-select (toggle on click, no auto-close) ──
-    document.querySelectorAll('[data-multi]').forEach(item => {
-      item.addEventListener('click', () => {
-        const selected = item.classList.toggle('sel__list-item--selected');
-        if (selected) {
-          item.setAttribute('aria-selected', 'true');
-        } else {
-          item.removeAttribute('aria-selected');
-        }
-      });
-    });
-
-    // ── Category Dropdown segments (each has its own menu) ──
-    document.querySelectorAll('[data-cat-trigger]').forEach(trigger => {
-      trigger.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const group = trigger.closest('[data-cat-group]');
-        // Close other open category groups (and any single-select dropdowns)
-        document.querySelectorAll('[data-cat-group].sel-category__group--open').forEach(g => {
-          if (g !== group) g.classList.remove('sel-category__group--open');
-        });
-        document.querySelectorAll('[data-sel].sel--open').forEach(s => s.classList.remove('sel--open'));
-        group.classList.toggle('sel-category__group--open');
-      });
-    });
-
-    document.querySelectorAll('.sel-category__menu-item').forEach(item => {
-      item.addEventListener('click', () => {
-        const group = item.closest('[data-cat-group]');
-        const menu = item.closest('.sel-category__menu');
-        const trigger = group.querySelector('[data-cat-trigger]');
-        const labelEl = trigger.querySelector('.sel-category__label');
-        const flagEl = trigger.querySelector('.sel-category__flag');
-        // The visible button text — first child span of the menu item is the rich label
-        const itemFirstSpan = item.querySelector('span');
-        const itemFlag = item.dataset.flag;
-        const labelText = itemFirstSpan
-          ? Array.from(itemFirstSpan.childNodes)
-              .filter(n => n.nodeType === Node.TEXT_NODE || (n.nodeType === Node.ELEMENT_NODE && !n.classList.contains('sel-category__menu-flag')))
-              .map(n => n.textContent).join('').trim()
-          : item.firstChild.textContent.trim();
-        if (labelEl) labelEl.textContent = labelText;
-        if (flagEl && itemFlag) flagEl.textContent = itemFlag;
-        // Mark selection
-        menu.querySelectorAll('.sel-category__menu-item').forEach(i => {
-          i.classList.remove('sel-category__menu-item--selected');
-          i.removeAttribute('aria-selected');
-          const check = i.querySelector('[data-lucide="check"], svg.lucide-check');
-          if (check) check.remove();
-        });
-        item.classList.add('sel-category__menu-item--selected');
-        item.setAttribute('aria-selected', 'true');
-        const checkEl = document.createElement('i');
-        checkEl.setAttribute('data-lucide', 'check');
-        item.appendChild(checkEl);
-        lucide.createIcons();
-        group.classList.remove('sel-category__group--open');
-      });
-    });
-  </script>
+  <script>lucide.createIcons();</script>
+  <script src="Select.js"></script>
 </body>
 </html>

@@ -20,8 +20,12 @@ Two axes: **Type** × **Device** = 6 variants.
 | `4105:3639` | Mobile | Control | 56px | "Susan Kerrigan" (16px) | 32px | hidden |
 | `4105:3635` | Mobile | Sub Text | 56px | "Page name" (16px) + "Sub text" | — | — |
 
-Mobile responsiveness handled via `@media (max-width: 767px)` — single HTML structure
-collapses to mobile. No `--mobile` modifier class.
+Mobile responsiveness is **container-query based** — the header is wrapped in
+`.cc-header-cq` (`container: cc-header / inline-size`) and rules use
+`@container cc-header (max-width: 767px)`, so it reflows on its own column width,
+not the viewport. (The container must be a separate wrapper: an element cannot
+query its own container — see `feedback_container_self_query_trap`.) Single HTML
+structure collapses to mobile; no `--mobile` modifier class.
 
 **Mobile content changes (Control):** Per Figma, mobile Control omits the "Hi " greeting
 prefix and the user details rows (Affino / Lead Project Manager). Implemented by wrapping
@@ -34,6 +38,7 @@ hiding `.cc-header__user-details`.
 
 | Figma | CSS |
 |---|---|
+| Container-query wrapper | `.cc-header-cq` (`<div>`, wraps every `.cc-header`) |
 | Wrapper (`CCHeader`) | `.cc-header` (`<header>`) |
 | Type=Default | (base — no modifier) |
 | Type=Sub Text | `.cc-header--sub-text` |
@@ -100,7 +105,7 @@ hiding `.cc-header__user-details`.
 Buttons inside `.cc-header__actions` collapse to icon-only 32×32 squares on mobile via:
 
 ```css
-@media (max-width: 767px) {
+@container cc-header (max-width: 767px) {
   .cc-header__actions .btn {
     padding: 0;
     width: var(--ai-spacing-7); /* 32px */
@@ -160,7 +165,7 @@ No additional CCHeader-specific gaps — all sizes and tokens map cleanly via th
 
 ## Responsive behaviour
 
-`@media (max-width: 767px)`:
+`@container cc-header (max-width: 767px)`:
 - Wrapper min-height: 64px → 56px
 - Wrapper padding: 16px → 8px/12px (vert/horiz)
 - Title font-size: 22px → 16px
@@ -192,7 +197,7 @@ No additional CCHeader-specific gaps — all sizes and tokens map cleanly via th
 
 - 2026-05-15: Initial pattern scaffold. Built from Figma component set `4105:3641`
   (CC Hybrid Design System). 6 variants (3 Types × 2 Devices) reduced to a single
-  responsive HTML structure with `@media (max-width: 767px)` for mobile collapses.
+  responsive HTML structure with `@container cc-header (max-width: 767px)` for mobile collapses.
   Content changes on mobile Control (greeting / user details hidden) handled with
   scoped class hides. Buttons in `.cc-header__actions` collapse from full-text to
   icon-only 32px square on mobile via the documented Mobile child-component sizing

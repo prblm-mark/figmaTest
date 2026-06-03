@@ -37,7 +37,7 @@ Chart is a Tier=Pattern component (in `src/patterns/Chart/`) because it composes
 | Card radius | `--ai-radius-md` | 8px |
 | Card padding | `--ai-spacing-6` | 24px |
 | Card stack gap | `--ai-spacing-5` | 16px |
-| Big metric font | `--ai-font-title` bold + `--ai-font-fixed-2xl` | Inter 700 / 26px |
+| Big metric font | `--ai-font-title` bold + `--ai-font-fixed-lg` | Inter 700 / 20px (Figma binding) |
 | Big metric line-height | `--ai-leading-sm` | 20px |
 | Big metric color | `--ai-text-primary` | #212123 |
 | Sub label font | `--ai-font-title` regular + `--ai-font-fixed-xs` | Inter 400 / 14px |
@@ -56,7 +56,7 @@ Chart is a Tier=Pattern component (in `src/patterns/Chart/`) because it composes
 | Filter color | `--ai-text-contrast` | #67676c |
 | Filter hover bg | `--ai-surface-minimal` | #f6f6f7 |
 | Filter hover text | `--ai-text-primary` | #212123 |
-| Filter padding | `--ai-spacing-2` v / `--ai-spacing-3` h | 6/8px |
+| Filter padding | `--ai-spacing-2` v / `--ai-spacing-0` h | 6/0px |
 | Filter gap | `--ai-spacing-2` | 6px |
 | Filter radius | `--ai-radius-md` | 8px |
 | Report link font | `--ai-font-title` semibold + `--ai-font-fixed-xs` | Inter 600 / 14px |

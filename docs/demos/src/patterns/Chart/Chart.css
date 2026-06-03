@@ -39,7 +39,7 @@
 .chart__big {
   margin: 0;
   font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-2xl);
+  font-size: var(--ai-font-fixed-lg);
   font-weight: var(--ai-font-bold);
   line-height: var(--ai-leading-sm);
   color: var(--ai-text-primary);
@@ -105,7 +105,7 @@
   gap: var(--ai-spacing-2);
   background: transparent;
   border: 0;
-  padding: var(--ai-spacing-2) var(--ai-spacing-3);
+  padding: var(--ai-spacing-2) var(--ai-spacing-0);
   border-radius: var(--ai-radius-md);
   font-family: var(--ai-font-title);
   font-size: var(--ai-font-fixed-xs);

@@ -11,6 +11,7 @@ figma.connect(
       }),
     },
     example: ({ type }) => html`
+      <div class="cc-header-cq">
       <header class="cc-header ${type}">
         <div class="cc-header__title-block">
           <div class="cc-header__title-block-text">
@@ -40,6 +41,7 @@ figma.connect(
           </div>
         </div>
       </header>
+      </div>
     `,
   }
 )

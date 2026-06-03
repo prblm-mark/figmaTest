@@ -1,7 +1,7 @@
 /* Select component
  * Figma node: 2527:1995 (file: Lus07xi8pPXLN87sQIyrEt)
  * Tier: Component
- * Types: Default, Multiselect, Disabled, Category Dropdown, Underline
+ * Types: Default, Label Left, Multiselect, Disabled, Category Dropdown, Underline
  * Sizes: Default (40px), sm (32px) — only Default, Disabled, Category Dropdown have sm
  *
  * Trigger is rendered as <button> showing the value as text + Lucide chevron.
@@ -95,6 +95,31 @@
 .sel__chevron [data-lucide] {
   width: 100%;
   height: 100%;
+}
+
+/* ── Type: Label Left — label beside the control (Figma 2755:2337) ──
+   Switches the field wrapper from column to a horizontal row: label
+   (shrink-0) + control (grows to fill). gap is spacing-5 (16px). */
+
+.sel--label-left {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--ai-spacing-5);
+}
+
+.sel--label-left .sel__label {
+  flex-shrink: 0;
+}
+
+.sel--label-left .sel__field {
+  flex: 1 0 0;
+  min-width: 0;
+}
+
+/* Field wrapper — anchors the popover to the control (not the whole row).
+   Used by Label Left; harmless on the column layout where it spans 100%. */
+.sel__field {
+  position: relative;
 }
 
 /* ── Size: sm ─────────────────────────────────────── */

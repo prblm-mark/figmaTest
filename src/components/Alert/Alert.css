@@ -6,7 +6,8 @@
  * Style axis (layout):
  *   - Default  : rounded card, header row + optional <ul> body + optional CTA button
  *   - CTA      : rounded card, single-row icon + text + CTA button (+ close).
- *                Stacks on mobile (text above CTA) via @media (max-width: 767px).
+ *                Stacks on mobile (text above CTA) via @container (max-width: 767px)
+ *                — the .alert is a container-type context, so it reflows on its own width.
  *   - Floating : pill (radius-full), "New" badge + message + arrow icon
  *   - Fixed    : full-width bar, 3px top border, no radius
  *
