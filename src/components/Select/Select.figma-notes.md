@@ -4,7 +4,7 @@
 
 ## Component Set
 
-Select is a Tier=Component design-system component for picking from a list of values. Five variant types covering single-select, multi-select list, disabled state, segmented category-region picker, and a minimal underline style. Triggers are rendered as `<button>` (not native `<select>`) so the value text remains visible in Figma capture.
+Select is a Tier=Component design-system component for picking from a list of values. Six variant types covering single-select, a horizontal label-left layout, multi-select list, disabled state, segmented category-region picker, and a minimal underline style. Triggers are rendered as `<button>` (not native `<select>`) so the value text remains visible in Figma capture.
 
 ## Variant × Size Matrix
 
@@ -12,6 +12,7 @@ Select is a Tier=Component design-system component for picking from a list of va
 |---|---|---|---|
 | `2527:1994` | Default | Default | Bordered button trigger, value text + chevron |
 | `2527:1996` | Default | sm | 32px height, smaller font |
+| `2755:2337` | Label Left | Default | Label beside control on one row (`gap` 16px); control grows to fill. Same trigger as Default |
 | `2527:1993` | Multiselect | Default | List view — selected items highlighted with `--ai-surface-minimal` bg + medium font weight |
 | `2527:1992` | Disabled | Default | Greyed bg, muted text, not interactive |
 | `2527:2004` | Disabled | sm | Smaller disabled |
@@ -24,6 +25,7 @@ Select is a Tier=Component design-system component for picking from a list of va
 | Figma property | CSS class |
 |---|---|
 | Type=Default | `.sel__control` |
+| Type=Label Left | `.sel.sel--label-left` (row layout) + `.sel__field` wrapper around control + menu |
 | Type=Disabled | `.sel__control` + `disabled` attr (or `.sel__control--disabled`) |
 | Type=Underline | `.sel__control.sel__control--underline` |
 | Type=Multiselect | `.sel__list` (replaces button trigger) |
@@ -82,12 +84,15 @@ None. The 1px gap between Multiselect items and 2px Underline border are optical
 
 ## Dependencies
 
-None — Select is self-contained. No native `<select>` element used (button-based triggers display the value as visible HTML text so it captures correctly to Figma).
+- **`Select.js`** (same folder) — shared interactive behaviour module. Auto-binds via document-level event delegation; no init call. Covers single-select (open / choose / close on click-outside + Esc), multi-select toggle, and the Category Dropdown segments. Load it on any page using Select markup (the demo and the ControlScreen template both do).
+
+No native `<select>` element used (button-based triggers display the value as visible HTML text so it captures correctly to Figma).
 
 ## Notes
 
-- Triggers are `<button>` elements rather than native `<select>`. Native selects don't render their selected option as visible text in Figma's html-to-design capture, so the chosen value would appear as an empty box. Buttons + a `<span class="sel__value">` keeps the value visible and capturable. Production wiring would connect this to a popover dropdown; the prototype shows the trigger only.
+- Triggers are `<button>` elements rather than native `<select>`. Native selects don't render their selected option as visible text in Figma's html-to-design capture, so the chosen value would appear as an empty box. Buttons + a `<span class="sel__value">` keeps the value visible and capturable. The popover dropdown is wired live by `Select.js` (single-select opens the `.sel__menu`, updates `.sel__value`, moves the check).
 - Country flags use emoji (🇬🇧). For higher-fidelity rendering swap for SVG flags in production.
 - Multiselect is shown in its open/list state. In production a multiselect would also have a button trigger that opens this list — same `.sel__list` rendered in a popover.
 - Underline variant has no horizontal padding so the value aligns flush-left with the parent surface (matches Figma where pl/pr are 0).
 - Disabled `:hover` is suppressed (`border-color: --ai-border-secondary`) to override the brand-border hover.
+- **Label Left** (`2755:2337`) only changes the `.sel` wrapper from a column to a horizontal row (`gap` 16px) — the label, control, value, chevron and popover sub-elements are unchanged. Control + menu are wrapped in `.sel__field` (`position: relative`) so the dropdown anchors to the control, not the full row. Reuses the single-select dropdown JS unchanged.

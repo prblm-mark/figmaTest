@@ -6,6 +6,7 @@ figma.connect(
     props: {
       type: figma.enum('Type', {
         Default: 'sel__control',
+        'Label Left': 'sel__control',
         Disabled: 'sel__control',
         Underline: 'sel__control sel__control--underline',
         Multiselect: 'sel__list',

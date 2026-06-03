@@ -39,13 +39,15 @@ figma.connect(
               <div class="stat-card"><!-- Help Guides --></div>
               <div class="upgrade-card"><!-- Version + Update --></div>
             </div>
-            <div class="cc-control__zone-row">
-              <div class="sel"><!-- Select Zone --></div>
-              <a class="cc-control__analysis-link" href="#">Analysis Dashboard</a>
-            </div>
-            <div class="cc-control__charts">
-              <div class="chart"><!-- Page Views --></div>
-              <div class="chart"><!-- Users --></div>
+            <div class="cc-control__panel">
+              <div class="cc-control__panel-head">
+                <div class="sel"><!-- Select Zone --></div>
+                <a class="btn btn--secondary cc-control__dash-btn" href="#">Analysis Dashboard</a>
+              </div>
+              <div class="cc-control__charts">
+                <div class="chart"><!-- Page Views --></div>
+                <div class="chart"><!-- Users --></div>
+              </div>
             </div>
             <section class="cc-control__section">
               <header class="cc-control__section-head">

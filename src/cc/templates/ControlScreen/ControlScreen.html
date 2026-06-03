@@ -489,28 +489,33 @@
 
       </div>
 
-      <!-- 3. Zone row: Select Zone (left) + Analysis Dashboard link (right on desktop) -->
-      <div class="cc-control__zone-row">
-        <div class="sel" data-sel>
-          <label class="sel__label" for="cs-zone">Select Zone</label>
-          <button id="cs-zone" class="sel__control sel__control--sm" type="button" data-sel-trigger>
-            <span class="sel__value">Affino</span>
-            <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
-          </button>
-          <ul class="sel__menu" role="listbox">
-            <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">Affino <i data-lucide="check"></i></button></li>
-            <li><button type="button" class="sel__menu-item" role="option">Zone A</button></li>
-            <li><button type="button" class="sel__menu-item" role="option">Zone B</button></li>
-          </ul>
+      <!-- 3 + 4. Analysis panel: header bar (Select Zone + Analysis Dashboard) over the two-chart row (Figma node 4186:21107) -->
+      <div class="cc-control__panel">
+        <div class="cc-control__panel-head">
+          <div class="sel sel--label-left" data-sel>
+            <label class="sel__label" for="cs-zone">Select Zone</label>
+            <div class="sel__field">
+              <button id="cs-zone" class="sel__control" type="button" data-sel-trigger>
+                <span class="sel__value">Affino</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">Affino <i data-lucide="check"></i></button></li>
+                <li><button type="button" class="sel__menu-item" role="option">Staging</button></li>
+                <li><button type="button" class="sel__menu-item" role="option">Production</button></li>
+                <li><button type="button" class="sel__menu-item" role="option">Development</button></li>
+                <li><button type="button" class="sel__menu-item" role="option">Sandbox</button></li>
+              </ul>
+            </div>
+          </div>
+          <a href="#" class="btn btn--secondary cc-control__dash-btn cc-control__dash-btn--desktop">
+            <span>Analysis Dashboard</span>
+            <i data-lucide="arrow-right" aria-hidden="true"></i>
+          </a>
         </div>
-        <a href="#" class="cc-control__analysis-link cc-control__analysis-link--desktop">
-          <span>Analysis Dashboard</span>
-          <i data-lucide="arrow-right" aria-hidden="true"></i>
-        </a>
-      </div>
 
-      <!-- 4. Two-chart row: Page Views · Users -->
-      <div class="cc-control__charts">
+        <!-- Two-chart row: Page Views · Users -->
+        <div class="cc-control__charts">
 
         <div class="chart">
           <div class="chart__head">
@@ -561,9 +566,10 @@
         </div>
 
       </div>
+      </div><!-- /cc-control__panel -->
 
-      <!-- Analysis Dashboard link (mobile-only — placed between charts and Whos Online per Figma) -->
-      <a href="#" class="cc-control__analysis-link cc-control__analysis-link--mobile">
+      <!-- Analysis Dashboard button (mobile-only — placed between charts and Whos Online per Figma) -->
+      <a href="#" class="btn btn--secondary cc-control__dash-btn cc-control__dash-btn--mobile">
         <span>Analysis Dashboard</span>
         <i data-lucide="arrow-right" aria-hidden="true"></i>
       </a>
@@ -1059,6 +1065,9 @@
       });
     })();
   </script>
+
+  <!-- Select Zone dropdown — shared Select behaviour (open/choose/close). -->
+  <script src="../../../components/Select/Select.js"></script>
 
   <!-- Chart.js initialisation — Page Views (multi-line) + Users (single-line) -->
   <script>

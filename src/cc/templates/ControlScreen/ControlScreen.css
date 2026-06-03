@@ -180,36 +180,55 @@
 }
 
 /* Zone row: Select Zone (left) + Analysis Dashboard link (right). */
-.cc-control__zone-row {
+/* Analysis panel — single bordered card wrapping the header bar + chart row
+   (Figma node 4186:21107). */
+.cc-control__panel {
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-datatable-table-border);
+  border-radius: var(--ai-radius-md);
+  overflow: hidden;
+}
+
+/* Header bar — Select Zone (left) + Analysis Dashboard button (right),
+   divided from the chart row by a bottom border (Figma node 4186:21108). */
+.cc-control__panel-head {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: var(--ai-spacing-5);
+  padding: var(--ai-spacing-4) var(--ai-spacing-5);
+  border-bottom: 1px solid var(--ai-datatable-table-border);
 }
 
-.cc-control__analysis-link {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--ai-spacing-2);
-  color: var(--ai-text-brand);
-  font-size: var(--ai-font-fixed-sm);
-  font-weight: var(--ai-font-semibold);
-  text-decoration: none;
+/* Select Zone — Label Left Select, grows to fill up to 280px (Figma node
+   4186:21109: Select container is `flex:1 0 0; max-width:280px`). */
+.cc-control__panel-head .sel {
+  flex: 1 0 0;
+  min-width: 0;
+  max-width: var(--ai-size-5);
 }
 
-.cc-control__analysis-link:hover { text-decoration: underline; }
+/* Analysis Dashboard — a btn--secondary with a scoped borderless override
+   (Case B contextual override, Figma node 4186:21110). Rendered as <a> for
+   navigation; trailing arrow only. The :focus-visible ring is left intact. */
+.cc-control__dash-btn,
+.cc-control__dash-btn:hover,
+.cc-control__dash-btn:active {
+  border-color: transparent;
+}
 
-/* Two copies in the DOM — one inside the zone-row (desktop), one as a
-   standalone block after the charts row (mobile). CSS swaps which is
+/* Two copies in the DOM — one in the header bar (desktop), one as a
+   standalone block after the chart row (mobile). CSS swaps which is
    visible at the breakpoint. */
-.cc-control__analysis-link--desktop { display: inline-flex; }
-.cc-control__analysis-link--mobile { display: none; }
+.cc-control__dash-btn--desktop { display: inline-flex; }
+.cc-control__dash-btn--mobile { display: none; }
 
-/* 2-col chart row. */
+/* 2-col chart row inside the panel — padded inner frame (Figma node 4186:21111). */
 .cc-control__charts {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--ai-spacing-6);
+  gap: var(--ai-spacing-5);
+  padding: var(--ai-spacing-5);
 }
 
 /* Section wrapper (heading + body), used for Whos Online (datatable). */
@@ -362,8 +381,8 @@
      block no longer applies. */
   .cc-control__cards .stat-card__value { font-size: var(--ai-font-fixed-xs); }   /* 16 -> 14 */
   .cc-control__cards .stat-card__title { font-size: var(--ai-font-fixed-xxs); }  /* 14 -> 12 */
-  /* Stack Select + (mobile-only Analysis link is rendered elsewhere) */
-  .cc-control__zone-row {
+  /* Stack the header bar contents (mobile Analysis button is rendered elsewhere). */
+  .cc-control__panel-head {
     flex-direction: column;
     align-items: stretch;
   }
@@ -371,9 +390,9 @@
     flex-direction: column;
     align-items: flex-start;
   }
-  /* Swap which Analysis Dashboard link copy is visible. */
-  .cc-control__analysis-link--desktop { display: none; }
-  .cc-control__analysis-link--mobile {
+  /* Swap which Analysis Dashboard button copy is visible. */
+  .cc-control__dash-btn--desktop { display: none; }
+  .cc-control__dash-btn--mobile {
     display: inline-flex;
     align-self: flex-end;
   }
