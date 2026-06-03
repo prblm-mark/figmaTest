@@ -1,0 +1,161 @@
+/* CC IconNavigation pattern (Tier=Pattern)
+ * Figma node: 4218:4680 — "IconNavigation" pattern, CC Hybrid file.
+ * Single variant (Tier=Pattern). A full-width strip holding nine icon+label
+ * module shortcuts (Publish, Promote, Social, Media, Structure, Design,
+ * Commerce, Analyse, Settings), distributed across a 768-wide (--ai-size-11)
+ * centred row.
+ *
+ * Background: Figma binds --ai-surface-minimal, but per user direction the
+ * strip uses --cc-actions-menu-secondary-bg (pairs with the CC ActionsMenu).
+ *
+ * Icons: the nine brand glyphs are the exact Figma SVGs, stored in
+ * img/cc-nav/ and painted via CSS `mask` in --ai-text-secondary (matching the
+ * affinoMark/affinoLogo convention in Sidebar.css / Menu.css). This keeps the
+ * artwork theme-aware (CC light/dark) instead of baking the stroke colour in.
+ *
+ * Interaction (per user): each item is an <a> with a subtle hover that darkens
+ * icon + label to --ai-text-primary. Figma defines no Selected/Active variant,
+ * so no current-page state is implemented.
+ */
+
+.cc-icon-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ai-spacing-4) 0;                 /* py 12, full-width strip */
+  width: 100%;
+  background-color: var(--cc-actions-menu-secondary-bg);
+  font-family: var(--ai-font-title);
+}
+
+/* The centred, distributed row of items — caps at 768 (--ai-size-11). */
+.cc-icon-nav__list {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: var(--ai-spacing-7);
+  padding: 0 var(--ai-spacing-7);                 /* px 32 */
+  width: 100%;
+  max-width: var(--ai-size-11);                   /* 768 */
+  margin: 0;
+  list-style: none;
+}
+
+.cc-icon-nav__item {
+  display: flex;
+  align-items: center;
+}
+
+/* Clickable column: icon box + label, centred. */
+.cc-icon-nav__link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ai-spacing-3);                        /* 8 */
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Suppress the global a:hover underline from base.css (line 101). */
+.cc-icon-nav__link:hover,
+.cc-icon-nav__link:focus-visible {
+  text-decoration: none;
+}
+
+/* Fixed-height slot the glyph is centred within. */
+.cc-icon-nav__icon-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--ai-spacing-9);                     /* 48 */
+}
+
+/* Each glyph is the exact Figma SVG painted via mask. Widths/heights are
+ * brand-asset intrinsic dimensions (allowed raw-px exception — asset metadata,
+ * not spacing tokens). mask-size 100% 100% fills the sized box; the source
+ * SVGs use preserveAspectRatio="none" matched to these proportions. */
+.cc-icon-nav__icon {
+  display: block;
+  flex-shrink: 0;
+  background-color: var(--ai-text-secondary);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  transition: background-color var(--ai-transition-default);
+}
+
+/* ── Per-icon brand glyphs (exact Figma SVGs, brand-asset dimensions) ── */
+.cc-icon-nav__icon--publish {
+  width: 46px; height: 41px;                       /* Figma 45.663 × 41 */
+  -webkit-mask-image: url('../../../../img/cc-nav/publish.svg');
+  mask-image: url('../../../../img/cc-nav/publish.svg');
+}
+.cc-icon-nav__icon--promote {
+  width: 49px; height: 41px;                       /* Figma 49 × 41.094 */
+  -webkit-mask-image: url('../../../../img/cc-nav/promote.svg');
+  mask-image: url('../../../../img/cc-nav/promote.svg');
+}
+.cc-icon-nav__icon--social {
+  width: 37px; height: 39px;                       /* Figma 36.5 × 39 */
+  -webkit-mask-image: url('../../../../img/cc-nav/social.svg');
+  mask-image: url('../../../../img/cc-nav/social.svg');
+}
+.cc-icon-nav__icon--media {
+  width: 52px; height: 38px;                       /* Figma 52 × 38 */
+  -webkit-mask-image: url('../../../../img/cc-nav/media.svg');
+  mask-image: url('../../../../img/cc-nav/media.svg');
+}
+.cc-icon-nav__icon--structure {
+  width: 49px; height: 37px;                       /* Figma 49.25 × 36.76 */
+  -webkit-mask-image: url('../../../../img/cc-nav/structure.svg');
+  mask-image: url('../../../../img/cc-nav/structure.svg');
+}
+.cc-icon-nav__icon--design {
+  width: 52px; height: 48px;                       /* Figma 52 × 47.719 */
+  -webkit-mask-image: url('../../../../img/cc-nav/design.svg');
+  mask-image: url('../../../../img/cc-nav/design.svg');
+}
+.cc-icon-nav__icon--commerce {
+  width: 48px; height: 43px;                       /* Figma 47.5 × 43.438 */
+  -webkit-mask-image: url('../../../../img/cc-nav/commerce.svg');
+  mask-image: url('../../../../img/cc-nav/commerce.svg');
+}
+.cc-icon-nav__icon--analyse {
+  width: 52px; height: 41px;                       /* Figma 52 × 41 */
+  -webkit-mask-image: url('../../../../img/cc-nav/analyse.svg');
+  mask-image: url('../../../../img/cc-nav/analyse.svg');
+}
+.cc-icon-nav__icon--settings {
+  width: 44px; height: 44px;                       /* Figma 44 × 44 */
+  -webkit-mask-image: url('../../../../img/cc-nav/settings.svg');
+  mask-image: url('../../../../img/cc-nav/settings.svg');
+}
+
+.cc-icon-nav__label {
+  margin: 0;
+  font-weight: var(--ai-font-medium);
+  font-size: var(--ai-font-fixed-xxs);             /* 12 */
+  line-height: 1.4;
+  letter-spacing: 0.36px;                          /* optical — allowed raw px */
+  text-align: center;
+  color: var(--ai-text-secondary);
+  transition: color var(--ai-transition-default);
+}
+
+/* ── Hover (per user): darken glyph + label to --ai-text-primary ── */
+.cc-icon-nav__link:hover .cc-icon-nav__icon {
+  background-color: var(--ai-text-primary);
+}
+.cc-icon-nav__link:hover .cc-icon-nav__label {
+  color: var(--ai-text-primary);
+}
+
+.cc-icon-nav__link:focus-visible {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: 2px;
+  border-radius: var(--ai-radius-sm);
+}
