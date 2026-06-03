@@ -23,6 +23,13 @@
   user-select: none;
 }
 
+/* When a button is rendered as an <a>, suppress the global `a:hover`
+   underline (base.css) — buttons never underline. `.btn:hover` (0,2,0)
+   outranks `a:hover` (0,1,1). */
+.btn:hover {
+  text-decoration: none;
+}
+
 /* Lucide icons inside buttons default to 24×24 — override to 16×16 */
 .btn [data-lucide] {
   width: var(--ai-icon-size-sm);
