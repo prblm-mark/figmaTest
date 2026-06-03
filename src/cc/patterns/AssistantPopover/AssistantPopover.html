@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" data-brand="cc">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../../components/dark-mode-toggle.js"></script>
+  <title>AssistantPopover — Control Centre</title>
+  <link rel="stylesheet" href="../../../styles/base.css">
+  <link rel="stylesheet" href="../../../components/Button/Button.css">
+  <link rel="stylesheet" href="AssistantPopover.css">
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: var(--ai-spacing-9);
+      background: var(--cc-ui-primary-bg);
+      font-family: var(--ai-font-body);
+      color: var(--ai-text-primary);
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 var(--ai-spacing-3);
+    }
+    .demo-section__lead {
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-contrast);
+      margin: 0 0 var(--ai-spacing-6);
+      max-width: 60ch;
+    }
+  </style>
+</head>
+<body>
+  <p class="demo-section__title">CC AssistantPopover — Pattern</p>
+  <p class="demo-section__lead">
+    A standalone pop-over / call-out that loads on the ControlScreen to highlight the
+    Affino Assistant. It is <strong>not</strong> part of the AiAssistant template — shown
+    here on its own. Behaviour (positioning, show/hide, dismiss) is not wired yet.
+  </p>
+
+  <div class="cc-assistant-popover">
+    <div class="cc-assistant-popover__header">
+      <div class="cc-assistant-popover__brand">
+        <span class="cc-assistant-popover__badge">
+          <i data-lucide="sparkles" aria-hidden="true"></i>
+        </span>
+        <p class="cc-assistant-popover__title">Affino Assistant</p>
+      </div>
+      <button class="btn btn--tertiary btn--sm btn--icon cc-assistant-popover__close" type="button" aria-label="Close">
+        <i data-lucide="x" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div class="cc-assistant-popover__body">
+      <div class="cc-assistant-popover__intro">
+        <p>Affino’s Assistant is great at providing in context support whilst you work in the control center.</p>
+        <p>Stuck on screen? Launch the Affino Assistant from the Actions Menu to get moving.</p>
+      </div>
+      <button class="btn btn--primary cc-assistant-popover__launch" type="button">
+        Launch
+        <i data-lucide="arrow-right" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script src="AssistantPopover.js"></script>
+</body>
+</html>

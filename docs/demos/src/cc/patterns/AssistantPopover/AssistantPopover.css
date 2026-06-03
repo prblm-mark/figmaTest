@@ -1,0 +1,113 @@
+/* CC AssistantPopover pattern (Tier=Pattern)
+ * Figma node: 4218:5304 — "Tier=Pattern, Type=Pop Over", CC Hybrid file.
+ *
+ * A standalone pop-over / call-out that loads on the ControlScreen to highlight
+ * that the Affino Assistant is available. NOT part of the AiAssistant template —
+ * its own self-contained pattern. A 320-wide (--ai-size-6) rounded card with a
+ * header (AI badge + "Affino Assistant" + close), a short intro, and a Launch
+ * primary button.
+ *
+ * Header is self-contained (own classes) — it resembles the CC ChatHeader
+ * treatment but is not the ChatHeader component (different slots: AI badge +
+ * close, no sidebar toggle / agent selector). Composes the Button component
+ * for Launch + close.
+ *
+ * CC brand context: needs data-brand="cc" on an ancestor so the --cc-* badge
+ * tokens resolve.
+ *
+ * Behaviour (show/hide, positioning, dismiss) is intentionally NOT implemented
+ * here yet — to be specced separately.
+ */
+
+.cc-assistant-popover {
+  display: flex;
+  flex-direction: column;
+  width: var(--ai-size-6);                          /* 320 */
+  background-color: var(--ai-surface-primary);
+  border-radius: var(--ai-radius-lg);               /* 16 */
+  box-shadow: var(--ai-shadow-md);
+  font-family: var(--ai-font-body);
+  overflow: hidden;                                 /* keep header divider + corners clipped */
+}
+
+/* ── Header ────────────────────────────────────────── */
+.cc-assistant-popover__header {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-5);                          /* 16 */
+  padding: var(--ai-spacing-4);                      /* 12 */
+  border-bottom: 1px solid var(--ai-border-secondary);
+}
+
+.cc-assistant-popover__brand {
+  display: flex;
+  flex: 1 0 0;
+  min-width: 0;
+  align-items: center;
+  gap: var(--ai-spacing-3);                          /* 8 */
+}
+
+/* AI badge — 32px rounded square holding the sparkles glyph. */
+.cc-assistant-popover__badge {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-7);                        /* 32 */
+  height: var(--ai-spacing-7);                       /* 32 */
+  border-radius: var(--ai-radius-md);                /* 8 */
+  background-color: var(--cc-actions-menu-secondary-bg);
+  color: var(--cc-actions-menu-icon);
+}
+
+.cc-assistant-popover__badge [data-lucide] {
+  width: var(--ai-icon-size-sm);                     /* 16 */
+  height: var(--ai-icon-size-sm);
+}
+
+.cc-assistant-popover__title {
+  flex: 1 0 0;
+  min-width: 0;
+  margin: 0;
+  text-align: center;
+  font-weight: var(--ai-font-semibold);
+  font-size: var(--ai-font-fixed-xs);                /* 14 */
+  line-height: var(--ai-leading-md);                 /* 24 */
+  color: var(--ai-text-primary);
+}
+
+/* Close reuses the Button component (btn btn--tertiary btn--sm btn--icon).
+ * Scoped override: in the CC brand --ai-btn-tertiary-bg is a visible grey
+ * (#e5e9eb), but the Figma pop-over close is transparent by default. Hover/
+ * active still come from btn--tertiary. */
+.cc-assistant-popover__close {
+  flex-shrink: 0;
+  background-color: transparent;
+}
+
+/* ── Body ──────────────────────────────────────────── */
+.cc-assistant-popover__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);                          /* 16 */
+  padding: var(--ai-spacing-5);                      /* 16 */
+}
+
+.cc-assistant-popover__intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);                          /* 8 — Figma 7px paragraph gap, nearest token (user-approved) */
+}
+
+.cc-assistant-popover__intro p {
+  margin: 0;
+  font-size: var(--ai-font-fixed-xs);                /* 14 — fixed (user: not fluid) */
+  font-weight: var(--ai-font-regular);
+  line-height: 1.5;                                  /* Figma leading-[1.5] ratio */
+  color: var(--ai-text-secondary);
+}
+
+/* Full-width Launch button. */
+.cc-assistant-popover__launch {
+  width: 100%;
+}

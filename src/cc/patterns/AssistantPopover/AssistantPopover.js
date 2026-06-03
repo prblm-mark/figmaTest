@@ -1,0 +1,1 @@
+document.addEventListener("click",function(e){var s=e.target.closest(".cc-assistant-popover__close");if(s){var t=s.closest(".cc-assistant-popover");t&&t.remove()}});
