@@ -357,6 +357,20 @@
   background-color: var(--cc-actions-menu-secondary-bg);
 }
 
+/* ── AI Assistant panel anchor ───────────────────────────────────────
+ * The panel is reused verbatim from src/cc/templates/AiAssistant (initial
+ * view only). It keeps position:fixed so the shared drag/resize shell works
+ * unchanged — we only re-anchor it from the demo's bottom-right corner to the
+ * top-right, beside the rail's AI Assistant button. The right offset clears
+ * the 56px rail (--ai-spacing-10) plus an 8px gap (--ai-spacing-3). */
+.cc-control .ai-assistant {
+  top: var(--ai-spacing-6);
+  bottom: auto;
+  right: calc(var(--ai-spacing-10) + var(--ai-spacing-3));
+  /* Above the chrome/page/rail-popovers (z 1–50), below the fav modal (100). */
+  z-index: 60;
+}
+
 /* Favourites panel list (top-level submenu used as the favourites menu) */
 .cc-control__fav-list {
   padding: var(--ai-spacing-3) 0;

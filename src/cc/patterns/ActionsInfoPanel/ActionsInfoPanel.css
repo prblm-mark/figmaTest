@@ -16,6 +16,7 @@
   width: var(--ai-size-5);
   padding: var(--ai-spacing-5);
   background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-lg);
   box-shadow: var(--ai-shadow-md);
 }
