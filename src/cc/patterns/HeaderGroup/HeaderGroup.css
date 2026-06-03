@@ -6,7 +6,7 @@
  * treated as the source of truth.
  *
  * This pattern owns no CSS beyond the vertical-stack wrapper. The composed
- * children retain their standalone CSS (TopNavigation + Header).
+ * children retain their standalone CSS (TopNavigation + IconNavigation + Header).
  */
 
 .cc-header-group {
@@ -14,4 +14,30 @@
   flex-direction: column;
   align-items: stretch;
   width: 100%;
+  /* Named inline-size container so the IconNavigation strip (a descendant) can
+   * hide on the GROUP's own width, not the viewport — consistent with the
+   * .cc-header-cq (cc-header) container the composed Header already uses. */
+  container: cc-header-group / inline-size;
+}
+
+/* ── Type=IconNavigation variant (Figma 4219:6346) ─────────────────
+ * The composed IconNavigation strip (the standalone cc-icon-nav pattern)
+ * sits between CCTopNavigation and CCHeader. Hidden by default; revealed
+ * by the User Menu "Icon Navigation" toggle, which adds
+ * .cc-header-group--icon-nav (wired in HeaderGroup.js). The "Hide Labels"
+ * sub-toggle adds .cc-icon-nav--no-labels to the strip itself. */
+.cc-header-group .cc-icon-nav {
+  display: none;
+}
+.cc-header-group--icon-nav .cc-icon-nav {
+  display: flex;
+}
+
+/* Below 768 (group width) the strip is ALWAYS hidden, regardless of the Icon
+ * Navigation toggle — placed after the show rule so it wins on equal
+ * specificity when the container condition matches. */
+@container cc-header-group (max-width: 767px) {
+  .cc-header-group--icon-nav .cc-icon-nav {
+    display: none;
+  }
 }

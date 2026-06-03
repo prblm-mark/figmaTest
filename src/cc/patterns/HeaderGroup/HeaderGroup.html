@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="../../../components/ThemeToggle/ThemeToggle.css" />
   <link rel="stylesheet" href="../TopNavigation/TopNavigation.css" />
   <link rel="stylesheet" href="../Header/Header.css" />
+  <link rel="stylesheet" href="../IconNavigation/IconNavigation.css" />
   <link rel="stylesheet" href="HeaderGroup.css" />
   <style>
     body { padding: var(--ai-spacing-7); background: var(--ai-surface-minimal); }
@@ -673,7 +674,7 @@
                 </div>
                 <div class="dropdown__toggle-list">
                   <div class="dropdown__toggle-row">
-                    <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" id="user-menu-desktop-icon-nav">
+                    <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" id="user-menu-desktop-icon-nav" data-cc-toggle="icon-nav">
                       <span class="toggle__track"><span class="toggle__knob"></span></span>
                     </button>
                     <label for="user-menu-desktop-icon-nav" class="toggle__label">
@@ -681,7 +682,7 @@
                     </label>
                   </div>
                   <div class="dropdown__toggle-row dropdown__toggle-row--reveal" data-reveal-by="user-menu-desktop-icon-nav">
-                    <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" id="user-menu-desktop-hide-labels">
+                    <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" id="user-menu-desktop-hide-labels" data-cc-toggle="hide-labels">
                       <span class="toggle__track"><span class="toggle__knob"></span></span>
                     </button>
                     <label for="user-menu-desktop-hide-labels" class="toggle__label">
@@ -792,7 +793,7 @@
                 </div>
                 <div class="dropdown__toggle-list">
                   <div class="dropdown__toggle-row">
-                    <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" id="user-menu-mobile-icon-nav">
+                    <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" id="user-menu-mobile-icon-nav" data-cc-toggle="icon-nav">
                       <span class="toggle__track"><span class="toggle__knob"></span></span>
                     </button>
                     <label for="user-menu-mobile-icon-nav" class="toggle__label">
@@ -800,7 +801,7 @@
                     </label>
                   </div>
                   <div class="dropdown__toggle-row dropdown__toggle-row--reveal" data-reveal-by="user-menu-mobile-icon-nav">
-                    <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" id="user-menu-mobile-hide-labels">
+                    <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" id="user-menu-mobile-hide-labels" data-cc-toggle="hide-labels">
                       <span class="toggle__track"><span class="toggle__knob"></span></span>
                     </button>
                     <label for="user-menu-mobile-hide-labels" class="toggle__label">
@@ -867,6 +868,152 @@
        instance. Keeps the demo markup minimal.
        ─────────────────────────────────────────────────────────────── -->
 
+  <!-- ───────────────────────────────────────────────────────────────
+       NEW VARIANT (2026-06-03): Type=IconNavigation (Figma 4219:6346).
+       The IconNavigation strip (standalone cc-icon-nav pattern) sits between
+       the TopNavigation and the Header. Hidden by default; shown when the
+       User Menu "Icon Navigation" toggle is active (HeaderGroup.js adds
+       .cc-header-group--icon-nav). The revealed "Hide Labels" sub-toggle adds
+       .cc-icon-nav--no-labels to the strip. The strip itself is injected into
+       any [data-cc-icon-nav] group from the #cc-icon-nav-strip template below.
+
+       This demo starts with the toggle ON (strip visible) to mirror the Figma
+       variant. Open the user menu (click the user block) to toggle it.
+       ─────────────────────────────────────────────────────────────── -->
+  <section class="demo-section">
+    <h2>Compiled — Icon Navigation (Desktop)</h2>
+    <p>Multizone topNav, the <strong>IconNavigation strip</strong>, then the Control header. Open the user menu and flip <strong>Icon Navigation</strong> to hide/show the strip; the revealed <strong>Hide Labels</strong> sub-toggle switches the strip to icons-only.</p>
+    <div class="demo-frame demo-frame--dropdown">
+      <div class="cc-header-group cc-header-group--icon-nav" data-cc-icon-nav>
+
+        <header class="cc-top-navigation">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <ol class="breadcrumb__list">
+              <li class="breadcrumb__item">
+                <div class="dropdown">
+                  <button class="breadcrumb__dropdown dropdown__trigger" type="button" aria-haspopup="menu" aria-expanded="false">
+                    Zone Selector
+                    <i data-lucide="chevron-down" aria-hidden="true"></i>
+                  </button>
+                  <div class="dropdown__panel" role="menu" aria-label="Zone selector">
+                    <ul class="dropdown__list">
+                      <li role="none"><button type="button" class="dropdown-item" role="menuitem"><span data-text="Zone Name 1">Zone Name 1</span></button></li>
+                      <li role="none"><button type="button" class="dropdown-item" role="menuitem"><span data-text="Zone name 2">Zone name 2</span></button></li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              <li class="breadcrumb__separator" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
+              <li class="breadcrumb__item"><a class="breadcrumb__link" href="#">Level 1</a></li>
+              <li class="breadcrumb__separator" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
+              <li class="breadcrumb__item breadcrumb__item--current" aria-current="page">Level 2</li>
+            </ol>
+          </nav>
+          <div class="cc-top-navigation__actions">
+            <div class="dropdown dropdown--user-menu">
+              <button class="cc-top-navigation__user dropdown__trigger" type="button" aria-haspopup="menu" aria-expanded="false">
+                <img class="portrait" src="https://i.pravatar.cc/64?u=derrick" alt="Derrick Jefferson" />
+                <span class="cc-top-navigation__user-name">Derrick Jefferson</span>
+                <span class="cc-top-navigation__user-chevron" aria-hidden="true"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <div class="dropdown__panel" role="menu" aria-label="User menu">
+                <div class="theme-toggle theme-toggle--fill">
+                  <button class="theme-toggle__btn" type="button" data-theme-value="light" aria-pressed="true"><i data-lucide="sun" aria-hidden="true"></i><span>Light</span></button>
+                  <button class="theme-toggle__btn" type="button" data-theme-value="dark" aria-pressed="false"><i data-lucide="moon" aria-hidden="true"></i><span>Dark</span></button>
+                </div>
+                <div class="dropdown__toggle-list">
+                  <div class="dropdown__toggle-row">
+                    <button class="toggle toggle--xs toggle--active" type="button" role="switch" aria-checked="true" id="hg-iconnav-demo-icon-nav" data-cc-toggle="icon-nav">
+                      <span class="toggle__track"><span class="toggle__knob"></span></span>
+                    </button>
+                    <label for="hg-iconnav-demo-icon-nav" class="toggle__label"><span class="toggle__label-text">Icon Navigation</span></label>
+                  </div>
+                  <div class="dropdown__toggle-row dropdown__toggle-row--reveal" data-reveal-by="hg-iconnav-demo-icon-nav">
+                    <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" id="hg-iconnav-demo-hide-labels" data-cc-toggle="hide-labels">
+                      <span class="toggle__track"><span class="toggle__knob"></span></span>
+                    </button>
+                    <label for="hg-iconnav-demo-hide-labels" class="toggle__label"><span class="toggle__label-text">Hide Labels</span></label>
+                  </div>
+                </div>
+                <hr class="dropdown__divider">
+                <ul class="dropdown__list">
+                  <li role="none"><button type="button" class="dropdown-item" role="menuitem"><i data-lucide="star" aria-hidden="true"></i><span data-text="My Favourites">My Favourites</span></button></li>
+                  <li role="none"><button type="button" class="dropdown-item" role="menuitem"><i data-lucide="circle-user" aria-hidden="true"></i><span data-text="My Content">My Content</span></button></li>
+                </ul>
+                <hr class="dropdown__divider">
+                <button type="button" class="dropdown-item dropdown-item--warning" role="menuitem"><i data-lucide="log-out" aria-hidden="true"></i><span data-text="Sign Out">Sign Out</span></button>
+              </div>
+            </div>
+            <button class="cc-top-navigation__preview" type="button" aria-label="Preview as desktop"><i data-lucide="monitor" aria-hidden="true"></i></button>
+          </div>
+        </header>
+
+        <!-- IconNavigation strip injected here from #cc-icon-nav-strip -->
+
+        <div class="cc-header-cq">
+        <header class="cc-header cc-header--control">
+          <div class="cc-header__title-block">
+            <img class="portrait" src="https://i.pravatar.cc/96?u=susan" alt="Susan Kerrigan" />
+            <div class="cc-header__title-block-text">
+              <h1 class="cc-header__title"><span class="cc-header__title-greeting">Hi </span>Susan Kerrigan</h1>
+              <div class="cc-header__user-details">
+                <span class="cc-header__user-item"><i data-lucide="building" aria-hidden="true"></i>Affino</span>
+                <span class="cc-header__user-item"><i data-lucide="briefcase-business" aria-hidden="true"></i>Lead Project Manager</span>
+              </div>
+            </div>
+          </div>
+          <div class="cc-header__actions">
+            <span class="notification-badge">
+              <button class="btn btn--tertiary btn--icon" type="button" aria-label="Notifications, 2 unread"><i data-lucide="bell" aria-hidden="true"></i></button>
+              <span class="notification-badge__count" aria-hidden="true">2</span>
+            </span>
+            <button class="btn btn--secondary" type="button"><i data-lucide="log-out" aria-hidden="true"></i><span class="cc-header__btn-label">Logout</span></button>
+            <button class="btn btn--primary" type="button"><i data-lucide="external-link" aria-hidden="true"></i><span class="cc-header__btn-label">View Site</span></button>
+            <button class="cc-header__kebab" type="button" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
+          </div>
+        </header>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- IconNavigation strip template — cloned into every [data-cc-icon-nav]
+       header-group by the injection script below. Mirrors the standalone
+       src/cc/patterns/IconNavigation/IconNavigation.html markup. -->
+  <template id="cc-icon-nav-strip">
+    <nav class="cc-icon-nav" aria-label="Module navigation">
+      <ul class="cc-icon-nav__list">
+        <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--publish" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Publish</span></a></li>
+        <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--promote" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Promote</span></a></li>
+        <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--social" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Social</span></a></li>
+        <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--media" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Media</span></a></li>
+        <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--structure" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Structure</span></a></li>
+        <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--design" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Design</span></a></li>
+        <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--commerce" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Commerce</span></a></li>
+        <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--analyse" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Analyse</span></a></li>
+        <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--settings" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Settings</span></a></li>
+      </ul>
+    </nav>
+  </template>
+
+  <!-- Demo helper: inject the strip into every header-group that has an Icon
+       Navigation toggle (so the toggle controls a real strip). Deferred to
+       DOMContentLoaded so it runs AFTER the user-menu auto-wrap below has
+       created the auto-wrapped menus' toggles. -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var tpl = document.getElementById('cc-icon-nav-strip');
+      if (!tpl) return;
+      document.querySelectorAll('.cc-header-group').forEach(function (group) {
+        if (!group.querySelector('[data-cc-toggle="icon-nav"]')) return;
+        if (group.querySelector('.cc-icon-nav')) return; // already present
+        var anchor = group.querySelector('.cc-header-cq') || group.querySelector('.cc-header');
+        group.insertBefore(tpl.content.cloneNode(true), anchor);
+      });
+    });
+  </script>
+
   <template id="cc-user-menu-panel">
     <div class="dropdown__panel" role="menu" aria-label="User menu">
       <div class="theme-toggle theme-toggle--fill">
@@ -881,7 +1028,7 @@
       </div>
       <div class="dropdown__toggle-list">
         <div class="dropdown__toggle-row">
-          <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" data-tpl-id="icon-nav">
+          <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" data-tpl-id="icon-nav" data-cc-toggle="icon-nav">
             <span class="toggle__track"><span class="toggle__knob"></span></span>
           </button>
           <label data-tpl-for="icon-nav" class="toggle__label">
@@ -889,7 +1036,7 @@
           </label>
         </div>
         <div class="dropdown__toggle-row dropdown__toggle-row--reveal" data-tpl-reveal-by="icon-nav">
-          <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" data-tpl-id="hide-labels">
+          <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" data-tpl-id="hide-labels" data-cc-toggle="hide-labels">
             <span class="toggle__track"><span class="toggle__knob"></span></span>
           </button>
           <label data-tpl-for="hide-labels" class="toggle__label">
@@ -972,6 +1119,7 @@
   </script>
   <script src="../../../components/ThemeToggle/ThemeToggle.js"></script>
   <script type="module" src="../../../components/Dropdown/Dropdown.js"></script>
+  <script src="HeaderGroup.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>lucide.createIcons();</script>
 </body>

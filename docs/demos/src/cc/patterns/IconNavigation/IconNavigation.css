@@ -146,6 +146,14 @@
   transition: color var(--ai-transition-default);
 }
 
+/* ── Labels-hidden mode ───────────────────────────────────────────
+ * Icons-only display. Not a Figma IconNavigation variant — it is a runtime
+ * display option driven by the HeaderGroup user-menu "Hide Labels" toggle
+ * (which is itself revealed only when "Icon Navigation" is on). */
+.cc-icon-nav--no-labels .cc-icon-nav__label {
+  display: none;
+}
+
 /* ── Hover (per user): darken glyph + label to --ai-text-primary ── */
 .cc-icon-nav__link:hover .cc-icon-nav__icon {
   background-color: var(--ai-text-primary);

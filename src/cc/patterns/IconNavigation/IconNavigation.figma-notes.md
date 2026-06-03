@@ -67,6 +67,18 @@ Lucide icons (they are bespoke Affino module glyphs), so the Lucide rule does no
 None. Every design value maps to an existing `--ai-*` token; glyph dimensions are the
 documented brand-asset exception.
 
+## Modifiers
+- `.cc-icon-nav--no-labels` — icons-only display (hides `.cc-icon-nav__label`). **Not a Figma
+  variant**; it's a runtime display option driven by the HeaderGroup user-menu "Hide Labels"
+  toggle (added 2026-06-03). The standalone IconNavigation Figma component has a single variant.
+
+## Composed in
+- **HeaderGroup (CC)** `Type=IconNavigation` (`4219:6346`) — the strip sits between
+  CCTopNavigation and CCHeader, hidden by default and shown via the User Menu "Icon Navigation"
+  toggle (`HeaderGroup.js` adds `.cc-header-group--icon-nav`). In that node Figma binds the
+  strip bg to `--ai-surface-minimal`, but the strip keeps this component's
+  `--cc-actions-menu-secondary-bg` override (user decision) for consistency everywhere.
+
 ## Notes
 - CC brand context: requires `data-brand="cc"` on an ancestor so the `--ai-*` tokens resolve
   to their CC values (`tokens-cc.css` / `tokens-cc-dark.css`).
