@@ -23,7 +23,7 @@ ControlScreen owns **only the app-shell layout**. Every visual block is rendered
 | Source | Role in ControlScreen |
 |---|---|
 | `src/cc/patterns/SidebarMenu/` + `sidebar-menu.js` | Left app rail + menu panel. Desktop + Mobile composites both included in DOM, swapped via `@media (max-width: 767px)`. Both auto-bind on DOMContentLoaded. |
-| `src/cc/patterns/HeaderGroup/` (composes `TopNavigation` + `Header`) | Top chrome. Uses the `cc-header--control` modifier — greeting + Logout/View Site CTAs. |
+| `src/cc/patterns/HeaderGroup/` (composes `TopNavigation` + `Header` + `IconNavigation`) | Top chrome. Uses the `cc-header--control` modifier — greeting + Logout/View Site CTAs. **IconNavigation strip** (Type=IconNavigation) sits between TopNavigation and Header, hidden by default; the User Menu "Icon Navigation" toggle (`data-cc-toggle="icon-nav"`) shows it via `HeaderGroup.js`, "Hide Labels" switches it to icons-only. Always hidden below 768 of the header-group's width (`@container cc-header-group`). |
 | `src/components/Alert/` (`alert--cta` + `alert--warning`) | Development-mode banner with Switch Mode CTA. |
 | `src/patterns/StatCard/` × 2 (`stat-card--number-first`) | "Key Features" + "Help Guides" cards in the 3-col row. Number First type — the bold label (`__value`) sits above the muted description (`__title`). |
 | `src/patterns/UpgradeCard/` | Version + Update CTA — third cell of the 3-col row. |
@@ -32,7 +32,7 @@ ControlScreen owns **only the app-shell layout**. Every visual block is rendered
 | `src/components/Datatables/` (Whos Online — **two instances swapped at the cs-page breakpoint**) | Members table. **Desktop** (`.cc-control__table--desktop`, ≥768px): Whos Online · Scroll — 4 columns (User, Account, Login, Touch). **Mobile** (`.cc-control__table--mobile`, <768px): Whos Online · **Trigger** — User + Login + a kebab that expands a detail row holding Account + Touch (Figma mobile node `4183:14675` / instance `4183:14681`, component variant `2764:2980`). Both instances are in the DOM; `@container cs-page (max-width: 767px)` hides one and shows the other — the same device-swap pattern as the SidebarMenu composites. Scroll↔Trigger is a markup-level variant (different DOM), not a CSS toggle, so each is a verbatim use of its component variant rather than one responsive markup. Kebab reveal is pure CSS (`:has(.datatables__kebab__input:checked)`). |
 | `src/cc/patterns/ActionsMenu/` | Full-height right-edge action rail (Figma node `4167:4879`, docked at `left: 1340px` of the 1396px Desktop frame). Wrapped in `.cc-control__actions` as the rightmost flex child of `.cc-control`. **Desktop only** — `display: none` below 768px (device-class swap, like the sidebar). |
 
-Transitive deps loaded via `<link>`: Button, Breadcrumb, Dropdown, DropdownItem, Portraits, Avatar, NotificationBadge, Toggle, ThemeToggle, Input, Table, MainMenuItem.
+Transitive deps loaded via `<link>`: Button, Breadcrumb, Dropdown, DropdownItem, Portraits, Avatar, NotificationBadge, Toggle, ThemeToggle, Input, Table, MainMenuItem, IconNavigation. JS: `HeaderGroup.js` (Icon Navigation toggle wiring).
 
 ## CSS Class Mapping
 
