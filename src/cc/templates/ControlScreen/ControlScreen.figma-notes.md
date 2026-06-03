@@ -137,3 +137,37 @@ Both are HTML-only overrides — no new CSS in `ControlScreen.css`.
 - **StatCard icon-wrap colour — overridden per-card in the template.** The component default is `#2563eb` (Blue/600, user-approved gap on the StatCard build), but Figma's Control Screen (node `4183:14664`) renders the two squares in CC teal hues: card 1 = `teal/500` (#14b8a6), card 2 = `muted-teal/600` (#3391a4). These are scoped overrides in `ControlScreen.css` (`.cc-control__cards .stat-card:nth-of-type(n) .stat-card__icon-wrap`). Both are Figma primitives with no `--ai-*` token — used on explicit instruction, with primitive-citing comments. A future StatCard-side brand-aware token could replace these.
 - **Icons:** card 1 uses Lucide `spotlight` ("Key Features", Figma `Icon/24px/Spotlight`); card 2 uses `file-question-mark` ("Help Guides").
 - **Select uses the Label Left variant.** Figma shows the Select Zone label INLINE with the dropdown (label-left, control-right on the same row), at all breakpoints. This is the formal `Type=Label Left` Select variant (`2755:2337`) — now implemented as `.sel.sel--label-left` with a `.sel__field` wrapper around the control + menu. The Select container grows to `max-width: var(--ai-size-5)` (280px) per the Figma instance (`flex:1 0 0; max-width:280px`). The dropdown is interactive (zone options: Affino, Staging, Production, Development, Sandbox) — wired by the shared `Select.js` module (open on click, choose option, close on click-outside / Esc) — the same behaviour the Select demo uses.
+
+## AI Assistant panel (rail-triggered, initial-state view only)
+
+The right-rail **AI Assistant** button (sparkles icon, `data-cc-ai-toggle`) opens the
+floating `AiAssistant` panel (`src/cc/templates/AiAssistant/`). Per product decision
+(2026-06-03) only the **initial-state view** is mounted here — the processing and response
+states (ChatMain state machine + GSAP animations) are demo-only and stay on the standalone
+AiAssistant page. So no `ChatMain.js`, no GSAP / ScrambleText / SplitText, no
+ChatResponse/Skeleton/Carousel/QuickLinks CSS are loaded by ControlScreen.
+
+**Markup.** The `.ai-assistant` subtree (root + resize handles + header + sidebar + the
+`#chat-main.chat-main--initial` initial view) is copied verbatim from the standalone page,
+with `.chat-main__scroll` dropped and `ai-assistant--hidden` added to the root. It is mounted
+once, directly after the action rail. (Vanilla-static stack: no HTML partials, so markup is
+duplicated; the JS is shared — see below.)
+
+**Shared JS.** The static "shell" behaviours (sidebar toggle + kebab menus, message-input
+active-state + duration-filter popover, drag-to-move, 4-edge resize, close button) were
+extracted into `AiAssistant/AiAssistant.js` → `initAiAssistantShell(root, opts)`, scoped to
+`root`. Both the standalone demo and ControlScreen import it. ControlScreen calls it with
+`{ brandThemeTarget: panel }` (keeps the chat brand-theme scoped to the panel, not the CC
+shell) and `{ onClose }` (resets the rail button's `aria-expanded`).
+
+**Open/close.** Wired in a dedicated `<script type="module">` at the end of the body — NOT a
+generic `[data-aa-toggle]` rail popover, so the large draggable panel is exempt from the rail
+popovers' click-outside-close. The button toggles `.ai-assistant--hidden`, syncs
+`aria-expanded`, and closes any open rail popover on open. The header close button hides it
+again.
+
+**CSS anchor.** `.cc-control .ai-assistant` overrides only the demo's bottom-right anchor →
+top-right beside the rail: `top: var(--ai-spacing-6)`,
+`right: calc(var(--ai-spacing-10) + var(--ai-spacing-3))` (clears the 56px rail + 8px gap),
+`z-index: 60` (above chrome/rail-popovers, below the fav modal). Position stays `fixed` so the
+shared drag/resize math is unchanged.
