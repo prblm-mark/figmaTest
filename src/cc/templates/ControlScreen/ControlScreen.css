@@ -97,22 +97,25 @@
      SidebarMenu can shrink the column far below 768px on a wide screen. */
   container-type: inline-size;
   container-name: cs-page;
-  /* Scrollbar: thin, transparent track, thumb in the CC action-rail grey. */
-  scrollbar-width: thin;
+  /* Scrollbar: normal width + a stable gutter (no layout shift when it appears).
+     Visible by DEFAULT (CC rail grey) — this is what touch devices get, since
+     they have no hover state to reveal an overlay bar. */
+  scrollbar-gutter: stable;
+  scrollbar-width: auto;
   scrollbar-color: var(--cc-actions-menu-primary-bg) transparent;
 }
 
-.cc-control__page::-webkit-scrollbar {
-  width: var(--ai-spacing-3);
-}
-
-.cc-control__page::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.cc-control__page::-webkit-scrollbar-thumb {
-  background-color: var(--cc-actions-menu-primary-bg);
-  border-radius: var(--ai-radius-full);
+/* Desktop + hover-capable pointers only: hide the thumb at rest and fade it in
+   on hover (overlay-subtle). Below 768px — and on any touch / no-hover device —
+   the bar stays permanently visible (the base rule above). */
+@media (hover: hover) and (min-width: 768px) {
+  .cc-control__page {
+    scrollbar-color: transparent transparent;
+    transition: scrollbar-color var(--ai-transition-default);
+  }
+  .cc-control__page:hover {
+    scrollbar-color: var(--cc-actions-menu-primary-bg) transparent;
+  }
 }
 
 /* Alert + card row share one container (Figma Frame 229, node 4183:14662):
@@ -377,6 +380,18 @@
 @media (max-width: 767px) {
   .cc-control__page {
     padding: var(--ai-spacing-4);
+    /* Trim the right padding (as on desktop) so the reserved scrollbar gutter
+       doesn't make the right side look heavier than the left. */
+    padding-right: var(--ai-spacing-2);
+  }
+}
+
+/* Desktop (≥768px): trim the right padding to spacing-4 so the content sits
+   evenly against the reserved scrollbar gutter, which adds width on the right
+   only. Same @media rationale as above — the page can't query its own container. */
+@media (min-width: 768px) {
+  .cc-control__page {
+    padding-right: var(--ai-spacing-4);
   }
 }
 
