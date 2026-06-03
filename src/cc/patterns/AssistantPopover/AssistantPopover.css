@@ -24,6 +24,7 @@
   flex-direction: column;
   width: var(--ai-size-6);                          /* 320 */
   background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-brand);
   border-radius: var(--ai-radius-lg);               /* 16 */
   box-shadow: var(--ai-shadow-md);
   font-family: var(--ai-font-body);
