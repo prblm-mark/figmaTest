@@ -61,9 +61,10 @@ No explicit `width` set — wrapper sizes to its content.
 | Width × Height | `var(--ai-spacing-8)` × `var(--ai-spacing-8)` (40 × 40) |
 | Border-radius | `var(--ai-radius-md)` (8px) |
 | Background (default) | `transparent` |
-| Background (hover / `.is-hover`) | `var(--cc-actions-menu-secondary-bg)` |
+| Background (hover / `.is-hover` / `:active`) | `var(--cc-actions-menu-secondary-bg)` |
 | Icon size | `var(--ai-icon-size-md)` (20px) |
-| Icon colour | `var(--cc-actions-menu-icon)` |
+| Icon colour (rest) | `var(--cc-actions-menu-icon)` |
+| Icon colour (hover / `.is-hover` / `:active`) | `var(--cc-actions-menu-icon-active)` |
 | Focus outline | `2px solid var(--ai-surface-brand)`, offset `-2px` |
 
 ---
@@ -77,18 +78,18 @@ A new `--cc-actions-menu-*` token family was added to the CC Semantic tokens
 |---|---|---|
 | `--cc-actions-menu-primary-bg` | `#d0dbe1` | `#334155` |
 | `--cc-actions-menu-secondary-bg` | `#e7edf0` | `#1e293b` |
-| `--cc-actions-menu-icon` | `#335562` | `#cbd5e1` |
+| `--cc-actions-menu-icon` (rest) | `#667f89` | `#94a3b8` |
+| `--cc-actions-menu-icon-active` (hover/active) | `#335562` | `#cbd5e1` |
 
-The three values coincide with existing `--ai-surface-contrast`,
-`--ai-surface-secondary`, and `--ai-icon-primary` in CC light — but the
-dedicated `--cc-actions-menu-*` family was kept so future re-themes can move
+The dedicated `--cc-actions-menu-*` family was kept so future re-themes can move
 the actions menu independently of the semantic surfaces.
 
-**SD warning:** the token compile emitted a collision warning for
-`--cc-actions-menu-icon` (it appears twice in the source with different
-values — `#667f89` then `#335562` in light, `#94a3b8` then `#cbd5e1` in dark).
-CSS cascade resolves to the second value but the source JSON should be
-de-duplicated. Worth a follow-up.
+**Collision resolved (2026-06-03):** the icon colour previously appeared twice
+in the source under one WEB name (`--cc-actions-menu-icon`), so the rest value
+(`#667f89` / `#94a3b8`) was clobbered by the active value (`#335562` / `#cbd5e1`)
+— icons rendered dark at rest. One token was renamed to
+`--cc-actions-menu-icon-active`; the two are now distinct and wired to rest vs
+hover/`:active` respectively in the CSS.
 
 No other token gaps.
 
