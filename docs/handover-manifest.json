@@ -1,0 +1,101 @@
+{
+  "description": "Backend-developer handover manifest. Machine-readable index of front-end elements that are mock / visual-only / in-memory and need real backend implementation. Front-end-only repo (vanilla HTML/CSS/JS, no framework, no backend). See HANDOVER.md for the human-readable version and the TODO(backend:<Surface>) in-code marker convention.",
+  "updated": "2026-06-04",
+  "categories": {
+    "visual-only": "Rendered but no behaviour wired at all.",
+    "fe-wired": "Works client-side; no backend required (may be fine as-is).",
+    "needs-backend": "Requires real data, API, auth, persistence, or AI service."
+  },
+  "surfaces": {
+    "ControlScreen": {
+      "file": "src/cc/templates/ControlScreen/ControlScreen.html",
+      "note": "CC home/landing dashboard. Front-end complete; all data is hardcoded and most actions are mock. Composes many CC patterns — see docs/component-registry.md for per-component status.",
+      "items": [
+        {
+          "id": "favourites-persistence",
+          "category": "needs-backend",
+          "element": "saveFav() / removeFav() + .cc-control__fav-list (desktop + mobile)",
+          "current": "Saving/removing a favourite only mutates the DOM in memory; lost on reload. Mirrored across both list copies.",
+          "needs": "Favourites CRUD API: GET (load on init), POST (save {name, context, timestamp}), DELETE. Replace in-memory DOM mutation with API-backed state."
+        },
+        {
+          "id": "panel-search",
+          "category": "needs-backend",
+          "element": "'Search Control' / 'Search Favourites' / 'Search CRM' <input type=\"search\">",
+          "current": "Empty inputs, no event handlers.",
+          "needs": "Per-panel search/filter API (debounced query → results), populate the lists from the response."
+        },
+        {
+          "id": "sidebar-nav-data",
+          "category": "needs-backend",
+          "element": "Static submenu <li> links in the SidebarMenu panels (CRM/Content/Marketing/etc.)",
+          "current": "Hardcoded list items; no navigation, no permission filtering.",
+          "needs": "Menu/structure API to populate items; permission-based visibility; real navigation/routing on click."
+        },
+        {
+          "id": "zone-selector",
+          "category": "needs-backend",
+          "element": "Zone Selector dropdown (.sel, wired by Select.js for open/close only)",
+          "current": "Static options (Affino/Staging/etc.); selection is visual.",
+          "needs": "Load available zones; persist selection to session; reload dashboard data for the chosen zone."
+        },
+        {
+          "id": "charts-data",
+          "category": "needs-backend",
+          "element": "2 Chart.js charts (Page Views, Users) + time-range buttons + report links",
+          "current": "Hardcoded data arrays + static labels; range buttons and report links are visual only.",
+          "needs": "Analytics API for series data; time-range query (7d/30d/etc.) updating the chart; real routes for Clicks/Revenue reports."
+        },
+        {
+          "id": "whos-online-table",
+          "category": "needs-backend",
+          "element": "Datatables 'Who's Online' (desktop + mobile) — rows, search, sort headers, pagination",
+          "current": "Static rows (5 fake users); search/sort/pagination controls are visual only.",
+          "needs": "Users API with server-side paginate/sort/search; live 'online' status (poll or WebSocket); touch/login metadata from auth."
+        },
+        {
+          "id": "auth-actions",
+          "category": "needs-backend",
+          "element": "Logout / Sign Out (user menu) / Switch Mode (dev→prod alert CTA) / View Site",
+          "current": "No click handlers (Switch Mode + View Site + header Logout); Sign Out visual only.",
+          "needs": "Auth/session endpoints (logout → clear session → redirect), mode-switch endpoint, View Site navigation."
+        },
+        {
+          "id": "notifications",
+          "category": "needs-backend",
+          "element": "Header NotificationBadge bell + count badge",
+          "current": "Static count ('2'); no click handler.",
+          "needs": "Notifications API (count + list) and a drawer/page on click."
+        },
+        {
+          "id": "ai-assistant",
+          "category": "needs-backend",
+          "element": "Mounted AiAssistant panel — message input, chat history list, pin/copy/delete menu",
+          "current": "Initial-state view only: send button is inert, chat history is static, menu actions are visual. Processing/response states are demo-only (GSAP) on the standalone AiAssistant page, NOT mounted here. (Distinct from the future full-page CC AI Chat the Maximise button will route to.)",
+          "needs": "Chat/AI backend: send message + stream response, chat-history CRUD (load/pin/delete), thumbs-up/down feedback. Session association with the user."
+        },
+        {
+          "id": "text-size",
+          "category": "needs-backend",
+          "element": "Rail Text-size slider (FontSizeSlider)",
+          "current": "Emits input/change events only; not bound to any font-scale variable.",
+          "needs": "Bind to a font-scale CSS var site-wide and persist the preference per user."
+        },
+        {
+          "id": "minimise",
+          "category": "needs-backend",
+          "element": "Rail Minimise button",
+          "current": "Visual only — no behaviour.",
+          "needs": "Toggle a condensed spacing view — apply data-layout=\"minimised\" on the shell (minimised-mode tokens already exist in css/tokens-minimised.css) — and persist the preference per user."
+        },
+        {
+          "id": "print",
+          "category": "fe-wired",
+          "element": "Rail Print button",
+          "current": "Calls window.print() — works natively.",
+          "needs": "None required. Only if a server-rendered print-to-PDF is wanted later."
+        }
+      ]
+    }
+  }
+}

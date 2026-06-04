@@ -165,3 +165,20 @@ Add rows there as components are built. Format: Component Name, Tier, Status, Fi
 4. Update `docs/tokens-reference.md` with the new token
 
 Do **not** manually edit `FigmaTokens/*.json` — they are the source of truth from Figma.
+
+---
+
+## 12. Backend Handover & Flagging
+
+This is a **front-end-only** repo (no backend). When an element is **mock / visual-only /
+in-memory** and will need real data, API, auth, persistence, or AI, flag it so the backend
+handover stays discoverable:
+
+- Drop a greppable marker at the element:
+  - HTML: `<!-- TODO(backend:<Surface>): <what is mock> → <suggested contract> -->`
+  - JS: `// TODO(backend:<Surface>): <what is mock> → <suggested contract>`
+  - Optional DOM hook: `data-backend-todo="<id>"`.
+- Add a matching entry under `surfaces.<Surface>.items[]` in `docs/handover-manifest.json`
+  (keep `id` in sync with the marker) and a row in [`HANDOVER.md`](HANDOVER.md).
+
+Find everything: `grep -rn "TODO(backend" src/`. Full guide: **[`HANDOVER.md`](HANDOVER.md)**.
