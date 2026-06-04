@@ -61,6 +61,10 @@
 <body class="cc-control">
 
   <!-- ━━━ Sidebar (Desktop composite) ━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <!-- TODO(backend:ControlScreen) [sidebar-nav-data, panel-search]: SidebarMenu submenu
+       links are static hardcoded <li>s — need a menu/structure API + permissioned navigation.
+       The panel search inputs ("Search Control/Favourites/CRM") have no handler — need a
+       per-panel search/filter API. Mirrored in the mobile sidebar below. See HANDOVER.md. -->
   <aside class="cc-control__sidebar cc-control__sidebar--desktop">
     <div class="cc-sidebar-menu" aria-label="Affino Control Centre">
 
@@ -242,7 +246,8 @@
         <button type="button" class="cc-sidebar__btn" data-cc-rail-extra hidden aria-label="Info"><i data-lucide="info" aria-hidden="true"></i></button>
         <button type="button" class="cc-sidebar__btn" data-cc-rail-extra hidden aria-label="Saved"><i data-lucide="star" aria-hidden="true"></i></button>
         <button type="button" class="cc-sidebar__btn" data-cc-rail-extra hidden aria-label="Text size"><i data-lucide="a-large-small" aria-hidden="true"></i></button>
-        <button type="button" class="cc-sidebar__btn" data-cc-rail-extra hidden aria-label="Minimise"><i data-lucide="minimize-2" aria-hidden="true"></i></button>
+        <!-- TODO(backend:ControlScreen) [minimise]: toggle a condensed spacing view — apply data-layout="minimised" on the shell (minimised-mode tokens exist) + persist the preference. -->
+        <button type="button" class="cc-sidebar__btn" data-cc-rail-extra hidden aria-label="Minimise" data-backend-todo="minimise"><i data-lucide="minimize-2" aria-hidden="true"></i></button>
       </nav>
 
       <!-- Panel: Control (mobile — hidden by default; tap rail to reveal) -->
@@ -437,6 +442,9 @@
             </div>
           </div>
           <div class="cc-header__actions">
+            <!-- TODO(backend:ControlScreen) [notifications, auth-actions]: bell count is static
+                 (need notifications API + drawer); Logout / View Site below have no handlers
+                 (need auth/session endpoints + navigation). -->
             <span class="notification-badge">
               <button class="btn btn--tertiary btn--icon" type="button" aria-label="Notifications, 2 unread">
                 <i data-lucide="bell" aria-hidden="true"></i>
@@ -481,7 +489,8 @@
                 <span class="alert__title">You are in development mode!</span>
                 <span class="alert__message"> Switch mode for Default</span>
               </div>
-              <button type="button" class="btn btn--primary btn--sm alert__cta-btn">
+              <!-- TODO(backend:ControlScreen) [auth-actions]: Switch Mode (dev→prod) has no handler — needs a mode-switch endpoint + reload. -->
+              <button type="button" class="btn btn--primary btn--sm alert__cta-btn" data-backend-todo="auth-actions">
                 Switch Mode
               </button>
             </div>
@@ -526,7 +535,8 @@
           <div class="sel sel--label-left" data-sel>
             <label class="sel__label" for="cs-zone">Select Zone</label>
             <div class="sel__field">
-              <button id="cs-zone" class="sel__control" type="button" data-sel-trigger>
+              <!-- TODO(backend:ControlScreen) [zone-selector]: static zone options + visual select — load zones, persist the choice, reload dashboard data for the chosen zone. -->
+              <button id="cs-zone" class="sel__control" type="button" data-sel-trigger data-backend-todo="zone-selector">
                 <span class="sel__value">Affino</span>
                 <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
               </button>
@@ -559,7 +569,8 @@
               <span>12.4%</span>
             </span>
           </div>
-          <div class="chart__canvas"><canvas id="cs-page-views"></canvas></div>
+          <!-- TODO(backend:ControlScreen) [charts-data]: Chart.js data is hardcoded; range buttons + report links are visual. Need analytics API + time-range query + real report routes. -->
+          <div class="chart__canvas"><canvas id="cs-page-views" data-backend-todo="charts-data"></canvas></div>
           <div class="chart__foot">
             <button type="button" class="chart__filter">
               <span>Last 7 days</span>
@@ -583,7 +594,7 @@
               <span>8.2%</span>
             </span>
           </div>
-          <div class="chart__canvas"><canvas id="cs-users"></canvas></div>
+          <div class="chart__canvas"><canvas id="cs-users" data-backend-todo="charts-data"></canvas></div>
           <div class="chart__foot">
             <button type="button" class="chart__filter">
               <span>Last 30 days</span>
@@ -614,7 +625,11 @@
         </header>
 
         <!-- Desktop: Whos Online · Scroll (4 columns). Hidden below 768px. -->
-        <div class="datatables cc-control__table--desktop">
+        <!-- TODO(backend:ControlScreen) [whos-online-table]: rows are static fake users; search,
+             sort headers and pagination are visual only. Need a users API (server-side
+             paginate/sort/search) + live online status (poll/WebSocket). Applies to the mobile
+             Trigger variant below too. -->
+        <div class="datatables cc-control__table--desktop" data-backend-todo="whos-online-table">
           <div class="datatables__toolbar">
             <span class="datatables__meta">
               <span>Show</span>
@@ -950,15 +965,18 @@
         <div class="cc-control__rail-popover cc-control__rail-popover--card" id="cc-rail-textsize" data-aa-panel="text-size" role="dialog" aria-label="Text size" hidden>
           <p class="cc-control__rail-popover-label">Text size</p>
           <div class="font-size-slider">
-            <input class="font-size-slider__input" type="range" min="1" max="4" step="1" value="2" aria-label="Text size">
+            <!-- TODO(backend:ControlScreen) [text-size]: emits input/change only — bind to a font-scale var site-wide and persist the preference per user. -->
+            <input class="font-size-slider__input" type="range" min="1" max="4" step="1" value="2" aria-label="Text size" data-backend-todo="text-size">
           </div>
         </div>
       </span>
       <!-- Minimise: visual-only for now (behaviour TBD) -->
-      <button class="actions-menu__btn" type="button" aria-label="Minimise">
+      <!-- TODO(backend:ControlScreen) [minimise]: toggle a condensed spacing view — apply data-layout="minimised" on the shell (minimised-mode tokens exist) + persist the preference. -->
+      <button class="actions-menu__btn" type="button" aria-label="Minimise" data-backend-todo="minimise">
         <i data-lucide="minimize-2" aria-hidden="true"></i>
       </button>
-      <button class="actions-menu__btn" type="button" aria-label="Print" data-aa-action="print">
+      <!-- TODO(backend:ControlScreen) [print]: fe-wired — window.print() works natively; OK as-is unless a server-side print-to-PDF is wanted. -->
+      <button class="actions-menu__btn" type="button" aria-label="Print" data-aa-action="print" data-backend-todo="print">
         <i data-lucide="printer" aria-hidden="true"></i>
       </button>
     </div>
@@ -969,6 +987,10 @@
        processing/response states are demo-only and live on the standalone
        AiAssistant page. Opened by the rail "AI Assistant" button; hidden by
        default; shell behaviours wired via initAiAssistantShell(). -->
+  <!-- TODO(backend:ControlScreen) [ai-assistant]: initial-state view only — message send is inert,
+       chat history is static, pin/copy/delete menu actions are visual. Need a chat/AI backend
+       (send + stream response, chat-history CRUD, thumbs feedback). The processing/response
+       states are demo-only (GSAP) on the standalone AiAssistant page, NOT mounted here. -->
   <div class="ai-assistant ai-assistant--hidden" id="ai-assistant">
 
     <!-- Resize handles: 4 edges -->
@@ -1311,7 +1333,8 @@
         </div>
       </div>
       <div class="modal__footer">
-        <button class="btn btn--primary" type="button" data-aa-fav-save>Save favourite</button>
+        <!-- TODO(backend:ControlScreen) [favourites-persistence]: saving only mutates the DOM in memory (lost on reload). Need favourites CRUD — POST {name, context, ts} here, GET on init, DELETE on remove. -->
+        <button class="btn btn--primary" type="button" data-aa-fav-save data-backend-todo="favourites-persistence">Save favourite</button>
       </div>
     </div>
   </div>
@@ -1458,6 +1481,9 @@
         });
       }
 
+      // TODO(backend:ControlScreen) [favourites-persistence]: saveFav/removeFav mutate the DOM
+      // only — favourites are in-memory and lost on reload. Replace with a favourites API
+      // (GET on init, POST on save, DELETE on remove) and render from the response.
       function saveFav() {
         var name = (favInput.value || '').trim();
         if (!name) { favInput.focus(); return; }
