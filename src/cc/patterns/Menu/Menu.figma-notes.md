@@ -48,7 +48,7 @@ Type controls layout; State controls which item is selected/expanded and whether
 | Panel padding | `--ai-spacing-4` (12 — Control/Analysis/Favourites); `10px` (CRM only) |
 | Panel gap | `--ai-spacing-3` (8 — Control/Analysis/Favourites); `10px` (CRM only) |
 | Items gap | `--ai-spacing-1` (4) |
-| Search field bg | `--ai-surface-elevated-1` (user override; was `--ai-surface-primary`) |
+| Search field bg | `--ai-surface-minimal` (user override; was `--ai-surface-primary`) |
 | Search field border | `--ai-border-secondary`; `:focus-within` → `--ai-border-brand` + double box-shadow ring (`--ai-surface-brand-soft`), mirroring the Input component (the nested input has `outline:none`, so the wrapper carries the focus indicator) |
 | Search field height / padding | 40 / `--ai-spacing-5` horizontal |
 | Search placeholder | `--ai-text-contrast` |
