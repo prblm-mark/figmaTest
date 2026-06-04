@@ -46,6 +46,7 @@
   --ai-border-info: #bfd1ff;
   --ai-border-warning: #fdba74;
   --ai-border-neutral: #e2e2e3;
+  --ai-radius-none: 0rem;
   --ai-radius-sm: 0.25rem;
   --ai-radius-md: 0.5rem;
   --ai-radius-lg: 1rem;
@@ -114,6 +115,8 @@
   --ai-spacing-11: 4rem;
   --ai-spacing-12: 4.5rem;
   --ai-spacing-13: 5rem;
+  --ai-spacing-0-5: 0.125rem;
+  --ai-spacing-px: 0.0625rem;
   --ai-spacing-0: 0rem;
   --ai-size-1: 8rem;
   --ai-size-2: 10rem;

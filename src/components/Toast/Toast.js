@@ -1,0 +1,1 @@
+document.addEventListener("click",function(t){var e=t.target.closest(".toast__close");if(e){var o=e.closest(".toast");o&&o.remove()}});
