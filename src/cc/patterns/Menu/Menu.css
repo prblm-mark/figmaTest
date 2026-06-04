@@ -74,6 +74,13 @@
   display: none;
 }
 
+/* Dark mode + floating flyout: search field bg uses the menu's secondary
+ * surface (user request). NB the floating block swaps the primary/secondary
+ * bg tokens above, so this reads the swapped value in this context. */
+[data-theme="dark"] .cc-menu--floating .cc-menu__search {
+  background-color: var(--cc-mainmenu-primary-bg);
+}
+
 /* ── Brand strip ───────────────────────────────────── */
 /* Figma cell is 167×72: a 167-wide wordmark in a 72-tall slot, centred
  * horizontally by the panel's `align-items: center`. The mask renders
