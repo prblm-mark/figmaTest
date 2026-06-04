@@ -100,10 +100,19 @@
   width: 100%;
   height: var(--ai-spacing-8);                    /* 40 */
   padding: 0 var(--ai-spacing-5) 0 var(--ai-spacing-3);   /* 8 left, 16 right */
-  background-color: var(--ai-surface-primary);
+  background-color: var(--ai-surface-elevated-1);
   border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-md);
   flex-shrink: 0;
+}
+
+/* Focus ring when the nested input is focused (the input itself has
+ * outline:none). Mirrors the Input component's focus-within treatment. */
+.cc-menu__search:focus-within {
+  border-color: var(--ai-border-brand);
+  box-shadow: 0 0 0 1px var(--ai-surface-primary),
+              0 0 0 3px var(--ai-surface-brand-soft);
+  outline: none;
 }
 
 .cc-menu__search-input {

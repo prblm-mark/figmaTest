@@ -53,6 +53,7 @@
   <link rel="stylesheet" href="../../../patterns/ChatMain/ChatMain.css">
   <link rel="stylesheet" href="../AiAssistant/AiAssistant.css">
   <link rel="stylesheet" href="../../patterns/AssistantPopover/AssistantPopover.css">
+  <link rel="stylesheet" href="../../../components/Toast/Toast.css">
 
   <!-- Template -->
   <link rel="stylesheet" href="ControlScreen.css">
@@ -1290,6 +1291,11 @@
     </div>
   </div>
 
+  <!-- ━━━ Toast stack (top-right) — favourites save/remove feedback ━━━━━
+       Empty container; toasts are spawned into it by the rail IIFE (success on
+       save, interactive Undo on remove). Uses the Toast component markup. -->
+  <div class="cc-toast-stack" id="cc-toasts" aria-live="polite" aria-atomic="false"></div>
+
   <!-- ━━━ "Save favourite as" modal (opened by the rail Favourite button) ━━━ -->
   <div class="modal-overlay" id="modal-fav" role="dialog" aria-modal="true" aria-labelledby="modal-fav-title">
     <div class="modal modal--sm">
@@ -1394,23 +1400,76 @@
         favModal.classList.remove('modal-overlay--open');
         document.body.style.overflow = '';
       }
+      // ── Feedback toasts (Toast component, spawned into #cc-toasts) ──
+      var toastStack = document.getElementById('cc-toasts');
+      var TOAST_MS = 4000;   // auto-dismiss delay
+
+      function dismissToast(toast) {
+        if (!toast || toast.dataset.leaving) return;
+        toast.dataset.leaving = '1';
+        if (toast._timer) clearTimeout(toast._timer);
+        toast.classList.remove('toast--in');
+        toast.classList.add('toast--leaving');
+        toast.addEventListener('transitionend', function () { toast.remove(); }, { once: true });
+      }
+      function showToast(toast, duration) {
+        if (!toastStack) return null;
+        toastStack.appendChild(toast);
+        if (window.lucide) lucide.createIcons();
+        // Reveal on the next frame so the slide-in transition plays.
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () { toast.classList.add('toast--in'); });
+        });
+        var closeBtn = toast.querySelector('.toast__close');
+        if (closeBtn) closeBtn.addEventListener('click', function () { dismissToast(toast); });
+        if (duration) toast._timer = setTimeout(function () { dismissToast(toast); }, duration);
+        return toast;
+      }
+      // Status toast (Info/Success/Danger/Warning + optional --color), message-only.
+      function statusToast(variant, icon, message) {
+        var t = document.createElement('div');
+        t.className = 'toast ' + variant;
+        t.setAttribute('role', 'status');
+        t.innerHTML =
+          '<span class="toast__icon"><i data-lucide="' + icon + '" aria-hidden="true"></i></span>' +
+          '<p class="toast__message"></p>' +
+          '<button type="button" class="toast__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>';
+        t.querySelector('.toast__message').textContent = message;   // textContent = safe
+        showToast(t, TOAST_MS);
+      }
+
+      // ── Favourite list helpers (mirrored across desktop + mobile lists) ──
+      function makeFavItem(name) {
+        var li = document.createElement('li');
+        li.className = 'cc-menu__submenu-item';
+        li.innerHTML =
+          '<span class="cc-menu__submenu-item-label"></span>' +
+          '<button class="cc-menu__submenu-item__action" type="button" aria-label="Remove from favourites"><i data-lucide="trash-2" aria-hidden="true"></i></button>';
+        li.querySelector('.cc-menu__submenu-item-label').textContent = name; // textContent = safe
+        return li;
+      }
+      // Remove every item matching `name` from both mirrored lists.
+      function removeFav(name) {
+        document.querySelectorAll('.cc-control__fav-list').forEach(function (list) {
+          Array.prototype.slice.call(list.children).forEach(function (li) {
+            var label = li.querySelector('.cc-menu__submenu-item-label');
+            if (label && label.textContent === name) li.remove();
+          });
+        });
+      }
+
       function saveFav() {
         var name = (favInput.value || '').trim();
         if (!name) { favInput.focus(); return; }
         document.querySelectorAll('.cc-control__fav-list').forEach(function (list) {
-          var li = document.createElement('li');
-          li.className = 'cc-menu__submenu-item';
-          li.innerHTML =
-            '<span class="cc-menu__submenu-item-label"></span>' +
-            '<button class="cc-menu__submenu-item__action" type="button" aria-label="Remove from favourites"><i data-lucide="trash-2" aria-hidden="true"></i></button>';
-          li.querySelector('.cc-menu__submenu-item-label').textContent = name; // textContent = safe
-          list.appendChild(li);
+          list.appendChild(makeFavItem(name));
         });
         if (window.lucide) lucide.createIcons();
         closeFav();
         // reveal the Favourites panel on the desktop sidebar so the new item shows
         var favBtn = document.querySelector('.cc-control__sidebar--desktop .cc-sidebar__btn[data-cc-target="favourites"]');
         if (favBtn && !favBtn.classList.contains('cc-sidebar__btn--active')) favBtn.click();
+        statusToast('toast--success toast--color', 'check', '“' + name + '” added to favourites');
       }
       document.querySelectorAll('[data-aa-modal="fav"]').forEach(function (b) { b.addEventListener('click', openFav); });
       if (favModal) {
@@ -1419,11 +1478,16 @@
         favModal.addEventListener('click', function (e) { if (e.target === favModal) closeFav(); });
         if (favInput) favInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') saveFav(); });
       }
-      // Remove-from-favourites (delegated, both panels)
+      // Remove-from-favourites (delegated, both panels) → Danger toast.
       document.querySelectorAll('.cc-control__fav-list').forEach(function (list) {
         list.addEventListener('click', function (e) {
           var rm = e.target.closest('.cc-menu__submenu-item__action');
-          if (rm) rm.closest('.cc-menu__submenu-item').remove();
+          if (!rm) return;
+          var li = rm.closest('.cc-menu__submenu-item');
+          var label = li && li.querySelector('.cc-menu__submenu-item-label');
+          var name = label ? label.textContent : '';
+          removeFav(name);
+          statusToast('toast--danger toast--color', 'trash-2', '“' + name + '” removed from favourites');
         });
       });
     })();

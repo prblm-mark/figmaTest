@@ -194,3 +194,15 @@ agreed 2026-06-03:
 - Wired in the end-of-body module (alongside the AiAssistant wiring) — **not**
   `AssistantPopover.js`, whose instant DOM-removal would fight the fade-out. The standalone
   pattern demo still uses AssistantPopover.js.
+
+## Favourites feedback toasts (Toast component)
+
+The save-favourites workflow now gives confirmation feedback via the **Toast**
+component (`src/components/Toast/`), spawned into a fixed top-right stack.
+
+- **Mount:** `Toast.css` added in head; an empty `<div class="cc-toast-stack" id="cc-toasts" aria-live="polite">` hosts spawned toasts. Scoped CSS (`.cc-control .cc-toast-stack`): fixed top-right, `z-index: 200` (above chrome/rail-popovers/AiAssistant z-60/fav modal z-100), click-through container, toasts re-enable pointer events, `max-width: calc(100vw - spacing-6*2)`, slide-in from right + fade (`--in` / `--leaving`, `--ai-transition-slow`).
+- **Save → Success toast** (`saveFav`): spawns `toast--success toast--color` (filled green variant, "check" glyph) — *"“{name}” added to favourites"*.
+- **Remove → Danger toast**: remove syncs **both** desktop + mobile `.cc-control__fav-list`s (was clicked-list-only); spawns `toast--danger toast--color` (filled red variant, "trash-2" glyph) — *"“{name}” removed from favourites"*. **No Undo** — a straight confirmation toast; removal is immediate and final.
+- Both use the same message-only `statusToast(variant, icon, message)` helper, auto-dismiss `TOAST_MS` 4000.
+- Spawn/dismiss controller (`showToast` / `dismissToast` / `statusToast`) lives in the rail-popover IIFE; toast text set via `textContent` (XSS-safe). Manual ✕ + auto-timeout both route through `dismissToast` (guards double-dismiss, clears timer). Not `Toast.js` (toasts are JS-spawned here, so the controller handles close directly).
+- Duplicate-name caveat: removing matches by label text, so two favourites with the same name are removed together (favourites aren't deduped — pre-existing).
