@@ -33,6 +33,12 @@
   display: flex;
 }
 
+/* Dark mode only: 1px optical top-nudge (user-requested). 1px is a sub-token
+ * optical offset (like a border width), not a layout-scale value. */
+[data-theme="dark"] .cc-header-group--icon-nav .cc-icon-nav {
+  margin-top: 1px;
+}
+
 /* Below 768 (group width) the strip is ALWAYS hidden, regardless of the Icon
  * Navigation toggle — placed after the show rule so it wins on equal
  * specificity when the container condition matches. */

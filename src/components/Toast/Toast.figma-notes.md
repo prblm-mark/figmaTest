@@ -39,6 +39,9 @@ Shared card: bg `--ai-surface-primary` · border `--ai-border-secondary` · shad
 `--ai-shadow-md` · radius `--ai-radius-lg` · gap/padding `--ai-spacing-4` (status)
 / `--ai-spacing-5` (notification, interactive) · width `--ai-size-7`.
 
+**Gap override (user):** `--color` (filled) variants tighten gap to `--ai-spacing-2` (6px) —
+a deliberate deviation from Figma (which uses `--ai-spacing-4` for all status toasts).
+
 | Property | Plain | Color (filled) |
 |---|---|---|
 | card background | `--ai-surface-primary` | `--ai-surface-{info\|success\|error\|warning}-soft` |

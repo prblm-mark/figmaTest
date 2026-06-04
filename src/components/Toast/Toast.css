@@ -102,6 +102,9 @@
 
 .toast--color .toast__icon { background-color: transparent; }
 
+/* Tighter gap on filled variants (user override — Figma uses --ai-spacing-4). */
+.toast--color { gap: var(--ai-spacing-2); }
+
 .toast--color.toast--info    .toast__message { color: var(--ai-text-info); }
 .toast--color.toast--success .toast__message { color: var(--ai-text-success); }
 .toast--color.toast--danger  .toast__message { color: var(--ai-text-error); }
