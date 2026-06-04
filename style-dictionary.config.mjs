@@ -127,13 +127,19 @@ StyleDictionary.registerTransform({
  * This ensures exact parity between what Figma calls a variable and its CSS name.
  * Example: "--ai-surface-primary" → strips "--" → "ai-surface-primary"
  *          CSS format adds "--" back → "--ai-surface-primary"
+ *
+ * Sanitise dots: a "." is not a valid CSS custom-property name character (it
+ * terminates the ident), so a WEB codeSyntax like "--ai-spacing-0.5" produces
+ * an unusable `var(--ai-spacing-0.5)`. Replace "." with "-" → "--ai-spacing-0-5"
+ * (matches the token's own "0-5" path key). Designers can also correct the WEB
+ * codeSyntax in Figma; this keeps the output valid regardless.
  */
 StyleDictionary.registerTransform({
   name: 'name/figma-web',
   type: 'name',
   transform: (token) => {
     const web = token.$extensions?.['com.figma.codeSyntax']?.WEB;
-    if (web) return web.replace(/^--/, '');
+    if (web) return web.replace(/^--/, '').replace(/\./g, '-');
     // Fallback: derive from path (for tokens without codeSyntax — filtered out anyway)
     return ['ai', ...token.path]
       .join('-')

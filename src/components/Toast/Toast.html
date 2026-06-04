@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>Toast — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../Button/Button.css">
+  <link rel="stylesheet" href="../Avatar/Avatar.css">
+  <link rel="stylesheet" href="../Portraits/Portraits.css">
+  <link rel="stylesheet" href="Toast.css">
+  <style>
+    body {
+      margin: 0;
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-secondary);
+      min-height: 100vh;
+      color: var(--ai-text-primary);
+      font-family: var(--ai-font-body);
+    }
+    .demo-section {
+      max-width: 28rem;
+      margin: 0 auto var(--ai-spacing-7);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-4);
+    }
+    .demo-section h2 {
+      margin: var(--ai-spacing-5) 0 0;
+      font-family: var(--ai-font-title);
+      font-size: var(--ai-font-fixed-sm);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .demo-section p.demo-note {
+      margin: 0 0 var(--ai-spacing-1) 0;
+      font-size: var(--ai-font-fixed-xs);
+      color: var(--ai-text-secondary);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Status — plain (white card, soft icon chip) ── -->
+  <div class="demo-section">
+    <h2>Status — Default</h2>
+    <p class="demo-note">White card, soft-tinted icon chip, status-coloured glyph, grey dismiss.</p>
+
+    <div class="toast toast--info" role="status">
+      <span class="toast__icon"><i data-lucide="info" aria-hidden="true"></i></span>
+      <p class="toast__message">Your changes have been saved.</p>
+      <button type="button" class="toast__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>
+    </div>
+
+    <div class="toast toast--success" role="status">
+      <span class="toast__icon"><i data-lucide="check" aria-hidden="true"></i></span>
+      <p class="toast__message">Item moved successfully.</p>
+      <button type="button" class="toast__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>
+    </div>
+
+    <div class="toast toast--danger" role="alert">
+      <span class="toast__icon"><i data-lucide="x" aria-hidden="true"></i></span>
+      <p class="toast__message">Item has been deleted</p>
+      <button type="button" class="toast__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>
+    </div>
+
+    <div class="toast toast--warning" role="alert">
+      <span class="toast__icon"><i data-lucide="triangle-alert" aria-hidden="true"></i></span>
+      <p class="toast__message">Improve your password difficulty.</p>
+      <button type="button" class="toast__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>
+    </div>
+  </div>
+
+  <!-- ── Status — Color / filled (tinted card + status border, text, close) ── -->
+  <div class="demo-section">
+    <h2>Status — Color</h2>
+    <p class="demo-note">Status-tinted card with status border, text and dismiss; no icon chip background.</p>
+
+    <div class="toast toast--info toast--color" role="status">
+      <span class="toast__icon"><i data-lucide="info" aria-hidden="true"></i></span>
+      <p class="toast__message">Your changes have been saved.</p>
+      <button type="button" class="toast__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>
+    </div>
+
+    <div class="toast toast--success toast--color" role="status">
+      <span class="toast__icon"><i data-lucide="check" aria-hidden="true"></i></span>
+      <p class="toast__message">Your changes have been saved.</p>
+      <button type="button" class="toast__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>
+    </div>
+
+    <div class="toast toast--danger toast--color" role="alert">
+      <span class="toast__icon"><i data-lucide="x" aria-hidden="true"></i></span>
+      <p class="toast__message">Item has been deleted</p>
+      <button type="button" class="toast__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>
+    </div>
+
+    <div class="toast toast--warning toast--color" role="alert">
+      <span class="toast__icon"><i data-lucide="triangle-alert" aria-hidden="true"></i></span>
+      <p class="toast__message">Improve your password difficulty.</p>
+      <button type="button" class="toast__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>
+    </div>
+  </div>
+
+  <!-- ── Notification ── -->
+  <div class="demo-section">
+    <h2>Notification</h2>
+    <p class="demo-note">Avatar + sender name, message and a brand-coloured timestamp.</p>
+
+    <div class="toast toast--notification" role="status">
+      <div class="avatar avatar--size-2">
+        <img class="portrait" src="https://picsum.photos/seed/female1/300" alt="Bonnie Green">
+      </div>
+      <div class="toast__content">
+        <p class="toast__name">Bonnie Green</p>
+        <p class="toast__text">commented on your photo.</p>
+        <p class="toast__time">A few seconds ago</p>
+      </div>
+      <button type="button" class="toast__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>
+    </div>
+  </div>
+
+  <!-- ── Interactive ── -->
+  <div class="demo-section">
+    <h2>Interactive</h2>
+    <p class="demo-note">Title + body with Primary / Secondary actions.</p>
+
+    <div class="toast toast--interactive" role="status">
+      <div class="toast__content">
+        <p class="toast__title">Update Available</p>
+        <p class="toast__text">A new software version is available for download.</p>
+        <div class="toast__actions">
+          <button type="button" class="btn btn--primary btn--sm">Update</button>
+          <button type="button" class="btn btn--secondary btn--sm">Not Now</button>
+        </div>
+      </div>
+      <button type="button" class="toast__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script src="Toast.js"></script>
+</body>
+</html>
