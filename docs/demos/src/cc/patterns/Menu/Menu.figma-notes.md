@@ -32,6 +32,7 @@ Type controls layout; State controls which item is selected/expanded and whether
 | Submenu list (under an expanded item) | `<ul class="cc-menu__submenu">` |
 | Submenu item | `<li class="cc-menu__submenu-item">` |
 | Submenu item trailing icon | `<button class="cc-menu__submenu-item__action">` (e.g. pin, trash) |
+| Pinned submenu item | `.cc-menu__submenu-item--pinned` (floats to top via `order:-1`; action stays visible + pin icon filled) |
 | CRM type — groups wrapper | `.cc-menu__crm-groups` |
 | CRM type — group | `.cc-menu__crm-group` |
 | CRM type — menu button (text + plus icon) | `<button class="cc-menu__crm-btn">` |
@@ -57,6 +58,7 @@ Type controls layout; State controls which item is selected/expanded and whether
 | Submenu item gap | `--ai-spacing-2` (6) |
 | Submenu item colour | `--ai-text-invert-secondary` |
 | Submenu action icon (pin / trash) | rest: `--ai-icon-invert-secondary`, opacity 0 → 0.7 on row hover → 1 + `--cc-mainmenu-icon` on icon hover |
+| Pinned action icon | always-visible (opacity 1); colour stays `--ai-icon-invert-secondary` at rest, promotes to `--cc-mainmenu-icon` on hover (shared action `:hover` rule); `svg { fill: currentColor }` overrides Lucide's `fill="none"` so the pin reads solid |
 | CRM `crm-btn` width | 100% (fills its `crm-group` parent) |
 | CRM `crm-btn` icon size | `--ai-icon-size-md` (20) |
 | CRM `crm-btn` icon colour | rest: `--ai-icon-invert-secondary`, hover: `--cc-mainmenu-icon` (label hover: `--ai-text-invert`) |
@@ -73,6 +75,7 @@ The MainMenuItem rows inside `.cc-menu__items` (Control / Analysis) compose the 
 
 ## Notes / Outstanding
 
+- **Pin interaction** is wired in the SidebarMenu pattern (`sidebar-menu.js` → `initSubmenuPins`), not in this demo. At runtime a pin button is injected into every nav sub-item (rows that already own an action — the Favourites trash rows — are skipped); clicking it toggles `.cc-menu__submenu-item--pinned`, which floats the row to the top (`order:-1`) and fills the icon. Pinned state is in-memory only — flagged `TODO(backend:ControlScreen) [submenu-pins]`. The Menu demo shows one statically-pinned row ("Article Archive Profiles") to illustrate the visual; the demo itself loads no JS.
 - **Scrolled state** in v1 is just the layout: no brand / no search. Hooking a real scroll-shadow that appears when the items list actually scrolls is a follow-up (no JS yet).
 - **CRM-only tokens** like the 10px gap/padding don't exist in the token system as `--ai-spacing-*` values. Hardcoded with comments per the project convention for one-off optical values inside CSS.
 - The Type=Analysis variant omits the search input per Figma. If the consuming app needs search there, treat it as an override.

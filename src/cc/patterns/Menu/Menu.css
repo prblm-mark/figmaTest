@@ -253,6 +253,29 @@
   color: var(--cc-mainmenu-icon);
 }
 
+/* ── Pinned sub-item ──
+ * Clicking the pin floats the row to the top of its list. `order: -1`
+ * does a live reorder of the flex-column submenu (no DOM mutation;
+ * un-pinning restores the natural source order). The pin action stays
+ * visible at rest (not just on row hover) and the icon reads solid. */
+.cc-menu__submenu-item--pinned {
+  order: -1;
+}
+
+.cc-menu__submenu-item--pinned .cc-menu__submenu-item__action {
+  /* Only force visibility — colour is left to the base action rule
+   * (--ai-icon-invert-secondary at rest) so the shared :hover rule can
+   * still promote it to --cc-mainmenu-icon. Setting colour here would tie
+   * the :hover rule on specificity and win on source order, killing hover. */
+  opacity: 1;
+}
+
+/* Lucide renders the pin with fill="none"; a CSS `fill` overrides the
+ * presentation attribute, so the pinned pin fills instead of outlining. */
+.cc-menu__submenu-item--pinned .cc-menu__submenu-item__action svg {
+  fill: currentColor;
+}
+
 /* ── Type=CRM-specific list (plus-icon menu buttons + Recent) ── */
 .cc-menu--crm {
   gap: var(--ai-spacing-3);
