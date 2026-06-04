@@ -72,6 +72,7 @@ patterns (see `docs/component-registry.md` for per-component status).
 | id | Element | Now | Backend work needed | Category |
 |---|---|---|---|---|
 | `favourites-persistence` | `saveFav()` / `removeFav()` + `.cc-control__fav-list` | In-memory DOM only; lost on reload | Favourites CRUD: GET (load on init) / POST `{name, context, ts}` / DELETE | needs-backend |
+| `submenu-pins` | `initSubmenuPins()` + `.cc-menu__submenu-item--pinned` | Pins float a sub-item to top (`order:-1`) + filled icon, but in-memory only; per menu tree, not synced desktop↔mobile, lost on reload | User-prefs API: GET pinned ids on init / POST on pin / DELETE on unpin; key by user + item id, share across menu trees | needs-backend |
 | `panel-search` | "Search Control / Favourites / CRM" inputs | No handler | Per-panel search/filter API → populate lists | needs-backend |
 | `sidebar-nav-data` | SidebarMenu submenu links | Hardcoded `<li>`, no nav | Menu/structure API + permissioned navigation | needs-backend |
 | `zone-selector` | Zone Selector dropdown | Static options, visual select | Load zones; persist choice; reload data for zone | needs-backend |

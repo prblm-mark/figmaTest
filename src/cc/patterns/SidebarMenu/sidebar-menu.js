@@ -11,6 +11,8 @@
  *   4. MainMenuItem click → toggle submenu (single-open within its <ul>)
  *   5. Search input       → live-filter rows inside the current panel
  *   6. CRM show-toggle    → reveal/hide [data-cc-recent-extra] items
+ *   8. Submenu pin       → pin a sub-item to the top of its list (filled
+ *      pin icon = pinned; `order:-1` floats it up). In-memory only.
  *   7. Desktop hover-flyout → hover a rail target on Desktop shows the
  *      matching menu as a floating overlay; suppressed when the target
  *      panel is already docked-active. 150ms grace on mouse-leave so the
@@ -42,6 +44,7 @@
     initMainMenuItems(root);
     initSearch(root);
     initShowToggle(root);
+    initSubmenuPins(root);
     initHoverFlyout(root);
   }
 
@@ -233,6 +236,39 @@
       );
       const text = (labelEl ? labelEl.textContent : row.textContent) || '';
       row.hidden = !text.toLowerCase().includes(q);
+    });
+  }
+
+  /* 8. Submenu pin → pin a sub-item to the top of its list ─────── */
+  function initSubmenuPins(root) {
+    // Inject a pin affordance into every nav sub-item that doesn't already
+    // carry a trailing action — this skips the Favourites trash rows, which
+    // own their own `.cc-menu__submenu-item__action` (a trash button).
+    root.querySelectorAll('.cc-menu__submenu-item').forEach((item) => {
+      if (item.querySelector('.cc-menu__submenu-item__action')) return;
+      const btn = document.createElement('button');
+      btn.className = 'cc-menu__submenu-item__action';
+      btn.type = 'button';
+      btn.setAttribute('aria-label', 'Pin');
+      btn.setAttribute('aria-pressed', 'false');
+      btn.innerHTML = '<i data-lucide="pin" aria-hidden="true"></i>';
+      item.appendChild(btn);
+    });
+    if (window.lucide) window.lucide.createIcons();
+
+    // TODO(backend:ControlScreen) [submenu-pins]: pinned state is in-memory
+    // only — held on the DOM, scoped to a single menu tree (not synced
+    // desktop↔mobile) and lost on reload. Persist via a user-prefs API:
+    // GET pinned ids on init, POST on pin, DELETE on unpin.
+    root.addEventListener('click', (e) => {
+      const action = e.target.closest('.cc-menu__submenu-item__action');
+      // Ignore the Favourites trash action — it has its own handler.
+      if (!action || action.getAttribute('aria-label') === 'Remove from favourites') return;
+      const item = action.closest('.cc-menu__submenu-item');
+      if (!item) return;
+      const pinned = item.classList.toggle('cc-menu__submenu-item--pinned');
+      action.setAttribute('aria-pressed', String(pinned));
+      action.setAttribute('aria-label', pinned ? 'Unpin' : 'Pin');
     });
   }
 
