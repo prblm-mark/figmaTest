@@ -45,7 +45,7 @@
 .input__wrap:focus-within {
   border-color: var(--ai-border-brand);
   box-shadow: 0 0 0 1px var(--ai-surface-primary),
-              0 0 0 3px var(--ai-surface-brand-soft); /* --ai-surface-brand-soft */
+              0 0 0 3px color-mix(in srgb, var(--ai-surface-brand-soft) 30%, transparent);
   outline: none;
 }
 
