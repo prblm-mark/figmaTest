@@ -45,8 +45,15 @@
 .input__wrap:focus-within {
   border-color: var(--ai-border-brand);
   box-shadow: 0 0 0 1px var(--ai-surface-primary),
-              0 0 0 3px color-mix(in srgb, var(--ai-surface-brand-soft) 30%, transparent);
+              0 0 0 3px color-mix(in srgb, var(--ai-surface-brand-soft) 95%, transparent);
   outline: none;
+}
+
+/* Light-mode focus ring is 70%; dark mode keeps the softer 30% (brand-soft is a
+   lighter blue in dark, so a strong ring reads as heavy). */
+[data-theme="dark"] .input__wrap:focus-within {
+  box-shadow: 0 0 0 1px var(--ai-surface-primary),
+              0 0 0 3px color-mix(in srgb, var(--ai-surface-brand-soft) 30%, transparent);
 }
 
 /* Suppress global :focus-visible outline from base.css on child elements */
