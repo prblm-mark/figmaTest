@@ -189,6 +189,25 @@
   border-radius: var(--ai-radius-md);
 }
 
+/* ── Size: extra-small ───────────────────────────────── */
+/* Figma xs uses explicit vertical padding (spacing-2) rather than a fixed
+   height token, a tighter gap, medium weight, and the small radius. */
+
+.btn--xs {
+  gap: var(--ai-spacing-1);
+  padding: var(--ai-spacing-2) var(--ai-spacing-3);
+  min-height: auto;
+  font-size: var(--ai-font-fluid-xxs);
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-xs);
+  border-radius: var(--ai-radius-sm);
+}
+
+.btn--xs [data-lucide] {
+  width: var(--ai-icon-size-xs);
+  height: var(--ai-icon-size-xs);
+}
+
 /* ── Icon-only variant (square button, no text) ──────── */
 
 .btn--icon {
@@ -200,5 +219,11 @@
 .btn--icon.btn--sm {
   width: var(--ai-spacing-7);
   min-height: var(--ai-spacing-7);
+  padding: 0;
+}
+
+.btn--icon.btn--xs {
+  width: var(--ai-spacing-7);
+  min-height: var(--ai-spacing-6);
   padding: 0;
 }

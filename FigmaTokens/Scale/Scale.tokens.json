@@ -407,6 +407,19 @@
     }
   },
   "icon-size": {
+    "xs": {
+      "$type": "number",
+      "$value": 12,
+      "$extensions": {
+        "com.figma.variableId": "VariableID:2926:5091",
+        "com.figma.scopes": [
+          "ALL_SCOPES"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "--ai-icon-size-xs"
+        }
+      }
+    },
     "sm": {
       "$type": "number",
       "$value": 16,
