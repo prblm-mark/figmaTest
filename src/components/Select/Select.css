@@ -58,13 +58,22 @@
 .sel__control:focus {
   border-color: var(--ai-border-brand);
   box-shadow: 0 0 0 1px var(--ai-surface-primary),
-              0 0 0 3px color-mix(in srgb, var(--ai-surface-brand-soft) 30%, transparent);
+              0 0 0 3px color-mix(in srgb, var(--ai-surface-brand-soft) 95%, transparent);
   outline: none;
 }
 
 /* Open state (popover visible) keeps the focus ring on the trigger */
 .sel--open .sel__control {
   border-color: var(--ai-border-brand);
+  box-shadow: 0 0 0 1px var(--ai-surface-primary),
+              0 0 0 3px color-mix(in srgb, var(--ai-surface-brand-soft) 95%, transparent);
+}
+
+/* Light-mode focus ring is 70% (matches Input); dark mode keeps the softer 30%
+   (brand-soft is a lighter blue in dark, so a strong ring reads as heavy). */
+[data-theme="dark"] .sel__control:focus,
+[data-theme="dark"] .sel--open .sel__control,
+[data-theme="dark"] .sel-category:focus-within {
   box-shadow: 0 0 0 1px var(--ai-surface-primary),
               0 0 0 3px color-mix(in srgb, var(--ai-surface-brand-soft) 30%, transparent);
 }
@@ -287,7 +296,7 @@
 .sel-category:focus-within {
   border-color: var(--ai-border-brand);
   box-shadow: 0 0 0 1px var(--ai-surface-primary),
-              0 0 0 3px color-mix(in srgb, var(--ai-surface-brand-soft) 30%, transparent);
+              0 0 0 3px color-mix(in srgb, var(--ai-surface-brand-soft) 95%, transparent);
 }
 
 /* Group wraps each segment + its menu, providing the popover anchor */
