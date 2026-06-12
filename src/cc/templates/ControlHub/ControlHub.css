@@ -1,0 +1,80 @@
+/* ControlHub — CC filterable directory screen (Tier=Template)
+ * Figma: ETKqleZdpertwFEo40YB5n / 4244:6526
+ *   Desktop content frame 4236:6169 · Mobile content frame 4243:6400
+ *
+ * Reuses the ControlScreen app-shell verbatim (../ControlScreen/ControlScreen.css):
+ * rail + chrome + sidebar composites + right ActionsMenu rail + AiAssistant /
+ * coachmark / toasts. This file adds ONLY the page-content classes for the
+ * directory: a filter Input + titled sections, each a responsive grid of
+ * ActionCards.
+ *
+ * The .cc-control__page scroll container is reused as-is — its desktop padding
+ * (--ai-spacing-6) and gap (--ai-spacing-7) already match Figma. Only the
+ * mobile inter-block gap differs (Figma uses --ai-spacing-6), handled via the
+ * --directory modifier below.
+ */
+
+/* Filter Input — used verbatim (the .input component supplies all field styles).
+   No extra style needed: as a stretch child of the flex-column page it fills the
+   row, matching Figma's full-width field. The class is a scoping / backend hook. */
+
+/* Section: heading + card grid (Figma desktop 4237:5758, mobile 4243:6402). */
+.cc-directory__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-4);
+}
+
+.cc-directory__section-title {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-bold);
+  font-size: var(--ai-font-fixed-md);   /* 18px desktop; steps to fixed-sm (16px) below 768 */
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+}
+
+/* Card grid — gap --ai-spacing-4 (Figma desktop 4237:5629, mobile 4243:6404).
+   Reflow keyed on the actual content column (cs-page), like the rest of
+   ControlScreen — the docked SidebarMenu can shrink the column on a wide screen,
+   so the grid should respond to the column width, not the viewport:
+     ≥1024px → 3 columns · 640–1023px → 2 columns · <640px → 1 column. */
+.cc-directory__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--ai-spacing-4);
+}
+
+@container cs-page (max-width: 1023px) {
+  .cc-directory__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@container cs-page (max-width: 639px) {
+  .cc-directory__grid {
+    grid-template-columns: 1fr;
+  }
+  /* Single-column (mobile) view — heading steps down (Figma mobile 4243:6403). */
+  .cc-directory__section-title {
+    font-size: var(--ai-font-fixed-sm);   /* 18px -> 16px */
+  }
+}
+
+/* Mobile inter-block gap: Figma's mobile content frame (4243:6400) uses
+   --ai-spacing-6 between the filter + sections, vs the shell's --ai-spacing-7.
+   Aligned to the single-column breakpoint. The page is its own cs-page
+   container, so per the CSS Containment spec it cannot query itself — use a
+   viewport @media (same rationale as ControlScreen.css page-padding overrides). */
+@media (max-width: 639px) {
+  .cc-control__page--directory {
+    gap: var(--ai-spacing-6);
+  }
+}
+
+/* Button-variant cards navigate the whole card (the "+ add" button is a separate
+   action), so signal clickability with a pointer cursor. The Chevron variant is
+   already an <a>. Navigation + add are backend-pending — see TODO(backend:ControlHub). */
+.cc-directory__grid .action-card--button {
+  cursor: pointer;
+}

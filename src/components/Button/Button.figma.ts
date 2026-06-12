@@ -14,6 +14,7 @@ figma.connect(
       size: figma.enum('Size', {
         base: '',
         sm: 'btn--sm',
+        xs: 'btn--xs',
       }),
       iconOnly: figma.boolean('Icon Only', {
         true: 'btn--icon',

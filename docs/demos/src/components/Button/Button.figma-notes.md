@@ -26,12 +26,12 @@
 
 | Type | Sizes | States |
 |---|---|---|
-| Default (Primary) | base, sm | Default, Hover, Focus, Pressed, Disabled |
-| Secondary | base, sm | Default, Hover, Focus, Pressed, Disabled |
-| Tertiary | base, sm | Default, Hover, Focus, Pressed, Disabled |
-| Alert | base, sm | Default, Hover, Focus, Pressed |
-| Alert Outline | base, sm | Default, Hover, Focus, Pressed |
-| Icon Only | base, sm | Default, Hover, Focus, Pressed, Disabled |
+| Default (Primary) | base, sm, xs | Default, Hover, Focus, Pressed, Disabled |
+| Secondary | base, sm, xs | Default, Hover, Focus, Pressed, Disabled |
+| Tertiary | base, sm, xs | Default, Hover, Focus, Pressed, Disabled |
+| Alert | base, sm, xs | Default, Hover, Focus, Pressed |
+| Alert Outline | base, sm, xs | Default, Hover, Focus, Pressed |
+| Icon Only | base, sm, xs | Default, Hover, Focus, Pressed, Disabled |
 
 ## CSS Class Mapping
 
@@ -44,6 +44,7 @@
 | `Type` | Alert Outline | `.btn--alert-outline` |
 | `Size` | base | _(none — default)_ |
 | `Size` | sm | `.btn--sm` |
+| `Size` | xs | `.btn--xs` |
 | `Icon Only` | True | `.btn--icon` |
 | `State` | Disabled | `disabled` attr / `.btn--disabled` |
 
@@ -94,7 +95,10 @@ Figma default for all text-button variants has `showLeftIcon=true` — both slot
 | `--ai-font-fluid-xs` | `--ai-font-fluid-xs` | Base font size (14px) |
 | `--ai-font-fluid-xxs` | `--ai-font-fluid-xxs` | Small font size (12px) |
 | `--ai-leading-xs` | `--ai-leading-xs` | Line height (16px) |
-| `--ai-icon-size-sm` | `--ai-icon-size-sm` | Icon size inside buttons (16px) |
+| `--ai-icon-size-sm` | `--ai-icon-size-sm` | Icon size inside base/sm buttons (16px) |
+| `--ai-icon-size-xs` | `--ai-icon-size-xs` | Icon size inside xs buttons (12px) |
+| `--ai-spacing-2` / `--ai-spacing-3` | same | xs vertical / horizontal padding (6px / 8px) |
+| `--ai-spacing-6` | `--ai-spacing-6` | xs icon-only height (24px) |
 
 ## Token Gaps — Action Required in Figma
 
@@ -111,6 +115,7 @@ Figma default for all text-button variants has `showLeftIcon=true` — both slot
 
 - `button/base` typography: `--ai-font-fluid-xs` (14px), `--ai-font-semibold` (600), `--ai-leading-xs` (16px)
 - `button/sm` typography: `--ai-font-fluid-xxs` (12px), `--ai-font-semibold` (600), `--ai-leading-xs` (16px)
+- `button/xs` typography: `--ai-font-fluid-xxs` (12px), `--ai-font-medium` (500), `--ai-leading-xs` (16px). xs differs from sm: medium weight (not semibold), `--ai-radius-sm` (4px), `--ai-spacing-1` gap (4px), 12px icons (`--ai-icon-size-xs`), and explicit vertical padding (`--ai-spacing-2`) rather than a fixed-height token — 28px text / 24px icon-only have no spacing token, so xs uses Figma's `py-2` padding directly.
 - Secondary = **transparent** bg + `--ai-btn-secondary-border` (visually outlined)
 - Tertiary = **transparent** bg + **no border** (ghost/text button); uses dedicated `--ai-btn-tertiary-*` tokens
 - Tertiary hover bg: `--ai-btn-tertiary-bg-hover` (#F3F4F6); focus ring: `0 0 0 2px --ai-border-secondary` (no inner white border)

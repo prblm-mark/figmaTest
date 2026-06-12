@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>ActionCard Component — Demo</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../Button/Button.css">
+  <link rel="stylesheet" href="ActionCard.css">
+  <style>
+    body { padding: var(--ai-spacing-7); background-color: var(--ai-surface-secondary); min-height: 100vh; }
+    .demo-section { margin-bottom: var(--ai-spacing-7); }
+    .demo-section h2 { font-size: var(--ai-font-fixed-lg); margin-bottom: var(--ai-spacing-5); }
+    .demo-row-label { font-size: var(--ai-font-fixed-xxs); font-weight: var(--ai-font-semibold); color: var(--ai-text-contrast); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--ai-spacing-2); }
+    /* ActionCards fill their container; constrain the demo column to match Figma (~376px). */
+    .demo-stack { display: flex; flex-direction: column; gap: var(--ai-spacing-3); max-width: 376px; }
+  </style>
+</head>
+<body>
+  <h1>ActionCard</h1>
+  <p>A single-row card with a fluid title and a trailing action. Two variants:
+    an <code>xs</code> Tertiary Button, or a right-chevron affordance. Hovering darkens the border.</p>
+
+  <div class="demo-section">
+    <h2>Action = Button</h2>
+    <p class="demo-row-label">Title + xs Tertiary Button (composes the Button component)</p>
+    <div class="demo-stack">
+      <div class="action-card action-card--button">
+        <p class="action-card__title">Campaign Dashboards</p>
+        <button class="btn btn--tertiary btn--xs" type="button">
+          <i data-lucide="plus" aria-hidden="true"></i>
+          add
+        </button>
+      </div>
+      <div class="action-card action-card--button">
+        <p class="action-card__title">A very long campaign dashboard name that truncates with an ellipsis</p>
+        <button class="btn btn--tertiary btn--xs" type="button">
+          <i data-lucide="plus" aria-hidden="true"></i>
+          add
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Action = Right Chevron</h2>
+    <p class="demo-row-label">Whole card is the navigational target (rendered as a link)</p>
+    <div class="demo-stack">
+      <a class="action-card action-card--chevron" href="#">
+        <span class="action-card__title">Campaign Dashboards</span>
+        <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+      </a>
+      <a class="action-card action-card--chevron" href="#">
+        <span class="action-card__title">A very long campaign dashboard name that truncates with an ellipsis</span>
+        <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- Lucide via CDN for standalone demo (webpack handles this in the full build) -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

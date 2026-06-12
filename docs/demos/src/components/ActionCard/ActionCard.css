@@ -1,0 +1,47 @@
+/* ActionCard component — uses only --ai-* design tokens.
+   A single-row card: a title that fills the row plus a trailing action
+   (an xs Tertiary Button, or a right-chevron affordance). */
+
+.action-card {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-6);
+  width: 100%;
+  min-height: var(--ai-spacing-10);
+  padding: var(--ai-spacing-4);
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  text-decoration: none;
+  transition: border-color var(--ai-transition-default);
+}
+
+/* Hover darkens the border for both Action variants (Figma State=Hover). */
+.action-card:hover {
+  border-color: var(--ai-border-primary);
+  text-decoration: none;
+}
+
+/* Title fills the row and truncates with an ellipsis. */
+.action-card__title {
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-medium);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-sm);
+  letter-spacing: var(--ai-tracking-5);
+  color: var(--ai-text-primary);
+}
+
+/* Right-chevron affordance (Action=Right Chevron variant). */
+.action-card__chevron {
+  flex-shrink: 0;
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-secondary);
+}
