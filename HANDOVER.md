@@ -63,6 +63,22 @@ Each marker's `<id>` matches an entry in `docs/handover-manifest.json` → `surf
 
 ---
 
+## Surface: ControlHub
+
+`src/cc/templates/ControlHub/ControlHub.html` — the CC filterable directory screen (a second
+"Control Screen" view). It **reuses the ControlScreen app-shell verbatim**, so every shell-level
+backend item (sidebar nav, auth, notifications, AI assistant, favourites, etc.) is inherited —
+see the ControlScreen surface below. The items here are specific to ControlHub's own page content.
+
+| id | Element | Now | Backend work needed | Category |
+|---|---|---|---|---|
+| `controlhub-filter` | `.cc-directory__filter .input__control` ("Filter…") | Renders (search + clear) but typing does nothing | Client-side only: debounced title filter across sections, hide non-matching cards + empty headings; clear resets | visual-only |
+| `controlhub-card-actions` | `.action-card--chevron` (`href="#"`) + `.action-card--button .btn` ("+ add") | Chevron links to `#`; "add" buttons inert | Real per-area destinations + add-to-favourites/dashboard (POST, reflect added state); taxonomy from the nav content source | needs-backend |
+
+`grep -rn "TODO(backend:ControlHub)" src/`
+
+---
+
 ## Surface: ControlScreen
 
 `src/cc/templates/ControlScreen/ControlScreen.html` — the CC home/landing dashboard.

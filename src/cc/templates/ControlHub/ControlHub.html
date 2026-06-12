@@ -1,0 +1,1350 @@
+<!doctype html>
+<html lang="en" data-brand="cc">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../../components/dark-mode-toggle.js"></script>
+  <title>Control Hub — Affino Control Centre</title>
+
+  <!-- Base + tokens -->
+  <link rel="stylesheet" href="../../../styles/base.css">
+
+  <!-- Atom-tier components -->
+  <link rel="stylesheet" href="../../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../../components/ActionCard/ActionCard.css">
+  <link rel="stylesheet" href="../../../components/Breadcrumb/Breadcrumb.css">
+  <link rel="stylesheet" href="../../../components/Dropdown/Dropdown.css">
+  <link rel="stylesheet" href="../../../components/DropdownItem/DropdownItem.css">
+  <link rel="stylesheet" href="../../../components/Portraits/Portraits.css">
+  <link rel="stylesheet" href="../../../components/Avatar/Avatar.css">
+  <link rel="stylesheet" href="../../../components/NotificationBadge/NotificationBadge.css">
+  <link rel="stylesheet" href="../../../components/Toggle/Toggle.css">
+  <link rel="stylesheet" href="../../../components/ThemeToggle/ThemeToggle.css">
+  <link rel="stylesheet" href="../../../components/Input/Input.css">
+  <link rel="stylesheet" href="../../../components/Select/Select.css">
+  <link rel="stylesheet" href="../../../components/Table/Table.css">
+  <link rel="stylesheet" href="../../../components/Alert/Alert.css">
+  <link rel="stylesheet" href="../../../components/Datatables/Datatables.css">
+
+  <!-- DS-tier patterns -->
+  <link rel="stylesheet" href="../../../patterns/Modal/Modal.css">
+  <link rel="stylesheet" href="../../../patterns/StatCard/StatCard.css">
+  <link rel="stylesheet" href="../../../patterns/UpgradeCard/UpgradeCard.css">
+  <link rel="stylesheet" href="../../../patterns/Chart/Chart.css">
+
+  <!-- CC-tier components + patterns -->
+  <link rel="stylesheet" href="../../components/MainMenuItem/MainMenuItem.css">
+  <link rel="stylesheet" href="../../patterns/Sidebar/Sidebar.css">
+  <link rel="stylesheet" href="../../patterns/Menu/Menu.css">
+  <link rel="stylesheet" href="../../patterns/SidebarMenu/SidebarMenu.css">
+  <link rel="stylesheet" href="../../patterns/TopNavigation/TopNavigation.css">
+  <link rel="stylesheet" href="../../patterns/Header/Header.css">
+  <link rel="stylesheet" href="../../patterns/HeaderGroup/HeaderGroup.css">
+  <link rel="stylesheet" href="../../patterns/IconNavigation/IconNavigation.css">
+  <link rel="stylesheet" href="../../patterns/ActionsMenu/ActionsMenu.css">
+  <link rel="stylesheet" href="../../patterns/ActionsInfoPanel/ActionsInfoPanel.css">
+  <link rel="stylesheet" href="../../components/FontSizeSlider/FontSizeSlider.css">
+
+  <!-- AI Assistant panel (initial-state view only — mounted from src/cc/templates/AiAssistant) -->
+  <link rel="stylesheet" href="../../../components/ChatSidebarItem/ChatSidebarItem.css">
+  <link rel="stylesheet" href="../../../components/ChatSidebarMenu/ChatSidebarMenu.css">
+  <link rel="stylesheet" href="../../../patterns/MessageInput/MessageInput.css">
+  <link rel="stylesheet" href="../../../patterns/ChatSidebar/ChatSidebar.css">
+  <link rel="stylesheet" href="../../../patterns/ChatHeader/ChatHeader.css">
+  <link rel="stylesheet" href="../../../patterns/ChatMain/ChatMain.css">
+  <link rel="stylesheet" href="../AiAssistant/AiAssistant.css">
+  <link rel="stylesheet" href="../../patterns/AssistantPopover/AssistantPopover.css">
+  <link rel="stylesheet" href="../../../components/Toast/Toast.css">
+
+  <!-- Template -->
+  <!-- Reuse the ControlScreen app-shell layout verbatim; ControlHub adds only its page-content classes. -->
+  <link rel="stylesheet" href="../ControlScreen/ControlScreen.css">
+  <link rel="stylesheet" href="ControlHub.css">
+</head>
+<body class="cc-control">
+
+  <!-- ━━━ Sidebar (Desktop composite) ━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <!-- TODO(backend:ControlScreen) [sidebar-nav-data, panel-search]: SidebarMenu submenu
+       links are static hardcoded <li>s — need a menu/structure API + permissioned navigation.
+       The panel search inputs ("Search Control/Favourites/CRM") have no handler — need a
+       per-panel search/filter API. Mirrored in the mobile sidebar below. See HANDOVER.md. -->
+  <aside class="cc-control__sidebar cc-control__sidebar--desktop">
+    <div class="cc-sidebar-menu" aria-label="Affino Control Centre">
+
+      <nav class="cc-sidebar" role="toolbar" aria-label="Workspace switcher">
+        <div class="cc-sidebar__brand" role="img" aria-label="Affino"></div>
+        <button type="button" class="cc-sidebar__btn cc-sidebar__btn--active" data-cc-target="control" aria-controls="cc-d-control" aria-current="true" aria-label="Workspace settings"><i data-lucide="sliders-vertical" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" data-cc-target="crm" aria-controls="cc-d-crm" aria-label="CRM"><i data-lucide="user-cog" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" data-cc-target="analysis" aria-controls="cc-d-analysis" aria-label="Analysis"><i data-lucide="chart-no-axes-combined" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" data-cc-target="favourites" aria-controls="cc-d-favourites" aria-label="Favourites"><i data-lucide="star" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" aria-label="Organisation"><i data-lucide="network" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" aria-label="Profile"><i data-lucide="circle-user" aria-hidden="true"></i></button>
+      </nav>
+
+      <!-- Panel: Control (docked open by default — Menu Open Desktop variant) -->
+      <nav class="cc-menu" id="cc-d-control" data-cc-panel="control" aria-label="Control menu" aria-hidden="false">
+        <div class="cc-menu__brand" role="img" aria-label="Affino"></div>
+        <label class="cc-menu__search">
+          <i data-lucide="search" aria-hidden="true"></i>
+          <input class="cc-menu__search-input" type="search" placeholder="Search Control" aria-label="Search Control">
+        </label>
+        <ul class="cc-menu__items">
+          <li>
+            <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="user-cog"></i></span><span class="cc-main-menu-item__label">CRM</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Accounts</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Contacts</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Opportunities</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Tasks</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Forums</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Sales Teams</span></li>
+            </ul>
+          </li>
+          <li>
+            <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="file-text"></i></span><span class="cc-main-menu-item__label">Content</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Archive</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Attributes</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Export</span></li>
+            </ul>
+          </li>
+          <li>
+            <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="megaphone"></i></span><span class="cc-main-menu-item__label">Marketing</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Ad Campaigns</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Mailing Lists</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Messages</span></li>
+            </ul>
+          </li>
+          <li>
+            <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="shopping-cart"></i></span><span class="cc-main-menu-item__label">Commerce</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Catalogue Items</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Orders</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Subscriptions</span></li>
+            </ul>
+          </li>
+          <li>
+            <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="sparkles"></i></span><span class="cc-main-menu-item__label">AI</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">AI Analyst</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">AI Report</span></li>
+            </ul>
+          </li>
+          <li>
+            <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="images"></i></span><span class="cc-main-menu-item__label">Media</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Media Items</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Media Inbox</span></li>
+            </ul>
+          </li>
+          <li>
+            <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="layout-panel-top"></i></span><span class="cc-main-menu-item__label">Structure</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Channels</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Sections</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Zones</span></li>
+            </ul>
+          </li>
+          <li>
+            <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="palette"></i></span><span class="cc-main-menu-item__label">Design</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Design Styles</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Fonts</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Skins</span></li>
+            </ul>
+          </li>
+          <li>
+            <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="settings"></i></span><span class="cc-main-menu-item__label">Settings</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">System Settings</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">About</span></li>
+            </ul>
+          </li>
+          <li>
+            <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="square-code"></i></span><span class="cc-main-menu-item__label">Custom</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Remote Error Log</span></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Panel: Analysis -->
+      <nav class="cc-menu" id="cc-d-analysis" data-cc-panel="analysis" aria-label="Analysis menu" hidden aria-hidden="true">
+        <div class="cc-menu__brand" role="img" aria-label="Affino"></div>
+        <ul class="cc-menu__items">
+          <li>
+            <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="layout-dashboard"></i></span><span class="cc-main-menu-item__label">Dashboards</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Analysis Dashboard</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Audience Dashboard</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Live Dashboard</span></li>
+            </ul>
+          </li>
+          <li>
+            <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="user-cog"></i></span><span class="cc-main-menu-item__label">CRM</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">CRM Analysis</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">User Analysis</span></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Panel: Favourites (opened by the ★ rail button; populated by the rail Favourite modal) -->
+      <nav class="cc-menu" id="cc-d-favourites" data-cc-panel="favourites" aria-label="Favourites menu" hidden aria-hidden="true">
+        <div class="cc-menu__brand" role="img" aria-label="Affino"></div>
+        <label class="cc-menu__search">
+          <i data-lucide="search" aria-hidden="true"></i>
+          <input class="cc-menu__search-input" type="search" placeholder="Search Favourites" aria-label="Search Favourites">
+        </label>
+        <ul class="cc-menu__submenu cc-control__fav-list">
+          <li class="cc-menu__submenu-item">
+            <span class="cc-menu__submenu-item-label">Analysis Dashboard</span>
+            <button class="cc-menu__submenu-item__action" type="button" aria-label="Remove from favourites"><i data-lucide="trash-2" aria-hidden="true"></i></button>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Panel: CRM -->
+      <nav class="cc-menu cc-menu--crm" id="cc-d-crm" data-cc-panel="crm" aria-label="CRM menu" hidden aria-hidden="true">
+        <div class="cc-menu__brand" role="img" aria-label="Affino"></div>
+        <label class="cc-menu__search">
+          <i data-lucide="search" aria-hidden="true"></i>
+          <input class="cc-menu__search-input" type="search" placeholder="Search CRM" aria-label="Search CRM">
+        </label>
+        <div class="cc-menu__crm-groups">
+          <div class="cc-menu__crm-group">
+            <button class="cc-menu__crm-btn"><span class="cc-menu__crm-btn__label">Contacts</span><span class="cc-menu__crm-btn__icon"><i data-lucide="square-plus"></i></span></button>
+            <button class="cc-menu__crm-btn"><span class="cc-menu__crm-btn__label">Accounts</span><span class="cc-menu__crm-btn__icon"><i data-lucide="square-plus"></i></span></button>
+            <button class="cc-menu__crm-btn"><span class="cc-menu__crm-btn__label">Opportunities</span><span class="cc-menu__crm-btn__icon"><i data-lucide="square-plus"></i></span></button>
+          </div>
+          <div class="cc-menu__crm-group">
+            <p class="cc-menu__recent-heading">Recent</p>
+            <button class="cc-menu__recent-item"><span class="cc-menu__recent-item__label">Daisy Smith, Jacobs Media</span><span class="cc-menu__recent-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <button class="cc-menu__recent-item"><span class="cc-menu__recent-item__label">Keisha Grant, Nova Designs</span><span class="cc-menu__recent-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <button class="cc-menu__recent-item"><span class="cc-menu__recent-item__label">Dev Sharma, Quantum Dynamics</span><span class="cc-menu__recent-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+          </div>
+        </div>
+      </nav>
+
+    </div>
+  </aside>
+
+  <!-- ━━━ Sidebar (Mobile composite) ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <aside class="cc-control__sidebar cc-control__sidebar--mobile">
+    <div class="cc-sidebar-menu" aria-label="Affino Control Centre (mobile)">
+
+      <nav class="cc-sidebar cc-sidebar--mobile" role="toolbar" aria-label="Workspace switcher">
+        <div class="cc-sidebar__brand" role="img" aria-label="Affino"></div>
+        <button type="button" class="cc-sidebar__btn" data-cc-target="control" aria-controls="cc-m-control" aria-label="Workspace settings"><i data-lucide="sliders-vertical" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" data-cc-target="crm" aria-controls="cc-m-crm" aria-label="CRM"><i data-lucide="user-cog" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" data-cc-target="analysis" aria-controls="cc-m-analysis" aria-label="Analysis"><i data-lucide="chart-no-axes-combined" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" data-cc-target="favourites" aria-controls="cc-m-favourites" aria-label="Favourites"><i data-lucide="star" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" aria-label="Organisation"><i data-lucide="network" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" aria-label="Profile"><i data-lucide="circle-user" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" data-cc-toggle-extras aria-expanded="false" aria-label="More options"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" data-cc-rail-extra hidden aria-label="AI"><i data-lucide="sparkles" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" data-cc-rail-extra hidden aria-label="Info"><i data-lucide="info" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" data-cc-rail-extra hidden aria-label="Saved"><i data-lucide="star" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" data-cc-rail-extra hidden aria-label="Text size"><i data-lucide="a-large-small" aria-hidden="true"></i></button>
+        <!-- TODO(backend:ControlScreen) [minimise]: toggle a condensed spacing view — apply data-layout="minimised" on the shell (minimised-mode tokens exist) + persist the preference. -->
+        <button type="button" class="cc-sidebar__btn" data-cc-rail-extra hidden aria-label="Minimise" data-backend-todo="minimise"><i data-lucide="minimize-2" aria-hidden="true"></i></button>
+      </nav>
+
+      <!-- Panel: Control (mobile — hidden by default; tap rail to reveal) -->
+      <nav class="cc-menu" id="cc-m-control" data-cc-panel="control" aria-label="Control menu (mobile)" hidden aria-hidden="true">
+        <label class="cc-menu__search">
+          <i data-lucide="search" aria-hidden="true"></i>
+          <input class="cc-menu__search-input" type="search" placeholder="Search Control" aria-label="Search Control">
+        </label>
+        <ul class="cc-menu__items">
+          <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="user-cog"></i></span><span class="cc-main-menu-item__label">CRM</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button><ul class="cc-menu__submenu" hidden><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Accounts</span></li><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Contacts</span></li><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Opportunities</span></li></ul></li>
+          <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="file-text"></i></span><span class="cc-main-menu-item__label">Content</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button><ul class="cc-menu__submenu" hidden><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Archive</span></li><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Attributes</span></li></ul></li>
+          <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="megaphone"></i></span><span class="cc-main-menu-item__label">Marketing</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button><ul class="cc-menu__submenu" hidden><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Ad Campaigns</span></li><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Mailing Lists</span></li></ul></li>
+          <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="shopping-cart"></i></span><span class="cc-main-menu-item__label">Commerce</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button><ul class="cc-menu__submenu" hidden><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Catalogue Items</span></li><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Orders</span></li></ul></li>
+          <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="sparkles"></i></span><span class="cc-main-menu-item__label">AI</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button><ul class="cc-menu__submenu" hidden><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">AI Analyst</span></li></ul></li>
+          <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="images"></i></span><span class="cc-main-menu-item__label">Media</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button><ul class="cc-menu__submenu" hidden><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Media Items</span></li></ul></li>
+          <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="layout-panel-top"></i></span><span class="cc-main-menu-item__label">Structure</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button><ul class="cc-menu__submenu" hidden><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Channels</span></li></ul></li>
+          <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="palette"></i></span><span class="cc-main-menu-item__label">Design</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button><ul class="cc-menu__submenu" hidden><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Design Styles</span></li></ul></li>
+          <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="settings"></i></span><span class="cc-main-menu-item__label">Settings</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button><ul class="cc-menu__submenu" hidden><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">System Settings</span></li></ul></li>
+          <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="square-code"></i></span><span class="cc-main-menu-item__label">Custom</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button><ul class="cc-menu__submenu" hidden><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Remote Error Log</span></li></ul></li>
+        </ul>
+      </nav>
+
+      <!-- Panel: Analysis (mobile stub) -->
+      <nav class="cc-menu" id="cc-m-analysis" data-cc-panel="analysis" aria-label="Analysis menu (mobile)" hidden aria-hidden="true">
+        <ul class="cc-menu__items">
+          <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="layout-dashboard"></i></span><span class="cc-main-menu-item__label">Dashboards</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button><ul class="cc-menu__submenu" hidden><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Analysis Dashboard</span></li></ul></li>
+        </ul>
+      </nav>
+
+      <!-- Panel: Favourites (mobile) -->
+      <nav class="cc-menu" id="cc-m-favourites" data-cc-panel="favourites" aria-label="Favourites menu (mobile)" hidden aria-hidden="true">
+        <div class="cc-menu__brand" role="img" aria-label="Affino"></div>
+        <label class="cc-menu__search">
+          <i data-lucide="search" aria-hidden="true"></i>
+          <input class="cc-menu__search-input" type="search" placeholder="Search Favourites" aria-label="Search Favourites">
+        </label>
+        <ul class="cc-menu__submenu cc-control__fav-list">
+          <li class="cc-menu__submenu-item">
+            <span class="cc-menu__submenu-item-label">Analysis Dashboard</span>
+            <button class="cc-menu__submenu-item__action" type="button" aria-label="Remove from favourites"><i data-lucide="trash-2" aria-hidden="true"></i></button>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Panel: CRM (mobile stub) -->
+      <nav class="cc-menu cc-menu--crm" id="cc-m-crm" data-cc-panel="crm" aria-label="CRM menu (mobile)" hidden aria-hidden="true">
+        <label class="cc-menu__search">
+          <i data-lucide="search" aria-hidden="true"></i>
+          <input class="cc-menu__search-input" type="search" placeholder="Search CRM" aria-label="Search CRM">
+        </label>
+        <div class="cc-menu__crm-groups">
+          <div class="cc-menu__crm-group">
+            <button class="cc-menu__crm-btn"><span class="cc-menu__crm-btn__label">Contacts</span><span class="cc-menu__crm-btn__icon"><i data-lucide="square-plus"></i></span></button>
+            <button class="cc-menu__crm-btn"><span class="cc-menu__crm-btn__label">Accounts</span><span class="cc-menu__crm-btn__icon"><i data-lucide="square-plus"></i></span></button>
+          </div>
+        </div>
+      </nav>
+
+    </div>
+  </aside>
+
+  <!-- ━━━ Main column ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <main class="cc-control__main">
+
+    <!-- Top chrome: CC HeaderGroup (TopNavigation + Header) -->
+    <div class="cc-control__chrome">
+      <div class="cc-header-group">
+
+        <header class="cc-top-navigation">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <ol class="breadcrumb__list">
+              <li class="breadcrumb__item">
+                <div class="dropdown">
+                  <button class="breadcrumb__dropdown dropdown__trigger" type="button" aria-haspopup="menu" aria-expanded="false">Zone Selector<i data-lucide="chevron-down" aria-hidden="true"></i></button>
+                  <div class="dropdown__panel" role="menu" aria-label="Zone selector">
+                    <ul class="dropdown__list">
+                      <li role="none"><button type="button" class="dropdown__item" role="menuitem">Zone A</button></li>
+                      <li role="none"><button type="button" class="dropdown__item" role="menuitem">Zone B</button></li>
+                      <li role="none"><button type="button" class="dropdown__item dropdown__item--selected" role="menuitem" aria-current="page">Affino</button></li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              <li class="breadcrumb__separator" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
+              <li class="breadcrumb__item"><a class="breadcrumb__link" href="#">Level 1</a></li>
+              <li class="breadcrumb__separator breadcrumb__separator--collapse" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
+              <li class="breadcrumb__item breadcrumb__item--current breadcrumb__item--collapse" aria-current="page">Level 2</li>
+            </ol>
+          </nav>
+          <div class="cc-top-navigation__actions">
+            <!-- User Menu dropdown — mirrors HeaderGroup's "User Menu"
+                 Desktop variant (node 4146:6685). Composes ThemeToggle
+                 + Toggle rows + DropdownItem entries + Sign Out. -->
+            <div class="dropdown dropdown--user-menu">
+              <button class="cc-top-navigation__user dropdown__trigger" type="button" aria-haspopup="menu" aria-expanded="false">
+                <img class="portrait" src="https://i.pravatar.cc/64?u=derrick" alt="Derrick Jefferson" />
+                <span class="cc-top-navigation__user-name">Derrick Jefferson</span>
+                <span class="cc-top-navigation__user-chevron" aria-hidden="true"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <div class="dropdown__panel" role="menu" aria-label="User menu">
+                <div class="theme-toggle theme-toggle--fill">
+                  <button class="theme-toggle__btn" type="button" data-theme-value="light" aria-pressed="true">
+                    <i data-lucide="sun" aria-hidden="true"></i>
+                    <span>Light</span>
+                  </button>
+                  <button class="theme-toggle__btn" type="button" data-theme-value="dark" aria-pressed="false">
+                    <i data-lucide="moon" aria-hidden="true"></i>
+                    <span>Dark</span>
+                  </button>
+                </div>
+                <div class="dropdown__toggle-list">
+                  <div class="dropdown__toggle-row">
+                    <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" id="cs-user-menu-icon-nav" data-cc-toggle="icon-nav">
+                      <span class="toggle__track"><span class="toggle__knob"></span></span>
+                    </button>
+                    <label for="cs-user-menu-icon-nav" class="toggle__label">
+                      <span class="toggle__label-text">Icon Navigation</span>
+                    </label>
+                  </div>
+                  <div class="dropdown__toggle-row dropdown__toggle-row--reveal" data-reveal-by="cs-user-menu-icon-nav">
+                    <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" id="cs-user-menu-hide-labels" data-cc-toggle="hide-labels">
+                      <span class="toggle__track"><span class="toggle__knob"></span></span>
+                    </button>
+                    <label for="cs-user-menu-hide-labels" class="toggle__label">
+                      <span class="toggle__label-text">Hide Labels</span>
+                    </label>
+                  </div>
+                </div>
+                <hr class="dropdown__divider">
+                <ul class="dropdown__list">
+                  <li role="none">
+                    <button type="button" class="dropdown-item" role="menuitem">
+                      <i data-lucide="star" aria-hidden="true"></i>
+                      <span data-text="My Favourites">My Favourites</span>
+                    </button>
+                  </li>
+                  <li role="none">
+                    <button type="button" class="dropdown-item" role="menuitem">
+                      <i data-lucide="circle-user" aria-hidden="true"></i>
+                      <span data-text="My Content">My Content</span>
+                    </button>
+                  </li>
+                </ul>
+                <hr class="dropdown__divider">
+                <button type="button" class="dropdown-item dropdown-item--warning" role="menuitem">
+                  <i data-lucide="log-out" aria-hidden="true"></i>
+                  <span data-text="Sign Out">Sign Out</span>
+                </button>
+              </div>
+            </div>
+            <button class="cc-top-navigation__preview" type="button" aria-label="Preview as desktop"><i data-lucide="monitor" aria-hidden="true"></i></button>
+          </div>
+        </header>
+
+        <!-- IconNavigation strip (cc-icon-nav pattern). Hidden by default; the
+             User Menu "Icon Navigation" toggle shows it (HeaderGroup.js adds
+             .cc-header-group--icon-nav), and "Hide Labels" switches it to
+             icons-only (.cc-icon-nav--no-labels). Always hidden below 768 of the
+             header-group's width via @container cc-header-group. -->
+        <nav class="cc-icon-nav" aria-label="Module navigation">
+          <ul class="cc-icon-nav__list">
+            <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--publish" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Publish</span></a></li>
+            <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--promote" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Promote</span></a></li>
+            <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--social" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Social</span></a></li>
+            <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--media" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Media</span></a></li>
+            <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--structure" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Structure</span></a></li>
+            <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--design" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Design</span></a></li>
+            <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--commerce" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Commerce</span></a></li>
+            <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--analyse" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Analyse</span></a></li>
+            <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--settings" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Settings</span></a></li>
+          </ul>
+        </nav>
+
+        <div class="cc-header-cq">
+        <header class="cc-header cc-header--control">
+          <div class="cc-header__title-block">
+            <img class="portrait" src="https://i.pravatar.cc/96?u=susan" alt="Susan Kerrigan" />
+            <div class="cc-header__title-block-text">
+              <h1 class="cc-header__title">
+                <span class="cc-header__title-greeting">Hi </span>Susan Kerrigan
+              </h1>
+              <div class="cc-header__user-details">
+                <span class="cc-header__user-item">
+                  <i data-lucide="building" aria-hidden="true"></i>
+                  Affino
+                </span>
+                <span class="cc-header__user-item">
+                  <i data-lucide="briefcase-business" aria-hidden="true"></i>
+                  Lead Project Manager
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="cc-header__actions">
+            <!-- TODO(backend:ControlScreen) [notifications, auth-actions]: bell count is static
+                 (need notifications API + drawer); Logout / View Site below have no handlers
+                 (need auth/session endpoints + navigation). -->
+            <span class="notification-badge">
+              <button class="btn btn--tertiary btn--icon" type="button" aria-label="Notifications, 2 unread">
+                <i data-lucide="bell" aria-hidden="true"></i>
+              </button>
+              <span class="notification-badge__count" aria-hidden="true">2</span>
+            </span>
+            <button class="btn btn--secondary" type="button">
+              <i data-lucide="log-out" aria-hidden="true"></i>
+              <span class="cc-header__btn-label">Logout</span>
+            </button>
+            <button class="btn btn--primary" type="button">
+              <i data-lucide="external-link" aria-hidden="true"></i>
+              <span class="cc-header__btn-label">View Site</span>
+            </button>
+          </div>
+        </header>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Page content (scrolling area) — filterable directory of report/analysis areas.
+         Figma: ETKqleZdpertwFEo40YB5n / desktop 4236:6169, mobile 4243:6400.
+         Reuses the ControlScreen .cc-control__page scroll+padding shell; the
+         --directory modifier only tightens the mobile inter-block gap. -->
+    <div class="cc-control__page cc-control__page--directory">
+
+      <!-- Filter — Input component (search icon + clear). VISUAL ONLY. -->
+      <!-- TODO(backend:ControlHub): filter input is mock — no client-side filtering wired → debounced filter over card titles, hide empty sections -->
+      <div class="input cc-directory__filter" data-backend-todo="controlhub-filter">
+        <div class="input__wrap">
+          <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
+          <input type="text" class="input__control" placeholder="Filter..." aria-label="Filter">
+          <button type="button" class="input__clear" aria-label="Clear filter">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- ActionCard sections. Chevron cards navigate; "add" cards add to favourites/dashboard. VISUAL ONLY. -->
+      <!-- TODO(backend:ControlHub): ActionCard chevron links (href="#") + "add" buttons are mock → wire real destinations + add-to-favourites/dashboard -->
+      <section class="cc-directory__section">
+        <h2 class="cc-directory__section-title">Analysis</h2>
+        <div class="cc-directory__grid">
+          <a class="action-card action-card--chevron" href="#">
+            <span class="action-card__title">Ad Campaign Analysis</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <div class="action-card action-card--button">
+            <p class="action-card__title">Campaign Dashboards</p>
+            <button class="btn btn--tertiary btn--xs" type="button">
+              <i data-lucide="plus" aria-hidden="true"></i>
+              add
+            </button>
+          </div>
+          <a class="action-card action-card--chevron" href="#">
+            <span class="action-card__title">Lifecycle Analysis</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <div class="action-card action-card--button">
+            <p class="action-card__title">Conversion Funnels</p>
+            <button class="btn btn--tertiary btn--xs" type="button">
+              <i data-lucide="plus" aria-hidden="true"></i>
+              add
+            </button>
+          </div>
+          <a class="action-card action-card--chevron" href="#">
+            <span class="action-card__title">Converting Articles Report</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="#">
+            <span class="action-card__title">Message Analysis</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="#">
+            <span class="action-card__title">Message Campaign Analysis</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <div class="action-card action-card--button">
+            <p class="action-card__title">Mailing List Analysis</p>
+            <button class="btn btn--tertiary btn--xs" type="button">
+              <i data-lucide="plus" aria-hidden="true"></i>
+              add
+            </button>
+          </div>
+          <a class="action-card action-card--chevron" href="#">
+            <span class="action-card__title">Mailing List Removal Log</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="#">
+            <span class="action-card__title">Referral Analysis</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+        </div>
+      </section>
+
+      <section class="cc-directory__section">
+        <h2 class="cc-directory__section-title">Ad Campaigns</h2>
+        <div class="cc-directory__grid">
+          <a class="action-card action-card--chevron" href="#">
+            <span class="action-card__title">Ad Campaign Analysis</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <div class="action-card action-card--button">
+            <p class="action-card__title">Campaign Dashboards</p>
+            <button class="btn btn--tertiary btn--xs" type="button">
+              <i data-lucide="plus" aria-hidden="true"></i>
+              add
+            </button>
+          </div>
+          <a class="action-card action-card--chevron" href="#">
+            <span class="action-card__title">Lifecycle Analysis</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <div class="action-card action-card--button">
+            <p class="action-card__title">Conversion Funnels</p>
+            <button class="btn btn--tertiary btn--xs" type="button">
+              <i data-lucide="plus" aria-hidden="true"></i>
+              add
+            </button>
+          </div>
+          <a class="action-card action-card--chevron" href="#">
+            <span class="action-card__title">Converting Articles Report</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="#">
+            <span class="action-card__title">Message Analysis</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="#">
+            <span class="action-card__title">Message Campaign Analysis</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <div class="action-card action-card--button">
+            <p class="action-card__title">Mailing List Analysis</p>
+            <button class="btn btn--tertiary btn--xs" type="button">
+              <i data-lucide="plus" aria-hidden="true"></i>
+              add
+            </button>
+          </div>
+          <a class="action-card action-card--chevron" href="#">
+            <span class="action-card__title">Mailing List Removal Log</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="#">
+            <span class="action-card__title">Referral Analysis</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ━━━ Right action rail (ActionsMenu) ━━━━━━━━━━━━━━━━━━━━━
+       Figma node 4167:4879 — full-height rail docked to the right edge of
+       the Desktop Menu Open variant (4187:21253). Desktop only; hidden
+       below 768px per design (matches the sidebar device-class swap). -->
+  <div class="cc-control__actions">
+    <div class="actions-menu">
+      <button class="actions-menu__btn" type="button" aria-label="AI Assistant" aria-haspopup="dialog" aria-expanded="false" aria-controls="ai-assistant" data-cc-ai-toggle>
+        <i data-lucide="sparkles" aria-hidden="true"></i>
+      </button>
+      <span class="cc-control__rail-item">
+        <button class="actions-menu__btn" type="button" aria-label="Info" aria-haspopup="dialog" aria-expanded="false" aria-controls="cc-rail-info" data-aa-toggle="info">
+          <i data-lucide="info" aria-hidden="true"></i>
+        </button>
+        <div class="cc-control__rail-popover" id="cc-rail-info" data-aa-panel="info" role="dialog" aria-label="Information" hidden>
+          <div class="cc-actions-info-panel">
+            <section class="cc-actions-info-panel__section">
+              <h3 class="cc-actions-info-panel__heading">Description</h3>
+              <p class="cc-actions-info-panel__body">Your Control Centre home — monitor live activity, jump into key features, and switch zones from one place.</p>
+            </section>
+            <section class="cc-actions-info-panel__section">
+              <h3 class="cc-actions-info-panel__heading">Related</h3>
+              <div class="cc-actions-info-panel__pills">
+                <button type="button" class="btn btn--tertiary btn--sm">Analysis Dashboard</button>
+                <button type="button" class="btn btn--tertiary btn--sm">Zone Settings</button>
+              </div>
+            </section>
+            <section class="cc-actions-info-panel__section">
+              <h3 class="cc-actions-info-panel__heading">System Security Right</h3>
+              <div class="cc-actions-info-panel__pills">
+                <button type="button" class="btn btn--tertiary btn--sm">Control Access</button>
+                <button type="button" class="btn btn--tertiary btn--sm">Member Management</button>
+              </div>
+            </section>
+          </div>
+        </div>
+      </span>
+      <button class="actions-menu__btn" type="button" aria-label="Add to favourites" aria-haspopup="dialog" data-aa-modal="fav">
+        <i data-lucide="star" aria-hidden="true"></i>
+      </button>
+      <span class="cc-control__rail-item">
+        <button class="actions-menu__btn" type="button" aria-label="Text size" aria-haspopup="dialog" aria-expanded="false" aria-controls="cc-rail-textsize" data-aa-toggle="text-size">
+          <i data-lucide="a-large-small" aria-hidden="true"></i>
+        </button>
+        <div class="cc-control__rail-popover cc-control__rail-popover--card" id="cc-rail-textsize" data-aa-panel="text-size" role="dialog" aria-label="Text size" hidden>
+          <p class="cc-control__rail-popover-label">Text size</p>
+          <div class="font-size-slider">
+            <!-- TODO(backend:ControlScreen) [text-size]: emits input/change only — bind to a font-scale var site-wide and persist the preference per user. -->
+            <input class="font-size-slider__input" type="range" min="1" max="4" step="1" value="2" aria-label="Text size" data-backend-todo="text-size">
+          </div>
+        </div>
+      </span>
+      <!-- Minimise: visual-only for now (behaviour TBD) -->
+      <!-- TODO(backend:ControlScreen) [minimise]: toggle a condensed spacing view — apply data-layout="minimised" on the shell (minimised-mode tokens exist) + persist the preference. -->
+      <button class="actions-menu__btn" type="button" aria-label="Minimise" data-backend-todo="minimise">
+        <i data-lucide="minimize-2" aria-hidden="true"></i>
+      </button>
+      <!-- TODO(backend:ControlScreen) [print]: fe-wired — window.print() works natively; OK as-is unless a server-side print-to-PDF is wanted. -->
+      <button class="actions-menu__btn" type="button" aria-label="Print" data-aa-action="print" data-backend-todo="print">
+        <i data-lucide="printer" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ━━━ AI Assistant panel (initial-state view) ━━━━━━━━━━━━━━━━━━
+       Mounted from src/cc/templates/AiAssistant — initial view only. The
+       processing/response states are demo-only and live on the standalone
+       AiAssistant page. Opened by the rail "AI Assistant" button; hidden by
+       default; shell behaviours wired via initAiAssistantShell(). -->
+  <!-- TODO(backend:ControlScreen) [ai-assistant]: initial-state view only — message send is inert,
+       chat history is static, pin/copy/delete menu actions are visual. Need a chat/AI backend
+       (send + stream response, chat-history CRUD, thumbs feedback). The processing/response
+       states are demo-only (GSAP) on the standalone AiAssistant page, NOT mounted here. -->
+  <div class="ai-assistant ai-assistant--hidden" id="ai-assistant">
+
+    <!-- Resize handles: 4 edges -->
+    <div class="ai-assistant__resize-handle ai-assistant__resize-handle--top" id="resize-handle-top" aria-hidden="true"></div>
+    <div class="ai-assistant__resize-handle ai-assistant__resize-handle--bottom" id="resize-handle-bottom" aria-hidden="true"></div>
+    <div class="ai-assistant__resize-handle ai-assistant__resize-handle--left" id="resize-handle-left" aria-hidden="true"></div>
+    <div class="ai-assistant__resize-handle ai-assistant__resize-handle--right" id="resize-handle-right" aria-hidden="true"></div>
+
+    <!-- ═══ ChatHeader — simplified for CC (no selector dropdown) ═══ -->
+    <div class="chat-header chat-header--minimised ai-assistant__header" id="drag-handle">
+      <div class="chat-header__container">
+        <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Toggle sidebar" id="sidebar-toggle">
+          <i data-lucide="panel-left" aria-hidden="true"></i>
+        </button>
+        <div class="ai-assistant__title">Affino Assistant</div>
+      </div>
+      <!-- Window buttons: maximise (visual only) + close -->
+      <div class="chat-header__window-buttons">
+        <button class="btn btn--tertiary btn--sm btn--icon chat-header__maximize" aria-label="Maximise" id="expand-btn">
+          <i data-lucide="maximize" aria-hidden="true"></i>
+        </button>
+        <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Close" id="close-btn">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══ MAIN CONTENT ═════════════════════════════ -->
+    <div class="ai-assistant__main">
+
+      <!-- ═══ SIDEBAR (overlay, slides in below header) ═══ -->
+      <div class="ai-assistant__overlay" id="sidebar-overlay"></div>
+      <aside class="ai-assistant__sidebar">
+        <div class="chat-sidebar" id="sidebar">
+
+          <!-- Logo -->
+          <div class="chat-sidebar__logo">
+            <img src="../../../../img/affinoLogo.svg" alt="Affino" width="167" height="38">
+          </div>
+
+          <!-- Actions -->
+          <div class="chat-sidebar__actions">
+            <div class="chat-sidebar-item chat-sidebar-item--action" tabindex="0">
+              <i data-lucide="message-square" class="chat-sidebar-item__icon" aria-hidden="true"></i>
+              <span class="chat-sidebar-item__text">New Chat</span>
+            </div>
+            <div class="chat-sidebar-item chat-sidebar-item--action" tabindex="0">
+              <i data-lucide="search" class="chat-sidebar-item__icon" aria-hidden="true"></i>
+              <span class="chat-sidebar-item__text">Search</span>
+            </div>
+          </div>
+
+          <!-- Sections -->
+          <div class="chat-sidebar__sections">
+
+            <!-- Pinned -->
+            <div class="chat-sidebar__section">
+              <span class="chat-sidebar__section-label">Pinned</span>
+
+              <div class="chat-sidebar-item chat-sidebar-item--pinned" tabindex="0">
+                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+                <span class="chat-sidebar-item__text">Here's how to set up a themable gradient in Figma using your surface color tokens</span>
+                <div class="chat-sidebar-item__actions">
+                  <div class="chat-sidebar-item__fade"></div>
+                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                    <i data-lucide="ellipsis" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="chat-sidebar-menu">
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin-off" aria-hidden="true"></i> Unpin</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+                </div>
+              </div>
+
+              <div class="chat-sidebar-item chat-sidebar-item--pinned" tabindex="0">
+                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+                <span class="chat-sidebar-item__text">Both fills reference your design tokens, so when you swap themes, the gradient updates automatically.</span>
+                <div class="chat-sidebar-item__actions">
+                  <div class="chat-sidebar-item__fade"></div>
+                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                    <i data-lucide="ellipsis" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="chat-sidebar-menu">
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin-off" aria-hidden="true"></i> Unpin</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent -->
+            <div class="chat-sidebar__section">
+              <span class="chat-sidebar__section-label">Recent</span>
+
+              <div class="chat-sidebar-item" tabindex="0">
+                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+                <span class="chat-sidebar-item__text">Here's how to set up a themable gradient in Figma using your surface color tokens</span>
+                <div class="chat-sidebar-item__actions">
+                  <div class="chat-sidebar-item__fade"></div>
+                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                    <i data-lucide="ellipsis" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="chat-sidebar-menu">
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+                </div>
+              </div>
+
+              <div class="chat-sidebar-item chat-sidebar-item--selected" tabindex="0">
+                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+                <span class="chat-sidebar-item__text">This way, the bottom fill shows through where the top fill is transparent,</span>
+                <div class="chat-sidebar-item__actions">
+                  <div class="chat-sidebar-item__fade"></div>
+                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                    <i data-lucide="ellipsis" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="chat-sidebar-menu">
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+                </div>
+              </div>
+
+              <div class="chat-sidebar-item" tabindex="0">
+                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+                <span class="chat-sidebar-item__text">Both fills reference your design tokens, so when you swap themes, the gradient updates automatically.</span>
+                <div class="chat-sidebar-item__actions">
+                  <div class="chat-sidebar-item__fade"></div>
+                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                    <i data-lucide="ellipsis" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="chat-sidebar-menu">
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+                </div>
+              </div>
+
+              <div class="chat-sidebar-item" tabindex="0">
+                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+                <span class="chat-sidebar-item__text">As of late 2024, Figma added support for variables in gradient stops.</span>
+                <div class="chat-sidebar-item__actions">
+                  <div class="chat-sidebar-item__fade"></div>
+                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                    <i data-lucide="ellipsis" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="chat-sidebar-menu">
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+                </div>
+              </div>
+
+              <div class="chat-sidebar-item" tabindex="0">
+                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+                <span class="chat-sidebar-item__text">How do i go about setting up a sitemap channel</span>
+                <div class="chat-sidebar-item__actions">
+                  <div class="chat-sidebar-item__fade"></div>
+                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                    <i data-lucide="ellipsis" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="chat-sidebar-menu">
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Older -->
+            <div class="chat-sidebar__section">
+              <span class="chat-sidebar__section-label">Older</span>
+
+              <div class="chat-sidebar-item" tabindex="0">
+                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+                <span class="chat-sidebar-item__text">Here's how to set up a themable gradient in Figma using your surface color tokens</span>
+                <div class="chat-sidebar-item__actions">
+                  <div class="chat-sidebar-item__fade"></div>
+                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                    <i data-lucide="ellipsis" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="chat-sidebar-menu">
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+                </div>
+              </div>
+
+              <div class="chat-sidebar-item" tabindex="0">
+                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+                <span class="chat-sidebar-item__text">This way, the bottom fill shows through where the top fill is transparent,</span>
+                <div class="chat-sidebar-item__actions">
+                  <div class="chat-sidebar-item__fade"></div>
+                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                    <i data-lucide="ellipsis" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="chat-sidebar-menu">
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+                </div>
+              </div>
+
+              <div class="chat-sidebar-item" tabindex="0">
+                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
+                <span class="chat-sidebar-item__text">Both fills reference your design tokens, so when you swap themes, the gradient updates automatically.</span>
+                <div class="chat-sidebar-item__actions">
+                  <div class="chat-sidebar-item__fade"></div>
+                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
+                    <i data-lucide="ellipsis" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="chat-sidebar-menu">
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
+                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </aside>
+
+      <div class="chat-main chat-main--initial" id="chat-main">
+
+        <!-- ═══ INITIAL VIEW — custom CC intro (no SuggestedQuestion grid) ═══ -->
+        <div class="chat-main__initial">
+          <div class="chat-main__initial-inner ai-assistant__initial-inner">
+
+            <!-- Welcome paragraphs — verbatim from Figma 4151:8248 -->
+            <div class="ai-assistant__welcome">
+              <p>Affino's Support AI is great at answering support questions, but can make mistakes when it doesn't have an exact answer for the question.</p>
+              <p>Ask one question at a time for the best response, and ask full questions, for important questions check the guides or the forums.</p>
+              <p>Help improve the AI by providing feedback with the thumbs up and down below.</p>
+            </div>
+
+            <!-- MessageInput (bottom of initial view) -->
+            <div class="chat-main__input-wrap">
+              <div class="msg-input">
+                <div class="msg-input__box">
+                  <textarea
+                    class="msg-input__textarea"
+                    rows="1"
+                    placeholder="Send a question"
+                  ></textarea>
+                  <div class="msg-input__actions">
+                    <div class="msg-input__filter-container">
+                      <button
+                        class="btn btn--tertiary btn--sm btn--icon msg-input__filter-btn"
+                        aria-label="Filter by recent content"
+                      >
+                        <i data-lucide="funnel" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                    <button
+                      class="btn btn--primary btn--sm btn--icon msg-input__send-btn"
+                      aria-label="Send message"
+                      disabled
+                    >
+                      <i data-lucide="move-up" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ━━━ AI Assistant coachmark (AssistantPopover) ━━━━━━━━━━━━━━━━━━
+       Bottom-right call-out promoting the Affino Assistant. Fades in a few
+       seconds after load on first visit; dismissing it (✕ or Launch) persists
+       via localStorage so it won't return. Launch opens the AiAssistant panel.
+       Behaviour wired in the end-of-body module; not AssistantPopover.js. -->
+  <div class="cc-assistant-popover" aria-label="Affino Assistant">
+    <div class="cc-assistant-popover__header">
+      <div class="cc-assistant-popover__brand">
+        <span class="cc-assistant-popover__badge">
+          <i data-lucide="sparkles" aria-hidden="true"></i>
+        </span>
+        <p class="cc-assistant-popover__title">Affino Assistant</p>
+      </div>
+      <button class="btn btn--tertiary btn--sm btn--icon cc-assistant-popover__close" type="button" aria-label="Close">
+        <i data-lucide="x" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="cc-assistant-popover__body">
+      <div class="cc-assistant-popover__intro">
+        <p>Affino’s Assistant is great at providing in context support whilst you work in the control center.</p>
+        <p>Stuck on screen? Launch the Affino Assistant from the Actions Menu to get moving.</p>
+      </div>
+      <button class="btn btn--primary cc-assistant-popover__launch" type="button">
+        Launch
+        <i data-lucide="arrow-right" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ━━━ Toast stack (top-right) — favourites save/remove feedback ━━━━━
+       Empty container; toasts are spawned into it by the rail IIFE (success on
+       save, interactive Undo on remove). Uses the Toast component markup. -->
+  <div class="cc-toast-stack" id="cc-toasts" aria-live="polite" aria-atomic="false"></div>
+
+  <!-- ━━━ "Save favourite as" modal (opened by the rail Favourite button) ━━━ -->
+  <div class="modal-overlay" id="modal-fav" role="dialog" aria-modal="true" aria-labelledby="modal-fav-title">
+    <div class="modal modal--sm">
+      <div class="modal__header">
+        <h2 class="modal__title" id="modal-fav-title">Save favourite as</h2>
+        <button class="modal__close" type="button" aria-label="Close" data-aa-modal-close><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+      <div class="modal__body">
+        <div class="input">
+          <div class="input__wrap">
+            <input id="cc-fav-name" type="text" class="input__control" placeholder="e.g. Q3 Campaign View" aria-label="Favourite name">
+          </div>
+        </div>
+      </div>
+      <div class="modal__footer">
+        <!-- TODO(backend:ControlScreen) [favourites-persistence]: saving only mutates the DOM in memory (lost on reload). Need favourites CRUD — POST {name, context, ts} here, GET on init, DELETE on remove. -->
+        <button class="btn btn--primary" type="button" data-aa-fav-save data-backend-todo="favourites-persistence">Save favourite</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ━━━ Scripts ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+
+  <!-- Existing auto-binding interaction scripts -->
+  <script src="../../patterns/SidebarMenu/sidebar-menu.js"></script>
+  <script src="../../../components/ThemeToggle/ThemeToggle.js"></script>
+  <!-- Toggle has no standalone JS file; consumers wire .toggle clicks
+       inline. Event-delegated at the document so it works for toggles
+       inside dynamically-shown panels (the User Menu Dropdown). -->
+  <script>
+    document.addEventListener('click', function (e) {
+      var toggle = e.target.closest('.toggle:not(.toggle--disabled)');
+      if (!toggle) return;
+      var isActive = toggle.classList.toggle('toggle--active');
+      toggle.setAttribute('aria-checked', String(isActive));
+    });
+  </script>
+  <script type="module" src="../../../components/Dropdown/Dropdown.js"></script>
+  <!-- Wires the User Menu "Icon Navigation" / "Hide Labels" toggles to the
+       IconNavigation strip in this header group. -->
+  <script src="../../patterns/HeaderGroup/HeaderGroup.js"></script>
+  <!-- Alert dismiss: clicking the close icon removes the alert. -->
+  <script src="../../../components/Alert/Alert.js"></script>
+  <!-- FontSizeSlider auto-inits its inputs (paints the track fill) on load -->
+  <script type="module" src="../../components/FontSizeSlider/FontSizeSlider.js"></script>
+
+  <!-- ActionsMenu rail popovers (Info, …). Generic toggle: one open at a time,
+       closes on Esc / click-outside. Add more by pairing a button
+       [data-aa-toggle="X"] with a panel [data-aa-panel="X"]. -->
+  <script>
+    (function () {
+      function panelFor(key) { return document.querySelector('[data-aa-panel="' + key + '"]'); }
+      function toggleFor(key) { return document.querySelector('[data-aa-toggle="' + key + '"]'); }
+      function close(panel) {
+        if (!panel || panel.hidden) return;
+        panel.hidden = true;
+        var t = toggleFor(panel.dataset.aaPanel);
+        if (t) t.setAttribute('aria-expanded', 'false');
+      }
+      function closeAll(except) {
+        document.querySelectorAll('[data-aa-panel]').forEach(function (p) { if (p !== except) close(p); });
+      }
+      document.querySelectorAll('[data-aa-toggle]').forEach(function (btn) {
+        var panel = panelFor(btn.dataset.aaToggle);
+        if (!panel) return;
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var willOpen = panel.hidden;
+          closeAll(willOpen ? panel : null);
+          panel.hidden = !willOpen;
+          btn.setAttribute('aria-expanded', String(willOpen));
+          if (willOpen && window.lucide) lucide.createIcons();
+        });
+      });
+      document.addEventListener('click', function (e) {
+        document.querySelectorAll('[data-aa-panel]:not([hidden])').forEach(function (p) {
+          var t = toggleFor(p.dataset.aaPanel);
+          if (!p.contains(e.target) && !(t && t.contains(e.target))) close(p);
+        });
+      });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeAll(null); closeFav(); } });
+
+      // Print action
+      document.querySelectorAll('[data-aa-action="print"]').forEach(function (btn) {
+        btn.addEventListener('click', function () { window.print(); });
+      });
+
+      // ── Favourite → "Save favourite as" modal → Favourites sidebar panel ──
+      var favModal = document.getElementById('modal-fav');
+      var favInput = document.getElementById('cc-fav-name');
+      function openFav() {
+        if (!favModal) return;
+        closeAll(null);                       // close any open rail popover first
+        favModal.classList.add('modal-overlay--open');
+        document.body.style.overflow = 'hidden';
+        if (favInput) { favInput.value = ''; favInput.focus(); }
+      }
+      function closeFav() {
+        if (!favModal) return;
+        favModal.classList.remove('modal-overlay--open');
+        document.body.style.overflow = '';
+      }
+      // ── Feedback toasts (Toast component, spawned into #cc-toasts) ──
+      var toastStack = document.getElementById('cc-toasts');
+      var TOAST_MS = 4000;   // auto-dismiss delay
+
+      function dismissToast(toast) {
+        if (!toast || toast.dataset.leaving) return;
+        toast.dataset.leaving = '1';
+        if (toast._timer) clearTimeout(toast._timer);
+        toast.classList.remove('toast--in');
+        toast.classList.add('toast--leaving');
+        toast.addEventListener('transitionend', function () { toast.remove(); }, { once: true });
+      }
+      function showToast(toast, duration) {
+        if (!toastStack) return null;
+        toastStack.appendChild(toast);
+        if (window.lucide) lucide.createIcons();
+        // Reveal on the next frame so the slide-in transition plays.
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () { toast.classList.add('toast--in'); });
+        });
+        var closeBtn = toast.querySelector('.toast__close');
+        if (closeBtn) closeBtn.addEventListener('click', function () { dismissToast(toast); });
+        if (duration) toast._timer = setTimeout(function () { dismissToast(toast); }, duration);
+        return toast;
+      }
+      // Status toast (Info/Success/Danger/Warning + optional --color), message-only.
+      function statusToast(variant, icon, message) {
+        var t = document.createElement('div');
+        t.className = 'toast ' + variant;
+        t.setAttribute('role', 'status');
+        t.innerHTML =
+          '<span class="toast__icon"><i data-lucide="' + icon + '" aria-hidden="true"></i></span>' +
+          '<p class="toast__message"></p>' +
+          '<button type="button" class="toast__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>';
+        t.querySelector('.toast__message').textContent = message;   // textContent = safe
+        showToast(t, TOAST_MS);
+      }
+
+      // ── Favourite list helpers (mirrored across desktop + mobile lists) ──
+      function makeFavItem(name) {
+        var li = document.createElement('li');
+        li.className = 'cc-menu__submenu-item';
+        li.innerHTML =
+          '<span class="cc-menu__submenu-item-label"></span>' +
+          '<button class="cc-menu__submenu-item__action" type="button" aria-label="Remove from favourites"><i data-lucide="trash-2" aria-hidden="true"></i></button>';
+        li.querySelector('.cc-menu__submenu-item-label').textContent = name; // textContent = safe
+        return li;
+      }
+      // Remove every item matching `name` from both mirrored lists.
+      function removeFav(name) {
+        document.querySelectorAll('.cc-control__fav-list').forEach(function (list) {
+          Array.prototype.slice.call(list.children).forEach(function (li) {
+            var label = li.querySelector('.cc-menu__submenu-item-label');
+            if (label && label.textContent === name) li.remove();
+          });
+        });
+      }
+
+      // TODO(backend:ControlScreen) [favourites-persistence]: saveFav/removeFav mutate the DOM
+      // only — favourites are in-memory and lost on reload. Replace with a favourites API
+      // (GET on init, POST on save, DELETE on remove) and render from the response.
+      function saveFav() {
+        var name = (favInput.value || '').trim();
+        if (!name) { favInput.focus(); return; }
+        document.querySelectorAll('.cc-control__fav-list').forEach(function (list) {
+          list.appendChild(makeFavItem(name));
+        });
+        if (window.lucide) lucide.createIcons();
+        closeFav();
+        // reveal the Favourites panel on the desktop sidebar so the new item shows
+        var favBtn = document.querySelector('.cc-control__sidebar--desktop .cc-sidebar__btn[data-cc-target="favourites"]');
+        if (favBtn && !favBtn.classList.contains('cc-sidebar__btn--active')) favBtn.click();
+        statusToast('toast--success toast--color', 'check', '“' + name + '” added to favourites');
+      }
+      document.querySelectorAll('[data-aa-modal="fav"]').forEach(function (b) { b.addEventListener('click', openFav); });
+      if (favModal) {
+        favModal.querySelector('[data-aa-modal-close]').addEventListener('click', closeFav);
+        favModal.querySelector('[data-aa-fav-save]').addEventListener('click', saveFav);
+        favModal.addEventListener('click', function (e) { if (e.target === favModal) closeFav(); });
+        if (favInput) favInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') saveFav(); });
+      }
+      // Remove-from-favourites (delegated, both panels) → Danger toast.
+      document.querySelectorAll('.cc-control__fav-list').forEach(function (list) {
+        list.addEventListener('click', function (e) {
+          var rm = e.target.closest('.cc-menu__submenu-item__action');
+          if (!rm) return;
+          var li = rm.closest('.cc-menu__submenu-item');
+          var label = li && li.querySelector('.cc-menu__submenu-item-label');
+          var name = label ? label.textContent : '';
+          removeFav(name);
+          statusToast('toast--danger toast--color', 'trash-2', '“' + name + '” removed from favourites');
+        });
+      });
+    })();
+  </script>
+
+  <!-- Select Zone dropdown — shared Select behaviour (open/choose/close). -->
+  <script src="../../../components/Select/Select.js"></script>
+
+  <!-- Chart.js initialisation — Page Views (multi-line) + Users (single-line) -->
+  <script>
+    (function () {
+      const cs = getComputedStyle(document.documentElement);
+      const tok = (n, fb) => (cs.getPropertyValue(n).trim() || fb);
+      const brand = tok('--ai-surface-brand', '#0071d8');
+      const success = tok('--ai-surface-success', '#30cb90');
+      const text = tok('--ai-text-contrast', '#67676c');
+      const grid = tok('--ai-border-secondary', '#e2e2e3');
+
+      Chart.defaults.font.family = 'Inter, sans-serif';
+      Chart.defaults.font.size = 12;
+      Chart.defaults.color = text;
+      Chart.defaults.borderColor = grid;
+
+      function gradientFill(color) {
+        return (ctx) => {
+          const chart = ctx.chart;
+          const { ctx: c, chartArea } = chart;
+          if (!chartArea) return color;
+          const g = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          g.addColorStop(0, color + 'aa');
+          g.addColorStop(1, color + '00');
+          return g;
+        };
+      }
+
+      const sharedScales = {
+        x: { grid: { display: false }, border: { display: false } },
+        y: { grid: { color: grid, drawBorder: false, borderDash: [4, 4] }, border: { display: false } },
+      };
+      const sharedPlugins = {
+        legend: { display: false },
+        tooltip: { backgroundColor: '#212123', titleFont: { weight: '600' }, padding: 10, cornerRadius: 6 },
+      };
+
+      new Chart(document.getElementById('cs-page-views'), {
+        type: 'line',
+        data: {
+          labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+          datasets: [
+            { label: 'Page Views', data: [3000, 4200, 3800, 5100, 4900, 6100, 5800],
+              borderColor: brand, backgroundColor: brand, tension: 0.4, borderWidth: 3, pointRadius: 0, pointHoverRadius: 5 },
+            { label: 'Sessions', data: [1800, 2400, 2200, 2900, 2800, 3300, 3100],
+              borderColor: success, backgroundColor: success, tension: 0.4, borderWidth: 3, pointRadius: 0, pointHoverRadius: 5 },
+          ],
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: sharedPlugins, scales: sharedScales },
+      });
+
+      new Chart(document.getElementById('cs-users'), {
+        type: 'line',
+        data: {
+          labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug'],
+          datasets: [{
+            label: 'Users', data: [6500, 6200, 7400, 8800, 9100, 10200, 11400, 12840],
+            borderColor: brand, backgroundColor: gradientFill(brand),
+            tension: 0.4, borderWidth: 3, fill: true, pointRadius: 0, pointHoverRadius: 5,
+          }],
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: sharedPlugins, scales: sharedScales },
+      });
+    })();
+  </script>
+
+  <!-- AI Assistant panel: shell behaviours + rail-button toggle. Initial-state
+       view only — no ChatMain / processing / response wiring (those are
+       demo-only and live on the standalone AiAssistant page). -->
+  <script type="module">
+    import { initAiAssistantShell } from '../AiAssistant/AiAssistant.js';
+
+    const panel = document.getElementById('ai-assistant');
+    const aiBtn = document.querySelector('[data-cc-ai-toggle]');
+
+    if (panel && aiBtn) {
+      const setExpanded = (open) => aiBtn.setAttribute('aria-expanded', String(open));
+
+      // Sidebar, drag, resize, close, input. Brand theme scoped to the panel so
+      // it never recolours the CC shell; close button syncs the rail button.
+      initAiAssistantShell(panel, {
+        brandThemeTarget: panel,
+        onClose: () => setExpanded(false),
+      });
+
+      // Open the panel (idempotent): close any open rail popover, reveal, sync
+      // aria. Shared by the rail button and the coachmark's Launch button.
+      const openAssistant = () => {
+        document.querySelectorAll('[data-aa-panel]:not([hidden])').forEach((p) => {
+          p.hidden = true;
+          const t = document.querySelector('[data-aa-toggle="' + p.dataset.aaPanel + '"]');
+          if (t) t.setAttribute('aria-expanded', 'false');
+        });
+        panel.classList.remove('ai-assistant--hidden');
+        setExpanded(true);
+        if (window.lucide) lucide.createIcons();
+      };
+
+      // Rail button toggles the panel. Deliberately NOT a generic
+      // [data-aa-toggle] popover: a large draggable panel shouldn't vanish on an
+      // outside click, so it is wired separately and exempt from the rail
+      // popovers' click-outside handler.
+      aiBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (panel.classList.contains('ai-assistant--hidden')) {
+          openAssistant();
+        } else {
+          panel.classList.add('ai-assistant--hidden');
+          setExpanded(false);
+        }
+      });
+
+      // ── AssistantPopover coachmark ──────────────────────────────────
+      // First visit only: slides up into view on load. ✕ or Launch dismiss it
+      // and persist the dismissal via localStorage so it won't return. Launch
+      // also opens the assistant. (No AssistantPopover.js here — that script's
+      // instant DOM-removal would fight the slide-out.)
+      const popover = document.querySelector('.cc-assistant-popover');
+      const DISMISS_KEY = 'cc-assistant-popover-dismissed';
+      if (popover) {
+        let dismissed = false;
+        try { dismissed = localStorage.getItem(DISMISS_KEY) === '1'; } catch (_) {}
+
+        if (dismissed) {
+          popover.remove();
+        } else {
+          const dismiss = () => {
+            try { localStorage.setItem(DISMISS_KEY, '1'); } catch (_) {}
+            popover.classList.remove('cc-assistant-popover--visible');
+            popover.addEventListener('transitionend', () => popover.remove(), { once: true });
+          };
+          // Reveal after a short beat so the slide-up transition plays.
+          const SHOW_DELAY_MS = 500; // brief delay before the coachmark slides up
+          setTimeout(() => popover.classList.add('cc-assistant-popover--visible'), SHOW_DELAY_MS);
+          popover.querySelector('.cc-assistant-popover__close')
+            .addEventListener('click', dismiss);
+          popover.querySelector('.cc-assistant-popover__launch')
+            .addEventListener('click', () => { openAssistant(); dismiss(); });
+        }
+      }
+    }
+  </script>
+</body>
+</html>

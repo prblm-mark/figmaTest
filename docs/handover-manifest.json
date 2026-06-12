@@ -1,12 +1,32 @@
 {
   "description": "Backend-developer handover manifest. Machine-readable index of front-end elements that are mock / visual-only / in-memory and need real backend implementation. Front-end-only repo (vanilla HTML/CSS/JS, no framework, no backend). See HANDOVER.md for the human-readable version and the TODO(backend:<Surface>) in-code marker convention.",
-  "updated": "2026-06-04",
+  "updated": "2026-06-12",
   "categories": {
     "visual-only": "Rendered but no behaviour wired at all.",
     "fe-wired": "Works client-side; no backend required (may be fine as-is).",
     "needs-backend": "Requires real data, API, auth, persistence, or AI service."
   },
   "surfaces": {
+    "ControlHub": {
+      "file": "src/cc/templates/ControlHub/ControlHub.html",
+      "note": "CC filterable directory screen. Reuses the ControlScreen app-shell (see the ControlScreen surface for all shell-level backend items — sidebar nav, auth, notifications, AI assistant, favourites, etc.). The items below are specific to ControlHub's own page content; everything else is inherited from the reused shell.",
+      "items": [
+        {
+          "id": "controlhub-filter",
+          "category": "visual-only",
+          "element": ".cc-directory__filter .input__control (placeholder 'Filter...')",
+          "current": "Filter field renders (search icon + clear button) but no filtering logic is wired — typing does nothing; the clear button is the component default only.",
+          "needs": "Client-side filtering is sufficient (no backend): debounced text match over ActionCard titles across all sections, hiding cards (and empty section headings) that don't match; clear button resets. Promote to fe-wired once implemented."
+        },
+        {
+          "id": "controlhub-card-actions",
+          "category": "needs-backend",
+          "element": ".action-card--chevron (href=\"#\") + .action-card--button (whole-card nav, pointer cursor) with a separate .btn (\"+ add\")",
+          "current": "Both card variants are meant to navigate the whole card to the area's screen. Chevron cards link to '#'; Button cards show a pointer cursor but card-level navigation isn't wired; the 'add' buttons are inert.",
+          "needs": "Real navigation targets per area for BOTH variants (whole card → the corresponding report/analysis screen — implement the Button card as a stretched-link so the '+ add' button stays a separate action above it) and an add-to-favourites/dashboard action for the 'add' button (POST, then reflect added state). Card title + section taxonomy comes from the same content source as the sidebar nav."
+        }
+      ]
+    },
     "ControlScreen": {
       "file": "src/cc/templates/ControlScreen/ControlScreen.html",
       "note": "CC home/landing dashboard. Front-end complete; all data is hardcoded and most actions are mock. Composes many CC patterns \u2014 see docs/component-registry.md for per-component status.",
