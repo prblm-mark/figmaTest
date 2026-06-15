@@ -4,6 +4,7 @@
   --ai-surface-secondary: #2e2e32;
   --ai-surface-contrast: #3c3c3f;
   --ai-surface-invert: #f6f6f7;
+  --ai-surface-input: #1b1b1e;
   --ai-surface-elevated-1: #212123;
   --ai-surface-elevated-2: #2e2e32;
   --ai-surface-brand: #0071d8;
@@ -54,6 +55,12 @@
   --cc-mainmenu-primary-bg: #334155;
   --cc-mainmenu-secondary-bg: #1e293b;
   --cc-mainmenu-icon: #334155;
+  --cc-ui-primary-bg: #131316;
+  --cc-ui-secondary-bg: #212123;
+  --cc-actions-menu-primary-bg: #334155;
+  --cc-actions-menu-secondary-bg: #1e293b;
+  --cc-actions-menu-icon: #334155;
+  --cc-actions-menu-icon-active: #334155;
   --ai-chat-brand: #0071d8;
   --ai-chat-msg-bg: #172554;
   --ai-chat-msg-text: #eff6ff;

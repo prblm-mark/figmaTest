@@ -8,9 +8,10 @@
   --ai-surface-secondary: #ececed;
   --ai-surface-contrast: #c2c2c4;
   --ai-surface-invert: #1b1b1f;
+  --ai-surface-input: #fafafb;
   --ai-surface-elevated-1: #ffffff;
   --ai-surface-elevated-2: #ffffff;
-  --ai-surface-brand: #0071d8;
+  --ai-surface-brand: #2563eb;
   --ai-surface-brand-light: #3a8fff;
   --ai-surface-brand-dark: #0054a3;
   --ai-surface-brand-soft: #bfd1ff;
@@ -19,7 +20,7 @@
   --ai-surface-error-soft: #fef3f3;
   --ai-surface-success: #059669;
   --ai-surface-success-soft: #ecfdf5;
-  --ai-surface-info: #0071d8;
+  --ai-surface-info: #2563eb;
   --ai-surface-info-soft: #f0f3ff;
   --ai-surface-warning: #f97316;
   --ai-surface-warning-soft: #fff7ed;
@@ -31,12 +32,12 @@
   --ai-text-invert: #ffffff;
   --ai-text-invert-secondary: #ececed;
   --ai-text-error: #b91c1c;
-  --ai-text-brand: #0071d8;
+  --ai-text-brand: #2563eb;
   --ai-text-success: #065f46;
   --ai-text-info: #0b4c81;
   --ai-text-warning: #9a3412;
   --ai-text-neutral: #212123;
-  --ai-border-brand: #0071d8;
+  --ai-border-brand: #2563eb;
   --ai-border-primary: #1b1b1f;
   --ai-border-secondary: #e2e2e3;
   --ai-border-contrast: #c2c2c4;
@@ -57,19 +58,25 @@
   --ai-icon-contrast: #929295;
   --ai-icon-invert: #ffffff;
   --ai-icon-invert-secondary: #e2e2e3;
-  --ai-icon-brand: #0071d8;
-  --cc-header-primary-bg: #0f3b53;
+  --ai-icon-brand: #2563eb;
+  --cc-header-primary-bg: #0b2c3e;
   --cc-header-secondary-bg: #ffffff;
   --cc-header-icon: #ffffff;
   --cc-mainmenu-primary-bg: #0f3b53;
   --cc-mainmenu-secondary-bg: #0b2c3e;
   --cc-mainmenu-icon: #ffffff;
-  --ai-chat-brand: #0071d8; /** Editable by user */
+  --cc-ui-primary-bg: #ececed;
+  --cc-ui-secondary-bg: #ffffff;
+  --cc-actions-menu-primary-bg: #0f3b53;
+  --cc-actions-menu-secondary-bg: #0b2c3e;
+  --cc-actions-menu-icon: #ffffff;
+  --cc-actions-menu-icon-active: #ffffff;
+  --ai-chat-brand: #2563eb; /** Editable by user */
   --ai-chat-msg-bg: #eff6ff; /** Editable by user */
   --ai-chat-msg-text: #1e3a8a; /** Editable by user */
   --ai-chat-sidebar-bg: #f6f6f7;
   --ai-chat-sidebar-text: #212123;
-  --ai-btn-primary-bg: #0071d8;
+  --ai-btn-primary-bg: #2563eb;
   --ai-btn-primary-bg-hover: #3a8fff;
   --ai-btn-primary-bg-pressed: #0054a3;
   --ai-btn-primary-border: rgba(0, 0, 0, 0);

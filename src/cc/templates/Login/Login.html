@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en" data-brand="cc">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../../components/dark-mode-toggle.js"></script>
+  <title>Login — Affino Control Centre</title>
+
+  <!-- Base + tokens -->
+  <link rel="stylesheet" href="../../../styles/base.css">
+
+  <!-- Atom-tier components -->
+  <link rel="stylesheet" href="../../../components/Input/Input.css">
+  <link rel="stylesheet" href="../../../components/Checkbox/Checkbox.css">
+  <link rel="stylesheet" href="../../../components/Button/Button.css">
+
+  <!-- This template -->
+  <link rel="stylesheet" href="Login.css">
+</head>
+<body>
+  <!--
+    TODO(backend:Login): whole screen is a visual/mock front-end. No real auth,
+    session, or validation is wired. See HANDOVER.md → Login surface.
+  -->
+  <main class="cc-login" data-backend-todo="login-screen">
+    <div class="cc-login__column">
+
+      <!-- Logo + title -->
+      <div class="cc-login__head">
+        <div class="cc-login__brand" role="img" aria-label="Affino"></div>
+        <h1 class="cc-login__title">Control Centre Login</h1>
+      </div>
+
+      <!-- Login card -->
+      <!-- TODO(backend:Login): form does not submit → POST /auth/login { email, password, remember } -->
+      <form class="cc-login__card" action="#" method="post" novalidate>
+
+        <!-- Email -->
+        <div class="input">
+          <label class="input__label" for="cc-login-email">Email address</label>
+          <div class="input__wrap">
+            <i data-lucide="mail" class="input__icon" aria-hidden="true"></i>
+            <input id="cc-login-email" name="email" type="email" class="input__control"
+                   autocomplete="email" placeholder=" ">
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="input">
+          <label class="input__label" for="cc-login-password">Password</label>
+          <div class="input__wrap">
+            <i data-lucide="lock" class="input__icon" aria-hidden="true"></i>
+            <input id="cc-login-password" name="password" type="password" class="input__control"
+                   autocomplete="current-password" placeholder=" ">
+          </div>
+        </div>
+
+        <!-- Remember me / forgot password -->
+        <div class="cc-login__options">
+          <label class="checkbox">
+            <input type="checkbox" class="checkbox__input" id="cc-login-remember" name="remember">
+            <span class="checkbox__indicator">
+              <i data-lucide="check" aria-hidden="true"></i>
+            </span>
+            <span class="checkbox__label">
+              <span class="checkbox__label-text">Remember me</span>
+            </span>
+          </label>
+          <!-- TODO(backend:Login): forgot-password link target → /auth/forgot -->
+          <a href="#" class="cc-login__link">Forgot password?</a>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn btn--primary cc-login__submit">Login</button>
+      </form>
+
+      <!-- Footer -->
+      <!-- TODO(backend:Login): register link target → /auth/register -->
+      <p class="cc-login__footer">Not a member? <a href="#" class="cc-login__link">Register Now</a></p>
+
+    </div>
+  </main>
+
+  <!-- Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>
