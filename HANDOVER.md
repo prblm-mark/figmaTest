@@ -79,6 +79,22 @@ see the ControlScreen surface below. The items here are specific to ControlHub's
 
 ---
 
+## Surface: Login
+
+`src/cc/templates/Login/Login.html` — the CC Control Centre login screen. A standalone
+visual mock: the form renders but no authentication, session, or validation is wired.
+
+| id | Element | Now | Backend work needed | Category |
+|---|---|---|---|---|
+| `login-submit` | `.cc-login__card` `<form>` + `.cc-login__submit` ("Login") | Submits to `#`; no auth | `POST /auth/login {email, password, remember}` → set session, redirect to Control Centre; surface error states on the inputs | needs-backend |
+| `login-remember` | `.checkbox` ("Remember me", `name="remember"`) | Toggles visually only | Bind to session lifetime (persistent vs session cookie) on login | needs-backend |
+| `login-forgot` | `.cc-login__link` ("Forgot password?", `href="#"`) | Links to `#` | Route to `/auth/forgot` (password-reset flow) | needs-backend |
+| `login-register` | `.cc-login__link` ("Register Now", `href="#"`) | Links to `#` | Route to `/auth/register` (sign-up flow) | needs-backend |
+
+`grep -rn "TODO(backend:Login)" src/`
+
+---
+
 ## Surface: ControlScreen
 
 `src/cc/templates/ControlScreen/ControlScreen.html` — the CC home/landing dashboard.

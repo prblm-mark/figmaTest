@@ -1,12 +1,46 @@
 {
   "description": "Backend-developer handover manifest. Machine-readable index of front-end elements that are mock / visual-only / in-memory and need real backend implementation. Front-end-only repo (vanilla HTML/CSS/JS, no framework, no backend). See HANDOVER.md for the human-readable version and the TODO(backend:<Surface>) in-code marker convention.",
-  "updated": "2026-06-12",
+  "updated": "2026-06-15",
   "categories": {
     "visual-only": "Rendered but no behaviour wired at all.",
     "fe-wired": "Works client-side; no backend required (may be fine as-is).",
     "needs-backend": "Requires real data, API, auth, persistence, or AI service."
   },
   "surfaces": {
+    "Login": {
+      "file": "src/cc/templates/Login/Login.html",
+      "note": "CC Control Centre login screen. Standalone visual mock — the form renders but no authentication, session, or validation is wired.",
+      "items": [
+        {
+          "id": "login-submit",
+          "category": "needs-backend",
+          "element": ".cc-login__card <form> + .cc-login__submit (\"Login\")",
+          "current": "Form submits to '#'; no auth, no validation.",
+          "needs": "POST /auth/login { email, password, remember } → establish session and redirect to the Control Centre; surface invalid-credential / field errors on the inputs (Input has an error state)."
+        },
+        {
+          "id": "login-remember",
+          "category": "needs-backend",
+          "element": ".checkbox (\"Remember me\", name=\"remember\")",
+          "current": "Toggles visually only.",
+          "needs": "Bind to session lifetime on login — persistent cookie when checked, session cookie otherwise."
+        },
+        {
+          "id": "login-forgot",
+          "category": "needs-backend",
+          "element": ".cc-login__link (\"Forgot password?\", href=\"#\")",
+          "current": "Links to '#'.",
+          "needs": "Route to /auth/forgot (password-reset flow)."
+        },
+        {
+          "id": "login-register",
+          "category": "needs-backend",
+          "element": ".cc-login__link (\"Register Now\", href=\"#\")",
+          "current": "Links to '#'.",
+          "needs": "Route to /auth/register (sign-up flow)."
+        }
+      ]
+    },
     "ControlHub": {
       "file": "src/cc/templates/ControlHub/ControlHub.html",
       "note": "CC filterable directory screen. Reuses the ControlScreen app-shell (see the ControlScreen surface for all shell-level backend items — sidebar nav, auth, notifications, AI assistant, favourites, etc.). The items below are specific to ControlHub's own page content; everything else is inherited from the reused shell.",
