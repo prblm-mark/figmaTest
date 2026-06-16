@@ -7,7 +7,7 @@
 - **Tier:** `Component` → built into `src/components/Dropdown/`
 - URL: https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2553-3676
 
-## Variant matrix (7 variants)
+## Variant matrix (8 variants)
 
 | Node ID | Type | Notes | Built |
 |---|---|---|---|
@@ -16,6 +16,7 @@
 | 2553:3673 | Actions | Items with leading icons + divider + Delete CTA (alert button) | ✅ |
 | 2553:3671 | Checkbox | Checkbox items (composes existing Checkbox component) | ✅ |
 | 2553:3672 | Search | Search input + filterable item list | ✅ |
+| 2955:6653 | Filter views | "Saved views" label + **sm** DropdownItems (selected row uses trailing tick, no grey bg) + divider + a full-width **tertiary sm Button** "+ New view" (instance `2955:6668`) | ✅ (added 2026-06-16) |
 | 2699:1976 | User menu | ThemeToggle + Icon Navigation Toggle + DropdownItems + Sign Out (Warning type) | ✅ (added 2026-05-27) |
 | 2705:2491 | User Menu Icon Nav | Same as User menu, but Icon Navigation toggled ON reveals Hide Labels row | ✅ (added 2026-05-27 — same `.dropdown--user-menu` markup, JS reveals the hidden row when the linked Toggle becomes active) |
 
@@ -35,6 +36,10 @@ inner node ID — `I<instance>;2699:2156` references the Warning-variant icon, v
 | Panel — Search variant | `.dropdown__panel .dropdown__panel--search` | Adds vertical gap between search input and list |
 | Panel — Actions variant | `.dropdown__panel .dropdown__panel--actions` | Adds vertical gap between item list and Delete CTA |
 | Panel — Checkbox variant | `.dropdown__panel .dropdown__panel--checkbox` | Different padding (16px x, 12px y) per Figma |
+| Panel — Filter views variant | `.dropdown__panel .dropdown__panel--filter-views` | `min-width: var(--ai-size-3)` (192px) |
+| Filter views — section label | `.dropdown__label` | "Saved views" — `--ai-font-body` / `--ai-font-fluid-xxs` (12px) / `--ai-text-contrast`, padding `2px 12px 4px` (`--ai-spacing-0-5` / `-4` / `-1`) |
+| Filter views — item group (top) | `.dropdown__list--filter-views-top` | `padding-bottom: var(--ai-spacing-3)`. Rows are `.dropdown-item--sm`; selected row carries `.dropdown-item__check` (no grey bg) |
+| Filter views — footer | `.dropdown__filter-views-footer` | `padding-top: var(--ai-spacing-3)`. Holds the "New view" CTA — a `.btn .btn--tertiary .btn--sm` forced full-width + left-aligned (`justify-content: flex-start`) with a leading `plus` icon. Scoped overrides: horizontal padding `--ai-spacing-3` (8px, vs btn--sm's 12px), text + icon `--ai-text-contrast`, weight `--ai-font-medium`. |
 | List | `.dropdown__list` | Flex column. `--header` modifier adds 4px gap (used in With Header) |
 | Item (action / link) | `.dropdown-item` | Extracted to **DropdownItem** component on 2026-05-27 — see `src/components/DropdownItem/`. Has Default and Warning Types, with State=Hover. The legacy `.dropdown__item` class still works via a back-compat alias in `Dropdown.css` (deprecated — prefer `.dropdown-item`). |
 | User menu — toggle list wrapper | `.dropdown__toggle-list` | Used only by `.dropdown--user-menu`. Vertical flex stack for Toggle rows. Padding `8px / 6px`. |
@@ -113,4 +118,5 @@ Auto-binds on `DOMContentLoaded` to every `.dropdown` on the page.
 
 - `Button` (`src/components/Button/`) — `.btn .btn--secondary` for the trigger; `.btn .btn--alert` for the Delete CTA in the Actions variant.
 - `Checkbox` (`src/components/Checkbox/`) — used by the Checkbox variant.
-- Lucide icons via CDN — `chevron-down`, `user`, `settings`, `help-circle`, `log-out`, `pencil`, `copy`, `archive`, `trash-2`, `search`, `check`.
+- `DropdownItem` (`src/components/DropdownItem/`) — every row; the **Filter views** variant uses the `.dropdown-item--sm` size and the `.dropdown-item__check` trailing tick.
+- Lucide icons via CDN — `chevron-down`, `user`, `settings`, `help-circle`, `log-out`, `pencil`, `copy`, `archive`, `trash-2`, `search`, `check`, `plus`.

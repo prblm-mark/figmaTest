@@ -213,6 +213,45 @@
   width: 100%;
 }
 
+/* ── Type=Filter views ────────────────────────────────── */
+/* Figma 2955:6653 — a "Saved views" panel (192px) with a small section label,
+ * a group of sm DropdownItems (selected row uses the trailing tick, not grey bg),
+ * a divider, then a "+ New view" sm item. Composes DropdownItem (.dropdown-item--sm). */
+
+.dropdown__panel--filter-views {
+  min-width: var(--ai-size-3); /* 192px */
+}
+
+/* Small section label ("Saved views"). */
+.dropdown__label {
+  margin: 0;
+  padding: var(--ai-spacing-0-5) var(--ai-spacing-4) var(--ai-spacing-1); /* 2px / 12px / 4px */
+  font-family: var(--ai-font-body);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fluid-xxs); /* 12px */
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+}
+
+/* Item group above the divider (Figma pb-8 = spacing-3). */
+.dropdown__list--filter-views-top { padding-bottom: var(--ai-spacing-3); }
+
+/* Footer below the divider: a full-width, left-aligned tertiary "New view"
+ * button (Figma instance 2955:6668 — btn--tertiary, sm). */
+.dropdown__filter-views-footer { padding-top: var(--ai-spacing-3); }
+
+.dropdown__filter-views-footer .btn {
+  width: 100%;
+  justify-content: flex-start;
+  padding: 0 var(--ai-spacing-3); /* 8px — overrides btn--sm's 12px */
+  color: var(--ai-text-contrast);
+  font-weight: var(--ai-font-medium);
+}
+
+.dropdown__filter-views-footer .btn [data-lucide] {
+  color: var(--ai-text-contrast);
+}
+
 /* ── Type=User menu ───────────────────────────────────── */
 /* Embeds a ThemeToggle, a list of Toggle rows (Icon Navigation / Hide Labels),
  * and DropdownItem sections separated by dividers. Hide Labels row is

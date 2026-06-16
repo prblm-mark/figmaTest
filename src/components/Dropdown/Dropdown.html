@@ -166,6 +166,37 @@
         </div>
       </div>
 
+      <!-- Filter views -->
+      <div class="dropdown">
+        <button class="btn btn--secondary dropdown__trigger" aria-haspopup="menu" aria-expanded="false">
+          <span>All orders</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown__panel dropdown__panel--filter-views" role="menu" aria-label="All orders">
+          <p class="dropdown__label">Saved views</p>
+          <ul class="dropdown__list dropdown__list--filter-views-top">
+            <li role="none">
+              <button type="button" class="dropdown-item dropdown-item--sm" role="menuitemradio" aria-checked="true">
+                <span data-text="All orders">All orders</span>
+                <i data-lucide="check" class="dropdown-item__check" aria-hidden="true"></i>
+              </button>
+            </li>
+            <li role="none">
+              <button type="button" class="dropdown-item dropdown-item--sm" role="menuitemradio" aria-checked="false">
+                <span data-text="My Content">My Content</span>
+              </button>
+            </li>
+          </ul>
+          <hr class="dropdown__divider">
+          <div class="dropdown__filter-views-footer">
+            <button type="button" class="btn btn--tertiary btn--sm">
+              <i data-lucide="plus" aria-hidden="true"></i>
+              New view
+            </button>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 

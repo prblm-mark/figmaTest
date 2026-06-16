@@ -2,12 +2,18 @@
  * Figma node: 2699:2149
  * Tier: Component
  *
- * Two axes: State (Default | Hover) × Type (Default | Warning) = 4 variants.
+ * Three axes: State (Default | Hover) × Type (Default | Warning) × Size (Default | sm).
  *
  * - Default Default:   transparent bg, Regular text
  * - Hover Default:     --ai-surface-secondary bg, Medium text
  * - Default Warning:   transparent bg, Regular text (visually identical to Default Default)
  * - Hover Warning:     --ai-surface-error bg, Semibold white text (destructive)
+ * - Size=sm (.dropdown-item--sm): vertical padding --ai-spacing-2 (6px) vs
+ *   --ai-spacing-3 (8px) → 36px row vs 40px. Horizontal padding/gap/font/radius unchanged.
+ *
+ * Optional trailing tick (.dropdown-item__check): a brand-blue check pushed to
+ * the right edge, marking a selected row in the Filter-views Dropdown. This is
+ * a tick-only selection style (no grey bg), distinct from --selected.
  *
  * Extracted from Dropdown's inline `.dropdown__item` selectors on 2026-05-27
  * to match Figma's formal componentisation. Dropdown demos now use this class.
@@ -40,7 +46,25 @@
   flex-shrink: 0;
   width: var(--ai-icon-size-sm); /* 16px */
   height: var(--ai-icon-size-sm);
-  color: var(--ai-icon-secondary);
+  color: var(--ai-icon-contrast);
+}
+
+/* ── Size=sm ──────────────────────────────────────────── */
+/* Figma 2955:6736 — only vertical padding differs from Default. */
+
+.dropdown-item--sm {
+  padding-top: var(--ai-spacing-2); /* 6px */
+  padding-bottom: var(--ai-spacing-2);
+}
+
+/* ── Trailing tick (selected, Filter-views style) ─────── */
+/* Right-aligned brand-blue check. Tick-only selection (no grey bg).
+ * Selector is scoped under .dropdown-item so it outranks the base
+ * `.dropdown-item [data-lucide]` colour rule (equal specificity, later wins). */
+
+.dropdown-item .dropdown-item__check {
+  margin-left: auto;
+  color: var(--ai-surface-brand);
 }
 
 /* ── Stable-width label ───────────────────────────────── */
