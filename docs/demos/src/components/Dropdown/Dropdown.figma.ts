@@ -1,7 +1,7 @@
 import figma, { html } from '@figma/code-connect/html'
 
 // Type controls panel content (Basic / With Header / Actions / Checkbox /
-// Search / User menu / User Menu Icon Nav). Open/close, click-outside
+// Search / Filter views / User menu / User Menu Icon Nav). Open/close, click-outside
 // dismiss, Escape-to-close, and search filtering are wired up by Dropdown.js.
 // Checkbox + User menu variants use data-dropdown="stay-open" so the panel
 // stays open as users toggle. The User menu reveal hook is also in Dropdown.js
@@ -16,6 +16,7 @@ figma.connect(
         Actions: '',
         Checkbox: '',
         Search: '',
+        'Filter views': '',
         'User menu': 'dropdown--user-menu',
         'User Menu Icon Nav': 'dropdown--user-menu',
       }),

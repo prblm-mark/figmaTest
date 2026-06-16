@@ -86,6 +86,34 @@
   </div>
 
   <div class="demo-section">
+    <h2>Size=sm (6px vertical padding → 36px row)</h2>
+
+    <p class="demo-label">Default sm</p>
+    <button class="dropdown-item dropdown-item--sm" type="button">
+      <i data-lucide="star" aria-hidden="true"></i>
+      <span data-text="My Favourites">My Favourites</span>
+    </button>
+
+    <p class="demo-label">Hover sm</p>
+    <button class="dropdown-item dropdown-item--sm is-hover" type="button">
+      <i data-lucide="star" aria-hidden="true"></i>
+      <span data-text="My Favourites">My Favourites</span>
+    </button>
+
+    <p class="demo-label">Selected (trailing tick, no grey bg — Filter-views style)</p>
+    <button class="dropdown-item dropdown-item--sm" type="button" aria-current="true">
+      <span data-text="My Favourites">My Favourites</span>
+      <i data-lucide="check" class="dropdown-item__check" aria-hidden="true"></i>
+    </button>
+
+    <p class="demo-label">Warning sm</p>
+    <button class="dropdown-item dropdown-item--sm dropdown-item--warning is-hover" type="button">
+      <i data-lucide="trash-2" aria-hidden="true"></i>
+      <span data-text="Delete">Delete</span>
+    </button>
+  </div>
+
+  <div class="demo-section">
     <h2>Live hover (no .is-hover class — hover with mouse)</h2>
     <button class="dropdown-item" type="button">
       <i data-lucide="star" aria-hidden="true"></i>

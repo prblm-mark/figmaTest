@@ -8,17 +8,28 @@
 
 ## Variant matrix
 
-Two axes: **State** × **Type** = 4 variants.
+Three axes: **State** (Default | Hover) × **Type** (Default | Warning) × **Size** (Default | sm) = 8 variants.
 
-| Node | State | Type | bg | Font weight | Text colour |
-|---|---|---|---|---|---|
-| `2699:2148` | Default | Default | transparent | Regular | `--ai-text-primary` |
-| `2699:2147` | Hover | Default | `--ai-surface-secondary` | Medium | `--ai-text-primary` |
-| `2699:2155` | Default | Warning | transparent | Regular | `--ai-text-primary` |
-| `2699:2151` | Hover | Warning | `--ai-surface-error` (red) | Semibold | white (`--ai-text-invert`) |
+| Node | State | Type | Size | bg | Font weight | Text colour |
+|---|---|---|---|---|---|---|
+| `2699:2148` | Default | Default | Default | transparent | Regular | `--ai-text-primary` |
+| `2955:6736` | Default | Default | sm | transparent | Regular | `--ai-text-primary` |
+| `2699:2147` | Hover | Default | Default | `--ai-surface-secondary` | Medium | `--ai-text-primary` |
+| `2955:6733` | Hover | Default | sm | `--ai-surface-secondary` | Medium | `--ai-text-primary` |
+| `2699:2155` | Default | Warning | Default | transparent | Regular | `--ai-text-primary` |
+| `2955:6730` | Default | Warning | sm | transparent | Regular | `--ai-text-primary` |
+| `2699:2151` | Hover | Warning | Default | `--ai-surface-error` (red) | Semibold | white |
+| `2955:6727` | Hover | Warning | sm | `--ai-surface-error` (red) | Semibold | white |
 
 **Default Warning is visually identical to Default Default.** Only the Hover state of the
 Warning variant shows the destructive red treatment.
+
+**Size=sm** changes only the vertical padding (`--ai-spacing-3` 8px → `--ai-spacing-2` 6px),
+giving a 36px row vs 40px. Horizontal padding, gap, font, and radius are unchanged.
+
+**Trailing tick** (`.dropdown-item__check`): an optional right-aligned brand-blue `check` icon
+(Figma `showRightIcon`) marks a selected row in the Filter-views Dropdown — a tick-only
+selection style with no grey background, distinct from `--selected`.
 
 The Hover state is achieved either via:
 - `:hover` pseudo-class (real mouse interaction)
@@ -35,9 +46,12 @@ The Hover state is achieved either via:
 | Type=Warning | `.dropdown-item--warning` |
 | State=Default | (no modifier) |
 | State=Hover | `:hover` or `.is-hover` |
+| Size=Default | (no modifier) |
+| Size=sm | `.dropdown-item--sm` |
 | Icon | `<i data-lucide="…">` directly inside `.dropdown-item` |
 | Label | `<span data-text="<label>">` (see Stable-width label below) |
-| Selected (existing) | `.dropdown-item--selected` or `aria-current="page"` |
+| Selected (grey-bg) | `.dropdown-item--selected` or `aria-current="page"` |
+| Selected (trailing tick) | `<i data-lucide="check" class="dropdown-item__check">` as last child |
 
 ### Stable-width label
 
@@ -79,7 +93,20 @@ Items without `data-text` work too — they just reflow on hover like normal tex
 | Font-size | `var(--ai-font-fixed-xs)` (14px) |
 | Line-height | `var(--ai-leading-md)` (24px) |
 | Icon size | `var(--ai-icon-size-sm)` (16px) |
-| Icon colour | `var(--ai-icon-secondary)` |
+| Icon colour | `var(--ai-icon-contrast)` |
+
+### Size=sm
+
+| Property | Token |
+|---|---|
+| Vertical padding | `var(--ai-spacing-2)` (6px) — overrides the base 8px; horizontal padding unchanged |
+
+### Trailing tick (`.dropdown-item__check`)
+
+| Property | Token |
+|---|---|
+| Alignment | `margin-left: auto` (pushed to the right edge) |
+| Colour | `var(--ai-surface-brand)` (brand blue) |
 
 ### Hover (Default type)
 
@@ -139,3 +166,6 @@ the surrounding chrome (border, shadow, padding) — DropdownItem is only the ro
 - 2026-05-27: Extracted from Dropdown's inline `.dropdown__item` selectors to match
   Figma's formal componentisation (component set `2699:2149`). Added Type=Warning
   for destructive actions. Dropdown demos updated to compose this class.
+- 2026-06-16: Added **Size=sm** axis (`.dropdown-item--sm`, vertical padding 6px → 36px row)
+  and an optional **trailing tick** (`.dropdown-item__check`) for the Filter-views selected
+  style. Aligned the star icon colour to Figma's `--ai-icon-contrast` (was `--ai-icon-secondary`).

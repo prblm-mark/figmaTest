@@ -12,9 +12,13 @@ figma.connect(
         Default: '',
         Hover: 'is-hover',
       }),
+      size: figma.enum('Size', {
+        Default: '',
+        sm: 'dropdown-item--sm',
+      }),
     },
-    example: ({ type, state }) => html`
-      <button class="dropdown-item ${type} ${state}" type="button">
+    example: ({ type, state, size }) => html`
+      <button class="dropdown-item ${type} ${state} ${size}" type="button">
         <i data-lucide="star" aria-hidden="true"></i>
         <span data-text="Item label">Item label</span>
       </button>
