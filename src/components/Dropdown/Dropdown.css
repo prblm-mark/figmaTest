@@ -222,6 +222,13 @@
   min-width: var(--ai-size-3); /* 192px */
 }
 
+/* Filter-views rows hover to the softer --ai-surface-minimal (vs the default
+ * DropdownItem --ai-surface-secondary). Scoped to this panel only. */
+.dropdown__panel--filter-views .dropdown-item:hover,
+.dropdown__panel--filter-views .dropdown-item.is-hover {
+  background-color: var(--ai-surface-minimal);
+}
+
 /* Small section label ("Saved views"). */
 .dropdown__label {
   margin: 0;
@@ -250,6 +257,72 @@
 
 .dropdown__filter-views-footer .btn [data-lucide] {
   color: var(--ai-text-contrast);
+}
+
+/* Per-row actions (Filter views): a non-selected view row reveals a "…" trigger
+ * on hover (Figma `Icon/16px/Ellipsis`); clicking it toggles a floating mini
+ * action menu (Figma frame "ChatMenu" — copy / delete). The selected row keeps
+ * the tick and has no actions. */
+.dropdown__view {
+  position: relative;
+  width: 100%;
+}
+
+/* "…" trigger — overlays the row's trailing slot (aligns with the tick column),
+ * hidden until the row is hovered or the menu is open. */
+.dropdown-item__more {
+  position: absolute;
+  top: 50%;
+  right: var(--ai-spacing-4); /* 12px — matches the item's trailing padding */
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ai-icon-contrast);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none; /* invisible trigger must not intercept clicks */
+  transition: opacity var(--ai-transition-default);
+}
+
+.dropdown__view:hover .dropdown-item__more,
+.dropdown-item__more[aria-expanded="true"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.dropdown-item__more [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* Floating mini action menu — appears to the right of the row, overlapping the
+ * panel's right edge (Figma 2959:7726). */
+.dropdown__row-menu {
+  position: absolute;
+  top: 50%;
+  left: calc(100% - var(--ai-spacing-4)); /* overlap into the panel padding */
+  transform: translateY(-50%);
+  z-index: 11;
+  display: flex;
+  padding: var(--ai-spacing-2); /* 6px */
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  box-shadow: var(--ai-shadow-sm); /* Figma drop-shadow 0 2px 1.5px — nearest token */
+}
+
+.dropdown__row-menu[hidden] {
+  display: none;
+}
+
+.dropdown__row-menu .btn [data-lucide] {
+  color: var(--ai-icon-contrast);
 }
 
 /* ── Type=User menu ───────────────────────────────────── */

@@ -16,7 +16,7 @@
 | 2553:3673 | Actions | Items with leading icons + divider + Delete CTA (alert button) | ✅ |
 | 2553:3671 | Checkbox | Checkbox items (composes existing Checkbox component) | ✅ |
 | 2553:3672 | Search | Search input + filterable item list | ✅ |
-| 2955:6653 | Filter views | "Saved views" label + **sm** DropdownItems (selected row uses trailing tick, no grey bg) + divider + a full-width **tertiary sm Button** "+ New view" (instance `2955:6668`) | ✅ (added 2026-06-16) |
+| 2955:6653 | Filter views | "Saved views" label + **sm** DropdownItems (selected row uses trailing tick, no grey bg) + divider + a full-width **tertiary sm Button** "+ New view" (instance `2955:6668`). A non-selected row reveals a "…" trigger on hover that toggles a floating copy/delete mini action-menu (Figma `2959:7765` / "ChatMenu" `2959:7726`). | ✅ (added 2026-06-16; per-row actions 2026-06-16) |
 | 2699:1976 | User menu | ThemeToggle + Icon Navigation Toggle + DropdownItems + Sign Out (Warning type) | ✅ (added 2026-05-27) |
 | 2705:2491 | User Menu Icon Nav | Same as User menu, but Icon Navigation toggled ON reveals Hide Labels row | ✅ (added 2026-05-27 — same `.dropdown--user-menu` markup, JS reveals the hidden row when the linked Toggle becomes active) |
 
@@ -36,10 +36,13 @@ inner node ID — `I<instance>;2699:2156` references the Warning-variant icon, v
 | Panel — Search variant | `.dropdown__panel .dropdown__panel--search` | Adds vertical gap between search input and list |
 | Panel — Actions variant | `.dropdown__panel .dropdown__panel--actions` | Adds vertical gap between item list and Delete CTA |
 | Panel — Checkbox variant | `.dropdown__panel .dropdown__panel--checkbox` | Different padding (16px x, 12px y) per Figma |
-| Panel — Filter views variant | `.dropdown__panel .dropdown__panel--filter-views` | `min-width: var(--ai-size-3)` (192px) |
+| Panel — Filter views variant | `.dropdown__panel .dropdown__panel--filter-views` | `min-width: var(--ai-size-3)` (192px). Scoped override: rows hover to `--ai-surface-minimal` (vs the default DropdownItem `--ai-surface-secondary`). |
 | Filter views — section label | `.dropdown__label` | "Saved views" — `--ai-font-body` / `--ai-font-fluid-xxs` (12px) / `--ai-text-contrast`, padding `2px 12px 4px` (`--ai-spacing-0-5` / `-4` / `-1`) |
 | Filter views — item group (top) | `.dropdown__list--filter-views-top` | `padding-bottom: var(--ai-spacing-3)`. Rows are `.dropdown-item--sm`; selected row carries `.dropdown-item__check` (no grey bg) |
 | Filter views — footer | `.dropdown__filter-views-footer` | `padding-top: var(--ai-spacing-3)`. Holds the "New view" CTA — a `.btn .btn--tertiary .btn--sm` forced full-width + left-aligned (`justify-content: flex-start`) with a leading `plus` icon. Scoped overrides: horizontal padding `--ai-spacing-3` (8px, vs btn--sm's 12px), text + icon `--ai-text-contrast`, weight `--ai-font-medium`. |
+| Filter views — view row (with actions) | `.dropdown__view` (`<li>`, `position: relative`) | Wraps a non-selected view's `.dropdown-item--sm` plus its `.dropdown-item__more` trigger and `.dropdown__row-menu`. |
+| Filter views — "…" trigger | `.dropdown-item__more` | Absolute, right `--ai-spacing-4`, `--ai-icon-contrast`, `opacity:0` → `1` on `.dropdown__view:hover` or `[aria-expanded="true"]`. Lucide `ellipsis` (Figma `Icon/16px/Ellipsis`). |
+| Filter views — row action menu | `.dropdown__row-menu` | Floating card right of the row (`left: calc(100% - var(--ai-spacing-4))`, `z-index:11`): `--ai-surface-primary` + `--ai-border-secondary` + `--ai-radius-md` + `--ai-spacing-2` padding + `--ai-shadow-sm`. Holds two `.btn--tertiary .btn--icon .btn--xs` buttons — `copy` + `trash-2`. Toggled via `hidden`. |
 | List | `.dropdown__list` | Flex column. `--header` modifier adds 4px gap (used in With Header) |
 | Item (action / link) | `.dropdown-item` | Extracted to **DropdownItem** component on 2026-05-27 — see `src/components/DropdownItem/`. Has Default and Warning Types, with State=Hover. The legacy `.dropdown__item` class still works via a back-compat alias in `Dropdown.css` (deprecated — prefer `.dropdown-item`). |
 | User menu — toggle list wrapper | `.dropdown__toggle-list` | Used only by `.dropdown--user-menu`. Vertical flex stack for Toggle rows. Padding `8px / 6px`. |
@@ -89,6 +92,7 @@ inner node ID — `I<instance>;2699:2156` references the Warning-variant icon, v
 
 - **Drop shadow.** Figma applies `0 4px 6px rgba(0,0,0,0.08)` to the panel. The closest existing token is `--ai-shadow-md` (`0 2px 10px rgba(0,0,0,0.1)`). The token reference in `docs/tokens-reference.md` describes shadow-md as covering "tooltips, inputs, **menus**" so it is the semantically correct choice for this dropdown menu. The visual delta is small (slightly larger blur, slightly higher opacity in shadow-md). Flag to the designer if a dedicated `--ai-shadow-popover` token is preferred.
 - **2px gap on the Search variant's list** (Figma `gap-[2px]`). Collapsed to `0` in the build — matches the Basic variant's flush-row pattern, and 2px has no `--ai-spacing-*` equivalent.
+- **Filter-views row action menu shadow.** Figma `0 2px 1.5px rgba(0,0,0,0.1)` on the floating "ChatMenu" card → mapped to `--ai-shadow-sm` (nearest token). Small visual delta only.
 
 No raw hex / arbitrary colour values used.
 
@@ -104,6 +108,7 @@ Auto-binds on `DOMContentLoaded` to every `.dropdown` on the page.
 | Click outside closes | Document-level click handler |
 | Escape closes | Returns focus to the trigger |
 | Search filter | When a `.dropdown__search-input` exists, typing case-insensitive-substring-filters the list items |
+| Row action menu (Filter views) | `initRowActions()` — clicking a row's `.dropdown-item__more` ("…") toggles its `.dropdown__row-menu` (copy / delete); clicking elsewhere in the panel or another trigger closes open menus. Copy/Delete are mock (`TODO(backend:SavedViews)`). |
 
 ## Notes
 
@@ -119,4 +124,4 @@ Auto-binds on `DOMContentLoaded` to every `.dropdown` on the page.
 - `Button` (`src/components/Button/`) — `.btn .btn--secondary` for the trigger; `.btn .btn--alert` for the Delete CTA in the Actions variant.
 - `Checkbox` (`src/components/Checkbox/`) — used by the Checkbox variant.
 - `DropdownItem` (`src/components/DropdownItem/`) — every row; the **Filter views** variant uses the `.dropdown-item--sm` size and the `.dropdown-item__check` trailing tick.
-- Lucide icons via CDN — `chevron-down`, `user`, `settings`, `help-circle`, `log-out`, `pencil`, `copy`, `archive`, `trash-2`, `search`, `check`, `plus`.
+- Lucide icons via CDN — `chevron-down`, `user`, `settings`, `help-circle`, `log-out`, `pencil`, `copy`, `archive`, `trash-2`, `search`, `check`, `plus`, `ellipsis`.

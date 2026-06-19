@@ -181,10 +181,23 @@
                 <i data-lucide="check" class="dropdown-item__check" aria-hidden="true"></i>
               </button>
             </li>
-            <li role="none">
+            <li role="none" class="dropdown__view">
               <button type="button" class="dropdown-item dropdown-item--sm" role="menuitemradio" aria-checked="false">
                 <span data-text="My Content">My Content</span>
               </button>
+              <!-- "…" reveals on row hover; toggles the copy/delete mini-menu -->
+              <button type="button" class="dropdown-item__more" aria-label="My Content actions" aria-haspopup="menu" aria-expanded="false">
+                <i data-lucide="ellipsis" aria-hidden="true"></i>
+              </button>
+              <!-- TODO(backend:SavedViews): copy duplicates / delete removes the view — mock/no-op in demo -->
+              <div class="dropdown__row-menu" role="menu" aria-label="My Content actions" hidden>
+                <button type="button" class="btn btn--tertiary btn--icon btn--xs" aria-label="Copy view">
+                  <i data-lucide="copy" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="btn btn--tertiary btn--icon btn--xs" aria-label="Delete view">
+                  <i data-lucide="trash-2" aria-hidden="true"></i>
+                </button>
+              </div>
             </li>
           </ul>
           <hr class="dropdown__divider">

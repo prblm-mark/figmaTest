@@ -57,12 +57,57 @@ function initReveals(panel) {
   });
 }
 
+/* Wire up per-row action menus (Filter views: the "…" trigger on a non-selected
+ * view row toggles a floating copy/delete mini-menu). Idempotent per trigger.
+ * Click "…" to toggle; clicking elsewhere in the panel, the menu buttons, or
+ * outside the dropdown closes it. */
+function initRowActions(panel) {
+  const triggers = panel.querySelectorAll('.dropdown-item__more');
+  if (!triggers.length) return;
+
+  const closeAll = () => {
+    panel.querySelectorAll('.dropdown__row-menu').forEach((menu) => {
+      menu.hidden = true;
+    });
+    triggers.forEach((t) => t.setAttribute('aria-expanded', 'false'));
+  };
+
+  triggers.forEach((trigger) => {
+    if (trigger.dataset.rowActionsInit === '1') return;
+    trigger.dataset.rowActionsInit = '1';
+
+    const menu = trigger.parentElement.querySelector('.dropdown__row-menu');
+    if (!menu) return;
+
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation(); // don't select the row or close the dropdown
+      const willOpen = menu.hidden;
+      closeAll();
+      menu.hidden = !willOpen;
+      trigger.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+    });
+
+    // Mock copy/delete — keep the dropdown open, just close the row menu.
+    menu.addEventListener('click', (e) => {
+      e.stopPropagation();
+      // TODO(backend:SavedViews): wire copy (duplicate view) / delete (remove view).
+      closeAll();
+    });
+  });
+
+  // A click anywhere else inside the panel closes any open row menu.
+  panel.addEventListener('click', closeAll);
+}
+
 function init(root) {
   const panel = root.querySelector('.dropdown__panel');
 
   // Reveal wiring runs for every dropdown (including static showcases), so
   // do it before the dropdown-init early-return below.
-  if (panel) initReveals(panel);
+  if (panel) {
+    initReveals(panel);
+    initRowActions(panel);
+  }
 
   if (root.dataset.dropdownInit === '1') return;
   root.dataset.dropdownInit = '1';
