@@ -63,6 +63,20 @@ Each marker's `<id>` matches an entry in `docs/handover-manifest.json` → `surf
 
 ---
 
+## Surface: Filters
+
+`src/components/FilterItem/FilterItem.js` — the Filter Item chip. Front-end **visual + state
+API only**: the chip renders all states and exposes `el.setFilterValues([…])`, but the value
+picker, the source list of filterable values, and persistence of the active filter are not built.
+
+| id | Element | Now | Backend work needed | Category |
+|---|---|---|---|---|
+| `filter-item-picker` | `.filter-item__trigger` (emits `filter-item:toggle`); `el.setFilterValues([…])` | Trigger toggles open + chevron flip; no value list, nothing persists | Mount a multi-select value picker on `filter-item:toggle`; source options per filter; call `setFilterValues([…])` with the choice (chip applies the 1–3 / 4+ rollup); persist active set; `×` clears (`filter-item:clear`) | needs-backend |
+
+`grep -rn "TODO(backend:Filters)" src/`
+
+---
+
 ## Surface: ControlHub
 
 `src/cc/templates/ControlHub/ControlHub.html` — the CC filterable directory screen (a second

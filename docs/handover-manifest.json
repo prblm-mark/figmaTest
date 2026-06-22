@@ -1,6 +1,6 @@
 {
   "description": "Backend-developer handover manifest. Machine-readable index of front-end elements that are mock / visual-only / in-memory and need real backend implementation. Front-end-only repo (vanilla HTML/CSS/JS, no framework, no backend). See HANDOVER.md for the human-readable version and the TODO(backend:<Surface>) in-code marker convention.",
-  "updated": "2026-06-15",
+  "updated": "2026-06-22",
   "categories": {
     "visual-only": "Rendered but no behaviour wired at all.",
     "fe-wired": "Works client-side; no backend required (may be fine as-is).",
@@ -63,7 +63,7 @@
     },
     "ControlScreen": {
       "file": "src/cc/templates/ControlScreen/ControlScreen.html",
-      "note": "CC home/landing dashboard. Front-end complete; all data is hardcoded and most actions are mock. Composes many CC patterns \u2014 see docs/component-registry.md for per-component status.",
+      "note": "CC home/landing dashboard. Front-end complete; all data is hardcoded and most actions are mock. Composes many CC patterns — see docs/component-registry.md for per-component status.",
       "items": [
         {
           "id": "favourites-persistence",
@@ -76,7 +76,7 @@
           "id": "submenu-pins",
           "category": "needs-backend",
           "element": "initSubmenuPins() in patterns/SidebarMenu/sidebar-menu.js + .cc-menu__submenu-item--pinned",
-          "current": "Pinning a nav sub-item floats it to the top (order:-1) and fills the pin icon, but state is in-memory only \u2014 held on the DOM, scoped to one menu tree (not synced desktop\u2194mobile) and lost on reload.",
+          "current": "Pinning a nav sub-item floats it to the top (order:-1) and fills the pin icon, but state is in-memory only — held on the DOM, scoped to one menu tree (not synced desktop↔mobile) and lost on reload.",
           "needs": "Persist pinned sub-items via a user-prefs API: GET pinned ids on init (apply --pinned on render), POST on pin, DELETE on unpin. Key by user + menu item id; share state across the desktop and mobile menu trees."
         },
         {
@@ -84,7 +84,7 @@
           "category": "needs-backend",
           "element": "'Search Control' / 'Search Favourites' / 'Search CRM' <input type=\"search\">",
           "current": "Empty inputs, no event handlers.",
-          "needs": "Per-panel search/filter API (debounced query \u2192 results), populate the lists from the response."
+          "needs": "Per-panel search/filter API (debounced query → results), populate the lists from the response."
         },
         {
           "id": "sidebar-nav-data",
@@ -110,16 +110,16 @@
         {
           "id": "whos-online-table",
           "category": "needs-backend",
-          "element": "Datatables 'Who's Online' (desktop + mobile) \u2014 rows, search, sort headers, pagination",
+          "element": "Datatables 'Who's Online' (desktop + mobile) — rows, search, sort headers, pagination",
           "current": "Static rows (5 fake users); search/sort/pagination controls are visual only.",
           "needs": "Users API with server-side paginate/sort/search; live 'online' status (poll or WebSocket); touch/login metadata from auth."
         },
         {
           "id": "auth-actions",
           "category": "needs-backend",
-          "element": "Logout / Sign Out (user menu) / Switch Mode (dev\u2192prod alert CTA) / View Site",
+          "element": "Logout / Sign Out (user menu) / Switch Mode (dev→prod alert CTA) / View Site",
           "current": "No click handlers (Switch Mode + View Site + header Logout); Sign Out visual only.",
-          "needs": "Auth/session endpoints (logout \u2192 clear session \u2192 redirect), mode-switch endpoint, View Site navigation."
+          "needs": "Auth/session endpoints (logout → clear session → redirect), mode-switch endpoint, View Site navigation."
         },
         {
           "id": "notifications",
@@ -131,7 +131,7 @@
         {
           "id": "ai-assistant",
           "category": "needs-backend",
-          "element": "Mounted AiAssistant panel \u2014 message input, chat history list, pin/copy/delete menu",
+          "element": "Mounted AiAssistant panel — message input, chat history list, pin/copy/delete menu",
           "current": "Initial-state view only: send button is inert, chat history is static, menu actions are visual. Processing/response states are demo-only (GSAP) on the standalone AiAssistant page, NOT mounted here. (Distinct from the future full-page CC AI Chat the Maximise button will route to.)",
           "needs": "Chat/AI backend: send message + stream response, chat-history CRUD (load/pin/delete), thumbs-up/down feedback. Session association with the user."
         },
@@ -146,15 +146,28 @@
           "id": "minimise",
           "category": "needs-backend",
           "element": "Rail Minimise button",
-          "current": "Visual only \u2014 no behaviour.",
-          "needs": "Toggle a condensed spacing view \u2014 apply data-layout=\"minimised\" on the shell (minimised-mode tokens already exist in css/tokens-minimised.css) \u2014 and persist the preference per user."
+          "current": "Visual only — no behaviour.",
+          "needs": "Toggle a condensed spacing view — apply data-layout=\"minimised\" on the shell (minimised-mode tokens already exist in css/tokens-minimised.css) — and persist the preference per user."
         },
         {
           "id": "print",
           "category": "fe-wired",
           "element": "Rail Print button",
-          "current": "Calls window.print() \u2014 works natively.",
+          "current": "Calls window.print() — works natively.",
           "needs": "None required. Only if a server-rendered print-to-PDF is wanted later."
+        }
+      ]
+    },
+    "Filters": {
+      "file": "src/components/FilterItem/FilterItem.js",
+      "note": "Filter Item chip — front-end visual + state API only. The value picker, the source list of filterable values, and persistence of the active filter are not built.",
+      "items": [
+        {
+          "id": "filter-item-picker",
+          "category": "needs-backend",
+          "element": ".filter-item__trigger (emits filter-item:toggle); el.setFilterValues([…])",
+          "current": "Trigger toggles the open state + chevron flip; no value list is shown and nothing persists.",
+          "needs": "Mount a multi-select value picker on the filter-item:toggle event; source the option list per filter; on selection call el.setFilterValues([…]) (chip applies the 1–3 / 4+ rollup); persist the active filter set and clear via the × (filter-item:clear)."
         }
       ]
     }
