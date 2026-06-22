@@ -302,7 +302,8 @@
 }
 
 /* Floating mini action menu — appears to the right of the row, overlapping the
- * panel's right edge (Figma 2959:7726). */
+ * panel's right edge (Figma "ChatMenu" 2959:7744). Vertical stack of two
+ * labelled rows (Copy / Delete). */
 .dropdown__row-menu {
   position: absolute;
   top: 50%;
@@ -310,7 +311,9 @@
   transform: translateY(-50%);
   z-index: 11;
   display: flex;
-  padding: var(--ai-spacing-2); /* 6px */
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--ai-spacing-3); /* 8px */
   background: var(--ai-surface-primary);
   border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-md);
@@ -319,6 +322,17 @@
 
 .dropdown__row-menu[hidden] {
   display: none;
+}
+
+/* Labelled rows — tertiary sm buttons forced full-width + left-aligned, like
+ * the "New view" footer CTA. Figma: leading 16px icon + 12px Medium label,
+ * text/primary, icon/contrast, pl 8px / pr 12px. */
+.dropdown__row-menu .btn {
+  width: 100%;
+  justify-content: flex-start;
+  padding-left: var(--ai-spacing-3); /* 8px (btn--sm right padding 12px kept) */
+  color: var(--ai-text-primary);
+  font-weight: var(--ai-font-medium);
 }
 
 .dropdown__row-menu .btn [data-lucide] {
