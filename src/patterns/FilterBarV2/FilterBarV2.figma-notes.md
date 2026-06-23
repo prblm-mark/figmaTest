@@ -56,9 +56,11 @@ Desktop fetched in full: Default, New View, Search. The rest are state/content p
 | Search | `.filter-bar-v2--search` | row 1 → back-arrow + full-width search Input (Export + actions hidden); **chips row 2 stays** |
 | New View | `.filter-bar-v2--new-view` | row 1 views → "New view" Input + Create (Export + actions stay); **row 2 collapses to just Add Filters** |
 
-**Saved-view selection + double-click inline rename** (`FilterBarV2.js` `wireViews` — same model
-as FilterBarV1: capture-phase click takeover, 220ms single/double disambiguation, `.filter-bar-v2__rename`
-input overlaid on the `<li>`; code-first, not in Figma — flag for designer) and the **right-aligned kebab panel**
+**Saved-view selection + rename** (`FilterBarV2.js` `wireViews` — same model as FilterBarV1:
+double-click OR the **"Rename" item in the row's … menu** (`[data-filter-rename]`, beside Copy/Delete)
+runs an inline `.filter-bar-v2__rename` overlay; capture-phase click takeover + 220ms single/double
+disambiguation; the … is on every row incl. the selected one and is always-visible on touch via
+`@media (hover: none)` in `Dropdown.css`; code-first, not in Figma — flag for designer) and the **right-aligned kebab panel**
 (`.filter-bar-v2__menu .dropdown__panel { left:auto; right:0 }`) match FilterBarV1. V2's search
 field lives inside `__lead` (which stays visible in search mode), so it needs no relocation.
 

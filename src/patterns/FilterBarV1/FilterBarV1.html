@@ -63,11 +63,20 @@
           <div class="dropdown__panel dropdown__panel--filter-views" role="menu" aria-label="Saved views">
             <p class="dropdown__label">Saved views</p>
             <ul class="dropdown__list dropdown__list--filter-views-top">
-              <li role="none">
+              <li role="none" class="dropdown__view">
                 <button type="button" class="dropdown-item dropdown-item--sm" role="menuitemradio" aria-checked="true">
                   <span data-text="All Orders">All Orders</span>
                   <i data-lucide="check" class="dropdown-item__check" aria-hidden="true"></i>
                 </button>
+                <button type="button" class="dropdown-item__more" aria-label="All Orders actions" aria-haspopup="menu" aria-expanded="false">
+                  <i data-lucide="ellipsis" aria-hidden="true"></i>
+                </button>
+                <!-- TODO(backend:Filters): rename / copy / delete the view — mock -->
+                <div class="dropdown__row-menu" role="menu" aria-label="All Orders actions" hidden>
+                  <button type="button" class="btn btn--tertiary btn--sm" role="menuitem" data-filter-rename><i data-lucide="pencil" aria-hidden="true"></i>Rename</button>
+                  <button type="button" class="btn btn--tertiary btn--sm" role="menuitem"><i data-lucide="copy" aria-hidden="true"></i>Copy</button>
+                  <button type="button" class="btn btn--tertiary btn--sm" role="menuitem"><i data-lucide="trash-2" aria-hidden="true"></i>Delete</button>
+                </div>
               </li>
               <li role="none" class="dropdown__view">
                 <button type="button" class="dropdown-item dropdown-item--sm" role="menuitemradio" aria-checked="false">
@@ -76,8 +85,9 @@
                 <button type="button" class="dropdown-item__more" aria-label="My Content actions" aria-haspopup="menu" aria-expanded="false">
                   <i data-lucide="ellipsis" aria-hidden="true"></i>
                 </button>
-                <!-- TODO(backend:Filters): copy duplicates / delete removes the view — mock -->
+                <!-- TODO(backend:Filters): rename / copy / delete the view — mock -->
                 <div class="dropdown__row-menu" role="menu" aria-label="My Content actions" hidden>
+                  <button type="button" class="btn btn--tertiary btn--sm" role="menuitem" data-filter-rename><i data-lucide="pencil" aria-hidden="true"></i>Rename</button>
                   <button type="button" class="btn btn--tertiary btn--sm" role="menuitem"><i data-lucide="copy" aria-hidden="true"></i>Copy</button>
                   <button type="button" class="btn btn--tertiary btn--sm" role="menuitem"><i data-lucide="trash-2" aria-hidden="true"></i>Delete</button>
                 </div>
@@ -229,11 +239,20 @@
           <div class="dropdown__panel dropdown__panel--filter-views" role="menu" aria-label="Saved views">
             <p class="dropdown__label">Saved views</p>
             <ul class="dropdown__list dropdown__list--filter-views-top">
-              <li role="none"><button type="button" class="dropdown-item dropdown-item--sm" role="menuitemradio" aria-checked="true"><span data-text="All Orders">All Orders</span><i data-lucide="check" class="dropdown-item__check" aria-hidden="true"></i></button></li>
+              <li role="none" class="dropdown__view">
+                <button type="button" class="dropdown-item dropdown-item--sm" role="menuitemradio" aria-checked="true"><span data-text="All Orders">All Orders</span><i data-lucide="check" class="dropdown-item__check" aria-hidden="true"></i></button>
+                <button type="button" class="dropdown-item__more" aria-label="All Orders actions" aria-haspopup="menu" aria-expanded="false"><i data-lucide="ellipsis" aria-hidden="true"></i></button>
+                <div class="dropdown__row-menu" role="menu" aria-label="All Orders actions" hidden>
+                  <button type="button" class="btn btn--tertiary btn--sm" role="menuitem" data-filter-rename><i data-lucide="pencil" aria-hidden="true"></i>Rename</button>
+                  <button type="button" class="btn btn--tertiary btn--sm" role="menuitem"><i data-lucide="copy" aria-hidden="true"></i>Copy</button>
+                  <button type="button" class="btn btn--tertiary btn--sm" role="menuitem"><i data-lucide="trash-2" aria-hidden="true"></i>Delete</button>
+                </div>
+              </li>
               <li role="none" class="dropdown__view">
                 <button type="button" class="dropdown-item dropdown-item--sm" role="menuitemradio" aria-checked="false"><span data-text="My Content">My Content</span></button>
                 <button type="button" class="dropdown-item__more" aria-label="My Content actions" aria-haspopup="menu" aria-expanded="false"><i data-lucide="ellipsis" aria-hidden="true"></i></button>
                 <div class="dropdown__row-menu" role="menu" aria-label="My Content actions" hidden>
+                  <button type="button" class="btn btn--tertiary btn--sm" role="menuitem" data-filter-rename><i data-lucide="pencil" aria-hidden="true"></i>Rename</button>
                   <button type="button" class="btn btn--tertiary btn--sm" role="menuitem"><i data-lucide="copy" aria-hidden="true"></i>Copy</button>
                   <button type="button" class="btn btn--tertiary btn--sm" role="menuitem"><i data-lucide="trash-2" aria-hidden="true"></i>Delete</button>
                 </div>

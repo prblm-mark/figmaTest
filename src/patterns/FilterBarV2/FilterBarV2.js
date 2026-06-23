@@ -89,6 +89,18 @@ function wireViews(root) {
   };
 
   views.addEventListener('click', (e) => {
+    const renameBtn = e.target.closest('[data-filter-rename]');
+    if (renameBtn && views.contains(renameBtn)) {
+      e.stopPropagation();
+      const li = renameBtn.closest('li');
+      const menu = li && li.querySelector('.dropdown__row-menu');
+      if (menu) menu.hidden = true;
+      const moreBtn = li && li.querySelector('.dropdown-item__more');
+      if (moreBtn) moreBtn.setAttribute('aria-expanded', 'false');
+      const row = li && li.querySelector('.dropdown-item[role="menuitemradio"]');
+      if (row) startRename(row);
+      return;
+    }
     const item = isRowName(e);
     if (!item) return;
     e.stopPropagation();

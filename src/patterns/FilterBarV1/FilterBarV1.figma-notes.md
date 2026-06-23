@@ -55,6 +55,13 @@ open/clear are owned by the **Dropdown** and **FilterItem** components (their ow
   (`.dropdown-item__check`), and closes the menu.
 - **Double click** a row name → inline rename: overlays a `.filter-bar-v1__rename` `<input>` on the
   row (Enter / blur commits, Escape cancels; committing the current view also updates the trigger).
+- **"Rename" in the row's … menu** (`[data-filter-rename]`, alongside Copy / Delete) is the
+  touch-friendly equivalent — it runs the same inline rename. The … menu is now present on **every**
+  row including the selected one, so any view can be renamed/copied/deleted. (Double-click stays as
+  a desktop shortcut.)
+
+Mobile/touch: the per-row … is hover-revealed on desktop but **always visible on touch**
+(`@media (hover: none)` in `Dropdown.css`) so Rename/Copy/Delete are reachable without hover.
 
 Because single-click on a `.dropdown-item` normally closes the panel (Dropdown.js), row clicks are
 intercepted in the **capture phase** with `stopPropagation`, and a ~220ms timer disambiguates

@@ -102,6 +102,19 @@ function wireViews(root) {
 
   // Capture phase so we beat Dropdown.js's bubble-phase close on .dropdown-item.
   views.addEventListener('click', (e) => {
+    // "Rename" in a row's … menu — touch-friendly equivalent of double-click.
+    const renameBtn = e.target.closest('[data-filter-rename]');
+    if (renameBtn && views.contains(renameBtn)) {
+      e.stopPropagation();
+      const li = renameBtn.closest('li');
+      const menu = li && li.querySelector('.dropdown__row-menu');
+      if (menu) menu.hidden = true; // close the … menu ourselves (we stopped Dropdown.js)
+      const moreBtn = li && li.querySelector('.dropdown-item__more');
+      if (moreBtn) moreBtn.setAttribute('aria-expanded', 'false');
+      const row = li && li.querySelector('.dropdown-item[role="menuitemradio"]');
+      if (row) startRename(row);
+      return;
+    }
     const item = isRowName(e);
     if (!item) return;
     e.stopPropagation();
