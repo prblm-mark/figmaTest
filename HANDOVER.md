@@ -65,13 +65,17 @@ Each marker's `<id>` matches an entry in `docs/handover-manifest.json` → `surf
 
 ## Surface: Filters
 
-`src/components/FilterItem/FilterItem.js` — the Filter Item chip. Front-end **visual + state
-API only**: the chip renders all states and exposes `el.setFilterValues([…])`, but the value
-picker, the source list of filterable values, and persistence of the active filter are not built.
+The Filter Item chip (`src/components/FilterItem/`) and the two A/B filter-bar toolbars
+(`src/patterns/FilterBarV1/` single-row, `src/patterns/FilterBarV2/` two-row). Front-end
+**visual + state API only**: the chips, saved-views menu, search mode, New View, Export and
+kebab actions all render and transition, but no data, querying, or persistence is wired.
 
 | id | Element | Now | Backend work needed | Category |
 |---|---|---|---|---|
-| `filter-item-picker` | `.filter-item__trigger` (emits `filter-item:toggle`); `el.setFilterValues([…])` | Trigger toggles open + chevron flip; no value list, nothing persists | Mount a multi-select value picker on `filter-item:toggle`; source options per filter; call `setFilterValues([…])` with the choice (chip applies the 1–3 / 4+ rollup); persist active set; `×` clears (`filter-item:clear`) | needs-backend |
+| `filter-item-picker` | `.filter-item__trigger` (emits `filter-item:toggle`); `el.setFilterValues([…])` | Trigger toggles open + chevron flip; no value list, nothing persists | Mount a multi-select value picker on `filter-item:toggle`; source options per filter; call `setFilterValues([…])` (chip applies the 1–3 / 4+ rollup); persist active set; `×` clears (`filter-item:clear`) | needs-backend |
+| `filter-bar-views` | `.filter-bar-v{1,2}__views` Dropdown + “+ New view” + Create | Static All Orders / My Content; New view enters rename mode but Create is a no-op; per-row Copy/Delete mock | Saved-views CRUD per user+context (GET / POST create-from-filters / PATCH rename / copy / DELETE); switching a view loads its filter set | needs-backend |
+| `filter-bar-search` | `.filter-bar-v{1,2}__search .input__control` | Search mode toggles but typing does nothing | Debounced query against the list data source; reflect in the controlled table | needs-backend |
+| `filter-bar-export` | V2 `.filter-bar-v2__export` + kebab actions | Buttons/menu render, no handler | Export current view; wire kebab actions to endpoints | needs-backend |
 
 `grep -rn "TODO(backend:Filters)" src/`
 

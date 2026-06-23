@@ -1,0 +1,233 @@
+/* FilterBarV2 — filter toolbar (A/B variant 2). Uses only --ai-* tokens.
+ *
+ * Two-row card: row1 = [saved-views | ........ Export  search  kebab],
+ *               row2 = [solid FilterItem chips ........ Add Filters].
+ * Differs from V1: explicit Export button, two stacked rows, and chips use the
+ * SOLID "default" FilterItem treatment (only Add Filters is dashed).
+ *
+ * JS-driven modes on the root:
+ *   .filter-bar-v2--search    → row1 becomes back-arrow + full-width search; chips row stays
+ *   .filter-bar-v2--new-view  → row1 views replaced by "New view" field + Create; row2 = Add Filters only
+ *
+ * Composes (link their CSS in the page): FilterItem, Dropdown, DropdownItem, Input, Button.
+ */
+
+.filter-bar-v2 {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  overflow: hidden; /* clip row borders to the rounded corners */
+  box-sizing: border-box;
+}
+
+/* ── Rows ──────────────────────────────────────────────── */
+.filter-bar-v2__row {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-5); /* 16px */
+  padding: var(--ai-spacing-4) var(--ai-spacing-5); /* 12 / 16 */
+}
+
+.filter-bar-v2__row--top {
+  border-bottom: 1px solid var(--ai-border-secondary);
+}
+
+/* Lead area of row1 — holds the views control (or new-view / search fields). */
+.filter-bar-v2__lead {
+  display: flex;
+  flex: 1 0 0;
+  min-width: 0;
+  align-items: center;
+  gap: var(--ai-spacing-3); /* 8px */
+}
+
+/* ── Saved-views control (Dropdown w/ field-styled trigger) ── */
+.filter-bar-v2__views {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.filter-bar-v2__views-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ai-spacing-3);
+  width: var(--ai-size-3); /* 192px */
+  min-height: var(--ai-spacing-8); /* 40px */
+  padding: 0 var(--ai-spacing-5); /* 0 16px */
+  margin: 0;
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs); /* 14px */
+  font-weight: var(--ai-font-regular); /* V2 trigger is regular (V1 is medium) */
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  cursor: pointer;
+}
+
+.filter-bar-v2__views-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.filter-bar-v2__views-chevron {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-contrast);
+  flex-shrink: 0;
+  transition: transform var(--ai-transition-default);
+}
+
+.filter-bar-v2__views.is-open .filter-bar-v2__views-chevron {
+  transform: rotate(180deg);
+}
+
+/* ── Export button (V2-only) ─────────────────────────── */
+.filter-bar-v2__export {
+  flex-shrink: 0;
+}
+
+/* ── Actions (search icon + kebab) ───────────────────── */
+.filter-bar-v2__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  flex-shrink: 0;
+}
+
+.filter-bar-v2__icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ai-icon-contrast);
+  cursor: pointer;
+}
+
+.filter-bar-v2__icon-btn [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+.filter-bar-v2__menu {
+  position: relative;
+}
+
+/* Kebab sits at the far right → right-align its panel to the trigger. */
+.filter-bar-v2__menu .dropdown__panel {
+  left: auto;
+  right: 0;
+}
+
+/* ── Chips row (row2) ────────────────────────────────── */
+.filter-bar-v2__chips {
+  display: flex;
+  flex: 1 0 0;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ai-spacing-3); /* 8px */
+}
+
+.filter-bar-v2__add {
+  flex-shrink: 0; /* "Add Filters" pinned to the right of the chips row */
+}
+
+/* ── Search mode (row1 → back + full-width search; chips row stays) ── */
+.filter-bar-v2__back {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ai-icon-contrast);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.filter-bar-v2__back [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+.filter-bar-v2__search {
+  display: none;
+  flex: 1 0 0;
+  min-width: 0;
+}
+
+.filter-bar-v2--search .filter-bar-v2__back {
+  display: inline-flex;
+}
+
+.filter-bar-v2--search .filter-bar-v2__search {
+  display: block;
+}
+
+.filter-bar-v2--search .filter-bar-v2__views,
+.filter-bar-v2--search .filter-bar-v2__export,
+.filter-bar-v2--search .filter-bar-v2__actions {
+  display: none;
+}
+
+/* ── New View mode ───────────────────────────────────── */
+.filter-bar-v2__new-view {
+  display: none;
+  flex-shrink: 0;
+  width: var(--ai-size-3); /* 192px */
+}
+
+.filter-bar-v2__create {
+  display: none;
+  flex-shrink: 0;
+}
+
+/* The new-view field's × is a cancel control, not a text-clear — keep it visible
+ * even when the field is empty (Input's default hides it until text is typed). */
+.filter-bar-v2__new-view .input__clear {
+  visibility: visible;
+}
+
+.filter-bar-v2--new-view .filter-bar-v2__views {
+  display: none;
+}
+
+.filter-bar-v2--new-view .filter-bar-v2__new-view {
+  display: block;
+}
+
+.filter-bar-v2--new-view .filter-bar-v2__create {
+  display: inline-flex;
+}
+
+/* New-view row2 collapses to just the Add Filters chip. */
+.filter-bar-v2--new-view .filter-bar-v2__chips {
+  display: none;
+}
+
+/* ── Focus (a11y) ────────────────────────────────────── */
+.filter-bar-v2__views-trigger:focus-visible,
+.filter-bar-v2__icon-btn:focus-visible,
+.filter-bar-v2__back:focus-visible {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: 2px;
+  border-radius: var(--ai-radius-sm);
+}
+
+/* ── Mobile (Device=Mobile): Export collapses out of the bar (per Figma) ── */
+@media (max-width: 767px) {
+  .filter-bar-v2__export {
+    display: none;
+  }
+}
