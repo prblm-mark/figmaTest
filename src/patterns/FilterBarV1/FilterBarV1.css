@@ -156,8 +156,10 @@
   display: inline-flex;
 }
 
-/* New View mode keeps only the "Add Filters" chip (matches Figma New View). */
-.filter-bar-v1--new-view .filter-bar-v1__chips > .filter-item:not(.filter-bar-v1__add) {
+/* New View mode — and a freshly created (empty) view — keep only the "Add Filters"
+ * chip. Existing views keep their default chips. */
+.filter-bar-v1--new-view .filter-bar-v1__chips > .filter-item:not(.filter-bar-v1__add),
+.filter-bar-v1--view-empty .filter-bar-v1__chips > .filter-item:not(.filter-bar-v1__add) {
   display: none;
 }
 

@@ -5,11 +5,15 @@
  * Copy/Delete mini-menu, and the FilterItem chips are their own components —
  * load and init their scripts separately (they auto-bind).
  *
- * Hooks (data-filter-action on a descendant button): see FilterBarV1.js.
+ * Hooks (data-filter-action on a descendant button): see FilterBarV1.js, plus
+ * "new-view-create" (Create → add the typed name to the saved-views list + select it).
  *
  * TODO(backend:Filters): saved-views list, value pickers, search querying,
- * Create (persist), Export, and the kebab actions are all mock.
+ * Create (persist), Export, and the kebab actions are all mock — a created view
+ * lives in the DOM only and is lost on reload.
  */
+
+import { initAll as initDropdowns } from '../../components/Dropdown/Dropdown.js';
 
 function setMode(root, mode) {
   root.classList.toggle('filter-bar-v2--search', mode === 'search');
@@ -24,6 +28,58 @@ function closeDropdowns(root) {
   });
 }
 
+/* Select a saved-view row: trigger label + tick + aria-checked, then close. */
+function selectView(root, item) {
+  const views = root.querySelector('.filter-bar-v2__views');
+  if (!views || !item) return;
+  const label = views.querySelector('.filter-bar-v2__views-label');
+  const text = item.querySelector('[data-text]');
+  if (label && text) label.textContent = text.textContent.trim();
+  views.querySelectorAll('.dropdown-item[role="menuitemradio"]').forEach((it) => {
+    it.setAttribute('aria-checked', it === item ? 'true' : 'false');
+  });
+  // New (empty) view → show only "Add Filters"; existing views keep their chips.
+  // Non-destructive: chips stay in the DOM, hidden by CSS while this class is on.
+  root.classList.toggle('filter-bar-v2--view-empty', item.dataset.viewEmpty === '1');
+  let check = views.querySelector('.dropdown-item__check');
+  if (!check) {
+    check = document.createElement('i');
+    check.setAttribute('data-lucide', 'check');
+    check.setAttribute('aria-hidden', 'true');
+    check.className = 'dropdown-item__check';
+  }
+  item.appendChild(check);
+  views.classList.remove('is-open');
+  const trigger = views.querySelector('.dropdown__trigger');
+  if (trigger) trigger.setAttribute('aria-expanded', 'false');
+}
+
+/* Append a new saved-view row (with its … menu) and return its radio button. */
+function addView(root, name) {
+  const list = root.querySelector('.filter-bar-v2__views .dropdown__list--filter-views-top');
+  if (!list) return null;
+  const li = document.createElement('li');
+  li.setAttribute('role', 'none');
+  li.className = 'dropdown__view';
+  li.innerHTML =
+    '<button type="button" class="dropdown-item dropdown-item--sm" role="menuitemradio" aria-checked="false"><span data-text=""></span></button>'
+    + '<button type="button" class="dropdown-item__more" aria-haspopup="menu" aria-expanded="false"><i data-lucide="ellipsis" aria-hidden="true"></i></button>'
+    + '<div class="dropdown__row-menu" role="menu" hidden>'
+    + '<button type="button" class="btn btn--tertiary btn--sm" role="menuitem" data-filter-rename><i data-lucide="pencil" aria-hidden="true"></i>Rename</button>'
+    + '<button type="button" class="btn btn--tertiary btn--sm" role="menuitem"><i data-lucide="copy" aria-hidden="true"></i>Copy</button>'
+    + '<button type="button" class="btn btn--tertiary btn--sm" role="menuitem"><i data-lucide="trash-2" aria-hidden="true"></i>Delete</button>'
+    + '</div>';
+  const span = li.querySelector('[data-text]');
+  span.setAttribute('data-text', name);
+  span.textContent = name;
+  li.querySelector('.dropdown-item__more').setAttribute('aria-label', name + ' actions');
+  li.querySelector('.dropdown__row-menu').setAttribute('aria-label', name + ' actions');
+  list.appendChild(li);
+  const row = li.querySelector('.dropdown-item[role="menuitemradio"]');
+  row.dataset.viewEmpty = '1'; // new view starts with no filters (see selectView)
+  return row;
+}
+
 /* Saved-views row interaction (FilterBarV2): single click selects + closes,
  * double click inline-renames. See FilterBarV1.js for the full rationale. */
 function wireViews(root) {
@@ -31,19 +87,6 @@ function wireViews(root) {
   if (!views) return;
   const label = views.querySelector('.filter-bar-v2__views-label');
   let clickTimer = null;
-
-  const selectRow = (item) => {
-    const text = item.querySelector('[data-text]');
-    if (label && text) label.textContent = text.textContent.trim();
-    views.querySelectorAll('.dropdown-item[role="menuitemradio"]').forEach((it) => {
-      it.setAttribute('aria-checked', it === item ? 'true' : 'false');
-    });
-    const check = views.querySelector('.dropdown-item__check');
-    if (check) item.appendChild(check);
-    views.classList.remove('is-open');
-    const trigger = views.querySelector('.dropdown__trigger');
-    if (trigger) trigger.setAttribute('aria-expanded', 'false');
-  };
 
   const startRename = (item) => {
     const li = item.closest('li');
@@ -105,7 +148,7 @@ function wireViews(root) {
     if (!item) return;
     e.stopPropagation();
     if (clickTimer) return;
-    clickTimer = setTimeout(() => { clickTimer = null; selectRow(item); }, 220);
+    clickTimer = setTimeout(() => { clickTimer = null; selectView(root, item); }, 220);
   }, true);
 
   views.addEventListener('dblclick', (e) => {
@@ -148,6 +191,21 @@ function init(root) {
       case 'new-view-exit':
         setMode(root, null);
         break;
+      case 'new-view-create': {
+        const input = root.querySelector('.filter-bar-v2__new-view .input__control');
+        const name = input ? input.value.trim() : '';
+        if (name) {
+          const row = addView(root, name);
+          if (row) {
+            if (typeof window !== 'undefined' && window.lucide) window.lucide.createIcons();
+            initDropdowns(root);
+            selectView(root, row); // selects + applies --view-empty (only Add Filters shows)
+          }
+        }
+        if (input) input.value = '';
+        setMode(root, null);
+        break;
+      }
       default:
         break;
     }

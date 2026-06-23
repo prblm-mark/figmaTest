@@ -44,7 +44,7 @@ state/content permutations of those structures (verified against the parent-fram
 | Mode | Class | Entered by | Effect |
 |---|---|---|---|
 | Search | `.filter-bar-v1--search` | 🔍 (`data-filter-action="search"`) | back-arrow + full-width search Input replace the bar; ← exits |
-| New View | `.filter-bar-v1--new-view` | "+ New view" in saved-views menu (`data-filter-action="new-view"`) | views trigger → "New view" Input + Create Button; chips collapse to only the `.filter-bar-v1__add` ("Add Filters") chip (matches Figma New View); × / Create exit |
+| New View | `.filter-bar-v1--new-view` | "+ New view" in saved-views menu (`data-filter-action="new-view"`) | views trigger → "New view" Input + Create Button; chips collapse to only the `.filter-bar-v1__add` ("Add Filters") chip (matches Figma New View). **Create** (`new-view-create`) appends the typed name as a new saved-view row (`addView`, flagged `data-view-empty="1"`), selects it (`selectView` → trigger label + tick), and re-wires the new row's … menu (`Dropdown.initAll`); **×** (`new-view-exit`) cancels; empty name → just exits. A new (empty) view shows **only the "Add Filters" chip** via the `.filter-bar-v1--view-empty` class (non-destructive — chips stay in the DOM, hidden by CSS). Existing views keep their default chips; `selectView` toggles `--view-empty` from the row's `data-view-empty` flag, so switching back to All Orders / My Content restores the full chip set. |
 
 The saved-views dropdown, kebab actions menu, per-row Copy/Delete mini-menu, and chip
 open/clear are owned by the **Dropdown** and **FilterItem** components (their own JS auto-binds).

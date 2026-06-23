@@ -244,8 +244,10 @@
   display: inline-flex;
 }
 
-/* New-view row2 collapses to just the Add Filters chip. */
-.filter-bar-v2--new-view .filter-bar-v2__chips {
+/* New-view mode — and a freshly created (empty) view — collapse row 2 to just the
+ * Add Filters chip (a sibling of __chips, so it stays). Existing views keep chips. */
+.filter-bar-v2--new-view .filter-bar-v2__chips,
+.filter-bar-v2--view-empty .filter-bar-v2__chips {
   display: none;
 }
 
