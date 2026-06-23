@@ -63,6 +63,10 @@ open/clear are owned by the **Dropdown** and **FilterItem** components (their ow
 Mobile/touch: the per-row … is hover-revealed on desktop but **always visible on touch**
 (`@media (hover: none)` in `Dropdown.css`) so Rename/Copy/Delete are reachable without hover.
 
+On the **selected** row the … overlays the trailing tick, so the tick is hidden whenever the …
+is shown — row `:hover`, its menu open (`:has([aria-expanded="true"])`), or always on touch
+(scoped to `.filter-bar-v1__views`, since only the FilterBar puts a … on the selected row).
+
 Because single-click on a `.dropdown-item` normally closes the panel (Dropdown.js), row clicks are
 intercepted in the **capture phase** with `stopPropagation`, and a ~220ms timer disambiguates
 single vs double click. The rename `<input>` is appended to the `<li>` (it can't nest inside the

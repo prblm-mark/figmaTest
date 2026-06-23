@@ -79,6 +79,19 @@
   transform: rotate(180deg);
 }
 
+/* On the selected row the … overlays the tick — hide the tick whenever the …
+ * is shown (row hover, its menu open, or always on touch) so they don't clash. */
+.filter-bar-v1__views .dropdown__view:hover .dropdown-item__check,
+.filter-bar-v1__views .dropdown__view:has(.dropdown-item__more[aria-expanded="true"]) .dropdown-item__check {
+  visibility: hidden;
+}
+
+@media (hover: none) {
+  .filter-bar-v1__views .dropdown-item__check {
+    visibility: hidden;
+  }
+}
+
 /* Inline rename (double-click a saved-view name). The <input> overlays the row
  * — it can't nest inside the row's <button> — so the <li> is the positioning
  * context while editing. */
