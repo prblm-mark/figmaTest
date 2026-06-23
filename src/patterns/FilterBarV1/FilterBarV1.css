@@ -79,6 +79,28 @@
   transform: rotate(180deg);
 }
 
+/* Inline rename (double-click a saved-view name). The <input> overlays the row
+ * — it can't nest inside the row's <button> — so the <li> is the positioning
+ * context while editing. */
+.filter-bar-v1__li--renaming {
+  position: relative;
+}
+
+.filter-bar-v1__rename {
+  position: absolute;
+  inset: var(--ai-spacing-1) var(--ai-spacing-3); /* sit over the row's text area */
+  z-index: 1;
+  box-sizing: border-box;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-primary);
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-brand);
+  border-radius: var(--ai-radius-sm);
+  padding: 0 var(--ai-spacing-2);
+  outline: none;
+}
+
 /* ── Chips group (left divider rule between views and chips) ── */
 .filter-bar-v1__chips {
   display: flex;

@@ -49,9 +49,18 @@ state/content permutations of those structures (verified against the parent-fram
 The saved-views dropdown, kebab actions menu, per-row Copy/Delete mini-menu, and chip
 open/clear are owned by the **Dropdown** and **FilterItem** components (their own JS auto-binds).
 
-**Saved-view selection** is wired by `FilterBarV1.js` (`wireViewSelect`): clicking a
-`menuitemradio` row updates the trigger's `.filter-bar-v1__views-label` text, flips
-`aria-checked`, and moves the single rendered tick (`.dropdown-item__check`) onto the chosen row.
+**Saved-view selection + rename** is wired by `FilterBarV1.js` (`wireViews`):
+- **Single click** a `menuitemradio` row → select: updates the trigger's
+  `.filter-bar-v1__views-label`, flips `aria-checked`, moves the rendered tick
+  (`.dropdown-item__check`), and closes the menu.
+- **Double click** a row name → inline rename: overlays a `.filter-bar-v1__rename` `<input>` on the
+  row (Enter / blur commits, Escape cancels; committing the current view also updates the trigger).
+
+Because single-click on a `.dropdown-item` normally closes the panel (Dropdown.js), row clicks are
+intercepted in the **capture phase** with `stopPropagation`, and a ~220ms timer disambiguates
+single vs double click. The rename `<input>` is appended to the `<li>` (it can't nest inside the
+row's `<button>`) with the `<li>` made `position: relative` via `.filter-bar-v1__li--renaming`.
+**This rename interaction is code-first — not in the Figma spec; flag for designer review.**
 
 Two structural rules this relies on:
 - **`.filter-bar-v1__search` is a sibling of `__main`, not a child** — search mode hides `__main`
