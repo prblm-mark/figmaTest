@@ -21,6 +21,11 @@ export default defineConfig({
   description: 'Component library built from Figma design tokens',
   base: process.env.DOCS_BASE || '/',
 
+  // Component figma-notes are ingested verbatim and legitimately cross-link sibling
+  // source folders (e.g. ../FilterBarV1/) which aren't VitePress routes. Those aren't
+  // navigable docs links, so don't fail the build on them.
+  ignoreDeadLinks: true,
+
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
   ],
