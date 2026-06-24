@@ -11,6 +11,7 @@ figma.connect(
         'Views dropdown': '',
         'New View': 'filter-bar-v2--new-view',
         Wrapping: '',
+        'Save View': 'filter-bar-v2--save-view',
         Search: 'filter-bar-v2--search',
         Actions: '',
       }),

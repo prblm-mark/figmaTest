@@ -251,6 +251,24 @@
   display: none;
 }
 
+/* ── Save View (Type=Save View) — a primary "Save view" CTA pinned to the right of
+ * row 2, shown once a filter is added/amended. It's a Button (primary, sm); hidden
+ * until the bar enters the save-view state. In that state "Add Filters" rejoins the
+ * chip flow (chips stop filling the row) and Save view takes the right edge. */
+.filter-bar-v2__save {
+  display: none;
+  flex-shrink: 0;
+}
+
+.filter-bar-v2--save-view .filter-bar-v2__chips {
+  flex: 0 1 auto; /* don't fill — let Add Filters sit beside the chips on the left */
+}
+
+.filter-bar-v2--save-view .filter-bar-v2__save {
+  display: inline-flex;
+  margin-left: auto; /* push the CTA to the right edge of row 2 */
+}
+
 /* ── Focus (a11y) ────────────────────────────────────── */
 .filter-bar-v2__views-trigger:focus-visible,
 .filter-bar-v2__icon-btn:focus-visible,

@@ -23,7 +23,7 @@ the filter chips with "Add Filters" pinned right.
 | Search mode | replaces the whole bar | replaces **row 1 only** — chips row stays |
 | Mobile | views+actions row, chips wrap | same, **Export collapses out of the bar** |
 
-## Variant matrix (14 = 7 Type × Desktop/Mobile)
+## Variant matrix (8 Type × Desktop/Mobile)
 
 `Type` = scenarios of one toolbar (modelled as JS modes + composed-component states).
 
@@ -34,6 +34,7 @@ the filter chips with "Add Filters" pinned right.
 | 2977:3797 / 2977:3808 | Views dropdown | saved-views `.dropdown` is `.is-open` |
 | 2977:3799 / 2977:3806 | New View | root `.filter-bar-v2--new-view` |
 | 2977:3798 / 2977:3802 | Wrapping | more chips → row 2 flex-wraps |
+| 2989:6121 / 2989:6242 | Save View | root `.filter-bar-v2--save-view` reveals a "Save view" primary CTA (Button, sm) pinned right of row 2; Add Filters rejoins the chip flow |
 | 2977:3800 / 2977:3809 | Search | root `.filter-bar-v2--search` |
 | 2977:3807 / 2977:3805 | Actions | kebab `.dropdown` is `.is-open` |
 
@@ -55,6 +56,7 @@ Desktop fetched in full: Default, New View, Search. The rest are state/content p
 |---|---|---|
 | Search | `.filter-bar-v2--search` | row 1 → back-arrow + full-width search Input (Export + actions hidden); **chips row 2 stays** |
 | New View | `.filter-bar-v2--new-view` | row 1 views → "New view" Input + Create (Export + actions stay); **row 2 collapses to just Add Filters**. **Create** (`new-view-create`) appends the typed name to the saved-views list (`addView`, flagged `data-view-empty="1"`) + selects it (`selectView`) + re-wires its … (`Dropdown.initAll`); **×** cancels. A new (empty) view shows **only "Add Filters"** via `.filter-bar-v2--view-empty` (non-destructive — chips stay in the DOM). Existing views keep their default chips; `selectView` toggles `--view-empty` from the row's flag, so switching back restores them. |
+| Save View | `.filter-bar-v2--save-view` | a filter added/amended — **mock**: clicking the "Add Filters" chip (FilterItem bubbles `filter-item:toggle` with `open:true`) reveals the `.filter-bar-v2__save` "Save view" CTA (Button `--primary --sm`) pinned right of row 2 (`margin-left:auto`); the chips stop filling the row (`flex:0 1 auto`) so Add Filters rejoins the chip flow. Clicking the CTA (`data-filter-action="save-view"`) is a mock "save" — drops the class + closes the Add Filters chip. **TODO(backend:Filters)** — real trigger is a persisted filter-set change. |
 
 **Saved-view selection + rename** (`FilterBarV2.js` `wireViews` — same model as FilterBarV1:
 double-click OR the **"Rename" item in the row's … menu** (`[data-filter-rename]`, beside Copy/Delete)
@@ -75,7 +77,8 @@ field lives inside `__lead` (which stays visible in search mode), so it needs no
 | Export | `.btn.btn--secondary.filter-bar-v2__export` | Button + `download` icon + "Export"; hidden on mobile |
 | Actions | `.filter-bar-v2__actions` | search icon-btn + kebab `.dropdown` |
 | Chips (row 2) | `.filter-bar-v2__chips` | flex-wrap, gap 8; chips are FilterItem **default (solid)** / `--selected` |
-| Add Filters | `.filter-item--empty.filter-bar-v2__add` | dashed, pinned right |
+| Add Filters | `.filter-item--empty.filter-bar-v2__add` | dashed, pinned right (rejoins the chip flow in save-view mode) |
+| Save view CTA | `.btn.btn--primary.btn--sm.filter-bar-v2__save` | composes Button (primary, sm); hidden until `.filter-bar-v2--save-view`, then pinned right of row 2 |
 | Search / New-view / Create / Back | `.filter-bar-v2__{search,new-view,create,back}` | compose Input / Button |
 
 ## Token Mapping

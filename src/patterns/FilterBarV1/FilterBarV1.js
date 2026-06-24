@@ -230,6 +230,16 @@ function init(root) {
 
   wireViews(root);
 
+  // Save View: a filter being added/amended reveals the "Save view" CTA. Mock —
+  // here we trigger it from the "Add Filters" chip's toggle (FilterItem bubbles
+  // `filter-item:toggle`). TODO(backend:Filters): real trigger is a persisted
+  // filter-set change.
+  root.addEventListener('filter-item:toggle', (e) => {
+    if (e.target.closest('.filter-bar-v1__add') && e.detail && e.detail.open) {
+      root.classList.add('filter-bar-v1--save-view');
+    }
+  });
+
   const focusEl = (sel) => {
     const el = root.querySelector(sel);
     if (el) el.focus();
@@ -268,6 +278,17 @@ function init(root) {
         }
         if (input) input.value = '';
         setMode(root, null);
+        break;
+      }
+      case 'save-view': {
+        // Mock "save" — dismiss the CTA and close the Add Filters chip it came from.
+        root.classList.remove('filter-bar-v1--save-view');
+        const add = root.querySelector('.filter-bar-v1__add');
+        if (add) {
+          add.classList.remove('filter-item--open');
+          const t = add.querySelector('.filter-item__trigger');
+          if (t) t.setAttribute('aria-expanded', 'false');
+        }
         break;
       }
       default:

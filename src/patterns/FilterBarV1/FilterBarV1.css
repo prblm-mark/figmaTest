@@ -163,6 +163,18 @@
   display: none;
 }
 
+/* ── Save View (Type=Save View) — a primary "Save view" CTA that appears in the
+ * chip flow, right after "Add Filters", once a filter is added/amended. It's a
+ * Button (primary, sm); hidden until the bar enters the save-view state. */
+.filter-bar-v1__save {
+  display: none;
+  flex-shrink: 0;
+}
+
+.filter-bar-v1--save-view .filter-bar-v1__save {
+  display: inline-flex;
+}
+
 /* ── Actions (search icon + kebab) ───────────────────── */
 .filter-bar-v1__actions {
   display: flex;
