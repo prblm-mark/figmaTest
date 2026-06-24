@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="../../components/dark-mode-toggle.js"></script>
-  <title>FilterBarV2 — Design System</title>
+  <title>FilterBar — Design System</title>
   <link rel="stylesheet" href="../../styles/base.css">
   <!-- Dependencies -->
   <link rel="stylesheet" href="../../components/Button/Button.css">
@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="../../components/Dropdown/Dropdown.css">
   <link rel="stylesheet" href="../../components/FilterItem/FilterItem.css">
   <!-- Component -->
-  <link rel="stylesheet" href="FilterBarV2.css">
+  <link rel="stylesheet" href="FilterBar.css">
   <style>
     body { padding: var(--ai-spacing-7); background: var(--ai-surface-secondary); min-height: 100vh; }
     .demo-section {
@@ -75,10 +75,10 @@
 </head>
 <body>
 
-  <h1 class="demo-chrome" style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-4);">Filter Bar — V2</h1>
+  <h1 class="demo-chrome" style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-4);">Filter Bar</h1>
   <p class="demo-chrome" style="font-size: var(--ai-font-fixed-xs); color: var(--ai-text-secondary); margin: 0 0 var(--ai-spacing-6); max-width: 64ch;">
-    Two-row filter toolbar (A/B variant 2). Row 1: saved-views + an explicit Export button + search/kebab.
-    Row 2: the filter chips (V2 uses the <strong>solid</strong> FilterItem; only “Add Filters” is dashed).
+    Two-row filter toolbar. Row 1: saved-views + an explicit Export button + search/kebab.
+    Row 2: the filter chips (solid <strong>FilterItem</strong>; only “Add Filters” is dashed).
     Resize below 768px — the Export button collapses out of the bar (per Figma).
   </p>
 
@@ -96,14 +96,14 @@
     <p class="demo-section__title">Default — interactive</p>
     <p class="demo-section__sub">Open “All Orders”, toggle a chip, hit 🔍 to search, ⋮ for actions, or “+ New view” to rename.</p>
 
-    <div class="filter-bar-v2">
-      <div class="filter-bar-v2__row filter-bar-v2__row--top">
-        <button type="button" class="filter-bar-v2__back" data-filter-action="search-exit" aria-label="Exit search"><i data-lucide="arrow-left" aria-hidden="true"></i></button>
-        <div class="filter-bar-v2__lead">
-          <div class="dropdown filter-bar-v2__views" data-dropdown>
-            <button type="button" class="dropdown__trigger filter-bar-v2__views-trigger" aria-haspopup="menu" aria-expanded="false">
-              <span class="filter-bar-v2__views-label">All Orders</span>
-              <i data-lucide="chevron-down" class="filter-bar-v2__views-chevron" aria-hidden="true"></i>
+    <div class="filter-bar">
+      <div class="filter-bar__row filter-bar__row--top">
+        <button type="button" class="filter-bar__back" data-filter-action="search-exit" aria-label="Exit search"><i data-lucide="arrow-left" aria-hidden="true"></i></button>
+        <div class="filter-bar__lead">
+          <div class="dropdown filter-bar__views" data-dropdown>
+            <button type="button" class="dropdown__trigger filter-bar__views-trigger" aria-haspopup="menu" aria-expanded="false">
+              <span class="filter-bar__views-label">All Orders</span>
+              <i data-lucide="chevron-down" class="filter-bar__views-chevron" aria-hidden="true"></i>
             </button>
             <div class="dropdown__panel dropdown__panel--filter-views" role="menu" aria-label="Saved views">
               <p class="dropdown__label">Saved views</p>
@@ -134,15 +134,15 @@
             </div>
           </div>
 
-          <div class="input filter-bar-v2__new-view">
+          <div class="input filter-bar__new-view">
             <div class="input__wrap">
               <input type="text" class="input__control" placeholder="New view" aria-label="New view name">
               <button type="button" class="input__clear" data-filter-action="new-view-exit" aria-label="Cancel new view"><i data-lucide="x" aria-hidden="true"></i></button>
             </div>
           </div>
-          <button type="button" class="btn btn--primary filter-bar-v2__create" data-filter-action="new-view-create">Create</button>
+          <button type="button" class="btn btn--primary filter-bar__create" data-filter-action="new-view-create">Create</button>
 
-          <div class="input filter-bar-v2__search">
+          <div class="input filter-bar__search">
             <div class="input__wrap">
               <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
               <input type="search" class="input__control" placeholder="Search" aria-label="Search">
@@ -150,12 +150,12 @@
           </div>
         </div>
 
-        <div class="filter-bar-v2__actions">
-          <button type="button" class="btn btn--secondary filter-bar-v2__export"><i data-lucide="download" aria-hidden="true"></i>Export</button>
-          <div class="input filter-bar-v2__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
-          <button type="button" class="filter-bar-v2__icon-btn" data-filter-action="search" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
-          <div class="dropdown filter-bar-v2__menu" data-dropdown>
-            <button type="button" class="dropdown__trigger filter-bar-v2__icon-btn" aria-haspopup="menu" aria-expanded="false" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
+        <div class="filter-bar__actions">
+          <button type="button" class="btn btn--secondary filter-bar__export"><i data-lucide="download" aria-hidden="true"></i>Export</button>
+          <div class="input filter-bar__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
+          <button type="button" class="filter-bar__icon-btn" data-filter-action="search" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
+          <div class="dropdown filter-bar__menu" data-dropdown>
+            <button type="button" class="dropdown__trigger filter-bar__icon-btn" aria-haspopup="menu" aria-expanded="false" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
             <div class="dropdown__panel" role="menu" aria-label="Actions">
               <ul class="dropdown__list">
                 <li role="none"><button type="button" class="dropdown-item" role="menuitem"><span data-text="Some action">Some action</span></button></li>
@@ -166,15 +166,15 @@
         </div>
       </div>
 
-      <div class="filter-bar-v2__row">
-        <div class="filter-bar-v2__chips">
+      <div class="filter-bar__row">
+        <div class="filter-bar__chips">
           <div class="filter-item filter-item--rounded" data-filter-name="Name"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Name</span></button></div>
           <div class="filter-item filter-item--rounded" data-filter-name="Zone"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Zone</span></button></div>
           <div class="filter-item filter-item--rounded" data-filter-name="Type"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Type</span></button></div>
           <div class="filter-item filter-item--rounded" data-filter-name="Keywords"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Keywords</span></button></div>
-          <div class="filter-item filter-item--rounded filter-item--empty filter-bar-v2__add" data-filter-name="Add Filters"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Add Filters</span></button></div>
+          <div class="filter-item filter-item--rounded filter-item--empty filter-bar__add" data-filter-name="Add Filters"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Add Filters</span></button></div>
           <!-- Save View CTA — revealed when a filter is added/amended (here: click "Add Filters"). In the chip flow: after Add Filters on mobile, pinned right on desktop. -->
-          <button type="button" class="btn btn--primary btn--sm filter-bar-v2__save" data-filter-action="save-view">Save view</button>
+          <button type="button" class="btn btn--primary btn--sm filter-bar__save" data-filter-action="save-view">Save view</button>
         </div>
       </div>
     </div>
@@ -183,23 +183,23 @@
   <!-- ── Filter active ─────────────────────────────────── -->
   <div class="demo-section">
     <p class="demo-section__title">Type=Filter Active</p>
-    <div class="filter-bar-v2">
-      <div class="filter-bar-v2__row filter-bar-v2__row--top">
-        <div class="filter-bar-v2__lead">
-          <div class="dropdown filter-bar-v2__views" data-dropdown>
-            <button type="button" class="dropdown__trigger filter-bar-v2__views-trigger" aria-haspopup="menu" aria-expanded="false"><span class="filter-bar-v2__views-label">All Orders</span><i data-lucide="chevron-down" class="filter-bar-v2__views-chevron" aria-hidden="true"></i></button>
+    <div class="filter-bar">
+      <div class="filter-bar__row filter-bar__row--top">
+        <div class="filter-bar__lead">
+          <div class="dropdown filter-bar__views" data-dropdown>
+            <button type="button" class="dropdown__trigger filter-bar__views-trigger" aria-haspopup="menu" aria-expanded="false"><span class="filter-bar__views-label">All Orders</span><i data-lucide="chevron-down" class="filter-bar__views-chevron" aria-hidden="true"></i></button>
             <div class="dropdown__panel dropdown__panel--filter-views" role="menu" aria-label="Saved views" hidden></div>
           </div>
         </div>
-        <div class="filter-bar-v2__actions">
-          <button type="button" class="btn btn--secondary filter-bar-v2__export"><i data-lucide="download" aria-hidden="true"></i>Export</button>
-          <div class="input filter-bar-v2__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
-          <button type="button" class="filter-bar-v2__icon-btn" data-filter-action="search" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
-          <button type="button" class="filter-bar-v2__icon-btn" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
+        <div class="filter-bar__actions">
+          <button type="button" class="btn btn--secondary filter-bar__export"><i data-lucide="download" aria-hidden="true"></i>Export</button>
+          <div class="input filter-bar__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
+          <button type="button" class="filter-bar__icon-btn" data-filter-action="search" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
+          <button type="button" class="filter-bar__icon-btn" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
         </div>
       </div>
-      <div class="filter-bar-v2__row">
-        <div class="filter-bar-v2__chips">
+      <div class="filter-bar__row">
+        <div class="filter-bar__chips">
           <div class="filter-item filter-item--rounded" data-filter-name="Name"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Name</span></button></div>
           <div class="filter-item filter-item--rounded filter-item--selected" data-filter-name="Zone">
             <button type="button" class="filter-item__clear" aria-label="Clear Zone filter"><i data-lucide="x" aria-hidden="true"></i></button>
@@ -207,7 +207,7 @@
           </div>
           <div class="filter-item filter-item--rounded" data-filter-name="Type"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Type</span></button></div>
           <div class="filter-item filter-item--rounded" data-filter-name="Keywords"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Keywords</span></button></div>
-          <div class="filter-item filter-item--rounded filter-item--empty filter-bar-v2__add" data-filter-name="Add Filters"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Add Filters</span></button></div>
+          <div class="filter-item filter-item--rounded filter-item--empty filter-bar__add" data-filter-name="Add Filters"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Add Filters</span></button></div>
         </div>
       </div>
     </div>
@@ -216,23 +216,23 @@
   <!-- ── Save View ─────────────────────────────────────── -->
   <div class="demo-section">
     <p class="demo-section__title">Type=Save View (a "Save view" CTA appears once a filter is added/amended)</p>
-    <div class="filter-bar-v2 filter-bar-v2--save-view">
-      <div class="filter-bar-v2__row filter-bar-v2__row--top">
-        <div class="filter-bar-v2__lead">
-          <div class="dropdown filter-bar-v2__views" data-dropdown>
-            <button type="button" class="dropdown__trigger filter-bar-v2__views-trigger" aria-haspopup="menu" aria-expanded="false"><span class="filter-bar-v2__views-label">All Orders</span><i data-lucide="chevron-down" class="filter-bar-v2__views-chevron" aria-hidden="true"></i></button>
+    <div class="filter-bar filter-bar--save-view">
+      <div class="filter-bar__row filter-bar__row--top">
+        <div class="filter-bar__lead">
+          <div class="dropdown filter-bar__views" data-dropdown>
+            <button type="button" class="dropdown__trigger filter-bar__views-trigger" aria-haspopup="menu" aria-expanded="false"><span class="filter-bar__views-label">All Orders</span><i data-lucide="chevron-down" class="filter-bar__views-chevron" aria-hidden="true"></i></button>
             <div class="dropdown__panel dropdown__panel--filter-views" role="menu" aria-label="Saved views" hidden></div>
           </div>
         </div>
-        <div class="filter-bar-v2__actions">
-          <button type="button" class="btn btn--secondary filter-bar-v2__export"><i data-lucide="download" aria-hidden="true"></i>Export</button>
-          <div class="input filter-bar-v2__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
-          <button type="button" class="filter-bar-v2__icon-btn" data-filter-action="search" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
-          <button type="button" class="filter-bar-v2__icon-btn" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
+        <div class="filter-bar__actions">
+          <button type="button" class="btn btn--secondary filter-bar__export"><i data-lucide="download" aria-hidden="true"></i>Export</button>
+          <div class="input filter-bar__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
+          <button type="button" class="filter-bar__icon-btn" data-filter-action="search" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
+          <button type="button" class="filter-bar__icon-btn" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
         </div>
       </div>
-      <div class="filter-bar-v2__row">
-        <div class="filter-bar-v2__chips">
+      <div class="filter-bar__row">
+        <div class="filter-bar__chips">
           <div class="filter-item filter-item--rounded" data-filter-name="Name"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Name</span></button></div>
           <div class="filter-item filter-item--rounded filter-item--selected" data-filter-name="Zone">
             <button type="button" class="filter-item__clear" aria-label="Clear Zone filter"><i data-lucide="x" aria-hidden="true"></i></button>
@@ -240,8 +240,8 @@
           </div>
           <div class="filter-item filter-item--rounded" data-filter-name="Type"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Type</span></button></div>
           <div class="filter-item filter-item--rounded" data-filter-name="Keywords"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Keywords</span></button></div>
-          <div class="filter-item filter-item--rounded filter-item--empty filter-bar-v2__add" data-filter-name="Add Filters"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Add Filters</span></button></div>
-          <button type="button" class="btn btn--primary btn--sm filter-bar-v2__save" data-filter-action="save-view">Save view</button>
+          <div class="filter-item filter-item--rounded filter-item--empty filter-bar__add" data-filter-name="Add Filters"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Add Filters</span></button></div>
+          <button type="button" class="btn btn--primary btn--sm filter-bar__save" data-filter-action="save-view">Save view</button>
         </div>
       </div>
     </div>
@@ -250,23 +250,23 @@
   <!-- ── Wrapping ──────────────────────────────────────── -->
   <div class="demo-section">
     <p class="demo-section__title">Type=Wrapping (chips wrap; 4+ Selected rolls up)</p>
-    <div class="filter-bar-v2">
-      <div class="filter-bar-v2__row filter-bar-v2__row--top">
-        <div class="filter-bar-v2__lead">
-          <div class="dropdown filter-bar-v2__views" data-dropdown>
-            <button type="button" class="dropdown__trigger filter-bar-v2__views-trigger" aria-haspopup="menu" aria-expanded="false"><span class="filter-bar-v2__views-label">All Orders</span><i data-lucide="chevron-down" class="filter-bar-v2__views-chevron" aria-hidden="true"></i></button>
+    <div class="filter-bar">
+      <div class="filter-bar__row filter-bar__row--top">
+        <div class="filter-bar__lead">
+          <div class="dropdown filter-bar__views" data-dropdown>
+            <button type="button" class="dropdown__trigger filter-bar__views-trigger" aria-haspopup="menu" aria-expanded="false"><span class="filter-bar__views-label">All Orders</span><i data-lucide="chevron-down" class="filter-bar__views-chevron" aria-hidden="true"></i></button>
             <div class="dropdown__panel dropdown__panel--filter-views" role="menu" aria-label="Saved views" hidden></div>
           </div>
         </div>
-        <div class="filter-bar-v2__actions">
-          <button type="button" class="btn btn--secondary filter-bar-v2__export"><i data-lucide="download" aria-hidden="true"></i>Export</button>
-          <div class="input filter-bar-v2__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
-          <button type="button" class="filter-bar-v2__icon-btn" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
-          <button type="button" class="filter-bar-v2__icon-btn" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
+        <div class="filter-bar__actions">
+          <button type="button" class="btn btn--secondary filter-bar__export"><i data-lucide="download" aria-hidden="true"></i>Export</button>
+          <div class="input filter-bar__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
+          <button type="button" class="filter-bar__icon-btn" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
+          <button type="button" class="filter-bar__icon-btn" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
         </div>
       </div>
-      <div class="filter-bar-v2__row">
-        <div class="filter-bar-v2__chips">
+      <div class="filter-bar__row">
+        <div class="filter-bar__chips">
           <div class="filter-item filter-item--rounded" data-filter-name="Name"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Name</span></button></div>
           <div class="filter-item filter-item--rounded filter-item--selected" data-filter-name="Zone">
             <button type="button" class="filter-item__clear" aria-label="Clear Zone filter"><i data-lucide="x" aria-hidden="true"></i></button>
@@ -282,7 +282,7 @@
             <button type="button" class="filter-item__clear" aria-label="Clear Sort Order filter"><i data-lucide="x" aria-hidden="true"></i></button>
             <button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Sort Order</span><span class="filter-item__sep" aria-hidden="true">·</span><span class="filter-item__values">Affino, and 3 more</span><i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i></button>
           </div>
-          <div class="filter-item filter-item--rounded filter-item--empty filter-bar-v2__add" data-filter-name="Add Filters"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Add Filters</span></button></div>
+          <div class="filter-item filter-item--rounded filter-item--empty filter-bar__add" data-filter-name="Add Filters"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Add Filters</span></button></div>
         </div>
       </div>
     </div>
@@ -291,11 +291,11 @@
   <!-- ── Saved views dropdown (open) ───────────────────── -->
   <div class="demo-section">
     <p class="demo-section__title">Type=Views dropdown (saved-views menu open)</p>
-    <div class="filter-bar-v2">
-      <div class="filter-bar-v2__row filter-bar-v2__row--top">
-        <div class="filter-bar-v2__lead">
-          <div class="dropdown filter-bar-v2__views is-open" data-dropdown data-dropdown-init="1">
-            <button type="button" class="dropdown__trigger filter-bar-v2__views-trigger" aria-haspopup="menu" aria-expanded="true"><span class="filter-bar-v2__views-label">All Orders</span><i data-lucide="chevron-down" class="filter-bar-v2__views-chevron" aria-hidden="true"></i></button>
+    <div class="filter-bar">
+      <div class="filter-bar__row filter-bar__row--top">
+        <div class="filter-bar__lead">
+          <div class="dropdown filter-bar__views is-open" data-dropdown data-dropdown-init="1">
+            <button type="button" class="dropdown__trigger filter-bar__views-trigger" aria-haspopup="menu" aria-expanded="true"><span class="filter-bar__views-label">All Orders</span><i data-lucide="chevron-down" class="filter-bar__views-chevron" aria-hidden="true"></i></button>
             <div class="dropdown__panel dropdown__panel--filter-views" role="menu" aria-label="Saved views">
               <p class="dropdown__label">Saved views</p>
               <ul class="dropdown__list dropdown__list--filter-views-top">
@@ -325,17 +325,17 @@
             </div>
           </div>
         </div>
-        <div class="filter-bar-v2__actions">
-          <button type="button" class="btn btn--secondary filter-bar-v2__export"><i data-lucide="download" aria-hidden="true"></i>Export</button>
-          <div class="input filter-bar-v2__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
-          <button type="button" class="filter-bar-v2__icon-btn" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
-          <button type="button" class="filter-bar-v2__icon-btn" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
+        <div class="filter-bar__actions">
+          <button type="button" class="btn btn--secondary filter-bar__export"><i data-lucide="download" aria-hidden="true"></i>Export</button>
+          <div class="input filter-bar__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
+          <button type="button" class="filter-bar__icon-btn" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
+          <button type="button" class="filter-bar__icon-btn" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
         </div>
       </div>
-      <div class="filter-bar-v2__row">
-        <div class="filter-bar-v2__chips">
+      <div class="filter-bar__row">
+        <div class="filter-bar__chips">
           <div class="filter-item filter-item--rounded" data-filter-name="Type"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Type</span></button></div>
-          <div class="filter-item filter-item--rounded filter-item--empty filter-bar-v2__add" data-filter-name="Add Filters"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Add Filters</span></button></div>
+          <div class="filter-item filter-item--rounded filter-item--empty filter-bar__add" data-filter-name="Add Filters"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Add Filters</span></button></div>
         </div>
       </div>
     </div>
@@ -344,31 +344,31 @@
   <!-- ── New view mode ─────────────────────────────────── -->
   <div class="demo-section">
     <p class="demo-section__title">Type=New View (rename mode — row 2 collapses to Add Filters)</p>
-    <div class="filter-bar-v2 filter-bar-v2--new-view">
-      <div class="filter-bar-v2__row filter-bar-v2__row--top">
-        <div class="filter-bar-v2__lead">
-          <div class="dropdown filter-bar-v2__views" data-dropdown>
-            <button type="button" class="dropdown__trigger filter-bar-v2__views-trigger" aria-haspopup="menu" aria-expanded="false"><span class="filter-bar-v2__views-label">All Orders</span><i data-lucide="chevron-down" class="filter-bar-v2__views-chevron" aria-hidden="true"></i></button>
+    <div class="filter-bar filter-bar--new-view">
+      <div class="filter-bar__row filter-bar__row--top">
+        <div class="filter-bar__lead">
+          <div class="dropdown filter-bar__views" data-dropdown>
+            <button type="button" class="dropdown__trigger filter-bar__views-trigger" aria-haspopup="menu" aria-expanded="false"><span class="filter-bar__views-label">All Orders</span><i data-lucide="chevron-down" class="filter-bar__views-chevron" aria-hidden="true"></i></button>
             <div class="dropdown__panel dropdown__panel--filter-views" role="menu" aria-label="Saved views" hidden></div>
           </div>
-          <div class="input filter-bar-v2__new-view">
+          <div class="input filter-bar__new-view">
             <div class="input__wrap">
               <input type="text" class="input__control" placeholder="New view" aria-label="New view name">
               <button type="button" class="input__clear" data-filter-action="new-view-exit" aria-label="Cancel new view"><i data-lucide="x" aria-hidden="true"></i></button>
             </div>
           </div>
-          <button type="button" class="btn btn--primary filter-bar-v2__create" data-filter-action="new-view-create">Create</button>
+          <button type="button" class="btn btn--primary filter-bar__create" data-filter-action="new-view-create">Create</button>
         </div>
-        <div class="filter-bar-v2__actions">
-          <button type="button" class="btn btn--secondary filter-bar-v2__export"><i data-lucide="download" aria-hidden="true"></i>Export</button>
-          <div class="input filter-bar-v2__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
-          <button type="button" class="filter-bar-v2__icon-btn" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
-          <button type="button" class="filter-bar-v2__icon-btn" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
+        <div class="filter-bar__actions">
+          <button type="button" class="btn btn--secondary filter-bar__export"><i data-lucide="download" aria-hidden="true"></i>Export</button>
+          <div class="input filter-bar__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
+          <button type="button" class="filter-bar__icon-btn" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
+          <button type="button" class="filter-bar__icon-btn" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
         </div>
       </div>
-      <div class="filter-bar-v2__row">
-        <div class="filter-bar-v2__chips">
-          <div class="filter-item filter-item--rounded filter-item--empty filter-bar-v2__add" data-filter-name="Add Filters"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Add Filters</span></button></div>
+      <div class="filter-bar__row">
+        <div class="filter-bar__chips">
+          <div class="filter-item filter-item--rounded filter-item--empty filter-bar__add" data-filter-name="Add Filters"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Add Filters</span></button></div>
         </div>
       </div>
     </div>
@@ -377,30 +377,30 @@
   <!-- ── Search mode ───────────────────────────────────── -->
   <div class="demo-section">
     <p class="demo-section__title">Type=Search (row 1 → full-width search; chips row stays)</p>
-    <div class="filter-bar-v2 filter-bar-v2--search">
-      <div class="filter-bar-v2__row filter-bar-v2__row--top">
-        <button type="button" class="filter-bar-v2__back" data-filter-action="search-exit" aria-label="Exit search"><i data-lucide="arrow-left" aria-hidden="true"></i></button>
-        <div class="filter-bar-v2__lead">
-          <div class="dropdown filter-bar-v2__views" data-dropdown>
-            <button type="button" class="dropdown__trigger filter-bar-v2__views-trigger" aria-haspopup="menu" aria-expanded="false"><span class="filter-bar-v2__views-label">All Orders</span><i data-lucide="chevron-down" class="filter-bar-v2__views-chevron" aria-hidden="true"></i></button>
+    <div class="filter-bar filter-bar--search">
+      <div class="filter-bar__row filter-bar__row--top">
+        <button type="button" class="filter-bar__back" data-filter-action="search-exit" aria-label="Exit search"><i data-lucide="arrow-left" aria-hidden="true"></i></button>
+        <div class="filter-bar__lead">
+          <div class="dropdown filter-bar__views" data-dropdown>
+            <button type="button" class="dropdown__trigger filter-bar__views-trigger" aria-haspopup="menu" aria-expanded="false"><span class="filter-bar__views-label">All Orders</span><i data-lucide="chevron-down" class="filter-bar__views-chevron" aria-hidden="true"></i></button>
             <div class="dropdown__panel dropdown__panel--filter-views" role="menu" aria-label="Saved views" hidden></div>
           </div>
-          <div class="input filter-bar-v2__search">
+          <div class="input filter-bar__search">
             <div class="input__wrap">
               <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
               <input type="search" class="input__control" placeholder="Search" aria-label="Search">
             </div>
           </div>
         </div>
-        <div class="filter-bar-v2__actions">
-          <button type="button" class="btn btn--secondary filter-bar-v2__export"><i data-lucide="download" aria-hidden="true"></i>Export</button>
-          <div class="input filter-bar-v2__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
-          <button type="button" class="filter-bar-v2__icon-btn" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
-          <button type="button" class="filter-bar-v2__icon-btn" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
+        <div class="filter-bar__actions">
+          <button type="button" class="btn btn--secondary filter-bar__export"><i data-lucide="download" aria-hidden="true"></i>Export</button>
+          <div class="input filter-bar__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
+          <button type="button" class="filter-bar__icon-btn" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
+          <button type="button" class="filter-bar__icon-btn" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
         </div>
       </div>
-      <div class="filter-bar-v2__row">
-        <div class="filter-bar-v2__chips">
+      <div class="filter-bar__row">
+        <div class="filter-bar__chips">
           <div class="filter-item filter-item--rounded" data-filter-name="Name"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Name</span></button></div>
           <div class="filter-item filter-item--rounded filter-item--selected" data-filter-name="Zone">
             <button type="button" class="filter-item__clear" aria-label="Clear Zone filter"><i data-lucide="x" aria-hidden="true"></i></button>
@@ -408,7 +408,7 @@
           </div>
           <div class="filter-item filter-item--rounded" data-filter-name="Type"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Type</span></button></div>
           <div class="filter-item filter-item--rounded" data-filter-name="Keywords"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Keywords</span></button></div>
-          <div class="filter-item filter-item--rounded filter-item--empty filter-bar-v2__add" data-filter-name="Add Filters"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Add Filters</span></button></div>
+          <div class="filter-item filter-item--rounded filter-item--empty filter-bar__add" data-filter-name="Add Filters"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Add Filters</span></button></div>
         </div>
       </div>
     </div>
@@ -418,31 +418,31 @@
   <div class="demo-section">
     <p class="demo-section__title">Type=Alt Search (mobile) — persistent inline search instead of icon + takeover</p>
     <p class="demo-section__sub">Switch the toggle to <strong>Mobile</strong> (or resize below 768px): the search becomes a field filling row 1 between the views control and the kebab. Desktop is unchanged.</p>
-    <div class="filter-bar-v2 filter-bar-v2--alt-search">
-      <div class="filter-bar-v2__row filter-bar-v2__row--top">
-        <div class="filter-bar-v2__lead">
-          <div class="dropdown filter-bar-v2__views" data-dropdown>
-            <button type="button" class="dropdown__trigger filter-bar-v2__views-trigger" aria-haspopup="menu" aria-expanded="false"><span class="filter-bar-v2__views-label">All Orders</span><i data-lucide="chevron-down" class="filter-bar-v2__views-chevron" aria-hidden="true"></i></button>
+    <div class="filter-bar filter-bar--alt-search">
+      <div class="filter-bar__row filter-bar__row--top">
+        <div class="filter-bar__lead">
+          <div class="dropdown filter-bar__views" data-dropdown>
+            <button type="button" class="dropdown__trigger filter-bar__views-trigger" aria-haspopup="menu" aria-expanded="false"><span class="filter-bar__views-label">All Orders</span><i data-lucide="chevron-down" class="filter-bar__views-chevron" aria-hidden="true"></i></button>
             <div class="dropdown__panel dropdown__panel--filter-views" role="menu" aria-label="Saved views" hidden></div>
           </div>
         </div>
-        <div class="filter-bar-v2__actions">
-          <button type="button" class="btn btn--secondary filter-bar-v2__export"><i data-lucide="download" aria-hidden="true"></i>Export</button>
-          <div class="input filter-bar-v2__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
-          <button type="button" class="filter-bar-v2__icon-btn" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
-          <div class="dropdown filter-bar-v2__menu" data-dropdown>
-            <button type="button" class="dropdown__trigger filter-bar-v2__icon-btn" aria-haspopup="menu" aria-expanded="false" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
+        <div class="filter-bar__actions">
+          <button type="button" class="btn btn--secondary filter-bar__export"><i data-lucide="download" aria-hidden="true"></i>Export</button>
+          <div class="input filter-bar__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
+          <button type="button" class="filter-bar__icon-btn" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
+          <div class="dropdown filter-bar__menu" data-dropdown>
+            <button type="button" class="dropdown__trigger filter-bar__icon-btn" aria-haspopup="menu" aria-expanded="false" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
             <div class="dropdown__panel" role="menu" aria-label="Actions" hidden></div>
           </div>
         </div>
       </div>
-      <div class="filter-bar-v2__row">
-        <div class="filter-bar-v2__chips">
+      <div class="filter-bar__row">
+        <div class="filter-bar__chips">
           <div class="filter-item filter-item--rounded" data-filter-name="Name"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Name</span></button></div>
           <div class="filter-item filter-item--rounded" data-filter-name="Zone"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Zone</span></button></div>
           <div class="filter-item filter-item--rounded" data-filter-name="Type"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Type</span></button></div>
           <div class="filter-item filter-item--rounded" data-filter-name="Keywords"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Keywords</span></button></div>
-          <div class="filter-item filter-item--rounded filter-item--empty filter-bar-v2__add" data-filter-name="Add Filters"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Add Filters</span></button></div>
+          <div class="filter-item filter-item--rounded filter-item--empty filter-bar__add" data-filter-name="Add Filters"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Add Filters</span></button></div>
         </div>
       </div>
     </div>
@@ -454,7 +454,7 @@
   <script type="module">
     import { initAll as initDropdowns } from '../../components/Dropdown/Dropdown.js';
     import { initAll as initFilterItems } from '../../components/FilterItem/FilterItem.js';
-    import { initAll as initFilterBars } from './FilterBarV2.js';
+    import { initAll as initFilterBars } from './FilterBar.js';
     initDropdowns();
     initFilterItems();
     initFilterBars();

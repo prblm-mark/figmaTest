@@ -1,13 +1,13 @@
-/* FilterBarV2 — toolbar mode transitions. Auto-binds to every `.filter-bar-v2`.
+/* FilterBar — toolbar mode transitions. Auto-binds to every `.filter-bar`.
  *
- * Same mode model as FilterBarV1 (search / new-view), but scoped to the V2
- * two-row layout. The saved-views Dropdown, kebab actions menu, per-row
- * Copy/Delete mini-menu, and the FilterItem chips are their own components —
- * load and init their scripts separately (they auto-bind).
+ * Two-row layout with search / new-view modes. The saved-views Dropdown, kebab
+ * actions menu, per-row Copy/Delete mini-menu, and the FilterItem chips are their
+ * own components — load and init their scripts separately (they auto-bind).
  *
- * Hooks (data-filter-action on a descendant button): see FilterBarV1.js, plus
- * "new-view-create" (Create → add the typed name to the saved-views list + select it).
- * Per-row … menu actions (rename/copy/delete) are handled in wireViews — see FilterBarV1.js.
+ * Hooks (data-filter-action on a descendant button): "search" / "search-exit",
+ * "new-view" / "new-view-exit" / "new-view-create" (Create → add the typed name to
+ * the saved-views list + select it), "save-view". Per-row … menu actions
+ * (rename/copy/delete) are handled in wireViews.
  *
  * TODO(backend:Filters): saved-views list, value pickers, search querying,
  * Create, Export, and the row actions (rename/copy/delete) are all mock — they
@@ -17,8 +17,8 @@
 import { initAll as initDropdowns } from '../../components/Dropdown/Dropdown.js';
 
 function setMode(root, mode) {
-  root.classList.toggle('filter-bar-v2--search', mode === 'search');
-  root.classList.toggle('filter-bar-v2--new-view', mode === 'new-view');
+  root.classList.toggle('filter-bar--search', mode === 'search');
+  root.classList.toggle('filter-bar--new-view', mode === 'new-view');
 }
 
 function closeDropdowns(root) {
@@ -31,9 +31,9 @@ function closeDropdowns(root) {
 
 /* Select a saved-view row: trigger label + tick + aria-checked, then close. */
 function selectView(root, item) {
-  const views = root.querySelector('.filter-bar-v2__views');
+  const views = root.querySelector('.filter-bar__views');
   if (!views || !item) return;
-  const label = views.querySelector('.filter-bar-v2__views-label');
+  const label = views.querySelector('.filter-bar__views-label');
   const text = item.querySelector('[data-text]');
   if (label && text) label.textContent = text.textContent.trim();
   views.querySelectorAll('.dropdown-item[role="menuitemradio"]').forEach((it) => {
@@ -41,7 +41,7 @@ function selectView(root, item) {
   });
   // New (empty) view → show only "Add Filters"; existing views keep their chips.
   // Non-destructive: chips stay in the DOM, hidden by CSS while this class is on.
-  root.classList.toggle('filter-bar-v2--view-empty', item.dataset.viewEmpty === '1');
+  root.classList.toggle('filter-bar--view-empty', item.dataset.viewEmpty === '1');
   let check = views.querySelector('.dropdown-item__check');
   if (!check) {
     check = document.createElement('i');
@@ -57,7 +57,7 @@ function selectView(root, item) {
 
 /* Append a new saved-view row (with its … menu) and return its radio button. */
 function addView(root, name) {
-  const list = root.querySelector('.filter-bar-v2__views .dropdown__list--filter-views-top');
+  const list = root.querySelector('.filter-bar__views .dropdown__list--filter-views-top');
   if (!list) return null;
   const li = document.createElement('li');
   li.setAttribute('role', 'none');
@@ -81,25 +81,25 @@ function addView(root, name) {
   return row;
 }
 
-/* Saved-views row interaction (FilterBarV2): single click selects + closes,
- * double click inline-renames. See FilterBarV1.js for the full rationale. */
+/* Saved-views row interaction (FilterBar): single click selects + closes,
+ * double click inline-renames (capture-phase takeover + 220ms single/double timer). */
 function wireViews(root) {
-  const views = root.querySelector('.filter-bar-v2__views');
+  const views = root.querySelector('.filter-bar__views');
   if (!views) return;
-  const label = views.querySelector('.filter-bar-v2__views-label');
+  const label = views.querySelector('.filter-bar__views-label');
   let clickTimer = null;
 
   const startRename = (item) => {
     const li = item.closest('li');
     const text = item.querySelector('[data-text]');
-    if (!li || !text || li.querySelector('.filter-bar-v2__rename')) return;
+    if (!li || !text || li.querySelector('.filter-bar__rename')) return;
 
     const input = document.createElement('input');
     input.type = 'text';
-    input.className = 'filter-bar-v2__rename';
+    input.className = 'filter-bar__rename';
     input.value = text.textContent.trim();
     input.setAttribute('aria-label', 'Rename view');
-    li.classList.add('filter-bar-v2__li--renaming');
+    li.classList.add('filter-bar__li--renaming');
     li.appendChild(input);
     input.focus();
     input.select();
@@ -114,7 +114,7 @@ function wireViews(root) {
         if (item.getAttribute('aria-checked') === 'true' && label) label.textContent = v;
       }
       input.remove();
-      li.classList.remove('filter-bar-v2__li--renaming');
+      li.classList.remove('filter-bar__li--renaming');
     };
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') { e.preventDefault(); finish(true); }
@@ -128,7 +128,7 @@ function wireViews(root) {
   const isRowName = (e) => {
     const item = e.target.closest('.dropdown-item[role="menuitemradio"]');
     if (!item || !views.contains(item)) return null;
-    if (e.target.closest('.dropdown-item__more, .dropdown__row-menu, .filter-bar-v2__rename')) return null;
+    if (e.target.closest('.dropdown-item__more, .dropdown__row-menu, .filter-bar__rename')) return null;
     return item;
   };
 
@@ -214,8 +214,8 @@ function init(root) {
   // `filter-item:toggle`). TODO(backend:Filters): real trigger is a persisted
   // filter-set change.
   root.addEventListener('filter-item:toggle', (e) => {
-    if (e.target.closest('.filter-bar-v2__add') && e.detail && e.detail.open) {
-      root.classList.add('filter-bar-v2--save-view');
+    if (e.target.closest('.filter-bar__add') && e.detail && e.detail.open) {
+      root.classList.add('filter-bar--save-view');
     }
   });
 
@@ -231,7 +231,7 @@ function init(root) {
     switch (trigger.dataset.filterAction) {
       case 'search':
         setMode(root, 'search');
-        focusEl('.filter-bar-v2__search .input__control');
+        focusEl('.filter-bar__search .input__control');
         break;
       case 'search-exit':
         setMode(root, null);
@@ -239,13 +239,13 @@ function init(root) {
       case 'new-view':
         closeDropdowns(root);
         setMode(root, 'new-view');
-        focusEl('.filter-bar-v2__new-view .input__control');
+        focusEl('.filter-bar__new-view .input__control');
         break;
       case 'new-view-exit':
         setMode(root, null);
         break;
       case 'new-view-create': {
-        const input = root.querySelector('.filter-bar-v2__new-view .input__control');
+        const input = root.querySelector('.filter-bar__new-view .input__control');
         const name = input ? input.value.trim() : '';
         if (name) {
           const row = addView(root, name);
@@ -261,8 +261,8 @@ function init(root) {
       }
       case 'save-view': {
         // Mock "save" — dismiss the CTA and close the Add Filters chip it came from.
-        root.classList.remove('filter-bar-v2--save-view');
-        const add = root.querySelector('.filter-bar-v2__add');
+        root.classList.remove('filter-bar--save-view');
+        const add = root.querySelector('.filter-bar__add');
         if (add) {
           add.classList.remove('filter-item--open');
           const t = add.querySelector('.filter-item__trigger');
@@ -277,7 +277,7 @@ function init(root) {
 }
 
 function initAll(scope = document) {
-  scope.querySelectorAll('.filter-bar-v2').forEach(init);
+  scope.querySelectorAll('.filter-bar').forEach(init);
 }
 
 if (typeof document !== 'undefined') {

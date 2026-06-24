@@ -1,18 +1,18 @@
-/* FilterBarV2 — filter toolbar (A/B variant 2). Uses only --ai-* tokens.
+/* FilterBar — two-row filter toolbar. Uses only --ai-* tokens.
  *
  * Two-row card: row1 = [saved-views | ........ Export  search  kebab],
  *               row2 = [solid FilterItem chips ........ Add Filters].
- * Differs from V1: explicit Export button, two stacked rows, and chips use the
+ * Explicit Export button, two stacked rows, and chips use the
  * SOLID "default" FilterItem treatment (only Add Filters is dashed).
  *
  * JS-driven modes on the root:
- *   .filter-bar-v2--search    → row1 becomes back-arrow + full-width search; chips row stays
- *   .filter-bar-v2--new-view  → row1 views replaced by "New view" field + Create; row2 = Add Filters only
+ *   .filter-bar--search    → row1 becomes back-arrow + full-width search; chips row stays
+ *   .filter-bar--new-view  → row1 views replaced by "New view" field + Create; row2 = Add Filters only
  *
  * Composes (link their CSS in the page): FilterItem, Dropdown, DropdownItem, Input, Button.
  */
 
-.filter-bar-v2 {
+.filter-bar {
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -27,19 +27,19 @@
 }
 
 /* ── Rows ──────────────────────────────────────────────── */
-.filter-bar-v2__row {
+.filter-bar__row {
   display: flex;
   align-items: center;
   gap: var(--ai-spacing-5); /* 16px */
   padding: var(--ai-spacing-4) var(--ai-spacing-5); /* 12 / 16 */
 }
 
-.filter-bar-v2__row--top {
+.filter-bar__row--top {
   border-bottom: 1px solid var(--ai-border-secondary);
 }
 
 /* Lead area of row1 — holds the views control (or new-view / search fields). */
-.filter-bar-v2__lead {
+.filter-bar__lead {
   display: flex;
   flex: 1 0 0;
   min-width: 0;
@@ -48,12 +48,12 @@
 }
 
 /* ── Saved-views control (Dropdown w/ field-styled trigger) ── */
-.filter-bar-v2__views {
+.filter-bar__views {
   position: relative;
   flex-shrink: 0;
 }
 
-.filter-bar-v2__views-trigger {
+.filter-bar__views-trigger {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -67,19 +67,19 @@
   border-radius: var(--ai-radius-md);
   font-family: var(--ai-font-body);
   font-size: var(--ai-font-fixed-xs); /* 14px */
-  font-weight: var(--ai-font-regular); /* V2 trigger is regular (V1 is medium) */
+  font-weight: var(--ai-font-regular); /* views trigger is regular weight */
   line-height: var(--ai-leading-md);
   color: var(--ai-text-primary);
   cursor: pointer;
 }
 
-.filter-bar-v2__views-label {
+.filter-bar__views-label {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.filter-bar-v2__views-chevron {
+.filter-bar__views-chevron {
   width: var(--ai-icon-size-sm);
   height: var(--ai-icon-size-sm);
   color: var(--ai-icon-contrast);
@@ -87,29 +87,29 @@
   transition: transform var(--ai-transition-default);
 }
 
-.filter-bar-v2__views.is-open .filter-bar-v2__views-chevron {
+.filter-bar__views.is-open .filter-bar__views-chevron {
   transform: rotate(180deg);
 }
 
 /* On the selected row the … overlays the tick — hide the tick whenever the …
  * is shown (row hover, its menu open, or always on touch) so they don't clash. */
-.filter-bar-v2__views .dropdown__view:hover .dropdown-item__check,
-.filter-bar-v2__views .dropdown__view:has(.dropdown-item__more[aria-expanded="true"]) .dropdown-item__check {
+.filter-bar__views .dropdown__view:hover .dropdown-item__check,
+.filter-bar__views .dropdown__view:has(.dropdown-item__more[aria-expanded="true"]) .dropdown-item__check {
   visibility: hidden;
 }
 
 @media (hover: none) {
-  .filter-bar-v2__views .dropdown-item__check {
+  .filter-bar__views .dropdown-item__check {
     visibility: hidden;
   }
 }
 
-/* Inline rename (double-click a saved-view name) — see FilterBarV1.css. */
-.filter-bar-v2__li--renaming {
+/* Inline rename (double-click a saved-view name). */
+.filter-bar__li--renaming {
   position: relative;
 }
 
-.filter-bar-v2__rename {
+.filter-bar__rename {
   position: absolute;
   inset: var(--ai-spacing-1) var(--ai-spacing-3);
   z-index: 1;
@@ -124,20 +124,20 @@
   outline: none;
 }
 
-/* ── Export button (V2-only) ─────────────────────────── */
-.filter-bar-v2__export {
+/* ── Export button ─────────────────────────────────── */
+.filter-bar__export {
   flex-shrink: 0;
 }
 
 /* ── Actions (search icon + kebab) ───────────────────── */
-.filter-bar-v2__actions {
+.filter-bar__actions {
   display: flex;
   align-items: center;
   gap: var(--ai-spacing-3);
   flex-shrink: 0;
 }
 
-.filter-bar-v2__icon-btn {
+.filter-bar__icon-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -149,23 +149,23 @@
   cursor: pointer;
 }
 
-.filter-bar-v2__icon-btn [data-lucide] {
+.filter-bar__icon-btn [data-lucide] {
   width: var(--ai-icon-size-sm);
   height: var(--ai-icon-size-sm);
 }
 
-.filter-bar-v2__menu {
+.filter-bar__menu {
   position: relative;
 }
 
 /* Kebab sits at the far right → right-align its panel to the trigger. */
-.filter-bar-v2__menu .dropdown__panel {
+.filter-bar__menu .dropdown__panel {
   left: auto;
   right: 0;
 }
 
 /* ── Chips row (row2) ────────────────────────────────── */
-.filter-bar-v2__chips {
+.filter-bar__chips {
   display: flex;
   flex: 1 0 0;
   min-width: 0;
@@ -174,12 +174,12 @@
   gap: var(--ai-spacing-3); /* 8px */
 }
 
-.filter-bar-v2__add {
+.filter-bar__add {
   flex-shrink: 0; /* "Add Filters" is the last chip in the flow (after the filter list) */
 }
 
 /* ── Search mode (row1 → back + full-width search; chips row stays) ── */
-.filter-bar-v2__back {
+.filter-bar__back {
   display: none;
   align-items: center;
   justify-content: center;
@@ -192,28 +192,28 @@
   flex-shrink: 0;
 }
 
-.filter-bar-v2__back [data-lucide] {
+.filter-bar__back [data-lucide] {
   width: var(--ai-icon-size-sm);
   height: var(--ai-icon-size-sm);
 }
 
-.filter-bar-v2__search {
+.filter-bar__search {
   display: none;
   flex: 1 0 0;
   min-width: 0;
 }
 
-.filter-bar-v2--search .filter-bar-v2__back {
+.filter-bar--search .filter-bar__back {
   display: inline-flex;
 }
 
-.filter-bar-v2--search .filter-bar-v2__search {
+.filter-bar--search .filter-bar__search {
   display: block;
 }
 
-.filter-bar-v2--search .filter-bar-v2__views,
-.filter-bar-v2--search .filter-bar-v2__export,
-.filter-bar-v2--search .filter-bar-v2__actions {
+.filter-bar--search .filter-bar__views,
+.filter-bar--search .filter-bar__export,
+.filter-bar--search .filter-bar__actions {
   display: none;
 }
 
@@ -223,58 +223,58 @@
  * collapses to the search icon + full-width takeover (the --search mode above).
  * Mobile-first: hidden by default; the search icon shows. ≥768px: field shows,
  * icon hides. */
-.filter-bar-v2__search-bar {
+.filter-bar__search-bar {
   display: none;
 }
 
 @media (min-width: 768px) {
-  .filter-bar-v2__search-bar {
+  .filter-bar__search-bar {
     display: block;
     width: var(--ai-size-3); /* 192px */
     flex-shrink: 0;
   }
 
   /* The search icon is mobile-only — the persistent field replaces it on desktop. */
-  .filter-bar-v2__icon-btn[aria-label="Search"] {
+  .filter-bar__icon-btn[aria-label="Search"] {
     display: none;
   }
 }
 
 /* ── New View mode ───────────────────────────────────── */
-.filter-bar-v2__new-view {
+.filter-bar__new-view {
   display: none;
   flex-shrink: 0;
   width: var(--ai-size-3); /* 192px */
 }
 
-.filter-bar-v2__create {
+.filter-bar__create {
   display: none;
   flex-shrink: 0;
 }
 
 /* The new-view field's × is a cancel control, not a text-clear — keep it visible
  * even when the field is empty (Input's default hides it until text is typed). */
-.filter-bar-v2__new-view .input__clear {
+.filter-bar__new-view .input__clear {
   visibility: visible;
 }
 
-.filter-bar-v2--new-view .filter-bar-v2__views {
+.filter-bar--new-view .filter-bar__views {
   display: none;
 }
 
-.filter-bar-v2--new-view .filter-bar-v2__new-view {
+.filter-bar--new-view .filter-bar__new-view {
   display: block;
 }
 
-.filter-bar-v2--new-view .filter-bar-v2__create {
+.filter-bar--new-view .filter-bar__create {
   display: inline-flex;
 }
 
 /* New-view mode — and a freshly created (empty) view — collapse row 2 to just the
  * "Add Filters" chip. Add Filters now lives inside __chips (last in the flow), so
  * hide only the OTHER chips. Existing views keep their full chip set. */
-.filter-bar-v2--new-view .filter-bar-v2__chips > .filter-item:not(.filter-bar-v2__add),
-.filter-bar-v2--view-empty .filter-bar-v2__chips > .filter-item:not(.filter-bar-v2__add) {
+.filter-bar--new-view .filter-bar__chips > .filter-item:not(.filter-bar__add),
+.filter-bar--view-empty .filter-bar__chips > .filter-item:not(.filter-bar__add) {
   display: none;
 }
 
@@ -283,20 +283,20 @@
  * `margin-left:auto` pins it to the right edge of the chip row; on mobile that margin
  * is dropped (see media query) so it flows right after "Add Filters" in the wrapping
  * chips. Hidden until the bar enters the save-view state. */
-.filter-bar-v2__save {
+.filter-bar__save {
   display: none;
   flex-shrink: 0;
 }
 
-.filter-bar-v2--save-view .filter-bar-v2__save {
+.filter-bar--save-view .filter-bar__save {
   display: inline-flex;
   margin-left: auto; /* desktop: pin to the right edge of the chip row */
 }
 
 /* ── Focus (a11y) ────────────────────────────────────── */
-.filter-bar-v2__views-trigger:focus-visible,
-.filter-bar-v2__icon-btn:focus-visible,
-.filter-bar-v2__back:focus-visible {
+.filter-bar__views-trigger:focus-visible,
+.filter-bar__icon-btn:focus-visible,
+.filter-bar__back:focus-visible {
   outline: 2px solid var(--ai-surface-brand);
   outline-offset: 2px;
   border-radius: var(--ai-radius-sm);
@@ -304,13 +304,13 @@
 
 /* ── Mobile (Device=Mobile): Export collapses out of the bar (per Figma) ── */
 @media (max-width: 767px) {
-  .filter-bar-v2__export {
+  .filter-bar__export {
     display: none;
   }
 
   /* New View mode: let the field flex (basis 0, then grow) so it shrinks to make
    * room for Create instead of pushing it off the line. Create keeps its width. */
-  .filter-bar-v2--new-view .filter-bar-v2__new-view {
+  .filter-bar--new-view .filter-bar__new-view {
     flex: 1 1 0;
     width: auto;
     min-width: 0;
@@ -318,7 +318,7 @@
 
   /* The "Create" CTA uses the small button at mobile (Figma mobile New View
    * variant 2977:3806 — button/sm). Mirrors .btn--sm (radius unchanged = md). */
-  .filter-bar-v2__create {
+  .filter-bar__create {
     padding: 0 var(--ai-spacing-4);
     min-height: var(--ai-spacing-7);
     font-size: var(--ai-font-fluid-xxs);
@@ -326,7 +326,7 @@
 
   /* Save View: on mobile the CTA sits after "Add Filters" in the wrapping chip flow
    * (Figma mobile 2989:6242) — drop the desktop auto-margin that pins it right. */
-  .filter-bar-v2--save-view .filter-bar-v2__save {
+  .filter-bar--save-view .filter-bar__save {
     margin-left: 0;
   }
 
@@ -334,15 +334,15 @@
    * search icon + full-width takeover, the search is a persistent field that fills
    * row 1 between the views dropdown and the kebab. Per Figma the views control hugs
    * its content (~136px, not the 192px field) and all three gaps are 8px. */
-  .filter-bar-v2--alt-search .filter-bar-v2__row--top {
+  .filter-bar--alt-search .filter-bar__row--top {
     gap: var(--ai-spacing-5); /* 16px between the views control and the search field */
   }
 
-  .filter-bar-v2--alt-search .filter-bar-v2__lead {
+  .filter-bar--alt-search .filter-bar__lead {
     flex: 0 1 auto; /* views at content width, not filling */
   }
 
-  .filter-bar-v2--alt-search .filter-bar-v2__views-trigger {
+  .filter-bar--alt-search .filter-bar__views-trigger {
     width: auto; /* hug "All Orders ▾" instead of the fixed 192px field */
     padding: 0; /* borderless, paddingless plain control (Figma alt-search) */
     border: 0;
@@ -350,19 +350,19 @@
     /* keep min-height for vertical alignment with the 40px search field */
   }
 
-  .filter-bar-v2--alt-search .filter-bar-v2__actions {
+  .filter-bar--alt-search .filter-bar__actions {
     flex: 1 0 0; /* the actions cluster fills, so the search field can grow */
     min-width: 0;
   }
 
-  .filter-bar-v2--alt-search .filter-bar-v2__search-bar {
+  .filter-bar--alt-search .filter-bar__search-bar {
     display: block;
     flex: 1 0 0;
     width: auto;
     min-width: 0;
   }
 
-  .filter-bar-v2--alt-search .filter-bar-v2__icon-btn[aria-label="Search"] {
+  .filter-bar--alt-search .filter-bar__icon-btn[aria-label="Search"] {
     display: none; /* no icon — the persistent field replaces it */
   }
 }

@@ -159,8 +159,8 @@
       ]
     },
     "Filters": {
-      "file": "src/components/FilterItem/ + src/patterns/FilterBarV1/ + src/patterns/FilterBarV2/",
-      "note": "Filter Item chip + the two A/B filter-bar toolbars (V1 single-row, V2 two-row). Front-end visual + state API only: the value picker, the source list of filterable values, saved views, search querying, Create (persist a new view), and Export are all mock.",
+      "file": "src/components/FilterItem/ + src/patterns/FilterBar/",
+      "note": "Filter Item chip + the filter-bar toolbar (two-row). Front-end visual + state API only: the value picker, the source list of filterable values, saved views, search querying, Create (persist a new view), and Export are all mock.",
       "items": [
         {
           "id": "filter-item-picker",
@@ -172,21 +172,21 @@
         {
           "id": "filter-bar-views",
           "category": "needs-backend",
-          "element": ".filter-bar-v{1,2}__views (saved-views Dropdown) + '+ New view' (data-filter-action=\"new-view\") + Create",
+          "element": ".filter-bar__views (saved-views Dropdown) + '+ New view' (data-filter-action=\"new-view\") + Create",
           "current": "Static 'All Orders' / 'My Content' list; New view enters rename mode but Create is a no-op; Copy/Delete per-row are mock.",
           "needs": "Saved-views CRUD scoped to user+context: GET list, POST (create from current filters), PATCH (rename), POST copy, DELETE; switching a view loads its filter set."
         },
         {
           "id": "filter-bar-search",
           "category": "needs-backend",
-          "element": ".filter-bar-v{1,2}__search .input__control (search mode)",
+          "element": ".filter-bar__search .input__control (search mode)",
           "current": "Search mode toggles in/out but typing does nothing.",
           "needs": "Debounced query against the list data source; reflect results in the table the bar controls."
         },
         {
           "id": "filter-bar-export",
           "category": "needs-backend",
-          "element": "V2 .filter-bar-v2__export ('Export') + kebab actions (Export / Some action / Generate Shipping Labels)",
+          "element": ".filter-bar__export ('Export') + kebab actions (Export / Some action / Generate Shipping Labels)",
           "current": "Buttons/menu render; no handler.",
           "needs": "Export current view (CSV/etc.); wire the kebab actions to real endpoints."
         }
