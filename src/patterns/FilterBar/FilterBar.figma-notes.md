@@ -84,13 +84,13 @@ disambiguation; the … is on every row incl. the selected one and is always-vis
 | Element | Class | Notes |
 |---|---|---|
 | Root | `.filter-bar` | column, border-secondary, radius-md, overflow hidden |
-| Row | `.filter-bar__row` (+`--top`) | flex, gap 16, pad 12/16; `--top` adds bottom border |
+| Row | `.filter-bar__row` (+`--top`) | flex, gap 16, pad 12/16 (12 all sides at mobile); `--top` adds bottom border |
 | Lead (row 1) | `.filter-bar__lead` | flex-1, gap 8 — holds views / new-view / search |
 | Views control | `.dropdown.filter-bar__views` | Dropdown filter-views panel; trigger field is **regular** weight |
 | Actions | `.filter-bar__actions` | row-1 group (Figma "Frame 230"), 8px gap: **Export** + persistent search field (desktop) / search icon-btn (mobile) + kebab `.dropdown` |
 | Export | `.btn.btn--secondary.filter-bar__export` | first child of `.filter-bar__actions`; Button + `download` icon; hidden on mobile |
 | Search field (desktop) | `.input.filter-bar__search-bar` | persistent 192px Input; desktop only — replaced by the icon + takeover on mobile |
-| Chips (row 2) | `.filter-bar__chips` | flex-wrap, gap 8; chips are FilterItem **default (solid)** / `--selected`, **all `--rounded`** (pill `--ai-radius-full`, per user direction) |
+| Chips (row 2) | `.filter-bar__chips` | flex-wrap, gap 6 (`--ai-spacing-2`, all sizes); chips are FilterItem **default (solid)** / `--selected`, **all `--rounded`** (pill `--ai-radius-full`, per user direction) |
 | Add Filters | `.filter-item--empty.filter-item--rounded.filter-bar__add` | dashed pill; **last chip inside `__chips`** (in the flow, after the filter list) |
 | Save view CTA | `.btn.btn--primary.btn--sm.filter-bar__save` | composes Button (primary, sm); hidden until `.filter-bar--save-view`, then pinned right of row 2 |
 | Search / New-view / Create / Back | `.filter-bar__{search,new-view,create,back}` | compose Input / Button |

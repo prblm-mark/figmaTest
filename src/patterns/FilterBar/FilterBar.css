@@ -171,7 +171,7 @@
   min-width: 0;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--ai-spacing-3); /* 8px */
+  gap: var(--ai-spacing-2); /* 6px — chip gap at all screen sizes */
 }
 
 .filter-bar__add {
@@ -306,6 +306,11 @@
 @media (max-width: 767px) {
   .filter-bar__export {
     display: none;
+  }
+
+  /* Even --ai-spacing-4 (12px) padding on both rows at mobile (Figma mobile frames). */
+  .filter-bar__row {
+    padding: var(--ai-spacing-4);
   }
 
   /* New View mode: let the field flex (basis 0, then grow) so it shrinks to make
