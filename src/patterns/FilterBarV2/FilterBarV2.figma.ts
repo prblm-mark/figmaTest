@@ -42,9 +42,9 @@ figma.connect(
             <div class="filter-item" data-filter-name="Name">
               <button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Name</span></button>
             </div>
-          </div>
-          <div class="filter-item filter-item--empty filter-bar-v2__add" data-filter-name="Add Filters">
-            <button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Add Filters</span></button>
+            <div class="filter-item filter-item--empty filter-bar-v2__add" data-filter-name="Add Filters">
+              <button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Add Filters</span></button>
+            </div>
           </div>
         </div>
       </div>

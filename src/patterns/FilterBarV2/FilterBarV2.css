@@ -19,8 +19,11 @@
   background: var(--ai-surface-primary);
   border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-md);
-  overflow: hidden; /* clip row borders to the rounded corners */
   box-sizing: border-box;
+  /* No `overflow: hidden` here — the root's own bg + border-radius round the card,
+   * and the inter-row divider sits mid-card (clear of the corners), so nothing
+   * needs clipping. Clipping would crop the saved-views / kebab dropdown panels,
+   * which must escape the card. */
 }
 
 /* ── Rows ──────────────────────────────────────────────── */
@@ -172,7 +175,7 @@
 }
 
 .filter-bar-v2__add {
-  flex-shrink: 0; /* "Add Filters" pinned to the right of the chips row */
+  flex-shrink: 0; /* "Add Filters" is the last chip in the flow (after the filter list) */
 }
 
 /* ── Search mode (row1 → back + full-width search; chips row stays) ── */
@@ -245,28 +248,25 @@
 }
 
 /* New-view mode — and a freshly created (empty) view — collapse row 2 to just the
- * Add Filters chip (a sibling of __chips, so it stays). Existing views keep chips. */
-.filter-bar-v2--new-view .filter-bar-v2__chips,
-.filter-bar-v2--view-empty .filter-bar-v2__chips {
+ * "Add Filters" chip. Add Filters now lives inside __chips (last in the flow), so
+ * hide only the OTHER chips. Existing views keep their full chip set. */
+.filter-bar-v2--new-view .filter-bar-v2__chips > .filter-item:not(.filter-bar-v2__add),
+.filter-bar-v2--view-empty .filter-bar-v2__chips > .filter-item:not(.filter-bar-v2__add) {
   display: none;
 }
 
 /* ── Save View (Type=Save View) — a primary "Save view" CTA pinned to the right of
- * row 2, shown once a filter is added/amended. It's a Button (primary, sm); hidden
- * until the bar enters the save-view state. In that state "Add Filters" rejoins the
- * chip flow (chips stop filling the row) and Save view takes the right edge. */
+ * row 2, shown once a filter is added/amended. It's a Button (primary, sm), a sibling
+ * after __chips; the chips fill the row so the CTA lands at the right edge. Hidden
+ * until the bar enters the save-view state. */
 .filter-bar-v2__save {
   display: none;
   flex-shrink: 0;
 }
 
-.filter-bar-v2--save-view .filter-bar-v2__chips {
-  flex: 0 1 auto; /* don't fill — let Add Filters sit beside the chips on the left */
-}
-
 .filter-bar-v2--save-view .filter-bar-v2__save {
   display: inline-flex;
-  margin-left: auto; /* push the CTA to the right edge of row 2 */
+  margin-left: auto; /* keep the CTA pinned to the right edge of row 2 */
 }
 
 /* ── Focus (a11y) ────────────────────────────────────── */
@@ -290,5 +290,29 @@
     flex: 1 1 0;
     width: auto;
     min-width: 0;
+  }
+
+  /* The "Create" CTA uses the small button at mobile (Figma mobile New View
+   * variant 2977:3806 — button/sm). Mirrors .btn--sm (radius unchanged = md). */
+  .filter-bar-v2__create {
+    padding: 0 var(--ai-spacing-4);
+    min-height: var(--ai-spacing-7);
+    font-size: var(--ai-font-fluid-xxs);
+  }
+
+  /* Mobile: the filter chips scroll horizontally instead of wrapping (Figma mobile
+   * variant 2977:3804 — a single non-wrapping row; chips keep their size). */
+  .filter-bar-v2__chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox — hide the bar to match Figma's clean clipped row */
+  }
+
+  .filter-bar-v2__chips::-webkit-scrollbar {
+    display: none; /* WebKit/Blink */
+  }
+
+  .filter-bar-v2__chips > .filter-item {
+    flex-shrink: 0; /* keep chip size so the row overflows (scrolls) rather than squashing */
   }
 }
