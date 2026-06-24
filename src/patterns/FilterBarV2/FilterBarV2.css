@@ -335,7 +335,7 @@
    * row 1 between the views dropdown and the kebab. Per Figma the views control hugs
    * its content (~136px, not the 192px field) and all three gaps are 8px. */
   .filter-bar-v2--alt-search .filter-bar-v2__row--top {
-    gap: var(--ai-spacing-3); /* 8px — views · search · kebab (Figma) */
+    gap: var(--ai-spacing-5); /* 16px between the views control and the search field */
   }
 
   .filter-bar-v2--alt-search .filter-bar-v2__lead {
