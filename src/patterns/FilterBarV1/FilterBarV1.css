@@ -270,12 +270,23 @@
     padding-left: 0;
   }
 
-  /* New View mode on mobile: field + Create share row1 with chips below. */
+  /* New View mode on mobile: field + Create share row1 with chips below. The field
+   * flexes (basis 0 so it never forces Create onto a second line, then grows to
+   * fill); Create + actions keep their natural width to its right. */
   .filter-bar-v1__new-view {
     order: 1;
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
   }
 
   .filter-bar-v1__create {
     order: 2;
+  }
+
+  /* Drop the actions auto-margin here — it would otherwise eat the free space and
+   * starve the field's flex-grow, collapsing the input. */
+  .filter-bar-v1--new-view .filter-bar-v1__actions {
+    margin-left: 0;
   }
 }

@@ -265,4 +265,12 @@
   .filter-bar-v2__export {
     display: none;
   }
+
+  /* New View mode: let the field flex (basis 0, then grow) so it shrinks to make
+   * room for Create instead of pushing it off the line. Create keeps its width. */
+  .filter-bar-v2--new-view .filter-bar-v2__new-view {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+  }
 }
