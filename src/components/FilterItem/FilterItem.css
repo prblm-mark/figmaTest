@@ -1,0 +1,137 @@
+/* FilterItem — faceted filter chip. Uses only --ai-* design tokens.
+ *
+ * States (modifier classes):
+ *   (base)              Default  — solid border, "+ Name", opens a value picker
+ *   .filter-item--empty Empty    — dashed border placeholder ("add a filter")
+ *   .filter-item--selected       — info-soft fill, "× Name · values ⌄"
+ * Shape:
+ *   (base)              Rounded=False → --ai-radius-md
+ *   .filter-item--rounded         Rounded=True  → --ai-radius-full
+ * Interaction:
+ *   .filter-item--open  trigger expanded — chevron flips 180°
+ *
+ * Markup is always the full set of slots; the state classes show/hide them so a
+ * chip can move between Default ⇄ Selected without re-rendering (see FilterItem.js).
+ */
+
+.filter-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-1); /* 4px */
+  height: var(--ai-spacing-7); /* 32px */
+  /* Figma: pl 8 / pr 12 / py 6 */
+  padding: var(--ai-spacing-2) var(--ai-spacing-4) var(--ai-spacing-2) var(--ai-spacing-3);
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  box-sizing: border-box;
+}
+
+/* ── Shape ─────────────────────────────────────────────── */
+.filter-item--rounded {
+  border-radius: var(--ai-radius-full);
+}
+
+/* ── Empty (dashed placeholder) ────────────────────────── */
+.filter-item--empty {
+  border-style: dashed;
+  border-color: var(--ai-border-contrast);
+}
+
+/* ── Selected ──────────────────────────────────────────── */
+.filter-item--selected {
+  background: var(--ai-surface-info-soft);
+  border-color: var(--ai-border-info);
+}
+
+/* ── Trigger (name · values + chevron; opens the picker) ── */
+.filter-item__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-1); /* 4px */
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* ── Clear (×) — selected only ─────────────────────────── */
+.filter-item__clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ai-icon-contrast);
+  cursor: pointer;
+}
+
+/* ── Text ──────────────────────────────────────────────── */
+.filter-item__name,
+.filter-item__values {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xxs); /* 12px */
+  line-height: var(--ai-leading-xs); /* 16px */
+  color: var(--ai-text-primary);
+  white-space: nowrap;
+}
+
+.filter-item__name {
+  font-weight: var(--ai-font-medium);
+}
+
+.filter-item__values {
+  font-weight: var(--ai-font-semibold);
+}
+
+.filter-item__sep {
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-sm); /* 16px */
+  line-height: var(--ai-leading-md); /* 24px */
+  letter-spacing: -0.3125px; /* optical — Figma tracking on the middot */
+  color: var(--ai-icon-contrast);
+}
+
+/* ── Icons (plus / x / chevron all render at 12px / contrast) ── */
+.filter-item [data-lucide] {
+  width: var(--ai-icon-size-xs); /* 12px */
+  height: var(--ai-icon-size-xs);
+  color: var(--ai-icon-contrast);
+  flex-shrink: 0;
+}
+
+.filter-item__chevron {
+  transition: transform var(--ai-transition-default);
+}
+
+.filter-item--open .filter-item__chevron {
+  transform: rotate(180deg);
+}
+
+/* ── Slot visibility per state ─────────────────────────── */
+/* Non-selected (Default / Empty): only the add icon + name show. */
+.filter-item:not(.filter-item--selected) .filter-item__clear,
+.filter-item:not(.filter-item--selected) .filter-item__sep,
+.filter-item:not(.filter-item--selected) .filter-item__values,
+.filter-item:not(.filter-item--selected) .filter-item__chevron {
+  display: none;
+}
+
+/* Selected: the leading add icon is replaced by the clear (×). */
+.filter-item--selected .filter-item__add {
+  display: none;
+}
+
+/* ── Focus (a11y — Figma defines no hover/focus state for the chip) ── */
+.filter-item__trigger:focus-visible,
+.filter-item__clear:focus-visible {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: 2px;
+  border-radius: var(--ai-radius-sm);
+}
