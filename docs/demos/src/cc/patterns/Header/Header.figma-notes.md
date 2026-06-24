@@ -14,7 +14,7 @@ Two axes: **Type** × **Device** = 6 variants.
 | Node ID | Device | Type | Min-height | Title | Has avatar | Has user details |
 |---|---|---|---|---|---|---|
 | `4105:3640` | Desktop | Default | 64px | "Page name" (22px) | — | — |
-| `4105:3638` | Desktop | Control | 64px | "Hi Susan Kerrigan" (22px) | 48px | Affino, Lead Project Manager |
+| `4105:3638` | Desktop | Control | 64px | "Susan Kerrigan" (22px) | 48px | Affino, Lead Project Manager |
 | `4105:3636` | Desktop | Sub Text | 64px | "Page name" (22px) + "Sub text" | — | — |
 | `4105:3637` | Mobile | Default | 56px | "Page name" (16px) | — | — |
 | `4105:3639` | Mobile | Control | 56px | "Susan Kerrigan" (16px) | 32px | hidden |
@@ -27,10 +27,10 @@ not the viewport. (The container must be a separate wrapper: an element cannot
 query its own container — see `feedback_container_self_query_trap`.) Single HTML
 structure collapses to mobile; no `--mobile` modifier class.
 
-**Mobile content changes (Control):** Per Figma, mobile Control omits the "Hi " greeting
-prefix and the user details rows (Affino / Lead Project Manager). Implemented by wrapping
-"Hi " in a `<span class="cc-header__title-greeting">` and hiding it on mobile, and
-hiding `.cc-header__user-details`.
+**Greeting prefix removed (per design direction):** Figma shows the desktop Control title
+as "Hi Susan Kerrigan", but the "Hi " greeting prefix has been removed — the title shows the
+name only. **Mobile content changes (Control):** the user details rows (Affino / Lead Project
+Manager) hide on mobile via `.cc-header__user-details`.
 
 ---
 
@@ -46,7 +46,6 @@ hiding `.cc-header__user-details`.
 | `Tilte Block` (typo) | `.cc-header__title-block` |
 | Title text column | `.cc-header__title-block-text` (used in Sub Text + Control) |
 | `Title` | `.cc-header__title` (`<h1>`) |
-| Greeting prefix ("Hi ") | `.cc-header__title-greeting` (`<span>`, hidden on mobile) |
 | Subtitle ("Sub text") | `.cc-header__subtitle` (`<p>`) |
 | `Avatars` | (wrapper omitted; portrait sits directly inside title-block) |
 | `Female 1` | `.portrait` (existing Portraits component) |
@@ -174,7 +173,6 @@ No additional CCHeader-specific gaps — all sizes and tokens map cleanly via th
 - Control variant:
   - title-block gap shrinks to 8px
   - Portrait shrinks to 32px
-  - `.cc-header__title-greeting` hides ("Hi " prefix)
   - `.cc-header__user-details` hides (Affino / Lead Project Manager)
   - title line-height becomes 1.1
 
