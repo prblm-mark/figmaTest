@@ -329,4 +329,40 @@
   .filter-bar-v2--save-view .filter-bar-v2__save {
     margin-left: 0;
   }
+
+  /* Alt Search (Type=Alt Search, Device=Mobile — Figma 2999:4699): instead of the
+   * search icon + full-width takeover, the search is a persistent field that fills
+   * row 1 between the views dropdown and the kebab. Per Figma the views control hugs
+   * its content (~136px, not the 192px field) and all three gaps are 8px. */
+  .filter-bar-v2--alt-search .filter-bar-v2__row--top {
+    gap: var(--ai-spacing-3); /* 8px — views · search · kebab (Figma) */
+  }
+
+  .filter-bar-v2--alt-search .filter-bar-v2__lead {
+    flex: 0 1 auto; /* views at content width, not filling */
+  }
+
+  .filter-bar-v2--alt-search .filter-bar-v2__views-trigger {
+    width: auto; /* hug "All Orders ▾" instead of the fixed 192px field */
+    padding: 0; /* borderless, paddingless plain control (Figma alt-search) */
+    border: 0;
+    background: transparent;
+    /* keep min-height for vertical alignment with the 40px search field */
+  }
+
+  .filter-bar-v2--alt-search .filter-bar-v2__actions {
+    flex: 1 0 0; /* the actions cluster fills, so the search field can grow */
+    min-width: 0;
+  }
+
+  .filter-bar-v2--alt-search .filter-bar-v2__search-bar {
+    display: block;
+    flex: 1 0 0;
+    width: auto;
+    min-width: 0;
+  }
+
+  .filter-bar-v2--alt-search .filter-bar-v2__icon-btn[aria-label="Search"] {
+    display: none; /* no icon — the persistent field replaces it */
+  }
 }

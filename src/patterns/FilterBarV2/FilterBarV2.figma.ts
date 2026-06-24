@@ -13,6 +13,7 @@ figma.connect(
         Wrapping: '',
         'Save View': 'filter-bar-v2--save-view',
         Search: 'filter-bar-v2--search',
+        'Alt Search': 'filter-bar-v2--alt-search',
         Actions: '',
       }),
     },

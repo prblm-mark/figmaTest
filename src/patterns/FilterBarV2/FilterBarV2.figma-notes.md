@@ -23,7 +23,7 @@ the filter chips with "Add Filters" pinned right.
 | Search mode | replaces the whole bar | replaces **row 1 only** — chips row stays |
 | Mobile | views+actions row, chips wrap | same, **Export collapses out of the bar** |
 
-## Variant matrix (8 Type × Desktop/Mobile)
+## Variant matrix (8 Type × Desktop/Mobile, + Alt Search mobile)
 
 `Type` = scenarios of one toolbar (modelled as JS modes + composed-component states).
 
@@ -36,6 +36,7 @@ the filter chips with "Add Filters" pinned right.
 | 2977:3798 / 2977:3802 | Wrapping | more chips → row 2 flex-wraps |
 | 2989:6121 / 2989:6242 | Save View | root `.filter-bar-v2--save-view` reveals a "Save view" primary CTA (Button, sm) pinned right of row 2; Add Filters rejoins the chip flow |
 | 2977:3800 / 2977:3809 | Search | root `.filter-bar-v2--search` |
+| — / 2999:4699 | Alt Search (mobile) | root `.filter-bar-v2--alt-search` — **mobile-only** alternative to the search icon + takeover: a persistent search field fills row 1 between the views control and the kebab |
 | 2977:3807 / 2977:3805 | Actions | kebab `.dropdown` is `.is-open` |
 
 Desktop fetched in full: Default, New View, Search. The rest are state/content permutations.
@@ -71,6 +72,7 @@ Desktop fetched in full: Default, New View, Search. The rest are state/content p
 |---|---|---|
 | Search | `.filter-bar-v2--search` | row 1 → back-arrow + full-width search Input (Export + actions hidden); **chips row 2 stays** |
 | New View | `.filter-bar-v2--new-view` | row 1 views → "New view" Input + Create (Export + actions stay); **row 2 collapses to just Add Filters**. **Create** (`new-view-create`) appends the typed name to the saved-views list (`addView`, flagged `data-view-empty="1"`) + selects it (`selectView`) + re-wires its … (`Dropdown.initAll`); **×** cancels. A new (empty) view shows **only "Add Filters"** via `.filter-bar-v2--view-empty` (non-destructive — chips stay in the DOM). Existing views keep their default chips; `selectView` toggles `--view-empty` from the row's flag, so switching back restores them. |
+| Alt Search | `.filter-bar-v2--alt-search` | **mobile-only** alternative search treatment (Figma 2999:4699). Instead of the search icon + full-width takeover, the persistent `.filter-bar-v2__search-bar` field is shown and **fills** row 1 (`flex:1`) between the views control and the kebab. The views trigger becomes a **plain borderless control** (`width:auto`, no border / bg / padding — not the 192px field) so the search gets the width; row-1 gap drops to `--ai-spacing-3` (8px) to match Figma (views · search · kebab). Search icon hidden. Desktop unchanged. CSS-only (modifier on the root). |
 | Save View | `.filter-bar-v2--save-view` | a filter added/amended — **mock**: clicking the "Add Filters" chip (FilterItem bubbles `filter-item:toggle` with `open:true`) reveals the `.filter-bar-v2__save` "Save view" CTA (Button `--primary --sm`) — the last child **inside** `__chips`, after "Add Filters". **Desktop:** `margin-left:auto` pins it to the right edge of the chip row. **Mobile (≤767px):** that margin is dropped so it flows right after "Add Filters" in the wrapping chips (Figma mobile 2989:6242). Clicking the CTA (`data-filter-action="save-view"`) is a mock "save" — drops the class + closes the Add Filters chip. **TODO(backend:Filters)** — real trigger is a persisted filter-set change. |
 
 **Saved-view selection + rename** (`FilterBarV2.js` `wireViews` — same model as FilterBarV1:

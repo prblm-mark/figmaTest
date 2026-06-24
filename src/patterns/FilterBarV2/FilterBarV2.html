@@ -30,16 +30,66 @@
       font-size: var(--ai-font-fixed-xs);
       color: var(--ai-text-secondary);
     }
+    /* ── Demo-only device-preview toggle ──────────────────── */
+    .device-toggle {
+      display: inline-flex;
+      gap: var(--ai-spacing-1);
+      margin: 0 0 var(--ai-spacing-6);
+      padding: var(--ai-spacing-1);
+      background: var(--ai-surface-minimal);
+      border-radius: var(--ai-radius-md);
+    }
+    .device-toggle__btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--ai-spacing-2);
+      min-height: var(--ai-spacing-7);
+      padding: 0 var(--ai-spacing-4);
+      border: 0;
+      border-radius: var(--ai-radius-sm);
+      background: transparent;
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-medium);
+      color: var(--ai-text-secondary);
+      cursor: pointer;
+    }
+    .device-toggle__btn--active {
+      background: var(--ai-surface-primary);
+      color: var(--ai-text-primary);
+      box-shadow: var(--ai-shadow-sm);
+    }
+    .device-frame {
+      width: var(--ai-size-7); /* 384px — Figma mobile frame width */
+      max-width: 100%;
+      height: 80vh;
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-lg);
+      background: var(--ai-surface-primary);
+    }
+    /* When loaded inside the preview iframe (?embed) hide the page chrome. */
+    body.is-embed { padding: var(--ai-spacing-5); background: var(--ai-surface-primary); }
+    body.is-embed .demo-chrome,
+    body.is-embed .device-frame { display: none; }
   </style>
 </head>
 <body>
 
-  <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-4);">Filter Bar — V2</h1>
-  <p style="font-size: var(--ai-font-fixed-xs); color: var(--ai-text-secondary); margin: 0 0 var(--ai-spacing-6); max-width: 64ch;">
+  <h1 class="demo-chrome" style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-4);">Filter Bar — V2</h1>
+  <p class="demo-chrome" style="font-size: var(--ai-font-fixed-xs); color: var(--ai-text-secondary); margin: 0 0 var(--ai-spacing-6); max-width: 64ch;">
     Two-row filter toolbar (A/B variant 2). Row 1: saved-views + an explicit Export button + search/kebab.
     Row 2: the filter chips (V2 uses the <strong>solid</strong> FilterItem; only “Add Filters” is dashed).
     Resize below 768px — the Export button collapses out of the bar (per Figma).
   </p>
+
+  <!-- Demo-only: preview the bar at desktop or mobile width (mobile renders in a 384px iframe so the @media rules apply) -->
+  <div class="device-toggle demo-chrome" role="radiogroup" aria-label="Preview width">
+    <button type="button" class="device-toggle__btn device-toggle__btn--active" data-view="desktop" aria-pressed="true"><i data-lucide="monitor" aria-hidden="true"></i>Desktop</button>
+    <button type="button" class="device-toggle__btn" data-view="mobile" aria-pressed="false"><i data-lucide="smartphone" aria-hidden="true"></i>Mobile</button>
+  </div>
+  <iframe class="device-frame" title="Mobile preview (384px)" hidden></iframe>
+
+  <div id="demo-root">
 
   <!-- ── Default (interactive) ─────────────────────────── -->
   <div class="demo-section">
@@ -364,6 +414,42 @@
     </div>
   </div>
 
+  <!-- ── Alt Search (mobile) ───────────────────────────── -->
+  <div class="demo-section">
+    <p class="demo-section__title">Type=Alt Search (mobile) — persistent inline search instead of icon + takeover</p>
+    <p class="demo-section__sub">Switch the toggle to <strong>Mobile</strong> (or resize below 768px): the search becomes a field filling row 1 between the views control and the kebab. Desktop is unchanged.</p>
+    <div class="filter-bar-v2 filter-bar-v2--alt-search">
+      <div class="filter-bar-v2__row filter-bar-v2__row--top">
+        <div class="filter-bar-v2__lead">
+          <div class="dropdown filter-bar-v2__views" data-dropdown>
+            <button type="button" class="dropdown__trigger filter-bar-v2__views-trigger" aria-haspopup="menu" aria-expanded="false"><span class="filter-bar-v2__views-label">All Orders</span><i data-lucide="chevron-down" class="filter-bar-v2__views-chevron" aria-hidden="true"></i></button>
+            <div class="dropdown__panel dropdown__panel--filter-views" role="menu" aria-label="Saved views" hidden></div>
+          </div>
+        </div>
+        <div class="filter-bar-v2__actions">
+          <button type="button" class="btn btn--secondary filter-bar-v2__export"><i data-lucide="download" aria-hidden="true"></i>Export</button>
+          <div class="input filter-bar-v2__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
+          <button type="button" class="filter-bar-v2__icon-btn" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
+          <div class="dropdown filter-bar-v2__menu" data-dropdown>
+            <button type="button" class="dropdown__trigger filter-bar-v2__icon-btn" aria-haspopup="menu" aria-expanded="false" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
+            <div class="dropdown__panel" role="menu" aria-label="Actions" hidden></div>
+          </div>
+        </div>
+      </div>
+      <div class="filter-bar-v2__row">
+        <div class="filter-bar-v2__chips">
+          <div class="filter-item filter-item--rounded" data-filter-name="Name"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Name</span></button></div>
+          <div class="filter-item filter-item--rounded" data-filter-name="Zone"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Zone</span></button></div>
+          <div class="filter-item filter-item--rounded" data-filter-name="Type"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Type</span></button></div>
+          <div class="filter-item filter-item--rounded" data-filter-name="Keywords"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Keywords</span></button></div>
+          <div class="filter-item filter-item--rounded filter-item--empty filter-bar-v2__add" data-filter-name="Add Filters"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Add Filters</span></button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div><!-- /#demo-root -->
+
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script type="module">
     import { initAll as initDropdowns } from '../../components/Dropdown/Dropdown.js';
@@ -374,5 +460,33 @@
     initFilterBars();
   </script>
   <script>lucide.createIcons();</script>
+  <!-- Demo-only: device-preview toggle. Mobile renders the page in a 384px iframe so the
+       component's @media (max-width:767px) rules actually apply. -->
+  <script>
+    (function () {
+      var params = new URLSearchParams(location.search);
+      if (params.has('embed')) { document.body.classList.add('is-embed'); return; }
+      var toggle = document.querySelector('.device-toggle');
+      var root = document.getElementById('demo-root');
+      var frame = document.querySelector('.device-frame');
+      if (!toggle || !root || !frame) return;
+      frame.addEventListener('load', function () {
+        try { frame.style.height = frame.contentDocument.documentElement.scrollHeight + 'px'; } catch (e) {}
+      });
+      toggle.addEventListener('click', function (e) {
+        var btn = e.target.closest('[data-view]');
+        if (!btn) return;
+        var mobile = btn.dataset.view === 'mobile';
+        toggle.querySelectorAll('.device-toggle__btn').forEach(function (b) {
+          var on = b === btn;
+          b.classList.toggle('device-toggle__btn--active', on);
+          b.setAttribute('aria-pressed', String(on));
+        });
+        if (mobile && !frame.src) frame.src = location.pathname + '?embed';
+        root.hidden = mobile;
+        frame.hidden = !mobile;
+      });
+    })();
+  </script>
 </body>
 </html>
