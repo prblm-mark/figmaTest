@@ -7,10 +7,11 @@
  *
  * Hooks (data-filter-action on a descendant button): see FilterBarV1.js, plus
  * "new-view-create" (Create → add the typed name to the saved-views list + select it).
+ * Per-row … menu actions (rename/copy/delete) are handled in wireViews — see FilterBarV1.js.
  *
  * TODO(backend:Filters): saved-views list, value pickers, search querying,
- * Create (persist), Export, and the kebab actions are all mock — a created view
- * lives in the DOM only and is lost on reload.
+ * Create, Export, and the row actions (rename/copy/delete) are all mock — they
+ * mutate the DOM only, so every change is lost on reload.
  */
 
 import { initAll as initDropdowns } from '../../components/Dropdown/Dropdown.js';
@@ -66,8 +67,8 @@ function addView(root, name) {
     + '<button type="button" class="dropdown-item__more" aria-haspopup="menu" aria-expanded="false"><i data-lucide="ellipsis" aria-hidden="true"></i></button>'
     + '<div class="dropdown__row-menu" role="menu" hidden>'
     + '<button type="button" class="btn btn--tertiary btn--sm" role="menuitem" data-filter-rename><i data-lucide="pencil" aria-hidden="true"></i>Rename</button>'
-    + '<button type="button" class="btn btn--tertiary btn--sm" role="menuitem"><i data-lucide="copy" aria-hidden="true"></i>Copy</button>'
-    + '<button type="button" class="btn btn--tertiary btn--sm" role="menuitem"><i data-lucide="trash-2" aria-hidden="true"></i>Delete</button>'
+    + '<button type="button" class="btn btn--tertiary btn--sm" role="menuitem" data-filter-copy><i data-lucide="copy" aria-hidden="true"></i>Copy</button>'
+    + '<button type="button" class="btn btn--tertiary btn--sm" role="menuitem" data-filter-delete><i data-lucide="trash-2" aria-hidden="true"></i>Delete</button>'
     + '</div>';
   const span = li.querySelector('[data-text]');
   span.setAttribute('data-text', name);
@@ -131,17 +132,59 @@ function wireViews(root) {
     return item;
   };
 
+  // Close a row's … menu (we stopped Dropdown.js, so we close it ourselves).
+  const closeRowMenu = (li) => {
+    if (!li) return;
+    const menu = li.querySelector('.dropdown__row-menu');
+    if (menu) menu.hidden = true;
+    const moreBtn = li.querySelector('.dropdown-item__more');
+    if (moreBtn) moreBtn.setAttribute('aria-expanded', 'false');
+  };
+
   views.addEventListener('click', (e) => {
     const renameBtn = e.target.closest('[data-filter-rename]');
     if (renameBtn && views.contains(renameBtn)) {
       e.stopPropagation();
       const li = renameBtn.closest('li');
-      const menu = li && li.querySelector('.dropdown__row-menu');
-      if (menu) menu.hidden = true;
-      const moreBtn = li && li.querySelector('.dropdown-item__more');
-      if (moreBtn) moreBtn.setAttribute('aria-expanded', 'false');
+      closeRowMenu(li);
       const row = li && li.querySelector('.dropdown-item[role="menuitemradio"]');
       if (row) startRename(row);
+      return;
+    }
+    // "Copy" in a row's … menu — duplicate the view (mock; DOM only).
+    const copyBtn = e.target.closest('[data-filter-copy]');
+    if (copyBtn && views.contains(copyBtn)) {
+      e.stopPropagation();
+      const li = copyBtn.closest('li');
+      closeRowMenu(li);
+      const srcRow = li && li.querySelector('.dropdown-item[role="menuitemradio"]');
+      const srcText = srcRow && srcRow.querySelector('[data-text]');
+      if (srcRow && srcText) {
+        const copyRow = addView(root, 'Copy of ' + srcText.textContent.trim());
+        if (copyRow) {
+          // Mirror the source's filter state (addView defaults new rows to empty).
+          copyRow.dataset.viewEmpty = srcRow.dataset.viewEmpty === '1' ? '1' : '0';
+          if (typeof window !== 'undefined' && window.lucide) window.lucide.createIcons();
+          initDropdowns(root); // wire the new row's … menu (idempotent)
+          selectView(root, copyRow);
+        }
+      }
+      return;
+    }
+    // "Delete" in a row's … menu — remove the view (mock; DOM only).
+    const deleteBtn = e.target.closest('[data-filter-delete]');
+    if (deleteBtn && views.contains(deleteBtn)) {
+      e.stopPropagation();
+      const li = deleteBtn.closest('li');
+      if (!li) return;
+      const row = li.querySelector('.dropdown-item[role="menuitemradio"]');
+      const wasSelected = row && row.getAttribute('aria-checked') === 'true';
+      const list = li.parentElement;
+      li.remove();
+      if (wasSelected) {
+        const next = list && list.querySelector('.dropdown-item[role="menuitemradio"]');
+        if (next) selectView(root, next); // fall back to the first remaining view
+      }
       return;
     }
     const item = isRowName(e);
