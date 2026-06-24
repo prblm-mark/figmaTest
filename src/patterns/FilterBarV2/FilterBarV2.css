@@ -217,6 +217,29 @@
   display: none;
 }
 
+/* ── Persistent search field (desktop) ───────────────────
+ * Figma 2977:3803 desktop shows a 192px search Input always present in the
+ * actions cluster (Export | Search | kebab). On mobile (Figma 2977:3804) it
+ * collapses to the search icon + full-width takeover (the --search mode above).
+ * Mobile-first: hidden by default; the search icon shows. ≥768px: field shows,
+ * icon hides. */
+.filter-bar-v2__search-bar {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .filter-bar-v2__search-bar {
+    display: block;
+    width: var(--ai-size-3); /* 192px */
+    flex-shrink: 0;
+  }
+
+  /* The search icon is mobile-only — the persistent field replaces it on desktop. */
+  .filter-bar-v2__icon-btn[aria-label="Search"] {
+    display: none;
+  }
+}
+
 /* ── New View mode ───────────────────────────────────── */
 .filter-bar-v2__new-view {
   display: none;
@@ -255,10 +278,11 @@
   display: none;
 }
 
-/* ── Save View (Type=Save View) — a primary "Save view" CTA pinned to the right of
- * row 2, shown once a filter is added/amended. It's a Button (primary, sm), a sibling
- * after __chips; the chips fill the row so the CTA lands at the right edge. Hidden
- * until the bar enters the save-view state. */
+/* ── Save View (Type=Save View) — a primary "Save view" CTA shown once a filter is
+ * added/amended. It's the last child INSIDE __chips (a Button, primary sm). On desktop
+ * `margin-left:auto` pins it to the right edge of the chip row; on mobile that margin
+ * is dropped (see media query) so it flows right after "Add Filters" in the wrapping
+ * chips. Hidden until the bar enters the save-view state. */
 .filter-bar-v2__save {
   display: none;
   flex-shrink: 0;
@@ -266,7 +290,7 @@
 
 .filter-bar-v2--save-view .filter-bar-v2__save {
   display: inline-flex;
-  margin-left: auto; /* keep the CTA pinned to the right edge of row 2 */
+  margin-left: auto; /* desktop: pin to the right edge of the chip row */
 }
 
 /* ── Focus (a11y) ────────────────────────────────────── */
@@ -300,19 +324,9 @@
     font-size: var(--ai-font-fluid-xxs);
   }
 
-  /* Mobile: the filter chips scroll horizontally instead of wrapping (Figma mobile
-   * variant 2977:3804 — a single non-wrapping row; chips keep their size). */
-  .filter-bar-v2__chips {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scrollbar-width: none; /* Firefox — hide the bar to match Figma's clean clipped row */
-  }
-
-  .filter-bar-v2__chips::-webkit-scrollbar {
-    display: none; /* WebKit/Blink */
-  }
-
-  .filter-bar-v2__chips > .filter-item {
-    flex-shrink: 0; /* keep chip size so the row overflows (scrolls) rather than squashing */
+  /* Save View: on mobile the CTA sits after "Add Filters" in the wrapping chip flow
+   * (Figma mobile 2989:6242) — drop the desktop auto-margin that pins it right. */
+  .filter-bar-v2--save-view .filter-bar-v2__save {
+    margin-left: 0;
   }
 }

@@ -46,15 +46,20 @@ Desktop fetched in full: Default, New View, Search. The rest are state/content p
   **No `overflow: hidden`** — the root's own bg + radius round the card and the inter-row
   divider sits mid-card, so nothing needs clipping; clipping would crop the saved-views /
   kebab dropdown panels (which must escape the card).
-- **Row 1** (`.filter-bar-v2__row--top`, `border-bottom`): `[lead (views) ........ Export  search  kebab]`,
-  px `--ai-spacing-5` / py `--ai-spacing-4`, gap `--ai-spacing-5`.
+- **Row 1** (`.filter-bar-v2__row--top`, `border-bottom`): `[lead (views) .....16px..... [Export · Search · kebab]]`,
+  px `--ai-spacing-5` / py `--ai-spacing-4`. **Export, the search field, and the kebab are grouped in
+  the `.filter-bar-v2__actions` div** (Figma row-1 "Frame 230", e.g. 2989:6122) with an internal
+  `--ai-spacing-3` (8px) gap; the row's `--ai-spacing-5` (16px) gap only separates the lead from that
+  group. The **search is a persistent 192px field** (`--ai-size-3`) on desktop (Figma 2977:3803).
 - **Row 2**: `[chips (flex-1, wrap) — "Add Filters" is the last chip in the flow]`, same padding.
   (In the Save View state a "Save view" CTA sits as a sibling after `__chips`, pinned right.)
+- **Search responsive behaviour:** desktop shows the persistent `.filter-bar-v2__search-bar` field +
+  hides the search icon; **mobile (≤767px)** hides the field and shows the **search icon**, which
+  enters the full-width **takeover** (`--search` mode → back-arrow + `.filter-bar-v2__search` in lead).
+  Implemented mobile-first: `.filter-bar-v2__search-bar { display:none }`, then `@media (min-width:768px)`
+  shows it (192px) and hides `.filter-bar-v2__icon-btn[aria-label="Search"]`.
 - **Mobile (≤767px):** rows already stack; the **Export button is hidden** (`display:none`) per the
-  Figma mobile variants; the **chips row scrolls horizontally instead of wrapping** —
-  `.filter-bar-v2__chips` becomes `flex-wrap: nowrap; overflow-x: auto` with chips `flex-shrink: 0`
-  (Figma mobile variant 2977:3804: single non-wrapping clipped row). Scrollbar hidden for a clean
-  look. The Save view CTA stays a sibling outside the scroll area (pinned right).
+  Figma mobile variants; the **chips row wraps** to multiple lines (Figma mobile variant 2977:3804).
   The **New View "Create" CTA uses the small button** at mobile (`btn--sm` sizing applied to
   `.filter-bar-v2__create` in the media query — padding `--ai-spacing-4`, `min-height --ai-spacing-7`,
   `font-size --ai-font-fluid-xxs`), per Figma mobile New View variant 2977:3806 (`button/sm`).
@@ -66,7 +71,7 @@ Desktop fetched in full: Default, New View, Search. The rest are state/content p
 |---|---|---|
 | Search | `.filter-bar-v2--search` | row 1 → back-arrow + full-width search Input (Export + actions hidden); **chips row 2 stays** |
 | New View | `.filter-bar-v2--new-view` | row 1 views → "New view" Input + Create (Export + actions stay); **row 2 collapses to just Add Filters**. **Create** (`new-view-create`) appends the typed name to the saved-views list (`addView`, flagged `data-view-empty="1"`) + selects it (`selectView`) + re-wires its … (`Dropdown.initAll`); **×** cancels. A new (empty) view shows **only "Add Filters"** via `.filter-bar-v2--view-empty` (non-destructive — chips stay in the DOM). Existing views keep their default chips; `selectView` toggles `--view-empty` from the row's flag, so switching back restores them. |
-| Save View | `.filter-bar-v2--save-view` | a filter added/amended — **mock**: clicking the "Add Filters" chip (FilterItem bubbles `filter-item:toggle` with `open:true`) reveals the `.filter-bar-v2__save` "Save view" CTA (Button `--primary --sm`), a sibling after `__chips` pinned to the right edge of row 2 (`margin-left:auto`; "Add Filters" stays the last chip in the flow). Clicking the CTA (`data-filter-action="save-view"`) is a mock "save" — drops the class + closes the Add Filters chip. **TODO(backend:Filters)** — real trigger is a persisted filter-set change. |
+| Save View | `.filter-bar-v2--save-view` | a filter added/amended — **mock**: clicking the "Add Filters" chip (FilterItem bubbles `filter-item:toggle` with `open:true`) reveals the `.filter-bar-v2__save` "Save view" CTA (Button `--primary --sm`) — the last child **inside** `__chips`, after "Add Filters". **Desktop:** `margin-left:auto` pins it to the right edge of the chip row. **Mobile (≤767px):** that margin is dropped so it flows right after "Add Filters" in the wrapping chips (Figma mobile 2989:6242). Clicking the CTA (`data-filter-action="save-view"`) is a mock "save" — drops the class + closes the Add Filters chip. **TODO(backend:Filters)** — real trigger is a persisted filter-set change. |
 
 **Saved-view selection + rename** (`FilterBarV2.js` `wireViews` — same model as FilterBarV1:
 double-click OR the **"Rename" item in the row's … menu** (`[data-filter-rename]`, beside Copy/Delete)
@@ -84,10 +89,11 @@ field lives inside `__lead` (which stays visible in search mode), so it needs no
 | Row | `.filter-bar-v2__row` (+`--top`) | flex, gap 16, pad 12/16; `--top` adds bottom border |
 | Lead (row 1) | `.filter-bar-v2__lead` | flex-1, gap 8 — holds views / new-view / search |
 | Views control | `.dropdown.filter-bar-v2__views` | Dropdown filter-views panel; trigger field is **regular** weight |
-| Export | `.btn.btn--secondary.filter-bar-v2__export` | Button + `download` icon + "Export"; hidden on mobile |
-| Actions | `.filter-bar-v2__actions` | search icon-btn + kebab `.dropdown` |
-| Chips (row 2) | `.filter-bar-v2__chips` | flex-wrap, gap 8; chips are FilterItem **default (solid)** / `--selected` |
-| Add Filters | `.filter-item--empty.filter-bar-v2__add` | dashed; **last chip inside `__chips`** (in the flow, after the filter list) — matches Figma |
+| Actions | `.filter-bar-v2__actions` | row-1 group (Figma "Frame 230"), 8px gap: **Export** + persistent search field (desktop) / search icon-btn (mobile) + kebab `.dropdown` |
+| Export | `.btn.btn--secondary.filter-bar-v2__export` | first child of `.filter-bar-v2__actions`; Button + `download` icon; hidden on mobile |
+| Search field (desktop) | `.input.filter-bar-v2__search-bar` | persistent 192px Input; desktop only — replaced by the icon + takeover on mobile |
+| Chips (row 2) | `.filter-bar-v2__chips` | flex-wrap, gap 8; chips are FilterItem **default (solid)** / `--selected`, **all `--rounded`** (pill `--ai-radius-full`, per user direction) |
+| Add Filters | `.filter-item--empty.filter-item--rounded.filter-bar-v2__add` | dashed pill; **last chip inside `__chips`** (in the flow, after the filter list) |
 | Save view CTA | `.btn.btn--primary.btn--sm.filter-bar-v2__save` | composes Button (primary, sm); hidden until `.filter-bar-v2--save-view`, then pinned right of row 2 |
 | Search / New-view / Create / Back | `.filter-bar-v2__{search,new-view,create,back}` | compose Input / Button |
 
