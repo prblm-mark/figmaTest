@@ -4,13 +4,12 @@
  * Three Type axes:
  *   - Default:  title only
  *   - Sub Text: title + subtitle row
- *   - Control:  avatar + greeting + user details (Affino, Job title)
+ *   - Control:  avatar + name + user details (Affino, Job title)
  * Device responsiveness is CONTAINER-QUERY based: markup wraps the header in
  * `.cc-header-cq` (container: cc-header / inline-size) and rules use
  * `@container cc-header (max-width: 767px)`, so the header reflows on its own
- * column width, not the viewport. The Control variant also changes content on
- * mobile: the "Hi " greeting prefix and the user details (Affino / Job title
- * rows) hide, leaving avatar + name only.
+ * column width, not the viewport. The Control variant also hides the user
+ * details (Affino / Job title rows) on mobile, leaving avatar + name only.
  */
 
 /* Container-query wrapper. The container MUST be a separate ancestor: an element
@@ -244,8 +243,7 @@
     line-height: 1.1; /* matches Figma Mobile Control */
   }
 
-  /* Hide greeting prefix and user details on mobile Control */
-  .cc-header--control .cc-header__title-greeting,
+  /* Hide user details on mobile Control */
   .cc-header--control .cc-header__user-details {
     display: none;
   }
