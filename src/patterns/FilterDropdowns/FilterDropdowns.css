@@ -35,6 +35,11 @@
   gap: var(--ai-spacing-5);              /* 16px */
   max-height: var(--ai-size-7);          /* 384px */
 }
+/* Header (Input/title) and Apply stay put; only the list scrolls */
+.filter-dropdowns--list > .input,
+.filter-dropdowns--list > .filter-dropdowns__apply {
+  flex-shrink: 0;
+}
 
 /* ── Standalone title (Checkbox type; header without a field) ── */
 .filter-dropdowns__title {
@@ -53,9 +58,10 @@
   padding-bottom: var(--ai-spacing-3);   /* 8px */
   width: 100%;
 }
-/* In the scrolling (w/search) type the list flexes and scrolls */
+/* The list takes its natural height (flex-basis auto so it never collapses in a
+ * max-height card) and only scrolls once the card hits its 384px cap. */
 .filter-dropdowns--list .filter-dropdowns__checklist {
-  flex: 1 0 0;
+  flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
 }
