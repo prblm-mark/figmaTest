@@ -1,0 +1,281 @@
+/* DatePicker component
+ * Figma node: 3039:8761 — "Date Picker"
+ * A calendar popover with day / month / year drill-down views, single-date and
+ * range selection, disabled dates, and a "Today" shortcut. Optionally attached
+ * to an Input-styled trigger field.
+ *
+ * Views (JS-toggled): days (default) · months · years
+ * Modes: single (default) · range (single or dual month)
+ *
+ * Uses only --ai-* design tokens. Composes the Input component for the trigger.
+ */
+
+/* ── Root ─────────────────────────────────────────────── */
+.datepicker {
+  position: relative;
+  display: inline-block;
+}
+
+/* ── Trigger field ────────────────────────────────────── */
+/* The trigger reuses the Input component (.input / .input__wrap / .input__control).
+ * This block only positions the calendar icon and the readonly cursor. */
+.datepicker__field .input__control {
+  cursor: pointer;
+}
+
+.datepicker__field-icon {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-contrast);
+  flex-shrink: 0;
+}
+
+/* ── Calendar surface ─────────────────────────────────── */
+.datepicker__calendar {
+  display: flex;
+  flex-direction: column;
+  padding: var(--ai-spacing-5); /* 16px */
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  box-shadow: var(--ai-shadow-lg);
+}
+
+/* Row of month panels (two when dual-month range) */
+.datepicker__months {
+  display: flex;
+  gap: var(--ai-spacing-6);
+}
+
+/* Popover mode — anchored under the trigger field, hidden until open */
+.datepicker__calendar--popover {
+  position: absolute;
+  top: calc(100% + var(--ai-spacing-2));
+  left: 0;
+  z-index: 50;
+  display: none;
+}
+.datepicker.datepicker--open .datepicker__calendar--popover {
+  display: flex;
+}
+
+/* ── One month panel (dual-month range shows two) ─────── */
+.datepicker__month {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Header (title + nav) ─────────────────────────────── */
+.datepicker__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--ai-spacing-7); /* 32px */
+  margin-bottom: var(--ai-spacing-4);
+}
+
+.datepicker__title {
+  border: none;
+  background: transparent;
+  padding: 0 var(--ai-spacing-2);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);   /* 14px */
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.datepicker__title:disabled {
+  cursor: default;
+}
+
+.datepicker__nav {
+  display: flex;
+  gap: var(--ai-spacing-1);
+}
+
+.datepicker__nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-7);  /* 32px */
+  height: var(--ai-spacing-7);
+  border: none;
+  background: transparent;
+  border-radius: var(--ai-radius-md);
+  color: var(--ai-icon-contrast);
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+.datepicker__nav-btn:hover {
+  background: var(--ai-surface-minimal);
+}
+.datepicker__nav-btn [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* ── Weekday row ──────────────────────────────────────── */
+.datepicker__weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, var(--ai-spacing-7));
+  gap: var(--ai-spacing-1);
+  margin-bottom: var(--ai-spacing-1);
+}
+.datepicker__weekday {
+  padding: var(--ai-spacing-2) 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xxs); /* 12px */
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+  text-align: center;
+}
+
+/* ── Day grid ─────────────────────────────────────────── */
+.datepicker__grid {
+  display: grid;
+  grid-template-columns: repeat(7, var(--ai-spacing-7));
+  gap: var(--ai-spacing-1); /* 4px */
+}
+
+/* ── Cell (day / month / year) ────────────────────────── */
+.datepicker__cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--ai-spacing-7); /* 32px */
+  border: none;
+  background: transparent;
+  border-radius: var(--ai-radius-md);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);  /* 14px */
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-primary);
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+.datepicker__grid .datepicker__cell {
+  width: var(--ai-spacing-7); /* 32px day cells */
+}
+.datepicker__cell:hover:not(.datepicker__cell--selected):not(.datepicker__cell--range-start):not(.datepicker__cell--range-end):not(.datepicker__cell--disabled) {
+  background: var(--ai-surface-minimal);
+}
+
+/* Adjacent-month day */
+.datepicker__cell--muted {
+  color: var(--ai-text-contrast);
+}
+
+/* Today (not selected) */
+.datepicker__cell--today {
+  background: var(--ai-surface-minimal);
+  color: var(--ai-text-brand);
+  font-weight: var(--ai-font-bold);
+}
+
+/* Selected single date */
+.datepicker__cell--selected {
+  background: var(--ai-surface-brand);
+  color: var(--ai-text-invert);
+  font-weight: var(--ai-font-semibold);
+}
+
+/* Range endpoints */
+.datepicker__cell--range-start,
+.datepicker__cell--range-end {
+  background: var(--ai-surface-brand);
+  color: var(--ai-text-invert);
+  font-weight: var(--ai-font-semibold);
+}
+.datepicker__cell--range-start {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.datepicker__cell--range-end {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+/* In-range band */
+.datepicker__cell--in-range {
+  background: var(--ai-surface-brand-soft-extra);
+  color: var(--ai-text-brand);
+  font-weight: var(--ai-font-medium);
+  border-radius: 0;
+}
+/* Today keeps its bold weight even inside a range */
+.datepicker__cell--in-range.datepicker__cell--today {
+  font-weight: var(--ai-font-bold);
+}
+
+/* Disabled */
+.datepicker__cell--disabled {
+  opacity: 0.5;
+  color: var(--ai-text-contrast);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ── Month / Year drill-down grids ────────────────────── */
+.datepicker__grid--months,
+.datepicker__grid--years {
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--ai-spacing-1);
+}
+.datepicker__grid--months .datepicker__cell,
+.datepicker__grid--years .datepicker__cell {
+  width: auto;
+  font-size: var(--ai-font-fixed-xxs); /* 12px */
+}
+/* Current month/year (highlight, like Today) */
+.datepicker__cell--current {
+  background: var(--ai-surface-minimal);
+  color: var(--ai-text-brand);
+  font-weight: var(--ai-font-bold);
+}
+
+/* ── Footer ───────────────────────────────────────────── */
+.datepicker__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--ai-spacing-4);
+  padding-top: var(--ai-spacing-4);
+  border-top: 1px solid var(--ai-border-secondary);
+}
+/* Hidden when there is no selection (matches the "no selection" Figma variant) */
+.datepicker__footer[hidden] {
+  display: none;
+}
+
+.datepicker__selected {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xxs); /* 12px */
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-secondary);
+}
+
+.datepicker__today-btn {
+  border: none;
+  background: transparent;
+  padding: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xxs); /* 12px */
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-brand);
+  cursor: pointer;
+}
+
+/* Focus-visible outline for keyboard users (base.css provides the ring elsewhere) */
+.datepicker__cell:focus-visible,
+.datepicker__nav-btn:focus-visible,
+.datepicker__title:focus-visible,
+.datepicker__today-btn:focus-visible {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: -2px;
+}

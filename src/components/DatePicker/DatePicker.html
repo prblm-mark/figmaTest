@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>Date Picker — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../Input/Input.css">
+  <link rel="stylesheet" href="DatePicker.css">
+  <style>
+    body { padding: var(--ai-spacing-7); background: var(--ai-surface-secondary); min-height: 100vh; }
+    h1 { font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-3); }
+    .demo-intro { font-size: var(--ai-font-fixed-xs); color: var(--ai-text-secondary); margin: 0 0 var(--ai-spacing-7); max-width: 640px; }
+    .demo-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--ai-spacing-7);
+      align-items: flex-start;
+    }
+    .demo-item { display: flex; flex-direction: column; gap: var(--ai-spacing-3); }
+    .demo-item__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0;
+    }
+    /* Give the single-date popover example room to open below its field */
+    .demo-popover { min-height: var(--ai-size-11); }
+    .demo-field { width: var(--ai-size-7); }
+  </style>
+</head>
+<body>
+
+  <h1>Date Picker</h1>
+  <p class="demo-intro">
+    A calendar popover with day / month / year drill-down, single-date and range
+    selection, disabled-past dates, and a Today shortcut. Click the month/year in a
+    calendar header to drill down into the month and year selectors. Toggle dark mode
+    to verify colour behaviour.
+  </p>
+
+  <div class="demo-grid">
+
+    <!-- 1. Single Date — Input trigger + popover calendar -->
+    <div class="demo-item demo-popover">
+      <p class="demo-item__title">Single date (field + popover)</p>
+      <div class="datepicker demo-field" data-datepicker data-mode="single" data-initial="2026-03-11">
+        <div class="input">
+          <label class="input__label">Start date</label>
+          <div class="input__wrap">
+            <input class="input__control" type="text" readonly placeholder="Select date"
+                   value="11 Mar 2026" data-datepicker-input aria-label="Start date">
+            <i data-lucide="calendar" class="datepicker__field-icon" data-datepicker-toggle aria-hidden="true"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. No selection (today highlighted) — inline -->
+    <div class="demo-item">
+      <p class="demo-item__title">No selection (today highlighted)</p>
+      <div class="datepicker" data-datepicker data-inline data-mode="single"></div>
+    </div>
+
+    <!-- 3. With disabled past dates — inline (opens on today's month; days before today disabled) -->
+    <div class="demo-item">
+      <p class="demo-item__title">Disabled past dates</p>
+      <div class="datepicker" data-datepicker data-inline data-mode="single" data-disable-past></div>
+    </div>
+
+    <!-- 4. Date range — single month (click two days to set a range) -->
+    <div class="demo-item">
+      <p class="demo-item__title">Date range — single month</p>
+      <div class="datepicker" data-datepicker data-inline data-mode="range"></div>
+    </div>
+
+    <!-- 5. Date range — dual month -->
+    <div class="demo-item">
+      <p class="demo-item__title">Date range — dual month</p>
+      <div class="datepicker" data-datepicker data-inline data-mode="range" data-months="2"></div>
+    </div>
+
+    <!-- 6. Month selector -->
+    <div class="demo-item">
+      <p class="demo-item__title">Month selector</p>
+      <div class="datepicker" data-datepicker data-inline data-mode="single" data-view="months" data-initial="2026-03-11"></div>
+    </div>
+
+    <!-- 7. Year selector (current year highlighted) -->
+    <div class="demo-item">
+      <p class="demo-item__title">Year selector</p>
+      <div class="datepicker" data-datepicker data-inline data-mode="single" data-view="years"></div>
+    </div>
+
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script src="DatePicker.js"></script>
+</body>
+</html>
