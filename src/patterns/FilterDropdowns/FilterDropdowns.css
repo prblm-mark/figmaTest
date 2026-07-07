@@ -1,0 +1,161 @@
+/* FilterDropdowns pattern
+ * Figma node: 3039:5639 — "FilterDropdowns"
+ * Tier: Pattern. The popover bodies that open from a FilterItem / the FilterBar.
+ *
+ * One shell (a bordered card, 320px, shadow-md) composing existing components:
+ *   Input (header label + select/search/date fields), Checkbox (multi-select rows),
+ *   FilterDropdownItemGroup/Item (option lists), FilterItem (More Filters chips),
+ *   Button (Apply), DatePicker (date operand fields).
+ *
+ * Core phase types (this file): Select, w/Placeholder, Text, Checkbox, Multi Select,
+ *   Multi Select w/search, Select Options (±subtext), Date In the last, Date Range,
+ *   Date Equal To, More Filters.
+ * Phase 2 (pending): Predictive Text (×3), Multi Select Table, Multi Select Modal.
+ *
+ * Only prototype-level layout lives here; control visuals come from the child CSS.
+ * Uses only --ai-* design tokens.
+ */
+
+/* ── Shell ────────────────────────────────────────────── */
+.filter-dropdowns {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);              /* 8px */
+  width: var(--ai-size-6);               /* 320px */
+  max-width: 100%;
+  padding: var(--ai-spacing-4);          /* 12px */
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);    /* Figma bound --ai-spacing-3 (8px); radius-md = same value */
+  box-shadow: var(--ai-shadow-md);       /* Figma light/shadow-md (0 3px 10px .1, 0 1px 4px .16) */
+}
+
+/* List-heavy types (Multi Select ±search) use a wider gap + a capped, scrolling body */
+.filter-dropdowns--list {
+  gap: var(--ai-spacing-5);              /* 16px */
+  max-height: var(--ai-size-7);          /* 384px */
+}
+
+/* ── Standalone title (Checkbox type; header without a field) ── */
+.filter-dropdowns__title {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);    /* 14px */
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-primary);
+}
+
+/* ── Checkbox / option list body ──────────────────────── */
+.filter-dropdowns__checklist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-4);              /* 12px */
+  padding-bottom: var(--ai-spacing-3);   /* 8px */
+  width: 100%;
+}
+/* In the scrolling (w/search) type the list flexes and scrolls */
+.filter-dropdowns--list .filter-dropdowns__checklist {
+  flex: 1 0 0;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* A single-checkbox body (Checkbox type) keeps the 12px gap + 8px bottom pad */
+.filter-dropdowns__checkbox-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-4);
+  padding-bottom: var(--ai-spacing-3);
+  width: 100%;
+}
+
+/* ── Date operand row ─────────────────────────────────── */
+.filter-dropdowns__date-row {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);              /* 8px */
+  width: 100%;
+}
+.filter-dropdowns__date-row .input {
+  flex: 1 0 0;
+  min-width: 0;
+}
+/* "and" separator between two date fields (Date Range) */
+.filter-dropdowns__date-sep {
+  flex-shrink: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);    /* 14px */
+  font-weight: var(--ai-font-regular);
+  color: var(--ai-text-contrast);
+}
+/* Leading corner icon on indented operand rows (Date In the last / Equal To) */
+.filter-dropdowns__date-corner {
+  flex-shrink: 0;
+  width: var(--ai-icon-size-md);         /* 20px */
+  height: var(--ai-icon-size-md);
+  color: var(--ai-icon-contrast);
+}
+
+/* ── More Filters (FilterItem chips) ──────────────────── */
+.filter-dropdowns__facets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ai-spacing-3);              /* 8px */
+  width: 100%;
+}
+
+/* ── Apply button (full-width primary Button) ─────────── */
+.filter-dropdowns__apply.btn {
+  width: 100%;
+}
+
+/* ── Select (interactive: field opens the options menu) ── */
+.filter-dropdowns--select {
+  position: relative;
+}
+
+/* The field is a clickable trigger (a div styled like an Input field) */
+.filter-dropdowns__trigger {
+  cursor: pointer;
+}
+.filter-dropdowns__trigger:focus-visible {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: -2px;
+}
+
+.filter-dropdowns__value {
+  flex: 1 0 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);   /* 14px */
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+}
+.filter-dropdowns__value--placeholder {
+  color: var(--ai-text-contrast);
+}
+
+.filter-dropdowns__chevron {
+  transition: transform 120ms ease;
+}
+.filter-dropdowns--open .filter-dropdowns__chevron {
+  transform: rotate(180deg);
+}
+
+/* The options menu floats below the field like a real dropdown */
+.filter-dropdowns__menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  margin-top: var(--ai-spacing-1);       /* 4px */
+  box-shadow: var(--ai-shadow-md);
+}
+.filter-dropdowns__menu[hidden] {
+  display: none;
+}

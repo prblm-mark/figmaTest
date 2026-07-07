@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Filter Dropdowns — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/Input/Input.css">
+  <link rel="stylesheet" href="../../components/Checkbox/Checkbox.css">
+  <link rel="stylesheet" href="../../components/FilterItem/FilterItem.css">
+  <link rel="stylesheet" href="../../components/FilterDropdownItem/FilterDropdownItem.css">
+  <link rel="stylesheet" href="../../components/FilterDropdownItemGroup/FilterDropdownItemGroup.css">
+  <link rel="stylesheet" href="../../components/DatePicker/DatePicker.css">
+  <link rel="stylesheet" href="FilterDropdowns.css">
+  <style>
+    body { padding: var(--ai-spacing-7); background: var(--ai-surface-secondary); min-height: 100vh; }
+    h1 { font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-3); }
+    .demo-intro { font-size: var(--ai-font-fixed-xs); color: var(--ai-text-secondary); margin: 0 0 var(--ai-spacing-7); max-width: 680px; }
+    .demo-grid { display: flex; flex-wrap: wrap; gap: var(--ai-spacing-7); align-items: flex-start; }
+    .demo-item { display: flex; flex-direction: column; gap: var(--ai-spacing-3); width: var(--ai-size-6); }
+    .demo-item__title { font-size: var(--ai-font-fixed-xxs); font-weight: var(--ai-font-semibold); color: var(--ai-text-contrast); text-transform: uppercase; letter-spacing: 0.08em; margin: 0; }
+  </style>
+</head>
+<body>
+
+  <h1>Filter Dropdowns</h1>
+  <p class="demo-intro">
+    The popover bodies that open from a FilterItem / the FilterBar. One shell (a 320px
+    card) composes Input, Checkbox, FilterDropdownItemGroup, FilterItem, DatePicker and
+    Button per filter type. <strong>Core phase</strong> shown below; Predictive Text,
+    Multi Select Table and Multi Select Modal are pending. Toggle dark mode to verify colours.
+  </p>
+
+  <div class="demo-grid">
+
+    <!-- Text -->
+    <div class="demo-item">
+      <p class="demo-item__title">Text</p>
+      <div class="filter-dropdowns" data-filter-dropdowns>
+        <div class="input">
+          <label class="input__label">Filter by Name</label>
+          <div class="input__wrap">
+            <input class="input__control" type="text" placeholder="Enter name" aria-label="Name">
+          </div>
+        </div>
+        <button type="button" class="btn btn--primary filter-dropdowns__apply" data-filter-dropdowns-apply>Apply</button>
+      </div>
+    </div>
+
+    <!-- Checkbox -->
+    <div class="demo-item">
+      <p class="demo-item__title">Checkbox</p>
+      <div class="filter-dropdowns" data-filter-dropdowns>
+        <div class="filter-dropdowns__checkbox-body">
+          <p class="filter-dropdowns__title">Excluding Tax</p>
+          <label class="checkbox">
+            <input type="checkbox" class="checkbox__input" checked>
+            <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            <span class="checkbox__label"><span class="checkbox__label-text">Exclude tax from totals</span></span>
+          </label>
+        </div>
+        <button type="button" class="btn btn--primary filter-dropdowns__apply" data-filter-dropdowns-apply>Apply</button>
+      </div>
+    </div>
+
+    <!-- Multi Select -->
+    <div class="demo-item">
+      <p class="demo-item__title">Multi Select</p>
+      <div class="filter-dropdowns filter-dropdowns--list" data-filter-dropdowns>
+        <div class="input"><label class="input__label">Filter by Topics</label></div>
+        <div class="filter-dropdowns__checklist">
+          <label class="checkbox"><input type="checkbox" class="checkbox__input"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span><span class="checkbox__label"><span class="checkbox__label-text">Commerce</span></span></label>
+          <label class="checkbox"><input type="checkbox" class="checkbox__input"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span><span class="checkbox__label"><span class="checkbox__label-text">Content</span></span></label>
+          <label class="checkbox"><input type="checkbox" class="checkbox__input" checked><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span><span class="checkbox__label"><span class="checkbox__label-text">CRM</span></span></label>
+          <label class="checkbox"><input type="checkbox" class="checkbox__input"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span><span class="checkbox__label"><span class="checkbox__label-text">Events</span></span></label>
+          <label class="checkbox"><input type="checkbox" class="checkbox__input" checked><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span><span class="checkbox__label"><span class="checkbox__label-text">Marketing</span></span></label>
+          <label class="checkbox"><input type="checkbox" class="checkbox__input"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span><span class="checkbox__label"><span class="checkbox__label-text">Support</span></span></label>
+        </div>
+        <button type="button" class="btn btn--primary filter-dropdowns__apply" data-filter-dropdowns-apply>Apply</button>
+      </div>
+    </div>
+
+    <!-- Multi Select w/search -->
+    <div class="demo-item">
+      <p class="demo-item__title">Multi Select w/search</p>
+      <div class="filter-dropdowns filter-dropdowns--list" data-filter-dropdowns>
+        <div class="input">
+          <label class="input__label">Filter by Topics</label>
+          <div class="input__wrap">
+            <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
+            <input class="input__control" type="search" placeholder="Search" aria-label="Search topics" data-filter-dropdowns-search>
+          </div>
+        </div>
+        <div class="filter-dropdowns__checklist" data-filter-dropdowns-list>
+          <label class="checkbox"><input type="checkbox" class="checkbox__input"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span><span class="checkbox__label"><span class="checkbox__label-text">Commerce</span></span></label>
+          <label class="checkbox"><input type="checkbox" class="checkbox__input"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span><span class="checkbox__label"><span class="checkbox__label-text">Content</span></span></label>
+          <label class="checkbox"><input type="checkbox" class="checkbox__input" checked><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span><span class="checkbox__label"><span class="checkbox__label-text">CRM</span></span></label>
+          <label class="checkbox"><input type="checkbox" class="checkbox__input"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span><span class="checkbox__label"><span class="checkbox__label-text">Events</span></span></label>
+          <label class="checkbox"><input type="checkbox" class="checkbox__input" checked><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span><span class="checkbox__label"><span class="checkbox__label-text">Marketing</span></span></label>
+          <label class="checkbox"><input type="checkbox" class="checkbox__input"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span><span class="checkbox__label"><span class="checkbox__label-text">Support</span></span></label>
+          <label class="checkbox"><input type="checkbox" class="checkbox__input"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span><span class="checkbox__label"><span class="checkbox__label-text">Webinars</span></span></label>
+        </div>
+        <button type="button" class="btn btn--primary filter-dropdowns__apply" data-filter-dropdowns-apply>Apply</button>
+      </div>
+    </div>
+
+    <!-- Select Options -->
+    <div class="demo-item">
+      <p class="demo-item__title">Select Options</p>
+      <div class="filter-dropdowns filter-dropdowns--select" data-filter-dropdowns data-select>
+        <div class="input">
+          <label class="input__label">Filter by Zone</label>
+          <div class="input__wrap filter-dropdowns__trigger" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="false" aria-label="Zone" data-select-trigger>
+            <span class="filter-dropdowns__value filter-dropdowns__value--placeholder" data-select-value>Select zone</span>
+            <i data-lucide="chevron-down" class="input__icon filter-dropdowns__chevron" aria-hidden="true"></i>
+          </div>
+        </div>
+        <div class="filter-dropdown-item-group filter-dropdowns__menu" role="listbox" aria-multiselectable="false" aria-label="Zone options" hidden data-select-menu>
+          <button type="button" class="filter-dropdown-item filter-dropdown-item--selected" data-filter-dropdown-item>
+            <span class="filter-dropdown-item__text"><span class="filter-dropdown-item__name">Default QA9</span></span>
+            <span class="filter-dropdown-item__check"><i data-lucide="circle-check" aria-hidden="true"></i></span>
+          </button>
+          <button type="button" class="filter-dropdown-item" data-filter-dropdown-item>
+            <span class="filter-dropdown-item__text"><span class="filter-dropdown-item__name">Premium EU</span></span>
+            <span class="filter-dropdown-item__check"><i data-lucide="circle-check" aria-hidden="true"></i></span>
+          </button>
+          <button type="button" class="filter-dropdown-item" data-filter-dropdown-item>
+            <span class="filter-dropdown-item__text"><span class="filter-dropdown-item__name">Trial Sandbox</span></span>
+            <span class="filter-dropdown-item__check"><i data-lucide="circle-check" aria-hidden="true"></i></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Select Options w/subtext -->
+    <div class="demo-item">
+      <p class="demo-item__title">Select Options w/subtext</p>
+      <div class="filter-dropdowns filter-dropdowns--select" data-filter-dropdowns data-select>
+        <div class="input">
+          <label class="input__label">Filter by Zone</label>
+          <div class="input__wrap filter-dropdowns__trigger" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="false" aria-label="Zone" data-select-trigger>
+            <span class="filter-dropdowns__value filter-dropdowns__value--placeholder" data-select-value>Select zone</span>
+            <i data-lucide="chevron-down" class="input__icon filter-dropdowns__chevron" aria-hidden="true"></i>
+          </div>
+        </div>
+        <div class="filter-dropdown-item-group filter-dropdowns__menu" role="listbox" aria-multiselectable="false" aria-label="Zone options" hidden data-select-menu>
+          <button type="button" class="filter-dropdown-item filter-dropdown-item--selected" data-filter-dropdown-item>
+            <span class="filter-dropdown-item__text"><span class="filter-dropdown-item__name">Default QA9</span><span class="filter-dropdown-item__sub">142 items</span></span>
+            <span class="filter-dropdown-item__check"><i data-lucide="circle-check" aria-hidden="true"></i></span>
+          </button>
+          <button type="button" class="filter-dropdown-item" data-filter-dropdown-item>
+            <span class="filter-dropdown-item__text"><span class="filter-dropdown-item__name">Premium EU</span><span class="filter-dropdown-item__sub">38 items</span></span>
+            <span class="filter-dropdown-item__check"><i data-lucide="circle-check" aria-hidden="true"></i></span>
+          </button>
+          <button type="button" class="filter-dropdown-item" data-filter-dropdown-item>
+            <span class="filter-dropdown-item__text"><span class="filter-dropdown-item__name">Trial Sandbox</span><span class="filter-dropdown-item__sub">12 items</span></span>
+            <span class="filter-dropdown-item__check"><i data-lucide="circle-check" aria-hidden="true"></i></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Date In the last -->
+    <div class="demo-item">
+      <p class="demo-item__title">Date — In the last</p>
+      <div class="filter-dropdowns" data-filter-dropdowns>
+        <div class="input">
+          <label class="input__label">Filter by Date</label>
+          <div class="input__wrap">
+            <input class="input__control" type="text" readonly value="In the last" aria-label="Date operator">
+            <i data-lucide="chevron-down" class="input__icon" aria-hidden="true"></i>
+          </div>
+        </div>
+        <div class="filter-dropdowns__date-row">
+          <i data-lucide="corner-down-right" class="filter-dropdowns__date-corner" aria-hidden="true"></i>
+          <div class="input"><div class="input__wrap"><input class="input__control" type="number" placeholder="0" aria-label="Amount"></div></div>
+          <div class="input"><div class="input__wrap"><input class="input__control" type="text" readonly value="days" aria-label="Unit"><i data-lucide="chevron-down" class="input__icon" aria-hidden="true"></i></div></div>
+        </div>
+        <button type="button" class="btn btn--primary filter-dropdowns__apply" data-filter-dropdowns-apply>Apply</button>
+      </div>
+    </div>
+
+    <!-- Date Range -->
+    <div class="demo-item">
+      <p class="demo-item__title">Date — Range</p>
+      <div class="filter-dropdowns" data-filter-dropdowns>
+        <div class="input">
+          <label class="input__label">Filter by Date</label>
+          <div class="input__wrap">
+            <input class="input__control" type="text" readonly value="Between" aria-label="Date operator">
+            <i data-lucide="chevron-down" class="input__icon" aria-hidden="true"></i>
+          </div>
+        </div>
+        <div class="filter-dropdowns__date-row">
+          <div class="datepicker" data-datepicker data-mode="single">
+            <div class="input"><div class="input__wrap"><input class="input__control" type="text" readonly placeholder="Start" data-datepicker-input aria-label="Start date"><i data-lucide="calendar" class="input__icon" data-datepicker-toggle aria-hidden="true"></i></div></div>
+          </div>
+          <span class="filter-dropdowns__date-sep">and</span>
+          <div class="datepicker" data-datepicker data-mode="single">
+            <div class="input"><div class="input__wrap"><input class="input__control" type="text" readonly placeholder="End" data-datepicker-input aria-label="End date"><i data-lucide="calendar" class="input__icon" data-datepicker-toggle aria-hidden="true"></i></div></div>
+          </div>
+        </div>
+        <button type="button" class="btn btn--primary filter-dropdowns__apply" data-filter-dropdowns-apply>Apply</button>
+      </div>
+    </div>
+
+    <!-- Date Equal To -->
+    <div class="demo-item">
+      <p class="demo-item__title">Date — Equal To</p>
+      <div class="filter-dropdowns" data-filter-dropdowns>
+        <div class="input">
+          <label class="input__label">Filter by Date</label>
+          <div class="input__wrap">
+            <input class="input__control" type="text" readonly value="Equal to" aria-label="Date operator">
+            <i data-lucide="chevron-down" class="input__icon" aria-hidden="true"></i>
+          </div>
+        </div>
+        <div class="filter-dropdowns__date-row">
+          <i data-lucide="corner-down-right" class="filter-dropdowns__date-corner" aria-hidden="true"></i>
+          <div class="datepicker" data-datepicker data-mode="single">
+            <div class="input"><div class="input__wrap"><input class="input__control" type="text" readonly placeholder="Select date" data-datepicker-input aria-label="Date"><i data-lucide="calendar" class="input__icon" data-datepicker-toggle aria-hidden="true"></i></div></div>
+          </div>
+        </div>
+        <button type="button" class="btn btn--primary filter-dropdowns__apply" data-filter-dropdowns-apply>Apply</button>
+      </div>
+    </div>
+
+    <!-- More Filters -->
+    <div class="demo-item">
+      <p class="demo-item__title">More Filters</p>
+      <div class="filter-dropdowns">
+        <div class="filter-dropdowns__facets">
+          <div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Order Date"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Order Date</span></button></div>
+          <div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Payment Date"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Payment Date</span></button></div>
+          <div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="External Order ID"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">External Order ID</span></button></div>
+          <div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Order Status"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Order Status</span></button></div>
+          <div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Order Method"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Order Method</span></button></div>
+          <div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Order Type"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Order Type</span></button></div>
+          <div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Sub Order Type"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Sub Order Type</span></button></div>
+          <div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Payment Status"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Payment Status</span></button></div>
+          <div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Catalogue Item"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Catalogue Item</span></button></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script src="../../components/FilterDropdownItem/FilterDropdownItem.js"></script>
+  <script src="../../components/DatePicker/DatePicker.js"></script>
+  <script src="FilterDropdowns.js"></script>
+</body>
+</html>
