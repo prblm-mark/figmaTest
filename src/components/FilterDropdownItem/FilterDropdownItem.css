@@ -1,0 +1,82 @@
+/* FilterDropdownItem — a selectable filter option row.
+ * Figma node: 3032:18152 — "FilterDropdownItem"
+ * Anatomy: title ("Option name") + optional sub text, with a green check-circle
+ * shown on the right when selected. Multi-select toggle — clicking toggles the
+ * check independently of sibling items.
+ *
+ * Variants: Type (Initial / Selected) × State (Default / Hover)
+ *   Type=Selected → check visible   ·   State=Hover → surface-minimal bg
+ *
+ * Uses only --ai-* design tokens.
+ */
+
+.filter-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);              /* 8px */
+  width: 100%;                            /* fills the dropdown; Figma frame = 280px */
+  padding: var(--ai-spacing-2) var(--ai-spacing-3); /* 6px 8px */
+  border: none;
+  background: transparent;
+  border-radius: var(--ai-radius-md);     /* Figma bound --ai-spacing-3 (8px); radius-md = same value, correct category */
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 120ms ease;
+}
+
+/* State = Hover */
+.filter-dropdown-item:hover {
+  background-color: var(--ai-surface-minimal);
+}
+
+.filter-dropdown-item:focus-visible {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: -2px;
+}
+
+/* ── Text block ───────────────────────────────────────── */
+.filter-dropdown-item__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1 0 0;
+  min-width: 0;
+  line-height: var(--ai-leading-sm);      /* 20px */
+}
+
+.filter-dropdown-item__name {
+  width: 100%;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);     /* 14px */
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-primary);
+}
+
+.filter-dropdown-item__sub {
+  width: 100%;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);    /* 12px */
+  font-weight: var(--ai-font-regular);
+  color: var(--ai-text-secondary);
+}
+
+/* ── Check icon — reserved space, hidden until selected ── */
+.filter-dropdown-item__check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--ai-icon-size-sm);          /* 16px */
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-surface-success);
+  visibility: hidden;
+}
+.filter-dropdown-item__check [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* Type = Selected */
+.filter-dropdown-item--selected .filter-dropdown-item__check {
+  visibility: visible;
+}

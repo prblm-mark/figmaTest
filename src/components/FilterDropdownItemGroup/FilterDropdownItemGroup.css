@@ -1,0 +1,21 @@
+/* FilterDropdownItemGroup — a bordered card that stacks FilterDropdownItem rows.
+ * Figma node: 3032:18397 — "FilterDropdownItemGroup"
+ * Composes: FilterDropdownItem (../FilterDropdownItem/).
+ *
+ * Variants (Property 1): w/Subtext | Default — this only controls whether the
+ * child items show sub text; the container itself is identical in both. Selection
+ * and hover behaviour come from FilterDropdownItem / FilterDropdownItem.js.
+ *
+ * Uses only --ai-* design tokens.
+ */
+
+.filter-dropdown-item-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-px);            /* 1px */
+  width: 100%;                           /* fills its dropdown; Figma frame = 296px */
+  padding: var(--ai-spacing-3);          /* 8px */
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);    /* Figma bound --ai-spacing-3 (8px); radius-md = same value, correct category */
+}

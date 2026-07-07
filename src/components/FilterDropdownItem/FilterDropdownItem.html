@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>Filter Dropdown Item — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="FilterDropdownItem.css">
+  <style>
+    body { padding: var(--ai-spacing-7); background: var(--ai-surface-secondary); min-height: 100vh; }
+    h1 { font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-3); }
+    .demo-intro { font-size: var(--ai-font-fixed-xs); color: var(--ai-text-secondary); margin: 0 0 var(--ai-spacing-7); max-width: 640px; }
+    .demo-row { display: flex; flex-wrap: wrap; gap: var(--ai-spacing-7); align-items: flex-start; margin-bottom: var(--ai-spacing-7); }
+    .demo-item { display: flex; flex-direction: column; gap: var(--ai-spacing-3); }
+    .demo-item__title { font-size: var(--ai-font-fixed-xxs); font-weight: var(--ai-font-semibold); color: var(--ai-text-contrast); text-transform: uppercase; letter-spacing: 0.08em; margin: 0; }
+    /* Dropdown surface the items live inside */
+    .demo-menu {
+      width: 288px;
+      padding: var(--ai-spacing-2);
+      background: var(--ai-surface-primary);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-lg);
+      box-shadow: var(--ai-shadow-lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-1);
+    }
+    /* Simulate :hover statically for the state gallery */
+    .is-hover { background-color: var(--ai-surface-minimal); }
+    .demo-section__title { font-size: var(--ai-font-fixed-xs); font-weight: var(--ai-font-semibold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-5); }
+  </style>
+</head>
+<body>
+
+  <h1>Filter Dropdown Item</h1>
+  <p class="demo-intro">
+    A selectable filter option row — title + optional sub text, with a green check-circle
+    shown when selected. Multi-select: clicking a live item toggles its check independently.
+    Toggle dark mode to verify colour behaviour.
+  </p>
+
+  <!-- States: Type × State (static reference; hover simulated with .is-hover) -->
+  <h2 class="demo-section__title">Type × State</h2>
+  <div class="demo-row">
+    <div class="demo-item">
+      <p class="demo-item__title">Initial · Default</p>
+      <div class="demo-menu">
+        <div class="filter-dropdown-item">
+          <span class="filter-dropdown-item__text">
+            <span class="filter-dropdown-item__name">Option name</span>
+            <span class="filter-dropdown-item__sub">Sub Text</span>
+          </span>
+          <span class="filter-dropdown-item__check"><i data-lucide="circle-check" aria-hidden="true"></i></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-item">
+      <p class="demo-item__title">Initial · Hover</p>
+      <div class="demo-menu">
+        <div class="filter-dropdown-item is-hover">
+          <span class="filter-dropdown-item__text">
+            <span class="filter-dropdown-item__name">Option name</span>
+            <span class="filter-dropdown-item__sub">Sub Text</span>
+          </span>
+          <span class="filter-dropdown-item__check"><i data-lucide="circle-check" aria-hidden="true"></i></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-item">
+      <p class="demo-item__title">Selected · Default</p>
+      <div class="demo-menu">
+        <div class="filter-dropdown-item filter-dropdown-item--selected">
+          <span class="filter-dropdown-item__text">
+            <span class="filter-dropdown-item__name">Option name</span>
+            <span class="filter-dropdown-item__sub">Sub Text</span>
+          </span>
+          <span class="filter-dropdown-item__check"><i data-lucide="circle-check" aria-hidden="true"></i></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-item">
+      <p class="demo-item__title">Selected · Hover</p>
+      <div class="demo-menu">
+        <div class="filter-dropdown-item filter-dropdown-item--selected is-hover">
+          <span class="filter-dropdown-item__text">
+            <span class="filter-dropdown-item__name">Option name</span>
+            <span class="filter-dropdown-item__sub">Sub Text</span>
+          </span>
+          <span class="filter-dropdown-item__check"><i data-lucide="circle-check" aria-hidden="true"></i></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Without sub text -->
+  <h2 class="demo-section__title">Without sub text</h2>
+  <div class="demo-row">
+    <div class="demo-menu">
+      <div class="filter-dropdown-item">
+        <span class="filter-dropdown-item__text">
+          <span class="filter-dropdown-item__name">Option name</span>
+        </span>
+        <span class="filter-dropdown-item__check"><i data-lucide="circle-check" aria-hidden="true"></i></span>
+      </div>
+      <div class="filter-dropdown-item filter-dropdown-item--selected">
+        <span class="filter-dropdown-item__text">
+          <span class="filter-dropdown-item__name">Option name</span>
+        </span>
+        <span class="filter-dropdown-item__check"><i data-lucide="circle-check" aria-hidden="true"></i></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live multi-select list -->
+  <h2 class="demo-section__title">Live multi-select (click to toggle)</h2>
+  <div class="demo-row">
+    <div class="demo-menu" role="listbox" aria-multiselectable="true" aria-label="Filter by zone">
+      <button type="button" class="filter-dropdown-item filter-dropdown-item--selected" data-filter-dropdown-item>
+        <span class="filter-dropdown-item__text">
+          <span class="filter-dropdown-item__name">Default QA9</span>
+          <span class="filter-dropdown-item__sub">142 items</span>
+        </span>
+        <span class="filter-dropdown-item__check"><i data-lucide="circle-check" aria-hidden="true"></i></span>
+      </button>
+      <button type="button" class="filter-dropdown-item" data-filter-dropdown-item>
+        <span class="filter-dropdown-item__text">
+          <span class="filter-dropdown-item__name">Premium EU</span>
+          <span class="filter-dropdown-item__sub">38 items</span>
+        </span>
+        <span class="filter-dropdown-item__check"><i data-lucide="circle-check" aria-hidden="true"></i></span>
+      </button>
+      <button type="button" class="filter-dropdown-item" data-filter-dropdown-item>
+        <span class="filter-dropdown-item__text">
+          <span class="filter-dropdown-item__name">Trial Sandbox</span>
+          <span class="filter-dropdown-item__sub">12 items</span>
+        </span>
+        <span class="filter-dropdown-item__check"><i data-lucide="circle-check" aria-hidden="true"></i></span>
+      </button>
+      <button type="button" class="filter-dropdown-item filter-dropdown-item--selected" data-filter-dropdown-item>
+        <span class="filter-dropdown-item__text">
+          <span class="filter-dropdown-item__name">Staging US</span>
+          <span class="filter-dropdown-item__sub">21 items</span>
+        </span>
+        <span class="filter-dropdown-item__check"><i data-lucide="circle-check" aria-hidden="true"></i></span>
+      </button>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script src="FilterDropdownItem.js"></script>
+</body>
+</html>
