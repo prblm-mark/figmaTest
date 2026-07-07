@@ -76,9 +76,17 @@
   gap: var(--ai-spacing-3);              /* 8px */
   width: 100%;
 }
-.filter-dropdowns__date-row .input {
+/* Direct operand cells share the row width equally and are allowed to shrink.
+ * Date fields are wrapped in .datepicker (inline-block by default), so the wrapper
+ * itself must flex — otherwise it sizes to content and overflows the 320px card. */
+.filter-dropdowns__date-row > .input,
+.filter-dropdowns__date-row > .datepicker {
   flex: 1 0 0;
   min-width: 0;
+}
+.filter-dropdowns__date-row > .datepicker .input,
+.filter-dropdowns__date-row > .datepicker .input__wrap {
+  width: 100%;
 }
 /* "and" separator between two date fields (Date Range) */
 .filter-dropdowns__date-sep {
