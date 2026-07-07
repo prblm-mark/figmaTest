@@ -33,11 +33,11 @@ existing design-system components for each of 17 filter types.
 | 3039:5635 | Date Range | Input (operator) + [DatePicker "and" DatePicker] | ✅ |
 | 3039:5631 | Date Equal To | Input (operator) + corner + DatePicker | ✅ |
 | 3039:5637 | More Filters | FilterItem empty/rounded chips (no Apply) | ✅ |
-| 3039:5638 | Predictive Text | Input + predictive suggestions | ⏳ phase 2 |
-| 3039:5625 | Predictive Text Options | Input + option list | ⏳ phase 2 |
-| 3039:5622 | Predictive text Options w/subtext | Input + option list (subtext) | ⏳ phase 2 |
-| 3039:5624 | Multi Select Table | Datatables + checkboxes | ⏳ phase 2 |
-| 3039:5630 | Multi Select Modal | Modal + Datatables + FilterItem chips | ⏳ phase 2 |
+| 3039:5638 | Predictive Text | *consolidated* → Predictive Text Options (predictive always reveals options) | 🔁 |
+| 3039:5625 | Predictive Text Options | text Input + type-to-reveal single-select menu | ✅ |
+| 3039:5622 | Predictive text Options w/subtext | same, with subtext rows | ✅ |
+| 3039:5624 | Multi Select Table | 640px card: label + FilterItem chips + Datatables (checkbox/Name/Catalogue ID/Zone, row-link) + Apply | ✅ |
+| 3039:5630 | Multi Select Modal | 960px Modal: title + 7 FilterItem chips + Datatables (adds Price) + Cancel/Apply | ✅ |
 
 **Select consolidation (user direction, 2026-07-07):** the plain `Select` and
 `w/Placeholder` variants are NOT shown as standalone panels. Per the reference, the Select
@@ -46,10 +46,15 @@ is represented as **two versions of its open state** — the select field + the
 with (`Select Options w/subtext`). These two omit the Apply button: choosing an option is
 the action.
 
-**Phase 2 pending (per user, "phased — core first"):** the three Predictive types,
-Multi Select Table, and Multi Select Modal. Their design contexts were NOT fetched yet
-and must be fetched from Figma before building (Predictive likely composes Input +
-FilterDropdownItemGroup; Table composes Datatables; Modal composes the Modal pattern).
+**Predictive types (built, user direction 2026-07-07):** consolidated to **2** — a text
+Input whose suggestion menu reveals *as characters are typed* (like Select on click), then
+single-select fills the field. `Predictive Text` (no options) is dropped since a predictive
+field inherently reveals options. Wired by `wirePredictive` in `FilterDropdowns.js`.
+
+**Phase 2 complete (2026-07-07):** Multi Select Table (composes Datatables + FilterItem +
+Checkbox + Button; 640px = `--ai-size-10`, Figma's 671px snapped to token per direction) and
+Multi Select Modal (composes the Modal pattern + Datatables + FilterItem; 960px = `--ai-size-12`).
+All 17 Figma types now represented (Select and Predictive Text consolidated per direction).
 
 ## Interaction (confirmed with user, 2026-07-07)
 
