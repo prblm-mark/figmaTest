@@ -13,6 +13,9 @@
   <link rel="stylesheet" href="../../components/FilterDropdownItem/FilterDropdownItem.css">
   <link rel="stylesheet" href="../../components/FilterDropdownItemGroup/FilterDropdownItemGroup.css">
   <link rel="stylesheet" href="../../components/DatePicker/DatePicker.css">
+  <link rel="stylesheet" href="../../components/Table/Table.css">
+  <link rel="stylesheet" href="../../components/Datatables/Datatables.css">
+  <link rel="stylesheet" href="../Modal/Modal.css">
   <link rel="stylesheet" href="FilterDropdowns.css">
   <style>
     body { padding: var(--ai-spacing-7); background: var(--ai-surface-secondary); min-height: 100vh; }
@@ -241,6 +244,165 @@
           <div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Sub Order Type"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Sub Order Type</span></button></div>
           <div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Payment Status"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Payment Status</span></button></div>
           <div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Catalogue Item"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Catalogue Item</span></button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Predictive Text Options -->
+    <div class="demo-item">
+      <p class="demo-item__title">Predictive Text Options</p>
+      <div class="filter-dropdowns filter-dropdowns--select" data-filter-dropdowns data-predictive>
+        <div class="input">
+          <label class="input__label">Filter by Name</label>
+          <div class="input__wrap">
+            <input class="input__control" type="text" placeholder="Type to search" aria-label="Name" data-predictive-input>
+          </div>
+        </div>
+        <div class="filter-dropdown-item-group filter-dropdowns__menu" role="listbox" aria-label="Name options" hidden data-select-menu>
+          <button type="button" class="filter-dropdown-item" data-filter-dropdown-item>
+            <span class="filter-dropdown-item__text"><span class="filter-dropdown-item__name">Acme Corp</span></span>
+            <span class="filter-dropdown-item__check"><i data-lucide="circle-check" aria-hidden="true"></i></span>
+          </button>
+          <button type="button" class="filter-dropdown-item" data-filter-dropdown-item>
+            <span class="filter-dropdown-item__text"><span class="filter-dropdown-item__name">Globex</span></span>
+            <span class="filter-dropdown-item__check"><i data-lucide="circle-check" aria-hidden="true"></i></span>
+          </button>
+          <button type="button" class="filter-dropdown-item" data-filter-dropdown-item>
+            <span class="filter-dropdown-item__text"><span class="filter-dropdown-item__name">Initech</span></span>
+            <span class="filter-dropdown-item__check"><i data-lucide="circle-check" aria-hidden="true"></i></span>
+          </button>
+          <button type="button" class="filter-dropdown-item" data-filter-dropdown-item>
+            <span class="filter-dropdown-item__text"><span class="filter-dropdown-item__name">Umbrella Co</span></span>
+            <span class="filter-dropdown-item__check"><i data-lucide="circle-check" aria-hidden="true"></i></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Predictive Text Options w/subtext -->
+    <div class="demo-item">
+      <p class="demo-item__title">Predictive Text Options w/subtext</p>
+      <div class="filter-dropdowns filter-dropdowns--select" data-filter-dropdowns data-predictive>
+        <div class="input">
+          <label class="input__label">Filter by Name</label>
+          <div class="input__wrap">
+            <input class="input__control" type="text" placeholder="Type to search" aria-label="Name" data-predictive-input>
+          </div>
+        </div>
+        <div class="filter-dropdown-item-group filter-dropdowns__menu" role="listbox" aria-label="Name options" hidden data-select-menu>
+          <button type="button" class="filter-dropdown-item" data-filter-dropdown-item>
+            <span class="filter-dropdown-item__text"><span class="filter-dropdown-item__name">Acme Corp</span><span class="filter-dropdown-item__sub">Active · Sarah K.</span></span>
+            <span class="filter-dropdown-item__check"><i data-lucide="circle-check" aria-hidden="true"></i></span>
+          </button>
+          <button type="button" class="filter-dropdown-item" data-filter-dropdown-item>
+            <span class="filter-dropdown-item__text"><span class="filter-dropdown-item__name">Globex</span><span class="filter-dropdown-item__sub">Active · Tom R.</span></span>
+            <span class="filter-dropdown-item__check"><i data-lucide="circle-check" aria-hidden="true"></i></span>
+          </button>
+          <button type="button" class="filter-dropdown-item" data-filter-dropdown-item>
+            <span class="filter-dropdown-item__text"><span class="filter-dropdown-item__name">Initech</span><span class="filter-dropdown-item__sub">Inactive · Jane M.</span></span>
+            <span class="filter-dropdown-item__check"><i data-lucide="circle-check" aria-hidden="true"></i></span>
+          </button>
+          <button type="button" class="filter-dropdown-item" data-filter-dropdown-item>
+            <span class="filter-dropdown-item__text"><span class="filter-dropdown-item__name">Umbrella Co</span><span class="filter-dropdown-item__sub">Active · Alan G.</span></span>
+            <span class="filter-dropdown-item__check"><i data-lucide="circle-check" aria-hidden="true"></i></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Multi Select Table -->
+    <div class="demo-item" style="width: auto;">
+      <p class="demo-item__title">Multi Select Table</p>
+      <div class="filter-dropdowns filter-dropdowns--table" data-filter-dropdowns>
+        <div class="filter-dropdowns__header">
+          <p class="filter-dropdowns__title">Filter by Zone</p>
+        </div>
+        <div class="filter-dropdowns__facets">
+          <div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Name"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Name</span></button></div>
+          <div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Catalogue Group"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Catalogue Group</span></button></div>
+          <div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Catalogue Item Code"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Catalogue Item Code</span></button></div>
+          <div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Payment Method"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Payment Method</span></button></div>
+        </div>
+        <div class="filter-dropdowns__table-region">
+          <div class="datatables">
+            <div class="datatables__body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th class="datatables__col--tight"><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select all"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></th>
+                    <th><button class="datatables__sort datatables__sort--active" type="button">Name <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+                    <th><button class="datatables__sort" type="button">Catalogue ID <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+                    <th><button class="datatables__sort" type="button">Zone <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+                    <th class="datatables__col--tight" aria-label="Open"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" checked aria-label="Select row"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>1 Week Subs</td><td>affino-ai-123-0-1</td><td>Default QA9</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open item"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr>
+                  <tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select row"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>1 Month Subs</td><td>affino-ai-123-0-2</td><td>Default QA9</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open item"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr>
+                  <tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select row"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Quarterly Pass</td><td>affino-ai-123-0-3</td><td>Default QA9</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open item"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr>
+                  <tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" checked aria-label="Select row"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Annual Membership</td><td>affino-ai-123-0-4</td><td>Premium EU</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open item"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr>
+                  <tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select row"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Day Pass</td><td>affino-ai-123-0-5</td><td>Default QA9</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open item"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr>
+                  <tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select row"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Student Plan</td><td>affino-ai-123-0-6</td><td>Premium EU</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open item"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr>
+                  <tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select row"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Corporate Seat</td><td>affino-ai-123-0-7</td><td>Default QA9</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open item"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="filter-dropdowns__table-footer">
+          <button type="button" class="btn btn--primary filter-dropdowns__apply" data-filter-dropdowns-apply>Apply</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Multi Select Modal -->
+    <div class="demo-item" style="width: auto;">
+      <p class="demo-item__title">Multi Select Modal</p>
+      <div class="modal filter-dropdowns__modal" role="dialog" aria-modal="true" aria-labelledby="fd-modal-title">
+        <div class="modal__header">
+          <h2 class="modal__title" id="fd-modal-title">Filter by Catalogue Item</h2>
+          <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
+        </div>
+        <div class="filter-dropdowns__facets filter-dropdowns__modal-facets">
+          <div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Name"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Name</span></button></div>
+          <div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Catalogue Group"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Catalogue Group</span></button></div>
+          <div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Catalogue Item Code"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Catalogue Item Code</span></button></div>
+          <div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Payment Method"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Payment Method</span></button></div>
+          <div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Order No"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Order No</span></button></div>
+          <div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Order Owner"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Order Owner</span></button></div>
+          <div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Primary Sort"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Primary Sort</span></button></div>
+        </div>
+        <div class="filter-dropdowns__table-region">
+          <div class="datatables">
+            <div class="datatables__body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th class="datatables__col--tight"><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select all"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></th>
+                    <th><button class="datatables__sort datatables__sort--active" type="button">Name <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+                    <th><button class="datatables__sort" type="button">Catalogue ID <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+                    <th><button class="datatables__sort" type="button">Zone <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+                    <th><button class="datatables__sort" type="button">Price <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+                    <th class="datatables__col--tight" aria-label="Open"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" checked aria-label="Select row"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>1 Week Subs</td><td>affino-ai-123-0-1</td><td>Default QA9</td><td>£10.00</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open item"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr>
+                  <tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select row"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>1 Month Subs</td><td>affino-ai-123-0-2</td><td>Default QA9</td><td>£32.00</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open item"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr>
+                  <tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select row"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Quarterly Pass</td><td>affino-ai-123-0-3</td><td>Default QA9</td><td>£85.00</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open item"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr>
+                  <tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" checked aria-label="Select row"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Annual Membership</td><td>affino-ai-123-0-4</td><td>Premium EU</td><td>£299.00</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open item"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr>
+                  <tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select row"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Day Pass</td><td>affino-ai-123-0-5</td><td>Default QA9</td><td>£4.50</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open item"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr>
+                  <tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select row"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Student Plan</td><td>affino-ai-123-0-6</td><td>Premium EU</td><td>£120.00</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open item"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr>
+                  <tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select row"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Corporate Seat</td><td>affino-ai-123-0-7</td><td>Default QA9</td><td>£450.00</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open item"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr>
+                  <tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select row"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Trial Week</td><td>affino-ai-123-0-8</td><td>Trial Sandbox</td><td>£0.00</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open item"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="modal__footer">
+          <button type="button" class="btn btn--secondary">Cancel</button>
+          <button type="button" class="btn btn--primary" data-filter-dropdowns-apply>Apply</button>
         </div>
       </div>
     </div>

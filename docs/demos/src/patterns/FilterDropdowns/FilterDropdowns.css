@@ -43,6 +43,7 @@
 
 /* ── Standalone title (Checkbox type; header without a field) ── */
 .filter-dropdowns__title {
+  margin: 0;
   font-family: var(--ai-font-title);
   font-size: var(--ai-font-fixed-xs);    /* 14px */
   font-weight: var(--ai-font-semibold);
@@ -121,6 +122,64 @@
 /* ── Apply button (full-width primary Button) ─────────── */
 .filter-dropdowns__apply.btn {
   width: 100%;
+}
+
+/* ── Multi Select Table (wide, Datatables body) ───────── */
+/* Figma is 671px wide; snapped to --ai-size-10 (640px) per design direction. */
+.filter-dropdowns--table {
+  width: var(--ai-size-10);              /* 640px */
+  padding: 0;                             /* each section owns its padding */
+  gap: 0;
+  overflow: hidden;                       /* clip the table to the rounded corners */
+}
+
+/* Label header used by the table + modal types */
+.filter-dropdowns__header {
+  padding: var(--ai-spacing-4);           /* 12px */
+}
+
+/* Facet chip row (FilterItem chips) inside the table / modal */
+.filter-dropdowns--table .filter-dropdowns__facets,
+.filter-dropdowns__modal-facets {
+  padding: var(--ai-spacing-4);
+  border-bottom: 1px solid var(--ai-border-secondary);
+}
+/* Table's label header has no border, so its facet row keeps a top border;
+   the modal header already provides one, so drop it there (avoids a double border). */
+.filter-dropdowns--table .filter-dropdowns__facets {
+  border-top: 1px solid var(--ai-border-secondary);
+}
+
+/* Scrolling table region */
+.filter-dropdowns__table-region {
+  width: 100%;
+  max-height: var(--ai-size-7);          /* 384px */
+  overflow-y: auto;
+}
+.filter-dropdowns__table-region .datatables {
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+.filter-dropdowns__linkcell {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ai-icon-secondary);
+}
+.filter-dropdowns__linkcell [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* Table footer (full-width Apply) */
+.filter-dropdowns__table-footer {
+  padding: var(--ai-spacing-3) var(--ai-spacing-4);  /* 8px 12px */
+}
+
+/* ── Multi Select Modal (960px, composes the Modal pattern) ── */
+.filter-dropdowns__modal.modal {
+  width: var(--ai-size-12);              /* 960px */
 }
 
 /* ── Select (interactive: field opens the options menu) ── */

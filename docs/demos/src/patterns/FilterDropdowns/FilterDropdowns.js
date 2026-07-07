@@ -80,6 +80,43 @@
     document.addEventListener('click', function (e) { if (!root.contains(e.target)) close(); });
   }
 
+  function wirePredictive(root) {
+    var input = root.querySelector('[data-predictive-input]');
+    var menu = root.querySelector('[data-select-menu]');
+    if (!input || !menu) return;
+
+    function open() { root.classList.add('filter-dropdowns--open'); menu.hidden = false; }
+    function close() { root.classList.remove('filter-dropdowns--open'); menu.hidden = true; }
+
+    function filter() {
+      var q = input.value.trim().toLowerCase();
+      menu.querySelectorAll('.filter-dropdown-item').forEach(function (item) {
+        var n = item.querySelector('.filter-dropdown-item__name');
+        var t = (n ? n.textContent : '').toLowerCase();
+        item.style.display = (!q || t.indexOf(q) !== -1) ? '' : 'none';
+      });
+    }
+
+    // Suggestions reveal as characters are typed; an empty query closes the menu.
+    input.addEventListener('input', function () {
+      if (input.value.trim()) { open(); filter(); } else { close(); }
+    });
+
+    // Single-select: picking a suggestion fills the input and closes
+    menu.addEventListener('filter-dropdown-item:toggle', function (e) {
+      if (e.detail && e.detail.selected) {
+        menu.querySelectorAll('.filter-dropdown-item--selected').forEach(function (it) {
+          if (it !== e.target) { it.classList.remove('filter-dropdown-item--selected'); it.setAttribute('aria-pressed', 'false'); }
+        });
+        var n = e.target.querySelector('.filter-dropdown-item__name');
+        if (n) input.value = n.textContent.trim();
+        close();
+      }
+    });
+
+    document.addEventListener('click', function (e) { if (!root.contains(e.target)) close(); });
+  }
+
   function wireApply(root) {
     var apply = root.querySelector('[data-filter-dropdowns-apply]');
     if (!apply) return;
@@ -94,6 +131,7 @@
       root.__filterDropdowns = true;
       wireSearch(root);
       wireSelect(root);
+      wirePredictive(root);
       wireApply(root);
     });
   }
