@@ -15,13 +15,22 @@ figma.connect(
         Focus: '',
         Error: 'input--error',
       }),
+      labelBack: figma.boolean('show label back', {
+        true: html`<button type="button" class="input__label-back" aria-label="Back">
+            <i data-lucide="arrow-left" aria-hidden="true"></i>
+          </button>`,
+        false: html``,
+      }),
     },
-    example: ({ size, state }) => html`
+    example: ({ size, state, labelBack }) => html`
       <div class="input ${size} ${state}">
-        <label class="input__label">Label</label>
+        <div class="input__label-row">
+          ${labelBack}
+          <label class="input__label">Label</label>
+        </div>
         <div class="input__wrap">
           <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
-          <input class="input__field" type="text" placeholder="Placeholder">
+          <input class="input__control" type="text" placeholder="Placeholder">
           <button class="input__clear" aria-label="Clear">
             <i data-lucide="x" aria-hidden="true"></i>
           </button>

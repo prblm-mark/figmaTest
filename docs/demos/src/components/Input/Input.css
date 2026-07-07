@@ -23,6 +23,55 @@
   color: var(--ai-text-primary);
 }
 
+/* ── Label row (optional back button + label) ────────── */
+/* Figma "show label back" (node 3033:5171): a Label Container that holds an
+ * optional back button to the left of the label. Wrap the label in this row
+ * only when the back button is present. */
+
+.input__label-row {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);             /* 8px */
+}
+
+.input__label-row .input__label {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Back button — a scoped secondary icon button. Smaller than the shared Button
+ * component (radius-sm, 12px icon, 6px padding), so built inline here (Case B)
+ * reusing Button's secondary tokens rather than the .btn component. */
+.input__label-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ai-spacing-1);
+  padding: var(--ai-spacing-2);          /* 6px */
+  flex-shrink: 0;
+  background-color: var(--ai-btn-secondary-bg);
+  border: 1px solid var(--ai-btn-secondary-border);
+  border-radius: var(--ai-radius-sm);
+  color: var(--ai-btn-secondary-text);
+  cursor: pointer;
+  transition: background-color var(--ai-transition-default),
+              border-color var(--ai-transition-default);
+}
+
+.input__label-back:hover {
+  background-color: var(--ai-btn-secondary-bg-hover);
+  border-color: var(--ai-btn-secondary-border-hover);
+}
+
+.input__label-back:active {
+  background-color: var(--ai-btn-secondary-bg-pressed);
+}
+
+.input__label-back [data-lucide] {
+  width: var(--ai-icon-size-xs);         /* 12px */
+  height: var(--ai-icon-size-xs);
+}
+
 /* ── Field wrapper ───────────────────────────────────── */
 
 .input__wrap {

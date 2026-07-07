@@ -28,9 +28,27 @@
 | Element | Class | Visibility | Notes |
 |---|---|---|---|
 | Label | `.input__label` | Always shown | Remove from HTML to hide |
+| Label back button | `.input__label-back` | Optional (Figma `show label back`, hidden by default) | Back button left of the label. Wrap label + button in `.input__label-row`. See below. |
 | Left icon | `.input__icon` | Optional | Lucide icon, `--ai-icon-contrast` |
 | Clear button | `.input__clear` | Auto — shown when input has value | Uses `:has(:not(:placeholder-shown))`, no JS |
 | Help text | `.input__help` | Optional | Below the field. Turns `--ai-text-error` in error state |
+
+**Label back button (`show label back`, added 2026-07-06):**
+```html
+<div class="input">
+  <div class="input__label-row">
+    <button type="button" class="input__label-back" aria-label="Back">
+      <i data-lucide="arrow-left" aria-hidden="true"></i>
+    </button>
+    <label class="input__label">First Name</label>
+  </div>
+  <div class="input__wrap">
+    <input class="input__control" type="text" placeholder="i.e Tom">
+  </div>
+</div>
+```
+Only wrap the label in `.input__label-row` when the back button is present; a bare
+`.input__label` is otherwise unchanged.
 
 ### Usage examples
 
@@ -93,6 +111,8 @@ Hover, Active, and Focus all share the same visual treatment (brand border) — 
 | State=Error | `.input.input--error` |
 | Placeholder View=True | Input empty (`:placeholder-shown`) |
 | Placeholder View=False | Input filled (`:not(:placeholder-shown)`) — clear button becomes visible |
+| show label back=True | `.input__label-row` wraps `.input__label-back` + `.input__label` |
+| show label back=False | Bare `.input__label` (no row wrapper needed) |
 
 ## Token Mapping
 
@@ -101,7 +121,13 @@ Hover, Active, and Focus all share the same visual treatment (brand border) — 
 | Container gap | `--ai-spacing-3` | `--ai-spacing-3` |
 | Label font | `--ai-font-title`, `--ai-font-semibold`, `--ai-font-fixed-xs`, `--ai-leading-xs` | same |
 | Label color | `--ai-text-primary` | `--ai-text-primary` |
-| Label container gap | `--ai-spacing-5` | `--ai-spacing-5` |
+| Label row gap (back btn ↔ label) | `--ai-spacing-3` | `--ai-spacing-3` |
+| Back btn bg | `--ai-btn-secondary-bg` (transparent) | `--ai-btn-secondary-bg` |
+| Back btn border | `--ai-btn-secondary-border` | `--ai-btn-secondary-border` |
+| Back btn padding | `--ai-spacing-2` (6px) | `--ai-spacing-2` |
+| Back btn radius | `--ai-radius-sm` (4px) | `--ai-radius-sm` |
+| Back btn icon size | 12px | `--ai-icon-size-xs` (0.75rem) |
+| Back btn icon/text color | `--ai-btn-secondary-text` | `--ai-btn-secondary-text` |
 | Field height (base) | `--ai-spacing-8` | `--ai-spacing-8` |
 | Field height (sm) | `--ai-spacing-7` | `--ai-spacing-7` |
 | Field padding-x (base) | `--ai-spacing-5` | `--ai-spacing-4` (user-directed change, 2026-06-01) |
@@ -131,3 +157,14 @@ Hover, Active, and Focus all share the same visual treatment (brand border) — 
 - No Disabled state found in Figma — not implemented. Add if required.
 - Clear button uses `:has(:not(:placeholder-shown))` — shows only when input has a value, no JS needed
 - Hover and Active share the same visual treatment as Focus (brand border)
+- **Label back button (`show label back`, node `3033:5171`):** in Figma this is a **Button
+  component instance**, but its geometry (radius-sm, 12px icon, 6px padding, no fixed height)
+  matches no variant of our shared Button component. Per user decision (2026-07-06) it is built
+  as a **scoped Case B element** (`.input__label-back`) reusing Button's `--ai-btn-secondary-*`
+  tokens, rather than the `.btn` component. If a matching xs icon-button variant is later added
+  to Button (with its own Figma variant), migrate this to use it.
+- **Icon naming mismatch:** the Figma layer is named `Icon/24px/ArrowRight` but the actual
+  asset/visual is a **left-pointing arrow** (a back affordance). Implemented with Lucide
+  `arrow-left`, which matches the visual and the "back" semantics.
+- Hover/pressed on the back button reuse Button's secondary state tokens
+  (`--ai-btn-secondary-bg-hover` / `-bg-pressed`); Figma only specifies the default state.
