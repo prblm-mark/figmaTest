@@ -1,0 +1,370 @@
+/* ==========================================================================
+   AudioPlayer — Article audio player
+   Figma: Lus07xi8pPXLN87sQIyrEt · frame 3055:5458 "Article Audio Player"
+   3 Types × 2 Devices. Device=Mobile is expressed as @media (max-width: 767px)
+   — never a modifier class.
+     .audio-player--compact  → Compact Inline Bar  (3055:5457 / 3055:5455)
+     .audio-player--card     → Card with waveform  (3055:5453 / 3055:5454)
+     .audio-player--mini     → Sticky Mini Player  (3055:5456 / 3055:5452)
+
+   Assumes base.css + tokens.css (+ tokens-shadows.css) are loaded by the page.
+   Token normalisation (approved): sticky-desktop surface-info → surface-brand,
+   card-mobile text-neutral → text-primary (both same hex, treated as slips).
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Shared shell
+   -------------------------------------------------------------------------- */
+.audio-player {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--ai-size-11); /* 768px desktop frame; fills narrower screens */
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  font-family: var(--ai-font-title), sans-serif;
+  color: var(--ai-text-primary);
+}
+.audio-player *,
+.audio-player *::before,
+.audio-player *::after {
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   Play / pause button — circular, brand fill (shared)
+   -------------------------------------------------------------------------- */
+.audio-player__play {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-8);  /* 40px */
+  height: var(--ai-spacing-8);
+  padding: 0;
+  border: none;
+  border-radius: var(--ai-radius-full);
+  background-color: var(--ai-surface-brand);
+  color: var(--ai-icon-invert);
+  cursor: pointer;
+  transition: background-color var(--ai-transition-default);
+}
+.audio-player__play:hover {
+  background-color: var(--ai-surface-brand-dark);
+}
+
+/* Play / pause icon swap (Figma shows only the play glyph; pause is the
+   playing-state counterpart). Default icon size 20px; card overrides to 24. */
+.audio-player__icon {
+  width: var(--ai-icon-size-md);  /* 20px */
+  height: var(--ai-icon-size-md);
+}
+.audio-player__icon--pause {
+  display: none;
+}
+.audio-player.is-playing .audio-player__icon--play {
+  display: none;
+}
+.audio-player.is-playing .audio-player__icon--pause {
+  display: block;
+}
+
+/* --------------------------------------------------------------------------
+   Download button — circular, transparent (shared)
+   -------------------------------------------------------------------------- */
+.audio-player__download {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-8);  /* 40px */
+  height: var(--ai-spacing-8);
+  padding: 0;
+  border: none;
+  border-radius: var(--ai-radius-full);
+  background-color: transparent;
+  color: var(--ai-icon-secondary);
+  cursor: pointer;
+  transition: background-color var(--ai-transition-default);
+}
+.audio-player__download:hover {
+  background-color: var(--ai-surface-secondary);
+}
+/* i before Lucide runs, svg after it replaces the placeholder */
+.audio-player__download i,
+.audio-player__download svg {
+  width: var(--ai-icon-size-sm);  /* 16px — user override (Figma binds 20px) */
+  height: var(--ai-icon-size-sm);
+}
+
+/* --------------------------------------------------------------------------
+   Thin seek bar — compact + mini (card uses the waveform instead)
+   -------------------------------------------------------------------------- */
+.audio-player__scrubber {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  height: var(--ai-spacing-1);  /* 4px */
+  padding: 0;
+  margin: 0;
+  border: none;
+  background-color: var(--ai-surface-contrast);
+  border-radius: var(--ai-radius-full);
+  cursor: pointer;
+}
+.audio-player__scrubber-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 100%;
+  background-color: var(--ai-surface-brand);
+  border-radius: var(--ai-radius-full);
+}
+
+/* --------------------------------------------------------------------------
+   Time / duration (shared defaults — card + mini "0:00 / 3:45" group)
+   -------------------------------------------------------------------------- */
+.audio-player__time,
+.audio-player__duration,
+.audio-player__time-sep {
+  font-family: inherit;
+  font-size: var(--ai-font-fixed-xxs);  /* 12px */
+  line-height: var(--ai-leading-md);
+  white-space: nowrap;
+}
+.audio-player__time {
+  flex-shrink: 0;
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-secondary);
+}
+.audio-player__time-sep {
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-contrast);
+}
+.audio-player__duration {
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-secondary);
+  cursor: pointer;
+}
+.audio-player__time-group {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-1);  /* 4px */
+}
+
+/* ==========================================================================
+   Type: Compact Inline Bar
+   Order: play · current-time · scrubber · duration · download
+   ========================================================================== */
+.audio-player--compact {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-4);  /* 12px */
+  padding: var(--ai-spacing-3) var(--ai-spacing-4);  /* 8px / 12px */
+  border-radius: var(--ai-radius-full);
+}
+/* Compact standalone time + duration run larger than the grouped default */
+.audio-player--compact .audio-player__time {
+  font-size: var(--ai-font-fixed-xs);  /* 14px */
+}
+.audio-player--compact .audio-player__duration {
+  font-size: var(--ai-font-fixed-xs);  /* 14px */
+  font-weight: var(--ai-font-regular);
+  color: var(--ai-text-primary);
+}
+
+@media (max-width: 767px) {
+  .audio-player--compact {
+    gap: var(--ai-spacing-3);       /* 8px */
+    padding: var(--ai-spacing-3);   /* 8px all sides */
+  }
+  .audio-player--compact .audio-player__time {
+    font-size: var(--ai-font-fixed-xxs);  /* 12px */
+  }
+  .audio-player--compact .audio-player__duration {
+    font-size: var(--ai-font-fixed-sm);   /* 16px */
+  }
+}
+
+/* ==========================================================================
+   Type: Card with waveform
+   Rows: eyebrow · heading · [play + waveform] · [download + time group]
+   ========================================================================== */
+.audio-player--card {
+  display: flex;
+  flex-direction: column;
+  padding: var(--ai-spacing-6);  /* 24px */
+  border-radius: var(--ai-radius-lg);
+  box-shadow: var(--ai-shadow-card);
+}
+
+.audio-player__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);  /* 6px */
+}
+.audio-player__eyebrow i,
+.audio-player__eyebrow svg {
+  flex-shrink: 0;
+  width: var(--ai-icon-size-sm);  /* 16px */
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-brand);
+}
+.audio-player__eyebrow-label {
+  font-weight: var(--ai-font-semibold);
+  font-size: var(--ai-font-fixed-xxs);  /* 12px */
+  line-height: var(--ai-leading-md);
+  letter-spacing: 0.48px;  /* optical, per Figma tracking */
+  text-transform: uppercase;
+  color: var(--ai-text-brand);
+}
+
+.audio-player__heading {
+  margin: 0;
+  padding-top: var(--ai-spacing-2);  /* 6px */
+  font-weight: var(--ai-font-bold);
+  font-size: var(--ai-font-fixed-md);  /* 18px */
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-primary);
+}
+
+.audio-player__wave-row {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-5);  /* 16px */
+  padding-top: var(--ai-spacing-5);
+}
+.audio-player--card .audio-player__play {
+  width: var(--ai-spacing-10);  /* 56px */
+  height: var(--ai-spacing-10);
+}
+.audio-player--card .audio-player__play .audio-player__icon {
+  width: var(--ai-icon-size-lg);  /* 24px */
+  height: var(--ai-icon-size-lg);
+}
+
+.audio-player__waveform {
+  flex: 1 1 0;
+  min-width: 0;
+  height: var(--ai-spacing-9);  /* 48px */
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-0-5);  /* 2px */
+  cursor: pointer;
+}
+.audio-player__bar {
+  flex: 1 1 0;
+  min-width: var(--ai-spacing-0-5);  /* 2px */
+  height: 50%;  /* overwritten per-bar in JS with the amplitude value */
+  border-radius: var(--ai-radius-full);
+  background-color: var(--ai-surface-contrast);
+}
+.audio-player__bar.is-played {
+  background-color: var(--ai-surface-brand);
+}
+
+.audio-player__controls {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-4);  /* 12px */
+  padding-top: var(--ai-spacing-4);
+}
+.audio-player__controls .audio-player__time-group {
+  margin-left: auto;  /* Figma: time group right-aligned */
+}
+
+@media (max-width: 767px) {
+  .audio-player--card {
+    padding: var(--ai-spacing-5);  /* 16px */
+  }
+  .audio-player--card .audio-player__heading {
+    font-size: var(--ai-font-fixed-sm);  /* 16px */
+  }
+  .audio-player--card .audio-player__wave-row {
+    gap: var(--ai-spacing-4);  /* 12px */
+  }
+  .audio-player--card .audio-player__play {
+    width: var(--ai-spacing-9);  /* 48px */
+    height: var(--ai-spacing-9);
+  }
+  .audio-player--card .audio-player__play .audio-player__icon {
+    width: var(--ai-icon-size-md);  /* 20px */
+    height: var(--ai-icon-size-md);
+  }
+}
+
+/* ==========================================================================
+   Type: Sticky Mini Player
+   Desktop: single row  play · text · scrubber · time · download
+   Mobile:  two rows     [play · text · download] / [scrubber · time]
+   The two wrapper rows use display:contents on desktop so their children
+   participate directly in the single flex row (ordered below); at <=767px
+   they become real flex rows.
+   ========================================================================== */
+.audio-player--mini {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-4);  /* 12px */
+  padding: var(--ai-spacing-4) var(--ai-spacing-5);  /* 12px / 16px */
+  border-radius: var(--ai-radius-lg);
+}
+.audio-player--mini .audio-player__mini-top,
+.audio-player--mini .audio-player__mini-bottom {
+  display: contents;
+}
+.audio-player--mini .audio-player__play { order: 1; }
+.audio-player--mini .audio-player__text { order: 2; }
+.audio-player--mini .audio-player__scrubber { order: 3; }
+.audio-player--mini .audio-player__time-group { order: 4; }
+.audio-player--mini .audio-player__download { order: 5; }
+
+.audio-player__text {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+.audio-player__title {
+  margin: 0;
+  font-weight: var(--ai-font-semibold);
+  font-size: var(--ai-font-fixed-xs);  /* 14px */
+  line-height: var(--ai-leading-sm);   /* 20px — user override (Figma leading-md) */
+  color: var(--ai-text-primary);
+  white-space: nowrap;
+}
+.audio-player__sub {
+  margin: 0;
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-xxs);  /* 12px */
+  line-height: var(--ai-leading-sm);    /* 20px — user override (Figma leading-md) */
+  color: var(--ai-text-secondary);
+  white-space: nowrap;
+}
+
+@media (max-width: 767px) {
+  .audio-player--mini {
+    flex-direction: column;
+    gap: var(--ai-spacing-3);       /* 8px */
+    padding: var(--ai-spacing-4);   /* 12px */
+  }
+  .audio-player--mini .audio-player__mini-top,
+  .audio-player--mini .audio-player__mini-bottom {
+    display: flex;
+    align-items: center;
+    gap: var(--ai-spacing-4);  /* 12px */
+    width: 100%;
+  }
+  .audio-player--mini .audio-player__text {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+  .audio-player--mini .audio-player__download {
+    width: var(--ai-spacing-7);  /* 32px */
+    height: var(--ai-spacing-7);
+  }
+}

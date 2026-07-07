@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>Audio Player — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="AudioPlayer.css">
+  <style>
+    body {
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-secondary);
+      min-height: 100vh;
+    }
+    .demo-wrap { max-width: 820px; margin: 0 auto; }
+    .demo-section {
+      padding: var(--ai-spacing-6);
+      background: var(--ai-surface-primary);
+      border-radius: var(--ai-radius-lg);
+      margin-bottom: var(--ai-spacing-5);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-5);
+    }
+    .demo-section__title {
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0;
+    }
+    .demo-section__note {
+      font-size: var(--ai-font-fixed-xxs);
+      color: var(--ai-text-contrast);
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-wrap">
+    <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-6);">Audio Player</h1>
+    <p style="font-size: var(--ai-font-fixed-sm); color: var(--ai-text-secondary); margin: 0 0 var(--ai-spacing-6);">
+      Article audio player — three types. Playback is simulated. Resize the viewport below 768px to see each type's mobile layout.
+    </p>
+
+    <!-- Compact Inline Bar ------------------------------------------------- -->
+    <section class="demo-section">
+      <h2 class="demo-section__title">Compact Inline Bar</h2>
+      <!-- TODO(backend:AudioPlayer): playback simulated; wire to real audio src + downloadUrl -->
+      <div class="audio-player audio-player--compact" data-ap-player data-duration="225"
+           data-backend-todo="AudioPlayer" role="group" aria-label="Article audio player">
+        <button class="audio-player__play" data-ap-toggle type="button" aria-label="Play / pause" aria-pressed="false">
+          <i class="audio-player__icon audio-player__icon--play" data-lucide="play" aria-hidden="true"></i>
+          <i class="audio-player__icon audio-player__icon--pause" data-lucide="pause" aria-hidden="true"></i>
+        </button>
+        <span class="audio-player__time" data-ap-current>0:00</span>
+        <div class="audio-player__scrubber" data-ap-scrubber role="slider" aria-label="Seek" tabindex="0"
+             aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="audio-player__scrubber-fill" data-ap-fill></div>
+        </div>
+        <button class="audio-player__duration" data-ap-duration type="button" aria-label="Toggle remaining time">3:45</button>
+        <button class="audio-player__download" data-ap-download type="button" aria-label="Download audio">
+          <i data-lucide="download" aria-hidden="true"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- Card with waveform ------------------------------------------------- -->
+    <section class="demo-section">
+      <h2 class="demo-section__title">Card with waveform</h2>
+      <!-- TODO(backend:AudioPlayer): playback simulated; wire to real audio src + downloadUrl -->
+      <div class="audio-player audio-player--card" data-ap-player data-duration="225"
+           data-backend-todo="AudioPlayer" role="group" aria-label="Article audio player">
+        <div class="audio-player__eyebrow">
+          <i data-lucide="headphones" aria-hidden="true"></i>
+          <span class="audio-player__eyebrow-label">Listen to this article</span>
+        </div>
+        <h3 class="audio-player__heading">The future of design systems in an AI-native workflow</h3>
+        <div class="audio-player__wave-row">
+          <button class="audio-player__play" data-ap-toggle type="button" aria-label="Play / pause" aria-pressed="false">
+            <i class="audio-player__icon audio-player__icon--play" data-lucide="play" aria-hidden="true"></i>
+            <i class="audio-player__icon audio-player__icon--pause" data-lucide="pause" aria-hidden="true"></i>
+          </button>
+          <div class="audio-player__waveform" data-ap-waveform data-ap-bars="56"
+               role="slider" aria-label="Seek" tabindex="0"
+               aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+        </div>
+        <div class="audio-player__controls">
+          <button class="audio-player__download" data-ap-download type="button" aria-label="Download audio">
+            <i data-lucide="download" aria-hidden="true"></i>
+          </button>
+          <span class="audio-player__time-group">
+            <span class="audio-player__time" data-ap-current>0:00</span>
+            <span class="audio-player__time-sep">/</span>
+            <button class="audio-player__duration" data-ap-duration type="button" aria-label="Toggle remaining time">3:45</button>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sticky Mini Player ------------------------------------------------- -->
+    <section class="demo-section">
+      <h2 class="demo-section__title">Sticky Mini Player</h2>
+      <p class="demo-section__note">Below 768px this reflows from a single row to two rows.</p>
+      <!-- TODO(backend:AudioPlayer): playback simulated; wire to real audio src + downloadUrl -->
+      <div class="audio-player audio-player--mini" data-ap-player data-duration="225"
+           data-backend-todo="AudioPlayer" role="group" aria-label="Article audio player">
+        <div class="audio-player__mini-top">
+          <button class="audio-player__play" data-ap-toggle type="button" aria-label="Play / pause" aria-pressed="false">
+            <i class="audio-player__icon audio-player__icon--play" data-lucide="play" aria-hidden="true"></i>
+            <i class="audio-player__icon audio-player__icon--pause" data-lucide="pause" aria-hidden="true"></i>
+          </button>
+          <span class="audio-player__text">
+            <span class="audio-player__title">Listen to this article</span>
+            <span class="audio-player__sub">Narrated · 6 min</span>
+          </span>
+          <button class="audio-player__download" data-ap-download type="button" aria-label="Download audio">
+            <i data-lucide="download" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="audio-player__mini-bottom">
+          <div class="audio-player__scrubber" data-ap-scrubber role="slider" aria-label="Seek" tabindex="0"
+               aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="audio-player__scrubber-fill" data-ap-fill></div>
+          </div>
+          <span class="audio-player__time-group">
+            <span class="audio-player__time" data-ap-current>0:00</span>
+            <span class="audio-player__time-sep">/</span>
+            <button class="audio-player__duration" data-ap-duration type="button" aria-label="Toggle remaining time">3:45</button>
+          </span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script src="AudioPlayer.js"></script>
+</body>
+</html>
