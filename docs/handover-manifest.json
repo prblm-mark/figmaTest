@@ -191,6 +191,19 @@
           "needs": "Export current view (CSV/etc.); wire the kebab actions to real endpoints."
         }
       ]
+    },
+    "AudioPlayer": {
+      "file": "src/components/AudioPlayer/AudioPlayer.html",
+      "note": "Article audio player component (3 types). Playback is simulated by a JS timer so the scrubber/waveform/time read true in the demo; no real audio is bundled.",
+      "items": [
+        {
+          "id": "AudioPlayer",
+          "category": "needs-backend",
+          "element": ".audio-player [data-ap-player] (play/pause, scrubber, waveform, download)",
+          "current": "A timer advances a fake progress value; the download button is a no-op (preventDefault).",
+          "needs": "Wire to a real <audio> element / streamed source. Contract: { src: url, duration: seconds, downloadUrl: url }. Replace the simulated ticker with audio.timeupdate; point the download button at downloadUrl."
+        }
+      ]
     }
   }
 }

@@ -151,6 +151,21 @@ When another surface (e.g. AiAssistant, Header, a generic component) is handed o
 
 Keeping the marker `id`s in sync with the manifest `id`s is the only rule.
 
+## Surface: AudioPlayer
+
+`src/components/AudioPlayer/AudioPlayer.html` — the article audio player component (3 types:
+Compact Inline Bar, Card with waveform, Sticky Mini Player). Playback is **simulated** by a JS
+timer so the scrubber, waveform, time and countdown read true in the demo; no real audio is
+bundled.
+
+| id | Element | Now | Backend work needed | Category |
+|---|---|---|---|---|
+| `AudioPlayer` | `.audio-player` `[data-ap-player]` (play/pause, scrubber, waveform, download) | A timer advances a fake progress value; download button is a no-op | Wire to a real `<audio>` / streamed source. Contract: `{ src, duration, downloadUrl }`. Replace the ticker with `audio.timeupdate`; point download at `downloadUrl` | needs-backend |
+
+`grep -rn "TODO(backend:AudioPlayer)" src/`
+
+---
+
 ## Scope of this document
 
 Documentation + in-code flags **only** — no backend code, framework migration, or API
