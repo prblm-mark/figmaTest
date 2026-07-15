@@ -36,49 +36,121 @@
       color: var(--ai-text-contrast);
       margin: 0;
     }
+    /* Mock-article chrome for the dock-on-scroll demo */
+    .demo-article__kicker {
+      font-size: var(--ai-font-fixed-xxs);
+      font-weight: var(--ai-font-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ai-text-brand);
+      margin: 0 0 var(--ai-spacing-3);
+    }
+    .demo-article__title {
+      font-size: var(--ai-font-fixed-3xl);
+      font-weight: var(--ai-font-bold);
+      line-height: var(--ai-leading-xl);
+      color: var(--ai-text-primary);
+      margin: 0 0 var(--ai-spacing-4);
+    }
+    .demo-article__standfirst {
+      font-size: var(--ai-font-fixed-md);
+      line-height: var(--ai-leading-lg);
+      color: var(--ai-text-secondary);
+      margin: 0 0 var(--ai-spacing-6);
+    }
+    .demo-article__body p {
+      font-size: var(--ai-font-fixed-sm);
+      line-height: var(--ai-leading-lg);
+      color: var(--ai-text-primary);
+      margin: 0 0 var(--ai-spacing-5);
+    }
   </style>
 </head>
 <body>
   <div class="demo-wrap">
     <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-6);">Audio Player</h1>
     <p style="font-size: var(--ai-font-fixed-sm); color: var(--ai-text-secondary); margin: 0 0 var(--ai-spacing-6);">
-      Article audio player — three types. Playback is simulated. Resize the viewport below 768px to see each type's mobile layout.
+      Article audio player — one unified waveform card. The waveform is the seek control;
+      played bars turn brand-blue while playing. Playback is simulated.
+      Resize the viewport below 768px to see the two-row mobile layout.
     </p>
 
-    <!-- Compact Inline Bar ------------------------------------------------- -->
+    <!-- Inline (Default) --------------------------------------------------- -->
     <section class="demo-section">
-      <h2 class="demo-section__title">Compact Inline Bar</h2>
+      <h2 class="demo-section__title">Inline player</h2>
+      <p class="demo-section__note">Placed inline in the article body, below the title / standfirst.</p>
       <!-- TODO(backend:AudioPlayer): playback simulated; wire to real audio src + downloadUrl -->
-      <div class="audio-player audio-player--compact" data-ap-player data-duration="225"
+      <div class="audio-player" data-ap-player data-duration="225"
            data-backend-todo="AudioPlayer" role="group" aria-label="Article audio player">
+        <div class="audio-player__label">
+          <p class="audio-player__eyebrow">Listen to this article · 6 min</p>
+          <p class="audio-player__title">The future of design systems in an AI-native workflow</p>
+        </div>
         <button class="audio-player__play" data-ap-toggle type="button" aria-label="Play / pause" aria-pressed="false">
           <i class="audio-player__icon audio-player__icon--play" data-lucide="play" aria-hidden="true"></i>
           <i class="audio-player__icon audio-player__icon--pause" data-lucide="pause" aria-hidden="true"></i>
         </button>
-        <span class="audio-player__time" data-ap-current>0:00</span>
-        <div class="audio-player__scrubber" data-ap-scrubber role="slider" aria-label="Seek" tabindex="0"
-             aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-          <div class="audio-player__scrubber-fill" data-ap-fill></div>
-        </div>
-        <button class="audio-player__duration" data-ap-duration type="button" aria-label="Toggle remaining time">3:45</button>
+        <div class="audio-player__waveform" data-ap-waveform data-ap-bars="56"
+             role="slider" aria-label="Seek" tabindex="0"
+             aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+        <span class="audio-player__time-group">
+          <span class="audio-player__time" data-ap-current>0:00</span>
+          <span class="audio-player__time-sep">/</span>
+          <button class="audio-player__duration" data-ap-duration type="button" aria-label="Toggle remaining time">3:45</button>
+        </span>
         <button class="audio-player__download" data-ap-download type="button" aria-label="Download audio">
           <i data-lucide="download" aria-hidden="true"></i>
         </button>
       </div>
     </section>
 
-    <!-- Card with waveform ------------------------------------------------- -->
+    <!-- Sticky (docked appearance) ----------------------------------------- -->
     <section class="demo-section">
-      <h2 class="demo-section__title">Card with waveform</h2>
+      <h2 class="demo-section__title">Sticky bar — docked appearance</h2>
+      <p class="demo-section__note">Shows the article title (so the reader knows what's playing) and a drop shadow. Shown here in place; on scroll it fixes to the viewport bottom (see below).</p>
       <!-- TODO(backend:AudioPlayer): playback simulated; wire to real audio src + downloadUrl -->
-      <div class="audio-player audio-player--card" data-ap-player data-duration="225"
+      <div class="audio-player audio-player--sticky" data-ap-player data-duration="225"
            data-backend-todo="AudioPlayer" role="group" aria-label="Article audio player">
-        <div class="audio-player__eyebrow">
-          <i data-lucide="headphones" aria-hidden="true"></i>
-          <span class="audio-player__eyebrow-label">Listen to this article</span>
+        <div class="audio-player__label">
+          <p class="audio-player__eyebrow">Listen to this article · 6 min</p>
+          <p class="audio-player__title">The future of design systems in an AI-native workflow</p>
         </div>
-        <h3 class="audio-player__heading">The future of design systems in an AI-native workflow</h3>
-        <div class="audio-player__wave-row">
+        <button class="audio-player__play" data-ap-toggle type="button" aria-label="Play / pause" aria-pressed="false">
+          <i class="audio-player__icon audio-player__icon--play" data-lucide="play" aria-hidden="true"></i>
+          <i class="audio-player__icon audio-player__icon--pause" data-lucide="pause" aria-hidden="true"></i>
+        </button>
+        <div class="audio-player__waveform" data-ap-waveform data-ap-bars="56"
+             role="slider" aria-label="Seek" tabindex="0"
+             aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+        <span class="audio-player__time-group">
+          <span class="audio-player__time" data-ap-current>0:00</span>
+          <span class="audio-player__time-sep">/</span>
+          <button class="audio-player__duration" data-ap-duration type="button" aria-label="Toggle remaining time">3:45</button>
+        </span>
+        <button class="audio-player__download" data-ap-download type="button" aria-label="Download audio">
+          <i data-lucide="download" aria-hidden="true"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- Dock on scroll (live) ---------------------------------------------- -->
+    <section class="demo-section">
+      <h2 class="demo-section__title">Dock on scroll — live</h2>
+      <p class="demo-section__note">Scroll down past the inline player: the sticky bar slides up and fixes to the bottom of the viewport, staying in sync. Scroll back up to dismiss it.</p>
+
+      <article class="demo-article">
+        <p class="demo-article__kicker">Design Systems</p>
+        <h3 class="demo-article__title">The future of design systems in an AI-native workflow</h3>
+        <p class="demo-article__standfirst">How component libraries, design tokens and code generation are converging — and what it means for the people who build and maintain them.</p>
+
+        <!-- Inline player: watched for scroll; shares state with the dock below -->
+        <!-- TODO(backend:AudioPlayer): playback simulated; wire to real audio src + downloadUrl -->
+        <div class="audio-player" data-ap-player data-ap-group="article" data-ap-role="inline" data-duration="225"
+             data-backend-todo="AudioPlayer" role="group" aria-label="Article audio player">
+          <div class="audio-player__label">
+            <p class="audio-player__eyebrow">Listen to this article · 6 min</p>
+            <p class="audio-player__title">The future of design systems in an AI-native workflow</p>
+          </div>
           <button class="audio-player__play" data-ap-toggle type="button" aria-label="Play / pause" aria-pressed="false">
             <i class="audio-player__icon audio-player__icon--play" data-lucide="play" aria-hidden="true"></i>
             <i class="audio-player__icon audio-player__icon--pause" data-lucide="pause" aria-hidden="true"></i>
@@ -86,53 +158,63 @@
           <div class="audio-player__waveform" data-ap-waveform data-ap-bars="56"
                role="slider" aria-label="Seek" tabindex="0"
                aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
-        </div>
-        <div class="audio-player__controls">
-          <button class="audio-player__download" data-ap-download type="button" aria-label="Download audio">
-            <i data-lucide="download" aria-hidden="true"></i>
-          </button>
           <span class="audio-player__time-group">
             <span class="audio-player__time" data-ap-current>0:00</span>
             <span class="audio-player__time-sep">/</span>
             <button class="audio-player__duration" data-ap-duration type="button" aria-label="Toggle remaining time">3:45</button>
           </span>
+          <button class="audio-player__download" data-ap-download type="button" aria-label="Download audio">
+            <i data-lucide="download" aria-hidden="true"></i>
+          </button>
         </div>
-      </div>
-    </section>
 
-    <!-- Sticky Mini Player ------------------------------------------------- -->
-    <section class="demo-section">
-      <h2 class="demo-section__title">Sticky Mini Player</h2>
-      <p class="demo-section__note">Below 768px this reflows from a single row to two rows.</p>
-      <!-- TODO(backend:AudioPlayer): playback simulated; wire to real audio src + downloadUrl -->
-      <div class="audio-player audio-player--mini" data-ap-player data-duration="225"
-           data-backend-todo="AudioPlayer" role="group" aria-label="Article audio player">
-        <div class="audio-player__mini-top">
-          <button class="audio-player__play" data-ap-toggle type="button" aria-label="Play / pause" aria-pressed="false">
-            <i class="audio-player__icon audio-player__icon--play" data-lucide="play" aria-hidden="true"></i>
-            <i class="audio-player__icon audio-player__icon--pause" data-lucide="pause" aria-hidden="true"></i>
-          </button>
-          <span class="audio-player__text">
-            <span class="audio-player__title">Listen to this article</span>
-            <span class="audio-player__sub">Narrated · 6 min</span>
-          </span>
-          <button class="audio-player__download" data-ap-download type="button" aria-label="Download audio">
-            <i data-lucide="download" aria-hidden="true"></i>
-          </button>
+        <div class="demo-article__body">
+          <p>Design systems began as static libraries: a set of components, some usage guidance, and a shared vocabulary. For years the hard part was keeping design and code in step — a change in one rarely propagated cleanly to the other.</p>
+          <p>The arrival of design tokens changed the economics. Once colour, spacing and typography live as named values rather than hand-copied hex codes, a single edit can ripple through every surface that references them. The library stops being a snapshot and becomes a source of truth.</p>
+          <p>AI-native tooling pushes this further. Instead of translating a Figma frame by hand, a designer's intent can be read directly and expressed as production markup that already speaks the token language. The gap between "designed" and "shipped" narrows to a review step.</p>
+          <p>None of this removes the need for judgement. Someone still decides what a component is for, which states it needs, and how it should degrade on a small screen. The machine is fast at the mechanical translation; it is indifferent to whether the result is coherent.</p>
+          <p>That is where governance earns its keep. A well-run system encodes decisions — this token, not that raw value; this semantic role, not that lookalike — so the fast path and the correct path are the same path.</p>
+          <p>The teams that thrive treat the system as a product with its own users: the designers and engineers who consume it every day. They measure adoption, they retire the exceptions, and they keep the documentation close enough to the code that it never drifts.</p>
+          <p>Audio narration, like this player, is a small example of the same principle. It is one component, defined once, that adapts to its context — inline while you read, docked while you scroll — without asking the author to think about any of it.</p>
+          <p>Consider the alternative. Three bespoke players, each with its own markup, its own edge cases, and its own bugs. A fix applied to one quietly rots in the other two. Consolidation is not just tidier; it is cheaper to own over the life of the product.</p>
+          <p>The waveform itself is a good illustration. Its bars are generated deterministically from the track width, so the shape is stable across renders and never depends on random noise. Playback simply paints the leading bars in the brand colour as time advances.</p>
+          <p>Seeking works the same everywhere: click anywhere on the waveform and the current time jumps to that position. The thin scrubber that older versions carried is gone — one control, one interaction, one mental model for the reader.</p>
+          <p>Accessibility rides along for free when the semantics are right. The play button is a real button with an accurate pressed state; the waveform reports its position; the docked twin is hidden from assistive tech until it actually appears.</p>
+          <p>Docking is deliberately restrained. The bar only appears once the inline player has left the viewport entirely, and it retreats the moment the reader scrolls back to it. Nothing flashes, nothing fights the content for attention.</p>
+          <p>Keeping the two instances in sync is the quiet trick. A single controller drives both, so pressing play on the docked bar is indistinguishable from pressing play inline. State lives in one place; the DOM is just a projection of it.</p>
+          <p>On mobile the same component folds into two rows. The label and download share the top; the play button, waveform and time share the bottom. Docked, the title moves beside the play button so the reader always knows what is speaking.</p>
+          <p>These decisions are small on their own. Together they are the difference between a component you trust and one you reach around. The system is the sum of many such quiet choices, made once and honoured everywhere.</p>
+          <p>That is the whole ambition of an AI-native workflow: not to remove the craft, but to remove the toil around it — so the people who care about the details are free to spend their attention where it actually matters.</p>
+          <p>Scroll a little further and then back up to watch the docked bar appear and dismiss itself. The behaviour is the same one a reader would meet on a real article page, where the narration follows them down the story and steps aside when it is no longer needed.</p>
+          <p>When the last paragraph clears the fold, the player has long since docked — proof that there is finally enough room below it for the interaction to breathe. In production the article body is invariably this long or longer, so the dock always has somewhere to go.</p>
         </div>
-        <div class="audio-player__mini-bottom">
-          <div class="audio-player__scrubber" data-ap-scrubber role="slider" aria-label="Seek" tabindex="0"
-               aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-            <div class="audio-player__scrubber-fill" data-ap-fill></div>
-          </div>
-          <span class="audio-player__time-group">
-            <span class="audio-player__time" data-ap-current>0:00</span>
-            <span class="audio-player__time-sep">/</span>
-            <button class="audio-player__duration" data-ap-duration type="button" aria-label="Toggle remaining time">3:45</button>
-          </span>
-        </div>
-      </div>
+      </article>
     </section>
+  </div>
+
+  <!-- Docked twin for the article player above (shares group "article") -->
+  <!-- TODO(backend:AudioPlayer): playback simulated; wire to real audio src + downloadUrl -->
+  <div class="audio-player audio-player--sticky audio-player--dock" data-ap-player data-ap-group="article" data-ap-role="dock" data-duration="225"
+       data-backend-todo="AudioPlayer" role="group" aria-label="Article audio player (docked)">
+    <div class="audio-player__label">
+      <p class="audio-player__eyebrow">Listen to this article · 6 min</p>
+      <p class="audio-player__title">The future of design systems in an AI-native workflow</p>
+    </div>
+    <button class="audio-player__play" data-ap-toggle type="button" aria-label="Play / pause" aria-pressed="false">
+      <i class="audio-player__icon audio-player__icon--play" data-lucide="play" aria-hidden="true"></i>
+      <i class="audio-player__icon audio-player__icon--pause" data-lucide="pause" aria-hidden="true"></i>
+    </button>
+    <div class="audio-player__waveform" data-ap-waveform data-ap-bars="56"
+         role="slider" aria-label="Seek" tabindex="0"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+    <span class="audio-player__time-group">
+      <span class="audio-player__time" data-ap-current>0:00</span>
+      <span class="audio-player__time-sep">/</span>
+      <button class="audio-player__duration" data-ap-duration type="button" aria-label="Toggle remaining time">3:45</button>
+    </span>
+    <button class="audio-player__download" data-ap-download type="button" aria-label="Download audio">
+      <i data-lucide="download" aria-hidden="true"></i>
+    </button>
   </div>
 
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
