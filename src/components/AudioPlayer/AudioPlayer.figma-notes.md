@@ -2,101 +2,111 @@
 
 ## Figma Node
 - File key: `Lus07xi8pPXLN87sQIyrEt` (Affino AI — Design System)
-- Parent frame: `3055:5458` "Article Audio Player"
+- Parent frame: `3069:5884` "Article Audio Player"
 - Variants (Tier=Component):
-  | Node ID | Type | Device |
-  |---|---|---|
-  | 3055:5457 | Compact Inline Bar | Desktop |
-  | 3055:5455 | Compact Inline Bar | Mobile |
-  | 3055:5453 | Card with waveform | Desktop |
-  | 3055:5454 | Card with waveform | Mobile |
-  | 3055:5456 | Sticky Mini Player | Desktop |
-  | 3055:5452 | Sticky Mini Player | Mobile |
+  | Node ID | Type | Device | Notes |
+  |---|---|---|---|
+  | 3069:7316 | Default | Desktop | eyebrow label; unplayed |
+  | 3076:4114 | Playing | Desktop | eyebrow label; leading bars brand |
+  | 3069:7157 | Sticky  | Desktop | article title + `shadow-md`; leading bars brand |
+  | 3069:7482 | Default | Mobile  | eyebrow label; unplayed |
+  | 3076:4190 | Playing | Mobile  | eyebrow label; leading bars brand |
+  | 3069:7076 | Playing | Mobile  | **title version** (labelled "Playing" in Figma but structurally the Sticky/docked mobile layout); leading bars brand |
 
-## Variant × Device Matrix
-Device=Mobile is implemented as `@media (max-width: 767px)` — never a modifier class.
+## Redesign summary (supersedes the old 3-Type version)
+The previous component had three distinct layouts (`--compact` / `--card` / `--mini`).
+Figma replaced all of them with **one waveform card**. Removed entirely: the thin
+`Slider - Seek` scrubber, the headphones eyebrow icon, the uppercase brand label,
+the large heading, and the "Narrated · 6 min" subtitle. The waveform is now the
+sole seek control across every variant.
 
-| Type | Modifier | Desktop | Mobile deltas |
-|---|---|---|---|
-| Compact Inline Bar | `--compact` | pill, `px 12 / py 8`, gap 12, play 40 / icon 20; current-time `fixed-xs` medium, duration `fixed-xs` regular | gap 8, padding 8 all; current-time `fixed-xxs`, duration `fixed-sm` |
-| Card with waveform | `--card` | `radius-lg`, padding 24, `shadow-card`; heading `fixed-md`; play 56 / icon 24; waveform h48 gap16 | padding 16; heading `fixed-sm`; play 48 / icon 20; waveform gap 12 |
-| Sticky Mini Player | `--mini` | `radius-lg`, `px 16 / py 12`, single row (play · text · scrubber · time · download); play 40 / icon 20 | two rows `[play · text · download]` / `[scrubber · time]`, flex-col gap 8, padding 12; download 32 |
+## Type → code mapping
+| Figma Type | Code | Meaning |
+|---|---|---|
+| Default | `.audio-player` (base) | Inline player, eyebrow label "Listen to this article · 6 min" |
+| Playing | `.audio-player.is-playing` (runtime) | Not a structural variant — played bars turn `--ai-surface-brand` |
+| Sticky | `.audio-player--sticky` (+ `--dock` via JS) | Docked appearance: article title + `shadow-md`; reflowed mobile layout |
 
-All three share `max-width: --ai-size-11` (768px) and shrink to fill narrower screens (Figma mobile frame = `--ai-size-6` 320px).
+Per the designer: **Sticky is the same player**, placed inline below the article
+title/standfirst, that slides up and fixes to the viewport bottom once scrolled
+out of view (JS `--dock`, IntersectionObserver on the inline instance).
 
-## Interaction
-No interaction-state *variants* exist in Figma (axes are Type × Device only). Behaviour (JS, `AudioPlayer.js`), confirmed against the validated prototypes:
-- Play/pause: toggles `.is-playing` on the root → swaps `--play`/`--pause` icon; `aria-pressed` synced.
-- Scrubber / waveform: click-to-seek (`[data-ap-scrubber]` / `[data-ap-waveform]`).
-- Duration button: toggles between total time and `-remaining`.
-- Download: no-op — **backend TODO** (see below).
-- Waveform bars are generated deterministically from the track width (no `Math.random`, stable) — the per-bar heights in Figma are amplitude data, not tokens.
+## Layout matrix (CSS grid — one DOM, reflowed via grid-template-areas)
+| Mode | Desktop areas | Mobile areas |
+|---|---|---|
+| Default | `label label label label` / `play wave time download` | `label label download` / `play wave time` |
+| Sticky | same as Default desktop (wider gaps + shadow) | `play label download` / `wave wave time` |
+
+Gaps: Default desktop col 12 / row 8; Sticky desktop col 16 / row 12. Mobile:
+Default col 12 / row 6; Sticky col 12 / row 8. Padding: desktop 12/16, mobile 12.
 
 ## CSS Class Mapping
 | Figma layer | CSS class |
 |---|---|
-| Article Audio Player (root) | `.audio-player` + `--compact` / `--card` / `--mini` |
-| Button - Play / pause | `.audio-player__play` (icon `.audio-player__icon--play/--pause`) |
-| Slider - Seek (thin) | `.audio-player__scrubber` + `.audio-player__scrubber-fill` |
-| Slider - Seek (waveform) | `.audio-player__waveform` + `.audio-player__bar` (`.is-played`) |
-| current time | `.audio-player__time` |
-| "/" separator | `.audio-player__time-sep` |
-| Button - Toggle remaining time | `.audio-player__duration` |
+| Article Audio Player (root) | `.audio-player` (+ `--sticky`, + `--dock`) |
+| Text / Heading 2 (label) | `.audio-player__label` → `.audio-player__eyebrow` (Default) / `.audio-player__title` (Sticky) |
+| Button - Play / pause | `.audio-player__play` (icons `.audio-player__icon--play/--pause`) |
+| Slider - Seek (bars) | `.audio-player__waveform` + `.audio-player__bar` (`.is-played`) |
+| current time / "/" / duration | `.audio-player__time` / `.audio-player__time-sep` / `.audio-player__duration`, wrapped in `.audio-player__time-group` |
 | Button - Download audio | `.audio-player__download` |
-| eyebrow (headphones + label) | `.audio-player__eyebrow` + `.audio-player__eyebrow-label` |
-| Heading 2 (card) | `.audio-player__heading` |
-| mini title / sub | `.audio-player__title` / `.audio-player__sub` |
-| mini row wrappers | `.audio-player__mini-top` / `.audio-player__mini-bottom` (`display: contents` on desktop) |
 
 ## Token Mapping
 | Figma | CSS token | Role |
 |---|---|---|
-| surface/primary | `--ai-surface-primary` | container bg |
-| border/secondary | `--ai-border-secondary` | container border |
-| surface/brand | `--ai-surface-brand` | play fill, scrubber fill, played bars |
-| surface/contrast | `--ai-surface-contrast` | scrubber track, unplayed bars |
-| text/primary | `--ai-text-primary` | heading, compact duration |
-| text/secondary | `--ai-text-secondary` | current time, mini sub, grouped time |
+| surface/primary | `--ai-surface-primary` | card bg |
+| border/secondary | `--ai-border-secondary` | card border |
+| surface/brand | `--ai-surface-brand` | play fill, played bars |
+| surface/contrast | `--ai-surface-contrast` | unplayed bars |
+| text/primary | `--ai-text-primary` | title |
+| text/secondary | `--ai-text-secondary` | eyebrow, current time, duration |
 | text/contrast | `--ai-text-contrast` | "/" separator |
-| text/brand | `--ai-text-brand` | eyebrow label |
-| icon/invert | `--ai-icon-invert` | play/pause glyph (on brand) |
+| icon/invert | `--ai-icon-invert` | play/pause glyph |
 | icon/secondary | `--ai-icon-secondary` | download glyph |
-| icon/brand | `--ai-icon-brand` | eyebrow headphones |
-| spacing 7/8/9/10 | `--ai-spacing-7/8/9/10` | control box sizes 32/40/48/56 |
-| spacing 0-5/1/2/3/4/5/6 | `--ai-spacing-*` | gaps, padding, track height (4), bar min-w (2) |
-| radius/full, radius/lg | `--ai-radius-full`, `--ai-radius-lg` | pill controls, card corners |
-| size/11, size/6 | `--ai-size-11`, `--ai-size-6` | 768 / 320 frame widths (→ max-width) |
-| font fixed xxs/xs/sm/md | `--ai-font-fixed-*` | type ramp |
-| font medium/regular/semibold/bold | `--ai-font-*` | weights |
-| leading md/sm | `--ai-leading-*` | line heights |
-| icon 16/20/24 | `--ai-icon-size-sm/md/lg` | icon sizing |
+| radius/lg, radius/full | `--ai-radius-lg`, `--ai-radius-full` | card corners, controls |
+| shadow-md (effect) | `--ai-shadow-md` | Sticky drop shadow |
+| spacing 8/9/6/7 | `--ai-spacing-8/9/6/7` | play & download 40 / waveform h 48 / mobile download 24 / 32 |
+| spacing 0-5/1/2/3/4/5 | `--ai-spacing-*` | bar min-w 2 / gaps / padding |
+| size/11 | `--ai-size-11` | 768px max-width (frame width) |
+| font fixed sm/xs/xxs | `--ai-font-fixed-*` | title 16 / eyebrow 14 / time 12 |
+| font semibold/medium | `--ai-font-*` | weights |
+| leading sm/xs/md | `--ai-leading-*` | 20 / 16 / 24 |
+| icon 20/16 | `--ai-icon-size-md/sm` | play / download+bars |
 
 ## Token Gaps & Decisions
-- **Control box sizes (40/48/56/32px)** — Figma left these unbound. Approved to
-  use the exactly-matching spacing tokens (`--ai-spacing-8/9/10/7`).
-- **Card drop-shadow** `0 0 10px rgba(0,0,0,0.05)` — no existing `--ai-shadow-*`
-  matched; **new token `--ai-shadow-card`** added to `css/tokens-shadows.css`
-  (light + dark).
-- **Same-value token slips (normalised, approved):**
-  - Sticky **desktop** play + slider-fill used `--ai-surface-info`; every other
-    variant used `--ai-surface-brand` (both `#2563eb`) → normalised to `--ai-surface-brand`.
-  - Card **mobile** heading used `--ai-text-neutral`; desktop used `--ai-text-primary`
-    (both `#212123`) → normalised to `--ai-text-primary`.
+- **Play-button fill `--ai-surface-info` vs `--ai-surface-brand`** — Figma binds
+  `surface-info` on the Desktop variants and `surface-brand` on Mobile (both
+  `#2563eb`, a slip). Played bars use `surface-brand` everywhere. **User approved
+  normalising the play button to `--ai-surface-brand`.**
+- **Sticky drop shadow** — Figma effect "light/shadow-md" (two layers:
+  `#0000001A 0 3 10` + `#00000029 0 1 4`). Mapped to the existing `--ai-shadow-md`
+  token (single-layer `0 2px 10px rgba(0,0,0,0.1)`), which Figma named to match.
+  The old `--ai-shadow-card` token is no longer used by this component.
+- **Mobile Sticky shadow** — the Figma mobile title frame (3069:7076) omits the
+  shadow, but `--sticky` applies `shadow-md` on all breakpoints so the docked bar
+  reads as a floating element over article content. Minor, intentional.
+- **Mobile Sticky download size** — Figma sets the mobile Sticky download to 32px
+  (`--ai-spacing-7`); **user chose to normalise it to 24px** (`--ai-spacing-6`),
+  matching the mobile Default download, so all mobile downloads are one size.
+- **Player-row gap 12 vs 16** — Default desktop (absolute-authored) spaces controls
+  ~12px; Sticky desktop (flex-authored) uses `gap-5` (16px). Kept per-mode
+  (Default col-gap 12, Sticky 16); the Figma Sticky time↔download inner gap (8px)
+  was unified to the row column-gap.
+
+## Interaction / JS (`AudioPlayer.js`)
+- Play/pause toggles `.is-playing` → swaps play/pause icon; `aria-pressed` synced.
+- Waveform: click-to-seek (`[data-ap-waveform]`), `role="slider"`, `aria-valuenow`
+  updated on render.
+- Duration button toggles total ↔ `-remaining`.
+- Download: no-op — **backend TODO**.
+- Bar heights generated deterministically from track width (no `Math.random`);
+  bar count derives from width and rebuilds (debounced) on resize.
+- **Grouping**: players sharing `[data-ap-group]` are driven by one controller so
+  the inline and docked instances stay in sync. `[data-ap-role="inline"]` is
+  observed; once it scrolls above the viewport the `[data-ap-role="dock"]` element
+  gets `.is-docked-visible` (slides up, `aria-hidden` cleared).
 
 ## Notes
-- Lucide icons: `play`, `pause`, `download`, `headphones` (exact matches).
-- **Mini text stack** (`.audio-player__text`): user override — gap removed (Figma 2px) and
-  title/sub `line-height` set to `--ai-leading-sm` (20px; Figma `--ai-leading-md` 24px) for a
-  tighter two-line block.
-- **Icon sizes:** download + headphones are `--ai-icon-size-sm` (16px) on all
-  versions. The headphones eyebrow is 16px in Figma; the download icon is a
-  **user override** (Figma binds it at 20px / `--ai-icon-size-md`). Play/pause
-  glyph stays 20px (24px on the card-desktop 56px button).
-- `letter-spacing: 0.48px` on the eyebrow label is an optical value (kept as px).
-- Width is `100% / max-width: --ai-size-11` rather than a fixed 768px so the
-  component fills its article column and shrinks on mobile — the Figma fixed
-  widths are the canvas frame sizes.
-- Hover: Figma defines no hover/pressed states. Added conventional, token-based
-  affordances only — play → `--ai-surface-brand-dark`, download → `--ai-surface-secondary`.
-- The "sticky" positioning (dock-on-scroll) is a *usage* concern, not part of the
-  component — the Figma "Sticky Mini Player" variant is just the bar chrome.
+- Lucide icons: `play`, `pause`, `download` (exact matches). Headphones icon removed.
+- `--ai-surface-brand-dark` play hover and `--ai-surface-secondary` download hover
+  are conventional affordances (Figma defines no hover/pressed states).
+- `z-index: 50` on `--dock` and `1px` card border are structural (not tokenised).
