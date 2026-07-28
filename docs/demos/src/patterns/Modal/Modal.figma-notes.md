@@ -69,6 +69,18 @@ Dialog pattern for alerts, confirmations, forms, feedback, and scrollable conten
 - **Textarea** (`src/components/Textarea/`) — feedback variant text area
 - **Checkbox** (`src/components/Checkbox/`) — form "remember me", negative feedback options
 
+## Responsive
+
+Figma defines no mobile modal variant. One responsive rule exists in code:
+
+| Breakpoint | Rule | Origin |
+|---|---|---|
+| `max-width: 639px` (below `--ai-bp-sm`) | `.modal__header` / `.modal__footer` padding → `var(--ai-spacing-4) var(--ai-spacing-5)` (from `--ai-spacing-5` / `--ai-spacing-6`) | Added 2026-07-27 during the EventPicker build, then applied to **all** modals by request |
+
+`.modal--confirm .modal__footer` is unaffected — it is more specific and keeps its
+intentionally borderless, centred `0 var(--ai-spacing-6) var(--ai-spacing-6)` padding.
+`.modal__body` padding is also unchanged at every width.
+
 ## Notes
 
 - Overlay (`.modal-overlay`) included for interactive demo but is not part of the Figma component — it's an implementation detail.

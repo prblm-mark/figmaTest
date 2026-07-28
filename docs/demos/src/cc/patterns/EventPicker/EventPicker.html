@@ -1,0 +1,809 @@
+<!doctype html>
+<!-- data-brand="cc": this pattern ships inside the Control Centre, so the demo previews
+     the CC palette it will actually render in. The Figma set is authored in the standard
+     theme, so the toolbar (gear tab, right edge) carries a "CC brand" toggle for
+     comparing against the Figma frames. The CSS itself is brand-agnostic. -->
+<html lang="en" data-brand="cc">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../../../components/dark-mode-toggle.js"></script>
+  <title>EventPicker (CC) — Affino AI Design System</title>
+
+  <link rel="stylesheet" href="../../../styles/base.css" />
+  <link rel="stylesheet" href="../../../components/Button/Button.css" />
+  <link rel="stylesheet" href="../../../components/Badge/Badge.css" />
+  <link rel="stylesheet" href="../../../components/Checkbox/Checkbox.css" />
+  <link rel="stylesheet" href="../../../components/SearchInput/SearchInput.css" />
+  <link rel="stylesheet" href="../../../components/ActionCard/ActionCard.css" />
+  <link rel="stylesheet" href="../../../patterns/Modal/Modal.css" />
+  <link rel="stylesheet" href="EventPicker.css" />
+  <style>
+    body {
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-minimal);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-7);
+      min-height: 100vh;
+    }
+    .demo-section {
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-primary);
+      border-radius: var(--ai-radius-md);
+      box-shadow: var(--ai-shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-5);
+      align-items: flex-start;
+    }
+    .demo-section h2 {
+      margin: 0;
+      font-family: var(--ai-font-title);
+      font-size: var(--ai-font-fixed-sm);
+      font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-primary);
+    }
+    .demo-note {
+      margin: 0;
+      max-width: var(--ai-size-11);
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xxs);
+      line-height: var(--ai-leading-sm);
+      color: var(--ai-text-secondary);
+    }
+    .demo-log {
+      font-family: var(--ai-font-body);
+      font-size: var(--ai-font-fixed-xxs);
+      color: var(--ai-text-contrast);
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="margin: 0; font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-2xl);
+             font-weight: var(--ai-font-bold); color: var(--ai-text-primary);">EventPicker <span
+      style="font-size: var(--ai-font-fixed-xs); font-weight: var(--ai-font-regular);
+             color: var(--ai-text-contrast);">Control Centre · Tier=Pattern · Figma 3108:6662</span></h1>
+  <p class="demo-note" style="margin-top: calc(var(--ai-spacing-6) * -1);">
+    Device=Mobile is handled by <code>@media (max-width: 767px)</code> — resize the viewport below
+    768px to see the stacked card layout. Selecting an event emits
+    <code>event-picker:select</code>; Cancel / close emit <code>event-picker:close</code>.
+    <span class="demo-log" data-ep-log></span>
+  </p>
+
+  <section class="demo-section">
+    <h2>Type=Event Picker</h2>
+    <p class="demo-note">Shown on entering the module. Live ticked, last-used event pinned to the top, the rest sorted by latest event date.</p>
+      <div class="modal modal--lg event-picker" role="dialog" aria-modal="true"
+           aria-labelledby="ep1-title" data-event-picker>
+
+        <div class="modal__header">
+          <h2 class="modal__title" id="ep1-title">Select an event</h2>
+          <button class="modal__close" type="button" aria-label="Close" data-ep-close>
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <div class="event-picker__filters">
+          <div class="search">
+            <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+            <input class="search__input" type="search" placeholder="Search event name…"
+                   aria-label="Search event name" data-ep-search>
+          </div>
+          <label class="checkbox">
+            <input type="checkbox" class="checkbox__input" checked data-ep-live>
+            <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            <span class="checkbox__label">
+              <span class="checkbox__label-text">Live events only</span>
+              <span class="checkbox__helper">Untick to include draft and archived events</span>
+            </span>
+          </label>
+        </div>
+
+        <div class="event-picker__list" data-ep-list>
+        <p class="event-picker__group" data-ep-group="pinned">Last used</p>
+        <button class="action-card action-card--chevron event-picker__event event-picker__event--pinned" type="button"
+                data-ep-event data-id="evt-cpa" data-name="The Card &amp; Payments Awards 2026" data-status="live" data-group="pinned">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">The Card &amp; Payments Awards 2026</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>3 Feb 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>Grosvenor House, London</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>386 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans"><i data-lucide="layout-grid" aria-hidden="true"></i>2 plans</span>
+              <span class="event-picker__seated">
+                <span class="event-picker__seated-track"><span class="event-picker__seated-fill" style="--event-picker-seated: 79%"></span></span>
+                <span class="event-picker__seated-label">286/360 seated</span>
+              </span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <p class="event-picker__group" data-ep-group="latest">Latest events</p>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-gpf" data-name="Global Payments Forum" data-status="live" data-group="latest">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">Global Payments Forum</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>12 Nov 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>Hilton Metropole, Birmingham</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>640 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans event-picker__plans--none"><i data-lucide="layout-grid" aria-hidden="true"></i>0 plans</span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-ris" data-name="Retail Innovation Summit" data-status="live" data-group="latest">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">Retail Innovation Summit</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>8 Oct 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>Manchester Central</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>820 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans"><i data-lucide="layout-grid" aria-hidden="true"></i>1 plan</span>
+              <span class="event-picker__seated">
+                <span class="event-picker__seated-track"><span class="event-picker__seated-fill" style="--event-picker-seated: 57%"></span></span>
+                <span class="event-picker__seated-label">512/900 seated</span>
+              </span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-ild" data-name="Insurance Leaders Dinner" data-status="live" data-group="latest">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">Insurance Leaders Dinner</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>17 Sep 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>The Savoy, London</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>180 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans"><i data-lucide="layout-grid" aria-hidden="true"></i>1 plan</span>
+              <span class="event-picker__seated">
+                <span class="event-picker__seated-track"><span class="event-picker__seated-fill" style="--event-picker-seated: 90%"></span></span>
+                <span class="event-picker__seated-label">180/200 seated</span>
+              </span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-fts" data-name="FinTech Summit 2026" data-status="live" data-group="latest">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">FinTech Summit 2026</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>14 May 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>ExCeL London</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>1,200 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans event-picker__plans--none"><i data-lucide="layout-grid" aria-hidden="true"></i>0 plans</span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-mds" data-name="Members&#39; Dinner — Spring" data-status="live" data-group="latest">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">Members&#39; Dinner — Spring</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>20 Mar 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>The Ivy, London</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>90 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans event-picker__plans--none"><i data-lucide="layout-grid" aria-hidden="true"></i>0 plans</span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        </div>
+
+        <div class="event-picker__empty" data-ep-empty hidden>
+          <span class="event-picker__empty-icon"><i data-lucide="search-x" aria-hidden="true"></i></span>
+          <p class="event-picker__empty-title">No events match “<span data-ep-empty-query></span>”</p>
+          <p class="event-picker__empty-desc">Try a different search, or untick
+            <strong>Live events only</strong> to include draft and archived events.</p>
+          <button class="btn btn--secondary" type="button" data-ep-clear>Clear search</button>
+        </div>
+
+        <div class="modal__footer event-picker__footer">
+          <span class="event-picker__count" data-ep-count aria-live="polite">6 events · live only</span>
+          <button class="btn btn--secondary" type="button" data-ep-close>Cancel</button>
+        </div>
+
+      </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Type=Event Picker (search)</h2>
+    <p class="demo-note">Predictive search. Typing filters the list live and highlights the matched characters; the pinned group hides when it has no match.</p>
+      <div class="modal modal--lg event-picker" role="dialog" aria-modal="true"
+           aria-labelledby="ep2-title" data-event-picker>
+
+        <div class="modal__header">
+          <h2 class="modal__title" id="ep2-title">Select an event</h2>
+          <button class="modal__close" type="button" aria-label="Close" data-ep-close>
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <div class="event-picker__filters">
+          <div class="search">
+            <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+            <input class="search__input" type="search" placeholder="Search event name…"
+                   aria-label="Search event name" value="din" data-ep-search>
+          </div>
+          <label class="checkbox">
+            <input type="checkbox" class="checkbox__input" checked data-ep-live>
+            <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            <span class="checkbox__label">
+              <span class="checkbox__label-text">Live events only</span>
+              <span class="checkbox__helper">Untick to include draft and archived events</span>
+            </span>
+          </label>
+        </div>
+
+        <div class="event-picker__list" data-ep-list>
+        <p class="event-picker__group" data-ep-group="pinned">Last used</p>
+        <button class="action-card action-card--chevron event-picker__event event-picker__event--pinned" type="button"
+                data-ep-event data-id="evt-cpa" data-name="The Card &amp; Payments Awards 2026" data-status="live" data-group="pinned">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">The Card &amp; Payments Awards 2026</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>3 Feb 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>Grosvenor House, London</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>386 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans"><i data-lucide="layout-grid" aria-hidden="true"></i>2 plans</span>
+              <span class="event-picker__seated">
+                <span class="event-picker__seated-track"><span class="event-picker__seated-fill" style="--event-picker-seated: 79%"></span></span>
+                <span class="event-picker__seated-label">286/360 seated</span>
+              </span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <p class="event-picker__group" data-ep-group="latest">Latest events</p>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-gpf" data-name="Global Payments Forum" data-status="live" data-group="latest">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">Global Payments Forum</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>12 Nov 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>Hilton Metropole, Birmingham</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>640 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans event-picker__plans--none"><i data-lucide="layout-grid" aria-hidden="true"></i>0 plans</span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-ris" data-name="Retail Innovation Summit" data-status="live" data-group="latest">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">Retail Innovation Summit</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>8 Oct 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>Manchester Central</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>820 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans"><i data-lucide="layout-grid" aria-hidden="true"></i>1 plan</span>
+              <span class="event-picker__seated">
+                <span class="event-picker__seated-track"><span class="event-picker__seated-fill" style="--event-picker-seated: 57%"></span></span>
+                <span class="event-picker__seated-label">512/900 seated</span>
+              </span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-ild" data-name="Insurance Leaders Dinner" data-status="live" data-group="latest">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">Insurance Leaders Dinner</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>17 Sep 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>The Savoy, London</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>180 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans"><i data-lucide="layout-grid" aria-hidden="true"></i>1 plan</span>
+              <span class="event-picker__seated">
+                <span class="event-picker__seated-track"><span class="event-picker__seated-fill" style="--event-picker-seated: 90%"></span></span>
+                <span class="event-picker__seated-label">180/200 seated</span>
+              </span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-fts" data-name="FinTech Summit 2026" data-status="live" data-group="latest">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">FinTech Summit 2026</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>14 May 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>ExCeL London</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>1,200 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans event-picker__plans--none"><i data-lucide="layout-grid" aria-hidden="true"></i>0 plans</span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-mds" data-name="Members&#39; Dinner — Spring" data-status="live" data-group="latest">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">Members&#39; Dinner — Spring</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>20 Mar 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>The Ivy, London</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>90 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans event-picker__plans--none"><i data-lucide="layout-grid" aria-hidden="true"></i>0 plans</span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        </div>
+
+        <div class="event-picker__empty" data-ep-empty hidden>
+          <span class="event-picker__empty-icon"><i data-lucide="search-x" aria-hidden="true"></i></span>
+          <p class="event-picker__empty-title">No events match “<span data-ep-empty-query></span>”</p>
+          <p class="event-picker__empty-desc">Try a different search, or untick
+            <strong>Live events only</strong> to include draft and archived events.</p>
+          <button class="btn btn--secondary" type="button" data-ep-clear>Clear search</button>
+        </div>
+
+        <div class="modal__footer event-picker__footer">
+          <span class="event-picker__count" data-ep-count aria-live="polite">2 events · live only</span>
+          <button class="btn btn--secondary" type="button" data-ep-close>Cancel</button>
+        </div>
+
+      </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Type=Event Picker (no results)</h2>
+    <p class="demo-note">No match for the query. Offers Clear search; the footer count drops to zero.</p>
+      <div class="modal modal--lg event-picker" role="dialog" aria-modal="true"
+           aria-labelledby="ep3-title" data-event-picker>
+
+        <div class="modal__header">
+          <h2 class="modal__title" id="ep3-title">Select an event</h2>
+          <button class="modal__close" type="button" aria-label="Close" data-ep-close>
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <div class="event-picker__filters">
+          <div class="search">
+            <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+            <input class="search__input" type="search" placeholder="Search event name…"
+                   aria-label="Search event name" value="gala" data-ep-search>
+          </div>
+          <label class="checkbox">
+            <input type="checkbox" class="checkbox__input" checked data-ep-live>
+            <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            <span class="checkbox__label">
+              <span class="checkbox__label-text">Live events only</span>
+              <span class="checkbox__helper">Untick to include draft and archived events</span>
+            </span>
+          </label>
+        </div>
+
+        <div class="event-picker__list" data-ep-list>
+        <p class="event-picker__group" data-ep-group="pinned">Last used</p>
+        <button class="action-card action-card--chevron event-picker__event event-picker__event--pinned" type="button"
+                data-ep-event data-id="evt-cpa" data-name="The Card &amp; Payments Awards 2026" data-status="live" data-group="pinned">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">The Card &amp; Payments Awards 2026</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>3 Feb 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>Grosvenor House, London</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>386 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans"><i data-lucide="layout-grid" aria-hidden="true"></i>2 plans</span>
+              <span class="event-picker__seated">
+                <span class="event-picker__seated-track"><span class="event-picker__seated-fill" style="--event-picker-seated: 79%"></span></span>
+                <span class="event-picker__seated-label">286/360 seated</span>
+              </span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <p class="event-picker__group" data-ep-group="latest">Latest events</p>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-gpf" data-name="Global Payments Forum" data-status="live" data-group="latest">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">Global Payments Forum</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>12 Nov 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>Hilton Metropole, Birmingham</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>640 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans event-picker__plans--none"><i data-lucide="layout-grid" aria-hidden="true"></i>0 plans</span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-ris" data-name="Retail Innovation Summit" data-status="live" data-group="latest">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">Retail Innovation Summit</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>8 Oct 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>Manchester Central</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>820 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans"><i data-lucide="layout-grid" aria-hidden="true"></i>1 plan</span>
+              <span class="event-picker__seated">
+                <span class="event-picker__seated-track"><span class="event-picker__seated-fill" style="--event-picker-seated: 57%"></span></span>
+                <span class="event-picker__seated-label">512/900 seated</span>
+              </span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-ild" data-name="Insurance Leaders Dinner" data-status="live" data-group="latest">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">Insurance Leaders Dinner</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>17 Sep 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>The Savoy, London</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>180 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans"><i data-lucide="layout-grid" aria-hidden="true"></i>1 plan</span>
+              <span class="event-picker__seated">
+                <span class="event-picker__seated-track"><span class="event-picker__seated-fill" style="--event-picker-seated: 90%"></span></span>
+                <span class="event-picker__seated-label">180/200 seated</span>
+              </span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-fts" data-name="FinTech Summit 2026" data-status="live" data-group="latest">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">FinTech Summit 2026</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>14 May 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>ExCeL London</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>1,200 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans event-picker__plans--none"><i data-lucide="layout-grid" aria-hidden="true"></i>0 plans</span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-mds" data-name="Members&#39; Dinner — Spring" data-status="live" data-group="latest">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">Members&#39; Dinner — Spring</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>20 Mar 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>The Ivy, London</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>90 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans event-picker__plans--none"><i data-lucide="layout-grid" aria-hidden="true"></i>0 plans</span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        </div>
+
+        <div class="event-picker__empty" data-ep-empty hidden>
+          <span class="event-picker__empty-icon"><i data-lucide="search-x" aria-hidden="true"></i></span>
+          <p class="event-picker__empty-title">No events match “<span data-ep-empty-query></span>”</p>
+          <p class="event-picker__empty-desc">Try a different search, or untick
+            <strong>Live events only</strong> to include draft and archived events.</p>
+          <button class="btn btn--secondary" type="button" data-ep-clear>Clear search</button>
+        </div>
+
+        <div class="modal__footer event-picker__footer">
+          <span class="event-picker__count" data-ep-count aria-live="polite">0 events · live only</span>
+          <button class="btn btn--secondary" type="button" data-ep-close>Cancel</button>
+        </div>
+
+      </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Type=Event Picker (all statuses)</h2>
+    <p class="demo-note">Live unticked. Draft and archived events join the list and every row gains a status badge.</p>
+      <div class="modal modal--lg event-picker" role="dialog" aria-modal="true"
+           aria-labelledby="ep4-title" data-event-picker>
+
+        <div class="modal__header">
+          <h2 class="modal__title" id="ep4-title">Select an event</h2>
+          <button class="modal__close" type="button" aria-label="Close" data-ep-close>
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <div class="event-picker__filters">
+          <div class="search">
+            <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+            <input class="search__input" type="search" placeholder="Search event name…"
+                   aria-label="Search event name" data-ep-search>
+          </div>
+          <label class="checkbox">
+            <input type="checkbox" class="checkbox__input" data-ep-live>
+            <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            <span class="checkbox__label">
+              <span class="checkbox__label-text">Live events only</span>
+              <span class="checkbox__helper">Untick to include draft and archived events</span>
+            </span>
+          </label>
+        </div>
+
+        <div class="event-picker__list" data-ep-list>
+        <p class="event-picker__group" data-ep-group="pinned">Last used</p>
+        <button class="action-card action-card--chevron event-picker__event event-picker__event--pinned" type="button"
+                data-ep-event data-id="evt-cpa" data-name="The Card &amp; Payments Awards 2026" data-status="live" data-group="pinned">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">The Card &amp; Payments Awards 2026</span>
+              <span class="badge badge--pill badge--sm badge--success">Live</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>3 Feb 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>Grosvenor House, London</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>386 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans"><i data-lucide="layout-grid" aria-hidden="true"></i>2 plans</span>
+              <span class="event-picker__seated">
+                <span class="event-picker__seated-track"><span class="event-picker__seated-fill" style="--event-picker-seated: 79%"></span></span>
+                <span class="event-picker__seated-label">286/360 seated</span>
+              </span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <p class="event-picker__group" data-ep-group="latest">Latest events</p>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-gpf" data-name="Global Payments Forum" data-status="live" data-group="latest">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">Global Payments Forum</span>
+              <span class="badge badge--pill badge--sm badge--success">Live</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>12 Nov 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>Hilton Metropole, Birmingham</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>640 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans event-picker__plans--none"><i data-lucide="layout-grid" aria-hidden="true"></i>0 plans</span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-amr" data-name="Autumn Members&#39; Reception" data-status="draft" data-group="latest">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">Autumn Members&#39; Reception</span>
+              <span class="badge badge--pill badge--sm badge--warning">Draft</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>5 Nov 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>Kimpton Fitzroy, London</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>120 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans event-picker__plans--none"><i data-lucide="layout-grid" aria-hidden="true"></i>0 plans</span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-ris" data-name="Retail Innovation Summit" data-status="live" data-group="latest">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">Retail Innovation Summit</span>
+              <span class="badge badge--pill badge--sm badge--success">Live</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>8 Oct 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>Manchester Central</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>820 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans"><i data-lucide="layout-grid" aria-hidden="true"></i>1 plan</span>
+              <span class="event-picker__seated">
+                <span class="event-picker__seated-track"><span class="event-picker__seated-fill" style="--event-picker-seated: 57%"></span></span>
+                <span class="event-picker__seated-label">512/900 seated</span>
+              </span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-ild" data-name="Insurance Leaders Dinner" data-status="live" data-group="latest">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">Insurance Leaders Dinner</span>
+              <span class="badge badge--pill badge--sm badge--success">Live</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>17 Sep 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>The Savoy, London</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>180 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans"><i data-lucide="layout-grid" aria-hidden="true"></i>1 plan</span>
+              <span class="event-picker__seated">
+                <span class="event-picker__seated-track"><span class="event-picker__seated-fill" style="--event-picker-seated: 90%"></span></span>
+                <span class="event-picker__seated-label">180/200 seated</span>
+              </span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-fts" data-name="FinTech Summit 2026" data-status="live" data-group="latest">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">FinTech Summit 2026</span>
+              <span class="badge badge--pill badge--sm badge--success">Live</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>14 May 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>ExCeL London</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>1,200 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans event-picker__plans--none"><i data-lucide="layout-grid" aria-hidden="true"></i>0 plans</span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-mds" data-name="Members&#39; Dinner — Spring" data-status="live" data-group="latest">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">Members&#39; Dinner — Spring</span>
+              <span class="badge badge--pill badge--sm badge--success">Live</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>20 Mar 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>The Ivy, London</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>90 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans event-picker__plans--none"><i data-lucide="layout-grid" aria-hidden="true"></i>0 plans</span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-tda" data-name="Tech &amp; Data Awards 2025" data-status="archived" data-group="latest">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">Tech &amp; Data Awards 2025</span>
+              <span class="badge badge--pill badge--sm badge--neutral">Archived</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>4 Dec 2025</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>Grosvenor House, London</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>410 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans"><i data-lucide="layout-grid" aria-hidden="true"></i>3 plans</span>
+              <span class="event-picker__seated">
+                <span class="event-picker__seated-track"><span class="event-picker__seated-fill" style="--event-picker-seated: 95%"></span></span>
+                <span class="event-picker__seated-label">398/420 seated</span>
+              </span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        </div>
+
+        <div class="event-picker__empty" data-ep-empty hidden>
+          <span class="event-picker__empty-icon"><i data-lucide="search-x" aria-hidden="true"></i></span>
+          <p class="event-picker__empty-title">No events match “<span data-ep-empty-query></span>”</p>
+          <p class="event-picker__empty-desc">Try a different search, or untick
+            <strong>Live events only</strong> to include draft and archived events.</p>
+          <button class="btn btn--secondary" type="button" data-ep-clear>Clear search</button>
+        </div>
+
+        <div class="modal__footer event-picker__footer">
+          <span class="event-picker__count" data-ep-count aria-live="polite">8 events · all statuses</span>
+          <button class="btn btn--secondary" type="button" data-ep-close>Cancel</button>
+        </div>
+
+      </div>
+  </section>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script src="event-picker.js"></script>
+  <script>
+    // Demo-only: brand toggle. Defaults to the CC palette (the context this pattern
+    // ships in); flip it off to compare against the standard-theme Figma frames.
+    window.demoToolbar.addControls([{
+      label: 'CC brand',
+      id: 'ep-brand',
+      active: true,
+      onClick: function (btn) {
+        var root = document.documentElement;
+        var on = root.getAttribute('data-brand') === 'cc';
+        if (on) {
+          root.removeAttribute('data-brand');
+        } else {
+          root.setAttribute('data-brand', 'cc');
+        }
+        btn.classList.toggle('active', !on);
+      }
+    }]);
+
+    // Demo-only: surface the component's events so the API is visible in the gallery.
+    var log = document.querySelector('[data-ep-log]');
+    document.addEventListener('event-picker:select', function (e) {
+      log.textContent = '— last event: select "' + e.detail.name + '" (' + e.detail.id + ')';
+    });
+    document.addEventListener('event-picker:close', function () {
+      log.textContent = '— last event: close';
+    });
+  </script>
+</body>
+</html>

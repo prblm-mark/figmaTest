@@ -1,0 +1,333 @@
+/* EventPicker (CC) — Tier=Pattern
+ * Figma: Lus07xi8pPXLN87sQIyrEt, component set 3108:6662 "Seat Planner"
+ *   Tier=Pattern, Device=Desktop | Mobile  x  Type=Event Picker |
+ *   Event Picker (search) | Event Picker (no results) | Event Picker (all statuses)
+ *
+ * The event chooser shown on entering Control > CRM > Seating Planner, and again
+ * via "Change event". Lists the latest live events with the last-used one pinned.
+ *
+ * Composes (no styles restated here — only what Figma adds on top):
+ *   patterns/Modal        shell, header, close button, footer
+ *   components/SearchInput predictive search field (.search)
+ *   components/Checkbox    "Live events only" (.checkbox)
+ *   components/ActionCard  each event row (.action-card + chevron)
+ *   components/Badge       status pills (.badge--pill --sm --success/warning/neutral)
+ *   components/Button      Cancel / Clear search (.btn--secondary)
+ *
+ * Device=Mobile is implemented as @media (max-width: 767px) per the DS breakpoint
+ * convention, not a modifier class.
+ */
+
+/* ── Shell (contextual overrides on .modal) ──────────────── */
+
+/* Figma's shell adds a hairline border and uses shadow-md, where the base Modal
+ * has no border and uses shadow-lg. Background stays Modal's
+ * --ai-surface-elevated-1: identical to Figma's --ai-surface-primary in light
+ * (#ffffff) but correctly lighter in dark, and Figma has no dark variant. */
+.modal.event-picker {
+  border: 1px solid var(--ai-border-secondary);
+  box-shadow: var(--ai-shadow-md);
+}
+
+/* ── Filters: predictive search + Live checkbox ──────────── */
+
+.event-picker__filters {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-4);
+  padding: var(--ai-spacing-5) var(--ai-spacing-6);
+  border-bottom: 1px solid var(--ai-border-secondary);
+  flex-shrink: 0;
+}
+
+/* ── Listing ─────────────────────────────────────────────── */
+
+.event-picker__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+  padding: var(--ai-spacing-5) var(--ai-spacing-6);
+  /* Figma caps the scroll region at 360px; --ai-size-7 (384px) is the nearest
+   * token and was approved in place of an untokenised value. */
+  max-height: var(--ai-size-7);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ai-surface-secondary) transparent;
+}
+
+/* Group heading — "Last used" / "Latest events".
+ * Figma gives the first group 4px top padding and each subsequent one 16px. */
+.event-picker__group {
+  margin: 0;
+  padding-top: var(--ai-spacing-5);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  letter-spacing: var(--ai-tracking-7);
+  text-transform: uppercase;
+  color: var(--ai-text-contrast);
+}
+
+.event-picker__group:first-child {
+  padding-top: var(--ai-spacing-1);
+}
+
+/* ── Event row (contextual overrides on .action-card) ────── */
+
+/* ActionCard supplies surface, border, radius, padding, min-height and hover.
+ * Figma tightens the gap from the base --ai-spacing-6 to --ai-spacing-5. */
+.action-card.event-picker__event {
+  gap: var(--ai-spacing-5);
+  text-align: left;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.event-picker__event:focus-visible {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: 2px;
+}
+
+/* Pinned (last-used) event carries NO distinct styling — it is identified by the
+ * "Last used" group heading above it and by its position at the top of the list.
+ * This is a deliberate deviation from Figma (node 3087:5104 tints the card with
+ * --ai-surface-brand-soft-extra and promotes its border to --ai-border-brand);
+ * removed at the designer's request 2026-07-28. The `--pinned` class is kept as a
+ * markup hook for the host app. */
+
+.event-picker__event-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-1);
+  flex: 1;
+  min-width: 0;
+}
+
+.event-picker__event-head {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  flex-wrap: wrap;
+}
+
+.event-picker__event-name {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-sm);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+}
+
+/* Date · Location · Attendees */
+.event-picker__meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--ai-spacing-1) var(--ai-spacing-4);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-secondary);
+}
+
+.event-picker__meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+}
+
+.event-picker__meta-item [data-lucide] {
+  width: var(--ai-icon-size-xs);
+  height: var(--ai-icon-size-xs);
+  color: var(--ai-icon-contrast);
+  flex-shrink: 0;
+}
+
+/* ── Trailing stats: seating plans + seats seated ────────── */
+
+.event-picker__stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--ai-spacing-2);
+  min-width: var(--ai-size-1); /* 128px */
+  flex-shrink: 0;
+}
+
+.event-picker__plans {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-primary);
+}
+
+.event-picker__plans [data-lucide] {
+  width: var(--ai-icon-size-xs);
+  height: var(--ai-icon-size-xs);
+  color: var(--ai-icon-contrast);
+  flex-shrink: 0;
+}
+
+/* No plans yet — Figma drops the count to the muted text token. */
+.event-picker__plans--none {
+  color: var(--ai-text-contrast);
+}
+
+.event-picker__seated {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--ai-spacing-1);
+  width: var(--ai-size-1); /* 128px */
+}
+
+.event-picker__seated-track {
+  width: 100%;
+  height: var(--ai-spacing-1); /* 4px */
+  background: var(--ai-surface-secondary);
+  border-radius: var(--ai-radius-full);
+  overflow: hidden;
+}
+
+.event-picker__seated-fill {
+  display: block;
+  height: 100%;
+  /* --event-picker-seated is a per-row data value, not a style decision */
+  width: var(--event-picker-seated, 0%);
+  background: var(--ai-surface-success);
+  border-radius: var(--ai-radius-full);
+}
+
+.event-picker__seated-label {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-secondary);
+  white-space: nowrap;
+}
+
+/* ── Predictive-search match highlight ───────────────────── */
+
+.event-picker__mark {
+  /* No horizontal padding — the highlight sits mid-word, so padding would
+   * push the following characters out of place. */
+  padding: 0;
+  background: var(--ai-surface-brand-soft);
+  border-radius: var(--ai-radius-sm);
+  color: var(--ai-text-primary);
+}
+
+/* ── Type=Event Picker (no results) ──────────────────────── */
+
+.event-picker__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  padding: var(--ai-spacing-9) var(--ai-spacing-6);
+  text-align: center;
+}
+
+.event-picker__empty-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-8); /* 40px */
+  height: var(--ai-spacing-8);
+  border-radius: var(--ai-radius-full);
+  background: var(--ai-surface-minimal);
+  color: var(--ai-icon-contrast);
+}
+
+.event-picker__empty-icon [data-lucide] {
+  width: var(--ai-icon-size-md);
+  height: var(--ai-icon-size-md);
+}
+
+.event-picker__empty-title {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+}
+
+.event-picker__empty-desc {
+  margin: 0;
+  max-width: var(--ai-size-6); /* 320px */
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-secondary);
+}
+
+.event-picker__empty-desc strong {
+  font-weight: var(--ai-font-bold);
+}
+
+/* ── Footer (contextual override on .modal__footer) ─────── */
+
+/* Base Modal aligns actions right; Figma splits the count and Cancel apart. */
+.modal__footer.event-picker__footer {
+  justify-content: space-between;
+}
+
+.event-picker__count {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-secondary);
+}
+
+/* ── Device=Mobile ──────────────────────────────────────── */
+
+@media (max-width: 767px) {
+  /* Figma stacks the card: name + meta, then stats below, chevron dropped. */
+  .action-card.event-picker__event {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ai-spacing-3);
+  }
+
+  /* Stats wrap below the name + meta here, so they read as a separate row. */
+  .event-picker__stats {
+    align-items: flex-start;
+    min-width: 0;
+    width: 100%;
+    border-top: 1px solid var(--ai-border-secondary);
+    padding-top: var(--ai-spacing-3);
+  }
+
+  .event-picker__seated {
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .event-picker__event .action-card__chevron {
+    display: none;
+  }
+}
+
+/* ── Below bp-sm (640px) — tighten the chrome ────────────── */
+
+/* Header and footer padding also tightens here — that now lives in
+ * patterns/Modal (applies to every modal), so it is not repeated. */
+@media (max-width: 639px) {
+  .event-picker__filters,
+  .event-picker__list,
+  .event-picker__empty {
+    padding: var(--ai-spacing-5);
+  }
+}

@@ -273,6 +273,20 @@
   border-color: var(--ai-chat-brand);
 }
 
+/* ── Below bp-sm (640px) ─────────────────── */
+
+/* Tighten the chrome on narrow viewports so the header/footer don't eat the
+ * available width. Added 2026-07-27 (EventPicker build) and applied to every
+ * modal by request. Figma has no mobile modal variant.
+ * Note: `.modal--confirm .modal__footer` keeps its own bespoke padding — it is
+ * more specific and intentionally borderless/centred. */
+@media (max-width: 639px) {
+  .modal__header,
+  .modal__footer {
+    padding: var(--ai-spacing-4) var(--ai-spacing-5);
+  }
+}
+
 /* ── Overlay (for interactive demo) ──────── */
 
 .modal-overlay {
