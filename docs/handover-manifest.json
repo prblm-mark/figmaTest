@@ -373,7 +373,7 @@
           "id": "seating-deferred-controls",
           "category": "needs-backend",
           "element": "Every [data-sp-action] control: copy-plans 344756, add-table 344757, room-layout 344760, export 344761, table-edit 342307, table-delete 344758, assign-seat 342309",
-          "current": "Render and are focusable; each announces its owning task via a toast instead of failing silently. Built so far: 342306 new-plan, 344754 plan-edit, 344755 plan-delete, 344756 copy-plans, 344757 add-table, 342307 table-edit.",
+          "current": "Render and are focusable; each announces its owning task via a toast instead of failing silently. Built so far: 342306 new-plan, 344754 plan-edit, 344755 plan-delete, 344756 copy-plans, 344757 add-table, 342307 table-edit, 344758 table-delete.",
           "needs": "One sub-task each. Register a handler with SeatingPlannerWorkspace.on(action, fn) and the control goes live — the shell needs no change."
         },
         {
@@ -466,6 +466,20 @@
           "element": "\"New table\" mode of the table form (tableform-new.html)",
           "current": "The form supports a New mode and it is captured, but NOTHING opens it: TASK-344757's Add table button creates a table instantly from the plan defaults, with no form.",
           "needs": "Resolve the overlap between the two briefs. 344757 says Add table adds straight away; 342307 is titled \"New / Edit Table form\". Either Add table should open this form pre-filled with the defaults, or the New mode is dead and should be dropped. Raised by this build."
+        },
+        {
+          "id": "seating-delete-table",
+          "category": "needs-backend",
+          "element": "Delete table confirmation (TASK-344758) — deleteplan style, deletetable-confirm.html + SeatingPlannerDeleteTable.js",
+          "current": "alertdialog on a card's ✕, opened from the clicked card. Copy is data-driven (table name + seated count); with nobody seated it says so rather than inventing a consequence. Confirming returns each occupant to Unassigned, removes the card, resyncs the plan chip, and — if the deleted table was the open one — moves the seat panel to the next remaining table, or clears it when the plan has no tables left. Esc cancels. DOM-only.",
+          "needs": "Delete the Table and its TableSeat rows and return occupants to the event pool in ONE transaction. Table numbers are NOT resequenced after a delete: Add table takes max(existing)+1, so gaps are expected and harmless — resequencing would renumber tables under guests who have already been told their table number."
+        },
+        {
+          "id": "seating-table-name-scope",
+          "category": "needs-backend",
+          "element": "Table names / numbers across plans",
+          "current": "Table names are unique only WITHIN a plan — Main Ballroom and Overflow Room B both have a \"Table 1\". Every lookup in the prototype scopes by plan (data-sp-belongs); a selector that doesn't will silently hit the wrong plan's table, which is exactly what happened in one of this build's test assertions.",
+          "needs": "Scope every table query by SeatingPlan, and never treat a table name or number as an event-wide identifier. Worth confirming whether names should be unique per plan at the database level."
         }
       ]
     }
