@@ -373,7 +373,7 @@
           "id": "seating-deferred-controls",
           "category": "needs-backend",
           "element": "Every [data-sp-action] control: copy-plans 344756, add-table 344757, room-layout 344760, export 344761, table-edit 342307, table-delete 344758, assign-seat 342309",
-          "current": "Render and are focusable; each announces its owning task via a toast instead of failing silently. Built so far: TASK-342306 (new-plan), TASK-344754 (plan-edit), TASK-344755 (plan-delete), TASK-344756 (copy-plans), TASK-344757 (add-table).",
+          "current": "Render and are focusable; each announces its owning task via a toast instead of failing silently. Built so far: 342306 new-plan, 344754 plan-edit, 344755 plan-delete, 344756 copy-plans, 344757 add-table, 342307 table-edit.",
           "needs": "One sub-task each. Register a handler with SeatingPlannerWorkspace.on(action, fn) and the control goes live — the shell needs no change."
         },
         {
@@ -386,9 +386,9 @@
         {
           "id": "seating-tier-colours",
           "category": "needs-backend",
-          "element": ".sp-table--tier-head / --tier-premium left edge + .sp-table__tier label",
-          "current": "Placeholder neutral rank ramp; Standard tier is deliberately unmarked. Tier is always paired with a text label so it is never colour-only.",
-          "needs": "TASK-342308 supplies the real tier values and colours. NOTE a token gap surfaced here: six roles need six distinguishable hues and the DS has five usable status colours (brand is reserved for selection), so VIP and Guest currently share the neutral hue and differ by fill style. Designer decision needed."
+          "element": "Table tier — .sp-table--tier-* left edge + .sp-table__tier label",
+          "current": "TASK-342307 NAMES THE SET: Standard / Gold / Silver / Bronze / VIP / Head table / Sponsor, \"shown as a colour on the plan\". Note Premium (used in the earlier build) is NOT in that list — migrated to Gold. Interim mapping: the five ranked tiers use an ordered ramp derived from ONE token (--ai-border-primary mixed toward the paper), Sponsor reuses the gold that already means sponsorship on the card (the star), Standard is unmarked, and the tier LABEL always renders so tier is never colour-only.",
+          "needs": "TASK-342308 decides the real colours, and three questions come with it. (1) Gold/Silver/Bronze are named BY colour, so literal metallics mean 3+ new DS tokens. (2) A table card would then carry three colour systems at once — 7 tier colours, 6 role colours on the seat dots, 3 fill states — which is what the shell deliberately simplified. (3) VIP and Sponsor are BOTH tier values and role values, so the same word can mean two things in two colours on one card; Sponsor is also a separate field on the table form, so Type=Sponsor with an empty Sponsor field is currently undefined."
         },
         {
           "id": "seating-new-plan",
@@ -445,6 +445,27 @@
           "element": "Plan chip summary \"N tables · X/Y seated · Z free\" + its fill bar",
           "current": "BUG FOUND AND FIXED during TASK-344757: the chip was written once and never recomputed, so the summary went stale the moment anyone was unseated — the plan summary silently lied. syncPlanChip() now recomputes it from the plan's tables and is called on unseat and on add-table; it is published on the shell API for later sub-tasks that add or remove tables.",
           "needs": "Nothing server-side while a plan's tables are all loaded — the recompute is client-side. Any sub-task that changes table or seat counts must call SeatingPlannerWorkspace.syncPlanChip(planKey), or derive the summary from the server response."
+        },
+        {
+          "id": "seating-table-form",
+          "category": "needs-backend",
+          "element": "Table form, New / Edit (TASK-342307) — tableform-*.html + SeatingPlannerTableForm.js",
+          "current": "Opens pre-filled from a table's edit action. Name (required), tier (the 7 named values), sponsor via account lookup with predictive search, host, capacity, shape. Saving rewrites the card's name, tier class + label, sponsor line, dots, count and fill pill, then resyncs the plan chip. DOM-only.",
+          "needs": "Table row with FKs — Type → Table Type lookup, Sponsor → Account — plus a sort order. Accounts list is GET /crm/accounts?q=. Capacity changes must add/remove TableSeat rows and unassign the surplus in the SAME transaction."
+        },
+        {
+          "id": "seating-capacity-reduction",
+          "category": "needs-backend",
+          "element": "Seats (capacity) field + its data-driven note",
+          "current": "The note states current occupancy and escalates to a warning naming exactly how many people will be displaced before you save. On save the surplus is taken from the HIGHEST-numbered seats and returned to Unassigned; increasing capacity appends empty seats. Verified 10→7 returned 3, and 7→12 added 5 empty.",
+          "needs": "Server must decide and record WHICH occupants are displaced. Taking the last seats is the only sensible automatic rule, but seat order is meaningful here (\"who sits next to whom\"), so confirm with the spec team whether the user should choose instead of the system picking. Unassign in the same transaction as the seat removal."
+        },
+        {
+          "id": "seating-new-table-trigger",
+          "category": "visual-only",
+          "element": "\"New table\" mode of the table form (tableform-new.html)",
+          "current": "The form supports a New mode and it is captured, but NOTHING opens it: TASK-344757's Add table button creates a table instantly from the plan defaults, with no form.",
+          "needs": "Resolve the overlap between the two briefs. 344757 says Add table adds straight away; 342307 is titled \"New / Edit Table form\". Either Add table should open this form pre-filled with the defaults, or the New mode is dead and should be dropped. Raised by this build."
         }
       ]
     }
