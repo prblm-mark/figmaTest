@@ -203,6 +203,44 @@ Two things to understand before wiring anything:
 
 ---
 
+## Surface: SeatingPlanner
+
+Control > CRM > Seating Planner, built one screen at a time.
+
+- **Screen 1 — event picker (TASK-342608): shipped** as `src/cc/patterns/EventPicker/`.
+- **Screen 2 — workspace shell (TASK-344753): prototype** at `src/prototypes/SeatingPlanner/`
+  (`workspace-no-event` · `workspace-no-plan` · `workspace-plan-selected` · `workspace-free-seats`,
+  behaviour in `SeatingPlannerWorkspace.js`).
+
+Two things to understand before wiring anything:
+
+- **TASK-344753 is the shell + wiring only.** Every control's detail lives in its own sub-task.
+  Those controls carry `[data-sp-action]` + `[data-sp-task]` and route through one registry, so a
+  sub-task goes live by calling `SeatingPlannerWorkspace.on('<action>', fn)` — **no refactor of the
+  shell**. Until then each control announces its owning task rather than failing silently.
+- **Seat order is meaningful.** It is "who sits next to whom", so reorder must persist an explicit
+  index on `TableSeat` — never a sort.
+
+Reads/writes `SeatingPlan`, `Table`, `TableSeat` (data model on the parent task). No new fields.
+
+| id | Element | Now | Backend work needed | Category |
+|---|---|---|---|---|
+| `seating-events-list` | EventPicker rows + predictive search | Mock rows; search filters loaded rows | `GET /crm/events?status=live&sort=-startDate`; debounced `GET /crm/events?q=` | needs-backend |
+| `seating-last-used-event` | Pinned "Last used" row | `localStorage` only — the pattern leaves persistence to the host | Per-user preference, read on open / written on select | needs-backend |
+| `seating-event-gate` | `workspace-no-event.html` | Static picker over an empty workspace | Module opens with the picker and renders nothing else until an event is chosen | needs-backend |
+| `seating-plans-row` | `.sp-plan` chips | 2 mock plans; selection swaps tables client-side | `GET` the event's `SeatingPlan` rows with aggregate table/seat counts | needs-backend |
+| `seating-tables-grid` | `.sp-table` cards | 36 mock cards; pill + dots recompute client-side | `GET` Tables for the plan with per-seat occupancy so dots/pill derive from `TableSeat` | needs-backend |
+| `seating-seat-panel` | Seat list — occupant, role, reorder, remove | Derived from mock dots; changes lost on reload | Read/write `TableSeat`; **persist an explicit seat index**; remove returns the person to Unassigned | needs-backend |
+| `seating-unassigned-tray` | Unassigned panel | 7 mock people; search + count live | Attendees with no `TableSeat` row. Owner: TASK-351550 | needs-backend |
+| `seating-free-seats-filter` | `[data-sp-freeseats]` | Filters the grid to tables with a free seat — **fully working** | Nothing, while the plan's tables are loaded. Revisit only if paginated | fe-wired |
+| `seating-deferred-controls` | All `[data-sp-action]` controls | Render + announce their owning task | One sub-task each: new-plan 342306 · copy-plans 344756 · plan-edit 344754 · plan-delete 344755 · add-table 344757 · room-layout 344760 · export 344761 · table-edit 342307 · table-delete 344758 · assign-seat 342309 | needs-backend |
+| `seating-drag-assign` | `draggable="true"` on seat + tray rows | Not implemented; Assign is the path shown | TASK-344759. **Make Assign canonical on every viewport and drag a desktop accelerator** — HTML5 drag fails on touch and keyboard users can't drag, so the tap path is needed regardless | needs-backend |
+| `seating-tier-colours` | Tier left edge + `.sp-table__tier` label | Placeholder neutral rank ramp; Standard unmarked; tier never colour-only | TASK-342308. **Token gap:** 6 roles need 6 distinguishable hues, the DS has 5 usable status colours (brand reserved for selection) — VIP and Guest currently share neutral and differ by fill style. Designer decision | needs-backend |
+
+`grep -rn "TODO(backend:SeatingPlanner)" src/`
+
+---
+
 ## Scope of this document
 
 Documentation + in-code flags **only** — no backend code, framework migration, or API

@@ -1,7 +1,6 @@
-
 {
   "description": "Backend-developer handover manifest. Machine-readable index of front-end elements that are mock / visual-only / in-memory and need real backend implementation. Front-end-only repo (vanilla HTML/CSS/JS, no framework, no backend). See HANDOVER.md for the human-readable version and the TODO(backend:<Surface>) in-code marker convention.",
-  "updated": "2026-07-28",
+  "updated": "2026-07-29",
   "categories": {
     "visual-only": "Rendered but no behaviour wired at all.",
     "fe-wired": "Works client-side; no backend required (may be fine as-is).",
@@ -307,6 +306,89 @@
           "element": "01-brief.html 'Clone last year's event' action card",
           "current": "Inert button.",
           "needs": "GET /api/events?clonable=1 for the picker, then a server-side deep copy of the event model plus its section scaffolding into a new draft."
+        }
+      ]
+    },
+    "SeatingPlanner": {
+      "file": "src/cc/patterns/EventPicker/ (screen 1, built) + src/prototypes/SeatingPlanner/ (screen 2 workspace shell, prototype)",
+      "note": "Control > CRM > Seating Planner. Screen 1 (event picker, TASK-342608) shipped as the EventPicker pattern. Screen 2 is the workspace shell — TASK-344753 — covering the event bar, seating plans row, toolbar, tables grid, seat panel and unassigned tray. That task is the shell + wiring only: each control's detail lives in its own sub-task and is marked up with [data-sp-action] + [data-sp-task], routed through one registry. A sub-task goes live by calling SeatingPlannerWorkspace.on('<action>', fn) — no refactor needed. Reads/writes SeatingPlan, Table and TableSeat (data model on the parent task); no new fields.",
+      "items": [
+        {
+          "id": "seating-events-list",
+          "category": "needs-backend",
+          "element": "EventPicker rows + predictive search (event-picker.js)",
+          "current": "Rows are mock DOM; search filters already-loaded rows in the browser.",
+          "needs": "GET /crm/events?status=live&sort=-startDate for the list; debounced GET /crm/events?q=<term> for search."
+        },
+        {
+          "id": "seating-last-used-event",
+          "category": "needs-backend",
+          "element": "Pinned \"Last used\" row; the prototype keeps it in localStorage",
+          "current": "Per-user last-used event is client-side only; the pattern deliberately leaves persistence to the host.",
+          "needs": "Per-user preference read on module open and written on select. Named in the brief as a remaining item."
+        },
+        {
+          "id": "seating-event-gate",
+          "category": "needs-backend",
+          "element": "workspace-no-event.html — the event-gated entry state",
+          "current": "Static: picker over an empty workspace.",
+          "needs": "Opening the module with no event chosen must show the picker and render nothing else until one is selected (Behaviour section of TASK-344753)."
+        },
+        {
+          "id": "seating-plans-row",
+          "category": "needs-backend",
+          "element": ".sp-plan chips — name, table count, seated/capacity, fill bar",
+          "current": "Two mock plans; chip selection swaps the visible tables client-side.",
+          "needs": "GET the event's SeatingPlan rows with aggregate table/seat counts. Selecting a plan loads its Tables."
+        },
+        {
+          "id": "seating-tables-grid",
+          "category": "needs-backend",
+          "element": ".sp-table cards — name, tier, sponsor, fill pill, seat dots",
+          "current": "36 mock cards (30 Main Ballroom + 6 Overflow). Fill pill and dots recompute client-side after an unseat.",
+          "needs": "GET Tables for the selected plan with per-seat occupancy so the dots and fill pill derive from real TableSeat rows."
+        },
+        {
+          "id": "seating-seat-panel",
+          "category": "needs-backend",
+          "element": ".sp-panel seat list — occupant, role tag, reorder, remove",
+          "current": "Seats derived from mock dot data; reorder and remove work in the DOM and are lost on reload.",
+          "needs": "Read/write TableSeat. Seat order is meaningful (\"who sits next to whom\") so reorder must persist an explicit index, not a sort. Remove clears the seat and returns the person to Unassigned."
+        },
+        {
+          "id": "seating-unassigned-tray",
+          "category": "needs-backend",
+          "element": ".sp-panel Unassigned — role tag, name, company, live count, search",
+          "current": "Seven mock people; search + count are live client-side; unseating appends to the tray.",
+          "needs": "Attendees for the event with no TableSeat row. Owning sub-task TASK-351550."
+        },
+        {
+          "id": "seating-free-seats-filter",
+          "category": "fe-wired",
+          "element": "[data-sp-freeseats] toggle",
+          "current": "Filters the grid to tables holding at least one empty seat. Fully working.",
+          "needs": "Nothing server-side while the plan's tables are already loaded. Revisit only if table lists are paginated."
+        },
+        {
+          "id": "seating-deferred-controls",
+          "category": "needs-backend",
+          "element": "Every [data-sp-action] control: new-plan 342306, copy-plans 344756, plan-edit 344754, plan-delete 344755, add-table 344757, room-layout 344760, export 344761, table-edit 342307, table-delete 344758, assign-seat 342309",
+          "current": "Render and are focusable; each announces its owning task via a toast instead of failing silently.",
+          "needs": "One sub-task each. Register a handler with SeatingPlannerWorkspace.on(action, fn) and the control goes live — the shell needs no change."
+        },
+        {
+          "id": "seating-drag-assign",
+          "category": "needs-backend",
+          "element": "Seat rows and tray rows carry draggable=\"true\"; no drop handling",
+          "current": "Drag is not implemented. The per-seat Assign action is the path shown.",
+          "needs": "TASK-344759. Recommendation from this build: make Assign the canonical path on every viewport and treat drag as a desktop accelerator — HTML5 drag does not work on touch and keyboard users cannot drag, so the tap/click path is required regardless."
+        },
+        {
+          "id": "seating-tier-colours",
+          "category": "needs-backend",
+          "element": ".sp-table--tier-head / --tier-premium left edge + .sp-table__tier label",
+          "current": "Placeholder neutral rank ramp; Standard tier is deliberately unmarked. Tier is always paired with a text label so it is never colour-only.",
+          "needs": "TASK-342308 supplies the real tier values and colours. NOTE a token gap surfaced here: six roles need six distinguishable hues and the DS has five usable status colours (brand is reserved for selection), so VIP and Guest currently share the neutral hue and differ by fill style. Designer decision needed."
         }
       ]
     }
