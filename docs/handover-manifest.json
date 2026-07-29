@@ -387,8 +387,8 @@
           "id": "seating-tier-colours",
           "category": "needs-backend",
           "element": "Table tier — .sp-table--tier-* left edge + .sp-table__tier label",
-          "current": "TASK-342307 NAMES THE SET: Standard / Gold / Silver / Bronze / VIP / Head table / Sponsor, \"shown as a colour on the plan\". Note Premium (used in the earlier build) is NOT in that list — migrated to Gold. Interim mapping: the five ranked tiers use an ordered ramp derived from ONE token (--ai-border-primary mixed toward the paper), Sponsor reuses the gold that already means sponsorship on the card (the star), Standard is unmarked, and the tier LABEL always renders so tier is never colour-only.",
-          "needs": "TASK-342308 decides the real colours, and three questions come with it. (1) Gold/Silver/Bronze are named BY colour, so literal metallics mean 3+ new DS tokens. (2) A table card would then carry three colour systems at once — 7 tier colours, 6 role colours on the seat dots, 3 fill states — which is what the shell deliberately simplified. (3) VIP and Sponsor are BOTH tier values and role values, so the same word can mean two things in two colours on one card; Sponsor is also a separate field on the table form, so Type=Sponsor with an empty Sponsor field is currently undefined."
+          "current": "RESOLVED BY TASK-342308. Colours no longer come from the design system at all: every card takes its left edge from --sp-tier-colour, painted at runtime from the TableType lookup, so the DS needs no metallic Gold/Silver/Bronze tokens. Seeded Standard #8fa0b5, Gold #c9a227, Silver #b8bfc7, Bronze #b07d48, VIP #9b51e0, Head table #3b6fe0, Sponsor #c0392b. The tier LABEL still always renders, so tier is never colour-only. Premium (used in the earlier build) is not in the brief's set and stays migrated to Gold.",
+          "needs": "Store the colour per TableType row (see seating-table-types). Two of the three original questions survive: a card can still carry three colour systems at once (tier edge, 6 role dot colours, 3 fill states), and VIP/Sponsor are BOTH tier values and role values — Sponsor is also a separate field on the table form, so Type=Sponsor with an empty Sponsor field remains undefined. The metallic-token question is closed."
         },
         {
           "id": "seating-new-plan",
@@ -480,6 +480,27 @@
           "element": "Table names / numbers across plans",
           "current": "Table names are unique only WITHIN a plan — Main Ballroom and Overflow Room B both have a \"Table 1\". Every lookup in the prototype scopes by plan (data-sp-belongs); a selector that doesn't will silently hit the wrong plan's table, which is exactly what happened in one of this build's test assertions.",
           "needs": "Scope every table query by SeatingPlan, and never treat a table name or number as an event-wide identifier. Worth confirming whether names should be unique per plan at the database level."
+        },
+        {
+          "id": "seating-table-types",
+          "category": "needs-backend",
+          "element": "Table types lookup (TASK-342308) — tabletypes-*.html + SeatingPlannerTableTypes.js",
+          "current": "Modal listing the tier set with a colour swatch, an editable label, up/down reorder and Remove per row, plus an add row at the foot. The rows ARE the model: row index is sortOrder. Opened from the toolbar's tier-colours control. Editing a colour repaints every table on that tier live; renaming a tier migrates its tables so identity survives; removing a tier drops its tables back to Standard and says how many moved. Standard cannot be removed — it shows \"default\" instead of a dead control. Duplicate labels are rejected with a toast. The Table form's tier dropdown is rebuilt from the same list. DOM-only — nothing persists across a reload.",
+          "needs": "A TableType lookup table (label, colour, sortOrder) with Table.Type as an FK to it. Because it is an FK, a delete must either repoint dependent Tables at Standard or be blocked — never left dangling — and a rename must be invisible to the Tables. Enforce label uniqueness server-side and protect the Standard/fallback row from deletion. The seed values above are the brief's list; the colours are a first pass and are the client's to change."
+        },
+        {
+          "id": "seating-tier-colour-safety",
+          "category": "visual-only",
+          "element": "The colour picker in the Table types lookup",
+          "current": "A free <input type=\"color\">. Client-chosen, so the value is data, not a token — which means nothing stops it colliding with something already meaningful on the same card. The seeded Head table #3b6fe0 already sits very close to the brand blue used for the SELECTED table, and the six role dot hues are in the same space. There is no contrast check against the card background and no mono-print fallback; the tier text label always rendering is the only guarantee that tier survives a bad colour choice.",
+          "needs": "Decide how much to constrain the picker: a curated swatch set is the safest answer, or keep it free and add a contrast check plus a warning when a pick lands near the selection blue or a role colour. Either way keep the tier label visible — colour must never be the only carrier. Raised by this build."
+        },
+        {
+          "id": "seating-tier-sort-order",
+          "category": "visual-only",
+          "element": "Sort Order in the Table types lookup",
+          "current": "The brief asks for a Sort Order field; the reference image shows an ordered list with no number. Implemented as row order with up/down controls — the same affordance the seat list uses — and read back as a 0-based sortOrder. The number is the data, the list is the interface.",
+          "needs": "Confirm the list is acceptable in place of a literal number field. If numbers must be editable directly (e.g. to interleave a new tier without dragging), the field can be added back — but then the server has to resequence on collision."
         }
       ]
     }
