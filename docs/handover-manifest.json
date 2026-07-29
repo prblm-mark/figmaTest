@@ -380,7 +380,7 @@
           "id": "seating-drag-assign",
           "category": "needs-backend",
           "element": "Seat rows and tray rows carry draggable=\"true\"; no drop handling",
-          "current": "Drag is not implemented. The per-seat Assign action is the path shown.",
+          "current": "draggable=\"true\" on seat + tray rows, with no drop handling. The Assign popup (TASK-342309) is built and is the working path; it exposes SeatingPlannerAssign.open(seatRow) so a drop — or a failed drag on touch — can land there instead of dead-ending.",
           "needs": "TASK-344759. Recommendation from this build: make Assign the canonical path on every viewport and treat drag as a desktop accelerator — HTML5 drag does not work on touch and keyboard users cannot drag, so the tap/click path is required regardless."
         },
         {
@@ -501,6 +501,27 @@
           "element": "Sort Order in the Table types lookup",
           "current": "The brief asks for a Sort Order field; the reference image shows an ordered list with no number. Implemented as row order with up/down controls — the same affordance the seat list uses — and read back as a 0-based sortOrder. The number is the data, the list is the interface.",
           "needs": "Confirm the list is acceptable in place of a literal number field. If numbers must be editable directly (e.g. to interleave a new tier without dragging), the field can be added back — but then the server has to resequence on collision."
+        },
+        {
+          "id": "seating-assign-seat",
+          "category": "needs-backend",
+          "element": "Assign person to a seat (TASK-342309) — assign-*.html + SeatingPlannerAssign.js",
+          "current": "Opened from an empty seat's Assign button. Grouped by SOURCE, not role: “Event attendees” are read LIVE from the Unassigned tray (so the popup and the tray cannot disagree, and seating removes the tray row), “CRM contacts” are mock people not on the guest list — seating one says out loud that they were added to the event. Anyone already seated is filtered out. A row commits on click; there is no Save footer, because with one the row click would only be a selection. Predictive search matches name AND company across both groups; with no match it offers the typed term straight into the guest fields. Seating updates the seat row, the card dot, count and fill pill, the plan chip and the tray count. Esc closes. DOM-only.",
+          "needs": "Write the TableSeat occupant — an FK to Attendee/Contact, or a guest name/company pair when there is no record — plus the role and the seat index. Seating a CRM contact must ALSO create the event Attendee row, in the same transaction. Reject anyone who already holds a seat in this event rather than duplicating them; the prototype filters them out of the list, but the server is the only place that can enforce it. Attendees via GET /crm/events/<id>/attendees?unassigned=1, contacts via GET /crm/contacts?q=, both debounced."
+        },
+        {
+          "id": "seating-assign-role-source",
+          "category": "visual-only",
+          "element": "The Role field in the Assign popup",
+          "current": "The brief lists a Role dropdown; the reference shows role as a BADGE on each result row and has no dropdown. Both are honoured: a person already in the system carries the role from their record (visible on the row before you click it), and the dropdown belongs to the manual guest — the one case with no record to read a role from. It defaults to Guest and covers all six roles.",
+          "needs": "Confirm role is a property of the person, not of the seating. If it must be OVERRIDABLE when seating an existing person (“Tom is an attendee but he is hosting this table”), one-click seating has to become select-then-confirm, and the role then needs storing on TableSeat rather than read from the Attendee. That is a spec decision. Raised by this build."
+        },
+        {
+          "id": "seating-seat-occupant-record",
+          "category": "fe-wired",
+          "element": "Who is in which seat — data-sp-occupants on the table card",
+          "current": "BUG FOUND AND FIXED during this build: occupant names for every table except Table 1 were DERIVED at render time from the mock people pool by index, so any change to the seats renamed everyone below it — unseat the third of ten and the remaining seven came back as different people, and a person assigned by this task lost their identity as soon as you switched tables. The shell now stamps the occupants onto the card whenever the seats change, so the card is the record. Verified: seat 4 assigned, switch away and back, still the same person; unseating seat 3 leaves seats 4–10 untouched.",
+          "needs": "Nothing server-side — this is a prototype-only workaround for having no model. It does show what the real thing must guarantee: seat identity is a persisted TableSeat row keyed to an Attendee, never a position in a list. Also fixed the mock seed, which had the seven tray people ALSO in the seated pool, so the prototype claimed the same person was seated and unassigned at once."
         }
       ]
     }
