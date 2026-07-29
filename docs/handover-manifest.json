@@ -372,8 +372,8 @@
         {
           "id": "seating-deferred-controls",
           "category": "needs-backend",
-          "element": "Every [data-sp-action] control: new-plan 342306, copy-plans 344756, plan-edit 344754, plan-delete 344755, add-table 344757, room-layout 344760, export 344761, table-edit 342307, table-delete 344758, assign-seat 342309",
-          "current": "Render and are focusable; each announces its owning task via a toast instead of failing silently.",
+          "element": "Every [data-sp-action] control: copy-plans 344756, plan-edit 344754, plan-delete 344755, add-table 344757, room-layout 344760, export 344761, table-edit 342307, table-delete 344758, assign-seat 342309",
+          "current": "Render and are focusable; each announces its owning task via a toast instead of failing silently. TASK-342306 (new-plan) is now BUILT and demonstrates the pattern.",
           "needs": "One sub-task each. Register a handler with SeatingPlannerWorkspace.on(action, fn) and the control goes live — the shell needs no change."
         },
         {
@@ -389,6 +389,20 @@
           "element": ".sp-table--tier-head / --tier-premium left edge + .sp-table__tier label",
           "current": "Placeholder neutral rank ramp; Standard tier is deliberately unmarked. Tier is always paired with a text label so it is never colour-only.",
           "needs": "TASK-342308 supplies the real tier values and colours. NOTE a token gap surfaced here: six roles need six distinguishable hues and the DS has five usable status colours (brand is reserved for selection), so VIP and Guest currently share the neutral hue and differ by fill style. Designer decision needed."
+        },
+        {
+          "id": "seating-new-plan",
+          "category": "needs-backend",
+          "element": "New plan popup — src/prototypes/SeatingPlanner/newplan-*.html + SeatingPlannerNewPlan.js",
+          "current": "Modal validates the two required fields and the 6–12 seats bound, then creates the plan chip and generates its table cards entirely in the DOM. Lost on reload. Registers itself on the shell via SeatingPlannerWorkspace.on('new-plan', …) — the shell was not modified.",
+          "needs": "POST a SeatingPlan with { name (required), room, tables (required), seatsPerTable (default 10, bounded 6–12), tableShape (Round|Square) } and an FK to the selected Event; generate Table + TableSeat rows server-side; return the created plan so the plans row and grid re-read rather than being built client-side. Server must re-validate — the client bound is a convenience, not a guarantee."
+        },
+        {
+          "id": "seating-table-shape",
+          "category": "needs-backend",
+          "element": "Table shape (Round / Square) — set at generation time in the New plan popup",
+          "current": "Captured on the plan and echoed in the confirmation toast, but nothing renders shape: the tables grid shows no shape indicator, and TASK-344753's table cards have no shape affordance.",
+          "needs": "Decide whether shape is display-only metadata or should render on the table card / in the Room layout view (TASK-344760). Raised by this build — the shell predates the field."
         }
       ]
     }
