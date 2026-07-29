@@ -165,6 +165,44 @@ JS timer so the waveform, time and countdown read true in the demo; no real audi
 
 ---
 
+## Surface: EventBuilder
+
+`src/prototypes/EventBuilder/` — an **exploratory prototype** (8 screens + shared `.css`/`.js`) for
+a stand-alone event builder: an AI brief generates a complete draft event page, the assistant then
+walks the client through what it couldn't infer, and the same event can be edited three ways —
+conversationally, in-context on the real front-end page, or field-by-field in a full form.
+
+Two things to understand before wiring anything:
+
+- **No new event capability.** Every block maps 1:1 to a field the current Advanced Event template
+  already has. The value is in structure and speed, not new features. The `Coming later` cards in
+  the block library on `05-blocks.html` are deliberately inert placeholders.
+- **The whole event model is in the DOM.** Block membership, order, page shape and field values are
+  held as `data-eb-*` attributes and classes, and are lost on reload. The only persistence is the
+  brief, in `sessionStorage` under `eb:brief`. A real version needs one event-model API that all
+  three editing surfaces read and write.
+
+| id | Element | Now | Backend work needed | Category |
+|---|---|---|---|---|
+| `eb-generate` | `01-brief.html` `[data-eb-brief]` + send | Brief stashed in `sessionStorage`; send just navigates | `POST /api/event-builder/generate {brief, sectionId}` → event model: blocks + order, page shape, first-pass field values, **per-field confidence** (the gap-fill list on 04 should be derived from it, not hardcoded) | needs-backend |
+| `eb-generate-stream` | `02-generating.html` `.eb-gen__list` | Hardcoded checklist; spinner decorative | Stream generation events (block decided / copy written / field inferred) over SSE from the generate call | needs-backend |
+| `eb-proposals` | `03-draft.html` `[data-eb-proposal]` + in-canvas `.eb-block--proposed` bar | 3 static proposals; accept/reject rewrite the DOM only | Return proposals as a **diff** against the model, each with target block, payload and provenance. Accept applies server-side; reject is recorded so it isn't re-proposed | needs-backend |
+| `eb-refine` | `.eb-promptbar__input[data-eb-prompt]` (03, 04, 06, 07) | Prompt bar renders; Refine pre-fills it; submit does nothing | `POST /api/event-builder/refine {eventId, prompt, selectedBlockId?}` → proposal diff through the same accept/reject path | needs-backend |
+| `eb-crm-picker` | `04-gapfill.html` `.eb-answer` judge list | 5 hardcoded contacts; static count in the button | `GET /api/crm/contacts?role=judge&event=<prev>`; write chosen ids to the event's **existing speakers field**; contact-create for "Add someone new" | needs-backend |
+| `eb-blocks` | `05-blocks.html` `[data-eb-add]`; rail `[data-eb-move]` / `[data-eb-remove]` | Add/reorder/remove mutate the DOM in-memory | Persist block membership + order, and create the section/article scaffolding each block implies — the work the "Created for you" notices describe | needs-backend |
+| `eb-page-shape` | `[data-eb-shape]` (03, 06) | Fully working client-side: swaps tab strip ⇄ sticky anchor nav and shows/hides panels | Only persist the chosen shape and have the public template honour it. **The rendering can ship as-is** | fe-wired |
+| `eb-inline-edit` | `06-inline-edit.html` `.eb-editable[contenteditable]` + `.eb-formatbar` | Text editable in-browser; format bar decorative; nothing saved | Bind each editable to its event field and PATCH on blur; AI endpoint for Rewrite/Shorten; revision history for Undo | needs-backend |
+| `eb-upload` | `.drag-drop[data-drag-drop]` (06, 07) | Drop zones render; no file read or stored | `POST /api/media/upload` → media-library reference on the field. Should also allow picking an existing library item | needs-backend |
+| `eb-catalogue` | `07-advanced.html` `#f-cat`, `#f-table` | Plain text inputs holding a name + price string | `GET /api/catalogue/items` with a picker bound to an **item id**, so Buy Now / Book a table resolve to real items and prices | needs-backend |
+| `eb-provenance` | `07-advanced.html` `.eb-from` badges + "out of sync" warning | Static badges and a hardcoded SEO-title mismatch | Per-field provenance (assistant / canvas / form) stored with the event, plus a consistency check across title, SEO title and teaser | needs-backend |
+| `eb-map` | `.eb-map` (03, 08) | Styled placeholder | Server-side geocode of the venue address → tiles or static image. The point is a structured address field instead of pasted embed code | needs-backend |
+| `eb-publish` | Publish / Save &amp; publish; `08` toast | Navigates and always shows success | Persist, run publication rules (go-live, clearance, live flag), return the public URL, surface validation failures | needs-backend |
+| `eb-clone` | `01-brief.html` "Clone last year's event" | Inert | `GET /api/events?clonable=1` + server-side deep copy of the model and its section scaffolding into a new draft | needs-backend |
+
+`grep -rn "TODO(backend:EventBuilder)" src/`
+
+---
+
 ## Scope of this document
 
 Documentation + in-code flags **only** — no backend code, framework migration, or API

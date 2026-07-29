@@ -1,6 +1,7 @@
+
 {
   "description": "Backend-developer handover manifest. Machine-readable index of front-end elements that are mock / visual-only / in-memory and need real backend implementation. Front-end-only repo (vanilla HTML/CSS/JS, no framework, no backend). See HANDOVER.md for the human-readable version and the TODO(backend:<Surface>) in-code marker convention.",
-  "updated": "2026-06-23",
+  "updated": "2026-07-28",
   "categories": {
     "visual-only": "Rendered but no behaviour wired at all.",
     "fe-wired": "Works client-side; no backend required (may be fine as-is).",
@@ -202,6 +203,110 @@
           "element": ".audio-player [data-ap-player] (play/pause, scrubber, waveform, download)",
           "current": "A timer advances a fake progress value; the download button is a no-op (preventDefault).",
           "needs": "Wire to a real <audio> element / streamed source. Contract: { src: url, duration: seconds, downloadUrl: url }. Replace the simulated ticker with audio.timeupdate; point the download button at downloadUrl."
+        }
+      ]
+    },
+    "EventBuilder": {
+      "file": "src/prototypes/EventBuilder/ (8 screens + EventBuilder.css/.js)",
+      "note": "AI-driven event builder prototype: brief -> generated draft -> guided gap-filling -> block library -> in-context editing -> all-fields form -> published page. Front end only. The entire event model lives in the DOM and is lost on reload (bar the brief, which uses sessionStorage). Blocks map 1:1 to existing Advanced Event fields; no new event capability is implied.",
+      "items": [
+        {
+          "id": "eb-generate",
+          "category": "needs-backend",
+          "element": "01-brief.html `.msg-input__textarea[data-eb-brief]` + send button",
+          "current": "Brief is typed and stashed in sessionStorage under `eb:brief`; the send button just navigates to 02.",
+          "needs": "POST /api/event-builder/generate { brief, sectionId } -> full event model: chosen blocks + order, page shape (tabbed|scroll), first-pass field values, and a per-field confidence so the gap-fill list on 04 can be derived rather than hardcoded."
+        },
+        {
+          "id": "eb-generate-stream",
+          "category": "needs-backend",
+          "element": "02-generating.html `.eb-gen__list` progress items",
+          "current": "Hardcoded checklist with static done/working/pending states; the spinner is decorative.",
+          "needs": "Stream generation events (block decided / copy written / field inferred) over SSE or websocket from the generate call, so progress reflects real work."
+        },
+        {
+          "id": "eb-proposals",
+          "category": "needs-backend",
+          "element": "03-draft.html `[data-eb-proposal]` cards + the in-canvas `.eb-block--proposed` action bar",
+          "current": "Three static proposals. Accept/Reject rewrite the DOM (accept clears the dashed state, reject removes the block and its rail row); nothing persists.",
+          "needs": "Return proposals as a diff against the current event model, each with a target block, a payload and a provenance reference (e.g. 'from your 2026 page'). Accept applies the patch server-side and returns the new model; reject records the dismissal so it is not re-proposed."
+        },
+        {
+          "id": "eb-refine",
+          "category": "needs-backend",
+          "element": "`.eb-promptbar__input[data-eb-prompt]` on 03, 04, 06 and 07",
+          "current": "Free-text prompt bar; Refine buttons pre-fill it. Submitting does nothing.",
+          "needs": "POST /api/event-builder/refine { eventId, prompt, selectedBlockId? } -> a proposal diff rendered through the same accept/reject path as eb-proposals."
+        },
+        {
+          "id": "eb-crm-picker",
+          "category": "needs-backend",
+          "element": "04-gapfill.html `.eb-answer` judge checkbox list; 'Select all 16' / 'Add someone new'",
+          "current": "Five hardcoded contacts; checkboxes toggle but the count in the button is static and nothing is written.",
+          "needs": "GET /api/crm/contacts?role=judge&event=<prevEventId> for the candidate list, then write chosen contact ids to the event's speakers field (the same field the Advanced Event screen uses). Also needs contact-create for 'Add someone new'."
+        },
+        {
+          "id": "eb-blocks",
+          "category": "needs-backend",
+          "element": "05-blocks.html `[data-eb-add]` library cards; rail `[data-eb-move]` / `[data-eb-remove]`",
+          "current": "Adding appends a rail row and flips the card to 'In use'; reorder swaps DOM siblings and re-appends canvas blocks; remove deletes both. All in-memory.",
+          "needs": "Block membership + order persisted on the event, and the section/article scaffolding each block implies created server-side (this is the work the 'Created for you' notices describe). Locked 'Coming later' cards are deliberately inert."
+        },
+        {
+          "id": "eb-page-shape",
+          "category": "fe-wired",
+          "element": "`[data-eb-shape]` in the inspector on 03 and 06",
+          "current": "Toggling swaps the tab strip for the sticky anchor nav and shows/hides `[data-eb-panel]` groups. Works fully client-side.",
+          "needs": "Persist the chosen shape on the event and have the public template honour it. The rendering logic itself is front-end and can ship as-is."
+        },
+        {
+          "id": "eb-inline-edit",
+          "category": "needs-backend",
+          "element": "06-inline-edit.html `.eb-editable[contenteditable]` regions + `.eb-formatbar`",
+          "current": "Text is editable in the browser and the format bar is decorative. Edits are never saved and the 'Rewrite with AI' / 'Shorten' buttons do nothing.",
+          "needs": "PATCH the corresponding event field per edited region (each editable needs a field binding), plus an AI rewrite endpoint for the two assistive format-bar actions. Undo needs a revision history."
+        },
+        {
+          "id": "eb-upload",
+          "category": "needs-backend",
+          "element": "`.drag-drop[data-drag-drop]` on 06 (hero background) and 07 (main / alternative image)",
+          "current": "Drop zones render; no file is read or stored.",
+          "needs": "POST /api/media/upload -> media-library reference stored on the block/field. Should also allow picking an existing media-library item rather than only uploading."
+        },
+        {
+          "id": "eb-catalogue",
+          "category": "needs-backend",
+          "element": "07-advanced.html `#f-cat` / `#f-table` (catalogue items)",
+          "current": "Plain text inputs containing a human-readable item name and price.",
+          "needs": "GET /api/catalogue/items with a picker bound to an item id (not a string), so the event's Buy Now / Book a table buttons resolve to real catalogue items and prices."
+        },
+        {
+          "id": "eb-provenance",
+          "category": "needs-backend",
+          "element": "07-advanced.html `.eb-from` / `.eb-from--canvas` badges and the 'inconsistency' warning",
+          "current": "Static badges marking which fields the assistant wrote vs which were edited on the page; the SEO-title mismatch and its 'Fix it' button are hardcoded.",
+          "needs": "Per-field provenance (who/what last wrote it: assistant, canvas edit, or form) stored with the event, plus a consistency check across related fields (title vs SEO title vs teaser) to generate these warnings."
+        },
+        {
+          "id": "eb-map",
+          "category": "needs-backend",
+          "element": "`.eb-map` on 03 and 08",
+          "current": "Styled placeholder reading 'Map generated from the address'.",
+          "needs": "Server-side geocode of the venue address returning map tiles or a static map image — the point being a structured address field instead of pasted embed code in the WYSIWYG."
+        },
+        {
+          "id": "eb-publish",
+          "category": "needs-backend",
+          "element": "'Publish' / 'Save & publish' in the top bar; the 08 confirmation toast",
+          "current": "Navigates to 08-published.html and shows a success toast unconditionally.",
+          "needs": "Persist the event, run the publication rules (go-live date, access clearance, live flag) and return the public URL. The toast should reflect the real result, including validation failures."
+        },
+        {
+          "id": "eb-clone",
+          "category": "needs-backend",
+          "element": "01-brief.html 'Clone last year's event' action card",
+          "current": "Inert button.",
+          "needs": "GET /api/events?clonable=1 for the picker, then a server-side deep copy of the event model plus its section scaffolding into a new draft."
         }
       ]
     }
