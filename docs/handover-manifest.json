@@ -372,8 +372,8 @@
         {
           "id": "seating-deferred-controls",
           "category": "needs-backend",
-          "element": "Every [data-sp-action] control: copy-plans 344756, plan-delete 344755, add-table 344757, room-layout 344760, export 344761, table-edit 342307, table-delete 344758, assign-seat 342309",
-          "current": "Render and are focusable; each announces its owning task via a toast instead of failing silently. TASK-342306 (new-plan) and TASK-344754 (plan-edit) are now BUILT and demonstrate the pattern.",
+          "element": "Every [data-sp-action] control: copy-plans 344756, add-table 344757, room-layout 344760, export 344761, table-edit 342307, table-delete 344758, assign-seat 342309",
+          "current": "Render and are focusable; each announces its owning task via a toast instead of failing silently. TASK-342306 (new-plan), TASK-344754 (plan-edit) and TASK-344755 (plan-delete) are now BUILT and demonstrate the pattern.",
           "needs": "One sub-task each. Register a handler with SeatingPlannerWorkspace.on(action, fn) and the control goes live — the shell needs no change."
         },
         {
@@ -410,6 +410,13 @@
           "element": "Edit plan popup — src/prototypes/SeatingPlanner/editplan-*.html + SeatingPlannerEditPlan.js",
           "current": "Opens from a chip's ✎ pre-filled from THAT chip (the shell passes the clicked control through as ctx.trigger). Saving renames the chip, updates its room, rebuilds the label the toolbar reads, and refreshes the action buttons' aria-labels. DOM-only, lost on reload.",
           "needs": "PATCH the SeatingPlan record with { name (required), room }. Renaming must NOT touch the plan's Tables or TableSeats — verified in the prototype: a rename leaves all 30 tables and the open seat panel intact. Re-read the plans row after saving rather than patching the DOM."
+        },
+        {
+          "id": "seating-delete-plan",
+          "category": "needs-backend",
+          "element": "Delete plan confirmation — deleteplan-confirm.html + SeatingPlannerDeletePlan.js",
+          "current": "alertdialog on a chip's ✕, opened from the clicked chip. Copy is data-driven — table and seated counts are read off the DOM, and the people clause is dropped when nobody is seated. Confirming removes the chip and its table cards, injects every returned occupant into the Unassigned tray, and if the deleted plan was open, selects the next remaining plan (or folds the workspace away and restores the \"No plans yet\" hint when none are left). Esc cancels. DOM-only.",
+          "needs": "Delete the SeatingPlan plus its Table and TableSeat rows in ONE transaction and return the occupants to the event pool. A partial failure must not leave people unassigned from a plan that still exists. Re-read the plans row and the Unassigned pool after deleting rather than patching the DOM. The counts in the dialog must come from the server, not the client, so a stale page can't understate what is about to be destroyed."
         }
       ]
     }
