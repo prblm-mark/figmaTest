@@ -358,9 +358,9 @@
         {
           "id": "seating-unassigned-tray",
           "category": "needs-backend",
-          "element": ".sp-panel Unassigned — role tag, name, company, live count, search",
-          "current": "Seven mock people; search + count are live client-side; unseating appends to the tray.",
-          "needs": "Attendees for the event with no TableSeat row. Owning sub-task TASK-351550."
+          "element": "Unassigned pool (TASK-351550) — tray-*.html + SeatingPlannerTray.js",
+          "current": "DERIVED, not a list: the event's people minus everyone seated, recomputed on every change. Role tag + name + company per row, live count badge, predictive search over name AND company, and an empty state for a fully-seated event. Because it derives, the four return paths (unseat, delete table, delete plan, reduce capacity) now put people back BY NAME with no pushing — they used to insert a row labelled by origin (\"Table 12 · seat 4\") because the occupant's real name was not available. Manually-added guests (342309) survive being unseated because the module remembers anyone it has seen seated who is not on the roster.",
+          "needs": "The list is a QUERY, not a stored collection: the event's attendees and linked CRM contacts LEFT JOIN TableSeat, keeping the unseated, plus guests already stored on a TableSeat. No new stored fields. Recompute server-side after every seating change rather than caching client-side, or two editors will disagree about who is free. Owner confirmed: TASK-351550."
         },
         {
           "id": "seating-free-seats-filter",
@@ -379,9 +379,9 @@
         {
           "id": "seating-drag-assign",
           "category": "needs-backend",
-          "element": "Seat rows and tray rows carry draggable=\"true\"; no drop handling",
-          "current": "draggable=\"true\" on seat + tray rows, with no drop handling. The Assign popup (TASK-342309) is built and is the working path; it exposes SeatingPlannerAssign.open(seatRow) so a drop — or a failed drag on touch — can land there instead of dead-ending.",
-          "needs": "TASK-344759. Recommendation from this build: make Assign the canonical path on every viewport and treat drag as a desktop accelerator — HTML5 drag does not work on touch and keyboard users cannot drag, so the tap/click path is required regardless."
+          "element": "Drag to seat (TASK-344759) — drag-*.html + SeatingPlannerDrag.js",
+          "current": "All four placements from the brief are live: pool → empty seat, pool → table card (first free seat, or refused with \"Table full\"), seat → seat (move, or swap when the target is occupied), seat → pool (unseat). Plus seat → another table card, which the brief omits but the interaction implies. Drag shows the source dimmed, legal targets in success tone, a \"Swap\" label on an occupied seat and the refusal reason on a full table. THE SAME FOUR PLACEMENTS RUN BY TAP AND BY KEYBOARD: pick a person, a bar names who is in the air, then choose a seat, a table or the pool; Esc cancels. Nothing re-implements seating — it moves people between card dots and the occupant list and hands off to the shell, so the pool re-derives itself (351550).",
+          "needs": "Each placement is a TableSeat write — occupant plus seat order. A SWAP is two rows changing in ONE transaction, or the pair can end up in the same seat; a move between tables changes the parent Table too, so it must not be modelled as delete-then-insert. Re-read the plan after a placement rather than trusting the client, since two editors can aim at the same seat."
         },
         {
           "id": "seating-tier-colours",
@@ -522,6 +522,34 @@
           "element": "Who is in which seat — data-sp-occupants on the table card",
           "current": "BUG FOUND AND FIXED during this build: occupant names for every table except Table 1 were DERIVED at render time from the mock people pool by index, so any change to the seats renamed everyone below it — unseat the third of ten and the remaining seven came back as different people, and a person assigned by this task lost their identity as soon as you switched tables. The shell now stamps the occupants onto the card whenever the seats change, so the card is the record. Verified: seat 4 assigned, switch away and back, still the same person; unseating seat 3 leaves seats 4–10 untouched.",
           "needs": "Nothing server-side — this is a prototype-only workaround for having no model. It does show what the real thing must guarantee: seat identity is a persisted TableSeat row keyed to an Attendee, never a position in a list. Also fixed the mock seed, which had the seven tray people ALSO in the seated pool, so the prototype claimed the same person was seated and unassigned at once."
+        },
+        {
+          "id": "seating-pool-scope",
+          "category": "needs-backend",
+          "element": "What \"unassigned\" is measured against — plan or event",
+          "current": "Implemented EVENT-WIDE: the pool excludes anyone seated in ANY plan of the event. The brief says \"not yet seated in the selected plan\", which taken literally would offer the 240 people seated in Main Ballroom as unassigned the moment you switch to Overflow Room B, and let you seat them a second time.",
+          "needs": "Confirm the intended scope. Three things point to event-wide: the capacities say the plans are COMPLEMENTARY rather than alternatives (300 + 60 = 360 seats for 386 attendees, so both rooms seat one guest list); TASK-342309's Assign popup already excludes anyone seated anywhere, so per-plan here would make the two contradict each other; and event-wide is the reading that cannot double-book. If plans are meant to be ALTERNATIVE drafts of the same room, per-plan is right and the exclusion in 342309 has to change with it. Raised by this build."
+        },
+        {
+          "id": "seating-pool-empty-state",
+          "category": "fe-wired",
+          "element": "Empty state of the Unassigned pool",
+          "current": "Neither the brief nor the reference covers a pool with nobody in it — \"0\" over an empty box reads as broken. Added: a success-toned \"Everyone is seated · Nobody is waiting for a seat\" block, and a separate \"nobody matches <term>\" message for a filtered-out pool, which is a different situation from an empty one.",
+          "needs": "Nothing server-side. Confirm the copy. Note the DS has no --ai-icon-success token (success exists only as surface/text/border), so the icon uses --ai-text-success, following the pattern .sp-capacity__note--warn already set — worth adding icon-status tokens if this recurs."
+        },
+        {
+          "id": "seating-occupant-identity",
+          "category": "fe-wired",
+          "element": "Who is seated where — data-sp-occupants on every card",
+          "current": "Extends the 342309 fix. Occupant names used to be derived at RENDER time for any table but Table 1, so they only existed while a table was open — which a derived pool cannot work with, since it can only return a person it can name. Every card is now stamped at boot. Two defects fell out of that and were fixed: the mock generator put the SAME person in a dozen chairs (24 names over 300 seats), which meant unseating someone left them seated elsewhere and they never returned to the pool; and it could mint a name that was already authored or already in the pool. Names are now unique event-wide — verified 286 seated, 0 duplicates, 0 overlap with the pool.",
+          "needs": "Nothing server-side — prototype scaffolding for having no model. It is the shape of the real requirement though: a seat holds a REFERENCE to an attendee, and every occupant of the event is a distinct person. Cosmetic artifact of guaranteeing uniqueness: people at the same table often share a surname. Real attendee data will not."
+        },
+        {
+          "id": "seating-touch-placement",
+          "category": "fe-wired",
+          "element": "Placing a person without drag — the touch and keyboard path",
+          "current": "The brief asks how this works on mobile. It is not a separate mobile feature: pick-then-place is the mechanism and drag is an accelerator for it. Tap (or Enter) a person in the pool or a seated row to pick them up — a fixed bar names them and offers Cancel — then tap a seat, a table card or the pool to place them. Esc or Cancel aborts. Rows carry tabindex, so the whole flow works from the keyboard, which matters because keyboard users cannot drag either. Verified in a browser: pick, place, swap, unseat, cancel and refusal all work by tap and by Enter, and picking does not hijack table selection.",
+          "needs": "No extra backend — the same TableSeat writes. What is still OUTSTANDING is the mobile LAYOUT: the workspace has never been designed below --ai-bp-md, and this task did not invent it. The proposal from 344753 stands (plan chips as a scroll strip, single-column tables, seat panel and pool as sheets); pick-then-place is what makes it usable once that layout is built. Agreed with Mark: \"we will refine mobile as we go\"."
         }
       ]
     }
