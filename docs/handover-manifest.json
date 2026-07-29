@@ -373,7 +373,7 @@
           "id": "seating-deferred-controls",
           "category": "needs-backend",
           "element": "Every [data-sp-action] control: copy-plans 344756, add-table 344757, room-layout 344760, export 344761, table-edit 342307, table-delete 344758, assign-seat 342309",
-          "current": "Render and are focusable; each announces its owning task via a toast instead of failing silently. TASK-342306 (new-plan), TASK-344754 (plan-edit), TASK-344755 (plan-delete) and TASK-344756 (copy-plans) are now BUILT.",
+          "current": "Render and are focusable; each announces its owning task via a toast instead of failing silently. Built so far: TASK-342306 (new-plan), TASK-344754 (plan-edit), TASK-344755 (plan-delete), TASK-344756 (copy-plans), TASK-344757 (add-table).",
           "needs": "One sub-task each. Register a handler with SeatingPlannerWorkspace.on(action, fn) and the control goes live — the shell needs no change."
         },
         {
@@ -431,6 +431,20 @@
           "element": "Destination rows showing an existing plan count (e.g. \"1 plan\")",
           "current": "Copy is INSERT, not replace: copying 2 plans into an event that already has 1 leaves it with 3. The prototype makes this visible by showing each destination's current plan count and incrementing it, but nothing warns before the fact.",
           "needs": "Confirm the intended semantics. If append is right, consider naming clones to avoid two plans called \"Main Ballroom\" in one event. If replace is ever wanted it needs its own confirmation, since it would destroy existing seating. Raised by this build — the brief says \"insert\" but doesn't cover the collision case."
+        },
+        {
+          "id": "seating-add-table",
+          "category": "needs-backend",
+          "element": "Add table toolbar button (TASK-344757) — SeatingPlannerAddTable.js",
+          "current": "No popup. Appends a card with the next table number, the plan's default seat count (data-sp-plan-seats, set when the plan was created), every seat empty; recomputes the plan chip and toolbar count, and opens the new table so its empty seat list is on screen.",
+          "needs": "Insert a Table plus its empty TableSeat rows under the plan. Assign the table number and sort order SERVER-SIDE — computing either on the client races other editors. Note the number must be max(existing)+1, not count+1: after deleting Table 3 of 5, count+1 would mint a second Table 5. Seat count comes from the PLAN default, not from the last table, since individual tables can have been changed."
+        },
+        {
+          "id": "seating-plan-chip-summary",
+          "category": "fe-wired",
+          "element": "Plan chip summary \"N tables · X/Y seated · Z free\" + its fill bar",
+          "current": "BUG FOUND AND FIXED during TASK-344757: the chip was written once and never recomputed, so the summary went stale the moment anyone was unseated — the plan summary silently lied. syncPlanChip() now recomputes it from the plan's tables and is called on unseat and on add-table; it is published on the shell API for later sub-tasks that add or remove tables.",
+          "needs": "Nothing server-side while a plan's tables are all loaded — the recompute is client-side. Any sub-task that changes table or seat counts must call SeatingPlannerWorkspace.syncPlanChip(planKey), or derive the summary from the server response."
         }
       ]
     }
