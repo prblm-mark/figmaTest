@@ -373,8 +373,8 @@
           "id": "seating-deferred-controls",
           "category": "needs-backend",
           "element": "Every [data-sp-action] control: copy-plans 344756, add-table 344757, room-layout 344760, export 344761, table-edit 342307, table-delete 344758, assign-seat 342309",
-          "current": "Render and are focusable; each announces its owning task via a toast instead of failing silently. Built so far: 342306 new-plan, 344754 plan-edit, 344755 plan-delete, 344756 copy-plans, 344757 add-table, 342307 table-edit, 344758 table-delete.",
-          "needs": "One sub-task each. Register a handler with SeatingPlannerWorkspace.on(action, fn) and the control goes live — the shell needs no change."
+          "current": "Every [data-sp-action] control is now built EXCEPT export (TASK-344761), which still announces its owning task when clicked. The registry has two kinds of extension point: click actions, and 'notify' for a sub-task that owns a derived view (351550).",
+          "needs": "One sub-task left: export 344761."
         },
         {
           "id": "seating-drag-assign",
@@ -550,6 +550,27 @@
           "element": "Placing a person without drag — the touch and keyboard path",
           "current": "The brief asks how this works on mobile. It is not a separate mobile feature: pick-then-place is the mechanism and drag is an accelerator for it. Tap (or Enter) a person in the pool or a seated row to pick them up — a fixed bar names them and offers Cancel — then tap a seat, a table card or the pool to place them. Esc or Cancel aborts. Rows carry tabindex, so the whole flow works from the keyboard, which matters because keyboard users cannot drag either. Verified in a browser: pick, place, swap, unseat, cancel and refusal all work by tap and by Enter, and picking does not hijack table selection.",
           "needs": "No extra backend — the same TableSeat writes. What is still OUTSTANDING is the mobile LAYOUT: the workspace has never been designed below --ai-bp-md, and this task did not invent it. The proposal from 344753 stands (plan chips as a scroll strip, single-column tables, seat panel and pool as sheets); pick-then-place is what makes it usable once that layout is built. Agreed with Mark: \"we will refine mobile as we go\"."
+        },
+        {
+          "id": "seating-room-layout",
+          "category": "needs-backend",
+          "element": "Room layout (TASK-344760) — layout-*.html + SeatingPlannerLayout.js",
+          "current": "Popup from the toolbar, titled with the plan name as the reference shows. Attaches a floor plan (PDF or image) to the PLAN, so switching plans switches the layout. The dropzone is the DS DragDropFile component; choose or drag a file and an IMAGE genuinely previews — it is read with FileReader, so nothing leaves the browser. A PDF gets a document card with an Open link rather than a fake thumbnail. Footer swaps Upload for Replace + Remove once something is attached. Non-image, non-PDF files are refused by name. The toolbar button carries a dot when the current plan has a layout — an addition, since otherwise you cannot tell without opening the popup.",
+          "needs": "Upload to a MediaFileItem and store the REFERENCE on the SeatingPlan — one per plan. Replacing means repointing the reference and letting the media layer collect the old item, not deleting the file blind: a MediaFileItem may be shared. Validate type AND size server-side; the accept attribute is a convenience, not a control. Copying plans to another event (344756) needs a decision: does the clone carry the floor plan reference or start empty?"
+        },
+        {
+          "id": "seating-room-layout-scope",
+          "category": "visual-only",
+          "element": "What \"Room layout\" means",
+          "current": "RESOLVED. TASK-344753 assumed this was a spatial seat-map editor — dragging tables around a floor plan — and recorded it as undesigned. The brief settles it: Room layout ATTACHES A FILE. The tables grid stays a list, and no floor-plan canvas is needed.",
+          "needs": "Nothing, unless a spatial view is wanted later — in which case it is a new task, not this one. Worth noting the attached plan is a picture: the app cannot relate a table on the canvas to a Table row, so \"where table 12 actually is\" stays human knowledge."
+        },
+        {
+          "id": "seating-pdf-preview",
+          "category": "visual-only",
+          "element": "In-app preview of an attached PDF",
+          "current": "The brief asks for in-app preview. Images do preview inline. A PDF cannot be rasterised by the page, so it shows a document card (name, size, Open in a new tab) plus a line saying why — better than a fake thumbnail that implies a preview that is not there.",
+          "needs": "Decide whether inline PDF preview is required. If so it needs a viewer (pdf.js or an <embed>/<iframe> against the stored file), which is a real dependency and a decision for the spec team rather than something to slip in. Raised by this build."
         }
       ]
     }
