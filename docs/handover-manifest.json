@@ -371,10 +371,10 @@
         },
         {
           "id": "seating-deferred-controls",
-          "category": "needs-backend",
+          "category": "fe-wired",
           "element": "Every [data-sp-action] control: copy-plans 344756, add-table 344757, room-layout 344760, export 344761, table-edit 342307, table-delete 344758, assign-seat 342309",
-          "current": "Every [data-sp-action] control is now built EXCEPT export (TASK-344761), which still announces its owning task when clicked. The registry has two kinds of extension point: click actions, and 'notify' for a sub-task that owns a derived view (351550).",
-          "needs": "One sub-task left: export 344761."
+          "current": "EVERY [data-sp-action] control is now built — nothing is left announcing an unbuilt task. The registry has two kinds of extension point: click actions, and 'notify' for a sub-task that owns a derived view (351550).",
+          "needs": "Nothing further front-end. Keep the registry when wiring the backend: it is where each control's handler already lives."
         },
         {
           "id": "seating-drag-assign",
@@ -571,6 +571,27 @@
           "element": "In-app preview of an attached PDF",
           "current": "The brief asks for in-app preview. Images do preview inline. A PDF cannot be rasterised by the page, so it shows a document card (name, size, Open in a new tab) plus a line saying why — better than a fake thumbnail that implies a preview that is not there.",
           "needs": "Decide whether inline PDF preview is required. If so it needs a viewer (pdf.js or an <embed>/<iframe> against the stored file), which is a real dependency and a decision for the spec team rather than something to slip in. Raised by this build."
+        },
+        {
+          "id": "seating-export",
+          "category": "needs-backend",
+          "element": "Export the plan (TASK-342305) — export-*.html + SeatingPlannerExport.js",
+          "current": "Split button in the toolbar — PDF (default) / Excel (.xlsx) / CSV — each opening a preview before download. THE PREVIEW FOLLOWS THE FORMAT: PDF previews as the document the reference draws (event name, meta line, then each table as a numbered list of occupants with the role in brackets), while CSV and .xlsx preview as the brief's six columns (Table, Type, Seat, Name, Company, Role) in the DS Table component — showing a document preview for a CSV would misrepresent the file. Read-only, per plan, derived from the DOM, and it stays true after edits: unseat someone and the row count and meta line both drop by one. THE CSV DOWNLOADS FOR REAL, generated in the browser with correct quoting; PDF and .xlsx explain that they are server-side rather than downloading something fake.",
+          "needs": "Read-only over the plan's Table / TableSeat rows. PDF and XLSX need a server-side generator; build ALL THREE formats from the same query or the three will disagree — the browser CSV here only covers what the page already has. Note the row set is SEATED SEATS ONLY, per the brief (\"every table and its seated attendees\"); see seating-export-empty-seats."
+        },
+        {
+          "id": "seating-export-empty-seats",
+          "category": "visual-only",
+          "element": "Whether the export lists empty seats",
+          "current": "It does not. The brief says \"every table and its seated attendees\", so a table with 3 of 10 filled exports 3 rows, and the preview says so out loud (\"Empty seats are not exported\"). A table with nobody seated still appears in the PDF, with a line saying it is empty, so it is not silently missing.",
+          "needs": "Confirm. A planner printing a seating list may well want the empty seats as blank rows — it is the difference between a record of who is coming and a working document to fill in on the day. Cheap either way, but it changes the row count. Raised by this build."
+        },
+        {
+          "id": "seating-export-task-number",
+          "category": "visual-only",
+          "element": "Task number on the export controls",
+          "current": "The shell marked these controls TASK-344761, taken from the parent task's sub-task list. The brief for the work is TASK-342305, so the controls now carry 342305.",
+          "needs": "Confirm whether 344761 was simply a mis-recorded number, or a SEPARATE piece of export work that is still outstanding. Raised by this build."
         }
       ]
     }
