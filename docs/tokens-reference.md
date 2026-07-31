@@ -1,6 +1,6 @@
 # Design System Token Reference
 
-Complete token tables for the Affino AI design system. All CSS variables use the `--ai-` prefix.
+Complete token tables for the Affino Design System. All CSS variables use the `--ai-` prefix.
 
 ---
 

@@ -5,7 +5,7 @@
 
 ## TL;DR
 
-This repo is the **Affino AI Design System** — a **front-end-only** component library
+This repo is the **Affino Design System** — a **front-end-only** component library
 (vanilla **HTML + CSS + JS**, Webpack 5, **no framework, no backend**). It is built from Figma
 and used to produce production HTML/CSS. **Every data value is hardcoded or in-memory, and most
 actions are visual-only.** "Backend handover" here means: *which interactive elements are mock,

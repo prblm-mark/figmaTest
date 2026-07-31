@@ -1,7 +1,9 @@
-# figmaTest Project Memory
+# Affino Design System — Project Memory
 
 ## Project Overview
-Figma Design System token project. Exports Figma variables as DTCG-format tokens for web use.
+The Affino Design System (ADS) — design system for Affino's client-facing Control Centre, AI
+and display-side products. Exports Figma variables as DTCG-format tokens for web use.
+Separate from the Hub's internal React/Tailwind UI system; they share no tokens.
 Status: Token pipeline + component scaffold implemented. Bi-directional Figma ↔ Code workflow active.
 
 ## Key Paths

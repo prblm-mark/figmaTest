@@ -17,8 +17,8 @@ const ccTemplates = sidebarData.cc?.templates?.length || 0
 const ccCount = ccComponents + ccPatterns + ccTemplates
 
 export default defineConfig({
-  title: 'Affino AI Design System',
-  description: 'Component library built from Figma design tokens',
+  title: 'Affino Design System',
+  description: 'Design system for Affino Control Centre, AI and display-side products',
   base: process.env.DOCS_BASE || '/',
 
   // Component figma-notes are ingested verbatim and legitimately cross-link sibling

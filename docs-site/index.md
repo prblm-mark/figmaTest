@@ -1,7 +1,7 @@
 ---
 layout: home
 hero:
-  name: Affino AI
+  name: Affino
   text: Design System
   tagline: Component library built from Figma design tokens. Token-driven, accessible, dark mode ready.
   actions:

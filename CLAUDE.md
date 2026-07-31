@@ -31,8 +31,14 @@ This file is read by Claude Code at the start of every session. All rules here a
 
 ## 1. Project Overview
 
-This is a **Figma Design System** project. Designers work in Figma; Claude Code turns Figma
-components into production HTML/CSS using **only the design tokens defined below**.
+This is the **Affino Design System** (ADS) — the design system for Affino's client-facing
+products: the **Control Centre**, **AI**, and **display-side** components and templates.
+Designers work in Figma; Claude Code turns Figma components into production HTML/CSS using
+**only the design tokens defined below**.
+
+Not to be confused with the Hub's own UI design system (`hub.affino.com`, React + Tailwind,
+internal-only) — the two are deliberately separate and share no tokens. See
+`docs/hub-executor-setup.md`.
 
 - Token source: `FigmaTokens/` (DTCG JSON exported from Figma)
 - Generated CSS: `css/tokens.css` (run `npm run tokens` to rebuild)
