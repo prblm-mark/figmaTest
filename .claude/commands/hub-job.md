@@ -54,10 +54,22 @@ If any pre-flight check fails: do not start the job. Report the failure (§ Esca
    `task_list` filters `labels` server-side, and `involves` unions owner/delegate/lead/creator.
    With an explicit `<task-id>`, fetch that one directly.
 3. Select **one** job. Never run two jobs in a single session — one job, one branch, one report.
-4. Echo the job back before acting: id, type, requester, and the brief in full. If the brief is
-   ambiguous or missing the information the target skill needs, that is an escalation (§ Escalation),
-   not something to fill in with assumptions.
-5. **Mint the correlation id now:** `hub-job-<TASK-CODE>`. Every message this job sends carries it as
+4. Echo the job back before acting: id, type, requester, **target surface**, and the brief in full.
+   If the brief is ambiguous or missing the information the target skill needs, that is an escalation
+   (§ Escalation), not something to fill in with assumptions.
+5. **The brief must name a target surface.** It decides which token modes the build draws from:
+
+   | Target surface | Token modes |
+   |---|---|
+   | Display-side (Affino products) | base **Light/Dark** — reserved for display-side going forward |
+   | Control Centre | CC Light/Dark (`data-theme` + CC scoping) |
+   | AI / Chat | Chat Light/Dark, `--ai-chat-brand` accents |
+
+   A missing target surface is a **requester escalation** — message-only, like the Step 0 stop, since
+   a rewritten brief is not a design decision. **Do not default it.** A Control Centre screen built
+   from base tokens looks plausible and is wrong in every colour, which is exactly the failure mode
+   this contract exists to prevent.
+6. **Mint the correlation id now:** `hub-job-<TASK-CODE>`. Every message this job sends carries it as
    `thread_id`. See § Configuration for why it is a label, not a queue.
 
 `labels` is an **array on read** and a **comma-separated string on write** — do not send an array.

@@ -206,6 +206,23 @@ or agents will conflate two different token sets with different names and values
 treating it as fleet-wide. Also: **no `make extract-design-system` target exists in any Makefile** — the
 KB doc's command is drift.
 
+### Decision — display-side inherits base Light/Dark (2026-07-31, Mark)
+
+Display-side is **not** a new token mode. The existing base **Light/Dark** modes are set aside to
+become the display-side theme in future. So the three surfaces map to modes as:
+
+| Target surface | Token modes |
+|---|---|
+| Display-side (Affino products) | base **Light/Dark** — reserved for this going forward |
+| Control Centre | CC Light/Dark |
+| AI / Chat | Chat Light/Dark, `--ai-chat-brand` accents |
+
+**Consequence for the pipeline:** which surface a prototype targets determines which modes it draws
+from, and `/build-prototype` had no concept of this. A brief must now name its target surface, and a
+missing one is a **requester escalation** (message-only, like the Step 0 stop — a rewritten brief is
+not a design decision). It is deliberately **not defaulted**: a Control Centre screen built from base
+tokens looks plausible and is wrong in every colour.
+
 ### Decision — the two systems stay separate (2026-07-31, Mark)
 
 **Resolved: no token coupling between this repo and the Hub.** They are two different frameworks
