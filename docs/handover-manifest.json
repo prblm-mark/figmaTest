@@ -592,6 +592,20 @@
           "element": "Task number on the export controls",
           "current": "The shell marked these controls TASK-344761, taken from the parent task's sub-task list. The brief for the work is TASK-342305, so the controls now carry 342305.",
           "needs": "Confirm whether 344761 was simply a mis-recorded number, or a SEPARATE piece of export work that is still outstanding. Raised by this build."
+        },
+        {
+          "id": "seating-main-layout-alternatives",
+          "category": "visual-only",
+          "element": "Main interface layout (TASK-344753 revisited) — alt1-threepane.html, alt1b-worklist-v2.html, alt3-accordion.html, alt-compare.html",
+          "current": "OPEN DECISION, three fully-wired alternatives against the current layout, which is untouched and remains the fallback. The defect being fixed is measured, not asserted: the seat panel and the pool are each capped at 30rem with their own scroll, stacked in a 448px rail inside a PAGE-scrolled 1356px document, so at 1440x900 the pool's first row sits at y~1013 and you can see the seats or the pool, never both ends of a drag. All three alternatives make the same structural move — the page stops scrolling and each region owns its own scroller with a pinned head — and differ only in where the pool lives and how the width is split. A · Worklist: tables list | seats | pool, the list flexible with a 384 floor, the detail a minmax(320, 384) that eases down when the viewport is tight, the pool 320, both right-hand columns draggable wider (never narrower than designed), and a list/grid toggle on the tables pane defaulting to grid. A2 · Worklist v2: the same three panes with list and detail sharing the width equally. C · Accordion: one-line rows with the seats opening inline, one table at a time. A fourth (B · Dock) was built and then dropped at the designer's request; its insight is recorded under seating-mobile-layout — a full-width bottom dock is the answer below 1024px, where no three-pane layout survives.",
+          "needs": "A decision on which layout ships. Nothing server-side. Three things to know before choosing: (1) both worklists need 1440px or more to show a whole 10-seat table at once — below that the seat list scrolls, and in A you can drag the detail column past 580px to get two untruncated seat columns instead; (2) the accordion shows the open table and its ~370px drawer with no full row of context at 813px of viewport, at 5 tables or 40, so it wins on directness rather than on fitting more in; (3) all three are gated at 1024px and fall back to the page-scroll layout below it, per WCAG 1.4.10 Reflow — the mobile layout is still unbuilt (seating-mobile-layout). Raised by this build."
+        },
+        {
+          "id": "seating-workspace-prefs",
+          "category": "needs-backend",
+          "element": "Pane widths and tables-view preference — SeatingPlannerShellAlts.js",
+          "current": "Both are in-memory only and last as long as the page does. Dragging a resize handle writes a px width to a CSS custom property on the pane row; the list/grid toggle writes one attribute on <body>. Reload and both return to their defaults (grid view, detail 384 easing to 320, pool 320).",
+          "needs": "Persist per user, not per event or per plan — it is a workspace preference, like a column layout in a data grid: {tablesView: 'list'|'grid', detailWidth: px|null, poolWidth: px|null}, null meaning 'use the default and keep adapting to the viewport'. Store the widths as numbers and clamp them server-side or on read, because a stale width from a wide monitor must not squeeze the tables list below its floor on a laptop — the front end already clamps to the same floor it uses in CSS. Cheap to defer: without it the layout simply opens at its defaults every time."
         }
       ]
     }
