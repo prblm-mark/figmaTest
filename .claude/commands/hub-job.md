@@ -74,6 +74,19 @@ If any pre-flight check fails: do not start the job. Report the failure (§ Esca
 
 `labels` is an **array on read** and a **comma-separated string on write** — do not send an array.
 
+**Label matching is AND across terms, and each term is a case-insensitive *substring*.** Two
+consequences:
+
+- Intake stays on **`ads-job` alone**. `labels="ads-job,design-system"` would work (terms are ANDed),
+  but requiring two labels only adds a way for a requester to file a job half-labelled and invisible.
+  One precise label has fewer failure modes than two.
+- **Never create any label *containing* `ads-job`** — `ads-job-blocked`, `no-ads-job`, `ads-job-v2`
+  would all be pulled in by the substring match, including onto blocker tasks that must stay out of
+  intake. The label is a reserved exact string, not a prefix to build on.
+
+Substring matching also means these filters cannot express exclusion: there is no way to ask for
+"labelled `design` but not `design-system`". Do not use labels for mutually-exclusive routing.
+
 ---
 
 ## Step 2 — Dispatch
@@ -130,8 +143,13 @@ resolves here:
    - `send_message(to=<requester>, thread_id="hub-job-<TASK-CODE>", message_type="task")`.
      `message_type="task"` matters: task messages are protected from auto-cleanup until closed with
      `complete_task_message`, so a job handshake will not be reaped mid-decision.
-   - `task_create(labels="design-system,needs-design-decision", owner_id=<actor-handle>, …)` with
+   - `task_create(labels="design-system,needs-design-decision", owner_id="Mark", …)` with
      `originating_task_code` set to the job's task code.
+   - **Assignment and delivery diverge — do both, or the blocker is never seen.**
+     `owner_id="Mark"` puts the task on Mark's board, but `resolve_recipient("Mark")` returns
+     `{resolved_id: "shaz", type: "agent"}` — a message addressed to his name routes to his *agent*,
+     not to him. So: assign the task to `Mark`, **and** `send_message` to `shaz`. Doing only the
+     first leaves a task nobody is told about; doing only the second leaves a decision nobody owns.
      **Never add `ads-job` to a blocker** — that is the intake filter, so a blocker carrying it would
      be re-ingested as new work on the next run, and the executor would loop on its own escalations.
      **Only for genuine design decisions** —
@@ -190,13 +208,23 @@ plausible-looking component built on invented values.
      links it.
 4. Register outputs where the repo expects them: `docs/component-registry.md` for components,
    `docs/handover-manifest.json` + `HANDOVER.md` for anything mock (CLAUDE.md §12).
-5. **Check out of the hub session before exiting.** A reaper force-closes sessions where
-   `check_out_at IS NULL` and `last_seen` has gone stale, so a run that just stops leaves a session
-   to be killed and a misleading timeline in `agent_teamtime_session_detail`. Check out on **every**
-   exit path — completed, blocked, or pre-flight failure.
-   No separate heartbeat loop is needed while the job is working: `last_seen` updates passively on
-   any API activity (throttled to once per 60s per agent). `agent_heartbeat(agent_id)` matters only
-   across long idle gaps — e.g. a job parked waiting on a design decision.
+5. **Check out of the hub session before exiting** — on **every** exit path: completed, blocked, or
+   pre-flight failure. A reaper force-closes sessions with `check_out_at IS NULL` whose `last_seen` is
+   older than 120 minutes (scan runs every 5 min), so a run that just stops still gets closed — but by
+   the reaper, at the wrong time, leaving a misleading timeline in `agent_teamtime_session_detail`.
+
+   Board status is a **stored enum**, not something derived from activity: `agent_sessions.status` is
+   one of `online | working | idle | error | offline`, and only ever changes because something writes
+   it. `agent_teamtime_check_in` writes `online`, check-out writes `offline`, and
+   `agent_teamtime_status` sets any of the five directly. So use it: `working` while building, `idle`
+   when parked on a design decision, `error` on a pre-flight failure. A board that reflects reality is
+   the whole point of having one.
+
+   **No heartbeat loop is needed.** One check-in is enough, provided the executor touches the API at
+   least once every 2 hours — `last_seen` updates passively on any API activity (throttled to 60s per
+   agent), so a job that is doing anything at all stays fresh. Only if a job can idle longer than 2h
+   (a blocker awaiting a decision) does it need an explicit `agent_heartbeat` /
+   `agent_teamtime_touch` inside that window.
 
 ---
 
@@ -210,7 +238,8 @@ Verified against the live Hub API 2026-07-31. Fill the placeholders before the f
 | Intake call | `task_list(labels="ads-job", involves="Iris", view="lean")` |
 | Job label | **`ads-job`** — the executable marker. Not `design-system` (whose 5 existing tasks are *consumers* of the design system, not build jobs) and not `design` (41 tasks, a discipline label). `design-system` may be added alongside as a topical tag. |
 | Blocker label | `design-system,needs-design-decision` — **never `ads-job`** (see below). Comma string on write; free-form, unvalidated. |
-| Design-decision owner | **Mark Foster** (Head of Design & Build) — actor id TBC, see `docs/hub-executor-setup.md`. A named person or agent; **no team target exists** |
+| Design-decision owner | `owner_id="Mark"` — the **handle string, exact casing**. The server resolves it to actor 28781 with `owner_type="person"`; never pass the numeric id. Handles are not uniformly cased (`Mark`, `Rao` capitalised; `susan`, `quang`, `julius` not). |
+| Blocker notification | **also `send_message` to `shaz`** — see "assignment and delivery diverge" below |
 | Correlation id | `hub-job-<TASK-CODE>` as `thread_id`, minted by this command |
 | Message type | `task` (survives auto-cleanup; close with `complete_task_message`) |
 

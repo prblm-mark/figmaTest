@@ -1,7 +1,7 @@
 # Hub Executor Setup — `Iris` as the privileged executor
 
 **Date:** 2026-07-31
-**Status:** executor side wired; hub side blocked on registering `Iris` + Mark's actor id
+**Status:** executor side wired and schema-complete; hub side blocked only on registering `Iris`
 **Companion doc:** [`hub-agent-integration.md`](hub-agent-integration.md) (the architecture)
 
 ---
@@ -59,7 +59,7 @@ in it assumes a schema any more. Three answers changed the command materially:
 **1. `my_tasks` cannot filter — use `task_list`.** `my_tasks` accepts only `limit`/`offset`/`view`
 (owner-or-delegate + `X-Agent-ID`, nothing else), so it would return every assigned task and force
 the command to guess which are design-system work. Intake is now
-`task_list(labels="design-system", involves="Iris", view="lean")` — server-side label
+`task_list(labels="ads-job", involves="Iris", view="lean")` — server-side label
 filtering, and `involves` unions owner/delegate/lead/creator. `labels` is an **array on read, a
 comma-separated string on write**. In use today: `design` 41 tasks, `design-system` 5.
 
@@ -95,7 +95,8 @@ rejected there and on `kb_update` — "Body is auto-assembled from steps"), then
 `kb_step_create(slug, body, heading, position)` supplies the prose as ordered sections. `kb_create`
 takes `originating_task_code` and `idempotency_key` (24h replay-safe retry), both worth setting from
 a pipeline. `doc_type` (Diátaxis) **and** `template_slug` are required for non-exempt categories or
-the server 400s; exempt: `note`, `scratch`, `draft`, `comment`, `brain-backup`, `test`.
+the server 400s. Exempt categories are only `scratch`, `comment`, `brain-backup`, `test` — **not**
+`note` or `draft`, despite the `kb_create` docstring saying so (see "Classification" below).
 
 No design-system namespace exists — 51 in-use categories with no match, and
 `kb_folders_list(q="design")` returns 0 folders. What exists is a substantial tag-and-slug cluster to
@@ -165,9 +166,18 @@ escalation, turning a broad label directly into noise in the design owner's queu
 would be re-ingested as new work on the next run and the executor would loop on its own blockers.
 Blockers use `design-system,needs-design-decision`.
 
-**Still open:** does `task_list(labels="a,b")` treat the comma as AND or OR? If AND, filtering on
-`ads-job,design-system` is precise; if OR, it is worse than either alone and intake must stay on
-`ads-job` only.
+**Resolved 2026-07-31: comma is AND, and each term is a case-insensitive *substring* match**
+(`task_filters.py:312-318` builds one `EXISTS … ILIKE %term%` clause per label, joined with `AND`).
+
+Intake nonetheless stays on **`ads-job` alone**: two required labels only add a way to file a job
+half-labelled and invisible. Two consequences of substring matching to respect:
+
+- **Never create any label containing `ads-job`** (`ads-job-blocked`, `no-ads-job`, `ads-job-v2`) — all
+  would be pulled into intake, including blockers that must stay out of it. It is a reserved exact
+  string, not a prefix to extend.
+- The filter cannot express exclusion — there is no way to ask for "`design` but not `design-system`",
+  which is also why the earlier `design` count of 41 already included all 5 `design-system` tasks. Never
+  use labels for mutually-exclusive routing.
 
 ---
 
@@ -275,18 +285,27 @@ dormancy became visible. Set an interval on our docs so an unpublished repo chan
    person-owned working agents get names (`Ace`, `Metis`, `Diana`, `Dex`, `Aurora`, `Haku`, `Nova`,
    `Shaz`). This is Mark's agent doing design work, so a name fits; `ds-executor` would have read as
    infrastructure.
-   Liveness needs no heartbeat loop: `last_seen` updates passively on any API activity (throttled to
-   60s per agent), so a working job stays fresh. `agent_heartbeat(agent_id)` matters only across long
-   idle gaps, e.g. a job parked on a design decision. **But check out** — a reaper force-closes
-   sessions with `check_out_at IS NULL` and stale `last_seen` (`/hub-job` Step 5 now does this on every
-   exit path). Exact online/idle/offline cutoffs are still unknown.
-2. **The design-decision owner is Mark Foster** (set 2026-07-31). Still needs the **assignable actor
-   id** to pass as `task_create(owner_id=…)` — `team_list` ids are not assignable and `auth_me`
-   returns the *calling* identity, so neither yields it. Likely route: fetch any existing task Mark
-   owns and read `owner_actor_id` off it (tasks stamp that separately from `created_by_actor_id`).
-   Until it is known the executor can only message the requester, not file a blocker.
-   Lower urgency since the prototype-token-gap policy change — `needs-design-decision` tasks now
-   only originate from `/build-component` runs.
+   **Liveness — resolved 2026-07-31.** Board status is a **stored enum**, not derived from activity:
+   `agent_sessions.status` is one of `online | working | idle | error | offline` and only changes when
+   something writes it (`agent_teamtime_check_in` → `online`, check-out → `offline`,
+   `agent_teamtime_status` → any). So there is no cutoff to hit and **one check-in is enough**, provided
+   the executor touches the API at least once every **120 minutes** (`AUTO_CHECKOUT_MINUTES`; the stale
+   reaper scans every 5 min, and `last_seen` is touched passively by any API call, throttled to 60s).
+   A polling executor never goes stale; only a job idling >2h needs an explicit `agent_heartbeat` /
+   `agent_teamtime_touch`. **Always check out** — otherwise the reaper closes the session at the wrong
+   time and the timeline is misleading. `/hub-job` Step 5 does this on every exit path and also sets
+   `working` / `idle` / `error` so the board reflects reality.
+   Note: the `online/idle/offline` label in `list_agents` is a *different*, `last_seen`-derived value
+   whose cutoffs are still unknown — that is not the board.
+2. ~~**Name the design-decision owner.**~~ **Resolved 2026-07-31: `owner_id="Mark"`.** Pass the
+   **handle string with exact casing** — the server resolves it to actor 28781 with
+   `owner_type="person"`; the numeric id is never passed. Handles are inconsistently cased (`Mark`,
+   `Rao` capitalised; `susan`, `quang`, `julius` not).
+
+   **Assignment and delivery diverge, so a blocker needs both.** `owner_id="Mark"` puts the task on
+   Mark's board, but `resolve_recipient("Mark")` returns `{resolved_id: "shaz", type: "agent"}` — a
+   message addressed to his name reaches his *agent*, not him. Assign to `Mark` **and**
+   `send_message` to `shaz`: task-only means nobody is told, message-only means nobody owns it.
 
 ---
 
