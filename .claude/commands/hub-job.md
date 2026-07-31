@@ -82,12 +82,25 @@ must begin with `Skill(skill="build-component")`.
 
 ## Step 3 — Escalation contract (the load-bearing rule)
 
-`/build-prototype` and `/build-component` are written for an attended session. Every one of their
-stop conditions says *"STOP and ask the user"* — token gap, gradient with no style, hardcoded
-dimension, Tier=Template shell paints, contextual override, missing variant, missing dependency,
-unverified value. **In a hub job there is no user in the terminal.**
+`/build-component` is written for an attended session. Every one of its stop conditions says
+*"STOP and ask the user"* — token gap, gradient with no style, hardcoded dimension, Tier=Template
+shell paints, contextual override, missing variant, missing dependency, unverified value.
+**In a hub job there is no user in the terminal.**
 
-When any STOP in any skill fires, it resolves here:
+**The two skills escalate differently, and the difference is the point:**
+
+| | `/build-component` | `/build-prototype` |
+|---|---|---|
+| Token gap | **Hard stop → escalate** to the design owner | **No stop** — recorded in `<Name>.token-gaps.md`, build continues |
+| Scope/duplication problem | escalate | Step 0 hard stop → **escalate to the requester** |
+| Why | the design decision already exists, so a gap means a real question | the prototype *produces* the design decision, so the question is premature |
+
+A prototype that blocked on every novel value would stall the pipeline on exactly the work it exists
+to do. A component that didn't block would ship invented values as precedent. Do not collapse these
+two behaviours into one.
+
+When a STOP fires in `/build-component` — or the Step 0 stop fires in `/build-prototype` — it
+resolves here:
 
 1. **Do not guess. Do not proceed past that step.** No "reasonable" token, no nearest-match
    spacing, no `/* one-off optical */` inline value. A wrong value that ships is worse than a
@@ -106,7 +119,10 @@ When any STOP in any skill fires, it resolves here:
      `message_type="task"` matters: task messages are protected from auto-cleanup until closed with
      `complete_task_message`, so a job handshake will not be reaped mid-decision.
    - `task_create(labels="design-system,needs-design-decision", owner_id=<actor-handle>, …)` with
-     `originating_task_code` set to the job's task code.
+     `originating_task_code` set to the job's task code. **Only for genuine design decisions** —
+     i.e. `/build-component` stops. A `/build-prototype` Step 0 stop is message-only: the fix is a
+     rewritten brief, so filing a design-decision task would put a brief-quality problem in the
+     design owner's queue.
    - **There is no team or role target.** Assignment is actor-handle only (`owner_id` / `delegate_id`
      / `lead_id`, resolving to a person or agent). `team_list` is a flat read-only directory whose
      ids are not assignable. So the design owner must be a **named actor** configured up front
@@ -145,6 +161,10 @@ plausible-looking component built on invented values.
      only exists on one machine. They still never reach `main`.
 2. Open a PR with: the job id, the brief, screens/components produced, Figma node URLs, the token
    validation result, and anything deferred.
+   - **For a prototype job, the PR body must reproduce `<Name>.token-gaps.md` in full** (or state
+     that it is empty). That file is the design owner's review list and the input to the later
+     `/build-component` build. An unreported gaps file is indistinguishable from a silently guessed
+     value — which is the failure this whole contract exists to prevent.
 3. Report completion to the hub with the PR URL and Figma URLs:
    - `send_message(to=<requester>, thread_id="hub-job-<TASK-CODE>", message_type="task")`, then
      `complete_task_message` once acknowledged.
@@ -168,7 +188,7 @@ Verified against the live Hub API 2026-07-31. Fill the placeholders before the f
 | Intake call | `task_list(labels="design-system", involves="<ds-executor>", view="lean")` |
 | Job label | `design-system` (41 tasks carry `design`, 5 carry `design-system`) |
 | Blocker label | `design-system,needs-design-decision` (comma string on write; free-form, unvalidated) |
-| Design-decision owner | `<actor-handle>` — a named person or agent; **no team target exists** |
+| Design-decision owner | **Mark Foster** (Head of Design & Build) — actor id TBC, see `docs/hub-executor-setup.md`. A named person or agent; **no team target exists** |
 | Correlation id | `hub-job-<TASK-CODE>` as `thread_id`, minted by this command |
 | Message type | `task` (survives auto-cleanup; close with `complete_task_message`) |
 

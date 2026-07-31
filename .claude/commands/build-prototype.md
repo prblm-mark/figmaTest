@@ -10,13 +10,21 @@ Usage: `/build-prototype <description of the flow>`
 This is the **Code → Figma** direction. It is the opposite of `/build-component` (Figma → Code).
 No Figma source is needed — start from a written description and use existing components + tokens.
 
-**If this run was started by `/hub-job` (unattended):** every "STOP and ask the user" below — the
-Step 0 hard stop, the missing-token stop, the gradient stop — resolves through
-`.claude/commands/hub-job.md` § Step 3 — Escalation contract, because nobody is at the terminal.
-WIP-commit, report the question with the values found, raise it on the hub, mark the job blocked.
-Never downgrade a STOP to a best guess just because no one is available to answer it. Note also
-that prototypes **are** committed on `proto/*` branches in a hub job (never to `main`) — the next
-stage's agent cannot refine what exists only on one machine.
+**If this run was started by `/hub-job` (unattended):**
+
+- **There is no token STOP in this workflow.** A missing token is recorded in
+  `<Name>.token-gaps.md` and the build continues (see Key principles, tier 2). Do **not** escalate a
+  token gap from a prototype job — a prototype exists to produce the design decision, so blocking on
+  one would stall the pipeline on every genuinely novel design. This is deliberately the opposite of
+  `/build-component`, where the decision already exists and the stops are hard.
+- **The Step 0 hard stop is the one real stop, and it goes to the requester**, not the design owner.
+  A brief asking for a gallery of a component that already exists is a brief-quality problem, not a
+  design decision: `send_message` to the requester, mark the job blocked, and do not file a
+  `needs-design-decision` task. See `.claude/commands/hub-job.md` § Step 3.
+- **Prototypes are committed on `proto/*` branches** in a hub job (never to `main`) — the next
+  stage's agent cannot refine what exists only on one machine.
+- The `<Name>.token-gaps.md` file must be listed in the completion report and the PR body. It is the
+  design owner's review list; an unreported gaps file is the same as a silently guessed value.
 
 **This process also applies to ad-hoc prototype builds** (e.g. user asks "build me a duration
 picker prototype" without invoking the skill). If you are building any prototype in
@@ -73,16 +81,40 @@ If a prototype request passes Step 0, continue to Key principles below.
   build**, stop and use `/build-component`. If this is a **prototype-only build** (quick
   exploration, not a production component), build the element inline in the prototype CSS
   using design system tokens — do not create files in `src/components/`.
-- **Design system tokens for ALL visual properties — no exceptions.** Every colour, spacing,
-  radius, font size, font weight, font family, line height, and icon size in prototype CSS
-  **must** use an `--ai-*` token. This applies to both reused components AND new prototype-only
-  elements. If no `--ai-*` token exists for a value, STOP and ask the user before writing CSS.
-  The only exceptions:
-  - Layout dimensions with no token match (e.g. `width: 288px`) — hardcode with a comment
-  - Card drop-shadows: use `0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1)`
-  - Border widths (`1px`, `2px`) — optical values, keep as `px`
+- **Use an existing token wherever one exists — then record the gaps and keep going.**
+  A prototype is the thing that *produces* a design decision, so it must not block waiting for one.
+  There is **no token STOP in this workflow** (unlike `/build-component`, where the decision has
+  already been made and the stops are hard). Three tiers:
+
+  1. **A token exists for this value → use it.** Non-negotiable, and not merely a style rule — see
+     "Why tier 1 is non-negotiable" below. Applies to every colour, spacing, radius, font size,
+     font weight, font family, line height and icon size, in reused components *and* new
+     prototype-only elements.
+  2. **No token exists → write the raw value and log it.** Append an entry to
+     `src/prototypes/<Name>/<Name>.token-gaps.md`: property, value, element/selector, and what the
+     value is *for* (the design intent, not just the number). Then carry on. Do not pause, do not
+     ask, do not approximate to a near-miss token to avoid the entry — a wrong token binding is
+     worse than an honest gap, because it survives re-tokenisation looking correct.
+  3. **Pre-approved raw values** — no log entry needed:
+     - Card drop-shadows: `0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1)`
+     - Border widths (`1px`, `2px`) — optical values, keep as `px`
+
+  The gaps file travels with the prototype (and its PR) as the design owner's review list, and is
+  the input to the eventual `/build-component` build — where every gap must be resolved to a token
+  or an explicit approval before any component CSS is written.
+
+- **Why tier 1 is non-negotiable.** `generate_figma_design` resolves `var(--ai-*)` to raw values
+  during capture, and the Re-tokenise plugin rebinds them afterwards **by value matching only**
+  (`inferredVariables`, then hex→variable and float→variable maps; ambiguous matches are skipped —
+  see `figma-plugin-retokenise/README.md`). So a value that matches an existing token round-trips
+  back to a proper binding, and a value that doesn't **stays raw in Figma permanently.**
+  Re-tokenise repairs bindings lost in capture; it cannot invent tokens for novel values. Using an
+  existing token where one exists is what makes re-tokenising work at all.
+
 - **Never add new design system tokens.** Prototype CSS may only use `--ai-*` tokens that
   already exist. Do not add new `--ai-*` CSS variables to support prototype elements.
+  Recording a gap is **not** minting a token — tier 2 logs the need and moves on; only the design
+  owner decides whether a token gets created.
 - **Real screens, not demos.** Prototype pages look like product screens — centred card or
   full-page layout — not the component-demo wrapper style used in `<Name>.html` demo files.
 - **One file per screen.** Each screen in the flow gets its own `.html` file. Shared layout
@@ -224,9 +256,21 @@ Step 2 — Profile         https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt?n
 
 Files: src/prototypes/Registration/
 
+Token gaps: 3 recorded → src/prototypes/Registration/Registration.token-gaps.md
+  padding: 10px      .reg-card__footer     tighter footer rhythm than spacing-3
+  color: #2E4A7D     .reg-card__accent     step-indicator accent, no brand token
+  width: 288px       .reg-card             fixed card width (layout, pre-approved)
+
 ⚠ Run the Re-tokenise plugin in Figma to rebind captured values to
   design system variables: select the frame → Plugins → Development → Re-tokenise
+  Re-tokenise matches by VALUE — the gaps above have no matching variable, so they
+  will stay raw in Figma until a token is minted. They are not a re-tokenise failure.
 ```
+
+**Always list the token gaps in the report** (or state "Token gaps: none"). They are the design
+owner's review list and the input to the later `/build-component` build, where they populate the
+`## Token Gaps` section of `<Name>.figma-notes.md`. A gap that is recorded but never surfaced is
+functionally a guessed value.
 
 ---
 

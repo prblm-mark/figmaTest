@@ -105,6 +105,51 @@ wanted. **So Phase 1 exists, but as "write into the existing cluster", not "buil
 
 ---
 
+## Policy decision — prototypes do not stop on token gaps (2026-07-31)
+
+The token STOP has been **removed from `/build-prototype`** and replaced with record-and-continue.
+It remains hard in `/build-component`. The asymmetry is deliberate:
+
+> A prototype is the thing that *produces* a design decision, so asking "which token should this be?"
+> is premature. A component is built after the decision exists, so a gap there is a real question.
+
+An unattended prototype job that blocked on every novel value would stall the pipeline on exactly
+the work it exists to do; a component job that didn't block would ship invented values as precedent.
+
+**The replacement mechanism — three tiers:**
+
+1. A token exists for this value → use it. Non-negotiable.
+2. No token exists → write the raw value and log it to
+   `src/prototypes/<Name>/<Name>.token-gaps.md` (property, value, selector, design intent), then
+   continue. No pause, no approximation to a near-miss token.
+3. Pre-approved raw values (card drop-shadows, `1px`/`2px` border widths) → no entry needed.
+
+The gaps file is listed in the build report, reproduced in full in the PR body, and feeds the
+`## Token Gaps` section of `<Name>.figma-notes.md` at the `/build-component` stage. `/build-prototype`
+still may not add `--ai-*` tokens — recording a gap is not minting one.
+
+Escalation follows the same split: a prototype token gap is **not** escalated at all, and the Step 0
+hard stop (brief asks for a gallery of an existing component) goes to the **requester**, message-only,
+because a rewritten brief is not a design decision.
+
+### Why tier 1 survives as non-negotiable
+
+Re-tokenising does **not** make prototype token discipline redundant — it depends on it.
+`generate_figma_design` resolves `var(--ai-*)` to raw values during capture, and
+`figma-plugin-retokenise` rebinds them **by value matching only** (`inferredVariables`, then
+hex→variable and float→variable maps; ambiguous matches are skipped). So:
+
+- a value matching an existing token round-trips back to a proper binding;
+- a value with no matching token **stays raw in Figma permanently.**
+
+Re-tokenise repairs bindings lost in capture; it cannot invent tokens for novel values. Worth noting
+it has never actually been run on Event Builder or Seating Planner (~60 frames) — so the recovery
+step is both narrower than assumed and untested. **Suggested check:** run it once on Seating
+Planner's frames and measure what share binds. That number says how much latitude prototypes can
+safely have.
+
+---
+
 ## Remaining work
 
 **Blocking the first unattended run** — both outside this repo:
@@ -113,7 +158,9 @@ wanted. **So Phase 1 exists, but as "write into the existing cluster", not "buil
    2026-05-22); `shaz`'s key does not have it. Route via an admin key plus `auth_provision_agent` for
    the executor's own API key. Then give it check-in discipline or it shows permanently offline in
    `agent_teamtime_board`.
-2. **Name the design-decision owner** — a real actor handle for `needs-design-decision` blockers.
+2. **The design-decision owner is Mark Foster** (set 2026-07-31). Still needs the **assignable actor
+   id** to pass as `owner_id` — `team_list` ids are not assignable, so this must come from the hub
+   (question 5a).
 
 **Blocking the other-platform read leg, not the executor:** `design_kit` → 404 "design kit not
 generated (`scripts/generate_design_kit.py`)" and `design_components_list` → 404 "extract not
