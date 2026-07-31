@@ -10,6 +10,14 @@ Usage: `/build-prototype <description of the flow>`
 This is the **Code → Figma** direction. It is the opposite of `/build-component` (Figma → Code).
 No Figma source is needed — start from a written description and use existing components + tokens.
 
+**If this run was started by `/hub-job` (unattended):** every "STOP and ask the user" below — the
+Step 0 hard stop, the missing-token stop, the gradient stop — resolves through
+`.claude/commands/hub-job.md` § Step 3 — Escalation contract, because nobody is at the terminal.
+WIP-commit, report the question with the values found, raise it on the hub, mark the job blocked.
+Never downgrade a STOP to a best guess just because no one is available to answer it. Note also
+that prototypes **are** committed on `proto/*` branches in a hub job (never to `main`) — the next
+stage's agent cannot refine what exists only on one machine.
+
 **This process also applies to ad-hoc prototype builds** (e.g. user asks "build me a duration
 picker prototype" without invoking the skill). If you are building any prototype in
 `src/prototypes/`, follow this process — especially Steps 4–7 (Figma push).

@@ -6,6 +6,18 @@ Usage: `/build-component <Figma URL or node description>`
 
 ---
 
+## If this run was started by `/hub-job` (unattended)
+
+Every **"STOP and ask the user"** in this document assumes someone is at the terminal. When the run
+came from `/hub-job` there is nobody there, so each of those stops resolves through
+**`.claude/commands/hub-job.md` § Step 3 — Escalation contract**: WIP-commit, report the question
+with property name / Figma value / nearest tokens, raise it on the hub, mark the job blocked, exit.
+
+**Do not downgrade a STOP to a best guess because no one is available to answer it.** Every rule
+below applies identically in an unattended run — a blocked job is the correct outcome.
+
+---
+
 ## Source-of-truth rules (always apply)
 
 These are absolute. Violating any of them turns a clean component build into rework.
