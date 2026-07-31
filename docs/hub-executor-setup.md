@@ -1,7 +1,7 @@
-# Hub Executor Setup — `shaz` as the privileged executor
+# Hub Executor Setup — `Iris` as the privileged executor
 
 **Date:** 2026-07-31
-**Status:** executor side wired; hub side blocked on schema answers
+**Status:** executor side wired; hub side blocked on registering `Iris` + Mark's actor id
 **Companion doc:** [`hub-agent-integration.md`](hub-agent-integration.md) (the architecture)
 
 ---
@@ -9,7 +9,7 @@
 ## What was set up
 
 **`.claude/commands/hub-job.md`** — the executor entry point. Pre-flight gate (cwd, clean worktree,
-both MCP servers up, `npm run tokens`), hub intake via `session_init`/`my_tasks`, a dispatch table
+both MCP servers up, `npm run tokens`), hub intake via `session_init`/`task_list`, a dispatch table
 into `/build-prototype` and `/build-component`, branch discipline, Figma push rules,
 land-and-report, and hard limits (never `main`, never invent a token, never commit a credential).
 
@@ -41,7 +41,7 @@ Since `shaz`'s identity is credential-based (`session_init` / `confirm_agent_lin
 directory-based, moving its workspace here keeps the same hub identity. `claudeMain` holds no repo,
 no `CLAUDE.md` and no commands — only that one MCP server — so there is nothing to migrate.
 
-### Phase 1 may be unnecessary
+### Phase 1 may be unnecessary (superseded — see "The hub's design extract is a different design system")
 
 The hub already exposes `my_tasks` / `task_create` (job queue), `send_message` / `check_messages`
 (escalation channel), and `kb_read` (knowledge base). Those are the three things the architecture
@@ -59,7 +59,7 @@ in it assumes a schema any more. Three answers changed the command materially:
 **1. `my_tasks` cannot filter — use `task_list`.** `my_tasks` accepts only `limit`/`offset`/`view`
 (owner-or-delegate + `X-Agent-ID`, nothing else), so it would return every assigned task and force
 the command to guess which are design-system work. Intake is now
-`task_list(labels="design-system", involves="<ds-executor>", view="lean")` — server-side label
+`task_list(labels="design-system", involves="Iris", view="lean")` — server-side label
 filtering, and `involves` unions owner/delegate/lead/creator. `labels` is an **array on read, a
 comma-separated string on write**. In use today: `design` 41 tasks, `design-system` 5.
 
@@ -81,7 +81,7 @@ not by `thread_id`. So the executor cannot reply into a thread the requester nev
 mints `hub-job-<TASK-CODE>` itself and echoes it on every message. Messages are sent with
 `message_type="task"`, which protects them from auto-cleanup until `complete_task_message`.
 
-**5. A separate `ds-executor` identity is confirmed as the right call.** Intake keys off
+**5. A separate executor identity is confirmed as the right call** — named **`Iris`** (chosen 2026-07-31). Intake keys off
 `X-Agent-ID`, so a shared identity competes with `shaz`'s open tasks for one inbox; and tasks stamp
 `created_by_actor_id`/`owner_actor_id` separately, giving a two-actor trail per job for free.
 `agent_teamtime_log` accepts an explicit `agent_id`, but sessions are per-agent — interleaved stages
@@ -154,27 +154,88 @@ safely have.
 
 **Blocking the first unattended run** — both outside this repo:
 
-1. **Register the `ds-executor` identity.** `agent_register` needs admin scope (locked down
-   2026-05-22); `shaz`'s key does not have it. Route via an admin key plus `auth_provision_agent` for
-   the executor's own API key. Then give it check-in discipline or it shows permanently offline in
-   `agent_teamtime_board`.
+1. **Register the executor identity.** `agent_register` needs admin scope (locked down 2026-05-22);
+   `shaz`'s key does not have it. **Route: ask `server-claude` or Markus directly** — message 538381
+   from server-claude offers exactly this ("ping me or Markus and we'll verify/provision your key"),
+   then `auth_provision_agent` for the executor's own API key.
+   **Named `Iris`.** Fleet convention splits by owner: system-owned agents use
+   `<purpose>-<role>` (`support-agent`, `cron-scheduler`, `ci-suite-runner`, `server-watchdog`), while
+   person-owned working agents get names (`Ace`, `Metis`, `Diana`, `Dex`, `Aurora`, `Haku`, `Nova`,
+   `Shaz`). This is Mark's agent doing design work, so a name fits; `ds-executor` would have read as
+   infrastructure.
+   Liveness needs no heartbeat loop: `last_seen` updates passively on any API activity (throttled to
+   60s per agent), so a working job stays fresh. `agent_heartbeat(agent_id)` matters only across long
+   idle gaps, e.g. a job parked on a design decision. **But check out** — a reaper force-closes
+   sessions with `check_out_at IS NULL` and stale `last_seen` (`/hub-job` Step 5 now does this on every
+   exit path). Exact online/idle/offline cutoffs are still unknown.
 2. **The design-decision owner is Mark Foster** (set 2026-07-31). Still needs the **assignable actor
-   id** to pass as `owner_id` — `team_list` ids are not assignable, so this must come from the hub
-   (question 5a).
+   id** to pass as `task_create(owner_id=…)` — `team_list` ids are not assignable and `auth_me`
+   returns the *calling* identity, so neither yields it. Likely route: fetch any existing task Mark
+   owns and read `owner_actor_id` off it (tasks stamp that separately from `created_by_actor_id`).
+   Until it is known the executor can only message the requester, not file a blocker.
+   Lower urgency since the prototype-token-gap policy change — `needs-design-decision` tasks now
+   only originate from `/build-component` runs.
 
-**Blocking the other-platform read leg, not the executor:** `design_kit` → 404 "design kit not
-generated (`scripts/generate_design_kit.py`)" and `design_components_list` → 404 "extract not
-generated". Hub-side fix: `make extract-design-system`.
+---
 
-This executor is deliberately unaffected — it reads tokens and the component catalogue from its own
-checkout, never from the hub. A hub design-kit read should **not** be added as a fallback; the local
-checkout is the source of truth. But until those regenerate, spec agents on ChatGPT/Kimi have no
-machine-readable view of the design system, so stage 1 of the pipeline can't start.
+## The hub's design extract is a different design system (investigated 2026-07-31)
 
-**Worth investigating:** `design-system-extract` in the KB and `make extract-design-system` suggest an
-extract pipeline already exists. If it generates from this repo, the right Phase 1 is wiring this
-repo's CI to trigger that regeneration — cleaner and self-maintaining compared with hand-writing KB
-docs via `kb_step_create`.
+**An earlier version of this doc proposed wiring this repo's CI to trigger `make extract-design-system`.
+That was wrong — dropped.** Both hub scripts read the **Hub's own frontend**, not this repo:
+
+- `scripts/extract_design_system.py` — scans `frontend/src/components/**/*.tsx`, with curated
+  category/status in hand-maintained `frontend/src/design-system/meta.json`; outputs
+  `data/design-system-extract.json`.
+- `scripts/generate_design_kit.py` — `SOURCE = frontend/src/index.css`, whose own docstring says
+  "SOURCE OF TRUTH stays `frontend/src/index.css` (`@theme` = light, `.dark` = dark)".
+
+There is no snapshot or copy of this repo anywhere in that pipeline. The "Hub design system" is the Hub
+frontend's Tailwind CSS plus its React component tree, reflected back out. Triggering it from here
+would regenerate Hub tokens from Hub CSS — self-maintaining, but not maintaining anything we own.
+
+**So `design_kit` was never the right read surface for spec agents building against *this* design
+system.** Phase 0 stands and is now clearly correct: agents read this repo's GitHub Pages docs site and
+raw skill markdown. Any KB publication must be labelled unambiguously as the **Affino Design System**,
+or agents will conflate two different token sets with different names and values.
+
+**The 404s were probably not staleness.** Nothing schedules either script. The only invocation sites are
+`scripts/build-frontend.sh:92` (frontend build time, writing the gitignored runtime copy) and
+`scripts/check.sh:1253,1256` — both `--check` only, as CI gates. Nothing in CI *writes*
+`data/design_kit/`; it appears to be generated by hand. Shaz was on the AI1 dev box, which never ran
+`build-frontend.sh`, so neither artefact existed on that disk. Worth re-testing against hub-prod before
+treating it as fleet-wide. Also: **no `make extract-design-system` target exists in any Makefile** — the
+KB doc's command is drift.
+
+### Decision — the two systems stay separate (2026-07-31, Mark)
+
+**Resolved: no token coupling between this repo and the Hub.** They are two different frameworks
+serving two different audiences:
+
+- **The Affino Design System** (this repo — the name to use going forward, not "the Figma design
+  system") builds the **Affino Control Centre, AI, and display-side components and templates** for
+  Affino **products**. Client-facing.
+- **The Hub** is an **internal** tool — where agents, knowledge and tasks are linked. Not client-facing.
+  Affino Design System tokens will **not** be used there.
+
+So a shared token source has no consumer on the Hub side, and coupling them would create a maintenance
+obligation serving nothing. A mapping between the two remains possible as a **separate future project**,
+not part of this pipeline.
+
+**What this does not change:** Hub agents still need to *read* the Affino Design System to build
+prototypes for Affino products. Publishing ADS docs to the Hub KB is about **agent discovery**, not the
+Hub adopting the tokens — those are separate things and only the second is ruled out.
+
+### The live question this decision leaves open
+
+Affino runs **three** token systems: Hub UI (`frontend/src/index.css`), this repo's Figma→tokens
+pipeline, and production/deck brand. The KB doc `research-production-styling-framework-2026-07` already
+reaches this conclusion — that what's missing is "a shared SOURCE + METHOD + GOVERNANCE (Mark's Figma
+pipeline, under `mission-design-system`), not one universal token set" — and names Mark as owner.
+
+Hub UI is now **out of scope** (decision above). But two of those three systems — the Affino Design
+System and production/deck brand — are **both client-facing**, which is where a shared source actually
+matters. That, not the Hub, is the live governance question the research doc is pointing at.
+**Not in scope for this pipeline; flagged for a dedicated session.**
 
 ---
 

@@ -48,7 +48,7 @@ If any pre-flight check fails: do not start the job. Report the failure (§ Esca
 
 1. `session_init` — establish the hub session. Intake keys off session identity (`X-Agent-ID`), so
    the executor must run under its **own** agent identity, not the requester's (§ Configuration).
-2. **`task_list(labels="design-system", involves="<executor-agent>", view="lean")`** — do **not** use
+2. **`task_list(labels="design-system", involves="Iris", view="lean")`** — do **not** use
    `my_tasks` for intake. `my_tasks` accepts only `limit`/`offset`/`view`: it has no label filter, so
    it would return every assigned task and force this command to guess which are design-system work.
    `task_list` filters `labels` server-side, and `involves` unions owner/delegate/lead/creator.
@@ -175,6 +175,13 @@ plausible-looking component built on invented values.
      links it.
 4. Register outputs where the repo expects them: `docs/component-registry.md` for components,
    `docs/handover-manifest.json` + `HANDOVER.md` for anything mock (CLAUDE.md §12).
+5. **Check out of the hub session before exiting.** A reaper force-closes sessions where
+   `check_out_at IS NULL` and `last_seen` has gone stale, so a run that just stops leaves a session
+   to be killed and a misleading timeline in `agent_teamtime_session_detail`. Check out on **every**
+   exit path — completed, blocked, or pre-flight failure.
+   No separate heartbeat loop is needed while the job is working: `last_seen` updates passively on
+   any API activity (throttled to once per 60s per agent). `agent_heartbeat(agent_id)` matters only
+   across long idle gaps — e.g. a job parked waiting on a design decision.
 
 ---
 
@@ -184,8 +191,8 @@ Verified against the live Hub API 2026-07-31. Fill the placeholders before the f
 
 | Setting | Value |
 |---|---|
-| Executor agent identity | `<ds-executor>` — **must be its own identity**, not `shaz`'s |
-| Intake call | `task_list(labels="design-system", involves="<ds-executor>", view="lean")` |
+| Executor agent identity | **`Iris`** — **must be its own identity**, not `shaz`'s (registration pending) |
+| Intake call | `task_list(labels="design-system", involves="Iris", view="lean")` |
 | Job label | `design-system` (41 tasks carry `design`, 5 carry `design-system`) |
 | Blocker label | `design-system,needs-design-decision` (comma string on write; free-form, unvalidated) |
 | Design-decision owner | **Mark Foster** (Head of Design & Build) — actor id TBC, see `docs/hub-executor-setup.md`. A named person or agent; **no team target exists** |
@@ -194,7 +201,7 @@ Verified against the live Hub API 2026-07-31. Fill the placeholders before the f
 
 **Why the executor needs its own identity.** `task_list`/`check_messages` key off `X-Agent-ID`, so a
 shared identity means competing with `shaz`'s open tasks for one inbox. Tasks stamp
-`created_by_actor_id` and `owner_actor_id` separately, so requester=`shaz` / executor=`ds-executor`
+`created_by_actor_id` and `owner_actor_id` separately, so requester=`shaz` / executor=`Iris`
 yields a two-actor audit trail per job for free. `agent_teamtime_log` does accept an explicit
 `agent_id`, but sessions are per-agent — interleaved stages under one identity corrupt the timeline.
 
