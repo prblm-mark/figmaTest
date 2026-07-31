@@ -160,10 +160,19 @@ The executor side is wired; the hub side is not.
   bearer token lives in `~/.claude.json`, never in the repo — `.mcp.json` stays committed with only
   the Figma entry.
 
-**Revision to Phase 1:** because the hub already exposes `kb_read`, a separate Design System MCP
-server may be unnecessary. If DS docs can be published into the hub knowledge base, every
-other-platform agent reads them through a connector it already has. Confirm the KB write path before
-building any new server.
+**Phase 1 revised — confirmed 2026-07-31.** The hub KB has a write path
+(`kb_create` metadata → `kb_step_create` prose), so a separate Design System MCP server is
+unnecessary; other-platform agents read the DS through a connector they already have. There is no
+design-system namespace, so publishing means writing into the existing tag-and-slug cluster
+(`mission-design-system`, `kb-design-tokens-canon`, `design-system-extract`). Full schema and the
+remaining setup: [`hub-executor-setup.md`](hub-executor-setup.md).
+
+**Caveat:** the hub's two machine-readable design surfaces are currently 404 — `design_kit` and
+`design_components_list`, both awaiting `make extract-design-system`. That blocks the other-platform
+read leg (spec agents discovering the DS), not the executor, which reads its own checkout. The
+existence of `design-system-extract` + `make extract-design-system` suggests an extract pipeline
+already exists — if it generates from this repo, wiring this repo's CI to trigger it beats
+hand-writing KB docs.
 
 ---
 

@@ -46,12 +46,21 @@ If any pre-flight check fails: do not start the job. Report the failure (§ Esca
 
 ## Step 1 — Identity and intake
 
-1. `session_init` — establish the hub session.
-2. `my_tasks` (or `check_messages`) — list assigned work. With an explicit `<task-id>`, fetch that one.
+1. `session_init` — establish the hub session. Intake keys off session identity (`X-Agent-ID`), so
+   the executor must run under its **own** agent identity, not the requester's (§ Configuration).
+2. **`task_list(labels="design-system", involves="<executor-agent>", view="lean")`** — do **not** use
+   `my_tasks` for intake. `my_tasks` accepts only `limit`/`offset`/`view`: it has no label filter, so
+   it would return every assigned task and force this command to guess which are design-system work.
+   `task_list` filters `labels` server-side, and `involves` unions owner/delegate/lead/creator.
+   With an explicit `<task-id>`, fetch that one directly.
 3. Select **one** job. Never run two jobs in a single session — one job, one branch, one report.
 4. Echo the job back before acting: id, type, requester, and the brief in full. If the brief is
    ambiguous or missing the information the target skill needs, that is an escalation (§ Escalation),
    not something to fill in with assumptions.
+5. **Mint the correlation id now:** `hub-job-<TASK-CODE>`. Every message this job sends carries it as
+   `thread_id`. See § Configuration for why it is a label, not a queue.
+
+`labels` is an **array on read** and a **comma-separated string on write** — do not send an array.
 
 ---
 
@@ -92,8 +101,18 @@ When any STOP in any skill fires, it resolves here:
      `--ai-*` tokens
    - the options as the skill lists them (add a token / approve a `calc()` / approve a primitive / …)
    - the branch name and commit SHA
-4. **Raise it on the hub:** `send_message` to the requester, and `task_create` a blocker task for the
-   design owner labelled `needs-design-decision`, referencing the job id and branch.
+4. **Raise it on the hub:**
+   - `send_message(to=<requester>, thread_id="hub-job-<TASK-CODE>", message_type="task")`.
+     `message_type="task"` matters: task messages are protected from auto-cleanup until closed with
+     `complete_task_message`, so a job handshake will not be reaped mid-decision.
+   - `task_create(labels="design-system,needs-design-decision", owner_id=<actor-handle>, …)` with
+     `originating_task_code` set to the job's task code.
+   - **There is no team or role target.** Assignment is actor-handle only (`owner_id` / `delegate_id`
+     / `lead_id`, resolving to a person or agent). `team_list` is a flat read-only directory whose
+     ids are not assignable. So the design owner must be a **named actor** configured up front
+     (§ Configuration) — if that handle is unset, escalate to the requester rather than filing a
+     blocker task nobody owns. A messaging group (`group_send_message`) can notify a team in
+     parallel, but it is comms-only and cannot own the blocker.
 5. **Mark the job blocked and exit.** Never mark a blocked job complete. Never open a PR from a
    blocked branch.
 6. **Batch where possible.** If several open questions are already known, send them as one
@@ -126,9 +145,77 @@ plausible-looking component built on invented values.
      only exists on one machine. They still never reach `main`.
 2. Open a PR with: the job id, the brief, screens/components produced, Figma node URLs, the token
    validation result, and anything deferred.
-3. Report completion to the hub (`send_message` + task status) with the PR URL and Figma URLs.
+3. Report completion to the hub with the PR URL and Figma URLs:
+   - `send_message(to=<requester>, thread_id="hub-job-<TASK-CODE>", message_type="task")`, then
+     `complete_task_message` once acknowledged.
+   - **There is no PR-URL field on a task** (no `pr_url` / `pull_request_url` anywhere in the hub
+     API). Put the URL in the task **description** text and a `task_comment` — never rely on
+     `workspace`, which holds file/dir paths only, or on `execution_mode: 'repo'`, which implies a
+     branch but exposes no branch or PR handle. If the job has an Affino forum thread, `thread_code`
+     links it.
 4. Register outputs where the repo expects them: `docs/component-registry.md` for components,
    `docs/handover-manifest.json` + `HANDOVER.md` for anything mock (CLAUDE.md §12).
+
+---
+
+## Configuration — resolved hub schema
+
+Verified against the live Hub API 2026-07-31. Fill the placeholders before the first unattended run.
+
+| Setting | Value |
+|---|---|
+| Executor agent identity | `<ds-executor>` — **must be its own identity**, not `shaz`'s |
+| Intake call | `task_list(labels="design-system", involves="<ds-executor>", view="lean")` |
+| Job label | `design-system` (41 tasks carry `design`, 5 carry `design-system`) |
+| Blocker label | `design-system,needs-design-decision` (comma string on write; free-form, unvalidated) |
+| Design-decision owner | `<actor-handle>` — a named person or agent; **no team target exists** |
+| Correlation id | `hub-job-<TASK-CODE>` as `thread_id`, minted by this command |
+| Message type | `task` (survives auto-cleanup; close with `complete_task_message`) |
+
+**Why the executor needs its own identity.** `task_list`/`check_messages` key off `X-Agent-ID`, so a
+shared identity means competing with `shaz`'s open tasks for one inbox. Tasks stamp
+`created_by_actor_id` and `owner_actor_id` separately, so requester=`shaz` / executor=`ds-executor`
+yields a two-actor audit trail per job for free. `agent_teamtime_log` does accept an explicit
+`agent_id`, but sessions are per-agent — interleaved stages under one identity corrupt the timeline.
+
+Two setup costs, both outside this repo: `agent_register` needs **admin scope** (locked down
+2026-05-22), which `shaz`'s key does not have — route via an admin key plus `auth_provision_agent`
+for the executor's own API key. And the new identity needs its own check-in discipline or it shows
+permanently offline in `agent_teamtime_board`.
+
+**`thread_id` is a correlation label, not a queue.** It is free-form (≤256 chars), opt-in on both
+ends, and echoed only when non-null — most live messages have none. `message_thread` retrieves by
+**partner**, not by `thread_id`. Never design intake around reading a thread back.
+
+### Publishing design-system docs to the hub KB
+
+Two-step — the split is not optional:
+
+1. `kb_create(slug, title, …)` — **metadata only.** A body is rejected here and on `kb_update`
+   ("Body is auto-assembled from steps"). Takes `originating_task_code` (`TASK-NNNNN`) and
+   `idempotency_key` (24h replay-safe), both of which a job pipeline should always set.
+2. `kb_step_create(slug, body, heading, position)` — the actual prose, as ordered sections.
+
+`doc_type` (Diátaxis) **and** `template_slug` are required for non-exempt categories — the server
+400s without them. Exempt categories: `note`, `scratch`, `draft`, `comment`, `brain-backup`, `test`.
+
+There is **no design-system namespace**: `kb_categories` returns 51 in-use values with none matching
+(nearest: `frontend`, `reference`, `spec`, `architecture`, `hub-plan`), and `kb_folders_list(q="design")`
+returns 0 folders. What exists is a tag-and-slug cluster to write into — tag `design-system`, slug
+`…-design-system-…` — alongside `mission-design-system`, `kb-design-tokens-canon`,
+`design-system-extract`, `plan-design-system-quality-process-2026-07`. Use `kb_folder_create` only if
+a real namespace is wanted.
+
+### Known hub-side outage (does not block this command)
+
+`design_kit` → 404 "design kit not generated (`scripts/generate_design_kit.py`)" and
+`design_components_list` → 404 "extract not generated". Fix is hub-side: `make extract-design-system`.
+
+**This executor is unaffected**, and deliberately so: it reads tokens and the component catalogue
+from its **own checkout** (`css/tokens.css` after `npm run tokens`, `src/components/`,
+`docs/tokens-reference.md`) — never from the hub. Those 404s block the *other-platform* read leg
+(spec agents on ChatGPT/Kimi discovering the design system), not job execution. Do not add a hub
+design-kit read to this command as a fallback; the local checkout is the source of truth.
 
 ---
 
