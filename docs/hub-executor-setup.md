@@ -150,6 +150,41 @@ safely have.
 
 ---
 
+## Decision — publish the design system to the Hub KB (2026-07-31, Mark)
+
+**Confirmed: yes.** Hub agents need to read the Affino Design System to build prototypes for Affino
+products, so Phase 1 goes ahead as KB publication. This is **agent discovery only** — it does not mean
+the Hub adopts these tokens (ruled out above).
+
+**What to publish**, smallest useful set first:
+
+1. **A disambiguation page** — "this is the Affino Design System (client-facing products), *not* the
+   Hub's own UI design system", with the GitHub Pages URL. This one matters most: two token sets with
+   different names and values are in play, and an agent that conflates them will produce confident
+   nonsense.
+2. `docs/tokens-reference.md` — the token tables. The thing agents most need.
+3. `docs/component-registry.md` — what already exists, so briefs don't ask for rebuilds.
+4. `.claude/commands/build-prototype.md` — the how-to, so agents draft briefs that fit the workflow.
+5. The target-surface → token-mode mapping (above).
+
+**Publish by script, not by hand.** A hand-maintained copy of a token table drifts, and a *stale* token
+table is worse than no table — agents would build confidently against wrong values. So this wants a
+small publisher in this repo (reading `docs/*.md`, writing via the hub API, idempotent), invoked by
+`Iris` or from CI on merge to `main`. Note this is *our* publisher — the hub's own
+`extract_design_system.py` reads the Hub frontend and will never see this repo.
+
+**Blocking unknown — the update path.** `kb_create` is metadata-only and `kb_step_create` adds prose as
+ordered sections. What is not yet known is how to *re-publish*: is there a `kb_step_update` /
+`kb_step_delete`, a way to replace a doc's steps wholesale, or does refreshing mean delete-and-recreate?
+Publishing once is easy; staying current is the whole point, so this decides the publisher's design.
+Also still open: the `template_slug` list (required alongside `doc_type` for non-exempt categories).
+
+Provisional metadata: category `reference`, `doc_type: reference` (Diátaxis) for the token/registry
+pages and `how-to` for the skill text, tag `design-system`, and slugs that cannot be mistaken for the
+Hub's own docs — e.g. `affino-design-system-tokens`, never anything resembling `design-system-extract`.
+
+---
+
 ## Remaining work
 
 **Blocking the first unattended run** — both outside this repo:
@@ -239,7 +274,7 @@ obligation serving nothing. A mapping between the two remains possible as a **se
 not part of this pipeline.
 
 **What this does not change:** Hub agents still need to *read* the Affino Design System to build
-prototypes for Affino products. Publishing ADS docs to the Hub KB is about **agent discovery**, not the
+prototypes for Affino products. Publishing Affino Design System docs to the Hub KB is about **agent discovery**, not the
 Hub adopting the tokens — those are separate things and only the second is ruled out.
 
 ### The live question this decision leaves open

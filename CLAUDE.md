@@ -31,7 +31,7 @@ This file is read by Claude Code at the start of every session. All rules here a
 
 ## 1. Project Overview
 
-This is the **Affino Design System** (ADS) — the design system for Affino's client-facing
+This is the **Affino Design System** — the design system for Affino's client-facing
 products: the **Control Centre**, **AI**, and **display-side** components and templates.
 Designers work in Figma; Claude Code turns Figma components into production HTML/CSS using
 **only the design tokens defined below**.
