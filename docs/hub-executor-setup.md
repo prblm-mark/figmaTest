@@ -150,6 +150,27 @@ safely have.
 
 ---
 
+## Decision — the job label is `ads-job` (2026-07-31, Mark)
+
+Intake filters on **`ads-job`**, a new dedicated label meaning "the executor can run this".
+
+Not `design` (41 tasks) — a *discipline* label covering visual design work unrelated to this repo, so
+the executor would pull jobs it cannot execute, and its failure mode for an unexecutable job is an
+escalation, turning a broad label directly into noise in the design owner's queue. Not `design-system`
+(5 tasks) either: those read as *consumers* of the design system — "Hub Apps — detail page…",
+"Calendar UX standardisation" — so on its first run the executor would try to build TASK-331242.
+`design-system` may still be added alongside as a topical tag for humans browsing.
+
+**Blocker tasks must never carry `ads-job`.** It is the intake filter, so an escalation labelled with it
+would be re-ingested as new work on the next run and the executor would loop on its own blockers.
+Blockers use `design-system,needs-design-decision`.
+
+**Still open:** does `task_list(labels="a,b")` treat the comma as AND or OR? If AND, filtering on
+`ads-job,design-system` is precise; if OR, it is worse than either alone and intake must stay on
+`ads-job` only.
+
+---
+
 ## Decision — publish the design system to the Hub KB (2026-07-31, Mark)
 
 **Confirmed: yes.** Hub agents need to read the Affino Design System to build prototypes for Affino

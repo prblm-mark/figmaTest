@@ -48,7 +48,7 @@ If any pre-flight check fails: do not start the job. Report the failure (§ Esca
 
 1. `session_init` — establish the hub session. Intake keys off session identity (`X-Agent-ID`), so
    the executor must run under its **own** agent identity, not the requester's (§ Configuration).
-2. **`task_list(labels="design-system", involves="Iris", view="lean")`** — do **not** use
+2. **`task_list(labels="ads-job", involves="Iris", view="lean")`** — do **not** use
    `my_tasks` for intake. `my_tasks` accepts only `limit`/`offset`/`view`: it has no label filter, so
    it would return every assigned task and force this command to guess which are design-system work.
    `task_list` filters `labels` server-side, and `involves` unions owner/delegate/lead/creator.
@@ -131,7 +131,10 @@ resolves here:
      `message_type="task"` matters: task messages are protected from auto-cleanup until closed with
      `complete_task_message`, so a job handshake will not be reaped mid-decision.
    - `task_create(labels="design-system,needs-design-decision", owner_id=<actor-handle>, …)` with
-     `originating_task_code` set to the job's task code. **Only for genuine design decisions** —
+     `originating_task_code` set to the job's task code.
+     **Never add `ads-job` to a blocker** — that is the intake filter, so a blocker carrying it would
+     be re-ingested as new work on the next run, and the executor would loop on its own escalations.
+     **Only for genuine design decisions** —
      i.e. `/build-component` stops. A `/build-prototype` Step 0 stop is message-only: the fix is a
      rewritten brief, so filing a design-decision task would put a brief-quality problem in the
      design owner's queue.
@@ -204,9 +207,9 @@ Verified against the live Hub API 2026-07-31. Fill the placeholders before the f
 | Setting | Value |
 |---|---|
 | Executor agent identity | **`Iris`** — **must be its own identity**, not `shaz`'s (registration pending) |
-| Intake call | `task_list(labels="design-system", involves="Iris", view="lean")` |
-| Job label | `design-system` (41 tasks carry `design`, 5 carry `design-system`) |
-| Blocker label | `design-system,needs-design-decision` (comma string on write; free-form, unvalidated) |
+| Intake call | `task_list(labels="ads-job", involves="Iris", view="lean")` |
+| Job label | **`ads-job`** — the executable marker. Not `design-system` (whose 5 existing tasks are *consumers* of the design system, not build jobs) and not `design` (41 tasks, a discipline label). `design-system` may be added alongside as a topical tag. |
+| Blocker label | `design-system,needs-design-decision` — **never `ads-job`** (see below). Comma string on write; free-form, unvalidated. |
 | Design-decision owner | **Mark Foster** (Head of Design & Build) — actor id TBC, see `docs/hub-executor-setup.md`. A named person or agent; **no team target exists** |
 | Correlation id | `hub-job-<TASK-CODE>` as `thread_id`, minted by this command |
 | Message type | `task` (survives auto-cleanup; close with `complete_task_message`) |
