@@ -194,15 +194,71 @@ small publisher in this repo (reading `docs/*.md`, writing via the hub API, idem
 `Iris` or from CI on merge to `main`. Note this is *our* publisher — the hub's own
 `extract_design_system.py` reads the Hub frontend and will never see this repo.
 
-**Blocking unknown — the update path.** `kb_create` is metadata-only and `kb_step_create` adds prose as
-ordered sections. What is not yet known is how to *re-publish*: is there a `kb_step_update` /
-`kb_step_delete`, a way to replace a doc's steps wholesale, or does refreshing mean delete-and-recreate?
-Publishing once is easy; staying current is the whole point, so this decides the publisher's design.
-Also still open: the `template_slug` list (required alongside `doc_type` for non-exempt categories).
+### Update path — resolved 2026-07-31
 
-Provisional metadata: category `reference`, `doc_type: reference` (Diátaxis) for the token/registry
-pages and `how-to` for the skill text, tag `design-system`, and slugs that cannot be mistaken for the
-Hub's own docs — e.g. `affino-design-system-tokens`, never anything resembling `design-system-extract`.
+There is a full step-mutation surface, so refreshing is **list → diff → batch-update**, never
+delete-and-recreate. Step ids are stable (`design-system-extract`'s six steps are still 71312–71317
+from creation on 2026-05-25, unchanged through version 2).
+
+| Tool | Purpose |
+|---|---|
+| `kb_steps_list(slug, view='lean')` | id + sort_order + heading + body_preview (no full bodies) |
+| `kb_steps_batch_update(slug, updates[])` | ≤50 steps, one transaction, all-or-nothing |
+| `kb_step_update(slug, step_id, …)` | overwrite one section in place; auto-syncs the doc body |
+| `kb_step_delete(slug, step_id)` | delete, renumber remaining, auto-sync |
+| `kb_steps_create_batch` / `kb_steps_reorder` | bulk append / re-sequence |
+
+**Three constraints that dictate the publisher's design:**
+
+1. **Batching is mandatory, not an optimisation.** A loop-detector blocks 5+ same-pattern calls, so a
+   publisher iterating `kb_step_update` over six sections is killed on the fifth. Use
+   `kb_steps_batch_update`.
+2. **Step writes have no idempotency key** (only `kb_create` does, 24h). So the publisher must be
+   **reconcile-based** — read `kb_steps_list`, match on heading, update by id. An append-based re-run
+   duplicates every section.
+3. **Versioning is free.** `kb_update` snapshots the previous version and takes `change_summary`;
+   `kb_doc_versions` / `kb_doc_diff` / `kb_rollback` all exist. A scripted publisher gets an audit
+   trail per run for nothing.
+
+### Classification — resolved 2026-07-31
+
+`doc_type` is a **closed set**: `tutorial` | `how-to` | `reference` | `explanation`.
+
+`template_slug` is **not** constrained by category, but two other mechanisms bite:
+
+- **Slug prefix forces the template**, overriding any choice — `plan-`, `research-`, `process-`,
+  `runbook-`, `architecture-`, `help-`, `affino-help-`, `tech-`, `faq-`, `affino-faq-`. Miss it and you
+  get `shaped_slug_classification_required`. An anti-laundering guard blocks dodging via `draft-`,
+  `note-`, `wip-`, `tmp-` prefixes.
+- For `category=reference` with an unshaped slug, any template is accepted.
+
+**Template: `template-codebase-patterns`.** Its own summary describes this exact case — "the canonical
+source is the repo file, the KB copy is a synced mirror … Guidance-only — it carries no enforced step
+headings, so labelling a mirror doc with it adds zero conformance burden". `template-architecture` (91
+consumers) is the fallback if enforced structure is ever wanted. Do **not** copy
+`design-system-extract`'s `template-reference`: it is absent from `kb_templates_list`, so presumably
+deprecated — the validator simply doesn't check that templates exist.
+
+**Correction to earlier notes in this doc:** `note` and `draft` are **not** classification-exempt.
+`EXEMPT_CATEGORIES` is only `{scratch, comment, brain-backup, test}`; the `kb_create` docstring listing
+note/draft is stale (a code comment records them being dropped). The "use an exempt category to skip the
+requirement" escape hatch does not exist.
+
+### The doc set
+
+| Source in this repo | KB slug | category | doc_type |
+|---|---|---|---|
+| *(new, written for the KB)* disambiguation + surface/mode map | `affino-design-system-overview` | reference | reference |
+| `docs/tokens-reference.md` | `affino-design-system-tokens` | reference | reference |
+| `docs/component-registry.md` | `affino-design-system-components` | reference | reference |
+| `.claude/commands/build-prototype.md` | `affino-design-system-prototype-workflow` | reference | how-to |
+
+All tagged `design-system`. None of these slugs hit a shaped prefix. Never use a slug resembling
+`design-system-extract` — that is the Hub's own, different design system.
+
+**Use `review_interval_days` as a deliberate drift alarm.** `design-system-extract` currently reports
+`is_stale: true` at 67.3 days against a 14-day interval, which is exactly how the extract pipeline's
+dormancy became visible. Set an interval on our docs so an unpublished repo change surfaces the same way.
 
 ---
 
