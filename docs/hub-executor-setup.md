@@ -181,6 +181,25 @@ half-labelled and invisible. Two consequences of substring matching to respect:
 
 ---
 
+## Two traps found while filing the registration request (2026-07-31)
+
+**`owner_type` is not a reliable person/agent discriminator — use `owner_actor_type`.** A task assigned
+to `server-claude` came back with `owner_type: "person"` while `owner_actor_type` was correctly `"ai"`
+and `owner_id_display` was `"SC"`. The assignment itself was right; `owner_type` is a derived column
+with a quirk consistent with the person/agent resolution in `task_sync.py`. Since this repo's escalation
+contract already turns on a person/agent distinction (assign to `Mark`, notify `shaz`), do not verify a
+blocker landed correctly by reading `owner_type`.
+
+**Labels are routing keys, not tags — never add one for findability.** The registration request was
+filed with `agent-registration` only, deliberately *without* `design-system`. Because label filtering is
+case-insensitive substring matching, tagging an admin request `design-system` would make it surface in
+any future view filtering on that label alone — and this repo's own blocker label is
+`design-system,needs-design-decision`, so "all design-system work" would have shown an admin task as
+design work. Intake on `ads-job` alone would not have caught it either way; the point is the general
+rule. Once a label is a filter input, adding it has functional consequences, not just cosmetic ones.
+
+---
+
 ## Decision — publish the design system to the Hub KB (2026-07-31, Mark)
 
 **Confirmed: yes.** Hub agents need to read the Affino Design System to build prototypes for Affino
