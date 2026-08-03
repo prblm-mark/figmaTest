@@ -46,8 +46,10 @@ If any pre-flight check fails: do not start the job. Report the failure (§ Esca
 
 ## Step 1 — Identity and intake
 
-1. `session_init` — establish the hub session. Intake keys off session identity (`X-Agent-ID`), so
-   the executor must run under its **own** agent identity, not the requester's (§ Configuration).
+1. `session_init` — establish the hub session. **Call it bare: the `agent_id` parameter was removed
+   2026-08-02** and passing it now errors at the tool boundary. Identity derives from the calling key,
+   which makes § Configuration's point structural rather than advisory — the executor *is* whatever key
+   it holds, so it must run under its own key, not the requester's.
 2. **`task_list(labels="ads-job", involves="Iris", view="lean")`** — do **not** use
    `my_tasks` for intake. `my_tasks` accepts only `limit`/`offset`/`view`: it has no label filter, so
    it would return every assigned task and force this command to guess which are design-system work.
@@ -145,6 +147,23 @@ resolves here:
      `complete_task_message`, so a job handshake will not be reaped mid-decision.
    - `task_create(labels="design-system,needs-design-decision", owner_id="Mark", …)` with
      `originating_task_code` set to the job's task code.
+   - **Make the blocker title unique, and handle the duplicate response.** Since 2026-08-02 the
+     duplicate-title check fires for real callers (it used to be skipped as a side effect of how
+     `created_by` was passed). A same-title task created by you within 30 days now returns
+     **200 with `duplicate_warning`** and the existing task under `existing_task` — **no top-level
+     `code`**. Reading `code` off that response yields nothing, so the blocker looks filed and isn't
+     trackable. Two defences, use both:
+     - Put the job's task code *and* the specific question in the title — "TASK-NNNNN — CheckoutCard:
+       no token for 10px footer gap" — never a generic "Design decision needed".
+     - Pass `skip_duplicate_check: true` when a repeat is genuinely intended, rather than relying on
+       title shape.
+     Always read the response: if it came back with `duplicate_warning`, resolve the code from
+     `existing_task` and say so in the report rather than treating the create as fresh.
+   - **`created_by` is derived from the calling key** (same change) — do not pass it. A `created_by`
+     in the body is ignored and logged. `owner_id` / `delegate_id` / `lead_id` are unaffected: who
+     *did* this derives from the key, who *should do* it stays a parameter. Related: a typo'd
+     `owner_id` used to mint a ghost actor and return 201; it is now a strict lookup returning 400, so
+     `owner_id="Mark"` must be exactly cased.
    - **Assignment and delivery diverge — do both, or the blocker is never seen.**
      `owner_id="Mark"` puts the task on Mark's board, but `resolve_recipient("Mark")` returns
      `{resolved_id: "shaz", type: "agent"}` — a message addressed to his name routes to his *agent*,
