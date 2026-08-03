@@ -172,10 +172,32 @@ Note this answers SC's request for "the file key and page" with a **page in the 
 not a separate Affino Control Centre file — consistent with where prototypes have always gone. If SC
 expected a distinct CC file, that needs saying explicitly.
 
-**Still open:** the frame naming convention and the stale-node cleanup rule. Recommendation on record:
-stop relying on title replacement (it demonstrably does not replace — one session minted ~20 new nodes
-instead), use task-code-prefixed unique names, suffix superseded sets, and log every created node id so
-cleanup is scriptable rather than done by eye.
+### Frame naming — decided 2026-08-03
+
+```
+<TASK-CODE> — <Prototype> — <screen> — v<n>
+e.g.  TASK-12345 — CheckoutFlow — step-2 — v3
+```
+
+**Unique names are a safety mechanism, not tidiness.** Frame names come from the document `<title>`, and
+title identity is neither a reliable update mechanism nor a reliable hazard — all three behaviours have
+been observed with byte-identical titles:
+
+| Date | Behaviour |
+|---|---|
+| 2026-07-27 | a second capture at another viewport **silently destroyed** 4 existing frames |
+| 2026-07-29 | re-captures replaced their frames cleanly, as intended |
+| 2026-07-31 | ~20 re-captures each minted a **new** node, replacing nothing |
+
+`generate_figma_design` exposes no control over this — it takes only `fileKey`, `nodeId` and
+`captureId`, and `nodeId` only chooses the page to append under. `use_figma` is the documented path for
+updating something already in Figma.
+
+**So: amended pushes do not replace originals, by policy as well as by mechanism.** Bump `v<n>`; the
+highest version is current. Marking the old one superseded (`[superseded] …` or moving it to the **Spec
+Team Archive** page) is a manual step, since capture cannot rename or move existing nodes. **Nothing is
+deleted automatically** — a designer's in-Figma edits exist nowhere else, so an automated replace could
+destroy the only copy of reviewed work. Deletion is a deliberate human act using the logged node ids.
 
 ---
 

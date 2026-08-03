@@ -207,7 +207,8 @@ never merged to `main` — same intent, workable mechanism.
 
 ### 3. Figma repeat-push duplicates
 
-The 2026-07-31 session minted ~20 new nodes instead of replacing frames with matching titles. An
+Frame naming is a safety mechanism: identical `<title>`s have both silently destroyed existing frames
+(2026-07-27) and appended ~20 duplicates (2026-07-31), with no control over which. An
 automated pipeline will litter the company file fast. Pin explicit file keys per stage and settle a
 naming + stale-node cleanup convention before `shaz` is allowed to push unattended.
 

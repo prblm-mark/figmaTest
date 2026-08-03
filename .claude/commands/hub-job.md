@@ -190,9 +190,36 @@ plausible-looking component built on invented values.
   working area; automated output landing there makes reviewed work indistinguishable from incoming
   drafts. Note the colon: Figma URLs write the page as `?node-id=3273-4346`, the API wants
   `3273:4346`.
-- **Expect duplicates, and record them.** Re-pushing a frame with an unchanged `<title>` does **not**
-  replace the existing node — the 2026-07-31 session minted ~20 new nodes this way. Log every node
-  id created in the completion report so stale ones can be cleaned up. Do not loop on push retries.
+- **Give every push a unique, versioned frame name. This is a safety rule, not a tidiness one.**
+
+  ```
+  <TASK-CODE> — <Prototype> — <screen> — v<n>
+  e.g.  TASK-12345 — CheckoutFlow — step-2 — v3
+  ```
+
+  Frame names come from each page's document `<title>`, and **title identity is neither a reliable
+  update mechanism nor a reliable hazard.** Observed behaviour with byte-identical titles:
+  - 2026-07-27 — a second capture at a different viewport **silently destroyed** four existing
+    frames. Nothing deleted them explicitly.
+  - 2026-07-29 — re-captures replaced their frames cleanly, as intended.
+  - 2026-07-31 — ~20 re-captures each minted a **new** node, replacing nothing.
+
+  The tool surface offers no control over this: `generate_figma_design` takes only `fileKey`,
+  `nodeId` and `captureId`, and `nodeId` merely says which page to append under. So a unique name per
+  push is the only thing standing between an amended prototype and the silent deletion of whatever
+  was there — including edits a designer made in Figma that exist nowhere else.
+
+- **Never rely on replacement to update a frame, and never assume it won't happen.** If a frame
+  genuinely must be replaced, do it deliberately in Figma (rename or delete the old node first), or
+  use `use_figma`, which is the documented path for updating something already in Figma.
+
+- **Bump the version, don't reuse it.** The highest `v<n>` is current. Superseding a version is a
+  *marking* step, never a deletion: prefix the old frame `[superseded]` or move it to the
+  **Spec Team Archive** page. Capture cannot move or rename existing nodes, so this is a manual or
+  `use_figma` step — the version number is what carries "which is current" in the meantime.
+
+- **Log every created node id** in the completion report and PR body, so cleanup is scriptable rather
+  than done by eye. Do not loop on push retries.
 
 ---
 

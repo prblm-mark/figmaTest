@@ -217,6 +217,27 @@ incoming drafts.
 hyphen; `generate_figma_design` takes `3273:4346` with a colon. Copying the hyphenated form straight
 out of the URL bar is the easy mistake here.
 
+**Every capture needs a unique, versioned `<title>` — this protects existing frames.** Frame names
+come from the document `<title>`, and title identity is **neither a reliable update mechanism nor a
+reliable hazard**: on 2026-07-27 a second capture at another viewport *silently destroyed* four
+existing frames; on 2026-07-29 re-captures cleanly replaced theirs; on 2026-07-31 ~20 re-captures each
+minted a new node. The tool exposes no control over which happens.
+
+So name every screen distinctly, including a version:
+
+```
+<TASK-CODE> — <Prototype> — <screen> — v<n>
+e.g.  TASK-12345 — CheckoutFlow — step-2 — v3
+```
+
+Bump `v<n>` on every re-push; never reuse a title to "update in place". The highest version is
+current. Marking the previous one superseded (`[superseded] …`, or moving it to the **Spec Team
+Archive** page) is a separate manual step — capture cannot rename or move existing nodes. **Nothing
+is ever deleted automatically**, because a designer's in-Figma edits exist nowhere else.
+
+For a variant of the same screen (mobile/desktop, light/dark), the titles must differ too — that is
+exactly what destroyed the 27 July frames. Suffix the `<title>` (`… · Mobile`) and revert afterwards.
+
 If a brief does not make clear which of the two applies, treat it as Mark's page only when this
 command was invoked interactively. A Hub-dispatched job always targets **Spec Team** — see
 `.claude/commands/hub-job.md` § Step 4.
