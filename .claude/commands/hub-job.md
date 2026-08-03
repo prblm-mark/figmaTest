@@ -213,8 +213,7 @@ plausible-looking component built on invented values.
    older than 120 minutes (scan runs every 5 min), so a run that just stops still gets closed — but by
    the reaper, at the wrong time, leaving a misleading timeline in `agent_teamtime_session_detail`.
 
-   Board status is a **stored enum**, not something derived from activity: `agent_sessions.status` is
-   one of `online | working | idle | error | offline`, and only ever changes because something writes
+   Board status is a **stored enum**, not something derived from activity: it is one of `online | working | idle | error | offline`, and only ever changes because something writes
    it. `agent_teamtime_check_in` writes `online`, check-out writes `offline`, and
    `agent_teamtime_status` sets any of the five directly. So use it: `working` while building, `idle`
    when parked on a design decision, `error` on a pre-flight failure. A board that reflects reality is
@@ -238,7 +237,7 @@ Verified against the live Hub API 2026-07-31. Fill the placeholders before the f
 | Intake call | `task_list(labels="ads-job", involves="Iris", view="lean")` |
 | Job label | **`ads-job`** — the executable marker. Not `design-system` (whose 5 existing tasks are *consumers* of the design system, not build jobs) and not `design` (41 tasks, a discipline label). `design-system` may be added alongside as a topical tag. |
 | Blocker label | `design-system,needs-design-decision` — **never `ads-job`** (see below). Comma string on write; free-form, unvalidated. |
-| Design-decision owner | `owner_id="Mark"` — the **handle string, exact casing**. The server resolves it to actor 28781 with `owner_type="person"`; never pass the numeric id. Handles are not uniformly cased (`Mark`, `Rao` capitalised; `susan`, `quang`, `julius` not). |
+| Design-decision owner | `owner_id="Mark"` — the **handle string, exact casing**. The server resolves it to his actor record with `owner_type="person"`; never pass the numeric id. Handles are not uniformly cased (some capitalised, some not). |
 | Blocker notification | **also `send_message` to `shaz`** — see "assignment and delivery diverge" below |
 | Correlation id | `hub-job-<TASK-CODE>` as `thread_id`, minted by this command |
 | Message type | `task` (survives auto-cleanup; close with `complete_task_message`) |
@@ -249,8 +248,7 @@ shared identity means competing with `shaz`'s open tasks for one inbox. Tasks st
 yields a two-actor audit trail per job for free. `agent_teamtime_log` does accept an explicit
 `agent_id`, but sessions are per-agent — interleaved stages under one identity corrupt the timeline.
 
-Two setup costs, both outside this repo: `agent_register` needs **admin scope** (locked down
-2026-05-22), which `shaz`'s key does not have — route via an admin key plus `auth_provision_agent`
+Two setup costs, both outside this repo: `agent_register` needs **admin scope** (locked down), which `shaz`'s key does not have — route via an admin key plus `auth_provision_agent`
 for the executor's own API key. And the new identity needs its own check-in discipline or it shows
 permanently offline in `agent_teamtime_board`.
 
@@ -279,7 +277,7 @@ a real namespace is wanted.
 
 ### Known hub-side outage (does not block this command)
 
-`design_kit` → 404 "design kit not generated (`scripts/generate_design_kit.py`)" and
+`design_kit` → 404 "design kit not generated (the Hub's design-kit generator)" and
 `design_components_list` → 404 "extract not generated". Fix is hub-side: `make extract-design-system`.
 
 **This executor is unaffected**, and deliberately so: it reads tokens and the component catalogue

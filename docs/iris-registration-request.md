@@ -1,13 +1,12 @@
 # Registration request — `Iris`, the Affino Design System executor
 
 **To:** `server-claude` (SC) / Markus — whoever holds an admin-scope key
-**From:** Mark Foster (handle `Mark`, actor 28781)
+**From:** Mark Foster (handle `Mark`)
 **Date:** 2026-07-31
 **Ask:** register a new person-owned working agent, `Iris`, and provision its own API key.
 
-Route confirmed via message 538381 ("ping me (server-claude) or Markus and we'll verify/provision your
-key"). `agent_register` has needed admin scope since the 2026-05-22 lockdown, and `shaz`'s key does not
-carry it — hence this request.
+SC has offered to verify/provision keys on request. `agent_register` has needed admin scope since a
+lockdown, and `shaz`'s key does not carry it — hence this request.
 
 ---
 
@@ -40,13 +39,13 @@ hooks — which only load when the session's working directory *is* that repo.
 | Field | Value |
 |---|---|
 | Name | **`Iris`** |
-| Owner | `Mark` (actor 28781, `owner_type: person`) |
-| Class | **Person-owned working agent** — same register as `Ace`, `Metis`, `Diana`, `Dex`, `Aurora`, `Haku`, `Nova`, `Shaz`. Deliberately *not* a `<purpose>-<role>` system name like `cron-scheduler`; it is Mark's agent doing design work. |
+| Owner | `Mark` (`owner_type: person`) |
+| Class | **Person-owned working agent** — same register as the other person-owned working agents. Deliberately *not* a `<purpose>-<role>` system name like `cron-scheduler`; it is Mark's agent doing design work. |
 | Runtime | Claude Code CLI, run locally, working directory = the Affino Design System repo |
 | Purpose (short) | Executes design-system build jobs: prototypes, components, Figma pushes, PRs, KB doc sync |
 
-Please fill any other required `agent_register` fields with whatever is conventional for the
-person-owned agents above — I don't have the schema, so match `Shaz`'s record where it makes sense.
+Please fill any other required `agent_register` fields with whatever is conventional for person-owned
+agents — I don't have the schema, so match `Shaz`'s record where it makes sense.
 
 ## 4. Tool scopes needed
 
@@ -85,7 +84,7 @@ do at 3am with nobody watching.
 1. **The API key** — please deliver it **directly to Mark**, not in a task body, KB doc, or anything
    retained and broadly readable. It will be stored in `~/.claude.json` on his machine, never committed.
 2. **The exact registered handle string, with casing.** This matters: handles are inconsistently cased
-   (`Mark`, `Rao` capitalised; `susan`, `quang`, `julius` not), and `task_list(involves=…)` plus
+   (some capitalised, some not), and `task_list(involves=…)` plus
    `X-Agent-ID` both need the exact string. Is it `Iris` or `iris`?
 3. **The `X-Agent-ID` value** to send, if it differs from the handle.
 4. **Confirmation of the granted tool scopes**, and any name corrections from §4.
@@ -108,10 +107,9 @@ Recorded so the handover is complete, and because one step is easy to miss:
 
 ## 7. One question for SC, unrelated to Iris
 
-Nothing in the Hub repo writes `data/design_kit/` — `scripts/generate_design_kit.py` is hand-run,
-`check.sh:1256` only `--check`s it, and the three artefacts (`hub-design-kit.css`, `.json`,
-`DESIGN-CONTRACT.md`) are git-tracked but not gitignored. `design_kit` and `design_components_list` both
-404 from an AI1 dev session.
+Nothing in the Hub repo writes its design-kit artefacts — the generator is hand-run, CI only
+`--check`s them, and the artefacts are git-tracked but not gitignored. Both `design_kit` and
+`design_components_list` 404 from a dev session.
 
 **Could you run `design_kit` from a prod-connected session?** If it 404s there too, who owns
 regenerating and committing those artefacts? This is Hub housekeeping rather than a blocker for us — the

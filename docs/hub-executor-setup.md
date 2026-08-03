@@ -64,7 +64,7 @@ filtering, and `involves` unions owner/delegate/lead/creator. `labels` is an **a
 comma-separated string on write**. In use today: `design` 41 tasks, `design-system` 5.
 
 **2. There is no team or role target.** Assignment is actor-handle only (`owner_id`/`delegate_id`/
-`lead_id`, resolving server-side to a person or agent). `team_list` is a flat 10-person read-only
+`lead_id`, resolving server-side to a person or agent). `team_list` is a flat read-only
 directory whose ids are not assignable. So a `needs-design-decision` blocker must name a **specific
 actor**, configured up front — if that handle is unset the executor escalates to the requester rather
 than filing a task nobody owns. A messaging group can notify a team in parallel but cannot own the
@@ -85,8 +85,7 @@ mints `hub-job-<TASK-CODE>` itself and echoes it on every message. Messages are 
 `X-Agent-ID`, so a shared identity competes with `shaz`'s open tasks for one inbox; and tasks stamp
 `created_by_actor_id`/`owner_actor_id` separately, giving a two-actor trail per job for free.
 `agent_teamtime_log` accepts an explicit `agent_id`, but sessions are per-agent — interleaved stages
-under one identity corrupt the timeline. Fleet precedent is per-purpose identities (36 registered,
-incl. `support-agent`, `cron-scheduler`, `ci-suite-runner`).
+under one identity corrupt the timeline. Fleet precedent is per-purpose identities.
 
 ### KB write path exists — but as a tag cluster, not a namespace
 
@@ -159,7 +158,7 @@ Not `design` (41 tasks) — a *discipline* label covering visual design work unr
 the executor would pull jobs it cannot execute, and its failure mode for an unexecutable job is an
 escalation, turning a broad label directly into noise in the design owner's queue. Not `design-system`
 (5 tasks) either: those read as *consumers* of the design system — "Hub Apps — detail page…",
-"Calendar UX standardisation" — so on its first run the executor would try to build TASK-331242.
+"Calendar UX standardisation" — so on its first run the executor would try to build a live task.
 `design-system` may still be added alongside as a topical tag for humans browsing.
 
 **Blocker tasks must never carry `ads-job`.** It is the intake filter, so an escalation labelled with it
@@ -226,8 +225,7 @@ small publisher in this repo (reading `docs/*.md`, writing via the hub API, idem
 ### Update path — resolved 2026-07-31
 
 There is a full step-mutation surface, so refreshing is **list → diff → batch-update**, never
-delete-and-recreate. Step ids are stable (`design-system-extract`'s six steps are still 71312–71317
-from creation on 2026-05-25, unchanged through version 2).
+delete-and-recreate. Step ids are stable (`design-system-extract`'s six steps are unchanged from creation through later versions).
 
 | Tool | Purpose |
 |---|---|
@@ -269,7 +267,7 @@ consumers) is the fallback if enforced structure is ever wanted. Do **not** copy
 deprecated — the validator simply doesn't check that templates exist.
 
 **Correction to earlier notes in this doc:** `note` and `draft` are **not** classification-exempt.
-`EXEMPT_CATEGORIES` is only `{scratch, comment, brain-backup, test}`; the `kb_create` docstring listing
+the exempt set is only `{scratch, comment, brain-backup, test}`; the `kb_create` docstring listing
 note/draft is stale (a code comment records them being dropped). The "use an exempt category to skip the
 requirement" escape hatch does not exist.
 
@@ -295,21 +293,19 @@ dormancy became visible. Set an interval on our docs so an unpublished repo chan
 
 **Blocking the first unattended run** — both outside this repo:
 
-1. **Register the executor identity.** `agent_register` needs admin scope (locked down 2026-05-22);
-   `shaz`'s key does not have it. **Route: ask `server-claude` or Markus directly** — message 538381
+1. **Register the executor identity.** `agent_register` needs admin scope (locked down);
+   `shaz`'s key does not have it. **Route: ask `server-claude` or Markus directly** — an offer from SC
    from server-claude offers exactly this ("ping me or Markus and we'll verify/provision your key"),
    then `auth_provision_agent` for the executor's own API key.
    **Named `Iris`.** Fleet convention splits by owner: system-owned agents use
-   `<purpose>-<role>` (`support-agent`, `cron-scheduler`, `ci-suite-runner`, `server-watchdog`), while
-   person-owned working agents get names (`Ace`, `Metis`, `Diana`, `Dex`, `Aurora`, `Haku`, `Nova`,
-   `Shaz`). This is Mark's agent doing design work, so a name fits; `ds-executor` would have read as
+   `<purpose>-<role>` (`<purpose>-<role>`), while
+   person-owned working agents get names. This is Mark's agent doing design work, so a name fits; `ds-executor` would have read as
    infrastructure.
    **Liveness — resolved 2026-07-31.** Board status is a **stored enum**, not derived from activity:
-   `agent_sessions.status` is one of `online | working | idle | error | offline` and only changes when
+   it is one of `online | working | idle | error | offline` and only changes when
    something writes it (`agent_teamtime_check_in` → `online`, check-out → `offline`,
    `agent_teamtime_status` → any). So there is no cutoff to hit and **one check-in is enough**, provided
-   the executor touches the API at least once every **120 minutes** (`AUTO_CHECKOUT_MINUTES`; the stale
-   reaper scans every 5 min, and `last_seen` is touched passively by any API call, throttled to 60s).
+   the executor touches the API at least once every **120 minutes** (the stale reaper scans every 5 min, and `last_seen` is touched passively by any API call, throttled to 60s).
    A polling executor never goes stale; only a job idling >2h needs an explicit `agent_heartbeat` /
    `agent_teamtime_touch`. **Always check out** — otherwise the reaper closes the session at the wrong
    time and the timeline is misleading. `/hub-job` Step 5 does this on every exit path and also sets
@@ -317,9 +313,8 @@ dormancy became visible. Set an interval on our docs so an unpublished repo chan
    Note: the `online/idle/offline` label in `list_agents` is a *different*, `last_seen`-derived value
    whose cutoffs are still unknown — that is not the board.
 2. ~~**Name the design-decision owner.**~~ **Resolved 2026-07-31: `owner_id="Mark"`.** Pass the
-   **handle string with exact casing** — the server resolves it to actor 28781 with
-   `owner_type="person"`; the numeric id is never passed. Handles are inconsistently cased (`Mark`,
-   `Rao` capitalised; `susan`, `quang`, `julius` not).
+   **handle string with exact casing** — the server resolves it to his actor record with
+   `owner_type="person"`; the numeric id is never passed. Handles are inconsistently cased (some capitalised, some not).
 
    **Assignment and delivery diverge, so a blocker needs both.** `owner_id="Mark"` puts the task on
    Mark's board, but `resolve_recipient("Mark")` returns `{resolved_id: "shaz", type: "agent"}` — a
@@ -333,11 +328,10 @@ dormancy became visible. Set an interval on our docs so an unpublished repo chan
 **An earlier version of this doc proposed wiring this repo's CI to trigger `make extract-design-system`.
 That was wrong — dropped.** Both hub scripts read the **Hub's own frontend**, not this repo:
 
-- `scripts/extract_design_system.py` — scans `frontend/src/components/**/*.tsx`, with curated
-  category/status in hand-maintained `frontend/src/design-system/meta.json`; outputs
-  `data/design-system-extract.json`.
-- `scripts/generate_design_kit.py` — `SOURCE = frontend/src/index.css`, whose own docstring says
-  "SOURCE OF TRUTH stays `frontend/src/index.css` (`@theme` = light, `.dark` = dark)".
+- the Hub's **component extractor** scans the Hub frontend's own component tree, with category/status
+  from a hand-curated metadata file, and writes its own extract artefact.
+- the Hub's **design-kit generator** reads the Hub frontend's own stylesheet, which its docstring names
+  as the Hub's source of truth (Tailwind `@theme` for light, `.dark` for dark).
 
 There is no snapshot or copy of this repo anywhere in that pipeline. The "Hub design system" is the Hub
 frontend's Tailwind CSS plus its React component tree, reflected back out. Triggering it from here
@@ -349,9 +343,9 @@ raw skill markdown. Any KB publication must be labelled unambiguously as the **A
 or agents will conflate two different token sets with different names and values.
 
 **The 404s were probably not staleness.** Nothing schedules either script. The only invocation sites are
-`scripts/build-frontend.sh:92` (frontend build time, writing the gitignored runtime copy) and
-`scripts/check.sh:1253,1256` — both `--check` only, as CI gates. Nothing in CI *writes*
-`data/design_kit/`; it appears to be generated by hand. Shaz was on the AI1 dev box, which never ran
+the Hub frontend build (frontend build time, writing the gitignored runtime copy) and
+the Hub's CI gates — both `--check` only, as CI gates. Nothing in CI *writes*
+its design-kit artefacts; it appears to be generated by hand. Shaz was on the a dev box, which never ran
 `build-frontend.sh`, so neither artefact existed on that disk. Worth re-testing against hub-prod before
 treating it as fleet-wide. Also: **no `make extract-design-system` target exists in any Makefile** — the
 KB doc's command is drift.
@@ -394,7 +388,7 @@ Hub adopting the tokens — those are separate things and only the second is rul
 
 ### The live question this decision leaves open
 
-Affino runs **three** token systems: Hub UI (`frontend/src/index.css`), this repo's Figma→tokens
+Affino runs **three** token systems: Hub UI (the Hub frontend's own stylesheet), this repo's Figma→tokens
 pipeline, and production/deck brand. The KB doc `research-production-styling-framework-2026-07` already
 reaches this conclusion — that what's missing is "a shared SOURCE + METHOD + GOVERNANCE (Mark's Figma
 pipeline, under `mission-design-system`), not one universal token set" — and names Mark as owner.
