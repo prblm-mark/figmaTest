@@ -185,6 +185,7 @@ plausible-looking component built on invented values.
   |---|---|
   | `fileKey` | `Lus07xi8pPXLN87sQIyrEt` (Affino AI / Design System) |
   | `nodeId` | `3273:4346` — the **Spec Team** page |
+  | archive | `3273:4717` — **Spec Team Archive**, for superseded versions (manual move) |
 
   **An unattended job always targets Spec Team, never `2025:803`.** That second page is Mark's own
   working area; automated output landing there makes reviewed work indistinguishable from incoming
@@ -215,7 +216,7 @@ plausible-looking component built on invented values.
 
 - **Bump the version, don't reuse it.** The highest `v<n>` is current. Superseding a version is a
   *marking* step, never a deletion: prefix the old frame `[superseded]` or move it to the
-  **Spec Team Archive** page. Capture cannot move or rename existing nodes, so this is a manual or
+  **Spec Team Archive** page (`3273:4717`). Capture cannot move or rename existing nodes, so this is a manual or
   `use_figma` step — the version number is what carries "which is current" in the meantime.
 
 - **Log every created node id** in the completion report and PR body, so cleanup is scriptable rather

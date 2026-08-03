@@ -158,9 +158,10 @@ Prototype frames land on **two different pages of the same file**, split by who 
 |---|---|---|
 | Mark, in this repo (attended) | Prototypes | `2025:803` |
 | The spec team, built on the Hub | **Spec Team** | `3273:4346` |
+| *(superseded versions — moved by hand)* | **Spec Team Archive** | `3273:4717` |
 
-File key for both: `Lus07xi8pPXLN87sQIyrEt` (Affino AI / Design System). Verified 2026-08-03 —
-`3273:4346` is a page named "Spec Team", created empty.
+File key for all: `Lus07xi8pPXLN87sQIyrEt` (Affino AI / Design System). Verified 2026-08-03 — `3273:4346`
+is a page named "Spec Team" and `3273:4717` is "Spec Team Archive", both created empty.
 
 **Never cross them.** Mark's page is his working area; spec-team output landing there makes reviewed
 work indistinguishable from incoming drafts, and the reverse buries the team's work in his.
@@ -195,7 +196,7 @@ updating something already in Figma.
 
 **So: amended pushes do not replace originals, by policy as well as by mechanism.** Bump `v<n>`; the
 highest version is current. Marking the old one superseded (`[superseded] …` or moving it to the **Spec
-Team Archive** page) is a manual step, since capture cannot rename or move existing nodes. **Nothing is
+Team Archive** page, `3273:4717`) is a manual step, since capture cannot rename or move existing nodes. **Nothing is
 deleted automatically** — a designer's in-Figma edits exist nowhere else, so an automated replace could
 destroy the only copy of reviewed work. Deletion is a deliberate human act using the logged node ids.
 

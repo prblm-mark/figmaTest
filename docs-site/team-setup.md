@@ -66,6 +66,7 @@ with incoming drafts makes it impossible to tell them apart.
 |---|---|---|
 | Prototypes | `2025:803` | Mark, building in this repo |
 | Spec Team | `3273:4346` | The spec team's Hub-built prototypes |
+| Spec Team Archive | `3273:4717` | Superseded spec-team versions, moved here by hand |
 
 Figma URLs hyphenate the page id (`?node-id=3273-4346`); the API wants the colon form
 (`3273:4346`).

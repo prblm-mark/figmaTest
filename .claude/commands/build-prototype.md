@@ -208,6 +208,7 @@ destination page — **which page depends on who is running this**:
 |---|---|---|
 | **Mark** (this repo, attended) | Prototypes | `2025:803` |
 | **The spec team** (Hub-built, e.g. Quang) | Spec Team | `3273:4346` |
+| *(superseded versions, moved by hand)* | Spec Team Archive | `3273:4717` |
 
 Both pages live in the same file. **Never cross them.** Mark's page is his working area and the spec
 team's output landing in it — or vice versa — makes it impossible to tell reviewed work from
@@ -232,7 +233,7 @@ e.g.  TASK-12345 — CheckoutFlow — step-2 — v3
 
 Bump `v<n>` on every re-push; never reuse a title to "update in place". The highest version is
 current. Marking the previous one superseded (`[superseded] …`, or moving it to the **Spec Team
-Archive** page) is a separate manual step — capture cannot rename or move existing nodes. **Nothing
+Archive** page, `3273:4717`) is a separate manual step — capture cannot rename or move existing nodes. **Nothing
 is ever deleted automatically**, because a designer's in-Figma edits exist nowhere else.
 
 For a variant of the same screen (mobile/desktop, light/dark), the titles must differ too — that is
