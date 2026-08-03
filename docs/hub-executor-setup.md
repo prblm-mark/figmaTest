@@ -150,6 +150,35 @@ safely have.
 
 ---
 
+## Decision — two prototype destination pages (2026-08-03, Mark)
+
+Prototype frames land on **two different pages of the same file**, split by who built them:
+
+| Who is building | Page | `nodeId` |
+|---|---|---|
+| Mark, in this repo (attended) | Prototypes | `2025:803` |
+| The spec team, built on the Hub | **Spec Team** | `3273:4346` |
+
+File key for both: `Lus07xi8pPXLN87sQIyrEt` (Affino AI / Design System). Verified 2026-08-03 —
+`3273:4346` is a page named "Spec Team", created empty.
+
+**Never cross them.** Mark's page is his working area; spec-team output landing there makes reviewed
+work indistinguishable from incoming drafts, and the reverse buries the team's work in his.
+
+**Watch the id format.** Figma URLs hyphenate (`?node-id=3273-4346`); the API takes the colon form
+(`3273:4346`). Copying straight from the URL bar is the easy mistake.
+
+Note this answers SC's request for "the file key and page" with a **page in the design-system file**,
+not a separate Affino Control Centre file — consistent with where prototypes have always gone. If SC
+expected a distinct CC file, that needs saying explicitly.
+
+**Still open:** the frame naming convention and the stale-node cleanup rule. Recommendation on record:
+stop relying on title replacement (it demonstrably does not replace — one session minted ~20 new nodes
+instead), use task-code-prefixed unique names, suffix superseded sets, and log every created node id so
+cleanup is scriptable rather than done by eye.
+
+---
+
 ## Decision — the job label is `ads-job` (2026-07-31, Mark)
 
 Intake filters on **`ads-job`**, a new dedicated label meaning "the executor can run this".

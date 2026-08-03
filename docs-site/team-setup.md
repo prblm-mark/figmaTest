@@ -56,6 +56,20 @@ You should see `figma` listed as connected.
 | File | Key | Contains |
 |---|---|---|
 | **Affino AI Design System** | `Lus07xi8pPXLN87sQIyrEt` | Published library — Primitives, Scale, Semantic (Light/Dark), Typography, base components |
+
+### Prototype destination pages
+
+Both live in the Affino AI Design System file above. Keep them separate — mixing reviewed work
+with incoming drafts makes it impossible to tell them apart.
+
+| Page | `nodeId` | Who pushes here |
+|---|---|---|
+| Prototypes | `2025:803` | Mark, building in this repo |
+| Spec Team | `3273:4346` | The spec team's Hub-built prototypes |
+
+Figma URLs hyphenate the page id (`?node-id=3273-4346`); the API wants the colon form
+(`3273:4346`).
+
 | **Affino AI Chat** | `Ikv8jxb5dcRH8ff4q4dR11` | Chat product — Semantic (Chat Light/Dark), chat components, patterns, templates |
 
 ## Troubleshooting

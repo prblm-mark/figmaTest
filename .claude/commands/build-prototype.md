@@ -201,8 +201,25 @@ loads with a 200 response before proceeding.
 **Step 5a — Generate one capture ID per screen (all upfront):**
 
 Call `generate_figma_design` once per screen with `outputMode: "existingFile"` and
-`fileKey: "Lus07xi8pPXLN87sQIyrEt"` (the Affino AI / Design System file),
-`nodeId: "2025:803"` (the dedicated Prototypes page).
+`fileKey: "Lus07xi8pPXLN87sQIyrEt"` (the Affino AI / Design System file), plus the `nodeId` of the
+destination page — **which page depends on who is running this**:
+
+| Who is building | Destination page | `nodeId` |
+|---|---|---|
+| **Mark** (this repo, attended) | Prototypes | `2025:803` |
+| **The spec team** (Hub-built, e.g. Quang) | Spec Team | `3273:4346` |
+
+Both pages live in the same file. **Never cross them.** Mark's page is his working area and the spec
+team's output landing in it — or vice versa — makes it impossible to tell reviewed work from
+incoming drafts.
+
+**Use the colon form in the API call.** A Figma URL writes the page as `?node-id=3273-4346` with a
+hyphen; `generate_figma_design` takes `3273:4346` with a colon. Copying the hyphenated form straight
+out of the URL bar is the easy mistake here.
+
+If a brief does not make clear which of the two applies, treat it as Mark's page only when this
+command was invoked interactively. A Hub-dispatched job always targets **Spec Team** — see
+`.claude/commands/hub-job.md` § Step 4.
 
 Each call returns a unique `captureId`. Record all of them before proceeding.
 Never reuse a capture ID across screens.

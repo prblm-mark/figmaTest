@@ -177,9 +177,19 @@ plausible-looking component built on invented values.
 
 `/build-prototype` treats the Figma push as mandatory. Two automation-specific rules on top:
 
-- **Target an explicit file key.** `generate_figma_design` pushes to "your current file/page" — a
-  per-user session notion that a job runner does not have. The destination file must come from the
-  job payload or a pinned constant, never from ambient session state.
+- **Target an explicit file key and page.** `generate_figma_design` pushes to "your current file/page"
+  — a per-user session notion that a job runner does not have. Both must be pinned, never taken from
+  ambient session state:
+
+  | | Value |
+  |---|---|
+  | `fileKey` | `Lus07xi8pPXLN87sQIyrEt` (Affino AI / Design System) |
+  | `nodeId` | `3273:4346` — the **Spec Team** page |
+
+  **An unattended job always targets Spec Team, never `2025:803`.** That second page is Mark's own
+  working area; automated output landing there makes reviewed work indistinguishable from incoming
+  drafts. Note the colon: Figma URLs write the page as `?node-id=3273-4346`, the API wants
+  `3273:4346`.
 - **Expect duplicates, and record them.** Re-pushing a frame with an unchanged `<title>` does **not**
   replace the existing node — the 2026-07-31 session minted ~20 new nodes this way. Log every node
   id created in the completion report so stale ones can be cleaned up. Do not loop on push retries.
