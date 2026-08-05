@@ -43,6 +43,26 @@
  * the CSS line that settles it. Anything ambiguous and un-overridden is REPORTED,
  * never bound — a wrong semantic looks correct forever, whereas a primitive at
  * least looks wrong in dark mode.
+ *
+ * ─── THE FAMILY RULE DECIDES WHAT TO BIND, NOT WHAT IS WRONG ────────────────
+ * CRITICAL, and got this wrong once: the family is used to CHOOSE a token for a
+ * paint that needs one. It is NOT a test of correctness for paints that already
+ * have one. The Semantic collection holds both generic families (`surface/*`,
+ * `text/*`, `icon/*`, `border/*`) AND component-scoped tokens
+ * (`components/global/button/secondary-border`, `components/cc/ui/primary-bg`),
+ * and a component-scoped token is MORE specific — therefore better — than the
+ * generic one with the same value.
+ *
+ * An earlier version required the bound name to start with the expected generic
+ * family, so it "corrected" `components/global/button/secondary-border` on a
+ * button border down to `border/contrast`, and 43 paints were made worse in a
+ * single run before it was caught.
+ *
+ * So: anything already on ANY Semantic token is preserved. Only two things get
+ * rebound — a paint not on a semantic token at all, and the one narrow
+ * wrong-product case (`components/chat/*` on an icon in a Control Centre screen).
+ * When in doubt, preserve: the existing binding was chosen with more context than
+ * a hex comparison has.
  */
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -158,9 +178,10 @@ const cols = await figma.variables.getLocalVariableCollectionsAsync();
 const semantic = cols.filter(function (c) { return c.name === 'Semantic'; })[0];
 if (!semantic) throw new Error('no Semantic collection');
 const byName = {};
+const SEMANTIC_NAMES = {};
 for (const vid of semantic.variableIds) {
   const v = await figma.variables.getVariableByIdAsync(vid);
-  if (v) byName[v.name] = v;
+  if (v) { byName[v.name] = v; SEMANTIC_NAMES[v.name] = true; }
 }
 const cache = {};
 async function nameOf(id) {
@@ -186,9 +207,18 @@ for (const n of frame.findAll(function () { return true; })) {
       if (!p || p.type !== 'SOLID') continue;
       const bvc = p.boundVariables && p.boundVariables.color;
       const cur = bvc && bvc.id ? await nameOf(bvc.id) : null;
-      // Right family already — leave it. NB "is on Semantic" is NOT good enough:
-      // an icon bound to a chat text token is semantic and still wrong.
-      if (cur && cur.indexOf(fam + '/') === 0) { out.alreadyCorrect++; continue; }
+      // LEAVE ANYTHING ALREADY ON A SEMANTIC TOKEN ALONE — including
+      // components/* tokens, which are MORE specific than the generic families
+      // and therefore better. An earlier version required the name to start with
+      // the generic family and so "corrected"
+      // components/global/button/secondary-border on a button border down to
+      // border/contrast — 43 paints made worse in one run. Only two things get
+      // rebound: a binding that is not semantic at all, and the narrow
+      // wrong-product case below.
+      if (cur && SEMANTIC_NAMES[cur]) {
+        const otherProduct = cur.indexOf('components/chat/') === 0 && fam === 'icon';
+        if (!otherProduct) { out.alreadyCorrect++; continue; }
+      }
       const k = fam + '|' + hex(p.color);
       const target = MAP[k] ? byName[MAP[k].name] : null;
       if (!target) {
@@ -215,7 +245,8 @@ for (const n of frame.findAll(function () { return true; })) {
       if (!p || p.type !== 'SOLID') continue;
       const bvc = p.boundVariables && p.boundVariables.color;
       const nm = bvc && bvc.id ? await nameOf(bvc.id) : null;
-      if (nm && nm.indexOf(fam + '/') === 0) right++; else wrong++;
+      // "correct" = on ANY semantic token, generic family or component-scoped.
+      if (nm && SEMANTIC_NAMES[nm]) right++; else wrong++;
     }
   }
 }

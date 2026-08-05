@@ -327,9 +327,19 @@ nor the Re-tokenise plugin ever sees which token it was. Value is lossy three wa
 
 - **Lucide icons are STROKED vectors, not filled.** A fills-only pass misses every icon — 144 of them
   on one frame, 120 sitting on the `VP/500` primitive.
-- **"Already on Semantic" is NOT good enough.** 16 icon strokes were bound to
-  `components/chat/…/chat-sidebar-text` — semantic, and the wrong family. The check is whether the
-  bound name starts with the family the node calls for.
+- **The family picks a token; it does not judge existing ones.** Use it to choose a token for a paint
+  that has none, or has a primitive. **Preserve anything already on a Semantic token — including
+  `components/*`**, which is *more* specific than the generic family and therefore better. An earlier
+  version required the generic family prefix and so "corrected"
+  `components/global/button/secondary-border` on a button border down to `border/contrast`, making 43
+  paints worse in one run. The single exception worth rebinding is a wrong-*product* token, e.g.
+  `components/chat/*` on an icon in a Control Centre screen.
+
+- **Pin the frame height with `overflow: hidden` on BOTH `html` and `body`.** A height alone does not
+  clip: `documentElement.scrollHeight` stays at the viewport, the capture uses that, and the frame comes
+  out whatever the window happened to be (1600×1278 instead of 1600×1000). Note that a pre-flight check
+  of `scrollHeight` cannot confirm the pin — it is spec-floored at the viewport — so verify the
+  **captured frame's** width×height after the push, not before.
 
 Measured on `3281:2` (2026-08-05): **79 of 576 colour bindings landed on `Primitives`/`Colours`.**
 Those do not follow theme modes, so the frame breaks in dark. This is not an occasional glitch — expect
