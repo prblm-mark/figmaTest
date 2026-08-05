@@ -286,11 +286,24 @@ Do this for ALL screens in a single operation. Do not leave capture scripts in t
 
 **A capture binds colours by resolved VALUE, never by token name.** The browser turns
 `var(--ai-surface-error)` into `rgb(220,38,38)` before the page is serialised, so neither the capture
-nor the Re-tokenise plugin ever sees which token it was. Value is lossy twice over:
+nor the Re-tokenise plugin ever sees which token it was. Value is lossy three ways:
 
 - Every **Semantic** variable *aliases* a Primitive, so a semantic and its primitive resolve to the
   same hex — nothing in a value comparison can prefer the semantic layer.
-- Many semantics share one hex. `#2E2E32` matches **fifteen** of them; `#FFFFFF` matches ten.
+- **One hex spans FAMILIES.** `#67676C` is `--ai-text-contrast` *and* `--ai-icon-secondary`; `#212123`
+  is `--ai-text-primary` *and* `--ai-icon-primary`. Only the node says which is meant, so the script
+  picks the family from node type + property: TEXT fill → `text/*`, vector fill **or stroke** →
+  `icon/*`, other fill → `surface/*`, other stroke → `border/*`.
+- Many semantics share one hex *within* a family too — `#FFFFFF` is surface-primary, -elevated-1 and
+  -elevated-2. Those need an `OVERRIDES` entry citing the CSS line, or they are reported, not bound.
+
+**Two traps this covers, both found the hard way:**
+
+- **Lucide icons are STROKED vectors, not filled.** A fills-only pass misses every icon — 144 of them
+  on one frame, 120 sitting on the `VP/500` primitive.
+- **"Already on Semantic" is NOT good enough.** 16 icon strokes were bound to
+  `components/chat/…/chat-sidebar-text` — semantic, and the wrong family. The check is whether the
+  bound name starts with the family the node calls for.
 
 Measured on `3281:2` (2026-08-05): **79 of 576 colour bindings landed on `Primitives`/`Colours`.**
 Those do not follow theme modes, so the frame breaks in dark. This is not an occasional glitch — expect
