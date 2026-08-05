@@ -218,6 +218,32 @@ incoming drafts.
 hyphen; `generate_figma_design` takes `3273:4346` with a colon. Copying the hyphenated form straight
 out of the URL bar is the easy mistake here.
 
+**CAPTURE VIEWPORT WIDTHS — fixed, not whatever the window happens to be.**
+
+| Version | Width | Why |
+|---|---|---|
+| **Desktop** | **1600px** | Mark, 2026-08-05: fits inside the **Control Centre interface** when composing refined mockups, so a captured frame drops straight into the CC chrome without rescaling |
+| **Mobile** | **390px** | iPhone 14/15/16 logical width — the middle of the real range (360 small Android · 375 SE/mini · 412 large Android · 430 Pro Max) |
+
+The capture takes its viewport from the **real Chrome window**, so set the bounds before opening the
+capture URL and restore them afterwards:
+
+```bash
+osascript -e 'tell application "Google Chrome" to get bounds of front window'   # record first
+# desktop: width 1600 · mobile: width 390 — keep the same x/y so the window does not jump
+osascript -e 'tell application "Google Chrome" to set bounds of front window to {X, Y, X+1600, Y2}'
+# … capture, poll to completion …
+osascript -e 'tell application "Google Chrome" to set bounds of front window to {ORIGINAL}'
+```
+
+**Headless Chrome cannot be used for this** — it floors the viewport at 500px, so a narrower
+`--window-size` crops rather than re-lays-out. Mobile widths are only real in the actual browser. (For
+*measuring* a phone layout without capturing, pin the page in a fixed-width iframe and read inside it
+with `--allow-file-access-from-files`.)
+
+Desktop and mobile of the same screen are two frames, so their `<title>`s **must differ** — suffix
+`· Desktop` / `· Mobile`. Identical titles are what silently destroyed four frames on 2026-07-27.
+
 **Every capture needs a unique, versioned `<title>` — this protects existing frames.** Frame names
 come from the document `<title>`, and title identity is **neither a reliable update mechanism nor a
 reliable hazard**: on 2026-07-27 a second capture at another viewport *silently destroyed* four
