@@ -24,5 +24,44 @@
         ]
       }
     ]
+  },
+  "permissions": {
+    "allow": [
+      "mcp__crm-api__code_grep",
+      "mcp__claude-in-chrome__read_console_messages",
+      "mcp__claude-in-chrome__tabs_context_mcp",
+      "mcp__figma-remote-mcp__get_screenshot",
+      "mcp__figma-remote-mcp__get_design_context",
+      "mcp__figma-remote-mcp__get_metadata",
+      "mcp__crm-api__kb_read",
+      "mcp__crm-api__kb_search",
+      "mcp__crm-api__kb_steps_list",
+      "mcp__crm-api__kb_folders_list",
+      "mcp__crm-api__kb_categories",
+      "mcp__crm-api__kb_templates_list",
+      "mcp__crm-api__task_list",
+      "mcp__crm-api__task_detail",
+      "mcp__crm-api__my_tasks",
+      "mcp__crm-api__list_agents",
+      "mcp__crm-api__team_list",
+      "mcp__crm-api__check_messages",
+      "mcp__crm-api__message_detail",
+      "mcp__crm-api__resolve_recipient",
+      "mcp__crm-api__api_health",
+      "mcp__crm-api__auth_me",
+      "mcp__crm-api__design_kit",
+      "mcp__crm-api__design_components_list",
+      "mcp__crm-api__deploy_status",
+      "mcp__crm-api__cron_runs_list",
+      "mcp__claude_ai_Affino_Hub__kb_read",
+      "mcp__claude_ai_Affino_Hub__kb_steps_list",
+      "mcp__claude_ai_Affino_Hub__task_detail",
+      "mcp__claude_ai_Affino_Hub__task_list",
+      "mcp__claude_ai_Affino_Hub__my_tasks",
+      "mcp__claude_ai_Affino_Hub__list_agents",
+      "mcp__claude_ai_Affino_Hub__check_messages",
+      "mcp__claude_ai_Affino_Hub__messages_unread",
+      "Bash(node --check *)"
+    ]
   }
 }
