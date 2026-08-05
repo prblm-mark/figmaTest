@@ -282,6 +282,47 @@ For every HTML file that had the capture script injected, remove it:
 
 Do this for ALL screens in a single operation. Do not leave capture scripts in the source.
 
+### 6b. Rebind colours to Semantic — MANDATORY, every push
+
+**A capture binds colours by resolved VALUE, never by token name.** The browser turns
+`var(--ai-surface-error)` into `rgb(220,38,38)` before the page is serialised, so neither the capture
+nor the Re-tokenise plugin ever sees which token it was. Value is lossy twice over:
+
+- Every **Semantic** variable *aliases* a Primitive, so a semantic and its primitive resolve to the
+  same hex — nothing in a value comparison can prefer the semantic layer.
+- Many semantics share one hex. `#2E2E32` matches **fifteen** of them; `#FFFFFF` matches ten.
+
+Measured on `3281:2` (2026-08-05): **79 of 576 colour bindings landed on `Primitives`/`Colours`.**
+Those do not follow theme modes, so the frame breaks in dark. This is not an occasional glitch — expect
+it on every capture.
+
+**Run it for every frame you push:**
+
+```bash
+node scripts/gen-figma-rebind.mjs <nodeId>            # dry run — changes nothing
+node scripts/gen-figma-rebind.mjs <nodeId> --apply    # after reading the dry run
+```
+
+The generator parses `css/tokens.css` into a hex → token map and emits a `use_figma` payload that
+audits the frame **by collection** and rebinds anything off Semantic. Then:
+
+1. **Read the dry run's `UNRESOLVED` list before applying.** Each entry is a colour the map cannot
+   settle, because more than one `--ai-*` token shares that hex.
+2. **Resolve each one from the prototype's own CSS**, which is the only authoritative source — e.g.
+   `.sp-dot--vip { background: var(--ai-surface-neutral) }` settles `#2E2E32` that value matching
+   offered fifteen candidates for. Add it to `OVERRIDES` in the generator with the CSS line cited.
+3. **Never guess an ambiguous colour.** If the CSS does not settle it, leave it bound to the primitive
+   and report it. A wrong semantic looks correct forever; a primitive at least looks wrong in dark.
+   **This is not a design decision and must not be escalated as one** — it is a binding question, and
+   the answer either exists in the CSS or the prototype has a real token gap worth recording in
+   `<Name>.token-gaps.md`.
+4. Apply, and check the payload's own re-audit: `nonSemanticRemaining` must be `0`.
+
+**Do not run the Re-tokenise plugin for colour.** Its colour pass matches by value and cannot beat the
+CSS-derived map; on a `bindVariables=true` capture it has nothing to add. Re-tokenise is still the right
+tool for the **dimensional** properties — radius, padding, gap, stroke weight — which the capture leaves
+entirely unbound and where numeric values collide far less than colours do.
+
 ### 7. Report
 
 Output a summary and remind the user to re-tokenise:
@@ -300,16 +341,26 @@ Token gaps: 3 recorded → src/prototypes/Registration/Registration.token-gaps.m
   color: #2E4A7D     .reg-card__accent     step-indicator accent, no brand token
   width: 288px       .reg-card             fixed card width (layout, pre-approved)
 
-⚠ Run the Re-tokenise plugin in Figma to rebind captured values to
-  design system variables: select the frame → Plugins → Development → Re-tokenise
-  Re-tokenise matches by VALUE — the gaps above have no matching variable, so they
-  will stay raw in Figma until a token is minted. They are not a re-tokenise failure.
+Colour bindings (step 6b): 412 paints · 412 on Semantic · 0 remaining off it
+  rebound  surface/neutral 25 · surface/error 21 · surface/success 18
+  UNRESOLVED  none
+
+⚠ Run the Re-tokenise plugin for the DIMENSIONAL properties only — radius,
+  padding, gap, stroke weight, which the capture leaves unbound:
+  select the frame → Plugins → Development → Re-tokenise
+  Colours are already handled by step 6b. Do not use the plugin for colour: it
+  matches by value and cannot beat the CSS-derived map.
 ```
 
 **Always list the token gaps in the report** (or state "Token gaps: none"). They are the design
 owner's review list and the input to the later `/build-component` build, where they populate the
 `## Token Gaps` section of `<Name>.figma-notes.md`. A gap that is recorded but never surfaced is
 functionally a guessed value.
+
+**Always list the step 6b colour-binding result too**, including `UNRESOLVED: none` when there is
+nothing outstanding. Silence reads as "handled" — and the first audit of `3281:2` reported
+"576 bound, 0 unbound", which looked perfect while 79 of them sat on the wrong collection. Report the
+count that matters: how many are **on Semantic**, and how many are not.
 
 ---
 
