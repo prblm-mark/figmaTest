@@ -7,7 +7,7 @@
 
 ---
 
-## Variant matrix (24 variants)
+## Variant matrix (23 variants)
 
 | Type | Style | Device | Node | CSS |
 |---|---|---|---|---|
@@ -141,4 +141,4 @@ No raw primitives used. All colour, spacing, radius, typography values map to ex
 
 ## History
 
-- 2026-05-29: Initial build from Figma frame `2542:5858`. All 24 variants implemented (10 newly-added Style=CTA variants + existing Default/Floating/Fixed). 4 STOPs resolved (Case B CTA-button override; normalised Info Fixed bg; Floating left as 3-type subset; Type icons mapped to semantic Lucide). Replaces the prior `src/prototypes/Alerts/` sketch which has been deleted.
+- 2026-05-29: Initial build from Figma frame `2542:5858`. All 23 variants implemented (10 newly-added Style=CTA variants + existing Default/Floating/Fixed). 4 STOPs resolved (Case B CTA-button override; normalised Info Fixed bg; Floating left as 3-type subset; Type icons mapped to semantic Lucide). Replaces the prior `src/prototypes/Alerts/` sketch which has been deleted.
