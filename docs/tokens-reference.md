@@ -213,13 +213,67 @@ The following tokens remain as explicit chat-specific values:
 
 ## Shadow
 
-| Variable | Light value | Dark value | Use |
-|---|---|---|---|
-| `--ai-shadow-sm` | `0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06)` | `0 1px 3px rgba(0,0,0,0.25), 0 1px 2px rgba(0,0,0,0.15)` | Small dropdowns, toggle thumbs |
-| `--ai-shadow-md` | `0 2px 10px rgba(0,0,0,0.1)` | `0 2px 10px rgba(0,0,0,0.25)` | Tooltips, inputs, menus |
-| `--ai-shadow-lg` | `0 0 20px rgba(0,0,0,0.05), 0 2px 2px rgba(0,0,0,0.1)` | `0 0 20px rgba(0,0,0,0.15), 0 2px 2px rgba(0,0,0,0.25)` | Modals, cards, panels |
+Light values are transcribed by hand from the Figma `light/shadow-*` effect styles
+(shadows cannot be exported as DTCG variables). **Dark values are derived, not
+transcribed: every light alpha × 2.5, layer geometry unchanged.** Where Figma's
+`dark/shadow-*` styles disagree with that rule, the rule wins and Figma is corrected.
 
-**Source:** `css/tokens-shadows.css` (static, manually maintained). Dark mode uses stronger opacities.
+**Last synced 2026-08-24.**
+
+| Variable | Light | Dark (light × 2.5) | Use |
+|---|---|---|---|
+| `--ai-shadow-xxs` | `0 1px 0.5px rgba(29,41,61,0.02)` | `0 1px 0.5px rgba(29,41,61,0.047)` | Barely-there contact lift — Seating Planner components |
+| `--ai-shadow-base` | `0 1px 2px -1px rgba(29,41,61,0.1), 0 1px 3px 0 rgba(29,41,61,0.1)` | `0 1px 2px -1px rgba(29,41,61,0.251), 0 1px 3px 0 rgba(29,41,61,0.251)` | Tailwind base shadow, slate-tinted — **same step as `sm`**, see below |
+| `--ai-shadow-sm` | `0 1px 2px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.1)` | `0 1px 2px rgba(0,0,0,0.149), 0 1px 3px rgba(0,0,0,0.255)` | Small dropdowns, toggle thumbs |
+| `--ai-shadow-md` | `0 3px 10px rgba(0,0,0,0.1), 0 1px 4px rgba(0,0,0,0.16)` | `0 3px 10px rgba(0,0,0,0.255), 0 1px 4px rgba(0,0,0,0.4)` | Tooltips, inputs, menus |
+| `--ai-shadow-lg` | `0 2px 2px rgba(0,0,0,0.1), 0 0 20px rgba(0,0,0,0.05)` | `0 2px 2px rgba(0,0,0,0.255), 0 0 20px rgba(0,0,0,0.125)` | Modals, cards, panels |
+| `--ai-shadow-card` | `0 0 10px rgba(0,0,0,0.05)` | `0 0 10px rgba(0,0,0,0.125)` | Soft even halo (AudioPlayer waveform card) |
+| `--ai-shadow-cc-rail` | `4px 0 4px rgba(0,0,0,0.2)` | `none` — deliberate exception | CC SidebarMenu docked right edge |
+
+**Source:** `css/tokens-shadows.css` (static, manually maintained — *not* rebuilt by
+`npm run tokens`).
+
+### The 2.5× dark rule
+
+Dark alphas are always `light × 2.5`, with offsets and blur radii left alone. Alphas are
+picked to round-trip exactly to the 8-digit hex handed to the designer, so the CSS and the
+Figma styles cannot drift:
+
+| Alpha | Figma hex |
+|---|---|
+| 0.047 | `#1D293D0C` |
+| 0.125 | `#00000020` |
+| 0.149 | `#00000026` |
+| 0.255 | `#00000041` |
+| 0.400 | `#00000066` |
+| 0.251 | `#1D293D40` (slate `shadow`) |
+
+**Notes on the 2026-08-24 sync:**
+
+- `--ai-shadow-xxs` is new, and is the only shadow whose colour is **slate-tinted**
+  (`#1D293D`) rather than pure black — it follows the new slate neutral ramp. Figma also
+  sets a `0.05` spread on it, dropped as sub-pixel noise. At 0.02 alpha over 0.5px of blur
+  it is close to invisible in light mode.
+- `--ai-shadow-md`'s light contact layer went back to Figma's `0.16`. It had been held at
+  `0.05` since 2026-07-27 as a deliberate designer softening; that divergence is reverted.
+- `--ai-shadow-cc-rail` is the **one deliberate exception** to the 2.5× rule: it stays
+  `none` in dark. A directional edge shadow is invisible against the already-dark canvas,
+  and the rule's 0.5 alpha would read as a black smear rather than depth.
+- Dark values apply under `[data-theme="dark"]`, which also covers the CC-dark and
+  chat-dark contexts since those carry the same attribute.
+**Two things to settle:**
+
+1. **`--ai-shadow-base` and `--ai-shadow-sm` occupy the same step.** Identical offsets and blur
+   radii; they differ only in tint (slate vs black), layer-1 alpha (0.10 vs 0.06) and a
+   `-1px` spread on `shadow`'s first layer. Two names for one visual level — does `shadow`
+   supersede `sm`?
+2. **Tint is split across the family.** `xxs` and `shadow` are slate (`#1D293D`); `sm`,
+   `md`, `lg`, `card` and `cc-rail` are still pure black. The slate pair are the most
+   recently authored, so the rest may simply be awaiting the same treatment.
+
+Note the name: the Figma style is called plainly `shadow`, but the CSS token is
+`--ai-shadow-base` so it keeps the `--ai-shadow-{size}` convention. This is the one shadow
+where the CSS name and the Figma style name deliberately differ.
 
 ## Gradient
 
