@@ -226,7 +226,7 @@ transcribed: every light alpha × 2.5, layer geometry unchanged.** Where Figma's
 | `--ai-shadow-base` | `0 1px 2px -1px rgba(29,41,61,0.1), 0 1px 3px 0 rgba(29,41,61,0.1)` | `0 1px 2px -1px rgba(29,41,61,0.251), 0 1px 3px 0 rgba(29,41,61,0.251)` | Tailwind base shadow, slate-tinted — **same step as `sm`**, see below |
 | `--ai-shadow-sm` | `0 1px 2px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.1)` | `0 1px 2px rgba(0,0,0,0.149), 0 1px 3px rgba(0,0,0,0.255)` | Small dropdowns, toggle thumbs |
 | `--ai-shadow-md` | `0 3px 10px rgba(0,0,0,0.1), 0 1px 4px rgba(0,0,0,0.16)` | `0 3px 10px rgba(0,0,0,0.255), 0 1px 4px rgba(0,0,0,0.4)` | Tooltips, inputs, menus |
-| `--ai-shadow-lg` | `0 2px 2px rgba(0,0,0,0.1), 0 0 20px rgba(0,0,0,0.05)` | `0 2px 2px rgba(0,0,0,0.255), 0 0 20px rgba(0,0,0,0.125)` | Modals, cards, panels |
+| `--ai-shadow-lg` | `0 2px 2px rgba(0,0,0,0.18), 0 0 20px rgba(0,0,0,0.09)` | `0 2px 2px rgba(0,0,0,0.451), 0 0 20px rgba(0,0,0,0.224)` | Modals, cards, panels |
 | `--ai-shadow-card` | `0 0 10px rgba(0,0,0,0.05)` | `0 0 10px rgba(0,0,0,0.125)` | Soft even halo (AudioPlayer waveform card) |
 | `--ai-shadow-cc-rail` | `4px 0 4px rgba(0,0,0,0.2)` | `none` — deliberate exception | CC SidebarMenu docked right edge |
 
@@ -246,7 +246,9 @@ Figma styles cannot drift:
 | 0.149 | `#00000026` |
 | 0.255 | `#00000041` |
 | 0.400 | `#00000066` |
-| 0.251 | `#1D293D40` (slate `shadow`) |
+| 0.251 | `#1D293D40` (slate `base`) |
+| 0.451 | `#00000073` (re-weighted `lg`) |
+| 0.224 | `#00000039` (re-weighted `lg`) |
 
 **Notes on the 2026-08-24 sync:**
 
@@ -261,6 +263,39 @@ Figma styles cannot drift:
   and the rule's 0.5 alpha would read as a black smear rather than depth.
 - Dark values apply under `[data-theme="dark"]`, which also covers the CC-dark and
   chat-dark contexts since those carry the same attribute.
+### lg was re-weighted on 2026-08-24
+
+The scale read inverted. `lg` was wider than `md` — 20px reach vs 13px — but **lighter**: peak
+0.10 against md's 0.16, and total ink 1.20 against 1.64. So "large" looked lighter than
+"medium".
+
+Swapping the two values was tried first and rejected: it fixed density but inverted *reach*
+instead, and left md's 44 consumers (tooltips, inputs, menus) rendering a wide halo while lg's
+22 (modals, panels) got a tight one — backwards for those elements. **The assignment is
+unchanged; `lg`'s alphas were raised instead**, keeping its wide 2px-contact + 20px-halo
+character.
+
+Alphas were derived, not picked: chosen so lg's ink (`2·a1 + 20·a2`) lands ~1.32× md's 1.64
+with a peak just above md's 0.16. `0.18 / 0.09` gives peak 0.18, ink 2.16. The ladder is now
+monotonic on all three measures:
+
+| Token | Peak α | Ink | Reach |
+|---|---|---|---|
+| `xxs` | 0.02 | 0.01 | 2px |
+| `base` | 0.10 | 0.50 | 4px |
+| `sm` | 0.10 | 0.42 | 4px |
+| `md` | 0.16 | 1.64 | 13px |
+| `lg` | 0.18 | 2.16 | 20px |
+| `card` | 0.05 | 0.50 | 10px |
+
+No Figma style exists for the re-weighted `lg` — Figma is to be updated from these values:
+light `#0000002E` + `#00000017`, dark `#00000073` + `#00000039`.
+
+**Flagged for a refinement pass.** The 1.32× ratio was chosen to clear the inversion, not
+designed. Open questions for that pass: `base` vs `sm` (identical geometry, and base's ink is
+actually the higher of the two), whether the steps should be perceptually even, and whether
+`card` belongs on the ladder at all.
+
 **Two things to settle:**
 
 1. **`--ai-shadow-base` and `--ai-shadow-sm` occupy the same step.** Identical offsets and blur

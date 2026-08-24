@@ -33,13 +33,24 @@
    * this file about whether it supersedes sm. */
   --ai-shadow-base: 0 1px 2px -1px rgba(29, 41, 61, 0.1), 0 1px 3px 0 rgba(29, 41, 61, 0.1);
   --ai-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.1);
-  /* Contact layer resynced to Figma's #00000029 (0.16) on 2026-08-24.
-   * It had been held at 0.05 since 2026-07-27 — a deliberate softening by the
-   * designer that intentionally diverged from the Figma style. That divergence
-   * is now reverted per instruction to sync all shadows. If the softer contact
-   * layer was still wanted, this is the line to change back. */
+  /* Contact layer is Figma's #00000029 (0.16), resynced 2026-08-24 — it had been
+   * held at 0.05 since 2026-07-27 as a deliberate designer softening. */
   --ai-shadow-md: 0 3px 10px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.16);
-  --ai-shadow-lg: 0 2px 2px rgba(0, 0, 0, 0.1), 0 0 20px rgba(0, 0, 0, 0.05);
+  /* lg was RE-WEIGHTED on 2026-08-24, not swapped with md.
+   *
+   * The scale read inverted: lg was wider than md (20px reach vs 13px) but lighter —
+   * peak 0.10 vs md's 0.16, and total ink 1.20 vs 1.64. Briefly swapping the two values
+   * fixed density but inverted reach instead, and left md's 44 consumers (tooltips,
+   * inputs, menus) rendering a wide halo while lg's 22 (modals, panels) got a tight one
+   * — backwards for those elements. So the assignment is restored and lg's alphas are
+   * raised instead, keeping its wide 2px-contact + 20px-halo character.
+   *
+   * Derivation: alphas chosen so lg's ink (2*a1 + 20*a2) lands ~1.32x md's 1.64, with
+   * peak just above md's 0.16. 0.18/0.09 gives peak 0.18, ink 2.16. lg now exceeds md
+   * on peak, ink AND reach, so the scale is monotonic on all three.
+   * No Figma style exists for these yet — Figma is to be updated from these values.
+   * Flagged for a refinement pass; see the footer. */
+  --ai-shadow-lg: 0 2px 2px rgba(0, 0, 0, 0.18), 0 0 20px rgba(0, 0, 0, 0.09);
   /* Soft even card halo. AudioPlayer "Card with waveform" (Figma 3055:5453)
    * binds drop-shadow(0 0 10px rgba(0,0,0,0.05)) — no --ai-shadow-* matched
    * (shadow-lg is 20px blur + a second layer), so this token was added.
@@ -63,7 +74,8 @@
    * so the two sides cannot drift apart:
    *   0.047 = #1D293D0C   0.149 = #…26   0.255 = #…41
    *   0.400 = #…66        0.125 = #…20   0.502 = #…80
-   *   0.251 = #1D293D40 (the slate-tinted `shadow`)
+   *   0.251 = #1D293D40 (the slate-tinted `base`)
+   *   0.451 = #…73        0.224 = #…39   (the re-weighted lg)
    */
   --ai-shadow-xxs: 0 1px 0.5px rgba(29, 41, 61, 0.047);
   --ai-shadow-base: 0 1px 2px -1px rgba(29, 41, 61, 0.251), 0 1px 3px 0 rgba(29, 41, 61, 0.251);
@@ -71,7 +83,8 @@
   /* Two layers at the light geometry. Figma currently has a single layer at
    * `0 2px 10px #00000040`; under the 2.5x rule it should be this pair. */
   --ai-shadow-md: 0 3px 10px rgba(0, 0, 0, 0.255), 0 1px 4px rgba(0, 0, 0, 0.4);
-  --ai-shadow-lg: 0 2px 2px rgba(0, 0, 0, 0.255), 0 0 20px rgba(0, 0, 0, 0.125);
+  /* The re-weighted lg at 2.5x: 0.18 -> 0.451, 0.09 -> 0.224. */
+  --ai-shadow-lg: 0 2px 2px rgba(0, 0, 0, 0.451), 0 0 20px rgba(0, 0, 0, 0.224);
   /* No Figma style at either strength — derived from the light card value. */
   --ai-shadow-card: 0 0 10px rgba(0, 0, 0, 0.125);
   /* Deliberate exception to the 2.5x rule, reaffirmed by the designer 2026-08-24:
@@ -96,4 +109,24 @@
  * 3. RESOLVED 2026-08-24: named `--ai-shadow-base` to keep this file's
  *    `--ai-shadow-{size}` convention. The Figma style is named plainly `shadow`, so
  *    this is the one place where the CSS name and the Figma style name differ.
+ */
+
+/* REVISIT: shadow scale refinement
+ * ---------------------------------------------------------------------------
+ * lg's 0.18 / 0.09 alphas were derived to sit ~1.32x md's ink with a slightly higher
+ * peak — enough to make the scale monotonic, but the ratio itself was chosen, not
+ * designed. The designer wants a refinement pass over the whole ladder. Current light
+ * measurements, for reference:
+ *
+ *     token   peak   ink    reach
+ *     xxs     0.02   0.01     2px
+ *     base    0.10   0.50     4px
+ *     sm      0.10   0.42     4px     <- base and sm are the same step
+ *     md      0.16   1.64    13px
+ *     lg      0.18   2.16    20px
+ *     card    0.05   0.50    10px
+ *
+ * Open with it: base vs sm (identical geometry, and base's ink is actually higher),
+ * whether the steps should be perceptually even, and whether card belongs on the
+ * ladder at all or stays a one-off.
  */
