@@ -1,7 +1,8 @@
 # WCAG 2.1 AA Contrast Audit
 
-Full six-mode audit of the Affino Design System colour tokens, run **2026-08-24** against the
-token CSS generated from the Aug 2026 Figma re-export.
+Full six-mode audit of the Affino Design System colour tokens, run against the token CSS
+generated from the Aug 2026 Figma re-export. Last refreshed **2026-08-24** after the dark-mode
+brand ramp was darkened one step (`surface.brand` `#30B6C2` → `#009FBA` in Dark and CCDark).
 
 Reproduce with:
 
@@ -22,29 +23,29 @@ TOKENS_DIR=/path/to/other/css node scripts/contrast-audit.mjs --json
 
 ## Headline
 
-**554 pairings** audited across Light, Dark, ChatLight, ChatDark, CCLight and CCDark.
+**552 pairings** audited across Light, Dark, ChatLight, ChatDark, CCLight and CCDark.
 
 | | Count |
 |---|---|
-| Passing | 397 |
-| **Blocking failures** | **97** |
+| Passing | 398 |
+| **Blocking failures** | **96** |
 | Advisory (decorative, arguably 1.4.11-exempt) | 52 |
 | Informational (disabled controls, WCAG-exempt) | 6 |
 
-Of the 97 blocking failures, measured against a rebuild of the pre-rework commit (`HEAD~1`):
+Of the 96 blocking failures, measured against a rebuild of the commit before the rework landed (`ee814890`):
 
 - **41 are regressions** introduced by the Aug 2026 rework — they passed before.
-- **56 are pre-existing** — they failed before the rework too.
-- **13 pairings were *fixed*** by the rework (mostly `--ai-text-brand`, which gained 2–3× contrast
+- **55 are pre-existing** — they failed before the rework too.
+- **14 pairings were *fixed*** by the rework (mostly `--ai-text-brand`, which gained 2–3× contrast
   in the dark and chat modes).
 
-The 97 failures collapse into **27 distinct token pairs**, and every one of them falls under one
+The 96 failures collapse into **27 distinct token pairs**, and every one of them falls under one
 of the seven root causes below — so fixing those seven clears the whole list.
 
 | Root cause | Failures | Regression? |
 |---|---|---|
 | 1. `--ai-text-invert` does not flip in dark mode | 6 | yes |
-| 2. Primary button: white on mid-tone teal | 14 | yes (4 of 14; hover was already failing) |
+| 2. Primary button: white on mid-tone teal | 13 | yes (4 of 13; hover was already failing) |
 | 3. Invert text on solid status fills | 24 | mostly |
 | 4. `--ai-text-contrast` too light on tinted surfaces | 18 | partly |
 | 5. Focus indicator / `--ai-border-brand` | 7 | yes |
@@ -93,28 +94,49 @@ way `icon/invert` already does (`Grey/850 #172033` or matching `icon-invert`'s `
 
 ### 2. Primary button: white text on a mid-tone teal fill — REGRESSION
 
-| Mode | Fill | Ratio | Needs |
+The dark-mode brand ramp was darkened one step on 2026-08-24, which moved every dark button
+state in the right direction without clearing the line:
+
+| Mode | State | Fill | Was | Now | Needs |
+|---|---|---|---|---|---|
+| Dark | hover | `#30B6C2` | 1.88:1 | **2.44:1** | 4.5:1 |
+| Dark | base | `#009FBA` | 2.44:1 | **3.15:1** | 4.5:1 |
+| Dark | pressed | `#0094AD` | 3.15:1 | **3.60:1** | 4.5:1 |
+| CCDark | base | `#009FBA` | 2.44:1 | **3.15:1** | 4.5:1 |
+| CCDark | hover | `#0094AD` | 1.88:1 | **3.60:1** | 4.5:1 |
+| CCDark | pressed | `#007A8D` | 3.15:1 | 5.04:1 | ✅ passes |
+| Light / CCLight | base | `#0094AD` | — | **3.60:1** | 4.5:1 |
+| Light / CCLight | hover | `#009FBA` | — | **3.15:1** | 4.5:1 |
+| ChatLight / ChatDark | base | `#0588F0` | — | **3.63:1** | 4.5:1 |
+
+**Dark mode cannot be fixed by darkening the fill.** There is a squeeze: the label needs 4.5:1
+against the fill, and the fill itself needs 3:1 against the dark page surface (`#1E293B`). No
+Lagoon step satisfies both with white text.
+
+| Fill | White label | Dark label `Grey/900 #0F172A` | Fill vs dark page |
 |---|---|---|---|
-| Dark | `#30B6C2` | **2.44:1** | 4.5:1 |
-| Dark (hover) | `#77CAD0` | **1.88:1** | 4.5:1 |
-| Light / CCLight | `#0094AD` | **3.60:1** | 4.5:1 |
-| Light (hover) | `#009FBA` | **3.15:1** | 4.5:1 |
-| ChatLight / ChatDark | `#0588F0` | **3.63:1** | 4.5:1 |
+| `Lagoon/8 #30B6C2` | 2.44:1 | **7.31:1** | 5.99:1 |
+| `Lagoon/9 #009FBA` (current) | 3.15:1 | **5.67:1** | 4.65:1 |
+| `Lagoon/10 #0094AD` | 3.60:1 | **4.96:1** | 4.07:1 |
+| `Lagoon/11 #007A8D` | **5.04:1** | 3.54:1 | **2.90:1** ✗ |
 
-Teal at Lagoon step 9/10 is simply lighter than the blue it replaced at the same nominal
-position — the old `#2563EB` gave 5.17:1. The dark hover state at 1.88:1 is the worst
-single value in the audit.
+`Lagoon/11` is the only step that passes with white — and it is the only one whose button
+becomes hard to see against the page.
 
-**Fix, two options:**
+**Fix — the two themes want opposite answers, which is exactly what a theme-aware token is for:**
 
-- **Darken the fill.** `Lagoon/11 #007A8D` gives **5.04:1** with white — and that value is already
-  in the system as `--ai-surface-brand-dark`. Shifting `btn-primary-bg` from step 10 to step 11
-  fixes light mode with no new primitive.
-- **Or flip the text to dark** on the mid-tone fills, which is what Radix itself recommends for
-  step 9/10 solid fills. This is the better answer for dark mode, where a *darker* teal fights
-  the surrounding surface.
+- **Dark and CCDark:** keep the fill where it now is and set `--ai-btn-primary-text` to a dark
+  value. `Grey/900 #0F172A` on the current `#009FBA` gives **5.67:1**, and the fill stays 4.65:1
+  against the page. Both thresholds clear with no further fill change.
+  `--ai-btn-primary-text` is already a per-mode token — it is simply `#FFFFFF` in all six modes
+  today, so this is a value change in two modes, not a new token.
+- **Light and CCLight:** the opposite — keep white text and darken the fill to
+  `Lagoon/11 #007A8D` (**5.04:1**), which is already in the system as `--ai-surface-brand-dark`.
+- **ChatLight / ChatDark:** BlueRadix step 11 `#0D74CE` gives 5.07:1 with white.
 
-14 failures across the three button states.
+Note the hover direction is also inconsistent between modes: Dark's hover goes *lighter* than its
+base (`surface.brand-light`), so hover contrast is worse than rest, while CCDark's button tokens
+were re-pointed to go *darker* on hover. Worth aligning. 13 failures.
 
 ### 3. `--ai-text-invert` on solid status fills — mostly REGRESSION
 
@@ -203,7 +225,7 @@ be, not a token-value slip. It needs a designer call, not a mechanical bump. 16 
 
 <!-- Generated by scripts/contrast-audit.mjs --md — do not hand-edit below this line. -->
 
-Audited **552 pairings** across 6 modes: **97 fail**, 397 pass.
+Audited **552 pairings** across 6 modes: **96 fail**, 398 pass.
 
 ### Light — 15 failures
 
@@ -236,17 +258,17 @@ Selector: `[data-theme="dark"]`
 | `--ai-text-invert`<br>`#e2e8f0` | `--ai-surface-invert`<br>`#f1f5f9` | **1.13:1** | 4.5:1 | Body text on surfaces |
 | `--ai-text-invert-secondary`<br>`#cad5e2` | `--ai-surface-invert`<br>`#f1f5f9` | **1.36:1** | 4.5:1 | Body text on surfaces |
 | `--ai-border-secondary`<br>`#334155` | `--ai-surface-primary`<br>`#1e293b` | **1.41:1** | 3:1 | Structural borders — default input/card border — a control boundary |
-| `--ai-btn-primary-text-hover`<br>`#ffffff` | `--ai-btn-primary-bg-hover`<br>`#77cad0` | **1.88:1** | 4.5:1 | Buttons — hover |
 | `--ai-border-contrast`<br>`#475569` | `--ai-surface-primary`<br>`#1e293b` | **1.93:1** | 3:1 | Structural borders |
-| `--ai-text-invert`<br>`#e2e8f0` | `--ai-surface-info`<br>`#30b6c2` | **1.98:1** | 4.5:1 | Invert text on solid status fill |
 | `--ai-icon-invert-secondary`<br>`#94a3b8` | `--ai-surface-invert`<br>`#f1f5f9` | **2.34:1** | 3:1 | Icons on surfaces |
 | `--ai-text-invert`<br>`#e2e8f0` | `--ai-surface-warning`<br>`#f76b15` | **2.41:1** | 4.5:1 | Invert text on solid status fill |
-| `--ai-btn-primary-text`<br>`#ffffff` | `--ai-btn-primary-bg`<br>`#30b6c2` | **2.44:1** | 4.5:1 | Buttons |
+| `--ai-btn-primary-text-hover`<br>`#ffffff` | `--ai-btn-primary-bg-hover`<br>`#30b6c2` | **2.44:1** | 4.5:1 | Buttons — hover |
+| `--ai-text-invert`<br>`#e2e8f0` | `--ai-surface-info`<br>`#009fba` | **2.55:1** | 4.5:1 | Invert text on solid status fill |
 | `--ai-text-invert`<br>`#e2e8f0` | `--ai-surface-success`<br>`#30a46c` | **2.56:1** | 4.5:1 | Invert text on solid status fill |
 | `--ai-border-brand`<br>`#007a8d` | `--ai-surface-primary`<br>`#1e293b` | **2.90:1** | 3:1 | Focus indicator |
-| `--ai-btn-primary-text`<br>`#ffffff` | `--ai-btn-primary-bg-pressed`<br>`#009fba` | **3.15:1** | 4.5:1 | Buttons — pressed |
+| `--ai-btn-primary-text`<br>`#ffffff` | `--ai-btn-primary-bg`<br>`#009fba` | **3.15:1** | 4.5:1 | Buttons |
 | `--ai-text-invert`<br>`#e2e8f0` | `--ai-surface-error`<br>`#e5484d` | **3.17:1** | 4.5:1 | Invert text on solid status fill |
 | `--ai-text-contrast`<br>`#94a3b8` | `--ai-surface-secondary`<br>`#3d4b5f` | **3.46:1** | 4.5:1 | Body text on surfaces |
+| `--ai-btn-primary-text`<br>`#ffffff` | `--ai-btn-primary-bg-pressed`<br>`#0094ad` | **3.60:1** | 4.5:1 | Buttons — pressed |
 | `--ai-text-error`<br>`#e5484d` | `--ai-surface-primary`<br>`#1e293b` | **3.74:1** | 4.5:1 | Status text on page |
 | `--ai-text-invert`<br>`#e2e8f0` | `--ai-surface-neutral`<br>`#64748b` | **3.86:1** | 4.5:1 | Invert text on solid status fill |
 | `--ai-text-contrast`<br>`#94a3b8` | `--ai-surface-elevated-2`<br>`#334155` | **4.04:1** | 4.5:1 | Body text on surfaces |
@@ -319,7 +341,7 @@ Selector: `[data-brand="cc"]`
 | `--ai-text-contrast`<br>`#667f89` | `--ai-surface-elevated-1`<br>`#ffffff` | **4.23:1** | 4.5:1 | Body text on surfaces |
 | `--ai-text-warning`<br>`#cc4e00` | `--ai-surface-warning-soft`<br>`#fff7ed` | **4.25:1** | 4.5:1 | Status text on soft fill |
 
-### CCDark — 18 failures
+### CCDark — 17 failures
 
 Selector: `[data-brand="cc"][data-theme="dark"]`
 
@@ -328,17 +350,16 @@ Selector: `[data-brand="cc"][data-theme="dark"]`
 | `--ai-text-invert`<br>`#e2e8f0` | `--ai-surface-invert`<br>`#f1f5f9` | **1.13:1** | 4.5:1 | Body text on surfaces |
 | `--ai-text-invert-secondary`<br>`#cad5e2` | `--ai-surface-invert`<br>`#f1f5f9` | **1.36:1** | 4.5:1 | Body text on surfaces |
 | `--ai-border-secondary`<br>`#334155` | `--ai-surface-primary`<br>`#1e293b` | **1.41:1** | 3:1 | Structural borders — default input/card border — a control boundary |
-| `--ai-btn-primary-text-hover`<br>`#ffffff` | `--ai-btn-primary-bg-hover`<br>`#77cad0` | **1.88:1** | 4.5:1 | Buttons — hover |
 | `--ai-border-contrast`<br>`#475569` | `--ai-surface-primary`<br>`#1e293b` | **1.93:1** | 3:1 | Structural borders |
 | `--ai-text-invert`<br>`#e2e8f0` | `--ai-surface-info`<br>`#30b6c2` | **1.98:1** | 4.5:1 | Invert text on solid status fill |
 | `--ai-icon-invert-secondary`<br>`#94a3b8` | `--ai-surface-invert`<br>`#f1f5f9` | **2.34:1** | 3:1 | Icons on surfaces |
 | `--ai-text-invert`<br>`#e2e8f0` | `--ai-surface-warning`<br>`#f76b15` | **2.41:1** | 4.5:1 | Invert text on solid status fill |
-| `--ai-btn-primary-text`<br>`#ffffff` | `--ai-btn-primary-bg`<br>`#30b6c2` | **2.44:1** | 4.5:1 | Buttons |
 | `--ai-text-invert`<br>`#e2e8f0` | `--ai-surface-success`<br>`#30a46c` | **2.56:1** | 4.5:1 | Invert text on solid status fill |
 | `--ai-border-brand`<br>`#007a8d` | `--ai-surface-primary`<br>`#1e293b` | **2.90:1** | 3:1 | Focus indicator |
-| `--ai-btn-primary-text`<br>`#ffffff` | `--ai-btn-primary-bg-pressed`<br>`#009fba` | **3.15:1** | 4.5:1 | Buttons — pressed |
+| `--ai-btn-primary-text`<br>`#ffffff` | `--ai-btn-primary-bg`<br>`#009fba` | **3.15:1** | 4.5:1 | Buttons |
 | `--ai-text-invert`<br>`#e2e8f0` | `--ai-surface-error`<br>`#e5484d` | **3.17:1** | 4.5:1 | Invert text on solid status fill |
 | `--ai-text-contrast`<br>`#94a3b8` | `--ai-surface-secondary`<br>`#3d4b5f` | **3.46:1** | 4.5:1 | Body text on surfaces |
+| `--ai-btn-primary-text-hover`<br>`#ffffff` | `--ai-btn-primary-bg-hover`<br>`#0094ad` | **3.60:1** | 4.5:1 | Buttons — hover |
 | `--ai-text-error`<br>`#e5484d` | `--ai-surface-primary`<br>`#1e293b` | **3.74:1** | 4.5:1 | Status text on page |
 | `--ai-text-invert`<br>`#e2e8f0` | `--ai-surface-neutral`<br>`#64748b` | **3.86:1** | 4.5:1 | Invert text on solid status fill |
 | `--ai-text-contrast`<br>`#94a3b8` | `--ai-surface-elevated-2`<br>`#334155` | **4.04:1** | 4.5:1 | Body text on surfaces |
@@ -418,5 +439,4 @@ WCAG 2.1 exempts disabled controls from contrast minimums, so these are reported
 | ChatDark | `--ai-btn-text-disabled` `#c2c2c4` | `--ai-btn-bg-disabled` `#67676c` | 3.16:1 |
 | CCLight | `--ai-btn-text-disabled` `#99aab1` | `--ai-btn-bg-disabled` `#ccd4d8` | 1.60:1 |
 | CCDark | `--ai-btn-text-disabled` `#64748b` | `--ai-btn-bg-disabled` `#94a3b8` | 1.86:1 |
-
 

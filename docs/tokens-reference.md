@@ -618,9 +618,14 @@ nominal ramp position, so three pairings regressed:
 | Pairing | Before | After | Needs | Status |
 |---|---|---|---|---|
 | `--ai-btn-primary-text` `#FFFFFF` on `--ai-btn-primary-bg` `#0094AD` (light) | 5.17:1 | **3.60:1** | 4.5:1 | ✗ fails |
-| `--ai-btn-primary-text` `#FFFFFF` on `--ai-btn-primary-bg` `#30B6C2` (dark) | 4.82:1 | **2.44:1** | 4.5:1 | ✗ fails badly |
+| `--ai-btn-primary-text` `#FFFFFF` on `--ai-btn-primary-bg` `#009FBA` (dark) | 4.82:1 | **3.15:1** | 4.5:1 | ✗ fails |
 | `--ai-border-brand` `#30B6C2` on `--ai-surface-primary` (light) | 5.17:1 | **2.44:1** | 3:1 | ✗ fails |
 | `--ai-icon-contrast` `#94A3B8` on `--ai-surface-primary` (light) | 3.10:1 | **2.56:1** | 3:1 | ✗ fails |
+
+The dark-mode brand ramp was darkened one step on 2026-08-24, lifting the dark button from
+2.44:1 to 3.15:1 — better, but still short. See root cause 2 in the audit: dark mode cannot
+reach 4.5:1 with white text without making the button itself invisible against the page, so it
+needs a **dark** `--ai-btn-primary-text` instead.
 
 Everything else measured on the light default context passes, including `text-brand` (5.04:1),
 `text-error` (5.21:1), `text-success` (4.72:1), `text-warning` (4.51:1) and `text-contrast`
@@ -629,8 +634,8 @@ Everything else measured on the light default context passes, including `text-br
 Note `--ai-border-contrast` `#94A3B8` is 2.56:1 — still below 3:1, but it was 1.78:1 before,
 so the rework improved it. Pre-existing, not a regression.
 
-The dark-mode primary button is the urgent one: white on `#30B6C2` fails even the relaxed 3:1
-large-text threshold. Dark-mode teal at that lightness wants **dark** text, not white.
+Dark-mode teal wants **dark** label text, not white — that is the only option that clears both
+the label's 4.5:1 and the button's own 3:1 against the page surface.
 
 ### The full audit is done — see `docs/contrast-audit.md`
 
@@ -638,8 +643,8 @@ The six-mode audit was completed on 2026-08-24 and lives in
 [`docs/contrast-audit.md`](contrast-audit.md). Re-run it any time with `npm run contrast`
 (exits non-zero on any blocking failure, so it works as a gate).
 
-**554 pairings across all six modes: 97 blocking failures**, collapsing into seven root causes.
-41 are regressions from the Aug 2026 rework, 56 pre-existing, and 13 pairings were improved by it.
+**552 pairings across all six modes: 96 blocking failures**, collapsing into seven root causes.
+41 are regressions from the Aug 2026 rework, 55 pre-existing, and 14 pairings were improved by it.
 
 The worst finding is not in the table above: **`--ai-text-invert` does not flip in dark mode**
 while `--ai-icon-invert` does, so inverted text lands light-on-light at **1.13:1** (down from

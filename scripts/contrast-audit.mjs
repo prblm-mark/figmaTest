@@ -224,7 +224,9 @@ const informational = fails.filter(r => r.severity === 'exempt');
 if (process.argv.includes('--json')) {
   console.log(JSON.stringify(results.map(r => ({
     mode: r.mode, fg: r.fg, bg: r.bg, fgVal: r.fgVal, bgVal: r.bgVal,
-    need: r.need, ratio: +r.ratio.toFixed(3), pass: r.pass,
+    // Full precision, not rounded: consumers round once for display. Emitting 3 decimals
+    // here made 1.8845 print as 1.89 after a second rounding.
+    need: r.need, ratio: r.ratio, pass: r.pass,
     severity: r.severity, group: r.group, note: r.note ?? null,
   })), null, 0));
   process.exit(0);
