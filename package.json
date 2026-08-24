@@ -11,6 +11,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tokens": "node style-dictionary.config.mjs",
+    "contrast": "node scripts/contrast-audit.mjs",
     "code-connect:publish": "figma connect publish",
     "code-connect:unpublish": "figma connect unpublish",
     "start": "webpack serve --open --config webpack.config.dev.js",

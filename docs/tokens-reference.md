@@ -632,16 +632,18 @@ so the rework improved it. Pre-existing, not a regression.
 The dark-mode primary button is the urgent one: white on `#30B6C2` fails even the relaxed 3:1
 large-text threshold. Dark-mode teal at that lightness wants **dark** text, not white.
 
-### TODO — full six-mode contrast audit
+### The full audit is done — see `docs/contrast-audit.md`
 
-The table above covers the light default context plus the two primary-button cases. It is **not**
-a complete audit. Outstanding: every foreground/background pairing across all six modes —
-Light, Dark, ChatLight, ChatDark, CCLight, CCDark — including status soft-fill combinations
-(`text-{status}` on `surface-{status}-soft`), border-on-surface pairings, and the CC component
-tokens (`--cc-header-*`, `--cc-mainmenu-*`, `--cc-actions-menu-*`). Several CC tokens inverted
-polarity in this export (e.g. `--cc-actions-menu-primary-bg` went from dark `#0F3B53` to light
-`#D6DEE8` while its icon token became `{icon.secondary}`), so those pairings need re-checking
-from scratch.
+The six-mode audit was completed on 2026-08-24 and lives in
+[`docs/contrast-audit.md`](contrast-audit.md). Re-run it any time with `npm run contrast`
+(exits non-zero on any blocking failure, so it works as a gate).
+
+**554 pairings across all six modes: 97 blocking failures**, collapsing into seven root causes.
+41 are regressions from the Aug 2026 rework, 56 pre-existing, and 13 pairings were improved by it.
+
+The worst finding is not in the table above: **`--ai-text-invert` does not flip in dark mode**
+while `--ai-icon-invert` does, so inverted text lands light-on-light at **1.13:1** (down from
+15.90:1). See root cause 1 in the audit.
 
 ---
 
