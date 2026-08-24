@@ -148,6 +148,26 @@ StyleDictionary.registerTransform({
   },
 });
 
+/**
+ * Seating Planner variable names.
+ *
+ * The Seating Planner collection is prototype-scoped and its Figma variables carry no
+ * codeSyntax.WEB, so names are derived from the token path. Prefixed `--sp-` (not `--ai-`)
+ * to keep prototype role colours out of the core design-system namespace — the same
+ * carve-out the CC component tokens use with `--cc-`.
+ *
+ * Example: "Gold Table" → "sp-gold-table" → CSS format adds "--" → "--sp-gold-table"
+ */
+StyleDictionary.registerTransform({
+  name: 'name/seating-planner',
+  type: 'name',
+  transform: (token) =>
+    ['sp', ...token.path]
+      .join('-')
+      .toLowerCase()
+      .replace(/\s+/g, '-'),
+});
+
 // ─── Mobile media-query formatter ─────────────────────────────────────────────
 
 StyleDictionary.registerFormat({
@@ -508,3 +528,127 @@ const sdCCDark = new StyleDictionary({
 });
 
 await sdCCDark.buildAllPlatforms();
+
+// ─── Seating Planner token builds ─────────────────────────────────────────────
+// Prototype-scoped role colours for the Seating Planner (attendee/VIP/speaker/table
+// tiers). Three interchangeable palettes, one per Figma mode.
+//
+// Namespaced `--sp-*`, NOT `--ai-*`: these are prototype role colours, not core
+// design-system semantics, and must not be reachable from component CSS by accident.
+// The Figma variables carry no codeSyntax.WEB, so names come from the path via the
+// name/seating-planner transform.
+//
+// Activation: add data-seating="muted" | "radix-soft" | "radix-vivid" to a container.
+// No :root default is emitted — a palette must be chosen explicitly, so an unset
+// container renders with no --sp-* values rather than silently inheriting one mode.
+
+const seatingModes = [
+  { mode: 'Muted',        slug: 'muted' },
+  { mode: 'Radix Soft',   slug: 'radix-soft' },
+  { mode: 'Radix Vivid',  slug: 'radix-vivid' },
+];
+
+for (const { mode, slug } of seatingModes) {
+  const sdSeating = new StyleDictionary({
+    usesDtcg: true,
+    parsers: ['figma-token-parser'],
+    source: [`FigmaTokens/Seating Planner/${mode}.tokens.json`],
+    platforms: {
+      css: {
+        transforms: [
+          'color/figma-hex',
+          'name/seating-planner',
+        ],
+        buildPath: 'css/',
+        files: [{
+          destination: `tokens-seating-${slug}.css`,
+          format: 'css/variables-selector',
+          options: {
+            selector: `[data-seating="${slug}"]`,
+            outputReferences: false,
+          },
+        }],
+      },
+    },
+  });
+
+  await sdSeating.buildAllPlatforms();
+}
+
+// ─── Output collision guard ───────────────────────────────────────────────────
+// Style Dictionary warns about token collisions but still emits every duplicate
+// declaration, so the LAST one silently wins in the cascade. That is how a Figma
+// codeSyntax copy-paste (five font sizes all named --ai-font-fixed-4xl) turned
+// `h1` from 32px into 72px with nothing but a soft build warning.
+//
+// This guard re-reads what was actually written and fails the build on any custom
+// property declared more than once with DIFFERENT values. Identical-value duplicates
+// are reported as benign and do not fail (e.g. --ai-spacing-0 from both spacing.0
+// and size.0, which are both 0).
+//
+// Files are written before this runs, so a failure never leaves you without CSS —
+// it just refuses to let the ambiguity pass unnoticed. Escape hatch for a
+// deliberate override: TOKENS_ALLOW_COLLISIONS=1 npm run tokens
+
+import { readFileSync, existsSync } from 'node:fs';
+
+const generatedFiles = [
+  'css/tokens.css',
+  'css/tokens-mobile.css',
+  'css/tokens-dark.css',
+  'css/tokens-minimised.css',
+  'css/tokens-chat.css',
+  'css/tokens-chat-dark.css',
+  'css/tokens-cc.css',
+  'css/tokens-cc-dark.css',
+  ...seatingModes.map(({ slug }) => `css/tokens-seating-${slug}.css`),
+];
+
+const hardCollisions = [];
+const benignCollisions = [];
+
+for (const file of generatedFiles) {
+  if (!existsSync(file)) continue;
+
+  // Each generated file emits exactly one variable block, so grouping by file
+  // (rather than by selector) is enough to catch every shadowed declaration.
+  const declarations = new Map();
+  for (const line of readFileSync(file, 'utf8').split('\n')) {
+    const match = line.match(/^\s*(--[\w-]+)\s*:\s*(.+?);\s*$/);
+    if (!match) continue;
+    const [, prop, value] = match;
+    if (!declarations.has(prop)) declarations.set(prop, []);
+    declarations.get(prop).push(value.trim());
+  }
+
+  for (const [prop, values] of declarations) {
+    if (values.length < 2) continue;
+    const bucket = new Set(values).size > 1 ? hardCollisions : benignCollisions;
+    bucket.push({ file, prop, values });
+  }
+}
+
+if (benignCollisions.length) {
+  console.log('\nℹ️  Duplicate declarations with identical values (harmless):');
+  for (const { file, prop, values } of benignCollisions) {
+    console.log(`   ${file}  ${prop}  ×${values.length} = ${values[0]}`);
+  }
+}
+
+if (hardCollisions.length) {
+  console.error('\n✗ Token name collisions — later declarations silently override earlier ones:\n');
+  for (const { file, prop, values } of hardCollisions) {
+    console.error(`   ${file}`);
+    console.error(`     ${prop}`);
+    values.forEach((v, i) => {
+      const marker = i === values.length - 1 ? '← WINS' : '  shadowed';
+      console.error(`       ${v.padEnd(12)} ${marker}`);
+    });
+    console.error('');
+  }
+  console.error('Fix the duplicated codeSyntax.WEB values in Figma, re-export, and rebuild.');
+  console.error('To emit anyway: TOKENS_ALLOW_COLLISIONS=1 npm run tokens\n');
+
+  if (process.env.TOKENS_ALLOW_COLLISIONS !== '1') process.exit(1);
+  console.error('TOKENS_ALLOW_COLLISIONS=1 set — continuing despite collisions.\n');
+}

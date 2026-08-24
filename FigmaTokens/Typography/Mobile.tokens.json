@@ -12,8 +12,7 @@
           "com.figma.codeSyntax": {
             "WEB": "--ai-font-title"
           },
-          "com.figma.type": "string",
-          "com.figma.isOverride": true
+          "com.figma.type": "string"
         }
       },
       "body": {
@@ -27,8 +26,7 @@
           "com.figma.codeSyntax": {
             "WEB": "--ai-font-body"
           },
-          "com.figma.type": "string",
-          "com.figma.isOverride": true
+          "com.figma.type": "string"
         }
       }
     },
@@ -44,8 +42,7 @@
           "com.figma.codeSyntax": {
             "WEB": "--ai-font-regular"
           },
-          "com.figma.type": "string",
-          "com.figma.isOverride": true
+          "com.figma.type": "string"
         }
       },
       "Medium": {
@@ -59,8 +56,7 @@
           "com.figma.codeSyntax": {
             "WEB": "--ai-font-medium"
           },
-          "com.figma.type": "string",
-          "com.figma.isOverride": true
+          "com.figma.type": "string"
         }
       },
       "SemiBold": {
@@ -74,8 +70,7 @@
           "com.figma.codeSyntax": {
             "WEB": "--ai-font-semibold"
           },
-          "com.figma.type": "string",
-          "com.figma.isOverride": true
+          "com.figma.type": "string"
         }
       },
       "Bold": {
@@ -89,8 +84,7 @@
           "com.figma.codeSyntax": {
             "WEB": "--ai-font-bold"
           },
-          "com.figma.type": "string",
-          "com.figma.isOverride": true
+          "com.figma.type": "string"
         }
       },
       "ExtraBold": {
@@ -104,12 +98,50 @@
           "com.figma.codeSyntax": {
             "WEB": "--ai-font-extrabold"
           },
-          "com.figma.type": "string",
-          "com.figma.isOverride": true
+          "com.figma.type": "string"
         }
       }
     },
     "size-fixed": {
+      "5xs": {
+        "$type": "number",
+        "$value": 10,
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3321:2248",
+          "com.figma.scopes": [
+            "ALL_SCOPES"
+          ],
+          "com.figma.codeSyntax": {
+            "WEB": "--ai-font-fixed-5xs"
+          }
+        }
+      },
+      "4xs": {
+        "$type": "number",
+        "$value": 11,
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3321:2247",
+          "com.figma.scopes": [
+            "ALL_SCOPES"
+          ],
+          "com.figma.codeSyntax": {
+            "WEB": "--ai-font-fixed-4xs"
+          }
+        }
+      },
+      "3xs": {
+        "$type": "number",
+        "$value": 12,
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3393:29138",
+          "com.figma.scopes": [
+            "ALL_SCOPES"
+          ],
+          "com.figma.codeSyntax": {
+            "WEB": "--ai-font-fixed-3xs"
+          }
+        }
+      },
       "xxs": {
         "$type": "number",
         "$value": 12,
@@ -119,9 +151,21 @@
             "ALL_SCOPES"
           ],
           "com.figma.codeSyntax": {
+            "WEB": "--ai-font-fixed-2xs"
+          }
+        }
+      },
+      "2xs": {
+        "$type": "number",
+        "$value": 13,
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3393:27704",
+          "com.figma.scopes": [
+            "ALL_SCOPES"
+          ],
+          "com.figma.codeSyntax": {
             "WEB": "--ai-font-fixed-xxs"
-          },
-          "com.figma.isOverride": true
+          }
         }
       },
       "xs": {
@@ -134,8 +178,7 @@
           ],
           "com.figma.codeSyntax": {
             "WEB": "--ai-font-fixed-xs"
-          },
-          "com.figma.isOverride": true
+          }
         }
       },
       "sm": {
@@ -148,8 +191,7 @@
           ],
           "com.figma.codeSyntax": {
             "WEB": "--ai-font-fixed-sm"
-          },
-          "com.figma.isOverride": true
+          }
         }
       },
       "md": {
@@ -162,8 +204,7 @@
           ],
           "com.figma.codeSyntax": {
             "WEB": "--ai-font-fixed-md"
-          },
-          "com.figma.isOverride": true
+          }
         }
       },
       "lg": {
@@ -176,8 +217,7 @@
           ],
           "com.figma.codeSyntax": {
             "WEB": "--ai-font-fixed-lg"
-          },
-          "com.figma.isOverride": true
+          }
         }
       },
       "xl": {
@@ -190,8 +230,7 @@
           ],
           "com.figma.codeSyntax": {
             "WEB": "--ai-font-fixed-xl"
-          },
-          "com.figma.isOverride": true
+          }
         }
       },
       "2xl": {
@@ -204,8 +243,7 @@
           ],
           "com.figma.codeSyntax": {
             "WEB": "--ai-font-fixed-2xl"
-          },
-          "com.figma.isOverride": true
+          }
         }
       },
       "3xl": {
@@ -218,8 +256,7 @@
           ],
           "com.figma.codeSyntax": {
             "WEB": "--ai-font-fixed-3xl"
-          },
-          "com.figma.isOverride": true
+          }
         }
       },
       "4xl": {
@@ -232,8 +269,59 @@
           ],
           "com.figma.codeSyntax": {
             "WEB": "--ai-font-fixed-4xl"
-          },
-          "com.figma.isOverride": true
+          }
+        }
+      },
+      "5xl": {
+        "$type": "number",
+        "$value": 36,
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3241:9874",
+          "com.figma.scopes": [
+            "ALL_SCOPES"
+          ],
+          "com.figma.codeSyntax": {
+            "WEB": "--ai-font-fixed-5xl"
+          }
+        }
+      },
+      "6xl": {
+        "$type": "number",
+        "$value": 48,
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3241:9875",
+          "com.figma.scopes": [
+            "ALL_SCOPES"
+          ],
+          "com.figma.codeSyntax": {
+            "WEB": "--ai-font-fixed-6xl"
+          }
+        }
+      },
+      "7xl": {
+        "$type": "number",
+        "$value": 60,
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3241:9876",
+          "com.figma.scopes": [
+            "ALL_SCOPES"
+          ],
+          "com.figma.codeSyntax": {
+            "WEB": "--ai-font-fixed-7xl"
+          }
+        }
+      },
+      "8xl": {
+        "$type": "number",
+        "$value": 72,
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3241:9877",
+          "com.figma.scopes": [
+            "ALL_SCOPES"
+          ],
+          "com.figma.codeSyntax": {
+            "WEB": "--ai-font-fixed-8xl"
+          }
         }
       }
     },
@@ -248,8 +336,7 @@
           ],
           "com.figma.codeSyntax": {
             "WEB": "--ai-font-fluid-xxs"
-          },
-          "com.figma.isOverride": true
+          }
         }
       },
       "xs": {
@@ -262,8 +349,7 @@
           ],
           "com.figma.codeSyntax": {
             "WEB": "--ai-font-fluid-xs"
-          },
-          "com.figma.isOverride": true
+          }
         }
       },
       "sm": {
@@ -276,8 +362,7 @@
           ],
           "com.figma.codeSyntax": {
             "WEB": "--ai-font-fluid-sm"
-          },
-          "com.figma.isOverride": true
+          }
         }
       },
       "md": {
@@ -290,8 +375,7 @@
           ],
           "com.figma.codeSyntax": {
             "WEB": "--ai-font-fluid-md"
-          },
-          "com.figma.isOverride": true
+          }
         }
       },
       "lg": {
@@ -304,8 +388,7 @@
           ],
           "com.figma.codeSyntax": {
             "WEB": "--ai-font-fluid-lg"
-          },
-          "com.figma.isOverride": true
+          }
         }
       },
       "xl": {
@@ -318,8 +401,7 @@
           ],
           "com.figma.codeSyntax": {
             "WEB": "--ai-font-fluid-xl"
-          },
-          "com.figma.isOverride": true
+          }
         }
       },
       "2xl": {
@@ -332,8 +414,7 @@
           ],
           "com.figma.codeSyntax": {
             "WEB": "--ai-font-fluid-2xl"
-          },
-          "com.figma.isOverride": true
+          }
         }
       },
       "3xl": {
@@ -346,8 +427,7 @@
           ],
           "com.figma.codeSyntax": {
             "WEB": "--ai-font-fluid-3xl"
-          },
-          "com.figma.isOverride": true
+          }
         }
       },
       "4xl": {
@@ -360,8 +440,7 @@
           ],
           "com.figma.codeSyntax": {
             "WEB": "--ai-font-fluid-4xl"
-          },
-          "com.figma.isOverride": true
+          }
         }
       }
     }
@@ -377,8 +456,7 @@
         ],
         "com.figma.codeSyntax": {
           "WEB": "--ai-leading-xs"
-        },
-        "com.figma.isOverride": true
+        }
       }
     },
     "sm": {
@@ -391,8 +469,7 @@
         ],
         "com.figma.codeSyntax": {
           "WEB": "--ai-leading-sm"
-        },
-        "com.figma.isOverride": true
+        }
       }
     },
     "md": {
@@ -405,8 +482,7 @@
         ],
         "com.figma.codeSyntax": {
           "WEB": "--ai-leading-md"
-        },
-        "com.figma.isOverride": true
+        }
       }
     },
     "lg": {
@@ -419,8 +495,7 @@
         ],
         "com.figma.codeSyntax": {
           "WEB": "--ai-leading-lg"
-        },
-        "com.figma.isOverride": true
+        }
       }
     },
     "xl": {
@@ -433,8 +508,7 @@
         ],
         "com.figma.codeSyntax": {
           "WEB": "--ai-leading-xl"
-        },
-        "com.figma.isOverride": true
+        }
       }
     },
     "2xl": {
@@ -447,8 +521,7 @@
         ],
         "com.figma.codeSyntax": {
           "WEB": "--ai-leading-2xl"
-        },
-        "com.figma.isOverride": true
+        }
       }
     }
   },
@@ -463,8 +536,7 @@
         ],
         "com.figma.codeSyntax": {
           "WEB": "--ai-tracking-1"
-        },
-        "com.figma.isOverride": true
+        }
       }
     },
     "2": {
@@ -477,8 +549,7 @@
         ],
         "com.figma.codeSyntax": {
           "WEB": "--ai-tracking-2"
-        },
-        "com.figma.isOverride": true
+        }
       }
     },
     "3": {
@@ -491,8 +562,7 @@
         ],
         "com.figma.codeSyntax": {
           "WEB": "--ai-tracking-3"
-        },
-        "com.figma.isOverride": true
+        }
       }
     },
     "4": {
@@ -505,8 +575,7 @@
         ],
         "com.figma.codeSyntax": {
           "WEB": "--ai-tracking-4"
-        },
-        "com.figma.isOverride": true
+        }
       }
     },
     "5": {
@@ -519,8 +588,7 @@
         ],
         "com.figma.codeSyntax": {
           "WEB": "--ai-tracking-5"
-        },
-        "com.figma.isOverride": true
+        }
       }
     },
     "6": {
@@ -533,8 +601,7 @@
         ],
         "com.figma.codeSyntax": {
           "WEB": "--ai-tracking-6"
-        },
-        "com.figma.isOverride": true
+        }
       }
     },
     "7": {
@@ -547,8 +614,7 @@
         ],
         "com.figma.codeSyntax": {
           "WEB": "--ai-tracking-7"
-        },
-        "com.figma.isOverride": true
+        }
       }
     }
   },

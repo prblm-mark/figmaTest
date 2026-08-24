@@ -56,7 +56,7 @@ Template-owned classes only (every other class belongs to a composed component):
 | `.cc-control__section` | Wrapper frame: section heading + section body. |
 | `.cc-control__section-head` | Flex row: title left, meta right (stacks on mobile). |
 | `.cc-control__section-title` | h2 — "Who's Online". Bold (`--ai-font-bold`). |
-| `.cc-control__section-meta` | Subtitle — "78 Members Online (…)" at `--ai-font-fixed-xxs`. The count is wrapped in `.cc-control__section-meta-strong` (bold, `--ai-text-primary`), inline with the guest/bot breakdown. |
+| `.cc-control__section-meta` | Subtitle — "78 Members Online (…)" at `--ai-font-fixed-2xs`. The count is wrapped in `.cc-control__section-meta-strong` (bold, `--ai-text-primary`), inline with the guest/bot breakdown. |
 
 ## Token Mapping
 
@@ -104,7 +104,7 @@ No new JS module is authored by the template.
 - **Alert + cards share a container:** per Figma Frame 229 (node `4183:14662`) the dev-mode Alert and the three-card row sit inside one wrapper (`.cc-control__alert-cards`), stacked with a `--ai-spacing-5` (16px) gap — tighter than the `--ai-spacing-7` (32px) gap between other top-level blocks in `.cc-control__page`.
 - **Mobile content order:** UpgradeCard precedes the two StatCards on mobile per Figma (visible in `cs-mobile-collapsed.png`). Implemented via `order: -1` on `.cc-control__cards .upgrade-card` so the HTML order stays semantic.
 - **Card size is container-responsive:** both StatCards and the UpgradeCard render at **base** size by default (mobile / narrow column) and upgrade to the **Lg** size variant at `@container cs-page (min-width: 768px)`. Because a component size modifier (`--lg`) can't be toggled by CSS, the min-width block in `ControlScreen.css` mirrors the `.stat-card--lg` / `.upgrade-card--lg` rules exactly (same `--ai-*` tokens) rather than adding the class in markup. This keeps the base/mobile size as the safe no-CQ fallback.
-- **Mobile-only StatCard type sizing:** in `@container cs-page (max-width: 767px)` the StatCard text steps down — `__value` 16px → `--ai-font-fixed-xs` (14px), `__title` 14px → `--ai-font-fixed-xxs` (12px). This is a template override (the StatCard component keeps 16/14 at all sizes); standard sizes return at ≥768px where the block no longer applies.
+- **Mobile-only StatCard type sizing:** in `@container cs-page (max-width: 767px)` the StatCard text steps down — `__value` 16px → `--ai-font-fixed-xs` (14px), `__title` 14px → `--ai-font-fixed-2xs` (12px). This is a template override (the StatCard component keeps 16/14 at all sizes); standard sizes return at ≥768px where the block no longer applies.
 - **Scoped component CSS overrides:** template-scoped customisations are limited to the card row — the container-query card-size block, the mobile-only StatCard font sizing, the per-card teal icon-square colours, and the `.cc-control__alert-cards` wrapper. Every composed component is otherwise used verbatim, so future Figma changes to any of them surface here automatically.
 - **Demo content sourcing:** every block reuses copy from its own demo for now — to be amended later with Figma-faithful labels (Susan Kerrigan / Maria Mellor / 78 Members / Version 8.0.33.10 etc. already match; chart numbers + StatCard icon choice may be refined).
 

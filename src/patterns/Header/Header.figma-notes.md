@@ -47,7 +47,7 @@
 | Tooltip radius | `--ai-radius-lg` | `--ai-radius-lg` |
 | Tooltip padding | `--ai-spacing-5` | `--ai-spacing-5` |
 | Tooltip text color | `--ai-text-invert` | `--ai-text-invert` |
-| Tooltip text font | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xxs`, `--ai-leading-xs` | same |
+| Tooltip text font | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-2xs`, `--ai-leading-xs` | same |
 
 ## Token Gaps
 None — all design values map to `--ai-*` semantic tokens.

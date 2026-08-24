@@ -8,6 +8,11 @@
 @import '../../css/tokens-cc.css';
 @import '../../css/tokens-cc-dark.css';
 @import '../../css/tokens-minimised.css';
+/* Seating Planner role palettes — prototype-scoped `--sp-*`, inert until a container
+   sets data-seating="muted" | "radix-soft" | "radix-vivid". */
+@import '../../css/tokens-seating-muted.css';
+@import '../../css/tokens-seating-radix-soft.css';
+@import '../../css/tokens-seating-radix-vivid.css';
 @import url('../../css/tokens-gradients.css');
 @import url('../../css/tokens-shadows.css');
 

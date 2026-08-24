@@ -82,7 +82,7 @@ SM is the implicit default (no CSS modifier). Other sizes via `.toggle--xs`,
 | Label line-height | `1.25` | (same) |
 | Label colour | `var(--ai-text-primary)` | (same) |
 | Helper font-weight | `var(--ai-font-regular)` | (same) |
-| Helper font-size | `var(--ai-font-fixed-xxs)` (12px) | `var(--ai-font-fixed-xs)` (14px) |
+| Helper font-size | `var(--ai-font-fixed-2xs)` (12px) | `var(--ai-font-fixed-xs)` (14px) |
 | Helper line-height | `1.5` | (same) |
 | Helper colour | `var(--ai-text-contrast)` | (same) |
 | Disabled label / helper colour | `var(--ai-icon-contrast)` | (same) |

@@ -476,7 +476,7 @@ Full tables in CLAUDE.md §2. Most-used in prototypes:
 .proto-step__dot [data-lucide] { width: var(--ai-icon-size-sm); height: var(--ai-icon-size-sm); }
 .proto-step--active .proto-step__dot { background: var(--ai-surface-brand); border-color: var(--ai-surface-brand); color: var(--ai-btn-primary-text); }
 .proto-step--complete .proto-step__dot { background: var(--ai-surface-success); border-color: var(--ai-surface-success); color: var(--ai-btn-primary-text); }
-.proto-step__label { font-family: var(--ai-font-body); font-size: var(--ai-font-fixed-xxs); font-weight: var(--ai-font-medium); color: var(--ai-text-contrast); }
+.proto-step__label { font-family: var(--ai-font-body); font-size: var(--ai-font-fixed-2xs); font-weight: var(--ai-font-medium); color: var(--ai-text-contrast); }
 .proto-step--active .proto-step__label, .proto-step--complete .proto-step__label { color: var(--ai-text-primary); }
 .proto-steps__line { flex: 1; height: 1px; background: var(--ai-border-secondary); margin-top: var(--ai-spacing-5); }
 ```

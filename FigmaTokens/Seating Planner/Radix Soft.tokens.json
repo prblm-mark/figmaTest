@@ -1,0 +1,268 @@
+{
+  "Attendee": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        0.36862701177597046,
+        0.6941180229187012,
+        0.9372550249099731
+      ],
+      "alpha": 1,
+      "hex": "#5EB1EF"
+    },
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3367:6394",
+      "com.figma.scopes": [
+        "ALL_SCOPES"
+      ],
+      "com.figma.aliasData": {
+        "targetVariableId": "VariableID:5d5bf48a2738b66191c76980fe552cd6eb6d082b/-1:-1",
+        "targetVariableName": "blue/8",
+        "targetVariableSetId": "VariableCollectionId:9889a04f02f56bfd4598022d5ba13c5008babced/-1:-1",
+        "targetVariableSetName": "Radix Full"
+      }
+    }
+  },
+  "VIP": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        0.8117650151252747,
+        0.5686269998550415,
+        0.8470590114593506
+      ],
+      "alpha": 1,
+      "hex": "#CF91D8"
+    },
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3367:6395",
+      "com.figma.scopes": [
+        "ALL_SCOPES"
+      ],
+      "com.figma.aliasData": {
+        "targetVariableId": "VariableID:65d192b7149904dc95182b5d638d654bf52f99ed/-1:-1",
+        "targetVariableName": "plum/8",
+        "targetVariableSetId": "VariableCollectionId:9889a04f02f56bfd4598022d5ba13c5008babced/-1:-1",
+        "targetVariableSetName": "Radix Full"
+      }
+    }
+  },
+  "Speaker": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        0.32548999786376953,
+        0.7254899740219116,
+        0.6705880165100098
+      ],
+      "alpha": 1,
+      "hex": "#53B9AB"
+    },
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3367:6396",
+      "com.figma.scopes": [
+        "ALL_SCOPES"
+      ],
+      "com.figma.aliasData": {
+        "targetVariableId": "VariableID:0fc427ca8e3aa9d1da84f00b58558a6e1babf1ed/-1:-1",
+        "targetVariableName": "teal/8",
+        "targetVariableSetId": "VariableCollectionId:9889a04f02f56bfd4598022d5ba13c5008babced/-1:-1",
+        "targetVariableSetName": "Radix Full"
+      }
+    }
+  },
+  "Sponsor": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        0.9215689897537231,
+        0.556863009929657,
+        0.564706027507782
+      ],
+      "alpha": 1,
+      "hex": "#EB8E90"
+    },
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3367:6397",
+      "com.figma.scopes": [
+        "ALL_SCOPES"
+      ],
+      "com.figma.aliasData": {
+        "targetVariableId": "VariableID:0485a650e86470cece25a18daf3e71e85b1297b8/-1:-1",
+        "targetVariableName": "red/8",
+        "targetVariableSetId": "VariableCollectionId:9889a04f02f56bfd4598022d5ba13c5008babced/-1:-1",
+        "targetVariableSetName": "Radix Full"
+      }
+    }
+  },
+  "Host": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        0.9254900217056274,
+        0.5803920030593872,
+        0.33333298563957214
+      ],
+      "alpha": 1,
+      "hex": "#EC9455"
+    },
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3367:6398",
+      "com.figma.scopes": [
+        "ALL_SCOPES"
+      ],
+      "com.figma.aliasData": {
+        "targetVariableId": "VariableID:3a24269ba3e92a230badf01ce798bfde1f6911a6/-1:-1",
+        "targetVariableName": "orange/8",
+        "targetVariableSetId": "VariableCollectionId:9889a04f02f56bfd4598022d5ba13c5008babced/-1:-1",
+        "targetVariableSetName": "Radix Full"
+      }
+    }
+  },
+  "Gold Table": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        0.800000011920929,
+        0.3058820068836212,
+        0
+      ],
+      "alpha": 1,
+      "hex": "#CC4E00"
+    },
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3455:9886",
+      "com.figma.scopes": [
+        "ALL_SCOPES"
+      ],
+      "com.figma.aliasData": {
+        "targetVariableId": "VariableID:142e3a9ef71f6f0b436acb6026c5701826ddd0f4/-1:-1",
+        "targetVariableName": "OrangeRadix/11",
+        "targetVariableSetId": "VariableCollectionId:8f6c1c1faabbdf0817d5304f220b65ab37368977/-1:-1",
+        "targetVariableSetName": "Primitives"
+      }
+    }
+  },
+  "Silver": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        0.5450980067253113,
+        0.5529410243034363,
+        0.5960779786109924
+      ],
+      "alpha": 1,
+      "hex": "#8B8D98"
+    },
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3455:9887",
+      "com.figma.scopes": [
+        "ALL_SCOPES"
+      ],
+      "com.figma.aliasData": {
+        "targetVariableId": "VariableID:7ba6f30a16ff16a63b6c52ec846e329f95cedd3a/-1:-1",
+        "targetVariableName": "slate/9",
+        "targetVariableSetId": "VariableCollectionId:9889a04f02f56bfd4598022d5ba13c5008babced/-1:-1",
+        "targetVariableSetName": "Radix Full"
+      }
+    }
+  },
+  "Bronze": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        0.6274510025978088,
+        0.4588240087032318,
+        0.32548999786376953
+      ],
+      "alpha": 1,
+      "hex": "#A07553"
+    },
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3455:9888",
+      "com.figma.scopes": [
+        "ALL_SCOPES"
+      ],
+      "com.figma.aliasData": {
+        "targetVariableId": "VariableID:670240745a5a38af3e159bd81e662f6540af83ba/-1:-1",
+        "targetVariableName": "brown/10",
+        "targetVariableSetId": "VariableCollectionId:9889a04f02f56bfd4598022d5ba13c5008babced/-1:-1",
+        "targetVariableSetName": "Radix Full"
+      }
+    }
+  },
+  "Head Table": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        0.6000000238418579,
+        0.10588235408067703,
+        0.10588235408067703
+      ],
+      "alpha": 1,
+      "hex": "#991B1B"
+    },
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3455:9889",
+      "com.figma.scopes": [
+        "ALL_SCOPES"
+      ]
+    }
+  },
+  "VIP Table": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        0,
+        0.45490196347236633,
+        0.6196078658103943
+      ],
+      "alpha": 1,
+      "hex": "#00749E"
+    },
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3455:9890",
+      "com.figma.scopes": [
+        "ALL_SCOPES"
+      ]
+    }
+  },
+  "Press Table": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        0.36078399419784546,
+        0.48627498745918274,
+        0.18431399762630463
+      ],
+      "alpha": 1,
+      "hex": "#5C7C2F"
+    },
+    "$extensions": {
+      "com.figma.variableId": "VariableID:3455:9891",
+      "com.figma.scopes": [
+        "ALL_SCOPES"
+      ],
+      "com.figma.aliasData": {
+        "targetVariableId": "VariableID:6054aed373f87a2cea6a676ec85bf7d619c97bfe/-1:-1",
+        "targetVariableName": "lime/11",
+        "targetVariableSetId": "VariableCollectionId:9889a04f02f56bfd4598022d5ba13c5008babced/-1:-1",
+        "targetVariableSetName": "Radix Full"
+      }
+    }
+  },
+  "$extensions": {
+    "com.figma.modeName": "Radix Soft"
+  }
+}

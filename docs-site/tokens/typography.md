@@ -27,7 +27,11 @@ Fixed sizes do not change between breakpoints. Use for elements that should stay
 
 | Token | rem | px | Style name | Use |
 |---|---|---|---|---|
-| `--ai-font-fixed-xxs` | `0.75rem` | 12px | body/xxs | Labels, captions, disclaimer text |
+| `--ai-font-fixed-5xs` | `0.625rem` | 10px | — | Micro labels, dense table chrome |
+| `--ai-font-fixed-4xs` | `0.6875rem` | 11px | — | Micro labels |
+| `--ai-font-fixed-3xs` | `0.75rem` | 12px | — | Labels, captions |
+| `--ai-font-fixed-2xs` | `0.75rem` | 12px | body/xxs | **The 12px token components use** — labels, captions, disclaimer text |
+| `--ai-font-fixed-xxs` | `0.8125rem` | 13px | — | One step up from 12px |
 | `--ai-font-fixed-xs` | `0.875rem` | 14px | body/xs | Small body, metadata, table cells |
 | `--ai-font-fixed-sm` | `1rem` | 16px | body/sm | Body text default |
 | `--ai-font-fixed-md` | `1.125rem` | 18px | — | Large body |
@@ -36,6 +40,17 @@ Fixed sizes do not change between breakpoints. Use for elements that should stay
 | `--ai-font-fixed-2xl` | `1.625rem` | 26px | — | Heading 3 |
 | `--ai-font-fixed-3xl` | `1.75rem` | 28px | — | Desktop welcome title |
 | `--ai-font-fixed-4xl` | `2rem` | 32px | — | Heading 1 |
+| `--ai-font-fixed-5xl` | `2.25rem` | 36px | — | Display |
+| `--ai-font-fixed-6xl` | `3rem` | 48px | — | Display |
+| `--ai-font-fixed-7xl` | `3.75rem` | 60px | — | Display |
+| `--ai-font-fixed-8xl` | `4.5rem` | 72px | — | Display |
+
+::: warning `xxs` changed meaning in the Aug 2026 export
+`xxs` used to be the 12px step. The Figma variable formerly named `xxs` now emits
+`--ai-font-fixed-2xs`, and `--ai-font-fixed-xxs` was reassigned to a new 13px step. Component CSS was
+repointed to `--ai-font-fixed-2xs` so nothing shifted visually.
+**Use `--ai-font-fixed-2xs` for 12px**; reach for `xxs` only when you want 13px.
+:::
 
 ## Font Sizes — Fluid (responsive)
 
@@ -91,10 +106,10 @@ Figma uses named text styles that map to token combinations:
 | `title/xl` | `--ai-font-title` | `--ai-font-bold` | `--ai-font-fluid-xl` | `--ai-leading-lg` | `--ai-tracking-4` |
 | `title/base` | `--ai-font-title` | `--ai-font-bold` | `--ai-font-fixed-sm` | `--ai-leading-xs` | `--ai-tracking-4` |
 | `title/xs` | `--ai-font-title` | `--ai-font-semibold` | `--ai-font-fixed-xs` | `--ai-leading-xs` | `--ai-tracking-4` |
-| `title/xxs` | `--ai-font-title` | `--ai-font-semibold` | `--ai-font-fixed-xxs` | `--ai-leading-xs` | `--ai-tracking-4` |
+| `title/xxs` | `--ai-font-title` | `--ai-font-semibold` | `--ai-font-fixed-2xs` | `--ai-leading-xs` | `--ai-tracking-4` |
 | `body/xs` | `--ai-font-body` | `--ai-font-regular` | `--ai-font-fixed-xs` | `--ai-leading-md` | `--ai-tracking-4` |
-| `body/xxs` | `--ai-font-body` | `--ai-font-regular` | `--ai-font-fixed-xxs` | `--ai-leading-xs` | `--ai-tracking-5` |
-| `body/xxs/medium` | `--ai-font-body` | `--ai-font-medium` | `--ai-font-fixed-xxs` | `--ai-leading-xs` | `--ai-tracking-5` |
+| `body/xxs` | `--ai-font-body` | `--ai-font-regular` | `--ai-font-fixed-2xs` | `--ai-leading-xs` | `--ai-tracking-5` |
+| `body/xxs/medium` | `--ai-font-body` | `--ai-font-medium` | `--ai-font-fixed-2xs` | `--ai-leading-xs` | `--ai-tracking-5` |
 | `button/base` | `--ai-font-body` | `--ai-font-semibold` | `--ai-font-fluid-xs` | `--ai-leading-xs` | `--ai-tracking-4` |
 | `button/sm` | `--ai-font-body` | `--ai-font-semibold` | `--ai-font-fluid-xxs` | `--ai-leading-xs` | `--ai-tracking-4` |
 

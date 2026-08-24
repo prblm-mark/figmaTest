@@ -10,16 +10,16 @@ Complete token tables for the Affino Design System. All CSS variables use the `-
 |---|---|---|
 | `--ai-surface-primary` | `#FFFFFF` | Page/card background |
 | `--ai-surface-elevated-1` | `#FFFFFF` | Cards, dropdowns, popovers (steps up in dark) |
-| `--ai-surface-elevated-2` | `#FFFFFF` | Modals, dialogs (steps up further in dark) |
-| `--ai-surface-minimal` | `#F6F6F7` | Very subtle background (Neutral/50) |
-| `--ai-surface-secondary` | `#E2E2E3` | Subtle section background (Neutral/200) |
-| `--ai-surface-contrast` | `#C2C2C4` | Divider areas, table stripes (Neutral/300) |
-| `--ai-surface-invert` | `#1B1B1F` | Dark backgrounds (Neutral/900) |
-| `--ai-surface-brand` | `#0071D8` | Brand/primary action bg |
-| `--ai-surface-brand-light` | `#3A8FFF` | Hover state on brand |
-| `--ai-surface-brand-dark` | `#0054A3` | Pressed state on brand |
-| `--ai-surface-brand-soft` | `#BFD1FF` | Light brand tint (focus rings, active backgrounds) |
-| `--ai-surface-brand-soft-extra` | `#F0F3FF` | Very light brand tint (chat msg bubbles, soft backgrounds) |
+| `--ai-surface-elevated-2` | `#F1F5F9` | Modals, dialogs (steps up further in dark) |
+| `--ai-surface-minimal` | `#F8FAFC` | Very subtle background (Grey/50) |
+| `--ai-surface-secondary` | `#E9EEF4` | Subtle section background (Grey/150) |
+| `--ai-surface-contrast` | `#D6DEE8` | Divider areas, table stripes (Grey/250) |
+| `--ai-surface-invert` | `#1E293B` | Dark backgrounds (Grey/800) |
+| `--ai-surface-brand` | `#0094AD` | Brand/primary action bg |
+| `--ai-surface-brand-light` | `#009FBA` | Hover state on brand |
+| `--ai-surface-brand-dark` | `#007A8D` | Pressed state on brand |
+| `--ai-surface-brand-soft` | `#D9F2F2` | Light brand tint (focus rings, active backgrounds) |
+| `--ai-surface-brand-soft-extra` | `#EDF5F5` | Very light brand tint (chat msg bubbles, soft backgrounds) |
 
 > **Renamed Apr 2026:** `--ai-surface-brand-contrast` → `--ai-surface-brand-soft`,
 > `--ai-surface-brand-contrast-extra` → `--ai-surface-brand-soft-extra`,
@@ -29,9 +29,9 @@ Complete token tables for the Affino Design System. All CSS variables use the `-
 
 | Variable | Value | Use |
 |---|---|---|
-| `--ai-text-primary` | `#212123` | Body text, headings (Neutral/800) |
-| `--ai-text-secondary` | `#3C3C3F` | Secondary/supporting text (Neutral/700) |
-| `--ai-text-contrast` | `#67676C` | Placeholder, captions (Neutral/500) |
+| `--ai-text-primary` | `#172033` | Body text, headings (Grey/850) |
+| `--ai-text-secondary` | `#3D4B5F` | Secondary/supporting text (Grey/650) |
+| `--ai-text-contrast` | `#64748B` | Placeholder, captions (Grey/500) |
 | `--ai-text-invert` | `#FFFFFF` | Text on dark/brand backgrounds |
 
 See **Status / feedback** below for `--ai-text-info`, `--ai-text-success`, `--ai-text-warning`, `--ai-text-error`, `--ai-text-neutral`.
@@ -40,11 +40,11 @@ See **Status / feedback** below for `--ai-text-info`, `--ai-text-success`, `--ai
 
 | Variable | Value | Use |
 |---|---|---|
-| `--ai-border-brand` | `#0071D8` | Brand-colored borders |
-| `--ai-border-primary` | `#1B1B1F` | Strong dividers (Neutral/900) |
-| `--ai-border-secondary` | `#E2E2E3` | Default input/card borders (Neutral/200) |
-| `--ai-border-contrast` | `#C2C2C4` | Stronger borders (Neutral/300) |
-| `--ai-border-invert` | `#1B1B1F` | Borders on inverted/dark surfaces (Neutral/900) |
+| `--ai-border-brand` | `#30B6C2` | Brand-colored borders |
+| `--ai-border-primary` | `#64748B` | Strong dividers (Grey/500) |
+| `--ai-border-secondary` | `#E2E8F0` | Default input/card borders (Grey/200) |
+| `--ai-border-contrast` | `#94A3B8` | Stronger borders (Grey/400) |
+| `--ai-border-invert` | `#1E293B` | Borders on inverted/dark surfaces (Grey/800) |
 
 See **Status / feedback** below for `--ai-border-info`, `--ai-border-success`, `--ai-border-warning`, `--ai-border-error`, `--ai-border-neutral`.
 
@@ -56,21 +56,21 @@ Theme-aware semantic tokens for alerts, banners, badges, and any UI that signals
 
 | Status | `surface-{status}` | `surface-{status}-soft` | `text-{status}` | `border-{status}` |
 |---|---|---|---|---|
-| info | `#0071D8` | `#F0F3FF` | `#0B4C81` | `#BFD1FF` |
-| success | `#239E6F` | `#EFFFF7` | `#0F5C3F` | `#3EFCB4` |
-| warning | `#F0A326` | `#FFF5EE` | `#7F4609` | `#FDC793` |
-| error | `#DC2626` | `#FEF3F3` | `#B91C1C` | `#FBD5D5` |
-| neutral | `#2E2E32` | `#F6F6F7` | `#212123` | `#E2E2E3` |
+| info | `#0094AD` | `#EDF5F5` | `#007A8D` | `#98D9DC` |
+| success | `#30A46C` | `#E6F6EB` | `#218358` | `#ADDDC0` |
+| warning | `#F76B15` | `#FFEFD6` | `#CC4E00` | `#FFC182` |
+| error | `#E5484D` | `#FEEBEC` | `#CE2C31` | `#FDBDBE` |
+| neutral | `#334155` | `#F1F5F9` | `#293548` | `#CAD5E2` |
 
 **Dark mode values:**
 
 | Status | `surface-{status}` | `surface-{status}-soft` | `text-{status}` | `border-{status}` |
 |---|---|---|---|---|
-| info | `#3A8FFF` | `#0A2947` | `#75A5FF` | `#0054A3` |
-| success | `#30CB90` | `#052E20` | `#34DA9B` | `#0F5C3F` |
-| warning | `#F0A326` | `#2A1607` | `#FDB24F` | `#7F4609` |
-| error | `#EF4444` | `#450A0A` | `#F87171` | `#991B1B` |
-| neutral | `#525256` | `#2E2E32` | `#E2E2E3` | `#525256` |
+| info | `#30B6C2` | `#00282F` | `#30B6C2` | `#007A8D` |
+| success | `#30A46C` | `#132D21` | `#8ECEAA` | `#218358` |
+| warning | `#F76B15` | `#331E0B` | `#EC9455` | `#CC4E00` |
+| error | `#E5484D` | `#3B1219` | `#E5484D` | `#CE2C31` |
+| neutral | `#64748B` | `#293548` | `#E2E8F0` | `#64748B` |
 
 **Usage:** combine slots for a complete tinted block. Example for an alert:
 
@@ -98,11 +98,11 @@ Soft backgrounds use a tinted dark in dark mode (e.g. Aqua/950 for success), kee
 
 | Variable | Value | Use |
 |---|---|---|
-| `--ai-icon-primary` | `#212123` | Default icon color (Neutral/800) |
-| `--ai-icon-secondary` | `#67676C` | Secondary icon (Neutral/500) |
-| `--ai-icon-contrast` | `#929295` | Muted/disabled icon (Neutral/400) |
+| `--ai-icon-primary` | `#475569` | Default icon color (Grey/600) |
+| `--ai-icon-secondary` | `#64748B` | Secondary icon (Grey/500) |
+| `--ai-icon-contrast` | `#94A3B8` | Muted/disabled icon (Grey/400) |
 | `--ai-icon-invert` | `#FFFFFF` | Icon on dark background |
-| `--ai-icon-brand` | `#0071D8` | Brand-colored icon |
+| `--ai-icon-brand` | `#0094AD` | Brand-colored icon |
 
 ## Icon Sizes
 
@@ -119,29 +119,29 @@ Soft backgrounds use a tinted dark in dark mode (e.g. Aqua/950 for success), kee
 
 | Variable | Value | Use |
 |---|---|---|
-| `--ai-btn-primary-bg` | `#0071D8` | Primary button background |
-| `--ai-btn-primary-bg-hover` | `#3A8FFF` | Primary hover + focus background |
-| `--ai-btn-primary-bg-pressed` | `#0054A3` | Primary pressed background |
+| `--ai-btn-primary-bg` | `#0094AD` | Primary button background |
+| `--ai-btn-primary-bg-hover` | `#009FBA` | Primary hover + focus background |
+| `--ai-btn-primary-bg-pressed` | `#007A8D` | Primary pressed background |
 | `--ai-btn-primary-text` | `#FFFFFF` | Primary text (theme-invariant) |
 | `--ai-btn-primary-text-hover` | `#FFFFFF` | Primary hover text |
 | `--ai-btn-primary-border` | `rgba(0,0,0,0)` | Primary default + hover border |
 | `--ai-btn-primary-border-hover` | `rgba(0,0,0,0)` | Primary hover border |
 | `--ai-btn-secondary-bg` | `transparent` | Secondary button background |
-| `--ai-btn-secondary-bg-hover` | `#F6F6F7` | Secondary hover + focus background |
-| `--ai-btn-secondary-bg-pressed` | `#E2E2E3` | Secondary pressed background |
-| `--ai-btn-secondary-border` | `#C2C2C4` | Secondary default + pressed border; focus ring |
-| `--ai-btn-secondary-border-hover` | `#C2C2C4` | Secondary hover border |
-| `--ai-btn-secondary-text` | `#212123` | Secondary text |
-| `--ai-btn-secondary-text-hover` | `#212123` | Secondary hover text |
+| `--ai-btn-secondary-bg-hover` | `#F8FAFC` | Secondary hover + focus background |
+| `--ai-btn-secondary-bg-pressed` | `#E9EEF4` | Secondary pressed background |
+| `--ai-btn-secondary-border` | `#D6DEE8` | Secondary default + pressed border; focus ring |
+| `--ai-btn-secondary-border-hover` | `#D6DEE8` | Secondary hover border |
+| `--ai-btn-secondary-text` | `#172033` | Secondary text |
+| `--ai-btn-secondary-text-hover` | `#172033` | Secondary hover text |
 | `--ai-btn-tertiary-bg` | `transparent` | Tertiary background |
-| `--ai-btn-tertiary-bg-hover` | `#F6F6F7` | Tertiary hover + focus background |
-| `--ai-btn-tertiary-bg-pressed` | `#E2E2E3` | Tertiary pressed background |
+| `--ai-btn-tertiary-bg-hover` | `#F8FAFC` | Tertiary hover + focus background |
+| `--ai-btn-tertiary-bg-pressed` | `#E9EEF4` | Tertiary pressed background |
 | `--ai-btn-tertiary-border` | `rgba(0,0,0,0)` | Tertiary default border |
 | `--ai-btn-tertiary-border-hover` | `rgba(0,0,0,0)` | Tertiary hover border |
-| `--ai-btn-tertiary-text` | `#212123` | Tertiary text |
-| `--ai-btn-tertiary-text-hover` | `#212123` | Tertiary hover text |
-| `--ai-btn-bg-disabled` | `#C2C2C4` | Disabled background (all variants) |
-| `--ai-btn-text-disabled` | `#67676C` | Disabled text (all variants) |
+| `--ai-btn-tertiary-text` | `#172033` | Tertiary text |
+| `--ai-btn-tertiary-text-hover` | `#172033` | Tertiary hover text |
+| `--ai-btn-bg-disabled` | `#CAD5E2` | Disabled background (all variants) |
+| `--ai-btn-text-disabled` | `#64748B` | Disabled text (all variants) |
 
 ## Spacing
 
@@ -190,11 +190,11 @@ The following tokens remain as explicit chat-specific values:
 
 | Variable | Light value | Dark value | Use |
 |---|---|---|---|
-| `--ai-chat-brand` | `#0071D8` | `#0071D8` | Chat brand accent (theme-invariant) |
-| `--ai-chat-msg-bg` | `#F0F3FF` | `#0F406B` | User message bubble background |
-| `--ai-chat-msg-text` | `#0F406B` | `#F0F3FF` | User message bubble text |
-| `--ai-chat-sidebar-bg` | `#F6F6F7` | `#1B1B1F` | Sidebar background (editable by user) |
-| `--ai-chat-sidebar-text` | `#212123` | `#E2E2E3` | Sidebar text (editable by user) |
+| `--ai-chat-brand` | `#0094AD` | `#30B6C2` | Chat brand accent (theme-invariant) |
+| `--ai-chat-msg-bg` | `#EDF5F5` | `#00282F` | User message bubble background |
+| `--ai-chat-msg-text` | `#043840` | `#EDF5F5` | User message bubble text |
+| `--ai-chat-sidebar-bg` | `#F1F5F9` | `#1B1B1F` | Sidebar background (editable by user) |
+| `--ai-chat-sidebar-text` | `#172033` | `#CAD5E2` | Sidebar text (editable by user) |
 | `--ai-chat-sidebar-hover-bg` | -- | -- | Computed (see Computed Tokens) |
 | `--ai-chat-sidebar-active-bg` | -- | -- | Computed (see Computed Tokens) |
 
@@ -202,14 +202,14 @@ The following tokens remain as explicit chat-specific values:
 
 | Variable | Light value | Dark value |
 |---|---|---|
-| `--ai-skeleton-base` | `#E2E2E3` | `#1B1B1F` |
-| `--ai-skeleton-highlight` | `#FFFFFF` | `#2E2E32` |
+| `--ai-skeleton-base` | `#E2E8F0` | `#0F172A` |
+| `--ai-skeleton-highlight` | `#FFFFFF` | `#334155` |
 
 ## SourcesCarousel Component
 
 | Variable | Light value | Dark value |
 |---|---|---|
-| `--ai-src-carousel-card-bg` | `#F6F6F7` | `#2E2E32` |
+| `--ai-src-carousel-card-bg` | `#F1F5F9` | `#334155` |
 
 ## Shadow
 
@@ -270,58 +270,64 @@ Mobile-first scale (mirrors Tailwind defaults). All `@media` queries use `min-wi
 
 **Generated file:** `css/tokens-dark.css` (rebuilt by `npm run tokens`; do not edit manually).
 
-All `--ai-*` variables continue to work in dark mode. Brand, error, border, spacing, radius, and typography tokens are **theme-invariant**.
+All `--ai-*` variables continue to work in dark mode. Spacing, radius and typography tokens are
+**theme-invariant**.
+
+Colour tokens are mostly NOT theme-invariant. Since the Aug 2026 rework the brand ramp shifts
+(`surface-brand` `#0094AD` light -> `#30B6C2` dark) and so do `text-error` / `border-error`.
+Only the solid status fills hold across themes: `surface-error`, `surface-success`,
+`surface-warning`. Check the table below rather than assuming a token is invariant.
 
 ### Tokens that change in dark mode
 
 | Variable | Light value | Dark value |
 |---|---|---|
-| `--ai-surface-primary` | `#FFFFFF` | `#1B1B1F` |
-| `--ai-surface-elevated-1` | `#FFFFFF` | `#212123` |
-| `--ai-surface-elevated-2` | `#FFFFFF` | `#2E2E32` |
-| `--ai-surface-minimal` | `#F6F6F7` | `#212123` |
-| `--ai-surface-secondary` | `#E2E2E3` | `#2E2E32` |
-| `--ai-surface-contrast` | `#C2C2C4` | `#3C3C3F` |
-| `--ai-surface-invert` | `#1B1B1F` | `#F6F6F7` |
-| `--ai-surface-brand-soft` | `#BFD1FF` | `#75A5FF` |
-| `--ai-surface-brand-soft-extra` | `#F0F3FF` | `#BFD1FF` |
-| `--ai-text-primary` | `#212123` | `#F6F6F7` |
-| `--ai-text-secondary` | `#3C3C3F` | `#E2E2E3` |
-| `--ai-text-contrast` | `#67676C` | `#929295` |
-| `--ai-text-invert` | `#FFFFFF` | `#1B1B1F` |
-| `--ai-border-primary` | `#1B1B1F` | `#F6F6F7` |
-| `--ai-border-secondary` | `#E2E2E3` | `#2E2E32` |
-| `--ai-border-contrast` | `#C2C2C4` | `#3C3C3F` |
-| `--ai-border-invert` | `#1B1B1F` | `#F6F6F7` |
-| `--ai-icon-primary` | `#212123` | `#F6F6F7` |
-| `--ai-icon-secondary` | `#67676C` | `#929295` |
-| `--ai-icon-contrast` | `#929295` | `#929295` |
-| `--ai-icon-invert` | `#FFFFFF` | `#1B1B1F` |
-| `--ai-chat-msg-bg` | `#F0F3FF` | `#0F406B` |
-| `--ai-chat-msg-text` | `#0F406B` | `#F0F3FF` |
-| `--ai-chat-sidebar-bg` | `#F6F6F7` | `#1B1B1F` |
-| `--ai-chat-sidebar-text` | `#212123` | `#E2E2E3` |
-| `--ai-btn-secondary-bg-hover` | `#F6F6F7` | `#212123` |
-| `--ai-btn-secondary-bg-pressed` | `#E2E2E3` | `#2E2E32` |
-| `--ai-btn-secondary-border` | `#C2C2C4` | `#3C3C3F` |
-| `--ai-btn-secondary-border-hover` | `#C2C2C4` | `#3C3C3F` |
-| `--ai-btn-secondary-text` | `#212123` | `#F6F6F7` |
-| `--ai-btn-secondary-text-hover` | `#212123` | `#F6F6F7` |
-| `--ai-btn-tertiary-bg-hover` | `#F6F6F7` | `#212123` |
-| `--ai-btn-tertiary-bg-pressed` | `#E2E2E3` | `#2E2E32` |
-| `--ai-btn-tertiary-text` | `#212123` | `#F6F6F7` |
-| `--ai-btn-tertiary-text-hover` | `#212123` | `#F6F6F7` |
-| `--ai-btn-bg-disabled` | `#C2C2C4` | `#67676C` |
-| `--ai-btn-text-disabled` | `#67676C` | `#C2C2C4` |
-| `--ai-skeleton-base` | `#E2E2E3` | `#1B1B1F` |
-| `--ai-skeleton-highlight` | `#FFFFFF` | `#2E2E32` |
-| `--ai-src-carousel-card-bg` | `#F6F6F7` | `#2E2E32` |
+| `--ai-surface-primary` | `#FFFFFF` | `#1E293B` |
+| `--ai-surface-elevated-1` | `#FFFFFF` | `#1E293B` |
+| `--ai-surface-elevated-2` | `#F1F5F9` | `#334155` |
+| `--ai-surface-minimal` | `#F8FAFC` | `#293548` |
+| `--ai-surface-secondary` | `#E9EEF4` | `#3D4B5F` |
+| `--ai-surface-contrast` | `#D6DEE8` | `#64748B` |
+| `--ai-surface-invert` | `#1E293B` | `#F1F5F9` |
+| `--ai-surface-brand-soft` | `#D9F2F2` | `#043840` |
+| `--ai-surface-brand-soft-extra` | `#EDF5F5` | `#00282F` |
+| `--ai-text-primary` | `#172033` | `#F1F5F9` |
+| `--ai-text-secondary` | `#3D4B5F` | `#CAD5E2` |
+| `--ai-text-contrast` | `#64748B` | `#94A3B8` |
+| `--ai-text-invert` | `#FFFFFF` | `#E2E8F0` |
+| `--ai-border-primary` | `#64748B` | `#64748B` |
+| `--ai-border-secondary` | `#E2E8F0` | `#334155` |
+| `--ai-border-contrast` | `#94A3B8` | `#475569` |
+| `--ai-border-invert` | `#1E293B` | `#F1F5F9` |
+| `--ai-icon-primary` | `#475569` | `#F1F5F9` |
+| `--ai-icon-secondary` | `#64748B` | `#CAD5E2` |
+| `--ai-icon-contrast` | `#94A3B8` | `#94A3B8` |
+| `--ai-icon-invert` | `#FFFFFF` | `#0F172A` |
+| `--ai-chat-msg-bg` | `#EDF5F5` | `#00282F` |
+| `--ai-chat-msg-text` | `#043840` | `#EDF5F5` |
+| `--ai-chat-sidebar-bg` | `#F1F5F9` | `#1B1B1F` |
+| `--ai-chat-sidebar-text` | `#172033` | `#CAD5E2` |
+| `--ai-btn-secondary-bg-hover` | `#F8FAFC` | `#293548` |
+| `--ai-btn-secondary-bg-pressed` | `#E9EEF4` | `#3D4B5F` |
+| `--ai-btn-secondary-border` | `#D6DEE8` | `#64748B` |
+| `--ai-btn-secondary-border-hover` | `#D6DEE8` | `#64748B` |
+| `--ai-btn-secondary-text` | `#172033` | `#F1F5F9` |
+| `--ai-btn-secondary-text-hover` | `#172033` | `#F1F5F9` |
+| `--ai-btn-tertiary-bg-hover` | `#F8FAFC` | `#293548` |
+| `--ai-btn-tertiary-bg-pressed` | `#E9EEF4` | `#3D4B5F` |
+| `--ai-btn-tertiary-text` | `#172033` | `#F1F5F9` |
+| `--ai-btn-tertiary-text-hover` | `#172033` | `#F1F5F9` |
+| `--ai-btn-bg-disabled` | `#CAD5E2` | `#64748B` |
+| `--ai-btn-text-disabled` | `#64748B` | `#CAD5E2` |
+| `--ai-skeleton-base` | `#E2E8F0` | `#0F172A` |
+| `--ai-skeleton-highlight` | `#FFFFFF` | `#334155` |
+| `--ai-src-carousel-card-bg` | `#F1F5F9` | `#334155` |
 
-**Elevation in dark mode:** In light mode, all elevation surfaces are `#FFFFFF`. In dark mode, each level steps up the neutral scale: `elevated-1` = `#212123` (Neutral/800), `elevated-2` = `#2E2E32` (Neutral/700). This creates visible depth separation on dark backgrounds.
+**Elevation in dark mode:** In light mode `surface-primary` and `elevated-1` are both `#FFFFFF` (Neutral/0) and `elevated-2` steps to `#F1F5F9` (Grey/100). In dark mode, `surface-primary` and `elevated-1` share `#1E293B` (Grey/800) and `elevated-2` steps up to `#334155` (Grey/700). This creates visible depth separation on dark backgrounds.
 
 ### Component dark-mode notes
 
-- **Tooltip:** Fixed dark panel (`#0B0B0C` = Neutral/950) in both themes. Does **not** invert.
+- **Tooltip:** Fixed dark panel (`#0B0B0C` = Neutral/1000) in both themes. Does **not** invert.
 
 ---
 
@@ -339,28 +345,45 @@ Both files are auto-generated; do not edit manually.
 
 Instead of dedicated `--ai-chat-surface-*` tokens, the chat context remaps the **core semantic tokens** (`--ai-surface-*`, `--ai-border-*`, etc.) to chat-neutral values. Components inside a `[data-surface="chat"]` container use the same `--ai-surface-primary`, `--ai-border-secondary`, etc. variables as everywhere else -- they just resolve to different values.
 
+### Two different neutral families
+
+Since the Aug 2026 token rework the two contexts no longer draw from the same neutral ramp:
+
+- **Default context** uses the slate-blue `Grey/*` ramp (`#F8FAFC` -> `#1E293B`), cool and
+  slightly blue-tinted.
+- **Chat context** kept the older warm-neutral greys (`#F6F6F7` -> `#1B1B1F`).
+
+So a chat panel sitting next to default chrome is not a lighter or darker step of the same
+hue -- it is a different hue family. Compare the columns below as *different palettes*, not as
+offsets on one scale.
+
+The accent and status colours DID move in both contexts, but to different hues: default brand
+is Lagoon teal (`#0094AD`), chat brand is Radix Blue (`#0588F0`).
+
 ### Key differences from default context (light mode)
 
-| Token | Default | Chat context | Notes |
-|---|---|---|---|
-| `--ai-surface-primary` | `#FFFFFF` | `#FFFFFF` | Same in light |
-| `--ai-surface-elevated-2` | `#FFFFFF` | `#F6F6F7` | Chat elevates to minimal |
-| `--ai-surface-secondary` | `#E2E2E3` | `#FFFFFF` | Flips to white |
-| `--ai-surface-contrast` | `#C2C2C4` | `#F6F6F7` | Much lighter in chat |
-| `--ai-surface-minimal` | `#F6F6F7` | `#E2E2E3` | Shifts one step darker |
-| `--ai-border-contrast` | `#C2C2C4` | `#F6F6F7` | Lighter borders |
+| Token | Default | Chat context |
+|---|---|---|
+| `--ai-surface-primary` | `#FFFFFF` | `#FFFFFF` |
+| `--ai-surface-elevated-2` | `#F1F5F9` | `#F6F6F7` |
+| `--ai-surface-secondary` | `#E9EEF4` | `#FFFFFF` |
+| `--ai-surface-contrast` | `#D6DEE8` | `#F6F6F7` |
+| `--ai-surface-minimal` | `#F8FAFC` | `#E2E2E3` |
+| `--ai-border-contrast` | `#94A3B8` | `#F6F6F7` |
+| `--ai-surface-brand` | `#0094AD` (Lagoon) | `#0588F0` (BlueRadix) |
 
 ### Key differences from default context (dark mode)
 
-| Token | Default dark | Chat dark | Notes |
-|---|---|---|---|
-| `--ai-surface-primary` | `#1B1B1F` | `#212123` | One step lighter |
-| `--ai-surface-elevated-1` | `#212123` | `#2E2E32` | Steps up further |
-| `--ai-surface-elevated-2` | `#2E2E32` | `#3C3C3F` | Steps up further |
-| `--ai-surface-secondary` | `#2E2E32` | `#2E2E32` | Same |
-| `--ai-surface-contrast` | `#3C3C3F` | `#1B1B1F` | Inverts to darkest |
-| `--ai-border-secondary` | `#2E2E32` | `#3C3C3F` | One step lighter |
-| `--ai-border-contrast` | `#3C3C3F` | `#1B1B1F` | Inverts to darkest |
+| Token | Default dark | Chat dark |
+|---|---|---|
+| `--ai-surface-primary` | `#1E293B` | `#212123` |
+| `--ai-surface-elevated-1` | `#1E293B` | `#2E2E32` |
+| `--ai-surface-elevated-2` | `#334155` | `#3C3C3F` |
+| `--ai-surface-secondary` | `#3D4B5F` | `#2E2E32` |
+| `--ai-surface-contrast` | `#64748B` | `#1B1B1F` |
+| `--ai-border-secondary` | `#334155` | `#3C3C3F` |
+| `--ai-border-contrast` | `#475569` | `#1B1B1F` |
+| `--ai-surface-brand` | `#30B6C2` (Lagoon) | `#0588F0` (BlueRadix) |
 
 ### CSS specificity
 
@@ -370,6 +393,41 @@ Instead of dedicated `--ai-chat-surface-*` tokens, the chat context remaps the *
 | `[data-theme="dark"] [data-surface="chat"]` | `0,2,0` |
 
 The chat context selector has the same specificity as `[data-theme="dark"]` (`0,1,0`). Because `tokens-chat.css` is loaded after `tokens-dark.css` in `base.css`, the chat context wins when both are active -- which is correct because the dark chat file (`0,2,0`) handles the dark+chat combination explicitly.
+
+---
+
+## Seating Planner Palettes
+
+Prototype-scoped role colours for the Seating Planner (attendee tiers and table tiers).
+Namespaced `--sp-*`, **not** `--ai-*` — these are prototype role colours, not core design-system
+semantics, and must not be used in `src/components/`, `src/patterns/` or `src/templates/`.
+
+**Activation:** add `data-seating="muted" | "radix-soft" | "radix-vivid"` to a container.
+There is deliberately **no `:root` default** — a palette must be chosen explicitly, so a
+container without the attribute resolves no `--sp-*` values at all rather than silently
+inheriting one mode.
+
+**Generated files** (rebuilt by `npm run tokens`; do not edit manually):
+`css/tokens-seating-muted.css`, `css/tokens-seating-radix-soft.css`,
+`css/tokens-seating-radix-vivid.css`.
+
+| Variable | Muted | Radix Soft | Radix Vivid |
+|---|---|---|---|
+| `--sp-attendee` | `#6598F1` | `#5EB1EF` | `#0797B9` |
+| `--sp-vip` | `#C399F1` | `#CF91D8` | `#AB4ABA` |
+| `--sp-speaker` | `#2FA68C` | `#53B9AB` | `#4CBBA5` |
+| `--sp-sponsor` | `#EE6E66` | `#EB8E90` | `#5B5BD6` |
+| `--sp-host` | `#ED9C51` | `#EC9455` | `#F76B15` |
+| `--sp-gold-table` | `#CC4E00` | `#CC4E00` | `#CC4E00` |
+| `--sp-silver` | `#8B8D98` | `#8B8D98` | `#8B8D98` |
+| `--sp-bronze` | `#A07553` | `#A07553` | `#A07553` |
+| `--sp-head-table` | `#991B1B` | `#991B1B` | `#991B1B` |
+| `--sp-vip-table` | `#00749E` | `#00749E` | `#00749E` |
+| `--sp-press-table` | `#5C7C2F` | `#5C7C2F` | `#5C7C2F` |
+
+**Note:** only the five attendee-role colours differ between modes. The six table-tier colours
+(`gold-table` through `press-table`) are identical across all three — worth confirming with the
+designer whether the table tiers were meant to get per-mode values too.
 
 ---
 
@@ -477,17 +535,34 @@ Font: **Inter** (loaded via Google Fonts in `src/styles/base.css`).
 
 ### Font Sizes (Fixed)
 
-| Variable | Value | Use |
-|---|---|---|
-| `--ai-font-fixed-xxs` | `0.75rem` | Labels, captions |
-| `--ai-font-fixed-xs` | `0.875rem` | Small body, metadata |
-| `--ai-font-fixed-sm` | `1rem` | Body text (default) |
-| `--ai-font-fixed-md` | `1.125rem` | Large body |
-| `--ai-font-fixed-lg` | `1.25rem` | Small heading |
-| `--ai-font-fixed-xl` | `1.375rem` | Heading 5/4 |
-| `--ai-font-fixed-2xl` | `1.625rem` | Heading 3 |
-| `--ai-font-fixed-3xl` | `1.75rem` | Heading 2 |
-| `--ai-font-fixed-4xl` | `2rem` | Heading 1 |
+| Variable | Value | px | Use |
+|---|---|---|---|
+| `--ai-font-fixed-5xs` | `0.625rem` | 10px | Micro labels, dense table chrome |
+| `--ai-font-fixed-4xs` | `0.6875rem` | 11px | Micro labels |
+| `--ai-font-fixed-3xs` | `0.75rem` | 12px | Labels, captions |
+| `--ai-font-fixed-2xs` | `0.75rem` | 12px | Labels, captions — **the 12px token used across components** |
+| `--ai-font-fixed-xxs` | `0.8125rem` | 13px | Labels, captions (one step up from 12px) |
+| `--ai-font-fixed-xs` | `0.875rem` | 14px | Small body, metadata |
+| `--ai-font-fixed-sm` | `1rem` | 16px | Body text (default) |
+| `--ai-font-fixed-md` | `1.125rem` | 18px | Large body |
+| `--ai-font-fixed-lg` | `1.25rem` | 20px | Small heading |
+| `--ai-font-fixed-xl` | `1.375rem` | 22px | Heading 5/4 |
+| `--ai-font-fixed-2xl` | `1.625rem` | 26px | Heading 3 |
+| `--ai-font-fixed-3xl` | `1.75rem` | 28px | Heading 2 |
+| `--ai-font-fixed-4xl` | `2rem` | 32px | Heading 1 |
+| `--ai-font-fixed-5xl` | `2.25rem` | 36px | Display |
+| `--ai-font-fixed-6xl` | `3rem` | 48px | Display |
+| `--ai-font-fixed-7xl` | `3.75rem` | 60px | Display |
+| `--ai-font-fixed-8xl` | `4.5rem` | 72px | Display |
+
+> **`xxs` changed meaning in the Aug 2026 export.** It used to be the 12px step; the Figma
+> variable formerly named `xxs` now emits `--ai-font-fixed-2xs`, and `xxs` was reassigned to a
+> new 13px step. All 318 component references were repointed from `--ai-font-fixed-xxs` to
+> `--ai-font-fixed-2xs` so nothing shifted visually. **Use `--ai-font-fixed-2xs` for 12px;**
+> reach for `xxs` only when you specifically want 13px.
+>
+> `3xs` and `2xs` are both 12px. `2xs` is the one components use — `3xs` is the ramp position
+> that happens to share the value.
 
 ### Font Sizes (Fluid — responsive)
 
@@ -527,6 +602,46 @@ Font: **Inter** (loaded via Google Fonts in `src/styles/base.css`).
 | `--ai-tracking-7` | `0.05em` | 0.8px | Loosest (labels, captions) |
 
 Tracking tokens use `em` units (relative to element font size), not `rem`.
+
+---
+
+## Accessibility — contrast status
+
+WCAG 2.1 AA thresholds (CLAUDE.md §9): **4.5:1** for normal text, **3:1** for large text,
+UI components and graphical objects.
+
+### Known failures after the Aug 2026 brand move
+
+The brand moved from blue `#2563EB` to Lagoon teal `#0094AD`. Teal is a lighter hue at the same
+nominal ramp position, so three pairings regressed:
+
+| Pairing | Before | After | Needs | Status |
+|---|---|---|---|---|
+| `--ai-btn-primary-text` `#FFFFFF` on `--ai-btn-primary-bg` `#0094AD` (light) | 5.17:1 | **3.60:1** | 4.5:1 | ✗ fails |
+| `--ai-btn-primary-text` `#FFFFFF` on `--ai-btn-primary-bg` `#30B6C2` (dark) | 4.82:1 | **2.44:1** | 4.5:1 | ✗ fails badly |
+| `--ai-border-brand` `#30B6C2` on `--ai-surface-primary` (light) | 5.17:1 | **2.44:1** | 3:1 | ✗ fails |
+| `--ai-icon-contrast` `#94A3B8` on `--ai-surface-primary` (light) | 3.10:1 | **2.56:1** | 3:1 | ✗ fails |
+
+Everything else measured on the light default context passes, including `text-brand` (5.04:1),
+`text-error` (5.21:1), `text-success` (4.72:1), `text-warning` (4.51:1) and `text-contrast`
+(4.76:1).
+
+Note `--ai-border-contrast` `#94A3B8` is 2.56:1 — still below 3:1, but it was 1.78:1 before,
+so the rework improved it. Pre-existing, not a regression.
+
+The dark-mode primary button is the urgent one: white on `#30B6C2` fails even the relaxed 3:1
+large-text threshold. Dark-mode teal at that lightness wants **dark** text, not white.
+
+### TODO — full six-mode contrast audit
+
+The table above covers the light default context plus the two primary-button cases. It is **not**
+a complete audit. Outstanding: every foreground/background pairing across all six modes —
+Light, Dark, ChatLight, ChatDark, CCLight, CCDark — including status soft-fill combinations
+(`text-{status}` on `surface-{status}-soft`), border-on-surface pairings, and the CC component
+tokens (`--cc-header-*`, `--cc-mainmenu-*`, `--cc-actions-menu-*`). Several CC tokens inverted
+polarity in this export (e.g. `--cc-actions-menu-primary-bg` went from dark `#0F3B53` to light
+`#D6DEE8` while its icon token became `{icon.secondary}`), so those pairings need re-checking
+from scratch.
 
 ---
 

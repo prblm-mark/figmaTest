@@ -142,7 +142,7 @@ Hover, Active, and Focus all share the same visual treatment (brand border) — 
 | Input font | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xs`, `--ai-leading-md` | same |
 | Input color (filled) | `--ai-text-primary` | `--ai-text-primary` |
 | Placeholder color | `--text/contrast-2` | `--ai-text-contrast` |
-| Help text font | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xxs`, `--ai-leading-xs` | same |
+| Help text font | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-2xs`, `--ai-leading-xs` | same |
 | Help text color | `--ai-text-secondary` | `--ai-text-secondary` |
 | Error help color | `--ai-text-error` | `--ai-text-error` |
 

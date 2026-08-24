@@ -523,7 +523,7 @@ If the user says yes to docs:
 | Border colors | `--ai-border-*` |
 | Border radius | `--ai-radius-sm/md/lg/xl/full` |
 | Spacing / size | `--ai-spacing-1` … `--ai-spacing-13` |
-| Font size (fixed) | `--ai-font-fixed-xxs` … `--ai-font-fixed-4xl` |
+| Font size (fixed) | `--ai-font-fixed-5xs` … `--ai-font-fixed-8xl` — **12px is `--ai-font-fixed-2xs`**, not `xxs` (`xxs` is 13px since the Aug 2026 export) |
 | Font size (fluid) | `--ai-font-fluid-xxs` … `--ai-font-fluid-4xl` — **genuinely responsive** via `tokens-mobile.css`; desktop value at ≥768px, smaller mobile value at ≤767px. No component CSS needed for typography responsiveness. |
 | Font weight | `--ai-font-regular/medium/semibold/bold/extrabold` |
 | Line height | `--ai-leading-xs` … `--ai-leading-2xl` |
