@@ -1,6 +1,6 @@
 {
   "description": "Backend-developer handover manifest. Machine-readable index of front-end elements that are mock / visual-only / in-memory and need real backend implementation. Front-end-only repo (vanilla HTML/CSS/JS, no framework, no backend). See HANDOVER.md for the human-readable version and the TODO(backend:<Surface>) in-code marker convention.",
-  "updated": "2026-07-29",
+  "updated": "2026-08-25",
   "categories": {
     "visual-only": "Rendered but no behaviour wired at all.",
     "fe-wired": "Works client-side; no backend required (may be fine as-is).",
@@ -9,21 +9,21 @@
   "surfaces": {
     "Login": {
       "file": "src/cc/templates/Login/Login.html",
-      "note": "CC Control Centre login screen. Standalone visual mock — the form renders but no authentication, session, or validation is wired.",
+      "note": "CC Control Centre login screen. Standalone visual mock \u2014 the form renders but no authentication, session, or validation is wired.",
       "items": [
         {
           "id": "login-submit",
           "category": "needs-backend",
           "element": ".cc-login__card <form> + .cc-login__submit (\"Login\")",
           "current": "Form submits to '#'; no auth, no validation.",
-          "needs": "POST /auth/login { email, password, remember } → establish session and redirect to the Control Centre; surface invalid-credential / field errors on the inputs (Input has an error state)."
+          "needs": "POST /auth/login { email, password, remember } \u2192 establish session and redirect to the Control Centre; surface invalid-credential / field errors on the inputs (Input has an error state)."
         },
         {
           "id": "login-remember",
           "category": "needs-backend",
           "element": ".checkbox (\"Remember me\", name=\"remember\")",
           "current": "Toggles visually only.",
-          "needs": "Bind to session lifetime on login — persistent cookie when checked, session cookie otherwise."
+          "needs": "Bind to session lifetime on login \u2014 persistent cookie when checked, session cookie otherwise."
         },
         {
           "id": "login-forgot",
@@ -43,13 +43,13 @@
     },
     "ControlHub": {
       "file": "src/cc/templates/ControlHub/ControlHub.html",
-      "note": "CC filterable directory screen. Reuses the ControlScreen app-shell (see the ControlScreen surface for all shell-level backend items — sidebar nav, auth, notifications, AI assistant, favourites, etc.). The items below are specific to ControlHub's own page content; everything else is inherited from the reused shell.",
+      "note": "CC filterable directory screen. Reuses the ControlScreen app-shell (see the ControlScreen surface for all shell-level backend items \u2014 sidebar nav, auth, notifications, AI assistant, favourites, etc.). The items below are specific to ControlHub's own page content; everything else is inherited from the reused shell.",
       "items": [
         {
           "id": "controlhub-filter",
           "category": "visual-only",
           "element": ".cc-directory__filter .input__control (placeholder 'Filter...')",
-          "current": "Filter field renders (search icon + clear button) but no filtering logic is wired — typing does nothing; the clear button is the component default only.",
+          "current": "Filter field renders (search icon + clear button) but no filtering logic is wired \u2014 typing does nothing; the clear button is the component default only.",
           "needs": "Client-side filtering is sufficient (no backend): debounced text match over ActionCard titles across all sections, hiding cards (and empty section headings) that don't match; clear button resets. Promote to fe-wired once implemented."
         },
         {
@@ -57,13 +57,13 @@
           "category": "needs-backend",
           "element": ".action-card--chevron (href=\"#\") + .action-card--button (whole-card nav, pointer cursor) with a separate .btn (\"+ add\")",
           "current": "Both card variants are meant to navigate the whole card to the area's screen. Chevron cards link to '#'; Button cards show a pointer cursor but card-level navigation isn't wired; the 'add' buttons are inert.",
-          "needs": "Real navigation targets per area for BOTH variants (whole card → the corresponding report/analysis screen — implement the Button card as a stretched-link so the '+ add' button stays a separate action above it) and an add-to-favourites/dashboard action for the 'add' button (POST, then reflect added state). Card title + section taxonomy comes from the same content source as the sidebar nav."
+          "needs": "Real navigation targets per area for BOTH variants (whole card \u2192 the corresponding report/analysis screen \u2014 implement the Button card as a stretched-link so the '+ add' button stays a separate action above it) and an add-to-favourites/dashboard action for the 'add' button (POST, then reflect added state). Card title + section taxonomy comes from the same content source as the sidebar nav."
         }
       ]
     },
     "ControlScreen": {
       "file": "src/cc/templates/ControlScreen/ControlScreen.html",
-      "note": "CC home/landing dashboard. Front-end complete; all data is hardcoded and most actions are mock. Composes many CC patterns — see docs/component-registry.md for per-component status.",
+      "note": "CC home/landing dashboard. Front-end complete; all data is hardcoded and most actions are mock. Composes many CC patterns \u2014 see docs/component-registry.md for per-component status.",
       "items": [
         {
           "id": "favourites-persistence",
@@ -76,7 +76,7 @@
           "id": "submenu-pins",
           "category": "needs-backend",
           "element": "initSubmenuPins() in patterns/SidebarMenu/sidebar-menu.js + .cc-menu__submenu-item--pinned",
-          "current": "Pinning a nav sub-item floats it to the top (order:-1) and fills the pin icon, but state is in-memory only — held on the DOM, scoped to one menu tree (not synced desktop↔mobile) and lost on reload.",
+          "current": "Pinning a nav sub-item floats it to the top (order:-1) and fills the pin icon, but state is in-memory only \u2014 held on the DOM, scoped to one menu tree (not synced desktop\u2194mobile) and lost on reload.",
           "needs": "Persist pinned sub-items via a user-prefs API: GET pinned ids on init (apply --pinned on render), POST on pin, DELETE on unpin. Key by user + menu item id; share state across the desktop and mobile menu trees."
         },
         {
@@ -84,7 +84,7 @@
           "category": "needs-backend",
           "element": "'Search Control' / 'Search Favourites' / 'Search CRM' <input type=\"search\">",
           "current": "Empty inputs, no event handlers.",
-          "needs": "Per-panel search/filter API (debounced query → results), populate the lists from the response."
+          "needs": "Per-panel search/filter API (debounced query \u2192 results), populate the lists from the response."
         },
         {
           "id": "sidebar-nav-data",
@@ -110,16 +110,16 @@
         {
           "id": "whos-online-table",
           "category": "needs-backend",
-          "element": "Datatables 'Who's Online' (desktop + mobile) — rows, search, sort headers, pagination",
+          "element": "Datatables 'Who's Online' (desktop + mobile) \u2014 rows, search, sort headers, pagination",
           "current": "Static rows (5 fake users); search/sort/pagination controls are visual only.",
           "needs": "Users API with server-side paginate/sort/search; live 'online' status (poll or WebSocket); touch/login metadata from auth."
         },
         {
           "id": "auth-actions",
           "category": "needs-backend",
-          "element": "Logout / Sign Out (user menu) / Switch Mode (dev→prod alert CTA) / View Site",
+          "element": "Logout / Sign Out (user menu) / Switch Mode (dev\u2192prod alert CTA) / View Site",
           "current": "No click handlers (Switch Mode + View Site + header Logout); Sign Out visual only.",
-          "needs": "Auth/session endpoints (logout → clear session → redirect), mode-switch endpoint, View Site navigation."
+          "needs": "Auth/session endpoints (logout \u2192 clear session \u2192 redirect), mode-switch endpoint, View Site navigation."
         },
         {
           "id": "notifications",
@@ -131,7 +131,7 @@
         {
           "id": "ai-assistant",
           "category": "needs-backend",
-          "element": "Mounted AiAssistant panel — message input, chat history list, pin/copy/delete menu",
+          "element": "Mounted AiAssistant panel \u2014 message input, chat history list, pin/copy/delete menu",
           "current": "Initial-state view only: send button is inert, chat history is static, menu actions are visual. Processing/response states are demo-only (GSAP) on the standalone AiAssistant page, NOT mounted here. (Distinct from the future full-page CC AI Chat the Maximise button will route to.)",
           "needs": "Chat/AI backend: send message + stream response, chat-history CRUD (load/pin/delete), thumbs-up/down feedback. Session association with the user."
         },
@@ -146,14 +146,14 @@
           "id": "minimise",
           "category": "needs-backend",
           "element": "Rail Minimise button",
-          "current": "Visual only — no behaviour.",
-          "needs": "Toggle a condensed spacing view — apply data-layout=\"minimised\" on the shell (minimised-mode tokens already exist in css/tokens-minimised.css) — and persist the preference per user."
+          "current": "Visual only \u2014 no behaviour.",
+          "needs": "Toggle a condensed spacing view \u2014 apply data-layout=\"minimised\" on the shell (minimised-mode tokens already exist in css/tokens-minimised.css) \u2014 and persist the preference per user."
         },
         {
           "id": "print",
           "category": "fe-wired",
           "element": "Rail Print button",
-          "current": "Calls window.print() — works natively.",
+          "current": "Calls window.print() \u2014 works natively.",
           "needs": "None required. Only if a server-rendered print-to-PDF is wanted later."
         }
       ]
@@ -165,9 +165,9 @@
         {
           "id": "filter-item-picker",
           "category": "needs-backend",
-          "element": ".filter-item__trigger (emits filter-item:toggle); el.setFilterValues([…])",
+          "element": ".filter-item__trigger (emits filter-item:toggle); el.setFilterValues([\u2026])",
           "current": "Trigger toggles the open state + chevron flip; no value list is shown and nothing persists.",
-          "needs": "Mount a multi-select value picker on the filter-item:toggle event; source the option list per filter; on selection call el.setFilterValues([…]) (chip applies the 1–3 / 4+ rollup); persist the active filter set and clear via the × (filter-item:clear)."
+          "needs": "Mount a multi-select value picker on the filter-item:toggle event; source the option list per filter; on selection call el.setFilterValues([\u2026]) (chip applies the 1\u20133 / 4+ rollup); persist the active filter set and clear via the \u00d7 (filter-item:clear)."
         },
         {
           "id": "filter-bar-views",
@@ -291,7 +291,7 @@
           "category": "needs-backend",
           "element": "`.eb-map` on 03 and 08",
           "current": "Styled placeholder reading 'Map generated from the address'.",
-          "needs": "Server-side geocode of the venue address returning map tiles or a static map image — the point being a structured address field instead of pasted embed code in the WYSIWYG."
+          "needs": "Server-side geocode of the venue address returning map tiles or a static map image \u2014 the point being a structured address field instead of pasted embed code in the WYSIWYG."
         },
         {
           "id": "eb-publish",
@@ -311,7 +311,7 @@
     },
     "SeatingPlanner": {
       "file": "src/cc/patterns/EventPicker/ (screen 1, built) + src/prototypes/SeatingPlanner/ (screen 2 workspace shell, prototype)",
-      "note": "Control > CRM > Seating Planner. Screen 1 (event picker, TASK-342608) shipped as the EventPicker pattern. Screen 2 is the workspace shell — TASK-344753 — covering the event bar, seating plans row, toolbar, tables grid, seat panel and unassigned tray. That task is the shell + wiring only: each control's detail lives in its own sub-task and is marked up with [data-sp-action] + [data-sp-task], routed through one registry. A sub-task goes live by calling SeatingPlannerWorkspace.on('<action>', fn) — no refactor needed. Reads/writes SeatingPlan, Table and TableSeat (data model on the parent task); no new fields.",
+      "note": "Control > CRM > Seating Planner. Screen 1 (event picker, TASK-342608) shipped as the EventPicker pattern. Screen 2 is the workspace shell \u2014 TASK-344753 \u2014 covering the event bar, seating plans row, toolbar, tables grid, seat panel and unassigned tray. That task is the shell + wiring only: each control's detail lives in its own sub-task and is marked up with [data-sp-action] + [data-sp-task], routed through one registry. A sub-task goes live by calling SeatingPlannerWorkspace.on('<action>', fn) \u2014 no refactor needed. Reads/writes SeatingPlan, Table and TableSeat (data model on the parent task); no new fields.",
       "items": [
         {
           "id": "seating-events-list",
@@ -330,36 +330,36 @@
         {
           "id": "seating-event-gate",
           "category": "needs-backend",
-          "element": "workspace-no-event.html — the event-gated entry state",
+          "element": "workspace-no-event.html \u2014 the event-gated entry state",
           "current": "Static: picker over an empty workspace.",
           "needs": "Opening the module with no event chosen must show the picker and render nothing else until one is selected (Behaviour section of TASK-344753)."
         },
         {
           "id": "seating-plans-row",
           "category": "needs-backend",
-          "element": ".sp-plan chips — name, table count, seated/capacity, fill bar",
+          "element": ".sp-plan chips \u2014 name, table count, seated/capacity, fill bar",
           "current": "Two mock plans; chip selection swaps the visible tables client-side.",
           "needs": "GET the event's SeatingPlan rows with aggregate table/seat counts. Selecting a plan loads its Tables."
         },
         {
           "id": "seating-tables-grid",
           "category": "needs-backend",
-          "element": ".sp-table cards — name, tier, sponsor, fill pill, seat dots",
+          "element": ".sp-table cards \u2014 name, tier, sponsor, fill pill, seat dots",
           "current": "36 mock cards (30 Main Ballroom + 6 Overflow). Fill pill and dots recompute client-side after an unseat.",
           "needs": "GET Tables for the selected plan with per-seat occupancy so the dots and fill pill derive from real TableSeat rows."
         },
         {
           "id": "seating-seat-panel",
           "category": "needs-backend",
-          "element": ".sp-panel seat list — occupant, role tag, reorder, remove",
+          "element": ".sp-panel seat list \u2014 occupant, role tag, reorder, remove",
           "current": "Seats derived from mock dot data; reorder and remove work in the DOM and are lost on reload.",
           "needs": "Read/write TableSeat. Seat order is meaningful (\"who sits next to whom\") so reorder must persist an explicit index, not a sort. Remove clears the seat and returns the person to Unassigned."
         },
         {
           "id": "seating-unassigned-tray",
           "category": "needs-backend",
-          "element": "Unassigned pool (TASK-351550) — tray-*.html + SeatingPlannerTray.js",
-          "current": "DERIVED, not a list: the event's people minus everyone seated, recomputed on every change. Role tag + name + company per row, live count badge, predictive search over name AND company, and an empty state for a fully-seated event. Because it derives, the four return paths (unseat, delete table, delete plan, reduce capacity) now put people back BY NAME with no pushing — they used to insert a row labelled by origin (\"Table 12 · seat 4\") because the occupant's real name was not available. Manually-added guests (342309) survive being unseated because the module remembers anyone it has seen seated who is not on the roster.",
+          "element": "Unassigned pool (TASK-351550) \u2014 tray-*.html + SeatingPlannerTray.js",
+          "current": "DERIVED, not a list: the event's people minus everyone seated, recomputed on every change. Role tag + name + company per row, live count badge, predictive search over name AND company, and an empty state for a fully-seated event. Because it derives, the four return paths (unseat, delete table, delete plan, reduce capacity) now put people back BY NAME with no pushing \u2014 they used to insert a row labelled by origin (\"Table 12 \u00b7 seat 4\") because the occupant's real name was not available. Manually-added guests (342309) survive being unseated because the module remembers anyone it has seen seated who is not on the roster.",
           "needs": "The list is a QUERY, not a stored collection: the event's attendees and linked CRM contacts LEFT JOIN TableSeat, keeping the unseated, plus guests already stored on a TableSeat. No new stored fields. Recompute server-side after every seating change rather than caching client-side, or two editors will disagree about who is free. Owner confirmed: TASK-351550."
         },
         {
@@ -373,91 +373,91 @@
           "id": "seating-deferred-controls",
           "category": "fe-wired",
           "element": "Every [data-sp-action] control: copy-plans 344756, add-table 344757, room-layout 344760, export 344761, table-edit 342307, table-delete 344758, assign-seat 342309",
-          "current": "EVERY [data-sp-action] control is now built — nothing is left announcing an unbuilt task. The registry has two kinds of extension point: click actions, and 'notify' for a sub-task that owns a derived view (351550).",
+          "current": "EVERY [data-sp-action] control is now built \u2014 nothing is left announcing an unbuilt task. The registry has two kinds of extension point: click actions, and 'notify' for a sub-task that owns a derived view (351550).",
           "needs": "Nothing further front-end. Keep the registry when wiring the backend: it is where each control's handler already lives."
         },
         {
           "id": "seating-drag-assign",
           "category": "needs-backend",
-          "element": "Drag to seat (TASK-344759) — drag-*.html + SeatingPlannerDrag.js",
-          "current": "All four placements from the brief are live: pool → empty seat, pool → table card (first free seat, or refused with \"Table full\"), seat → seat (move, or swap when the target is occupied), seat → pool (unseat). Plus seat → another table card, which the brief omits but the interaction implies. Drag shows the source dimmed, legal targets in success tone, a \"Swap\" label on an occupied seat and the refusal reason on a full table. THE SAME FOUR PLACEMENTS RUN BY TAP AND BY KEYBOARD: pick a person, a bar names who is in the air, then choose a seat, a table or the pool; Esc cancels. Nothing re-implements seating — it moves people between card dots and the occupant list and hands off to the shell, so the pool re-derives itself (351550).",
-          "needs": "Each placement is a TableSeat write — occupant plus seat order. A SWAP is two rows changing in ONE transaction, or the pair can end up in the same seat; a move between tables changes the parent Table too, so it must not be modelled as delete-then-insert. Re-read the plan after a placement rather than trusting the client, since two editors can aim at the same seat."
+          "element": "Drag to seat (TASK-344759) \u2014 drag-*.html + SeatingPlannerDrag.js",
+          "current": "All four placements from the brief are live: pool \u2192 empty seat, pool \u2192 table card (first free seat, or refused with \"Table full\"), seat \u2192 seat (move, or swap when the target is occupied), seat \u2192 pool (unseat). Plus seat \u2192 another table card, which the brief omits but the interaction implies. Drag shows the source dimmed, legal targets in success tone, a \"Swap\" label on an occupied seat and the refusal reason on a full table. THE SAME FOUR PLACEMENTS RUN BY TAP AND BY KEYBOARD: pick a person, a bar names who is in the air, then choose a seat, a table or the pool; Esc cancels. Nothing re-implements seating \u2014 it moves people between card dots and the occupant list and hands off to the shell, so the pool re-derives itself (351550).",
+          "needs": "Each placement is a TableSeat write \u2014 occupant plus seat order. A SWAP is two rows changing in ONE transaction, or the pair can end up in the same seat; a move between tables changes the parent Table too, so it must not be modelled as delete-then-insert. Re-read the plan after a placement rather than trusting the client, since two editors can aim at the same seat."
         },
         {
           "id": "seating-tier-colours",
           "category": "needs-backend",
-          "element": "Table tier — .sp-table--tier-* left edge + .sp-table__tier label",
+          "element": "Table tier \u2014 .sp-table--tier-* left edge + .sp-table__tier label",
           "current": "RESOLVED BY TASK-342308. Colours no longer come from the design system at all: every card takes its left edge from --sp-tier-colour, painted at runtime from the TableType lookup, so the DS needs no metallic Gold/Silver/Bronze tokens. Seeded Standard #8fa0b5, Gold #c9a227, Silver #b8bfc7, Bronze #b07d48, VIP #9b51e0, Head table #3b6fe0, Sponsor #c0392b. The tier LABEL still always renders, so tier is never colour-only. Premium (used in the earlier build) is not in the brief's set and stays migrated to Gold.",
-          "needs": "Store the colour per TableType row (see seating-table-types). Two of the three original questions survive: a card can still carry three colour systems at once (tier edge, 6 role dot colours, 3 fill states), and VIP/Sponsor are BOTH tier values and role values — Sponsor is also a separate field on the table form, so Type=Sponsor with an empty Sponsor field remains undefined. The metallic-token question is closed."
+          "needs": "Store the colour per TableType row (see seating-table-types). Two of the three original questions survive: a card can still carry three colour systems at once (tier edge, 6 role dot colours, 3 fill states), and VIP/Sponsor are BOTH tier values and role values \u2014 Sponsor is also a separate field on the table form, so Type=Sponsor with an empty Sponsor field remains undefined. The metallic-token question is closed."
         },
         {
           "id": "seating-new-plan",
           "category": "needs-backend",
-          "element": "New plan popup — src/prototypes/SeatingPlanner/newplan-*.html + SeatingPlannerNewPlan.js",
-          "current": "Modal validates the two required fields and the 6–12 seats bound, then creates the plan chip and generates its table cards entirely in the DOM. Lost on reload. Registers itself on the shell via SeatingPlannerWorkspace.on('new-plan', …) — the shell was not modified.",
-          "needs": "POST a SeatingPlan with { name (required), room, tables (required), seatsPerTable (default 10, bounded 6–12), tableShape (Round|Square) } and an FK to the selected Event; generate Table + TableSeat rows server-side; return the created plan so the plans row and grid re-read rather than being built client-side. Server must re-validate — the client bound is a convenience, not a guarantee."
+          "element": "New plan popup \u2014 src/prototypes/SeatingPlanner/newplan-*.html + SeatingPlannerNewPlan.js",
+          "current": "Modal validates the two required fields and the 6\u201312 seats bound, then creates the plan chip and generates its table cards entirely in the DOM. Lost on reload. Registers itself on the shell via SeatingPlannerWorkspace.on('new-plan', \u2026) \u2014 the shell was not modified.",
+          "needs": "POST a SeatingPlan with { name (required), room, tables (required), seatsPerTable (default 10, bounded 6\u201312), tableShape (Round|Square) } and an FK to the selected Event; generate Table + TableSeat rows server-side; return the created plan so the plans row and grid re-read rather than being built client-side. Server must re-validate \u2014 the client bound is a convenience, not a guarantee."
         },
         {
           "id": "seating-table-shape",
           "category": "needs-backend",
-          "element": "Table shape (Round / Square) — set at generation time in the New plan popup",
+          "element": "Table shape (Round / Square) \u2014 set at generation time in the New plan popup",
           "current": "Captured on the plan and echoed in the confirmation toast, but nothing renders shape: the tables grid shows no shape indicator, and TASK-344753's table cards have no shape affordance.",
-          "needs": "Decide whether shape is display-only metadata or should render on the table card / in the Room layout view (TASK-344760). Raised by this build — the shell predates the field."
+          "needs": "Decide whether shape is display-only metadata or should render on the table card / in the Room layout view (TASK-344760). Raised by this build \u2014 the shell predates the field."
         },
         {
           "id": "seating-edit-plan",
           "category": "needs-backend",
-          "element": "Edit plan popup — src/prototypes/SeatingPlanner/editplan-*.html + SeatingPlannerEditPlan.js",
-          "current": "Opens from a chip's ✎ pre-filled from THAT chip (the shell passes the clicked control through as ctx.trigger). Saving renames the chip, updates its room, rebuilds the label the toolbar reads, and refreshes the action buttons' aria-labels. DOM-only, lost on reload.",
-          "needs": "PATCH the SeatingPlan record with { name (required), room }. Renaming must NOT touch the plan's Tables or TableSeats — verified in the prototype: a rename leaves all 30 tables and the open seat panel intact. Re-read the plans row after saving rather than patching the DOM."
+          "element": "Edit plan popup \u2014 src/prototypes/SeatingPlanner/editplan-*.html + SeatingPlannerEditPlan.js",
+          "current": "Opens from a chip's \u270e pre-filled from THAT chip (the shell passes the clicked control through as ctx.trigger). Saving renames the chip, updates its room, rebuilds the label the toolbar reads, and refreshes the action buttons' aria-labels. DOM-only, lost on reload.",
+          "needs": "PATCH the SeatingPlan record with { name (required), room }. Renaming must NOT touch the plan's Tables or TableSeats \u2014 verified in the prototype: a rename leaves all 30 tables and the open seat panel intact. Re-read the plans row after saving rather than patching the DOM."
         },
         {
           "id": "seating-delete-plan",
           "category": "needs-backend",
-          "element": "Delete plan confirmation — deleteplan-confirm.html + SeatingPlannerDeletePlan.js",
-          "current": "alertdialog on a chip's ✕, opened from the clicked chip. Copy is data-driven — table and seated counts are read off the DOM, and the people clause is dropped when nobody is seated. Confirming removes the chip and its table cards, injects every returned occupant into the Unassigned tray, and if the deleted plan was open, selects the next remaining plan (or folds the workspace away and restores the \"No plans yet\" hint when none are left). Esc cancels. DOM-only.",
+          "element": "Delete plan confirmation \u2014 deleteplan-confirm.html + SeatingPlannerDeletePlan.js",
+          "current": "alertdialog on a chip's \u2715, opened from the clicked chip. Copy is data-driven \u2014 table and seated counts are read off the DOM, and the people clause is dropped when nobody is seated. Confirming removes the chip and its table cards, injects every returned occupant into the Unassigned tray, and if the deleted plan was open, selects the next remaining plan (or folds the workspace away and restores the \"No plans yet\" hint when none are left). Esc cancels. DOM-only.",
           "needs": "Delete the SeatingPlan plus its Table and TableSeat rows in ONE transaction and return the occupants to the event pool. A partial failure must not leave people unassigned from a plan that still exists. Re-read the plans row and the Unassigned pool after deleting rather than patching the DOM. The counts in the dialog must come from the server, not the client, so a stale page can't understate what is about to be destroyed."
         },
         {
           "id": "seating-copy-plans",
           "category": "needs-backend",
-          "element": "Copy plans to event — copyplans-*.html + SeatingPlannerCopyPlans.js",
+          "element": "Copy plans to event \u2014 copyplans-*.html + SeatingPlannerCopyPlans.js",
           "current": "Destination list reuses screen 1's Event Picker rows (.sp-event) and predictive search; the current event is excluded so a plan can't be copied onto itself. Intro copy is data-driven (plan count + source event name read off the page). Selecting a destination bumps that row's plan count and toasts what was copied. DOM-only.",
-          "needs": "Insert cloned SeatingPlan + Table rows under the target Event with TableSeat occupants left EMPTY — tables, capacities, types and sponsors carried, attendees not. Clone in ONE transaction so a failure can't leave half a layout. Destination list is GET /crm/events excluding the current event, with a debounced ?q= search."
+          "needs": "Insert cloned SeatingPlan + Table rows under the target Event with TableSeat occupants left EMPTY \u2014 tables, capacities, types and sponsors carried, attendees not. Clone in ONE transaction so a failure can't leave half a layout. Destination list is GET /crm/events excluding the current event, with a debounced ?q= search."
         },
         {
           "id": "seating-copy-append-semantics",
           "category": "needs-backend",
           "element": "Destination rows showing an existing plan count (e.g. \"1 plan\")",
           "current": "Copy is INSERT, not replace: copying 2 plans into an event that already has 1 leaves it with 3. The prototype makes this visible by showing each destination's current plan count and incrementing it, but nothing warns before the fact.",
-          "needs": "Confirm the intended semantics. If append is right, consider naming clones to avoid two plans called \"Main Ballroom\" in one event. If replace is ever wanted it needs its own confirmation, since it would destroy existing seating. Raised by this build — the brief says \"insert\" but doesn't cover the collision case."
+          "needs": "Confirm the intended semantics. If append is right, consider naming clones to avoid two plans called \"Main Ballroom\" in one event. If replace is ever wanted it needs its own confirmation, since it would destroy existing seating. Raised by this build \u2014 the brief says \"insert\" but doesn't cover the collision case."
         },
         {
           "id": "seating-add-table",
           "category": "needs-backend",
-          "element": "Add table toolbar button (TASK-344757) — SeatingPlannerAddTable.js",
+          "element": "Add table toolbar button (TASK-344757) \u2014 SeatingPlannerAddTable.js",
           "current": "No popup. Appends a card with the next table number, the plan's default seat count (data-sp-plan-seats, set when the plan was created), every seat empty; recomputes the plan chip and toolbar count, and opens the new table so its empty seat list is on screen.",
-          "needs": "Insert a Table plus its empty TableSeat rows under the plan. Assign the table number and sort order SERVER-SIDE — computing either on the client races other editors. Note the number must be max(existing)+1, not count+1: after deleting Table 3 of 5, count+1 would mint a second Table 5. Seat count comes from the PLAN default, not from the last table, since individual tables can have been changed."
+          "needs": "Insert a Table plus its empty TableSeat rows under the plan. Assign the table number and sort order SERVER-SIDE \u2014 computing either on the client races other editors. Note the number must be max(existing)+1, not count+1: after deleting Table 3 of 5, count+1 would mint a second Table 5. Seat count comes from the PLAN default, not from the last table, since individual tables can have been changed."
         },
         {
           "id": "seating-plan-chip-summary",
           "category": "fe-wired",
-          "element": "Plan chip summary \"N tables · X/Y seated · Z free\" + its fill bar",
-          "current": "BUG FOUND AND FIXED during TASK-344757: the chip was written once and never recomputed, so the summary went stale the moment anyone was unseated — the plan summary silently lied. syncPlanChip() now recomputes it from the plan's tables and is called on unseat and on add-table; it is published on the shell API for later sub-tasks that add or remove tables.",
-          "needs": "Nothing server-side while a plan's tables are all loaded — the recompute is client-side. Any sub-task that changes table or seat counts must call SeatingPlannerWorkspace.syncPlanChip(planKey), or derive the summary from the server response."
+          "element": "Plan chip summary \"N tables \u00b7 X/Y seated \u00b7 Z free\" + its fill bar",
+          "current": "BUG FOUND AND FIXED during TASK-344757: the chip was written once and never recomputed, so the summary went stale the moment anyone was unseated \u2014 the plan summary silently lied. syncPlanChip() now recomputes it from the plan's tables and is called on unseat and on add-table; it is published on the shell API for later sub-tasks that add or remove tables.",
+          "needs": "Nothing server-side while a plan's tables are all loaded \u2014 the recompute is client-side. Any sub-task that changes table or seat counts must call SeatingPlannerWorkspace.syncPlanChip(planKey), or derive the summary from the server response."
         },
         {
           "id": "seating-table-form",
           "category": "needs-backend",
-          "element": "Table form, New / Edit (TASK-342307) — tableform-*.html + SeatingPlannerTableForm.js",
+          "element": "Table form, New / Edit (TASK-342307) \u2014 tableform-*.html + SeatingPlannerTableForm.js",
           "current": "Opens pre-filled from a table's edit action. Name (required), tier (the 7 named values), sponsor via account lookup with predictive search, host, capacity, shape. Saving rewrites the card's name, tier class + label, sponsor line, dots, count and fill pill, then resyncs the plan chip. DOM-only.",
-          "needs": "Table row with FKs — Type → Table Type lookup, Sponsor → Account — plus a sort order. Accounts list is GET /crm/accounts?q=. Capacity changes must add/remove TableSeat rows and unassign the surplus in the SAME transaction."
+          "needs": "Table row with FKs \u2014 Type \u2192 Table Type lookup, Sponsor \u2192 Account \u2014 plus a sort order. Accounts list is GET /crm/accounts?q=. Capacity changes must add/remove TableSeat rows and unassign the surplus in the SAME transaction."
         },
         {
           "id": "seating-capacity-reduction",
           "category": "needs-backend",
           "element": "Seats (capacity) field + its data-driven note",
-          "current": "The note states current occupancy and escalates to a warning naming exactly how many people will be displaced before you save. On save the surplus is taken from the HIGHEST-numbered seats and returned to Unassigned; increasing capacity appends empty seats. Verified 10→7 returned 3, and 7→12 added 5 empty.",
+          "current": "The note states current occupancy and escalates to a warning naming exactly how many people will be displaced before you save. On save the surplus is taken from the HIGHEST-numbered seats and returned to Unassigned; increasing capacity appends empty seats. Verified 10\u21927 returned 3, and 7\u219212 added 5 empty.",
           "needs": "Server must decide and record WHICH occupants are displaced. Taking the last seats is the only sensible automatic rule, but seat order is meaningful here (\"who sits next to whom\"), so confirm with the spec team whether the user should choose instead of the system picking. Unassign in the same transaction as the seat removal."
         },
         {
@@ -470,63 +470,63 @@
         {
           "id": "seating-delete-table",
           "category": "needs-backend",
-          "element": "Delete table confirmation (TASK-344758) — deleteplan style, deletetable-confirm.html + SeatingPlannerDeleteTable.js",
-          "current": "alertdialog on a card's ✕, opened from the clicked card. Copy is data-driven (table name + seated count); with nobody seated it says so rather than inventing a consequence. Confirming returns each occupant to Unassigned, removes the card, resyncs the plan chip, and — if the deleted table was the open one — moves the seat panel to the next remaining table, or clears it when the plan has no tables left. Esc cancels. DOM-only.",
-          "needs": "Delete the Table and its TableSeat rows and return occupants to the event pool in ONE transaction. Table numbers are NOT resequenced after a delete: Add table takes max(existing)+1, so gaps are expected and harmless — resequencing would renumber tables under guests who have already been told their table number."
+          "element": "Delete table confirmation (TASK-344758) \u2014 deleteplan style, deletetable-confirm.html + SeatingPlannerDeleteTable.js",
+          "current": "alertdialog on a card's \u2715, opened from the clicked card. Copy is data-driven (table name + seated count); with nobody seated it says so rather than inventing a consequence. Confirming returns each occupant to Unassigned, removes the card, resyncs the plan chip, and \u2014 if the deleted table was the open one \u2014 moves the seat panel to the next remaining table, or clears it when the plan has no tables left. Esc cancels. DOM-only.",
+          "needs": "Delete the Table and its TableSeat rows and return occupants to the event pool in ONE transaction. Table numbers are NOT resequenced after a delete: Add table takes max(existing)+1, so gaps are expected and harmless \u2014 resequencing would renumber tables under guests who have already been told their table number."
         },
         {
           "id": "seating-table-name-scope",
           "category": "needs-backend",
           "element": "Table names / numbers across plans",
-          "current": "Table names are unique only WITHIN a plan — Main Ballroom and Overflow Room B both have a \"Table 1\". Every lookup in the prototype scopes by plan (data-sp-belongs); a selector that doesn't will silently hit the wrong plan's table, which is exactly what happened in one of this build's test assertions.",
+          "current": "Table names are unique only WITHIN a plan \u2014 Main Ballroom and Overflow Room B both have a \"Table 1\". Every lookup in the prototype scopes by plan (data-sp-belongs); a selector that doesn't will silently hit the wrong plan's table, which is exactly what happened in one of this build's test assertions.",
           "needs": "Scope every table query by SeatingPlan, and never treat a table name or number as an event-wide identifier. Worth confirming whether names should be unique per plan at the database level."
         },
         {
           "id": "seating-table-types",
           "category": "needs-backend",
-          "element": "Table types lookup (TASK-342308) — tabletypes-*.html + SeatingPlannerTableTypes.js",
-          "current": "Modal listing the tier set with a colour swatch, an editable label, up/down reorder and Remove per row, plus an add row at the foot. The rows ARE the model: row index is sortOrder. Opened from the toolbar's tier-colours control. Editing a colour repaints every table on that tier live; renaming a tier migrates its tables so identity survives; removing a tier drops its tables back to Standard and says how many moved. Standard cannot be removed — it shows \"default\" instead of a dead control. Duplicate labels are rejected with a toast. The Table form's tier dropdown is rebuilt from the same list. DOM-only — nothing persists across a reload.",
-          "needs": "A TableType lookup table (label, colour, sortOrder) with Table.Type as an FK to it. Because it is an FK, a delete must either repoint dependent Tables at Standard or be blocked — never left dangling — and a rename must be invisible to the Tables. Enforce label uniqueness server-side and protect the Standard/fallback row from deletion. The seed values above are the brief's list; the colours are a first pass and are the client's to change."
+          "element": "Table types lookup (TASK-342308) \u2014 tabletypes-*.html + SeatingPlannerTableTypes.js",
+          "current": "Modal listing the tier set with a colour swatch, an editable label, up/down reorder and Remove per row, plus an add row at the foot. The rows ARE the model: row index is sortOrder. Opened from the toolbar's tier-colours control. Editing a colour repaints every table on that tier live; renaming a tier migrates its tables so identity survives; removing a tier drops its tables back to Standard and says how many moved. Standard cannot be removed \u2014 it shows \"default\" instead of a dead control. Duplicate labels are rejected with a toast. The Table form's tier dropdown is rebuilt from the same list. DOM-only \u2014 nothing persists across a reload.",
+          "needs": "A TableType lookup table (label, colour, sortOrder) with Table.Type as an FK to it. Because it is an FK, a delete must either repoint dependent Tables at Standard or be blocked \u2014 never left dangling \u2014 and a rename must be invisible to the Tables. Enforce label uniqueness server-side and protect the Standard/fallback row from deletion. The seed values above are the brief's list; the colours are a first pass and are the client's to change."
         },
         {
           "id": "seating-tier-colour-safety",
           "category": "visual-only",
           "element": "The colour picker in the Table types lookup",
-          "current": "A free <input type=\"color\">. Client-chosen, so the value is data, not a token — which means nothing stops it colliding with something already meaningful on the same card. The seeded Head table #3b6fe0 already sits very close to the brand blue used for the SELECTED table, and the six role dot hues are in the same space. There is no contrast check against the card background and no mono-print fallback; the tier text label always rendering is the only guarantee that tier survives a bad colour choice.",
-          "needs": "Decide how much to constrain the picker: a curated swatch set is the safest answer, or keep it free and add a contrast check plus a warning when a pick lands near the selection blue or a role colour. Either way keep the tier label visible — colour must never be the only carrier. Raised by this build."
+          "current": "A free <input type=\"color\">. Client-chosen, so the value is data, not a token \u2014 which means nothing stops it colliding with something already meaningful on the same card. The seeded Head table #3b6fe0 already sits very close to the brand blue used for the SELECTED table, and the six role dot hues are in the same space. There is no contrast check against the card background and no mono-print fallback; the tier text label always rendering is the only guarantee that tier survives a bad colour choice.",
+          "needs": "Decide how much to constrain the picker: a curated swatch set is the safest answer, or keep it free and add a contrast check plus a warning when a pick lands near the selection blue or a role colour. Either way keep the tier label visible \u2014 colour must never be the only carrier. Raised by this build."
         },
         {
           "id": "seating-tier-sort-order",
           "category": "visual-only",
           "element": "Sort Order in the Table types lookup",
-          "current": "The brief asks for a Sort Order field; the reference image shows an ordered list with no number. Implemented as row order with up/down controls — the same affordance the seat list uses — and read back as a 0-based sortOrder. The number is the data, the list is the interface.",
-          "needs": "Confirm the list is acceptable in place of a literal number field. If numbers must be editable directly (e.g. to interleave a new tier without dragging), the field can be added back — but then the server has to resequence on collision."
+          "current": "The brief asks for a Sort Order field; the reference image shows an ordered list with no number. Implemented as row order with up/down controls \u2014 the same affordance the seat list uses \u2014 and read back as a 0-based sortOrder. The number is the data, the list is the interface.",
+          "needs": "Confirm the list is acceptable in place of a literal number field. If numbers must be editable directly (e.g. to interleave a new tier without dragging), the field can be added back \u2014 but then the server has to resequence on collision."
         },
         {
           "id": "seating-assign-seat",
           "category": "needs-backend",
-          "element": "Assign person to a seat (TASK-342309) — assign-*.html + SeatingPlannerAssign.js",
-          "current": "Opened from an empty seat's Assign button. Grouped by SOURCE, not role: “Event attendees” are read LIVE from the Unassigned tray (so the popup and the tray cannot disagree, and seating removes the tray row), “CRM contacts” are mock people not on the guest list — seating one says out loud that they were added to the event. Anyone already seated is filtered out. A row commits on click; there is no Save footer, because with one the row click would only be a selection. Predictive search matches name AND company across both groups; with no match it offers the typed term straight into the guest fields. Seating updates the seat row, the card dot, count and fill pill, the plan chip and the tray count. Esc closes. DOM-only.",
-          "needs": "Write the TableSeat occupant — an FK to Attendee/Contact, or a guest name/company pair when there is no record — plus the role and the seat index. Seating a CRM contact must ALSO create the event Attendee row, in the same transaction. Reject anyone who already holds a seat in this event rather than duplicating them; the prototype filters them out of the list, but the server is the only place that can enforce it. Attendees via GET /crm/events/<id>/attendees?unassigned=1, contacts via GET /crm/contacts?q=, both debounced."
+          "element": "Assign person to a seat (TASK-342309) \u2014 assign-*.html + SeatingPlannerAssign.js",
+          "current": "Opened from an empty seat's Assign button. Grouped by SOURCE, not role: \u201cEvent attendees\u201d are read LIVE from the Unassigned tray (so the popup and the tray cannot disagree, and seating removes the tray row), \u201cCRM contacts\u201d are mock people not on the guest list \u2014 seating one says out loud that they were added to the event. Anyone already seated is filtered out. A row commits on click; there is no Save footer, because with one the row click would only be a selection. Predictive search matches name AND company across both groups; with no match it offers the typed term straight into the guest fields. Seating updates the seat row, the card dot, count and fill pill, the plan chip and the tray count. Esc closes. DOM-only.",
+          "needs": "Write the TableSeat occupant \u2014 an FK to Attendee/Contact, or a guest name/company pair when there is no record \u2014 plus the role and the seat index. Seating a CRM contact must ALSO create the event Attendee row, in the same transaction. Reject anyone who already holds a seat in this event rather than duplicating them; the prototype filters them out of the list, but the server is the only place that can enforce it. Attendees via GET /crm/events/<id>/attendees?unassigned=1, contacts via GET /crm/contacts?q=, both debounced."
         },
         {
           "id": "seating-assign-role-source",
           "category": "visual-only",
           "element": "The Role field in the Assign popup",
-          "current": "The brief lists a Role dropdown; the reference shows role as a BADGE on each result row and has no dropdown. Both are honoured: a person already in the system carries the role from their record (visible on the row before you click it), and the dropdown belongs to the manual guest — the one case with no record to read a role from. It defaults to Guest and covers all six roles.",
-          "needs": "Confirm role is a property of the person, not of the seating. If it must be OVERRIDABLE when seating an existing person (“Tom is an attendee but he is hosting this table”), one-click seating has to become select-then-confirm, and the role then needs storing on TableSeat rather than read from the Attendee. That is a spec decision. Raised by this build."
+          "current": "The brief lists a Role dropdown; the reference shows role as a BADGE on each result row and has no dropdown. Both are honoured: a person already in the system carries the role from their record (visible on the row before you click it), and the dropdown belongs to the manual guest \u2014 the one case with no record to read a role from. It defaults to Guest and covers all six roles.",
+          "needs": "Confirm role is a property of the person, not of the seating. If it must be OVERRIDABLE when seating an existing person (\u201cTom is an attendee but he is hosting this table\u201d), one-click seating has to become select-then-confirm, and the role then needs storing on TableSeat rather than read from the Attendee. That is a spec decision. Raised by this build."
         },
         {
           "id": "seating-seat-occupant-record",
           "category": "fe-wired",
-          "element": "Who is in which seat — data-sp-occupants on the table card",
-          "current": "BUG FOUND AND FIXED during this build: occupant names for every table except Table 1 were DERIVED at render time from the mock people pool by index, so any change to the seats renamed everyone below it — unseat the third of ten and the remaining seven came back as different people, and a person assigned by this task lost their identity as soon as you switched tables. The shell now stamps the occupants onto the card whenever the seats change, so the card is the record. Verified: seat 4 assigned, switch away and back, still the same person; unseating seat 3 leaves seats 4–10 untouched.",
-          "needs": "Nothing server-side — this is a prototype-only workaround for having no model. It does show what the real thing must guarantee: seat identity is a persisted TableSeat row keyed to an Attendee, never a position in a list. Also fixed the mock seed, which had the seven tray people ALSO in the seated pool, so the prototype claimed the same person was seated and unassigned at once."
+          "element": "Who is in which seat \u2014 data-sp-occupants on the table card",
+          "current": "BUG FOUND AND FIXED during this build: occupant names for every table except Table 1 were DERIVED at render time from the mock people pool by index, so any change to the seats renamed everyone below it \u2014 unseat the third of ten and the remaining seven came back as different people, and a person assigned by this task lost their identity as soon as you switched tables. The shell now stamps the occupants onto the card whenever the seats change, so the card is the record. Verified: seat 4 assigned, switch away and back, still the same person; unseating seat 3 leaves seats 4\u201310 untouched.",
+          "needs": "Nothing server-side \u2014 this is a prototype-only workaround for having no model. It does show what the real thing must guarantee: seat identity is a persisted TableSeat row keyed to an Attendee, never a position in a list. Also fixed the mock seed, which had the seven tray people ALSO in the seated pool, so the prototype claimed the same person was seated and unassigned at once."
         },
         {
           "id": "seating-pool-scope",
           "category": "needs-backend",
-          "element": "What \"unassigned\" is measured against — plan or event",
+          "element": "What \"unassigned\" is measured against \u2014 plan or event",
           "current": "Implemented EVENT-WIDE: the pool excludes anyone seated in ANY plan of the event. The brief says \"not yet seated in the selected plan\", which taken literally would offer the 240 people seated in Main Ballroom as unassigned the moment you switch to Overflow Room B, and let you seat them a second time.",
           "needs": "Confirm the intended scope. Three things point to event-wide: the capacities say the plans are COMPLEMENTARY rather than alternatives (300 + 60 = 360 seats for 386 attendees, so both rooms seat one guest list); TASK-342309's Assign popup already excludes anyone seated anywhere, so per-plan here would make the two contradict each other; and event-wide is the reading that cannot double-book. If plans are meant to be ALTERNATIVE drafts of the same room, per-plan is right and the exclusion in 342309 has to change with it. Raised by this build."
         },
@@ -534,57 +534,57 @@
           "id": "seating-pool-empty-state",
           "category": "fe-wired",
           "element": "Empty state of the Unassigned pool",
-          "current": "Neither the brief nor the reference covers a pool with nobody in it — \"0\" over an empty box reads as broken. Added: a success-toned \"Everyone is seated · Nobody is waiting for a seat\" block, and a separate \"nobody matches <term>\" message for a filtered-out pool, which is a different situation from an empty one.",
-          "needs": "Nothing server-side. Confirm the copy. Note the DS has no --ai-icon-success token (success exists only as surface/text/border), so the icon uses --ai-text-success, following the pattern .sp-capacity__note--warn already set — worth adding icon-status tokens if this recurs."
+          "current": "Neither the brief nor the reference covers a pool with nobody in it \u2014 \"0\" over an empty box reads as broken. Added: a success-toned \"Everyone is seated \u00b7 Nobody is waiting for a seat\" block, and a separate \"nobody matches <term>\" message for a filtered-out pool, which is a different situation from an empty one.",
+          "needs": "Nothing server-side. Confirm the copy. Note the DS has no --ai-icon-success token (success exists only as surface/text/border), so the icon uses --ai-text-success, following the pattern .sp-capacity__note--warn already set \u2014 worth adding icon-status tokens if this recurs."
         },
         {
           "id": "seating-occupant-identity",
           "category": "fe-wired",
-          "element": "Who is seated where — data-sp-occupants on every card",
-          "current": "Extends the 342309 fix. Occupant names used to be derived at RENDER time for any table but Table 1, so they only existed while a table was open — which a derived pool cannot work with, since it can only return a person it can name. Every card is now stamped at boot. Two defects fell out of that and were fixed: the mock generator put the SAME person in a dozen chairs (24 names over 300 seats), which meant unseating someone left them seated elsewhere and they never returned to the pool; and it could mint a name that was already authored or already in the pool. Names are now unique event-wide — verified 286 seated, 0 duplicates, 0 overlap with the pool.",
-          "needs": "Nothing server-side — prototype scaffolding for having no model. It is the shape of the real requirement though: a seat holds a REFERENCE to an attendee, and every occupant of the event is a distinct person. Cosmetic artifact of guaranteeing uniqueness: people at the same table often share a surname. Real attendee data will not."
+          "element": "Who is seated where \u2014 data-sp-occupants on every card",
+          "current": "Extends the 342309 fix. Occupant names used to be derived at RENDER time for any table but Table 1, so they only existed while a table was open \u2014 which a derived pool cannot work with, since it can only return a person it can name. Every card is now stamped at boot. Two defects fell out of that and were fixed: the mock generator put the SAME person in a dozen chairs (24 names over 300 seats), which meant unseating someone left them seated elsewhere and they never returned to the pool; and it could mint a name that was already authored or already in the pool. Names are now unique event-wide \u2014 verified 286 seated, 0 duplicates, 0 overlap with the pool.",
+          "needs": "Nothing server-side \u2014 prototype scaffolding for having no model. It is the shape of the real requirement though: a seat holds a REFERENCE to an attendee, and every occupant of the event is a distinct person. Cosmetic artifact of guaranteeing uniqueness: people at the same table often share a surname. Real attendee data will not."
         },
         {
           "id": "seating-touch-placement",
           "category": "fe-wired",
-          "element": "Placing a person without drag — the touch and keyboard path",
-          "current": "The brief asks how this works on mobile. It is not a separate mobile feature: pick-then-place is the mechanism and drag is an accelerator for it. Tap (or Enter) a person in the pool or a seated row to pick them up — a fixed bar names them and offers Cancel — then tap a seat, a table card or the pool to place them. Esc or Cancel aborts. Rows carry tabindex, so the whole flow works from the keyboard, which matters because keyboard users cannot drag either. Verified in a browser: pick, place, swap, unseat, cancel and refusal all work by tap and by Enter, and picking does not hijack table selection.",
-          "needs": "No extra backend — the same TableSeat writes. What is still OUTSTANDING is the mobile LAYOUT: the workspace has never been designed below --ai-bp-md, and this task did not invent it. The proposal from 344753 stands (plan chips as a scroll strip, single-column tables, seat panel and pool as sheets); pick-then-place is what makes it usable once that layout is built. Agreed with Mark: \"we will refine mobile as we go\"."
+          "element": "Placing a person without drag \u2014 the touch and keyboard path",
+          "current": "The brief asks how this works on mobile. It is not a separate mobile feature: pick-then-place is the mechanism and drag is an accelerator for it. Tap (or Enter) a person in the pool or a seated row to pick them up \u2014 a fixed bar names them and offers Cancel \u2014 then tap a seat, a table card or the pool to place them. Esc or Cancel aborts. Rows carry tabindex, so the whole flow works from the keyboard, which matters because keyboard users cannot drag either. Verified in a browser: pick, place, swap, unseat, cancel and refusal all work by tap and by Enter, and picking does not hijack table selection.",
+          "needs": "No extra backend \u2014 the same TableSeat writes. What is still OUTSTANDING is the mobile LAYOUT: the workspace has never been designed below --ai-bp-md, and this task did not invent it. The proposal from 344753 stands (plan chips as a scroll strip, single-column tables, seat panel and pool as sheets); pick-then-place is what makes it usable once that layout is built. Agreed with Mark: \"we will refine mobile as we go\"."
         },
         {
           "id": "seating-room-layout",
           "category": "needs-backend",
-          "element": "Room layout (TASK-344760) — layout-*.html + SeatingPlannerLayout.js",
-          "current": "Popup from the toolbar, titled with the plan name as the reference shows. Attaches a floor plan (PDF or image) to the PLAN, so switching plans switches the layout. The dropzone is the DS DragDropFile component; choose or drag a file and an IMAGE genuinely previews — it is read with FileReader, so nothing leaves the browser. A PDF gets a document card with an Open link rather than a fake thumbnail. Footer swaps Upload for Replace + Remove once something is attached. Non-image, non-PDF files are refused by name. The toolbar button carries a dot when the current plan has a layout — an addition, since otherwise you cannot tell without opening the popup.",
-          "needs": "Upload to a MediaFileItem and store the REFERENCE on the SeatingPlan — one per plan. Replacing means repointing the reference and letting the media layer collect the old item, not deleting the file blind: a MediaFileItem may be shared. Validate type AND size server-side; the accept attribute is a convenience, not a control. Copying plans to another event (344756) needs a decision: does the clone carry the floor plan reference or start empty?"
+          "element": "Room layout (TASK-344760) \u2014 layout-*.html + SeatingPlannerLayout.js",
+          "current": "Popup from the toolbar, titled with the plan name as the reference shows. Attaches a floor plan (PDF or image) to the PLAN, so switching plans switches the layout. The dropzone is the DS DragDropFile component; choose or drag a file and an IMAGE genuinely previews \u2014 it is read with FileReader, so nothing leaves the browser. A PDF gets a document card with an Open link rather than a fake thumbnail. Footer swaps Upload for Replace + Remove once something is attached. Non-image, non-PDF files are refused by name. The toolbar button carries a dot when the current plan has a layout \u2014 an addition, since otherwise you cannot tell without opening the popup.",
+          "needs": "Upload to a MediaFileItem and store the REFERENCE on the SeatingPlan \u2014 one per plan. Replacing means repointing the reference and letting the media layer collect the old item, not deleting the file blind: a MediaFileItem may be shared. Validate type AND size server-side; the accept attribute is a convenience, not a control. Copying plans to another event (344756) needs a decision: does the clone carry the floor plan reference or start empty?"
         },
         {
           "id": "seating-room-layout-scope",
           "category": "visual-only",
           "element": "What \"Room layout\" means",
-          "current": "RESOLVED. TASK-344753 assumed this was a spatial seat-map editor — dragging tables around a floor plan — and recorded it as undesigned. The brief settles it: Room layout ATTACHES A FILE. The tables grid stays a list, and no floor-plan canvas is needed.",
-          "needs": "Nothing, unless a spatial view is wanted later — in which case it is a new task, not this one. Worth noting the attached plan is a picture: the app cannot relate a table on the canvas to a Table row, so \"where table 12 actually is\" stays human knowledge."
+          "current": "RESOLVED. TASK-344753 assumed this was a spatial seat-map editor \u2014 dragging tables around a floor plan \u2014 and recorded it as undesigned. The brief settles it: Room layout ATTACHES A FILE. The tables grid stays a list, and no floor-plan canvas is needed.",
+          "needs": "Nothing, unless a spatial view is wanted later \u2014 in which case it is a new task, not this one. Worth noting the attached plan is a picture: the app cannot relate a table on the canvas to a Table row, so \"where table 12 actually is\" stays human knowledge."
         },
         {
           "id": "seating-pdf-preview",
           "category": "visual-only",
           "element": "In-app preview of an attached PDF",
-          "current": "The brief asks for in-app preview. Images do preview inline. A PDF cannot be rasterised by the page, so it shows a document card (name, size, Open in a new tab) plus a line saying why — better than a fake thumbnail that implies a preview that is not there.",
+          "current": "The brief asks for in-app preview. Images do preview inline. A PDF cannot be rasterised by the page, so it shows a document card (name, size, Open in a new tab) plus a line saying why \u2014 better than a fake thumbnail that implies a preview that is not there.",
           "needs": "Decide whether inline PDF preview is required. If so it needs a viewer (pdf.js or an <embed>/<iframe> against the stored file), which is a real dependency and a decision for the spec team rather than something to slip in. Raised by this build."
         },
         {
           "id": "seating-export",
           "category": "needs-backend",
-          "element": "Export the plan (TASK-342305) — export-*.html + SeatingPlannerExport.js",
-          "current": "Split button in the toolbar — PDF (default) / Excel (.xlsx) / CSV — each opening a preview before download. THE PREVIEW FOLLOWS THE FORMAT: PDF previews as the document the reference draws (event name, meta line, then each table as a numbered list of occupants with the role in brackets), while CSV and .xlsx preview as the brief's six columns (Table, Type, Seat, Name, Company, Role) in the DS Table component — showing a document preview for a CSV would misrepresent the file. Read-only, per plan, derived from the DOM, and it stays true after edits: unseat someone and the row count and meta line both drop by one. THE CSV DOWNLOADS FOR REAL, generated in the browser with correct quoting; PDF and .xlsx explain that they are server-side rather than downloading something fake.",
-          "needs": "Read-only over the plan's Table / TableSeat rows. PDF and XLSX need a server-side generator; build ALL THREE formats from the same query or the three will disagree — the browser CSV here only covers what the page already has. Note the row set is SEATED SEATS ONLY, per the brief (\"every table and its seated attendees\"); see seating-export-empty-seats."
+          "element": "Export the plan (TASK-342305) \u2014 export-*.html + SeatingPlannerExport.js",
+          "current": "Split button in the toolbar \u2014 PDF (default) / Excel (.xlsx) / CSV \u2014 each opening a preview before download. THE PREVIEW FOLLOWS THE FORMAT: PDF previews as the document the reference draws (event name, meta line, then each table as a numbered list of occupants with the role in brackets), while CSV and .xlsx preview as the brief's six columns (Table, Type, Seat, Name, Company, Role) in the DS Table component \u2014 showing a document preview for a CSV would misrepresent the file. Read-only, per plan, derived from the DOM, and it stays true after edits: unseat someone and the row count and meta line both drop by one. THE CSV DOWNLOADS FOR REAL, generated in the browser with correct quoting; PDF and .xlsx explain that they are server-side rather than downloading something fake.",
+          "needs": "Read-only over the plan's Table / TableSeat rows. PDF and XLSX need a server-side generator; build ALL THREE formats from the same query or the three will disagree \u2014 the browser CSV here only covers what the page already has. Note the row set is SEATED SEATS ONLY, per the brief (\"every table and its seated attendees\"); see seating-export-empty-seats."
         },
         {
           "id": "seating-export-empty-seats",
           "category": "visual-only",
           "element": "Whether the export lists empty seats",
           "current": "It does not. The brief says \"every table and its seated attendees\", so a table with 3 of 10 filled exports 3 rows, and the preview says so out loud (\"Empty seats are not exported\"). A table with nobody seated still appears in the PDF, with a line saying it is empty, so it is not silently missing.",
-          "needs": "Confirm. A planner printing a seating list may well want the empty seats as blank rows — it is the difference between a record of who is coming and a working document to fill in on the day. Cheap either way, but it changes the row count. Raised by this build."
+          "needs": "Confirm. A planner printing a seating list may well want the empty seats as blank rows \u2014 it is the difference between a record of who is coming and a working document to fill in on the day. Cheap either way, but it changes the row count. Raised by this build."
         },
         {
           "id": "seating-export-task-number",
@@ -596,51 +596,58 @@
         {
           "id": "seating-main-layout",
           "category": "fe-wired",
-          "element": "Main interface (TASK-344753) — src/prototypes/SeatingPlanner/workspace.html",
-          "current": "DECIDED 31 Jul 2026: the WORKLIST layout is the main interface. The two other alternatives, the compare board, the layout switcher, its demo bar and the four old fallback workspace states have been deleted; workspace.html is the only workspace file. Shape: tables list | table detail | unassigned, each region owning its own scroller so the PAGE never scrolls and both ends of a drag stay on screen — the defect this replaced put the pool's first row at y~1013 in a page-scrolled 1356px document, so you could see the seats or the pool but never both. Detail column minmax(320, 384) and pool 320, both draggable wider from those minimums, never narrower; the tables list flips between rows and 240px cards (grid by default); below 1024 the pool is hidden, the toggle goes, and the table detail opens inline beneath the tapped row. ALL 13 SUB-TASKS ARE WIRED HERE — verified by clicking every [data-sp-action] at 1440 and 500 and asserting the shell's 'not built in this task' toast never appears, plus plan switch, table select, seat reorder, unseat, drag, filters, both searches and the export split menu. Two things had never been wired in ANY layout and were fixed to get there: Table types (342308) had a handler but no trigger anywhere, and Change event (342608) had no handler at all.",
-          "needs": "Nothing server-side for the layout itself. Build it from workspace.html rather than from the old frames. Note the shell CSS/JS is still .sp-shell-scoped and additive, because SeatingPlanner.css also paints screen 1 and the 34 sub-task capture states — those states still carry the old .sp-ws__cols markup, which is why DeletePlan.js keeps that selector alongside the [data-sp-workspace] hook. Open items elsewhere in this surface: seating-card-keyboard (cards bind click only — Enter cannot open a table), seating-workspace-prefs (pane widths and the tables view do not persist), and seating-card-left-border (fixed in the shell scope only)."
+          "element": "Main interface (TASK-344753) \u2014 src/prototypes/SeatingPlanner/workspace.html",
+          "current": "DECIDED 31 Jul 2026: the WORKLIST layout is the main interface. The two other alternatives, the compare board, the layout switcher, its demo bar and the four old fallback workspace states have been deleted; workspace.html is the only workspace file. Shape: tables list | table detail | unassigned, each region owning its own scroller so the PAGE never scrolls and both ends of a drag stay on screen \u2014 the defect this replaced put the pool's first row at y~1013 in a page-scrolled 1356px document, so you could see the seats or the pool but never both. Detail column minmax(320, 384) and pool 320, both draggable wider from those minimums, never narrower; the tables list flips between rows and 240px cards (grid by default); below 1024 the pool is hidden, the toggle goes, and the table detail opens inline beneath the tapped row. ALL 13 SUB-TASKS ARE WIRED HERE \u2014 verified by clicking every [data-sp-action] at 1440 and 500 and asserting the shell's 'not built in this task' toast never appears, plus plan switch, table select, seat reorder, unseat, drag, filters, both searches and the export split menu. Two things had never been wired in ANY layout and were fixed to get there: Table types (342308) had a handler but no trigger anywhere, and Change event (342608) had no handler at all.",
+          "needs": "Nothing server-side for the layout itself. Build it from workspace.html rather than from the old frames. Note the shell CSS/JS is still .sp-shell-scoped and additive, because SeatingPlanner.css also paints screen 1 and the 34 sub-task capture states \u2014 those states still carry the old .sp-ws__cols markup, which is why DeletePlan.js keeps that selector alongside the [data-sp-workspace] hook. Open items elsewhere in this surface: seating-card-keyboard (cards bind click only \u2014 Enter cannot open a table), seating-workspace-prefs (pane widths and the tables view do not persist), and seating-card-left-border (fixed in the shell scope only)."
         },
         {
           "id": "seating-workspace-prefs",
           "category": "needs-backend",
-          "element": "Pane widths and tables-view preference — SeatingPlannerShellAlts.js",
+          "element": "Pane widths and tables-view preference \u2014 SeatingPlannerShellAlts.js",
           "current": "Both are in-memory only and last as long as the page does. Dragging a resize handle writes a px width to a CSS custom property on the pane row; the list/grid toggle writes one attribute on <body>. Reload and both return to their defaults (grid view, detail 384 easing to 320, pool 320).",
-          "needs": "Persist per user, not per event or per plan — it is a workspace preference, like a column layout in a data grid: {tablesView: 'list'|'grid', detailWidth: px|null, poolWidth: px|null}, null meaning 'use the default and keep adapting to the viewport'. Store the widths as numbers and clamp them server-side or on read, because a stale width from a wide monitor must not squeeze the tables list below its floor on a laptop — the front end already clamps to the same floor it uses in CSS. Cheap to defer: without it the layout simply opens at its defaults every time."
+          "needs": "Persist per user, not per event or per plan \u2014 it is a workspace preference, like a column layout in a data grid: {tablesView: 'list'|'grid', detailWidth: px|null, poolWidth: px|null}, null meaning 'use the default and keep adapting to the viewport'. Store the widths as numbers and clamp them server-side or on read, because a stale width from a wide monitor must not squeeze the tables list below its floor on a laptop \u2014 the front end already clamps to the same floor it uses in CSS. Cheap to defer: without it the layout simply opens at its defaults every time."
         },
         {
           "id": "seating-mobile-worklist",
           "category": "fe-wired",
-          "element": "Worklist v1 below 1024px — SeatingPlannerShell.css @media (max-width: 1023px) + SeatingPlannerShellAlts.js",
-          "current": "Built and working. HTML5 drag does not fire on touch at all, so the Unassigned column — whose whole job was to be dragged out of — is hidden and seating happens by tapping an empty seat and picking from the Assign popup, which reads the same derived list (already the canonical path on every viewport, TASK-344759). HIDDEN, NOT REMOVED: [data-sp-tray-list] is a singleton nine queries depend on and the derived pool is where unseated people go, so unseat / delete table / delete plan all still work; its count is mirrored into the tables pane head ('7 unassigned') so the 'somebody is still waiting' signal survives. The table detail opens INLINE beneath the row you tapped, spanning the full viewport width, using the same relocation machinery as layout C gated by body[data-sp-acc-below] — inline rather than absolutely positioned so DOM order stays reading order for a screen reader and the Tab key, and nothing needs re-measuring on scroll. Nothing is open on arrival; tapping a row scrolls it to the top of the page smoothly (instant under prefers-reduced-motion); tapping the open row again closes it, and the close is ANIMATED — the drawer's height eases to zero so the rows below slide up instead of jumping 800px, with a token guard so tapping another table mid-animation cannot leave a collapsed drawer behind. The seating plans strip stays on screen (switching rooms is a mobile job too): the chips and the layout switcher scroll sideways in one line rather than wrapping, which is what had made the appbar 480px tall. The list/grid toggle is HIDDEN below 1024: both the row restyle and the grid-view rules live inside min-width blocks, so down there the cards render as the shipped card one per row whichever way the toggle is set — measured one per row at 500, 768 and 1023 — and a control that changes nothing is worse than no control. The body attribute is left in place so widening the window returns you to the view you were in.",
-          "needs": "Nothing server-side. Two open design questions: (1) there is no way to browse the unassigned people on their own below 1024 — only via Assign from an empty seat — so a tappable 'N unassigned' opening a bottom sheet would close that gap, and the count is currently plain text; (2) the seat rows keep their draggable attributes on mobile, harmless because touch never fires them, but they could be stripped. Note two behaviours inherited from the shell, both reasonable but worth knowing: Add table opens the table it just created, and switching plans opens the new plan's first table. Transitions and smooth scrolling do not run under headless virtual time, so both were verified by destination and by timeout fallback rather than by observing the animation — worth an eyeball in a real browser below 1024."
+          "element": "Worklist v1 below 1024px \u2014 SeatingPlannerShell.css @media (max-width: 1023px) + SeatingPlannerShellAlts.js",
+          "current": "Built and working. HTML5 drag does not fire on touch at all, so the Unassigned column \u2014 whose whole job was to be dragged out of \u2014 is hidden and seating happens by tapping an empty seat and picking from the Assign popup, which reads the same derived list (already the canonical path on every viewport, TASK-344759). HIDDEN, NOT REMOVED: [data-sp-tray-list] is a singleton nine queries depend on and the derived pool is where unseated people go, so unseat / delete table / delete plan all still work; its count is mirrored into the tables pane head ('7 unassigned') so the 'somebody is still waiting' signal survives. The table detail opens INLINE beneath the row you tapped, spanning the full viewport width, using the same relocation machinery as layout C gated by body[data-sp-acc-below] \u2014 inline rather than absolutely positioned so DOM order stays reading order for a screen reader and the Tab key, and nothing needs re-measuring on scroll. Nothing is open on arrival; tapping a row scrolls it to the top of the page smoothly (instant under prefers-reduced-motion); tapping the open row again closes it, and the close is ANIMATED \u2014 the drawer's height eases to zero so the rows below slide up instead of jumping 800px, with a token guard so tapping another table mid-animation cannot leave a collapsed drawer behind. The seating plans strip stays on screen (switching rooms is a mobile job too): the chips and the layout switcher scroll sideways in one line rather than wrapping, which is what had made the appbar 480px tall. The list/grid toggle is HIDDEN below 1024: both the row restyle and the grid-view rules live inside min-width blocks, so down there the cards render as the shipped card one per row whichever way the toggle is set \u2014 measured one per row at 500, 768 and 1023 \u2014 and a control that changes nothing is worse than no control. The body attribute is left in place so widening the window returns you to the view you were in.",
+          "needs": "Nothing server-side. Two open design questions: (1) there is no way to browse the unassigned people on their own below 1024 \u2014 only via Assign from an empty seat \u2014 so a tappable 'N unassigned' opening a bottom sheet would close that gap, and the count is currently plain text; (2) the seat rows keep their draggable attributes on mobile, harmless because touch never fires them, but they could be stripped. Note two behaviours inherited from the shell, both reasonable but worth knowing: Add table opens the table it just created, and switching plans opens the new plan's first table. Transitions and smooth scrolling do not run under headless virtual time, so both were verified by destination and by timeout fallback rather than by observing the animation \u2014 worth an eyeball in a real browser below 1024."
         },
         {
           "id": "seating-card-keyboard",
           "category": "visual-only",
-          "element": "Keyboard operation of a table card — SeatingPlannerWorkspace.js initTableSelect",
+          "element": "Keyboard operation of a table card \u2014 SeatingPlannerWorkspace.js initTableSelect",
           "current": "DEFECT, pre-existing and present on every layout including the current one. The cards are role=\"button\" tabindex=\"0\", so they take focus and announce as buttons, but initTableSelect binds CLICK only and the shell has no keydown handler for them (its single keydown listener handles Escape for the export split menu). A div with role=button does not synthesise a click from Enter, so a keyboard user can focus a table and not open it. Space scrolls the page instead.",
-          "needs": "Add a keydown handler beside initTableSelect: on Enter or Space with a [data-sp-table] target, preventDefault and call selectTable(card). One place, all layouts fixed at once — the mobile accordion's close-on-second-tap would then need the same treatment. WCAG 2.1.1 Keyboard, and it also blocks the mobile detail from being opened without a pointer. Found while building the mobile layout; deliberately NOT fixed there, because it is the shell's own gap and shell edits have been kept to the single line this exploration needed."
+          "needs": "Add a keydown handler beside initTableSelect: on Enter or Space with a [data-sp-table] target, preventDefault and call selectTable(card). One place, all layouts fixed at once \u2014 the mobile accordion's close-on-second-tap would then need the same treatment. WCAG 2.1.1 Keyboard, and it also blocks the mobile detail from being opened without a pointer. Found while building the mobile layout; deliberately NOT fixed there, because it is the shell's own gap and shell edits have been kept to the single line this exploration needed."
         },
         {
           "id": "seating-card-left-border",
           "category": "visual-only",
-          "element": "Left edge of an untiered (Standard) table card — .sp-table",
-          "current": "DEFECT, fixed in the alternatives only. A Standard table carries no data-sp-tier attribute, so it never reaches `.sp-table[data-sp-tier] { border-left-color: var(--sp-tier-colour, transparent) }` and keeps the base `border-left: 3px solid transparent` — measured rgba(0,0,0,0) against a 1px #e2e2e3 frame on every other side, i.e. a card with one edge missing. The alternatives now give an untiered card the frame colour, excluding the selected card so its brand edge still wins: every row has a 3px left edge, neutral when untiered and coloured when tiered, and the text stays aligned across rows (a 1px left border would shift it 2px against tiered rows).",
-          "needs": "Move the one-liner into SeatingPlanner.css when a layout is adopted — `.sp-table:not([data-sp-tier]):not(.sp-table--selected) { border-left-color: var(--ai-border-secondary) }`. It is kept out of that file for now because it paints the 35 signed-off states and the current layout is deliberately untouched, so THE FALLBACK STILL SHOWS THE GAP. Related pre-existing subtlety worth a designer's eye: on a tiered card the tier colour outranks the selected state on that edge, so an open Gold table shows a gold left edge and brand on its other three sides."
+          "element": "Left edge of an untiered (Standard) table card \u2014 .sp-table",
+          "current": "DEFECT, fixed in the alternatives only. A Standard table carries no data-sp-tier attribute, so it never reaches `.sp-table[data-sp-tier] { border-left-color: var(--sp-tier-colour, transparent) }` and keeps the base `border-left: 3px solid transparent` \u2014 measured rgba(0,0,0,0) against a 1px #e2e2e3 frame on every other side, i.e. a card with one edge missing. The alternatives now give an untiered card the frame colour, excluding the selected card so its brand edge still wins: every row has a 3px left edge, neutral when untiered and coloured when tiered, and the text stays aligned across rows (a 1px left border would shift it 2px against tiered rows).",
+          "needs": "Move the one-liner into SeatingPlanner.css when a layout is adopted \u2014 `.sp-table:not([data-sp-tier]):not(.sp-table--selected) { border-left-color: var(--ai-border-secondary) }`. It is kept out of that file for now because it paints the 35 signed-off states and the current layout is deliberately untouched, so THE FALLBACK STILL SHOWS THE GAP. Related pre-existing subtlety worth a designer's eye: on a tiered card the tier colour outranks the selected state on that edge, so an open Gold table shows a gold left edge and brand on its other three sides."
         },
         {
           "id": "seating-plans-scroller",
           "category": "fe-wired",
-          "element": "Seating plans block — .sp-plans in the layout alternatives",
-          "current": "Rebuilt as two rows: the title with New plan and Copy plans to event on one line, the rooms beneath on their own horizontally scrollable line. Desktop gets prev/next ARROWS instead of a scrollbar — hidden until the rooms overflow, and each hides again at its end, so a visible arrow always does something. Touch gets a swipe with no arrow. The room cards KEEP their size-4 (240px) width below 1024 rather than stretching to fill the track, so the cut card at the edge is emergent rather than guaranteed: measured with five plans, a card is cut at 500, 560, 600, 700, 768 and 900px (10% to 97% of a card showing), but at ~527, ~775 and 1023px the cards land exactly flush (track = 248n - 8) and nothing would signal the rest. So a TRAILING FADE is applied whenever the track can still scroll right — a mask driven by the same measurement that hides the next arrow — which does not depend on the arithmetic working out. The data-sp-plans-row hook moved onto the track, so NewPlan.js's chips and DeletePlan.js's 'No plans yet' hint still land in the right place with no change to either module.",
+          "element": "Seating plans block \u2014 .sp-plans in the layout alternatives",
+          "current": "Rebuilt as two rows: the title with New plan and Copy plans to event on one line, the rooms beneath on their own horizontally scrollable line. Desktop gets prev/next ARROWS instead of a scrollbar \u2014 hidden until the rooms overflow, and each hides again at its end, so a visible arrow always does something. Touch gets a swipe with no arrow. The room cards KEEP their size-4 (240px) width below 1024 rather than stretching to fill the track, so the cut card at the edge is emergent rather than guaranteed: measured with five plans, a card is cut at 500, 560, 600, 700, 768 and 900px (10% to 97% of a card showing), but at ~527, ~775 and 1023px the cards land exactly flush (track = 248n - 8) and nothing would signal the rest. So a TRAILING FADE is applied whenever the track can still scroll right \u2014 a mask driven by the same measurement that hides the next arrow \u2014 which does not depend on the arithmetic working out. The data-sp-plans-row hook moved onto the track, so NewPlan.js's chips and DeletePlan.js's 'No plans yet' hint still land in the right place with no change to either module.",
           "needs": "Nothing server-side. Three implementation notes: the arrow and fade state is re-synced on scroll, on resize, on a mutation of the chip list AND on a timeout after an arrow click, because a smooth scroll fires no scroll events in some environments and a stale arrow is a dead control; the fade uses currentColor as its opaque mask stop, because a mask reads only the alpha channel and hardcoding a colour would breach the token rule; and if the fade is ever dropped, remember the peek is NOT guaranteed at 527, 775 or 1023px with 240px cards."
         },
         {
           "id": "seating-prototype-inventory",
           "category": "visual-only",
           "element": "What is left in src/prototypes/SeatingPlanner/ after the 31 Jul cleanup",
-          "current": "40 HTML files: workspace.html (the adopted main interface), 4 screen-1 event-picker states (index, all-events, search-active, no-results), 34 sub-task capture states, states.html (the index, not a screen) and _base-workspace.html (a BUILD INPUT, not a screen — the generator reads it to rebuild workspace.html with all ten modal roots intact; it is not linked from anywhere). Deleted: alt1-threepane.html, alt1b-worklist-v2.html, alt3-accordion.html, alt-compare.html and workspace-{no-event,no-plan,plan-selected,free-seats}.html.",
-          "needs": "Nothing. Recorded because the prototype directory is UNTRACKED — those eight files have no git history and cannot be recovered, so this is the only record that they existed and what replaced them. The Figma frames captured from them still exist on page 2025:803 and are the designer's reference; the superseded ones want deleting by hand."
+          "current": "40 HTML files: workspace.html (the adopted main interface), 4 screen-1 event-picker states (index, all-events, search-active, no-results), 34 sub-task capture states, states.html (the index, not a screen) and _base-workspace.html (a BUILD INPUT, not a screen \u2014 the generator reads it to rebuild workspace.html with all ten modal roots intact; it is not linked from anywhere). Deleted: alt1-threepane.html, alt1b-worklist-v2.html, alt3-accordion.html, alt-compare.html and workspace-{no-event,no-plan,plan-selected,free-seats}.html.",
+          "needs": "Nothing. Recorded because the prototype directory is UNTRACKED \u2014 those eight files have no git history and cannot be recovered, so this is the only record that they existed and what replaced them. The Figma frames captured from them still exist on page 2025:803 and are the designer's reference; the superseded ones want deleting by hand."
+        },
+        {
+          "id": "seating-room-list",
+          "category": "needs-backend",
+          "element": "Room Card (`src/components/RoomCard/`) \u2014 the DS component built 2026-08-25 from Figma `3470:84951`",
+          "current": "Room name, table count, seated count and capacity are hardcoded in the demo. The capacity bar is driven by a `--room-card-progress` custom property the caller sets; the component computes nothing. Selection is a class the parent toggles \u2014 the card ships no JS, so nothing coordinates single-select yet.",
+          "needs": "`GET /api/events/{eventId}/rooms` \u2192 `[{ id, name, tableCount, seatsSeated, seatsCapacity }]`, with the caller computing `seatsSeated/seatsCapacity` into `--room-card-progress`. **Derive the counts server-side, not on the client** \u2014 the same trap already recorded in `seating-plan-chip-summary`, where a written-once summary silently went stale after an unseat. Edit and delete are unwired buttons; delete needs a confirmation and a decision on what happens to the tables and seated attendees underneath. **Open question first:** this card's content (`N tables \u00b7 X/Y seated`, `Z free`, fill bar) is identical to the plan chip in `seating-plan-chip-summary` \u2014 confirm whether a \"Room\" is a new entity or whether Room Card is the componentised SeatingPlan chip. If the latter, no new table is needed and the prototype's chip should be replaced by this component."
         }
       ]
     }

@@ -1,0 +1,243 @@
+/* RoomCard — seating-plan room summary card
+ * Figma: Lus07xi8pPXLN87sQIyrEt node 3470:84951
+ *        (Tier x Type x State x Device, 12 variants)
+ *
+ * Assumes base.css + tokens.css are loaded by the page.
+ *
+ * Presentational only — no JS. Confirmed with the designer 2026-08-25:
+ *   - the card is a DROP-IN list item; the parent module owns selection and toggles
+ *     `--selected`. Single-select coordination lives with whoever renders the list.
+ *   - the WHOLE card is the select trigger. That is why `.room-card__select` stretches
+ *     over the card via ::after, and why `.room-card__actions` sits above it on z-index —
+ *     the edit/delete buttons must stay independently clickable inside the bigger target.
+ *   - Composes Button (btn btn--secondary btn--icon btn--2xs) for edit + delete.
+ *
+ * Type=Default and Type=Seats Assigned are the SAME CSS. Figma draws them as separate
+ * variants, but the only differences are the data (0/148 vs 124/148, so 0% vs 84% fill)
+ * and the label text — both are brand-coloured. Only `--full` earns a modifier.
+ *
+ * The progress fill is data-driven via --room-card-progress. Figma draws the Seats
+ * Assigned fill at a fixed 158px, which is ~62% of the track and does NOT match the
+ * 124/148 (84%) in its own label — the bar is drawn, not computed. Never port that width.
+ */
+
+.room-card {
+  /* Fraction of capacity seated. The parent sets this per room. */
+  --room-card-progress: 0%;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ai-spacing-3);
+  /* Fluid: fills its container (a column in the room list). Figma draws 290px wide,
+   * which has no token; the bound min-width does — --ai-size-5 (280px). */
+  inline-size: 100%;
+  min-inline-size: var(--ai-size-5);
+  padding: var(--ai-spacing-5);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-lg);
+  background-color: var(--ai-surface-primary);
+  box-shadow: var(--ai-shadow-xxs);
+}
+
+/* ── Header: name + actions ─────────────────────────────────────────────────── */
+.room-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  inline-size: 100%;
+}
+
+.room-card__name {
+  flex: 1 0 0;
+  min-inline-size: 0;
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-sm);
+  font-weight: var(--ai-font-bold);
+  line-height: normal;
+  color: var(--ai-text-primary);
+}
+
+/* The select trigger. Stretches over the whole card so the entire surface is
+ * clickable, while remaining a single real <button> for semantics and keyboard.
+ * `position: relative` is deliberately NOT set on any ancestor between this and
+ * .room-card — the ::after resolves its inset against the card itself. */
+.room-card__select {
+  display: block;
+  max-inline-size: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: start;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.room-card__select::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+/* Focus lands on the card, not on the text run — the hit area is the card, so the
+ * ring must describe the card. base.css puts :focus-visible on the button itself,
+ * which would draw a ring around just the room name. */
+.room-card__select:focus-visible {
+  outline: none;
+}
+
+.room-card:has(.room-card__select:focus-visible) {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: 2px;
+}
+
+/* Above the stretched ::after, so edit/delete don't also trigger selection. */
+.room-card__actions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--ai-spacing-1);
+  flex-shrink: 0;
+}
+
+/* ── Meta: counts + seats free / FULL badge ─────────────────────────────────── */
+.room-card__meta {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--ai-spacing-3);
+  inline-size: 100%;
+  white-space: nowrap;
+}
+
+.room-card__counts {
+  margin: 0;
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-regular);
+  line-height: normal;
+  color: var(--ai-text-contrast);
+}
+
+.room-card__free {
+  margin: 0;
+  flex-shrink: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-4xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: normal;
+  /* Figma bound --ai-surface-brand here; at 11px that is 3.60:1 on white and
+   * 3.44:1 on the Selected surface, both under the 4.5:1 AA floor. Rebound to
+   * --ai-text-brand (5.04:1 / 4.82:1) by the designer 2026-08-25 — Figma updated
+   * to match, so this is NOT a divergence. */
+  color: var(--ai-text-brand);
+}
+
+/* ── FULL badge (Full only) ─────────────────────────────────────────────────
+ * An inline frame in Figma, not a component instance — so it is scoped here
+ * rather than composed. */
+.room-card__badge {
+  display: flex;
+  align-items: center;
+  /* It occupies the same slot as .room-card__free and is a <p> for symmetry with it,
+   * so it needs the same margin reset — without this the default block margins add
+   * 16px to the Full card and push its progress bar out of line with the others. */
+  margin: 0;
+  /* Figma bound border/width/border-3 (a BORDER-WIDTH token) as this gap.
+   * Corrected to --ai-spacing-1 by the designer 2026-08-25. */
+  gap: var(--ai-spacing-1);
+  flex-shrink: 0;
+  padding-inline: var(--ai-spacing-2);
+  padding-block: var(--ai-spacing-0-5);
+  border-radius: var(--ai-radius-full);
+  background-color: var(--ai-surface-success);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-6xs);
+  font-weight: var(--ai-font-bold);
+  line-height: normal;
+  text-transform: uppercase;
+  color: var(--ai-text-invert);
+}
+
+/* 7x7 is below the icon scale (the smallest token, --ai-icon-size-xs, is 12px, which
+ * will not fit a 15px-tall badge). Approved as a raw value by the designer 2026-08-25. */
+.room-card__badge [data-lucide],
+.room-card__badge svg {
+  inline-size: 7px;
+  block-size: 7px;
+  flex-shrink: 0;
+}
+
+/* ── Progress bar ───────────────────────────────────────────────────────────
+ * aria-hidden: "12 tables · 124/148 seated" and "24 seats free" already state the
+ * same value in text directly above it, so exposing a progressbar role here would
+ * make screen readers announce the number three times. */
+.room-card__progress {
+  display: flex;
+  align-items: flex-start;
+  inline-size: 100%;
+  block-size: var(--ai-spacing-2);
+  border-radius: var(--ai-radius-full);
+  background-color: var(--ai-surface-contrast);
+  overflow: hidden;
+}
+
+.room-card__progress-fill {
+  inline-size: var(--room-card-progress);
+  block-size: 100%;
+  background-color: var(--ai-surface-brand);
+}
+
+/* ── Type: Full ─────────────────────────────────────────────────────────────
+ * The bar turns success-green and the "N seats free" text is replaced by the badge. */
+.room-card--full .room-card__progress-fill {
+  background-color: var(--ai-surface-success);
+}
+
+/* ── State: Selected ────────────────────────────────────────────────────────
+ * A clean two-property delta, verified identical on Type=Default and Type=Full. */
+.room-card--selected {
+  border-color: var(--ai-border-brand);
+  background-color: var(--ai-surface-minimal);
+}
+
+/* ── Device: Mobile ─────────────────────────────────────────────────────────
+ * Figma's Device axis. Only four things change: padding, min-width, the name's
+ * font-size, and the word "seated" dropping out of the counts line. Buttons,
+ * badge, check icon and bar height all stay put — verified on the mobile
+ * Full variant (3484:186649). */
+@media (max-width: 767px) {
+  .room-card {
+    min-inline-size: var(--ai-size-4);
+    padding: var(--ai-spacing-4);
+  }
+
+  .room-card__name {
+    font-size: var(--ai-font-fixed-xs);
+  }
+
+  /* Figma's mobile counts read "12 tables · 0/148" — no "seated". Hidden visually
+   * but left in the accessibility tree, so mobile screen-reader users still hear
+   * the full sentence. `display: none` would drop it outright. */
+  .room-card__seated {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}

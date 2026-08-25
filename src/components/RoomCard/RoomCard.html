@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RoomCard — Affino Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../Button/Button.css">
+  <link rel="stylesheet" href="RoomCard.css">
+  <style>
+    body {
+      margin: 0;
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-minimal);
+      font-family: var(--ai-font-body);
+      color: var(--ai-text-primary);
+    }
+    h1 { font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-xl); margin: 0 0 var(--ai-spacing-2); }
+    h2 {
+      font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-md);
+      margin: var(--ai-spacing-8) 0 var(--ai-spacing-1);
+    }
+    .lede { color: var(--ai-text-contrast); font-size: var(--ai-font-fixed-xs); margin: 0 0 var(--ai-spacing-5); max-width: 70ch; }
+    .demo-row-label {
+      font-family: var(--ai-font-title);
+      font-size: var(--ai-font-fixed-2xs); font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast); text-transform: uppercase; letter-spacing: 0.08em;
+      margin: var(--ai-spacing-5) 0 var(--ai-spacing-2);
+    }
+    /* The card is fluid and fills its container, so the demo supplies the container:
+       a room-list column. --ai-size-6 (320px) leaves the card near the 290px Figma
+       draws it at, once the grid gap is accounted for. */
+    .room-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(var(--ai-size-5), var(--ai-size-6)));
+      gap: var(--ai-spacing-5);
+      align-items: start;
+    }
+    .room-list--single { grid-template-columns: minmax(var(--ai-size-5), var(--ai-size-6)); }
+  </style>
+</head>
+<body>
+  <h1>RoomCard</h1>
+  <p class="lede">Room summary card for the Seating Planner room list. Shows a room's table and
+  seat counts with a capacity bar. <strong>Presentational only</strong> — the parent module owns
+  selection and toggles <code>--selected</code>, so single-select coordination stays with whoever
+  renders the list. No JS in the component.</p>
+  <p class="lede">The <strong>whole card is the select trigger</strong>: the room name is a real
+  <code>&lt;button&gt;</code> whose <code>::after</code> stretches over the card, with the edit and
+  delete buttons layered above it so they stay independently clickable. Focus draws a ring around
+  the card rather than around the name.</p>
+
+  <h2>Types — State=Default</h2>
+  <p class="lede">Three types. <strong>Default and Seats Assigned are the same CSS</strong> — Figma
+  draws them as separate variants, but they differ only in the data driving the bar and the label,
+  both brand-coloured. Only <code>--full</code> changes anything visually: the bar turns
+  <code>--ai-surface-success</code> and the FULL badge replaces the seats-free text.</p>
+  <div class="room-list">
+    <!-- TODO(backend:SeatingPlanner): room name, table count, seated count and capacity are all
+         hardcoded → GET /api/events/{eventId}/rooms returning
+         [{ id, name, tableCount, seatsSeated, seatsCapacity }]. The progress bar is driven by
+         --room-card-progress, which the caller computes as seatsSeated/seatsCapacity. -->
+    <article class="room-card" data-backend-todo="seating-room-list">
+      <div class="room-card__header">
+        <h3 class="room-card__name">
+          <button type="button" class="room-card__select">Main Ballroom</button>
+        </h3>
+        <div class="room-card__actions">
+          <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Main Ballroom">
+            <i data-lucide="pencil" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Main Ballroom">
+            <i data-lucide="trash" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <div class="room-card__meta">
+        <p class="room-card__counts">12 tables · 0/148<span class="room-card__seated"> seated</span></p>
+        <p class="room-card__free">148 seats free</p>
+      </div>
+      <div class="room-card__progress" aria-hidden="true">
+        <div class="room-card__progress-fill"></div>
+      </div>
+    </article>
+
+    <article class="room-card" style="--room-card-progress: 83.78%">
+      <div class="room-card__header">
+        <h3 class="room-card__name">
+          <button type="button" class="room-card__select">Main Ballroom</button>
+        </h3>
+        <div class="room-card__actions">
+          <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Main Ballroom">
+            <i data-lucide="pencil" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Main Ballroom">
+            <i data-lucide="trash" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <div class="room-card__meta">
+        <p class="room-card__counts">12 tables · 124/148<span class="room-card__seated"> seated</span></p>
+        <p class="room-card__free">24 seats free</p>
+      </div>
+      <div class="room-card__progress" aria-hidden="true">
+        <div class="room-card__progress-fill"></div>
+      </div>
+    </article>
+
+    <article class="room-card room-card--full" style="--room-card-progress: 100%">
+      <div class="room-card__header">
+        <h3 class="room-card__name">
+          <button type="button" class="room-card__select">Main Ballroom</button>
+        </h3>
+        <div class="room-card__actions">
+          <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Main Ballroom">
+            <i data-lucide="pencil" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Main Ballroom">
+            <i data-lucide="trash" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <div class="room-card__meta">
+        <p class="room-card__counts">12 tables · 148/148<span class="room-card__seated"> seated</span></p>
+        <p class="room-card__badge"><i data-lucide="check" aria-hidden="true"></i>Full</p>
+      </div>
+      <div class="room-card__progress" aria-hidden="true">
+        <div class="room-card__progress-fill"></div>
+      </div>
+    </article>
+  </div>
+
+  <h2>Types — State=Selected</h2>
+  <p class="lede">Selected is a two-property delta on every type: background drops to
+  <code>--ai-surface-minimal</code> and the border goes <code>--ai-border-brand</code>. Verified
+  identical on Default and Full, so it composes rather than branching per type.</p>
+  <div class="room-list">
+    <article class="room-card room-card--selected">
+      <div class="room-card__header">
+        <h3 class="room-card__name">
+          <button type="button" class="room-card__select">Main Ballroom</button>
+        </h3>
+        <div class="room-card__actions">
+          <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Main Ballroom">
+            <i data-lucide="pencil" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Main Ballroom">
+            <i data-lucide="trash" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <div class="room-card__meta">
+        <p class="room-card__counts">12 tables · 0/148<span class="room-card__seated"> seated</span></p>
+        <p class="room-card__free">148 seats free</p>
+      </div>
+      <div class="room-card__progress" aria-hidden="true">
+        <div class="room-card__progress-fill"></div>
+      </div>
+    </article>
+
+    <article class="room-card room-card--selected" style="--room-card-progress: 83.78%">
+      <div class="room-card__header">
+        <h3 class="room-card__name">
+          <button type="button" class="room-card__select">Main Ballroom</button>
+        </h3>
+        <div class="room-card__actions">
+          <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Main Ballroom">
+            <i data-lucide="pencil" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Main Ballroom">
+            <i data-lucide="trash" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <div class="room-card__meta">
+        <p class="room-card__counts">12 tables · 124/148<span class="room-card__seated"> seated</span></p>
+        <p class="room-card__free">24 seats free</p>
+      </div>
+      <div class="room-card__progress" aria-hidden="true">
+        <div class="room-card__progress-fill"></div>
+      </div>
+    </article>
+
+    <article class="room-card room-card--full room-card--selected" style="--room-card-progress: 100%">
+      <div class="room-card__header">
+        <h3 class="room-card__name">
+          <button type="button" class="room-card__select">Main Ballroom</button>
+        </h3>
+        <div class="room-card__actions">
+          <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Main Ballroom">
+            <i data-lucide="pencil" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Main Ballroom">
+            <i data-lucide="trash" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <div class="room-card__meta">
+        <p class="room-card__counts">12 tables · 148/148<span class="room-card__seated"> seated</span></p>
+        <p class="room-card__badge"><i data-lucide="check" aria-hidden="true"></i>Full</p>
+      </div>
+      <div class="room-card__progress" aria-hidden="true">
+        <div class="room-card__progress-fill"></div>
+      </div>
+    </article>
+  </div>
+
+  <h2>Device=Mobile</h2>
+  <p class="lede"><strong>Resize the viewport below 768px to see the mobile layout.</strong> Figma's
+  Device axis is implemented as <code>@media (max-width: 767px)</code>, not a modifier class, so the
+  cards above respond on their own. Four things change: padding 16px → 12px, min-width 280px →
+  240px, the room name 16px → 14px, and the word "seated" leaves the counts line. It stays in the
+  accessibility tree, so screen readers still hear the full sentence.</p>
+
+  <h2>Long room name</h2>
+  <p class="lede">The name is the only flexible element in the header; it truncates with an
+  ellipsis so the edit and delete buttons never get pushed out of the card.</p>
+  <div class="room-list room-list--single">
+    <article class="room-card" style="--room-card-progress: 40%">
+      <div class="room-card__header">
+        <h3 class="room-card__name">
+          <button type="button" class="room-card__select">Queen Elizabeth II Conference &amp; Banqueting Suite</button>
+        </h3>
+        <div class="room-card__actions">
+          <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Queen Elizabeth II Conference &amp; Banqueting Suite">
+            <i data-lucide="pencil" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Queen Elizabeth II Conference &amp; Banqueting Suite">
+            <i data-lucide="trash" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <div class="room-card__meta">
+        <p class="room-card__counts">8 tables · 32/80<span class="room-card__seated"> seated</span></p>
+        <p class="room-card__free">48 seats free</p>
+      </div>
+      <div class="room-card__progress" aria-hidden="true">
+        <div class="room-card__progress-fill"></div>
+      </div>
+    </article>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>if (window.lucide) lucide.createIcons();</script>
+</body>
+</html>

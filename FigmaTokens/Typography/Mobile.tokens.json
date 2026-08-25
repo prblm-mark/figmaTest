@@ -103,6 +103,19 @@
       }
     },
     "size-fixed": {
+      "6xs": {
+        "$type": "number",
+        "$value": 9,
+        "$extensions": {
+          "com.figma.variableId": "VariableID:PENDING-FIGMA-EXPORT-6xs",
+          "com.figma.scopes": [
+            "ALL_SCOPES"
+          ],
+          "com.figma.codeSyntax": {
+            "WEB": "--ai-font-fixed-6xs"
+          }
+        }
+      },
       "5xs": {
         "$type": "number",
         "$value": 10,
