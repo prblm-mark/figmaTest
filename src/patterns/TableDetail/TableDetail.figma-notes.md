@@ -162,21 +162,28 @@ from 271px to 275px and gave the single-row legend more slack.
 
 | Element | Property | Figma | CSS |
 |---|---|---|---|
-| `__legend` | `gap` | split: `4px` row / `8px` column, bound to `--ai-spacing-3` | **uniform `--ai-spacing-0-5`** (2px) |
+| `__legend` | `row-gap` | `4px` | **`--ai-spacing-0-5`** (2px) |
+| `__legend` | `column-gap` | `8px` | `--ai-spacing-3` (8px) — Figma's, unchanged |
 
-Designer call 2026-08-25, and it fixes a real layout problem rather than just tightening spacing.
-**Figma's legend sits on a single row** — its five items total 240px and its content box is 272px,
-so 240 + four 8px gaps = 272 exactly. Our item widths come out 3px narrower (237px) but the content
-box is narrower still, so at an 8px column gap the row needed 269px against 253px available and
-**wrapped to two rows** — a hair over, but wrapped.
+Only the **row** gap was tightened (designer, 2026-08-25). Figma binds a split gap on this container
+— 4px row, 8px column, both via `--ai-spacing-3`.
 
-At 2px the row needs 245px and fits with 8px to spare on desktop, 24px on mobile. Verified one row
-at both breakpoints on both the All Roles and Full variants, with the legend dropping from ~46px to
-32px tall.
+**The row gap does visible work here, because the five-role legend wraps.** Figma fits it on one
+row: its items total 240px and its content box is 272px, so 240 plus four 8px gaps fills it exactly.
+Our text metrics come out slightly narrower (237px) but the content box is narrower still (257px
+after the panel border, list padding and the scrollbar gutter), so the row needs 269px and **wraps to
+two**. Measured:
 
-Worth noting the fragility this exposes: single-row parity with Figma depends on font metrics to
-within a few pixels. The legend still carries `flex-wrap: wrap`, so a longer role name or a larger
-text size reflows rather than overflowing — which is the right failure mode.
+| Type | Legend rows | Legend height |
+|---|---|---|
+| 2 Roles | 1 | 32px |
+| All Roles / Full | **2** | 48px |
+
+So the five-role legend is one row in Figma and two in the browser, with the two rows 2px apart.
+That is a **12px shortfall against one-row parity** — worth knowing, since closing it would need
+either a narrower column gap (an earlier attempt at a uniform 2px did fit on one row, but that is
+not what was wanted), shorter role labels, or a wider panel. `flex-wrap` is deliberate, so wrapping
+is a graceful outcome rather than an overflow.
 
 ## Interaction model
 
