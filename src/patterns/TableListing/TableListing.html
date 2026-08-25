@@ -703,5 +703,21 @@
 
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>if (window.lucide) lucide.createIcons();</script>
+  <script>
+    /* DEMO WIRING ONLY — not part of the pattern.
+     *
+     * Toggle ships no JS: it is CSS-only, and every consumer wires the flip itself (its own
+     * demo does exactly this). Without it a role="switch" never updates aria-checked, which
+     * is broken as a control regardless of what it filters.
+     *
+     * The FILTERING is deliberately absent — deriving "only free seats" belongs to the parent
+     * module and the backend (seating-free-seats-filter), not to this pattern. */
+    document.querySelectorAll('.table-listing .toggle:not(.toggle--disabled)').forEach(function (toggle) {
+      toggle.addEventListener('click', function () {
+        var isActive = toggle.classList.toggle('toggle--active');
+        toggle.setAttribute('aria-checked', String(isActive));
+      });
+    });
+  </script>
 </body>
 </html>

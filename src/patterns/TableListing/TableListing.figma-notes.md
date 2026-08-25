@@ -147,6 +147,33 @@ cap was blocking new consumers without shaping any existing one. The two now-red
 - The search is `<input type="search">` with an `aria-label`, since there is no visible label.
 - TableCards bring their own selection contract — the parent toggles `--selected` on them.
 
+## The toggle needs wiring, because Toggle ships no JS
+
+`Toggle` is CSS-only — no `Toggle.js` exists. Every consumer wires the flip itself, which is what
+its own demo does with a small inline script. So this pattern's demo carries the same wiring:
+
+```js
+document.querySelectorAll('.table-listing .toggle:not(.toggle--disabled)').forEach(function (t) {
+  t.addEventListener('click', function () {
+    t.setAttribute('aria-checked', String(t.classList.toggle('toggle--active')));
+  });
+});
+```
+
+That is **demo wiring, not part of the pattern**. The distinction matters: flipping `aria-checked`
+on a `role="switch"` is the control's own contract and has to work or the control is broken, whereas
+**the filtering itself is deliberately absent** — deriving "only free seats" belongs to the parent
+module and the backend (`seating-free-seats-filter`).
+
+Clicking the "Only free seats" text also flips it, via `label[for]` + `aria-labelledby`. Verified:
+knob 2.5px → 13.5px, track `--ai-border-secondary` → `--ai-surface-brand`, both directions, and
+through the label.
+
+> **Worth raising at component level:** since Toggle ships no JS, every consumer re-implements this.
+> `Dropdown.js` even carries a comment reading "the Toggle's own click handler flips
+> `.toggle--active`" — i.e. it already assumes Toggle owns the behaviour. Either Toggle should ship a
+> tiny self-init, or that comment is misleading.
+
 ## Notes
 
 - **A hidden `View Actions` frame** sits at the end of the toolbar (`3474:91539`, `hidden="true"`)
@@ -163,3 +190,7 @@ cap was blocking new consumers without shaping any existing one. The two now-red
 - **The registry cites node `2025:1080` for both Toggle and ToggleDS.** That node is Toggle's set, so
   ToggleDS's row points at the wrong component. Worth correcting.
 - **No hover, focus, pressed or disabled variants** for the pattern itself, and no dark-mode variant.
+- **Harness note.** CSS transitions do not advance under Chrome's `--virtual-time-budget`, so a
+  transitioned property (this toggle animates `left` and `background-color`) reads its *start* value
+  forever after a class change — it looks broken when it is not. Inject
+  `* { transition: none !important }` in the probe to measure the settled state.
