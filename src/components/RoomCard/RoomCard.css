@@ -41,11 +41,15 @@
   box-shadow: var(--ai-shadow-xxs);
 }
 
-/* ── Header: name + actions ─────────────────────────────────────────────────── */
+/* ── Header: name + actions ───────────────────────────────────────────────────
+ * The gap is a designer addition (2026-08-25) — Figma's header frame sets none. It
+ * guarantees clearance between the truncating name and the actions, which
+ * space-between alone does not once the name is long enough to fill its track. */
 .room-card__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--ai-spacing-1);
   inline-size: 100%;
 }
 
@@ -110,7 +114,11 @@
   flex-shrink: 0;
 }
 
-/* ── Meta: counts + seats free / FULL badge ─────────────────────────────────── */
+/* ── Meta: counts + seats free / FULL badge ───────────────────────────────────
+ * NOTE: this gap is NOT from Figma's meta frame, which sets none. The value came
+ * from the single-child badge wrapper (3470:84968) that was dropped as redundant,
+ * and is kept here for the same reason the header has one — clearance between the
+ * truncating counts and the right-hand element. Flagged for confirmation. */
 .room-card__meta {
   display: flex;
   align-items: flex-start;

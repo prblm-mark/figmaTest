@@ -119,8 +119,8 @@ while `textContent` still reads `"12 tables · 0/148 seated"`.
 | `--ai-radius-lg` | card `border-radius` (16px) | |
 | `light/shadow-xxs` → `--ai-shadow-xxs` | card `box-shadow` | |
 | `--ai-spacing-5` / `--ai-spacing-4` | card `padding` desktop / mobile | |
-| `--ai-spacing-3` | card `gap`, meta `gap` | |
-| `--ai-spacing-1` | actions `gap`, badge `gap` | |
+| `--ai-spacing-3` | card `gap` | meta `gap` too, but see below |
+| `--ai-spacing-1` | actions `gap`, badge `gap` | header `gap` too, but see below |
 | `--ai-size-5` / `--ai-size-4` | card `min-inline-size` desktop / mobile | |
 | `--ai-font-title` | every text node | |
 | `--ai-font-fixed-sm` / `-xs` | name, desktop / mobile | |
@@ -139,6 +139,24 @@ while `textContent` still reads `"12 tables · 0/148 seated"`.
 | `--ai-spacing-0-5` | badge `padding-block` (2px) | |
 | `--ai-icon-size-xs` | action-button icons (12px, via `btn--2xs`) | |
 | `--ai-radius-sm` | action-button radius (via `btn--2xs`) | |
+
+## Two gaps where the CSS leads Figma
+
+| Element | Property | Figma | CSS |
+|---|---|---|---|
+| `__header` | `gap` | **not set** | `--ai-spacing-1` (4px) |
+| `__meta` | `gap` | **not set** | `--ai-spacing-3` (8px) |
+
+**The header gap was requested by the designer** (2026-08-25). It matters more than it looks:
+`justify-content: space-between` gives no clearance once the name is long enough to fill its
+track, so a truncated name butted straight up against the edit button. Verified — the long-name
+demo card went from 0px to 4px of clearance.
+
+**The meta gap is not from Figma's meta frame**, which sets none on any variant. The value came
+from the single-child badge wrapper (`3470:84968`) that was dropped as redundant, and is kept for
+the same reason as the header — clearance between the truncating counts and the seats-free label
+or badge. **Worth an explicit confirm**, since it is 8px rather than the header's 4px and nothing
+in Figma asks for either.
 
 ## Token gaps and decisions
 
