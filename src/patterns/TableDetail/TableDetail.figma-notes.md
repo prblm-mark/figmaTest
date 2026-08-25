@@ -135,6 +135,29 @@ consequence is the header rendering **73px against Figma's 80px**. Everything in
 pixel-correct; only that 6px of slack in the sponsor row differs. **Worth either binding a token in
 Figma or confirming the row should just hug its content.**
 
+## Scrollbar
+
+The seat list carries a **transparent track with a thin `--ai-surface-secondary` thumb**, per the
+designer 2026-08-25 — matching `.chat-sidebar__sections`, the existing precedent for this treatment.
+
+```
+scrollbar-color: var(--ai-surface-secondary) transparent;
+scrollbar-width: thin;
+```
+
+Plus `::-webkit-scrollbar` / `-track` / `-thumb` rules for older WebKit, using
+`--ai-spacing-2` (6px) where the ChatSidebar precedent hardcodes `6px`.
+
+**Measured gutter: 11px, not 6px.** Once `scrollbar-width: thin` is declared, Chrome 121+ honours
+the standard property and ignores the `::-webkit-scrollbar` width — so 11px *is* the browser's
+"thin", and the webkit width is effectively dead code kept only for older WebKit. The same is true
+of the ChatSidebar precedent, where the 6px is equally inert in a current browser. Getting a literal
+6px in Chrome would mean dropping `scrollbar-width: thin`, which costs Firefox its thin scrollbar —
+so this is standards-first by choice, not by accident.
+
+Side benefit: `thin` reclaims 4px of gutter over the default `auto`, which widened the seat cards
+from 271px to 275px and gave the single-row legend more slack.
+
 ## One place the CSS leads Figma
 
 | Element | Property | Figma | CSS |

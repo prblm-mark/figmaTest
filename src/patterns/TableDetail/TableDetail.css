@@ -161,6 +161,27 @@
   padding-inline: var(--ai-spacing-5);
   padding-block-end: var(--ai-spacing-5);
   overflow-y: auto;
+  /* Transparent track, thin thumb in --ai-surface-secondary. The standard properties
+   * cover Firefox and Chrome 121+/Safari 18.2+; the -webkit- rules below carry older
+   * WebKit. Same treatment as .chat-sidebar__sections, which is the existing precedent
+   * for a thin scrollbar on a transparent track. */
+  scrollbar-color: var(--ai-surface-secondary) transparent;
+  scrollbar-width: thin;
+}
+
+/* `width`, not `inline-size` — these are UA pseudo-elements and logical properties are
+ * not reliably honoured on them. 6px matches the precedent, via the token. */
+.table-detail__list::-webkit-scrollbar {
+  width: var(--ai-spacing-2);
+}
+
+.table-detail__list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.table-detail__list::-webkit-scrollbar-thumb {
+  background-color: var(--ai-surface-secondary);
+  border-radius: var(--ai-radius-full);
 }
 
 /* ── Role legend ────────────────────────────────────────────────────────────
