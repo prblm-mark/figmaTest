@@ -315,4 +315,11 @@
   .table-card__name {
     font-size: var(--ai-font-fixed-xs);
   }
+
+  /* Designer addition — Figma keeps --ai-spacing-2 (6px) at both breakpoints. Tightened
+     to 4px on mobile, where the smaller 14px title leaves the sponsor row looking
+     loosely attached to it. Desktop is unchanged. */
+  .table-card__sponsor {
+    padding-block-start: var(--ai-spacing-1);
+  }
 }

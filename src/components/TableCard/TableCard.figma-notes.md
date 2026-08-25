@@ -101,14 +101,19 @@ alone could not settle which one the card takes.
 
 ## Device=Mobile deltas
 
-Only two, verified against `3484:188923`:
+Two come from Figma (verified against `3484:188923`); the third is a designer addition.
 
-| Property | Desktop | Mobile |
-|---|---|---|
-| card `padding` | `--ai-spacing-5` (16px) | `--ai-spacing-4` (12px) |
-| name `font-size` | `--ai-font-fixed-sm` (16px) | `--ai-font-fixed-xs` (14px) |
+| Property | Desktop | Mobile | Source |
+|---|---|---|---|
+| card `padding` | `--ai-spacing-5` (16px) | `--ai-spacing-4` (12px) | Figma |
+| name `font-size` | `--ai-font-fixed-sm` (16px) | `--ai-font-fixed-xs` (14px) | Figma |
+| `__sponsor` `padding-block-start` | `--ai-spacing-2` (6px) | **`--ai-spacing-1`** (4px) | **designer, 2026-08-25** |
 
-Bar, legend, swatches, badge, buttons and sponsor row are identical between breakpoints. Note the
+Figma keeps the sponsor row's 6px padding at both breakpoints; it was tightened to 4px on mobile,
+where the smaller 14px title leaves the row looking loosely attached to it. Measured: the sponsor row
+goes 22px → 20px and the header 42px → 38px, with desktop untouched.
+
+Bar, legend, swatches, badge and buttons are identical between breakpoints. Note the
 `min-inline-size` stays `--ai-size-4` (240px) at both — **unlike RoomCard**, whose min-width steps
 280 → 240.
 
