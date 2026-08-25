@@ -10,6 +10,12 @@
  *
  * Role colour: one custom property drives both the accent bar and the role label, the same
  * pattern as TableType. Defaults bind the Seating Planner --sp-* tokens.
+ *
+ * SPACING + HOVER LEAD FIGMA. Seven values were refined by the designer after the initial
+ * Figma-faithful build (seat gap, body gap, meta gap, actions padding, the whole action
+ * hover, and the Empty card's container gap). Figma is being updated to match, so a future
+ * audit re-reading get_design_context will see the older values and flag these as wrong —
+ * they are not. Full table in AttendeeCard.figma-notes.md.
  */
 
 .attendee-card {
@@ -62,7 +68,7 @@
   flex-shrink: 0;
   inline-size: var(--ai-spacing-5);
   block-size: var(--ai-spacing-5);
-  margin-inline-start: var(--ai-spacing-4);
+  margin-inline-start: var(--ai-spacing-3);
   border-radius: var(--ai-radius-sm);
   background-color: var(--ai-surface-secondary);
   font-family: var(--ai-font-title);
@@ -78,7 +84,6 @@
   flex: 1 0 0;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--ai-spacing-0-5);
   min-inline-size: 0;
   margin-inline-start: var(--ai-spacing-4);
   padding-block: var(--ai-spacing-3);
@@ -97,7 +102,7 @@
 .attendee-card__meta {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-2);
+  gap: var(--ai-spacing-1);
   inline-size: 100%;
   margin: 0;
   font-family: var(--ai-font-title);
@@ -144,6 +149,11 @@
   gap: var(--ai-spacing-0-5);
   flex-shrink: 0;
   align-self: stretch;
+  /* Logical property — this is padding-left in LTR, matching the rest of this file. */
+  padding-inline-start: var(--ai-spacing-3);
+  /* Insets the cluster vertically, which also bounds the reorder stack so the chevrons
+   * fill the padded height rather than the full card height. */
+  padding-block: var(--ai-spacing-2);
 }
 
 .attendee-card__action {
@@ -155,7 +165,8 @@
   inline-size: var(--ai-spacing-6);
   block-size: var(--ai-spacing-6);
   padding: 0;
-  border: 0;
+  /* Transparent at rest so the hover border below cannot shift the layout. */
+  border: 1px solid transparent;
   /* Figma binds --ai-spacing-2 (6px) as the radius here, which is a spacing token used
    * for a radius and matches no radius step (4/8/16/24/100). Using the nearest, sm.
    * Flagged in figma-notes for correction in Figma. */
@@ -167,6 +178,10 @@
 
 .attendee-card__action:hover {
   background-color: var(--ai-surface-secondary);
+  border-color: var(--ai-border-secondary);
+  /* Icons are Lucide SVGs on currentColor, so this darkens them from
+   * --ai-icon-contrast to --ai-icon-secondary. */
+  color: var(--ai-icon-secondary);
 }
 
 .attendee-card__action [data-lucide],
@@ -207,7 +222,6 @@
  * Structurally different: no name/meta block, a dashed border, an accent bar in
  * --ai-surface-contrast rather than a role colour, and an Assign button. */
 .attendee-card--empty {
-  gap: var(--ai-spacing-5);
   min-block-size: var(--ai-spacing-9);
   border-style: dashed;
   border-color: var(--ai-btn-secondary-border);
@@ -219,7 +233,14 @@
 }
 
 .attendee-card__empty-label {
-  flex-shrink: 0;
+  /* Grows to fill the row so the label stays LEFT-aligned and the Assign button is
+   * pushed to the right edge. Figma achieves this with a flex-1 group wrapping
+   * accent + seat + label; this is the flattened equivalent. Without it the card's
+   * justify-content: space-between has free space to distribute and the seat and
+   * label drift toward the centre. */
+  flex: 1 0 0;
+  min-inline-size: 0;
+  text-align: start;
   margin: 0;
   margin-inline-start: var(--ai-spacing-4);
   padding-block: var(--ai-spacing-3);

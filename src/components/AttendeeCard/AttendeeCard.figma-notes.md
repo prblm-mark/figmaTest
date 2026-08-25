@@ -111,6 +111,42 @@ Empty's background is already `minimal`, so only its border changes — dashed g
 | `--ai-text-primary` / `--ai-text-contrast` | text | |
 | `--ai-icon-contrast` | action icons | |
 
+## Spacing and hover: the CSS deliberately leads Figma
+
+Refined with the designer 2026-08-25 **after** the initial Figma-faithful build. Figma is to be
+updated to match, so these are intentional divergences, not drift:
+
+| Element | Property | Figma | CSS now |
+|---|---|---|---|
+| seat number | leading gap | `--ai-spacing-4` (12px) | **`--ai-spacing-3`** (8px) |
+| body (name + meta) | `gap` | `--ai-spacing-0-5` (2px) | **removed** — name and meta sit flush |
+| meta row | `gap` | `--ai-spacing-2` (6px) | **`--ai-spacing-1`** (4px) |
+| actions | `padding-inline-start` | not set | **`--ai-spacing-3`** (8px) |
+| actions | `padding-block` | not set | **`--ai-spacing-2`** (6px) |
+| action button | `:hover` | **no hover state exists** | bg `--ai-surface-secondary`, border `--ai-border-secondary`, icon `--ai-icon-secondary` |
+| Empty card | container `gap` | `--ai-spacing-5` (16px) | **removed** — see below |
+
+> **Do not "correct" these back from a Figma fetch.** `/update-components` and
+> `/review-component` both re-read `get_design_context`, will see the older values and will
+> report the CSS as wrong. It is not — Figma is the side that is behind. Delete this section once
+> Figma catches up.
+
+### Notes on two of them
+
+**The action-button hover is entirely additive.** The Figma set has no hover, focus, pressed or
+disabled variant for these controls. A hover was added so they read as interactive, then the
+designer specified the treatment: icons darken from `--ai-icon-contrast` to `--ai-icon-secondary`,
+with a `--ai-border-secondary` border. The button carries `border: 1px solid transparent` at rest
+so the hover border cannot reflow it — verified 24×24 in both states, with `box-sizing:
+border-box` global from `base.css`.
+
+**The Empty card's container gap was wrong, not just different.** It was applying 16px between
+*all four* children on top of the 12px margins, and — with no flex-growing child — the card's
+`justify-content: space-between` had free space to distribute, which pushed the seat and label
+toward the centre. Figma gets the same result by wrapping accent + seat + label in a `flex: 1 0 0`
+group; `__empty-label` now grows instead, which is the flattened equivalent. Verified: accent 27,
+seat 39, label 67, Assign flush to the right padding edge.
+
 ## Token gaps and dimension decisions
 
 Four dimensions in Figma have no `--ai-*` token. Resolved with the designer 2026-08-25 rather
