@@ -93,7 +93,6 @@ Empty's background is already `minimal`, so only its border changes — dashed g
 | `--ai-radius-md` | card `border-radius` | |
 | `light/shadow-xxs` → `--ai-shadow-xxs` | `box-shadow` | the token added 2026-08-24 |
 | `--ai-spacing-2` | card `padding-inline`, accent bar width, meta gap | |
-| `--ai-spacing-1` | accent wrapper width | |
 | `--ai-radius-full` | accent bar radius | |
 | `--ai-spacing-5` | seat badge box, Empty container gap | Figma draws 18px — see below |
 | `--ai-spacing-4` | gap before seat / body | |
@@ -124,6 +123,7 @@ updated to match, so these are intentional divergences, not drift:
 | actions | `padding-inline-start` | not set | **`--ai-spacing-3`** (8px) |
 | actions | `padding-block` | not set | **`--ai-spacing-2`** (6px) |
 | action button | `:hover` | **no hover state exists** | bg `--ai-surface-secondary`, border `--ai-border-secondary`, icon `--ai-icon-secondary` |
+| accent wrapper | `inline-size` | `--ai-spacing-1` (4px) | **removed** — shrink-wraps the 6px bar, see below |
 | Empty card | container `gap` | `--ai-spacing-5` (16px) | **removed** — see below |
 
 > **Do not "correct" these back from a Figma fetch.** `/update-components` and
@@ -182,10 +182,13 @@ separator are `aria-hidden`.
 - **Seat badge font family is inconsistent in Figma**: `--ai-font-title` on the five filled types
   but `--ai-font-body` on Empty, for the same element. Built as drawn (title on filled, body on
   Empty) so the component matches Figma, but one of the two is almost certainly unintended.
-- **The accent bar is two elements on purpose.** Figma nests a 6px rounded bar inside a 4px-wide
-  wrapper, so the bar's right 2px sits inside the following gap. Both widths are real tokens
-  (`--ai-spacing-2`, `--ai-spacing-1`); collapsing them to one element would shift the layout by
-  2px.
+- **The accent bar is two elements, but the wrapper is no longer sized.** Figma nests a 6px
+  rounded bar (`--ai-spacing-2`) inside a 4px-wide wrapper (`--ai-spacing-1`), so the bar's right
+  2px overhangs into the following gap. The wrapper's `inline-size` was removed at the designer's
+  direction, so it shrink-wraps the bar and the accent occupies its full 6px with no overhang —
+  everything after it sits 2px further right (seat now starts at 21px, was 19px). The wrapper is
+  still a separate element because it carries the `padding-block` that insets the bar vertically
+  from the card edges; collapsing the two would lose that.
 - **No hover, focus, pressed or disabled variants exist** in the Figma set, so none are
   implemented beyond a hover on the action buttons (needed for them to read as interactive).
 - **No dark-mode variant** in Figma. The card uses theme-aware surface and border tokens

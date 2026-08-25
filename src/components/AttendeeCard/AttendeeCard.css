@@ -11,9 +11,9 @@
  * Role colour: one custom property drives both the accent bar and the role label, the same
  * pattern as TableType. Defaults bind the Seating Planner --sp-* tokens.
  *
- * SPACING + HOVER LEAD FIGMA. Seven values were refined by the designer after the initial
+ * SPACING + HOVER LEAD FIGMA. Eight values were refined by the designer after the initial
  * Figma-faithful build (seat gap, body gap, meta gap, actions padding, the whole action
- * hover, and the Empty card's container gap). Figma is being updated to match, so a future
+ * hover, the accent wrapper's width, and the Empty card's container gap). Figma is being updated to match, so a future
  * audit re-reading get_design_context will see the older values and flag these as wrong —
  * they are not. Full table in AttendeeCard.figma-notes.md.
  */
@@ -38,16 +38,17 @@
 }
 
 /* ── Accent bar ──────────────────────────────────────────────────────────────
- * Figma nests a 6px rounded bar inside a 4px-wide wrapper, so the bar's right 2px
- * sits inside the following gap. Both widths are real tokens, so the two elements
- * are kept rather than collapsed — collapsing would shift the layout by 2px. */
+ * Figma nests the 6px rounded bar inside a 4px-wide wrapper, so the bar's right 2px
+ * overhangs into the following gap. The wrapper is left UNSIZED here at the designer's
+ * direction 2026-08-25, so it shrink-wraps the bar and the accent occupies the full
+ * 6px with no overhang. The wrapper is still a separate element — it carries the
+ * vertical inset (padding-block) that insets the bar from the card edges. */
 .attendee-card__accent {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   flex-shrink: 0;
   align-self: stretch;
-  inline-size: var(--ai-spacing-1);
   padding-block: var(--ai-spacing-2);
 }
 
