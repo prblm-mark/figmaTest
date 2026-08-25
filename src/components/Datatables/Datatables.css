@@ -378,16 +378,15 @@
     padding-right: 0;
   }
 
-  /* Toolbar search fills the available space below 768px. At desktop the
-   * search uses `align-items: flex-end` (content-width, right-aligned) and
-   * the Input `--sm` wrap caps at --ai-size-3 (192px) — on a narrow toolbar
-   * that fixed width overflows. Stretch the wrap to the search column and
-   * lift the cap so it shrinks/grows with the toolbar instead. */
+  /* Toolbar search fills the available space below 768px. At desktop the search uses
+   * `align-items: flex-end` (content-width, right-aligned); stretching it here lets it
+   * shrink and grow with a narrow toolbar instead.
+   *
+   * A companion `.input__wrap { max-width: none }` used to sit here, lifting the 192px
+   * cap Input's --sm size carried. That cap was removed from Input on 2026-08-25, so the
+   * override is gone as redundant. */
   .datatables__search {
     align-items: stretch;
-  }
-  .datatables__search .input__wrap {
-    max-width: none;
   }
 }
 

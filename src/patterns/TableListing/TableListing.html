@@ -1,0 +1,707 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TableListing — Affino Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/Input/Input.css">
+  <link rel="stylesheet" href="../../components/Toggle/Toggle.css">
+  <link rel="stylesheet" href="../../components/TableType/TableType.css">
+  <link rel="stylesheet" href="../../components/FullBadge/FullBadge.css">
+  <link rel="stylesheet" href="../../components/TableCard/TableCard.css">
+  <link rel="stylesheet" href="TableListing.css">
+  <script>
+    /* ?frame=mobile marks this document as the one INSIDE the mobile preview iframe, so the
+       preview section hides itself and cannot recurse. Runs in <head> before paint. */
+    if (location.search.indexOf('frame=mobile') !== -1) document.documentElement.dataset.frame = 'mobile';
+  </script>
+  <style>
+    body {
+      margin: 0;
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-minimal);
+      font-family: var(--ai-font-body);
+      color: var(--ai-text-primary);
+    }
+    h1 { font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-xl); margin: 0 0 var(--ai-spacing-2); }
+    h2.demo-heading {
+      font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-md);
+      margin: var(--ai-spacing-8) 0 var(--ai-spacing-1);
+    }
+    .lede { color: var(--ai-text-contrast); font-size: var(--ai-font-fixed-xs); margin: 0 0 var(--ai-spacing-5); max-width: 70ch; }
+    /* ── Mobile preview ──────────────────────────────────────────────────────
+       An iframe of THIS page at 390px. An iframe carries its own viewport, so the
+       pattern's own @media (max-width: 767px) fires inside it no matter how wide the
+       outer window is — which is the only way to show the mobile rendering without
+       duplicating markup or inventing a --mobile modifier. */
+    .mobile-preview {
+      display: flex; flex-direction: column; gap: var(--ai-spacing-3);
+      inline-size: fit-content;
+    }
+    .mobile-preview__frame {
+      inline-size: 390px; /* iPhone-class viewport — a device width, not a design token */
+      block-size: 720px;
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-lg);
+      background: var(--ai-surface-primary);
+    }
+    .mobile-preview__caption {
+      font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-2xs);
+      color: var(--ai-text-contrast); margin: 0;
+    }
+    [data-frame="mobile"] .mobile-preview,
+    [data-frame="mobile"] h1,
+    [data-frame="mobile"] .lede--intro { display: none; }
+    [data-frame="mobile"] h2.demo-heading:first-of-type { margin-block-start: 0; }
+  </style>
+</head>
+<body>
+  <h1>TableListing</h1>
+  <p class="lede lede--intro">The Seating Planner tables grid and its toolbar. <strong>Tier:
+  Pattern.</strong> Composes <strong>TableCard</strong> (one per table), <strong>Toggle</strong>
+  (<code>toggle--xxs</code>) and <strong>Input</strong> (<code>input--sm</code>, label-less).
+  <strong>Presentational only</strong> — filtering, search and the free-seats toggle are the parent
+  module's job, and there is no JS here.</p>
+  <p class="lede lede--intro">The grid is <code>repeat(auto-fill, minmax(var(--ai-size-4), 1fr))</code>
+  rather than Figma's literal four columns. TableCard has a 240px min-width, so four fixed columns
+  need ~984px and would overflow between 768px and about 1000px; auto-fill lands on 4 columns at
+  Figma's drawn width and 1 at mobile, stepping through 3 and 2 in between. <strong>Resize this page
+  to watch the column count change.</strong></p>
+
+  <h2 class="demo-heading">Tier=Pattern, Device=Desktop</h2>
+  <p class="lede">Thirteen tables, the first selected. Cards here carry neither a sponsor row nor a
+  tier pill — both are <code>hidden</code> on the instances in Figma.</p>
+  <!-- TODO(backend:SeatingPlanner): the table list, the counts and the free-seats filter are
+       all hardcoded. Reuses seating-tables-grid for the per-table contract; this pattern adds
+       the toolbar. "Only free seats" filters to tables with capacity remaining — derive that
+       server-side from the same aggregated counts, and see seating-free-seats-filter which
+       already specs it. The search filters by table name. -->
+  <section class="table-listing" data-backend-todo="seating-tables-listing" aria-label="Tables">
+    <div class="table-listing__toolbar">
+      <div class="table-listing__toolbar-main">
+        <h2 class="table-listing__title">Tables</h2>
+        <div class="table-listing__filter">
+          <button type="button" class="toggle toggle--xxs" role="switch" aria-checked="false"
+                  id="free-seats-a" aria-labelledby="free-seats-label-a">
+            <span class="toggle__track"><span class="toggle__knob"></span></span>
+          </button>
+          <label class="table-listing__filter-label" id="free-seats-label-a" for="free-seats-a">Only free seats</label>
+        </div>
+      </div>
+      <span class="table-listing__divider" aria-hidden="true"></span>
+      <div class="input input--sm table-listing__search">
+        <div class="input__wrap">
+          <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
+          <input id="find-table-a" type="search" class="input__control"
+                 placeholder="Find a table" aria-label="Find a table">
+        </div>
+      </div>
+    </div>
+    <div class="table-listing__grid">
+      <article class="table-card table-card--selected">
+        <div class="table-card__header">
+          <div class="table-card__titles">
+            <h3 class="table-card__name">
+              <button type="button" class="table-card__select">Table 1</button>
+            </h3>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__viz">
+          <div class="table-card__bar" aria-hidden="true">
+            <span class="table-card__seg" style="--seg: 4"></span>
+          </div>
+          <div class="table-card__legend">
+            <span class="table-card__legend-item"><span class="table-card__swatch"></span>Empty (4)</span>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__footer">
+          <div class="table-card__count-group">
+            <p class="table-card__count">0 / 10 seated</p>
+          </div>
+          <div class="table-card__actions">
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 1">
+              <i data-lucide="pencil" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 1">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="table-card">
+        <div class="table-card__header">
+          <div class="table-card__titles">
+            <h3 class="table-card__name">
+              <button type="button" class="table-card__select">Table 2</button>
+            </h3>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__viz">
+          <div class="table-card__bar" aria-hidden="true">
+            <span class="table-card__seg" style="--seg: 4"></span>
+          </div>
+          <div class="table-card__legend">
+            <span class="table-card__legend-item"><span class="table-card__swatch"></span>Empty (4)</span>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__footer">
+          <div class="table-card__count-group">
+            <p class="table-card__count">0 / 10 seated</p>
+          </div>
+          <div class="table-card__actions">
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 2">
+              <i data-lucide="pencil" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 2">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="table-card">
+        <div class="table-card__header">
+          <div class="table-card__titles">
+            <h3 class="table-card__name">
+              <button type="button" class="table-card__select">Table 3</button>
+            </h3>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__viz">
+          <div class="table-card__bar" aria-hidden="true">
+            <span class="table-card__seg" style="--seg: 4"></span>
+          </div>
+          <div class="table-card__legend">
+            <span class="table-card__legend-item"><span class="table-card__swatch"></span>Empty (4)</span>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__footer">
+          <div class="table-card__count-group">
+            <p class="table-card__count">0 / 10 seated</p>
+          </div>
+          <div class="table-card__actions">
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 3">
+              <i data-lucide="pencil" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 3">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="table-card">
+        <div class="table-card__header">
+          <div class="table-card__titles">
+            <h3 class="table-card__name">
+              <button type="button" class="table-card__select">Table 4</button>
+            </h3>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__viz">
+          <div class="table-card__bar" aria-hidden="true">
+            <span class="table-card__seg" style="--seg: 4"></span>
+          </div>
+          <div class="table-card__legend">
+            <span class="table-card__legend-item"><span class="table-card__swatch"></span>Empty (4)</span>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__footer">
+          <div class="table-card__count-group">
+            <p class="table-card__count">0 / 10 seated</p>
+          </div>
+          <div class="table-card__actions">
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 4">
+              <i data-lucide="pencil" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 4">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="table-card">
+        <div class="table-card__header">
+          <div class="table-card__titles">
+            <h3 class="table-card__name">
+              <button type="button" class="table-card__select">Table 5</button>
+            </h3>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__viz">
+          <div class="table-card__bar" aria-hidden="true">
+            <span class="table-card__seg" style="--seg: 4"></span>
+          </div>
+          <div class="table-card__legend">
+            <span class="table-card__legend-item"><span class="table-card__swatch"></span>Empty (4)</span>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__footer">
+          <div class="table-card__count-group">
+            <p class="table-card__count">0 / 10 seated</p>
+          </div>
+          <div class="table-card__actions">
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 5">
+              <i data-lucide="pencil" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 5">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="table-card">
+        <div class="table-card__header">
+          <div class="table-card__titles">
+            <h3 class="table-card__name">
+              <button type="button" class="table-card__select">Table 6</button>
+            </h3>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__viz">
+          <div class="table-card__bar" aria-hidden="true">
+            <span class="table-card__seg" style="--seg: 4"></span>
+          </div>
+          <div class="table-card__legend">
+            <span class="table-card__legend-item"><span class="table-card__swatch"></span>Empty (4)</span>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__footer">
+          <div class="table-card__count-group">
+            <p class="table-card__count">0 / 10 seated</p>
+          </div>
+          <div class="table-card__actions">
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 6">
+              <i data-lucide="pencil" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 6">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="table-card">
+        <div class="table-card__header">
+          <div class="table-card__titles">
+            <h3 class="table-card__name">
+              <button type="button" class="table-card__select">Table 7</button>
+            </h3>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__viz">
+          <div class="table-card__bar" aria-hidden="true">
+            <span class="table-card__seg" style="--seg: 4"></span>
+          </div>
+          <div class="table-card__legend">
+            <span class="table-card__legend-item"><span class="table-card__swatch"></span>Empty (4)</span>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__footer">
+          <div class="table-card__count-group">
+            <p class="table-card__count">0 / 10 seated</p>
+          </div>
+          <div class="table-card__actions">
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 7">
+              <i data-lucide="pencil" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 7">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="table-card">
+        <div class="table-card__header">
+          <div class="table-card__titles">
+            <h3 class="table-card__name">
+              <button type="button" class="table-card__select">Table 8</button>
+            </h3>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__viz">
+          <div class="table-card__bar" aria-hidden="true">
+            <span class="table-card__seg" style="--seg: 4"></span>
+          </div>
+          <div class="table-card__legend">
+            <span class="table-card__legend-item"><span class="table-card__swatch"></span>Empty (4)</span>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__footer">
+          <div class="table-card__count-group">
+            <p class="table-card__count">0 / 10 seated</p>
+          </div>
+          <div class="table-card__actions">
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 8">
+              <i data-lucide="pencil" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 8">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="table-card">
+        <div class="table-card__header">
+          <div class="table-card__titles">
+            <h3 class="table-card__name">
+              <button type="button" class="table-card__select">Table 9</button>
+            </h3>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__viz">
+          <div class="table-card__bar" aria-hidden="true">
+            <span class="table-card__seg" style="--seg: 4"></span>
+          </div>
+          <div class="table-card__legend">
+            <span class="table-card__legend-item"><span class="table-card__swatch"></span>Empty (4)</span>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__footer">
+          <div class="table-card__count-group">
+            <p class="table-card__count">0 / 10 seated</p>
+          </div>
+          <div class="table-card__actions">
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 9">
+              <i data-lucide="pencil" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 9">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="table-card">
+        <div class="table-card__header">
+          <div class="table-card__titles">
+            <h3 class="table-card__name">
+              <button type="button" class="table-card__select">Table 10</button>
+            </h3>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__viz">
+          <div class="table-card__bar" aria-hidden="true">
+            <span class="table-card__seg" style="--seg: 4"></span>
+          </div>
+          <div class="table-card__legend">
+            <span class="table-card__legend-item"><span class="table-card__swatch"></span>Empty (4)</span>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__footer">
+          <div class="table-card__count-group">
+            <p class="table-card__count">0 / 10 seated</p>
+          </div>
+          <div class="table-card__actions">
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 10">
+              <i data-lucide="pencil" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 10">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="table-card">
+        <div class="table-card__header">
+          <div class="table-card__titles">
+            <h3 class="table-card__name">
+              <button type="button" class="table-card__select">Table 11</button>
+            </h3>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__viz">
+          <div class="table-card__bar" aria-hidden="true">
+            <span class="table-card__seg" style="--seg: 4"></span>
+          </div>
+          <div class="table-card__legend">
+            <span class="table-card__legend-item"><span class="table-card__swatch"></span>Empty (4)</span>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__footer">
+          <div class="table-card__count-group">
+            <p class="table-card__count">0 / 10 seated</p>
+          </div>
+          <div class="table-card__actions">
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 11">
+              <i data-lucide="pencil" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 11">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="table-card">
+        <div class="table-card__header">
+          <div class="table-card__titles">
+            <h3 class="table-card__name">
+              <button type="button" class="table-card__select">Table 12</button>
+            </h3>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__viz">
+          <div class="table-card__bar" aria-hidden="true">
+            <span class="table-card__seg" style="--seg: 4"></span>
+          </div>
+          <div class="table-card__legend">
+            <span class="table-card__legend-item"><span class="table-card__swatch"></span>Empty (4)</span>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__footer">
+          <div class="table-card__count-group">
+            <p class="table-card__count">0 / 10 seated</p>
+          </div>
+          <div class="table-card__actions">
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 12">
+              <i data-lucide="pencil" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 12">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="table-card">
+        <div class="table-card__header">
+          <div class="table-card__titles">
+            <h3 class="table-card__name">
+              <button type="button" class="table-card__select">Table 13</button>
+            </h3>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__viz">
+          <div class="table-card__bar" aria-hidden="true">
+            <span class="table-card__seg" style="--seg: 4"></span>
+          </div>
+          <div class="table-card__legend">
+            <span class="table-card__legend-item"><span class="table-card__swatch"></span>Empty (4)</span>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__footer">
+          <div class="table-card__count-group">
+            <p class="table-card__count">0 / 10 seated</p>
+          </div>
+          <div class="table-card__actions">
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 13">
+              <i data-lucide="pencil" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 13">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <h2 class="demo-heading">Device=Mobile</h2>
+  <p class="lede"><strong>Shown live in the 390px frame below</strong> — or resize the viewport under
+  768px. The toolbar becomes two rows (title + toggle, then a full-width search), the divider goes,
+  the title drops 18px &rarr; 16px, the root's inline padding tightens 16px &rarr; 12px, and the grid
+  falls to a single column.</p>
+  <div class="mobile-preview">
+    <iframe class="mobile-preview__frame" src="TableListing.html?frame=mobile"
+            title="Table Listing at a 390px mobile viewport" loading="lazy"></iframe>
+    <p class="mobile-preview__caption">Live 390px viewport &mdash; the same page and the same CSS,
+    rendered in an iframe so <code>@media (max-width: 767px)</code> applies inside it.</p>
+  </div>
+
+  <h2 class="demo-heading">Short list</h2>
+  <p class="lede">Four tables, to show the grid with a single full row.</p>
+  <section class="table-listing" aria-label="Tables">
+    <div class="table-listing__toolbar">
+      <div class="table-listing__toolbar-main">
+        <h2 class="table-listing__title">Tables</h2>
+        <div class="table-listing__filter">
+          <button type="button" class="toggle toggle--xxs" role="switch" aria-checked="false"
+                  id="free-seats-b" aria-labelledby="free-seats-label-b">
+            <span class="toggle__track"><span class="toggle__knob"></span></span>
+          </button>
+          <label class="table-listing__filter-label" id="free-seats-label-b" for="free-seats-b">Only free seats</label>
+        </div>
+      </div>
+      <span class="table-listing__divider" aria-hidden="true"></span>
+      <div class="input input--sm table-listing__search">
+        <div class="input__wrap">
+          <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
+          <input id="find-table-b" type="search" class="input__control"
+                 placeholder="Find a table" aria-label="Find a table">
+        </div>
+      </div>
+    </div>
+    <div class="table-listing__grid">
+      <article class="table-card table-card--selected">
+        <div class="table-card__header">
+          <div class="table-card__titles">
+            <h3 class="table-card__name">
+              <button type="button" class="table-card__select">Table 1</button>
+            </h3>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__viz">
+          <div class="table-card__bar" aria-hidden="true">
+            <span class="table-card__seg" style="--seg: 4"></span>
+          </div>
+          <div class="table-card__legend">
+            <span class="table-card__legend-item"><span class="table-card__swatch"></span>Empty (4)</span>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__footer">
+          <div class="table-card__count-group">
+            <p class="table-card__count">0 / 10 seated</p>
+          </div>
+          <div class="table-card__actions">
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 1">
+              <i data-lucide="pencil" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 1">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="table-card">
+        <div class="table-card__header">
+          <div class="table-card__titles">
+            <h3 class="table-card__name">
+              <button type="button" class="table-card__select">Table 2</button>
+            </h3>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__viz">
+          <div class="table-card__bar" aria-hidden="true">
+            <span class="table-card__seg" style="--seg: 4"></span>
+          </div>
+          <div class="table-card__legend">
+            <span class="table-card__legend-item"><span class="table-card__swatch"></span>Empty (4)</span>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__footer">
+          <div class="table-card__count-group">
+            <p class="table-card__count">0 / 10 seated</p>
+          </div>
+          <div class="table-card__actions">
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 2">
+              <i data-lucide="pencil" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 2">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="table-card">
+        <div class="table-card__header">
+          <div class="table-card__titles">
+            <h3 class="table-card__name">
+              <button type="button" class="table-card__select">Table 3</button>
+            </h3>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__viz">
+          <div class="table-card__bar" aria-hidden="true">
+            <span class="table-card__seg" style="--seg: 4"></span>
+          </div>
+          <div class="table-card__legend">
+            <span class="table-card__legend-item"><span class="table-card__swatch"></span>Empty (4)</span>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__footer">
+          <div class="table-card__count-group">
+            <p class="table-card__count">0 / 10 seated</p>
+          </div>
+          <div class="table-card__actions">
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 3">
+              <i data-lucide="pencil" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 3">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="table-card">
+        <div class="table-card__header">
+          <div class="table-card__titles">
+            <h3 class="table-card__name">
+              <button type="button" class="table-card__select">Table 4</button>
+            </h3>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__viz">
+          <div class="table-card__bar" aria-hidden="true">
+            <span class="table-card__seg" style="--seg: 4"></span>
+          </div>
+          <div class="table-card__legend">
+            <span class="table-card__legend-item"><span class="table-card__swatch"></span>Empty (4)</span>
+          </div>
+        </div>
+        <hr class="table-card__rule">
+        <div class="table-card__footer">
+          <div class="table-card__count-group">
+            <p class="table-card__count">0 / 10 seated</p>
+          </div>
+          <div class="table-card__actions">
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 4">
+              <i data-lucide="pencil" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 4">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>if (window.lucide) lucide.createIcons();</script>
+</body>
+</html>

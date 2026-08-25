@@ -144,3 +144,31 @@ Same exception class as letter-spacing and border-widths.
 - 2026-05-27: Figma expanded to 4 sizes (xs, SM, Default, LG) and switched
   Active track to `--ai-surface-brand`. CSS updated to match; StyleSettings
   retains `--ai-chat-brand` via contextual override.
+
+## `toggle--xxs` — the fifth size, added 2026-08-25
+
+Added while building **TableListing** (`3488:196339`), whose "Only free seats" control is a Toggle
+instance at `size="xxs"`.
+
+**This is a real Figma variant, not an invention** — Toggle's set (`2025:1080`) defines five sizes,
+and the component only had four:
+
+| Figma Size | Node (Initial) | Track | Knob | In code |
+|---|---|---|---|---|
+| **xxs** | `2025:1081` | **24×12** | **8×8** | **`.toggle--xxs`** (new) |
+| xs | `3435:28258` | 32×16 | 12×12 | `.toggle--xs` |
+| SM | `2702:2223` | 40×20 | 16×16 | base `.toggle` |
+| Default | `2025:1102` | 44×24 | 20×20 | `.toggle--default` |
+| LG | `2025:1123` | ?×28 | 24×24 | `.toggle--lg` |
+
+Every xxs dimension is a token: 24 = `--ai-spacing-6`, 12 = `--ai-spacing-4`, 8 = `--ai-spacing-3`.
+Colours are the component's existing ones — `--ai-border-secondary` track, `--ai-surface-brand` when
+active — which is exactly what Figma binds. Verified 24×12 / 8×8 with the knob at 2.5px → 13.5px.
+
+**xxs has only Initial and Active in Figma — no Disabled**, so no Disabled row was added to the demo.
+The size-agnostic `--disabled` still composes if a consumer ever needs it.
+
+**One deliberate 0.5px difference.** Figma places the active knob at `left: 14px`, i.e. a 2px right
+inset against its own 2.5px left inset. Every other size in this component uses a symmetric
+`calc(100% - knob - 2.5px)`, which gives 13.5px here. Internal consistency was preferred over
+reproducing what reads as a Figma nudge; if the asymmetry is deliberate, this is the line to change.

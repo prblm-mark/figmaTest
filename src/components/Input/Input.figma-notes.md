@@ -168,3 +168,29 @@ Hover, Active, and Focus all share the same visual treatment (brand border) — 
   `arrow-left`, which matches the visual and the "back" semantics.
 - Hover/pressed on the back button reuse Button's secondary state tokens
   (`--ai-btn-secondary-bg-hover` / `-bg-pressed`); Figma only specifies the default state.
+
+## The `--sm` 192px max-width was removed, 2026-08-25
+
+`.input--sm .input__wrap` carried `max-width: var(--ai-size-3)` (192px). It was **undocumented** —
+it appeared nowhere in these notes — and it sat on a *size* modifier, which governs height, padding
+and typography everywhere else in this component. The effect was that **no `input--sm` could ever
+fill its container.**
+
+It had already been worked around in three places before anyone questioned it:
+
+| Consumer | Workaround |
+|---|---|
+| `Datatables.css` | `max-width: none` inside a `@media (max-width: 767px)` block, with a comment naming the cap |
+| `ControlScreen.html` | inline `style="max-width: none"` — though that one targets `.datatables__search`'s own 18rem cap, so it remains |
+| `Unassigned.css` | a scoped `max-inline-size: none` override, added 2026-08-24 |
+
+and it then blocked TableListing's 320px toolbar search, at which point the designer removed it.
+
+**Removal was proved safe before it was made.** Every `input--sm` wrap in Datatables and
+ControlScreen was measured at 1400px and 500px, before and after: **identical** — 288 / 288 / 266 /
+266 in Datatables at both widths, 0 / 297 in ControlScreen. The cap was shaping no existing
+consumer; it was only blocking new ones. The two redundant workarounds (Datatables' media-query rule
+and Unassigned's override) were removed in the same commit and their comments corrected.
+
+**Consumers wanting a narrow small input now set their own width** — which is where that decision
+belongs.

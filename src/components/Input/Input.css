@@ -196,10 +196,15 @@
 
 /* ── Size: sm ────────────────────────────────────────── */
 
+/* No max-width here. A `max-width: var(--ai-size-3)` (192px) lived on this rule until
+ * 2026-08-25 and was removed at the designer's direction: a SIZE modifier should govern
+ * height, padding and typography, not cap width. It had already been worked around in
+ * three places — Datatables lifted it in a media query, ControlScreen with an inline
+ * style, and Unassigned with a scoped override — and blocked TableListing's 320px search.
+ * Consumers that want a narrow small input set their own width. */
 .input--sm .input__wrap,
 .input__wrap.input--sm {
   min-height: var(--ai-spacing-7);      /* 32px */
   padding: 0 var(--ai-spacing-3);       /* 0 8px */
   gap: var(--ai-spacing-2);              /* 6px */
-  max-width: var(--ai-size-3);           /* 192px */
 }
