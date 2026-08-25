@@ -71,6 +71,15 @@ function parseRegistry() {
       const notes = cols[4] || ''
 
       registry[name] = { tier, status, figmaUrl, notes }
+      // Also index under a normalised key so a registry row named for humans
+      // ("Attendee Card", "Filter Bar") still resolves against the component's
+      // directory name ("AttendeeCard", "FilterBar"). Without this the lookup
+      // misses, figmaUrl comes back empty, and the page silently lands in the
+      // wrong product bucket. The literal key wins if both are present.
+      const normalised = name.replace(/\s+/g, '').replace(/\(CC\)$/i, '')
+      if (normalised !== name && !registry[normalised]) {
+        registry[normalised] = { tier, status, figmaUrl, notes }
+      }
     }
   }
   return registry
