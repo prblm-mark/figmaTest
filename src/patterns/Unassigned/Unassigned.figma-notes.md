@@ -58,6 +58,29 @@ Built as `<input type="search">`, which is the correct type for the control.
 > then a designer copying that snippet gets markup that does not style. Left for the designer, since
 > publishing writes to Figma.
 
+## The search field needs a width override
+
+`Input`'s sm size carries **`max-width: var(--ai-size-3)` (192px)** on
+`.input--sm .input__wrap`, so `inline-size: 100%` alone does nothing — an `input--sm` can never fill
+its container. The field was rendering 192px wide inside a 286px body, visibly narrower than the
+attendee rows beneath it. Designer's call 2026-08-25: **span the full sheet width.**
+
+```css
+.unassigned__body > .input .input__wrap { inline-size: 100%; max-inline-size: none; }
+```
+
+**Scoped here rather than fixed in Input**, because `Datatables`, `ControlScreen` and the DataTables
+prototype also use `input--sm` and would need checking first.
+
+> **Worth reviewing at component level.** That cap is **undocumented** — it appears nowhere in
+> `Input.figma-notes.md` — and it sits on a *size* modifier, which normally governs height, padding
+> and typography rather than width. As it stands, every future full-width `input--sm` hits the same
+> wall and needs the same override. Either the cap belongs on a separate width modifier, or it
+> should go and the three current consumers should set their own widths.
+
+Verified: the wrap now measures 286px in all three demo panels, exactly matching both the body's
+content box and the attendee rows below it, with the 32px sm height intact.
+
 ## Token mapping
 
 | Figma | CSS | Role |

@@ -105,9 +105,22 @@
   padding-block-end: var(--ai-spacing-5);
 }
 
-/* The search Input needs to fill the body; the component itself is width-agnostic. */
+/* The search field spans the full sheet width (designer, 2026-08-25).
+ *
+ * This needs an override, not just `inline-size: 100%`: Input's sm size carries
+ * `max-width: var(--ai-size-3)` (192px) on `.input--sm .input__wrap`, so an `input--sm`
+ * can never fill its container. That cap is undocumented in Input's figma-notes and sits
+ * on a SIZE modifier, which normally governs height, padding and type rather than width —
+ * see figma-notes, it is worth reviewing at component level. Scoped here rather than
+ * removed there, because Datatables and ControlScreen also use `input--sm` and would need
+ * checking first. */
 .unassigned__body > .input {
   inline-size: 100%;
+}
+
+.unassigned__body > .input .input__wrap {
+  inline-size: 100%;
+  max-inline-size: none;
 }
 
 .unassigned__list {
