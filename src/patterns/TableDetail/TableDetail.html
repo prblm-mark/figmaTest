@@ -27,20 +27,52 @@
        for the workspace height that would bound it in the real screen — it is what makes
        the seat list scroll rather than the page. */
     .panel-rail { display: flex; block-size: 560px; }
+    /* ── Mobile preview ──────────────────────────────────────────────────────
+       An iframe of THIS page at 390px. An iframe carries its own viewport, so the
+       component's own @media (max-width: 767px) fires inside it no matter how wide the
+       outer window is — which is the only way to show the mobile rendering without
+       duplicating markup or inventing a --mobile modifier. */
+    .mobile-preview {
+      display: flex; flex-direction: column; gap: var(--ai-spacing-3);
+      inline-size: fit-content;
+    }
+    .mobile-preview__frame {
+      inline-size: 390px; /* iPhone-class viewport — a device width, not a design token */
+      block-size: 700px;
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-lg);
+      background: var(--ai-surface-primary);
+    }
+    .mobile-preview__caption {
+      font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-2xs);
+      color: var(--ai-text-contrast); margin: 0;
+    }
+    /* Inside the frame: hide this section so it cannot load itself, and drop the page
+       intro so the components start at the top. */
+    [data-frame="mobile"] .mobile-preview,
+    [data-frame="mobile"] h1,
+    [data-frame="mobile"] .lede--intro { display: none; }
+    /* the first heading no longer needs its top margin once the intro is gone */
+    [data-frame="mobile"] h2:first-of-type { margin-block-start: 0; }
   </style>
+  <script>
+    /* ?frame=mobile marks this document as the one INSIDE the mobile preview iframe, so the
+       preview section hides itself and cannot recurse. Runs in <head> before paint. */
+    if (location.search.indexOf('frame=mobile') !== -1) document.documentElement.dataset.frame = 'mobile';
+  </script>
 </head>
 <body>
   <h1>TableDetail</h1>
-  <p class="lede">Table inspector panel for the Seating Planner — a 320px rail listing every seat at
+  <p class="lede lede--intro">Table inspector panel for the Seating Planner — a 320px rail listing every seat at
   a table. <strong>Tier: Pattern.</strong> Composes <strong>AttendeeCard</strong> (one per seat),
   <strong>TableType</strong> for the tier pill, and Button via AttendeeCard's Assign action.
   <strong>Presentational only</strong> — the seat rows are drop targets whose
   <code>--dragged-over</code> the parent module toggles; nothing here drags, and there is no JS.</p>
-  <p class="lede"><strong>The panel fills its column and the seat list scrolls</strong> inside a
+  <p class="lede lede--intro"><strong>The panel fills its column and the seat list scrolls</strong> inside a
   fixed header. Figma pins the desktop panel at 698px, but that is just how tall it drew ten seats —
   a twenty-seat table has to work too, so the height comes from the container instead. Each demo
   below is bounded to 560px to show that scroll.</p>
-  <p class="lede"><strong>The whole Type axis is data, not CSS.</strong> Default, 2 Roles, All Roles
+  <p class="lede lede--intro"><strong>The whole Type axis is data, not CSS.</strong> Default, 2 Roles, All Roles
   and Full differ only in how many roles the legend lists and how many seats are filled — so there
   are no Type modifiers, exactly as with TableCard.</p>
 
@@ -775,11 +807,17 @@
   </div>
 
   <h2>Device=Mobile</h2>
-  <p class="lede"><strong>Resize the viewport below 768px.</strong> All four mobile variants drop the
+  <p class="lede"><strong>Shown live in the 390px frame below</strong> — or resize the viewport under 768px. All four mobile variants drop the
   panel header entirely — no table name, seated count, sponsor or tier pill — and tighten the list:
   padding 16px &rarr; 8px and the seat gap 8px &rarr; 6px. The mobile screen supplies the table name
   in its own sheet chrome. Implemented as <code>@media (max-width: 767px)</code>, so the panels above
   respond on their own.</p>
+  <div class="mobile-preview">
+    <iframe class="mobile-preview__frame" src="TableDetail.html?frame=mobile"
+            title="Table Detail at a 390px mobile viewport" loading="lazy"></iframe>
+    <p class="mobile-preview__caption">Live 390px viewport &mdash; the same page and the same CSS,
+    rendered in an iframe so <code>@media (max-width: 767px)</code> applies inside it.</p>
+  </div>
 
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>if (window.lucide) lucide.createIcons();</script>
