@@ -119,8 +119,8 @@ while `textContent` still reads `"12 tables · 0/148 seated"`.
 | `--ai-radius-lg` | card `border-radius` (16px) | |
 | `light/shadow-xxs` → `--ai-shadow-xxs` | card `box-shadow` | |
 | `--ai-spacing-5` / `--ai-spacing-4` | card `padding` desktop / mobile | |
-| `--ai-spacing-3` | card `gap` | meta `gap` too, but see below |
-| `--ai-spacing-1` | actions `gap`, badge `gap` | header `gap` too, but see below |
+| `--ai-spacing-3` | card `gap` | header + meta `gap` too, but see below |
+| `--ai-spacing-1` | actions `gap`, badge `gap` | |
 | `--ai-size-5` / `--ai-size-4` | card `min-inline-size` desktop / mobile | |
 | `--ai-font-title` | every text node | |
 | `--ai-font-fixed-sm` / `-xs` | name, desktop / mobile | |
@@ -144,7 +144,7 @@ while `textContent` still reads `"12 tables · 0/148 seated"`.
 
 | Element | Property | Figma | CSS |
 |---|---|---|---|
-| `__header` | `gap` | **not set** | `--ai-spacing-1` (4px) |
+| `__header` | `gap` | **not set** | `--ai-spacing-3` (8px) |
 | `__meta` | `gap` | **not set** | `--ai-spacing-3` (8px) |
 | badge check icon | size + stroke | `7×7`, default stroke | **`10×10`, `stroke-width: 4`** |
 | badge label | `letter-spacing` | **not set** | **`--ai-tracking-7`** (0.05em) |
@@ -152,7 +152,7 @@ while `textContent` still reads `"12 tables · 0/148 seated"`.
 **The header gap was requested by the designer** (2026-08-25). It matters more than it looks:
 `justify-content: space-between` gives no clearance once the name is long enough to fill its
 track, so a truncated name butted straight up against the edit button. Verified — the long-name
-demo card went from 0px to 4px of clearance.
+demo card went from 0px of clearance to 8px.
 
 **The check icon had to grow to stay legible** (designer call, 2026-08-25). Lucide draws on a
 24-unit viewBox, so its default `stroke-width: 2` thins to roughly 0.6px once the SVG is scaled to
@@ -173,8 +173,12 @@ updated to match, the frame should grow to about 50px.
 **The meta gap is not from Figma's meta frame**, which sets none on any variant. The value came
 from the single-child badge wrapper (`3470:84968`) that was dropped as redundant, and is kept for
 the same reason as the header — clearance between the truncating counts and the seats-free label
-or badge. **Worth an explicit confirm**, since it is 8px rather than the header's 4px and nothing
-in Figma asks for either.
+or badge.
+
+**The two were matched at `--ai-spacing-3`** by the designer 2026-08-25 (the header started at 4px).
+Beyond consistency this buys real alignment: the actions cluster and the seats-free label now share
+a right edge, both landing 1px inside the card's padding box. Neither gap comes from Figma, so if
+the frames are ever updated, both rows want 8px.
 
 ## Token gaps and decisions
 

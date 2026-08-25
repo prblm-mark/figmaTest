@@ -44,12 +44,14 @@
 /* ── Header: name + actions ───────────────────────────────────────────────────
  * The gap is a designer addition (2026-08-25) — Figma's header frame sets none. It
  * guarantees clearance between the truncating name and the actions, which
- * space-between alone does not once the name is long enough to fill its track. */
+ * space-between alone does not once the name is long enough to fill its track.
+ * Matched to __meta below so the card's two rows inset their right-hand element
+ * by the same amount. */
 .room-card__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--ai-spacing-1);
+  gap: var(--ai-spacing-3);
   inline-size: 100%;
 }
 
