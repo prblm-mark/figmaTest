@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unassigned — Affino Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Input/Input.css">
+  <link rel="stylesheet" href="../../components/AttendeeCard/AttendeeCard.css">
+  <link rel="stylesheet" href="Unassigned.css">
+  <style>
+    body {
+      margin: 0;
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-minimal);
+      font-family: var(--ai-font-body);
+      color: var(--ai-text-primary);
+    }
+    h1 { font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-xl); margin: 0 0 var(--ai-spacing-2); }
+    h2 {
+      font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-md);
+      margin: var(--ai-spacing-8) 0 var(--ai-spacing-1);
+    }
+    .lede { color: var(--ai-text-contrast); font-size: var(--ai-font-fixed-xs); margin: 0 0 var(--ai-spacing-5); max-width: 70ch; }
+    .rail { display: flex; align-items: flex-start; gap: var(--ai-spacing-7); flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+  <h1>Unassigned</h1>
+  <p class="lede">Tray of attendees not yet seated, for the Seating Planner. <strong>Tier:
+  Pattern</strong> — Figma defines no Tier property on this set, unlike the rest of the module, but
+  it composes two components so §4 puts it here.</p>
+  <p class="lede">Composes <strong>AttendeeCard</strong> with <em>both</em> of its booleans off — no
+  seat number and no row actions, since an unseated person has no seat to number and nothing to
+  reorder — and <strong>Input</strong> (<code>input input--sm</code>, label-less, leading search
+  icon). <strong>Presentational only</strong>, no JS: in the real module these rows are the drag
+  <em>sources</em> that the seat rows receive, and the parent owns that.</p>
+  <p class="lede">The Type axis is data. <code>Default</code> is the empty state and
+  <code>Unassiged</code> [sic] is the populated list, so which one renders is markup the caller
+  supplies — there are no Type modifiers, just different children of <code>__body</code>.</p>
+
+  <h2>Both types</h2>
+  <p class="lede">The count pill and the hint line are identical in both; only the body below the
+  search field changes.</p>
+  <div class="rail">
+  <!-- TODO(backend:SeatingPlanner): the tray contents and the count are hardcoded. This list
+       is a QUERY, not a stored collection — see seating-unassigned-tray, which already specs it
+       as the event's attendees LEFT JOIN TableSeat keeping the unseated, plus guests already
+       stored on a seat. Recompute server-side after every seating change; a cached client list
+       makes two editors disagree about who is free. The count is len(that query). -->
+  <section class="unassigned" data-backend-todo="seating-unassigned-tray" aria-label="Unassigned attendees">
+    <header class="unassigned__header">
+      <div class="unassigned__header-row">
+        <h3 class="unassigned__title">Unassigned</h3>
+        <span class="unassigned__count">0</span>
+      </div>
+      <p class="unassigned__hint">Drag an attendee onto a seat or table to assign</p>
+    </header>
+    <div class="unassigned__body">
+      <div class="input input--sm">
+        <div class="input__wrap">
+          <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
+          <input id="unassigned-search-empty" type="search" class="input__control"
+                 placeholder="Search unassigned" aria-label="Search unassigned attendees">
+        </div>
+      </div>
+      <div class="unassigned__empty">
+        <i data-lucide="circle-check" aria-hidden="true"></i>
+        <p class="unassigned__empty-title">Everyone is seated</p>
+        <p class="unassigned__empty-text">Nobody is waiting for a seat. Unseat someone, or add a
+        guest from a seat&rsquo;s Assign action.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="unassigned" aria-label="Unassigned attendees">
+    <header class="unassigned__header">
+      <div class="unassigned__header-row">
+        <h3 class="unassigned__title">Unassigned</h3>
+        <span class="unassigned__count">6</span>
+      </div>
+      <p class="unassigned__hint">Drag an attendee onto a seat or table to assign</p>
+    </header>
+    <div class="unassigned__body">
+      <div class="input input--sm">
+        <div class="input__wrap">
+          <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
+          <input id="unassigned-search-list" type="search" class="input__control"
+                 placeholder="Search unassigned" aria-label="Search unassigned attendees">
+        </div>
+      </div>
+      <div class="unassigned__list">
+        <article class="attendee-card attendee-card--vip">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Ethan Patel</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Nexus Innovations</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">VIP</span>
+            </p>
+          </div>
+        </article>
+
+        <article class="attendee-card attendee-card--speaker">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Nina Ivanova</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Stellar Dynamics</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">Speaker</span>
+            </p>
+          </div>
+        </article>
+
+        <article class="attendee-card attendee-card--sponsor">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Julian Carter</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Lunar Technologies</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">Sponsor</span>
+            </p>
+          </div>
+        </article>
+
+        <article class="attendee-card attendee-card--attendee">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Zara Khan</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">SkyNet Solutions</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">Attendee</span>
+            </p>
+          </div>
+        </article>
+
+        <article class="attendee-card attendee-card--attendee">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Noah Sullivan</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Synergy Partners</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">Attendee</span>
+            </p>
+          </div>
+        </article>
+
+        <article class="attendee-card attendee-card--attendee">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Isabella Torres</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Vertex Creative</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">Attendee</span>
+            </p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <h2>Roles</h2>
+  <p class="lede">Row colour comes from AttendeeCard&rsquo;s <code>--sp-*</code> role bindings.
+  Figma&rsquo;s sample covers VIP, Speaker, Sponsor and Attendee; <strong>Host</strong> is shown
+  here too since AttendeeCard supports it and an unseated host is perfectly possible.</p>
+  <div class="rail">
+  <section class="unassigned" aria-label="Unassigned attendees">
+    <header class="unassigned__header">
+      <div class="unassigned__header-row">
+        <h3 class="unassigned__title">Unassigned</h3>
+        <span class="unassigned__count">5</span>
+      </div>
+      <p class="unassigned__hint">Drag an attendee onto a seat or table to assign</p>
+    </header>
+    <div class="unassigned__body">
+      <div class="input input--sm">
+        <div class="input__wrap">
+          <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
+          <input id="unassigned-search-roles" type="search" class="input__control"
+                 placeholder="Search unassigned" aria-label="Search unassigned attendees">
+        </div>
+      </div>
+      <div class="unassigned__list">
+        <article class="attendee-card attendee-card--host">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Sarah Jenkins</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Table Host</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">Host</span>
+            </p>
+          </div>
+        </article>
+        <article class="attendee-card attendee-card--vip">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Ethan Patel</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Nexus Innovations</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">VIP</span>
+            </p>
+          </div>
+        </article>
+        <article class="attendee-card attendee-card--speaker">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Nina Ivanova</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Stellar Dynamics</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">Speaker</span>
+            </p>
+          </div>
+        </article>
+        <article class="attendee-card attendee-card--sponsor">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Julian Carter</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Lunar Technologies</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">Sponsor</span>
+            </p>
+          </div>
+        </article>
+        <article class="attendee-card attendee-card--attendee">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Zara Khan</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">SkyNet Solutions</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">Attendee</span>
+            </p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <h2>No mobile variant</h2>
+  <p class="lede">Figma defines <strong>no Device axis</strong> on this set — only Type — and the
+  word &ldquo;mobile&rdquo; appears nowhere in its design context or variables, so there is no
+  mobile layout to implement. The panel is a fixed <code>--ai-size-6</code> (320px) rail at every
+  width, like TableDetail.</p>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>if (window.lucide) lucide.createIcons();</script>
+</body>
+</html>
