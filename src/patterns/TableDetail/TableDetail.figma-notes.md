@@ -95,9 +95,10 @@ supplies the table name in its own sheet chrome. **See the accessibility note be
 | `light/shadow-xxs` → `--ai-shadow-xxs` | panel `box-shadow` | |
 | `--ai-size-6` | panel `inline-size` (320px) | fixed at both breakpoints |
 | `--ai-spacing-5` | header `padding` + `gap`, list `padding` (desktop) | |
-| `--ai-spacing-3` | header-row `gap`, meta `gap`, list `gap`, seats `gap`, legend `padding` + `column-gap`, swatch size, mobile list `padding` | |
-| `--ai-spacing-1` | titles `gap`, legend `row-gap`, legend-item `gap` | |
+| `--ai-spacing-3` | header-row `gap`, meta `gap`, list `gap`, seats `gap`, legend `padding`, swatch size, mobile list `padding` | |
+| `--ai-spacing-1` | titles `gap`, legend-item `gap` | |
 | `--ai-spacing-2` | sponsor `gap`, mobile seats `gap` | |
+| `--ai-spacing-0-5` | legend `gap` | CSS leads Figma — see below |
 | `--ai-font-title` | name, meta, legend | |
 | `--ai-font-fixed-md` | table name (18px) | |
 | `--ai-font-fixed-2xs` | meta / seated count (12px) | |
@@ -133,6 +134,26 @@ Rather than inline a raw 22px, the row is left to its content, which measures 16
 consequence is the header rendering **73px against Figma's 80px**. Everything inside is
 pixel-correct; only that 6px of slack in the sponsor row differs. **Worth either binding a token in
 Figma or confirming the row should just hug its content.**
+
+## One place the CSS leads Figma
+
+| Element | Property | Figma | CSS |
+|---|---|---|---|
+| `__legend` | `gap` | split: `4px` row / `8px` column, bound to `--ai-spacing-3` | **uniform `--ai-spacing-0-5`** (2px) |
+
+Designer call 2026-08-25, and it fixes a real layout problem rather than just tightening spacing.
+**Figma's legend sits on a single row** — its five items total 240px and its content box is 272px,
+so 240 + four 8px gaps = 272 exactly. Our item widths come out 3px narrower (237px) but the content
+box is narrower still, so at an 8px column gap the row needed 269px against 253px available and
+**wrapped to two rows** — a hair over, but wrapped.
+
+At 2px the row needs 245px and fits with 8px to spare on desktop, 24px on mobile. Verified one row
+at both breakpoints on both the All Roles and Full variants, with the legend dropping from ~46px to
+32px tall.
+
+Worth noting the fragility this exposes: single-row parity with Figma depends on font metrics to
+within a few pixels. The legend still carries `flex-wrap: wrap`, so a longer role name or a larger
+text size reflows rather than overflowing — which is the right failure mode.
 
 ## Interaction model
 

@@ -171,8 +171,9 @@
   flex-wrap: wrap;
   align-items: flex-start;
   align-content: flex-start;
-  row-gap: var(--ai-spacing-1);
-  column-gap: var(--ai-spacing-3);
+  /* Designer call 2026-08-25. Figma has a split gap here — 4px row / 8px column, bound to
+     --ai-spacing-3 — replaced by a uniform --ai-spacing-0-5. */
+  gap: var(--ai-spacing-0-5);
   flex-shrink: 0;
   inline-size: 100%;
   margin: 0;
