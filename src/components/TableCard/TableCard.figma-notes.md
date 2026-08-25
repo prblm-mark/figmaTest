@@ -148,7 +148,7 @@ Resolved with the designer 2026-08-25 rather than invented.
 | Figma | Decision |
 |---|---|
 | `--ai-font-fixed-6xs` (a **font-size** token) bound as the 9px gap between bar and legend, **and** as the legend's column gap | **Snapped to `--ai-spacing-3`** (8px). A 1px change that stops a type token driving layout. |
-| legend swatch `border-radius: 2px`, unbound | **New token `--ai-radius-xs`** (2px). `--ai-radius-sm` (4px) would visibly round an 8px square. Hand-added to `FigmaTokens/{Scale/Scale,Light,Dark}.tokens.json` at the designer's request pending a re-export — id `VariableID:PENDING-FIGMA-EXPORT-radius-xs`, so it is greppable. |
+| legend swatch `border-radius: 2px`, unbound | **New token `--ai-radius-xs`** (2px), created in Figma by the designer. `--ai-radius-sm` (4px) would visibly round an 8px square. Re-exported and confirmed 2026-08-25 — `VariableID:3534:102610` in `FigmaTokens/Scale/Scale.tokens.json`. |
 | card `width: 289px` | **Dropped.** The card is fluid and fills its grid cell. 289px has no token; the bound `min-width` does (`--ai-size-4`). |
 | sponsor row `height: 22px` | **Dropped as derivable** — it is exactly the 16px icon plus the 6px `padding-top`, so the content defines it. |
 | `line` node stroke, invisible in design context | **`--ai-border-secondary`**, resolved by calling `get_variable_defs` on the node itself (`3470:85258`). Not a gap — just hidden behind an SVG asset. |
@@ -213,6 +213,15 @@ variants carry is how the TableType Code Connect went wrong in wave 1.
   the AttendeeCard and RoomCard decisions. The card's own select target is the full card.
 - The FullBadge's white-on-success contrast (3.16:1) is deliberately open — see its notes.
 - The table name is an `<h3>`; the demo nests it under `<h2>` section headings.
+
+## Where radius tokens actually live
+
+Worth recording, because it cost a wrong guess: the Style Dictionary build reads
+`FigmaTokens/Scale/Scale.tokens.json` and `FigmaTokens/Semantic/*`. The **top-level**
+`FigmaTokens/Light.tokens.json`, `Dark.tokens.json` and `Primitive.tokens.json` are *not* build
+sources, despite also containing radius entries — they are legacy files. `--ai-radius-xs` was
+briefly hand-added to all three; only the Scale one had any effect, and removing the other two left
+`css/tokens.css` byte-identical. **Radius comes from Scale alone.**
 
 ## Notes
 
