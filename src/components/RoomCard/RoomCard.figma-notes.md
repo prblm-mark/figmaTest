@@ -147,6 +147,7 @@ while `textContent` still reads `"12 tables · 0/148 seated"`.
 | `__header` | `gap` | **not set** | `--ai-spacing-1` (4px) |
 | `__meta` | `gap` | **not set** | `--ai-spacing-3` (8px) |
 | badge check icon | size + stroke | `7×7`, default stroke | **`10×10`, `stroke-width: 4`** |
+| badge label | `letter-spacing` | **not set** | **`--ai-tracking-7`** (0.05em) |
 
 **The header gap was requested by the designer** (2026-08-25). It matters more than it looks:
 `justify-content: space-between` gives no clearance once the name is long enough to fill its
@@ -160,6 +161,14 @@ properly; verified against a true 1× raster rather than a scaled preview, since
 exactly this kind of thinning. CSS `stroke-width` wins over the `stroke-width="2"` presentation
 attribute Lucide writes onto the `<svg>`. The knock-on is 3px of badge width — **48.1×15 against
 Figma's 45×15** — with the badge height, card height and bar alignment all unchanged.
+
+**The badge label carries `--ai-tracking-7`**, which Figma does not set — the same treatment
+TableType's uppercase micro-label was given, and for the same reason: 9px bold uppercase sets very
+tight. Adds 1.8px of badge width (four characters at 0.45px).
+
+Between the icon and the tracking, the badge now renders **49.9×15 against Figma's 45×15**. Height,
+card height and bar alignment are all unchanged, so nothing downstream moved — but if Figma is ever
+updated to match, the frame should grow to about 50px.
 
 **The meta gap is not from Figma's meta frame**, which sets none on any variant. The value came
 from the single-child badge wrapper (`3470:84968`) that was dropped as redundant, and is kept for
@@ -218,7 +227,7 @@ CSS; folding those onto `btn--2xs` is a worthwhile follow-up but was out of scop
 
 - **`Full-Badge` is an inline frame, not a component instance.** `get_metadata` reports it as
   `<frame>` where the two Buttons report as `<instance>` — so it is correctly scoped as
-  `.room-card__badge` rather than composed. Renders 48.1×15 — 3px wider than Figma's 45×15, entirely from the enlarged check icon above.
+  `.room-card__badge` rather than composed. Renders 49.9×15 — ~5px wider than Figma's 45×15, from the enlarged check icon plus the added tracking.
 - **`get_design_context` returns the actions frame as an empty `<div>`** on every variant — the
   Button instances are flattened out of the output. They are only visible via `get_metadata` on the
   frame. Don't read that empty div as "no actions"; the screenshot shows two.

@@ -177,6 +177,9 @@
   font-weight: var(--ai-font-bold);
   line-height: normal;
   text-transform: uppercase;
+  /* Designer addition — Figma sets no tracking here. Matches the treatment given to
+     TableType's uppercase micro-label. */
+  letter-spacing: var(--ai-tracking-7);
   color: var(--ai-text-invert);
 }
 
