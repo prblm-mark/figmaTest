@@ -26,11 +26,12 @@
       color: var(--ai-text-contrast); text-transform: uppercase; letter-spacing: 0.08em;
       margin: var(--ai-spacing-5) 0 var(--ai-spacing-2);
     }
-    /* Figma draws the card at 288px; --ai-size-5 (280px) is the nearest token and is
-       applied here as a wrapper, since the card itself is fluid. */
+    /* The card itself is fluid, so the tray stands in for its container. --ai-size-6
+       (320px) less the tray's 12px padding and 1px border each side leaves the card at
+       294px, which is about where Figma draws it (288px). */
     .tray {
       display: flex; flex-direction: column; gap: var(--ai-spacing-3);
-      max-inline-size: var(--ai-size-5);
+      max-inline-size: var(--ai-size-6);
       padding: var(--ai-spacing-4);
       background: var(--ai-surface-primary);
       border: 1px solid var(--ai-border-secondary);
@@ -361,8 +362,9 @@
   </div>
 
   <h2>Fluid width</h2>
-  <p class="lede">The card fills its container. Figma draws it at 288px; the trays above are
-  constrained to <code>--ai-size-5</code> (280px) to match, and this one is unconstrained.</p>
+  <p class="lede">The card fills its container. The trays above are constrained to
+  <code>--ai-size-6</code> (320px), which leaves the card itself near the 288px Figma draws it at;
+  this one is unconstrained.</p>
   <div class="tray tray--wide">
     <article class="attendee-card attendee-card--host">
       <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>

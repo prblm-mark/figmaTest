@@ -154,7 +154,7 @@ than invented:
 
 | Figma | Decision |
 |---|---|
-| card `width: 288px` | **Dropped.** The card is fluid and fills its container (a row in the Unassigned tray / Table Detail). The demo constrains its wrapper to `--ai-size-5` (280px) to approximate Figma's frame. |
+| card `width: 288px` | **Dropped.** The card is fluid and fills its container (a row in the Unassigned tray / Table Detail). The demo constrains its tray to `--ai-size-6` (320px), which — less the tray's own padding and border — leaves the card near Figma's 288px. |
 | seat badge `18px` | **`--ai-spacing-5`** (16px) |
 | action hit area `28px` | **`--ai-spacing-6`** (24px) |
 | reorder stack `height: 36px` | **Not a fixed height** — fills the available vertical space |

@@ -25,8 +25,9 @@
   align-items: center;
   justify-content: space-between;
   /* Fluid: fills its container (it is a list row in the Unassigned tray / Table Detail).
-   * Figma draws it at 288px; the nearest token is --ai-size-5 (280px), which the demo uses
-   * as a wrapper constraint rather than being baked in here. Designer-confirmed 2026-08-25. */
+   * Figma draws it at 288px; the demo constrains its TRAY to --ai-size-6 (320px), which
+   * leaves the card near that width, rather than baking a width in here.
+   * Designer-confirmed 2026-08-25. */
   inline-size: 100%;
   padding-inline: var(--ai-spacing-2);
   border: 1px solid var(--ai-border-secondary);
