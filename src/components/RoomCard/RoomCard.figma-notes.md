@@ -49,6 +49,21 @@ Figma sets the fill to a fixed `w-[158px]`, which is ~62% of the track — while
 says `124/148`, i.e. 84%. The two disagree in Figma. **Never port the 158px.** The fill is driven
 by `--room-card-progress`, which the parent computes as `seatsSeated / seatsCapacity`.
 
+## What this represents
+
+Confirmed with the designer 2026-08-25: **a Room Card IS a room/plan card** — the componentised
+form of the Seating Planner's plan chip, not a new entity above `SeatingPlan`. Its content is the
+same summary the prototype's chip already renders (`N tables · X/Y seated`, `Z free`, fill bar),
+so no new table is needed on the backend; the counts derive from the plan's tables and seats.
+
+Two consequences:
+
+- `docs/handover-manifest.json` → `seating-room-list` records the contract against `SeatingPlan`
+  rather than a new Room entity.
+- The prototype at `src/prototypes/SeatingPlanner/` still renders its own hand-built plan chip.
+  **This component is now the authority** — the chip should be replaced by it so the two cannot
+  drift. Not done here (the prototype is parked and uncommitted); flagged as a follow-up.
+
 ## Interaction model
 
 Confirmed with the designer 2026-08-25:
@@ -133,17 +148,18 @@ All five resolved with the designer 2026-08-25 rather than invented.
 |---|---|
 | `--ai-surface-brand` bound as the "N seats free" **text** colour | **Rebound to `--ai-text-brand`.** At 11px the surface token gives 3.60:1 on white and 3.44:1 on the Selected surface — both under the 4.5:1 AA floor. `--ai-text-brand` gives 5.04:1 / 4.82:1. **Figma has been updated**, and `3470:84948` already returns `--ai-text-brand`, so this is not a divergence. |
 | badge `gap` bound to `border/width/border-3` (3px) | **Corrected to `--ai-spacing-1`** (4px). A border-width token driving a flex gap; 3px matches no spacing step. Figma updated. |
-| badge label `9px`, unbound | **New token `--ai-font-fixed-6xs`** (9px). Created in Figma by the designer and added to `FigmaTokens/Typography/{Desktop,Mobile,Minimised}.tokens.json` so the build resolves it now — see the warning below. |
+| badge label `9px`, unbound | **New token `--ai-font-fixed-6xs`** (9px), created in Figma by the designer. Re-exported and confirmed 2026-08-25 — `VariableID:3321:2248`, present in all three Typography modes. |
 | CheckIcon `7×7px` | **Approved as a raw value.** The smallest icon token is `--ai-icon-size-xs` (12px), which will not fit a 15px-tall badge. Commented at the declaration. |
 | `Grey/0` primitive (`#ffffff`) on the badge label | **`--ai-text-invert`**, which is exactly `#ffffff`. |
 | card `width: 290px` | **Dropped.** The card is fluid and fills its column. 290px has no token; the bound `min-width` does (`--ai-size-5` / `--ai-size-4`), and those are kept. |
 
-> **`--ai-font-fixed-6xs` was hand-added to the token JSON.** CLAUDE.md §11 forbids editing
-> `FigmaTokens/*.json` by hand; this was an explicit designer instruction ("create new var and I
-> will upload new tokens") to unblock the build. The `com.figma.variableId` is the placeholder
-> `VariableID:PENDING-FIGMA-EXPORT-6xs` so it is greppable. **The next Figma re-export overwrites
-> all three files and should carry the real variable at the same 9px value — check that
-> `--ai-font-fixed-6xs` survives `npm run tokens`.**
+> **`--ai-font-fixed-6xs` round-tripped cleanly.** It was briefly hand-added to unblock this
+> build; the designer's re-export landed the same day and `css/tokens.css` came back
+> byte-identical, so the stopgap and the real variable agree. Worth knowing how the scale moved:
+> the old 10px variable was *renamed* to `6xs` and set to 9, and a **new** variable
+> (`VariableID:3532:102609`) took over `5xs` at 10px. So `--ai-font-fixed-5xs` still exists and
+> AttendeeCard's seat badge is unaffected — but the ID reuse makes a naive id-based diff look like
+> `5xs` vanished.
 
 ## Button: a new size was added for this component
 
