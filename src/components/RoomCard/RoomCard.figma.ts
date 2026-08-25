@@ -83,7 +83,7 @@ figma.connect(
         </div>
         <div class="room-card__meta">
           <p class="room-card__counts">12 tables · 148/148<span class="room-card__seated"> seated</span></p>
-          <p class="room-card__badge"><i data-lucide="check" aria-hidden="true"></i>Full</p>
+          <span class="full-badge"><i data-lucide="check" aria-hidden="true"></i>Full</span>
         </div>
         <div class="room-card__progress" aria-hidden="true">
           <div class="room-card__progress-fill"></div>

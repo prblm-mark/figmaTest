@@ -596,6 +596,20 @@
         "com.figma.isOverride": true
       }
     },
+    "radius-xs": {
+      "$type": "number",
+      "$value": 2,
+      "$extensions": {
+        "com.figma.variableId": "VariableID:PENDING-FIGMA-EXPORT-radius-xs",
+        "com.figma.scopes": [
+          "ALL_SCOPES"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "--ai-radius-xs"
+        },
+        "com.figma.isOverride": true
+      }
+    },
     "radius-sm": {
       "$type": "number",
       "$value": 4,

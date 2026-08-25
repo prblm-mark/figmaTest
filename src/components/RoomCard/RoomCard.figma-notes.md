@@ -3,7 +3,8 @@
 **Tier:** Component
 **Built:** 2026-08-25 (Seating Planner module, wave 2b)
 **Files:** `RoomCard.css`, `RoomCard.html`, `RoomCard.figma.ts`, `RoomCard.figma-notes.md`
-**Composes:** Button (`btn btn--secondary btn--icon btn--2xs`) — the edit + delete actions
+**Composes:** Button (`btn btn--secondary btn--icon btn--2xs`) — edit + delete actions;
+FullBadge (`.full-badge`) — the Full type's capacity pill
 **JS:** none
 
 ## Figma Node
@@ -95,7 +96,7 @@ composes as one modifier rather than branching per type.
 ## Device=Mobile deltas
 
 Only four things change. Verified against the mobile Full variant (`3484:186649`) that buttons
-(24×24), badge (45×15 as drawn) and bar height (6px) all stay put; the check is 7×7 in Figma at both breakpoints.
+(24×24), badge and bar height (6px) all stay put between breakpoints.
 
 | Property | Desktop | Mobile |
 |---|---|---|
@@ -120,23 +121,20 @@ while `textContent` still reads `"12 tables · 0/148 seated"`.
 | `light/shadow-xxs` → `--ai-shadow-xxs` | card `box-shadow` | |
 | `--ai-spacing-5` / `--ai-spacing-4` | card `padding` desktop / mobile | |
 | `--ai-spacing-3` | card `gap` | header + meta `gap` too, but see below |
-| `--ai-spacing-1` | actions `gap`, badge `gap` | |
+| `--ai-spacing-1` | actions `gap` | |
 | `--ai-size-5` / `--ai-size-4` | card `min-inline-size` desktop / mobile | |
 | `--ai-font-title` | every text node | |
 | `--ai-font-fixed-sm` / `-xs` | name, desktop / mobile | |
 | `--ai-font-fixed-2xs` | counts (12px) | |
 | `--ai-font-fixed-4xs` | seats free (11px) | |
-| `--ai-font-fixed-6xs` | FULL badge label (9px) | **token added for this build** |
-| `--ai-font-bold` / `-semibold` / `-regular` | name+badge / seats free / counts | |
+| `--ai-font-bold` / `-semibold` / `-regular` | name / seats free / counts | |
 | `--ai-text-primary` / `--ai-text-contrast` | name / counts | |
 | `--ai-text-brand` | seats free | see below |
-| `--ai-text-invert` | FULL badge label | was the `Grey/0` primitive |
 | `--ai-surface-contrast` | progress track | |
 | `--ai-surface-brand` | progress fill (Default, Seats Assigned) | |
-| `--ai-surface-success` | progress fill + badge background (Full) | |
-| `--ai-radius-full` | track, fill, badge | |
-| `--ai-spacing-2` | track `block-size` (6px), badge `padding-inline` | |
-| `--ai-spacing-0-5` | badge `padding-block` (2px) | |
+| `--ai-surface-success` | progress fill (Full) | |
+| `--ai-radius-full` | track, fill | |
+| `--ai-spacing-2` | track `block-size` (6px) | |
 | `--ai-icon-size-xs` | action-button icons (12px, via `btn--2xs`) | |
 | `--ai-radius-sm` | action-button radius (via `btn--2xs`) | |
 
@@ -146,29 +144,15 @@ while `textContent` still reads `"12 tables · 0/148 seated"`.
 |---|---|---|---|
 | `__header` | `gap` | **not set** | `--ai-spacing-3` (8px) |
 | `__meta` | `gap` | **not set** | `--ai-spacing-3` (8px) |
-| badge check icon | size + stroke | `7×7`, default stroke | **`10×10`, `stroke-width: 4`** |
-| badge label | `letter-spacing` | **not set** | **`--ai-tracking-7`** (0.05em) |
 
 **The header gap was requested by the designer** (2026-08-25). It matters more than it looks:
 `justify-content: space-between` gives no clearance once the name is long enough to fill its
 track, so a truncated name butted straight up against the edit button. Verified — the long-name
 demo card went from 0px of clearance to 8px.
 
-**The check icon had to grow to stay legible** (designer call, 2026-08-25). Lucide draws on a
-24-unit viewBox, so its default `stroke-width: 2` thins to roughly 0.6px once the SVG is scaled to
-Figma's 7px — a hairline that all but vanished against the green. 10px with `stroke-width: 4` reads
-properly; verified against a true 1× raster rather than a scaled preview, since upscaling hides
-exactly this kind of thinning. CSS `stroke-width` wins over the `stroke-width="2"` presentation
-attribute Lucide writes onto the `<svg>`. The knock-on is 3px of badge width — **48.1×15 against
-Figma's 45×15** — with the badge height, card height and bar alignment all unchanged.
-
-**The badge label carries `--ai-tracking-7`**, which Figma does not set — the same treatment
-TableType's uppercase micro-label was given, and for the same reason: 9px bold uppercase sets very
-tight. Adds 1.8px of badge width (four characters at 0.45px).
-
-Between the icon and the tracking, the badge now renders **49.9×15 against Figma's 45×15**. Height,
-card height and bar alignment are all unchanged, so nothing downstream moved — but if Figma is ever
-updated to match, the frame should grow to about 50px.
+**The badge's own divergences now live with the component.** Its check icon was enlarged to
+10×10 with `stroke-width: 4` and its label given `--ai-tracking-7`, both of which put it ~5px wider
+than the 45×15 Figma draws. Those are recorded in `FullBadge.figma-notes.md`, not here.
 
 **The meta gap is not from Figma's meta frame**, which sets none on any variant. The value came
 from the single-child badge wrapper (`3470:84968`) that was dropped as redundant, and is kept for
@@ -182,15 +166,13 @@ the frames are ever updated, both rows want 8px.
 
 ## Token gaps and decisions
 
-All five resolved with the designer 2026-08-25 rather than invented.
+Resolved with the designer 2026-08-25 rather than invented. The badge's own gaps (the `border-3`
+gap, the 9px label, the 7×7 check, the `Grey/0` primitive) moved to `FullBadge.figma-notes.md`
+when it was extracted.
 
 | Figma | Decision |
 |---|---|
 | `--ai-surface-brand` bound as the "N seats free" **text** colour | **Rebound to `--ai-text-brand`.** At 11px the surface token gives 3.60:1 on white and 3.44:1 on the Selected surface — both under the 4.5:1 AA floor. `--ai-text-brand` gives 5.04:1 / 4.82:1. **Figma has been updated**, and `3470:84948` already returns `--ai-text-brand`, so this is not a divergence. |
-| badge `gap` bound to `border/width/border-3` (3px) | **Corrected to `--ai-spacing-1`** (4px). A border-width token driving a flex gap; 3px matches no spacing step. Figma updated. |
-| badge label `9px`, unbound | **New token `--ai-font-fixed-6xs`** (9px), created in Figma by the designer. Re-exported and confirmed 2026-08-25 — `VariableID:3321:2248`, present in all three Typography modes. |
-| CheckIcon `7×7px` | **Approved as a raw value, then raised to 10×10.** No icon token fits — the smallest, `--ai-icon-size-xs`, is 12px and will not sit in a 15px badge. See the divergence table above for why 7px had to grow. |
-| `Grey/0` primitive (`#ffffff`) on the badge label | **`--ai-text-invert`**, which is exactly `#ffffff`. |
 | card `width: 290px` | **Dropped.** The card is fluid and fills its column. 290px has no token; the bound `min-width` does (`--ai-size-5` / `--ai-size-4`), and those are kept. |
 
 > **`--ai-font-fixed-6xs` round-tripped cleanly.** It was briefly hand-added to unblock this
@@ -221,17 +203,17 @@ CSS; folding those onto `btn--2xs` is a worthwhile follow-up but was out of scop
 - **The progress bar is `aria-hidden`.** "12 tables · 124/148 seated" and "24 seats free" state the
   same value in text immediately above it; a `progressbar` role would make screen readers announce
   the number a third time.
-- The FULL badge is **white on `--ai-surface-success` at 3.16:1**, under the 4.5:1 needed for 9px
-  bold text. This is a palette-level problem (it would need either a darker success or a dark
-  label) rather than something this component can fix — **flagged, not resolved.** It joins the
-  open items in `docs/contrast-audit.md`.
+- The FULL badge's white-on-success contrast (3.16:1) is **deliberately open** at the designer's
+  direction — see `FullBadge.figma-notes.md`. It is a palette problem, not a card problem.
 - The room name is an `<h3>`; the demo nests it under `<h2>` section headings.
 
 ## Notes
 
-- **`Full-Badge` is an inline frame, not a component instance.** `get_metadata` reports it as
-  `<frame>` where the two Buttons report as `<instance>` — so it is correctly scoped as
-  `.room-card__badge` rather than composed. Renders 49.9×15 — ~5px wider than Figma's 45×15, from the enlarged check icon plus the added tracking.
+- **`Full-Badge` is an inline frame in Figma, not a component instance** — `get_metadata` reports
+  it as `<frame>` where the two Buttons report as `<instance>`. It was originally scoped here as
+  `.room-card__badge`, then **extracted to `src/components/FullBadge/` on 2026-08-25** once
+  TableCard turned out to draw an identical copy. Figma should follow by making it a real
+  component; until then neither consumer can Code Connect it.
 - **`get_design_context` returns the actions frame as an empty `<div>`** on every variant — the
   Button instances are flattened out of the output. They are only visible via `get_metadata` on the
   frame. Don't read that empty div as "no actions"; the screenshot shows two.

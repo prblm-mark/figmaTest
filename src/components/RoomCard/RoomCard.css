@@ -10,7 +10,8 @@
  *   - the WHOLE card is the select trigger. That is why `.room-card__select` stretches
  *     over the card via ::after, and why `.room-card__actions` sits above it on z-index —
  *     the edit/delete buttons must stay independently clickable inside the bigger target.
- *   - Composes Button (btn btn--secondary btn--icon btn--2xs) for edit + delete.
+ *   - Composes Button (btn btn--secondary btn--icon btn--2xs) for edit + delete, and
+ *     FullBadge (.full-badge) for the Full type's capacity pill.
  *
  * Type=Default and Type=Seats Assigned are the SAME CSS. Figma draws them as separate
  * variants, but the only differences are the data (0/148 vs 124/148, so 0% vs 84% fill)
@@ -154,50 +155,6 @@
    * --ai-text-brand (5.04:1 / 4.82:1) by the designer 2026-08-25 — Figma updated
    * to match, so this is NOT a divergence. */
   color: var(--ai-text-brand);
-}
-
-/* ── FULL badge (Full only) ─────────────────────────────────────────────────
- * An inline frame in Figma, not a component instance — so it is scoped here
- * rather than composed. */
-.room-card__badge {
-  display: flex;
-  align-items: center;
-  /* It occupies the same slot as .room-card__free and is a <p> for symmetry with it,
-   * so it needs the same margin reset — without this the default block margins add
-   * 16px to the Full card and push its progress bar out of line with the others. */
-  margin: 0;
-  /* Figma bound border/width/border-3 (a BORDER-WIDTH token) as this gap.
-   * Corrected to --ai-spacing-1 by the designer 2026-08-25. */
-  gap: var(--ai-spacing-1);
-  flex-shrink: 0;
-  padding-inline: var(--ai-spacing-2);
-  padding-block: var(--ai-spacing-0-5);
-  border-radius: var(--ai-radius-full);
-  background-color: var(--ai-surface-success);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-6xs);
-  font-weight: var(--ai-font-bold);
-  line-height: normal;
-  text-transform: uppercase;
-  /* Designer addition — Figma sets no tracking here. Matches the treatment given to
-     TableType's uppercase micro-label. */
-  letter-spacing: var(--ai-tracking-7);
-  color: var(--ai-text-invert);
-}
-
-/* Below the icon scale (the smallest token, --ai-icon-size-xs, is 12px, which will not
- * fit a 15px-tall badge). Approved as a raw value by the designer 2026-08-25.
- *
- * Figma draws this check at 7x7, which was illegible once rendered: Lucide's stroke
- * scales with the 24-unit viewBox, so at 7px its default stroke-width of 2 thins to
- * ~0.6px. Raised to 10px with a 4 stroke-width at the designer's direction — CSS
- * stroke-width beats the presentation attribute Lucide writes on the <svg>. */
-.room-card__badge [data-lucide],
-.room-card__badge svg {
-  inline-size: 10px;
-  block-size: 10px;
-  flex-shrink: 0;
-  stroke-width: 4px;
 }
 
 /* ── Progress bar ───────────────────────────────────────────────────────────

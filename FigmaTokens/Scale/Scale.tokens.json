@@ -555,6 +555,19 @@
           }
         }
       },
+      "radius-xs": {
+        "$type": "number",
+        "$value": 2,
+        "$extensions": {
+          "com.figma.variableId": "VariableID:3534:102610",
+          "com.figma.scopes": [
+            "ALL_SCOPES"
+          ],
+          "com.figma.codeSyntax": {
+            "WEB": "--ai-radius-xs"
+          }
+        }
+      },
       "radius-sm": {
         "$type": "number",
         "$value": 4,
