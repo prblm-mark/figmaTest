@@ -214,7 +214,9 @@
   flex-shrink: 0;
   font-family: var(--ai-font-title);
   font-size: var(--ai-font-fixed-6xs);
-  font-weight: var(--ai-font-regular);
+  /* Designer addition — Figma has regular here. At 9px, medium carries better against
+     the surrounding text without reading as bold. */
+  font-weight: var(--ai-font-medium);
   line-height: normal;
   color: var(--ai-text-contrast);
 }

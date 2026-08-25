@@ -183,15 +183,20 @@ instance); nothing about TableType's own appearance is touched.
 > have the old nested header, so the other eleven need the same change in Figma. The CSS applies it
 > to every variant, since it is one shared header.
 
-## One divergence that remains
+## Two places the CSS leads Figma
 
 | Element | Property | Figma | CSS |
 |---|---|---|---|
 | `__sponsor-name` | truncation | `white-space: nowrap` + `shrink-0` | **+ `overflow: hidden`, `text-overflow: ellipsis`** |
+| `__legend-item` | `font-weight` | `--ai-font-regular` | **`--ai-font-medium`** |
 
-Figma still pairs `nowrap` with `shrink-0` here, which overflows rather than truncating. The
-full-width row gives a long sponsor name far more room than before, but it still needs somewhere to
-stop — verified truncating at 246px.
+**The sponsor name needs somewhere to stop.** Figma pairs `nowrap` with `shrink-0`, which overflows
+rather than truncating. The full-width row gives a long name far more room than before, but it still
+needs a limit — verified truncating at 246px.
+
+**The legend is medium**, a designer call 2026-08-25 — at 9px, regular sits too light against the
+surrounding text. No layout consequence: the legend still measures 24px across two rows and no card
+height moved.
 
 ## A Figma property inconsistency worth fixing
 
