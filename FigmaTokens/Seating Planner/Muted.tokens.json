@@ -15,7 +15,10 @@
       "com.figma.variableId": "VariableID:3367:6394",
       "com.figma.scopes": [
         "ALL_SCOPES"
-      ]
+      ],
+      "com.figma.codeSyntax": {
+        "WEB": "sp-attendee"
+      }
     }
   },
   "VIP": {
@@ -34,7 +37,10 @@
       "com.figma.variableId": "VariableID:3367:6395",
       "com.figma.scopes": [
         "ALL_SCOPES"
-      ]
+      ],
+      "com.figma.codeSyntax": {
+        "WEB": "sp-vip"
+      }
     }
   },
   "Speaker": {
@@ -53,7 +59,10 @@
       "com.figma.variableId": "VariableID:3367:6396",
       "com.figma.scopes": [
         "ALL_SCOPES"
-      ]
+      ],
+      "com.figma.codeSyntax": {
+        "WEB": "sp-speaker"
+      }
     }
   },
   "Sponsor": {
@@ -72,7 +81,10 @@
       "com.figma.variableId": "VariableID:3367:6397",
       "com.figma.scopes": [
         "ALL_SCOPES"
-      ]
+      ],
+      "com.figma.codeSyntax": {
+        "WEB": "sp-sponsor"
+      }
     }
   },
   "Host": {
@@ -91,7 +103,10 @@
       "com.figma.variableId": "VariableID:3367:6398",
       "com.figma.scopes": [
         "ALL_SCOPES"
-      ]
+      ],
+      "com.figma.codeSyntax": {
+        "WEB": "sp-host"
+      }
     }
   },
   "Gold Table": {
@@ -111,6 +126,9 @@
       "com.figma.scopes": [
         "ALL_SCOPES"
       ],
+      "com.figma.codeSyntax": {
+        "WEB": "sp-table-gold"
+      },
       "com.figma.aliasData": {
         "targetVariableId": "VariableID:142e3a9ef71f6f0b436acb6026c5701826ddd0f4/-1:-1",
         "targetVariableName": "OrangeRadix/11",
@@ -136,6 +154,9 @@
       "com.figma.scopes": [
         "ALL_SCOPES"
       ],
+      "com.figma.codeSyntax": {
+        "WEB": "sp-table-silver"
+      },
       "com.figma.aliasData": {
         "targetVariableId": "VariableID:7ba6f30a16ff16a63b6c52ec846e329f95cedd3a/-1:-1",
         "targetVariableName": "slate/9",
@@ -161,6 +182,9 @@
       "com.figma.scopes": [
         "ALL_SCOPES"
       ],
+      "com.figma.codeSyntax": {
+        "WEB": "sp-table-bronze"
+      },
       "com.figma.aliasData": {
         "targetVariableId": "VariableID:670240745a5a38af3e159bd81e662f6540af83ba/-1:-1",
         "targetVariableName": "brown/10",
@@ -185,7 +209,10 @@
       "com.figma.variableId": "VariableID:3455:9889",
       "com.figma.scopes": [
         "ALL_SCOPES"
-      ]
+      ],
+      "com.figma.codeSyntax": {
+        "WEB": "sp-table-head"
+      }
     }
   },
   "VIP Table": {
@@ -204,7 +231,10 @@
       "com.figma.variableId": "VariableID:3455:9890",
       "com.figma.scopes": [
         "ALL_SCOPES"
-      ]
+      ],
+      "com.figma.codeSyntax": {
+        "WEB": "sp-table-vip"
+      }
     }
   },
   "Press Table": {
@@ -224,6 +254,9 @@
       "com.figma.scopes": [
         "ALL_SCOPES"
       ],
+      "com.figma.codeSyntax": {
+        "WEB": "sp-table-press"
+      },
       "com.figma.aliasData": {
         "targetVariableId": "VariableID:6054aed373f87a2cea6a676ec85bf7d619c97bfe/-1:-1",
         "targetVariableName": "lime/11",

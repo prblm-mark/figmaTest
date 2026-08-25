@@ -16,6 +16,9 @@
       "com.figma.scopes": [
         "ALL_SCOPES"
       ],
+      "com.figma.codeSyntax": {
+        "WEB": "sp-attendee"
+      },
       "com.figma.aliasData": {
         "targetVariableId": "VariableID:5d5bf48a2738b66191c76980fe552cd6eb6d082b/-1:-1",
         "targetVariableName": "blue/8",
@@ -41,6 +44,9 @@
       "com.figma.scopes": [
         "ALL_SCOPES"
       ],
+      "com.figma.codeSyntax": {
+        "WEB": "sp-vip"
+      },
       "com.figma.aliasData": {
         "targetVariableId": "VariableID:65d192b7149904dc95182b5d638d654bf52f99ed/-1:-1",
         "targetVariableName": "plum/8",
@@ -66,6 +72,9 @@
       "com.figma.scopes": [
         "ALL_SCOPES"
       ],
+      "com.figma.codeSyntax": {
+        "WEB": "sp-speaker"
+      },
       "com.figma.aliasData": {
         "targetVariableId": "VariableID:0fc427ca8e3aa9d1da84f00b58558a6e1babf1ed/-1:-1",
         "targetVariableName": "teal/8",
@@ -91,6 +100,9 @@
       "com.figma.scopes": [
         "ALL_SCOPES"
       ],
+      "com.figma.codeSyntax": {
+        "WEB": "sp-sponsor"
+      },
       "com.figma.aliasData": {
         "targetVariableId": "VariableID:0485a650e86470cece25a18daf3e71e85b1297b8/-1:-1",
         "targetVariableName": "red/8",
@@ -116,6 +128,9 @@
       "com.figma.scopes": [
         "ALL_SCOPES"
       ],
+      "com.figma.codeSyntax": {
+        "WEB": "sp-host"
+      },
       "com.figma.aliasData": {
         "targetVariableId": "VariableID:3a24269ba3e92a230badf01ce798bfde1f6911a6/-1:-1",
         "targetVariableName": "orange/8",
@@ -141,6 +156,9 @@
       "com.figma.scopes": [
         "ALL_SCOPES"
       ],
+      "com.figma.codeSyntax": {
+        "WEB": "sp-table-gold"
+      },
       "com.figma.aliasData": {
         "targetVariableId": "VariableID:142e3a9ef71f6f0b436acb6026c5701826ddd0f4/-1:-1",
         "targetVariableName": "OrangeRadix/11",
@@ -166,6 +184,9 @@
       "com.figma.scopes": [
         "ALL_SCOPES"
       ],
+      "com.figma.codeSyntax": {
+        "WEB": "sp-table-silver"
+      },
       "com.figma.aliasData": {
         "targetVariableId": "VariableID:7ba6f30a16ff16a63b6c52ec846e329f95cedd3a/-1:-1",
         "targetVariableName": "slate/9",
@@ -191,6 +212,9 @@
       "com.figma.scopes": [
         "ALL_SCOPES"
       ],
+      "com.figma.codeSyntax": {
+        "WEB": "sp-table-bronze"
+      },
       "com.figma.aliasData": {
         "targetVariableId": "VariableID:670240745a5a38af3e159bd81e662f6540af83ba/-1:-1",
         "targetVariableName": "brown/10",
@@ -215,7 +239,10 @@
       "com.figma.variableId": "VariableID:3455:9889",
       "com.figma.scopes": [
         "ALL_SCOPES"
-      ]
+      ],
+      "com.figma.codeSyntax": {
+        "WEB": "sp-table-head"
+      }
     }
   },
   "VIP Table": {
@@ -234,7 +261,10 @@
       "com.figma.variableId": "VariableID:3455:9890",
       "com.figma.scopes": [
         "ALL_SCOPES"
-      ]
+      ],
+      "com.figma.codeSyntax": {
+        "WEB": "sp-table-vip"
+      }
     }
   },
   "Press Table": {
@@ -254,6 +284,9 @@
       "com.figma.scopes": [
         "ALL_SCOPES"
       ],
+      "com.figma.codeSyntax": {
+        "WEB": "sp-table-press"
+      },
       "com.figma.aliasData": {
         "targetVariableId": "VariableID:6054aed373f87a2cea6a676ec85bf7d619c97bfe/-1:-1",
         "targetVariableName": "lime/11",

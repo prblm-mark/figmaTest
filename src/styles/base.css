@@ -8,8 +8,12 @@
 @import '../../css/tokens-cc.css';
 @import '../../css/tokens-cc-dark.css';
 @import '../../css/tokens-minimised.css';
-/* Seating Planner role palettes — prototype-scoped `--sp-*`, inert until a container
-   sets data-seating="muted" | "radix-soft" | "radix-vivid". */
+/* Seating Planner role palettes — `--sp-*`, named from Figma's codeSyntax.WEB.
+   Radix Vivid is the default at :root; the three mode files below override it when a
+   container sets data-seating="muted" | "radix-soft" | "radix-vivid".
+   ORDER MATTERS: :root and [data-seating] are both specificity 0,1,0, so the default
+   must be imported first for the explicit attribute to win. */
+@import '../../css/tokens-seating-default.css';
 @import '../../css/tokens-seating-muted.css';
 @import '../../css/tokens-seating-radix-soft.css';
 @import '../../css/tokens-seating-radix-vivid.css';

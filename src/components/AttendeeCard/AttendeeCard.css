@@ -1,0 +1,246 @@
+/* AttendeeCard — seating-plan attendee / empty-seat row
+ * Figma: Lus07xi8pPXLN87sQIyrEt node 3474:89292 (Type x State x Tier, 12 variants)
+ *
+ * Assumes base.css + tokens.css are loaded by the page.
+ *
+ * Presentational only — no JS. Confirmed with the designer 2026-08-25:
+ *   - the card is a DROP TARGET only, never a drag source. `--dragged-over` is a class the
+ *     parent module toggles while an attendee is held over the card.
+ *   - Composes Button (btn btn--secondary btn--sm) for the Empty variant's Assign action.
+ *
+ * Role colour: one custom property drives both the accent bar and the role label, the same
+ * pattern as TableType. Defaults bind the Seating Planner --sp-* tokens.
+ */
+
+.attendee-card {
+  --attendee-card-role: var(--sp-attendee);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* Fluid: fills its container (it is a list row in the Unassigned tray / Table Detail).
+   * Figma draws it at 288px; the nearest token is --ai-size-5 (280px), which the demo uses
+   * as a wrapper constraint rather than being baked in here. Designer-confirmed 2026-08-25. */
+  inline-size: 100%;
+  padding-inline: var(--ai-spacing-2);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  background-color: var(--ai-surface-primary);
+  box-shadow: var(--ai-shadow-xxs);
+  overflow: hidden;
+}
+
+/* ── Accent bar ──────────────────────────────────────────────────────────────
+ * Figma nests a 6px rounded bar inside a 4px-wide wrapper, so the bar's right 2px
+ * sits inside the following gap. Both widths are real tokens, so the two elements
+ * are kept rather than collapsed — collapsing would shift the layout by 2px. */
+.attendee-card__accent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-shrink: 0;
+  align-self: stretch;
+  inline-size: var(--ai-spacing-1);
+  padding-block: var(--ai-spacing-2);
+}
+
+.attendee-card__accent-bar {
+  flex: 1 0 0;
+  min-block-size: 0;
+  inline-size: var(--ai-spacing-2);
+  border-radius: var(--ai-radius-full);
+  background-color: var(--attendee-card-role);
+}
+
+/* ── Seat number ────────────────────────────────────────────────────────────
+ * Figma draws an 18px square; snapped to --ai-spacing-5 (16px) per the designer
+ * 2026-08-25, since 18px has no token. */
+.attendee-card__seat {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  inline-size: var(--ai-spacing-5);
+  block-size: var(--ai-spacing-5);
+  margin-inline-start: var(--ai-spacing-4);
+  border-radius: var(--ai-radius-sm);
+  background-color: var(--ai-surface-secondary);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-5xs);
+  font-weight: var(--ai-font-bold);
+  line-height: normal;
+  color: var(--ai-text-contrast);
+}
+
+/* ── Name + meta ───────────────────────────────────────────────────────────── */
+.attendee-card__body {
+  display: flex;
+  flex: 1 0 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ai-spacing-0-5);
+  min-inline-size: 0;
+  margin-inline-start: var(--ai-spacing-4);
+  padding-block: var(--ai-spacing-3);
+}
+
+.attendee-card__name {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: normal;
+  color: var(--ai-text-primary);
+  white-space: nowrap;
+}
+
+.attendee-card__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  inline-size: 100%;
+  margin: 0;
+  font-family: var(--ai-font-title);
+  line-height: normal;
+}
+
+.attendee-card__company {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /* Figma leaves this size unbound as a raw 12px; --ai-font-fixed-2xs is exactly 12px,
+   * so binding the token is visually a no-op. Flagged in figma-notes. */
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-regular);
+  color: var(--ai-text-contrast);
+}
+
+/* Figma uses a 3px SVG ellipse. Rendered as a middot instead — it is a text separator,
+ * and a character avoids an off-scale 3px dimension with no token. See figma-notes. */
+.attendee-card__sep {
+  flex-shrink: 0;
+  color: var(--ai-text-contrast);
+  font-size: var(--ai-font-fixed-2xs);
+}
+
+.attendee-card__role {
+  flex-shrink: 0;
+  padding-block: var(--ai-spacing-px);
+  border-radius: var(--ai-radius-sm);
+  font-size: var(--ai-font-fixed-4xs);
+  font-weight: var(--ai-font-medium);
+  color: var(--attendee-card-role);
+  white-space: nowrap;
+}
+
+/* ── Actions ────────────────────────────────────────────────────────────────
+ * Rendered as real <button>s: delete and reorder are actions, and design context
+ * never conveys interaction. Figma draws the hit areas at 28px / 20px, both under
+ * the 44x44 touch minimum in CLAUDE.md §9 — built as drawn and flagged, per the
+ * designer 2026-08-25. */
+.attendee-card__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-0-5);
+  flex-shrink: 0;
+  align-self: stretch;
+}
+
+.attendee-card__action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  inline-size: var(--ai-spacing-6);
+  block-size: var(--ai-spacing-6);
+  padding: 0;
+  border: 0;
+  /* Figma binds --ai-spacing-2 (6px) as the radius here, which is a spacing token used
+   * for a radius and matches no radius step (4/8/16/24/100). Using the nearest, sm.
+   * Flagged in figma-notes for correction in Figma. */
+  border-radius: var(--ai-radius-sm);
+  background: none;
+  color: var(--ai-icon-contrast);
+  cursor: pointer;
+}
+
+.attendee-card__action:hover {
+  background-color: var(--ai-surface-secondary);
+}
+
+.attendee-card__action [data-lucide],
+.attendee-card__action svg {
+  inline-size: var(--ai-icon-size-xs);
+  block-size: var(--ai-icon-size-xs);
+}
+
+/* The reorder stack fills the available vertical space rather than Figma's fixed
+ * 36px, per the designer 2026-08-25. */
+.attendee-card__reorder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  align-self: stretch;
+  inline-size: var(--ai-icon-size-md);
+}
+
+.attendee-card__reorder .attendee-card__action {
+  inline-size: var(--ai-icon-size-md);
+  block-size: auto;
+  flex: 1 0 0;
+  min-block-size: 0;
+}
+
+/* ── Role presets ───────────────────────────────────────────────────────────
+ * Bound to the Seating Planner collection. These follow the active
+ * data-seating palette (Muted / Radix Soft / Radix Vivid). */
+.attendee-card--attendee { --attendee-card-role: var(--sp-attendee); }
+.attendee-card--vip      { --attendee-card-role: var(--sp-vip); }
+.attendee-card--speaker  { --attendee-card-role: var(--sp-speaker); }
+.attendee-card--sponsor  { --attendee-card-role: var(--sp-sponsor); }
+.attendee-card--host     { --attendee-card-role: var(--sp-host); }
+
+/* ── Empty seat ─────────────────────────────────────────────────────────────
+ * Structurally different: no name/meta block, a dashed border, an accent bar in
+ * --ai-surface-contrast rather than a role colour, and an Assign button. */
+.attendee-card--empty {
+  gap: var(--ai-spacing-5);
+  min-block-size: var(--ai-spacing-9);
+  border-style: dashed;
+  border-color: var(--ai-btn-secondary-border);
+  background-color: var(--ai-surface-minimal);
+}
+
+.attendee-card--empty .attendee-card__accent-bar {
+  background-color: var(--ai-surface-contrast);
+}
+
+.attendee-card__empty-label {
+  flex-shrink: 0;
+  margin: 0;
+  margin-inline-start: var(--ai-spacing-4);
+  padding-block: var(--ai-spacing-3);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-medium);
+  line-height: normal;
+  color: var(--ai-text-contrast);
+  white-space: nowrap;
+}
+
+/* ── Dragged Over ───────────────────────────────────────────────────────────
+ * Drop-target highlight, toggled by the parent module. For the filled types the
+ * background drops to minimal and the border goes brand; Empty is already minimal,
+ * so only its border changes — dashed grey to SOLID brand. */
+.attendee-card--dragged-over {
+  border-color: var(--ai-border-brand);
+  background-color: var(--ai-surface-minimal);
+}
+
+.attendee-card--empty.attendee-card--dragged-over {
+  border-style: solid;
+  border-color: var(--ai-border-brand);
+}

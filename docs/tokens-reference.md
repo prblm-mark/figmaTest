@@ -487,36 +487,54 @@ The chat context selector has the same specificity as `[data-theme="dark"]` (`0,
 
 ## Seating Planner Palettes
 
-Prototype-scoped role colours for the Seating Planner (attendee tiers and table tiers).
-Namespaced `--sp-*`, **not** `--ai-*` — these are prototype role colours, not core design-system
-semantics, and must not be used in `src/components/`, `src/patterns/` or `src/templates/`.
+Role and table-tier colours for the Seating Planner. Namespaced `--sp-*`, **not** `--ai-*`, to
+keep them out of the core design-system namespace — the same carve-out the CC component tokens
+use with `--cc-`.
 
-**Activation:** add `data-seating="muted" | "radix-soft" | "radix-vivid"` to a container.
-There is deliberately **no `:root` default** — a palette must be chosen explicitly, so a
-container without the attribute resolves no `--sp-*` values at all rather than silently
-inheriting one mode.
+Names come from Figma's `codeSyntax.WEB` (added 2026-08-25), so the CSS and the Figma variables
+cannot drift. The six table tiers are grouped under `sp-table-*`, which keeps the attendee role
+`--sp-vip` distinct from the table tier `--sp-table-vip`.
+
+**Radix Vivid is the default**, emitted at `:root`. The three mode files override it when a
+container carries `data-seating="muted" | "radix-soft" | "radix-vivid"`.
 
 **Generated files** (rebuilt by `npm run tokens`; do not edit manually):
-`css/tokens-seating-muted.css`, `css/tokens-seating-radix-soft.css`,
-`css/tokens-seating-radix-vivid.css`.
+`css/tokens-seating-default.css` (`:root`, Radix Vivid) plus
+`css/tokens-seating-{muted,radix-soft,radix-vivid}.css`.
 
-| Variable | Muted | Radix Soft | Radix Vivid |
+> **Import order matters.** `:root` and `[data-seating="…"]` are both specificity `0,1,0`, so
+> source order alone decides the winner. `base.css` imports the default file *first*; move it
+> after the mode files and the explicit attribute silently stops working.
+
+### Attendee roles — these differ per mode
+
+| Variable | Muted | Radix Soft | **Radix Vivid** (default) |
 |---|---|---|---|
-| `--sp-attendee` | `#6598F1` | `#5EB1EF` | `#0797B9` |
-| `--sp-vip` | `#C399F1` | `#CF91D8` | `#AB4ABA` |
-| `--sp-speaker` | `#2FA68C` | `#53B9AB` | `#4CBBA5` |
-| `--sp-sponsor` | `#EE6E66` | `#EB8E90` | `#5B5BD6` |
-| `--sp-host` | `#ED9C51` | `#EC9455` | `#F76B15` |
-| `--sp-gold-table` | `#CC4E00` | `#CC4E00` | `#CC4E00` |
-| `--sp-silver` | `#8B8D98` | `#8B8D98` | `#8B8D98` |
-| `--sp-bronze` | `#A07553` | `#A07553` | `#A07553` |
-| `--sp-head-table` | `#991B1B` | `#991B1B` | `#991B1B` |
-| `--sp-vip-table` | `#00749E` | `#00749E` | `#00749E` |
-| `--sp-press-table` | `#5C7C2F` | `#5C7C2F` | `#5C7C2F` |
+| `--sp-attendee` | `#6598F1` | `#5EB1EF` | **`#0797B9`** |
+| `--sp-vip` | `#C399F1` | `#CF91D8` | **`#AB4ABA`** |
+| `--sp-speaker` | `#2FA68C` | `#53B9AB` | **`#4CBBA5`** |
+| `--sp-sponsor` | `#EE6E66` | `#EB8E90` | **`#5B5BD6`** |
+| `--sp-host` | `#ED9C51` | `#EC9455` | **`#F76B15`** |
 
-**Note:** only the five attendee-role colours differ between modes. The six table-tier colours
-(`gold-table` through `press-table`) are identical across all three — worth confirming with the
-designer whether the table tiers were meant to get per-mode values too.
+### Table tiers — identical across all three modes
+
+| Variable | All modes |
+|---|---|
+| `--sp-table-gold` | `#CC4E00` |
+| `--sp-table-silver` | `#8B8D98` |
+| `--sp-table-bronze` | `#A07553` |
+| `--sp-table-head` | `#991B1B` |
+| `--sp-table-vip` | `#00749E` |
+| `--sp-table-press` | `#5C7C2F` |
+
+Only the five attendee roles vary by mode; the six table tiers are the same in all three. Worth
+confirming with the designer whether the tiers were meant to get per-mode values too.
+
+**Consumers:** `AttendeeCard` binds the five role tokens for its accent bar and role label.
+`TableType` deliberately does **not** bind these — its tier colours are user-picked from a colour
+picker at runtime, so they are raw hex. Note two of its Figma values diverge from these tokens:
+Gold is `#D97706` where `--sp-table-gold` is `#CC4E00`, and Silver's base is `#ABB2B8` where
+`--sp-table-silver` `#8B8D98` appears as its *text* colour.
 
 ---
 

@@ -151,21 +151,24 @@ StyleDictionary.registerTransform({
 /**
  * Seating Planner variable names.
  *
- * The Seating Planner collection is prototype-scoped and its Figma variables carry no
- * codeSyntax.WEB, so names are derived from the token path. Prefixed `--sp-` (not `--ai-`)
- * to keep prototype role colours out of the core design-system namespace — the same
- * carve-out the CC component tokens use with `--cc-`.
+ * As of 2026-08-25 the designer added codeSyntax.WEB to all 33 Seating Planner variables,
+ * so Figma now drives these names and this transform defers to it. The designer's naming
+ * groups the six table tiers under `sp-table-*` (sp-table-gold, sp-table-vip, ...), which
+ * also disambiguates the attendee role `sp-vip` from the table tier `sp-table-vip` — the
+ * earlier path-derived names conflated those.
  *
- * Example: "Gold Table" → "sp-gold-table" → CSS format adds "--" → "--sp-gold-table"
+ * The path fallback is retained deliberately: without it, a future seating variable added
+ * WITHOUT a WEB name would fall through to name/figma-web's `ai`-prefixed derivation and
+ * silently land in the core --ai-* namespace. The fallback keeps it in --sp-*.
  */
 StyleDictionary.registerTransform({
   name: 'name/seating-planner',
   type: 'name',
-  transform: (token) =>
-    ['sp', ...token.path]
-      .join('-')
-      .toLowerCase()
-      .replace(/\s+/g, '-'),
+  transform: (token) => {
+    const web = token.$extensions?.['com.figma.codeSyntax']?.WEB;
+    if (web) return web.replace(/^--/, '').replace(/\./g, '-');
+    return ['sp', ...token.path].join('-').toLowerCase().replace(/\s+/g, '-');
+  },
 });
 
 // ─── Mobile media-query formatter ─────────────────────────────────────────────
@@ -547,6 +550,33 @@ const seatingModes = [
   { mode: 'Radix Soft',   slug: 'radix-soft' },
   { mode: 'Radix Vivid',  slug: 'radix-vivid' },
 ];
+
+// Radix Vivid is the DEFAULT palette (designer decision 2026-08-25), emitted at :root so
+// seating components resolve without an explicit data-seating attribute. It previously had
+// no default, which meant an unset container rendered accent bars and role labels with no
+// colour at all — a silent failure rather than a safe one.
+//
+// Import order matters: this :root file must load BEFORE the three [data-seating] files.
+// `:root` and `[data-seating="..."]` are both specificity 0,1,0, so source order alone
+// decides which wins, and the explicit attribute must be able to override the default.
+const sdSeatingDefault = new StyleDictionary({
+  usesDtcg: true,
+  parsers: ['figma-token-parser'],
+  source: ['FigmaTokens/Seating Planner/Radix Vivid.tokens.json'],
+  platforms: {
+    css: {
+      transforms: ['color/figma-hex', 'name/seating-planner'],
+      buildPath: 'css/',
+      files: [{
+        destination: 'tokens-seating-default.css',
+        format: 'css/variables-selector',
+        options: { selector: ':root', outputReferences: false },
+      }],
+    },
+  },
+});
+
+await sdSeatingDefault.buildAllPlatforms();
 
 for (const { mode, slug } of seatingModes) {
   const sdSeating = new StyleDictionary({

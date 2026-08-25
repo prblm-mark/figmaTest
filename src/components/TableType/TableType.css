@@ -1,0 +1,62 @@
+/* TableType — seating-plan table tier label
+ * Figma: Lus07xi8pPXLN87sQIyrEt node 3470:85494 (Type x Tier, 5 variants)
+ *
+ * Assumes base.css + tokens.css are loaded by the page.
+ *
+ * COLOUR MODEL
+ * The tier colour is chosen by the user from a colour picker in the product, so it is a
+ * runtime value rather than a design token. One custom property drives all three paints,
+ * per the designer's rule:
+ *
+ *     background  80% white over the tier colour
+ *     border      70% white over the tier colour
+ *     text        25% black over the tier colour
+ *
+ * Set --table-type-color to recolour a pill; the five modifiers below are just presets
+ * carrying the tier colours Figma ships. Because a picker supplies the value, raw hex is
+ * approved here (user-approved 2026-08-24) — these are not design values.
+ *
+ * The compositing bases are pure #ffffff / #000000 because that is what Figma composites
+ * against, NOT --ai-surface-primary. Using a theme-aware token would change the formula in
+ * dark mode and break the match.
+ *
+ * TYPOGRAPHY: the CSS deliberately LEADS Figma on two properties, at the designer's request
+ * 2026-08-25 — font-weight is bold (700) where Figma still has semibold (600), and
+ * letter-spacing is --ai-tracking-7 (0.05em) where Figma still has --ai-tracking-5 (0.0125em).
+ * Figma is to be updated to match. Do not "correct" these back from a Figma fetch. See the dark-mode note in TableType.figma-notes.md.
+ */
+
+.table-type {
+  /* Default preset = VIP, which is Figma's default variant */
+  --table-type-color: #00749e;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ai-spacing-0-5) var(--ai-spacing-3);
+  border: 1px solid color-mix(in srgb, #ffffff 70%, var(--table-type-color));
+  border-radius: var(--ai-radius-full);
+  background-color: color-mix(in srgb, #ffffff 80%, var(--table-type-color));
+  color: color-mix(in srgb, #000000 25%, var(--table-type-color));
+
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-5xs);
+  font-weight: var(--ai-font-bold);
+  line-height: normal;
+  letter-spacing: var(--ai-tracking-7);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ── Tier presets ───────────────────────────────────────────────────────────
+ * Raw hex, matching Figma exactly. Three of the five happen to equal the
+ * Seating Planner --sp-* tokens (VIP, Head Table, Bronze) and two do not
+ * (Gold is Amber #d97706 where --sp-table-gold is #cc4e00; Silver's #abb2b8
+ * is not a token at all). Left as hex so all five behave identically — see
+ * figma-notes for the reconciliation note. */
+
+.table-type--vip        { --table-type-color: #00749e; }
+.table-type--head-table { --table-type-color: #991b1b; }
+.table-type--gold       { --table-type-color: #d97706; }
+.table-type--silver     { --table-type-color: #abb2b8; }
+.table-type--bronze     { --table-type-color: #a07553; }
