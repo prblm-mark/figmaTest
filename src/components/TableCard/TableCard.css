@@ -40,27 +40,38 @@
   box-shadow: var(--ai-shadow-xxs);
 }
 
-/* ── Header: title + sponsor + tier pill ─────────────────────────────────────
- * No gap: Figma's Header-Section sets none, and the title group is flex-1 with the
- * pill shrink-0 hard against it. See figma-notes — RoomCard's equivalent row was
- * given --ai-spacing-3 for exactly the clearance this lacks. */
+/* ── Header: title row above a full-width sponsor row ────────────────────────
+ * RESTRUCTURED 2026-08-25 (Figma 3476:106256). The header is now a COLUMN: the title
+ * and tier pill share a row, and the sponsor row sits beneath them spanning the full
+ * width instead of being nested in the title column. That is what lets a long sponsor
+ * name use the whole card rather than the narrow strip left beside the pill.
+ * Header-Section declares no gap of its own. */
 .table-card__header {
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
   inline-size: 100%;
 }
 
+/* The title row. Figma's 12px gap is what finally separates the name from the pill —
+ * this row is the one the old build left with no clearance at all. */
 .table-card__titles {
   display: flex;
-  flex: 1 0 0;
-  flex-direction: column;
   align-items: flex-start;
-  gap: var(--ai-spacing-0);
-  min-inline-size: 0;
+  gap: var(--ai-spacing-4);
+  inline-size: 100%;
+}
+
+/* Figma sets `shrink-0` on the pill instance, so it keeps its intrinsic width and the
+ * name absorbs the remaining space. A layout concern of this row, not a restyle of
+ * TableType — nothing about the pill's own appearance is touched. */
+.table-card__titles .table-type {
+  flex-shrink: 0;
 }
 
 .table-card__name {
-  max-inline-size: 100%;
+  flex: 1 0 0;
+  min-inline-size: 0;
   margin: 0;
   font-family: var(--ai-font-title);
   font-size: var(--ai-font-fixed-sm);
@@ -83,11 +94,12 @@
   color: inherit;
   text-align: start;
   cursor: pointer;
-  /* Figma sets only `white-space: nowrap` here, with no truncation — a long table
-   * name would overflow and shove the tier pill out. Truncation added; see notes. */
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  /* WRAPS, does not truncate. Figma dropped the `white-space: nowrap` it used to carry
+   * when the header was restructured, so a long table name now flows onto a second
+   * line instead of being clipped — which is the point of the restructure. This
+   * retires the ellipsis that was previously added here as a divergence. Set
+   * explicitly because some UAs still default buttons to nowrap. */
+  white-space: normal;
 }
 
 .table-card__select::after {
@@ -107,13 +119,15 @@
   outline-offset: 2px;
 }
 
-/* Optional row. Figma fixes this at h-[22px], which is exactly the 16px icon plus the
- * 6px padding-top, so the height is left to the content rather than pinned. */
+/* Optional row, now a direct child of the header at full width (Figma renamed the frame
+ * `Paragraph` -> `Sponsor` in the restructure). Figma fixes it at h-[22px], which is
+ * exactly the 16px icon plus the 6px padding-top, so the height is left to the content
+ * rather than pinned. */
 .table-card__sponsor {
   display: flex;
   align-items: center;
   gap: var(--ai-spacing-2);
-  max-inline-size: 100%;
+  inline-size: 100%;
   margin: 0;
   padding-block-start: var(--ai-spacing-2);
 }
@@ -127,7 +141,9 @@
 }
 
 .table-card__sponsor-name {
-  /* Same truncation addition as the table name — Figma specifies none. */
+  /* Still an addition: Figma keeps `whitespace-nowrap` + `shrink-0` here, which would
+   * overflow rather than truncate. The full-width row gives it far more room than
+   * before, but a very long sponsor name still needs somewhere to stop. */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

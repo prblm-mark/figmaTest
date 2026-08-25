@@ -39,6 +39,9 @@
   sponsor and a per-role capacity breakdown. <strong>Presentational only</strong> — the parent module
   owns selection and toggles <code>--selected</code>; selecting a table is what opens Table Detail.
   No JS in the component.</p>
+  <p class="lede">The header is a <strong>column</strong>: the table name and tier pill share a row
+  with a 12px gap, and the sponsor row sits beneath them spanning the full card width. The name
+  <strong>wraps</strong> rather than truncating.</p>
   <p class="lede">The <strong>whole card is the select trigger</strong>: the table name is a real
   <code>&lt;button&gt;</code> whose <code>::after</code> stretches over the card, with the edit and
   delete buttons layered above it so they stay independently clickable. Composes
@@ -63,12 +66,12 @@
         <h3 class="table-card__name">
           <button type="button" class="table-card__select">Table 21</button>
         </h3>
+        <span class="table-type table-type--vip">VIP</span>
+      </div>
       <p class="table-card__sponsor">
         <i data-lucide="handshake" aria-hidden="true"></i>
         <span class="table-card__sponsor-name">Mastercard</span>
       </p>
-      </div>
-    <span class="table-type table-type--vip">VIP</span>
     </div>
     <hr class="table-card__rule">
     <div class="table-card__viz">
@@ -101,12 +104,12 @@
         <h3 class="table-card__name">
           <button type="button" class="table-card__select">Table 21</button>
         </h3>
+        <span class="table-type table-type--vip">VIP</span>
+      </div>
       <p class="table-card__sponsor">
         <i data-lucide="handshake" aria-hidden="true"></i>
         <span class="table-card__sponsor-name">Mastercard</span>
       </p>
-      </div>
-    <span class="table-type table-type--vip">VIP</span>
     </div>
     <hr class="table-card__rule">
     <div class="table-card__viz">
@@ -147,12 +150,12 @@
         <h3 class="table-card__name">
           <button type="button" class="table-card__select">Table 21</button>
         </h3>
+        <span class="table-type table-type--vip">VIP</span>
+      </div>
       <p class="table-card__sponsor">
         <i data-lucide="handshake" aria-hidden="true"></i>
         <span class="table-card__sponsor-name">Mastercard</span>
       </p>
-      </div>
-    <span class="table-type table-type--vip">VIP</span>
     </div>
     <hr class="table-card__rule">
     <div class="table-card__viz">
@@ -195,12 +198,12 @@
         <h3 class="table-card__name">
           <button type="button" class="table-card__select">Table 21</button>
         </h3>
+        <span class="table-type table-type--vip">VIP</span>
+      </div>
       <p class="table-card__sponsor">
         <i data-lucide="handshake" aria-hidden="true"></i>
         <span class="table-card__sponsor-name">Mastercard</span>
       </p>
-      </div>
-    <span class="table-type table-type--vip">VIP</span>
     </div>
     <hr class="table-card__rule">
     <div class="table-card__viz">
@@ -233,12 +236,12 @@
         <h3 class="table-card__name">
           <button type="button" class="table-card__select">Table 21</button>
         </h3>
+        <span class="table-type table-type--vip">VIP</span>
+      </div>
       <p class="table-card__sponsor">
         <i data-lucide="handshake" aria-hidden="true"></i>
         <span class="table-card__sponsor-name">Mastercard</span>
       </p>
-      </div>
-    <span class="table-type table-type--vip">VIP</span>
     </div>
     <hr class="table-card__rule">
     <div class="table-card__viz">
@@ -279,12 +282,12 @@
         <h3 class="table-card__name">
           <button type="button" class="table-card__select">Table 21</button>
         </h3>
+        <span class="table-type table-type--vip">VIP</span>
+      </div>
       <p class="table-card__sponsor">
         <i data-lucide="handshake" aria-hidden="true"></i>
         <span class="table-card__sponsor-name">Mastercard</span>
       </p>
-      </div>
-    <span class="table-type table-type--vip">VIP</span>
     </div>
     <hr class="table-card__rule">
     <div class="table-card__viz">
@@ -319,7 +322,7 @@
   </article>
   </div>
   <h2>Tier pills</h2>
-<p class="lede">The pill is the <strong>TableType</strong> component, unchanged. Its tier colour is picked by the user at runtime, so all five presets are shown.</p>
+<p class="lede">The pill is the <strong>TableType</strong> component, unchanged, and now sits in the title row with a 12px gap. Its tier colour is picked by the user at runtime, so all five presets are shown.</p>
   <div class="table-grid">
   <article class="table-card">
     <div class="table-card__header">
@@ -327,12 +330,12 @@
         <h3 class="table-card__name">
           <button type="button" class="table-card__select">Table 1</button>
         </h3>
+        <span class="table-type table-type--head-table">Head Table</span>
+      </div>
       <p class="table-card__sponsor">
         <i data-lucide="handshake" aria-hidden="true"></i>
         <span class="table-card__sponsor-name">Mastercard</span>
       </p>
-      </div>
-    <span class="table-type table-type--head-table">Head Table</span>
     </div>
     <hr class="table-card__rule">
     <div class="table-card__viz">
@@ -373,12 +376,12 @@
         <h3 class="table-card__name">
           <button type="button" class="table-card__select">Table 2</button>
         </h3>
+        <span class="table-type table-type--gold">Gold</span>
+      </div>
       <p class="table-card__sponsor">
         <i data-lucide="handshake" aria-hidden="true"></i>
         <span class="table-card__sponsor-name">Mastercard</span>
       </p>
-      </div>
-    <span class="table-type table-type--gold">Gold</span>
     </div>
     <hr class="table-card__rule">
     <div class="table-card__viz">
@@ -419,12 +422,12 @@
         <h3 class="table-card__name">
           <button type="button" class="table-card__select">Table 3</button>
         </h3>
+        <span class="table-type table-type--silver">Silver</span>
+      </div>
       <p class="table-card__sponsor">
         <i data-lucide="handshake" aria-hidden="true"></i>
         <span class="table-card__sponsor-name">Mastercard</span>
       </p>
-      </div>
-    <span class="table-type table-type--silver">Silver</span>
     </div>
     <hr class="table-card__rule">
     <div class="table-card__viz">
@@ -465,12 +468,12 @@
         <h3 class="table-card__name">
           <button type="button" class="table-card__select">Table 4</button>
         </h3>
+        <span class="table-type table-type--bronze">Bronze</span>
+      </div>
       <p class="table-card__sponsor">
         <i data-lucide="handshake" aria-hidden="true"></i>
         <span class="table-card__sponsor-name">Mastercard</span>
       </p>
-      </div>
-    <span class="table-type table-type--bronze">Bronze</span>
     </div>
     <hr class="table-card__rule">
     <div class="table-card__viz">
@@ -514,8 +517,8 @@
         <h3 class="table-card__name">
           <button type="button" class="table-card__select">Table 21</button>
         </h3>
+        <span class="table-type table-type--vip">VIP</span>
       </div>
-    <span class="table-type table-type--vip">VIP</span>
     </div>
     <hr class="table-card__rule">
     <div class="table-card__viz">
@@ -556,11 +559,11 @@
         <h3 class="table-card__name">
           <button type="button" class="table-card__select">Table 21</button>
         </h3>
+      </div>
       <p class="table-card__sponsor">
         <i data-lucide="handshake" aria-hidden="true"></i>
         <span class="table-card__sponsor-name">Mastercard</span>
       </p>
-      </div>
     </div>
     <hr class="table-card__rule">
     <div class="table-card__viz">
@@ -637,7 +640,7 @@
   </article>
   </div>
   <h2>Long names</h2>
-<p class="lede">Figma sets only <code>white-space: nowrap</code> on the table and sponsor names, with no truncation — a long name would overflow and shove the tier pill out of the card. Ellipsis truncation was added; see the notes.</p>
+<p class="lede">This is what the header restructure is for. The table name <strong>wraps</strong> rather than truncating — Figma dropped its <code>nowrap</code> — and the sponsor row now spans the full card width instead of the narrow strip left beside the pill, so a long sponsor name has room. The pill holds its width and stays on the first line.</p>
   <div class="table-grid">
   <article class="table-card">
     <div class="table-card__header">
@@ -645,12 +648,12 @@
         <h3 class="table-card__name">
           <button type="button" class="table-card__select">Head Table — Sponsors, VIPs and Guest Speakers</button>
         </h3>
+        <span class="table-type table-type--vip">VIP</span>
+      </div>
       <p class="table-card__sponsor">
         <i data-lucide="handshake" aria-hidden="true"></i>
         <span class="table-card__sponsor-name">Mastercard International Incorporated</span>
       </p>
-      </div>
-    <span class="table-type table-type--vip">VIP</span>
     </div>
     <hr class="table-card__rule">
     <div class="table-card__viz">
@@ -679,6 +682,52 @@
           <i data-lucide="pencil" aria-hidden="true"></i>
         </button>
         <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Head Table — Sponsors, VIPs and Guest Speakers">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </article>
+
+  <article class="table-card">
+    <div class="table-card__header">
+      <div class="table-card__titles">
+        <h3 class="table-card__name">
+          <button type="button" class="table-card__select">Table 12</button>
+        </h3>
+        <span class="table-type table-type--gold">Gold</span>
+      </div>
+      <p class="table-card__sponsor">
+        <i data-lucide="handshake" aria-hidden="true"></i>
+        <span class="table-card__sponsor-name">Mastercard International Incorporated Global Partnerships Division</span>
+      </p>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__viz">
+      <div class="table-card__bar" aria-hidden="true">
+        <span class="table-card__seg table-card__seg--attendee" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--vip" style="--seg: 1"></span>
+        <span class="table-card__seg table-card__seg--speaker" style="--seg: 1"></span>
+        <span class="table-card__seg table-card__seg--sponsor" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--empty" style="--seg: 4"></span>
+      </div>
+      <div class="table-card__legend">
+        <span class="table-card__legend-item table-card__legend-item--attendee"><span class="table-card__swatch"></span>Attendee (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--vip"><span class="table-card__swatch"></span>VIP (1)</span>
+        <span class="table-card__legend-item table-card__legend-item--speaker"><span class="table-card__swatch"></span>Speaker (1)</span>
+        <span class="table-card__legend-item table-card__legend-item--sponsor"><span class="table-card__swatch"></span>Sponsor (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--empty"><span class="table-card__swatch"></span>Empty (4)</span>
+      </div>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__footer">
+      <div class="table-card__count-group">
+        <p class="table-card__count">6 / 10 seated</p>
+      </div>
+      <div class="table-card__actions">
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 12">
+          <i data-lucide="pencil" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 12">
           <i data-lucide="trash" aria-hidden="true"></i>
         </button>
       </div>

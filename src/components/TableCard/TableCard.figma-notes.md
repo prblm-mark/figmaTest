@@ -2,6 +2,7 @@
 
 **Tier:** Component
 **Built:** 2026-08-25 (Seating Planner module, wave 3)
+**Header restructured:** 2026-08-25 — see below
 **Files:** `TableCard.css`, `TableCard.html`, `TableCard.figma.ts`, `TableCard.figma-notes.md`
 **Composes:** TableType (`.table-type`) — tier pill; FullBadge (`.full-badge`) — at-capacity pill;
 Button (`btn btn--secondary btn--icon btn--2xs`) — edit + delete
@@ -34,12 +35,13 @@ class plus a media query.
 | Full | Default | Mobile | `3484:188962` | ↑ |
 | Full | Selected | Mobile | `3484:189046` | ↑ + `--selected` |
 
-Desktop: Empty 289×173, Populated/Full 289×186. Mobile: 289×163 / 289×176.
+Desktop: Empty 289×172, Populated/Full 289×185. Mobile: 289×162 / 289×175. (Figma shed 1px when the
+bar-to-legend gap went 9px → 8px, which the CSS already used.)
 
-Rendered heights are **177 / 190**, i.e. +4. Two sources: the card's own 1px border top and bottom
-(Figma strokes are inside-aligned and don't add to frame size), and the two rules. Figma draws those
-as zero-height `line` nodes with the stroke outside the box; an `<hr>` with a 1px border is genuinely
-1px tall. Cosmetic arithmetic in an auto-height card, not a bug.
+Rendered heights are **177 / 190**, i.e. +5. Three sources: the card's own 1px border top and bottom;
+the two rules — Figma draws those as zero-height `line` nodes with the stroke outside the box, whereas
+an `<hr>` with a 1px border is genuinely 1px tall; and 1px on the title row, where a 16px bold line
+box measures 20px in the browser against Figma's 19. Cosmetic arithmetic in an auto-height card.
 
 ### The whole Type axis is data, not CSS
 
@@ -147,29 +149,49 @@ Resolved with the designer 2026-08-25 rather than invented.
 
 | Figma | Decision |
 |---|---|
-| `--ai-font-fixed-6xs` (a **font-size** token) bound as the 9px gap between bar and legend, **and** as the legend's column gap | **Snapped to `--ai-spacing-3`** (8px). A 1px change that stops a type token driving layout. |
+| `--ai-font-fixed-6xs` (a **font-size** token) bound as the 9px gap between bar and legend, **and** as the legend's column gap | **Snapped to `--ai-spacing-3`** (8px). A 1px change that stops a type token driving layout. **Figma has since followed** — the bar-to-legend gap now measures 8px there too. |
 | legend swatch `border-radius: 2px`, unbound | **New token `--ai-radius-xs`** (2px), created in Figma by the designer. `--ai-radius-sm` (4px) would visibly round an 8px square. Re-exported and confirmed 2026-08-25 — `VariableID:3534:102610` in `FigmaTokens/Scale/Scale.tokens.json`. |
 | card `width: 289px` | **Dropped.** The card is fluid and fills its grid cell. 289px has no token; the bound `min-width` does (`--ai-size-4`). |
 | sponsor row `height: 22px` | **Dropped as derivable** — it is exactly the 16px icon plus the 6px `padding-top`, so the content defines it. |
 | `line` node stroke, invisible in design context | **`--ai-border-secondary`**, resolved by calling `get_variable_defs` on the node itself (`3470:85258`). Not a gap — just hidden behind an SVG asset. |
 
-## Three places the CSS leads Figma
+## The header restructure (2026-08-25)
+
+The designer rebuilt `Header-Section` (`3476:106256`) so a long sponsor name gets the whole card
+width, and added the title-to-pill clearance that the first build had flagged as missing.
+
+| | Before | After |
+|---|---|---|
+| `Header-Section` | **row** — title column beside the pill | **column** |
+| `Title-Label-Group` | **column** — title above the sponsor row | **row** — title beside the pill |
+| tier pill | sibling of the title group, `gap: 0` | **inside the title row, `gap: --ai-spacing-4`** (12px) |
+| sponsor row | nested in the title column, `88px` wide | **full-width sibling below the title row** |
+| frame name | `Paragraph` | `Sponsor` |
+| table name | `white-space: nowrap`, no overflow | **no `nowrap` — it wraps** |
+
+Verified: name 198 + 12px gap + pill 36 = the full 246px content width; the sponsor row measures the
+same 246; a long title wraps to two 20px lines with the pill holding its width on the first line.
+
+**This retires the two divergences the first build carried.** The header gap is now Figma's own 12px
+rather than something left at 0 and flagged, and the table name's ellipsis is gone — Figma dropping
+`nowrap` means wrapping is the intended answer to a long name, which is the whole point of the
+restructure. `flex-shrink: 0` on the pill is scoped from this row (Figma sets `shrink-0` on the
+instance); nothing about TableType's own appearance is touched.
+
+> **Only 1 of 12 Figma variants carries this.** `3470:85480` — the Populated / Default / Desktop
+> variant — is restructured. `3470:85479`, `3472:85601` and `3484:188923` were all checked and still
+> have the old nested header, so the other eleven need the same change in Figma. The CSS applies it
+> to every variant, since it is one shared header.
+
+## One divergence that remains
 
 | Element | Property | Figma | CSS |
 |---|---|---|---|
-| `__header` | `gap` | **not set** | **not set** — left faithful, but see below |
-| `__select` (table name) | truncation | `white-space: nowrap` only | **+ `overflow: hidden`, `text-overflow: ellipsis`** |
-| `__sponsor-name` | truncation | `white-space: nowrap` only | **+ `overflow: hidden`, `text-overflow: ellipsis`** |
+| `__sponsor-name` | truncation | `white-space: nowrap` + `shrink-0` | **+ `overflow: hidden`, `text-overflow: ellipsis`** |
 
-**Neither name truncates in Figma.** With `nowrap` and no `overflow`, a long table name overflows its
-flex-1 track and shoves the tier pill out of the card; a long sponsor name does the same. Ellipsis
-truncation was added to both. Unlike RoomCard — whose Figma title *does* carry
-`overflow-hidden text-ellipsis` — this set omits it, which reads as an oversight rather than intent.
-
-**The header gap was left at Figma's 0**, deliberately, even though RoomCard's equivalent row was
-given `--ai-spacing-3` for exactly the clearance this lacks: with the pill `shrink-0` hard against a
-flex-1 title, a truncated name ends flush against it. Built faithful and **flagged for a decision**
-rather than quietly matching RoomCard — it is a one-line change either way.
+Figma still pairs `nowrap` with `shrink-0` here, which overflows rather than truncating. The
+full-width row gives a long sponsor name far more room than before, but it still needs somewhere to
+stop — verified truncating at 246px.
 
 ## A Figma property inconsistency worth fixing
 
@@ -190,10 +212,12 @@ variants carry is how the TableType Code Connect went wrong in wave 1.
 
 ## Cross-component findings
 
-- **TableType is unchanged, by decision.** Figma's instance here renders at `--ai-font-fixed-6xs`
-  (9px) with `--ai-tracking-6`, while the component is `--ai-font-fixed-5xs` (10px) with
-  `--ai-tracking-7` and `--ai-font-bold`. The designer's call 2026-08-25 was that **the component is
-  the source of truth** and Figma should follow, so nothing was changed. Its colour model was
+- **TableType is unchanged, by decision — and the size drift has since closed.** When first built,
+  Figma's instance rendered at `--ai-font-fixed-6xs` (9px); as of the header restructure it reads
+  `--ai-font-fixed-5xs` (10px), matching the component, and the pill grew 34×17 → 36×18 accordingly.
+  Only `--ai-tracking-6` vs the component's `--ai-tracking-7`, and `font-semibold` vs
+  `--ai-font-bold`, still differ — the two amends the designer made in wave 1. The call 2026-08-25
+  was that **the component is the source of truth** and Figma should follow, so nothing was changed. Its colour model was
   verified correct in passing: Figma's `#b2d5e2` border, `#005777` text and white-80%-over-`#00749e`
   fill are exactly what TableType's three `color-mix()` formulas produce.
 - **`--sp-host` is missing from Figma's legend.** The collection defines it and AttendeeCard uses it,

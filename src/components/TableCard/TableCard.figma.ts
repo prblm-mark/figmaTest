@@ -9,6 +9,9 @@ import figma, { html } from '@figma/code-connect/html'
 // written as literal example content instead of bound props. Add the bindings once Figma
 // defines both properties across the whole set.
 //
+// Header structure (2026-08-25): the tier pill sits INSIDE .table-card__titles beside the
+// name, and .table-card__sponsor is a full-width sibling below that row.
+//
 // `Device` is not mapped: it is implemented as @media (max-width: 767px), so both Desktop
 // and Mobile produce identical markup. `Tier` is single-valued and produces no CSS.
 //
@@ -45,13 +48,13 @@ figma.connect(
             <h3 class="table-card__name">
               <button type="button" class="table-card__select">Table 21</button>
             </h3>
-            ${showSponsor ? html`
-            <p class="table-card__sponsor">
-              <i data-lucide="handshake" aria-hidden="true"></i>
-              <span class="table-card__sponsor-name">Mastercard</span>
-            </p>` : ''}
+            <span class="table-type table-type--vip">VIP</span>
           </div>
-          <span class="table-type table-type--vip">VIP</span>
+          ${showSponsor ? html`
+          <p class="table-card__sponsor">
+            <i data-lucide="handshake" aria-hidden="true"></i>
+            <span class="table-card__sponsor-name">Mastercard</span>
+          </p>` : ''}
         </div>
         <hr class="table-card__rule">
         <div class="table-card__viz">
@@ -97,12 +100,12 @@ figma.connect(
             <h3 class="table-card__name">
               <button type="button" class="table-card__select">Table 21</button>
             </h3>
-            <p class="table-card__sponsor">
-              <i data-lucide="handshake" aria-hidden="true"></i>
-              <span class="table-card__sponsor-name">Mastercard</span>
-            </p>
+            <span class="table-type table-type--vip">VIP</span>
           </div>
-          <span class="table-type table-type--vip">VIP</span>
+          <p class="table-card__sponsor">
+            <i data-lucide="handshake" aria-hidden="true"></i>
+            <span class="table-card__sponsor-name">Mastercard</span>
+          </p>
         </div>
         <hr class="table-card__rule">
         <div class="table-card__viz">
@@ -139,12 +142,12 @@ figma.connect(
             <h3 class="table-card__name">
               <button type="button" class="table-card__select">Table 21</button>
             </h3>
-            <p class="table-card__sponsor">
-              <i data-lucide="handshake" aria-hidden="true"></i>
-              <span class="table-card__sponsor-name">Mastercard</span>
-            </p>
+            <span class="table-type table-type--vip">VIP</span>
           </div>
-          <span class="table-type table-type--vip">VIP</span>
+          <p class="table-card__sponsor">
+            <i data-lucide="handshake" aria-hidden="true"></i>
+            <span class="table-card__sponsor-name">Mastercard</span>
+          </p>
         </div>
         <hr class="table-card__rule">
         <div class="table-card__viz">
