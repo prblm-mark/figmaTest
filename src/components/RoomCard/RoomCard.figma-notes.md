@@ -95,7 +95,7 @@ composes as one modifier rather than branching per type.
 ## Device=Mobile deltas
 
 Only four things change. Verified against the mobile Full variant (`3484:186649`) that buttons
-(24×24), badge (45×15), check (7×7) and bar height (6px) all stay put.
+(24×24), badge (45×15 as drawn) and bar height (6px) all stay put; the check is 7×7 in Figma at both breakpoints.
 
 | Property | Desktop | Mobile |
 |---|---|---|
@@ -146,11 +146,20 @@ while `textContent` still reads `"12 tables · 0/148 seated"`.
 |---|---|---|---|
 | `__header` | `gap` | **not set** | `--ai-spacing-1` (4px) |
 | `__meta` | `gap` | **not set** | `--ai-spacing-3` (8px) |
+| badge check icon | size + stroke | `7×7`, default stroke | **`10×10`, `stroke-width: 4`** |
 
 **The header gap was requested by the designer** (2026-08-25). It matters more than it looks:
 `justify-content: space-between` gives no clearance once the name is long enough to fill its
 track, so a truncated name butted straight up against the edit button. Verified — the long-name
 demo card went from 0px to 4px of clearance.
+
+**The check icon had to grow to stay legible** (designer call, 2026-08-25). Lucide draws on a
+24-unit viewBox, so its default `stroke-width: 2` thins to roughly 0.6px once the SVG is scaled to
+Figma's 7px — a hairline that all but vanished against the green. 10px with `stroke-width: 4` reads
+properly; verified against a true 1× raster rather than a scaled preview, since upscaling hides
+exactly this kind of thinning. CSS `stroke-width` wins over the `stroke-width="2"` presentation
+attribute Lucide writes onto the `<svg>`. The knock-on is 3px of badge width — **48.1×15 against
+Figma's 45×15** — with the badge height, card height and bar alignment all unchanged.
 
 **The meta gap is not from Figma's meta frame**, which sets none on any variant. The value came
 from the single-child badge wrapper (`3470:84968`) that was dropped as redundant, and is kept for
@@ -167,7 +176,7 @@ All five resolved with the designer 2026-08-25 rather than invented.
 | `--ai-surface-brand` bound as the "N seats free" **text** colour | **Rebound to `--ai-text-brand`.** At 11px the surface token gives 3.60:1 on white and 3.44:1 on the Selected surface — both under the 4.5:1 AA floor. `--ai-text-brand` gives 5.04:1 / 4.82:1. **Figma has been updated**, and `3470:84948` already returns `--ai-text-brand`, so this is not a divergence. |
 | badge `gap` bound to `border/width/border-3` (3px) | **Corrected to `--ai-spacing-1`** (4px). A border-width token driving a flex gap; 3px matches no spacing step. Figma updated. |
 | badge label `9px`, unbound | **New token `--ai-font-fixed-6xs`** (9px), created in Figma by the designer. Re-exported and confirmed 2026-08-25 — `VariableID:3321:2248`, present in all three Typography modes. |
-| CheckIcon `7×7px` | **Approved as a raw value.** The smallest icon token is `--ai-icon-size-xs` (12px), which will not fit a 15px-tall badge. Commented at the declaration. |
+| CheckIcon `7×7px` | **Approved as a raw value, then raised to 10×10.** No icon token fits — the smallest, `--ai-icon-size-xs`, is 12px and will not sit in a 15px badge. See the divergence table above for why 7px had to grow. |
 | `Grey/0` primitive (`#ffffff`) on the badge label | **`--ai-text-invert`**, which is exactly `#ffffff`. |
 | card `width: 290px` | **Dropped.** The card is fluid and fills its column. 290px has no token; the bound `min-width` does (`--ai-size-5` / `--ai-size-4`), and those are kept. |
 
@@ -209,7 +218,7 @@ CSS; folding those onto `btn--2xs` is a worthwhile follow-up but was out of scop
 
 - **`Full-Badge` is an inline frame, not a component instance.** `get_metadata` reports it as
   `<frame>` where the two Buttons report as `<instance>` — so it is correctly scoped as
-  `.room-card__badge` rather than composed. Rendered 45.1×15 against Figma's 45×15.
+  `.room-card__badge` rather than composed. Renders 48.1×15 — 3px wider than Figma's 45×15, entirely from the enlarged check icon above.
 - **`get_design_context` returns the actions frame as an empty `<div>`** on every variant — the
   Button instances are flattened out of the output. They are only visible via `get_metadata` on the
   frame. Don't read that empty div as "no actions"; the screenshot shows two.

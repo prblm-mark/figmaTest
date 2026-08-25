@@ -180,13 +180,19 @@
   color: var(--ai-text-invert);
 }
 
-/* 7x7 is below the icon scale (the smallest token, --ai-icon-size-xs, is 12px, which
- * will not fit a 15px-tall badge). Approved as a raw value by the designer 2026-08-25. */
+/* Below the icon scale (the smallest token, --ai-icon-size-xs, is 12px, which will not
+ * fit a 15px-tall badge). Approved as a raw value by the designer 2026-08-25.
+ *
+ * Figma draws this check at 7x7, which was illegible once rendered: Lucide's stroke
+ * scales with the 24-unit viewBox, so at 7px its default stroke-width of 2 thins to
+ * ~0.6px. Raised to 10px with a 4 stroke-width at the designer's direction — CSS
+ * stroke-width beats the presentation attribute Lucide writes on the <svg>. */
 .room-card__badge [data-lucide],
 .room-card__badge svg {
-  inline-size: 7px;
-  block-size: 7px;
+  inline-size: 10px;
+  block-size: 10px;
   flex-shrink: 0;
+  stroke-width: 4px;
 }
 
 /* ── Progress bar ───────────────────────────────────────────────────────────
