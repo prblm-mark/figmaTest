@@ -449,12 +449,15 @@
  * word and it moves.
  */
 @media (max-width: 1023px) {
-  /* The room label and its count stack. */
+  /* The room label and its count stack. The 2px gap is a designer call 2026-08-26, not a
+   * Figma value — Figma's mobile variant binds --ai-spacing-1 (4px). Same tightening taken
+   * on TableDetail's legend row gap, and for the same reason: two lines of stacked text
+   * read as one block at 2px and as two separate things at 4px. */
   .seating-header__room {
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    gap: var(--ai-spacing-1);
+    gap: var(--ai-spacing-0-5);
   }
 
   .seating-header__room-name {
