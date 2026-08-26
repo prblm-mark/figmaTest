@@ -419,8 +419,14 @@
 
   /* The toolbar's PADDING moves with its siblings, so all three regions share one inline
    * padding at any width. Everything else about the toolbar switches at 1024px instead —
-   * see the block below. */
+   * see the block below.
+   *
+   * The gap (between the actions group and the kebab) tightens to 8px here, a designer
+   * call 2026-08-26 rather than a Figma value: Figma's own mobile Toolbar still binds
+   * --ai-spacing-5. It is scoped to this block, not the 1024 one, so the tablet band keeps
+   * Figma's 16px. */
   .seating-header__toolbar {
+    gap: var(--ai-spacing-3);
     padding: var(--ai-spacing-4);
   }
 }

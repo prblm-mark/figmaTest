@@ -76,7 +76,7 @@ so the same nesting is used.
 | `--ai-spacing-6` | bar `padding`, rooms + toolbar `padding-inline` (24px) | |
 | `--ai-spacing-5` | rooms + toolbar `padding-block`, rooms + toolbar `gap`, divider `block-size` (16px) | |
 | `--ai-spacing-4` | title-row `gap`, meta `column-gap`, mobile bar `gap` + `padding-inline`, mobile rooms + toolbar `padding` (12px) | |
-| `--ai-spacing-3` | details `gap`, actions `gap`, room `gap`, toggle-group `gap`, buttons `gap`, mobile rooms `gap` (8px) | |
+| `--ai-spacing-3` | details `gap`, actions `gap`, room `gap`, toggle-group `gap`, buttons `gap`, mobile rooms `gap`, **mobile toolbar `gap`** (8px) | |
 | `--ai-spacing-2` | meta `row-gap`, meta-item `gap`, compact-toolbar buttons `gap` (6px) | |
 | `--ai-spacing-1` | compact-toolbar room `gap` (4px) | |
 | `--ai-spacing-7` | **bar `gap` (32px)**, compact export button + mobile global-action `min-height` | |
@@ -113,6 +113,7 @@ is interactive, the meta icons are decoration) or may be drift.
 | Room Card instance `w-[290px]` (desktop) | **`--ai-size-5`** (280px). 290 has no token; 280 is the one that exists **and is the `min-inline-size` RoomCard itself binds** — the identical call made when RoomCard was built, so the two components agree rather than disagree by 10px. |
 | Toolbar room-label `gap-[8px]`, unbound | **`--ai-spacing-3`**, which is exactly 8px, so binding it is visually a no-op. Same treatment as TableListing's 12px filter label. **Worth binding in Figma.** |
 | `Event-Info-Bar` has no gap (Figma relies on `space-between` against a fixed 900px block) | **`--ai-spacing-7`** (32px) added (designer, 2026-08-26). With the details block fluid, this gap is what replaces the fixed width and keeps a long event title off the buttons. Overridden to `--ai-spacing-4` in the stacked mobile layout. |
+| Figma's mobile `Toolbar` binds `gap: --ai-spacing-5` (16px) | **`--ai-spacing-3`** (8px) below 768px (designer, 2026-08-26) — a deliberate override rather than a Figma value. Scoped to the 767px block, so the 768–1023 tablet band keeps Figma's 16px. It is the gap between the actions group and the kebab. |
 | Kebab is a bare `Icon/24px/EllipsisVertical` layer, not a Button instance | **Built as a real `<button>`** (designer, 2026-08-26) with `aria-label="More seating actions"` and a stretched `::after` giving the 44×44 touch target, while the icon stays 20px as drawn. A bare `<i>` is neither focusable nor keyboard-operable (CLAUDE.md §9). Same stretched-trigger pattern RoomCard uses. |
 | Divider `line` node stroke, invisible in design context | **`--ai-border-secondary`**, resolved by `get_variable_defs` on the node itself (`3474:90290`). Not a gap — the same element, and the same resolution, as TableListing's divider. |
 
@@ -144,6 +145,7 @@ under-reporting was hit earlier in this module.
 | `__rooms` padding / gap | 24/16, gap 16 | 12 all round, gap 8 |
 | room cards | `flex: 0 0 280px` | `flex: 1 0 0` on RoomCard's own 240px floor |
 | `__toolbar` padding | 24 inline / 16 block | 12 all round |
+| `__toolbar` gap | `--ai-spacing-5` (16) | **`--ai-spacing-3` (8)** — a designer call, not Figma; see below |
 | `__room` direction | `row`, gap 8 | **`column`**, gap 4 |
 | `__room-name` / `__room-count` | 18 / 14px | 16 / 12px |
 | `__toggle-group`, `__divider` | present | **`display: none`** — absent from the variant, not rearranged |
