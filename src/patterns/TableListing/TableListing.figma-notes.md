@@ -147,32 +147,19 @@ cap was blocking new consumers without shaping any existing one. The two now-red
 - The search is `<input type="search">` with an `aria-label`, since there is no visible label.
 - TableCards bring their own selection contract — the parent toggles `--selected` on them.
 
-## The toggle needs wiring, because Toggle ships no JS
+## The toggle works; the filtering is deliberately absent
 
-`Toggle` is CSS-only — no `Toggle.js` exists. Every consumer wires the flip itself, which is what
-its own demo does with a small inline script. So this pattern's demo carries the same wiring:
+The "Only free seats" switch flips itself — `Toggle` gained `Toggle.js` on 2026-08-26, so the
+component owns its own `.toggle--active` and `aria-checked`. This page just includes the script.
 
-```js
-document.querySelectorAll('.table-listing .toggle:not(.toggle--disabled)').forEach(function (t) {
-  t.addEventListener('click', function () {
-    t.setAttribute('aria-checked', String(t.classList.toggle('toggle--active')));
-  });
-});
-```
+**The filtering is a separate thing and is deliberately not here.** Deriving "only free seats"
+belongs to the parent module and the backend (`seating-free-seats-filter`); a consumer that needs to
+react listens for `toggle:change` and reads `detail.active`.
 
-That is **demo wiring, not part of the pattern**. The distinction matters: flipping `aria-checked`
-on a `role="switch"` is the control's own contract and has to work or the control is broken, whereas
-**the filtering itself is deliberately absent** — deriving "only free seats" belongs to the parent
-module and the backend (`seating-free-seats-filter`).
+Clicking the "Only free seats" text also flips it, via `label[for]` + `aria-labelledby`.
 
-Clicking the "Only free seats" text also flips it, via `label[for]` + `aria-labelledby`. Verified:
-knob 2.5px → 13.5px, track `--ai-border-secondary` → `--ai-surface-brand`, both directions, and
-through the label.
-
-> **Worth raising at component level:** since Toggle ships no JS, every consumer re-implements this.
-> `Dropdown.js` even carries a comment reading "the Toggle's own click handler flips
-> `.toggle--active`" — i.e. it already assumes Toggle owns the behaviour. Either Toggle should ship a
-> tiny self-init, or that comment is misleading.
+> This pattern briefly carried its own inline flip, which was the ninth copy of the same three lines
+> across the repo. Removing all nine is what prompted `Toggle.js` — see `Toggle.figma-notes.md`.
 
 ## Notes
 

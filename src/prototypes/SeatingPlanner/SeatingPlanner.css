@@ -1,0 +1,1926 @@
+/* Seating Planner prototype
+ * Tier: Prototype (src/prototypes/ — not a design system component)
+ * Spec: Control > CRM > Seating Planner
+ *
+ * Composes: cc/patterns/EventPicker, patterns/Modal, components/SearchInput,
+ *           components/Checkbox, components/Badge, components/Button,
+ *           components/ActionCard, components/Input, components/Select
+ *
+ * THE EVENT PICKER IS NOW THE SHIPPED COMPONENT (2026-07-29).
+ * Screen 1 was prototyped here first, then componentised as
+ * src/cc/patterns/EventPicker/. The prototype kept a COPY of that CSS, which
+ * drifted once the designer changed the component (heading icons dropped, the
+ * pinned card's brand tint removed, mobile breakpoint moved to --ai-bp-md…), so
+ * the states now LINK the component and use its `event-picker__*` classes.
+ * Nothing about the picker lives in this file any more — do not re-add it. The
+ * Copy-plans destination list uses the same component classes.
+ *
+ * Prototype-only elements defined here:
+ *   .sp-page / .sp-empty / .sp-selected  — the page behind the picker popup
+ *   .sp-seated__track / __fill           — the meter on the workspace PLAN CHIPS
+ *                                          (screen 2's own element, not the
+ *                                          picker's; kept deliberately)
+ *   everything under the SCREEN 2 banner and the per-task banners below it
+ */
+
+/* ── Page behind the popup ───────────────────────────── */
+
+body {
+  min-height: 100vh;
+  background: var(--ai-surface-secondary);
+}
+
+.sp-page {
+  padding: var(--ai-spacing-7);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-6);
+}
+
+.sp-page__title {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fluid-2xl);
+  font-weight: var(--ai-font-bold);
+  line-height: var(--ai-leading-lg);
+  color: var(--ai-text-primary);
+  margin: 0;
+}
+
+/* ── Empty state (no event chosen yet) ───────────────── */
+
+.sp-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ai-spacing-4);
+  padding: var(--ai-spacing-11) var(--ai-spacing-7);
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-lg);
+  text-align: center;
+}
+
+.sp-empty__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-9);
+  height: var(--ai-spacing-9);
+  border-radius: var(--ai-radius-full);
+  background: var(--ai-surface-minimal);
+  color: var(--ai-icon-contrast);
+}
+
+.sp-empty__icon [data-lucide] {
+  width: var(--ai-icon-size-lg);
+  height: var(--ai-icon-size-lg);
+}
+
+.sp-empty__title {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-md);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  margin: 0;
+}
+
+.sp-empty__desc {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-secondary);
+  margin: 0;
+}
+
+/* Selected-event summary — stands in for the seating plans screen,
+   which is a later spec screen. */
+.sp-selected {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ai-spacing-5);
+  padding: var(--ai-spacing-6);
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-lg);
+}
+
+.sp-selected__label {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+  text-transform: uppercase;
+  letter-spacing: var(--ai-tracking-7);
+  margin: 0 0 var(--ai-spacing-2);
+}
+
+.sp-selected__name {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-md);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  margin: 0;
+}
+
+.sp-seated__track {
+  width: 100%;
+  height: var(--ai-spacing-1); /* 4px */
+  background: var(--ai-surface-secondary);
+  border-radius: var(--ai-radius-full);
+  overflow: hidden;
+}
+
+.sp-seated__fill {
+  display: block;
+  height: 100%;
+  /* --sp-seated-pct is a data value supplied per row, not a style decision */
+  width: var(--sp-seated-pct, 0%);
+  background: var(--ai-surface-success);
+  border-radius: var(--ai-radius-full);
+}
+
+
+/* ==========================================================================
+   SCREEN 2 — Seating Planner workspace (TASK-344753)
+   --------------------------------------------------------------------------
+   The workspace shell: event bar, seating plans row, toolbar, tables grid,
+   seat panel, unassigned tray. Additive only — nothing above this line is
+   touched (screen 1's Event Picker already fed a production pattern).
+
+   Colour discipline on this screen — each hue has exactly one job:
+     brand blue  selection (plan chip, table card, seat)
+     gold        sponsorship, on the ★ icon only
+     neutral ramp  table tier (rank), ALWAYS paired with a text label so tier
+                   is never colour-only (WCAG 1.4.1 — and it survives a mono
+                   Export PDF). Default tier is unmarked: marking all 30
+                   tables is the same as marking none.
+     role hues   seat dots + role tags only
+   ========================================================================== */
+
+/* ── Page ──────────────────────────────────────────────────────────────── */
+
+.sp-ws {
+  min-height: 100vh;
+  padding: var(--ai-spacing-6);
+  background: var(--ai-surface-secondary);
+}
+
+.sp-ws__cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--ai-spacing-5);
+  margin-top: var(--ai-spacing-5);
+}
+
+/* The rail only earns its width once there's room for the grid beside it */
+@media (min-width: 1280px) {
+  .sp-ws__cols { grid-template-columns: minmax(0, 1fr) var(--ai-size-8); }
+}
+
+.sp-card {
+  padding: var(--ai-spacing-6);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-lg);
+  background: var(--ai-surface-primary);
+}
+
+/* ── Event bar ─────────────────────────────────────────────────────────── */
+
+.sp-eventbar__top {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ai-spacing-5);
+}
+
+.sp-eventbar__main { flex: 1; min-width: 0; }
+
+.sp-eventbar__name {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-lg);
+  font-weight: var(--ai-font-bold);
+  line-height: var(--ai-leading-md);
+  letter-spacing: var(--ai-tracking-2);
+  color: var(--ai-text-primary);
+}
+
+.sp-eventbar__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ai-spacing-4);
+  margin: var(--ai-spacing-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sp-eventbar__meta li {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+}
+
+.sp-eventbar__meta svg,
+.sp-eventbar__meta [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-secondary);
+}
+
+/* ── Seating plans row ─────────────────────────────────────────────────── */
+
+.sp-plans {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ai-spacing-4);
+  margin-top: var(--ai-spacing-5);
+  padding-top: var(--ai-spacing-5);
+  border-top: 1px solid var(--ai-border-secondary);
+}
+
+.sp-plans__label {
+  flex: none;
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-semibold);
+  letter-spacing: var(--ai-tracking-7);
+  text-transform: uppercase;
+  color: var(--ai-text-contrast);
+}
+
+/* A plan chip. Selecting one opens its table workspace. */
+.sp-plan {
+  flex: none;
+  width: var(--ai-size-4);
+  padding: var(--ai-spacing-4);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  background: var(--ai-surface-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--ai-transition-fast), box-shadow var(--ai-transition-fast);
+}
+
+.sp-plan:hover { border-color: var(--ai-border-contrast); }
+
+.sp-plan--active {
+  border-color: var(--ai-border-brand);
+  box-shadow: 0 0 0 1px var(--ai-surface-brand);
+}
+
+.sp-plan__head {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+}
+
+.sp-plan__name {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Screen 1 uses this track as a flex child of .sp-seated, so it gets a box for
+   free. Here it's a direct child of the chip, and an inline box ignores height
+   (it took the 46px line-height instead of 4px). Compose, don't change screen 1. */
+.sp-plan .sp-seated__track { display: block; }
+
+.sp-plan__stats {
+  margin: var(--ai-spacing-1) 0 var(--ai-spacing-3);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+}
+
+/* ── Shared icon-button (plan + table card actions) ────────────────────── */
+
+.sp-iconbtn {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--ai-spacing-6);
+  height: var(--ai-spacing-6);
+  padding: 0;
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-sm);
+  background: var(--ai-surface-primary);
+  color: var(--ai-icon-secondary);
+  cursor: pointer;
+  transition: background var(--ai-transition-fast), color var(--ai-transition-fast);
+}
+
+.sp-iconbtn:hover {
+  background: var(--ai-surface-minimal);
+  color: var(--ai-icon-primary);
+}
+
+.sp-iconbtn svg,
+.sp-iconbtn [data-lucide] {
+  width: var(--ai-icon-size-xs);
+  height: var(--ai-icon-size-xs);
+}
+
+.sp-iconbtn--danger:hover {
+  background: var(--ai-surface-error-soft);
+  color: var(--ai-text-error);
+}
+
+/* ── Toolbar above the grid ────────────────────────────────────────────── */
+
+.sp-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ai-spacing-4);
+  margin-bottom: var(--ai-spacing-5);
+}
+
+.sp-toolbar__title {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-bold);
+  letter-spacing: var(--ai-tracking-7);
+  text-transform: uppercase;
+  color: var(--ai-text-secondary);
+}
+
+.sp-toolbar__spacer { flex: 1; }
+
+.sp-toolbar__toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-secondary);
+}
+
+/* Export is a split button: default action + a dropdown for the other formats */
+.sp-split { display: flex; }
+
+.sp-split > .btn:first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.sp-split > .btn:last-child {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  margin-left: -1px;
+  padding-inline: var(--ai-spacing-2);
+}
+
+.sp-split__wrap { position: relative; }
+
+.sp-split__menu {
+  position: absolute;
+  z-index: 5;
+  top: calc(100% + var(--ai-spacing-2));
+  right: 0;
+  min-width: var(--ai-size-2);
+  padding: var(--ai-spacing-2);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  background: var(--ai-surface-primary);
+  box-shadow: var(--ai-shadow-md);
+}
+
+.sp-split__item {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  width: 100%;
+  padding: var(--ai-spacing-3);
+  border: none;
+  border-radius: var(--ai-radius-sm);
+  background: none;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-primary);
+  text-align: left;
+  cursor: pointer;
+}
+
+.sp-split__item:hover { background: var(--ai-surface-minimal); }
+
+.sp-split__item svg,
+.sp-split__item [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-secondary);
+}
+
+/* ── Tables grid ───────────────────────────────────────────────────────── */
+
+.sp-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ai-spacing-4);
+}
+
+@media (min-width: 768px)  { .sp-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .sp-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (min-width: 1440px) { .sp-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+
+.sp-table {
+  padding: var(--ai-spacing-4);
+  border: 1px solid var(--ai-border-secondary);
+  /* 3px so the tier edge reads at a glance; the rest of the border stays 1px */
+  border-left: 3px solid transparent;
+  border-radius: var(--ai-radius-md);
+  background: var(--ai-surface-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--ai-transition-fast), box-shadow var(--ai-transition-fast);
+}
+
+.sp-table:hover { border-color: var(--ai-border-contrast); }
+
+.sp-table--selected {
+  border-color: var(--ai-border-brand);
+  border-left-color: var(--ai-border-brand);
+  box-shadow: 0 0 0 1px var(--ai-surface-brand);
+}
+
+/* Tier — a neutral rank ramp, never the only signal (see .sp-table__tier).
+   Standard tier is deliberately unmarked. Real values land with TASK-342308. */
+.sp-table--tier-head    { border-left-color: var(--ai-border-primary); }
+.sp-table--tier-premium { border-left-color: var(--ai-border-contrast); }
+
+.sp-table__head {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+}
+
+.sp-table__name {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-primary);
+}
+
+/* The text half of the tier signal */
+.sp-table__tier {
+  display: block;
+  margin-top: var(--ai-spacing-1);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-bold);
+  letter-spacing: var(--ai-tracking-7);
+  text-transform: uppercase;
+  color: var(--ai-text-contrast);
+}
+
+/* Sponsorship — the only gold on the screen, and only on the star */
+.sp-table__sponsor {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  margin: var(--ai-spacing-2) 0 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-secondary);
+}
+
+.sp-table__sponsor svg,
+.sp-table__sponsor [data-lucide] {
+  flex: none;
+  width: var(--ai-icon-size-xs);
+  height: var(--ai-icon-size-xs);
+  color: var(--ai-surface-warning);
+}
+
+.sp-table__foot {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  margin-top: var(--ai-spacing-4);
+}
+
+.sp-table__count {
+  flex: 1;
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-regular);
+  color: var(--ai-text-secondary);
+}
+
+/* Seat dots — a compact read of who is on the table */
+.sp-table__dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ai-spacing-1);
+  margin-top: var(--ai-spacing-3);
+}
+
+.sp-dot {
+  width: var(--ai-spacing-3);
+  height: var(--ai-spacing-3);
+  border-radius: var(--ai-radius-full);
+  background: var(--ai-surface-contrast);
+}
+
+/* TOKEN GAP (flagged): six roles, five usable status hues — and brand is
+   reserved for selection here. Rather than invent a purple, VIP and Guest share
+   the neutral hue and are told apart by fill style. Revisit with TASK-342308 if
+   the designer would rather add a sixth role colour to the DS. */
+.sp-dot--attendee { background: var(--ai-surface-info); }
+.sp-dot--sponsor  { background: var(--ai-surface-error); }
+.sp-dot--speaker  { background: var(--ai-surface-success); }
+.sp-dot--host     { background: var(--ai-surface-warning); }
+.sp-dot--vip      { background: var(--ai-surface-neutral); }
+
+.sp-dot--guest {
+  background: var(--ai-surface-primary);
+  border: 2px solid var(--ai-surface-neutral);
+}
+
+.sp-dot--empty {
+  background: var(--ai-surface-minimal);
+  border: 1px solid var(--ai-border-secondary);
+}
+
+.sp-grid__note {
+  margin: var(--ai-spacing-5) 0 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-contrast);
+}
+
+/* ── Right rail ────────────────────────────────────────────────────────── */
+
+.sp-rail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+  min-width: 0;
+}
+
+.sp-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-lg);
+  background: var(--ai-surface-primary);
+  overflow: hidden;
+}
+
+.sp-panel__head {
+  flex: none;
+  padding: var(--ai-spacing-5);
+  border-bottom: 1px solid var(--ai-border-secondary);
+}
+
+.sp-panel__title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+}
+
+.sp-panel__title {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-md);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+}
+
+.sp-panel__meta {
+  margin: var(--ai-spacing-2) 0 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+}
+
+.sp-panel__body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--ai-spacing-4);
+  /* Caps the rail so both panels stay on screen together */
+  max-height: 30rem; /* 480px — no size token between 448 and 640 */
+  scrollbar-width: thin;
+}
+
+.sp-panel__foot {
+  flex: none;
+  padding: var(--ai-spacing-4) var(--ai-spacing-5);
+  border-top: 1px solid var(--ai-border-secondary);
+  background: var(--ai-surface-minimal);
+}
+
+/* ── Seat list ─────────────────────────────────────────────────────────── */
+
+.sp-seat {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  padding: var(--ai-spacing-3);
+  margin-bottom: var(--ai-spacing-2);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  background: var(--ai-surface-primary);
+}
+
+.sp-seat:last-child { margin-bottom: 0; }
+
+.sp-seat__num {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--ai-spacing-6);
+  height: var(--ai-spacing-6);
+  border-radius: var(--ai-radius-full);
+  background: var(--ai-surface-minimal);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-contrast);
+}
+
+.sp-seat__person { flex: 1; min-width: 0; }
+
+.sp-seat__name {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sp-seat__org {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+}
+
+.sp-seat__actions {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-1);
+}
+
+/* Stacked reorder arrows keep the row height down */
+.sp-seat__reorder {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-px);
+}
+
+.sp-seat__reorder .sp-iconbtn {
+  height: var(--ai-spacing-4);
+  border-radius: var(--ai-radius-sm);
+}
+
+/* An empty seat is an invitation, not an error */
+.sp-seat--empty {
+  border-style: dashed;
+  background: var(--ai-surface-minimal);
+}
+
+.sp-seat--empty .sp-seat__name { color: var(--ai-text-contrast); font-weight: var(--ai-font-regular); }
+
+/* ── Role tags ─────────────────────────────────────────────────────────── */
+
+.sp-role {
+  flex: none;
+  padding: var(--ai-spacing-0-5) var(--ai-spacing-3);
+  border-radius: var(--ai-radius-full);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-bold);
+  letter-spacing: var(--ai-tracking-6);
+  text-transform: uppercase;
+  color: var(--ai-text-invert);
+  white-space: nowrap;
+}
+
+.sp-role--attendee { background: var(--ai-surface-info); }
+.sp-role--sponsor  { background: var(--ai-surface-error); }
+.sp-role--speaker  { background: var(--ai-surface-success); }
+.sp-role--host     { background: var(--ai-surface-warning); }
+.sp-role--vip      { background: var(--ai-surface-neutral); }
+
+/* Guest matches its outlined dot */
+.sp-role--guest {
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-surface-neutral);
+  color: var(--ai-text-primary);
+}
+
+/* ── Legend ────────────────────────────────────────────────────────────── */
+
+.sp-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ai-spacing-3) var(--ai-spacing-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sp-legend li {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-secondary);
+}
+
+/* ── Unassigned tray ───────────────────────────────────────────────────── */
+
+.sp-tray__hint {
+  margin: 0 0 var(--ai-spacing-4);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-contrast);
+}
+
+.sp-person {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  padding: var(--ai-spacing-3);
+  margin-bottom: var(--ai-spacing-2);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  background: var(--ai-surface-primary);
+  cursor: grab;
+}
+
+.sp-person:last-child { margin-bottom: 0; }
+.sp-person:hover { border-color: var(--ai-border-contrast); }
+
+.sp-person__name {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sp-person__org {
+  flex: none;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  color: var(--ai-text-contrast);
+}
+
+/* ── Empty states ──────────────────────────────────────────────────────── */
+
+.sp-emptypanel {
+  padding: var(--ai-spacing-11) var(--ai-spacing-6);
+  border: 1px dashed var(--ai-border-contrast);
+  border-radius: var(--ai-radius-lg);
+  background: var(--ai-surface-primary);
+  text-align: center;
+}
+
+.sp-emptypanel__title {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-md);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+}
+
+.sp-emptypanel__desc {
+  margin: var(--ai-spacing-2) auto 0;
+  max-width: var(--ai-size-9);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-contrast);
+}
+
+/* Rows hidden by the "Only free seats" filter */
+.sp-table[hidden] { display: none; }
+
+/* ── Deferred-control toast ────────────────────────────────────────────────
+   Controls owned by a sub-task announce which task owns them rather than
+   failing silently. Removed once that sub-task registers a real handler. */
+
+.sp-toast-host {
+  position: fixed;
+  z-index: 40;
+  bottom: var(--ai-spacing-6);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+}
+
+
+/* ==========================================================================
+   TASK-342306 — New plan popup
+   --------------------------------------------------------------------------
+   Creates a SeatingPlan on the selected event and generates its Table /
+   TableSeat rows. Opened from the Seating plans row, including from the
+   "no plans yet" state.
+
+   Uses the Modal pattern's Form variant (.modal__form / __form-group) and the
+   Input component's own help + error slots — .input--error already turns
+   .input__help red, so the validation state needs no new CSS.
+   ========================================================================== */
+
+/* The seating plans row before any plan exists */
+.sp-plans__none {
+  flex: none;
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+}
+
+/* Required-field marker. Paired with aria-required on the control, so the
+   asterisk is decoration rather than the only signal. */
+.sp-req { color: var(--ai-text-error); }
+
+/* Tables / Seats per table / Table shape sit on one row */
+.sp-newplan__row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--ai-spacing-4);
+}
+
+/* The event name in the modal title is context, not the heading itself */
+.sp-newplan__context {
+  font-weight: var(--ai-font-regular);
+  color: var(--ai-text-contrast);
+}
+
+/* Select has no help slot of its own; borrow the Input one for consistency */
+.sp-newplan__row .sel + .input__help { display: block; margin-top: var(--ai-spacing-2); }
+
+
+/* ==========================================================================
+   states.html — index of every prototype state
+   --------------------------------------------------------------------------
+   Navigation only, so the whole module is reviewable from demo > Prototypes.
+   Not captured to Figma.
+   ========================================================================== */
+
+.sp-states {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--ai-spacing-5);
+  margin-top: var(--ai-spacing-5);
+}
+
+@media (min-width: 1024px) {
+  .sp-states { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.sp-states__group {
+  padding: var(--ai-spacing-6);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-lg);
+  background: var(--ai-surface-primary);
+}
+
+.sp-states__title {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-sm);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+}
+
+.sp-states__note {
+  margin: var(--ai-spacing-2) 0 var(--ai-spacing-5);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-contrast);
+}
+
+.sp-states__note code {
+  font-size: var(--ai-font-fixed-2xs);
+  color: var(--ai-text-secondary);
+}
+
+.sp-states__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-2);
+}
+
+.sp-states__foot {
+  margin: var(--ai-spacing-6) 0 0;
+  padding: var(--ai-spacing-5);
+  border: 1px dashed var(--ai-border-contrast);
+  border-radius: var(--ai-radius-md);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-contrast);
+}
+
+
+/* ==========================================================================
+   TASK-344755 — Delete plan confirmation
+   --------------------------------------------------------------------------
+   Standard modal shape (header / body / footer) at --sm width, NOT the DS
+   .modal--confirm variant: that one centres its text and its footer, whereas
+   the reference is left-aligned with right-aligned actions. The destructive
+   action uses the existing .btn--alert.
+   ========================================================================== */
+
+.sp-confirm__copy {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+}
+
+.sp-confirm__copy strong { font-weight: var(--ai-font-semibold); }
+
+/* The consequence, one step quieter than the question */
+.sp-confirm__detail {
+  margin: var(--ai-spacing-2) 0 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-contrast);
+}
+
+
+
+/* ==========================================================================
+   TASK-344756 — Copy plans
+   --------------------------------------------------------------------------
+   Reuses the SHIPPED EventPicker component for the destination list
+   (.event-picker / __filters / __list / __event / __empty / __footer, from
+   src/cc/patterns/EventPicker). Only the intro paragraph is new — the
+   dialog explains what is and isn't carried over before you pick a target.
+   ========================================================================== */
+
+.sp-copy__intro {
+  margin: 0;
+  padding: var(--ai-spacing-5) var(--ai-spacing-6) 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-contrast);
+}
+
+.sp-copy__intro strong {
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-primary);
+}
+
+
+/* ==========================================================================
+   TASK-342307 — Table form (New / Edit) + the specified tier set
+   --------------------------------------------------------------------------
+   The brief finally names the tiers: Standard / Gold / Silver / Bronze / VIP /
+   Head table / Sponsor, "shown as a colour on the plan". Note "Premium" from
+   the earlier build is NOT in that list — migrated to Gold.
+
+   INTERIM COLOUR MAPPING, pending TASK-342308. Six marked tiers need six
+   distinguishable edges and the DS has three usable neutral borders, two of
+   which are nearly identical. Rather than invent six hues:
+
+     · the five RANKED tiers get an ordered ramp derived from ONE existing
+       token (--ai-border-primary mixed toward the paper), so they read as a
+       rank rather than six unrelated categories;
+     · Sponsor is not a rank, so it reuses the gold that already means
+       sponsorship on this card (the ★) — one hue, one meaning;
+     · Standard stays unmarked, so the exceptional tables are the ones that
+       stand out;
+     · and the tier LABEL is always rendered, so tier is never colour-only.
+
+   Gold / Silver / Bronze are named by colour, so if the designer wants literal
+   metallics that is 3+ new DS tokens and a decision about competing with the
+   six role colours already on the card. Flagged, not silently invented.
+   ========================================================================== */
+
+.sp-table--tier-head    { border-left-color: var(--ai-border-primary); }
+.sp-table--tier-vip     { border-left-color: color-mix(in srgb, var(--ai-border-primary) 80%, var(--ai-surface-primary)); }
+.sp-table--tier-gold    { border-left-color: color-mix(in srgb, var(--ai-border-primary) 62%, var(--ai-surface-primary)); }
+.sp-table--tier-silver  { border-left-color: color-mix(in srgb, var(--ai-border-primary) 44%, var(--ai-surface-primary)); }
+.sp-table--tier-bronze  { border-left-color: color-mix(in srgb, var(--ai-border-primary) 26%, var(--ai-surface-primary)); }
+.sp-table--tier-sponsor { border-left-color: var(--ai-surface-warning); }
+
+/* ── Account lookup (Sponsor field) ─────────────────────────────────────── */
+
+.sp-lookup { position: relative; }
+
+.sp-lookup__menu {
+  position: absolute;
+  z-index: 5;
+  top: calc(100% + var(--ai-spacing-2));
+  left: 0;
+  right: 0;
+  max-height: 12rem; /* 192px — a scannable handful, then scroll */
+  overflow-y: auto;
+  padding: var(--ai-spacing-2);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  background: var(--ai-surface-primary);
+  box-shadow: var(--ai-shadow-md);
+  scrollbar-width: thin;
+}
+
+.sp-lookup__item {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  width: 100%;
+  padding: var(--ai-spacing-3);
+  border: none;
+  border-radius: var(--ai-radius-sm);
+  background: none;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-primary);
+  text-align: left;
+  cursor: pointer;
+}
+
+.sp-lookup__item:hover { background: var(--ai-surface-minimal); }
+
+.sp-lookup__item svg,
+.sp-lookup__item [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-surface-warning);
+}
+
+.sp-lookup__none {
+  padding: var(--ai-spacing-3);
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  color: var(--ai-text-contrast);
+}
+
+/* The chosen sponsor, shown as a removable chip below the field */
+.sp-lookup__chosen {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  margin-top: var(--ai-spacing-2);
+  padding: var(--ai-spacing-2) var(--ai-spacing-3);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  background: var(--ai-surface-minimal);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-primary);
+  width: fit-content;
+}
+
+.sp-lookup__chosen svg,
+.sp-lookup__chosen [data-lucide] {
+  width: var(--ai-icon-size-xs);
+  height: var(--ai-icon-size-xs);
+  color: var(--ai-surface-warning);
+}
+
+/* ── Capacity note ──────────────────────────────────────────────────────
+   Data-driven: states the current occupancy and what a reduction would do.
+   Turns into a warning once the entered capacity is below the seated count. */
+
+.sp-capacity__note {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-contrast);
+}
+
+.sp-capacity__note--warn {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ai-spacing-3);
+  padding: var(--ai-spacing-3) var(--ai-spacing-4);
+  border: 1px solid var(--ai-border-warning);
+  border-radius: var(--ai-radius-md);
+  background: var(--ai-surface-warning-soft);
+  color: var(--ai-text-warning);
+  font-weight: var(--ai-font-medium);
+}
+
+.sp-capacity__note--warn svg,
+.sp-capacity__note--warn [data-lucide] {
+  flex: none;
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* Seats + Shape share a row, and the note spans beneath them */
+.sp-tableform__row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ai-spacing-4);
+}
+
+
+/* ==========================================================================
+   TASK-342308 — Table types lookup (tier label + colour + sort order)
+   --------------------------------------------------------------------------
+   THIS RESOLVES THE TIER TOKEN GAP. Tier colours are chosen by the client in a
+   colour picker, so they are CLIENT DATA — the same status as the Event
+   Builder's client brand — not design-system tokens. The DS therefore needs no
+   metallic Gold/Silver/Bronze tokens, and the interim neutral ramp built for
+   TASK-342307 is replaced by the configured value, carried per card as
+   --sp-tier-colour.
+
+   The tier LABEL still always renders. A client-picked colour has no contrast
+   guarantee, can collide with the role-dot hues, and vanishes in a mono
+   Export PDF — the label is what keeps tier legible in all three cases.
+   ========================================================================== */
+
+/* ── CARD LEFT EDGE — every card, every state (moved here 2026-08-04) ─────────
+
+   These two rules together guarantee a 3px left edge on every card: the tier
+   colour when one is painted, brand when an untiered card is open, and a neutral
+   frame-coloured edge otherwise. Previously the untiered rule was scoped
+   `.sp-shell` in SeatingPlannerShell.css, which only 4 of the 36 card-bearing
+   states load — so 32 of them had no edge at all.
+
+   THE FALLBACK USED TO BE `transparent`, AND THAT WAS THE REAL BUG. `--sp-tier-colour`
+   is painted at runtime by SeatingPlannerTableTypes.js, which the slimmed capture
+   states deliberately do not load. So every tiered card there resolved to
+   transparent — and because `[data-sp-tier]` (0,2,0) outranks `.sp-table--selected`
+   (0,1,0) and sits later in this file, the OPEN table lost its brand edge too. The
+   ~32 Figma frames captured from those states show the tier system as invisible.
+   A neutral fallback makes an unpainted tier look like an untiered card instead of
+   vanishing.
+
+   The tier colour outranking the selected state on this edge is DELIBERATE (an open
+   Gold table reads gold on the left, brand on the other three sides) — that ordering
+   is kept; only the unpainted case changes.
+
+   Specificity, for whoever edits next:
+     .sp-table                                                (0,1,0) transparent base
+     .sp-table--selected                                      (0,1,0) brand
+     .sp-table[data-sp-tier]                                   (0,2,0) tier or neutral
+     .sp-table:not([data-sp-tier]):not(.sp-table--selected)    (0,3,0) neutral
+   The :not() chain is (0,3,0) but excludes selected cards, so it never steals the
+   brand edge from an open untiered table.
+   ──────────────────────────────────────────────────────────────────────────── */
+
+.sp-table[data-sp-tier] { border-left-color: var(--sp-tier-colour, var(--ai-border-secondary)); }
+
+.sp-table:not([data-sp-tier]):not(.sp-table--selected) {
+  border-left-color: var(--ai-border-secondary);
+}
+
+/* ── Table types manager ────────────────────────────────────────────────── */
+
+.sp-types__intro {
+  margin: 0;
+  padding: var(--ai-spacing-5) var(--ai-spacing-6) var(--ai-spacing-4);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-contrast);
+}
+
+.sp-types__list {
+  max-height: 22rem; /* 352px — 7 seed rows without the dialog growing off-screen */
+  overflow-y: auto;
+  padding: 0 var(--ai-spacing-6);
+  scrollbar-width: thin;
+}
+
+.sp-types__row {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  padding: var(--ai-spacing-3) 0;
+  border-bottom: 1px solid var(--ai-border-secondary);
+}
+
+.sp-types__row:last-child { border-bottom: none; }
+
+/* The swatch IS the colour input — no separate trigger to explain */
+.sp-types__swatch {
+  flex: none;
+  position: relative;
+  width: var(--ai-spacing-9);
+  height: var(--ai-spacing-8);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-sm);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.sp-types__swatch input[type="color"] {
+  position: absolute;
+  inset: calc(-1 * var(--ai-spacing-2));
+  width: calc(100% + var(--ai-spacing-4));
+  height: calc(100% + var(--ai-spacing-4));
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.sp-types__row .input { flex: 1; min-width: 0; }
+
+/* Standard can't be removed — say why instead of showing a dead control */
+.sp-types__default {
+  flex: none;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-contrast);
+}
+
+.sp-types__reorder {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-px);
+}
+
+.sp-types__reorder .sp-iconbtn {
+  height: var(--ai-spacing-4);
+  border-radius: var(--ai-radius-sm);
+}
+
+/* ── Add-a-type row ─────────────────────────────────────────────────────── */
+
+.sp-types__add {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--ai-spacing-4);
+  padding: var(--ai-spacing-5) var(--ai-spacing-6);
+  border-top: 1px solid var(--ai-border-secondary);
+  background: var(--ai-surface-minimal);
+}
+
+.sp-types__add-name { flex: 1; min-width: 0; }
+
+.sp-types__add-colour {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-2);
+}
+
+.sp-types__label {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-secondary);
+}
+
+
+/* ==========================================================================
+   TASK-342309 — Assign person to a seat (popup)
+   --------------------------------------------------------------------------
+   Opened from an empty seat's "Assign" button, and the documented fallback for
+   drag-and-drop (TASK-344759) — which is why it has to work on every viewport:
+   HTML5 drag fails on touch and keyboard users cannot drag at all.
+
+   The list is grouped by SOURCE, not by role: "Event attendees" are people
+   already on the guest list and currently unassigned (read live from the tray,
+   so the popup and the tray can never disagree), "CRM contacts" are people not
+   yet on the guest list — seating one of those adds them to the event.
+
+   A row commits on click. There is deliberately no Save footer: with a footer
+   the row click would only be a selection, which is the extra click the mock
+   removes. Manual guests are the exception — they need Name/Company/Role
+   first, so that row has its own Add button.
+   ========================================================================== */
+
+.sp-assign__help {
+  margin: var(--ai-spacing-3) 0 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-contrast);
+}
+
+/* The list scrolls, not the modal body: the search field above it and the guest
+   row below it have to stay put. 360px is the height .modal__body--scroll
+   uses. */
+.sp-assign__results {
+  max-height: 360px;
+  overflow-y: auto;
+  margin-top: var(--ai-spacing-5);
+  scrollbar-width: thin;
+}
+
+.sp-assign__results::-webkit-scrollbar {
+  width: 6px; /* optical value, as in patterns/Modal */
+}
+
+.sp-assign__results::-webkit-scrollbar-thumb {
+  border-radius: var(--ai-radius-full);
+  background: var(--ai-border-secondary);
+}
+
+/* Source heading — same uppercase micro-label as the tier text */
+.sp-assign__group {
+  margin: var(--ai-spacing-5) 0 var(--ai-spacing-2);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-bold);
+  letter-spacing: var(--ai-tracking-7);
+  text-transform: uppercase;
+  color: var(--ai-text-contrast);
+}
+
+.sp-assign__group:first-child { margin-top: 0; }
+
+.sp-assign__row {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  width: 100%;
+  padding: var(--ai-spacing-3);
+  border: none;
+  border-radius: var(--ai-radius-md);
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sp-assign__row:hover { background: var(--ai-surface-minimal); }
+
+.sp-assign__row:focus-visible {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: -2px;
+}
+
+.sp-assign__name {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sp-assign__meta {
+  flex: none;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  color: var(--ai-text-contrast);
+}
+
+/* No match — the term is almost certainly a guest who isn't in the system, so
+   offer to carry it straight into the guest fields instead of retyping it. */
+.sp-assign__none {
+  padding: var(--ai-spacing-5) var(--ai-spacing-3);
+  text-align: center;
+}
+
+.sp-assign__none p {
+  margin: 0 0 var(--ai-spacing-4);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-contrast);
+}
+
+.sp-assign__none strong { color: var(--ai-text-primary); }
+
+/* ── Add a guest manually ───────────────────────────────────────────────── */
+
+.sp-assign__manual {
+  margin-top: var(--ai-spacing-5);
+  padding-top: var(--ai-spacing-5);
+  border-top: 1px solid var(--ai-border-secondary);
+}
+
+.sp-assign__hint {
+  margin: 0 0 var(--ai-spacing-4);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-contrast);
+}
+
+/* Name + Company share the top row; Role + Add sit beneath, so nothing is
+   squeezed below its usable width at the modal's default 512px. */
+.sp-assign__manual-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ai-spacing-3);
+}
+
+.sp-assign__manual-foot {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--ai-spacing-3);
+  margin-top: var(--ai-spacing-3);
+}
+
+.sp-assign__manual-foot .sp-assign__role { flex: 1; min-width: 0; }
+.sp-assign__manual-foot .sel { width: 100%; }
+.sp-assign__manual-foot .btn { flex: none; }
+
+
+/* ==========================================================================
+   TASK-351550 — Unassigned pool (right column)
+   --------------------------------------------------------------------------
+   The shell (344753) rendered this block; this task makes it DERIVED. The pool
+   is not a list that only ever grows — it is
+   "the event's people minus everyone seated", recomputed on every change. Which
+   is why the four earlier return paths (unseat, delete table, delete plan,
+   reduce capacity) no longer need to push a row: the person stops being seated,
+   so the next derive brings them back BY NAME.
+
+   Two additions the brief and the reference don't cover:
+     · the list needed a class rather than an inline margin on the container
+     · an empty state — "0 unassigned" over an empty box reads as broken, and a
+       fully-seated event is a success worth saying out loud
+   ========================================================================== */
+
+.sp-tray__list {
+  margin-top: var(--ai-spacing-4);
+}
+
+.sp-tray__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  margin-top: var(--ai-spacing-4);
+  padding: var(--ai-spacing-7) var(--ai-spacing-5);
+  border: 1px dashed var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  text-align: center;
+}
+
+/* There is no --ai-icon-success token; the DS carries success only as
+   surface/text/border. Using --ai-text-success on the icon follows the pattern
+   .sp-capacity__note--warn already set with --ai-text-warning. Flagged in the
+   handover rather than invented as a new token. */
+.sp-tray__empty svg,
+.sp-tray__empty [data-lucide] {
+  width: var(--ai-icon-size-md);
+  height: var(--ai-icon-size-md);
+  color: var(--ai-text-success);
+}
+
+.sp-tray__empty-title {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-primary);
+}
+
+.sp-tray__empty-desc {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-contrast);
+}
+
+/* "No match" — a filtered-out pool is not the same as an empty one */
+.sp-tray__none {
+  margin: var(--ai-spacing-4) 0 0;
+  padding: var(--ai-spacing-4) var(--ai-spacing-3);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-contrast);
+  text-align: center;
+}
+
+.sp-tray__none strong { color: var(--ai-text-primary); }
+
+
+/* ==========================================================================
+   TASK-344759 — Drag to seat, and the tap path that replaces it
+   --------------------------------------------------------------------------
+   The reference for this task shows the seat panel with no drag visuals at all,
+   so every state below is a design decision, not a transcription: what a picked
+   person looks like, what a valid drop target looks like, how a swap is
+   distinguished from a fill, and how a full table refuses.
+
+   ONE OPERATION, TWO INPUT METHODS. The brief asks how this works on mobile,
+   where drag is impossible. The answer is that drag is not the mechanism — it is
+   an accelerator for one: PICK, then PLACE. Tap a person (or press Enter on
+   them) to pick them up, then tap a seat, a table, or the pool to place them.
+   Dragging runs the same four placements. That also covers keyboard users, who
+   cannot drag either, so the tap path is not a mobile concession — it is the
+   accessible path, and drag is the shortcut.
+
+   Colour discipline continues: brand = the thing you are acting on, success =
+   a legal destination, error = a refusal. No new hues.
+   ========================================================================== */
+
+/* The person being moved — dimmed, because they are "in the air" */
+.sp-drag-source {
+  opacity: 0.4;
+}
+
+/* Picked up by tap/keyboard. Unlike a drag there is no cursor to follow, so the
+   row has to hold the state visibly until it is placed or cancelled. */
+.sp-picked {
+  border-color: var(--ai-border-brand);
+  box-shadow: 0 0 0 1px var(--ai-border-brand);
+}
+
+/* A legal destination */
+.sp-drop {
+  border-color: var(--ai-border-success);
+  background: var(--ai-surface-success-soft);
+}
+
+/* An occupied seat: the two people exchange places, which is a different
+   promise from filling an empty seat, so it gets its own label. */
+.sp-drop--swap::after {
+  content: 'Swap';
+  margin-left: auto;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-semibold);
+  letter-spacing: var(--ai-tracking-7);
+  text-transform: uppercase;
+  color: var(--ai-text-success);
+}
+
+/* A refusal — a full table, or the pool when the person is already unassigned */
+.sp-drop--reject {
+  border-color: var(--ai-border-error);
+  background: var(--ai-surface-error-soft);
+  cursor: not-allowed;
+}
+
+.sp-drop--reject::after {
+  content: attr(data-sp-reject);
+  margin-left: auto;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-error);
+}
+
+/* The pool is a drop target for unseating, so it needs a visible boundary while
+   something is in the air — otherwise there is nothing to aim at. */
+.sp-panel.sp-drop {
+  border-color: var(--ai-border-success);
+}
+
+/* ── The placement bar: what pick-then-place uses instead of a cursor ────── */
+
+.sp-place {
+  position: fixed;
+  left: 50%;
+  bottom: var(--ai-spacing-6);
+  transform: translateX(-50%);
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-4);
+  max-width: calc(100% - var(--ai-spacing-7));
+  padding: var(--ai-spacing-4) var(--ai-spacing-5);
+  border: 1px solid var(--ai-border-brand);
+  border-radius: var(--ai-radius-full);
+  background: var(--ai-surface-primary);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.sp-place[hidden] { display: none; }
+
+.sp-place__text {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-secondary);
+}
+
+.sp-place__text strong { color: var(--ai-text-primary); }
+
+.sp-place svg,
+.sp-place [data-lucide] {
+  flex: none;
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-brand);
+}
+
+/* Rows are keyboard-operable, so they need a focus ring of their own */
+.sp-person:focus-visible,
+.sp-seat:focus-visible {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: 2px;
+}
+
+
+/* ==========================================================================
+   TASK-344760 — Room layout (attach a floor plan to a plan)
+   --------------------------------------------------------------------------
+   WHAT THIS TASK IS NOT: a spatial seat-map editor. The shell's notes assumed
+   "Room layout" meant dragging tables around a floor plan; the brief settles it
+   — it attaches a FILE (PDF or image) to the SeatingPlan, previews it, replaces
+   or removes it. The tables grid stays a list. That closes an open question from
+   TASK-344753.
+
+   The dropzone is the DS DragDropFile component; only the preview, the document
+   card and the file meta row are new here. The reference shows the empty state
+   only, so the attached states are designed rather than transcribed.
+   ========================================================================== */
+
+/* The uploaded image, shown at its own aspect ratio */
+.sp-layout__preview {
+  display: block;
+  width: 100%;
+  max-height: var(--ai-size-7); /* 384px */
+  object-fit: contain;
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  background: var(--ai-surface-minimal);
+}
+
+/* A PDF can't be shown as an image, so it gets a document card instead of a
+   fake thumbnail — see the handover: real in-app preview needs a PDF viewer. */
+.sp-layout__doc {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-4);
+  padding: var(--ai-spacing-6);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  background: var(--ai-surface-minimal);
+}
+
+.sp-layout__doc svg,
+.sp-layout__doc [data-lucide] {
+  flex: none;
+  width: var(--ai-icon-size-xl);
+  height: var(--ai-icon-size-xl);
+  color: var(--ai-icon-secondary);
+}
+
+.sp-layout__doc-main { flex: 1; min-width: 0; }
+
+/* Filename + size, under the preview */
+.sp-layout__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  margin-top: var(--ai-spacing-4);
+}
+
+.sp-layout__name {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sp-layout__size {
+  flex: none;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  color: var(--ai-text-contrast);
+}
+
+.sp-layout__hint {
+  margin: var(--ai-spacing-4) 0 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-contrast);
+}
+
+/* Whether a plan HAS a layout is otherwise invisible until you open the popup,
+   so the toolbar button carries a dot. Not in the reference — an addition. */
+.sp-toolbar [data-sp-action="room-layout"][data-sp-has-layout="true"]::after {
+  content: '';
+  width: var(--ai-spacing-2);
+  height: var(--ai-spacing-2);
+  border-radius: var(--ai-radius-full);
+  background: var(--ai-surface-success);
+}
+
+/* The plan name in the dialog title, as the reference shows it — lighter than
+   "Room layout" so the title reads as heading + context. No DS equivalent. */
+.sp-layout__plan {
+  font-weight: var(--ai-font-regular);
+  color: var(--ai-text-contrast);
+}
+
+
+/* ==========================================================================
+   TASK-342305 — Export the plan (preview, then download)
+   --------------------------------------------------------------------------
+   The reference is a DOCUMENT preview, not a spreadsheet grid: the event name,
+   a meta line, then each table with a numbered list of its occupants. That is
+   what a PDF will look like, so that is what the PDF preview shows.
+
+   THE PREVIEW FOLLOWS THE FORMAT. A CSV or an .xlsx is not a document — it is
+   the brief's six columns (Table, Type, Seat, Name, Company, Role), so those
+   two preview as a grid using the DS Table component. Showing a document
+   preview for a CSV would misrepresent the file you are about to get.
+   ========================================================================== */
+
+/* The "paper" — deliberately plainer than app chrome, because it stands in for
+   a printed page rather than a screen.
+   NOTE the selectors below are scoped to .sp-export__doc: patterns/Modal styles
+   `.modal__body p`, which is two classes and outranks a lone element class, so a
+   single-class rule here silently loses its size, weight and colour. */
+.sp-export__doc {
+  padding: var(--ai-spacing-6);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  background: var(--ai-surface-primary);
+}
+
+.sp-export__doc .sp-export__title {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-md);
+  font-weight: var(--ai-font-bold);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+}
+
+.sp-export__doc .sp-export__meta {
+  margin: var(--ai-spacing-2) 0 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-contrast);
+}
+
+.sp-export__doc .sp-export__table {
+  margin: var(--ai-spacing-6) 0 var(--ai-spacing-3);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-sm);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-primary);
+}
+
+/* the fill count and the tier sit beside the table name, quieter than it */
+.sp-export__doc .sp-export__table span {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-regular);
+  color: var(--ai-text-contrast);
+}
+
+.sp-export__list {
+  margin: 0;
+  padding-left: var(--ai-spacing-6);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-lg);
+  color: var(--ai-text-primary);
+}
+
+/* Role in brackets after the name, as the reference has it. Muted, because the
+   name is the thing you are scanning for. */
+.sp-export__role { color: var(--ai-text-secondary); }
+
+.sp-export__doc .sp-export__empty {
+  margin: var(--ai-spacing-3) 0 0;
+  padding-left: var(--ai-spacing-6);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-style: italic;
+  color: var(--ai-text-contrast);
+}
+
+/* Which format you are about to download, above the preview */
+.modal__body .sp-export__format {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  margin: 0 0 var(--ai-spacing-5);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-contrast);
+}
+
+.sp-export__format svg,
+.sp-export__format [data-lucide] {
+  flex: none;
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-secondary);
+}
+
+.sp-export__format strong { color: var(--ai-text-primary); }
+
+/* The grid preview (CSV / Excel) scrolls inside the modal body */
+.sp-export__grid {
+  max-height: var(--ai-size-7); /* 384px */
+  overflow: auto;
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  scrollbar-width: thin;
+}
+
+.sp-export__doc-scroll {
+  max-height: var(--ai-size-7);
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+/* ============================================================================
+   PLANS ACTIONS — abbreviate the labels below --ai-bp-sm (Mark, 2026-08-03)
+   ----------------------------------------------------------------------------
+   "New plan" / "Copy plans" become "New" / "Copy" under 640px, where the plans
+   action row is the widest thing in the appbar. The droppable word is a span
+   inside the button rather than two swapped labels, so the words have one source
+   of truth and cannot drift apart.
+
+   The buttons carry an explicit aria-label with the FULL text at every width, so
+   the abbreviation is visual only — a screen reader still hears "New plan". WCAG
+   2.5.3 (Label in Name) holds because the visible word is contained in the
+   accessible name.
+
+   px rather than var(--ai-bp-sm), per CLAUDE.md §2: @media cannot read custom
+   properties. 639 = 640 - 1, the width below the sm breakpoint.
+   ============================================================================ */
+
+@media (max-width: 639px) {
+  .sp-plans__btn-word { display: none; }
+}

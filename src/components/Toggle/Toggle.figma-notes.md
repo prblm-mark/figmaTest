@@ -172,3 +172,57 @@ The size-agnostic `--disabled` still composes if a consumer ever needs it.
 inset against its own 2.5px left inset. Every other size in this component uses a symmetric
 `calc(100% - knob - 2.5px)`, which gives 13.5px here. Internal consistency was preferred over
 reproducing what reads as a Figma nudge; if the asymmetry is deliberate, this is the line to change.
+
+## `Toggle.js` — the component owns its own flip, from 2026-08-26
+
+Toggle shipped **CSS-only** until now, which meant it did not work: a `role="switch"` whose
+`aria-checked` never changes is a broken control. Every consumer had re-implemented the same
+three-line flip inline — **nine copies**:
+
+| Page | Note |
+|---|---|
+| `Toggle.html` | its own demo |
+| `Dropdown.html` | commented "so .toggle--active flips and the linked reveal fires" |
+| `StyleSettings.html` | |
+| `TableListing.html` | added the day before this landed |
+| `HeaderGroup.html` | delegated, for toggles injected after parse |
+| `AiChat.html` ×2 | flip **plus** side effects (borders, suggestions) |
+| `ControlHub.html` | commented "**Toggle has no standalone JS file**; consumers wire .toggle clicks inline" |
+| `ControlScreen.html` | same comment |
+
+Two component JS files made it worse by *assuming* the behaviour existed: `Dropdown.js` and
+`HeaderGroup.js` both carry comments about "the toggle's own click handler". Those comments are now
+true.
+
+**Behaviour.** Click flips `.toggle--active`, syncs `aria-checked`, then emits `toggle:change`
+(bubbles, `detail { active }`). `.toggle--disabled`, `aria-disabled="true"` and a disabled `<button>`
+are inert. Keyboard is free — it is a real `<button>`, so Space and Enter fire click.
+
+**Two design choices, both taken from what those nine copies had learned:**
+
+1. **Delegated at the document**, not bound per element. Three of the nine had already converged on
+   delegation because the user-menu Dropdown injects toggles after parse, which a
+   `querySelectorAll` pass at `DOMContentLoaded` never sees.
+2. **Capture phase.** A delegated bubble listener runs *after* listeners on the element itself, so a
+   consumer reading `.toggle--active` synchronously in its own handler would see the pre-click state.
+   Capture runs document-first, so the flip is applied before any element handler reads it.
+   `Dropdown.js` and `HeaderGroup.js` both hedge with a `setTimeout` for exactly that reason; they no
+   longer need to, though the hedge is harmless and was left alone.
+
+Including the script twice is guarded and cannot double-flip.
+
+### Verified after the change
+
+All eight consumer pages: **flips exactly once** per click (not twice — the regression to fear when
+adding self-init while inline copies remain), two `toggle:change` events for two clicks, and
+disabled toggles inert. Side effects that used to live in the flip handlers still work:
+
+- **AiChat** — `chat-header--no-border` and the suggestions row, both directions. These are the two
+  handlers that were converted to `toggle:change` listeners rather than deleted.
+- **Dropdown** and **HeaderGroup** — reveal rows (`data-reveal-by`) sync, `SYNCED=true`.
+- **HeaderGroup** — the icon-nav group class syncs.
+
+> **Test over HTTP, not `file://`.** AiChat, Dropdown, ControlHub and ControlScreen load
+> `Dropdown.js` as an ES module, and modules are blocked over `file://` — the module never runs, so
+> every listener in it silently fails to attach. Verifying AiChat's side effects on `file://` showed
+> them dead when they were fine; `python3 -m http.server` was needed to see the truth.

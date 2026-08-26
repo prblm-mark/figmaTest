@@ -1,0 +1,226 @@
+/* ============================================================================
+   Seating Planner — toolbar options review board (2026-08-03)
+   ----------------------------------------------------------------------------
+   Styles for toolbar-compare.html only. Like states.html this is NAVIGATION,
+   not a screen: it is never captured to Figma, so it does not need to be a
+   pixel match for anything — but it still uses only --ai-* tokens, because a
+   review page that breaks the rules is a bad advert for them.
+
+   The iframe width is a deliberate hardcode: 390px is a device width being
+   reviewed, i.e. test data, not a design value. Same for the frame height.
+   ============================================================================ */
+
+.cmp {
+  max-width: var(--ai-size-13);
+  margin: 0 auto;
+  padding: var(--ai-spacing-7) var(--ai-spacing-5) var(--ai-spacing-13);
+}
+
+.cmp__head { margin-bottom: var(--ai-spacing-7); }
+
+.cmp__title {
+  margin: 0 0 var(--ai-spacing-3);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fluid-xl);
+  font-weight: var(--ai-font-bold);
+  color: var(--ai-text-primary);
+}
+
+.cmp__lede,
+.cmp__p {
+  margin: 0 0 var(--ai-spacing-4);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-sm);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-secondary);
+}
+
+.cmp__lede { font-size: var(--ai-font-fixed-md); }
+
+.cmp__p--note {
+  padding: var(--ai-spacing-4);
+  border-left: 3px solid var(--ai-border-brand);
+  border-radius: var(--ai-radius-sm);
+  background: var(--ai-surface-secondary);
+}
+
+.cmp__section { margin-bottom: var(--ai-spacing-9); }
+
+.cmp__h2 {
+  margin: 0 0 var(--ai-spacing-4);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-lg);
+  font-weight: var(--ai-font-bold);
+  color: var(--ai-text-primary);
+}
+
+.cmp__h3 {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  margin: 0 0 var(--ai-spacing-3);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-md);
+  font-weight: var(--ai-font-bold);
+  color: var(--ai-text-primary);
+}
+
+/* ---------------------------------------------------------------- the table */
+
+/* Wide content scrolls inside its own container rather than the page. */
+.cmp__tablewrap {
+  overflow-x: auto;
+  margin-bottom: var(--ai-spacing-4);
+}
+
+.cmp__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+}
+
+.cmp__table th,
+.cmp__table td {
+  padding: var(--ai-spacing-3) var(--ai-spacing-4);
+  border-bottom: 1px solid var(--ai-border-secondary);
+  text-align: left;
+  white-space: nowrap;
+  color: var(--ai-text-secondary);
+}
+
+.cmp__table thead th {
+  font-weight: var(--ai-font-bold);
+  color: var(--ai-text-primary);
+}
+
+.cmp__table tbody th {
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-primary);
+}
+
+.cmp__row--good td,
+.cmp__row--good th { background: var(--ai-surface-success-soft); }
+
+.cmp__dim { color: var(--ai-text-contrast);   /* the DS has no -tertiary; -contrast IS the dimmer text semantic */ }
+
+/* --------------------------------------------------------------- the frames */
+
+/* THE FRAMES ARE PINNED TO A REAL DEVICE WIDTH, and this is the whole point.
+
+   The first version used `grid-template-columns: repeat(auto-fit, minmax(min(390px,
+   100%), 1fr))`, which makes 390px the MINIMUM and lets each frame stretch to fill
+   the row. Measured, they rendered at 534px — 144px more room than a real phone, so
+   every option looked better than it is. Mark: "otherwise the ui is a false economy
+   as the screen real-estate is incorrect." Exactly right, and it inverted the
+   recommendation once corrected.
+
+   So: flex with a FIXED width per frame, never 1fr. Frames wrap to the next row
+   rather than growing. --cmp-w is set by the width switcher. */
+
+.cmp__grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ai-spacing-5);
+}
+
+.cmp__frame {
+  flex: none;
+  width: max-content;
+  margin: 0;
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  overflow: hidden;
+  background: var(--ai-surface-primary);
+}
+
+/* ------------------------------------------------------------ width switcher */
+
+.cmp__widths {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  margin-bottom: var(--ai-spacing-5);
+}
+
+.cmp__widths-label {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-secondary);
+}
+
+.cmp__wbtn[aria-pressed="true"] {
+  border-color: var(--ai-border-brand);
+  color: var(--ai-text-brand);
+}
+
+.cmp__measured {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  color: var(--ai-text-contrast);
+}
+
+.cmp__cap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ai-spacing-3);
+  padding: var(--ai-spacing-3) var(--ai-spacing-4);
+  border-bottom: 1px solid var(--ai-border-secondary);
+}
+
+.cmp__link {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-brand);
+}
+
+/* A device viewport under review — test data, not design values. 844 is the
+   iPhone 14/15/16 logical height and is held constant across widths so the
+   comparison only varies one axis. */
+.cmp__iframe {
+  display: block;
+  width: var(--cmp-w, 390px);
+  height: 844px;
+  border: 0;
+}
+
+/* -------------------------------------------------------------- the options */
+
+.cmp__opts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+  gap: var(--ai-spacing-5);
+}
+
+.cmp__opt {
+  padding: var(--ai-spacing-5);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  background: var(--ai-surface-primary);
+}
+
+.cmp__opt--rec { border-color: var(--ai-border-brand); }
+
+.cmp__list {
+  margin: 0;
+  padding-left: var(--ai-spacing-5);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-secondary);
+}
+
+.cmp__list li + li { margin-top: var(--ai-spacing-3); }
+
+.cmp code {
+  padding: 0 var(--ai-spacing-1);
+  border-radius: var(--ai-radius-sm);
+  background: var(--ai-surface-secondary);
+  /* TOKEN GAP: no mono family in the DS — logged in SeatingPlanner.token-gaps.md */
+  font-family: monospace;
+  font-size: 0.9em;
+}

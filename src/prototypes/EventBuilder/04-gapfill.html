@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Event Builder · 4 Guided gap-filling — Prototype</title>
+
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/SegmentedControl/SegmentedControl.css">
+  <link rel="stylesheet" href="../../components/Badge/Badge.css">
+  <link rel="stylesheet" href="../../components/Checkbox/Checkbox.css">
+  <link rel="stylesheet" href="../../components/Avatar/Avatar.css">
+  <link rel="stylesheet" href="../../components/Portraits/Portraits.css">
+  <link rel="stylesheet" href="../../components/Input/Input.css">
+  <link rel="stylesheet" href="EventBuilder.css">
+</head>
+<body class="eb-body">
+
+  <!-- ══════════════════════════════ TOP BAR ══════════════════════════════ -->
+  <header class="eb-topbar">
+    <div class="eb-topbar__brand">
+      <span class="eb-topbar__logo"><i data-lucide="calendar-plus" aria-hidden="true"></i></span>
+      <div class="eb-topbar__meta">
+        <p class="eb-crumb">
+          <span>Affino</span>
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+          <span>Events</span>
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+          <span>TPF Club</span>
+        </p>
+        <h1 class="eb-topbar__title">Card &amp; Payments Awards UK 2027</h1>
+      </div>
+    </div>
+
+    <span class="eb-status">
+      <span class="eb-status__dot"></span>
+      Draft
+    </span>
+
+    <div class="eb-topbar__spacer"></div>
+
+    <div class="seg-control" role="radiogroup" aria-label="Builder mode">
+      <button class="seg-control__btn seg-control__btn--active" type="button" role="radio" aria-checked="true">
+        <i data-lucide="layout-dashboard" aria-hidden="true"></i>
+        Build
+      </button>
+      <button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-eb-goto="07-advanced.html">
+        <i data-lucide="sliders-horizontal" aria-hidden="true"></i>
+        Fields
+      </button>
+    </div>
+
+    <span class="eb-topbar__divider"></span>
+
+    <div class="eb-topbar__actions">
+      <button class="btn btn--tertiary btn--sm" type="button" data-eb-goto="03-draft.html">
+        <i data-lucide="arrow-left" aria-hidden="true"></i>
+        Back to draft
+      </button>
+      <button class="btn btn--secondary btn--sm" type="button" data-eb-goto="05-blocks.html">Skip the rest</button>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════ SHELL ════════════════════════════════ -->
+  <div class="eb-shell">
+
+    <!-- ══════════════ RAIL ══════════════ -->
+    <aside class="eb-rail">
+      <div class="eb-rail__group">
+        <p class="eb-rail__title">
+          <span>Filling the gaps</span>
+          <span class="eb-rail__count">2 of 6</span>
+        </p>
+        <ul class="eb-rail__list">
+          <li><div class="eb-blockrow" data-eb-blockrow="hero">
+            <span class="eb-dot eb-dot--done"><i data-lucide="check" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Dress code</span>
+            <span class="eb-blockrow__note">Black tie</span>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-blockrow="overview">
+            <span class="eb-dot eb-dot--done"><i data-lucide="check" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Guest numbers</span>
+            <span class="eb-blockrow__note">1,200</span>
+          </div></li>
+          <li><div class="eb-blockrow eb-blockrow--active" data-eb-blockrow="judges">
+            <span class="eb-dot eb-dot--empty"></span>
+            <span class="eb-blockrow__label">Judging panel</span>
+            <span class="eb-blockrow__note">now</span>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-blockrow="signup">
+            <span class="eb-dot eb-dot--empty"></span>
+            <span class="eb-blockrow__label">Entry fee</span>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-blockrow="charity">
+            <span class="eb-dot eb-dot--empty"></span>
+            <span class="eb-blockrow__label">Charity partner</span>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-blockrow="winners">
+            <span class="eb-dot eb-dot--empty"></span>
+            <span class="eb-blockrow__label">Winners photos</span>
+          </div></li>
+        </ul>
+        <p class="eb-rail__hint">
+          These are only the things I couldn't work out from your brief. Everything else is already drafted.
+        </p>
+      </div>
+    </aside>
+
+    <!-- ══════════════ CANVAS — spotlight on the block being discussed ══════════════ -->
+    <main class="eb-canvas eb-canvas--spotlight">
+
+      <div class="eb-canvas__bar">
+        <i data-lucide="crosshair" aria-hidden="true"></i>
+        <span>Showing the block we're talking about: <strong>Judges</strong></span>
+        <div class="eb-canvas__bar-spacer"></div>
+        <span>2 of 6 answered</span>
+      </div>
+
+      <div class="eb-frame" data-eb-frame>
+        <div class="eb-frame__chrome">
+          <div class="eb-frame__dots">
+            <span class="eb-frame__dot"></span>
+            <span class="eb-frame__dot"></span>
+            <span class="eb-frame__dot"></span>
+          </div>
+          <span class="eb-frame__url">tpfclub.com/card-and-payments-awards-uk-2027</span>
+        </div>
+
+        <div class="eb-page" data-eb-page-body>
+
+          <section class="eb-block eb-hero" data-eb-block="hero" data-eb-label="Hero" data-eb-icon="image">
+            <p class="eb-hero__eyebrow"><i data-lucide="award" aria-hidden="true"></i> 22nd annual awards</p>
+            <h2 class="eb-hero__title">The Card &amp; Payments Awards UK 2027</h2>
+            <p class="eb-hero__strap">Independent. Respected. Recognised.</p>
+            <ul class="eb-hero__meta">
+              <li><i data-lucide="calendar" aria-hidden="true"></i> 4 February 2027</li>
+              <li><i data-lucide="shirt" aria-hidden="true"></i> Black tie</li>
+              <li><i data-lucide="users" aria-hidden="true"></i> 1,200 guests</li>
+            </ul>
+          </section>
+
+          <nav class="eb-etabs" aria-label="Event sections">
+            <button class="eb-etab" type="button" data-eb-etab="overview">Overview</button>
+            <button class="eb-etab eb-etab--active" type="button" data-eb-etab="judges">Judges</button>
+            <button class="eb-etab" type="button" data-eb-etab="sponsors">Sponsors</button>
+            <button class="eb-etab" type="button" data-eb-etab="faq">FAQs</button>
+          </nav>
+
+          <div data-eb-panel="overview" hidden>
+            <section class="eb-block eb-sect" data-eb-block="overview" data-eb-label="Overview" data-eb-icon="align-left">
+              <div class="eb-sect__head">
+                <p class="eb-sect__eyebrow">Overview</p>
+                <h3 class="eb-sect__title">The longest-running recognition programme in UK payments</h3>
+              </div>
+              <div class="eb-sect__body">
+                <p>Established in 2005, the Card &amp; Payments Awards celebrate the organisations shaping how Britain pays.</p>
+              </div>
+            </section>
+          </div>
+
+          <!-- ══ THE BLOCK UNDER DISCUSSION — spotlit ══ -->
+          <div data-eb-panel="judges">
+            <section class="eb-block eb-block--focus eb-sect"
+                     data-eb-block="judges" data-eb-label="Judges" data-eb-icon="gavel">
+              <span class="eb-block__tag"><i data-lucide="message-circle-question" aria-hidden="true"></i> We're filling this in</span>
+              <div class="eb-sect__head">
+                <p class="eb-sect__eyebrow">The panel</p>
+                <h3 class="eb-sect__title">2027 judging panel</h3>
+                <p class="eb-sect__lede">
+                  Sixteen independent judges from across the payments sector — none judge a category they compete in.
+                </p>
+              </div>
+              <div class="eb-people">
+                <div class="eb-person">
+                  <div class="avatar avatar--size-4"><img class="portrait" src="https://picsum.photos/seed/judge1/300" alt=""></div>
+                  <p class="eb-person__name">Priya Raman</p>
+                  <p class="eb-person__role">Head of Payments, Aurora Bank</p>
+                </div>
+                <div class="eb-person">
+                  <div class="avatar avatar--size-4"><img class="portrait" src="https://picsum.photos/seed/judge2/300" alt=""></div>
+                  <p class="eb-person__name">Daniel Osei</p>
+                  <p class="eb-person__role">Director, Meridian Consulting</p>
+                </div>
+                <div class="eb-person">
+                  <div class="avatar avatar--size-4"><img class="portrait" src="https://picsum.photos/seed/judge3/300" alt=""></div>
+                  <p class="eb-person__name">Helen Whitcombe</p>
+                  <p class="eb-person__role">CPO, Northgate Payments</p>
+                </div>
+                <div class="eb-person">
+                  <div class="avatar avatar--size-4 avatar--initials avatar--placeholder">?</div>
+                  <p class="eb-person__name">13 to confirm</p>
+                  <p class="eb-person__role">Answer opposite to import</p>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div data-eb-panel="sponsors" hidden>
+            <section class="eb-block eb-sect eb-sect--tint" data-eb-block="sponsors" data-eb-label="Sponsors" data-eb-icon="handshake">
+              <div class="eb-sect__head">
+                <p class="eb-sect__eyebrow">Our partners</p>
+                <h3 class="eb-sect__title">2027 sponsors</h3>
+              </div>
+              <div class="eb-logos">
+                <span class="eb-logo eb-logo--lg">FIS</span>
+                <span class="eb-logo">THALES</span>
+                <span class="eb-logo">VISA</span>
+              </div>
+            </section>
+          </div>
+
+          <div data-eb-panel="faq" hidden>
+            <section class="eb-block eb-sect" data-eb-block="faq" data-eb-label="FAQ" data-eb-icon="circle-help">
+              <div class="eb-sect__head">
+                <p class="eb-sect__eyebrow">Questions</p>
+                <h3 class="eb-sect__title">Frequently asked</h3>
+              </div>
+              <div class="eb-sect__body"><p>Five questions drafted from your brief.</p></div>
+            </section>
+          </div>
+
+        </div>
+      </div>
+    </main>
+
+    <!-- ══════════════ INSPECTOR — progress through the interview ══════════════ -->
+    <aside class="eb-inspector">
+      <div class="eb-inspector__head">
+        <span class="eb-inspector__head-icon"><i data-lucide="list-checks" aria-hidden="true"></i></span>
+        <div>
+          <p class="eb-inspector__eyebrow">Question 3 of 6</p>
+          <p class="eb-inspector__title">Judging panel</p>
+        </div>
+      </div>
+
+      <div class="eb-inspector__section">
+        <p class="eb-inspector__section-title">Why we're asking</p>
+        <p class="eb-field__help">
+          Your brief said "about 16 industry figures". The Judges block needs real people, and you
+          already have last year's panel in your CRM — so it's a question, not a data-entry job.
+        </p>
+      </div>
+
+      <div class="eb-inspector__section">
+        <p class="eb-inspector__section-title">What this writes to</p>
+        <ul class="eb-rail__list">
+          <li><div class="eb-blockrow">
+            <span class="eb-blockrow__icon"><i data-lucide="users" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Speakers field</span>
+          </div></li>
+          <li><div class="eb-blockrow">
+            <span class="eb-blockrow__icon"><i data-lucide="columns-3" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Max columns</span>
+            <span class="eb-blockrow__note">4</span>
+          </div></li>
+        </ul>
+        <p class="eb-field__help">
+          Exactly the same fields the current Advanced Event screen uses — no new storage.
+        </p>
+      </div>
+
+      <div class="eb-inspector__foot">
+        <button class="btn btn--secondary btn--sm eb-btn-block" type="button" data-eb-goto="07-advanced.html">
+          <i data-lucide="sliders-horizontal" aria-hidden="true"></i>
+          Edit these fields directly
+        </button>
+      </div>
+    </aside>
+
+    <!-- ══════════════ AI DOCK — one question at a time ══════════════ -->
+    <section class="eb-ai">
+      <div class="eb-ai__head">
+        <span class="eb-ai__badge"><i data-lucide="sparkles" aria-hidden="true"></i></span>
+        <p class="eb-ai__title">Event assistant</p>
+        <div class="eb-ai__spacer"></div>
+        <div class="eb-progress">
+          <span class="eb-progress__item eb-progress__item--done"><i data-lucide="check" aria-hidden="true"></i> Dress code</span>
+          <span class="eb-progress__item eb-progress__item--done"><i data-lucide="check" aria-hidden="true"></i> Guests</span>
+          <span class="eb-progress__item eb-progress__item--current">Judges</span>
+          <span class="eb-progress__item">Entry fee</span>
+          <span class="eb-progress__item">Charity</span>
+          <span class="eb-progress__item">Photos</span>
+        </div>
+      </div>
+
+      <div class="eb-ai__body">
+        <div class="eb-turn">
+          <span class="eb-turn__avatar"><i data-lucide="sparkles" aria-hidden="true"></i></span>
+          <div class="eb-turn__content">
+            <p class="eb-turn__text">
+              Who's judging in 2027? I found <strong>16 judges on your 2026 event</strong> in the CRM.
+              Tick the ones returning and I'll add them — or skip and pick them yourself later.
+            </p>
+
+            <!-- TODO(backend:EventBuilder): the judge list is hardcoded. Real version needs
+                 GET /api/crm/contacts?role=judge&event=2026 and writes the chosen ids to the
+                 event's speakers field. -->
+            <div class="eb-answer" data-backend-todo="eb-crm-picker">
+              <div class="eb-answer__list">
+                <label class="checkbox">
+                  <input type="checkbox" class="checkbox__input" checked>
+                  <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+                  <span class="checkbox__label">
+                    <span class="checkbox__label-text">Priya Raman</span>
+                    <span class="checkbox__helper">Head of Payments, Aurora Bank · judged 2024–2026</span>
+                  </span>
+                </label>
+                <label class="checkbox">
+                  <input type="checkbox" class="checkbox__input" checked>
+                  <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+                  <span class="checkbox__label">
+                    <span class="checkbox__label-text">Daniel Osei</span>
+                    <span class="checkbox__helper">Director, Meridian Consulting · judged 2026</span>
+                  </span>
+                </label>
+                <label class="checkbox">
+                  <input type="checkbox" class="checkbox__input" checked>
+                  <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+                  <span class="checkbox__label">
+                    <span class="checkbox__label-text">Helen Whitcombe</span>
+                    <span class="checkbox__helper">CPO, Northgate Payments · judged 2025–2026</span>
+                  </span>
+                </label>
+                <label class="checkbox">
+                  <input type="checkbox" class="checkbox__input">
+                  <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+                  <span class="checkbox__label">
+                    <span class="checkbox__label-text">Marcus Feld</span>
+                    <span class="checkbox__helper">Independent consultant · judged 2026 · now at a competing entrant</span>
+                  </span>
+                </label>
+                <label class="checkbox">
+                  <input type="checkbox" class="checkbox__input" checked>
+                  <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+                  <span class="checkbox__label">
+                    <span class="checkbox__label-text">Aisha Karim</span>
+                    <span class="checkbox__helper">VP Risk, Talos Network · judged 2026</span>
+                  </span>
+                </label>
+              </div>
+
+              <div class="eb-answer__actions">
+                <button class="btn btn--tertiary btn--xs" type="button">Select all 16</button>
+                <button class="btn btn--tertiary btn--xs" type="button">
+                  <i data-lucide="user-plus" aria-hidden="true"></i>
+                  Add someone new
+                </button>
+                <div class="eb-answer__spacer"></div>
+                <button class="btn btn--tertiary btn--xs" type="button">Skip for now</button>
+                <button class="btn btn--primary btn--xs" type="button" data-eb-goto="05-blocks.html">
+                  Add 12 judges
+                  <i data-lucide="arrow-right" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="eb-ai__foot eb-ai__foot--row">
+        <div class="eb-promptbar">
+          <span class="eb-promptbar__icon"><i data-lucide="sparkles" aria-hidden="true"></i></span>
+          <input class="eb-promptbar__input" type="text" data-eb-prompt
+                 aria-label="Answer in your own words"
+                 placeholder="Or just tell me — “same panel as last year but drop Marcus”">
+          <button class="btn btn--primary btn--sm btn--icon" type="button" aria-label="Send">
+            <i data-lucide="move-up" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>lucide.createIcons();</script>
+<script src="EventBuilder.js"></script>
+</body>
+</html>

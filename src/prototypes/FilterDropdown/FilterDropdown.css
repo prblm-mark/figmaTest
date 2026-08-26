@@ -1,0 +1,268 @@
+/* FilterDropdown prototype — alternatives for a filter-item dropdown that holds
+ * nested filters + a value picker. Prototype-only layout; all component visuals
+ * come from their own CSS. Uses only --ai-* tokens.
+ *
+ * Screens:
+ *   table-select.html  baseline (recreates the Figma reference)
+ *   checklist.html     compact faceted menu
+ *   two-pane.html      master-detail facet nav
+ *   accordion.html     grouped accordion sections
+ */
+
+/* ── Page frame ─────────────────────────────────────────── */
+body {
+  min-height: 100vh;
+  background: var(--ai-surface-secondary);
+  padding: var(--ai-spacing-9); /* 48px */
+  font-family: var(--ai-font-body);
+  color: var(--ai-text-primary);
+}
+
+.fd-stage {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.fd-stage__title {
+  margin: 0 0 var(--ai-spacing-2);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fluid-lg);
+  font-weight: var(--ai-font-bold);
+  color: var(--ai-text-primary);
+}
+
+.fd-stage__sub {
+  margin: 0 0 var(--ai-spacing-6);
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-secondary);
+}
+
+/* Alternative navigation between prototype screens */
+.fd-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ai-spacing-2);
+  margin-bottom: var(--ai-spacing-7);
+}
+
+/* ── Filter bar with the trigger chip ───────────────────── */
+.fd-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  margin-bottom: var(--ai-spacing-3);
+}
+
+/* ── Dropdown panel (the popover surface) ───────────────── */
+.fd-panel {
+  position: relative;
+  width: 640px;
+  max-width: 100%;
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-lg);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Small pointer connecting the panel to the trigger chip */
+.fd-panel::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 24px;
+  width: 12px;
+  height: 12px;
+  background: var(--ai-surface-primary);
+  border-top: 1px solid var(--ai-border-secondary);
+  border-left: 1px solid var(--ai-border-secondary);
+  transform: rotate(45deg);
+}
+
+.fd-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ai-spacing-3);
+  padding: var(--ai-spacing-5) var(--ai-spacing-6);
+  border-bottom: 1px solid var(--ai-border-secondary);
+}
+
+.fd-panel__title {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-md);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-primary);
+}
+
+.fd-panel__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-7);
+  height: var(--ai-spacing-7);
+  border: none;
+  background: transparent;
+  border-radius: var(--ai-radius-md);
+  color: var(--ai-icon-secondary);
+  cursor: pointer;
+}
+.fd-panel__close:hover { background: var(--ai-surface-secondary); }
+.fd-panel__close [data-lucide] { width: var(--ai-icon-size-md); height: var(--ai-icon-size-md); }
+
+/* Row of nested filter chips inside the panel */
+.fd-facets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ai-spacing-2);
+  padding: var(--ai-spacing-4) var(--ai-spacing-6);
+  border-bottom: 1px solid var(--ai-border-secondary);
+}
+
+/* Scrollable body */
+.fd-panel__body {
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+/* Sticky footer with Apply */
+.fd-panel__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ai-spacing-3);
+  padding: var(--ai-spacing-4) var(--ai-spacing-6);
+  border-top: 1px solid var(--ai-border-secondary);
+  background: var(--ai-surface-primary);
+}
+
+.fd-panel__footer .btn--primary { flex: 1; justify-content: center; }
+
+.fd-footer__meta {
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-secondary);
+  white-space: nowrap;
+}
+
+/* ── 1. Table-select (baseline) ─────────────────────────── */
+.fd-table-region { padding: 0; }
+.fd-table-region .datatables { border: none; border-radius: 0; box-shadow: none; }
+.fd-linkcell {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ai-icon-secondary);
+}
+.fd-linkcell [data-lucide] { width: var(--ai-icon-size-sm); height: var(--ai-icon-size-sm); }
+
+/* ── 2. Checklist (compact menu) ────────────────────────── */
+.fd-search-wrap { padding: var(--ai-spacing-4) var(--ai-spacing-6) 0; }
+.fd-checklist {
+  display: flex;
+  flex-direction: column;
+  padding: var(--ai-spacing-3) var(--ai-spacing-6);
+  gap: var(--ai-spacing-1);
+}
+.fd-check-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--ai-spacing-2) var(--ai-spacing-2);
+  border-radius: var(--ai-radius-md);
+}
+.fd-check-row:hover { background: var(--ai-surface-secondary); }
+.fd-check-row__meta {
+  font-size: var(--ai-font-fixed-2xs);
+  color: var(--ai-text-secondary);
+}
+.fd-checklist__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--ai-spacing-1) var(--ai-spacing-2) var(--ai-spacing-3);
+  border-bottom: 1px solid var(--ai-border-secondary);
+  margin-bottom: var(--ai-spacing-2);
+}
+.fd-checklist__count {
+  font-size: var(--ai-font-fixed-2xs);
+  color: var(--ai-text-secondary);
+}
+.fd-linkbtn {
+  border: none;
+  background: transparent;
+  padding: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-brand);
+  cursor: pointer;
+}
+.fd-linkbtn:hover { text-decoration: underline; }
+
+/* ── 3. Two-pane (master-detail) ────────────────────────── */
+.fd-twopane { display: flex; min-height: 320px; }
+.fd-rail {
+  flex: 0 0 200px;
+  border-right: 1px solid var(--ai-border-secondary);
+  padding: var(--ai-spacing-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-1);
+  background: var(--ai-surface-secondary);
+}
+.fd-rail__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ai-spacing-2);
+  padding: var(--ai-spacing-3) var(--ai-spacing-3);
+  border: none;
+  background: transparent;
+  border-radius: var(--ai-radius-md);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-secondary);
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+}
+.fd-rail__item:hover { background: var(--ai-surface-primary); }
+.fd-rail__item--active {
+  background: var(--ai-surface-primary);
+  color: var(--ai-text-primary);
+  font-weight: var(--ai-font-semibold);
+}
+.fd-rail__item [data-lucide] { width: var(--ai-icon-size-sm); height: var(--ai-icon-size-sm); }
+.fd-rail__badge {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 var(--ai-spacing-1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--ai-radius-full);
+  background: var(--ai-surface-brand);
+  color: var(--ai-btn-primary-text);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-semibold);
+}
+.fd-detail { flex: 1; display: flex; flex-direction: column; }
+.fd-detail__head {
+  padding: var(--ai-spacing-4) var(--ai-spacing-5) 0;
+}
+.fd-detail .fd-checklist { padding: var(--ai-spacing-3) var(--ai-spacing-5); }
+
+/* ── 4. Accordion (grouped) ─────────────────────────────── */
+.fd-accordion { padding: var(--ai-spacing-3) var(--ai-spacing-6); }
+.fd-acc-summary {
+  margin-left: var(--ai-spacing-2);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-regular);
+  color: var(--ai-text-secondary);
+}
+.fd-accordion .acc__panel { padding-top: var(--ai-spacing-2); }
+.fd-accordion .fd-checklist { padding: 0; }

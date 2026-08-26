@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Seating Planner · New plan popup — Prototype</title>
+
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/Badge/Badge.css">
+  <link rel="stylesheet" href="../../components/Toggle/Toggle.css">
+  <link rel="stylesheet" href="../../components/SearchInput/SearchInput.css">
+  <link rel="stylesheet" href="../../components/Input/Input.css">
+  <link rel="stylesheet" href="../../components/Select/Select.css">
+  <link rel="stylesheet" href="../../components/Toast/Toast.css">
+  <link rel="stylesheet" href="../../patterns/Modal/Modal.css">
+  <link rel="stylesheet" href="../../components/DragDropFile/DragDropFile.css">
+  <link rel="stylesheet" href="SeatingPlanner.css">
+</head>
+<body>
+
+  <main class="sp-ws">
+
+    <section class="sp-card sp-eventbar">
+      <div class="sp-eventbar__top">
+        <div class="sp-eventbar__main">
+          <h1 class="sp-eventbar__name">FinTech Summit 2026</h1>
+          <ul class="sp-eventbar__meta">
+            <li><i data-lucide="calendar" aria-hidden="true"></i>14 May 2026</li>
+            <li><i data-lucide="map-pin" aria-hidden="true"></i>ExCeL London</li>
+            <li><i data-lucide="users" aria-hidden="true"></i>1,200 attendees</li>
+          </ul>
+        </div>
+        <button class="btn btn--secondary btn--sm" type="button" data-sp-action="change-event" data-sp-task="TASK-342608">
+          <i data-lucide="repeat" aria-hidden="true"></i>
+          Change event
+        </button>
+      </div>
+
+      <!-- Seating plans row, before any plan exists -->
+      <div class="sp-plans" data-sp-plans-row>
+        <p class="sp-plans__label">Seating plans</p>
+        <p class="sp-plans__none">No plans yet — create one →</p>
+        <button class="btn btn--primary btn--sm" type="button" data-sp-action="new-plan" data-sp-task="TASK-342306" aria-label="New plan">
+          <i data-lucide="plus" aria-hidden="true"></i>
+          New plan
+        </button>
+        <button class="btn btn--secondary btn--sm" type="button" data-sp-action="copy-plans" data-sp-task="TASK-344756" aria-label="Copy plans">
+          <i data-lucide="copy" aria-hidden="true"></i>
+          Copy plans
+        </button>
+      </div>
+    </section>
+
+    <div class="sp-emptypanel" style="margin-top: var(--ai-spacing-5)" data-np-placeholder>
+      <p class="sp-emptypanel__title">No seating plans yet</p>
+      <p class="sp-emptypanel__desc">Create a plan to generate its tables and start seating people.</p>
+    </div>
+
+    <!-- Revealed once a plan is created -->
+    <div class="sp-ws__cols" data-np-reveal hidden>
+      <section class="sp-card">
+        <div class="sp-toolbar">
+          <p class="sp-toolbar__title" data-sp-plan-title></p>
+          <div class="sp-toolbar__spacer"></div>
+          <span class="sp-toolbar__toggle">
+            <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" aria-label="Only free seats" data-sp-freeseats>
+              <span class="toggle__track"><span class="toggle__knob"></span></span>
+            </button>
+            <span>Only free seats</span>
+          </span>
+          <button class="btn btn--secondary btn--sm" type="button" data-sp-action="add-table" data-sp-task="TASK-344757">
+            <i data-lucide="plus" aria-hidden="true"></i>Add table
+          </button>
+          <button class="btn btn--secondary btn--sm" type="button" data-sp-action="room-layout" data-sp-task="TASK-344760">
+            <i data-lucide="map" aria-hidden="true"></i>Room layout
+          </button>
+        </div>
+        <div class="sp-grid" data-sp-grid></div>
+        <p class="sp-grid__note" data-sp-filter-note>Click a table to open its seat list.</p>
+      </section>
+
+      <aside class="sp-rail">
+        <section class="sp-panel">
+          <div class="sp-panel__head">
+            <div class="sp-panel__title-row">
+              <h2 class="sp-panel__title" data-sp-seat-title>Table 1</h2>
+              <span class="badge badge--border badge--neutral badge--sm" data-sp-seat-tier hidden></span>
+            </div>
+            <p class="sp-panel__meta" data-sp-seat-meta></p>
+          </div>
+          <div class="sp-panel__body" data-sp-seatlist></div>
+        </section>
+      </aside>
+    </div>
+
+  </main>
+
+  <!-- ══════════════ NEW PLAN POPUP — TASK-342306 ══════════════
+       Modal pattern, Form variant. Opened by the shell's "new-plan" action:
+       SeatingPlannerNewPlan.js registers the handler, replacing the deferred
+       -control toast. Nothing in the shell changed to make this live. -->
+  <div class="modal-overlay modal-overlay--open" data-np-overlay>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="np-title" data-np-modal>
+
+      <div class="modal__header">
+        <h2 class="modal__title" id="np-title">New seating plan <span class="sp-newplan__context">in FinTech Summit 2026</span></h2>
+        <button class="modal__close" type="button" aria-label="Close" data-np-close>
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <div class="modal__body">
+        <!-- TODO(backend:SeatingPlanner): creates a SeatingPlan (FK to the selected
+             Event) and generates Table + TableSeat rows. Seats bounded 6–12. -->
+        <div class="modal__form">
+          <div class="modal__form-group">
+            <label class="modal__form-label" for="np-name">Plan name <span class="sp-req" aria-hidden="true">*</span></label>
+            <div class="input">
+              <div class="input__wrap">
+                <input id="np-name" class="input__control" type="text" placeholder="e.g. Main Ballroom" value="" aria-required="true" data-np-name>
+              </div>
+              <span class="input__help">Name for this seating layout.</span>
+            </div>
+          </div>
+          <div class="modal__form-group">
+            <label class="modal__form-label" for="np-room">Room / location</label>
+            <div class="input">
+              <div class="input__wrap">
+                <input id="np-room" class="input__control" type="text" placeholder="e.g. Great Room" value="" data-np-room>
+              </div>
+              <span class="input__help">The room or area this plan covers.</span>
+            </div>
+          </div>
+
+          <div class="sp-newplan__row">
+          <div class="modal__form-group">
+            <label class="modal__form-label" for="np-tables">Tables <span class="sp-req" aria-hidden="true">*</span></label>
+            <div class="input">
+              <div class="input__wrap">
+                <input id="np-tables" class="input__control" type="number" placeholder="12" value="12" aria-required="true" data-np-tables>
+              </div>
+              <span class="input__help">How many tables to generate. Tables can be added or removed later.</span>
+            </div>
+          </div>
+          <div class="modal__form-group">
+            <label class="modal__form-label" for="np-seats">Seats / table</label>
+            <div class="input">
+              <div class="input__wrap">
+                <input id="np-seats" class="input__control" type="number" placeholder="10" value="10" data-np-seats>
+              </div>
+              <span class="input__help">Default seats on each table (6–12). Individual tables can be changed later.</span>
+            </div>
+          </div>
+            <div class="modal__form-group">
+              <label class="modal__form-label" for="np-shape">Table shape</label>
+              <div class="sel" data-sel>
+                <button id="np-shape" class="sel__control" type="button" data-sel-trigger>
+                  <span class="sel__value" data-np-shape-value>Round</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <ul class="sel__menu" role="listbox">
+                  <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">Round <i data-lucide="check"></i></button></li>
+                  <li><button type="button" class="sel__menu-item" role="option">Square</button></li>
+                </ul>
+              </div>
+              <span class="input__help">Default shape for the generated tables.</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="modal__footer">
+        <button class="btn btn--secondary" type="button" data-np-cancel>Cancel</button>
+        <button class="btn btn--primary" type="button" data-np-create>Create plan</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════ ROOM LAYOUT — TASK-344760 ══════════════
+       Attaches a floor plan (PDF or image) to the PLAN, previews it, replaces or
+       removes it. NOT a spatial seat-map editor — the brief settles the question
+       TASK-344753 left open. The dropzone is the DS DragDropFile component; the
+       preview, the document card and the file meta row are this task's.
+       The file never leaves the browser: an image is read with FileReader and
+       genuinely previewed. Backend: a MediaFileItem reference on the SeatingPlan. -->
+  <div class="modal-overlay" data-rl-overlay>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="rl-title" data-rl-modal>
+
+      <div class="modal__header">
+        <h2 class="modal__title" id="rl-title">Room layout ·
+          <span class="sp-layout__plan" data-rl-plan></span></h2>
+        <button class="modal__close" type="button" aria-label="Close" data-rl-close>
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <div class="modal__body" data-rl-body></div>
+
+      <div class="modal__footer" data-rl-footer></div>
+
+      <!-- TODO(backend:SeatingPlanner): upload to a MediaFileItem and store the
+           reference on the SeatingPlan. Validate type AND size server-side —
+           accept= is a convenience, not a control. -->
+      <input type="file" class="drag-drop__native" accept="application/pdf,image/*"
+             aria-label="Choose a floor plan" data-rl-native hidden>
+
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script src="../../components/Select/Select.js"></script>
+  <script src="SeatingPlannerWorkspace.js"></script>
+  <script src="SeatingPlannerAddTable.js"></script>
+  <script src="SeatingPlannerNewPlan.js"></script>
+  <script src="SeatingPlannerLayout.js"></script>
+</body>
+</html>

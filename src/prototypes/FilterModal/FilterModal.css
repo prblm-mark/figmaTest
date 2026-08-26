@@ -1,0 +1,60 @@
+/* FilterModal prototype — "Filter by Catalogue Item" modal, rebuilt in the
+ * design system. Prototype-only layout; all component visuals come from their
+ * own CSS (Modal, FilterItem, Checkbox, Datatables, Button). Uses only --ai-* tokens.
+ */
+
+/* ── Page frame ─────────────────────────────────────────── */
+body {
+  min-height: 100vh;
+  background: var(--ai-surface-secondary);
+  font-family: var(--ai-font-body);
+}
+
+/* Overlay comes from Modal.css (.modal-overlay). Centre the modal. */
+.modal-overlay {
+  min-height: 100vh;
+  padding: var(--ai-spacing-9); /* 48px */
+}
+
+/* Wide filter modal — the 5-column table needs more room than --lg (768px). */
+.fm-modal {
+  width: var(--ai-size-12); /* 960px */
+  max-width: 100%;
+}
+
+/* ── Nested filter chips row ────────────────────────────── */
+.fm-facets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ai-spacing-2);
+  padding: var(--ai-spacing-4) var(--ai-spacing-6);
+  border-bottom: 1px solid var(--ai-border-secondary);
+  flex-shrink: 0;
+}
+
+/* ── Table body ─────────────────────────────────────────── */
+/* Remove the modal body's default padding so the table sits flush and its row
+ * borders span the full width, matching the reference. */
+.fm-body {
+  padding: 0;
+  gap: 0;
+  max-height: 420px; /* layout dimension — no token match */
+}
+
+.fm-body .datatables {
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Row-open external link cell */
+.fm-linkcell {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ai-icon-secondary);
+}
+.fm-linkcell [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}

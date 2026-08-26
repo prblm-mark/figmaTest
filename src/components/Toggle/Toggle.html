@@ -192,14 +192,7 @@
     </div>
   </div>
 
-  <script>
-    document.querySelectorAll('.toggle:not(.toggle--disabled)').forEach(function (toggle) {
-      toggle.addEventListener('click', function () {
-        var isActive = toggle.classList.toggle('toggle--active');
-        toggle.setAttribute('aria-checked', String(isActive));
-      });
-    });
-  </script>
+  <script src="Toggle.js"></script>
 
 </body>
 </html>

@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Filter Dropdown — Checklist</title>
+
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/FilterItem/FilterItem.css">
+  <link rel="stylesheet" href="../../components/Checkbox/Checkbox.css">
+  <link rel="stylesheet" href="../../components/SearchInput/SearchInput.css">
+  <link rel="stylesheet" href="FilterDropdown.css">
+</head>
+<body>
+  <div class="fd-stage">
+    <h1 class="fd-stage__title">Filter Dropdown — alternatives</h1>
+    <p class="fd-stage__sub">2 of 4 · <strong>Checklist</strong> — compact faceted menu. Search + a plain checkbox list instead of a full table, with Select all and a live count.</p>
+
+    <nav class="fd-switch" aria-label="Alternatives">
+      <button class="btn btn--secondary btn--sm" type="button" onclick="location.href='table-select.html'">Table select</button>
+      <button class="btn btn--primary btn--sm" type="button">Checklist</button>
+      <button class="btn btn--secondary btn--sm" type="button" onclick="location.href='two-pane.html'">Two-pane</button>
+      <button class="btn btn--secondary btn--sm" type="button" onclick="location.href='accordion.html'">Accordion</button>
+    </nav>
+
+    <!-- Trigger filter item (open) -->
+    <div class="fd-bar">
+      <div class="filter-item filter-item--selected filter-item--open" data-filter-name="Zone">
+        <button type="button" class="filter-item__clear" aria-label="Clear Zone filter"><i data-lucide="x" aria-hidden="true"></i></button>
+        <button type="button" class="filter-item__trigger" aria-haspopup="listbox" aria-expanded="true">
+          <i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i>
+          <span class="filter-item__name">Zone</span>
+          <span class="filter-item__sep" aria-hidden="true">·</span>
+          <span class="filter-item__values">Default QA9</span>
+          <i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Dropdown panel -->
+    <div class="fd-panel" role="dialog" aria-label="Filter by Zone" style="width: 420px;">
+      <div class="fd-panel__header">
+        <h2 class="fd-panel__title">Filter by Zone</h2>
+        <button class="fd-panel__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+
+      <!-- Nested filters -->
+      <div class="fd-facets">
+        <div class="filter-item filter-item--empty" data-filter-name="Name">
+          <button type="button" class="filter-item__trigger" aria-expanded="false">
+            <i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Name</span>
+          </button>
+        </div>
+        <div class="filter-item filter-item--empty" data-filter-name="Catalogue Group">
+          <button type="button" class="filter-item__trigger" aria-expanded="false">
+            <i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Catalogue Group</span>
+          </button>
+        </div>
+        <div class="filter-item filter-item--empty" data-filter-name="Payment Method">
+          <button type="button" class="filter-item__trigger" aria-expanded="false">
+            <i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Payment Method</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Search -->
+      <div class="fd-search-wrap">
+        <div class="search">
+          <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+          <input class="search__input" type="search" placeholder="Search zones">
+        </div>
+      </div>
+
+      <!-- Checklist -->
+      <div class="fd-panel__body">
+        <div class="fd-checklist">
+          <div class="fd-checklist__head">
+            <label class="checkbox">
+              <input type="checkbox" class="checkbox__input" aria-label="Select all">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+              <span class="checkbox__label"><span class="checkbox__label-text">Select all</span></span>
+            </label>
+            <span class="fd-checklist__count">2 of 6 selected</span>
+          </div>
+
+          <!-- TODO(backend:CatalogueFilter): zone options are mock → GET /catalogue/zones -->
+          <label class="fd-check-row checkbox" style="display:flex;">
+            <span style="display:flex;align-items:center;gap:var(--ai-spacing-3);">
+              <input type="checkbox" class="checkbox__input" checked>
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+              <span class="checkbox__label"><span class="checkbox__label-text">Default QA9</span></span>
+            </span>
+            <span class="fd-check-row__meta">142</span>
+          </label>
+          <label class="fd-check-row checkbox" style="display:flex;">
+            <span style="display:flex;align-items:center;gap:var(--ai-spacing-3);">
+              <input type="checkbox" class="checkbox__input" checked>
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+              <span class="checkbox__label"><span class="checkbox__label-text">Premium EU</span></span>
+            </span>
+            <span class="fd-check-row__meta">38</span>
+          </label>
+          <label class="fd-check-row checkbox" style="display:flex;">
+            <span style="display:flex;align-items:center;gap:var(--ai-spacing-3);">
+              <input type="checkbox" class="checkbox__input">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+              <span class="checkbox__label"><span class="checkbox__label-text">Trial Sandbox</span></span>
+            </span>
+            <span class="fd-check-row__meta">12</span>
+          </label>
+          <label class="fd-check-row checkbox" style="display:flex;">
+            <span style="display:flex;align-items:center;gap:var(--ai-spacing-3);">
+              <input type="checkbox" class="checkbox__input">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+              <span class="checkbox__label"><span class="checkbox__label-text">Archived</span></span>
+            </span>
+            <span class="fd-check-row__meta">7</span>
+          </label>
+          <label class="fd-check-row checkbox" style="display:flex;">
+            <span style="display:flex;align-items:center;gap:var(--ai-spacing-3);">
+              <input type="checkbox" class="checkbox__input">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+              <span class="checkbox__label"><span class="checkbox__label-text">Staging US</span></span>
+            </span>
+            <span class="fd-check-row__meta">21</span>
+          </label>
+          <label class="fd-check-row checkbox" style="display:flex;">
+            <span style="display:flex;align-items:center;gap:var(--ai-spacing-3);">
+              <input type="checkbox" class="checkbox__input">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+              <span class="checkbox__label"><span class="checkbox__label-text">Legacy 2019</span></span>
+            </span>
+            <span class="fd-check-row__meta">3</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="fd-panel__footer">
+        <button class="fd-linkbtn" type="button">Clear</button>
+        <button class="btn btn--primary btn--sm" type="button">Apply</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

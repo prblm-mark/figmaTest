@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Filter Views — Prototype</title>
+
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/Badge/Badge.css">
+  <link rel="stylesheet" href="../../components/Table/Table.css">
+  <link rel="stylesheet" href="../../components/Datatables/Datatables.css">
+  <link rel="stylesheet" href="../../components/SearchInput/SearchInput.css">
+  <link rel="stylesheet" href="FilterViews.css">
+</head>
+<body>
+  <div class="fv-app">
+
+    <!-- View tab bar -->
+    <nav class="fv-tabs" role="tablist" aria-label="Saved views">
+      <button class="fv-tab fv-tab--active" role="tab" aria-selected="true">All deals</button>
+      <button class="fv-tab" role="tab" aria-selected="false">My open deals</button>
+      <button class="fv-tab" role="tab" aria-selected="false">Closing this month</button>
+      <button class="fv-tab" role="tab" aria-selected="false">
+        <i data-lucide="star" aria-hidden="true"></i> Closed Won
+      </button>
+      <!-- a "new" view tab is injected here by JS when + is clicked -->
+      <button class="fv-tab__add" type="button" aria-label="New view">
+        <i data-lucide="plus" aria-hidden="true"></i>
+      </button>
+    </nav>
+
+    <!-- Filter bar -->
+    <div class="fv-filterbar">
+      <button class="btn btn--secondary btn--sm fv-filter-btn" type="button">
+        <i data-lucide="filter" aria-hidden="true"></i>
+        Filter
+        <i data-lucide="chevron-down" aria-hidden="true"></i>
+      </button>
+
+      <span class="fv-chip" data-chip="owner">
+        <span class="fv-chip__key">Owner</span> = Sarah K.
+        <button class="fv-chip__remove" type="button" aria-label="Remove Owner filter">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </span>
+      <span class="fv-chip" data-chip="status">
+        <span class="fv-chip__key">Status</span> = Active
+        <button class="fv-chip__remove" type="button" aria-label="Remove Status filter">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </span>
+
+      <div class="fv-filterbar__right">
+        <!-- Resting: search icon + overflow -->
+        <button class="btn btn--tertiary btn--icon btn--sm fv-search-toggle" type="button" aria-label="Search">
+          <i data-lucide="search" aria-hidden="true"></i>
+        </button>
+        <button class="btn btn--tertiary btn--icon btn--sm fv-overflow" type="button" aria-label="More options">
+          <i data-lucide="more-horizontal" aria-hidden="true"></i>
+        </button>
+
+        <!-- Modified state: Save view CTA (hidden until a filter changes) -->
+        <button class="btn btn--secondary btn--sm fv-save-view" type="button" hidden>
+          <i data-lucide="star" aria-hidden="true"></i>
+          Save view
+        </button>
+
+        <!-- Inline-expand search (hidden until the search icon is clicked) -->
+        <div class="search fv-search" hidden>
+          <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+          <input class="search__input" type="search" placeholder="Search...">
+          <button class="fv-search__close" type="button" aria-label="Close search">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Deals table (reuses Datatables / Table) -->
+    <div class="fv-table-region">
+      <div class="datatables">
+        <div class="datatables__body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th><button class="datatables__sort datatables__sort--active" type="button">Company <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+                <th><button class="datatables__sort" type="button">Status <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+                <th><button class="datatables__sort" type="button">Owner <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+                <th><button class="datatables__sort" type="button">Value <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+                <th><button class="datatables__sort" type="button">Stage <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+                <th><button class="datatables__sort" type="button">Date <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Acme Corp</td>
+                <td><span class="badge badge--success badge--pill">Active</span></td>
+                <td>Sarah K.</td>
+                <td>$12,400</td>
+                <td><span class="badge badge--info badge--pill">Closed Won</span></td>
+                <td>Jun 2</td>
+              </tr>
+              <tr>
+                <td>Globex Ltd</td>
+                <td><span class="badge badge--success badge--pill">Active</span></td>
+                <td>Tom R.</td>
+                <td>$8,200</td>
+                <td><span class="badge badge--warning badge--pill">Proposal</span></td>
+                <td>Jun 5</td>
+              </tr>
+              <tr>
+                <td>Initech</td>
+                <td><span class="badge badge--neutral badge--pill">Inactive</span></td>
+                <td>Jane M.</td>
+                <td>$3,100</td>
+                <td><span class="badge badge--default badge--pill">Discovery</span></td>
+                <td>Jun 7</td>
+              </tr>
+              <tr>
+                <td>Umbrella Co</td>
+                <td><span class="badge badge--success badge--pill">Active</span></td>
+                <td>Alan G.</td>
+                <td>$21,000</td>
+                <td><span class="badge badge--info badge--pill">Closed Won</span></td>
+                <td>Jun 9</td>
+              </tr>
+              <tr>
+                <td>Stark Ind.</td>
+                <td><span class="badge badge--success badge--pill">Active</span></td>
+                <td>Sarah K.</td>
+                <td>$45,000</td>
+                <td><span class="badge badge--danger badge--pill">Negotiation</span></td>
+                <td>Jun 10</td>
+              </tr>
+              <tr>
+                <td>Wayne Ent.</td>
+                <td><span class="badge badge--neutral badge--pill">Inactive</span></td>
+                <td>Tom R.</td>
+                <td>$7,500</td>
+                <td><span class="badge badge--warning badge--pill">Proposal</span></td>
+                <td>Jun 11</td>
+              </tr>
+              <tr>
+                <td>Oscorp</td>
+                <td><span class="badge badge--success badge--pill">Active</span></td>
+                <td>Jane M.</td>
+                <td>$9,300</td>
+                <td><span class="badge badge--default badge--pill">Discovery</span></td>
+                <td>Jun 12</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script>
+    (function () {
+      const tabs        = document.querySelector('.fv-tabs');
+      const addBtn      = document.querySelector('.fv-tab__add');
+      const searchToggle = document.querySelector('.fv-search-toggle');
+      const overflow    = document.querySelector('.fv-overflow');
+      const saveView    = document.querySelector('.fv-save-view');
+      const search      = document.querySelector('.fv-search');
+      const searchClose = document.querySelector('.fv-search__close');
+      const searchInput = search.querySelector('.search__input');
+
+      let modified = false;
+
+      function showResting() {
+        search.hidden = true;
+        searchToggle.hidden = false;
+        overflow.hidden = false;
+        saveView.hidden = !modified;       // Save view persists once a filter changed
+        if (modified) { searchToggle.hidden = true; overflow.hidden = true; }
+      }
+      function expandSearch() {
+        search.hidden = false;
+        searchToggle.hidden = true;
+        overflow.hidden = true;
+        saveView.hidden = true;
+        searchInput.focus();
+      }
+      function markModified() {
+        modified = true;
+        showResting();
+      }
+      function setActiveTab(tab) {
+        tabs.querySelectorAll('.fv-tab').forEach(t => {
+          t.classList.remove('fv-tab--active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        tab.classList.add('fv-tab--active');
+        tab.setAttribute('aria-selected', 'true');
+      }
+      function addNewTab() {
+        let t = tabs.querySelector('.fv-tab--new');
+        if (!t) {
+          t = document.createElement('button');
+          t.className = 'fv-tab fv-tab--new';
+          t.setAttribute('role', 'tab');
+          t.innerHTML = '<i data-lucide="sparkles" aria-hidden="true"></i> new';
+          tabs.insertBefore(t, addBtn);
+          t.addEventListener('click', () => setActiveTab(t));
+          lucide.createIcons();
+        }
+        setActiveTab(t);
+        return t;
+      }
+
+      // Wiring
+      searchToggle.addEventListener('click', expandSearch);
+      searchClose.addEventListener('click', showResting);
+      addBtn.addEventListener('click', addNewTab);
+      saveView.addEventListener('click', () => { modified = false; showResting(); });
+
+      document.querySelectorAll('.fv-tab').forEach(t =>
+        t.addEventListener('click', () => setActiveTab(t)));
+
+      document.querySelectorAll('.fv-chip__remove').forEach(b =>
+        b.addEventListener('click', () => { b.closest('.fv-chip').remove(); markModified(); }));
+
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && !search.hidden) showResting();
+      });
+
+      // Initial state (used for the Figma capture: ?state=resting|saved|newsearch)
+      const state = new URLSearchParams(location.search).get('state');
+      if (state === 'saved') {
+        modified = true;
+        showResting();
+      } else if (state === 'newsearch') {
+        addNewTab();
+        expandSearch();
+      }
+    })();
+  </script>
+</body>
+</html>

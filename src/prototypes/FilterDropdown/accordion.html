@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Filter Dropdown — Accordion</title>
+
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/FilterItem/FilterItem.css">
+  <link rel="stylesheet" href="../../components/Checkbox/Checkbox.css">
+  <link rel="stylesheet" href="../../components/Accordion/Accordion.css">
+  <link rel="stylesheet" href="FilterDropdown.css">
+</head>
+<body>
+  <div class="fd-stage">
+    <h1 class="fd-stage__title">Filter Dropdown — alternatives</h1>
+    <p class="fd-stage__sub">4 of 4 · <strong>Accordion</strong> — grouped. Each nested filter is a collapsible section with a selected-count summary; expand one to reveal its checklist. Everything in a single scroll.</p>
+
+    <nav class="fd-switch" aria-label="Alternatives">
+      <button class="btn btn--secondary btn--sm" type="button" onclick="location.href='table-select.html'">Table select</button>
+      <button class="btn btn--secondary btn--sm" type="button" onclick="location.href='checklist.html'">Checklist</button>
+      <button class="btn btn--secondary btn--sm" type="button" onclick="location.href='two-pane.html'">Two-pane</button>
+      <button class="btn btn--primary btn--sm" type="button">Accordion</button>
+    </nav>
+
+    <!-- Trigger filter item (open) -->
+    <div class="fd-bar">
+      <div class="filter-item filter-item--selected filter-item--open" data-filter-name="Zone">
+        <button type="button" class="filter-item__clear" aria-label="Clear Zone filter"><i data-lucide="x" aria-hidden="true"></i></button>
+        <button type="button" class="filter-item__trigger" aria-haspopup="listbox" aria-expanded="true">
+          <i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i>
+          <span class="filter-item__name">Zone</span>
+          <span class="filter-item__sep" aria-hidden="true">·</span>
+          <span class="filter-item__values">Default QA9</span>
+          <i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Dropdown panel -->
+    <div class="fd-panel" role="dialog" aria-label="Filter catalogue" style="width: 440px;">
+      <div class="fd-panel__header">
+        <h2 class="fd-panel__title">Filter catalogue</h2>
+        <button class="fd-panel__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+
+      <div class="fd-panel__body">
+        <div class="fd-accordion">
+          <div class="acc acc--separated acc--sm">
+            <!-- Zone (open) -->
+            <div class="acc__item acc__item--open">
+              <h3 class="acc__heading">
+                <button type="button" class="acc__trigger" data-acc-trigger>
+                  <span>Zone <span class="fd-acc-summary">Default QA9, Premium EU</span></span>
+                  <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+              </h3>
+              <div class="acc__panel">
+                <div class="fd-checklist">
+                  <!-- TODO(backend:CatalogueFilter): zone options mock → GET /catalogue/zones -->
+                  <label class="fd-check-row checkbox" style="display:flex;">
+                    <span style="display:flex;align-items:center;gap:var(--ai-spacing-3);">
+                      <input type="checkbox" class="checkbox__input" checked>
+                      <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+                      <span class="checkbox__label"><span class="checkbox__label-text">Default QA9</span></span>
+                    </span>
+                    <span class="fd-check-row__meta">142</span>
+                  </label>
+                  <label class="fd-check-row checkbox" style="display:flex;">
+                    <span style="display:flex;align-items:center;gap:var(--ai-spacing-3);">
+                      <input type="checkbox" class="checkbox__input" checked>
+                      <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+                      <span class="checkbox__label"><span class="checkbox__label-text">Premium EU</span></span>
+                    </span>
+                    <span class="fd-check-row__meta">38</span>
+                  </label>
+                  <label class="fd-check-row checkbox" style="display:flex;">
+                    <span style="display:flex;align-items:center;gap:var(--ai-spacing-3);">
+                      <input type="checkbox" class="checkbox__input">
+                      <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+                      <span class="checkbox__label"><span class="checkbox__label-text">Trial Sandbox</span></span>
+                    </span>
+                    <span class="fd-check-row__meta">12</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Catalogue Group (closed) -->
+            <div class="acc__item">
+              <h3 class="acc__heading">
+                <button type="button" class="acc__trigger" data-acc-trigger>
+                  <span>Catalogue Group <span class="fd-acc-summary">Any</span></span>
+                  <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+              </h3>
+              <div class="acc__panel">
+                <div class="fd-checklist">
+                  <label class="fd-check-row checkbox" style="display:flex;">
+                    <span style="display:flex;align-items:center;gap:var(--ai-spacing-3);">
+                      <input type="checkbox" class="checkbox__input">
+                      <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+                      <span class="checkbox__label"><span class="checkbox__label-text">Subscriptions</span></span>
+                    </span>
+                    <span class="fd-check-row__meta">88</span>
+                  </label>
+                  <label class="fd-check-row checkbox" style="display:flex;">
+                    <span style="display:flex;align-items:center;gap:var(--ai-spacing-3);">
+                      <input type="checkbox" class="checkbox__input">
+                      <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+                      <span class="checkbox__label"><span class="checkbox__label-text">Passes</span></span>
+                    </span>
+                    <span class="fd-check-row__meta">24</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Payment Method (closed) -->
+            <div class="acc__item">
+              <h3 class="acc__heading">
+                <button type="button" class="acc__trigger" data-acc-trigger>
+                  <span>Payment Method <span class="fd-acc-summary">Any</span></span>
+                  <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+              </h3>
+              <div class="acc__panel">
+                <div class="fd-checklist">
+                  <label class="fd-check-row checkbox" style="display:flex;">
+                    <span style="display:flex;align-items:center;gap:var(--ai-spacing-3);">
+                      <input type="checkbox" class="checkbox__input">
+                      <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+                      <span class="checkbox__label"><span class="checkbox__label-text">Card</span></span>
+                    </span>
+                    <span class="fd-check-row__meta">120</span>
+                  </label>
+                  <label class="fd-check-row checkbox" style="display:flex;">
+                    <span style="display:flex;align-items:center;gap:var(--ai-spacing-3);">
+                      <input type="checkbox" class="checkbox__input">
+                      <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+                      <span class="checkbox__label"><span class="checkbox__label-text">Invoice</span></span>
+                    </span>
+                    <span class="fd-check-row__meta">32</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fd-panel__footer">
+        <button class="fd-linkbtn" type="button">Reset all</button>
+        <button class="btn btn--primary btn--sm" type="button">Apply</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script>
+    // Minimal accordion toggle (prototype-only)
+    document.querySelectorAll('[data-acc-trigger]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        btn.closest('.acc__item').classList.toggle('acc__item--open');
+      });
+    });
+  </script>
+</body>
+</html>

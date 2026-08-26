@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Event Builder · 5 Block library — Prototype</title>
+
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/SegmentedControl/SegmentedControl.css">
+  <link rel="stylesheet" href="../../components/Badge/Badge.css">
+  <link rel="stylesheet" href="../../components/SearchInput/SearchInput.css">
+  <link rel="stylesheet" href="../../components/Tooltip/Tooltip.css">
+  <link rel="stylesheet" href="EventBuilder.css">
+</head>
+<body class="eb-body">
+
+  <!-- ══════════════════════════════ TOP BAR ══════════════════════════════ -->
+  <header class="eb-topbar">
+    <div class="eb-topbar__brand">
+      <span class="eb-topbar__logo"><i data-lucide="calendar-plus" aria-hidden="true"></i></span>
+      <div class="eb-topbar__meta">
+        <p class="eb-crumb">
+          <span>Affino</span>
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+          <span>Events</span>
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+          <span>TPF Club</span>
+        </p>
+        <h1 class="eb-topbar__title">Card &amp; Payments Awards UK 2027</h1>
+      </div>
+    </div>
+
+    <span class="eb-status">
+      <span class="eb-status__dot"></span>
+      Draft
+    </span>
+
+    <div class="eb-topbar__spacer"></div>
+
+    <div class="seg-control" role="radiogroup" aria-label="Builder mode">
+      <button class="seg-control__btn seg-control__btn--active" type="button" role="radio" aria-checked="true">
+        <i data-lucide="layout-dashboard" aria-hidden="true"></i>
+        Build
+      </button>
+      <button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-eb-goto="07-advanced.html">
+        <i data-lucide="sliders-horizontal" aria-hidden="true"></i>
+        Fields
+      </button>
+    </div>
+
+    <span class="eb-topbar__divider"></span>
+
+    <div class="eb-topbar__actions">
+      <button class="btn btn--secondary btn--sm" type="button" data-eb-goto="03-draft.html">
+        <i data-lucide="eye" aria-hidden="true"></i>
+        Preview
+      </button>
+      <button class="btn btn--primary btn--sm" type="button" data-eb-goto="08-published.html">Publish</button>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════ SHELL ════════════════════════════════ -->
+  <div class="eb-shell">
+
+    <!-- ══════════════ RAIL — the current spine ══════════════ -->
+    <aside class="eb-rail">
+      <div class="eb-rail__group">
+        <p class="eb-rail__title">
+          <span>Core</span>
+          <span class="eb-rail__count">fixed</span>
+        </p>
+        <ul class="eb-rail__list">
+          <li><div class="eb-blockrow">
+            <span class="eb-blockrow__icon"><i data-lucide="image" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Hero</span>
+            <span class="eb-blockrow__lock"><i data-lucide="lock" aria-hidden="true"></i></span>
+          </div></li>
+          <li><div class="eb-blockrow">
+            <span class="eb-blockrow__icon"><i data-lucide="align-left" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Overview</span>
+            <span class="eb-blockrow__lock"><i data-lucide="lock" aria-hidden="true"></i></span>
+          </div></li>
+          <li><div class="eb-blockrow">
+            <span class="eb-blockrow__icon"><i data-lucide="ticket" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Sign-up &amp; entries</span>
+            <span class="eb-blockrow__lock"><i data-lucide="lock" aria-hidden="true"></i></span>
+          </div></li>
+        </ul>
+      </div>
+
+      <div class="eb-rail__group">
+        <p class="eb-rail__title">
+          <span>Blocks</span>
+          <span class="eb-rail__count" data-eb-rail-count>9 blocks</span>
+        </p>
+        <ul class="eb-rail__list" data-eb-spine>
+          <li><div class="eb-blockrow" data-eb-blockrow="judges">
+            <span class="eb-blockrow__grip" aria-hidden="true"><i data-lucide="grip-vertical"></i></span>
+            <span class="eb-blockrow__icon"><i data-lucide="gavel" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Judges</span>
+            <button class="eb-blockrow__btn" type="button" data-eb-move="up" aria-label="Move up">
+              <i data-lucide="chevron-up" aria-hidden="true"></i>
+            </button>
+            <button class="eb-blockrow__btn" type="button" data-eb-remove aria-label="Remove">
+              <i data-lucide="x" aria-hidden="true"></i>
+            </button>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-blockrow="sponsors">
+            <span class="eb-blockrow__grip" aria-hidden="true"><i data-lucide="grip-vertical"></i></span>
+            <span class="eb-blockrow__icon"><i data-lucide="handshake" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Sponsors</span>
+            <button class="eb-blockrow__btn" type="button" data-eb-move="up" aria-label="Move up">
+              <i data-lucide="chevron-up" aria-hidden="true"></i>
+            </button>
+            <button class="eb-blockrow__btn" type="button" data-eb-remove aria-label="Remove">
+              <i data-lucide="x" aria-hidden="true"></i>
+            </button>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-blockrow="keydates">
+            <span class="eb-blockrow__grip" aria-hidden="true"><i data-lucide="grip-vertical"></i></span>
+            <span class="eb-blockrow__icon"><i data-lucide="calendar-clock" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Key dates</span>
+            <button class="eb-blockrow__btn" type="button" data-eb-move="up" aria-label="Move up">
+              <i data-lucide="chevron-up" aria-hidden="true"></i>
+            </button>
+            <button class="eb-blockrow__btn" type="button" data-eb-remove aria-label="Remove">
+              <i data-lucide="x" aria-hidden="true"></i>
+            </button>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-blockrow="testimonials">
+            <span class="eb-blockrow__grip" aria-hidden="true"><i data-lucide="grip-vertical"></i></span>
+            <span class="eb-blockrow__icon"><i data-lucide="quote" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Testimonials</span>
+            <button class="eb-blockrow__btn" type="button" data-eb-move="up" aria-label="Move up">
+              <i data-lucide="chevron-up" aria-hidden="true"></i>
+            </button>
+            <button class="eb-blockrow__btn" type="button" data-eb-remove aria-label="Remove">
+              <i data-lucide="x" aria-hidden="true"></i>
+            </button>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-blockrow="charity">
+            <span class="eb-blockrow__grip" aria-hidden="true"><i data-lucide="grip-vertical"></i></span>
+            <span class="eb-blockrow__icon"><i data-lucide="heart-handshake" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Charity</span>
+            <button class="eb-blockrow__btn" type="button" data-eb-move="up" aria-label="Move up">
+              <i data-lucide="chevron-up" aria-hidden="true"></i>
+            </button>
+            <button class="eb-blockrow__btn" type="button" data-eb-remove aria-label="Remove">
+              <i data-lucide="x" aria-hidden="true"></i>
+            </button>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-blockrow="winners">
+            <span class="eb-blockrow__grip" aria-hidden="true"><i data-lucide="grip-vertical"></i></span>
+            <span class="eb-blockrow__icon"><i data-lucide="images" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">2026 winners</span>
+            <button class="eb-blockrow__btn" type="button" data-eb-move="up" aria-label="Move up">
+              <i data-lucide="chevron-up" aria-hidden="true"></i>
+            </button>
+            <button class="eb-blockrow__btn" type="button" data-eb-remove aria-label="Remove">
+              <i data-lucide="x" aria-hidden="true"></i>
+            </button>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-blockrow="faq">
+            <span class="eb-blockrow__grip" aria-hidden="true"><i data-lucide="grip-vertical"></i></span>
+            <span class="eb-blockrow__icon"><i data-lucide="circle-help" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">FAQ</span>
+            <button class="eb-blockrow__btn" type="button" data-eb-move="up" aria-label="Move up">
+              <i data-lucide="chevron-up" aria-hidden="true"></i>
+            </button>
+            <button class="eb-blockrow__btn" type="button" data-eb-remove aria-label="Remove">
+              <i data-lucide="x" aria-hidden="true"></i>
+            </button>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-blockrow="venue">
+            <span class="eb-blockrow__grip" aria-hidden="true"><i data-lucide="grip-vertical"></i></span>
+            <span class="eb-blockrow__icon"><i data-lucide="map-pin" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Venue</span>
+            <button class="eb-blockrow__btn" type="button" data-eb-move="up" aria-label="Move up">
+              <i data-lucide="chevron-up" aria-hidden="true"></i>
+            </button>
+            <button class="eb-blockrow__btn" type="button" data-eb-remove aria-label="Remove">
+              <i data-lucide="x" aria-hidden="true"></i>
+            </button>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-blockrow="contact">
+            <span class="eb-blockrow__grip" aria-hidden="true"><i data-lucide="grip-vertical"></i></span>
+            <span class="eb-blockrow__icon"><i data-lucide="mail" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Contact</span>
+            <button class="eb-blockrow__btn" type="button" data-eb-move="up" aria-label="Move up">
+              <i data-lucide="chevron-up" aria-hidden="true"></i>
+            </button>
+            <button class="eb-blockrow__btn" type="button" data-eb-remove aria-label="Remove">
+              <i data-lucide="x" aria-hidden="true"></i>
+            </button>
+          </div></li>
+        </ul>
+
+        <button class="btn btn--primary btn--sm eb-rail__add" type="button" data-eb-library-open>
+          <i data-lucide="plus" aria-hidden="true"></i>
+          Add a block
+        </button>
+      </div>
+    </aside>
+
+    <!-- ══════════════ CANVAS (behind the library) ══════════════ -->
+    <main class="eb-canvas">
+      <div class="eb-frame" data-eb-frame>
+        <div class="eb-frame__chrome">
+          <div class="eb-frame__dots">
+            <span class="eb-frame__dot"></span>
+            <span class="eb-frame__dot"></span>
+            <span class="eb-frame__dot"></span>
+          </div>
+          <span class="eb-frame__url">tpfclub.com/card-and-payments-awards-uk-2027</span>
+        </div>
+        <div class="eb-page">
+          <section class="eb-hero">
+            <p class="eb-hero__eyebrow"><i data-lucide="award" aria-hidden="true"></i> 22nd annual awards</p>
+            <h2 class="eb-hero__title">The Card &amp; Payments Awards UK 2027</h2>
+            <p class="eb-hero__strap">Independent. Respected. Recognised.</p>
+          </section>
+          <nav class="eb-etabs" aria-label="Event sections">
+            <button class="eb-etab eb-etab--active" type="button">Overview</button>
+            <button class="eb-etab" type="button">Judges</button>
+            <button class="eb-etab" type="button">Sponsors</button>
+            <button class="eb-etab" type="button">Charity</button>
+            <button class="eb-etab" type="button">FAQs</button>
+          </nav>
+          <section class="eb-sect">
+            <div class="eb-sect__head">
+              <p class="eb-sect__eyebrow">Overview</p>
+              <h3 class="eb-sect__title">The longest-running recognition programme in UK payments</h3>
+            </div>
+            <div class="eb-sect__body">
+              <p>Established in 2005, the Card &amp; Payments Awards celebrate the organisations and individuals shaping how Britain pays.</p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- ══════════════ INSPECTOR (behind the library) ══════════════ -->
+    <aside class="eb-inspector">
+      <div class="eb-inspector__head">
+        <span class="eb-inspector__head-icon"><i data-lucide="blocks" aria-hidden="true"></i></span>
+        <div>
+          <p class="eb-inspector__eyebrow">Structure</p>
+          <p class="eb-inspector__title">12 blocks in use</p>
+        </div>
+      </div>
+      <div class="eb-inspector__section">
+        <p class="eb-inspector__section-title">How this differs from today</p>
+        <p class="eb-field__help">
+          Today each of these is a Channel, a Section and an article you create by hand, in the
+          right order, with the right names. Here they're blocks — added, removed and reordered,
+          with the scaffolding created behind the scenes.
+        </p>
+      </div>
+    </aside>
+
+    <!-- ══════════════ SCRIM + LIBRARY ══════════════ -->
+    <div class="eb-scrim" data-eb-scrim></div>
+
+    <section class="eb-library" data-eb-library aria-label="Block library">
+      <div class="eb-library__head">
+        <div class="eb-library__head-row">
+          <h2 class="eb-library__title">Add a block</h2>
+          <button class="btn btn--tertiary btn--sm btn--icon" type="button" aria-label="Close" data-eb-library-close>
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="search search--sm">
+          <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+          <input class="search__input" type="search" placeholder="Search blocks…" aria-label="Search blocks">
+        </div>
+      </div>
+
+      <!-- TODO(backend:EventBuilder): block membership and order are DOM-only. Adding a
+           block must persist it on the event AND create the section/article scaffolding
+           it implies — that is the work the "Created for you" notices describe. Locked
+           "Coming later" cards are deliberately inert. -->
+      <div class="eb-library__body" data-backend-todo="eb-blocks">
+
+        <!-- ── Group 1: existing event features ── -->
+        <div class="eb-library__group">
+          <div class="eb-library__group-head">
+            <h3 class="eb-library__group-title">Event features</h3>
+            <p class="eb-library__group-note">Everything your events module already does</p>
+          </div>
+          <div class="eb-library__grid">
+
+            <div class="eb-blockcard eb-blockcard--in-use">
+              <div class="eb-thumb">
+                <span class="eb-thumb__bar eb-thumb__bar--head eb-thumb__bar--short"></span>
+                <span class="eb-thumb__row">
+                  <span class="eb-thumb__cell"></span>
+                  <span class="eb-thumb__cell"></span>
+                  <span class="eb-thumb__cell"></span>
+                  <span class="eb-thumb__cell"></span>
+                </span>
+              </div>
+              <div class="eb-blockcard__top">
+                <span class="eb-blockcard__icon"><i data-lucide="users" aria-hidden="true"></i></span>
+                <p class="eb-blockcard__title">Speakers / Judges</p>
+              </div>
+              <p class="eb-blockcard__desc">Pick people from your CRM. Optionally invite them to write their own bio.</p>
+              <div class="eb-blockcard__foot">
+                <span class="badge badge--border badge--success badge--sm">In use</span>
+              </div>
+            </div>
+
+            <div class="eb-blockcard eb-blockcard--in-use">
+              <div class="eb-thumb">
+                <span class="eb-thumb__bar eb-thumb__bar--head eb-thumb__bar--short"></span>
+                <span class="eb-thumb__row">
+                  <span class="eb-thumb__cell"></span>
+                  <span class="eb-thumb__cell"></span>
+                </span>
+                <span class="eb-thumb__row">
+                  <span class="eb-thumb__cell"></span>
+                  <span class="eb-thumb__cell"></span>
+                  <span class="eb-thumb__cell"></span>
+                </span>
+              </div>
+              <div class="eb-blockcard__top">
+                <span class="eb-blockcard__icon"><i data-lucide="handshake" aria-hidden="true"></i></span>
+                <p class="eb-blockcard__title">Sponsors</p>
+              </div>
+              <p class="eb-blockcard__desc">Tiered slots with display names — no more Channel-plus-Section per tier.</p>
+              <div class="eb-blockcard__foot">
+                <span class="badge badge--border badge--success badge--sm">In use</span>
+              </div>
+            </div>
+
+            <button class="eb-blockcard" type="button"
+                    data-eb-add="agenda" data-eb-label="Agenda" data-eb-icon="clock">
+              <div class="eb-thumb">
+                <span class="eb-thumb__bar eb-thumb__bar--wide"></span>
+                <span class="eb-thumb__bar eb-thumb__bar--mid"></span>
+                <span class="eb-thumb__bar eb-thumb__bar--wide"></span>
+                <span class="eb-thumb__bar eb-thumb__bar--mid"></span>
+              </div>
+              <div class="eb-blockcard__top">
+                <span class="eb-blockcard__icon"><i data-lucide="clock" aria-hidden="true"></i></span>
+                <p class="eb-blockcard__title">Agenda</p>
+              </div>
+              <p class="eb-blockcard__desc">A running order on the event itself. Drag to reorder or auto-sort by time.</p>
+              <div class="eb-blockcard__foot" data-eb-add-state>
+                <span class="badge badge--border badge--info badge--sm">Add</span>
+              </div>
+            </button>
+
+            <button class="eb-blockcard" type="button"
+                    data-eb-add="gallery" data-eb-label="Gallery" data-eb-icon="image">
+              <div class="eb-thumb">
+                <span class="eb-thumb__row">
+                  <span class="eb-thumb__cell"></span>
+                  <span class="eb-thumb__cell"></span>
+                  <span class="eb-thumb__cell"></span>
+                </span>
+                <span class="eb-thumb__row">
+                  <span class="eb-thumb__cell"></span>
+                  <span class="eb-thumb__cell"></span>
+                  <span class="eb-thumb__cell"></span>
+                </span>
+              </div>
+              <div class="eb-blockcard__top">
+                <span class="eb-blockcard__icon"><i data-lucide="image" aria-hidden="true"></i></span>
+                <p class="eb-blockcard__title">Gallery</p>
+              </div>
+              <p class="eb-blockcard__desc">Point at a media library section. The tab structure is created for you.</p>
+              <div class="eb-blockcard__foot" data-eb-add-state>
+                <span class="badge badge--border badge--info badge--sm">Add</span>
+              </div>
+            </button>
+
+            <div class="eb-blockcard eb-blockcard--in-use">
+              <div class="eb-thumb">
+                <span class="eb-thumb__bar eb-thumb__bar--head eb-thumb__bar--short"></span>
+                <span class="eb-thumb__row"><span class="eb-thumb__cell"></span></span>
+              </div>
+              <div class="eb-blockcard__top">
+                <span class="eb-blockcard__icon"><i data-lucide="map-pin" aria-hidden="true"></i></span>
+                <p class="eb-blockcard__title">Venue &amp; map</p>
+              </div>
+              <p class="eb-blockcard__desc">A structured address field with a responsive map — no pasted embed code.</p>
+              <div class="eb-blockcard__foot">
+                <span class="badge badge--border badge--success badge--sm">In use</span>
+              </div>
+            </div>
+
+            <div class="eb-blockcard eb-blockcard--in-use">
+              <div class="eb-thumb">
+                <span class="eb-thumb__bar eb-thumb__bar--head eb-thumb__bar--short"></span>
+                <span class="eb-thumb__bar eb-thumb__bar--mid"></span>
+              </div>
+              <div class="eb-blockcard__top">
+                <span class="eb-blockcard__icon"><i data-lucide="mail" aria-hidden="true"></i></span>
+                <p class="eb-blockcard__title">Contact</p>
+              </div>
+              <p class="eb-blockcard__desc">A system contact, chosen with the same picker as speakers.</p>
+              <div class="eb-blockcard__foot">
+                <span class="badge badge--border badge--success badge--sm">In use</span>
+              </div>
+            </div>
+
+            <button class="eb-blockcard" type="button"
+                    data-eb-add="custom" data-eb-label="Custom tab" data-eb-icon="file-text">
+              <div class="eb-thumb">
+                <span class="eb-thumb__bar eb-thumb__bar--head eb-thumb__bar--short"></span>
+                <span class="eb-thumb__bar eb-thumb__bar--wide"></span>
+                <span class="eb-thumb__bar eb-thumb__bar--wide"></span>
+                <span class="eb-thumb__bar eb-thumb__bar--mid"></span>
+              </div>
+              <div class="eb-blockcard__top">
+                <span class="eb-blockcard__icon"><i data-lucide="file-text" aria-hidden="true"></i></span>
+                <p class="eb-blockcard__title">Custom tab</p>
+              </div>
+              <p class="eb-blockcard__desc">Free-form rich text for anything with no block of its own yet.</p>
+              <div class="eb-blockcard__foot" data-eb-add-state>
+                <span class="badge badge--border badge--info badge--sm">Add</span>
+              </div>
+            </button>
+
+            <button class="eb-blockcard" type="button"
+                    data-eb-add="postevent" data-eb-label="Post-event" data-eb-icon="video">
+              <div class="eb-thumb">
+                <span class="eb-thumb__row"><span class="eb-thumb__cell"></span></span>
+                <span class="eb-thumb__bar eb-thumb__bar--mid"></span>
+              </div>
+              <div class="eb-blockcard__top">
+                <span class="eb-blockcard__icon"><i data-lucide="video" aria-hidden="true"></i></span>
+                <p class="eb-blockcard__title">Post-event</p>
+              </div>
+              <p class="eb-blockcard__desc">Shown automatically once the event date passes — video, photos, write-up.</p>
+              <div class="eb-blockcard__foot" data-eb-add-state>
+                <span class="badge badge--border badge--info badge--sm">Add</span>
+              </div>
+            </button>
+
+          </div>
+        </div>
+
+        <!-- ── Group 2: rich content the current pages fake ── -->
+        <div class="eb-library__group">
+          <div class="eb-library__group-head">
+            <h3 class="eb-library__group-title">Rich content</h3>
+            <p class="eb-library__group-note">Today these are hand-built custom tabs — now they're real blocks</p>
+          </div>
+          <div class="eb-library__grid">
+
+            <div class="eb-blockcard eb-blockcard--in-use">
+              <div class="eb-thumb">
+                <span class="eb-thumb__bar eb-thumb__bar--wide"></span>
+                <span class="eb-thumb__bar eb-thumb__bar--wide"></span>
+                <span class="eb-thumb__bar eb-thumb__bar--wide"></span>
+              </div>
+              <div class="eb-blockcard__top">
+                <span class="eb-blockcard__icon"><i data-lucide="circle-help" aria-hidden="true"></i></span>
+                <p class="eb-blockcard__title">FAQ</p>
+              </div>
+              <p class="eb-blockcard__desc">Question-and-answer pairs rendered as a proper accordion.</p>
+              <div class="eb-blockcard__foot">
+                <span class="badge badge--border badge--success badge--sm">In use</span>
+              </div>
+            </div>
+
+            <div class="eb-blockcard eb-blockcard--in-use">
+              <div class="eb-thumb">
+                <span class="eb-thumb__row">
+                  <span class="eb-thumb__cell"></span>
+                  <span class="eb-thumb__cell"></span>
+                  <span class="eb-thumb__cell"></span>
+                  <span class="eb-thumb__cell"></span>
+                </span>
+                <span class="eb-thumb__bar eb-thumb__bar--wide"></span>
+              </div>
+              <div class="eb-blockcard__top">
+                <span class="eb-blockcard__icon"><i data-lucide="calendar-clock" aria-hidden="true"></i></span>
+                <p class="eb-blockcard__title">Key dates</p>
+              </div>
+              <p class="eb-blockcard__desc">A milestone timeline — entries open, close, shortlist, ceremony.</p>
+              <div class="eb-blockcard__foot">
+                <span class="badge badge--border badge--success badge--sm">In use</span>
+              </div>
+            </div>
+
+            <div class="eb-blockcard eb-blockcard--in-use">
+              <div class="eb-thumb">
+                <span class="eb-thumb__row">
+                  <span class="eb-thumb__cell"></span>
+                  <span class="eb-thumb__cell"></span>
+                </span>
+                <span class="eb-thumb__bar eb-thumb__bar--short"></span>
+              </div>
+              <div class="eb-blockcard__top">
+                <span class="eb-blockcard__icon"><i data-lucide="quote" aria-hidden="true"></i></span>
+                <p class="eb-blockcard__title">Testimonials</p>
+              </div>
+              <p class="eb-blockcard__desc">Quotes with attribution. Added by the assistant from your 2026 page.</p>
+              <div class="eb-blockcard__foot">
+                <span class="badge badge--border badge--success badge--sm">In use</span>
+              </div>
+            </div>
+
+            <div class="eb-blockcard eb-blockcard--in-use">
+              <div class="eb-thumb">
+                <span class="eb-thumb__row">
+                  <span class="eb-thumb__cell"></span>
+                  <span class="eb-thumb__cell"></span>
+                  <span class="eb-thumb__cell"></span>
+                </span>
+              </div>
+              <div class="eb-blockcard__top">
+                <span class="eb-blockcard__icon"><i data-lucide="images" aria-hidden="true"></i></span>
+                <p class="eb-blockcard__title">Previous winners</p>
+              </div>
+              <p class="eb-blockcard__desc">Last year's winners with a link through to the full list.</p>
+              <div class="eb-blockcard__foot">
+                <span class="badge badge--border badge--success badge--sm">In use</span>
+              </div>
+            </div>
+
+            <button class="eb-blockcard" type="button"
+                    data-eb-add="categories" data-eb-label="Categories" data-eb-icon="list">
+              <div class="eb-thumb">
+                <span class="eb-thumb__bar eb-thumb__bar--wide"></span>
+                <span class="eb-thumb__bar eb-thumb__bar--mid"></span>
+                <span class="eb-thumb__bar eb-thumb__bar--wide"></span>
+              </div>
+              <div class="eb-blockcard__top">
+                <span class="eb-blockcard__icon"><i data-lucide="list" aria-hidden="true"></i></span>
+                <p class="eb-blockcard__title">Award categories</p>
+              </div>
+              <p class="eb-blockcard__desc">The list of categories people enter, each with its criteria.</p>
+              <div class="eb-blockcard__foot" data-eb-add-state>
+                <span class="badge badge--border badge--info badge--sm">Add</span>
+              </div>
+            </button>
+
+            <button class="eb-blockcard" type="button"
+                    data-eb-add="charitylong" data-eb-label="Charity" data-eb-icon="heart-handshake">
+              <div class="eb-thumb">
+                <span class="eb-thumb__bar eb-thumb__bar--head eb-thumb__bar--short"></span>
+                <span class="eb-thumb__bar eb-thumb__bar--wide"></span>
+                <span class="eb-thumb__bar eb-thumb__bar--mid"></span>
+              </div>
+              <div class="eb-blockcard__top">
+                <span class="eb-blockcard__icon"><i data-lucide="heart-handshake" aria-hidden="true"></i></span>
+                <p class="eb-blockcard__title">Charity partner</p>
+              </div>
+              <p class="eb-blockcard__desc">Beneficiary, running total raised, and past partners.</p>
+              <div class="eb-blockcard__foot" data-eb-add-state>
+                <span class="badge badge--border badge--info badge--sm">Add</span>
+              </div>
+            </button>
+
+          </div>
+        </div>
+
+        <!-- ── Group 3: not built yet ── -->
+        <div class="eb-library__group">
+          <div class="eb-library__group-head">
+            <h3 class="eb-library__group-title">Coming later</h3>
+            <p class="eb-library__group-note">Where the block model goes next — nothing here works yet</p>
+          </div>
+          <div class="eb-library__grid">
+
+            <div class="eb-blockcard eb-blockcard--locked">
+              <div class="eb-blockcard__top">
+                <span class="eb-blockcard__icon"><i data-lucide="radio" aria-hidden="true"></i></span>
+                <p class="eb-blockcard__title">Live streaming</p>
+                <span class="eb-blockrow__lock"><i data-lucide="lock" aria-hidden="true"></i></span>
+              </div>
+              <p class="eb-blockcard__desc">Embedded stream with a chat sidebar for remote attendees.</p>
+            </div>
+
+            <div class="eb-blockcard eb-blockcard--locked">
+              <div class="eb-blockcard__top">
+                <span class="eb-blockcard__icon"><i data-lucide="network" aria-hidden="true"></i></span>
+                <p class="eb-blockcard__title">Networking</p>
+                <span class="eb-blockrow__lock"><i data-lucide="lock" aria-hidden="true"></i></span>
+              </div>
+              <p class="eb-blockcard__desc">Delegate matchmaking and meeting requests before the day.</p>
+            </div>
+
+            <div class="eb-blockcard eb-blockcard--locked">
+              <div class="eb-blockcard__top">
+                <span class="eb-blockcard__icon"><i data-lucide="file-check" aria-hidden="true"></i></span>
+                <p class="eb-blockcard__title">Entry submission</p>
+                <span class="eb-blockrow__lock"><i data-lucide="lock" aria-hidden="true"></i></span>
+              </div>
+              <p class="eb-blockcard__desc">The awards entry form itself, on the event rather than off-site.</p>
+            </div>
+
+            <div class="eb-blockcard eb-blockcard--locked">
+              <div class="eb-blockcard__top">
+                <span class="eb-blockcard__icon"><i data-lucide="armchair" aria-hidden="true"></i></span>
+                <p class="eb-blockcard__title">Seating plan</p>
+                <span class="eb-blockrow__lock"><i data-lucide="lock" aria-hidden="true"></i></span>
+              </div>
+              <p class="eb-blockcard__desc">Table allocation, surfaced to guests on the night.</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="eb-library__foot">
+        <p class="eb-library__foot-text">
+          12 of 18 blocks in use · adding a block creates its section scaffolding for you
+        </p>
+        <button class="btn btn--secondary btn--sm" type="button" data-eb-library-close>Close</button>
+        <button class="btn btn--primary btn--sm" type="button" data-eb-goto="06-inline-edit.html">
+          Done
+          <i data-lucide="arrow-right" aria-hidden="true"></i>
+        </button>
+      </div>
+    </section>
+
+  </div>
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>lucide.createIcons();</script>
+<script src="EventBuilder.js"></script>
+</body>
+</html>

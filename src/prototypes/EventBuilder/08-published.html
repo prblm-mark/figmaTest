@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Event Builder · 8 Published event page — Prototype</title>
+
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/Badge/Badge.css">
+  <link rel="stylesheet" href="../../components/Avatar/Avatar.css">
+  <link rel="stylesheet" href="../../components/Portraits/Portraits.css">
+  <link rel="stylesheet" href="../../components/Accordion/Accordion.css">
+  <link rel="stylesheet" href="../../components/Toast/Toast.css">
+  <link rel="stylesheet" href="EventBuilder.css">
+</head>
+<body>
+
+  <!-- Publish confirmation, over the live page.
+       TODO(backend:EventBuilder): publishing is unconditional — the toast always shows
+       success. Needs a real save that runs the publication rules (go-live date, access
+       clearance, live flag), returns the public URL, and surfaces validation failures. -->
+  <div class="eb-publish-toast" data-backend-todo="eb-publish">
+    <div class="toast toast--success toast--interactive" role="status">
+      <span class="toast__icon"><i data-lucide="check" aria-hidden="true"></i></span>
+      <div class="toast__content">
+        <p class="toast__message">Event published</p>
+        <p class="toast__text">Live at tpfclub.com · 11 blocks · long-scroll layout</p>
+      </div>
+      <div class="toast__actions">
+        <button class="btn btn--tertiary btn--xs" type="button" data-eb-goto="06-inline-edit.html">Keep editing</button>
+      </div>
+      <button type="button" class="toast__close" aria-label="Dismiss" data-eb-dismiss=".toast">
+        <i data-lucide="x" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       THE PUBLISHED PAGE — no builder chrome at all.
+       Long-scroll shape with sticky anchor nav, to contrast with the tabbed
+       draft on screen 03. Same blocks, same content, different page shape.
+       ══════════════════════════════════════════════════════════════════════ -->
+  <main class="eb-page eb-page--live">
+
+    <!-- ── Hero ── -->
+    <section class="eb-hero">
+      <p class="eb-hero__eyebrow"><i data-lucide="award" aria-hidden="true"></i> 22nd annual awards</p>
+      <h1 class="eb-hero__title">The Card &amp; Payments Awards UK 2027</h1>
+      <p class="eb-hero__strap">Independent. Respected. Recognised.</p>
+      <ul class="eb-hero__meta">
+        <li><i data-lucide="calendar" aria-hidden="true"></i> 4 February 2027</li>
+        <li><i data-lucide="clock" aria-hidden="true"></i> 18:00 – 02:00 GMT</li>
+        <li><i data-lucide="map-pin" aria-hidden="true"></i> JW Marriott Grosvenor House, London</li>
+        <li><i data-lucide="shirt" aria-hidden="true"></i> Black tie</li>
+      </ul>
+      <div class="eb-hero__cta">
+        <button class="eb-cta" type="button">
+          Submit an entry
+          <i data-lucide="arrow-right" aria-hidden="true"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- ── Sticky anchor nav (the long-scroll alternative to tabs) ── -->
+    <nav class="eb-anchors" aria-label="Jump to section">
+      <a href="#s-overview">Overview</a>
+      <a href="#s-dates">Key dates</a>
+      <a href="#s-judges">Judges</a>
+      <a href="#s-sponsors">Sponsors</a>
+      <a href="#s-quotes">Testimonials</a>
+      <a href="#s-charity">Charity</a>
+      <a href="#s-winners">2026 winners</a>
+      <a href="#s-faq">FAQs</a>
+      <a href="#s-venue">Venue</a>
+      <a href="#s-contact">Contact</a>
+    </nav>
+
+    <!-- ── Overview ── -->
+    <section class="eb-sect" id="s-overview">
+      <div class="eb-sect__head">
+        <p class="eb-sect__eyebrow">Overview</p>
+        <h2 class="eb-sect__title">The longest-running recognition programme in UK payments</h2>
+      </div>
+      <div class="eb-sect__body">
+        <p>
+          Established in 2005, the Card &amp; Payments Awards celebrate the organisations and
+          individuals shaping how Britain pays. Over twenty-two years the programme has become the
+          benchmark the industry measures itself against.
+        </p>
+        <p>
+          Judging is independent and confidential. Entries are assessed by a panel drawn from across
+          the sector — issuers, networks, acquirers, fintechs and independent consultants — none of
+          whom judge a category they compete in.
+        </p>
+      </div>
+      <button class="eb-cta eb-sect__cta" type="button">
+        Submit an entry
+        <i data-lucide="arrow-right" aria-hidden="true"></i>
+      </button>
+    </section>
+
+    <!-- ── Key dates ── -->
+    <section class="eb-sect eb-sect--tint" id="s-dates">
+      <div class="eb-sect__head">
+        <p class="eb-sect__eyebrow">Key dates</p>
+        <h2 class="eb-sect__title">The 2027 timetable</h2>
+      </div>
+      <div class="eb-timeline">
+        <div class="eb-milestone eb-milestone--done">
+          <p class="eb-milestone__date">7 Jul 2026</p>
+          <p class="eb-milestone__label">Entries open</p>
+        </div>
+        <div class="eb-milestone eb-milestone--next">
+          <p class="eb-milestone__date">25 Sep 2026</p>
+          <p class="eb-milestone__label">Entries close</p>
+        </div>
+        <div class="eb-milestone">
+          <p class="eb-milestone__date">16 Oct 2026</p>
+          <p class="eb-milestone__label">Shortlist announced</p>
+        </div>
+        <div class="eb-milestone">
+          <p class="eb-milestone__date">4 Feb 2027</p>
+          <p class="eb-milestone__label">Awards ceremony</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Judges ── -->
+    <section class="eb-sect" id="s-judges">
+      <div class="eb-sect__head">
+        <p class="eb-sect__eyebrow">The panel</p>
+        <h2 class="eb-sect__title">2027 judging panel</h2>
+        <p class="eb-sect__lede">Sixteen independent judges from across the payments sector.</p>
+      </div>
+      <div class="eb-people">
+        <div class="eb-person">
+          <div class="avatar avatar--size-4"><img class="portrait" src="https://picsum.photos/seed/judge1/300" alt=""></div>
+          <p class="eb-person__name">Priya Raman</p>
+          <p class="eb-person__role">Head of Payments, Aurora Bank</p>
+        </div>
+        <div class="eb-person">
+          <div class="avatar avatar--size-4"><img class="portrait" src="https://picsum.photos/seed/judge2/300" alt=""></div>
+          <p class="eb-person__name">Daniel Osei</p>
+          <p class="eb-person__role">Director, Meridian Consulting</p>
+        </div>
+        <div class="eb-person">
+          <div class="avatar avatar--size-4"><img class="portrait" src="https://picsum.photos/seed/judge3/300" alt=""></div>
+          <p class="eb-person__name">Helen Whitcombe</p>
+          <p class="eb-person__role">CPO, Northgate Payments</p>
+        </div>
+        <div class="eb-person">
+          <div class="avatar avatar--size-4"><img class="portrait" src="https://picsum.photos/seed/judge5/300" alt=""></div>
+          <p class="eb-person__name">Aisha Karim</p>
+          <p class="eb-person__role">VP Risk, Talos Network</p>
+        </div>
+        <div class="eb-person">
+          <div class="avatar avatar--size-4"><img class="portrait" src="https://picsum.photos/seed/judge6/300" alt=""></div>
+          <p class="eb-person__name">Tom Ashworth</p>
+          <p class="eb-person__role">Founder, Ledgerline</p>
+        </div>
+        <div class="eb-person">
+          <div class="avatar avatar--size-4"><img class="portrait" src="https://picsum.photos/seed/judge7/300" alt=""></div>
+          <p class="eb-person__name">Nadia Belhaj</p>
+          <p class="eb-person__role">Head of Fraud, Cresta</p>
+        </div>
+        <div class="eb-person">
+          <div class="avatar avatar--size-4"><img class="portrait" src="https://picsum.photos/seed/judge8/300" alt=""></div>
+          <p class="eb-person__name">Greg Sandiford</p>
+          <p class="eb-person__role">MD, Fielding Retail</p>
+        </div>
+        <div class="eb-person">
+          <div class="avatar avatar--size-4 avatar--initials avatar--placeholder">+9</div>
+          <p class="eb-person__name">9 more judges</p>
+          <p class="eb-person__role">View the full panel</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Sponsors ── -->
+    <section class="eb-sect eb-sect--tint" id="s-sponsors">
+      <div class="eb-sect__head">
+        <p class="eb-sect__eyebrow">Our partners</p>
+        <h2 class="eb-sect__title">2027 sponsors</h2>
+      </div>
+
+      <div class="eb-tier">
+        <p class="eb-tier__label">Prime sponsor</p>
+        <div class="eb-logos"><span class="eb-logo eb-logo--lg">FIS</span></div>
+      </div>
+      <div class="eb-tier">
+        <p class="eb-tier__label">Champagne sponsor</p>
+        <div class="eb-logos"><span class="eb-logo">THALES</span></div>
+      </div>
+      <div class="eb-tier">
+        <p class="eb-tier__label">Casino &amp; payment sponsors</p>
+        <div class="eb-logos">
+          <span class="eb-logo">PRIORITY PASS</span>
+          <span class="eb-logo">INGENICO</span>
+        </div>
+      </div>
+      <div class="eb-tier">
+        <p class="eb-tier__label">Category sponsors</p>
+        <div class="eb-logos">
+          <span class="eb-logo">AMEX</span>
+          <span class="eb-logo">DISCOVER</span>
+          <span class="eb-logo">FISERV</span>
+          <span class="eb-logo">MASTERCARD</span>
+          <span class="eb-logo">VISA</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Testimonials (the block the assistant proposed on screen 03) ── -->
+    <section class="eb-sect" id="s-quotes">
+      <div class="eb-sect__head">
+        <p class="eb-sect__eyebrow">Testimonials</p>
+        <h2 class="eb-sect__title">What the industry says</h2>
+      </div>
+      <div class="eb-quotes">
+        <blockquote class="eb-quote">
+          <p class="eb-quote__text">"The absolute benchmark for quality in our industry — being shortlisted means something."</p>
+          <p class="eb-quote__by">Candice Pressinger <span class="eb-quote__org">· Elavon</span></p>
+        </blockquote>
+        <blockquote class="eb-quote">
+          <p class="eb-quote__text">"Winning changed how partners saw us. It opened doors that cold outreach never would."</p>
+          <p class="eb-quote__by">Josh Bridewell <span class="eb-quote__org">· NovaPay</span></p>
+        </blockquote>
+        <blockquote class="eb-quote">
+          <p class="eb-quote__text">"The one night of the year the whole sector is genuinely in one room."</p>
+          <p class="eb-quote__by">Sarah Okonkwo <span class="eb-quote__org">· NovaPay</span></p>
+        </blockquote>
+        <blockquote class="eb-quote">
+          <p class="eb-quote__text">"Independent judging is what gives these awards their weight."</p>
+          <p class="eb-quote__by">Tania Platt <span class="eb-quote__org">· Visa</span></p>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- ── Charity ── -->
+    <section class="eb-sect eb-sect--tint" id="s-charity">
+      <div class="eb-sect__head">
+        <p class="eb-sect__eyebrow">Giving back</p>
+        <h2 class="eb-sect__title">21 years of charitable support</h2>
+        <p class="eb-sect__lede">Over £525,000 raised to date through the awards dinner.</p>
+      </div>
+      <div class="eb-sect__body">
+        <p>
+          Each year the ceremony supports a charity chosen by the organising committee. The 2026
+          beneficiary was Food Bank Aid, which supplies a network of food banks across north London.
+          The 2027 partner will be announced alongside the shortlist in October.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── 2026 winners ── -->
+    <section class="eb-sect" id="s-winners">
+      <div class="eb-sect__head">
+        <p class="eb-sect__eyebrow">Last year</p>
+        <h2 class="eb-sect__title">2026 winners</h2>
+      </div>
+      <div class="eb-gallery">
+        <div class="eb-gallery__item"><i data-lucide="image" aria-hidden="true"></i></div>
+        <div class="eb-gallery__item"><i data-lucide="image" aria-hidden="true"></i></div>
+        <div class="eb-gallery__item"><i data-lucide="image" aria-hidden="true"></i></div>
+        <div class="eb-gallery__item"><i data-lucide="image" aria-hidden="true"></i></div>
+        <div class="eb-gallery__item"><i data-lucide="image" aria-hidden="true"></i></div>
+        <div class="eb-gallery__item"><i data-lucide="image" aria-hidden="true"></i></div>
+        <div class="eb-gallery__item"><i data-lucide="image" aria-hidden="true"></i></div>
+        <div class="eb-gallery__item"><i data-lucide="image" aria-hidden="true"></i></div>
+      </div>
+      <button class="eb-cta eb-cta--ghost eb-sect__cta" type="button">View all 2026 winners</button>
+    </section>
+
+    <!-- ── FAQ ── -->
+    <section class="eb-sect eb-sect--tint" id="s-faq">
+      <div class="eb-sect__head">
+        <p class="eb-sect__eyebrow">Questions</p>
+        <h2 class="eb-sect__title">Frequently asked</h2>
+      </div>
+      <div class="acc acc--separated" data-acc="single">
+        <div class="acc__item acc__item--open">
+          <h3 class="acc__heading">
+            <button type="button" class="acc__trigger" data-acc-trigger>
+              <span>Who can enter?</span>
+              <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+            </button>
+          </h3>
+          <div class="acc__panel">
+            <p>Banks, building societies, fintechs, processors, acquirers, networks and suppliers operating in the UK payments market.</p>
+          </div>
+        </div>
+        <div class="acc__item">
+          <h3 class="acc__heading">
+            <button type="button" class="acc__trigger" data-acc-trigger>
+              <span>What does the evening look like?</span>
+              <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+            </button>
+          </h3>
+          <div class="acc__panel">
+            <p>Arrival from 18:00, dinner at 19:30, awards from 21:00, then networking and entertainment until 02:00.</p>
+          </div>
+        </div>
+        <div class="acc__item">
+          <h3 class="acc__heading">
+            <button type="button" class="acc__trigger" data-acc-trigger>
+              <span>Must shortlisted organisations attend?</span>
+              <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+            </button>
+          </h3>
+          <div class="acc__panel">
+            <p>Attendance isn't compulsory, but winners are announced on the night and we can't accept acceptances in absentia.</p>
+          </div>
+        </div>
+        <div class="acc__item">
+          <h3 class="acc__heading">
+            <button type="button" class="acc__trigger" data-acc-trigger>
+              <span>How much does it cost to enter?</span>
+              <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+            </button>
+          </h3>
+          <div class="acc__panel">
+            <p>£95 per entry. There's no limit on how many categories one organisation can enter.</p>
+          </div>
+        </div>
+        <div class="acc__item">
+          <h3 class="acc__heading">
+            <button type="button" class="acc__trigger" data-acc-trigger>
+              <span>What's the dress code?</span>
+              <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+            </button>
+          </h3>
+          <div class="acc__panel">
+            <p>Black tie.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Venue ── -->
+    <section class="eb-sect" id="s-venue">
+      <div class="eb-sect__head">
+        <p class="eb-sect__eyebrow">Getting there</p>
+        <h2 class="eb-sect__title">JW Marriott Grosvenor House</h2>
+        <p class="eb-sect__lede">86–90 Park Lane, London W1K 7TN · nearest tube Marble Arch</p>
+      </div>
+      <!-- TODO(backend:EventBuilder): placeholder. Needs a server-side geocode of the
+           venue address returning tiles or a static map image. -->
+      <div class="eb-map" data-backend-todo="eb-map">
+        <i data-lucide="map" aria-hidden="true"></i>
+        <span>Map generated from the address</span>
+      </div>
+    </section>
+
+    <!-- ── Contact ── -->
+    <section class="eb-sect eb-sect--tint" id="s-contact">
+      <div class="eb-sect__head">
+        <p class="eb-sect__eyebrow">Get in touch</p>
+        <h2 class="eb-sect__title">Awards team</h2>
+      </div>
+      <div class="eb-sect__body">
+        <p>info@TPFClub.com · +44 (0)1428 000 000 · Haslemere, Surrey, UK</p>
+      </div>
+    </section>
+
+    <!-- ── Sticky sign-up bar ── -->
+    <div class="eb-signup">
+      <div class="eb-signup__text">
+        Entries for 2027 open 7 July 2026
+        <span class="eb-signup__price">Entry £95 · Table of 10 £4,200</span>
+      </div>
+      <button class="eb-cta" type="button">
+        Submit an entry
+        <i data-lucide="arrow-right" aria-hidden="true"></i>
+      </button>
+      <button class="eb-cta eb-cta--ghost" type="button">Book a table</button>
+    </div>
+
+    <!-- ── Footer ── -->
+    <footer class="eb-pfoot">
+      <div class="eb-pfoot__cols">
+        <div>
+          <p class="eb-pfoot__title">Events</p>
+          <ul class="eb-pfoot__list">
+            <li>Card &amp; Payments Awards UK</li>
+            <li>Middle East Awards</li>
+            <li>USA Awards</li>
+          </ul>
+        </div>
+        <div>
+          <p class="eb-pfoot__title">Participate</p>
+          <ul class="eb-pfoot__list">
+            <li>Why enter</li>
+            <li>Partners &amp; sponsorship</li>
+            <li>Book a table</li>
+          </ul>
+        </div>
+        <div>
+          <p class="eb-pfoot__title">Company</p>
+          <ul class="eb-pfoot__list">
+            <li>About TPF Club</li>
+            <li>Contact</li>
+            <li>Subscribe to mailing list</li>
+          </ul>
+        </div>
+        <div>
+          <p class="eb-pfoot__title">Contact</p>
+          <ul class="eb-pfoot__list">
+            <li>info@TPFClub.com</li>
+            <li>Haslemere, Surrey, UK</li>
+            <li>New York · Dubai</li>
+          </ul>
+        </div>
+      </div>
+      <p class="eb-pfoot__legal">© 2026 The Payments &amp; Fintech Club. All rights reserved.</p>
+    </footer>
+
+  </main>
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>lucide.createIcons();</script>
+<script src="EventBuilder.js"></script>
+</body>
+</html>

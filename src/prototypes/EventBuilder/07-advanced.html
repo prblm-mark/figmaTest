@@ -1,0 +1,788 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Event Builder · 7 All fields — Prototype</title>
+
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/SegmentedControl/SegmentedControl.css">
+  <link rel="stylesheet" href="../../components/Badge/Badge.css">
+  <link rel="stylesheet" href="../../components/Input/Input.css">
+  <link rel="stylesheet" href="../../components/Textarea/Textarea.css">
+  <link rel="stylesheet" href="../../components/Select/Select.css">
+  <link rel="stylesheet" href="../../components/Checkbox/Checkbox.css">
+  <link rel="stylesheet" href="../../components/Toggle/Toggle.css">
+  <link rel="stylesheet" href="../../components/DragDropFile/DragDropFile.css">
+  <link rel="stylesheet" href="../../components/Tooltip/Tooltip.css">
+  <link rel="stylesheet" href="EventBuilder.css">
+</head>
+<body class="eb-body">
+
+  <!-- ══════════════════════════════ TOP BAR ══════════════════════════════ -->
+  <header class="eb-topbar">
+    <div class="eb-topbar__brand">
+      <span class="eb-topbar__logo"><i data-lucide="calendar-plus" aria-hidden="true"></i></span>
+      <div class="eb-topbar__meta">
+        <p class="eb-crumb">
+          <span>Affino</span>
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+          <span>Events</span>
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+          <span>TPF Club</span>
+        </p>
+        <h1 class="eb-topbar__title">Card &amp; Payments Awards UK 2027</h1>
+      </div>
+    </div>
+
+    <span class="eb-status">
+      <span class="eb-status__dot"></span>
+      Draft
+    </span>
+
+    <div class="eb-topbar__spacer"></div>
+
+    <div class="seg-control" role="radiogroup" aria-label="Builder mode">
+      <button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-eb-goto="03-draft.html">
+        <i data-lucide="layout-dashboard" aria-hidden="true"></i>
+        Build
+      </button>
+      <button class="seg-control__btn seg-control__btn--active" type="button" role="radio" aria-checked="true">
+        <i data-lucide="sliders-horizontal" aria-hidden="true"></i>
+        Fields
+      </button>
+    </div>
+
+    <span class="eb-topbar__divider"></span>
+
+    <div class="eb-topbar__actions">
+      <button class="btn btn--secondary btn--sm" type="button" data-eb-goto="06-inline-edit.html">
+        <i data-lucide="arrow-left" aria-hidden="true"></i>
+        Back to the page
+      </button>
+      <button class="btn btn--primary btn--sm" type="button" data-eb-goto="08-published.html">Save &amp; publish</button>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════ SHELL ════════════════════════════════ -->
+  <div class="eb-shell eb-shell--form">
+
+    <!-- ══════════════ SECTION RAIL ══════════════ -->
+    <aside class="eb-rail">
+      <div class="eb-rail__group">
+        <p class="eb-rail__title">
+          <span>Sections</span>
+          <span class="eb-rail__count">9 of 12</span>
+        </p>
+        <ul class="eb-rail__list">
+          <li><div class="eb-blockrow eb-blockrow--active" data-eb-form-section="basics">
+            <span class="eb-dot eb-dot--done"><i data-lucide="check" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Event basics</span>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-form-section="hero">
+            <span class="eb-dot eb-dot--done"><i data-lucide="check" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Main / hero</span>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-form-section="people">
+            <span class="eb-dot eb-dot--done"><i data-lucide="check" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Judges &amp; sponsors</span>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-form-section="signup">
+            <span class="eb-dot eb-dot--done"><i data-lucide="check" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Sign-up &amp; entries</span>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-form-section="dates">
+            <span class="eb-dot eb-dot--done"><i data-lucide="check" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Dates &amp; calendar</span>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-form-section="publication">
+            <span class="eb-dot eb-dot--empty"></span>
+            <span class="eb-blockrow__label">Publication</span>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-form-section="access">
+            <span class="eb-dot eb-dot--done"><i data-lucide="check" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Access &amp; visibility</span>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-form-section="seo">
+            <span class="eb-dot eb-dot--empty"></span>
+            <span class="eb-blockrow__label">SEO &amp; titles</span>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-form-section="placement">
+            <span class="eb-dot eb-dot--empty"></span>
+            <span class="eb-blockrow__label">Placement</span>
+          </div></li>
+        </ul>
+        <p class="eb-rail__hint">
+          Every field on today's Advanced Event screen is here. The guided flow and the page editor
+          write to these same fields — nothing is hidden or duplicated.
+        </p>
+      </div>
+    </aside>
+
+    <!-- ══════════════ FORM ══════════════ -->
+    <main class="eb-form">
+      <div class="eb-form__inner">
+
+        <div class="eb-form__head">
+          <h2 class="eb-form__title">All fields</h2>
+          <p class="eb-form__sub">
+            The complete event record — template panels plus every standard article field.
+          </p>
+        </div>
+
+        <div class="eb-notice eb-notice--info eb-notice--parity">
+          <i data-lucide="key-round" aria-hidden="true"></i>
+          <p>
+            <strong>Complete field parity.</strong> Anything editable on the current Advanced Event
+            screen is editable here. The builder is a faster route to the same fields, not a
+            replacement that loses some.
+          </p>
+        </div>
+
+        <!-- ── Event basics ── -->
+        <section class="eb-card" data-eb-form-card="basics">
+          <div class="eb-card__head">
+            <h3 class="eb-card__title">Event basics</h3>
+            <span class="eb-from"><i data-lucide="sparkles" aria-hidden="true"></i> 6 fields written by the assistant</span>
+          </div>
+
+          <div class="eb-grid eb-grid--2">
+            <div class="input">
+              <div class="eb-field__label-row">
+                <label class="eb-field__label" for="f-title">Event title</label>
+                <span class="eb-from"><i data-lucide="sparkles" aria-hidden="true"></i> assistant</span>
+              </div>
+              <div class="input__wrap">
+                <input id="f-title" type="text" class="input__control" value="The Card &amp; Payments Awards UK 2027">
+              </div>
+            </div>
+
+            <div class="sel" data-sel>
+              <label class="eb-field__label" for="f-section">Section</label>
+              <button id="f-section" class="sel__control" type="button" data-sel-trigger>
+                <span class="sel__value">TPF Club › Events</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">TPF Club › Events <i data-lucide="check"></i></button></li>
+                <li><button type="button" class="sel__menu-item" role="option">TPF Club › Middle East</button></li>
+                <li><button type="button" class="sel__menu-item" role="option">TPF Club › USA</button></li>
+                <li><button type="button" class="sel__menu-item" role="option">＋ New section…</button></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="eb-notice">
+            <i data-lucide="check" aria-hidden="true"></i>
+            <p>
+              <strong>Created for you:</strong> the Overview section beneath TPF Club › Events, plus a
+              sub-section for each of the 9 blocks. You no longer build this scaffolding by hand.
+            </p>
+          </div>
+
+          <div class="eb-grid eb-grid--3 eb-field--gap">
+            <div class="input">
+              <label class="eb-field__label" for="f-start">Start</label>
+              <div class="input__wrap">
+                <input id="f-start" type="datetime-local" class="input__control" value="2027-02-04T18:00">
+              </div>
+            </div>
+            <div class="input">
+              <label class="eb-field__label" for="f-end">End</label>
+              <div class="input__wrap">
+                <input id="f-end" type="datetime-local" class="input__control" value="2027-02-05T02:00">
+              </div>
+            </div>
+            <div class="input">
+              <div class="eb-field__label-row">
+                <label class="eb-field__label" for="f-loc">Location</label>
+                <span class="eb-from"><i data-lucide="sparkles" aria-hidden="true"></i> assistant</span>
+              </div>
+              <div class="input__wrap">
+                <input id="f-loc" type="text" class="input__control" value="JW Marriott Grosvenor House, London">
+              </div>
+            </div>
+          </div>
+
+          <div class="eb-field eb-field--gap">
+            <div class="eb-field__label-row">
+              <label class="eb-field__label" for="f-teaser">Teaser</label>
+              <span class="eb-from eb-from--canvas"><i data-lucide="pencil" aria-hidden="true"></i> edited on the page</span>
+            </div>
+            <div class="input">
+              <div class="input__wrap">
+                <input id="f-teaser" type="text" class="input__control" value="Independent. Respected. Recognised.">
+              </div>
+            </div>
+          </div>
+
+          <div class="textarea eb-field--gap">
+            <div class="eb-field__label-row">
+              <label class="textarea__label" for="f-intro">Introduction</label>
+              <span class="eb-from"><i data-lucide="sparkles" aria-hidden="true"></i> assistant</span>
+            </div>
+            <textarea class="textarea__control" id="f-intro" rows="2">The longest-running and most respected recognition programme in UK payments.</textarea>
+          </div>
+
+          <div class="textarea eb-field--gap">
+            <div class="eb-field__label-row">
+              <label class="textarea__label" for="f-main">Main text</label>
+              <span class="eb-from eb-from--canvas"><i data-lucide="pencil" aria-hidden="true"></i> edited on the page</span>
+            </div>
+            <textarea class="textarea__control" id="f-main" rows="4">Established in 2005, the Card &amp; Payments Awards celebrate the organisations and individuals shaping how Britain pays. Over twenty-two years the programme has become the benchmark the industry measures itself against. Judging is independent and confidential.</textarea>
+          </div>
+        </section>
+
+        <!-- ── Main / hero ── -->
+        <section class="eb-card" data-eb-form-card="hero">
+          <div class="eb-card__head">
+            <h3 class="eb-card__title">Main / hero</h3>
+            <span class="badge badge--border badge--neutral badge--sm">also a block</span>
+          </div>
+
+          <div class="eb-grid eb-grid--2">
+            <div class="eb-field">
+              <span class="eb-field__label">Main image (banner)</span>
+              <div class="drag-drop" data-drag-drop>
+                <div class="drag-drop__icon-wrap"><i data-lucide="upload-cloud" aria-hidden="true"></i></div>
+                <div class="drag-drop__text">
+                  <p class="drag-drop__title"><strong>Click to upload</strong> or drag and drop</p>
+                  <p class="drag-drop__subtitle">Using the brand gradient — no image set</p>
+                </div>
+                <input type="file" class="drag-drop__native" data-drag-native accept="image/*">
+              </div>
+            </div>
+            <div class="eb-field">
+              <span class="eb-field__label">Alternative image (secondary tabs)</span>
+              <div class="drag-drop" data-drag-drop>
+                <div class="drag-drop__icon-wrap"><i data-lucide="upload-cloud" aria-hidden="true"></i></div>
+                <div class="drag-drop__text">
+                  <p class="drag-drop__title"><strong>Click to upload</strong> or drag and drop</p>
+                  <p class="drag-drop__subtitle">SVG, PNG or JPG</p>
+                </div>
+                <input type="file" class="drag-drop__native" data-drag-native accept="image/*">
+              </div>
+            </div>
+          </div>
+
+          <div class="eb-grid eb-grid--3 eb-field--gap">
+            <div class="input">
+              <label class="eb-field__label" for="f-banner">Hero banner text</label>
+              <div class="input__wrap">
+                <input id="f-banner" type="text" class="input__control" value="4 February 2027 · London">
+              </div>
+            </div>
+            <div class="input">
+              <label class="eb-field__label" for="f-maxh">Max height, alt hero (px)</label>
+              <div class="input__wrap">
+                <input id="f-maxh" type="text" class="input__control" value="360">
+              </div>
+            </div>
+            <div class="input">
+              <label class="eb-field__label" for="f-logo">Logo</label>
+              <div class="input__wrap">
+                <input id="f-logo" type="text" class="input__control" value="tpf-club-logo.svg">
+              </div>
+            </div>
+          </div>
+
+          <div class="eb-checks eb-field--gap">
+            <label class="checkbox">
+              <input type="checkbox" class="checkbox__input">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+              <span class="checkbox__label"><span class="checkbox__label-text">Hide header</span></span>
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" class="checkbox__input" checked>
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+              <span class="checkbox__label"><span class="checkbox__label-text">Use image as hero banner</span></span>
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" class="checkbox__input">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+              <span class="checkbox__label"><span class="checkbox__label-text">Hide title on secondary tabs</span></span>
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" class="checkbox__input">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+              <span class="checkbox__label"><span class="checkbox__label-text">Hide navigation</span></span>
+            </label>
+          </div>
+        </section>
+
+        <!-- ── Judges & sponsors ── -->
+        <section class="eb-card" data-eb-form-card="people">
+          <div class="eb-card__head">
+            <h3 class="eb-card__title">Judges &amp; sponsors</h3>
+            <span class="eb-from"><i data-lucide="sparkles" aria-hidden="true"></i> 16 judges imported</span>
+          </div>
+
+          <div class="eb-grid eb-grid--3">
+            <div class="input">
+              <label class="eb-field__label" for="f-featured">Featured judge(s)</label>
+              <div class="input__wrap">
+                <input id="f-featured" type="text" class="input__control" value="Priya Raman">
+              </div>
+            </div>
+            <div class="input">
+              <label class="eb-field__label" for="f-cols-feat">Max columns (featured)</label>
+              <div class="input__wrap">
+                <input id="f-cols-feat" type="text" class="input__control" value="3">
+              </div>
+            </div>
+            <div class="input">
+              <div class="eb-field__label-row">
+                <label class="eb-field__label" for="f-cols-all">Max columns (all)</label>
+                <span class="eb-from"><i data-lucide="sparkles" aria-hidden="true"></i> assistant</span>
+              </div>
+              <div class="input__wrap">
+                <input id="f-cols-all" type="text" class="input__control" value="4">
+              </div>
+            </div>
+          </div>
+
+          <div class="eb-checks eb-field--gap">
+            <label class="checkbox">
+              <input type="checkbox" class="checkbox__input" checked>
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+              <span class="checkbox__label"><span class="checkbox__label-text">Show biog popup</span></span>
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" class="checkbox__input" checked>
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+              <span class="checkbox__label"><span class="checkbox__label-text">Show 'View profile' on popup</span></span>
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" class="checkbox__input" checked>
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+              <span class="checkbox__label"><span class="checkbox__label-text">Invite judges to write their own bio</span></span>
+            </label>
+          </div>
+
+          <div class="eb-grid eb-grid--2 eb-field--gap">
+            <div class="input">
+              <label class="eb-field__label" for="f-headline">Headline sponsor</label>
+              <div class="input__wrap">
+                <input id="f-headline" type="text" class="input__control" value="FIS — Prime sponsor">
+              </div>
+            </div>
+            <div class="input">
+              <label class="eb-field__label" for="f-sponsors">Sponsor tiers</label>
+              <div class="input__wrap">
+                <input id="f-sponsors" type="text" class="input__control" value="Champagne, Casino, Payment, Category">
+              </div>
+            </div>
+          </div>
+
+          <div class="eb-notice">
+            <i data-lucide="check" aria-hidden="true"></i>
+            <p>
+              <strong>Created for you:</strong> a Sponsors section per tier with clean display names,
+              rather than the section name leaking onto the public page.
+            </p>
+          </div>
+        </section>
+
+        <!-- ── Sign-up & entries ── -->
+        <section class="eb-card" data-eb-form-card="signup">
+          <div class="eb-card__head">
+            <h3 class="eb-card__title">Sign-up &amp; entries</h3>
+          </div>
+
+          <div class="eb-grid eb-grid--3">
+            <div class="sel" data-sel>
+              <label class="eb-field__label" for="f-pos">Sign-up position</label>
+              <button id="f-pos" class="sel__control" type="button" data-sel-trigger>
+                <span class="sel__value">Base bar</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">Base bar <i data-lucide="check"></i></button></li>
+                <li><button type="button" class="sel__menu-item" role="option">Tab</button></li>
+                <li><button type="button" class="sel__menu-item" role="option">None</button></li>
+              </ul>
+            </div>
+            <div class="input">
+              <div class="eb-field__label-row">
+                <label class="eb-field__label" for="f-cat">Catalogue item (entry fee)</label>
+                <span class="eb-from"><i data-lucide="sparkles" aria-hidden="true"></i> assistant</span>
+              </div>
+              <!-- TODO(backend:EventBuilder): catalogue lookup is a plain text field here.
+                   Needs GET /api/catalogue/items and a picker bound to an item id. -->
+              <div class="input__wrap" data-backend-todo="eb-catalogue">
+                <input id="f-cat" type="text" class="input__control" value="Awards — Entry Fee · £95">
+              </div>
+            </div>
+            <div class="input">
+              <label class="eb-field__label" for="f-table">Catalogue item (tables)</label>
+              <div class="input__wrap">
+                <input id="f-table" type="text" class="input__control" value="Awards — Table of 10 · £4,200">
+              </div>
+            </div>
+          </div>
+
+          <div class="eb-grid eb-grid--3 eb-field--gap">
+            <div class="input">
+              <label class="eb-field__label" for="f-signal">Sign-up Customer Signal</label>
+              <div class="input__wrap">
+                <input id="f-signal" type="text" class="input__control" value="C&amp;P Awards 2027 entry">
+              </div>
+            </div>
+            <div class="input">
+              <label class="eb-field__label" for="f-clearance">Success security clearance</label>
+              <div class="input__wrap">
+                <input id="f-clearance" type="text" class="input__control" value="Entrant">
+              </div>
+            </div>
+            <div class="input">
+              <label class="eb-field__label" for="f-success">Success message</label>
+              <div class="input__wrap">
+                <input id="f-success" type="text" class="input__control" value="Entry received — good luck!">
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── Dates & calendar ── -->
+        <section class="eb-card" data-eb-form-card="dates">
+          <div class="eb-card__head">
+            <h3 class="eb-card__title">Dates &amp; calendar</h3>
+            <span class="eb-from"><i data-lucide="sparkles" aria-hidden="true"></i> 4 milestones from your brief</span>
+          </div>
+
+          <div class="eb-grid eb-grid--2">
+            <div class="input">
+              <label class="eb-field__label" for="f-open">Entries open</label>
+              <div class="input__wrap">
+                <input id="f-open" type="datetime-local" class="input__control" value="2026-07-07T09:00">
+              </div>
+            </div>
+            <div class="input">
+              <label class="eb-field__label" for="f-close">Entries close</label>
+              <div class="input__wrap">
+                <input id="f-close" type="datetime-local" class="input__control" value="2026-09-25T17:00">
+              </div>
+            </div>
+            <div class="input">
+              <label class="eb-field__label" for="f-shortlist">Shortlist announced</label>
+              <div class="input__wrap">
+                <input id="f-shortlist" type="datetime-local" class="input__control" value="2026-10-16T09:00">
+              </div>
+            </div>
+            <div class="input">
+              <label class="eb-field__label" for="f-recur">Number of recurrences</label>
+              <div class="input__wrap">
+                <input id="f-recur" type="text" class="input__control" value="0">
+              </div>
+            </div>
+          </div>
+
+          <div class="eb-checks eb-field--gap">
+            <label class="checkbox">
+              <input type="checkbox" class="checkbox__input" checked>
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+              <span class="checkbox__label">
+                <span class="checkbox__label-text">Auto-generate calendar invite (.ics)</span>
+                <span class="checkbox__helper">The "Add to calendar" icon only shows if this is on or a file is attached</span>
+              </span>
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" class="checkbox__input">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+              <span class="checkbox__label"><span class="checkbox__label-text">Recurring event</span></span>
+            </label>
+          </div>
+        </section>
+
+        <p class="eb-form__divider">Standard article fields</p>
+
+        <!-- ── Publication ── -->
+        <section class="eb-card" data-eb-form-card="publication">
+          <div class="eb-card__head">
+            <h3 class="eb-card__title">Publication &amp; scheduling</h3>
+          </div>
+
+          <div class="eb-checks">
+            <label class="checkbox">
+              <input type="checkbox" class="checkbox__input">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+              <span class="checkbox__label"><span class="checkbox__label-text">Live</span></span>
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" class="checkbox__input">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+              <span class="checkbox__label"><span class="checkbox__label-text">Sticky item</span></span>
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" class="checkbox__input" checked>
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+              <span class="checkbox__label"><span class="checkbox__label-text">Highlight</span></span>
+            </label>
+          </div>
+
+          <div class="eb-grid eb-grid--2 eb-field--gap">
+            <div class="input">
+              <label class="eb-field__label" for="f-golive">Publish start (go-live)</label>
+              <div class="input__wrap">
+                <input id="f-golive" type="datetime-local" class="input__control" value="2026-06-01T09:00">
+              </div>
+            </div>
+            <div class="input">
+              <label class="eb-field__label" for="f-expiry">Publish end (expiry)</label>
+              <div class="input__wrap">
+                <input id="f-expiry" type="datetime-local" class="input__control" value="">
+              </div>
+            </div>
+          </div>
+
+          <div class="eb-grid eb-grid--3 eb-field--gap">
+            <div class="input">
+              <label class="eb-field__label" for="f-so">Sort order (SO)</label>
+              <div class="input__wrap"><input id="f-so" type="text" class="input__control" value="10"></div>
+            </div>
+            <div class="input">
+              <label class="eb-field__label" for="f-priority">Priority</label>
+              <div class="input__wrap"><input id="f-priority" type="text" class="input__control" value="100"></div>
+            </div>
+            <div class="input">
+              <label class="eb-field__label" for="f-catgy">Content category</label>
+              <div class="input__wrap"><input id="f-catgy" type="text" class="input__control" value="Event"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── Access & visibility ── -->
+        <section class="eb-card" data-eb-form-card="access">
+          <div class="eb-card__head">
+            <h3 class="eb-card__title">Access &amp; visibility</h3>
+          </div>
+
+          <div class="eb-grid eb-grid--3">
+            <div class="sel" data-sel>
+              <label class="eb-field__label" for="f-sec">Security clearance</label>
+              <button id="f-sec" class="sel__control" type="button" data-sel-trigger>
+                <span class="sel__value">Non-secured (public)</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">Non-secured (public) <i data-lucide="check"></i></button></li>
+                <li><button type="button" class="sel__menu-item" role="option">Registered users</button></li>
+                <li><button type="button" class="sel__menu-item" role="option">Entrant</button></li>
+                <li><button type="button" class="sel__menu-item" role="option">Members</button></li>
+              </ul>
+            </div>
+            <div class="sel" data-sel>
+              <label class="eb-field__label" for="f-edit">Contributor edit clearance</label>
+              <button id="f-edit" class="sel__control" type="button" data-sel-trigger>
+                <span class="sel__value">Editors</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item" role="option">Non-secured</button></li>
+                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">Editors <i data-lucide="check"></i></button></li>
+                <li><button type="button" class="sel__menu-item" role="option">Admins</button></li>
+              </ul>
+            </div>
+            <div class="sel" data-sel>
+              <label class="eb-field__label" for="f-geo">Geo-blocking</label>
+              <button id="f-geo" class="sel__control" type="button" data-sel-trigger>
+                <span class="sel__value">None</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">None <i data-lucide="check"></i></button></li>
+                <li><button type="button" class="sel__menu-item" role="option">Allow list</button></li>
+                <li><button type="button" class="sel__menu-item" role="option">Block list</button></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="eb-checks eb-field--gap">
+            <label class="checkbox">
+              <input type="checkbox" class="checkbox__input">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+              <span class="checkbox__label"><span class="checkbox__label-text">Private</span></span>
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" class="checkbox__input">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+              <span class="checkbox__label"><span class="checkbox__label-text">Hide from listing</span></span>
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" class="checkbox__input">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+              <span class="checkbox__label"><span class="checkbox__label-text">Hide from search</span></span>
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" class="checkbox__input" checked>
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+              <span class="checkbox__label"><span class="checkbox__label-text">Include in search index</span></span>
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" class="checkbox__input">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+              <span class="checkbox__label"><span class="checkbox__label-text">Exclude from AI</span></span>
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" class="checkbox__input">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+              <span class="checkbox__label"><span class="checkbox__label-text">Content subscription (paywall)</span></span>
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" class="checkbox__input">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+              <span class="checkbox__label"><span class="checkbox__label-text">Show associated users</span></span>
+            </label>
+          </div>
+        </section>
+
+        <!-- ── SEO & titles ──
+             TODO(backend:EventBuilder): the .eb-from provenance badges and the
+             "out of sync with the hero" warning are static. Needs per-field provenance
+             (assistant / canvas edit / form) stored with the event, plus a consistency
+             check across title, SEO title and teaser to generate the warning. -->
+        <section class="eb-card" data-eb-form-card="seo" data-backend-todo="eb-provenance">
+          <div class="eb-card__head">
+            <h3 class="eb-card__title">SEO &amp; titles</h3>
+            <span class="eb-from"><i data-lucide="triangle-alert" aria-hidden="true"></i> 2 out of sync with the hero</span>
+          </div>
+
+          <div class="eb-grid eb-grid--2">
+            <div class="input">
+              <label class="eb-field__label" for="f-sub">Subtitle (Title 2)</label>
+              <div class="input__wrap"><input id="f-sub" type="text" class="input__control" value=""></div>
+            </div>
+            <div class="input">
+              <label class="eb-field__label" for="f-formatted">Formatted title</label>
+              <div class="input__wrap"><input id="f-formatted" type="text" class="input__control" value=""></div>
+            </div>
+            <div class="input">
+              <label class="eb-field__label" for="f-headline2">Headline</label>
+              <div class="input__wrap"><input id="f-headline2" type="text" class="input__control" value=""></div>
+            </div>
+            <div class="input">
+              <label class="eb-field__label" for="f-headline3">Headline extra</label>
+              <div class="input__wrap"><input id="f-headline3" type="text" class="input__control" value=""></div>
+            </div>
+          </div>
+
+          <div class="eb-grid eb-grid--2 eb-field--gap">
+            <div class="input">
+              <div class="eb-field__label-row">
+                <label class="eb-field__label" for="f-seotitle">SEO page title</label>
+                <span class="eb-from"><i data-lucide="triangle-alert" aria-hidden="true"></i> older wording</span>
+              </div>
+              <div class="input__wrap">
+                <input id="f-seotitle" type="text" class="input__control" value="The Card and Payment Awards UK 2027 — TPF Club">
+              </div>
+            </div>
+            <div class="input">
+              <label class="eb-field__label" for="f-seodesc">SEO page description</label>
+              <div class="input__wrap">
+                <input id="f-seodesc" type="text" class="input__control" value="Enter the UK's longest-running payments awards.">
+              </div>
+            </div>
+          </div>
+
+          <div class="textarea eb-field--gap">
+            <label class="textarea__label" for="f-summary">Summary</label>
+            <textarea class="textarea__control" id="f-summary" rows="2"></textarea>
+          </div>
+        </section>
+
+        <!-- ── Placement ── -->
+        <section class="eb-card" data-eb-form-card="placement">
+          <div class="eb-card__head">
+            <h3 class="eb-card__title">Extra content &amp; placement</h3>
+          </div>
+
+          <div class="eb-grid eb-grid--3">
+            <div class="input">
+              <label class="eb-field__label" for="f-cta">Call to action</label>
+              <div class="input__wrap"><input id="f-cta" type="text" class="input__control" value="Submit an entry"></div>
+            </div>
+            <div class="input">
+              <label class="eb-field__label" for="f-quote">Pull-quote</label>
+              <div class="input__wrap"><input id="f-quote" type="text" class="input__control" value=""></div>
+            </div>
+            <div class="input">
+              <label class="eb-field__label" for="f-credits">Credits</label>
+              <div class="input__wrap"><input id="f-credits" type="text" class="input__control" value=""></div>
+            </div>
+          </div>
+
+          <div class="eb-grid eb-grid--3 eb-field--gap">
+            <div class="input">
+              <label class="eb-field__label" for="f-secondary">Secondary sections</label>
+              <div class="input__wrap"><input id="f-secondary" type="text" class="input__control" value="Homepage › Featured"></div>
+            </div>
+            <div class="input">
+              <label class="eb-field__label" for="f-related">Related articles</label>
+              <div class="input__wrap"><input id="f-related" type="text" class="input__control" value="C&amp;P Awards 2026"></div>
+            </div>
+            <div class="input">
+              <label class="eb-field__label" for="f-tax">Taxonomy / topics</label>
+              <div class="input__wrap"><input id="f-tax" type="text" class="input__control" value="Payments, Fintech, Awards"></div>
+            </div>
+          </div>
+
+          <div class="textarea eb-field--gap">
+            <label class="textarea__label" for="f-embed">Code / embed box</label>
+            <textarea class="textarea__control" id="f-embed" rows="2"></textarea>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- ══════════════ AI DOCK ══════════════ -->
+    <section class="eb-ai">
+      <div class="eb-ai__head">
+        <span class="eb-ai__badge"><i data-lucide="sparkles" aria-hidden="true"></i></span>
+        <p class="eb-ai__title">Event assistant</p>
+        <div class="eb-ai__spacer"></div>
+        <span class="badge badge--border badge--warning badge--sm">1 inconsistency</span>
+      </div>
+
+      <div class="eb-ai__body">
+        <div class="eb-turn">
+          <span class="eb-turn__avatar"><i data-lucide="sparkles" aria-hidden="true"></i></span>
+          <div class="eb-turn__content">
+            <p class="eb-turn__text">
+              Your <strong>SEO page title</strong> still says "Card and Payment Awards" — the hero and
+              event title both say "Card &amp; Payments Awards". Worth fixing before you publish.
+            </p>
+            <div class="eb-answer__actions">
+              <button class="btn btn--primary btn--xs" type="button">
+                <i data-lucide="check" aria-hidden="true"></i>
+                Fix it
+              </button>
+              <button class="btn btn--secondary btn--xs" type="button">Leave it</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="eb-ai__foot eb-ai__foot--row">
+        <div class="eb-promptbar">
+          <span class="eb-promptbar__icon"><i data-lucide="sparkles" aria-hidden="true"></i></span>
+          <input class="eb-promptbar__input" type="text" data-eb-prompt
+                 aria-label="Ask about a field"
+                 placeholder="Ask about any field — “what does sort order do?”, “set access to members only”">
+          <button class="btn btn--primary btn--sm btn--icon" type="button" aria-label="Send">
+            <i data-lucide="move-up" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>lucide.createIcons();</script>
+<script src="../../components/Select/Select.js"></script>
+<script src="EventBuilder.js"></script>
+</body>
+</html>

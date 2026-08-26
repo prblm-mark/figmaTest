@@ -296,15 +296,7 @@
 
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>lucide.createIcons();</script>
-  <!-- Toggle click handler so .toggle--active flips and the linked reveal fires -->
-  <script>
-    document.querySelectorAll('.toggle:not(.toggle--disabled)').forEach(function (toggle) {
-      toggle.addEventListener('click', function () {
-        var isActive = toggle.classList.toggle('toggle--active');
-        toggle.setAttribute('aria-checked', String(isActive));
-      });
-    });
-  </script>
+  <script src="../Toggle/Toggle.js"></script>
   <script src="../ThemeToggle/ThemeToggle.js"></script>
   <script type="module" src="./Dropdown.js"></script>
 </body>
