@@ -66,9 +66,9 @@ figma.connect(
       <body class="cc-control">
         <!-- … the No Event screen exactly as above … -->
 
-        <!-- Scrim: Modal.css supplies fixed/centred/--ai-spacing-6. Light keeps Modal's
-             black at 0.5; dark rises to 0.85 (SeatingPlanner.css). -->
-        <div class="modal-overlay seating-picker-overlay" id="seating-picker" data-seating-picker>
+        <!-- Modal.css supplies the whole overlay: fixed/centred/--ai-spacing-6 plus the
+             per-theme scrim (navy here, black on chat surfaces; 0.5 light, 0.85 dark). -->
+        <div class="modal-overlay" id="seating-picker" data-seating-picker>
           <!-- … EventPicker, .modal.modal--lg.event-picker (768px via --ai-size-11) … -->
         </div>
       </body>

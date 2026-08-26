@@ -293,13 +293,56 @@
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
   z-index: 100;
   align-items: center;
   justify-content: center;
   padding: var(--ai-spacing-6);
+  /* Scrim — see the theme block below. */
+  background: rgba(15, 23, 42, 0.5);
 }
 
 .modal-overlay--open {
   display: flex;
+}
+
+/* ── Scrim per theme ─────────────────────────
+ * Two axes, and they are independent: the COLOUR comes from the surface, the ALPHA from the
+ * theme (designer, 2026-08-26).
+ *
+ *              light            dark
+ *   default    navy   0.5       navy   0.85
+ *   chat       black  0.5       black  0.85
+ *
+ * COLOUR. `#0F172A` navy for the default, CC-light, dark and CC-dark themes — this is what
+ * Figma draws (Seating Planner overlays 3515:176055 / 3515:176080), and black read as too
+ * harsh a veil against those greys. The chat surfaces keep black, which suits their own
+ * near-neutral greys (`--cc-ui-primary-bg` is #ececed / #131316 there, not the navy-tinted
+ * slate the CC and default themes use).
+ *
+ * ALPHA. 0.5 in light, 0.85 in dark, regardless of surface. A 50% veil over an
+ * already-dark page barely separates the dialog from it, so the density has to rise to keep
+ * the modal legible.
+ *
+ * SELECTORS mirror the token files exactly, so a modal is always scrimmed to match whatever
+ * theme it is actually rendered in: `data-theme` on <html> (tokens-dark.css) and
+ * `data-surface` on <body> (tokens-chat.css / tokens-chat-dark.css, which is itself a
+ * descendant selector for the same reason). `data-brand="cc"` needs no rule of its own —
+ * CC light and CC dark take the default navy.
+ *
+ * Raw rgba because THERE IS NO SCRIM TOKEN in the scale. `#0f172a` exists as
+ * `--cc-header-primary-bg` (and dark `--cc-ui-primary-bg`), but binding a scrim to a header
+ * or page background would be a category error, and a hex token cannot carry the alpha
+ * anyway. A real `--ai-surface-scrim` with per-theme values is the proper fix — flagged in
+ * Modal.figma-notes.md. */
+
+[data-theme="dark"] .modal-overlay {
+  background: rgba(15, 23, 42, 0.85);
+}
+
+[data-surface="chat"] .modal-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] [data-surface="chat"] .modal-overlay {
+  background: rgba(0, 0, 0, 0.85);
 }

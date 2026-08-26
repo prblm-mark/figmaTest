@@ -81,6 +81,57 @@ Figma defines no mobile modal variant. One responsive rule exists in code:
 intentionally borderless, centred `0 var(--ai-spacing-6) var(--ai-spacing-6)` padding.
 `.modal__body` padding is also unchanged at every width.
 
+## Overlay scrim — per theme
+
+`.modal-overlay` supplies the scrim for every modal in the system. Its colour and its opacity move
+on **two independent axes** (designer, 2026-08-26):
+
+| | light | dark |
+|---|---|---|
+| default / CC | `rgba(15, 23, 42, 0.5)` — navy | `rgba(15, 23, 42, 0.85)` |
+| chat | `rgba(0, 0, 0, 0.5)` — black | `rgba(0, 0, 0, 0.85)` |
+
+**Colour comes from the surface.** `#0F172A` navy for the default, dark, CC-light and CC-dark
+themes — this is what Figma draws (Seating Planner overlays `3515:176055` light / `3515:176080`
+dark), and black read as too harsh a veil against those slate greys. The **chat** surfaces keep
+black, which suits their own near-neutral palette — `--cc-ui-primary-bg` is `#ececed` / `#131316`
+there, not the navy-tinted slate the CC and default themes use.
+
+**Opacity comes from the theme**, regardless of surface: 0.5 light, 0.85 dark. A 50% veil over an
+already-dark page barely separates the dialog from it, so the density has to rise to keep the modal
+legible. The dark value was read off Figma's own dark frame rather than assumed.
+
+**The selectors mirror the token files exactly**, so a modal is always scrimmed to match the theme
+it is actually rendered in:
+
+| Theme | Token file selector | Scrim rule |
+|---|---|---|
+| light | `:root` | `.modal-overlay` |
+| dark | `[data-theme="dark"]` | `[data-theme="dark"] .modal-overlay` |
+| CC light | `[data-brand="cc"]` | — inherits the default navy |
+| CC dark | `[data-brand="cc"][data-theme="dark"]` | — inherits the dark navy |
+| chat light | `[data-surface="chat"]` | `[data-surface="chat"] .modal-overlay` |
+| chat dark | `[data-theme="dark"] [data-surface="chat"]` | same, prefixed |
+
+`data-theme` and `data-brand` sit on `<html>`; **`data-surface` sits on `<body>`**, which is why the
+chat rules are descendant selectors — the same shape `tokens-chat-dark.css` itself uses. CC needs no
+rule of its own: both CC themes take the default navy.
+
+Specificity resolves the overlap without relying on source order — chat-dark is three attributes
+deep, so it beats both the plain dark rule and the plain chat rule.
+
+> **This lived in `SeatingPlanner.css` first** and was promoted here on 2026-08-26, because nothing
+> about it was specific to that screen. Promoting it changed three existing consumers (this demo,
+> ControlScreen, ControlHub) from black to navy in the default themes — intended, not incidental.
+
+### Token gap
+
+**There is no scrim token**, so all four values are raw rgba. `#0f172a` exists as
+`--cc-header-primary-bg` (and dark `--cc-ui-primary-bg`), but binding a scrim to a header or page
+background would be a category error, and a hex token cannot carry the alpha anyway. The proper fix
+is a real `--ai-surface-scrim` with per-theme values in Figma; until then these are deliberate raw
+values, not oversights.
+
 ## Notes
 
 - Overlay (`.modal-overlay`) included for interactive demo but is not part of the Figma component — it's an implementation detail.

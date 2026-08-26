@@ -32,37 +32,13 @@
  */
 
 /* ── Select Event modal scrim ───────────────────────────────────────────────
- * The overlay itself is Modal.css's `.modal-overlay` — fixed, centred, `--ai-spacing-6`
- * padding, `display: none` until `--open`. All three match Figma's overlay frame exactly,
- * so only the scrim colour is touched here.
+ * Nothing here any more. The scrim moved into Modal.css on 2026-08-26 as a system-wide
+ * per-theme rule (navy for default/CC, black for chat; 0.5 light, 0.85 dark), because
+ * nothing about it was specific to seating. See the theme block in Modal.css.
  *
- * COLOUR: `#0F172A` (navy) in both themes, which is exactly what Figma draws — black read
- * as too harsh a veil (designer, 2026-08-26). Only the alpha changes between themes.
- *
- *   light  rgba(15, 23, 42, 0.5)   — Figma 3515:176055
- *   dark   rgba(15, 23, 42, 0.85)  — Figma 3515:176080
- *
- * The higher dark alpha is not arbitrary: a 50% veil over an already-dark page barely
- * separates the dialog from it, so the density has to rise to keep the modal legible.
- *
- * SCOPED to these screens, with two classes so it wins on specificity rather than on
- * stylesheet order — Modal.css's `.modal-overlay` sets black at 0.5 and every other modal
- * in the system keeps it. Both of these very likely belong in Modal.css as a system-wide
- * rule (nothing here is specific to seating, and every modal has the same dark-mode
- * problem), but that is a deliberate decision about every existing modal, not a side effect
- * of this screen. Flagged in figma-notes.
- *
- * Raw rgba in both themes because THERE IS NO SCRIM TOKEN in the scale. `#0f172a` does
- * appear as `--cc-header-primary-bg` / dark `--cc-ui-primary-bg`, but binding a scrim to a
- * header or page background would be the same category error as the Datatables token on the
- * Container above — and neither can carry the alpha anyway. Flagged as a genuine gap. */
-.modal-overlay.seating-picker-overlay {
-  background: rgba(15, 23, 42, 0.5);
-}
-
-[data-theme="dark"] .modal-overlay.seating-picker-overlay {
-  background: rgba(15, 23, 42, 0.85);
-}
+ * The overlay itself has always been Modal's `.modal-overlay` — fixed, centred,
+ * `--ai-spacing-6` padding, `display: none` until `--open`. All three already matched
+ * Figma's overlay frame exactly, so this template has never needed to touch it. */
 
 /* ── Chrome: no bottom rule ─────────────────────────────────────────────────
  * The shell gives `.cc-control__chrome` a 1px `--ai-border-secondary` bottom rule. Figma's

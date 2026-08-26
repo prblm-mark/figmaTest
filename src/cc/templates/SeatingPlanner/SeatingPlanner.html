@@ -894,8 +894,9 @@
        pattern (src/cc/patterns/EventPicker/), used verbatim — its own JS owns search,
        the Live filter, selection and Escape, and emits event-picker:select / :close.
        This template owns only opening it, closing it and where focus goes.
-       .modal-overlay comes from Modal.css: display:none until --open. -->
-  <div class="modal-overlay seating-picker-overlay" id="seating-picker" data-seating-picker>
+       .modal-overlay comes from Modal.css: display:none until --open, plus the
+       per-theme scrim (navy here, black on chat surfaces). -->
+  <div class="modal-overlay" id="seating-picker" data-seating-picker>
     <div class="modal modal--lg event-picker" role="dialog" aria-modal="true"
          aria-labelledby="seating-picker-title" data-event-picker>
 
