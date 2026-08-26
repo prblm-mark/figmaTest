@@ -1,7 +1,13 @@
 /* SeatingPlanner — Seating Planner screen inside the CC app shell (Tier=Template)
- * Figma: Lus07xi8pPXLN87sQIyrEt
- *   Desktop frame 3515:175956 (1728x1117) · Mobile frame 3515:213358 (402x874)
- *   Both named "No Event" — this is the first of a series of screens.
+ * Figma: Lus07xi8pPXLN87sQIyrEt — one screen, several mutually-exclusive STATES:
+ *
+ *   "No Event"      3515:175956 desktop · 3515:213358 mobile   — the event gate
+ *   "Select Event"  3515:176032 desktop · 3515:228380 mobile   — + the EventPicker modal
+ *   "No Plan"       3515:176082 desktop · 3515:213400 mobile   — + SeatingHeader, no plans yet
+ *
+ * The states live in one page and are switched by `data-seating-state` (SeatingPlanner.js),
+ * because choosing an event genuinely advances No Event -> No Plan. `?state=no-plan` lands
+ * on one directly for review.
  *
  * Reuses the ControlScreen app-shell verbatim (../ControlScreen/ControlScreen.css):
  * the icon rail, the chrome (CCTopNavigation), the desktop/mobile sidebar swap, the right
@@ -56,15 +62,19 @@
   border-block-end: 0;
 }
 
-/* ── Page padding ───────────────────────────────────────────────────────────
+/* ── Page padding + gap ─────────────────────────────────────────────────────
  * The one place this screen departs from the shell. `.cc-control__page` gives
- * --ai-spacing-6 (24px), which is what ControlScreen and ControlHub both want; Figma
- * binds --ai-spacing-7 (32px) here, dropping to --ai-spacing-4 (12px) on mobile.
+ * --ai-spacing-6 (24px) padding and --ai-spacing-7 (32px) gap; Figma binds
+ * --ai-spacing-7 padding and --ai-spacing-5 (16px) gap, both dropping to --ai-spacing-4
+ * (12px) on mobile.
  *
- * The shell's `gap: --ai-spacing-7` is left alone — this page has a single child, so it
- * never applies. */
+ * The gap only started mattering on the No Plan state, which is the first with two page
+ * children (SeatingHeader + the card). On the No Event state there is one child, so the
+ * shell's 32px gap was invisible rather than correct — worth stating, because "it looked
+ * right" would have been a bad reason to leave it. */
 .cc-control__page--seating {
   padding: var(--ai-spacing-7);
+  gap: var(--ai-spacing-5);
   /* The shell reserves a stable 15px scrollbar gutter so a scrollbar appearing cannot
    * shift the layout. That is right for ControlScreen and ControlHub, whose pages scroll —
    * but this page never does: its single child fills it and owns its own scrolling (and
@@ -97,7 +107,28 @@
   overflow: hidden;
 }
 
-/* ── Empty state: "No event selected" ───────────────────────────────────────
+/* The No Plan state's card is the same box with a different treatment: a DASHED border and
+ * `--ai-shadow-xxs`, reading as a placeholder waiting to be filled rather than a populated
+ * surface. Same dashed-placeholder idea as Unassigned's empty state.
+ *
+ * Figma binds `--ai-surface-primary` directly here (not the Datatables token the No Event
+ * frame used) and leaves the radius as a raw `rounded-[16px]`, which is `--ai-radius-lg`
+ * exactly — so the base rule above already covers both. */
+.seating-screen--placeholder {
+  border-style: dashed;
+  box-shadow: var(--ai-shadow-xxs);
+}
+
+/* ── Empty states ───────────────────────────────────────────────────────────
+ * Two of them so far, sharing the centring and the 64px block padding, differing in their
+ * inline padding and in how their two lines are spaced. Each keeps exactly what its own
+ * frame binds:
+ *
+ *   --gate      No Event  · 32px inline · 12px gap · has an icon disc and a CTA
+ *   --no-plans  No Plan   · 24px inline · no gap, a 6px pad on the text instead
+ *
+ * `padding-inline` differs because Figma says so, not for a reason anyone has stated —
+ * worth a designer glance.
  * Figma splits this from the Container as its own auto-layout child, and it is kept
  * separate rather than merged: later screens put a different child in the same card, so
  * the card and this state are genuinely two things.
@@ -110,10 +141,19 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--ai-spacing-4);
-  padding-inline: var(--ai-spacing-7);
+  /* Both frames read py-[65px] / px-[25px] or px-[33px] — those are 64/24/32 PLUS the
+   * card's 1px stroke, the same stroke-inside-vs-added arithmetic decoded on SeatingToast. */
   padding-block: var(--ai-spacing-11);
   text-align: center;
+}
+
+.seating-screen__empty--gate {
+  gap: var(--ai-spacing-4);
+  padding-inline: var(--ai-spacing-7);
+}
+
+.seating-screen__empty--no-plans {
+  padding-inline: var(--ai-spacing-6);
 }
 
 /* A 48px brand-tinted disc. Figma names the frame "Text", which it is not. */
@@ -150,13 +190,33 @@
   color: var(--ai-text-primary);
 }
 
+/* UNIFIED across both empty states at the designer's direction 2026-08-26. The two frames
+ * disagreed: the No Event state binds --ai-font-title with --ai-leading-md (24px), the No
+ * Plan state --ai-font-body with --ai-leading-sm (20px). Body/20 won, so this is one rule
+ * rather than two — and the No Event state's desktop leading tightens 24 -> 20 as a result.
+ *
+ * Colour is --ai-text-secondary everywhere. The No Plan DESKTOP frame binds
+ * --ai-text-contrast, but its own mobile frame and both No Event frames say secondary, so
+ * the desktop frame is the outlier (designer, 2026-08-26). Worth fixing in Figma.
+ *
+ * The No Plan frames cap the line at 512px, which is --ai-size-9 exactly. Applied to both:
+ * a centred sentence wants a measure regardless of state, and the No Event copy is shorter
+ * than the cap so nothing changes there. Figma marks these nowrap; left wrapping, since the
+ * cap plus real copy never reaches two lines on desktop and mobile is meant to wrap. */
 .seating-screen__empty-text {
   margin: 0;
-  font-family: var(--ai-font-title);
+  max-inline-size: var(--ai-size-9);
+  font-family: var(--ai-font-body);
   font-size: var(--ai-font-fixed-xs);
   font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-md);
+  line-height: var(--ai-leading-sm);
   color: var(--ai-text-secondary);
+}
+
+/* Figma spaces the No Plan lines with a 6px pad on the second paragraph instead of a
+ * container gap — `pt-[6px]`, which is --ai-spacing-2 exactly. */
+.seating-screen__empty--no-plans .seating-screen__empty-text {
+  padding-block-start: var(--ai-spacing-2);
 }
 
 /* ── Mobile ─────────────────────────────────────────────────────────────────
@@ -172,17 +232,16 @@
 @media (max-width: 767px) {
   .cc-control__page--seating {
     padding: var(--ai-spacing-4);
+    gap: var(--ai-spacing-4);
   }
 
   .seating-screen__empty-title {
     font-size: var(--ai-font-fixed-sm);
   }
 
-  /* Steps down a size AND tightens its leading, so the sentence wraps to two lines
-   * rather than running off. Figma sets `w-[min-content]` with `min-w-full` here, which
-   * is just "fill the width and wrap" — the default once nowrap is gone. */
+  /* Only the size steps down now. Both states' mobile frames already bound
+   * --ai-leading-sm, so unifying the base on 20px made the leading override redundant. */
   .seating-screen__empty-text {
     font-size: var(--ai-font-fixed-xxs);
-    line-height: var(--ai-leading-sm);
   }
 }

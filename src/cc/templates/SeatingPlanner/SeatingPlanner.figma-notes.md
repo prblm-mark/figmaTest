@@ -1,9 +1,9 @@
 # SeatingPlanner — Figma Notes
 
 **Tier:** Template
-**Built:** 2026-08-26 (Seating Planner module, screens 1–2 of a series)
+**Built:** 2026-08-26 (Seating Planner module, screens 1–3 of a series)
 **Files:** `SeatingPlanner.css`, `SeatingPlanner.html`, `SeatingPlanner.js`, `SeatingPlanner.figma.ts`, `SeatingPlanner.figma-notes.md`
-**Composes:** the **ControlScreen app shell** verbatim + Button (`btn--secondary`) + **EventPicker** (the Select Event modal, itself composing Modal / SearchInput / Checkbox / ActionCard / Badge)
+**Composes:** the **ControlScreen app shell** verbatim + Button + **EventPicker** (the Select Event modal, itself composing Modal / SearchInput / Checkbox / ActionCard / Badge) + **SeatingHeader** (`Type=No Plans`)
 **JS:** the shell's own bundle, ported unchanged, + `event-picker.js` (the picker's own) + `SeatingPlanner.js` (opening/closing the picker and focus management — nothing else)
 
 ## Figma Nodes
@@ -17,6 +17,10 @@
 - **Desktop:** `3515:176032`, 1728×1117
 - **Mobile:** `3515:228380`, 402×874
 - **Desktop, dark mode:** `3515:176057` (overlay `3515:176080`)
+
+**Screen 3 — "No Plan"**
+- **Desktop:** `3515:176082`, 1728×1117
+- **Mobile:** `3515:213400`, 402×874
 
 Both frames are named **"No Event"**, and their content frame carries the working title
 *"TASK-344753 — SeatingPlanner — mobile toolbar bottom bar — v4"* — a leftover name from a
@@ -169,6 +173,95 @@ centred, `--ai-spacing-6` padding, matching Figma's overlay frame exactly.
 - **`.modal` has no border and a different shadow** from what Figma's instance shows here
   (`1px --ai-border-secondary`, `0 3px 10px rgba(0,0,0,0.1)`). Also an EventPicker/Modal-level
   question, not re-litigated from this frame.
+
+## Screen 3 — "No Plan"
+
+An event is chosen but has no seating plans yet, so the page gains a **SeatingHeader** at
+`Type=No Plans` above a dashed placeholder card. The header instance's internals match the wave-6
+build exactly — including the mobile frame's reversed, primary-first Global-Actions — which is a
+useful independent confirmation of that component.
+
+**No new components.** SeatingHeader is used verbatim, and the header's own **New Plan** button is
+why this empty state needs no CTA of its own (unlike the event gate, which has one).
+
+### The page gap only started mattering here
+
+This is the first state with **two** page children, so it is the first to exercise the page's `gap`.
+Figma binds `--ai-spacing-5` (16px) desktop / `--ai-spacing-4` (12px) mobile, where the shell gives
+`--ai-spacing-7` (32px).
+
+Worth stating plainly: on screens 1 and 2 the shell's 32px gap was **invisible, not correct** — one
+child means no gap is ever drawn. "It looked right" would have been a bad reason to leave it.
+
+### The card is the same box, differently dressed
+
+| | No Event card | No Plan card |
+|---|---|---|
+| border | solid | **dashed** |
+| shadow | none | **`--ai-shadow-xxs`** |
+| background | `--ai-datatable-table-bg` → rebound | **`--ai-surface-primary`** (bound directly) |
+| radius | `--ai-radius-lg` | raw `rounded-[16px]` — the same 16px |
+
+So `.seating-screen--placeholder` adds two declarations and nothing else. The dashed-plus-shadow
+treatment reads as a placeholder waiting to be filled — the same idea as Unassigned's empty state.
+
+Note Figma binds `--ai-surface-primary` **directly** on this card, having used the Datatables token
+on the No Event one. That is more evidence the Datatables binding there was a slip, not a choice.
+
+### The two empty states
+
+They share the centring and the 64px block padding, and differ in inline padding and line spacing:
+
+| | `--gate` (No Event) | `--no-plans` (No Plan) |
+|---|---|---|
+| `padding-inline` | `--ai-spacing-7` (32) | `--ai-spacing-6` (24) |
+| line spacing | `gap: --ai-spacing-4` | no gap; `--ai-spacing-2` pad on the text |
+| icon disc | yes | **no** |
+| CTA | Select Event | **none** (the header has New Plan) |
+
+The differing inline padding is what Figma says, with no stated reason — worth a designer glance.
+
+Figma spaces the No Plan lines with a `pt-[6px]` on the second paragraph rather than a container
+gap; 6px is `--ai-spacing-2` exactly, so it is bound rather than raw.
+
+### The body text was unified (designer, 2026-08-26)
+
+The two frames disagreed three ways about the same kind of sentence:
+
+| | font-family | leading | colour |
+|---|---|---|---|
+| No Event (both breakpoints) | `--ai-font-title` | `--ai-leading-md` desktop / `-sm` mobile | `--ai-text-secondary` |
+| No Plan desktop | `--ai-font-body` | `--ai-leading-sm` | `--ai-text-contrast` |
+| No Plan mobile | `--ai-font-body` | `--ai-leading-sm` | `--ai-text-secondary` |
+
+**Unified on body / `--ai-leading-sm` (20px) / `--ai-text-secondary`**, so one rule serves both.
+Two consequences worth being explicit about:
+
+- The No Event state's **desktop leading tightens 24 → 20** and its font-family changes
+  title → body. That is a deliberate change to an already-built, already-reviewed screen.
+- The colour picked `--ai-text-secondary` because the No Plan **desktop** frame is the outlier —
+  its own mobile frame and both No Event frames say secondary. **Worth fixing that frame in Figma.**
+
+The No Plan frames also cap the measure at 512px, which is `--ai-size-9` exactly. Applied to both
+states: a centred sentence wants a measure regardless, and the No Event copy is shorter than the cap
+so nothing moves there.
+
+### States in one page
+
+Screens 1–3 are mutually-exclusive states of one screen, so they live in one page and
+`SeatingPlanner.js` switches them with `data-seating-state`:
+
+- **Choosing an event advances No Event → No Plan for real**, using the seam screen 2 left behind.
+  The demo is a working flow, not a set of stills.
+- **`?state=no-plan`** lands on a state directly for review — the same trick `?frame=mobile` uses.
+- Panels toggle via the **`hidden` attribute**, not a class: `base.css` guarantees `hidden` always
+  wins, and a `display: none` flex child is removed from layout entirely, so the page's gap never
+  appears around a state that is off screen.
+
+**What the flow does NOT claim.** Which state renders is really the plan *count*, not the click — an
+event that already has plans should go straight to the planner. So the chosen event is still
+re-emitted as `seating-planner:event-chosen` for a host to act on, rather than being treated as
+settled here.
 
 ## Token mapping
 

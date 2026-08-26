@@ -75,3 +75,40 @@ figma.connect(
     `,
   }
 )
+
+// Screen 3 — "No Plan" (3515:176082 / 3515:213400). An event is chosen but has no plans, so
+// the page gains SeatingHeader at Type=No Plans above a DASHED placeholder card. No new
+// components: the header is used verbatim, and its own New Plan button is why this empty
+// state has no CTA of its own.
+//
+// This is the first state with two page children, so it is the first to exercise the page
+// gap — --ai-spacing-5 desktop / --ai-spacing-4 mobile, where the shell gives spacing-7.
+//
+// States live in one page and are switched by data-seating-state; choosing an event in the
+// picker advances no-event -> no-plan, and ?state=no-plan lands here directly.
+figma.connect(
+  'https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=3515-176082',
+  {
+    example: () => html`
+      <body class="cc-control">
+        <!-- … ControlScreen app-shell + chrome, exactly as above … -->
+        <main class="cc-control__main">
+          <div class="cc-control__page cc-control__page--seating" data-seating-state="no-plan">
+            <!-- SeatingHeader, Type=No Plans (the event bar alone) -->
+            <section class="seating-header" data-seating-panel="no-plan">
+              <!-- … Event-Info-Bar: title + swap, meta list, Copy Plans / New Plan … -->
+            </section>
+
+            <section class="seating-screen seating-screen--placeholder"
+                     aria-labelledby="seating-no-plans-title" data-seating-panel="no-plan">
+              <div class="seating-screen__empty seating-screen__empty--no-plans">
+                <h2 class="seating-screen__empty-title" id="seating-no-plans-title">No seating plans yet</h2>
+                <p class="seating-screen__empty-text">Create a plan to generate its tables and start seating people.</p>
+              </div>
+            </section>
+          </div>
+        </main>
+      </body>
+    `,
+  }
+)

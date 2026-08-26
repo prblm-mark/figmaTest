@@ -39,6 +39,34 @@
   var dialog = overlay.querySelector('[role="dialog"]');
   var returnFocusTo = null;
 
+  /* ── Screen state ─────────────────────────────────────────────────────────
+   * The screen has mutually-exclusive states, each a Figma frame of its own:
+   *
+   *   no-event   the event gate            3515:175956 / 3515:213358
+   *   no-plan    event chosen, no plans    3515:176082 / 3515:213400
+   *
+   * Both states' markup is in the page and one is shown at a time. `hidden` rather than a
+   * CSS class, because base.css guarantees `hidden` always wins, and a display:none child
+   * is removed from flex layout entirely — so the page's gap never appears around a state
+   * that is not on screen.
+   *
+   * Choosing an event genuinely advances no-event -> no-plan (designer, 2026-08-26), which
+   * makes the demo a working flow rather than a set of stills. `?state=no-plan` lands on one
+   * directly for review, the same trick `?frame=mobile` uses elsewhere. */
+  var page = document.querySelector('[data-seating-state]');
+  var panels = document.querySelectorAll('[data-seating-panel]');
+
+  function setState(state) {
+    if (!page) return;
+    page.setAttribute('data-seating-state', state);
+    Array.prototype.forEach.call(panels, function (panel) {
+      panel.hidden = panel.getAttribute('data-seating-panel') !== state;
+    });
+  }
+
+  var requested = /[?&]state=([a-z-]+)/.exec(window.location.search);
+  if (requested) setState(requested[1]);
+
   function isOpen() {
     return overlay.classList.contains(OPEN_CLASS);
   }
@@ -95,12 +123,16 @@
     var chosen = event.detail || {};
     close();
 
-    /* TODO(backend:SeatingPlanner): this is the seam the next screen plugs into. The chosen
-     * event should drive the planner (seating-header, seating-tables-listing,
-     * seating-table-detail, seating-unassigned-tray) and be persisted per user so a reload
-     * returns to it — see seating-last-used-event. Nothing is invented here on purpose:
-     * the post-selection screen is not designed yet, so pretending it exists would be
-     * worse than an honest no-op. */
+    /* An event now has somewhere to go: the No Plan state. This is the seam screen 2 left
+     * behind, wired up. */
+    setState('no-plan');
+
+    /* TODO(backend:SeatingPlanner): the chosen event's name/date/venue should populate the
+     * SeatingHeader rather than the hardcoded copy in it, and the choice should persist per
+     * user so a reload returns to it — see seating-last-used-event. Which state renders is
+     * really the plan COUNT, not the click: an event with plans goes straight to the
+     * planner, not to No Plan. That is why the event is still re-emitted for a host to act
+     * on rather than being treated as settled here. */
     overlay.dispatchEvent(new CustomEvent('seating-planner:event-chosen', {
       bubbles: true,
       detail: { id: chosen.id || '', name: chosen.name || '' }
