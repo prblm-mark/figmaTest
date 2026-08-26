@@ -76,6 +76,18 @@
   max-inline-size: 100%;
 }
 
+/* The swap button must not absorb any of the squeeze — the TITLE is what gives way, which
+ * is what its ellipsis is for.
+ *
+ * Without this the button is an ordinary shrinkable flex item, and because `.btn--icon`
+ * sets `width` rather than a minimum, a long event title crushed it well below its 32px.
+ * Figma has this instance at a fixed 32x24. Every other button group in this pattern
+ * (`__actions`, `__buttons`, `__more`) already carries flex-shrink: 0 on its container;
+ * this one sits directly in a flex row, so it needs its own. */
+.seating-header__title-row > .btn {
+  flex-shrink: 0;
+}
+
 /* `flex: 0 1 auto` — must NOT grow, or the swap button would be pushed to the far right
  * of the (now fluid) details column instead of sitting beside the title as Figma draws
  * it. It may shrink, which is what makes the ellipsis reachable: Figma marks the title

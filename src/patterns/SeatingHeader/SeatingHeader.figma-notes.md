@@ -342,6 +342,12 @@ page overflow at either width, and the kebab is a focusable `BUTTON`.
   box that cannot shrink never truncates. It only made sense against the fixed 900px parent. With
   the block now fluid the ellipsis is honoured (`flex: 0 1 auto`), which is what the rules were
   there to express.
+- **The swap button needs its own `flex-shrink: 0`.** It sits directly in the title row rather than
+  in a group, so unlike `__actions`, `__buttons` and `__more` — whose containers all carry it — it
+  was an ordinary shrinkable flex item. Because `.btn--icon` sets `width` rather than a minimum, a
+  long event title crushed it well below its 32px instead of truncating itself. Figma has the
+  instance at a fixed 32×24. Fixed 2026-08-26; verified 32×24 with a 12×12 icon at 1552, 1100, 900,
+  700, 500, 390 and 320px, with the title ellipsising on desktop and wrapping below 768 instead.
 - **`Frame 248` / `Frame 252` are the layer names** for the room-label group and the mobile button
   group. Default Figma names; worth renaming, and the same layer-naming noise flagged on
   TableCard, TableDetail and Unassigned.
