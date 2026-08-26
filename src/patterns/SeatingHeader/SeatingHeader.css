@@ -1,0 +1,450 @@
+/* SeatingHeader — the Seating Planner's event bar, room selector and toolbar
+ * Figma: Lus07xi8pPXLN87sQIyrEt node 3474:90519 (Tier=Pattern x Type x Device, 4 variants)
+ *
+ * Assumes base.css + tokens.css are loaded by the page.
+ *
+ * Composes Button (base / --sm / --icon --xs / --icon --sm), Toggle (`toggle--xs`,
+ * label-less) and RoomCard (one per plan, in the Room-Selector-Bar slot). Needs
+ * Toggle.js for the switch to flip; everything else is presentational.
+ *
+ * Figma names this component "Header". It is filed as SeatingHeader because
+ * src/patterns/Header is a different, unrelated component (the AI-Chat header).
+ *
+ * The Type axis is DATA, not CSS: `No Plans` is the event bar on its own, `Has Plans`
+ * adds the room selector and the toolbar. Which one renders is markup the caller
+ * supplies, so there are no Type modifiers — the fifth component in this module where
+ * that holds (see RoomCard, TableCard, TableDetail, Unassigned).
+ *
+ * WIDTH: Figma draws 1552px, unbound and matching no token — just the frame it drew.
+ * Fluid at the designer's direction 2026-08-26, the same call taken for AttendeeCard,
+ * TableCard and TableListing.
+ */
+
+.seating-header {
+  display: flex;
+  flex-direction: column;
+  inline-size: 100%;
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-lg);
+  background-color: var(--ai-surface-primary);
+  /* Figma sets overflow-clip on the frame; keeps the room-selector scroller and the
+   * child cards inside the radius. */
+  overflow: hidden;
+}
+
+/* Only Event-Info-Bar and Room-Selector-Bar carry a bottom rule in Figma; Toolbar has
+ * none. That works out on Type=Has Plans, where Toolbar is last — but on Type=No Plans
+ * the event bar IS last, and its rule would sit directly on top of the root's own
+ * border, reading as a 2px line at the rounded bottom edge. Suppressed here so the
+ * rule always does its actual job: separating the bar from what follows. */
+.seating-header > :last-child {
+  border-block-end: 0;
+}
+
+/* ── Event-Info-Bar ─────────────────────────────────────────────────────────
+ * Desktop is one row: the event details on the left, the global actions hard right. */
+.seating-header__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--ai-spacing-6);
+  border-block-end: 1px solid var(--ai-border-secondary);
+}
+
+/* Figma pins this at w-[900px], unbound and matching no --ai-size-* token (the set binds
+ * only --ai-size-4 240 and --ai-size-5 280). Fluid at the designer's direction
+ * 2026-08-26: the bar is justify-between, so this is simply its left column. */
+.seating-header__details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ai-spacing-3);
+  flex: 1 0 0;
+  min-inline-size: 0;
+}
+
+.seating-header__title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-4);
+  max-inline-size: 100%;
+}
+
+/* `flex: 0 1 auto` — must NOT grow, or the swap button would be pushed to the far right
+ * of the (now fluid) details column instead of sitting beside the title as Figma draws
+ * it. It may shrink, which is what makes the ellipsis reachable: Figma marks the title
+ * shrink-0 WITH ellipsis rules, an inert pair that only made sense against a fixed
+ * 900px parent. Honouring the ellipsis is the intent. */
+.seating-header__title {
+  flex: 0 1 auto;
+  min-inline-size: 0;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xl);
+  font-weight: var(--ai-font-bold);
+  line-height: normal;
+  color: var(--ai-text-primary);
+}
+
+/* The event facts: date, headcount, venue. A real <ul>, so it is a list to a screen
+ * reader too.
+ *
+ * Figma wraps these in a single-child `Item` frame carrying its own --ai-spacing-5 gap;
+ * with one child that gap does nothing, so the wrapper is dropped. (Desktop only —
+ * mobile has no such wrapper, which is what confirms it is noise.)
+ *
+ * flex-wrap plus the split gap is Figma's MOBILE rule, applied at both breakpoints: the
+ * column gap is --ai-spacing-4 on both, and desktop never reaches its own wrap point, so
+ * the single rule reproduces both variants and degrades instead of overflowing between. */
+.seating-header__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  row-gap: var(--ai-spacing-2);
+  column-gap: var(--ai-spacing-4);
+  inline-size: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.seating-header__meta-item {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  flex-shrink: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+  white-space: nowrap;
+}
+
+.seating-header__meta-item [data-lucide],
+.seating-header__meta-item svg {
+  inline-size: var(--ai-icon-size-sm);
+  block-size: var(--ai-icon-size-sm);
+  flex-shrink: 0;
+  color: var(--ai-icon-contrast);
+}
+
+.seating-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  flex-shrink: 0;
+}
+
+/* ── Room-Selector-Bar ──────────────────────────────────────────────────────
+ * A Figma slot, so its contents are the caller's — one RoomCard per plan.
+ *
+ * overflow-x: Figma's own mobile variant overflows its frame (12 + 240 + 8 + 240 + 12 =
+ * 512 in a 392px frame, with the second card visibly clipped), so more plans than fit is
+ * the drawn, intended state. A scroller is the faithful reading of that; the alternative
+ * would be to invent wrapping Figma does not show. */
+.seating-header__rooms {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ai-spacing-5);
+  padding-inline: var(--ai-spacing-6);
+  padding-block: var(--ai-spacing-5);
+  border-block-end: 1px solid var(--ai-border-secondary);
+  background-color: var(--ai-surface-primary);
+  overflow-x: auto;
+  /* Same thin-scrollbar-on-a-transparent-track treatment as TableDetail's seat list
+   * (designer, 2026-08-25), so the two scrollers in this module match. */
+  scrollbar-color: var(--ai-surface-secondary) transparent;
+  scrollbar-width: thin;
+}
+
+/* `height`, not `block-size` — these are UA pseudo-elements and logical properties are not
+ * reliably honoured on them. Horizontal scroller here, so it is height rather than
+ * TableDetail's width. */
+.seating-header__rooms::-webkit-scrollbar {
+  height: var(--ai-spacing-2);
+}
+
+.seating-header__rooms::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.seating-header__rooms::-webkit-scrollbar-thumb {
+  background-color: var(--ai-surface-secondary);
+  border-radius: var(--ai-radius-full);
+}
+
+/* Figma draws the desktop card at 290px, which has no token; --ai-size-5 (280px) is the
+ * one that exists and is the min-width RoomCard itself binds — the identical call already
+ * taken inside RoomCard, so the two agree. flex-basis is needed because RoomCard's own
+ * `inline-size: 100%` would otherwise resolve against the whole bar. */
+.seating-header__rooms > .room-card {
+  flex: 0 0 var(--ai-size-5);
+}
+
+/* ── Toolbar ────────────────────────────────────────────────────────────────
+ * The active room, the unassigned switch, and the table actions. */
+.seating-header__toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-5);
+  padding-inline: var(--ai-spacing-6);
+  padding-block: var(--ai-spacing-5);
+  background-color: var(--ai-surface-primary);
+}
+
+.seating-header__toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-5);
+  flex: 1 0 0;
+  min-inline-size: 0;
+}
+
+/* Figma splits the room label and the toggle group as two equal flex-1 columns, exactly
+ * as TableListing's toolbar does — 537px each in a 1468px row. */
+.seating-header__room {
+  display: flex;
+  align-items: center;
+  /* Figma leaves this an unbound raw 8px; --ai-spacing-3 is exactly 8px, so binding it
+   * is visually a no-op. Flagged in figma-notes. */
+  gap: var(--ai-spacing-3);
+  flex: 1 0 0;
+  min-inline-size: 0;
+}
+
+.seating-header__room-name {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-md);
+  font-weight: var(--ai-font-bold);
+  line-height: normal;
+  color: var(--ai-text-primary);
+  white-space: nowrap;
+}
+
+.seating-header__room-count {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-medium);
+  line-height: normal;
+  color: var(--ai-text-contrast);
+  white-space: nowrap;
+}
+
+/* Right-aligned within its own flex-1 column, which is what puts it hard against the
+ * divider — the same arrangement as TableListing's filter group. */
+.seating-header__toggle-group {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--ai-spacing-3);
+  flex: 1 0 0;
+  min-inline-size: 0;
+}
+
+.seating-header__toggle-label {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-medium);
+  line-height: normal;
+  color: var(--ai-text-contrast);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* A 16px vertical hairline. Figma draws it as a rotated `line` node whose stroke is
+ * hidden inside an SVG asset; it resolves to --ai-border-secondary via get_variable_defs
+ * on 3474:90290 — the same element, and the same resolution, as TableListing's divider.
+ * 1px is the border-width exception. */
+.seating-header__divider {
+  flex-shrink: 0;
+  inline-size: 1px;
+  block-size: var(--ai-spacing-5);
+  background-color: var(--ai-border-secondary);
+}
+
+.seating-header__buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--ai-spacing-3);
+  flex-shrink: 0;
+}
+
+/* The overflow kebab. Figma draws a bare 20px icon layer with no button around it; built
+ * as a real <button> at the designer's direction 2026-08-26, since a bare <i> is neither
+ * focusable nor keyboard-operable (CLAUDE.md §9). The ::after stretches the hit area to
+ * the 44x44 minimum without disturbing the 20px icon Figma draws — the same stretched-
+ * trigger pattern RoomCard uses for its card select. */
+.seating-header__more {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  color: var(--ai-icon-secondary);
+}
+
+.seating-header__more::after {
+  content: '';
+  position: absolute;
+  inset-inline-start: 50%;
+  inset-block-start: 50%;
+  /* 44px is the WCAG 2.1 AA touch-target minimum, not a design value — no token. */
+  inline-size: 44px;
+  block-size: 44px;
+  transform: translate(-50%, -50%);
+}
+
+.seating-header__more [data-lucide],
+.seating-header__more svg {
+  inline-size: var(--ai-icon-size-md);
+  block-size: var(--ai-icon-size-md);
+  flex-shrink: 0;
+}
+
+.seating-header__more:focus-visible {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: 2px;
+  border-radius: var(--ai-radius-sm);
+}
+
+/* ── Device: Mobile ─────────────────────────────────────────────────────────
+ * Figma's Device axis. The event bar becomes three stacked rows, the meta wraps, the
+ * room cards narrow and grow, and the toolbar loses the toggle and the divider entirely.
+ */
+@media (max-width: 767px) {
+  .seating-header__bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ai-spacing-4);
+    /* Asymmetric in Figma — 12px inline, 16px block. Not a step-down of the desktop 24. */
+    padding-inline: var(--ai-spacing-4);
+    padding-block: var(--ai-spacing-5);
+  }
+
+  .seating-header__details {
+    flex: 0 0 auto;
+    inline-size: 100%;
+  }
+
+  .seating-header__title-row {
+    align-items: flex-start;
+    inline-size: 100%;
+  }
+
+  /* Mobile drops the ellipsis and wraps instead: Figma makes the title flex-1 with
+   * word-break, because a phone has no room to truncate a long event name into
+   * uselessness. */
+  .seating-header__title {
+    flex: 1 0 0;
+    font-size: var(--ai-font-fixed-md);
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+    overflow-wrap: break-word;
+  }
+
+  .seating-header__meta-item {
+    font-size: var(--ai-font-fixed-2xs);
+  }
+
+  /* Figma REVERSES the two global actions on mobile, leading with the primary "New Plan"
+   * where desktop leads with the secondary "Copy Plans". Built as drawn. Worth
+   * confirming it is deliberate rather than a layer-order slip — see figma-notes. */
+  .seating-header__actions > .btn--primary {
+    order: -1;
+  }
+
+  /* Figma also steps these two down from Button's base size (40 tall) to `sm` (32) here.
+   * A size class cannot be added from a media query, so `btn--sm`'s four geometry
+   * properties are replicated — same reason as the export button below. */
+  .seating-header__actions > .btn {
+    min-height: var(--ai-spacing-7);
+    padding: 0 var(--ai-spacing-4);
+    font-size: var(--ai-font-fluid-xxs);
+    border-radius: var(--ai-radius-md);
+  }
+
+  .seating-header__rooms {
+    gap: var(--ai-spacing-3);
+    padding: var(--ai-spacing-4);
+  }
+
+  /* Figma switches the cards to flex-1 here, so a single plan fills the width while two
+   * or more hold their 240px floor and scroll. That floor is RoomCard's own mobile
+   * min-inline-size (--ai-size-4), so it needs no restating. */
+  .seating-header__rooms > .room-card {
+    flex: 1 0 0;
+  }
+
+  .seating-header__toolbar {
+    padding: var(--ai-spacing-4);
+  }
+
+  /* The room label and its count stack. */
+  .seating-header__room {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: var(--ai-spacing-1);
+  }
+
+  .seating-header__room-name {
+    font-size: var(--ai-font-fixed-sm);
+  }
+
+  .seating-header__room-count {
+    font-size: var(--ai-font-fixed-2xs);
+  }
+
+  /* Both absent from the mobile variant — not merely rearranged. */
+  .seating-header__toggle-group,
+  .seating-header__divider {
+    display: none;
+  }
+
+  .seating-header__buttons {
+    gap: var(--ai-spacing-2);
+  }
+
+  /* Mobile reduces three toolbar buttons to two: "Room Layout" goes entirely, "Add Table"
+   * shortens to "Add", and "Export" becomes icon-only. Those are CONTENT changes across
+   * Figma's Device axis, so they are done here rather than by shipping two markups. */
+  .seating-header__btn--layout {
+    display: none;
+  }
+
+  /* Clipped rather than display:none, so the full label — "Add Table", "Export" — stays in
+   * the accessibility tree and the export button keeps an accessible name. Same technique
+   * RoomCard uses to drop the word "seated". Being out of flow, it contributes no flex gap. */
+  .seating-header__btn-shrink {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* 32x32 — the geometry of `btn--icon btn--sm`, which cannot be added as a class from a
+   * media query. Figma drops the chevron here too. */
+  .seating-header__btn--export.btn {
+    inline-size: var(--ai-spacing-7);
+    min-block-size: var(--ai-spacing-7);
+    padding: 0;
+  }
+
+  .seating-header__btn-chevron {
+    display: none;
+  }
+}
