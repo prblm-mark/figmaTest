@@ -1,7 +1,8 @@
 import figma, { html } from '@figma/code-connect/html'
 
-// `Tier` is single-valued (`Pattern`) and `Device` is implemented as
-// @media (max-width: 767px), so neither is mapped.
+// `Tier` is single-valued (`Pattern`) and `Device` is implemented in CSS — as TWO
+// breakpoints, since the toolbar stays compact to 1023px while the rest reverts at 767px —
+// so neither is mapped.
 //
 // `Type` IS mapped, because it is the one axis that changes markup rather than CSS:
 // `No Plans` is the event bar on its own, `Has Plans` adds the room selector and the
@@ -9,6 +10,13 @@ import figma, { html } from '@figma/code-connect/html'
 //
 // Figma names this component "Header"; it is filed as SeatingHeader because
 // src/patterns/Header is a different, unrelated component (the AI-Chat header).
+//
+// Two scripts are required alongside this markup: Toggle.js (the switch owns its own flip)
+// and SeatingHeader.js (mouse drag for the scrollbar-less plans carousel; touch and
+// keyboard need nothing).
+//
+// Note the toolbar keeps its compact form up to 1023px, not 767px — so the room label is
+// stacked and the toggle, divider and "Room Layout" button are absent at tablet widths.
 
 const BAR = html`
     <div class="seating-header__bar">
@@ -44,8 +52,9 @@ const BAR = html`
     </div>`
 
 // One RoomCard per plan, in Figma's Room-Selector-Bar slot. Cards are pinned to
-// --ai-size-5 (280px) on desktop and grow from RoomCard's own 240px floor on mobile; the
-// bar scrolls horizontally when there are more plans than fit.
+// --ai-size-5 (280px) on desktop and grow from RoomCard's own 240px floor on mobile. The
+// bar is a scrollbar-less carousel when there are more plans than fit: touch swipes, and
+// SeatingHeader.js adds mouse drag.
 const roomCard = (name: string, counts: string, free: string, selected: boolean) => html`
       <article class="room-card ${selected ? 'room-card--selected' : ''}">
         <div class="room-card__header">
@@ -71,8 +80,8 @@ const roomCard = (name: string, counts: string, free: string, selected: boolean)
       </article>`
 
 // The toolbar. The toggle is Toggle at `xs`, label-less, and needs Toggle.js to flip.
-// `Room Layout` is hidden, `Add Table` shortens to `Add` and `Export` becomes icon-only at
-// mobile — all three are Figma Device deltas handled in CSS, not by a second markup.
+// `Room Layout` is hidden, `Add Table` shortens to `Add` and `Export` becomes icon-only
+// BELOW 1024px — all three are Figma Device deltas handled in CSS, not by a second markup.
 const TOOLBAR = html`
     <div class="seating-header__toolbar">
       <div class="seating-header__toolbar-actions">

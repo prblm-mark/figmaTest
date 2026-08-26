@@ -45,6 +45,11 @@
       border-radius: var(--ai-radius-lg);
       background: var(--ai-surface-primary);
     }
+    /* The 768–1023 band, where the toolbar is compact but the event bar is not. */
+    .mobile-preview__frame--tablet {
+      inline-size: 900px;
+      block-size: 400px;
+    }
     .mobile-preview__caption {
       font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-2xs);
       color: var(--ai-text-contrast); margin: 0;
@@ -266,7 +271,11 @@
 
   <h2 class="demo-heading">Many plans — the room selector scrolls</h2>
   <p class="lede">Figma's own mobile variant overflows its frame with two cards, so more plans than
-  fit is the drawn state. The bar scrolls horizontally rather than wrapping.</p>
+  fit is the drawn state. The bar scrolls horizontally rather than wrapping, and
+  <strong>shows no scrollbar</strong> &mdash; which is what Figma draws. <strong>Drag it with the
+  mouse</strong> (the cursor turns to a grab handle only when there is somewhere to go), swipe it on
+  a touch screen, or just Tab through the cards and let focus pull them into view. A drag that ends
+  on a card deliberately does <em>not</em> activate it.</p>
   <section class="seating-header" aria-label="Seating plan header, many plans">
     <div class="seating-header__rooms">
       <article class="room-card room-card--selected">
@@ -382,11 +391,29 @@
     </div>
   </section>
 
+  <h2 class="demo-heading">768&ndash;1023px &mdash; the toolbar stays compact</h2>
+  <p class="lede"><strong>Not a Figma variant.</strong> The toolbar carries far more than the bars
+  above it &mdash; room name, count, the switch, a divider, three buttons and the kebab &mdash; so it
+  runs out of room long before the event bar does. It therefore keeps its compact form (stacked room
+  label, no toggle or divider, two buttons) all the way to 1023px, while the event bar is already
+  back to its desktop row. <strong>1024px is the Seating Planner shell's own layout boundary</strong>
+  &mdash; the prototype switches to its worklist at the same width. The toolbar's padding
+  deliberately stays with its siblings, so all three regions keep a common inline padding.</p>
+  <div class="mobile-preview">
+    <iframe class="mobile-preview__frame mobile-preview__frame--tablet"
+            src="SeatingHeader.html?frame=mobile"
+            title="Seating Header at a 900px viewport" loading="lazy"></iframe>
+    <p class="mobile-preview__caption">Live 900px viewport &mdash; desktop event bar, compact
+    toolbar.</p>
+  </div>
+
   <h2 class="demo-heading">Device=Mobile</h2>
   <p class="lede">The bar stacks into three rows and the meta wraps; <strong>the primary "New Plan"
   leads</strong> where desktop leads with "Copy Plans"; the toolbar drops the toggle and the
   divider outright, "Room Layout" goes, "Add Table" shortens to "Add", and Export becomes
-  icon-only.</p>
+  icon-only &mdash; though all of those toolbar changes now happen at <strong>1023px</strong>, not
+  767px, so they are already in effect in the preview above. The plans carousel is swipe-only here
+  &mdash; no scrollbar, exactly as Figma draws it.</p>
   <div class="mobile-preview">
     <iframe class="mobile-preview__frame" src="SeatingHeader.html?frame=mobile"
             title="Seating Header at a 390px mobile viewport" loading="lazy"></iframe>
@@ -399,5 +426,8 @@
   <!-- Toggle owns its own flip since 2026-08-26. Showing/hiding the unassigned tray is the
        parent module's job, not this pattern's — listen for `toggle:change`. -->
   <script src="../../components/Toggle/Toggle.js"></script>
+  <!-- Drag-to-scroll for the room-plans carousel, which hides its scrollbar. Touch swipes
+       natively and needs no JS; this adds mouse drag and the grab cursor. -->
+  <script src="SeatingHeader.js"></script>
 </body>
 </html>

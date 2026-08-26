@@ -47,6 +47,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  /* 32px minimum between the details block and the global actions (designer, 2026-08-26).
+   * Figma needs no gap here because its details block is a fixed 900px, which leaves a
+   * wide hole next to the buttons; with the block fluid (`flex: 1 0 0`) this gap is what
+   * replaces that fixed width and stops a long event title reaching the buttons.
+   * The mobile rule below overrides it with --ai-spacing-4 for the stacked layout. */
+  gap: var(--ai-spacing-7);
   padding: var(--ai-spacing-6);
   border-block-end: 1px solid var(--ai-border-secondary);
 }
@@ -155,26 +161,38 @@
   border-block-end: 1px solid var(--ai-border-secondary);
   background-color: var(--ai-surface-primary);
   overflow-x: auto;
-  /* Same thin-scrollbar-on-a-transparent-track treatment as TableDetail's seat list
-   * (designer, 2026-08-25), so the two scrollers in this module match. */
-  scrollbar-color: var(--ai-surface-secondary) transparent;
-  scrollbar-width: thin;
+  /* NO SCROLLBAR — a carousel, driven by touch swipe and (via SeatingHeader.js) mouse drag
+   * (designer, 2026-08-26). This is closer to Figma than the thin bar it replaces: Figma
+   * draws the second card simply clipped, with no scrollbar anywhere.
+   *
+   * Deliberately NOT the treatment TableDetail's seat list has. That is a long vertical
+   * list, where the bar doubles as a position indicator worth keeping; a two-or-three-card
+   * horizontal carousel is a different interaction.
+   *
+   * Scrolling itself is untouched — only the bar is hidden — so touch swipe, trackpad,
+   * shift-wheel and Tab-to-the-next-card all keep working. */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* legacy Edge */
+  /* Keeps a swipe past the end from chaining to the page — on iOS and in Chrome that
+   * otherwise triggers back-navigation. */
+  overscroll-behavior-x: contain;
 }
 
-/* `height`, not `block-size` — these are UA pseudo-elements and logical properties are not
- * reliably honoured on them. Horizontal scroller here, so it is height rather than
- * TableDetail's width. */
 .seating-header__rooms::-webkit-scrollbar {
-  height: var(--ai-spacing-2);
+  display: none; /* Safari + Chrome */
 }
 
-.seating-header__rooms::-webkit-scrollbar-track {
-  background: transparent;
+/* Only advertise dragging when there is somewhere to drag to. SeatingHeader.js adds
+ * `is-scrollable` when the content overflows and keeps it in sync on resize, so a bar with
+ * one plan in it does not offer a grab cursor that does nothing. */
+.seating-header__rooms.is-scrollable {
+  cursor: grab;
 }
 
-.seating-header__rooms::-webkit-scrollbar-thumb {
-  background-color: var(--ai-surface-secondary);
-  border-radius: var(--ai-radius-full);
+.seating-header__rooms.is-dragging {
+  cursor: grabbing;
+  /* Without this a drag across the cards selects their text instead. */
+  user-select: none;
 }
 
 /* Figma draws the desktop card at 290px, which has no token; --ai-size-5 (280px) is the
@@ -387,10 +405,32 @@
     flex: 1 0 0;
   }
 
+  /* The toolbar's PADDING moves with its siblings, so all three regions share one inline
+   * padding at any width. Everything else about the toolbar switches at 1024px instead —
+   * see the block below. */
   .seating-header__toolbar {
     padding: var(--ai-spacing-4);
   }
+}
 
+/* ── Toolbar: stays compact until 1024px ────────────────────────────────────
+ * The toolbar carries far more than the bars above it — room name, unassigned count, the
+ * switch, a divider, three buttons and the kebab — so it runs out of room long before the
+ * event bar does. It therefore keeps its compact form all the way up to 1023px (designer,
+ * 2026-08-26), where everything else reverts to the desktop layout at 768px.
+ *
+ * 1024 is not an invented number: it is the Seating Planner shell's own layout boundary —
+ * the prototype's `SeatingPlannerShell.css` switches to the worklist at
+ * `max-width: 1023px` — so the DS pattern now changes shape at the same width as the app
+ * it belongs to.
+ *
+ * The toolbar's own `padding` is deliberately NOT in here. It sits in the 767px block
+ * above, so between 768 and 1023 the toolbar's content still lines up with the event
+ * bar's; moving it here would indent the toolbar 12px against the bar's 24px, which reads
+ * as a misalignment defect rather than a compact layout. Flagged in figma-notes — say the
+ * word and it moves.
+ */
+@media (max-width: 1023px) {
   /* The room label and its count stack. */
   .seating-header__room {
     flex-direction: column;
@@ -407,7 +447,7 @@
     font-size: var(--ai-font-fixed-2xs);
   }
 
-  /* Both absent from the mobile variant — not merely rearranged. */
+  /* Both absent from Figma's mobile variant — not merely rearranged. */
   .seating-header__toggle-group,
   .seating-header__divider {
     display: none;
@@ -417,9 +457,10 @@
     gap: var(--ai-spacing-2);
   }
 
-  /* Mobile reduces three toolbar buttons to two: "Room Layout" goes entirely, "Add Table"
-   * shortens to "Add", and "Export" becomes icon-only. Those are CONTENT changes across
-   * Figma's Device axis, so they are done here rather than by shipping two markups. */
+  /* The compact toolbar reduces three buttons to two: "Room Layout" goes entirely,
+   * "Add Table" shortens to "Add", and "Export" becomes icon-only. Those are CONTENT
+   * changes across Figma's Device axis, so they are done here rather than by shipping two
+   * markups. */
   .seating-header__btn--layout {
     display: none;
   }
