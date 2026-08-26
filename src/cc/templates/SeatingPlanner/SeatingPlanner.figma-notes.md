@@ -1,16 +1,22 @@
 # SeatingPlanner — Figma Notes
 
 **Tier:** Template
-**Built:** 2026-08-26 (Seating Planner module, screen 1 of a series)
-**Files:** `SeatingPlanner.css`, `SeatingPlanner.html`, `SeatingPlanner.figma.ts`, `SeatingPlanner.figma-notes.md`
-**Composes:** the **ControlScreen app shell** verbatim + Button (`btn--secondary`)
-**JS:** the shell's own bundle, ported unchanged. None of its own.
+**Built:** 2026-08-26 (Seating Planner module, screens 1–2 of a series)
+**Files:** `SeatingPlanner.css`, `SeatingPlanner.html`, `SeatingPlanner.js`, `SeatingPlanner.figma.ts`, `SeatingPlanner.figma-notes.md`
+**Composes:** the **ControlScreen app shell** verbatim + Button (`btn--secondary`) + **EventPicker** (the Select Event modal, itself composing Modal / SearchInput / Checkbox / ActionCard / Badge)
+**JS:** the shell's own bundle, ported unchanged, + `event-picker.js` (the picker's own) + `SeatingPlanner.js` (opening/closing the picker and focus management — nothing else)
 
 ## Figma Nodes
 
 - **File key:** `Lus07xi8pPXLN87sQIyrEt` (Affino AI — Design System)
-- **Desktop:** `3515:175956` — "No Event", 1728×1117
-- **Mobile:** `3515:213358` — "No Event", 402×874
+**Screen 1 — "No Event"**
+- **Desktop:** `3515:175956`, 1728×1117
+- **Mobile:** `3515:213358`, 402×874
+
+**Screen 2 — "Select Event"**
+- **Desktop:** `3515:176032`, 1728×1117
+- **Mobile:** `3515:228380`, 402×874
+- **Desktop, dark mode:** `3515:176057` (overlay `3515:176080`)
 
 Both frames are named **"No Event"**, and their content frame carries the working title
 *"TASK-344753 — SeatingPlanner — mobile toolbar bottom bar — v4"* — a leftover name from a
@@ -78,6 +84,94 @@ Recorded from `get_design_context` on `3515:175977` (desktop) and `3515:213363` 
 want. **Figma binds `--ai-spacing-7` (32px) here**, dropping to `--ai-spacing-4` (12px) on mobile —
 hence the `--seating` modifier. The shell's `gap: --ai-spacing-7` is left alone: this page has a
 single child, so it never applies.
+
+## Screen 2 — "Select Event"
+
+The same screen with a modal over it. **No new markup was designed**: the modal is the
+already-built **EventPicker** pattern (`src/cc/patterns/EventPicker/`), whose Figma component set
+is `3108:6662` — confusingly named **"Seat Planner"**, which is why the instance on these frames
+reads that way. It arrives complete with 8 variants, its own JS and its own Code Connect.
+
+So screen 2 added no component CSS at all. What it added was **hosting**: the overlay, and the
+open/close/focus behaviour that `.modal-overlay` cannot express on its own.
+
+### What was already right
+
+| Needed | Already existed | Match |
+|---|---|---|
+| overlay: fixed, centred, `--ai-spacing-6` padding | `.modal-overlay` in Modal.css | **exact** |
+| modal width 768px | `.modal--lg` = `--ai-size-11` | **exact** |
+| modal bg / radius | `.modal` → `--ai-surface-elevated-1`, `--ai-radius-lg` | matches Figma's binding |
+| picker contents, search, Live filter, empty state | EventPicker + `event-picker.js` | used verbatim |
+| Escape closes | `event-picker.js` listens on its own root | see the caveat below |
+
+### The interaction (designer, 2026-08-26)
+
+EventPicker's own header says it best — *"Emits CustomEvents so the host app owns persistence and
+routing"*. This template is that host, so `SeatingPlanner.js` exists to do exactly four things:
+
+1. **"Select Event" opens it**, and `aria-expanded` tracks the state.
+2. **Close on `event-picker:close`** (the × and Cancel, both `[data-ep-close]`), on a **backdrop
+   click**, and on **Escape**.
+3. **Close on `event-picker:select`**, re-emitting `seating-planner:event-chosen` with
+   `{ id, name }`.
+4. **Manage focus**, because `.modal-overlay` only toggles `display`.
+
+**Why the focus code is not optional.** The dialog is marked `aria-modal="true"`, which promises
+focus is inside it and cannot wander out — a promise CSS cannot keep. Without it, opening the picker
+leaves focus on the button behind the scrim and Tab walks the page underneath. **Escape also stops
+working**, because EventPicker listens for it on its own root: no focus inside the picker, no
+keydown, no close. So focus moves to the **search field** on open (what you came to do, and inside
+the picker root so Escape works immediately) and returns to the trigger on close, with a Tab trap
+wrapping at both ends.
+
+**One bug this caught.** Restoring focus to "whatever was focused before" happily restored it to
+`<body>` when the dialog had been opened without the trigger being focused first — which is the same
+as losing focus, and sends the next Tab to the top of the page. `<body>` is now explicitly rejected
+in favour of the trigger, not merely null-checked.
+
+### On select, nothing is invented
+
+The screen that follows does not exist yet, so selection closes the modal and re-emits the choice
+with a `TODO(backend:SeatingPlanner)` marking the seam. Pretending the planner exists would be worse
+than an honest no-op — see the handover note.
+
+### The scrim
+
+| | Figma | Built |
+|---|---|---|
+| light | `rgba(15, 23, 42, 0.5)` — navy | **`rgba(0, 0, 0, 0.5)`** — Modal's existing black, kept |
+| dark | `rgba(15, 23, 42, 0.85)` — navy | **`rgba(0, 0, 0, 0.85)`** |
+
+**Light stays black** at the designer's direction: the shared `.modal-overlay` is not restyled off
+the back of one frame. **Dark rises to 85%**, confirmed against Figma's own dark frame
+(`3515:176080`) rather than assumed — a 50% veil over an already-dark page barely separates the
+dialog from it.
+
+Two things flagged rather than fixed:
+- **There is no scrim token**, in either theme. Both values are raw rgba, which is a genuine gap in
+  the scale.
+- **The dark-mode density is almost certainly system-wide** — every modal has this problem in dark
+  mode — so `[data-theme="dark"] .modal-overlay` probably belongs in Modal.css. Left scoped to this
+  template until that is a deliberate decision rather than a side effect of this screen.
+
+### Flagged on screen 2
+
+- **The base card behind the modal is 302px tall on the desktop frame** — hugging its content —
+  where screen 1's desktop fills (1005) and screen 2's own *mobile* frame fills (802). Two frames of
+  three say fill, and a background screen should not resize because a modal opened over it, so it is
+  **left filling** (designer, 2026-08-26). Almost certainly the frame was collapsed while the modal
+  was placed.
+- **Desktop uses a `SidebarMenu` instance here** where screen 1's desktop used `Sidebar`. Both are
+  56px wide and render identically, so it makes no difference in code — but the two frames disagree
+  about which component is placed.
+- **The modal renders 645px tall against Figma's `h-[619px]`.** Not introduced by this screen:
+  **EventPicker's own demo measures 768×645 too**, so the 26px is a pre-existing difference in that
+  component, checked rather than assumed. Left as an EventPicker matter — it was built and signed
+  off from the same Figma set.
+- **`.modal` has no border and a different shadow** from what Figma's instance shows here
+  (`1px --ai-border-secondary`, `0 3px 10px rgba(0,0,0,0.1)`). Also an EventPicker/Modal-level
+  question, not re-litigated from this frame.
 
 ## Token mapping
 

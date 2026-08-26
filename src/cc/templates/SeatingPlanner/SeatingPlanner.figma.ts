@@ -15,6 +15,10 @@ import figma, { html } from '@figma/code-connect/html'
 //   2. the cc-header title row is REMOVED (Figma's chrome is CCTopNavigation only, 48px)
 //   3. the breadcrumb reads Affino.com > Events > Seating Planner
 //
+// Screen 2 ("Select Event", 3515:176032 / 3515:228380) is this same screen with the
+// EventPicker over it — no new markup, just Modal.css's .modal-overlay plus
+// SeatingPlanner.js for open/close/focus. It is connected separately below.
+//
 // This is screen 1 of a series; later screens replace the .seating-screen__empty child
 // while keeping the .seating-screen card.
 figma.connect(
@@ -44,6 +48,29 @@ figma.connect(
             </section>
           </div>
         </main>
+      </body>
+    `,
+  }
+)
+
+// Screen 2 — "Select Event". The same screen with the EventPicker modal open. The picker is
+// the built pattern used verbatim (its own figma.connect covers its internals), so all this
+// adds is the overlay and the hosting: "Select Event" opens it; the ×, Cancel, Escape and a
+// backdrop click close it; selection re-emits seating-planner:event-chosen. Focus moves to
+// the search field on open and back to the trigger on close, because aria-modal="true"
+// promises a focus scope that CSS alone cannot keep.
+figma.connect(
+  'https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=3515-176032',
+  {
+    example: () => html`
+      <body class="cc-control">
+        <!-- … the No Event screen exactly as above … -->
+
+        <!-- Scrim: Modal.css supplies fixed/centred/--ai-spacing-6. Light keeps Modal's
+             black at 0.5; dark rises to 0.85 (SeatingPlanner.css). -->
+        <div class="modal-overlay seating-picker-overlay" id="seating-picker" data-seating-picker>
+          <!-- … EventPicker, .modal.modal--lg.event-picker (768px via --ai-size-11) … -->
+        </div>
       </body>
     `,
   }
