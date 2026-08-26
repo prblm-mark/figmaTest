@@ -36,24 +36,32 @@
  * padding, `display: none` until `--open`. All three match Figma's overlay frame exactly,
  * so only the scrim colour is touched here.
  *
- * LIGHT: left as Modal's `rgba(0, 0, 0, 0.5)` at the designer's direction 2026-08-26.
- * Figma draws `rgba(15, 23, 42, 0.5)` — navy rather than black — but the shared overlay
- * stays black for now rather than restyling every modal in the system off one frame.
+ * COLOUR: `#0F172A` (navy) in both themes, which is exactly what Figma draws — black read
+ * as too harsh a veil (designer, 2026-08-26). Only the alpha changes between themes.
  *
- * DARK: the scrim goes to 85% (designer, 2026-08-26; confirmed against Figma's dark frame
- * 3515:176080, which binds `rgba(15, 23, 42, 0.85)`). A 50% veil over an already-dark page
- * barely separates the dialog from it, so the density has to rise. The colour follows the
- * light decision and stays black.
+ *   light  rgba(15, 23, 42, 0.5)   — Figma 3515:176055
+ *   dark   rgba(15, 23, 42, 0.85)  — Figma 3515:176080
  *
- * Scoped to this template. It is very likely a system-wide truth — every modal has the same
- * problem in dark mode — so this probably belongs in Modal.css as
- * `[data-theme="dark"] .modal-overlay`. Left scoped until that is a deliberate decision
- * rather than a side effect of this screen. Flagged in figma-notes.
+ * The higher dark alpha is not arbitrary: a 50% veil over an already-dark page barely
+ * separates the dialog from it, so the density has to rise to keep the modal legible.
  *
- * rgba is a raw value in both themes because there is no scrim token in the scale; that gap
- * is flagged too. */
-[data-theme="dark"] .seating-picker-overlay {
-  background: rgba(0, 0, 0, 0.85);
+ * SCOPED to these screens, with two classes so it wins on specificity rather than on
+ * stylesheet order — Modal.css's `.modal-overlay` sets black at 0.5 and every other modal
+ * in the system keeps it. Both of these very likely belong in Modal.css as a system-wide
+ * rule (nothing here is specific to seating, and every modal has the same dark-mode
+ * problem), but that is a deliberate decision about every existing modal, not a side effect
+ * of this screen. Flagged in figma-notes.
+ *
+ * Raw rgba in both themes because THERE IS NO SCRIM TOKEN in the scale. `#0f172a` does
+ * appear as `--cc-header-primary-bg` / dark `--cc-ui-primary-bg`, but binding a scrim to a
+ * header or page background would be the same category error as the Datatables token on the
+ * Container above — and neither can carry the alpha anyway. Flagged as a genuine gap. */
+.modal-overlay.seating-picker-overlay {
+  background: rgba(15, 23, 42, 0.5);
+}
+
+[data-theme="dark"] .modal-overlay.seating-picker-overlay {
+  background: rgba(15, 23, 42, 0.85);
 }
 
 /* ── Chrome: no bottom rule ─────────────────────────────────────────────────
