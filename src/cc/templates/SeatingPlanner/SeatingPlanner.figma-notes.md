@@ -138,22 +138,32 @@ than an honest no-op — see the handover note.
 
 ### The scrim
 
-| | Figma | Built |
-|---|---|---|
-| light | `rgba(15, 23, 42, 0.5)` — navy | **`rgba(0, 0, 0, 0.5)`** — Modal's existing black, kept |
-| dark | `rgba(15, 23, 42, 0.85)` — navy | **`rgba(0, 0, 0, 0.85)`** |
+`#0F172A` (navy) in both themes — exactly what Figma draws. Black read as too harsh a veil
+(designer, 2026-08-26). Only the alpha changes between themes:
 
-**Light stays black** at the designer's direction: the shared `.modal-overlay` is not restyled off
-the back of one frame. **Dark rises to 85%**, confirmed against Figma's own dark frame
-(`3515:176080`) rather than assumed — a 50% veil over an already-dark page barely separates the
-dialog from it.
+| | Figma | Built | |
+|---|---|---|---|
+| light | `rgba(15, 23, 42, 0.5)` (`3515:176055`) | **`rgba(15, 23, 42, 0.5)`** | exact |
+| dark | `rgba(15, 23, 42, 0.85)` (`3515:176080`) | **`rgba(15, 23, 42, 0.85)`** | exact |
+
+The higher dark alpha is not arbitrary: a 50% veil over an already-dark page barely separates the
+dialog from it, so the density has to rise to keep the modal legible. Confirmed against Figma's own
+dark frame rather than assumed.
+
+**Scoped to these screens**, via `.modal-overlay.seating-picker-overlay` — two classes, so it wins
+on specificity rather than on stylesheet order. **Verified not to leak:** three other pages use
+`.modal-overlay` (Modal's own demo, ControlScreen, ControlHub) and all keep Modal's
+`rgba(0, 0, 0, 0.5)`.
 
 Two things flagged rather than fixed:
-- **There is no scrim token**, in either theme. Both values are raw rgba, which is a genuine gap in
-  the scale.
-- **The dark-mode density is almost certainly system-wide** — every modal has this problem in dark
-  mode — so `[data-theme="dark"] .modal-overlay` probably belongs in Modal.css. Left scoped to this
-  template until that is a deliberate decision rather than a side effect of this screen.
+- **There is no scrim token**, in either theme, so both values are raw rgba — a genuine gap in the
+  scale. `#0f172a` does exist as `--cc-header-primary-bg` (and dark `--cc-ui-primary-bg`), but
+  binding a scrim to a header or page background would be the same category error as the Datatables
+  token on the Container, and neither can carry the alpha anyway.
+- **Both rules very likely belong in Modal.css.** Nothing about them is specific to seating, and
+  every modal has the same dark-mode legibility problem. Left scoped because promoting them changes
+  three existing consumers, which is a decision about those screens rather than a side effect of
+  this one.
 
 ### Flagged on screen 2
 
