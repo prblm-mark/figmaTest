@@ -31,6 +31,22 @@
  * --cc-ui-primary-bg, which is exactly what Figma binds here. Nothing to restate.
  */
 
+/* ── Chrome: no bottom rule ─────────────────────────────────────────────────
+ * The shell gives `.cc-control__chrome` a 1px `--ai-border-secondary` bottom rule. Figma's
+ * CCHeaderGroup on this screen is 48px with no rule, and it has nothing to separate: the
+ * top nav is dark (`--cc-header-primary-bg`) sitting directly on the light page, so the
+ * edge is already unambiguous and a light hairline just reads as a seam.
+ *
+ * Scoped with `:has()` rather than removed from the shell — ControlScreen and ControlHub
+ * keep theirs. The chrome and the page are siblings under `.cc-control__main`, so matching
+ * on the page's own modifier reaches the chrome without adding a class to the markup.
+ * (`:has()` is already used in this codebase — see RoomCard's focus ring.)
+ *
+ * This is also the 1px that had the chrome rendering 49 against Figma's 48. */
+.cc-control__main:has(.cc-control__page--seating) .cc-control__chrome {
+  border-block-end: 0;
+}
+
 /* ── Page padding ───────────────────────────────────────────────────────────
  * The one place this screen departs from the shell. `.cc-control__page` gives
  * --ai-spacing-6 (24px), which is what ControlScreen and ControlHub both want; Figma

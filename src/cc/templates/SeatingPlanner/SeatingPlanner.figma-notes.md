@@ -163,11 +163,11 @@ Measured in headless Chrome at both frame sizes.
 | desktop sidebar | 56×1117 | **56×1117** | exact |
 | desktop ActionsMenu | 56×1117 | **56×1117** | exact |
 | desktop main column | 1616×1117 | **1616×1117** | exact |
-| desktop chrome | 1616×48 | 1616×**49** | 1px — the chrome's own `border-bottom` |
-| **desktop Container** | **1552×1005** | **1552×1004** | **width exact**, 1px height |
+| desktop chrome | 1616×48 | **1616×48** | exact, once the shell's bottom rule was removed |
+| **desktop Container** | **1552×1005** | **1552×1005** | **exact** |
 | mobile sidebar | 52 wide | **52×874** | exact |
 | mobile ActionsMenu | absent | **`display: none`** | exact |
-| **mobile Container** | **326×802** | **326×809** | **width exact**, +7 — see below |
+| **mobile Container** | **326×802** | **326×810** | **width exact**, +8 — see below |
 | icon disc | 48×48, glyph 24 | **48×48, 24** | exact |
 | Select Event button | 144×40 | 142×**40** | height exact; 2px is text metrics |
 | heading / body | 18/16 and 14/13, leading 24/20 | **all exact** | |
@@ -187,6 +187,22 @@ certainly means the instance simply was not switched to its narrow state in the 
 here would make this screen the only CC screen with a taller mobile chrome. The 7px it adds to the
 Container's height is the same difference. **Worth confirming with the designer**, since the
 alternative reading is that TopNavigation's 40px mobile rule is itself wrong.
+
+### The chrome's bottom rule was removed
+
+The shell gives `.cc-control__chrome` a 1px `--ai-border-secondary` bottom rule. Figma's
+CCHeaderGroup here is 48px with **no** rule, and it has nothing to separate: the top nav is dark
+(`--cc-header-primary-bg`) sitting directly on the light page, so the edge is already unambiguous
+and the hairline just reads as a seam (designer, 2026-08-26).
+
+Scoped rather than removed from the shell —
+`.cc-control__main:has(.cc-control__page--seating) .cc-control__chrome`. The chrome and the page are
+siblings under `.cc-control__main`, so matching on the page's own modifier reaches the chrome with no
+markup change. **Verified no leak:** ControlScreen still renders 1px/131px and ControlHub 1px/121px,
+while this screen is 0px/48px.
+
+Removing it made the desktop side pixel-exact — chrome 1616×48, page 1616×1069 and the Container
+1552×1005, all matching Figma exactly.
 
 ### The scrollbar gutter was released
 
