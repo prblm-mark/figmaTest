@@ -1,0 +1,163 @@
+/* SeatingPlanner — Seating Planner screen inside the CC app shell (Tier=Template)
+ * Figma: Lus07xi8pPXLN87sQIyrEt
+ *   Desktop frame 3515:175956 (1728x1117) · Mobile frame 3515:213358 (402x874)
+ *   Both named "No Event" — this is the first of a series of screens.
+ *
+ * Reuses the ControlScreen app-shell verbatim (../ControlScreen/ControlScreen.css):
+ * the icon rail, the chrome (CCTopNavigation), the desktop/mobile sidebar swap, the right
+ * ActionsMenu rail and the AiAssistant panel. Figma confirms that reuse rather than just
+ * permitting it — the sidebar's six glyphs are the same set ControlScreen already renders
+ * (SlidersVertical, UserCog, ChatNoAxesCombined, Star, Network, CircleUser), and the
+ * mobile frame drops the ActionsMenu and swaps the rail exactly as the shell's own
+ * `@media (max-width: 768px)` rules already do.
+ *
+ * This file adds ONLY the page-content classes: the full-height Container card and the
+ * "No event selected" empty state inside it.
+ *
+ * SHELL PAINT VALUES ARE FIGMA-BOUND, not layout-only (CLAUDE.md source-of-truth rule #5).
+ * Recorded from `get_design_context` on 3515:175977 / 3515:213363 before any CSS here:
+ *
+ *   | Wrapper        | Property     | Figma binding                        |
+ *   |----------------|--------------|--------------------------------------|
+ *   | page content   | background   | --cc-ui-primary-bg                   |
+ *   | page content   | padding      | --ai-spacing-7 / --ai-spacing-4 mob  |
+ *   | Container      | background   | --ai-datatable-table-bg (rebound)    |
+ *   | Container      | border       | --ai-border-secondary                |
+ *   | Container      | radius       | --ai-radius-lg                       |
+ *   | empty state    | padding      | --ai-spacing-7 inline / -11 block    |
+ *   | empty state    | gap          | --ai-spacing-4                       |
+ *
+ * The background is the shell's own and already correct — `.cc-control` paints
+ * --cc-ui-primary-bg, which is exactly what Figma binds here. Nothing to restate.
+ */
+
+/* ── Page padding ───────────────────────────────────────────────────────────
+ * The one place this screen departs from the shell. `.cc-control__page` gives
+ * --ai-spacing-6 (24px), which is what ControlScreen and ControlHub both want; Figma
+ * binds --ai-spacing-7 (32px) here, dropping to --ai-spacing-4 (12px) on mobile.
+ *
+ * The shell's `gap: --ai-spacing-7` is left alone — this page has a single child, so it
+ * never applies. */
+.cc-control__page--seating {
+  padding: var(--ai-spacing-7);
+  /* The shell reserves a stable 15px scrollbar gutter so a scrollbar appearing cannot
+   * shift the layout. That is right for ControlScreen and ControlHub, whose pages scroll —
+   * but this page never does: its single child fills it and owns its own scrolling (and
+   * the later screens scroll inside that card too). So the gutter would permanently
+   * reserve room for a scrollbar that cannot appear. Released, which is precisely the 15px
+   * that otherwise left the card at 1537 instead of Figma's 1552. */
+  scrollbar-gutter: auto;
+}
+
+/* ── The Container card ─────────────────────────────────────────────────────
+ * Figma's `Container`: flex-1 with min-height 0, so it fills the page rather than sizing
+ * to its contents. That is what makes the empty state centre in the viewport, and it is
+ * also what the later screens need — the seating layout scrolls inside this card, not
+ * down the page.
+ *
+ * `overflow: hidden` keeps future children (the plans carousel, the seat lists) inside the
+ * radius, the same reason TableListing and SeatingHeader carry it. */
+.seating-screen {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 0;
+  min-block-size: 0;
+  inline-size: 100%;
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-lg);
+  /* Figma binds --ai-datatable-table-bg (#ffffff) — a Datatables token doing a surface's
+   * job, the same slip found on SeatingToast. Rebound to the semantic equivalent
+   * (designer, 2026-08-26); identical value today. */
+  background-color: var(--ai-surface-primary);
+  overflow: hidden;
+}
+
+/* ── Empty state: "No event selected" ───────────────────────────────────────
+ * Figma splits this from the Container as its own auto-layout child, and it is kept
+ * separate rather than merged: later screens put a different child in the same card, so
+ * the card and this state are genuinely two things.
+ *
+ * The inner padding is identical at both breakpoints — 32 inline / 64 block — which is
+ * worth stating because it would be easy to assume it tightens with the page padding. */
+.seating-screen__empty {
+  display: flex;
+  flex: 1 0 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ai-spacing-4);
+  padding-inline: var(--ai-spacing-7);
+  padding-block: var(--ai-spacing-11);
+  text-align: center;
+}
+
+/* A 48px brand-tinted disc. Figma names the frame "Text", which it is not. */
+.seating-screen__empty-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  /* 48px is --ai-spacing-9 exactly, so the size is on-scale despite reading as a raw
+   * `size-[48px]` in the design context. */
+  inline-size: var(--ai-spacing-9);
+  block-size: var(--ai-spacing-9);
+  border-radius: var(--ai-radius-full);
+  background-color: var(--ai-surface-brand-soft-extra);
+  /* Figma binds --ai-surface-brand for the glyph. Unlike the success/error icons on
+   * SeatingToast — where the icon scale genuinely has no entry — `--ai-icon-brand` DOES
+   * exist and carries the identical #0094ad, so this is a rebind rather than a gap
+   * (designer, 2026-08-26). */
+  color: var(--ai-icon-brand);
+}
+
+.seating-screen__empty-icon [data-lucide],
+.seating-screen__empty-icon svg {
+  inline-size: var(--ai-icon-size-lg);
+  block-size: var(--ai-icon-size-lg);
+}
+
+.seating-screen__empty-title {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-md);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+}
+
+.seating-screen__empty-text {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-secondary);
+}
+
+/* ── Mobile ─────────────────────────────────────────────────────────────────
+ * @media, not @container, even though the shell makes `.cc-control__page` a container
+ * named `cs-page`. Two reasons: the page padding above cannot be a container query at all
+ * — an element cannot query the container it establishes — and splitting the two would put
+ * the padding change and the type change on different switch points. One mechanism, one
+ * breakpoint. It also matches how every other component in this module handles Figma's
+ * Device axis.
+ *
+ * Figma's mobile frame is a 402px viewport, so a viewport query is what its intent
+ * describes; the shell's own sidebar and ActionsMenu swaps are viewport-based too. */
+@media (max-width: 767px) {
+  .cc-control__page--seating {
+    padding: var(--ai-spacing-4);
+  }
+
+  .seating-screen__empty-title {
+    font-size: var(--ai-font-fixed-sm);
+  }
+
+  /* Steps down a size AND tightens its leading, so the sentence wraps to two lines
+   * rather than running off. Figma sets `w-[min-content]` with `min-w-full` here, which
+   * is just "fill the width and wrap" — the default once nowrap is gone. */
+  .seating-screen__empty-text {
+    font-size: var(--ai-font-fixed-xxs);
+    line-height: var(--ai-leading-sm);
+  }
+}
