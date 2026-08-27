@@ -348,9 +348,31 @@ it on every capture.
 **Run it for every frame you push:**
 
 ```bash
-node scripts/gen-figma-rebind.mjs <nodeId>            # dry run — changes nothing
-node scripts/gen-figma-rebind.mjs <nodeId> --apply    # after reading the dry run
+node scripts/gen-figma-rebind.mjs <nodeId>[,<nodeId>…]                 # dry run — changes nothing
+node scripts/gen-figma-rebind.mjs <nodeId>[,<nodeId>…] --apply         # after reading the dry run
+node scripts/gen-figma-rebind.mjs <nodeIds> --theme cc                 # a Control Centre screen
 ```
+
+**Pass every frame from the push in one comma-separated list.** A push is never one frame — desktop
+plus mobile is the minimum — and one call means one `setCurrentPageAsync`, one read of the Semantic
+collection, and one result you can compare frame-to-frame. It returns an array, one entry per frame.
+
+**`--theme cc` is REQUIRED for a Control Centre screen, and `--theme chat` for a chat surface.**
+The map is built from `css/tokens.css`, which carries the LIGHT values — correct for a component
+demo page, and wrong for anything rendering under another theme, because those paints resolve to
+hexes the light map has never seen. Measured on `3565:1383` (2026-08-27): **44 of 160 paints
+unresolvable** without it, including 29 on `#A1B7C3` which *is* `--ai-icon-invert-secondary` in CC
+and 2 on `#667F89` which *is* `--ai-text-contrast` there. With `--theme cc` those 31 rebound and
+the leftovers dropped to 13. The overlay REPLACES each token's hex rather than adding to it — adding
+would leave the light values in the map and let one match falsely inside a CC frame.
+
+**The `components/*` guard covers library variables too** (fixed 2026-08-27). `SEMANTIC_NAMES` is
+built from `getLocalVariableCollectionsAsync`, which does **not** return variables imported from
+another file. So `components/button/primary-text` — a perfectly good component-scoped token, just
+remote — failed the "already correct" check and would have been "corrected" down to the generic
+`text/invert`. That is the same 43-paints-made-worse failure described above, reached by a different
+route. The guard now matches on the `components/` name prefix, which covers local and remote alike.
+If you write your own payload, keep that check.
 
 The generator parses `css/tokens.css` into a hex → token map and emits a `use_figma` payload that
 audits the frame **by collection** and rebinds anything off Semantic. Then:

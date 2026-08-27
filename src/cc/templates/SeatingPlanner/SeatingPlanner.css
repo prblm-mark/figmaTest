@@ -346,6 +346,21 @@
     gap: var(--ai-spacing-2);
   }
 
+  /* The sm replication above is a MEDIA QUERY, not the `input--sm` class, so
+   * `.input--sm .input__step` in Input.css never fires here and the stepper buttons would
+   * stay 40px wide inside a 32px-tall wrap. Same reason the two rules above exist at all.
+   * The padding reset matters just as much: `.create-plan__grid .input__wrap` above has the
+   * same specificity as Input.css's `.input--stepper .input__wrap` but loads later, so it
+   * would win and re-introduce the 8px side padding that the flush buttons need at zero. */
+  .create-plan__grid .input--stepper .input__wrap {
+    padding: 0;
+    gap: 0;
+  }
+
+  .create-plan__grid .input--stepper .input__step {
+    inline-size: var(--ai-spacing-7);
+  }
+
   /* Select's own sm control, to match the Inputs beside it. */
   .create-plan__shape .sel__control {
     min-height: var(--ai-spacing-7);

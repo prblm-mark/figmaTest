@@ -280,8 +280,28 @@ about to increment or decrement.
 `− ` disabled at min and `+` at max; clamping at both bounds; `input`+`change` both fired; empty
 field seeds correctly; typing past a bound re-syncs; no JS errors.
 
-### Not yet adopted
+### The 252px min-content floor (fixed 2026-08-27, same day)
 
-The Seating Planner create-plan form's Tables and Seats-per-table fields are the obvious first
-consumers, but the designer asked for **the component only** for now — those fields are still
-plain number Inputs.
+Adopting the stepper in the create-plan modal surfaced a bug the component's own demo had been
+showing all along without anyone reading it as one: **two of the seven demo rows overflowed the
+card.** The two that did were the only ones whose field had no `max` attribute.
+
+Chrome derives a number input's intrinsic width from the digit count of its `max`. With
+`max="12"` `.input` reports a 108px min-content width; with no `max` it falls back to a
+~20-character default and reports **252px**. `1fr` is `minmax(auto, 1fr)`, so the grid honoured
+that 252px minimum and the row grew past its container. A stepper documented as *fluid* was in
+fact imposing a ~252px floor on whatever held it.
+
+`min-inline-size: 0` does **not** fix this — measured, not assumed: it left min-content at 252.
+`inline-size: 0` on `.input__control` drops it to 86px (the two buttons plus borders) and changes
+nothing at render time, because `flex: 1` grows the field straight back. Verified: all seven rows
+inside the card, base still 40px, `--sm` still 32px, field still 74px in a 156px column.
+
+Worth remembering as a class of bug: **an intrinsic-size floor is invisible until something
+constrains the element.** The stepper looked perfect at full width and only misbehaved in a grid.
+
+### Adopted by
+
+**Seating Planner — create-plan modal** (`src/cc/templates/SeatingPlanner/`), 2026-08-27:
+Tables (`min=1`, no max) and Seats / table (`min=6 max=12`). Note the mobile caveat recorded in
+that screen's own figma-notes — at 390px the three-column grid leaves the field ~29px.

@@ -555,3 +555,80 @@ page. Reverting one line restores the shell default.
   theme-aware, so it will follow `data-theme="dark"` on its own.
 - **`get_metadata` on the Seat Planner page returns ~10M characters** — do not fetch it to find a
   frame. Ask for the node id, or go straight to a known node.
+
+---
+
+## Create-plan: Tables + Seats are steppers (2026-08-27)
+
+Both fields now use `.input--stepper` (see `src/components/Input/Input.figma-notes.md`). **No Figma
+node backs the stepper**, so this is a code-side decision the frames do not show — the create-plan
+frames still draw plain number fields. Flagged rather than silently diverged.
+
+Why it fits here: both values are bounded quantities. Tables is `min=1`; Seats / table is
+`min=6 max=12`, straight from the frame's own help copy. With the buttons disabled at each bound the
+form cannot reach an invalid seats value by clicking at all, which is strictly better than catching
+it in validation afterwards. The existing validation is untouched and still fires on typing.
+
+### Mobile needed two extra rules — and has a caveat worth a designer decision
+
+At ≤639px this screen replicates `input--sm` geometry through a **media query** rather than the
+class (Figma's mobile frame puts every Input at `sm`, and a class cannot be added from a media
+query). Two consequences the adoption exposed:
+
+1. `.input--sm .input__step` in Input.css keys on the class, so it never fired — the buttons stayed
+   40px wide inside a 32px-tall wrap.
+2. `.create-plan__grid .input__wrap` and Input.css's `.input--stepper .input__wrap` have the *same*
+   specificity, and this file loads later — so the grid's `padding: 0 8px` won, re-introducing the
+   side padding the flush buttons need at zero.
+
+Both are now handled in the `@media (max-width: 639px)` block, scoped to `.create-plan__grid
+.input--stepper`. Measured after: 95×32 wrap, 32px buttons, flush, no horizontal overflow.
+
+**CAVEAT — the number field is 29px wide at 390px.** Figma's mobile frame keeps Tables / Seats /
+Shape in one three-column row, which leaves ~95px per column; two 32px buttons take 64 of it. A
+two-digit value renders at 14px so it fits with ~7px either side, but `"888"` renders at 26px and
+would visually touch the buttons — and Tables has no `max`, so three digits is reachable. Left as
+Figma draws it rather than restructuring the grid unasked. The options, if it needs changing:
+
+- let Tables / Seats span the full width on mobile and drop Shape to its own row (diverges from the
+  mobile frame's layout);
+- give Tables a `max` so the field can never need three digits;
+- accept it — 6–12 seats and typical table counts are two digits.
+
+Also visible in the mobile capture and **pre-existing**, not caused by this change: Table Shape's
+Select truncates "Round" to "Rou…" at that column width. The grid columns are equal `1fr`, so the
+stepper did not take space from it.
+
+### Figma captures (Prototypes page, `2025:803`)
+
+| Frame | Node | Size |
+|---|---|---|
+| TASK-344753 — Input stepper — component matrix — v1 · Desktop | `3564:1383` | 1600×1230 |
+| TASK-344753 — SeatingPlanner — create-plan steppers — v1 · Desktop | `3565:1383` | 1600×1230 |
+| TASK-344753 — SeatingPlanner — create-plan steppers — v1 · Mobile | `3566:1383` | 390×1230 |
+
+Colour rebind ran on all three (`scripts/gen-figma-rebind.mjs`). The stepper frame came out
+**146/146 on Semantic, 0 remaining** — the `bindVariables=true` capture bound it correctly with no
+help. The two CC frames needed the new `--theme cc` overlay and then rebound 31 and 41 paints; what
+is left is recorded under "Rebind leftovers" below.
+
+**Heights are not pinned.** All three frames are 1230px tall — the window height, not the content
+height — so each has empty space below the content. The skill's `overflow: hidden` on `html` *and*
+`body` pin was not applied. Not re-pushed, because a re-capture mints a new node rather than
+updating in place (`feedback_figma_capture_title_collision`), so the fix belongs on the next push.
+
+### Rebind leftovers — reported, not guessed
+
+Per the push routine: where the CSS does not settle a colour, it stays on its primitive and gets
+reported rather than bound to a plausible-looking token.
+
+- **`#F3F6F7` on vector nodes** — 12 desktop / 3 mobile, on `MId Blue/100`. In the CC theme this hex
+  is `--ai-surface-minimal`, `--ai-surface-input` *and* `--ai-surface-elevated-2` (three surface
+  candidates), plus `--cc-header-icon`. The audit classes these nodes as `icon`, and there is no
+  `--ai-icon-*` at that value in CC. `--cc-header-icon` is almost certainly what they are, but that
+  is a `--cc-*` token and the rebind map covers only the four `--ai-*` families — so this needs
+  either a designer call or an extension of the generator to CC-namespaced tokens.
+- **`#000000` unbound stroke** — 2, mobile only. No token at that value.
+- **`#0F172A` unbound fill** — 1, both frames. This is the modal scrim, `rgba(15, 23, 42, 0.5)` in
+  `Modal.css`. Deliberately a raw `rgba()` because it carries alpha, and the hex was the designer's
+  own instruction. Expected to stay unbound.

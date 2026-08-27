@@ -313,6 +313,15 @@
 
 .input--stepper .input__control {
   text-align: center;
+  /* Chrome derives a number input's intrinsic width from its `max` attribute's digit count,
+   * and with no `max` at all it falls back to a ~20-character default. That intrinsic width
+   * became the wrapper's MIN-CONTENT size, so a stepper billed as "fluid" was silently forcing
+   * a ~252px floor on its container — enough to blow a `1fr` grid column wide open (found in
+   * this component's own demo, 2026-08-27: the two rows without a `max` overflowed the card
+   * while the four with `max="12"` sat at 156px). `min-inline-size: 0` does NOT fix this; a
+   * zero `inline-size` does, dropping min-content 252 -> 86, and costs nothing at render time
+   * because `flex: 1` above grows the field back to fill the wrap. */
+  inline-size: 0;
   /* The − / + buttons replace the native spinner, so it is hidden. This is the one place a
    * spinner SHOULD go: keeping both would give the same control two different affordances. */
   appearance: textfield;

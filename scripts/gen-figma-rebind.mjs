@@ -4,7 +4,7 @@
  * frame's colour bindings and rebinds them to the right SEMANTIC token, choosing
  * the token FAMILY from what each colour is used for.
  *
- *   node scripts/gen-figma-rebind.mjs <nodeId> [--page 2025:803] [--apply]
+ *   node scripts/gen-figma-rebind.mjs <nodeId>[,<nodeId>…] [--page 2025:803] [--theme cc|chat] [--apply]
  *
  * Dry run by default: the payload reports and changes nothing. `--apply` mutates.
  *
@@ -89,17 +89,35 @@ const OVERRIDES = {
  * Semantic collection before use; an unverified name is reported, not applied. */
 const NAME_FIXUPS = {};
 
-function parseTokens() {
-  // Base tokens.css only — it carries the LIGHT values, and captures are taken in
-  // the light theme. Dark/chat/CC values would add hexes absent from the capture
-  // and could only manufacture false matches.
-  const css = readFileSync(join(ROOT, 'css/tokens.css'), 'utf8');
-  const perFamily = Object.fromEntries(FAMILIES.map((f) => [f, new Map()]));
+function readTokenHexes(file) {
+  const css = readFileSync(join(ROOT, file), 'utf8');
   const re = /--ai-([a-z0-9-]+)\s*:\s*(#[0-9a-fA-F]{6})\s*;/g;
+  const out = new Map();                      // token -> HEX
   let m;
-  while ((m = re.exec(css))) {
-    const token = m[1];
-    const hex = m[2].toUpperCase();
+  while ((m = re.exec(css))) out.set(m[1], m[2].toUpperCase());
+  return out;
+}
+
+function parseTokens(theme) {
+  /* Base `css/tokens.css` carries the LIGHT values. That was the whole story while every capture
+   * was a light-theme component page — but the Control Centre screens render under the CC theme,
+   * whose values live in `css/tokens-cc.css`, so their paints resolve to hexes the light map has
+   * never seen. Measured on 3565:1383 (2026-08-27): 44 of 160 paints unresolvable, among them
+   * 29 on #A1B7C3 which IS `--ai-icon-invert-secondary` in CC and 2 on #667F89 which IS
+   * `--ai-text-contrast` there. The old comment claimed a theme overlay "could only manufacture
+   * false matches"; the opposite is true — without it a CC capture cannot be rebound at all.
+   *
+   * The overlay REPLACES a token's hex rather than adding to it, which is why this now resolves
+   * token -> hex first and inverts afterwards. Adding would leave every light hex in the map and
+   * let a light value match inside a CC frame — that WOULD be a false match. */
+  const byToken = readTokenHexes('css/tokens.css');
+  if (theme) {
+    const overlay = readTokenHexes(`css/tokens-${theme}.css`);
+    for (const [token, hex] of overlay) byToken.set(token, hex);
+  }
+
+  const perFamily = Object.fromEntries(FAMILIES.map((f) => [f, new Map()]));
+  for (const [token, hex] of byToken) {
     const family = FAMILIES.find((f) => token === f || token.startsWith(f + '-'));
     if (!family) continue;                    // radius/spacing/btn/etc — not colour families
     if (!perFamily[family].has(hex)) perFamily[family].set(hex, []);
@@ -115,17 +133,27 @@ function figmaName(token) {
 }
 
 const args = process.argv.slice(2);
-const nodeId = args.find((a) => !a.startsWith('--'));
+/* A push is almost never one frame — desktop + mobile of the same screen is the minimum, and
+ * a multi-screen prototype is several more. Emitting one payload per frame meant the identical
+ * 8.5KB MAP crossed the wire once per frame and each run re-read the whole Semantic collection.
+ * A comma-separated list audits them all in one call: same page, one setCurrentPageAsync, one
+ * variable read, one result to compare across frames. A single id still works unchanged. */
+const nodeIds = (args.find((a) => !a.startsWith('--')) || '')
+  .split(',').map((s) => s.trim()).filter(Boolean);
 const apply = args.includes('--apply');
 const pIdx = args.indexOf('--page');
 const pageId = pIdx > -1 ? args[pIdx + 1] : '2025:803';
+/* `--theme cc` for a Control Centre screen, `--theme chat` for a chat surface. Omit for a
+ * plain light-theme component page. The name is the `css/tokens-<name>.css` suffix. */
+const tIdx = args.indexOf('--theme');
+const theme = tIdx > -1 ? args[tIdx + 1] : null;
 
-if (!nodeId) {
-  console.error('usage: node scripts/gen-figma-rebind.mjs <nodeId> [--page 2025:803] [--apply]');
+if (!nodeIds.length) {
+  console.error('usage: node scripts/gen-figma-rebind.mjs <nodeId>[,<nodeId>…] [--page 2025:803] [--theme cc|chat] [--apply]');
   process.exit(1);
 }
 
-const perFamily = parseTokens();
+const perFamily = parseTokens(theme);
 const map = {};            // "family|#HEX" -> { name, source }
 const ambiguous = [];
 for (const family of FAMILIES) {
@@ -146,10 +174,11 @@ console.error(`[gen] ${Object.keys(map).length} resolvable  ·  ${ambiguous.leng
 for (const a of ambiguous) {
   console.error(`        ${a.key}  ${a.tokens.map((t) => '--ai-' + t).join(', ')}`);
 }
-console.error(`[gen] emitting ${apply ? 'APPLY' : 'DRY RUN'} for ${nodeId} on page ${pageId}`);
+console.error(`[gen] theme: ${theme || 'light (base)'}`);
+console.error(`[gen] emitting ${apply ? 'APPLY' : 'DRY RUN'} for ${nodeIds.join(', ')} on page ${pageId}`);
 
 process.stdout.write(`// GENERATED by scripts/gen-figma-rebind.mjs — do not edit by hand
-// Target ${nodeId} on page ${pageId} · ${apply ? 'APPLY' : 'DRY RUN'}
+// Target ${nodeIds.join(', ')} on page ${pageId} · ${apply ? 'APPLY' : 'DRY RUN'}
 // Keys are "family|#HEX". Family comes from node type + property, because one hex
 // spans families: #67676C is text/contrast AND icon/secondary.
 const APPLY = ${apply};
@@ -165,12 +194,15 @@ function familyFor(node, prop) {
 const page = await figma.getNodeByIdAsync('${pageId}');
 if (!page) throw new Error('page not found');
 await figma.setCurrentPageAsync(page);
-let frame = await figma.getNodeByIdAsync('${nodeId}');
-// Node ids are NOT stable across a Re-tokenise run — fall back to name.
-if (!frame) {
-  frame = page.children.filter(function (n) { return n.id === '${nodeId}'; })[0] || null;
+const NODE_IDS = ${JSON.stringify(nodeIds)};
+const frames = [];
+for (const id of NODE_IDS) {
+  let f = await figma.getNodeByIdAsync(id);
+  // Node ids are NOT stable across a Re-tokenise run — fall back to a page-children scan.
+  if (!f) f = page.children.filter(function (n) { return n.id === id; })[0] || null;
+  if (!f) throw new Error('node ' + id + ' not found — re-check the id, it may have changed');
+  frames.push(f);
 }
-if (!frame) throw new Error('node ${nodeId} not found — re-check the id, it may have changed');
 
 function hex(c){function h(x){return ('0'+Math.round(x*255).toString(16)).slice(-2);}return '#'+(h(c.r)+h(c.g)+h(c.b)).toUpperCase();}
 
@@ -190,7 +222,10 @@ async function nameOf(id) {
   return (cache[id] = v ? v.name : '?');
 }
 
-const out = { mode: APPLY ? 'APPLY' : 'DRY RUN', frame: frame.name,
+const results = [];
+for (const frame of frames) {
+const out = { mode: APPLY ? 'APPLY' : 'DRY RUN', frame: frame.name, frameId: frame.id,
+              size: Math.round(frame.width) + 'x' + Math.round(frame.height),
               wouldRebind: {}, alreadyCorrect: 0, UNRESOLVED: {}, mapNamesMissing: [] };
 for (const k of Object.keys(MAP)) if (!byName[MAP[k].name]) out.mapNamesMissing.push(MAP[k].name);
 const mutated = [];
@@ -215,7 +250,14 @@ for (const n of frame.findAll(function () { return true; })) {
       // border/contrast — 43 paints made worse in one run. Only two things get
       // rebound: a binding that is not semantic at all, and the narrow
       // wrong-product case below.
-      if (cur && SEMANTIC_NAMES[cur]) {
+      // A component-scoped token is preserved WHEREVER it lives. SEMANTIC_NAMES is built from
+      // getLocalVariableCollectionsAsync, which does not return LIBRARY variables — so a token
+      // imported from another file (e.g. components/button/primary-text) failed this guard and
+      // got "corrected" down to the generic text/invert. That is the documented 43-paints-made-
+      // worse failure, just reached by a different route than the one it was written for.
+      // Matching on the name prefix covers local and remote alike (2026-08-27).
+      const isComponentToken = cur && cur.indexOf('components/') === 0;
+      if (cur && (SEMANTIC_NAMES[cur] || isComponentToken)) {
         const otherProduct = cur.indexOf('components/chat/') === 0 && fam === 'icon';
         if (!otherProduct) { out.alreadyCorrect++; continue; }
       }
@@ -245,13 +287,16 @@ for (const n of frame.findAll(function () { return true; })) {
       if (!p || p.type !== 'SOLID') continue;
       const bvc = p.boundVariables && p.boundVariables.color;
       const nm = bvc && bvc.id ? await nameOf(bvc.id) : null;
-      // "correct" = on ANY semantic token, generic family or component-scoped.
-      if (nm && SEMANTIC_NAMES[nm]) right++; else wrong++;
+      // "correct" = on ANY semantic token, generic family or component-scoped — including a
+      // component token imported from a library, which is not in the local Semantic collection.
+      if (nm && (SEMANTIC_NAMES[nm] || nm.indexOf('components/') === 0)) right++; else wrong++;
     }
   }
 }
 out.audit = { paintsOnCorrectFamily: right, paintsNotOnCorrectFamily: wrong };
 out.mutatedNodeCount = mutated.length;
 out.mutatedNodeIds = mutated.slice(0, 8);
-return out;
+results.push(out);
+}
+return results;
 `);

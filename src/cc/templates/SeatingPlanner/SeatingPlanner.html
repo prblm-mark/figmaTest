@@ -1165,19 +1165,39 @@
               </div>
               <p class="input__help" data-cp-help>The room or area this plan covers</p>
             </div>
-            <div class="input" data-cp-field="tables">
+            <!-- Steppers, not plain number fields (`.input--stepper`, 2026-08-27). Both are
+                 bounded quantities, so the − / + buttons disable at the bounds and the field
+                 cannot reach an invalid value by clicking at all. Input.js is included at the
+                 foot of this page; it needs no per-field init. -->
+            <div class="input input--stepper" data-cp-field="tables">
               <label class="input__label" for="cp-tables">Tables</label>
               <div class="input__wrap">
+                <button type="button" class="input__step input__step--dec" data-input-step="-1"
+                        aria-controls="cp-tables" aria-label="Fewer tables">
+                  <i data-lucide="minus" aria-hidden="true"></i>
+                </button>
                 <input id="cp-tables" type="number" min="1" step="1" required
                        class="input__control" value="12">
+                <button type="button" class="input__step input__step--inc" data-input-step="1"
+                        aria-controls="cp-tables" aria-label="More tables">
+                  <i data-lucide="plus" aria-hidden="true"></i>
+                </button>
               </div>
               <p class="input__help" data-cp-help>Number of tables is required.</p>
             </div>
-            <div class="input" data-cp-field="seats">
+            <div class="input input--stepper" data-cp-field="seats">
               <label class="input__label" for="cp-seats">Seats / table</label>
               <div class="input__wrap">
+                <button type="button" class="input__step input__step--dec" data-input-step="-1"
+                        aria-controls="cp-seats" aria-label="Fewer seats per table">
+                  <i data-lucide="minus" aria-hidden="true"></i>
+                </button>
                 <input id="cp-seats" type="number" min="6" max="12" step="1" required
                        class="input__control" value="10">
+                <button type="button" class="input__step input__step--inc" data-input-step="1"
+                        aria-controls="cp-seats" aria-label="More seats per table">
+                  <i data-lucide="plus" aria-hidden="true"></i>
+                </button>
               </div>
               <p class="input__help" data-cp-help></p>
             </div>
@@ -1388,6 +1408,7 @@
   </script>
 
   <!-- Select Zone dropdown — shared Select behaviour (open/choose/close). -->
+  <script src="../../../components/Input/Input.js"></script>
   <script src="../../../components/Select/Select.js"></script>
 
   <!-- Chart.js initialisation — Page Views (multi-line) + Users (single-line) -->
