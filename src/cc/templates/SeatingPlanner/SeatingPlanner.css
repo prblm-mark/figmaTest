@@ -341,11 +341,43 @@
     gap: var(--ai-spacing-2);
   }
 
+  /* Select's own sm control, to match the Inputs beside it. */
+  .create-plan__shape .sel__control {
+    min-height: var(--ai-spacing-7);
+    padding-block: 0;
+  }
+
   .create-plan__footer .btn {
     min-height: var(--ai-spacing-7);
     padding: 0 var(--ai-spacing-4);
     font-size: var(--ai-font-fluid-xxs);
     border-radius: var(--ai-radius-md);
   }
+}
+
+/* Table Shape is a Select rather than an Input, so it needs the column layout `.input`
+ * gives its siblings: label, control, help — stacked with the same 8px gap, so the three
+ * fields in that grid row align on every line. */
+.create-plan__shape {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+  min-inline-size: 0;
+}
+
+/* `.sel` brings its own label+control gap; the wrapper above already provides it, and
+ * doubling would push the control 8px below its neighbours. */
+.create-plan__shape .sel {
+  gap: var(--ai-spacing-3);
+  min-inline-size: 0;
+}
+
+/* Number fields: the native spinner is kept — it is the affordance that makes a number
+ * field legible as one, and the designer asked for number fields specifically. Figma draws
+ * no spinner, but Figma would not render one either way, so this is not a divergence from
+ * an instruction. Only the Firefox default of reserving spinner space unconditionally is
+ * normalised, so the value does not sit off-centre against the text fields beside it. */
+.create-plan__grid input[type="number"] {
+  min-inline-size: 0;
 }
 

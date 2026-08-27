@@ -339,6 +339,8 @@
       clearErrors();
 
       var name = overlay.querySelector('#cp-name');
+      var room = overlay.querySelector('#cp-room');
+      var tables = overlay.querySelector('#cp-tables');
       var seats = overlay.querySelector('#cp-seats');
       var bad = null;
 
@@ -346,9 +348,33 @@
         setError('name', 'Plan name is required');
         bad = bad || name;
       }
-      if (seats && seats.value.trim()) {
+
+      /* Room / location became required 2026-08-27. Figma gives it only a hint ("The room or
+       * area this plan covers"), never an error, so this message follows the wording of the
+       * one required-field error Figma DOES state — "Plan name is required". Derived from the
+       * established pattern rather than lifted from a frame; flagged in figma-notes. */
+      if (room && !room.value.trim()) {
+        setError('room', 'Room / location is required');
+        bad = bad || room;
+      }
+
+      /* Tables: required, and its own help line already says so in Figma's words. */
+      if (tables) {
+        var t = Number(tables.value);
+        if (!tables.value.trim() || !Number.isFinite(t) || t < 1) {
+          setError('tables', 'Number of tables is required.');
+          bad = bad || tables;
+        }
+      }
+
+      /* Seats: required AND bounded. Both messages are Figma's own copy. The bounds match
+       * the input's min/max, so the native spinner cannot reach an invalid value either. */
+      if (seats) {
         var n = Number(seats.value);
-        if (!Number.isFinite(n) || n < 6 || n > 12) {
+        if (!seats.value.trim()) {
+          setError('seats', 'Seats per table must be between 6 and 12.');
+          bad = bad || seats;
+        } else if (!Number.isFinite(n) || n < 6 || n > 12) {
           setError('seats', 'Seats per table must be between 6 and 12.');
           bad = bad || seats;
         }
@@ -368,7 +394,10 @@
           room: (overlay.querySelector('#cp-room') || {}).value || '',
           tables: (overlay.querySelector('#cp-tables') || {}).value || '',
           seats: (overlay.querySelector('#cp-seats') || {}).value || '',
-          shape: (overlay.querySelector('#cp-shape') || {}).value || ''
+          /* Table Shape is a Select, so its value lives in the trigger's label rather than
+           * on an input. */
+          shape: (overlay.querySelector('#cp-shape .sel__value') ||
+                  overlay.querySelector('[data-cp-field="shape"] .sel__value') || {}).textContent || ''
         }
       }));
     });

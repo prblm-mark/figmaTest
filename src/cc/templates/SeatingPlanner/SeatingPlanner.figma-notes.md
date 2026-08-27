@@ -160,6 +160,40 @@ ControlHub) from black to navy. See **Modal.figma-notes.md → Overlay scrim**, 
 So this screen now touches the overlay not at all — `.modal-overlay` already supplied fixed,
 centred, `--ai-spacing-6` padding, matching Figma's overlay frame exactly.
 
+### Form enhancements (designer, 2026-08-27)
+
+Four changes on top of what the frames draw:
+
+| Field | Change |
+|---|---|
+| Room / location | now **required** |
+| Tables | `type="number"`, **required**, real value `12` (was a placeholder) |
+| Seats / table | `type="number"`, **required**, real value `10`, `min="6" max="12"` |
+| Table Shape | now a **Select** — Round / Square / Rectangle, Round selected |
+
+**The seats default exposed a contradiction in the design.** Figma's placeholder is `14`, but its own
+error copy says "Seats per table must be between 6 and 12." — so promoting 14 to a real value would
+open the form invalid. Resolved as **10** with the 6–12 rule intact (designer): a mid-range default
+rather than an edge one, so the first nudge upward does not trip the error. `min`/`max` now mirror
+the rule, so the native spinner cannot reach an invalid value either.
+
+**One error string is derived, not lifted.** Figma gives Room / location only a hint ("The room or
+area this plan covers") and never an error, so "Room / location is required" follows the wording of
+the one required-field error Figma *does* state. Flagged as derived rather than sourced.
+
+Tables reuses Figma's own "Number of tables is required." as its error, which is the copy Figma
+renders as a grey hint — so that string now does double duty. Still worth the designer's attention:
+it reads like validation and is styled as a hint.
+
+**Table Shape needed no new component.** `Select` already had everything, including the
+`sel__control--sm` compact size the mobile modal needs. It sits in a `.create-plan__shape` wrapper
+that reproduces `.input`'s column layout, so all three fields in that row align on every line —
+verified: labels and controls share an identical top, and all three cells measure 146×104.
+
+**The native number spinner is kept.** Figma draws none, but Figma would not render one either way,
+so this is not a divergence from an instruction — and a number field without its spinner is a worse
+number field.
+
 ### Flagged on screen 2
 
 - **The base card behind the modal is 302px tall on the desktop frame** — hugging its content —
@@ -352,6 +386,12 @@ a hint you did not ask for.
 - Every Input has its clear button and icon **hidden** in Figma, so neither is rendered. The
   published Code Connect for Input is **still stale** here too — it emits `input__field` where the
   class is `input__control`.
+- **`Select.js` was being loaded twice** — once by the ported ControlScreen shell and once by the
+  line added for Table Shape. Because its trigger branch is a `classList.toggle`, the two handlers
+  cancelled each other and **no Select on the page would open**, while option clicks still appeared
+  to work. The duplicate include is gone and `Select.js` gained a double-include guard, so the same
+  mistake is now harmless — see Select.figma-notes. Worth remembering when porting the shell: it
+  already brings Chart.js, Select, Dropdown, Toggle, Alert, HeaderGroup and SidebarMenu with it.
 
 ## Token mapping
 

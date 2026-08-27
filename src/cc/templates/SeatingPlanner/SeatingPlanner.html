@@ -66,6 +66,7 @@
   <link rel="stylesheet" href="../../../components/Badge/Badge.css">
   <link rel="stylesheet" href="../../../components/Checkbox/Checkbox.css">
   <link rel="stylesheet" href="../../../components/SearchInput/SearchInput.css">
+  <link rel="stylesheet" href="../../../components/Select/Select.css">
   <link rel="stylesheet" href="../../../components/ActionCard/ActionCard.css">
   <link rel="stylesheet" href="../../patterns/EventPicker/EventPicker.css">
   <!-- App shell, reused verbatim (rail, chrome, sidebar swap, ActionsMenu,
@@ -1160,28 +1161,41 @@
             <div class="input create-plan__wide" data-cp-field="room">
               <label class="input__label" for="cp-room">Room / location</label>
               <div class="input__wrap">
-                <input id="cp-room" type="text" class="input__control" placeholder="e.g. Great room">
+                <input id="cp-room" type="text" required class="input__control" placeholder="e.g. Great room">
               </div>
               <p class="input__help" data-cp-help>The room or area this plan covers</p>
             </div>
             <div class="input" data-cp-field="tables">
               <label class="input__label" for="cp-tables">Tables</label>
               <div class="input__wrap">
-                <input id="cp-tables" type="text" inputmode="numeric" class="input__control" placeholder="12">
+                <input id="cp-tables" type="number" min="1" step="1" required
+                       class="input__control" value="12">
               </div>
               <p class="input__help" data-cp-help>Number of tables is required.</p>
             </div>
             <div class="input" data-cp-field="seats">
               <label class="input__label" for="cp-seats">Seats / table</label>
               <div class="input__wrap">
-                <input id="cp-seats" type="text" inputmode="numeric" class="input__control" placeholder="14">
+                <input id="cp-seats" type="number" min="6" max="12" step="1" required
+                       class="input__control" value="10">
               </div>
               <p class="input__help" data-cp-help></p>
             </div>
-            <div class="input" data-cp-field="shape">
-              <label class="input__label" for="cp-shape">Table Shape</label>
-              <div class="input__wrap">
-                <input id="cp-shape" type="text" class="input__control" placeholder="Round">
+            <!-- Select, not an Input: Table Shape is a choice of three, so the field type
+                 should say so. Round / Square / Rectangle, Round selected. Select.js
+                 auto-binds via `data-sel` and needs no init. -->
+            <div class="create-plan__shape" data-cp-field="shape">
+              <div class="sel" data-sel>
+                <label class="sel__label" for="cp-shape">Table Shape</label>
+                <button id="cp-shape" class="sel__control" type="button" data-sel-trigger>
+                  <span class="sel__value">Round</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <ul class="sel__menu" role="listbox" aria-label="Table shape">
+                  <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">Round <i data-lucide="check"></i></button></li>
+                  <li><button type="button" class="sel__menu-item" role="option">Square</button></li>
+                  <li><button type="button" class="sel__menu-item" role="option">Rectangle</button></li>
+                </ul>
               </div>
               <p class="input__help" data-cp-help>Default shape for the generated table.</p>
             </div>
@@ -1216,6 +1230,9 @@
   <!-- EventPicker's own interaction layer (search, Live filter, selection, Escape). -->
   <script src="../../patterns/EventPicker/event-picker.js"></script>
   <!-- This screen's only JS: opening/closing the picker and focus management. -->
+  <!-- Table Shape uses Select. Select.js is NOT added here: the ported shell already
+       loads it further down, and a second include would double-bind its document
+       click handler so every toggle cancelled itself. -->
   <script src="SeatingPlanner.js"></script>
 
   <!-- ActionsMenu rail popovers (Info, …). Generic toggle: one open at a time,
