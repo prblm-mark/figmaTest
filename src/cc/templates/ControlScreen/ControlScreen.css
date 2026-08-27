@@ -111,6 +111,24 @@
      SidebarMenu can shrink the column far below 768px on a wide screen. */
   container-type: inline-size;
   container-name: cs-page;
+  /* Keeps page content out of the chrome's paint layer (2026-08-27).
+   *
+   * `.cc-control__chrome` is `position: relative; z-index: 1`, and any component inside the page
+   * that uses `z-index: 1` — RoomCard's action buttons do — lands in the SAME layer. Equal
+   * z-index means DOM order decides, and the page comes after the chrome, so those buttons
+   * painted straight over an open user menu. Verified by hit-testing `elementFromPoint` at the
+   * overlap, not by reading the CSS.
+   *
+   * `container-type` does NOT already do this, which is the counter-intuitive part:
+   * `getComputedStyle(...).contain` reads `none` for a container-type element, and empirically
+   * it does not trap positive-z descendants. So the containment added for container queries
+   * gives no stacking protection at all — measured, having first assumed it would.
+   *
+   * `isolation: isolate` rather than bumping the chrome's z-index: a higher number is only a
+   * tie-break that the next component to use z-index: 2 defeats, whereas isolating the page
+   * means content can never escape its own region regardless of what it does internally.
+   * The ActionsMenu rail is a SIBLING of <main>, so it is unaffected. */
+  isolation: isolate;
   /* Scrollbar: normal width + a stable gutter (no layout shift when it appears).
      Visible by DEFAULT (CC rail grey) — this is what touch devices get, since
      they have no hover state to reveal an overlay bar. */

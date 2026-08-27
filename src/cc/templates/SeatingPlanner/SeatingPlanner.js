@@ -664,3 +664,38 @@
     if (!isStacked()) setWidth(currentWidth());
   }
 })();
+
+/* ══ Chrome shadow on scroll ══════════════════════════════════════════════════════════════
+ * This screen deliberately has no header block and no chrome hairline (both designer calls), so
+ * nothing separates the chrome from content sliding under it. A `--ai-shadow-sm` that appears
+ * only once the page has actually scrolled gives the separation without adding permanent chrome.
+ *
+ * Keyed off the PAGE's scrollTop, because that is the scroller that moves content under the
+ * chrome. When the layout is side by side the card grid scrolls inside its own box instead and
+ * nothing passes under the chrome, so no shadow — which is correct, not an omission.
+ */
+(function () {
+  'use strict';
+
+  var page = document.querySelector('.cc-control__page--seating');
+  var chrome = document.querySelector('.cc-control__chrome');
+  if (!page || !chrome) return;
+
+  var on = null;
+  function sync() {
+    var scrolled = page.scrollTop > 0;
+    if (scrolled === on) return;      /* scroll fires continuously; only touch the DOM on a flip */
+    on = scrolled;
+    chrome.classList.toggle('is-scrolled', scrolled);
+  }
+
+  /* `passive` because this never calls preventDefault — without it the listener can block the
+   * scroll it is only observing. */
+  page.addEventListener('scroll', sync, { passive: true });
+
+  /* Also re-check when the page stops being scrollable at all: switching to the side-by-side
+   * layout, or a panel change, can leave `is-scrolled` stuck on with nothing scrolled. */
+  if (window.ResizeObserver) new ResizeObserver(sync).observe(page);
+
+  sync();
+})();

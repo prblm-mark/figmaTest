@@ -167,6 +167,23 @@ function isStacked() { return pageEl.getBoundingClientRect().width <= STACK_MAX;
 new ResizeObserver(onContainerResize).observe(pageEl);
 ```
 
+### `container-type` gives NO stacking protection
+
+Do not assume the containment you added for container queries also isolates z-index. It does not:
+`getComputedStyle(el).contain` reads **`none`** for a `container-type` element, and empirically it
+does **not** trap positive-`z-index` descendants (measured 2026-08-27 by toggling `container-type`
+to `normal` on three ancestors — the bug survived all three).
+
+Consequence, found the hard way: `.cc-control__chrome` is `z-index: 1` and RoomCard's
+`.room-card__actions` is *also* `z-index: 1`, so equal z-index in one layer let DOM order decide and
+page content painted over an open dropdown. The fix is **`isolation: isolate`** on the region that
+should contain its own content — not a bigger z-index, which is only a tie-break the next component
+defeats. `.cc-control__page` now carries it.
+
+When a stacking bug is suspected, hit-test with `document.elementFromPoint` at the overlap rather
+than reasoning from the cascade — the paint order of non-positioned stacking contexts is exactly
+where intuition fails.
+
 Precedent already in the repo: `Alert`, `Datatables`, `SourcesCarousel` and `SystemRole` are all
 self-containers. 65 files still carry viewport media queries — convert opportunistically, and
 always re-verify the component at its own breakpoints afterwards.

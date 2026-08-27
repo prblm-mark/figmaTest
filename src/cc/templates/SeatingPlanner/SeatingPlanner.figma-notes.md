@@ -844,3 +844,27 @@ constrains the height**; the component's own demo is auto-height and must stay u
 **Verified:** at a real 402px viewport the page scrolls 1960/834 and the last of 12 cards is
 reachable; at a 1100px column the grid scrolls 964/604; at 1847 nothing needs to scroll. Swept
 1847 → 402 with no text spilling, no boxes escaping, and no horizontal overflow.
+
+### Chrome gains a shadow once the page scrolls (2026-08-27)
+
+This screen deliberately has **no header block** and **no chrome hairline** — both earlier designer
+calls. That left nothing to separate the chrome from content sliding under it. Designer's fix: a
+shadow on scroll.
+
+`--ai-shadow-sm`, applied via an `is-scrolled` class that `SeatingPlanner.js` toggles from the
+**page's** `scrollTop`. The page is the scroller that actually moves content under the chrome; when
+the layout is side by side the card grid scrolls inside its own box instead and nothing passes under
+the chrome, so no shadow appears — correct, not an omission.
+
+Implementation notes: the listener is `{ passive: true }` (it never calls `preventDefault`, and
+without the flag it can block the scroll it only observes); the DOM is touched only when the state
+flips, since `scroll` fires continuously; and a `ResizeObserver` re-checks, because switching to the
+side-by-side layout can otherwise leave `is-scrolled` stuck on with nothing scrolled.
+
+Verified: no shadow at `scrollTop: 0`, `--ai-shadow-sm` once scrolled, back to none on return, and
+the chrome's bottom border still removed. The **dark** token applies correctly on this dark screen
+(`rgba(0,0,0,0.149)` / `0.255` from `tokens-shadows.css:82`, not the light `0.06` / `0.1`).
+
+A measuring note: read immediately after the class flips, the computed `box-shadow` is a fully
+transparent two-layer value — that is the 0.15s transition at t=0, not a broken token. Read after
+the transition completes.
