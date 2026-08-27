@@ -34,6 +34,21 @@
 }
 
 /* ── Header ──────────────────────────────── */
+/* Figma's ModalHeader is its own component set (3427:11820) with Size=Base and Size=sm,
+ * and it carries FOUR properties our Modal did not express: `subText`, `subTitle`,
+ * `showIcon`, and the size axis. The subtitle arrived with the Seating Planner's
+ * create-plan modal ("New Seating Plan" over the event name), so `__title-block` and
+ * `__subtitle` are added here rather than scoped to that screen — they are part of the
+ * component, just unused until now (designer, 2026-08-27).
+ *
+ * Purely additive: no existing modal has a subtitle, so EventPicker, ControlScreen and
+ * ControlHub are untouched. `.modal__title` alone still works as a direct header child.
+ *
+ * NOT yet implemented from that set, and flagged in Modal.figma-notes: `showIcon` (a 40px
+ * tinted disc — note its `rgba(48,203,144,0.15)` fill is the SAME already-approved value
+ * `.modal__header-icon--positive` uses below, so that part is settled), `subTitle` (a second
+ * inline title beside the first, with --ai-tracking-3), and the fact that Base/sm are SIZE
+ * VARIANTS rather than a breakpoint. A proper ModalHeader/Body/Footer audit is its own job. */
 
 .modal__header {
   display: flex;
@@ -83,6 +98,25 @@
 .modal__close [data-lucide] {
   width: var(--ai-icon-size-md);
   height: var(--ai-icon-size-md);
+}
+
+/* Title + subtitle stack. `flex: 1 0 0` + `min-inline-size: 0` mirrors Figma's
+ * `flex-[1_0_0] min-w-px`, so a long title truncates rather than shoving the close button. */
+.modal__title-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-2);
+  flex: 1 0 0;
+  min-inline-size: 0;
+}
+
+.modal__subtitle {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
 }
 
 /* ── Body ────────────────────────────────── */
@@ -280,10 +314,35 @@
  * modal by request. Figma has no mobile modal variant.
  * Note: `.modal--confirm .modal__footer` keeps its own bespoke padding — it is
  * more specific and intentionally borderless/centred. */
+/* The Seating Planner's create-plan modal (Figma 3515:228092) is the FIRST mobile modal
+ * spec in the file — Modal.figma-notes previously recorded that none existed. Its values
+ * are added to this existing block rather than a new breakpoint, so all of Modal's
+ * responsive behaviour switches at one width (designer, 2026-08-27).
+ *
+ * Note what this really is: Figma expresses these as the **Size=sm variants** of the
+ * ModalHeader / ModalBody / Modal Footer component sets, not as a device breakpoint. A
+ * media query reproduces the right values for these screens, but a consumer wanting the
+ * compact modal at desktop width cannot ask for it. Flagged in Modal.figma-notes. */
 @media (max-width: 639px) {
   .modal__header,
   .modal__footer {
     padding: var(--ai-spacing-4) var(--ai-spacing-5);
+  }
+
+  .modal__body {
+    padding: var(--ai-spacing-5);
+  }
+
+  .modal__title {
+    font-size: var(--ai-font-fixed-sm);
+  }
+
+  .modal__title-block {
+    gap: var(--ai-spacing-1);
+  }
+
+  .modal__subtitle {
+    font-size: var(--ai-font-fixed-xxs);
   }
 }
 

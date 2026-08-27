@@ -71,7 +71,12 @@ Dialog pattern for alerts, confirmations, forms, feedback, and scrollable conten
 
 ## Responsive
 
-Figma defines no mobile modal variant. One responsive rule exists in code:
+**Superseded 2026-08-27.** Figma now DOES define a compact modal — see *Header / Body / Footer are
+their own component sets* below — and the Seating Planner's create-plan modal
+(`3515:228092` / `3515:212739`) is the first frame to specify it. The rules below were extended
+for it.
+
+Original note: Figma defines no mobile modal variant. One responsive rule exists in code:
 
 | Breakpoint | Rule | Origin |
 |---|---|---|
@@ -138,3 +143,51 @@ values, not oversights.
 - Scrollable body max-height (360px) is a hardcoded layout dimension.
 - Confirmation icon wrap size (56px) is a hardcoded layout dimension.
 - The Figma source uses flat frames for buttons/textarea/checkbox — the code composes the real components.
+
+## Header / Body / Footer are their own component sets
+
+Discovered 2026-08-27 while building the Seating Planner's create-plan modal. Modal's parts have
+been promoted to component sets of their own, each with a **Size** axis:
+
+| Component | Set | Variants |
+|---|---|---|
+| ModalHeader | `3427:11820` | `Size=Base` (`3427:11819`), `Size=sm` (`3427:11821`) |
+| ModalBody | `3427:12224` | `Size=Base` (`3427:11885`), `Size=sm` (`3427:12231`) |
+| Modal Footer | `3427:11838` | `Size=Base` (`3427:11837`), `Size=sm` (`3427:11839`) |
+
+`ModalHeader` also exposes four properties this component did not express: **`subText`**,
+**`subTitle`**, **`showIcon`** and **`size`**.
+
+### What was implemented
+
+**`subText`** — as `.modal__title-block` + `.modal__subtitle`. The create-plan modal needed it
+("New Seating Plan" over the event name). Purely additive: no existing modal has a subtitle, so
+EventPicker, ControlScreen and ControlHub are untouched, and `.modal__title` still works as a direct
+header child.
+
+**The sm values** — folded into the existing `max-width: 639px` block (body padding → 16, title →
+16, title-block gap → 4, subtitle → 13), joining the header/footer padding rule already there.
+
+### What was NOT, and why it matters
+
+- **`showIcon`** — a 40px tinted disc with a 20px glyph. Its `rgba(48, 203, 144, 0.15)` fill is the
+  *same already-approved value* `.modal__header-icon--positive` uses, so there is no token question
+  here, only unwritten CSS.
+- **`subTitle`** — a second, inline title beside the first, medium weight with `--ai-tracking-3`.
+  Distinct from `subText`, which sits *below*.
+- **Base/sm are SIZE VARIANTS, not a breakpoint.** This is the important one. Implementing them as
+  `@media (max-width: 639px)` reproduces the right values for these screens, but a consumer who
+  wants the compact modal at desktop width cannot ask for it, and a `.modal--compact` class would be
+  the faithful model. Chosen deliberately (designer, 2026-08-27) as the smaller change; a full
+  ModalHeader/Body/Footer audit is its own job.
+- **The sm variant's own padding disagrees with the screens using it.** `Size=sm` binds
+  `py: --ai-spacing-3` (8) and a 6px heading gap; the create-plan mobile frames bind `py: 12` and a
+  4px gap — which is what Modal's existing 639px rule already produced. So those frames are not
+  using sm as drawn. Worth resolving before the audit.
+- **`.modal` shadow and border still differ from Figma.** Figma binds `light/shadow-md`
+  (`--ai-shadow-md`) plus a 1px `--ai-border-secondary`; `.modal` has neither. Pre-existing, flagged
+  on the Seating Planner screens too.
+- **The overlay's mobile padding.** The create-plan mobile frame places its modal 32px from each
+  edge, where `.modal-overlay` pads `--ai-spacing-6` (24) — so the modal renders 354 wide against
+  Figma's 338. Not changed, because overlay padding is shared by every modal.
+
