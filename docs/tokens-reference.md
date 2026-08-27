@@ -689,12 +689,19 @@ Font: **Inter** (loaded via Google Fonts in `src/styles/base.css`).
 
 | Variable | Value | Use |
 |---|---|---|
+| `--ai-leading-none` | `1` | Tight headings that should not wrap — **a unitless RATIO, not a length**, so it scales with the element's font-size. Added 2026-08-27 for Modal's header, which Figma renders `leading-none` at both sizes. |
 | `--ai-leading-xs` | `1rem` | Caption/label |
 | `--ai-leading-sm` | `1.25rem` | Small body |
 | `--ai-leading-md` | `1.5rem` | Body default |
 | `--ai-leading-lg` | `2rem` | Heading |
 | `--ai-leading-xl` | `2.5rem` | Large heading |
 | `--ai-leading-2xl` | `3rem` | Display |
+
+> **`--ai-leading-none` is the one leading token that is not a length.** The rest of the scale is
+> absolute px→rem; this one is a ratio, because Figma's `leading-none` means "one times the font
+> size" and has to keep working across sizes and themes. The Style Dictionary transform
+> (`dimension/figma-rem`) therefore leaves any `line height` value of 4 or less unitless — without
+> that, a Figma value of `1` would export as `0.0625rem` (1px) and collapse every line box using it.
 
 ### Letter Spacing (Tracking)
 

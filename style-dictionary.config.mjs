@@ -91,7 +91,18 @@ StyleDictionary.registerTransform({
     const path = token.path || [];
     return token.$type === 'number' && typeof token.$value === 'number' && !path.includes('tracking');
   },
-  transform: (token) => `${token.$value / 16}rem`,
+  transform: (token) => {
+    const path = token.path || [];
+    /* Line heights may be a RATIO rather than an absolute px value — Figma's `leading-none`
+     * is 1, meaning "one times the font size". A ratio must stay unitless: ÷16 would turn 1
+     * into 0.0625rem (1px) and collapse every line box that used it.
+     *
+     * Detected by magnitude rather than by name, so a future `leading-tight: 1.25` works too:
+     * a line-height of 4px or less is meaningless as an absolute, so any value that small is
+     * a ratio. The real scale starts at 16. */
+    if (path.includes('line height') && token.$value <= 4) return String(token.$value);
+    return `${token.$value / 16}rem`;
+  },
 });
 
 /**

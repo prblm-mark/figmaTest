@@ -221,9 +221,16 @@ themes where `--ai-font-fixed-md` resolves differently, as it does on EventPicke
 The title has no `nowrap` or ellipsis, so a long user-supplied name still wraps rather than being
 clipped; at leading 1 those lines touch but stay legible.
 
-**TOKEN GAP:** there is no ratio token, and no `--ai-leading-*` equals 18px — the scale is
-16/20/24/32/40/48. **`--ai-leading-none: 1` is the proper home for this**; the raw `1` is the
-interim. Worth adding in Figma.
+**Token added, gap closed.** There was no ratio token and no `--ai-leading-*` equal to 18px (the
+scale is 16/20/24/32/40/48), so **`--ai-leading-none: 1` was added** to
+`FigmaTokens/Typography/{Desktop,Mobile,Minimised}.tokens.json` on 2026-08-27 — the designer had
+already added the Figma variable, so the next export replaces the placeholder variableId.
+
+That needed a **pipeline fix as well**: `dimension/figma-rem` converts every `$type: "number"` token
+to rem, so a value of `1` would have exported as `0.0625rem` (1px) and collapsed every line box
+using it. The transform now leaves any `line height` value of 4 or less unitless — detected by
+magnitude rather than by name, so a future `leading-tight: 1.25` works too. **This would have bitten
+the designer's own upload**, not just the hand-added token.
 
 Result: the Seating Planner's create-plan modal now measures **512×506 with a 71px header and a 38px
 title block — exactly Figma**, having been 562 before this and the two fixes above. Modal's own demo
