@@ -584,16 +584,35 @@ query). Two consequences the adoption exposed:
 Both are now handled in the `@media (max-width: 639px)` block, scoped to `.create-plan__grid
 .input--stepper`. Measured after: 95×32 wrap, 32px buttons, flush, no horizontal overflow.
 
-**CAVEAT — the number field is 29px wide at 390px.** Figma's mobile frame keeps Tables / Seats /
-Shape in one three-column row, which leaves ~95px per column; two 32px buttons take 64 of it. A
-two-digit value renders at 14px so it fits with ~7px either side, but `"888"` renders at 26px and
-would visually touch the buttons — and Tables has no `max`, so three digits is reachable. Left as
-Figma draws it rather than restructuring the grid unasked. The options, if it needs changing:
+### The 29px mobile field — RESOLVED by capping Tables at 99
 
-- let Tables / Seats span the full width on mobile and drop Shape to its own row (diverges from the
-  mobile frame's layout);
-- give Tables a `max` so the field can never need three digits;
-- accept it — 6–12 seats and typical table counts are two digits.
+Figma's mobile frame keeps Tables / Seats / Shape in one three-column row, which leaves ~95px per
+column; two 32px buttons take 64 of it, leaving the number field **29px**. Two digits fit; `"888"`
+renders at 26px in a 29px field — 1.5px either side, effectively touching the buttons — and Tables
+originally had no `max`, so three digits was reachable.
+
+**Designer's call (2026-08-27): give Tables a `max` rather than restructure the grid.** So the
+mobile layout still matches the frame exactly, and the field can no longer be asked to hold a value
+it cannot show.
+
+`max="99"` — the largest value that never needs three digits. Worth being explicit about what that
+number is and is not: **the cap bounds the digit count, not the domain.** It is not a statement that
+an event may have at most 99 tables. If a real upper limit ever comes from the product side and it
+exceeds 99, this cap is the wrong lever and the grid is the thing to change instead.
+
+Measured after: `"99"` renders 17px in the 29px field — **11px slack**, ~5.5px each side, against
+3px for the three-digit case it replaces. Desktop is 64px with 47px slack. Clicking `+` stops at 99
+and further clicks are no-ops.
+
+**One derived error string.** The `+` button disables at 99, so clicking cannot exceed the cap — but
+the field is a real number input, so typing or pasting `150` would otherwise submit. Validation now
+catches it with *"Number of tables must be between 1 and 99."* Figma states **no** tables bound at
+all, so this follows the wording of the one bounded-field error it does state ("Seats per table must
+be between 6 and 12."). Derived from the established pattern, not lifted from a frame — same footing
+as the Room / location message, and listed with it under the designer follow-ups.
+
+The resting help line is unchanged and is still Figma's own hint, *"Number of tables is required."*
+— it reverts to that once a valid value is entered.
 
 Also visible in the mobile capture and **pre-existing**, not caused by this change: Table Shape's
 Select truncates "Round" to "Rou…" at that column width. The grid columns are equal `1fr`, so the

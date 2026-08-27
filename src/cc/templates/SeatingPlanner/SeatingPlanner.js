@@ -358,11 +358,21 @@
         bad = bad || room;
       }
 
-      /* Tables: required, and its own help line already says so in Figma's words. */
+      /* Tables: required, and its own help line already says so in Figma's words.
+       *
+       * Upper bound added 2026-08-27 with the `max="99"` cap. The stepper's + button disables at
+       * 99 so clicking cannot exceed it, but the field is still a real number input — typing 150
+       * or pasting it would otherwise submit. Figma states no tables bound at all, so this message
+       * follows the wording of the one bounded-field error it DOES state ("Seats per table must be
+       * between 6 and 12."). Derived from the established pattern, not lifted from a frame — same
+       * footing as the Room message above, and flagged in figma-notes. */
       if (tables) {
         var t = Number(tables.value);
         if (!tables.value.trim() || !Number.isFinite(t) || t < 1) {
           setError('tables', 'Number of tables is required.');
+          bad = bad || tables;
+        } else if (t > 99) {
+          setError('tables', 'Number of tables must be between 1 and 99.');
           bad = bad || tables;
         }
       }

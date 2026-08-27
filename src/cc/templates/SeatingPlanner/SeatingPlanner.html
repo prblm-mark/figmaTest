@@ -1168,7 +1168,13 @@
             <!-- Steppers, not plain number fields (`.input--stepper`, 2026-08-27). Both are
                  bounded quantities, so the − / + buttons disable at the bounds and the field
                  cannot reach an invalid value by clicking at all. Input.js is included at the
-                 foot of this page; it needs no per-field init. -->
+                 foot of this page; it needs no per-field init.
+
+                 Tables is capped at 99 (designer, 2026-08-27) so the value can never need three
+                 digits — at 390px Figma's three-column row leaves the field 29px, which holds two
+                 digits comfortably and three only by touching the buttons. The cap exists to bound
+                 the DIGIT COUNT, so 99 is the largest value that satisfies it; it is not a claim
+                 about how many tables an event may have. -->
             <div class="input input--stepper" data-cp-field="tables">
               <label class="input__label" for="cp-tables">Tables</label>
               <div class="input__wrap">
@@ -1176,7 +1182,7 @@
                         aria-controls="cp-tables" aria-label="Fewer tables">
                   <i data-lucide="minus" aria-hidden="true"></i>
                 </button>
-                <input id="cp-tables" type="number" min="1" step="1" required
+                <input id="cp-tables" type="number" min="1" max="99" step="1" required
                        class="input__control" value="12">
                 <button type="button" class="input__step input__step--inc" data-input-step="1"
                         aria-controls="cp-tables" aria-label="More tables">
