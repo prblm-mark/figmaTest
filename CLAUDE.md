@@ -96,6 +96,83 @@ Each `<ComponentName>/` folder contains: `<Name>.html` (demo), `<Name>.css` (sty
 
 ---
 
+## 4a. Responsive strategy — container queries, not viewport queries
+
+> **HARD RULE.** New component and template CSS uses **container queries**. A viewport
+> `@media` query is only correct for an element whose size really is set by the viewport.
+
+**Why.** Components live inside the CC app shell, where a docked SidebarMenu and the ActionsMenu
+rail change the content column *without any window resize*. Measured on the live Seating Planner
+(2026-08-27): a **2239px viewport** with the menu docked left the page column at **820px**, and
+neither `max-width: 1023px` nor `max-width: 767px` fired — so the header toolbar kept its widest
+layout and its text ran straight over the Show-unassigned toggle. `ControlScreen.css` had already
+written this exact warning next to `cs-page`; it just was not applied.
+
+### The two container names
+
+| Name | Established on | Means |
+|---|---|---|
+| `cs-main` | `.cc-control__main` (ControlScreen) | the whole content column, **outside** the page's own padding |
+| `cs-page` | `.cc-control__page` (ControlScreen) | the page content box — **the screen-width signal** |
+
+A **standalone component demo has no shell**, so any demo whose component queries `cs-page` must
+establish it itself, or the narrow rules can never fire and the demo silently misrepresents the
+component:
+
+```css
+body { container-type: inline-size; container-name: cs-page; }
+```
+
+### Choosing the container — measure first, then decide
+
+**An element can never query the container it establishes.** So a component's own root box
+(padding, border) cannot key on its own container — put those rules on `cs-page`, and keep
+descendant rules on the component's own container.
+
+**Self-container only if the element's own width tracks the available space.** Measure it before
+deciding. Concrete trap: `TableDetail` is a fixed **320px**, `TableCard` **275**, `RoomCard`
+**280**, `AttendeeCard` **286** — all under 767 *on desktop*, so a `container-type` on those roots
+plus a `max-width: 767px` self-query fires **permanently**, desktop included. Those deltas are
+about the screen being narrow, not the element, so they key on `cs-page`.
+
+| Situation | Use |
+|---|---|
+| Element spans the page column (`SeatingHeader`, `TableListing`) | self-container: `container-type: inline-size` + `container-name: <component>`, descendants query it |
+| Element is a fixed/small box (`TableCard`, `RoomCard`, `TableDetail`) | `@container cs-page (max-width: …)` |
+| The component root's own padding / border | `@container cs-page (…)` — it cannot self-query |
+| `position: fixed` overlay outside the shell (modals) | **`@media` is correct** — it really is viewport-sized |
+| The shell's own sidebar / rail device swaps | `@media` — genuinely device-level |
+
+### Prefer intrinsic CSS over a breakpoint
+
+A breakpoint only moves the width at which a layout breaks. Where overflow is the problem, fix it
+intrinsically so it holds at **every** width:
+
+- flex children that must yield: `min-inline-size: 0`
+- text that must not escape: `overflow: hidden; text-overflow: ellipsis` alongside `white-space: nowrap`
+- a field with a preferred width: `flex: 0 1 <size>; max-inline-size: <size>` — a **cap**, not a floor
+
+Both Seating Planner collisions were intrinsic bugs, not missing breakpoints: `nowrap` with no
+ellipsis on `.seating-header__room-name` (a 130px box holding 243px of text), and
+`flex-shrink: 0` + a hard 320 on `.table-listing__search` (which left the title a 13px box).
+
+### JS must not use `matchMedia` for layout state
+
+JS cannot read a container query, and `matchMedia` reintroduces the bug. Measure the container and
+watch it with a **`ResizeObserver`** — the column changes width with no window resize at all:
+
+```js
+var STACK_MAX = 1023;                       // keep in step with the CSS value
+function isStacked() { return pageEl.getBoundingClientRect().width <= STACK_MAX; }
+new ResizeObserver(onContainerResize).observe(pageEl);
+```
+
+Precedent already in the repo: `Alert`, `Datatables`, `SourcesCarousel` and `SystemRole` are all
+self-containers. 65 files still carry viewport media queries — convert opportunistically, and
+always re-verify the component at its own breakpoints afterwards.
+
+---
+
 ## 5. Figma -> Code Workflow
 
 The full workflow lives in `/build-component` (mandatory — see §0). For ad-hoc reads

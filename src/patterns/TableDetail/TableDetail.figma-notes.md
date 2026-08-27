@@ -242,3 +242,22 @@ The same contract as the rest of the module:
 - **No hover, focus, pressed or disabled variants** exist in the set, and no dark-mode variant. The
   `--sp-*` role colours are **not** theme-aware, so the legend swatches will not adapt under
   `[data-theme="dark"]`.
+
+
+---
+
+## Responsive: container queries (2026-08-27)
+
+**Keys on `cs-page`, NOT a self-container.** This panel is a fixed **320px** at both breakpoints,
+which is under 767 — so `container-type` on this root plus a `max-width: 767px` self-query would
+fire permanently, on desktop included, and the header would never render. Its mobile deltas are
+about the screen being narrow, not the panel.
+
+Separately, when the panel is used **inline inside TableListing's grid** on the Seating Planner, its
+header is hidden by placement (`.table-listing__grid > .table-detail`) rather than by width — see
+that template's notes. Placement is the real condition: the header is redundant exactly when a card
+above supplies the name and count.
+
+Rationale and the decision rule live in **CLAUDE.md §4a**. The short version: a docked
+SidebarMenu shrinks the CC content column with no window resize, so a viewport query cannot see
+the real available width — measured 820px of column at a 2239px viewport, with no query firing.

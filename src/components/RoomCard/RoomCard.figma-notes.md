@@ -229,3 +229,15 @@ CSS; folding those onto `btn--2xs` is a worthwhile follow-up but was out of scop
 - `font-semibold` on the seats-free text is unbound in Figma while its siblings cite
   `--ai-font-bold` / `--ai-font-regular`. `--ai-font-semibold` (600) is used here. **Worth binding
   in Figma.**
+
+
+---
+
+## Responsive: container queries (2026-08-27)
+
+**Keys on `cs-page`, NOT a self-container.** Measured own width **280px** desktop / ~302px mobile —
+both under 767, so a self-query would fire permanently. Same reasoning as TableCard.
+
+Rationale and the decision rule live in **CLAUDE.md §4a**. The short version: a docked
+SidebarMenu shrinks the CC content column with no window resize, so a viewport query cannot see
+the real available width — measured 820px of column at a 2239px viewport, with no query firing.

@@ -15,6 +15,11 @@
  */
 
 .table-listing {
+  /* Self-container (2026-08-27), same reasoning as SeatingHeader: this pattern fills the page
+   * column, so its own inline size is the available width. The viewport query it replaces left
+   * the toolbar in its single-row form inside a 382px box, which crushed the title to 13px. */
+  container-type: inline-size;
+  container-name: table-listing;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -101,8 +106,14 @@
 }
 
 .table-listing__search {
-  flex-shrink: 0;
-  inline-size: var(--ai-size-6);
+  /* Was `flex-shrink: 0` + a hard `inline-size: var(--ai-size-6)`. Measured 2026-08-27: the
+   * search held its full 320px inside a 382px toolbar, leaving 62px for the title and filter
+   * together, so the title was squeezed to a 13px box and its text overflowed by 45px — the
+   * "Tab..s" collision. A breakpoint alone would not have fixed this, only moved the width it
+   * happens at; the fix is intrinsic. 320 is now a CAP, not a floor, and the field may shrink. */
+  flex: 0 1 var(--ai-size-6);
+  max-inline-size: var(--ai-size-6);
+  min-inline-size: 0;
 }
 
 /* ── Grid ───────────────────────────────────────────────────────────────────
@@ -124,12 +135,17 @@
  * Figma's Device axis. The toolbar becomes two rows — title + filter, then a full-width
  * search — the divider goes, the title drops a step, and the root's inline padding
  * tightens. The grid needs no rule: auto-fill already gives one column at this width. */
-@media (max-width: 767px) {
+/* The root's own padding CANNOT live in the rule below: an element never matches a query on
+ * the container it declares. It keys on the screen container instead — see the `cs-page`
+ * contract in CLAUDE.md. */
+@container cs-page (max-width: 767px) {
   .table-listing {
     padding-inline: var(--ai-spacing-4);
     padding-block: var(--ai-spacing-5);
   }
+}
 
+@container table-listing (max-width: 767px) {
   .table-listing__toolbar {
     flex-direction: column;
     align-items: stretch;
@@ -147,5 +163,10 @@
 
   .table-listing__search {
     inline-size: 100%;
+    /* Release the 320 cap the base rule adds. In the stacked toolbar the field owns the whole
+     * row, which is what Figma's mobile frame draws (302 wide in a 302 column) — without this
+     * the cap held it at 320 inside a much wider row. */
+    max-inline-size: none;
+    flex: 0 0 auto;
   }
 }

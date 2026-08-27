@@ -47,6 +47,20 @@
   flex-direction: column;
   min-width: 0;
   min-height: 0;
+  /* OUTER container query context, `cs-main` (2026-08-27). `.cc-control__page` below
+   * establishes `cs-page` and therefore cannot query it for its OWN properties — an element
+   * can never query the container it declares. So the page's padding and gap had to stay
+   * viewport-keyed, which is wrong for exactly the reason the cs-page comment already gives:
+   * a docked SidebarMenu shrinks this column far below 768px on a wide screen. `cs-main` sits
+   * one level out, so the page can respond to its real available width.
+   *
+   * `container-type` is required as well as the name: a name alone leaves container-type at
+   * `normal`, which is not a query container at all. Safe here because this column's width
+   * comes from the flex row, never from its contents. Note it also makes this element a
+   * containing block for absolutely positioned descendants — the chrome dropdowns were
+   * re-measured after this change for exactly that reason. */
+  container-name: cs-main;
+  container-type: inline-size;
   /* No `overflow: hidden` here — it would clip dropdown panels opening
    * from the top chrome (Zone Selector, User Menu). The scroll lives
    * one level deeper on `.cc-control__page`. */

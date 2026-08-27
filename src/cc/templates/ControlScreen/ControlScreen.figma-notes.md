@@ -206,3 +206,27 @@ component (`src/components/Toast/`), spawned into a fixed top-right stack.
 - Both use the same message-only `statusToast(variant, icon, message)` helper, auto-dismiss `TOAST_MS` 4000.
 - Spawn/dismiss controller (`showToast` / `dismissToast` / `statusToast`) lives in the rail-popover IIFE; toast text set via `textContent` (XSS-safe). Manual ✕ + auto-timeout both route through `dismissToast` (guards double-dismiss, clears timer). Not `Toast.js` (toasts are JS-spawned here, so the controller handles close directly).
 - Duplicate-name caveat: removing matches by label text, so two favourites with the same name are removed together (favourites aren't deduped — pre-existing).
+
+---
+
+## `cs-main` — an outer container context (2026-08-27)
+
+`.cc-control__main` now sets `container-type: inline-size; container-name: cs-main`.
+
+**Why it was needed.** `.cc-control__page` establishes `cs-page`, and an element can never query the
+container it declares — so the page's **own** padding and gap had to stay viewport-keyed. That was
+wrong for precisely the reason the `cs-page` comment already gave: a docked SidebarMenu shrinks this
+column far below 768px on a wide screen. Measured on the Seating Planner: a **2239px viewport** with
+the menu docked left the column at **820px**, page padding stuck at 32px, and no viewport query
+fired. `cs-main` sits one level out, so the page can respond to its real available width.
+
+`container-type` is set as well as the name — a name alone leaves `container-type: normal`, which is
+not a query container at all. Safe here because this column's width comes from the flex row, never
+from its contents.
+
+**Shared by ControlScreen, ControlHub and SeatingPlanner**, so all three were re-verified after the
+change: `cs-main` applied, no horizontal overflow, chrome dropdowns still opening at sane positions
+(size containment also makes this element a containing block for absolutely positioned descendants,
+which is the specific risk), and zero JS errors.
+
+See **CLAUDE.md §4a** for the project-wide rule.

@@ -361,3 +361,23 @@ page overflow at either width, and the kebab is a focusable `BUTTON`.
 - **Figma MCP has a per-seat tool-call limit** that was hit partway through this build. Scoped
   `get_variable_defs` calls and screenshots are the cheap way to resolve values hidden inside SVG
   assets; a full-variant `get_design_context` is the expensive one.
+
+
+---
+
+## Responsive: container queries (2026-08-27)
+
+**Self-container.** `.seating-header` sets `container-type: inline-size; container-name:
+seating-header`, and both former media queries — the 767 mobile block and the 1023 toolbar band —
+now key on it. Correct as a self-container because this pattern spans the page column, so its own
+inline size *is* the available width.
+
+**Two intrinsic fixes, independent of any breakpoint.** `.seating-header__room-name` and
+`__room-count` had `white-space: nowrap` with no ellipsis and no zero min-size, so they could not
+shrink and simply spilled out of their flex parent — measured a 130px box holding 243px of text,
+running over the Show-unassigned toggle. Both now truncate. The container query stacks that row far
+earlier now, but the guard matters at every width, which a breakpoint alone would not give.
+
+Rationale and the decision rule live in **CLAUDE.md §4a**. The short version: a docked
+SidebarMenu shrinks the CC content column with no window resize, so a viewport query cannot see
+the real available width — measured 820px of column at a 2239px viewport, with no query firing.

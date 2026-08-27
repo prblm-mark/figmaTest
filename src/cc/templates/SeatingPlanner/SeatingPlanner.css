@@ -221,17 +221,17 @@
   padding-block-start: var(--ai-spacing-2);
 }
 
-/* ── Mobile ─────────────────────────────────────────────────────────────────
- * @media, not @container, even though the shell makes `.cc-control__page` a container
- * named `cs-page`. Two reasons: the page padding above cannot be a container query at all
- * — an element cannot query the container it establishes — and splitting the two would put
- * the padding change and the type change on different switch points. One mechanism, one
- * breakpoint. It also matches how every other component in this module handles Figma's
- * Device axis.
+/* ── Narrow ─────────────────────────────────────────────────────────────────
+ * Was `@media (max-width: 767px)`, on the reasoning that the page cannot query the container
+ * it establishes so both rules had to share one mechanism. **That reasoning is now void**:
+ * ControlScreen names an OUTER container `cs-main` (2026-08-27), so the page can respond to
+ * its real available width.
  *
- * Figma's mobile frame is a 402px viewport, so a viewport query is what its intent
- * describes; the shell's own sidebar and ActionsMenu swaps are viewport-based too. */
-@media (max-width: 767px) {
+ * It had to change, not merely could. Measured on the live page: a docked SidebarMenu at a
+ * 2239px viewport left this column 820px wide and NO viewport query fired, so the page kept
+ * 32px padding and every child kept its widest layout. Figma's mobile frame being a 402px
+ * viewport describes the intent, not the trigger — the trigger is available width. */
+@container cs-main (max-width: 767px) {
   .cc-control__page--seating {
     padding: var(--ai-spacing-4);
     gap: var(--ai-spacing-4);
@@ -339,6 +339,10 @@
  *
  * 639px, matching Modal's own breakpoint (extended in Modal.css for this screen), so the
  * whole modal — padding, type, fields, buttons — switches at one width rather than two. */
+/* Genuinely @media, and it must stay that way: the create-plan overlay is `position: fixed`
+ * on <body>, OUTSIDE `.cc-control__main`, so it is not a descendant of cs-main or cs-page and
+ * cannot query either. A fixed overlay is sized by the viewport, so the viewport is also the
+ * correct signal. Verified in the DOM 2026-08-27 — do not "fix" this one. */
 @media (max-width: 639px) {
   .create-plan__grid .input__wrap {
     min-height: var(--ai-spacing-7);
@@ -512,13 +516,30 @@
  * Nothing is needed to hide the detail's header on mobile — TableDetail's own Device=Mobile
  * variants already drop it, and that is already in TableDetail.css. The card above supplies
  * the name and count, which is exactly why Figma drops it. */
-@media (max-width: 767px) {
+/* 1023, not 767. Two panels need roughly 1024 of column before the listing stops being usable:
+ * at a 1024 container the row is 960 and the listing gets 620 (two card columns), while at 768
+ * it would get 364 — one cramped column beside a full-width detail. 1023 also matches the band
+ * SeatingHeader's own toolbar already uses and the 1023 the prototype shell uses, so the whole
+ * screen changes mode at one width instead of three.
+ *
+ * `cs-page` because `.seating-plan` is a CHILD of the page — it may query the page's container
+ * freely; only the page itself may not. */
+@container cs-page (max-width: 1023px) {
   .seating-plan {
     flex-direction: column;
   }
 
   .seating-plan__handle,
   .seating-plan__aside {
+    display: none;
+  }
+
+  /* Header hidden by PLACEMENT, not by width. TableDetail keys its own header rule on
+   * `cs-page (max-width: 767px)`, but this row stacks at 1023 — so between 768 and 1023 the
+   * inline detail would have shown a header duplicating the card right above it. Placement is
+   * the real condition anyway: the header is redundant precisely because a card supplies the
+   * name and count, which is exactly when the detail sits inside the grid. */
+  .table-listing__grid > .table-detail .table-detail__header {
     display: none;
   }
 

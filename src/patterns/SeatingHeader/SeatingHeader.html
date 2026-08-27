@@ -16,6 +16,11 @@
     if (location.search.indexOf('frame=mobile') !== -1) document.documentElement.dataset.frame = 'mobile';
   </script>
   <style>
+    /* The screen container. These components key their narrow-screen rules on `cs-page`,
+       which the CC shell establishes on `.cc-control__page` — a standalone demo has no shell,
+       so without this the mobile rules could never fire here and the demo would silently
+       misrepresent the component. Resizing this page still exercises them. */
+    body { container-type: inline-size; container-name: cs-page; }
     body {
       margin: 0;
       padding: var(--ai-spacing-7);

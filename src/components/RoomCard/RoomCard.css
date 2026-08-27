@@ -195,7 +195,11 @@
  * font-size, and the word "seated" dropping out of the counts line. Buttons,
  * badge, check icon and bar height all stay put — verified on the mobile
  * Full variant (3484:186649). */
-@media (max-width: 767px) {
+/* SCREEN container, not a self-container (2026-08-27). Measured own width: 280px desktop / ~302px mobile — under 767 at
+ * BOTH breakpoints, so `container-type` on this root plus a `max-width: 767px` self-query would
+ * fire permanently, on desktop included. These deltas are about the SCREEN being narrow, not
+ * this element being narrow, so they key on `cs-page`. See the contract in CLAUDE.md §responsive. */
+@container cs-page (max-width: 767px) {
   .room-card {
     min-inline-size: var(--ai-size-4);
     padding: var(--ai-spacing-4);

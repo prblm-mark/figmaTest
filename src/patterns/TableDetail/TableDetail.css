@@ -254,7 +254,11 @@
  *
  * Mobile also carries no fixed height in Figma, unlike desktop's 698px; since the panel
  * fills its container at both breakpoints, that needs no rule. */
-@media (max-width: 767px) {
+/* SCREEN container, not a self-container (2026-08-27). Measured own width: 320px, fixed — under 767 at
+ * BOTH breakpoints, so `container-type` on this root plus a `max-width: 767px` self-query would
+ * fire permanently, on desktop included. These deltas are about the SCREEN being narrow, not
+ * this element being narrow, so they key on `cs-page`. See the contract in CLAUDE.md §responsive. */
+@container cs-page (max-width: 767px) {
   /* a11y note: this takes the table name and seated count out of the accessibility tree
    * along with the visual. Correct only because the mobile screen supplies them in its
    * own sheet chrome — designer-confirmed 2026-08-25 and recorded in figma-notes. */

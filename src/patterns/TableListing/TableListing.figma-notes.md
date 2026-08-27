@@ -181,3 +181,27 @@ Clicking the "Only free seats" text also flips it, via `label[for]` + `aria-labe
   transitioned property (this toggle animates `left` and `background-color`) reads its *start* value
   forever after a class change — it looks broken when it is not. Inject
   `* { transition: none !important }` in the probe to measure the settled state.
+
+
+---
+
+## Responsive: container queries (2026-08-27)
+
+**Self-container.** `.table-listing` sets `container-type: inline-size; container-name:
+table-listing`; its descendant rules key on it. The root's own padding **cannot** — an element never
+matches a query on the container it declares — so that one rule keys on `cs-page`.
+
+**The search field was the real bug.** It had `flex-shrink: 0` and a hard `inline-size:
+var(--ai-size-6)`, so it held its full 320px inside a 382px toolbar, leaving 62px for the title and
+filter together: the title got a 13px box. Now `flex: 0 1 var(--ai-size-6)` with
+`max-inline-size: var(--ai-size-6)` and `min-inline-size: 0` — 320 is a **cap**, not a floor. The
+stacked block releases the cap (`max-inline-size: none`) so the field still fills the row, which is
+what Figma's mobile frame draws.
+
+Note the side effect, which is correct: the listing reacts to **its own** width, so when the detail
+panel takes 320 the listing can be narrow enough to stack its toolbar while the header above — which
+spans the full page — does not.
+
+Rationale and the decision rule live in **CLAUDE.md §4a**. The short version: a docked
+SidebarMenu shrinks the CC content column with no window resize, so a viewport query cannot see
+the real available width — measured 820px of column at a 2239px viewport, with no query firing.

@@ -21,6 +21,13 @@
  */
 
 .seating-header {
+  /* Self-container (2026-08-27). This pattern spans the page column, so its own inline size
+   * IS the available width — the correct signal. Replaces two viewport media queries that
+   * could not see the docked SidebarMenu or the ActionsMenu rail narrowing the column: at a
+   * 2239px viewport with the menu docked the column was 820px and neither query fired, so the
+   * toolbar stayed in its widest form and its text ran straight over the toggle. */
+  container-type: inline-size;
+  container-name: seating-header;
   display: flex;
   flex-direction: column;
   inline-size: 100%;
@@ -254,6 +261,14 @@
   line-height: normal;
   color: var(--ai-text-primary);
   white-space: nowrap;
+  /* `nowrap` with no ellipsis and no zero min-size meant this text could not shrink and simply
+   * spilled out of its flex parent — measured 2026-08-27 at a 130px box holding 243px of text,
+   * running straight over the Show-unassigned toggle. The container query below now stacks this
+   * row far earlier, but the guard stays: a long enough room name must truncate, not escape.
+   * Intrinsic, so it holds at every width rather than only below a breakpoint. */
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .seating-header__room-count {
@@ -264,6 +279,12 @@
   line-height: normal;
   color: var(--ai-text-contrast);
   white-space: nowrap;
+  /* Same guard as the name. The count is short and parenthetical, so it resists shrinking
+   * first — the name is what should give way. */
+  flex-shrink: 0;
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Right-aligned within its own flex-1 column, which is what puts it hard against the
@@ -352,7 +373,7 @@
  * Figma's Device axis. The event bar becomes three stacked rows, the meta wraps, the
  * room cards narrow and grow, and the toolbar loses the toggle and the divider entirely.
  */
-@media (max-width: 767px) {
+@container seating-header (max-width: 767px) {
   .seating-header__bar {
     flex-direction: column;
     align-items: flex-start;
@@ -448,7 +469,7 @@
  * as a misalignment defect rather than a compact layout. Flagged in figma-notes — say the
  * word and it moves.
  */
-@media (max-width: 1023px) {
+@container seating-header (max-width: 1023px) {
   /* The room label and its count stack. The 2px gap is a designer call 2026-08-26, not a
    * Figma value — Figma's mobile variant binds --ai-spacing-1 (4px). Same tightening taken
    * on TableDetail's legend row gap, and for the same reason: two lines of stacked text

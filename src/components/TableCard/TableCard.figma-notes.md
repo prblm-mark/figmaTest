@@ -273,3 +273,16 @@ briefly hand-added to all three; only the Scale one had any effect, and removing
 - **No dark-mode variant.** Every colour is a theme-aware `--ai-*` token except the `--sp-*` role
   colours, which are **not** theme-aware — so the bar and legend will not adapt under
   `[data-theme="dark"]`. Not designed or reviewed.
+
+
+---
+
+## Responsive: container queries (2026-08-27)
+
+**Keys on `cs-page`, NOT a self-container.** Measured own width **275px** on desktop and ~300px on
+mobile — both under 767, so a self-query would fire on desktop too and the card would permanently
+wear its mobile padding. The Device=Mobile deltas describe the screen, not the card.
+
+Rationale and the decision rule live in **CLAUDE.md §4a**. The short version: a docked
+SidebarMenu shrinks the CC content column with no window resize, so a viewport query cannot see
+the real available width — measured 820px of column at a 2239px viewport, with no query firing.

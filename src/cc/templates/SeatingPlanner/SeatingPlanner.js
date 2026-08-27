@@ -463,8 +463,17 @@
   var countEl = plan.querySelector('[data-sp-detail-count]');
   var cards   = Array.prototype.slice.call(plan.querySelectorAll('[data-sp-card]'));
 
-  var MOBILE = '(max-width: 767px)';
-  function isMobile() { return window.matchMedia(MOBILE).matches; }
+  /* The CSS stacks this row at `@container cs-page (max-width: 1023px)`. JS cannot read a
+   * container query, and `matchMedia` would reintroduce the exact bug the CSS just fixed — a
+   * docked SidebarMenu leaves an 820px column at a 2239px viewport, where every viewport query
+   * says "desktop". So the threshold is measured off the page container, and a ResizeObserver
+   * watches it. STACK_MAX must stay in step with the CSS value. */
+  var STACK_MAX = 1023;
+  var pageEl = document.querySelector('.cc-control__page') || plan.parentNode;
+
+  function isStacked() {
+    return pageEl.getBoundingClientRect().width <= STACK_MAX;
+  }
 
   /* ── Selection ─────────────────────────────────────────────────────────── */
 
@@ -476,7 +485,7 @@
    * on mobile it is inserted straight after the selected card so it lands between two cards
    * exactly as the frame draws it. Two instances would drift apart the moment either changed. */
   function placeDetail() {
-    if (!selected || !isMobile()) {
+    if (!selected || !isStacked()) {
       if (detail.parentNode !== aside) aside.appendChild(detail);
       return;
     }
@@ -488,7 +497,7 @@
   function select(card, opts) {
     var scroll = opts && opts.scroll;
 
-    if (selected === card && isMobile()) {
+    if (selected === card && isStacked()) {
       /* Tapping the open card again closes it — otherwise a mobile user has no way back to
        * the plain list, since there is no close control in the frame. */
       selected = null;
@@ -513,7 +522,7 @@
     /* "table in focus should scroll to top of chrome/header group" (designer, 2026-08-27),
      * which is what the mobile frame shows: the listing offset so the card sits at the top.
      * The page is the scroller, so scrollIntoView on the card is the whole behaviour. */
-    if (scroll && isMobile() && card.scrollIntoView) {
+    if (scroll && isStacked() && card.scrollIntoView) {
       card.scrollIntoView({ block: 'start', behavior: 'smooth' });
     }
   }
@@ -529,7 +538,7 @@
    * because the detail would take too much of the screen (designer, 2026-08-27). Re-applied on
    * every breakpoint crossing, so resizing a desktop window down and back behaves. */
   function applyDefault() {
-    if (isMobile()) {
+    if (isStacked()) {
       /* Clear the class off EVERY card, not just the one `selected` points at. The markup
        * ships Table 1 pre-selected so a static render (or a Figma capture) matches the
        * desktop frame without JS — which means on mobile there is a selected card that this
@@ -542,10 +551,24 @@
     placeDetail();
   }
 
-  var mq = window.matchMedia(MOBILE);
-  if (mq.addEventListener) mq.addEventListener('change', applyDefault);
-  else if (mq.addListener) mq.addListener(applyDefault);
-  applyDefault();
+  /* ResizeObserver, not a resize listener: the column changes width when the SidebarMenu docks
+   * or the rail appears, with no window resize at all — which is the whole reason this screen
+   * needed container queries. Guarded so it only re-runs when the stacked/side-by-side state
+   * actually flips, since RO fires on every pixel. */
+  var wasStacked = null;
+  function onContainerResize() {
+    var now = isStacked();
+    if (now === wasStacked) return;
+    wasStacked = now;
+    applyDefault();
+  }
+
+  if (window.ResizeObserver) {
+    new ResizeObserver(onContainerResize).observe(pageEl);
+  } else {
+    window.addEventListener('resize', onContainerResize);
+  }
+  onContainerResize();
 
   /* ── Resize handle ─────────────────────────────────────────────────────── */
 
@@ -590,7 +613,7 @@
     var dragFrom = 0, dragWidth = 0;
 
     handle.addEventListener('pointerdown', function (event) {
-      if (isMobile()) return;
+      if (isStacked()) return;
       dragFrom = event.clientX;
       dragWidth = currentWidth();
       handle.setAttribute('data-dragging', '');
@@ -617,7 +640,7 @@
 
     /* Keyboard: a separator that can only be dragged is unusable without a mouse. */
     handle.addEventListener('keydown', function (event) {
-      if (isMobile()) return;
+      if (isStacked()) return;
       var b = bounds();
       var step = tokenPx('--ai-spacing-5');           /* 16px per press */
       var k = event.key;
@@ -632,12 +655,12 @@
     /* Double-click resets to Figma's 320 — the usual escape hatch once a splitter has been
      * dragged somewhere unhelpful. */
     handle.addEventListener('dblclick', function () {
-      if (isMobile()) return;
+      if (isStacked()) return;
       plan.style.removeProperty('--sp-aside-w');
       handle.setAttribute('aria-valuenow', String(Math.round(currentWidth())));
     });
 
     /* Seed the ARIA values from the real rendered width. */
-    if (!isMobile()) setWidth(currentWidth());
+    if (!isStacked()) setWidth(currentWidth());
   }
 })();

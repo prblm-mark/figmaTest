@@ -769,3 +769,48 @@ the row), double-click → 320, ARIA min/now/max tracking. Mobile 402: nothing p
 aside hidden, tapping inserts the detail directly after the card at 300px flush with the grid on both
 edges, card 2 follows it, detail header hidden, re-tap restores the plain list. No horizontal overflow
 and no JS errors at either width.
+
+---
+
+## Container queries replace viewport queries (2026-08-27)
+
+The designer reported overlapping toolbar items. Reproduced on the live page and measured: a
+**2239px viewport** with the SidebarMenu docked leaves the page column at **820px**, and neither
+`@media (max-width: 1023px)` nor `(max-width: 767px)` fires. Every element therefore kept its widest
+layout inside a box less than half the width it was designed for.
+
+| Symptom | Measured at an 820px column |
+|---|---|
+| Toolbar text over the toggle | `.seating-header__room` box 130px, content 243px → spilled **+113** |
+| "Tables" title crushed to "Tab..s" | title box **13px** (correctly ellipsised — the crush was the cause, not the overflow) |
+| …because the search never shrank | `.table-listing__search` held **320px** of a 382px toolbar |
+| Detail panel never yielded | aside stayed 320 while the listing collapsed |
+
+### What changed here
+
+| Was | Now | Why |
+|---|---|---|
+| `@media (max-width: 767px)` page padding/gap | `@container cs-main (max-width: 767px)` | the page cannot query its own `cs-page`; ControlScreen now names an outer `cs-main` |
+| `@media (max-width: 767px)` `.seating-plan` stacking | `@container cs-page (max-width: 1023px)` | a child may query the page's container freely; 1023 because two panels need ~1024 of column before the listing stops being usable (620px = two card columns, against 364 at 768) — and it matches the band SeatingHeader's toolbar and the prototype shell already use, so the whole screen changes mode at one width |
+| `@media (max-width: 639px)` create-plan modal | **unchanged** | the overlay is `position: fixed` on `<body>`, outside the shell — not a descendant of either container, and genuinely viewport-sized. Verified in the DOM; do not "fix" it |
+| detail header hidden below 767 | hidden by **placement** (`.table-listing__grid > .table-detail`) | the row stacks at 1023 but TableDetail hides its header at 767, so between 768–1023 the inline detail would have shown a header duplicating the card above it. Placement is the real condition anyway |
+| `matchMedia('(max-width: 767px)')` in JS | container width + `ResizeObserver` | JS cannot read a container query, and `matchMedia` reintroduces the exact bug. `STACK_MAX = 1023` must stay in step with the CSS |
+
+The `ResizeObserver` is guarded to re-run only when the stacked/side-by-side state actually flips,
+since it fires on every pixel. A plain `resize` listener would not have worked at all: the column
+changes width when the menu docks, with no window resize.
+
+### Verified (live page + headless, 2026-08-27)
+
+Swept the page content box from 1783 down to 378: **no text spilling, no boxes escaping their
+parents, no horizontal overflow at any width.** Padding 32 → 12 at ≤767. Row stacks at ≤1023.
+Search capped at 320 in a single-row toolbar and full-width when stacked. Component demos re-checked
+wide and narrow (TableCard 16/12, TableListing row/column + 16/12 root padding, TableDetail header
+shown/hidden) — they needed a `cs-page` wrapper on their own `<body>`, or their narrow rules could
+never have fired. ControlScreen and ControlHub re-verified for the shared `cs-main` change.
+
+### Still viewport-keyed, deliberately
+
+The shell's own sidebar and ActionsMenu device swaps, and the create-plan modal. Both are genuinely
+device/viewport concerns. 65 other files in the repo still carry viewport media queries — see
+CLAUDE.md §4a.
