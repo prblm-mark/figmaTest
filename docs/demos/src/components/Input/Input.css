@@ -167,8 +167,15 @@
 /* ── Help text ───────────────────────────────────────── */
 
 .input__help {
+  /* base.css sets `p { margin: 0 0 var(--ai-spacing-5) }`, so this <p> inherited a 16px
+   * bottom margin that nothing here reset — adding 16px to the height of EVERY input that
+   * shows help or an error text, in every consumer. Found via the Seating Planner's
+   * create-plan modal, whose grid rows measured 104/104/120 against Figma's 88/88/104.
+   * Same bug class as Badge's <p> (2026-08-25): a component paragraph picking up the
+   * page-level margin because the component never zeroed it. */
+  margin: 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);  /* 12px */
+  font-size: var(--ai-font-fixed-2xs);  /* 12px */
   font-weight: var(--ai-font-regular);  /* 400 */
   line-height: var(--ai-leading-xs);     /* 16px */
   color: var(--ai-text-secondary);
@@ -196,10 +203,135 @@
 
 /* ── Size: sm ────────────────────────────────────────── */
 
+/* No max-width here. A `max-width: var(--ai-size-3)` (192px) lived on this rule until
+ * 2026-08-25 and was removed at the designer's direction: a SIZE modifier should govern
+ * height, padding and typography, not cap width. It had already been worked around in
+ * three places — Datatables lifted it in a media query, ControlScreen with an inline
+ * style, and Unassigned with a scoped override — and blocked TableListing's 320px search.
+ * Consumers that want a narrow small input set their own width. */
 .input--sm .input__wrap,
 .input__wrap.input--sm {
   min-height: var(--ai-spacing-7);      /* 32px */
   padding: 0 var(--ai-spacing-3);       /* 0 8px */
   gap: var(--ai-spacing-2);              /* 6px */
-  max-width: var(--ai-size-3);           /* 192px */
 }
+
+/* ── Stepper (number input with − / + buttons) ────────
+ *
+ * NO FIGMA NODE. Built 2026-08-27 from a Flowbite/Tailwind reference the designer supplied,
+ * so every value below is a MAPPING DECISION rather than a Figma binding — the same footing
+ * as FullBadge, which was also extracted from code. Consequently there is no `.figma.ts`
+ * entry for it: Code Connect needs a component to attach to. See Input.figma-notes.
+ *
+ * Built as a modifier rather than a new component (designer, 2026-08-27) so it inherits the
+ * five things Input already does correctly: the label, the help line, the error state
+ * (red border, red ring, red help), the `--sm` size, and the focus-within ring. A standalone
+ * component would have had to re-implement all five and keep them in sync by hand.
+ *
+ * Reference mapping — Flowbite's semantic names to ours:
+ *   bg-neutral-secondary-medium (buttons)  -> --ai-surface-secondary
+ *   hover:bg-neutral-tertiary-medium       -> --ai-surface-contrast
+ *   border-default-medium                  -> --ai-border-secondary
+ *   h-10 / px-3                            -> --ai-spacing-8 (a 40px square button)
+ *   w-4 h-4 icons                          -> --ai-icon-size-sm
+ *   text-sm, centred                       -> Input's own --ai-font-fixed-xs
+ *   max-w-[9rem]                           -> DROPPED; fluid instead (designer) — 144px
+ *                                             matches no token, and the control should fill
+ *                                             whatever column holds it.
+ *
+ * The reference tints the FIELD as well as the buttons. Here only the buttons are tinted and
+ * the field stays --ai-surface-primary (designer), so a stepper sitting beside a text Input
+ * or a Select does not read as a different species of control. */
+
+.input--stepper .input__wrap {
+  /* The buttons sit flush inside the wrap's border, so the wrap gives up its own padding
+   * and gap. `overflow: hidden` keeps the button fills inside the border radius. */
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+}
+
+.input__step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  /* Stretch to the wrap's height rather than setting one, so the button tracks whatever size
+   * the wrap is — including `--sm` — with only the width needing a per-size rule.
+   * Measured 40x38: the wrap is 40 and the buttons sit INSIDE its 1px border. The reference
+   * computes the same way (h-10 inside a bordered container), so this is not a discrepancy. */
+  align-self: stretch;
+  inline-size: var(--ai-spacing-8);
+  padding: 0;
+  border: 0;
+  background-color: var(--ai-surface-secondary);
+  color: var(--ai-icon-primary);
+  cursor: pointer;
+  transition: background-color var(--ai-transition-default);
+}
+
+.input--sm .input__step {
+  inline-size: var(--ai-spacing-7);
+}
+
+/* Hairlines between each button and the field. 1px is the border-width exception. */
+.input__step--dec {
+  border-inline-end: 1px solid var(--ai-border-secondary);
+}
+
+.input__step--inc {
+  border-inline-start: 1px solid var(--ai-border-secondary);
+}
+
+.input__step [data-lucide],
+.input__step svg {
+  inline-size: var(--ai-icon-size-sm);
+  block-size: var(--ai-icon-size-sm);
+}
+
+.input__step:hover:not(:disabled) {
+  background-color: var(--ai-surface-contrast);
+}
+
+/* At a bound, the button is genuinely unavailable rather than merely styled that way —
+ * Input.js disables it, so it also leaves the tab order and reports itself to assistive tech. */
+/* Opacity alone, deliberately: there is no `--ai-icon-disabled` token, and referencing one
+ * with a fallback would read as though there were. */
+.input__step:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Kept visible, NOT suppressed like `.input__control` and `.input__clear` above. The wrap's
+ * focus-within ring says "this control has focus" but not WHICH button, and a stepper has
+ * two — so an inset outline on the focused button is the only thing that tells a keyboard
+ * user whether they are about to increment or decrement. */
+.input__step:focus-visible {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: -2px;
+}
+
+.input--stepper .input__control {
+  text-align: center;
+  /* Chrome derives a number input's intrinsic width from its `max` attribute's digit count,
+   * and with no `max` at all it falls back to a ~20-character default. That intrinsic width
+   * became the wrapper's MIN-CONTENT size, so a stepper billed as "fluid" was silently forcing
+   * a ~252px floor on its container — enough to blow a `1fr` grid column wide open (found in
+   * this component's own demo, 2026-08-27: the two rows without a `max` overflowed the card
+   * while the four with `max="12"` sat at 156px). `min-inline-size: 0` does NOT fix this; a
+   * zero `inline-size` does, dropping min-content 252 -> 86, and costs nothing at render time
+   * because `flex: 1` above grows the field back to fill the wrap. */
+  inline-size: 0;
+  /* The − / + buttons replace the native spinner, so it is hidden. This is the one place a
+   * spinner SHOULD go: keeping both would give the same control two different affordances. */
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.input--stepper .input__control::-webkit-outer-spin-button,
+.input--stepper .input__control::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+

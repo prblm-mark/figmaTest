@@ -18,7 +18,7 @@
 |---|---|---|---|
 | Gap | `--ai-spacing-3` | `--ai-spacing-3` | 8px |
 | Text font family | `--ai-font-title` | `--ai-font-title` | Inter |
-| Text font size | `--ai-font-fixed-xxs` | `--ai-font-fixed-xxs` | 12px |
+| Text font size | `--ai-font-fixed-2xs` | `--ai-font-fixed-2xs` | 12px |
 | Text font weight | `--ai-font-semibold` | `--ai-font-semibold` | 600 |
 | Text line height | `--ai-leading-xs` | `--ai-leading-xs` | 16px |
 | Text color | `--ai-text-primary` | `--ai-text-primary` | #1f2a37 |

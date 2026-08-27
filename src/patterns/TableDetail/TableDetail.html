@@ -1,0 +1,830 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TableDetail — Affino Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/TableType/TableType.css">
+  <link rel="stylesheet" href="../../components/AttendeeCard/AttendeeCard.css">
+  <link rel="stylesheet" href="TableDetail.css">
+  <style>
+    /* The screen container. These components key their narrow-screen rules on `cs-page`,
+       which the CC shell establishes on `.cc-control__page` — a standalone demo has no shell,
+       so without this the mobile rules could never fire here and the demo would silently
+       misrepresent the component. Resizing this page still exercises them. */
+    body { container-type: inline-size; container-name: cs-page; }
+    body {
+      margin: 0;
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-minimal);
+      font-family: var(--ai-font-body);
+      color: var(--ai-text-primary);
+    }
+    h1 { font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-xl); margin: 0 0 var(--ai-spacing-2); }
+    h2 {
+      font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-md);
+      margin: var(--ai-spacing-8) 0 var(--ai-spacing-1);
+    }
+    .lede { color: var(--ai-text-contrast); font-size: var(--ai-font-fixed-xs); margin: 0 0 var(--ai-spacing-5); max-width: 70ch; }
+    /* The panel fills its column, so the demo supplies a column to fill. 560px stands in
+       for the workspace height that would bound it in the real screen — it is what makes
+       the seat list scroll rather than the page. */
+    .panel-rail { display: flex; block-size: 560px; }
+    /* ── Mobile preview ──────────────────────────────────────────────────────
+       An iframe of THIS page at 390px. An iframe carries its own viewport, so the
+       component's own @media (max-width: 767px) fires inside it no matter how wide the
+       outer window is — which is the only way to show the mobile rendering without
+       duplicating markup or inventing a --mobile modifier. */
+    .mobile-preview {
+      display: flex; flex-direction: column; gap: var(--ai-spacing-3);
+      inline-size: fit-content;
+    }
+    .mobile-preview__frame {
+      inline-size: 390px; /* iPhone-class viewport — a device width, not a design token */
+      block-size: 700px;
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-lg);
+      background: var(--ai-surface-primary);
+    }
+    .mobile-preview__caption {
+      font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-2xs);
+      color: var(--ai-text-contrast); margin: 0;
+    }
+    /* Inside the frame: hide this section so it cannot load itself, and drop the page
+       intro so the components start at the top. */
+    [data-frame="mobile"] .mobile-preview,
+    [data-frame="mobile"] h1,
+    [data-frame="mobile"] .lede--intro { display: none; }
+    /* the first heading no longer needs its top margin once the intro is gone */
+    [data-frame="mobile"] h2:first-of-type { margin-block-start: 0; }
+  </style>
+  <script>
+    /* ?frame=mobile marks this document as the one INSIDE the mobile preview iframe, so the
+       preview section hides itself and cannot recurse. Runs in <head> before paint. */
+    if (location.search.indexOf('frame=mobile') !== -1) document.documentElement.dataset.frame = 'mobile';
+  </script>
+</head>
+<body>
+  <h1>TableDetail</h1>
+  <p class="lede lede--intro">Table inspector panel for the Seating Planner — a 320px rail listing every seat at
+  a table. <strong>Tier: Pattern.</strong> Composes <strong>AttendeeCard</strong> (one per seat),
+  <strong>TableType</strong> for the tier pill, and Button via AttendeeCard's Assign action.
+  <strong>Presentational only</strong> — the seat rows are drop targets whose
+  <code>--dragged-over</code> the parent module toggles; nothing here drags, and there is no JS.</p>
+  <p class="lede lede--intro"><strong>The panel fills its column and the seat list scrolls</strong> inside a
+  fixed header. Figma pins the desktop panel at 698px, but that is just how tall it drew ten seats —
+  a twenty-seat table has to work too, so the height comes from the container instead. Each demo
+  below is bounded to 560px to show that scroll.</p>
+  <p class="lede lede--intro"><strong>The whole Type axis is data, not CSS.</strong> Default, 2 Roles, All Roles
+  and Full differ only in how many roles the legend lists and how many seats are filled — so there
+  are no Type modifiers, exactly as with TableCard.</p>
+
+  <h2>Type=Default</h2>
+  <p class="lede">No legend at all — nothing is seated, so there are no roles to list. Ten Empty seats.</p>
+  <div class="panel-rail">
+  <!-- TODO(backend:SeatingPlanner): table name, tier, sponsor, seated count and every seat
+       row are hardcoded → GET /crm/tables/{tableId} returning
+       { id, name, tableType, sponsor, capacity, seats: [{ index, attendee, role }] }.
+       The legend is DERIVED from the distinct roles actually seated — do not store it.
+       Derive the seated count server-side too: seating-plan-chip-summary records a
+       client-computed summary going stale after an unseat. -->
+  <section class="table-detail" data-backend-todo="seating-table-detail" aria-label="Table 21 seating detail">
+    <header class="table-detail__header">
+      <div class="table-detail__header-row">
+        <div class="table-detail__titles">
+          <h3 class="table-detail__name">Table 21</h3>
+          <p class="table-detail__meta">
+            <span class="table-detail__count">0 / 10 seated</span>
+            <span class="table-detail__sep" aria-hidden="true">·</span>
+            <span class="table-detail__sponsor">
+              <i data-lucide="handshake" aria-hidden="true"></i>
+              <span class="table-detail__sponsor-name">Monzo</span>
+            </span>
+          </p>
+        </div>
+        <span class="table-type table-type--gold">Gold</span>
+      </div>
+    </header>
+    <div class="table-detail__list">
+      <div class="table-detail__seats">
+        <article class="attendee-card attendee-card--empty">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">1</span>
+          <p class="attendee-card__empty-label">Empty seat</p>
+          <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+        </article>
+        <article class="attendee-card attendee-card--empty">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">2</span>
+          <p class="attendee-card__empty-label">Empty seat</p>
+          <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+        </article>
+        <article class="attendee-card attendee-card--empty">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">3</span>
+          <p class="attendee-card__empty-label">Empty seat</p>
+          <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+        </article>
+        <article class="attendee-card attendee-card--empty">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">4</span>
+          <p class="attendee-card__empty-label">Empty seat</p>
+          <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+        </article>
+        <article class="attendee-card attendee-card--empty">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">5</span>
+          <p class="attendee-card__empty-label">Empty seat</p>
+          <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+        </article>
+        <article class="attendee-card attendee-card--empty">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">6</span>
+          <p class="attendee-card__empty-label">Empty seat</p>
+          <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+        </article>
+        <article class="attendee-card attendee-card--empty">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">7</span>
+          <p class="attendee-card__empty-label">Empty seat</p>
+          <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+        </article>
+        <article class="attendee-card attendee-card--empty">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">8</span>
+          <p class="attendee-card__empty-label">Empty seat</p>
+          <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+        </article>
+        <article class="attendee-card attendee-card--empty">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">9</span>
+          <p class="attendee-card__empty-label">Empty seat</p>
+          <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+        </article>
+        <article class="attendee-card attendee-card--empty">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">10</span>
+          <p class="attendee-card__empty-label">Empty seat</p>
+          <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+        </article>
+      </div>
+    </div>
+  </section>
+  </div>
+  <h2>Type=2 Roles</h2>
+  <p class="lede">Two roles seated, so the legend lists exactly those two. Figma names the variant for the count of distinct roles.</p>
+  <div class="panel-rail">
+  <section class="table-detail" aria-label="Table 21 seating detail">
+    <header class="table-detail__header">
+      <div class="table-detail__header-row">
+        <div class="table-detail__titles">
+          <h3 class="table-detail__name">Table 21</h3>
+          <p class="table-detail__meta">
+            <span class="table-detail__count">2 / 10 seated</span>
+            <span class="table-detail__sep" aria-hidden="true">·</span>
+            <span class="table-detail__sponsor">
+              <i data-lucide="handshake" aria-hidden="true"></i>
+              <span class="table-detail__sponsor-name">Monzo</span>
+            </span>
+          </p>
+        </div>
+        <span class="table-type table-type--gold">Gold</span>
+      </div>
+    </header>
+    <div class="table-detail__list">
+      <p class="table-detail__legend">
+        <span class="table-detail__legend-item table-detail__legend-item--speaker"><span class="table-detail__swatch"></span>Speaker</span>
+        <span class="table-detail__legend-item table-detail__legend-item--sponsor"><span class="table-detail__swatch"></span>Sponsor</span>
+      </p>
+      <div class="table-detail__seats">
+        <article class="attendee-card attendee-card--speaker">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">1</span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Elena Rostova</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Quantum Tech</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">Speaker</span>
+            </p>
+          </div>
+          <div class="attendee-card__actions">
+            <button type="button" class="attendee-card__action" aria-label="Remove Elena Rostova">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+            <div class="attendee-card__reorder">
+              <button type="button" class="attendee-card__action" aria-label="Move Elena Rostova up">
+                <i data-lucide="chevron-up" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="attendee-card__action" aria-label="Move Elena Rostova down">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="attendee-card attendee-card--sponsor">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">2</span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Marcus Aurelius</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Aurora Labs</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">Sponsor</span>
+            </p>
+          </div>
+          <div class="attendee-card__actions">
+            <button type="button" class="attendee-card__action" aria-label="Remove Marcus Aurelius">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+            <div class="attendee-card__reorder">
+              <button type="button" class="attendee-card__action" aria-label="Move Marcus Aurelius up">
+                <i data-lucide="chevron-up" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="attendee-card__action" aria-label="Move Marcus Aurelius down">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="attendee-card attendee-card--empty">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">3</span>
+          <p class="attendee-card__empty-label">Empty seat</p>
+          <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+        </article>
+        <article class="attendee-card attendee-card--empty">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">4</span>
+          <p class="attendee-card__empty-label">Empty seat</p>
+          <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+        </article>
+        <article class="attendee-card attendee-card--empty">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">5</span>
+          <p class="attendee-card__empty-label">Empty seat</p>
+          <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+        </article>
+        <article class="attendee-card attendee-card--empty">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">6</span>
+          <p class="attendee-card__empty-label">Empty seat</p>
+          <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+        </article>
+        <article class="attendee-card attendee-card--empty">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">7</span>
+          <p class="attendee-card__empty-label">Empty seat</p>
+          <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+        </article>
+        <article class="attendee-card attendee-card--empty">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">8</span>
+          <p class="attendee-card__empty-label">Empty seat</p>
+          <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+        </article>
+        <article class="attendee-card attendee-card--empty">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">9</span>
+          <p class="attendee-card__empty-label">Empty seat</p>
+          <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+        </article>
+        <article class="attendee-card attendee-card--empty">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">10</span>
+          <p class="attendee-card__empty-label">Empty seat</p>
+          <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+        </article>
+      </div>
+    </div>
+  </section>
+  </div>
+  <h2>Type=All Roles</h2>
+  <p class="lede">All five roles seated with three seats still free — Figma's own sample data.</p>
+  <div class="panel-rail">
+  <section class="table-detail" aria-label="Table 21 seating detail">
+    <header class="table-detail__header">
+      <div class="table-detail__header-row">
+        <div class="table-detail__titles">
+          <h3 class="table-detail__name">Table 21</h3>
+          <p class="table-detail__meta">
+            <span class="table-detail__count">7 / 10 seated</span>
+            <span class="table-detail__sep" aria-hidden="true">·</span>
+            <span class="table-detail__sponsor">
+              <i data-lucide="handshake" aria-hidden="true"></i>
+              <span class="table-detail__sponsor-name">Monzo</span>
+            </span>
+          </p>
+        </div>
+        <span class="table-type table-type--gold">Gold</span>
+      </div>
+    </header>
+    <div class="table-detail__list">
+      <p class="table-detail__legend">
+        <span class="table-detail__legend-item table-detail__legend-item--host"><span class="table-detail__swatch"></span>Host</span>
+        <span class="table-detail__legend-item table-detail__legend-item--vip"><span class="table-detail__swatch"></span>VIP</span>
+        <span class="table-detail__legend-item table-detail__legend-item--speaker"><span class="table-detail__swatch"></span>Speaker</span>
+        <span class="table-detail__legend-item table-detail__legend-item--sponsor"><span class="table-detail__swatch"></span>Sponsor</span>
+        <span class="table-detail__legend-item table-detail__legend-item--attendee"><span class="table-detail__swatch"></span>Attendee</span>
+      </p>
+      <div class="table-detail__seats">
+        <article class="attendee-card attendee-card--host">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">1</span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Sarah Jenkins</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Table Host</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">Host</span>
+            </p>
+          </div>
+          <div class="attendee-card__actions">
+            <button type="button" class="attendee-card__action" aria-label="Remove Sarah Jenkins">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+            <div class="attendee-card__reorder">
+              <button type="button" class="attendee-card__action" aria-label="Move Sarah Jenkins up">
+                <i data-lucide="chevron-up" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="attendee-card__action" aria-label="Move Sarah Jenkins down">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="attendee-card attendee-card--vip">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">2</span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">David Chen</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Vertex Creative</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">VIP</span>
+            </p>
+          </div>
+          <div class="attendee-card__actions">
+            <button type="button" class="attendee-card__action" aria-label="Remove David Chen">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+            <div class="attendee-card__reorder">
+              <button type="button" class="attendee-card__action" aria-label="Move David Chen up">
+                <i data-lucide="chevron-up" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="attendee-card__action" aria-label="Move David Chen down">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="attendee-card attendee-card--speaker">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">3</span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Elena Rostova</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Quantum Tech</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">Speaker</span>
+            </p>
+          </div>
+          <div class="attendee-card__actions">
+            <button type="button" class="attendee-card__action" aria-label="Remove Elena Rostova">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+            <div class="attendee-card__reorder">
+              <button type="button" class="attendee-card__action" aria-label="Move Elena Rostova up">
+                <i data-lucide="chevron-up" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="attendee-card__action" aria-label="Move Elena Rostova down">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="attendee-card attendee-card--sponsor">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">4</span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Marcus Aurelius</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Aurora Labs</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">Sponsor</span>
+            </p>
+          </div>
+          <div class="attendee-card__actions">
+            <button type="button" class="attendee-card__action" aria-label="Remove Marcus Aurelius">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+            <div class="attendee-card__reorder">
+              <button type="button" class="attendee-card__action" aria-label="Move Marcus Aurelius up">
+                <i data-lucide="chevron-up" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="attendee-card__action" aria-label="Move Marcus Aurelius down">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="attendee-card attendee-card--attendee">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">5</span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Aisha Rahman</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Cloud Systems</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">Attendee</span>
+            </p>
+          </div>
+          <div class="attendee-card__actions">
+            <button type="button" class="attendee-card__action" aria-label="Remove Aisha Rahman">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+            <div class="attendee-card__reorder">
+              <button type="button" class="attendee-card__action" aria-label="Move Aisha Rahman up">
+                <i data-lucide="chevron-up" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="attendee-card__action" aria-label="Move Aisha Rahman down">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="attendee-card attendee-card--attendee">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">6</span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Liam O'Connor</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Aurora Labs</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">Attendee</span>
+            </p>
+          </div>
+          <div class="attendee-card__actions">
+            <button type="button" class="attendee-card__action" aria-label="Remove Liam O'Connor">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+            <div class="attendee-card__reorder">
+              <button type="button" class="attendee-card__action" aria-label="Move Liam O'Connor up">
+                <i data-lucide="chevron-up" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="attendee-card__action" aria-label="Move Liam O'Connor down">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="attendee-card attendee-card--attendee">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">7</span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Sophia Martinez</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Apex Design</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">Attendee</span>
+            </p>
+          </div>
+          <div class="attendee-card__actions">
+            <button type="button" class="attendee-card__action" aria-label="Remove Sophia Martinez">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+            <div class="attendee-card__reorder">
+              <button type="button" class="attendee-card__action" aria-label="Move Sophia Martinez up">
+                <i data-lucide="chevron-up" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="attendee-card__action" aria-label="Move Sophia Martinez down">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="attendee-card attendee-card--empty">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">8</span>
+          <p class="attendee-card__empty-label">Empty seat</p>
+          <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+        </article>
+        <article class="attendee-card attendee-card--empty">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">9</span>
+          <p class="attendee-card__empty-label">Empty seat</p>
+          <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+        </article>
+        <article class="attendee-card attendee-card--empty">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">10</span>
+          <p class="attendee-card__empty-label">Empty seat</p>
+          <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+        </article>
+      </div>
+    </div>
+  </section>
+  </div>
+  <h2>Type=Full</h2>
+  <p class="lede">Every seat taken. Structurally identical to All Roles — only the data differs.</p>
+  <div class="panel-rail">
+  <section class="table-detail" aria-label="Table 21 seating detail">
+    <header class="table-detail__header">
+      <div class="table-detail__header-row">
+        <div class="table-detail__titles">
+          <h3 class="table-detail__name">Table 21</h3>
+          <p class="table-detail__meta">
+            <span class="table-detail__count">10 / 10 seated</span>
+            <span class="table-detail__sep" aria-hidden="true">·</span>
+            <span class="table-detail__sponsor">
+              <i data-lucide="handshake" aria-hidden="true"></i>
+              <span class="table-detail__sponsor-name">Monzo</span>
+            </span>
+          </p>
+        </div>
+        <span class="table-type table-type--gold">Gold</span>
+      </div>
+    </header>
+    <div class="table-detail__list">
+      <p class="table-detail__legend">
+        <span class="table-detail__legend-item table-detail__legend-item--host"><span class="table-detail__swatch"></span>Host</span>
+        <span class="table-detail__legend-item table-detail__legend-item--vip"><span class="table-detail__swatch"></span>VIP</span>
+        <span class="table-detail__legend-item table-detail__legend-item--speaker"><span class="table-detail__swatch"></span>Speaker</span>
+        <span class="table-detail__legend-item table-detail__legend-item--sponsor"><span class="table-detail__swatch"></span>Sponsor</span>
+        <span class="table-detail__legend-item table-detail__legend-item--attendee"><span class="table-detail__swatch"></span>Attendee</span>
+      </p>
+      <div class="table-detail__seats">
+        <article class="attendee-card attendee-card--host">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">1</span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Sarah Jenkins</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Table Host</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">Host</span>
+            </p>
+          </div>
+          <div class="attendee-card__actions">
+            <button type="button" class="attendee-card__action" aria-label="Remove Sarah Jenkins">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+            <div class="attendee-card__reorder">
+              <button type="button" class="attendee-card__action" aria-label="Move Sarah Jenkins up">
+                <i data-lucide="chevron-up" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="attendee-card__action" aria-label="Move Sarah Jenkins down">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="attendee-card attendee-card--vip">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">2</span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">David Chen</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Vertex Creative</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">VIP</span>
+            </p>
+          </div>
+          <div class="attendee-card__actions">
+            <button type="button" class="attendee-card__action" aria-label="Remove David Chen">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+            <div class="attendee-card__reorder">
+              <button type="button" class="attendee-card__action" aria-label="Move David Chen up">
+                <i data-lucide="chevron-up" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="attendee-card__action" aria-label="Move David Chen down">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="attendee-card attendee-card--speaker">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">3</span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Elena Rostova</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Quantum Tech</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">Speaker</span>
+            </p>
+          </div>
+          <div class="attendee-card__actions">
+            <button type="button" class="attendee-card__action" aria-label="Remove Elena Rostova">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+            <div class="attendee-card__reorder">
+              <button type="button" class="attendee-card__action" aria-label="Move Elena Rostova up">
+                <i data-lucide="chevron-up" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="attendee-card__action" aria-label="Move Elena Rostova down">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="attendee-card attendee-card--sponsor">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">4</span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Marcus Aurelius</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Aurora Labs</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">Sponsor</span>
+            </p>
+          </div>
+          <div class="attendee-card__actions">
+            <button type="button" class="attendee-card__action" aria-label="Remove Marcus Aurelius">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+            <div class="attendee-card__reorder">
+              <button type="button" class="attendee-card__action" aria-label="Move Marcus Aurelius up">
+                <i data-lucide="chevron-up" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="attendee-card__action" aria-label="Move Marcus Aurelius down">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="attendee-card attendee-card--attendee">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">5</span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Aisha Rahman</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Cloud Systems</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">Attendee</span>
+            </p>
+          </div>
+          <div class="attendee-card__actions">
+            <button type="button" class="attendee-card__action" aria-label="Remove Aisha Rahman">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+            <div class="attendee-card__reorder">
+              <button type="button" class="attendee-card__action" aria-label="Move Aisha Rahman up">
+                <i data-lucide="chevron-up" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="attendee-card__action" aria-label="Move Aisha Rahman down">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="attendee-card attendee-card--attendee">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">6</span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Liam O'Connor</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Aurora Labs</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">Attendee</span>
+            </p>
+          </div>
+          <div class="attendee-card__actions">
+            <button type="button" class="attendee-card__action" aria-label="Remove Liam O'Connor">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+            <div class="attendee-card__reorder">
+              <button type="button" class="attendee-card__action" aria-label="Move Liam O'Connor up">
+                <i data-lucide="chevron-up" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="attendee-card__action" aria-label="Move Liam O'Connor down">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="attendee-card attendee-card--attendee">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">7</span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Sophia Martinez</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Apex Design</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">Attendee</span>
+            </p>
+          </div>
+          <div class="attendee-card__actions">
+            <button type="button" class="attendee-card__action" aria-label="Remove Sophia Martinez">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+            <div class="attendee-card__reorder">
+              <button type="button" class="attendee-card__action" aria-label="Move Sophia Martinez up">
+                <i data-lucide="chevron-up" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="attendee-card__action" aria-label="Move Sophia Martinez down">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="attendee-card attendee-card--speaker">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">8</span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Sarah Jenkins</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Vertex Creative</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">Speaker</span>
+            </p>
+          </div>
+          <div class="attendee-card__actions">
+            <button type="button" class="attendee-card__action" aria-label="Remove Sarah Jenkins">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+            <div class="attendee-card__reorder">
+              <button type="button" class="attendee-card__action" aria-label="Move Sarah Jenkins up">
+                <i data-lucide="chevron-up" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="attendee-card__action" aria-label="Move Sarah Jenkins down">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="attendee-card attendee-card--sponsor">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">9</span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Emily Carter</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Nexus Innovations</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">Sponsor</span>
+            </p>
+          </div>
+          <div class="attendee-card__actions">
+            <button type="button" class="attendee-card__action" aria-label="Remove Emily Carter">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+            <div class="attendee-card__reorder">
+              <button type="button" class="attendee-card__action" aria-label="Move Emily Carter up">
+                <i data-lucide="chevron-up" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="attendee-card__action" aria-label="Move Emily Carter down">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="attendee-card attendee-card--attendee">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">10</span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">James Thompson</p>
+            <p class="attendee-card__meta">
+              <span class="attendee-card__company">Nexus Innovations</span>
+              <span class="attendee-card__sep" aria-hidden="true">·</span>
+              <span class="attendee-card__role">Attendee</span>
+            </p>
+          </div>
+          <div class="attendee-card__actions">
+            <button type="button" class="attendee-card__action" aria-label="Remove James Thompson">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+            <div class="attendee-card__reorder">
+              <button type="button" class="attendee-card__action" aria-label="Move James Thompson up">
+                <i data-lucide="chevron-up" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="attendee-card__action" aria-label="Move James Thompson down">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <h2>Device=Mobile</h2>
+  <p class="lede"><strong>Shown live in the 390px frame below</strong> — or resize the viewport under 768px. All four mobile variants drop the
+  panel header entirely — no table name, seated count, sponsor or tier pill — and tighten the list:
+  padding 16px &rarr; 8px and the seat gap 8px &rarr; 6px. The mobile screen supplies the table name
+  in its own sheet chrome. Implemented as <code>@media (max-width: 767px)</code>, so the panels above
+  respond on their own.</p>
+  <div class="mobile-preview">
+    <iframe class="mobile-preview__frame" src="TableDetail.html?frame=mobile"
+            title="Table Detail at a 390px mobile viewport" loading="lazy"></iframe>
+    <p class="mobile-preview__caption">Live 390px viewport &mdash; the same page and the same CSS,
+    rendered in an iframe so <code>@media (max-width: 767px)</code> applies inside it.</p>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>if (window.lucide) lucide.createIcons();</script>
+</body>
+</html>

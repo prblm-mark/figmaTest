@@ -26,7 +26,7 @@ Layout switching is handled by a **container query** (`@container (min-width: 15
 | Internal gap (desktop/wide) | `--ai-spacing-5` | 16px |
 | Text column gap | `--ai-spacing-1` | 4px |
 | Text line-height | `--ai-leading-xs` | 1rem (16px) |
-| Category font | `--ai-font-body` + `--ai-font-medium` + `--ai-font-fixed-xxs` | Inter Medium 12px |
+| Category font | `--ai-font-body` + `--ai-font-medium` + `--ai-font-fixed-2xs` | Inter Medium 12px |
 | Category color | `--ai-text-contrast` | #6b7280 |
 | Title font | `--ai-font-title` + `--ai-font-semibold` + `--ai-font-fixed-xs` | Inter SemiBold 14px |
 | Title color | `--ai-text-primary` | #1f2a37 |

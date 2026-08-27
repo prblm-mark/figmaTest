@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shadow modes</title>
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="components/Button/Button.css">
+  <style>
+    body {
+      margin: 0;
+      padding: var(--ai-spacing-7);
+      min-height: 100vh;
+      background: var(--ai-surface-secondary);
+      font-family: var(--ai-font-body);
+      color: var(--ai-text-primary);
+    }
+    h1 { font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-xl); margin: 0 0 var(--ai-spacing-2); }
+    h2 {
+      font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-md);
+      margin: var(--ai-spacing-8) 0 var(--ai-spacing-1);
+    }
+    .sub { color: var(--ai-text-contrast); font-size: var(--ai-font-fixed-xs); margin: 0 0 var(--ai-spacing-5); max-width: 70ch; }
+    code {
+      font-size: var(--ai-font-fixed-2xs);
+      background: var(--ai-surface-minimal);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-sm);
+      padding: 0 var(--ai-spacing-1);
+    }
+
+    /* ── Mode bar ── */
+    .modes {
+      display: flex; gap: var(--ai-spacing-2); align-items: center; flex-wrap: wrap;
+      padding: var(--ai-spacing-3);
+      background: var(--ai-surface-elevated-1);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-md);
+      margin-bottom: var(--ai-spacing-6);
+      position: sticky; top: var(--ai-spacing-3); z-index: 2;
+      box-shadow: var(--ai-shadow-sm);
+    }
+    .modes__label {
+      font-size: var(--ai-font-fixed-2xs); font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast); text-transform: uppercase; letter-spacing: 0.08em;
+      margin-right: var(--ai-spacing-2);
+    }
+    .modes__current {
+      margin-left: auto; font-size: var(--ai-font-fixed-2xs);
+      color: var(--ai-text-contrast); font-variant-numeric: tabular-nums;
+    }
+    [data-mode][aria-pressed="true"] { outline: 2px solid var(--ai-surface-brand); outline-offset: 1px; }
+
+    /* ── Shadow specimen grid ──
+       Each band paints a different surface token so the same shadow can be judged
+       against every ground it actually lands on. */
+    .band {
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-md);
+      margin-bottom: var(--ai-spacing-5);
+      overflow: hidden;
+    }
+    .band__hd {
+      display: flex; align-items: baseline; gap: var(--ai-spacing-3); flex-wrap: wrap;
+      padding: var(--ai-spacing-2) var(--ai-spacing-4);
+      background: var(--ai-surface-elevated-1);
+      border-bottom: 1px solid var(--ai-border-secondary);
+      font-size: var(--ai-font-fixed-2xs);
+    }
+    .band__hd b { font-weight: var(--ai-font-semibold); }
+    .band__hex { color: var(--ai-text-contrast); font-variant-numeric: tabular-nums; }
+    .band__body {
+      display: flex; gap: var(--ai-spacing-6); flex-wrap: wrap;
+      padding: var(--ai-spacing-6) var(--ai-spacing-5);
+    }
+    .band--primary   .band__body { background: var(--ai-surface-primary); }
+    .band--minimal   .band__body { background: var(--ai-surface-minimal); }
+    .band--secondary .band__body { background: var(--ai-surface-secondary); }
+    .band--elev2     .band__body { background: var(--ai-surface-elevated-2); }
+    .band--invert    .band__body { background: var(--ai-surface-invert); }
+
+    .chip {
+      width: 8.5rem; display: flex; flex-direction: column; gap: var(--ai-spacing-2);
+      align-items: center;
+    }
+    .chip__box {
+      width: 100%; height: var(--ai-spacing-11);
+      background: var(--ai-surface-elevated-1);
+      border-radius: var(--ai-radius-md);
+    }
+    /* On the inverted band the card needs a light face or the shadow is meaningless */
+    .band--invert .chip__box { background: var(--ai-surface-primary); }
+    .chip__name {
+      font-size: var(--ai-font-fixed-2xs); font-weight: var(--ai-font-medium);
+      color: var(--ai-text-primary);
+    }
+    .band--invert .chip__name { color: var(--ai-text-invert); }
+
+    .s-xxs     { box-shadow: var(--ai-shadow-xxs); }
+    .s-base    { box-shadow: var(--ai-shadow-base); }
+    .s-sm      { box-shadow: var(--ai-shadow-sm); }
+    .s-md      { box-shadow: var(--ai-shadow-md); }
+    .s-lg      { box-shadow: var(--ai-shadow-lg); }
+    .s-card    { box-shadow: var(--ai-shadow-card); }
+    .s-cc-rail { box-shadow: var(--ai-shadow-cc-rail); }
+
+    /* ── Resolved-value table ── */
+    .tablewrap { overflow-x: auto; border: 1px solid var(--ai-border-secondary); border-radius: var(--ai-radius-md); }
+    table { border-collapse: collapse; width: 100%; font-size: var(--ai-font-fixed-2xs); }
+    th, td {
+      text-align: left; padding: var(--ai-spacing-2) var(--ai-spacing-3);
+      border-bottom: 1px solid var(--ai-border-secondary); white-space: nowrap;
+    }
+    th {
+      background: var(--ai-surface-minimal); color: var(--ai-text-contrast);
+      font-weight: var(--ai-font-medium); text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    tr:last-child td { border-bottom: 0; }
+    td.tok { font-weight: var(--ai-font-medium); }
+    td.val { color: var(--ai-text-secondary); }
+    .note {
+      margin-top: var(--ai-spacing-4); padding: var(--ai-spacing-3) var(--ai-spacing-4);
+      background: var(--ai-surface-info-soft);
+      border: 1px solid var(--ai-border-info);
+      border-radius: var(--ai-radius-md);
+      font-size: var(--ai-font-fixed-2xs); color: var(--ai-text-info);
+      max-width: 78ch;
+    }
+  </style>
+</head>
+<body>
+  <h1>Shadow modes</h1>
+  <p class="sub">Every shadow token, on every surface it lands on, in all six modes. The shadow
+  tokens themselves only define <code>:root</code> and <code>[data-theme="dark"]</code> — so
+  switching to CC or Chat does not change the shadows, it changes the <em>surfaces underneath
+  them</em>. That is the interesting part: Chat still runs on the older warm greys while the
+  default context is on the slate ramp.</p>
+
+  <div class="modes" role="group" aria-label="Mode">
+    <span class="modes__label">Mode</span>
+    <button type="button" class="btn btn--secondary btn--sm" data-mode="ai-light"   aria-pressed="false">AI Light</button>
+    <button type="button" class="btn btn--secondary btn--sm" data-mode="ai-dark"    aria-pressed="false">AI Dark</button>
+    <button type="button" class="btn btn--secondary btn--sm" data-mode="cc-light"   aria-pressed="false">CC Light</button>
+    <button type="button" class="btn btn--secondary btn--sm" data-mode="cc-dark"    aria-pressed="false">CC Dark</button>
+    <button type="button" class="btn btn--secondary btn--sm" data-mode="chat-light" aria-pressed="false">Chat Light</button>
+    <button type="button" class="btn btn--secondary btn--sm" data-mode="chat-dark"  aria-pressed="false">Chat Dark</button>
+    <span class="modes__current" id="modeCurrent"></span>
+  </div>
+
+  <div id="bands"></div>
+
+  <h2>Resolved values in this mode</h2>
+  <p class="sub">Read straight out of the cascade with <code>getComputedStyle</code>, so this is
+  what the browser is actually using — not what the stylesheet says.</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Token</th><th>Resolved value</th></tr></thead>
+      <tbody id="valueRows"></tbody>
+    </table>
+  </div>
+
+  <div class="note" id="modeNote"></div>
+
+  <h2>Surface collisions worth knowing</h2>
+  <p class="sub">Found while building this page. Where a card's own face resolves to the same
+  value as the ground beneath it, the shadow is the only thing separating them — so these are
+  the cases where shadow quality matters most.</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Mode</th><th>Collision</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td>Chat Dark</td><td><code>elevated-1</code> = <code>minimal</code> = <code>secondary</code> = <code>#2E2E32</code></td><td>card invisible on two of the five grounds</td></tr>
+        <tr><td>AI Dark · CC Dark</td><td><code>elevated-1</code> = <code>primary</code> = <code>#1E293B</code></td><td>card invisible on the primary ground</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    // data-theme goes on <html>; data-surface goes on <body>.
+    // tokens-chat-dark.css uses a DESCENDANT selector — [data-theme="dark"] [data-surface="chat"] —
+    // so the two attributes must sit on different elements or the dark-chat block never matches.
+    const MODES = {
+      'ai-light':   { theme: null,   brand: null, surface: null,   label: 'AI Light' },
+      'ai-dark':    { theme: 'dark', brand: null, surface: null,   label: 'AI Dark' },
+      'cc-light':   { theme: null,   brand: 'cc', surface: null,   label: 'CC Light' },
+      'cc-dark':    { theme: 'dark', brand: 'cc', surface: null,   label: 'CC Dark' },
+      'chat-light': { theme: null,   brand: null, surface: 'chat', label: 'Chat Light' },
+      'chat-dark':  { theme: 'dark', brand: null, surface: 'chat', label: 'Chat Dark' },
+    };
+
+    const SHADOWS = [
+      ['--ai-shadow-xxs',     's-xxs',     'xxs'],
+      ['--ai-shadow-base',    's-base',    'base'],
+      ['--ai-shadow-sm',      's-sm',      'sm'],
+      ['--ai-shadow-md',      's-md',      'md'],
+      ['--ai-shadow-lg',      's-lg',      'lg'],
+      ['--ai-shadow-card',    's-card',    'card'],
+      ['--ai-shadow-cc-rail', 's-cc-rail', 'cc-rail'],
+    ];
+
+    const BANDS = [
+      ['primary',   '--ai-surface-primary',   'the default card ground'],
+      ['minimal',   '--ai-surface-minimal',   'subtle page background'],
+      ['secondary', '--ai-surface-secondary', 'tinted section background'],
+      ['elev2',     '--ai-surface-elevated-2','modal / raised layer'],
+      ['invert',    '--ai-surface-invert',    'inverted surface — card face flips to primary'],
+    ];
+
+    // Build the bands once; everything below re-resolves through custom properties.
+    document.getElementById('bands').innerHTML = BANDS.map(([key, token, why]) => `
+      <section class="band band--${key}">
+        <div class="band__hd">
+          <b>${token}</b>
+          <span class="band__hex" data-hexfor="${token}"></span>
+          <span class="band__hex">${why}</span>
+        </div>
+        <div class="band__body">
+          ${SHADOWS.map(([, cls, name]) => `
+            <div class="chip">
+              <div class="chip__box ${cls}"></div>
+              <span class="chip__name">${name}</span>
+            </div>`).join('')}
+        </div>
+      </section>`).join('');
+
+    const NOTES = {
+      'ai-light':   'Baseline. xxs is deliberately almost invisible here — 0.02 alpha over 0.5px of blur.',
+      'ai-dark':    'Dark values are light x 2.5. cc-rail is the one deliberate exception: it stays none, because a directional edge shadow is invisible against a dark canvas.',
+      'cc-light':   'CC shares the AI shadow set. Only the surfaces differ, so any change you see here is the ground, not the shadow.',
+      'cc-dark':    'CC dark inherits [data-theme="dark"] for shadows — there is no CC-specific shadow override.',
+      'chat-light': 'Chat kept the older warm-neutral greys while the default context moved to the slate ramp. The slate-tinted xxs and base shadows are sitting on a warm ground here — worth judging whether that reads correctly.',
+      'chat-dark':  'Chat dark also keeps the older greys. Note the surface collision: elevated-1, minimal and secondary are ALL #2E2E32 here, so a raised card on a minimal or secondary ground is invisible apart from its shadow. In ai-dark and cc-dark the collision is narrower — elevated-1 equals primary, so only the primary band goes flat.',
+    };
+
+    function refresh(name) {
+      const cs = getComputedStyle(document.body);
+      document.getElementById('valueRows').innerHTML = SHADOWS.map(([tok]) => {
+        const v = cs.getPropertyValue(tok).trim() || '(unset)';
+        return `<tr><td class="tok">${tok}</td><td class="val">${v}</td></tr>`;
+      }).join('');
+      document.querySelectorAll('[data-hexfor]').forEach((el) => {
+        el.textContent = cs.getPropertyValue(el.dataset.hexfor).trim();
+      });
+      document.getElementById('modeNote').textContent = NOTES[name] || '';
+    }
+
+    function applyMode(name) {
+      const m = MODES[name];
+      if (!m) return;
+      const html = document.documentElement;
+      const body = document.body;
+      m.theme   ? html.setAttribute('data-theme', m.theme)     : html.removeAttribute('data-theme');
+      m.brand   ? html.setAttribute('data-brand', m.brand)     : html.removeAttribute('data-brand');
+      m.surface ? body.setAttribute('data-surface', m.surface) : body.removeAttribute('data-surface');
+
+      document.querySelectorAll('[data-mode]').forEach((b) => {
+        b.setAttribute('aria-pressed', String(b.dataset.mode === name));
+      });
+      const bits = [
+        m.theme   ? `data-theme="${m.theme}"`     : 'no theme',
+        m.brand   ? `data-brand="${m.brand}"`     : 'no brand',
+        m.surface ? `data-surface="${m.surface}"`  : 'no surface',
+      ];
+      document.getElementById('modeCurrent').textContent = bits.join(' · ');
+      localStorage.setItem('shadow-modes', name);
+      requestAnimationFrame(() => refresh(name));
+    }
+
+    document.querySelectorAll('[data-mode]').forEach((btn) => {
+      btn.addEventListener('click', () => applyMode(btn.dataset.mode));
+    });
+
+    applyMode(localStorage.getItem('shadow-modes') || 'ai-light');
+  </script>
+</body>
+</html>

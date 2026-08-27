@@ -46,7 +46,7 @@ Chart is a Tier=Pattern component (in `src/patterns/Chart/`) because it composes
 | Title gap | `--ai-spacing-1` | 4px |
 | Delta pill bg | `--ai-surface-success` | #30cb90 |
 | Delta pill text | `--ai-text-invert` | #ffffff |
-| Delta pill font | `--ai-font-title` semibold + `--ai-font-fixed-xxs` | Inter 600 / 12px |
+| Delta pill font | `--ai-font-title` semibold + `--ai-font-fixed-2xs` | Inter 600 / 12px |
 | Delta pill padding | `--ai-spacing-1` v / `--ai-spacing-3` h | 4/8px |
 | Delta pill gap | `--ai-spacing-1` | 4px |
 | Delta pill radius | `--ai-radius-full` | rounded |

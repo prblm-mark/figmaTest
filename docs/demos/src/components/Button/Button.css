@@ -227,3 +227,21 @@
   min-height: var(--ai-spacing-6);
   padding: 0;
 }
+
+/* 24x24 icon-only. Added 2026-08-25 for Room Card (3470:84951), which places
+   Button instances at 24x24 with a 12px icon — a size the set didn't cover
+   (icon 40, +sm 32, +xs 32x24). ICON-ONLY: there is no text `.btn--2xs`,
+   because Figma defines none. Radius is set here rather than inherited, since
+   unlike --xs there is no base `.btn--2xs` rule to carry it. */
+.btn--icon.btn--2xs {
+  width: var(--ai-spacing-6);
+  min-height: var(--ai-spacing-6);
+  padding: 0;
+  border-radius: var(--ai-radius-sm);
+}
+
+.btn--icon.btn--2xs [data-lucide],
+.btn--icon.btn--2xs svg {
+  width: var(--ai-icon-size-xs);
+  height: var(--ai-icon-size-xs);
+}

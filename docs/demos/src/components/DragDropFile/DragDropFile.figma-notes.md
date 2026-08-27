@@ -75,7 +75,7 @@
 | Title colour              | `--ai-text-secondary`                |
 | Title strong colour       | `--ai-text-primary`                  |
 | Subtitle font             | `--ai-font-title`                    |
-| Subtitle size             | `--ai-font-fixed-xxs`               |
+| Subtitle size             | `--ai-font-fixed-2xs`               |
 | Subtitle colour           | `--ai-text-contrast`                 |
 | Text group gap            | `--ai-spacing-3`                     |
 | Transition                | `--ai-transition-default`            |

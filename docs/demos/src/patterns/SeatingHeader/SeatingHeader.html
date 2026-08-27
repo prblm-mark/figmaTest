@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SeatingHeader — Affino Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/Toggle/Toggle.css">
+  <link rel="stylesheet" href="../../components/FullBadge/FullBadge.css">
+  <link rel="stylesheet" href="../../components/RoomCard/RoomCard.css">
+  <link rel="stylesheet" href="SeatingHeader.css">
+  <script>
+    /* ?frame=mobile marks this document as the one INSIDE the mobile preview iframe, so the
+       preview section hides itself and cannot recurse. Runs in <head> before paint. */
+    if (location.search.indexOf('frame=mobile') !== -1) document.documentElement.dataset.frame = 'mobile';
+  </script>
+  <style>
+    /* The screen container. These components key their narrow-screen rules on `cs-page`,
+       which the CC shell establishes on `.cc-control__page` — a standalone demo has no shell,
+       so without this the mobile rules could never fire here and the demo would silently
+       misrepresent the component. Resizing this page still exercises them. */
+    body { container-type: inline-size; container-name: cs-page; }
+    body {
+      margin: 0;
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-minimal);
+      font-family: var(--ai-font-body);
+      color: var(--ai-text-primary);
+    }
+    h1 { font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-xl); margin: 0 0 var(--ai-spacing-2); }
+    h2.demo-heading {
+      font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-md);
+      margin: var(--ai-spacing-8) 0 var(--ai-spacing-1);
+    }
+    .lede { color: var(--ai-text-contrast); font-size: var(--ai-font-fixed-xs); margin: 0 0 var(--ai-spacing-5); max-width: 70ch; }
+    /* ── Mobile preview ──────────────────────────────────────────────────────
+       An iframe of THIS page at 390px. An iframe carries its own viewport, so the
+       pattern's own @media (max-width: 767px) fires inside it no matter how wide the
+       outer window is — which is the only way to show the mobile rendering without
+       duplicating markup or inventing a --mobile modifier. */
+    .mobile-preview {
+      display: flex; flex-direction: column; gap: var(--ai-spacing-3);
+      inline-size: fit-content;
+    }
+    .mobile-preview__frame {
+      inline-size: 390px; /* iPhone-class viewport — a device width, not a design token */
+      block-size: 760px;
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-lg);
+      background: var(--ai-surface-primary);
+    }
+    /* The 768–1023 band, where the toolbar is compact but the event bar is not. */
+    .mobile-preview__frame--tablet {
+      inline-size: 900px;
+      block-size: 400px;
+    }
+    .mobile-preview__caption {
+      font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-2xs);
+      color: var(--ai-text-contrast); margin: 0;
+    }
+    [data-frame="mobile"] .mobile-preview,
+    [data-frame="mobile"] h1,
+    [data-frame="mobile"] .lede--intro { display: none; }
+    [data-frame="mobile"] h2.demo-heading:first-of-type { margin-block-start: 0; }
+  </style>
+</head>
+<body>
+  <h1>SeatingHeader</h1>
+  <p class="lede lede--intro">The Seating Planner's event bar, room selector and toolbar.
+  <strong>Tier: Pattern.</strong> Composes <strong>Button</strong>, <strong>Toggle</strong>
+  (<code>toggle--xs</code>, label-less) and <strong>RoomCard</strong> — one per plan, in the
+  Room-Selector-Bar slot.</p>
+  <p class="lede lede--intro">Figma calls this component <strong>Header</strong>. It is filed as
+  SeatingHeader because <code>src/patterns/Header</code> is a different, unrelated component (the
+  AI-Chat header).</p>
+  <p class="lede lede--intro">The <strong>Type</strong> axis is data, not CSS:
+  <code>No Plans</code> is the event bar on its own and <code>Has Plans</code> adds the room
+  selector and the toolbar, so which one renders is markup the caller supplies. There are no Type
+  modifiers — the fifth component in this module where that holds.</p>
+
+  <h2 class="demo-heading">Tier=Pattern, Type=Has Plans, Device=Desktop</h2>
+  <p class="lede">The full header. Two plans, the first selected.</p>
+  <!-- TODO(backend:SeatingPlanner): the event details, the plan list and the unassigned count are
+       all hardcoded. Needs: GET the event (name, date, attendee count, venue) for the info bar;
+       the plan list reuses seating-room-list for the per-card contract; the active room's
+       unassigned count is the same aggregate seating-tables-listing already needs. "Show
+       unassigned" toggles visibility of the unassigned tray — see seating-free-seats-filter for
+       the equivalent already specced on TableListing. Copy Plans / New Plan / Room Layout /
+       Add Table / Export and the kebab are all unwired. -->
+  <section class="seating-header" data-backend-todo="seating-header" aria-label="Seating plan header">
+    <div class="seating-header__bar">
+      <div class="seating-header__details">
+        <div class="seating-header__title-row">
+          <h2 class="seating-header__title">The Card &amp; Payments Awards 2026</h2>
+          <button type="button" class="btn btn--secondary btn--icon btn--xs" aria-label="Switch event">
+            <i data-lucide="arrow-left-right" aria-hidden="true"></i>
+          </button>
+        </div>
+        <ul class="seating-header__meta">
+          <li class="seating-header__meta-item">
+            <i data-lucide="calendar" aria-hidden="true"></i>3 Feb 2026
+          </li>
+          <li class="seating-header__meta-item">
+            <i data-lucide="users" aria-hidden="true"></i>386 attendees
+          </li>
+          <li class="seating-header__meta-item">
+            <i data-lucide="map-pin" aria-hidden="true"></i>Grosvenor House, London
+          </li>
+        </ul>
+      </div>
+      <div class="seating-header__actions">
+        <button type="button" class="btn btn--secondary">
+          <i data-lucide="copy" aria-hidden="true"></i>Copy Plans
+        </button>
+        <button type="button" class="btn btn--primary">
+          <i data-lucide="plus" aria-hidden="true"></i>New Plan
+        </button>
+      </div>
+    </div>
+
+    <div class="seating-header__rooms">
+      <article class="room-card room-card--selected" data-backend-todo="seating-room-list">
+        <div class="room-card__header">
+          <h3 class="room-card__name">
+            <button type="button" class="room-card__select">Main Ballroom</button>
+          </h3>
+          <div class="room-card__actions">
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Main Ballroom">
+              <i data-lucide="pencil" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Main Ballroom">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <div class="room-card__meta">
+          <p class="room-card__counts">12 tables · 0/148<span class="room-card__seated"> seated</span></p>
+          <p class="room-card__free">148 seats free</p>
+        </div>
+        <div class="room-card__progress" aria-hidden="true">
+          <div class="room-card__progress-fill"></div>
+        </div>
+      </article>
+
+      <article class="room-card" style="--room-card-progress: 41.2%">
+        <div class="room-card__header">
+          <h3 class="room-card__name">
+            <button type="button" class="room-card__select">Overflow Annex</button>
+          </h3>
+          <div class="room-card__actions">
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Overflow Annex">
+              <i data-lucide="pencil" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Overflow Annex">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <div class="room-card__meta">
+          <p class="room-card__counts">8 tables · 42/102<span class="room-card__seated"> seated</span></p>
+          <p class="room-card__free">60 seats free</p>
+        </div>
+        <div class="room-card__progress" aria-hidden="true">
+          <div class="room-card__progress-fill"></div>
+        </div>
+      </article>
+    </div>
+
+    <div class="seating-header__toolbar">
+      <div class="seating-header__toolbar-actions">
+        <div class="seating-header__room">
+          <p class="seating-header__room-name">Main Ballroom</p>
+          <p class="seating-header__room-count">(72 Unassigned)</p>
+        </div>
+        <div class="seating-header__toggle-group">
+          <button type="button" class="toggle toggle--xs" role="switch" aria-checked="false"
+                  id="show-unassigned-a" aria-labelledby="show-unassigned-label-a">
+            <span class="toggle__track"><span class="toggle__knob"></span></span>
+          </button>
+          <label class="seating-header__toggle-label" id="show-unassigned-label-a"
+                 for="show-unassigned-a">Show unassigned</label>
+        </div>
+        <span class="seating-header__divider" aria-hidden="true"></span>
+        <div class="seating-header__buttons">
+          <button type="button" class="btn btn--secondary btn--sm seating-header__btn--layout">
+            <i data-lucide="grid-3x3" aria-hidden="true"></i>Room Layout
+          </button>
+          <button type="button" class="btn btn--secondary btn--sm">
+            <!-- The whole label is ONE span so the clipped word is not a separate flex child of
+                 .btn — as a child it would inherit the button's gap and render "Add  Table". -->
+            <i data-lucide="plus" aria-hidden="true"></i><span class="seating-header__btn-label">Add<span class="seating-header__btn-shrink"> Table</span></span>
+          </button>
+          <button type="button" class="btn btn--secondary btn--sm seating-header__btn--export">
+            <i data-lucide="download" aria-hidden="true"></i><span class="seating-header__btn-shrink">Export</span><i
+              data-lucide="chevron-down" class="seating-header__btn-chevron" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <button type="button" class="seating-header__more" aria-label="More seating actions">
+        <i data-lucide="ellipsis-vertical" aria-hidden="true"></i>
+      </button>
+    </div>
+  </section>
+
+  <h2 class="demo-heading">Tier=Pattern, Type=No Plans, Device=Desktop</h2>
+  <p class="lede">The event bar on its own. Structurally identical to the bar above — Figma's
+  <code>No Plans</code> variant is <em>only</em> the bar, with no room selector and no toolbar.</p>
+  <section class="seating-header" aria-label="Seating plan header, no plans yet">
+    <div class="seating-header__bar">
+      <div class="seating-header__details">
+        <div class="seating-header__title-row">
+          <h2 class="seating-header__title">The Card &amp; Payments Awards 2026</h2>
+          <button type="button" class="btn btn--secondary btn--icon btn--xs" aria-label="Switch event">
+            <i data-lucide="arrow-left-right" aria-hidden="true"></i>
+          </button>
+        </div>
+        <ul class="seating-header__meta">
+          <li class="seating-header__meta-item">
+            <i data-lucide="calendar" aria-hidden="true"></i>3 Feb 2026
+          </li>
+          <li class="seating-header__meta-item">
+            <i data-lucide="users" aria-hidden="true"></i>386 attendees
+          </li>
+          <li class="seating-header__meta-item">
+            <i data-lucide="map-pin" aria-hidden="true"></i>Grosvenor House, London
+          </li>
+        </ul>
+      </div>
+      <div class="seating-header__actions">
+        <button type="button" class="btn btn--secondary">
+          <i data-lucide="copy" aria-hidden="true"></i>Copy Plans
+        </button>
+        <button type="button" class="btn btn--primary">
+          <i data-lucide="plus" aria-hidden="true"></i>New Plan
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <h2 class="demo-heading">A long event name</h2>
+  <p class="lede">The title truncates with an ellipsis on desktop rather than pushing the swap
+  button away, and wraps instead of truncating on mobile.</p>
+  <section class="seating-header" aria-label="Seating plan header, long event name">
+    <div class="seating-header__bar">
+      <div class="seating-header__details">
+        <div class="seating-header__title-row">
+          <h2 class="seating-header__title">The Card &amp; Payments Awards 2026 — Winter Gala, Ceremony
+          and Industry Dinner, Grosvenor House</h2>
+          <button type="button" class="btn btn--secondary btn--icon btn--xs" aria-label="Switch event">
+            <i data-lucide="arrow-left-right" aria-hidden="true"></i>
+          </button>
+        </div>
+        <ul class="seating-header__meta">
+          <li class="seating-header__meta-item">
+            <i data-lucide="calendar" aria-hidden="true"></i>3 Feb 2026
+          </li>
+          <li class="seating-header__meta-item">
+            <i data-lucide="users" aria-hidden="true"></i>386 attendees
+          </li>
+          <li class="seating-header__meta-item">
+            <i data-lucide="map-pin" aria-hidden="true"></i>Grosvenor House, London
+          </li>
+        </ul>
+      </div>
+      <div class="seating-header__actions">
+        <button type="button" class="btn btn--secondary">
+          <i data-lucide="copy" aria-hidden="true"></i>Copy Plans
+        </button>
+        <button type="button" class="btn btn--primary">
+          <i data-lucide="plus" aria-hidden="true"></i>New Plan
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <h2 class="demo-heading">Many plans — the room selector scrolls</h2>
+  <p class="lede">Figma's own mobile variant overflows its frame with two cards, so more plans than
+  fit is the drawn state. The bar scrolls horizontally rather than wrapping, and
+  <strong>shows no scrollbar</strong> &mdash; which is what Figma draws. <strong>Drag it with the
+  mouse</strong> (the cursor turns to a grab handle only when there is somewhere to go), swipe it on
+  a touch screen, or just Tab through the cards and let focus pull them into view. A drag that ends
+  on a card deliberately does <em>not</em> activate it.</p>
+  <section class="seating-header" aria-label="Seating plan header, many plans">
+    <div class="seating-header__rooms">
+      <article class="room-card room-card--selected">
+        <div class="room-card__header">
+          <h3 class="room-card__name">
+            <button type="button" class="room-card__select">Main Ballroom</button>
+          </h3>
+          <div class="room-card__actions">
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Main Ballroom">
+              <i data-lucide="pencil" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Main Ballroom">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <div class="room-card__meta">
+          <p class="room-card__counts">12 tables · 0/148<span class="room-card__seated"> seated</span></p>
+          <p class="room-card__free">148 seats free</p>
+        </div>
+        <div class="room-card__progress" aria-hidden="true">
+          <div class="room-card__progress-fill"></div>
+        </div>
+      </article>
+      <article class="room-card" style="--room-card-progress: 41.2%">
+        <div class="room-card__header">
+          <h3 class="room-card__name">
+            <button type="button" class="room-card__select">Overflow Annex</button>
+          </h3>
+          <div class="room-card__actions">
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Overflow Annex">
+              <i data-lucide="pencil" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Overflow Annex">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <div class="room-card__meta">
+          <p class="room-card__counts">8 tables · 42/102<span class="room-card__seated"> seated</span></p>
+          <p class="room-card__free">60 seats free</p>
+        </div>
+        <div class="room-card__progress" aria-hidden="true">
+          <div class="room-card__progress-fill"></div>
+        </div>
+      </article>
+      <article class="room-card room-card--full" style="--room-card-progress: 100%">
+        <div class="room-card__header">
+          <h3 class="room-card__name">
+            <button type="button" class="room-card__select">Terrace Room</button>
+          </h3>
+          <div class="room-card__actions">
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Terrace Room">
+              <i data-lucide="pencil" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Terrace Room">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <div class="room-card__meta">
+          <p class="room-card__counts">5 tables · 60/60<span class="room-card__seated"> seated</span></p>
+          <p class="room-card__free">Full</p>
+        </div>
+        <div class="room-card__progress" aria-hidden="true">
+          <div class="room-card__progress-fill"></div>
+        </div>
+      </article>
+      <article class="room-card" style="--room-card-progress: 12%">
+        <div class="room-card__header">
+          <h3 class="room-card__name">
+            <button type="button" class="room-card__select">Mezzanine</button>
+          </h3>
+          <div class="room-card__actions">
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Mezzanine">
+              <i data-lucide="pencil" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Mezzanine">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <div class="room-card__meta">
+          <p class="room-card__counts">6 tables · 9/72<span class="room-card__seated"> seated</span></p>
+          <p class="room-card__free">63 seats free</p>
+        </div>
+        <div class="room-card__progress" aria-hidden="true">
+          <div class="room-card__progress-fill"></div>
+        </div>
+      </article>
+      <article class="room-card" style="--room-card-progress: 66%">
+        <div class="room-card__header">
+          <h3 class="room-card__name">
+            <button type="button" class="room-card__select">Garden Marquee</button>
+          </h3>
+          <div class="room-card__actions">
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Garden Marquee">
+              <i data-lucide="pencil" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Garden Marquee">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <div class="room-card__meta">
+          <p class="room-card__counts">10 tables · 79/120<span class="room-card__seated"> seated</span></p>
+          <p class="room-card__free">41 seats free</p>
+        </div>
+        <div class="room-card__progress" aria-hidden="true">
+          <div class="room-card__progress-fill"></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <h2 class="demo-heading">768&ndash;1023px &mdash; the toolbar stays compact</h2>
+  <p class="lede"><strong>Not a Figma variant.</strong> The toolbar carries far more than the bars
+  above it &mdash; room name, count, the switch, a divider, three buttons and the kebab &mdash; so it
+  runs out of room long before the event bar does. It therefore keeps its compact form (stacked room
+  label, no toggle or divider, two buttons) all the way to 1023px, while the event bar is already
+  back to its desktop row. <strong>1024px is the Seating Planner shell's own layout boundary</strong>
+  &mdash; the prototype switches to its worklist at the same width. The toolbar's padding
+  deliberately stays with its siblings, so all three regions keep a common inline padding.</p>
+  <div class="mobile-preview">
+    <iframe class="mobile-preview__frame mobile-preview__frame--tablet"
+            src="SeatingHeader.html?frame=mobile"
+            title="Seating Header at a 900px viewport" loading="lazy"></iframe>
+    <p class="mobile-preview__caption">Live 900px viewport &mdash; desktop event bar, compact
+    toolbar.</p>
+  </div>
+
+  <h2 class="demo-heading">Device=Mobile</h2>
+  <p class="lede">The bar stacks into three rows and the meta wraps; <strong>the primary "New Plan"
+  leads</strong> where desktop leads with "Copy Plans"; the toolbar drops the toggle and the
+  divider outright, "Room Layout" goes, "Add Table" shortens to "Add", and Export becomes
+  icon-only &mdash; though all of those toolbar changes now happen at <strong>1023px</strong>, not
+  767px, so they are already in effect in the preview above. The plans carousel is swipe-only here
+  &mdash; no scrollbar, exactly as Figma draws it.</p>
+  <div class="mobile-preview">
+    <iframe class="mobile-preview__frame" src="SeatingHeader.html?frame=mobile"
+            title="Seating Header at a 390px mobile viewport" loading="lazy"></iframe>
+    <p class="mobile-preview__caption">Live 390px viewport &mdash; the same page and the same CSS,
+    rendered in an iframe so <code>@media (max-width: 767px)</code> applies inside it.</p>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>if (window.lucide) lucide.createIcons();</script>
+  <!-- Toggle owns its own flip since 2026-08-26. Showing/hiding the unassigned tray is the
+       parent module's job, not this pattern's — listen for `toggle:change`. -->
+  <script src="../../components/Toggle/Toggle.js"></script>
+  <!-- Drag-to-scroll for the room-plans carousel, which hides its scrollbar. Touch swipes
+       natively and needs no JS; this adds mouse drag and the grab cursor. -->
+  <script src="SeatingHeader.js"></script>
+</body>
+</html>

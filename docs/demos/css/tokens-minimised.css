@@ -1,5 +1,10 @@
 [data-layout="minimised"] {
-  --ai-font-fixed-xxs: 0.75rem;
+  --ai-font-fixed-6xs: 0.5625rem;
+  --ai-font-fixed-5xs: 0.625rem;
+  --ai-font-fixed-4xs: 0.6875rem;
+  --ai-font-fixed-3xs: 0.75rem;
+  --ai-font-fixed-2xs: 0.75rem;
+  --ai-font-fixed-xxs: 0.8125rem;
   --ai-font-fixed-xs: 0.875rem;
   --ai-font-fixed-sm: 1rem;
   --ai-font-fixed-md: 1.125rem;
@@ -8,6 +13,10 @@
   --ai-font-fixed-2xl: 1.625rem;
   --ai-font-fixed-3xl: 1.75rem;
   --ai-font-fixed-4xl: 2rem;
+  --ai-font-fixed-5xl: 2.25rem;
+  --ai-font-fixed-6xl: 3rem;
+  --ai-font-fixed-7xl: 3.75rem;
+  --ai-font-fixed-8xl: 4.5rem;
   --ai-font-fluid-xxs: 0.75rem;
   --ai-font-fluid-xs: 0.875rem;
   --ai-font-fluid-sm: 0.875rem;
@@ -17,6 +26,7 @@
   --ai-font-fluid-2xl: 1.5rem;
   --ai-font-fluid-3xl: 1.625rem;
   --ai-font-fluid-4xl: 1.875rem;
+  --ai-leading-none: 1;
   --ai-leading-xs: 1rem;
   --ai-leading-sm: 1.25rem;
   --ai-leading-md: 1.5rem;

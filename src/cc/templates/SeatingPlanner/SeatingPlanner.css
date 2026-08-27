@@ -1,0 +1,597 @@
+/* SeatingPlanner — Seating Planner screen inside the CC app shell (Tier=Template)
+ * Figma: Lus07xi8pPXLN87sQIyrEt — one screen, several mutually-exclusive STATES:
+ *
+ *   "No Event"      3515:175956 desktop · 3515:213358 mobile   — the event gate
+ *   "Select Event"  3515:176032 desktop · 3515:228380 mobile   — + the EventPicker modal
+ *   "No Plan"       3515:176082 desktop · 3515:213400 mobile   — + SeatingHeader, no plans yet
+ *   "Create Plan"   3515:212885 desktop · 3515:228092 mobile   — + the create-plan modal
+ *   "…/ Help On & Errors" 3515:212593 desktop · 3515:212739 mobile — same modal, help + errors
+ *
+ * The states live in one page and are switched by `data-seating-state` (SeatingPlanner.js),
+ * because choosing an event genuinely advances No Event -> No Plan. `?state=no-plan` lands
+ * on one directly for review.
+ *
+ * Reuses the ControlScreen app-shell verbatim (../ControlScreen/ControlScreen.css):
+ * the icon rail, the chrome (CCTopNavigation), the desktop/mobile sidebar swap, the right
+ * ActionsMenu rail and the AiAssistant panel. Figma confirms that reuse rather than just
+ * permitting it — the sidebar's six glyphs are the same set ControlScreen already renders
+ * (SlidersVertical, UserCog, ChatNoAxesCombined, Star, Network, CircleUser), and the
+ * mobile frame drops the ActionsMenu and swaps the rail exactly as the shell's own
+ * `@media (max-width: 768px)` rules already do.
+ *
+ * This file adds ONLY the page-content classes: the full-height Container card and the
+ * "No event selected" empty state inside it.
+ *
+ * SHELL PAINT VALUES ARE FIGMA-BOUND, not layout-only (CLAUDE.md source-of-truth rule #5).
+ * Recorded from `get_design_context` on 3515:175977 / 3515:213363 before any CSS here:
+ *
+ *   | Wrapper        | Property     | Figma binding                        |
+ *   |----------------|--------------|--------------------------------------|
+ *   | page content   | background   | --cc-ui-primary-bg                   |
+ *   | page content   | padding      | --ai-spacing-7 / --ai-spacing-4 mob  |
+ *   | Container      | background   | --ai-datatable-table-bg (rebound)    |
+ *   | Container      | border       | --ai-border-secondary                |
+ *   | Container      | radius       | --ai-radius-lg                       |
+ *   | empty state    | padding      | --ai-spacing-7 inline / -11 block    |
+ *   | empty state    | gap          | --ai-spacing-4                       |
+ *
+ * The background is the shell's own and already correct — `.cc-control` paints
+ * --cc-ui-primary-bg, which is exactly what Figma binds here. Nothing to restate.
+ */
+
+/* ── Select Event modal scrim ───────────────────────────────────────────────
+ * Nothing here any more. The scrim moved into Modal.css on 2026-08-26 as a system-wide
+ * per-theme rule (navy for default/CC, black for chat; 0.5 light, 0.85 dark), because
+ * nothing about it was specific to seating. See the theme block in Modal.css.
+ *
+ * The overlay itself has always been Modal's `.modal-overlay` — fixed, centred,
+ * `--ai-spacing-6` padding, `display: none` until `--open`. All three already matched
+ * Figma's overlay frame exactly, so this template has never needed to touch it. */
+
+/* ── Chrome: no bottom rule ─────────────────────────────────────────────────
+ * The shell gives `.cc-control__chrome` a 1px `--ai-border-secondary` bottom rule. Figma's
+ * CCHeaderGroup on this screen is 48px with no rule, and it has nothing to separate: the
+ * top nav is dark (`--cc-header-primary-bg`) sitting directly on the light page, so the
+ * edge is already unambiguous and a light hairline just reads as a seam.
+ *
+ * Scoped with `:has()` rather than removed from the shell — ControlScreen and ControlHub
+ * keep theirs. The chrome and the page are siblings under `.cc-control__main`, so matching
+ * on the page's own modifier reaches the chrome without adding a class to the markup.
+ * (`:has()` is already used in this codebase — see RoomCard's focus ring.)
+ *
+ * This is also the 1px that had the chrome rendering 49 against Figma's 48. */
+.cc-control__main:has(.cc-control__page--seating) .cc-control__chrome {
+  border-block-end: 0;
+}
+
+/* ── Page padding + gap ─────────────────────────────────────────────────────
+ * The one place this screen departs from the shell. `.cc-control__page` gives
+ * --ai-spacing-6 (24px) padding and --ai-spacing-7 (32px) gap; Figma binds
+ * --ai-spacing-7 padding and --ai-spacing-5 (16px) gap, both dropping to --ai-spacing-4
+ * (12px) on mobile.
+ *
+ * The gap only started mattering on the No Plan state, which is the first with two page
+ * children (SeatingHeader + the card). On the No Event state there is one child, so the
+ * shell's 32px gap was invisible rather than correct — worth stating, because "it looked
+ * right" would have been a bad reason to leave it. */
+.cc-control__page--seating {
+  padding: var(--ai-spacing-7);
+  gap: var(--ai-spacing-5);
+  /* The shell reserves a stable 15px scrollbar gutter so a scrollbar appearing cannot
+   * shift the layout. That is right for ControlScreen and ControlHub, whose pages scroll —
+   * but this page never does: its single child fills it and owns its own scrolling (and
+   * the later screens scroll inside that card too). So the gutter would permanently
+   * reserve room for a scrollbar that cannot appear. Released, which is precisely the 15px
+   * that otherwise left the card at 1537 instead of Figma's 1552. */
+  scrollbar-gutter: auto;
+}
+
+/* ── The Container card ─────────────────────────────────────────────────────
+ * Figma's `Container`: flex-1 with min-height 0, so it fills the page rather than sizing
+ * to its contents. That is what makes the empty state centre in the viewport, and it is
+ * also what the later screens need — the seating layout scrolls inside this card, not
+ * down the page.
+ *
+ * `overflow: hidden` keeps future children (the plans carousel, the seat lists) inside the
+ * radius, the same reason TableListing and SeatingHeader carry it. */
+.seating-screen {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 0;
+  min-block-size: 0;
+  inline-size: 100%;
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-lg);
+  /* Figma binds --ai-datatable-table-bg (#ffffff) — a Datatables token doing a surface's
+   * job, the same slip found on SeatingToast. Rebound to the semantic equivalent
+   * (designer, 2026-08-26); identical value today. */
+  background-color: var(--ai-surface-primary);
+  overflow: hidden;
+}
+
+/* The No Plan state's card is the same box with a different treatment: a DASHED border and
+ * `--ai-shadow-xxs`, reading as a placeholder waiting to be filled rather than a populated
+ * surface. Same dashed-placeholder idea as Unassigned's empty state.
+ *
+ * Figma binds `--ai-surface-primary` directly here (not the Datatables token the No Event
+ * frame used) and leaves the radius as a raw `rounded-[16px]`, which is `--ai-radius-lg`
+ * exactly — so the base rule above already covers both. */
+.seating-screen--placeholder {
+  border-style: dashed;
+  box-shadow: var(--ai-shadow-xxs);
+}
+
+/* ── Empty states ───────────────────────────────────────────────────────────
+ * Two of them so far, sharing the centring and the 64px block padding, differing in their
+ * inline padding and in how their two lines are spaced. Each keeps exactly what its own
+ * frame binds:
+ *
+ *   --gate      No Event  · 32px inline · 12px gap · has an icon disc and a CTA
+ *   --no-plans  No Plan   · 24px inline · no gap, a 6px pad on the text instead
+ *
+ * `padding-inline` differs because Figma says so, not for a reason anyone has stated —
+ * worth a designer glance.
+ * Figma splits this from the Container as its own auto-layout child, and it is kept
+ * separate rather than merged: later screens put a different child in the same card, so
+ * the card and this state are genuinely two things.
+ *
+ * The inner padding is identical at both breakpoints — 32 inline / 64 block — which is
+ * worth stating because it would be easy to assume it tightens with the page padding. */
+.seating-screen__empty {
+  display: flex;
+  flex: 1 0 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* Both frames read py-[65px] / px-[25px] or px-[33px] — those are 64/24/32 PLUS the
+   * card's 1px stroke, the same stroke-inside-vs-added arithmetic decoded on SeatingToast. */
+  padding-block: var(--ai-spacing-11);
+  text-align: center;
+}
+
+.seating-screen__empty--gate {
+  gap: var(--ai-spacing-4);
+  padding-inline: var(--ai-spacing-7);
+}
+
+.seating-screen__empty--no-plans {
+  padding-inline: var(--ai-spacing-6);
+}
+
+/* A 48px brand-tinted disc. Figma names the frame "Text", which it is not. */
+.seating-screen__empty-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  /* 48px is --ai-spacing-9 exactly, so the size is on-scale despite reading as a raw
+   * `size-[48px]` in the design context. */
+  inline-size: var(--ai-spacing-9);
+  block-size: var(--ai-spacing-9);
+  border-radius: var(--ai-radius-full);
+  background-color: var(--ai-surface-brand-soft-extra);
+  /* Figma binds --ai-surface-brand for the glyph. Unlike the success/error icons on
+   * SeatingToast — where the icon scale genuinely has no entry — `--ai-icon-brand` DOES
+   * exist and carries the identical #0094ad, so this is a rebind rather than a gap
+   * (designer, 2026-08-26). */
+  color: var(--ai-icon-brand);
+}
+
+.seating-screen__empty-icon [data-lucide],
+.seating-screen__empty-icon svg {
+  inline-size: var(--ai-icon-size-lg);
+  block-size: var(--ai-icon-size-lg);
+}
+
+.seating-screen__empty-title {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-md);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+}
+
+/* UNIFIED across both empty states at the designer's direction 2026-08-26. The two frames
+ * disagreed: the No Event state binds --ai-font-title with --ai-leading-md (24px), the No
+ * Plan state --ai-font-body with --ai-leading-sm (20px). Body/20 won, so this is one rule
+ * rather than two — and the No Event state's desktop leading tightens 24 -> 20 as a result.
+ *
+ * Colour is --ai-text-secondary everywhere. The No Plan DESKTOP frame binds
+ * --ai-text-contrast, but its own mobile frame and both No Event frames say secondary, so
+ * the desktop frame is the outlier (designer, 2026-08-26). Worth fixing in Figma.
+ *
+ * The No Plan frames cap the line at 512px, which is --ai-size-9 exactly. Applied to both:
+ * a centred sentence wants a measure regardless of state, and the No Event copy is shorter
+ * than the cap so nothing changes there. Figma marks these nowrap; left wrapping, since the
+ * cap plus real copy never reaches two lines on desktop and mobile is meant to wrap. */
+.seating-screen__empty-text {
+  margin: 0;
+  max-inline-size: var(--ai-size-9);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-secondary);
+}
+
+/* Figma spaces the No Plan lines with a 6px pad on the second paragraph instead of a
+ * container gap — `pt-[6px]`, which is --ai-spacing-2 exactly. */
+.seating-screen__empty--no-plans .seating-screen__empty-text {
+  padding-block-start: var(--ai-spacing-2);
+}
+
+/* ── Narrow ─────────────────────────────────────────────────────────────────
+ * Was `@media (max-width: 767px)`, on the reasoning that the page cannot query the container
+ * it establishes so both rules had to share one mechanism. **That reasoning is now void**:
+ * ControlScreen names an OUTER container `cs-main` (2026-08-27), so the page can respond to
+ * its real available width.
+ *
+ * It had to change, not merely could. Measured on the live page: a docked SidebarMenu at a
+ * 2239px viewport left this column 820px wide and NO viewport query fired, so the page kept
+ * 32px padding and every child kept its widest layout. Figma's mobile frame being a 402px
+ * viewport describes the intent, not the trigger — the trigger is available width. */
+@container cs-main (max-width: 767px) {
+  .cc-control__page--seating {
+    padding: var(--ai-spacing-4);
+    gap: var(--ai-spacing-4);
+  }
+
+  .seating-screen__empty-title {
+    font-size: var(--ai-font-fixed-sm);
+  }
+
+  /* Only the size steps down now. Both states' mobile frames already bound
+   * --ai-leading-sm, so unifying the base on 20px made the leading override redundant. */
+  .seating-screen__empty-text {
+    font-size: var(--ai-font-fixed-xxs);
+  }
+}
+
+/* ── Create Plan modal form ─────────────────────────────────────────────────
+ * Figma 3515:212885 / 3515:228092 (help off) and 3515:212593 / 3515:212739 (help on +
+ * errors). The modal itself is Modal + ModalHeader/Body/Footer, all of which already
+ * matched Figma exactly — header/footer padding 16/24, body padding 24 with a 16px gap,
+ * a 20px close icon. Modal gained only `__title-block` / `__subtitle`. So the CSS here is
+ * the FORM's own layout and nothing else.
+ *
+ * A real 3-column grid, which is what Figma binds — not a flex row per line:
+ *   grid-cols-[repeat(3,minmax(0,1fr))], gap-x 12px, gap-y 16px
+ * Plan name and Room/location span all three; Tables / Seats / Shape take one each. Rows
+ * are content-height rather than Figma's fixed 64/56px, because the help and error lines
+ * grow them (Figma's own help-on frame shows 88 and 104px rows for the same inputs). */
+.create-plan__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: var(--ai-spacing-4);
+  row-gap: var(--ai-spacing-5);
+  inline-size: 100%;
+}
+
+.create-plan__grid > .create-plan__wide {
+  grid-column: 1 / -1;
+}
+
+/* The Content Slot is the positioning context: Figma places the toggle `absolute right-0
+ * top-0`, so it sits on the same line as the first field's label rather than in the flow.
+ * (Its mobile frame reads `right-[1760px]`, which is Figma junk — the rendered position is
+ * right-aligned in both.) */
+.create-plan__form {
+  position: relative;
+  inline-size: 100%;
+}
+
+.create-plan__help-toggle {
+  position: absolute;
+  inset-inline-end: 0;
+  inset-block-start: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  /* Figma's `py-[--ai-spacing-px]` — a 1px nudge so the 12px-tall track optically centres
+   * against the 16px label line. */
+  padding-block: var(--ai-spacing-px);
+}
+
+/* 11px, not the 12px TableListing's toggle label uses — this frame binds
+ * --ai-font-fixed-4xs. Worth a designer glance that two toggle labels differ. */
+.create-plan__help-label {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-4xs);
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* HELP vs ERROR visibility.
+ *
+ * Both use Input's own `__help` element — that is how the component works, and how Figma
+ * draws it: `.input--error .input__help` turns red, so an error message and a hint are the
+ * same line in two colours.
+ *
+ * Which means the "Show help" toggle must NOT hide error messages. Only non-error help
+ * lines are hidden when the toggle is off. Figma never draws help-off-with-errors, so this
+ * is a reasoned call rather than a copied one: an error you cannot see is worse than a
+ * hint you did not ask for. Flagged in figma-notes.
+ *
+ * Keyed on `[data-cp-field]`, NOT on `.input`. Table Shape is a Select, so its wrapper is
+ * `.create-plan__shape` — a `.input`-based selector silently missed it and its help line
+ * showed permanently, whatever the toggle said. The data hook is on all five fields whatever
+ * component each one uses, which is precisely why it is the right thing to select on. */
+.create-plan__form:not(.create-plan__form--help) [data-cp-field]:not(.input--error) .input__help {
+  display: none;
+}
+
+/* Empty help lines never render. Figma gives help copy for only three of the five fields —
+ * Plan name and Seats/table show ERRORS in the one help-on frame, which masks whatever hint
+ * they may have — so those two ship with an empty help element that validation fills.
+ * `:empty` keeps them from reserving a 16px line in the meantime. */
+.create-plan__form .input__help:empty {
+  display: none;
+}
+
+/* ── Create Plan modal: compact size ───────────────────────────────────────
+ * Figma's mobile frame puts every Input at `input--sm` and both footer buttons at
+ * `btn--sm`. Neither can be added as a class from a media query, so their geometry is
+ * replicated — the same approach SeatingHeader's export button needed.
+ *
+ * 639px, matching Modal's own breakpoint (extended in Modal.css for this screen), so the
+ * whole modal — padding, type, fields, buttons — switches at one width rather than two. */
+/* Genuinely @media, and it must stay that way: the create-plan overlay is `position: fixed`
+ * on <body>, OUTSIDE `.cc-control__main`, so it is not a descendant of cs-main or cs-page and
+ * cannot query either. A fixed overlay is sized by the viewport, so the viewport is also the
+ * correct signal. Verified in the DOM 2026-08-27 — do not "fix" this one. */
+@media (max-width: 639px) {
+  .create-plan__grid .input__wrap {
+    min-height: var(--ai-spacing-7);
+    padding: 0 var(--ai-spacing-3);
+    gap: var(--ai-spacing-2);
+  }
+
+  /* The sm replication above is a MEDIA QUERY, not the `input--sm` class, so
+   * `.input--sm .input__step` in Input.css never fires here and the stepper buttons would
+   * stay 40px wide inside a 32px-tall wrap. Same reason the two rules above exist at all.
+   * The padding reset matters just as much: `.create-plan__grid .input__wrap` above has the
+   * same specificity as Input.css's `.input--stepper .input__wrap` but loads later, so it
+   * would win and re-introduce the 8px side padding that the flush buttons need at zero. */
+  .create-plan__grid .input--stepper .input__wrap {
+    padding: 0;
+    gap: 0;
+  }
+
+  .create-plan__grid .input--stepper .input__step {
+    inline-size: var(--ai-spacing-7);
+  }
+
+  /* Select's own sm control, to match the Inputs beside it. */
+  .create-plan__shape .sel__control {
+    min-height: var(--ai-spacing-7);
+    padding-block: 0;
+  }
+
+  .create-plan__footer .btn {
+    min-height: var(--ai-spacing-7);
+    padding: 0 var(--ai-spacing-4);
+    font-size: var(--ai-font-fluid-xxs);
+    border-radius: var(--ai-radius-md);
+  }
+}
+
+/* Table Shape is a Select rather than an Input, so it needs the column layout `.input`
+ * gives its siblings: label, control, help — stacked with the same 8px gap, so the three
+ * fields in that grid row align on every line. */
+.create-plan__shape {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+  min-inline-size: 0;
+}
+
+/* `.sel` brings its own label+control gap; the wrapper above already provides it, and
+ * doubling would push the control 8px below its neighbours. */
+.create-plan__shape .sel {
+  gap: var(--ai-spacing-3);
+  min-inline-size: 0;
+}
+
+/* Number fields: the native spinner is kept — it is the affordance that makes a number
+ * field legible as one, and the designer asked for number fields specifically. Figma draws
+ * no spinner, but Figma would not render one either way, so this is not a divergence from
+ * an instruction. Only the Firefox default of reserving spinner space unconditionally is
+ * normalised, so the value does not sit off-centre against the text fields beside it. */
+.create-plan__grid input[type="number"] {
+  min-inline-size: 0;
+}
+
+/* ── State: Plan selected ───────────────────────────────────────────────────
+ * Figma 3515:177748 (desktop) · 3515:213426 (mobile) · 3515:228026 (mobile, tapped)
+ *
+ * Frame 245 (3515:177773) is 1552 wide and lays out exactly:
+ *     listing 1212 · gap 8 · pill 4 · gap 8 · detail 320
+ * Every one of those traces to a token read from get_variable_defs on that frame:
+ * the gaps are --ai-spacing-3 (8), the pill is --ai-spacing-1 (4) at --ai-radius-full,
+ * and the detail width is --ai-size-6 (320) — Figma binds the size token, so the panel
+ * width is NOT a hardcoded 320. 1212 is simply what is left over, so the listing fills.
+ *
+ * The row itself has NO gap. The handle's own inline padding provides Figma's 8px on each
+ * side of the pill, which makes the drag target 20px wide while the visible bar stays 4px —
+ * the standard way to build a splitter, and it reproduces Figma's whitespace exactly rather
+ * than adding a hit area on top of it. */
+
+.seating-plan {
+  display: flex;
+  /* No gap — see above; the handle's padding is the gap. */
+  gap: 0;
+  /* Fills the page beside the header, and owns its own scrolling, exactly like the
+   * single-child screens before it. min-block-size:0 is what lets the children scroll
+   * instead of stretching the row (app-shell height trap). */
+  flex: 1 0 0;
+  min-block-size: 0;
+}
+
+.seating-plan > .table-listing {
+  flex: 1 1 auto;
+  /* Without this the grid's own min-content floor would stop the listing ever yielding
+   * width to the detail panel. */
+  min-inline-size: 0;
+  min-block-size: 0;
+}
+
+/* ── Scrolling: two models, one per layout ──────────────────────────────────
+ * SIDE BY SIDE — the listing's height is constrained by the row (so the detail panel stays put
+ * beside it), which means the CARD GRID has to be the scroller. TableListing itself sets
+ * `overflow: hidden` on its root to clip card shadows inside its radius and provides no internal
+ * scroller, so without this the grid is simply clipped and the tables below the fold are
+ * unreachable. Measured 2026-08-27: a 1816px grid inside a 715px listing with nothing scrolling.
+ *
+ * That is only latent on this screen today — 12 cards in a 4-column grid happen to fit — but it
+ * bites the moment a plan has more tables. The scroller lives here rather than in TableListing
+ * because this template is what constrains the height; the component's own demo is auto-height
+ * and must stay unopinionated. */
+.seating-plan > .table-listing .table-listing__grid {
+  flex: 1 1 auto;
+  min-block-size: 0;
+  overflow-y: auto;
+  /* Paired deliberately: `overflow-y: auto` alone computes overflow-x to `auto` too, which would
+   * offer a pointless horizontal scrollbar. The root already clips shadows, so clipping here
+   * costs nothing. */
+  overflow-x: hidden;
+}
+
+.seating-plan__aside {
+  flex: 0 0 auto;
+  /* --sp-aside-w is set by the drag handle at runtime; --ai-size-6 (320) is Figma's value
+   * and the reset target. */
+  inline-size: var(--sp-aside-w, var(--ai-size-6));
+  min-inline-size: 0;
+  display: flex;
+  min-block-size: 0;
+}
+
+.seating-plan__aside > .table-detail {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+}
+
+/* ── The resize handle ──────────────────────────────────────────────────────
+ * Figma draws the pill but cannot express interaction, and the designer confirmed it IS a
+ * drag handle (2026-08-27). They asked whether highlighting the panel edge would be better
+ * practice instead: it would not, on its own — an edge that only reacts on hover is
+ * undiscoverable, since nothing tells you it can be dragged until you happen to land on the
+ * exact few pixels. Keeping Figma's always-visible pill AND highlighting it on
+ * hover/focus/drag gives both: a discoverable affordance and the edge feedback. */
+
+.seating-plan__handle {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  padding-inline: var(--ai-spacing-3);   /* 8px each side — Figma's gap, as the hit area */
+  cursor: col-resize;
+  /* Stops a touch drag scrolling the page instead of moving the handle. */
+  touch-action: none;
+  background: none;
+  border: 0;
+}
+
+.seating-plan__handle-bar {
+  inline-size: var(--ai-spacing-1);      /* 4px */
+  border-radius: var(--ai-radius-full);
+  /* Figma binds --cc-actions-menu-primary-bg here — the ACTIONS MENU's background token, on a
+   * splitter in the page body. Its value is identical to --ai-surface-contrast in all six
+   * modes, so this is a value-preserving swap to the generic family that belongs in a page
+   * body. Flagged for the designer to repoint the Figma binding. */
+  background-color: var(--ai-surface-contrast);
+  transition: background-color var(--ai-transition-default);
+}
+
+/* Figma specifies no hover/active state for the pill — this is an added interactive state,
+ * flagged in figma-notes. --ai-border-brand is the same token the selected TableCard and
+ * RoomCard use for their brand edge, so the handle reads as part of the same language. */
+.seating-plan__handle:hover .seating-plan__handle-bar,
+.seating-plan__handle[data-dragging] .seating-plan__handle-bar {
+  background-color: var(--ai-border-brand);
+}
+
+/* The bar takes the focus ring rather than the 20px hit area, so the indicator sits on the
+ * thing the user is about to move. Not suppressed — a keyboard user resizes with the arrow
+ * keys and needs to know the handle has focus. */
+.seating-plan__handle:focus-visible {
+  outline: none;
+}
+
+.seating-plan__handle:focus-visible .seating-plan__handle-bar {
+  background-color: var(--ai-border-brand);
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: 2px;
+}
+
+/* ── Device: Mobile ────────────────────────────────────────────────────────
+ * Both mobile frames drop the side panel entirely: the listing is full width, there is no
+ * pill, and a tapped table's detail appears INSIDE the card grid directly beneath it
+ * (3515:228026 puts a Table Detail instance between two Table Cards). SeatingPlanner.js
+ * moves the one detail element between here and the aside, so there is a single instance
+ * rather than two copies to keep in sync.
+ *
+ * Nothing is needed to hide the detail's header on mobile — TableDetail's own Device=Mobile
+ * variants already drop it, and that is already in TableDetail.css. The card above supplies
+ * the name and count, which is exactly why Figma drops it. */
+/* 1023, not 767. Two panels need roughly 1024 of column before the listing stops being usable:
+ * at a 1024 container the row is 960 and the listing gets 620 (two card columns), while at 768
+ * it would get 364 — one cramped column beside a full-width detail. 1023 also matches the band
+ * SeatingHeader's own toolbar already uses and the 1023 the prototype shell uses, so the whole
+ * screen changes mode at one width instead of three.
+ *
+ * `cs-page` because `.seating-plan` is a CHILD of the page — it may query the page's container
+ * freely; only the page itself may not. */
+@container cs-page (max-width: 1023px) {
+  .seating-plan {
+    flex-direction: column;
+    /* STACKED — the other scroll model: the PAGE scrolls and this row is its natural height.
+     * `flex: 1 0 0` pinned the row to the page height, so the stacked listing was clipped to it
+     * and the page had nothing left to scroll — the tables below the fold could not be reached
+     * at all. Figma's mobile frames show exactly page-scrolling: the listing is 2019px tall in an
+     * 874px frame, and in the tapped frame it sits at y=-79 because the page has scrolled.
+     *
+     * This clipping predates the container-query change — it was already wrong at a 402px
+     * viewport — but that change made the stacked layout reachable at any column ≤1023, so it
+     * stopped being a phone-only problem. */
+    flex: 0 0 auto;
+  }
+
+  /* Hand the scrolling back to the page: the grid must grow to its content here, not scroll
+   * inside a box that is no longer height-constrained. */
+  .seating-plan > .table-listing .table-listing__grid {
+    flex: 0 0 auto;
+    overflow: visible;
+    min-block-size: auto;
+  }
+
+  .seating-plan__handle,
+  .seating-plan__aside {
+    display: none;
+  }
+
+  /* Header hidden by PLACEMENT, not by width. TableDetail keys its own header rule on
+   * `cs-page (max-width: 767px)`, but this row stacks at 1023 — so between 768 and 1023 the
+   * inline detail would have shown a header duplicating the card right above it. Placement is
+   * the real condition anyway: the header is redundant precisely because a card supplies the
+   * name and count, which is exactly when the detail sits inside the grid. */
+  .table-listing__grid > .table-detail .table-detail__header {
+    display: none;
+  }
+
+  /* CASE B contextual override, flagged to the designer 2026-08-27.
+   * TableDetail sets `inline-size: var(--ai-size-6)` — a fixed 320 at BOTH breakpoints, and
+   * its own notes call that out as deliberate. But Figma's mobile instance (3515:228045) is
+   * 302 wide, i.e. the grid column, because Figma resized the instance. Left at 320 it
+   * measurably overflows: 320 in a 300px column. So the width is overridden here, scoped to
+   * the grid, rather than changed in the component — a side panel elsewhere still wants 320. */
+  .table-listing__grid > .table-detail {
+    grid-column: 1 / -1;
+    inline-size: 100%;
+    min-inline-size: 0;
+  }
+}

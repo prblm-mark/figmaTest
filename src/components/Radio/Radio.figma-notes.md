@@ -21,7 +21,7 @@
 | Element | Class | Visibility | Notes |
 |---|---|---|---|
 | Label text | `.radio__label` | Always shown | `--ai-text-primary`, `--ai-font-fixed-xs` |
-| Helper text | `.radio__helper` | Optional | `--ai-text-contrast`, `--ai-font-fixed-xxs`. Remove from HTML to hide |
+| Helper text | `.radio__helper` | Optional | `--ai-text-contrast`, `--ai-font-fixed-2xs`. Remove from HTML to hide |
 
 ### Usage examples
 
@@ -110,7 +110,7 @@
 | Label text color     | `--ai-text-primary`              |
 | Helper text color    | `--ai-text-contrast`             |
 | Label font size      | `--ai-font-fixed-xs`             |
-| Helper font size     | `--ai-font-fixed-xxs`            |
+| Helper font size     | `--ai-font-fixed-2xs`            |
 | Indicator radius     | `--ai-radius-full`               |
 | Wrapper gap          | `--ai-spacing-3`                 |
 | Label gap            | `--ai-spacing-1`                 |

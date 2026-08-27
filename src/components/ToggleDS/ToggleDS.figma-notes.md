@@ -29,7 +29,7 @@
 | Element | Class | Visibility | Notes |
 |---|---|---|---|
 | Label text | `.toggle-ds__label` | Always shown | SM: `--ai-font-fixed-xs`; Default/LG: `--ai-font-fixed-sm` |
-| Helper text | `.toggle-ds__helper` | Optional | SM: `--ai-font-fixed-xxs`; Default/LG: `--ai-font-fixed-xs`. Remove from HTML to hide |
+| Helper text | `.toggle-ds__helper` | Optional | SM: `--ai-font-fixed-2xs`; Default/LG: `--ai-font-fixed-xs`. Remove from HTML to hide |
 
 ### Usage examples
 
@@ -139,7 +139,7 @@
 | Label text color     | `--ai-text-primary`              |
 | Helper text color    | `--ai-text-contrast`             |
 | SM label font size   | `--ai-font-fixed-xs`             |
-| SM helper font size  | `--ai-font-fixed-xxs`            |
+| SM helper font size  | `--ai-font-fixed-2xs`            |
 | Default/LG label     | `--ai-font-fixed-sm`             |
 | Default/LG helper    | `--ai-font-fixed-xs`             |
 | Wrapper gap          | `--ai-spacing-3`                 |

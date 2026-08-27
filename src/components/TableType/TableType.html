@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TableType — Affino Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="TableType.css">
+  <style>
+    body {
+      margin: 0;
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-minimal);
+      font-family: var(--ai-font-body);
+      color: var(--ai-text-primary);
+    }
+    h1 { font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-xl); margin: 0 0 var(--ai-spacing-2); }
+    h2 {
+      font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-md);
+      margin: var(--ai-spacing-8) 0 var(--ai-spacing-1);
+    }
+    .lede { color: var(--ai-text-contrast); font-size: var(--ai-font-fixed-xs); margin: 0 0 var(--ai-spacing-5); max-width: 70ch; }
+    .demo-row {
+      display: flex; gap: var(--ai-spacing-4); align-items: center; flex-wrap: wrap;
+      padding: var(--ai-spacing-5);
+      background: var(--ai-surface-primary);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-md);
+    }
+    .demo-row--on-tint { background: var(--ai-surface-secondary); }
+    .demo-row-label {
+      font-size: var(--ai-font-fixed-2xs); font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast); text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: var(--ai-spacing-2);
+    }
+    .picker {
+      display: flex; gap: var(--ai-spacing-4); align-items: center; flex-wrap: wrap;
+      padding: var(--ai-spacing-5);
+      background: var(--ai-surface-primary);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-md);
+    }
+    .picker input[type="color"] {
+      inline-size: var(--ai-spacing-8); block-size: var(--ai-spacing-8);
+      padding: 0; border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-sm); background: none; cursor: pointer;
+    }
+    .picker code {
+      font-size: var(--ai-font-fixed-2xs); color: var(--ai-text-secondary);
+    }
+  </style>
+</head>
+<body>
+  <h1>TableType</h1>
+  <p class="lede">Table tier label for the Seating Planner. The tier colour is picked by the user
+  at runtime — one custom property (<code>--table-type-color</code>) drives the background,
+  border and text, so any colour produces a coherent pill.</p>
+
+  <h2>Tier presets</h2>
+  <p class="lede">All five Figma variants. Type = VIP · Head Table · Gold · Silver · Bronze.</p>
+  <p class="demo-row-label">On surface-primary</p>
+  <div class="demo-row">
+    <span class="table-type table-type--vip">VIP</span>
+    <span class="table-type table-type--head-table">Head Table</span>
+    <span class="table-type table-type--gold">Gold</span>
+    <span class="table-type table-type--silver">Silver</span>
+    <span class="table-type table-type--bronze">Bronze</span>
+  </div>
+
+  <h2>On a tinted ground</h2>
+  <p class="lede">The pill composites against pure white by design, so it does not adapt to the
+  surface beneath it. Worth checking it still reads on a tinted section background.</p>
+  <div class="demo-row demo-row--on-tint">
+    <span class="table-type table-type--vip">VIP</span>
+    <span class="table-type table-type--head-table">Head Table</span>
+    <span class="table-type table-type--gold">Gold</span>
+    <span class="table-type table-type--silver">Silver</span>
+    <span class="table-type table-type--bronze">Bronze</span>
+  </div>
+
+  <h2>Default, with no modifier</h2>
+  <p class="lede">Falls back to the VIP colour, matching Figma's default variant.</p>
+  <div class="demo-row">
+    <span class="table-type">No modifier</span>
+  </div>
+
+  <h2>Arbitrary colour from a picker</h2>
+  <p class="lede">This is the real usage: the product sets <code>--table-type-color</code> from a
+  colour picker and the three derived paints follow. Change the swatch to confirm the formula
+  holds for any hue.</p>
+  <div class="picker">
+    <input type="color" id="tierColor" value="#5c7c2f" aria-label="Tier colour">
+    <span class="table-type" id="livePill" style="--table-type-color: #5c7c2f">Press Table</span>
+    <code id="liveOut"></code>
+  </div>
+
+  <h2>Long and short labels</h2>
+  <p class="lede">The pill is content-sized with <code>white-space: nowrap</code>, so it grows
+  with its label rather than truncating.</p>
+  <div class="demo-row">
+    <span class="table-type table-type--gold">A</span>
+    <span class="table-type table-type--gold">Gold</span>
+    <span class="table-type table-type--gold">Head Table Reserved</span>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    if (window.lucide) lucide.createIcons();
+
+    // Live picker — mirrors how the product will drive the component.
+    const input = document.getElementById('tierColor');
+    const pill  = document.getElementById('livePill');
+    const out   = document.getElementById('liveOut');
+    function sync() {
+      pill.style.setProperty('--table-type-color', input.value);
+      const cs = getComputedStyle(pill);
+      out.textContent = `bg ${cs.backgroundColor} · border ${cs.borderTopColor} · text ${cs.color}`;
+    }
+    input.addEventListener('input', sync);
+    sync();
+  </script>
+</body>
+</html>

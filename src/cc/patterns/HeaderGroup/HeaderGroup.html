@@ -1105,17 +1105,7 @@
     })();
   </script>
 
-  <!-- Toggle click handler — event-delegated so it works for both existing
-       and dynamically-injected .toggle elements (the user-menu wrap above
-       creates new toggles after page parse). -->
-  <script>
-    document.addEventListener('click', function (e) {
-      var toggle = e.target.closest('.toggle:not(.toggle--disabled)');
-      if (!toggle) return;
-      var isActive = toggle.classList.toggle('toggle--active');
-      toggle.setAttribute('aria-checked', String(isActive));
-    });
-  </script>
+  <script src="../../../components/Toggle/Toggle.js"></script>
   <script src="../../../components/ThemeToggle/ThemeToggle.js"></script>
   <script type="module" src="../../../components/Dropdown/Dropdown.js"></script>
   <script src="HeaderGroup.js"></script>

@@ -77,7 +77,7 @@
   border: 0;
   border-radius: var(--ai-radius-md);
   font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-xxs);
+  font-size: var(--ai-font-fixed-2xs);
   font-weight: var(--ai-font-semibold);
   color: var(--ai-btn-primary-text);
   cursor: pointer;
@@ -351,7 +351,7 @@
 .search--sm .search__action {
   height: calc(var(--ai-spacing-7) - 4px);
   padding: 0 var(--ai-spacing-3);
-  font-size: var(--ai-font-fixed-xxs);
+  font-size: var(--ai-font-fixed-2xs);
 }
 
 .search--sm .search__action--icon-only {
@@ -362,7 +362,7 @@
 .search-split--sm .search-split__btn {
   min-height: var(--ai-spacing-7);
   padding: 0 var(--ai-spacing-4);
-  font-size: var(--ai-font-fixed-xxs);
+  font-size: var(--ai-font-fixed-2xs);
 }
 
 .search-split--sm .search-split__btn--icon-only {
@@ -373,7 +373,7 @@
 .search-group--sm .search-group__dropdown,
 .search-group--sm .search-group__action {
   min-height: var(--ai-spacing-7);
-  font-size: var(--ai-font-fixed-xxs);
+  font-size: var(--ai-font-fixed-2xs);
   padding: 0 var(--ai-spacing-3);
 }
 

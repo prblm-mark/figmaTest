@@ -229,6 +229,7 @@
 
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>lucide.createIcons();</script>
+  <script src="../../components/Toggle/Toggle.js"></script>
 
   <script>
     // ── Drag to move ──────────────────────────────────────
@@ -365,14 +366,6 @@
           d.closest('.style-settings__select-wrap').querySelector('.style-settings__select').setAttribute('aria-expanded', 'false');
         });
       }
-    });
-
-    // ── Toggle switches ─────────────────────────────────
-    document.querySelectorAll('.toggle:not(.toggle--disabled)').forEach(function (toggle) {
-      toggle.addEventListener('click', function () {
-        var isActive = toggle.classList.toggle('toggle--active');
-        toggle.setAttribute('aria-checked', String(isActive));
-      });
     });
 
     // ── Reset button ────────────────────────────────────

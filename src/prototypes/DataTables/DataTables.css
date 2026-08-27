@@ -44,7 +44,7 @@ body {
 
 .dt-section__label {
   margin: 0;
-  font-size: var(--ai-font-fixed-xxs);
+  font-size: var(--ai-font-fixed-2xs);
   font-weight: var(--ai-font-semibold);
   color: var(--ai-text-contrast);
   text-transform: uppercase;
@@ -308,7 +308,7 @@ body {
 }
 
 .dt-row-detail__list dt {
-  font-size: var(--ai-font-fixed-xxs);
+  font-size: var(--ai-font-fixed-2xs);
   font-weight: var(--ai-font-semibold);
   color: var(--ai-text-contrast);
   text-transform: uppercase;

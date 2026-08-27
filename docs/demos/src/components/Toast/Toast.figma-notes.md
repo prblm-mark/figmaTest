@@ -60,7 +60,7 @@ Typography (all toast text uses `--ai-font-title` in Figma):
 | status message | `--ai-font-fixed-xs` (14) | regular | `--ai-leading-sm` (20) — user override (Figma: leading-md/24) | primary / status |
 | notification name | `--ai-font-fixed-sm` (16) | semibold | `--ai-leading-md` (24) | `--ai-text-primary` |
 | notification message | `--ai-font-fixed-xs` (14) | regular | `--ai-leading-sm` (20) | `--ai-text-secondary` |
-| notification time | `--ai-font-fixed-xxs` (12) | medium | `--ai-leading-md` (24) | `--ai-text-brand` |
+| notification time | `--ai-font-fixed-2xs` (12) | medium | `--ai-leading-md` (24) | `--ai-text-brand` |
 | interactive title | `--ai-font-fixed-sm` (16) | semibold | `--ai-leading-md` (24) | `--ai-text-primary`, letter-spacing `--ai-tracking-5` |
 | interactive body | `--ai-font-fixed-xs` (14) | regular | `--ai-leading-sm` (20) | `--ai-text-secondary` |
 

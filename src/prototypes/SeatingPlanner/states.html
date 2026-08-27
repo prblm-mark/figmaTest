@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Seating Planner — all prototype states</title>
+
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/Badge/Badge.css">
+  <link rel="stylesheet" href="../../components/ActionCard/ActionCard.css">
+  <link rel="stylesheet" href="SeatingPlanner.css">
+</head>
+<body>
+
+  <!-- Index of every prototype state, so the whole module is reviewable from
+       demo > Prototypes without knowing the filenames. Deliberately NOT
+       captured to Figma — it's navigation, not a screen. -->
+  <main class="sp-ws">
+
+    <section class="sp-card sp-eventbar">
+      <div class="sp-eventbar__top">
+        <div class="sp-eventbar__main">
+          <h1 class="sp-eventbar__name">Seating Planner</h1>
+          <ul class="sp-eventbar__meta">
+            <li><i data-lucide="folder" aria-hidden="true"></i>Control &gt; CRM &gt; Seating Planner</li>
+            <li><i data-lucide="layout-grid" aria-hidden="true"></i>38 states · worklist adopted</li>
+          </ul>
+        </div>
+        <span class="badge badge--border badge--neutral badge--sm">Prototype</span>
+      </div>
+    </section>
+
+    <div class="sp-states">
+
+      <section class="sp-states__group">
+        <h2 class="sp-states__title">
+          Main interface
+          <span class="badge badge--success badge--sm">Adopted</span>
+        </h2>
+        <p class="sp-states__note">TASK-344753. The worklist layout, chosen 31 Jul 2026 from three
+          alternatives and now the only one: tables list · table detail · unassigned, each region owning
+          its own scroller so the page never scrolls and both ends of a drag stay on screen. The detail
+          column and the pool drag wider from their 320px minimums; the tables list flips between rows and
+          cards; below 1024 the pool goes (drag and drop does not exist on touch) and the table detail
+          opens inline beneath the row you tapped. <strong>All 13 sub-tasks are wired here</strong> — every
+          control opens its own popup, nothing announces an unbuilt task.</p>
+        <nav class="sp-states__list">
+          <a class="action-card action-card--chevron" href="workspace.html">
+            <span class="action-card__title">Workspace — the main interface</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+        </nav>
+      </section>
+
+      <section class="sp-states__group">
+        <h2 class="sp-states__title">
+          Toolbar at mobile — options to review
+          <span class="badge badge--warning badge--sm">Open</span>
+        </h2>
+        <p class="sp-states__note">The action bar wraps to three ragged lines below 640px. Its cause is
+          precise rather than general crowding: <code>.sp-toolbar__spacer</code> is <code>flex: 1</code>
+          in a wrapping row, so on a wrapped line it collapses to 4px instead of forcing a break — which
+          is why &ldquo;Only free seats&rdquo; sits against the <em>title</em> rather than with the
+          controls. Three options built as working files; <strong>start with the compare board</strong>,
+          which carries the measured numbers and the trade-offs.
+          <strong>Scope note:</strong> the toolbar is 112px of the 496px above the first table card, so
+          none of these fixes more than a fifth of the mobile problem — the 274px event bar is the bigger
+          offender and is still untouched.</p>
+        <nav class="sp-states__list">
+          <a class="action-card action-card--chevron" href="toolbar-compare.html">
+            <span class="action-card__title">Compare all three — measured, side by side</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="toolbar-a-overflow.html">
+            <span class="action-card__title">A — overflow menu (+48px, 2 lines)</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="toolbar-c-bottombar.html">
+            <span class="action-card__title">C — sticky bottom bar (reach, not space)</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="toolbar-e-planscope.html">
+            <span class="action-card__title">E — plan settings on the plan (+48px, nothing hidden)</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+        </nav>
+      </section>
+
+      <section class="sp-states__group">
+        <h2 class="sp-states__title">
+          Screen 1 — Event picker
+          <span class="badge badge--success badge--sm">Shipped</span>
+        </h2>
+        <p class="sp-states__note">TASK-342608 · built as <code>src/cc/patterns/EventPicker/</code></p>
+        <nav class="sp-states__list">
+          <a class="action-card action-card--chevron" href="index.html">
+            <span class="action-card__title">No event selected — picker open</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="all-events.html">
+            <span class="action-card__title">All statuses (Live filter off)</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="search-active.html">
+            <span class="action-card__title">Predictive search active</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="no-results.html">
+            <span class="action-card__title">No results</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+        </nav>
+      </section>
+
+      <section class="sp-states__group">
+        <h2 class="sp-states__title">
+          New plan popup
+          <span class="badge badge--info badge--sm">Prototype</span>
+        </h2>
+        <p class="sp-states__note">TASK-342306 · creates the plan and generates its tables. Try it from <a href="workspace.html">the workspace</a> — the shell's <strong>New plan</strong> button is live.</p>
+        <nav class="sp-states__list">
+          <a class="action-card action-card--chevron" href="newplan-no-plans.html">
+            <span class="action-card__title">Event with no plans yet</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="newplan-default.html">
+            <span class="action-card__title">Popup — default</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="newplan-error.html">
+            <span class="action-card__title">Popup — validation errors</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+        </nav>
+      </section>
+
+      <section class="sp-states__group">
+        <h2 class="sp-states__title">
+          Edit plan popup
+          <span class="badge badge--info badge--sm">Prototype</span>
+        </h2>
+        <p class="sp-states__note">TASK-344754 · rename / change room, from a chip's ✎. Live from the workspace too.</p>
+        <nav class="sp-states__list">
+          <a class="action-card action-card--chevron" href="editplan-default.html">
+            <span class="action-card__title">Popup — pre-filled</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="editplan-error.html">
+            <span class="action-card__title">Popup — validation error</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+        </nav>
+      </section>
+
+      <section class="sp-states__group">
+        <h2 class="sp-states__title">
+          Delete plan
+          <span class="badge badge--info badge--sm">Prototype</span>
+        </h2>
+        <p class="sp-states__note">TASK-344755 · confirmation on a chip's ✕. Copy is data-driven; deleting returns every seated person to Unassigned.</p>
+        <nav class="sp-states__list">
+          <a class="action-card action-card--chevron" href="deleteplan-confirm.html">
+            <span class="action-card__title">Confirmation dialog</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+        </nav>
+      </section>
+
+      <section class="sp-states__group">
+        <h2 class="sp-states__title">
+          Copy plans
+          <span class="badge badge--info badge--sm">Prototype</span>
+        </h2>
+        <p class="sp-states__note">TASK-344756 · clones every plan's structure into another event; seats left empty. Reuses the Event Picker's rows and predictive search.</p>
+        <nav class="sp-states__list">
+          <a class="action-card action-card--chevron" href="copyplans-default.html">
+            <span class="action-card__title">Destination list</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="copyplans-search.html">
+            <span class="action-card__title">Predictive search active</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+        </nav>
+      </section>
+
+      <section class="sp-states__group">
+        <h2 class="sp-states__title">
+          Add table
+          <span class="badge badge--info badge--sm">Prototype</span>
+        </h2>
+        <p class="sp-states__note">TASK-344757 · toolbar button, no popup. Next table number (max+1), the plan's default seat count, all seats empty.</p>
+        <nav class="sp-states__list">
+          <a class="action-card action-card--chevron" href="addtable-added.html">
+            <span class="action-card__title">Table added — empty seat list</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+        </nav>
+      </section>
+
+      <section class="sp-states__group">
+        <h2 class="sp-states__title">
+          Table form (New / Edit)
+          <span class="badge badge--info badge--sm">Prototype</span>
+        </h2>
+        <p class="sp-states__note">TASK-342307 · name, tier, sponsor lookup, host, capacity, shape. Reducing capacity below the seated count returns the surplus to Unassigned. Live from any table's ✎.</p>
+        <nav class="sp-states__list">
+          <a class="action-card action-card--chevron" href="tableform-edit.html">
+            <span class="action-card__title">Edit table — pre-filled</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="tableform-lookup.html">
+            <span class="action-card__title">Sponsor account lookup</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="tableform-capacity.html">
+            <span class="action-card__title">Capacity reduced — warning</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="tableform-new.html">
+            <span class="action-card__title">New table — empty form</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+        </nav>
+      </section>
+
+      <section class="sp-states__group">
+        <h2 class="sp-states__title">
+          Delete table
+          <span class="badge badge--info badge--sm">Prototype</span>
+        </h2>
+        <p class="sp-states__note">TASK-344758 · confirmation on a card's ✕. Occupants return to Unassigned; the seat panel moves to the next table rather than going stale.</p>
+        <nav class="sp-states__list">
+          <a class="action-card action-card--chevron" href="deletetable-confirm.html">
+            <span class="action-card__title">Confirmation dialog</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+        </nav>
+      </section>
+
+      <section class="sp-states__group">
+        <h2 class="sp-states__title">
+          Table types
+          <span class="badge badge--info badge--sm">Prototype</span>
+        </h2>
+        <p class="sp-states__note">TASK-342308 · the tier lookup — label, colour, sort order. Colours are client data, so the card edges are painted from this list rather than from design-system tokens. Standard is the undeletable fallback. Live from the toolbar's tier-colours control.</p>
+        <nav class="sp-states__list">
+          <a class="action-card action-card--chevron" href="tabletypes-manage.html">
+            <span class="action-card__title">Manage table types</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="tabletypes-applied.html">
+            <span class="action-card__title">Tier colours applied to the plan</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+        </nav>
+      </section>
+
+      <section class="sp-states__group">
+        <h2 class="sp-states__title">
+          Assign person to a seat
+          <span class="badge badge--info badge--sm">Prototype</span>
+        </h2>
+        <p class="sp-states__note">TASK-342309 · from an empty seat's Assign, and the fallback for drag-and-drop. Grouped by source: event attendees (read live from the Unassigned tray) and CRM contacts, who are added to the event when seated. A row commits on click; manual guests get Name, Company and a Role.</p>
+        <nav class="sp-states__list">
+          <a class="action-card action-card--chevron" href="assign-default.html">
+            <span class="action-card__title">Both sources listed</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="assign-search.html">
+            <span class="action-card__title">Predictive search</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="assign-guest.html">
+            <span class="action-card__title">No match — add a guest manually</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="assign-seated.html">
+            <span class="action-card__title">Person seated — card, chip and tray updated</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+        </nav>
+      </section>
+
+      <section class="sp-states__group">
+        <h2 class="sp-states__title">
+          Unassigned pool
+          <span class="badge badge--info badge--sm">Prototype</span>
+        </h2>
+        <p class="sp-states__note">TASK-351550 · the right column. The pool is <strong>derived</strong> — the event's people minus everyone seated — so unseating, deleting a table or plan, and cutting a table's capacity all return people to it <em>by name</em>, with no pushing. Predictive search filters by name or company.</p>
+        <nav class="sp-states__list">
+          <a class="action-card action-card--chevron" href="tray-returned.html">
+            <span class="action-card__title">People returned to the pool</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="tray-search.html">
+            <span class="action-card__title">Predictive search</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="tray-empty.html">
+            <span class="action-card__title">Everyone seated — empty pool</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+        </nav>
+      </section>
+
+      <section class="sp-states__group">
+        <h2 class="sp-states__title">
+          Drag to seat
+          <span class="badge badge--info badge--sm">Prototype</span>
+        </h2>
+        <p class="sp-states__note">TASK-344759 · pool → seat, pool → table, seat ↔ seat (swap), seat → pool. Drag is an <strong>accelerator</strong>, not the mechanism: the same four placements run by tap or keyboard — pick a person, then choose a seat, a table or the pool. That is the answer for touch, where drag is impossible.</p>
+        <nav class="sp-states__list">
+          <a class="action-card action-card--chevron" href="drag-over-seat.html">
+            <span class="action-card__title">Pool person over an empty seat</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="drag-swap.html">
+            <span class="action-card__title">Seat over an occupied seat — swap</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="drag-full.html">
+            <span class="action-card__title">Full table — refused</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="drag-place.html">
+            <span class="action-card__title">Placing without drag — tap or keyboard</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+        </nav>
+      </section>
+
+      <section class="sp-states__group">
+        <h2 class="sp-states__title">
+          Room layout
+          <span class="badge badge--info badge--sm">Prototype</span>
+        </h2>
+        <p class="sp-states__note">TASK-344760 · attaches a floor plan (PDF or image) to the <strong>plan</strong>, from the toolbar. <strong>Not a spatial seat-map editor</strong> — the brief settles the question the shell left open. An image previews for real (the file is read in the browser); a PDF gets a document card. Replace / remove, and the toolbar shows a dot when a plan has one.</p>
+        <nav class="sp-states__list">
+          <a class="action-card action-card--chevron" href="layout-empty.html">
+            <span class="action-card__title">Nothing attached</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="layout-image.html">
+            <span class="action-card__title">Floor plan attached — previewed</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="layout-pdf.html">
+            <span class="action-card__title">PDF attached</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+        </nav>
+      </section>
+
+      <section class="sp-states__group">
+        <h2 class="sp-states__title">
+          Export the plan
+          <span class="badge badge--info badge--sm">Prototype</span>
+        </h2>
+        <p class="sp-states__note">TASK-342305 · every table and its seated attendees, previewed before download. <strong>The preview follows the format</strong>: PDF previews as the document it will be, CSV and Excel as the brief's six columns. <strong>The CSV really downloads</strong> — generated in the browser; PDF and .xlsx need a server-side generator and say so.</p>
+        <nav class="sp-states__list">
+          <a class="action-card action-card--chevron" href="export-menu.html">
+            <span class="action-card__title">Format menu — PDF / Excel / CSV</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="export-preview.html">
+            <span class="action-card__title">PDF preview — the document</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          <a class="action-card action-card--chevron" href="export-csv.html">
+            <span class="action-card__title">CSV preview — the six columns</span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+        </nav>
+      </section>
+
+    </div>
+
+    <p class="sp-states__foot">
+      <strong>Every sub-task of the workspace is now prototyped.</strong> Each control is live —
+      nothing left announcing an unbuilt task.
+    </p>
+
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

@@ -59,7 +59,7 @@ Accordion is a Tier=Component design-system component. Each item has a header (t
 | Panel padding (sm) | `--ai-spacing-5` | 16px all |
 | Panel text | `--ai-text-secondary` | #3c3c3f |
 | Panel size (Default) | `--ai-font-fixed-xs` | 14px |
-| Panel size (sm) | `--ai-font-fixed-xxs` | 12px |
+| Panel size (sm) | `--ai-font-fixed-2xs` | 12px |
 | Panel line-height (Default) | `--ai-leading-md` | 24px |
 | Panel line-height (sm) | `--ai-leading-sm` | 20px |
 | Chevron icon size | `--ai-icon-size-sm` | 16px |

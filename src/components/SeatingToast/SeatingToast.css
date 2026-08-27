@@ -1,0 +1,120 @@
+/* SeatingToast — Seating Planner action confirmation / warning pill
+ * Figma: Lus07xi8pPXLN87sQIyrEt component set 3474:90240 (Type x Tier=Component, 2 variants)
+ *
+ * Assumes base.css + tokens.css are loaded by the page.
+ *
+ * Composes Button (`btn--secondary btn--xs`) for the Undo action. Presentational — the
+ * component owns no show/hide behaviour; see the note at the bottom.
+ *
+ * NOT THE SAME COMPONENT AS `Toast`. `src/components/Toast/` is the general-purpose
+ * notification CARD — 384px, --ai-radius-lg, an icon chip, a close button, 10 variants.
+ * This is a 465px PILL: --ai-radius-full, a bare 20px icon, a status-coloured border on a
+ * white ground, an Undo CTA and no close affordance. Figma names it just "Toast", which is
+ * why it is filed under a qualified name — see figma-notes.
+ */
+
+.seating-toast {
+  display: flex;
+  align-items: center;
+  /* Figma leaves this an unbound raw 12px; --ai-spacing-4 is exactly 12px. */
+  gap: var(--ai-spacing-4);
+  /* Figma draws 465px, unbound and matching no token (--ai-size-8 is 448, --ai-size-9 is
+   * 512). --ai-size-8 at the designer's direction 2026-08-26, with max-inline-size so it
+   * never overflows a narrow container — the same shape of rule the Toast card uses. A
+   * toast is a fixed-size floating element, so unlike TableCard or TableListing it is
+   * deliberately not fluid. */
+  inline-size: var(--ai-size-8);
+  max-inline-size: 100%;
+  /* Figma reads px-[17px] py-[13px]. Those are 16 and 12 PLUS its 1px stroke: with
+   * border-box (global in base.css) 12 + 16 padding and a 1px border reproduce Figma's
+   * 58px height exactly — 1 + 12 + 32 + 12 + 1. */
+  padding: var(--ai-spacing-4) var(--ai-spacing-5);
+  /* Neutral fallback: Type is required, and each modifier sets its own colour. */
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-full);
+  /* Figma binds --ai-datatable-table-bg (#ffffff) — a Datatables token doing a surface's
+   * job. Rebound to the semantic equivalent (designer, 2026-08-26): identical today, but a
+   * toast should not change colour if the table background is ever retuned. */
+  background-color: var(--ai-surface-primary);
+  /* Figma draws an unbound two-layer shadow, 0 0 10px rgba(0,0,0,.05) (which is exactly
+   * --ai-shadow-card) plus 0 2px 1px rgba(0,0,0,.1) (which matches nothing). Resolved to
+   * --ai-shadow-md at the designer's direction 2026-08-26 — the token the Toast card
+   * already uses, so the two notification surfaces cast the same shadow. Heavier than
+   * Figma draws here; a deliberate consistency call. */
+  box-shadow: var(--ai-shadow-md);
+}
+
+/* ── Type ───────────────────────────────────────────────────────────────────
+ * The only axis. It sets the border colour and the icon colour, nothing else — the
+ * ground stays white in both, which is what distinguishes this from the Toast card's
+ * `--color` variants (those tint the whole card). */
+.seating-toast--success {
+  border-color: var(--ai-border-success);
+}
+
+.seating-toast--error {
+  border-color: var(--ai-border-error);
+}
+
+/* ── Icon ───────────────────────────────────────────────────────────────────
+ * A bare 20px glyph — no chip, unlike the Toast card's 32px rounded tile.
+ *
+ * The colour is a SURFACE token doing an icon's job, exactly as Figma binds it, because
+ * the icon scale has no success or error entry — it stops at primary / secondary /
+ * contrast / invert / brand. The same gap was hit and flagged on Unassigned's empty-state
+ * tick; `--ai-icon-success` and `--ai-icon-error` remain genuine holes in the scale. */
+.seating-toast__icon {
+  inline-size: var(--ai-icon-size-md);
+  block-size: var(--ai-icon-size-md);
+  flex-shrink: 0;
+}
+
+.seating-toast--success .seating-toast__icon {
+  color: var(--ai-surface-success);
+}
+
+.seating-toast--error .seating-toast__icon {
+  color: var(--ai-surface-error);
+}
+
+/* ── Message ────────────────────────────────────────────────────────────────
+ * Figma marks this whitespace-nowrap, which only holds because its sample strings happen
+ * to fit. Left to wrap here: a real seat or attendee name is not length-bounded, and a
+ * nowrap pill would overflow rather than grow. The full radius keeps a two-line pill
+ * looking deliberate.
+ *
+ * Font family is --ai-font-body, which is what Figma binds — note the Toast card uses
+ * --ai-font-title for its message. Flagged in figma-notes. */
+.seating-toast__message {
+  flex: 1 0 0;
+  min-inline-size: 0;
+  margin: 0;
+  font-family: var(--ai-font-body);
+  /* Both unbound in Figma (raw 14px / 20px), and both match a token exactly. */
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-primary);
+}
+
+/* Figma emphasises the subject of the sentence — the attendee and the seat, or the table
+ * that is full — in semibold within an otherwise regular line. `<strong>` carries that,
+ * so the emphasis is in the markup rather than being purely visual. */
+.seating-toast__message strong {
+  font-weight: var(--ai-font-semibold);
+  color: inherit;
+}
+
+/* ── Undo CTA ───────────────────────────────────────────────────────────────
+ * CONTEXTUAL OVERRIDE (Case B, confirmed with the designer 2026-08-26).
+ *
+ * The instance is 55x32. Figma's Button set defines Size=xs as 28 tall for every text
+ * variant it has (115x28 on Primary, Secondary, Tertiary and Alert alike), and this
+ * instance reaches 32 by overriding its padding to --ai-spacing-3 / --ai-spacing-4.
+ * So `.btn--xs` in Button.css is correct against its own source and is left alone — the
+ * override is scoped here instead. Two classes so it wins on specificity rather than on
+ * stylesheet order. */
+.seating-toast__cta.btn {
+  flex-shrink: 0;
+  padding: var(--ai-spacing-3) var(--ai-spacing-4);
+}

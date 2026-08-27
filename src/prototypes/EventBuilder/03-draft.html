@@ -1,0 +1,816 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Event Builder · 3 Generated draft with AI suggestions — Prototype</title>
+
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/SegmentedControl/SegmentedControl.css">
+  <link rel="stylesheet" href="../../components/Badge/Badge.css">
+  <link rel="stylesheet" href="../../components/Avatar/Avatar.css">
+  <link rel="stylesheet" href="../../components/Portraits/Portraits.css">
+  <link rel="stylesheet" href="../../components/Tooltip/Tooltip.css">
+  <link rel="stylesheet" href="../../components/Accordion/Accordion.css">
+  <link rel="stylesheet" href="../../components/ColorPickerInput/ColorPickerInput.css">
+  <link rel="stylesheet" href="../../components/Toggle/Toggle.css">
+  <link rel="stylesheet" href="../../components/Input/Input.css">
+  <link rel="stylesheet" href="../../components/DragDropFile/DragDropFile.css">
+  <link rel="stylesheet" href="../../patterns/MessageInput/MessageInput.css">
+  <link rel="stylesheet" href="EventBuilder.css">
+</head>
+<body class="eb-body">
+
+  <!-- ══════════════════════════════ TOP BAR ══════════════════════════════ -->
+  <header class="eb-topbar">
+    <div class="eb-topbar__brand">
+      <span class="eb-topbar__logo"><i data-lucide="calendar-plus" aria-hidden="true"></i></span>
+      <div class="eb-topbar__meta">
+        <p class="eb-crumb">
+          <span>Affino</span>
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+          <span>Events</span>
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+          <span>TPF Club</span>
+        </p>
+        <h1 class="eb-topbar__title">Card &amp; Payments Awards UK 2027</h1>
+      </div>
+    </div>
+
+    <span class="eb-status">
+      <span class="eb-status__dot"></span>
+      Draft
+    </span>
+
+    <div class="eb-topbar__spacer"></div>
+
+    <!-- Mode switch — two surfaces: build the page, or edit every field -->
+    <div class="seg-control" role="radiogroup" aria-label="Builder mode">
+      <button class="seg-control__btn seg-control__btn--active" type="button" role="radio" aria-checked="true">
+        <i data-lucide="layout-dashboard" aria-hidden="true"></i>
+        Build
+      </button>
+      <button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-eb-goto="07-advanced.html">
+        <i data-lucide="sliders-horizontal" aria-hidden="true"></i>
+        Fields
+      </button>
+    </div>
+
+    <span class="eb-topbar__divider"></span>
+
+    <div class="eb-topbar__actions">
+      <button class="eb-iconbtn eb-iconbtn--active" type="button" aria-label="Tabbed layout" data-eb-shape="tabs">
+        <i data-lucide="layout-panel-top" aria-hidden="true"></i>
+      </button>
+      <button class="eb-iconbtn" type="button" aria-label="Long-scroll layout" data-eb-shape="scroll">
+        <i data-lucide="rows-3" aria-hidden="true"></i>
+      </button>
+      <span class="eb-topbar__divider"></span>
+      <button class="eb-iconbtn eb-iconbtn--active" type="button" aria-label="Desktop preview" data-eb-device="desktop">
+        <i data-lucide="monitor" aria-hidden="true"></i>
+      </button>
+      <button class="eb-iconbtn" type="button" aria-label="Mobile preview" data-eb-device="mobile">
+        <i data-lucide="smartphone" aria-hidden="true"></i>
+      </button>
+      <span class="eb-topbar__divider"></span>
+      <button class="btn btn--secondary btn--sm" type="button" data-eb-goto="08-published.html">
+        <i data-lucide="eye" aria-hidden="true"></i>
+        Preview
+      </button>
+      <button class="btn btn--primary btn--sm" type="button" data-eb-goto="08-published.html">
+        Publish
+      </button>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════ SHELL ════════════════════════════════ -->
+  <div class="eb-shell">
+
+    <!-- ══════════════ RAIL — the block spine ══════════════ -->
+    <aside class="eb-rail">
+
+      <div class="eb-rail__group">
+        <p class="eb-rail__title">
+          <span>Core</span>
+          <span class="eb-rail__count">fixed</span>
+        </p>
+        <ul class="eb-rail__list">
+          <li><div class="eb-blockrow" data-eb-blockrow="hero">
+            <span class="eb-blockrow__icon"><i data-lucide="image" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Hero</span>
+            <span class="eb-blockrow__lock" title="Core blocks can't be removed"><i data-lucide="lock" aria-hidden="true"></i></span>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-blockrow="overview">
+            <span class="eb-blockrow__icon"><i data-lucide="align-left" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Overview</span>
+            <span class="eb-blockrow__lock" title="Core blocks can't be removed"><i data-lucide="lock" aria-hidden="true"></i></span>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-blockrow="signup">
+            <span class="eb-blockrow__icon"><i data-lucide="ticket" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Sign-up &amp; entries</span>
+            <span class="eb-blockrow__lock" title="Core blocks can't be removed"><i data-lucide="lock" aria-hidden="true"></i></span>
+          </div></li>
+        </ul>
+      </div>
+
+      <div class="eb-rail__group">
+        <p class="eb-rail__title">
+          <span>Blocks</span>
+          <span class="eb-rail__count" data-eb-rail-count>8 blocks</span>
+        </p>
+        <ul class="eb-rail__list" data-eb-spine>
+          <li><div class="eb-blockrow" data-eb-blockrow="judges">
+            <span class="eb-blockrow__grip" aria-hidden="true"><i data-lucide="grip-vertical"></i></span>
+            <span class="eb-blockrow__icon"><i data-lucide="gavel" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Judges</span>
+            <span class="eb-blockrow__note">16</span>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-blockrow="sponsors">
+            <span class="eb-blockrow__grip" aria-hidden="true"><i data-lucide="grip-vertical"></i></span>
+            <span class="eb-blockrow__icon"><i data-lucide="handshake" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Sponsors</span>
+            <span class="eb-blockrow__note">9</span>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-blockrow="keydates">
+            <span class="eb-blockrow__grip" aria-hidden="true"><i data-lucide="grip-vertical"></i></span>
+            <span class="eb-blockrow__icon"><i data-lucide="calendar-clock" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Key dates</span>
+            <span class="eb-blockrow__note">4</span>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-blockrow="charity">
+            <span class="eb-blockrow__grip" aria-hidden="true"><i data-lucide="grip-vertical"></i></span>
+            <span class="eb-blockrow__icon"><i data-lucide="heart-handshake" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Charity</span>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-blockrow="winners">
+            <span class="eb-blockrow__grip" aria-hidden="true"><i data-lucide="grip-vertical"></i></span>
+            <span class="eb-blockrow__icon"><i data-lucide="images" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">2026 winners</span>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-blockrow="faq">
+            <span class="eb-blockrow__grip" aria-hidden="true"><i data-lucide="grip-vertical"></i></span>
+            <span class="eb-blockrow__icon"><i data-lucide="circle-help" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">FAQ</span>
+            <span class="eb-blockrow__note">5</span>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-blockrow="venue">
+            <span class="eb-blockrow__grip" aria-hidden="true"><i data-lucide="grip-vertical"></i></span>
+            <span class="eb-blockrow__icon"><i data-lucide="map-pin" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Venue</span>
+          </div></li>
+          <li><div class="eb-blockrow" data-eb-blockrow="contact">
+            <span class="eb-blockrow__grip" aria-hidden="true"><i data-lucide="grip-vertical"></i></span>
+            <span class="eb-blockrow__icon"><i data-lucide="mail" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Contact</span>
+          </div></li>
+
+          <!-- The pending AI proposal, mirrored in the rail -->
+          <li><div class="eb-blockrow eb-blockrow--proposed" data-eb-blockrow="testimonials">
+            <span class="eb-blockrow__icon"><i data-lucide="quote" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Testimonials</span>
+            <span class="eb-blockrow__note" data-eb-blockrow-note>suggested</span>
+          </div></li>
+        </ul>
+
+        <button class="btn btn--secondary btn--sm eb-rail__add" type="button" data-eb-goto="05-blocks.html">
+          <i data-lucide="plus" aria-hidden="true"></i>
+          Add a block
+        </button>
+        <p class="eb-rail__hint">Drag to reorder. Core blocks stay where they are.</p>
+      </div>
+    </aside>
+
+    <!-- ══════════════ CANVAS ══════════════ -->
+    <main class="eb-canvas">
+
+      <!-- One format bar per screen. JS parks it against the element being
+           edited and shows it only while an editable element is selected. -->
+      <div class="eb-formatbar" data-eb-formatbar hidden>
+        <button class="eb-formatbar__btn eb-formatbar__btn--active" type="button" aria-label="Bold"><i data-lucide="bold" aria-hidden="true"></i></button>
+        <button class="eb-formatbar__btn" type="button" aria-label="Italic"><i data-lucide="italic" aria-hidden="true"></i></button>
+        <span class="eb-formatbar__sep"></span>
+        <button class="eb-formatbar__btn" type="button" aria-label="Add link"><i data-lucide="link" aria-hidden="true"></i></button>
+        <span class="eb-formatbar__sep"></span>
+        <button class="eb-formatbar__btn" type="button" aria-label="Rewrite with AI"><i data-lucide="sparkles" aria-hidden="true"></i></button>
+        <button class="eb-formatbar__btn" type="button" aria-label="Shorten"><i data-lucide="minimize-2" aria-hidden="true"></i></button>
+      </div>
+
+      <div class="eb-canvas__bar">
+        <i data-lucide="layout-panel-top" aria-hidden="true"></i>
+        <span>Page shape: <strong data-eb-shape-label>Tabbed</strong> · 9 sections</span>
+        <div class="eb-canvas__bar-spacer"></div>
+        <i data-lucide="mouse-pointer-click" aria-hidden="true"></i>
+        <span>Click any block to edit it</span>
+      </div>
+
+      <div class="eb-frame" data-eb-frame>
+        <div class="eb-frame__chrome">
+          <div class="eb-frame__dots">
+            <span class="eb-frame__dot"></span>
+            <span class="eb-frame__dot"></span>
+            <span class="eb-frame__dot"></span>
+          </div>
+          <span class="eb-frame__url">tpfclub.com/card-and-payments-awards-uk-2027</span>
+        </div>
+
+        <div class="eb-page" data-eb-page-body>
+
+          <!-- ── Hero ── -->
+          <section class="eb-block eb-hero"
+                   data-eb-block="hero" data-eb-label="Hero" data-eb-icon="image">
+            <span class="eb-block__tag"><i data-lucide="image" aria-hidden="true"></i> Hero</span>
+            <p class="eb-hero__eyebrow eb-el" data-eb-el="hero-eyebrow" data-eb-el-type="eyebrow" data-eb-label="Eyebrow"><i data-lucide="award" aria-hidden="true"></i> <span data-eb-text>22nd annual awards</span></p>
+            <h2 class="eb-hero__title eb-el" data-eb-el="hero-title" data-eb-el-type="heading" data-eb-label="Title">The Card &amp; Payments Awards UK 2027</h2>
+            <p class="eb-hero__strap eb-el" data-eb-el="hero-strap" data-eb-el-type="strap" data-eb-label="Strapline">Independent. Respected. Recognised.</p>
+            <ul class="eb-hero__meta eb-el" data-eb-el="hero-meta" data-eb-el-type="meta" data-eb-label="Detail row">
+              <li><i data-lucide="calendar" aria-hidden="true"></i> 4 February 2027</li>
+              <li><i data-lucide="clock" aria-hidden="true"></i> 18:00 – 02:00 GMT</li>
+              <li><i data-lucide="map-pin" aria-hidden="true"></i> JW Marriott Grosvenor House, London</li>
+            </ul>
+            <div class="eb-hero__cta">
+              <button class="eb-cta eb-el" type="button" data-eb-el="hero-cta" data-eb-el-type="cta" data-eb-label="Button">
+                <span data-eb-text>Submit an entry</span>
+                <i data-lucide="arrow-right" aria-hidden="true"></i>
+              </button>
+            </div>
+          </section>
+
+          <!-- ── Tab strip (tabbed shape) ── -->
+          <nav class="eb-etabs" data-eb-tabs aria-label="Event sections">
+            <button class="eb-etab eb-etab--active" type="button" data-eb-etab="overview">Overview</button>
+            <button class="eb-etab" type="button" data-eb-etab="judges">Judges</button>
+            <button class="eb-etab" type="button" data-eb-etab="sponsors">Sponsors</button>
+            <button class="eb-etab" type="button" data-eb-etab="charity">Charity</button>
+            <button class="eb-etab" type="button" data-eb-etab="winners">2026 Awards</button>
+            <button class="eb-etab" type="button" data-eb-etab="faq">FAQs</button>
+            <button class="eb-etab" type="button" data-eb-etab="venue">Venue</button>
+            <button class="eb-etab" type="button" data-eb-etab="contact">Contact</button>
+          </nav>
+
+          <!-- ── Anchor nav (long-scroll shape) ── -->
+          <nav class="eb-anchors" data-eb-anchors aria-label="Jump to section" hidden>
+            <a href="#p-overview">Overview</a>
+            <a href="#p-judges">Judges</a>
+            <a href="#p-sponsors">Sponsors</a>
+            <a href="#p-charity">Charity</a>
+            <a href="#p-winners">2026 Awards</a>
+            <a href="#p-faq">FAQs</a>
+            <a href="#p-venue">Venue</a>
+            <a href="#p-contact">Contact</a>
+          </nav>
+
+          <!-- ── Overview ── -->
+          <div data-eb-panel="overview" id="p-overview">
+            <section class="eb-block eb-sect"
+                     data-eb-block="overview" data-eb-label="Overview" data-eb-icon="align-left">
+              <span class="eb-block__tag"><i data-lucide="align-left" aria-hidden="true"></i> Overview</span>
+              <div class="eb-sect__head">
+                <p class="eb-sect__eyebrow">Overview</p>
+                <h3 class="eb-sect__title eb-el" data-eb-el-type="heading" data-eb-label="Section title" data-eb-el="sect-title-1">The longest-running recognition programme in UK payments</h3>
+              </div>
+              <div class="eb-sect__body">
+                <p class="eb-el" data-eb-el="sect-body" data-eb-el-type="text" data-eb-label="Body text">
+                  Established in 2005, the Card &amp; Payments Awards celebrate the organisations and
+                  individuals shaping how Britain pays. Over twenty-two years the programme has become
+                  the benchmark the industry measures itself against.
+                </p>
+                <p>
+                  Judging is independent and confidential. Entries are assessed by a panel drawn from
+                  across the sector — issuers, networks, acquirers, fintechs and independent
+                  consultants — none of whom judge a category they compete in.
+                </p>
+              </div>
+              <button class="eb-cta eb-sect__cta" type="button">
+                Submit an entry
+                <i data-lucide="arrow-right" aria-hidden="true"></i>
+              </button>
+            </section>
+
+            <!-- ── Key dates ── -->
+            <section class="eb-block eb-sect eb-sect--tint"
+                     data-eb-block="keydates" data-eb-label="Key dates" data-eb-icon="calendar-clock">
+              <span class="eb-block__tag"><i data-lucide="calendar-clock" aria-hidden="true"></i> Key dates</span>
+              <div class="eb-sect__head">
+                <p class="eb-sect__eyebrow">Key dates</p>
+                <h3 class="eb-sect__title eb-el" data-eb-el-type="heading" data-eb-label="Section title" data-eb-el="sect-title-2">The 2027 timetable</h3>
+              </div>
+              <div class="eb-timeline">
+                <div class="eb-milestone eb-milestone--done">
+                  <p class="eb-milestone__date">7 Jul 2026</p>
+                  <p class="eb-milestone__label">Entries open</p>
+                </div>
+                <div class="eb-milestone eb-milestone--next">
+                  <p class="eb-milestone__date">25 Sep 2026</p>
+                  <p class="eb-milestone__label">Entries close</p>
+                </div>
+                <div class="eb-milestone">
+                  <p class="eb-milestone__date">16 Oct 2026</p>
+                  <p class="eb-milestone__label">Shortlist announced</p>
+                </div>
+                <div class="eb-milestone">
+                  <p class="eb-milestone__date">4 Feb 2027</p>
+                  <p class="eb-milestone__label">Awards ceremony</p>
+                </div>
+              </div>
+            </section>
+
+            <!-- ══ THE PENDING AI PROPOSAL, SHOWN IN PLACE ══ -->
+            <section class="eb-block eb-block--proposed eb-sect"
+                     data-eb-block="testimonials" data-eb-label="Testimonials" data-eb-icon="quote">
+              <span class="eb-block__tag"><i data-lucide="sparkles" aria-hidden="true"></i> Proposed by AI</span>
+              <div class="eb-sect__head">
+                <p class="eb-sect__eyebrow">Testimonials</p>
+                <h3 class="eb-sect__title eb-el" data-eb-el-type="heading" data-eb-label="Section title" data-eb-el="sect-title-3">What the industry says</h3>
+              </div>
+              <div class="eb-quotes">
+                <blockquote class="eb-quote">
+                  <p class="eb-quote__text">"The absolute benchmark for quality in our industry — being shortlisted means something."</p>
+                  <p class="eb-quote__by">Candice Pressinger <span class="eb-quote__org">· Elavon</span></p>
+                </blockquote>
+                <blockquote class="eb-quote">
+                  <p class="eb-quote__text">"Winning changed how partners saw us. It opened doors that cold outreach never would."</p>
+                  <p class="eb-quote__by">Josh Bridewell <span class="eb-quote__org">· NovaPay</span></p>
+                </blockquote>
+              </div>
+
+              <div class="eb-block__actions" data-eb-block-actions>
+                <p class="eb-block__actions-label">
+                  Pulled four quotes from your 2026 event page. Add this block?
+                </p>
+                <button class="btn btn--tertiary btn--xs" type="button" data-eb-refine="testimonials">
+                  <i data-lucide="rotate-ccw" aria-hidden="true"></i>
+                  Refine
+                </button>
+                <button class="btn btn--secondary btn--xs" type="button" data-eb-reject="testimonials">
+                  <i data-lucide="x" aria-hidden="true"></i>
+                  Reject
+                </button>
+                <button class="btn btn--primary btn--xs" type="button" data-eb-accept="testimonials">
+                  <i data-lucide="check" aria-hidden="true"></i>
+                  Accept
+                </button>
+              </div>
+            </section>
+          </div>
+
+          <!-- ── Judges ── -->
+          <div data-eb-panel="judges" id="p-judges" hidden>
+            <section class="eb-block eb-sect"
+                     data-eb-block="judges" data-eb-label="Judges" data-eb-icon="gavel">
+              <span class="eb-block__tag"><i data-lucide="gavel" aria-hidden="true"></i> Judges</span>
+              <div class="eb-sect__head">
+                <p class="eb-sect__eyebrow">The panel</p>
+                <h3 class="eb-sect__title eb-el" data-eb-el-type="heading" data-eb-label="Section title" data-eb-el="sect-title-4">2027 judging panel</h3>
+                <p class="eb-sect__lede">Sixteen independent judges from across the payments sector.</p>
+              </div>
+              <div class="eb-people">
+                <div class="eb-person">
+                  <div class="avatar avatar--size-4"><img class="portrait" src="https://picsum.photos/seed/judge1/300" alt=""></div>
+                  <p class="eb-person__name">Priya Raman</p>
+                  <p class="eb-person__role">Head of Payments, Aurora Bank</p>
+                </div>
+                <div class="eb-person">
+                  <div class="avatar avatar--size-4"><img class="portrait" src="https://picsum.photos/seed/judge2/300" alt=""></div>
+                  <p class="eb-person__name">Daniel Osei</p>
+                  <p class="eb-person__role">Director, Meridian Consulting</p>
+                </div>
+                <div class="eb-person">
+                  <div class="avatar avatar--size-4"><img class="portrait" src="https://picsum.photos/seed/judge3/300" alt=""></div>
+                  <p class="eb-person__name">Helen Whitcombe</p>
+                  <p class="eb-person__role">CPO, Northgate Payments</p>
+                </div>
+                <div class="eb-person">
+                  <div class="avatar avatar--size-4"><img class="portrait" src="https://picsum.photos/seed/judge4/300" alt=""></div>
+                  <p class="eb-person__name">Marcus Feld</p>
+                  <p class="eb-person__role">Independent consultant</p>
+                </div>
+                <div class="eb-person">
+                  <div class="avatar avatar--size-4"><img class="portrait" src="https://picsum.photos/seed/judge5/300" alt=""></div>
+                  <p class="eb-person__name">Aisha Karim</p>
+                  <p class="eb-person__role">VP Risk, Talos Network</p>
+                </div>
+                <div class="eb-person">
+                  <div class="avatar avatar--size-4 avatar--initials avatar--placeholder">+11</div>
+                  <p class="eb-person__name">11 more</p>
+                  <p class="eb-person__role">Panel completing</p>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <!-- ── Sponsors ── -->
+          <div data-eb-panel="sponsors" id="p-sponsors" hidden>
+            <section class="eb-block eb-sect eb-sect--tint"
+                     data-eb-block="sponsors" data-eb-label="Sponsors" data-eb-icon="handshake">
+              <span class="eb-block__tag"><i data-lucide="handshake" aria-hidden="true"></i> Sponsors</span>
+              <div class="eb-sect__head">
+                <p class="eb-sect__eyebrow">Our partners</p>
+                <h3 class="eb-sect__title eb-el" data-eb-el-type="heading" data-eb-label="Section title" data-eb-el="sect-title-5">2027 sponsors</h3>
+              </div>
+
+              <div class="eb-tier">
+                <p class="eb-tier__label">Prime sponsor</p>
+                <div class="eb-logos"><span class="eb-logo eb-logo--lg">FIS</span></div>
+              </div>
+              <div class="eb-tier">
+                <p class="eb-tier__label">Champagne sponsor</p>
+                <div class="eb-logos"><span class="eb-logo">THALES</span></div>
+              </div>
+              <div class="eb-tier">
+                <p class="eb-tier__label">Casino &amp; payment sponsors</p>
+                <div class="eb-logos">
+                  <span class="eb-logo">PRIORITY PASS</span>
+                  <span class="eb-logo">INGENICO</span>
+                </div>
+              </div>
+              <div class="eb-tier">
+                <p class="eb-tier__label">Category sponsors</p>
+                <div class="eb-logos">
+                  <span class="eb-logo">AMEX</span>
+                  <span class="eb-logo">DISCOVER</span>
+                  <span class="eb-logo">FISERV</span>
+                  <span class="eb-logo">MASTERCARD</span>
+                  <span class="eb-logo">VISA</span>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <!-- ── Charity ── -->
+          <div data-eb-panel="charity" id="p-charity" hidden>
+            <section class="eb-block eb-sect"
+                     data-eb-block="charity" data-eb-label="Charity" data-eb-icon="heart-handshake">
+              <span class="eb-block__tag"><i data-lucide="heart-handshake" aria-hidden="true"></i> Charity</span>
+              <div class="eb-sect__head">
+                <p class="eb-sect__eyebrow">Giving back</p>
+                <h3 class="eb-sect__title eb-el" data-eb-el-type="heading" data-eb-label="Section title" data-eb-el="sect-title-6">21 years of charitable support</h3>
+                <p class="eb-sect__lede">Over £525,000 raised to date through the awards dinner.</p>
+              </div>
+              <div class="eb-sect__body">
+                <p class="eb-el" data-eb-el="sect-body" data-eb-el-type="text" data-eb-label="Body text">
+                  Each year the ceremony supports a charity chosen by the organising committee. The 2026
+                  beneficiary was Food Bank Aid, which supplies a network of food banks across north London.
+                  The 2027 partner will be announced with the shortlist.
+                </p>
+              </div>
+            </section>
+          </div>
+
+          <!-- ── 2026 winners ── -->
+          <div data-eb-panel="winners" id="p-winners" hidden>
+            <section class="eb-block eb-sect"
+                     data-eb-block="winners" data-eb-label="2026 winners" data-eb-icon="images">
+              <span class="eb-block__tag"><i data-lucide="images" aria-hidden="true"></i> 2026 winners</span>
+              <div class="eb-sect__head">
+                <p class="eb-sect__eyebrow">Last year</p>
+                <h3 class="eb-sect__title eb-el" data-eb-el-type="heading" data-eb-label="Section title" data-eb-el="sect-title-7">2026 winners</h3>
+              </div>
+              <div class="eb-gallery">
+                <div class="eb-gallery__item"><i data-lucide="image" aria-hidden="true"></i></div>
+                <div class="eb-gallery__item"><i data-lucide="image" aria-hidden="true"></i></div>
+                <div class="eb-gallery__item"><i data-lucide="image" aria-hidden="true"></i></div>
+                <div class="eb-gallery__item"><i data-lucide="image" aria-hidden="true"></i></div>
+                <div class="eb-gallery__item"><i data-lucide="image" aria-hidden="true"></i></div>
+                <div class="eb-gallery__item"><i data-lucide="image" aria-hidden="true"></i></div>
+              </div>
+            </section>
+          </div>
+
+          <!-- ── FAQ ── -->
+          <div data-eb-panel="faq" id="p-faq" hidden>
+            <section class="eb-block eb-sect eb-sect--tint"
+                     data-eb-block="faq" data-eb-label="FAQ" data-eb-icon="circle-help">
+              <span class="eb-block__tag"><i data-lucide="circle-help" aria-hidden="true"></i> FAQ</span>
+              <div class="eb-sect__head">
+                <p class="eb-sect__eyebrow">Questions</p>
+                <h3 class="eb-sect__title eb-el" data-eb-el-type="heading" data-eb-label="Section title" data-eb-el="sect-title-8">Frequently asked</h3>
+              </div>
+              <div class="acc acc--separated" data-acc="single">
+                <div class="acc__item acc__item--open">
+                  <h4 class="acc__heading">
+                    <button type="button" class="acc__trigger" data-acc-trigger>
+                      <span>Who can enter?</span>
+                      <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                    </button>
+                  </h4>
+                  <div class="acc__panel">
+                    <p>Banks, building societies, fintechs, processors, acquirers, networks and suppliers operating in the UK payments market.</p>
+                  </div>
+                </div>
+                <div class="acc__item">
+                  <h4 class="acc__heading">
+                    <button type="button" class="acc__trigger" data-acc-trigger>
+                      <span>What does the evening look like?</span>
+                      <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                    </button>
+                  </h4>
+                  <div class="acc__panel">
+                    <p>Arrival from 18:00, dinner at 19:30, awards from 21:00, then networking and entertainment until 02:00.</p>
+                  </div>
+                </div>
+                <div class="acc__item">
+                  <h4 class="acc__heading">
+                    <button type="button" class="acc__trigger" data-acc-trigger>
+                      <span>Must shortlisted organisations attend?</span>
+                      <span class="acc__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                    </button>
+                  </h4>
+                  <div class="acc__panel">
+                    <p>Attendance isn't compulsory, but winners are announced on the night and we can't accept acceptances in absentia.</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <!-- ── Venue ── -->
+          <div data-eb-panel="venue" id="p-venue" hidden>
+            <section class="eb-block eb-sect"
+                     data-eb-block="venue" data-eb-label="Venue" data-eb-icon="map-pin">
+              <span class="eb-block__tag"><i data-lucide="map-pin" aria-hidden="true"></i> Venue</span>
+              <div class="eb-sect__head">
+                <p class="eb-sect__eyebrow">Getting there</p>
+                <h3 class="eb-sect__title eb-el" data-eb-el-type="heading" data-eb-label="Section title" data-eb-el="sect-title-9">JW Marriott Grosvenor House</h3>
+                <p class="eb-sect__lede">86–90 Park Lane, London W1K 7TN</p>
+              </div>
+              <!-- TODO(backend:EventBuilder): map is a placeholder. Real version geocodes the
+                   address server-side and returns tiles — no pasted embed code. -->
+              <div class="eb-map" data-backend-todo="eb-map">
+                <i data-lucide="map" aria-hidden="true"></i>
+                <span>Map generated from the address</span>
+              </div>
+            </section>
+          </div>
+
+          <!-- ── Contact ── -->
+          <div data-eb-panel="contact" id="p-contact" hidden>
+            <section class="eb-block eb-sect"
+                     data-eb-block="contact" data-eb-label="Contact" data-eb-icon="mail">
+              <span class="eb-block__tag"><i data-lucide="mail" aria-hidden="true"></i> Contact</span>
+              <div class="eb-sect__head">
+                <p class="eb-sect__eyebrow">Get in touch</p>
+                <h3 class="eb-sect__title eb-el" data-eb-el-type="heading" data-eb-label="Section title" data-eb-el="sect-title-10">Awards team</h3>
+              </div>
+              <div class="eb-sect__body">
+                <p class="eb-el" data-eb-el="sect-body" data-eb-el-type="text" data-eb-label="Body text">info@TPFClub.com · +44 (0)1428 000 000 · Haslemere, Surrey</p>
+              </div>
+            </section>
+          </div>
+
+          <!-- ── Sign-up bar (core) ── -->
+          <section class="eb-block eb-signup"
+                   data-eb-block="signup" data-eb-label="Sign-up &amp; entries" data-eb-icon="ticket">
+            <span class="eb-block__tag"><i data-lucide="ticket" aria-hidden="true"></i> Sign-up</span>
+            <div class="eb-signup__text">
+              Entries for 2027 open 7 July 2026
+              <span class="eb-signup__price">Entry fee £95 · Table of 10 £4,200</span>
+            </div>
+            <button class="eb-cta" type="button">
+              Submit an entry
+              <i data-lucide="arrow-right" aria-hidden="true"></i>
+            </button>
+            <button class="eb-cta eb-cta--ghost" type="button">Book a table</button>
+          </section>
+
+        </div>
+      </div>
+    </main>
+
+    <!-- ══════════════ INSPECTOR — contextual ══════════════
+         Nothing selected -> page settings. Click a block on the canvas or in
+         the rail and this becomes that block's options (rendered from
+         BLOCK_PANELS in EventBuilder.js). There is no separate refine mode. -->
+    <aside class="eb-inspector">
+      <div class="eb-inspector__head">
+        <span class="eb-inspector__head-icon" data-eb-inspector-icon><i data-lucide="file-sliders" aria-hidden="true"></i></span>
+        <div>
+          <p class="eb-inspector__eyebrow" data-eb-inspector-eyebrow>Nothing selected</p>
+          <p class="eb-inspector__title" data-eb-inspector-title>Page settings</p>
+        </div>
+      </div>
+
+      <!-- Block options render here when a block is selected -->
+      <div data-eb-inspector-body hidden></div>
+
+      <!-- Page-level settings — shown whenever nothing is selected -->
+      <div data-eb-inspector-page>
+
+        <div class="eb-inspector__section">
+          <p class="eb-inspector__hint">
+            <i data-lucide="mouse-pointer-click" aria-hidden="true"></i>
+            Click any block — on the page or in the rail — to edit it here.
+          </p>
+        </div>
+
+        <div class="eb-inspector__section">
+          <p class="eb-inspector__section-title">Page shape</p>
+          <div class="eb-shape">
+            <button class="eb-shape__opt eb-shape__opt--active" type="button" data-eb-shape="tabs">
+              <div class="eb-shape__diagram">
+                <span class="eb-shape__bar eb-shape__bar--head"></span>
+                <span class="eb-shape__tabs">
+                  <span class="eb-shape__tab eb-shape__tab--on"></span>
+                  <span class="eb-shape__tab"></span>
+                  <span class="eb-shape__tab"></span>
+                  <span class="eb-shape__tab"></span>
+                </span>
+                <span class="eb-shape__bar"></span>
+                <span class="eb-shape__bar"></span>
+              </div>
+              <span class="eb-shape__label">Tabbed</span>
+            </button>
+            <button class="eb-shape__opt" type="button" data-eb-shape="scroll">
+              <div class="eb-shape__diagram">
+                <span class="eb-shape__bar eb-shape__bar--head"></span>
+                <span class="eb-shape__bar"></span>
+                <span class="eb-shape__bar"></span>
+                <span class="eb-shape__bar"></span>
+                <span class="eb-shape__bar"></span>
+              </div>
+              <span class="eb-shape__label">Long scroll</span>
+            </button>
+          </div>
+          <p class="eb-field__help">
+            We chose tabbed — nine sections is a lot to scroll. Switching re-renders the same blocks.
+          </p>
+        </div>
+
+        <div class="eb-inspector__section">
+          <p class="eb-inspector__section-title">Brand</p>
+          <div class="eb-swatches">
+            <div class="eb-swatch">
+              <span class="eb-swatch__label">Primary</span>
+              <label class="color-picker-input">
+                <input type="color" class="color-picker-input__native" value="#0b2545" aria-label="Primary colour">
+                <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #0B2545;"></span></span>
+                <span class="color-picker-input__value">#0B2545</span>
+              </label>
+            </div>
+            <div class="eb-swatch">
+              <span class="eb-swatch__label">Secondary</span>
+              <label class="color-picker-input">
+                <input type="color" class="color-picker-input__native" value="#13315c" aria-label="Secondary colour">
+                <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #13315C;"></span></span>
+                <span class="color-picker-input__value">#13315C</span>
+              </label>
+            </div>
+            <div class="eb-swatch">
+              <span class="eb-swatch__label">Accent</span>
+              <label class="color-picker-input">
+                <input type="color" class="color-picker-input__native" value="#c9a227" aria-label="Accent colour">
+                <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #C9A227;"></span></span>
+                <span class="color-picker-input__value">#C9A227</span>
+              </label>
+            </div>
+          </div>
+          <p class="eb-field__help">Taken from your existing site. Everything else is derived from these three.</p>
+        </div>
+
+        <div class="eb-inspector__section">
+          <p class="eb-inspector__section-title">Still to check</p>
+          <ul class="eb-rail__list">
+            <li><div class="eb-blockrow" data-eb-goto="04-gapfill.html">
+              <span class="eb-blockrow__icon"><i data-lucide="gavel" aria-hidden="true"></i></span>
+              <span class="eb-blockrow__label">Judges</span>
+              <span class="eb-blockrow__note">import 16?</span>
+            </div></li>
+            <li><div class="eb-blockrow" data-eb-goto="04-gapfill.html">
+              <span class="eb-blockrow__icon"><i data-lucide="ticket" aria-hidden="true"></i></span>
+              <span class="eb-blockrow__label">Entry fee</span>
+              <span class="eb-blockrow__note">catalogue</span>
+            </div></li>
+            <li><div class="eb-blockrow" data-eb-goto="04-gapfill.html">
+              <span class="eb-blockrow__icon"><i data-lucide="heart-handshake" aria-hidden="true"></i></span>
+              <span class="eb-blockrow__label">Charity partner</span>
+              <span class="eb-blockrow__note">not set</span>
+            </div></li>
+            <li><div class="eb-blockrow" data-eb-goto="04-gapfill.html">
+              <span class="eb-blockrow__icon"><i data-lucide="images" aria-hidden="true"></i></span>
+              <span class="eb-blockrow__label">Winners photos</span>
+              <span class="eb-blockrow__note">pick library</span>
+            </div></li>
+          </ul>
+        </div>
+
+        <div class="eb-inspector__foot">
+          <button class="btn btn--primary btn--sm eb-btn-block" type="button" data-eb-goto="04-gapfill.html">
+            <i data-lucide="list-checks" aria-hidden="true"></i>
+            Work through the 6 gaps
+        </div>
+      </div>
+
+      <!-- Bridge to the full form — only meaningful with a block selected -->
+      <div class="eb-inspector__foot" data-eb-inspector-foot hidden>
+        <button class="eb-allfields" type="button" data-eb-goto="07-advanced.html">
+          <i data-lucide="sliders-horizontal" aria-hidden="true"></i>
+          <span class="eb-allfields__text">
+            All fields for this block
+            <span class="eb-allfields__sub">Every Advanced Event field, nothing hidden</span>
+          </span>
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ══════════════ AI DOCK ══════════════ -->
+    <section class="eb-ai">
+      <div class="eb-ai__head">
+        <span class="eb-ai__badge"><i data-lucide="sparkles" aria-hidden="true"></i></span>
+        <p class="eb-ai__title">Event assistant</p>
+        <div class="eb-ai__spacer"></div>
+        <span class="badge badge--info badge--sm" data-eb-proposal-count>3 suggestions to review</span>
+      </div>
+
+      <div class="eb-ai__body">
+        <div class="eb-turn">
+          <span class="eb-turn__avatar"><i data-lucide="sparkles" aria-hidden="true"></i></span>
+          <div class="eb-turn__content">
+            <p class="eb-turn__text">
+              Your draft is ready. I used <strong>11 blocks</strong>, all of them existing event
+              features — no new functionality. Copy is a first pass; edit anything by clicking it
+              on the page.
+            </p>
+            <ul class="eb-built">
+              <li><i data-lucide="check" aria-hidden="true"></i> Hero + strapline</li>
+              <li><i data-lucide="check" aria-hidden="true"></i> Overview copy</li>
+              <li><i data-lucide="check" aria-hidden="true"></i> 4 sponsor tiers</li>
+              <li><i data-lucide="check" aria-hidden="true"></i> Key dates</li>
+              <li><i data-lucide="check" aria-hidden="true"></i> 5 FAQs</li>
+              <li><i data-lucide="check" aria-hidden="true"></i> Venue from address</li>
+            </ul>
+            <p class="eb-turn__text">Three things I'd add, based on your 2026 page:</p>
+          </div>
+        </div>
+
+        <!-- TODO(backend:EventBuilder): proposals are static markup. Real version returns
+             a diff against the current event model, each item with a target block, a
+             payload and a provenance reference. -->
+        <div data-backend-todo="eb-proposals">
+          <div class="eb-proposal" data-eb-proposal="testimonials">
+            <span class="eb-proposal__icon"><i data-lucide="quote" aria-hidden="true"></i></span>
+            <div class="eb-proposal__main">
+              <p class="eb-proposal__title">Add a Testimonials block</p>
+              <p class="eb-proposal__why">Four quotes sit in the WYSIWYG on your 2026 page — this makes them a real block. Shown on the page now.</p>
+            </div>
+            <div class="eb-proposal__actions" data-eb-proposal-actions>
+              <button class="btn btn--tertiary btn--xs" type="button" data-eb-refine="testimonials">Refine</button>
+              <button class="btn btn--secondary btn--xs" type="button" data-eb-reject="testimonials">Reject</button>
+              <button class="btn btn--primary btn--xs" type="button" data-eb-accept="testimonials">Accept</button>
+            </div>
+            <span class="eb-proposal__state" hidden data-eb-proposal-state></span>
+          </div>
+
+          <div class="eb-proposal" data-eb-proposal="booktable">
+            <span class="eb-proposal__icon"><i data-lucide="utensils" aria-hidden="true"></i></span>
+            <div class="eb-proposal__main">
+              <p class="eb-proposal__title">Add a "Book a table" tab</p>
+              <p class="eb-proposal__why">Your 2026 page had one and it drove most of the ticket revenue. Uses the existing catalogue sign-up.</p>
+            </div>
+            <div class="eb-proposal__actions" data-eb-proposal-actions>
+              <button class="btn btn--tertiary btn--xs" type="button" data-eb-refine="booktable">Refine</button>
+              <button class="btn btn--secondary btn--xs" type="button" data-eb-reject="booktable">Reject</button>
+              <button class="btn btn--primary btn--xs" type="button" data-eb-accept="booktable">Accept</button>
+            </div>
+            <span class="eb-proposal__state" hidden data-eb-proposal-state></span>
+          </div>
+
+          <div class="eb-proposal" data-eb-proposal="categories">
+            <span class="eb-proposal__icon"><i data-lucide="list" aria-hidden="true"></i></span>
+            <div class="eb-proposal__main">
+              <p class="eb-proposal__title">Add an award categories list</p>
+              <p class="eb-proposal__why">You mentioned entries but there's nowhere showing what people enter. I'd use a Custom tab.</p>
+            </div>
+            <div class="eb-proposal__actions" data-eb-proposal-actions>
+              <button class="btn btn--tertiary btn--xs" type="button" data-eb-refine="categories">Refine</button>
+              <button class="btn btn--secondary btn--xs" type="button" data-eb-reject="categories">Reject</button>
+              <button class="btn btn--primary btn--xs" type="button" data-eb-accept="categories">Accept</button>
+            </div>
+            <span class="eb-proposal__state" hidden data-eb-proposal-state></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="eb-ai__foot eb-ai__foot--row">
+        <!-- TODO(backend:EventBuilder): prompt goes nowhere. Needs
+             POST /api/event-builder/refine { eventId, prompt } -> proposal diff. -->
+        <div class="eb-promptbar" data-backend-todo="eb-refine">
+          <span class="eb-promptbar__icon"><i data-lucide="sparkles" aria-hidden="true"></i></span>
+          <input class="eb-promptbar__input" type="text" data-eb-prompt
+                 aria-label="Ask for a change"
+                 placeholder="Ask for a change — “make the overview shorter”, “add a dress code note”…">
+          <button class="btn btn--primary btn--sm btn--icon" type="button" aria-label="Send">
+            <i data-lucide="move-up" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>lucide.createIcons();</script>
+<script src="EventBuilder.js"></script>
+</body>
+</html>

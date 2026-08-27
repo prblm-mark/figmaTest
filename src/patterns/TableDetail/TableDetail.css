@@ -1,0 +1,276 @@
+/* TableDetail — Seating Planner table inspector panel
+ * Figma: Lus07xi8pPXLN87sQIyrEt node 3475:94010
+ *        (Type x Tier=Pattern x Device, 8 variants)
+ *
+ * Assumes base.css + tokens.css are loaded by the page.
+ *
+ * Presentational only — no JS. Composes AttendeeCard (one per seat), TableType (the tier
+ * pill) and, via AttendeeCard's Empty variant, Button for the Assign action. The seat rows
+ * are drop targets whose `--dragged-over` the parent module toggles; nothing here drags.
+ *
+ * THE WHOLE Type AXIS IS DATA, NOT CSS — the same finding as TableCard. Figma draws
+ * Default / 2 Roles / All Roles / Full, and they differ only in how many roles the legend
+ * lists (none / 2 / 5) and how many seats are filled. Nothing branches on Type, so there
+ * are deliberately no Type modifiers.
+ *
+ * HEIGHT: Figma pins the desktop panel at 698px, which is simply how tall it drew ten
+ * seats and has no token. At the designer's direction 2026-08-25 the panel instead fills
+ * its column and the seat list scrolls inside a fixed header — so a twenty-seat table
+ * works and the header stays put. That is what `block-size: 100%` plus the
+ * `flex: 1 / min-block-size: 0 / overflow-y: auto` on the list below are doing.
+ */
+
+.table-detail {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* Fixed 320px at both breakpoints — bound to --ai-size-6 in Figma, not a fluid width. */
+  inline-size: var(--ai-size-6);
+  block-size: 100%;
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-lg);
+  background-color: var(--ai-surface-primary);
+  box-shadow: var(--ai-shadow-xxs);
+  /* Keeps the scrolling seat list clipped inside the rounded corners. */
+  overflow: hidden;
+}
+
+/* ── Panel header ───────────────────────────────────────────────────────────
+ * Never shrinks and never scrolls — the seat list scrolls beneath it.
+ *
+ * Figma sets `border-0` here while still carrying --ai-border-secondary as the border
+ * colour: a zero-width border with a colour left on it. The rendered design shows no
+ * divider under the header, so none is drawn. If a divider was intended, it needs a
+ * width in Figma first. */
+.table-detail__header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ai-spacing-5);
+  flex-shrink: 0;
+  inline-size: 100%;
+  padding: var(--ai-spacing-5);
+}
+
+.table-detail__header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--ai-spacing-3);
+  inline-size: 100%;
+}
+
+.table-detail__titles {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--ai-spacing-1);
+  min-inline-size: 0;
+}
+
+.table-detail__name {
+  max-inline-size: 100%;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-md);
+  font-weight: var(--ai-font-bold);
+  line-height: normal;
+  color: var(--ai-text-primary);
+}
+
+/* Figma sets `shrink-0` on the pill instance. A layout concern of this row — nothing
+ * about TableType's own appearance is touched. */
+.table-detail__header-row .table-type {
+  flex-shrink: 0;
+}
+
+/* ── Meta line: seated count · sponsor ──────────────────────────────────────── */
+.table-detail__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  max-inline-size: 100%;
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-medium);
+  line-height: normal;
+  color: var(--ai-text-contrast);
+}
+
+.table-detail__count {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* Figma draws a 3px ellipse. Rendered as a middot instead — it is a text separator, and
+ * a character avoids an off-scale 3px dimension with no token. Same treatment as
+ * AttendeeCard's identical separator. */
+.table-detail__sep {
+  flex-shrink: 0;
+}
+
+/* The sponsor name is bound to --ai-font-body here, where TableCard's equivalent uses
+ * --ai-font-title. Both resolve to Inter so it is visually a no-op, but the binding is
+ * inconsistent between the two components — flagged in figma-notes, built as drawn. */
+.table-detail__sponsor {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  min-inline-size: 0;
+  font-family: var(--ai-font-body);
+  line-height: var(--ai-leading-xs);
+}
+
+.table-detail__sponsor [data-lucide],
+.table-detail__sponsor svg {
+  inline-size: var(--ai-icon-size-sm);
+  block-size: var(--ai-icon-size-sm);
+  flex-shrink: 0;
+  /* --ai-icon-secondary, NOT the --ai-icon-contrast TableCard's handshake uses. Resolved
+   * by get_variable_defs on the icon node (3472:85943); design context hides the colour
+   * inside an SVG asset. */
+  color: var(--ai-icon-secondary);
+}
+
+.table-detail__sponsor-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Guest list ─────────────────────────────────────────────────────────────
+ * A Figma `slot`, so the seat rows are content the caller supplies. This is the part
+ * that scrolls: flex: 1 to take the leftover height, min-block-size: 0 so it is allowed
+ * to be shorter than its content, then overflow-y: auto. Without min-block-size: 0 a
+ * flex item refuses to shrink below its content and the panel grows instead.
+ *
+ * Figma gives it no padding-top on desktop — the header's own padding provides it. */
+.table-detail__list {
+  display: flex;
+  flex: 1;
+  min-block-size: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ai-spacing-3);
+  inline-size: 100%;
+  padding-inline: var(--ai-spacing-5);
+  padding-block-end: var(--ai-spacing-5);
+  overflow-y: auto;
+  /* Transparent track, thin thumb in --ai-surface-secondary. The standard properties
+   * cover Firefox and Chrome 121+/Safari 18.2+; the -webkit- rules below carry older
+   * WebKit. Same treatment as .chat-sidebar__sections, which is the existing precedent
+   * for a thin scrollbar on a transparent track. */
+  scrollbar-color: var(--ai-surface-secondary) transparent;
+  scrollbar-width: thin;
+}
+
+/* `width`, not `inline-size` — these are UA pseudo-elements and logical properties are
+ * not reliably honoured on them. 6px matches the precedent, via the token. */
+.table-detail__list::-webkit-scrollbar {
+  width: var(--ai-spacing-2);
+}
+
+.table-detail__list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.table-detail__list::-webkit-scrollbar-thumb {
+  background-color: var(--ai-surface-secondary);
+  border-radius: var(--ai-radius-full);
+}
+
+/* ── Role legend ────────────────────────────────────────────────────────────
+ * Present only when the table has seated roles — absent entirely on Type=Default.
+ * Wraps, so a table with all five roles reflows rather than overflowing. */
+.table-detail__legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+  /* Figma binds a split gap here — 4px row / 8px column. The column gap is Figma's;
+     only the ROW gap was tightened to --ai-spacing-0-5 (designer, 2026-08-25). */
+  row-gap: var(--ai-spacing-0-5);
+  column-gap: var(--ai-spacing-3);
+  flex-shrink: 0;
+  inline-size: 100%;
+  margin: 0;
+  padding: var(--ai-spacing-3);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  background-color: var(--ai-surface-minimal);
+}
+
+.table-detail__legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-1);
+  flex-shrink: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-4xs);
+  font-weight: var(--ai-font-medium);
+  line-height: normal;
+  color: var(--ai-text-secondary);
+}
+
+.table-detail__swatch {
+  flex-shrink: 0;
+  inline-size: var(--ai-spacing-3);
+  block-size: var(--ai-spacing-3);
+  border-radius: var(--ai-radius-xs);
+  background-color: var(--table-detail-role);
+}
+
+/* ── Role colours ───────────────────────────────────────────────────────────
+ * One custom property per item, bound to the Seating Planner collection. The swatch
+ * inherits it from its legend item. Unlike TableCard's legend this one DOES include
+ * Host, so all five roles are covered. */
+.table-detail__legend-item { --table-detail-role: var(--ai-surface-contrast); }
+.table-detail__legend-item--host     { --table-detail-role: var(--sp-host); }
+.table-detail__legend-item--vip      { --table-detail-role: var(--sp-vip); }
+.table-detail__legend-item--speaker  { --table-detail-role: var(--sp-speaker); }
+.table-detail__legend-item--sponsor  { --table-detail-role: var(--sp-sponsor); }
+.table-detail__legend-item--attendee { --table-detail-role: var(--sp-attendee); }
+
+/* ── Seats ──────────────────────────────────────────────────────────────────
+ * The AttendeeCard rows. Their own gap differs by breakpoint (see below), which is why
+ * they sit in their own wrapper rather than being direct children of the list. */
+.table-detail__seats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ai-spacing-3);
+  inline-size: 100%;
+}
+
+/* ── Device: Mobile ─────────────────────────────────────────────────────────
+ * Figma's Device axis. All four mobile variants drop the panel header entirely — no
+ * table name, seated count, sponsor or tier pill — and tighten the list. Verified on
+ * 3488:201546 and 3488:201601.
+ *
+ * Mobile also carries no fixed height in Figma, unlike desktop's 698px; since the panel
+ * fills its container at both breakpoints, that needs no rule. */
+/* SCREEN container, not a self-container (2026-08-27). Measured own width: 320px, fixed — under 767 at
+ * BOTH breakpoints, so `container-type` on this root plus a `max-width: 767px` self-query would
+ * fire permanently, on desktop included. These deltas are about the SCREEN being narrow, not
+ * this element being narrow, so they key on `cs-page`. See the contract in CLAUDE.md §responsive. */
+@container cs-page (max-width: 767px) {
+  /* a11y note: this takes the table name and seated count out of the accessibility tree
+   * along with the visual. Correct only because the mobile screen supplies them in its
+   * own sheet chrome — designer-confirmed 2026-08-25 and recorded in figma-notes. */
+  .table-detail__header {
+    display: none;
+  }
+
+  .table-detail__list {
+    padding: var(--ai-spacing-3);
+  }
+
+  .table-detail__seats {
+    gap: var(--ai-spacing-2);
+  }
+}

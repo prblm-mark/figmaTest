@@ -18,6 +18,19 @@
 (function () {
   'use strict';
 
+  /* Double-include guard, matching Toggle.js.
+   *
+   * Without it a second <script> tag binds a SECOND document click handler, and because the
+   * trigger branch is a `classList.toggle`, the two cancel each other out — the menu never
+   * opens and the component looks broken rather than duplicated. Option clicks still appear
+   * to work (both handlers set the same value), which makes it a genuinely confusing failure.
+   *
+   * Hit for real on the Seating Planner screen (2026-08-27): its ported ControlScreen shell
+   * already loads this file, and adding it again for the create-plan Select silently killed
+   * every Select on the page. */
+  if (window.__selectReady) return;
+  window.__selectReady = true;
+
   function refreshIcons() {
     if (window.lucide && typeof window.lucide.createIcons === 'function') {
       window.lucide.createIcons();

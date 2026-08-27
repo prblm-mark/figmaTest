@@ -82,7 +82,7 @@ body {
   padding: var(--ai-spacing-1) var(--ai-spacing-3);
   background: var(--ai-surface-success);
   color: var(--ai-text-invert);
-  font-size: var(--ai-font-fixed-xxs);
+  font-size: var(--ai-font-fixed-2xs);
   font-weight: var(--ai-font-semibold);
   border-radius: var(--ai-radius-full);
 }

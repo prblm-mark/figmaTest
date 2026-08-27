@@ -57,7 +57,7 @@
   margin: 0;
   font-family: var(--ai-font-title);
   font-weight: var(--ai-font-semibold);
-  font-size: var(--ai-font-fixed-xxs);
+  font-size: var(--ai-font-fixed-2xs);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-primary);
   font-feature-settings: 'dlig' 1;
@@ -75,7 +75,7 @@
   margin: 0;
   font-family: var(--ai-font-body);
   font-weight: var(--ai-font-regular);
-  font-size: var(--ai-font-fixed-xxs);
+  font-size: var(--ai-font-fixed-2xs);
   line-height: 1.5;
   color: var(--ai-text-contrast);
   font-feature-settings: 'dlig' 1;

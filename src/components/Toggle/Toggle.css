@@ -71,6 +71,26 @@
   background-color: var(--ai-border-secondary);
 }
 
+/* ── Size: xxs (24×12 track, 8px thumb) ─────────────── */
+/* Added 2026-08-25 for TableListing's "Only free seats" control. A real Figma variant
+   (Size=xxs on set 2025:1080), not an invention — the component was simply behind.
+   Figma defines only Initial and Active for this size, no Disabled; the generic
+   `--disabled` still composes if a consumer ever needs it. */
+
+.toggle--xxs .toggle__track {
+  width: var(--ai-spacing-6); /* 24px */
+  height: var(--ai-spacing-4); /* 12px */
+}
+
+.toggle--xxs .toggle__knob {
+  width: var(--ai-spacing-3); /* 8px */
+  height: var(--ai-spacing-3);
+}
+
+.toggle--xxs.toggle--active .toggle__knob {
+  left: calc(100% - var(--ai-spacing-3) - 2.5px);
+}
+
 /* ── Size: xs (32×16 track, 12px thumb) ─────────────── */
 
 .toggle--xs .toggle__track {
@@ -160,7 +180,7 @@
 .toggle__helper {
   font-family: var(--ai-font-title);
   font-weight: var(--ai-font-regular);
-  font-size: var(--ai-font-fixed-xxs);
+  font-size: var(--ai-font-fixed-2xs);
   line-height: 1.5;
   color: var(--ai-text-contrast);
   margin: 0;

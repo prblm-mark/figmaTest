@@ -56,9 +56,9 @@ modifier classes rather than 12 rules.
 | Trigger (Name · values + chevron) | `.filter-item__trigger` | `<button>`, transparent reset, opens the picker |
 | Clear (×) | `.filter-item__clear` | `<button>`, selected-only, resets the chip |
 | Leading add icon (+) | `.filter-item__add` | Lucide `plus`; hidden when `--selected` |
-| Filter name | `.filter-item__name` | `--ai-font-medium`, `--ai-font-fixed-xxs` |
+| Filter name | `.filter-item__name` | `--ai-font-medium`, `--ai-font-fixed-2xs` |
 | Separator | `.filter-item__sep` | `·` — `--ai-font-fixed-sm` / `--ai-font-regular` / `--ai-icon-contrast` |
-| Selected values | `.filter-item__values` | `--ai-font-semibold`, `--ai-font-fixed-xxs`; text set by JS rollup |
+| Selected values | `.filter-item__values` | `--ai-font-semibold`, `--ai-font-fixed-2xs`; text set by JS rollup |
 | Chevron | `.filter-item__chevron` | Lucide `chevron-down`, 12px |
 
 ## Token Mapping
@@ -77,7 +77,7 @@ modifier classes rather than 12 rules.
 | `font/medium` | `--ai-font-medium` | Filter name weight |
 | `font/semibold` | `--ai-font-semibold` | Selected values weight |
 | `font/regular` | `--ai-font-regular` | Separator weight |
-| `font/fixed-xxs` (12px) | `--ai-font-fixed-xxs` | Name + values size |
+| `font/fixed-xxs` (12px) | `--ai-font-fixed-2xs` | Name + values size |
 | `font/fixed-sm` (16px) | `--ai-font-fixed-sm` | Separator glyph size |
 | `leading/xs` (16px) | `--ai-leading-xs` | Name + values line-height |
 | `leading/md` (24px) | `--ai-leading-md` | Separator line-height |

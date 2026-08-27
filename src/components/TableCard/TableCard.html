@@ -1,0 +1,791 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TableCard — Affino Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../Button/Button.css">
+  <link rel="stylesheet" href="../TableType/TableType.css">
+  <link rel="stylesheet" href="../FullBadge/FullBadge.css">
+  <link rel="stylesheet" href="TableCard.css">
+  <style>
+    /* The screen container. These components key their narrow-screen rules on `cs-page`,
+       which the CC shell establishes on `.cc-control__page` — a standalone demo has no shell,
+       so without this the mobile rules could never fire here and the demo would silently
+       misrepresent the component. Resizing this page still exercises them. */
+    body { container-type: inline-size; container-name: cs-page; }
+    body {
+      margin: 0;
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-minimal);
+      font-family: var(--ai-font-body);
+      color: var(--ai-text-primary);
+    }
+    h1 { font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-xl); margin: 0 0 var(--ai-spacing-2); }
+    h2 {
+      font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-md);
+      margin: var(--ai-spacing-8) 0 var(--ai-spacing-1);
+    }
+    .lede { color: var(--ai-text-contrast); font-size: var(--ai-font-fixed-xs); margin: 0 0 var(--ai-spacing-5); max-width: 70ch; }
+    /* The card is fluid and fills its cell, so the demo supplies the container: the
+       tables grid it lives in. --ai-size-5 (280px) tracks Figma's 289px closely. */
+    .table-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(var(--ai-size-4), var(--ai-size-5)));
+      gap: var(--ai-spacing-5);
+      align-items: start;
+    }
+    /* ── Mobile preview ──────────────────────────────────────────────────────
+       An iframe of THIS page at 390px. An iframe carries its own viewport, so the
+       component's own @media (max-width: 767px) fires inside it no matter how wide the
+       outer window is — which is the only way to show the mobile rendering without
+       duplicating markup or inventing a --mobile modifier. */
+    .mobile-preview {
+      display: flex; flex-direction: column; gap: var(--ai-spacing-3);
+      inline-size: fit-content;
+    }
+    .mobile-preview__frame {
+      inline-size: 390px; /* iPhone-class viewport — a device width, not a design token */
+      block-size: 700px;
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-lg);
+      background: var(--ai-surface-primary);
+    }
+    .mobile-preview__caption {
+      font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-2xs);
+      color: var(--ai-text-contrast); margin: 0;
+    }
+    /* Inside the frame: hide this section so it cannot load itself, and drop the page
+       intro so the components start at the top. */
+    [data-frame="mobile"] .mobile-preview,
+    [data-frame="mobile"] h1,
+    [data-frame="mobile"] .lede--intro { display: none; }
+    /* the first heading no longer needs its top margin once the intro is gone */
+    [data-frame="mobile"] h2:first-of-type { margin-block-start: 0; }
+  </style>
+  <script>
+    /* ?frame=mobile marks this document as the one INSIDE the mobile preview iframe, so the
+       preview section hides itself and cannot recurse. Runs in <head> before paint. */
+    if (location.search.indexOf('frame=mobile') !== -1) document.documentElement.dataset.frame = 'mobile';
+  </script>
+</head>
+<body>
+  <h1>TableCard</h1>
+  <p class="lede lede--intro">Table summary card for the Seating Planner tables grid. Shows a table's name, tier,
+  sponsor and a per-role capacity breakdown. <strong>Presentational only</strong> — the parent module
+  owns selection and toggles <code>--selected</code>; selecting a table is what opens Table Detail.
+  No JS in the component.</p>
+  <p class="lede lede--intro">The header is a <strong>column</strong>: the table name and tier pill share a row
+  with a 12px gap, and the sponsor row sits beneath them spanning the full card width. The name
+  <strong>wraps</strong> rather than truncating.</p>
+  <p class="lede lede--intro">The <strong>whole card is the select trigger</strong>: the table name is a real
+  <code>&lt;button&gt;</code> whose <code>::after</code> stretches over the card, with the edit and
+  delete buttons layered above it so they stay independently clickable. Composes
+  <strong>TableType</strong>, <strong>FullBadge</strong> and <strong>Button</strong>.</p>
+  <p class="lede lede--intro">The capacity bar is <strong>proportional to the seat counts</strong>: each segment
+  carries its count in a <code>--seg</code> custom property and divides the track by
+  <code>flex-grow</code>. Figma draws the segments at fixed widths that contradict its own legend, so
+  those widths are not ported.</p>
+
+  <h2>State=Default</h2>
+<p class="lede">Three Types. <strong>The whole Type axis is data, not CSS</strong> — Empty, Populated and Full differ only in how many bar segments and legend rows the caller supplies, and whether the FullBadge is present. Nothing branches on Type, so there are no <code>--empty</code> / <code>--populated</code> / <code>--full</code> modifiers.</p>
+  <div class="table-grid">
+  <!-- TODO(backend:SeatingPlanner): table name, tier, sponsor, per-role seat counts and
+       capacity are all hardcoded → GET /crm/plans/{planId}/tables returning
+       [{ id, name, tableType, sponsor, capacity, seats: [{ role }] }]. Aggregate the
+       per-role counts SERVER-SIDE and hand them straight to --seg on each segment: the
+       same trap as seating-plan-chip-summary, where a client-side summary went stale
+       after an unseat. The role set must match the --sp-* collection. -->
+  <article class="table-card" data-backend-todo="seating-table-grid">
+    <div class="table-card__header">
+      <div class="table-card__titles">
+        <h3 class="table-card__name">
+          <button type="button" class="table-card__select">Table 21</button>
+        </h3>
+        <span class="table-type table-type--vip">VIP</span>
+      </div>
+      <p class="table-card__sponsor">
+        <i data-lucide="handshake" aria-hidden="true"></i>
+        <span class="table-card__sponsor-name">Mastercard</span>
+      </p>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__viz">
+      <div class="table-card__bar" aria-hidden="true">
+        <span class="table-card__seg table-card__seg--empty" style="--seg: 10"></span>
+      </div>
+      <div class="table-card__legend">
+        <span class="table-card__legend-item table-card__legend-item--empty"><span class="table-card__swatch"></span>Empty (10)</span>
+      </div>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__footer">
+      <div class="table-card__count-group">
+        <p class="table-card__count">0 / 10 seated</p>
+      </div>
+      <div class="table-card__actions">
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 21">
+          <i data-lucide="pencil" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 21">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </article>
+
+  <article class="table-card">
+    <div class="table-card__header">
+      <div class="table-card__titles">
+        <h3 class="table-card__name">
+          <button type="button" class="table-card__select">Table 21</button>
+        </h3>
+        <span class="table-type table-type--vip">VIP</span>
+      </div>
+      <p class="table-card__sponsor">
+        <i data-lucide="handshake" aria-hidden="true"></i>
+        <span class="table-card__sponsor-name">Mastercard</span>
+      </p>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__viz">
+      <div class="table-card__bar" aria-hidden="true">
+        <span class="table-card__seg table-card__seg--attendee" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--vip" style="--seg: 1"></span>
+        <span class="table-card__seg table-card__seg--speaker" style="--seg: 1"></span>
+        <span class="table-card__seg table-card__seg--sponsor" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--empty" style="--seg: 4"></span>
+      </div>
+      <div class="table-card__legend">
+        <span class="table-card__legend-item table-card__legend-item--attendee"><span class="table-card__swatch"></span>Attendee (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--vip"><span class="table-card__swatch"></span>VIP (1)</span>
+        <span class="table-card__legend-item table-card__legend-item--speaker"><span class="table-card__swatch"></span>Speaker (1)</span>
+        <span class="table-card__legend-item table-card__legend-item--sponsor"><span class="table-card__swatch"></span>Sponsor (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--empty"><span class="table-card__swatch"></span>Empty (4)</span>
+      </div>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__footer">
+      <div class="table-card__count-group">
+        <p class="table-card__count">6 / 10 seated</p>
+      </div>
+      <div class="table-card__actions">
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 21">
+          <i data-lucide="pencil" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 21">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </article>
+
+  <article class="table-card">
+    <div class="table-card__header">
+      <div class="table-card__titles">
+        <h3 class="table-card__name">
+          <button type="button" class="table-card__select">Table 21</button>
+        </h3>
+        <span class="table-type table-type--vip">VIP</span>
+      </div>
+      <p class="table-card__sponsor">
+        <i data-lucide="handshake" aria-hidden="true"></i>
+        <span class="table-card__sponsor-name">Mastercard</span>
+      </p>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__viz">
+      <div class="table-card__bar" aria-hidden="true">
+        <span class="table-card__seg table-card__seg--attendee" style="--seg: 4"></span>
+        <span class="table-card__seg table-card__seg--vip" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--speaker" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--sponsor" style="--seg: 2"></span>
+      </div>
+      <div class="table-card__legend">
+        <span class="table-card__legend-item table-card__legend-item--attendee"><span class="table-card__swatch"></span>Attendee (4)</span>
+        <span class="table-card__legend-item table-card__legend-item--vip"><span class="table-card__swatch"></span>VIP (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--speaker"><span class="table-card__swatch"></span>Speaker (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--sponsor"><span class="table-card__swatch"></span>Sponsor (2)</span>
+      </div>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__footer">
+      <div class="table-card__count-group">
+        <p class="table-card__count">10 / 10 seated</p>
+        <span class="full-badge"><i data-lucide="check" aria-hidden="true"></i>Full</span>
+      </div>
+      <div class="table-card__actions">
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 21">
+          <i data-lucide="pencil" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 21">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </article>
+  </div>
+  <h2>State=Selected</h2>
+<p class="lede">A two-property delta on every Type: background drops to <code>--ai-surface-minimal</code> and the border goes <code>--ai-border-brand</code>.</p>
+  <div class="table-grid">
+  <article class="table-card table-card--selected">
+    <div class="table-card__header">
+      <div class="table-card__titles">
+        <h3 class="table-card__name">
+          <button type="button" class="table-card__select">Table 21</button>
+        </h3>
+        <span class="table-type table-type--vip">VIP</span>
+      </div>
+      <p class="table-card__sponsor">
+        <i data-lucide="handshake" aria-hidden="true"></i>
+        <span class="table-card__sponsor-name">Mastercard</span>
+      </p>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__viz">
+      <div class="table-card__bar" aria-hidden="true">
+        <span class="table-card__seg table-card__seg--empty" style="--seg: 10"></span>
+      </div>
+      <div class="table-card__legend">
+        <span class="table-card__legend-item table-card__legend-item--empty"><span class="table-card__swatch"></span>Empty (10)</span>
+      </div>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__footer">
+      <div class="table-card__count-group">
+        <p class="table-card__count">0 / 10 seated</p>
+      </div>
+      <div class="table-card__actions">
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 21">
+          <i data-lucide="pencil" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 21">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </article>
+
+  <article class="table-card table-card--selected">
+    <div class="table-card__header">
+      <div class="table-card__titles">
+        <h3 class="table-card__name">
+          <button type="button" class="table-card__select">Table 21</button>
+        </h3>
+        <span class="table-type table-type--vip">VIP</span>
+      </div>
+      <p class="table-card__sponsor">
+        <i data-lucide="handshake" aria-hidden="true"></i>
+        <span class="table-card__sponsor-name">Mastercard</span>
+      </p>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__viz">
+      <div class="table-card__bar" aria-hidden="true">
+        <span class="table-card__seg table-card__seg--attendee" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--vip" style="--seg: 1"></span>
+        <span class="table-card__seg table-card__seg--speaker" style="--seg: 1"></span>
+        <span class="table-card__seg table-card__seg--sponsor" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--empty" style="--seg: 4"></span>
+      </div>
+      <div class="table-card__legend">
+        <span class="table-card__legend-item table-card__legend-item--attendee"><span class="table-card__swatch"></span>Attendee (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--vip"><span class="table-card__swatch"></span>VIP (1)</span>
+        <span class="table-card__legend-item table-card__legend-item--speaker"><span class="table-card__swatch"></span>Speaker (1)</span>
+        <span class="table-card__legend-item table-card__legend-item--sponsor"><span class="table-card__swatch"></span>Sponsor (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--empty"><span class="table-card__swatch"></span>Empty (4)</span>
+      </div>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__footer">
+      <div class="table-card__count-group">
+        <p class="table-card__count">6 / 10 seated</p>
+      </div>
+      <div class="table-card__actions">
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 21">
+          <i data-lucide="pencil" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 21">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </article>
+
+  <article class="table-card table-card--selected">
+    <div class="table-card__header">
+      <div class="table-card__titles">
+        <h3 class="table-card__name">
+          <button type="button" class="table-card__select">Table 21</button>
+        </h3>
+        <span class="table-type table-type--vip">VIP</span>
+      </div>
+      <p class="table-card__sponsor">
+        <i data-lucide="handshake" aria-hidden="true"></i>
+        <span class="table-card__sponsor-name">Mastercard</span>
+      </p>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__viz">
+      <div class="table-card__bar" aria-hidden="true">
+        <span class="table-card__seg table-card__seg--attendee" style="--seg: 4"></span>
+        <span class="table-card__seg table-card__seg--vip" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--speaker" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--sponsor" style="--seg: 2"></span>
+      </div>
+      <div class="table-card__legend">
+        <span class="table-card__legend-item table-card__legend-item--attendee"><span class="table-card__swatch"></span>Attendee (4)</span>
+        <span class="table-card__legend-item table-card__legend-item--vip"><span class="table-card__swatch"></span>VIP (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--speaker"><span class="table-card__swatch"></span>Speaker (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--sponsor"><span class="table-card__swatch"></span>Sponsor (2)</span>
+      </div>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__footer">
+      <div class="table-card__count-group">
+        <p class="table-card__count">10 / 10 seated</p>
+        <span class="full-badge"><i data-lucide="check" aria-hidden="true"></i>Full</span>
+      </div>
+      <div class="table-card__actions">
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 21">
+          <i data-lucide="pencil" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 21">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </article>
+  </div>
+  <h2>Tier pills</h2>
+<p class="lede">The pill is the <strong>TableType</strong> component, unchanged, and now sits in the title row with a 12px gap. Its tier colour is picked by the user at runtime, so all five presets are shown.</p>
+  <div class="table-grid">
+  <article class="table-card">
+    <div class="table-card__header">
+      <div class="table-card__titles">
+        <h3 class="table-card__name">
+          <button type="button" class="table-card__select">Table 1</button>
+        </h3>
+        <span class="table-type table-type--head-table">Head Table</span>
+      </div>
+      <p class="table-card__sponsor">
+        <i data-lucide="handshake" aria-hidden="true"></i>
+        <span class="table-card__sponsor-name">Mastercard</span>
+      </p>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__viz">
+      <div class="table-card__bar" aria-hidden="true">
+        <span class="table-card__seg table-card__seg--attendee" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--vip" style="--seg: 1"></span>
+        <span class="table-card__seg table-card__seg--speaker" style="--seg: 1"></span>
+        <span class="table-card__seg table-card__seg--sponsor" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--empty" style="--seg: 4"></span>
+      </div>
+      <div class="table-card__legend">
+        <span class="table-card__legend-item table-card__legend-item--attendee"><span class="table-card__swatch"></span>Attendee (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--vip"><span class="table-card__swatch"></span>VIP (1)</span>
+        <span class="table-card__legend-item table-card__legend-item--speaker"><span class="table-card__swatch"></span>Speaker (1)</span>
+        <span class="table-card__legend-item table-card__legend-item--sponsor"><span class="table-card__swatch"></span>Sponsor (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--empty"><span class="table-card__swatch"></span>Empty (4)</span>
+      </div>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__footer">
+      <div class="table-card__count-group">
+        <p class="table-card__count">6 / 10 seated</p>
+      </div>
+      <div class="table-card__actions">
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 1">
+          <i data-lucide="pencil" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 1">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </article>
+
+  <article class="table-card">
+    <div class="table-card__header">
+      <div class="table-card__titles">
+        <h3 class="table-card__name">
+          <button type="button" class="table-card__select">Table 2</button>
+        </h3>
+        <span class="table-type table-type--gold">Gold</span>
+      </div>
+      <p class="table-card__sponsor">
+        <i data-lucide="handshake" aria-hidden="true"></i>
+        <span class="table-card__sponsor-name">Mastercard</span>
+      </p>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__viz">
+      <div class="table-card__bar" aria-hidden="true">
+        <span class="table-card__seg table-card__seg--attendee" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--vip" style="--seg: 1"></span>
+        <span class="table-card__seg table-card__seg--speaker" style="--seg: 1"></span>
+        <span class="table-card__seg table-card__seg--sponsor" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--empty" style="--seg: 4"></span>
+      </div>
+      <div class="table-card__legend">
+        <span class="table-card__legend-item table-card__legend-item--attendee"><span class="table-card__swatch"></span>Attendee (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--vip"><span class="table-card__swatch"></span>VIP (1)</span>
+        <span class="table-card__legend-item table-card__legend-item--speaker"><span class="table-card__swatch"></span>Speaker (1)</span>
+        <span class="table-card__legend-item table-card__legend-item--sponsor"><span class="table-card__swatch"></span>Sponsor (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--empty"><span class="table-card__swatch"></span>Empty (4)</span>
+      </div>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__footer">
+      <div class="table-card__count-group">
+        <p class="table-card__count">6 / 10 seated</p>
+      </div>
+      <div class="table-card__actions">
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 2">
+          <i data-lucide="pencil" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 2">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </article>
+
+  <article class="table-card">
+    <div class="table-card__header">
+      <div class="table-card__titles">
+        <h3 class="table-card__name">
+          <button type="button" class="table-card__select">Table 3</button>
+        </h3>
+        <span class="table-type table-type--silver">Silver</span>
+      </div>
+      <p class="table-card__sponsor">
+        <i data-lucide="handshake" aria-hidden="true"></i>
+        <span class="table-card__sponsor-name">Mastercard</span>
+      </p>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__viz">
+      <div class="table-card__bar" aria-hidden="true">
+        <span class="table-card__seg table-card__seg--attendee" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--vip" style="--seg: 1"></span>
+        <span class="table-card__seg table-card__seg--speaker" style="--seg: 1"></span>
+        <span class="table-card__seg table-card__seg--sponsor" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--empty" style="--seg: 4"></span>
+      </div>
+      <div class="table-card__legend">
+        <span class="table-card__legend-item table-card__legend-item--attendee"><span class="table-card__swatch"></span>Attendee (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--vip"><span class="table-card__swatch"></span>VIP (1)</span>
+        <span class="table-card__legend-item table-card__legend-item--speaker"><span class="table-card__swatch"></span>Speaker (1)</span>
+        <span class="table-card__legend-item table-card__legend-item--sponsor"><span class="table-card__swatch"></span>Sponsor (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--empty"><span class="table-card__swatch"></span>Empty (4)</span>
+      </div>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__footer">
+      <div class="table-card__count-group">
+        <p class="table-card__count">6 / 10 seated</p>
+      </div>
+      <div class="table-card__actions">
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 3">
+          <i data-lucide="pencil" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 3">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </article>
+
+  <article class="table-card">
+    <div class="table-card__header">
+      <div class="table-card__titles">
+        <h3 class="table-card__name">
+          <button type="button" class="table-card__select">Table 4</button>
+        </h3>
+        <span class="table-type table-type--bronze">Bronze</span>
+      </div>
+      <p class="table-card__sponsor">
+        <i data-lucide="handshake" aria-hidden="true"></i>
+        <span class="table-card__sponsor-name">Mastercard</span>
+      </p>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__viz">
+      <div class="table-card__bar" aria-hidden="true">
+        <span class="table-card__seg table-card__seg--attendee" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--vip" style="--seg: 1"></span>
+        <span class="table-card__seg table-card__seg--speaker" style="--seg: 1"></span>
+        <span class="table-card__seg table-card__seg--sponsor" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--empty" style="--seg: 4"></span>
+      </div>
+      <div class="table-card__legend">
+        <span class="table-card__legend-item table-card__legend-item--attendee"><span class="table-card__swatch"></span>Attendee (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--vip"><span class="table-card__swatch"></span>VIP (1)</span>
+        <span class="table-card__legend-item table-card__legend-item--speaker"><span class="table-card__swatch"></span>Speaker (1)</span>
+        <span class="table-card__legend-item table-card__legend-item--sponsor"><span class="table-card__swatch"></span>Sponsor (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--empty"><span class="table-card__swatch"></span>Empty (4)</span>
+      </div>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__footer">
+      <div class="table-card__count-group">
+        <p class="table-card__count">6 / 10 seated</p>
+      </div>
+      <div class="table-card__actions">
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 4">
+          <i data-lucide="pencil" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 4">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </article>
+  </div>
+  <h2>Optional sponsor and tier pill</h2>
+<p class="lede">Both are optional in Figma, but see the notes: on the Default variant a single <code>Show Sponsor</code> boolean hides <em>both</em>, which is almost certainly a Figma error — the Selected variant models them as two separate booleans. Built as two independent options.</p>
+  <div class="table-grid">
+  <article class="table-card">
+    <div class="table-card__header">
+      <div class="table-card__titles">
+        <h3 class="table-card__name">
+          <button type="button" class="table-card__select">Table 21</button>
+        </h3>
+        <span class="table-type table-type--vip">VIP</span>
+      </div>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__viz">
+      <div class="table-card__bar" aria-hidden="true">
+        <span class="table-card__seg table-card__seg--attendee" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--vip" style="--seg: 1"></span>
+        <span class="table-card__seg table-card__seg--speaker" style="--seg: 1"></span>
+        <span class="table-card__seg table-card__seg--sponsor" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--empty" style="--seg: 4"></span>
+      </div>
+      <div class="table-card__legend">
+        <span class="table-card__legend-item table-card__legend-item--attendee"><span class="table-card__swatch"></span>Attendee (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--vip"><span class="table-card__swatch"></span>VIP (1)</span>
+        <span class="table-card__legend-item table-card__legend-item--speaker"><span class="table-card__swatch"></span>Speaker (1)</span>
+        <span class="table-card__legend-item table-card__legend-item--sponsor"><span class="table-card__swatch"></span>Sponsor (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--empty"><span class="table-card__swatch"></span>Empty (4)</span>
+      </div>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__footer">
+      <div class="table-card__count-group">
+        <p class="table-card__count">6 / 10 seated</p>
+      </div>
+      <div class="table-card__actions">
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 21">
+          <i data-lucide="pencil" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 21">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </article>
+
+  <article class="table-card">
+    <div class="table-card__header">
+      <div class="table-card__titles">
+        <h3 class="table-card__name">
+          <button type="button" class="table-card__select">Table 21</button>
+        </h3>
+      </div>
+      <p class="table-card__sponsor">
+        <i data-lucide="handshake" aria-hidden="true"></i>
+        <span class="table-card__sponsor-name">Mastercard</span>
+      </p>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__viz">
+      <div class="table-card__bar" aria-hidden="true">
+        <span class="table-card__seg table-card__seg--attendee" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--vip" style="--seg: 1"></span>
+        <span class="table-card__seg table-card__seg--speaker" style="--seg: 1"></span>
+        <span class="table-card__seg table-card__seg--sponsor" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--empty" style="--seg: 4"></span>
+      </div>
+      <div class="table-card__legend">
+        <span class="table-card__legend-item table-card__legend-item--attendee"><span class="table-card__swatch"></span>Attendee (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--vip"><span class="table-card__swatch"></span>VIP (1)</span>
+        <span class="table-card__legend-item table-card__legend-item--speaker"><span class="table-card__swatch"></span>Speaker (1)</span>
+        <span class="table-card__legend-item table-card__legend-item--sponsor"><span class="table-card__swatch"></span>Sponsor (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--empty"><span class="table-card__swatch"></span>Empty (4)</span>
+      </div>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__footer">
+      <div class="table-card__count-group">
+        <p class="table-card__count">6 / 10 seated</p>
+      </div>
+      <div class="table-card__actions">
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 21">
+          <i data-lucide="pencil" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 21">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </article>
+
+  <article class="table-card">
+    <div class="table-card__header">
+      <div class="table-card__titles">
+        <h3 class="table-card__name">
+          <button type="button" class="table-card__select">Table 21</button>
+        </h3>
+      </div>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__viz">
+      <div class="table-card__bar" aria-hidden="true">
+        <span class="table-card__seg table-card__seg--attendee" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--vip" style="--seg: 1"></span>
+        <span class="table-card__seg table-card__seg--speaker" style="--seg: 1"></span>
+        <span class="table-card__seg table-card__seg--sponsor" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--empty" style="--seg: 4"></span>
+      </div>
+      <div class="table-card__legend">
+        <span class="table-card__legend-item table-card__legend-item--attendee"><span class="table-card__swatch"></span>Attendee (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--vip"><span class="table-card__swatch"></span>VIP (1)</span>
+        <span class="table-card__legend-item table-card__legend-item--speaker"><span class="table-card__swatch"></span>Speaker (1)</span>
+        <span class="table-card__legend-item table-card__legend-item--sponsor"><span class="table-card__swatch"></span>Sponsor (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--empty"><span class="table-card__swatch"></span>Empty (4)</span>
+      </div>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__footer">
+      <div class="table-card__count-group">
+        <p class="table-card__count">6 / 10 seated</p>
+      </div>
+      <div class="table-card__actions">
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 21">
+          <i data-lucide="pencil" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 21">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </article>
+  </div>
+  <h2>Long names</h2>
+<p class="lede">This is what the header restructure is for. The table name <strong>wraps</strong> rather than truncating — Figma dropped its <code>nowrap</code> — and the sponsor row now spans the full card width instead of the narrow strip left beside the pill, so a long sponsor name has room. The pill holds its width and stays on the first line.</p>
+  <div class="table-grid">
+  <article class="table-card">
+    <div class="table-card__header">
+      <div class="table-card__titles">
+        <h3 class="table-card__name">
+          <button type="button" class="table-card__select">Head Table — Sponsors, VIPs and Guest Speakers</button>
+        </h3>
+        <span class="table-type table-type--vip">VIP</span>
+      </div>
+      <p class="table-card__sponsor">
+        <i data-lucide="handshake" aria-hidden="true"></i>
+        <span class="table-card__sponsor-name">Mastercard International Incorporated</span>
+      </p>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__viz">
+      <div class="table-card__bar" aria-hidden="true">
+        <span class="table-card__seg table-card__seg--attendee" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--vip" style="--seg: 1"></span>
+        <span class="table-card__seg table-card__seg--speaker" style="--seg: 1"></span>
+        <span class="table-card__seg table-card__seg--sponsor" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--empty" style="--seg: 4"></span>
+      </div>
+      <div class="table-card__legend">
+        <span class="table-card__legend-item table-card__legend-item--attendee"><span class="table-card__swatch"></span>Attendee (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--vip"><span class="table-card__swatch"></span>VIP (1)</span>
+        <span class="table-card__legend-item table-card__legend-item--speaker"><span class="table-card__swatch"></span>Speaker (1)</span>
+        <span class="table-card__legend-item table-card__legend-item--sponsor"><span class="table-card__swatch"></span>Sponsor (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--empty"><span class="table-card__swatch"></span>Empty (4)</span>
+      </div>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__footer">
+      <div class="table-card__count-group">
+        <p class="table-card__count">6 / 10 seated</p>
+      </div>
+      <div class="table-card__actions">
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Head Table — Sponsors, VIPs and Guest Speakers">
+          <i data-lucide="pencil" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Head Table — Sponsors, VIPs and Guest Speakers">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </article>
+
+  <article class="table-card">
+    <div class="table-card__header">
+      <div class="table-card__titles">
+        <h3 class="table-card__name">
+          <button type="button" class="table-card__select">Table 12</button>
+        </h3>
+        <span class="table-type table-type--gold">Gold</span>
+      </div>
+      <p class="table-card__sponsor">
+        <i data-lucide="handshake" aria-hidden="true"></i>
+        <span class="table-card__sponsor-name">Mastercard International Incorporated Global Partnerships Division</span>
+      </p>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__viz">
+      <div class="table-card__bar" aria-hidden="true">
+        <span class="table-card__seg table-card__seg--attendee" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--vip" style="--seg: 1"></span>
+        <span class="table-card__seg table-card__seg--speaker" style="--seg: 1"></span>
+        <span class="table-card__seg table-card__seg--sponsor" style="--seg: 2"></span>
+        <span class="table-card__seg table-card__seg--empty" style="--seg: 4"></span>
+      </div>
+      <div class="table-card__legend">
+        <span class="table-card__legend-item table-card__legend-item--attendee"><span class="table-card__swatch"></span>Attendee (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--vip"><span class="table-card__swatch"></span>VIP (1)</span>
+        <span class="table-card__legend-item table-card__legend-item--speaker"><span class="table-card__swatch"></span>Speaker (1)</span>
+        <span class="table-card__legend-item table-card__legend-item--sponsor"><span class="table-card__swatch"></span>Sponsor (2)</span>
+        <span class="table-card__legend-item table-card__legend-item--empty"><span class="table-card__swatch"></span>Empty (4)</span>
+      </div>
+    </div>
+    <hr class="table-card__rule">
+    <div class="table-card__footer">
+      <div class="table-card__count-group">
+        <p class="table-card__count">6 / 10 seated</p>
+      </div>
+      <div class="table-card__actions">
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 12">
+          <i data-lucide="pencil" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 12">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </article>
+  </div>
+
+  <h2>Device=Mobile</h2>
+  <p class="lede"><strong>Shown live in the 390px frame below</strong> — or resize the viewport under 768px. Figma's
+  Device axis is a <code>@media (max-width: 767px)</code> rule, not a modifier, so the cards above
+  respond on their own. Only two things change: padding 16px &rarr; 12px and the table name 16px
+  &rarr; 14px. Unlike RoomCard the min-width does <em>not</em> step down, and the bar, legend,
+  swatches, badge and buttons are all identical between breakpoints.</p>
+  <div class="mobile-preview">
+    <iframe class="mobile-preview__frame" src="TableCard.html?frame=mobile"
+            title="Table Card at a 390px mobile viewport" loading="lazy"></iframe>
+    <p class="mobile-preview__caption">Live 390px viewport &mdash; the same page and the same CSS,
+    rendered in an iframe so <code>@media (max-width: 767px)</code> applies inside it.</p>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>if (window.lucide) lucide.createIcons();</script>
+</body>
+</html>

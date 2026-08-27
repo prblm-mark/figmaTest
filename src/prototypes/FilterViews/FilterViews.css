@@ -1,0 +1,162 @@
+/*
+ * FilterViews — prototype (Code ← Figma reproduction)
+ * A CRM "Saved Views" deals-table toolbar. Reproduces three Figma states
+ * (Lus07xi8pPXLN87sQIyrEt nodes 2949:3530 / 3930 / 4134) as ONE wired screen:
+ *   resting → modified (Save view CTA) → new view + inline search.
+ * Drive the initial state with ?state=resting|saved|newsearch (used for the
+ * Figma capture so each state becomes its own frame).
+ *
+ * The source frames were a non-DS hex mock; this rebuild uses --ai-* tokens
+ * and existing components (Datatables/Table, Badge, Button, SearchInput).
+ * Prototype-only chrome (view tabs, filter chips) is built inline below.
+ */
+
+/* ── Page + app card ──────────────────────────────────── */
+body {
+  min-height: 100vh;
+  background: var(--ai-surface-minimal);
+  padding: var(--ai-spacing-6);
+}
+
+.fv-app {
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-lg);
+  overflow: hidden;                 /* clip children to the rounded corners */
+  max-width: 1024px;                /* layout dimension — no token match */
+  margin: 0 auto;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* ── View tab bar ─────────────────────────────────────── */
+.fv-tabs {
+  display: flex;
+  align-items: stretch;
+  gap: var(--ai-spacing-1);
+  padding: 0 var(--ai-spacing-5);
+  background: var(--ai-surface-primary);
+  border-bottom: 1px solid var(--ai-border-secondary);
+}
+
+.fv-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  padding: var(--ai-spacing-3) var(--ai-spacing-4);
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-contrast);
+  white-space: nowrap;
+  transition: color var(--ai-transition-default),
+              border-color var(--ai-transition-default);
+}
+
+.fv-tab:hover { color: var(--ai-text-secondary); }
+
+.fv-tab--active {
+  color: var(--ai-text-brand);
+  border-bottom-color: var(--ai-surface-brand);
+  font-weight: var(--ai-font-medium);
+}
+
+.fv-tab [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+.fv-tab__add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ai-spacing-2);
+  margin-left: var(--ai-spacing-1);
+  border: 0;
+  background: transparent;
+  color: var(--ai-text-contrast);
+  cursor: pointer;
+  border-radius: var(--ai-radius-md);
+}
+.fv-tab__add:hover { background: var(--ai-surface-minimal); color: var(--ai-text-secondary); }
+.fv-tab__add [data-lucide] { width: var(--ai-icon-size-sm); height: var(--ai-icon-size-sm); }
+
+/* ── Filter bar ───────────────────────────────────────── */
+.fv-filterbar {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  min-height: var(--ai-spacing-9);
+  padding: var(--ai-spacing-3) var(--ai-spacing-5);
+  background: var(--ai-surface-primary);
+  border-bottom: 1px solid var(--ai-border-secondary);
+}
+
+/* Filter chips */
+.fv-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+  white-space: nowrap;
+}
+.fv-chip__key { color: var(--ai-text-contrast); }
+.fv-chip { color: var(--ai-text-secondary); }
+
+.fv-chip__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ai-text-contrast);
+  cursor: pointer;
+  border-radius: var(--ai-radius-full);
+}
+.fv-chip__remove:hover { color: var(--ai-text-primary); }
+.fv-chip__remove [data-lucide] { width: var(--ai-icon-size-sm); height: var(--ai-icon-size-sm); }
+
+/* Right-aligned action cluster */
+.fv-filterbar__right {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  margin-left: auto;
+}
+
+/* Inline-expand search (reuses the SearchInput .search box) */
+.fv-search {
+  width: 240px;                     /* layout dimension — no token match */
+}
+.fv-search__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ai-spacing-1);
+  border: 0;
+  background: transparent;
+  color: var(--ai-text-contrast);
+  cursor: pointer;
+  border-radius: var(--ai-radius-full);
+}
+.fv-search__close:hover { color: var(--ai-text-primary); }
+.fv-search__close [data-lucide] { width: var(--ai-icon-size-sm); height: var(--ai-icon-size-sm); }
+
+/* ── Table region ─────────────────────────────────────── */
+.fv-table-region {
+  padding: var(--ai-spacing-5);
+  background: var(--ai-surface-minimal);
+}
+
+/* Right-align the Value column (numeric) — reads better in a deals table */
+.fv-table-region .table td:nth-child(4),
+.fv-table-region .table th:nth-child(4) .datatables__sort { justify-content: flex-end; }
+.fv-table-region .table td:nth-child(4) { text-align: right; }

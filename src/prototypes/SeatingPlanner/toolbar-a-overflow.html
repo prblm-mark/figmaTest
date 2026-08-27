@@ -1,0 +1,1489 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Seating Planner · Toolbar option A — overflow menu</title>
+
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/Badge/Badge.css">
+  <link rel="stylesheet" href="../../components/Toggle/Toggle.css">
+  <link rel="stylesheet" href="../../components/SearchInput/SearchInput.css">
+  <link rel="stylesheet" href="../../components/Toast/Toast.css">
+  <link rel="stylesheet" href="../../components/ActionCard/ActionCard.css">
+  <link rel="stylesheet" href="../../components/Input/Input.css">
+  <link rel="stylesheet" href="../../components/Select/Select.css">
+  <link rel="stylesheet" href="../../patterns/Modal/Modal.css">
+  <link rel="stylesheet" href="../../cc/patterns/EventPicker/EventPicker.css">
+  <link rel="stylesheet" href="../../components/DragDropFile/DragDropFile.css">
+  <link rel="stylesheet" href="../../components/Table/Table.css">
+  <link rel="stylesheet" href="SeatingPlanner.css">
+  <!-- The alternative-layout shell. Loaded ONLY by the three alternatives,
+       so the 35 signed-off states cannot be affected by it. -->
+  <link rel="stylesheet" href="SeatingPlannerShell.css">
+  <link rel="stylesheet" href="SeatingPlannerToolbarAlt.css">
+</head>
+<body class="sp-shell sp-shell--alt1" data-sp-tb="a" data-sp-view="grid" data-sp-acc-below="1024">
+
+  <main class="sp-ws">
+
+    <!-- ROW 1 — appbar: the event, the plan strip, and the layout switcher -->
+    <section class="sp-card sp-eventbar">
+      <div class="sp-eventbar__top">
+        <div class="sp-eventbar__main">
+          <h1 class="sp-eventbar__name">The Card &amp; Payments Awards 2026</h1>
+          <ul class="sp-eventbar__meta">
+            <li><i data-lucide="calendar" aria-hidden="true"></i>3 Feb 2026</li>
+            <li><i data-lucide="map-pin" aria-hidden="true"></i>Grosvenor House, London</li>
+            <li><i data-lucide="users" aria-hidden="true"></i>386 attendees</li>
+          </ul>
+        </div>
+        <button class="btn btn--secondary btn--sm" type="button" data-sp-action="change-event" data-sp-task="TASK-342608">
+          <i data-lucide="repeat" aria-hidden="true"></i>
+          Change event
+        </button>
+      </div>
+
+      <!-- ══════════════ SEATING PLANS ROW ══════════════ -->
+      <!-- Two rows: the title and its actions, then the rooms on a scroller. -->
+      <div class="sp-plans">
+        <div class="sp-plans__head">
+          <p class="sp-plans__label">Seating plans</p>
+          <div class="sp-plans__actions">
+            <button class="btn btn--primary btn--sm" type="button" data-sp-action="new-plan" data-sp-task="TASK-342306" aria-label="New plan">
+              <i data-lucide="plus" aria-hidden="true"></i>
+              New<span class="sp-plans__btn-word"> plan</span>
+            </button>
+            <button class="btn btn--secondary btn--sm" type="button" data-sp-action="copy-plans" data-sp-task="TASK-344756" aria-label="Copy plans">
+              <i data-lucide="copy" aria-hidden="true"></i>
+              Copy<span class="sp-plans__btn-word"> plans</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="sp-plans__scroller">
+          <button class="sp-iconbtn sp-plans__nav" type="button"
+                  aria-label="Scroll plans left" data-sp-plans-scroll="prev" hidden>
+            <i data-lucide="chevron-left" aria-hidden="true"></i>
+          </button>
+          <div class="sp-plans__track" data-sp-plans-row data-sp-plans-track>
+            <div class="sp-plan sp-plan--active" data-sp-plan="main" data-sp-plan-label="MAIN BALLROOM — GREAT ROOM" data-sp-plan-seats="10" data-sp-plan-room="Great Room" role="button" tabindex="0" aria-pressed="true">
+              <div class="sp-plan__head">
+                <p class="sp-plan__name">Main Ballroom</p>
+                <button class="sp-iconbtn" type="button" aria-label="Edit Main Ballroom" data-sp-action="plan-edit" data-sp-task="TASK-344754"><i data-lucide="pencil" aria-hidden="true"></i></button>
+                <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Main Ballroom" data-sp-action="plan-delete" data-sp-task="TASK-344755"><i data-lucide="x" aria-hidden="true"></i></button>
+              </div>
+              <p class="sp-plan__stats">30 tables · 240/300 seated · 60 free</p>
+              <span class="sp-seated__track"><span class="sp-seated__fill" style="--sp-seated-pct: 80%"></span></span>
+            </div>
+            <div class="sp-plan" data-sp-plan="overflow" data-sp-plan-label="OVERFLOW ROOM B — SACKVILLE SUITE" data-sp-plan-seats="10" data-sp-plan-room="Sackville Suite" role="button" tabindex="0" aria-pressed="false">
+              <div class="sp-plan__head">
+                <p class="sp-plan__name">Overflow Room B</p>
+                <button class="sp-iconbtn" type="button" aria-label="Edit Overflow Room B" data-sp-action="plan-edit" data-sp-task="TASK-344754"><i data-lucide="pencil" aria-hidden="true"></i></button>
+                <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Overflow Room B" data-sp-action="plan-delete" data-sp-task="TASK-344755"><i data-lucide="x" aria-hidden="true"></i></button>
+              </div>
+              <p class="sp-plan__stats">6 tables · 46/60 seated · 14 free</p>
+              <span class="sp-seated__track"><span class="sp-seated__fill" style="--sp-seated-pct: 77%"></span></span>
+            </div>
+          </div>
+          <button class="sp-iconbtn sp-plans__nav" type="button"
+                  aria-label="Scroll plans right" data-sp-plans-scroll="next" hidden>
+            <i data-lucide="chevron-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROW 2 — actionbar: the toolbar hoisted out of the tables card, so all
+         five controls keep full size whatever the panes below are doing -->
+    <div class="sp-shell__actionbar">
+        <div class="sp-toolbar">
+          <p class="sp-toolbar__title" data-sp-plan-title>MAIN BALLROOM — GREAT ROOM · 30 tables</p>
+          <div class="sp-toolbar__spacer"></div>
+
+          <span class="sp-toolbar__toggle">
+            <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" aria-label="Only free seats" data-sp-freeseats>
+              <span class="toggle__track"><span class="toggle__knob"></span></span>
+            </button>
+            <span><span class="sp-tb-full">Only free seats</span><span class="sp-tb-short">Free seats</span></span>
+          </span>
+
+          <button class="btn btn--secondary btn--sm" type="button" data-sp-action="add-table" data-sp-task="TASK-344757">
+            <i data-lucide="plus" aria-hidden="true"></i>
+            Add table
+          </button>
+          <button class="btn btn--secondary btn--sm" type="button" data-sp-action="room-layout" data-sp-task="TASK-344760">
+            <i data-lucide="map" aria-hidden="true"></i>
+            Room layout
+          </button>
+          <button class="btn btn--secondary btn--sm" type="button" data-sp-action="tier-colours" data-sp-task="TASK-342308">
+            <i data-lucide="palette" aria-hidden="true"></i>
+            Table types
+          </button>
+
+          <!-- OPTION A — overflow. Below 640px the two plan-settings buttons above
+               are hidden and reappear as items in here. The items carry the SAME
+               data-sp-action, so the workspace registry dispatches them with no extra
+               wiring: a menu item IS the button, relocated.
+
+               Own data-sp-more-* attributes on purpose — the shell resolves the split
+               menu with one('[data-sp-split-menu]'), the FIRST in the document, so a
+               second menu on those attributes would toggle the export menu instead. -->
+          <span class="sp-more">
+            <button class="btn btn--secondary btn--sm" type="button" aria-label="More actions"
+                    aria-haspopup="true" aria-expanded="false" data-sp-more-toggle>
+              <i data-lucide="more-horizontal" aria-hidden="true"></i>
+            </button>
+            <div class="sp-split__menu sp-more__menu" data-sp-more-menu hidden>
+              <button class="sp-split__item" type="button" data-sp-action="room-layout" data-sp-task="TASK-344760">
+                <i data-lucide="map" aria-hidden="true"></i>Room layout
+              </button>
+              <button class="sp-split__item" type="button" data-sp-action="tier-colours" data-sp-task="TASK-342308">
+                <i data-lucide="palette" aria-hidden="true"></i>Table types
+              </button>
+            </div>
+          </span>
+
+          <!-- Export split button: PDF is the default action, other formats in the menu -->
+          <span class="sp-split__wrap">
+            <span class="sp-split">
+              <button class="btn btn--primary btn--sm" type="button" data-sp-action="export" data-sp-task="TASK-342305" data-sp-format="pdf">
+                <i data-lucide="download" aria-hidden="true"></i>
+                Export PDF
+              </button>
+              <button class="btn btn--primary btn--sm" type="button" aria-label="Other export formats" aria-haspopup="true" data-sp-split-toggle>
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </span>
+            <div class="sp-split__menu" data-sp-split-menu hidden>
+              <button class="sp-split__item" type="button" data-sp-action="export" data-sp-task="TASK-342305" data-sp-format="xlsx">
+                <i data-lucide="file-spreadsheet" aria-hidden="true"></i>Excel (.xlsx)
+              </button>
+              <button class="sp-split__item" type="button" data-sp-action="export" data-sp-task="TASK-342305" data-sp-format="csv">
+                <i data-lucide="file-text" aria-hidden="true"></i>CSV
+              </button>
+            </div>
+          </span>
+        </div>
+    </div>
+
+    <!-- ROW 3 — list | seats | pool. Three scrollers, three pinned heads,
+         source and target permanently side by side. -->
+    <div class="sp-shell__work" data-sp-workspace>
+
+      <section class="sp-shell__pane sp-shell__list">
+        <div class="sp-shell__pane-head">
+          <h2 class="sp-shell__pane-title">Tables</h2>
+          <span class="sp-shell__pane-count" data-sp-list-count></span>
+          <!-- Mobile only: the pool is hidden below 1024 (no drag and drop on               touch), so the one thing it still had to say is echoed here. -->
+          <span class="sp-shell__pane-echo" data-sp-tray-echo hidden></span>
+          <div class="search search--sm sp-shell__pane-search">
+            <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+            <input class="search__input" type="search" placeholder="Find a table…"
+                   aria-label="Find a table" data-sp-list-search>
+          </div>
+          <!-- Two states, one hook. aria-pressed rather than aria-current: this
+               is a mode you turn on, not a place you are at. -->
+          <div class="sp-shell__viewtoggle" role="group" aria-label="Table list view">
+            <button class="sp-iconbtn" type="button" aria-pressed="false"
+                    aria-label="Show tables as a list" data-sp-view-toggle="list">
+              <i data-lucide="list" aria-hidden="true"></i>
+            </button>
+            <button class="sp-iconbtn" type="button" aria-pressed="true"
+                    aria-label="Show tables as a grid" data-sp-view-toggle="grid">
+              <i data-lucide="layout-grid" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <div class="sp-grid" data-sp-grid data-sp-acc>
+          <div class="sp-table sp-table--tier-head sp-table--selected" data-sp-table role="button" tabindex="0" aria-pressed="true" data-sp-belongs="main" data-sp-name="Table 1" data-sp-seed="5" data-sp-tier="Head table" data-sp-occupants="Hana Ashby~GoCardless|Aisha Okafor~Visa Europe|Eve Owens~GoCardless|David Shah~Wise|Mia Farah~Revolut|Sarah Ashby~Klarna|Sir Alan Prentice~Guest of Honour|Dr Naomi Osei~Opening address|Elena Ruiz~Visa Europe|James Corrigan~TPF Club">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 1<span class="sp-table__tier">Head table</span></p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 1" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 1" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--host"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 2" data-sp-seed="10">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 2</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 2" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 2" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 3" data-sp-seed="15">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 3</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 3" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 3" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 4" data-sp-seed="20">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 4</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 4" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 4" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 5" data-sp-seed="1">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 5</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 5" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 5" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span></div>
+          </div>
+          <div class="sp-table sp-table--tier-gold" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 6" data-sp-seed="6" data-sp-tier="Gold" data-sp-sponsor="Barclaycard">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 6<span class="sp-table__tier">Gold</span></p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <p class="sp-table__sponsor"><i data-lucide="star" aria-hidden="true"></i>Barclaycard</p>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 6" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 6" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span></div>
+          </div>
+          <div class="sp-table sp-table--tier-gold" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 7" data-sp-seed="11" data-sp-tier="Gold" data-sp-sponsor="Wise">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 7<span class="sp-table__tier">Gold</span></p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <p class="sp-table__sponsor"><i data-lucide="star" aria-hidden="true"></i>Wise</p>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 7" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 7" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 8" data-sp-seed="16">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 8</p>
+              <span class="badge badge--warning badge--sm" data-sp-fill>8/10</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>8 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 8" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 8" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+          <div class="sp-table sp-table--tier-gold" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 9" data-sp-seed="21" data-sp-tier="Gold" data-sp-sponsor="Wise">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 9<span class="sp-table__tier">Gold</span></p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <p class="sp-table__sponsor"><i data-lucide="star" aria-hidden="true"></i>Wise</p>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 9" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 9" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 10" data-sp-seed="2">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 10</p>
+              <span class="badge badge--warning badge--sm" data-sp-fill>3/10</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>3 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 10" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 10" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 11" data-sp-seed="7" data-sp-sponsor="Mastercard">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 11</p>
+              <span class="badge badge--neutral badge--sm" data-sp-fill>Empty</span>
+            </div>
+            <p class="sp-table__sponsor"><i data-lucide="star" aria-hidden="true"></i>Mastercard</p>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>0 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 11" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 11" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 12" data-sp-seed="12">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 12</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 12" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 12" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 13" data-sp-seed="17">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 13</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 13" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 13" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 14" data-sp-seed="22">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 14</p>
+              <span class="badge badge--warning badge--sm" data-sp-fill>6/10</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>6 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 14" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 14" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 15" data-sp-seed="3">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 15</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 15" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 15" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 16" data-sp-seed="8">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 16</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 16" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 16" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 17" data-sp-seed="13">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 17</p>
+              <span class="badge badge--warning badge--sm" data-sp-fill>3/10</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>3 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 17" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 17" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+          <div class="sp-table sp-table--tier-gold" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 18" data-sp-seed="18" data-sp-tier="Gold" data-sp-sponsor="Monzo">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 18<span class="sp-table__tier">Gold</span></p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <p class="sp-table__sponsor"><i data-lucide="star" aria-hidden="true"></i>Monzo</p>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 18" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 18" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 19" data-sp-seed="23">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 19</p>
+              <span class="badge badge--warning badge--sm" data-sp-fill>3/10</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>3 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 19" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 19" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 20" data-sp-seed="4">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 20</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 20" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 20" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 21" data-sp-seed="9">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 21</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 21" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 21" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 22" data-sp-seed="14">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 22</p>
+              <span class="badge badge--warning badge--sm" data-sp-fill>4/10</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>4 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 22" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 22" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 23" data-sp-seed="19">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 23</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 23" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 23" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 24" data-sp-seed="0" data-sp-sponsor="Mastercard">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 24</p>
+              <span class="badge badge--warning badge--sm" data-sp-fill>4/10</span>
+            </div>
+            <p class="sp-table__sponsor"><i data-lucide="star" aria-hidden="true"></i>Mastercard</p>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>4 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 24" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 24" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+          <div class="sp-table sp-table--tier-gold" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 25" data-sp-seed="5" data-sp-tier="Gold" data-sp-sponsor="Stripe">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 25<span class="sp-table__tier">Gold</span></p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <p class="sp-table__sponsor"><i data-lucide="star" aria-hidden="true"></i>Stripe</p>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 25" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 25" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 26" data-sp-seed="10">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 26</p>
+              <span class="badge badge--warning badge--sm" data-sp-fill>8/10</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>8 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 26" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 26" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 27" data-sp-seed="15" data-sp-sponsor="Mastercard">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 27</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <p class="sp-table__sponsor"><i data-lucide="star" aria-hidden="true"></i>Mastercard</p>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 27" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 27" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 28" data-sp-seed="20">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 28</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 28" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 28" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 29" data-sp-seed="1" data-sp-sponsor="Wise">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 29</p>
+              <span class="badge badge--warning badge--sm" data-sp-fill>4/10</span>
+            </div>
+            <p class="sp-table__sponsor"><i data-lucide="star" aria-hidden="true"></i>Wise</p>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>4 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 29" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 29" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 30" data-sp-seed="6" data-sp-sponsor="Revolut">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 30</p>
+              <span class="badge badge--warning badge--sm" data-sp-fill>7/10</span>
+            </div>
+            <p class="sp-table__sponsor"><i data-lucide="star" aria-hidden="true"></i>Revolut</p>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>7 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 30" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 30" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table hidden data-sp-offplan role="button" tabindex="0" aria-pressed="false" data-sp-belongs="overflow" data-sp-name="Table 1" data-sp-seed="5">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 1</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 1" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 1" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table hidden data-sp-offplan role="button" tabindex="0" aria-pressed="false" data-sp-belongs="overflow" data-sp-name="Table 2" data-sp-seed="10">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 2</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 2" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 2" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table hidden data-sp-offplan role="button" tabindex="0" aria-pressed="false" data-sp-belongs="overflow" data-sp-name="Table 3" data-sp-seed="15">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 3</p>
+              <span class="badge badge--warning badge--sm" data-sp-fill>8/10</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>8 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 3" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 3" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table hidden data-sp-offplan role="button" tabindex="0" aria-pressed="false" data-sp-belongs="overflow" data-sp-name="Table 4" data-sp-seed="20">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 4</p>
+              <span class="badge badge--warning badge--sm" data-sp-fill>6/10</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>6 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 4" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 4" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+          <div class="sp-table sp-table--tier-gold" data-sp-table hidden data-sp-offplan role="button" tabindex="0" aria-pressed="false" data-sp-belongs="overflow" data-sp-name="Table 5" data-sp-seed="1" data-sp-tier="Gold" data-sp-sponsor="Klarna">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 5<span class="sp-table__tier">Gold</span></p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <p class="sp-table__sponsor"><i data-lucide="star" aria-hidden="true"></i>Klarna</p>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 5" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 5" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table hidden data-sp-offplan role="button" tabindex="0" aria-pressed="false" data-sp-belongs="overflow" data-sp-name="Table 6" data-sp-seed="6">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 6</p>
+              <span class="badge badge--warning badge--sm" data-sp-fill>2/10</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>2 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 6" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 6" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+        </div>
+        <div class="sp-shell__pane-foot">
+        <p class="sp-grid__note" data-sp-filter-note>Click a table to open its seat list. Fill state: green full · amber partial · grey empty.</p>
+        </div>
+      </section>
+
+      <div class="sp-shell__resize" role="separator" aria-orientation="vertical"
+           tabindex="0" draggable="false" data-sp-resize="detail"
+           aria-label="Resize the table detail column" aria-valuemin="320" aria-valuenow="320"
+           title="Drag to widen · double-click to reset"></div>
+
+      <!-- The seat panel lives here on desktop and is MOVED beneath the open
+           table row below 1024px. It must never leave the document: nine
+           singleton queries would start returning null. -->
+      <section class="sp-shell__pane" data-sp-panel-home>
+        <div data-sp-acc-drawer>
+        <section class="sp-panel">
+          <div class="sp-panel__head">
+            <div class="sp-panel__title-row">
+              <h2 class="sp-panel__title" data-sp-seat-title>Table 1</h2>
+              <span class="badge badge--border badge--neutral badge--sm" data-sp-seat-tier>Head table</span>
+            </div>
+            <p class="sp-panel__meta" data-sp-seat-meta>10 / 10 seated · seat order = who sits next to whom</p>
+          </div>
+          <div class="sp-panel__body" data-sp-seatlist></div>
+          <div class="sp-panel__foot">
+            <ul class="sp-legend">
+              <li><span class="sp-dot sp-dot--attendee"></span>Attendee</li>
+              <li><span class="sp-dot sp-dot--sponsor"></span>Sponsor</li>
+              <li><span class="sp-dot sp-dot--vip"></span>VIP</li>
+              <li><span class="sp-dot sp-dot--speaker"></span>Speaker</li>
+              <li><span class="sp-dot sp-dot--host"></span>Host</li>
+              <li><span class="sp-dot sp-dot--guest"></span>Guest</li>
+            </ul>
+          </div>
+        </section>
+        </div>
+      </section>
+
+      <div class="sp-shell__resize" role="separator" aria-orientation="vertical"
+           tabindex="0" draggable="false" data-sp-resize="pool"
+           aria-label="Resize the unassigned column" aria-valuemin="320" aria-valuenow="320"
+           title="Drag to widen · double-click to reset"></div>
+
+      <section class="sp-shell__pane">
+        <section class="sp-panel" data-sp-tray-panel>
+          <div class="sp-panel__head">
+            <div class="sp-panel__title-row">
+              <h2 class="sp-panel__title">Unassigned</h2>
+              <span class="badge badge--warning badge--sm" data-sp-tray-count>7</span>
+            </div>
+            <p class="sp-panel__meta">Drag a person onto a seat or table to assign · drag back here to unassign.</p>
+          </div>
+          <div class="sp-panel__body">
+            <div class="search search--sm">
+              <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+              <input class="search__input" type="search" placeholder="Search unassigned…" aria-label="Search unassigned people" data-sp-tray-search>
+            </div>
+            <p class="sp-tray__none" data-sp-tray-none hidden></p>
+            <div class="sp-tray__list" data-sp-tray-list>
+              <div class="sp-person" data-sp-person draggable="true"><span class="sp-role sp-role--vip">VIP</span><p class="sp-person__name">Dame Helen Verity</p><span class="sp-person__org">Guest of Honour</span></div>
+              <div class="sp-person" data-sp-person draggable="true"><span class="sp-role sp-role--sponsor">Sponsor</span><p class="sp-person__name">Marcus Webb</p><span class="sp-person__org">Barclaycard</span></div>
+              <div class="sp-person" data-sp-person draggable="true"><span class="sp-role sp-role--speaker">Speaker</span><p class="sp-person__name">Priya Anand</p><span class="sp-person__org">Keynote</span></div>
+              <div class="sp-person" data-sp-person draggable="true"><span class="sp-role sp-role--attendee">Attendee</span><p class="sp-person__name">Tom Fielding</p><span class="sp-person__org">Revolut</span></div>
+              <div class="sp-person" data-sp-person draggable="true"><span class="sp-role sp-role--attendee">Attendee</span><p class="sp-person__name">Grace Owens</p><span class="sp-person__org">Monzo</span></div>
+              <div class="sp-person" data-sp-person draggable="true"><span class="sp-role sp-role--attendee">Attendee</span><p class="sp-person__name">Omar Farah</p><span class="sp-person__org">Wise</span></div>
+              <div class="sp-person" data-sp-person draggable="true"><span class="sp-role sp-role--attendee">Attendee</span><p class="sp-person__name">Nina Kaur</p><span class="sp-person__org">Stripe</span></div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+    </div>
+  </main>
+
+
+  <!-- ══════════════ NEW PLAN POPUP — TASK-342306 ══════════════
+       Modal pattern, Form variant. Opened by the shell's "new-plan" action:
+       SeatingPlannerNewPlan.js registers the handler, replacing the deferred
+       -control toast. Nothing in the shell changed to make this live. -->
+  <div class="modal-overlay" data-np-overlay>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="np-title" data-np-modal>
+
+      <div class="modal__header">
+        <h2 class="modal__title" id="np-title">New seating plan <span class="sp-newplan__context">in The Card &amp; Payments Awards 2026</span></h2>
+        <button class="modal__close" type="button" aria-label="Close" data-np-close>
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <div class="modal__body">
+        <!-- TODO(backend:SeatingPlanner): creates a SeatingPlan (FK to the selected
+             Event) and generates Table + TableSeat rows. Seats bounded 6–12. -->
+        <div class="modal__form">
+          <div class="modal__form-group">
+            <label class="modal__form-label" for="np-name">Plan name <span class="sp-req" aria-hidden="true">*</span></label>
+            <div class="input">
+              <div class="input__wrap">
+                <input id="np-name" class="input__control" type="text" placeholder="e.g. Main Ballroom" value="" aria-required="true" data-np-name>
+              </div>
+              <span class="input__help">Name for this seating layout.</span>
+            </div>
+          </div>
+          <div class="modal__form-group">
+            <label class="modal__form-label" for="np-room">Room / location</label>
+            <div class="input">
+              <div class="input__wrap">
+                <input id="np-room" class="input__control" type="text" placeholder="e.g. Great Room" value="" data-np-room>
+              </div>
+              <span class="input__help">The room or area this plan covers.</span>
+            </div>
+          </div>
+
+          <div class="sp-newplan__row">
+          <div class="modal__form-group">
+            <label class="modal__form-label" for="np-tables">Tables <span class="sp-req" aria-hidden="true">*</span></label>
+            <div class="input">
+              <div class="input__wrap">
+                <input id="np-tables" class="input__control" type="number" placeholder="12" value="12" aria-required="true" data-np-tables>
+              </div>
+              <span class="input__help">How many tables to generate. Tables can be added or removed later.</span>
+            </div>
+          </div>
+          <div class="modal__form-group">
+            <label class="modal__form-label" for="np-seats">Seats / table</label>
+            <div class="input">
+              <div class="input__wrap">
+                <input id="np-seats" class="input__control" type="number" placeholder="10" value="10" data-np-seats>
+              </div>
+              <span class="input__help">Default seats on each table (6–12). Individual tables can be changed later.</span>
+            </div>
+          </div>
+            <div class="modal__form-group">
+              <label class="modal__form-label" for="np-shape">Table shape</label>
+              <div class="sel" data-sel>
+                <button id="np-shape" class="sel__control" type="button" data-sel-trigger>
+                  <span class="sel__value" data-np-shape-value>Round</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <ul class="sel__menu" role="listbox">
+                  <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">Round <i data-lucide="check"></i></button></li>
+                  <li><button type="button" class="sel__menu-item" role="option">Square</button></li>
+                </ul>
+              </div>
+              <span class="input__help">Default shape for the generated tables.</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="modal__footer">
+        <button class="btn btn--secondary" type="button" data-np-cancel>Cancel</button>
+        <button class="btn btn--primary" type="button" data-np-create>Create plan</button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════ EDIT PLAN POPUP — TASK-344754 ══════════════
+       Rename a plan / change its room, from the chip's ✎ action. Registers on
+       the shell via SeatingPlannerWorkspace.on('plan-edit', …); the shell hands
+       over the clicked button so the popup knows which plan to load. -->
+  <div class="modal-overlay" data-ep-overlay>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="ep-title" data-ep-modal>
+
+      <div class="modal__header">
+        <h2 class="modal__title" id="ep-title">Edit seating plan</h2>
+        <button class="modal__close" type="button" aria-label="Close" data-ep-close>
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <div class="modal__body">
+        <!-- TODO(backend:SeatingPlanner): PATCH the SeatingPlan record (name, room).
+             Renaming must not touch the plan's Tables or TableSeats. -->
+        <div class="modal__form">
+          <div class="modal__form-group">
+            <label class="modal__form-label" for="ep-name">Plan name <span class="sp-req" aria-hidden="true">*</span></label>
+            <div class="input">
+              <div class="input__wrap">
+                <input id="ep-name" class="input__control" type="text" value="Main Ballroom" aria-required="true" data-ep-name>
+              </div>
+              <span class="input__help">Rename this seating plan.</span>
+            </div>
+          </div>
+          <div class="modal__form-group">
+            <label class="modal__form-label" for="ep-room">Room / location</label>
+            <div class="input">
+              <div class="input__wrap">
+                <input id="ep-room" class="input__control" type="text" value="Great Room" data-ep-room>
+              </div>
+              <span class="input__help">The room or area this plan covers.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal__footer">
+        <button class="btn btn--secondary" type="button" data-ep-cancel>Cancel</button>
+        <button class="btn btn--primary" type="button" data-ep-save>Save</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════ DELETE PLAN CONFIRMATION — TASK-344755 ══════════════
+       NOTE the reference mock titles this "Delete table", but its body copy and
+       the brief both say *plan*, and delete-table is TASK-344758. Treated as a
+       copy/paste slip in the mock — flagged to Mark.
+       Copy is data-driven: table + seated counts are read off the DOM. -->
+  <div class="modal-overlay" data-dp-overlay>
+    <div class="modal modal--sm" role="alertdialog" aria-modal="true"
+         aria-labelledby="dp-title" aria-describedby="dp-copy" data-dp-modal>
+
+      <div class="modal__header">
+        <h2 class="modal__title" id="dp-title">Delete plan</h2>
+        <button class="modal__close" type="button" aria-label="Close" data-dp-close>
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <div class="modal__body">
+        <!-- TODO(backend:SeatingPlanner): delete the SeatingPlan + its Table and
+             TableSeat rows in ONE transaction and return occupants to the event
+             pool. A partial failure must not leave people unassigned from a plan
+             that still exists. -->
+        <p class="sp-confirm__copy" id="dp-copy" data-dp-copy>
+          Are you sure you wish to delete the seating plan <strong>Main Ballroom</strong>?
+        </p>
+        <p class="sp-confirm__detail" data-dp-detail>
+          Its 30 tables will be removed and 240 seated people returned to Unassigned.
+        </p>
+      </div>
+
+      <div class="modal__footer">
+        <button class="btn btn--secondary" type="button" data-dp-cancel>Cancel</button>
+        <button class="btn btn--alert" type="button" data-dp-confirm>Delete plan</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════ COPY PLANS TO EVENT — TASK-344756 ══════════════
+       Reuses screen 1's Event Picker rows (.sp-event) and predictive search
+       rather than a second event-row pattern. The mock omits the search field;
+       the brief specifies it, so it's here.
+       Intro copy is data-driven from the plans actually on the page. -->
+  <div class="modal-overlay" data-cp-overlay>
+    <div class="modal modal--lg event-picker" role="dialog" aria-modal="true"
+         aria-labelledby="cp-title" data-cp-modal>
+
+      <div class="modal__header">
+        <h2 class="modal__title" id="cp-title">Copy all plans to another event</h2>
+        <button class="modal__close" type="button" aria-label="Close" data-cp-close>
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <p class="sp-copy__intro" data-cp-intro>
+        Copy all <strong>2 plans</strong> from <strong>The Card &amp; Payments Awards 2026</strong>
+        to another event. Tables and capacities are kept; seated attendees are cleared.
+        Choose the destination event:
+      </p>
+
+      <div data-cp-body>
+        <!-- TODO(backend:SeatingPlanner): destinations are mock → GET /crm/events
+             excluding the current one; debounced GET /crm/events?q=<term>. -->
+        <div class="event-picker__filters">
+          <div class="search">
+            <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+            <input class="search__input" type="search" placeholder="Search event name…"
+                   aria-label="Search event name" value="" data-cp-search>
+          </div>
+        </div>
+
+        <div class="event-picker__list" data-cp-list>
+          <button class="action-card action-card--chevron event-picker__event" type="button" data-cp-event data-name="Global Payments Forum">
+            <span class="event-picker__event-main">
+              <span class="event-picker__event-head">
+                <span class="event-picker__event-name">Global Payments Forum</span>
+              </span>
+              <span class="event-picker__meta">
+                <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>12 Nov 2026</span>
+                <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>Hilton Metropole, Birmingham</span>
+              </span>
+            </span>
+            <span class="event-picker__stats">
+              <span class="event-picker__plans event-picker__plans--none" data-cp-plans data-plans="0"><i data-lucide="layout-grid" aria-hidden="true"></i>0 plans</span>
+            </span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </button>
+          <button class="action-card action-card--chevron event-picker__event" type="button" data-cp-event data-name="Autumn Gala 2026">
+            <span class="event-picker__event-main">
+              <span class="event-picker__event-head">
+                <span class="event-picker__event-name">Autumn Gala 2026</span>
+              <span class="badge badge--border badge--neutral badge--sm">Draft</span>
+              </span>
+              <span class="event-picker__meta">
+                <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>1 Oct 2026</span>
+                <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>The Savoy, London</span>
+              </span>
+            </span>
+            <span class="event-picker__stats">
+              <span class="event-picker__plans event-picker__plans--none" data-cp-plans data-plans="0"><i data-lucide="layout-grid" aria-hidden="true"></i>0 plans</span>
+            </span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </button>
+          <button class="action-card action-card--chevron event-picker__event" type="button" data-cp-event data-name="Retail Innovation Summit">
+            <span class="event-picker__event-main">
+              <span class="event-picker__event-head">
+                <span class="event-picker__event-name">Retail Innovation Summit</span>
+              </span>
+              <span class="event-picker__meta">
+                <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>8 Oct 2026</span>
+                <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>Manchester Central</span>
+              </span>
+            </span>
+            <span class="event-picker__stats">
+              <span class="event-picker__plans" data-cp-plans data-plans="1"><i data-lucide="layout-grid" aria-hidden="true"></i>1 plan</span>
+            </span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </button>
+          <button class="action-card action-card--chevron event-picker__event" type="button" data-cp-event data-name="Insurance Leaders Dinner">
+            <span class="event-picker__event-main">
+              <span class="event-picker__event-head">
+                <span class="event-picker__event-name">Insurance Leaders Dinner</span>
+              </span>
+              <span class="event-picker__meta">
+                <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>17 Sep 2026</span>
+                <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>The Savoy, London</span>
+              </span>
+            </span>
+            <span class="event-picker__stats">
+              <span class="event-picker__plans" data-cp-plans data-plans="1"><i data-lucide="layout-grid" aria-hidden="true"></i>1 plan</span>
+            </span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </button>
+          <button class="action-card action-card--chevron event-picker__event" type="button" data-cp-event data-name="FinTech Summit 2026">
+            <span class="event-picker__event-main">
+              <span class="event-picker__event-head">
+                <span class="event-picker__event-name">FinTech Summit 2026</span>
+              </span>
+              <span class="event-picker__meta">
+                <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>14 May 2026</span>
+                <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>ExCeL London</span>
+              </span>
+            </span>
+            <span class="event-picker__stats">
+              <span class="event-picker__plans event-picker__plans--none" data-cp-plans data-plans="0"><i data-lucide="layout-grid" aria-hidden="true"></i>0 plans</span>
+            </span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </button>
+          <button class="action-card action-card--chevron event-picker__event" type="button" data-cp-event data-name="Members' Dinner — Spring">
+            <span class="event-picker__event-main">
+              <span class="event-picker__event-head">
+                <span class="event-picker__event-name">Members' Dinner — Spring</span>
+              </span>
+              <span class="event-picker__meta">
+                <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>20 Mar 2026</span>
+                <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>The Ivy, London</span>
+              </span>
+            </span>
+            <span class="event-picker__stats">
+              <span class="event-picker__plans event-picker__plans--none" data-cp-plans data-plans="0"><i data-lucide="layout-grid" aria-hidden="true"></i>0 plans</span>
+            </span>
+            <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <div class="event-picker__empty" data-cp-nores hidden>
+          <span class="event-picker__empty-icon"><i data-lucide="search-x" aria-hidden="true"></i></span>
+          <p class="event-picker__empty-title">No events match “<span data-cp-nores-query></span>”</p>
+          <p class="event-picker__empty-desc">Try a different search. The event you're copying from isn't listed — you can't copy a plan onto itself.</p>
+          <button class="btn btn--secondary" type="button" data-cp-clear>Clear search</button>
+        </div>
+      </div>
+
+      <div class="modal__footer event-picker__footer">
+        <span class="event-picker__count" data-cp-count aria-live="polite">6 events</span>
+        <button class="btn btn--secondary" type="button" data-cp-cancel>Cancel</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════ TABLE FORM (New / Edit) — TASK-342307 ══════════════
+       Tier set comes from this brief: Standard / Head table / VIP / Gold /
+       Silver / Bronze / Sponsor. Colour mapping is INTERIM pending TASK-342308
+       — see the SeatingPlanner.css banner for why.
+       Field labels carry their own short qualifiers ("(optional)",
+       "★ shown on the table") the way the reference does, so only the capacity
+       note needs to say anything the label can't. -->
+  <div class="modal-overlay" data-tf-overlay>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="tf-title" data-tf-modal>
+
+      <div class="modal__header">
+        <h2 class="modal__title" id="tf-title" data-tf-title>Edit table</h2>
+        <button class="modal__close" type="button" aria-label="Close" data-tf-close>
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <div class="modal__body">
+        <!-- TODO(backend:SeatingPlanner): Table row, FK to SeatingPlan.
+             Type → Table Type lookup, Sponsor → Account, plus a sort order.
+             Capacity changes add/remove TableSeat rows and unassign the surplus
+             in the SAME transaction. -->
+        <div class="modal__form">
+
+          <div class="modal__form-group">
+            <label class="modal__form-label" for="tf-name">Table name <span class="sp-req" aria-hidden="true">*</span></label>
+            <div class="input">
+              <div class="input__wrap">
+                <input id="tf-name" class="input__control" type="text" value="Table 1" placeholder="e.g. Sponsors&#39; Table" aria-required="true" data-tf-name>
+              </div>
+              <span class="input__help">Display name for the table.</span>
+            </div>
+          </div>
+
+          <div class="modal__form-group">
+            <label class="modal__form-label" for="tf-tier">Table type / tier</label>
+              <div class="sel" data-sel>
+                <button id="tf-tier" class="sel__control" type="button" data-sel-trigger>
+                  <span class="sel__value" data-tf-tier-value>Head table</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <ul class="sel__menu" role="listbox">
+                  <li><button type="button" class="sel__menu-item" role="option" aria-selected="false" data-tf-tier="Standard">Standard</button></li>
+                  <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true" data-tf-tier="Head table">Head table <i data-lucide="check"></i></button></li>
+                  <li><button type="button" class="sel__menu-item" role="option" aria-selected="false" data-tf-tier="VIP">VIP</button></li>
+                  <li><button type="button" class="sel__menu-item" role="option" aria-selected="false" data-tf-tier="Gold">Gold</button></li>
+                  <li><button type="button" class="sel__menu-item" role="option" aria-selected="false" data-tf-tier="Silver">Silver</button></li>
+                  <li><button type="button" class="sel__menu-item" role="option" aria-selected="false" data-tf-tier="Bronze">Bronze</button></li>
+                  <li><button type="button" class="sel__menu-item" role="option" aria-selected="false" data-tf-tier="Sponsor">Sponsor</button></li>
+                </ul>
+              </div>
+            <span class="input__help">The table tier. Shown as a colour and a label on the plan.</span>
+          </div>
+
+          <div class="modal__form-group">
+            <label class="modal__form-label" for="tf-sponsor">Sponsor <span class="sp-newplan__context">(★ shown on the table)</span></label>
+            <div class="sp-lookup">
+              <div class="input">
+                <div class="input__wrap">
+                  <input id="tf-sponsor" class="input__control" type="text" placeholder="Search accounts…" value="" data-tf-sponsor>
+                </div>
+              </div>
+              <div class="sp-lookup__menu" data-tf-lookup-menu hidden></div>
+            </div>
+              <div class="sp-lookup__chosen" data-tf-sponsor-chosen data-value="" hidden></div>
+          </div>
+
+          <div class="modal__form-group">
+            <label class="modal__form-label" for="tf-host">Host <span class="sp-newplan__context">(optional)</span></label>
+            <div class="input">
+              <div class="input__wrap">
+                <input id="tf-host" class="input__control" type="text" value="" placeholder="e.g. table captain" data-tf-host>
+              </div>
+            </div>
+          </div>
+
+          <div class="sp-tableform__row">
+            <div class="modal__form-group">
+              <label class="modal__form-label" for="tf-seats">Seats (capacity)</label>
+              <div class="input">
+                <div class="input__wrap">
+                  <input id="tf-seats" class="input__control" type="number" min="1" value="10" data-tf-seats>
+                </div>
+              </div>
+            </div>
+            <div class="modal__form-group">
+              <label class="modal__form-label" for="tf-shape">Shape</label>
+              <div class="sel" data-sel>
+                <button id="tf-shape" class="sel__control" type="button" data-sel-trigger>
+                  <span class="sel__value" data-tf-shape-value>Round</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <ul class="sel__menu" role="listbox">
+                  <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true" data-tf-shape="Round">Round <i data-lucide="check"></i></button></li>
+                  <li><button type="button" class="sel__menu-item" role="option" aria-selected="false" data-tf-shape="Square">Square</button></li>
+                </ul>
+              </div>
+            </div>
+            <p class="sp-capacity__note" data-tf-capacity-note>10 of 10 seated. Reducing seats below 10 returns the extra people to Unassigned.</p>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="modal__footer">
+        <button class="btn btn--secondary" type="button" data-tf-cancel>Cancel</button>
+        <button class="btn btn--primary" type="button" data-tf-save>Save</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════ DELETE TABLE CONFIRMATION — TASK-344758 ══════════════
+       Sibling of the Delete plan dialog, one level down. Copy is data-driven:
+       the table name and seated count are read off the card. -->
+  <div class="modal-overlay" data-dt-overlay>
+    <div class="modal modal--sm" role="alertdialog" aria-modal="true"
+         aria-labelledby="dt-title" aria-describedby="dt-copy" data-dt-modal>
+
+      <div class="modal__header">
+        <h2 class="modal__title" id="dt-title">Delete table</h2>
+        <button class="modal__close" type="button" aria-label="Close" data-dt-close>
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <div class="modal__body">
+        <!-- TODO(backend:SeatingPlanner): delete the Table + its TableSeat rows and
+             return occupants to the event pool in ONE transaction. Table numbers
+             are NOT resequenced — Add table takes max+1, so gaps are expected. -->
+        <p class="sp-confirm__copy" id="dt-copy" data-dt-copy>
+          Are you sure you wish to delete <strong>Table 6</strong>?
+        </p>
+        <p class="sp-confirm__detail" data-dt-detail>
+          3 seated people will be returned to the Unassigned pool.
+        </p>
+      </div>
+
+      <div class="modal__footer">
+        <button class="btn btn--secondary" type="button" data-dt-cancel>Cancel</button>
+        <button class="btn btn--alert" type="button" data-dt-confirm>Delete table</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════ TABLE TYPES LOOKUP — TASK-342308 ══════════════
+       Tier label + colour + sort order, configurable. Colours are CLIENT DATA
+       chosen in a picker — not DS tokens — which is what resolves the tier
+       token gap flagged in 344753/342307.
+       Two rules from the reference that the brief omits: Standard cannot be
+       removed (it is the fallback), and removing a tier drops its tables back
+       to Standard. Sort order is row order with up/down controls rather than a
+       raw number field — the number is the data, the list is the interface. -->
+  <div class="modal-overlay" data-tt-overlay>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="tt-title" data-tt-modal>
+
+      <div class="modal__header">
+        <h2 class="modal__title" id="tt-title">Table types</h2>
+        <button class="modal__close" type="button" aria-label="Close" data-tt-close>
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <p class="sp-types__intro">
+        Define the table tiers. Add, rename, recolour or remove them. Tables using a
+        removed tier fall back to Standard.
+      </p>
+
+      <!-- TODO(backend:SeatingPlanner): TableType lookup (label, colour, sortOrder).
+           Table.Type is an FK, so a delete must repoint dependent Tables at Standard
+           or be blocked — never left dangling. Renaming must not change identity. -->
+      <div class="sp-types__list" data-tt-list>
+          <div class="sp-types__row" data-tt-row>
+            <label class="sp-types__swatch" aria-label="Colour for Standard">
+              <input type="color" value="#8fa0b5" data-tt-colour>
+            </label>
+            <div class="input"><div class="input__wrap">
+              <input class="input__control" type="text" value="Standard" aria-label="Tier name" data-tt-label>
+            </div></div>
+            <span class="sp-types__reorder">
+              <button class="sp-iconbtn" type="button" data-tt-move="up" aria-label="Move up"><i data-lucide="chevron-up" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn" type="button" data-tt-move="down" aria-label="Move down"><i data-lucide="chevron-down" aria-hidden="true"></i></button>
+            </span>
+            <span class="sp-types__default">default</span>
+          </div>
+          <div class="sp-types__row" data-tt-row>
+            <label class="sp-types__swatch" aria-label="Colour for Gold">
+              <input type="color" value="#c9a227" data-tt-colour>
+            </label>
+            <div class="input"><div class="input__wrap">
+              <input class="input__control" type="text" value="Gold" aria-label="Tier name" data-tt-label>
+            </div></div>
+            <span class="sp-types__reorder">
+              <button class="sp-iconbtn" type="button" data-tt-move="up" aria-label="Move up"><i data-lucide="chevron-up" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn" type="button" data-tt-move="down" aria-label="Move down"><i data-lucide="chevron-down" aria-hidden="true"></i></button>
+            </span>
+            <button class="btn btn--secondary btn--xs" type="button" data-tt-remove><i data-lucide="x" aria-hidden="true"></i>Remove</button>
+          </div>
+          <div class="sp-types__row" data-tt-row>
+            <label class="sp-types__swatch" aria-label="Colour for Silver">
+              <input type="color" value="#b8bfc7" data-tt-colour>
+            </label>
+            <div class="input"><div class="input__wrap">
+              <input class="input__control" type="text" value="Silver" aria-label="Tier name" data-tt-label>
+            </div></div>
+            <span class="sp-types__reorder">
+              <button class="sp-iconbtn" type="button" data-tt-move="up" aria-label="Move up"><i data-lucide="chevron-up" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn" type="button" data-tt-move="down" aria-label="Move down"><i data-lucide="chevron-down" aria-hidden="true"></i></button>
+            </span>
+            <button class="btn btn--secondary btn--xs" type="button" data-tt-remove><i data-lucide="x" aria-hidden="true"></i>Remove</button>
+          </div>
+          <div class="sp-types__row" data-tt-row>
+            <label class="sp-types__swatch" aria-label="Colour for Bronze">
+              <input type="color" value="#b07d48" data-tt-colour>
+            </label>
+            <div class="input"><div class="input__wrap">
+              <input class="input__control" type="text" value="Bronze" aria-label="Tier name" data-tt-label>
+            </div></div>
+            <span class="sp-types__reorder">
+              <button class="sp-iconbtn" type="button" data-tt-move="up" aria-label="Move up"><i data-lucide="chevron-up" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn" type="button" data-tt-move="down" aria-label="Move down"><i data-lucide="chevron-down" aria-hidden="true"></i></button>
+            </span>
+            <button class="btn btn--secondary btn--xs" type="button" data-tt-remove><i data-lucide="x" aria-hidden="true"></i>Remove</button>
+          </div>
+          <div class="sp-types__row" data-tt-row>
+            <label class="sp-types__swatch" aria-label="Colour for VIP">
+              <input type="color" value="#9b51e0" data-tt-colour>
+            </label>
+            <div class="input"><div class="input__wrap">
+              <input class="input__control" type="text" value="VIP" aria-label="Tier name" data-tt-label>
+            </div></div>
+            <span class="sp-types__reorder">
+              <button class="sp-iconbtn" type="button" data-tt-move="up" aria-label="Move up"><i data-lucide="chevron-up" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn" type="button" data-tt-move="down" aria-label="Move down"><i data-lucide="chevron-down" aria-hidden="true"></i></button>
+            </span>
+            <button class="btn btn--secondary btn--xs" type="button" data-tt-remove><i data-lucide="x" aria-hidden="true"></i>Remove</button>
+          </div>
+          <div class="sp-types__row" data-tt-row>
+            <label class="sp-types__swatch" aria-label="Colour for Head table">
+              <input type="color" value="#3b6fe0" data-tt-colour>
+            </label>
+            <div class="input"><div class="input__wrap">
+              <input class="input__control" type="text" value="Head table" aria-label="Tier name" data-tt-label>
+            </div></div>
+            <span class="sp-types__reorder">
+              <button class="sp-iconbtn" type="button" data-tt-move="up" aria-label="Move up"><i data-lucide="chevron-up" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn" type="button" data-tt-move="down" aria-label="Move down"><i data-lucide="chevron-down" aria-hidden="true"></i></button>
+            </span>
+            <button class="btn btn--secondary btn--xs" type="button" data-tt-remove><i data-lucide="x" aria-hidden="true"></i>Remove</button>
+          </div>
+          <div class="sp-types__row" data-tt-row>
+            <label class="sp-types__swatch" aria-label="Colour for Sponsor">
+              <input type="color" value="#c0392b" data-tt-colour>
+            </label>
+            <div class="input"><div class="input__wrap">
+              <input class="input__control" type="text" value="Sponsor" aria-label="Tier name" data-tt-label>
+            </div></div>
+            <span class="sp-types__reorder">
+              <button class="sp-iconbtn" type="button" data-tt-move="up" aria-label="Move up"><i data-lucide="chevron-up" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn" type="button" data-tt-move="down" aria-label="Move down"><i data-lucide="chevron-down" aria-hidden="true"></i></button>
+            </span>
+            <button class="btn btn--secondary btn--xs" type="button" data-tt-remove><i data-lucide="x" aria-hidden="true"></i>Remove</button>
+          </div>
+      </div>
+
+      <div class="sp-types__add">
+        <div class="sp-types__add-name">
+          <label class="sp-types__label" for="tt-new">New type name</label>
+          <div class="input"><div class="input__wrap">
+            <input id="tt-new" class="input__control" type="text" placeholder="e.g. Platinum" value="" data-tt-new-name>
+          </div></div>
+        </div>
+        <div class="sp-types__add-colour">
+          <span class="sp-types__label">Colour</span>
+          <label class="sp-types__swatch" aria-label="Colour for the new tier">
+            <input type="color" value="#3b6fe0" data-tt-new-colour>
+          </label>
+        </div>
+        <button class="btn btn--primary" type="button" data-tt-add>Add type</button>
+      </div>
+
+      <div class="modal__footer">
+        <button class="btn btn--secondary" type="button" data-tt-done>Close</button>
+      </div>
+
+    </div>
+  </div>
+  <!-- ══════════════ ASSIGN PERSON TO A SEAT — TASK-342309 ══════════════
+       Opened by an empty seat's "Assign" button, and the fallback for
+       drag-and-drop (TASK-344759) — so it has to work on every viewport.
+       Grouped by SOURCE: "Event attendees" are on the guest list and unassigned
+       (read live from the tray), "CRM contacts" are not on the list yet, so
+       seating one adds them to the event.
+       A row commits on click — no Save footer, because with one the row click
+       would only be a selection. Role comes from the person's record; the Role
+       dropdown belongs to the manual guest, who has no record to read. -->
+  <div class="modal-overlay" data-as-overlay>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="as-title" data-as-modal>
+
+      <div class="modal__header">
+        <h2 class="modal__title" id="as-title" data-as-title>Assign person to Table 1 · seat 4</h2>
+        <button class="modal__close" type="button" aria-label="Close" data-as-close>
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <div class="modal__body">
+        <!-- TODO(backend:SeatingPlanner): sets the TableSeat occupant — FK to
+             Attendee/Contact, or a guest name/company pair when there is no
+             record — plus role and seat index. Seating a CRM contact must also
+             create the event Attendee row in the same transaction. Reject
+             anyone who already holds a seat in this event. -->
+        <div class="search">
+          <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+          <input class="search__input" type="search" placeholder="Search by attendee name or account…"
+                 aria-label="Search by attendee name or account" data-as-search>
+        </div>
+        <p class="sp-assign__help">
+          Search event attendees or accounts to seat someone. Their role comes from their
+          record and drives the colour tag. Anyone already seated is not listed.
+        </p>
+
+        <div class="sp-assign__results" data-as-results></div>
+
+        <div class="sp-assign__manual">
+          <p class="sp-assign__group">Add a guest manually</p>
+          <p class="sp-assign__hint">
+            Someone who is not on the attendee list — a plus-one, or a late walk-up.
+          </p>
+          <div class="sp-assign__manual-row">
+            <div class="input">
+              <div class="input__wrap">
+                <input class="input__control" type="text" placeholder="Name"
+                       aria-label="Guest name" data-as-guest-name>
+              </div>
+            </div>
+            <div class="input">
+              <div class="input__wrap">
+                <input class="input__control" type="text" placeholder="Company"
+                       aria-label="Guest company (optional)" data-as-guest-org>
+              </div>
+            </div>
+          </div>
+          <div class="sp-assign__manual-foot">
+            <div class="sp-assign__role">
+              <div class="sel" data-sel>
+                <button class="sel__control" type="button" aria-label="Role" data-sel-trigger>
+                  <span class="sel__value" data-as-role-value>Guest</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <ul class="sel__menu" role="listbox">
+                    <li><button type="button" class="sel__menu-item" role="option" aria-selected="false" data-as-role-opt="Attendee">Attendee</button></li>
+                    <li><button type="button" class="sel__menu-item" role="option" aria-selected="false" data-as-role-opt="Sponsor">Sponsor</button></li>
+                    <li><button type="button" class="sel__menu-item" role="option" aria-selected="false" data-as-role-opt="VIP">VIP</button></li>
+                    <li><button type="button" class="sel__menu-item" role="option" aria-selected="false" data-as-role-opt="Speaker">Speaker</button></li>
+                    <li><button type="button" class="sel__menu-item" role="option" aria-selected="false" data-as-role-opt="Host">Host</button></li>
+                    <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true" data-as-role-opt="Guest">Guest <i data-lucide="check"></i></button></li>
+                </ul>
+              </div>
+            </div>
+            <button class="btn btn--primary" type="button" data-as-guest-add>Add</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Placement bar — TASK-344759. What pick-then-place uses in place of a
+       cursor: the person stays "in the air" until a seat, table or the pool is
+       chosen. This is the path that works on touch and by keyboard. -->
+  <div class="sp-place" data-sp-place hidden>
+    <i data-lucide="hand" aria-hidden="true"></i>
+    <p class="sp-place__text" data-sp-place-text></p>
+    <button class="btn btn--secondary btn--xs" type="button" data-sp-place-cancel>Cancel</button>
+  </div>
+
+  <!-- ══════════════ ROOM LAYOUT — TASK-344760 ══════════════
+       Attaches a floor plan (PDF or image) to the PLAN, previews it, replaces or
+       removes it. NOT a spatial seat-map editor — the brief settles the question
+       TASK-344753 left open. The dropzone is the DS DragDropFile component; the
+       preview, the document card and the file meta row are this task's.
+       The file never leaves the browser: an image is read with FileReader and
+       genuinely previewed. Backend: a MediaFileItem reference on the SeatingPlan. -->
+  <div class="modal-overlay" data-rl-overlay>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="rl-title" data-rl-modal>
+
+      <div class="modal__header">
+        <h2 class="modal__title" id="rl-title">Room layout ·
+          <span class="sp-layout__plan" data-rl-plan></span></h2>
+        <button class="modal__close" type="button" aria-label="Close" data-rl-close>
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <div class="modal__body" data-rl-body></div>
+
+      <div class="modal__footer" data-rl-footer></div>
+
+      <!-- TODO(backend:SeatingPlanner): upload to a MediaFileItem and store the
+           reference on the SeatingPlan. Validate type AND size server-side —
+           accept= is a convenience, not a control. -->
+      <input type="file" class="drag-drop__native" accept="application/pdf,image/*"
+             aria-label="Choose a floor plan" data-rl-native hidden>
+
+    </div>
+  </div>
+
+  <!-- ══════════════ EXPORT PREVIEW — TASK-342305 ══════════════
+       Preview before download, from the toolbar split button. The preview
+       FOLLOWS THE FORMAT: PDF previews as the document the reference draws
+       (event name, meta line, each table as a numbered list), CSV and .xlsx
+       preview as the brief's six columns, because that is what those files
+       hold. Read-only over the plan's tables and seats. -->
+  <div class="modal-overlay" data-ex-overlay>
+    <div class="modal modal--lg" role="dialog" aria-modal="true" aria-labelledby="ex-title" data-ex-modal>
+
+      <div class="modal__header">
+        <h2 class="modal__title" id="ex-title" data-ex-title>Preview — PDF export</h2>
+        <button class="modal__close" type="button" aria-label="Close" data-ex-close>
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <!-- TODO(backend:SeatingPlanner): read-only over the plan Table / TableSeat
+           rows. PDF and XLSX need a server-side generator — build all three
+           formats from the same query or they will disagree. -->
+      <div class="modal__body" data-ex-body></div>
+
+      <div class="modal__footer">
+        <button class="btn btn--secondary" type="button" data-ex-close>Close</button>
+        <button class="btn btn--primary" type="button" data-ex-download>Download PDF</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script src="../../components/Select/Select.js"></script>
+  <script src="SeatingPlannerWorkspace.js"></script>
+  <script src="SeatingPlannerAddTable.js"></script>
+  <script src="SeatingPlannerTableForm.js"></script>
+  <script src="SeatingPlannerDeleteTable.js"></script>
+  <script src="SeatingPlannerTableTypes.js"></script>
+  <script src="SeatingPlannerNewPlan.js"></script>
+  <script src="SeatingPlannerEditPlan.js"></script>
+  <script src="SeatingPlannerDeletePlan.js"></script>
+  <script src="SeatingPlannerCopyPlans.js"></script>
+  <script src="SeatingPlannerAssign.js"></script>
+  <script src="SeatingPlannerTray.js"></script>
+  <script src="SeatingPlannerDrag.js"></script>
+  <script src="SeatingPlannerLayout.js"></script>
+  <script src="SeatingPlannerExport.js"></script>
+  <script src="SeatingPlannerShell.js"></script>
+  <script src="SeatingPlannerToolbarAlt.js"></script>
+</body>
+</html>

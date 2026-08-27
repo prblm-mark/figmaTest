@@ -32,6 +32,7 @@
 | Alert | base, sm, xs | Default, Hover, Focus, Pressed |
 | Alert Outline | base, sm, xs | Default, Hover, Focus, Pressed |
 | Icon Only | base, sm, xs | Default, Hover, Focus, Pressed, Disabled |
+| Icon Only | **2xs** (code-only) | Default, Hover, Focus, Pressed, Disabled |
 
 ## CSS Class Mapping
 
@@ -45,6 +46,7 @@
 | `Size` | base | _(none — default)_ |
 | `Size` | sm | `.btn--sm` |
 | `Size` | xs | `.btn--xs` |
+| `Size` | _(none — see below)_ | `.btn--icon.btn--2xs` |
 | `Icon Only` | True | `.btn--icon` |
 | `State` | Disabled | `disabled` attr / `.btn--disabled` |
 
@@ -124,3 +126,38 @@ Figma default for all text-button variants has `showLeftIcon=true` — both slot
 - Alert background uses Figma primitive `Red/500` → maps to `--ai-surface-error` (#ef4444)
 - `.btn--lg` does **not** exist in Figma — removed from implementation
 - Figma exports the component collection key as `compnonents` (typo — do not fix in tokens)
+
+## `btn--2xs` — a 24x24 icon size that leads Figma
+
+Added 2026-08-25 while building **RoomCard** (`3470:84951`), which places Button instances at
+**24x24** with a 12px icon. No existing size produces that:
+
+| Size | Icon-only, as drawn in the Button set (`53:2489`) |
+|---|---|
+| base | 40x40 |
+| sm | 32x32 |
+| xs | 32x24 (Secondary/Tertiary), 28x24 (Primary) |
+| **2xs** | **24x24 — does not exist in Figma** |
+
+So RoomCard's buttons are **resized instances**, a Figma-side override rather than a variant. The
+designer chose to formalise the size in code (2026-08-25):
+
+```css
+.btn--icon.btn--2xs { 24x24, padding 0, --ai-radius-sm, 12px icon }
+```
+
+Two things to know about it:
+
+- **It is icon-only on purpose.** There is no text `.btn--2xs`, because Figma defines none, and
+  inventing one would be a variant with no Figma counterpart. Writing `btn btn--2xs` without
+  `btn--icon` therefore does nothing — the rule is a two-class combination, matching the house
+  style of `.btn--icon.btn--sm` / `.btn--icon.btn--xs`.
+- **Its radius is set explicitly**, unlike `--xs` which inherits `--ai-radius-sm` from the base
+  `.btn--xs` rule. There is no base `.btn--2xs`, so nothing would carry it.
+- The icon rule targets **both** `[data-lucide]` and `svg`. `lucide.createIcons()` replaces the
+  `<i>` with an `<svg>`, so an `[data-lucide]`-only selector is fragile. Verified 12x12 rendered.
+
+> **Figma follow-up:** add a `Size=2xs` icon-only variant to the Button set so Figma and code
+> agree, or resize RoomCard's instances to `xs`. Until then this row is code-ahead-of-Figma.
+> **Second consumer waiting:** AttendeeCard's `.attendee-card__action` is the same geometry
+> (24px box, 12px icon, `--ai-radius-sm`) built as scoped CSS — worth folding onto `btn--2xs`.

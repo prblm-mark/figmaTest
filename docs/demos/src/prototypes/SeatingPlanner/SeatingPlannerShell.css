@@ -1,0 +1,1130 @@
+/* Seating Planner — the main interface shell (TASK-344753)
+ * Tier: Prototype
+ *
+ * ADOPTED 2026-07-31: this began as an exploration of three alternative layouts
+ * loaded alongside an untouched fallback. Worklist v1 won; the alternatives, the
+ * compare board and the four fallback workspace states are gone, and this file is
+ * simply the shell. Loaded by workspace.html.
+ *
+ * SeatingPlanner.css is still not edited: it carries screen 1 and the sub-task
+ * capture states, so everything here stays additive and scoped to .sp-shell.
+ *
+ * WHAT IS BEING FIXED. In the fallback the seat panel and the Unassigned pool
+ * are each capped at 30rem with their own scroll, stacked in a 448px rail, in a
+ * PAGE-scrolled document — measured page height 1356px. So:
+ *   1440×900  scrolled to the bottom: the pool + the last ~7 of 10 seat rows,
+ *             with the panel head, the toolbar and the plan chips off-screen
+ *   1280×720  the pool + ~4 seat rows; with real browser chrome, ~2
+ * The fault is not only "never visible together" — it is SHARED SCROLL
+ * OWNERSHIP: one scrollbar drives three regions you have to aim at at once.
+ * Every layout here makes the same move: the page stops scrolling, and each
+ * region owns its own scroller with a pinned head.
+ *
+ * SCOPING. `<body class="sp-shell sp-shell--alt1">`. The --alt1 modifier is kept
+ * rather than renamed: the sub-task capture states share SeatingPlanner.css, and a
+ * blanket rename here would be churn with no reader. Overriding an existing
+ * class is then (0,2,0) against the original's (0,1,0), so it wins with no
+ * !important (forbidden — CLAUDE.md §8) and it also beats the viewport media
+ * queries in SeatingPlanner.css. Brand-new class names (.sp-shell__*) need no
+ * prefix — nothing else in the repo uses them.
+ *
+ * RULES THIS FILE OBEYS, because the modules would break otherwise:
+ *   · No alt-only class on any node JS creates or re-classes — .sp-table,
+ *     .sp-seat, .sp-person, .sp-dot and [data-sp-fill] are all minted from
+ *     string templates or have className overwritten at runtime. Everything
+ *     here hangs off an authored ancestor and targets children by BEM name.
+ *   · No nth-child for row layout — TableForm inserts .sp-table__sponsor at
+ *     runtime, so child order is not stable. grid-template-areas keyed to the
+ *     BEM names instead.
+ *   · The pool container keeps .sp-panel, because `.sp-panel.sp-drop` is the
+ *     only drop-target feedback the pool has.
+ *
+ * Everything is gated behind @media (min-width: 1024px). Below --ai-bp-lg the
+ * alt states fall back to the page-scroll layout they inherit, which already
+ * works — a fixed-height three-pane shell would fail WCAG 1.4.10 Reflow at 400%
+ * zoom (CLAUDE.md §9).
+ */
+
+@media (min-width: 1024px) {
+
+  /* ==========================================================================
+     1 — THE APP-SHELL HEIGHT CHAIN (shared by all three)
+     --------------------------------------------------------------------------
+     Four details here fail SILENTLY if skipped, so each is spelled out.
+     ========================================================================== */
+
+  /* (a) base.css / SeatingPlanner.css set `body { min-height: 100vh }`. If only
+     .sp-ws gets a height, then wherever dvh < vh (any mobile browser with a
+     visible toolbar) the BODY stays taller than the viewport and the page
+     scrolls anyway — the exact fault this shell exists to remove. */
+  body.sp-shell {
+    min-height: 0;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    /* A COLUMN. There is nothing above .sp-ws now that the demo bar has gone, but
+       this is kept deliberately: with `.sp-ws { height: 100% }` any band added above
+       the app would push its bottom out of a body that clips and the pool's footer
+       would silently disappear. flex + min-height:0 gives the app what is left. */
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* (b) `minmax(0, 1fr)`, never `1fr`: a bare 1fr has a content-based automatic
+     minimum, so a tall pane pushes the track past the viewport before any
+     min-height:0 on its descendants gets a chance to matter. */
+  .sp-shell .sp-ws {
+    flex: 1;
+    min-height: 0;
+    padding: 0;
+    display: grid;
+    grid-template-rows: auto auto minmax(0, 1fr);
+    overflow: hidden;
+  }
+
+  /* NOTE the two hooks are deliberately different things:
+       [data-sp-workspace] = "hide me when the last plan is deleted" (DeletePlan
+                             reads it)
+       .sp-shell__work     = "you are the row of panes"
+     Using one attribute for both roles meant any second top-level region
+     inherited the pane row's column template. Keep them separate. */
+  .sp-shell__work {
+    min-height: 0;
+    display: grid;
+    gap: var(--ai-spacing-5);
+    padding: var(--ai-spacing-5) var(--ai-spacing-6);
+  }
+
+  /* The pane is the container queried by the grid/seat list inside it. An
+     element cannot query the container it declares, so container-type lives
+     here and the queries live on the children. Named, so that an unnamed query
+     cannot bind to some nearer container by accident. */
+  .sp-shell__pane {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--ai-border-secondary);
+    border-radius: var(--ai-radius-lg);
+    background: var(--ai-surface-primary);
+    container-type: inline-size;
+    container-name: sp-pane;
+  }
+
+  /* A panel INSIDE a pane hands its chrome to the pane. Scoped to descendants
+     of a pane rather than to .sp-shell, so a panel that is itself a top-level
+     region would keep its own border and background. */
+  .sp-shell__pane .sp-panel {
+    height: 100%;
+    border: none;
+    border-radius: 0;
+    background: none;
+  }
+
+  /* (c) The 30rem cap exists only for the fallback's vertical stack; here the
+     pane is a track of a fixed-height frame and the cap would be an arbitrary
+     short box. */
+  .sp-shell .sp-panel__body {
+    max-height: none;
+  }
+
+  /* (d) [data-sp-grid] is a grid that is ALSO a flex:1 item. Without
+     align-content:start its auto rows stretch to fill, so a 5-table plan
+     renders five 400px-tall cards. */
+  .sp-shell [data-sp-grid] {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    align-content: start;
+    scrollbar-width: thin;
+  }
+
+  /* The pool: make the LIST the scroller, not the panel body, so the search
+     field stays pinned. In the fallback the search sits inside the scroller and
+     scrolls away — a live defect, not a layout preference. */
+  .sp-shell [data-sp-tray-panel] .sp-panel__body {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  .sp-shell .sp-tray__list {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    margin-top: var(--ai-spacing-4);
+    scrollbar-width: thin;
+  }
+
+  .sp-shell [data-sp-seatlist] {
+    scrollbar-width: thin;
+  }
+
+  /* ==========================================================================
+     2 — APPBAR (shell row 1) and ACTIONBAR (shell row 2)
+     --------------------------------------------------------------------------
+     The toolbar is hoisted out of the tables card into its own full-width row
+     in ALL THREE builds. That keeps all five controls at full size everywhere
+     (a 280px pane wraps them onto three lines) and removes a variable from the
+     comparison. It is safe despite .sp-ws{overflow:hidden}: the export split
+     menu opens DOWNWARD from a direct child of .sp-ws, i.e. inside the shell
+     box. It would only be clipped if the toolbar sat inside a pane.
+     ========================================================================== */
+
+  .sp-shell .sp-eventbar {
+    border-width: 0 0 1px;
+    border-radius: 0;
+    padding: var(--ai-spacing-4) var(--ai-spacing-6);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--ai-spacing-4) var(--ai-spacing-5);
+  }
+
+  .sp-shell .sp-eventbar__top { grid-column: 1 / -1; }
+  .sp-shell .sp-plans { grid-column: 1; margin-top: 0; }
+
+  .sp-shell .sp-eventbar__name {
+    font-size: var(--ai-font-fixed-md);
+  }
+
+  .sp-shell .sp-eventbar__meta {
+    margin-top: var(--ai-spacing-1);
+  }
+
+  /* The arrows are the desktop affordance for the rooms track — touch swipes
+     instead (see the mobile block). They sit OUTSIDE the track, so they never
+     cover a card, and the module unhides them only when there is somewhere to go. */
+  .sp-shell .sp-plans__nav:not([hidden]) {
+    display: grid;
+  }
+
+  .sp-shell__actionbar {
+    display: flex;
+    align-items: center;
+    gap: var(--ai-spacing-4);
+    padding: var(--ai-spacing-3) var(--ai-spacing-6);
+    border-bottom: 1px solid var(--ai-border-secondary);
+    background: var(--ai-surface-primary);
+  }
+
+  .sp-shell__actionbar .sp-toolbar {
+    flex: 1;
+    margin-bottom: 0;
+  }
+
+
+  /* ==========================================================================
+     3 — PANE CHROME
+     ========================================================================== */
+
+  .sp-shell__pane-head {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: var(--ai-spacing-3);
+    padding: var(--ai-spacing-4) var(--ai-spacing-5);
+    border-bottom: 1px solid var(--ai-border-secondary);
+  }
+
+  .sp-shell__pane-title {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    font-family: var(--ai-font-title);
+    font-size: var(--ai-font-fixed-sm);
+    font-weight: var(--ai-font-semibold);
+    line-height: var(--ai-leading-sm);
+    color: var(--ai-text-primary);
+  }
+
+  .sp-shell__pane-search {
+    flex: none;
+    width: var(--ai-size-2);
+  }
+
+  .sp-shell__pane-foot {
+    flex: none;
+    padding: var(--ai-spacing-3) var(--ai-spacing-5);
+    border-top: 1px solid var(--ai-border-secondary);
+    background: var(--ai-surface-minimal);
+  }
+
+  .sp-shell__pane-foot .sp-grid__note {
+    margin: 0;
+  }
+
+  /* ==========================================================================
+     4 — DENSITY
+     --------------------------------------------------------------------------
+     Ancestor-scoped, so it reaches rows minted by JS after boot. ~60px → ~48px
+     per row is what makes 10 seats fit at 720px.
+     ========================================================================== */
+
+  .sp-shell .sp-seat,
+  .sp-shell .sp-person {
+    padding: var(--ai-spacing-2) var(--ai-spacing-3);
+    margin-bottom: var(--ai-spacing-1);
+  }
+
+  /* Seat rows become grid cells, so the list can go multi-column where there is
+     width for it. 292px is the floor for an untruncated row: 162px of fixed
+     chrome (num 24 + gap 8 + role tag 64 + gap 8 + actions 40 + padding 16 +
+     border 2) plus ~130px for a name like "Dame Helen Verity". */
+  /* PERCENTAGE tracks, not `1fr`. Chrome sizes an `fr` track from the available
+     space it computed BEFORE the vertical scrollbar was placed — with
+     `scrollbar-width: thin` it used a 5.6px reservation while clientWidth ends up
+     11px smaller — so the track came out ~5px wider than the content box and the
+     seat panel grew a horizontal scrollbar with nothing to scroll to. A percentage
+     resolves against the content box that actually exists. Measured: track 283px
+     in a 283px box, and the row keeps its 12px padding plus the gutter.
+     Only visible once the detail column came down to 320px. */
+  .sp-shell [data-sp-seatlist] {
+    display: grid;
+    grid-template-columns: minmax(0, 100%);
+    gap: var(--ai-spacing-2);
+    align-content: start;
+  }
+
+  .sp-shell [data-sp-seatlist] .sp-seat {
+    margin-bottom: 0;
+  }
+
+  /* While a person is held, the placement bar is fixed over the bottom ~56px of
+     whatever is beneath it. The scroller grows a gutter for exactly as long as
+     that is true, so the last seat row is always reachable. `pick()` shows the
+     bar but `dragstart` does not, so this is the tap/keyboard path's problem. */
+  body.sp-shell:has(.sp-place:not([hidden])) [data-sp-seatlist],
+  body.sp-shell:has(.sp-place:not([hidden])) .sp-tray__list {
+    padding-bottom: var(--ai-spacing-10);
+  }
+
+  /* ==========================================================================
+     5 — TABLE CARD AS A LIST ROW (alt1 and alt3)
+     --------------------------------------------------------------------------
+     Same element, same hooks, same generated markup — re-laid-out onto its
+     existing children by grid-template-areas. Never nth-child: TableForm
+     inserts .sp-table__sponsor at runtime and AddTable appends dots.
+     ========================================================================== */
+
+  .sp-shell__list [data-sp-grid] {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--ai-spacing-2);
+    padding: var(--ai-spacing-4);
+  }
+
+  .sp-shell__list .sp-table {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "head head"
+      "foot dots";
+    row-gap: var(--ai-spacing-2);
+    column-gap: var(--ai-spacing-3);
+    align-items: center;
+    padding: var(--ai-spacing-3);
+    border-left-width: 1px;
+  }
+
+  .sp-shell__list .sp-table__count {
+    white-space: nowrap;   /* "10 / 10 seated" wrapping doubles every row */
+  }
+
+  .sp-shell__list .sp-table__head { grid-area: head; }
+  .sp-shell__list .sp-table__foot { grid-area: foot; }
+  .sp-shell__list .sp-table__dots { grid-area: dots; justify-content: flex-end; }
+
+  /* The tier reads as a suffix on one line rather than a stacked caption */
+  .sp-shell__list .sp-table__tier {
+    display: inline;
+    margin: 0 0 0 var(--ai-spacing-2);
+  }
+
+  /* The fill badge lives INSIDE .sp-table__head, so placing the sponsor in the
+     same grid area overlaps it. In the narrow list pane the sponsor is dropped —
+     the full name is still in [data-sp-seat-meta] ("· sponsored by Barclaycard")
+     whenever the table is open. The wide accordion row gives it a column
+     instead (see the ALT 3 section). */
+  .sp-shell--alt1 .sp-shell__list .sp-table__sponsor {
+    display: none;
+  }
+
+  /* A row hidden by the list search. Deliberately NOT [hidden]:
+     applyFreeSeatsFilter owns that attribute and re-runs on every seat change,
+     so the two mechanisms have to be orthogonal or they clobber each other. */
+  .sp-shell [data-sp-nomatch] {
+    display: none;
+  }
+
+  /* ==========================================================================
+     ALT 1 — "worklist": table list | seats | pool, three full-height panes.
+     --------------------------------------------------------------------------
+     Mark, 2026-07-30: "set the default width of the table detail column to
+     size-7, and attendees to size-6, but can we add a drag handle so we can
+     expand them manually if required. the min width should [be] the default
+     widths - so they should only grow larger." Then: "we can drop the table
+     detail column down [a] size for its min width." And finally: "is it not
+     possible for the table detail column to be a size wider by default, then
+     shrink to a size smaller if necessary" — which is what minmax() is for:
+
+       minmax(--sp-list-floor, 1fr) | 4px | minmax(size-6, size-7) | 4px | --sp-pool-w
+                                            320 floor, 384 wanted ↑    320 default ↑
+
+     Track sizing does the work in the right order. §12.6 maximises the detail
+     track toward its 384 growth limit out of whatever free space exists, and only
+     §12.7 hands the remainder to the fr track — so the detail is 384 whenever the
+     viewport can afford it and eases down toward 320 when it cannot, without a
+     media query. The list's own floor is a minimum, so it is never the one that
+     gives way. Measured: 384 down to ~1216px, then shrinking; 328 at 1152.
+
+     Below 1152 the PREFERRED width drops to 320 as well, so the detail stays as
+     small as it is allowed to be and the list keeps everything else. Without that
+     the two rules fought: the list's floor falls to size-2 down there (three
+     floors do not fit, see below), and the detail promptly maximised back to 384
+     and took the difference — at 1024 the list measured 200px while the detail sat
+     at 384, which is the wrong way round for a pane you navigate from. Now the
+     list gets 264px there instead. Below 1024 the shell is off entirely and the
+     regions stack (Reflow).
+
+     Dragging replaces the whole minmax() with a fixed --sp-detail-w, because at
+     that point the width is a decision rather than a preference.
+
+     The handles are REAL GRID ITEMS between the panes, not absolutely-positioned
+     overlays: .sp-shell__pane sets overflow:hidden, so anything hanging outside a
+     pane's box would be clipped, and anything inside it would sit on top of the
+     seat rows. A 4px track with a ±6px pseudo-element hit area gives a 16px grab
+     zone that reaches into both gaps without costing width.
+
+     THE LIST HAS A FLOOR TOO — size-7 (384px), Mark 2026-07-30 — so it can never
+     be dragged away or squeezed to a sliver. It lives in --sp-list-floor rather
+     than inline in the template, because the JS clamp has to agree with the CSS
+     exactly and this way there is one number for both to read.
+
+     That third minimum still has a cost, but a smaller one than it was: 384 + 320
+     + 320 plus 8px of handles, 64px of gaps and 48px of padding needs ~1150px of
+     viewport rather than ~1230px, so the list's full floor now holds at 1152 as
+     well. Below that it drops back to size-2, because the alternative is a pool
+     clipped off the right-hand edge by .sp-ws { overflow: hidden } — a broken
+     layout is worse than a narrow list.
+     ========================================================================== */
+
+  .sp-shell--alt1 .sp-shell__work {
+    --sp-list-floor: var(--ai-size-2);
+    --sp-detail-want: var(--ai-size-6);
+    grid-template-columns:
+      minmax(var(--sp-list-floor), 1fr)
+      var(--ai-spacing-1)
+      var(--sp-detail-w, minmax(var(--ai-size-6), var(--sp-detail-want)))
+      var(--ai-spacing-1)
+      var(--sp-pool-w, var(--ai-size-6));
+  }
+
+  @media (min-width: 1152px) {
+    .sp-shell--alt1 .sp-shell__work {
+      --sp-list-floor: var(--ai-size-7);
+      --sp-detail-want: var(--ai-size-7);
+    }
+  }
+
+  /* The mobile accordion needs a wrapper it can relocate, but on a desktop that
+     wrapper must not exist as a box: as a plain block it took an auto height of
+     738px inside a 504px pane, so the panel stopped scrolling and its footer was
+     clipped by the pane's overflow. `display: contents` removes the box and hands
+     the panel straight back to the pane's flex column, which is what every rule
+     from here down assumes. */
+  .sp-shell--alt1 [data-sp-acc-drawer] {
+    display: contents;
+  }
+
+  .sp-shell__resize {
+    align-self: stretch;
+    position: relative;
+    padding: 0;
+    border: none;
+    border-radius: var(--ai-radius-full);
+    background: var(--ai-border-secondary);
+    cursor: col-resize;
+    touch-action: none;   /* or the pointer stream is stolen by panning */
+    transition: background var(--ai-transition-fast);
+  }
+
+  /* The grab zone, reaching 6px into the gap on each side. On the pseudo so the
+     rail itself can stay 4px wide and quiet. */
+  .sp-shell__resize::before {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    inset-inline: calc(-1 * var(--ai-spacing-3));
+  }
+
+  .sp-shell__resize:hover,
+  .sp-shell__resize:focus-visible,
+  .sp-shell__resize[data-sp-resizing] {
+    background: var(--ai-surface-brand);
+  }
+
+  .sp-shell__resize:focus-visible {
+    outline: 2px solid var(--ai-surface-brand);
+    outline-offset: var(--ai-spacing-1);
+  }
+
+  /* While a column is being dragged, nothing else should highlight, select text
+     or start an HTML5 drag under the pointer. */
+  body.sp-shell[data-sp-resizing] {
+    cursor: col-resize;
+    user-select: none;
+  }
+
+  /* The list pane is now the widest thing on screen and the head has one more
+     control in it, so it is allowed to wrap and the search is allowed to shrink.
+     Without this the head is clipped by .sp-shell__pane{overflow:hidden} at the
+     narrow end. */
+  .sp-shell__list .sp-shell__pane-head {
+    flex-wrap: wrap;
+  }
+
+  .sp-shell__list .sp-shell__pane-search {
+    flex: 1;
+    width: auto;
+    min-width: var(--ai-size-1);
+  }
+
+  /* ---- list / grid toggle (both worklists) --------------------------------- */
+
+  .sp-shell__viewtoggle {
+    flex: none;
+    display: flex;
+    gap: var(--ai-spacing-1);
+  }
+
+  /* -soft-extra rather than -soft: the brand icon on #f0f3ff measures ~4.9:1
+     against ~3.5:1 on the stronger tint, and 3:1 is the floor for a UI glyph. */
+  .sp-shell__viewtoggle .sp-iconbtn[aria-pressed="true"] {
+    border-color: var(--ai-border-brand);
+    background: var(--ai-surface-brand-soft-extra);
+    color: var(--ai-icon-brand);
+  }
+
+  /* GRID VIEW, shared by both worklists — scoped to body.sp-shell rather than to
+     one layout, because only a layout that ships the toggle can ever set
+     data-sp-view, and the accordion does not.
+
+     Nothing is re-laid-out here: the row restyle in section 5 is switched OFF and
+     the card's own shipped styles take over again, so the two views cannot drift
+     apart. The four declarations below are exactly the properties section 5
+     overrode, restored to their SeatingPlanner.css values (padding-4, 3px tier
+     edge, block tier caption, dots from the left).
+
+     Card floor size-4 (240px), Mark's value. Bigger cards, fewer per row than the
+     160px floor first shipped here: 4 columns at 1920, 2 at 1600 and 1440 (272px
+     each at 1440), 1 below that — 2×240+16 = 496 needs a 496px pane and 1280
+     gives 432.
+
+     min(size-4, 100%) rather than size-4 alone: a bare minmax() minimum is a HARD
+     floor, so at a 1024 viewport — where this pane is 240px and its content box
+     208px — the track stayed 240 and the grid overflowed sideways inside a pane
+     that clips. min() lets the single column shrink to the pane instead. */
+  body.sp-shell[data-sp-view="grid"] .sp-shell__list [data-sp-grid] {
+    grid-template-columns: repeat(auto-fill, minmax(min(var(--ai-size-4), 100%), 1fr));
+    gap: var(--ai-spacing-4);
+  }
+
+  body.sp-shell[data-sp-view="grid"] .sp-shell__list .sp-table {
+    display: block;
+    padding: var(--ai-spacing-4);
+    border-left-width: 3px;
+  }
+
+  body.sp-shell[data-sp-view="grid"] .sp-shell__list .sp-table__tier {
+    display: block;
+    margin: var(--ai-spacing-1) 0 0;
+  }
+
+  body.sp-shell[data-sp-view="grid"] .sp-shell__list .sp-table__dots {
+    justify-content: flex-start;
+  }
+
+  /* the card has room for it again */
+  body.sp-shell[data-sp-view="grid"] .sp-shell__list .sp-table__sponsor {
+    display: flex;
+  }
+
+  /* Two columns of seats once the pane clears the 292px-per-column floor
+     (162px of fixed chrome + ~130px for a name like "Dame Helen Verity").
+     The query is on the CHILD; the pane declares the container.
+
+     Neither worklist satisfies it at its default width — alt1's detail pane starts
+     at 384px and alt1b's is 438px at 1280 / 518px at 1440. Both can reach it:
+     alt1 by DRAGGING the detail column past ~600px, which is a good reason to
+     leave the query in place rather than hard-code one column; alt1b on a wide
+     monitor (≥1600px viewport). Forcing two columns at 1440 would give 259px
+     each, below the floor, and truncate names to buy nothing. */
+  @container sp-pane (min-width: 580px) {
+    .sp-shell--alt1 [data-sp-seatlist],
+    .sp-shell--alt1b [data-sp-seatlist] {
+      grid-template-columns: repeat(2, minmax(0, calc(50% - var(--ai-spacing-2) / 2)));
+    }
+  }
+
+  /* ==========================================================================
+     ALT 1B — "worklist v2": the list and the detail share the width EQUALLY,
+     the pool alone is fixed.
+     --------------------------------------------------------------------------
+     Mark, 2026-07-30: "rather than the table detail be the largest column, id
+     like the table list and table detail columns to both grow/shrink equally.
+     just the attendees to be fixed width."
+
+     1fr | 1fr | 320. At 1280 that is 440 | 440 | 320; at 1440, 520 | 520 | 320.
+     The markup is byte-identical to alt1 — v2 is a pure CSS delta, so the
+     comparison is provably about the column template and nothing else.
+
+     THE TRADE it makes explicit: the seats pane no longer clears the 580px
+     two-column threshold at any common desktop width, so the seat list stays
+     single-column and taller. What the list pane buys with those pixels is the
+     sponsor line back (see below) and long table names that no longer truncate.
+     ========================================================================== */
+
+  .sp-shell--alt1b .sp-shell__work {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) var(--ai-size-6);
+  }
+
+  /* Below ~380px of pane the row has no room for it, same as alt1. */
+  .sp-shell--alt1b .sp-shell__list .sp-table__sponsor {
+    display: none;
+  }
+
+  /* Wide enough: the sponsor gets its own column on the meta row rather than the
+     head row, where the fill badge lives — .sp-table__head is a flex box with the
+     badge pushed right, so anything sharing that grid area lands underneath it.
+     The count and the action buttons stay in column 1 so their position is
+     identical on sponsored and unsponsored rows. */
+  @container sp-pane (min-width: 380px) {
+    .sp-shell--alt1b .sp-shell__list .sp-table {
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      grid-template-areas:
+        "head head head"
+        "foot spon dots";
+    }
+
+    .sp-shell--alt1b .sp-shell__list .sp-table__sponsor {
+      display: flex;
+      grid-area: spon;
+      max-width: var(--ai-size-2);
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  /* ==========================================================================
+     ALT 3 — "accordion": table rows, the open one expanding in place.
+     --------------------------------------------------------------------------
+     THE DRAWER IS A SIBLING OF THE CARD, NEVER A CHILD. Nesting it inside
+     [data-sp-table] is fatal: the shell's document listeners run in registration
+     order, so clicking a seat's unseat button matches initTableSelect's
+     closest('[data-sp-table]') FIRST, which re-renders the seat list and
+     detaches the row — and initSeatActions then throws on seat.outerHTML. The
+     person is removed from the plan and never reaches the pool.
+     ========================================================================== */
+
+  .sp-shell--alt3 .sp-shell__work {
+    grid-template-columns: minmax(0, 1fr) var(--ai-size-6);
+  }
+
+  /* The drawer is a full-width child of the one-column grid, sitting directly
+     after the row it belongs to. */
+  /* NO container-type here. Declaring one collapsed the drawer to its 2px
+     borders while the panel inside measured 370px — the containment made the
+     drawer stop sizing to its content. It does not need to be a container
+     anyway: it spans the list pane, so the seat columns below query `sp-pane`,
+     which the pane already declares. */
+  .sp-shell--alt3 [data-sp-acc-drawer] {
+    border: 1px solid var(--ai-border-brand);
+    border-radius: var(--ai-radius-md);
+    background: var(--ai-surface-primary);
+  }
+
+  /* Capped so a 10-seat table cannot push the other 39 rows off screen.
+     flex:none is load-bearing: `flex:1` implies flex-basis:0%, and inside an
+     AUTO-height flex column that makes the item's hypothetical size 0, so the
+     panel collapsed to head+foot and the drawer rendered as a 4px hairline. */
+  .sp-shell--alt3 [data-sp-acc-drawer] .sp-panel__body {
+    flex: none;
+    max-height: var(--ai-size-7);
+    overflow-y: auto;
+  }
+
+  /* Parked, waiting for a table to be opened. It must stay in the document —
+     nine singleton queries would start returning null otherwise. */
+  .sp-shell__home[hidden] {
+    display: none;
+  }
+
+  /* The rows pane is wide, so seats go 2 or 3 across inside the drawer */
+  @container sp-pane (min-width: 620px) {
+    .sp-shell--alt3 [data-sp-seatlist] {
+      grid-template-columns: repeat(2, minmax(0, calc(50% - var(--ai-spacing-2) / 2)));
+    }
+  }
+
+  @container sp-pane (min-width: 940px) {
+    .sp-shell--alt3 [data-sp-seatlist] {
+      grid-template-columns: repeat(3, minmax(0, calc(100% / 3 - var(--ai-spacing-2) * 2 / 3)));
+    }
+  }
+
+  /* The row that is open reads as the head of its drawer */
+  .sp-shell--alt3 .sp-table.sp-table--selected {
+    border-color: var(--ai-border-brand);
+  }
+
+  /* ~990px of width means the whole row fits on ONE line, so unlike alt1 the
+     accordion demotes nothing — sponsor included. */
+  .sp-shell--alt3 .sp-shell__list .sp-table {
+    grid-template-columns: minmax(0, 1fr) auto auto auto;
+    grid-template-areas: "head spon foot dots";
+    column-gap: var(--ai-spacing-5);
+    row-gap: 0;
+  }
+
+  .sp-shell--alt3 .sp-shell__list .sp-table__sponsor {
+    grid-area: spon;
+    max-width: var(--ai-size-2);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* The drawer is inside the list PANE, so `.sp-shell__pane .sp-panel{height:100%}`
+     would resolve against an auto-height parent and collapse the seat panel to a
+     hairline. It did. */
+  .sp-shell--alt3 [data-sp-acc-drawer] .sp-panel {
+    height: auto;
+  }
+
+}
+
+/* ============================================================================
+   SEATING PLANS — two rows, the rooms on a scroller (every width)
+   ----------------------------------------------------------------------------
+   Mark, 2026-07-31: the title and its calls to action on one row, the rooms beneath
+   on their own horizontally scrollable row; an arrow on desktop rather than a
+   scrollbar, and on touch a swipe with half a card showing at the edge so it is
+   obvious there is more. The scrollbar is hidden in both cases — the arrow, or the
+   cut card, IS the affordance.
+   ============================================================================ */
+
+.sp-shell .sp-plans {
+  display: block;
+}
+
+.sp-shell .sp-plans__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ai-spacing-3) var(--ai-spacing-4);
+}
+
+.sp-shell .sp-plans__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  margin-left: auto;          /* actions sit opposite the title, same row */
+}
+
+.sp-shell .sp-plans__scroller {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  margin-top: var(--ai-spacing-4);
+}
+
+.sp-shell .sp-plans__track {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  gap: var(--ai-spacing-3);
+  overflow-x: auto;
+  /* padding + equal negative margin: room for a card's focus ring and hover
+     shadow without insetting the first card from the pane edge */
+  padding: var(--ai-spacing-1);
+  margin: calc(-1 * var(--ai-spacing-1));
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.sp-shell .sp-plans__track::-webkit-scrollbar {
+  display: none;
+}
+
+.sp-shell .sp-plans__track .sp-plan {
+  flex: none;
+}
+
+/* The "No plans yet — create one →" hint DeletePlan.js drops into the track. */
+.sp-shell .sp-plans__track .sp-plans__none {
+  flex: none;
+  align-self: center;
+  margin: 0;
+}
+
+.sp-shell .sp-plans__nav {
+  display: none;              /* the module unhides it when there is room to move */
+  flex: none;
+  place-items: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sp-shell .sp-plans__track { scroll-behavior: auto; }
+}
+
+/* ============================================================================
+   BOTTOM ACTION BAR — option C, ADOPTED 2026-08-05
+   ----------------------------------------------------------------------------
+   Below 640px the toolbar's action group docks to the bottom of the viewport and
+   the toolbar keeps only what describes the VIEW: the plan title and the
+   free-seats filter.
+
+   WHY THIS ONE, on measured evidence at real device widths (usable area = viewport
+   minus everything above the first table card, minus the bar; height 844):
+
+     width  current      A overflow   C (this)     E on the plan
+     360    236px 4 ln   288px 3 ln   287px 2 ln   256px 3 ln
+     375    252px 4 ln   304px 3 ln   303px 2 ln   272px 3 ln
+     390    252px 4 ln   304px 3 ln   303px 2 ln   272px 3 ln
+     412    276px 4 ln   328px 3 ln   327px 2 ln   296px 3 ln
+     430    320px 3 ln   328px 3 ln   327px 2 ln   368px 2 ln
+
+   A and C tie on space to within 1px everywhere real users are; C does it in TWO
+   toolbar lines to A's three and keeps the actions in thumb reach. E only wins at
+   430 — below that it moves two controls to the plans row, which then wraps, so the
+   height reappears higher up the page.
+
+   The first comparison of these options measured at 500px and rendered its frames
+   at 534px, which flattered everything and picked E. A phone cannot be measured in
+   headless Chrome (it floors the viewport at 500) — pin the page in a fixed-width
+   iframe and read inside it instead.
+
+   COST, stated plainly: the bar spends ~49px permanently to free ~100px of scroll.
+   The net pixel gain is modest; what it really buys is reach and an action position
+   that never moves. It is also a docked bar the mobile design did not previously
+   have — if the Unassigned count ever wants one too, that is one bar too many and
+   needs resolving rather than stacking.
+   ============================================================================ */
+
+.sp-tb-short { display: none; }
+
+/* ABOVE the breakpoint the wrapper must behave exactly like the four flex items it
+   replaced, or introducing it is a desktop regression. It was left as a bare <div>
+   at first, i.e. display:block inside a flex row — measured 64px tall at 1440
+   against the original 32px, and 100px at 768 against 76px. A block box on a text
+   line carries its own leading and cannot wrap its children the way sibling flex
+   items did. Matching .sp-toolbar's own display/gap restores both. */
+.sp-shell .sp-toolbar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ai-spacing-4);
+}
+
+@media (max-width: 639px) {
+  /* Abbreviated labels win below sm; each control keeps an aria-label with the full
+     text, so this is visual only (WCAG 2.5.3 holds — the short label is contained
+     in the accessible name). */
+  .sp-shell .sp-tb-full { display: none; }
+  .sp-shell .sp-tb-short { display: inline; }
+
+  /* The spacer exists to push the controls right of the title on ONE line, and
+     there is no one line down here. Left in place it collapsed to 4px and
+     right-aligned the filter against the TITLE — the stray indent in the mobile
+     screenshot that started this work. */
+  .sp-shell .sp-toolbar__spacer { display: none; }
+  .sp-shell .sp-toolbar { row-gap: var(--ai-spacing-3); }
+
+  /* The count is already repeated in the pane head, so the title may wrap for
+     nothing. One line, ellipsised. */
+  .sp-shell .sp-toolbar__title {
+    flex: 1 1 100%;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .sp-shell .sp-toolbar__actions {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 6;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: var(--ai-spacing-3);
+    padding: var(--ai-spacing-3) var(--ai-spacing-4);
+    border-top: 1px solid var(--ai-border-secondary);
+    background: var(--ai-surface-primary);
+    box-shadow: var(--ai-shadow-md);
+  }
+
+  /* Each cell is a full-width target; the split wrap has to stretch too, or the
+     export button sits at its intrinsic width inside a 1fr column. */
+  .sp-shell .sp-toolbar__actions > .sp-split__wrap,
+  .sp-shell .sp-toolbar__actions > .sp-split__wrap .sp-split,
+  .sp-shell .sp-toolbar__actions .btn { width: 100%; }
+
+  .sp-shell .sp-toolbar__actions .sp-split { display: flex; }
+  .sp-shell .sp-toolbar__actions .sp-split > .btn:first-child { flex: 1; }
+  .sp-shell .sp-toolbar__actions .sp-split > .btn:last-child { width: auto; flex: none; }
+
+  /* The menu must open UPWARDS out of a docked bar. */
+  .sp-shell .sp-toolbar__actions .sp-split__menu {
+    top: auto;
+    bottom: calc(100% + var(--ai-spacing-2));
+  }
+
+  /* Nothing may sit under the bar. */
+  .sp-shell { padding-bottom: var(--ai-spacing-12); }
+}
+
+/* ============================================================================
+   CARD LEFT EDGE — MOVED OUT OF THIS FILE, 2026-08-04
+   ----------------------------------------------------------------------------
+   The untiered-card edge rule used to live here, `.sp-shell`-scoped, on the
+   reasoning that SeatingPlanner.css paints the signed-off states and should not
+   be touched. Now that the worklist is the only layout, that scope was the whole
+   workspace — and measuring showed only 4 of the 36 card-bearing states even load
+   this file, so 32 of them never got the fix.
+
+   Both edge rules now live together in SeatingPlanner.css (search "CARD LEFT
+   EDGE"), where the tier fallback bug is also documented: it was `transparent`,
+   which made every tiered card in those 32 states edgeless because their slimmed
+   markup does not load SeatingPlannerTableTypes.js to paint --sp-tier-colour.
+
+   The first version of the rule was written inside the min-width:1024 block, where
+   it could not possibly fix the mobile view it was written for — worth remembering
+   when a file is one big media query.
+   ============================================================================ */
+
+/* ============================================================================
+   MOBILE — worklist v1 only, below --ai-bp-lg
+   ----------------------------------------------------------------------------
+   Mark, 2026-07-31: "we need to work on the mobile (<1024) now where the drag
+   and drop wont work… can we remove the attendees as we can[t] drag and drop so
+   thats useless. the table detail needs to be brought in to context when
+   selecting the table. Ideally it would take the shape of the accordion version…
+   it should span the full viewport width though."
+
+   Everything above this line is inside @media (min-width: 1024px), so below that
+   the alt states inherit the page-scroll fallback. This block shapes that
+   fallback for alt1 — alt1b and alt3 are untouched and still degrade as before.
+
+   THREE MOVES:
+   1 THE POOL GOES. HTML5 drag does not fire on touch at all, so a column whose
+     only job was to be dragged out of is dead weight. It is DISPLAY:NONE, never
+     removed: [data-sp-tray-list] is a singleton nine queries depend on, it is
+     where unseated people go, and the Assign popup reads it live — which is the
+     canonical seating path on every viewport (TASK-344759). The one thing that
+     would be lost, "somebody is still waiting for a seat", is echoed into the
+     tables pane head by the module.
+   2 THE SEAT PANEL COMES TO THE ROW. Same relocation machinery as alt3, gated to
+     this breakpoint by body[data-sp-acc-below]. Inline, not absolute: the row
+     order stays the DOM order, so a screen reader and the Tab key get the seats
+     immediately after the table they belong to, and nothing has to be measured
+     or repositioned on scroll.
+   3 FULL BLEED. The pane's own chrome is dropped and the workspace padding zeroed
+     so the list and the drawer both span the viewport. Nothing needs negative
+     margins or 100vw (which would count the scrollbar and overflow).
+   ============================================================================ */
+
+@media (max-width: 1023px) {
+
+  /* full-bleed: kill the padding rather than fight it with negative margins */
+  .sp-shell--alt1 .sp-ws {
+    padding: 0;
+  }
+
+  .sp-shell--alt1 .sp-eventbar,
+  .sp-shell--alt1 .sp-shell__actionbar {
+    padding: var(--ai-spacing-4) var(--ai-spacing-5);
+    border-radius: 0;
+  }
+
+  .sp-shell--alt1 .sp-eventbar {
+    border-width: 0 0 1px;
+  }
+
+  .sp-shell--alt1 .sp-shell__actionbar {
+    border-bottom: 1px solid var(--ai-border-secondary);
+    background: var(--ai-surface-primary);
+  }
+
+  /* the pane stops being a card and becomes the page */
+  .sp-shell--alt1 .sp-shell__pane {
+    border: none;
+    border-radius: 0;
+    background: var(--ai-surface-primary);
+  }
+
+  .sp-shell--alt1 .sp-shell__pane-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ai-spacing-3);
+    padding: var(--ai-spacing-4) var(--ai-spacing-5);
+    border-bottom: 1px solid var(--ai-border-secondary);
+  }
+
+  .sp-shell--alt1 .sp-shell__pane-title {
+    flex: none;
+    margin: 0;
+    font-family: var(--ai-font-title);
+    font-size: var(--ai-font-fixed-sm);
+    font-weight: var(--ai-font-semibold);
+    color: var(--ai-text-primary);
+  }
+
+  /* the search takes the rest of the first line; the toggle follows it */
+  .sp-shell--alt1 .sp-shell__pane-search {
+    flex: 1;
+    min-width: var(--ai-size-1);
+  }
+
+  .sp-shell--alt1 .sp-shell__pane-echo {
+    flex: none;
+    order: 9;                     /* last, on its own line if the head wraps */
+    font-family: var(--ai-font-body);
+    font-size: var(--ai-font-fixed-2xs);
+    font-weight: var(--ai-font-medium);
+    color: var(--ai-text-contrast);
+  }
+
+  .sp-shell--alt1 .sp-shell__pane-foot {
+    padding: var(--ai-spacing-3) var(--ai-spacing-5);
+    border-top: 1px solid var(--ai-border-secondary);
+    background: var(--ai-surface-minimal);
+  }
+
+  .sp-shell--alt1 .sp-shell__pane-foot .sp-grid__note {
+    margin: 0;
+  }
+
+  /* NO ARROW on touch — swipe instead. The room cards KEEP their size-4 width
+     (Mark, 2026-07-31: "can the room cards remain size-4 <1024, not span to
+     cover") rather than being stretched to a fraction of the track. The peek is
+     then emergent rather than guaranteed: at 500px a 240px card leaves the second
+     one ~86% visible, so the cut is obvious, but at a width where the cards happen
+     to fill the track exactly — track = 248n − 8, i.e. ~527px for two cards or
+     ~775px for three — a further card would sit entirely off-screen with nothing
+     to signal it. Snapping is kept, which makes a swipe land on a card edge. */
+  .sp-shell--alt1 .sp-plans__nav {
+    display: none;
+  }
+
+  .sp-shell--alt1 .sp-plans__track {
+    scroll-snap-type: x proximity;
+  }
+
+  .sp-shell--alt1 .sp-plans__track .sp-plan {
+    scroll-snap-align: start;
+  }
+
+  /* The guarantee the fixed card width cannot give: a trailing fade whenever there
+     is more to the right. `currentColor` rather than a colour — a mask only reads
+     the alpha channel, so this needs an opaque stop, not a design colour, and
+     currentColor is opaque without hardcoding one. */
+  .sp-shell--alt1 .sp-plans__track[data-sp-plans-more] {
+    mask-image: linear-gradient(to right, currentColor
+                calc(100% - var(--ai-spacing-9)), transparent);
+  }
+
+  .sp-shell--alt1 .sp-plans {
+    margin-top: var(--ai-spacing-3);
+  }
+
+  /* THE LIST/GRID TOGGLE GOES (Mark, 2026-07-31: "it becomes redundant"). It is:
+     both the row restyle and the grid-view rules live inside min-width blocks, so
+     below 1024 neither applies — the cards render as the shipped card, one per row,
+     whichever way the toggle is set, and a control that changes nothing is worse
+     than no control. The body attribute is left alone: it costs nothing here and
+     it is still what desktop reads when the window is widened again. */
+  .sp-shell--alt1 .sp-shell__viewtoggle {
+    display: none;
+  }
+
+  /* 1 — the pool and the column handles have no job here */
+  .sp-shell--alt1 [data-sp-tray-panel],
+  .sp-shell--alt1 .sp-shell__resize {
+    display: none;
+  }
+
+  /* 2 — one table per row, and the drawer sits immediately after the open one */
+  .sp-shell--alt1 [data-sp-grid] {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--ai-spacing-3);
+    padding: var(--ai-spacing-4) var(--ai-spacing-5);
+  }
+
+  /* Edge to edge, as asked: the negative inline margins cancel exactly the side
+     padding the grid gives its rows, which is how you span the viewport without
+     100vw (that counts the scrollbar and overflows). Square sides for the same
+     reason — a radius at the screen edge reads as a mistake. */
+  .sp-shell--alt1 [data-sp-acc-drawer] {
+    margin-top: calc(-1 * var(--ai-spacing-3));   /* sit against its own row */
+    margin-inline: calc(-1 * var(--ai-spacing-5));
+    border-block: 1px solid var(--ai-border-brand);
+    border-top: none;
+    border-radius: 0;
+    background: var(--ai-surface-primary);
+  }
+
+  .sp-shell--alt1 [data-sp-acc-drawer] .sp-panel {
+    border: none;
+    border-radius: 0;
+    background: none;
+  }
+
+  /* Closing animates its height to 0 so the rows below SLIDE up instead of
+     jumping — Mark, 2026-07-31. The height is set inline by the module (the content
+     height is not knowable in CSS); this rule only supplies the easing and the
+     clip. `height` rather than `max-height`, because the module has a real pixel
+     value to start from. */
+  .sp-shell--alt1 [data-sp-acc-drawer][data-sp-collapsing] {
+    overflow: hidden;
+    transition: height var(--ai-transition-slow);
+  }
+
+  /* the open row reads as the head of its drawer */
+  .sp-shell--alt1 .sp-table.sp-table--selected {
+    border-color: var(--ai-border-brand);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  /* Parked — nothing open — so the pane is not there at all. Both cases resolve to
+     the same rule: while the drawer is home it must not render, and once it has
+     been relocated into the grid the home is empty anyway. */
+  .sp-shell--alt1 [data-sp-panel-home] {
+    display: none;
+  }
+
+  /* Seats: full width rows, and the panel is as tall as its content — the PAGE
+     scrolls here, so a cap would just add a second scroller inside one. */
+  .sp-shell--alt1 [data-sp-seatlist] {
+    display: grid;
+    grid-template-columns: minmax(0, 100%);
+    gap: var(--ai-spacing-2);
+    max-height: none;
+    overflow: visible;
+  }
+
+  /* Drag hints are a lie on touch, so the copy that promises dragging goes. The
+     seat panel's own meta line stays — it explains the ORDER, not the gesture. */
+  .sp-shell--alt1 .sp-tray__hint {
+    display: none;
+  }
+}

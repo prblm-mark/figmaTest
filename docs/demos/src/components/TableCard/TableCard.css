@@ -1,0 +1,329 @@
+/* TableCard — seating-plan table summary card
+ * Figma: Lus07xi8pPXLN87sQIyrEt node 3470:85483
+ *        (Tier x State x Type x Device, 12 variants)
+ *
+ * Assumes base.css + tokens.css are loaded by the page.
+ *
+ * Presentational only — no JS. Confirmed with the designer 2026-08-25:
+ *   - the parent module owns selection and toggles `--selected`; selecting a table is
+ *     what opens Table Detail. The whole card is the trigger, hence the stretched
+ *     `.table-card__select` and the raised `.table-card__actions`.
+ *   - Composes TableType (`.table-type`) for the tier pill, FullBadge (`.full-badge`)
+ *     for the at-capacity pill, and Button (`btn--secondary btn--icon btn--2xs`) for
+ *     edit + delete.
+ *
+ * THE WHOLE Type AXIS IS DATA, NOT CSS. Figma draws Empty / Populated / Full as three
+ * variants, but they differ only in how many bar segments and legend rows exist, and
+ * whether the FullBadge is present — all markup the caller supplies. Nothing branches
+ * on Type, so there are deliberately no `--empty` / `--populated` / `--full` modifiers.
+ * Only State earns CSS.
+ *
+ * The bar is data-driven via --seg on each segment. Figma draws the segments at fixed
+ * widths (62/31/31/62 with the empty one flex-1) which do NOT match its own legend
+ * counts — 6 of 10 seated occupies 73% of the track. Never port those widths.
+ */
+
+.table-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ai-spacing-4);
+  /* Fluid: fills its cell in the tables grid. Figma draws 289px, which has no token;
+   * the bound min-width does — --ai-size-4 (240px), the same at both breakpoints. */
+  inline-size: 100%;
+  min-inline-size: var(--ai-size-4);
+  padding: var(--ai-spacing-5);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-lg);
+  background-color: var(--ai-surface-primary);
+  box-shadow: var(--ai-shadow-xxs);
+}
+
+/* ── Header: title row above a full-width sponsor row ────────────────────────
+ * RESTRUCTURED 2026-08-25 (Figma 3476:106256). The header is now a COLUMN: the title
+ * and tier pill share a row, and the sponsor row sits beneath them spanning the full
+ * width instead of being nested in the title column. That is what lets a long sponsor
+ * name use the whole card rather than the narrow strip left beside the pill.
+ * Header-Section declares no gap of its own. */
+.table-card__header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  inline-size: 100%;
+}
+
+/* The title row. Figma's 12px gap is what finally separates the name from the pill —
+ * this row is the one the old build left with no clearance at all. */
+.table-card__titles {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ai-spacing-4);
+  inline-size: 100%;
+}
+
+/* Figma sets `shrink-0` on the pill instance, so it keeps its intrinsic width and the
+ * name absorbs the remaining space. A layout concern of this row, not a restyle of
+ * TableType — nothing about the pill's own appearance is touched. */
+.table-card__titles .table-type {
+  flex-shrink: 0;
+}
+
+.table-card__name {
+  flex: 1 0 0;
+  min-inline-size: 0;
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-sm);
+  font-weight: var(--ai-font-bold);
+  line-height: normal;
+  color: var(--ai-text-primary);
+}
+
+/* The select trigger, stretched over the whole card. Same pattern as RoomCard:
+ * `position: relative` is deliberately NOT set on any ancestor between this and
+ * .table-card, so the ::after resolves its inset against the card itself. */
+.table-card__select {
+  display: block;
+  max-inline-size: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: start;
+  cursor: pointer;
+  /* WRAPS, does not truncate. Figma dropped the `white-space: nowrap` it used to carry
+   * when the header was restructured, so a long table name now flows onto a second
+   * line instead of being clipped — which is the point of the restructure. This
+   * retires the ellipsis that was previously added here as a divergence. Set
+   * explicitly because some UAs still default buttons to nowrap. */
+  white-space: normal;
+}
+
+.table-card__select::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+/* Focus describes the card, not the name — the hit area is the whole card. */
+.table-card__select:focus-visible {
+  outline: none;
+}
+
+.table-card:has(.table-card__select:focus-visible) {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: 2px;
+}
+
+/* Optional row, now a direct child of the header at full width (Figma renamed the frame
+ * `Paragraph` -> `Sponsor` in the restructure). Figma fixes it at h-[22px], which is
+ * exactly the 16px icon plus the 6px padding-top, so the height is left to the content
+ * rather than pinned. */
+.table-card__sponsor {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  inline-size: 100%;
+  margin: 0;
+  padding-block-start: var(--ai-spacing-2);
+}
+
+.table-card__sponsor [data-lucide],
+.table-card__sponsor svg {
+  inline-size: var(--ai-icon-size-sm);
+  block-size: var(--ai-icon-size-sm);
+  flex-shrink: 0;
+  color: var(--ai-icon-contrast);
+}
+
+.table-card__sponsor-name {
+  /* Still an addition: Figma keeps `whitespace-nowrap` + `shrink-0` here, which would
+   * overflow rather than truncate. The full-width row gives it far more room than
+   * before, but a very long sponsor name still needs somewhere to stop. */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+}
+
+/* ── Rules ──────────────────────────────────────────────────────────────────
+ * Figma draws these as `line` nodes, whose stroke get_design_context hides inside an
+ * SVG asset. get_variable_defs on the node (3470:85258) resolves it to
+ * --ai-border-secondary. hr is unstyled in base.css, so it is reset here. */
+.table-card__rule {
+  flex-shrink: 0;
+  inline-size: 100%;
+  margin: 0;
+  border: 0;
+  border-block-start: 1px solid var(--ai-border-secondary);
+}
+
+/* ── Capacity bar + legend ──────────────────────────────────────────────────
+ * Figma binds --ai-font-fixed-6xs (a FONT SIZE token) as the 9px gap here and as the
+ * legend's column gap. Snapped to --ai-spacing-3 (8px) by the designer 2026-08-25 so
+ * a type token is not driving layout. */
+.table-card__viz {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ai-spacing-3);
+  inline-size: 100%;
+}
+
+.table-card__bar {
+  display: flex;
+  gap: var(--ai-spacing-px);
+  inline-size: 100%;
+  block-size: var(--ai-spacing-3);
+  border-radius: var(--ai-radius-sm);
+  overflow: hidden;
+}
+
+/* Proportional: flex-grow carries the seat count and flex-basis is 0, so the segments
+ * divide the track exactly by count and always cover it — including the empty one, so
+ * the track needs no background of its own (Figma gives it none). */
+.table-card__seg {
+  flex-grow: var(--seg, 1);
+  flex-shrink: 1;
+  flex-basis: 0;
+  min-inline-size: 0;
+  background-color: var(--table-card-role);
+}
+
+.table-card__legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  row-gap: var(--ai-spacing-0-5);
+  column-gap: var(--ai-spacing-3);
+  inline-size: 100%;
+}
+
+.table-card__legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-1);
+  flex-shrink: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-6xs);
+  /* Designer addition — Figma has regular here. At 9px, medium carries better against
+     the surrounding text without reading as bold. */
+  font-weight: var(--ai-font-medium);
+  line-height: normal;
+  color: var(--ai-text-contrast);
+}
+
+.table-card__swatch {
+  flex-shrink: 0;
+  inline-size: var(--ai-spacing-3);
+  block-size: var(--ai-spacing-3);
+  /* 2px. --ai-radius-xs was added for this on 2026-08-25 — radius-sm (4px) would
+   * visibly round an 8px square. */
+  border-radius: var(--ai-radius-xs);
+  background-color: var(--table-card-role);
+}
+
+/* ── Role colours ───────────────────────────────────────────────────────────
+ * One custom property drives both the bar segment and the legend swatch, so a role
+ * modifier can go on either. Bound to the Seating Planner collection; the swatch
+ * inherits the property from its legend item.
+ *
+ * Figma's legend covers four roles plus Empty. --sp-host exists in the collection and
+ * AttendeeCard uses it, but Table Card's Figma legend omits it — NOT added here, since
+ * inventing a variant with no Figma counterpart is how drift starts. Flagged in notes. */
+.table-card__seg,
+.table-card__legend-item {
+  --table-card-role: var(--ai-surface-contrast);
+}
+
+.table-card__seg--attendee,
+.table-card__legend-item--attendee { --table-card-role: var(--sp-attendee); }
+
+.table-card__seg--vip,
+.table-card__legend-item--vip { --table-card-role: var(--sp-vip); }
+
+.table-card__seg--speaker,
+.table-card__legend-item--speaker { --table-card-role: var(--sp-speaker); }
+
+.table-card__seg--sponsor,
+.table-card__legend-item--sponsor { --table-card-role: var(--sp-sponsor); }
+
+/* ── Footer: seated count (+ FullBadge) and actions ─────────────────────────── */
+.table-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  inline-size: 100%;
+}
+
+/* Figma wraps the count and the badge in a Left-Footer-Area; the 8px gap is read off
+ * its geometry (badge at x=89, text 81 wide). */
+.table-card__count-group {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  min-inline-size: 0;
+}
+
+.table-card__count {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-medium);
+  line-height: normal;
+  color: var(--ai-text-secondary);
+  white-space: nowrap;
+}
+
+/* Above the stretched ::after, so edit/delete don't also select the table. */
+.table-card__actions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--ai-spacing-1);
+  flex-shrink: 0;
+}
+
+/* ── State: Selected ────────────────────────────────────────────────────────
+ * A two-property delta, verified on Populated (3470:85479). Both --ai-surface-primary
+ * and --ai-surface-minimal appear in the variant's variable list, so this was read from
+ * the design context rather than inferred — the card itself takes minimal. */
+.table-card--selected {
+  border-color: var(--ai-border-brand);
+  background-color: var(--ai-surface-minimal);
+}
+
+/* ── Device: Mobile ─────────────────────────────────────────────────────────
+ * Figma's Device axis, as a media query. Only two things change — verified against the
+ * mobile Populated variant (3484:188923): the bar, legend, swatches, badge, buttons and
+ * min-width are all identical, and unlike RoomCard the min-width does not step down. */
+/* SCREEN container, not a self-container (2026-08-27). Measured own width: 275px desktop / ~300px mobile — under 767 at
+ * BOTH breakpoints, so `container-type` on this root plus a `max-width: 767px` self-query would
+ * fire permanently, on desktop included. These deltas are about the SCREEN being narrow, not
+ * this element being narrow, so they key on `cs-page`. See the contract in CLAUDE.md §responsive. */
+@container cs-page (max-width: 767px) {
+  .table-card {
+    padding: var(--ai-spacing-4);
+  }
+
+  .table-card__name {
+    font-size: var(--ai-font-fixed-xs);
+  }
+
+  /* Designer addition — Figma keeps --ai-spacing-2 (6px) at both breakpoints. Tightened
+     to 4px on mobile, where the smaller 14px title leaves the sponsor row looking
+     loosely attached to it. Desktop is unchanged. */
+  .table-card__sponsor {
+    padding-block-start: var(--ai-spacing-1);
+  }
+}

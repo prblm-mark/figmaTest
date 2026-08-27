@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SeatingToast — Affino Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../Button/Button.css">
+  <link rel="stylesheet" href="SeatingToast.css">
+  <style>
+    body {
+      margin: 0;
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-minimal);
+      font-family: var(--ai-font-body);
+      color: var(--ai-text-primary);
+    }
+    h1 { font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-xl); margin: 0 0 var(--ai-spacing-2); }
+    h2.demo-heading {
+      font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-md);
+      margin: var(--ai-spacing-8) 0 var(--ai-spacing-1);
+    }
+    .lede { color: var(--ai-text-contrast); font-size: var(--ai-font-fixed-xs); margin: 0 0 var(--ai-spacing-5); max-width: 70ch; }
+    .demo-stack { display: flex; flex-direction: column; gap: var(--ai-spacing-5); align-items: flex-start; }
+    /* Proves max-inline-size: 100% — the pill shrinks to the rail rather than overflowing. */
+    .demo-narrow {
+      inline-size: 320px;
+      padding: var(--ai-spacing-4);
+      border: 1px dashed var(--ai-border-secondary);
+      border-radius: var(--ai-radius-md);
+    }
+  </style>
+</head>
+<body>
+  <h1>SeatingToast</h1>
+  <p class="lede">The Seating Planner's action confirmation and warning pill.
+  <strong>Tier: Component.</strong> Composes <strong>Button</strong>
+  (<code>btn--secondary btn--xs</code>) for the Undo action.</p>
+  <p class="lede"><strong>This is not the <code>Toast</code> component.</strong>
+  <code>src/components/Toast/</code> is the general-purpose notification <em>card</em> — 384px,
+  <code>--ai-radius-lg</code>, an icon chip, a close button, 10 variants. This is a
+  <em>pill</em>: <code>--ai-radius-full</code>, a bare 20px icon, a status-coloured border on a
+  white ground, an Undo CTA and no close affordance. Figma names it just "Toast".</p>
+
+  <h2 class="demo-heading">Type=Success / Type=Error</h2>
+  <p class="lede">The only axis. It sets the border colour and the icon colour — the ground stays
+  white in both, which is what separates this from the Toast card's tinted
+  <code>--color</code> variants. Figma emphasises the subject of the sentence in semibold, carried
+  here by <code>&lt;strong&gt;</code> so the emphasis is in the markup rather than purely visual.</p>
+  <!-- TODO(backend:SeatingPlanner): the messages, the emphasised names and the Undo action are all
+       hardcoded. Each toast is raised by a seating action (assign / unassign / move) and its Undo
+       must reverse that specific operation, so it needs the operation's id — see
+       seating-assign-seat and seating-drag-assign for the actions that raise them. -->
+  <div class="demo-stack" data-backend-todo="seating-toast">
+    <div class="seating-toast seating-toast--success" role="status">
+      <i class="seating-toast__icon" data-lucide="badge-check" aria-hidden="true"></i>
+      <p class="seating-toast__message"><strong>Helen Verity</strong> successfully assigned to
+      <strong>Seat 2</strong></p>
+      <button type="button" class="btn btn--secondary btn--xs seating-toast__cta">Undo</button>
+    </div>
+
+    <div class="seating-toast seating-toast--error" role="alert">
+      <i class="seating-toast__icon" data-lucide="triangle-alert" aria-hidden="true"></i>
+      <p class="seating-toast__message"><strong>Table 12</strong> is full, please assign to another
+      table</p>
+      <button type="button" class="btn btn--secondary btn--xs seating-toast__cta">Undo</button>
+    </div>
+  </div>
+
+  <h2 class="demo-heading">Show Cta = false</h2>
+  <p class="lede">A real boolean property on the Figma component. The CTA is simply absent from the
+  markup — there is no modifier, because the flex row needs no change to close up.</p>
+  <div class="demo-stack">
+    <div class="seating-toast seating-toast--success" role="status">
+      <i class="seating-toast__icon" data-lucide="badge-check" aria-hidden="true"></i>
+      <p class="seating-toast__message"><strong>Seating plan</strong> saved</p>
+    </div>
+
+    <div class="seating-toast seating-toast--error" role="alert">
+      <i class="seating-toast__icon" data-lucide="triangle-alert" aria-hidden="true"></i>
+      <p class="seating-toast__message">Could not reach the server — <strong>changes not
+      saved</strong></p>
+    </div>
+  </div>
+
+  <h2 class="demo-heading">A long message wraps</h2>
+  <p class="lede">Figma marks the message <code>whitespace-nowrap</code>, which only holds because
+  its sample strings happen to fit. Attendee and table names are not length-bounded, so the message
+  wraps and the pill grows instead of overflowing. The full radius keeps a two-line pill looking
+  deliberate.</p>
+  <div class="demo-stack">
+    <div class="seating-toast seating-toast--success" role="status">
+      <i class="seating-toast__icon" data-lucide="badge-check" aria-hidden="true"></i>
+      <p class="seating-toast__message"><strong>Dame Helen Verity-Fitzwilliam</strong> successfully
+      assigned to <strong>Seat 11, Table 4 — Platinum Sponsors</strong></p>
+      <button type="button" class="btn btn--secondary btn--xs seating-toast__cta">Undo</button>
+    </div>
+  </div>
+
+  <h2 class="demo-heading">In a 320px container</h2>
+  <p class="lede"><code>max-inline-size: 100%</code> means the pill shrinks to its container rather
+  than overflowing it — the Undo button holds its size and the message takes the squeeze.</p>
+  <div class="demo-narrow">
+    <div class="seating-toast seating-toast--error" role="alert">
+      <i class="seating-toast__icon" data-lucide="triangle-alert" aria-hidden="true"></i>
+      <p class="seating-toast__message"><strong>Table 12</strong> is full</p>
+      <button type="button" class="btn btn--secondary btn--xs seating-toast__cta">Undo</button>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>if (window.lucide) lucide.createIcons();</script>
+</body>
+</html>

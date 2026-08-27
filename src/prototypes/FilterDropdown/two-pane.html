@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Filter Dropdown — Two-pane</title>
+
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/FilterItem/FilterItem.css">
+  <link rel="stylesheet" href="../../components/Checkbox/Checkbox.css">
+  <link rel="stylesheet" href="../../components/SearchInput/SearchInput.css">
+  <link rel="stylesheet" href="FilterDropdown.css">
+</head>
+<body>
+  <div class="fd-stage">
+    <h1 class="fd-stage__title">Filter Dropdown — alternatives</h1>
+    <p class="fd-stage__sub">3 of 4 · <strong>Two-pane</strong> — master–detail. The nested filters become a left rail; the right pane is the value picker for the selected facet. Scales when there are many facets.</p>
+
+    <nav class="fd-switch" aria-label="Alternatives">
+      <button class="btn btn--secondary btn--sm" type="button" onclick="location.href='table-select.html'">Table select</button>
+      <button class="btn btn--secondary btn--sm" type="button" onclick="location.href='checklist.html'">Checklist</button>
+      <button class="btn btn--primary btn--sm" type="button">Two-pane</button>
+      <button class="btn btn--secondary btn--sm" type="button" onclick="location.href='accordion.html'">Accordion</button>
+    </nav>
+
+    <!-- Trigger filter item (open) -->
+    <div class="fd-bar">
+      <div class="filter-item filter-item--selected filter-item--open" data-filter-name="Zone">
+        <button type="button" class="filter-item__clear" aria-label="Clear Zone filter"><i data-lucide="x" aria-hidden="true"></i></button>
+        <button type="button" class="filter-item__trigger" aria-haspopup="listbox" aria-expanded="true">
+          <i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i>
+          <span class="filter-item__name">Zone</span>
+          <span class="filter-item__sep" aria-hidden="true">·</span>
+          <span class="filter-item__values">Default QA9</span>
+          <i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Dropdown panel -->
+    <div class="fd-panel" role="dialog" aria-label="Filter by Zone" style="width: 560px;">
+      <div class="fd-panel__header">
+        <h2 class="fd-panel__title">Filters</h2>
+        <button class="fd-panel__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+
+      <div class="fd-twopane">
+        <!-- Facet rail -->
+        <div class="fd-rail" role="tablist" aria-label="Filter facets">
+          <!-- TODO(backend:CatalogueFilter): facet list + counts are mock → GET /catalogue/facets -->
+          <button class="fd-rail__item" type="button" role="tab" aria-selected="false">Name</button>
+          <button class="fd-rail__item" type="button" role="tab" aria-selected="false">Catalogue Group</button>
+          <button class="fd-rail__item" type="button" role="tab" aria-selected="false">Catalogue Item Code</button>
+          <button class="fd-rail__item" type="button" role="tab" aria-selected="false">Payment Method</button>
+          <button class="fd-rail__item fd-rail__item--active" type="button" role="tab" aria-selected="true">
+            Zone <span class="fd-rail__badge">2</span>
+          </button>
+        </div>
+
+        <!-- Value picker for the selected facet -->
+        <div class="fd-detail">
+          <div class="fd-detail__head">
+            <div class="search">
+              <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+              <input class="search__input" type="search" placeholder="Search zones">
+            </div>
+          </div>
+          <div class="fd-panel__body">
+            <div class="fd-checklist">
+              <label class="fd-check-row checkbox" style="display:flex;">
+                <span style="display:flex;align-items:center;gap:var(--ai-spacing-3);">
+                  <input type="checkbox" class="checkbox__input" checked>
+                  <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+                  <span class="checkbox__label"><span class="checkbox__label-text">Default QA9</span></span>
+                </span>
+                <span class="fd-check-row__meta">142</span>
+              </label>
+              <label class="fd-check-row checkbox" style="display:flex;">
+                <span style="display:flex;align-items:center;gap:var(--ai-spacing-3);">
+                  <input type="checkbox" class="checkbox__input" checked>
+                  <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+                  <span class="checkbox__label"><span class="checkbox__label-text">Premium EU</span></span>
+                </span>
+                <span class="fd-check-row__meta">38</span>
+              </label>
+              <label class="fd-check-row checkbox" style="display:flex;">
+                <span style="display:flex;align-items:center;gap:var(--ai-spacing-3);">
+                  <input type="checkbox" class="checkbox__input">
+                  <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+                  <span class="checkbox__label"><span class="checkbox__label-text">Trial Sandbox</span></span>
+                </span>
+                <span class="fd-check-row__meta">12</span>
+              </label>
+              <label class="fd-check-row checkbox" style="display:flex;">
+                <span style="display:flex;align-items:center;gap:var(--ai-spacing-3);">
+                  <input type="checkbox" class="checkbox__input">
+                  <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+                  <span class="checkbox__label"><span class="checkbox__label-text">Staging US</span></span>
+                </span>
+                <span class="fd-check-row__meta">21</span>
+              </label>
+              <label class="fd-check-row checkbox" style="display:flex;">
+                <span style="display:flex;align-items:center;gap:var(--ai-spacing-3);">
+                  <input type="checkbox" class="checkbox__input">
+                  <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+                  <span class="checkbox__label"><span class="checkbox__label-text">Archived</span></span>
+                </span>
+                <span class="fd-check-row__meta">7</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fd-panel__footer">
+        <span class="fd-footer__meta">2 filters · 2 zones</span>
+        <button class="btn btn--primary btn--sm" type="button">Apply</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

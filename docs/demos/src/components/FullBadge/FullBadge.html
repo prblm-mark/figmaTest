@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FullBadge — Affino Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="FullBadge.css">
+  <style>
+    body {
+      margin: 0;
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-minimal);
+      font-family: var(--ai-font-body);
+      color: var(--ai-text-primary);
+    }
+    h1 { font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-xl); margin: 0 0 var(--ai-spacing-2); }
+    h2 {
+      font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-md);
+      margin: var(--ai-spacing-8) 0 var(--ai-spacing-1);
+    }
+    .lede { color: var(--ai-text-contrast); font-size: var(--ai-font-fixed-xs); margin: 0 0 var(--ai-spacing-5); max-width: 70ch; }
+    .demo-row-label {
+      font-family: var(--ai-font-title);
+      font-size: var(--ai-font-fixed-2xs); font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast); text-transform: uppercase; letter-spacing: 0.08em;
+      margin: var(--ai-spacing-5) 0 var(--ai-spacing-2);
+    }
+    .panel {
+      display: flex; align-items: center; gap: var(--ai-spacing-5);
+      inline-size: fit-content;
+      padding: var(--ai-spacing-5);
+      background: var(--ai-surface-primary);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-md);
+    }
+    .panel--dark { background: var(--ai-surface-invert); border-color: var(--ai-border-invert); }
+    .count {
+      font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-2xs);
+      font-weight: var(--ai-font-medium); color: var(--ai-text-secondary);
+    }
+    .panel--dark .count { color: var(--ai-text-invert-secondary); }
+    .zoom { display: flex; align-items: flex-end; gap: var(--ai-spacing-6); }
+    .zoom > div { transform-origin: bottom left; }
+  </style>
+</head>
+<body>
+  <h1>FullBadge</h1>
+  <p class="lede">Status pill for a seating container that has reached capacity. Used by
+  <strong>RoomCard</strong> and <strong>TableCard</strong>, where it replaces or sits beside the
+  seats-remaining text once nothing is free.</p>
+  <p class="lede"><strong>Single-purpose by design.</strong> Figma defines exactly one appearance,
+  so there are no variants, sizes or colour modifiers — and none should be added without a Figma
+  counterpart. It was extracted from two identical inline Figma frames rather than built from a
+  component set; see the notes for what that means for Code Connect.</p>
+
+  <h2>Default</h2>
+  <p class="lede">The whole component: a check and the word FULL, on
+  <code>--ai-surface-success</code>.</p>
+  <div class="panel">
+    <span class="full-badge"><i data-lucide="check" aria-hidden="true"></i>Full</span>
+  </div>
+
+  <h2>In context</h2>
+  <p class="lede">How both consumers use it — beside a seated count in a card footer. It never
+  shrinks, so a growing count beside it cannot squash it.</p>
+  <p class="demo-row-label">TableCard footer</p>
+  <div class="panel">
+    <span class="count">10 / 10 seated</span>
+    <span class="full-badge"><i data-lucide="check" aria-hidden="true"></i>Full</span>
+  </div>
+  <p class="demo-row-label">RoomCard meta row</p>
+  <div class="panel">
+    <span class="count">12 tables · 148/148 seated</span>
+    <span class="full-badge"><i data-lucide="check" aria-hidden="true"></i>Full</span>
+  </div>
+
+  <h2>Legibility</h2>
+  <p class="lede">The badge is 9px type with a 10px check — small enough that the check's stroke
+  weight matters. Shown at 1×, 3× and 6× so the icon weight can be judged; the 1× instance is the
+  real rendering, the others are scaled copies.</p>
+  <div class="panel zoom">
+    <div><span class="full-badge"><i data-lucide="check" aria-hidden="true"></i>Full</span></div>
+    <div style="transform: scale(3)"><span class="full-badge"><i data-lucide="check" aria-hidden="true"></i>Full</span></div>
+    <div style="transform: scale(6)"><span class="full-badge"><i data-lucide="check" aria-hidden="true"></i>Full</span></div>
+  </div>
+
+  <h2>Known contrast issue</h2>
+  <p class="lede">White on <code>--ai-surface-success</code> measures <strong>3.16:1</strong>, under
+  the 4.5:1 that WCAG AA requires for 9px bold text. This needs a palette answer — a darker success
+  or a dark label — rather than a component fix, so it is
+  <strong>deliberately open</strong> at the designer's direction, tracked in
+  <code>docs/contrast-audit.md</code>. Fixing it here now fixes it for both consumers at once,
+  which is part of why this was extracted.</p>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>if (window.lucide) lucide.createIcons();</script>
+</body>
+</html>

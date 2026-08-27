@@ -1,0 +1,171 @@
+/* ============================================================================
+   Seating Planner — TOOLBAR MOBILE OPTIONS (review only, 2026-08-03)
+   ----------------------------------------------------------------------------
+   Three alternatives for the `.sp-toolbar` at mobile, keyed off a body attribute
+   so one stylesheet serves all three and nothing here touches workspace.html or
+   the 35 signed-off capture states:
+
+       body[data-sp-tb="a"]   overflow menu
+       body[data-sp-tb="c"]   sticky bottom action bar
+       body[data-sp-tb="e"]   plan settings moved onto the plan
+
+   THE MEASURED BASELINE (workspace.html at 500x725):
+     event bar 274px · action bar 153px (toolbar 112px) · first table card at
+     496px = 68% of the viewport. The toolbar is 112 of those 496px, so no option
+     here can fix more than ~a quarter of the mobile problem — the event bar is
+     the bigger offender and is out of scope for this round.
+
+   WHY THE CURRENT TOOLBAR LOOKS RAGGED, precisely: `.sp-toolbar` is a wrapping
+   flex row with `.sp-toolbar__spacer { flex: 1 }`. On a wrapped line the spacer
+   collapses to 4px instead of forcing a break, so "Only free seats" is
+   right-aligned against the TITLE rather than grouped with the controls beneath
+   it. It reads as a stray indent because that is exactly what it is.
+
+   640px = --ai-bp-sm. px in @media per CLAUDE.md §2 — @media cannot read custom
+   properties. 639 is "below sm".
+   ============================================================================ */
+
+/* ---------------------------------------------------------------------------
+   SHARED — the spacer fix, applied by all three options.
+   Below sm the spacer stops earning its keep: it exists to push the controls
+   right of the title on ONE line, and there is no one line down here.
+   --------------------------------------------------------------------------- */
+
+@media (max-width: 639px) {
+  body[data-sp-tb] .sp-toolbar__spacer { display: none; }
+  body[data-sp-tb] .sp-toolbar { row-gap: var(--ai-spacing-3); }
+
+  /* Abbreviated labels win below sm, full labels above. One rule for all three
+     options — see the note on .sp-tb-short below.
+
+     This is what makes option A fit two lines: measured at 500px the toolbar has
+     453px of content width, and A's second line came to 454px. It missed by ONE
+     pixel. Dropping "Only " from the filter frees ~35px, so the pixel budget is
+     not tight afterwards — it was tight only because nothing had been shortened. */
+  body[data-sp-tb] .sp-tb-full { display: none; }
+  body[data-sp-tb] .sp-tb-short { display: inline; }
+
+  /* The title already repeats the table count in the pane head, so it may wrap
+     to two lines for nothing. One line, ellipsised. */
+  body[data-sp-tb] .sp-toolbar__title {
+    flex: 1 1 100%;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+/* ===========================================================================
+   OPTION A — OVERFLOW MENU
+   ---------------------------------------------------------------------------
+   Below sm, Room layout and Table types leave the row and appear in a "More"
+   menu instead. Toggle + Add table + Export stay visible, which is the set you
+   actually touch while seating people.
+
+   The menu reuses .sp-split__menu / .sp-split__item wholesale — same shape as
+   the export menu, so it is not a second popover pattern to maintain. It runs on
+   its OWN attributes (data-sp-more-*) because the shell's split handler resolves
+   its menu with one('[data-sp-split-menu]'), i.e. the FIRST in the document: a
+   second menu on those attributes would toggle the export menu instead. Latent
+   bug, worth fixing generically if this option is adopted.
+   =========================================================================== */
+
+.sp-more { position: relative; display: none; }
+
+body[data-sp-tb="a"] .sp-more__menu { min-width: var(--ai-size-2); }
+
+@media (max-width: 639px) {
+  body[data-sp-tb="a"] .sp-more { display: inline-flex; }
+
+  /* Direct children only — the same actions exist INSIDE the menu. */
+  body[data-sp-tb="a"] .sp-toolbar > [data-sp-action="room-layout"],
+  body[data-sp-tb="a"] .sp-toolbar > [data-sp-action="tier-colours"] {
+    display: none;
+  }
+}
+
+/* ===========================================================================
+   OPTION C — STICKY BOTTOM ACTION BAR
+   ---------------------------------------------------------------------------
+   Actions leave the scroll region entirely and dock to the bottom, in thumb
+   reach. The toolbar keeps only what describes the VIEW: the plan title and the
+   free-seats filter.
+
+   Labels shorten inside the bar (Add / Layout / Types / Export) using the same
+   two-span technique as the plans row, and every button keeps an aria-label with
+   the full text, so the abbreviation is visual only.
+
+   COST, stated honestly: the bar spends ~60px permanently to free ~76px of
+   scroll, so the net pixel gain is small — what it really buys is reach and a
+   stable action position. It also introduces a docked bar that the mobile design
+   does not currently have (the unassigned count is mirrored into the pane head
+   instead), so it is a new pattern to own.
+   =========================================================================== */
+
+/* Label pair used by every option: .sp-tb-full is the wide label, .sp-tb-short the
+   mobile one. Only one is ever rendered, and each button keeps an aria-label with
+   the FULL text so the abbreviation is visual only (WCAG 2.5.3 holds because the
+   short label is contained in the accessible name). */
+.sp-tb-short { display: none; }
+
+@media (max-width: 639px) {
+  body[data-sp-tb="c"] .sp-toolbar__actions {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 6;                     /* over the cards, under the export menu's 5 + its own stacking */
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: var(--ai-spacing-3);
+    padding: var(--ai-spacing-3) var(--ai-spacing-4);
+    border-top: 1px solid var(--ai-border-secondary);
+    background: var(--ai-surface-primary);
+    box-shadow: var(--ai-shadow-md);
+  }
+
+  /* Each cell is a full-width target; the split wrap has to stretch too or the
+     export button sits in a 1fr column at its own intrinsic width. */
+  body[data-sp-tb="c"] .sp-toolbar__actions > .sp-split__wrap,
+  body[data-sp-tb="c"] .sp-toolbar__actions > .sp-split__wrap .sp-split,
+  body[data-sp-tb="c"] .sp-toolbar__actions .btn { width: 100%; }
+
+  body[data-sp-tb="c"] .sp-toolbar__actions .sp-split { display: flex; }
+  body[data-sp-tb="c"] .sp-toolbar__actions .sp-split > .btn:first-child { flex: 1; }
+  body[data-sp-tb="c"] .sp-toolbar__actions .sp-split > .btn:last-child { width: auto; flex: none; }
+
+  /* The menu must open UPWARDS from a docked bar. */
+  body[data-sp-tb="c"] .sp-toolbar__actions .sp-split__menu {
+    top: auto;
+    bottom: calc(100% + var(--ai-spacing-2));
+  }
+
+  /* Nothing may sit under the bar. */
+  body[data-sp-tb="c"] { padding-bottom: var(--ai-spacing-12); }
+}
+
+/* ===========================================================================
+   OPTION E — PLAN SETTINGS MOVED ONTO THE PLAN  (recommended)
+   ---------------------------------------------------------------------------
+   Room layout and Table types are PLAN-scoped settings, not table-list actions —
+   which is why the row crowded in the first place. They move up to the seating
+   plans actions, leaving the toolbar holding only what acts on the tables list:
+   the filter, Add table, and Export.
+
+   Structural rather than cosmetic: nothing is hidden behind a tap, and there is
+   no icon-recognisability gamble at the widths that matter, because the labels
+   only collapse in the plans row where the buttons sit beside New and Copy.
+
+   OPEN QUESTION this option raises, deliberately left visible: WHERE on the plan
+   do they belong? Here they are in the plans action row, acting on the ACTIVE
+   plan. The alternative is per-chip (beside the existing edit/delete), which is
+   more precise but crowds a chip that already carries two controls.
+   =========================================================================== */
+
+@media (max-width: 639px) {
+  /* Relocated buttons collapse to their icon beside New / Copy, reusing the
+     class the plans row already abbreviates with. */
+  body[data-sp-tb="e"] .sp-plans__actions .sp-plans__btn-word { display: none; }
+}

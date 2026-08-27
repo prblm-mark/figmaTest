@@ -25,7 +25,7 @@
 | Padding | `--ai-spacing-3` (vertical) `--ai-spacing-5` (horizontal) |
 | Gap | `--ai-spacing-3` |
 | Max width | `12rem` (192px) |
-| Font | `--ai-font-title`, `--ai-font-medium`, `--ai-font-fixed-xxs` (12px) |
+| Font | `--ai-font-title`, `--ai-font-medium`, `--ai-font-fixed-2xs` (12px) |
 | Line height | `--ai-leading-xs` |
 | Icon size | `--ai-icon-size-sm` (16px) |
 

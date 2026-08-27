@@ -55,7 +55,7 @@
 | Version size (Lg) | `var(--ai-font-fixed-sm)` | 16px |
 | Version colour | `var(--ai-text-primary)` | |
 | Status font | `var(--ai-font-body)` + `var(--ai-font-medium)` | Inter Medium |
-| Status size (Base) | `var(--ai-font-fixed-xxs)` | 12px |
+| Status size (Base) | `var(--ai-font-fixed-2xs)` | 12px |
 | Status size (Lg) | `var(--ai-font-fixed-xs)` | 14px |
 | Status colour | `var(--ai-text-contrast)` | |
 | Update button bg (override) | `var(--ai-surface-success)` | Case-B scoped to `.upgrade-card .btn--primary` |

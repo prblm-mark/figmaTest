@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AttendeeCard — Affino Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../Button/Button.css">
+  <link rel="stylesheet" href="AttendeeCard.css">
+  <style>
+    body {
+      margin: 0;
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-minimal);
+      font-family: var(--ai-font-body);
+      color: var(--ai-text-primary);
+    }
+    h1 { font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-xl); margin: 0 0 var(--ai-spacing-2); }
+    h2 {
+      font-family: var(--ai-font-title); font-size: var(--ai-font-fixed-md);
+      margin: var(--ai-spacing-8) 0 var(--ai-spacing-1);
+    }
+    .lede { color: var(--ai-text-contrast); font-size: var(--ai-font-fixed-xs); margin: 0 0 var(--ai-spacing-5); max-width: 70ch; }
+    .demo-row-label {
+      font-size: var(--ai-font-fixed-2xs); font-weight: var(--ai-font-semibold);
+      color: var(--ai-text-contrast); text-transform: uppercase; letter-spacing: 0.08em;
+      margin: var(--ai-spacing-5) 0 var(--ai-spacing-2);
+    }
+    /* The card itself is fluid, so the tray stands in for its container. --ai-size-6
+       (320px) less the tray's 12px padding and 1px border each side leaves the card at
+       294px, which is about where Figma draws it (288px). */
+    .tray {
+      display: flex; flex-direction: column; gap: var(--ai-spacing-3);
+      max-inline-size: var(--ai-size-6);
+      padding: var(--ai-spacing-4);
+      background: var(--ai-surface-primary);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-md);
+    }
+    .tray--wide { max-inline-size: none; }
+  </style>
+</head>
+<body>
+  <h1>AttendeeCard</h1>
+  <p class="lede">Attendee row for the Seating Planner — used in the Unassigned tray and inside
+  Table Detail. A <strong>drop target only</strong>: it never initiates a drag, and
+  <code>--dragged-over</code> is a class the parent module toggles while an attendee is held
+  over it. No JS in the component.</p>
+  <p class="lede">Role colours come from the Seating Planner collection. <strong>Radix Vivid is
+  the default</strong>, so the card works with no extra markup; add
+  <code>data-seating="muted"</code> or <code>"radix-soft"</code> to an ancestor to switch palette.
+  The section at the foot of this page shows all three.</p>
+
+  <h2>Roles — Default</h2>
+  <p class="lede">Five role types. The accent bar and role label share one custom property,
+  bound to the Seating Planner <code>--sp-*</code> tokens.</p>
+  <div class="tray">
+    <article class="attendee-card attendee-card--attendee">
+      <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+      <span class="attendee-card__seat">1</span>
+      <div class="attendee-card__body">
+        <p class="attendee-card__name">Sarah Jenkins</p>
+        <p class="attendee-card__meta">
+          <span class="attendee-card__company">Vertex Creative</span>
+          <span class="attendee-card__sep" aria-hidden="true">·</span>
+          <span class="attendee-card__role">Attendee</span>
+        </p>
+      </div>
+      <div class="attendee-card__actions">
+        <button type="button" class="attendee-card__action" aria-label="Remove Sarah Jenkins">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+        <div class="attendee-card__reorder">
+          <button type="button" class="attendee-card__action" aria-label="Move Sarah Jenkins up">
+            <i data-lucide="chevron-up" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="attendee-card__action" aria-label="Move Sarah Jenkins down">
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <article class="attendee-card attendee-card--vip">
+      <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+      <span class="attendee-card__seat">2</span>
+      <div class="attendee-card__body">
+        <p class="attendee-card__name">Sarah Jenkins</p>
+        <p class="attendee-card__meta">
+          <span class="attendee-card__company">Vertex Creative</span>
+          <span class="attendee-card__sep" aria-hidden="true">·</span>
+          <span class="attendee-card__role">VIP</span>
+        </p>
+      </div>
+      <div class="attendee-card__actions">
+        <button type="button" class="attendee-card__action" aria-label="Remove Sarah Jenkins">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+        <div class="attendee-card__reorder">
+          <button type="button" class="attendee-card__action" aria-label="Move Sarah Jenkins up">
+            <i data-lucide="chevron-up" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="attendee-card__action" aria-label="Move Sarah Jenkins down">
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <article class="attendee-card attendee-card--speaker">
+      <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+      <span class="attendee-card__seat">3</span>
+      <div class="attendee-card__body">
+        <p class="attendee-card__name">Sarah Jenkins</p>
+        <p class="attendee-card__meta">
+          <span class="attendee-card__company">Vertex Creative</span>
+          <span class="attendee-card__sep" aria-hidden="true">·</span>
+          <span class="attendee-card__role">Speaker</span>
+        </p>
+      </div>
+      <div class="attendee-card__actions">
+        <button type="button" class="attendee-card__action" aria-label="Remove Sarah Jenkins">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+        <div class="attendee-card__reorder">
+          <button type="button" class="attendee-card__action" aria-label="Move Sarah Jenkins up">
+            <i data-lucide="chevron-up" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="attendee-card__action" aria-label="Move Sarah Jenkins down">
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <article class="attendee-card attendee-card--sponsor">
+      <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+      <span class="attendee-card__seat">4</span>
+      <div class="attendee-card__body">
+        <p class="attendee-card__name">Sarah Jenkins</p>
+        <p class="attendee-card__meta">
+          <span class="attendee-card__company">Vertex Creative</span>
+          <span class="attendee-card__sep" aria-hidden="true">·</span>
+          <span class="attendee-card__role">Sponsor</span>
+        </p>
+      </div>
+      <div class="attendee-card__actions">
+        <button type="button" class="attendee-card__action" aria-label="Remove Sarah Jenkins">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+        <div class="attendee-card__reorder">
+          <button type="button" class="attendee-card__action" aria-label="Move Sarah Jenkins up">
+            <i data-lucide="chevron-up" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="attendee-card__action" aria-label="Move Sarah Jenkins down">
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <article class="attendee-card attendee-card--host">
+      <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+      <span class="attendee-card__seat">5</span>
+      <div class="attendee-card__body">
+        <p class="attendee-card__name">Sarah Jenkins</p>
+        <p class="attendee-card__meta">
+          <span class="attendee-card__company">Vertex Creative</span>
+          <span class="attendee-card__sep" aria-hidden="true">·</span>
+          <span class="attendee-card__role">Host</span>
+        </p>
+      </div>
+      <div class="attendee-card__actions">
+        <button type="button" class="attendee-card__action" aria-label="Remove Sarah Jenkins">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+        <div class="attendee-card__reorder">
+          <button type="button" class="attendee-card__action" aria-label="Move Sarah Jenkins up">
+            <i data-lucide="chevron-up" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="attendee-card__action" aria-label="Move Sarah Jenkins down">
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <h2>Roles — Dragged Over</h2>
+  <p class="lede">Drop-target highlight: background drops to <code>--ai-surface-minimal</code>
+  and the border goes <code>--ai-border-brand</code>.</p>
+  <div class="tray">
+    <article class="attendee-card attendee-card--attendee attendee-card--dragged-over">
+      <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+      <span class="attendee-card__seat">1</span>
+      <div class="attendee-card__body">
+        <p class="attendee-card__name">Sarah Jenkins</p>
+        <p class="attendee-card__meta">
+          <span class="attendee-card__company">Vertex Creative</span>
+          <span class="attendee-card__sep" aria-hidden="true">·</span>
+          <span class="attendee-card__role">Attendee</span>
+        </p>
+      </div>
+      <div class="attendee-card__actions">
+        <button type="button" class="attendee-card__action" aria-label="Remove Sarah Jenkins">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+        <div class="attendee-card__reorder">
+          <button type="button" class="attendee-card__action" aria-label="Move up"><i data-lucide="chevron-up" aria-hidden="true"></i></button>
+          <button type="button" class="attendee-card__action" aria-label="Move down"><i data-lucide="chevron-down" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </article>
+
+    <article class="attendee-card attendee-card--vip attendee-card--dragged-over">
+      <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+      <span class="attendee-card__seat">2</span>
+      <div class="attendee-card__body">
+        <p class="attendee-card__name">Sarah Jenkins</p>
+        <p class="attendee-card__meta">
+          <span class="attendee-card__company">Vertex Creative</span>
+          <span class="attendee-card__sep" aria-hidden="true">·</span>
+          <span class="attendee-card__role">VIP</span>
+        </p>
+      </div>
+      <div class="attendee-card__actions">
+        <button type="button" class="attendee-card__action" aria-label="Remove Sarah Jenkins">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+        <div class="attendee-card__reorder">
+          <button type="button" class="attendee-card__action" aria-label="Move up"><i data-lucide="chevron-up" aria-hidden="true"></i></button>
+          <button type="button" class="attendee-card__action" aria-label="Move down"><i data-lucide="chevron-down" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </article>
+
+    <article class="attendee-card attendee-card--speaker attendee-card--dragged-over">
+      <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+      <span class="attendee-card__seat">3</span>
+      <div class="attendee-card__body">
+        <p class="attendee-card__name">Sarah Jenkins</p>
+        <p class="attendee-card__meta">
+          <span class="attendee-card__company">Vertex Creative</span>
+          <span class="attendee-card__sep" aria-hidden="true">·</span>
+          <span class="attendee-card__role">Speaker</span>
+        </p>
+      </div>
+      <div class="attendee-card__actions">
+        <button type="button" class="attendee-card__action" aria-label="Remove Sarah Jenkins">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+        <div class="attendee-card__reorder">
+          <button type="button" class="attendee-card__action" aria-label="Move up"><i data-lucide="chevron-up" aria-hidden="true"></i></button>
+          <button type="button" class="attendee-card__action" aria-label="Move down"><i data-lucide="chevron-down" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </article>
+
+    <article class="attendee-card attendee-card--sponsor attendee-card--dragged-over">
+      <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+      <span class="attendee-card__seat">4</span>
+      <div class="attendee-card__body">
+        <p class="attendee-card__name">Sarah Jenkins</p>
+        <p class="attendee-card__meta">
+          <span class="attendee-card__company">Vertex Creative</span>
+          <span class="attendee-card__sep" aria-hidden="true">·</span>
+          <span class="attendee-card__role">Sponsor</span>
+        </p>
+      </div>
+      <div class="attendee-card__actions">
+        <button type="button" class="attendee-card__action" aria-label="Remove Sarah Jenkins">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+        <div class="attendee-card__reorder">
+          <button type="button" class="attendee-card__action" aria-label="Move up"><i data-lucide="chevron-up" aria-hidden="true"></i></button>
+          <button type="button" class="attendee-card__action" aria-label="Move down"><i data-lucide="chevron-down" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </article>
+
+    <article class="attendee-card attendee-card--host attendee-card--dragged-over">
+      <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+      <span class="attendee-card__seat">5</span>
+      <div class="attendee-card__body">
+        <p class="attendee-card__name">Sarah Jenkins</p>
+        <p class="attendee-card__meta">
+          <span class="attendee-card__company">Vertex Creative</span>
+          <span class="attendee-card__sep" aria-hidden="true">·</span>
+          <span class="attendee-card__role">Host</span>
+        </p>
+      </div>
+      <div class="attendee-card__actions">
+        <button type="button" class="attendee-card__action" aria-label="Remove Sarah Jenkins">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+        <div class="attendee-card__reorder">
+          <button type="button" class="attendee-card__action" aria-label="Move up"><i data-lucide="chevron-up" aria-hidden="true"></i></button>
+          <button type="button" class="attendee-card__action" aria-label="Move down"><i data-lucide="chevron-down" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <h2>Empty seat</h2>
+  <p class="lede">Structurally different: no name or meta, a dashed border, a neutral accent bar,
+  and an Assign action. Composes Button as <code>btn btn--secondary btn--sm</code>.</p>
+  <p class="demo-row-label">Default</p>
+  <div class="tray">
+    <article class="attendee-card attendee-card--empty">
+      <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+      <span class="attendee-card__seat">1</span>
+      <p class="attendee-card__empty-label">Empty seat</p>
+      <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+    </article>
+  </div>
+  <p class="demo-row-label">Dragged over — dashed grey becomes solid brand</p>
+  <div class="tray">
+    <article class="attendee-card attendee-card--empty attendee-card--dragged-over">
+      <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+      <span class="attendee-card__seat">1</span>
+      <p class="attendee-card__empty-label">Empty seat</p>
+      <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+    </article>
+  </div>
+
+  <h2>Optional slots</h2>
+  <p class="lede">Figma exposes <code>Show Actions</code> and <code>Show Seat Number</code> as
+  booleans — omit the corresponding element.</p>
+  <div class="tray">
+    <article class="attendee-card attendee-card--vip">
+      <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+      <span class="attendee-card__seat">7</span>
+      <div class="attendee-card__body">
+        <p class="attendee-card__name">No actions</p>
+        <p class="attendee-card__meta">
+          <span class="attendee-card__company">Vertex Creative</span>
+          <span class="attendee-card__sep" aria-hidden="true">·</span>
+          <span class="attendee-card__role">VIP</span>
+        </p>
+      </div>
+    </article>
+    <article class="attendee-card attendee-card--speaker">
+      <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+      <div class="attendee-card__body">
+        <p class="attendee-card__name">No seat number</p>
+        <p class="attendee-card__meta">
+          <span class="attendee-card__company">Vertex Creative</span>
+          <span class="attendee-card__sep" aria-hidden="true">·</span>
+          <span class="attendee-card__role">Speaker</span>
+        </p>
+      </div>
+      <div class="attendee-card__actions">
+        <button type="button" class="attendee-card__action" aria-label="Remove">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+        <div class="attendee-card__reorder">
+          <button type="button" class="attendee-card__action" aria-label="Move up"><i data-lucide="chevron-up" aria-hidden="true"></i></button>
+          <button type="button" class="attendee-card__action" aria-label="Move down"><i data-lucide="chevron-down" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <h2>Fluid width</h2>
+  <p class="lede">The card fills its container. The trays above are constrained to
+  <code>--ai-size-6</code> (320px), which leaves the card itself near the 288px Figma draws it at;
+  this one is unconstrained.</p>
+  <div class="tray tray--wide">
+    <article class="attendee-card attendee-card--host">
+      <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+      <span class="attendee-card__seat">1</span>
+      <div class="attendee-card__body">
+        <p class="attendee-card__name">Sarah Jenkins</p>
+        <p class="attendee-card__meta">
+          <span class="attendee-card__company">Vertex Creative</span>
+          <span class="attendee-card__sep" aria-hidden="true">·</span>
+          <span class="attendee-card__role">Host</span>
+        </p>
+      </div>
+      <div class="attendee-card__actions">
+        <button type="button" class="attendee-card__action" aria-label="Remove Sarah Jenkins">
+          <i data-lucide="trash" aria-hidden="true"></i>
+        </button>
+        <div class="attendee-card__reorder">
+          <button type="button" class="attendee-card__action" aria-label="Move up"><i data-lucide="chevron-up" aria-hidden="true"></i></button>
+          <button type="button" class="attendee-card__action" aria-label="Move down"><i data-lucide="chevron-down" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <h2>Seating palettes</h2>
+  <p class="lede">The same card in all three modes. Radix Vivid is what resolves with no
+  attribute set.</p>
+  <div style="display:flex; gap:var(--ai-spacing-5); flex-wrap:wrap">
+    <div>
+      <p class="demo-row-label">Radix Vivid — default</p>
+      <div class="tray">
+        <article class="attendee-card attendee-card--host">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Sarah Jenkins</p>
+            <p class="attendee-card__meta"><span class="attendee-card__role">Host</span></p>
+          </div>
+        </article>
+      </div>
+    </div>
+    <div data-seating="muted">
+      <p class="demo-row-label">Muted</p>
+      <div class="tray">
+        <article class="attendee-card attendee-card--host">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Sarah Jenkins</p>
+            <p class="attendee-card__meta"><span class="attendee-card__role">Host</span></p>
+          </div>
+        </article>
+      </div>
+    </div>
+    <div data-seating="radix-soft">
+      <p class="demo-row-label">Radix Soft</p>
+      <div class="tray">
+        <article class="attendee-card attendee-card--host">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <div class="attendee-card__body">
+            <p class="attendee-card__name">Sarah Jenkins</p>
+            <p class="attendee-card__meta"><span class="attendee-card__role">Host</span></p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>if (window.lucide) lucide.createIcons();</script>
+</body>
+</html>

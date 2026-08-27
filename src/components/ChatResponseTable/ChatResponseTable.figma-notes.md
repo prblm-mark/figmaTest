@@ -19,7 +19,7 @@
 | Outer radius | `--ai-radius-lg` |
 | Header font-family | `--ai-font-title` |
 | Header font-weight | `--ai-font-semibold` |
-| Header font-size (mobile) | `--ai-font-fixed-xxs` |
+| Header font-size (mobile) | `--ai-font-fixed-2xs` |
 | Header font-size (desktop) | `--ai-font-fixed-xs` |
 | Header line-height | `--ai-leading-xs` |
 | Header color | `--ai-text-secondary` |

@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Seating Planner — toolbar mobile options (A · C · E)</title>
+
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/Badge/Badge.css">
+  <link rel="stylesheet" href="SeatingPlanner.css">
+  <link rel="stylesheet" href="SeatingPlannerCompare.css">
+</head>
+<body>
+
+  <!-- Review board for the three toolbar mobile options. Like states.html this is
+       NAVIGATION, not a screen — deliberately not captured to Figma.
+
+       HOW THE NUMBERS WERE TAKEN, because it matters here. Headless Chrome floors
+       the viewport at 500px, so it cannot measure a phone directly. Every figure
+       below was read from inside an iframe pinned to the stated width, which is the
+       same mechanism this page renders with. Reproduce by loading each variant in a
+       fixed-width iframe and reading getBoundingClientRect on .sp-toolbar and the
+       first [data-sp-table].
+
+       The first version of this board reported 500px readings and let its frames
+       stretch to 534px. Both flattered the options and one of them inverted the
+       recommendation. -->
+
+  <main class="cmp">
+
+    <header class="cmp__head">
+      <h1 class="cmp__title">Toolbar at mobile — three options</h1>
+      <p class="cmp__lede">
+        The action bar wraps to <strong>four ragged lines at 390px</strong>. These are options A, C and E,
+        built as real working files rather than mockups: every action still opens its real modal in each one.
+      </p>
+    </header>
+
+    <section class="cmp__section">
+      <h2 class="cmp__h2">Read this first — the earlier numbers were wrong</h2>
+      <p class="cmp__p cmp__p--note">
+        This board originally measured at 500px and rendered its frames at 534px, because the grid used
+        <code>minmax(min(390px, 100%), 1fr)</code> — 390 as a <em>minimum</em>, then stretched. A real phone
+        has 144px less room than that, and the difference is not cosmetic: it changed which option wins.
+        At 500px A and E tied and E was recommended. <strong>At 390px E is the weakest of the three and C is
+        the only option that reaches two lines.</strong> Everything below is measured at real device widths.
+      </p>
+      <p class="cmp__p">
+        Scope, unchanged: the toolbar is part of the problem, not all of it. At 390px the first table card
+        sits at 592px — the event bar and plans strip above it account for most of that, and they are
+        untouched here.
+      </p>
+    </section>
+
+    <section class="cmp__section">
+      <h2 class="cmp__h2">Measured at real device widths</h2>
+      <p class="cmp__p">
+        <strong>Usable area</strong> is the pixels left for the actual work: viewport height minus everything
+        above the first table card, minus any docked bar. Higher is better. Height held at 844 throughout.
+      </p>
+
+      <div class="cmp__tablewrap">
+        <table class="cmp__table">
+          <thead>
+            <tr>
+              <th>Width</th>
+              <th>Current</th>
+              <th>A · overflow</th>
+              <th>C · bottom bar</th>
+              <th>E · on the plan</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">360 <span class="cmp__dim">small Android</span></th>
+              <td>236px <span class="cmp__dim">4 lines</span></td>
+              <td><strong>288px</strong> <span class="cmp__dim">3</span></td>
+              <td>287px <span class="cmp__dim">2</span></td>
+              <td>256px <span class="cmp__dim">3</span></td>
+            </tr>
+            <tr>
+              <th scope="row">375 <span class="cmp__dim">iPhone SE/mini</span></th>
+              <td>252px <span class="cmp__dim">4 lines</span></td>
+              <td><strong>304px</strong> <span class="cmp__dim">3</span></td>
+              <td>303px <span class="cmp__dim">2</span></td>
+              <td>272px <span class="cmp__dim">3</span></td>
+            </tr>
+            <tr class="cmp__row--good">
+              <th scope="row">390 <span class="cmp__dim">iPhone 14/15/16</span></th>
+              <td>252px <span class="cmp__dim">4 lines</span></td>
+              <td><strong>304px</strong> <span class="cmp__dim">3</span></td>
+              <td>303px <span class="cmp__dim">2</span></td>
+              <td>272px <span class="cmp__dim">3</span></td>
+            </tr>
+            <tr>
+              <th scope="row">412 <span class="cmp__dim">large Android</span></th>
+              <td>276px <span class="cmp__dim">4 lines</span></td>
+              <td><strong>328px</strong> <span class="cmp__dim">3</span></td>
+              <td>327px <span class="cmp__dim">2</span></td>
+              <td>296px <span class="cmp__dim">3</span></td>
+            </tr>
+            <tr>
+              <th scope="row">430 <span class="cmp__dim">Pro Max</span></th>
+              <td>320px <span class="cmp__dim">3 lines</span></td>
+              <td>328px <span class="cmp__dim">3</span></td>
+              <td>327px <span class="cmp__dim">2</span></td>
+              <td><strong>368px</strong> <span class="cmp__dim">2</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="cmp__p cmp__p--note">
+        <strong>A and C tie on space at every real width</strong> — within 1px, at 360 through 412. The
+        difference is that C does it in <strong>two</strong> toolbar lines to A's three, and puts the actions
+        in thumb reach where they never scroll away.
+        <br><br>
+        <strong>E only wins at 430px</strong>, and is the weakest of the three everywhere below it. The
+        reason is worth knowing: E moves two controls to the plans row, and below 430 <em>that</em> row wraps
+        instead — so the height comes back a few pixels higher up the page. E relocates the problem rather
+        than removing it. Its premise is still sound; the build is not.
+      </p>
+    </section>
+
+    <section class="cmp__section">
+      <h2 class="cmp__h2">Side by side</h2>
+      <p class="cmp__p">
+        Every frame is pinned to the chosen width — fixed, never stretched. The number beside each label is
+        the width the frame is <em>actually</em> rendering at, read back from the DOM, so this page cannot
+        quietly flatter the options again.
+      </p>
+
+      <div class="cmp__widths">
+        <span class="cmp__widths-label">Device width</span>
+        <button class="btn btn--secondary btn--sm cmp__wbtn" type="button" data-w="360" aria-pressed="false">360</button>
+        <button class="btn btn--secondary btn--sm cmp__wbtn" type="button" data-w="375" aria-pressed="false">375</button>
+        <button class="btn btn--secondary btn--sm cmp__wbtn" type="button" data-w="390" aria-pressed="true">390</button>
+        <button class="btn btn--secondary btn--sm cmp__wbtn" type="button" data-w="412" aria-pressed="false">412</button>
+        <button class="btn btn--secondary btn--sm cmp__wbtn" type="button" data-w="430" aria-pressed="false">430</button>
+      </div>
+
+      <div class="cmp__grid">
+        <figure class="cmp__frame">
+          <figcaption class="cmp__cap">
+            <span class="badge badge--default">Current</span>
+            <span class="cmp__measured">—</span>
+            <a class="cmp__link" href="workspace.html" target="_blank" rel="noopener">open&nbsp;&rarr;</a>
+          </figcaption>
+          <iframe class="cmp__iframe" src="workspace.html" title="Current toolbar"></iframe>
+        </figure>
+
+        <figure class="cmp__frame">
+          <figcaption class="cmp__cap">
+            <span class="badge badge--brand">A &middot; overflow</span>
+            <span class="cmp__measured">—</span>
+            <a class="cmp__link" href="toolbar-a-overflow.html" target="_blank" rel="noopener">open&nbsp;&rarr;</a>
+          </figcaption>
+          <iframe class="cmp__iframe" src="toolbar-a-overflow.html" title="Option A — overflow menu"></iframe>
+        </figure>
+
+        <figure class="cmp__frame">
+          <figcaption class="cmp__cap">
+            <span class="badge badge--success">C &middot; bottom bar</span>
+            <span class="cmp__measured">—</span>
+            <a class="cmp__link" href="toolbar-c-bottombar.html" target="_blank" rel="noopener">open&nbsp;&rarr;</a>
+          </figcaption>
+          <iframe class="cmp__iframe" src="toolbar-c-bottombar.html" title="Option C — sticky bottom bar"></iframe>
+        </figure>
+
+        <figure class="cmp__frame">
+          <figcaption class="cmp__cap">
+            <span class="badge badge--brand">E &middot; on the plan</span>
+            <span class="cmp__measured">—</span>
+            <a class="cmp__link" href="toolbar-e-planscope.html" target="_blank" rel="noopener">open&nbsp;&rarr;</a>
+          </figcaption>
+          <iframe class="cmp__iframe" src="toolbar-e-planscope.html" title="Option E — settings on the plan"></iframe>
+        </figure>
+      </div>
+    </section>
+
+    <section class="cmp__section">
+      <h2 class="cmp__h2">The trade-offs</h2>
+
+      <div class="cmp__opts">
+        <article class="cmp__opt cmp__opt--rec">
+          <h3 class="cmp__h3">C &mdash; sticky bottom bar <span class="badge badge--success">now recommended</span></h3>
+          <p class="cmp__p">
+            Actions leave the scroll region and dock to the bottom in four equal columns; the toolbar keeps
+            only what describes the view. Labels shorten to Add / Layout / Types / Export, each keeping an
+            <code>aria-label</code> with the full text, and the export menu opens upward.
+          </p>
+          <ul class="cmp__list">
+            <li><strong>For:</strong> the only option that reaches <strong>two</strong> toolbar lines at real
+              phone widths, ties A on space, and puts every action in thumb reach where it never scrolls away.</li>
+            <li><strong>Against:</strong> spends 49px permanently. Four icon+short-label cells are tight at
+              360px — worth a look on a real handset before committing.</li>
+            <li><strong>Open question:</strong> the mobile design mirrors the unassigned count into the pane
+              head rather than using a docked bar. If a bar exists, does that count belong in it? Two docked
+              bars would be one too many.</li>
+          </ul>
+        </article>
+
+        <article class="cmp__opt">
+          <h3 class="cmp__h3">A &mdash; overflow menu</h3>
+          <p class="cmp__p">
+            Room layout and Table types move into a <code>&ctdot;</code> menu; the filter, Add table and
+            Export stay out. Reuses the export menu&rsquo;s own popover styles, so it is not a second pattern.
+          </p>
+          <ul class="cmp__list">
+            <li><strong>For:</strong> identical usable area to C without introducing a docked bar — the
+              conservative choice, and the smallest change to the existing layout.</li>
+            <li><strong>Against:</strong> still three lines at every real width, and a <code>&ctdot;</code>
+              is where features go to be forgotten.</li>
+            <li><strong>If adopted:</strong> fix the shell&rsquo;s split handler, which resolves its menu with
+              <code>one('[data-sp-split-menu]')</code> — the <em>first</em> in the document. A second menu on
+              those attributes would toggle the export menu. Latent today, real with two menus.</li>
+          </ul>
+        </article>
+
+        <article class="cmp__opt">
+          <h3 class="cmp__h3">E &mdash; settings on the plan <span class="badge badge--warning">needs rework</span></h3>
+          <p class="cmp__p">
+            Room layout and Table types are plan-scoped settings, not table-list actions, so they move beside
+            New and Copy. <strong>The reasoning holds; this build does not.</strong> Below 430px the plans row
+            wraps under four controls, so the height reappears just above the toolbar.
+          </p>
+          <ul class="cmp__list">
+            <li><strong>For:</strong> the only structural fix — nothing hidden, and it corrects a
+              misplacement rather than working around it. Best of all four at 430px (368px usable).</li>
+            <li><strong>Against:</strong> worst of the three from 360 to 412, which is where the users are.</li>
+            <li><strong>To make it work:</strong> stop the plans row wrapping — all four controls icon-only
+              below sm, or the two settings on the plan chip instead of the row. Worth doing if the
+              principle matters more than the pixels.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="cmp__section">
+      <h2 class="cmp__h2">Not covered by any of these</h2>
+      <ul class="cmp__list">
+        <li>The <strong>event bar and plans strip</strong>, which are most of the 592px above the first card
+          at 390px — the larger half of the mobile problem.</li>
+        <li><strong>Real-handset checking.</strong> These are iframes at device widths, which is honest about
+          layout but not about touch targets, thumb reach or how a docked bar feels next to a home indicator.
+          C in particular should be opened on a phone before it is chosen.</li>
+        <li>Whether the plan title should truncate further; &ldquo;&middot; 30 tables&rdquo; is already
+          repeated in the pane head.</li>
+      </ul>
+    </section>
+
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script src="SeatingPlannerCompare.js"></script>
+</body>
+</html>

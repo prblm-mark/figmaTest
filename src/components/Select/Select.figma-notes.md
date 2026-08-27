@@ -52,7 +52,7 @@ Select is a Tier=Component design-system component for picking from a list of va
 | Focus halo | `--ai-surface-brand-soft` | brand contrast |
 | Label font | `--ai-font-title` semibold + `--ai-font-fixed-xs` | Inter 600 / 14px |
 | Value font (Default) | `--ai-font-title` regular + `--ai-font-fixed-xs` | Inter 400 / 14px |
-| Value font (sm) | `--ai-font-title` regular + `--ai-font-fixed-xxs` | Inter 400 / 12px |
+| Value font (sm) | `--ai-font-title` regular + `--ai-font-fixed-2xs` | Inter 400 / 12px |
 | Value color | `--ai-text-primary` | #212123 |
 | Disabled bg | `--ai-surface-minimal` | #f6f6f7 |
 | Disabled text | `--ai-text-contrast` | #67676c |
@@ -96,3 +96,17 @@ No native `<select>` element used (button-based triggers display the value as vi
 - Underline variant has no horizontal padding so the value aligns flush-left with the parent surface (matches Figma where pl/pr are 0).
 - Disabled `:hover` is suppressed (`border-color: --ai-border-secondary`) to override the brand-border hover.
 - **Label Left** (`2755:2337`) only changes the `.sel` wrapper from a column to a horizontal row (`gap` 16px) — the label, control, value, chevron and popover sub-elements are unchanged. Control + menu are wrapped in `.sel__field` (`position: relative`) so the dropdown anchors to the control, not the full row. Reuses the single-select dropdown JS unchanged.
+
+## Double-include guard (2026-08-27)
+
+`Select.js` now bails if it has already run (`window.__selectReady`), matching `Toggle.js`.
+
+**Why it matters more here than usual.** The trigger branch is a `classList.toggle`, so a second
+document click handler cancels the first — the menu never opens, and the component looks *broken*
+rather than duplicated. Option clicks still appear to work, because both handlers set the same
+value, which makes the failure genuinely confusing to diagnose.
+
+Hit for real on the Seating Planner screen: its ported ControlScreen shell already loads this file,
+and adding it again for the create-plan Table Shape select silently killed **every** Select on the
+page.
+

@@ -59,7 +59,7 @@
 | Name font weight | `--ai-font-semibold` | `--ai-font-semibold` |
 | Name line height | `--ai-leading-xs` | `--ai-leading-xs` |
 | Name color | `--ai-text-primary` | `--ai-text-primary` |
-| Date font size | `--ai-font-fixed-xxs` | `--ai-font-fixed-xxs` |
+| Date font size | `--ai-font-fixed-2xs` | `--ai-font-fixed-2xs` |
 | Date font weight | `--ai-font-regular` | `--ai-font-regular` |
 | Date line height | `--ai-leading-xs` | `--ai-leading-xs` |
 | Date color | `--ai-text-contrast` | `--ai-text-contrast` |

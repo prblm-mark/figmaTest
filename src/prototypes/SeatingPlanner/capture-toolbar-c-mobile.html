@@ -1,0 +1,982 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>TASK-344753 — SeatingPlanner — mobile toolbar bottom bar — v5</title>
+
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/Badge/Badge.css">
+  <link rel="stylesheet" href="../../components/Toggle/Toggle.css">
+  <link rel="stylesheet" href="../../components/SearchInput/SearchInput.css">
+  <link rel="stylesheet" href="../../components/Toast/Toast.css">
+  <link rel="stylesheet" href="../../components/ActionCard/ActionCard.css">
+  <link rel="stylesheet" href="../../components/Input/Input.css">
+  <link rel="stylesheet" href="../../components/Select/Select.css">
+  <link rel="stylesheet" href="../../patterns/Modal/Modal.css">
+  <link rel="stylesheet" href="../../cc/patterns/EventPicker/EventPicker.css">
+  <link rel="stylesheet" href="../../components/DragDropFile/DragDropFile.css">
+  <link rel="stylesheet" href="../../components/Table/Table.css">
+  <link rel="stylesheet" href="SeatingPlanner.css">
+  <!-- The alternative-layout shell. Loaded ONLY by the three alternatives,
+       so the 35 signed-off states cannot be affected by it. -->
+  <link rel="stylesheet" href="SeatingPlannerShell.css">
+
+  <!-- CAPTURE-ONLY: clip the document to ONE SCREENFUL ─────────────────────────
+       v1 came out 390×4145 because the mobile shell is page-scrolled and the
+       capture serialises the whole document. A full-page capture has no viewport,
+       so the position:fixed bar was written out at y≈844 — where the viewport
+       bottom happened to be — floating between table cards a fifth of the way down.
+       The frame showed a button row adrift in a list, which is not the design.
+
+       A phone shows one screenful, so the frame is one screenful. LAST in <head>
+       and `html body.sp-shell` (0,1,1) on purpose: the first attempt sat above the
+       stylesheet links, where `body` (0,0,1) lost to `.sp-shell` (0,1,0) from a
+       later sheet and did nothing.
+
+       844 = iPhone 14/15/16 logical height, matching the capture window width.
+       This block exists only in this capture state, never in workspace.html. -->
+  <style>
+    html { height: 844px; max-height: 844px; overflow: hidden; }
+    html body.sp-shell {
+      height: 844px;
+      min-height: 0;
+      max-height: 844px;
+      overflow: hidden;
+      /* The shell reserves 72px so the last card clears the docked bar. In a clipped
+         one-screenful frame there is nothing to scroll past it, and that reservation
+         pushed body.scrollHeight to 916 — a frame 72px taller than the device with a
+         blank strip under the bar. */
+      padding-bottom: 0;
+    }
+    /* body.scrollHeight is measured from the CONTENT, so clipping the body alone
+       left it reporting 4145 while every other metric read 844 — and 4145 is what
+       the v1 capture used. Clip the content wrapper too, so no metric disagrees and
+       the captured height cannot depend on which one the tool happens to read. */
+    html body.sp-shell > main {
+      height: 844px;
+      max-height: 844px;
+      overflow: hidden;
+    }
+
+    /* THE BAR MUST NOT BE `fixed` FOR A CAPTURE. A captured document has no
+       viewport, and both ways of leaving it fixed failed:
+
+         v1  tall document (390×4145) — the bar was serialised at y≈844, where the
+             viewport bottom happened to be, so it floated between table cards a
+             fifth of the way down. Frame showed a button row adrift in a list.
+         v2  clipped document (390×844) — the bar VANISHED. A fixed element is not
+             laid out inside the body's box, so body{overflow:hidden} clipped it out
+             of existence along with the overflowing list.
+
+       Absolute inside a position:relative body puts it in the box tree, within
+       bounds, at the bottom of the screenful — which is exactly where the docked bar
+       appears on a handset. The real bar stays `fixed` in workspace.html; this
+       override exists only so the CAPTURE tells the truth about what it looks like. */
+    html body.sp-shell { position: relative; }
+    html body.sp-shell .sp-toolbar__actions {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+  </style>
+</head>
+<body class="sp-shell sp-shell--alt1" data-sp-view="grid" data-sp-acc-below="1024">
+
+  <main class="sp-ws">
+
+    <!-- ROW 1 — appbar: the event, the plan strip, and the layout switcher -->
+    <section class="sp-card sp-eventbar">
+      <div class="sp-eventbar__top">
+        <div class="sp-eventbar__main">
+          <h1 class="sp-eventbar__name">The Card &amp; Payments Awards 2026</h1>
+          <ul class="sp-eventbar__meta">
+            <li><i data-lucide="calendar" aria-hidden="true"></i>3 Feb 2026</li>
+            <li><i data-lucide="map-pin" aria-hidden="true"></i>Grosvenor House, London</li>
+            <li><i data-lucide="users" aria-hidden="true"></i>386 attendees</li>
+          </ul>
+        </div>
+        <button class="btn btn--secondary btn--sm" type="button" data-sp-action="change-event" data-sp-task="TASK-342608">
+          <i data-lucide="repeat" aria-hidden="true"></i>
+          Change event
+        </button>
+      </div>
+
+      <!-- ══════════════ SEATING PLANS ROW ══════════════ -->
+      <!-- Two rows: the title and its actions, then the rooms on a scroller. -->
+      <div class="sp-plans">
+        <div class="sp-plans__head">
+          <p class="sp-plans__label">Seating plans</p>
+          <div class="sp-plans__actions">
+            <button class="btn btn--primary btn--sm" type="button" data-sp-action="new-plan" data-sp-task="TASK-342306" aria-label="New plan">
+              <i data-lucide="plus" aria-hidden="true"></i>
+              New<span class="sp-plans__btn-word"> plan</span>
+            </button>
+            <button class="btn btn--secondary btn--sm" type="button" data-sp-action="copy-plans" data-sp-task="TASK-344756" aria-label="Copy plans">
+              <i data-lucide="copy" aria-hidden="true"></i>
+              Copy<span class="sp-plans__btn-word"> plans</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="sp-plans__scroller">
+          <button class="sp-iconbtn sp-plans__nav" type="button"
+                  aria-label="Scroll plans left" data-sp-plans-scroll="prev" hidden>
+            <i data-lucide="chevron-left" aria-hidden="true"></i>
+          </button>
+          <div class="sp-plans__track" data-sp-plans-row data-sp-plans-track>
+            <div class="sp-plan sp-plan--active" data-sp-plan="main" data-sp-plan-label="MAIN BALLROOM — GREAT ROOM" data-sp-plan-seats="10" data-sp-plan-room="Great Room" role="button" tabindex="0" aria-pressed="true">
+              <div class="sp-plan__head">
+                <p class="sp-plan__name">Main Ballroom</p>
+                <button class="sp-iconbtn" type="button" aria-label="Edit Main Ballroom" data-sp-action="plan-edit" data-sp-task="TASK-344754"><i data-lucide="pencil" aria-hidden="true"></i></button>
+                <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Main Ballroom" data-sp-action="plan-delete" data-sp-task="TASK-344755"><i data-lucide="x" aria-hidden="true"></i></button>
+              </div>
+              <p class="sp-plan__stats">30 tables · 240/300 seated · 60 free</p>
+              <span class="sp-seated__track"><span class="sp-seated__fill" style="--sp-seated-pct: 80%"></span></span>
+            </div>
+            <div class="sp-plan" data-sp-plan="overflow" data-sp-plan-label="OVERFLOW ROOM B — SACKVILLE SUITE" data-sp-plan-seats="10" data-sp-plan-room="Sackville Suite" role="button" tabindex="0" aria-pressed="false">
+              <div class="sp-plan__head">
+                <p class="sp-plan__name">Overflow Room B</p>
+                <button class="sp-iconbtn" type="button" aria-label="Edit Overflow Room B" data-sp-action="plan-edit" data-sp-task="TASK-344754"><i data-lucide="pencil" aria-hidden="true"></i></button>
+                <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Overflow Room B" data-sp-action="plan-delete" data-sp-task="TASK-344755"><i data-lucide="x" aria-hidden="true"></i></button>
+              </div>
+              <p class="sp-plan__stats">6 tables · 46/60 seated · 14 free</p>
+              <span class="sp-seated__track"><span class="sp-seated__fill" style="--sp-seated-pct: 77%"></span></span>
+            </div>
+          </div>
+          <button class="sp-iconbtn sp-plans__nav" type="button"
+                  aria-label="Scroll plans right" data-sp-plans-scroll="next" hidden>
+            <i data-lucide="chevron-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROW 2 — actionbar: the toolbar hoisted out of the tables card, so all
+         five controls keep full size whatever the panes below are doing -->
+    <div class="sp-shell__actionbar">
+        <div class="sp-toolbar">
+          <p class="sp-toolbar__title" data-sp-plan-title>MAIN BALLROOM — GREAT ROOM · 30 tables</p>
+          <div class="sp-toolbar__spacer"></div>
+
+          <span class="sp-toolbar__toggle">
+            <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" aria-label="Only free seats" data-sp-freeseats>
+              <span class="toggle__track"><span class="toggle__knob"></span></span>
+            </button>
+            <span><span class="sp-tb-full">Only free seats</span><span class="sp-tb-short">Free seats</span></span>
+          </span>
+
+          <!-- ADOPTED 2026-08-05 — option C, the sticky bottom action bar.
+               Chosen from A/C/E on measured evidence: at real phone widths (360-412)
+               it is the ONLY option that gets the toolbar to two lines, it ties A on
+               usable area to within 1px, and it puts every action in thumb reach where
+               it never scrolls away. Below 640px this wrapper docks to the bottom of
+               the viewport; above it, it is a plain flex row and the desktop layout is
+               unchanged. Rules live in SeatingPlannerShell.css § BOTTOM ACTION BAR.
+
+               Labels shorten inside the bar via the .sp-tb-full/.sp-tb-short pair, and
+               every control keeps an aria-label carrying the FULL text, so the
+               abbreviation is visual only. -->
+          <div class="sp-toolbar__actions">
+            <button class="btn btn--secondary btn--sm" type="button" data-sp-action="add-table" data-sp-task="TASK-344757" aria-label="Add table">
+              <i data-lucide="plus" aria-hidden="true"></i>
+              <span class="sp-tb-full">Add table</span><span class="sp-tb-short">Add</span>
+            </button>
+            <button class="btn btn--secondary btn--sm" type="button" data-sp-action="room-layout" data-sp-task="TASK-344760" aria-label="Room layout">
+              <i data-lucide="map" aria-hidden="true"></i>
+              <span class="sp-tb-full">Room layout</span><span class="sp-tb-short">Layout</span>
+            </button>
+            <button class="btn btn--secondary btn--sm" type="button" data-sp-action="tier-colours" data-sp-task="TASK-342308" aria-label="Table types">
+              <i data-lucide="palette" aria-hidden="true"></i>
+              <span class="sp-tb-full">Table types</span><span class="sp-tb-short">Types</span>
+            </button>
+
+            <!-- Export split button: PDF is the default action, other formats in the menu -->
+            <span class="sp-split__wrap">
+              <span class="sp-split">
+                <button class="btn btn--primary btn--sm" type="button" data-sp-action="export" data-sp-task="TASK-342305" data-sp-format="pdf">
+                  <i data-lucide="download" aria-hidden="true"></i>
+                  <span class="sp-tb-full">Export PDF</span><span class="sp-tb-short">Export</span>
+                </button>
+                <button class="btn btn--primary btn--sm" type="button" aria-label="Other export formats" aria-haspopup="true" data-sp-split-toggle>
+                  <i data-lucide="chevron-down" aria-hidden="true"></i>
+                </button>
+              </span>
+              <div class="sp-split__menu" data-sp-split-menu hidden>
+                <button class="sp-split__item" type="button" data-sp-action="export" data-sp-task="TASK-342305" data-sp-format="xlsx">
+                  <i data-lucide="file-spreadsheet" aria-hidden="true"></i>Excel (.xlsx)
+                </button>
+                <button class="sp-split__item" type="button" data-sp-action="export" data-sp-task="TASK-342305" data-sp-format="csv">
+                  <i data-lucide="file-text" aria-hidden="true"></i>CSV
+                </button>
+              </div>
+            </span>
+          </div>
+        </div>
+    </div>
+
+    <!-- ROW 3 — list | seats | pool. Three scrollers, three pinned heads,
+         source and target permanently side by side. -->
+    <div class="sp-shell__work" data-sp-workspace>
+
+      <section class="sp-shell__pane sp-shell__list">
+        <div class="sp-shell__pane-head">
+          <h2 class="sp-shell__pane-title">Tables</h2>
+          <span class="sp-shell__pane-count" data-sp-list-count></span>
+          <!-- Mobile only: the pool is hidden below 1024 (no drag and drop on               touch), so the one thing it still had to say is echoed here. -->
+          <span class="sp-shell__pane-echo" data-sp-tray-echo hidden></span>
+          <div class="search search--sm sp-shell__pane-search">
+            <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+            <input class="search__input" type="search" placeholder="Find a table…"
+                   aria-label="Find a table" data-sp-list-search>
+          </div>
+          <!-- Two states, one hook. aria-pressed rather than aria-current: this
+               is a mode you turn on, not a place you are at. -->
+          <div class="sp-shell__viewtoggle" role="group" aria-label="Table list view">
+            <button class="sp-iconbtn" type="button" aria-pressed="false"
+                    aria-label="Show tables as a list" data-sp-view-toggle="list">
+              <i data-lucide="list" aria-hidden="true"></i>
+            </button>
+            <button class="sp-iconbtn" type="button" aria-pressed="true"
+                    aria-label="Show tables as a grid" data-sp-view-toggle="grid">
+              <i data-lucide="layout-grid" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <div class="sp-grid" data-sp-grid data-sp-acc>
+          <div class="sp-table sp-table--tier-head sp-table--selected" data-sp-table role="button" tabindex="0" aria-pressed="true" data-sp-belongs="main" data-sp-name="Table 1" data-sp-seed="5" data-sp-tier="Head table" data-sp-occupants="Hana Ashby~GoCardless|Aisha Okafor~Visa Europe|Eve Owens~GoCardless|David Shah~Wise|Mia Farah~Revolut|Sarah Ashby~Klarna|Sir Alan Prentice~Guest of Honour|Dr Naomi Osei~Opening address|Elena Ruiz~Visa Europe|James Corrigan~TPF Club">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 1<span class="sp-table__tier">Head table</span></p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 1" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 1" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--host"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 2" data-sp-seed="10">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 2</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 2" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 2" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 3" data-sp-seed="15">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 3</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 3" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 3" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 4" data-sp-seed="20">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 4</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 4" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 4" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 5" data-sp-seed="1">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 5</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 5" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 5" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span></div>
+          </div>
+          <div class="sp-table sp-table--tier-gold" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 6" data-sp-seed="6" data-sp-tier="Gold" data-sp-sponsor="Barclaycard">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 6<span class="sp-table__tier">Gold</span></p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <p class="sp-table__sponsor"><i data-lucide="star" aria-hidden="true"></i>Barclaycard</p>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 6" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 6" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span></div>
+          </div>
+          <div class="sp-table sp-table--tier-gold" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 7" data-sp-seed="11" data-sp-tier="Gold" data-sp-sponsor="Wise">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 7<span class="sp-table__tier">Gold</span></p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <p class="sp-table__sponsor"><i data-lucide="star" aria-hidden="true"></i>Wise</p>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 7" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 7" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 8" data-sp-seed="16">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 8</p>
+              <span class="badge badge--warning badge--sm" data-sp-fill>8/10</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>8 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 8" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 8" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+          <div class="sp-table sp-table--tier-gold" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 9" data-sp-seed="21" data-sp-tier="Gold" data-sp-sponsor="Wise">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 9<span class="sp-table__tier">Gold</span></p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <p class="sp-table__sponsor"><i data-lucide="star" aria-hidden="true"></i>Wise</p>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 9" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 9" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 10" data-sp-seed="2">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 10</p>
+              <span class="badge badge--warning badge--sm" data-sp-fill>3/10</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>3 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 10" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 10" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 11" data-sp-seed="7" data-sp-sponsor="Mastercard">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 11</p>
+              <span class="badge badge--neutral badge--sm" data-sp-fill>Empty</span>
+            </div>
+            <p class="sp-table__sponsor"><i data-lucide="star" aria-hidden="true"></i>Mastercard</p>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>0 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 11" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 11" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 12" data-sp-seed="12">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 12</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 12" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 12" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 13" data-sp-seed="17">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 13</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 13" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 13" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 14" data-sp-seed="22">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 14</p>
+              <span class="badge badge--warning badge--sm" data-sp-fill>6/10</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>6 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 14" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 14" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 15" data-sp-seed="3">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 15</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 15" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 15" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 16" data-sp-seed="8">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 16</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 16" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 16" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 17" data-sp-seed="13">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 17</p>
+              <span class="badge badge--warning badge--sm" data-sp-fill>3/10</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>3 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 17" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 17" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+          <div class="sp-table sp-table--tier-gold" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 18" data-sp-seed="18" data-sp-tier="Gold" data-sp-sponsor="Monzo">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 18<span class="sp-table__tier">Gold</span></p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <p class="sp-table__sponsor"><i data-lucide="star" aria-hidden="true"></i>Monzo</p>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 18" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 18" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 19" data-sp-seed="23">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 19</p>
+              <span class="badge badge--warning badge--sm" data-sp-fill>3/10</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>3 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 19" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 19" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 20" data-sp-seed="4">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 20</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 20" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 20" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 21" data-sp-seed="9">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 21</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 21" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 21" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 22" data-sp-seed="14">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 22</p>
+              <span class="badge badge--warning badge--sm" data-sp-fill>4/10</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>4 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 22" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 22" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 23" data-sp-seed="19">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 23</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 23" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 23" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 24" data-sp-seed="0" data-sp-sponsor="Mastercard">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 24</p>
+              <span class="badge badge--warning badge--sm" data-sp-fill>4/10</span>
+            </div>
+            <p class="sp-table__sponsor"><i data-lucide="star" aria-hidden="true"></i>Mastercard</p>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>4 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 24" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 24" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+          <div class="sp-table sp-table--tier-gold" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 25" data-sp-seed="5" data-sp-tier="Gold" data-sp-sponsor="Stripe">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 25<span class="sp-table__tier">Gold</span></p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <p class="sp-table__sponsor"><i data-lucide="star" aria-hidden="true"></i>Stripe</p>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 25" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 25" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 26" data-sp-seed="10">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 26</p>
+              <span class="badge badge--warning badge--sm" data-sp-fill>8/10</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>8 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 26" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 26" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 27" data-sp-seed="15" data-sp-sponsor="Mastercard">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 27</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <p class="sp-table__sponsor"><i data-lucide="star" aria-hidden="true"></i>Mastercard</p>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 27" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 27" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--sponsor"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 28" data-sp-seed="20">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 28</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 28" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 28" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 29" data-sp-seed="1" data-sp-sponsor="Wise">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 29</p>
+              <span class="badge badge--warning badge--sm" data-sp-fill>4/10</span>
+            </div>
+            <p class="sp-table__sponsor"><i data-lucide="star" aria-hidden="true"></i>Wise</p>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>4 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 29" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 29" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table role="button" tabindex="0" aria-pressed="false" data-sp-belongs="main" data-sp-name="Table 30" data-sp-seed="6" data-sp-sponsor="Revolut">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 30</p>
+              <span class="badge badge--warning badge--sm" data-sp-fill>7/10</span>
+            </div>
+            <p class="sp-table__sponsor"><i data-lucide="star" aria-hidden="true"></i>Revolut</p>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>7 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 30" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 30" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table hidden data-sp-offplan role="button" tabindex="0" aria-pressed="false" data-sp-belongs="overflow" data-sp-name="Table 1" data-sp-seed="5">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 1</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 1" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 1" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--host"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table hidden data-sp-offplan role="button" tabindex="0" aria-pressed="false" data-sp-belongs="overflow" data-sp-name="Table 2" data-sp-seed="10">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 2</p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 2" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 2" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--vip"></span><span class="sp-dot sp-dot--attendee"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table hidden data-sp-offplan role="button" tabindex="0" aria-pressed="false" data-sp-belongs="overflow" data-sp-name="Table 3" data-sp-seed="15">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 3</p>
+              <span class="badge badge--warning badge--sm" data-sp-fill>8/10</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>8 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 3" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 3" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table hidden data-sp-offplan role="button" tabindex="0" aria-pressed="false" data-sp-belongs="overflow" data-sp-name="Table 4" data-sp-seed="20">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 4</p>
+              <span class="badge badge--warning badge--sm" data-sp-fill>6/10</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>6 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 4" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 4" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--guest"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+          <div class="sp-table sp-table--tier-gold" data-sp-table hidden data-sp-offplan role="button" tabindex="0" aria-pressed="false" data-sp-belongs="overflow" data-sp-name="Table 5" data-sp-seed="1" data-sp-tier="Gold" data-sp-sponsor="Klarna">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 5<span class="sp-table__tier">Gold</span></p>
+              <span class="badge badge--success badge--sm" data-sp-fill>Full</span>
+            </div>
+            <p class="sp-table__sponsor"><i data-lucide="star" aria-hidden="true"></i>Klarna</p>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>10 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 5" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 5" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--speaker"></span></div>
+          </div>
+          <div class="sp-table" data-sp-table hidden data-sp-offplan role="button" tabindex="0" aria-pressed="false" data-sp-belongs="overflow" data-sp-name="Table 6" data-sp-seed="6">
+            <div class="sp-table__head">
+              <p class="sp-table__name">Table 6</p>
+              <span class="badge badge--warning badge--sm" data-sp-fill>2/10</span>
+            </div>
+            <div class="sp-table__foot">
+              <p class="sp-table__count" data-sp-count>2 / 10 seated</p>
+              <button class="sp-iconbtn" type="button" aria-label="Edit Table 6" data-sp-action="table-edit" data-sp-task="TASK-342307"><i data-lucide="pencil" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn sp-iconbtn--danger" type="button" aria-label="Delete Table 6" data-sp-action="table-delete" data-sp-task="TASK-344758"><i data-lucide="x" aria-hidden="true"></i></button>
+            </div>
+            <div class="sp-table__dots" aria-hidden="true"><span class="sp-dot sp-dot--sponsor"></span><span class="sp-dot sp-dot--attendee"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span><span class="sp-dot sp-dot--empty"></span></div>
+          </div>
+        </div>
+        <div class="sp-shell__pane-foot">
+        <p class="sp-grid__note" data-sp-filter-note>Click a table to open its seat list. Fill state: green full · amber partial · grey empty.</p>
+        </div>
+      </section>
+
+      <div class="sp-shell__resize" role="separator" aria-orientation="vertical"
+           tabindex="0" draggable="false" data-sp-resize="detail"
+           aria-label="Resize the table detail column" aria-valuemin="320" aria-valuenow="320"
+           title="Drag to widen · double-click to reset"></div>
+
+      <!-- The seat panel lives here on desktop and is MOVED beneath the open
+           table row below 1024px. It must never leave the document: nine
+           singleton queries would start returning null. -->
+      <section class="sp-shell__pane" data-sp-panel-home>
+        <div data-sp-acc-drawer>
+        <section class="sp-panel">
+          <div class="sp-panel__head">
+            <div class="sp-panel__title-row">
+              <h2 class="sp-panel__title" data-sp-seat-title>Table 1</h2>
+              <span class="badge badge--border badge--neutral badge--sm" data-sp-seat-tier>Head table</span>
+            </div>
+            <p class="sp-panel__meta" data-sp-seat-meta>10 / 10 seated · seat order = who sits next to whom</p>
+          </div>
+          <div class="sp-panel__body" data-sp-seatlist></div>
+          <div class="sp-panel__foot">
+            <ul class="sp-legend">
+              <li><span class="sp-dot sp-dot--attendee"></span>Attendee</li>
+              <li><span class="sp-dot sp-dot--sponsor"></span>Sponsor</li>
+              <li><span class="sp-dot sp-dot--vip"></span>VIP</li>
+              <li><span class="sp-dot sp-dot--speaker"></span>Speaker</li>
+              <li><span class="sp-dot sp-dot--host"></span>Host</li>
+              <li><span class="sp-dot sp-dot--guest"></span>Guest</li>
+            </ul>
+          </div>
+        </section>
+        </div>
+      </section>
+
+      <div class="sp-shell__resize" role="separator" aria-orientation="vertical"
+           tabindex="0" draggable="false" data-sp-resize="pool"
+           aria-label="Resize the unassigned column" aria-valuemin="320" aria-valuenow="320"
+           title="Drag to widen · double-click to reset"></div>
+
+      <section class="sp-shell__pane">
+        <section class="sp-panel" data-sp-tray-panel>
+          <div class="sp-panel__head">
+            <div class="sp-panel__title-row">
+              <h2 class="sp-panel__title">Unassigned</h2>
+              <span class="badge badge--warning badge--sm" data-sp-tray-count>7</span>
+            </div>
+            <p class="sp-panel__meta">Drag a person onto a seat or table to assign · drag back here to unassign.</p>
+          </div>
+          <div class="sp-panel__body">
+            <div class="search search--sm">
+              <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+              <input class="search__input" type="search" placeholder="Search unassigned…" aria-label="Search unassigned people" data-sp-tray-search>
+            </div>
+            <p class="sp-tray__none" data-sp-tray-none hidden></p>
+            <div class="sp-tray__list" data-sp-tray-list>
+              <div class="sp-person" data-sp-person draggable="true"><span class="sp-role sp-role--vip">VIP</span><p class="sp-person__name">Dame Helen Verity</p><span class="sp-person__org">Guest of Honour</span></div>
+              <div class="sp-person" data-sp-person draggable="true"><span class="sp-role sp-role--sponsor">Sponsor</span><p class="sp-person__name">Marcus Webb</p><span class="sp-person__org">Barclaycard</span></div>
+              <div class="sp-person" data-sp-person draggable="true"><span class="sp-role sp-role--speaker">Speaker</span><p class="sp-person__name">Priya Anand</p><span class="sp-person__org">Keynote</span></div>
+              <div class="sp-person" data-sp-person draggable="true"><span class="sp-role sp-role--attendee">Attendee</span><p class="sp-person__name">Tom Fielding</p><span class="sp-person__org">Revolut</span></div>
+              <div class="sp-person" data-sp-person draggable="true"><span class="sp-role sp-role--attendee">Attendee</span><p class="sp-person__name">Grace Owens</p><span class="sp-person__org">Monzo</span></div>
+              <div class="sp-person" data-sp-person draggable="true"><span class="sp-role sp-role--attendee">Attendee</span><p class="sp-person__name">Omar Farah</p><span class="sp-person__org">Wise</span></div>
+              <div class="sp-person" data-sp-person draggable="true"><span class="sp-role sp-role--attendee">Attendee</span><p class="sp-person__name">Nina Kaur</p><span class="sp-person__org">Stripe</span></div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+    </div>
+  </main>
+
+
+  <!-- CAPTURE STATE — mobile toolbar, option C (adopted 2026-08-05)
+       ────────────────────────────────────────────────────────────────────────
+       workspace.html with the modal roots removed EXCEPT Table types, and
+       nothing else changed: all 36 cards, real totals, the real bottom bar.
+
+       Modals are stripped for WEIGHT only — the full file is 110KB and captures
+       have hung above ~88KB before.
+
+       TABLE TYPES IS KEPT DELIBERATELY, and it is not optional. The tier seed
+       colours live in that modal's <input type="color"> values, and
+       SeatingPlannerTableTypes.js:220 opens with
+           if (!one('[data-tt-modal]')) return;
+       so without the root the module bails, --sp-tier-colour is never painted, and
+       every tiered card falls back to the neutral edge. Measured that way first:
+       the frame lost its tier colours entirely, which would have shown the
+       designer a design missing a feature it has.
+
+       NOT trimmed to 12 cards, which is how earlier capture states were slimmed —
+       that left them quoting "30 tables · 240/300" over a 12-card grid, so the
+       frames asserted numbers the picture contradicted.
+
+       Not linked from anywhere; rebuilt by cutting workspace.html between the first
+       modal banner and the script block, keeping the Table types block. -->
+  <!-- ══════════════ TABLE TYPES LOOKUP — TASK-342308 ══════════════
+       Tier label + colour + sort order, configurable. Colours are CLIENT DATA
+       chosen in a picker — not DS tokens — which is what resolves the tier
+       token gap flagged in 344753/342307.
+       Two rules from the reference that the brief omits: Standard cannot be
+       removed (it is the fallback), and removing a tier drops its tables back
+       to Standard. Sort order is row order with up/down controls rather than a
+       raw number field — the number is the data, the list is the interface. -->
+  <div class="modal-overlay" data-tt-overlay>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="tt-title" data-tt-modal>
+
+      <div class="modal__header">
+        <h2 class="modal__title" id="tt-title">Table types</h2>
+        <button class="modal__close" type="button" aria-label="Close" data-tt-close>
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <p class="sp-types__intro">
+        Define the table tiers. Add, rename, recolour or remove them. Tables using a
+        removed tier fall back to Standard.
+      </p>
+
+      <!-- TODO(backend:SeatingPlanner): TableType lookup (label, colour, sortOrder).
+           Table.Type is an FK, so a delete must repoint dependent Tables at Standard
+           or be blocked — never left dangling. Renaming must not change identity. -->
+      <div class="sp-types__list" data-tt-list>
+          <div class="sp-types__row" data-tt-row>
+            <label class="sp-types__swatch" aria-label="Colour for Standard">
+              <input type="color" value="#8fa0b5" data-tt-colour>
+            </label>
+            <div class="input"><div class="input__wrap">
+              <input class="input__control" type="text" value="Standard" aria-label="Tier name" data-tt-label>
+            </div></div>
+            <span class="sp-types__reorder">
+              <button class="sp-iconbtn" type="button" data-tt-move="up" aria-label="Move up"><i data-lucide="chevron-up" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn" type="button" data-tt-move="down" aria-label="Move down"><i data-lucide="chevron-down" aria-hidden="true"></i></button>
+            </span>
+            <span class="sp-types__default">default</span>
+          </div>
+          <div class="sp-types__row" data-tt-row>
+            <label class="sp-types__swatch" aria-label="Colour for Gold">
+              <input type="color" value="#c9a227" data-tt-colour>
+            </label>
+            <div class="input"><div class="input__wrap">
+              <input class="input__control" type="text" value="Gold" aria-label="Tier name" data-tt-label>
+            </div></div>
+            <span class="sp-types__reorder">
+              <button class="sp-iconbtn" type="button" data-tt-move="up" aria-label="Move up"><i data-lucide="chevron-up" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn" type="button" data-tt-move="down" aria-label="Move down"><i data-lucide="chevron-down" aria-hidden="true"></i></button>
+            </span>
+            <button class="btn btn--secondary btn--xs" type="button" data-tt-remove><i data-lucide="x" aria-hidden="true"></i>Remove</button>
+          </div>
+          <div class="sp-types__row" data-tt-row>
+            <label class="sp-types__swatch" aria-label="Colour for Silver">
+              <input type="color" value="#b8bfc7" data-tt-colour>
+            </label>
+            <div class="input"><div class="input__wrap">
+              <input class="input__control" type="text" value="Silver" aria-label="Tier name" data-tt-label>
+            </div></div>
+            <span class="sp-types__reorder">
+              <button class="sp-iconbtn" type="button" data-tt-move="up" aria-label="Move up"><i data-lucide="chevron-up" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn" type="button" data-tt-move="down" aria-label="Move down"><i data-lucide="chevron-down" aria-hidden="true"></i></button>
+            </span>
+            <button class="btn btn--secondary btn--xs" type="button" data-tt-remove><i data-lucide="x" aria-hidden="true"></i>Remove</button>
+          </div>
+          <div class="sp-types__row" data-tt-row>
+            <label class="sp-types__swatch" aria-label="Colour for Bronze">
+              <input type="color" value="#b07d48" data-tt-colour>
+            </label>
+            <div class="input"><div class="input__wrap">
+              <input class="input__control" type="text" value="Bronze" aria-label="Tier name" data-tt-label>
+            </div></div>
+            <span class="sp-types__reorder">
+              <button class="sp-iconbtn" type="button" data-tt-move="up" aria-label="Move up"><i data-lucide="chevron-up" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn" type="button" data-tt-move="down" aria-label="Move down"><i data-lucide="chevron-down" aria-hidden="true"></i></button>
+            </span>
+            <button class="btn btn--secondary btn--xs" type="button" data-tt-remove><i data-lucide="x" aria-hidden="true"></i>Remove</button>
+          </div>
+          <div class="sp-types__row" data-tt-row>
+            <label class="sp-types__swatch" aria-label="Colour for VIP">
+              <input type="color" value="#9b51e0" data-tt-colour>
+            </label>
+            <div class="input"><div class="input__wrap">
+              <input class="input__control" type="text" value="VIP" aria-label="Tier name" data-tt-label>
+            </div></div>
+            <span class="sp-types__reorder">
+              <button class="sp-iconbtn" type="button" data-tt-move="up" aria-label="Move up"><i data-lucide="chevron-up" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn" type="button" data-tt-move="down" aria-label="Move down"><i data-lucide="chevron-down" aria-hidden="true"></i></button>
+            </span>
+            <button class="btn btn--secondary btn--xs" type="button" data-tt-remove><i data-lucide="x" aria-hidden="true"></i>Remove</button>
+          </div>
+          <div class="sp-types__row" data-tt-row>
+            <label class="sp-types__swatch" aria-label="Colour for Head table">
+              <input type="color" value="#3b6fe0" data-tt-colour>
+            </label>
+            <div class="input"><div class="input__wrap">
+              <input class="input__control" type="text" value="Head table" aria-label="Tier name" data-tt-label>
+            </div></div>
+            <span class="sp-types__reorder">
+              <button class="sp-iconbtn" type="button" data-tt-move="up" aria-label="Move up"><i data-lucide="chevron-up" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn" type="button" data-tt-move="down" aria-label="Move down"><i data-lucide="chevron-down" aria-hidden="true"></i></button>
+            </span>
+            <button class="btn btn--secondary btn--xs" type="button" data-tt-remove><i data-lucide="x" aria-hidden="true"></i>Remove</button>
+          </div>
+          <div class="sp-types__row" data-tt-row>
+            <label class="sp-types__swatch" aria-label="Colour for Sponsor">
+              <input type="color" value="#c0392b" data-tt-colour>
+            </label>
+            <div class="input"><div class="input__wrap">
+              <input class="input__control" type="text" value="Sponsor" aria-label="Tier name" data-tt-label>
+            </div></div>
+            <span class="sp-types__reorder">
+              <button class="sp-iconbtn" type="button" data-tt-move="up" aria-label="Move up"><i data-lucide="chevron-up" aria-hidden="true"></i></button>
+              <button class="sp-iconbtn" type="button" data-tt-move="down" aria-label="Move down"><i data-lucide="chevron-down" aria-hidden="true"></i></button>
+            </span>
+            <button class="btn btn--secondary btn--xs" type="button" data-tt-remove><i data-lucide="x" aria-hidden="true"></i>Remove</button>
+          </div>
+      </div>
+
+      <div class="sp-types__add">
+        <div class="sp-types__add-name">
+          <label class="sp-types__label" for="tt-new">New type name</label>
+          <div class="input"><div class="input__wrap">
+            <input id="tt-new" class="input__control" type="text" placeholder="e.g. Platinum" value="" data-tt-new-name>
+          </div></div>
+        </div>
+        <div class="sp-types__add-colour">
+          <span class="sp-types__label">Colour</span>
+          <label class="sp-types__swatch" aria-label="Colour for the new tier">
+            <input type="color" value="#3b6fe0" data-tt-new-colour>
+          </label>
+        </div>
+        <button class="btn btn--primary" type="button" data-tt-add>Add type</button>
+      </div>
+
+      <div class="modal__footer">
+        <button class="btn btn--secondary" type="button" data-tt-done>Close</button>
+      </div>
+
+    </div>
+  </div>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script src="../../components/Select/Select.js"></script>
+  <script src="SeatingPlannerWorkspace.js"></script>
+  <script src="SeatingPlannerAddTable.js"></script>
+  <script src="SeatingPlannerTableForm.js"></script>
+  <script src="SeatingPlannerDeleteTable.js"></script>
+  <script src="SeatingPlannerTableTypes.js"></script>
+  <script src="SeatingPlannerNewPlan.js"></script>
+  <script src="SeatingPlannerEditPlan.js"></script>
+  <script src="SeatingPlannerDeletePlan.js"></script>
+  <script src="SeatingPlannerCopyPlans.js"></script>
+  <script src="SeatingPlannerAssign.js"></script>
+  <script src="SeatingPlannerTray.js"></script>
+  <script src="SeatingPlannerDrag.js"></script>
+  <script src="SeatingPlannerLayout.js"></script>
+  <script src="SeatingPlannerExport.js"></script>
+  <script src="SeatingPlannerShell.js"></script>
+
+  <!-- CAPTURE-ONLY: paint the bar LAST ─────────────────────────────────────────
+       v3 put the bar in the frame at the right place (y≈812 of 844) and it was
+       still invisible. The capture flattens z-index into FIGMA LAYER ORDER: the bar
+       lives before the tables section in DOM order, so `z-index: 6` lifts it in a
+       browser but in Figma it is merely an earlier sibling — buried under the opaque
+       table list.
+
+       Re-parenting it to the end of <body> makes it the last-painted node, so it
+       lands on top in Figma. Its rendered position does not move, because it is
+       absolutely positioned against body either way, and the CSS matches on class
+       rather than on ancestry.
+
+       GENERAL LESSON for any capture with an overlay, sticky header or docked bar:
+       z-index does not survive the capture. Whatever must appear on top has to be
+       last in the DOM. -->
+  <script>
+    (function () {
+      function lift() {
+        var bar = document.querySelector('.sp-toolbar__actions');
+        if (bar && bar.parentNode !== document.body) document.body.appendChild(bar);
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', lift);
+      } else { lift(); }
+      /* after the shell's own boot, in case it re-renders the toolbar */
+      window.addEventListener('load', function () { setTimeout(lift, 300); });
+    })();
+  </script>
+</body>
+</html>

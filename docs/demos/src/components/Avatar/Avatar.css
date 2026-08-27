@@ -122,7 +122,7 @@
   color: var(--ai-text-info);
   font-family: var(--ai-font-title);
   font-weight: var(--ai-font-semibold);
-  font-size: var(--ai-font-fixed-xxs);     /* 12px — Size 1 */
+  font-size: var(--ai-font-fixed-2xs);     /* 12px — Size 1 */
   line-height: 1;
   text-transform: uppercase;
   user-select: none;

@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Event Builder · 1 Describe your event — Prototype</title>
+
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/Tooltip/Tooltip.css">
+  <link rel="stylesheet" href="../../components/SuggestedQuestion/SuggestedQuestion.css">
+  <link rel="stylesheet" href="../../components/ActionCard/ActionCard.css">
+  <link rel="stylesheet" href="../../components/Badge/Badge.css">
+  <link rel="stylesheet" href="../../patterns/MessageInput/MessageInput.css">
+  <link rel="stylesheet" href="EventBuilder.css">
+</head>
+<body>
+
+<div class="eb-start">
+
+  <!-- Top bar — cut down: no event exists yet, so no blocks/inspector -->
+  <header class="eb-topbar">
+    <div class="eb-topbar__brand">
+      <span class="eb-topbar__logo"><i data-lucide="calendar-plus" aria-hidden="true"></i></span>
+      <div class="eb-topbar__meta">
+        <p class="eb-crumb">
+          <span>Affino</span>
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+          <span>Events</span>
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+          <span>New event</span>
+        </p>
+        <h1 class="eb-topbar__title">Event Builder</h1>
+      </div>
+    </div>
+    <div class="eb-topbar__spacer"></div>
+    <div class="eb-topbar__actions">
+      <button class="btn btn--tertiary btn--sm" type="button">Cancel</button>
+    </div>
+  </header>
+
+  <main class="eb-start__main">
+    <div class="eb-start__inner">
+
+      <span class="eb-start__mark"><i data-lucide="sparkles" aria-hidden="true"></i></span>
+      <h2 class="eb-start__title">Describe your event</h2>
+      <p class="eb-start__sub">
+        Tell us what you're running in your own words. We'll build a complete draft event page —
+        blocks, structure and first-pass copy — then walk you through anything we couldn't work out.
+      </p>
+
+      <!-- TODO(backend:EventBuilder): the brief is sent nowhere. Real version needs
+           POST /api/event-builder/generate { brief, sectionId } -> a full event model
+           (blocks, order, field values, confidence per field). -->
+      <div class="eb-start__composer" data-backend-todo="eb-generate">
+        <div class="msg-input msg-input--active">
+          <div class="msg-input__box">
+            <textarea
+              class="msg-input__textarea"
+              rows="4"
+              data-eb-brief
+              aria-label="Describe your event"
+              placeholder="e.g. A black-tie awards dinner for the payments industry, February 2027, central London…"
+            >The Card &amp; Payments Awards UK 2027 — our 22nd annual awards. Black-tie ceremony and dinner at JW Marriott Grosvenor House, London on 4 February 2027, 6pm till late. Around 1,200 guests. We need an entries process opening in July, a judging panel of about 16 industry figures, four sponsor tiers, a charity partner, last year's winners, and an FAQ. Strapline: Independent. Respected. Recognised.</textarea>
+            <div class="msg-input__actions">
+              <div class="msg-input__filter-container">
+                <button class="btn btn--tertiary btn--sm btn--icon" type="button" aria-label="Attach a brief or last year's page">
+                  <i data-lucide="paperclip" aria-hidden="true"></i>
+                </button>
+                <div class="msg-input__tooltip msg-input__tooltip--filter">
+                  <div class="tooltip" role="tooltip">
+                    <p class="tooltip__text">Attach a document, or point at last year's event page to reuse its content</p>
+                  </div>
+                </div>
+              </div>
+              <button
+                class="btn btn--primary btn--sm btn--icon msg-input__send-btn"
+                type="button"
+                aria-label="Build my event"
+                data-eb-goto="02-generating.html">
+                <i data-lucide="move-up" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <div class="msg-input__disclaimer">
+            <p class="msg-input__disclaimer-text">Only your existing event tools are used — nothing new is invented</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked starters -->
+      <div class="eb-start__section">
+        <p class="eb-start__label">Or start from a shape we know</p>
+        <div class="eb-start__starters">
+          <button class="suggested-question" type="button" data-eb-goto="02-generating.html">
+            <i data-lucide="trophy" aria-hidden="true"></i>
+            <div class="suggested-question__body">
+              <p class="suggested-question__text">An awards ceremony</p>
+              <p class="suggested-question__subtext">Entries, judges, shortlist, sponsor tiers, table booking</p>
+            </div>
+          </button>
+          <button class="suggested-question" type="button" data-eb-goto="02-generating.html">
+            <i data-lucide="presentation" aria-hidden="true"></i>
+            <div class="suggested-question__body">
+              <p class="suggested-question__text">A conference or summit</p>
+              <p class="suggested-question__subtext">Speakers, agenda, venue, delegate tickets</p>
+            </div>
+          </button>
+          <button class="suggested-question" type="button" data-eb-goto="02-generating.html">
+            <i data-lucide="users" aria-hidden="true"></i>
+            <div class="suggested-question__body">
+              <p class="suggested-question__text">A members' roundtable</p>
+              <p class="suggested-question__subtext">Small agenda, contact, invitation-only sign-up</p>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Escape hatches — the AI route is not the only route -->
+      <div class="eb-start__alt">
+        <!-- TODO(backend:EventBuilder): "Clone" needs GET /api/events?clonable=1 and a
+             server-side deep copy of the event model + its section scaffolding. -->
+        <div class="action-card" data-backend-todo="eb-clone">
+          <p class="action-card__title">Clone last year's event</p>
+          <button class="btn btn--tertiary btn--xs" type="button">
+            <i data-lucide="copy" aria-hidden="true"></i>
+            choose
+          </button>
+        </div>
+        <div class="action-card">
+          <p class="action-card__title">Start from a blank event</p>
+          <button class="btn btn--tertiary btn--xs" type="button" data-eb-goto="05-blocks.html">
+            <i data-lucide="plus" aria-hidden="true"></i>
+            build
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <p class="eb-start__foot">
+    Prototype — front end only. No event is created and nothing is saved.
+  </p>
+
+</div>
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>lucide.createIcons();</script>
+<script src="EventBuilder.js"></script>
+</body>
+</html>

@@ -60,7 +60,7 @@
 
 .textarea__help {
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);  /* 12px */
+  font-size: var(--ai-font-fixed-2xs);  /* 12px */
   font-weight: var(--ai-font-regular);  /* 400 */
   line-height: var(--ai-leading-xs);    /* 16px */
   color: var(--ai-text-secondary);
@@ -76,7 +76,7 @@
 
 .textarea__char-count {
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-xxs);  /* 12px */
+  font-size: var(--ai-font-fixed-2xs);  /* 12px */
   font-weight: var(--ai-font-regular);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-contrast);
@@ -120,5 +120,5 @@
 .textarea--sm .textarea__control {
   min-height: 80px; /* layout dimension — no token match */
   padding: var(--ai-spacing-3) var(--ai-spacing-4);
-  font-size: var(--ai-font-fixed-xxs);  /* 12px */
+  font-size: var(--ai-font-fixed-2xs);  /* 12px */
 }

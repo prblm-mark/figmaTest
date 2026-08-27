@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../components/dark-mode-toggle.js"></script>
+  <title>Event Builder · 2 Building your draft — Prototype</title>
+
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/Badge/Badge.css">
+  <link rel="stylesheet" href="../../components/Spinner/Spinner.css">
+  <link rel="stylesheet" href="../../components/Skeleton/Skeleton.css">
+  <link rel="stylesheet" href="EventBuilder.css">
+</head>
+<body class="eb-body">
+
+  <!-- ══════════════════════════════ TOP BAR ══════════════════════════════ -->
+  <header class="eb-topbar">
+    <div class="eb-topbar__brand">
+      <span class="eb-topbar__logo"><i data-lucide="calendar-plus" aria-hidden="true"></i></span>
+      <div class="eb-topbar__meta">
+        <p class="eb-crumb">
+          <span>Affino</span>
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+          <span>Events</span>
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+          <span>New event</span>
+        </p>
+        <h1 class="eb-topbar__title">Card &amp; Payments Awards UK 2027</h1>
+      </div>
+    </div>
+
+    <span class="eb-status">
+      <span class="eb-status__dot"></span>
+      Building draft
+    </span>
+
+    <div class="eb-topbar__spacer"></div>
+
+    <div class="eb-topbar__actions">
+      <button class="btn btn--tertiary btn--sm" type="button" data-eb-goto="01-brief.html">
+        <i data-lucide="arrow-left" aria-hidden="true"></i>
+        Change brief
+      </button>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════ SHELL ════════════════════════════════ -->
+  <div class="eb-shell eb-shell--no-inspector">
+
+    <!-- ── Rail: blocks landing as they are decided ── -->
+    <aside class="eb-rail">
+      <div class="eb-rail__group">
+        <p class="eb-rail__title">
+          <span>Core</span>
+          <span class="eb-rail__count">always present</span>
+        </p>
+        <ul class="eb-rail__list">
+          <li><div class="eb-blockrow">
+            <span class="eb-blockrow__icon"><i data-lucide="image" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Hero</span>
+            <span class="eb-blockrow__note"><i data-lucide="check" aria-hidden="true"></i></span>
+          </div></li>
+          <li><div class="eb-blockrow">
+            <span class="eb-blockrow__icon"><i data-lucide="align-left" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Overview</span>
+            <span class="eb-blockrow__note"><i data-lucide="check" aria-hidden="true"></i></span>
+          </div></li>
+          <li><div class="eb-blockrow">
+            <span class="eb-blockrow__icon"><i data-lucide="ticket" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Sign-up</span>
+            <span class="eb-blockrow__note"><i data-lucide="check" aria-hidden="true"></i></span>
+          </div></li>
+        </ul>
+      </div>
+
+      <div class="eb-rail__group">
+        <p class="eb-rail__title">
+          <span>Chosen from your brief</span>
+          <span class="eb-rail__count">6</span>
+        </p>
+        <ul class="eb-rail__list">
+          <li><div class="eb-blockrow">
+            <span class="eb-blockrow__icon"><i data-lucide="gavel" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Judges</span>
+            <span class="eb-blockrow__note"><i data-lucide="check" aria-hidden="true"></i></span>
+          </div></li>
+          <li><div class="eb-blockrow">
+            <span class="eb-blockrow__icon"><i data-lucide="handshake" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Sponsors</span>
+            <span class="eb-blockrow__note"><i data-lucide="check" aria-hidden="true"></i></span>
+          </div></li>
+          <li><div class="eb-blockrow">
+            <span class="eb-blockrow__icon"><i data-lucide="calendar-clock" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Key dates</span>
+            <span class="eb-blockrow__note"><i data-lucide="check" aria-hidden="true"></i></span>
+          </div></li>
+          <li><div class="eb-blockrow">
+            <span class="eb-blockrow__icon"><i data-lucide="heart-handshake" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Charity</span>
+            <span class="eb-blockrow__note"><i data-lucide="check" aria-hidden="true"></i></span>
+          </div></li>
+          <li><div class="eb-blockrow eb-blockrow--pending">
+            <span class="eb-blockrow__icon"><i data-lucide="circle-help" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">FAQ</span>
+            <span class="eb-blockrow__note">writing…</span>
+          </div></li>
+          <li><div class="eb-blockrow eb-blockrow--queued">
+            <span class="eb-blockrow__icon"><i data-lucide="map-pin" aria-hidden="true"></i></span>
+            <span class="eb-blockrow__label">Venue</span>
+            <span class="eb-blockrow__note">queued</span>
+          </div></li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- ── Canvas: the page assembling top-down ── -->
+    <main class="eb-canvas">
+
+      <!-- TODO(backend:EventBuilder): this progress list is hardcoded. Real version
+           streams generation events (block decided / copy written / field inferred)
+           over SSE from POST /api/event-builder/generate. -->
+      <div class="eb-gen" data-backend-todo="eb-generate-stream">
+        <span class="spinner spinner--sm spinner--brand" role="status">
+          <svg class="spinner__svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle class="spinner__track" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
+            <path class="spinner__arc" d="M12 2 a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+          </svg>
+        </span>
+        <div class="eb-gen__main">
+          <p class="eb-gen__title">Building your event page</p>
+          <ul class="eb-gen__list">
+            <li data-state="done"><i data-lucide="circle-check" aria-hidden="true"></i>
+              Recognised an <strong>awards ceremony</strong> — using the awards block set</li>
+            <li data-state="done"><i data-lucide="circle-check" aria-hidden="true"></i>
+              Read date, time and venue: <strong>4 Feb 2027, 18:00, JW Marriott Grosvenor House</strong></li>
+            <li data-state="done"><i data-lucide="circle-check" aria-hidden="true"></i>
+              Chose <strong>9 blocks</strong> and set the page to <strong>tabbed</strong> — 9 sections is a lot to scroll</li>
+            <li data-state="done"><i data-lucide="circle-check" aria-hidden="true"></i>
+              Found <strong>4 sponsor tiers</strong> in your brief and created a slot for each</li>
+            <li data-state="working"><i data-lucide="loader" aria-hidden="true"></i>
+              Drafting overview and FAQ copy from your strapline</li>
+            <li data-state="pending"><i data-lucide="circle-dashed" aria-hidden="true"></i>
+              Then: 6 things to check with you</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="eb-frame" data-eb-frame>
+        <div class="eb-frame__chrome">
+          <div class="eb-frame__dots">
+            <span class="eb-frame__dot"></span>
+            <span class="eb-frame__dot"></span>
+            <span class="eb-frame__dot"></span>
+          </div>
+          <span class="eb-frame__url">tpfclub.com/card-and-payments-awards-uk-2027</span>
+        </div>
+
+        <div class="eb-page">
+          <!-- Hero has resolved -->
+          <div class="eb-ghost eb-ghost--hero">
+            <div class="skeleton eb-ghost__hero">
+              <div class="skeleton__line skeleton__line--eyebrow"></div>
+              <div class="skeleton__line skeleton__line--title"></div>
+              <div class="skeleton__line skeleton__line--strap"></div>
+            </div>
+          </div>
+
+          <div class="eb-ghost">
+            <p class="eb-ghost__label"><i data-lucide="align-left" aria-hidden="true"></i> Overview</p>
+            <div class="skeleton">
+              <div class="skeleton__line"></div>
+              <div class="skeleton__line"></div>
+              <div class="skeleton__line"></div>
+            </div>
+          </div>
+
+          <div class="eb-ghost">
+            <p class="eb-ghost__label"><i data-lucide="gavel" aria-hidden="true"></i> Judges</p>
+            <div class="skeleton">
+              <div class="skeleton__line"></div>
+              <div class="skeleton__line"></div>
+            </div>
+          </div>
+
+          <div class="eb-ghost eb-ghost--pending">
+            <p class="eb-ghost__label"><i data-lucide="handshake" aria-hidden="true"></i> Sponsors</p>
+            <div class="skeleton">
+              <div class="skeleton__line"></div>
+              <div class="skeleton__line"></div>
+            </div>
+          </div>
+
+          <div class="eb-ghost eb-ghost--pending">
+            <p class="eb-ghost__label"><i data-lucide="circle-help" aria-hidden="true"></i> FAQ</p>
+            <div class="skeleton">
+              <div class="skeleton__line"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ── AI dock ── -->
+    <section class="eb-ai">
+      <div class="eb-ai__head">
+        <span class="eb-ai__badge"><i data-lucide="sparkles" aria-hidden="true"></i></span>
+        <p class="eb-ai__title">Event assistant</p>
+        <div class="eb-ai__spacer"></div>
+        <span class="badge badge--info badge--sm">Working</span>
+      </div>
+
+      <div class="eb-ai__body">
+        <div class="eb-turn">
+          <span class="eb-turn__avatar eb-turn__avatar--user"><i data-lucide="user" aria-hidden="true"></i></span>
+          <div class="eb-turn__content">
+            <p class="eb-turn__text" data-eb-brief-echo>The Card &amp; Payments Awards UK 2027 — our 22nd annual awards. Black-tie ceremony and dinner at JW Marriott Grosvenor House, London on 4 February 2027, 6pm till late. Around 1,200 guests. We need an entries process opening in July, a judging panel of about 16 industry figures, four sponsor tiers, a charity partner, last year's winners, and an FAQ. Strapline: Independent. Respected. Recognised.</p>
+          </div>
+        </div>
+
+        <div class="eb-turn">
+          <span class="eb-turn__avatar"><i data-lucide="sparkles" aria-hidden="true"></i></span>
+          <div class="eb-turn__content">
+            <p class="eb-turn__text">
+              Got it — an awards ceremony. I'm building the page now using your existing event
+              blocks only. Nothing here is new functionality, it's the same speakers, sponsors,
+              agenda and sign-up tools you already have, arranged for an awards event.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="eb-ai__foot eb-ai__foot--row">
+        <p class="eb-ai__foot-text">
+          Usually takes about 20 seconds. You can start editing as soon as the draft appears.
+        </p>
+        <button class="btn btn--primary btn--sm" type="button" data-eb-goto="03-draft.html">
+          Open the draft
+          <i data-lucide="arrow-right" aria-hidden="true"></i>
+        </button>
+      </div>
+    </section>
+
+  </div>
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>lucide.createIcons();</script>
+<script src="EventBuilder.js"></script>
+</body>
+</html>

@@ -1141,6 +1141,7 @@ When users ask about specific topics, focus your answers on what is directly rel
 
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>lucide.createIcons();</script>
+  <script src="../../components/Toggle/Toggle.js"></script>
 
   <!-- GSAP CDN -->
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
@@ -1583,10 +1584,12 @@ When users ask about specific topics, focus your answers on what is directly rel
     });
 
     // ── Toggle switches ─────────────────────────────────
+    // Toggle owns its own flip and aria state since 2026-08-26; these listen for the
+    // resulting `toggle:change` and apply only the side effects.
+
     // Show Borders
-    document.getElementById('style-toggle-borders').addEventListener('click', function () {
-      const isActive = this.classList.toggle('toggle--active');
-      this.setAttribute('aria-checked', String(isActive));
+    document.getElementById('style-toggle-borders').addEventListener('toggle:change', function (e) {
+      const isActive = e.detail.active;
       // Toggle no-border modifier on header + sidebar border
       document.querySelectorAll('.chat-header').forEach(el => {
         el.classList.toggle('chat-header--no-border', !isActive);
@@ -1597,11 +1600,9 @@ When users ask about specific topics, focus your answers on what is directly rel
     });
 
     // Show Questions
-    document.getElementById('style-toggle-questions').addEventListener('click', function () {
-      const isActive = this.classList.toggle('toggle--active');
-      this.setAttribute('aria-checked', String(isActive));
+    document.getElementById('style-toggle-questions').addEventListener('toggle:change', function (e) {
       document.querySelectorAll('.chat-main__suggestions').forEach(el => {
-        el.style.display = isActive ? '' : 'none';
+        el.style.display = e.detail.active ? '' : 'none';
       });
     });
 

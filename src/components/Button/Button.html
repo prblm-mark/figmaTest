@@ -12,7 +12,7 @@
     .demo-section { margin-bottom: var(--ai-spacing-7); }
     .demo-section h2 { font-size: var(--ai-font-fixed-lg); margin-bottom: var(--ai-spacing-5); }
     .demo-row { display: flex; align-items: center; gap: var(--ai-spacing-4); flex-wrap: wrap; margin-bottom: var(--ai-spacing-3); }
-    .demo-row-label { font-size: var(--ai-font-fixed-xxs); font-weight: var(--ai-font-semibold); color: var(--ai-text-contrast); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--ai-spacing-2); }
+    .demo-row-label { font-size: var(--ai-font-fixed-2xs); font-weight: var(--ai-font-semibold); color: var(--ai-text-contrast); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--ai-spacing-2); }
   </style>
 </head>
 <body>
@@ -244,6 +244,21 @@
       </button>
       <button class="btn btn--primary btn--icon" disabled aria-label="Next">
         <i data-lucide="arrow-right" aria-hidden="true"></i>
+      </button>
+    </div>
+    <p class="demo-row-label">2xs — 24&times;24, icon-only</p>
+    <div class="demo-row">
+      <button class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit">
+        <i data-lucide="pencil" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete">
+        <i data-lucide="trash" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn--tertiary btn--icon btn--2xs" aria-label="More">
+        <i data-lucide="ellipsis" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn--secondary btn--icon btn--2xs" disabled aria-label="Edit">
+        <i data-lucide="pencil" aria-hidden="true"></i>
       </button>
     </div>
   </div>

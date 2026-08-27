@@ -50,7 +50,7 @@ metadata, not spacing tokens). Rounded to whole px; exact Figma values noted abo
 | `--ai-text-primary` (#00222f CC) | `--ai-text-primary` | Glyph + label on hover |
 | `--ai-font-title` (Inter) | `--ai-font-title` | Label family |
 | `--ai-font-medium` | `--ai-font-medium` | Label weight |
-| `--ai-font-fixed-xxs` (12) | `--ai-font-fixed-xxs` | Label size |
+| `--ai-font-fixed-2xs` (12) | `--ai-font-fixed-2xs` | Label size |
 
 Label `letter-spacing: 0.36px` and `line-height: 1.4` — optical typographic values
 (letter-spacing is an allowed raw-px exception; 1.4 is unitless).
