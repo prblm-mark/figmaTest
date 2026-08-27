@@ -230,3 +230,31 @@ change: `cs-main` applied, no horizontal overflow, chrome dropdowns still openin
 which is the specific risk), and zero JS errors.
 
 See **CLAUDE.md §4a** for the project-wide rule.
+
+## `isolation: isolate` on the page (2026-08-27)
+
+Reported: the user menu was pierced by RoomCard's edit/delete buttons.
+
+**Mechanism, established by hit-testing rather than by reading CSS.** `.cc-control__chrome` is
+`position: relative; z-index: 1`. RoomCard's `.room-card__actions` is *also* `position: relative;
+z-index: 1`. Equal z-index in the same layer means **DOM order decides**, and `.cc-control__page`
+comes after `.cc-control__chrome` — so the buttons painted over an open dropdown.
+`document.elementFromPoint` at the overlap confirmed the buttons won; 88 sample points across the
+panel now return zero intruders.
+
+**The counter-intuitive part, and worth remembering:** `container-type: inline-size` gives **no
+stacking protection at all**. `getComputedStyle(page).contain` reads `none` for a container-type
+element, and empirically it does not trap positive-z descendants — toggling `container-type` to
+`normal` on main, page and header each left the bug in place. So the containment added for
+container queries does nothing here. That was assumed first and then measured, which is the only
+reason it was not "fixed" in the wrong place.
+
+**Why `isolation: isolate` and not a bigger z-index on the chrome:** a higher number is only a
+tie-break that the next component to use `z-index: 2` defeats. Isolating the page means its content
+can never escape its own region regardless of what any component does internally — the property
+exists for exactly this. The ActionsMenu rail is a **sibling of `<main>`**, so it is unaffected.
+
+**Not a regression from the container-query work** — the clash predates it. Re-verified on
+ControlScreen and ControlHub: isolation applied, both chrome dropdowns unobstructed, no
+`position: fixed` elements inside the page that the isolation could trap, no horizontal overflow,
+zero JS errors.

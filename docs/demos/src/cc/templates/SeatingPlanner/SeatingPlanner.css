@@ -62,6 +62,17 @@
  * This is also the 1px that had the chrome rendering 49 against Figma's 48. */
 .cc-control__main:has(.cc-control__page--seating) .cc-control__chrome {
   border-block-end: 0;
+  transition: box-shadow var(--ai-transition-default);
+}
+
+/* ...which leaves nothing to separate the chrome from content passing under it once the page
+ * scrolls — this screen has no header block to do that job (designer, 2026-08-27). So the rule
+ * above trades a permanent hairline for a shadow that appears only when it is needed.
+ * `SeatingPlanner.js` toggles `is-scrolled` off the PAGE's scrollTop, which is the scroller that
+ * actually moves content under the chrome; when the layout is side by side it is the card grid
+ * that scrolls instead, and nothing passes under the chrome, so no shadow appears. */
+.cc-control__main:has(.cc-control__page--seating) .cc-control__chrome.is-scrolled {
+  box-shadow: var(--ai-shadow-sm);
 }
 
 /* ── Page padding + gap ─────────────────────────────────────────────────────
