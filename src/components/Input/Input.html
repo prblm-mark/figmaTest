@@ -253,6 +253,226 @@
     </div>
   </div>
 
+
+  <!-- ── Stepper ─────────────────────────────────────────────────────────────
+       NO FIGMA NODE. Built from a Flowbite/Tailwind reference the designer supplied, so every
+       value is a mapping decision rather than a binding — hence no .figma.ts entry, the same
+       footing as FullBadge. A modifier rather than a new component, so it inherits the label,
+       help line, error state, --sm size and focus ring from Input.
+
+       Fluid by design: the reference caps at 144px, which matches no token, so the control
+       fills its container instead. The narrow cells below are the DEMO constraining it. -->
+  <h2 style="font-size: var(--ai-font-fixed-2xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: var(--ai-spacing-8) 0 var(--ai-spacing-3);">Stepper</h2>
+  <p style="font-family: var(--ai-font-body); font-size: var(--ai-font-fixed-xs); color: var(--ai-text-secondary); max-width: 70ch; margin: 0 0 var(--ai-spacing-6);">
+    <code>.input--stepper</code> — a number field with &minus;&nbsp;/&nbsp;+ buttons. The native
+    spinner is hidden, since the buttons replace it. Buttons <strong>disable at the bounds</strong>,
+    so the control cannot produce an invalid value; typing or arrow-keying past a bound updates them
+    too. Each press emits <code>input</code> and <code>change</code>, so validation and bindings
+    react as they would to typing.
+  </p>
+
+  <div class="demo-section" style="max-width: 34rem;">
+    <div class="demo-row">
+      <span></span>
+      <span class="demo-col-header">Base</span>
+      <span class="demo-col-header">sm</span>
+    </div>
+
+    <div class="demo-row">
+      <span class="demo-row__label">Default</span>
+      <div class="input input--stepper">
+        <label class="input__label" for="step-a">Tables</label>
+        <div class="input__wrap">
+          <button type="button" class="input__step input__step--dec" data-input-step="-1"
+                  aria-controls="step-a" aria-label="Decrease tables">
+            <i data-lucide="minus" aria-hidden="true"></i>
+          </button>
+          <input id="step-a" class="input__control" type="number" value="12" min="1" step="1">
+          <button type="button" class="input__step input__step--inc" data-input-step="1"
+                  aria-controls="step-a" aria-label="Increase tables">
+            <i data-lucide="plus" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <div class="input input--stepper input--sm">
+        <label class="input__label" for="step-a-sm">Tables</label>
+        <div class="input__wrap">
+          <button type="button" class="input__step input__step--dec" data-input-step="-1"
+                  aria-controls="step-a-sm" aria-label="Decrease tables">
+            <i data-lucide="minus" aria-hidden="true"></i>
+          </button>
+          <input id="step-a-sm" class="input__control" type="number" value="12" min="1" step="1">
+          <button type="button" class="input__step input__step--inc" data-input-step="1"
+                  aria-controls="step-a-sm" aria-label="Increase tables">
+            <i data-lucide="plus" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-row">
+      <span class="demo-row__label">With help</span>
+      <div class="input input--stepper">
+        <label class="input__label" for="step-b">Seats / table</label>
+        <div class="input__wrap">
+          <button type="button" class="input__step input__step--dec" data-input-step="-1"
+                  aria-controls="step-b" aria-label="Decrease seats / table">
+            <i data-lucide="minus" aria-hidden="true"></i>
+          </button>
+          <input id="step-b" class="input__control" type="number" value="10" min="6" max="12" step="1">
+          <button type="button" class="input__step input__step--inc" data-input-step="1"
+                  aria-controls="step-b" aria-label="Increase seats / table">
+            <i data-lucide="plus" aria-hidden="true"></i>
+          </button>
+        </div>
+        <p class="input__help">Between 6 and 12</p>
+      </div>
+      <div class="input input--stepper input--sm">
+        <label class="input__label" for="step-b-sm">Seats / table</label>
+        <div class="input__wrap">
+          <button type="button" class="input__step input__step--dec" data-input-step="-1"
+                  aria-controls="step-b-sm" aria-label="Decrease seats / table">
+            <i data-lucide="minus" aria-hidden="true"></i>
+          </button>
+          <input id="step-b-sm" class="input__control" type="number" value="10" min="6" max="12" step="1">
+          <button type="button" class="input__step input__step--inc" data-input-step="1"
+                  aria-controls="step-b-sm" aria-label="Increase seats / table">
+            <i data-lucide="plus" aria-hidden="true"></i>
+          </button>
+        </div>
+        <p class="input__help">Between 6 and 12</p>
+      </div>
+    </div>
+
+    <div class="demo-row">
+      <span class="demo-row__label">Error</span>
+      <div class="input input--stepper input--error">
+        <label class="input__label" for="step-c">Seats / table</label>
+        <div class="input__wrap">
+          <button type="button" class="input__step input__step--dec" data-input-step="-1"
+                  aria-controls="step-c" aria-label="Decrease seats / table">
+            <i data-lucide="minus" aria-hidden="true"></i>
+          </button>
+          <input id="step-c" class="input__control" type="number" value="4" min="6" max="12" step="1">
+          <button type="button" class="input__step input__step--inc" data-input-step="1"
+                  aria-controls="step-c" aria-label="Increase seats / table">
+            <i data-lucide="plus" aria-hidden="true"></i>
+          </button>
+        </div>
+        <p class="input__help">Seats per table must be between 6 and 12.</p>
+      </div>
+      <div class="input input--stepper input--sm input--error">
+        <label class="input__label" for="step-c-sm">Seats / table</label>
+        <div class="input__wrap">
+          <button type="button" class="input__step input__step--dec" data-input-step="-1"
+                  aria-controls="step-c-sm" aria-label="Decrease seats / table">
+            <i data-lucide="minus" aria-hidden="true"></i>
+          </button>
+          <input id="step-c-sm" class="input__control" type="number" value="4" min="6" max="12" step="1">
+          <button type="button" class="input__step input__step--inc" data-input-step="1"
+                  aria-controls="step-c-sm" aria-label="Increase seats / table">
+            <i data-lucide="plus" aria-hidden="true"></i>
+          </button>
+        </div>
+        <p class="input__help">Seats per table must be between 6 and 12.</p>
+      </div>
+    </div>
+
+    <div class="demo-row">
+      <span class="demo-row__label">At min &mdash; &minus; disabled</span>
+      <div class="input input--stepper">
+        <label class="input__label" for="step-d">Tables</label>
+        <div class="input__wrap">
+          <button type="button" class="input__step input__step--dec" data-input-step="-1"
+                  aria-controls="step-d" aria-label="Decrease tables">
+            <i data-lucide="minus" aria-hidden="true"></i>
+          </button>
+          <input id="step-d" class="input__control" type="number" value="6" min="6" max="12" step="1">
+          <button type="button" class="input__step input__step--inc" data-input-step="1"
+                  aria-controls="step-d" aria-label="Increase tables">
+            <i data-lucide="plus" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <div class="input input--stepper input--sm">
+        <label class="input__label" for="step-d-sm">Tables</label>
+        <div class="input__wrap">
+          <button type="button" class="input__step input__step--dec" data-input-step="-1"
+                  aria-controls="step-d-sm" aria-label="Decrease tables">
+            <i data-lucide="minus" aria-hidden="true"></i>
+          </button>
+          <input id="step-d-sm" class="input__control" type="number" value="6" min="6" max="12" step="1">
+          <button type="button" class="input__step input__step--inc" data-input-step="1"
+                  aria-controls="step-d-sm" aria-label="Increase tables">
+            <i data-lucide="plus" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-row">
+      <span class="demo-row__label">At max &mdash; + disabled</span>
+      <div class="input input--stepper">
+        <label class="input__label" for="step-e">Tables</label>
+        <div class="input__wrap">
+          <button type="button" class="input__step input__step--dec" data-input-step="-1"
+                  aria-controls="step-e" aria-label="Decrease tables">
+            <i data-lucide="minus" aria-hidden="true"></i>
+          </button>
+          <input id="step-e" class="input__control" type="number" value="12" min="6" max="12" step="1">
+          <button type="button" class="input__step input__step--inc" data-input-step="1"
+                  aria-controls="step-e" aria-label="Increase tables">
+            <i data-lucide="plus" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <div class="input input--stepper input--sm">
+        <label class="input__label" for="step-e-sm">Tables</label>
+        <div class="input__wrap">
+          <button type="button" class="input__step input__step--dec" data-input-step="-1"
+                  aria-controls="step-e-sm" aria-label="Decrease tables">
+            <i data-lucide="minus" aria-hidden="true"></i>
+          </button>
+          <input id="step-e-sm" class="input__control" type="number" value="12" min="6" max="12" step="1">
+          <button type="button" class="input__step input__step--inc" data-input-step="1"
+                  aria-controls="step-e-sm" aria-label="Increase tables">
+            <i data-lucide="plus" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-row">
+      <span class="demo-row__label">No label</span>
+      <div class="input input--stepper">
+        <div class="input__wrap">
+          <button type="button" class="input__step input__step--dec" data-input-step="-1"
+                  aria-controls="step-f" aria-label="Decrease value">
+            <i data-lucide="minus" aria-hidden="true"></i>
+          </button>
+          <input id="step-f" class="input__control" type="number" value="1" min="0" step="1">
+          <button type="button" class="input__step input__step--inc" data-input-step="1"
+                  aria-controls="step-f" aria-label="Increase value">
+            <i data-lucide="plus" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <div class="input input--stepper input--sm">
+        <div class="input__wrap">
+          <button type="button" class="input__step input__step--dec" data-input-step="-1"
+                  aria-controls="step-f-sm" aria-label="Decrease value">
+            <i data-lucide="minus" aria-hidden="true"></i>
+          </button>
+          <input id="step-f-sm" class="input__control" type="number" value="1" min="0" step="1">
+          <button type="button" class="input__step input__step--inc" data-input-step="1"
+                  aria-controls="step-f-sm" aria-label="Increase value">
+            <i data-lucide="plus" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>
     // Scan all data-lucide attributes on the page and replace each element
@@ -260,5 +480,7 @@
     // ready — placing the script at the bottom of <body> guarantees this.
     lucide.createIcons();
   </script>
+  <!-- Stepper behaviour. Input is otherwise CSS-only. -->
+  <script src="Input.js"></script>
 </body>
 </html>

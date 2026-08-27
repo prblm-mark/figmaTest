@@ -210,3 +210,78 @@ Same bug class as **Badge**'s `<p>` (2026-08-25): a component paragraph silently
 page-level margin because the component never zeroed it. Worth grepping for other component `<p>`
 elements that don't set `margin`.
 
+
+---
+
+## Stepper — `.input--stepper` (added 2026-08-27)
+
+**NO FIGMA NODE.** Built from a Flowbite/Tailwind quantity-input reference the designer supplied
+("can we create a number input like this, but using our framework"). Every value below is a
+**mapping decision**, not a Figma binding — so unlike the rest of this component it is not
+verifiable against a node, and there is **no `.figma.ts` entry** for it (Code Connect needs a
+Figma component to attach to). Same footing as **FullBadge**, which was also extracted from code.
+
+If a stepper is later drawn in Figma, this section is the thing to reconcile against it — not the
+other way round.
+
+### Why a modifier and not a new component
+
+Designer's call. It inherits the five things Input already gets right — the label, the help line,
+the error state (red border + red ring + red help), the `--sm` size, and the focus-within ring. A
+standalone component would have re-implemented all five and then drifted from them.
+
+### Reference mapping
+
+| Reference (Flowbite) | Ours | Note |
+|---|---|---|
+| `bg-neutral-secondary-medium` (buttons) | `--ai-surface-secondary` | |
+| `hover:bg-neutral-tertiary-medium` | `--ai-surface-contrast` | |
+| `border-default-medium` | `--ai-border-secondary` | the two hairlines flanking the field |
+| `h-10` | inherited from `.input__wrap` (40px) | `--sm` gives 32 for free |
+| `px-3` → 40px wide button | `--ai-spacing-8` (40) | `--ai-spacing-7` (32) at `--sm` |
+| `w-4 h-4` icons | `--ai-icon-size-sm` | |
+| `text-sm`, centred | Input's own `--ai-font-fixed-xs` + `text-align: center` | |
+| `max-w-[9rem]` | **dropped — fluid** | designer's call; 144px matches no token, and the control should fill whatever column holds it. The demo's narrow cells are the demo constraining it, not the component. |
+
+Two deliberate departures from the reference:
+
+1. **Only the buttons are tinted.** The reference tints the field too. Designer's call: the field
+   stays `--ai-surface-primary` so a stepper beside a text Input or a Select does not read as a
+   different species of control.
+2. **Buttons are `disabled` at the bounds**, not merely dimmed — so the control cannot produce an
+   invalid value, and the button leaves the tab order and reports itself to assistive tech.
+
+### Behaviour — `Input.js`
+
+Input is otherwise CSS-only; this is the first JS it has needed. One delegated listener, no
+per-element binding, guarded by `window.__inputStepperReady` (the Select.js double-include lesson).
+
+- Honours `min` / `max` / `step`, clamping to the bounds; decimal steps are rounded to the
+  precision the step implies, so `0.1 + 0.2` does not leak float error into the field.
+- Emits **`input` and `change`** on every press — without them a framework binding or a validation
+  handler would never see the value change.
+- Typing or arrow-keying past a bound re-syncs the buttons too, not just clicking them.
+- An empty field disables nothing and the first press seeds `min` (or 0), so it lands on a valid
+  value rather than `NaN`.
+- The field stays a real `<input type="number">` — arrows, scroll and paste all keep working. The
+  native spinner is hidden because the buttons replace it; keeping both would give one control two
+  competing affordances.
+- `window.inputStepperSync()` re-syncs after injecting steppers or changing `min`/`max` at runtime.
+
+`.input__step:focus-visible` keeps its outline, unlike `.input__control` and `.input__clear` which
+suppress theirs. The wrap's focus ring says "this control has focus" but not **which** button, and
+a stepper has two — the inset outline is the only thing telling a keyboard user whether they are
+about to increment or decrement.
+
+### Verified (headless Chrome, 2026-08-27)
+
+40px at Base / 32px at `--sm`; 16px icons; buttons `--ai-surface-secondary` on an
+`--ai-surface-primary` field; 1px `--ai-border-secondary` hairlines; native spinner suppressed;
+`− ` disabled at min and `+` at max; clamping at both bounds; `input`+`change` both fired; empty
+field seeds correctly; typing past a bound re-syncs; no JS errors.
+
+### Not yet adopted
+
+The Seating Planner create-plan form's Tables and Seats-per-table fields are the obvious first
+consumers, but the designer asked for **the component only** for now — those fields are still
+plain number Inputs.
