@@ -401,3 +401,136 @@
   min-inline-size: 0;
 }
 
+/* ── State: Plan selected ───────────────────────────────────────────────────
+ * Figma 3515:177748 (desktop) · 3515:213426 (mobile) · 3515:228026 (mobile, tapped)
+ *
+ * Frame 245 (3515:177773) is 1552 wide and lays out exactly:
+ *     listing 1212 · gap 8 · pill 4 · gap 8 · detail 320
+ * Every one of those traces to a token read from get_variable_defs on that frame:
+ * the gaps are --ai-spacing-3 (8), the pill is --ai-spacing-1 (4) at --ai-radius-full,
+ * and the detail width is --ai-size-6 (320) — Figma binds the size token, so the panel
+ * width is NOT a hardcoded 320. 1212 is simply what is left over, so the listing fills.
+ *
+ * The row itself has NO gap. The handle's own inline padding provides Figma's 8px on each
+ * side of the pill, which makes the drag target 20px wide while the visible bar stays 4px —
+ * the standard way to build a splitter, and it reproduces Figma's whitespace exactly rather
+ * than adding a hit area on top of it. */
+
+.seating-plan {
+  display: flex;
+  /* No gap — see above; the handle's padding is the gap. */
+  gap: 0;
+  /* Fills the page beside the header, and owns its own scrolling, exactly like the
+   * single-child screens before it. min-block-size:0 is what lets the children scroll
+   * instead of stretching the row (app-shell height trap). */
+  flex: 1 0 0;
+  min-block-size: 0;
+}
+
+.seating-plan > .table-listing {
+  flex: 1 1 auto;
+  /* Without this the grid's own min-content floor would stop the listing ever yielding
+   * width to the detail panel. */
+  min-inline-size: 0;
+}
+
+.seating-plan__aside {
+  flex: 0 0 auto;
+  /* --sp-aside-w is set by the drag handle at runtime; --ai-size-6 (320) is Figma's value
+   * and the reset target. */
+  inline-size: var(--sp-aside-w, var(--ai-size-6));
+  min-inline-size: 0;
+  display: flex;
+  min-block-size: 0;
+}
+
+.seating-plan__aside > .table-detail {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+}
+
+/* ── The resize handle ──────────────────────────────────────────────────────
+ * Figma draws the pill but cannot express interaction, and the designer confirmed it IS a
+ * drag handle (2026-08-27). They asked whether highlighting the panel edge would be better
+ * practice instead: it would not, on its own — an edge that only reacts on hover is
+ * undiscoverable, since nothing tells you it can be dragged until you happen to land on the
+ * exact few pixels. Keeping Figma's always-visible pill AND highlighting it on
+ * hover/focus/drag gives both: a discoverable affordance and the edge feedback. */
+
+.seating-plan__handle {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  padding-inline: var(--ai-spacing-3);   /* 8px each side — Figma's gap, as the hit area */
+  cursor: col-resize;
+  /* Stops a touch drag scrolling the page instead of moving the handle. */
+  touch-action: none;
+  background: none;
+  border: 0;
+}
+
+.seating-plan__handle-bar {
+  inline-size: var(--ai-spacing-1);      /* 4px */
+  border-radius: var(--ai-radius-full);
+  /* Figma binds --cc-actions-menu-primary-bg here — the ACTIONS MENU's background token, on a
+   * splitter in the page body. Its value is identical to --ai-surface-contrast in all six
+   * modes, so this is a value-preserving swap to the generic family that belongs in a page
+   * body. Flagged for the designer to repoint the Figma binding. */
+  background-color: var(--ai-surface-contrast);
+  transition: background-color var(--ai-transition-default);
+}
+
+/* Figma specifies no hover/active state for the pill — this is an added interactive state,
+ * flagged in figma-notes. --ai-border-brand is the same token the selected TableCard and
+ * RoomCard use for their brand edge, so the handle reads as part of the same language. */
+.seating-plan__handle:hover .seating-plan__handle-bar,
+.seating-plan__handle[data-dragging] .seating-plan__handle-bar {
+  background-color: var(--ai-border-brand);
+}
+
+/* The bar takes the focus ring rather than the 20px hit area, so the indicator sits on the
+ * thing the user is about to move. Not suppressed — a keyboard user resizes with the arrow
+ * keys and needs to know the handle has focus. */
+.seating-plan__handle:focus-visible {
+  outline: none;
+}
+
+.seating-plan__handle:focus-visible .seating-plan__handle-bar {
+  background-color: var(--ai-border-brand);
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: 2px;
+}
+
+/* ── Device: Mobile ────────────────────────────────────────────────────────
+ * Both mobile frames drop the side panel entirely: the listing is full width, there is no
+ * pill, and a tapped table's detail appears INSIDE the card grid directly beneath it
+ * (3515:228026 puts a Table Detail instance between two Table Cards). SeatingPlanner.js
+ * moves the one detail element between here and the aside, so there is a single instance
+ * rather than two copies to keep in sync.
+ *
+ * Nothing is needed to hide the detail's header on mobile — TableDetail's own Device=Mobile
+ * variants already drop it, and that is already in TableDetail.css. The card above supplies
+ * the name and count, which is exactly why Figma drops it. */
+@media (max-width: 767px) {
+  .seating-plan {
+    flex-direction: column;
+  }
+
+  .seating-plan__handle,
+  .seating-plan__aside {
+    display: none;
+  }
+
+  /* CASE B contextual override, flagged to the designer 2026-08-27.
+   * TableDetail sets `inline-size: var(--ai-size-6)` — a fixed 320 at BOTH breakpoints, and
+   * its own notes call that out as deliberate. But Figma's mobile instance (3515:228045) is
+   * 302 wide, i.e. the grid column, because Figma resized the instance. Left at 320 it
+   * measurably overflows: 320 in a 300px column. So the width is overridden here, scoped to
+   * the grid, rather than changed in the component — a side panel elsewhere still wants 320. */
+  .table-listing__grid > .table-detail {
+    grid-column: 1 / -1;
+    inline-size: 100%;
+    min-inline-size: 0;
+  }
+}

@@ -651,3 +651,121 @@ reported rather than bound to a plausible-looking token.
 - **`#0F172A` unbound fill** — 1, both frames. This is the modal scrim, `rgba(15, 23, 42, 0.5)` in
   `Modal.css`. Deliberately a raw `rgba()` because it carries alpha, and the hex was the designer's
   own instruction. Expected to stay unbound.
+
+---
+
+## State: Plan selected (2026-08-27)
+
+| Frame | Node | Size |
+|---|---|---|
+| First Plan / Table Selected — desktop | `3515:177748` | 1728×1117 |
+| First Plan / No Table Selected — mobile | `3515:213426` | 402×874 |
+| First Plan / Table Selected — mobile, tapped | `3515:228026` | 402×874 |
+| 3-panel resized + Show unassigned on | `3515:210144` | **context only — not built** |
+
+Composition only: SeatingHeader (full Type), TableListing, TableDetail, TableCard, AttendeeCard,
+RoomCard — every one already built and used verbatim. The only new CSS is `.seating-plan`, the row
+that holds them, and its drag handle.
+
+### Shell values (Step 3a) — all read from Figma, none inferred
+
+| Wrapper | Property | Figma | Token |
+|---|---|---|---|
+| `.cc-control__page--seating` | padding · gap | 32 · 16 desktop, 12 · 12 mobile | `--ai-spacing-7`/`-5`, `--ai-spacing-4` — **already correct from the earlier screens**, re-verified against Header y=32/12 and body y=336/365 |
+| `.seating-plan` (Frame 245, `3515:177773`) | gap | 0 — see below | — |
+| listing | width | 1212 = what's left | `flex: 1 1 auto` |
+| handle | inline padding · bar | 8 each side · 4 wide, radius-full | `--ai-spacing-3` · `--ai-spacing-1` · `--ai-radius-full` |
+| `.seating-plan__aside` | width | 320 | **`--ai-size-6`** — Figma binds the size token, so this is not a hardcoded 320 |
+
+Frame 245 lays out `1212 · 8 · 4 · 8 · 320 = 1552`. The row itself takes **no gap**: the handle's own
+inline padding *is* Figma's 8px either side, which makes the drag target 20px wide while the visible
+bar stays 4px. That reproduces Figma's whitespace exactly instead of adding a hit area on top of it.
+
+### The drag handle
+
+Designer confirmed the 4px pill (`3515:177775`) is a drag handle, and asked whether highlighting the
+panel edge would be better practice instead. **Decision: keep the pill and highlight it** — an edge
+that only reacts on hover is undiscoverable, because nothing signals draggability until the pointer
+happens to land on the exact few pixels. Figma already draws the pill, so keeping it costs nothing
+and adds the affordance; highlighting it on hover / focus / drag delivers the edge feedback too.
+
+Implemented as `role="separator" aria-orientation="vertical"` with `aria-valuemin/now/max`,
+`tabindex="0"`, pointer drag with pointer capture, and keyboard control — a separator that can only
+be dragged is unusable without a mouse.
+
+**Token flag.** The pill is bound to `--cc-actions-menu-primary-bg` — the *ActionsMenu's* background
+token, on a splitter in the page body. Its value is identical to `--ai-surface-contrast` in all six
+modes, so the code uses `--ai-surface-contrast`: a value-preserving swap to the generic family that
+belongs here. **Worth repointing the Figma binding.**
+
+**Interaction parameters Figma cannot express — flagged for a designer call:**
+
+| Parameter | Value used | Basis |
+|---|---|---|
+| default width | 320 | `--ai-size-6`, Figma |
+| min width | 240 | `--ai-size-4` — **in Frame 245's own variable list**, so not invented |
+| max width | half the row | **invented** — no Figma evidence |
+| arrow-key step | 16 (`--ai-spacing-5`) | **invented** |
+| double-click | reset to 320 | **invented** — the usual splitter escape hatch |
+| hover / drag colour | `--ai-border-brand` | **invented state** — Figma gives the pill no hover variant. Chosen because selected TableCard and RoomCard use the same brand-edge token |
+
+### Desktop pre-selects, mobile does not
+
+Designer, 2026-08-27: *"on desktop when a plan is created we will by default select the first table…
+On mobile however, we will not pre-select as it would take up too much screen real estate."* Both
+frames agree — the mobile one is literally named "No Table Selected".
+
+The markup ships Table 1 with `--selected` so a no-JS render (or a Figma capture) matches the desktop
+frame. That caused a bug worth recording: `applyDefault()` cleared only the card that its own
+`selected` variable pointed at, which on mobile was `null` — so the pre-selected card stayed
+highlighted. It now clears the class from every card and seeds `selected` from the markup.
+
+### Mobile: the detail goes inside the card grid
+
+`3515:228026` puts a **Table Detail instance between two Table Cards**, and the listing sits at
+`y = -79` — scrolled so the tapped card is at the top. That matches the designer's *"table in focus
+should scroll to top of chrome/header group"*, implemented as `scrollIntoView({block:'start'})`.
+
+**One detail element, moved — not two copies.** `placeDetail()` appends it to the aside on desktop and
+inserts it after the selected card on mobile. Two instances would drift apart the moment either changed.
+
+**No override needed for the header.** TableDetail's own Device=Mobile variants already drop the panel
+header, and that rule is already in `TableDetail.css`. Figma drops it because the card directly above
+supplies the name and count — the same justification TableDetail's notes record for its sheet chrome,
+just with the TableCard as the source here.
+
+**CASE B contextual override — applied, flagged.** `.table-detail` sets `inline-size: var(--ai-size-6)`
+and its notes call the fixed 320 deliberate at *both* breakpoints. Figma's mobile instance is **302** —
+the grid column — because Figma resized the instance. Left at 320 it measurably overflows (320 in a
+300px column), so the width is overridden **scoped to `.table-listing__grid > .table-detail`** rather
+than changed in the component, since a side panel elsewhere still wants 320. Worth formalising as a
+fill-width variant if the inline usage recurs.
+
+**Re-tap closes.** Tapping the open card again deselects it. Invented: no frame shows a close control,
+and without this a mobile user has no way back to the plain list.
+
+### Content discrepancy — deliberately not copied
+
+Every TableCard in both frames reads **"Empty (4)"** while its count reads **"0 / 10 seated"**. Those
+contradict each other: a 10-seat table with nothing seated has ten empty seats. It is the TableCard
+default text left unoverridden across twelve instances. The build uses **"Empty (10)"** for internal
+coherence — shipping "0 / 10 seated · Empty (4)" would read as a bug to any reviewer. Flagged rather
+than silently matched.
+
+### Out of scope
+
+`3515:210144` shows the **three-panel** layout — Tables (2 columns) | Table Detail | Unassigned — with
+"Show unassigned" on and a panel resized. Supplied as context, not as this screen. The toggle carries a
+`TODO(backend:SeatingPlanner)` marker and is inert. `.seating-plan` is a plain flex row, so adding a
+third panel needs no restructuring, but the **resize model across three panels needs its own
+definition** (which boundary each handle moves, and how the two interact).
+
+### Verified (headless Chrome, 2026-08-27)
+
+Desktop 1728: row 1552, listing **1212**, handle **20** (8+4+8) with a **4px** bar, aside **320** —
+every figure matching Frame 245. Table 1 pre-selected, detail header shown, clicking Table 5 moves the
+selection with exactly one card selected. Handle: ArrowLeft 320→336, clamps at 240, Home → 776 (half
+the row), double-click → 320, ARIA min/now/max tracking. Mobile 402: nothing pre-selected, handle and
+aside hidden, tapping inserts the detail directly after the card at 300px flush with the grid on both
+edges, card 2 follows it, detail header hidden, re-tap restores the plain list. No horizontal overflow
+and no JS errors at either width.

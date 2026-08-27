@@ -71,6 +71,7 @@
      * over the no-plan screen. Without this they would match no panel and hide all of them,
      * leaving an empty page behind the modal. */
     if (want.indexOf('create-plan') === 0) want = 'no-plan';
+    /* States that exist: no-event · no-plan · plan (+ create-plan* as modals over no-plan). */
     if (document.querySelector('[data-seating-panel="' + want + '"]')) setState(want);
   }
 
@@ -394,9 +395,15 @@
 
       close();
 
-      /* TODO(backend:SeatingPlanner): creating a plan must generate its tables — see
-       * seating-new-plan — and the screen that follows is not designed yet, so this stops at
-       * an event a host can act on rather than inventing the next state. */
+      /* The screen that follows IS now designed (3515:177748 / 3515:213426), so the flow
+       * continues into it instead of stopping at the event. The event is still dispatched —
+       * a host needs it to actually create the plan.
+       *
+       * TODO(backend:SeatingPlanner): creating a plan must generate its tables — see
+       * seating-new-plan. The plan screen's 12 tables and its seat rows are static markup;
+       * the real screen must render THIS plan's tables at the requested count and shape. */
+      setState('plan');
+
       overlay.dispatchEvent(new CustomEvent('seating-planner:plan-created', {
         bubbles: true,
         detail: {
@@ -430,3 +437,207 @@
   }
 })();
 
+
+/* ══ Plan selected: table selection, the mobile inline detail, and the resize handle ══════
+ *
+ * Figma  3515:177748  desktop, first table selected
+ *        3515:213426  mobile, nothing selected
+ *        3515:228026  mobile, tapped — the detail sits INSIDE the card grid, and the listing
+ *                     is at y=-79, i.e. scrolled so the selected card is at the top
+ *
+ * Selection lives here rather than in TableCard: the card's own figma-notes say the parent
+ * module owns it and toggles `--selected`, because only the parent knows which sibling to
+ * deselect and which detail panel to fill.
+ */
+(function () {
+  'use strict';
+
+  var plan = document.querySelector('[data-sp-plan]');
+  if (!plan) return;
+
+  var grid    = plan.querySelector('[data-sp-grid]');
+  var aside   = plan.querySelector('[data-sp-aside]');
+  var detail  = plan.querySelector('[data-sp-detail]');
+  var handle  = plan.querySelector('[data-sp-handle]');
+  var nameEl  = plan.querySelector('[data-sp-detail-name]');
+  var countEl = plan.querySelector('[data-sp-detail-count]');
+  var cards   = Array.prototype.slice.call(plan.querySelectorAll('[data-sp-card]'));
+
+  var MOBILE = '(max-width: 767px)';
+  function isMobile() { return window.matchMedia(MOBILE).matches; }
+
+  /* ── Selection ─────────────────────────────────────────────────────────── */
+
+  /* Seeded from the markup rather than starting null: the HTML pre-selects Table 1 so a
+   * no-JS render matches the desktop frame. */
+  var selected = plan.querySelector('.table-card--selected');
+
+  /* The detail is ONE element that moves, not two copies. On desktop it lives in the aside;
+   * on mobile it is inserted straight after the selected card so it lands between two cards
+   * exactly as the frame draws it. Two instances would drift apart the moment either changed. */
+  function placeDetail() {
+    if (!selected || !isMobile()) {
+      if (detail.parentNode !== aside) aside.appendChild(detail);
+      return;
+    }
+    if (selected.nextSibling !== detail) {
+      selected.parentNode.insertBefore(detail, selected.nextSibling);
+    }
+  }
+
+  function select(card, opts) {
+    var scroll = opts && opts.scroll;
+
+    if (selected === card && isMobile()) {
+      /* Tapping the open card again closes it — otherwise a mobile user has no way back to
+       * the plain list, since there is no close control in the frame. */
+      selected = null;
+      card.classList.remove('table-card--selected');
+      placeDetail();
+      return;
+    }
+
+    cards.forEach(function (c) { c.classList.remove('table-card--selected'); });
+    card.classList.add('table-card--selected');
+    selected = card;
+
+    var n = card.getAttribute('data-sp-table');
+    if (nameEl) nameEl.textContent = 'Table ' + n;
+    /* TODO(backend:SeatingPlanner): the seat rows are static markup for one empty table — the
+     * real panel must load THIS table's seats and its own seated count. See
+     * seating-table-detail. Only the title and count are updated here. */
+    if (countEl) countEl.textContent = card.querySelector('.table-card__count').textContent;
+
+    placeDetail();
+
+    /* "table in focus should scroll to top of chrome/header group" (designer, 2026-08-27),
+     * which is what the mobile frame shows: the listing offset so the card sits at the top.
+     * The page is the scroller, so scrollIntoView on the card is the whole behaviour. */
+    if (scroll && isMobile() && card.scrollIntoView) {
+      card.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    }
+  }
+
+  grid.addEventListener('click', function (event) {
+    var trigger = event.target.closest && event.target.closest('.table-card__select');
+    if (!trigger) return;
+    var card = trigger.closest('[data-sp-card]');
+    if (card) select(card, { scroll: true });
+  });
+
+  /* Desktop pre-selects the first table so the detail panel is never empty; mobile does not,
+   * because the detail would take too much of the screen (designer, 2026-08-27). Re-applied on
+   * every breakpoint crossing, so resizing a desktop window down and back behaves. */
+  function applyDefault() {
+    if (isMobile()) {
+      /* Clear the class off EVERY card, not just the one `selected` points at. The markup
+       * ships Table 1 pre-selected so a static render (or a Figma capture) matches the
+       * desktop frame without JS — which means on mobile there is a selected card that this
+       * function has never seen, and checking `selected` alone left it highlighted. */
+      cards.forEach(function (c) { c.classList.remove('table-card--selected'); });
+      selected = null;
+    } else if (!selected && cards.length) {
+      select(cards[0], { scroll: false });
+    }
+    placeDetail();
+  }
+
+  var mq = window.matchMedia(MOBILE);
+  if (mq.addEventListener) mq.addEventListener('change', applyDefault);
+  else if (mq.addListener) mq.addListener(applyDefault);
+  applyDefault();
+
+  /* ── Resize handle ─────────────────────────────────────────────────────── */
+
+  if (handle) {
+    /* Custom properties resolve to the AUTHORED string, so --ai-size-4 reads back as "15rem"
+     * and parseFloat gives 15, not 240. Convert through the root font size rather than
+     * hardcoding 16 — a user with a larger default font would otherwise get wrong bounds. */
+    function tokenPx(name) {
+      var raw = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+      var n = parseFloat(raw);
+      if (!isFinite(n)) return 0;
+      if (raw.indexOf('rem') !== -1) {
+        return n * parseFloat(getComputedStyle(document.documentElement).fontSize);
+      }
+      return n;
+    }
+
+    /* MIN is --ai-size-4 (240) and DEFAULT is --ai-size-6 (320); both appear in Frame 245's
+     * own variable list, so neither is invented. The MAX is half the row, which Figma does
+     * NOT specify — flagged in figma-notes as an interaction parameter needing a designer
+     * call, along with the arrow-key step. */
+    function bounds() {
+      var min = tokenPx('--ai-size-4');
+      var max = Math.max(min, plan.getBoundingClientRect().width / 2);
+      return { min: min, max: max };
+    }
+
+    function currentWidth() {
+      return aside.getBoundingClientRect().width;
+    }
+
+    function setWidth(px) {
+      var b = bounds();
+      var w = Math.min(b.max, Math.max(b.min, px));
+      plan.style.setProperty('--sp-aside-w', w + 'px');
+      handle.setAttribute('aria-valuenow', String(Math.round(w)));
+      handle.setAttribute('aria-valuemin', String(Math.round(b.min)));
+      handle.setAttribute('aria-valuemax', String(Math.round(b.max)));
+      return w;
+    }
+
+    var dragFrom = 0, dragWidth = 0;
+
+    handle.addEventListener('pointerdown', function (event) {
+      if (isMobile()) return;
+      dragFrom = event.clientX;
+      dragWidth = currentWidth();
+      handle.setAttribute('data-dragging', '');
+      /* Capture keeps the drag alive when the pointer outruns the 20px handle. */
+      if (handle.setPointerCapture) handle.setPointerCapture(event.pointerId);
+      event.preventDefault();
+    });
+
+    handle.addEventListener('pointermove', function (event) {
+      if (!handle.hasAttribute('data-dragging')) return;
+      /* The aside is on the RIGHT, so dragging left (negative dx) makes it wider. */
+      setWidth(dragWidth - (event.clientX - dragFrom));
+    });
+
+    function endDrag(event) {
+      if (!handle.hasAttribute('data-dragging')) return;
+      handle.removeAttribute('data-dragging');
+      if (handle.releasePointerCapture && event.pointerId !== undefined) {
+        try { handle.releasePointerCapture(event.pointerId); } catch (e) { /* already gone */ }
+      }
+    }
+    handle.addEventListener('pointerup', endDrag);
+    handle.addEventListener('pointercancel', endDrag);
+
+    /* Keyboard: a separator that can only be dragged is unusable without a mouse. */
+    handle.addEventListener('keydown', function (event) {
+      if (isMobile()) return;
+      var b = bounds();
+      var step = tokenPx('--ai-spacing-5');           /* 16px per press */
+      var k = event.key;
+      if (k === 'ArrowLeft')       setWidth(currentWidth() + step);
+      else if (k === 'ArrowRight') setWidth(currentWidth() - step);
+      else if (k === 'Home')       setWidth(b.max);
+      else if (k === 'End')        setWidth(b.min);
+      else return;
+      event.preventDefault();
+    });
+
+    /* Double-click resets to Figma's 320 — the usual escape hatch once a splitter has been
+     * dragged somewhere unhelpful. */
+    handle.addEventListener('dblclick', function () {
+      if (isMobile()) return;
+      plan.style.removeProperty('--sp-aside-w');
+      handle.setAttribute('aria-valuenow', String(Math.round(currentWidth())));
+    });
+
+    /* Seed the ARIA values from the real rendered width. */
+    if (!isMobile()) setWidth(currentWidth());
+  }
+})();
