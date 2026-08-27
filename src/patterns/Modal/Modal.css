@@ -68,7 +68,24 @@
   font-family: var(--ai-font-title);
   font-size: var(--ai-font-fixed-md);
   font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-md);
+  /* Figma's ModalHeader renders the title `leading-none` in BOTH Base and sm — its title row
+   * is `h-[18px]` against an 18px font — where this was --ai-leading-md (24px), making every
+   * modal header 8px taller than drawn (designer, 2026-08-27).
+   *
+   * A unitless 1, deliberately, and NOT 0. Zero would give the element zero height, so in
+   * this flex column the title would contribute nothing and the subtitle would overlap it —
+   * the header collapses rather than tightens. (Figma's `leading-[0]` appears on the text
+   * WRAPPER and is an export artefact of mixed-style containers; `leading-none` on the
+   * paragraph is the real instruction.) 1 also scales, so this single rule covers both
+   * sizes — 18px here, 16px in the compact block below — which a fixed px value could not.
+   *
+   * TOKEN GAP: there is no ratio token, and no --ai-leading-* equals 18px (the scale is
+   * 16/20/24/32/40/48). `--ai-leading-none: 1` is the proper home for this — flagged in
+   * Modal.figma-notes. The raw 1 is the interim.
+   *
+   * Note the title has no `nowrap`/ellipsis, so a long user-supplied name still wraps rather
+   * than being clipped; at leading 1 those lines touch but stay legible. */
+  line-height: 1;
   color: var(--ai-text-primary);
   margin: 0;
 }
@@ -120,7 +137,11 @@
   font-family: var(--ai-font-title);
   font-size: var(--ai-font-fixed-xs);
   font-weight: var(--ai-font-regular);
-  line-height: var(--ai-leading-xs);
+  /* `leading-none` as well — Figma renders BOTH the title and Sub Text that way. At
+   * --ai-leading-xs (16px) against a 14px font this was 2px tall, which was the last of the
+   * create-plan modal's difference from Figma. Same reasoning and same token gap as
+   * `.modal__title` above. */
+  line-height: 1;
   color: var(--ai-text-contrast);
 }
 

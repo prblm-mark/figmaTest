@@ -204,13 +204,28 @@ of Input's 12px/16. Scoped to `.modal__body > p`, which is what the rule always 
 modal's own body copy. Verified safe — all 36 paragraphs in Modal's own demo are direct children,
 and the only nested ones anywhere are the help lines that should never have been caught.
 
-### Still open: the title's line-height
+### The header type is `leading-none`
 
-`.modal__title` uses `--ai-leading-md` (24px) where Figma's ModalHeader renders the title
-`leading-none` (18px, `h-[18px]` on the title row) in **both** Base and sm. That makes every modal
-header 8px taller than drawn — the create-plan modal measures 512×514 against Figma's 512×506, with
-the whole difference in the header; its body (360) and footer (73) are exact.
+`.modal__title` used `--ai-leading-md` (24px) and `.modal__subtitle` `--ai-leading-xs` (16px), where
+Figma's ModalHeader renders **both** `leading-none` — its title row is `h-[18px]` against an 18px
+font. That made every modal header 8px taller than drawn. Fixed 2026-08-27.
 
-Not changed: it alters the header metrics of every modal in the system, which is a design decision
-rather than a bug fix, and it belongs with the ModalHeader/Body/Footer audit above.
+**A unitless `1`, deliberately, and not `0`** (which was the suggestion). Zero gives the element
+zero height, so in the header's flex column the title would contribute nothing and the subtitle
+would overlap it — the header collapses rather than tightens. Figma's `leading-[0]` appears on the
+text *wrapper* and is an export artefact of mixed-style containers; `leading-none` on the paragraph
+is the real instruction. `1` also scales, so one rule covers Base and the compact size (18px and
+16px title, 14px and 13px subtitle) where a fixed px value would need two — and it stays correct in
+themes where `--ai-font-fixed-md` resolves differently, as it does on EventPicker's page.
 
+The title has no `nowrap` or ellipsis, so a long user-supplied name still wraps rather than being
+clipped; at leading 1 those lines touch but stay legible.
+
+**TOKEN GAP:** there is no ratio token, and no `--ai-leading-*` equals 18px — the scale is
+16/20/24/32/40/48. **`--ai-leading-none: 1` is the proper home for this**; the raw `1` is the
+interim. Worth adding in Figma.
+
+Result: the Seating Planner's create-plan modal now measures **512×506 with a 71px header and a 38px
+title block — exactly Figma**, having been 562 before this and the two fixes above. Modal's own demo
+and EventPicker are unaffected in height, since their headers are driven by the 32px close button
+rather than by the title.
