@@ -194,3 +194,19 @@ and Unassigned's override) were removed in the same commit and their comments co
 
 **Consumers wanting a narrow small input now set their own width** — which is where that decision
 belongs.
+
+## `.input__help` was 16px too tall (fixed 2026-08-27)
+
+`base.css` sets `p { margin: 0 0 var(--ai-spacing-5) }` — a 16px bottom margin on every
+paragraph — and `.input__help` never reset it. So **every input showing help or error text was
+16px taller than designed**, in every consumer, since the help element was added.
+
+Found via the Seating Planner's create-plan modal, whose form grid measured rows of 104/104/120
+against Figma's 88/88/104 — a uniform +16 that pointed at the element rather than the layout.
+With `margin: 0`, an input with help is now exactly `16 + 8 + 40 + 8 + 16 = 88`, and that modal's
+grid matches Figma to the pixel.
+
+Same bug class as **Badge**'s `<p>` (2026-08-25): a component paragraph silently inheriting the
+page-level margin because the component never zeroed it. Worth grepping for other component `<p>`
+elements that don't set `margin`.
+

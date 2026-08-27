@@ -9,6 +9,11 @@
 
 .modal {
   background: var(--ai-surface-elevated-1);
+  /* Figma binds a 1px --ai-border-secondary on the Modal root, and had done all along —
+   * it was noted as a difference while building the Seating Planner screens and then not
+   * acted on. Added for ALL modals 2026-08-27. With the global border-box it sits inside
+   * the width, so `--ai-size-9` stays 512px. */
+  border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-lg);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
   width: var(--ai-size-9); /* 512px — default */
@@ -128,7 +133,13 @@
   gap: var(--ai-spacing-5);
 }
 
-.modal__body p {
+/* DIRECT children only. `.modal__body p` is (0,1,1) and beats a single-class selector like
+ * `.input__help` (0,1,0), so it silently restyled every nested paragraph a modal happened to
+ * contain — the create-plan form's help lines rendered at 14px/24 instead of Input's 12px/16.
+ * This rule is for the modal's OWN body copy, so `>` expresses what it always meant.
+ * Verified safe: all 50 paragraphs in Modal's own demo are direct children, and the only
+ * nested ones anywhere are the help lines that should never have been caught. */
+.modal__body > p {
   font-family: var(--ai-font-body);
   font-size: var(--ai-font-fixed-xs);
   font-weight: var(--ai-font-regular);

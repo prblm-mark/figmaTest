@@ -191,3 +191,26 @@ header child.
   edge, where `.modal-overlay` pads `--ai-spacing-6` (24) — so the modal renders 354 wide against
   Figma's 338. Not changed, because overlay padding is shared by every modal.
 
+## Two fixes, 2026-08-27
+
+**`.modal` had no border.** Figma binds a 1px `--ai-border-secondary` on the Modal root and always
+had; it was noted as a difference while building the Seating Planner screens and then not acted on.
+Added for **all** modals. With the global `border-box` it sits inside the width, so `--ai-size-9`
+stays 512px.
+
+**`.modal__body p` was restyling nested paragraphs.** At (0,1,1) it beat any single-class selector,
+including `.input__help` (0,1,0) — so the create-plan form's help lines rendered at 14px/24 instead
+of Input's 12px/16. Scoped to `.modal__body > p`, which is what the rule always meant: it is for the
+modal's own body copy. Verified safe — all 36 paragraphs in Modal's own demo are direct children,
+and the only nested ones anywhere are the help lines that should never have been caught.
+
+### Still open: the title's line-height
+
+`.modal__title` uses `--ai-leading-md` (24px) where Figma's ModalHeader renders the title
+`leading-none` (18px, `h-[18px]` on the title row) in **both** Base and sm. That makes every modal
+header 8px taller than drawn — the create-plan modal measures 512×514 against Figma's 512×506, with
+the whole difference in the header; its body (360) and footer (73) are exact.
+
+Not changed: it alters the header metrics of every modal in the system, which is a design decision
+rather than a bug fix, and it belongs with the ModalHeader/Body/Footer audit above.
+

@@ -167,6 +167,13 @@
 /* ── Help text ───────────────────────────────────────── */
 
 .input__help {
+  /* base.css sets `p { margin: 0 0 var(--ai-spacing-5) }`, so this <p> inherited a 16px
+   * bottom margin that nothing here reset — adding 16px to the height of EVERY input that
+   * shows help or an error text, in every consumer. Found via the Seating Planner's
+   * create-plan modal, whose grid rows measured 104/104/120 against Figma's 88/88/104.
+   * Same bug class as Badge's <p> (2026-08-25): a component paragraph picking up the
+   * page-level margin because the component never zeroed it. */
+  margin: 0;
   font-family: var(--ai-font-body);
   font-size: var(--ai-font-fixed-2xs);  /* 12px */
   font-weight: var(--ai-font-regular);  /* 400 */
