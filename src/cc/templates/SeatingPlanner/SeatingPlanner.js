@@ -65,7 +65,14 @@
   }
 
   var requested = /[?&]state=([a-z-]+)/.exec(window.location.search);
-  if (requested) setState(requested[1]);
+  if (requested) {
+    var want = requested[1];
+    /* `create-plan` and `create-plan-errors` are MODAL states, not page states — they sit
+     * over the no-plan screen. Without this they would match no panel and hide all of them,
+     * leaving an empty page behind the modal. */
+    if (want.indexOf('create-plan') === 0) want = 'no-plan';
+    if (document.querySelector('[data-seating-panel="' + want + '"]')) setState(want);
+  }
 
   function isOpen() {
     return overlay.classList.contains(OPEN_CLASS);
@@ -178,3 +185,209 @@
     }
   });
 })();
+
+/* ── Create Plan modal ──────────────────────────────────────────────────────
+ * Figma 3515:212885 / 3515:228092 (help off) and 3515:212593 / 3515:212739 (help on +
+ * errors). Opened by the SeatingHeader's own New Plan button.
+ *
+ * Deliberately a separate block from the picker above rather than a shared helper. The two
+ * modals differ in what focus should land on (a search field vs the first form field) and in
+ * what closing means (a picker just closes; a form may be mid-edit), and the picker's
+ * behaviour is largely delegated to event-picker.js. A shared abstraction over two
+ * genuinely different dialogs would hide more than it saved — but the ARIA contract is
+ * identical, so the same rules apply: focus moves in on open, returns on close, and Tab is
+ * trapped while it is open.
+ */
+(function () {
+  'use strict';
+
+  if (window.__createPlanReady) return;
+  window.__createPlanReady = true;
+
+  var OPEN_CLASS = 'modal-overlay--open';
+  var FOCUSABLE = [
+    'a[href]', 'button:not([disabled])', 'input:not([disabled])',
+    'select:not([disabled])', 'textarea:not([disabled])', '[tabindex]:not([tabindex="-1"])'
+  ].join(',');
+
+  var overlay = document.querySelector('[data-create-plan]');
+  var trigger = document.querySelector('[data-seating-new-plan]');
+  if (!overlay || !trigger) return;
+
+  var dialog = overlay.querySelector('[role="dialog"]');
+  var form = overlay.querySelector('#create-plan-form');
+  var helpToggle = overlay.querySelector('#cp-help-toggle');
+  var returnFocusTo = null;
+
+  function isOpen() { return overlay.classList.contains(OPEN_CLASS); }
+
+  function focusable() {
+    return Array.prototype.filter.call(
+      dialog.querySelectorAll(FOCUSABLE),
+      function (el) { return el.offsetParent !== null; }
+    );
+  }
+
+  function field(name) { return overlay.querySelector('[data-cp-field="' + name + '"]'); }
+
+  function setError(name, message) {
+    var wrap = field(name);
+    if (!wrap) return;
+    var help = wrap.querySelector('[data-cp-help]');
+    wrap.classList.add('input--error');
+    if (help) {
+      help.textContent = message;
+      /* The message is an error, so announce it. `.input--error .input__help` is already
+       * red in Input.css — the same element serves as hint and error, which is exactly how
+       * Figma draws it. */
+      help.setAttribute('role', 'alert');
+    }
+    var control = wrap.querySelector('.input__control');
+    if (control) control.setAttribute('aria-invalid', 'true');
+  }
+
+  /* Restores whatever hint the markup shipped with — empty for the two fields whose help
+   * copy Figma never shows, which `.input__help:empty` then hides. */
+  function clearErrors() {
+    Array.prototype.forEach.call(overlay.querySelectorAll('[data-cp-field]'), function (wrap) {
+      wrap.classList.remove('input--error');
+      var help = wrap.querySelector('[data-cp-help]');
+      if (help) {
+        help.textContent = help.getAttribute('data-cp-help-original') || '';
+        help.removeAttribute('role');
+      }
+      var control = wrap.querySelector('.input__control');
+      if (control) control.removeAttribute('aria-invalid');
+    });
+  }
+
+  /* Stash the shipped hints once, so clearErrors can put them back. */
+  Array.prototype.forEach.call(overlay.querySelectorAll('[data-cp-help]'), function (help) {
+    help.setAttribute('data-cp-help-original', help.textContent.trim());
+  });
+
+  function open() {
+    if (isOpen()) return;
+    returnFocusTo = document.activeElement;
+    overlay.classList.add(OPEN_CLASS);
+    trigger.setAttribute('aria-expanded', 'true');
+    var first = overlay.querySelector('.input__control');
+    if (first) first.focus();
+    else dialog.focus();
+  }
+
+  function close() {
+    if (!isOpen()) return;
+    overlay.classList.remove(OPEN_CLASS);
+    trigger.setAttribute('aria-expanded', 'false');
+    /* Same `<body>` rejection as the picker — see the note there. */
+    var target = (returnFocusTo && returnFocusTo !== document.body && returnFocusTo.isConnected)
+      ? returnFocusTo
+      : trigger;
+    returnFocusTo = null;
+    target.focus();
+  }
+
+  trigger.addEventListener('click', open);
+
+  Array.prototype.forEach.call(overlay.querySelectorAll('[data-cp-close]'), function (btn) {
+    btn.addEventListener('click', close);
+  });
+
+  overlay.addEventListener('click', function (event) {
+    if (event.target === overlay) close();
+  });
+
+  overlay.addEventListener('keydown', function (event) {
+    if (!isOpen()) return;
+
+    if (event.key === 'Escape') { close(); return; }
+    if (event.key !== 'Tab') return;
+
+    var items = focusable();
+    if (!items.length) return;
+    var first = items[0], last = items[items.length - 1], active = document.activeElement;
+
+    if (event.shiftKey && (active === first || !dialog.contains(active))) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && (active === last || !dialog.contains(active))) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
+
+  /* "Show help" reveals each field's hint. The class does the work; the CSS deliberately
+   * leaves ERROR messages visible either way — an error you cannot see is worse than a hint
+   * you did not ask for, and Figma never draws help-off-with-errors to say otherwise. */
+  if (helpToggle) {
+    helpToggle.addEventListener('toggle:change', function (event) {
+      form.classList.toggle('create-plan__form--help', !!(event.detail && event.detail.active));
+    });
+  }
+
+  /* Validation uses the two rules Figma's own error copy states, verbatim:
+   *   "Plan name is required"
+   *   "Seats per table must be between 6 and 12."
+   * Nothing is invented — those strings ARE the spec, and transcribing them is why this is
+   * wired rather than faked with a demo state. Tables shows a hint reading "Number of tables
+   * is required." but Figma renders it grey, as help rather than an error, so it is not
+   * validated here. Worth a designer check: that copy reads like validation. */
+  if (form) {
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      clearErrors();
+
+      var name = overlay.querySelector('#cp-name');
+      var seats = overlay.querySelector('#cp-seats');
+      var bad = null;
+
+      if (name && !name.value.trim()) {
+        setError('name', 'Plan name is required');
+        bad = bad || name;
+      }
+      if (seats && seats.value.trim()) {
+        var n = Number(seats.value);
+        if (!Number.isFinite(n) || n < 6 || n > 12) {
+          setError('seats', 'Seats per table must be between 6 and 12.');
+          bad = bad || seats;
+        }
+      }
+
+      if (bad) { bad.focus(); return; }
+
+      close();
+
+      /* TODO(backend:SeatingPlanner): creating a plan must generate its tables — see
+       * seating-new-plan — and the screen that follows is not designed yet, so this stops at
+       * an event a host can act on rather than inventing the next state. */
+      overlay.dispatchEvent(new CustomEvent('seating-planner:plan-created', {
+        bubbles: true,
+        detail: {
+          name: (overlay.querySelector('#cp-name') || {}).value || '',
+          room: (overlay.querySelector('#cp-room') || {}).value || '',
+          tables: (overlay.querySelector('#cp-tables') || {}).value || '',
+          seats: (overlay.querySelector('#cp-seats') || {}).value || '',
+          shape: (overlay.querySelector('#cp-shape') || {}).value || ''
+        }
+      }));
+    });
+  }
+
+  /* ?state=create-plan / create-plan-errors opens it directly for review; the errors form
+   * shows exactly the combination Figma's help-on frame draws. */
+  var q = window.location.search;
+  if (q.indexOf('state=create-plan') !== -1) {
+    open();
+    if (q.indexOf('create-plan-errors') !== -1) {
+      if (helpToggle) {
+        helpToggle.classList.add('toggle--active');
+        helpToggle.setAttribute('aria-checked', 'true');
+        form.classList.add('create-plan__form--help');
+      }
+      setError('name', 'Plan name is required');
+      setError('seats', 'Seats per table must be between 6 and 12.');
+    }
+  }
+})();
+

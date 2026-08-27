@@ -4,6 +4,8 @@
  *   "No Event"      3515:175956 desktop · 3515:213358 mobile   — the event gate
  *   "Select Event"  3515:176032 desktop · 3515:228380 mobile   — + the EventPicker modal
  *   "No Plan"       3515:176082 desktop · 3515:213400 mobile   — + SeatingHeader, no plans yet
+ *   "Create Plan"   3515:212885 desktop · 3515:228092 mobile   — + the create-plan modal
+ *   "…/ Help On & Errors" 3515:212593 desktop · 3515:212739 mobile — same modal, help + errors
  *
  * The states live in one page and are switched by `data-seating-state` (SeatingPlanner.js),
  * because choosing an event genuinely advances No Event -> No Plan. `?state=no-plan` lands
@@ -245,3 +247,105 @@
     font-size: var(--ai-font-fixed-xxs);
   }
 }
+
+/* ── Create Plan modal form ─────────────────────────────────────────────────
+ * Figma 3515:212885 / 3515:228092 (help off) and 3515:212593 / 3515:212739 (help on +
+ * errors). The modal itself is Modal + ModalHeader/Body/Footer, all of which already
+ * matched Figma exactly — header/footer padding 16/24, body padding 24 with a 16px gap,
+ * a 20px close icon. Modal gained only `__title-block` / `__subtitle`. So the CSS here is
+ * the FORM's own layout and nothing else.
+ *
+ * A real 3-column grid, which is what Figma binds — not a flex row per line:
+ *   grid-cols-[repeat(3,minmax(0,1fr))], gap-x 12px, gap-y 16px
+ * Plan name and Room/location span all three; Tables / Seats / Shape take one each. Rows
+ * are content-height rather than Figma's fixed 64/56px, because the help and error lines
+ * grow them (Figma's own help-on frame shows 88 and 104px rows for the same inputs). */
+.create-plan__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: var(--ai-spacing-4);
+  row-gap: var(--ai-spacing-5);
+  inline-size: 100%;
+}
+
+.create-plan__grid > .create-plan__wide {
+  grid-column: 1 / -1;
+}
+
+/* The Content Slot is the positioning context: Figma places the toggle `absolute right-0
+ * top-0`, so it sits on the same line as the first field's label rather than in the flow.
+ * (Its mobile frame reads `right-[1760px]`, which is Figma junk — the rendered position is
+ * right-aligned in both.) */
+.create-plan__form {
+  position: relative;
+  inline-size: 100%;
+}
+
+.create-plan__help-toggle {
+  position: absolute;
+  inset-inline-end: 0;
+  inset-block-start: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  /* Figma's `py-[--ai-spacing-px]` — a 1px nudge so the 12px-tall track optically centres
+   * against the 16px label line. */
+  padding-block: var(--ai-spacing-px);
+}
+
+/* 11px, not the 12px TableListing's toggle label uses — this frame binds
+ * --ai-font-fixed-4xs. Worth a designer glance that two toggle labels differ. */
+.create-plan__help-label {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-4xs);
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* HELP vs ERROR visibility.
+ *
+ * Both use Input's own `__help` element — that is how the component works, and how Figma
+ * draws it: `.input--error .input__help` turns red, so an error message and a hint are the
+ * same line in two colours.
+ *
+ * Which means the "Show help" toggle must NOT hide error messages. Only non-error help
+ * lines are hidden when the toggle is off. Figma never draws help-off-with-errors, so this
+ * is a reasoned call rather than a copied one: an error you cannot see is worse than a
+ * hint you did not ask for. Flagged in figma-notes. */
+.create-plan__form:not(.create-plan__form--help) .input:not(.input--error) .input__help {
+  display: none;
+}
+
+/* Empty help lines never render. Figma gives help copy for only three of the five fields —
+ * Plan name and Seats/table show ERRORS in the one help-on frame, which masks whatever hint
+ * they may have — so those two ship with an empty help element that validation fills.
+ * `:empty` keeps them from reserving a 16px line in the meantime. */
+.create-plan__form .input__help:empty {
+  display: none;
+}
+
+/* ── Create Plan modal: compact size ───────────────────────────────────────
+ * Figma's mobile frame puts every Input at `input--sm` and both footer buttons at
+ * `btn--sm`. Neither can be added as a class from a media query, so their geometry is
+ * replicated — the same approach SeatingHeader's export button needed.
+ *
+ * 639px, matching Modal's own breakpoint (extended in Modal.css for this screen), so the
+ * whole modal — padding, type, fields, buttons — switches at one width rather than two. */
+@media (max-width: 639px) {
+  .create-plan__grid .input__wrap {
+    min-height: var(--ai-spacing-7);
+    padding: 0 var(--ai-spacing-3);
+    gap: var(--ai-spacing-2);
+  }
+
+  .create-plan__footer .btn {
+    min-height: var(--ai-spacing-7);
+    padding: 0 var(--ai-spacing-4);
+    font-size: var(--ai-font-fluid-xxs);
+    border-radius: var(--ai-radius-md);
+  }
+}
+

@@ -502,7 +502,8 @@
             <button type="button" class="btn btn--secondary">
               <i data-lucide="copy" aria-hidden="true"></i>Copy Plans
             </button>
-            <button type="button" class="btn btn--primary">
+            <button type="button" class="btn btn--primary" data-seating-new-plan
+                    aria-haspopup="dialog" aria-expanded="false" aria-controls="create-plan">
               <i data-lucide="plus" aria-hidden="true"></i>New Plan
             </button>
           </div>
@@ -1112,6 +1113,87 @@
         <button class="btn btn--secondary" type="button" data-ep-close>Cancel</button>
       </div>
 
+    </div>
+  </div>
+
+  <!-- ━━━ Create Plan modal ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       Figma 3515:212885 / 3515:228092 (help off) and 3515:212593 / 3515:212739
+       (help on + errors). Modal + ModalHeader/Body/Footer already matched Figma exactly;
+       Modal gained only __title-block / __subtitle for the event name beneath the title.
+
+       The form is a real 3-column grid (Figma binds grid-cols-[repeat(3,minmax(0,1fr))]),
+       with the first two fields spanning all three.
+
+       Help copy comes from the help-on frame. Plan name and Seats/table show ERRORS there
+       rather than hints, so their help elements start empty and validation fills them —
+       whatever hint those two fields may have is not in any frame. -->
+  <div class="modal-overlay" id="create-plan" data-create-plan>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="create-plan-title">
+      <div class="modal__header">
+        <div class="modal__title-block">
+          <h2 class="modal__title" id="create-plan-title">New Seating Plan</h2>
+          <!-- TODO(backend:SeatingPlanner): the chosen event's name — see seating-events-list. -->
+          <p class="modal__subtitle">The Card &amp; Payments Awards 2026</p>
+        </div>
+        <button class="modal__close" type="button" aria-label="Close" data-cp-close>
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="modal__body">
+        <!-- novalidate: the browser's own bubbles would pre-empt the designed error lines. -->
+        <form class="create-plan__form" id="create-plan-form" novalidate>
+          <div class="create-plan__help-toggle">
+            <button type="button" class="toggle toggle--xxs" role="switch" aria-checked="false"
+                    id="cp-help-toggle" aria-labelledby="cp-help-label">
+              <span class="toggle__track"><span class="toggle__knob"></span></span>
+            </button>
+            <label class="create-plan__help-label" id="cp-help-label" for="cp-help-toggle">Show help</label>
+          </div>
+          <div class="create-plan__grid">
+            <div class="input create-plan__wide" data-cp-field="name">
+              <label class="input__label" for="cp-name">Plan name</label>
+              <div class="input__wrap">
+                <input id="cp-name" type="text" class="input__control" placeholder="e.g. Main Ballroom">
+              </div>
+              <p class="input__help" data-cp-help></p>
+            </div>
+            <div class="input create-plan__wide" data-cp-field="room">
+              <label class="input__label" for="cp-room">Room / location</label>
+              <div class="input__wrap">
+                <input id="cp-room" type="text" class="input__control" placeholder="e.g. Great room">
+              </div>
+              <p class="input__help" data-cp-help>The room or area this plan covers</p>
+            </div>
+            <div class="input" data-cp-field="tables">
+              <label class="input__label" for="cp-tables">Tables</label>
+              <div class="input__wrap">
+                <input id="cp-tables" type="text" inputmode="numeric" class="input__control" placeholder="12">
+              </div>
+              <p class="input__help" data-cp-help>Number of tables is required.</p>
+            </div>
+            <div class="input" data-cp-field="seats">
+              <label class="input__label" for="cp-seats">Seats / table</label>
+              <div class="input__wrap">
+                <input id="cp-seats" type="text" inputmode="numeric" class="input__control" placeholder="14">
+              </div>
+              <p class="input__help" data-cp-help></p>
+            </div>
+            <div class="input" data-cp-field="shape">
+              <label class="input__label" for="cp-shape">Table Shape</label>
+              <div class="input__wrap">
+                <input id="cp-shape" type="text" class="input__control" placeholder="Round">
+              </div>
+              <p class="input__help" data-cp-help>Default shape for the generated table.</p>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal__footer create-plan__footer">
+        <button type="button" class="btn btn--secondary" data-cp-close>Cancel</button>
+        <!-- TODO(backend:SeatingPlanner): creating a plan must generate its tables — see
+             seating-new-plan. The screen that follows is not designed yet. -->
+        <button type="submit" form="create-plan-form" class="btn btn--primary">Create plan</button>
+      </div>
     </div>
   </div>
 

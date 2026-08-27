@@ -1,7 +1,7 @@
 # SeatingPlanner — Figma Notes
 
 **Tier:** Template
-**Built:** 2026-08-26 (Seating Planner module, screens 1–3 of a series)
+**Built:** 2026-08-26 → 2026-08-27 (Seating Planner module, screens 1–5 of a series)
 **Files:** `SeatingPlanner.css`, `SeatingPlanner.html`, `SeatingPlanner.js`, `SeatingPlanner.figma.ts`, `SeatingPlanner.figma-notes.md`
 **Composes:** the **ControlScreen app shell** verbatim + Button + **EventPicker** (the Select Event modal, itself composing Modal / SearchInput / Checkbox / ActionCard / Badge) + **SeatingHeader** (`Type=No Plans`)
 **JS:** the shell's own bundle, ported unchanged, + `event-picker.js` (the picker's own) + `SeatingPlanner.js` (opening/closing the picker and focus management — nothing else)
@@ -21,6 +21,10 @@
 **Screen 3 — "No Plan"**
 - **Desktop:** `3515:176082`, 1728×1117
 - **Mobile:** `3515:213400`, 402×874
+
+**Screens 4–5 — "Create Plan" and "Create Plan / Help On & Errors"**
+- **Desktop:** `3515:212885` (help off) · `3515:212593` (help on + errors)
+- **Mobile:** `3515:228092` · `3515:212739`
 
 Both frames are named **"No Event"**, and their content frame carries the working title
 *"TASK-344753 — SeatingPlanner — mobile toolbar bottom bar — v4"* — a leftover name from a
@@ -262,6 +266,92 @@ Screens 1–3 are mutually-exclusive states of one screen, so they live in one p
 event that already has plans should go straight to the planner. So the chosen event is still
 re-emitted as `seating-planner:event-chosen` for a host to act on, rather than being treated as
 settled here.
+
+## Screens 4–5 — "Create Plan" (+ help and errors)
+
+The No Plan screen with a **create-plan modal** over it, opened by the SeatingHeader's own **New
+Plan** button. Screens 4 and 5 are the same modal in two states — help off, and help on with two
+fields in error — so they are built as one modal, not two.
+
+### Nothing new was needed from Modal except a subtitle
+
+`Modal`, `ModalHeader`, `ModalBody` and `Modal Footer` already matched Figma **exactly**: header and
+footer padding `--ai-spacing-5 --ai-spacing-6`, body padding `--ai-spacing-6` with a
+`--ai-spacing-5` gap, a 32px close button with a **20px** icon, and the modal's own 512px width
+(`.modal` default = `--ai-size-9`). Checked rather than assumed.
+
+The one gap was the **subtitle** ("New Seating Plan" over the event name). Figma's ModalHeader
+component has a formal `subText` property, so `.modal__title-block` + `.modal__subtitle` went into
+**Modal** rather than being scoped here. That build also uncovered that ModalHeader/Body/Footer are
+now their own component sets with a Size axis — see **Modal.figma-notes → Header / Body / Footer are
+their own component sets**, which records what was and was not taken.
+
+### The form
+
+A real **3-column grid**, which is what Figma binds (`grid-cols-[repeat(3,minmax(0,1fr))]`,
+`gap-x: --ai-spacing-4`, `gap-y: --ai-spacing-5`). Plan name and Room / location span all three;
+Tables, Seats / table and Table Shape take one each.
+
+Rows are content-height rather than Figma's fixed 64px, because help and error lines grow them —
+Figma's own help-on frame shows the same inputs at 88px and 104px.
+
+The **"Show help" toggle** is `Toggle` at `xxs` (the size added for TableListing), positioned
+`absolute right-0 top-0` inside the form so it sits on the first field's label line, exactly as
+Figma places it. Its label is `--ai-font-fixed-4xs` (11px) — **not** the 12px TableListing's toggle
+label uses, which is worth a designer glance.
+
+| Field | Placeholder | Help copy (from the help-on frame) |
+|---|---|---|
+| Plan name | e.g. Main Ballroom | **none — masked by its error** |
+| Room / location | e.g. Great room | The room or area this plan covers |
+| Tables | 12 | Number of tables is required. |
+| Seats / table | 14 | **none — masked by its error** |
+| Table Shape | Round | Default shape for the generated table. |
+
+**Two help strings are genuinely unknown.** The only frame that shows help also shows Plan name and
+Seats / table in error, so their hints — if they have any — appear nowhere. Those two ship with an
+empty help element that validation fills, and `.input__help:empty` keeps it from reserving a line.
+Nothing was invented to fill the gap.
+
+### Errors are real validation, not a demo state
+
+`.input--error` already does everything Figma draws: red border, red focus ring, and
+`.input__help` turned red — so an error message and a hint are the same element in two colours,
+which is exactly the design.
+
+The two rules are **transcribed from Figma's own error copy**, not invented:
+
+- `Plan name is required`
+- `Seats per table must be between 6 and 12.`
+
+So submitting the form actually validates, and screen 5 is reachable by using the form rather than
+by faking a state. `?state=create-plan-errors` also lands on it directly.
+
+**Tables is not validated**, even though its help reads "Number of tables is required." — Figma
+renders that grey, as help rather than an error. Worth a designer check: that copy reads like
+validation but is not styled as it.
+
+**The help toggle deliberately does not hide error messages** — only non-error help lines. Figma
+never draws help-off-with-errors, so this is a reasoned call: an error you cannot see is worse than
+a hint you did not ask for.
+
+### Flagged
+
+- **The desktop base header is a DETACHED frame.** `header-realistic-5-rooms` (91px) replaces the
+  `Header` instance screen 3 uses (99px), with `padding-block: 20px` — which is **off-scale**, no
+  token. The mobile frame still uses the real instance. Built with the SeatingHeader component and
+  the 20px ignored: the component is the authority, and an off-scale value in one frame is an
+  experiment, not a spec.
+- **The label differs between the two frames** — "Seats / Table" on screen 4, "Seats / table" on
+  screen 5. Built lowercase, matching "Room / location".
+- **The mobile modal renders 354 wide against Figma's 338.** That frame places the modal 32px from
+  each edge where `.modal-overlay` pads `--ai-spacing-6` (24). Not changed — the overlay's padding is
+  shared by every modal in the system.
+- **The desktop modal renders 512×424 against Figma's 512×418** — width exact, 6px of label/field
+  text metrics.
+- Every Input has its clear button and icon **hidden** in Figma, so neither is rendered. The
+  published Code Connect for Input is **still stale** here too — it emits `input__field` where the
+  class is `input__control`.
 
 ## Token mapping
 
