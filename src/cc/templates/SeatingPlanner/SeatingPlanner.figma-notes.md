@@ -814,3 +814,33 @@ never have fired. ControlScreen and ControlHub re-verified for the shared `cs-ma
 The shell's own sidebar and ActionsMenu device swaps, and the create-plan modal. Both are genuinely
 device/viewport concerns. 65 other files in the repo still carry viewport media queries — see
 CLAUDE.md §4a.
+
+### Two scroll models, one per layout (2026-08-27)
+
+Reported: "I can't scroll the table listing." Measured — a **1816px** card grid inside a listing
+clipped to **715px** by TableListing's own `overflow: hidden`, with `.seating-plan { flex: 1 0 0 }`
+pinning the row to the page height so the page had nothing left to scroll. Every table below the
+fold was unreachable.
+
+**This clipping predates the container-query change** — it was already wrong at a 402px viewport.
+What the change did was make the stacked layout reachable at any column ≤1023, so it stopped being
+a phone-only problem.
+
+| Layout | Who scrolls | How |
+|---|---|---|
+| Side by side (>1023) | the **card grid** | the listing's height is constrained by the row so the detail panel stays put beside it, so the grid must be the scroller: `flex: 1 1 auto; min-block-size: 0; overflow-y: auto` |
+| Stacked (≤1023) | the **page** | `.seating-plan { flex: 0 0 auto }` — natural height — and the grid reverts to `overflow: visible` so it grows to its content |
+
+Figma's mobile frames show page-scrolling explicitly: the listing is 2019px tall in an 874px frame,
+and in the tapped frame it sits at **y = −79** because the page has scrolled.
+
+`overflow-x: hidden` is paired with `overflow-y: auto` deliberately — `auto` on one axis computes the
+other to `auto` too, which would offer a pointless horizontal scrollbar. The listing root already
+clips shadows to its radius, so clipping at the grid costs nothing.
+
+The scroller lives in this template rather than in TableListing because **this template is what
+constrains the height**; the component's own demo is auto-height and must stay unopinionated.
+
+**Verified:** at a real 402px viewport the page scrolls 1960/834 and the last of 12 cards is
+reachable; at a 1100px column the grid scrolls 964/604; at 1847 nothing needs to scroll. Swept
+1847 → 402 with no text spilling, no boxes escaping, and no horizontal overflow.

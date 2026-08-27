@@ -381,3 +381,18 @@ earlier now, but the guard matters at every width, which a breakpoint alone woul
 Rationale and the decision rule live in **CLAUDE.md §4a**. The short version: a docked
 SidebarMenu shrinks the CC content column with no window resize, so a viewport query cannot see
 the real available width — measured 820px of column at a 2239px viewport, with no query firing.
+
+### Room cards are capped (2026-08-27)
+
+The narrow block sets `.seating-header__rooms > .room-card { flex: 1 0 0 }`, which Figma draws so a
+single plan fills the row while two or more hold RoomCard's 240px mobile floor and scroll. With no
+maximum that was harmless while the block only fired on a phone — but it now fires on **container**
+width, so a squeezed desktop column produced one absurdly wide plan chip.
+
+`max-inline-size: var(--ai-size-6)` (320) caps it. 320 sits just above Figma's mobile card (302), so
+a real phone still fills the row exactly as drawn — verified at a genuine 402px viewport: one plan
+renders 285px in a 285px row, four plans render 240px each and the carousel scrolls (1008 vs 309).
+The cap only engages once the row is wider than the design ever intended.
+
+**Flagged:** if plans should never exceed their 280px desktop pin, this becomes `--ai-size-5` — a
+one-token change. 320 was chosen to preserve the mobile frame's fill; neither token is Figma's 302.

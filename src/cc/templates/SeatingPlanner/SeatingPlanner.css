@@ -436,6 +436,28 @@
   /* Without this the grid's own min-content floor would stop the listing ever yielding
    * width to the detail panel. */
   min-inline-size: 0;
+  min-block-size: 0;
+}
+
+/* ── Scrolling: two models, one per layout ──────────────────────────────────
+ * SIDE BY SIDE — the listing's height is constrained by the row (so the detail panel stays put
+ * beside it), which means the CARD GRID has to be the scroller. TableListing itself sets
+ * `overflow: hidden` on its root to clip card shadows inside its radius and provides no internal
+ * scroller, so without this the grid is simply clipped and the tables below the fold are
+ * unreachable. Measured 2026-08-27: a 1816px grid inside a 715px listing with nothing scrolling.
+ *
+ * That is only latent on this screen today — 12 cards in a 4-column grid happen to fit — but it
+ * bites the moment a plan has more tables. The scroller lives here rather than in TableListing
+ * because this template is what constrains the height; the component's own demo is auto-height
+ * and must stay unopinionated. */
+.seating-plan > .table-listing .table-listing__grid {
+  flex: 1 1 auto;
+  min-block-size: 0;
+  overflow-y: auto;
+  /* Paired deliberately: `overflow-y: auto` alone computes overflow-x to `auto` too, which would
+   * offer a pointless horizontal scrollbar. The root already clips shadows, so clipping here
+   * costs nothing. */
+  overflow-x: hidden;
 }
 
 .seating-plan__aside {
@@ -527,6 +549,24 @@
 @container cs-page (max-width: 1023px) {
   .seating-plan {
     flex-direction: column;
+    /* STACKED — the other scroll model: the PAGE scrolls and this row is its natural height.
+     * `flex: 1 0 0` pinned the row to the page height, so the stacked listing was clipped to it
+     * and the page had nothing left to scroll — the tables below the fold could not be reached
+     * at all. Figma's mobile frames show exactly page-scrolling: the listing is 2019px tall in an
+     * 874px frame, and in the tapped frame it sits at y=-79 because the page has scrolled.
+     *
+     * This clipping predates the container-query change — it was already wrong at a 402px
+     * viewport — but that change made the stacked layout reachable at any column ≤1023, so it
+     * stopped being a phone-only problem. */
+    flex: 0 0 auto;
+  }
+
+  /* Hand the scrolling back to the page: the grid must grow to its content here, not scroll
+   * inside a box that is no longer height-constrained. */
+  .seating-plan > .table-listing .table-listing__grid {
+    flex: 0 0 auto;
+    overflow: visible;
+    min-block-size: auto;
   }
 
   .seating-plan__handle,

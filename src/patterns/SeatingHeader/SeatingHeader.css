@@ -436,6 +436,14 @@
    * min-inline-size (--ai-size-4), so it needs no restating. */
   .seating-header__rooms > .room-card {
     flex: 1 0 0;
+    /* CAP (designer, 2026-08-27). `flex: 1 0 0` with no maximum meant a single plan stretched to
+     * whatever the row was — harmless while this block only fired on a phone, but it now fires on
+     * container width, so a squeezed desktop column could produce one 676px-wide plan chip.
+     * --ai-size-6 (320) sits just above Figma's mobile card (302), so a real phone still fills the
+     * row exactly as drawn and the cap only engages once the row is wider than the design ever
+     * intended. Flagged: if plans should never exceed their 280px desktop pin, this becomes
+     * --ai-size-5 — one token. */
+    max-inline-size: var(--ai-size-6);
   }
 
   /* The toolbar's PADDING moves with its siblings, so all three regions share one inline
