@@ -314,8 +314,13 @@
  * Which means the "Show help" toggle must NOT hide error messages. Only non-error help
  * lines are hidden when the toggle is off. Figma never draws help-off-with-errors, so this
  * is a reasoned call rather than a copied one: an error you cannot see is worse than a
- * hint you did not ask for. Flagged in figma-notes. */
-.create-plan__form:not(.create-plan__form--help) .input:not(.input--error) .input__help {
+ * hint you did not ask for. Flagged in figma-notes.
+ *
+ * Keyed on `[data-cp-field]`, NOT on `.input`. Table Shape is a Select, so its wrapper is
+ * `.create-plan__shape` — a `.input`-based selector silently missed it and its help line
+ * showed permanently, whatever the toggle said. The data hook is on all five fields whatever
+ * component each one uses, which is precisely why it is the right thing to select on. */
+.create-plan__form:not(.create-plan__form--help) [data-cp-field]:not(.input--error) .input__help {
   display: none;
 }
 
