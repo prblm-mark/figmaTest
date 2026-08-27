@@ -31,6 +31,21 @@
   display: flex;
   flex-direction: column;
   inline-size: 100%;
+  /* NEVER shrink. A header's height is its content, and crushing it destroys information rather
+   * than merely tightening it.
+   *
+   * Found 2026-08-27: inside a height-constrained flex column (`.cc-control__page`) this
+   * collapsed to **2px** — no room plan, no toolbar, the action buttons sliced in half. The
+   * mechanism is worth remembering, because the usual protection silently does not apply here:
+   * a flex item's automatic minimum size (`min-height: auto`) only protects items whose
+   * `overflow` is `visible`. This root sets `overflow: hidden` just below, to keep the room
+   * carousel inside the radius — which means its automatic minimum is ZERO and it will happily
+   * collapse to nothing and clip, rather than refusing to shrink. So when a sibling demanded
+   * more height than the column had, the entire shortfall came out of this element.
+   *
+   * With `flex-shrink: 0` the overflow goes to the scroll container instead, which is the
+   * correct failure mode: content stays visible and reachable. */
+  flex-shrink: 0;
   border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-lg);
   background-color: var(--ai-surface-primary);

@@ -396,3 +396,40 @@ The cap only engages once the row is wider than the design ever intended.
 
 **Flagged:** if plans should never exceed their 280px desktop pin, this becomes `--ai-size-5` — a
 one-token change. 320 was chosen to preserve the mobile frame's fill; neither token is Figma's 302.
+
+### The header must never shrink (fixed 2026-08-27)
+
+Reported: "planner header all broken, no plan showing and height cropping content." Reproduced and
+measured inside the Seating Planner — at a 402px column the header rendered **2px** against a
+natural 251, so the room carousel was 25px and the toolbar and half the action buttons were simply
+gone. At 700px it rendered 101 of 211, which is the sliced-buttons screenshot.
+
+**The component itself was never at fault** — its own demo measured a correct 299px (bar 125 +
+rooms 112 + toolbar 60) with both room cards visible, because there the parent is `display: block`
+and nothing can shrink it. The failure only appears where it is a flex item.
+
+**Mechanism, and the part worth remembering.** `.cc-control__page` is a height-constrained flex
+column. SeatingPlanner had just been changed to `.seating-plan { flex: 0 0 auto }` so the stacked
+row could take its natural height and let the page scroll — but `flex-shrink: 0` means the row
+refuses to give anything back, so when the column ran short the **entire** shortfall (1026px at
+mobile) had to come out of the only shrinkable sibling: this header, at its default
+`flex: 0 1 auto`.
+
+The usual protection did not apply, and that is the subtle bit: a flex item's automatic minimum
+size (`min-height: auto`) **only protects items whose `overflow` is `visible`**. This root sets
+`overflow: hidden` to keep the room carousel inside its radius, so its automatic minimum is
+**zero** — it collapsed all the way and clipped, rather than refusing to shrink.
+
+Fix: `flex-shrink: 0` on `.seating-header`. A header's height is its content, and crushing it
+destroys information rather than tightening it; with this the overflow goes to the scroll container
+instead, which is the correct failure mode. Inert in the standalone demo, where the parent is not
+a flex container.
+
+**A hypothesis worth recording as wrong:** the obvious suspect was `container-type: inline-size`,
+since layout containment can zero an automatic minimum size. Tested directly by setting
+`container-type: normal` on the live element — the header stayed at 2px. The container query had
+nothing to do with it.
+
+Verified after the fix at columns 1800 / 1400 / 1100 / 900 / 700 / 500 / 402: header always at its
+natural height (294–341), room card always visible, toolbar always present, and all content
+reachable — the grid scrolling at 1100 and the page scrolling at ≤700.
