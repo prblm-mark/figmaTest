@@ -598,3 +598,97 @@ working ellipsis. So it reflows rather than overlaps, which is the standing requ
 pattern. `elementFromPoint` is the check that matters here; reasoning from the cascade is what
 missed the original overlap.
 
+## Toolbar overflow menu + the 1200 band (2026-08-28)
+
+Two new variants on the set (`3474:90519`, now **6** variants — Type has 4 values):
+
+| Node | Type | Frame | Management-Buttons | Dropdowns |
+|---|---|---|---|---|
+| `3585:110311` | `Menu >1200` | 1552 | **3** — 118 Room Layout, 101 Add, 111 Export | 176×**64**, 1 item |
+| `3585:110436` | `Menu <1024` | 1100 | **2** — 101 Add, 111 Export | 176×**96**, 2 items |
+
+The delta is exactly one 32px menu row, so Room Layout is what relocates. Menu items read
+**Room Layout** and **Table Types**; Table Types is the permanent entry.
+
+> **These two Types are NOT data.** `No Plans` / `Has Plans` are markup the caller picks; these two
+> describe how the toolbar reflows, which is CSS. They are deliberately **not** mapped in
+> `SeatingHeader.figma.ts` — mapping them would publish a second and third markup for what is one
+> component at different widths.
+
+### The resulting model
+
+| container | Room Layout | Add | Export | toggle/divider | menu |
+|---|---|---|---|---|---|
+| ≥1200 | toolbar button | ✓ | ✓ | shown | Table Types |
+| 1024–1199 | **menu item** | ✓ | ✓ | shown | Room Layout, Table Types |
+| ≤1023 | menu item | ✓ | icon | hidden | Room Layout, Table Types |
+
+Below 1024 the menu keeps both items and Add/Export stay visible (designer, 2026-08-28) — the
+mobile layout is unchanged from the existing build.
+
+**Before this, Room Layout was simply lost.** Measured on the old code: at container 1054 it was a
+125px button; at 963 it was `display: none` with nowhere to go, i.e. unreachable. The menu is what
+makes the collapse non-destructive.
+
+**CSS cannot move a node,** so the button and the menu item are two copies of one action whose
+visibility swaps. Anything wiring Room Layout must bind BOTH.
+
+### Container queries measure the CONTENT box — this header's border shifts every breakpoint by 2px
+
+`max-width: 1199px` is correct, but it does not fire at a 1199px *element*. `container-type:
+inline-size` queries the content box, and this root has `border: 1px` per side:
+
+| border-box | content box | Room Layout |
+|---|---|---|
+| 1202 | 1200 | toolbar |
+| **1201** | **1199** | **menu** |
+
+So the switch lands at border-box 1201. The 1023 and 767 blocks carry the same 2px offset and
+always have, so 1199 was kept rather than compensated — compensating would make this one
+breakpoint inconsistent with its siblings for a 2px difference nobody can see.
+
+Worth knowing when measuring: `getBoundingClientRect().width` is the border box, so a probe will
+always look 2px out of step with the query. Subtract the border before comparing.
+
+### The root's `overflow: hidden` had to go
+
+Figma draws the panel **48px below the header's bottom edge** (`3585:110311`: Toolbar y=224..288 in
+a 288-tall symbol, Dropdowns y=272..336). An absolutely-positioned panel inside a clipped ancestor
+is invisible, so the clip was removed.
+
+It was only ever protecting the radius. The room-selector carousel — the thing the old comment said
+it was for — clips itself with its own `overflow-x: auto`. The corners are now held by the first and
+last rows carrying their own radii, which also survives Type=No Plans where the bar is both.
+Verified after the change: root `overflow: visible`, bar top corners 16px, toolbar bottom corners
+16px with `border-bottom: 0`, carousel still scrollable, panel 51px clear of the header.
+
+That also invalidated the `flex-shrink: 0` rationale at the top of the file, which cited the clip as
+the reason `min-height: auto` could not protect this element. The comment is corrected; the
+declaration is kept, because stating the intent beats relying on a default that the next `overflow`
+change would silently switch off again — which is how the original 2px collapse happened.
+
+### Composition: Dropdown, not a bespoke menu
+
+The kebab is now a `.dropdown__trigger` inside a `.dropdown` root, so open/close, outside-click
+dismiss, Escape and focus return all come from `Dropdown.js`. Verified `aria-expanded` toggles and
+Escape closes at every width. Dropdown.js does not require its trigger to be a `.btn`, so the kebab
+keeps its icon-only look and 36×44 hit area.
+
+Adds two page requirements: **`Dropdown.css`** and **`Dropdown.js` as `type="module"`**. Both were
+already on SeatingPlanner.html; both had to be added to this component's own demo.
+
+Only two things are set locally — the root must not shrink in the toolbar row, and the panel is
+flipped to `inset-inline-end: 0` because Dropdown's default `left: 0` would push it off-screen from
+a trigger at the end of the row.
+
+**FLAGGED — panel size is Dropdown's, not Figma's.** Ours renders **240px** wide (Dropdown's own
+`min-width: var(--ai-size-4)`) where Figma's instance is **176px**; heights are 66/106 against
+Figma's 64/96. Figma has resized the Dropdown instance in this context — a contextual override on
+*that* component. Not applied here: narrowing Dropdown globally, or scoping an override onto it from
+this pattern, are both decisions about Dropdown rather than SeatingHeader.
+
+**Both menu actions already exist as prototypes** — this menu is the trigger they never had:
+`seating-room-layout` (TASK-344760, `SeatingPlannerLayout.js`) and `seating-table-types`
+(TASK-342308, `SeatingPlannerTableTypes.js`). So the remaining work is wiring, and persistence is
+already tracked on those two manifest rows — do not log a third.
+
