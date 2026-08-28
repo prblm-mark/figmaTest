@@ -143,7 +143,13 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  row-gap: var(--ai-spacing-2);
+  /* 4px (designer, 2026-08-28), tightening the wrapped rows. Was `--ai-spacing-2` (6px).
+   * FLAGGED: the mobile frame 3515:213426 still draws 6px here — its three meta items sit at
+   * y=0 and y=22 at 16px tall, so 22 - 16 = 6 — so Figma and code now differ by 2px on this one
+   * property until the frame is updated. Applied on the designer's explicit instruction, which
+   * the build-component rules accept as a source alongside a Figma binding; recorded so the next
+   * audit reads this as an intentional divergence rather than drift to be "corrected" back. */
+  row-gap: var(--ai-spacing-1);
   column-gap: var(--ai-spacing-4);
   inline-size: 100%;
   margin: 0;
@@ -429,8 +435,17 @@
   .seating-header__bar {
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--ai-spacing-4);
-    /* Asymmetric in Figma — 12px inline, 16px block. Not a step-down of the desktop 24. */
+    /* 16px (designer, 2026-08-28), up from `--ai-spacing-4`.
+     * FLAGGED: the mobile frame 3515:213426 still draws 12px here — inside its 170px
+     * Event-Info-Bar, Event-Details occupies y=16..110 and Global-Actions starts at y=122, so
+     * 122 - 110 = 12. Figma and code now differ by one step on this property until the frame is
+     * updated. `align-items: flex-start` is safe alongside the column direction only because
+     * `.seating-header__details` below sets `inline-size: 100%` explicitly — without that,
+     * flex-start would shrink-wrap every child once the direction flips. */
+    gap: var(--ai-spacing-5);
+    /* Asymmetric in Figma — 12px inline, 16px block. Not a step-down of the desktop 24.
+     * Both still match the frame: padding-block-start reads y=16 and the bar's own bottom
+     * padding reads 170 - 154 = 16. */
     padding-inline: var(--ai-spacing-4);
     padding-block: var(--ai-spacing-5);
   }

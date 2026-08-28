@@ -485,3 +485,34 @@ neighbour begins. Every button now owns all of its own pixels at both breakpoint
 AA target-size minimum (2.5.8, 24×24) — the 44 figure is Apple HIG / WCAG 2.5.5 AAA. The
 alternative is either overlapping a sibling control or widening Figma's 8px gap, which is a
 designer call.
+
+## Two designer-directed divergences from the mobile frame (2026-08-28)
+
+Both applied on explicit instruction, and both currently differ from what `3515:213426` draws.
+Recorded so the next audit reads them as intentional rather than as drift to be corrected back —
+if the frames are updated to match, delete this section.
+
+| Property | Code | Frame `3515:213426` | How the frame value was read |
+|---|---|---|---|
+| `.seating-header__meta` `row-gap` | `--ai-spacing-1` (4px) | **6px** | Its three meta items sit at y=0 and y=22 at 16px tall → 22 − 16 = 6 |
+| `.seating-header__bar` `gap` (mobile) | `--ai-spacing-5` (16px) | **12px** | Inside the 170px Event-Info-Bar, Event-Details occupies y=16..110 and Global-Actions starts at y=122 → 122 − 110 = 12 |
+
+Everything else in the mobile bar still matches the frame: `padding-inline` 12px and
+`padding-block` 16px (block-start reads y=16, block-end reads 170 − 154 = 16), and the asymmetry
+is real rather than a step-down of the desktop 24.
+
+`align-items: flex-start` alongside `flex-direction: column` is only safe because
+`.seating-header__details` sets `inline-size: 100%` two rules below. When the direction flips,
+`align-items` stops being a cross-axis alignment and becomes a WIDTH policy — anything but
+`stretch` shrink-wraps every child. The explicit width is what neutralises that here; do not
+remove it while leaving `flex-start` in place.
+
+### Measuring this component: there are TWO `.seating-header` in the Seating Planner
+
+One is `display: none` (the no-plans state) and one is live. An unscoped
+`querySelector('.seating-header__bar')` returns the hidden one first, which reports
+`width: 0`, `flex-direction: row` and the DESKTOP gap — indistinguishable from "the mobile
+container query never fired". That reading cost a diagnosis during this change. Select the first
+match with a non-zero box, and kill transitions (`*{transition:none!important}`) because they do
+not advance under headless Chrome's `--virtual-time-budget`.
+
