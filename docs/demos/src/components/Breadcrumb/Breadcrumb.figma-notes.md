@@ -156,3 +156,66 @@ No primitive Tailwind colours used. No hardcoded px / hex values (border widths 
   `get_variable_defs` on the separator (`2580:11172`) and home icon (`2580:11192`) nodes
   pinpointed `--ai-icon-contrast` vs `--ai-icon-secondary` respectively. The dropdown chevron
   icon node had no token binding — fell back to `currentColor` (documented in Token gap notes).
+
+## Truncation instead of wrapping (2026-08-28)
+
+`.breadcrumb__list` was `flex-wrap: wrap`. In the CC top nav that put the trail on two lines and grew
+the chrome to two rows — reported from a 302px device. A breadcrumb lives in a fixed-height bar, so
+it has to give way by truncating.
+
+### Why the obvious fix does nothing
+
+Setting `overflow: hidden; text-overflow: ellipsis` on `.breadcrumb__link` **does not work**, and it
+is worth knowing why before someone tries it again. `text-overflow` needs a **block container
+overflowing inline content**. A flex container's text becomes an anonymous flex item, which
+`text-overflow` cannot reach — so it clips FLUSH with no ellipsis.
+
+Measured with the properties on the link: `display: flex` (an `inline-flex` flex-item is blockified),
+`overflow: hidden`, `text-overflow: ellipsis`, `clientWidth` 40 against `scrollWidth` 42 — genuinely
+overflowing, still no ellipsis.
+
+### What actually works: the `<li>` is the ellipsis container
+
+| Element | Change | Why |
+|---|---|---|
+| `.breadcrumb__list` | `flex-wrap: nowrap`, `min-inline-size: 0` | stops the wrap; lets the list go under min-content so truncation is reachable |
+| `.breadcrumb__item` | `inline-flex` → **`block`** + `overflow: hidden` + `text-overflow: ellipsis` + `min-inline-size: 0` | a block container, so the ellipsis has something to apply to |
+| `.breadcrumb__link:not(--home)` | → `display: inline` | its text becomes inline content of that block |
+| `.breadcrumb__item:has(--home)`, `:has(__dropdown)` | `display: flex; align-items: center` | see the centring regression below |
+| `.breadcrumb__item:has(__dropdown)` | `flex-shrink: 0` | the head crumb holds its width |
+| `.breadcrumb__separator` | `flex-shrink: 0` | a half-clipped chevron reads as a fault, not truncation |
+
+Links here are **either text-only or icon-only** — `--home` is the only icon variant and carries no
+text — so nothing needs both a flex box and truncation. That is what makes this approach viable
+without adding a label span to 41 crumbs across 8 files.
+
+### Two regressions found by measuring, not by looking
+
+**The `<li>` losing `align-items: center` miscentred the home glyph** in 3 places in this component's
+own demo. An inline-flex child inside a block sits on the BASELINE, not centred. Fixed by giving the
+flex box back to exactly the crumbs that hold a control rather than text, via `:has()`.
+
+**`flex-shrink: 0` on the dropdown BUTTON did nothing** — the flex item of the list is the `<li>`, so
+the button held its own width while its container shrank underneath it, squashing the `<li>` to 36px
+against 102px of content and clipping the 16px chevron clean off. The rule has to sit on the `<li>`.
+
+### Verified
+
+Six consumers, 57 visible crumbs: zero wrapped lists, no miscentred icons, no horizontal overflow —
+Breadcrumb demo, TopNavigation, HeaderGroup, ControlScreen, ControlHub, SeatingPlanner at 390.
+
+Truncation itself, with a 32-character crumb forced into the CC top nav:
+
+| viewport | dropdown crumb | truncating crumb | ellipsis |
+|---|---|---|---|
+| 560 | 90/90 intact | 227/227 | not needed |
+| 390 | 90/90 intact | 124/227 | yes |
+| 375 | 90/90 intact | ~110/227 | yes |
+| 320 | 90/90 intact | ~60/227 | yes |
+| 302 | 90/90 intact | 36/227 | yes |
+
+**Accepted degradation:** below about 270px of bar the truncating crumb reaches 0 width and
+disappears, leaving its separator with nothing after it. No supported device is that narrow — 320 is
+the smallest common width and still shows "Events…" — so no floor was added. If one is ever wanted,
+it belongs as a `min-inline-size` on the truncating item, not as another breakpoint.
+
