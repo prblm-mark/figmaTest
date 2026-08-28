@@ -1,3 +1,22 @@
+/* ─── PARKED 2026-08-28 — NO FIGMA COMPONENT EXISTS ────────────────────────────────────
+ *
+ * Excluded from Code Connect by its `.parked` extension; publish is all-or-nothing.
+ *
+ * `4218-5304` fails as "node is not a top level component or component set", and there is no
+ * AssistantPopover component in the CC Hybrid file (see the sixteen-entry inventory listed in
+ * NotificationBadge.figma.ts.parked).
+ *
+ * Note the adjacency: `4218:4681` IS the IconNavigation set, so `4218-5304` is a sibling node
+ * in the same neighbourhood of the canvas — consistent with the popover having been drawn
+ * beside IconNavigation rather than published as a component. The nearest real candidate is the
+ * AiAssistant set (`4152:8323`), whose `Type` includes a **`Pop Over`** option — that may be
+ * where this design now lives, but repointing there would attach this markup to a different
+ * component, so it was NOT done without the designer confirming.
+ *
+ * TO REINSTATE: confirm whether AssistantPopover is AiAssistant's `Type=Pop Over` variant. If
+ * so, point at `4152:8323` with `variant: { Type: 'Pop Over' }`.
+ */
+
 import figma, { html } from '@figma/code-connect/html'
 
 figma.connect(

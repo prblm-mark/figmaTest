@@ -5,7 +5,7 @@ import figma, { html } from '@figma/code-connect/html'
 // `Type` changes exactly two things in CSS — the border colour and the icon colour — plus the
 // icon glyph, the ARIA role and the message, all of which differ per variant.
 //
-// `Show Cta` is a real boolean on the Figma component; the CTA is simply omitted from the markup
+// `Show CTA` is a real boolean on the Figma component; the CTA is simply omitted from the markup
 // when false, with no modifier, because the flex row closes up on its own.
 //
 // NOT the same component as Toast (src/components/Toast/). Figma names both just "Toast"; this is
@@ -40,7 +40,7 @@ figma.connect(
         Success: html`<strong>Helen Verity</strong> successfully assigned to <strong>Seat 2</strong>`,
         Error: html`<strong>Table 12</strong> is full, please assign to another table`,
       }),
-      cta: figma.boolean('Show Cta', {
+      cta: figma.boolean('Show CTA', {
         true: html`<button type="button" class="btn btn--secondary btn--xs seating-toast__cta">Undo</button>`,
         false: html``,
       }),

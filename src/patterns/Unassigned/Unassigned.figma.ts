@@ -70,8 +70,13 @@ figma.connect(
 
 // ── Type=Default: the empty state ────────────────────────────────────────────────────
 figma.connect(
-  'https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=3478-111940',
+  'https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=3478-111942',
   {
+    /* Connected on the component SET with a variant restriction, not on the variant node itself.
+     * Code Connect rejects a variant URL outright ("node is not a top level component or
+     * component set"), which is what kept this mapping unpublished. `variant` is the supported
+     * way to surface different markup per variant. */
+    variant: { Type: 'Default' },
     example: () => html`
       <section class="unassigned" aria-label="Unassigned attendees">
         <header class="unassigned__header">

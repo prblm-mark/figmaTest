@@ -1,3 +1,23 @@
+/* ─── PARKED 2026-08-28 — SCREEN FRAMES CANNOT BE CODE-CONNECTED ───────────────────────
+ *
+ * Excluded from Code Connect by the `.parked` extension; publish is all-or-nothing.
+ *
+ * All three mappings (3515-175956, 3515-176032, 3515-176082) fail as "corresponding node is
+ * not a component or component set". That is not a wrong pointer to be corrected — it is
+ * architectural: Code Connect attaches only to COMPONENT and COMPONENT_SET nodes, and these
+ * are standalone screen frames. This file's own original comment said as much:
+ * "the desktop and mobile frames are two standalone frames rather than variants of one set".
+ *
+ * There IS a `Seat Planner` COMPONENT_SET at 3108:6662 (props: Slot Search, Slots List, Slot,
+ * Tier, Device, Type), but it is a different, older artefact from these screens — repointing
+ * there would publish this markup against the wrong node, so it was NOT done.
+ *
+ * TO REINSTATE: the screens would have to become components in Figma. For full-screen
+ * templates that is unusual, so deleting this file may be the honest outcome — the template's
+ * own figma-notes.md already records the node IDs for traceability, which is what Code Connect
+ * would have been providing here.
+ */
+
 import figma, { html } from '@figma/code-connect/html'
 
 // Seating Planner screen, "No Event" state. Reuses the ControlScreen app-shell verbatim

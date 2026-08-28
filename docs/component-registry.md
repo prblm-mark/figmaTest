@@ -1,5 +1,14 @@
 # Component Registry
 
+> **Code Connect published 2026-08-28** — 75 of 86 mappings are live (47 Affino AI, 15 CC Hybrid,
+> 13 AI Chat). **11 connects across 6 components are PARKED** as `<Name>.figma.ts.parked` because
+> they cannot validate: AttendeeCard and AudioPlayer (duplicate variants in Figma invalidate their
+> sets' properties), RoomCard, NotificationBadge and AssistantPopover (no such Figma component),
+> and SeatingPlanner (maps screen frames, which Code Connect cannot attach to). Each parked file
+> names the exact Figma-side fix in its header. Publish is all-or-nothing, so these must stay
+> parked until fixed. See `docs/code-connect.md`.
+
+
 | Component | Tier | Status | Figma URL | Notes |
 |---|---|---|---|---|
 | ActionCard | component | Built | [node 2930:5757](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2930-5757) | `src/components/ActionCard/` — single-row card, fluid ellipsis title + trailing action. 2 Action variants × Default/Hover (CSS `:hover` border darken). Action=Button composes Button (Tertiary, **xs**); Action=Right Chevron renders as `<a>` with `chevron-right`. Height `--ai-spacing-10` (56px). |

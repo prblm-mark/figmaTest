@@ -93,8 +93,13 @@ figma.connect(
 
 // ── Type=Empty: a single empty segment and one legend row ────────────────────────────
 figma.connect(
-  'https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=3470-85482',
+  'https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=3470-85483',
   {
+    /* Connected on the component SET with a variant restriction, not on the variant node itself.
+     * Code Connect rejects a variant URL outright ("node is not a top level component or
+     * component set"), which is what kept this mapping unpublished. `variant` is the supported
+     * way to surface different markup per variant. */
+    variant: { Type: 'Empty' },
     props: {
       state: figma.enum('State', { Default: '', Selected: 'table-card--selected' }),
     },
@@ -142,8 +147,13 @@ figma.connect(
 
 // ── Type=Full: FullBadge beside the count, and no empty segment ──────────────────────
 figma.connect(
-  'https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=3472-85601',
+  'https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=3470-85483',
   {
+    /* Connected on the component SET with a variant restriction, not on the variant node itself.
+     * Code Connect rejects a variant URL outright ("node is not a top level component or
+     * component set"), which is what kept this mapping unpublished. `variant` is the supported
+     * way to surface different markup per variant. */
+    variant: { Type: 'Full' },
     props: {
       state: figma.enum('State', { Default: '', Selected: 'table-card--selected' }),
     },
