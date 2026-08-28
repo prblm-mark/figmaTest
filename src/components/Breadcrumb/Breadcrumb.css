@@ -16,21 +16,51 @@
 
 .breadcrumb__list {
   display: flex;
-  flex-wrap: wrap;
+  /* NOWRAP, changed from `wrap` 2026-08-28. Wrapping put the trail on two lines, and in the CC top
+   * nav that broke the bar: the 40px chrome grew to two rows at ~300px of column (screenshot from a
+   * 302px device). A breadcrumb has a fixed-height row to live in, so it has to give way by
+   * truncating rather than by growing. */
+  flex-wrap: nowrap;
   align-items: center;
   gap: var(--ai-spacing-2);
+  /* Lets the list shrink below its content width, which is what makes the ellipsis reachable —
+   * without it a flex item never goes under min-content and the trail just overflows instead. */
+  min-inline-size: 0;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
+/* BLOCK, not inline-flex (changed 2026-08-28). The `<li>` is the ellipsis container, and that is
+ * the whole trick: `text-overflow` needs a BLOCK container overflowing inline content, and it does
+ * nothing on a flex box — a flex container's text becomes an anonymous flex item, which
+ * `text-overflow` cannot reach. Measured before the change: the link reported
+ * `display: flex` (an `inline-flex` flex-item is blockified), `overflow: hidden`,
+ * `text-overflow: ellipsis`, and clientW 40 against scrollW 42 — i.e. genuinely overflowing and
+ * still clipping FLUSH, with no ellipsis drawn.
+ *
+ * Vertical centring survives the change: `height` and `line-height` are both `--ai-leading-md`, so
+ * a single line of text sits centred without needing `align-items`. */
 .breadcrumb__item {
-  display: inline-flex;
-  align-items: center;
+  display: block;
   height: var(--ai-leading-md);
   font-size: var(--ai-font-fixed-xs);
   line-height: var(--ai-leading-md);
+  /* Same reason as the list: each crumb must be allowed under its own min-content. */
+  min-inline-size: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
+
+/* Chevrons never absorb the squeeze — they are 16px of meaning, and a half-clipped chevron reads
+ * as a rendering fault rather than as truncation. The text is what gives way. */
+.breadcrumb__separator {
+  flex-shrink: 0;
+}
+
+/* The current item needs nothing extra — its text is a direct child of the `<li>`, which is now the
+ * ellipsis container, so it truncates by inheritance. */
 
 /* Link items (clickable crumbs) */
 .breadcrumb__link {
@@ -45,6 +75,56 @@
 
 .breadcrumb__link:hover {
   color: var(--ai-text-primary);
+}
+
+/* Items whose content is a FLEX CONTROL get their flex box back. The `<li>` became `display: block`
+ * so `text-overflow` could reach its text, but that also dropped `align-items: center` — and an
+ * inline-flex child in a block sits on the BASELINE, not centred. Measured: the home glyph came out
+ * miscentred in 3 places in the Breadcrumb demo.
+ *
+ * Scoped with `:has()` to exactly the two crumbs that hold a control rather than text, neither of
+ * which has anything to truncate: `--home` is icon-only, and the dropdown deliberately does not
+ * truncate (see below). Plain text crumbs keep the block box and the ellipsis. */
+.breadcrumb__item:has(.breadcrumb__link--home),
+.breadcrumb__item:has(.breadcrumb__dropdown) {
+  display: flex;
+  align-items: center;
+}
+
+/* A text-only link is INLINE, so its text is inline content of the `<li>` block above and the
+ * ellipsis reaches it. Links in this component are either text-only or icon-only — `--home` is the
+ * only icon variant and carries no text — so nothing needs both a flex box and truncation.
+ *
+ * `--home` therefore keeps the flex box it needs to centre its glyph. */
+.breadcrumb__link:not(.breadcrumb__link--home) {
+  display: inline;
+}
+
+/* The dropdown crumb does NOT truncate: it is a zone/site name at the head of the trail, it is the
+ * one crumb whose loss makes the rest ambiguous, and it needs its flex box for the chevron. It
+ * holds its width and the crumbs after it give way instead.
+ *
+ * `flex-shrink` has to go on the `<li>`, NOT on the button. The flex item of the list is the `<li>`;
+ * a `flex-shrink: 0` on the button inside it does nothing, because the button is not what the list
+ * is distributing space between. Measured with it on the button: the dropdown's `<li>` still
+ * reported `flex-shrink: 1` and was squashed to 36px against 102px of content, which clipped the
+ * 16px chevron clean off — the button held its own width and its container shrank underneath it.
+ *
+ * Also why the dropdown must not truncate rather than merely preferring not to: its text sits in a
+ * flex box, so `text-overflow` cannot reach it (same trap as the links, see `__item` above) and it
+ * would clip FLUSH rather than ellipsis. If a zone name ever needs truncating, wrap its text in a
+ * span at that point. */
+.breadcrumb__item:has(.breadcrumb__dropdown) {
+  flex-shrink: 0;
+}
+
+/* Icons inside a crumb hold their size — the home glyph and the dropdown chevron both carry
+ * meaning, and clipping either looks broken rather than truncated. */
+.breadcrumb__link [data-lucide],
+.breadcrumb__link svg,
+.breadcrumb__dropdown [data-lucide],
+.breadcrumb__dropdown svg {
+  flex-shrink: 0;
 }
 
 /* Current page (last item, non-clickable) */
