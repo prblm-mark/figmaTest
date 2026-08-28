@@ -672,3 +672,61 @@
     min-inline-size: 0;
   }
 }
+
+/* ── Edit Plan modal (Figma 3515:176248 desktop / 3515:227054 mobile) ───────────────────────────
+ * A separate modal from create-plan (designer, 2026-08-28), editing only Plan name and
+ * Room / location. Everything structural comes from Modal: `--ai-size-9` (512px) width,
+ * `--ai-radius-lg`, `--ai-surface-elevated-1`, and the 24px header/body/footer padding — all
+ * confirmed on the frame's own variable defs, so nothing is re-declared here.
+ *
+ * Only two things are local: the absolutely-positioned help toggle, and the field stack's gap.
+ *
+ * These mirror `.create-plan__*` almost exactly. That duplication is the accepted cost of the
+ * separate-modal decision; if a third plan modal appears, extract the toggle then. */
+
+.edit-plan__form {
+  position: relative;
+  inline-size: 100%;
+}
+
+/* 16px between the two fields. From the frame: the Inputs sit at y=0 and y=80 inside a 144px-tall
+ * content frame and are 64 tall each (16 label + 8 gap + 40 field), so 80 - 64 = 16. */
+.edit-plan__fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+}
+
+/* Out of flow, pinned to the first label's line — the same treatment create-plan uses, including
+ * the 1px block padding that optically centres the 12px track against the 16px label. */
+.edit-plan__help-toggle {
+  position: absolute;
+  inset-inline-end: 0;
+  inset-block-start: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  padding-block: var(--ai-spacing-px);
+}
+
+.edit-plan__help-label {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-4xs);
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* Help lines are hidden until the toggle is on — both frames draw the Inputs with their Help Slot
+ * hidden, which is the toggle's off state. An error still shows regardless: `.input--error
+ * .input__help` is the error line, so silencing hints must not silence errors. */
+.edit-plan__form:not(.edit-plan__form--help) [data-ep-field]:not(.input--error) .input__help {
+  display: none;
+}
+
+/* An empty help paragraph would still occupy its line box and push the field stack. */
+.edit-plan__form .input__help:empty {
+  display: none;
+}

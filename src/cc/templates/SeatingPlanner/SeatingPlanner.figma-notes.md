@@ -928,3 +928,76 @@ It also matters beyond the bar: this screen's chrome height is already pinned to
 (the reason the chrome's bottom border was removed — it had been rendering 49 against Figma's 48).
 Letting the bar collapse to 40 would leave the chrome 8px taller than its content.
 
+## Edit Plan modal (2026-08-28)
+
+Figma **3515:176248** desktop / **3515:227054** mobile, both named "Edit Plan". A modal over the
+existing plan screen — the shell, header and table listing are unchanged.
+
+**A separate modal from create-plan, by the designer's decision.** It is that modal minus Tables,
+Seats / table and Table shape, so a two-mode version of one modal was the alternative; the designer
+chose separate markup. The duplication is therefore deliberate: the help toggle and both fields
+mirror `.create-plan__*`. If a third plan modal appears, that is the point to extract the toggle
+into a shared class rather than copy it a third time.
+
+| | Edit Plan | create-plan |
+|---|---|---|
+| fields | Plan name, Room / location | + Tables, Seats/table, Table shape |
+| subtitle | **none** (Figma hides Sub Title and Sub Text) | the event name |
+| primary button | **Save** | Create plan |
+| help toggle | yes, at **every** width (designer) | yes |
+
+### Everything structural comes from Modal
+
+Nothing about the box is re-declared: width `--ai-size-9` (512px), `--ai-radius-lg`,
+`--ai-surface-elevated-1` and the 24px header/body/footer padding are all Modal's, and all four
+appear in this frame's own `get_variable_defs`. Measured after the build: **512×332 desktop**, which
+is Figma's frame size exactly. Mobile renders 338×300.
+
+Only two things are local — the absolutely-positioned help toggle, and the 16px gap between the two
+fields (`--ai-spacing-5`, derived from the frame: Inputs at y=0 and y=80, 64 tall each).
+
+### Trigger and behaviour
+
+Opened by a **room card's pencil**, pre-filled from that card (designer's choice; both frames show
+the pencil, and the mobile frame highlights that card).
+
+The hook is an explicit `data-ep-open`, not the icon or the aria-label, for two independent reasons:
+`createIcons()` **consumes** `data-lucide` — the `<i>` becomes `<svg class="lucide-pencil">` — so an
+icon-attribute selector silently stops matching after init; and `aria-label^="Edit"` would also
+catch all **twelve** TableCard pencils on this screen. There is exactly one room-card edit button
+here and thirteen "Edit …" buttons in total.
+
+Saving does four things, all verified:
+
+| | before | after |
+|---|---|---|
+| room card name | Main Ballroom | Grand Hall |
+| toolbar active-plan label | Main Ballroom | Grand Hall |
+| edit button aria-label | Edit Main Ballroom | Edit Grand Hall |
+| stored room (`data-ep-room`) | — | Level 2, East Wing |
+
+The toolbar sync is guarded twice: only when the edited card is `--selected`, and only when the
+toolbar's current text still matches the *previous* name — so renaming an inactive card leaves the
+header alone, and a stale label is never overwritten with the wrong plan's name.
+
+**The room round-trips via `data-ep-room` on the card.** RoomCard has nowhere to *display* a room
+(it shows tables, seats and a progress bar), so without stashing it the field would open blank every
+time and silently discard whatever was typed. The manifest's `seating-edit-plan` row documents the
+prototype as updating the room on save, so dropping it would have been a regression against
+documented behaviour rather than a simplification.
+
+### Divergences, both minor and deliberate
+
+- **Room placeholder** reads `e.g. Great room`, matching create-plan's convention on the same
+  screen. Figma's field shows `Great Room` — but both of Figma's fields are drawn in placeholder
+  grey, i.e. it is illustrating the empty state rather than specifying copy, and the name field
+  really is pre-filled in the built version.
+- **Help copy** for Plan name is "The name this plan appears under". Figma hides both Help Slots
+  (the toggle's off state), so it specifies no hint text; the room's reuses create-plan's wording.
+
+### Also seen in the desktop frame, NOT built
+
+The toolbar's Management-Buttons group has **four** buttons (101 / 118 / 112 / 111) where the
+current build has three — Room Layout 118, Add Table 101, Export 111. The 112px one is **new and
+unidentified**, and nothing in the frame names it. Flagged rather than guessed at.
+
