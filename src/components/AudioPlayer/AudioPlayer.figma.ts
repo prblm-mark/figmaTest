@@ -1,23 +1,3 @@
-/* ─── PARKED 2026-08-28 — blocked by a DUPLICATE VARIANT in Figma ───────────────────────
- *
- * Same defect and same reason as AttendeeCard (see that file's header). Excluded from Code
- * Connect by the `.parked` extension; publish is all-or-nothing.
- *
- * The Article Audio Player set (3069:5884) has TWO variants named
- * `Tier=Component, Type=Playing, Device=Mobile` — `3076:4190` and `3069:7076` — which
- * invalidates the set's properties, so this mapping's `Type` reports as "does not exist".
- *
- * Likely the intended fix rather than a straight delete: the duplicate `3069:7076` is **120px**
- * tall where the real `Type=Playing, Device=Mobile` is 102px, and the desktop `Type=Sticky` is
- * 108px. So `3069:7076` looks like the MOBILE STICKY variant with its Type left on `Playing`.
- * Worth checking before deleting it — deleting would lose the mobile sticky design.
- *
- * Note `.Article Audio Player _ Legacy` (3055:5458) still reports a healthy
- * `['Tier', 'Type', 'Device']`, which is what this set looked like before the duplicate.
- *
- * TO REINSTATE: fix the variant's Type in Figma, rename back to `AudioPlayer.figma.ts`, publish.
- */
-
 import figma, { html } from '@figma/code-connect/html'
 
 /**

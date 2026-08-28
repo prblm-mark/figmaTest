@@ -180,15 +180,37 @@ in `get_code_connect_map`, including the `--selected` combinations.
 | `showSubText` | `Show Sub Text` |
 | `filterName` | `Filter Name` |
 
-**(b) A duplicate variant in Figma.** If a component set contains two variants with the identical
-name (e.g. two `Type=Empty, State=Default`), the set's property definitions are invalidated and
-**every** property reports as non-existent — even ones plainly visible in the variant names. Both
-Attendee Card (`3474:89292`) and Article Audio Player (`3069:5884`) had this.
+**(b) A VARIANT-NAME COLLISION in Figma.** If a component set contains two variants with the
+identical name (e.g. two `Type=Empty, State=Default`), the set's property definitions are
+invalidated and **every** property reports as non-existent — even ones plainly visible in the
+variant names. Both Attendee Card (`3474:89292`) and Article Audio Player (`3069:5884`) had this.
 
 The tell is a contradiction from `list_file_components_for_code_connect`: `hasVariants: true`
 alongside `properties: {}`. When you see that pairing, call `get_metadata` on the set and look for
-two children with the same name — it is a Figma defect, not a mapping bug, and no code change can
-fix it.
+two children with the same name. It is a Figma defect, not a mapping bug — no code change fixes it.
+
+**Do not assume the fix is to delete one.** A collision means a variant is *mislabelled*, and the
+missing label is usually the point. Both cases here were resolved by correcting the label, and
+deleting would have destroyed real design work:
+
+| Set | I called it | It actually was |
+|---|---|---|
+| Attendee Card | a redundant copy, safe to delete | a variant with its **State** left on `Default` — it is the `Empty / Dragged Over` design |
+| Article Audio Player | a duplicate | a variant with its **Type** left on `Playing` — it is the `Sticky / Mobile` design |
+
+I reached "safe to delete" on Attendee Card by comparing `get_metadata` output and finding the two
+subtrees byte-identical in size, children and coordinates. That reasoning is unsound: **a state
+variant often differs only in PAINT, and `get_metadata` does not report paint.** Geometric identity
+is therefore not evidence of duplication. Two ways to tell them apart properly:
+
+- **Position.** Variant sets are laid out in a grid by axis. The Audio Player's rows are Default
+  (y≈107), Playing (y≈376), Sticky (y≈604); the mislabelled node sat at **y=604** — in the Sticky
+  row, next to the desktop Sticky — and was the only mobile variant not 102px tall. That alone
+  identified the intended label before the designer confirmed it.
+- **`get_design_context`**, which does return fills, on both nodes.
+
+The safe recommendation is always "one of these is mislabelled — which axis value is missing?",
+never "delete the duplicate".
 
 ### Getting the authoritative node IDs
 
