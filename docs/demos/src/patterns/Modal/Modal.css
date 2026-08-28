@@ -18,6 +18,16 @@
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
   width: var(--ai-size-9); /* 512px — default */
   max-width: 100%;
+  /* Cap the HEIGHT too (2026-08-27, from Samsung S23 testing). Without it a modal grows to its
+   * content height and, being centred in a flex overlay, overflows equally past the overlay's
+   * padding on both sides — so the 24px gap became about 5px and the dialog looked pinned to the
+   * top and bottom edges of the phone. `100%` is the overlay's CONTENT box, so the padding is
+   * now respected and the modal shrinks instead.
+   *
+   * Nothing more is needed for the content: a growable middle region such as
+   * `.event-picker__list` already sets `overflow-y: auto`, which makes its automatic minimum
+   * size zero, so it absorbs the reduction and scrolls. */
+  max-block-size: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -392,6 +402,25 @@
 
 .modal-overlay--open {
   display: flex;
+}
+
+/* ── Overlay padding, narrow ─────────────────
+ * 32, not 24 (2026-08-27). The designer reported the dialog feeling too close to the top and
+ * bottom of the phone. The real bug was the modal overflowing its padding entirely — fixed by
+ * `max-block-size: 100%` on `.modal` — but 24px on a ~540px-tall visible area still reads tight.
+ *
+ * Figma already implied 32: the create-plan MOBILE frame is 338 wide inside a 402 viewport, a
+ * discrepancy recorded in Modal.figma-notes when that screen was built and left alone because
+ * nothing depended on it. It does now.
+ *
+ * Deliberately placed HERE, after the base rule, and NOT in the `Size=sm` media block above —
+ * that block sits earlier in the file, so an equally specific `.modal-overlay` override inside it
+ * silently loses to the base declaration below it. Measured: padding stayed 24px. Moving the rule
+ * is the fix; raising specificity to force it would have hidden the ordering problem. */
+@media (max-width: 639px) {
+  .modal-overlay {
+    padding: var(--ai-spacing-7);
+  }
 }
 
 /* ── Scrim per theme ─────────────────────────

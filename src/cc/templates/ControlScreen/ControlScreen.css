@@ -16,8 +16,20 @@
 .cc-control {
   display: flex;
   align-items: stretch;
+  /* `vh` first as the fallback, then `dvh` (2026-08-27, from Samsung S23 testing).
+   *
+   * On mobile Chrome `100vh` is the LARGE viewport — the height the page would have if the URL
+   * bar were hidden. With the bar showing, a 100vh shell therefore runs about 75px BELOW the
+   * fold, which is why the empty-state sheets had their bottom edge and rounded corner cut off
+   * on the device while looking correct in a desktop window.
+   *
+   * `dvh` tracks the visible viewport as the browser chrome shows and hides, so the shell always
+   * fits. `svh` would also never overflow but leaves dead space once the bar retracts. Browsers
+   * without `dvh` keep the `vh` line above. */
   min-height: 100vh;
   height: 100vh;
+  min-height: 100dvh;
+  height: 100dvh;
   margin: 0;
   background: var(--cc-ui-primary-bg);
   font-family: var(--ai-font-body);
@@ -25,7 +37,10 @@
 
 .cc-control__sidebar {
   flex: 0 0 auto;
+  /* Same dvh reasoning as `.cc-control` above — the rail must match the shell exactly or it
+   * either falls short of the fold or pushes past it. */
   height: 100vh;
+  height: 100dvh;
   min-width: 0;
   /* Stack above .cc-control__main so the cc-sidebar-menu's right-
    * edge drop shadow (var(--ai-shadow-cc-rail), applied when the menu
