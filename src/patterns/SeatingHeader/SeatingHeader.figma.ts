@@ -11,9 +11,14 @@ import figma, { html } from '@figma/code-connect/html'
 // Figma names this component "Header"; it is filed as SeatingHeader because
 // src/patterns/Header is a different, unrelated component (the AI-Chat header).
 //
-// Two scripts are required alongside this markup: Toggle.js (the switch owns its own flip)
-// and SeatingHeader.js (mouse drag for the scrollbar-less plans carousel; touch and
-// keyboard need nothing).
+// THREE scripts are required alongside this markup: Toggle.js (the switch owns its own flip),
+// SeatingHeader.js (mouse drag for the scrollbar-less plans carousel; touch and keyboard need
+// nothing) and Dropdown.js for the toolbar overflow menu — an ES module, so `type="module"`.
+//
+// The Type axis gained two values on 2026-08-28 — `Menu >1200` (3585:110311) and `Menu <1024`
+// (3585:110436) — which are NOT data like `No Plans` / `Has Plans`: they document how the toolbar
+// reflows, which is CSS. They are deliberately absent from the `plans` enum below, because mapping
+// them would publish a second and third markup for what is one component at different widths.
 //
 // Note the toolbar keeps its compact form up to 1023px, not 767px — so the room label is
 // stacked and the toggle, divider and "Room Layout" button are absent at tablet widths.
@@ -116,10 +121,33 @@ figma.connect(
               </button>
             </div>
           </div>
-          <!-- Figma draws a bare 20px icon; built as a real <button> for keyboard and touch. -->
-          <button type="button" class="seating-header__more" aria-label="More seating actions">
-            <i data-lucide="ellipsis-vertical" aria-hidden="true"></i>
-          </button>
+          <!-- Overflow menu. Figma draws a bare 20px icon plus a Dropdowns instance
+               (3585:110482); built by composing Dropdown, so open/close, outside-click, Escape and
+               focus return all come from Dropdown.js. Needs Dropdown.css + Dropdown.js on the page.
+               Room Layout appears here only below container 1200 — the CSS swaps it with the
+               toolbar button, so both copies must bind the same handler.
+               NO BACKTICKS in this comment: it sits inside a tagged template literal, so a
+               backtick terminates the template. See docs/code-connect.md. -->
+          <div class="dropdown seating-header__menu">
+            <button type="button" class="seating-header__more dropdown__trigger"
+                    aria-haspopup="menu" aria-expanded="false" aria-label="More seating actions">
+              <i data-lucide="ellipsis-vertical" aria-hidden="true"></i>
+            </button>
+            <div class="dropdown__panel" role="menu" aria-label="More seating actions">
+              <ul class="dropdown__list">
+                <li role="none" class="seating-header__menu-item--layout">
+                  <button type="button" class="dropdown-item" role="menuitem">
+                    <i data-lucide="grid-3x3" aria-hidden="true"></i><span data-text="Room Layout">Room Layout</span>
+                  </button>
+                </li>
+                <li role="none">
+                  <button type="button" class="dropdown-item" role="menuitem">
+                    <i data-lucide="file-text" aria-hidden="true"></i><span data-text="Table Types">Table Types</span>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>`,
         'No Plans': html``,
       }),

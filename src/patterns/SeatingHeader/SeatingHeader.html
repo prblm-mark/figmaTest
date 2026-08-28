@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="../../components/Toggle/Toggle.css">
   <link rel="stylesheet" href="../../components/FullBadge/FullBadge.css">
   <link rel="stylesheet" href="../../components/RoomCard/RoomCard.css">
+  <link rel="stylesheet" href="../../components/Dropdown/Dropdown.css">
   <link rel="stylesheet" href="SeatingHeader.css">
   <script>
     /* ?frame=mobile marks this document as the one INSIDE the mobile preview iframe, so the
@@ -197,9 +198,43 @@
           </button>
         </div>
       </div>
-      <button type="button" class="seating-header__more" aria-label="More seating actions">
-        <i data-lucide="ellipsis-vertical" aria-hidden="true"></i>
-      </button>
+      <!-- Overflow menu. Composes Dropdown (Figma instances `Dropdowns` here, node 3585:110482),
+           so open/close, outside-click dismiss, Escape and focus return all come from Dropdown.js
+           — this pattern adds no menu behaviour of its own. The trigger keeps the kebab's own
+           class for its icon-only look and 36x44 hit area; `dropdown__trigger` is what Dropdown.js
+           binds to, and it does not require the trigger to be a `.btn`.
+
+           Room Layout appears here only below 1200 — see the CSS. It is a SECOND copy of the
+           toolbar button's action, not a move: CSS cannot relocate a node, so the button and the
+           menu item swap visibility. Both must stay wired to the same handler when one exists. -->
+      <div class="dropdown seating-header__menu">
+        <button type="button" class="seating-header__more dropdown__trigger"
+                aria-haspopup="menu" aria-expanded="false" aria-label="More seating actions">
+          <i data-lucide="ellipsis-vertical" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown__panel" role="menu" aria-label="More seating actions">
+          <ul class="dropdown__list">
+            <li role="none" class="seating-header__menu-item--layout">
+              <button type="button" class="dropdown-item" role="menuitem">
+                <i data-lucide="grid-3x3" aria-hidden="true"></i><span data-text="Room Layout">Room Layout</span>
+              </button>
+            </li>
+            <!-- TODO(backend:SeatingPlanner): both items are UNWIRED TRIGGERS, not missing features.
+                 Each already has a working prototype whose trigger this menu is meant to be:
+                   Room Layout -> seating-room-layout   (TASK-344760, SeatingPlannerLayout.js)
+                   Table Types -> seating-table-types   (TASK-342308, SeatingPlannerTableTypes.js)
+                 Those prototypes open their own popups from "the toolbar's tier-colours control",
+                 which is what Figma 3585:110311 / 3585:110436 have now formalised as this menu. So
+                 the work here is wiring, and persistence is already tracked on those two manifest
+                 rows — do NOT log a third. -->
+            <li role="none" data-backend-todo="seating-table-types">
+              <button type="button" class="dropdown-item" role="menuitem">
+                <i data-lucide="file-text" aria-hidden="true"></i><span data-text="Table Types">Table Types</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -431,6 +466,10 @@
   <!-- Toggle owns its own flip since 2026-08-26. Showing/hiding the unassigned tray is the
        parent module's job, not this pattern's — listen for `toggle:change`. -->
   <script src="../../components/Toggle/Toggle.js"></script>
+  <!-- Dropdown.js drives the toolbar overflow menu. It is an ES MODULE, so it needs
+       type="module" and must be served over http:// — a file:// open silently fails with
+       an empty error. It self-initialises every `.dropdown` on DOMContentLoaded. -->
+  <script type="module" src="../../components/Dropdown/Dropdown.js"></script>
   <!-- Drag-to-scroll for the room-plans carousel, which hides its scrollbar. Touch swipes
        natively and needs no JS; this adds mouse drag and the grab cursor. -->
   <script src="SeatingHeader.js"></script>

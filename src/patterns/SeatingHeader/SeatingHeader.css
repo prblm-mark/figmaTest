@@ -38,28 +38,48 @@
    * collapsed to **2px** — no room plan, no toolbar, the action buttons sliced in half. The
    * mechanism is worth remembering, because the usual protection silently does not apply here:
    * a flex item's automatic minimum size (`min-height: auto`) only protects items whose
-   * `overflow` is `visible`. This root sets `overflow: hidden` just below, to keep the room
-   * carousel inside the radius — which means its automatic minimum is ZERO and it will happily
-   * collapse to nothing and clip, rather than refusing to shrink. So when a sibling demanded
-   * more height than the column had, the entire shortfall came out of this element.
+   * `overflow` is `visible`. This root USED TO set `overflow: hidden` — which made its automatic
+   * minimum ZERO, so it collapsed to nothing and clipped rather than refusing to shrink, and any
+   * shortfall a sibling caused came entirely out of this element.
    *
-   * With `flex-shrink: 0` the overflow goes to the scroll container instead, which is the
-   * correct failure mode: content stays visible and reachable. */
+   * That clip was removed on 2026-08-28 (see below), so the automatic minimum would now protect
+   * it. `flex-shrink: 0` is KEPT anyway: it states the intent directly rather than relying on a
+   * default that a future `overflow` change would silently switch off again — which is exactly how
+   * the 2px collapse happened. With it, overflow goes to the scroll container instead, the correct
+   * failure mode: content stays visible and reachable. */
   flex-shrink: 0;
   border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-lg);
   background-color: var(--ai-surface-primary);
-  /* Figma sets overflow-clip on the frame; keeps the room-selector scroller and the
-   * child cards inside the radius. */
-  overflow: hidden;
+  /* NO `overflow: hidden` here (removed 2026-08-28). It used to clip the whole component, which
+   * made the toolbar's overflow menu impossible: Figma draws that panel 48px BELOW the header's
+   * bottom edge (3585:110311 — Toolbar y=224..288 in a 288-tall symbol, Dropdowns y=272..336), and
+   * an absolutely-positioned panel inside a clipped ancestor simply disappears.
+   *
+   * The clip was only ever protecting the radius. What actually needs clipping is the
+   * room-selector carousel, and `.seating-header__rooms` already does that itself with
+   * `overflow-x: auto`. So the corners are now held by the first and last rows carrying their own
+   * radii instead — see the two rules below. */
 }
 
-/* Only Event-Info-Bar and Room-Selector-Bar carry a bottom rule in Figma; Toolbar has
- * none. That works out on Type=Has Plans, where Toolbar is last — but on Type=No Plans
- * the event bar IS last, and its rule would sit directly on top of the root's own
- * border, reading as a 2px line at the rounded bottom edge. Suppressed here so the
- * rule always does its actual job: separating the bar from what follows. */
+/* The rounded corners, previously a side effect of the root's `overflow: hidden`. Both the event
+ * bar and the toolbar paint `--ai-surface-primary`, so without this they square off the corners —
+ * the exact failure mode recorded against SystemRole's minimised mode. Applied to whichever rows
+ * happen to be first and last, because Type=No Plans has no toolbar and the bar is then both. */
+.seating-header > :first-child {
+  border-start-start-radius: var(--ai-radius-lg);
+  border-start-end-radius: var(--ai-radius-lg);
+}
+
+/* Bottom corners, plus the bottom-rule suppression — one rule, since both target the last row.
+ *
+ * On the rule: only Event-Info-Bar and Room-Selector-Bar carry a bottom border in Figma; Toolbar
+ * has none. That works out on Type=Has Plans, where Toolbar is last — but on Type=No Plans the
+ * event bar IS last, and its rule would sit directly on the root's own border, reading as a 2px
+ * line at the rounded bottom edge. */
 .seating-header > :last-child {
+  border-end-start-radius: var(--ai-radius-lg);
+  border-end-end-radius: var(--ai-radius-lg);
   border-block-end: 0;
 }
 
@@ -371,6 +391,25 @@
  * focusable nor keyboard-operable (CLAUDE.md §9). The ::after stretches the hit area to
  * the 44x44 minimum without disturbing the 20px icon Figma draws — the same stretched-
  * trigger pattern RoomCard uses for its card select. */
+/* ── Toolbar overflow menu ──────────────────────────────────────────────────
+ * Composes Dropdown. Only the bits Dropdown cannot know are set here: that the root must not
+ * shrink in the toolbar row, and that the panel hangs off the RIGHT edge because the trigger sits
+ * at the end of the row. Dropdown's own panel is `left: 0`, which would push it off-screen. */
+.seating-header__menu {
+  flex-shrink: 0;
+}
+
+.seating-header__menu .dropdown__panel {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+}
+
+/* Room Layout lives in the toolbar above 1200 and in this menu below it, so exactly one of the
+ * two is visible at any width. Default state is the >=1200 one: button shown, menu item hidden. */
+.seating-header__menu-item--layout {
+  display: none;
+}
+
 .seating-header__more {
   position: relative;
   display: flex;
@@ -568,6 +607,37 @@
  * as a misalignment defect rather than a compact layout. Flagged in figma-notes — say the
  * word and it moves.
  */
+/* ── Room Layout moves into the overflow menu below 1200 ────────────────────
+ * New behaviour 2026-08-28, from the designer's two menu frames:
+ *   Type=Menu >1200 (3585:110311) — 1552 wide, Management-Buttons holds THREE buttons
+ *                                   (118 Room Layout, 101 Add, 111 Export), menu has 1 item
+ *   Type=Menu <1024 (3585:110436) — 1100 wide, Management-Buttons holds TWO (101, 111),
+ *                                   menu grows 176x64 -> 176x96, i.e. one 32px row taller
+ *
+ * So Room Layout is the item that relocates, and Table Types is the menu's permanent entry.
+ *
+ * Before this, the toolbar kept all three buttons down to 1024 and then collapsed everything at
+ * once — measured: at container 1054 Room Layout was still a 125px button, at 963 it was
+ * `display: none` and simply UNREACHABLE. The menu now gives it somewhere to go, so nothing is
+ * lost at any width.
+ *
+ * CSS cannot move a node, so the button and the menu item are two copies of one action whose
+ * visibility swaps here. Anything that wires up Room Layout must bind BOTH.
+ *
+ * 1199 not 1200: `max-width` is inclusive, so this must stop one pixel below the 1200 the frame
+ * is named for. The band this opens is 1024-1199; below 1024 the existing mobile rules take over
+ * and the menu keeps both items (designer, 2026-08-28 — Add and Export stay visible at mobile,
+ * exactly as the current build has them). */
+@container seating-header (max-width: 1199px) {
+  .seating-header__btn--layout {
+    display: none;
+  }
+
+  .seating-header__menu-item--layout {
+    display: block;
+  }
+}
+
 @container seating-header (max-width: 1023px) {
   /* The room label and its count stack. The 2px gap is a designer call 2026-08-26, not a
    * Figma value — Figma's mobile variant binds --ai-spacing-1 (4px). Same tightening taken
@@ -613,13 +683,11 @@
     gap: var(--ai-spacing-2);
   }
 
-  /* The compact toolbar reduces three buttons to two: "Room Layout" goes entirely and "Export"
-   * becomes icon-only. "Add Table" KEEPS ITS FULL LABEL here as of 2026-08-28 — see the
-   * export-scoped clip below. Those are CONTENT changes across Figma's Device axis, so they are
-   * done here rather than by shipping two markups. */
-  .seating-header__btn--layout {
-    display: none;
-  }
+  /* The compact toolbar keeps two buttons and turns "Export" icon-only. "Add Table" KEEPS ITS
+   * FULL LABEL here as of 2026-08-28 — see the export-scoped clip below. "Room Layout" is already
+   * gone by this width: it leaves the toolbar at 1199 and moves into the overflow menu, in the
+   * block ABOVE this one. Those are CONTENT changes across Figma's Device axis, so they are done
+   * here rather than by shipping two markups. */
 
   /* EXPORT ONLY (designer, 2026-08-28). This was an unscoped `.seating-header__btn-shrink`, which
    * caught the Add button too and gave it a third, intermediate label: "Add Table" -> "Add" ->

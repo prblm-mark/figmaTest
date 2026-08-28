@@ -633,9 +633,35 @@
               </button>
             </div>
           </div>
-          <button type="button" class="seating-header__more" aria-label="More seating actions">
-            <i data-lucide="ellipsis-vertical" aria-hidden="true"></i>
-          </button>
+          <!-- Overflow menu — composes Dropdown (Figma instances `Dropdowns`, 3585:110482), so
+               open/close, outside-click, Escape and focus return come from Dropdown.js, already
+               loaded at the foot of this page. Room Layout shows here only below 1200; see
+               SeatingHeader.css. -->
+          <div class="dropdown seating-header__menu">
+            <button type="button" class="seating-header__more dropdown__trigger"
+                    aria-haspopup="menu" aria-expanded="false" aria-label="More seating actions">
+              <i data-lucide="ellipsis-vertical" aria-hidden="true"></i>
+            </button>
+            <div class="dropdown__panel" role="menu" aria-label="More seating actions">
+              <ul class="dropdown__list">
+                <li role="none" class="seating-header__menu-item--layout">
+                  <button type="button" class="dropdown-item" role="menuitem">
+                    <i data-lucide="grid-3x3" aria-hidden="true"></i><span data-text="Room Layout">Room Layout</span>
+                  </button>
+                </li>
+                <!-- TODO(backend:SeatingPlanner): both items are UNWIRED TRIGGERS, not missing
+                     features. Room Layout -> seating-room-layout (TASK-344760); Table Types ->
+                     seating-table-types (TASK-342308). Both prototypes exist and open their own
+                     popups; this menu is the trigger Figma has now formalised. Persistence is
+                     already tracked on those manifest rows. -->
+                <li role="none" data-backend-todo="seating-table-types">
+                  <button type="button" class="dropdown-item" role="menuitem">
+                    <i data-lucide="file-text" aria-hidden="true"></i><span data-text="Table Types">Table Types</span>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </section>
 
