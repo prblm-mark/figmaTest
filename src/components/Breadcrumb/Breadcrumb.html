@@ -17,6 +17,11 @@
       background: var(--ai-surface-primary);
       border-radius: var(--ai-radius-lg);
       margin-bottom: var(--ai-spacing-5);
+      /* Breadcrumb's sub-640 gap block uses an ANONYMOUS `@container`, which resolves to the
+         nearest ancestor container. In the CC shell that is `.cc-top-navigation`; a standalone demo
+         has no shell, so without a container here the block could never fire and this page would
+         silently misrepresent the component. CLAUDE.md §4a. */
+      container-type: inline-size;
     }
     /* Give the Dropdown demo enough vertical room for open panels */
     .demo-section--dropdown { min-height: 18rem; }
