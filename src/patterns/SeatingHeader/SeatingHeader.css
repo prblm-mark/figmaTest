@@ -485,11 +485,55 @@
   }
 
   /* 32x32 — the geometry of `btn--icon btn--sm`, which cannot be added as a class from a
-   * container query. Mirrors the Export rule in the 1023 block. */
+   * container query. Export gets the identical treatment just below. */
   .seating-header__btn--add.btn {
     inline-size: var(--ai-spacing-7);
     min-block-size: var(--ai-spacing-7);
     padding: 0;
+  }
+
+  /* ── Moved down from the 1023 block on 2026-08-28 (designer) ──────────────
+   * The toggle, the divider and Export's label all used to compact at 1023. They now hold their
+   * full form down to 767, so the 768-1199 band keeps the complete toolbar and only Room Layout
+   * has left it (into the overflow menu, at 1200). Below 767 everything collapses at once, which
+   * is what Figma's mobile frame 3515:213426 draws: no toggle, and Add and Export as 32px icons.
+   *
+   * This supersedes an earlier instruction that put the toggle's threshold at 1024. The room-name
+   * stacking and its font steps stay in the 1023 block deliberately — narrowing the room block is
+   * what frees the horizontal space these full-width buttons now need in that band. */
+
+  /* Both absent from Figma's mobile variant — not merely rearranged. */
+  .seating-header__toggle-group,
+  .seating-header__divider {
+    display: none;
+  }
+
+  /* EXPORT ONLY. The two buttons wrap DIFFERENT content in the same class, which is why one
+   * selector would produce two effects:
+   *   Add     `Add<span class="__btn-shrink"> Table</span>`  -> clipping leaves the word "Add"
+   *   Export  `<span class="__btn-shrink">Export</span>`     -> clipping leaves nothing, icon-only
+   * Add is handled by clipping its whole `__btn-label` above, so this stays scoped to Export.
+   *
+   * Clipped rather than `display: none`, so "Export" stays in the accessibility tree and the
+   * icon-only button keeps an accessible name. Being out of flow, it contributes no flex gap. */
+  .seating-header__btn--export .seating-header__btn-shrink {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .seating-header__btn--export.btn {
+    inline-size: var(--ai-spacing-7);
+    min-block-size: var(--ai-spacing-7);
+    padding: 0;
+  }
+
+  /* Figma drops the chevron at mobile too. */
+  .seating-header__btn-chevron {
+    display: none;
   }
 
   .seating-header__bar {
@@ -673,12 +717,6 @@
     font-size: var(--ai-font-fixed-xxs);
   }
 
-  /* Both absent from Figma's mobile variant — not merely rearranged. */
-  .seating-header__toggle-group,
-  .seating-header__divider {
-    display: none;
-  }
-
   .seating-header__buttons {
     gap: var(--ai-spacing-2);
   }
@@ -689,39 +727,4 @@
    * block ABOVE this one. Those are CONTENT changes across Figma's Device axis, so they are done
    * here rather than by shipping two markups. */
 
-  /* EXPORT ONLY (designer, 2026-08-28). This was an unscoped `.seating-header__btn-shrink`, which
-   * caught the Add button too and gave it a third, intermediate label: "Add Table" -> "Add" ->
-   * icon-only. That middle step existed because the toolbar used to overflow in this band; with
-   * the container queries reflowing properly it is no longer buying anything, and a button that
-   * says "Add" alone is less clear than either of the two states Figma actually draws. Add now
-   * holds "Add Table" all the way down to 767, where it becomes icon-only.
-   *
-   * The two buttons wrap DIFFERENT content in the same class, which is why one selector produced
-   * two different effects:
-   *   Add     `Add<span class="__btn-shrink"> Table</span>`  -> clipping leaves the word "Add"
-   *   Export  `<span class="__btn-shrink">Export</span>`     -> clipping leaves nothing, icon-only
-   *
-   * Clipped rather than `display: none`, so "Export" stays in the accessibility tree and the
-   * icon-only button keeps an accessible name. Same technique RoomCard uses to drop the word
-   * "seated". Being out of flow, it contributes no flex gap. */
-  .seating-header__btn--export .seating-header__btn-shrink {
-    position: absolute;
-    inline-size: 1px;
-    block-size: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-
-  /* 32x32 — the geometry of `btn--icon btn--sm`, which cannot be added as a class from a
-   * media query. Figma drops the chevron here too. */
-  .seating-header__btn--export.btn {
-    inline-size: var(--ai-spacing-7);
-    min-block-size: var(--ai-spacing-7);
-    padding: 0;
-  }
-
-  .seating-header__btn-chevron {
-    display: none;
-  }
 }
