@@ -610,6 +610,9 @@ Two new variants on the set (`3474:90519`, now **6** variants — Type has 4 val
 The delta is exactly one 32px menu row, so Room Layout is what relocates. Menu items read
 **Room Layout** and **Table Types**; Table Types is the permanent entry.
 
+The switch happens at **1024**, taken from the `Menu <1024` variant name rather than from the 1100px
+width that frame happens to be drawn at — a distinction that cost one wrong implementation.
+
 > **These two Types are NOT data.** `No Plans` / `Has Plans` are markup the caller picks; these two
 > describe how the toolbar reflows, which is CSS. They are deliberately **not** mapped in
 > `SeatingHeader.figma.ts` — mapping them would publish a second and third markup for what is one
@@ -619,9 +622,14 @@ The delta is exactly one 32px menu row, so Room Layout is what relocates. Menu i
 
 | container | Room Layout | Add | Export | toggle/divider | menu |
 |---|---|---|---|---|---|
-| ≥1200 | toolbar button | ✓ | ✓ | shown | Table Types |
-| 1024–1199 | **menu item** | ✓ | ✓ | shown | Room Layout, Table Types |
-| ≤1023 | menu item | ✓ | icon | hidden | Room Layout, Table Types |
+| ≥1024 | toolbar button | ✓ | ✓ | shown | Table Types |
+| 768–1023 | **menu item** | ✓ | ✓ | shown | Room Layout, Table Types |
+| ≤767 | menu item | icon | icon | hidden | Room Layout, Table Types |
+
+> **Superseded numbers, kept because this moved twice.** Room Layout's threshold was first built at
+> **1199**, reading the `Menu <1024` frame's 1100px *drawn width* as "the menu state persists to
+> 1200". The variant NAME is the spec — `<1024` — and the designer confirmed 1024 on 2026-08-28.
+> Separately the toolbar compaction moved 1023 → 767. Net effect: two breakpoints, 1023 and 767.
 
 Below 1024 the menu keeps both items and Add/Export stay visible (designer, 2026-08-28) — the
 mobile layout is unchanged from the existing build.
@@ -700,9 +708,13 @@ the intent is: *Show unassigned is hidden until 1024; Room Layout is in the over
 
 | header content width | Room Layout button | Show unassigned |
 |---|---|---|
-| 1202 and up | **shown** | shown |
-| 1122 → 1032 | in the menu | **shown** |
-| 1022 and down | in the menu | hidden |
+| 1024 and up | **shown** | shown |
+| 1023 → 768 | in the menu | **shown** |
+| 767 and down | in the menu | hidden |
+
+(Re-measured after the 2026-08-28 revisions; the viewport table below was taken when Room Layout's
+threshold was 1199 and the toggle's was 1024, so its *browser* numbers no longer map — the 178px
+shell offset it documents still does.)
 
 Both fire exactly where intended. **But the browser window is a different number**, and that is what
 makes this look broken when resizing:
@@ -735,9 +747,13 @@ Three bands, all keyed to the header's own container width:
 
 | container | Room Layout | Show unassigned + divider | Add Table | Export |
 |---|---|---|---|---|
-| **≥1200** | toolbar button | shown | full label | full label + chevron |
-| **768–1199** | in the overflow menu | **shown** | **full label** | **full label + chevron** |
+| **≥1024** | toolbar button | shown | full label | full label + chevron |
+| **768–1023** | in the overflow menu | **shown** | **full label** | **full label + chevron** |
 | **≤767** | in the overflow menu | hidden | 32px icon | 32px icon, no chevron |
+
+Room Layout's threshold is **1024**, revised 2026-08-28 from an earlier 1199. Only two breakpoints
+remain — 1023 and 767 — because with the compaction moved down to 767, Room Layout became the only
+thing changing at 1023 and no longer needed a breakpoint of its own.
 
 The toggle, divider, Export label and Export chevron were moved out of the 1023 block into the 767
 block on the designer's instruction, so the middle band now carries the **complete** toolbar and the

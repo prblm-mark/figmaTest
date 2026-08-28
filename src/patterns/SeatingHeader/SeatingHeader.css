@@ -651,28 +651,24 @@
  * as a misalignment defect rather than a compact layout. Flagged in figma-notes — say the
  * word and it moves.
  */
-/* ── Room Layout moves into the overflow menu below 1200 ────────────────────
- * New behaviour 2026-08-28, from the designer's two menu frames:
- *   Type=Menu >1200 (3585:110311) — 1552 wide, Management-Buttons holds THREE buttons
- *                                   (118 Room Layout, 101 Add, 111 Export), menu has 1 item
- *   Type=Menu <1024 (3585:110436) — 1100 wide, Management-Buttons holds TWO (101, 111),
- *                                   menu grows 176x64 -> 176x96, i.e. one 32px row taller
- *
- * So Room Layout is the item that relocates, and Table Types is the menu's permanent entry.
- *
- * Before this, the toolbar kept all three buttons down to 1024 and then collapsed everything at
- * once — measured: at container 1054 Room Layout was still a 125px button, at 963 it was
- * `display: none` and simply UNREACHABLE. The menu now gives it somewhere to go, so nothing is
- * lost at any width.
- *
- * CSS cannot move a node, so the button and the menu item are two copies of one action whose
- * visibility swaps here. Anything that wires up Room Layout must bind BOTH.
- *
- * 1199 not 1200: `max-width` is inclusive, so this must stop one pixel below the 1200 the frame
- * is named for. The band this opens is 1024-1199; below 1024 the existing mobile rules take over
- * and the menu keeps both items (designer, 2026-08-28 — Add and Export stay visible at mobile,
- * exactly as the current build has them). */
-@container seating-header (max-width: 1199px) {
+@container seating-header (max-width: 1023px) {
+  /* ── Room Layout moves into the overflow menu below 1024 ──────────────────
+   * Designer, 2026-08-28. From the two menu frames:
+   *   Type=Menu >1200 (3585:110311) — Management-Buttons holds THREE buttons (118 Room Layout,
+   *                                   101 Add, 111 Export); the menu has 1 item, Table Types
+   *   Type=Menu <1024 (3585:110436) — TWO buttons (101, 111); the menu grows 176x64 -> 176x96,
+   *                                   i.e. one 32px row taller, which is Room Layout arriving
+   *
+   * The threshold is 1024, per the `Menu <1024` variant NAME. Note that frame is DRAWN at 1100,
+   * which is why an earlier pass read it as "the menu state persists up to 1200" and put the
+   * breakpoint at 1199. The name is the spec; the frame width is just where it was drawn.
+   *
+   * CSS cannot move a node, so the toolbar button and the menu item are two copies of one action
+   * whose visibility swaps here. Anything wiring Room Layout must bind BOTH.
+   *
+   * This shares the 1023 block rather than having its own: with the toolbar compaction moved down
+   * to 767, Room Layout is now the only thing that changes at this width, so a separate breakpoint
+   * would have been one more number to keep in step for no gain. */
   .seating-header__btn--layout {
     display: none;
   }
@@ -680,9 +676,7 @@
   .seating-header__menu-item--layout {
     display: block;
   }
-}
 
-@container seating-header (max-width: 1023px) {
   /* The room label and its count stack. The 2px gap is a designer call 2026-08-26, not a
    * Figma value — Figma's mobile variant binds --ai-spacing-1 (4px). Same tightening taken
    * on TableDetail's legend row gap, and for the same reason: two lines of stacked text
