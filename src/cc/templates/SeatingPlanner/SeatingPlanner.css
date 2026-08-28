@@ -379,10 +379,33 @@
     grid-column: 1 / -1;
   }
 
+  /* KEEP IN STEP WITH `.input--sm` IN Input.css — this is a hand copy, and it has already
+   * drifted once. Until 2026-08-28 it replicated `padding: --ai-spacing-3` / `gap:
+   * --ai-spacing-2`, which were Input.css's own uncited values rather than Figma's; when those
+   * were corrected to `-4` / `-3` this copy still held the old pair. Worse, it never replicated
+   * the sm TYPOGRAPHY at all, so every field in this modal rendered its label and value at the
+   * Base 14px on mobile where Figma specifies 13px — which is what the designer reported. */
   .create-plan__grid .input__wrap {
     min-height: var(--ai-spacing-7);
-    padding: 0 var(--ai-spacing-3);
-    gap: var(--ai-spacing-2);
+    padding: 0 var(--ai-spacing-4);
+    gap: var(--ai-spacing-3);
+  }
+
+  .create-plan__grid .input__label {
+    font-size: var(--ai-font-fixed-2xs);   /* 13px */
+  }
+
+  .create-plan__grid .input__control {
+    font-size: var(--ai-font-fixed-2xs);   /* 13px */
+    line-height: var(--ai-leading-xs);      /* 16px */
+  }
+
+  /* The Stepper keeps `--ai-leading-md` at both sizes (Figma 3567:105368), unlike a plain
+   * Input's sm field. Three classes deliberately: Input.css's own `.input--stepper
+   * .input__control` is only two and loads EARLIER than this file, so it cannot defend itself
+   * against the rule above — exactly the collision the padding comment below describes. */
+  .create-plan__grid .input--stepper .input__control {
+    line-height: var(--ai-leading-md);      /* 24px */
   }
 
   /* The sm replication above is a MEDIA QUERY, not the `input--sm` class, so

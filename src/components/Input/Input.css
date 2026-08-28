@@ -212,8 +212,40 @@
 .input--sm .input__wrap,
 .input__wrap.input--sm {
   min-height: var(--ai-spacing-7);      /* 32px */
-  padding: 0 var(--ai-spacing-3);       /* 0 8px */
-  gap: var(--ai-spacing-2);              /* 6px */
+  /* Figma binds `--ai-spacing-4` / `--ai-spacing-3` on the sm Field (78:2029). Both were
+   * wrong until 2026-08-28: padding was --ai-spacing-3 (8px) and gap --ai-spacing-2 (6px),
+   * introduced together in 93b1a45b with no Figma citation alongside a `max-width: 192px`
+   * that the designer has since removed as an invention. Same commit, same class of error —
+   * these two were simply not caught at the same time. 12px also matches the Base padding
+   * this file already uses, so the two sizes now differ only in height and typography. */
+  padding: 0 var(--ai-spacing-4);       /* 0 12px */
+  gap: var(--ai-spacing-3);              /* 8px */
+}
+
+/* ── Size: sm — typography ────────────────────────────
+ *
+ * Figma's Size axis steps the LABEL and the FIELD down a step, not just the box: 14px -> 13px
+ * on both, and the field's line-height 24px -> 16px. Verified on the sm nodes directly
+ * (label 78:2028, field text 78:2032) rather than through the variant root, because Code
+ * Connect intercepts `get_design_context` on the variant and returns this project's own
+ * snippet instead of the design — so the variant root cannot be used to audit itself.
+ *
+ * None of this was implemented until 2026-08-28: every `input--sm` rendered its label and
+ * field at the Base 14px. It went unnoticed because `--sm` is the size the Seating Planner
+ * uses at mobile, where 14px is close enough to look deliberate.
+ *
+ * The help text is NOT part of this step — Figma keeps `body/xxs` (12px) at both sizes, so
+ * there is deliberately no `.input--sm .input__help` rule here.
+ *
+ * One selector covers both markup patterns: `input--sm` on the container (label is a
+ * descendant) and on the wrap itself (Datatables' toolbars, which carry no label). */
+.input--sm .input__label {
+  font-size: var(--ai-font-fixed-2xs);  /* 13px */
+}
+
+.input--sm .input__control {
+  font-size: var(--ai-font-fixed-2xs);  /* 13px */
+  line-height: var(--ai-leading-xs);     /* 16px */
 }
 
 /* ── Stepper (number input with − / + buttons) ────────
@@ -313,6 +345,14 @@
 
 .input--stepper .input__control {
   text-align: center;
+  /* The Stepper keeps `--ai-leading-md` (24px) on its number at BOTH sizes — Figma binds it on
+   * the sm variant (3567:105368) exactly as on Base — whereas a plain Input's sm field steps
+   * down to `--ai-leading-xs`. So this re-asserts 24px against the `.input--sm .input__control`
+   * rule above. It relies on SOURCE ORDER, not specificity: both selectors are two classes, and
+   * this block is later in the file. Do not move the stepper block above the size block.
+   *
+   * The font-size is deliberately NOT re-asserted — 13px at sm is correct for the Stepper too. */
+  line-height: var(--ai-leading-md);     /* 24px */
   /* Chrome derives a number input's intrinsic width from its `max` attribute's digit count,
    * and with no `max` at all it falls back to a ~20-character default. That intrinsic width
    * became the wrapper's MIN-CONTENT size, so a stepper billed as "fluid" was silently forcing
@@ -333,5 +373,28 @@
   -webkit-appearance: none;
   appearance: none;
   margin: 0;
+}
+
+/* The Stepper binds its help/error text to `--ai-font-fixed-3xs` where a plain Input's help binds
+ * `--ai-font-fixed-xxs` (via the `body/xxs` style). Both are 0.75rem / 12px today, in every mode,
+ * so this rule is visually inert — which is exactly the point of writing it: the designer
+ * confirmed on 2026-08-28 that the Stepper genuinely sits on the `3xs` ramp position, so if the
+ * ramp ever moves, `.input__help` renders the size each component asked for instead of silently
+ * inheriting the other's. Keeping the code honest about a same-value divergence is cheap; only
+ * discovering it after the ramp moves is not.
+ *
+ * Two 12px tokens is a deliberate feature of the ramp, not a duplicate to be tidied away:
+ * `docs/tokens-reference.md` records `xxs` as the one components use and `3xs` as the ramp
+ * position that happens to share the value. This is `3xs`'s first use in the codebase.
+ *
+ * No order dependency here, unlike the line-height re-assert above — two classes beats the
+ * one-class `.input__help`, so specificity settles it wherever this rule sits.
+ *
+ * Everything else on this element already agreed and needed no rule: family `--ai-font-body`,
+ * weight `--ai-font-regular`, `--ai-leading-xs`, and `--ai-text-secondary` / `--ai-text-error`.
+ * The family only agreed as of the same day — Figma had the Stepper's help and number on
+ * `--ai-font-title`, and the designer repointed every non-title element to `--ai-font-body`. */
+.input--stepper .input__help {
+  font-size: var(--ai-font-fixed-3xs);  /* 12px */
 }
 
