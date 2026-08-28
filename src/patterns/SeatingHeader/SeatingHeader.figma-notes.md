@@ -552,3 +552,49 @@ accessibility tree at every size and `innerText` still reports it when the butto
 icon-only. The 32px width is the signal that the label is hidden — do not use text content to
 test which state the button is in.
 
+## Toolbar tightened, and its inline padding made asymmetric (2026-08-28)
+
+Designer-directed. Three changes to two rules:
+
+| Rule | Property | Was | Now |
+|---|---|---|---|
+| `.seating-header__toolbar` | `gap` | `--ai-spacing-5` 16px | `--ai-spacing-3` 8px |
+| `.seating-header__toolbar` | `padding-inline-end` | (24px, from the shorthand) | `--ai-spacing-4` 12px |
+| `.seating-header__toolbar-actions` | `gap` | `--ai-spacing-5` 16px | `--ai-spacing-3` 8px |
+
+**The asymmetric padding relies on declaration order.** `padding-inline-end` must stay AFTER
+`padding-inline`; reversed, the shorthand resets the end side back to 24px. It reads like a
+redundant pair and is not. It happens to be alphabetical, so a property sorter leaves it alone.
+
+**A ≤767 override became dead and was removed.** That block used to re-declare
+`gap: var(--ai-spacing-3)`, scoped there deliberately so the tablet band kept Figma's 16px. With
+the base rule now 8px it restated the inherited value, and its comment ("the tablet band keeps
+Figma's 16px") had become false. Its `padding: var(--ai-spacing-4)` remains real — it flattens the
+base rule's 24/12 inline and 16 block into 12px on all four sides, confirmed on mobile frame
+`3515:213426` where a 326px Toolbar holds a 302px Toolbar-Actions at x=12.
+
+**FLAGGED:** the `__toolbar-actions` 8px diverges from that frame, which still draws 16px — its
+room block occupies x=0..190 and the button cluster starts at x=206. Third such divergence recorded
+today, alongside the meta row-gap and the bar gap.
+
+### The 8px gap halves the safety margin — stress-tested, and it holds
+
+Room ↔ buttons clearance drops from 16px to 8px, a direct consequence of the actions gap. That is
+now the tightest margin in the toolbar, and this component has a history of overlapping exactly
+there, so it was tested rather than assumed. With a 60-character room name forced in at five
+widths:
+
+| viewport | name box | its `scrollWidth` | clipped? | gap | hit-test at buttons' left edge |
+|---|---|---|---|---|---|
+| 1024 | 613 | 613 | no | 8px | `btn` |
+| 900 | 577 | 577 | no | 8px | `btn` |
+| 768 | 485 | 502 | **yes** | 8px | `btn` |
+| 500 | 277 | 502 | **yes** | 8px | `btn` |
+| 390 | 167 | 502 | **yes** | 8px | `btn` |
+
+The gap never goes negative, and `elementFromPoint` at the buttons' leading edge returns the
+button at every width — the room name never paints over it. Below 768 the name clips with a
+working ellipsis. So it reflows rather than overlaps, which is the standing requirement for this
+pattern. `elementFromPoint` is the check that matters here; reasoning from the cascade is what
+missed the original overlap.
+

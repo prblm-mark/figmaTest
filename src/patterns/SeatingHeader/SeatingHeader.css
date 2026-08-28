@@ -248,16 +248,34 @@
 .seating-header__toolbar {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-5);
+  /* 8px (designer, 2026-08-28), was --ai-spacing-5 (16px). This is the gap between the actions
+   * group and the kebab. It now applies at EVERY width — see the note on the redundant ≤767
+   * override further down. */
+  gap: var(--ai-spacing-3);
+  /* Asymmetric inline padding (designer, 2026-08-28): 24px leading, 12px trailing. The kebab is
+   * an optical edge rather than a boxed control, so it sits closer to the border than the room
+   * name does.
+   *
+   * ORDER IS LOAD-BEARING. `padding-inline-end` must stay AFTER `padding-inline`, which sets both
+   * sides; reversed, the shorthand would reset the end back to 24px. It reads like a redundant
+   * pair and is not. (It happens to be alphabetical too, so a property sorter leaves it alone.) */
   padding-inline: var(--ai-spacing-6);
   padding-block: var(--ai-spacing-5);
+  padding-inline-end: var(--ai-spacing-4);
   background-color: var(--ai-surface-primary);
 }
 
 .seating-header__toolbar-actions {
   display: flex;
   align-items: center;
-  gap: var(--ai-spacing-5);
+  /* 8px (designer, 2026-08-28), was --ai-spacing-5 (16px). This is the gap between the room
+   * block, the unassigned switch, the divider and the button cluster.
+   * FLAGGED: the mobile frame 3515:213426 still draws 16px here — inside its 302px-wide
+   * Toolbar-Actions, the room block occupies x=0..190 and the button cluster starts at x=206, so
+   * 206 - 190 = 16. Figma and code now differ on this property until the frame is updated. Same
+   * situation as the meta row-gap and the bar gap recorded above; applied on explicit
+   * instruction and noted so a later audit reads it as intent rather than drift. */
+  gap: var(--ai-spacing-3);
   flex: 1 0 0;
   min-inline-size: 0;
 }
@@ -520,12 +538,15 @@
    * padding at any width. Everything else about the toolbar switches at 1024px instead —
    * see the block below.
    *
-   * The gap (between the actions group and the kebab) tightens to 8px here, a designer
-   * call 2026-08-26 rather than a Figma value: Figma's own mobile Toolbar still binds
-   * --ai-spacing-5. It is scoped to this block, not the 1024 one, so the tablet band keeps
-   * Figma's 16px. */
+   * The gap USED to be overridden here to 8px, scoped to this block so the tablet band kept
+   * Figma's 16px. That override was removed on 2026-08-28 when the designer took the base rule
+   * down to `--ai-spacing-3` — it became a no-op restating the inherited value, and the comment
+   * explaining it had become false, since 8px now applies at every width including tablet.
+   *
+   * What remains is real: `padding` collapses the base rule's asymmetric 24/12 inline and 16
+   * block into a flat 12px on all four sides. Confirmed on the mobile frame 3515:213426, where
+   * the 326px-wide Toolbar holds a 302px Toolbar-Actions at x=12 — 12px either side. */
   .seating-header__toolbar {
-    gap: var(--ai-spacing-3);
     padding: var(--ai-spacing-4);
   }
 }
