@@ -1,23 +1,3 @@
-/* ─── PARKED 2026-08-28 — NO FIGMA COMPONENT EXISTS ────────────────────────────────────
- *
- * Excluded from Code Connect by the `.parked` extension; publish is all-or-nothing.
- *
- * Both node IDs this file mapped are dead: `3470-84951` returns "invalid node selection" from
- * `get_metadata` (it does not exist at all) and `3470-84952` fails validation as "not a top
- * level component or component set". And there is no Room Card component set anywhere in the
- * file — the Seat Planner page holds exactly nine sets: Seat Planner, Table Card, Table Type,
- * Attendee Card, Toast, Header, Table Detail, Unassigned, Table Listing.
- *
- * This is consistent with RoomCard having been confirmed as the room/plan CHIP rather than a
- * new entity: the design lives inside Header's `Room-Selector-Bar` slot (set 3474:90519, which
- * does expose that property) rather than as a standalone component. The RoomCard CSS and demo
- * are unaffected and stay in use — only the Code Connect mapping is unpublishable.
- *
- * TO REINSTATE: either the designer promotes Room Card to its own component set (then point
- * this file at it), or accept that it is only ever an inline part of Header and delete this
- * file. Do NOT invent a node ID to make validation pass.
- */
-
 import figma, { html } from '@figma/code-connect/html'
 
 // Room Card has NO Figma TEXT properties — get_design_context reports only
@@ -76,10 +56,23 @@ figma.connect(
 )
 
 // Type=Full — the FULL badge replaces the "N seats free" text and the bar turns green.
-// Connected on the Full/Default variant directly so Figma surfaces the right markup.
+//
+// Connected on the SET with `variant: { Type: 'Full' }`, NOT on a variant node. This pointed at
+// `3470-84952` until 2026-08-28, which Code Connect rejects ("node is not a top level component or
+// component set"). Figma resolves the most specific matching connect, so this wins over the
+// unrestricted set-level connect above for both Full variants.
+//
+// Worth recording why this one looked different from the other variant-URL mistakes: for a while
+// BOTH of this file's node IDs were phantom — `3470-84951` returned "invalid node selection" and
+// no Room Card set existed anywhere in the file, so the conclusion was that RoomCard was only ever
+// an inline part of Header's Room-Selector-Bar slot. The designer restored the set on 2026-08-28,
+// at which point `3470-84951` resolved as the real set and `3470-84952` resolved as its
+// `Type=Full, State=Default, Device=Desktop` variant — the ordinary mistake it had always been.
+// A dead node ID cannot be diagnosed as "wrong pointer" vs "no component"; it just fails.
 figma.connect(
-  'https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=3470-84952',
+  'https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=3470-84951',
   {
+    variant: { Type: 'Full' },
     props: {
       state: figma.enum('State', {
         Default: '',
