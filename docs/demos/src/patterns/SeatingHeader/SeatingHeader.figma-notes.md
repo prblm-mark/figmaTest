@@ -729,3 +729,50 @@ minus its 2px border, or the container width in DevTools' container-query badge.
 tells you nothing directly, and the 178px offset is a property of the current shell state rather
 than a constant to memorise.
 
+## Toolbar bands, final (2026-08-28)
+
+Three bands, all keyed to the header's own container width:
+
+| container | Room Layout | Show unassigned + divider | Add Table | Export |
+|---|---|---|---|---|
+| **≥1200** | toolbar button | shown | full label | full label + chevron |
+| **768–1199** | in the overflow menu | **shown** | **full label** | **full label + chevron** |
+| **≤767** | in the overflow menu | hidden | 32px icon | 32px icon, no chevron |
+
+The toggle, divider, Export label and Export chevron were moved out of the 1023 block into the 767
+block on the designer's instruction, so the middle band now carries the **complete** toolbar and the
+only thing that has left it is Room Layout. This supersedes an earlier instruction that put the
+toggle's threshold at 1024 — the reference screenshot showed toggle + both full labels together,
+which only that model produces.
+
+**The room-name stacking and its font steps stayed at 1023 deliberately.** Narrowing the room block
+is what frees the horizontal space the full-width buttons now need between 768 and 1023; moving it
+down to 767 as well would have taken that space back at precisely the tightest widths.
+
+### Measured, both plain and stressed
+
+Swept 15 widths either side of every boundary. The bands land exactly as tabulated: toggle and both
+full labels hold at container 768, and at 767 the toggle goes and Add/Export become 32px icons —
+which is what Figma's mobile frame `3515:213426` draws.
+
+No overlap at any width, and `.seating-header__toolbar-actions` never overflows its own box. Room ↔
+buttons clearance runs 251–415px through the new band and 8px at mobile.
+
+Stressed with a 60-character room name, which is what absorbs the squeeze:
+
+| container | name box | needs | clipped | gap | hit-test at buttons' edge |
+|---|---|---|---|---|---|
+| 1024 | 235 | 565 | yes | 496px | `btn` |
+| 898 | 291 | 502 | yes | 316px | `btn` |
+| 798 | 241 | 502 | yes | 266px | `btn` |
+| 768 | 226 | 502 | yes | 251px | `btn` |
+
+`elementFromPoint` at the buttons' leading edge returns the button at every width, never the room
+name — so the name ellipsises and the row reflows rather than overlapping, which is the standing
+requirement for this pattern.
+
+**Harness note:** injecting this markup with `DOMParser` for an isolated test and forgetting
+`lucide.createIcons()` makes every icon-only control collapse to **0 width** — the kebab vanishes
+and the Add/Export squares render empty. That is the harness, not the component; measure on the real
+page, or call `createIcons()` after injecting.
+
