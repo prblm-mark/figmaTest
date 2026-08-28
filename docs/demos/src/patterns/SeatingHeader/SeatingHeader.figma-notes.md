@@ -485,3 +485,116 @@ neighbour begins. Every button now owns all of its own pixels at both breakpoint
 AA target-size minimum (2.5.8, 24×24) — the 44 figure is Apple HIG / WCAG 2.5.5 AAA. The
 alternative is either overlapping a sibling control or widening Figma's 8px gap, which is a
 designer call.
+
+## Two designer-directed divergences from the mobile frame (2026-08-28)
+
+Both applied on explicit instruction, and both currently differ from what `3515:213426` draws.
+Recorded so the next audit reads them as intentional rather than as drift to be corrected back —
+if the frames are updated to match, delete this section.
+
+| Property | Code | Frame `3515:213426` | How the frame value was read |
+|---|---|---|---|
+| `.seating-header__meta` `row-gap` | `--ai-spacing-1` (4px) | **6px** | Its three meta items sit at y=0 and y=22 at 16px tall → 22 − 16 = 6 |
+| `.seating-header__bar` `gap` (mobile) | `--ai-spacing-5` (16px) | **12px** | Inside the 170px Event-Info-Bar, Event-Details occupies y=16..110 and Global-Actions starts at y=122 → 122 − 110 = 12 |
+
+Everything else in the mobile bar still matches the frame: `padding-inline` 12px and
+`padding-block` 16px (block-start reads y=16, block-end reads 170 − 154 = 16), and the asymmetry
+is real rather than a step-down of the desktop 24.
+
+`align-items: flex-start` alongside `flex-direction: column` is only safe because
+`.seating-header__details` sets `inline-size: 100%` two rules below. When the direction flips,
+`align-items` stops being a cross-axis alignment and becomes a WIDTH policy — anything but
+`stretch` shrink-wraps every child. The explicit width is what neutralises that here; do not
+remove it while leaving `flex-start` in place.
+
+### Measuring this component: there are TWO `.seating-header` in the Seating Planner
+
+One is `display: none` (the no-plans state) and one is live. An unscoped
+`querySelector('.seating-header__bar')` returns the hidden one first, which reports
+`width: 0`, `flex-direction: row` and the DESKTOP gap — indistinguishable from "the mobile
+container query never fired". That reading cost a diagnosis during this change. Select the first
+match with a non-zero box, and kill transitions (`*{transition:none!important}`) because they do
+not advance under headless Chrome's `--virtual-time-budget`.
+
+## The toolbar's Add button has TWO label states, not three (2026-08-28)
+
+`.seating-header__btn--add` was degrading in three steps — **"Add Table" → "Add" → icon-only** —
+because the ≤1023 block clipped `.seating-header__btn-shrink` unscoped, and that class catches
+both toolbar buttons while wrapping different content in each:
+
+| Button | Markup | Effect of clipping `__btn-shrink` |
+|---|---|---|
+| Add | `Add<span class="__btn-shrink"> Table</span>` | leaves the bare word **"Add"** |
+| Export | `<span class="__btn-shrink">Export</span>` | leaves **nothing** → icon-only |
+
+One selector, two outcomes. The clip is now scoped to
+`.seating-header__btn--export .seating-header__btn-shrink`, so Add holds its full label down to
+767 and then goes icon-only, matching the only two states Figma draws (desktop 1552, mobile 402).
+
+The intermediate "Add" was never a design state — it relieved a real overflow in the 768–1023 band
+back when this pattern used viewport media queries that could not see the docked SidebarMenu
+narrowing the column. With the self-container reflowing correctly there is nothing to relieve, and
+a button labelled just "Add" is less clear than either state Figma specifies.
+
+Measured across the whole band on the live screen, by CONTAINER width (which is what the queries
+key on, not the viewport):
+
+| container | Add | Export | room ↔ buttons |
+|---|---|---|---|
+| 1224 | "Add Table" 108px | "Export" 112px | clear 651px |
+| 909 / 833 / 832 | "Add Table" 108px | icon 32px | clear 16px |
+| 709 → 269 | icon 32px | icon 32px | clear 16px |
+
+No overlap at any width and no horizontal overflow; clearance is a steady 16px from 1100 down.
+
+**Reading that table:** the label is CLIPPED, not `display: none`, so "Add Table" stays in the
+accessibility tree at every size and `innerText` still reports it when the button is visually
+icon-only. The 32px width is the signal that the label is hidden — do not use text content to
+test which state the button is in.
+
+## Toolbar tightened, and its inline padding made asymmetric (2026-08-28)
+
+Designer-directed. Three changes to two rules:
+
+| Rule | Property | Was | Now |
+|---|---|---|---|
+| `.seating-header__toolbar` | `gap` | `--ai-spacing-5` 16px | `--ai-spacing-3` 8px |
+| `.seating-header__toolbar` | `padding-inline-end` | (24px, from the shorthand) | `--ai-spacing-4` 12px |
+| `.seating-header__toolbar-actions` | `gap` | `--ai-spacing-5` 16px | `--ai-spacing-3` 8px |
+
+**The asymmetric padding relies on declaration order.** `padding-inline-end` must stay AFTER
+`padding-inline`; reversed, the shorthand resets the end side back to 24px. It reads like a
+redundant pair and is not. It happens to be alphabetical, so a property sorter leaves it alone.
+
+**A ≤767 override became dead and was removed.** That block used to re-declare
+`gap: var(--ai-spacing-3)`, scoped there deliberately so the tablet band kept Figma's 16px. With
+the base rule now 8px it restated the inherited value, and its comment ("the tablet band keeps
+Figma's 16px") had become false. Its `padding: var(--ai-spacing-4)` remains real — it flattens the
+base rule's 24/12 inline and 16 block into 12px on all four sides, confirmed on mobile frame
+`3515:213426` where a 326px Toolbar holds a 302px Toolbar-Actions at x=12.
+
+**FLAGGED:** the `__toolbar-actions` 8px diverges from that frame, which still draws 16px — its
+room block occupies x=0..190 and the button cluster starts at x=206. Third such divergence recorded
+today, alongside the meta row-gap and the bar gap.
+
+### The 8px gap halves the safety margin — stress-tested, and it holds
+
+Room ↔ buttons clearance drops from 16px to 8px, a direct consequence of the actions gap. That is
+now the tightest margin in the toolbar, and this component has a history of overlapping exactly
+there, so it was tested rather than assumed. With a 60-character room name forced in at five
+widths:
+
+| viewport | name box | its `scrollWidth` | clipped? | gap | hit-test at buttons' left edge |
+|---|---|---|---|---|---|
+| 1024 | 613 | 613 | no | 8px | `btn` |
+| 900 | 577 | 577 | no | 8px | `btn` |
+| 768 | 485 | 502 | **yes** | 8px | `btn` |
+| 500 | 277 | 502 | **yes** | 8px | `btn` |
+| 390 | 167 | 502 | **yes** | 8px | `btn` |
+
+The gap never goes negative, and `elementFromPoint` at the buttons' leading edge returns the
+button at every width — the room name never paints over it. Below 768 the name clips with a
+working ellipsis. So it reflows rather than overlaps, which is the standing requirement for this
+pattern. `elementFromPoint` is the check that matters here; reasoning from the cascade is what
+missed the original overlap.
+

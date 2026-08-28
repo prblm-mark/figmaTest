@@ -907,3 +907,24 @@ designer settling capitalisation across the set rather than per frame.
 Seats=12; the build has Tables=12 and Seats=10, because the designer explicitly chose "default 10,
 keep 6–12" for SEATS when those fields were made real. Left as decided; the frame is presumably
 just placeholder content.
+
+## Top nav keeps 48px on this screen (2026-08-28)
+
+`TopNavigation.css` collapses the bar to `--ai-spacing-8` (40px) below a 767px container. The
+Seating Planner opts out: its mobile frame `3515:213426` draws `CCHeaderGroup` at **48px** with the
+`CCTopNavigation` instance filling it at 48 — the same height as desktop. Both nodes measure 48
+there; this was read off the frame, not inferred from the desktop value.
+
+Scoped in `SeatingPlanner.css` with the same `.cc-control__main:has(.cc-control__page--seating)`
+idiom already used for the chrome's missing bottom rule and its scroll shadow, so ControlScreen and
+ControlHub keep the 40px collapse. Verified: at 390px this screen's bar is 48px and its chrome is
+48px, while ControlScreen's bar is 40px at the same width.
+
+Three classes (`:has()` contributes its argument's specificity) against the one-class rule inside
+TopNavigation's `@container`, so it wins on specificity — it does not depend on file order, nor on
+which container that unnamed query resolves against.
+
+It also matters beyond the bar: this screen's chrome height is already pinned to 48 in the design
+(the reason the chrome's bottom border was removed — it had been rendering 49 against Figma's 48).
+Letting the bar collapse to 40 would leave the chrome 8px taller than its content.
+

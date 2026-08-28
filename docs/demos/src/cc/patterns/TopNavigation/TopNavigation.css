@@ -144,6 +144,27 @@
 @container (max-width: 767px) {
   .cc-top-navigation {
     min-height: var(--ai-spacing-8); /* 40px on mobile */
+    /* 12px, from the mobile variants (4099:3630 / 4099:3632), where the Breadcrumb child sits at
+     * x=12 with 12px clear on the right. Desktop keeps --ai-spacing-5 (16px), measured the same
+     * way on 4099:3633 (Breadcrumb at x=16). This was missing until 2026-08-28 — mobile kept the
+     * desktop 16px because the block only ever overrode min-height. */
+    padding: 0 var(--ai-spacing-4);
+  }
+
+  /* Mobile steps the crumb type down 14px -> 13px (designer, 2026-08-28; Figma's mobile variants
+   * bind 13px where desktop binds 14px).
+   *
+   * On `.breadcrumb__item`, because that is where Breadcrumb.css sets the size — `__link` and
+   * `__dropdown` both declare `font-size: inherit`, so setting it on the list or the nav would
+   * do nothing. Two classes beats Breadcrumb's own one-class rule, so no !important is needed.
+   *
+   * NOTE ON THE TOKEN NAME: 13px is `--ai-font-fixed-2xs` in this codebase. The CC Hybrid Figma
+   * file still binds 13px to a variable it calls `--ai-font-fixed-xxs` — that file's typography
+   * variables predate the 28 Aug 2026 swap, under which `xxs` became 12px and `2xs` became 13px
+   * in the Affino AI file and in `css/tokens.css`. The PIXEL VALUE is what agrees here, not the
+   * name. Copying the name straight out of the CC Hybrid file would silently give 12px. */
+  .cc-top-navigation .breadcrumb__item {
+    font-size: var(--ai-font-fixed-2xs); /* 13px */
   }
 
   .cc-top-navigation__user-name,

@@ -55,7 +55,37 @@ on the segment buttons.
 | Padding (horizontal) | `var(--ai-spacing-4)` (12px) |
 | Gap (icon → label) | `var(--ai-spacing-3)` (8px) |
 | Background (inactive) | `transparent` |
-| Background (active) | `var(--ai-surface-minimal)` |
+| Background (active) | `var(--ai-surface-secondary)` — was `--ai-surface-minimal` until 2026-08-28. Both Figma variants bind secondary; minimal (#f8fafc) was only a ~2% step off the #ffffff wrapper, so the active segment read as unselected. |
+
+### Active-segment background — `secondary`, not `minimal` (2026-08-28)
+
+Changed at the designer's direction and verified in Figma: both variants (`2699:2053` Dark,
+`2699:2062` Light) bind `--ai-surface-secondary`, and neither references `minimal`.
+
+It is a real visual fix, not a rename. Against the `--ai-surface-primary` wrapper the old token
+was nearly invisible, and the improvement holds in every mode the component actually renders in:
+
+| Mode | wrapper (`primary`) | old (`minimal`) | new (`secondary`) |
+|---|---|---|---|
+| Light | `#ffffff` | `#f8fafc` — ~2% step, read as unselected | `#e9eef4` |
+| Dark | `#1e293b` | `#293548` | `#3d4b5f` |
+| CC Light | (cc) | `#f3f6f7` | `#e7edf0` |
+| CC Dark | (cc) | `#293548` | `#3d4b5f` |
+
+**One mode inverts, and is flagged rather than handled:** under `[data-surface="chat"]`,
+`--ai-surface-secondary` is `#ffffff` while `--ai-surface-minimal` is `#e2e2e3` — so in chat
+context the change would make the active segment *white* and the old token was the higher-contrast
+one. This is not a live problem: ThemeToggle is never rendered inside a `[data-surface="chat"]`
+scope (checked every consumer — Dropdown, HeaderGroup, ControlScreen, ControlHub, SeatingPlanner;
+none sets it). If ThemeToggle is ever adopted into a chat surface, the active segment will need a
+chat-scoped override.
+
+**Verification note for whoever re-measures this:** `.theme-toggle__btn` carries
+`transition: background-color`, and CSS transitions never advance under headless Chrome's
+`--virtual-time-budget`. A naive probe therefore reports the *pre-change* colour and makes dark
+mode look broken — the active segment appeared stuck at the light `#e9eef4` while `body`, which has
+no transition, flipped correctly. Inject
+`*{transition:none!important;animation:none!important}` before measuring.
 | Border | none |
 | Border-radius (inactive) | `var(--ai-radius-md)` |
 | Border-radius (active) | `var(--ai-radius-sm)` |

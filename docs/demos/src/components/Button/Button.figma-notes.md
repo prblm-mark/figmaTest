@@ -127,17 +127,35 @@ Figma default for all text-button variants has `showLeftIcon=true` — both slot
 - `.btn--lg` does **not** exist in Figma — removed from implementation
 - Figma exports the component collection key as `compnonents` (typo — do not fix in tokens)
 
-## `btn--2xs` — a 24x24 icon size that leads Figma
+## `btn--2xs` — a 24x24 icon size that led Figma, and is now REDUNDANT
 
 Added 2026-08-25 while building **RoomCard** (`3470:84951`), which places Button instances at
-**24x24** with a 12px icon. No existing size produces that:
+**24x24** with a 12px icon. At the time no existing size produced that.
+
+**Superseded 2026-08-28: the designer squared off the xs icon size, so `.btn--icon.btn--xs` IS
+24x24 now and this class duplicates it exactly** — same width, min-height, padding, radius and
+icon size. Re-read from the set rather than assumed: every `Icon Only=True, Size=xs` variant
+measures 24x24 across all three Types and all five States (Secondary `2926:3565` +
+Hover `2926:3577` / Focus `2926:3613` / Pressed `2926:3593` / Disabled `2926:3595`; Primary
+`2926:3559`…; Tertiary `2926:3571`…), and `2926:3565` binds `--ai-spacing-6`,
+`--ai-icon-size-xs`, `--ai-radius-sm`.
 
 | Size | Icon-only, as drawn in the Button set (`53:2489`) |
 |---|---|
 | base | 40x40 |
 | sm | 32x32 |
-| xs | 32x24 (Secondary/Tertiary), 28x24 (Primary) |
-| **2xs** | **24x24 — does not exist in Figma** |
+| xs | **24x24 — since 2026-08-28. Was 32x24 (Secondary/Tertiary), 28x24 (Primary)** |
+| 2xs | 24x24 — **exists only in code, and now duplicates xs** |
+
+**Not retired in the same change, deliberately.** `btn--2xs` has 161 usages across TableCard,
+RoomCard, AttendeeCard and SeatingHeader, and its literal string is baked into Code Connect
+snippets already published to Figma — so collapsing it into `xs` is a migration plus a
+`code-connect:publish`, not a tidy-up to fold into a one-line size fix. Flagged for the designer
+to schedule.
+
+Cautionary note for the next audit: this section previously stated xs was 32x24 as settled fact,
+and that statement outlived the Figma it described. A dimension recorded in prose here is a
+snapshot, not a spec — re-read the set before relying on one.
 
 So RoomCard's buttons are **resized instances**, a Figma-side override rather than a variant. The
 designer chose to formalise the size in code (2026-08-25):

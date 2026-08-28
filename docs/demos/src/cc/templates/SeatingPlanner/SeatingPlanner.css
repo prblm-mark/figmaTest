@@ -75,6 +75,25 @@
   box-shadow: var(--ai-shadow-sm);
 }
 
+/* ── Top nav keeps its 48px on THIS screen, at every width ──────────────────
+ * TopNavigation.css drops the bar to `--ai-spacing-8` (40px) below a 767px container. The
+ * Seating Planner does not follow: its mobile frame (3515:213426) draws CCHeaderGroup at 48
+ * with the CCTopNavigation instance filling it at 48 — the same height as desktop. Verified on
+ * the frame rather than inferred; the two nodes both measure 48 there.
+ *
+ * That matters beyond the bar itself, which is why it belongs here rather than being argued
+ * into the shared component: the comment above notes the chrome had been rendering 49 against
+ * Figma's 48, so this screen's chrome height is already pinned to 48 in the design. Letting the
+ * bar collapse to 40 at mobile would leave the chrome 8px taller than its content.
+ *
+ * Same `:has()` idiom as the two rules above — ControlScreen and ControlHub keep the 40px
+ * collapse. Three classes here (`:has()` contributes its argument's specificity) against the
+ * one-class rule inside TopNavigation's `@container`, so this wins on specificity and does not
+ * depend on file order or on which container the query resolves against. */
+.cc-control__main:has(.cc-control__page--seating) .cc-top-navigation {
+  min-height: var(--ai-spacing-9); /* 48px */
+}
+
 /* ── Page padding + gap ─────────────────────────────────────────────────────
  * The one place this screen departs from the shell. `.cc-control__page` gives
  * --ai-spacing-6 (24px) padding and --ai-spacing-7 (32px) gap; Figma binds

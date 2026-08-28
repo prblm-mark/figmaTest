@@ -222,8 +222,22 @@
   padding: 0;
 }
 
+/* 24x24 square. Was `--ai-spacing-7` (32) until 2026-08-28, making this a 32x24 oblong — which
+ * was correct for the Figma of the time. The designer has since squared the size off: every
+ * `Icon Only=True, Size=xs` variant now measures 24x24, across all three Types and all five
+ * States (Secondary `2926:3565` and its Hover/Focus/Pressed/Disabled siblings, likewise Primary
+ * `2926:3559` and Tertiary `2926:3571`). `2926:3565` binds `--ai-spacing-6`, `--ai-icon-size-xs`
+ * and `--ai-radius-sm` — the last two of which this file already had right.
+ *
+ * NOTE: this makes `.btn--icon.btn--2xs` below REDUNDANT — it is now byte-identical to this rule
+ * (24x24, 12px icon, radius-sm, padding 0). `2xs` was invented on 2026-08-25 precisely because
+ * Figma had no 24x24 icon size; Figma has now caught up, so the two class names describe one
+ * size. Left in place deliberately rather than swept: `btn--2xs` has 161 usages across TableCard,
+ * RoomCard, AttendeeCard and SeatingHeader, and its exact string is already baked into published
+ * Code Connect snippets, so retiring it is a deliberate migration plus a re-publish, not a
+ * tidy-up to fold into this change. Flagged for the designer. */
 .btn--icon.btn--xs {
-  width: var(--ai-spacing-7);
+  width: var(--ai-spacing-6);
   min-height: var(--ai-spacing-6);
   padding: 0;
 }
