@@ -52,7 +52,7 @@ Select is a Tier=Component design-system component for picking from a list of va
 | Focus halo | `--ai-surface-brand-soft` | brand contrast |
 | Label font | `--ai-font-title` semibold + `--ai-font-fixed-xs` | Inter 600 / 14px |
 | Value font (Default) | `--ai-font-title` regular + `--ai-font-fixed-xs` | Inter 400 / 14px |
-| Value font (sm) | `--ai-font-title` regular + `--ai-font-fixed-2xs` | Inter 400 / 12px |
+| Value font (sm) | `--ai-font-title` regular + `--ai-font-fixed-xxs` | Inter 400 / 12px |
 | Value color | `--ai-text-primary` | #212123 |
 | Disabled bg | `--ai-surface-minimal` | #f6f6f7 |
 | Disabled text | `--ai-text-contrast` | #67676c |

@@ -42,7 +42,7 @@
 | Height | `h-[24px]` = `--ai-spacing-6` | `--ai-spacing-6` |
 | Horizontal padding | `--ai-spacing-3` | `--ai-spacing-3` |
 | Border radius | `--ai-radius-full` | `--ai-radius-full` |
-| Font size | `--ai-font-fixed-2xs` | `--ai-font-fixed-2xs` |
+| Font size | `--ai-font-fixed-xxs` | `--ai-font-fixed-xxs` |
 | Font weight | `--ai-font-medium` | `--ai-font-medium` |
 | Line height | `--ai-leading-xs` | `--ai-leading-xs` |
 

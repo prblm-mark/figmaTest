@@ -134,7 +134,7 @@ Bar, legend, swatches, badge and buttons are identical between breakpoints. Note
 | `--ai-spacing-2` | sponsor row `gap` + `padding-block-start` (6px) | |
 | `--ai-icon-size-sm` | sponsor icon (16px) | via `get_variable_defs` on `3476:106260` |
 | `--ai-icon-contrast` | sponsor icon colour | same fetch |
-| `--ai-font-fixed-2xs` | sponsor name, seated count (12px) | |
+| `--ai-font-fixed-xxs` | sponsor name, seated count (12px) | |
 | `--ai-leading-xs` | sponsor name `line-height` | |
 | `--ai-text-primary` / `--ai-text-contrast` / `--ai-text-secondary` | name / sponsor + legend / count | |
 | `--ai-spacing-3` | bar `block-size` (8px), viz `gap`, legend `column-gap`, footer count `gap` | |

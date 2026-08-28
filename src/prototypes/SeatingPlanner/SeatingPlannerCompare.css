@@ -158,7 +158,7 @@
 
 .cmp__measured {
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   color: var(--ai-text-contrast);
 }
 
@@ -173,7 +173,7 @@
 
 .cmp__link {
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-medium);
   color: var(--ai-text-brand);
 }

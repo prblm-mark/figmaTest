@@ -42,7 +42,7 @@ body {
 
 .rng-section__label {
   margin: 0;
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);
   color: var(--ai-text-contrast);
   text-transform: uppercase;
@@ -264,7 +264,7 @@ body {
   margin: 0 var(--ai-spacing-2);
   padding: 0 calc(var(--ai-spacing-5) / 2); /* offset by half thumb */
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   color: var(--ai-text-contrast);
 }
 
@@ -288,7 +288,7 @@ body {
   height: var(--ai-spacing-7);
   margin: 0 var(--ai-spacing-2);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   color: var(--ai-text-contrast);
 }
 

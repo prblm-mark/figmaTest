@@ -85,7 +85,7 @@ so the same nesting is used.
 | `--ai-font-fixed-xl` / `-md` | title, desktop / mobile (22 / 18px) | |
 | `--ai-font-fixed-md` / `-sm` | room name, desktop / mobile (18 / 16px) | |
 | `--ai-font-fixed-xs` / `-2xs` | meta items + room count, desktop / mobile (14 / 12px) | |
-| `--ai-font-fixed-2xs` | "Show unassigned" (12px, both breakpoints) | |
+| `--ai-font-fixed-xxs` | "Show unassigned" (12px, both breakpoints) | |
 | `--ai-font-fluid-xxs` | mobile global-action font size (from `btn--sm`) | |
 | `--ai-font-bold` / `-medium` | title + room name / meta + count + toggle label | |
 | `--ai-text-primary` / `--ai-text-contrast` | title + room name / meta + count + toggle label | |

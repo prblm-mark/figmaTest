@@ -49,7 +49,7 @@ Multi-line text input for longer form content. Mirrors the Input component's tok
 | Disabled bg | `--ai-surface-minimal` | Yes |
 | Label font | `--ai-font-title` / `--ai-font-fixed-xs` / `--ai-font-semibold` | Yes |
 | Control font | `--ai-font-body` / `--ai-font-fixed-xs` / `--ai-font-regular` | Yes |
-| Help font | `--ai-font-body` / `--ai-font-fixed-2xs` / `--ai-font-regular` | Yes |
+| Help font | `--ai-font-body` / `--ai-font-fixed-xxs` / `--ai-font-regular` | Yes |
 | Placeholder | `--ai-text-contrast` | Yes |
 | Padding (base) | `--ai-spacing-4` top/bottom, `--ai-spacing-5` left/right | — |
 | Padding (sm) | `--ai-spacing-3` top/bottom, `--ai-spacing-4` left/right | — |

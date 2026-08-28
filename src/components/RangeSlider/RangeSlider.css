@@ -203,7 +203,7 @@
   margin: 0 var(--ai-spacing-2);
   padding: 0 calc(var(--ai-icon-size-sm) / 2); /* offset by half a thumb */
   font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   color: var(--ai-text-contrast);
 }
 
@@ -227,7 +227,7 @@
   height: var(--ai-spacing-7);
   margin: 0 var(--ai-spacing-2);
   font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   color: var(--ai-text-contrast);
 }
 

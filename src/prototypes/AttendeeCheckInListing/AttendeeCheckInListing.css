@@ -112,7 +112,7 @@ body {
 
 .alt-a-stat__label {
   margin: 0;
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);
   color: var(--ai-text-contrast);
   text-transform: uppercase;
@@ -129,7 +129,7 @@ body {
 
 .alt-a-stat__meta {
   margin: 0;
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-regular);
   color: var(--ai-text-contrast);
 }

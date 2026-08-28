@@ -647,8 +647,8 @@ Font: **Inter** (loaded via Google Fonts in `src/styles/base.css`).
 | `--ai-font-fixed-5xs` | `0.625rem` | 10px | Micro labels, dense table chrome |
 | `--ai-font-fixed-4xs` | `0.6875rem` | 11px | Micro labels |
 | `--ai-font-fixed-3xs` | `0.75rem` | 12px | Labels, captions |
-| `--ai-font-fixed-2xs` | `0.75rem` | 12px | Labels, captions — **the 12px token used across components** |
-| `--ai-font-fixed-xxs` | `0.8125rem` | 13px | Labels, captions (one step up from 12px) |
+| `--ai-font-fixed-xxs` | `0.75rem` | 12px | Labels, captions — **the 12px token used across components** |
+| `--ai-font-fixed-2xs` | `0.8125rem` | 13px | Labels, captions (one step up from 12px) |
 | `--ai-font-fixed-xs` | `0.875rem` | 14px | Small body, metadata |
 | `--ai-font-fixed-sm` | `1rem` | 16px | Body text (default) |
 | `--ai-font-fixed-md` | `1.125rem` | 18px | Large body |
@@ -662,13 +662,22 @@ Font: **Inter** (loaded via Google Fonts in `src/styles/base.css`).
 | `--ai-font-fixed-7xl` | `3.75rem` | 60px | Display |
 | `--ai-font-fixed-8xl` | `4.5rem` | 72px | Display |
 
-> **`xxs` changed meaning in the Aug 2026 export.** It used to be the 12px step; the Figma
-> variable formerly named `xxs` now emits `--ai-font-fixed-2xs`, and `xxs` was reassigned to a
-> new 13px step. All 318 component references were repointed from `--ai-font-fixed-xxs` to
-> `--ai-font-fixed-2xs` so nothing shifted visually. **Use `--ai-font-fixed-2xs` for 12px;**
-> reach for `xxs` only when you specifically want 13px.
+> **`xxs` and `2xs` have now swapped TWICE — check this table, do not trust memory.**
 >
-> `3xs` and `2xs` are both 12px. `2xs` is the one components use — `3xs` is the ramp position
+> The Aug 2026 export moved the 12px step from `xxs` to `2xs`, and 318 references were repointed.
+> The **28 Aug 2026 export reversed it**: `xxs` is 12px again and `2xs` is the 13px step. All 361
+> references were swapped back (and the 5 that genuinely wanted 13px were moved the other way, so
+> nothing shifted visually — verified by measuring rendered font sizes, not by counting
+> replacements).
+>
+> **Use `--ai-font-fixed-xxs` for 12px;** reach for `2xs` only when you specifically want 13px.
+>
+> Because these two names have changed meaning twice, a `2xs` or `xxs` reference in any older
+> comment, figma-note or commit message may describe the value it had at the time. The name↔value
+> pairing was preserved through both sweeps, so prose that quotes both (`--ai-font-fixed-xxs`
+> (12px)) stays true; prose that quotes only the name does not.
+>
+> `3xs` and `xxs` are both 12px. `xxs` is the one components use — `3xs` is the ramp position
 > that happens to share the value.
 
 ### Font Sizes (Fluid — responsive)

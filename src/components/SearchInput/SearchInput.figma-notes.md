@@ -52,7 +52,7 @@ SearchInput is a Tier=Component design-system component for search-style input c
 | Placeholder | `--ai-text-contrast` | #67676c |
 | Inset action height | `--ai-spacing-7` | 32px |
 | Inset action padding | `--ai-spacing-4` (12px) | |
-| Inset action font | `--ai-font-title` semibold + `--ai-font-fixed-2xs` | Inter 600 / 12px |
+| Inset action font | `--ai-font-title` semibold + `--ai-font-fixed-xxs` | Inter 600 / 12px |
 | Standalone Split button height | `--ai-spacing-8` | 40px |
 | Standalone button padding | `--ai-spacing-5` | 16px |
 | Standalone button font | `--ai-font-title` semibold + `--ai-font-fixed-xs` | Inter 600 / 14px |

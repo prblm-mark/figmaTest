@@ -21,7 +21,7 @@
 | Element | Class | Visibility | Notes |
 |---|---|---|---|
 | Label text | `.checkbox__label` | Always shown | `--ai-text-primary`, `--ai-font-fixed-xs` |
-| Helper text | `.checkbox__helper` | Optional | `--ai-text-contrast`, `--ai-font-fixed-2xs`. Remove from HTML to hide |
+| Helper text | `.checkbox__helper` | Optional | `--ai-text-contrast`, `--ai-font-fixed-xxs`. Remove from HTML to hide |
 
 ### Usage examples
 
@@ -124,7 +124,7 @@
 | Label text color       | `--ai-text-primary`              |
 | Helper text color      | `--ai-text-contrast`             |
 | Label font size        | `--ai-font-fixed-xs`             |
-| Helper font size       | `--ai-font-fixed-2xs`            |
+| Helper font size       | `--ai-font-fixed-xxs`            |
 | Wrapper gap            | `--ai-spacing-3`                 |
 | Label gap              | `--ai-spacing-1`                 |
 | Transition             | `--ai-transition-default`        |

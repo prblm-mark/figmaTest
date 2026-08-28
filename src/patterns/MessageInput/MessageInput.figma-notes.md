@@ -56,7 +56,7 @@ MessageInput is a pattern-tier component. It is the chat input bar containing a 
 | Send btn disabled opacity | `0.8` | 80% (raw, approved) |
 | Send btn active bg | `--ai-btn-primary-bg` | #0071d8 |
 | Filter container radius | `--ai-radius-md` | 8px |
-| Disclaimer font | `--ai-font-fixed-2xs` | 12px |
+| Disclaimer font | `--ai-font-fixed-xxs` | 12px |
 | Disclaimer line-height | `--ai-leading-xs` | 16px |
 | Disclaimer color | `--ai-text-contrast` | #6b7280 |
 | Disclaimer tracking | `--ai-tracking-5` | 0.0125em |

@@ -102,7 +102,7 @@ body {
   align-items: center;
   gap: var(--ai-spacing-2);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-contrast);
   white-space: nowrap;
