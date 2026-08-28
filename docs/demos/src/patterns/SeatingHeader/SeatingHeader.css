@@ -365,8 +365,20 @@
   position: absolute;
   inset-inline-start: 50%;
   inset-block-start: 50%;
-  /* 44px is the WCAG 2.1 AA touch-target minimum, not a design value — no token. */
-  inline-size: 44px;
+  /* Touch target. Not design values — no token; these are a11y minimums.
+   *
+   * 36 wide, NOT 44 (2026-08-28). A 44px area centred on this 20px button overhangs 12px each
+   * side, but Figma's gap to the Export button is 8 — so it covered Export's rightmost 4px and
+   * a tap there opened the kebab menu instead. Hit-tested: Export owned only 9 of 10 sampled
+   * pixels, the last one stolen by "More seating actions".
+   *
+   * 36 = 20 + 8 + 8, so it fills the gap on both sides and stops exactly where the neighbour
+   * begins. Still well above WCAG 2.2's AA target-size minimum (2.5.8, 24x24); the 44 figure in
+   * CLAUDE.md §9 is Apple HIG / WCAG 2.5.5 AAA. **Flagged**: this is a deliberate deviation from
+   * that §9 number, taken because the alternative is overlapping a sibling control. Widening
+   * Figma's 8px gap would allow the full 44 — a designer call. Block size stays 44, since there
+   * is vertical room. */
+  inline-size: 36px;
   block-size: 44px;
   transform: translate(-50%, -50%);
 }
@@ -389,6 +401,31 @@
  * room cards narrow and grow, and the toolbar loses the toggle and the divider entirely.
  */
 @container seating-header (max-width: 767px) {
+  /* Add Table becomes ICON-ONLY here (Figma updated 2026-08-28, mobile frame 3515:213426).
+   * The buttons group went 128 -> 96 wide — two 32x32 icon buttons plus the 20px kebab — and the
+   * room block took the 16px it freed, 158 -> 190. Between 768 and 1023 the button keeps its
+   * shortened "Add" label: Figma has only the two frames (desktop 1552, mobile 402), so that
+   * middle band stays a deliberate intermediate step, "Add Table" -> "Add" -> icon.
+   *
+   * The label is CLIPPED, not removed, so "Add Table" remains the button's accessible name — the
+   * same technique Export already uses below and RoomCard uses for the word "seated". */
+  .seating-header__btn--add .seating-header__btn-label {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* 32x32 — the geometry of `btn--icon btn--sm`, which cannot be added as a class from a
+   * container query. Mirrors the Export rule in the 1023 block. */
+  .seating-header__btn--add.btn {
+    inline-size: var(--ai-spacing-7);
+    min-block-size: var(--ai-spacing-7);
+    padding: 0;
+  }
+
   .seating-header__bar {
     flex-direction: column;
     align-items: flex-start;
@@ -499,7 +536,22 @@
    * read as one block at 2px and as two separate things at 4px. */
   .seating-header__room {
     flex-direction: column;
-    align-items: flex-start;
+    /* THE OVERLAP FIX (2026-08-28). `flex-start` was correct-looking and wrong: in a COLUMN flex
+     * container, cross-axis alignment governs WIDTH, and anything other than `stretch`
+     * shrink-wraps each child to its own content. So the room name held a fixed 111px while its
+     * parent shrank, escaping the box by up to 72px and painting straight over the buttons.
+     *
+     * `overflow: hidden` + `text-overflow: ellipsis` on the name were already present and could
+     * never fire — a shrink-wrapped box is never narrower than its own text. `stretch` gives the
+     * children the container's width, so they finally clip. Measured at a 260px column:
+     * name 111 -> 39, escape +72 -> none, 56px overlap -> 16px of clearance.
+     *
+     * Visually identical to `flex-start` here, because the text is left-aligned either way.
+     *
+     * Worth generalising: whenever a rule flips `flex-direction` to column, re-check
+     * `align-items` — a value that only described alignment in the row layout silently becomes a
+     * width policy, and it is the reason a layout OVERLAPS instead of reflowing. */
+    align-items: stretch;
     justify-content: center;
     gap: var(--ai-spacing-0-5);
   }

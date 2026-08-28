@@ -433,3 +433,55 @@ nothing to do with it.
 Verified after the fix at columns 1800 / 1400 / 1100 / 900 / 700 / 500 / 402: header always at its
 natural height (294–341), room card always visible, toolbar always present, and all content
 reachable — the grid scrolling at 1100 and the page scrolling at ≤700.
+
+## Toolbar overlap and the icon-only Add (2026-08-28)
+
+Reported: at small sizes the room label overlapped the Add button; and the principle behind it —
+**a layout should never overlap, it should reflow.** The designer suspected absolute positioning.
+
+**It was not absolute positioning.** The two `position: absolute` uses here are a 44×44 touch
+target on the kebab (a pseudo-element) and the visually-hidden label pattern — neither affects
+sibling layout. The cause was `align-items`.
+
+### `align-items` becomes a WIDTH policy the moment you flip to column
+
+`.seating-header__room` is a row on desktop and a column below 1023. The column block set
+`align-items: flex-start`, which reads as harmless alignment — but in a column flex container the
+cross axis is horizontal, so anything other than `stretch` **shrink-wraps each child to its own
+content**. The room name therefore held a fixed 111px while its parent shrank, escaping the box by
+up to **+72px** and painting over the buttons — a **56px overlap** at a 260px column.
+
+The `overflow: hidden` + `text-overflow: ellipsis` added earlier were present the whole time and
+could never fire: a shrink-wrapped box is never narrower than its own text.
+
+`align-items: stretch` fixes it — measured at a 260px column, name 111 → 39, escape +72 → none,
+56px overlap → 16px of clearance. Visually identical to `flex-start`, because the text is
+left-aligned either way.
+
+**Generalise this:** whenever a rule flips `flex-direction` to `column`, re-check `align-items`. A
+value that only described alignment in the row layout silently becomes a width policy, and it is
+precisely why a layout overlaps instead of reflowing.
+
+### Add Table is icon-only on mobile (Figma updated)
+
+Mobile frame `3515:213426` now draws the buttons group at **96 wide** — two 32×32 icon buttons plus
+the 20px kebab, down from 128 — and the room block took the 16px it freed, 158 → **190**. So Add
+joins Export as icon-only.
+
+There are now three steps, because Figma has only two frames (desktop 1552, mobile 402) and the
+band between is ours to degrade: **"Add Table" → "Add" (≤1023) → icon (≤767)**. The label is
+CLIPPED, not removed, so "Add Table" stays the button's accessible name — verified at every width.
+
+### A second overlap, in hit targets rather than pixels
+
+While checking the first, hit-testing found the kebab stealing Export's rightmost ~4px: its 44×44
+`::after`, centred on a 20px button, overhangs 12px each side while Figma's gap is only 8. Export
+owned 9 of 10 sampled pixels.
+
+Reduced to **36 × 44** — 20 + 8 + 8, so it fills the gap on both sides and stops exactly where the
+neighbour begins. Every button now owns all of its own pixels at both breakpoints.
+
+**Flagged:** 36 is a deliberate deviation from the 44 in CLAUDE.md §9. It still clears WCAG 2.2's
+AA target-size minimum (2.5.8, 24×24) — the 44 figure is Apple HIG / WCAG 2.5.5 AAA. The
+alternative is either overlapping a sibling control or widening Figma's 8px gap, which is a
+designer call.
