@@ -101,7 +101,7 @@ supplies the table name in its own sheet chrome. **See the accessibility note be
 | `--ai-spacing-0-5` | legend `gap` | CSS leads Figma — see below |
 | `--ai-font-title` | name, meta, legend | |
 | `--ai-font-fixed-md` | table name (18px) | |
-| `--ai-font-fixed-2xs` | meta / seated count (12px) | |
+| `--ai-font-fixed-xxs` | meta / seated count (12px) | |
 | `--ai-font-fixed-4xs` | legend labels (11px) | |
 | `--ai-font-bold` / `-medium` | name / meta + legend | |
 | `--ai-font-body` | sponsor name | inconsistent with TableCard — see below |

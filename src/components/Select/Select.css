@@ -136,7 +136,7 @@
 .sel__control--sm {
   min-height: var(--ai-spacing-7);  /* 32px */
   padding: 0 var(--ai-spacing-3) 0 var(--ai-spacing-4);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
 }
 
 /* ── Type: Disabled ────────────────────────────────── */
@@ -481,7 +481,7 @@
 .sel-category--sm .sel-category__category,
 .sel-category--sm .sel-category__value {
   min-height: var(--ai-spacing-7);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
 }
 
 .sel-category--sm .sel-category__category {

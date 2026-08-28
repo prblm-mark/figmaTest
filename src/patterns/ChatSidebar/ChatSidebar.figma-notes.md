@@ -40,7 +40,7 @@ Dark Mode handled by `data-sidebar-theme="light|dark"` via `sidebar-colors.js`, 
 | Section items gap | `1px` | optical separator |
 | Label px | `--ai-spacing-3` | 8px |
 | Label py | `--ai-spacing-2` | 6px |
-| Label font | `body/xxs` — `--ai-font-fixed-2xs` / `--ai-font-regular` / `--ai-leading-xs` | 12px |
+| Label font | `body/xxs` — `--ai-font-fixed-xxs` / `--ai-font-regular` / `--ai-leading-xs` | 12px |
 | Label color | `var(--ai-chat-sidebar-text)` + `opacity: 0.6` | Computed muted text |
 
 ## Token gaps

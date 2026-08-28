@@ -51,7 +51,7 @@ ChatHeader is a pattern-tier component. It is the top header bar of the chat UI,
 | Selector border | `--ai-border-secondary` | #d1d5db |
 | Selector radius | `--ai-radius-md` | 8px |
 | Selector text padding | `--ai-spacing-4` | 12px |
-| Selector font | `--ai-font-body` + `--ai-font-medium` + `--ai-font-fixed-2xs` | Inter Medium 12px |
+| Selector font | `--ai-font-body` + `--ai-font-medium` + `--ai-font-fixed-xxs` | Inter Medium 12px |
 | Selector line-height | `--ai-leading-xs` | 16px |
 | Selector letter-spacing | `--ai-tracking-5` | 0.0125em (Figma: 0.12px at 12px) |
 | Selector text color | `--ai-text-primary` | #1f2a37 |

@@ -10,23 +10,11 @@ import figma, { html } from '@figma/code-connect/html'
 // search field is Input (label-less, input--sm). Both are their own components with their own
 // Code Connect; the markup is inlined here so the snippet is copy-pasteable.
 
-const SEARCH = html`
-      <div class="input input--sm">
-        <div class="input__wrap">
-          <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
-          <input id="unassigned-search" type="search" class="input__control"
-                 placeholder="Search unassigned" aria-label="Search unassigned attendees">
-        </div>
-      </div>`
-
-const header = (count: string) => html`
-    <header class="unassigned__header">
-      <div class="unassigned__header-row">
-        <h3 class="unassigned__title">Unassigned</h3>
-        <span class="unassigned__count">${count}</span>
-      </div>
-      <p class="unassigned__hint">Drag an attendee onto a seat or table to assign</p>
-    </header>`
+// STRUCTURE NOTE (2026-08-28): the header and search field were a helper function and a module
+// const, interpolated as `${header('6')}` / `${SEARCH}`. The parser accepts only a single flat
+// tagged template whose every `${}` is a destructured prop or a `figma.*()` call, so neither form
+// is supported — and with no props declared this failed as an InternalError rather than a readable
+// message. Both are written out inline. See docs/code-connect.md.
 
 // ── Type=Unassiged: the populated list, connected at set level ───────────────────────
 figma.connect(
@@ -34,9 +22,21 @@ figma.connect(
   {
     example: () => html`
       <section class="unassigned" aria-label="Unassigned attendees">
-        ${header('6')}
+        <header class="unassigned__header">
+          <div class="unassigned__header-row">
+            <h3 class="unassigned__title">Unassigned</h3>
+            <span class="unassigned__count">6</span>
+          </div>
+          <p class="unassigned__hint">Drag an attendee onto a seat or table to assign</p>
+        </header>
         <div class="unassigned__body">
-          ${SEARCH}
+          <div class="input input--sm">
+            <div class="input__wrap">
+              <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
+              <input id="unassigned-search" type="search" class="input__control"
+                     placeholder="Search unassigned" aria-label="Search unassigned attendees">
+            </div>
+          </div>
           <div class="unassigned__list">
             <!-- AttendeeCard with Show Seat Number and Show Actions both off. -->
             <article class="attendee-card attendee-card--vip">
@@ -74,9 +74,21 @@ figma.connect(
   {
     example: () => html`
       <section class="unassigned" aria-label="Unassigned attendees">
-        ${header('0')}
+        <header class="unassigned__header">
+          <div class="unassigned__header-row">
+            <h3 class="unassigned__title">Unassigned</h3>
+            <span class="unassigned__count">0</span>
+          </div>
+          <p class="unassigned__hint">Drag an attendee onto a seat or table to assign</p>
+        </header>
         <div class="unassigned__body">
-          ${SEARCH}
+          <div class="input input--sm">
+            <div class="input__wrap">
+              <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
+              <input id="unassigned-search" type="search" class="input__control"
+                     placeholder="Search unassigned" aria-label="Search unassigned attendees">
+            </div>
+          </div>
           <div class="unassigned__empty">
             <i data-lucide="circle-check" aria-hidden="true"></i>
             <p class="unassigned__empty-title">Everyone is seated</p>

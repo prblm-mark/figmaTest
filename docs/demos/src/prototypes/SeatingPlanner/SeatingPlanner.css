@@ -109,7 +109,7 @@ body {
 
 .sp-selected__label {
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-medium);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-contrast);
@@ -224,7 +224,7 @@ body {
   align-items: center;
   gap: var(--ai-spacing-2);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-regular);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-contrast);
@@ -253,7 +253,7 @@ body {
   flex: none;
   margin: 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);
   letter-spacing: var(--ai-tracking-7);
   text-transform: uppercase;
@@ -308,7 +308,7 @@ body {
 .sp-plan__stats {
   margin: var(--ai-spacing-1) 0 var(--ai-spacing-3);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-regular);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-contrast);
@@ -360,7 +360,7 @@ body {
 .sp-toolbar__title {
   margin: 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-bold);
   letter-spacing: var(--ai-tracking-7);
   text-transform: uppercase;
@@ -374,7 +374,7 @@ body {
   align-items: center;
   gap: var(--ai-spacing-3);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-medium);
   color: var(--ai-text-secondary);
 }
@@ -419,7 +419,7 @@ body {
   border-radius: var(--ai-radius-sm);
   background: none;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-medium);
   color: var(--ai-text-primary);
   text-align: left;
@@ -494,7 +494,7 @@ body {
   display: block;
   margin-top: var(--ai-spacing-1);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-bold);
   letter-spacing: var(--ai-tracking-7);
   text-transform: uppercase;
@@ -508,7 +508,7 @@ body {
   gap: var(--ai-spacing-2);
   margin: var(--ai-spacing-2) 0 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-medium);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-secondary);
@@ -533,7 +533,7 @@ body {
   flex: 1;
   margin: 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-regular);
   color: var(--ai-text-secondary);
 }
@@ -576,7 +576,7 @@ body {
 .sp-grid__note {
   margin: var(--ai-spacing-5) 0 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   line-height: var(--ai-leading-sm);
   color: var(--ai-text-contrast);
 }
@@ -624,7 +624,7 @@ body {
 .sp-panel__meta {
   margin: var(--ai-spacing-2) 0 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-contrast);
 }
@@ -670,7 +670,7 @@ body {
   border-radius: var(--ai-radius-full);
   background: var(--ai-surface-minimal);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);
   color: var(--ai-text-contrast);
 }
@@ -692,7 +692,7 @@ body {
 .sp-seat__org {
   margin: 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-contrast);
 }
@@ -731,7 +731,7 @@ body {
   padding: var(--ai-spacing-0-5) var(--ai-spacing-3);
   border-radius: var(--ai-radius-full);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-bold);
   letter-spacing: var(--ai-tracking-6);
   text-transform: uppercase;
@@ -768,7 +768,7 @@ body {
   align-items: center;
   gap: var(--ai-spacing-2);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-medium);
   color: var(--ai-text-secondary);
 }
@@ -778,7 +778,7 @@ body {
 .sp-tray__hint {
   margin: 0 0 var(--ai-spacing-4);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   line-height: var(--ai-leading-sm);
   color: var(--ai-text-contrast);
 }
@@ -815,7 +815,7 @@ body {
 .sp-person__org {
   flex: none;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   color: var(--ai-text-contrast);
 }
 
@@ -883,7 +883,7 @@ body {
   flex: none;
   margin: 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-regular);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-contrast);
@@ -950,13 +950,13 @@ body {
 .sp-states__note {
   margin: var(--ai-spacing-2) 0 var(--ai-spacing-5);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   line-height: var(--ai-leading-sm);
   color: var(--ai-text-contrast);
 }
 
 .sp-states__note code {
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   color: var(--ai-text-secondary);
 }
 
@@ -972,7 +972,7 @@ body {
   border: 1px dashed var(--ai-border-contrast);
   border-radius: var(--ai-radius-md);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   line-height: var(--ai-leading-md);
   color: var(--ai-text-contrast);
 }
@@ -1023,7 +1023,7 @@ body {
   margin: 0;
   padding: var(--ai-spacing-5) var(--ai-spacing-6) 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-regular);
   line-height: var(--ai-leading-md);
   color: var(--ai-text-contrast);
@@ -1116,7 +1116,7 @@ body {
   padding: var(--ai-spacing-3);
   margin: 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   color: var(--ai-text-contrast);
 }
 
@@ -1131,7 +1131,7 @@ body {
   border-radius: var(--ai-radius-md);
   background: var(--ai-surface-minimal);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-medium);
   color: var(--ai-text-primary);
   width: fit-content;
@@ -1152,7 +1152,7 @@ body {
   grid-column: 1 / -1;
   margin: 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-regular);
   line-height: var(--ai-leading-md);
   color: var(--ai-text-contrast);
@@ -1242,7 +1242,7 @@ body {
   margin: 0;
   padding: var(--ai-spacing-5) var(--ai-spacing-6) var(--ai-spacing-4);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   line-height: var(--ai-leading-md);
   color: var(--ai-text-contrast);
 }
@@ -1293,7 +1293,7 @@ body {
 .sp-types__default {
   flex: none;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-medium);
   color: var(--ai-text-contrast);
 }
@@ -1332,7 +1332,7 @@ body {
 
 .sp-types__label {
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);
   color: var(--ai-text-secondary);
 }
@@ -1359,7 +1359,7 @@ body {
 .sp-assign__help {
   margin: var(--ai-spacing-3) 0 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   line-height: var(--ai-leading-sm);
   color: var(--ai-text-contrast);
 }
@@ -1387,7 +1387,7 @@ body {
 .sp-assign__group {
   margin: var(--ai-spacing-5) 0 var(--ai-spacing-2);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-bold);
   letter-spacing: var(--ai-tracking-7);
   text-transform: uppercase;
@@ -1433,7 +1433,7 @@ body {
 .sp-assign__meta {
   flex: none;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   color: var(--ai-text-contrast);
 }
 
@@ -1465,7 +1465,7 @@ body {
 .sp-assign__hint {
   margin: 0 0 var(--ai-spacing-4);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   line-height: var(--ai-leading-sm);
   color: var(--ai-text-contrast);
 }
@@ -1545,7 +1545,7 @@ body {
 .sp-tray__empty-desc {
   margin: 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   line-height: var(--ai-leading-sm);
   color: var(--ai-text-contrast);
 }
@@ -1555,7 +1555,7 @@ body {
   margin: var(--ai-spacing-4) 0 0;
   padding: var(--ai-spacing-4) var(--ai-spacing-3);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   line-height: var(--ai-leading-sm);
   color: var(--ai-text-contrast);
   text-align: center;
@@ -1608,7 +1608,7 @@ body {
   content: 'Swap';
   margin-left: auto;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);
   letter-spacing: var(--ai-tracking-7);
   text-transform: uppercase;
@@ -1626,7 +1626,7 @@ body {
   content: attr(data-sp-reject);
   margin-left: auto;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);
   color: var(--ai-text-error);
 }
@@ -1756,14 +1756,14 @@ body {
 .sp-layout__size {
   flex: none;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   color: var(--ai-text-contrast);
 }
 
 .sp-layout__hint {
   margin: var(--ai-spacing-4) 0 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   line-height: var(--ai-leading-sm);
   color: var(--ai-text-contrast);
 }
@@ -1823,7 +1823,7 @@ body {
 .sp-export__doc .sp-export__meta {
   margin: var(--ai-spacing-2) 0 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   line-height: var(--ai-leading-sm);
   color: var(--ai-text-contrast);
 }
@@ -1840,7 +1840,7 @@ body {
 /* the fill count and the tier sit beside the table name, quieter than it */
 .sp-export__doc .sp-export__table span {
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-regular);
   color: var(--ai-text-contrast);
 }
@@ -1874,7 +1874,7 @@ body {
   gap: var(--ai-spacing-3);
   margin: 0 0 var(--ai-spacing-5);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   line-height: var(--ai-leading-sm);
   color: var(--ai-text-contrast);
 }

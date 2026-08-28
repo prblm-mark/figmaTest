@@ -111,7 +111,7 @@ dark (`#212123` vs `#1b1b1f`), and Figma has no dark variant.
 | `--ai-font-fixed-md` | same | modal title (18px) |
 | `--ai-font-fixed-sm` | same | event name (16px) |
 | `--ai-font-fixed-xs` | same | checkbox label, no-results title, button text (14px) |
-| `--ai-font-fixed-2xs` | same | meta, plans, seated, count, badges, group label (12px) |
+| `--ai-font-fixed-xxs` | same | meta, plans, seated, count, badges, group label (12px) |
 | `--ai-leading-md` / `--ai-leading-sm` / `--ai-leading-xs` | same | title + name / meta + desc / labels |
 | `--ai-tracking-7` | same | group label letter-spacing — see Token Gaps |
 | `--ai-text-primary` / `--ai-text-secondary` / `--ai-text-contrast` | same | name + title / meta + count / group label + 0-plans |
@@ -155,7 +155,7 @@ Every gap below was raised and resolved with the designer on 2026-07-27.
    tracking scale stops at 0.05em. **Resolved:** use `--ai-tracking-7` everywhere.
 5. **No-results description lost its bindings** — raw `#3c3c3f`, `12px`, `20px` line-height and
    `Inter:Bold` (a mixed-style text node the tokenise plugin could not bind). **Resolved:**
-   mapped to the semantic equivalents `--ai-text-secondary` / `--ai-font-fixed-2xs` /
+   mapped to the semantic equivalents `--ai-text-secondary` / `--ai-font-fixed-xxs` /
    `--ai-leading-sm` / `--ai-font-bold`.
 
 ## Deviations & inconsistencies

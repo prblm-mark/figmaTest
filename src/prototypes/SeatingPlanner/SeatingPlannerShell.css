@@ -998,7 +998,7 @@
     flex: none;
     order: 9;                     /* last, on its own line if the head wraps */
     font-family: var(--ai-font-body);
-    font-size: var(--ai-font-fixed-2xs);
+    font-size: var(--ai-font-fixed-xxs);
     font-weight: var(--ai-font-medium);
     color: var(--ai-text-contrast);
   }

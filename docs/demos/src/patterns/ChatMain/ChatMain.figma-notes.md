@@ -82,7 +82,7 @@
 | Suggestions grid (mobile) | `repeat(2, 1fr)` | 2 cols |
 | Suggestions grid (desktop) | `repeat(3, 1fr)` | 3 cols |
 | Suggestions gap | `--ai-spacing-5` | 16px |
-| Feedback font-size | `--ai-font-fixed-2xs` | 12px |
+| Feedback font-size | `--ai-font-fixed-xxs` | 12px |
 | Feedback color | `--ai-text-contrast` | #6B7280 |
 
 ## Token Mapping — Scroll Area (Processing + Response)

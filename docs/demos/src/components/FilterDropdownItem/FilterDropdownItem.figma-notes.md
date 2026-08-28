@@ -56,7 +56,7 @@ via the shared token). CSS represents the cross-product with one `--selected` mo
 | Hover bg | `--ai-surface-minimal` | `--ai-surface-minimal` |
 | Title | `--ai-font-body` medium, `--ai-font-fixed-xs` (14px), `--ai-leading-sm` (20px) | same |
 | Title colour | `--ai-text-primary` | `--ai-text-primary` |
-| Sub text | `--ai-font-body` regular, `--ai-font-fixed-2xs` (12px) | same |
+| Sub text | `--ai-font-body` regular, `--ai-font-fixed-xxs` (12px) | same |
 | Sub text colour | `--ai-text-secondary` | `--ai-text-secondary` |
 | Check size | 16px | `--ai-icon-size-sm` |
 | Check colour | `--ai-surface-success` (#059669) | `--ai-surface-success` |

@@ -115,9 +115,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  /* Figma leaves this size unbound as a raw 12px; --ai-font-fixed-2xs is exactly 12px,
+  /* Figma leaves this size unbound as a raw 12px; --ai-font-fixed-xxs is exactly 12px,
    * so binding the token is visually a no-op. Flagged in figma-notes. */
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-regular);
   color: var(--ai-text-contrast);
 }
@@ -127,7 +127,7 @@
 .attendee-card__sep {
   flex-shrink: 0;
   color: var(--ai-text-contrast);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
 }
 
 .attendee-card__role {
@@ -247,7 +247,7 @@
   margin-inline-start: var(--ai-spacing-4);
   padding-block: var(--ai-spacing-3);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-medium);
   line-height: normal;
   color: var(--ai-text-contrast);

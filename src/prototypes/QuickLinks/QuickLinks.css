@@ -51,7 +51,7 @@ body {
 
 .proto-card__label {
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-contrast);
@@ -71,7 +71,7 @@ body {
   border: 1px solid var(--ai-surface-brand-soft);
   border-radius: var(--ai-radius-full);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-medium);
   line-height: var(--ai-leading-xs);
   color: var(--ai-surface-brand);
@@ -164,7 +164,7 @@ body {
 
 .chat-msg__label {
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-secondary);

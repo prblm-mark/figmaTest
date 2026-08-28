@@ -255,7 +255,7 @@
   /* Only the size steps down now. Both states' mobile frames already bound
    * --ai-leading-sm, so unifying the base on 20px made the leading override redundant. */
   .seating-screen__empty-text {
-    font-size: var(--ai-font-fixed-xxs);
+    font-size: var(--ai-font-fixed-2xs);
   }
 }
 

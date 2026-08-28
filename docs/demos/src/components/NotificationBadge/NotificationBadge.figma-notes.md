@@ -89,7 +89,7 @@ the bell button).
 | Gap | Figma | Resolution |
 |---|---|---|
 | Badge background | Red 500 / `#ef4444` (raw primitive, no `--ai-*` token) | Approved: use existing `--ai-surface-error` (Red 600 / `#dc2626`). Slightly darker than Figma. Worth raising with the designer to add `--ai-surface-error-bright` (Red 500). |
-| Badge counter font-size | 8px (no token at this size; smallest tokens are `--ai-font-fixed-2xs` = 11px and `--ai-font-fluid-xxs` = 12px) | Approved: use raw `8px` with comment. Sub-token optical size, similar exception class to border-widths and letter-spacing. |
+| Badge counter font-size | 8px (no token at this size; smallest tokens are `--ai-font-fixed-xxs` = 11px and `--ai-font-fluid-xxs` = 12px) | Approved: use raw `8px` with comment. Sub-token optical size, similar exception class to border-widths and letter-spacing. |
 | Badge position offsets | `top: 4px right: 5px` (40px) and `top: 1px right: 2px` (32px) — only 4px maps to a token | Resolved by switching to translate-based offset (`translate(25%, -25%)`), which is size-agnostic and avoids the raw-px positions. |
 
 ---

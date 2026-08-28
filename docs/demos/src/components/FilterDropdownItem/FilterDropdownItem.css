@@ -55,7 +55,7 @@
 .filter-dropdown-item__sub {
   width: 100%;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);    /* 12px */
+  font-size: var(--ai-font-fixed-xxs);    /* 12px */
   font-weight: var(--ai-font-regular);
   color: var(--ai-text-secondary);
 }

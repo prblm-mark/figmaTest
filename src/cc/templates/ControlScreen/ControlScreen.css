@@ -322,7 +322,7 @@
 
 .cc-control__section-meta {
   margin: 0;
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   color: var(--ai-text-secondary);
 }
 
@@ -529,7 +529,7 @@
      16/14 at all sizes). Standard sizes return at >=768px (MD), where this
      block no longer applies. */
   .cc-control__cards .stat-card__value { font-size: var(--ai-font-fixed-xs); }   /* 16 -> 14 */
-  .cc-control__cards .stat-card__title { font-size: var(--ai-font-fixed-2xs); }  /* 14 -> 12 */
+  .cc-control__cards .stat-card__title { font-size: var(--ai-font-fixed-xxs); }  /* 14 -> 12 */
   /* Stack the header bar contents (Select keeps its 280px max-width cap). */
   .cc-control__panel-head {
     flex-direction: column;

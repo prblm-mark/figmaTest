@@ -39,7 +39,7 @@
 | Title color | `--ai-text-primary` | #1F2A37 |
 | Subtitle font-family | `--ai-font-body` | Inter |
 | Subtitle font-weight | `--ai-font-regular` | 400 |
-| Subtitle font-size | `--ai-font-fixed-2xs` | 0.75rem |
+| Subtitle font-size | `--ai-font-fixed-xxs` | 0.75rem |
 | Subtitle line-height | `1.5` | — |
 | Subtitle color | `--ai-text-contrast` | #6B7280 |
 

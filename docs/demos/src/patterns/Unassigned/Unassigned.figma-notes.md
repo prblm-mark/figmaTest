@@ -89,7 +89,7 @@ rows below.
 | `--ai-font-title` | every text node | |
 | `--ai-font-fixed-md` | panel title (18px) | |
 | `--ai-font-fixed-4xs` | count (11px) | |
-| `--ai-font-fixed-2xs` | hint, empty body copy (12px) | |
+| `--ai-font-fixed-xxs` | hint, empty body copy (12px) | |
 | `--ai-font-fixed-xs` | empty-state heading (14px) | |
 | `--ai-font-bold` / `-semibold` / `-regular` | title / count + empty heading / hint + empty copy | |
 | `--ai-leading-xs` | hint, empty body copy (16px) | see below |

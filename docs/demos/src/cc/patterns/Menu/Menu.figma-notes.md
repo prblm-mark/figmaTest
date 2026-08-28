@@ -66,7 +66,7 @@ Type controls layout; State controls which item is selected/expanded and whether
 | CRM Recent item colour | rest: `--ai-text-invert-secondary`, hover: `--ai-text-invert` |
 | CRM Recent chevron colour | rest: `--ai-icon-invert-secondary`, hover (on row): `--cc-mainmenu-icon` |
 | CRM Recent chevron rotation | `rotate(-90deg)` so chevron-down points right |
-| CRM `show-toggle` font | `--ai-font-fixed-2xs` (12) |
+| CRM `show-toggle` font | `--ai-font-fixed-xxs` (12) |
 | CRM `show-toggle` colours | label rest: `--ai-text-invert-secondary`, hover: `--ai-text-invert`; icon rest: `--ai-icon-invert-secondary`, hover: `--cc-mainmenu-icon` |
 
 **Duotone rule (applies to all Types):** every icon inside the Menu panel uses `--ai-icon-invert-secondary` at rest and promotes to `--cc-mainmenu-icon` on its hover/active state; every label uses `--ai-text-invert-secondary` at rest and promotes to `--ai-text-invert` on hover. This matches the MainMenuItem and Sidebar contrast convention so the navy chrome reads as a single coherent system.

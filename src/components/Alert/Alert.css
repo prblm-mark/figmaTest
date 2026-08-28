@@ -218,13 +218,13 @@
   color: var(--ai-text-invert);
   font-family: var(--ai-font-title);
   font-weight: var(--ai-font-semibold);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   line-height: var(--ai-leading-md);
   flex-shrink: 0;
 }
 
 .alert--floating .alert__text {
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   line-height: var(--ai-leading-md);
 }
 

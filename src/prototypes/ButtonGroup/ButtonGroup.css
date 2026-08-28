@@ -49,7 +49,7 @@ body {
 
 .proto-section__desc {
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-regular);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-contrast);

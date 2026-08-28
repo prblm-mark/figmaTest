@@ -15,8 +15,48 @@ import figma, { html } from '@figma/code-connect/html'
 // components with their own Code Connect. Only two seats are shown per example — a real
 // table has as many rows as it has seats.
 
-const SEAT_FILLED = html`
-        <article class="attendee-card attendee-card--host">
+// The header is desktop-only — CSS hides it below 768px, so it stays in the markup.
+
+// STRUCTURE NOTE (2026-08-28): the header and the two seat rows were shared module consts
+// interpolated as `${HEADER}` / `${SEAT_FILLED}` / `${SEAT_EMPTY}`. The parser rejects a
+// module-level identifier as a placeholder — every `${}` must be a destructured prop or a
+// `figma.*()` call — and because this file declares no props at all it failed with an
+// InternalError rather than a readable message. The fragments are written out inline instead.
+// See docs/code-connect.md.
+
+// ── Type=All Roles: the representative case, connected at set level ──────────────────
+figma.connect(
+  'https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=3475-94010',
+  {
+    example: () => html`
+      <section class="table-detail" aria-label="Table 21 seating detail">
+            <header class="table-detail__header">
+      <div class="table-detail__header-row">
+        <div class="table-detail__titles">
+          <h3 class="table-detail__name">Table 21</h3>
+          <p class="table-detail__meta">
+            <span class="table-detail__count">7 / 10 seated</span>
+            <span class="table-detail__sep" aria-hidden="true">·</span>
+            <span class="table-detail__sponsor">
+              <i data-lucide="handshake" aria-hidden="true"></i>
+              <span class="table-detail__sponsor-name">Monzo</span>
+            </span>
+          </p>
+        </div>
+        <span class="table-type table-type--gold">Gold</span>
+      </div>
+    </header>
+        <div class="table-detail__list">
+          <!-- Derived from the roles actually seated — never stored. -->
+          <p class="table-detail__legend">
+            <span class="table-detail__legend-item table-detail__legend-item--host"><span class="table-detail__swatch"></span>Host</span>
+            <span class="table-detail__legend-item table-detail__legend-item--vip"><span class="table-detail__swatch"></span>VIP</span>
+            <span class="table-detail__legend-item table-detail__legend-item--speaker"><span class="table-detail__swatch"></span>Speaker</span>
+            <span class="table-detail__legend-item table-detail__legend-item--sponsor"><span class="table-detail__swatch"></span>Sponsor</span>
+            <span class="table-detail__legend-item table-detail__legend-item--attendee"><span class="table-detail__swatch"></span>Attendee</span>
+          </p>
+          <div class="table-detail__seats">
+                    <article class="attendee-card attendee-card--host">
           <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
           <span class="attendee-card__seat">1</span>
           <div class="attendee-card__body">
@@ -40,19 +80,27 @@ const SEAT_FILLED = html`
               </button>
             </div>
           </div>
-        </article>`
-
-const SEAT_EMPTY = html`
-        <article class="attendee-card attendee-card--empty">
+        </article>
+                    <article class="attendee-card attendee-card--empty">
           <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
           <span class="attendee-card__seat">2</span>
           <p class="attendee-card__empty-label">Empty seat</p>
           <button type="button" class="btn btn--secondary btn--sm">Assign</button>
-        </article>`
+        </article>
+          </div>
+        </div>
+      </section>
+    `,
+  }
+)
 
-// The header is desktop-only — CSS hides it below 768px, so it stays in the markup.
-const HEADER = html`
-    <header class="table-detail__header">
+// ── Type=Default: no legend at all, every seat empty ─────────────────────────────────
+figma.connect(
+  'https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=3475-94006',
+  {
+    example: () => html`
+      <section class="table-detail" aria-label="Table 21 seating detail">
+            <header class="table-detail__header">
       <div class="table-detail__header-row">
         <div class="table-detail__titles">
           <h3 class="table-detail__name">Table 21</h3>
@@ -67,44 +115,15 @@ const HEADER = html`
         </div>
         <span class="table-type table-type--gold">Gold</span>
       </div>
-    </header>`
-
-// ── Type=All Roles: the representative case, connected at set level ──────────────────
-figma.connect(
-  'https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=3475-94010',
-  {
-    example: () => html`
-      <section class="table-detail" aria-label="Table 21 seating detail">
-        ${HEADER}
-        <div class="table-detail__list">
-          <!-- Derived from the roles actually seated — never stored. -->
-          <p class="table-detail__legend">
-            <span class="table-detail__legend-item table-detail__legend-item--host"><span class="table-detail__swatch"></span>Host</span>
-            <span class="table-detail__legend-item table-detail__legend-item--vip"><span class="table-detail__swatch"></span>VIP</span>
-            <span class="table-detail__legend-item table-detail__legend-item--speaker"><span class="table-detail__swatch"></span>Speaker</span>
-            <span class="table-detail__legend-item table-detail__legend-item--sponsor"><span class="table-detail__swatch"></span>Sponsor</span>
-            <span class="table-detail__legend-item table-detail__legend-item--attendee"><span class="table-detail__swatch"></span>Attendee</span>
-          </p>
-          <div class="table-detail__seats">
-            ${SEAT_FILLED}
-            ${SEAT_EMPTY}
-          </div>
-        </div>
-      </section>
-    `,
-  }
-)
-
-// ── Type=Default: no legend at all, every seat empty ─────────────────────────────────
-figma.connect(
-  'https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=3475-94006',
-  {
-    example: () => html`
-      <section class="table-detail" aria-label="Table 21 seating detail">
-        ${HEADER}
+    </header>
         <div class="table-detail__list">
           <div class="table-detail__seats">
-            ${SEAT_EMPTY}
+                    <article class="attendee-card attendee-card--empty">
+          <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
+          <span class="attendee-card__seat">2</span>
+          <p class="attendee-card__empty-label">Empty seat</p>
+          <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+        </article>
           </div>
         </div>
       </section>

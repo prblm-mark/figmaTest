@@ -83,7 +83,7 @@ inner node ID — `I<instance>;2699:2156` references the Warning-variant icon, v
 | `spacing/8` (40px) | `--ai-spacing-8` | Trigger height, profile avatar size, search height, default item min-height |
 | `font/title` | `--ai-font-title` | All text |
 | `font/fixed-xs` (14px) | `--ai-font-fixed-xs` | Trigger label, item text |
-| `font/fixed-xxs` (12px) | `--ai-font-fixed-2xs` | Profile email |
+| `font/fixed-xxs` (12px) | `--ai-font-fixed-xxs` | Profile email |
 | `font/regular/medium/semibold` | `--ai-font-regular/medium/semibold` | Item / selected item / trigger weights |
 | `leading/xs` (16px) | `--ai-leading-xs` | Profile name |
 | `leading/md` (24px) | `--ai-leading-md` | Item text |

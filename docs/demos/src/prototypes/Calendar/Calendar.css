@@ -51,7 +51,7 @@ body {
 
 .proto-card__label {
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-contrast);
@@ -130,7 +130,7 @@ body {
 
 .cal__weekday {
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-medium);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-contrast);
@@ -255,7 +255,7 @@ body {
 
 .cal__footer-text {
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-medium);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-secondary);
@@ -263,7 +263,7 @@ body {
 
 .cal__footer-link {
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);
   line-height: var(--ai-leading-xs);
   color: var(--ai-surface-brand);
@@ -372,7 +372,7 @@ body {
   background: none;
   border-radius: var(--ai-radius-md);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-regular);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-primary);

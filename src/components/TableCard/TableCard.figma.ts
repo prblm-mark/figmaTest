@@ -19,15 +19,11 @@ import figma, { html } from '@figma/code-connect/html'
 // caller supplies (segment count, legend rows, whether FullBadge is present), so each gets
 // its own connect below rather than a modifier.
 
-const ACTIONS = html`
-  <div class="table-card__actions">
-    <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 21">
-      <i data-lucide="pencil" aria-hidden="true"></i>
-    </button>
-    <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 21">
-      <i data-lucide="trash" aria-hidden="true"></i>
-    </button>
-  </div>`
+// The action cluster used to be a shared `ACTIONS` const interpolated into each example. The
+// parser rejects a module-level identifier as a placeholder — every `${}` must be a destructured
+// prop or a `figma.*()` call — so it is written out in each template instead. Duplicated on
+// purpose: a Dev Mode snippet is read on its own, and the alternative was three broken mappings.
+// See docs/code-connect.md.
 
 // ── Populated: the representative case, connected at set level ───────────────────────
 figma.connect(
@@ -39,9 +35,15 @@ figma.connect(
         Default: '',
         Selected: 'table-card--selected',
       }),
-      showSponsor: figma.boolean('Show Sponsor'),
+      sponsor: figma.boolean('Show Sponsor', {
+        true: html`<p class="table-card__sponsor">
+            <i data-lucide="handshake" aria-hidden="true"></i>
+            <span class="table-card__sponsor-name">Mastercard</span>
+          </p>`,
+        false: html``,
+      }),
     },
-    example: ({ state, showSponsor }) => html`
+    example: ({ state, sponsor }) => html`
       <article class="table-card ${state}">
         <div class="table-card__header">
           <div class="table-card__titles">
@@ -50,11 +52,7 @@ figma.connect(
             </h3>
             <span class="table-type table-type--vip">VIP</span>
           </div>
-          ${showSponsor ? html`
-          <p class="table-card__sponsor">
-            <i data-lucide="handshake" aria-hidden="true"></i>
-            <span class="table-card__sponsor-name">Mastercard</span>
-          </p>` : ''}
+          ${sponsor}
         </div>
         <hr class="table-card__rule">
         <div class="table-card__viz">
@@ -79,7 +77,14 @@ figma.connect(
           <div class="table-card__count-group">
             <p class="table-card__count">6 / 10 seated</p>
           </div>
-          ${ACTIONS}
+          <div class="table-card__actions">
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 21">
+              <i data-lucide="pencil" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 21">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+          </div>
         </div>
       </article>
     `,
@@ -121,7 +126,14 @@ figma.connect(
           <div class="table-card__count-group">
             <p class="table-card__count">0 / 10 seated</p>
           </div>
-          ${ACTIONS}
+          <div class="table-card__actions">
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 21">
+              <i data-lucide="pencil" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 21">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+          </div>
         </div>
       </article>
     `,
@@ -170,7 +182,14 @@ figma.connect(
             <p class="table-card__count">10 / 10 seated</p>
             <span class="full-badge"><i data-lucide="check" aria-hidden="true"></i>Full</span>
           </div>
-          ${ACTIONS}
+          <div class="table-card__actions">
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 21">
+              <i data-lucide="pencil" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 21">
+              <i data-lucide="trash" aria-hidden="true"></i>
+            </button>
+          </div>
         </div>
       </article>
     `,

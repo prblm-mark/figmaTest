@@ -66,7 +66,7 @@
 | Row list gap | `--ai-spacing-1` | `--ai-spacing-1` |
 | Timeline line color | `Neutral/200` = `#e5e7eb` | `--ai-border-secondary` |
 | Footer padding | `--ai-spacing-3` × `--ai-spacing-5` | `--ai-spacing-3` × `--ai-spacing-5` |
-| Footer label font | `body/xxs` | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-2xs`, `--ai-leading-xs` |
+| Footer label font | `body/xxs` | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xxs`, `--ai-leading-xs` |
 | Footer label color | `--ai-text-primary` | `--ai-text-primary` |
 | Footer label tracking | `0.12px` | `0.12px` (optical, px) |
 

@@ -40,7 +40,7 @@ body {
 
 .bn-section__label {
   margin: 0;
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);
   color: var(--ai-text-contrast);
   text-transform: uppercase;
@@ -76,7 +76,7 @@ body {
   background: transparent;
   border: 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-medium);
   color: var(--ai-text-contrast);
   cursor: pointer;

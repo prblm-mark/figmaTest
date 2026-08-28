@@ -3,18 +3,16 @@ import figma, { html } from '@figma/code-connect/html'
 figma.connect(
   'https://www.figma.com/design/ETKqleZdpertwFEo40YB5n/Affino-CC-Hybrid--Design-System?node-id=4099-3634',
   {
+    /* The breadcrumb trail is returned BY the enum rather than chosen inside the template: the
+     * parser rejects a conditional as a placeholder, so branching moves into the prop. See
+     * docs/code-connect.md. */
     props: {
-      type: figma.enum('Type', {
-        Default: 'default',
-        Multizone: 'multizone',
-      }),
-    },
-    example: ({ type }) => html`
-      <header class="cc-top-navigation">
-        <nav class="breadcrumb" aria-label="Breadcrumb">
-          <ol class="breadcrumb__list">
-            ${type === 'multizone'
-              ? html`
+      crumbs: figma.enum('Type', {
+        Default: html`
+                <li class="breadcrumb__item"><a class="breadcrumb__link" href="#">Zone name</a></li>
+                <li class="breadcrumb__separator" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
+                <li class="breadcrumb__item breadcrumb__item--current" aria-current="page">Level 1</li>`,
+        Multizone: html`
                 <li class="breadcrumb__item">
                   <div class="dropdown">
                     <button class="breadcrumb__dropdown dropdown__trigger" type="button" aria-haspopup="menu" aria-expanded="false">
@@ -31,13 +29,14 @@ figma.connect(
                 <li class="breadcrumb__separator" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
                 <li class="breadcrumb__item"><a class="breadcrumb__link" href="#">Level 1</a></li>
                 <li class="breadcrumb__separator" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
-                <li class="breadcrumb__item breadcrumb__item--current" aria-current="page">Level 2</li>
-              `
-              : html`
-                <li class="breadcrumb__item"><a class="breadcrumb__link" href="#">Zone name</a></li>
-                <li class="breadcrumb__separator" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
-                <li class="breadcrumb__item breadcrumb__item--current" aria-current="page">Level 1</li>
-              `}
+                <li class="breadcrumb__item breadcrumb__item--current" aria-current="page">Level 2</li>`,
+      }),
+    },
+    example: ({ crumbs }) => html`
+      <header class="cc-top-navigation">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <ol class="breadcrumb__list">
+            ${crumbs}
           </ol>
         </nav>
         <div class="cc-top-navigation__actions">

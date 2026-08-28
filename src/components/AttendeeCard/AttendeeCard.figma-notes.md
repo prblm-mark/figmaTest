@@ -166,7 +166,7 @@ than invented:
 2. **The action-icon radius** uses `--ai-radius-sm` (4px). Figma binds `--ai-spacing-2` (6px) —
    a *spacing* token used for a radius, and 6px matches no radius step (4/8/16/24/100).
    **Worth correcting in Figma.**
-3. **The company font-size** is bound to `--ai-font-fixed-2xs`. Figma leaves it a raw
+3. **The company font-size** is bound to `--ai-font-fixed-xxs`. Figma leaves it a raw
    `text-[12px]` while every sibling text node cites a token. The token is exactly 12px, so
    binding it is visually a no-op. **Worth binding in Figma.**
 

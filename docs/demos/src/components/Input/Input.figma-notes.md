@@ -142,7 +142,7 @@ Hover, Active, and Focus all share the same visual treatment (brand border) — 
 | Input font | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xs`, `--ai-leading-md` | same |
 | Input color (filled) | `--ai-text-primary` | `--ai-text-primary` |
 | Placeholder color | `--text/contrast-2` | `--ai-text-contrast` |
-| Help text font | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-2xs`, `--ai-leading-xs` | same |
+| Help text font | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xxs`, `--ai-leading-xs` | same |
 | Help text color | `--ai-text-secondary` | `--ai-text-secondary` |
 | Error help color | `--ai-text-error` | `--ai-text-error` |
 
@@ -336,7 +336,7 @@ That is worth recording: the reference-to-token decisions held up against an ind
    field. Its value (`#172033`) is identical to `--ai-text-primary`, which is what this build uses.
    Same class as the `--cc-actions-menu-primary-bg` splitter and the `--ai-datatable-table-bg` slips
    already recorded on this screen: a token that works, where a token that *means* it exists.
-2. **Label is `--ai-font-fixed-xxs` (13px)** where an ordinary Input label is `--ai-font-fixed-xs`
+2. **Label is `--ai-font-fixed-2xs` (13px)** where an ordinary Input label is `--ai-font-fixed-xs`
    (14px). Adopting it would make "Tables" and "Seats / table" visibly smaller than "Plan name" in
    the same form, which reads as a slip rather than an intent.
 3. **Container has `p-px`** (1px padding) insetting the buttons inside the border; this build uses

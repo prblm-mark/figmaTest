@@ -56,7 +56,7 @@ RangeSlider is a Tier=Component design-system component for selecting a numeric 
 | Value font | `--ai-font-title` semibold + `--ai-font-fixed-sm` | Inter 600 / 16px |
 | Value color | `--ai-surface-brand` | #0071d8 |
 | Disabled value color | `--ai-text-contrast` | #67676c |
-| Step/label text | `--ai-font-title` + `--ai-font-fixed-2xs` | Inter / 12px |
+| Step/label text | `--ai-font-title` + `--ai-font-fixed-xxs` | Inter / 12px |
 | Step/label color | `--ai-text-contrast` | #67676c |
 | Tick mark | `--ai-border-secondary` | 1px |
 | Field stack gap | `--ai-spacing-3` | 8px |

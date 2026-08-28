@@ -75,7 +75,7 @@
 .filter-item__name,
 .filter-item__values {
   font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-2xs); /* 12px */
+  font-size: var(--ai-font-fixed-xxs); /* 12px */
   line-height: var(--ai-leading-xs); /* 16px */
   color: var(--ai-text-primary);
   white-space: nowrap;

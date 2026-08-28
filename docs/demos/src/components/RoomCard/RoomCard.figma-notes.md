@@ -125,7 +125,7 @@ while `textContent` still reads `"12 tables · 0/148 seated"`.
 | `--ai-size-5` / `--ai-size-4` | card `min-inline-size` desktop / mobile | |
 | `--ai-font-title` | every text node | |
 | `--ai-font-fixed-sm` / `-xs` | name, desktop / mobile | |
-| `--ai-font-fixed-2xs` | counts (12px) | |
+| `--ai-font-fixed-xxs` | counts (12px) | |
 | `--ai-font-fixed-4xs` | seats free (11px) | |
 | `--ai-font-bold` / `-semibold` / `-regular` | name / seats free / counts | |
 | `--ai-text-primary` / `--ai-text-contrast` | name / counts | |

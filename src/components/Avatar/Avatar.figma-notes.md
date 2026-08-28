@@ -106,7 +106,7 @@ Total = **80 symbols**, matching the metadata enumeration.
 | Text colour | `--ai-text-info` |
 | Font family | `--ai-font-title` |
 | Font weight | `--ai-font-semibold` |
-| Font size (Size 1) | `--ai-font-fixed-2xs` (12px) |
+| Font size (Size 1) | `--ai-font-fixed-xxs` (12px) |
 | Font size (Size 2) | `--ai-font-fixed-xs`  (14px) |
 | Font size (Size 3) | `--ai-font-fixed-md`  (18px) |
 | Font size (Size 4) | `--ai-font-fixed-xl`  (22px) |

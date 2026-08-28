@@ -313,13 +313,13 @@
 }
 
 .ai-assistant .chat-response-table th {
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
 }
 
 /* ── ChatMain: code block — pinned to mobile ──────────── */
 
 .ai-assistant .chat-main__response code {
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
 }
 
 /* ── ChatMain: response — fixed font ──────────────────── */
@@ -392,7 +392,7 @@
 /* ── SuggestedQuestion: text — mobile font ────────────── */
 
 .ai-assistant .suggested-question__text {
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   line-height: var(--ai-leading-xs);
 }
 

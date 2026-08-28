@@ -95,7 +95,7 @@ tokens.
 | `spacing/9` (48px) | `--ai-spacing-9` | Kebab cell width |
 | `font/title` | `--ai-font-title` | All Datatables-specific text |
 | `font/fixed-xs` (14px) | `--ai-font-fixed-xs` | Footer text, meta text, page-btn label |
-| `font/fixed-xxs` (12px) | `--ai-font-fixed-2xs` | Detail `<dt>` (uppercase labels) |
+| `font/fixed-xxs` (12px) | `--ai-font-fixed-xxs` | Detail `<dt>` (uppercase labels) |
 | `font/medium` | `--ai-font-medium` | Page-size select label |
 | `font/bold` | `--ai-font-bold` | Active page-btn, footer `<strong>` |
 | `tracking/7` (0.05em) | `--ai-tracking-7` | Detail `<dt>` letter-spacing |

@@ -15,9 +15,17 @@ figma.connect(
         Active: 'toggle--active',
         Disabled: 'toggle--disabled',
       }),
+      /* `aria-checked` as its own enum off the same axis. It cannot be derived from `state`
+       * inside the template: the parser requires every `${}` to be a destructured prop or a
+       * `figma.*()` call, so a comparison there is rejected. See docs/code-connect.md. */
+      checked: figma.enum('State', {
+        Initial: 'false',
+        Active: 'true',
+        Disabled: 'false',
+      }),
     },
-    example: ({ size, state }) => html`
-      <button class="toggle ${size} ${state}" type="button" role="switch" aria-checked="${state === 'toggle--active' ? 'true' : 'false'}">
+    example: ({ size, state, checked }) => html`
+      <button class="toggle ${size} ${state}" type="button" role="switch" aria-checked="${checked}">
         <span class="toggle__track"><span class="toggle__knob"></span></span>
         <span class="toggle__label">
           <span class="toggle__label-text">Label text</span>

@@ -80,7 +80,7 @@ Range single/dual are the same calendar with `mode=range` and 1 or 2 panels.
 | Cell size | `--ai-spacing-7` (32px), grid gap `--ai-spacing-1` (4px) |
 | Cell radius | `--ai-radius-md` |
 | Day / title font | `--ai-font-title` `--ai-font-fixed-xs` (14px) `--ai-leading-xs` |
-| Weekday / footer / month-year-cell font | `--ai-font-fixed-2xs` (12px) |
+| Weekday / footer / month-year-cell font | `--ai-font-fixed-xxs` (12px) |
 | Nav / field icon | `--ai-icon-size-sm` (16px), `--ai-icon-contrast` |
 | Footer border / padding | `--ai-border-secondary` top, `--ai-spacing-4` (12px) |
 

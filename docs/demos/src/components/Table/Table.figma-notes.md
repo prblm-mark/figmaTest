@@ -31,7 +31,7 @@ Properties: **Type** × **Device** = 3 × 2 = 6 (intended).
 | `<table>` | `.table` | `border-collapse: collapse`, `width: 100%`, `--ai-font-title` family |
 | Type=Striped | `.table.table--striped` | Alternating row bgs (`tbody tr:nth-child(even)` → `--ai-surface-minimal`) |
 | Type=Border | `.table.table--bordered` | Vertical cell borders on every column except the last |
-| Header cell | `<th>` (default styling) | Padding `8/16`, uppercase, `--ai-font-fixed-2xs`, semibold |
+| Header cell | `<th>` (default styling) | Padding `8/16`, uppercase, `--ai-font-fixed-xxs`, semibold |
 | Body cell | `<td>` (default styling) | Padding `12/16`, regular `--ai-font-fixed-xs` |
 | Right-aligned cell utility | `.table__cell--right` | Optional helper — apply on `<th>` and `<td>` to right-align a column. Not used in the default Table demo (numeric columns left-align like all other cells). |
 
@@ -49,7 +49,7 @@ Properties: **Type** × **Device** = 3 × 2 = 6 (intended).
 | `spacing/4` (12px) | `--ai-spacing-4` | Body padding-y |
 | `spacing/5` (16px) | `--ai-spacing-5` | All cell padding-x |
 | `font/title` | `--ai-font-title` | Both header and body |
-| `font/fixed-xxs` (12px) | `--ai-font-fixed-2xs` | Header text size |
+| `font/fixed-xxs` (12px) | `--ai-font-fixed-xxs` | Header text size |
 | `font/fixed-xs` (14px) | `--ai-font-fixed-xs` | Body text size |
 | `font/semibold` | `--ai-font-semibold` | Header weight |
 | `font/regular` | `--ai-font-regular` | Body weight |

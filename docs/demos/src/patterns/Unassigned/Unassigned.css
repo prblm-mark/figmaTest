@@ -86,7 +86,7 @@
   inline-size: 100%;
   margin: 0;
   font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-regular);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-contrast);
@@ -163,7 +163,7 @@
   margin: 0;
   text-align: center;
   font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-regular);
   /* Figma has an unbound `line-height: 1.4` (16.8px at 12px). Snapped to
    * --ai-leading-xs (16px, i.e. 1.33) at the designer's direction 2026-08-25 —

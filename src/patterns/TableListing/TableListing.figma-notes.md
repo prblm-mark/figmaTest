@@ -87,7 +87,7 @@ at every desktop size tested.
 | `--ai-size-4` | grid column `minmax` floor (240px) | TableCard's own min-width |
 | `--ai-font-title` | title, filter label | |
 | `--ai-font-fixed-md` / `-sm` | title, desktop / mobile | |
-| `--ai-font-fixed-2xs` | filter label (12px) | unbound in Figma — see below |
+| `--ai-font-fixed-xxs` | filter label (12px) | unbound in Figma — see below |
 | `--ai-font-bold` / `-medium` | title / filter label | |
 | `--ai-text-primary` / `--ai-text-contrast` | title / filter label | |
 
@@ -96,9 +96,9 @@ at every desktop size tested.
 | Figma | Decision |
 |---|---|
 | root `w-[1180px]` desktop / `w-[390px]` mobile | **Fluid `inline-size: 100%`** (designer, 2026-08-25). Both unbound and matching no token — they are just the frames Figma drew. This is the main content area, not a fixed rail, so the same call already taken for AttendeeCard and TableCard applies; the grid does the responsive work. |
-| filter label `text-[12px]`, unbound | **`--ai-font-fixed-2xs`**, which is exactly 12px, so binding it is visually a no-op. Same treatment as TableCard's company size. **Worth binding in Figma.** |
+| filter label `text-[12px]`, unbound | **`--ai-font-fixed-xxs`**, which is exactly 12px, so binding it is visually a no-op. Same treatment as TableCard's company size. **Worth binding in Figma.** |
 | divider `line` node stroke, invisible in design context | **`--ai-border-secondary`**, resolved by `get_variable_defs` on the node itself (`3474:91537`). Not a gap — just hidden behind an SVG asset. |
-| `--ai-font-fixed-xxs` (13px) and `--ai-font-fixed-xs` (14px) in the set's variable list | **Not gaps.** Neither is used by anything in this pattern's own design context — phantoms of the same kind seen on TableDetail and Unassigned, likely bound on hidden layers or inside TableCard. |
+| `--ai-font-fixed-2xs` (13px) and `--ai-font-fixed-xs` (14px) in the set's variable list | **Not gaps.** Neither is used by anything in this pattern's own design context — phantoms of the same kind seen on TableDetail and Unassigned, likely bound on hidden layers or inside TableCard. |
 
 ## Two child components had to change
 

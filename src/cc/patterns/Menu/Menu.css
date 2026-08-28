@@ -431,7 +431,7 @@
   border: 0;
   border-radius: var(--ai-radius-md);
   font-family: inherit;
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   color: var(--ai-text-invert-secondary);
   cursor: pointer;
   transition: background-color var(--ai-transition-default), color var(--ai-transition-default);

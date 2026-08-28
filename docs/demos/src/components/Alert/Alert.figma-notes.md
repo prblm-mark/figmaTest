@@ -92,7 +92,7 @@ Spacing / radius / typography:
 | Message weight | `var(--ai-font-medium)` |
 | Text size | `var(--ai-font-fixed-xs)` (14px) |
 | Text leading | `var(--ai-leading-md)` (24px) |
-| Floating text size | `var(--ai-font-fixed-2xs)` (12px) |
+| Floating text size | `var(--ai-font-fixed-xxs)` (12px) |
 | Badge height | `var(--ai-spacing-7)` (32px) |
 | Badge padding-x | `var(--ai-spacing-3)` |
 | Icon size | `var(--ai-icon-size-sm)` (16px) |

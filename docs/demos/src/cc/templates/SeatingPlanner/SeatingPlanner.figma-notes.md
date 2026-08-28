@@ -462,7 +462,7 @@ sidebar and ActionsMenu swaps are viewport-based.
 |---|---|---|
 | page `padding` | `--ai-spacing-7` (32) | `--ai-spacing-4` (12) |
 | heading | `--ai-font-fixed-md` (18) | `--ai-font-fixed-sm` (16) |
-| body | `--ai-font-fixed-xs` (14), `--ai-leading-md` | `--ai-font-fixed-xxs` (13), `--ai-leading-sm`, wraps to 2 lines |
+| body | `--ai-font-fixed-xs` (14), `--ai-leading-md` | `--ai-font-fixed-2xs` (13), `--ai-leading-sm`, wraps to 2 lines |
 | empty state padding, gap, disc, button | — | **all identical** |
 
 The empty state's 32/64 inner padding not changing is worth stating, because it would be easy to

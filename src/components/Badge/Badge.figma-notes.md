@@ -72,7 +72,7 @@ Both frames list the same 32 symbols.
 | `gap` | `var(--ai-spacing-2)` (6px) |
 | `font-family` | `var(--ai-font-title)` |
 | `font-weight` | `var(--ai-font-semibold)` |
-| `font-size` | `var(--ai-font-fixed-2xs)` (12px) |
+| `font-size` | `var(--ai-font-fixed-xxs)` (12px) |
 | `line-height` | `var(--ai-leading-xs)` (16px) |
 
 ### State colour pairs (used by Default, Pill, Icon Left, Indicator, Dismissible types)
@@ -143,8 +143,8 @@ override needed.
 
 | Size | padding (V H) | font-size | line-height | Resulting height |
 |---|---|---|---|---|
-| sm | `0` `var(--ai-spacing-2)` | `--ai-font-fixed-2xs` | `--ai-leading-xs` | 18px |
-| Default | `var(--ai-spacing-1)` `var(--ai-spacing-3)` | `--ai-font-fixed-2xs` | `--ai-leading-xs` | 26px |
+| sm | `0` `var(--ai-spacing-2)` | `--ai-font-fixed-xxs` | `--ai-leading-xs` | 18px |
+| Default | `var(--ai-spacing-1)` `var(--ai-spacing-3)` | `--ai-font-fixed-xxs` | `--ai-leading-xs` | 26px |
 | lg | `var(--ai-spacing-2)` `var(--ai-spacing-4)` | `--ai-font-fixed-xs` | `--ai-leading-sm` | 34px |
 
 `lg` overrides the icon size to `--ai-icon-size-md` (20px) for icons inside the badge.

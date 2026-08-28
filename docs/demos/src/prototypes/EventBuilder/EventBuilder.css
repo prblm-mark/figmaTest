@@ -80,7 +80,7 @@
   align-items: center;
   gap: var(--ai-spacing-1);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-regular);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-contrast);
@@ -159,7 +159,7 @@
   align-items: center;
   gap: var(--ai-spacing-2);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-medium);
   color: var(--ai-text-contrast);
 }
@@ -226,7 +226,7 @@
   gap: var(--ai-spacing-3);
   margin: 0 var(--ai-spacing-2) var(--ai-spacing-3);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);
   line-height: var(--ai-leading-xs);
   letter-spacing: var(--ai-tracking-7);
@@ -330,7 +330,7 @@
 
 .eb-blockrow__note {
   flex: none;
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-regular);
   color: var(--ai-text-contrast);
 }
@@ -383,7 +383,7 @@
 .eb-rail__hint {
   margin: var(--ai-spacing-3) var(--ai-spacing-2) 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-regular);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-contrast);
@@ -413,7 +413,7 @@
   max-width: var(--ai-size-12);
   margin: 0 auto var(--ai-spacing-4);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-medium);
   color: var(--ai-text-contrast);
 }
@@ -465,7 +465,7 @@
   background: var(--ai-surface-primary);
   border: 1px solid var(--ai-border-secondary);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   color: var(--ai-text-contrast);
   white-space: nowrap;
   overflow: hidden;
@@ -516,7 +516,7 @@
   border-bottom-right-radius: var(--ai-radius-sm);
   background: var(--ai-surface-brand);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-invert);
@@ -548,7 +548,7 @@
   flex: 1;
   margin: 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-medium);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-brand);
@@ -679,7 +679,7 @@
 .eb-inspector__eyebrow {
   margin: 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-medium);
   line-height: var(--ai-leading-xs);
   letter-spacing: var(--ai-tracking-7);
@@ -704,7 +704,7 @@
 .eb-inspector__section-title {
   margin: 0 0 var(--ai-spacing-4);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);
   line-height: var(--ai-leading-xs);
   letter-spacing: var(--ai-tracking-7);
@@ -724,7 +724,7 @@
   min-height: var(--ai-spacing-6);
   margin-bottom: var(--ai-spacing-2);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-secondary);
@@ -733,7 +733,7 @@
 .eb-field__help {
   margin: var(--ai-spacing-2) 0 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-regular);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-contrast);
@@ -746,7 +746,7 @@
   gap: var(--ai-spacing-2);
   padding-block: var(--ai-spacing-3);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-medium);
 }
 
@@ -784,7 +784,7 @@
   border-radius: var(--ai-radius-md);
   background: var(--ai-surface-minimal);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-medium);
   line-height: var(--ai-leading-sm);
   color: var(--ai-text-contrast);
@@ -809,7 +809,7 @@
 .eb-inspector__row-label {
   margin: 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-medium);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-secondary);
@@ -830,7 +830,7 @@
 
 .eb-swatch__label {
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-medium);
   color: var(--ai-text-secondary);
 }
@@ -847,7 +847,7 @@
   border-radius: var(--ai-radius-md);
   background: var(--ai-surface-minimal);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);
   color: var(--ai-text-primary);
   text-align: left;
@@ -868,7 +868,7 @@
 .eb-allfields__sub {
   display: block;
   margin-top: var(--ai-spacing-0-5);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-regular);
   color: var(--ai-text-contrast);
 }
@@ -929,7 +929,7 @@
 
 .eb-shape__label {
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);
   color: var(--ai-text-secondary);
 }
@@ -981,7 +981,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--ai-spacing-2);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);
   letter-spacing: var(--ai-tracking-7);
   text-transform: uppercase;
@@ -1081,7 +1081,7 @@
   border-bottom: 2px solid transparent;
   background: none;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);
   letter-spacing: var(--ai-tracking-6);
   color: var(--eb-client-secondary);
@@ -1110,7 +1110,7 @@
 
 .eb-anchors a {
   flex: none;
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);
   letter-spacing: var(--ai-tracking-6);
   color: var(--eb-client-on-primary);
@@ -1129,7 +1129,7 @@
 
 .eb-sect__eyebrow {
   margin: 0 0 var(--ai-spacing-2);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-bold);
   letter-spacing: var(--ai-tracking-7);
   text-transform: uppercase;
@@ -1181,7 +1181,7 @@
 
 .eb-person__role {
   margin: var(--ai-spacing-1) 0 0;
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-regular);
   line-height: var(--ai-leading-xs);
   color: var(--eb-client-ink-soft);
@@ -1193,7 +1193,7 @@
 
 .eb-tier__label {
   margin: 0 0 var(--ai-spacing-4);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-bold);
   letter-spacing: var(--ai-tracking-7);
   text-transform: uppercase;
@@ -1257,7 +1257,7 @@
 
 .eb-agenda__desc {
   margin: var(--ai-spacing-1) 0 0;
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   color: var(--eb-client-ink-soft);
 }
 
@@ -1317,7 +1317,7 @@
 
 .eb-milestone__label {
   margin: var(--ai-spacing-1) 0 0;
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   color: var(--eb-client-ink-soft);
 }
 
@@ -1345,7 +1345,7 @@
 
 .eb-quote__by {
   margin: var(--ai-spacing-4) 0 0;
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);
   color: var(--eb-client-primary);
 }
@@ -1387,7 +1387,7 @@
   place-items: center;
   gap: var(--ai-spacing-2);
   color: var(--eb-client-secondary);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-medium);
 }
 
@@ -1420,7 +1420,7 @@
 
 .eb-signup__price {
   margin: var(--ai-spacing-0-5) 0 0;
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-regular);
   color: var(--eb-client-accent);
 }
@@ -1465,7 +1465,7 @@
 
 .eb-pfoot__title {
   margin: 0 0 var(--ai-spacing-3);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-bold);
   letter-spacing: var(--ai-tracking-7);
   text-transform: uppercase;
@@ -1482,7 +1482,7 @@
 }
 
 .eb-pfoot__list li {
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   line-height: var(--ai-leading-sm);
   color: var(--eb-client-on-primary);
 }
@@ -1491,7 +1491,7 @@
   margin: var(--ai-spacing-7) 0 0;
   padding-top: var(--ai-spacing-5);
   border-top: 1px solid color-mix(in srgb, var(--eb-client-on-primary) 20%, transparent);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   color: var(--eb-client-on-primary);
 }
 
@@ -1537,7 +1537,7 @@
 .eb-ai__title {
   margin: 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);
   letter-spacing: var(--ai-tracking-6);
   color: var(--ai-text-brand);
@@ -1619,7 +1619,7 @@
   border-radius: var(--ai-radius-full);
   background: var(--ai-surface-success-soft);
   border: 1px solid var(--ai-border-success);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-medium);
   color: var(--ai-text-success);
 }
@@ -1687,7 +1687,7 @@
 
 .eb-proposal__why {
   margin: var(--ai-spacing-1) 0 0;
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-contrast);
 }
@@ -1703,7 +1703,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--ai-spacing-1);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);
   color: var(--ai-text-success);
 }
@@ -1753,7 +1753,7 @@
   padding: var(--ai-spacing-1) var(--ai-spacing-3);
   border-radius: var(--ai-radius-full);
   background: var(--ai-surface-minimal);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-medium);
   color: var(--ai-text-contrast);
   white-space: nowrap;
@@ -1833,7 +1833,7 @@
 .eb-library__sub {
   margin: 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-contrast);
 }
@@ -1858,7 +1858,7 @@
 .eb-library__group-title {
   margin: 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);
   letter-spacing: var(--ai-tracking-7);
   text-transform: uppercase;
@@ -1868,7 +1868,7 @@
 .eb-library__group-note {
   margin: 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   color: var(--ai-text-contrast);
 }
 
@@ -1957,7 +1957,7 @@
 .eb-blockcard__desc {
   margin: 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-regular);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-contrast);
@@ -2016,7 +2016,7 @@
   flex: 1;
   margin: 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   color: var(--ai-text-contrast);
 }
 
@@ -2078,7 +2078,7 @@
   flex: 1;
   margin: 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-bold);
   letter-spacing: var(--ai-tracking-7);
   text-transform: uppercase;
@@ -2111,7 +2111,7 @@
   background: var(--ai-surface-brand-soft-extra);
   border: 1px solid var(--ai-border-info);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-medium);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-brand);
@@ -2155,7 +2155,7 @@
   border: 1px solid var(--ai-border-success);
   background: var(--ai-surface-success-soft);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   line-height: var(--ai-leading-sm);
   color: var(--ai-text-success);
 }
@@ -2184,7 +2184,7 @@
 .eb-form__divider {
   margin: var(--ai-spacing-8) 0 var(--ai-spacing-5);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-bold);
   letter-spacing: var(--ai-tracking-7);
   text-transform: uppercase;
@@ -2294,7 +2294,7 @@
 .eb-start__label {
   margin: 0 0 var(--ai-spacing-4);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);
   letter-spacing: var(--ai-tracking-7);
   text-transform: uppercase;
@@ -2315,7 +2315,7 @@
   padding: var(--ai-spacing-5) var(--ai-spacing-6);
   text-align: center;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   color: var(--ai-text-contrast);
 }
 
@@ -2357,7 +2357,7 @@
   align-items: center;
   gap: var(--ai-spacing-3);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-secondary);
 }
@@ -2394,7 +2394,7 @@
   gap: var(--ai-spacing-2);
   margin: 0 0 var(--ai-spacing-4);
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);
   letter-spacing: var(--ai-tracking-7);
   text-transform: uppercase;
@@ -2439,7 +2439,7 @@
   flex: 1;
   margin: 0;
   font-family: var(--ai-font-body);
-  font-size: var(--ai-font-fixed-2xs);
+  font-size: var(--ai-font-fixed-xxs);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-contrast);
 }

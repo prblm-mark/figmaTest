@@ -32,16 +32,40 @@ figma.connect(
       }),
       attendeeName: figma.string('Attendee Name'),
       companyName: figma.string('Company name'),
-      seatNumber: figma.string('Seat number'),
-      showActions: figma.boolean('Show Actions'),
-      showSeatNumber: figma.boolean('Show Seat Number'),
+      /* Both booleans return MARKUP rather than being tested in the template — the parser
+       * rejects `${flag ? a : b}`, so the branch moves into the prop. See docs/code-connect.md.
+       *
+       * Trade-off worth knowing: a prop cannot reference another prop, so the seat number and
+       * the aria-label names inside these fragments are literals rather than the bound
+       * `seatNumber` / `attendeeName`. The bindings survive everywhere they are used directly
+       * in the template below. */
+      seat: figma.boolean('Show Seat Number', {
+        true: html`<span class="attendee-card__seat">1</span>`,
+        false: html``,
+      }),
+      actions: figma.boolean('Show Actions', {
+        true: html`<div class="attendee-card__actions">
+          <button type="button" class="attendee-card__action" aria-label="Remove attendee">
+            <i data-lucide="trash" aria-hidden="true"></i>
+          </button>
+          <div class="attendee-card__reorder">
+            <button type="button" class="attendee-card__action" aria-label="Move attendee up">
+              <i data-lucide="chevron-up" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="attendee-card__action" aria-label="Move attendee down">
+              <i data-lucide="chevron-down" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>`,
+        false: html``,
+      }),
     },
-    example: ({ type, state, roleLabel, attendeeName, companyName, seatNumber, showActions, showSeatNumber }) => html`
+    example: ({ type, state, roleLabel, attendeeName, companyName, seat, actions }) => html`
       <article class="attendee-card ${type} ${state}">
         <span class="attendee-card__accent" aria-hidden="true">
           <span class="attendee-card__accent-bar"></span>
         </span>
-        ${showSeatNumber ? html`<span class="attendee-card__seat">${seatNumber}</span>` : ''}
+        ${seat}
         <div class="attendee-card__body">
           <p class="attendee-card__name">${attendeeName}</p>
           <p class="attendee-card__meta">
@@ -50,20 +74,7 @@ figma.connect(
             <span class="attendee-card__role">${roleLabel}</span>
           </p>
         </div>
-        ${showActions ? html`
-        <div class="attendee-card__actions">
-          <button type="button" class="attendee-card__action" aria-label="Remove ${attendeeName}">
-            <i data-lucide="trash" aria-hidden="true"></i>
-          </button>
-          <div class="attendee-card__reorder">
-            <button type="button" class="attendee-card__action" aria-label="Move ${attendeeName} up">
-              <i data-lucide="chevron-up" aria-hidden="true"></i>
-            </button>
-            <button type="button" class="attendee-card__action" aria-label="Move ${attendeeName} down">
-              <i data-lucide="chevron-down" aria-hidden="true"></i>
-            </button>
-          </div>
-        </div>` : ''}
+        ${actions}
       </article>
     `,
   }
