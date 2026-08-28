@@ -199,3 +199,32 @@
 
 /* ── Focus ────────────────────────────────────────────── */
 /* Keyboard focus uses the global outline from base.css. */
+
+/* ── Below the sm breakpoint (640px) ────────────────────────────────────────
+ * Tighter gaps on small screens (designer, 2026-08-28): the list and the dropdown trigger both go
+ * from `--ai-spacing-2` (6px) to `--ai-spacing-1` (4px). 639px because `max-width` is inclusive and
+ * sm is 640 — the same value ControlHub's single-column block already uses.
+ *
+ * ANONYMOUS `@container`, deliberately. This component establishes no container of its own, so the
+ * query resolves to the nearest ancestor container — which in every CC consumer is
+ * `.cc-top-navigation`, and that IS the right signal: what matters is how much bar the trail has,
+ * not how wide the window is. The CC shell costs ~178px, so a viewport query would fire at the
+ * wrong moment and would miss the docked-sidebar case entirely.
+ *
+ * `container-type` was NOT added to `.breadcrumb` to make this a self-query. Its base `display` is
+ * `inline-block`, and inline-size containment makes an element's inline size independent of its
+ * contents — an `inline-block` would collapse to zero width. TopNavigation overrides it to
+ * `display: block; flex: 1 0 0`, so CC is safe, but the standalone demo is not, and the component
+ * should not depend on a consumer's override to keep its own width.
+ *
+ * Consequence for demos: a page with no container ancestor never fires this block. The demo
+ * establishes one itself, per CLAUDE.md §4a. */
+@container (max-width: 639px) {
+  .breadcrumb__list {
+    gap: var(--ai-spacing-1);
+  }
+
+  .breadcrumb__dropdown {
+    gap: var(--ai-spacing-1);
+  }
+}

@@ -219,3 +219,50 @@ disappears, leaving its separator with nothing after it. No supported device is 
 the smallest common width and still shows "Events…" — so no floor was added. If one is ever wanted,
 it belongs as a `min-inline-size` on the truncating item, not as another breakpoint.
 
+## Tighter gaps below the sm breakpoint (2026-08-28)
+
+`.breadcrumb__list` and `.breadcrumb__dropdown` both drop `--ai-spacing-2` (6px) → `--ai-spacing-1`
+(4px) below **640px**, the `sm` breakpoint from `docs/tokens-reference.md`. `.breadcrumb__link`'s own
+gap is untouched — the designer named only those two.
+
+`max-width: 639px`, because `max-width` is inclusive. Verified on the exact boundary: container
+**640 → 6px**, container **639 → 4px**. Same value ControlHub's single-column block already uses.
+
+### Which container this resolves against
+
+The query is **anonymous**, so it resolves to the nearest ancestor container. That is deliberate:
+
+| context | resolved container | why it is the right signal |
+|---|---|---|
+| CC shell | `.cc-top-navigation` | how much bar the trail has, which is what governs whether 2px of gap matters |
+| this demo | `.demo-section` | added for the purpose — see below |
+
+A viewport query would have been wrong: the CC shell costs ~178px, so it would fire at the wrong
+moment and would miss the docked-sidebar case entirely, which is the whole reason this codebase
+moved off viewport queries.
+
+**`container-type` was NOT added to `.breadcrumb` to make this a self-query.** Its base `display` is
+`inline-block`, and inline-size containment makes an element's inline size independent of its
+contents — an `inline-block` would collapse to **zero width**. TopNavigation overrides it to
+`display: block; flex: 1 0 0` so CC would have been safe, but the standalone demo would not, and a
+component should not depend on a consumer's override to keep its own width.
+
+**The demo therefore establishes a container itself** (`container-type: inline-size` on
+`.demo-section`), per CLAUDE.md §4a. Without it this block could never fire on that page and the demo
+would silently misrepresent the component.
+
+### The threshold is not the element width
+
+Container queries measure the **content box**, so the *element* width at which this fires is larger
+by the container's own padding and border. For `.cc-top-navigation`, whose inline padding is 16px
+each side at desktop:
+
+    nav content box 639  ==  nav border box 671   -> gap 4px
+    nav content box 640  ==  nav border box 672   -> gap 6px
+
+So do not expect this to switch at a 640px bar. Same class of offset as SeatingHeader's 2px border,
+just larger — see that component's notes.
+
+Verified firing in both contexts: demo at container 1021 → 6px, 621 and 481 → 4px; Seating Planner
+at nav 1288 → 6px, 648 and 338 → 4px.
+
