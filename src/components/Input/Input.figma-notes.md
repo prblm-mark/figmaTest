@@ -8,10 +8,21 @@
 
 ### Sizes
 
-| Size | Class | Height | Padding | Use |
-|---|---|---|---|---|
-| Base (default) | `.input` | 40px (`--ai-spacing-8`) | 12px (`--ai-spacing-4`) | Standard form inputs |
-| Small | `.input.input--sm` | 32px (`--ai-spacing-7`) | 12px (`--ai-spacing-4`) | Compact forms, inline filters |
+| Size | Class | Height | Padding-x | Content gap | Label | Field | Field leading |
+|---|---|---|---|---|---|---|---|
+| Base (default) | `.input` | 40px (`--ai-spacing-8`) | 12px (`--ai-spacing-4`) | 8px (`--ai-spacing-3`) | 14px (`--ai-font-fixed-xs`) | 14px (`--ai-font-fixed-xs`) | 24px (`--ai-leading-md`) |
+| Small | `.input.input--sm` | 32px (`--ai-spacing-7`) | 12px (`--ai-spacing-4`) | 8px (`--ai-spacing-3`) | **13px (`--ai-font-fixed-2xs`)** | **13px (`--ai-font-fixed-2xs`)** | **16px (`--ai-leading-xs`)** |
+
+> **The Size axis steps typography, not just the box.** This table listed only height and padding
+> until 2026-08-28, and the CSS matched the table rather than Figma — so every `input--sm`
+> rendered its label and value at the Base 14px. The designer caught it at mobile, where `--sm`
+> is the size the Seating Planner uses. Help text is the exception: `body/xxs` (12px) at **both**
+> sizes, so there is deliberately no sm rule for it.
+>
+> Verified on the sm child nodes (label `78:2028`, field text `78:2032`), not the variant root —
+> Code Connect intercepts `get_design_context` on a mapped variant and returns this project's own
+> snippet in place of the design, so a mapped component cannot be used to audit itself. Reach for
+> `get_variable_defs` plus the child nodes instead.
 
 ### States
 
@@ -102,6 +113,25 @@ Only wrap the label in `.input__label-row` when the back button is present; a ba
 
 Hover, Active, and Focus all share the same visual treatment (brand border) — implemented via `:hover` and `:focus-within` on `.input__wrap`.
 
+The component set holds **21 variants** — the 20 above × `Placeholder View` True/False (which is
+`:placeholder-shown` in CSS, not a class), plus one more:
+
+### New in Figma, NOT built — flagged 2026-08-28
+
+Found while auditing the Size axis; none is a visual state, so none was implemented. Raised for
+the designer rather than guessed at:
+
+| Finding | Node | Why not built |
+|---|---|---|
+| `State=Slot`, Size=sm only | `3488:204564` | Renders identically to `Size=sm, State=Default` in the screenshot, and Base has no equivalent. Reads as a Figma authoring construct (a slot-enabled variant) rather than a state the CSS should express. An asymmetric axis — one size having a state the other lacks — is usually the tell. |
+| `Action Slot`, hidden | `3435:28465` inside `78:2017` | A fourth stack slot below Help, hidden in every variant. Nothing to build until something is placed in it, but worth knowing it exists — it implies a future action row under the help line. |
+| Base uses slots, sm uses frames | `78:2018` / `3435:27539` vs `78:2027` | Base wraps Label and Help in `Label Slot` / `Help Slot`; sm uses plain frames. Structural inconsistency between the two sizes, invisible in output. |
+
+The Stepper set has one of its own: its **help/error text is a raw `text-[12px]`**, not a bound
+variable, at both sizes (`3567:105370`, `3567:105371`). The value matches
+`--ai-font-fixed-xxs`, which is what this build uses, so nothing is visually wrong — but the
+binding is missing in Figma, so a future token change would silently skip it.
+
 ## CSS Class Mapping
 
 | Figma property | CSS |
@@ -119,7 +149,7 @@ Hover, Active, and Focus all share the same visual treatment (brand border) — 
 | Property | Figma variable | CSS variable |
 |---|---|---|
 | Container gap | `--ai-spacing-3` | `--ai-spacing-3` |
-| Label font | `--ai-font-title`, `--ai-font-semibold`, `--ai-font-fixed-xs`, `--ai-leading-xs` | same |
+| Label font (base) | `--ai-font-title`, `--ai-font-semibold`, `--ai-font-fixed-xs`, `--ai-leading-xs` | same |
 | Label color | `--ai-text-primary` | `--ai-text-primary` |
 | Label row gap (back btn ↔ label) | `--ai-spacing-3` | `--ai-spacing-3` |
 | Back btn bg | `--ai-btn-secondary-bg` (transparent) | `--ai-btn-secondary-bg` |
@@ -131,15 +161,18 @@ Hover, Active, and Focus all share the same visual treatment (brand border) — 
 | Field height (base) | `--ai-spacing-8` | `--ai-spacing-8` |
 | Field height (sm) | `--ai-spacing-7` | `--ai-spacing-7` |
 | Field padding-x (base) | `--ai-spacing-5` | `--ai-spacing-4` (user-directed change, 2026-06-01) |
-| Field padding-x (sm) | `--ai-spacing-4` | `--ai-spacing-4` |
+| Field padding-x (sm) | `--ai-spacing-4` | `--ai-spacing-4` (was `--ai-spacing-3` in code until 2026-08-28 — this row already claimed `-4`, so the CSS had drifted from its own notes) |
 | Field bg | `--ai-surface-primary` | `--ai-surface-primary` |
 | Field border (default) | `--ai-border-secondary` | `--ai-border-secondary` |
 | Field border (hover/focus) | `--ai-border-brand` | `--ai-border-brand` |
 | Field border (error) | `--ai-border-error` | `--ai-border-error` |
-| Content gap | `--ai-spacing-3` | `--ai-spacing-3` |
+| Content gap (base) | `--ai-spacing-3` | `--ai-spacing-3` |
+| Content gap (sm) | `--ai-spacing-3` | `--ai-spacing-3` (was `--ai-spacing-2` in code until 2026-08-28) |
+| Label font (sm) | `--ai-font-fixed-2xs` (13px) | same |
+| Input font (sm) | `--ai-font-fixed-2xs` (13px), `--ai-leading-xs` | same |
 | Icon size | — | `--ai-icon-size-sm` (16px) |
 | Icon color | `--ai-icon-contrast` | `--ai-icon-contrast` |
-| Input font | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xs`, `--ai-leading-md` | same |
+| Input font (base) | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xs`, `--ai-leading-md` | same |
 | Input color (filled) | `--ai-text-primary` | `--ai-text-primary` |
 | Placeholder color | `--text/contrast-2` | `--ai-text-contrast` |
 | Help text font | `--ai-font-body`, `--ai-font-regular`, `--ai-font-fixed-xxs`, `--ai-leading-xs` | same |
@@ -326,21 +359,33 @@ property for property:
 | button width | 32px at sm | `--ai-spacing-7` ✓ |
 | hairlines | `border-r` / `border-l` `--ai-border-secondary` | ✓ |
 | icon | 16px | `--ai-icon-size-sm` ✓ |
-| number | centred, `--ai-font-fixed-xs`, `--ai-leading-md` | ✓ |
+| number (base) | centred, `--ai-font-fixed-xs`, `--ai-leading-md` | ✓ |
+| number (sm) | centred, `--ai-font-fixed-2xs`, `--ai-leading-md` | ✓ since 2026-08-28 |
+| label (base / sm) | `--ai-font-fixed-xs` / `--ai-font-fixed-2xs` | ✓ since 2026-08-28 |
 
 That is worth recording: the reference-to-token decisions held up against an independent redraw.
 
-**Three discrepancies — NOT adopted, flagged for the designer:**
+**Re-audited 2026-08-28 — two of the three earlier "discrepancies" were not discrepancies:**
 
-1. **Number text is bound to `--ai-chat-sidebar-text`** — a CHAT token on a Control Centre form
-   field. Its value (`#172033`) is identical to `--ai-text-primary`, which is what this build uses.
-   Same class as the `--cc-actions-menu-primary-bg` splitter and the `--ai-datatable-table-bg` slips
-   already recorded on this screen: a token that works, where a token that *means* it exists.
-2. **Label is `--ai-font-fixed-2xs` (13px)** where an ordinary Input label is `--ai-font-fixed-xs`
-   (14px). Adopting it would make "Tables" and "Seats / table" visibly smaller than "Plan name" in
-   the same form, which reads as a slip rather than an intent.
-3. **Container has `p-px`** (1px padding) insetting the buttons inside the border; this build uses
-   `padding: 0`. Sub-pixel, listed for completeness.
+1. **`--ai-chat-sidebar-text` on the number: RESOLVED in Figma.** Both sizes now bind
+   `--ai-text-primary` (re-read from `3567:105368` / `3567:105370`), which is what this build
+   always used. No action.
+2. **"Label is 13px where an ordinary Input label is 14px": MY ERROR, now adopted.** I compared
+   the Stepper's **sm** label against the Input's **Base** label. Input's own sm label is 13px
+   too — both components step 14 → 13 on the Size axis, identically. The stated worry ("Tables
+   would look smaller than Plan name in the same form") was void for the same reason: in the
+   create-plan modal at mobile, Plan name is *also* sm, so all three labels are 13px and match.
+   The lesson is narrow and worth keeping: **compare like size against like size.** A
+   cross-size comparison manufactures a discrepancy that is really just the axis working.
+3. **Container `p-px`** (1px inset on the buttons) — still not adopted; this build uses
+   `padding: 0`. Sub-pixel, genuinely still a divergence.
+
+**One real difference between the two components, deliberately kept:** the Stepper's number holds
+`--ai-leading-md` (24px) at **both** sizes, where a plain Input's sm field steps down to
+`--ai-leading-xs` (16px). Figma binds it that way on `3567:105368`, so `.input--stepper
+.input__control` re-asserts 24px against the shared sm rule. That re-assert works by **source
+order**, not specificity — both selectors are two classes — so the stepper block must stay below
+the size block in `Input.css`.
 
 **Follow-up now possible:** with a real component to attach to, the stepper can finally have a
 `.figma.ts` Code Connect entry — the only reason it had none was the missing node.
