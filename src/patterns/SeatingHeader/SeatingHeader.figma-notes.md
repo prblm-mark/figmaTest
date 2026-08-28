@@ -516,3 +516,39 @@ container query never fired". That reading cost a diagnosis during this change. 
 match with a non-zero box, and kill transitions (`*{transition:none!important}`) because they do
 not advance under headless Chrome's `--virtual-time-budget`.
 
+## The toolbar's Add button has TWO label states, not three (2026-08-28)
+
+`.seating-header__btn--add` was degrading in three steps — **"Add Table" → "Add" → icon-only** —
+because the ≤1023 block clipped `.seating-header__btn-shrink` unscoped, and that class catches
+both toolbar buttons while wrapping different content in each:
+
+| Button | Markup | Effect of clipping `__btn-shrink` |
+|---|---|---|
+| Add | `Add<span class="__btn-shrink"> Table</span>` | leaves the bare word **"Add"** |
+| Export | `<span class="__btn-shrink">Export</span>` | leaves **nothing** → icon-only |
+
+One selector, two outcomes. The clip is now scoped to
+`.seating-header__btn--export .seating-header__btn-shrink`, so Add holds its full label down to
+767 and then goes icon-only, matching the only two states Figma draws (desktop 1552, mobile 402).
+
+The intermediate "Add" was never a design state — it relieved a real overflow in the 768–1023 band
+back when this pattern used viewport media queries that could not see the docked SidebarMenu
+narrowing the column. With the self-container reflowing correctly there is nothing to relieve, and
+a button labelled just "Add" is less clear than either state Figma specifies.
+
+Measured across the whole band on the live screen, by CONTAINER width (which is what the queries
+key on, not the viewport):
+
+| container | Add | Export | room ↔ buttons |
+|---|---|---|---|
+| 1224 | "Add Table" 108px | "Export" 112px | clear 651px |
+| 909 / 833 / 832 | "Add Table" 108px | icon 32px | clear 16px |
+| 709 → 269 | icon 32px | icon 32px | clear 16px |
+
+No overlap at any width and no horizontal overflow; clearance is a steady 16px from 1100 down.
+
+**Reading that table:** the label is CLIPPED, not `display: none`, so "Add Table" stays in the
+accessibility tree at every size and `innerText` still reports it when the button is visually
+icon-only. The 32px width is the signal that the label is hidden — do not use text content to
+test which state the button is in.
+
