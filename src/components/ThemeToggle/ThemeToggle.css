@@ -3,7 +3,7 @@
  * Tier: Component
  *
  * Two variants (State=Light | Dark) that mirror each other — the active
- * button is highlighted with --ai-surface-minimal + --ai-radius-sm; the
+ * button is highlighted with --ai-surface-secondary + --ai-radius-sm; the
  * inactive button is transparent. The whole wrapper is bordered + rounded.
  *
  * Distinct from `src/components/dark-mode-toggle.js` (which is the demo-page
@@ -59,7 +59,14 @@
 /* ── Active segment ──────────────────────────────────── */
 
 .theme-toggle__btn[aria-pressed="true"] {
-  background-color: var(--ai-surface-minimal);
+  /* `--ai-surface-secondary`, not `--ai-surface-minimal` (designer, 2026-08-28). Both Figma
+   * variants (2699:2053 Dark, 2699:2062 Light) bind secondary and neither references minimal.
+   *
+   * It matters visually rather than nominally: the wrapper is `--ai-surface-primary` (#ffffff)
+   * and minimal is #f8fafc, so the active segment was a ~2% step off its own background and
+   * read as unselected. Secondary is #e9eef4. Both tokens are theme-aware (dark: #293548 vs
+   * #3d4b5f), so the contrast improves in dark mode too rather than only in light. */
+  background-color: var(--ai-surface-secondary);
   border-radius: var(--ai-radius-sm);
 }
 

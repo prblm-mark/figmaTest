@@ -22,6 +22,38 @@ Mobile responsiveness handled via `@container (max-width: 767px)` (the bar is a
 `container-type: inline-size` context) — single HTML structure collapses to the mobile
 layout. No `--mobile` modifier class.
 
+> **Two Device deltas were missing until 2026-08-28** and were added at the designer's
+> direction, both verified against the mobile variants:
+>
+> | | Desktop (`4099:3633`) | Mobile (`4099:3630` / `:3632`) |
+> |---|---|---|
+> | bar padding-x | `--ai-spacing-5` 16px | **`--ai-spacing-4` 12px** |
+> | bar min-height | `--ai-spacing-9` 48px | `--ai-spacing-8` 40px (already correct) |
+> | breadcrumb font | `--ai-font-fixed-xs` 14px | **`--ai-font-fixed-2xs` 13px** |
+>
+> Padding was read geometrically rather than from a class: the Breadcrumb child sits at `x=12`
+> with 12px clear on the right in both mobile variants, and at `x=16` in the desktop one.
+>
+> The font override is scoped `.cc-top-navigation .breadcrumb__item` — **not** the list or the
+> nav — because that is the element Breadcrumb.css sizes; `__link` and `__dropdown` both declare
+> `font-size: inherit`, so setting it anywhere else silently does nothing.
+>
+> **Token-name hazard, recorded because it will recur:** 13px is `--ai-font-fixed-2xs` in this
+> codebase, but the CC Hybrid Figma file binds 13px to a variable it still calls
+> `--ai-font-fixed-xxs`. That file's typography variables predate the 28 Aug 2026 swap, after
+> which `xxs` = 12px and `2xs` = 13px in `css/tokens.css` and in the Affino AI file. **The two
+> Figma files now disagree about what `xxs` means.** Match on the pixel value, never the name —
+> copying the name out of the CC Hybrid file yields 12px.
+>
+> One subtlety about the mobile block, unchanged but worth knowing: `.cc-top-navigation`
+> declares its own `container-type`, so rules inside `@container` that target the BAR ITSELF
+> resolve against the nearest ancestor container (`cs-main`), while rules targeting descendants
+> resolve against the bar. Both signals agree in practice — measured 2026-08-28, the bar and
+> `cs-main` are the same width (1008px desktop, 338px mobile) because the bar spans the chrome —
+> so the padding and min-height overrides do fire. It is not a bug today, but the block's
+> original comment ("whenever the bar itself is narrower than 768px") is only true of the
+> descendant rules.
+
 **Breadcrumb item budget:** max **2 items** below MD (768px), **3 items** at ≥768px. The
 breadcrumb keeps the zone selector + 1 level (or 2 levels when there's no zone selector).
 Any trailing crumb beyond that budget carries `breadcrumb__item--collapse` (and its leading
@@ -56,7 +88,10 @@ markers, so it is unaffected.
 |---|---|
 | Background | `var(--cc-header-primary-bg)` (#0f3b53 in CC light) |
 | Min height | `var(--ai-spacing-9)` (48px) |
-| Padding (x) | `var(--ai-spacing-5)` (16px) |
+| Padding (x) — desktop | `var(--ai-spacing-5)` (16px) |
+| Padding (x) — mobile | `var(--ai-spacing-4)` (12px) — **added 2026-08-28** |
+| Breadcrumb font — desktop | `var(--ai-font-fixed-xs)` (14px), from Breadcrumb's own CSS |
+| Breadcrumb font — mobile | `var(--ai-font-fixed-2xs)` (13px) — **added 2026-08-28**, scoped override |
 | Gap | `var(--ai-spacing-5)` (16px) |
 
 ### Breadcrumb (contextual override — dark bg)
