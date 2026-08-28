@@ -1,3 +1,25 @@
+/* ─── PARKED 2026-08-28 — blocked by a DUPLICATE VARIANT in Figma ───────────────────────
+ *
+ * Excluded from Code Connect by its `.parked` extension (figma.config.json includes
+ * `src/**/*.figma.ts`). `figma connect publish` aborts on ANY validation failure, so one
+ * unpublishable mapping blocks all 86; parking this keeps the other 73 shippable.
+ *
+ * The Attendee Card set (3474:89292) has TWO variants with the identical name
+ * `Tier=Component, Type=Empty, State=Default` — `3474:89291` and `3528:102567`. A duplicate
+ * variant combination invalidates the whole set's property definitions, so `Type`, `State`,
+ * `Attendee Name`, `Company name`, `Show Seat Number` and `Show Actions` all report as
+ * "does not exist" even though the variant names plainly contain them. Confirmed independently:
+ * `list_file_components_for_code_connect` returns `properties: {}` with `hasVariants: true`
+ * for this set — a contradiction that is itself the signature of the defect.
+ *
+ * TO REINSTATE:
+ *   1. In Figma, delete ONE of the duplicate `Type=Empty, State=Default` variants.
+ *   2. Repoint the second `figma.connect` from the variant `3474-89291` to the SET
+ *      `3474-89292` plus `variant: { Type: 'Empty' }` — the same fix already applied to
+ *      TableCard, TableDetail and Unassigned. A variant URL is rejected outright.
+ *   3. Rename this file back to `AttendeeCard.figma.ts` and re-run `npm run code-connect:publish`.
+ */
+
 import figma, { html } from '@figma/code-connect/html'
 
 // Type drives the role modifier; Attendee maps to no modifier because it is the CSS default.

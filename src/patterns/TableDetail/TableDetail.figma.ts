@@ -96,8 +96,13 @@ figma.connect(
 
 // ── Type=Default: no legend at all, every seat empty ─────────────────────────────────
 figma.connect(
-  'https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=3475-94006',
+  'https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=3475-94010',
   {
+    /* Connected on the component SET with a variant restriction, not on the variant node itself.
+     * Code Connect rejects a variant URL outright ("node is not a top level component or
+     * component set"), which is what kept this mapping unpublished. `variant` is the supported
+     * way to surface different markup per variant. */
+    variant: { Type: 'Default' },
     example: () => html`
       <section class="table-detail" aria-label="Table 21 seating detail">
             <header class="table-detail__header">

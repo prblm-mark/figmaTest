@@ -1,3 +1,23 @@
+/* ─── PARKED 2026-08-28 — NO FIGMA COMPONENT EXISTS ────────────────────────────────────
+ *
+ * Excluded from Code Connect by its `.parked` extension; `figma connect publish` aborts on ANY
+ * validation failure, so one unpublishable mapping blocks every other.
+ *
+ * Both mapped nodes (`4095-3413`, `4113-3433`) fail as "corresponding node is not a component
+ * or component set", and no NotificationBadge component exists in the CC Hybrid file. Its
+ * component inventory, read via `list_file_components_for_code_connect`, is exactly sixteen
+ * entries: Sidebar, Menu, Main Menu, SidebarMenu, FontSizeSlider (x2), ActionsMenu, AiAssistant,
+ * ActionsInfoPanel, Control Screen (x3), CCTopNavigation, CCHeader, CCHeaderGroup,
+ * IconNavigation. There is nothing to repoint to.
+ *
+ * Most likely the badge is drawn inline inside CCHeader — that set does carry a
+ * `Show Notification` BOOLEAN property — rather than existing as its own component. Same
+ * shape of problem as RoomCard.
+ *
+ * TO REINSTATE: either the designer promotes it to its own component, or map it as CCHeader's
+ * `Show Notification` boolean instead. Do NOT invent a node ID to make validation pass.
+ */
+
 import figma, { html } from '@figma/code-connect/html'
 
 // NotificationBadge is not a Figma component set — it's extracted from the

@@ -10,7 +10,7 @@ figma.connect(
         Initial: '',
         Selected: 'filter-dropdown-item--selected',
       }),
-      subText: figma.boolean('showSubText', {
+      subText: figma.boolean('Show Sub Text', {
         true: html`<span class="filter-dropdown-item__sub">Sub Text</span>`,
         false: html``,
       }),

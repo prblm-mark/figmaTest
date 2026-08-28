@@ -18,7 +18,7 @@ figma.connect(
         '3 Selected': 'filter-item--selected',
         '4+ Selected': 'filter-item--selected',
       }),
-      filterName: figma.string('filterName'),
+      filterName: figma.string('Filter Name'),
     },
     example: ({ rounded, state, filterName }) => html`
       <div class="filter-item ${rounded} ${state}" data-filter-name="${filterName}">

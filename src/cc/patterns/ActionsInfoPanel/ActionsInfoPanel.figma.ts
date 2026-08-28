@@ -1,7 +1,10 @@
 import figma, { html } from '@figma/code-connect/html'
 
+// Repointed 2026-08-28: was `node-id=4164-8667`, which Code Connect rejects — it is a variant
+// or inner frame, not a top-level component. Correct target is the ActionsInfoPanel set (Tier), confirmed via
+// `list_file_components_for_code_connect` on the CC Hybrid file rather than read off the canvas.
 figma.connect(
-  'https://www.figma.com/design/ETKqleZdpertwFEo40YB5n/Affino-CC-Hybrid--Design-System?node-id=4164-8667',
+  'https://www.figma.com/design/ETKqleZdpertwFEo40YB5n/Affino-CC-Hybrid--Design-System?node-id=4165-4007',
   {
     example: () => html`
       <div class="cc-actions-info-panel">

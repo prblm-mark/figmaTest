@@ -15,7 +15,7 @@ figma.connect(
         Focus: '',
         Error: 'input--error',
       }),
-      labelBack: figma.boolean('show label back', {
+      labelBack: figma.boolean('Show Label Back', {
         true: html`<button type="button" class="input__label-back" aria-label="Back">
             <i data-lucide="arrow-left" aria-hidden="true"></i>
           </button>`,

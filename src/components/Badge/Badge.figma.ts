@@ -1,7 +1,7 @@
 import figma, { html } from '@figma/code-connect/html'
 
 figma.connect(
-  'https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2580-8904',
+  'https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2580-10544',
   {
     props: {
       type: figma.enum('Type', {

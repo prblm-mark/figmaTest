@@ -1,3 +1,23 @@
+/* ─── PARKED 2026-08-28 — NO FIGMA COMPONENT EXISTS ────────────────────────────────────
+ *
+ * Excluded from Code Connect by the `.parked` extension; publish is all-or-nothing.
+ *
+ * Both node IDs this file mapped are dead: `3470-84951` returns "invalid node selection" from
+ * `get_metadata` (it does not exist at all) and `3470-84952` fails validation as "not a top
+ * level component or component set". And there is no Room Card component set anywhere in the
+ * file — the Seat Planner page holds exactly nine sets: Seat Planner, Table Card, Table Type,
+ * Attendee Card, Toast, Header, Table Detail, Unassigned, Table Listing.
+ *
+ * This is consistent with RoomCard having been confirmed as the room/plan CHIP rather than a
+ * new entity: the design lives inside Header's `Room-Selector-Bar` slot (set 3474:90519, which
+ * does expose that property) rather than as a standalone component. The RoomCard CSS and demo
+ * are unaffected and stay in use — only the Code Connect mapping is unpublishable.
+ *
+ * TO REINSTATE: either the designer promotes Room Card to its own component set (then point
+ * this file at it), or accept that it is only ever an inline part of Header and delete this
+ * file. Do NOT invent a node ID to make validation pass.
+ */
+
 import figma, { html } from '@figma/code-connect/html'
 
 // Room Card has NO Figma TEXT properties — get_design_context reports only
