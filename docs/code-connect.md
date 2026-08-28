@@ -212,6 +212,22 @@ is therefore not evidence of duplication. Two ways to tell them apart properly:
 The safe recommendation is always "one of these is mislabelled — which axis value is missing?",
 never "delete the duplicate".
 
+### A dead node ID is undiagnosable — re-check before concluding "no component"
+
+RoomCard's two node IDs were both dead: `3470-84951` returned "invalid node selection" from
+`get_metadata`, `3470-84952` failed validation, and no Room Card set appeared anywhere in the
+file's 246-entry inventory. The reasonable conclusion at the time — that RoomCard was only ever an
+inline part of Header's `Room-Selector-Bar` slot — was wrong. The set had simply been deleted or
+detached in Figma. Once the designer restored it, `3470-84951` resolved as the real set and
+`3470-84952` resolved as its `Type=Full, State=Default, Device=Desktop` variant: an ordinary
+variant-URL mistake all along.
+
+The lesson is narrow but worth having: **a missing node produces the same silence whether the
+pointer is wrong or the component is gone.** So "no such component" is a statement about the file's
+current state, not a permanent property of the mapping. Park it, say exactly what was checked, and
+re-verify rather than deleting the mapping — deleting would have thrown away a correct 12-variant
+mapping that needed a one-line fix.
+
 ### Getting the authoritative node IDs
 
 Never read a component-set node ID off the canvas or reuse one from a parent's design context.

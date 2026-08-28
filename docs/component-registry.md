@@ -1,14 +1,14 @@
 # Component Registry
 
-> **Code Connect published 2026-08-28** — **78 of 86 mappings are live** (50 Affino AI, 15 CC
-> Hybrid, 13 AI Chat). AttendeeCard and AudioPlayer were recovered the same day once the designer
-> fixed their variant collisions in Figma — see below; neither was the duplicate I first called it.
+> **Code Connect published 2026-08-28** — **80 of 86 mappings are live** (52 Affino AI, 15 CC
+> Hybrid, 13 AI Chat). AttendeeCard, AudioPlayer and RoomCard were all recovered the same day as
+> the designer fixed each blocker in Figma.
 >
-> **8 connects across 4 components remain PARKED** as `<Name>.figma.ts.parked`: RoomCard,
-> NotificationBadge and AssistantPopover (no such Figma component exists) and SeatingPlanner
-> (maps screen frames, which Code Connect cannot attach to). Each parked file names the exact
-> Figma-side fix in its header. Publish is all-or-nothing, so these must stay parked until fixed.
-> See `docs/code-connect.md`.
+> **6 connects across 3 components remain PARKED** as `<Name>.figma.ts.parked`: NotificationBadge
+> and AssistantPopover (no such Figma component exists) and SeatingPlanner (maps screen frames,
+> which Code Connect cannot attach to). Each parked file names the exact Figma-side fix in its
+> header. Publish is all-or-nothing, so these must stay parked until fixed. See
+> `docs/code-connect.md`.
 
 
 | Component | Tier | Status | Figma URL | Notes |
