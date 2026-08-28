@@ -127,10 +127,9 @@ the designer rather than guessed at:
 | `Action Slot`, hidden | `3435:28465` inside `78:2017` | A fourth stack slot below Help, hidden in every variant. Nothing to build until something is placed in it, but worth knowing it exists — it implies a future action row under the help line. |
 | Base uses slots, sm uses frames | `78:2018` / `3435:27539` vs `78:2027` | Base wraps Label and Help in `Label Slot` / `Help Slot`; sm uses plain frames. Structural inconsistency between the two sizes, invisible in output. |
 
-The Stepper set has one of its own: its **help/error text is a raw `text-[12px]`**, not a bound
-variable, at both sizes (`3567:105370`, `3567:105371`). The value matches
-`--ai-font-fixed-xxs`, which is what this build uses, so nothing is visually wrong — but the
-binding is missing in Figma, so a future token change would silently skip it.
+~~The Stepper set has one of its own: its help/error text is a raw `text-[12px]`.~~
+**CLOSED 2026-08-28** — the designer bound it. See "Stepper help text" below; the binding
+raised a token-choice question rather than simply resolving.
 
 ## CSS Class Mapping
 
@@ -362,6 +361,8 @@ property for property:
 | number (base) | centred, `--ai-font-fixed-xs`, `--ai-leading-md` | ✓ |
 | number (sm) | centred, `--ai-font-fixed-2xs`, `--ai-leading-md` | ✓ since 2026-08-28 |
 | label (base / sm) | `--ai-font-fixed-xs` / `--ai-font-fixed-2xs` | ✓ since 2026-08-28 |
+| help / error text | `--ai-font-fixed-3xs`, `--ai-leading-xs`, `--ai-font-body` | ✓ via `.input--stepper .input__help` |
+| help / error colour | `--ai-text-secondary` / `--ai-text-error` | ✓ (Input's own) |
 
 That is worth recording: the reference-to-token decisions held up against an independent redraw.
 
@@ -389,3 +390,44 @@ the size block in `Input.css`.
 
 **Follow-up now possible:** with a real component to attach to, the stepper can finally have a
 `.figma.ts` Code Connect entry — the only reason it had none was the missing node.
+
+### Stepper help text — bound 2026-08-28, on `3xs` not `xxs`
+
+The help/error text was a raw `text-[12px]` with no variable behind it. That was flagged, and the
+designer bound it across all four help-bearing variants — `3567:105371` / `3567:105370` (Help,
+Base/sm) and `3567:105373` / `3567:105372` (Error, Base/sm), verified on each Paragraph node
+(`3567:105229`, `3567:105244`, `3567:105262`, `3567:105277`) rather than through the variant roots:
+
+| Property | Figma | This build |
+|---|---|---|
+| font-size | `--ai-font-fixed-3xs` (12px) | `.input--stepper .input__help` — **the codebase's first use of `3xs`** |
+| line-height | `--ai-leading-xs` (16px) | ✓ Input's own |
+| family / weight | `--ai-font-body` / `--ai-font-regular` | ✓ Input's own |
+| colour | `--ai-text-secondary`, `--ai-text-error` on Error | ✓ Input's own |
+
+**The binding raised a question rather than settling one.** A plain Input's help binds
+`--ai-font-fixed-xxs` (through the `body/xxs` style); the Stepper's now binds
+`--ai-font-fixed-3xs`. Both are `0.75rem` / 12px in **every** mode, and `.input__help` is a
+single class shared by both components — so the two Figma components were asking the same element
+for two different tokens that happen to agree.
+
+Raised with the designer, who confirmed (2026-08-28) that **the Stepper genuinely sits on the
+`3xs` ramp position** — so it is adopted rather than treated as a mis-pick. `docs/tokens-reference.md`
+records the pair deliberately: `xxs` is the token components use, `3xs` is the ramp position that
+shares its value.
+
+That makes `.input--stepper .input__help` **visually inert today**, which is the point of writing
+it: if the ramp ever moves, each component renders the size it asked for instead of silently
+inheriting the other's. Proved it is really bound to `3xs` and not just coincidentally landing on
+12px by forcing `--ai-font-fixed-3xs` to `30px` on a wrapper — the Stepper's help followed to 30px,
+the Input's stayed at 12px. **Two tokens with equal values cannot be told apart by measuring the
+result; perturb one and see which follows.**
+
+Unlike the `--ai-leading-md` re-assert on `.input__control`, this rule has **no order dependency** —
+two classes beats the one-class `.input__help`, so specificity settles it wherever it sits.
+
+**Also resolved the same day: the font-family divergence.** Figma had the Stepper's help *and* its
+number on `--ai-font-title`; the designer repointed every non-title element to `--ai-font-body`
+(label correctly stays `title`). Re-verified on `3567:105256` (Base number, 14px/body) and
+`3567:105239` (sm number, 13px/body). This build already used `--ai-font-body` on both, so no code
+change was needed — the divergence closed from the Figma side.

@@ -375,3 +375,26 @@
   margin: 0;
 }
 
+/* The Stepper binds its help/error text to `--ai-font-fixed-3xs` where a plain Input's help binds
+ * `--ai-font-fixed-xxs` (via the `body/xxs` style). Both are 0.75rem / 12px today, in every mode,
+ * so this rule is visually inert — which is exactly the point of writing it: the designer
+ * confirmed on 2026-08-28 that the Stepper genuinely sits on the `3xs` ramp position, so if the
+ * ramp ever moves, `.input__help` renders the size each component asked for instead of silently
+ * inheriting the other's. Keeping the code honest about a same-value divergence is cheap; only
+ * discovering it after the ramp moves is not.
+ *
+ * Two 12px tokens is a deliberate feature of the ramp, not a duplicate to be tidied away:
+ * `docs/tokens-reference.md` records `xxs` as the one components use and `3xs` as the ramp
+ * position that happens to share the value. This is `3xs`'s first use in the codebase.
+ *
+ * No order dependency here, unlike the line-height re-assert above — two classes beats the
+ * one-class `.input__help`, so specificity settles it wherever this rule sits.
+ *
+ * Everything else on this element already agreed and needed no rule: family `--ai-font-body`,
+ * weight `--ai-font-regular`, `--ai-leading-xs`, and `--ai-text-secondary` / `--ai-text-error`.
+ * The family only agreed as of the same day — Figma had the Stepper's help and number on
+ * `--ai-font-title`, and the designer repointed every non-title element to `--ai-font-body`. */
+.input--stepper .input__help {
+  font-size: var(--ai-font-fixed-3xs);  /* 12px */
+}
+
