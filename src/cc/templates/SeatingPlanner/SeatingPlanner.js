@@ -64,6 +64,15 @@
     });
   }
 
+  /* The create-plan modal lives in its own IIFE and cannot see `setState` — calling it directly
+   * from there threw a ReferenceError, so a successful submit closed the modal and then silently
+   * failed to advance (found 2026-08-27 by reading the minified build, where the undeclared global
+   * was obvious). It already announces itself, so the state machine listens instead: the modal
+   * reports what happened, this owns what the page shows. */
+  document.addEventListener('seating-planner:plan-created', function () {
+    setState('plan');
+  });
+
   var requested = /[?&]state=([a-z-]+)/.exec(window.location.search);
   if (requested) {
     var want = requested[1];
@@ -395,15 +404,13 @@
 
       close();
 
-      /* The screen that follows IS now designed (3515:177748 / 3515:213426), so the flow
-       * continues into it instead of stopping at the event. The event is still dispatched —
-       * a host needs it to actually create the plan.
+      /* The screen that follows IS now designed (3515:177748 / 3515:213426), so the flow continues
+       * into it. The transition is driven by the event below rather than a direct call: `setState`
+       * belongs to another IIFE and is not in scope here.
        *
        * TODO(backend:SeatingPlanner): creating a plan must generate its tables — see
        * seating-new-plan. The plan screen's 12 tables and its seat rows are static markup;
        * the real screen must render THIS plan's tables at the requested count and shape. */
-      setState('plan');
-
       overlay.dispatchEvent(new CustomEvent('seating-planner:plan-created', {
         bubbles: true,
         detail: {
