@@ -236,3 +236,33 @@ Result: the Seating Planner's create-plan modal now measures **512×506 with a 7
 title block — exactly Figma**, having been 562 before this and the two fixes above. Modal's own demo
 and EventPicker are unaffected in height, since their headers are driven by the 32px close button
 rather than by the title.
+
+## The modal overflowed its overlay padding (2026-08-27, Samsung S23)
+
+Reported: the Select-an-event modal felt too close to the top and bottom of the phone. Measured on
+the device screenshot — about **5px** of gap where the overlay declares **24**.
+
+`.modal` had `width` and `max-width` but **no height cap**, so it grew to its content height. Being
+centred in a flex overlay, an item taller than the container overflows equally past the padding on
+both sides — the padding is not a floor. On a ~543px-tall visible viewport the modal wanted 532, so
+the 24px gaps collapsed to ~5.
+
+Fixed with `max-block-size: 100%` on `.modal` — `100%` is the overlay's content box, so the padding
+is now respected and the modal shrinks instead. Nothing else was needed for the content: a growable
+middle region like `.event-picker__list` already sets `overflow-y: auto`, which makes its automatic
+minimum size zero, so it absorbs the reduction and scrolls.
+
+**Overlay padding also raised to 32 at ≤639px.** With the overflow fixed the gap was a correct 24,
+but the designer's point stands on a 543px-tall screen. Figma had already implied 32: the
+create-plan MOBILE frame is 338 wide inside a 402 viewport — a discrepancy recorded in these notes
+when that screen was built and left alone because nothing depended on it.
+
+**A cascade-order trap worth recording.** That override was first written inside the existing
+`Size=sm` `@media (max-width: 639px)` block at line ~366 — and silently did nothing, because the
+base `.modal-overlay` rule sits at line ~391, *after* it, at equal specificity. Padding stayed
+24px; measured, not assumed. The fix was to move the rule below the base declaration rather than
+raise its specificity, which would have hidden the ordering problem instead of solving it.
+
+Verified: S23 box (360×543) picker → overlay padding 32, modal 479 of 543, gaps 32/32, inner list
+scrolling; create-plan → 365 tall, centred with 89 either side; desktop (1400×900) unchanged at 24
+with 128px gaps. Zero JS errors throughout.

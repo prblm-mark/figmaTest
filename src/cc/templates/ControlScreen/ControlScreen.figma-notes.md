@@ -258,3 +258,23 @@ exists for exactly this. The ActionsMenu rail is a **sibling of `<main>`**, so i
 ControlScreen and ControlHub: isolation applied, both chrome dropdowns unobstructed, no
 `position: fixed` elements inside the page that the isolation could trap, no horizontal overflow,
 zero JS errors.
+
+## `100dvh`, not `100vh` (2026-08-27, from Samsung S23 testing)
+
+Reported: on a real device the empty-state sheets ran past the bottom of the viewport — their
+bottom edge and rounded corner were cut off, on both the No Event and No Plan screens.
+
+`.cc-control` had `min-height: 100vh; height: 100vh`, and `.cc-control__sidebar` matched it. On
+mobile Chrome **`100vh` is the LARGE viewport** — the height the page would have with the URL bar
+hidden. With the bar showing, a 100vh shell therefore extends roughly 75 CSS px BELOW the fold.
+`.cc-control__page` is `flex: 1` of that shell, so the sheet inside it was pushed past the visible
+area. Nothing looked wrong in a desktop window, which is why it survived until device testing.
+
+Both now declare `vh` first and `dvh` second, so browsers without `dvh` keep the old value and
+everything else tracks the visible viewport as the chrome shows and hides. `svh` would also never
+overflow but leaves dead space once the bar retracts, which is worse for an app shell that should
+fill the screen.
+
+Verified at the S23's real visible box (360×543): shell 543, fits exactly, sheet bottom at 531,
+nothing cut off, no page overflow. Desktop unchanged — ControlScreen and the plan screen both
+report shell = viewport with no overflow and zero JS errors.
