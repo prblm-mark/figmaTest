@@ -1,25 +1,3 @@
-/* ─── PARKED 2026-08-28 — blocked by a DUPLICATE VARIANT in Figma ───────────────────────
- *
- * Excluded from Code Connect by its `.parked` extension (figma.config.json includes
- * `src/**/*.figma.ts`). `figma connect publish` aborts on ANY validation failure, so one
- * unpublishable mapping blocks all 86; parking this keeps the other 73 shippable.
- *
- * The Attendee Card set (3474:89292) has TWO variants with the identical name
- * `Tier=Component, Type=Empty, State=Default` — `3474:89291` and `3528:102567`. A duplicate
- * variant combination invalidates the whole set's property definitions, so `Type`, `State`,
- * `Attendee Name`, `Company name`, `Show Seat Number` and `Show Actions` all report as
- * "does not exist" even though the variant names plainly contain them. Confirmed independently:
- * `list_file_components_for_code_connect` returns `properties: {}` with `hasVariants: true`
- * for this set — a contradiction that is itself the signature of the defect.
- *
- * TO REINSTATE:
- *   1. In Figma, delete ONE of the duplicate `Type=Empty, State=Default` variants.
- *   2. Repoint the second `figma.connect` from the variant `3474-89291` to the SET
- *      `3474-89292` plus `variant: { Type: 'Empty' }` — the same fix already applied to
- *      TableCard, TableDetail and Unassigned. A variant URL is rejected outright.
- *   3. Rename this file back to `AttendeeCard.figma.ts` and re-run `npm run code-connect:publish`.
- */
-
 import figma, { html } from '@figma/code-connect/html'
 
 // Type drives the role modifier; Attendee maps to no modifier because it is the CSS default.
@@ -103,15 +81,31 @@ figma.connect(
 )
 
 // Empty seat — no name or meta block, and an Assign button instead of the action cluster.
-// Connected on the Empty/Default variant directly so Figma surfaces the right markup.
+//
+// Connected on the SET with `variant: { Type: 'Empty' }`, NOT on a variant node. This previously
+// pointed at `3474-89291` directly, which Code Connect rejects outright ("node is not a top level
+// component or component set") and which kept the whole publish blocked, since publish is
+// all-or-nothing. Figma resolves the most specific matching connect, so this wins over the
+// unrestricted set-level connect above for every Empty variant.
+//
+// `State` is mapped here too, deliberately. `Type: 'Empty'` matches BOTH Empty/Default and
+// Empty/Dragged Over, so without this the drag highlight would be missing from the snippet Figma
+// shows for the Dragged Over variant. This became live only on 2026-08-28: until then the second
+// Empty variant was mis-labelled as a duplicate `State=Default`, so there was nothing to
+// distinguish. The designer corrected the state rather than deleting the variant.
 figma.connect(
-  'https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=3474-89291',
+  'https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=3474-89292',
   {
+    variant: { Type: 'Empty' },
     props: {
       seatNumber: figma.string('Seat number'),
+      state: figma.enum('State', {
+        Default: '',
+        'Dragged Over': ' attendee-card--dragged-over',
+      }),
     },
-    example: ({ seatNumber }) => html`
-      <article class="attendee-card attendee-card--empty">
+    example: ({ seatNumber, state }) => html`
+      <article class="attendee-card attendee-card--empty${state}">
         <span class="attendee-card__accent" aria-hidden="true">
           <span class="attendee-card__accent-bar"></span>
         </span>
