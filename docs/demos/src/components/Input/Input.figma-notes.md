@@ -305,3 +305,42 @@ constrains the element.** The stepper looked perfect at full width and only misb
 **Seating Planner — create-plan modal** (`src/cc/templates/SeatingPlanner/`), 2026-08-27:
 Tables (`min=1`, no max) and Seats / table (`min=6 max=12`). Note the mobile caveat recorded in
 that screen's own figma-notes — at 390px the three-column grid leaves the field ~29px.
+
+### The stepper now EXISTS in Figma (2026-08-28) — reconciliation
+
+This section was written saying there was **no Figma node**, and that if a stepper were ever drawn
+this would be the thing to reconcile against it. That has now happened: the create-plan frames
+(`3515:228092` mobile, `3515:212885` desktop) place instances of a **`Stepper`** component.
+
+**The mapping chosen from the Flowbite reference matches what the designer subsequently drew**,
+property for property:
+
+| Property | Figma Stepper | This build |
+|---|---|---|
+| label → control gap | `--ai-spacing-3` | ✓ (Input's own) |
+| container height | 32px at sm | `--ai-spacing-7` ✓ |
+| container bg | `--ai-surface-primary` | ✓ |
+| container border | 1px `--ai-border-secondary` | ✓ |
+| radius | `--ai-radius-md` | ✓ |
+| button bg | `--ai-surface-secondary` | ✓ |
+| button width | 32px at sm | `--ai-spacing-7` ✓ |
+| hairlines | `border-r` / `border-l` `--ai-border-secondary` | ✓ |
+| icon | 16px | `--ai-icon-size-sm` ✓ |
+| number | centred, `--ai-font-fixed-xs`, `--ai-leading-md` | ✓ |
+
+That is worth recording: the reference-to-token decisions held up against an independent redraw.
+
+**Three discrepancies — NOT adopted, flagged for the designer:**
+
+1. **Number text is bound to `--ai-chat-sidebar-text`** — a CHAT token on a Control Centre form
+   field. Its value (`#172033`) is identical to `--ai-text-primary`, which is what this build uses.
+   Same class as the `--cc-actions-menu-primary-bg` splitter and the `--ai-datatable-table-bg` slips
+   already recorded on this screen: a token that works, where a token that *means* it exists.
+2. **Label is `--ai-font-fixed-xxs` (13px)** where an ordinary Input label is `--ai-font-fixed-xs`
+   (14px). Adopting it would make "Tables" and "Seats / table" visibly smaller than "Plan name" in
+   the same form, which reads as a slip rather than an intent.
+3. **Container has `p-px`** (1px padding) insetting the buttons inside the border; this build uses
+   `padding: 0`. Sub-pixel, listed for completeness.
+
+**Follow-up now possible:** with a real component to attach to, the stepper can finally have a
+`.figma.ts` Code Connect entry — the only reason it had none was the missing node.
