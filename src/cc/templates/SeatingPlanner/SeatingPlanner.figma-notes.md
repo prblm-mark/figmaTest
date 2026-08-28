@@ -868,3 +868,42 @@ the chrome's bottom border still removed. The **dark** token applies correctly o
 A measuring note: read immediately after the class flips, the computed `box-shadow` is a fully
 transparent two-layer value — that is the 0.15s transition at t=0, not a broken token. Read after
 the transition completes.
+
+### Create-plan grid: two columns on mobile (2026-08-28)
+
+Reported broken by the stepper adoption, and Figma updated in response. Three columns stopped
+working the moment Tables and Seats became steppers: each spends 64px of its width on the two
+buttons, so at the mobile modal size the number field was crushed to about **20px**, "Table Shape"
+wrapped onto two lines and the Select truncated to "R…".
+
+Figma's updated mobile frame `3515:228092` moves to two columns with Table shape on its own
+full-width row. **Desktop deliberately stays at three** — frame `3515:212885` still places all three
+on one row — so this is a breakpoint change, not a redesign, and the base rule is untouched.
+
+| | Figma mobile | Built | Figma desktop | Built |
+|---|---|---|---|---|
+| modal | 338×425 | 338×**421** | 512×418 | 512×418 |
+| body padding | 16 | 16 | 24 | 24 |
+| grid | 304 | 304 | 462 | 462 |
+| Plan name / Room | 304×56 | 304×56 | 462×64 | 462×64 |
+| Tables / Seats | 146 @0 / @158 | ✓ | 146 @0 / @158 | ✓ |
+| Table shape | 304, own row @216 | ✓ | 146 @col316 | ✓ |
+
+Every figure matches except the modal's own height, 421 against 425 — 4px of text metrics, the same
+class of difference already recorded for this modal. The number field went from ~20px to **80px**.
+
+Gaps are unchanged and were re-read from the updated frames rather than carried over: column 12
+(`--ai-spacing-4`), row 16 (`--ai-spacing-5`) at both sizes.
+
+`.create-plan__shape` takes `grid-column: 1 / -1` at ≤639 rather than using `.create-plan__wide`,
+because that class means "always full width" and shape is the one field whose span differs by
+breakpoint.
+
+**Label case:** the new frame reads "Table **s**hape". Changed to match — consistent with the
+earlier call to build "Seats / table" lowercase when the two frames disagreed. Still worth the
+designer settling capitalisation across the set rather than per frame.
+
+**Flagged — demo values disagree with an earlier decision.** The updated frame shows Tables=10 and
+Seats=12; the build has Tables=12 and Seats=10, because the designer explicitly chose "default 10,
+keep 6–12" for SEATS when those fields were made real. Left as decided; the frame is presumably
+just placeholder content.

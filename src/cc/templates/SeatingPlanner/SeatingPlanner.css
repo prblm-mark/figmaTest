@@ -355,6 +355,30 @@
  * cannot query either. A fixed overlay is sized by the viewport, so the viewport is also the
  * correct signal. Verified in the DOM 2026-08-27 — do not "fix" this one. */
 @media (max-width: 639px) {
+  /* TWO columns here, not three (Figma updated 2026-08-28, mobile frame 3515:228092).
+   *
+   * Three columns stopped working the moment Tables and Seats became steppers: each stepper
+   * spends 64px of its width on the two buttons, so at this modal size the number field was
+   * crushed to about 20px, "Table Shape" wrapped onto two lines and the Select truncated to
+   * "R...". Widths measured from the frame: Stepper 146 + 12 gap + Stepper 146 = 304, which is
+   * exactly the Content Slot width, and Table shape moves to its own full-width row below.
+   *
+   * DESKTOP DELIBERATELY STAYS AT THREE — the desktop frame (3515:212885) still places all
+   * three on one row: 146 + 12 + 146 + 12 + 146 = 462, its own Content Slot width. So this is a
+   * breakpoint change, not a redesign, and the base rule is untouched.
+   *
+   * The gaps do not change: column 12 (--ai-spacing-4), row 16 (--ai-spacing-5) at both sizes,
+   * both re-read from the updated frames rather than carried over. */
+  .create-plan__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Table shape spans the row. It is the only field that changes span between breakpoints, so
+   * it cannot use `.create-plan__wide` — that class means "always full width". */
+  .create-plan__shape {
+    grid-column: 1 / -1;
+  }
+
   .create-plan__grid .input__wrap {
     min-height: var(--ai-spacing-7);
     padding: 0 var(--ai-spacing-3);
