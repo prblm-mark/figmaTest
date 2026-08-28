@@ -585,7 +585,13 @@
                 <button type="button" class="room-card__select">Main Ballroom</button>
               </h3>
               <div class="room-card__actions">
-                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Main Ballroom">
+                <!-- Opens the Edit Plan modal, pre-filled from this card. An explicit hook rather
+                     than matching the pencil icon or the aria-label: `data-lucide` is CONSUMED by
+                     `createIcons()` (the <i> becomes <svg class="lucide-pencil">), so an
+                     icon-attribute selector silently stops matching after init, and
+                     `aria-label^="Edit"` would also catch all twelve TableCard pencils below. -->
+                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Main Ballroom"
+                        data-ep-open>
                   <i data-lucide="pencil" aria-hidden="true"></i>
                 </button>
                 <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Main Ballroom">
@@ -1875,6 +1881,65 @@
         <!-- TODO(backend:SeatingPlanner): creating a plan must generate its tables — see
              seating-new-plan. The screen that follows is not designed yet. -->
         <button type="submit" form="create-plan-form" class="btn btn--primary">Create plan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Edit Plan (Figma 3515:176248 desktop / 3515:227054 mobile) ───────────────────────────
+       A SEPARATE modal from create-plan (designer's call, 2026-08-28) rather than a mode of it.
+       It edits only Plan name and Room / location — Tables, Seats / table and Table shape are not
+       editable after creation, which is what both frames draw.
+
+       No subtitle: create-plan carries the event name under its title, and Figma hides both Sub
+       Title and Sub Text here.
+
+       The duplication is deliberate and known: the help toggle and both fields mirror create-plan's.
+       If a third plan modal ever appears, that is the point to extract the toggle into a shared
+       class rather than copying it again. -->
+  <div class="modal-overlay" id="edit-plan" data-edit-plan>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="edit-plan-title">
+      <div class="modal__header">
+        <div class="modal__title-block">
+          <h2 class="modal__title" id="edit-plan-title">Edit Plan</h2>
+        </div>
+        <button class="modal__close" type="button" aria-label="Close" data-ep-close>
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="modal__body">
+        <!-- novalidate for the same reason as create-plan: the browser's own bubbles would
+             pre-empt the designed error lines. -->
+        <form class="edit-plan__form" id="edit-plan-form" novalidate>
+          <div class="edit-plan__help-toggle">
+            <button type="button" class="toggle toggle--xxs" role="switch" aria-checked="false"
+                    id="ep-help-toggle" aria-labelledby="ep-help-label">
+              <span class="toggle__track"><span class="toggle__knob"></span></span>
+            </button>
+            <label class="edit-plan__help-label" id="ep-help-label" for="ep-help-toggle">Show help</label>
+          </div>
+          <div class="edit-plan__fields">
+            <div class="input" data-ep-field="name">
+              <label class="input__label" for="ep-name">Plan name</label>
+              <div class="input__wrap">
+                <input id="ep-name" type="text" required class="input__control" placeholder="e.g. Main Ballroom">
+              </div>
+              <p class="input__help" data-ep-help>The name this plan appears under</p>
+            </div>
+            <div class="input" data-ep-field="room">
+              <label class="input__label" for="ep-room">Room / location</label>
+              <div class="input__wrap">
+                <input id="ep-room" type="text" required class="input__control" placeholder="e.g. Great room">
+              </div>
+              <p class="input__help" data-ep-help>The room or area this plan covers</p>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal__footer">
+        <button type="button" class="btn btn--secondary" data-ep-close>Cancel</button>
+        <!-- TODO(backend:SeatingPlanner): Save only rewrites the room card's name in the DOM —
+             see seating-room-list for the plan record this should PATCH. -->
+        <button type="submit" form="edit-plan-form" class="btn btn--primary">Save</button>
       </div>
     </div>
   </div>

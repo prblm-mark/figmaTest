@@ -706,3 +706,216 @@
 
   sync();
 })();
+
+/* ── Edit Plan modal ─────────────────────────────────────────────────────────────────────────
+ * Figma 3515:176248 (desktop) / 3515:227054 (mobile). Opened by a room card's pencil, pre-filled
+ * from that card, and edits only Plan name and Room / location.
+ *
+ * A separate modal from create-plan by the designer's decision (2026-08-28), so this is a separate
+ * IIFE rather than a mode of that one. The two are deliberately parallel in shape — same open/close
+ * contract, same error handling, same focus trap — so a change to one is easy to mirror.
+ */
+(function () {
+  'use strict';
+
+  if (window.__editPlanReady) return;
+  window.__editPlanReady = true;
+
+  var OPEN_CLASS = 'modal-overlay--open';
+  var FOCUSABLE = [
+    'a[href]', 'button:not([disabled])', 'input:not([disabled])',
+    'select:not([disabled])', 'textarea:not([disabled])', '[tabindex]:not([tabindex="-1"])'
+  ].join(',');
+
+  var overlay = document.querySelector('[data-edit-plan]');
+  if (!overlay) return;
+
+  var dialog = overlay.querySelector('[role="dialog"]');
+  var form = overlay.querySelector('#edit-plan-form');
+  var helpToggle = overlay.querySelector('#ep-help-toggle');
+  var nameInput = overlay.querySelector('#ep-name');
+  var roomInput = overlay.querySelector('#ep-room');
+  var returnFocusTo = null;
+  /* The card being edited. Save writes back to this one, so it must be remembered across the
+   * modal's lifetime rather than re-derived on submit — by then the click target is gone. */
+  var editingCard = null;
+
+  function isOpen() { return overlay.classList.contains(OPEN_CLASS); }
+
+  function focusable() {
+    return Array.prototype.filter.call(
+      dialog.querySelectorAll(FOCUSABLE),
+      function (el) { return el.offsetParent !== null; }
+    );
+  }
+
+  function field(name) { return overlay.querySelector('[data-ep-field="' + name + '"]'); }
+
+  Array.prototype.forEach.call(overlay.querySelectorAll('[data-ep-help]'), function (help) {
+    help.setAttribute('data-ep-help-original', help.textContent.trim());
+  });
+
+  function setError(name, message) {
+    var wrap = field(name);
+    if (!wrap) return;
+    wrap.classList.add('input--error');
+    var help = wrap.querySelector('[data-ep-help]');
+    if (help) {
+      help.textContent = message;
+      help.setAttribute('role', 'alert');
+    }
+    var control = wrap.querySelector('.input__control');
+    if (control) control.setAttribute('aria-invalid', 'true');
+  }
+
+  function clearErrors() {
+    Array.prototype.forEach.call(overlay.querySelectorAll('[data-ep-field]'), function (wrap) {
+      wrap.classList.remove('input--error');
+      var help = wrap.querySelector('[data-ep-help]');
+      if (help) {
+        help.textContent = help.getAttribute('data-ep-help-original') || '';
+        help.removeAttribute('role');
+      }
+      var control = wrap.querySelector('.input__control');
+      if (control) control.removeAttribute('aria-invalid');
+    });
+  }
+
+  function open(card, trigger) {
+    if (isOpen()) return;
+    editingCard = card;
+    returnFocusTo = trigger || document.activeElement;
+    clearErrors();
+
+    /* Pre-fill from the card. The name is the select button's text — RoomCard renders it as a
+     * button so the whole card is a select target, so `.room-card__select` IS the plan name.
+     *
+     * RoomCard has nowhere to DISPLAY the room (it shows tables, seats and a progress bar), so the
+     * room is stashed on the card in `data-ep-room` when saved and read back here. Without that the
+     * field would open blank every time and silently discard whatever was typed last — the existing
+     * prototype (`seating-edit-plan` in the handover manifest) updates the room on save, so
+     * dropping it here would have been a regression against documented behaviour, not a
+     * simplification. First open falls back to the placeholder, which is correct: no room is set. */
+    var nameEl = card && card.querySelector('.room-card__select');
+    if (nameInput) nameInput.value = nameEl ? nameEl.textContent.trim() : '';
+    if (roomInput) roomInput.value = (card && card.getAttribute('data-ep-room')) || '';
+
+    overlay.classList.add(OPEN_CLASS);
+    if (trigger) trigger.setAttribute('aria-expanded', 'true');
+    if (nameInput) nameInput.focus();
+    else dialog.focus();
+  }
+
+  function close() {
+    if (!isOpen()) return;
+    overlay.classList.remove(OPEN_CLASS);
+    Array.prototype.forEach.call(document.querySelectorAll('[data-ep-open]'), function (b) {
+      b.setAttribute('aria-expanded', 'false');
+    });
+    /* Reject `<body>` as a focus target, and a trigger that has since left the DOM — the same
+     * guard the picker and create-plan use. */
+    var target = (returnFocusTo && returnFocusTo !== document.body && returnFocusTo.isConnected)
+      ? returnFocusTo
+      : dialog;
+    returnFocusTo = null;
+    editingCard = null;
+    target.focus();
+  }
+
+  /* Delegated, because a room card can be added after load. Scoped to `[data-ep-open]` and NOT to
+   * the pencil icon or the aria-label: `createIcons()` replaces the <i data-lucide> with an <svg>,
+   * so an icon-attribute selector stops matching after init, and `aria-label^="Edit"` would catch
+   * all twelve TableCard pencils on this screen too. */
+  document.addEventListener('click', function (event) {
+    var btn = event.target.closest ? event.target.closest('[data-ep-open]') : null;
+    if (!btn) return;
+    event.preventDefault();
+    open(btn.closest('.room-card'), btn);
+  });
+
+  Array.prototype.forEach.call(overlay.querySelectorAll('[data-ep-close]'), function (btn) {
+    btn.addEventListener('click', close);
+  });
+
+  overlay.addEventListener('click', function (event) {
+    if (event.target === overlay) close();
+  });
+
+  overlay.addEventListener('keydown', function (event) {
+    if (!isOpen()) return;
+    if (event.key === 'Escape') { close(); return; }
+    if (event.key !== 'Tab') return;
+
+    var items = focusable();
+    if (!items.length) return;
+    var first = items[0], last = items[items.length - 1], active = document.activeElement;
+
+    if (event.shiftKey && (active === first || !dialog.contains(active))) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && (active === last || !dialog.contains(active))) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
+
+  if (helpToggle) {
+    helpToggle.addEventListener('click', function () {
+      /* Toggle.js owns the switch's own flip and has already updated aria-checked by the time this
+       * runs, so read it rather than tracking a second copy of the state. */
+      var on = helpToggle.getAttribute('aria-checked') === 'true';
+      form.classList.toggle('edit-plan__form--help', on);
+    });
+  }
+
+  if (form) {
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      clearErrors();
+
+      var name = nameInput ? nameInput.value.trim() : '';
+      var room = roomInput ? roomInput.value.trim() : '';
+      var ok = true;
+
+      if (!name) { setError('name', 'Plan name is required.'); ok = false; }
+      if (!room) { setError('room', 'Room or location is required.'); ok = false; }
+      if (!ok) {
+        var firstBad = overlay.querySelector('.input--error .input__control');
+        if (firstBad) firstBad.focus();
+        return;
+      }
+
+      /* TODO(backend:SeatingPlanner): DOM-only — this renames the card and nothing else. The plan
+       * record it should PATCH is tracked on seating-room-list; the room/location has nowhere to be
+       * stored client-side at all, which is why it is not written back here. */
+      if (editingCard) {
+        var wasSelected = editingCard.classList.contains('room-card--selected');
+        var nameEl = editingCard.querySelector('.room-card__select');
+        var previousName = nameEl ? nameEl.textContent.trim() : '';
+        if (nameEl) nameEl.textContent = name;
+        editingCard.setAttribute('data-ep-room', room);
+
+        /* The edit and delete buttons name the plan in their aria-labels, so a rename has to carry
+         * to them or the accessible names go stale and point at the old plan. */
+        Array.prototype.forEach.call(editingCard.querySelectorAll('[aria-label]'), function (el) {
+          var label = el.getAttribute('aria-label');
+          if (/^Edit /.test(label)) el.setAttribute('aria-label', 'Edit ' + name);
+          if (/^Delete /.test(label)) el.setAttribute('aria-label', 'Delete ' + name);
+        });
+
+        /* The toolbar names the ACTIVE plan, so renaming the selected card has to update it too —
+         * otherwise the header and the card disagree about what the same plan is called. Guarded on
+         * `--selected` so renaming a card that is not active leaves the toolbar alone, and matched
+         * on the previous name so a stale label is never overwritten with the wrong plan's. */
+        if (wasSelected) {
+          var toolbarName = document.querySelector('.seating-header__room-name');
+          if (toolbarName && toolbarName.textContent.trim() === previousName) {
+            toolbarName.textContent = name;
+          }
+        }
+      }
+
+      close();
+    });
+  }
+})();
