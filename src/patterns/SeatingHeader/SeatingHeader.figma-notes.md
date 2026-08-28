@@ -692,3 +692,40 @@ this pattern, are both decisions about Dropdown rather than SeatingHeader.
 (TASK-342308, `SeatingPlannerTableTypes.js`). So the remaining work is wiring, and persistence is
 already tracked on those two manifest rows — do not log a third.
 
+## Verifying the breakpoints: measure the HEADER, not the window
+
+The thresholds are the header's **own** width, confirmed with the designer 2026-08-28. Mobile-first,
+the intent is: *Show unassigned is hidden until 1024; Room Layout is in the overflow menu until
+1200.* Measured on `SeatingPlanner.html?state=plan`, keyed to the header's content box:
+
+| header content width | Room Layout button | Show unassigned |
+|---|---|---|
+| 1202 and up | **shown** | shown |
+| 1122 → 1032 | in the menu | **shown** |
+| 1022 and down | in the menu | hidden |
+
+Both fire exactly where intended. **But the browser window is a different number**, and that is what
+makes this look broken when resizing:
+
+| viewport | header container | |
+|---|---|---|
+| 1380 | 1202 | Room Layout still a button |
+| 1300 | 1122 | Room Layout drops to the menu |
+| 1210 | 1032 | Show unassigned still visible |
+| 1200 | 1022 | Show unassigned disappears |
+
+The CC shell costs a consistent **178px** — icon rail, sidebar, ActionsMenu rail, 24px page padding
+each side, and this header's own 2px border. So a 1024px browser window gives the header **831px**,
+and the transitions land near browser 1378 and 1202 *in this shell, in this state*.
+
+**That offset is not fixed and is not meant to be.** It changes the moment the SidebarMenu docks or
+the ActionsMenu rail opens — with no window resize at all. Keying these to the viewport was
+considered and rejected: it is exactly the bug the 2026-08-27 container conversion fixed, where a
+2239px viewport with the menu docked left the column at 820px, no viewport query fired, and the
+toolbar text ran over the toggle.
+
+**So when checking these thresholds, read the header's own width** — `getBoundingClientRect().width`
+minus its 2px border, or the container width in DevTools' container-query badge. A browser width
+tells you nothing directly, and the 178px offset is a property of the current shell state rather
+than a constant to memorise.
+
