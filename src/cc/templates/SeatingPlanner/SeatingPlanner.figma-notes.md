@@ -986,6 +986,35 @@ time and silently discard whatever was typed. The manifest's `seating-edit-plan`
 prototype as updating the room on save, so dropping it would have been a regression against
 documented behaviour rather than a simplification.
 
+### Mobile is a real variant, not a narrower box
+
+Missed on the first build (2026-08-28) — the modal rendered desktop internals inside a narrower
+frame. `3515:227107` specifies its own metrics, and every one now matches:
+
+| | desktop `3515:176618` | mobile `3515:227107` |
+|---|---|---|
+| Modal | 512×332 | **338×276** |
+| ModalHeader | 65 | **57** |
+| body / Content Slot inset | 24 | **16** |
+| Input box | 64 (40px field) | **56 (32px field → `--sm`)** |
+| field gap | 16 | 16 (unchanged) |
+| Modal Footer | 73 | **57** |
+
+Built and measured: desktop 512×332 / 65 / 24 / 64 / 16 / 73, mobile 338×276 / 57 / 16 / 56 / 16 /
+57 — exact on both.
+
+**Modal.css already did most of it.** Its own `@media (max-width: 639px)` block sets the 16px
+header/body/footer padding and steps the title down, and all of that matched the frame already. The
+only gaps were the two things a media query cannot express as classes: the Inputs at `--sm` (32px
+field, 13px label and value) and the footer buttons at `--sm` (32px, 12px).
+
+**Those rules are SHARED with create-plan rather than copied.** The two modals are separate by
+design, but this replication is pure geometry and identical for both, and the values had already
+drifted once (`--ai-spacing-3` → `-4` on 2026-08-28). A second copy would have re-armed exactly that
+trap, so `.edit-plan__fields` and `.edit-plan__footer` were added to the existing selectors instead.
+That is a shared implementation detail, not a walk-back of the separate-modal decision, which was
+about markup and naming.
+
 ### Divergences, both minor and deliberate
 
 - **Room placeholder** reads `e.g. Great room`, matching create-plan's convention on the same
