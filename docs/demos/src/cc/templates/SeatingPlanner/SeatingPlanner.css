@@ -398,23 +398,31 @@
     grid-column: 1 / -1;
   }
 
-  /* KEEP IN STEP WITH `.input--sm` IN Input.css — this is a hand copy, and it has already
+  /* Shared by BOTH plan modals — create-plan's grid and Edit Plan's field stack. They are separate
+   * modals by design, but this replication is pure geometry and identical for both, and keeping one
+   * copy is the point: these exact values drifted once already (see below). Duplicating them for
+   * Edit Plan would have re-armed that trap.
+   *
+   * KEEP IN STEP WITH `.input--sm` IN Input.css — this is a hand copy, and it has already
    * drifted once. Until 2026-08-28 it replicated `padding: --ai-spacing-3` / `gap:
    * --ai-spacing-2`, which were Input.css's own uncited values rather than Figma's; when those
    * were corrected to `-4` / `-3` this copy still held the old pair. Worse, it never replicated
    * the sm TYPOGRAPHY at all, so every field in this modal rendered its label and value at the
    * Base 14px on mobile where Figma specifies 13px — which is what the designer reported. */
-  .create-plan__grid .input__wrap {
+  .create-plan__grid .input__wrap,
+  .edit-plan__fields .input__wrap {
     min-height: var(--ai-spacing-7);
     padding: 0 var(--ai-spacing-4);
     gap: var(--ai-spacing-3);
   }
 
-  .create-plan__grid .input__label {
+  .create-plan__grid .input__label,
+  .edit-plan__fields .input__label {
     font-size: var(--ai-font-fixed-2xs);   /* 13px */
   }
 
-  .create-plan__grid .input__control {
+  .create-plan__grid .input__control,
+  .edit-plan__fields .input__control {
     font-size: var(--ai-font-fixed-2xs);   /* 13px */
     line-height: var(--ai-leading-xs);      /* 16px */
   }
@@ -448,7 +456,8 @@
     padding-block: 0;
   }
 
-  .create-plan__footer .btn {
+  .create-plan__footer .btn,
+  .edit-plan__footer .btn {
     min-height: var(--ai-spacing-7);
     padding: 0 var(--ai-spacing-4);
     font-size: var(--ai-font-fluid-xxs);
