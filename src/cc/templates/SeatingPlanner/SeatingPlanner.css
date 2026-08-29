@@ -457,7 +457,8 @@
   }
 
   .create-plan__footer .btn,
-  .edit-plan__footer .btn {
+  .edit-plan__footer .btn,
+  .delete-plan__footer .btn {
     min-height: var(--ai-spacing-7);
     padding: 0 var(--ai-spacing-4);
     font-size: var(--ai-font-fluid-xxs);
@@ -738,4 +739,37 @@
 /* An empty help paragraph would still occupy its line box and push the field stack. */
 .edit-plan__form .input__help:empty {
   display: none;
+}
+
+/* ── Delete Plan modal ────────────────────────────────────────────────────────────────────
+ * Figma 3515:176990 (desktop) / 3515:227162 (mobile), modal node 3515:227208.
+ *
+ * Almost nothing is needed here, and that is the point: the Modal pattern already draws this
+ * dialog correctly at BOTH sizes, which was checked against the mobile frame before writing a
+ * line rather than after (the Edit Plan mobile miss came from doing it the other way round).
+ * Measured from 3515:227208 — modal 338 wide inside a 402 viewport, i.e. `.modal-overlay`'s
+ * 32px narrow padding against `max-width: 100%`; header 57 = 12 + 32 + 12 + 1px border; body
+ * 144 = 16 + 112 + 16 with the two paragraphs 48 tall and 16 apart; footer 57, same as the
+ * header. Every one of those is an existing `.modal*` value, so this file adds NO mobile
+ * geometry for the modal chrome at all.
+ *
+ * CONTEXTUAL OVERRIDE (Case B, designer 2026-08-29). The one real difference. Figma paints the
+ * whole of both paragraphs `#00222f` = --ai-text-primary, confirmed on the text node itself
+ * (I3515:227208;...;3515:227203) rather than inferred from the crop — where the regular runs
+ * merely LOOK lighter than the semibold ones, which is antialiasing, not a second colour.
+ * `.modal__body > p` is --ai-text-secondary, and under this screen's `data-brand="cc"` that is
+ * #335562 against Figma's #00222f — a real difference, not a rounding one. Scoped here rather
+ * than changed in Modal.css: Modal.figma-notes records secondary as the component's own spec,
+ * and four other screens use it unverified. A destructive confirmation wants its consequence at
+ * full weight; that argument does not automatically extend to every modal. */
+.delete-plan__body > p {
+  color: var(--ai-text-primary);
+}
+
+/* The plan name and the two counts. Semibold only — colour and size are inherited, because
+ * Figma's runs differ from the surrounding text in WEIGHT alone (`Inter:Semi_Bold`, same
+ * `text-[14px]`, same `leading-[24px]`, same fill). `<strong>` is the right element on meaning
+ * as well as looks: these are the words that change what the button destroys. */
+.delete-plan__body strong {
+  font-weight: var(--ai-font-semibold);
 }
