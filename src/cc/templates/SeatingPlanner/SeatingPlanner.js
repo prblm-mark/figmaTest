@@ -919,3 +919,212 @@
     });
   }
 })();
+
+/* ── Delete Plan ───────────────────────────────────────────────────────────────────────────
+ * Figma 3515:176990 (desktop) / 3515:227162 (mobile). Deliberately parallel in shape to the
+ * editPlan IIFE above — same open/close contract, same focus trap — so a change to one is easy to
+ * mirror. What it does NOT share is a form: nothing is being edited, so there is no validation,
+ * no help toggle, and Cancel is the safe default that focus opens on.
+ */
+(function () {
+  'use strict';
+
+  if (window.__deletePlanReady) return;
+  window.__deletePlanReady = true;
+
+  var OPEN_CLASS = 'modal-overlay--open';
+  var FOCUSABLE = [
+    'a[href]', 'button:not([disabled])', 'input:not([disabled])',
+    'select:not([disabled])', 'textarea:not([disabled])', '[tabindex]:not([tabindex="-1"])'
+  ].join(',');
+
+  var overlay = document.querySelector('[data-delete-plan]');
+  if (!overlay) return;
+
+  var dialog = overlay.querySelector('[role="alertdialog"]');
+  var nameEl = overlay.querySelector('[data-dp-name]');
+  var consequenceEl = overlay.querySelector('[data-dp-consequence]');
+  var cancelBtn = overlay.querySelector('.btn--secondary[data-dp-close]');
+  var returnFocusTo = null;
+  var deletingCard = null;
+
+  function isOpen() { return overlay.classList.contains(OPEN_CLASS); }
+
+  function focusable() {
+    return Array.prototype.filter.call(
+      dialog.querySelectorAll(FOCUSABLE),
+      function (el) { return el.offsetParent !== null; }
+    );
+  }
+
+  function plural(n, one, many) { return n === 1 ? one : many; }
+
+  /* Counts come off the card, which renders them as "12 tables · 0/148 seated" — so the seated
+   * figure is the NUMERATOR of that fraction, not the whole of it, and 148 is capacity. Parsed by
+   * regex rather than by splitting on the separator: the middle dot is a presentation choice and
+   * `.room-card__seated` is a span the markup can drop, so anything positional would break the
+   * moment RoomCard restyles. A count that will not parse yields null and is treated as unknown
+   * below rather than as zero — silently claiming "0 tables" about a plan that has some is exactly
+   * the understatement seating-delete-plan warns about. */
+  function readCounts(card) {
+    var el = card && card.querySelector('.room-card__counts');
+    var text = el ? el.textContent : '';
+    var tables = /(\d+)\s+tables?\b/i.exec(text);
+    var seated = /(\d+)\s*\/\s*(\d+)/.exec(text);
+    return {
+      tables: tables ? parseInt(tables[1], 10) : null,
+      seated: seated ? parseInt(seated[1], 10) : null
+    };
+  }
+
+  /* The consequence line is DATA-DRIVEN, which is the documented behaviour for this dialog: the
+   * people clause is dropped entirely when nobody is seated, rather than rendering "and 0 seated
+   * people returned to Unassigned" — a consequence that would not happen. Figma draws the full
+   * form (30 tables / 240 people) because that is the state its frame shows; this screen's single
+   * plan is 12 tables with 0 seated, so it correctly renders the short form. */
+  function buildConsequence(counts) {
+    var frag = document.createDocumentFragment();
+    if (counts.tables === null) {
+      frag.appendChild(document.createTextNode(
+        'Its tables will be removed and any seated people returned to Unassigned.'));
+      return frag;
+    }
+
+    var tablesStrong = document.createElement('strong');
+    tablesStrong.textContent = String(counts.tables);
+
+    frag.appendChild(document.createTextNode('Its '));
+    frag.appendChild(tablesStrong);
+    frag.appendChild(document.createTextNode(
+      ' ' + plural(counts.tables, 'table', 'tables') +
+      ' will be removed'));
+
+    if (counts.seated) {
+      var seatedStrong = document.createElement('strong');
+      seatedStrong.textContent = String(counts.seated);
+      frag.appendChild(document.createTextNode(' and '));
+      frag.appendChild(seatedStrong);
+      frag.appendChild(document.createTextNode(
+        ' seated ' + plural(counts.seated, 'person', 'people') + ' returned to Unassigned'));
+    }
+
+    frag.appendChild(document.createTextNode('.'));
+    return frag;
+  }
+
+  function open(card, trigger) {
+    if (isOpen()) return;
+    deletingCard = card;
+    returnFocusTo = trigger || document.activeElement;
+
+    var selectEl = card && card.querySelector('.room-card__select');
+    if (nameEl) nameEl.textContent = selectEl ? selectEl.textContent.trim() : 'this plan';
+    if (consequenceEl) {
+      consequenceEl.textContent = '';
+      consequenceEl.appendChild(buildConsequence(readCounts(card)));
+    }
+
+    overlay.classList.add(OPEN_CLASS);
+    if (trigger) trigger.setAttribute('aria-expanded', 'true');
+    /* Cancel, not Delete. The destructive control should never be one Enter away from a dialog
+     * that has only just appeared. */
+    if (cancelBtn) cancelBtn.focus();
+    else dialog.focus();
+  }
+
+  function close(focusTarget) {
+    if (!isOpen()) return;
+    overlay.classList.remove(OPEN_CLASS);
+    Array.prototype.forEach.call(document.querySelectorAll('[data-dp-open]'), function (b) {
+      b.setAttribute('aria-expanded', 'false');
+    });
+
+    /* On CANCEL the trigger is still there and gets focus back. On CONFIRM it has just been
+     * deleted along with its card, so the caller passes somewhere to land instead — leaving focus
+     * on a removed node drops it to <body> and loses the keyboard user's place entirely. */
+    var target = focusTarget ||
+      ((returnFocusTo && returnFocusTo !== document.body && returnFocusTo.isConnected)
+        ? returnFocusTo
+        : dialog);
+    returnFocusTo = null;
+    deletingCard = null;
+    if (target) target.focus();
+  }
+
+  /* Delegated for the same reason as edit: a room card can be added after load. */
+  document.addEventListener('click', function (event) {
+    var btn = event.target.closest ? event.target.closest('[data-dp-open]') : null;
+    if (!btn) return;
+    event.preventDefault();
+    open(btn.closest('.room-card'), btn);
+  });
+
+  Array.prototype.forEach.call(overlay.querySelectorAll('[data-dp-close]'), function (btn) {
+    btn.addEventListener('click', function () { close(); });
+  });
+
+  overlay.addEventListener('click', function (event) {
+    if (event.target === overlay) close();
+  });
+
+  overlay.addEventListener('keydown', function (event) {
+    if (!isOpen()) return;
+    if (event.key === 'Escape') { close(); return; }
+    if (event.key !== 'Tab') return;
+
+    var items = focusable();
+    if (!items.length) return;
+    var first = items[0], last = items[items.length - 1], active = document.activeElement;
+
+    if (event.shiftKey && (active === first || !dialog.contains(active))) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && (active === last || !dialog.contains(active))) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
+
+  var confirmBtn = overlay.querySelector('[data-dp-confirm]');
+  if (confirmBtn) {
+    confirmBtn.addEventListener('click', function () {
+      var card = deletingCard;
+      if (!card) { close(); return; }
+
+      var wasSelected = card.classList.contains('room-card--selected');
+      var rooms = card.parentNode;
+      card.parentNode.removeChild(card);
+
+      /* TODO(backend:SeatingPlanner): DOM-only. This removes the card, and the open plan's table
+       * cards with it — see seating-delete-plan for the single transaction that must delete the
+       * SeatingPlan plus its Table and TableSeat rows and return the occupants to the event pool.
+       *
+       * The tables are cleared only when the deleted plan was the SELECTED one, because the
+       * listing shows the selected plan's tables and nothing else: deleting a background plan must
+       * leave the visible list alone. */
+      if (wasSelected) {
+        var listing = document.querySelector('[data-sp-grid], .table-listing__grid');
+        if (listing) {
+          Array.prototype.forEach.call(listing.querySelectorAll('.table-card'), function (t) {
+            t.parentNode.removeChild(t);
+          });
+        }
+      }
+
+      /* Land focus on the next surviving plan, or on the plans region itself when the last one has
+       * gone. `tabindex="-1"` is set here rather than in the markup so the container never becomes
+       * a Tab stop — it only needs to be focusABLE, not focusable by keyboard traversal. */
+      var next = rooms ? rooms.querySelector('.room-card__select') : null;
+      if (!next && rooms) {
+        rooms.setAttribute('tabindex', '-1');
+        next = rooms;
+      }
+
+      /* TODO(backend:SeatingPlanner): deleting the LAST plan should restore the "No plans yet"
+       * hint and fold the workspace away — behaviour the prototype has (newplan-no-plans.html) but
+       * which has no Figma frame for THIS template, so it is deliberately not invented here. The
+       * screen currently just empties. Tracked on seating-delete-plan. */
+      close(next);
+    });
+  }
+})();
