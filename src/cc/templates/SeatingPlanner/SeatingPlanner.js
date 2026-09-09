@@ -2501,3 +2501,125 @@
     });
   }
 })();
+
+/* ── Copy plans to another event ───────────────────────────────────────────────────────────
+ * Figma 1:13357 desktop / 1:44578 mobile.
+ *
+ * Deliberately thin, because event-picker.js already owns the dialog's behaviour: the search
+ * filtering, the footer count, Escape, row selection and Cancel all come from the
+ * `data-event-picker` root. This module only opens it, keeps the intro sentence honest, and
+ * does the copy when a destination is chosen.
+ */
+(function () {
+  'use strict';
+
+  if (window.__copyPlansReady) return;
+  window.__copyPlansReady = true;
+
+  var OPEN_CLASS = 'modal-overlay--open';
+
+  var overlay = document.querySelector('[data-copy-plans]');
+  if (!overlay) return;
+
+  var dialog = overlay.querySelector('[role="dialog"]');
+  var countEl = overlay.querySelector('[data-cp-count]');
+  var sourceEl = overlay.querySelector('[data-cp-source]');
+  var returnFocusTo = null;
+
+  function isOpen() { return overlay.classList.contains(OPEN_CLASS); }
+
+  function plural(n, one, many) { return n === 1 ? one : many; }
+
+  /* Read off the page rather than hardcoded, which is the documented requirement: the sentence
+   * cannot then disagree with the header it sits under, and it follows a plan being added or
+   * deleted without anyone remembering to update it. */
+  function syncIntro() {
+    var plans = document.querySelectorAll('.room-card').length;
+    if (countEl) countEl.textContent = plans + ' ' + plural(plans, 'plan', 'plans');
+
+    /* `.seating-header__title` and nothing else. A comma-separated fallback chain was wrong here:
+     * querySelector returns the first match in DOCUMENT ORDER, not the first selector that
+     * matches, so a broader selector earlier in the page would have won and named the wrong
+     * thing. There are two of these titles, one per header section, and both carry the same
+     * event. */
+    var title = document.querySelector('.seating-header__title');
+    if (sourceEl && title && title.textContent.trim()) {
+      sourceEl.textContent = title.textContent.trim();
+    }
+  }
+
+  function open(trigger) {
+    if (isOpen()) return;
+    returnFocusTo = trigger || document.activeElement;
+    syncIntro();
+    overlay.classList.add(OPEN_CLASS);
+    var search = overlay.querySelector('[data-ep-search]');
+    if (search) search.focus();
+    else if (dialog) dialog.focus();
+  }
+
+  function close() {
+    if (!isOpen()) return;
+    overlay.classList.remove(OPEN_CLASS);
+    var target = (returnFocusTo && returnFocusTo !== document.body && returnFocusTo.isConnected)
+      ? returnFocusTo
+      : dialog;
+    returnFocusTo = null;
+    if (target) target.focus();
+  }
+
+  /* Delegated: there are two Copy Plans buttons in the header, one per section, and both were
+   * unwired. */
+  document.addEventListener('click', function (event) {
+    var btn = event.target.closest ? event.target.closest('[data-cp-open]') : null;
+    if (!btn) return;
+    event.preventDefault();
+    open(btn);
+  });
+
+  overlay.addEventListener('click', function (event) {
+    if (event.target === overlay) close();
+  });
+
+  /* event-picker.js raises both of these on the dialog root, and they bubble to this overlay.
+   * The Select-an-event glue listens on ITS own overlay, so neither dialog hears the other. */
+  overlay.addEventListener('event-picker:close', close);
+
+  overlay.addEventListener('event-picker:select', function (event) {
+    var detail = event.detail || {};
+    var name = detail.name || 'that event';
+
+    var plans = document.querySelectorAll('.room-card').length;
+
+    /* Bump the destination row's plan count — the documented behaviour. The count is the number
+     * of plans that event now has, so it is read, added to and rewritten rather than incremented
+     * by one: copying two plans moves it by two. */
+    var row = overlay.querySelector('[data-ep-event][data-id="' + (detail.id || '') + '"]');
+    var planEl = row && row.querySelector('[data-cp-plans]');
+    if (planEl) {
+      var before = parseInt(planEl.getAttribute('data-cp-plans'), 10) || 0;
+      var after = before + plans;
+      planEl.setAttribute('data-cp-plans', String(after));
+      /* The icon is the first child and must survive, so only the trailing text node is
+       * rewritten — `textContent =` here would delete the <i>. */
+      planEl.lastChild.textContent = after + ' ' + plural(after, 'plan', 'plans');
+    }
+
+    close();
+
+    /* TODO(backend:SeatingPlanner): DOM-only — see seating-copy-plans, which asks for the cloned
+     * SeatingPlan + Table rows to be inserted under the target event in ONE transaction with
+     * TableSeat occupants left EMPTY: tables, capacities, types and sponsors carried, attendees
+     * not. Nothing here creates anything; it reports what a copy would do. */
+    document.dispatchEvent(new CustomEvent('sp:toast', {
+      detail: {
+        type: 'success',
+        parts: [
+          { text: plans + ' ' + plural(plans, 'plan', 'plans') + ' ', strong: true },
+          { text: 'copied to ' },
+          { text: name + '.', strong: true }
+        ]
+      }
+    }));
+  });
+})();

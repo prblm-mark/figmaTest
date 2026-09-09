@@ -218,6 +218,41 @@ This is a demo-wrapper concern only: the CSS uses semantic `--ai-*` tokens throu
 brand-agnostic, so the pattern re-themes automatically wherever it is placed (e.g. inside
 ControlScreen). Both palettes were verified in light and dark.
 
+## Reused by the Seating Planner's Copy plans dialog (2026-09-09)
+
+`src/cc/templates/SeatingPlanner/` builds its "Copy all plans to another event" modal
+(Figma `lRKvtYSU3SvO5hbMT33jxw` `1:13357` / `1:44578`) out of this pattern rather than
+restating it — Figma had hand-built that dialog as a copy of this one, and every part it
+needed was already here: `modal--lg`, `.event-picker__filters`, `.event-picker__list`, the
+ActionCard rows **including `.event-picker__plans`**, and `.event-picker__footer` with
+`[data-ep-count]` and a Cancel.
+
+It carries `data-event-picker`, so `event-picker.js` drives its search, count, Escape, row
+selection and Cancel. Two things make that safe to do twice on one page, and both are worth
+knowing before adding a third:
+
+- `initPicker` scopes every query to its own `root`, so the two lists never see each other's rows.
+- `event-picker:select` / `:close` are dispatched on the root and listened for on each dialog's
+  **own overlay**, not on `document`. A `document`-level listener would cross-wire them —
+  choosing a copy destination would also switch the current event.
+
+Three parts it omits, all hidden in its Figma: the `[data-ep-live]` checkbox, the
+`[data-ep-group]` headings, and the seated progress bar on a row.
+
+### One change to this pattern's JS
+
+`event-picker.js` used to append `· all statuses` to the footer count whenever the Live filter
+was unchecked — including when the picker has **no Live filter at all**, which produced
+"5 events · all statuses" where Figma draws a bare "5 events". The suffix describes that
+filter's state, so it is now guarded on the checkbox existing:
+
+```js
+(live ? (liveOnly ? ' · live only' : ' · all statuses') : '')
+```
+
+This picker always has the checkbox, so its own footer is unchanged — verified still reading
+"6 events · live only" after the change.
+
 ## JS API
 
 `event-picker.js` wires search, the Live checkbox, selection, clear and close. It emits events
