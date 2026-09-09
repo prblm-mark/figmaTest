@@ -644,10 +644,65 @@
               <button type="button" class="btn btn--secondary btn--sm seating-header__btn--add" data-tf-add>
                 <i data-lucide="plus" aria-hidden="true"></i><span class="seating-header__btn-label">Add<span class="seating-header__btn-shrink"> Table</span></span>
               </button>
-              <button type="button" class="btn btn--secondary btn--sm seating-header__btn--export">
-                <i data-lucide="download" aria-hidden="true"></i><span class="seating-header__btn-shrink">Export</span><i
-                  data-lucide="chevron-down" class="seating-header__btn-chevron" aria-hidden="true"></i>
-              </button>
+              <!-- Export (TASK-342305) — Figma 1:32273 desktop / 1:43681 mobile for the menu,
+                   1:14741 / 1:45146 for the PDF preview, 1:17021 / 1:46486 for the CSV preview.
+
+                   A SPLIT button (designer, 2026-09-09). Figma draws Export as a single 111px
+                   Button instance whose menu lists only Excel (.xlsx) and CSV — yet two PDF
+                   preview frames exist and the brief calls this a split button with "PDF
+                   (default)". Splitting it is the only arrangement in which all six frames are
+                   reachable and that sentence is true: the label runs the default format, the
+                   chevron opens the two alternatives Figma draws.
+
+                   Wrapped in `.dropdown` so open/close, outside-click, Escape and
+                   close-on-item-click all come from Dropdown.js, already loaded at the foot of
+                   this page. -->
+              <div class="dropdown seating-header__export">
+                <div class="seating-header__export-split">
+                  <!-- TODO(backend:SeatingPlanner): PDF is generated server-side — see
+                       seating-export. This opens the preview only. -->
+                  <button type="button" class="btn btn--secondary btn--sm seating-header__btn--export"
+                          data-sp-export="pdf">
+                    <i data-lucide="download" aria-hidden="true"></i><span class="seating-header__btn-shrink">Export</span>
+                  </button>
+                  <button type="button"
+                          class="btn btn--secondary btn--sm seating-header__export-more dropdown__trigger"
+                          aria-haspopup="menu" aria-expanded="false" aria-label="Other export formats">
+                    <i data-lucide="chevron-down" class="seating-header__btn-chevron" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="dropdown__panel dropdown__panel--export" role="menu" aria-label="Export format">
+                  <ul class="dropdown__list">
+                    <!-- PDF migrates INTO the menu below 767, because that is where
+                         SeatingHeader.css clips Export to an icon and hides the chevron — with no
+                         chevron there is no second half to open the menu, so the icon button takes
+                         that job and the default format needs a row of its own. Exactly the
+                         arrangement Room Layout already uses in the overflow menu below 1200:
+                         one control, two homes, never both visible at once. Flagged: the mobile
+                         menu frame 1:43681 draws two rows, not three. -->
+                    <li role="none" class="seating-header__export-item--pdf">
+                      <button type="button" class="dropdown-item dropdown-item--xs" role="menuitem"
+                              data-sp-export="pdf">
+                        <i data-lucide="file-text" aria-hidden="true"></i><span data-text="PDF">PDF</span>
+                      </button>
+                    </li>
+                    <!-- TODO(backend:SeatingPlanner): .xlsx is generated server-side and previews
+                         as the same six columns as CSV — see seating-export. -->
+                    <li role="none">
+                      <button type="button" class="dropdown-item dropdown-item--xs" role="menuitem"
+                              data-sp-export="xlsx">
+                        <i data-lucide="sheet" aria-hidden="true"></i><span data-text="Excel (.xlsx)">Excel (.xlsx)</span>
+                      </button>
+                    </li>
+                    <li role="none">
+                      <button type="button" class="dropdown-item dropdown-item--xs" role="menuitem"
+                              data-sp-export="csv">
+                        <i data-lucide="file-spreadsheet" aria-hidden="true"></i><span data-text="CSV">CSV</span>
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
           <!-- Overflow menu — composes Dropdown (Figma instances `Dropdowns`, 3585:110482), so
@@ -2631,6 +2686,81 @@
        TODO(backend:SeatingPlanner): Undo is DOM-only — see seating-toast, which records that a real
        Undo needs each action to return an operation id the toast posts back, because "undo the last
        change" is the wrong contract once two toasts can exist. -->
+  <!-- Export preview (TASK-342305) — Figma 1:14741 desktop / 1:45146 mobile (PDF),
+       1:17021 / 1:46486 (CSV). ONE overlay serves all three formats, because the frames differ
+       in exactly three places: the title, the primary button label, and which body is shown.
+       Everything else — the 768px shell, the summary line, the bordered panel — is byte-identical
+       across both preview frames, so duplicating the modal would have created two things to keep
+       in step for no gain.
+
+       THE PREVIEW FOLLOWS THE FORMAT. PDF previews as the document it will produce (event name,
+       meta line, then each table as a numbered list of its occupants with the role in brackets);
+       CSV and .xlsx preview as the six columns they will contain, in the DS Table component.
+       Showing a document preview for a spreadsheet would misrepresent the file.
+
+       Both bodies are BUILT FROM THE DOM at open time by SeatingPlanner.js, not authored here —
+       so the preview cannot drift from the plan it claims to describe. -->
+  <div class="modal-overlay" id="export-preview" data-export-preview>
+    <div class="modal modal--lg" role="dialog" aria-modal="true"
+         aria-labelledby="export-preview-title">
+      <div class="modal__header">
+        <div class="modal__title-block">
+          <h2 class="modal__title" id="export-preview-title" data-xp-title>Preview — PDF export</h2>
+        </div>
+        <button class="modal__close" type="button" aria-label="Close" data-xp-close>
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="modal__body export-preview__body">
+        <!-- The counts and both emphasised runs are written by JS. "Empty seats are not exported"
+             is a claim about the file, so it is stated to the user rather than left implicit —
+             see seating-export-empty-seats, which is still an open question for the spec team. -->
+        <p class="export-preview__summary">
+          <strong><span data-xp-tables>12 tables</span> · <span data-xp-seated>101 seated people</span></strong>
+          — every row below is in the file. Empty seats are not exported.
+        </p>
+
+        <!-- PDF body — a document preview. Scrolls inside a fixed --ai-size-7 (384px) panel. -->
+        <div class="export-preview__panel export-preview__panel--doc" data-xp-panel="doc" tabindex="0"
+             role="group" aria-label="PDF preview">
+          <div class="export-preview__doc" data-xp-doc>
+            <p class="export-preview__doc-title" data-xp-doc-title></p>
+            <p class="export-preview__doc-meta" data-xp-doc-meta></p>
+            <!-- One <section> per table, appended by JS. -->
+          </div>
+        </div>
+
+        <!-- CSV / .xlsx body — the DS Table, unmodified. `.table-wrap__scroll` is what makes the
+             six columns scroll sideways on a phone, which is exactly what frame 1:46486 draws
+             (TABLE / TYPE / SEAT visible, NAME / COMPANY / ROLE clipped off the right edge). -->
+        <div class="export-preview__panel export-preview__panel--table table-wrap" data-xp-panel="table" hidden>
+          <div class="table-wrap__scroll" data-xp-scroll tabindex="0" role="group" aria-label="CSV preview">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Table</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Seat</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Company</th>
+                  <th scope="col">Role</th>
+                </tr>
+              </thead>
+              <tbody data-xp-rows></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal__footer">
+        <button type="button" class="btn btn--secondary" data-xp-close>Cancel</button>
+        <!-- TODO(backend:SeatingPlanner): CSV is generated in the browser and really downloads;
+             PDF and .xlsx need a server-side generator and say so rather than downloading
+             something fake — see seating-export. -->
+        <button type="button" class="btn btn--primary" data-xp-download>Download PDF</button>
+      </div>
+    </div>
+  </div>
+
   <div class="sp-toast-host" data-sp-toast-host aria-live="polite" aria-atomic="true"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
