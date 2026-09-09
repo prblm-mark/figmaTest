@@ -972,3 +972,39 @@
     display: inline;
   }
 }
+
+/* ── Toast host ───────────────────────────────────────────────────────────────────────────
+ * Figma 1:6763 / 1:6881. Both frames put the Toast instance at x=632 y=1033 in a 1728x1117
+ * frame at 465x58 — so: horizontally centred (632 + 465/2 = 864.5 = half of 1728), and 26px
+ * clear of the bottom.
+ *
+ * 24px here, not 26. `--ai-spacing-6` is the nearest token and 26 maps to none (designer,
+ * 2026-09-09); the project's rule is to stop on an untokenised dimension rather than inline it,
+ * and 2px on a hand-placed floating element is inside the rounding I would expect.
+ *
+ * `position: fixed` is correct rather than a container query: the toast is centred on the
+ * VIEWPORT and lives outside the app shell, which is exactly the case CLAUDE.md 4a carves out.
+ *
+ * z-index sits below Modal's overlay (100) so a dialog opened while a toast is up covers it,
+ * and above the shell chrome (1) so page content never paints over it. In practice they do not
+ * overlap — the toast is raised as the modal closes — but the ordering should not depend on that.
+ *
+ * The host is full-width and click-through so it never swallows a click on the page beneath;
+ * only the pill itself takes pointer events. */
+.sp-toast-host {
+  position: fixed;
+  inset-block-end: var(--ai-spacing-6);
+  inset-inline: 0;
+  z-index: 90;
+  display: flex;
+  justify-content: center;
+  /* Keeps the pill off the screen edges once it hits its `max-inline-size: 100%` on a narrow
+   * viewport. Figma has no mobile toast frame, so this is the same gutter the pill already
+   * clears at the bottom rather than an invented value. */
+  padding-inline: var(--ai-spacing-6);
+  pointer-events: none;
+}
+
+.sp-toast-host .seating-toast {
+  pointer-events: auto;
+}

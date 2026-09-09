@@ -1453,6 +1453,37 @@
        * the plan read "13 tables · NaN/158". In add mode it is simply 0. */
       var seated = Math.min(seatedAtOpen, seats);
 
+      /* SNAPSHOT, taken before anything is mutated, so the toast's Undo can put it all back.
+       *
+       * Snapshotting HTML and restoring it is deliberate over replaying inverse operations: the
+       * save touches the card's name, count, five bar segments, five legend entries, four dataset
+       * attributes, the seat panel's rows and the plan totals, and an inverse of each is far more
+       * to get wrong than one `outerHTML` round-trip. It is only safe because BOTH handlers that
+       * act on a card are delegated — selection on the grid via `.table-card__select`, editing on
+       * the document via `[data-tf-open]` — so replacing the element keeps it live. */
+      var planEl = document.querySelector('.room-card__counts');
+      var freeEl = document.querySelector('.room-card__free');
+      var detailNameEl = document.querySelector('[data-sp-detail-name]');
+      var detailCountEl = document.querySelector('[data-sp-detail-count]');
+      var seatsEl = document.querySelector('.table-detail__seats');
+      var selectedEl = document.querySelector('.table-card--selected');
+      var previousName = '';
+      if (editingCard) {
+        var prevNameEl = editingCard.querySelector('.table-card__select');
+        previousName = prevNameEl ? prevNameEl.textContent.trim() : '';
+      }
+      var snap = {
+        cardId: editingCard ? editingCard.getAttribute('data-sp-table') : null,
+        cardHTML: editingCard ? editingCard.outerHTML : null,
+        planHTML: planEl ? planEl.innerHTML : null,
+        freeText: freeEl ? freeEl.textContent : null,
+        detailName: detailNameEl ? detailNameEl.textContent : null,
+        detailCount: detailCountEl ? detailCountEl.textContent : null,
+        seatsHTML: seatsEl ? seatsEl.innerHTML : null,
+        selectedId: selectedEl ? selectedEl.getAttribute('data-sp-table') : null
+      };
+      var createdCard = null;
+
       if (mode === 'add') {
         var grid = document.querySelector('[data-sp-grid], .table-listing__grid');
         if (grid) {
@@ -1517,11 +1548,19 @@
           if (sponsorValue) card.setAttribute('data-tf-sponsor', sponsorValue.textContent.trim());
 
           grid.appendChild(card);
+          createdCard = card;
           /* The pencil ships as <i data-lucide>, and createIcons() has already run for the page —
            * without re-running it the new card's two icons stay as empty <i> elements. */
           if (window.lucide && typeof window.lucide.createIcons === 'function') {
             window.lucide.createIcons();
           }
+          /* Both Add frames draw the NEW card selected with the seat panel switched to it, and
+           * seating-main-layout already records "Add table opens the table it just created" as
+           * the shell's behaviour. Driven by clicking the card's own select button rather than
+           * by setting classes, so it goes through the one delegated selection path instead of a
+           * second, drifting copy of it. */
+          var sel = card.querySelector('.table-card__select');
+          if (sel) sel.click();
         }
       }
 
@@ -1645,7 +1684,200 @@
           });
       }
 
+
+      /* ── Toast ──────────────────────────────────────────────────────────────────────────
+       * Figma 1:6881 (add) and 1:6763 (edit). Both emphasise the SUBJECT and the OBJECT with a
+       * plain verb phrase between, and the punctuation differs between them — the add copy ends
+       * in a full stop inside the bold, the rename copy has none. Reproduced as drawn rather
+       * than harmonised, the same call already made for the two modal headings.
+       *
+       * The third case is NOT drawn: an edit that changes capacity, tier, sponsor or host but
+       * leaves the name alone. "renamed to" would be a lie there, so it reads "<name> updated"
+       * (designer, 2026-09-09) — generic, but it only claims what actually happened. */
+      var parts;
+      if (mode === 'add') {
+        var planNameEl = document.querySelector('.room-card--selected .room-card__select')
+          || document.querySelector('.room-card__select');
+        var planName = planNameEl ? planNameEl.textContent.trim() : 'this plan';
+        parts = [
+          { text: name + ' ', strong: true },
+          { text: 'added to ' },
+          { text: planName + '.', strong: true }
+        ];
+      } else if (previousName && previousName !== name) {
+        parts = [
+          { text: previousName + ' ', strong: true },
+          { text: 'renamed to ' },
+          { text: name, strong: true }
+        ];
+      } else {
+        parts = [
+          { text: name + ' ', strong: true },
+          { text: 'updated' }
+        ];
+      }
+
+      /* DOM-only reversal (designer, 2026-09-09). seating-toast is explicit that a real Undo
+       * needs each action to hand back an operation id the toast posts back — "undo the last
+       * change" is the wrong contract once two toasts can coexist — so this reverses only what
+       * THIS save did, from the snapshot above, and the real contract stays flagged. */
+      document.dispatchEvent(new CustomEvent('sp:toast', {
+        detail: {
+          parts: parts,
+          undo: function () {
+            if (createdCard && createdCard.parentNode) {
+              createdCard.parentNode.removeChild(createdCard);
+            }
+            if (snap.cardHTML && snap.cardId) {
+              var live = document.querySelector('.table-card[data-sp-table="' + snap.cardId + '"]');
+              if (live) live.outerHTML = snap.cardHTML;
+            }
+            if (planEl && snap.planHTML !== null) planEl.innerHTML = snap.planHTML;
+            if (freeEl && snap.freeText !== null) freeEl.textContent = snap.freeText;
+            if (detailNameEl && snap.detailName !== null) detailNameEl.textContent = snap.detailName;
+            if (detailCountEl && snap.detailCount !== null) detailCountEl.textContent = snap.detailCount;
+            if (seatsEl && snap.seatsHTML !== null) seatsEl.innerHTML = snap.seatsHTML;
+
+            /* Selection is restored by SETTING the class, not by clicking: a click would run the
+             * selection handler, which rewrites the seat panel and would immediately undo the
+             * panel restore two lines above. */
+            Array.prototype.forEach.call(document.querySelectorAll('.table-card'), function (c) {
+              c.classList.remove('table-card--selected');
+            });
+            if (snap.selectedId) {
+              var prev = document.querySelector('.table-card[data-sp-table="' + snap.selectedId + '"]');
+              if (prev) prev.classList.add('table-card--selected');
+            }
+            if (window.lucide && typeof window.lucide.createIcons === 'function') {
+              window.lucide.createIcons();
+            }
+          }
+        }
+      }));
+
       close();
     });
   }
+})();
+
+/* ── Seating toast ─────────────────────────────────────────────────────────────────────────
+ * Figma 1:6763 (table edited) / 1:6881 (table added), both raising SeatingToast Type=Success
+ * with an Undo.
+ *
+ * The COMPONENT owns none of this on purpose — seating-toast records that it ships "no show/hide,
+ * no auto-dismiss timer and no JS at all", and that who retires a toast was an open front-end
+ * decision. This module is that decision, made with the designer 2026-09-09:
+ *   - auto-dismiss after 8s
+ *   - the timer PAUSES while the pointer is over the pill or focus is inside it, so Undo cannot
+ *     time out from under someone reading the sentence or tabbing to the button (WCAG 2.2 SC 2.2.1
+ *     is the reason seating-toast flagged this in the first place)
+ *   - Esc dismisses
+ *   - one toast at a time; a new one replaces the old
+ *
+ * Driven by a `sp:toast` CustomEvent rather than a function on `window`, so the raising code does
+ * not need this module to have loaded first and nothing new lands on the global object.
+ */
+(function () {
+  'use strict';
+
+  if (window.__spToastReady) return;
+  window.__spToastReady = true;
+
+  var DISMISS_MS = 8000;
+
+  var host = document.querySelector('[data-sp-toast-host]');
+  if (!host) return;
+
+  /* The live toast: { el, timer, undo }. Null when nothing is showing. */
+  var current = null;
+
+  function clear() {
+    if (!current) return;
+    if (current.timer) window.clearTimeout(current.timer);
+    if (current.el && current.el.parentNode) current.el.parentNode.removeChild(current.el);
+    current = null;
+  }
+
+  function pause() {
+    if (current && current.timer) {
+      window.clearTimeout(current.timer);
+      current.timer = null;
+    }
+  }
+
+  function resume() {
+    if (!current) return;
+    if (current.timer) window.clearTimeout(current.timer);
+    current.timer = window.setTimeout(clear, DISMISS_MS);
+  }
+
+  /* `parts` is an array of { text, strong } — the message is built as text nodes and <strong>
+   * runs rather than from an HTML string, because a table name is user input. Figma emphasises
+   * the subject AND the object ("**Table 13** added to **Main Ballroom.**"), which is why this
+   * takes a list rather than a single bold term. */
+  function show(parts, undo) {
+    clear();
+
+    var el = document.createElement('div');
+    el.className = 'seating-toast seating-toast--success';
+
+    var icon = document.createElement('i');
+    icon.className = 'seating-toast__icon';
+    icon.setAttribute('data-lucide', 'badge-check');
+    icon.setAttribute('aria-hidden', 'true');
+    el.appendChild(icon);
+
+    var msg = document.createElement('p');
+    msg.className = 'seating-toast__message';
+    (parts || []).forEach(function (p) {
+      if (!p || !p.text) return;
+      if (p.strong) {
+        var strong = document.createElement('strong');
+        strong.textContent = p.text;
+        msg.appendChild(strong);
+      } else {
+        msg.appendChild(document.createTextNode(p.text));
+      }
+    });
+    el.appendChild(msg);
+
+    if (typeof undo === 'function') {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'btn btn--secondary btn--xs seating-toast__cta';
+      btn.textContent = 'Undo';
+      btn.addEventListener('click', function () {
+        /* Read the handler BEFORE clearing — clear() nulls `current`. */
+        var fn = current && current.undo;
+        clear();
+        if (fn) fn();
+      });
+      el.appendChild(btn);
+    }
+
+    /* Bound on the PILL, not the host: `mouseenter` does not bubble, and the host is
+     * `pointer-events: none` so it never becomes the target itself. */
+    el.addEventListener('mouseenter', pause);
+    el.addEventListener('mouseleave', resume);
+    el.addEventListener('focusin', pause);
+    el.addEventListener('focusout', resume);
+
+    host.appendChild(el);
+    /* The icon ships as <i data-lucide> and createIcons() has already run for the page. */
+    if (window.lucide && typeof window.lucide.createIcons === 'function') {
+      window.lucide.createIcons();
+    }
+
+    current = { el: el, timer: null, undo: (typeof undo === 'function') ? undo : null };
+    resume();
+  }
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && current) clear();
+  });
+
+  document.addEventListener('sp:toast', function (event) {
+    var detail = event.detail || {};
+    show(detail.parts, detail.undo);
+  });
 })();

@@ -78,6 +78,10 @@
   <link rel="stylesheet" href="../../../components/AttendeeCard/AttendeeCard.css">
   <link rel="stylesheet" href="../../../patterns/TableListing/TableListing.css">
   <link rel="stylesheet" href="../../../patterns/TableDetail/TableDetail.css">
+  <!-- SeatingToast: the action-confirmation pill raised on table create/edit (Figma 1:6763 /
+       1:6881). Without this the pill renders with its classes but no styles — measured at 123px
+       wide against the component's 448, with the page's 16px body type instead of its own 14/20. -->
+  <link rel="stylesheet" href="../../../components/SeatingToast/SeatingToast.css">
   <link rel="stylesheet" href="../ControlScreen/ControlScreen.css">
   <link rel="stylesheet" href="SeatingPlanner.css">
 </head>
@@ -2269,6 +2273,20 @@
       </div>
     </div>
   </div>
+
+  <!-- Toast host — Figma 1:6763 (table edited) / 1:6881 (table added). Both frames place the
+       Toast at exactly the same spot: 465x58, horizontally centred, sitting off the bottom of the
+       screen as a sibling of the Control Screen rather than inside it.
+
+       The HOST is the live region, present in the DOM from load, and JS swaps the pill inside it.
+       A freshly-inserted `role="status"` element is announced unreliably, so the pill built by JS
+       deliberately does NOT carry the `role="status"` that SeatingToast's own demo shows — the
+       announcement is the host's job here. Noted as a deliberate deviation from the component demo.
+
+       TODO(backend:SeatingPlanner): Undo is DOM-only — see seating-toast, which records that a real
+       Undo needs each action to return an operation id the toast posts back, because "undo the last
+       change" is the wrong contract once two toasts can exist. -->
+  <div class="sp-toast-host" data-sp-toast-host aria-live="polite" aria-atomic="true"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
