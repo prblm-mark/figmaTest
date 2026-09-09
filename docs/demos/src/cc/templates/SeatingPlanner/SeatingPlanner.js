@@ -1128,3 +1128,357 @@
     });
   }
 })();
+
+/* ── Table form (Edit table) ───────────────────────────────────────────────────────────────
+ * Figma 3515:178044 desktop / 3515:227256 mobile, plus the sponsor-lookup, reduced-capacity and
+ * help-on states. Same open/close/focus-trap contract as editPlan and deletePlan above.
+ *
+ * Edit only — there is no New mode here (designer, 2026-08-29). The toolbar's Add Table button
+ * stays unwired; see seating-table-form.
+ */
+(function () {
+  'use strict';
+
+  if (window.__tableFormReady) return;
+  window.__tableFormReady = true;
+
+  var OPEN_CLASS = 'modal-overlay--open';
+  var FOCUSABLE = [
+    'a[href]', 'button:not([disabled])', 'input:not([disabled])',
+    'select:not([disabled])', 'textarea:not([disabled])', '[tabindex]:not([tabindex="-1"])'
+  ].join(',');
+
+  var overlay = document.querySelector('[data-table-form]');
+  if (!overlay) return;
+
+  var dialog = overlay.querySelector('[role="dialog"]');
+  var form = overlay.querySelector('#table-form-form');
+  var helpToggle = overlay.querySelector('#tf-help-toggle');
+  var nameInput = overlay.querySelector('#tf-name');
+  var seatsInput = overlay.querySelector('#tf-seats');
+  var hostInput = overlay.querySelector('#tf-host');
+  var tierValue = overlay.querySelector('#tf-tier .sel__value');
+  var shapeValue = overlay.querySelector('#tf-shape .sel__value');
+  var sponsorValue = overlay.querySelector('[data-tf-sponsor-value]');
+  var sponsorSearch = overlay.querySelector('[data-tf-sponsor-search]');
+  var sponsorList = overlay.querySelector('[data-tf-sponsor-list]');
+  var warning = overlay.querySelector('[data-tf-warning]');
+  var warningText = overlay.querySelector('[data-tf-warning-text]');
+
+  var returnFocusTo = null;
+  var editingCard = null;
+  /* The seated count at OPEN time. The warning compares against this rather than re-reading the
+   * card, because the card is not rewritten until Save — re-reading mid-edit would compare the
+   * typed capacity against itself once a first save had happened. */
+  var seatedAtOpen = 0;
+  /* Capacity at open, so the plan total can move by the DELTA. Recomputing the plan from the
+   * 12 cards would be more correct but is the server's job — see seating-table-form. */
+  var counts0 = { seated: 0, capacity: 0 };
+
+  function isOpen() { return overlay.classList.contains(OPEN_CLASS); }
+
+  function focusable() {
+    return Array.prototype.filter.call(
+      dialog.querySelectorAll(FOCUSABLE),
+      function (el) { return el.offsetParent !== null; }
+    );
+  }
+
+  function field(name) { return overlay.querySelector('[data-tf-field="' + name + '"]'); }
+
+  Array.prototype.forEach.call(overlay.querySelectorAll('[data-tf-help]'), function (help) {
+    help.setAttribute('data-tf-help-original', help.textContent.trim());
+  });
+
+  function setError(name, message) {
+    var wrap = field(name);
+    if (!wrap) return;
+    wrap.classList.add('input--error');
+    var help = wrap.querySelector('[data-tf-help]');
+    if (help) { help.textContent = message; help.setAttribute('role', 'alert'); }
+    var control = wrap.querySelector('.input__control');
+    if (control) control.setAttribute('aria-invalid', 'true');
+  }
+
+  function clearErrors() {
+    Array.prototype.forEach.call(overlay.querySelectorAll('[data-tf-field]'), function (wrap) {
+      wrap.classList.remove('input--error');
+      var help = wrap.querySelector('[data-tf-help]');
+      if (help) {
+        help.textContent = help.getAttribute('data-tf-help-original') || '';
+        help.removeAttribute('role');
+      }
+      var control = wrap.querySelector('.input__control');
+      if (control) control.removeAttribute('aria-invalid');
+    });
+  }
+
+  /* "0 / 10 seated" -> { seated: 0, capacity: 10 }. Regex rather than a split, for the same
+   * reason as deletePlan: the separator and the trailing word are presentation. */
+  function readCounts(card) {
+    var el = card && card.querySelector('.table-card__count');
+    var m = el ? /(\d+)\s*\/\s*(\d+)/.exec(el.textContent) : null;
+    return m ? { seated: parseInt(m[1], 10), capacity: parseInt(m[2], 10) }
+             : { seated: 0, capacity: 0 };
+  }
+
+  function plural(n, one, many) { return n === 1 ? one : many; }
+
+  /* Live, and non-blocking: Save stays enabled and the people really are returned (designer,
+   * 2026-08-29). Consistent with the other three return paths already documented on
+   * seating-unassigned-tray. */
+  function syncWarning() {
+    if (!warning || !seatsInput) return;
+    var next = parseInt(seatsInput.value, 10);
+    var removed = (isFinite(next) && seatedAtOpen > next) ? seatedAtOpen - next : 0;
+    if (!removed) { warning.hidden = true; return; }
+    warningText.textContent =
+      removed + ' ' + plural(removed, 'person', 'people') + ' will be returned to Unassigned — ' +
+      'the last ' + removed + ' ' + plural(removed, 'seat', 'seats') + ' of ' + seatedAtOpen + ' seated.';
+    warning.hidden = false;
+  }
+
+  function open(card, trigger) {
+    if (isOpen()) return;
+    editingCard = card;
+    returnFocusTo = trigger || document.activeElement;
+    clearErrors();
+
+    var nameEl = card && card.querySelector('.table-card__select');
+    var counts = readCounts(card);
+    seatedAtOpen = counts.seated;
+    counts0 = counts;
+
+    if (nameInput) nameInput.value = nameEl ? nameEl.textContent.trim() : '';
+    if (seatsInput) seatsInput.value = counts.capacity || '';
+    /* Tier, sponsor, host and shape have nowhere to live on the card in this template — it
+     * renders no tier chip (Figma hides the TableType instance) and no sponsor line — so they
+     * round-trip on the card's own dataset, the same trick edit-plan uses for the room. First
+     * open falls back to the defaults, which is correct: nothing is set. */
+    if (hostInput) hostInput.value = (card && card.getAttribute('data-tf-host')) || '';
+    if (tierValue) tierValue.textContent = (card && card.getAttribute('data-tf-tier')) || 'Standard';
+    if (shapeValue) shapeValue.textContent = (card && card.getAttribute('data-tf-shape')) || 'Round';
+    if (sponsorValue) sponsorValue.textContent = (card && card.getAttribute('data-tf-sponsor')) || 'Search Accounts…';
+
+    if (warning) warning.hidden = true;
+
+    overlay.classList.add(OPEN_CLASS);
+    if (trigger) trigger.setAttribute('aria-expanded', 'true');
+    if (nameInput) nameInput.focus();
+    else dialog.focus();
+  }
+
+  function close() {
+    if (!isOpen()) return;
+    overlay.classList.remove(OPEN_CLASS);
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tf-open]'), function (b) {
+      b.setAttribute('aria-expanded', 'false');
+    });
+    var target = (returnFocusTo && returnFocusTo !== document.body && returnFocusTo.isConnected)
+      ? returnFocusTo
+      : dialog;
+    returnFocusTo = null;
+    editingCard = null;
+    target.focus();
+  }
+
+  document.addEventListener('click', function (event) {
+    var btn = event.target.closest ? event.target.closest('[data-tf-open]') : null;
+    if (!btn) return;
+    event.preventDefault();
+    open(btn.closest('.table-card'), btn);
+  });
+
+  Array.prototype.forEach.call(overlay.querySelectorAll('[data-tf-close]'), function (btn) {
+    btn.addEventListener('click', close);
+  });
+
+  overlay.addEventListener('click', function (event) {
+    if (event.target === overlay) close();
+  });
+
+  overlay.addEventListener('keydown', function (event) {
+    if (!isOpen()) return;
+    if (event.key === 'Escape') { close(); return; }
+    if (event.key !== 'Tab') return;
+
+    var items = focusable();
+    if (!items.length) return;
+    var first = items[0], last = items[items.length - 1], active = document.activeElement;
+
+    if (event.shiftKey && (active === first || !dialog.contains(active))) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && (active === last || !dialog.contains(active))) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
+
+  if (helpToggle) {
+    helpToggle.addEventListener('click', function () {
+      var on = helpToggle.getAttribute('aria-checked') === 'true';
+      form.classList.toggle('table-form__form--help', on);
+    });
+  }
+
+  if (seatsInput) seatsInput.addEventListener('input', syncWarning);
+
+  /* Sponsor lookup. Dropdown.js owns opening the panel and closing it on outside-click; this
+   * only adds the two things that are specific to an account picker — filtering, and committing
+   * the clicked account back onto the trigger. */
+  if (sponsorSearch && sponsorList) {
+    sponsorSearch.addEventListener('input', function () {
+      var q = sponsorSearch.value.trim().toLowerCase();
+      Array.prototype.forEach.call(sponsorList.querySelectorAll('li'), function (li) {
+        var label = (li.textContent || '').trim().toLowerCase();
+        li.hidden = q ? label.indexOf(q) === -1 : false;
+      });
+    });
+  }
+
+  if (sponsorList) {
+    sponsorList.addEventListener('click', function (event) {
+      var item = event.target.closest ? event.target.closest('.dropdown-item') : null;
+      if (!item || !sponsorValue) return;
+      sponsorValue.textContent = item.textContent.trim();
+    });
+  }
+
+  if (form) {
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      clearErrors();
+
+      var name = nameInput ? nameInput.value.trim() : '';
+      var seats = seatsInput ? parseInt(seatsInput.value, 10) : NaN;
+      var ok = true;
+
+      if (!name) { setError('name', 'Table name is required.'); ok = false; }
+      if (!isFinite(seats) || seats < 1) { setError('seats', 'Enter a number of seats.'); ok = false; }
+      if (!ok) {
+        var firstBad = overlay.querySelector('.input--error .input__control');
+        if (firstBad) firstBad.focus();
+        return;
+      }
+
+      /* TODO(backend:SeatingPlanner): DOM-only — see seating-table-form for the Table record this
+       * should PATCH, and seating-unassigned-tray for where the returned occupants belong. */
+      if (editingCard) {
+        var seated = Math.min(seatedAtOpen, seats);
+        var nameEl = editingCard.querySelector('.table-card__select');
+        if (nameEl) nameEl.textContent = name;
+
+        var countEl = editingCard.querySelector('.table-card__count');
+        if (countEl) countEl.textContent = seated + ' / ' + seats + ' seated';
+
+        /* Empty seats are the segment that always moves when capacity does. Targeted by the
+         * --empty MODIFIER, not by first-match: Table 1 carries five segments
+         * (attendee/vip/speaker/sponsor/empty) since the occupants were seeded, and a bare
+         * `.table-card__seg` selector picks the ATTENDEE one — which would silently corrupt the
+         * bar on every save. Re-derived rather than nudged, per seating-plan-chip-summary. */
+        var empty = seats - seated;
+        var emptySeg = editingCard.querySelector('.table-card__seg--empty');
+        if (emptySeg) emptySeg.style.setProperty('--seg', String(empty));
+        var emptyLegend = editingCard.querySelector('.table-card__legend-item--empty');
+        if (emptyLegend) emptyLegend.lastChild.textContent = 'Empty (' + empty + ')';
+
+        /* If the capacity cut unseated people, take them off the role segments from the LAST one
+         * backwards. Knowingly an approximation: the dialog promises "the last N seats" and seat
+         * order is not role order, so only the server re-read that seating-table-form already
+         * asks for gets this exactly right. */
+        var toDrop = seatedAtOpen - seated;
+        if (toDrop > 0) {
+          Array.prototype.slice.call(
+            editingCard.querySelectorAll('.table-card__seg:not(.table-card__seg--empty)')
+          ).reverse().forEach(function (rs) {
+            if (toDrop <= 0) return;
+            var have = parseInt(rs.style.getPropertyValue('--seg'), 10) || 0;
+            var take = Math.min(have, toDrop);
+            rs.style.setProperty('--seg', String(have - take));
+            toDrop -= take;
+            var role = (String(rs.className).match(/table-card__seg--([a-z]+)/) || [])[1];
+            var lg = role && editingCard.querySelector('.table-card__legend-item--' + role);
+            if (lg && lg.lastChild) {
+              lg.lastChild.textContent = lg.lastChild.textContent.replace(/\((\d+)\)/, '(' + (have - take) + ')');
+            }
+          });
+        }
+
+        /* The legend is DERIVED from the roles ACTUALLY seated — TableDetail's spec is explicit
+         * that it is not stored, which is why Type=Default has no legend rather than an empty
+         * one. So a role that drops to zero leaves the legend entirely instead of rendering
+         * "Sponsor (0)", and its zero-width segment goes with it. */
+        Array.prototype.forEach.call(editingCard.querySelectorAll('.table-card__seg'), function (g) {
+          g.hidden = (parseInt(g.style.getPropertyValue('--seg'), 10) || 0) === 0;
+        });
+        Array.prototype.forEach.call(editingCard.querySelectorAll('.table-card__legend-item'), function (l) {
+          var m = /\((\d+)\)/.exec(l.textContent);
+          l.hidden = !!m && parseInt(m[1], 10) === 0;
+        });
+
+        /* Keep the rest of the screen honest. These were all zero before the occupants were
+         * seeded, so any drift was invisible; now it is not. */
+        if (editingCard.classList.contains('table-card--selected')) {
+          var detailCount = document.querySelector('[data-sp-detail-count]');
+          if (detailCount) detailCount.textContent = seated + ' / ' + seats + ' seated';
+
+          /* Seat rows follow the capacity — EVERY row past it goes, occupied ones included.
+           * Dropping only the empties was the first cut and it was wrong: the dialog has just
+           * promised that the last N people are returned to Unassigned, so leaving their rows
+           * in a table that no longer has those seats contradicts the sentence the user just
+           * agreed to. Removing by seat NUMBER is also what makes "the last N seats" literal
+           * here, rather than the role-order approximation the bar segments have to settle for. */
+          var seatList = document.querySelector('.table-detail__seats');
+          if (seatList) {
+            Array.prototype.forEach.call(
+              seatList.querySelectorAll('.attendee-card'), function (row) {
+                var n = parseInt((row.querySelector('.attendee-card__seat') || {}).textContent, 10);
+                if (n > seats) row.parentNode.removeChild(row);
+              });
+            var present = seatList.querySelectorAll('.attendee-card').length;
+            for (var n = present + 1; n <= seats; n++) {
+              var row = document.createElement('article');
+              row.className = 'attendee-card attendee-card--empty';
+              row.innerHTML =
+                '<span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>' +
+                '<span class="attendee-card__seat">' + n + '</span>' +
+                '<p class="attendee-card__empty-label">Empty seat</p>' +
+                '<button type="button" class="btn btn--secondary btn--sm">Assign</button>';
+              seatList.appendChild(row);
+            }
+          }
+        }
+
+        /* The plan totals: capacity is the sum across tables, so it moves by the delta rather
+         * than being recomputed — the other 11 cards are not re-read here. */
+        var planCounts = document.querySelector('.room-card__counts');
+        if (planCounts) {
+          planCounts.innerHTML = planCounts.innerHTML.replace(
+            /(\d+)\s*tables\s*·\s*(\d+)\/(\d+)/,
+            function (_m, t, planSeated, planCap) {
+              var nextCap = parseInt(planCap, 10) + (seats - counts0.capacity);
+              var nextSeated = parseInt(planSeated, 10) - (seatedAtOpen - seated);
+              var free = document.querySelector('.room-card__free');
+              if (free) free.textContent = (nextCap - nextSeated) + ' seats free';
+              return t + ' tables · ' + nextSeated + '/' + nextCap;
+            });
+        }
+
+        Array.prototype.forEach.call(editingCard.querySelectorAll('[aria-label]'), function (el) {
+          var label = el.getAttribute('aria-label');
+          if (/^Edit /.test(label)) el.setAttribute('aria-label', 'Edit ' + name);
+          if (/^Delete /.test(label)) el.setAttribute('aria-label', 'Delete ' + name);
+        });
+
+        /* Round-tripped on the card because the card renders none of these. */
+        editingCard.setAttribute('data-tf-host', hostInput ? hostInput.value.trim() : '');
+        if (tierValue) editingCard.setAttribute('data-tf-tier', tierValue.textContent.trim());
+        if (shapeValue) editingCard.setAttribute('data-tf-shape', shapeValue.textContent.trim());
+        if (sponsorValue) editingCard.setAttribute('data-tf-sponsor', sponsorValue.textContent.trim());
+      }
+
+      close();
+    });
+  }
+})();

@@ -410,19 +410,23 @@
    * the sm TYPOGRAPHY at all, so every field in this modal rendered its label and value at the
    * Base 14px on mobile where Figma specifies 13px — which is what the designer reported. */
   .create-plan__grid .input__wrap,
-  .edit-plan__fields .input__wrap {
+  .edit-plan__fields .input__wrap,
+  .table-form__fields .input__wrap {
     min-height: var(--ai-spacing-7);
     padding: 0 var(--ai-spacing-4);
     gap: var(--ai-spacing-3);
   }
 
   .create-plan__grid .input__label,
-  .edit-plan__fields .input__label {
+  .edit-plan__fields .input__label,
+  .table-form__fields .input__label,
+  .table-form__fields .sel__label {
     font-size: var(--ai-font-fixed-2xs);   /* 13px */
   }
 
   .create-plan__grid .input__control,
-  .edit-plan__fields .input__control {
+  .edit-plan__fields .input__control,
+  .table-form__fields .input__control {
     font-size: var(--ai-font-fixed-2xs);   /* 13px */
     line-height: var(--ai-leading-xs);      /* 16px */
   }
@@ -451,14 +455,16 @@
   }
 
   /* Select's own sm control, to match the Inputs beside it. */
-  .create-plan__shape .sel__control {
+  .create-plan__shape .sel__control,
+  .table-form__fields .sel__control {
     min-height: var(--ai-spacing-7);
     padding-block: 0;
   }
 
   .create-plan__footer .btn,
   .edit-plan__footer .btn,
-  .delete-plan__footer .btn {
+  .delete-plan__footer .btn,
+  .table-form__footer .btn {
     min-height: var(--ai-spacing-7);
     padding: 0 var(--ai-spacing-4);
     font-size: var(--ai-font-fluid-xxs);
@@ -772,4 +778,161 @@
  * as well as looks: these are the words that change what the button destroys. */
 .delete-plan__body strong {
   font-weight: var(--ai-font-semibold);
+}
+
+/* ── Table form (Edit table) ──────────────────────────────────────────────────────────────
+ * Figma 3515:178044 / 3515:227256 (default), 3515:180174 / 3515:227440 (sponsor lookup),
+ * 3515:179100 / 3515:227648 (reduced capacity), 3515:181232 / 3515:227842 (help on).
+ *
+ * The field stack is the only real layout here — the modal chrome is Modal's, unchanged.
+ * Measured, not assumed: desktop content slot 462 wide with Seats+Shape at 225 + 12 + 225;
+ * mobile 304 with 146 + 12 + 146. TWO COLUMNS AT BOTH SIZES, which is the one thing that
+ * differs from create-plan on this screen — that modal goes three columns to two at the
+ * breakpoint, this one never changes count, so there is no grid rule in the mobile block. */
+
+.table-form__form {
+  position: relative;
+  inline-size: 100%;
+  display: flex;
+  flex-direction: column;
+  /* 16px, which is the gap between the field grid and the capacity warning. From the frame:
+   * Frame 269 is 408 tall and the warning Paragraph starts at y=424. */
+  gap: var(--ai-spacing-5);
+}
+
+.table-form__fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--ai-spacing-4);   /* 12px */
+  row-gap: var(--ai-spacing-5);      /* 16px */
+}
+
+/* Full width is the default; only Seats and Shape opt out. Expressed this way round because
+ * four of the six fields span, so the exception is the half. */
+.table-form__fields > * {
+  grid-column: 1 / -1;
+}
+
+/* Two classes, so it beats the child rule above regardless of source order — the create-plan
+ * equivalent relies on order and is a trap waiting to be sprung by a future reshuffle. */
+.table-form__fields > .table-form__half {
+  grid-column: auto;
+}
+
+/* Select and Sponsor fields are not `.input`, so they do not inherit its column stack. Same
+ * 8px gap, so a Select's label/field/help/action line up with the Inputs beside them. */
+.table-form__stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+  min-inline-size: 0;
+}
+
+/* `.sel` keeps its own 8px label->control gap. There is NO doubling to guard against: the
+ * wrapper's gap applies between `.sel` and its SIBLINGS (help line, action row), not inside it.
+ * This rule briefly zeroed that gap and made the tier field 80px against Figma's 88 (72 vs 80 on
+ * mobile) — measured, and the reason the field is called out here at all. `.create-plan__shape
+ * .sel` is the precedent and it likewise sets `--ai-spacing-3`, not zero. */
+.table-form__stack .sel {
+  gap: var(--ai-spacing-3);
+  min-inline-size: 0;
+}
+
+/* Out of flow, pinned to the first label's line — the same treatment create-plan and edit-plan
+ * use, including the 1px block padding that optically centres the 12px track against the
+ * 16px label. Figma puts it at x=377 in a 462 slot (desktop) and x=219 in 304 (mobile), i.e.
+ * right-aligned at both sizes. */
+.table-form__help-toggle {
+  position: absolute;
+  inset-inline-end: 0;
+  inset-block-start: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  padding-block: var(--ai-spacing-px);
+}
+
+.table-form__help-label {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-4xs);
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* Help lines are hidden until the toggle is on — every frame with help off draws the Inputs
+ * with their Help Slot hidden. An error still shows regardless: `.input--error .input__help`
+ * is the error line, so silencing hints must not silence errors.
+ *
+ * NOTE the action row is deliberately NOT covered by this: `.input__action` is a separate slot
+ * and Figma shows "+ Manage table types" in the help-OFF frames too. */
+.table-form__form:not(.table-form__form--help) [data-tf-field]:not(.input--error) .input__help {
+  display: none;
+}
+
+.table-form__form .input__help:empty {
+  display: none;
+}
+
+/* ── Capacity warning ────────────────────────────────────────────────────────────────────
+ * Alert type=warning. The COLOURS are Alert's own — --ai-surface-warning-soft /
+ * --ai-border-warning / --ai-text-warning, all three confirmed by get_variable_defs on
+ * 3515:179636 after the designer bound them, and all three already correct in `.alert--warning`.
+ *
+ * Only the BOX METRICS are overridden, and only because this instance is more compact than
+ * Alert's base: Figma gives px-13 / py-9 against a 1px border, i.e. 12/8 padding, with an 8px
+ * gap — where `.alert` is 16/12 with a 12px gap. Scoped here rather than added as `.alert--sm`
+ * (designer, 2026-08-29): Alert carries five types across several screens that have not been
+ * re-verified against Figma, and one frame is thin evidence for a whole new size axis.
+ *
+ * Also flips Alert's column direction to a row: this instance is icon + one paragraph, with no
+ * title, close button or CTA, so Alert's `__header` row is not used. */
+.table-form__warning {
+  flex-direction: row;
+  align-items: flex-start;
+  padding: var(--ai-spacing-3) var(--ai-spacing-4);
+  gap: var(--ai-spacing-3);
+}
+
+.table-form__warning[hidden] {
+  display: none;
+}
+
+/* --ai-surface-warning (#f76b15), NOT the inherited --ai-text-warning (#cc4e00) that
+ * `.alert__icon` would otherwise take. Deduced rather than read directly: the icon exports as a
+ * flat SVG asset so its fill is not in the design context, but --ai-surface-warning is bound on
+ * the modal, the text is accounted for by --ai-text-warning, and nothing else in the dialog is
+ * that colour — and the two oranges are visibly different in the frame. */
+.table-form__warning .alert__icon {
+  color: var(--ai-surface-warning);
+}
+
+.table-form__warning-text {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);   /* 13px */
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-sm);     /* 20px */
+  color: inherit;
+}
+
+/* ── Sponsor lookup ──────────────────────────────────────────────────────────────────────
+ * Dropdown's search panel, sized to the field rather than to Dropdown's own default: Figma
+ * draws the List at 304 inside a 304 field on mobile and full-width on desktop, i.e. it tracks
+ * the trigger. Without this the panel keeps Dropdown's min-width and overhangs the column. */
+.table-form__sponsor .dropdown {
+  position: relative;
+}
+
+.table-form__sponsor .dropdown__panel {
+  inline-size: 100%;
+  min-inline-size: 0;
+}
+
+/* The trigger is a field, not a button, so it must fill the column — `.sel__control` is already
+ * full width but `.dropdown__trigger` is authored for inline buttons. */
+.table-form__sponsor .sel__control {
+  inline-size: 100%;
 }

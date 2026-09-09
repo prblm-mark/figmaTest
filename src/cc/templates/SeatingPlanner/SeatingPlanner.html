@@ -603,8 +603,8 @@
               </div>
             </div>
             <div class="room-card__meta">
-              <p class="room-card__counts">12 tables · 0/148<span class="room-card__seated"> seated</span></p>
-              <p class="room-card__free">148 seats free</p>
+              <p class="room-card__counts">12 tables · 6/148<span class="room-card__seated"> seated</span></p>
+              <p class="room-card__free">142 seats free</p>
             </div>
             <div class="room-card__progress" aria-hidden="true">
               <div class="room-card__progress-fill"></div>
@@ -616,7 +616,7 @@
           <div class="seating-header__toolbar-actions">
             <div class="seating-header__room">
               <p class="seating-header__room-name">Main Ballroom</p>
-              <p class="seating-header__room-count">(72 Unassigned)</p>
+              <p class="seating-header__room-count">(66 Unassigned)</p>
             </div>
             <div class="seating-header__toggle-group">
               <!-- TODO(backend:SeatingPlanner): this toggle reveals the Unassigned panel — the
@@ -709,19 +709,27 @@
             <hr class="table-card__rule">
             <div class="table-card__viz">
               <div class="table-card__bar" aria-hidden="true">
-                <span class="table-card__seg" style="--seg: 10"></span>
+                <span class="table-card__seg table-card__seg--attendee" style="--seg: 2"></span>
+                <span class="table-card__seg table-card__seg--vip" style="--seg: 1"></span>
+                <span class="table-card__seg table-card__seg--speaker" style="--seg: 1"></span>
+                <span class="table-card__seg table-card__seg--sponsor" style="--seg: 2"></span>
+                <span class="table-card__seg table-card__seg--empty" style="--seg: 4"></span>
               </div>
               <div class="table-card__legend">
-                <span class="table-card__legend-item"><span class="table-card__swatch"></span>Empty (10)</span>
+                <span class="table-card__legend-item table-card__legend-item--attendee"><span class="table-card__swatch"></span>Attendee (2)</span>
+                <span class="table-card__legend-item table-card__legend-item--vip"><span class="table-card__swatch"></span>VIP (1)</span>
+                <span class="table-card__legend-item table-card__legend-item--speaker"><span class="table-card__swatch"></span>Speaker (1)</span>
+                <span class="table-card__legend-item table-card__legend-item--sponsor"><span class="table-card__swatch"></span>Sponsor (2)</span>
+                <span class="table-card__legend-item table-card__legend-item--empty"><span class="table-card__swatch"></span>Empty (4)</span>
               </div>
             </div>
             <hr class="table-card__rule">
             <div class="table-card__footer">
               <div class="table-card__count-group">
-                <p class="table-card__count">0 / 10 seated</p>
+                <p class="table-card__count">6 / 10 seated</p>
               </div>
               <div class="table-card__actions">
-                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 1">
+                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 1" data-tf-open>
                   <i data-lucide="pencil" aria-hidden="true"></i>
                 </button>
                 <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 1">
@@ -753,7 +761,7 @@
                 <p class="table-card__count">0 / 10 seated</p>
               </div>
               <div class="table-card__actions">
-                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 2">
+                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 2" data-tf-open>
                   <i data-lucide="pencil" aria-hidden="true"></i>
                 </button>
                 <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 2">
@@ -785,7 +793,7 @@
                 <p class="table-card__count">0 / 10 seated</p>
               </div>
               <div class="table-card__actions">
-                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 3">
+                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 3" data-tf-open>
                   <i data-lucide="pencil" aria-hidden="true"></i>
                 </button>
                 <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 3">
@@ -817,7 +825,7 @@
                 <p class="table-card__count">0 / 10 seated</p>
               </div>
               <div class="table-card__actions">
-                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 4">
+                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 4" data-tf-open>
                   <i data-lucide="pencil" aria-hidden="true"></i>
                 </button>
                 <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 4">
@@ -849,7 +857,7 @@
                 <p class="table-card__count">0 / 10 seated</p>
               </div>
               <div class="table-card__actions">
-                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 5">
+                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 5" data-tf-open>
                   <i data-lucide="pencil" aria-hidden="true"></i>
                 </button>
                 <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 5">
@@ -881,7 +889,7 @@
                 <p class="table-card__count">0 / 10 seated</p>
               </div>
               <div class="table-card__actions">
-                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 6">
+                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 6" data-tf-open>
                   <i data-lucide="pencil" aria-hidden="true"></i>
                 </button>
                 <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 6">
@@ -913,7 +921,7 @@
                 <p class="table-card__count">0 / 10 seated</p>
               </div>
               <div class="table-card__actions">
-                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 7">
+                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 7" data-tf-open>
                   <i data-lucide="pencil" aria-hidden="true"></i>
                 </button>
                 <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 7">
@@ -945,7 +953,7 @@
                 <p class="table-card__count">0 / 10 seated</p>
               </div>
               <div class="table-card__actions">
-                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 8">
+                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 8" data-tf-open>
                   <i data-lucide="pencil" aria-hidden="true"></i>
                 </button>
                 <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 8">
@@ -977,7 +985,7 @@
                 <p class="table-card__count">0 / 10 seated</p>
               </div>
               <div class="table-card__actions">
-                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 9">
+                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 9" data-tf-open>
                   <i data-lucide="pencil" aria-hidden="true"></i>
                 </button>
                 <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 9">
@@ -1009,7 +1017,7 @@
                 <p class="table-card__count">0 / 10 seated</p>
               </div>
               <div class="table-card__actions">
-                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 10">
+                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 10" data-tf-open>
                   <i data-lucide="pencil" aria-hidden="true"></i>
                 </button>
                 <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 10">
@@ -1041,7 +1049,7 @@
                 <p class="table-card__count">0 / 10 seated</p>
               </div>
               <div class="table-card__actions">
-                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 11">
+                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 11" data-tf-open>
                   <i data-lucide="pencil" aria-hidden="true"></i>
                 </button>
                 <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 11">
@@ -1073,7 +1081,7 @@
                 <p class="table-card__count">0 / 10 seated</p>
               </div>
               <div class="table-card__actions">
-                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 12">
+                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Table 12" data-tf-open>
                   <i data-lucide="pencil" aria-hidden="true"></i>
                 </button>
                 <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Table 12">
@@ -1101,48 +1109,171 @@
                 <div class="table-detail__titles">
                   <h3 class="table-detail__name" data-sp-detail-name>Table 1</h3>
                   <p class="table-detail__meta">
-                    <span class="table-detail__count" data-sp-detail-count>0 / 10 seated</span>
+                    <span class="table-detail__count" data-sp-detail-count>6 / 10 seated</span>
                   </p>
                 </div>
               </div>
             </header>
             <div class="table-detail__list">
               <div class="table-detail__seats">
-            <article class="attendee-card attendee-card--empty">
+            <!-- Seats 1-6 are OCCUPIED as of 2026-09-09. The screen shipped with every table at
+                 "0 / 10 seated", which made the Table form's reduced-capacity warning UNREACHABLE: it
+                 fires when the new capacity falls below the seated count, and that count was always 0.
+                 Figma has the same contradiction — its reduced-capacity frame claims "10 seated" while
+                 the cards behind the modal still read "0 / 10 seated".
+                 Markup is AttendeeCard's own (its Code Connect example); names and companies come from
+                 the Unassigned pattern's roster; the role split matches TableCard's 6/10 example exactly,
+                 so this list and the card bar agree. The other 11 tables stay empty.
+                 TODO(backend:SeatingPlanner): mock occupants — see seating-seat-occupant-record. -->
+            <article class="attendee-card">
               <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
               <span class="attendee-card__seat">1</span>
-              <p class="attendee-card__empty-label">Empty seat</p>
-              <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+              <div class="attendee-card__body">
+                <p class="attendee-card__name">Ethan Patel</p>
+                <p class="attendee-card__meta">
+                  <span class="attendee-card__company">Nexus Innovations</span>
+                  <span class="attendee-card__sep" aria-hidden="true">·</span>
+                  <span class="attendee-card__role">Attendee</span>
+                </p>
+              </div>
+              <div class="attendee-card__actions">
+                <button type="button" class="attendee-card__action" aria-label="Remove Ethan Patel">
+                  <i data-lucide="trash" aria-hidden="true"></i>
+                </button>
+                <div class="attendee-card__reorder">
+                  <button type="button" class="attendee-card__action" aria-label="Move Ethan Patel up">
+                    <i data-lucide="chevron-up" aria-hidden="true"></i>
+                  </button>
+                  <button type="button" class="attendee-card__action" aria-label="Move Ethan Patel down">
+                    <i data-lucide="chevron-down" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
             </article>
-            <article class="attendee-card attendee-card--empty">
+            <article class="attendee-card">
               <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
               <span class="attendee-card__seat">2</span>
-              <p class="attendee-card__empty-label">Empty seat</p>
-              <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+              <div class="attendee-card__body">
+                <p class="attendee-card__name">Julian Carter</p>
+                <p class="attendee-card__meta">
+                  <span class="attendee-card__company">Lunar Technologies</span>
+                  <span class="attendee-card__sep" aria-hidden="true">·</span>
+                  <span class="attendee-card__role">Attendee</span>
+                </p>
+              </div>
+              <div class="attendee-card__actions">
+                <button type="button" class="attendee-card__action" aria-label="Remove Julian Carter">
+                  <i data-lucide="trash" aria-hidden="true"></i>
+                </button>
+                <div class="attendee-card__reorder">
+                  <button type="button" class="attendee-card__action" aria-label="Move Julian Carter up">
+                    <i data-lucide="chevron-up" aria-hidden="true"></i>
+                  </button>
+                  <button type="button" class="attendee-card__action" aria-label="Move Julian Carter down">
+                    <i data-lucide="chevron-down" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
             </article>
-            <article class="attendee-card attendee-card--empty">
+            <article class="attendee-card attendee-card--vip">
               <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
               <span class="attendee-card__seat">3</span>
-              <p class="attendee-card__empty-label">Empty seat</p>
-              <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+              <div class="attendee-card__body">
+                <p class="attendee-card__name">Nina Ivanova</p>
+                <p class="attendee-card__meta">
+                  <span class="attendee-card__company">Stellar Dynamics</span>
+                  <span class="attendee-card__sep" aria-hidden="true">·</span>
+                  <span class="attendee-card__role">VIP</span>
+                </p>
+              </div>
+              <div class="attendee-card__actions">
+                <button type="button" class="attendee-card__action" aria-label="Remove Nina Ivanova">
+                  <i data-lucide="trash" aria-hidden="true"></i>
+                </button>
+                <div class="attendee-card__reorder">
+                  <button type="button" class="attendee-card__action" aria-label="Move Nina Ivanova up">
+                    <i data-lucide="chevron-up" aria-hidden="true"></i>
+                  </button>
+                  <button type="button" class="attendee-card__action" aria-label="Move Nina Ivanova down">
+                    <i data-lucide="chevron-down" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
             </article>
-            <article class="attendee-card attendee-card--empty">
+            <article class="attendee-card attendee-card--speaker">
               <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
               <span class="attendee-card__seat">4</span>
-              <p class="attendee-card__empty-label">Empty seat</p>
-              <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+              <div class="attendee-card__body">
+                <p class="attendee-card__name">Zara Khan</p>
+                <p class="attendee-card__meta">
+                  <span class="attendee-card__company">SkyNet Solutions</span>
+                  <span class="attendee-card__sep" aria-hidden="true">·</span>
+                  <span class="attendee-card__role">Speaker</span>
+                </p>
+              </div>
+              <div class="attendee-card__actions">
+                <button type="button" class="attendee-card__action" aria-label="Remove Zara Khan">
+                  <i data-lucide="trash" aria-hidden="true"></i>
+                </button>
+                <div class="attendee-card__reorder">
+                  <button type="button" class="attendee-card__action" aria-label="Move Zara Khan up">
+                    <i data-lucide="chevron-up" aria-hidden="true"></i>
+                  </button>
+                  <button type="button" class="attendee-card__action" aria-label="Move Zara Khan down">
+                    <i data-lucide="chevron-down" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
             </article>
-            <article class="attendee-card attendee-card--empty">
+            <article class="attendee-card attendee-card--sponsor">
               <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
               <span class="attendee-card__seat">5</span>
-              <p class="attendee-card__empty-label">Empty seat</p>
-              <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+              <div class="attendee-card__body">
+                <p class="attendee-card__name">Noah Sullivan</p>
+                <p class="attendee-card__meta">
+                  <span class="attendee-card__company">Synergy Partners</span>
+                  <span class="attendee-card__sep" aria-hidden="true">·</span>
+                  <span class="attendee-card__role">Sponsor</span>
+                </p>
+              </div>
+              <div class="attendee-card__actions">
+                <button type="button" class="attendee-card__action" aria-label="Remove Noah Sullivan">
+                  <i data-lucide="trash" aria-hidden="true"></i>
+                </button>
+                <div class="attendee-card__reorder">
+                  <button type="button" class="attendee-card__action" aria-label="Move Noah Sullivan up">
+                    <i data-lucide="chevron-up" aria-hidden="true"></i>
+                  </button>
+                  <button type="button" class="attendee-card__action" aria-label="Move Noah Sullivan down">
+                    <i data-lucide="chevron-down" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
             </article>
-            <article class="attendee-card attendee-card--empty">
+            <article class="attendee-card attendee-card--sponsor">
               <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
               <span class="attendee-card__seat">6</span>
-              <p class="attendee-card__empty-label">Empty seat</p>
-              <button type="button" class="btn btn--secondary btn--sm">Assign</button>
+              <div class="attendee-card__body">
+                <p class="attendee-card__name">Isabella Torres</p>
+                <p class="attendee-card__meta">
+                  <span class="attendee-card__company">Vertex Creative</span>
+                  <span class="attendee-card__sep" aria-hidden="true">·</span>
+                  <span class="attendee-card__role">Sponsor</span>
+                </p>
+              </div>
+              <div class="attendee-card__actions">
+                <button type="button" class="attendee-card__action" aria-label="Remove Isabella Torres">
+                  <i data-lucide="trash" aria-hidden="true"></i>
+                </button>
+                <div class="attendee-card__reorder">
+                  <button type="button" class="attendee-card__action" aria-label="Move Isabella Torres up">
+                    <i data-lucide="chevron-up" aria-hidden="true"></i>
+                  </button>
+                  <button type="button" class="attendee-card__action" aria-label="Move Isabella Torres down">
+                    <i data-lucide="chevron-down" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
             </article>
             <article class="attendee-card attendee-card--empty">
               <span class="attendee-card__accent" aria-hidden="true"><span class="attendee-card__accent-bar"></span></span>
@@ -1980,6 +2111,161 @@
         <!-- TODO(backend:SeatingPlanner): Confirm only removes the card and its table cards from
              the DOM — see seating-delete-plan for the single transaction this should perform. -->
         <button type="button" class="btn btn--alert" data-dp-confirm>Delete Plan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table form (Edit) — Figma 3515:178044 desktop / 3515:227256 mobile, plus three more states:
+       Sponsor lookup 3515:180174 / 3515:227440, reduced capacity 3515:179100 / 3515:227648, and
+       help on 3515:181232 / 3515:227842.
+
+       Six fields in one grid: four full width, then Seats + Shape sharing a row at BOTH sizes
+       (desktop 225+12+225=462, mobile 146+12+146=304 — measured, not assumed; unlike create-plan
+       this does not change column count at the breakpoint).
+
+       Tier and Shape are Selects. Figma models them as Input instances carrying a chevron, but a
+       chevron field that opens a list is what `.sel` already is, and create-plan set that
+       precedent for Shape on this very screen. -->
+  <div class="modal-overlay" id="table-form" data-table-form>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="table-form-title">
+      <div class="modal__header">
+        <div class="modal__title-block">
+          <h2 class="modal__title" id="table-form-title">Edit table</h2>
+        </div>
+        <button class="modal__close" type="button" aria-label="Close" data-tf-close>
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="modal__body">
+        <!-- novalidate for the same reason as the other two plan modals: the browser's own
+             bubbles would pre-empt the designed error lines. -->
+        <form class="table-form__form" id="table-form-form" novalidate>
+          <div class="table-form__help-toggle">
+            <button type="button" class="toggle toggle--xxs" role="switch" aria-checked="false"
+                    id="tf-help-toggle" aria-labelledby="tf-help-label">
+              <span class="toggle__track"><span class="toggle__knob"></span></span>
+            </button>
+            <label class="table-form__help-label" id="tf-help-label" for="tf-help-toggle">Show help</label>
+          </div>
+
+          <div class="table-form__fields">
+            <div class="input" data-tf-field="name">
+              <label class="input__label" for="tf-name">Table name</label>
+              <div class="input__wrap">
+                <input id="tf-name" type="text" required class="input__control" placeholder="Table 1">
+              </div>
+              <p class="input__help" data-tf-help>Display name for the table.</p>
+            </div>
+
+            <!-- Tier. The action row is Input's own fourth slot (`.input__action`, Figma
+                 3435:28465) and belongs to THIS field — verified in all six frames, where it sits
+                 inside the tier Input's Action Slot. It only looks like it belongs to Sponsor when
+                 help is on, because the help line pushes it down toward the next label. -->
+            <div class="table-form__stack" data-tf-field="tier">
+              <div class="sel" data-sel>
+                <label class="sel__label" for="tf-tier">Table type / tier</label>
+                <button id="tf-tier" class="sel__control" type="button" data-sel-trigger>
+                  <span class="sel__value">Standard</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <ul class="sel__menu" role="listbox" aria-label="Table type / tier">
+                  <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">Standard <i data-lucide="check"></i></button></li>
+                  <li><button type="button" class="sel__menu-item" role="option">VIP</button></li>
+                  <li><button type="button" class="sel__menu-item" role="option">Head Table</button></li>
+                  <li><button type="button" class="sel__menu-item" role="option">Gold</button></li>
+                  <li><button type="button" class="sel__menu-item" role="option">Silver</button></li>
+                  <li><button type="button" class="sel__menu-item" role="option">Bronze</button></li>
+                </ul>
+              </div>
+              <p class="input__help" data-tf-help>The table tier. Shown as a colour and a label on the plan.</p>
+              <!-- TODO(backend:SeatingPlanner): opens the Table Types lookup — see
+                   seating-table-types (TASK-342308), which is not built in this template yet. -->
+              <button type="button" class="input__action" data-tf-manage-types>
+                <i data-lucide="plus" aria-hidden="true"></i>Manage table types
+              </button>
+            </div>
+
+            <!-- Sponsor. A searchable account lookup, so NOT a `.sel` — Figma draws a floating
+                 List of DropdownItems above a search row, which is exactly Dropdown's
+                 `--search` panel. The trigger carries both classes deliberately: `.sel__control`
+                 gives it the field look Figma draws, `.dropdown__trigger` is what Dropdown.js
+                 binds to and what rotates the chevron. -->
+            <div class="table-form__stack table-form__sponsor" data-tf-field="sponsor">
+              <label class="sel__label" for="tf-sponsor">Sponsor</label>
+              <div class="dropdown">
+                <button id="tf-sponsor" type="button" class="sel__control dropdown__trigger"
+                        aria-haspopup="menu" aria-expanded="false">
+                  <span class="sel__value" data-tf-sponsor-value>Search Accounts…</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <div class="dropdown__panel dropdown__panel--search" role="menu" aria-label="Sponsor account">
+                  <div class="dropdown__search">
+                    <i data-lucide="search" aria-hidden="true"></i>
+                    <input type="text" class="dropdown__search-input" placeholder="Search…"
+                           aria-label="Search accounts" data-tf-sponsor-search>
+                  </div>
+                  <!-- TODO(backend:SeatingPlanner): three mock accounts — the real list is a CRM
+                       account lookup. See seating-table-form. -->
+                  <ul class="dropdown__list" data-tf-sponsor-list>
+                    <li role="none"><button type="button" class="dropdown-item" role="menuitem"><span data-text="Mastercard">Mastercard</span></button></li>
+                    <li role="none"><button type="button" class="dropdown-item" role="menuitem"><span data-text="Monzo">Monzo</span></button></li>
+                    <li role="none"><button type="button" class="dropdown-item" role="menuitem"><span data-text="Visa">Visa</span></button></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="input" data-tf-field="host">
+              <label class="input__label" for="tf-host">Host</label>
+              <div class="input__wrap">
+                <input id="tf-host" type="text" class="input__control" placeholder="e.g. Table captain">
+              </div>
+              <p class="input__help" data-tf-help>Optional when a table host is required</p>
+            </div>
+
+            <div class="input table-form__half" data-tf-field="seats">
+              <label class="input__label" for="tf-seats">Seats (capacity)</label>
+              <div class="input__wrap">
+                <input id="tf-seats" type="number" min="1" required class="input__control" value="10">
+              </div>
+              <p class="input__help" data-tf-help>Seats per table must be between 6 and 12.</p>
+            </div>
+
+            <div class="table-form__stack table-form__half" data-tf-field="shape">
+              <div class="sel" data-sel>
+                <label class="sel__label" for="tf-shape">Shape</label>
+                <button id="tf-shape" class="sel__control" type="button" data-sel-trigger>
+                  <span class="sel__value">Round</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <ul class="sel__menu" role="listbox" aria-label="Shape">
+                  <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">Round <i data-lucide="check"></i></button></li>
+                  <li><button type="button" class="sel__menu-item" role="option">Square</button></li>
+                  <li><button type="button" class="sel__menu-item" role="option">Rectangle</button></li>
+                </ul>
+              </div>
+              <p class="input__help" data-tf-help>Default shape for the generated table.</p>
+            </div>
+          </div>
+
+          <!-- Capacity warning. Alert type=warning: the colours ARE --ai-surface-warning-soft /
+               --ai-border-warning / --ai-text-warning, confirmed by get_variable_defs on
+               3515:179636 after the designer bound them. Only the box metrics are compact
+               relative to `.alert`'s base, which is scoped in the CSS.
+               Live and non-blocking, per the designer: Save stays enabled and the people really
+               are returned. `role="status"` not `role="alert"` — it updates as you type, and an
+               assertive live region would interrupt on every keystroke. -->
+          <div class="alert alert--warning table-form__warning" role="status" hidden data-tf-warning>
+            <span class="alert__icon"><i data-lucide="triangle-alert" aria-hidden="true"></i></span>
+            <p class="table-form__warning-text" data-tf-warning-text></p>
+          </div>
+        </form>
+      </div>
+      <div class="modal__footer table-form__footer">
+        <button type="button" class="btn btn--secondary" data-tf-close>Cancel</button>
+        <!-- TODO(backend:SeatingPlanner): Save only rewrites the card in the DOM — see
+             seating-table-form for the Table record this should PATCH. -->
+        <button type="submit" form="table-form-form" class="btn btn--primary">Save</button>
       </div>
     </div>
   </div>
