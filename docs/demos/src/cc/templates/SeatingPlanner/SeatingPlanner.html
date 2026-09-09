@@ -82,6 +82,10 @@
        1:6881). Without this the pill renders with its classes but no styles — measured at 123px
        wide against the component's 448, with the page's 16px body type instead of its own 14/20. -->
   <link rel="stylesheet" href="../../../components/SeatingToast/SeatingToast.css">
+  <!-- ColorPickerInput: the tier colour chips in the Table types modal (Figma 1:43245 /
+       1:44462) use its new --chip variant. Checked rather than assumed — SeatingToast shipped
+       unlinked and rendered its classes with no styles. -->
+  <link rel="stylesheet" href="../../../components/ColorPickerInput/ColorPickerInput.css">
   <link rel="stylesheet" href="../ControlScreen/ControlScreen.css">
   <link rel="stylesheet" href="SeatingPlanner.css">
 </head>
@@ -2310,6 +2314,160 @@
              transaction that must drop the Table and its TableSeat rows and return the occupants. -->
         <button type="button" class="btn btn--alert" data-dtb-confirm>Delete table</button>
       </div>
+    </div>
+  </div>
+
+  <!-- Table types (TASK-342308) — Figma 1:43151 desktop / 1:44348 mobile, modal 1:43245 /
+       1:44462. Opened from the Table form's "+ Manage table types" link, which until now went
+       nowhere.
+
+       FOUR regions inside `.modal`, which is more than Modal's header/body/footer: the header,
+       an intro band, the body list, and an add band. Composed here as scoped regions rather than
+       by extending Modal — Modal does not forbid extra children, and an intro band is specific
+       to this dialog.
+
+       NO Cancel/Save: neither frame draws a footer, so every edit applies live and the X is the
+       only way out. That is consistent with the documented behaviour, where recolouring repaints
+       the tables as you go.
+
+       NO reorder controls: the documented spec asks for up/down per row, but neither frame draws
+       them (designer, 2026-09-09 — build what Figma draws). sortOrder is still the row order,
+       just not user-editable yet. -->
+  <div class="modal-overlay" id="table-types" data-table-types>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="table-types-title"
+         aria-describedby="table-types-intro">
+      <div class="modal__header">
+        <div class="modal__title-block">
+          <h2 class="modal__title" id="table-types-title">Table types</h2>
+        </div>
+        <button class="modal__close" type="button" aria-label="Close" data-tt-close>
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <p class="table-types__intro" id="table-types-intro">Define the table tiers. Add, rename,
+        recolour or remove them. Tables using a removed tier fall back to
+        <span data-tt-fallback>Standard</span>.</p>
+
+      <div class="modal__body table-types__body">
+        <!-- Standard: editable text (designer, 2026-09-09) but NOT removable, and it carries no
+             colour — a Standard table shows no tier chip at all, which is why Figma gives this
+             row neither a swatch nor a trash button. It is also the fallback every removed tier
+             drops to, so the intro sentence reads its current name rather than the word
+             "Standard" being hardcoded twice. -->
+        <div class="table-types__row table-types__row--default" data-tt-row data-tt-slug="standard">
+          <div class="input table-types__name">
+            <div class="input__wrap">
+              <input type="text" class="input__control" value="Standard" aria-label="Tier name" data-tt-name>
+            </div>
+          </div>
+        </div>
+
+        <hr class="table-types__rule">
+
+        <div class="table-types__list" data-tt-list>
+          <div class="table-types__row" data-tt-row data-tt-slug="gold">
+            <div class="color-picker-input color-picker-input--chip" data-tt-colour>
+              <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #d97706;"></span></span>
+              <span class="color-picker-input__value">#d97706</span>
+              <input type="color" class="color-picker-input__native" value="#d97706" aria-label="Gold tier colour">
+            </div>
+            <div class="input table-types__name">
+              <div class="input__wrap">
+                <input type="text" class="input__control" value="Gold" aria-label="Tier name" data-tt-name>
+              </div>
+            </div>
+            <button type="button" class="table-types__remove" aria-label="Remove Gold tier" data-tt-remove>
+              <i data-lucide="trash-2" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="table-types__row" data-tt-row data-tt-slug="silver">
+            <div class="color-picker-input color-picker-input--chip" data-tt-colour>
+              <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #abb2b8;"></span></span>
+              <span class="color-picker-input__value">#abb2b8</span>
+              <input type="color" class="color-picker-input__native" value="#abb2b8" aria-label="Silver tier colour">
+            </div>
+            <div class="input table-types__name">
+              <div class="input__wrap">
+                <input type="text" class="input__control" value="Silver" aria-label="Tier name" data-tt-name>
+              </div>
+            </div>
+            <button type="button" class="table-types__remove" aria-label="Remove Silver tier" data-tt-remove>
+              <i data-lucide="trash-2" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="table-types__row" data-tt-row data-tt-slug="bronze">
+            <div class="color-picker-input color-picker-input--chip" data-tt-colour>
+              <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #a07553;"></span></span>
+              <span class="color-picker-input__value">#a07553</span>
+              <input type="color" class="color-picker-input__native" value="#a07553" aria-label="Bronze tier colour">
+            </div>
+            <div class="input table-types__name">
+              <div class="input__wrap">
+                <input type="text" class="input__control" value="Bronze" aria-label="Tier name" data-tt-name>
+              </div>
+            </div>
+            <button type="button" class="table-types__remove" aria-label="Remove Bronze tier" data-tt-remove>
+              <i data-lucide="trash-2" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="table-types__row" data-tt-row data-tt-slug="head-table">
+            <div class="color-picker-input color-picker-input--chip" data-tt-colour>
+              <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #991b1b;"></span></span>
+              <span class="color-picker-input__value">#991b1b</span>
+              <input type="color" class="color-picker-input__native" value="#991b1b" aria-label="Head Table tier colour">
+            </div>
+            <div class="input table-types__name">
+              <div class="input__wrap">
+                <input type="text" class="input__control" value="Head Table" aria-label="Tier name" data-tt-name>
+              </div>
+            </div>
+            <button type="button" class="table-types__remove" aria-label="Remove Head Table tier" data-tt-remove>
+              <i data-lucide="trash-2" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="table-types__row" data-tt-row data-tt-slug="vip">
+            <div class="color-picker-input color-picker-input--chip" data-tt-colour>
+              <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #00749e;"></span></span>
+              <span class="color-picker-input__value">#00749e</span>
+              <input type="color" class="color-picker-input__native" value="#00749e" aria-label="VIP tier colour">
+            </div>
+            <div class="input table-types__name">
+              <div class="input__wrap">
+                <input type="text" class="input__control" value="VIP" aria-label="Tier name" data-tt-name>
+              </div>
+            </div>
+            <button type="button" class="table-types__remove" aria-label="Remove VIP tier" data-tt-remove>
+              <i data-lucide="trash-2" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add band. `items-end` in Figma, so the labels sit above their controls and the button
+           aligns to the field baseline rather than the label. -->
+      <form class="table-types__add" id="table-types-add" novalidate>
+        <div class="table-types__add-field">
+          <label class="table-types__label" for="tt-new-colour">Color</label>
+          <div class="color-picker-input color-picker-input--chip" data-tt-new-colour>
+            <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #e5e9eb;"></span></span>
+            <span class="color-picker-input__value">#e5e9eb</span>
+            <input type="color" id="tt-new-colour" class="color-picker-input__native" value="#e5e9eb" aria-label="New tier colour">
+          </div>
+        </div>
+        <div class="table-types__add-field table-types__add-field--grow">
+          <label class="table-types__label" for="tt-new-name">New type name</label>
+          <div class="input">
+            <div class="input__wrap">
+              <input type="text" id="tt-new-name" class="input__control" placeholder="e.g Platinum" data-tt-new-name>
+            </div>
+          </div>
+        </div>
+        <!-- TODO(backend:SeatingPlanner): the tier list is DOM-only — see seating-table-types for
+             the TableType lookup this should write to, and why a delete must repoint dependent
+             Tables rather than be left dangling. -->
+        <button type="submit" class="btn btn--primary btn--sm table-types__add-btn">Add Type</button>
+      </form>
     </div>
   </div>
 

@@ -79,3 +79,68 @@
   box-shadow: 0 0 0 1px var(--ai-surface-primary),
               0 0 0 3px var(--ai-surface-brand-soft);
 }
+
+/* ── Chip variant ────────────────────────────────────────────────────────────
+ * A compact, label-less colour control: just the swatch in a bordered box, no hex text.
+ *
+ * Figma: the Seating Planner's "Manage table types" modal (`lRKvtYSU3SvO5hbMT33jxw`,
+ * `1:43245` desktop / `1:44462` mobile) puts one of these at the head of every tier row and
+ * one in the add-a-tier band. It is drawn as a `Field` 52x40 — white, 1px
+ * --ai-border-secondary, --ai-radius-md, 6px padding — wrapping a 40x28 rectangle at
+ * --ai-radius-xs (2px, which is exactly the token, not a near miss).
+ *
+ * Case A rather than a screen-scoped copy (designer, 2026-09-09): a second colour control in
+ * the codebase is the duplication the build rules warn about, and this is the same control in a
+ * smaller dress. Purely additive — the base shape and every existing usage are untouched.
+ *
+ * WIDTH IS THE ONE COMPOSED VALUE. 52 matches no single spacing token, so it is built as
+ * `--ai-spacing-8` (40) + `--ai-spacing-4` (12). The OUTER box is then exactly Figma's 52x40,
+ * which is what affects the row layout.
+ *
+ * The chip inside comes out 38x26 rather than Figma's 40x28. That is the documented Figma
+ * padding trap, not a mistake: Figma measures its 6px padding from outside a stroke it draws on
+ * the boundary, where CSS border-box counts the border inside the width. SeatingToast records
+ * the same arithmetic (its "17/13" is 16/12 plus the stroke). Matching the rectangle exactly
+ * would push the outer box to 54x42 and break the row. */
+.color-picker-input--chip {
+  inline-size: calc(var(--ai-spacing-8) + var(--ai-spacing-4));   /* 52 */
+  /* No `height: auto` companion here. `block-size` and `height` are the SAME property, so an
+   * `auto` written after this line to "reset the base" silently clobbered it and collapsed the
+   * control to 14px — measured. The base's own 40px is what this replaces, with the token. */
+  block-size: var(--ai-spacing-8);                                /* 40 */
+  padding: var(--ai-spacing-2);                                   /* 6 */
+  gap: 0;
+  flex-shrink: 0;
+}
+
+/* Square, edge-to-edge, and NOT the base's round 20px swatch. The base sets an explicit
+ * 20x20 plus its own border and padding, so all four are reset rather than overridden
+ * piecemeal — a half-reset swatch is how a round chip survives in a square slot. */
+.color-picker-input--chip .color-picker-input__swatch {
+  /* 100% and nothing else: the base sets an explicit 20x20, and `width`/`height: auto` written
+   * after these would override them for the same reason as above. */
+  inline-size: 100%;
+  block-size: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ai-radius-xs);   /* 2px */
+  background-color: transparent;
+}
+
+.color-picker-input--chip .color-picker-input__swatch-inner {
+  border-radius: var(--ai-radius-xs);
+}
+
+/* The hex string has no room in a 52px control, and Figma draws none. Hidden rather than
+ * dropped from the markup so the value stays available to assistive tech and to any consumer
+ * reading it back. */
+.color-picker-input--chip .color-picker-input__value {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
