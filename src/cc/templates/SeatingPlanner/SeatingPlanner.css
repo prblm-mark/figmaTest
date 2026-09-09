@@ -936,3 +936,39 @@
 .table-form__sponsor .sel__control {
   inline-size: 100%;
 }
+
+/* ── Table form: per-breakpoint label TEXT ────────────────────────────────────────────────
+ * Two fields are worded differently at the two sizes, and this is deliberate rather than
+ * drift — all FOUR frames agree, across both modals and both Figma files:
+ *
+ *              desktop              mobile
+ *   seats      "Seats (capacity)"   "Seats / table"
+ *   shape      "Shape"              "Table shape"
+ *
+ * (Verified with `disableCodeConnect: true`. Left on, Code Connect shadows the design context
+ * and hands back this project's own Input snippet with a generic "Label", so the real strings
+ * are invisible — which is exactly how the mobile wording was missed when the Edit form was
+ * built, and it shipped with the desktop labels at both sizes.)
+ *
+ * Note it is not simply "shorter on mobile": "Table shape" is LONGER than "Shape". So this is
+ * wording, not truncation, and cannot be done with ellipsis or a narrower column.
+ *
+ * Done with two spans and `display: none` rather than JS: no measurement is involved, and
+ * `display: none` removes the unused string from the accessibility tree, so a screen reader
+ * reads one label rather than both. The switch is at 639px to sit on the SAME step as the
+ * modal's own sm treatment (Modal.css's block and the sm replication above) — the frames only
+ * evidence 402 and 1728, so aligning to the existing step is the coherent choice rather than
+ * inventing a third breakpoint. */
+.table-form__label-narrow {
+  display: none;
+}
+
+@media (max-width: 639px) {
+  .table-form__label-wide {
+    display: none;
+  }
+
+  .table-form__label-narrow {
+    display: inline;
+  }
+}
