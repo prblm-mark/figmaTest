@@ -1487,3 +1487,99 @@ was still null and cascaded into nonsense output:
 | 10 | re-open | `panel=empty`, primary **Upload PDF / image** — committed |
 
 Trash background at rest measured `rgba(0, 0, 0, 0)`.
+
+---
+
+## The "Populated" baseline (2026-09-09) — spec for the working prototype
+
+Design System file, `3515:202250` (desktop 1728×1139) and `3515:213496` (mobile 402×874), both
+named **Populated**. This is the dataset the working prototype is to start from.
+
+### Plans — four, not one
+
+| Plan | Frame's counts | Treatment |
+|---|---|---|
+| **Main Ballroom** *(selected)* | 12 tables · 124/148 seated · 24 seats free | `--ai-surface-minimal` bg, `--ai-border-brand` |
+| **Overflow Annex** | 6 tables · 41/48 seated · 7 seats free | `--ai-surface-primary` bg |
+| **VIP Lounge** | 4 tables · 32/32 seated | **FullBadge**, progress fill `--ai-surface-success` |
+| **Press Room** | 3 tables · **Empty** · 24 seats free | **no** progress fill element at all |
+
+Card chrome: `min-w-[280px]`, `w-[290px]`, `p-[--ai-spacing-5]`, `gap-[--ai-spacing-3]`,
+`--ai-radius-lg`, `light/shadow-xxs`. Progress track 6px, `--ai-surface-contrast`,
+`--ai-radius-full`. Name 16px Bold with ellipsis; counts 12px (`--ai-font-fixed-xxs`)
+`--ai-text-contrast`; "N seats free" 11px (`--ai-font-fixed-4xs`) SemiBold `--ai-text-brand`.
+
+Note the counts line reads **"3 tables · Empty"** rather than "0/24 seated" when a plan holds
+nobody — a distinct copy form, not a formatting edge case.
+
+Mobile shows **two** cards in a horizontal strip (240×85 each), so the strip scrolls.
+
+### Main Ballroom's tables — 11 of 13 visible in the listing viewport
+
+| # | Name | Type chip | Sponsor | Role split | Seated |
+|---|---|---|---|---|---|
+| 1 | — | **Headline Sponsor** | Mastercard | A2 · VIP1 · Sp1 · Spo2 · **H1** | 7/10 |
+| 2 | — | **Platinum** | Monzo | A2 · VIP1 · Sp2 | 5/10 |
+| 3 | Table 3 | — | — | A2 · Sp1 · Spo7 | 10/10 **Full** |
+| 4 | Table 4 | — | — | A7 · Sp1 · Spo2 | 10/10 **Full** |
+| 5 | Table 5 | — | — | A1 · VIP1 · Sp1 · Spo1 | 4/10 |
+| 6 | Table 6 | — | — | — | 0/10 |
+| 7 | Table 7 | — | — | Sp1 · Spo1 | 2/10 |
+| 8–11 | Table 8–11 | — | — | — | 0/10 |
+
+Event bar: "The Card & Payments Awards 2026" at **22px** (`--ai-font-fixed-xl`) Bold, then
+3 Feb 2026 / 386 attendees / Grosvenor House, London. Toolbar: "Main Ballroom" 18px Bold +
+"**(72 Unassigned)**" 14px Medium `--ai-text-contrast`.
+
+### The type chips are Gold and VIP with overridden labels
+
+`TableType` has `--vip / --head-table / --gold / --silver / --bronze`. The baseline's chips read
+**"Headline Sponsor"** and **"Platinum"**, which are not in that set — but the design context shows
+them as instances of the **Gold** (`rgb(217,119,6)`, border `#f4d6b4`) and **VIP**
+(`rgb(0,116,158)`, border `#b2d5e2`) variants with the *text* overridden.
+
+That is consistent with the Table types dialog, where a tier's **label is editable data** and its
+colour comes from the tier. So the model carries `{ label, variant }` per type rather than a fixed
+enum — and the baseline's two labels want adding to that lookup's seed.
+
+### Host is now drawn — and that settles an open question
+
+Card 1's legend reads **`Host (1)`**. `seating-table-grid` had recorded the opposite as an open
+question: *"Figma's legend omits Host though the collection and AttendeeCard both define it, so
+settle whether a table can seat one."* Settled: it can.
+
+`TableCard` had deliberately withheld the modifier for exactly that reason, with a comment saying
+so. `--sp-host` already existed in all four seating palettes (`#f76b15` default), so only the
+modifier was missing — and without it a Host segment fell through to the `--ai-surface-contrast`
+default and rendered **identically to an empty seat**. Added 2026-09-09; the stale comment is
+corrected. Measured on the live page: attendee `#0797b9`, vip `#ab4aba`, speaker `#4cbba5`,
+sponsor `#5b5bd6`, empty `rgb(208,219,225)`.
+
+`--empty` correctly has no modifier: the default *is* the empty treatment.
+
+### Where the frame does not reconcile — the build must derive, not copy
+
+Four places, all consequences of static art:
+
+1. **`Empty (4)` on every 0/10 card.** An empty ten-seat table should read `Empty (10)`. The
+   placeholder legend was never updated.
+2. **`12 tables · 124/148 seated`** on the Main Ballroom card, against **13** Table Card instances
+   and 130 seats in the listing. Already recorded separately as `seating-export-plan-capacity`,
+   where the export's derived `6/120` visibly disagreed with the card's `6/148`.
+3. **`4/ 10 seated`** on card 5 — missing space.
+4. **Three toolbar buttons labelled Room Layout / Add Table / Add Table.** The third is Export —
+   it is labelled Export in the export frames (`1:32273`) at the same 111px width. A stale label.
+
+A data-driven build derives all of these, so they fix themselves — which means the prototype will
+**correct** the frame in those four places rather than reproduce it. Worth knowing before comparing
+the two side by side.
+
+### Not yet resolved
+
+- **`Unassigned.css` is not linked** on this page, and there is no tray in the markup at all — only
+  the toggle and its label. Fourth stylesheet found missing on this screen after SeatingToast,
+  ColorPickerInput and DragDropFile.
+- **The unassigned pool size.** The toolbar says 72. Across all four plans the frame's own numbers
+  seat 124+41+32+0 = 197 of 386 attendees, which would make 189 unassigned, not 72. So "unassigned"
+  is not "event attendees minus seated" — it needs a definition before the pool can be derived
+  rather than authored.

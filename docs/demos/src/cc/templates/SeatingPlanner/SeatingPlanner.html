@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="../../../components/Dropdown/Dropdown.css">
   <link rel="stylesheet" href="../../../components/DropdownItem/DropdownItem.css">
   <link rel="stylesheet" href="../../../components/DragDropFile/DragDropFile.css">
+  <link rel="stylesheet" href="../../patterns/Unassigned/Unassigned.css">
   <link rel="stylesheet" href="../../../components/Portraits/Portraits.css">
   <link rel="stylesheet" href="../../../components/Avatar/Avatar.css">
   <link rel="stylesheet" href="../../../components/NotificationBadge/NotificationBadge.css">
@@ -508,7 +509,7 @@
                 <i data-lucide="calendar" aria-hidden="true"></i>3 Feb 2026
               </li>
               <li class="seating-header__meta-item">
-                <i data-lucide="users" aria-hidden="true"></i>386 attendees
+                <i data-lucide="users" aria-hidden="true"></i><span data-sp-attendee-count>183 attendees</span>
               </li>
               <li class="seating-header__meta-item">
                 <i data-lucide="map-pin" aria-hidden="true"></i>Grosvenor House, London
@@ -567,7 +568,7 @@
                 <i data-lucide="calendar" aria-hidden="true"></i>3 Feb 2026
               </li>
               <li class="seating-header__meta-item">
-                <i data-lucide="users" aria-hidden="true"></i>386 attendees
+                <i data-lucide="users" aria-hidden="true"></i><span data-sp-attendee-count>183 attendees</span>
               </li>
               <li class="seating-header__meta-item">
                 <i data-lucide="map-pin" aria-hidden="true"></i>Grosvenor House, London
@@ -625,7 +626,8 @@
           <div class="seating-header__toolbar-actions">
             <div class="seating-header__room">
               <p class="seating-header__room-name">Main Ballroom</p>
-              <p class="seating-header__room-count">(66 Unassigned)</p>
+              <!-- Derived: signed up minus assigned, event-wide. See seating-app.js. -->
+              <p class="seating-header__room-count" data-sp-unassigned-count>(72 Unassigned)</p>
             </div>
             <div class="seating-header__toggle-group">
               <!-- TODO(backend:SeatingPlanner): this toggle reveals the Unassigned panel — the
@@ -1164,6 +1166,36 @@
              aria-valuemin="240" aria-valuemax="0" aria-valuenow="320">
           <span class="seating-plan__handle-bar" aria-hidden="true"></span>
         </div>
+
+        <!-- Unassigned tray (TASK-344753) — the panel the "Show unassigned" switch has always
+             implied and never revealed. Markup is the DS Unassigned pattern's own; its stylesheet
+             was missing from this page and is now linked. Hidden until the switch asks for it.
+
+             The count is signed up MINUS assigned and is event-wide, so it does not change when
+             you switch plans — only seating or unseating moves it (designer, 2026-09-09). -->
+        <aside class="seating-plan__pool" data-sp-pool-region aria-label="Unassigned attendees" hidden>
+          <section class="unassigned" data-sp-pool>
+            <header class="unassigned__header">
+              <div class="unassigned__header-row">
+                <h3 class="unassigned__title">Unassigned</h3>
+                <span class="unassigned__count" data-sp-pool-count>72</span>
+              </div>
+              <p class="unassigned__hint">Signed up, not yet seated.</p>
+              <div class="input input--sm">
+                <div class="input__wrap">
+                  <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
+                  <input type="search" class="input__control" data-sp-pool-search
+                         placeholder="Find an attendee" aria-label="Find an unassigned attendee">
+                </div>
+              </div>
+            </header>
+            <div class="unassigned__body">
+              <!-- TODO(backend:SeatingPlanner): the pool is derived from the mock roster in
+                   seating-data.js — see seating-export-occupant-coverage. -->
+              <div class="unassigned__list" data-sp-pool-list></div>
+            </div>
+          </section>
+        </aside>
 
         <aside class="seating-plan__aside" data-sp-aside aria-label="Selected table">
           <section class="table-detail" data-sp-detail data-backend-todo="seating-table-detail">
@@ -2892,6 +2924,11 @@
   <!-- Table Shape uses Select. Select.js is NOT added here: the ported shell already
        loads it further down, and a second include would double-bind its document
        click handler so every toggle cancelled itself. -->
+  <!-- Model then renderer, both BEFORE SeatingPlanner.js. The interaction modules are all
+       delegated so order barely matters to them, but the export and room-layout modules read the
+       DOM on open, and the detail/listing must exist by then. -->
+  <script src="seating-data.js"></script>
+  <script src="seating-app.js"></script>
   <script src="SeatingPlanner.js"></script>
 
   <!-- ActionsMenu rail popovers (Info, …). Generic toggle: one open at a time,
