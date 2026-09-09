@@ -1047,3 +1047,166 @@
     line-height: var(--ai-leading-sm);     /* 20px */
   }
 }
+
+/* ── Table types modal ────────────────────────────────────────────────────────────────────
+ * Figma 1:43151 desktop / 1:44348 mobile; modal 1:43245 (512x598) / 1:44462 (338x563).
+ *
+ * Modal supplies the shell. What this adds is the two regions Modal has no slot for — an intro
+ * band between header and body, and an add band after it — plus the row layout.
+ *
+ * Measured, not assumed. Desktop: header 65, intro 56, body 360 (content 462x312), add band 115.
+ * Mobile: header 57, intro 60, body 344 (content 304x312), add band 100. The BODY CONTENT IS
+ * 312 AT BOTH SIZES — six 40px rows on a 52px pitch plus the divider — which is why no row
+ * geometry changes at the breakpoint. */
+
+/* Intro. Its own band, not part of the body: Figma places it as a sibling between ModalHeader
+ * and ModalBody with top and side padding but NO bottom padding — the body's own top padding
+ * provides the separation, and there is no rule under it (the visible line lower down is the
+ * divider under the Standard row, inside the body). */
+.table-types__intro {
+  margin: 0;
+  padding-block-start: var(--ai-spacing-5);      /* 16 desktop */
+  padding-inline: var(--ai-spacing-6);           /* 24 desktop */
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);           /* 12 */
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-xs);             /* 16 */
+  color: var(--ai-text-contrast);
+}
+
+/* The body is a plain column here — Modal's own 16px gap would double the 12px row pitch. */
+.table-types__body {
+  gap: var(--ai-spacing-4);                      /* 12 — the row pitch is 40 + 12 = 52 */
+}
+
+.table-types__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-4);                      /* 12 */
+}
+
+/* A row: colour chip, name field, remove. 8px gaps, from the frame's `gap-[8px]`. */
+.table-types__row {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);                      /* 8 */
+}
+
+/* The name field takes the rest. `min-inline-size: 0` so a long tier name shrinks the input
+ * rather than pushing the remove button out of the row. */
+.table-types__name {
+  flex: 1 0 0;
+  min-inline-size: 0;
+}
+
+/* Standard has no swatch and no remove, so its field spans the row — which is exactly what
+ * `flex: 1 0 0` already does once it is the only child. Nothing extra needed; the class exists
+ * so the JS can find the row and the rule documents why it looks different. */
+.table-types__row--default {
+  /* intentionally empty — see above */
+}
+
+/* Divider under the Standard row (Figma "Line 1", 1px, full content width). 1px is a border
+ * width, which is a documented raw-px exception. */
+.table-types__rule {
+  block-size: 0;
+  margin: 0;
+  border: 0;
+  border-block-start: 1px solid var(--ai-border-secondary);
+}
+
+/* Remove button. Figma places a Button instance here, but its paint matches NEITHER of our
+ * Button types: it is transparent with no border, where `.btn--secondary` is transparent WITH a
+ * --ai-btn-secondary-border and `.btn--tertiary` is a solid --ai-btn-tertiary-bg (#e5e9eb) with
+ * none. Built as a bare icon button instead, matching `.attendee-card__action` — the same
+ * affordance, a destructive icon control inside a list row, already established on this surface.
+ * Flagged for the designer rather than forced into a Button variant that would draw a box or a
+ * fill Figma does not show. */
+.table-types__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--ai-spacing-7);              /* 32 */
+  block-size: var(--ai-spacing-7);
+  flex-shrink: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: var(--ai-radius-md);
+  color: var(--ai-icon-secondary);
+  cursor: pointer;
+  transition: background-color var(--ai-transition-default),
+              color var(--ai-transition-default);
+}
+
+.table-types__remove:hover {
+  background-color: var(--ai-surface-minimal);
+  color: var(--ai-text-error);
+}
+
+.table-types__remove:focus-visible {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: 2px;
+}
+
+.table-types__remove [data-lucide],
+.table-types__remove svg {
+  inline-size: var(--ai-icon-size-sm);           /* 16 */
+  block-size: var(--ai-icon-size-sm);
+}
+
+/* Add band. `--ai-surface-minimal` ground with a --ai-border-secondary top border, both read off
+ * the frame (`bg-[#f3f6f7]`, `border-t` `#e5e9eb`). `align-items: flex-end` is Figma's
+ * `items-end`, which is what puts the button on the FIELD baseline rather than the label's. */
+.table-types__add {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--ai-spacing-3);                      /* 8 */
+  padding: var(--ai-spacing-6);                  /* 24 desktop */
+  background-color: var(--ai-surface-minimal);
+  border-block-start: 1px solid var(--ai-border-secondary);
+}
+
+.table-types__add-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-0-5);                    /* 2 — label 24 tall sits 26 above the field */
+  min-inline-size: 0;
+}
+
+.table-types__add-field--grow {
+  flex: 1 0 0;
+}
+
+.table-types__label {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);           /* 12 */
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-md);             /* 24 */
+  color: var(--ai-text-secondary);
+  white-space: nowrap;
+}
+
+/* 40px tall so it lines up with the 40px field beside it, while keeping `--sm`'s 12px type and
+ * 12px padding — which is what Figma draws (97x40 desktop, 80x40 mobile, `button/sm` type and
+ * `--ai-spacing-4` inline padding). Neither `.btn` (40 tall but 14px type, 16px padding) nor
+ * `.btn--sm` (32 tall) matches on its own, so the height is raised on top of `--sm`. */
+.table-types__add-btn.btn {
+  min-height: var(--ai-spacing-8);               /* 40 */
+  flex-shrink: 0;
+}
+
+/* ── Table types, mobile ─────────────────────────────────────────────────────────────────
+ * Only the two bands' padding changes — the rows are identical at both sizes. Figma: intro
+ * `pt-12 px-16` against desktop's `pt-16 px-24`, add band `p-16` against `p-24`. 639px to sit on
+ * the same step as the modal's own sm treatment, as with the other dialogs on this screen. */
+@media (max-width: 639px) {
+  .table-types__intro {
+    padding-block-start: var(--ai-spacing-4);    /* 12 */
+    padding-inline: var(--ai-spacing-5);         /* 16 */
+  }
+
+  .table-types__add {
+    padding: var(--ai-spacing-5);                /* 16 */
+  }
+}

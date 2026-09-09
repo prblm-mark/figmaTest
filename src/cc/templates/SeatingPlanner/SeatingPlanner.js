@@ -2193,3 +2193,311 @@
     });
   }
 })();
+
+/* ── Table types (TASK-342308) ─────────────────────────────────────────────────────────────
+ * Figma 1:43151 desktop / 1:44348 mobile. The lookup the Table form's "+ Manage table types"
+ * link has been pointing at nothing since that form was built.
+ *
+ * THE ROWS ARE THE MODEL, which is the documented shape for seating-table-types: there is no
+ * separate array, the DOM order is the sort order, and a row's name input is the tier's identity.
+ * Everything below reads the rows rather than a parallel copy that could drift from them.
+ *
+ * Live, with no Save — neither frame draws a footer, so each edit applies as it is made.
+ */
+(function () {
+  'use strict';
+
+  if (window.__tableTypesReady) return;
+  window.__tableTypesReady = true;
+
+  var OPEN_CLASS = 'modal-overlay--open';
+  var FOCUSABLE = [
+    'a[href]', 'button:not([disabled])', 'input:not([disabled])',
+    'select:not([disabled])', 'textarea:not([disabled])', '[tabindex]:not([tabindex="-1"])'
+  ].join(',');
+
+  var overlay = document.querySelector('[data-table-types]');
+  if (!overlay) return;
+
+  var dialog = overlay.querySelector('[role="dialog"]');
+  var list = overlay.querySelector('[data-tt-list]');
+  var addForm = overlay.querySelector('#table-types-add');
+  var newName = overlay.querySelector('[data-tt-new-name]');
+  var newColour = overlay.querySelector('#tt-new-colour');
+  var fallbackEl = overlay.querySelector('[data-tt-fallback]');
+  var returnFocusTo = null;
+
+  function isOpen() { return overlay.classList.contains(OPEN_CLASS); }
+
+  function focusable() {
+    return Array.prototype.filter.call(
+      dialog.querySelectorAll(FOCUSABLE),
+      function (el) { return el.offsetParent !== null; }
+    );
+  }
+
+  function rows() {
+    return Array.prototype.slice.call(overlay.querySelectorAll('[data-tt-row]'));
+  }
+
+  function nameOf(row) {
+    var input = row.querySelector('[data-tt-name]');
+    return input ? input.value.trim() : '';
+  }
+
+  /* The FIRST row is the fallback, whatever it is called. Standard's text is editable
+   * (designer, 2026-09-09), so hardcoding the word "Standard" in the removal message and the
+   * intro sentence would go stale the moment someone renamed it — hence the intro reads this
+   * back too. */
+  function fallbackName() {
+    var first = rows()[0];
+    return first ? (nameOf(first) || 'Standard') : 'Standard';
+  }
+
+  function syncFallbackLabel() {
+    if (fallbackEl) fallbackEl.textContent = fallbackName();
+  }
+
+  function toast(parts) {
+    document.dispatchEvent(new CustomEvent('sp:toast', {
+      detail: { type: 'error', parts: parts }
+    }));
+  }
+
+  /* Every table card that currently sits on `tier`. The tier lives on the card's dataset
+   * (`data-tf-tier`), written by the Table form — the cards in this template render no tier chip,
+   * so there is nothing else to match on. */
+  function cardsOnTier(tier) {
+    return Array.prototype.filter.call(
+      document.querySelectorAll('.table-card'),
+      function (c) { return (c.getAttribute('data-tf-tier') || 'Standard') === tier; }
+    );
+  }
+
+  /* The Table form's tier dropdown is rebuilt from these rows rather than kept as a second copy
+   * — the documented requirement, and the reason a rename does not orphan the form's options. */
+  function syncTierOptions() {
+    var menu = document.querySelector('#tf-tier ~ .sel__menu, [data-tf-field="tier"] .sel__menu');
+    if (!menu) return;
+    var current = document.querySelector('#tf-tier .sel__value');
+    var currentText = current ? current.textContent.trim() : '';
+    var names = rows().map(nameOf).filter(Boolean);
+
+    menu.innerHTML = '';
+    names.forEach(function (n) {
+      var li = document.createElement('li');
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'sel__menu-item';
+      btn.setAttribute('role', 'option');
+      btn.textContent = n;
+      if (n === currentText) {
+        btn.classList.add('sel__menu-item--selected');
+        btn.setAttribute('aria-selected', 'true');
+        var check = document.createElement('i');
+        check.setAttribute('data-lucide', 'check');
+        btn.appendChild(check);
+      }
+      li.appendChild(btn);
+      menu.appendChild(li);
+    });
+    /* If the selected tier no longer exists, fall the field back rather than leaving it naming a
+     * tier that has gone. */
+    if (current && names.indexOf(currentText) === -1) current.textContent = fallbackName();
+    if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
+  }
+
+  function open(trigger) {
+    if (isOpen()) return;
+    returnFocusTo = trigger || document.activeElement;
+    syncFallbackLabel();
+    overlay.classList.add(OPEN_CLASS);
+    var first = overlay.querySelector('[data-tt-name]');
+    if (first) first.focus();
+    else dialog.focus();
+  }
+
+  function close() {
+    if (!isOpen()) return;
+    overlay.classList.remove(OPEN_CLASS);
+    var target = (returnFocusTo && returnFocusTo !== document.body && returnFocusTo.isConnected)
+      ? returnFocusTo
+      : dialog;
+    returnFocusTo = null;
+    syncTierOptions();
+    if (target) target.focus();
+  }
+
+  /* Opened from the Table form's link, and the form is CLOSED first: both frames draw Table types
+   * over the plain screen with no form behind it, and stacking two dialogs would trap focus in
+   * the wrong one. */
+  document.addEventListener('click', function (event) {
+    var link = event.target.closest ? event.target.closest('[data-tf-manage-types]') : null;
+    if (!link) return;
+    event.preventDefault();
+    var form = document.querySelector('[data-table-form]');
+    if (form) form.classList.remove(OPEN_CLASS);
+    open(link);
+  });
+
+  Array.prototype.forEach.call(overlay.querySelectorAll('[data-tt-close]'), function (btn) {
+    btn.addEventListener('click', close);
+  });
+
+  overlay.addEventListener('click', function (event) {
+    if (event.target === overlay) close();
+  });
+
+  overlay.addEventListener('keydown', function (event) {
+    if (!isOpen()) return;
+    if (event.key === 'Escape') { close(); return; }
+    if (event.key !== 'Tab') return;
+
+    var items = focusable();
+    if (!items.length) return;
+    var first = items[0], last = items[items.length - 1], active = document.activeElement;
+
+    if (event.shiftKey && (active === first || !dialog.contains(active))) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && (active === last || !dialog.contains(active))) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
+
+  /* ── Rename ───────────────────────────────────────────────────────────────────────────
+   * A rename MIGRATES the tables on that tier so identity survives, which is the documented
+   * behaviour and the reason the previous value is stashed on focus: by the time `change` fires
+   * the input no longer knows what it used to say. */
+  overlay.addEventListener('focusin', function (event) {
+    var input = event.target.closest ? event.target.closest('[data-tt-name]') : null;
+    if (input) input.setAttribute('data-tt-was', input.value.trim());
+  });
+
+  overlay.addEventListener('change', function (event) {
+    var input = event.target.closest ? event.target.closest('[data-tt-name]') : null;
+    if (!input) return;
+    var was = input.getAttribute('data-tt-was') || '';
+    var now = input.value.trim();
+
+    if (!now) { input.value = was; return; }
+    if (now === was) return;
+
+    /* Duplicate labels are rejected with a toast — the documented rule, and necessary because
+     * the label IS the identity here: two tiers called "Gold" would be indistinguishable on a
+     * card's dataset. */
+    var clash = rows().some(function (r) {
+      return r !== input.closest('[data-tt-row]') && nameOf(r).toLowerCase() === now.toLowerCase();
+    });
+    if (clash) {
+      input.value = was;
+      toast([{ text: now, strong: true }, { text: ' is already a tier name.' }]);
+      return;
+    }
+
+    cardsOnTier(was).forEach(function (c) { c.setAttribute('data-tf-tier', now); });
+    input.setAttribute('data-tt-was', now);
+    syncFallbackLabel();
+    syncTierOptions();
+  });
+
+  /* ── Recolour ─────────────────────────────────────────────────────────────────────────
+   * ColorPickerInput's own demo script repaints the swatch; this only has to keep the hidden
+   * hex value in step, because that is what a consumer reads back.
+   *
+   * TODO(backend:SeatingPlanner): nothing on this screen renders a tier colour yet — the table
+   * cards here draw no TableType chip (see seating-table-grid), so a recolour is currently
+   * invisible outside this modal. Recorded rather than papered over. */
+  overlay.addEventListener('input', function (event) {
+    var native = event.target.closest ? event.target.closest('.color-picker-input__native') : null;
+    if (!native) return;
+    var wrap = native.closest('.color-picker-input');
+    if (!wrap) return;
+    var inner = wrap.querySelector('.color-picker-input__swatch-inner');
+    var value = wrap.querySelector('.color-picker-input__value');
+    if (inner) inner.style.backgroundColor = native.value;
+    if (value) value.textContent = native.value;
+  });
+
+  /* ── Remove ───────────────────────────────────────────────────────────────────────────── */
+  overlay.addEventListener('click', function (event) {
+    var btn = event.target.closest ? event.target.closest('[data-tt-remove]') : null;
+    if (!btn) return;
+    var row = btn.closest('[data-tt-row]');
+    if (!row) return;
+
+    var tier = nameOf(row);
+    var moved = cardsOnTier(tier);
+    var fallback = fallbackName();
+
+    moved.forEach(function (c) { c.setAttribute('data-tf-tier', fallback); });
+    row.parentNode.removeChild(row);
+    syncTierOptions();
+
+    /* Says how many moved — the documented behaviour, and the reason it names the fallback's
+     * CURRENT label rather than the literal "Standard". */
+    if (moved.length) {
+      toast([
+        { text: tier + ' ', strong: true },
+        { text: 'removed. ' },
+        { text: String(moved.length) + (moved.length === 1 ? ' table' : ' tables'), strong: true },
+        { text: ' moved to ' },
+        { text: fallback + '.', strong: true }
+      ]);
+    } else {
+      toast([{ text: tier + ' ', strong: true }, { text: 'removed. No tables were using it.' }]);
+    }
+  });
+
+  /* ── Add ──────────────────────────────────────────────────────────────────────────────── */
+  if (addForm) {
+    addForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      var name = newName ? newName.value.trim() : '';
+      if (!name) { if (newName) newName.focus(); return; }
+
+      var clash = rows().some(function (r) { return nameOf(r).toLowerCase() === name.toLowerCase(); });
+      if (clash) {
+        toast([{ text: name, strong: true }, { text: ' is already a tier name.' }]);
+        if (newName) newName.focus();
+        return;
+      }
+
+      var colour = newColour ? newColour.value : '#e5e9eb';
+      var row = document.createElement('div');
+      row.className = 'table-types__row';
+      row.setAttribute('data-tt-row', '');
+      row.innerHTML =
+        '<div class="color-picker-input color-picker-input--chip" data-tt-colour>' +
+          '<span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner"></span></span>' +
+          '<span class="color-picker-input__value"></span>' +
+          '<input type="color" class="color-picker-input__native">' +
+        '</div>' +
+        '<div class="input table-types__name">' +
+          '<div class="input__wrap">' +
+            '<input type="text" class="input__control" aria-label="Tier name" data-tt-name>' +
+          '</div>' +
+        '</div>' +
+        '<button type="button" class="table-types__remove" data-tt-remove>' +
+          '<i data-lucide="trash-2" aria-hidden="true"></i>' +
+        '</button>';
+
+      /* Values set as properties, not interpolated into the HTML above — a tier name is user
+       * input, so it goes through `value`/`textContent` and cannot inject markup. */
+      row.querySelector('.color-picker-input__swatch-inner').style.backgroundColor = colour;
+      row.querySelector('.color-picker-input__value').textContent = colour;
+      var nativeInput = row.querySelector('.color-picker-input__native');
+      nativeInput.value = colour;
+      nativeInput.setAttribute('aria-label', name + ' tier colour');
+      row.querySelector('[data-tt-name]').value = name;
+      row.querySelector('[data-tt-remove]').setAttribute('aria-label', 'Remove ' + name + ' tier');
+
+      list.appendChild(row);
+      if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
+
+      if (newName) { newName.value = ''; newName.focus(); }
+      syncTierOptions();
+    });
+  }
+})();
