@@ -590,9 +590,7 @@
   function undecorate() {
     var bar = document.querySelector('[data-sp-pick-bar]');
     if (bar) bar.hidden = true;
-    document.querySelectorAll('.attendee-card--dragged-over').forEach(function (el) {
-      el.classList.remove('attendee-card--dragged-over');
-    });
+    clearOver();
   }
 
   /* ── Reorder ───────────────────────────────────────────────────────────────────────────────
@@ -644,24 +642,42 @@
       bar.querySelector('[data-sp-pick-name]').textContent = nameOf(slot);
     }
 
-    /* `.attendee-card--dragged-over` is AttendeeCard's OWN state — a formal `State=Dragged Over`
-     * axis in Figma with six variants, one per Type. The component's header names this module as
-     * the thing that toggles it: "the card is a DROP TARGET only, never a drag source.
-     * `--dragged-over` is a class the parent module toggles while an attendee is held over the
-     * card." So this adds that class and nothing else.
+    /* NOTHING is highlighted here. `--dragged-over` means the ONE card currently under the
+     * pointer, and it is applied by markOver() below on dragenter / hover / focus.
      *
-     * The first version invented `--drop-move` / `--drop-swap` from the prototype's description
-     * and painted them green with a "Swap" pill. The real state is a brand border over a minimal
-     * background, and it already existed. */
-    document.querySelectorAll('[data-sp-seat]').forEach(function (el) {
-      var no = parseInt(el.getAttribute('data-sp-seat'), 10);
-      if (seatDrop(state.tableId, no)) el.classList.add('attendee-card--dragged-over');
-    });
+     * This function used to add it to every LEGAL seat, which lit up most of the list at once.
+     * That was the prototype's "legal targets" framing surviving a second time in the same
+     * feature — the component's state is named Dragged **Over**, and the designer put it
+     * plainly: "it should only highlight the table of attendee when it is being dragged over by
+     * the item being dragged."
+     *
+     * No highlight on a table card or on the tray either. Both are still real drop targets — the
+     * brief asks for pool->card and seat->pool — but TableCard has twelve variants and NO drag
+     * state, and Unassigned has two variants and no state axis at all. Flagged. */
+  }
 
-    /* No highlight on a table card or on the tray. Both are still real drop targets — the brief
-     * asks for pool->card and seat->pool — but TableCard has twelve variants and NO drag state,
-     * and Unassigned has two variants and no state axis at all. Inventing one is what went wrong
-     * the first time. Flagged for the designer. */
+  /* ── The one card under the pointer ────────────────────────────────────────────────────────
+   * `overEl` is tracked so a `dragover` storm (it fires continuously) does not re-run a
+   * querySelectorAll on every event. */
+  var overEl = null;
+
+  function clearOver() {
+    document.querySelectorAll('.attendee-card--dragged-over').forEach(function (el) {
+      el.classList.remove('attendee-card--dragged-over');
+    });
+    overEl = null;
+  }
+
+  /* Legality still gates it: an illegal target must NOT light up, or the highlight would promise
+   * a drop that place() then refuses. */
+  function markOver(el) {
+    if (el === overEl) return;
+    clearOver();
+    if (!el || !state.picked) return;
+    var no = parseInt(el.getAttribute('data-sp-seat'), 10);
+    if (!seatDrop(state.tableId, no)) return;
+    el.classList.add('attendee-card--dragged-over');
+    overEl = el;
   }
 
   function toast(parts, type) {
@@ -815,11 +831,34 @@
     if (!state.picked || !e.target.closest) return;
     var seatEl = e.target.closest('[data-sp-seat]');
     if (seatEl && seatDrop(state.tableId, parseInt(seatEl.getAttribute('data-sp-seat'), 10))) {
+      markOver(seatEl);                 /* the ONE card under the pointer */
       e.preventDefault(); return;
     }
+    markOver(null);                     /* left the seats — drop the highlight */
     if (e.target.closest('[data-sp-pool]') && poolDrop()) { e.preventDefault(); return; }
     var card = e.target.closest('[data-sp-card]');
     if (card && tableDrop(card.getAttribute('data-sp-table')) === 'move') e.preventDefault();
+  });
+
+  /* The pointer leaving the seat list entirely still has to put the highlight out — `dragover`
+   * simply stops firing, so nothing above would clear it. */
+  document.addEventListener('dragleave', function (e) {
+    if (!state.picked || !e.target.closest) return;
+    if (e.target.closest('[data-sp-seat]') === overEl) markOver(null);
+  });
+
+  /* ── The same highlight for the non-drag paths ────────────────────────────────────────────
+   * With somebody in the air but no drag in progress — the click and keyboard routes — the card
+   * "being dragged over" is whichever one the pointer is on or focus is in. Without this, the
+   * mouse and keyboard flows would place a person with no indication of where. */
+  document.addEventListener('mouseover', function (e) {
+    if (!state.picked || !e.target.closest) return;
+    markOver(e.target.closest('[data-sp-seat]'));
+  });
+
+  document.addEventListener('focusin', function (e) {
+    if (!state.picked || !e.target.closest) return;
+    markOver(e.target.closest('[data-sp-seat]'));
   });
 
   document.addEventListener('drop', function (e) {

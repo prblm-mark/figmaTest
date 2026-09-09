@@ -1634,8 +1634,28 @@ The component's own header names this module as the thing meant to toggle it:
 | Empty | `--ai-surface-minimal` bg, 1px **dashed** `--ai-btn-secondary-border` | **same bg, 1px SOLID `--ai-border-brand`** |
 
 Nodes: `3528:102567` Empty, `3474:89315` Attendee, `3474:89359` VIP, `3474:89337` Speaker,
-`3474:89381` Sponsor, `3474:89293` Host. Measured after the fix: border `rgb(48,182,194)`
-(`#30b6c2`), background `--ai-surface-minimal`, style solid, on all nine legal seats.
+`3474:89381` Sponsor, `3474:89293` Host. Measured: border `rgb(48,182,194)` (`#30b6c2`),
+background `--ai-surface-minimal`, style solid.
+
+#### …and then applied to too many cards — second correction, same day
+
+The first fix used the right class and still got the behaviour wrong: it added
+`--dragged-over` to **every legal seat**, lighting most of the list at once. The designer again:
+*"you are highlighting all of the other attendees when dragging. it should only highlight the
+table of attendee when it is being dragged over by the item being dragged."*
+
+The state is named Dragged **Over**. It means the one card under the pointer — not "a card you
+could legally drop on". That is the prototype's *"legal targets in success tone"* framing
+surviving into a second attempt at the same feature, after the colour had already been corrected.
+
+It is now applied by `markOver()`, driven by `dragover` / `dragleave` for the drag path and
+`mouseover` / `focusin` for the click and keyboard paths, with an `overEl` guard so a `dragover`
+storm does not re-scan the DOM on every event. Legality still gates it — an illegal target must
+not light up, or the highlight promises a drop that `place()` then refuses.
+
+**My own probe had asserted `--dragged-over on 9 seats` and I read that as a pass.** The test
+encoded the misreading, which is why it caught nothing. A verification that restates the
+assumption is not a verification.
 
 **Removed with the green, each because Figma has no counterpart:**
 
@@ -1692,6 +1712,14 @@ Without it, aiming at a table silently just re-selected it — the same trap
 direction.
 
 ### Verified (headless Chrome over HTTP, 2026-09-09)
+
+**Highlight scope** (added after the second correction): with nothing picked, hovering lights
+nothing. After picking seat 2, hovering seat 5 lights exactly `["5"]`; moving to seat 7 gives
+`["7"]` and releases 5; hovering the source seat 2 gives `[]` because it is not a legal target;
+hovering the tray gives `[]`. Under drag: `dragstart` `[]`, `dragover` seat 9 `["9"]`,
+`dragover` seat 4 `["4"]`, `dragleave` `[]`, and the drop clears it. By keyboard with a pool pick:
+focusing empty seat 8 gives `["8"]`, focusing an occupied seat gives `[]` — pool → occupied is
+not one of the five placements. Escape clears.
 
 Reorder: seat 1 down swapped with seat 2 and toasted "Hana Ashby swapped with Aisha Patel — seats
 1 and 2"; up restored it; up disabled on seat 1.
