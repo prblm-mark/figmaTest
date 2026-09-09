@@ -2623,3 +2623,435 @@
     }));
   });
 })();
+
+/* ── Export the plan (TASK-342305) ──────────────────────────────────────────────────────────
+ * Figma 1:32273 / 1:43681 (format menu), 1:14741 / 1:45146 (PDF preview),
+ * 1:17021 / 1:46486 (CSV preview).
+ *
+ * THE PREVIEW FOLLOWS THE FORMAT: PDF previews as the document it will produce, CSV and .xlsx
+ * as the six columns they will contain. Showing a document preview for a spreadsheet would
+ * misrepresent the file.
+ *
+ * Both bodies are BUILT FROM THE PAGE at open time rather than authored in the markup, so the
+ * preview cannot claim something the plan does not say. Add a table, delete one, or unseat
+ * somebody and the counts, the meta line and the row set all follow.
+ */
+(function () {
+  'use strict';
+
+  if (window.__seatingExportReady) return;
+  window.__seatingExportReady = true;
+
+  var OPEN_CLASS = 'modal-overlay--open';
+
+  var overlay = document.querySelector('[data-export-preview]');
+  if (!overlay) return;
+
+  var dialog   = overlay.querySelector('[role="dialog"]');
+  var titleEl  = overlay.querySelector('[data-xp-title]');
+  var tablesEl = overlay.querySelector('[data-xp-tables]');
+  var seatedEl = overlay.querySelector('[data-xp-seated]');
+  var docEl    = overlay.querySelector('[data-xp-doc]');
+  var docTitle = overlay.querySelector('[data-xp-doc-title]');
+  var docMeta  = overlay.querySelector('[data-xp-doc-meta]');
+  var rowsEl   = overlay.querySelector('[data-xp-rows]');
+  var dlBtn    = overlay.querySelector('[data-xp-download]');
+
+  var panels = {
+    doc:   overlay.querySelector('[data-xp-panel="doc"]'),
+    table: overlay.querySelector('[data-xp-panel="table"]')
+  };
+
+  /* Only two previews are drawn: "Preview — PDF export" and "Preview — CSV export". Excel has a
+   * menu row but no frame of its own, because the brief has it previewing as the same six
+   * columns as CSV — so it reuses that body, and its title and button follow the same
+   * "Preview — <format> export" / "Download <format>" pattern. Extrapolated, and flagged.
+   *
+   * `real` marks the one format this front end can genuinely produce. */
+  var FORMATS = {
+    pdf:  { title: 'Preview — PDF export',   cta: 'Download PDF',   panel: 'doc',   real: false },
+    xlsx: { title: 'Preview — Excel export', cta: 'Download Excel', panel: 'table', real: false },
+    csv:  { title: 'Preview — CSV export',   cta: 'Download CSV',   panel: 'table', real: true }
+  };
+
+  var COLUMNS = ['Table', 'Type', 'Seat', 'Name', 'Company', 'Role'];
+
+  var format = 'pdf';
+  var returnFocusTo = null;
+  var lastPlan = null;
+
+  function isOpen() { return overlay.classList.contains(OPEN_CLASS); }
+  function plural(n, one, many) { return n === 1 ? one : many; }
+  function text(el) { return el ? el.textContent.replace(/\s+/g, ' ').trim() : ''; }
+  function each(list, fn) { Array.prototype.forEach.call(list, fn); }
+
+  /* ── Reading the plan off the page ─────────────────────────────────────────────────────── */
+
+  /* `[data-sp-grid]` and nothing broader. `.table-card` matches 200 times in this document —
+   * every capture state and every other panel carries cards — so an unscoped query would export
+   * a plan assembled out of the screenshots further down the page. */
+  function tableCards() {
+    var grid = document.querySelector('[data-sp-grid]');
+    return grid ? Array.prototype.slice.call(grid.querySelectorAll('.table-card')) : [];
+  }
+
+  /* "6 / 10 seated" -> { seated: 6, capacity: 10 } */
+  function readCount(card) {
+    var m = text(card.querySelector('.table-card__count')).match(/(\d+)\s*\/\s*(\d+)/);
+    return m ? { seated: +m[1], capacity: +m[2] } : { seated: 0, capacity: 0 };
+  }
+
+  /* The legend is the only per-role breakdown a card carries ("Attendee (2)", "Empty (4)").
+   * Empty is dropped: it counts what is deliberately NOT in the file. */
+  function readRoles(card) {
+    var out = [];
+    each(card.querySelectorAll('.table-card__legend-item'), function (item) {
+      var m = text(item).match(/^(.*?)\s*\((\d+)\)$/);
+      if (!m) return;
+      var role = m[1].trim();
+      if (/^empty$/i.test(role)) return;
+      out.push({ role: role, count: +m[2] });
+    });
+    return out;
+  }
+
+  /* Named occupants exist for exactly ONE table — whichever the detail panel is showing. There
+   * is no occupant model behind this screen; the seat rows are markup. Nothing else can be
+   * named without inventing people, so nothing else is. See seating-export-occupant-coverage. */
+  function readDetailOccupants() {
+    var seats = document.querySelector('.table-detail__seats');
+    var forTable = text(document.querySelector('[data-sp-detail-name]'));
+    if (!seats || !forTable) return null;
+
+    var rows = [];
+    each(seats.querySelectorAll('.attendee-card'), function (row) {
+      /* An empty seat is not a row — the whole point of seating-export-empty-seats. */
+      if (row.classList.contains('attendee-card--empty')) return;
+      rows.push({
+        seat:    text(row.querySelector('.attendee-card__seat')),
+        name:    text(row.querySelector('.attendee-card__name')),
+        company: text(row.querySelector('.attendee-card__company')),
+        role:    text(row.querySelector('.attendee-card__role'))
+      });
+    });
+    return { table: forTable, rows: rows };
+  }
+
+  function readPlan() {
+    var detail = readDetailOccupants();
+    var seated = 0;
+    var capacity = 0;
+
+    var tables = tableCards().map(function (card) {
+      var name = text(card.querySelector('.table-card__select')) ||
+                 text(card.querySelector('.table-card__name'));
+      var count = readCount(card);
+      var roles = readRoles(card);
+      var occupants = (detail && detail.table === name) ? detail.rows : null;
+
+      /* A seated table whose people are not in the DOM still contributes its seats, carrying the
+       * role the legend gives and leaving the person blank — better than dropping seats out of a
+       * file that says it holds every one of them. */
+      if (!occupants && count.seated > 0) {
+        occupants = [];
+        var seat = 1;
+        roles.forEach(function (r) {
+          for (var i = 0; i < r.count; i++) {
+            occupants.push({ seat: String(seat++), name: '—', company: '—', role: r.role });
+          }
+        });
+      }
+
+      seated += count.seated;
+      capacity += count.capacity;
+
+      return {
+        name: name,
+        seated: count.seated,
+        capacity: count.capacity,
+        /* No source. The cards draw no TableType chip on this screen, so neither the CSV's TYPE
+         * column nor the document heading's type label has anything to read. Figma's own
+         * Table 11 heading is drawn exactly this way — "Table 11 0/10", no type — so the
+         * untyped presentation is a state the design already covers. Tracked as
+         * seating-export-table-type. */
+        type: text(card.querySelector('.table-card__type')),
+        occupants: occupants || []
+      };
+    });
+
+    return {
+      event:  text(document.querySelector('.seating-header__title')),
+      plan:   text(document.querySelector('.seating-header__room-name')),
+      /* Figma's meta names two places ("Main Ballroom · Great Room") — a plan and the room it
+       * sits in. This screen models one venue, on the header's map-pin meta item, so that is
+       * what the second slot carries. Flagged: it is a venue, not a room. */
+      venue:  text(document.querySelector('.seating-header__meta-item:last-child')),
+      tables: tables,
+      seated: seated,
+      capacity: capacity
+    };
+  }
+
+  /* ── The document preview (PDF) ────────────────────────────────────────────────────────── */
+
+  function pad(n) { return n < 10 ? '0' + n : String(n); }
+
+  /* dd/mm/yyyy, as the frame draws it ("generated 30/07/2026"). Generated now, on purpose: the
+   * line is a claim about when this document was produced. */
+  function today() {
+    var d = new Date();
+    return pad(d.getDate()) + '/' + pad(d.getMonth() + 1) + '/' + d.getFullYear();
+  }
+
+  function buildDoc(plan) {
+    docTitle.textContent = plan.event;
+
+    var where = [plan.plan, plan.venue].filter(Boolean).join(' · ');
+    docMeta.textContent = 'Seating plan: ' + where + ' · ' +
+      plan.seated + '/' + plan.capacity + ' seated · generated ' + today();
+
+    /* Everything after the meta line is rebuilt, so re-opening never stacks two documents. */
+    while (docMeta.nextSibling) docEl.removeChild(docMeta.nextSibling);
+
+    plan.tables.forEach(function (t) {
+      var heading = document.createElement('p');
+      heading.className = 'export-preview__doc-heading';
+      heading.appendChild(document.createTextNode(t.name));
+
+      var trail = document.createElement('span');
+      /* The type prefix only when there is one to show — otherwise the occupancy alone, which
+       * is how Figma draws an untyped table. */
+      trail.textContent = ' ' + (t.type ? t.type + ' · ' : '') + t.seated + '/' + t.capacity;
+      heading.appendChild(trail);
+      docEl.appendChild(heading);
+
+      if (!t.occupants.length) {
+        var empty = document.createElement('p');
+        empty.className = 'export-preview__doc-empty';
+        empty.textContent = 'No one seated at this table yet.';
+        docEl.appendChild(empty);
+        return;
+      }
+
+      var list = document.createElement('ol');
+      list.className = 'export-preview__doc-list';
+      t.occupants.forEach(function (o) {
+        var li = document.createElement('li');
+        li.appendChild(document.createTextNode(
+          o.name + (o.company ? ' — ' + o.company : '') + ' '
+        ));
+        var role = document.createElement('span');
+        role.textContent = '[' + o.role + ']';
+        li.appendChild(role);
+        list.appendChild(li);
+      });
+      docEl.appendChild(list);
+    });
+  }
+
+  /* ── The table preview (CSV / .xlsx) ───────────────────────────────────────────────────── */
+
+  /* One row per SEATED seat, which is the row set the file will hold. A table with nobody seated
+   * contributes nothing here — it appears in the PDF document, with its own line, but a
+   * spreadsheet row for an empty table would be a row about nobody. */
+  function planRows(plan) {
+    var rows = [];
+    plan.tables.forEach(function (t) {
+      t.occupants.forEach(function (o) {
+        rows.push([t.name, t.type || '—', o.seat, o.name, o.company, o.role]);
+      });
+    });
+    return rows;
+  }
+
+  function buildTable(plan) {
+    rowsEl.textContent = '';
+    planRows(plan).forEach(function (cells) {
+      var tr = document.createElement('tr');
+      cells.forEach(function (value) {
+        var td = document.createElement('td');
+        td.textContent = value;
+        tr.appendChild(td);
+      });
+      rowsEl.appendChild(tr);
+    });
+  }
+
+  /* ── Download ──────────────────────────────────────────────────────────────────────────── */
+
+  /* RFC 4180 quoting: double the quotes, and wrap any field carrying a comma, a quote or a
+   * newline. Skipping this is how an export quietly corrupts every row after a company name
+   * with a comma in it. */
+  function csvField(value) {
+    var s = String(value == null ? '' : value);
+    return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }
+
+  function csvText(plan) {
+    return [COLUMNS].concat(planRows(plan))
+      .map(function (row) { return row.map(csvField).join(','); })
+      .join('\r\n');
+  }
+
+  function slug(s) {
+    return (s || 'seating-plan').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  }
+
+  function toast(parts, type) {
+    document.dispatchEvent(new CustomEvent('sp:toast', {
+      detail: { parts: parts, type: type }
+    }));
+  }
+
+  function download() {
+    var plan = lastPlan || readPlan();
+    var spec = FORMATS[format];
+
+    if (!spec.real) {
+      /* Said out loud rather than downloading something fake. PDF and .xlsx need a server-side
+       * generator, and all three formats must come from the same query or they will disagree —
+       * see seating-export. */
+      toast([
+        { text: spec.cta.replace('Download ', '') + ' export', strong: true },
+        { text: ' is generated on the server — not wired up in this front end yet.' }
+      ], 'error');
+      return;
+    }
+
+    var blob = new Blob([csvText(plan)], { type: 'text/csv;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = slug(plan.plan) + '-seating.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    var rows = planRows(plan).length;
+    toast([
+      { text: 'CSV downloaded', strong: true },
+      { text: ' — ' + rows + ' ' + plural(rows, 'row', 'rows') + '.' }
+    ], 'success');
+  }
+
+  /* ── Open / close ──────────────────────────────────────────────────────────────────────── */
+
+  function open(next, trigger) {
+    var spec = FORMATS[next];
+    if (!spec) return;
+
+    format = next;
+    returnFocusTo = trigger || document.activeElement;
+    lastPlan = readPlan();
+
+    titleEl.textContent = spec.title;
+    dlBtn.textContent = spec.cta;
+
+    var tables = lastPlan.tables.length;
+    tablesEl.textContent = tables + ' ' + plural(tables, 'table', 'tables');
+    seatedEl.textContent = lastPlan.seated + ' ' + plural(lastPlan.seated, 'seated person', 'seated people');
+
+    if (spec.panel === 'doc') buildDoc(lastPlan);
+    else buildTable(lastPlan);
+
+    panels.doc.hidden = spec.panel !== 'doc';
+    panels.table.hidden = spec.panel !== 'table';
+
+    overlay.classList.add(OPEN_CLASS);
+    if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+
+    /* The close button, not the scroll panel. Landing on the panel is tempting — the arrow keys
+     * would scroll the preview straight away — but the panel carries a `:focus-visible` ring and
+     * Figma draws that border plain grey, so every mouse user opening the dialog risked a brand
+     * ring around the preview on a heuristic this code does not control. The panels keep
+     * `tabindex="0"`, so a keyboard user reaches the scroller with one Tab and gets the ring
+     * exactly when it is meant to show. */
+    var landing = overlay.querySelector('[data-xp-close]');
+    (landing || dialog).focus();
+  }
+
+  function close() {
+    if (!isOpen()) return;
+    overlay.classList.remove(OPEN_CLASS);
+    var target = (returnFocusTo && returnFocusTo !== document.body && returnFocusTo.isConnected)
+      ? returnFocusTo
+      : null;
+    returnFocusTo = null;
+    if (target) target.focus();
+  }
+
+  /* ── The split trigger ─────────────────────────────────────────────────────────────────── */
+
+  var root = document.querySelector('.seating-header__export');
+  var moreBtn = root && root.querySelector('.seating-header__export-more');
+  var labelBtn = root && root.querySelector('.seating-header__btn--export');
+
+  /* Below 767 SeatingHeader clips Export to a 32px icon and drops the chevron, so there is no
+   * second half left to open the menu — the icon button takes that job instead, and the menu
+   * carries a PDF row of its own.
+   *
+   * Decided from RENDERED VISIBILITY, never `matchMedia`: the toolbar's width is set by the
+   * docked SidebarMenu and the ActionsMenu rail, not by the window, so a viewport query would be
+   * answering a question nobody asked (CLAUDE.md §4a). A ResizeObserver keeps the ARIA honest
+   * because the column can change width with no window resize at all. */
+  function syncMode() {
+    if (!root || !labelBtn) return;
+    var split = !!(moreBtn && moreBtn.getClientRects().length);
+    root.setAttribute('data-sp-export-mode', split ? 'split' : 'menu');
+    if (split) {
+      labelBtn.removeAttribute('aria-haspopup');
+      labelBtn.removeAttribute('aria-expanded');
+    } else {
+      labelBtn.setAttribute('aria-haspopup', 'menu');
+      labelBtn.setAttribute('aria-expanded', root.classList.contains('is-open') ? 'true' : 'false');
+    }
+  }
+
+  if (root) {
+    syncMode();
+
+    var header = root.closest('.seating-header');
+    if (header && window.ResizeObserver) new ResizeObserver(syncMode).observe(header);
+
+    /* Dropdown.js owns the open class and resets aria-expanded on the CHEVRON. When the icon
+     * button is standing in as the trigger, that reset lands on a hidden element, so mirror the
+     * state from the root instead of trying to intercept every way the panel can close. */
+    if (window.MutationObserver) {
+      new MutationObserver(syncMode).observe(root, {
+        attributes: true, attributeFilter: ['class']
+      });
+    }
+  }
+
+  document.addEventListener('click', function (event) {
+    if (!event.target.closest) return;
+
+    if (event.target.closest('[data-xp-close]')) { close(); return; }
+    if (event.target.closest('[data-xp-download]')) { download(); return; }
+
+    var btn = event.target.closest('[data-sp-export]');
+    if (!btn) return;
+
+    /* The icon button doubles as the menu trigger where the chevron is hidden. Checked on the
+     * live element rather than on a remembered breakpoint. */
+    if (btn === labelBtn && root && root.getAttribute('data-sp-export-mode') === 'menu') {
+      event.preventDefault();
+      root.classList.toggle('is-open');
+      syncMode();
+      return;
+    }
+
+    event.preventDefault();
+    open(btn.getAttribute('data-sp-export'), btn);
+  });
+
+  /* Click the scrim to dismiss, matching every other modal on this screen. */
+  overlay.addEventListener('click', function (event) {
+    if (event.target === overlay) close();
+  });
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && isOpen()) { close(); }
+  });
+}());

@@ -1258,3 +1258,253 @@
 .copy-plans .event-picker__seated {
   display: none;
 }
+
+/* ── Export: split button + format menu ───────────────────────────────────────────────────
+ * Figma 1:32273 desktop / 1:43681 mobile. Figma draws Export as ONE 111px Button whose menu
+ * lists two formats, while a third format (PDF) has preview frames of its own and the brief
+ * calls the control a split button with "PDF (default)". Split at the designer's direction
+ * 2026-09-09: the label half runs PDF, the chevron half opens Excel/CSV.
+ *
+ * Everything the menu needs beyond this block already exists: `.dropdown__panel` for the panel
+ * chrome and `.dropdown-item--xs` for the rows — the latter added to DropdownItem in the same
+ * change, since Figma had grown a Size=xs axis that the component had never picked up. */
+
+.seating-header__export {
+  flex-shrink: 0;
+}
+
+/* Two buttons that have to read as one control. The shared edge is collapsed with a -1px pull
+ * so a single 1px rule divides the halves instead of two adjacent borders stacking to 2px. */
+.seating-header__export-split {
+  display: flex;
+  align-items: stretch;
+}
+
+.seating-header__export-split > .btn:first-child {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+
+.seating-header__export-more.btn {
+  margin-inline-start: -1px;
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+  padding-inline: var(--ai-spacing-2);   /* 6 — this half carries a chevron and no label */
+}
+
+/* The hovered/focused half must paint its full outline, including the collapsed edge. */
+.seating-header__export-split > .btn:hover,
+.seating-header__export-split > .btn:focus-visible {
+  position: relative;
+  z-index: 1;
+}
+
+/* Figma's List node 3393:27558: 160 wide (--ai-size-2) with 8px padding, where Dropdown's own
+ * panel default is 240 with 12px. */
+.dropdown__panel--export {
+  min-width: var(--ai-size-2);    /* 160 */
+  padding: var(--ai-spacing-3);   /* 8 */
+}
+
+/* The trigger sits at the very end of the toolbar row, so Dropdown's `left: 0` panel would hang
+ * off the viewport edge. Same correction the overflow kebab already makes. */
+.seating-header__export .dropdown__panel {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+}
+
+/* CONTEXTUAL OVERRIDE, flagged. This menu's row icons bind `--ai-icon-secondary`, while the
+ * DropdownItem component's own Size=xs variant binds `--ai-icon-primary` (3393:29188) and its
+ * Default/sm rows use `--ai-icon-contrast`. All three came out of Figma. Scoped here rather than
+ * changed in the component, because one row component having three icon colours reads as drift
+ * in Figma rather than intent — raised for the designer 2026-09-09. */
+.dropdown__panel--export .dropdown-item [data-lucide]:not(.dropdown-item__check) {
+  color: var(--ai-icon-secondary);
+}
+
+/* PDF has a menu row ONLY below 767. At wider widths the chevron exists and the label half
+ * already runs PDF, so the row would be a duplicate; below 767 SeatingHeader clips Export to a
+ * 32px icon and drops the chevron, leaving no second half to open the menu — so the icon button
+ * takes that job and PDF needs a row. One action, two homes, never both at once: the same
+ * arrangement Room Layout already uses in the overflow menu below 1200.
+ *
+ * `@container`, not `@media`: the toolbar's width is set by the docked SidebarMenu and the
+ * ActionsMenu rail, not by the window (CLAUDE.md §4a). `seating-header` is established on
+ * `.seating-header`, which encloses this panel. */
+.seating-header__export-item--pdf {
+  display: none;
+}
+
+@container seating-header (max-width: 767px) {
+  .seating-header__export-item--pdf {
+    display: block;
+  }
+
+  /* Hide the whole half, not just its icon. The pattern's own rule hides
+   * `.seating-header__btn-chevron` — the <i> — which on a split control would leave an empty
+   * 28px button behind. */
+  .seating-header__export-more {
+    display: none;
+  }
+
+  .seating-header__export-split > .btn:first-child {
+    border-radius: var(--ai-radius-md);
+  }
+}
+
+/* ── Export preview modal ─────────────────────────────────────────────────────────────────
+ * Figma 1:14741 desktop / 1:45146 mobile (PDF), 1:17021 / 1:46486 (CSV). 768 wide = `modal--lg`
+ * (--ai-size-11), and the mobile frames need nothing of their own: Modal's Size=sm block at 639
+ * already produces the 338-wide dialog those frames draw inside a 402 viewport, and neither
+ * preview steps its type down — checked on both mobile frames rather than assumed, because most
+ * of this screen does step down. */
+
+.export-preview__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);   /* 16 — Figma: summary ends y=24, panel starts y=40 */
+}
+
+/* "12 tables · 101 seated people — every row below is in the file. Empty seats are not
+ * exported." Two runs, one 14/24 line: the counts semibold over --ai-text-primary, the sentence
+ * regular over --ai-text-secondary (1:15251). */
+.export-preview__summary {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);    /* 14 */
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);     /* 24 */
+  color: var(--ai-text-secondary);
+}
+
+.export-preview__summary strong {
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-primary);
+}
+
+/* Both panels pin a HEIGHT and scroll their content — Figma clips a 3980px document into 384
+ * and ~4940px of table rows into 448. The two heights DIFFER and are left differing: both are
+ * real tokens (--ai-size-7 / --ai-size-8) and the modals differ to match (588 vs 652 tall).
+ *
+ * No `height: auto` companion anywhere near these — `block-size` and `height` are one property,
+ * so a reset would silently clobber the value. */
+.export-preview__panel--doc {
+  block-size: var(--ai-size-7);   /* 384 */
+  overflow-y: auto;
+  padding: var(--ai-spacing-6);   /* 24 — Figma draws p-25: 24px inside a 1px stroke */
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+}
+
+/* `overflow-y: auto` is doing double duty: it is how the document scrolls, and it is what sets
+ * this flex item's automatic minimum size to zero, so on a short phone the panel SHRINKS out of
+ * the 384 rather than pushing the dialog past `max-block-size: 100%` (the mechanism Modal.css
+ * documents for `.event-picker__list`). */
+
+.export-preview__panel--table {
+  block-size: var(--ai-size-8);   /* 448 */
+  display: flex;                  /* let the scroller fill the pinned height */
+}
+
+/* `.table-wrap` supplies the bg, border, radius and corner clipping; only the scrolling is
+ * scoped here. BOTH axes: 100 rows down, and six columns across on a phone — the sideways
+ * scroll is exactly what frame 1:46486 draws, with TABLE/TYPE/SEAT visible and
+ * NAME/COMPANY/ROLE clipped off the right edge. */
+.export-preview__panel--table .table-wrap__scroll {
+  flex: 1;
+  min-inline-size: 0;
+  min-block-size: 0;
+  overflow: auto;
+}
+
+/* ADDITION, not in Figma: the column headers stick. Figma clips the whole table, header
+ * included, so scrolling to row 60 of a 100-row preview would leave six unlabelled columns —
+ * which defeats the point of a preview whose job is to show which column holds what. Costs
+ * nothing at rest, and `.table thead th` already paints --ai-surface-minimal so rows cannot
+ * show through. Flagged for the designer. */
+.export-preview__panel--table .table thead th {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 1;
+}
+
+/* The document preview. Every value below is from the PDF frame's own text nodes, not from the
+ * screen around it. */
+.export-preview__doc-title {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-md);   /* 18 */
+  font-weight: var(--ai-font-bold);     /* Bold, not Semibold (1:15255) */
+  line-height: var(--ai-leading-md);    /* 24 */
+  color: var(--ai-text-primary);
+}
+
+.export-preview__doc-meta {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);  /* 12 */
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-sm);    /* 20 */
+  color: var(--ai-text-contrast);
+}
+
+/* Per-table heading. Figma's frame is 44 tall around a 20px line — the 24px above it IS the
+ * separation between tables, so it lives here rather than as a gap on the list above.
+ *
+ * 16px was MEASURED, not read: Figma reports this node as `text-[0px]`, its sentinel for a
+ * mixed-size run, so the size of the "Table 1" run is absent from the export. Solved from the
+ * node's own 161px width against Inter metrics — 16px SemiBold gives 160.84 and the next
+ * candidate is 3px out. The same run is why a stray 16px space span appears in the export. */
+.export-preview__doc-heading {
+  margin: 0;
+  padding-block-start: var(--ai-spacing-6);  /* 24 */
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-sm);        /* 16 */
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-sm);         /* 20 */
+  color: var(--ai-text-primary);
+}
+
+/* The type and occupancy trailing the table number ("Head table · 10/10"). */
+.export-preview__doc-heading span {
+  font-size: var(--ai-font-fixed-xxs);   /* 12 */
+  font-weight: var(--ai-font-regular);
+  color: var(--ai-text-contrast);
+}
+
+/* Numbered seat list. Figma hangs the marker in a 24px gutter: the text box is 646 wide inside a
+ * 670 list, and the "1." sits at x=-23 relative to that box. */
+.export-preview__doc-list {
+  margin: 0;
+  padding-inline-start: var(--ai-spacing-6);  /* 24 */
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);         /* 14 */
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-lg);          /* 32 */
+  color: var(--ai-text-primary);
+}
+
+/* The role, in brackets — a step down in emphasis, not in size (1:15263 keeps 14/32 and only
+ * changes the colour). */
+.export-preview__doc-list span {
+  color: var(--ai-text-secondary);
+}
+
+/* A table with nobody seated still appears in the document and says so, rather than going
+ * silently missing. The one italic run on this screen (1:15746). */
+.export-preview__doc-empty {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);   /* 14 */
+  font-style: italic;
+  line-height: var(--ai-leading-md);    /* 24 */
+  color: var(--ai-text-contrast);
+}
+
+/* Both panels are keyboard scrollers, so they take focus and must show it. */
+.export-preview__panel--doc:focus-visible,
+.export-preview__panel--table .table-wrap__scroll:focus-visible {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: 2px;
+}

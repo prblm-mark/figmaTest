@@ -8,7 +8,14 @@
 
 ## Variant matrix
 
-Three axes: **State** (Default | Hover) × **Type** (Default | Warning) × **Size** (Default | sm) = 8 variants.
+Three axes: **State** (Default | Hover) × **Type** (Default | Warning) × **Size** (Default | sm | **xs**) = 12 possible, **11 drawn**.
+
+`Size=xs` was added to the Figma set after this component was first built and was picked up on
+2026-09-09 while building the Seating Planner's Export menu, which is composed entirely of xs
+rows. The set is one variant short of complete: there is **no State=Default, Type=Warning,
+Size=xs**. Every other size has that cell. Since Default Warning is visually identical to
+Default Default at both other sizes, the CSS produces the same result for xs and the demo
+renders it, labelled as not-a-Figma-variant — but the Figma set should gain the cell.
 
 | Node | State | Type | Size | bg | Font weight | Text colour |
 |---|---|---|---|---|---|---|
@@ -20,12 +27,41 @@ Three axes: **State** (Default | Hover) × **Type** (Default | Warning) × **Siz
 | `2955:6730` | Default | Warning | sm | transparent | Regular | `--ai-text-primary` |
 | `2699:2151` | Hover | Warning | Default | `--ai-surface-error` (red) | Semibold | white |
 | `2955:6727` | Hover | Warning | sm | `--ai-surface-error` (red) | Semibold | white |
+| `3393:29188` | Default | Default | **xs** | transparent | **Medium** | `--ai-text-primary` |
+| `3393:27610` | Hover | Default | **xs** | `--ai-surface-secondary` | **Medium** | `--ai-text-primary` |
+| — *(absent)* | Default | Warning | **xs** | — | — | — |
+| `3393:29193` | Hover | Warning | **xs** | `--ai-surface-error` (red) | Semibold | white |
 
 **Default Warning is visually identical to Default Default.** Only the Hover state of the
 Warning variant shows the destructive red treatment.
 
 **Size=sm** changes only the vertical padding (`--ai-spacing-3` 8px → `--ai-spacing-2` 6px),
 giving a 36px row vs 40px. Horizontal padding, gap, font, and radius are unchanged.
+
+**Size=xs** is not a proportional step down from sm — it changes four properties at once, all
+read off `3393:29188` rather than scaled:
+
+| Property | Default | sm | xs |
+|---|---|---|---|
+| Padding | 8px / 12px | 6px / 12px | **4px / 8px** |
+| Row height | 40px | 36px | **32px** |
+| Font size | `--ai-font-fixed-xs` (14) | 14 | **`--ai-font-fixed-2xs` (13)** |
+| Font weight | Regular | Regular | **Medium** |
+| Leading icon | `--ai-icon-size-sm` (16) | 16 | **`--ai-icon-size-xs` (12)** |
+| Trailing tick | 16px | 16px | **16px — unchanged** |
+| Gap / radius | 8px / `--ai-radius-md` | same | same |
+
+Two consequences of xs already being Medium: hover has **no weight change** (so the
+stable-width reservation is a no-op rather than wrong), and the leading-icon rule needs
+`:not(.dropdown-item__check)` so the trailing tick keeps its 16px.
+
+**Leading-icon colour differs by size, and is flagged.** The xs variant binds
+`--ai-icon-primary`; the Default/sm rows in this component are built with
+`--ai-icon-contrast`. Both were taken from Figma, so the component now carries both. Separately,
+the Seating Planner's Export menu instance re-binds the same icon to `--ai-icon-secondary` — see
+`SeatingPlanner.css`, where it is scoped as a contextual override rather than changed here.
+Three different icon colours for one row component is more likely a drift in Figma than an
+intention; raised for the designer 2026-09-09.
 
 **Trailing tick** (`.dropdown-item__check`): an optional right-aligned brand-blue `check` icon
 (Figma `showRightIcon`) marks a selected row in the Filter-views Dropdown — a tick-only
@@ -48,6 +84,7 @@ The Hover state is achieved either via:
 | State=Hover | `:hover` or `.is-hover` |
 | Size=Default | (no modifier) |
 | Size=sm | `.dropdown-item--sm` |
+| Size=xs | `.dropdown-item--xs` |
 | Icon | `<i data-lucide="…">` directly inside `.dropdown-item` |
 | Label | `<span data-text="<label>">` (see Stable-width label below) |
 | Selected (grey-bg) | `.dropdown-item--selected` or `aria-current="page"` |

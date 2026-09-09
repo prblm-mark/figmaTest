@@ -57,6 +57,33 @@
   padding-bottom: var(--ai-spacing-2);
 }
 
+/* ── Size=xs ──────────────────────────────────────────── */
+/* Figma 3393:29188 (Default), 3393:27610 (Hover), 3393:29193 (Hover Warning) — a 32px row.
+ * Unlike Size=sm, which only re-pads vertically, xs changes FOUR properties: both padding
+ * axes, the font size, the font weight and the leading icon size. Each was read off the
+ * variant rather than scaled from Default, because none of them is a proportional step:
+ * 8/12 -> 4/8, 14 Regular -> 13 Medium, 16px icon -> 12px.
+ *
+ * Reached the design system via the Seating Planner's Export menu, which is built entirely
+ * from Size=xs rows. */
+
+.dropdown-item--xs {
+  padding: var(--ai-spacing-1) var(--ai-spacing-3); /* 4px / 8px -> 4+24+4 = 32px */
+  font-size: var(--ai-font-fixed-2xs);              /* 13px */
+  font-weight: var(--ai-font-medium);
+}
+
+/* The LEADING icon only. `:not()` is load-bearing: Figma keeps the trailing tick at 16px on
+ * this size (3393:29191), so a bare `[data-lucide]` here would shrink it to 12 as well. The
+ * exclusion also lifts this to (0,3,0), which deliberately still LOSES to the later
+ * `.dropdown-item--warning:hover [data-lucide]` rule below — equal specificity, and that one
+ * is further down the file, so a warning row's icon still goes white on hover. */
+.dropdown-item--xs [data-lucide]:not(.dropdown-item__check) {
+  width: var(--ai-icon-size-xs);  /* 12px */
+  height: var(--ai-icon-size-xs);
+  color: var(--ai-icon-primary);
+}
+
 /* ── Trailing tick (selected, Filter-views style) ─────── */
 /* Right-aligned brand-blue check. Tick-only selection (no grey bg).
  * Selector is scoped under .dropdown-item so it outranks the base

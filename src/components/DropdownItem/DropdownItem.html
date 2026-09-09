@@ -114,6 +114,45 @@
   </div>
 
   <div class="demo-section">
+    <h2>Size=xs (4/8 padding, 13px Medium, 12px icon → 32px row)</h2>
+
+    <p class="demo-label">Default xs</p>
+    <button class="dropdown-item dropdown-item--xs" type="button">
+      <i data-lucide="star" aria-hidden="true"></i>
+      <span data-text="My Favourites">My Favourites</span>
+    </button>
+
+    <p class="demo-label">Hover xs</p>
+    <button class="dropdown-item dropdown-item--xs is-hover" type="button">
+      <i data-lucide="star" aria-hidden="true"></i>
+      <span data-text="My Favourites">My Favourites</span>
+    </button>
+
+    <p class="demo-label">Selected xs — the trailing tick stays 16px while the leading icon is 12px</p>
+    <button class="dropdown-item dropdown-item--xs" type="button" aria-current="true">
+      <i data-lucide="star" aria-hidden="true"></i>
+      <span data-text="My Favourites">My Favourites</span>
+      <i data-lucide="check" class="dropdown-item__check" aria-hidden="true"></i>
+    </button>
+
+    <p class="demo-label">Warning xs (hover)</p>
+    <button class="dropdown-item dropdown-item--xs dropdown-item--warning is-hover" type="button">
+      <i data-lucide="trash-2" aria-hidden="true"></i>
+      <span data-text="Delete">Delete</span>
+    </button>
+
+    <p class="demo-label">
+      Default Warning xs — NOT a Figma variant (the set has no State=Default, Type=Warning,
+      Size=xs). Rendered here from the same rules as the other sizes, where Default Warning is
+      visually identical to Default Default.
+    </p>
+    <button class="dropdown-item dropdown-item--xs dropdown-item--warning" type="button">
+      <i data-lucide="trash-2" aria-hidden="true"></i>
+      <span data-text="Delete">Delete</span>
+    </button>
+  </div>
+
+  <div class="demo-section">
     <h2>Live hover (no .is-hover class — hover with mouse)</h2>
     <button class="dropdown-item" type="button">
       <i data-lucide="star" aria-hidden="true"></i>

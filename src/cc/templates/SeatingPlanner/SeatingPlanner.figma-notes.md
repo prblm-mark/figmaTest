@@ -1030,3 +1030,155 @@ The toolbar's Management-Buttons group has **four** buttons (101 / 118 / 112 / 1
 current build has three — Room Layout 118, Add Table 101, Export 111. The 112px one is **new and
 unidentified**, and nothing in the frame names it. Flagged rather than guessed at.
 
+
+---
+
+## Export (2026-09-09) — TASK-342305
+
+Six frames: `1:32273` / `1:43681` (format menu, desktop / mobile), `1:14741` / `1:45146`
+(PDF preview), `1:17021` / `1:46486` (CSV preview).
+
+### The frames do not agree, and the disagreement is the design question
+
+| Evidence | Says |
+|---|---|
+| `1:32273` + `1:43681` | Export is **one** Button instance; its menu holds **Excel (.xlsx)** and **CSV** |
+| `1:14741` + `1:45146` | a **PDF** preview exists |
+| `1:17021` + `1:46486` | a **CSV** preview exists |
+| The brief (`seating-export`) | "**Split button** — PDF (default) / Excel (.xlsx) / CSV" |
+
+PDF is in no menu, and Excel has no preview. Only one arrangement satisfies all four rows: PDF is
+the split button's **default action**, which is why it is absent from the menu, and Excel previews
+as the same six columns as CSV, which is why it has no frame of its own. Built that way at the
+designer's direction (2026-09-09). The alternatives were a three-row menu (contradicts both menu
+frames) or building exactly what is drawn (orphans the two PDF frames).
+
+`Management-Buttons` here holds **three** Button instances — 118 / 101 / 111, i.e. Room Layout /
+Add Table / Export. Worth recording against the note above from the Edit Plan frame, which found
+**four** (101 / 118 / 112 / 111) and could not identify the 112px one: this frame does not have
+it, so the fourth button is specific to that frame rather than a toolbar change.
+
+### Below 767 the split has nowhere to live
+
+`SeatingHeader.css` clips Export to a 32px icon and hides the chevron below container 767. With no
+chevron there is no second half to open the menu, so there the **icon button opens the menu** and
+PDF takes a third row. That mirrors Room Layout, which is already a toolbar button above 1200 and
+a menu item below it — one action, two homes, never both visible.
+
+The mode is chosen from the chevron's **rendered visibility**, not `matchMedia`: this toolbar's
+width is set by the docked SidebarMenu and the ActionsMenu rail, not by the window (CLAUDE.md
+§4a). A `ResizeObserver` on `.seating-header` keeps `aria-haspopup` / `aria-expanded` honest,
+because the column can change width with no window resize at all.
+
+**Flagged:** the mobile menu frame draws two rows, not three.
+
+### DropdownItem gained a Size=xs — the menu is built from it
+
+The menu rows are not the Dropdown component's default row. Figma's List node `3393:27558` is
+built from `DropdownItem` instances at **32px**, and `get_metadata` on the component set
+`2699:2149` shows why: it has grown a **`Size=xs`** axis (`3393:29188`, `3393:27610`,
+`3393:29193`) that the built component never picked up. Added to DropdownItem as a formal variant
+(Case A), not scoped here — see `DropdownItem.figma-notes.md`, which also records that the set is
+missing its Default+Warning+xs cell.
+
+One contextual override remains here: this menu binds `--ai-icon-secondary` on its row icons where
+the component's own xs variant binds `--ai-icon-primary`. Both came from Figma. Scoped to
+`.dropdown__panel--export` and flagged, because one row component carrying three different icon
+colours reads as Figma drift rather than intent.
+
+### One modal, three formats
+
+The two preview frames are byte-identical apart from the title, the primary button label, and
+which body is shown, so `#export-preview` serves all three formats rather than duplicating a
+shell. **The preview follows the format:** PDF previews as the document it will produce, CSV and
+.xlsx as the six columns they will hold, in the DS `Table`. A document preview for a spreadsheet
+would misrepresent the file.
+
+| Value | Figma | Built as |
+|---|---|---|
+| Modal width | 768 | `.modal--lg` (`--ai-size-11`) |
+| Summary → panel gap | 16 | `--ai-spacing-5` |
+| Document panel height | 384 | `--ai-size-7` |
+| Table panel height | 448 | `--ai-size-8` |
+| Panel padding | `p-25` | `--ai-spacing-6` (24) **+ the 1px border** — the usual Figma stroke arithmetic |
+| Panel border / radius | 1px `#e5e9eb` / 8 | `--ai-border-secondary` / `--ai-radius-md` |
+| Document title | Inter **Bold** 18/24 | `--ai-font-fixed-md`, `--ai-font-bold`, `--ai-leading-md` |
+| Meta line | 12/20 `#667f89` | `--ai-font-fixed-xxs`, `--ai-leading-sm`, `--ai-text-contrast` |
+| Table heading | **16** SemiBold /20 | `--ai-font-fixed-sm` — **measured, see below** |
+| Heading trail | 12 Regular `#667f89` | `--ai-font-fixed-xxs`, `--ai-text-contrast` |
+| Seat row | 14/32 | `--ai-font-fixed-xs`, `--ai-leading-lg` |
+| `[Role]` | 14/32 `#335562` | `--ai-text-secondary` — colour only, not a size step |
+| Empty-table line | 14/24 **italic** `#667f89` | the one italic run on this screen |
+| List indent | 24 (marker hung outside a 646 box in a 670 list) | `--ai-spacing-6` |
+
+The two panel heights **differ and are left differing** — both are real tokens, and the modals
+differ to match (588 vs 652 tall).
+
+The mobile frames needed nothing of their own: Modal's own Size=sm block at 639 already produces
+the 338-wide dialog they draw inside a 402 viewport, and **neither preview steps its type down** —
+checked on both mobile frames rather than assumed, because most of this screen does.
+
+### The 16px heading was measured, not read
+
+`get_design_context` reports the "Table 1 Head table · 10/10" node as `text-[0px]` — its sentinel
+for a mixed-size run — so the size of the "Table 1" run is simply absent from the export. Rather
+than assume 14 (the size either side of it), it was solved from the node's own **161px** width
+against Inter metrics: 16px SemiBold gives 160.84 and the next candidate is 3px out. The metrics
+were validated first on three nodes whose sizes Figma *does* report (311 → 310.08, 469 → 468.48,
+253 → 252.55), so the solve rests on a calibrated ruler. The stray `text-[16px]` span on the
+space between the runs is the same 16px run showing through.
+
+### Both bodies are built from the DOM
+
+Neither preview is authored in the markup — `readPlan()` reads the twelve cards for names, counts
+and per-role legends, and the TableDetail panel for named occupants, at open time. So the preview
+cannot claim something the plan does not say: add a table, delete one or unseat somebody and the
+counts, the meta line and the row set all follow.
+
+Two consequences worth knowing, both in the manifest:
+
+- **Named occupants exist for one table only** (`seating-export-occupant-coverage`). There is no
+  occupant model behind this screen. Nothing is invented to fill the gap.
+- **The TYPE column has no source** (`seating-export-table-type`) — the cards draw no TableType
+  chip. Figma's own Table 11 heading is untyped, so the presentation is a drawn state.
+
+The summary line reads **"12 tables · 6 seated people"** on this page where Figma's frame says
+101 — because this page holds six seated attendees. The preview describes the plan, not the frame.
+
+### Verified (headless Chrome over HTTP, 2026-09-09)
+
+At 1600: `mode=split`, chevron rendered, `-1px` shared edge, modal **768.0**, document panel
+**384px** `overflow-y: auto`, padding 24 + 1px border + 8px radius, **12 headings / 1 list / 11
+empty-lines** (exactly the seeded plan), heading `16px 600` with `padding-top: 24px`, list
+`14px/32px` indent 24, menu showing **only Excel and CSV**, row height **32.0**, padding `4px 8px`,
+`13px 500`, 12px icon, panel `min-width: 160px` / `padding: 8px`; CSV panel **448px**, six columns,
+`th` `12px 600` `0.6px` uppercase sticky, `td` `14px` `12px 16px`.
+
+At 600 (header container 509): `mode=menu`, chevron **not rendered**, label **32×32** with its
+radius restored, `aria-haspopup="menu"` and `aria-expanded` flipping false → true, **three** rows
+including PDF, and the PDF row opening the preview.
+
+Download: the CSV blob really is produced (`text/csv;charset=utf-8`,
+`main-ballroom-seating.csv`), 1 header + 6 rows, and a company name set to `Acme, "Big" Ltd`
+serialised as `"Acme, ""Big"" Ltd"`. PDF produced **no blob** and toasted that it is server-side.
+
+Measuring the menu row needed care: `querySelector('.dropdown-item--xs')` returns the **PDF** row,
+which is `display: none` above 767, so the first probe reported a 32px row as **0.0** — a hidden
+sibling reading exactly like a broken rule. The probe now filters to rows with client rects.
+
+### Additions and divergences
+
+- **Sticky column headers** on the CSV preview. Figma clips the whole table, header included, so
+  scrolling to row 60 of 100 would leave six unlabelled columns — which defeats a preview whose
+  job is to show which column holds what. Flagged as an addition Figma cannot express.
+- **Focus lands on the close button**, not the scroll panel. Landing on the panel would let the
+  arrow keys scroll immediately, but the panel carries a `:focus-visible` ring and Figma draws
+  that border plain grey — so a mouse user risked a brand ring around the preview on a heuristic
+  this code does not control. The panels keep `tabindex="0"`, so one Tab reaches the scroller.
+- **The menu's shadow.** Figma draws `0 4px 6px rgba(0,0,0,0.08)` on this panel, which matches no
+  shadow token; `.dropdown__panel`'s own `--ai-shadow-md` is used instead of inventing one.
+  `--ai-shadow-md` *does* match Figma's `light/shadow-md` effect exactly, so the panel is
+  consistent with every other Dropdown on the screen — just lighter in Figma than in code.
+- **The plan card now visibly disagrees with the export** — "6/148" against the export's "6/120".
+  Pre-existing, and the export is the one derived from what it exports
+  (`seating-export-plan-capacity`).

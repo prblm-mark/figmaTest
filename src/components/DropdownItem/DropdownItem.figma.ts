@@ -15,6 +15,7 @@ figma.connect(
       size: figma.enum('Size', {
         Default: '',
         sm: 'dropdown-item--sm',
+        xs: 'dropdown-item--xs',
       }),
     },
     example: ({ type, state, size }) => html`
