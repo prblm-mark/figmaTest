@@ -81,6 +81,7 @@ Original note: Figma defines no mobile modal variant. One responsive rule exists
 | Breakpoint | Rule | Origin |
 |---|---|---|
 | `max-width: 639px` (below `--ai-bp-sm`) | `.modal__header` / `.modal__footer` padding → `var(--ai-spacing-4) var(--ai-spacing-5)` (from `--ai-spacing-5` / `--ai-spacing-6`) | Added 2026-07-27 during the EventPicker build, then applied to **all** modals by request |
+| `max-width: 639px` | `.modal__footer .btn` → `min-height: --ai-spacing-7` (32), `padding: 0 --ai-spacing-4` (12), `font-size: --ai-font-fluid-xxs` (12) — i.e. `.btn--sm` | Added 2026-09-09. Completes the `Size=sm` footer variant (`3427:11839`), which had been implemented for padding but not button size. Affects **every** modal |
 
 `.modal--confirm .modal__footer` is unaffected — it is more specific and keeps its
 intentionally borderless, centred `0 var(--ai-spacing-6) var(--ai-spacing-6)` padding.
@@ -167,6 +168,31 @@ header child.
 
 **The sm values** — folded into the existing `max-width: 639px` block (body padding → 16, title →
 16, title-block gap → 4, subtitle → 13), joining the header/footer padding rule already there.
+
+**Footer buttons drop to `sm` too — added 2026-09-09.** This was a missing piece of that same
+mapping, not a new behaviour: `Modal Footer` at `Size=sm` (`3427:11839`) draws its buttons at
+**h-32 / px-12** with the `button/sm` text style, against **h-40 / px-16 / `button/base`** at
+`Size=Base` — i.e. exactly `.btn--sm`. The 639px block set the footer's own padding but left its
+buttons at the base size, so every modal in the repo rendered a desktop-sized footer button on a
+phone.
+
+Found while building the Seating Planner's export preview: its mobile footer measures **57** tall
+(12 + 32 + 13) against **73** on desktop (16 + 40 + 17), and the arithmetic only closes with a
+32px button. Applied as `.modal__footer .btn` inside the existing block rather than by changing
+markup, because the size is a property of the modal at that width, not of the caller's button —
+**none of the 312 footer buttons across 52 files declares a size**, so there was nothing to
+conflict with, and no consumer has to remember to swap a class. Icon-only footer buttons are kept
+square by a companion `.modal__footer .btn--icon` rule.
+
+Blast radius, stated plainly: this changes the mobile footer of **every modal in the repo**. That
+is the intent — they were all wrong in the same direction — but it is a wide change from a narrow
+discovery. Spot-checked at 390 on delete-table, table-form, copy-plans and delete-plan.
+
+**Related trap, worth reading before styling anything inside a modal body:**
+`.modal__body > p` is **(0,1,1)** and beats any single-class selector a consumer writes for its
+own paragraph. The comment above that rule already warns about it; the export preview walked into
+it anyway, and because Modal's declared values matched the consumer's base rule exactly, the bug
+was **invisible on desktop** and only surfaced as a mobile override that silently did nothing.
 
 ### What was NOT, and why it matters
 
