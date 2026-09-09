@@ -515,7 +515,7 @@
             </ul>
           </div>
           <div class="seating-header__actions">
-            <button type="button" class="btn btn--secondary">
+            <button type="button" class="btn btn--secondary" data-cp-open>
               <i data-lucide="copy" aria-hidden="true"></i>Copy Plans
             </button>
             <button type="button" class="btn btn--primary" data-seating-new-plan
@@ -574,7 +574,7 @@
             </ul>
           </div>
           <div class="seating-header__actions">
-            <button type="button" class="btn btn--secondary">
+            <button type="button" class="btn btn--secondary" data-cp-open>
               <i data-lucide="copy" aria-hidden="true"></i>Copy Plans
             </button>
             <button type="button" class="btn btn--primary" data-seating-new-plan
@@ -2468,6 +2468,154 @@
              Tables rather than be left dangling. -->
         <button type="submit" class="btn btn--primary btn--sm table-types__add-btn">Add Type</button>
       </form>
+    </div>
+  </div>
+
+  <!-- Copy plans to another event — Figma 1:13357 desktop (768x623) / 1:44578 mobile.
+       Opened from either Copy Plans button in the header.
+
+       ALMOST ENTIRELY THE EVENT PICKER. Figma hand-built this dialog as a copy of the picker,
+       and the pattern already carries every part it needs: `.event-picker__filters` search,
+       `.event-picker__list`, `.event-picker__event` rows built on ActionCard — INCLUDING the
+       `.event-picker__plans` count Figma shows on each row — and a `.event-picker__footer` with
+       `[data-ep-count]` plus a Cancel. So this reuses the markup rather than restating it, and
+       carries `data-event-picker` so event-picker.js drives the search, the count, Escape, row
+       selection and Cancel. Its `event-picker:select` / `:close` events are listened for on THIS
+       overlay, and the existing Select-an-event glue is bound to its own overlay, so the two
+       cannot cross-wire.
+
+       Three deliberate differences from the picker:
+         - no `[data-ep-live]` checkbox — Figma hides it, and event-picker.js already guards on it
+         - no `[data-ep-group]` headings — Figma hides those too, so the list is flat
+         - no seated progress bar on a row: Figma's rows show the plan count and chevron only
+
+       THE SOURCE EVENT IS EXCLUDED, so a plan cannot be copied onto the event it came from —
+       the documented rule, and what the desktop frame draws. The mobile frame still lists it
+       first, which is the picker's "Last used" row surviving with its group label hidden; both
+       frames' "6 events" footer is the un-excluded total. Five destinations, footer counts five
+       (designer, 2026-09-09). -->
+  <div class="modal-overlay" id="copy-plans" data-copy-plans>
+    <div class="modal modal--lg event-picker copy-plans" role="dialog" aria-modal="true"
+         aria-labelledby="copy-plans-title" aria-describedby="copy-plans-intro" data-event-picker>
+
+      <div class="modal__header">
+        <h2 class="modal__title" id="copy-plans-title">Copy all plans to another event</h2>
+        <button class="modal__close" type="button" aria-label="Close" data-ep-close>
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <div class="event-picker__filters copy-plans__filters">
+        <!-- Data-driven: the plan count and the source event name are read off the page, so this
+             sentence cannot disagree with the header above it. -->
+        <p class="copy-plans__intro" id="copy-plans-intro">Copy all
+          <strong data-cp-count>2 plans</strong> from
+          <strong data-cp-source>The Card &amp; Payments Awards 2026</strong> to another event.
+          Tables and capacities are kept; seated attendees are cleared. Choose the destination
+          event:</p>
+        <div class="search">
+          <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+          <input class="search__input" type="search" placeholder="Search event name…"
+                 aria-label="Search event name" data-ep-search>
+        </div>
+      </div>
+
+      <!-- TODO(backend:SeatingPlanner): these five destinations are the same mock events the
+           picker lists, minus the source — see seating-copy-plans, which asks for
+           GET /crm/events excluding the current event with a debounced ?q= search. -->
+      <div class="event-picker__list" data-ep-list>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-gpf" data-name="Global Payments Forum" data-status="live">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">Global Payments Forum</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>12 Nov 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>Hilton Metropole, Birmingham</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>640 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans" data-cp-plans="0"><i data-lucide="layout-grid" aria-hidden="true"></i>0 plans</span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-ris" data-name="Retail Innovation Summit" data-status="live">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">Retail Innovation Summit</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>8 Oct 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>Manchester Central</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>820 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans" data-cp-plans="1"><i data-lucide="layout-grid" aria-hidden="true"></i>1 plan</span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-ild" data-name="Insurance Leaders Dinner" data-status="live">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">Insurance Leaders Dinner</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>17 Sep 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>The Savoy, London</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>180 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans" data-cp-plans="1"><i data-lucide="layout-grid" aria-hidden="true"></i>1 plan</span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-fts" data-name="FinTech Summit 2026" data-status="live">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">FinTech Summit 2026</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>14 May 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>ExCeL London</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>1,200 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans" data-cp-plans="0"><i data-lucide="layout-grid" aria-hidden="true"></i>0 plans</span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-mds" data-name="Members&#39; Dinner — Spring" data-status="live">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">Members&#39; Dinner — Spring</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>20 Mar 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>The Ivy, London</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>90 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans" data-cp-plans="0"><i data-lucide="layout-grid" aria-hidden="true"></i>0 plans</span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <div class="modal__footer event-picker__footer">
+        <span class="event-picker__count" data-ep-count aria-live="polite">5 events</span>
+        <button class="btn btn--secondary" type="button" data-ep-close>Cancel</button>
+      </div>
+
     </div>
   </div>
 

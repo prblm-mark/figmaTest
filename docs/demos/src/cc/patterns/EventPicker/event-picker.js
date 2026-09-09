@@ -86,9 +86,14 @@
       if (emptyQuery) emptyQuery.textContent = q;
 
       if (count) {
+        /* The status suffix describes the Live filter's state, so it is only meaningful when
+         * that filter exists. A picker without a `[data-ep-live]` checkbox — the Seating
+         * Planner's Copy plans dialog is the first — gets the bare count, which is what its
+         * Figma draws. The Event Picker itself always has the checkbox, so its own footer is
+         * unchanged. */
         count.textContent =
           visible + (visible === 1 ? ' event' : ' events') +
-          (liveOnly ? ' · live only' : ' · all statuses');
+          (live ? (liveOnly ? ' · live only' : ' · all statuses') : '');
       }
     }
 

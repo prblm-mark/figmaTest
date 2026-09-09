@@ -1210,3 +1210,51 @@
     padding: var(--ai-spacing-5);                /* 16 */
   }
 }
+
+/* ── Copy plans modal ─────────────────────────────────────────────────────────────────────
+ * Figma 1:13357 desktop (768x623) / 1:44578 mobile. 768 is `modal--lg`, the width the Event
+ * Picker already uses — which is the point: this dialog is the picker in different clothes, so
+ * the shell, the filters block, the rows and the footer all come from `.event-picker` and only
+ * the two genuine differences are written here.
+ *
+ * NOTHING in this block restates a value the picker already sets. If a padding or a gap is not
+ * here, it is because `.event-picker` is already carrying it, Figma-verified from that build. */
+
+/* The intro sentence, which the picker has no equivalent of. 13px/20 at BOTH sizes — checked on
+ * both frames rather than assumed, because almost everything else on this screen steps down on
+ * mobile and this does not. Sits inside `.event-picker__filters` above the search, which is how
+ * Figma nests it (its "Slot Search" holds the sentence and the field together). */
+.copy-plans__intro {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);   /* 13 */
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-sm);     /* 20 */
+  color: var(--ai-text-contrast);
+}
+
+/* The plan count and the source event name. Emphasised by COLOUR and WEIGHT: the mobile frame
+ * marks both runs `Inter:Semi_Bold` over --ai-text-primary, and while the desktop export omits
+ * the weight on its spans, both crops render bold — so mobile's explicit spec is taken as the
+ * intent rather than the desktop export's omission. */
+.copy-plans__intro strong {
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-primary);
+}
+
+/* The filters block becomes a column here: the picker lays its search and Live checkbox out for
+ * its own arrangement, and this dialog stacks a sentence above a full-width search instead. */
+.copy-plans__filters {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--ai-spacing-4);              /* 12 — Figma: intro ends y=56, search starts y=68 */
+}
+
+/* Rows carry no seated bar. Figma's rows show the name, the meta line, the plan count and the
+ * chevron and stop there — a seated figure would be about the SOURCE plan, which is not what
+ * this list is choosing between. Hidden rather than removed from the markup so the row stays
+ * byte-identical to the picker's and cannot drift from it. */
+.copy-plans .event-picker__seated {
+  display: none;
+}
