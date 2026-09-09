@@ -1240,3 +1240,250 @@ sibling reading exactly like a broken rule. The probe now filters to rows with c
 - **The plan card now visibly disagrees with the export** — "6/148" against the export's "6/120".
   Pre-existing, and the export is the one derived from what it exports
   (`seating-export-plan-capacity`).
+
+---
+
+## Room Layout (2026-09-09) — TASK-344760
+
+Six frames: `1:20655` / `1:49180` (Empty), `1:24161` / `1:53040` (Image), `1:27691` / `1:55622`
+(PDF), desktop / mobile. Built as `#room-layout` + the `roomLayout` IIFE.
+
+**Frame naming defect:** `1:54336` is named **"Room Layout / Image"** but contains the **PDF**
+state — FileText icon, `grosvenor-great-room.pdf`, `PDF · 256 KB`, the PDF note. The name is
+stale; the content is what was built from. (It is also a duplicate of `1:55622`'s content.)
+
+### The empty state IS DragDropFile — verified, not assumed
+
+Figma's dropzone matches the DS component on every property, so the component is used rather than
+re-implemented:
+
+| Property | `DragDropFile` | Figma `1:22396` |
+|---|---|---|
+| min-height | 280 | 280 |
+| border | 2px dashed `--ai-border-secondary` | same |
+| radius | `--ai-radius-lg` | 16 |
+| padding | `--ai-spacing-7` (32) | `p-34` = 32 + the 2px stroke |
+| gap | `--ai-spacing-5` (16) | 16 |
+| disc | 48, `--ai-surface-brand-soft-extra`, `--ai-radius-full` | same |
+| disc icon | 24 (`--ai-icon-size-lg`), `--ai-icon-brand` | 24, Figma binds `--ai-surface-brand` |
+| `__title` | 14 / `--ai-leading-md` / `--ai-text-secondary` / centred | same |
+
+Only the **copy** is this screen's, so only the copy is scoped here. Its stylesheet was **missing
+from this page** and is now linked — the third time on this screen (after SeatingToast and
+ColorPickerInput), which is why it is now checked rather than assumed.
+
+**Token note, flagged:** Figma binds `--ai-surface-brand` for the disc icon's stroke, where
+`--ai-icon-brand` exists with the identical value (`#0094ad`) and is the semantically right token.
+The component already uses `--ai-icon-brand`, so the render is correct and nothing was changed —
+but the Figma variable should be re-bound.
+
+### Only the copy and the second line are scoped
+
+`DragDropFile.__subtitle` is 12px over `--ai-text-contrast`; this screen's second line is 14px over
+`--ai-text-secondary`, so it gets `.room-layout__hint` rather than bending the component.
+
+**Token gap, resolved:** that line's line-height is `1.4` (unitless, ≈19.6px at 14px) with no
+matching `--ai-leading-*`. The line above it is an explicit `--ai-leading-md`, so 1.4 reads as
+Figma's "Auto". Resolved to **`--ai-leading-sm` (20px)** at the designer's direction 2026-09-09.
+
+### Three states, one dialog
+
+512 wide — `.modal`'s own default (`--ai-size-9`), no size modifier. Only the footer's primary
+label changes with state; Cancel and the X are constant and there is **no Save**, the live model
+`#table-types` already uses.
+
+| State | Footer primary | Body |
+|---|---|---|
+| Empty | **Upload PDF / image** | the dropzone |
+| Image | **Replace** | preview box, then filename + trash |
+| PDF | **Replace** | document card (icon, name, `PDF · 256 KB`, Open, trash), then the note |
+
+**Remove lives in the body, not the footer.** All three frames put the trash inside the card /
+filename row; no frame draws a footer Remove. The recorded spec said "Replace + Remove" in the
+footer — Figma disagrees and Figma was followed.
+
+### Values
+
+| Element | Desktop | Mobile |
+|---|---|---|
+| Panel gap (Content Slot) | `--ai-spacing-3` (8) | **`--ai-spacing-2` (6)** |
+| Dropzone line 1 + hint | 14 | **13** |
+| Dropzone padding / height | 32 / 280 | 32 / 280 — **unchanged** |
+| Preview padding | `--ai-spacing-7` (32) | **`--ai-spacing-5` (16)** — Figma `p-17` = 16 + 1px |
+| Preview bg / border / radius | `--ai-surface-minimal` / 1px `--ai-border-secondary` / `--ai-radius-lg` | same |
+| Filename | 14 / `--ai-leading-md` / `--ai-text-secondary` | **13** |
+| File row top space | `--ai-spacing-4` (12) | 12 — **unchanged** |
+| Doc card padding / gap | 24 / 16 | **12 / 12** |
+| Doc name | 14 **SemiBold** / `--ai-leading-sm` / `--ai-text-primary` | 14 — **unchanged** |
+| Doc meta | 12 / `--ai-leading-sm` / `--ai-text-contrast` | 12 — **unchanged** |
+| Doc actions gap | `--ai-spacing-1` (4) | 4 |
+| Note | 14 / `--ai-leading-md` / `--ai-text-secondary`, pt 12 | **13 / `--ai-leading-xs` (16), pt 8** |
+
+The **image filename and the doc filename are styled differently** (14 Regular `--ai-text-secondary`
+vs 14 SemiBold `--ai-text-primary`) and the doc name does **not** step down while the image one
+does. Two states, two treatments, both followed rather than unified.
+
+`@media (max-width: 639px)`, matching Modal's own Size=sm switch, so the chrome and the contents
+step together. `@media` rather than `@container` because a `position: fixed` overlay genuinely is
+viewport-sized (CLAUDE.md §4a).
+
+### The preview box hugs its image, capped at 280
+
+Figma's two frames disagree: desktop draws a fixed 280 with the mock image overflowing its own
+32px padding, mobile hugs at 16px. Hugging with a `max-block-size: var(--ai-size-5)` cap on the
+image reproduces both for their own artwork and behaves for a real upload — a wide, short plan does
+not sit in a half-empty box, and a tall one cannot push the dialog past Modal's
+`max-block-size: 100%`. Designer's direction, 2026-09-09.
+
+### Both triggers are bound, because exactly one is live at a time
+
+`SeatingHeader` shows the toolbar button above container 1200 and the overflow-menu item below it.
+Measured with the panel open:
+
+| Width | Toolbar button | Menu `<li>` |
+|---|---|---|
+| 1600 | shown | `display: none` |
+| 1100 | hidden | `display: block` |
+| 390 | hidden | `display: block` |
+
+Binding one would have left the control dead at the other widths — the exact trap
+`seating-header` already warns about.
+
+### Nothing leaves the browser
+
+An image is read with `FileReader` and previewed as a data URL; a PDF gets an object URL so its
+Open link genuinely works, revoked on remove or replace. Attachments are held **per plan**, keyed
+on the plan name the dialog is titled with, so switching plans switches the layout.
+
+Non-image, non-PDF files are refused **by name**, and the check is on the file rather than on the
+`accept` attribute — a drag bypasses `accept` entirely. A drop anywhere else in the dialog is also
+swallowed, because an unhandled file drop makes the browser navigate away from the app.
+
+### Additions and divergences
+
+- **A visible focus ring on the dropzone.** The component's file input is `0×0` / `opacity: 0` —
+  correctly focusable, but its own ring is invisible, so a keyboard user got no indication. The zone
+  now rings on `:focus-within`, reusing the component's own drag-over brand border. WCAG 2.1 §9;
+  not drawn in Figma.
+- **Filename ellipsis on desktop.** Figma's mobile frame truncates the doc name and the desktop one
+  does not, so a long filename would escape the row at the wider size. Applied at both sizes and to
+  both filenames, per CLAUDE.md §4a — fix overflow intrinsically, not at a breakpoint. The full name
+  stays reachable via `title`.
+- **`data-rl-file-open`, not `data-rl-open`,** on the card's Open link. `data-rl-open` is the pair of
+  modal triggers, and a delegated handler matched the link too, re-opening the dialog on top of
+  itself. Caught by counting the hook after wiring — the same collision class as `data-ep-close`.
+- **No "has a layout" dot** on the toolbar button. The prototype added one so you could tell without
+  opening the dialog; no frame draws it, so it was not built. Worth a designer decision.
+- **Pre-existing hardcodes in `DragDropFile`,** not changed here: `min-height: 280px` (=
+  `--ai-size-5`) and the disc's `width/height: 48px` (= `--ai-spacing-9`). Both have exact tokens and
+  the file's own comment says "no token" for the first, which is no longer true. Flagged rather than
+  edited, since nothing is visually wrong and the component has its own consumers.
+
+### Verified (headless Chrome over HTTP, 2026-09-09)
+
+Desktop 1600 — modal **512**, title 18 / subtitle 14, dropzone `280 / dashed / 2px / 32px / 16px`,
+disc `48×48` `rgb(237,245,245)` radius 100px, disc icon 24px `rgb(0,148,173)`, line 1 14/24, hint
+14/20 centred, footer "Upload PDF / image".
+
+A `.csv` drop was refused by name and left the empty state up. An SVG drop produced a `data:` preview,
+the filename with `ellipsis/nowrap`, preview `32px` / `--ai-surface-minimal` / radius 16, the 280 cap
+on the image, a hugging box, and the footer flipped to "Replace". A 256,000-byte PDF drop produced
+`grosvenor-great-room.pdf` / **`PDF · 256 KB`**, a `blob:` href with `target="_blank"`, card `24px`
+gap `16px`, doc icon 24px `rgb(102,127,137)` (`--ai-icon-secondary`), name 14/600, meta 12, note
+14/24/12, trash `32×32`. Trash returned to empty, reverted the footer label, toasted, and moved focus
+to the file input; closing returned focus to `.seating-header__btn--layout`.
+
+Mobile 390 — modal **326** (390 − 2×32), title 16 / subtitle 13, footer button 32/12, dropzone
+unchanged at 32/280, line 1 and hint **13**, panel gap **6**, preview padding **16**, filename **13**,
+file row top space 12, card **12/12**, doc name 14 and meta 12 (neither steps), note **13/16/8**.
+At 1100 the menu item opened the **512** desktop modal with the hint still at 14.
+
+### Revisions after designer review, 2026-09-09
+
+**1. The remove buttons had a grey box at rest — and the cause is a CC token, not this screen.**
+
+Figma binds `--ai-btn-secondary-bg` (transparent) with no border on both trash buttons
+(`1:29441`, `1:25922`), and `.btn--tertiary` already reads its rest background from
+`--ai-btn-tertiary-bg` — which is `rgba(0, 0, 0, 0)` in `tokens.css`, `tokens-dark.css`,
+`tokens-chat.css` and `tokens-chat-dark.css`. But **`tokens-cc.css` sets it to `#e5e9eb`**, and
+this screen runs in the CC mode, so every tertiary button in the Control Centre paints a grey box
+at rest.
+
+The CC trio reads like a shifted ramp rather than a deliberate choice:
+
+| Mode | rest | hover | pressed |
+|---|---|---|---|
+| `tokens.css` (and dark, chat, chat-dark) | transparent | `#f8fafc` | `#e9eef4` |
+| **`tokens-cc.css`** | **`#e5e9eb`** | `#f2f4f5` | **`#e5e9eb`** |
+
+Rest and pressed are the *same value*, and hover is *lighter* than both — so hovering makes the
+button paler and pressing returns it to rest, which inverts the affordance. Read as
+`transparent → #f2f4f5 → #e5e9eb`, the CC ramp matches every other mode exactly, which suggests
+the rest slot was given the pressed value.
+
+Fixed by overriding **only the rest state** to transparent, scoped to this dialog's two remove
+buttons. Hover, pressed and focus still come from the component, so the override disappears on its
+own once the token is corrected. Not fixed at source because `css/tokens-cc.css` is generated and
+`FigmaTokens/*.json` is not hand-editable (CLAUDE.md §8, §11) — it needs a Figma change.
+
+**Follow-on, flagged with numbers:** with rest transparent, the CC hover `#f2f4f5` is
+*invisible* on the PDF card. Measured against the surfaces it actually sits on:
+
+| Trash button sits on | Hover contrast | Per-channel delta |
+|---|---|---|
+| PDF card — `--ai-surface-minimal` `#f3f6f7` | **1.016:1** | 1, 2, 2 |
+| Image filename row — the modal body, `#ffffff` | 1.103:1 | 13, 11, 10 |
+
+So the image state gets a faint but real hover and the PDF card gets none. No hover colour was
+invented to paper over it — for reference, CC's own pressed value (`#e5e9eb`) would read on the
+card. Designer decision.
+
+**2. The primary button is now a saved/draft control, not always "Replace".**
+
+Reported as not feeling right, and the model the designer described is what is built:
+
+| Draft vs saved | Label | Action |
+|---|---|---|
+| differs | **Save** | commit, toast, close |
+| same, nothing saved | **Upload PDF / image** | open the picker |
+| same, something saved | **Replace** | open the picker |
+
+So opening an empty plan and picking a file turns the button into Save; opening a plan that
+already has one shows Replace until the file is actually switched.
+
+**The consequence worth naming: Cancel now discards.** It had nothing to undo when a pick
+committed on the spot; now it does, so Cancel, the X, Escape and the scrim all drop the draft and
+leave the saved layout untouched. **Removing is a draft change too** — inferred for consistency
+rather than specified, so an accidental trash is recoverable by cancelling instead of being
+instantly destructive. The success toast moved with it, from pick-time to save-time, because a
+pick is no longer a commit.
+
+`data-rl-upload` was renamed `data-rl-primary`, since the button now has three jobs.
+
+**"Save" is not in Figma.** Its frames are static, so they cannot show a pending state; the two
+labels they do draw are the two not-dirty cases, so this adds a state rather than contradicting
+one.
+
+Object URLs are released only when the item they belong to stops being reachable as either the
+draft or the saved value — on save-over, on discard, and on remove.
+
+### Re-verified (headless Chrome over HTTP, 2026-09-09)
+
+Ten steps, each polled for the real state change rather than a fixed delay — the first attempt
+used `setTimeout` and its assertions raced `FileReader`, which made a Save land while the draft
+was still null and cascaded into nonsense output:
+
+| # | Action | Result |
+|---|---|---|
+| 1 | open on an empty plan | `panel=empty`, primary **Upload PDF / image** |
+| 2 | drop an image | `panel=image`, primary **Save**, `first.svg` |
+| 3 | click Save | closed, toast *"first.svg attached to Main Ballroom."* |
+| 4 | re-open | `panel=image`, primary **Replace**, `first.svg` |
+| 5 | switch the file | primary **Save**, `second.svg` |
+| 6 | Cancel, re-open | `first.svg` / **Replace** — the switch was discarded |
+| 7 | trash | `panel=empty`, primary **Save** |
+| 8 | Escape, re-open | `panel=image`, `first.svg` / **Replace** — the removal was discarded |
+| 9 | trash + Save | toast *"Layout removed from Main Ballroom."* |
+| 10 | re-open | `panel=empty`, primary **Upload PDF / image** — committed |
+
+Trash background at rest measured `rgba(0, 0, 0, 0)`.
