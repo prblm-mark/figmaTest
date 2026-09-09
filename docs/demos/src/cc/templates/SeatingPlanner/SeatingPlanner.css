@@ -464,7 +464,8 @@
   .create-plan__footer .btn,
   .edit-plan__footer .btn,
   .delete-plan__footer .btn,
-  .table-form__footer .btn {
+  .table-form__footer .btn,
+  .delete-table__footer .btn {
     min-height: var(--ai-spacing-7);
     padding: 0 var(--ai-spacing-4);
     font-size: var(--ai-font-fluid-xxs);
@@ -1007,4 +1008,42 @@
 
 .sp-toast-host .seating-toast {
   pointer-events: auto;
+}
+
+/* ── Delete table modal ───────────────────────────────────────────────────────────────────
+ * Figma 1:12323 desktop / 1:44254 mobile (Seating Planner file), modal 1:12839 / 1:44300.
+ *
+ * Geometry is Modal's already: desktop 512 wide with a 24px body and 65/73 chrome; mobile
+ * 338x244 with a 16px body and 57/57. Measured from the frames — mobile body 128 = 16 + 96 + 16,
+ * with two 40px paragraphs 16 apart; desktop body 112 = 24 + 64 + 24, two 24px paragraphs 16
+ * apart. Nothing here restates any of that.
+ *
+ * CONTEXTUAL OVERRIDE (Case B), the SECOND modal to need it: Figma paints both paragraphs
+ * #00222f = --ai-text-primary, where `.modal__body > p` is --ai-text-secondary. Delete Plan
+ * needed exactly the same override on 2026-08-29. Two of two body-copy modals now disagree with
+ * Modal's default, which is worth a look at the component rather than a third scoped copy —
+ * flagged, not acted on from here. */
+.delete-table__body > p {
+  color: var(--ai-text-primary);
+}
+
+/* Weight only; colour and size inherit, because Figma's emphasised runs differ from the
+ * surrounding text in weight alone. `<strong>` is right on meaning too — the table name and the
+ * headcount are the words that change what the button destroys. */
+.delete-table__body strong {
+  font-weight: var(--ai-font-semibold);
+}
+
+/* MOBILE TYPE STEP-DOWN, and this is where Delete table and Delete Plan genuinely differ.
+ * Delete table drops to 13px/20 on mobile (measured: two 40px paragraphs = 2 x 20); Delete Plan
+ * stays at 14px/24 at both sizes (its mobile paragraphs are 48 = 2 x 24). Both are as drawn, so
+ * each modal follows its own frame and the mismatch is recorded rather than resolved by picking a
+ * winner across two Figma files (designer, 2026-09-09).
+ *
+ * 639px to sit on the same step as the modal's own sm treatment, as with the Table form labels. */
+@media (max-width: 639px) {
+  .delete-table__body > p {
+    font-size: var(--ai-font-fixed-2xs);   /* 13px */
+    line-height: var(--ai-leading-sm);     /* 20px */
+  }
 }

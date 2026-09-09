@@ -1524,7 +1524,7 @@
                 '<button type="button" class="btn btn--secondary btn--icon btn--2xs" data-tf-open>' +
                   '<i data-lucide="pencil" aria-hidden="true"></i>' +
                 '</button>' +
-                '<button type="button" class="btn btn--secondary btn--icon btn--2xs">' +
+                '<button type="button" class="btn btn--secondary btn--icon btn--2xs" data-dtb-open>' +
                   '<i data-lucide="trash" aria-hidden="true"></i>' +
                 '</button>' +
               '</div>' +
@@ -1880,4 +1880,212 @@
     var detail = event.detail || {};
     show(detail.parts, detail.undo);
   });
+})();
+
+/* ── Delete table ──────────────────────────────────────────────────────────────────────────
+ * Figma 1:12323 desktop / 1:44254 mobile. Deliberately parallel to the deletePlan IIFE above —
+ * same open/close contract, same focus trap, same data-driven copy — so a change to one is easy
+ * to mirror.
+ */
+(function () {
+  'use strict';
+
+  if (window.__deleteTableReady) return;
+  window.__deleteTableReady = true;
+
+  var OPEN_CLASS = 'modal-overlay--open';
+  var FOCUSABLE = [
+    'a[href]', 'button:not([disabled])', 'input:not([disabled])',
+    'select:not([disabled])', 'textarea:not([disabled])', '[tabindex]:not([tabindex="-1"])'
+  ].join(',');
+
+  var overlay = document.querySelector('[data-delete-table]');
+  if (!overlay) return;
+
+  var dialog = overlay.querySelector('[role="alertdialog"]');
+  var nameEl = overlay.querySelector('[data-dtb-name]');
+  var consequenceEl = overlay.querySelector('[data-dtb-consequence]');
+  var cancelBtn = overlay.querySelector('.btn--secondary[data-dtb-close]');
+  var returnFocusTo = null;
+  var deletingCard = null;
+
+  function isOpen() { return overlay.classList.contains(OPEN_CLASS); }
+
+  function focusable() {
+    return Array.prototype.filter.call(
+      dialog.querySelectorAll(FOCUSABLE),
+      function (el) { return el.offsetParent !== null; }
+    );
+  }
+
+  function plural(n, one, many) { return n === 1 ? one : many; }
+
+  /* "6 / 10 seated" -> { seated: 6, capacity: 10 }. Regex rather than positional parsing, the
+   * same reasoning as deletePlan: the separator and the trailing word are presentation. */
+  function readCounts(card) {
+    var el = card && card.querySelector('.table-card__count');
+    var m = el ? /(\d+)\s*\/\s*(\d+)/.exec(el.textContent) : null;
+    return m ? { seated: parseInt(m[1], 10), capacity: parseInt(m[2], 10) }
+             : { seated: null, capacity: null };
+  }
+
+  /* Data-driven, and the empty case is the one Figma does not draw: with nobody seated it SAYS
+   * so rather than rendering "0 seated people will be returned", which would promise a
+   * consequence that never happens (designer, 2026-09-09 — and the documented behaviour for
+   * seating-delete-table already said the dialog should say so rather than invent one).
+   *
+   * Note this differs from Delete Plan, which drops its people clause entirely when nobody is
+   * seated. Deliberate: a plan with no one seated still loses its tables, so it has a
+   * consequence left to state; an empty table has none, so the line has to carry the fact. */
+  function buildConsequence(counts) {
+    var frag = document.createDocumentFragment();
+
+    if (counts.seated === null) {
+      frag.appendChild(document.createTextNode(
+        'Anyone seated at this table will be returned to the Unassigned pool.'));
+      return frag;
+    }
+    if (counts.seated === 0) {
+      frag.appendChild(document.createTextNode('No one is seated at this table.'));
+      return frag;
+    }
+
+    var strong = document.createElement('strong');
+    strong.textContent = String(counts.seated);
+    frag.appendChild(strong);
+    frag.appendChild(document.createTextNode(
+      ' seated ' + plural(counts.seated, 'person', 'people') +
+      ' will be returned to the Unassigned pool.'));
+    return frag;
+  }
+
+  function open(card, trigger) {
+    if (isOpen()) return;
+    deletingCard = card;
+    returnFocusTo = trigger || document.activeElement;
+
+    var selectEl = card && card.querySelector('.table-card__select');
+    if (nameEl) nameEl.textContent = selectEl ? selectEl.textContent.trim() : 'this table';
+    if (consequenceEl) {
+      consequenceEl.textContent = '';
+      consequenceEl.appendChild(buildConsequence(readCounts(card)));
+    }
+
+    overlay.classList.add(OPEN_CLASS);
+    if (trigger) trigger.setAttribute('aria-expanded', 'true');
+    /* Cancel, not Delete — the destructive control should never be one Enter away from a dialog
+     * that has only just appeared. */
+    if (cancelBtn) cancelBtn.focus();
+    else dialog.focus();
+  }
+
+  function close(focusTarget) {
+    if (!isOpen()) return;
+    overlay.classList.remove(OPEN_CLASS);
+    Array.prototype.forEach.call(document.querySelectorAll('[data-dtb-open]'), function (b) {
+      b.setAttribute('aria-expanded', 'false');
+    });
+    var target = focusTarget ||
+      ((returnFocusTo && returnFocusTo !== document.body && returnFocusTo.isConnected)
+        ? returnFocusTo
+        : dialog);
+    returnFocusTo = null;
+    deletingCard = null;
+    if (target) target.focus();
+  }
+
+  /* Delegated, so a table added by the Table form is deletable without re-binding. */
+  document.addEventListener('click', function (event) {
+    var btn = event.target.closest ? event.target.closest('[data-dtb-open]') : null;
+    if (!btn) return;
+    event.preventDefault();
+    open(btn.closest('.table-card'), btn);
+  });
+
+  Array.prototype.forEach.call(overlay.querySelectorAll('[data-dtb-close]'), function (btn) {
+    btn.addEventListener('click', function () { close(); });
+  });
+
+  overlay.addEventListener('click', function (event) {
+    if (event.target === overlay) close();
+  });
+
+  overlay.addEventListener('keydown', function (event) {
+    if (!isOpen()) return;
+    if (event.key === 'Escape') { close(); return; }
+    if (event.key !== 'Tab') return;
+
+    var items = focusable();
+    if (!items.length) return;
+    var first = items[0], last = items[items.length - 1], active = document.activeElement;
+
+    if (event.shiftKey && (active === first || !dialog.contains(active))) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && (active === last || !dialog.contains(active))) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
+
+  var confirmBtn = overlay.querySelector('[data-dtb-confirm]');
+  if (confirmBtn) {
+    confirmBtn.addEventListener('click', function () {
+      var card = deletingCard;
+      if (!card) { close(); return; }
+
+      var counts = readCounts(card);
+      var wasSelected = card.classList.contains('table-card--selected');
+      var grid = card.parentNode;
+
+      /* TODO(backend:SeatingPlanner): DOM-only. seating-delete-table asks for the Table and its
+       * TableSeat rows to go and the occupants to return to the pool in ONE transaction. */
+      grid.removeChild(card);
+
+      /* Plan totals move by this table's own numbers, and the table count drops by one. Same
+       * delta approach — and same caveat — as the Table form: recomputing from the surviving
+       * cards is sturdier and is the server's job. */
+      var planCounts = document.querySelector('.room-card__counts');
+      if (planCounts) {
+        planCounts.innerHTML = planCounts.innerHTML.replace(
+          /(\d+)\s*tables\s*·\s*(\d+)\/(\d+)/,
+          function (_m, t, planSeated, planCap) {
+            var nextTables = Math.max(0, parseInt(t, 10) - 1);
+            var nextCap = parseInt(planCap, 10) - (counts.capacity || 0);
+            var nextSeated = parseInt(planSeated, 10) - (counts.seated || 0);
+            var free = document.querySelector('.room-card__free');
+            if (free) free.textContent = (nextCap - nextSeated) + ' seats free';
+            return nextTables + ' tables · ' + nextSeated + '/' + nextCap;
+          });
+      }
+
+      /* If the deleted table was the OPEN one, the seat panel has to go somewhere: the next
+       * surviving table, or empty when the plan has none left. That is the documented behaviour
+       * for seating-delete-table. Moving it by clicking the next card's own select button keeps
+       * this on the single delegated selection path rather than duplicating it. */
+      var next = grid ? grid.querySelector('.table-card') : null;
+      if (wasSelected) {
+        if (next) {
+          var sel = next.querySelector('.table-card__select');
+          if (sel) sel.click();
+        } else {
+          var detailName = document.querySelector('[data-sp-detail-name]');
+          var detailCount = document.querySelector('[data-sp-detail-count]');
+          var seatList = document.querySelector('.table-detail__seats');
+          if (detailName) detailName.textContent = 'No table selected';
+          if (detailCount) detailCount.textContent = '';
+          if (seatList) seatList.innerHTML = '';
+        }
+      }
+
+      /* Land focus on a surviving table's own delete button where there is one, so a keyboard
+       * user stays in the list rather than being dropped to <body> with the card gone. */
+      var focusNext = next ? (next.querySelector('[data-dtb-open]') || next.querySelector('.table-card__select')) : null;
+      if (!focusNext) {
+        var addBtn = document.querySelector('[data-tf-add]');
+        focusNext = addBtn || null;
+      }
+      close(focusNext);
+    });
+  }
 })();
