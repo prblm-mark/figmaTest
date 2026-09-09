@@ -1817,3 +1817,138 @@
   color: var(--ai-text-contrast);
   text-align: center;
 }
+
+/* ── Placing a person: drag and pick-then-place ───────────────────────────────────────────
+ * seating-drag-assign asks for the source dimmed, legal targets in a success tone, a "Swap"
+ * label on an occupied seat and the refusal reason on a full table. All of it is applied by
+ * seating-app.js AFTER render, so the markup stays byte-identical to the authored markup
+ * whenever nothing is in the air — which is what keeps export and the modals reading a DOM
+ * they recognise. */
+
+/* The source, while it is in the air. Not `visibility: hidden` — you need to still see where
+ * the person came from to judge where to put them. */
+.attendee-card--picked {
+  opacity: 0.45;
+}
+
+/* Legal seat. `outline` rather than `border`, because AttendeeCard's border is load-bearing for
+ * its own layout and swapping it would shift every row by a pixel as the highlight came and
+ * went. An outline costs no space. */
+.attendee-card--drop-move,
+.attendee-card--drop-swap {
+  outline: 2px solid var(--ai-border-success);
+  outline-offset: -1px;
+  background-color: var(--ai-surface-success-soft);
+}
+
+/* An occupied seat says what will happen, rather than leaving the planner to guess that
+ * dropping here evicts somebody. */
+.attendee-card--drop-swap::after {
+  content: attr(data-sp-swap-label);
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: var(--ai-spacing-3);
+  transform: translateY(-50%);
+  padding: var(--ai-spacing-0-5) var(--ai-spacing-2);
+  border-radius: var(--ai-radius-full);
+  background-color: var(--ai-surface-success);
+  color: var(--ai-text-invert);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-4xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  pointer-events: none;
+}
+
+/* AttendeeCard is not positioned by default, and the label above is absolute. */
+.attendee-card--drop-swap {
+  position: relative;
+}
+
+/* A table card that can take them, and one that cannot. The full card is not merely un-lit:
+ * it is marked refused, so aiming at it reads as "no" rather than as nothing happening. */
+.table-card--drop-legal {
+  outline: 2px solid var(--ai-border-success);
+  outline-offset: -1px;
+  background-color: var(--ai-surface-success-soft);
+}
+
+.table-card--drop-full {
+  outline: 2px solid var(--ai-border-error);
+  outline-offset: -1px;
+}
+
+/* The tray as a target — dropping a seated person here unseats them. */
+.unassigned--drop-legal {
+  outline: 2px solid var(--ai-border-success);
+  outline-offset: -1px;
+}
+
+/* ── The "in the air" bar ─────────────────────────────────────────────────────────────────
+ * Fixed, because the planner may scroll the listing to find the table they want while holding
+ * somebody. Sits below Modal's overlay (z-index 100) and above the toast host (90) — being
+ * covered by a dialog is correct, since a dialog means the placement is no longer the task. */
+.seating-pick-bar {
+  position: fixed;
+  inset-block-end: var(--ai-spacing-6);
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  z-index: 95;
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-4);
+  max-inline-size: calc(100% - var(--ai-spacing-7) * 2);
+  padding: var(--ai-spacing-3) var(--ai-spacing-3) var(--ai-spacing-3) var(--ai-spacing-5);
+  background-color: var(--ai-surface-elevated-1);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-full);
+  box-shadow: var(--ai-shadow-md);
+}
+
+.seating-pick-bar[hidden] {
+  display: none;
+}
+
+.seating-pick-bar__icon {
+  flex-shrink: 0;
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-brand);
+}
+
+.seating-pick-bar__text {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-secondary);
+}
+
+.seating-pick-bar__text strong {
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-primary);
+}
+
+/* A picked-up row is grabbable; the cursor is the only hint a mouse user gets that drag is
+ * available at all. */
+[data-sp-pickable] {
+  cursor: grab;
+}
+
+[data-sp-pickable]:active {
+  cursor: grabbing;
+}
+
+@media (max-width: 639px) {
+  .seating-pick-bar {
+    inset-inline: var(--ai-spacing-5);
+    inset-inline-start: var(--ai-spacing-5);
+    transform: none;
+    max-inline-size: none;
+  }
+
+  .seating-pick-bar__text {
+    font-size: var(--ai-font-fixed-2xs);
+  }
+}

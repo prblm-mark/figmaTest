@@ -1583,3 +1583,76 @@ the two side by side.
   seat 124+41+32+0 = 197 of 386 attendees, which would make 189 unassigned, not 72. So "unassigned"
   is not "event attendees minus seated" — it needs a definition before the pool can be derived
   rather than authored.
+
+### Drag-and-drop and seat reordering (2026-09-09)
+
+Built against the model, following `seating-drag-assign` and `seating-touch-placement` — the
+prototype's documented behaviour, re-implemented rather than ported.
+
+**Pick-then-place is the mechanism; drag is an accelerator.** That is the load-bearing decision,
+and it comes straight from `seating-touch-placement`: *"pick-then-place is the mechanism and drag
+is an accelerator for it… keyboard users cannot drag either."* Click or Enter picks a person up,
+a fixed bar names them and offers Cancel, then a click or Enter on a seat, a table card or the
+tray places them. Esc puts them down. `dragstart` sets the *same* `picked` state a click does, so
+there is one set of rules instead of two that can disagree.
+
+**Five placements, one function.** All of these land in `place()`:
+
+| From | To | Result |
+|---|---|---|
+| pool | empty seat | seated |
+| pool | table card | first free seat, or refused **"… is full"** |
+| seat | seat | move, or **swap** when occupied |
+| seat | pool | unseated |
+| seat | another card | the fifth the brief implies |
+
+A swap is a single simultaneous exchange, not remove-then-insert — the manifest warned that
+modelling it as delete/insert is how the pair ends up in the same seat. **pool → occupied seat is
+refused**, not one of the five: silently evicting somebody the planner never chose to move would
+be worse than declining. A refusal **keeps the person in the air** so you can aim somewhere else
+without picking them up again.
+
+Affordances exactly as the brief asks: source dimmed, legal targets in success tone, a "Swap" pill
+on an occupied seat, a red outline and a named reason on a full table.
+
+**Reorder** uses the up/down chevrons AttendeeCard already draws and styles — the first version of
+the renderer had simply dropped them. Up/down swap with the adjacent seat, so moving into an empty
+seat and trading places with an occupied one are one operation. Up is disabled on seat 1, down on
+the last seat, and focus follows the row that moved rather than staying on the index — otherwise
+pressing "down" twice moves two different people.
+
+### The bug that made drag look impossible
+
+`pick()` originally called `render()`. Nothing about the *data* changes when you pick somebody up,
+but the renderer rebuilds the listing and the detail with `innerHTML` — which on `dragstart`
+detaches the very element being dragged. The browser then had nothing to drag and no `drop` ever
+fired. Worse, `dragend` also fired on the detached node, so `picked` stayed set and the next
+ordinary click was silently treated as a placement.
+
+Picking up now only decorates, via `decoratePick()` with a matching `undecorate()` kept beside it.
+Two things fell out of the fix: drag works, and the keyboard path no longer loses focus on pick.
+
+Decoration is applied **after** render rather than threaded through the templates, which is what
+keeps the emitted markup byte-identical to the authored markup whenever nothing is in the air —
+the property that lets export and the eight modals keep reading a DOM they recognise.
+
+**Also guarded:** a card click must not change the table *selection* while somebody is in the air.
+Without it, aiming at a table silently just re-selected it — the same trap
+`seating-touch-placement` records as *"picking does not hijack table selection"*, in the other
+direction.
+
+### Verified (headless Chrome over HTTP, 2026-09-09)
+
+Reorder: seat 1 down swapped with seat 2 and toasted "Hana Ashby swapped with Aisha Patel — seats
+1 and 2"; up restored it; up disabled on seat 1.
+
+Placement, by click: pool → empty seat 8 seated Yasmin Owens, detail 7/10 → 8/10, pool 72 → 71,
+bar cleared. Picking a seated person lit **3** legal seats and **0** swap targets from the pool
+(correct — pool picks cannot target an occupied seat), **11** legal cards and **2** full. Seat 8 →
+seat 1 swapped and said so. A full card refused with "Table 3 is full — nothing was moved" and
+kept the pick; Esc then cleared it. Pool → Table 2 took the first free seat, 5/10 → 6/10. Seat →
+tray unseated and moved the pool 70 → 71.
+
+By keyboard: Enter picked from the tray, Enter on seat 1 placed. By drag: seat 1 → seat 9 moved
+the person and emptied seat 1. With a pick live, a card click placed instead of re-selecting, and
+the detail stayed on Table 1.

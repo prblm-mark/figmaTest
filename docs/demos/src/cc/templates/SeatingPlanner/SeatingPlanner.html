@@ -2900,6 +2900,18 @@
     </div>
   </div>
 
+  <!-- "In the air" bar. Pick-then-place is the MECHANISM and drag is an accelerator over it
+       (seating-touch-placement) — a keyboard user cannot drag, so without this the whole feature
+       would be mouse-only. The bar names who has been picked up and offers a way out; Esc does
+       the same thing. -->
+  <div class="seating-pick-bar" data-sp-pick-bar role="status" aria-live="polite" hidden>
+    <i data-lucide="hand" class="seating-pick-bar__icon" aria-hidden="true"></i>
+    <p class="seating-pick-bar__text">
+      Placing <strong data-sp-pick-name></strong> — choose a seat, a table, or the unassigned list.
+    </p>
+    <button type="button" class="btn btn--secondary btn--sm" data-sp-pick-cancel>Cancel</button>
+  </div>
+
   <div class="sp-toast-host" data-sp-toast-host aria-live="polite" aria-atomic="true"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>

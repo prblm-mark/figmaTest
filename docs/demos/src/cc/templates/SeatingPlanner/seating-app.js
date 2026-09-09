@@ -39,7 +39,12 @@
                .tables[0].id,
     query: '',
     onlyFree: false,
-    showUnassigned: false
+    showUnassigned: false,
+    /* Who is "in the air". `{ kind:'pool', personId }` or `{ kind:'seat', tableId, seatNo }`.
+     * ONE piece of state serves both drag and pick-then-place, which is the whole point:
+     * seating-touch-placement records that "pick-then-place is the mechanism and drag is an
+     * accelerator for it", because keyboard users cannot drag. Two code paths, one placement. */
+    picked: null
   };
 
   /* ── Derivation ────────────────────────────────────────────────────────────────────────────
@@ -284,7 +289,9 @@
     seatsEl.innerHTML = t.seats.map(function (s, i) {
       var num = i + 1;
       if (!s) {
-        return '<article class="attendee-card attendee-card--empty" data-sp-seat="' + num + '">' +
+        return '<article class="attendee-card attendee-card--empty"' +
+               ' data-sp-seat="' + num + '" tabindex="0"' +
+               ' aria-label="Seat ' + num + ', empty">' +
           '<span class="attendee-card__accent" aria-hidden="true">' +
             '<span class="attendee-card__accent-bar"></span></span>' +
           '<span class="attendee-card__seat">' + num + '</span>' +
@@ -297,7 +304,11 @@
         '</article>';
       }
       var p = person(s.personId);
-      return '<article class="attendee-card attendee-card--' + s.role + '" data-sp-seat="' + num + '">' +
+      /* Draggable AND focusable: drag is the accelerator, tabindex is what makes the same
+       * placement reachable by keyboard — a keyboard user cannot drag at all. */
+      return '<article class="attendee-card attendee-card--' + s.role + '"' +
+              ' data-sp-seat="' + num + '" data-sp-pickable draggable="true" tabindex="0"' +
+              ' aria-label="Seat ' + num + ', ' + esc(p.name) + '. Press Enter to pick up.">' +
         '<span class="attendee-card__accent" aria-hidden="true">' +
           '<span class="attendee-card__accent-bar"></span></span>' +
         '<span class="attendee-card__seat">' + num + '</span>' +
@@ -313,6 +324,18 @@
           '<button type="button" class="attendee-card__action" data-sp-unseat="' + num + '"' +
                  ' aria-label="Remove ' + esc(p.name) + ' from seat ' + num + '">' +
             '<i data-lucide="trash" aria-hidden="true"></i></button>' +
+          /* Reorder. AttendeeCard already draws and styles this stack — the first version of
+           * this renderer simply dropped it. Up/down SWAP with the adjacent seat, so moving into
+           * an empty seat and trading places with an occupied one are the same operation. */
+          '<div class="attendee-card__reorder">' +
+            '<button type="button" class="attendee-card__action" data-sp-move-up="' + num + '"' +
+                   ' aria-label="Move ' + esc(p.name) + ' up"' + (num === 1 ? ' disabled' : '') + '>' +
+              '<i data-lucide="chevron-up" aria-hidden="true"></i></button>' +
+            '<button type="button" class="attendee-card__action" data-sp-move-down="' + num + '"' +
+                   ' aria-label="Move ' + esc(p.name) + ' down"' +
+                   (num === t.capacity ? ' disabled' : '') + '>' +
+              '<i data-lucide="chevron-down" aria-hidden="true"></i></button>' +
+          '</div>' +
         '</div>' +
       '</article>';
     }).join('');
@@ -352,7 +375,10 @@
     }
 
     listEl.innerHTML = shown.map(function (p) {
-      return '<article class="attendee-card" data-sp-pool-person="' + esc(p.id) + '">' +
+      return '<article class="attendee-card"' +
+              ' data-sp-pool-person="' + esc(p.id) + '" data-sp-pickable' +
+              ' draggable="true" tabindex="0"' +
+              ' aria-label="' + esc(p.name) + ', unassigned. Press Enter to pick up.">' +
         '<span class="attendee-card__accent" aria-hidden="true">' +
           '<span class="attendee-card__accent-bar"></span></span>' +
         '<div class="attendee-card__body">' +
@@ -391,6 +417,7 @@
     renderDetail();
     renderPool();
     renderChrome();
+    decoratePick();
     if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
   }
 
@@ -431,6 +458,228 @@
            { text: ' seated at ' + t.name + ', seat ' + seatNo + '.' }], 'success');
   }
 
+  /* ── Placement: the five moves, one function ───────────────────────────────────────────────
+   * seating-drag-assign lists four placements from the brief plus a fifth the interaction
+   * implies, and they ALL land here:
+   *
+   *   pool  -> empty seat    seat
+   *   pool  -> table card    first free seat, or refused "… is full"
+   *   seat  -> seat          move, or SWAP when the target is occupied
+   *   seat  -> pool          unseat
+   *   seat  -> other card    the implied fifth
+   *
+   * Drag and pick-then-place both call `place()`, so there is one set of rules rather than two
+   * that can disagree. A swap is deliberately a single simultaneous exchange, not
+   * remove-then-insert — the manifest warns that modelling it as delete/insert is how the pair
+   * ends up in the same seat. */
+
+  /* Can the pick land here, and as what? Returns 'move' | 'swap' | 'full' | null.
+   * These double as the highlight rules, so what lights up is exactly what will work. */
+  function seatDrop(tableId, seatNo) {
+    var src = state.picked;
+    if (!src) return null;
+    var t = tableById(tableId);
+    if (!t) return null;
+    if (src.kind === 'seat' && src.tableId === tableId && src.seatNo === seatNo) return null;
+    var dest = t.seats[seatNo - 1];
+    /* pool -> occupied seat is NOT one of the five. Refusing it beats silently evicting
+     * somebody the planner never chose to move. */
+    if (src.kind === 'pool') return dest ? null : 'move';
+    return dest ? 'swap' : 'move';
+  }
+
+  function tableDrop(tableId) {
+    var src = state.picked;
+    if (!src) return null;
+    var t = tableById(tableId);
+    if (!t) return null;
+    var free = t.seats.indexOf(null);
+    return free === -1 ? 'full' : 'move';
+  }
+
+  function poolDrop() {
+    return state.picked && state.picked.kind === 'seat' ? 'move' : null;
+  }
+
+  function takeFrom(src) {
+    if (src.kind === 'pool') return { personId: src.personId, role: 'attendee' };
+    var t = tableById(src.tableId);
+    return t ? t.seats[src.seatNo - 1] : null;
+  }
+
+  function nameOf(slot) { return slot ? person(slot.personId).name : ''; }
+
+  function place(target) {
+    var src = state.picked;
+    if (!src) return;
+
+    /* Resolve a table-card drop to its first free seat, or refuse and KEEP the pick so the
+     * planner can aim somewhere else without picking the person up again. */
+    if (target.kind === 'table') {
+      var t = tableById(target.tableId);
+      if (!t) { clearPick(); return; }
+      var free = t.seats.indexOf(null);
+      if (free === -1) {
+        toast([{ text: t.name, strong: true }, { text: ' is full — nothing was moved.' }], 'error');
+        return;
+      }
+      target = { kind: 'seat', tableId: target.tableId, seatNo: free + 1 };
+    }
+
+    var moving = takeFrom(src);
+    if (!moving) { clearPick(); return; }
+
+    if (target.kind === 'pool') {
+      if (src.kind !== 'seat') { clearPick(); return; }      /* pool -> pool is a no-op */
+      tableById(src.tableId).seats[src.seatNo - 1] = null;
+      finish([{ text: nameOf(moving), strong: true },
+              { text: ' returned to the unassigned pool.' }]);
+      return;
+    }
+
+    var destTable = tableById(target.tableId);
+    var kind = seatDrop(target.tableId, target.seatNo);
+    if (!kind) { clearPick(); return; }
+
+    var displaced = destTable.seats[target.seatNo - 1];
+
+    if (src.kind === 'seat') {
+      /* The exchange, both sides at once. */
+      tableById(src.tableId).seats[src.seatNo - 1] = displaced || null;
+    }
+    destTable.seats[target.seatNo - 1] = moving;
+
+    if (kind === 'swap' && displaced) {
+      finish([{ text: nameOf(moving), strong: true },
+              { text: ' swapped with ' }, { text: nameOf(displaced), strong: true },
+              { text: ' at ' + destTable.name + '.' }]);
+    } else {
+      finish([{ text: nameOf(moving), strong: true },
+              { text: ' seated at ' + destTable.name + ', seat ' + target.seatNo + '.' }]);
+    }
+  }
+
+  function finish(parts) {
+    state.picked = null;
+    render();
+    toast(parts, 'success');
+  }
+
+  /* Picking somebody up changes NO data, so it must not re-render — it only decorates.
+   *
+   * This was a real bug, not a tidiness point: `pick()` used to call `render()`, which replaced
+   * the listing and the detail via innerHTML. On `dragstart` that detaches the very element
+   * being dragged, so the browser had nothing to drag and no `drop` ever fired — and because
+   * `dragend` also fired on the detached node, `picked` stayed set and the NEXT click was
+   * silently treated as a placement. Decorating in place fixes the drag and stops the keyboard
+   * path losing focus on pick. */
+  function clearPick() {
+    if (!state.picked) return;
+    state.picked = null;
+    undecorate();
+  }
+
+  function pick(src) {
+    undecorate();
+    state.picked = src;
+    decoratePick();
+  }
+
+  /* Strip every mark decoratePick() can apply. Kept beside it deliberately — a mark added there
+   * and not removed here survives as a permanently highlighted row. */
+  function undecorate() {
+    var bar = document.querySelector('[data-sp-pick-bar]');
+    if (bar) bar.hidden = true;
+    document.querySelectorAll(
+      '.attendee-card--picked, .attendee-card--drop-move, .attendee-card--drop-swap,' +
+      '.table-card--drop-legal, .table-card--drop-full, .unassigned--drop-legal'
+    ).forEach(function (el) {
+      el.classList.remove('attendee-card--picked', 'attendee-card--drop-move',
+        'attendee-card--drop-swap', 'table-card--drop-legal', 'table-card--drop-full',
+        'unassigned--drop-legal');
+      el.removeAttribute('data-sp-swap-label');
+    });
+  }
+
+  /* ── Reorder ───────────────────────────────────────────────────────────────────────────────
+   * The up/down chevrons AttendeeCard already draws. A swap with the adjacent seat, so moving
+   * into an empty seat and trading places with an occupied one are one operation. */
+  function moveSeat(seatNo, delta) {
+    var t = tableById(state.tableId);
+    if (!t) return;
+    var to = seatNo + delta;
+    if (to < 1 || to > t.capacity) return;
+
+    var moving = t.seats[seatNo - 1];
+    if (!moving) return;
+    var other = t.seats[to - 1];
+
+    t.seats[seatNo - 1] = other || null;
+    t.seats[to - 1] = moving;
+    render();
+
+    /* Keep focus on the row that moved rather than on whatever now occupies the old index —
+     * otherwise a keyboard user pressing "down" twice moves two different people. */
+    var landed = document.querySelector('[data-sp-seat="' + to + '"] [data-sp-move-' +
+                 (delta < 0 ? 'up' : 'down') + '="' + to + '"]');
+    if (landed) landed.focus();
+
+    toast(other
+      ? [{ text: nameOf(moving), strong: true }, { text: ' swapped with ' },
+         { text: nameOf(other), strong: true }, { text: ' — seats ' + seatNo + ' and ' + to + '.' }]
+      : [{ text: nameOf(moving), strong: true }, { text: ' moved to seat ' + to + '.' }],
+      'success');
+  }
+
+  /* ── Pick decoration ──────────────────────────────────────────────────────────────────────
+   * Applied AFTER render rather than threaded through every template, so the emitted markup
+   * stays byte-identical to the authored markup whenever nothing is in the air — which is what
+   * keeps export and the modals reading a DOM they recognise. */
+  function decoratePick() {
+    var bar = document.querySelector('[data-sp-pick-bar]');
+    var src = state.picked;
+
+    if (!src) {
+      if (bar) bar.hidden = true;
+      return;
+    }
+
+    var slot = takeFrom(src);
+    if (bar) {
+      bar.hidden = false;
+      bar.querySelector('[data-sp-pick-name]').textContent = nameOf(slot);
+    }
+
+    /* The source, dimmed. */
+    var srcEl = src.kind === 'pool'
+      ? document.querySelector('[data-sp-pool-person="' + src.personId + '"]')
+      : (src.tableId === state.tableId
+          ? document.querySelector('[data-sp-seat="' + src.seatNo + '"]')
+          : null);
+    if (srcEl) srcEl.classList.add('attendee-card--picked');
+
+    /* Legal seats: success tone, and an occupied one says "Swap" out loud. */
+    document.querySelectorAll('[data-sp-seat]').forEach(function (el) {
+      var no = parseInt(el.getAttribute('data-sp-seat'), 10);
+      var kind = seatDrop(state.tableId, no);
+      if (!kind) return;
+      el.classList.add('attendee-card--drop-' + kind);
+      if (kind === 'swap') el.setAttribute('data-sp-swap-label', 'Swap');
+    });
+
+    /* Legal table cards, and the refusal reason on a full one. */
+    document.querySelectorAll('[data-sp-card]').forEach(function (el) {
+      var kind = tableDrop(el.getAttribute('data-sp-table'));
+      if (kind === 'move') el.classList.add('table-card--drop-legal');
+      else if (kind === 'full') el.classList.add('table-card--drop-full');
+    });
+
+    if (poolDrop()) {
+      var region = document.querySelector('[data-sp-pool]');
+      if (region) region.classList.add('unassigned--drop-legal');
+    }
+  }
+
   function toast(parts, type) {
     document.dispatchEvent(new CustomEvent('sp:toast', { detail: { parts: parts, type: type } }));
   }
@@ -457,9 +706,14 @@
       return;
     }
 
-    /* Not the edit/delete buttons inside the card — those are the modals' own hooks. */
+    /* Not the edit/delete buttons inside the card — those are the modals' own hooks. And NOT
+     * while somebody is in the air: with a pick live, a card click is a placement, handled
+     * below. Without this guard, aiming at a table would silently just change the selection —
+     * the trap seating-touch-placement records as "picking does not hijack table selection",
+     * here in the other direction. */
     var card = e.target.closest('[data-sp-card]');
-    if (card && !e.target.closest('[data-tf-open]') && !e.target.closest('[data-dtb-open]')) {
+    if (card && !state.picked &&
+        !e.target.closest('[data-tf-open]') && !e.target.closest('[data-dtb-open]')) {
       selectTable(card.getAttribute('data-sp-table'));
       return;
     }
@@ -467,19 +721,141 @@
     var un = e.target.closest('[data-sp-unseat]');
     if (un) { unseat(parseInt(un.getAttribute('data-sp-unseat'), 10)); return; }
 
+    /* Reorder, before the pick/place handling below — these are buttons inside a pickable row,
+     * so without returning here a chevron click would also pick the person up. */
+    var up = e.target.closest('[data-sp-move-up]');
+    if (up) { moveSeat(parseInt(up.getAttribute('data-sp-move-up'), 10), -1); return; }
+    var dn = e.target.closest('[data-sp-move-down]');
+    if (dn) { moveSeat(parseInt(dn.getAttribute('data-sp-move-down'), 10), 1); return; }
+
     var as = e.target.closest('[data-sp-assign]');
     if (as) { assign(parseInt(as.getAttribute('data-sp-assign'), 10)); return; }
+
+    if (e.target.closest('[data-sp-pick-cancel]')) { clearPick(); return; }
+
+    /* ── Pick-then-place ──────────────────────────────────────────────────────────────────
+     * With nothing in the air a click on a person picks them up; with something in the air a
+     * click on a target places them. Same rules as drag, because both call place(). */
+    var seatEl = e.target.closest('[data-sp-seat]');
+    var poolEl = e.target.closest('[data-sp-pool-person]');
+    var poolRegion = e.target.closest('[data-sp-pool]');
+
+    if (state.picked) {
+      if (seatEl) {
+        place({ kind: 'seat', tableId: state.tableId,
+                seatNo: parseInt(seatEl.getAttribute('data-sp-seat'), 10) });
+        return;
+      }
+      /* The pool REGION, not just a row — dropping a seated person anywhere in the tray
+       * unseats them, which is what the rail as a target means. */
+      if (poolRegion) { place({ kind: 'pool' }); return; }
+      if (card) { place({ kind: 'table', tableId: card.getAttribute('data-sp-table') }); return; }
+      clearPick();
+      return;
+    }
+
+    if (poolEl) { pick({ kind: 'pool', personId: poolEl.getAttribute('data-sp-pool-person') }); return; }
+    if (seatEl && seatEl.hasAttribute('data-sp-pickable')) {
+      pick({ kind: 'seat', tableId: state.tableId,
+             seatNo: parseInt(seatEl.getAttribute('data-sp-seat'), 10) });
+    }
   });
 
   /* Enter / Space on a card. The cards are role="button" tabindex="0", so they announce as
    * buttons and take focus — but a div does not synthesise a click from Enter, which is why
    * seating-card-keyboard has been an open WCAG 2.1.1 defect on every layout. Fixed here. */
   document.addEventListener('keydown', function (e) {
+    if (!e.target.closest) return;
+
+    /* Esc puts the person back down. The whole flow has to be abandonable without placing
+     * somebody somewhere by accident. */
+    if (e.key === 'Escape' && state.picked) { e.preventDefault(); clearPick(); return; }
+
     if (e.key !== 'Enter' && e.key !== ' ') return;
-    var card = e.target.closest ? e.target.closest('[data-sp-card]') : null;
+
+    var seatEl = e.target.closest('[data-sp-seat]');
+    var poolEl = e.target.closest('[data-sp-pool-person]');
+
+    /* Pick and place from the keyboard — the reason placement is not drag-only. A keyboard
+     * user cannot drag at all, so if this path did not exist the feature would be
+     * mouse-exclusive (seating-touch-placement). */
+    if (state.picked) {
+      if (seatEl) {
+        e.preventDefault();
+        place({ kind: 'seat', tableId: state.tableId,
+                seatNo: parseInt(seatEl.getAttribute('data-sp-seat'), 10) });
+        return;
+      }
+      var cardT = e.target.closest('[data-sp-card]');
+      if (cardT) {
+        e.preventDefault();
+        place({ kind: 'table', tableId: cardT.getAttribute('data-sp-table') });
+        return;
+      }
+    } else if (poolEl || (seatEl && seatEl.hasAttribute('data-sp-pickable'))) {
+      e.preventDefault();
+      if (poolEl) pick({ kind: 'pool', personId: poolEl.getAttribute('data-sp-pool-person') });
+      else pick({ kind: 'seat', tableId: state.tableId,
+                  seatNo: parseInt(seatEl.getAttribute('data-sp-seat'), 10) });
+      return;
+    }
+
+    var card = e.target.closest('[data-sp-card]');
     if (!card) return;
     e.preventDefault();                 /* Space would otherwise scroll the page */
     selectTable(card.getAttribute('data-sp-table'));
+  });
+
+  /* ── Drag: an accelerator over the same placement ─────────────────────────────────────────
+   * dragstart sets the SAME `picked` state a click would, so the highlighting, the legality
+   * rules and the placement are shared. Nothing here re-decides what is allowed. */
+  document.addEventListener('dragstart', function (e) {
+    var row = e.target.closest && e.target.closest('[data-sp-pickable]');
+    if (!row) return;
+    if (row.hasAttribute('data-sp-pool-person')) {
+      pick({ kind: 'pool', personId: row.getAttribute('data-sp-pool-person') });
+    } else {
+      pick({ kind: 'seat', tableId: state.tableId,
+             seatNo: parseInt(row.getAttribute('data-sp-seat'), 10) });
+    }
+    /* Firefox refuses to start a drag without payload, even when the payload is unused. */
+    if (e.dataTransfer) {
+      e.dataTransfer.effectAllowed = 'move';
+      try { e.dataTransfer.setData('text/plain', 'sp'); } catch (err) { /* IE guard */ }
+    }
+  });
+
+  /* preventDefault on dragover is what marks an element as a drop target — without it the
+   * browser refuses the drop and no `drop` event ever fires. */
+  document.addEventListener('dragover', function (e) {
+    if (!state.picked || !e.target.closest) return;
+    var seatEl = e.target.closest('[data-sp-seat]');
+    if (seatEl && seatDrop(state.tableId, parseInt(seatEl.getAttribute('data-sp-seat'), 10))) {
+      e.preventDefault(); return;
+    }
+    if (e.target.closest('[data-sp-pool]') && poolDrop()) { e.preventDefault(); return; }
+    var card = e.target.closest('[data-sp-card]');
+    if (card && tableDrop(card.getAttribute('data-sp-table')) === 'move') e.preventDefault();
+  });
+
+  document.addEventListener('drop', function (e) {
+    if (!state.picked || !e.target.closest) return;
+    e.preventDefault();
+    var seatEl = e.target.closest('[data-sp-seat]');
+    if (seatEl) {
+      place({ kind: 'seat', tableId: state.tableId,
+              seatNo: parseInt(seatEl.getAttribute('data-sp-seat'), 10) });
+      return;
+    }
+    if (e.target.closest('[data-sp-pool]')) { place({ kind: 'pool' }); return; }
+    var card = e.target.closest('[data-sp-card]');
+    if (card) place({ kind: 'table', tableId: card.getAttribute('data-sp-table') });
+  });
+
+  /* A drag that ends outside any target must put the person back down, or the highlighting
+   * stays on and the next click reads as a placement. */
+  document.addEventListener('dragend', function () {
+    if (state.picked) clearPick();
   });
 
   document.addEventListener('input', function (e) {
