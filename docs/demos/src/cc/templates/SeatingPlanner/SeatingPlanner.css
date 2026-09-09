@@ -1819,72 +1819,38 @@
 }
 
 /* ── Placing a person: drag and pick-then-place ───────────────────────────────────────────
- * seating-drag-assign asks for the source dimmed, legal targets in a success tone, a "Swap"
- * label on an occupied seat and the refusal reason on a full table. All of it is applied by
- * seating-app.js AFTER render, so the markup stays byte-identical to the authored markup
- * whenever nothing is in the air — which is what keeps export and the modals reading a DOM
- * they recognise. */
-
-/* The source, while it is in the air. Not `visibility: hidden` — you need to still see where
- * the person came from to judge where to put them. */
-.attendee-card--picked {
-  opacity: 0.45;
-}
-
-/* Legal seat. `outline` rather than `border`, because AttendeeCard's border is load-bearing for
- * its own layout and swapping it would shift every row by a pixel as the highlight came and
- * went. An outline costs no space. */
-.attendee-card--drop-move,
-.attendee-card--drop-swap {
-  outline: 2px solid var(--ai-border-success);
-  outline-offset: -1px;
-  background-color: var(--ai-surface-success-soft);
-}
-
-/* An occupied seat says what will happen, rather than leaving the planner to guess that
- * dropping here evicts somebody. */
-.attendee-card--drop-swap::after {
-  content: attr(data-sp-swap-label);
-  position: absolute;
-  inset-block-start: 50%;
-  inset-inline-end: var(--ai-spacing-3);
-  transform: translateY(-50%);
-  padding: var(--ai-spacing-0-5) var(--ai-spacing-2);
-  border-radius: var(--ai-radius-full);
-  background-color: var(--ai-surface-success);
-  color: var(--ai-text-invert);
-  font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-4xs);
-  font-weight: var(--ai-font-semibold);
-  line-height: var(--ai-leading-xs);
-  pointer-events: none;
-}
-
-/* AttendeeCard is not positioned by default, and the label above is absolute. */
-.attendee-card--drop-swap {
-  position: relative;
-}
-
-/* A table card that can take them, and one that cannot. The full card is not merely un-lit:
- * it is marked refused, so aiming at it reads as "no" rather than as nothing happening. */
-.table-card--drop-legal {
-  outline: 2px solid var(--ai-border-success);
-  outline-offset: -1px;
-  background-color: var(--ai-surface-success-soft);
-}
-
-.table-card--drop-full {
-  outline: 2px solid var(--ai-border-error);
-  outline-offset: -1px;
-}
-
-/* The tray as a target — dropping a seated person here unseats them. */
-.unassigned--drop-legal {
-  outline: 2px solid var(--ai-border-success);
-  outline-offset: -1px;
-}
+ * CORRECTED 2026-09-09 after designer review. The first version invented this entirely from
+ * the PROTOTYPE's description in `seating-drag-assign` — "legal targets in success tone, a
+ * 'Swap' label on an occupied seat" — and painted every legal target green with a Swap pill.
+ * That is a prototype, not a spec (`feedback_no_prototype_spec_substitute`), and worse: the
+ * real state already existed.
+ *
+ * AttendeeCard has a formal `State=Dragged Over` axis in Figma — six variants, one per Type
+ * (`3528:102567` Empty, `3474:89315` Attendee, `3474:89359` VIP, `3474:89337` Speaker,
+ * `3474:89381` Sponsor, `3474:89293` Host) — and `.attendee-card--dragged-over` was ALREADY
+ * built and documented. Its own header says so: "the card is a DROP TARGET only, never a drag
+ * source. `--dragged-over` is a class the parent module toggles while an attendee is held over
+ * the card." That module is seating-app.js. It now toggles that class and defines nothing.
+ *
+ * Removed with it, each because Figma has no counterpart:
+ *   - the "Swap" pill — no such element in any Dragged Over variant
+ *   - `.table-card--drop-legal` / `--drop-full` — TableCard's axes are
+ *     State (Default | Selected) x Type (Empty | Populated | Full) x Device. TWELVE variants
+ *     and NO drag state. TableCard's own CSS says it: "inventing a variant with no Figma
+ *     counterpart is how drift starts."
+ *   - `.unassigned--drop-legal` — Unassigned has two variants, empty and populated, no state axis
+ *   - `.attendee-card--picked` source dimming — no Figma state, and the component is
+ *     designer-confirmed as never being a drag source
+ *
+ * A table card and the tray are still functional drop targets, because the brief asks for those
+ * placements — they simply carry no highlight until one is designed. Flagged. */
 
 /* ── The "in the air" bar ─────────────────────────────────────────────────────────────────
+ * NOT IN FIGMA, and kept deliberately rather than invented for decoration: pick-then-place is
+ * the only path a keyboard user has (they cannot drag), so without a visible statement of who
+ * has been picked up, the mode change is imperceptible — WCAG 2.1 §9. Keeping it is an
+ * accessibility floor, not a design choice, and it wants a designed counterpart. Flagged.
+ *
  * Fixed, because the planner may scroll the listing to find the table they want while holding
  * somebody. Sits below Modal's overlay (z-index 100) and above the toast host (90) — being
  * covered by a dialog is correct, since a dialog means the placement is no longer the task. */

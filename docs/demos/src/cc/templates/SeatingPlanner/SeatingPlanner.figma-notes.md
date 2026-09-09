@@ -1612,8 +1612,58 @@ refused**, not one of the five: silently evicting somebody the planner never cho
 be worse than declining. A refusal **keeps the person in the air** so you can aim somewhere else
 without picking them up again.
 
-Affordances exactly as the brief asks: source dimmed, legal targets in success tone, a "Swap" pill
-on an occupied seat, a red outline and a named reason on a full table.
+### The drag-over visuals were wrong — corrected 2026-09-09
+
+I built the drag-over treatment from `seating-drag-assign`'s description — *"legal targets in
+success tone, a 'Swap' label on an occupied seat"* — and painted every legal target green with a
+Swap pill. **That text describes the PROTOTYPE, not the Figma build.** The manifest's `current`
+field is a record of what the prototype did; reading it as a spec is
+`feedback_no_prototype_spec_substitute` with a new disguise, because it does not *look* like a
+prototype the way `src/prototypes/` does.
+
+Worse, the real state already existed. **AttendeeCard has a formal `State=Dragged Over` axis** —
+six variants, one per Type — and `.attendee-card--dragged-over` was already built and documented.
+The component's own header names this module as the thing meant to toggle it:
+
+> *"Confirmed with the designer 2026-08-25: the card is a DROP TARGET only, never a drag source.
+> `--dragged-over` is a class the parent module toggles while an attendee is held over the card."*
+
+| Type | Default | Dragged Over |
+|---|---|---|
+| Attendee / VIP / Speaker / Sponsor / Host | `--ai-surface-primary` bg, 1px solid `--ai-border-secondary` | **`--ai-surface-minimal` bg, 1px solid `--ai-border-brand`** |
+| Empty | `--ai-surface-minimal` bg, 1px **dashed** `--ai-btn-secondary-border` | **same bg, 1px SOLID `--ai-border-brand`** |
+
+Nodes: `3528:102567` Empty, `3474:89315` Attendee, `3474:89359` VIP, `3474:89337` Speaker,
+`3474:89381` Sponsor, `3474:89293` Host. Measured after the fix: border `rgb(48,182,194)`
+(`#30b6c2`), background `--ai-surface-minimal`, style solid, on all nine legal seats.
+
+**Removed with the green, each because Figma has no counterpart:**
+
+| Invented | Why it went |
+|---|---|
+| the "Swap" pill | no such element in any Dragged Over variant |
+| `.table-card--drop-legal` / `--drop-full` | **TableCard has twelve variants and no drag state** — State (Default \| Selected) × Type (Empty \| Populated \| Full) × Device. Its own CSS says "inventing a variant with no Figma counterpart is how drift starts" |
+| `.unassigned--drop-legal` | Unassigned has two variants, empty and populated, no state axis |
+| `.attendee-card--picked` source dimming | no Figma state, and the component is designer-confirmed as **never a drag source** |
+
+A table card and the tray remain functional drop targets, because the brief asks for those
+placements — they simply carry **no highlight** until one is designed.
+
+Also corrected while here: the empty seat's action is Figma's **`btn btn--secondary btn--sm`
+labelled "Assign"** (`3474:89216`), which AttendeeCard's own notes state. The renderer had used an
+icon-only `user-plus` button.
+
+### Two things still unspecified, and flagged rather than invented
+
+- **A table card and the tray as drop targets have no designed state.** They accept a drop and
+  say nothing. That is a real gap in the feedback, not a decision.
+- **The "in the air" bar has no Figma counterpart.** It is kept anyway, and deliberately: a
+  keyboard user cannot drag, so pick-then-place is their only path, and without a visible
+  statement of who has been picked up the mode change is imperceptible (WCAG 2.1 §9). Keeping it
+  is an accessibility floor, not a design choice — it wants a designed counterpart.
+- **Seat rows are `draggable`,** which sits awkwardly against "never a drag source". The
+  component means it has no built-in grab affordance; the template adds one so seat→seat move
+  and swap work at all. Worth a designer ruling.
 
 **Reorder** uses the up/down chevrons AttendeeCard already draws and styles — the first version of
 the renderer had simply dropped them. Up/down swap with the adjacent seat, so moving into an empty

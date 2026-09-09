@@ -296,11 +296,11 @@
             '<span class="attendee-card__accent-bar"></span></span>' +
           '<span class="attendee-card__seat">' + num + '</span>' +
           '<p class="attendee-card__empty-label">Empty seat</p>' +
-          '<div class="attendee-card__actions">' +
-            '<button type="button" class="attendee-card__action" data-sp-assign="' + num + '"' +
-                   ' aria-label="Assign someone to seat ' + num + '">' +
-              '<i data-lucide="user-plus" aria-hidden="true"></i></button>' +
-          '</div>' +
+          /* Figma's Empty variant composes Button as `btn btn--secondary btn--sm` with the label
+           * "Assign" (3474:89216) — AttendeeCard's own notes say so too. The first version used
+           * an icon-only `user-plus` action, which is not what the component draws. */
+          '<button type="button" class="btn btn--secondary btn--sm" data-sp-assign="' + num + '"' +
+                 ' aria-label="Assign someone to seat ' + num + '">Assign</button>' +
         '</article>';
       }
       var p = person(s.personId);
@@ -590,14 +590,8 @@
   function undecorate() {
     var bar = document.querySelector('[data-sp-pick-bar]');
     if (bar) bar.hidden = true;
-    document.querySelectorAll(
-      '.attendee-card--picked, .attendee-card--drop-move, .attendee-card--drop-swap,' +
-      '.table-card--drop-legal, .table-card--drop-full, .unassigned--drop-legal'
-    ).forEach(function (el) {
-      el.classList.remove('attendee-card--picked', 'attendee-card--drop-move',
-        'attendee-card--drop-swap', 'table-card--drop-legal', 'table-card--drop-full',
-        'unassigned--drop-legal');
-      el.removeAttribute('data-sp-swap-label');
+    document.querySelectorAll('.attendee-card--dragged-over').forEach(function (el) {
+      el.classList.remove('attendee-card--dragged-over');
     });
   }
 
@@ -650,34 +644,24 @@
       bar.querySelector('[data-sp-pick-name]').textContent = nameOf(slot);
     }
 
-    /* The source, dimmed. */
-    var srcEl = src.kind === 'pool'
-      ? document.querySelector('[data-sp-pool-person="' + src.personId + '"]')
-      : (src.tableId === state.tableId
-          ? document.querySelector('[data-sp-seat="' + src.seatNo + '"]')
-          : null);
-    if (srcEl) srcEl.classList.add('attendee-card--picked');
-
-    /* Legal seats: success tone, and an occupied one says "Swap" out loud. */
+    /* `.attendee-card--dragged-over` is AttendeeCard's OWN state — a formal `State=Dragged Over`
+     * axis in Figma with six variants, one per Type. The component's header names this module as
+     * the thing that toggles it: "the card is a DROP TARGET only, never a drag source.
+     * `--dragged-over` is a class the parent module toggles while an attendee is held over the
+     * card." So this adds that class and nothing else.
+     *
+     * The first version invented `--drop-move` / `--drop-swap` from the prototype's description
+     * and painted them green with a "Swap" pill. The real state is a brand border over a minimal
+     * background, and it already existed. */
     document.querySelectorAll('[data-sp-seat]').forEach(function (el) {
       var no = parseInt(el.getAttribute('data-sp-seat'), 10);
-      var kind = seatDrop(state.tableId, no);
-      if (!kind) return;
-      el.classList.add('attendee-card--drop-' + kind);
-      if (kind === 'swap') el.setAttribute('data-sp-swap-label', 'Swap');
+      if (seatDrop(state.tableId, no)) el.classList.add('attendee-card--dragged-over');
     });
 
-    /* Legal table cards, and the refusal reason on a full one. */
-    document.querySelectorAll('[data-sp-card]').forEach(function (el) {
-      var kind = tableDrop(el.getAttribute('data-sp-table'));
-      if (kind === 'move') el.classList.add('table-card--drop-legal');
-      else if (kind === 'full') el.classList.add('table-card--drop-full');
-    });
-
-    if (poolDrop()) {
-      var region = document.querySelector('[data-sp-pool]');
-      if (region) region.classList.add('unassigned--drop-legal');
-    }
+    /* No highlight on a table card or on the tray. Both are still real drop targets — the brief
+     * asks for pool->card and seat->pool — but TableCard has twelve variants and NO drag state,
+     * and Unassigned has two variants and no state axis at all. Inventing one is what went wrong
+     * the first time. Flagged for the designer. */
   }
 
   function toast(parts, type) {
