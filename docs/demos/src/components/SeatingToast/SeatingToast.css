@@ -118,3 +118,28 @@
   flex-shrink: 0;
   padding: var(--ai-spacing-3) var(--ai-spacing-4);
 }
+
+/* ── Mobile ─────────────────────────────────────────────────────────────────
+ * The message steps down on a narrow viewport: 13px/16 against the 14px/20 above.
+ *
+ * Read off the Seating Planner file's only mobile toast frame — the table-deleted state
+ * `1:44212`, whose text node is 13px with `leading-[16px]`, and whose `get_variable_defs`
+ * returns `--ai-font-fixed-2xs: 13` and `--ai-leading-xs: 16`. The 465x58 desktop toast in the
+ * same pair (`1:43089`) keeps 14/20, so this is a genuine breakpoint change rather than a
+ * re-reading of the base size.
+ *
+ * Added 2026-09-09 when the delete toast was wired up. NOTE IT APPLIES TO EVERY TOAST, not just
+ * that one: there is no mobile frame for the create or edit toasts, but the step-down is a
+ * property of the component at this width rather than of any one message, and a delete toast
+ * rendering a size smaller than a create toast on the same phone would be the odd outcome.
+ * Flagged for the designer on that basis.
+ *
+ * 767px is the project's component breakpoint (CLAUDE.md). The modals on this screen switch at
+ * 639 instead, because that is where Modal's own sm treatment switches — a toast is not in a
+ * modal, so it follows the component rule. */
+@media (max-width: 767px) {
+  .seating-toast__message {
+    font-size: var(--ai-font-fixed-2xs);   /* 13px */
+    line-height: var(--ai-leading-xs);     /* 16px */
+  }
+}

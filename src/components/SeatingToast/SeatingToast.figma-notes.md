@@ -44,9 +44,14 @@ notification components, or whether this should eventually become a `Toast` layo
 | Success | Component | `3474:90239` | 465×58 | `.seating-toast--success` |
 | Error | Component | `3474:90238` | 465×58 | `.seating-toast--error` |
 
-`Tier` is single-valued (`Component`). **There is no Device axis** — no mobile variant, and
-"mobile" appears nowhere in the set's design context or variables, so there is no media query.
-`max-inline-size: 100%` is what makes it safe on a narrow screen.
+`Tier` is single-valued (`Component`). **There is no Device axis** in the component set — no mobile
+variant, and "mobile" appears nowhere in its design context or variables.
+
+**That is no longer the whole story (2026-09-09).** The component set has no mobile variant, but the
+Seating Planner file where the toast is actually placed on a screen *does* draw it at 402px, and
+there the message is a size smaller. So there is now one media query — see "Mobile — the message
+steps down" below. `max-inline-size: 100%` is still what keeps the pill itself safe on a narrow
+screen; the media query only changes the type.
 
 ### Type changes two properties, not the whole surface
 
@@ -79,8 +84,8 @@ changes height depending on whether it offers an Undo may or may not be wanted.
 | `--ai-icon-size-md` | icon (20px) | |
 | `--ai-surface-success` / `--ai-surface-error` | icon `color` | a SURFACE token on an icon — see below |
 | `--ai-font-body` | message `font-family` | note the `Toast` card uses `--ai-font-title` |
-| `--ai-font-fixed-xs` | message (14px) | unbound in Figma |
-| `--ai-leading-sm` | message (20px) | unbound in Figma |
+| `--ai-font-fixed-xs` | message (14px) | unbound in Figma; steps to `--ai-font-fixed-2xs` (13) below 767 |
+| `--ai-leading-sm` | message (20px) | unbound in Figma; steps to `--ai-leading-xs` (16) below 767 |
 | `--ai-font-regular` / `--ai-font-semibold` | message / its `<strong>` spans | |
 | `--ai-text-primary` | message colour | |
 
@@ -169,6 +174,39 @@ Unassigned (296/480 vs 297/472) and SeatingHeader (291 vs 288).
 Also verified: all icons resolve (zero unconverted `<i>`), the `seating-toast__icon` class survives
 `createIcons()` onto the generated `<svg>`, and roles alternate `status` / `alert` correctly across
 all six demo instances.
+
+## Mobile — the message steps down (added 2026-09-09)
+
+`.seating-toast__message` is 14px/20 at the base and **13px/16 below 767px**.
+
+Source: the Seating Planner file `lRKvtYSU3SvO5hbMT33jxw` is where the toast is actually placed
+on a screen, and its **table-deleted mobile frame `1:44212`** is the only mobile toast frame that
+exists. Its text node reads 13px with `leading-[16px]`, and `get_variable_defs` on the toast
+returns `--ai-font-fixed-2xs: 13` and `--ai-leading-xs: 16`. The paired **desktop** toast
+`1:43089` keeps 14/20, so this is a genuine breakpoint change and not a re-reading of the base.
+
+**It applies to every toast, not only the delete one.** There is no mobile frame for the create
+(`1:6881`) or edit (`1:6763`) toasts, but the step-down is a property of the component at that
+width rather than of any one message — and a delete toast rendering a size smaller than a create
+toast on the same phone would be the odd outcome. Raised with the designer on that basis.
+
+Breakpoint is 767px, the project's component breakpoint. The modals on the Seating Planner switch
+at 639 instead, because that is where `Modal`'s own sm treatment switches; a toast is not inside a
+modal, so it follows the component rule.
+
+## Both Types are now in use (2026-09-09)
+
+The variant matrix below has always listed Success and Error. Until the Seating Planner wired its
+table actions, only Success was placed:
+
+| Action | Type | Icon | Figma |
+|---|---|---|---|
+| Table created | Success | `badge-check` | `1:6881` |
+| Table renamed / updated | Success | `badge-check` | `1:6763` |
+| Table deleted | **Error** | `triangle-alert` | `1:43029` / `1:44173` |
+
+A removal is reported as a warning rather than a confirmation — worth knowing before assuming
+"toast = success" anywhere else.
 
 ## Notes and things to raise
 

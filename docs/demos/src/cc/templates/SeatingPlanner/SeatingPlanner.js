@@ -1811,19 +1811,30 @@
     current.timer = window.setTimeout(clear, DISMISS_MS);
   }
 
+  /* SeatingToast's two Types, and which icon each one carries. Read off the frames rather than
+   * assumed: the create and edit toasts (1:6881 / 1:6763) place `Icon/24px/BadgeCheck`, and the
+   * DELETE toast (1:43089 / 1:44212) places `Icon/24px/TriangleAlert` with the error ring — a
+   * removal is reported as a warning, not a success. */
+  var TYPES = {
+    success: { modifier: 'seating-toast--success', icon: 'badge-check' },
+    error:   { modifier: 'seating-toast--error',   icon: 'triangle-alert' }
+  };
+
   /* `parts` is an array of { text, strong } — the message is built as text nodes and <strong>
    * runs rather than from an HTML string, because a table name is user input. Figma emphasises
    * the subject AND the object ("**Table 13** added to **Main Ballroom.**"), which is why this
    * takes a list rather than a single bold term. */
-  function show(parts, undo) {
+  function show(parts, undo, type) {
     clear();
 
+    var kind = TYPES[type] || TYPES.success;
+
     var el = document.createElement('div');
-    el.className = 'seating-toast seating-toast--success';
+    el.className = 'seating-toast ' + kind.modifier;
 
     var icon = document.createElement('i');
     icon.className = 'seating-toast__icon';
-    icon.setAttribute('data-lucide', 'badge-check');
+    icon.setAttribute('data-lucide', kind.icon);
     icon.setAttribute('aria-hidden', 'true');
     el.appendChild(icon);
 
@@ -1878,7 +1889,7 @@
 
   document.addEventListener('sp:toast', function (event) {
     var detail = event.detail || {};
-    show(detail.parts, detail.undo);
+    show(detail.parts, detail.undo, detail.type);
   });
 })();
 
@@ -2038,6 +2049,35 @@
       var wasSelected = card.classList.contains('table-card--selected');
       var grid = card.parentNode;
 
+      /* Snapshot for the toast's Undo, taken before anything is removed. The NEXT SIBLING is part
+       * of it: re-appending would drop a restored table at the end of the grid instead of back
+       * where it was, and table order is how the user finds them. */
+      var snap = {
+        cardHTML: card.outerHTML,
+        nextId: card.nextElementSibling
+          ? card.nextElementSibling.getAttribute('data-sp-table')
+          : null,
+        wasSelected: wasSelected,
+        planHTML: null,
+        freeText: null,
+        detailName: null,
+        detailCount: null,
+        seatsHTML: null
+      };
+      var planElSnap = document.querySelector('.room-card__counts');
+      var freeElSnap = document.querySelector('.room-card__free');
+      var detailNameSnap = document.querySelector('[data-sp-detail-name]');
+      var detailCountSnap = document.querySelector('[data-sp-detail-count]');
+      var seatsElSnap = document.querySelector('.table-detail__seats');
+      if (planElSnap) snap.planHTML = planElSnap.innerHTML;
+      if (freeElSnap) snap.freeText = freeElSnap.textContent;
+      if (detailNameSnap) snap.detailName = detailNameSnap.textContent;
+      if (detailCountSnap) snap.detailCount = detailCountSnap.textContent;
+      if (seatsElSnap) snap.seatsHTML = seatsElSnap.innerHTML;
+
+      var deletedName = (card.querySelector('.table-card__select') || {}).textContent;
+      deletedName = deletedName ? deletedName.trim() : 'This table';
+
       /* TODO(backend:SeatingPlanner): DOM-only. seating-delete-table asks for the Table and its
        * TableSeat rows to go and the occupants to return to the pool in ONE transaction. */
       grid.removeChild(card);
@@ -2085,6 +2125,65 @@
         var addBtn = document.querySelector('[data-tf-add]');
         focusNext = addBtn || null;
       }
+
+      /* ── Toast ──────────────────────────────────────────────────────────────────────────
+       * Figma 1:43029 desktop / 1:44173 mobile. Type=ERROR, not success: both frames place
+       * `Icon/24px/TriangleAlert` with the --ai-border-error ring, where the create and edit
+       * toasts use BadgeCheck and the success ring. A removal is reported as a warning.
+       *
+       * Copy follows the same bold-subject / plain-verb / bold-object shape as the add toast,
+       * and likewise ends in a full stop inside the emphasis. */
+      var planNameEl = document.querySelector('.room-card--selected .room-card__select')
+        || document.querySelector('.room-card__select');
+      var planName = planNameEl ? planNameEl.textContent.trim() : 'this plan';
+
+      document.dispatchEvent(new CustomEvent('sp:toast', {
+        detail: {
+          type: 'error',
+          parts: [
+            { text: deletedName + ' ', strong: true },
+            { text: 'has been removed from ' },
+            { text: planName + '.', strong: true }
+          ],
+          /* DOM-only reversal, the same contract as the Table form's — see seating-toast, which
+           * records that a real Undo needs the operation id the server hands back. Restores the
+           * card AT ITS ORIGINAL POSITION, the plan totals, the seat panel and the selection. */
+          undo: function () {
+            var host = document.querySelector('[data-sp-grid], .table-listing__grid');
+            if (host && snap.cardHTML) {
+              var before = snap.nextId
+                ? host.querySelector('.table-card[data-sp-table="' + snap.nextId + '"]')
+                : null;
+              var tmp = document.createElement('div');
+              tmp.innerHTML = snap.cardHTML;
+              var restored = tmp.firstElementChild;
+              if (restored) {
+                if (before) host.insertBefore(restored, before);
+                else host.appendChild(restored);
+              }
+            }
+            if (planElSnap && snap.planHTML !== null) planElSnap.innerHTML = snap.planHTML;
+            if (freeElSnap && snap.freeText !== null) freeElSnap.textContent = snap.freeText;
+            if (detailNameSnap && snap.detailName !== null) detailNameSnap.textContent = snap.detailName;
+            if (detailCountSnap && snap.detailCount !== null) detailCountSnap.textContent = snap.detailCount;
+            if (seatsElSnap && snap.seatsHTML !== null) seatsElSnap.innerHTML = snap.seatsHTML;
+
+            /* Selection set directly rather than by clicking: a click would re-run the selection
+             * handler and rewrite the seat panel that was just restored. */
+            if (snap.wasSelected) {
+              Array.prototype.forEach.call(document.querySelectorAll('.table-card'), function (c) {
+                c.classList.remove('table-card--selected');
+              });
+              var back = document.querySelector('.table-card[data-sp-table="' + card.getAttribute('data-sp-table') + '"]');
+              if (back) back.classList.add('table-card--selected');
+            }
+            if (window.lucide && typeof window.lucide.createIcons === 'function') {
+              window.lucide.createIcons();
+            }
+          }
+        }
+      }));
+
       close(focusNext);
     });
   }
