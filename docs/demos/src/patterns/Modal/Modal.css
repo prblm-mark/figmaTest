@@ -384,6 +384,28 @@
   .modal__subtitle {
     font-size: var(--ai-font-fixed-2xs);
   }
+
+  /* Footer buttons drop to the sm size. This was the missing piece of the Size=sm mapping this
+   * block already implements: Figma's Modal Footer at Size=sm draws its buttons at h-32 / px-12
+   * with the `button/sm` text style, against h-40 / px-16 / `button/base` at Size=Base — i.e.
+   * exactly `.btn--sm`. Verified on the Seating Planner's mobile export frames (footer 57 tall =
+   * 12 + 32 + 13, against 73 = 16 + 40 + 17 on desktop), which is how it was found.
+   *
+   * Values are restated rather than the markup being switched to `.btn--sm`, because the size is
+   * a property of the modal at this width, not of the caller's button — every consumer would
+   * otherwise have to remember to swap the class, and none of the 312 footer buttons in the repo
+   * declares a size today. */
+  .modal__footer .btn {
+    min-height: var(--ai-spacing-7);        /* 32 */
+    padding: 0 var(--ai-spacing-4);         /* 12 */
+    font-size: var(--ai-font-fluid-xxs);    /* 12 */
+  }
+
+  /* An icon-only footer button stays square rather than becoming a 12px-padded oblong. */
+  .modal__footer .btn--icon {
+    inline-size: var(--ai-spacing-7);
+    padding: 0;
+  }
 }
 
 /* ── Overlay (for interactive demo) ──────── */

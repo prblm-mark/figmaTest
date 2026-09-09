@@ -673,13 +673,12 @@
                 </div>
                 <div class="dropdown__panel dropdown__panel--export" role="menu" aria-label="Export format">
                   <ul class="dropdown__list">
-                    <!-- PDF migrates INTO the menu below 767, because that is where
-                         SeatingHeader.css clips Export to an icon and hides the chevron — with no
-                         chevron there is no second half to open the menu, so the icon button takes
-                         that job and the default format needs a row of its own. Exactly the
-                         arrangement Room Layout already uses in the overflow menu below 1200:
-                         one control, two homes, never both visible at once. Flagged: the mobile
-                         menu frame 1:43681 draws two rows, not three. -->
+                    <!-- PDF is in the menu at EVERY width (designer, 2026-09-09). It is also what
+                         the label half runs, so above 767 this row is a deliberate redundancy —
+                         one place that lists all three formats. Below 767 it is the only route:
+                         SeatingHeader clips Export to a 32px icon and drops the chevron there, so
+                         the icon button opens the menu instead and there is no label half to run
+                         the default. Flagged: both menu frames draw two rows, not three. -->
                     <li role="none" class="seating-header__export-item--pdf">
                       <button type="button" class="dropdown-item dropdown-item--xs" role="menuitem"
                               data-sp-export="pdf">

@@ -1070,7 +1070,11 @@ width is set by the docked SidebarMenu and the ActionsMenu rail, not by the wind
 §4a). A `ResizeObserver` on `.seating-header` keeps `aria-haspopup` / `aria-expanded` honest,
 because the column can change width with no window resize at all.
 
-**Flagged:** the mobile menu frame draws two rows, not three.
+**Flagged:** both menu frames draw two rows, not three.
+
+**Updated 2026-09-09 (designer): the PDF row shows at EVERY width**, not just below 767. Above
+767 it duplicates what the label half already does — a deliberate redundancy so one place lists
+all three formats. Below 767 it remains the only route to the default format.
 
 ### DropdownItem gained a Size=xs — the menu is built from it
 
@@ -1114,9 +1118,55 @@ would misrepresent the file.
 The two panel heights **differ and are left differing** — both are real tokens, and the modals
 differ to match (588 vs 652 tall).
 
-The mobile frames needed nothing of their own: Modal's own Size=sm block at 639 already produces
-the 338-wide dialog they draw inside a 402 viewport, and **neither preview steps its type down** —
-checked on both mobile frames rather than assumed, because most of this screen does.
+### Mobile — CORRECTION (2026-09-09)
+
+An earlier pass of this build read the mobile frames from **screenshots** and concluded that
+neither preview stepped its type down. That was **wrong**, and the designer caught it. Read off
+the frames properly, mobile steps five values in the body and the modal's own chrome steps too:
+
+| Value | Desktop | Mobile (`1:45146` / `1:46486`) |
+|---|---|---|
+| Summary | 14/24 | **13**/24 |
+| Document title | 18 Bold | **16** Bold |
+| Table heading | 16 SemiBold | **14** SemiBold |
+| Seat row + its `[Role]` | 14/32 | **13**/32 |
+| Document panel padding | 24 (`p-25`) | **16** (`p-17`) |
+| Modal title | 18 | 16 — Modal's own Size=sm block |
+| Header / body / footer padding | 24 / 24 / 24 | 16 / 16 / 16 — Modal's block |
+| **Footer buttons** | h-40 / px-16 / 14 | **h-32 / px-12 / 12** — see below |
+
+What does **not** step, each checked rather than assumed: the meta line (12/20), the heading's
+trailing type and occupancy (12), the **empty-table line (14/24 — it stays 14 while the seat list
+beside it drops to 13**, which is Figma's own inconsistency, followed here), both panel heights
+(384 / 448), and **every CSV cell** — whose desktop metrics are exactly why the table scrolls
+sideways on a phone instead of reflowing, which is what frame `1:46486` draws.
+
+Keyed to `@media (max-width: 639px)`, matching Modal's Size=sm switch, so the dialog's chrome and
+its contents step together. `@media` is right here despite CLAUDE.md §4a: this is a
+`position: fixed` overlay, so it genuinely is viewport-sized.
+
+Two values were missing at **both** sizes and are now correct: the meta line carries 6px above it
+(its paragraph is 26 tall around a 20px line) and the empty-table line 8px (32 around 24).
+
+**Flagged, deliberately not encoded:** on the mobile frame the FIRST table heading has 16px above
+it (paragraph 36 tall) where the other eleven have 24 (44 tall), and desktop gives all twelve 24.
+Eleven consistent headings beat one outlier, so 24 stands at both sizes.
+
+### The bug the mobile pass exposed: `.modal__body > p`
+
+The mobile summary override did not apply, and the cause was **specificity, not the media query**.
+`Modal.css` carries `.modal__body > p { font-size: --ai-font-fixed-xs; … }` at **(0,1,1)**, which
+outranks a bare `.export-preview__summary` at **(0,1,0)** whatever the source order. Because
+Modal's declared values are *identical* to the base rule here, desktop looked perfectly correct
+and hid the problem completely — only the 13px mobile override lost, silently.
+
+Modal.css warns about this in a comment directly above that rule. Both summary rules now sit at
+(0,2,0) via `.export-preview__body > .export-preview__summary` so they travel together.
+
+Worth noting how it was found: not by reading the CSS, but by enumerating every matching
+`font-size` declaration for the element with `document.styleSheets` and printing them in source
+order. The winning rule was the one from a different stylesheet that never appeared in any
+grep of this file.
 
 ### The 16px heading was measured, not read
 
@@ -1155,8 +1205,16 @@ empty-lines** (exactly the seeded plan), heading `16px 600` with `padding-top: 2
 `th` `12px 600` `0.6px` uppercase sticky, `td` `14px` `12px 16px`.
 
 At 600 (header container 509): `mode=menu`, chevron **not rendered**, label **32×32** with its
-radius restored, `aria-haspopup="menu"` and `aria-expanded` flipping false → true, **three** rows
-including PDF, and the PDF row opening the preview.
+radius restored, `aria-haspopup="menu"` and `aria-expanded` flipping false → true, and the PDF row
+opening the preview.
+
+Re-verified at **390** after the mobile corrections: modal 326 (390 − 2×32), title 16, header
+12/16, body 16, footer button 32 / 0 12 / 12, summary 13, panel padding 16 at height 384,
+document title 16, meta 12 with 6 above, heading 14 with 24 above, trail 12, list 13/32, role 13,
+empty line 14 with 8 above; CSV panel 448 with desktop cell metrics and a real horizontal
+overflow (591 > 290). Desktop re-checked in the same run and unchanged. The Modal footer change
+was spot-checked on delete-table, table-form, copy-plans and delete-plan — all four now 32 / 0 12
+/ 12 at 390.
 
 Download: the CSV blob really is produced (`text/csv;charset=utf-8`,
 `main-ballroom-seating.csv`), 1 header + 6 rows, and a company name set to `Acme, "Big" Ltd`

@@ -2988,8 +2988,9 @@
   var labelBtn = root && root.querySelector('.seating-header__btn--export');
 
   /* Below 767 SeatingHeader clips Export to a 32px icon and drops the chevron, so there is no
-   * second half left to open the menu — the icon button takes that job instead, and the menu
-   * carries a PDF row of its own.
+   * second half left to open the menu — the icon button takes that job instead. The menu's PDF
+   * row is what makes the default format reachable there; it now shows at every width, so above
+   * 767 it simply duplicates what the label half does.
    *
    * Decided from RENDERED VISIBILITY, never `matchMedia`: the toolbar's width is set by the
    * docked SidebarMenu and the ActionsMenu rail, not by the window, so a viewport query would be

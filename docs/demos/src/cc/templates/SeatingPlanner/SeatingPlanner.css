@@ -1322,27 +1322,23 @@
   color: var(--ai-icon-secondary);
 }
 
-/* PDF has a menu row ONLY below 767. At wider widths the chevron exists and the label half
- * already runs PDF, so the row would be a duplicate; below 767 SeatingHeader clips Export to a
- * 32px icon and drops the chevron, leaving no second half to open the menu — so the icon button
- * takes that job and PDF needs a row. One action, two homes, never both at once: the same
- * arrangement Room Layout already uses in the overflow menu below 1200.
+/* The PDF row shows at EVERY width (designer, 2026-09-09 — "add pdf version to desktop too").
+ * It began as a narrow-only row, because below 767 SeatingHeader clips Export to a 32px icon and
+ * drops the chevron, leaving no second half to open the menu — so there the icon button opens the
+ * menu and PDF needs a row of its own. Keeping the row at all widths makes every format reachable
+ * from one place and costs only a redundancy with the label half, which still runs PDF as the
+ * split button's default action.
  *
- * `@container`, not `@media`: the toolbar's width is set by the docked SidebarMenu and the
- * ActionsMenu rail, not by the window (CLAUDE.md §4a). `seating-header` is established on
- * `.seating-header`, which encloses this panel. */
-.seating-header__export-item--pdf {
-  display: none;
-}
+ * Divergence to note: both menu frames draw two rows. */
 
 @container seating-header (max-width: 767px) {
-  .seating-header__export-item--pdf {
-    display: block;
-  }
-
   /* Hide the whole half, not just its icon. The pattern's own rule hides
    * `.seating-header__btn-chevron` — the <i> — which on a split control would leave an empty
-   * 28px button behind. */
+   * 28px button behind.
+   *
+   * `@container`, not `@media`: the toolbar's width is set by the docked SidebarMenu and the
+   * ActionsMenu rail, not by the window (CLAUDE.md §4a). `seating-header` is established on
+   * `.seating-header`, which encloses this control. */
   .seating-header__export-more {
     display: none;
   }
@@ -1367,8 +1363,15 @@
 
 /* "12 tables · 101 seated people — every row below is in the file. Empty seats are not
  * exported." Two runs, one 14/24 line: the counts semibold over --ai-text-primary, the sentence
- * regular over --ai-text-secondary (1:15251). */
-.export-preview__summary {
+ * regular over --ai-text-secondary (1:15251).
+ *
+ * The child combinator is REQUIRED, not tidiness. Modal.css carries
+ * `.modal__body > p { font-size: --ai-font-fixed-xs; ... }` at (0,1,1), which outranks a bare
+ * `.export-preview__summary` at (0,1,0) whatever the source order — and Modal.css says so in a
+ * comment right above that rule. Because its values are identical to these, the base rule looked
+ * correct and hid the problem; the MOBILE override then silently lost and the summary stayed 14px
+ * on a phone. Both rules now sit at (0,2,0) so they travel together. */
+.export-preview__body > .export-preview__summary {
   margin: 0;
   font-family: var(--ai-font-body);
   font-size: var(--ai-font-fixed-xs);    /* 14 */
@@ -1377,7 +1380,7 @@
   color: var(--ai-text-secondary);
 }
 
-.export-preview__summary strong {
+.export-preview__body > .export-preview__summary strong {
   font-weight: var(--ai-font-semibold);
   color: var(--ai-text-primary);
 }
@@ -1442,6 +1445,9 @@
 
 .export-preview__doc-meta {
   margin: 0;
+  /* Figma's paragraph is 26 tall around a 20px line, at BOTH sizes — 6px of space under the
+   * title, not zero. */
+  padding-block-start: var(--ai-spacing-2);   /* 6 */
   font-family: var(--ai-font-body);
   font-size: var(--ai-font-fixed-xxs);  /* 12 */
   font-weight: var(--ai-font-regular);
@@ -1495,6 +1501,8 @@
  * silently missing. The one italic run on this screen (1:15746). */
 .export-preview__doc-empty {
   margin: 0;
+  /* 32 tall around a 24px line at both sizes = 8px above. */
+  padding-block-start: var(--ai-spacing-3);   /* 8 */
   font-family: var(--ai-font-body);
   font-size: var(--ai-font-fixed-xs);   /* 14 */
   font-style: italic;
@@ -1508,3 +1516,49 @@
   outline: 2px solid var(--ai-surface-brand);
   outline-offset: 2px;
 }
+
+/* ── Export preview: mobile ───────────────────────────────────────────────────────────────
+ * Figma 1:45146 (PDF) / 1:46486 (CSV). Read off those frames after an earlier pass wrongly
+ * concluded from screenshots that nothing stepped down — the mobile frames step FIVE values, and
+ * the modal's own chrome steps too (Modal's Size=sm block, now including its footer buttons).
+ *
+ * `@media`, not `@container`: this is a `position: fixed` overlay, so it genuinely is
+ * viewport-sized (CLAUDE.md §4a), and 639 is Modal's own Size=sm switch — the dialog's chrome and
+ * its contents must step together or the header shrinks while the body does not.
+ *
+ * What does NOT step, checked rather than assumed: the meta line (12/20), the heading's trailing
+ * type and occupancy (12), the empty-table line (14/24 — it stays 14 while the seat list beside
+ * it drops to 13, which is Figma's inconsistency, followed here), both panel heights (384 / 448)
+ * and every CSV cell, whose desktop metrics are exactly why the table scrolls sideways on a phone
+ * instead of reflowing. */
+
+@media (max-width: 639px) {
+  /* (0,2,0) — see the base rule: Modal's `.modal__body > p` would otherwise win. */
+  .export-preview__body > .export-preview__summary {
+    font-size: var(--ai-font-fixed-2xs);   /* 14 -> 13 */
+  }
+
+  .export-preview__panel--doc {
+    padding: var(--ai-spacing-5);          /* 24 -> 16 (Figma p-17: 16 inside a 1px stroke) */
+  }
+
+  .export-preview__doc-title {
+    font-size: var(--ai-font-fixed-sm);    /* 18 -> 16 */
+  }
+
+  /* 16 -> 14. The trailing span keeps its own explicit 12, so it is unaffected. */
+  .export-preview__doc-heading {
+    font-size: var(--ai-font-fixed-xs);
+  }
+
+  /* 14 -> 13, and the bracketed role follows because it only overrides the colour. */
+  .export-preview__doc-list {
+    font-size: var(--ai-font-fixed-2xs);
+  }
+}
+
+/* FLAGGED, deliberately not encoded: on the mobile frame the FIRST table heading has 16px of
+ * space above it (paragraph 36 tall) while the other eleven have 24 (44 tall), and desktop gives
+ * all twelve 24. Eleven consistent headings beat one outlier, so the 24 stands at both sizes;
+ * special-casing `:first-of-type` to 16 on mobile only would encode what is almost certainly
+ * slop in the frame. */
