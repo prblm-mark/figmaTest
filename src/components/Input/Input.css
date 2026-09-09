@@ -181,6 +181,68 @@
   color: var(--ai-text-secondary);
 }
 
+/* ── Action row ──────────────────────────────────────── */
+
+/* Input's FOURTH stack slot, below Help — Figma `3435:28465` inside `78:2017`.
+ *
+ * This file's figma-notes has recorded the slot since the Input build, as "hidden in every
+ * variant. Nothing to build until something is placed in it." The Seating Planner's Table form
+ * (Figma `3515:178044`) is the first design to place something in it: a "+ Manage table types"
+ * link under the Table type / tier field. Built here rather than scoped to that screen because
+ * the slot belongs to Input's own component set — designer call, 2026-08-29.
+ *
+ * Purely additive: no existing Input renders an action row, so every current consumer is
+ * untouched. The 8px gap to whatever sits above comes from `.input`'s own column gap, which is
+ * why there is no margin here — and why the row sits 8px below the HELP line when help is shown
+ * and 8px below the FIELD when it is not, matching Figma's tier field at 112px (help on) and
+ * 88px (help off).
+ *
+ * `align-self: flex-start` so the hit area is the label's width, not the full field width —
+ * Figma draws the row at 120px inside a 462px column, and a full-width invisible target next to
+ * a form field is a misclick waiting to happen.
+ *
+ * Deliberately NOT scoped to `.input`: the tier and shape fields are Selects (`.sel`), which
+ * Figma still models as Input instances with a chevron. Keeping the selector standalone lets the
+ * same row sit in a `.sel` column stack without a second class that would drift from this one. */
+.input__action {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: var(--ai-spacing-0-5);            /* 2px */
+  padding: 0;
+  background: none;
+  border: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-4xs);   /* 11px */
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-xs);     /* 16px */
+  letter-spacing: 0.11px;                /* optical tracking from Figma — px exception */
+  font-feature-settings: 'case' 1;
+  color: var(--ai-text-brand);
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.input__action:hover {
+  text-decoration: underline;
+}
+
+.input__action:focus-visible {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: 2px;
+  border-radius: var(--ai-radius-sm);
+}
+
+/* 12px, not the 16px an icon in a form usually gets: Figma places a 20px Plus component scaled
+ * to 12x12 (`Icon/20px/Plus` at w=12 h=12), and `--ai-icon-size-xs` is bound on the node. */
+.input__action [data-lucide],
+.input__action svg {
+  width: var(--ai-icon-size-xs);
+  height: var(--ai-icon-size-xs);
+  flex-shrink: 0;
+}
+
 /* ── Error state ─────────────────────────────────────── */
 
 .input--error .input__wrap {

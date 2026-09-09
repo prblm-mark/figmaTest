@@ -166,6 +166,32 @@
       </div>
     </div>
 
+    <!-- Action row — Input's fourth stack slot (Figma 3435:28465), below Help. Shown both with
+         and without a help line, because the row's offset comes from `.input`'s own column gap:
+         8px below the help line when there is one, 8px below the field when there is not. -->
+    <div class="demo-row">
+      <span class="demo-row__label">Action row</span>
+      <div class="input">
+        <label class="input__label" for="config-action">Table type / tier</label>
+        <div class="input__wrap">
+          <input id="config-action" type="text" class="input__control" value="Gold">
+        </div>
+        <span class="input__help">The table tier. Shown as a colour and a label on the plan.</span>
+        <button type="button" class="input__action">
+          <i data-lucide="plus" aria-hidden="true"></i>Manage table types
+        </button>
+      </div>
+      <div class="input">
+        <label class="input__label" for="config-action-nohelp">Table type / tier</label>
+        <div class="input__wrap">
+          <input id="config-action-nohelp" type="text" class="input__control" value="Gold">
+        </div>
+        <button type="button" class="input__action">
+          <i data-lucide="plus" aria-hidden="true"></i>Manage table types
+        </button>
+      </div>
+    </div>
+
     <div class="demo-row">
       <span class="demo-row__label">Error</span>
       <div class="input input--error">
