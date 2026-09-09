@@ -1767,7 +1767,7 @@
  * The COMPONENT owns none of this on purpose — seating-toast records that it ships "no show/hide,
  * no auto-dismiss timer and no JS at all", and that who retires a toast was an open front-end
  * decision. This module is that decision, made with the designer 2026-09-09:
- *   - auto-dismiss after 8s
+ *   - auto-dismiss after 4s (8s until 2026-09-09, shortened at the designer's request)
  *   - the timer PAUSES while the pointer is over the pill or focus is inside it, so Undo cannot
  *     time out from under someone reading the sentence or tabbing to the button (WCAG 2.2 SC 2.2.1
  *     is the reason seating-toast flagged this in the first place)
@@ -1783,7 +1783,12 @@
   if (window.__spToastReady) return;
   window.__spToastReady = true;
 
-  var DISMISS_MS = 8000;
+  /* 4s (designer, 2026-09-09; 8s before that). The pause-on-hover / pause-on-focus below is
+   * what keeps this defensible with an Undo attached — the timer stops the moment the pointer
+   * is over the pill or focus lands inside it, so a user reaching for Undo cannot have it time
+   * out from under them. Without that pause, 4s against a WCAG 2.2 SC 2.2.1 expectation would
+   * be the part to argue about. */
+  var DISMISS_MS = 4000;
 
   var host = document.querySelector('[data-sp-toast-host]');
   if (!host) return;
