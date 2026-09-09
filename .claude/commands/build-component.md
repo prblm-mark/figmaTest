@@ -490,12 +490,35 @@ Once the component is built, QA'd, and registered, ask the user:
 > 4. **Neither** (I'll do it later)"
 
 If the user says yes to the demo index:
-- Determine the category from the Figma file key:
-  - `Lus07xi8pPXLN87sQIyrEt` → Design System section, label "System"
-  - `Ikv8jxb5dcRH8ff4q4dR11` → AI Chat section, label "AI Chat"
+- **Determine the section by PRODUCT AREA first, and only then fall back to the Figma file key.**
+  The file key is not sufficient on its own: several product areas are built from the shared
+  Design System file, so keying off it alone files their components under Design System, which is
+  wrong. Product area wins:
+  - **Seating Planner** — anything belonging to that surface (`TableCard`, `TableType`,
+    `AttendeeCard`, `RoomCard`, `FullBadge`, `SeatingToast`, `SeatingHeader`, `TableListing`,
+    `TableDetail`, `Unassigned`, the screen itself) → **Seating Planner** section,
+    `data-category="seating"`, label "Seating Planner". Set the designer's rule 2026-09-09:
+    "I would expect all of the seating planner components to live under Seating Planner, not
+    System — the same as AI Chat does." Ten cards had to be moved out of Design System to
+    correct it.
+  - **Control Centre** — `src/cc/*` → Control Centre section, `data-category="cc"`,
+    label "Control Centre"
+  - Otherwise by file key:
+    - `Lus07xi8pPXLN87sQIyrEt` → Design System section, `data-category="ds"`, label "System"
+    - `Ikv8jxb5dcRH8ff4q4dR11` → AI Chat section, `data-category="chat"`, label "AI Chat"
+- **The label is the section's own name**, optionally with a distinguishing suffix
+  (`Seating Planner · populated`, `Prototype · 38 states`). Never leave a moved card carrying the
+  label of the section it came from — that is what made the ten moved cards all read "System"
+  inside the Seating Planner section.
+- **File it in the subsection matching its tier** — Components / Patterns / Templates. Check the
+  tier, do not assume: four of those ten (`SeatingHeader`, `TableListing`, `TableDetail`,
+  `Unassigned`) are `data-tier="pattern"` but had been sitting in a Components subsection.
+- **Prototypes stay in Prototypes.** A product section carries Figma builds only. Putting a
+  prototype card in one makes a Figma build and a pre-Figma sketch look like peers (designer,
+  2026-09-09).
 - Add a card in the correct `<nav class="ds-grid">` section of `index.html`:
   ```html
-  <a href="src/components/<Name>/<Name>.html" class="ds-card" data-category="ds|chat" data-name="Component Name">
+  <a href="src/components/<Name>/<Name>.html" class="ds-card" data-category="ds|chat|cc|seating" data-name="Component Name">
     <div class="ds-card__icon"><i data-lucide="icon-name" aria-hidden="true"></i></div>
     <div class="ds-card__body">
       <p class="ds-card__label">System|AI Chat</p>

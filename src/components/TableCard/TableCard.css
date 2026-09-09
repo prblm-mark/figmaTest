@@ -236,9 +236,12 @@
  * modifier can go on either. Bound to the Seating Planner collection; the swatch
  * inherits the property from its legend item.
  *
- * Figma's legend covers four roles plus Empty. --sp-host exists in the collection and
- * AttendeeCard uses it, but Table Card's Figma legend omits it — NOT added here, since
- * inventing a variant with no Figma counterpart is how drift starts. Flagged in notes. */
+ * Figma's legend covers FIVE roles plus Empty. Host was held back while Table Card's legend
+ * had no Figma counterpart; the "Populated" baseline (`3515:202250`) now draws it, so it is
+ * wired below — see the note there.
+ *
+ * Empty deliberately has NO modifier rule: the default below IS the empty treatment, so an
+ * unrecognised role renders as an empty seat rather than as nothing. */
 .table-card__seg,
 .table-card__legend-item {
   --table-card-role: var(--ai-surface-contrast);
@@ -255,6 +258,21 @@
 
 .table-card__seg--sponsor,
 .table-card__legend-item--sponsor { --table-card-role: var(--sp-sponsor); }
+
+/* Host — ADDED 2026-09-09, and the note above it is now out of date.
+ *
+ * It was held back because Table Card's Figma legend had no Host counterpart, only
+ * AttendeeCard and the role collection did. The "Populated" baseline (Design System
+ * `3515:202250`) supplies that counterpart: its first card's legend reads
+ * `Host (1)` alongside Attendee, VIP, Speaker and Sponsor. So a table CAN seat a host, which
+ * also settles the open question recorded on `seating-table-grid`.
+ *
+ * Nothing else was needed — `--sp-host` already exists in all four seating palettes
+ * (`#f76b15` in the default). Without this rule a Host segment fell through to the
+ * `--ai-surface-contrast` default and rendered IDENTICALLY to an empty seat, which is the
+ * one thing a role colour must never do. */
+.table-card__seg--host,
+.table-card__legend-item--host { --table-card-role: var(--sp-host); }
 
 /* ── Footer: seated count (+ FullBadge) and actions ─────────────────────────── */
 .table-card__footer {

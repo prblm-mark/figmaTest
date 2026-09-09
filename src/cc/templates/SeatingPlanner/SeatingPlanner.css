@@ -1784,3 +1784,36 @@
     line-height: var(--ai-leading-xs);          /* 24 -> 16 */
   }
 }
+
+/* ── Working prototype: the four classes the renderer introduces ──────────────────────────
+ * seating-app.js paints the plan panel from the model. Everything it emits reuses existing
+ * component classes — deliberately, so the eight modals, export and room layout keep reading the
+ * DOM they already read. These four have no component to belong to. */
+
+/* The unassigned rail's column. The Unassigned pattern sizes itself (`--ai-size-6`, matching
+ * TableDetail so the two rails agree), so this only has to stop the flex row squeezing it. */
+.seating-plan__pool {
+  flex-shrink: 0;
+  min-block-size: 0;
+  display: flex;
+}
+
+/* A plan with every seat taken swaps its progress fill to success, which is how the VIP Lounge
+ * card reads in the baseline — green bar plus a FullBadge instead of a "N seats free" line. */
+.room-card__progress-fill--full {
+  background-color: var(--ai-surface-success);
+}
+
+/* Two empty states the authored markup never needed, because a hand-written list is never
+ * empty: no table matches the search, and no table is selected. */
+.table-listing__empty,
+.table-detail__empty {
+  margin: 0;
+  padding: var(--ai-spacing-6);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-contrast);
+  text-align: center;
+}
