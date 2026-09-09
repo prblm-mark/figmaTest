@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="../../../components/Breadcrumb/Breadcrumb.css">
   <link rel="stylesheet" href="../../../components/Dropdown/Dropdown.css">
   <link rel="stylesheet" href="../../../components/DropdownItem/DropdownItem.css">
+  <link rel="stylesheet" href="../../../components/DragDropFile/DragDropFile.css">
   <link rel="stylesheet" href="../../../components/Portraits/Portraits.css">
   <link rel="stylesheet" href="../../../components/Avatar/Avatar.css">
   <link rel="stylesheet" href="../../../components/NotificationBadge/NotificationBadge.css">
@@ -638,7 +639,7 @@
             </div>
             <span class="seating-header__divider" aria-hidden="true"></span>
             <div class="seating-header__buttons">
-              <button type="button" class="btn btn--secondary btn--sm seating-header__btn--layout">
+              <button type="button" class="btn btn--secondary btn--sm seating-header__btn--layout" data-rl-open>
                 <i data-lucide="grid-3x3" aria-hidden="true"></i>Room Layout
               </button>
               <button type="button" class="btn btn--secondary btn--sm seating-header__btn--add" data-tf-add>
@@ -716,7 +717,7 @@
             <div class="dropdown__panel" role="menu" aria-label="More seating actions">
               <ul class="dropdown__list">
                 <li role="none" class="seating-header__menu-item--layout">
-                  <button type="button" class="dropdown-item" role="menuitem">
+                  <button type="button" class="dropdown-item" role="menuitem" data-rl-open>
                     <i data-lucide="grid-3x3" aria-hidden="true"></i><span data-text="Room Layout">Room Layout</span>
                   </button>
                 </li>
@@ -2756,6 +2757,113 @@
              PDF and .xlsx need a server-side generator and say so rather than downloading
              something fake — see seating-export. -->
         <button type="button" class="btn btn--primary" data-xp-download>Download PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Room Layout (TASK-344760) — Figma 1:20655 / 1:49180 (Empty), 1:24161 / 1:53040 (Image),
+       1:27691 / 1:55622 (PDF), desktop / mobile. `modal--sm` is NOT used: all three states are
+       512 wide, which is `.modal`'s own default (`--ai-size-9`).
+
+       Attaches a floor plan to the PLAN, not the event — the subtitle carries the plan name and
+       the attachment is held per plan, so switching plans switches the layout.
+
+       THREE STATES IN ONE MODAL, swapped by JS: the empty dropzone, an image preview, and a
+       document card for a PDF. Only the footer's primary label changes with them
+       ("Upload PDF / image" when empty, "Replace" once something is attached) — Cancel and the X
+       are constant, and there is no Save: picking a file applies it, the same live model
+       `#table-types` uses.
+
+       The empty state IS the DS DragDropFile component, not a lookalike: Figma's dropzone matches
+       it on every property (280 min-height, 2px dashed --ai-border-secondary, --ai-radius-lg,
+       32px padding, the 48px --ai-surface-brand-soft-extra disc, a 24px icon). Only the copy is
+       this screen's, so only the copy is scoped here. Its stylesheet was missing from this page
+       and is now linked. -->
+  <div class="modal-overlay" id="room-layout" data-room-layout>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="room-layout-title">
+      <div class="modal__header">
+        <div class="modal__title-block">
+          <h2 class="modal__title" id="room-layout-title">Room Layout</h2>
+          <!-- TODO(backend:SeatingPlanner): the plan name is read off the header — see
+               seating-room-layout. Server-side this is the SeatingPlan the attachment hangs off. -->
+          <p class="modal__subtitle" data-rl-plan>Main Ballroom</p>
+        </div>
+        <button class="modal__close" type="button" aria-label="Close" data-rl-close>
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <div class="modal__body room-layout__body">
+        <!-- ── Empty ─────────────────────────────────────────────────────────────────────
+             A real <label> wrapping a real file input, so the whole zone is one keyboard-
+             operable control with no JS needed to open the picker — the DS component's own
+             `__native` input is what it is designed around. -->
+        <label class="drag-drop room-layout__drop" data-rl-panel="empty" data-rl-drop>
+          <span class="drag-drop__icon-wrap">
+            <i data-lucide="upload-cloud" aria-hidden="true"></i>
+          </span>
+          <span class="drag-drop__text">
+            <span class="drag-drop__title">No layout attached</span>
+            <span class="room-layout__hint">Upload a floor plan (PDF or image) of where the tables sit in the room — or drag a file here.</span>
+          </span>
+          <!-- TODO(backend:SeatingPlanner): the file never leaves the browser — it is read with
+               FileReader for the preview only. Upload to a MediaFileItem and store the REFERENCE
+               on the SeatingPlan; see seating-room-layout. -->
+          <input type="file" class="drag-drop__native" accept="image/*,application/pdf"
+                 data-rl-input aria-label="Choose a floor plan (PDF or image)">
+        </label>
+
+        <!-- ── Image attached ────────────────────────────────────────────────────────── -->
+        <div class="room-layout__attached" data-rl-panel="image" hidden>
+          <div class="room-layout__preview">
+            <img class="room-layout__image" alt="Attached floor plan" data-rl-image>
+          </div>
+          <div class="room-layout__file">
+            <p class="room-layout__filename" data-rl-image-name></p>
+            <button type="button" class="btn btn--tertiary btn--icon btn--sm"
+                    aria-label="Remove layout" data-rl-remove>
+              <i data-lucide="trash-2" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- ── PDF attached ─────────────────────────────────────────────────────────────
+             A document card rather than a fake thumbnail: the page cannot rasterise a PDF, and
+             a blank grey box implying a preview would be worse than saying so. The note below
+             is Figma's own copy — the designer has adopted the explanation. -->
+        <div class="room-layout__attached" data-rl-panel="pdf" hidden>
+          <div class="room-layout__doc">
+            <i data-lucide="file-text" class="room-layout__doc-icon" aria-hidden="true"></i>
+            <div class="room-layout__doc-body">
+              <p class="room-layout__doc-name" data-rl-pdf-name></p>
+              <p class="room-layout__doc-meta" data-rl-pdf-meta></p>
+            </div>
+            <div class="room-layout__doc-actions">
+              <!-- An <a>, not a button: opening in a new tab is navigation, and it works
+                   without JS once the href is set. -->
+              <!-- `data-rl-file-open`, deliberately not `data-rl-open`: that hook is the pair of
+                   triggers that OPEN THE MODAL, and a delegated click handler would have matched
+                   this link too and re-opened the dialog on top of itself. -->
+              <a class="btn btn--secondary btn--sm" target="_blank" rel="noopener"
+                 data-rl-file-open>Open</a>
+              <button type="button" class="btn btn--tertiary btn--icon btn--sm"
+                      aria-label="Remove layout" data-rl-remove>
+                <i data-lucide="trash-2" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <!-- TODO(backend:SeatingPlanner): inline PDF preview needs a real viewer (pdf.js or an
+               <embed> against the stored file) — see seating-pdf-preview, still a spec decision. -->
+          <p class="room-layout__note">A PDF can’t be previewed inline here — it opens in a new tab. See the handover: in-app preview needs a PDF viewer.</p>
+        </div>
+      </div>
+
+      <div class="modal__footer">
+        <button type="button" class="btn btn--secondary" data-rl-close>Cancel</button>
+        <!-- `data-rl-primary`, not `data-rl-upload`: this button has THREE jobs depending on
+             state — "Upload PDF / image" and "Replace" both open the picker, and "Save" commits
+             the pending change and closes. See the roomLayout IIFE. -->
+        <button type="button" class="btn btn--primary" data-rl-primary>Upload PDF / image</button>
       </div>
     </div>
   </div>

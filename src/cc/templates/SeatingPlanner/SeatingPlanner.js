@@ -3056,3 +3056,286 @@
     if (event.key === 'Escape' && isOpen()) { close(); }
   });
 }());
+
+/* ── Room Layout (TASK-344760) ───────────────────────────────────────────────────────────────
+ * Figma 1:20655 / 1:49180 (Empty), 1:24161 / 1:53040 (Image), 1:27691 / 1:55622 (PDF).
+ *
+ * Attaches a floor plan to the PLAN, so switching plans switches the layout.
+ *
+ * SAVED vs DRAFT (designer, 2026-09-09). The dialog holds a draft, and the primary button reports
+ * what it will do rather than always meaning the same thing:
+ *
+ *   draft differs from saved  ->  "Save"                 commit, toast, close
+ *   nothing saved yet         ->  "Upload PDF / image"   open the picker
+ *   something saved           ->  "Replace"              open the picker
+ *
+ * So opening on an empty plan and picking a file turns the button into Save; opening on a plan
+ * that already has one shows Replace until you actually switch it. The consequence worth naming:
+ * **Cancel now discards**. It had nothing to undo when a pick committed immediately; now it has,
+ * so Cancel, the X, Escape and the scrim all drop the draft and leave the saved layout alone.
+ * Removing is a draft change too, for the same reason — an accidental trash is recoverable by
+ * cancelling instead of being instantly destructive.
+ *
+ * NOTHING LEAVES THE BROWSER. An image is read with FileReader and previewed as a data URL; a PDF
+ * gets an object URL so its Open link genuinely works. Object URLs are revoked when the item they
+ * belong to is dropped — on save-over, on discard, and on remove — but never while an item is
+ * still reachable as either the draft or the saved value. See seating-room-layout.
+ */
+(function () {
+  'use strict';
+
+  if (window.__roomLayoutReady) return;
+  window.__roomLayoutReady = true;
+
+  var OPEN_CLASS = 'modal-overlay--open';
+
+  var overlay = document.querySelector('[data-room-layout]');
+  if (!overlay) return;
+
+  var dialog   = overlay.querySelector('[role="dialog"]');
+  var planEl   = overlay.querySelector('[data-rl-plan]');
+  var input    = overlay.querySelector('[data-rl-input]');
+  var drop     = overlay.querySelector('[data-rl-drop]');
+  var imageEl  = overlay.querySelector('[data-rl-image]');
+  var imageNm  = overlay.querySelector('[data-rl-image-name]');
+  var pdfNm    = overlay.querySelector('[data-rl-pdf-name]');
+  var pdfMeta  = overlay.querySelector('[data-rl-pdf-meta]');
+  var pdfLink  = overlay.querySelector('[data-rl-file-open]');
+  var primary  = overlay.querySelector('[data-rl-primary]');
+
+  var panels = {
+    empty: overlay.querySelector('[data-rl-panel="empty"]'),
+    image: overlay.querySelector('[data-rl-panel="image"]'),
+    pdf:   overlay.querySelector('[data-rl-panel="pdf"]')
+  };
+
+  /* Committed attachments, keyed by plan name — which is what the dialog is titled with, so one
+   * entry per plan and switching plans genuinely switches the layout. */
+  var saved = {};
+  var draft = null;
+  var plan = '';
+  var returnFocusTo = null;
+
+  function isOpen() { return overlay.classList.contains(OPEN_CLASS); }
+  function text(el) { return el ? el.textContent.replace(/\s+/g, ' ').trim() : ''; }
+  function savedItem() { return saved[plan] || null; }
+
+  /* Reference identity is enough: every pick builds a fresh object, and a remove sets null. */
+  function isDirty() { return draft !== savedItem(); }
+
+  function currentPlan() {
+    return text(document.querySelector('.seating-header__room-name')) || 'This plan';
+  }
+
+  /* "256 KB" / "1.4 MB". Decimal KB, which is what a file manager shows. */
+  function formatSize(bytes) {
+    if (!bytes && bytes !== 0) return '';
+    if (bytes < 1000) return bytes + ' B';
+    if (bytes < 1000 * 1000) return Math.round(bytes / 1000) + ' KB';
+    return (bytes / (1000 * 1000)).toFixed(1) + ' MB';
+  }
+
+  function toast(parts, type) {
+    document.dispatchEvent(new CustomEvent('sp:toast', { detail: { parts: parts, type: type } }));
+  }
+
+  /* Only ever called on an item that is no longer reachable from `draft` or `saved`. */
+  function release(item) {
+    if (item && item.revoke) URL.revokeObjectURL(item.url);
+  }
+
+  /* ── Rendering ─────────────────────────────────────────────────────────────────────────── */
+
+  function render() {
+    var kind = draft ? draft.kind : 'empty';
+
+    panels.empty.hidden = kind !== 'empty';
+    panels.image.hidden = kind !== 'image';
+    panels.pdf.hidden   = kind !== 'pdf';
+
+    /* Three labels, one button — see the header comment. "Save" is not in Figma: its frames are
+     * static, so they cannot show a pending state, and the two labels they DO draw are the two
+     * not-dirty cases. */
+    primary.textContent = isDirty() ? 'Save'
+      : (savedItem() ? 'Replace' : 'Upload PDF / image');
+
+    if (kind === 'image') {
+      imageEl.src = draft.url;
+      imageEl.alt = 'Floor plan for ' + plan;
+      imageNm.textContent = draft.name;
+      imageNm.title = draft.name;                  /* the row truncates; keep the full name reachable */
+    } else if (kind === 'pdf') {
+      pdfNm.textContent = draft.name;
+      pdfNm.title = draft.name;
+      pdfMeta.textContent = 'PDF · ' + formatSize(draft.size);
+      pdfLink.href = draft.url;
+      pdfLink.setAttribute('aria-label', 'Open ' + draft.name + ' in a new tab');
+    }
+  }
+
+  /* ── Accepting a file into the draft ───────────────────────────────────────────────────── */
+
+  function setDraft(item) {
+    /* Drop the outgoing draft unless it is the saved one, which Cancel still needs. */
+    if (draft && draft !== savedItem()) release(draft);
+    draft = item;
+    render();
+  }
+
+  function accept(file) {
+    if (!file) return;
+
+    var isImage = /^image\//.test(file.type);
+    var isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+
+    /* Refused BY NAME, so the message says which file was rejected. Checked on the file rather
+     * than trusting `accept`, which a drag bypasses entirely. */
+    if (!isImage && !isPdf) {
+      toast([
+        { text: file.name, strong: true },
+        { text: ' isn’t a PDF or an image, so it can’t be used as a floor plan.' }
+      ], 'error');
+      return;
+    }
+
+    if (isImage) {
+      var reader = new FileReader();
+      reader.onload = function () {
+        setDraft({ kind: 'image', name: file.name, size: file.size, url: reader.result, revoke: false });
+      };
+      /* Read locally — this is what keeps the file in the browser. */
+      reader.readAsDataURL(file);
+    } else {
+      setDraft({
+        kind: 'pdf', name: file.name, size: file.size,
+        url: URL.createObjectURL(file), revoke: true
+      });
+    }
+  }
+
+  /* Removing is a DRAFT change, not an immediate destruction — so Cancel can undo it. */
+  function removeDraft() {
+    if (!draft) return;
+    setDraft(null);
+    if (input) input.focus();      /* focus would otherwise sit on a button that is now gone */
+  }
+
+  /* ── Commit / discard ──────────────────────────────────────────────────────────────────── */
+
+  function save() {
+    var previous = savedItem();
+    if (previous && previous !== draft) release(previous);
+
+    if (draft) saved[plan] = draft;
+    else delete saved[plan];
+
+    var parts = draft
+      ? [{ text: draft.name, strong: true }, { text: ' attached to ' + plan + '.' }]
+      : [{ text: 'Layout removed', strong: true }, { text: ' from ' + plan + '.' }];
+
+    close();
+    toast(parts, 'success');
+  }
+
+  function discard() {
+    if (draft && draft !== savedItem()) release(draft);
+    draft = savedItem();
+  }
+
+  /* ── Open / close ──────────────────────────────────────────────────────────────────────── */
+
+  function open(trigger) {
+    if (isOpen()) return;
+    returnFocusTo = trigger || document.activeElement;
+    plan = currentPlan();
+    if (planEl) planEl.textContent = plan;
+    draft = savedItem();
+    render();
+    overlay.classList.add(OPEN_CLASS);
+    if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+    var closeBtn = overlay.querySelector('[data-rl-close]');
+    if (closeBtn) closeBtn.focus();
+  }
+
+  function close() {
+    if (!isOpen()) return;
+    overlay.classList.remove(OPEN_CLASS);
+    var target = (returnFocusTo && returnFocusTo !== document.body && returnFocusTo.isConnected)
+      ? returnFocusTo
+      : null;
+    returnFocusTo = null;
+    if (target) target.focus();
+  }
+
+  /* Every dismissal route drops the draft. */
+  function cancel() {
+    discard();
+    close();
+  }
+
+  /* ── Drag and drop ─────────────────────────────────────────────────────────────────────── */
+  /* The copy promises "or drag a file here", so the zone has to accept one. `--active` is the DS
+   * component's own drag-over modifier, not a new visual. */
+  if (drop) {
+    ['dragenter', 'dragover'].forEach(function (type) {
+      drop.addEventListener(type, function (event) {
+        event.preventDefault();
+        drop.classList.add('drag-drop--active');
+      });
+    });
+
+    ['dragleave', 'dragend'].forEach(function (type) {
+      drop.addEventListener(type, function () {
+        drop.classList.remove('drag-drop--active');
+      });
+    });
+
+    drop.addEventListener('drop', function (event) {
+      event.preventDefault();
+      drop.classList.remove('drag-drop--active');
+      var dt = event.dataTransfer;
+      if (dt && dt.files && dt.files.length) accept(dt.files[0]);
+    });
+  }
+
+  /* A drop anywhere else in the dialog must not make the browser navigate away from the app,
+   * which is what an unhandled file drop does. */
+  overlay.addEventListener('dragover', function (event) { event.preventDefault(); });
+  overlay.addEventListener('drop', function (event) { event.preventDefault(); });
+
+  if (input) {
+    input.addEventListener('change', function () {
+      if (input.files && input.files.length) accept(input.files[0]);
+      /* Cleared so re-picking the SAME file still fires `change`. */
+      input.value = '';
+    });
+  }
+
+  /* ── Events ────────────────────────────────────────────────────────────────────────────── */
+
+  document.addEventListener('click', function (event) {
+    if (!event.target.closest) return;
+
+    /* BOTH triggers: SeatingHeader shows the toolbar button above container 1200 and the overflow
+     * menu item below it, never both, so binding only one leaves the control dead at that width. */
+    var trigger = event.target.closest('[data-rl-open]');
+    if (trigger) { event.preventDefault(); open(trigger); return; }
+
+    if (!isOpen()) return;
+    if (event.target.closest('[data-rl-close]')) { cancel(); return; }
+    if (event.target.closest('[data-rl-remove]')) { removeDraft(); return; }
+
+    if (event.target.closest('[data-rl-primary]')) {
+      if (isDirty()) save();
+      else if (input) input.click();
+    }
+  });
+
+  overlay.addEventListener('click', function (event) {
+    if (event.target === overlay) cancel();
+  });
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && isOpen()) cancel();
+  });
+}());

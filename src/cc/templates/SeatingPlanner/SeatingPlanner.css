@@ -1562,3 +1562,225 @@
  * all twelve 24. Eleven consistent headings beat one outlier, so the 24 stands at both sizes;
  * special-casing `:first-of-type` to 16 on mobile only would encode what is almost certainly
  * slop in the frame. */
+
+/* ── Room Layout modal ────────────────────────────────────────────────────────────────────
+ * Figma 1:20655 / 1:49180 (Empty), 1:24161 / 1:53040 (Image), 1:27691 / 1:55622 (PDF).
+ * All three states are 512 wide, which is `.modal`'s own default (`--ai-size-9`) — no size
+ * modifier. The shell, header, subtitle and footer are entirely Modal's; only what Figma draws
+ * inside the body is written here.
+ *
+ * The empty state is the DS DragDropFile, matched property-for-property against Figma
+ * (280 min-height, 2px dashed --ai-border-secondary, --ai-radius-lg, 32px padding, the 48px
+ * --ai-surface-brand-soft-extra disc, 24px icon). NOTHING of that is restated below — if a
+ * dropzone value is not here, the component is already carrying it, Figma-verified. */
+
+/* Each attached state stacks its two parts with Figma's Content Slot gap. */
+.room-layout__attached {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);              /* 8 */
+  inline-size: 100%;
+}
+
+/* The dropzone's second line. DragDropFile's own `__subtitle` is 12px over --ai-text-contrast;
+ * this screen's is 14px over --ai-text-secondary, so it gets its own class rather than bending
+ * the component's. Figma gives it line-height 1.4 (=19.6 at 14px) with no matching token — the
+ * line above it is an explicit --ai-leading-md, so 1.4 reads as Figma's "Auto"; resolved to
+ * --ai-leading-sm (20px) at the designer's direction, 2026-09-09. */
+.room-layout__hint {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);   /* 14 */
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-sm);    /* 20 */
+  color: var(--ai-text-secondary);
+  text-align: center;
+}
+
+/* ADDITION, not in Figma: a visible focus ring. The component's file input is 0x0 and
+ * opacity: 0 — focusable, which is right, but its own ring is invisible, so a keyboard user
+ * would have no idea the dropzone had focus. Ringing the zone instead satisfies CLAUDE.md §9
+ * without touching the component. Border colour reuses the component's own drag-over brand
+ * border so the two states look related. */
+.room-layout__drop:focus-within {
+  border-color: var(--ai-border-brand);
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: 2px;
+}
+
+/* ── Image preview ───────────────────────────────────────────────────────────────────────
+ * The box HUGS its image, capped at 280 (--ai-size-5), at the designer's direction
+ * 2026-09-09. Figma's two frames disagree — desktop draws a fixed 280 with the mock image
+ * overflowing its own 32px padding, mobile hugs at 16px — and hugging-with-a-cap reproduces
+ * both for their own artwork while staying sane for a real upload: a wide, short floor plan
+ * does not sit in a half-empty box, and a tall one cannot push the dialog past Modal's
+ * `max-block-size: 100%`. */
+.room-layout__preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ai-spacing-7);         /* 32 — Figma draws p-33: 32 inside a 1px stroke */
+  background-color: var(--ai-surface-minimal);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-lg);
+}
+
+.room-layout__image {
+  display: block;
+  max-inline-size: 100%;
+  max-block-size: var(--ai-size-5);     /* 280 */
+  object-fit: contain;
+}
+
+/* Filename + remove, under the preview. */
+.room-layout__file {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ai-spacing-3);
+  padding-block-start: var(--ai-spacing-4);   /* 12 */
+}
+
+/* Ellipsis is an ADDITION on desktop: Figma's mobile frame truncates this and the desktop one
+ * does not, so a long filename would escape the row at the wider size. Applied at both, per
+ * CLAUDE.md §4a — fix overflow intrinsically rather than at a breakpoint. */
+.room-layout__filename {
+  margin: 0;
+  min-inline-size: 0;
+  overflow: hidden;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);   /* 14 */
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);    /* 24 */
+  color: var(--ai-text-secondary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── PDF document card ───────────────────────────────────────────────────────────────── */
+
+.room-layout__doc {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-5);             /* 16 */
+  padding: var(--ai-spacing-6);         /* 24 */
+  background-color: var(--ai-surface-minimal);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-lg);
+}
+
+/* The only bare icon in the card — the trash beside it sits inside a Button, so Button supplies
+ * its colour. `--ai-icon-secondary` is the one icon token the PDF frame binds that is not the
+ * modal's own close X. */
+.room-layout__doc-icon {
+  flex-shrink: 0;
+  width: var(--ai-icon-size-lg);        /* 24 */
+  height: var(--ai-icon-size-lg);
+  color: var(--ai-icon-secondary);
+}
+
+.room-layout__doc-body {
+  flex: 1 0 0;
+  min-inline-size: 0;                   /* lets the filename ellipsis actually engage */
+}
+
+/* Semibold over --ai-text-primary — note this differs from the IMAGE state's filename, which
+ * Figma draws 14px Regular over --ai-text-secondary. Two states, two treatments, both followed. */
+.room-layout__doc-name {
+  margin: 0;
+  overflow: hidden;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);   /* 14 */
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-sm);    /* 20 */
+  color: var(--ai-text-primary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.room-layout__doc-meta {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xxs);  /* 12 — Figma leaves this unbound; the token exists */
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-sm);    /* 20 */
+  color: var(--ai-text-contrast);
+}
+
+.room-layout__doc-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-1);             /* 4 */
+  flex-shrink: 0;
+}
+
+/* The remove buttons carry NO background at rest — Figma binds `--ai-btn-secondary-bg`
+ * (transparent) with no border on both of them (1:29441, 1:25922).
+ *
+ * Why this override is needed at all: `.btn--tertiary` already reads its rest background from
+ * `--ai-btn-tertiary-bg`, which is `rgba(0, 0, 0, 0)` in tokens.css, tokens-dark.css,
+ * tokens-chat.css and tokens-chat-dark.css — but **`tokens-cc.css` sets it to `#e5e9eb`**, a
+ * solid grey, and this screen runs in the CC mode. So every tertiary button in the Control Centre
+ * currently paints a grey box at rest. Flagged for the designer: that value looks wrong on its own
+ * terms, because the CC hover (`#f2f4f5`) is LIGHTER than its rest (`#e5e9eb`) — the affordance is
+ * inverted, and every other mode has rest transparent with a light-grey hover.
+ *
+ * Scoped here rather than fixed at source: `css/tokens-cc.css` is generated and
+ * `FigmaTokens/*.json` is not editable by hand (CLAUDE.md §8, §11), so the value has to change in
+ * Figma. Only the REST state is touched — hover, pressed and focus still come from the component,
+ * so the fix disappears on its own once the token is corrected. */
+.room-layout__doc-actions .btn--tertiary,
+.room-layout__file .btn--tertiary {
+  background-color: transparent;
+}
+
+/* Why a PDF shows a card and not a thumbnail. Figma's own copy. */
+.room-layout__note {
+  margin: 0;
+  padding-block-start: var(--ai-spacing-4);   /* 12 */
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);   /* 14 */
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-md);    /* 24 */
+  color: var(--ai-text-secondary);
+}
+
+/* ── Room Layout: mobile ─────────────────────────────────────────────────────────────────
+ * Figma 1:49180 / 1:53040 / 1:55622. Read off those frames, not stepped by intuition — and
+ * NOT everything steps: the file row's 12px top space, the doc name (14), the doc meta (12),
+ * the action buttons and the 280 image cap all hold their desktop values.
+ *
+ * `@media` at 639 rather than `@container`: a fixed overlay really is viewport-sized
+ * (CLAUDE.md §4a), and 639 is Modal's own Size=sm switch, so the chrome and the contents step
+ * together. */
+@media (max-width: 639px) {
+  .room-layout__attached {
+    gap: var(--ai-spacing-2);           /* 8 -> 6 */
+  }
+
+  /* Scoped to this usage — the DS component's own title size is not this screen's business. */
+  .room-layout__drop .drag-drop__title,
+  .room-layout__hint {
+    font-size: var(--ai-font-fixed-2xs);   /* 14 -> 13 */
+  }
+
+  .room-layout__preview {
+    padding: var(--ai-spacing-5);       /* 32 -> 16 (Figma p-17: 16 inside a 1px stroke) */
+  }
+
+  .room-layout__filename {
+    font-size: var(--ai-font-fixed-2xs);   /* 14 -> 13 */
+  }
+
+  .room-layout__doc {
+    gap: var(--ai-spacing-4);           /* 16 -> 12 */
+    padding: var(--ai-spacing-4);       /* 24 -> 12 */
+  }
+
+  /* Both size AND leading step here, unlike everything else on this screen. */
+  .room-layout__note {
+    padding-block-start: var(--ai-spacing-3);   /* 12 -> 8 */
+    font-size: var(--ai-font-fixed-2xs);        /* 14 -> 13 */
+    line-height: var(--ai-leading-xs);          /* 24 -> 16 */
+  }
+}
