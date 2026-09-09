@@ -517,8 +517,13 @@
     card.classList.add('table-card--selected');
     selected = card;
 
-    var n = card.getAttribute('data-sp-table');
-    if (nameEl) nameEl.textContent = 'Table ' + n;
+    /* The card's OWN name, not 'Table ' + data-sp-table. The number and the name were always the
+     * same string until the Table form let either be edited; now a card renamed to "Headline
+     * Sponsors" would open a panel headed "Table 14". The attribute stays as the stable id. */
+    var nameSrc = card.querySelector('.table-card__select');
+    if (nameEl) nameEl.textContent = nameSrc
+      ? nameSrc.textContent.trim()
+      : 'Table ' + card.getAttribute('data-sp-table');
     /* TODO(backend:SeatingPlanner): the seat rows are static markup for one empty table — the
      * real panel must load THIS table's seats and its own seated count. See
      * seating-table-detail. Only the title and count are updated here. */
@@ -1165,8 +1170,13 @@
   var warning = overlay.querySelector('[data-tf-warning]');
   var warningText = overlay.querySelector('[data-tf-warning-text]');
 
+  var titleEl = overlay.querySelector('#table-form-title');
   var returnFocusTo = null;
   var editingCard = null;
+  /* 'edit' or 'add'. Add Table is the SAME modal — desktop Add (Figma 1:11787) is
+   * structurally identical to desktop Edit down to the 462 grid, the 88px tier field with
+   * its action row and the 73px footer, so a second dialog would only be a copy that drifts. */
+  var mode = 'edit';
   /* The seated count at OPEN time. The warning compares against this rather than re-reading the
    * card, because the card is not rewritten until Save — re-reading mid-edit would compare the
    * typed capacity against itself once a first save had happened. */
@@ -1238,7 +1248,66 @@
     warning.hidden = false;
   }
 
+  /* max(existing) + 1, deliberately NOT count + 1: table numbers are never resequenced after a
+   * delete, so gaps are expected and a count-based number would collide with a survivor. That
+   * rule is already recorded on seating-delete-table. */
+  function nextTableNumber() {
+    var max = 0;
+    Array.prototype.forEach.call(document.querySelectorAll('.table-card__select'), function (el) {
+      var m = /(\d+)/.exec(el.textContent || '');
+      if (m) max = Math.max(max, parseInt(m[1], 10));
+    });
+    /* Also consider the stable ids, not just the visible names. A card renamed to something with
+     * no digits ("Headline Sponsors") drops out of the name scan, so name-only numbering handed
+     * out an id that a renamed card was already using — measured: adding two tables produced two
+     * cards both claiming data-sp-table="14". */
+    Array.prototype.forEach.call(document.querySelectorAll('[data-sp-table]'), function (el) {
+      var v = parseInt(el.getAttribute('data-sp-table'), 10);
+      if (isFinite(v)) max = Math.max(max, v);
+    });
+    return max + 1;
+  }
+
+  /* Defaults read off the Add frames, not carried across from Edit: tier Standard, sponsor
+   * placeholder, host empty, seats 10, shape Round — and the name field EMPTY behind a "Table N"
+   * placeholder, because the frame draws that number in placeholder grey rather than as a filled
+   * value. It is a suggestion, not something pre-committed on the user's behalf. */
+  function resetFields() {
+    var n = nextTableNumber();
+    if (nameInput) { nameInput.value = ''; nameInput.placeholder = 'Table ' + n; }
+    if (seatsInput) seatsInput.value = '10';
+    if (hostInput) hostInput.value = '';
+    if (tierValue) tierValue.textContent = 'Standard';
+    if (shapeValue) shapeValue.textContent = 'Round';
+    if (sponsorValue) sponsorValue.textContent = 'Search Accounts\u2026';
+  }
+
+  function openAdd(trigger) {
+    if (isOpen()) return;
+    mode = 'add';
+    editingCard = null;
+    returnFocusTo = trigger || document.activeElement;
+    clearErrors();
+    resetFields();
+    /* Nobody is seated at a table that does not exist yet, so the reduced-capacity warning can
+     * never apply here — and these two keep it that way rather than relying on it. */
+    seatedAtOpen = 0;
+    counts0 = { seated: 0, capacity: 0 };
+    if (warning) warning.hidden = true;
+    if (titleEl) titleEl.textContent = 'Add Table';
+
+    overlay.classList.add(OPEN_CLASS);
+    if (trigger) trigger.setAttribute('aria-expanded', 'true');
+    if (nameInput) nameInput.focus();
+    else dialog.focus();
+  }
+
   function open(card, trigger) {
+    mode = 'edit';
+    /* "Edit table" and "Add Table" — Figma capitalises the two titles differently and both are
+     * reproduced rather than harmonised, the same call already made for the Delete Plan dialog's
+     * "Delete plan" heading against its "Delete Plan" button. */
+    if (titleEl) titleEl.textContent = 'Edit table';
     if (isOpen()) return;
     editingCard = card;
     returnFocusTo = trigger || document.activeElement;
@@ -1288,6 +1357,15 @@
     event.preventDefault();
     open(btn.closest('.table-card'), btn);
   });
+
+  /* The toolbar's Add Table button, which had no handler at all until now. */
+  var addBtn = document.querySelector('[data-tf-add]');
+  if (addBtn) {
+    addBtn.addEventListener('click', function (event) {
+      event.preventDefault();
+      openAdd(addBtn);
+    });
+  }
 
   Array.prototype.forEach.call(overlay.querySelectorAll('[data-tf-close]'), function (btn) {
     btn.addEventListener('click', close);
@@ -1354,6 +1432,11 @@
       var seats = seatsInput ? parseInt(seatsInput.value, 10) : NaN;
       var ok = true;
 
+      /* In ADD mode an empty name adopts the placeholder. Figma draws "Table 13" in placeholder
+       * grey rather than as a filled value, so it is a suggestion — and a suggestion the user has
+       * to retype before Save will accept it is not a suggestion. Renaming an EXISTING table to
+       * nothing is still refused. */
+      if (!name && mode === 'add') name = nameInput ? nameInput.placeholder : '';
       if (!name) { setError('name', 'Table name is required.'); ok = false; }
       if (!isFinite(seats) || seats < 1) { setError('seats', 'Enter a number of seats.'); ok = false; }
       if (!ok) {
@@ -1363,9 +1446,86 @@
       }
 
       /* TODO(backend:SeatingPlanner): DOM-only — see seating-table-form for the Table record this
-       * should PATCH, and seating-unassigned-tray for where the returned occupants belong. */
+       * should PATCH (or POST, in add mode), and seating-unassigned-tray for where the returned
+       * occupants belong. */
+      /* Seated after the change. Hoisted above BOTH branches because the plan totals below need
+       * it either way — left inside the edit branch it was `undefined` in add mode, which made
+       * the plan read "13 tables · NaN/158". In add mode it is simply 0. */
+      var seated = Math.min(seatedAtOpen, seats);
+
+      if (mode === 'add') {
+        var grid = document.querySelector('[data-sp-grid], .table-listing__grid');
+        if (grid) {
+          var num = nextTableNumber();
+          var card = document.createElement('article');
+          card.className = 'table-card';
+          card.setAttribute('data-sp-card', '');
+          card.setAttribute('data-sp-table', String(num));
+          /* Emitted WITH the --empty modifiers on the segment and the legend entry. The twelve
+           * cards in the markup shipped without them, which left the edit write-back's
+           * `.table-card__seg--empty` lookup finding nothing on eleven of them — so a new card
+           * must not reintroduce the same shape. TableCard's own demo is the reference. */
+          card.innerHTML =
+            '<div class="table-card__header">' +
+              '<div class="table-card__titles">' +
+                '<h3 class="table-card__name">' +
+                  '<button type="button" class="table-card__select"></button>' +
+                '</h3>' +
+              '</div>' +
+            '</div>' +
+            '<hr class="table-card__rule">' +
+            '<div class="table-card__viz">' +
+              '<div class="table-card__bar" aria-hidden="true">' +
+                '<span class="table-card__seg table-card__seg--empty"></span>' +
+              '</div>' +
+              '<div class="table-card__legend">' +
+                '<span class="table-card__legend-item table-card__legend-item--empty">' +
+                  '<span class="table-card__swatch"></span>' +
+                '</span>' +
+              '</div>' +
+            '</div>' +
+            '<hr class="table-card__rule">' +
+            '<div class="table-card__footer">' +
+              '<div class="table-card__count-group">' +
+                '<p class="table-card__count"></p>' +
+              '</div>' +
+              '<div class="table-card__actions">' +
+                '<button type="button" class="btn btn--secondary btn--icon btn--2xs" data-tf-open>' +
+                  '<i data-lucide="pencil" aria-hidden="true"></i>' +
+                '</button>' +
+                '<button type="button" class="btn btn--secondary btn--icon btn--2xs">' +
+                  '<i data-lucide="trash" aria-hidden="true"></i>' +
+                '</button>' +
+              '</div>' +
+            '</div>';
+
+          /* Text and counts set as text, not interpolated into the HTML above — a user-supplied
+           * table name goes through textContent so a name containing markup cannot inject it. */
+          card.querySelector('.table-card__select').textContent = name;
+          card.querySelector('.table-card__count').textContent = '0 / ' + seats + ' seated';
+          card.querySelector('.table-card__seg--empty').style.setProperty('--seg', String(seats));
+          card.querySelector('.table-card__legend-item--empty')
+              .appendChild(document.createTextNode('Empty (' + seats + ')'));
+          card.querySelectorAll('.table-card__actions button')[0]
+              .setAttribute('aria-label', 'Edit ' + name);
+          card.querySelectorAll('.table-card__actions button')[1]
+              .setAttribute('aria-label', 'Delete ' + name);
+
+          card.setAttribute('data-tf-host', hostInput ? hostInput.value.trim() : '');
+          if (tierValue) card.setAttribute('data-tf-tier', tierValue.textContent.trim());
+          if (shapeValue) card.setAttribute('data-tf-shape', shapeValue.textContent.trim());
+          if (sponsorValue) card.setAttribute('data-tf-sponsor', sponsorValue.textContent.trim());
+
+          grid.appendChild(card);
+          /* The pencil ships as <i data-lucide>, and createIcons() has already run for the page —
+           * without re-running it the new card's two icons stay as empty <i> elements. */
+          if (window.lucide && typeof window.lucide.createIcons === 'function') {
+            window.lucide.createIcons();
+          }
+        }
+      }
+
       if (editingCard) {
-        var seated = Math.min(seatedAtOpen, seats);
         var nameEl = editingCard.querySelector('.table-card__select');
         if (nameEl) nameEl.textContent = name;
 
@@ -1450,21 +1610,6 @@
           }
         }
 
-        /* The plan totals: capacity is the sum across tables, so it moves by the delta rather
-         * than being recomputed — the other 11 cards are not re-read here. */
-        var planCounts = document.querySelector('.room-card__counts');
-        if (planCounts) {
-          planCounts.innerHTML = planCounts.innerHTML.replace(
-            /(\d+)\s*tables\s*·\s*(\d+)\/(\d+)/,
-            function (_m, t, planSeated, planCap) {
-              var nextCap = parseInt(planCap, 10) + (seats - counts0.capacity);
-              var nextSeated = parseInt(planSeated, 10) - (seatedAtOpen - seated);
-              var free = document.querySelector('.room-card__free');
-              if (free) free.textContent = (nextCap - nextSeated) + ' seats free';
-              return t + ' tables · ' + nextSeated + '/' + nextCap;
-            });
-        }
-
         Array.prototype.forEach.call(editingCard.querySelectorAll('[aria-label]'), function (el) {
           var label = el.getAttribute('aria-label');
           if (/^Edit /.test(label)) el.setAttribute('aria-label', 'Edit ' + name);
@@ -1476,6 +1621,28 @@
         if (tierValue) editingCard.setAttribute('data-tf-tier', tierValue.textContent.trim());
         if (shapeValue) editingCard.setAttribute('data-tf-shape', shapeValue.textContent.trim());
         if (sponsorValue) editingCard.setAttribute('data-tf-sponsor', sponsorValue.textContent.trim());
+      }
+
+
+      /* The plan totals, for BOTH modes. This used to sit inside the edit branch, so adding a
+       * table left the plan still claiming the old table count and the old capacity.
+       *
+       * Moves by DELTA rather than recomputing from the cards: `counts0.capacity` is 0 in add
+       * mode, so the whole new capacity is added, and the table count gains one only when a table
+       * was actually created. Recomputing from the twelve cards would be sturdier and is the
+       * server's job — seating-table-form already asks for that re-read. */
+      var planCounts = document.querySelector('.room-card__counts');
+      if (planCounts) {
+        planCounts.innerHTML = planCounts.innerHTML.replace(
+          /(\d+)\s*tables\s*·\s*(\d+)\/(\d+)/,
+          function (_m, t, planSeated, planCap) {
+            var nextTables = parseInt(t, 10) + (mode === 'add' ? 1 : 0);
+            var nextCap = parseInt(planCap, 10) + (seats - counts0.capacity);
+            var nextSeated = parseInt(planSeated, 10) - (seatedAtOpen - seated);
+            var free = document.querySelector('.room-card__free');
+            if (free) free.textContent = (nextCap - nextSeated) + ' seats free';
+            return nextTables + ' tables · ' + nextSeated + '/' + nextCap;
+          });
       }
 
       close();
