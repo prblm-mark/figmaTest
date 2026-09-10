@@ -120,16 +120,24 @@
 }
 
 /* Optional row, now a direct child of the header at full width (Figma renamed the frame
- * `Paragraph` -> `Sponsor` in the restructure). Figma fixes it at h-[22px], which is
- * exactly the 16px icon plus the 6px padding-top, so the height is left to the content
- * rather than pinned. */
+ * `Paragraph` -> `Sponsor` in the restructure). Figma fixes it at h-[22px], which was exactly
+ * the 16px icon plus its 6px padding-top, so the height is left to the content rather than
+ * pinned — and it now measures 18px, since the padding changed below.
+ *
+ * `padding-block-start` is --ai-spacing-0-5 (2px) at the designer's request 2026-09-10, where
+ * Figma binds --ai-spacing-2 (6px) — confirmed on the sponsor row's own variable defs
+ * (3476:106259), not inferred. A deliberate divergence; Figma wants updating.
+ *
+ * The `gap` is untouched and stays at --ai-spacing-2: Figma binds the same token to both, but
+ * only the padding was asked about, and they do different jobs — one sets the row's distance from
+ * the title, the other the icon's from the name. */
 .table-card__sponsor {
   display: flex;
   align-items: center;
   gap: var(--ai-spacing-2);
   inline-size: 100%;
   margin: 0;
-  padding-block-start: var(--ai-spacing-2);
+  padding-block-start: var(--ai-spacing-0-5);
 }
 
 .table-card__sponsor [data-lucide],
@@ -355,7 +363,12 @@
 
   /* Designer addition — Figma keeps --ai-spacing-2 (6px) at both breakpoints. Tightened
      to 4px on mobile, where the smaller 14px title leaves the sponsor row looking
-     loosely attached to it. Desktop is unchanged. */
+     loosely attached to it.
+     
+     FLAGGED 2026-09-10: desktop has since moved to --ai-spacing-0-5 (2px), so this override
+     now makes mobile LOOSER than desktop — the reverse of what it was added to do. Left in
+     place because only the desktop value was asked about, but it reads backwards and should
+     probably go, which would leave 2px at both breakpoints. Raised with the designer. */
   .table-card__sponsor {
     padding-block-start: var(--ai-spacing-1);
   }
