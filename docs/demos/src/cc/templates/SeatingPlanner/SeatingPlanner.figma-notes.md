@@ -2596,3 +2596,47 @@ Mid-drag the tray is marked and the pick bar is up; after the drop both are gone
 on the outer column *and* on a row deep inside the tray — each unseating one person, 72 → 73 → 74 —
 and for a drag abandoned with `dragend` outside any target. The card and seat paths are unchanged
 and still clear, which they did before only because their elements were being replaced.
+
+### Dropping from the tray onto an occupied seat: refused → REPLACE (designer, 2026-09-10)
+
+Reported: *"if I drag a user from the unassigned list on the table detail, if I drag over an empty
+seat it shows the highlighted state for a target, but not if I drag over a seat already assigned.
+This is inconsistent [with] dragging from the table detail and should be consistent."*
+
+The asymmetry was deliberate and documented — `seatDrop()` refused pool → occupied, on the
+reasoning that *"refusing it beats silently evicting somebody the planner never chose to move."*
+
+**The objection is the better argument.** An occupied seat lit up when the drag came from the rail
+and not when it came from the tray, so the same target answered differently depending on where the
+pointer started. An inconsistent rule is worse than an emphatic one, and the highlight was telling
+the truth about a rule that should not have existed.
+
+**"Silently" was the real problem, and it is now answered rather than accepted:** the toast names
+who was displaced and where they went — *"Yasmin Owens took the seat from Hana Ashby, who returned
+to the unassigned list."*
+
+#### Why nothing had to be moved to make it safe
+
+The pool is **derived** — roster minus assigned — so overwriting a seat returns its previous
+occupant to the tray on its own. There is no bookkeeping step to forget and no way for the pair to
+end up in two places. Verified: the pool count is unchanged at 72 across the operation (one person
+in, one out), the displaced person is back in the list, and a full scan for anybody seated twice
+returns nothing.
+
+#### `'replace'`, not `'swap'`
+
+They are genuinely different operations. A swap is a simultaneous exchange between two seats;
+somebody arriving from the tray has no seat to send the displaced person to. Sharing the word would
+have produced a toast claiming a swap that never happened, so `seatDrop()` gained a fifth return
+value and `place()` a branch of its own.
+
+Nothing else needed changing: `markOver()` and the `dragover` guard both test `seatDrop()` for
+truthiness, so the highlight and the drop permission picked `'replace'` up for free — which is the
+payoff of the rule that *what lights up is exactly what will work*.
+
+#### Verified
+
+A pool person over an occupied seat now highlights; the drop seats them, displaces the previous
+occupant back to the tray, keeps the pool count at 72 and produces no duplicates. The replaced
+person arrives with their **own role** (VIP, not Attendee), so the record-role fix holds through
+this path too. Seat → occupied still swaps, with the swap wording intact.
