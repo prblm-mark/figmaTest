@@ -952,8 +952,19 @@
     }
   }
 
+  /* `clearPick()`, NOT `state.picked = null` — this cleared the pick's DATA and left its
+   * DECORATION behind, and the tray is where that finally showed.
+   *
+   * It hid for as long as it did because `render()` was doing the cleanup by accident: it rebuilds
+   * the listing and the seat rows via `innerHTML`, so a `--drop-target` or `--dragged-over` class
+   * on one of those went out with the element that carried it. The tray sheet is AUTHORED markup —
+   * render only replaces the contents of `[data-sp-pool-list]`, never `.unassigned` itself — so
+   * the first decoration to live on an element that survives a render was also the first one to
+   * stay lit after the drop.
+   *
+   * `state.pickedViaDrag` was leaking the same way, from the same line. */
   function finish(parts) {
-    state.picked = null;
+    clearPick();
     render();
     toast(parts, 'success');
   }
@@ -1120,7 +1131,14 @@
 
   /* Whichever of the three drop surfaces the pointer is actually on. Seats and cards never nest —
    * a card holds no seat rows — but the TRAY does contain rows of its own, so it is checked last:
-   * hovering a tray row means the tray, which is correct, since a drop anywhere in it unseats. */
+   * hovering a tray row means the tray, which is correct, since a drop anywhere in it unseats.
+   *
+   * `[data-sp-pool-region]` here AND in dragover / drop / click, which it was not before: the
+   * highlight keyed on the region while the three placement handlers keyed on `[data-sp-pool]`,
+   * the sheet INSIDE it. The sheet fills the region today, so the two coincided in practice — but
+   * a lit surface that is not the droppable surface is a bug waiting for a layout change, and it
+   * is exactly the shape of "the highlight stayed on after I dropped": a drop the handler does
+   * not recognise never calls place(), so nothing clears. One area, one selector. */
   function overTarget(e) {
     if (!e.target.closest) return null;
     return e.target.closest('[data-sp-seat]') ||
@@ -1186,7 +1204,7 @@
      * click on a target places them. Same rules as drag, because both call place(). */
     var seatEl = e.target.closest('[data-sp-seat]');
     var poolEl = e.target.closest('[data-sp-pool-person]');
-    var poolRegion = e.target.closest('[data-sp-pool]');
+    var poolRegion = e.target.closest('[data-sp-pool-region]');
 
     if (state.picked) {
       if (seatEl) {
@@ -1286,7 +1304,7 @@
     if (seatEl && seatDrop(state.tableId, parseInt(seatEl.getAttribute('data-sp-seat'), 10))) {
       e.preventDefault(); return;
     }
-    if (e.target.closest('[data-sp-pool]') && poolDrop()) { e.preventDefault(); return; }
+    if (e.target.closest('[data-sp-pool-region]') && poolDrop()) { e.preventDefault(); return; }
     var card = e.target.closest('[data-sp-card]');
     if (card && tableDrop(card.getAttribute('data-sp-table')) === 'move') e.preventDefault();
   });
@@ -1321,7 +1339,7 @@
               seatNo: parseInt(seatEl.getAttribute('data-sp-seat'), 10) });
       return;
     }
-    if (e.target.closest('[data-sp-pool]')) { place({ kind: 'pool' }); return; }
+    if (e.target.closest('[data-sp-pool-region]')) { place({ kind: 'pool' }); return; }
     var card = e.target.closest('[data-sp-card]');
     if (card) place({ kind: 'table', tableId: card.getAttribute('data-sp-table') });
   });

@@ -2549,3 +2549,50 @@ Click pick → bar shown with Cancel, and Cancel clears it. Drag pick → bar sh
 hidden**, and `dragend` clears it. Escape cancels a click pick. Escape with the modal open *and* a
 pick held closes the modal and leaves the pick, so precedence is right. `role="status"` sits on the
 message and `cancel.closest('[aria-live]')` is null.
+
+### The tray's drop highlight stayed lit after the drop (2026-09-10)
+
+Reported: *"after a user has been unseated and dragged to unassigned the highlighted state has
+remained on the unassigned sheet — can this only be visible whilst an active drag target."*
+
+Two causes, and the first one had been latent for weeks.
+
+#### 1. `finish()` cleared the pick's data but not its decoration
+
+```js
+function finish(parts) {
+  state.picked = null;   // ← the pick is over, but nothing strips what it drew
+  render();
+  toast(parts, 'success');
+}
+```
+
+**`render()` had been doing that cleanup by accident.** It rebuilds the listing and the seat rows
+via `innerHTML`, so a `--drop-target` or `--dragged-over` class on one of those went out with the
+element carrying it. The tray sheet is **authored markup** — render only replaces the contents of
+`[data-sp-pool-list]`, never `.unassigned` itself — so the first decoration to live on an element
+that survives a render was also the first one to stay lit.
+
+`finish()` now calls `clearPick()`, which strips the decoration and also resets
+`state.pickedViaDrag` — leaking from the same line.
+
+That is the more useful lesson than the symptom: **a cleanup that works because the decorated
+element gets destroyed is not a cleanup**, and it fails silently the moment a decoration lands
+somewhere persistent.
+
+#### 2. The lit surface was not the droppable surface
+
+The highlight keyed on `[data-sp-pool-region]` (the column) while `dragover`, `drop` and the click
+handler all keyed on `[data-sp-pool]` (the sheet inside it). The sheet fills the region today, so
+in practice they coincided — but a drop the handler does not recognise never calls `place()`, and
+therefore never clears anything, which is precisely the reported shape. Caught while probing: a
+`drop` fired on the region left the highlight up and unseated nobody.
+
+All four now use the region. One area, one selector.
+
+#### Verified
+
+Mid-drag the tray is marked and the pick bar is up; after the drop both are gone. True for a drop
+on the outer column *and* on a row deep inside the tray — each unseating one person, 72 → 73 → 74 —
+and for a drag abandoned with `dragend` outside any target. The card and seat paths are unchanged
+and still clear, which they did before only because their elements were being replaced.
