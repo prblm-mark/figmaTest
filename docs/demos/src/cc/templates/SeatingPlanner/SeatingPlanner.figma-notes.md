@@ -2738,3 +2738,42 @@ From `?state=plan` and `?state=no-plan`: 4 plans → 5, the modal closes, the pa
 somebody from the tray into the new plan fills the seat, keeps their own role (VIP, not Attendee),
 and moves the chip to "2 tables · 1/12 seated" against a detail rail reading "1 / 6 seated". Every
 one of those figures is derived, so they agree by construction.
+
+### The plans rail is scrollable — the module existed and was never loaded (2026-09-10)
+
+Reported: *"the header should be scrollable, so all plans can be accessed. I'm sure we have built
+this already for the standalone version."*
+
+Right on both counts. `SeatingHeader.js` implements drag-to-scroll for the plans carousel, and this
+screen **never included it** — so once the plans overflowed, the last one was clipped with no way
+to reach it. Same class as `Unassigned.css` being linked at the wrong depth earlier today: a
+component that works, on a page that does not load it.
+
+**Nothing else was needed, because the module was written for this.** Its own header says
+*"include once per page; binds nothing per element"*, so it survives this screen rebuilding the
+strip, and it is guarded against a double include. It also already made the three decisions this
+request implies:
+
+| Input | How it is handled |
+|---|---|
+| **Touch** | nothing in JS — a native `overflow-x` container already swipes, with the platform's own momentum. Only `pointerType === 'mouse'` is handled, because *"re-implementing that in JS is how carousels end up feeling wrong"* |
+| **Mouse** | click-and-drag, which no browser gives natively |
+| **Keyboard** | nothing — the cards are real `<button>`s, so tabbing to an off-screen one scrolls it into view. The rail deliberately has no `tabindex`, which would add a focus stop that announces nothing |
+
+#### One addition: the rail is told to re-measure
+
+`render()` now calls `window.seatingHeaderSync()`. The module exposes it for precisely this —
+*"so a consumer that injects plans can re-sync without waiting for the observer"* — and this screen
+rebuilds the strip's contents on every render. Its fallback MutationObserver schedules through
+`requestAnimationFrame`, which is a frame late at best and **does not fire at all under headless
+virtual time**, so a rebuilt strip could otherwise be left without its grab cursor.
+
+#### Verified
+
+At a 1100px viewport with four plans: the rail overflows, carries `is-scrollable` and a `grab`
+cursor. A mouse drag of 200px scrolls it by exactly 200 and shows `grabbing` mid-drag. **The drag
+did not change the plan selection** — the movement threshold and capture-phase click swallow work,
+which matters because every card is a select trigger carrying edit and delete buttons. Adding a
+fifth plan keeps `is-scrollable` correct with no wait, and the new last plan is fully reachable by
+scrolling. At 1900px, where four plans fit, there is no overflow, no `is-scrollable` and a default
+cursor — the module's own rule that a rail with nothing to scroll must not offer a grab cursor.
