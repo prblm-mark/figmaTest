@@ -286,3 +286,30 @@ wear its mobile padding. The Device=Mobile deltas describe the screen, not the c
 Rationale and the decision rule live in **CLAUDE.md §4a**. The short version: a docked
 SidebarMenu shrinks the CC content column with no window resize, so a viewport query cannot see
 the real available width — measured 820px of column at a 2239px viewport, with no query firing.
+
+## The visualisation block absorbs extra card height (designer, 2026-09-10)
+
+TableListing now stretches every card on a row to the tallest one (its notes carry the reasoning
+and the Figma geometry). That raises a question this component has to answer: when a card is
+taller than its content, **where does the slack go?**
+
+Figma's listing instances answer it — `lRKvtYSU3SvO5hbMT33jxw` `1:31485`. The seated-count row
+sits a constant 16px, the card's own padding, from the bottom edge in all three row tracks:
+
+| Row track | Footer y | Footer + 24 + 16 | `Visualization-Slot` | Its content |
+|---|---|---|---|---|
+| 186 | 146 | 186 | 41 | 28 |
+| 164 | 124 | 164 | 41 | 27 |
+| 150 | 110 | 150 | 27 | 27 (natural) |
+
+So the footer is pinned to the bottom and the bar/legend block grows — not the other way round,
+and not slack left below the footer. Implemented as `flex: 1 1 auto` on `.table-card__viz`, which
+is a no-op on an unstretched card because there is no slack to take.
+
+The slack lands **after** the legend rather than around it. Figma's two row-1 instances disagree
+here — `1:31319` centres its bar+legend in the grown slot at y=6.5 while `1:31336` tops it at y=0
+— and the designer settled it start-aligned, which is the default `justify-content` on that
+column, so no declaration is needed.
+
+Nothing about the card's own drawn variants changed: at their natural heights every measurement is
+as before.

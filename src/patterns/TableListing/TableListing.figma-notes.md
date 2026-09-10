@@ -205,3 +205,78 @@ spans the full page — does not.
 Rationale and the decision rule live in **CLAUDE.md §4a**. The short version: a docked
 SidebarMenu shrinks the CC content column with no window resize, so a viewport query cannot see
 the real available width — measured 820px of column at a 2239px viewport, with no query firing.
+
+## Cards stretch to equal height on a row (designer, 2026-09-10)
+
+Reported: *"the cards should stretch so they are the same height on the row. also their alignment
+should be start, it should not be evenly spaced."*
+
+Source: `lRKvtYSU3SvO5hbMT33jxw` `1:31485` — the Table Listing instance in the **Seating Planner**
+file, not the Design System file this pattern was originally built from.
+
+Figma's grid frame (`I1:31485;1:58398;1:31252`) reads:
+
+```
+grid  grid-cols-[repeat(4,minmax(0,1fr))]  gap-x-[8px] gap-y-[8px]
+grid-rows-[186px 164px 150px]
+```
+
+It declares **no `align-items`**, so it takes the CSS default `stretch` — and the measured
+geometry confirms it: every card in a row is exactly its row track, 186 / 164 / 150, even though
+their content heights differ (row 1 has a two-line legend and a sponsor row on cards 1–2, and
+neither on cards 3–4).
+
+The grid rule had `align-items: start`, which measured **[190, 190, 155, 155]** on row 1. Changed
+to `stretch`.
+
+### …and `align-content: start`, which the first pass missed
+
+`align-items: stretch` alone was not enough, and got it wrong in the other direction — reported as
+*"the cards don't stretch to fill the container, there is a space at the bottom. they just need to
+stretch to match heights on the same row."*
+
+Two axes of the same word, and only one of them was wanted:
+
+| Property | Governs | Wanted |
+|---|---|---|
+| `align-items` | how a card sits in **its row** | `stretch` — match the row |
+| `align-content` | how the **rows** sit in the grid box | `start` — do *not* fill the box |
+
+A grid's default `align-content: normal` behaves as `stretch`. In the Seating Planner this grid is
+a flex item filling the panel height, so once the cards stretched to their tracks, the auto tracks
+themselves grew to swallow the whole box: **the Press Room's three cards measured 397px each — the
+full grid height — with zero space beneath them.** Figma leaves that space empty: `1:31485` is a
+698px listing holding 580px of content.
+
+**Why the first verification passed anyway:** it only reproduces when the container is TALLER than
+the content. Main Ballroom's 13 cards overflow and scroll, and `align-content` does nothing at all
+in that case — so the plan I measured was the one plan that could not show the bug. Checking a
+short plan is the test that matters here.
+
+Verified across all four plans after adding it: Main Ballroom [190×4] / [168×4] / [155×4] / [155]
+(scrolling, 13 cards), Overflow Annex [177×4] / [155×2] with 57px left at the bottom, VIP Lounge
+[155×4] and Press Room [155×3] each with 242px left. Every row internally equal, no row filling
+the box.
+
+Horizontally nothing changed and nothing needed to: `justify-content` computes to `normal` and the
+four columns fill the content box exactly (4 × 242.75 + 3 × 8 = 995, the 1010px border box less the
+15px scrollbar gutter), and `auto-fill` with `minmax(--ai-size-4, 1fr)` stays as it was. There was
+never any even spacing to remove on that axis.
+
+**Where the slack goes is TableCard's decision, and Figma pins the footer.** The seated-count row
+sits a constant 16px — the card's own padding — from the bottom in all three tracks (footer at
+y=146 in the 186 row, 124 in 164, 110 in 150), while `Visualization-Slot` grows past its content:
+41px holding 28px of bar+legend in row 1, 41 holding 27 in row 2, a natural 27 in row 3. So the
+bar/legend block absorbs it and the footer stays put — implemented as `flex: 1 1 auto` on
+`.table-card__viz`, documented in TableCard.css.
+
+**Figma's own instances disagree on where the content sits inside the grown slot** — `1:31319`
+centres its bar+legend at y=6.5, `1:31336` tops it at y=0. The designer's *"alignment should be
+start"* settles it as top-aligned, which is the default `justify-content` on that column.
+
+Verified after the change: rows measure [190,190,190,190] / [168×4] / [155×4] / [155], the footer
+is 17px from the bottom on every card (16px padding + the 1px border, since
+`getBoundingClientRect` is the border box), and the slack lands after the legend (35px and 13px on
+the stretched cards, 0 where there was nothing to absorb). At a 788px page the grid drops to two
+columns and rows stay equal. The component's own demo is unaffected — all its cards carry
+identical content, so stretching is a no-op there.
