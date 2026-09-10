@@ -158,6 +158,60 @@ so this is standards-first by choice, not by accident.
 Side benefit: `thin` reclaims 4px of gutter over the default `auto`, which widened the seat cards
 from 271px to 275px and gave the single-row legend more slack.
 
+## The header is TWO rows, where Figma nests them (designer, 2026-09-10)
+
+**This is a deliberate deviation from Figma, and Figma needs the same change.**
+
+Figma nests the meta line inside the same box as the table name, so the tier chip bounds them
+both. Its own frame shows the cost — `3475:94006`:
+
+```
+Frame                 288 wide   (header content box)
+├── Frame             155 wide   ← name + meta, squeezed by the chip
+│   ├── "Table 21"     73
+│   └── Left-Footer-Area 155     ← "0 / 10 seated" · handshake · "Monzo"
+└── Table Type instance 48 @ x=240
+```
+
+155px of 288 is enough only because the chip in the design is the 48px "Gold". The chip's label is
+data, though — the Seating Planner's baseline relabels the Gold tier "Headline Sponsor", which is
+**128px**. Measured on the built panel before the change:
+
+| Tier label | Chip px | Meta box | Sponsor name box | Wanted | Result |
+|---|---|---|---|---|---|
+| Headline Sponsor | 128 | 150 | 36 | 65 | **"Mas…"** |
+| Platinum | 74 | 154 | 39 | 39 | fits, with 0px of slack |
+
+Ellipsising was the component's designed overflow response, so this was not a bug — but "Mas…" is
+not a useful string, and the second row shows the nested layout had *no* headroom even for a short
+label. Reported by the designer as *"there should be 2 separate rows so the table type doesn't
+impact the width."*
+
+So the header is now:
+
+```
+.table-detail__header
+└── .table-detail__titles          column, 4px gap, inline-size: 100%
+    ├── .table-detail__header-row  ROW 1 — name, chip pushed right
+    └── .table-detail__meta        ROW 2 — count · sponsor, full width
+```
+
+`inline-size: 100%` on `__titles` is load-bearing: `__header` is a column with
+`align-items: flex-start`, so without it the box shrink-wraps its widest row and the meta line
+stops being full-width — which is the entire point of the split.
+
+Nothing else moves. Every token binding, the 4px name-to-meta gap, `space-between` on row 1 and
+`flex-shrink: 0` on the chip are all unchanged; only the nesting differs.
+
+**Verified after the change** (headless Chrome over HTTP, panel at its 320px width): row 1 spans
+the full 286px content box, the meta line sits 25px below it, and "Mastercard" reports
+`scrollWidth == clientWidth` — no truncation. Untyped, unsponsored tables render row 1 with the
+name alone and row 2 as the bare count.
+
+**Figma is now behind the code here.** Same as the legend row-gap below, but structural rather
+than a value — tracked as `seating-detail-sponsor-truncation` in the handover manifest. The
+Code Connect example markup changed with it, so `TableDetail.figma.ts` needs re-publishing.
+
 ## One place the CSS leads Figma
 
 | Element | Property | Figma | CSS |

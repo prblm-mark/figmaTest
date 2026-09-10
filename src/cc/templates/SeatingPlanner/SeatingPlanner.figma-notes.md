@@ -1734,3 +1734,126 @@ tray unseated and moved the pool 70 → 71.
 By keyboard: Enter picked from the tray, Enter on seat 1 placed. By drag: seat 1 → seat 9 moved
 the person and emptied seat 1. With a pick live, a card click placed instead of re-selecting, and
 the detail stayed on Table 1.
+
+### The table detail was missing its legend (2026-09-09)
+
+Reported: *"the table detail doesn't match what has already been built. there is no legend showing
+when attendees have been assigned, it should only not have a legend when no seats are assigned."*
+
+Correct — `TableDetail` has a legend and the renderer never emitted one. The component was already
+right; only the template's rendering was wrong. The same class of miss as the reorder chevrons: a
+piece of the component's own markup dropped on the way into the renderer.
+
+**The rule, from TableDetail's own notes** — `Type` names the count of distinct roles seated and
+that is *all* that changes between its variants:
+
+| Type | Legend | Seats filled |
+|---|---|---|
+| Default | **absent entirely** | 0 |
+| 2 Roles | 2 items | 2 |
+| All Roles | 5 items | 7 |
+| Full | 5 items | 10 |
+
+> *"The legend is derived, not stored. It lists the distinct roles actually seated, which is why
+> Default has none at all rather than an empty container."*
+
+So it is hidden rather than emptied when nobody is seated — `hidden` leaves both the layout and
+the accessibility tree, which is what "none at all rather than an empty container" asks for.
+
+**Two details that differ from TableCard's legend**, and are easy to get wrong by carrying one
+over to the other:
+
+- **No counts.** TableDetail reads `Speaker`, `Sponsor`; TableCard reads `Attendee (2)`.
+- **Order is first appearance down the seat list**, not the fixed `ROLES` order TableCard's bar
+  uses. That is what reproduces TableDetail's own demo, whose legend runs Host, VIP, Speaker,
+  Sponsor, Attendee because its seat 1 is the host. The distinction is not arbitrary: TableCard's
+  is a proportional bar where a stable left-to-right order matters, TableDetail's is a key to a
+  list.
+
+### Verified (headless Chrome over HTTP, 2026-09-09)
+
+Table 1 (7 seated — A2 VIP1 Sp1 Spo2 H1): legend visible, five items
+`["Attendee","VIP","Speaker","Sponsor","Host"]`, order confirmed equal to first-appearance down
+the seat list, no counts present, five swatches, Host swatch `rgb(247,107,21)` = `--sp-host`.
+Table 6 (0/10): `hidden` true, zero items, `offsetHeight` **0** — genuinely out of layout.
+Table 3 (10/10, three roles): `["Attendee","Speaker","Sponsor"]`. Derivation checked by unseating
+Table 1's only Host — the legend dropped to four items with Host gone.
+
+Visual confirmation was only partial: `.ai-assistant` re-shows itself over the detail rail in a
+headless screenshot, so only the legend's left edge (the teal Attendee and orange Host swatches)
+was visible. The measurements above are the evidence, not the picture.
+
+### The detail header was missing the sponsor and the tier chip (2026-09-10)
+
+Reported: *"the table selected has a table type and a sponsor, but it's not being shown in the
+table detail sheet."*
+
+Correct, and the same miss as the legend one screen earlier — the renderer emitted only the name
+and the seated count. TableDetail draws three more things in its header, on all four desktop
+variants, and `TableDetail.html` had them all along:
+
+```html
+<div class="table-detail__titles">              <!-- a COLUMN, 4px gap -->
+  <div class="table-detail__header-row">        <!-- ROW 1 — name, chip pushed right -->
+    <h3 class="table-detail__name">…</h3>
+    <span class="table-type table-type--gold">Gold</span>
+  </div>
+  <p class="table-detail__meta">                <!-- ROW 2 — full panel width -->
+    <span class="table-detail__count">0 / 10 seated</span>
+    <span class="table-detail__sep" aria-hidden="true">·</span>
+    <span class="table-detail__sponsor">
+      <i data-lucide="handshake"></i><span class="table-detail__sponsor-name">Monzo</span>
+    </span>
+  </p>
+</div>
+```
+
+Three implementation notes, each of which bit:
+
+- **The `·` is emitted with the sponsor, never before it.** An unsponsored table would otherwise
+  read "10 / 10 seated ·". Most of the baseline is unsponsored, so this is the common case, not
+  the edge one.
+- **Emitted, not toggled with `hidden`.** `.table-detail__sponsor` sets `display: flex`, and a
+  class rule outranks the UA stylesheet's `[hidden] { display: none }` — a `hidden` sponsor would
+  have stayed visible. `__sep` would have hidden correctly (it only sets `flex-shrink`), which is
+  exactly the kind of half-working result that reads as a rendering bug rather than a CSS one.
+- **The chip is added and removed, never parked as an empty element.** `__header-row` is a flex
+  row with an 8px gap, so an empty chip still takes a gap and shifts the meta line.
+
+Absence of a tier or sponsor is not drawn anywhere in Figma — all four desktop variants show
+both. The conditional follows TableCard's established rule: untyped means no chip, rather than an
+invented empty state.
+
+**Verified** (headless Chrome over HTTP): Table 1 → chip `table-type--gold` labelled "Headline
+Sponsor", meta `7 / 10 seated · Mastercard`, one `__sep`, handshake `<i>` upgraded to `<svg>` by
+`createIcons()`. Table 2 → `table-type--vip` / "Platinum" / Monzo. Tables 3 and 6 (untyped,
+unsponsored) → no chip, no `__sep`, meta `10 / 10 seated` and `0 / 10 seated`. Selecting away and
+back leaves exactly one chip, so the stale one is being removed. `data-sp-detail-count` survives
+every rebuild — six places in `SeatingPlanner.js` read it live.
+
+#### FLAG — a long tier label truncates the sponsor at 320px
+
+Measured on the built panel:
+
+| Table | Chip | Chip px | Meta box | Sponsor name box | Wanted | Truncated |
+|---|---|---|---|---|---|---|
+| 1 | Headline Sponsor | 128 | 150 | 36 | 65 | **yes — reads "Mas…"** |
+| 2 | Platinum | 74 | 154 | 39 | 39 | no, with 0px of slack |
+
+The panel is a fixed 320px (`--ai-size-6`), the chip sits on the row that bounds `__titles`, and
+`__sponsor-name` carries `overflow: hidden; text-overflow: ellipsis`. So ellipsising IS the
+component's designed response to overflow, per CLAUDE.md §4a — but "Mas…" is not a useful string,
+and Table 2 shows the layout fits a short label with *zero* headroom.
+
+This is structural rather than a tuning problem: **TableCard gives the sponsor its own full-width
+line below the titles row, TableDetail puts it inline in the meta.** Figma only ever drew the
+detail panel with a short tier label ("Gold") and a short sponsor ("Monzo"), so the collision was
+never visible there.
+
+**RESOLVED the same day — designer's call:** *"there should be 2 separate rows so the table type
+doesn't impact the width."* The header is now row 1 = name + chip, row 2 = the meta line at the
+full panel width, so the chip cannot affect the sponsor's box at all. The markup above already
+reflects it. Fixed at the COMPONENT, not scoped to this template, so TableDetail's own demo gets
+it too — and that makes Figma structurally behind the code, which is why the manifest item stays
+open. Full reasoning, the before/after measurements and the Figma frame that shows the 155px
+squeeze are in `TableDetail.figma-notes.md` § "The header is TWO rows".

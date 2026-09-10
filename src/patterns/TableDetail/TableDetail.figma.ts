@@ -31,19 +31,19 @@ figma.connect(
     example: () => html`
       <section class="table-detail" aria-label="Table 21 seating detail">
             <header class="table-detail__header">
-      <div class="table-detail__header-row">
-        <div class="table-detail__titles">
+      <div class="table-detail__titles">
+        <div class="table-detail__header-row">
           <h3 class="table-detail__name">Table 21</h3>
-          <p class="table-detail__meta">
-            <span class="table-detail__count">7 / 10 seated</span>
-            <span class="table-detail__sep" aria-hidden="true">·</span>
-            <span class="table-detail__sponsor">
-              <i data-lucide="handshake" aria-hidden="true"></i>
-              <span class="table-detail__sponsor-name">Monzo</span>
-            </span>
-          </p>
+          <span class="table-type table-type--gold">Gold</span>
         </div>
-        <span class="table-type table-type--gold">Gold</span>
+        <p class="table-detail__meta">
+          <span class="table-detail__count">7 / 10 seated</span>
+          <span class="table-detail__sep" aria-hidden="true">·</span>
+          <span class="table-detail__sponsor">
+            <i data-lucide="handshake" aria-hidden="true"></i>
+            <span class="table-detail__sponsor-name">Monzo</span>
+          </span>
+        </p>
       </div>
     </header>
         <div class="table-detail__list">
@@ -106,19 +106,19 @@ figma.connect(
     example: () => html`
       <section class="table-detail" aria-label="Table 21 seating detail">
             <header class="table-detail__header">
-      <div class="table-detail__header-row">
-        <div class="table-detail__titles">
+      <div class="table-detail__titles">
+        <div class="table-detail__header-row">
           <h3 class="table-detail__name">Table 21</h3>
-          <p class="table-detail__meta">
-            <span class="table-detail__count">7 / 10 seated</span>
-            <span class="table-detail__sep" aria-hidden="true">·</span>
-            <span class="table-detail__sponsor">
-              <i data-lucide="handshake" aria-hidden="true"></i>
-              <span class="table-detail__sponsor-name">Monzo</span>
-            </span>
-          </p>
+          <span class="table-type table-type--gold">Gold</span>
         </div>
-        <span class="table-type table-type--gold">Gold</span>
+        <p class="table-detail__meta">
+          <span class="table-detail__count">7 / 10 seated</span>
+          <span class="table-detail__sep" aria-hidden="true">·</span>
+          <span class="table-detail__sponsor">
+            <i data-lucide="handshake" aria-hidden="true"></i>
+            <span class="table-detail__sponsor-name">Monzo</span>
+          </span>
+        </p>
       </div>
     </header>
         <div class="table-detail__list">

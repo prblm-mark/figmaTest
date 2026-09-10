@@ -52,6 +52,16 @@
   padding: var(--ai-spacing-5);
 }
 
+/* Row 1 of the header: the table name with the tier chip pushed to the far right.
+ *
+ * DESIGNER'S CALL 2026-09-10 — this is a deliberate DEVIATION from Figma, which nests the meta
+ * line INSIDE the same box as the name so that the chip bounds them both. Figma's own frame shows
+ * the consequence: `__titles` is 155px of the 288px content width because the "Gold" chip takes
+ * 48 at x=240. A longer relabelled tier makes that box narrower still, and at "Headline Sponsor"
+ * (128px) the sponsor name was left a 36px box for 65px of text — it rendered as "Mas…".
+ *
+ * So the meta line is now a SIBLING row rather than a child, and the chip can no longer affect
+ * its width. Figma needs the same change — tracked as seating-detail-sponsor-truncation. */
 .table-detail__header-row {
   display: flex;
   align-items: flex-start;
@@ -60,12 +70,18 @@
   inline-size: 100%;
 }
 
+/* The header's column wrapper: row 1 over the meta line, at Figma's 4px gap.
+ *
+ * `inline-size: 100%` is load-bearing — `__header` is a column with `align-items: flex-start`,
+ * so without it this box shrink-wraps its widest row and the meta line stops being full-width,
+ * which is the whole point of the split. */
 .table-detail__titles {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
   gap: var(--ai-spacing-1);
+  inline-size: 100%;
   min-inline-size: 0;
 }
 

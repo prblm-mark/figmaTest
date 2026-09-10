@@ -1200,16 +1200,36 @@
         <aside class="seating-plan__aside" data-sp-aside aria-label="Selected table">
           <section class="table-detail" data-sp-detail data-backend-todo="seating-table-detail">
             <header class="table-detail__header">
-              <div class="table-detail__header-row">
-                <div class="table-detail__titles">
+              <!-- TWO ROWS, per the designer 2026-09-10: row 1 is the name with the tier chip
+                   pushed right, row 2 is the meta line at the full panel width. Figma nests the
+                   meta inside the same box as the name, which let a long tier label squeeze the
+                   sponsor to "Mas…" — see TableDetail.css for the measurements. Figma still needs
+                   the same change (seating-detail-sponsor-truncation).
+
+                   The meta line and the chip are both rebuilt per render by seating-app.js: the
+                   sponsor and the chip are CONDITIONAL (most tables in the baseline are untyped
+                   and unsponsored) and the `·` separator has to go with the sponsor, or an
+                   unsponsored table reads "10 / 10 seated ·". They are emitted rather than
+                   toggled with `hidden` because `.table-detail__sponsor` sets `display: flex`,
+                   which outranks the UA stylesheet's `[hidden] { display: none }`. -->
+              <div class="table-detail__titles">
+                <div class="table-detail__header-row" data-sp-detail-header-row>
                   <h3 class="table-detail__name" data-sp-detail-name>Table 1</h3>
-                  <p class="table-detail__meta">
-                    <span class="table-detail__count" data-sp-detail-count>6 / 10 seated</span>
-                  </p>
                 </div>
+                <p class="table-detail__meta" data-sp-detail-meta>
+                  <span class="table-detail__count" data-sp-detail-count>6 / 10 seated</span>
+                </p>
               </div>
             </header>
             <div class="table-detail__list">
+              <!-- Legend. DERIVED, never stored: one item per distinct role actually seated, in
+                   the order those roles first appear down the seat list. TableDetail's notes are
+                   explicit that a table with nobody seated has "none at all rather than an empty
+                   container", which is why this is hidden rather than emptied — hidden takes it
+                   out of both layout and the accessibility tree.
+
+                   Note the items carry NO counts, unlike TableCard's legend ("Attendee (2)"). -->
+              <p class="table-detail__legend" data-sp-detail-legend hidden></p>
               <div class="table-detail__seats">
             <!-- Seats 1-6 are OCCUPIED as of 2026-09-09. The screen shipped with every table at
                  "0 / 10 seated", which made the Table form's reduced-capacity warning UNREACHABLE: it
