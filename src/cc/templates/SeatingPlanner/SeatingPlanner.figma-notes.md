@@ -2685,3 +2685,56 @@ in produced unreliable output — it labelled the *known-bad* `data-seating-new-
 there is no signal here worth acting on, only a list worth auditing properly. The distinguishing
 question for each is the one that made New Plan fail: **do the duplicates live in different page
 states, only one of which is on screen?**
+
+### Saving a new plan now creates it (2026-09-10)
+
+Reported: *"can we make sure it adds it to the screen if I save it, this needs to be fully
+working."*
+
+The modal validated its five fields, closed, and announced `seating-planner:plan-created`;
+`SeatingPlanner.js` heard that and switched the page to the plan state. **Nothing added the plan to
+the model.** So saving landed you on the plan screen looking at Main Ballroom — the room strip
+still showed the original four and the new plan existed nowhere.
+
+`seating-app.js` now listens too. The modal reports what happened and the model layer owns the
+data, which is the division the state switch already used: *"the modal reports what happened, this
+owns what the page shows."*
+
+#### What a saved plan becomes
+
+`{ id, name, tables[], room, shape }`, with `count` tables of `capacity` empty seats each, all
+untyped and unsponsored. **Nothing about the counts is stored** — "5 tables · Empty", "0 / 8
+seated" and the seats-free figure are all derived from those seats, so a new plan reads correctly
+with nothing to set.
+
+The plan also becomes the selected one, and its first table the selected table, so the screen it
+switches to is showing what was just created rather than whatever was selected before.
+
+#### Two details that were not obvious
+
+**The render is deferred, the model update is not.** Both listeners share this event and run in
+registration order, so this one fires *before* `setState('plan')` reveals the panel. Measuring
+inside a hidden panel gives zeroes, which would leave `alignHeaders()` unable to align the row it
+had just built. The model is written synchronously — anything reading it is immediately correct —
+and only the paint waits.
+
+**The bounds are clamped, not trusted.** The form validates 1–99 tables and 6–12 seats, but
+`?state=create-plan` and a hand-fired event both reach this listener without passing through it.
+
+#### `room` and `shape` are captured but not rendered
+
+The form asks for both and nothing on the screen shows either — a plan chip displays a name and
+counts, and no table drawing exists yet. They are kept on the plan rather than dropped, because
+discarding what somebody typed is worse than carrying a field nobody reads. Tracked as
+`seating-new-plan-unrendered-fields`.
+
+#### Verified, from both entry states
+
+From `?state=plan` and `?state=no-plan`: 4 plans → 5, the modal closes, the page state becomes
+`plan`, the header reads the new name, and the right number of cards render. The new chip reads
+"5 tables · Empty" and is selected.
+
+**And it is usable, not just present** — which is what "fully working" had to mean: seating
+somebody from the tray into the new plan fills the seat, keeps their own role (VIP, not Attendee),
+and moves the chip to "2 tables · 1/12 seated" against a detail rail reading "1 / 6 seated". Every
+one of those figures is derived, so they agree by construction.

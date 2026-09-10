@@ -1373,6 +1373,66 @@
     if (state.picked) clearPick();
   });
 
+  /* ── A saved plan becomes a real plan ──────────────────────────────────────────────────────
+   * The create-plan modal validated its five fields, closed, and announced
+   * `seating-planner:plan-created` — and `SeatingPlanner.js` switched the page to the plan state.
+   * Nothing added the plan to the MODEL, so saving landed you on the plan screen looking at Main
+   * Ballroom: the room strip still showed the original four and the new plan existed nowhere.
+   *
+   * The modal reports what happened and this owns the data, which is the same division the state
+   * switch already uses — see the note beside that listener.
+   *
+   * DEFERRED RENDER, not a deferred model update. The two listeners share this event and run in
+   * registration order, so this one fires BEFORE `setState('plan')` reveals the panel. Measuring
+   * inside a hidden panel gives zeroes, which would leave `alignHeaders()` unable to align the row
+   * it has just built. The model is written synchronously so anything reading it is correct
+   * immediately; only the paint waits for the panel to exist. */
+  document.addEventListener('seating-planner:plan-created', function (e) {
+    var d = (e && e.detail) || {};
+
+    var name = String(d.name || '').trim() || 'New plan';
+    /* The form validates both of these, so a bad value should not reach here — clamped anyway
+     * rather than trusted, because `?state=create-plan` and a hand-fired event both bypass it.
+     * The bounds are the form's own: 1–99 tables, 6–12 seats. */
+    var count = Math.min(99, Math.max(1, parseInt(d.tables, 10) || 1));
+    var capacity = Math.min(12, Math.max(6, parseInt(d.seats, 10) || 10));
+
+    var id = 'plan-' + name.toLowerCase().replace(/\W+/g, '-').replace(/^-|-$/g, '') +
+             '-' + (D.plans.length + 1);
+
+    var tables = [];
+    for (var i = 1; i <= count; i++) {
+      var seats = [];
+      for (var j = 0; j < capacity; j++) seats.push(null);
+      /* Empty, untyped and unsponsored — a new plan has nobody in it, and every count on the
+       * screen is derived from these seats rather than stored, so "0 / N seated", "N tables ·
+       * Empty" and the seats-free figure all follow with nothing to set. */
+      tables.push({ id: id + '-t' + i, name: 'Table ' + i, typeId: null, sponsor: null,
+                    capacity: capacity, seats: seats });
+    }
+
+    /* `room` and `shape` are CAPTURED BUT NOT RENDERED. The form asks for both and nothing on the
+     * screen displays either — the plan chip shows a name and counts, and no table drawing exists
+     * yet. Kept on the plan rather than dropped, because discarding what somebody typed is worse
+     * than carrying a field nobody reads; flagged as seating-new-plan-unrendered-fields. */
+    var plan = { id: id, name: name, tables: tables,
+                 room: String(d.room || '').trim() || null,
+                 shape: String(d.shape || '').trim() || null };
+
+    D.plans.push(plan);
+    state.planId = plan.id;
+    state.tableId = plan.tables[0].id;
+
+    setTimeout(function () {
+      render();
+      /* Named, and named as new — "created" rather than "updated", because the room strip gaining
+       * a card is easy to miss when the page has just changed state underneath it. */
+      toast([{ text: plan.name, strong: true },
+             { text: ' created with ' + count + (count === 1 ? ' table' : ' tables') +
+                     ' of ' + capacity + ' seats.' }], 'success');
+    }, 0);
+  });
+
   /* ── Assign-person modal wiring ────────────────────────────────────────────────────────────
    * Delegated like everything else, so re-rendering the list never leaves a dead listener. */
 
