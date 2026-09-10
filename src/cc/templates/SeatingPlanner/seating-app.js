@@ -626,6 +626,13 @@
 
   function render() {
     renderRooms();
+    /* The plans rail decides whether it is scrollable by measuring, and this screen rebuilds its
+     * contents — so it is told directly rather than left to the MutationObserver SeatingHeader.js
+     * falls back on. That observer schedules through `requestAnimationFrame`, which is one frame
+     * late at best and does not fire at all under headless virtual time, so a rebuilt strip could
+     * be left without its grab cursor. The module exposes this for exactly this case: "so a
+     * consumer that injects plans can re-sync without waiting for the observer". */
+    if (window.seatingHeaderSync) window.seatingHeaderSync();
     renderListing();
     renderDetail();
     renderPool();

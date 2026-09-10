@@ -3099,6 +3099,18 @@
   <!-- Table Shape uses Select. Select.js is NOT added here: the ported shell already
        loads it further down, and a second include would double-bind its document
        click handler so every toggle cancelled itself. -->
+  <!-- Drag-to-scroll for the plans carousel, so every plan is reachable once they overflow the
+       rail. THIS WAS ALREADY BUILT for the standalone SeatingHeader and simply never loaded here —
+       the strip clipped the last plan with no way to reach it. Same class as Unassigned.css being
+       linked at the wrong depth: a component that works, on a page that does not include it.
+
+       Nothing else was needed. The module is delegated ("include once per page; binds nothing per
+       element"), so it survives this screen re-rendering the strip; it is guarded against a double
+       include; touch already swipes natively so it only handles `pointerType === 'mouse'`; and the
+       cards are real buttons, so Tab scrolls an off-screen one into view without the rail needing
+       a tabindex of its own. -->
+  <script src="../../../patterns/SeatingHeader/SeatingHeader.js"></script>
+
   <!-- Model then renderer, both BEFORE SeatingPlanner.js. The interaction modules are all
        delegated so order barely matters to them, but the export and room-layout modules read the
        DOM on open, and the detail/listing must exist by then. -->
