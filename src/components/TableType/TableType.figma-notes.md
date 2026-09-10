@@ -71,7 +71,7 @@ Figma's Silver text to the derived value, or reinstate an override here.
 | `--ai-radius-full` | `border-radius` | fully rounded |
 | `--ai-font-title` | `font-family` | Inter |
 | `--ai-font-bold` | `font-weight` | 700 — **CSS leads Figma**, see below |
-| `--ai-font-fixed-5xs` | `font-size` | 10px |
+| `--ai-font-fixed-6xs` | `font-size` | 9px — **CSS leads Figma**, see below |
 | `--ai-tracking-7` | `letter-spacing` | 0.05em — **CSS leads Figma**, see below |
 | (none) | `border-width: 1px` | allowed raw-px exception |
 
@@ -81,6 +81,7 @@ Amended 2026-08-25 at the designer's request, ahead of Figma being updated to ma
 
 | Property | Figma still has | CSS now uses |
 |---|---|---|
+| `font-size` | `--ai-font-fixed-5xs` (10px) | **`--ai-font-fixed-6xs` (9px)** — 2026-09-10 |
 | `font-weight` | `--ai-font-semibold` (600) | **`--ai-font-bold` (700)** |
 | `letter-spacing` | `--ai-tracking-5` (0.0125em) | **`--ai-tracking-7` (0.05em)** |
 
@@ -142,3 +143,28 @@ component — six table tiers in the tokens, five in the component.
   authoritative — there is no unnamed axis on this component.
 - **No `.figma.ts`** yet. Code Connect mapping was deliberately declined during the build (there
   was no code component to map to); it can be added now the component exists.
+
+### Font size dropped to 9px, and the pill got shorter with it (designer, 2026-09-10)
+
+*"Change the font size to 6xs on the table type pills."* Done — `--ai-font-fixed-5xs` (10px) →
+`--ai-font-fixed-6xs` (9px). Figma still binds 5xs, so this is the third property on which this
+component's CSS leads the design; the table above lists all three together.
+
+**Consequence worth knowing before a Figma sync:** the pill's height is padding-driven — nothing
+pins it — so it follows the type down. Measured:
+
+| | Height | "VIP" width | "Headline Sponsor" width |
+|---|---|---|---|
+| 5xs (10px) | 18px | 35.6 | 129.9 |
+| **6xs (9px)** | **16px** | 33.9 | **118.7** |
+
+18px is Figma's drawn height, so the pill is now 2px shorter than the design. Left to follow the
+type rather than re-padding to hold 18 — that would mean inventing a padding value the designer
+did not ask for. If 18px was load-bearing, it needs a Figma decision.
+
+The 11px saved on a long relabelled tier such as "Headline Sponsor" incidentally relieves the
+header squeeze that TableDetail hit, though that was already fixed structurally by splitting its
+header into two rows.
+
+Applies everywhere the pill is used — TableCard, TableDetail and the Seating Planner screen all
+compose `.table-type` and inherit this from the component.
