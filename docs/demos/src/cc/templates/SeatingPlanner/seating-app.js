@@ -45,6 +45,9 @@
      * seating-touch-placement records that "pick-then-place is the mechanism and drag is an
      * accelerator for it", because keyboard users cannot drag. Two code paths, one placement. */
     picked: null,
+    /* Whether the current pick began as a pointer drag. Only the pick bar reads it, to decide
+     * whether offering Cancel would be honest. */
+    pickedViaDrag: false,
     /* Which seat the Assign-person modal is filling. Held here rather than read back off the
      * dialog, because the title is prose ("… · seat 4") and parsing a number out of a sentence
      * is exactly the kind of thing that breaks when the copy changes. */
@@ -966,12 +969,18 @@
   function clearPick() {
     if (!state.picked) return;
     state.picked = null;
+    state.pickedViaDrag = false;
     undecorate();
   }
 
-  function pick(src) {
+  /* `viaDrag` records HOW the pick started, because it changes what the bar may honestly offer.
+   * During a pointer drag the button is already down: Cancel cannot be clicked, and releasing
+   * ends the drag and clears the pick anyway — so an unreachable Cancel would be advertising an
+   * action the user cannot take, in the one mode where they do not need it. */
+  function pick(src, viaDrag) {
     undecorate();
     state.picked = src;
+    state.pickedViaDrag = !!viaDrag;
     decoratePick();
   }
 
@@ -1028,8 +1037,15 @@
 
     var slot = takeFrom(src);
     if (bar) {
+      /* Unhide BEFORE writing the name. The message is a live region, and a region that is
+       * `hidden` when its text changes may never be announced — the order is the announcement. */
       bar.hidden = false;
       bar.querySelector('[data-sp-pick-name]').textContent = nameOf(slot);
+
+      /* Cancel only where it can actually be used: the click and keyboard path. A drag cancels
+       * itself on release, so the bar is pure status while one is in progress. */
+      var cancel = bar.querySelector('[data-sp-pick-cancel]');
+      if (cancel) cancel.hidden = !!state.pickedViaDrag;
     }
 
     /* NOTHING is highlighted here. `--dragged-over` means the ONE card currently under the
@@ -1203,10 +1219,10 @@
     var row = e.target.closest && e.target.closest('[data-sp-pickable]');
     if (!row) return;
     if (row.hasAttribute('data-sp-pool-person')) {
-      pick({ kind: 'pool', personId: row.getAttribute('data-sp-pool-person') });
+      pick({ kind: 'pool', personId: row.getAttribute('data-sp-pool-person') }, true);
     } else {
       pick({ kind: 'seat', tableId: state.tableId,
-             seatNo: parseInt(row.getAttribute('data-sp-seat'), 10) });
+             seatNo: parseInt(row.getAttribute('data-sp-seat'), 10) }, true);
     }
     /* Firefox refuses to start a drag without payload, even when the payload is unused. */
     if (e.dataTransfer) {
@@ -1301,8 +1317,12 @@
 
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
+      /* The open dialog wins — Escape belongs to the topmost thing. Only once nothing is open
+       * does it fall through to the pick, which had NO Escape at all: for a "something is in the
+       * air" state that is the reflex key, and arguably more use than the Cancel button. */
       var overlay = assignOverlay();
-      if (overlay && overlay.classList.contains(ASSIGN_OPEN)) assignClose();
+      if (overlay && overlay.classList.contains(ASSIGN_OPEN)) { assignClose(); return; }
+      if (state.picked) clearPick();
       return;
     }
     /* `role="button"` carries the semantics but not the behaviour — Enter and Space have to be

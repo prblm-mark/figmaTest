@@ -2514,3 +2514,38 @@ Also worth recording about the probe: a first attempt reported four of five as f
 selecting the destination table by clicking its card *while holding a person* — and a card click
 with somebody in the air is a **placement**, not a selection, so the pick was consumed before the
 seat click. The code was right and the test was wrong; selecting once up front fixed it.
+
+### The pick bar's Cancel was unreachable during a drag (2026-09-10)
+
+Reported: *"when I drag a user I get a 'placing' toast, it has a cancel button — how would a user
+cancel? That seems flawed."*
+
+Correct, and specifically for the drag case. `dragstart` calls the same `pick()` a click does, so
+the bar appeared in both flows, but `dragend` calls `clearPick()`. During a pointer drag the button
+is already down, so nothing can be clicked, and releasing it ends the drag and clears the pick
+anyway. **Cancel was advertising an action the user could not take, in the one mode where they did
+not need it** — releasing anywhere that is not a valid target already cancels.
+
+It is not flawed in the flow it was built for. The click-and-keyboard path has no button held down
+and nothing that auto-cancels, so Cancel is the only visible way out. **The bar has no Figma
+counterpart** — it is an accessibility floor for that path, because a keyboard user cannot drag at
+all. So this was an invention being wrong in one mode, not a design being misread.
+
+Two further problems surfaced while checking, both fixed here:
+
+| Problem | Fix |
+|---|---|
+| **Escape did not cancel a pick at all.** The handler took Escape for the assign modal then fell through to Enter/Space. For a "something is in the air" state that is the reflex key — arguably more use than the button | Escape now cancels a pick by either route. The open dialog still wins, because Escape belongs to the topmost thing; a second press then cancels the pick |
+| **A `<button>` sat inside `role="status" aria-live="polite"`.** A live region announces changes; it is not a place to host controls, and a screen reader may read the region on change without reliably exposing the button as an action | The role moved to the `<p>`. The icon stays a sibling so the flex layout is unchanged, and Cancel is now a plain sibling outside any live region |
+
+`pick(src, viaDrag)` records how the pick started — the only thing that reads it is the bar,
+deciding whether offering Cancel would be honest. `decoratePick()` also unhides the bar **before**
+writing the name, which was already the order and now matters more: a live region that is `hidden`
+when its text changes may never be announced.
+
+#### Verified
+
+Click pick → bar shown with Cancel, and Cancel clears it. Drag pick → bar shown with **Cancel
+hidden**, and `dragend` clears it. Escape cancels a click pick. Escape with the modal open *and* a
+pick held closes the modal and leaves the pick, so precedence is right. `role="status"` sits on the
+message and `cancel.closest('[aria-live]')` is null.

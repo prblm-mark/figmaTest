@@ -3047,9 +3047,25 @@
        (seating-touch-placement) — a keyboard user cannot drag, so without this the whole feature
        would be mouse-only. The bar names who has been picked up and offers a way out; Esc does
        the same thing. -->
-  <div class="seating-pick-bar" data-sp-pick-bar role="status" aria-live="polite" hidden>
+  <!-- THE LIVE REGION IS THE MESSAGE, not the bar. It used to be the wrapper, which put a
+       <button> inside `role="status" aria-live="polite"` — a live region is for announcing
+       changes, not for hosting controls, and a screen reader may read the region on change
+       without reliably exposing the button as an action. Scoping the role to the <p> keeps the
+       announcement and leaves the control a plain sibling.
+
+       The icon stays a sibling too, so the flex layout is unchanged; it is `aria-hidden` either
+       way. `decoratePick()` unhides the bar BEFORE writing the name, because a region that is
+       `hidden` when its text changes may never be announced.
+
+       Cancel is hidden while a pointer drag is in progress — see `pick(src, viaDrag)`. It cannot
+       be clicked with the button already down, and releasing ends the drag and clears the pick,
+       so during a drag this bar is pure status. Escape cancels a pick by either route.
+
+       No Figma counterpart: this bar is an accessibility floor for the click-and-keyboard
+       placement path, since a keyboard user cannot drag at all. -->
+  <div class="seating-pick-bar" data-sp-pick-bar hidden>
     <i data-lucide="hand" class="seating-pick-bar__icon" aria-hidden="true"></i>
-    <p class="seating-pick-bar__text">
+    <p class="seating-pick-bar__text" role="status" aria-live="polite">
       Placing <strong data-sp-pick-name></strong> — choose a seat, a table, or the unassigned list.
     </p>
     <button type="button" class="btn btn--secondary btn--sm" data-sp-pick-cancel>Cancel</button>
