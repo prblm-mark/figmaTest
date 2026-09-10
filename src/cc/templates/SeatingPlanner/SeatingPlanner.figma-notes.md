@@ -2431,3 +2431,45 @@ Pool overflows the row by **0**; its list scrolls with all 72 rows present. Gaps
 sides and equal. The strip computes `position: absolute`, 16px wide, `cursor: col-resize`, pill
 `display: none`, sitting exactly on the sheet's left edge and inside the aside, still
 `role="separator"` with `tabindex="0"`. Keyboard resize intact: `End` → 280, `Home` → 700.
+
+### Both sheets resize, and the drag highlight is contrast not brand (designer, 2026-09-10)
+
+#### `--ai-surface-contrast` for the hover / drag edge
+
+Was `--ai-border-brand`. Brand read as a selection or a focus cue on an edge the user is merely
+hovering; contrast says "this is something you can grab" without claiming state.
+
+**It is a subtle step, and worth knowing that before judging it:** the resting border is
+`--ai-border-secondary` `#e5e9eb` and the highlight is `--ai-surface-contrast` `#d0dbe1`. Against
+brand's `#30b6c2` that is a much quieter change. Deliberate, but if it proves too quiet on a real
+display the fix is a different token rather than more CSS.
+
+**Focus keeps the brand ring.** That one is a focus indicator, whose colour CLAUDE.md §9 fixes at
+`--ai-surface-brand`, and with the pill gone it is the only thing a keyboard user can see.
+
+#### The Unassigned sheet resizes too
+
+It had no handle at all — the row was a resizable detail rail next to a fixed 320px sheet. It now
+carries the same transparent 16px `col-resize` strip on its own leading edge, driving `--sp-pool-w`
+against the same bounds (280 floor, half the row ceiling) and the same double-click reset to 320.
+
+The resize logic became `makeResizable(handle, panel, property)` called twice, rather than the same
+forty lines pasted with two names changed. `tokenPx` moved out to be shared.
+
+**A hidden panel measures 0, and that mattered.** The Unassigned sheet is `hidden` until the
+toggle asks for it, so the init seed `setWidth(currentWidth())` read 0, clamped it up to the 280
+minimum and wrote it — the sheet then opened at 280 while the detail rail sat at 320. Measured, not
+theorised: it reported exactly that on first reveal. The seed now only runs from a real
+measurement; with nothing to measure, the property is left unset so the CSS fallback stands and the
+ARIA values are published from that fallback instead of from a zero.
+
+**Open, and now doubled:** the maximum is half the row, which Figma does not specify. With two
+independent panels both able to reach it, the pair at maximum would leave the listing very narrow.
+That is part of the same interaction question already flagged, not a new one.
+
+#### Verified
+
+Before reveal the pool's handle reports `320/280/700` from the fallback rather than 0 or 280; on
+reveal both sheets are 320. Each resizes alone — moving the pool leaves the detail at 320 and vice
+versa — both floor at 280, and a double-click returns each to 320 independently. The highlight
+computes `#d0dbe1`.

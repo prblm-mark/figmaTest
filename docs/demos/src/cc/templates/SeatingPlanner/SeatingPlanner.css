@@ -642,9 +642,15 @@
  * RoomCard use for their brand edge, so the handle reads as part of the same language. */
 /* Hover and drag now tint the SHEET'S EDGE rather than a pill — the edge is the affordance, so
  * the edge is what responds. Scoped to the aside that follows the strip. */
+/* `--ai-surface-contrast`, not `--ai-border-brand` (designer, 2026-09-10). Brand read as a
+ * selection or a focus cue on an edge the user is only hovering; contrast says "this is a thing
+ * you can grab" without claiming state. Focus keeps the brand ring below — that one IS a focus
+ * indicator, and CLAUDE.md §9 fixes its colour. */
 .seating-plan__handle:hover ~ .table-detail,
-.seating-plan__handle[data-dragging] ~ .table-detail {
-  border-inline-start-color: var(--ai-border-brand);
+.seating-plan__handle[data-dragging] ~ .table-detail,
+.seating-plan__handle:hover ~ .unassigned,
+.seating-plan__handle[data-dragging] ~ .unassigned {
+  border-inline-start-color: var(--ai-surface-contrast);
 }
 
 /* The bar takes the focus ring rather than the 20px hit area, so the indicator sits on the
@@ -1843,6 +1849,18 @@
   flex-shrink: 0;
   min-block-size: 0;
   display: flex;
+  /* Resizable on the same terms as the detail rail (designer, 2026-09-10): the width comes from
+   * `--sp-pool-w` when the handle has set one, and falls back to Figma's --ai-size-6 (320) —
+   * which is also what a double-click resets to. `position: relative` is the positioning context
+   * for the edge strip, exactly as on the aside. */
+  position: relative;
+  inline-size: var(--sp-pool-w, var(--ai-size-6));
+}
+
+/* The sheet fills the resizable column rather than keeping its own fixed 320, the same
+ * arrangement `.seating-plan__aside > .table-detail` uses. */
+.seating-plan__pool > .unassigned {
+  flex: 1 1 auto;
 }
 
 /* A plan with every seat taken swaps its progress fill to success, which is how the VIP Lounge
