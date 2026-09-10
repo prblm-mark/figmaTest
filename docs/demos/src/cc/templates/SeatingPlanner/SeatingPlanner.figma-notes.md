@@ -2777,3 +2777,35 @@ which matters because every card is a select trigger carrying edit and delete bu
 fifth plan keeps `is-scrollable` correct with no wait, and the new last plan is fully reachable by
 scrolling. At 1900px, where four plans fit, there is no overflow, no `is-scrollable` and a default
 cursor — the module's own rule that a rail with nothing to scroll must not offer a grab cursor.
+
+### Asset-wiring sweep (2026-09-10) — clean, with two documented exclusions
+
+Three times in one day a working component was let down by this template not wiring it up:
+`Unassigned.css` linked at the wrong depth, the tray's role markup dropped by the renderer, and
+`SeatingHeader.js` never referenced at all. The path audit added with the first of those catches a
+**broken** reference; it cannot catch an asset that was never mentioned. So: a deliberate sweep.
+
+**Method.** For every component directory in `src/components`, `src/patterns`, `src/templates`,
+`src/cc/patterns` and `src/cc/templates`, derive its block class from the directory name
+(`AttendeeCard` → `attendee-card`); if that class or any BEM child of it appears in this screen —
+in the authored markup **or** in the class strings its own JS builds — then the screen composes it,
+and every `.css` and `.js` in that directory should be referenced.
+
+**Result: no gaps.** All 74 references resolve, and every CSS file of every composed component is
+loaded. Two JS files are unreferenced and both are deliberate:
+
+| Not loaded | Why not, verified |
+|---|---|
+| `Toast/Toast.js` | It does a bare `toast.remove()` on close. This screen has its own `dismissToast()` that clears the auto-dismiss timer, swaps `--in` for `--leaving` and removes on `transitionend` — and binds the close button itself. Loading Toast.js would double-bind and rip the node out **before the exit transition ran**, losing the animation. Excluding it is the correct choice, not an oversight. |
+| `ChatMain/ChatMain.js` | Excluded by design, and `AiAssistant.js`'s own header says so: the processing/response views are *"demo-only — when the panel is mounted in ControlScreen we want just the initial-state view, so only this shell is reused there"*. It also needs GSAP, which this screen does not load. |
+
+#### The sweep's first run was wrong, which is worth recording
+
+It reported `AiAssistant.js` as missing. It is not — line 3346 loads it with
+`import { initAiAssistantShell } from '../AiAssistant/AiAssistant.js'`, inside an inline
+`<script type="module">`. The scan only looked at `<link href>` and `<script src>`, so **ES module
+imports were invisible to it**, and it would have had me "fix" something already correct.
+
+Any future run must count all three reference forms: `link`/`script` attributes, `import … from`
+inside inline modules, and `@import` inside inline styles. With those included the count went from
+73 to 74 and the false positive disappeared.
