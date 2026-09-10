@@ -126,7 +126,9 @@ supplies the table name in its own sheet chrome. **See the accessibility note be
 
 ### The sponsor row's 22px height is flagged, not inlined
 
-Figma pins the sponsor row at `h-[22px]`. In TableCard the identical 22px is *derivable* — exactly
+Figma pins the sponsor row at `h-[22px]`. In TableCard the identical 22px was *derivable* — exactly
+(TableCard's desktop padding moved to 2px on 2026-09-10, so its row now derives to 18px; this
+panel's row is unaffected and still derives to 22px) —
 `--ai-spacing-2` (6px) of padding-top plus a 16px icon — so it was safely omitted. **Here there is no
 padding**, so 22px is genuinely off-scale and unbound (the nearest steps are 16px and 24px).
 

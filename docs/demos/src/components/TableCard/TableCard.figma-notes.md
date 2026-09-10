@@ -107,7 +107,7 @@ Two come from Figma (verified against `3484:188923`); the third is a designer ad
 |---|---|---|---|
 | card `padding` | `--ai-spacing-5` (16px) | `--ai-spacing-4` (12px) | Figma |
 | name `font-size` | `--ai-font-fixed-sm` (16px) | `--ai-font-fixed-xs` (14px) | Figma |
-| `__sponsor` `padding-block-start` | `--ai-spacing-2` (6px) | **`--ai-spacing-1`** (4px) | **designer, 2026-08-25** |
+| `__sponsor` `padding-block-start` | `--ai-spacing-2` (6px) | **`--ai-spacing-0-5`** (2px) desktop · `--ai-spacing-1` (4px) mobile | **designer, 2026-08-25 (mobile) and 2026-09-10 (desktop)** — see the amendment below |
 
 Figma keeps the sponsor row's 6px padding at both breakpoints; it was tightened to 4px on mobile,
 where the smaller 14px title leaves the row looking loosely attached to it. Measured: the sponsor row
@@ -157,7 +157,7 @@ Resolved with the designer 2026-08-25 rather than invented.
 | `--ai-font-fixed-6xs` (a **font-size** token) bound as the 9px gap between bar and legend, **and** as the legend's column gap | **Snapped to `--ai-spacing-3`** (8px). A 1px change that stops a type token driving layout. **Figma has since followed** — the bar-to-legend gap now measures 8px there too. |
 | legend swatch `border-radius: 2px`, unbound | **New token `--ai-radius-xs`** (2px), created in Figma by the designer. `--ai-radius-sm` (4px) would visibly round an 8px square. Re-exported and confirmed 2026-08-25 — `VariableID:3534:102610` in `FigmaTokens/Scale/Scale.tokens.json`. |
 | card `width: 289px` | **Dropped.** The card is fluid and fills its grid cell. 289px has no token; the bound `min-width` does (`--ai-size-4`). |
-| sponsor row `height: 22px` | **Dropped as derivable** — it is exactly the 16px icon plus the 6px `padding-top`, so the content defines it. |
+| sponsor row `height: 22px` | **Dropped as derivable** — it was exactly the 16px icon plus the 6px `padding-top`, so the content defines it. Now measures **18px** on desktop after the 2026-09-10 padding change, which is the derivation doing its job rather than a value to chase. |
 | `line` node stroke, invisible in design context | **`--ai-border-secondary`**, resolved by calling `get_variable_defs` on the node itself (`3470:85258`). Not a gap — just hidden behind an SVG asset. |
 
 ## The header restructure (2026-08-25)
@@ -313,3 +313,36 @@ column, so no declaration is needed.
 
 Nothing about the card's own drawn variants changed: at their natural heights every measurement is
 as before.
+
+## Sponsor row padding: 2px on desktop (designer, 2026-09-10)
+
+`.table-card__sponsor` takes **`padding-block-start: var(--ai-spacing-0-5)`** (2px). Figma binds
+`--ai-spacing-2` (6px) — confirmed on the sponsor row's own variable defs (`3476:106259`) rather
+than inferred. A deliberate divergence; **Figma wants updating.**
+
+The `gap` is untouched at `--ai-spacing-2`. Figma binds the same token to both, but only the
+padding was asked about and the two do different jobs: one sets the row's distance from the title,
+the other the icon's distance from the name.
+
+Knock-on effects, all of which resolve themselves because they were built as derivations rather
+than pinned numbers:
+
+| | Before | After |
+|---|---|---|
+| Sponsor row height | 22px | **18px** |
+| Header height (sponsored card) | 42px | **38px** |
+
+The Seating Planner's per-row header alignment measures headers rather than assuming 42, so it
+adapted with no change — row 1 went from `42/42/42/42` to `38/38/38/38` with bars and legends
+still aligned. Verified. TableDetail's notes cross-reference "the identical 22px" in TableCard;
+that sentence is now historical, and its own sponsor row is unaffected.
+
+### FLAG — the mobile override now reads backwards
+
+The `@media (max-width: 767px)` block still sets `--ai-spacing-1` (4px), added 2026-08-25 because
+*"the smaller 14px title leaves the sponsor row looking loosely attached to it"*. With desktop now
+at 2px, that override makes **mobile looser than desktop** — the reverse of what it was for.
+
+Left in place, because only the desktop value was asked about and changing mobile unasked would be
+guessing. It should probably go, which would leave 2px at both breakpoints. Raised with the
+designer.

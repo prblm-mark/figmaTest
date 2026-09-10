@@ -2243,6 +2243,10 @@ Measured on row 1 of the Main Ballroom before the change:
 | Table 3 | no | **20** | **62** | **78** |
 | Table 4 | no | **20** | **62** | **78** |
 
+> These figures predate TableCard's sponsor padding dropping to 2px on 2026-09-10, which took the
+> sponsored header to 38px and the row to `38/38/38/38`. The pass measures headers rather than
+> assuming a number, so it adapted with no change — which is the point of measuring.
+
 The offset is **22px on all three** — exactly the sponsor row's height. And the legend-row count
 does *not* contribute: a 1-row legend against a 2-row one changes only what sits *below* the
 legend, because the stretch slack is start-aligned inside the visualisation block. So padding every
