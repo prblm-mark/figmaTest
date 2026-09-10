@@ -270,20 +270,96 @@
     if (!host) return;
 
     var nameEl  = host.querySelector('[data-sp-detail-name]');
-    var countEl = host.querySelector('[data-sp-detail-count]');
+    var metaEl  = host.querySelector('[data-sp-detail-meta]');
+    var rowEl   = host.querySelector('[data-sp-detail-header-row]');
     var seatsEl = host.querySelector('.table-detail__seats');
+    var legendEl = host.querySelector('[data-sp-detail-legend]');
     var t = state.tableId ? tableById(state.tableId) : null;
+
+    /* The tier chip sits on row 1 beside the name, so it is added and removed here rather than
+     * being written with the meta line — which is now row 2 and no longer shares a box with it.
+     * Never left in place as an empty element: `__header-row` is a flex row with an 8px gap, so
+     * an empty chip would still take a gap and push the name. */
+    function chip(type) {
+      if (!rowEl) return;
+      var old = rowEl.querySelector('.table-type');
+      if (old) old.remove();
+      if (!type) return;
+      rowEl.insertAdjacentHTML('beforeend',
+        '<span class="table-type table-type--' + esc(type.variant) + '">' +
+        esc(type.label) + '</span>');
+    }
+
+    /* `data-sp-detail-count` must survive every rebuild — SeatingPlanner.js reads it live in six
+     * places (the Table form's reduced-capacity warning, the export snapshot, the toasts). */
+    function meta(inner) {
+      if (metaEl) metaEl.innerHTML =
+        '<span class="table-detail__count" data-sp-detail-count>' + inner + '</span>';
+    }
 
     if (!t) {
       if (nameEl) nameEl.textContent = 'No table selected';
-      if (countEl) countEl.textContent = '';
+      meta('');
+      chip(null);
+      if (legendEl) legendEl.hidden = true;
       if (seatsEl) seatsEl.innerHTML =
         '<p class="table-detail__empty">Select a table to see who is seated at it.</p>';
       return;
     }
 
     if (nameEl) nameEl.textContent = t.name;
-    if (countEl) countEl.textContent = seated(t) + ' / ' + t.capacity + ' seated';
+
+    /* Meta line and tier chip. Both were missing entirely — the detail panel showed only the
+     * name and the count, so a table with a tier and a sponsor (baseline Table 1: Headline
+     * Sponsor / Mastercard) looked identical in the rail to an untyped one, even though its own
+     * card in the listing drew both. Same class of miss as the legend.
+     *
+     * The chip's LABEL is data and its COLOUR is the tier's variant — "Headline Sponsor" is the
+     * Gold variant relabelled — which is why typeOf() returns the two separately.
+     *
+     * The `·` is emitted with the sponsor, not before it: a table with no sponsor would
+     * otherwise read "10 / 10 seated ·". Figma draws a sponsor and a chip on all four desktop
+     * variants and never draws their absence, so the conditional follows TableCard's
+     * established rule — untyped means no chip rather than an invented empty state.
+     *
+     * The chip goes to `__header-row` (row 1) and the meta to its sibling row below, which is
+     * why a long tier label no longer truncates the sponsor. Designer's call 2026-09-10; the
+     * reasoning and the measurements are in TableDetail.css. */
+    meta(seated(t) + ' / ' + t.capacity + ' seated');
+    if (metaEl && t.sponsor) {
+      metaEl.insertAdjacentHTML('beforeend',
+        '<span class="table-detail__sep" aria-hidden="true">\u00b7</span>' +
+        '<span class="table-detail__sponsor">' +
+          '<i data-lucide="handshake" aria-hidden="true"></i>' +
+          '<span class="table-detail__sponsor-name">' + esc(t.sponsor) + '</span>' +
+        '</span>');
+    }
+    chip(typeOf(t));
+
+    /* ── Legend ────────────────────────────────────────────────────────────────────────────
+     * Distinct roles actually seated, in the order they first appear down the seat list —
+     * which is what reproduces TableDetail's own demo (Host, VIP, Speaker, Sponsor, Attendee
+     * for a table whose seat 1 is the host). Deliberately NOT the fixed ROLES order used for
+     * TableCard's bar: that one is a proportional bar where a stable left-to-right order
+     * matters, this one is a key to a list.
+     *
+     * Nobody seated means NO legend — TableDetail's notes: "Default has none at all rather
+     * than an empty container." Hidden rather than emptied, so it leaves both the layout and
+     * the accessibility tree.
+     *
+     * No counts on these items, unlike TableCard's. */
+    if (legendEl) {
+      var seen = [];
+      t.seats.forEach(function (slot) {
+        if (slot && seen.indexOf(slot.role) === -1) seen.push(slot.role);
+      });
+      legendEl.hidden = seen.length === 0;
+      legendEl.innerHTML = seen.map(function (role) {
+        return '<span class="table-detail__legend-item table-detail__legend-item--' + role + '">' +
+               '<span class="table-detail__swatch"></span>' + esc(roleLabel(role)) + '</span>';
+      }).join('');
+    }
+
     if (!seatsEl) return;
 
     seatsEl.innerHTML = t.seats.map(function (s, i) {
