@@ -113,9 +113,45 @@
     return r ? r.label : key;
   }
 
+  /* ── Table types registry ──────────────────────────────────────────────────────────────────
+   * The Table types modal IS the registry — its rows are what the user renames, recolours,
+   * removes and adds, and SeatingPlanner.js already rebuilds the Table form's tier dropdown from
+   * them. So the tier's label and colour are read back out of those rows on every render rather
+   * than kept as a second copy here: a recolour shows on the cards with no sync step to forget.
+   *
+   * `data-tt-slug` is the stable key and survives a rename; `[data-tt-name]` is the live label.
+   * The Standard row has no colour input at all, which is exactly how "no tier" is expressed —
+   * so it yields no entry and a Standard table is `typeId: null`.
+   *
+   * Falls back to the authored `D.TYPES` when the modal is not in the document, so this module
+   * still works on a page that hosts the plan without the modals. */
+  function registry() {
+    var rows = document.querySelectorAll('[data-tt-row]');
+    if (!rows.length) return D.TYPES;
+    var out = [];
+    Array.prototype.forEach.call(rows, function (row) {
+      var colour = row.querySelector('.color-picker-input__native');
+      var name = row.querySelector('[data-tt-name]');
+      if (!colour) return;                       /* Standard — no colour, no chip, no entry */
+      out.push({
+        id: row.getAttribute('data-tt-slug'),
+        label: name ? name.value.trim() : '',
+        colour: colour.value
+      });
+    });
+    return out;
+  }
+
   function typeOf(t) {
     if (!t.typeId) return null;
-    return D.TYPES.filter(function (x) { return x.id === t.typeId; })[0] || null;
+    return registry().filter(function (x) { return x.id === t.typeId; })[0] || null;
+  }
+
+  function typeByLabel(label) {
+    var want = String(label || '').trim().toLowerCase();
+    return registry().filter(function (x) {
+      return x.label.toLowerCase() === want;
+    })[0] || null;
   }
 
   /* ── Room strip ────────────────────────────────────────────────────────────────────────────
@@ -224,11 +260,13 @@
               '<h3 class="table-card__name">' +
                 '<button type="button" class="table-card__select">' + esc(t.name) + '</button>' +
               '</h3>' +
-              /* The tier chip. Its LABEL is data and its COLOUR is the tier's variant — the
-               * baseline's "Headline Sponsor" and "Platinum" are the Gold and VIP variants with
-               * the label overridden, which is why these are two separate fields. */
+              /* The tier chip. Both its label AND its colour are data: the colour comes straight
+               * from the tier's own picker in the Table types modal, set through TableType's
+               * documented `--table-type-color` API rather than one of its five preset
+               * modifiers. A preset class cannot express a recoloured tier, which is the entire
+               * point of that picker. */
               (type
-                ? '<span class="table-type table-type--' + esc(type.variant) + '">' +
+                ? '<span class="table-type" style="--table-type-color: ' + esc(type.colour) + '">' +
                   esc(type.label) + '</span>'
                 : '') +
             '</div>' +
@@ -290,8 +328,10 @@
       var old = rowEl.querySelector('.table-type');
       if (old) old.remove();
       if (!type) return;
+      /* Same as the card's chip: the colour is the tier's own picked value via
+       * `--table-type-color`, not one of TableType's five preset modifiers. */
       rowEl.insertAdjacentHTML('beforeend',
-        '<span class="table-type table-type--' + esc(type.variant) + '">' +
+        '<span class="table-type" style="--table-type-color: ' + esc(type.colour) + '">' +
         esc(type.label) + '</span>');
     }
 
@@ -960,6 +1000,257 @@
    * stays on and the next click reads as a placement. */
   document.addEventListener('dragend', function () {
     if (state.picked) clearPick();
+  });
+
+  /* ── The Table form saves to the MODEL ─────────────────────────────────────────────────────
+   * Before this, Save changed nothing that lasted: picking a tier and saving left `typeId` null,
+   * so no chip appeared and the next render put everything back. The form predates the model and
+   * did its work by DOM surgery on the card's HTML, the seat rows and the plan totals — patching
+   * "13 tables · 124/148" with a regex — which is exactly the drift the model exists to remove.
+   *
+   * So this intercepts the submit in the CAPTURE phase and calls `stopImmediatePropagation()`,
+   * which retires that whole path: the model is written, every count is re-derived, and the
+   * HTML-snapshot Undo goes with it (a snapshot of markup the model no longer agrees with would
+   * be restored only to be wiped by the next render — the Undo below reverses the FIELDS).
+   *
+   * Validation is reproduced rather than inherited, because stopping the handler stops its
+   * checks too. Both rules and the empty-name-adopts-the-placeholder behaviour in add mode are
+   * the originals. */
+
+  /* Which table the form is on. The legacy module keeps this privately, so it is captured from
+   * the trigger the user actually clicked rather than guessed from the selection — Add opens the
+   * same form with no table behind it. */
+  var formTableId = null;
+  var formMode = 'edit';
+
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest) return;
+    var add = e.target.closest('[data-tf-add]');
+    var open = add ? null : e.target.closest('[data-tf-open]');
+    if (!add && !open) return;
+    if (add) { formMode = 'add'; formTableId = null; }
+    else {
+      var card = open.closest('[data-sp-table]');
+      formMode = 'edit';
+      formTableId = card ? card.getAttribute('data-sp-table') : state.tableId;
+    }
+    /* Deferred, because the legacy `open()` runs on this same click and writes the tier field
+     * itself — from `data-tf-tier` on the card, an attribute the model-driven renderer never
+     * sets, so it always resolved to "Standard". Left alone that silently DROPS the tier:
+     * open Table 1, change only its name, save, and Headline Sponsor is gone because the
+     * field said Standard. */
+    setTimeout(fillForm, 0);
+  }, true);
+
+  /* Fill the form FROM THE MODEL, every field, replacing what the legacy `open()` just wrote.
+   *
+   * That function scrapes the card: name and seats out of its rendered text, tier and sponsor
+   * out of `data-tf-tier` / `data-tf-sponsor` attributes the old DOM-surgery save used to write
+   * back. The model-driven renderer emits neither attribute, so both fields opened blank — and
+   * because Save now reads the form, a blank field was a DELETION. Editing only a table's name
+   * silently cleared its tier and its sponsor. Reading the model instead removes the whole class
+   * of bug rather than patching one field at a time.
+   *
+   * `shape` and `host` are deliberately left to the legacy behaviour: the model does not carry
+   * them, so there is nothing to fill from and nothing is lost on save. Flagged in the manifest.
+   *
+   * The tier MENU is rebuilt here too. SeatingPlanner.js already does that, but only when the
+   * types modal changes — so a first open still showed the six options authored in the HTML and
+   * missed any tier added since, including the event's own two. Standard is prepended rather
+   * than stored: it is the absence of a tier, not a tier with no colour. */
+  function fillForm() {
+    var overlay = document.querySelector('[data-table-form]');
+    if (!overlay) return;
+
+    var t = formMode === 'edit' ? tableById(formTableId) : null;
+
+    var nameEl = overlay.querySelector('#tf-name');
+    if (nameEl) nameEl.value = t ? t.name : '';
+
+    var seatsEl = overlay.querySelector('#tf-seats');
+    if (seatsEl && t) seatsEl.value = t.capacity;
+
+    var sponEl = overlay.querySelector('[data-tf-sponsor-value]');
+    if (sponEl) sponEl.textContent = (t && t.sponsor) ? t.sponsor : 'Search Accounts…';
+
+    var menu = overlay.querySelector('[data-tf-field="tier"] .sel__menu');
+    var value = overlay.querySelector('#tf-tier .sel__value');
+    if (!menu || !value) return;
+
+    var standard = (document.querySelector('[data-tt-row][data-tt-slug="standard"] [data-tt-name]')
+                    || {}).value || 'Standard';
+    var current = (t && typeOf(t)) ? typeOf(t).label : standard;
+
+    menu.innerHTML = [{ label: standard }].concat(registry()).map(function (x) {
+      var on = x.label === current;
+      return '<li><button type="button" class="sel__menu-item' +
+             (on ? ' sel__menu-item--selected' : '') + '" role="option"' +
+             (on ? ' aria-selected="true"' : '') + '>' + esc(x.label) +
+             (on ? ' <i data-lucide="check"></i>' : '') + '</button></li>';
+    }).join('');
+
+    value.textContent = current;
+    if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+  }
+
+  function fieldError(overlay, name, message) {
+    var wrap = overlay.querySelector('[data-tf-field="' + name + '"]');
+    if (!wrap) return;
+    wrap.classList.add('input--error');
+    var help = wrap.querySelector('[data-tf-help]');
+    if (help) help.textContent = message;
+  }
+
+  function clearErrors(overlay) {
+    Array.prototype.forEach.call(overlay.querySelectorAll('[data-tf-field]'), function (wrap) {
+      wrap.classList.remove('input--error');
+      var help = wrap.querySelector('[data-tf-help]');
+      if (help) help.textContent = help.getAttribute('data-tf-help-original') || '';
+    });
+  }
+
+  document.addEventListener('submit', function (e) {
+    if (!e.target || e.target.id !== 'table-form-form') return;
+    var overlay = document.querySelector('[data-table-form]');
+    if (!overlay) return;
+
+    var nameEl  = overlay.querySelector('#tf-name');
+    var seatsEl = overlay.querySelector('#tf-seats');
+    var tierEl  = overlay.querySelector('#tf-tier .sel__value');
+    var sponEl  = overlay.querySelector('[data-tf-sponsor-value]');
+
+    var name  = nameEl ? nameEl.value.trim() : '';
+    var seats = seatsEl ? parseInt(seatsEl.value, 10) : NaN;
+
+    /* Add mode adopts the placeholder, because a suggestion you must retype is not a
+     * suggestion — the original behaviour, kept. */
+    if (!name && formMode === 'add' && nameEl) name = nameEl.placeholder || '';
+
+    clearErrors(overlay);
+    var ok = true;
+    if (!name) { fieldError(overlay, 'name', 'Table name is required.'); ok = false; }
+    if (!isFinite(seats) || seats < 1) {
+      fieldError(overlay, 'seats', 'Enter a number of seats.'); ok = false;
+    }
+    if (!ok) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      var bad = overlay.querySelector('.input--error .input__control');
+      if (bad) bad.focus();
+      return;
+    }
+
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    /* The tier is chosen by LABEL in the `.sel`, so it is resolved back through the registry.
+     * A label that resolves to nothing is Standard — which includes the Standard row itself,
+     * since that row has no colour and yields no entry. */
+    var tier = tierEl ? typeByLabel(tierEl.textContent) : null;
+    var sponsorText = sponEl ? sponEl.textContent.trim() : '';
+    /* The placeholder is the empty state, not a sponsor called "Search Accounts…". */
+    var sponsor = (!sponsorText || /^search accounts/i.test(sponsorText)) ? null : sponsorText;
+
+    var p = plan();
+    var t = formMode === 'add' ? null : tableById(formTableId);
+    var before = t && {
+      name: t.name, typeId: t.typeId, sponsor: t.sponsor,
+      capacity: t.capacity, seats: t.seats.slice()
+    };
+
+    if (formMode === 'add') {
+      t = { id: 't' + Date.now(), name: name, typeId: null, sponsor: null,
+            capacity: seats, seats: [] };
+      p.tables.push(t);
+    }
+    if (!t) return;
+
+    t.name = name;
+    t.typeId = tier ? tier.id : null;
+    t.sponsor = sponsor;
+
+    /* Capacity. Growing appends empty seats; shrinking drops the seats past the new end, and
+     * anyone sitting in them returns to the unassigned pool automatically — the pool is derived
+     * as signed-up minus assigned, so removing a seat is all it takes. */
+    t.capacity = seats;
+    while (t.seats.length < seats) t.seats.push(null);
+    if (t.seats.length > seats) t.seats = t.seats.slice(0, seats);
+
+    if (formMode === 'add') state.tableId = t.id;
+
+    var overlayOpen = overlay.classList.contains('modal-overlay--open');
+    if (overlayOpen) overlay.classList.remove('modal-overlay--open');
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tf-open]'), function (b) {
+      b.setAttribute('aria-expanded', 'false');
+    });
+
+    render();
+
+    /* Reuses the screen's own toast seam. Undo restores the FIELDS rather than a slab of HTML,
+     * so it stays true after any later render. */
+    var added = formMode === 'add';
+    var renamed = before && before.name !== name;
+    var parts = added
+      ? [{ text: name + ' ', strong: true }, { text: 'added to ' },
+         { text: p.name + '.', strong: true }]
+      : renamed
+        ? [{ text: before.name + ' ', strong: true }, { text: 'renamed to ' },
+           { text: name, strong: true }]
+        : [{ text: name + ' ', strong: true }, { text: 'updated' }];
+
+    document.dispatchEvent(new CustomEvent('sp:toast', {
+      detail: {
+        parts: parts,
+        undo: function () {
+          if (added) {
+            var i = p.tables.indexOf(t);
+            if (i > -1) p.tables.splice(i, 1);
+            state.tableId = p.tables.length ? p.tables[0].id : null;
+          } else if (before) {
+            t.name = before.name; t.typeId = before.typeId; t.sponsor = before.sponsor;
+            t.capacity = before.capacity; t.seats = before.seats.slice();
+          }
+          render();
+        }
+      }
+    }));
+  }, true);
+
+  /* ── A tier edited in the Table types modal shows on the plan at once ──────────────────────
+   * `registry()` re-reads those rows on every render, so nothing needs copying — the cards just
+   * have to be told to redraw. One handler for all four of that modal's actions: recolour fires
+   * `input` on the colour field, rename fires `input` on the text field, and add/remove are
+   * clicks. Runs after the legacy handlers so the rows are already in their new state.
+   *
+   * A REMOVED tier is dropped from every table that used it, which is the fallback to Standard
+   * the modal's own intro promises. Matching on `data-tt-slug` means a rename never triggers
+   * this — the slug is stable, only the label moves. */
+  function syncTiers() {
+    var live = registry().map(function (x) { return x.id; });
+    D.plans.forEach(function (pl) {
+      pl.tables.forEach(function (tb) {
+        if (tb.typeId && live.indexOf(tb.typeId) === -1) tb.typeId = null;
+      });
+    });
+    render();
+  }
+
+  document.addEventListener('input', function (e) {
+    if (!e.target.closest) return;
+    if (e.target.closest('[data-table-types]')) setTimeout(syncTiers, 0);
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest) return;
+    if (e.target.closest('[data-tt-remove]')) setTimeout(syncTiers, 0);
+  });
+
+  /* Adding a tier is a SUBMIT, not a click on a `[data-tt-add]` hook — "Add Type" is a
+   * `type="submit"` button inside the modal's own form. Keyed on the form, so pressing Enter in
+   * the new-tier name field counts too. */
+  document.addEventListener('submit', function (e) {
+    if (!e.target.closest) return;
+    if (e.target.closest('[data-table-types]')) setTimeout(syncTiers, 0);
   });
 
   document.addEventListener('input', function (e) {
