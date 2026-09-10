@@ -107,7 +107,7 @@ Two come from Figma (verified against `3484:188923`); the third is a designer ad
 |---|---|---|---|
 | card `padding` | `--ai-spacing-5` (16px) | `--ai-spacing-4` (12px) | Figma |
 | name `font-size` | `--ai-font-fixed-sm` (16px) | `--ai-font-fixed-xs` (14px) | Figma |
-| `__sponsor` `padding-block-start` | `--ai-spacing-2` (6px) | **`--ai-spacing-0-5`** (2px) desktop · `--ai-spacing-1` (4px) mobile | **designer, 2026-08-25 (mobile) and 2026-09-10 (desktop)** — see the amendment below |
+| `__sponsor` `padding-block-start` | `--ai-spacing-2` (6px) | **`--ai-spacing-0-5`** (2px), both breakpoints | **designer, 2026-09-10** — see the amendment below |
 
 Figma keeps the sponsor row's 6px padding at both breakpoints; it was tightened to 4px on mobile,
 where the smaller 14px title leaves the row looking loosely attached to it. Measured: the sponsor row
@@ -172,16 +172,17 @@ width, and added the title-to-pill clearance that the first build had flagged as
 | tier pill | sibling of the title group, `gap: 0` | **inside the title row, `gap: --ai-spacing-4`** (12px) |
 | sponsor row | nested in the title column, `88px` wide | **full-width sibling below the title row** |
 | frame name | `Paragraph` | `Sponsor` |
-| table name | `white-space: nowrap`, no overflow | **no `nowrap` — it wraps** |
+| table name | `white-space: nowrap`, no overflow | **no `nowrap` — it wraps** ← *reversed 2026-09-10, see below* |
 
 Verified: name 198 + 12px gap + pill 36 = the full 246px content width; the sponsor row measures the
 same 246; a long title wraps to two 20px lines with the pill holding its width on the first line.
 
-**This retires the two divergences the first build carried.** The header gap is now Figma's own 12px
-rather than something left at 0 and flagged, and the table name's ellipsis is gone — Figma dropping
-`nowrap` means wrapping is the intended answer to a long name, which is the whole point of the
-restructure. `flex-shrink: 0` on the pill is scoped from this row (Figma sets `shrink-0` on the
-instance); nothing about TableType's own appearance is touched.
+**This retired one of the two divergences the first build carried, and the other has since come
+back.** The header gap is now Figma's own 12px rather than something left at 0 and flagged. The
+table name's ellipsis was dropped here — Figma dropping `nowrap` read as wrapping being the
+intended answer to a long name — **but it was restored on 2026-09-10 at the designer's request; see
+"The table name truncates to one line" below.** `flex-shrink: 0` on the pill is scoped from this row
+(Figma sets `shrink-0` on the instance); nothing about TableType's own appearance is touched.
 
 > **Only 1 of 12 Figma variants carries this.** `3470:85480` — the Populated / Default / Desktop
 > variant — is restructured. `3470:85479`, `3472:85601` and `3484:188923` were all checked and still
@@ -337,12 +338,57 @@ adapted with no change — row 1 went from `42/42/42/42` to `38/38/38/38` with b
 still aligned. Verified. TableDetail's notes cross-reference "the identical 22px" in TableCard;
 that sentence is now historical, and its own sponsor row is unaffected.
 
-### FLAG — the mobile override now reads backwards
+### The mobile override is gone, so both breakpoints are 2px
 
-The `@media (max-width: 767px)` block still sets `--ai-spacing-1` (4px), added 2026-08-25 because
-*"the smaller 14px title leaves the sponsor row looking loosely attached to it"*. With desktop now
-at 2px, that override makes **mobile looser than desktop** — the reverse of what it was for.
+There had been a narrow override of `--ai-spacing-1` (4px), added 2026-08-25 because *"the smaller
+14px title leaves the sponsor row looking loosely attached to it"*. Once desktop moved to 2px that
+made **mobile looser than desktop** — the reverse of its own purpose — so it was flagged and then
+dropped at the designer's request the same day.
 
-Left in place, because only the desktop value was asked about and changing mobile unasked would be
-guessing. It should probably go, which would leave 2px at both breakpoints. Raised with the
-designer.
+**One value now, at every width: 2px.** Figma keeps `--ai-spacing-2` (6px) at both and wants
+updating.
+
+Left as a comment in the block rather than silently deleted, because the mobile value was a
+deliberate designer call once and a bare absence invites someone to "restore" it.
+
+(That block is `@container cs-page (max-width: 767px)`, not the `@media` the previous version of
+this note called it — per CLAUDE.md §4a the card keys on the page container, since a docked
+SidebarMenu narrows the column with no window resize at all.)
+
+Verified with the demo establishing `cs-page` itself — a standalone demo has no shell, so the
+narrow rules can otherwise never fire: 2px padding and an 18px row at both a 900px and a 400px
+container, with the name still stepping 16px → 14px, which confirms the container block still
+fires and only the sponsor rule left it.
+
+## The table name truncates to one line (designer, 2026-09-10)
+
+`.table-card__select` carries `white-space: nowrap; overflow: hidden; text-overflow: ellipsis`, so a
+long table name clips to a single line.
+
+**This reverses the 2026-08-25 position, and that one was Figma-derived** — which is exactly why it
+is worth spelling out rather than quietly re-editing the table above. Figma dropped the `nowrap` the
+name used to carry when the header was restructured, so wrapping was read as the intended answer to
+a long name and the earlier ellipsis was retired as a divergence. In practice a real name did what
+the restructure was supposed to accommodate and looked wrong doing it: "Headline Sponsors testing
+long" took the title onto two lines and pushed the card taller than its row-mates. So the ellipsis
+is back, and **Figma is again the side that wants updating.**
+
+### It goes on the button, not the heading
+
+`__name` is the flex item but `__select` is the block that actually contains the text, so the
+truncation has to live on the button. Three things already in place make it work, and all three are
+needed:
+
+| On | Property | Why it matters here |
+|---|---|---|
+| `__select` | `display: block` | `text-overflow` does nothing on an inline box |
+| `__select` | `max-inline-size: 100%` | gives it a width to clip against |
+| `__name` | `min-inline-size: 0` | lets the flex item shrink below its content instead of pushing the tier chip out of the row |
+
+**Verified** with the reported name: `nowrap` / `ellipsis` / `overflow: hidden` computed, button
+height 20px (one line) on every card, `scrollWidth > clientWidth` on the long names and not on the
+short ones, and the tier chip still sharing the name's row (`chipTop: 0`) rather than being pushed
+below. Checked with a chip and without one.
+
+The sponsor name below it was already truncating — that divergence is separate, older, and
+unaffected.
