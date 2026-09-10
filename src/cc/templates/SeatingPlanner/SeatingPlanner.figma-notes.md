@@ -1857,3 +1857,62 @@ reflects it. Fixed at the COMPONENT, not scoped to this template, so TableDetail
 it too — and that makes Figma structurally behind the code, which is why the manifest item stays
 open. Full reasoning, the before/after measurements and the Figma frame that shows the 155px
 squeeze are in `TableDetail.figma-notes.md` § "The header is TWO rows".
+
+### TableCard's sponsor name was unstyled — the renderer dropped its wrapper (2026-09-10)
+
+Reported: *"table card styling for sponsors is not correct"* against `3470:85480`.
+
+**TableCard itself is correct.** Audited the whole sponsor row against Figma and every property
+matches — this was the renderer, which emitted the name as a bare text node instead of wrapping it
+in `.table-card__sponsor-name`, so none of the row's typography applied.
+
+`get_variable_defs` on the sponsor row (`3476:106259`) binds exactly nine variables, and
+`TableCard.css` uses all nine:
+
+| Property | Figma | CSS |
+|---|---|---|
+| row `gap` + `padding-top` | `--ai-spacing-2` (6) | ✓ both |
+| icon size | `--ai-icon-size-sm` (16) | ✓ |
+| icon colour | `--ai-icon-contrast` | ✓ |
+| name family | `--ai-font-title` | ✓ |
+| name size | `--ai-font-fixed-xxs` (12) | ✓ |
+| name weight | `--ai-font-medium` | ✓ |
+| name `line-height` | `--ai-leading-xs` (16) | ✓ |
+| name colour | `--ai-text-contrast` | ✓ |
+
+Also confirmed from the same fetch: `Header-Section` is a column with **no gap** — the 6px
+separation between the title row and the sponsor row is the sponsor row's own `padding-top`, which
+is how the CSS already had it. Figma's `h-[22px]` on the row is derivable (16px content + 6px
+padding), as TableDetail's notes already record.
+
+Measured on the card before the fix, against the spec above:
+
+| | Rendered | Figma |
+|---|---|---|
+| `font-size` | **16px** | 12px |
+| `font-weight` | **400** | 500 |
+| `line-height` | **24px** | 16px |
+| `color` | **#335562** | `--ai-text-contrast` |
+
+Four properties wrong from one missing `<span>`. The row's own gap and padding measured correct,
+which is exactly why it read as a styling problem rather than absent markup.
+
+**After the fix:** 12px / 500 / 16px / Inter, icon 16×16. The two colours resolve to `#667f89`
+(text) and `#99aab1` (icon) rather than Figma's `#64748b` / `#94a3b8` — those are the **CC-mode
+values of the same tokens** in `tokens-cc.css`, and the card sits inside the Control Centre shell.
+Figma's `get_variable_defs` resolves in Light mode, so the difference is the mode, not the token.
+
+#### This was the third dropped element in a row, so the renderer was audited wholesale
+
+The legend, then the sponsor line and tier chip, now this. All three read as styling or design
+decisions rather than missing markup — nothing errors when a renderer omits an element.
+
+So instead of waiting for a fourth report, every element class in all seven components' demos was
+diffed against what `seating-app.js` and `SeatingPlanner.html` actually emit (matching
+concatenated modifiers such as `'table-card__seg--' + key` on their stem, and combining both
+sources so the statically authored chrome is not a false positive).
+
+**Result: TableCard, AttendeeCard, RoomCard, TableDetail, Unassigned, SeatingHeader and
+TableListing are all clean** — the sponsor-name span was the last one missing. Worth re-running
+whenever a component gains an element; the check is recorded in the feedback memory
+`feedback_renderer_drops_component_markup.md`.

@@ -232,9 +232,14 @@
                   esc(type.label) + '</span>'
                 : '') +
             '</div>' +
+            /* The name MUST be wrapped in `__sponsor-name`. Emitted as a bare text node it
+             * inherited the card's typography — measured 16px/400/24px in #335562 against the
+             * 12px/500/16px `--ai-text-contrast` the row binds in Figma (3476:106259). The row's
+             * own gap and 6px padding were right, so only the name was wrong, which is why it
+             * read as a styling bug rather than a missing element. */
             (t.sponsor
               ? '<p class="table-card__sponsor"><i data-lucide="handshake" aria-hidden="true"></i>' +
-                esc(t.sponsor) + '</p>'
+                '<span class="table-card__sponsor-name">' + esc(t.sponsor) + '</span></p>'
               : '') +
           '</div>' +
           '<hr class="table-card__rule">' +
