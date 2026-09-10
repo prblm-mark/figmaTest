@@ -94,12 +94,20 @@
   color: inherit;
   text-align: start;
   cursor: pointer;
-  /* WRAPS, does not truncate. Figma dropped the `white-space: nowrap` it used to carry
-   * when the header was restructured, so a long table name now flows onto a second
-   * line instead of being clipped — which is the point of the restructure. This
-   * retires the ellipsis that was previously added here as a divergence. Set
-   * explicitly because some UAs still default buttons to nowrap. */
-  white-space: normal;
+  /* TRUNCATES TO ONE LINE (designer, 2026-09-10). This REVERSES the 2026-08-25 position, which
+   * is worth spelling out because that one was Figma-derived: Figma dropped the `nowrap` it used
+   * to carry when the header was restructured, so the name was deliberately allowed to wrap and
+   * the earlier ellipsis divergence was retired. A long name ("Headline Sponsors testing long")
+   * then took the title onto two lines, which is what prompted the reversal — so the ellipsis is
+   * back and Figma is again the one that wants updating.
+   *
+   * Truncation belongs on THIS element, not on `__name`: the h3 is the flex item, but the button
+   * is the block that actually contains the text. It already has `display: block` and
+   * `max-inline-size: 100%`, and `__name` carries `min-inline-size: 0`, so the three together let
+   * it shrink below its content and clip rather than pushing the tier chip out of the row. */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .table-card__select::after {
@@ -361,15 +369,12 @@
     font-size: var(--ai-font-fixed-xs);
   }
 
-  /* Designer addition — Figma keeps --ai-spacing-2 (6px) at both breakpoints. Tightened
-     to 4px on mobile, where the smaller 14px title leaves the sponsor row looking
-     loosely attached to it.
-     
-     FLAGGED 2026-09-10: desktop has since moved to --ai-spacing-0-5 (2px), so this override
-     now makes mobile LOOSER than desktop — the reverse of what it was added to do. Left in
-     place because only the desktop value was asked about, but it reads backwards and should
-     probably go, which would leave 2px at both breakpoints. Raised with the designer. */
-  .table-card__sponsor {
-    padding-block-start: var(--ai-spacing-1);
-  }
+  /* NO sponsor-row override any more. There was one — 4px, added 2026-08-25 because the smaller
+     14px title left the row looking loosely attached — but once desktop moved to 2px on
+     2026-09-10 it made mobile LOOSER than desktop, the reverse of its own purpose. Dropped at
+     the designer's request, so the row is --ai-spacing-0-5 (2px) at both breakpoints. Figma keeps
+     --ai-spacing-2 (6px) at both and wants updating.
+
+     Left as a comment rather than silently deleted: the mobile value was a deliberate designer
+     call once, and a bare absence would invite someone to "restore" it. */
 }
