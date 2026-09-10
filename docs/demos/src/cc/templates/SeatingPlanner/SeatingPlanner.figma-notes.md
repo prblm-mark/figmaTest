@@ -2473,3 +2473,44 @@ Before reveal the pool's handle reports `320/280/700` from the fallback rather t
 reveal both sheets are 320. Each resizes alone — moving the pool leaves the detail at 320 and vice
 versa — both floor at 280, and a double-click returns each to 320 independently. The highlight
 computes `#d0dbe1`.
+
+### Placing someone from the pool demoted them to Attendee (2026-09-10)
+
+Reported: *"if I assign a user from the unassigned list, and he is a sponsor, when I move him to a
+table or into the table detail he switches to attendee — this happens to all types."*
+
+Exactly right, and it was one line. `takeFrom()` built the seat slot for a pool source as:
+
+```js
+if (src.kind === 'pool') return { personId: src.personId, role: 'attendee' };
+```
+
+So every drag out of the tray arrived as an Attendee — wrong accent bar, wrong legend segment,
+wrong role label — for all five roles.
+
+**The line was correct when it was written.** Roles lived only on seats then, so there was nothing
+to read a role *from* and Attendee was the only available default. Adding `person.role` for the
+Assign-person modal created a source of truth, and this path was never updated to use it. That is
+the actual defect: not a wrong value, but a default left in place after the thing it stood in for
+arrived.
+
+Now reads the record, with `|| 'attendee'` guarding a record without one rather than expecting one
+— every roster entry has a role (`pick()` stamps the seated, the round-robin fills the rest) and a
+manual guest is created as an Attendee explicitly, so the fallback should never fire.
+
+**One line covers every route.** `place()` assigns the slot from `takeFrom()` straight into the
+seat and never rewrites its role, and a table-card drop resolves to a seat before that point. So
+pool → seat and pool → table card are both fixed by it, and seat → seat is untouched because it
+carries its existing slot rather than rebuilding one.
+
+#### Verified
+
+Both routes, all five roles — ten placements, every one seated with its record role. Visually:
+placing a Host, Sponsor, Speaker and VIP into an empty Table 6 gives four distinct accent colours
+and a legend reading "Host · Sponsor · Speaker · VIP", where before the fix it would have read
+"Attendee (4)".
+
+Also worth recording about the probe: a first attempt reported four of five as failures. It was
+selecting the destination table by clicking its card *while holding a person* — and a card click
+with somebody in the air is a **placement**, not a selection, so the pick was consumed before the
+seat click. The code was right and the test was wrong; selecting once up front fixed it.

@@ -875,7 +875,24 @@
   }
 
   function takeFrom(src) {
-    if (src.kind === 'pool') return { personId: src.personId, role: 'attendee' };
+    if (src.kind === 'pool') {
+      /* THE PERSON'S OWN ROLE, not a hardcoded Attendee.
+       *
+       * This read `role: 'attendee'` and quietly demoted everybody: drag a Sponsor out of the
+       * unassigned tray onto a seat or a table card and they arrived as an Attendee, with the
+       * wrong accent colour and the wrong legend segment. It applied to all five roles.
+       *
+       * The line was correct when it was written — roles lived only on seats then, so there was
+       * nothing to read a role FROM and Attendee was the only available default. Adding
+       * `person.role` for the Assign-person modal made a source of truth available and this path
+       * was not updated to use it, which is the whole bug.
+       *
+       * The `||` guards a record with no role rather than expecting one: every roster entry has
+       * one now (pick() stamps the seated, the round-robin fills the rest) and a manual guest is
+       * created as an Attendee explicitly, so it should never fire. */
+      var p = person(src.personId);
+      return { personId: src.personId, role: (p && p.role) || 'attendee' };
+    }
     var t = tableById(src.tableId);
     return t ? t.seats[src.seatNo - 1] : null;
   }
