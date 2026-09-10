@@ -839,6 +839,8 @@
    * implies, and they ALL land here:
    *
    *   pool  -> empty seat    seat
+   *   pool  -> occupied seat REPLACE — the occupant returns to the tray (designer, 2026-09-10;
+   *                          it was refused before, which made the tray behave unlike the rail)
    *   pool  -> table card    first free seat, or refused "… is full"
    *   seat  -> seat          move, or SWAP when the target is occupied
    *   seat  -> pool          unseat
@@ -849,7 +851,7 @@
    * remove-then-insert — the manifest warns that modelling it as delete/insert is how the pair
    * ends up in the same seat. */
 
-  /* Can the pick land here, and as what? Returns 'move' | 'swap' | 'full' | null.
+  /* Can the pick land here, and as what? Returns 'move' | 'swap' | 'replace' | 'full' | null.
    * These double as the highlight rules, so what lights up is exactly what will work. */
   function seatDrop(tableId, seatNo) {
     var src = state.picked;
@@ -858,9 +860,23 @@
     if (!t) return null;
     if (src.kind === 'seat' && src.tableId === tableId && src.seatNo === seatNo) return null;
     var dest = t.seats[seatNo - 1];
-    /* pool -> occupied seat is NOT one of the five. Refusing it beats silently evicting
-     * somebody the planner never chose to move. */
-    if (src.kind === 'pool') return dest ? null : 'move';
+    /* pool -> OCCUPIED seat is a REPLACE, since 2026-09-10.
+     *
+     * It used to be refused, on the reasoning that "refusing it beats silently evicting somebody
+     * the planner never chose to move". The designer's objection is the better one: dragging from
+     * the tray then behaved differently from dragging within the rail — an occupied seat lit up
+     * for one source and not the other — and an inconsistent rule is worse than an emphatic one.
+     *
+     * "Silently" was the real problem, and it is answered rather than accepted: the toast names
+     * who was displaced and where they went. Nothing is lost either, because the pool is DERIVED
+     * as roster-minus-assigned — overwriting a seat returns its previous occupant to the tray on
+     * its own, with no bookkeeping to get wrong.
+     *
+     * It is 'replace' and not 'swap' because the two are genuinely different: a swap is a
+     * simultaneous exchange between two seats, and somebody arriving from the tray has no seat to
+     * send the displaced person to. Sharing the word would have produced a toast claiming a swap
+     * that never happened. */
+    if (src.kind === 'pool') return dest ? 'replace' : 'move';
     return dest ? 'swap' : 'move';
   }
 
@@ -942,7 +958,14 @@
     }
     destTable.seats[target.seatNo - 1] = moving;
 
-    if (kind === 'swap' && displaced) {
+    if (kind === 'replace' && displaced) {
+      /* Says who was displaced and where they went — the whole point of allowing this at all.
+       * The displaced person needs no explicit move: the pool is derived, so losing the seat is
+       * what puts them back in the tray. */
+      finish([{ text: nameOf(moving), strong: true },
+              { text: ' took the seat from ' }, { text: nameOf(displaced), strong: true },
+              { text: ', who returned to the unassigned list.' }]);
+    } else if (kind === 'swap' && displaced) {
       finish([{ text: nameOf(moving), strong: true },
               { text: ' swapped with ' }, { text: nameOf(displaced), strong: true },
               { text: ' at ' + destTable.name + '.' }]);
