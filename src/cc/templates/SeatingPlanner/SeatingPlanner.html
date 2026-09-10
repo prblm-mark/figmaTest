@@ -1400,6 +1400,14 @@
              The count is signed up MINUS assigned and is event-wide, so it does not change when
              you switch plans — only seating or unseating moves it (designer, 2026-09-09). -->
         <aside class="seating-plan__pool" data-sp-pool-region aria-label="Unassigned attendees" hidden>
+          <!-- The Unassigned sheet resizes too (designer, 2026-09-10). Same transparent
+               edge strip as the detail sheet's, and the same reason it is a real element rather
+               than a `::before`: a pseudo-element cannot take focus, and this is the only way to
+               resize without a mouse. -->
+          <div class="seating-plan__handle" data-sp-pool-handle role="separator"
+               aria-orientation="vertical" tabindex="0" aria-label="Resize the unassigned panel">
+            <span class="seating-plan__handle-bar" aria-hidden="true"></span>
+          </div>
           <section class="unassigned" data-sp-pool>
             <header class="unassigned__header">
               <div class="unassigned__header-row">

@@ -466,6 +466,8 @@
   var aside   = plan.querySelector('[data-sp-aside]');
   var detail  = plan.querySelector('[data-sp-detail]');
   var handle  = plan.querySelector('[data-sp-handle]');
+  var pool       = plan.querySelector('[data-sp-pool-region]');
+  var poolHandle = plan.querySelector('[data-sp-pool-handle]');
   var nameEl  = plan.querySelector('[data-sp-detail-name]');
   var countEl = plan.querySelector('[data-sp-detail-count]');
   var cards   = Array.prototype.slice.call(plan.querySelectorAll('[data-sp-card]'));
@@ -582,47 +584,52 @@
   }
   onContainerResize();
 
-  /* ── Resize handle ─────────────────────────────────────────────────────── */
+  /* ── Resize: BOTH sheets ────────────────────────────────────────────────────
+   * Was written for one handle with `aside` and `--sp-aside-w` closed over. The Unassigned sheet
+   * needs the same behaviour (designer, 2026-09-10), so it is a function of (handle, panel,
+   * property) called twice rather than the same forty lines pasted with two names changed. */
 
-  if (handle) {
-    /* Custom properties resolve to the AUTHORED string, so --ai-size-4 reads back as "15rem"
-     * and parseFloat gives 15, not 240. Convert through the root font size rather than
-     * hardcoding 16 — a user with a larger default font would otherwise get wrong bounds. */
-    function tokenPx(name) {
-      var raw = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-      var n = parseFloat(raw);
-      if (!isFinite(n)) return 0;
-      if (raw.indexOf('rem') !== -1) {
-        return n * parseFloat(getComputedStyle(document.documentElement).fontSize);
-      }
-      return n;
+  /* Custom properties resolve to the AUTHORED string, so --ai-size-5 reads back as "17.5rem" and
+   * parseFloat gives 17.5, not 280. Convert through the root font size rather than hardcoding 16
+   * — a user with a larger default font would otherwise get wrong bounds. */
+  function tokenPx(name) {
+    var raw = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    var n = parseFloat(raw);
+    if (!isFinite(n)) return 0;
+    if (raw.indexOf('rem') !== -1) {
+      return n * parseFloat(getComputedStyle(document.documentElement).fontSize);
     }
+    return n;
+  }
 
-    /* MIN is --ai-size-5 (280) since 2026-09-10, RAISED from --ai-size-4 (240) at the
-     * designer's request that the detail sheet have a 280 floor.
+  function makeResizable(handle, panel, prop) {
+    if (!handle || !panel) return;
+
+    /* MIN is --ai-size-5 (280) since 2026-09-10, RAISED from --ai-size-4 (240) at the designer's
+     * request that the detail sheet have a 280 floor.
      *
      * Worth flagging rather than burying: 240 was NOT invented — it appears in Frame 245's own
-     * variable list alongside the 320 default, so this clamp now diverges from Figma. It had to
-     * move together with the panel's own `min-inline-size`, because a handle that drags to 240
-     * against a panel that refuses to go below 280 is not a narrower rail, it is a handle that
-     * stops matching the thing it resizes.
+     * variable list alongside the 320 default, so this clamp diverges from Figma. It had to move
+     * together with the panel's own `min-inline-size`, because a handle that drags to 240 against
+     * a panel that refuses to go below 280 is not a narrower rail, it is a handle that stops
+     * matching the thing it resizes.
      *
      * The MAX is half the row, which Figma does not specify — flagged in figma-notes as an
-     * interaction parameter needing a designer call, along with the arrow-key step. */
+     * interaction parameter needing a designer call, along with the arrow-key step. Note both
+     * sheets now use it independently, so both at maximum would leave the listing very narrow;
+     * that combination is part of the same open question. */
     function bounds() {
       var min = tokenPx('--ai-size-5');
       var max = Math.max(min, plan.getBoundingClientRect().width / 2);
       return { min: min, max: max };
     }
 
-    function currentWidth() {
-      return aside.getBoundingClientRect().width;
-    }
+    function currentWidth() { return panel.getBoundingClientRect().width; }
 
     function setWidth(px) {
       var b = bounds();
       var w = Math.min(b.max, Math.max(b.min, px));
-      plan.style.setProperty('--sp-aside-w', w + 'px');
+      plan.style.setProperty(prop, w + 'px');
       handle.setAttribute('aria-valuenow', String(Math.round(w)));
       handle.setAttribute('aria-valuemin', String(Math.round(b.min)));
       handle.setAttribute('aria-valuemax', String(Math.round(b.max)));
@@ -636,14 +643,14 @@
       dragFrom = event.clientX;
       dragWidth = currentWidth();
       handle.setAttribute('data-dragging', '');
-      /* Capture keeps the drag alive when the pointer outruns the 20px handle. */
+      /* Capture keeps the drag alive when the pointer outruns the 16px strip. */
       if (handle.setPointerCapture) handle.setPointerCapture(event.pointerId);
       event.preventDefault();
     });
 
     handle.addEventListener('pointermove', function (event) {
       if (!handle.hasAttribute('data-dragging')) return;
-      /* The aside is on the RIGHT, so dragging left (negative dx) makes it wider. */
+      /* Both panels sit to the RIGHT of their own edge, so dragging left makes them wider. */
       setWidth(dragWidth - (event.clientX - dragFrom));
     });
 
@@ -657,7 +664,8 @@
     handle.addEventListener('pointerup', endDrag);
     handle.addEventListener('pointercancel', endDrag);
 
-    /* Keyboard: a separator that can only be dragged is unusable without a mouse. */
+    /* Keyboard: a separator that can only be dragged is unusable without a mouse — and with the
+     * pill gone this is the only affordance a keyboard user has at all. */
     handle.addEventListener('keydown', function (event) {
       if (isStacked()) return;
       var b = bounds();
@@ -675,13 +683,34 @@
      * dragged somewhere unhelpful. */
     handle.addEventListener('dblclick', function () {
       if (isStacked()) return;
-      plan.style.removeProperty('--sp-aside-w');
+      plan.style.removeProperty(prop);
       handle.setAttribute('aria-valuenow', String(Math.round(currentWidth())));
     });
 
-    /* Seed the ARIA values from the real rendered width. */
-    if (!isStacked()) setWidth(currentWidth());
+    /* Seed the ARIA values from the real rendered width — but ONLY from a real one.
+     *
+     * A hidden panel measures 0, which `setWidth` clamps up to the minimum and then writes: the
+     * Unassigned sheet is `hidden` until the toggle asks for it, so it seeded itself at 280 and
+     * opened narrower than Figma's 320 default. Measured, not guessed — it reported 280 on first
+     * reveal against the detail rail's 320.
+     *
+     * With no measurement to seed from, the property is left unset so the CSS fallback stands,
+     * and the ARIA values are published from that same fallback rather than from a zero. */
+    if (!isStacked()) {
+      var seed = currentWidth();
+      if (seed > 0) {
+        setWidth(seed);
+      } else {
+        var b0 = bounds();
+        handle.setAttribute('aria-valuenow', String(Math.round(tokenPx('--ai-size-6'))));
+        handle.setAttribute('aria-valuemin', String(Math.round(b0.min)));
+        handle.setAttribute('aria-valuemax', String(Math.round(b0.max)));
+      }
+    }
   }
+
+  makeResizable(handle, aside, '--sp-aside-w');
+  makeResizable(poolHandle, pool, '--sp-pool-w');
 })();
 
 /* ══ Chrome shadow on scroll ══════════════════════════════════════════════════════════════
