@@ -569,9 +569,13 @@
   min-block-size: 0;
 }
 
+/* `min-inline-size` is NOT reset to 0 here, deliberately. It used to be, so the panel could
+ * shrink to whatever the drag handle set — which is precisely what defeated the component's new
+ * --ai-size-5 (280) floor: a `min-inline-size: 0` on the panel makes any min on the component
+ * itself unreachable. The panel now stops at 280 and the handle's own clamp was raised to match,
+ * so the two cannot disagree. */
 .seating-plan__aside > .table-detail {
   flex: 1 1 auto;
-  min-inline-size: 0;
 }
 
 /* ── The resize handle ──────────────────────────────────────────────────────
