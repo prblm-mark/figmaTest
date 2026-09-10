@@ -27,6 +27,16 @@
   border-radius: var(--ai-radius-lg);
   background-color: var(--ai-surface-primary);
   box-shadow: var(--ai-shadow-xxs);
+  /* FILLS ITS COLUMN, LIST SCROLLS INSIDE — the same treatment TableDetail carries, and added
+   * here 2026-09-10 for the same reason: without it the sheet grows to its content and, in the
+   * Seating Planner's 72-person pool, ran straight past the bottom of the row. Its own demo never
+   * showed it because that list is six people long.
+   *
+   * `overflow: hidden` keeps the scrolling list clipped inside the 16px radius. All three parts
+   * are needed — see `__body` for the other two. */
+  block-size: 100%;
+  min-block-size: 0;
+  overflow: hidden;
 }
 
 /* ── Header ─────────────────────────────────────────────────────────────────
@@ -95,6 +105,9 @@
 /* ── Body: search field, then either the list or the empty state ─────────────
  * A Figma slot, so its contents are the caller's. No padding-top — the header's own
  * padding provides it. */
+/* `flex: 1` with `min-block-size: 0` is what makes the body absorb the leftover height and, more
+ * importantly, allows it to shrink below its content — a flex item refuses to do that by default,
+ * which is exactly what stops a scroll from ever engaging (the app-shell height trap). */
 .unassigned__body {
   display: flex;
   flex-direction: column;
@@ -103,6 +116,8 @@
   inline-size: 100%;
   padding-inline: var(--ai-spacing-5);
   padding-block-end: var(--ai-spacing-5);
+  flex: 1;
+  min-block-size: 0;
 }
 
 /* The search field spans the full sheet width (designer, 2026-08-25).
@@ -115,12 +130,49 @@
   inline-size: 100%;
 }
 
+/* The list is the scroller, not the body: the search field above it stays put while the people
+ * move, which is the whole point of having a search. Scrollbar treatment is the system's — a
+ * transparent track with a thin --ai-surface-secondary thumb, matching `.table-detail__list` and
+ * `.chat-sidebar__sections`. */
 .unassigned__list {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--ai-spacing-3);
   inline-size: 100%;
+  flex: 1;
+  min-block-size: 0;
+  overflow-y: auto;
+  scrollbar-color: var(--ai-surface-secondary) transparent;
+  scrollbar-width: thin;
+}
+
+/* `flex-shrink: 0` IS LOAD-BEARING. Making the list a height-constrained flex column means its
+ * children shrink below their content by default — with 72 people in the pool every row collapsed
+ * to about 1px and the sheet rendered as a stack of hairlines. `overflow-y: auto` does NOT prevent
+ * it: shrinking happens first, so there is nothing left to overflow.
+ *
+ * Same trap as `.assign__results > *` in the Seating Planner, hit twice in one day. The tell is a
+ * scroll region that is ALSO a flex column: TableDetail sidesteps it structurally (`__list`
+ * scrolls, `__seats` sits inside at auto height), and doing it with one element instead means
+ * saying this out loud. */
+.unassigned__list > * {
+  flex-shrink: 0;
+}
+
+/* `width`, not `inline-size` — these are UA pseudo-elements and logical properties are not
+ * reliably honoured on them. */
+.unassigned__list::-webkit-scrollbar {
+  width: var(--ai-spacing-2);
+}
+
+.unassigned__list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.unassigned__list::-webkit-scrollbar-thumb {
+  background-color: var(--ai-surface-secondary);
+  border-radius: var(--ai-radius-full);
 }
 
 /* ── Empty state ────────────────────────────────────────────────────────────

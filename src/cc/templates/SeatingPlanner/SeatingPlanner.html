@@ -1165,14 +1165,14 @@
         <!-- The 4px pill from Figma (3515:177775), as a real resize handle. Its own 8px inline
              padding IS the gap Figma draws either side of the pill, so the row needs no gap and
              the hit area is 20px wide while the visible bar stays 4px. -->
-        <div class="seating-plan__handle" data-sp-handle role="separator" aria-orientation="vertical"
-             tabindex="0" aria-label="Resize the table detail panel"
-             aria-valuemin="240" aria-valuemax="0" aria-valuenow="320">
-          <span class="seating-plan__handle-bar" aria-hidden="true"></span>
-        </div>
 
 
         <aside class="seating-plan__aside" data-sp-aside aria-label="Selected table">
+          <div class="seating-plan__handle" data-sp-handle role="separator" aria-orientation="vertical"
+               tabindex="0" aria-label="Resize the table detail panel"
+               aria-valuemin="240" aria-valuemax="0" aria-valuenow="320">
+            <span class="seating-plan__handle-bar" aria-hidden="true"></span>
+          </div>
           <section class="table-detail" data-sp-detail data-backend-todo="seating-table-detail">
             <header class="table-detail__header">
               <!-- TWO ROWS, per the designer 2026-09-10: row 1 is the name with the tier chip

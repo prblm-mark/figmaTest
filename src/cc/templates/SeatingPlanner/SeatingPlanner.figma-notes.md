@@ -2385,3 +2385,49 @@ Against the built component's own demo, side by side in one page: title 18px, co
 12px, hint text identical, 1px border, 16px radius, search inside `__body` — **no mismatches.**
 The pool's left edge is at or past the detail's right edge, and all **72** rows carry both a role
 modifier class and a role label.
+
+### The row gains a gap, and the resize pill becomes the sheet's edge (designer, 2026-09-10)
+
+*"There is no gap between sheets. I think at this stage we drop the drag handle inbetween the
+sheets, and just use the edge of the sheet, with a cursor change to indicate drag."*
+
+#### The gap was never there for the third sheet
+
+`.seating-plan` carried `gap: 0`, because the handle's own inline padding supplied Figma's 8px on
+each side of the pill — which reproduced `listing 1212 · gap 8 · pill 4 · gap 8 · detail 320`
+exactly. But that only produces a gap *where the handle is*, so when the Unassigned sheet arrived
+to the right of the detail the two were flush against each other.
+
+The row now carries `gap: var(--ai-spacing-3)` — the same token Figma binds between those columns.
+It always was 8px; it just used to arrive via the splitter.
+
+#### The pill is gone, and this reverses an explicit earlier decision
+
+On **2026-08-27** the designer asked whether highlighting the panel edge would be better practice
+than a pill, and the recorded answer was **"keep the pill and highlight it"** — an edge that only
+reacts on hover is undiscoverable, because nothing signals draggability until the pointer happens
+to land on the right few pixels. On **2026-09-10** they called it the other way. Restated here
+rather than quietly overwritten, because the reasoning behind the first answer is still true and
+the trade-off was accepted knowingly.
+
+So the pill is not painted, and the element is a **transparent 16px strip absolutely positioned on
+the detail sheet's leading edge**, over its own padding. Hover and drag tint that edge —
+`border-inline-start-color` on the sheet — rather than a pill.
+
+**It is still an element, deliberately.** A `::before` on the aside would be less markup, but a
+pseudo-element cannot take focus, and this is the only way to resize without a mouse: it keeps
+`role="separator"`, `tabindex="0"` and the arrow / Home / End keys. What was dropped is the visible
+pill, not keyboard access. The pill survives as the **focus indicator only** — an invisible strip
+would otherwise leave a keyboard user with nothing to see, which is precisely the discoverability
+cost the 2026-08-27 decision was avoiding. For pointer users the cursor now carries that signal.
+
+**Absolute, not a flex item with a negative margin.** That was the first attempt and it worked, but
+the strip remained a flex item and so collected the row's `gap` on *both* sides: listing→detail
+measured 16px against detail→pool's 8px. Out of the flow, every gap in the row is the one 8px.
+
+#### Verified
+
+Pool overflows the row by **0**; its list scrolls with all 72 rows present. Gaps are 8px on both
+sides and equal. The strip computes `position: absolute`, 16px wide, `cursor: col-resize`, pill
+`display: none`, sitting exactly on the sheet's left edge and inside the aside, still
+`role="separator"` with `tabindex="0"`. Keyboard resize intact: `End` → 280, `Home` → 700.
