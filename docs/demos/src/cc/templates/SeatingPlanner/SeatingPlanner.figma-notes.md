@@ -1995,3 +1995,121 @@ field from the model on open, which removes the class of bug instead of one fiel
   problem this fix removed from Save and should get the same treatment.
 - **Add table** goes through the model now, but the new table's id is a timestamp, which a real
   backend would supply.
+
+## Assign person modal (2026-09-10)
+
+Figma `3515:204464` default · `205148` help on · `205836` searching · `206452` no matches ·
+`229072` mobile. Toasts: `3515:208712` desktop, `3515:228888` mobile.
+
+Launched from the **Assign** button on an empty AttendeeCard in Table Detail, so the title always
+names one specific seat: *"Assign person to Table 10 · seat 4"*.
+
+**This replaces a placeholder.** Assign used to take whoever was first in the unassigned queue and
+seat them as an Attendee — no picker, no choice of person, no role. Both were flagged at the time
+(`seating-assign-next-in-queue`, `seating-assign-role-source`); this is the frame's real behaviour.
+
+### Almost all of it is components already built
+
+| Part | What it is |
+|---|---|
+| Dialog | a stock **Modal** instance. 512px is `.modal`'s own default (`--ai-size-9`), exactly what the frame draws, and ModalBody's 24px padding / 16px gap are `.modal__body`'s — neither re-declared |
+| Rows | **AttendeeCard** with `Show Seat Number` and `Show Actions` off |
+| Help line | the search **Input**'s own `Help Slot` — `.input__help`, not a paragraph of this dialog's |
+| Show help | **Toggle** `toggle--xxs`, same pattern as the Table form |
+| Manual guest | two **Input**s and a `btn btn--primary` |
+| Toast | **SeatingToast** via the screen's existing `sp:toast` seam, with `Show Cta` for Undo |
+
+**The rows are AttendeeCard, and that was worth checking rather than assuming.** Figma draws them
+as hand-built frames named `guest-row`, but their anatomy is AttendeeCard's exactly — the 6px
+`--sp-*` accent bar, the 14px semibold name, the 12px company, the 3px separator ellipse, the 11px
+role label in the role colour. AttendeeCard already carries `Show Seat Number` and `Show Actions`
+as **formal Figma booleans**, documented in its own notes as "omit `.attendee-card__seat` /
+`.attendee-card__actions`" — so this is both switched off, which is Case A rather than a
+contextual override, and nothing new was needed. **Figma should swap those frames for real
+instances** (`seating-assign-guest-row-not-instance`).
+
+### Behaviour
+
+- **Two sources.** "Event Attendees" is derived — the unassigned pool — which is why the help text
+  can promise *"anyone already seated is not listed"* with no filter of its own. "CRM Contact" is
+  an authored directory of people who have **not** signed up.
+- **No confirm step.** The frame has no Save button; the only button is "Add" for a manual guest.
+  So a row *is* the action — click it and the person is seated and the dialog closes.
+- **Search matches name and the second line**, which is what the frame's own `"an"` search proves:
+  it returns Elena Rostanova via "Quantum Tech" and Rosa Delgado via "Panel chair".
+- **An empty section drops its header** rather than showing an empty one, per the search frame.
+- **Seating a CRM contact or a manual guest adds them to the event** (designer, 2026-09-10), so the
+  header's attendee figure and the unassigned total both move — both derived from the roster, so
+  neither can drift. Verified: adding one guest took the header from 183 to 184 attendees.
+
+### The record now carries the role
+
+The modal's help text states the rule — *"their role comes from their record and drives the colour
+tag"* — and the frames show a role for people who are **not seated at all**, so it cannot live only
+on the seat, where this model had it.
+
+Rather than re-derive the authored tallies from people's records, which would move every legend,
+the authored tally now **writes** the record: `pick(role)` stamps `person.role`, so whoever fills a
+Host slot *is* a Host, and seat and record can never disagree. Everyone still unseated gets a role
+round-robin over `ROLES` by index — deterministic, and it puts all five roles in the pool.
+
+### Toast copy — Figma gives three different strings
+
+| Frame | String |
+|---|---|
+| `229072` (mobile screen) | "**Elena Rostova** successfully assigned to **Seat 2**" |
+| `208712` (desktop toast) | "**Ethan Patel** successfully assigned to **Table 5**" |
+| `228888` (mobile toast) | "**Sofia Petroz** assigned to Table **Headline Sponsor**" |
+
+Designer's ruling: **"successfully assigned to", with the object naming whatever was targeted** —
+a seat here, since the Assign button always belongs to one. Two of the three frames already do
+this. Undo reverses the seating and, for a CRM contact or manual guest, takes them back out of the
+roster too.
+
+### Two implementation traps, both measured
+
+**A `<button>` row collapses to 4px.** The whole row is one action, so a real `<button>` was the
+first choice. A button will not take its block size from a `flex-direction: column` child: the
+body measured its correct 49px *inside a 4px button*, and `.attendee-card`'s `overflow: hidden`
+clipped it. It is an `<article role="button" tabindex="0">` instead — the pattern TableCard already
+uses for a whole-card action — with Enter and Space wired in JS, since the role brings the
+semantics but not the behaviour.
+
+**`flex-shrink: 0` on the list children is load-bearing.** `.assign__results` is a
+height-constrained flex column, and flex items shrink below their content by default — with 84
+rows in it every one collapsed to about 1px, rendering as a stack of hairlines. `overflow-y: auto`
+does **not** prevent this: shrinking happens first, so there was nothing left to overflow.
+TableDetail sidesteps it structurally (`__list` scrolls, `__seats` sits inside at auto height);
+doing it with one element means saying so explicitly.
+
+### Flagged, not reproduced
+
+- **Three Input paddings in one dialog.** The search Field binds 8px left / 16px right, the two
+  manual-guest Fields bind 16px both sides, and Input's own base is 12px both sides. Three values
+  for the same control in one modal is drift rather than intent, so all three keep Input's base.
+- **The no-matches paint is unbound.** Figma has `#335562` as a raw hex, which is exactly
+  `--ai-text-secondary` in the Control Centre mode this screen runs in, so the token is used.
+  Worth binding in Figma.
+- **No hover state is drawn for the rows.** A clickable list that looks inert is worse than a
+  small liberty, so hover borrows AttendeeCard's own `--dragged-over` brand border rather than
+  introducing a colour. Needs a designer ruling.
+- **The search icon is named `Icon/16px/User`** but the asset is a search glass; built as `search`.
+- **These frames show the Unassigned tray WITH roles** and role-coloured accents; the tray as built
+  shows name and company only, with the accent falling back to Attendee. Out of scope here and
+  left alone — Unassigned's and AttendeeCard's own notes are the authority — but it is a real
+  difference in a frame supplied for this task.
+- **Modal's shadow differs from this frame's.** The frame carries `light/shadow-md`; `.modal` has
+  its own global `0 0 20px rgba(0,0,0,0.05), 0 2px 2px rgba(0,0,0,0.1)`. Not this dialog's call.
+
+### Verified (headless Chrome over HTTP)
+
+Opens with the right title and both sections (72 event + 12 CRM). Roles render from records. Help
+toggles on and off with the frame's exact copy — and `aria-checked` is **read, never written**,
+because Toggle.js owns the flip; writing it too made the two cancel out and the help never
+appeared, the same trap the Edit Plan and Table form handlers already document. `"an"` returns 29
+across both sections; `"Farrer"` gives no sections and the exact no-match line. Assigning an event
+attendee leaves the roster at 183 and takes the role from the record (`vip`); Undo clears the seat
+and leaves the roster alone. A CRM contact seats as `sponsor` and takes the roster to 184. A manual
+guest joins as `attendee`, and the header reads 184 attendees. Escape closes. Mobile at 402px: the
+dialog is near-full-width, the list scrolls, and the manual fields and Add button step to 32px
+while the search field stays 40px — measured on the mobile frame, not assumed.

@@ -2424,6 +2424,89 @@
     </div>
   </div>
 
+  <!-- ═══ Assign person ═══════════════════════════════════════════════════════════════════════
+       Figma 3515:204464 (default) / 205148 (help on) / 205836 (searching) / 206452 (no matches)
+       / 229072 (mobile). Launched from the Assign button on an EMPTY AttendeeCard in Table
+       Detail, so the title always names a specific seat.
+
+       Structurally a stock Modal: 512px is `.modal`'s own default width (--ai-size-9), and
+       ModalBody's 24px padding / 16px gap are `.modal__body`'s own, so neither is re-declared.
+
+       THE ROWS ARE AttendeeCard, not new markup. Figma draws them as hand-built frames named
+       `guest-row`, but their anatomy is AttendeeCard's exactly — the 6px `--sp-*` accent bar, the
+       14px semibold name, the 12px company, the 3px separator ellipse, the 11px role label in
+       the role colour. AttendeeCard already has `Show Seat Number` and `Show Actions` as formal
+       Figma booleans, and this is simply both switched off, so nothing new is needed and no
+       contextual override applies. Worth swapping those frames for real instances in Figma —
+       flagged as seating-assign-guest-row-not-instance.
+
+       The help paragraph is the search Input's OWN `Help Slot` (hidden in the frames), which is
+       why it is `.input__help` rather than a paragraph of this modal's own — same `Show help`
+       pattern as the Table form. -->
+  <div class="modal-overlay" id="assign-person" data-assign>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="assign-title">
+      <div class="modal__header">
+        <div class="modal__title-block">
+          <h2 class="modal__title" id="assign-title" data-assign-title>Assign person</h2>
+        </div>
+        <button class="modal__close" type="button" aria-label="Close" data-assign-close>
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <div class="modal__body assign__body">
+        <!-- Figma positions this absolutely at top-[81px]; it is a right-aligned row above the
+             search field, so it is built as one rather than carrying that offset over. -->
+        <div class="assign__help-toggle">
+          <button type="button" class="toggle toggle--xxs" role="switch" aria-checked="false"
+                  id="assign-help-toggle" aria-labelledby="assign-help-label">
+            <span class="toggle__track"><span class="toggle__knob"></span></span>
+          </button>
+          <label class="assign__help-label" id="assign-help-label" for="assign-help-toggle">Show help</label>
+        </div>
+
+        <div class="input assign__search">
+          <div class="input__wrap">
+            <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
+            <input id="assign-search" type="search" class="input__control"
+                   placeholder="Search by attendee name or account…"
+                   aria-label="Search by attendee name or account" data-assign-search>
+          </div>
+          <p class="input__help" data-assign-help hidden>Search event attendees or accounts to
+            seat someone. Their role comes from their record and drives the colour tag. Anyone
+            already seated is not listed.</p>
+        </div>
+
+        <div class="assign__results" data-assign-results></div>
+      </div>
+
+      <!-- Figma pins this to the bottom of the modal with `--ai-surface-minimal` and a top
+           border — a modal footer in everything but its contents, so it uses `.modal__footer`
+           and overrides only the two properties that differ (24px all round rather than 16/24,
+           and the minimal fill, which `.modal__footer` does not paint). -->
+      <div class="modal__footer assign__footer">
+        <p class="assign__section-label">Add a guest manually</p>
+        <form class="assign__manual" data-assign-manual>
+          <div class="input assign__manual-field">
+            <div class="input__wrap">
+              <input type="text" class="input__control" placeholder="Full name"
+                     aria-label="Guest full name" data-assign-guest-name>
+            </div>
+          </div>
+          <div class="input assign__manual-field">
+            <div class="input__wrap">
+              <input type="text" class="input__control" placeholder="Company"
+                     aria-label="Guest company" data-assign-guest-company>
+            </div>
+          </div>
+          <!-- TODO(backend:SeatingPlanner): a manually added guest is in-memory only, and has no
+               record to take a role from — see seating-assign-manual-guest. -->
+          <button type="submit" class="btn btn--primary">Add</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <!-- Table types (TASK-342308) — Figma 1:43151 desktop / 1:44348 mobile, modal 1:43245 /
        1:44462. Opened from the Table form's "+ Manage table types" link, which until now went
        nowhere.
