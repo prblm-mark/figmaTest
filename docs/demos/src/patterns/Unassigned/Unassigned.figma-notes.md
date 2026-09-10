@@ -186,3 +186,34 @@ Planner's assign modal.
 
 Figma specifies none of this — its frame draws a short list at a fixed height, so the question
 never arises there.
+
+## `--drop-target` (designer, 2026-09-10)
+
+Dropping a seated person on the tray unseats them, and the tray showed **nothing** while one was
+held over it — half of `seating-drag-unspecified-visuals`, closed alongside the table card's.
+
+**Figma has no drag state here, and unlike TableCard there is no state axis to point at:** this
+component has two variants and both are Type (empty / populated). So the values are not drawn from
+its own set. They are the system's established drop-target pair — `--ai-border-brand` on
+`--ai-surface-minimal` — which the designer confirmed for AttendeeCard's `--dragged-over` on
+2026-08-25, and which TableCard's drop target resolves to as well. Reusing an approved pair rather
+than inventing two values, but it is still a treatment **Figma does not draw for this component**,
+so it is worth adding there.
+
+The parent module toggles it. No drag JS lives here, the same division AttendeeCard's notes set out.
+
+### Legality and scope
+
+- Only when the drop would succeed: `poolDrop()` is null for a pool source, because pool → pool is
+  a no-op, so holding somebody already unassigned marks nothing.
+- The class goes on `.unassigned`, not the region wrapper around it, because the sheet is what has
+  the border.
+- **Hovering a tray row still means the tray.** The tray contains rows of its own, so it is
+  checked last in the target lookup — and that is correct, since a drop anywhere in it unseats.
+
+### Verified
+
+Holding a seated person and hovering the tray marks it; hovering one of its own rows keeps the mark
+on the tray; moving to a table card moves the mark; holding an already-unassigned person marks
+nothing; Escape clears it. The paint computes `rgb(48,182,194)` on `rgb(243,246,247)` — exactly
+`--ai-border-brand` on `--ai-surface-minimal`.

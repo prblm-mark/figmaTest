@@ -1074,6 +1074,9 @@
     document.querySelectorAll('.table-card--drop-target').forEach(function (el) {
       el.classList.remove('table-card--drop-target');
     });
+    document.querySelectorAll('.unassigned--drop-target').forEach(function (el) {
+      el.classList.remove('unassigned--drop-target');
+    });
     overEl = null;
   }
 
@@ -1083,6 +1086,19 @@
     if (el === overEl) return;
     clearOver();
     if (!el || !state.picked) return;
+
+    /* THE TRAY. Dropping a seated person here unseats them, and it showed nothing at all while
+     * one was held over it. `poolDrop()` is null for a pool source — pool to pool is a no-op — so
+     * holding somebody already unassigned marks nothing, which is right. The class goes on the
+     * sheet rather than the region wrapper, because the sheet is what has the border. */
+    if (el.hasAttribute('data-sp-pool-region')) {
+      if (poolDrop() !== 'move') return;
+      var sheet = el.querySelector('.unassigned');
+      if (!sheet) return;
+      sheet.classList.add('unassigned--drop-target');
+      overEl = el;
+      return;
+    }
 
     /* A TABLE CARD takes the selected state's styling (designer, 2026-09-10) — see TableCard.css
      * for why it is a separate class rather than `--selected` itself. */
@@ -1102,11 +1118,14 @@
     overEl = el;
   }
 
-  /* Whichever of the two drop surfaces the pointer is actually on. They never nest — a card holds
-   * no seat rows — so the order only decides which is checked first. */
+  /* Whichever of the three drop surfaces the pointer is actually on. Seats and cards never nest —
+   * a card holds no seat rows — but the TRAY does contain rows of its own, so it is checked last:
+   * hovering a tray row means the tray, which is correct, since a drop anywhere in it unseats. */
   function overTarget(e) {
     if (!e.target.closest) return null;
-    return e.target.closest('[data-sp-seat]') || e.target.closest('[data-sp-card]');
+    return e.target.closest('[data-sp-seat]') ||
+           e.target.closest('[data-sp-card]') ||
+           e.target.closest('[data-sp-pool-region]');
   }
 
   function toast(parts, type) {
