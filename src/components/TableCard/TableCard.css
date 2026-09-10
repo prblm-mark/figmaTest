@@ -170,11 +170,26 @@
  * Figma binds --ai-font-fixed-6xs (a FONT SIZE token) as the 9px gap here and as the
  * legend's column gap. Snapped to --ai-spacing-3 (8px) by the designer 2026-08-25 so
  * a type token is not driving layout. */
+/* The visualisation block ABSORBS any extra card height (designer, 2026-09-10).
+ *
+ * TableListing stretches every card on a row to the tallest one. Figma's listing instances
+ * (lRKvtYSU3SvO5hbMT33jxw `1:31485`) put that slack here rather than below the footer: the
+ * footer sits a constant 16px — the card's own padding — from the bottom in all three row
+ * tracks (footer y=146 in a 186 row, 124 in 164, 110 in 150), while Visualization-Slot grows
+ * past its content (41px holding 28px of bar+legend in row 1, 41 holding 27 in row 2, and a
+ * natural 27 in row 3 where nothing needed stretching).
+ *
+ * `flex: 1 1 auto` is a no-op on an unstretched card, since there is no slack to take.
+ *
+ * The slack lands AFTER the legend, not around it: Figma's two row-1 instances disagree —
+ * `1:31319` centres its bar+legend in the grown slot at y=6.5, `1:31336` tops it at y=0 — and
+ * the designer settled it as start-aligned, which is the default `justify-content` here. */
 .table-card__viz {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--ai-spacing-3);
+  flex: 1 1 auto;
   inline-size: 100%;
 }
 

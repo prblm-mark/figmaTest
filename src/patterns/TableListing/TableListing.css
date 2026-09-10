@@ -127,7 +127,32 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(var(--ai-size-4), 1fr));
   gap: var(--ai-spacing-3);
-  align-items: start;
+  /* STRETCH, not start (designer, 2026-09-10; Figma lRKvtYSU3SvO5hbMT33jxw `1:31485`).
+   * Cards on a row are all the height of the tallest one. Figma's grid declares no
+   * align-items, so it takes the default `stretch`, and its measured row tracks are
+   * 186 / 164 / 150 with every card in a row matching its track exactly.
+   *
+   * `start` was wrong and visible: row 1 measured [190, 190, 155, 155].
+   *
+   * Where the extra height goes is TableCard's business, not the grid's — it grows the
+   * visualisation block so the footer stays pinned to the bottom. See TableCard.css. */
+  align-items: stretch;
+  /* ...but the ROW TRACKS stay content-sized. `align-items` and `align-content` are different
+   * axes of the same word here, and only the first one was wanted:
+   *
+   *   align-items   → how a card sits in ITS ROW      → stretch (match the row)
+   *   align-content → how the ROWS sit in the GRID BOX → start  (do NOT fill the box)
+   *
+   * A grid's default `align-content: normal` behaves as `stretch`, and in the Seating Planner
+   * this grid is a flex item that fills the panel height — so with `align-items: stretch` the
+   * auto row tracks grew to swallow the whole box: the Press Room's three cards measured 397px
+   * each, the full grid height, with zero space beneath them. Figma leaves that space empty
+   * (`1:31485`: a 698px listing holding 580px of content).
+   *
+   * It only reproduces when the container is TALLER than the content. Main Ballroom's 13 cards
+   * overflow and scroll, where align-content does nothing at all — which is exactly why the
+   * first pass at this looked correct. */
+  align-content: start;
   inline-size: 100%;
 }
 
