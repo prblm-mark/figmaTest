@@ -536,6 +536,81 @@
     if (aside) aside.hidden = !state.showUnassigned;
   }
 
+  /* ── Header alignment across a row ─────────────────────────────────────────────────────────
+   * Designer, 2026-09-10: "when a table card has a sponsor making it larger, and we stretch the
+   * siblings on the same row, grow the top title section so the legends still align."
+   *
+   * Measured on row 1 of the Main Ballroom: a sponsored card's header is 42px and an unsponsored
+   * one 20px, and BOTH the bar and the legend sit exactly 22px apart — the sponsor row's height.
+   * Nothing else contributes: a 1-row legend against a 2-row one changes only what sits BELOW the
+   * legend, because the stretch slack is start-aligned inside the visualisation block. So padding
+   * every header in a row up to the tallest aligns the bars and the legends together.
+   *
+   * WHY NOT CSS. `flex-grow` on the header absorbs ALL the slack, including the legend-row
+   * difference, so an unsponsored card overshoots by 13px and misaligns the other way. `subgrid`
+   * needs definite row tracks on the parent and this grid uses `auto-fill`, so there are none to
+   * inherit. Reserving the sponsor row unconditionally is CSS-only but costs 22px on every
+   * unsponsored card in every row — 11 of the Main Ballroom's 13 — including rows with no sponsor
+   * to align to. */
+  function alignHeaders() {
+    if (!grid) return;
+    var cards = grid.querySelectorAll('.table-card');
+    if (!cards.length) return;
+
+    var entries = [];
+    Array.prototype.forEach.call(cards, function (c) {
+      var h = c.querySelector('.table-card__header');
+      if (h) entries.push({ card: c, head: h });
+    });
+    if (!entries.length) return;
+
+    /* Clear every override BEFORE measuring. A header still padded from a previous pass reports
+     * the padded height, so a row maximum would ratchet up and never come back down when a
+     * sponsored card moves to another row. */
+    entries.forEach(function (e) { e.head.style.minBlockSize = ''; });
+
+    /* Measure them all, then write. Interleaving reads and writes would have each write
+     * invalidate the next read. Grouped by the card's own top, so row membership comes from the
+     * layout rather than from arithmetic on a column count. */
+    var rows = {};
+    entries.forEach(function (e) {
+      var top = Math.round(e.card.getBoundingClientRect().top);
+      e.h = e.head.getBoundingClientRect().height;
+      (rows[top] = rows[top] || []).push(e);
+    });
+
+    Object.keys(rows).forEach(function (top) {
+      var group = rows[top];
+      var tallest = Math.max.apply(null, group.map(function (e) { return e.h; }));
+      group.forEach(function (e) {
+        /* Only the shorter ones are padded; the tallest keeps a content-driven height so nothing
+         * is pinned that does not need to be. */
+        if (e.h < tallest - 0.5) e.head.style.minBlockSize = tallest + 'px';
+      });
+    });
+  }
+
+  /* Which cards share a row changes with the container's width, and in the CC shell that column
+   * resizes with no window resize at all when the menu docks — so this watches the grid rather
+   * than using `matchMedia`, which would be blind to it (CLAUDE.md §4a). Debounced by a macrotask
+   * so the churn from the clear step coalesces into one pass; writing a min-height changes only
+   * block sizes, so it cannot change the row membership a later pass would read.
+   *
+   * NOT VERIFIED IN HEADLESS, and worth stating rather than implying. A ResizeObserver does not
+   * fire for an iframe width change under Chrome's `--virtual-time-budget`: a freshly created
+   * observer logged ZERO callbacks across a 4→3 column change that demonstrably reflowed. That
+   * cost three rewrites of this function chasing "failures" that were the harness, not the code —
+   * the same family as rAF and IntersectionObserver not firing there
+   * (`feedback_headless_http_and_transitions`). The pass itself IS verified, by calling it
+   * directly after a width change; only the observer's delivery is untested here. */
+  if (grid && window.ResizeObserver) {
+    var alignTimer = null;
+    new ResizeObserver(function () {
+      if (alignTimer) clearTimeout(alignTimer);
+      alignTimer = setTimeout(function () { alignTimer = null; alignHeaders(); }, 0);
+    }).observe(grid);
+  }
+
   function render() {
     renderRooms();
     renderListing();
@@ -544,6 +619,8 @@
     renderChrome();
     decoratePick();
     if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+    /* After the cards exist and after createIcons(), which changes their content height. */
+    alignHeaders();
   }
 
   /* ── Mutation ──────────────────────────────────────────────────────────────────────────────
@@ -1506,6 +1583,8 @@
       state.query = e.target.value;
       renderListing();
       if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+      /* Filtering changes which cards share a row, so the row maxima change with it. */
+      alignHeaders();
       return;
     }
     if (e.target.matches('[data-sp-pool-search]')) {
@@ -1525,6 +1604,7 @@
       state.onlyFree = !!e.detail.active;
       renderListing();
       if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+      alignHeaders();       /* same reason as the search path */
       return;
     }
     if (id === 'sp-show-unassigned') {

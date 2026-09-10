@@ -177,24 +177,59 @@
   margin: 0;
 }
 
-/* Scrollable body variant */
+/* ── Scrollable region inside a dialog ─────────────────────
+ *
+ * `.modal__scroll` IS THE CONVENTION for any modal scroll area — add it to whichever element
+ * actually scrolls, and set that element's own height/flex rules alongside it.
+ *
+ * A transparent track with a thin `--ai-surface-secondary` thumb. This is the treatment the
+ * design system already uses everywhere it scrolls: `.chat-sidebar__sections` established it,
+ * `.system-role__textarea` follows it, and the designer confirmed it for `.table-detail__list`
+ * on 2026-08-25. Figma specifies NOTHING here — its Scrollable variant (`2464:757`) draws a
+ * clipped 360px container with no scrollbar at all — so the appearance is a code decision, and
+ * one answer is better than two.
+ *
+ * `.modal__body--scroll` used to be that second answer: a visible `--ai-surface-minimal` track
+ * with an `--ai-border-secondary` thumb at a raw 6px, undocumented and used only by this
+ * component's own demo. Folded in here 2026-09-10 so the pattern is singular.
+ *
+ * CHROME CAVEAT, worth knowing before anyone tunes the width: Chrome honours
+ * `scrollbar-width: thin` and renders about 11px, ignoring the `::-webkit-scrollbar` width
+ * below — so those rules are for older WebKit only and the two numbers will not agree in a
+ * screenshot. Recorded in TableDetail's notes as well.
+ *
+ * `min-block-size: 0` is here because a scroll region is almost always a flex item, and without
+ * it a flex item refuses to shrink below its content — which is what makes the scroll never
+ * engage. Harmless anywhere else. */
+.modal__scroll,
+.modal__body--scroll {
+  overflow-y: auto;
+  min-block-size: 0;
+  scrollbar-color: var(--ai-surface-secondary) transparent;
+  scrollbar-width: thin;
+}
+
+/* `width`, not `inline-size` — these are UA pseudo-elements and logical properties are not
+ * reliably honoured on them. */
+.modal__scroll::-webkit-scrollbar,
+.modal__body--scroll::-webkit-scrollbar {
+  width: var(--ai-spacing-2);
+}
+
+.modal__scroll::-webkit-scrollbar-track,
+.modal__body--scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal__scroll::-webkit-scrollbar-thumb,
+.modal__body--scroll::-webkit-scrollbar-thumb {
+  background-color: var(--ai-surface-secondary);
+  border-radius: var(--ai-radius-full);
+}
+
+/* The variant keeps its own cap; only the scrollbar treatment is shared. */
 .modal__body--scroll {
   max-height: 360px; /* layout dimension — no token match */
-  overflow-y: auto;
-}
-
-.modal__body--scroll::-webkit-scrollbar {
-  width: 6px;
-}
-
-.modal__body--scroll::-webkit-scrollbar-track {
-  background: var(--ai-surface-minimal);
-  border-radius: var(--ai-radius-full);
-}
-
-.modal__body--scroll::-webkit-scrollbar-thumb {
-  background: var(--ai-border-secondary);
-  border-radius: var(--ai-radius-full);
 }
 
 /* ── Footer ──────────────────────────────── */

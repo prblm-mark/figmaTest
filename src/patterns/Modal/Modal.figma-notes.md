@@ -292,3 +292,38 @@ raise its specificity, which would have hidden the ordering problem instead of s
 Verified: S23 box (360×543) picker → overlay padding 32, modal 479 of 543, gaps 32/32, inner list
 scrolling; create-plan → 365 tall, centred with 89 either side; desktop (1400×900) unchanged at 24
 with 128px gaps. Zero JS errors throughout.
+
+## `.modal__scroll` — the scroll convention for dialogs (2026-09-10)
+
+**Add `.modal__scroll` to whichever element actually scrolls**, and set that element's own
+height/flex rules alongside it. It provides `overflow-y: auto`, `min-block-size: 0`, and the
+scrollbar treatment; caps and flex behaviour stay with the caller.
+
+A **transparent track with a thin `--ai-surface-secondary` thumb**. This is what the design system
+already does everywhere it scrolls, so it is a convention being named rather than invented:
+
+| Where | Established |
+|---|---|
+| `.chat-sidebar__sections` | the original precedent |
+| `.system-role__textarea` | follows it |
+| `.table-detail__list` | designer-confirmed 2026-08-25 |
+
+**Figma specifies nothing here.** Its `Type=Scrollable` variant (`2464:757`) draws a clipped
+360px container of paragraphs and no scrollbar at all — checked, not assumed. So the appearance is
+a code decision, and one answer is better than two.
+
+`.modal__body--scroll` was that second answer: a **visible** `--ai-surface-minimal` track with an
+`--ai-border-secondary` thumb at a raw 6px, undocumented in these notes and used only by this
+component's own demo. Folded into the shared rule, keeping its own 360px cap. Its scrollbar now
+looks like every other scroll region in the system.
+
+### Two things worth knowing before anyone tunes this
+
+- **Chrome renders `scrollbar-width: thin` at about 11px** and ignores the `::-webkit-scrollbar`
+  width, so those rules are for older WebKit only and the two numbers will not agree in a
+  screenshot. Measured 11px on the assign modal's list. TableDetail's notes record the same.
+- **`min-block-size: 0` is in the rule deliberately.** A scroll region is almost always a flex
+  item, and a flex item refuses to shrink below its content without it — which is exactly what
+  makes a scroll never engage. Harmless anywhere else.
+
+First consumer beyond the demo: the Seating Planner's Assign-person list.

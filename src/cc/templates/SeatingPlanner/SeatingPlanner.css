@@ -95,17 +95,22 @@
 }
 
 /* ── Page padding + gap ─────────────────────────────────────────────────────
- * The one place this screen departs from the shell. `.cc-control__page` gives
- * --ai-spacing-6 (24px) padding and --ai-spacing-7 (32px) gap; Figma binds
- * --ai-spacing-7 padding and --ai-spacing-5 (16px) gap, both dropping to --ai-spacing-4
- * (12px) on mobile.
+ * `.cc-control__page` gives --ai-spacing-6 (24px) padding and --ai-spacing-7 (32px) gap;
+ * Figma binds --ai-spacing-7 padding and --ai-spacing-5 (16px) gap, both dropping to
+ * --ai-spacing-4 (12px) on mobile.
+ *
+ * PADDING AMENDED 2026-09-10 at the designer's request: --ai-spacing-6 (24px) at desktop,
+ * where Figma binds --ai-spacing-7 (32px). A deliberate divergence, and it leaves this screen
+ * matching the shell's own padding — so the GAP is now the only place the page departs from
+ * `.cc-control__page`. Figma wants updating to match. The narrow override below is untouched
+ * and still steps to --ai-spacing-4, which is Figma's mobile value.
  *
  * The gap only started mattering on the No Plan state, which is the first with two page
  * children (SeatingHeader + the card). On the No Event state there is one child, so the
  * shell's 32px gap was invisible rather than correct — worth stating, because "it looked
  * right" would have been a bad reason to leave it. */
 .cc-control__page--seating {
-  padding: var(--ai-spacing-7);
+  padding: var(--ai-spacing-6);
   gap: var(--ai-spacing-5);
   /* The shell reserves a stable 15px scrollbar gutter so a scrollbar appearing cannot
    * shift the layout. That is right for ControlScreen and ControlHub, whose pages scroll —
@@ -1993,14 +1998,14 @@
  *
  * `flex: 1 1 auto` with `min-block-size: 0` stays, which makes 384 a CEILING rather than a floor:
  * on a short viewport the list still shrinks below it and scrolls. */
+/* `overflow-y` and `min-block-size` come from `.modal__scroll` in Modal.css, along with the
+ * scrollbar treatment — only the cap and the flex behaviour are this dialog's own. */
 .assign__results {
   display: flex;
   flex-direction: column;
   gap: var(--ai-spacing-3);
   flex: 1 1 auto;
-  min-block-size: 0;
   max-block-size: var(--ai-size-7);
-  overflow-y: auto;
 }
 
 /* `flex-shrink: 0` is LOAD-BEARING and not obvious. This is a height-constrained flex column,

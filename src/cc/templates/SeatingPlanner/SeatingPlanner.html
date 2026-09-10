@@ -2477,7 +2477,9 @@
             already seated is not listed.</p>
         </div>
 
-        <div class="assign__results" data-assign-results></div>
+        <!-- `modal__scroll` is Modal's shared scroll treatment — transparent track, thin
+             `--ai-surface-secondary` thumb — so this dialog does not carry a fifth copy of it. -->
+        <div class="assign__results modal__scroll" data-assign-results></div>
       </div>
 
       <!-- Figma pins this to the bottom of the modal with `--ai-surface-minimal` and a top
