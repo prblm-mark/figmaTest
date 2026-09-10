@@ -2324,3 +2324,64 @@ are correct as records of *Figma*; the code is what diverged.
 
 Verified: 24px padding with a 16px gap at desktop, 12px / 12px below the 767px container
 threshold, and back to 24px / 16px on return.
+
+### The Unassigned sheet: a 404'd stylesheet, the wrong side, and dropped roles (2026-09-10)
+
+Reported: *"show unassigned sheet is very wrong… it has been built already so there should be no
+problems here. Please use built version, and ensure sheet is to the right of table detail."*
+
+Right on both counts. `Unassigned` was fine; this page was wrong in four ways.
+
+#### 1. The stylesheet was 404ing — a wrong relative depth, not a missing link
+
+```
+- <link rel="stylesheet" href="../../patterns/Unassigned/Unassigned.css">     ← src/cc/patterns/…
++ <link rel="stylesheet" href="../../../patterns/Unassigned/Unassigned.css">  ← src/patterns/…
+```
+
+From `src/cc/templates/SeatingPlanner/`, `../../patterns/` is `src/cc/patterns/`, which does not
+exist. So the sheet rendered with **no component CSS at all**: a browser-default 28px `<h3>`, the
+count and hint as plain body text, and no card, border or radius. That is exactly the "very wrong"
+in the report.
+
+**This is worse than a missing link, and worth naming as its own failure mode.** A missing
+stylesheet is found by grepping for its name; this one *was* present, so the grep I ran earlier in
+this build found it and I concluded it was linked. Every other link in the file uses three levels
+(`../../../components/…`, `../../../patterns/TableDetail/…`) — only this one had two. Now checked
+by resolving every local `href`/`src` in the file against the filesystem: **one broken reference,
+and none after the fix.**
+
+#### 2. It was on the wrong side
+
+Figma `3515:207552` lays the row out **Tables | Table Detail | Unassigned**, with the sheet on the
+far right. The template had the pool `<aside>` before the detail `<aside>`, and since
+`.seating-plan` is a plain flex row with no `order` anywhere, DOM order is the position. Moved
+after the detail, so the row now reads listing → handle → detail → unassigned.
+
+#### 3. Invented copy, and the search in the wrong parent
+
+| | Was | Built component / Figma |
+|---|---|---|
+| Hint | "Signed up, not yet seated." | "Drag an attendee onto a seat or table to assign" |
+| Search placeholder | "Find an attendee" | "Search unassigned" |
+| Search parent | `unassigned__header` | `unassigned__body` |
+
+The search's parent matters rather than being cosmetic — the two carry different gaps.
+
+#### 4. The rows had no role — the fourth miss of this kind here
+
+`renderPool()` emitted a name and a company only, so every accent bar fell back to AttendeeCard's
+default Attendee colour and the role was absent. The built component's own demo shows
+`attendee-card--vip` with a "VIP" label, and the frame draws the same.
+
+**The class-diff check did not catch this one**, which is worth knowing about the check itself: it
+compares *class names* present anywhere in the renderer, and `attendee-card__role` does appear —
+in the detail rail and the assign modal. A class used in two of three places looks used. The check
+finds absent classes, not absent *usages*.
+
+#### Verified
+
+Against the built component's own demo, side by side in one page: title 18px, count 11px, hint
+12px, hint text identical, 1px border, 16px radius, search inside `__body` — **no mismatches.**
+The pool's left edge is at or past the detail's right edge, and all **72** rows carry both a role
+modifier class and a role label.
