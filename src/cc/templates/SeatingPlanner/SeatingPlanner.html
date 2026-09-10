@@ -15,7 +15,11 @@
   <link rel="stylesheet" href="../../../components/Dropdown/Dropdown.css">
   <link rel="stylesheet" href="../../../components/DropdownItem/DropdownItem.css">
   <link rel="stylesheet" href="../../../components/DragDropFile/DragDropFile.css">
-  <link rel="stylesheet" href="../../patterns/Unassigned/Unassigned.css">
+  <!-- THREE levels up, not two. This read `../../patterns/` and resolved to
+       `src/cc/patterns/`, which does not exist — the stylesheet 404'd silently and the
+       tray rendered with no chrome at all: a default 28px <h3>, no card, no border. The
+       component was fine; the link was not. -->
+  <link rel="stylesheet" href="../../../patterns/Unassigned/Unassigned.css">
   <link rel="stylesheet" href="../../../components/Portraits/Portraits.css">
   <link rel="stylesheet" href="../../../components/Avatar/Avatar.css">
   <link rel="stylesheet" href="../../../components/NotificationBadge/NotificationBadge.css">
@@ -1167,35 +1171,6 @@
           <span class="seating-plan__handle-bar" aria-hidden="true"></span>
         </div>
 
-        <!-- Unassigned tray (TASK-344753) — the panel the "Show unassigned" switch has always
-             implied and never revealed. Markup is the DS Unassigned pattern's own; its stylesheet
-             was missing from this page and is now linked. Hidden until the switch asks for it.
-
-             The count is signed up MINUS assigned and is event-wide, so it does not change when
-             you switch plans — only seating or unseating moves it (designer, 2026-09-09). -->
-        <aside class="seating-plan__pool" data-sp-pool-region aria-label="Unassigned attendees" hidden>
-          <section class="unassigned" data-sp-pool>
-            <header class="unassigned__header">
-              <div class="unassigned__header-row">
-                <h3 class="unassigned__title">Unassigned</h3>
-                <span class="unassigned__count" data-sp-pool-count>72</span>
-              </div>
-              <p class="unassigned__hint">Signed up, not yet seated.</p>
-              <div class="input input--sm">
-                <div class="input__wrap">
-                  <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
-                  <input type="search" class="input__control" data-sp-pool-search
-                         placeholder="Find an attendee" aria-label="Find an unassigned attendee">
-                </div>
-              </div>
-            </header>
-            <div class="unassigned__body">
-              <!-- TODO(backend:SeatingPlanner): the pool is derived from the mock roster in
-                   seating-data.js — see seating-export-occupant-coverage. -->
-              <div class="unassigned__list" data-sp-pool-list></div>
-            </div>
-          </section>
-        </aside>
 
         <aside class="seating-plan__aside" data-sp-aside aria-label="Selected table">
           <section class="table-detail" data-sp-detail data-backend-todo="seating-table-detail">
@@ -1415,6 +1390,37 @@
               <button type="button" class="btn btn--secondary btn--sm">Assign</button>
             </article>
               </div>
+            </div>
+          </section>
+        </aside>
+        <!-- Unassigned tray (TASK-344753) — the panel the "Show unassigned" switch has always
+             implied and never revealed. Markup is the DS Unassigned pattern's own; its stylesheet
+             was missing from this page and is now linked. Hidden until the switch asks for it.
+
+             The count is signed up MINUS assigned and is event-wide, so it does not change when
+             you switch plans — only seating or unseating moves it (designer, 2026-09-09). -->
+        <aside class="seating-plan__pool" data-sp-pool-region aria-label="Unassigned attendees" hidden>
+          <section class="unassigned" data-sp-pool>
+            <header class="unassigned__header">
+              <div class="unassigned__header-row">
+                <h3 class="unassigned__title">Unassigned</h3>
+                <span class="unassigned__count" data-sp-pool-count>72</span>
+              </div>
+              <p class="unassigned__hint">Drag an attendee onto a seat or table to assign</p>
+            </header>
+            <div class="unassigned__body">
+              <!-- The search belongs to `__body`, not `__header` — that is where the built
+                   component puts it, and the two parents carry different gaps. -->
+              <div class="input input--sm">
+                <div class="input__wrap">
+                  <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
+                  <input type="search" class="input__control" data-sp-pool-search
+                         placeholder="Search unassigned" aria-label="Search unassigned attendees">
+                </div>
+              </div>
+              <!-- TODO(backend:SeatingPlanner): the pool is derived from the mock roster in
+                   seating-data.js — see seating-export-occupant-coverage. -->
+              <div class="unassigned__list" data-sp-pool-list></div>
             </div>
           </section>
         </aside>

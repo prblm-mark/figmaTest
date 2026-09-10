@@ -500,16 +500,26 @@
     }
 
     listEl.innerHTML = shown.map(function (p) {
-      return '<article class="attendee-card"' +
+      /* ROLE CLASS AND ROLE LABEL, both of which were missing. The rows carried a name and a
+       * company only, so every accent bar fell back to AttendeeCard's default Attendee colour
+       * and the role was absent entirely — while the built Unassigned component's own demo shows
+       * `attendee-card--vip` with a "VIP" label, and Figma `3515:207552` draws the same. Fourth
+       * miss of this kind on this screen; the class-diff check in
+       * `feedback_renderer_drops_component_markup` catches the shape of it, and it only passed
+       * before because the CLASS `attendee-card__role` does appear elsewhere in this file. */
+      return '<article class="attendee-card attendee-card--' + esc(p.role) + '"' +
               ' data-sp-pool-person="' + esc(p.id) + '" data-sp-pickable' +
               ' draggable="true" tabindex="0"' +
-              ' aria-label="' + esc(p.name) + ', unassigned. Press Enter to pick up.">' +
+              ' aria-label="' + esc(p.name) + ', ' + esc(p.company) + ', ' +
+                esc(roleLabel(p.role)) + ', unassigned. Press Enter to pick up.">' +
         '<span class="attendee-card__accent" aria-hidden="true">' +
           '<span class="attendee-card__accent-bar"></span></span>' +
         '<div class="attendee-card__body">' +
           '<p class="attendee-card__name">' + esc(p.name) + '</p>' +
           '<p class="attendee-card__meta">' +
             '<span class="attendee-card__company">' + esc(p.company) + '</span>' +
+            '<span class="attendee-card__sep" aria-hidden="true">·</span>' +
+            '<span class="attendee-card__role">' + esc(roleLabel(p.role)) + '</span>' +
           '</p>' +
         '</div>' +
       '</article>';
