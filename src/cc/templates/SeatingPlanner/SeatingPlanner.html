@@ -2556,27 +2556,15 @@
         <hr class="table-types__rule">
 
         <div class="table-types__list" data-tt-list>
-          <!-- The BASELINE EVENT'S OWN TIERS. Figma's modal ships the five generic ones, but the
-               Populated frame gives Table 1 "Headline Sponsor" and Table 2 "Platinum" — drawn as
-               relabelled Gold and VIP instances, hence those two colours. Without rows here the
-               registry would contradict the plan: two tables would carry a tier you can neither
-               see nor rename nor recolour, and removing "Gold" would not touch the table actually
-               using that colour. Tier rows are data, not design. -->
-          <div class="table-types__row" data-tt-row data-tt-slug="headline-sponsor">
-            <div class="color-picker-input color-picker-input--chip" data-tt-colour>
-              <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #d97706;"></span></span>
-              <span class="color-picker-input__value">#d97706</span>
-              <input type="color" class="color-picker-input__native" value="#d97706" aria-label="Headline Sponsor tier colour">
-            </div>
-            <div class="input table-types__name">
-              <div class="input__wrap">
-                <input type="text" class="input__control" value="Headline Sponsor" aria-label="Tier name" data-tt-name>
-              </div>
-            </div>
-            <button type="button" class="table-types__remove" aria-label="Remove Headline Sponsor tier" data-tt-remove>
-              <i data-lucide="trash-2" aria-hidden="true"></i>
-            </button>
-          </div>
+          <!-- A BASELINE EVENT TIER. Figma's modal ships the five generic ones, but the Populated
+               frame gives Table 2 a "Platinum" chip — a relabelled VIP instance, hence that
+               colour. Without a row here the registry would contradict the plan: a table would
+               carry a tier you can neither see nor rename nor recolour, and removing "VIP" would
+               not touch the table actually using that colour. Tier rows are data, not design.
+
+               "Headline Sponsor" was the other and was REMOVED 2026-09-10 at the designer's
+               request — the frame relabelled a Gold instance, and the list should just say Gold.
+               Table 1 now carries `gold` directly. -->
           <div class="table-types__row" data-tt-row data-tt-slug="platinum">
             <div class="color-picker-input color-picker-input--chip" data-tt-colour>
               <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner" style="background-color: #00749e;"></span></span>

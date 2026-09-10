@@ -1942,6 +1942,20 @@
   min-block-size: 0;
 }
 
+/* THIS MODAL ONLY (designer, 2026-09-10): a tighter 8px gap between the toggle row, the search
+ * field and the list, and a 12px lead-in instead of `.modal__body`'s 24px — the toggle row is a
+ * thin strip rather than a block of content, so the stock spacing left it floating.
+ *
+ * Written as `.modal__body.assign__body` (0,2,0) rather than `.assign__body` alone. Both would
+ * work today only because SeatingPlanner.css happens to load after Modal.css, and an override
+ * that depends on link order is one reshuffle away from silently reverting. The extra class also
+ * takes it past Modal's own 639px rule, so the 12px lead-in holds at mobile while the other three
+ * sides still step down to 16px with every other dialog. */
+.modal__body.assign__body {
+  gap: var(--ai-spacing-3);
+  padding-block-start: var(--ai-spacing-4);
+}
+
 /* Figma pins this absolutely at `top-[81px] w-[462px]`; it is simply a right-aligned row above
  * the search field, so it is built as one — carrying that offset over would break the moment the
  * modal changed width. */
