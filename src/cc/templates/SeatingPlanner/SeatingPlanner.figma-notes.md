@@ -2640,3 +2640,48 @@ A pool person over an occupied seat now highlights; the drop seats them, displac
 occupant back to the tray, keeps the pool count at 72 and produces no duplicates. The replaced
 person arrives with their **own role** (VIP, not Attendee), so the record-role fix holds through
 this path too. Seat → occupied still swaps, with the swap wording intact.
+
+### New Plan did nothing on the plan state (2026-09-10)
+
+There are **two** New Plan buttons — one in the no-plan header, one in the plan header — and the
+create-plan module bound its listener with `querySelector`, which returns only the first:
+
+```js
+var trigger = document.querySelector('[data-seating-new-plan]');   // ← the no-plan one
+…
+trigger.addEventListener('click', open);
+```
+
+So on `?state=plan` the button on screen had no listener at all. Measured: two buttons in the DOM,
+one visible per state, and the visible one on the plan state is **index 1**.
+
+**It survived because the no-plan state is where you land by default**, so the button appears to
+work right up until you have a plan — which is exactly when you would want a second one.
+
+**This is the same bug the Copy Plans pair already had**, and that fix is three lines away in the
+same file, with a comment saying so: *"there are two Copy Plans buttons in the header, one per
+section, and both were unwired."* Same mistake, one element along, fixed the same way — a delegated
+listener, which also survives a re-render.
+
+Two details the delegation had to keep:
+
+- `aria-expanded` goes on **the button the user actually pressed**, so `lastTrigger` tracks it
+  rather than a fixed `trigger`.
+- On close it is cleared on **both**, because `?state=create-plan` opens the dialog with no button
+  pressed at all, and a stale `aria-expanded="true"` would otherwise outlive the dialog.
+
+Verified in both states: the visible button opens the dialog and reads `aria-expanded="true"`
+(index 1 on `plan`, index 0 on `no-plan`), and closing leaves both at `false`.
+
+#### Six other hooks share the shape — unverified
+
+A sweep for singular `querySelector` bindings on hooks with more than one real element, and no
+`querySelectorAll` or delegation anywhere, returns `data-cp-plans`, `data-ep-search`,
+`data-rl-image`, `data-sp-detail`, `data-tf-warning` and `data-xp-doc`.
+
+**Not claiming these are broken.** Most look like several elements inside one modal, where binding
+the first may well be intended. An attempt to triage them by which page state each occurrence sits
+in produced unreliable output — it labelled the *known-bad* `data-seating-new-plan` as fine — so
+there is no signal here worth acting on, only a list worth auditing properly. The distinguishing
+question for each is the one that made New Plan fail: **do the duplicates live in different page
+states, only one of which is on screen?**

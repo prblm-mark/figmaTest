@@ -221,8 +221,20 @@
   ].join(',');
 
   var overlay = document.querySelector('[data-create-plan]');
-  var trigger = document.querySelector('[data-seating-new-plan]');
-  if (!overlay || !trigger) return;
+  /* THERE ARE TWO New Plan buttons — one in the no-plan header, one in the plan header — and
+   * `querySelector` returns only the first. So the listener bound to the no-plan button and the
+   * one actually on screen in the `?state=plan` view did nothing at all.
+   *
+   * Exactly the bug the Copy Plans pair already had, whose fix is delegated and whose comment
+   * says so: "there are two Copy Plans buttons in the header, one per section, and both were
+   * unwired". The same mistake, one element along, and it survived because the no-plan state is
+   * the one you land on by default — so the button appears to work until you have a plan.
+   *
+   * `triggers` for the guard, and `lastTrigger` for `aria-expanded` and focus return, which have
+   * to name the button the user actually pressed. */
+  var triggers = Array.prototype.slice.call(document.querySelectorAll('[data-seating-new-plan]'));
+  if (!overlay || !triggers.length) return;
+  var lastTrigger = triggers[0];
 
   var dialog = overlay.querySelector('[role="dialog"]');
   var form = overlay.querySelector('#create-plan-form');
@@ -276,11 +288,12 @@
     help.setAttribute('data-cp-help-original', help.textContent.trim());
   });
 
-  function open() {
+  function open(from) {
     if (isOpen()) return;
+    if (from) lastTrigger = from;
     returnFocusTo = document.activeElement;
     overlay.classList.add(OPEN_CLASS);
-    trigger.setAttribute('aria-expanded', 'true');
+    lastTrigger.setAttribute('aria-expanded', 'true');
     var first = overlay.querySelector('.input__control');
     if (first) first.focus();
     else dialog.focus();
@@ -289,16 +302,24 @@
   function close() {
     if (!isOpen()) return;
     overlay.classList.remove(OPEN_CLASS);
-    trigger.setAttribute('aria-expanded', 'false');
+    /* Cleared on BOTH, not just the last one: the state is opened directly by `?state=create-plan`
+     * as well, and a stale `aria-expanded="true"` on the other button would outlive the dialog. */
+    triggers.forEach(function (t) { t.setAttribute('aria-expanded', 'false'); });
     /* Same `<body>` rejection as the picker — see the note there. */
     var target = (returnFocusTo && returnFocusTo !== document.body && returnFocusTo.isConnected)
       ? returnFocusTo
-      : trigger;
+      : lastTrigger;
     returnFocusTo = null;
     target.focus();
   }
 
-  trigger.addEventListener('click', open);
+  /* Delegated, so it does not matter which header is on screen or whether it was re-rendered. */
+  document.addEventListener('click', function (event) {
+    var btn = event.target.closest ? event.target.closest('[data-seating-new-plan]') : null;
+    if (!btn) return;
+    event.preventDefault();
+    open(btn);
+  });
 
   Array.prototype.forEach.call(overlay.querySelectorAll('[data-cp-close]'), function (btn) {
     btn.addEventListener('click', close);
