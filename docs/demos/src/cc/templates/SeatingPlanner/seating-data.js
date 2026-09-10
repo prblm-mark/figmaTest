@@ -59,10 +59,11 @@
    * table is `typeId: null` rather than a type whose colour happens to be empty. The modal says
    * the same thing by giving that row neither a swatch nor a trash button.
    *
-   * "Headline Sponsor" and "Platinum" are the baseline event's own tiers, drawn on the Populated
-   * frame as relabelled Gold and VIP instances — so they carry those two colours. */
+   * "Platinum" is one of the baseline event's own tiers, drawn on the Populated frame as a
+   * relabelled VIP instance, so it carries that colour. "Headline Sponsor" was the other and was
+   * REMOVED at the designer's request 2026-09-10 — the frame relabelled a Gold instance, and the
+   * tier list should just say Gold. Tables 1 and 2 now carry `gold` and `vip` directly. */
   var TYPES = [
-    { id: 'headline-sponsor', label: 'Headline Sponsor', colour: '#d97706' },
     { id: 'platinum',         label: 'Platinum',         colour: '#00749e' },
     { id: 'head-table',       label: 'Head Table',       colour: '#991b1b' },
     { id: 'gold',             label: 'Gold',             colour: '#d97706' },
@@ -189,14 +190,16 @@
   }
 
   /* Main Ballroom — the 13 tables the listing draws. Tables 1 and 2 carry a type chip and a
-   * sponsor; the rest are untyped, which is why their cards show no chip. Role tallies are
+   * sponsor — Gold and VIP since 2026-09-10, where the frame drew those two variants relabelled
+   * "Headline Sponsor" and "Platinum" — and the rest are untyped, which is why their cards show
+   * no chip. Role tallies are
    * exactly the legend splits the frame draws, so the derived legend reproduces them —
    * except on the 0/10 cards, where the frame's stale `Empty (4)` becomes the correct
    * `Empty (10)`. See figma-notes for that and the three other corrections. */
   var mainBallroom = [
-    table('mb1',  'Table 1',  'headline-sponsor', 'Mastercard', 10,
+    table('mb1',  'Table 1',  'gold', 'Mastercard', 10,
           { attendee: 2, vip: 1, speaker: 1, sponsor: 2, host: 1 }),   /* 7 / 10 */
-    table('mb2',  'Table 2',  'platinum', 'Monzo', 10,
+    table('mb2',  'Table 2',  'vip', 'Monzo', 10,
           { attendee: 2, vip: 1, speaker: 2 }),                        /* 5 / 10 */
     table('mb3',  'Table 3',  null, null, 10,
           { attendee: 2, speaker: 1, sponsor: 7 }),                    /* 10 / 10 — Full */

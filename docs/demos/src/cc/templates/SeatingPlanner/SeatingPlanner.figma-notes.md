@@ -2168,3 +2168,38 @@ no count, since it heads a form rather than a list.
 
 **Both want a Figma decision** — they are improvements to a design that does not include them, not
 reproductions of it. Tracked on `seating-assign-seat`.
+
+### Minor amends (designer, 2026-09-10)
+
+**Body spacing, this dialog only.** `.modal__body`'s stock 16px gap and 24px lead-in left the
+Show-help row floating — it is a thin strip rather than a block of content. Reduced to an 8px gap
+and a 12px lead-in.
+
+Written as `.modal__body.assign__body` (0,2,0), not `.assign__body` alone. Both would work today
+only because `SeatingPlanner.css` happens to load after `Modal.css`, and an override that depends
+on link order is one reshuffle away from silently reverting. The extra class also takes it past
+Modal's own 639px rule, so the 12px lead-in holds at mobile while the other three sides still step
+to 16px with every other dialog.
+
+Verified scoped: the assign body reads 8px / 12px while the Table form's body on the same page
+still reads 16px / 24px.
+
+**"Headline Sponsor" is deleted as a tier**, and Tables 1 and 2 now carry `gold` and `vip`
+directly.
+
+This is a **deliberate divergence from the Populated frame**, which draws those two cards with
+"HEADLINE SPONSOR" and "PLATINUM" chips — relabelled Gold and VIP instances. The designer's
+position is that the tier list should just say Gold, so the relabel goes and the tier it was
+hiding is used as itself. "Platinum" stays as a tier (it is still a distinct relabelled VIP the
+event uses) but no table points at it any more, which is fine — a tier may exist unused.
+
+Removed from both places it lived, because the registry and the data have to agree or a table
+carries a tier nobody can see or manage: the `headline-sponsor` row in the Table types modal and
+the entry in `SeatingData.TYPES`. Verified: 7 tier rows remain (Standard, Platinum, Gold, Silver,
+Bronze, Head Table, VIP), the Table form's tier dropdown offers exactly those, Table 1's field
+reads "Gold", and both chips render `Gold @ #d97706` and `VIP @ #00749e`.
+
+Note the knock-on: the header-truncation measurements recorded earlier in these notes were taken
+with the 128px "Headline Sponsor" chip. The two-row header fix stands on its own — a long tier
+label is still possible, since a label is editable data — but the specific string that exposed it
+is no longer in the baseline.
