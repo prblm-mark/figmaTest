@@ -514,15 +514,15 @@
  * and the detail width is --ai-size-6 (320) — Figma binds the size token, so the panel
  * width is NOT a hardcoded 320. 1212 is simply what is left over, so the listing fills.
  *
- * The row itself has NO gap. The handle's own inline padding provides Figma's 8px on each
- * side of the pill, which makes the drag target 20px wide while the visible bar stays 4px —
- * the standard way to build a splitter, and it reproduces Figma's whitespace exactly rather
- * than adding a hit area on top of it. */
+ * THE PILL IS GONE (designer, 2026-09-10) — see the resize section below. The row's 8px is now a
+ * real `gap` instead of the handle's inline padding, which is the same --ai-spacing-3 Figma binds
+ * between the columns; it just used to arrive via the splitter. That also gives the third sheet a
+ * gap, which it never had: with `gap: 0` and the handle sitting only between the listing and the
+ * detail, the detail and the Unassigned sheet were flush against each other. */
 
 .seating-plan {
   display: flex;
-  /* No gap — see above; the handle's padding is the gap. */
-  gap: 0;
+  gap: var(--ai-spacing-3);
   /* Fills the page beside the header, and owns its own scrolling, exactly like the
    * single-child screens before it. min-block-size:0 is what lets the children scroll
    * instead of stretching the row (app-shell height trap). */
@@ -561,6 +561,8 @@
 
 .seating-plan__aside {
   flex: 0 0 auto;
+  /* Positioning context for the resize strip, which now lives on this sheet's own edge. */
+  position: relative;
   /* --sp-aside-w is set by the drag handle at runtime; --ai-size-6 (320) is Figma's value
    * and the reset target. */
   inline-size: var(--sp-aside-w, var(--ai-size-6));
@@ -586,12 +588,34 @@
  * exact few pixels. Keeping Figma's always-visible pill AND highlighting it on
  * hover/focus/drag gives both: a discoverable affordance and the edge feedback. */
 
+/* ── Resize: the sheet's own edge ───────────────────────────────────────────────────────────────
+ * REVERSES the 2026-08-27 decision, and that one was explicit, so it is worth restating rather
+ * than quietly replacing. The designer asked then whether highlighting the panel edge would be
+ * better practice than a pill; the answer recorded was "keep the pill and highlight it", because
+ * an edge that only reacts on hover is undiscoverable. On 2026-09-10 they called it the other way:
+ * drop the pill between the sheets and use the sheet's edge with a cursor change.
+ *
+ * So the pill is gone and this element is now a transparent strip sitting ON the detail sheet's
+ * leading edge, overlapping it rather than occupying space between the sheets.
+ *
+ * IT IS STILL AN ELEMENT, deliberately. A `::before` on the aside would have been less markup,
+ * but a pseudo-element cannot take focus, and this is the only way to resize without a mouse —
+ * it keeps `role="separator"`, `tabindex="0"` and the arrow/Home/End keys. What was dropped is
+ * the visible pill, not keyboard access.
+ *
+ * `margin-inline-end: calc(0px - …)` is what takes it out of the flow: it claims its width for
+ * the hit area and then gives it back, so the row's `gap` is the only space between the sheets
+ * and the strip lands over the sheet edge to its right. */
 .seating-plan__handle {
-  flex: 0 0 auto;
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-  padding-inline: var(--ai-spacing-3);   /* 8px each side — Figma's gap, as the hit area */
+  /* ABSOLUTE, over the sheet's leading edge. It was first tried as a flex item whose width was
+   * cancelled by a negative margin, which worked but left the row asymmetric: still a flex item,
+   * it collected the row's `gap` on BOTH sides, so listing→detail measured 16px against
+   * detail→pool's 8px. Out of the flow, every gap in the row is the one 8px. */
+  position: absolute;
+  z-index: 1;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: var(--ai-spacing-5);   /* 16px grab zone, over the sheet's own padding */
   cursor: col-resize;
   /* Stops a touch drag scrolling the page instead of moving the handle. */
   touch-action: none;
@@ -599,7 +623,10 @@
   border: 0;
 }
 
+/* The pill is NOT painted any more — it survives only as the focus indicator above, which is why
+ * it is hidden here rather than deleted from the markup. */
 .seating-plan__handle-bar {
+  display: none;
   inline-size: var(--ai-spacing-1);      /* 4px */
   border-radius: var(--ai-radius-full);
   /* Figma binds --cc-actions-menu-primary-bg here — the ACTIONS MENU's background token, on a
@@ -613,9 +640,11 @@
 /* Figma specifies no hover/active state for the pill — this is an added interactive state,
  * flagged in figma-notes. --ai-border-brand is the same token the selected TableCard and
  * RoomCard use for their brand edge, so the handle reads as part of the same language. */
-.seating-plan__handle:hover .seating-plan__handle-bar,
-.seating-plan__handle[data-dragging] .seating-plan__handle-bar {
-  background-color: var(--ai-border-brand);
+/* Hover and drag now tint the SHEET'S EDGE rather than a pill — the edge is the affordance, so
+ * the edge is what responds. Scoped to the aside that follows the strip. */
+.seating-plan__handle:hover ~ .table-detail,
+.seating-plan__handle[data-dragging] ~ .table-detail {
+  border-inline-start-color: var(--ai-border-brand);
 }
 
 /* The bar takes the focus ring rather than the 20px hit area, so the indicator sits on the
@@ -625,7 +654,16 @@
   outline: none;
 }
 
+/* Keyboard focus DOES get a visible mark, and it has to: the strip is invisible at rest, so
+ * without this a keyboard user has no idea the separator is focused or that arrow keys will do
+ * anything. This is the discoverability cost the 2026-08-27 decision was avoiding — for pointer
+ * users it is now the cursor that carries the signal. */
 .seating-plan__handle:focus-visible .seating-plan__handle-bar {
+  display: block;
+  inline-size: var(--ai-spacing-1);
+  margin-inline: auto;
+  block-size: 100%;
+  border-radius: var(--ai-radius-full);
   background-color: var(--ai-border-brand);
   outline: 2px solid var(--ai-surface-brand);
   outline-offset: 2px;

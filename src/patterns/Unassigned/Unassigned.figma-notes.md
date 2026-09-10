@@ -151,3 +151,38 @@ designer replaced it with fill-the-column plus a scrolling list. Here there is n
   `--sp-*` role colours on the rows are **not** theme-aware.
 - The Lucide names match Figma's layer names: `circle-check` for `Icon/24px/CircleCheck`, `search`
   for the Input icon.
+
+## Fills its column, list scrolls inside (2026-09-10)
+
+The sheet had no height treatment at all: `block-size` was unset, nothing had `overflow`, and the
+list was a plain flex column. So it grew to its content, and in the Seating Planner's 72-person
+pool it ran straight past the bottom of the row. **This component's own demo never showed it** —
+that list is six people long, and six people fit.
+
+Same treatment TableDetail already carries, and for the same reason. Three parts, all needed:
+
+| Element | Added | Why |
+|---|---|---|
+| `.unassigned` | `block-size: 100%; min-block-size: 0; overflow: hidden` | fills the column; `hidden` keeps the scrolling list inside the 16px radius |
+| `.unassigned__body` | `flex: 1; min-block-size: 0` | absorbs the leftover height, and `min-block-size: 0` is what lets a flex item shrink below its content — without it a scroll never engages (the app-shell height trap) |
+| `.unassigned__list` | `flex: 1; min-block-size: 0; overflow-y: auto` | **the list** is the scroller, not the body, so the search field above stays put while the people move |
+
+Scrollbar is the system's — transparent track, thin `--ai-surface-secondary` thumb — matching
+`.table-detail__list` and `.chat-sidebar__sections`.
+
+### `flex-shrink: 0` on the list's children is load-bearing
+
+Making the list a height-constrained flex column means its children shrink below their content by
+default. With 72 people the sheet rendered as **a stack of ~1px hairlines**, and `overflow-y: auto`
+does not prevent it: shrinking happens first, so there is nothing left to overflow.
+
+Caught by screenshotting rather than by the measurements, which all looked correct — the region
+scrolled, the sheet was inside the row, 72 rows existed.
+
+**The tell is a scroll region that is also a flex column.** TableDetail sidesteps it structurally
+(`__list` scrolls and `__seats` sits inside at auto height); doing it with one element means saying
+`flex-shrink: 0` out loud. Second time in one day, after `.assign__results > *` in the Seating
+Planner's assign modal.
+
+Figma specifies none of this — its frame draws a short list at a fixed height, so the question
+never arises there.
