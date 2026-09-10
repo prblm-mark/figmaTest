@@ -100,7 +100,7 @@ figma.connect(
               <p class="seating-header__room-count">(72 Unassigned)</p>
             </div>
             <div class="seating-header__toggle-group">
-              <button type="button" class="toggle toggle--xs" role="switch" aria-checked="false"
+              <button type="button" class="toggle toggle--xxs" role="switch" aria-checked="false"
                       id="show-unassigned" aria-labelledby="show-unassigned-label">
                 <span class="toggle__track"><span class="toggle__knob"></span></span>
               </button>

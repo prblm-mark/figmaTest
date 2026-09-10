@@ -636,7 +636,11 @@
             <div class="seating-header__toggle-group">
               <!-- TODO(backend:SeatingPlanner): this toggle reveals the Unassigned panel — the
                    3-panel layout in Figma 3515:210144. Not wired yet; that is its own screen. -->
-              <button type="button" class="toggle toggle--xs" role="switch" aria-checked="false"
+              <!-- `toggle--xxs`, not the `toggle--xs` Figma binds here (designer, 2026-09-10):
+                   it matches the "Only free seats" switch in the toolbar directly below, which
+                   Figma draws at xxs. The two sat at 32x16 and 24x12 side by side. Figma wants
+                   updating — see SeatingHeader.figma-notes. -->
+              <button type="button" class="toggle toggle--xxs" role="switch" aria-checked="false"
                       id="sp-show-unassigned" aria-labelledby="sp-show-unassigned-label">
                 <span class="toggle__track"><span class="toggle__knob"></span></span>
               </button>

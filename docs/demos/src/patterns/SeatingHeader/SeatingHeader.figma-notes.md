@@ -3,7 +3,7 @@
 **Tier:** Pattern
 **Built:** 2026-08-26 (Seating Planner module, wave 6)
 **Files:** `SeatingHeader.css`, `SeatingHeader.html`, `SeatingHeader.js`, `SeatingHeader.figma.ts`, `SeatingHeader.figma-notes.md`
-**Composes:** Button (base, `--sm`, `--icon --xs`, `--icon --2xs` via RoomCard), Toggle (`toggle--xs`, label-less), RoomCard (one per plan)
+**Composes:** Button (base, `--sm`, `--icon --xs`, `--icon --2xs` via RoomCard), Toggle (`toggle--xxs`, label-less — **`--xs` in Figma**, see the amendment at the end), RoomCard (one per plan)
 **JS:** `SeatingHeader.js` (drag-to-scroll for the plans carousel) + `Toggle.js`
 
 ## Figma Node
@@ -792,3 +792,30 @@ requirement for this pattern.
 and the Add/Export squares render empty. That is the harness, not the component; measure on the real
 page, or call `createIcons()` after injecting.
 
+
+## The toggle is `xxs`, where Figma binds `xs` (designer, 2026-09-10)
+
+*"Can you make the show unassigned toggle match the only free seats toggle, for consistency."*
+
+Figma binds **`toggle--xs`** here — 32×16 track, 12px knob — and **`toggle--xxs`** on
+TableListing's "Only free seats" switch, 24×12 with an 8px knob. Those two toolbars sit directly
+above one another on the Seating Planner screen, so the pair rendered at visibly different sizes a
+few pixels apart. Measured before the change: 32×16 against 24×12.
+
+Unified on **`xxs`**, the size of the switch it was asked to match. A deliberate divergence, so
+**Figma wants updating here** rather than on TableListing — note that `xxs` is a real variant in
+Toggle's own Figma set, added for that toolbar, so this uses an existing size rather than inventing
+one.
+
+**Changed in the component, not scoped to the template.** The toggle is part of this component's
+own markup, so the component is the authority; the Seating Planner's copy of the markup was changed
+to match in the same commit. Fixing it only in the template is precisely the demo-versus-screen
+drift that has bitten this module repeatedly.
+
+### The request had its premise inverted, which is worth recording
+
+It asked to make this toggle `xs` "so it matches the only free seats toggle" — but it was
+*already* `xs`, and the free-seats switch is the `xxs` one, so taking it literally would have been
+a no-op and the stated goal would have gone unmet. Confirmed by measuring both before touching
+either, and the direction was settled with the designer rather than guessed: both options diverged
+from Figma, in opposite directions.
