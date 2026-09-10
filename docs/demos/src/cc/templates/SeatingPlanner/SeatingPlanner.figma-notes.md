@@ -671,7 +671,7 @@ that holds them, and its drag handle.
 
 | Wrapper | Property | Figma | Token |
 |---|---|---|---|
-| `.cc-control__page--seating` | padding · gap | 32 · 16 desktop, 12 · 12 mobile | `--ai-spacing-7`/`-5`, `--ai-spacing-4` — **already correct from the earlier screens**, re-verified against Header y=32/12 and body y=336/365 |
+| `.cc-control__page--seating` | padding · gap | 32 · 16 desktop, 12 · 12 mobile | `--ai-spacing-7`/`-5`, `--ai-spacing-4` — was correct from the earlier screens, re-verified against Header y=32/12 and body y=336/365. **Desktop padding since amended to `--ai-spacing-6` (24) — see the amendment at the end of this file** |
 | `.seating-plan` (Frame 245, `3515:177773`) | gap | 0 — see below | — |
 | listing | width | 1212 = what's left | `flex: 1 1 auto` |
 | handle | inline padding · bar | 8 each side · 4 wide, radius-full | `--ai-spacing-3` · `--ai-spacing-1` · `--ai-radius-full` |
@@ -2203,3 +2203,112 @@ Note the knock-on: the header-truncation measurements recorded earlier in these 
 with the 128px "Headline Sponsor" chip. The two-row header fix stands on its own — a long tier
 label is still possible, since a label is editable data — but the specific string that exposed it
 is no longer in the baseline.
+
+### The results list uses Modal's shared scroll treatment (2026-09-10)
+
+*"For the overflow scroll on modals, I think we have already established a pattern — apply it to
+the assign attendee, and all overflow modal scrolls moving forward."*
+
+There were two patterns, not one. The established one — transparent track, thin
+`--ai-surface-secondary` thumb — is used by `.chat-sidebar__sections` (the original),
+`.system-role__textarea` and `.table-detail__list` (designer-confirmed 2026-08-25). The outlier was
+Modal's own `.modal__body--scroll`: a visible `--ai-surface-minimal` track with an
+`--ai-border-secondary` thumb at a raw 6px.
+
+Checked which had Figma behind it: **neither**. Modal's `Type=Scrollable` variant (`2464:757`) draws
+a clipped 360px container and no scrollbar at all. So the majority-and-documented pattern wins, and
+rather than adding a fifth copy of it, it now lives in Modal as **`.modal__scroll`** — see
+`Modal.figma-notes.md`. The outlier was folded into the same rule, so there is one answer.
+
+`.assign__results` carries `assign__results modal__scroll`, and its own `overflow-y` and
+`min-block-size` declarations were removed as duplicates; only the `--ai-size-7` cap and the flex
+behaviour remain its own.
+
+Verified: the list's computed `scrollbar-color` and `scrollbar-width` are now byte-identical to
+`.table-detail__list`'s on the same page, and the region genuinely scrolls. The measured gutter is
+**11px**, not the 6px in the `::-webkit-scrollbar` rule — which is the Chrome caveat TableDetail
+already documented, now confirmed rather than inherited on trust.
+
+### Card headers align across a row, so the legends line up (designer, 2026-09-10)
+
+*"When a table card has a sponsor making it larger, and we stretch the siblings on the same row,
+can we grow the top title section so that legends still align."*
+
+Measured on row 1 of the Main Ballroom before the change:
+
+| card | sponsor | header | bar top | legend top |
+|---|---|---|---|---|
+| Table 1 | yes | 42 | 84 | 100 |
+| Table 2 | yes | 42 | 84 | 100 |
+| Table 3 | no | **20** | **62** | **78** |
+| Table 4 | no | **20** | **62** | **78** |
+
+The offset is **22px on all three** — exactly the sponsor row's height. And the legend-row count
+does *not* contribute: a 1-row legend against a 2-row one changes only what sits *below* the
+legend, because the stretch slack is start-aligned inside the visualisation block. So padding every
+header in a row up to the tallest aligns the bars and the legends together.
+
+#### Why this is JS and not CSS
+
+Three CSS routes, none of which work:
+
+- **`flex-grow` on the header** absorbs *all* the slack, including the legend-row difference, so an
+  unsponsored card overshoots by 13px and misaligns the other way.
+- **`subgrid`** needs definite row tracks on the parent; `.table-listing__grid` uses `auto-fill`
+  with implicit rows, so there are none to inherit.
+- **Reserving the sponsor row unconditionally** is CSS-only and does align everything, but costs
+  22px on every unsponsored card in every row — 11 of the Main Ballroom's 13 tables — including
+  rows where nothing has a sponsor and there is nothing to align to.
+
+So `alignHeaders()` clears every override, measures every header, groups by the card's own `top`,
+and pads the shorter ones in each row to the tallest. Clear-then-measure-then-write in three
+separate passes: a header still padded from last time reports the padded height, which would
+ratchet a row maximum up and never bring it back down; and interleaving reads with writes would
+have each write invalidate the next read.
+
+It runs from `render()` and from the two paths that re-render the listing alone — search and the
+free-seats filter — because filtering changes which cards share a row.
+
+#### The harness lied, three times
+
+The resize path is watched with a `ResizeObserver` on the grid, because in the CC shell that column
+resizes with no window resize at all when the menu docks (CLAUDE.md §4a).
+
+**A ResizeObserver does not fire for an iframe width change under Chrome's
+`--virtual-time-budget`.** A freshly created observer logged **zero** callbacks across a 4→3 column
+change that demonstrably reflowed — `gridTemplateColumns` went from four tracks to three in the
+same probe.
+
+That cost three rewrites of this function chasing failures that were the test rig, not the code:
+grouping by measured tops, then deferring by a macrotask, then reading the resolved
+`gridTemplateColumns` and doing the row arithmetic — each "fixed" some transitions and broke
+others, because none of them were ever running. The elaborate align-verify-retry loop that
+followed was machinery built for a phantom, and has been removed.
+
+Same family as rAF and IntersectionObserver not firing there, already recorded in
+`feedback_headless_http_and_transitions`.
+
+**What is and is not verified**, stated rather than implied: the pass itself is verified at every
+column count (4 / 3 / 2 / 1) by invoking it the way the observer would — all rows aligned at
+1560, 1100, 860, 1300, 700, 980 and back to 1560, plus filter on and off. The observer's
+*delivery* on resize is **not** verified here and cannot be with this rig.
+
+### Desktop page padding amended to 24px (designer, 2026-09-10)
+
+`.cc-control__page--seating` takes **`--ai-spacing-6` (24px)** at desktop, where Figma binds
+`--ai-spacing-7` (32px). A deliberate divergence at the designer's request; **Figma wants updating
+to match.**
+
+Two things worth noting rather than leaving to be rediscovered:
+
+- **It removes a departure rather than adding one.** `.cc-control__page` already gives 24px, so
+  this screen's padding is now the shell's own. The **gap** is the only place the page still
+  differs (`--ai-spacing-5` / 16px against the shell's 32px), which the rule's comment covers.
+- **The narrow override is untouched.** `@container cs-main (max-width: 767px)` still steps to
+  `--ai-spacing-4` (12px), which is Figma's mobile value — the request was scoped to desktop.
+
+The Figma-mapping tables earlier in this file still read `--ai-spacing-7` for the page padding and
+are correct as records of *Figma*; the code is what diverged.
+
+Verified: 24px padding with a 16px gap at desktop, 12px / 12px below the 767px container
+threshold, and back to 24px / 16px on return.
