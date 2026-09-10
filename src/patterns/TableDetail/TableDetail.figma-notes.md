@@ -317,3 +317,46 @@ above supplies the name and count.
 Rationale and the decision rule live in **CLAUDE.md §4a**. The short version: a docked
 SidebarMenu shrinks the CC content column with no window resize, so a viewport query cannot see
 the real available width — measured 820px of column at a 2239px viewport, with no query firing.
+
+## Minimum width: `--ai-size-5` (280px) (designer, 2026-09-10)
+
+`.table-detail` carries `min-inline-size: var(--ai-size-5)` alongside its fixed
+`inline-size: var(--ai-size-6)` (320).
+
+**Figma has no minimum at all** — it draws one fixed 320px width at every variant, which is what
+the note above the width records. So this is an addition rather than a binding, and it does nothing
+on its own: a floor only bites where a caller makes the panel narrower than its declared width.
+Today that is the Seating Planner's resizable rail.
+
+### Two other places had to agree, or the floor would have been inert
+
+A `min-inline-size` on a component is trivially defeated from outside, and it was being defeated in
+both directions:
+
+| Where | Was | Now |
+|---|---|---|
+| `.seating-plan__aside > .table-detail` | `min-inline-size: 0` — so the panel could shrink to whatever the drag set | reset removed, so the component's floor applies |
+| The handle's clamp (`SeatingPlanner.js`) | `--ai-size-4` (240) | `--ai-size-5` (280) |
+
+**The clamp change is a divergence from Figma and is flagged as one.** 240 was not invented — it
+appears in Frame 245's own variable list alongside the 320 default. But a handle that drags to 240
+against a panel that refuses to go below 280 is not a narrower rail; it is a handle that has stopped
+matching the thing it resizes. The designer's 280 floor supersedes the 240, and Figma wants
+updating.
+
+### The stacked case keeps its `min-inline-size: 0`, deliberately
+
+`.table-listing__grid > .table-detail` still resets the floor. At stacked widths the panel is not a
+rail — it is a full-width grid row (`grid-column: 1 / -1`) that should track the column, and Figma's
+own mobile instance is 302 wide. Enforcing a 280 rail minimum there would make the panel overflow
+its column on a narrow phone rather than fit it. That reset is the documented Case B override from
+2026-08-27 and is unchanged.
+
+### Verified
+
+Default 320 with `aria-valuemin` reporting 280. Driving the rail down through the real resize path
+(`End`, then five further presses past the minimum) stops at exactly 280, with the aside and the
+panel in step at every step and never below. `Home` still reaches the max at 700 (half the row).
+Forcing `--sp-aside-w` to 200 or 260 *around* the clamp leaves the panel at 280 — which is the floor
+doing its job, and also why the clamp had to move: bypassing it is the only way to get the two out
+of step.

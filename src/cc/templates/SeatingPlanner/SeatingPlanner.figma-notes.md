@@ -693,6 +693,14 @@ Implemented as `role="separator" aria-orientation="vertical"` with `aria-valuemi
 `tabindex="0"`, pointer drag with pointer capture, and keyboard control — a separator that can only
 be dragged is unusable without a mouse.
 
+**MINIMUM RAISED 2026-09-10: `--ai-size-5` (280), up from `--ai-size-4` (240).** The designer gave
+TableDetail a 280 floor, and this clamp had to move with it: a handle that drags to 240 against a
+panel that refuses to go below 280 is not a narrower rail, it is a handle that has stopped matching
+what it resizes. **A divergence from Figma, and flagged as one** — 240 was not invented, it appears
+in Frame 245's own variable list beside the 320 default. Figma wants updating. The component's own
+notes carry the full picture, including the `min-inline-size: 0` reset on the aside that had to go
+for the floor to bite at all.
+
 **Token flag.** The pill is bound to `--cc-actions-menu-primary-bg` — the *ActionsMenu's* background
 token, on a splitter in the page body. Its value is identical to `--ai-surface-contrast` in all six
 modes, so the code uses `--ai-surface-contrast`: a value-preserving swap to the generic family that

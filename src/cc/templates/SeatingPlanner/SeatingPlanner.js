@@ -598,12 +598,19 @@
       return n;
     }
 
-    /* MIN is --ai-size-4 (240) and DEFAULT is --ai-size-6 (320); both appear in Frame 245's
-     * own variable list, so neither is invented. The MAX is half the row, which Figma does
-     * NOT specify — flagged in figma-notes as an interaction parameter needing a designer
-     * call, along with the arrow-key step. */
+    /* MIN is --ai-size-5 (280) since 2026-09-10, RAISED from --ai-size-4 (240) at the
+     * designer's request that the detail sheet have a 280 floor.
+     *
+     * Worth flagging rather than burying: 240 was NOT invented — it appears in Frame 245's own
+     * variable list alongside the 320 default, so this clamp now diverges from Figma. It had to
+     * move together with the panel's own `min-inline-size`, because a handle that drags to 240
+     * against a panel that refuses to go below 280 is not a narrower rail, it is a handle that
+     * stops matching the thing it resizes.
+     *
+     * The MAX is half the row, which Figma does not specify — flagged in figma-notes as an
+     * interaction parameter needing a designer call, along with the arrow-key step. */
     function bounds() {
-      var min = tokenPx('--ai-size-4');
+      var min = tokenPx('--ai-size-5');
       var max = Math.max(min, plan.getBoundingClientRect().width / 2);
       return { min: min, max: max };
     }

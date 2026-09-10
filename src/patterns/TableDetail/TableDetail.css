@@ -26,6 +26,11 @@
   align-items: flex-start;
   /* Fixed 320px at both breakpoints — bound to --ai-size-6 in Figma, not a fluid width. */
   inline-size: var(--ai-size-6);
+  /* FLOOR of --ai-size-5 (280) at the designer's request 2026-09-10. It does nothing on its own,
+   * since the width above is fixed — it bites wherever a caller makes the panel narrower, which
+   * today means the Seating Planner's resizable rail. Figma has no min at all; it draws one fixed
+   * width. See the notes for the two places that had to agree with this. */
+  min-inline-size: var(--ai-size-5);
   block-size: 100%;
   border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-lg);
