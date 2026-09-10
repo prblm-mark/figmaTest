@@ -392,3 +392,44 @@ below. Checked with a chip and without one.
 
 The sponsor name below it was already truncating — that divergence is separate, older, and
 unaffected.
+
+## `--drop-target` reuses the Selected styling (designer, 2026-09-10)
+
+*"When an attendee is dragged over a table card, can we use the selected state styling to indicate
+drop target?"*
+
+`.table-card--drop-target` **shares the `--selected` rule** rather than copying its declarations,
+so the two cannot drift apart:
+
+```css
+.table-card--selected,
+.table-card--drop-target { border-color: …border-brand; background-color: …surface-minimal; }
+```
+
+**A separate class, not `--selected` itself**, and that distinction is the point. The selected
+table is a persistent choice that drives the detail rail and carries `aria-pressed="true"`; a drop
+target is momentary and carries no such meaning. Reusing the class would make the two
+indistinguishable in the DOM and would put `aria-pressed` on a card nobody has pressed. Verified:
+the drop target computes the same border and background as the selected card, does **not** carry
+`--selected`, and keeps `aria-pressed="false"`.
+
+### This closes a real gap, and it is not a new variant
+
+`seating-drag-unspecified-visuals` recorded that a table card would accept a drop and **show
+nothing at all**. Figma has no drag state for TableCard — 12 variants, not one of them a drag — and
+an earlier attempt at inventing `--drop-legal` / `--drop-full` was removed for exactly that reason:
+*"inventing a variant with no Figma counterpart is how drift starts."*
+
+Pointing at an existing variant's styling is the designer resolving the gap, not a new variant
+appearing. Nothing was added to the variant matrix.
+
+### Legality gates it, the same as the seat rows
+
+Only the card **under the pointer** is marked, and only when the drop would actually succeed.
+`tableDrop()` returns `'full'` for a table with no free seat — truthy, but `place()` refuses it with
+a toast and keeps the pick — so `'full'` is excluded explicitly. Marking it would promise a drop
+that is then refused, which is the rule AttendeeCard's `--dragged-over` already follows.
+
+Verified: nothing marked with no pick; the empty Table 6 marks; the full Table 3 does **not**;
+moving to another card moves the mark rather than adding a second; hovering a seat row clears the
+card mark; Escape clears everything.
