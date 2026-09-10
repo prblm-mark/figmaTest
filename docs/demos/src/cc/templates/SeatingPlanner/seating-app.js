@@ -639,8 +639,16 @@
       return p.name.toLowerCase().indexOf(q) > -1 || (p.company || '').toLowerCase().indexOf(q) > -1;
     }
 
-    var attendees = pool().filter(match);
-    var crm = crmAvailable().filter(match);
+    /* SORTED ALPHABETICALLY (designer, 2026-09-10). The unassigned pool arrives in roster
+     * insertion order, which is arbitrary to whoever is reading it — 72 names in no order at all.
+     * Sorted on the displayed string, so what you scan is what you compare, and `localeCompare`
+     * rather than `<` so accented names land where a reader expects. Copies are sorted, never the
+     * model: `pool()` is derived and `D.CRM` is authored, and neither should be reordered by a
+     * dialog rendering itself. */
+    function byName(a, b) { return a.name.localeCompare(b.name); }
+
+    var attendees = pool().filter(match).sort(byName);
+    var crm = crmAvailable().filter(match).sort(byName);
 
     if (!attendees.length && !crm.length) {
       host.innerHTML = '<p class="assign__empty">No matches — add a guest manually below.</p>';
@@ -676,14 +684,24 @@
     }
 
     /* An empty section drops its header rather than showing an empty one — what the frame's
-     * search state draws, where "Event Attendees" carries one result and "CRM Contact" two. */
+     * search state draws, where "Event Attendees" carries one result and "CRM Contact" two.
+     *
+     * COUNTS (designer, 2026-09-10) say whether to search or scroll, which matters when the pool
+     * is 72 names deep. Figma draws no count, so this is plain parenthesised text inside the
+     * existing label rather than a new element with new design values to invent. It counts what
+     * is LISTED BENEATH IT, not the section total, so the label stays true while filtering — a
+     * search that matches one person reads "Event Attendees (1)". */
+    function label(text, n) {
+      return '<p class="assign__section-label">' + text + ' (' + n + ')</p>';
+    }
+
     host.innerHTML =
       (attendees.length
-        ? '<p class="assign__section-label">Event Attendees</p>' +
+        ? label('Event Attendees', attendees.length) +
           attendees.map(function (p) { return row(p, 'event'); }).join('')
         : '') +
       (crm.length
-        ? '<p class="assign__section-label">CRM Contact</p>' +
+        ? label('CRM Contact', crm.length) +
           crm.map(function (p) { return row(p, 'crm'); }).join('')
         : '');
   }

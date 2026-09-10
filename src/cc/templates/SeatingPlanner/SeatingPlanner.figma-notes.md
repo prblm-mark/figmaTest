@@ -2113,3 +2113,58 @@ and leaves the roster alone. A CRM contact seats as `sponsor` and takes the rost
 guest joins as `attendee`, and the header reads 184 attendees. Escape closes. Mobile at 402px: the
 dialog is near-full-width, the list scrolls, and the manual fields and Add button step to 32px
 while the search field stays 40px — measured on the mobile frame, not assumed.
+
+### Height cap, alphabetical sort and section counts (designer, 2026-09-10)
+
+Reported as *"too big"*, and it was: `.modal` carries `max-block-size: 100%` and the results list
+took its `flex: 1 1 auto` at face value, so the dialog **tracked the viewport** instead of settling
+at a size.
+
+| | Before | After | Figma draws |
+|---|---|---|---|
+| Modal at a 1000px viewport | **952px** | **702px** | 719px |
+| Results region | 634 (11 rows) | 384 | ~384–408 (~6 rows) |
+
+#### The cap goes on the list, and 384 is the house value
+
+`--ai-size-7` (384px) is the repo's established cap for a scrollable list inside a dialog —
+`EventPicker.css:52` and both `FilterDropdowns` menus (`:36`, `:156`). EventPicker's own note
+records it having been approved for exactly this situation: *"Figma caps the scroll region at
+360px; `--ai-size-7` (384px) is the nearest token and was approved in place of an untokenised
+value."* Modal also ships `.modal__body--scroll` at a raw 360px, commented "layout dimension — no
+token match".
+
+**Two things deliberately not done:**
+
+- **No cap on `.modal`.** Its `max-block-size: 100%` was added after Samsung S23 testing so a
+  dialog respects the overlay's padding; capping the dialog rather than the list would push the
+  manual-guest footer off screen instead of scrolling the list.
+- **Not switched to `.modal__body--scroll`.** That scrolls the whole body, which would take the
+  search field and Show help out of view. Figma keeps them fixed too, so the structure was already
+  right — only the ceiling was missing.
+
+`flex: 1 1 auto` with `min-block-size: 0` stays, which makes 384 a **ceiling, not a floor**.
+Verified at a 560px viewport: the modal lands at 512, the list shrinks to 194 and scrolls, and the
+footer is still fully visible at 113.
+
+#### Sort and counts are additions, with no Figma counterpart
+
+Figma shows six rows and draws neither, which quietly assumes you search. With 72 unassigned
+people behind that search box, two small things make the list usable:
+
+- **Alphabetical**, on the displayed string via `localeCompare` so accented names land where a
+  reader expects. The pool arrives in roster insertion order, which is arbitrary to whoever is
+  reading it. Sorted copies only — `pool()` is derived and `D.CRM` is authored, and neither should
+  be reordered by a dialog rendering itself.
+- **Counts in the section labels** — "Event Attendees (72)" — so you can tell whether to search or
+  scroll. Plain parenthesised text inside the existing label rather than a new element, precisely
+  because Figma draws no count and there are no values to take from it. The count is of what is
+  **listed beneath it**, not the section total, so the label stays true while filtering: a search
+  matching one person reads "Event Attendees (1)".
+
+Verified: the list is programmatically confirmed sorted, labels read (72) / (12) at rest and
+(2) / (1) filtered on "ros", and the footer's own "Add a guest manually" label correctly carries
+no count, since it heads a form rather than a list.
+
+**Both want a Figma decision** — they are improvements to a design that does not include them, not
+reproductions of it. Tracked on `seating-assign-seat`.

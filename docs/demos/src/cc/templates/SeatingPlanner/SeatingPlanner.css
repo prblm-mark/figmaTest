@@ -1965,12 +1965,27 @@
   min-inline-size: var(--ai-size-4);
 }
 
+/* CAPPED at --ai-size-7 (384px), the repo's established cap for a scrollable list inside a
+ * dialog — EventPicker's list and both FilterDropdowns menus use the same token, and
+ * EventPicker's own note records it being approved in place of an untokenised Figma value:
+ * "Figma caps the scroll region at 360px; --ai-size-7 (384px) is the nearest token."
+ *
+ * Without it the list took `flex: 1 1 auto` at face value and claimed every spare pixel, so the
+ * dialog TRACKED THE VIEWPORT — 952px tall at a 1000px viewport against the 719px Figma draws.
+ *
+ * The cap goes on the LIST, never on `.modal`. Modal's own `max-block-size: 100%` was added
+ * deliberately (Samsung S23 testing) so a dialog respects the overlay's padding, and capping the
+ * dialog instead would push the manual-guest footer off screen rather than scrolling the list.
+ *
+ * `flex: 1 1 auto` with `min-block-size: 0` stays, which makes 384 a CEILING rather than a floor:
+ * on a short viewport the list still shrinks below it and scrolls. */
 .assign__results {
   display: flex;
   flex-direction: column;
   gap: var(--ai-spacing-3);
   flex: 1 1 auto;
   min-block-size: 0;
+  max-block-size: var(--ai-size-7);
   overflow-y: auto;
 }
 
