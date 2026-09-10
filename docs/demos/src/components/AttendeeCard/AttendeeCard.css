@@ -115,9 +115,13 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  /* Figma leaves this size unbound as a raw 12px; --ai-font-fixed-xxs is exactly 12px,
-   * so binding the token is visually a no-op. Flagged in figma-notes. */
-  font-size: var(--ai-font-fixed-xxs);
+  /* --ai-font-fixed-4xs (11px) at the designer's request 2026-09-10, where Figma leaves the size
+   * unbound as a raw 12px. Previously --ai-font-fixed-xxs, which is exactly 12px, so it had been
+   * a visual no-op over Figma; this is now a real divergence and Figma wants updating.
+   *
+   * It matches the role label beside it, which Figma binds to --ai-font-fixed-4xs — so the meta
+   * line is now one size throughout rather than 12px company against an 11px role. */
+  font-size: var(--ai-font-fixed-4xs);
   font-weight: var(--ai-font-regular);
   color: var(--ai-text-contrast);
 }

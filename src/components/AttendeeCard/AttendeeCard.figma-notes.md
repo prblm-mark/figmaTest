@@ -166,9 +166,11 @@ than invented:
 2. **The action-icon radius** uses `--ai-radius-sm` (4px). Figma binds `--ai-spacing-2` (6px) —
    a *spacing* token used for a radius, and 6px matches no radius step (4/8/16/24/100).
    **Worth correcting in Figma.**
-3. **The company font-size** is bound to `--ai-font-fixed-xxs`. Figma leaves it a raw
-   `text-[12px]` while every sibling text node cites a token. The token is exactly 12px, so
-   binding it is visually a no-op. **Worth binding in Figma.**
+3. **The company font-size** is `--ai-font-fixed-4xs` (11px) since 2026-09-10 — see the
+   amendment below. Figma leaves it a raw `text-[12px]` while every sibling text node cites a
+   token, so it was previously bound to `--ai-font-fixed-xxs`, which is exactly 12px and therefore
+   a visual no-op. It is now a **real divergence**, not just an unbound value. **Worth updating in
+   Figma.**
 
 ### Accessibility
 
@@ -196,3 +198,20 @@ separator are `aria-hidden`.
   or reviewed. The `--sp-*` role colours are **not** theme-aware.
 - **`--ai-shadow-xxs` validated here.** Figma binds `light/shadow-xxs` on this card, which is the
   token added 2026-08-24 — this is its first real consumer.
+
+## Company font-size dropped to 11px (designer, 2026-09-10)
+
+`.attendee-card__company` is `--ai-font-fixed-4xs` (11px), where Figma draws a raw `text-[12px]`.
+A deliberate divergence; **Figma wants updating.**
+
+It makes the meta line **one size throughout**: `.attendee-card__role` beside it was already
+`--ai-font-fixed-4xs`, which Figma itself binds, so the row had been 12px company against an 11px
+role. Now both are 11px.
+
+Nothing else moves — the card's height is content-driven off the name row and the block padding,
+not the meta line, so it stays at 50px filled and 48px empty.
+
+**This lands in three places at once**, which is the point of it being in the component: verified
+at 11px with the role matching in TableDetail's seat rows and the Seating Planner's Assign-person
+list, and at 11px in the Unassigned tray. The tray has no role element to match — a separate gap
+already flagged, since the Seating Planner frames show the tray *with* roles.
