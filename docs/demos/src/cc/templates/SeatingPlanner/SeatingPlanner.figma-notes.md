@@ -1916,3 +1916,82 @@ sources so the statically authored chrome is not a false positive).
 TableListing are all clean** — the sponsor-name span was the last one missing. Worth re-running
 whenever a component gains an element; the check is recorded in the feedback memory
 `feedback_renderer_drops_component_markup.md`.
+
+### The Table form now saves the tier, and the pill takes the tier's own colour (2026-09-10)
+
+Asked: *"when the table is edited can it save changes to table types, and apply the relevant
+colour from the table types?"* Both were missing. Measured before: picking Silver and pressing
+Save left `typeId` **null**, no chip appeared, and nothing survived a render.
+
+Three separate gaps, and the third was the interesting one.
+
+#### 1. A tier is a name AND a picked colour, not one of five presets
+
+`seating-data.js` gave each type a `variant` naming one of TableType's five modifier classes.
+That cannot express a recoloured tier — and recolouring is exactly what the Table types modal
+does, since every row is a ColorPickerInput chip beside the name field. TableType is built for
+this: its own CSS documents `--table-type-color` as the API and calls the modifiers *"just presets
+carrying the tier colours Figma ships"*.
+
+So `variant` is gone, replaced by `colour`, and both chips (card and detail rail) are rendered as
+`<span class="table-type" style="--table-type-color: …">`. No preset class is used on this screen
+any more; they remain the component's shipped defaults for its own demo.
+
+#### 2. The registry is the modal, read live
+
+Rather than copy label and colour into the data layer and sync them, `registry()` reads the
+`[data-tt-row]`s on every render — `data-tt-slug` as the stable key, `[data-tt-name]` as the live
+label, the colour input as the colour. A rename or recolour therefore lands with no sync step to
+forget. `data-tt-slug` surviving a rename is what keeps a renamed tier attached to its tables.
+
+The Standard row has no colour input, which is precisely how "no tier" is expressed — it yields no
+registry entry, and a Standard table is `typeId: null`. The modal says the same thing by giving
+that row neither a swatch nor a trash button.
+
+**Two rows were added to the modal:** Headline Sponsor and Platinum. Figma's modal ships the five
+generic tiers, but the Populated frame gives Tables 1 and 2 those two, drawn as relabelled Gold and
+VIP instances — so they carry those colours. Without rows, the registry contradicted the plan: two
+tables carried a tier you could not see, rename or recolour, and removing "Gold" would not have
+touched the table actually using that colour. Tier rows are data, not design.
+
+#### 3. Save wrote to the DOM, not the model — and open read attributes that no longer exist
+
+The form predates the model and did its work by DOM surgery: rebuilding the card's HTML, adding and
+removing seat rows, and patching the plan total `"13 tables · 124/148"` **with a regex** — the exact
+drift the model was introduced to remove. So the submit is now intercepted in the capture phase
+with `stopImmediatePropagation()`, which retires that path. The model is written, every count is
+re-derived, and the HTML-snapshot Undo goes with it — a snapshot of markup the model no longer
+agrees with would be restored only to be wiped by the next render. The Undo now reverses the
+**fields**. Validation is reproduced rather than inherited, because stopping the handler stops its
+checks too.
+
+**The subtler half:** the legacy `open()` fills the form by scraping the card — tier and sponsor out
+of `data-tf-tier` / `data-tf-sponsor`, attributes the old save wrote back and the model-driven
+renderer never emits. Both fields therefore opened blank, and because Save now reads the form, a
+blank field was a **deletion**: editing only a table's name silently cleared its tier *and* its
+sponsor. Caught by probing a name-only edit rather than the tier itself. Fixed by filling every
+field from the model on open, which removes the class of bug instead of one field at a time.
+
+#### Verified (headless Chrome over HTTP)
+
+| Action | Result |
+|---|---|
+| Open Table 1 | fields read `Table 1` / `10` / `Headline Sponsor` / `Mastercard`; menu offers all 8 tiers |
+| Untyped Table 5 | opens on `Standard`, and saving untouched leaves `typeId: null` |
+| Pick Silver on Table 3, save | `typeId: "silver"`, chip `Silver @ #abb2b8`, survives a re-render |
+| Change only the name | tier, sponsor and capacity all intact |
+| Change only the tier | name and sponsor intact, chip `Platinum @ #00749e` |
+| Recolour Silver to `#ff00aa` | chip follows immediately |
+| Rename Silver → "Second Tier" | label follows, `typeId` still `silver` |
+| Remove the tier | falls back to Standard: `typeId: null`, no chip |
+| Capacity 10 → 4 with 7 seated | seated 4, seat list 4 rows, pool 72 → 75 |
+| Empty name | refused, modal stays open, error shown, model unchanged |
+
+#### Still not wired, and deliberately so
+
+- **`shape` and `host` are not in the model**, so they are left to the legacy behaviour. Nothing is
+  lost on save because nothing reads them, but they do not persist either.
+- **Delete table** is still the legacy DOM-only path, with the same snapshot Undo. It has the same
+  problem this fix removed from Save and should get the same treatment.
+- **Add table** goes through the model now, but the new table's id is a timestamp, which a real
+  backend would supply.

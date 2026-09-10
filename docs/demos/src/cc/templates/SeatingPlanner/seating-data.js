@@ -44,21 +44,31 @@
   ];
 
   /* ── Table types ───────────────────────────────────────────────────────────────────────────
-   * `{ label, variant }`, not a fixed enum. The baseline's chips read "Headline Sponsor" and
-   * "Platinum", which are NOT in TableType's variant set — the design context shows them as
-   * instances of the Gold and VIP variants with the label overridden. That matches the Table
-   * types dialog, where a tier's label is editable data and its colour comes from the tier, so
-   * the label and the colour are separate fields here.
+   * `{ id, label, colour }`. A tier is a NAME plus a PICKED COLOUR, which is what the Table
+   * types modal (Figma `1:43245`) actually edits — each of its rows is a ColorPickerInput chip
+   * beside a text field. TableType is built for exactly this: its own CSS documents
+   * `--table-type-color` as the API and calls the five `--vip` / `--gold` / … modifiers "just
+   * presets carrying the tier colours Figma ships".
    *
-   * `variant` maps to TableType's own modifiers: vip | head-table | gold | silver | bronze. */
+   * SO THERE IS NO `variant` FIELD ANY MORE. It used to name one of those five presets, which
+   * cannot express a tier the user has recoloured — the whole point of the picker. The colours
+   * below are the modal's authored hexes, and `seating-app.js` re-reads them from its rows on
+   * every render so a recolour or rename shows on the cards immediately.
+   *
+   * `Standard` is absent deliberately: it carries no colour and draws no chip, so a Standard
+   * table is `typeId: null` rather than a type whose colour happens to be empty. The modal says
+   * the same thing by giving that row neither a swatch nor a trash button.
+   *
+   * "Headline Sponsor" and "Platinum" are the baseline event's own tiers, drawn on the Populated
+   * frame as relabelled Gold and VIP instances — so they carry those two colours. */
   var TYPES = [
-    { id: 'headline-sponsor', label: 'Headline Sponsor', variant: 'gold' },
-    { id: 'platinum',         label: 'Platinum',         variant: 'vip' },
-    { id: 'head-table',       label: 'Head Table',       variant: 'head-table' },
-    { id: 'gold',             label: 'Gold',             variant: 'gold' },
-    { id: 'silver',           label: 'Silver',           variant: 'silver' },
-    { id: 'bronze',           label: 'Bronze',           variant: 'bronze' },
-    { id: 'vip',              label: 'VIP',              variant: 'vip' }
+    { id: 'headline-sponsor', label: 'Headline Sponsor', colour: '#d97706' },
+    { id: 'platinum',         label: 'Platinum',         colour: '#00749e' },
+    { id: 'head-table',       label: 'Head Table',       colour: '#991b1b' },
+    { id: 'gold',             label: 'Gold',             colour: '#d97706' },
+    { id: 'silver',           label: 'Silver',           colour: '#abb2b8' },
+    { id: 'bronze',           label: 'Bronze',           colour: '#a07553' },
+    { id: 'vip',              label: 'VIP',              colour: '#00749e' }
   ];
 
   /* ── Roster ────────────────────────────────────────────────────────────────────────────────
