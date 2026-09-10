@@ -506,14 +506,32 @@
           "id": "seating-assign-seat",
           "category": "needs-backend",
           "element": "Assign person to a seat (TASK-342309) — assign-*.html + SeatingPlannerAssign.js",
-          "current": "Opened from an empty seat's Assign button. Grouped by SOURCE, not role: “Event attendees” are read LIVE from the Unassigned tray (so the popup and the tray cannot disagree, and seating removes the tray row), “CRM contacts” are mock people not on the guest list — seating one says out loud that they were added to the event. Anyone already seated is filtered out. A row commits on click; there is no Save footer, because with one the row click would only be a selection. Predictive search matches name AND company across both groups; with no match it offers the typed term straight into the guest fields. Seating updates the seat row, the card dot, count and fill pill, the plan chip and the tray count. Esc closes. DOM-only.",
+          "current": "Opened from an empty seat's Assign button. Grouped by SOURCE, not role: “Event attendees” are read LIVE from the Unassigned tray (so the popup and the tray cannot disagree, and seating removes the tray row), “CRM contacts” are mock people not on the guest list — seating one says out loud that they were added to the event. Anyone already seated is filtered out. A row commits on click; there is no Save footer, because with one the row click would only be a selection. Predictive search matches name AND company across both groups; with no match it offers the typed term straight into the guest fields. Seating updates the seat row, the card dot, count and fill pill, the plan chip and the tray count. Esc closes. DOM-only. BUILT 2026-09-10: the Assign-person modal (Figma 3515:204464 / 205148 / 205836 / 206452 / 229072) now opens from the Assign button on an empty AttendeeCard. Two sources — Event Attendees (derived: the unassigned pool, which is why the help text can promise 'anyone already seated is not listed') and CRM Contact (authored). No confirm step: the frame has no Save button, so a row IS the action. Search matches name and the second line, an empty section drops its header, and a toast with Undo reports the placement.",
           "needs": "Write the TableSeat occupant — an FK to Attendee/Contact, or a guest name/company pair when there is no record — plus the role and the seat index. Seating a CRM contact must ALSO create the event Attendee row, in the same transaction. Reject anyone who already holds a seat in this event rather than duplicating them; the prototype filters them out of the list, but the server is the only place that can enforce it. Attendees via GET /crm/events/<id>/attendees?unassigned=1, contacts via GET /crm/contacts?q=, both debounced."
+        },
+        {
+          "id": "seating-assign-crm-lookup",
+          "where": "src/cc/templates/SeatingPlanner/seating-data.js — SeatingData.CRM",
+          "current": "MOCK. The modal’s \"CRM Contact\" section is an authored 12-person directory of people who have not signed up to the event. The first four are the frame’s own rows verbatim (including \"Panel chair\" sitting where the others carry a company — the design uses that line for whatever identifies the person); the rest exist so a search has more than four things to find. Seating one adds them to the roster, so the derived attendee count and unassigned total both move.",
+          "needs": "GET a contact/account search — the help text calls them \"accounts\", so this is the CRM lookup, not a second attendee list. Should be query-driven rather than a full list, and must exclude anyone already on the event roster. Seating one needs to create the event registration as well as the seat assignment, in one call, or the count and the seat can disagree."
+        },
+        {
+          "id": "seating-assign-manual-guest",
+          "where": "src/cc/templates/SeatingPlanner/SeatingPlanner.html — [data-assign-manual]",
+          "current": "IN-MEMORY ONLY. \"Add a guest manually\" takes a name and a company and seats that person immediately, generating a client-side id. Their ROLE defaults to Attendee, which is NOT a Figma value: the modal’s help text only covers people who have a record to take a role from, and Figma never draws this case.",
+          "needs": "POST a guest against the event, returning a real id, then assign the seat. DESIGNER QUESTION: a manual guest has no record, so what role should they get — always Attendee, or should the form offer a role picker? Only the name is required today; confirm whether company should be too."
+        },
+        {
+          "id": "seating-assign-guest-row-not-instance",
+          "where": "Figma 3515:204464 and the other four assign frames",
+          "current": "FIGMA HOUSEKEEPING, no code impact. The person rows are hand-built frames named `guest-row`, but their anatomy is AttendeeCard’s exactly — the 6px --sp-* accent, the 14px semibold name, the 12px company, the 3px separator ellipse, the 11px role label in the role colour. AttendeeCard already has `Show Seat Number` and `Show Actions` as formal booleans, so this is both switched off and the build reuses the component.",
+          "needs": "Replace the `guest-row` frames with AttendeeCard instances with both booleans off, so the design and the build share one component. Also on these frames: the no-matches paint is an unbound #335562 (= --ai-text-secondary in the CC mode) and wants binding; the search icon is named Icon/16px/User but draws a search glass; the search Field binds 8/16 padding where the two manual-guest Fields bind 16/16 and Input’s base is 12/12 — three values for one control in one dialog; and no hover state is drawn for the rows."
         },
         {
           "id": "seating-assign-role-source",
           "category": "visual-only",
           "element": "The Role field in the Assign popup",
-          "current": "The brief lists a Role dropdown; the reference shows role as a BADGE on each result row and has no dropdown. Both are honoured: a person already in the system carries the role from their record (visible on the row before you click it), and the dropdown belongs to the manual guest — the one case with no record to read a role from. It defaults to Guest and covers all six roles.",
+          "current": "The brief lists a Role dropdown; the reference shows role as a BADGE on each result row and has no dropdown. Both are honoured: a person already in the system carries the role from their record (visible on the row before you click it), and the dropdown belongs to the manual guest — the one case with no record to read a role from. It defaults to Guest and covers all six roles. RESOLVED 2026-09-10. The role comes from the person's RECORD, which is the rule the modal's own help text states, and the frames show a role for people who are not seated at all — so it cannot live only on the seat. Rather than re-derive the authored tallies from records (which would move every legend), the authored tally now WRITES the record: pick(role) stamps person.role, so seat and record can never disagree. Everyone still unseated gets a role round-robin over ROLES by index.",
           "needs": "Confirm role is a property of the person, not of the seating. If it must be OVERRIDABLE when seating an existing person (“Tom is an attendee but he is hosting this table”), one-click seating has to become select-then-confirm, and the role then needs storing on TableSeat rather than read from the Attendee. That is a spec decision. Raised by this build."
         },
         {
@@ -771,7 +789,7 @@
           "id": "seating-assign-next-in-queue",
           "category": "visual-only",
           "element": "What \"assign\" does when an empty seat's + button is pressed",
-          "current": "TAKES THE FIRST PERSON IN THE POOL, and the role defaults to Attendee. The tray is a queue, so 'next up' is the honest behaviour until a picker exists — it is not a claim that the planner wanted that specific person. Changing a seat's role after assignment is not built.",
+          "current": "TAKES THE FIRST PERSON IN THE POOL, and the role defaults to Attendee. The tray is a queue, so 'next up' is the honest behaviour until a picker exists — it is not a claim that the planner wanted that specific person. Changing a seat's role after assignment is not built. RESOLVED 2026-09-10 — the modal replaces it. Assign no longer takes whoever is first in the queue; the user picks the person.",
           "needs": "Needs a real picker: search the pool, choose a person, choose their role. That is seating-assign-seat and seating-seat-occupant-record. Raised by this build."
         },
         {

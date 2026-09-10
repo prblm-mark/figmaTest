@@ -109,6 +109,40 @@
     });
   }
 
+  /* ── CRM directory ─────────────────────────────────────────────────────────────────────────
+   * The Assign-person modal (Figma `3515:204464`) offers TWO sources: "Event Attendees" and
+   * "CRM Contact". Event Attendees is derived — it is the unassigned pool — but CRM contacts are
+   * people who have NOT signed up, so they need their own list. The modal's help text says what
+   * this is for: "Search event attendees or accounts to seat someone."
+   *
+   * The first four are the frame's own authored rows, verbatim, including "Panel chair" sitting
+   * in the second slot where the others carry a company — the design uses that line for whatever
+   * identifies the person, not strictly an employer. The rest are added so a search has more
+   * than four things to find.
+   *
+   * Seating one of these ADDS THEM TO THE EVENT (designer, 2026-09-10): they become a signed-up
+   * attendee who happens to be seated, so the header's attendee count and the unassigned total
+   * both move consistently — both are derived from the roster, so neither can drift.
+   *
+   * `role` comes from the person's record and drives the colour tag, which is the rule the
+   * modal's own help text states.
+   *
+   * MOCK. Tracked as seating-assign-crm-lookup — a real build queries the CRM. */
+  var CRM = [
+    { id: 'c1',  name: 'Marcus Aurelius',  company: 'Aurora Labs',     role: 'sponsor' },
+    { id: 'c2',  name: 'Rosa Delgado',     company: 'Panel chair',     role: 'attendee' },
+    { id: 'c3',  name: "Liam O'Connor",    company: 'Partner Group',   role: 'attendee' },
+    { id: 'c4',  name: 'Anne Rowntree',    company: 'Apex Design',     role: 'attendee' },
+    { id: 'c5',  name: 'Priya Raghavan',   company: 'Thought Machine', role: 'speaker' },
+    { id: 'c6',  name: 'Tobias Lindqvist', company: 'Form3',           role: 'attendee' },
+    { id: 'c7',  name: 'Grace Boateng',    company: 'Starling Bank',   role: 'vip' },
+    { id: 'c8',  name: 'Samuel Osei',      company: 'Checkout.com',    role: 'sponsor' },
+    { id: 'c9',  name: 'Martha Whitfield', company: 'Keynote speaker', role: 'speaker' },
+    { id: 'c10', name: 'Idris Farah',      company: 'Curve',           role: 'attendee' },
+    { id: 'c11', name: 'Simone Castellano', company: 'Adyen',          role: 'vip' },
+    { id: 'c12', name: 'Kofi Njoku',       company: 'Table host',      role: 'host' }
+  ];
+
   /* ── Plans ─────────────────────────────────────────────────────────────────────────────────
    * `seats` is an array of length `capacity`. Each entry is either null (empty) or
    * `{ personId, role }`. Occupancy, the legend split and every total are counted off this, so
@@ -119,6 +153,15 @@
   var cursor = 0;
   function pick(role) {
     var person = roster[cursor++];
+    /* THE RECORD CARRIES THE ROLE, and the seat agrees with it.
+     *
+     * The Assign-person modal states the rule outright — "their role comes from their record and
+     * drives the colour tag" — and it shows a role for people who are not seated at all, so the
+     * role cannot live only on the seat. Rather than re-deriving the authored tallies from
+     * people's records (which would move every legend), the authored tally WRITES the record:
+     * whoever gets picked for a Host slot is a Host. The seat keeps its own `role` because that
+     * is what the legends read, and this guarantees the two can never disagree. */
+    person.role = role;
     return { personId: person.id, role: role };
   }
 
@@ -210,6 +253,13 @@
   /* ── Event ─────────────────────────────────────────────────────────────────────────────────
    * `attendees` is deliberately ABSENT. It is the roster length, derived like the pool — see the
    * header note. Everything here is a genuine event fact the frame authors. */
+  /* Everyone still unseated needs a record role too — the tray and the Assign modal both show
+   * one, and only the seated had theirs written by pick() above. Assigned round-robin over ROLES
+   * by index so it is identical on every load and every role is represented in the pool. */
+  roster.forEach(function (p, i) {
+    if (!p.role) p.role = ROLES[i % ROLES.length].key;
+  });
+
   var EVENT = {
     name: 'The Card & Payments Awards 2026',
     date: '3 Feb 2026',
@@ -219,6 +269,7 @@
   window.SeatingData = {
     ROLES: ROLES,
     TYPES: TYPES,
+    CRM: CRM,
     EVENT: EVENT,
     roster: roster,
     plans: PLANS,

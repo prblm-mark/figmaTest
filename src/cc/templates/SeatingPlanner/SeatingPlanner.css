@@ -1918,3 +1918,163 @@
     font-size: var(--ai-font-fixed-2xs);
   }
 }
+
+/* ── Assign person modal ────────────────────────────────────────────────────────────────────────
+ * Figma 3515:204464 (default) / 205148 (help on) / 205836 (searching) / 206452 (no matches)
+ * / 229072 (mobile). Launched from the Assign button on an empty AttendeeCard in Table Detail.
+ *
+ * Almost everything structural is Modal's already: 512px is `.modal`'s own default width
+ * (--ai-size-9, exactly what the frame draws), and the 24px body padding with a 16px gap is
+ * `.modal__body`'s. Neither is re-declared here. The rows are AttendeeCard with its
+ * `Show Seat Number` and `Show Actions` booleans off, so none of their internals are either.
+ *
+ * THREE PADDINGS FOR THREE INPUTS, and Figma's own drift: the search Field binds 8px left /
+ * 16px right, the two manual-guest Fields bind 16px both sides, and Input's own base is 12px
+ * both sides. Three values for the same control in one dialog is inconsistency rather than
+ * intent, so all three keep Input's base and the divergence is flagged in figma-notes instead of
+ * being reproduced. */
+
+/* The body owns the scroll, so the header and the manual-guest footer stay put. `.modal` is
+ * already a flex column with `overflow: hidden`, so this only needs to claim the free space and
+ * allow itself to shrink. */
+.assign__body {
+  flex: 1 1 auto;
+  min-block-size: 0;
+}
+
+/* Figma pins this absolutely at `top-[81px] w-[462px]`; it is simply a right-aligned row above
+ * the search field, so it is built as one — carrying that offset over would break the moment the
+ * modal changed width. */
+.assign__help-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--ai-spacing-2);
+  padding-block: var(--ai-spacing-px);
+}
+
+.assign__help-label {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-4xs);
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+}
+
+.assign__search {
+  min-inline-size: var(--ai-size-4);
+}
+
+.assign__results {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+  flex: 1 1 auto;
+  min-block-size: 0;
+  overflow-y: auto;
+}
+
+/* `flex-shrink: 0` is LOAD-BEARING and not obvious. This is a height-constrained flex column,
+ * and flex items shrink below their content by default — with 84 rows in it every one collapsed
+ * to about 1px, which rendered as a stack of hairlines. `overflow-y: auto` does NOT prevent that:
+ * it adds a scrollbar once content still overflows, but shrinking happens first, so there was
+ * nothing left to overflow.
+ *
+ * TableDetail sidesteps it structurally — `__list` scrolls and `__seats` sits inside at auto
+ * height, so its column is never constrained. Doing it with one element instead means saying so
+ * explicitly. */
+.assign__results > * {
+  flex-shrink: 0;
+}
+
+/* Shared by the two in-list section headers and the footer's own label — one treatment, and
+ * Figma gives the in-list pair a 16px lead-in that the footer's version does not have. */
+.assign__section-label {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-4xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  letter-spacing: var(--ai-tracking-7);
+  text-transform: uppercase;
+  color: var(--ai-text-contrast);
+}
+
+.assign__results .assign__section-label {
+  padding-block-start: var(--ai-spacing-5);
+}
+
+/* The whole row is one action. A real <button> was tried first and collapsed to 4px — a button
+ * will not take its block size from a `flex-direction: column` child, so AttendeeCard's body
+ * measured its correct 49px inside a 4px button and `overflow: hidden` clipped it. It is an
+ * `<article role="button" tabindex="0">` instead, which is the pattern TableCard already uses for
+ * a whole-card action; Enter and Space are wired in JS, since the role brings the semantics but
+ * not the behaviour. Every paint still comes from AttendeeCard. */
+.assign__row {
+  cursor: pointer;
+}
+
+/* Figma draws no hover for these rows, so this is the smallest affordance that keeps a clickable
+ * list from looking inert: the brand border AttendeeCard already uses for `--dragged-over`,
+ * rather than a new colour. Flagged for a designer ruling. */
+.assign__row:hover {
+  border-color: var(--ai-border-brand);
+}
+
+/* "No matches — add a guest manually below." Figma leaves this paint UNBOUND at #335562, which
+ * is exactly --ai-text-secondary in the Control Centre mode this screen runs in, so the token is
+ * used and the unbound paint is flagged. */
+.assign__empty {
+  margin: 0;
+  padding-block: var(--ai-spacing-3);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-secondary);
+  text-align: center;
+}
+
+/* A modal footer in everything but its contents, so it takes `.modal__footer` and overrides only
+ * what Figma draws differently: a column rather than a right-aligned row, 24px all round rather
+ * than 16/24, and the minimal fill, which `.modal__footer` does not paint. */
+.assign__footer {
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: var(--ai-spacing-3);
+  padding: var(--ai-spacing-6);
+  background-color: var(--ai-surface-minimal);
+}
+
+.assign__manual {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  row-gap: var(--ai-spacing-5);
+  column-gap: var(--ai-spacing-3);
+}
+
+.assign__manual-field {
+  flex: 1 1 0;
+  min-inline-size: 0;
+}
+
+/* ── Mobile (Figma 3515:229072) ────────────────────────────────────────────────────────────────
+ * Measured on the mobile frame: the SEARCH field stays 40px, but the two manual-guest fields and
+ * the Add button both step down to 32px. Modal's own 639px block already takes footer buttons to
+ * `sm`, so only the inputs need saying — mirroring `.input--sm` rather than inventing values.
+ *
+ * 639px, not 767px, because that is where Modal's Size=sm mapping lives and this dialog is a
+ * stock Modal; stepping at a different width would leave the footer's button and its inputs
+ * disagreeing between 640 and 767. */
+@media (max-width: 639px) {
+  .assign__manual-field .input__wrap {
+    min-block-size: var(--ai-spacing-7);
+  }
+
+  .assign__manual-field .input__control {
+    font-size: var(--ai-font-fixed-2xs);
+    line-height: var(--ai-leading-xs);
+  }
+}

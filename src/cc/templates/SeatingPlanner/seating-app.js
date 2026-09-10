@@ -44,7 +44,11 @@
      * ONE piece of state serves both drag and pick-then-place, which is the whole point:
      * seating-touch-placement records that "pick-then-place is the mechanism and drag is an
      * accelerator for it", because keyboard users cannot drag. Two code paths, one placement. */
-    picked: null
+    picked: null,
+    /* Which seat the Assign-person modal is filling. Held here rather than read back off the
+     * dialog, because the title is prose ("… · seat 4") and parsing a number out of a sentence
+     * is exactly the kind of thing that breaks when the copy changes. */
+    assignSeat: null
   };
 
   /* ── Derivation ────────────────────────────────────────────────────────────────────────────
@@ -564,19 +568,162 @@
   /* Assign takes the first person in the pool — the tray is the queue, so "next up" is the
    * honest behaviour until a picker exists. Role defaults to attendee; changing a seat's role is
    * seating-seat-occupant-record and is not built. */
+  /* ── Assign person ─────────────────────────────────────────────────────────────────────────
+   * Figma 3515:204464 / 205148 / 205836 / 206452 / 229072.
+   *
+   * REPLACES a placeholder: Assign used to take whoever happened to be first in the unassigned
+   * queue and seat them as an Attendee, with no picker and no say over the role. Both were
+   * flagged at the time; this is the frame's actual behaviour.
+   *
+   * Two sources. "Event Attendees" is derived — the unassigned pool, which is why the frame's
+   * help text can promise "anyone already seated is not listed" without a filter. "CRM Contact"
+   * is the authored directory of people who have NOT signed up; seating one adds them to the
+   * event, so the header's attendee figure and the unassigned total both move, both being
+   * derived from the roster.
+   *
+   * There is no confirm step. The frame has no Save button — the only button is "Add" for a
+   * manual guest — so a row IS the action: click it and the person is seated and the dialog
+   * closes. */
+
+  var ASSIGN_OPEN = 'modal-overlay--open';
+
+  function assignOverlay() { return document.querySelector('[data-assign]'); }
+
   function assign(seatNo) {
     var t = tableById(state.tableId);
-    if (!t) return;
-    var next = pool()[0];
-    if (!next) {
-      toast([{ text: 'Nobody left to seat', strong: true },
-             { text: ' — every signed-up attendee already has a seat.' }], 'error');
+    var overlay = assignOverlay();
+    if (!t || !overlay) return;
+
+    state.assignSeat = seatNo;
+
+    var titleEl = overlay.querySelector('[data-assign-title]');
+    if (titleEl) titleEl.textContent = 'Assign person to ' + t.name + ' · seat ' + seatNo;
+
+    var search = overlay.querySelector('[data-assign-search]');
+    if (search) search.value = '';
+    var guestName = overlay.querySelector('[data-assign-guest-name]');
+    var guestCo = overlay.querySelector('[data-assign-guest-company]');
+    if (guestName) guestName.value = '';
+    if (guestCo) guestCo.value = '';
+
+    renderAssign();
+    overlay.classList.add(ASSIGN_OPEN);
+    if (search) search.focus();
+  }
+
+  function assignClose() {
+    var overlay = assignOverlay();
+    if (overlay) overlay.classList.remove(ASSIGN_OPEN);
+    state.assignSeat = null;
+  }
+
+  /* CRM people who have not been pulled into the event yet. Once seated they are in the roster,
+   * so they leave this list and appear under Event Attendees like anyone else. */
+  function crmAvailable() {
+    var inRoster = {};
+    D.roster.forEach(function (p) { inRoster[p.id] = true; });
+    return (D.CRM || []).filter(function (c) { return !inRoster[c.id]; });
+  }
+
+  function renderAssign() {
+    var overlay = assignOverlay();
+    if (!overlay) return;
+    var host = overlay.querySelector('[data-assign-results]');
+    if (!host) return;
+
+    var q = ((overlay.querySelector('[data-assign-search]') || {}).value || '').trim().toLowerCase();
+    function match(p) {
+      if (!q) return true;
+      /* Name AND the second line, which is what the frame's own "an" search demonstrates:
+       * it returns Elena Rostanova via "Quantum Tech" and Rosa Delgado via "Panel chair". */
+      return p.name.toLowerCase().indexOf(q) > -1 || (p.company || '').toLowerCase().indexOf(q) > -1;
+    }
+
+    var attendees = pool().filter(match);
+    var crm = crmAvailable().filter(match);
+
+    if (!attendees.length && !crm.length) {
+      host.innerHTML = '<p class="assign__empty">No matches — add a guest manually below.</p>';
       return;
     }
-    t.seats[seatNo - 1] = { personId: next.id, role: 'attendee' };
+
+    function row(p, source) {
+      /* AttendeeCard with `Show Seat Number` and `Show Actions` off — both are formal Figma
+       * booleans on that component, so no variant or override is needed. The role comes from the
+       * person's record and drives the accent and the label, exactly as the help text says. */
+      /* An <article role="button">, NOT a <button>. Tried the real element first and the row
+       * collapsed to 4px: a button will not take its block size from a `flex-direction: column`
+       * child the way a div does — the body measured its correct 49px inside a 4px button, and
+       * `.attendee-card`'s `overflow: hidden` then clipped it. Same pattern TableCard already
+       * uses for a whole-card action, so the keyboard path is handled the same way too. */
+      return '<article class="attendee-card attendee-card--' + esc(p.role) + ' assign__row"' +
+                    ' data-assign-pick="' + esc(p.id) + '"' +
+                    ' data-assign-source="' + source + '"' +
+                    ' role="button" tabindex="0"' +
+                    ' aria-label="Assign ' + esc(p.name) + ', ' + esc(p.company) + ', ' +
+                      esc(roleLabel(p.role)) + '">' +
+        '<span class="attendee-card__accent" aria-hidden="true">' +
+          '<span class="attendee-card__accent-bar"></span></span>' +
+        '<div class="attendee-card__body">' +
+          '<p class="attendee-card__name">' + esc(p.name) + '</p>' +
+          '<p class="attendee-card__meta">' +
+            '<span class="attendee-card__company">' + esc(p.company) + '</span>' +
+            '<span class="attendee-card__sep" aria-hidden="true">·</span>' +
+            '<span class="attendee-card__role">' + esc(roleLabel(p.role)) + '</span>' +
+          '</p>' +
+        '</div>' +
+      '</article>';
+    }
+
+    /* An empty section drops its header rather than showing an empty one — what the frame's
+     * search state draws, where "Event Attendees" carries one result and "CRM Contact" two. */
+    host.innerHTML =
+      (attendees.length
+        ? '<p class="assign__section-label">Event Attendees</p>' +
+          attendees.map(function (p) { return row(p, 'event'); }).join('')
+        : '') +
+      (crm.length
+        ? '<p class="assign__section-label">CRM Contact</p>' +
+          crm.map(function (p) { return row(p, 'crm'); }).join('')
+        : '');
+  }
+
+  /* Seat somebody and report it. `person` is a roster entry or a CRM/manual record that is about
+   * to become one; `joined` says whether this call is what added them to the event, so Undo can
+   * take them back out again. */
+  function seatPerson(p, joined) {
+    var t = tableById(state.tableId);
+    var seatNo = state.assignSeat;
+    if (!t || !seatNo) return;
+
+    if (joined) D.roster.push(p);
+    t.seats[seatNo - 1] = { personId: p.id, role: p.role };
+
+    assignClose();
     render();
-    toast([{ text: next.name, strong: true },
-           { text: ' seated at ' + t.name + ', seat ' + seatNo + '.' }], 'success');
+
+    /* Copy per the designer 2026-09-10: "successfully assigned to", with the object naming the
+     * SEAT here because the Assign button always belongs to one. Figma's three toast instances
+     * disagree — two say "successfully assigned to" and one drops the word, and the object is a
+     * seat in one and a table in the other two — so the rule is one string with the object
+     * varying by what was actually targeted. */
+    document.dispatchEvent(new CustomEvent('sp:toast', {
+      detail: {
+        parts: [
+          { text: p.name + ' ', strong: true },
+          { text: 'successfully assigned to ' },
+          { text: 'Seat ' + seatNo, strong: true }
+        ],
+        undo: function () {
+          t.seats[seatNo - 1] = null;
+          if (joined) {
+            var i = D.roster.indexOf(p);
+            if (i > -1) D.roster.splice(i, 1);
+          }
+          render();
+        }
+      }
+    }));
   }
 
   /* ── Placement: the five moves, one function ───────────────────────────────────────────────
@@ -1000,6 +1147,89 @@
    * stays on and the next click reads as a placement. */
   document.addEventListener('dragend', function () {
     if (state.picked) clearPick();
+  });
+
+  /* ── Assign-person modal wiring ────────────────────────────────────────────────────────────
+   * Delegated like everything else, so re-rendering the list never leaves a dead listener. */
+
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest) return;
+
+    if (e.target.closest('[data-assign-close]')) { assignClose(); return; }
+
+    /* Click the backdrop to dismiss — the overlay itself, not anything inside the dialog. */
+    var overlay = assignOverlay();
+    if (overlay && e.target === overlay) { assignClose(); return; }
+
+    var pick = e.target.closest('[data-assign-pick]');
+    if (!pick) return;
+    var id = pick.getAttribute('data-assign-pick');
+    var source = pick.getAttribute('data-assign-source');
+
+    if (source === 'crm') {
+      var c = (D.CRM || []).filter(function (x) { return x.id === id; })[0];
+      /* A CRM contact JOINS the event as they are seated — the designer's call, and what keeps
+       * the derived attendee figure and the unassigned total consistent with each other. */
+      if (c) seatPerson(c, true);
+      return;
+    }
+    var p = person(id);
+    if (p && p.id) seatPerson(p, false);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      var overlay = assignOverlay();
+      if (overlay && overlay.classList.contains(ASSIGN_OPEN)) assignClose();
+      return;
+    }
+    /* `role="button"` carries the semantics but not the behaviour — Enter and Space have to be
+     * wired by hand, or the rows are announced as buttons that cannot be pressed. */
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    if (!e.target.closest) return;
+    var row = e.target.closest('[data-assign-pick]');
+    if (!row) return;
+    e.preventDefault();
+    row.click();
+  });
+
+  document.addEventListener('input', function (e) {
+    if (e.target && e.target.matches('[data-assign-search]')) renderAssign();
+  });
+
+  /* Show help drives the search Input's OWN `.input__help`, which is what Figma hides and shows
+   * — the paragraph is that Input's Help Slot, not a paragraph belonging to this dialog.
+   *
+   * `aria-checked` is READ, never written: Toggle.js owns the switch's flip and has already done
+   * it by the time this runs. Writing it here too made the two cancel out and the help text
+   * never appeared — the same trap the Edit Plan and Table form handlers already document. */
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest) return;
+    var t = e.target.closest('#assign-help-toggle');
+    if (!t) return;
+    var help = document.querySelector('[data-assign-help]');
+    if (help) help.hidden = t.getAttribute('aria-checked') !== 'true';
+  });
+
+  document.addEventListener('submit', function (e) {
+    if (!e.target.closest || !e.target.closest('[data-assign-manual]')) return;
+    e.preventDefault();
+    var overlay = assignOverlay();
+    if (!overlay) return;
+    var nameEl = overlay.querySelector('[data-assign-guest-name]');
+    var coEl = overlay.querySelector('[data-assign-guest-company]');
+    var name = nameEl ? nameEl.value.trim() : '';
+    if (!name) { if (nameEl) nameEl.focus(); return; }
+
+    /* A manual guest has no record, so there is no role to take from one. Figma does not draw
+     * this case — the help text only covers people who HAVE a record — so Attendee is the base
+     * role rather than a Figma value. Flagged as seating-assign-manual-guest. */
+    seatPerson({
+      id: 'g' + (D.roster.length + 1) + '-' + name.replace(/\W+/g, '').toLowerCase(),
+      name: name,
+      company: coEl ? coEl.value.trim() : '',
+      role: 'attendee'
+    }, true);
   });
 
   /* ── The Table form saves to the MODEL ─────────────────────────────────────────────────────
