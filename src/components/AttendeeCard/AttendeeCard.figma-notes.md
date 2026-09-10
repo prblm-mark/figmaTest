@@ -52,6 +52,15 @@ Confirmed with the designer 2026-08-25:
 
 - **Drop target only.** The card never initiates a drag. `--dragged-over` is a class the parent
   module toggles while an attendee is held over the card. No drag JS belongs here.
+  - **Clarified 2026-09-10, because this reads as a contradiction from the outside.** The Seating
+    Planner puts `draggable="true"` on its seat rows and its tray rows, which are AttendeeCards.
+    That does *not* breach this rule: the constraint is on the **component** — no drag JS in
+    `AttendeeCard.*`, and no drag initiated from within it — and it explicitly hands the drag to
+    the parent module, which is precisely what the Seating Planner does. `draggable` is set by the
+    parent on its own instances and every `dragstart` handler lives in `seating-app.js`.
+  - So a consumer MAY make its instances drag sources. What belongs here is nothing: not the
+    attribute, not a modifier, not a listener. The component stays a drop target that knows nothing
+    about drag, which is why its demo has no JS at all.
 - Delete and reorder are rendered as real `<button>`s with `aria-label`s. Design context conveys
   visual structure only, never interaction, so the frames Figma draws are buttons in code.
 

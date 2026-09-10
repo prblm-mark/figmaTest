@@ -39,6 +39,26 @@
   overflow: hidden;
 }
 
+/* ── State: drop target ─────────────────────────────────────────────────────
+ * Dropping a seated person on the tray unseats them, and the tray showed NOTHING while one was
+ * held over it — half of `seating-drag-unspecified-visuals`. Closed at the designer's direction
+ * 2026-09-10, alongside the table card's.
+ *
+ * FIGMA HAS NO DRAG STATE HERE, and unlike TableCard there is no state axis at all to point at:
+ * this component has two variants and both are Type (empty / populated). So the values are not
+ * taken from this component's own set — they are the system's established drop-target pair,
+ * `--ai-border-brand` on `--ai-surface-minimal`, which the designer confirmed for AttendeeCard's
+ * `--dragged-over` on 2026-08-25 and which TableCard's drop target now also resolves to. Reusing
+ * an approved pair rather than inventing two values, but it is still a treatment Figma does not
+ * draw for this component — worth adding there.
+ *
+ * The parent module toggles it, the same division AttendeeCard's notes set out: no drag JS lives
+ * in this component. */
+.unassigned--drop-target {
+  border-color: var(--ai-border-brand);
+  background-color: var(--ai-surface-minimal);
+}
+
 /* ── Header ─────────────────────────────────────────────────────────────────
  * Figma sets `border-0` here while still carrying --ai-border-secondary as the border
  * colour — a zero-width border with a colour left on it, the same quirk TableDetail's
