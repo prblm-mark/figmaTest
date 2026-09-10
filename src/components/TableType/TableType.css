@@ -20,10 +20,16 @@
  * against, NOT --ai-surface-primary. Using a theme-aware token would change the formula in
  * dark mode and break the match.
  *
- * TYPOGRAPHY: the CSS deliberately LEADS Figma on two properties, at the designer's request
- * 2026-08-25 — font-weight is bold (700) where Figma still has semibold (600), and
- * letter-spacing is --ai-tracking-7 (0.05em) where Figma still has --ai-tracking-5 (0.0125em).
- * Figma is to be updated to match. Do not "correct" these back from a Figma fetch. See the dark-mode note in TableType.figma-notes.md.
+ * TYPOGRAPHY: the CSS deliberately LEADS Figma on three properties, at the designer's request
+ * — font-weight is bold (700) where Figma still has semibold (600), letter-spacing is
+ * --ai-tracking-7 (0.05em) where Figma still has --ai-tracking-5 (0.0125em) (both 2026-08-25),
+ * and font-size is --ai-font-fixed-6xs (9px) where Figma still has --ai-font-fixed-5xs (10px)
+ * (2026-09-10). Figma is to be updated to match. Do not "correct" these back from a Figma
+ * fetch. See the dark-mode note in TableType.figma-notes.md.
+ *
+ * The 9px size also takes the pill from Figma's drawn 18px tall to 16px, because the height is
+ * padding-driven and nothing pins it. Left to follow the type rather than re-padding to hold 18
+ * — that would be inventing a value the designer did not ask for. Flagged in figma-notes.
  */
 
 .table-type {
@@ -40,7 +46,7 @@
   color: color-mix(in srgb, #000000 25%, var(--table-type-color));
 
   font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-5xs);
+  font-size: var(--ai-font-fixed-6xs);
   font-weight: var(--ai-font-bold);
   line-height: normal;
   letter-spacing: var(--ai-tracking-7);
