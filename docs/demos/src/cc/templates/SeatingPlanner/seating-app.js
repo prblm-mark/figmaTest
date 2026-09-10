@@ -1071,6 +1071,9 @@
     document.querySelectorAll('.attendee-card--dragged-over').forEach(function (el) {
       el.classList.remove('attendee-card--dragged-over');
     });
+    document.querySelectorAll('.table-card--drop-target').forEach(function (el) {
+      el.classList.remove('table-card--drop-target');
+    });
     overEl = null;
   }
 
@@ -1080,10 +1083,30 @@
     if (el === overEl) return;
     clearOver();
     if (!el || !state.picked) return;
+
+    /* A TABLE CARD takes the selected state's styling (designer, 2026-09-10) — see TableCard.css
+     * for why it is a separate class rather than `--selected` itself. */
+    if (el.hasAttribute('data-sp-card')) {
+      /* 'full' is truthy but NOT placeable: place() refuses it with a toast and keeps the pick.
+       * Highlighting it would promise a drop that is then refused, which is the same rule the
+       * seat rows follow — an illegal target must not light up. */
+      if (tableDrop(el.getAttribute('data-sp-table')) !== 'move') return;
+      el.classList.add('table-card--drop-target');
+      overEl = el;
+      return;
+    }
+
     var no = parseInt(el.getAttribute('data-sp-seat'), 10);
     if (!seatDrop(state.tableId, no)) return;
     el.classList.add('attendee-card--dragged-over');
     overEl = el;
+  }
+
+  /* Whichever of the two drop surfaces the pointer is actually on. They never nest — a card holds
+   * no seat rows — so the order only decides which is checked first. */
+  function overTarget(e) {
+    if (!e.target.closest) return null;
+    return e.target.closest('[data-sp-seat]') || e.target.closest('[data-sp-card]');
   }
 
   function toast(parts, type) {
@@ -1235,12 +1258,15 @@
    * browser refuses the drop and no `drop` event ever fires. */
   document.addEventListener('dragover', function (e) {
     if (!state.picked || !e.target.closest) return;
+
+    /* markOver() decides for itself whether the surface under the pointer is legal, so it is
+     * called with the target either way and the legality test is not duplicated here. */
+    markOver(overTarget(e));
+
     var seatEl = e.target.closest('[data-sp-seat]');
     if (seatEl && seatDrop(state.tableId, parseInt(seatEl.getAttribute('data-sp-seat'), 10))) {
-      markOver(seatEl);                 /* the ONE card under the pointer */
       e.preventDefault(); return;
     }
-    markOver(null);                     /* left the seats — drop the highlight */
     if (e.target.closest('[data-sp-pool]') && poolDrop()) { e.preventDefault(); return; }
     var card = e.target.closest('[data-sp-card]');
     if (card && tableDrop(card.getAttribute('data-sp-table')) === 'move') e.preventDefault();
@@ -1250,7 +1276,7 @@
    * simply stops firing, so nothing above would clear it. */
   document.addEventListener('dragleave', function (e) {
     if (!state.picked || !e.target.closest) return;
-    if (e.target.closest('[data-sp-seat]') === overEl) markOver(null);
+    if (overTarget(e) === overEl) markOver(null);
   });
 
   /* ── The same highlight for the non-drag paths ────────────────────────────────────────────
@@ -1259,12 +1285,12 @@
    * mouse and keyboard flows would place a person with no indication of where. */
   document.addEventListener('mouseover', function (e) {
     if (!state.picked || !e.target.closest) return;
-    markOver(e.target.closest('[data-sp-seat]'));
+    markOver(overTarget(e));
   });
 
   document.addEventListener('focusin', function (e) {
     if (!state.picked || !e.target.closest) return;
-    markOver(e.target.closest('[data-sp-seat]'));
+    markOver(overTarget(e));
   });
 
   document.addEventListener('drop', function (e) {

@@ -347,7 +347,22 @@
  * A two-property delta, verified on Populated (3470:85479). Both --ai-surface-primary
  * and --ai-surface-minimal appear in the variant's variable list, so this was read from
  * the design context rather than inferred — the card itself takes minimal. */
-.table-card--selected {
+/* `--drop-target` shares this rule rather than copying it (designer, 2026-09-10: "when an
+ * attendee is dragged over a table card, can we use the selected state styling to indicate drop
+ * target"). One rule, so the two can never drift apart.
+ *
+ * A SEPARATE CLASS, not `--selected` itself, and that distinction is the point: the selected
+ * table is a persistent choice that drives the detail rail and carries `aria-pressed="true"`,
+ * while a drop target is momentary and carries no such meaning. Reusing the class would make the
+ * two indistinguishable in the DOM and would put `aria-pressed` on a card nobody has pressed.
+ *
+ * This also closes `seating-drag-unspecified-visuals`: a table card would accept a drop and show
+ * nothing at all. Figma has no drag state for TableCard — 12 variants, none of them a drag — and
+ * an earlier attempt at inventing `--drop-legal` / `--drop-full` was removed for exactly that
+ * reason. Pointing at an existing variant's styling is the designer resolving it, not a new
+ * variant appearing. */
+.table-card--selected,
+.table-card--drop-target {
   border-color: var(--ai-border-brand);
   background-color: var(--ai-surface-minimal);
 }
