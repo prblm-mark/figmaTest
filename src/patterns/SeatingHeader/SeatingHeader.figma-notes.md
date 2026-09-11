@@ -1179,17 +1179,24 @@ screen on 2026-09-09 (Case B: scope it, flag it, rather than give one row compon
 colour). Recorded in both places so the two menus read as one override, not one override and one
 accident.
 
-### Open — the LABEL colour does not match either component or Export
+### Label colour — the third override, taken (designer, 2026-09-11)
 
 `get_variable_defs` on `3585:110482` also returns **`--ai-text-secondary`** (`#335562`), where
-DropdownItem's xs variant binds `--ai-text-primary` (`3393:29188`) — which is what both this menu
-and Export render today. **Not applied**, deliberately: it is a third contextual override with no
-precedent, and taking it would make this menu differ from Export, which is the opposite of what
-was asked for. Needs a designer call — most likely the same Figma drift as the icon colour, in
-which case both menus want fixing in Figma rather than in code.
+DropdownItem's xs variant binds `--ai-text-primary` (`3393:29188`). Raised as a question and
+answered: *"fix the label colour too, use text-secondary."* Applied scoped to
+`.seating-header__menu`, alongside the icon override.
 
-I could not compare Export's own binding directly: its frames (`1:32273` / `1:43681`) live in a
-different Figma file, so the node is not reachable with this file key.
+Safe as one declaration — DropdownItem's hover moves only `background-color` for a normal row
+(`color` changes on hover for `--warning` rows only, which these are not), so no state further
+down the cascade re-asserts the primary. Verified by hovering: label holds at `rgb(51, 85, 98)`
+while the background changes.
+
+**This does leave the two menus differing**, which is worth stating plainly because parity is what
+started the change: Export still renders `--ai-text-primary` (`rgb(0, 34, 47)`). It was left alone
+rather than swept along — its own Figma binding could not be checked, because its frames
+(`1:32273` / `1:43681`) live in a different file and the node is not reachable with this file key.
+If Export binds `--ai-text-secondary` too, it wants the same one-line override; if it genuinely
+binds primary, then the two menus disagree in Figma and that is the thing to fix.
 
 ### A missing stylesheet, found on the way
 
@@ -1212,3 +1219,6 @@ Both menus opened and measured in the screen at 1440×900:
 
 Row icons resolve to `rgb(102, 127, 137)` in both. The overflow menu's Room Layout row measures 0
 because it is `display: none` above 1200 by design — Table Types, the visible row, measures 32.
+
+Labels after the 2026-09-11 change: overflow `rgb(51, 85, 98)` (`--ai-text-secondary`), Export
+`rgb(0, 34, 47)` (`--ai-text-primary`) — the one remaining difference between them, above.
