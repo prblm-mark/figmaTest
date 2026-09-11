@@ -1312,7 +1312,7 @@ people working the same event should be able to disagree about it.
 
 ---
 
-## Dark mode needs the chrome hairline back (2026-09-11) — designer screenshot
+## Dark mode needs a boundary under the chrome (2026-09-11) — designer screenshot
 
 Reported with a screenshot: minimised, in dark mode, the CC chrome and the pinned toolbar read as
 one block with no boundary.
@@ -1327,9 +1327,28 @@ is the **toolbar row**, clipped mid-header, and a middle row has no top border o
 two merge. The `is-scrolled` shadow cannot cover it either: minimised, the page has ~1px of travel
 so the class never turns on, and a shadow is close to invisible against these fills anyway.
 
-Fixed by restoring `border-block-end` on the chrome **in dark only**. Not a hedge — measured: in
-light the chrome is `rgb(11, 44, 62)` against a `rgb(255, 255, 255)` toolbar, which separates by
-luminance with room to spare, and a hairline there would be noise. This restores the border
-exactly where the 2026-08-27 decision to drop it stops working rather than reversing that decision.
-`--ai-border-secondary` is the token the header's own border already uses; in dark it resolves to
-`#334155` against `rgb(30, 41, 59)` — a visible step, confirmed rather than assumed.
+Fixed with a **shadow on the chrome, in dark only**. A 1px rule was tried first and rejected by the
+designer — *"i dont like the solid line"* — so the boundary is `--ai-shadow-md` instead.
+
+Dark only is not a hedge but a measurement: in light the chrome is `rgb(11, 44, 62)` against a
+`rgb(255, 255, 255)` toolbar, which separates by luminance with room to spare, and anything added
+there would be noise. This covers the case the 2026-08-27 decision to drop the hairline stops
+working in, rather than reversing that decision.
+
+**`md`, not the `sm` this screen already uses for `is-scrolled`** — chosen by rendering all of them
+against the real fills rather than by picking off the scale. `sm` in dark is
+`rgba(0,0,0,.149)` / `rgba(0,0,0,.255)` over a surface that is already dark, and is barely
+perceptible; `lg` spreads 20px and reads as elevation rather than a boundary. `md` resolves to
+`rgba(0,0,0,.255) 0 3px 10px, rgba(0,0,0,.4) 0 1px 4px` in dark and separates clearly while
+staying quiet.
+
+Both the base and `.is-scrolled` selectors are named, because the two rules would otherwise tie at
+(0,4,0) and source order alone would settle it. In dark the boundary is the same problem whether
+the page has scrolled or not.
+
+**A measurement trap worth remembering:** the first check reported the shadow as
+`rgba(0,0,0,0) 0px 0px 0px 0px` and looked like a broken token. It was not — the chrome carries
+`transition: box-shadow`, and **CSS transitions never advance under `--virtual-time-budget`**, so
+the probe read the start of a transition from `none`. The tokens resolved correctly all along.
+Killing transitions in the probe is what made the real value readable; the same trap cost a
+misreading of the minimise margin earlier the same day.
