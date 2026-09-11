@@ -9,6 +9,9 @@
 ## Figma Nodes
 
 - **File key:** `Lus07xi8pPXLN87sQIyrEt` (Affino AI — Design System)
+**Sticky scroll — the page at maximum scroll**
+- **Desktop:** `3615:110611`, 1728×1139 — see "Sticky scroll" at the end of this file
+
 **Screen 1 — "No Event"**
 - **Desktop:** `3515:175956`, 1728×1117
 - **Mobile:** `3515:213358`, 402×874
@@ -2809,3 +2812,140 @@ imports were invisible to it**, and it would have had me "fix" something already
 Any future run must count all three reference forms: `link`/`script` attributes, `import … from`
 inside inline modules, and `@import` inside inline styles. With those included the count went from
 73 to 74 and the false positive disappeared.
+
+---
+
+
+## Sticky scroll (2026-09-11) — Figma `3615:110611`
+
+**The screen used to fit the viewport and never scroll.** The page was a fixed-height column,
+`.seating-plan` was pinned to it with `flex: 1 0 0`, and the sheets took whatever was left under
+the 293px header — about 395px at a 1440×800 window. The designer asked for the page to scroll so
+the header's upper rows can retire and hand that height back.
+
+### What the Figma frame specifies
+
+`3615:110611` "Sticky Scroll" is not a new layout — it is **this screen captured at its maximum
+scroll**, and it is precise about the model:
+
+| Node | Value | |
+|---|---|---|
+| `3615:110615` CCHeaderGroup | 48 | drawn last, i.e. over the scrolled content |
+| `3615:110617` content frame | 1347 tall at **`y=-208`** | the page, scrolled |
+| `3615:110618` Header | 288 = Event-Info-Bar **99** + Room-Selector-Bar **125** + Toolbar **64** | |
+| `3615:110619` Frame 246 | **979** | all three sheets, one height |
+| `3615:110620` Table Listing | 979 instance holding a **1038** slot | a fixed sheet, content clipped |
+
+Three things fall out of those numbers, and each is the design rather than an artefact:
+
+1. **Only the Toolbar pins.** At `y=-208` its top lands at **48** — flush under the chrome — with
+   the event bar and room carousel scrolled away above it.
+2. **Frame 246 is sized for the STUCK state:** `979 = 1139 − 48 chrome − 64 toolbar − 16 gap − 32
+   padding`. The sheets already stand at their final height, so the scroll range is exactly what
+   sits above them: `1347 − 1091 = 256 = 32 padding + 99 event bar + 125 carousel`. The page
+   scrolls precisely far enough to retire those two rows and not one pixel more.
+3. **The listing is a sheet, not a column.** Its slot overflows its own instance, so the cards
+   scroll inside it.
+
+Point 2 is why **nothing animates**. The "panels expand once the header is sticky" effect is the
+scroll itself moving them into the vacated space — no height transition, no measuring loop, no
+relayout of the card grid per frame.
+
+### The listing is a pinned sheet, level with the other two
+
+Briefly built the other way — listing growing with its content, page scrolling everything, one
+scroller — and it was **wrong**: the sheet's own toolbar went into the page scroll, so the Tables
+title, the free-seats toggle and `Find a table` left the screen as soon as you scrolled the
+tables. The designer's call (2026-09-11): *"by allowing the table listing to scroll we lose the
+search facility which is crucial. the table listing should be sticky and sit in line with the
+other siblings. max height should be the same as the other 2 siblings."*
+
+So all three sheets share `--sp-rail-h`, all three pin at `--sp-rail-top`, and each scrolls its
+own content. Which is what the frame draws.
+
+### How it is built
+
+| Concern | Where | Note |
+|---|---|---|
+| Header retires, toolbar pins | `.cc-control__page--seating > .seating-header:has(.seating-header__toolbar)` | `position: sticky` at a **negative** inset. A sticky *child* only sticks inside its parent's box, so a sticky `.seating-header__toolbar` would unpin as soon as the header's bottom passed the top. Sticking the whole header at `-(retire)` slides it up by exactly its two upper rows — no DOM move, no second copy of the toolbar. |
+| Three sheets, one height | `.seating-plan > .table-listing`, `.seating-plan__aside`, `.seating-plan__pool` | `position: sticky` at `--sp-rail-top`, `block-size: --sp-rail-h`, `align-self: flex-start`. |
+| Row height | `.seating-plan` | `flex: 0 0 auto` — it measures the sheets. |
+| Cards scroll, sheet does not | `.table-listing__grid` | `overflow-y: auto` inside the pinned sheet, which is what keeps the search on screen. |
+| No scrolled-shadow on the header | — | Added, then dropped (designer, 2026-09-11): with all three sheets pinned, nothing passes under the toolbar, so it would be an edge with nothing on the other side. The chrome keeps its own `is-scrolled` rule for No Event / No Plan. |
+
+### Scroll handoff — `SeatingPlanner.js`
+
+Side by side there are **four** scrollers: the page and one per sheet. The page's travel is small
+and fixed (~253px, the retiring header) and until it is spent the sheets hang that far below the
+fold, because they stand at the height they will have once the toolbar pins.
+
+Left to the browser that travel is near unreachable: chaining runs inner-first, so a wheel over
+the card grid scrolls the grid and only reaches the page once the grid ends — with a long plan you
+would scroll past every table before the header retired. So **downward wheel is spent on the page
+first**, wherever the pointer is. Upward is not intercepted at all: native chaining already
+returns the page only once the inner scroller is back at its top, which is the symmetric
+behaviour. Touch is not intercepted either — below 1023 the page is the only scroller, which is
+every touch device this screen is used on.
+
+### Three measured values, published by `SeatingPlanner.js`
+
+None is a value Figma binds, which is why each is measured rather than tokenised:
+
+- `--sp-header-retire` — `toolbar.top − header.top`. **Not** `headerH − toolbarH`: those differ by
+  the header's 1px bottom border, which is exactly enough to leave the pinned toolbar a pixel
+  clear of the chrome (measured: it landed at −1). Reading the distance between the two tops is
+  also border-agnostic.
+- `--sp-toolbar-h` — padding + content, so it grows if the room name wraps. Fallback
+  `--ai-spacing-11` (64), which is what Figma draws.
+- `--sp-scrollport-h` — `page.clientHeight`, so the sheets need no arithmetic about the chrome.
+
+A `ResizeObserver`, not `matchMedia`: docking the SidebarMenu narrows the column, which rewraps
+the toolbar, which changes the retire distance — with no window resize at all (CLAUDE.md §4a).
+
+### The sticky origin is the CONTENT box — measured, not assumed
+
+Every inset on this page is short by the page's own `padding-top`. Holding the inset at `-229`
+and varying only the padding moved the pinned element by exactly the padding, each time:
+
+| page padding | pinned at |
+|---|---|
+| 0 | −229 |
+| 24 | −205 |
+| 40 | −189 |
+| 64 | −165 |
+
+So a sticky child of a padded scroll container measures its offset from the padding's inner edge.
+Anything pinning flush with the scrollport subtracts the padding back off — which is what
+`--sp-page-pad` exists for, and why it is one shared name rather than a second copy of
+`--ai-spacing-6`.
+
+### Verified
+
+Headless Chrome, measured through the real shell. Toolbar pins at **0** (flush under the chrome,
+as Figma draws), all three sheets at **80** (= toolbar 64 + gap 16) and at one height:
+
+| Viewport | Sheet height | Old model | Page scroll |
+|---|---|---|---|
+| 1440×800 | **648** (listing = aside = pool) | 395 | 253 |
+| 1728×1139 | **987** | 734 | 253 — Figma's 979 at its 32px padding; 987 at the designer's 24px |
+| 980×900 | stacked — listing `static`, grid grows, page scrolls everything | — | unchanged |
+
+The handoff was exercised by dispatching wheel events over the grid: three notches of +120 move
+the page 120 → 240 → 253 with `grid.scrollTop` still 0, the fourth is not intercepted and the grid
+takes it, and upward is never intercepted. All three screen states re-checked: No Event and No
+Plan are not scrollable and nothing pins in them — Type=No Plans has no toolbar to retire to, and
+the `:has()` selector states exactly that condition.
+
+### Open, for the designer
+
+1. **At rest the three sheets run ~253px below the fold**, because they stand at their stuck
+   height from the start. That is what gives the page something to scroll, and it is Figma's own
+   model — the frame only ever draws the scrolled state. The first wheel notch anywhere lines
+   everything up. The alternative is no page scroll at all, with the header collapsing on inner
+   scroll instead; that never clips, but it is a different mechanism from the one the frame shows.
+2. **`scrollbar-gutter` is still `auto`.** The page now always scrolls in the plan state, so that
+   15px is spent either way; No Event / No Plan do not scroll and so sit 15px wider. Only visible
+   when switching between states. `stable` makes all three agree at the cost of 15px in the two
+   empty states.
+3. **The page scrolls on tall monitors too**, by the header's own height rather than anything
+   about the screen — consistent everywhere, but the event bar retires even when there was room.
