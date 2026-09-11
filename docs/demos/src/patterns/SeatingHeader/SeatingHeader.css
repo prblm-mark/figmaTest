@@ -66,7 +66,13 @@
  * bar and the toolbar paint `--ai-surface-primary`, so without this they square off the corners —
  * the exact failure mode recorded against SystemRole's minimised mode. Applied to whichever rows
  * happen to be first and last, because Type=No Plans has no toolbar and the bar is then both. */
-.seating-header > :first-child {
+.seating-header > :first-child,
+/* …and through the carousel wrapper, whose own box paints nothing: the rail inside it is what
+ * carries the background, so a wrapper-only radius would leave a square white corner poking out
+ * from under a rounded parent — the SystemRole corner-bleed failure again. Only reachable in the
+ * demo's carousel-only section, where the rail IS first and last; in the real header the bar is
+ * first and the toolbar last, so these two selectors are inert there. */
+.seating-header > :first-child > .seating-header__rooms {
   border-start-start-radius: var(--ai-radius-lg);
   border-start-end-radius: var(--ai-radius-lg);
 }
@@ -77,7 +83,8 @@
  * has none. That works out on Type=Has Plans, where Toolbar is last — but on Type=No Plans the
  * event bar IS last, and its rule would sit directly on the root's own border, reading as a 2px
  * line at the rounded bottom edge. */
-.seating-header > :last-child {
+.seating-header > :last-child,
+.seating-header > :last-child > .seating-header__rooms {
   border-end-start-radius: var(--ai-radius-lg);
   border-end-end-radius: var(--ai-radius-lg);
   border-block-end: 0;
@@ -205,6 +212,23 @@
   flex-shrink: 0;
 }
 
+/* ── Carousel wrapper ───────────────────────────────────────────────────────
+ * Exists ONLY to hold the arrows next to the rail rather than inside it. Two independent
+ * reasons, either of which alone would force it:
+ *
+ *   1. The rail is MASKED (see the edge fade below). Anything inside it is masked too, so an
+ *      arrow sitting at the edge — exactly where an arrow goes — would be faded by the very
+ *      affordance it accompanies.
+ *   2. `seating-app.js` does `rooms.innerHTML = plans.map(…)` on every render, so an arrow
+ *      inside the rail would be destroyed the first time a plan changed. That is this module's
+ *      most repeated bug (see `feedback_renderer_drops_component_markup`), and here the
+ *      structure rules it out rather than relying on anyone remembering.
+ *
+ * It adds a DOM level, so the two radius rules above were extended to reach through it. */
+.seating-header__carousel {
+  position: relative;
+}
+
 /* ── Room-Selector-Bar ──────────────────────────────────────────────────────
  * A Figma slot, so its contents are the caller's — one RoomCard per plan.
  *
@@ -307,6 +331,111 @@
 
 .seating-header__rooms.has-fade-end {
   --fade-end: var(--fade-w);
+}
+
+/* ── Carousel arrows (designer, 2026-09-11) ─────────────────────────────────────────────────
+ *
+ * The pointer-only half of the affordance pair the fade opened. Mouse drag works but is
+ * undiscoverable — nothing tells you the rail can be dragged until you happen to press on it —
+ * so these give a plain click target. **Desktop only, as asked**: touch swipes natively and an
+ * arrow there is redundant.
+ *
+ * NOT IN FIGMA. `get_metadata` on the set `3474:90519` returns six variants and none of them
+ * contains a nav control of any kind, so this is invented rather than transcribed — the same
+ * status as the fade, and recorded in the same divergence table. Composition keeps that honest:
+ * the visual IS the Button component at an existing size (`btn--secondary btn--icon btn--sm`,
+ * 32x32 via `--ai-spacing-7`) with Lucide chevrons, so no new paint value, radius or size is
+ * introduced here — only position.
+ *
+ * NO NEW STATE. The arrows are driven by the FADE's own classes, because `has-fade-start` /
+ * `has-fade-end` already mean precisely "there is more content this way", which is exactly when
+ * each arrow should exist. That makes it impossible for an arrow and a fade to disagree, and it
+ * is why this needed no JS beyond the click handlers. It also gives the ends-behaviour for free:
+ * at the start there is no prev arrow at all, matching SourcesCarousel, whose `[disabled]` arrows
+ * are likewise `display: none` rather than greyed.
+ *
+ * The selector requires the arrows to come AFTER the rail in source order — CSS has no preceding
+ * sibling. They are absolutely positioned, so source order is invisible; see the note in the HTML. */
+.seating-header__arrow {
+  position: absolute;
+  /* Centred with a transform rather than `inset-block: 0` + `margin-block: auto`. The auto-margin
+   * technique needs a DEFINITE height to centre against, and Button gives `btn--icon.btn--sm` a
+   * `min-height` with no height — so the box stretched to fill the whole rail and the arrows
+   * rendered as tall pills instead of 32px squares (caught by looking at a screenshot; every
+   * class-level probe passed). Restating a height here would duplicate Button's own size token
+   * and silently desync the day it changes, so the transform is the right fix: it centres at
+   * whatever height Button resolves to.
+   *
+   * Centres against the wrapper, whose box includes the rail's 1px bottom border, so the arrow
+   * sits half a pixel above the cards' own centre — below the threshold of anything, and the
+   * alternative hardcodes a border width into a position. */
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  /* Hidden by default at EVERY width: the show rules below are additive and desktop-only, so a
+   * narrow container can never reveal these however the fade classes land. */
+  display: none;
+}
+
+/* Inset by `--ai-spacing-4` rather than sitting flush (designer, 2026-09-11: "too tight to the
+ * edge"). It was at 0, hard against the rail's own edge. */
+.seating-header__arrow--prev {
+  inset-inline-start: var(--ai-spacing-4);
+}
+
+.seating-header__arrow--next {
+  inset-inline-end: var(--ai-spacing-4);
+}
+
+/* FILL + LIFT (designer, 2026-09-11, revised). Button's secondary variant is TRANSPARENT —
+ * `--ai-btn-secondary-bg` is `rgba(0,0,0,0)` in all three modes. Correct on a plain surface, wrong
+ * for a button floating over room cards: a card's "24 seats free" read straight through it.
+ *
+ * ONLY THE DEFAULT is overridden. An earlier pass shifted the whole state ladder down a rung
+ * (default took the hover fill, hover took pressed), which fixed the transparency but cost the
+ * press step — `:active` already paints `bg-pressed`, so pressed and hover collapsed to one tone.
+ * Reverted: hover and active now fall through to Button's own `--ai-btn-secondary-bg-hover` /
+ * `-bg-pressed` untouched, so the full ladder is intact and the two states read normally again.
+ *
+ * 90% of the page surface rather than a flat token, so the card beneath stays faintly legible
+ * instead of being punched out — the button reads as glass over the carousel rather than a patch
+ * cut out of it. `color-mix` rather than a hand-written rgba: the alpha has to apply to
+ * `--ai-surface-primary`, which is #ffffff in light and CC but #1e293b in dark, so a literal rgba
+ * would hardcode one theme's colour and break the other. It is also the established way this repo
+ * derives colours (ChatMain's scrollbar, Modal's brand mix). Opacity itself is a structural value,
+ * not a design token — see the skill's own note that `opacity` needs no token.
+ *
+ * The shadow is what separates it from the card at the 10% where they show through each other. */
+.seating-header__arrow.btn--secondary {
+  background-color: color-mix(in srgb, var(--ai-surface-primary) 90%, transparent);
+  box-shadow: var(--ai-shadow-base);
+}
+
+@container seating-header (min-width: 1024px) {
+  /* "Desktop" in this component's own vocabulary — it already bands at 767 and 1023, and 1024 is
+   * the boundary the Seating Planner shell uses too. Deliberately a CONTAINER query, so a docked
+   * SidebarMenu narrowing the column withdraws the arrows exactly as it collapses everything
+   * else; a viewport query would leave them on a 700px column. */
+  .seating-header__rooms.has-fade-start ~ .seating-header__arrow--prev,
+  .seating-header__rooms.has-fade-end ~ .seating-header__arrow--next {
+    display: inline-flex;
+  }
+
+  /* The fade widens to sit BEHIND the arrow (designer, 2026-09-11) — the button is 32px at a 12px
+   * inset, so it reaches 44px in from the rail edge, and `--ai-spacing-9` (48) is the token that
+   * covers it. Scoped to this block deliberately: the wider fade exists to carry the button, so it
+   * appears exactly where the button does and the 768–1023 band keeps the gutter-width fade.
+   *
+   * This BREAKS the padding-matching that used to protect the keyboard path. A fade equal to
+   * `padding-inline` could never dim a Tab-focused card, because the browser scrolls focus flush to
+   * the padding edge (24) — but at 48 the fade now reaches past it, and a focused card would land
+   * half-dimmed. `scroll-padding-inline` is the documented fix and is what makes the widening safe:
+   * it tells focus-scroll to stop `--fade-w` in, so the card clears the fade entirely. Without this
+   * line, widening the fade is a keyboard regression. */
+  .seating-header__rooms {
+    --fade-w: var(--ai-spacing-9);
+    scroll-padding-inline: var(--fade-w);
+  }
 }
 
 /* Figma draws the desktop card at 290px, which has no token; --ai-size-5 (280px) is the

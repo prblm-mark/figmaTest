@@ -870,9 +870,10 @@ off-screen card the browser scrolls it flush to the **padding** edge, not the bo
 measured `cardRightInset: 24` against a `fadeWpx: 24`. A focused card therefore lands exactly
 where the mask reaches full opacity and is never dimmed.
 
-**This is the constraint to know about if the fade is ever widened.** A fade wider than the
-padding *would* dim a Tab-focused card. The fix in that case is `scroll-padding-inline` on the
-rail, not a smaller fade — but as long as the two match, nothing is needed.
+**This became load-bearing the same day.** The fade WAS widened at ≥1024, to 48, so it sits behind
+the arrow buttons — and that is exactly the case this paragraph predicted: a fade wider than the
+padding dims a Tab-focused card. `scroll-padding-inline: var(--fade-w)` is applied in that block
+for precisely this reason. Below 1024 the fade still equals `padding-inline` and needs nothing.
 
 ### Directional, because a fade on a finished edge lies
 
@@ -937,6 +938,192 @@ a crop of a 500px render.
   they are wanted is `SourcesCarousel` — `[disabled]` arrows hidden at the ends, shown only from
   1024px, with the disabled state recomputed on scroll, which doubles as a position indicator.
 
+## Desktop-only carousel arrows (designer, 2026-09-11)
+
+The other half of the pair the fade opened, added straight after it. Dragging the rail works but
+is **undiscoverable** — nothing announces it until you happen to press on the rail — so the arrows
+give a plain click target. Desktop only, as asked: touch swipes natively and an arrow there is
+redundant.
+
+Also not in Figma, and checked rather than assumed: `get_metadata` on the set `3474:90519` returns
+**six** variants and not one of them contains a nav control. Composition is what keeps the
+invention honest — the visual IS `btn btn--secondary btn--icon btn--sm` (32×32 via
+`--ai-spacing-7`) with Lucide `chevron-left` / `chevron-right`, so **no new paint value, radius,
+size or icon is introduced**. Only position is new.
+
+### They needed a wrapper, for two independent reasons
+
+`.seating-header__carousel` exists solely so the arrows are the rail's **siblings** rather than its
+children. Either reason alone would force it:
+
+1. **The rail is masked.** An arrow inside it would be faded by the very affordance it accompanies
+   — and it sits exactly at the edge, where the mask is strongest.
+2. **`seating-app.js` does `rooms.innerHTML = plans.map(…)` on every render.** An arrow inside the
+   rail would be destroyed the first time a plan changed. This module's most repeated bug is the
+   renderer dropping component markup; here the structure rules it out instead of relying on
+   anyone remembering. Verified: 2 arrows before a render, 2 after.
+
+The wrapper adds a DOM level, so the `> :first-child` / `> :last-child` radius rules were extended
+to reach a rail nested inside it. That matters in exactly one place — the demo's carousel-only
+section, where the rail is both first and last — and without it the wrapper would round its corners
+while the rail inside painted square white ones straight through them, which is the SystemRole
+corner-bleed failure. Measured after the change: wrapper and rail both 16px on all four corners
+with the bottom border suppressed on both.
+
+### No new state: the fade's classes drive the arrows
+
+`has-fade-start` / `has-fade-end` already mean "there is more content this way", which is precisely
+when each arrow should exist. So the arrows are shown by CSS alone:
+
+```css
+.seating-header__rooms.has-fade-start ~ .seating-header__arrow--prev,
+.seating-header__rooms.has-fade-end   ~ .seating-header__arrow--next { display: inline-flex; }
+```
+
+Two things fall out of that. An arrow **cannot disagree with the fade beside it**, since there is
+one source of truth rather than two. And the ends-behaviour is free — no prev arrow at the start,
+no next arrow at the end — matching SourcesCarousel, whose `[disabled]` arrows are likewise
+`display: none` rather than greyed out. It also forces the source order: CSS has no preceding
+sibling, so the arrows must come **after** the rail in the markup. They are absolutely positioned,
+so that is invisible on screen.
+
+JS therefore only handles the click. It scrolls by one card plus one gap, **measured** rather than
+constant, because the card width is a token that differs per breakpoint (280 desktop, a flexed
+floor on mobile); measured 296 = 280 + 16, and clicking stepped 0 → 296 → 592 → 296 exactly.
+`prefers-reduced-motion` is honoured explicitly — script-initiated smooth scrolling is not covered
+by the CSS `scroll-behavior` the preference normally suppresses. That `matchMedia` call is **not**
+the layout-state use CLAUDE.md §4a forbids; it is a motion preference, which is what it is for.
+
+### Why 1024, and why a container query
+
+1024 is "desktop" in this component's own vocabulary — it already bands at 767 and 1023, and the
+Seating Planner shell uses the same boundary. It is a **container** query, so a docked SidebarMenu
+narrowing the column withdraws the arrows exactly as it collapses everything else; a viewport query
+would leave them on a 700px column.
+
+The honest alternative is `(hover: hover) and (pointer: fine)`, which asks the real question — "is
+there a mouse?" — rather than proxying it by width. Width was chosen because the instruction was
+"desktop only" and it matches the component's existing bands, but a large touch tablet will get
+arrows it does not need, and a narrow desktop window will lose arrows it could use. One media
+feature to change if the designer prefers the pointer test.
+
+### Verified (headless Chrome over HTTP, 2026-09-11)
+
+| Case | Result |
+|---|---|
+| ≥1024, at start / mid / end | next only · both · prev only ✓ |
+| Overflowing at 900px container | neither — desktop-only holds ✓ |
+| ≥1024 with one plan (no overflow) | neither ✓ |
+| Arrow inside the masked rail? | no — sibling of it ✓ |
+| Survives `rooms.innerHTML = …` | 2 before, 2 after ✓ |
+| Click step | 296 = card 280 + gap 16; 0 → 296 → 592 → 296 ✓ |
+| `prefers-reduced-motion` | scrolls instantly, no animation ✓ |
+| Corner radii through the wrapper | wrapper and rail both 16px, border suppressed ✓ |
+| Real screen at `?state=plan` | host 1340px, hidden until overflow, then 32×32 and shown ✓ |
+| **Hit test** over every card control | **empty — the arrow steals no pixel** ✓ |
+
+That last row is not a formality: this component has already shipped a bug where the kebab's
+44×44 tap area stole Export's rightmost 4px. The arrow overlays the rail's `--fade-w` gutter plus
+the first 8px of the nearest card, so `elementFromPoint` was run across both edges of every
+`__select` and `__edit` control at mid-scroll. Nothing was covered.
+
+### Amended twice the same day: gap, fill, fade width, shadow (designer, 2026-09-11)
+
+Reported against the live screen: *"too tight to the edge… being transparent doesn't work as it's
+a detailed interface below."* Both right, and the second had a nameable cause — **Button's
+secondary variant is transparent: `--ai-btn-secondary-bg` is `rgba(0,0,0,0)` in all three modes.**
+Correct on a plain surface, wrong for a button floating over room cards, where a card's
+"24 seats free" read straight through it.
+
+| | Was | Now |
+|---|---|---|
+| Inline inset | `0`, flush with the rail edge | `--ai-spacing-4` (12px) |
+| Default fill | `--ai-btn-secondary-bg` — **transparent** | `color-mix(in srgb, var(--ai-surface-primary) 90%, transparent)` |
+| Hover / active | Button's own | **unchanged** — Button's own |
+| Shadow | none | `--ai-shadow-base` |
+| Fade width ≥1024 | `--ai-spacing-6` (24) | `--ai-spacing-9` (48) |
+
+#### The first attempt shifted the whole ladder, and that was wrong
+
+The first pass moved every state down a rung — default took the hover fill, hover took pressed.
+It fixed the transparency, but `.btn--secondary:active` already paints `bg-pressed`, so **pressed
+and hover collapsed into one tone** and the press step disappeared. Flagged at the time, then
+corrected on the designer's instruction: **only the default is overridden now**, and hover and
+active fall through to Button's own tokens untouched. The full ladder is intact.
+
+#### Why `color-mix` and not a literal rgba
+
+The fill has to be `--ai-surface-primary` at 90%, and that token is `#ffffff` in light and CC but
+`#1e293b` in **dark** — so a hand-written `rgba(255,255,255,0.9)` would hardcode one theme and
+break the other. `color-mix(in srgb, … 90%, transparent)` applies the alpha to whatever the token
+resolves to, per theme, and is already how this repo derives colours (ChatMain's scrollbar tints,
+Modal's brand mix). The `0.9` itself needs no token — the skill lists `opacity` as a structural
+value.
+
+90% rather than solid is the point: the card beneath stays faintly legible, so the button reads as
+glass over the carousel rather than a patch cut out of it. `--ai-shadow-base` is what separates it
+from the card across the 10% where they show through each other.
+
+#### Widening the fade broke the keyboard protection, and needed a second line to fix
+
+The arrow is 32px at a 12px inset, so it reaches **44px** in from the rail edge; `--ai-spacing-9`
+(48) is the token that covers it. Scoped to the same `min-width: 1024px` block as the arrows, so
+the wider fade appears exactly where the button it serves does, and the 768–1023 band keeps the
+gutter-width fade.
+
+But that **breaks the padding-matching that used to make the fade keyboard-safe.** A fade equal to
+`padding-inline` could never dim a Tab-focused card, because focus-scroll stops flush at the
+padding edge (24). At 48 the fade reaches past that, and a focused card would land half-dimmed.
+**`scroll-padding-inline: var(--fade-w)` is what makes the widening safe** — it tells focus-scroll
+to stop `--fade-w` in. Without that line the wider fade is a keyboard regression, so the two
+belong together permanently.
+
+Verified after the change: focusing middle cards puts the focused control 222–536px clear of the
+rail edge against a 48px fade — **nothing dimmed**. (Two measurement traps here, both mine: the
+first run measured the *card* when the focused element is the *button inside it*, and it used the
+*last* card, where `has-fade-end` is switched off so nothing could be dimmed anyway. Measure the
+focused element, in a case where the fade is actually painted.)
+
+#### The gap moved the arrow further over the cards, so the hit test was re-run
+
+The inset grew the overlap from 8px to 20px, and the reported screenshot showed the arrow on a
+card's delete button. Measured in dark across every `button` in every card on a 2×4px grid:
+
+| Card visibility | Points stolen |
+|---|---|
+| 100% visible (four cards) | **0** |
+| 25% visible (the two edge cards) | 26 and 15 |
+
+The arrow only ever covers controls on the **partially-scrolled card at each edge** — the card it
+exists to bring into view, already under the fade. Click it and those controls are fully
+clickable. Ordinary carousel behaviour, and materially unlike the kebab bug this component shipped
+once, where a **fully visible** sibling permanently lost pixels.
+
+#### Process note: the original build was verified in light mode only
+
+Every probe and screenshot for the fade and the arrows used the default theme; the fault was
+reported from dark. Transparency is exactly the bug that hides in one theme — a transparent fill
+over a white card looks like a white button, so the light screenshots looked correct. Both themes
+are screenshotted now, and any future paint change here should be.
+
+### Two things worth recording
+
+**A screenshot caught what every class-level probe missed.** The first version centred the arrows
+with `inset-block: 0` + `margin-block: auto`, which only centres against a *definite* height —
+Button gives `btn--icon.btn--sm` a `min-height` and no height, so the box stretched and the arrows
+rendered as tall pills spanning the whole rail. Every probe passed, because the classes, the
+positions and the visibility were all correct. `translateY(-50%)` is the fix, and it is also the
+better one: restating a height here would duplicate Button's own size token and desync the day it
+changes.
+
+**The arrows are a third tab stop per rail.** They are real buttons and therefore focusable, which
+adds two stops that a keyboard user does not need — Tab already pulls cards into view. Left
+focusable deliberately: they announce something real ("Scroll to next plans"), unlike the rail
+itself, which is why the rail is still not given a `tabindex`. Worth revisiting if keyboard users
+find the extra stops noisy.
+
+---
+
 ---
 
 ## Figma-behind-code: every divergence in one place
@@ -953,7 +1140,9 @@ drift to correct back.** Delete a row once the Figma side is updated.
 | 3 | `.seating-header__toolbar-actions` `gap` | `--ai-spacing-3` (8) | 16px | 2026-08-28 | *Toolbar tightened…* — frame `3515:213426` still draws 16 |
 | 4 | Show-unassigned toggle size | `toggle--xxs` | binds `toggle--xs` | 2026-09-10 | *The toggle is `xxs`…* — `xxs` is a real variant, not invented |
 | 5 | Plans-carousel **edge fade** | mask fade, `--fade-w` = `padding-inline` | **nothing** — hard clip | 2026-09-11 | *The plans carousel gets an edge fade* — no gradient variable exists on the node |
+| 6 | Plans-carousel **arrows** | `btn--secondary --icon --sm`, ≥1024 only | **nothing** — no nav control in any of the 6 variants | 2026-09-11 | *Desktop-only carousel arrows* — composed from Button, so no new design value |
 
 Rows 1–3 are all against the same mobile frame `3515:213426`, so one frame update clears three of
-the five. Row 5 is the only one that adds something Figma does not draw at all, rather than
-changing a value it does.
+the six. Rows 5 and 6 are the two that ADD something Figma does not draw at all, rather than
+changing a value it does — and they are one feature in two halves, so they should be designed into
+Figma together if they are adopted there.

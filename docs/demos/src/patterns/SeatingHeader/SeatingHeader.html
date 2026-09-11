@@ -120,52 +120,63 @@
       </div>
     </div>
 
-    <div class="seating-header__rooms">
-      <article class="room-card room-card--selected" data-backend-todo="seating-room-list">
-        <div class="room-card__header">
-          <h3 class="room-card__name">
-            <button type="button" class="room-card__select">Main Ballroom</button>
-          </h3>
-          <div class="room-card__actions">
-            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Main Ballroom">
-              <i data-lucide="pencil" aria-hidden="true"></i>
-            </button>
-            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Main Ballroom">
-              <i data-lucide="trash" aria-hidden="true"></i>
-            </button>
+    <div class="seating-header__carousel">
+      <div class="seating-header__rooms">
+        <article class="room-card room-card--selected" data-backend-todo="seating-room-list">
+          <div class="room-card__header">
+            <h3 class="room-card__name">
+              <button type="button" class="room-card__select">Main Ballroom</button>
+            </h3>
+            <div class="room-card__actions">
+              <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Main Ballroom">
+                <i data-lucide="pencil" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Main Ballroom">
+                <i data-lucide="trash" aria-hidden="true"></i>
+              </button>
+            </div>
           </div>
-        </div>
-        <div class="room-card__meta">
-          <p class="room-card__counts">12 tables · 0/148<span class="room-card__seated"> seated</span></p>
-          <p class="room-card__free">148 seats free</p>
-        </div>
-        <div class="room-card__progress" aria-hidden="true">
-          <div class="room-card__progress-fill"></div>
-        </div>
-      </article>
+          <div class="room-card__meta">
+            <p class="room-card__counts">12 tables · 0/148<span class="room-card__seated"> seated</span></p>
+            <p class="room-card__free">148 seats free</p>
+          </div>
+          <div class="room-card__progress" aria-hidden="true">
+            <div class="room-card__progress-fill"></div>
+          </div>
+        </article>
 
-      <article class="room-card" style="--room-card-progress: 41.2%">
-        <div class="room-card__header">
-          <h3 class="room-card__name">
-            <button type="button" class="room-card__select">Overflow Annex</button>
-          </h3>
-          <div class="room-card__actions">
-            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Overflow Annex">
-              <i data-lucide="pencil" aria-hidden="true"></i>
-            </button>
-            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Overflow Annex">
-              <i data-lucide="trash" aria-hidden="true"></i>
-            </button>
+        <article class="room-card" style="--room-card-progress: 41.2%">
+          <div class="room-card__header">
+            <h3 class="room-card__name">
+              <button type="button" class="room-card__select">Overflow Annex</button>
+            </h3>
+            <div class="room-card__actions">
+              <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Overflow Annex">
+                <i data-lucide="pencil" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Overflow Annex">
+                <i data-lucide="trash" aria-hidden="true"></i>
+              </button>
+            </div>
           </div>
-        </div>
-        <div class="room-card__meta">
-          <p class="room-card__counts">8 tables · 42/102<span class="room-card__seated"> seated</span></p>
-          <p class="room-card__free">60 seats free</p>
-        </div>
-        <div class="room-card__progress" aria-hidden="true">
-          <div class="room-card__progress-fill"></div>
-        </div>
-      </article>
+          <div class="room-card__meta">
+            <p class="room-card__counts">8 tables · 42/102<span class="room-card__seated"> seated</span></p>
+            <p class="room-card__free">60 seats free</p>
+          </div>
+          <div class="room-card__progress" aria-hidden="true">
+            <div class="room-card__progress-fill"></div>
+          </div>
+        </article>
+      </div>
+      <!-- Arrows come AFTER the rail because CSS has no preceding-sibling selector and they are
+           shown by the rail's own `has-fade-*` classes. They are absolutely positioned, so this
+           source order is invisible on screen. Desktop-only, and hidden at the ends. -->
+      <button type="button" class="btn btn--secondary btn--icon btn--sm seating-header__arrow seating-header__arrow--prev" aria-label="Scroll to previous plans">
+        <i data-lucide="chevron-left" aria-hidden="true"></i>
+      </button>
+      <button type="button" class="btn btn--secondary btn--icon btn--sm seating-header__arrow seating-header__arrow--next" aria-label="Scroll to next plans">
+        <i data-lucide="chevron-right" aria-hidden="true"></i>
+      </button>
     </div>
 
     <div class="seating-header__toolbar">
@@ -312,122 +323,138 @@
   <h2 class="demo-heading">Many plans — the room selector scrolls</h2>
   <p class="lede">Figma's own mobile variant overflows its frame with two cards, so more plans than
   fit is the drawn state. The bar scrolls horizontally rather than wrapping, and
-  <strong>shows no scrollbar</strong> &mdash; which is what Figma draws. <strong>Drag it with the
-  mouse</strong> (the cursor turns to a grab handle only when there is somewhere to go), swipe it on
-  a touch screen, or just Tab through the cards and let focus pull them into view. A drag that ends
-  on a card deliberately does <em>not</em> activate it.</p>
+  <strong>shows no scrollbar</strong> &mdash; which is what Figma draws. Three affordances replace
+  it. An <strong>edge fade</strong> on whichever side has more content, which every input sees.
+  <strong>Arrow buttons</strong> on desktop only, since touch swipes natively &mdash; they appear
+  and disappear with the fade, because both are driven by the same two classes, so an arrow can
+  never point somewhere the fade says is empty. And <strong>mouse drag</strong> (the cursor turns to
+  a grab handle only when there is somewhere to go). Keyboard needs none of them: Tab through the
+  cards and focus pulls them into view. A drag that ends on a card deliberately does <em>not</em>
+  activate it. Neither the fade nor the arrows are in Figma &mdash; both were added on the
+  designer's instruction and are logged as divergences.</p>
   <section class="seating-header" aria-label="Seating plan header, many plans">
-    <div class="seating-header__rooms">
-      <article class="room-card room-card--selected">
-        <div class="room-card__header">
-          <h3 class="room-card__name">
-            <button type="button" class="room-card__select">Main Ballroom</button>
-          </h3>
-          <div class="room-card__actions">
-            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Main Ballroom">
-              <i data-lucide="pencil" aria-hidden="true"></i>
-            </button>
-            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Main Ballroom">
-              <i data-lucide="trash" aria-hidden="true"></i>
-            </button>
+    <div class="seating-header__carousel">
+      <div class="seating-header__rooms">
+        <article class="room-card room-card--selected">
+          <div class="room-card__header">
+            <h3 class="room-card__name">
+              <button type="button" class="room-card__select">Main Ballroom</button>
+            </h3>
+            <div class="room-card__actions">
+              <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Main Ballroom">
+                <i data-lucide="pencil" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Main Ballroom">
+                <i data-lucide="trash" aria-hidden="true"></i>
+              </button>
+            </div>
           </div>
-        </div>
-        <div class="room-card__meta">
-          <p class="room-card__counts">12 tables · 0/148<span class="room-card__seated"> seated</span></p>
-          <p class="room-card__free">148 seats free</p>
-        </div>
-        <div class="room-card__progress" aria-hidden="true">
-          <div class="room-card__progress-fill"></div>
-        </div>
-      </article>
-      <article class="room-card" style="--room-card-progress: 41.2%">
-        <div class="room-card__header">
-          <h3 class="room-card__name">
-            <button type="button" class="room-card__select">Overflow Annex</button>
-          </h3>
-          <div class="room-card__actions">
-            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Overflow Annex">
-              <i data-lucide="pencil" aria-hidden="true"></i>
-            </button>
-            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Overflow Annex">
-              <i data-lucide="trash" aria-hidden="true"></i>
-            </button>
+          <div class="room-card__meta">
+            <p class="room-card__counts">12 tables · 0/148<span class="room-card__seated"> seated</span></p>
+            <p class="room-card__free">148 seats free</p>
           </div>
-        </div>
-        <div class="room-card__meta">
-          <p class="room-card__counts">8 tables · 42/102<span class="room-card__seated"> seated</span></p>
-          <p class="room-card__free">60 seats free</p>
-        </div>
-        <div class="room-card__progress" aria-hidden="true">
-          <div class="room-card__progress-fill"></div>
-        </div>
-      </article>
-      <article class="room-card room-card--full" style="--room-card-progress: 100%">
-        <div class="room-card__header">
-          <h3 class="room-card__name">
-            <button type="button" class="room-card__select">Terrace Room</button>
-          </h3>
-          <div class="room-card__actions">
-            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Terrace Room">
-              <i data-lucide="pencil" aria-hidden="true"></i>
-            </button>
-            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Terrace Room">
-              <i data-lucide="trash" aria-hidden="true"></i>
-            </button>
+          <div class="room-card__progress" aria-hidden="true">
+            <div class="room-card__progress-fill"></div>
           </div>
-        </div>
-        <div class="room-card__meta">
-          <p class="room-card__counts">5 tables · 60/60<span class="room-card__seated"> seated</span></p>
-          <p class="room-card__free">Full</p>
-        </div>
-        <div class="room-card__progress" aria-hidden="true">
-          <div class="room-card__progress-fill"></div>
-        </div>
-      </article>
-      <article class="room-card" style="--room-card-progress: 12%">
-        <div class="room-card__header">
-          <h3 class="room-card__name">
-            <button type="button" class="room-card__select">Mezzanine</button>
-          </h3>
-          <div class="room-card__actions">
-            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Mezzanine">
-              <i data-lucide="pencil" aria-hidden="true"></i>
-            </button>
-            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Mezzanine">
-              <i data-lucide="trash" aria-hidden="true"></i>
-            </button>
+        </article>
+        <article class="room-card" style="--room-card-progress: 41.2%">
+          <div class="room-card__header">
+            <h3 class="room-card__name">
+              <button type="button" class="room-card__select">Overflow Annex</button>
+            </h3>
+            <div class="room-card__actions">
+              <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Overflow Annex">
+                <i data-lucide="pencil" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Overflow Annex">
+                <i data-lucide="trash" aria-hidden="true"></i>
+              </button>
+            </div>
           </div>
-        </div>
-        <div class="room-card__meta">
-          <p class="room-card__counts">6 tables · 9/72<span class="room-card__seated"> seated</span></p>
-          <p class="room-card__free">63 seats free</p>
-        </div>
-        <div class="room-card__progress" aria-hidden="true">
-          <div class="room-card__progress-fill"></div>
-        </div>
-      </article>
-      <article class="room-card" style="--room-card-progress: 66%">
-        <div class="room-card__header">
-          <h3 class="room-card__name">
-            <button type="button" class="room-card__select">Garden Marquee</button>
-          </h3>
-          <div class="room-card__actions">
-            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Garden Marquee">
-              <i data-lucide="pencil" aria-hidden="true"></i>
-            </button>
-            <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Garden Marquee">
-              <i data-lucide="trash" aria-hidden="true"></i>
-            </button>
+          <div class="room-card__meta">
+            <p class="room-card__counts">8 tables · 42/102<span class="room-card__seated"> seated</span></p>
+            <p class="room-card__free">60 seats free</p>
           </div>
-        </div>
-        <div class="room-card__meta">
-          <p class="room-card__counts">10 tables · 79/120<span class="room-card__seated"> seated</span></p>
-          <p class="room-card__free">41 seats free</p>
-        </div>
-        <div class="room-card__progress" aria-hidden="true">
-          <div class="room-card__progress-fill"></div>
-        </div>
-      </article>
+          <div class="room-card__progress" aria-hidden="true">
+            <div class="room-card__progress-fill"></div>
+          </div>
+        </article>
+        <article class="room-card room-card--full" style="--room-card-progress: 100%">
+          <div class="room-card__header">
+            <h3 class="room-card__name">
+              <button type="button" class="room-card__select">Terrace Room</button>
+            </h3>
+            <div class="room-card__actions">
+              <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Terrace Room">
+                <i data-lucide="pencil" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Terrace Room">
+                <i data-lucide="trash" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <div class="room-card__meta">
+            <p class="room-card__counts">5 tables · 60/60<span class="room-card__seated"> seated</span></p>
+            <p class="room-card__free">Full</p>
+          </div>
+          <div class="room-card__progress" aria-hidden="true">
+            <div class="room-card__progress-fill"></div>
+          </div>
+        </article>
+        <article class="room-card" style="--room-card-progress: 12%">
+          <div class="room-card__header">
+            <h3 class="room-card__name">
+              <button type="button" class="room-card__select">Mezzanine</button>
+            </h3>
+            <div class="room-card__actions">
+              <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Mezzanine">
+                <i data-lucide="pencil" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Mezzanine">
+                <i data-lucide="trash" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <div class="room-card__meta">
+            <p class="room-card__counts">6 tables · 9/72<span class="room-card__seated"> seated</span></p>
+            <p class="room-card__free">63 seats free</p>
+          </div>
+          <div class="room-card__progress" aria-hidden="true">
+            <div class="room-card__progress-fill"></div>
+          </div>
+        </article>
+        <article class="room-card" style="--room-card-progress: 66%">
+          <div class="room-card__header">
+            <h3 class="room-card__name">
+              <button type="button" class="room-card__select">Garden Marquee</button>
+            </h3>
+            <div class="room-card__actions">
+              <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Garden Marquee">
+                <i data-lucide="pencil" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Garden Marquee">
+                <i data-lucide="trash" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <div class="room-card__meta">
+            <p class="room-card__counts">10 tables · 79/120<span class="room-card__seated"> seated</span></p>
+            <p class="room-card__free">41 seats free</p>
+          </div>
+          <div class="room-card__progress" aria-hidden="true">
+            <div class="room-card__progress-fill"></div>
+          </div>
+        </article>
+      </div>
+      <!-- Arrows come AFTER the rail because CSS has no preceding-sibling selector and they are
+           shown by the rail's own `has-fade-*` classes. They are absolutely positioned, so this
+           source order is invisible on screen. Desktop-only, and hidden at the ends. -->
+      <button type="button" class="btn btn--secondary btn--icon btn--sm seating-header__arrow seating-header__arrow--prev" aria-label="Scroll to previous plans">
+        <i data-lucide="chevron-left" aria-hidden="true"></i>
+      </button>
+      <button type="button" class="btn btn--secondary btn--icon btn--sm seating-header__arrow seating-header__arrow--next" aria-label="Scroll to next plans">
+        <i data-lucide="chevron-right" aria-hidden="true"></i>
+      </button>
     </div>
   </section>
 
