@@ -75,6 +75,29 @@
   box-shadow: var(--ai-shadow-sm);
 }
 
+/* ── Dark mode needs the hairline back (designer, 2026-09-11) ───────────────
+ * MEASURED, because the cause is not obvious from the markup: in dark mode the top nav bar, the
+ * header toolbar and the three sheets all paint the SAME colour — `rgb(30, 41, 59)`. Nothing in
+ * dark separates by fill at all; every boundary on this screen is a border.
+ *
+ * The header carries its own border on all four sides, so at rest it is fine — that top border
+ * plus the page's 24px padding sits between it and the chrome. But scrolled or minimised, the
+ * visible top edge is the TOOLBAR ROW, clipped mid-header, and a middle row has no top border of
+ * its own. So the chrome and the pinned bar merge into one block, which is what the designer's
+ * screenshot shows.
+ *
+ * The shadow above cannot cover it either: minimised, the page has ~1px of travel, so
+ * `is-scrolled` never turns on — and a shadow is close to invisible against these fills anyway.
+ *
+ * DARK ONLY, and that is not a hedge: in light the chrome is dark navy against a white toolbar, so
+ * it separates by luminance with room to spare and a hairline would be noise. This restores the
+ * border exactly where the 2026-08-27 decision to drop it stops working, rather than reversing it.
+ * `--ai-border-secondary` is the token the header's own border already uses, and in dark it
+ * resolves to `#334155` against that `rgb(30, 41, 59)` — a visible step, not a guess. */
+[data-theme="dark"] .cc-control__main:has(.cc-control__page--seating) .cc-control__chrome {
+  border-block-end: 1px solid var(--ai-border-secondary);
+}
+
 /* ── Top nav keeps its 48px on THIS screen, at every width ──────────────────
  * TopNavigation.css drops the bar to `--ai-spacing-8` (40px) below a 767px container. The
  * Seating Planner does not follow: its mobile frame (3515:213426) draws CCHeaderGroup at 48

@@ -227,7 +227,7 @@ Reads/writes `SeatingPlan`, `Table`, `TableSeat` (data model on the parent task)
 | id | Element | Now | Backend work needed | Category |
 |---|---|---|---|---|
 | `seating-events-list` | EventPicker rows + predictive search | Mock rows; search filters loaded rows | `GET /crm/events?status=live&sort=-startDate`; debounced `GET /crm/events?q=` | needs-backend |
-| `seating-header-minimised` | Overflow menu > "Minimise header" (desktop only) | Class on the page, toggled by the menu row, lost on reload | Per-user UI preference, read on open / written on toggle — alongside `seating-last-used-event`, not a property of the plan | needs-backend |
+| `seating-header-minimised` | Overflow menu > "Minimise header" (desktop only) | `localStorage` under `sp:headerMinimised`, guarded reads/writes — survives reload, but follows the browser | Per-user UI preference, read on open / written on toggle — alongside `seating-last-used-event`, not a property of the plan | needs-backend |
 | `seating-last-used-event` | Pinned "Last used" row | `localStorage` only — the pattern leaves persistence to the host | Per-user preference, read on open / written on select | needs-backend |
 | `seating-event-gate` | `workspace-no-event.html` | Static picker over an empty workspace | Module opens with the picker and renders nothing else until an event is chosen | needs-backend |
 | `seating-plans-row` | `.sp-plan` chips | 2 mock plans; selection swaps tables client-side | `GET` the event's `SeatingPlan` rows with aggregate table/seat counts | needs-backend |
