@@ -1654,8 +1654,26 @@
     clearErrors(overlay);
     var ok = true;
     if (!name) { fieldError(overlay, 'name', 'Table name is required.'); ok = false; }
-    if (!isFinite(seats) || seats < 1) {
-      fieldError(overlay, 'seats', 'Enter a number of seats.'); ok = false;
+    /* 6-12, matching the help copy this field has always shown (designer, 2026-09-11). It used to
+     * accept anything >= 1, so the help line promised a bound the form did not enforce and typing
+     * 3 saved happily — which the stepper made obvious, since its buttons stop at 6 and 12.
+     *
+     * Bounds are READ FROM THE INPUT and the message is built from them, so the markup's min/max
+     * is the single source and the sentence cannot contradict the control. Two places holding the
+     * same pair is how the field and its help line drifted apart in the first place.
+     *
+     * KEEP IN STEP WITH `SeatingPlanner.js`. Both files validate this one form — that file binds
+     * the FORM and this one binds the DOCUMENT, so its handler runs first and this one overwrites
+     * the result, which is why only this copy decides whether the dialog saves. The duplication
+     * predates this change and is flagged in figma-notes rather than untangled here. */
+    var seatsMin = seatsEl ? Number(seatsEl.getAttribute('min')) : NaN;
+    var seatsMax = seatsEl ? Number(seatsEl.getAttribute('max')) : NaN;
+    if (!isFinite(seatsMin)) seatsMin = 6;
+    if (!isFinite(seatsMax)) seatsMax = 12;
+    if (!isFinite(seats) || seats < seatsMin || seats > seatsMax) {
+      fieldError(overlay, 'seats',
+        'Seats per table must be between ' + seatsMin + ' and ' + seatsMax + '.');
+      ok = false;
     }
     if (!ok) {
       e.preventDefault();

@@ -2990,10 +2990,36 @@ create-plan steppers got.
 between 6 and 12." — which is the identical derivation create-plan used. It was `min="1"` with no
 max, so the copy and the control disagreed.
 
-The form's own validation is deliberately **untouched**, again matching the create-plan decision:
-`SeatingPlanner.js` still errors only on `seats < 1`, so typing 3 is still accepted even though
-the buttons cannot reach it. Worth a designer call on its own — either the validation should say
-6–12 like the help copy, or the help copy is advisory and the bounds should be looser.
+### Validation now says 6–12 too (designer, 2026-09-11)
+
+Raised as a question and answered: *"set the validation to 6-12 to match the help copy."* It had
+accepted anything `>= 1`, so the help line promised a bound the form did not enforce and typing 3
+saved happily — which the stepper made obvious, since its buttons stop at 6 and 12.
+
+Both bounds are **read from the input's `min`/`max`** and the message is built from them, so the
+markup is the single source and the sentence cannot contradict the control. Two places holding the
+same pair is precisely how the field and its help line drifted apart to begin with.
+
+The wording is Figma's own: it is the one bounded-field error the frames state, and create-plan
+already uses it verbatim for both the empty and the out-of-range case.
+
+### Two handlers validate this one form
+
+Worth knowing before touching it again, because the first fix landed in the wrong one and the
+browser showed no change at all.
+
+`SeatingPlanner.js` binds **the form**; `seating-app.js` binds **the document** and calls
+`stopImmediatePropagation()`. Bubbling starts at the target, so SeatingPlanner.js runs *first* —
+and then seating-app.js runs, calls `clearErrors()` and re-validates, overwriting whatever the
+first one decided. So `seating-app.js` is the only copy that determines whether the dialog saves,
+while the other looks authoritative and is inert.
+
+Both are now at 6–12 and both derive the pair from the markup, so they cannot disagree. The
+duplication itself predates this change and is left alone — untangling which module owns the table
+form is a bigger change than a bounds fix, but it is a trap for the next person.
+
+**Verified** by submitting across the range: empty, 3, 5, 13 and 99 rejected with the message;
+6, 10 and 12 accepted and saved.
 
 ### Mobile needed the same three rules create-plan needed
 
