@@ -110,82 +110,91 @@
  * shell's 32px gap was invisible rather than correct — worth stating, because "it looked
  * right" would have been a bad reason to leave it. */
 .cc-control__page--seating {
-  /* One name for the page's own padding: the condensed header has to travel it as well as the
-   * retire distance, and the two must not drift apart. */
+  /* One name for the page's own padding, because the sticky insets below have to subtract it
+   * and the two must never drift — see `--sp-sticky-origin`. */
   --sp-page-pad: var(--ai-spacing-6);
   padding: var(--sp-page-pad);
   gap: var(--ai-spacing-5);
-  /* The shell reserves a stable 15px scrollbar gutter so a scrollbar appearing cannot
-   * shift the layout. That is right for ControlScreen and ControlHub, whose pages scroll —
-   * but this page never does: its children fill it and own their own scrolling. So the gutter
-   * would permanently reserve room for a scrollbar that cannot appear. Released, which is
-   * precisely the 15px that otherwise left the card at 1537 instead of Figma's 1552. */
+  /* The shell reserves a stable 15px scrollbar gutter so a scrollbar appearing cannot shift the
+   * layout. This page released it because it never scrolled — its single child filled it and
+   * owned its own scrolling — so a stable gutter would have reserved room for a scrollbar that
+   * could not appear, which is precisely the 15px that left the card at 1537 instead of Figma's
+   * 1552.
+   *
+   * STILL `auto` after the one-scroller change (2026-09-11), but the reasoning has inverted and
+   * is now a trade rather than a free win: in the plan state the scrollbar is always present, so
+   * the 15px is spent either way and `stable` would buy nothing; in the No Event / No Plan
+   * states nothing scrolls, so `auto` means those two are 15px wider than the plan state. Only
+   * visible when switching between them. `stable` would make the three consistent at the cost of
+   * 15px in the empty states, which are designer-signed-off as they stand — flagged, not taken. */
   scrollbar-gutter: auto;
+
+  /* ── Sticky-scroll metrics (2026-09-11) ───────────────────────────────────
+   * Both are MEASURED at runtime by SeatingPlanner.js, not designed, because neither is a
+   * value Figma binds: the toolbar's 64 is padding + content rather than a bound height (it
+   * grows if the room name wraps), and the scrollport's height depends on the chrome and the
+   * window. The fallbacks are what Figma actually draws — `Toolbar` measures 64 on 3615:110611,
+   * which is --ai-spacing-11 — so a no-JS render is still correct rather than merely non-broken.
+   *
+   * `--sp-rail-h` is the height the two rails have AT REST as well as when pinned: Figma sizes
+   * Frame 246 to 979 = 1139 viewport - 48 chrome - 64 toolbar - 16 gap - 32 padding, i.e. for
+   * the STUCK state. That is the whole trick — the rails already stand at their final height, so
+   * scrolling moves them into the space the event bar vacates instead of resizing anything. No
+   * height transition, and no relayout of the card grid per frame. */
+  --sp-rail-top: calc(var(--sp-toolbar-h, var(--ai-spacing-11)) + var(--ai-spacing-5)
+                      - var(--sp-page-pad));   /* see --sp-sticky-origin */
+  --sp-rail-h: calc(var(--sp-scrollport-h, calc(100dvh - var(--ai-spacing-9)))
+                    - var(--sp-toolbar-h, var(--ai-spacing-11))
+                    - var(--ai-spacing-5)      /* the page gap, header -> row */
+                    - var(--sp-page-pad));     /* the page's own padding-block-end */
 }
 
-/* ══ The header condenses; the page does not scroll ══════════════════════════
- * Figma 3615:110611 "Sticky Scroll" is this screen at its maximum scroll, and it is exact about
- * the END STATE: the content frame sits at y=-208, which puts the Toolbar row at y=48 — flush
- * under the 48px chrome — with the Event-Info-Bar (99) and Room-Selector-Bar (125) gone above
- * it, and Frame 246 filling what they vacated at 979 = 1139 - 48 - 64 - 16 - 32.
+/* ── The sticky origin is the CONTENT box, not the scrollport ───────────────
+ * Every `inset-block-start` on this page is short by the page's own padding, and that is a
+ * measured property of the engine rather than a guess: holding the inset at -229 and varying
+ * only this page's padding moved the pinned element by exactly the padding, every time —
  *
- * HOW you arrive at that state is the part Figma cannot draw, and the first two attempts both
- * failed on it:
+ *     padding 0 -> pinned at -229   |   24 -> -205   |   40 -> -189   |   64 -> -165
  *
- *   1. Page scrolls, listing grows with it. The sheet's own toolbar went into the page scroll,
- *      so `Find a table` left the screen with the cards. The search is crucial (designer).
- *   2. Page scrolls, all three sheets pinned at the STUCK height. Search stays — but a sheet
- *      standing at its stuck height necessarily overflows the fold by the header's own height
- *      before the header has gone anywhere, so at rest all three were cut off at the bottom by
- *      ~253px. That is not a bug in the implementation, it is arithmetic: the page can only
- *      scroll by R if the content is R taller than the scrollport, and the sheets are the only
- *      content there is.
+ * So a sticky child of a padded scroll container measures its offset from the padding's inner
+ * edge. Anything that wants to pin flush with the scrollport has to subtract the padding back
+ * off, which is what this exists to do and what makes `--sp-page-pad` a shared name rather than
+ * a second copy of the same token. */
+
+/* ── The header retires, leaving its toolbar pinned ─────────────────────────
+ * Figma 3615:110611 "Sticky Scroll" is this screen at its maximum scroll, and it is precise:
+ * the content frame sits at y=-208, which puts the Toolbar row's top at y=48 — flush under the
+ * 48px chrome — with the Event-Info-Bar (99) and Room-Selector-Bar (125) scrolled away above it.
+ * So what pins is the toolbar alone, not the header.
  *
- * So the page does NOT scroll (2026-09-11). The sheets fill the height available at rest and are
- * never clipped; scrolling any of them CONDENSES the header, and they grow into the space by
- * exactly the same R. Same end state as the frame, reached the way the designer first described
- * it: "if the table listing has a scroll, then this allows the chrome to be scrolled, and the
- * heights expand to the larger available height once the header is sticky."
+ * A sticky CHILD only sticks inside its own parent's box, so a sticky `.seating-header__toolbar`
+ * would unpin the moment the header's bottom edge passed the top — which, with a listing longer
+ * than the fold, is almost immediately. Sticking the whole header at a NEGATIVE offset instead
+ * lets it slide up by exactly its own two upper rows and stop, with no DOM move and no second
+ * copy of the toolbar to keep in sync.
  *
- * `margin-block-start`, not a height animation on the two retiring rows. Their heights are
- * content-derived, so animating them means either measuring both (and re-measuring while they
- * are collapsed, when they cannot be measured) or a `0fr`/`1fr` grid wrapper, which is a DOM
- * change to a shipped pattern. A negative top margin slides the whole header up by one measured
- * number and frees exactly that much for the row below — the header stays full size and
- * measurable throughout, and the page's own `overflow` clips what goes above its top edge, so
- * the two rows disappear under the chrome exactly as they do in the frame.
+ * The `0px` fallback is deliberate: without JS the header pins whole rather than retiring. That
+ * degrades to a correct screen, where any guessed retire distance would be an invented dimension.
  *
  * `:has(.seating-header__toolbar)` rather than a data attribute because it names the real
- * condition — Type=No Plans has no toolbar, so it has nothing to condense TO. */
+ * condition — Type=No Plans has no toolbar, so it has nothing to retire TO and must not pin. */
 .cc-control__page--seating > .seating-header:has(.seating-header__toolbar) {
-  transition: margin-block-start var(--ai-transition-slow);
-}
-
-/* `--sp-header-retire` is the distance from the header's top to its toolbar's top, measured by
- * SeatingPlanner.js. It is not a value Figma binds and could not be: the two rows above the
- * toolbar are content-sized, and the carousel's height moves with the RoomCards in it.
- *
- * The `0px` fallback is deliberate — without JS nothing condenses, which is a correct screen.
- * Any guessed distance would be an invented dimension. */
-.cc-control__page--seating.is-condensed > .seating-header:has(.seating-header__toolbar) {
-  /* Plus the page's padding, so the toolbar ends up FLUSH under the chrome — which is where
-   * Figma puts it: `3615:110611` has the Toolbar row at y=48 against a 48px CCHeaderGroup, with
-   * no page padding above it, because the padding has scrolled away in that frame.
-   *
-   * It is also what makes the retiring rows disappear cleanly. The page clips at its BORDER box,
-   * so a header sliding only `--sp-header-retire` stops with its carousel still filling the
-   * padding strip — measured as a 24px band of room-card bottoms under the chrome. Travelling the
-   * padding as well puts those rows at a negative offset, where the page clips them entirely. */
-  margin-block-start: calc(-1 * (var(--sp-header-retire, 0px) + var(--sp-page-pad)));
-}
-
-/* Above the sheets so the toolbar's dropdowns — Export, and the overflow kebab, which Figma
- * draws opening 48px BELOW the header's bottom edge — paint over them. Also what keeps the two
- * condensing rows over the sheets rather than under them while the margin animates. */
-.cc-control__page--seating > .seating-header {
-  position: relative;
+  position: sticky;
+  /* Minus the page padding as well — see `--sp-sticky-origin` above. The `0px` fallback then
+   * resolves to exactly `-{page padding}`, which pins the whole header flush under the chrome:
+   * without JS nothing retires, but nothing is misplaced either. */
+  inset-block-start: calc(-1 * (var(--sp-header-retire, 0px) + var(--sp-page-pad)));
+  /* Above the two rails (1) so the toolbar's dropdowns — Export, and the overflow kebab, which
+   * Figma draws opening 48px BELOW the header's bottom edge — paint over them and over the card
+   * grid passing underneath. */
   z-index: 2;
 }
+
+/* NO scrolled-shadow on this header (designer, 2026-09-11). It was added when the listing grew
+ * with the page, because cards then passed underneath the pinned toolbar and needed separating
+ * from it. With all three sheets pinned nothing passes under it at all — the page's only travel
+ * is the header retiring — so the shadow would be an edge with nothing on the other side of it.
+ * The chrome keeps its own `is-scrolled` rule above for the No Event / No Plan states. */
 
 /* ── The Container card ─────────────────────────────────────────────────────
  * Figma's `Container`: flex-1 with min-height 0, so it fills the page rather than sizing
@@ -334,7 +343,8 @@
  * viewport describes the intent, not the trigger — the trigger is available width. */
 @container cs-main (max-width: 767px) {
   .cc-control__page--seating {
-    padding: var(--ai-spacing-4);
+    --sp-page-pad: var(--ai-spacing-4);
+    padding: var(--sp-page-pad);
     gap: var(--ai-spacing-4);
   }
 
@@ -593,21 +603,21 @@
    * every width — which is the model the <=1023 stacked layout already used, extended to side
    * by side rather than invented for it.
    *
-   * Fills the page beside the header and stretches all three sheets to one height — which is
-   * what "max height should be the same as the other 2 siblings" asks for, and it now comes from
-   * the row rather than from a length each sheet sets for itself. When the header condenses, the
-   * row grows by the freed margin and all three grow with it.
+   * It used to be `flex: 1 0 0; min-block-size: 0`, pinning the row to the page height. Now the
+   * row is `auto` and all THREE sheets set the same height for themselves (`--sp-rail-h`) and
+   * pin themselves there, so the row measures that height and the page grows past the fold by
+   * exactly the part of the header that retires.
    *
-   * The listing is a SHEET, not a column that grows with its content (designer, 2026-09-11):
-   * letting it grow put its own toolbar — the Tables title, the free-seats toggle and
-   * `Find a table` — into the scroll, so the search left the screen with the cards. It is also
-   * what Figma draws: `3615:110620` is a 979-tall instance holding a 1038-tall slot, i.e. a fixed
-   * sheet with its content clipped.
+   * The listing is a pinned sheet like the other two, NOT a column that grows with its content
+   * (designer, 2026-09-11). Letting it grow put its own toolbar — the Tables title, the free-seats
+   * toggle and `Find a table` — into the page scroll, so the search left the screen as soon as you
+   * scrolled the tables. That search is crucial, so the grid scrolls inside the sheet and the
+   * toolbar stays above it. It is also what Figma draws: `3615:110620` is a 979-tall instance
+   * holding a 1038-tall slot, i.e. a fixed sheet with its content clipped.
    *
-   * `min-block-size: 0` is what lets the sheets scroll their own content instead of stretching
-   * the row (app-shell height trap). */
-  flex: 1 0 0;
-  min-block-size: 0;
+   * `flex-start` so the row cannot stretch any of them past the height they set. */
+  flex: 0 0 auto;
+  align-items: flex-start;
 }
 
 .seating-plan > .table-listing {
@@ -615,9 +625,13 @@
   /* Without this the grid's own min-content floor would stop the listing ever yielding
    * width to the detail panel. */
   min-inline-size: 0;
-  /* Height comes from the row, which all three sheets stretch to — so they are level with each
-   * other by construction rather than by three copies of one length. */
-  min-block-size: 0;
+  /* Pinned on exactly the same terms as the two rails — same offset, same height — so the three
+   * sheets stay level with each other and none of them scrolls out of the page. */
+  position: sticky;
+  inset-block-start: var(--sp-rail-top);
+  block-size: var(--sp-rail-h);
+  align-self: flex-start;
+  z-index: 1;
 }
 
 /* ── Scrolling: the CARDS scroll, the sheet does not ────────────────────────
@@ -643,8 +657,20 @@
 
 .seating-plan__aside {
   flex: 0 0 auto;
-  /* Positioning context for the resize strip, which lives on this sheet's own edge. */
-  position: relative;
+  /* STICKY, not relative (2026-09-11). Still the positioning context for the resize strip on
+   * this sheet's edge — `sticky` is a positioned value — and now also what keeps the sheet in
+   * place while the listing beside it scrolls past. It pins directly under the retired toolbar;
+   * see `--sp-rail-top` / `--sp-rail-h` on the page. */
+  position: sticky;
+  inset-block-start: var(--sp-rail-top);
+  block-size: var(--sp-rail-h);
+  /* The row is `align-items: flex-start`, so this is only belt and braces — but it states that
+   * the height above is the sheet's own and not something the row hands it. */
+  align-self: flex-start;
+  /* Level with the pool rail and above the card grid. `.table-card__actions` inside the grid is
+   * `position: relative; z-index: 1`, so an `auto` here would let a card's buttons paint over a
+   * sheet; equal z-index puts DOM order in charge instead, and the rails come last. */
+  z-index: 1;
   /* --sp-aside-w is set by the drag handle at runtime; --ai-size-6 (320) is Figma's value
    * and the reset target. */
   inline-size: var(--sp-aside-w, var(--ai-size-6));
@@ -789,26 +815,20 @@
    * `flex: 0 0 auto` on the row and the grid's `overflow: visible` used to live here. They are
    * unconditional now — the page is the only scroller at every width — so the stacked layout no
    * longer differs from the wide one in how it scrolls, only in how it is arranged. */
-  /* No condensing when stacked. Figma's mobile frames show the header scrolling away outright —
-   * the listing sits at y=-79 in the tapped frame with no bar left behind — and the page is the
-   * scroller here, so there is nothing for a margin to give back: the sheets are already their
-   * natural height. Written as the margin rather than by not adding the class, so the condition
-   * lives with the layout it belongs to. */
-  .cc-control__page--seating.is-condensed > .seating-header:has(.seating-header__toolbar) {
-    margin-block-start: 0;
+  .cc-control__page--seating > .seating-header:has(.seating-header__toolbar) {
+    position: static;
   }
 
-  /* STACKED — the other model: the PAGE scrolls and this row is its natural height. `flex: 1 0 0`
-   * pinned the row to the page height, so the stacked listing was clipped to it and the page had
-   * nothing left to scroll — the tables below the fold could not be reached at all. Figma's
-   * mobile frames show exactly page-scrolling: the listing is 2019px tall in an 874px frame, and
-   * in the tapped frame it sits at y=-79 because the page has scrolled. */
-  .seating-plan {
-    flex: 0 0 auto;
+  /* The listing is a plain block again: nothing sits beside it to stay level with, and a sheet
+   * pinned to a viewport's height would leave the pool below it unreachable. The grid hands its
+   * scrolling back to the page for the same reason — it must grow to its content here, not
+   * scroll inside a box that is no longer height-constrained. */
+  .seating-plan > .table-listing {
+    position: static;
+    block-size: auto;
+    align-self: auto;
   }
 
-  /* Hand the scrolling back to the page: the grid must grow to its content here, not scroll
-   * inside a box that is no longer height-constrained. */
   .seating-plan > .table-listing .table-listing__grid {
     flex: 0 0 auto;
     overflow: visible;
@@ -1946,14 +1966,34 @@
  * TableDetail so the two rails agree), so this only has to stop the flex row squeezing it. */
 .seating-plan__pool {
   flex-shrink: 0;
-  min-block-size: 0;
+  /* Pinned on exactly the same terms as the detail rail — see the notes there. */
+  block-size: var(--sp-rail-h);
+  align-self: flex-start;
+  z-index: 1;
   display: flex;
   /* Resizable on the same terms as the detail rail (designer, 2026-09-10): the width comes from
    * `--sp-pool-w` when the handle has set one, and falls back to Figma's --ai-size-6 (320) —
-   * which is also what a double-click resets to. `position: relative` is the positioning context
-   * for the edge strip, exactly as on the aside. */
-  position: relative;
+   * which is also what a double-click resets to. `position: sticky` is the positioning context
+   * for the edge strip, exactly as on the aside, and pins the sheet for the same reason. */
+  position: sticky;
+  inset-block-start: var(--sp-rail-top);
   inline-size: var(--sp-pool-w, var(--ai-size-6));
+}
+
+/* STACKED: the pool takes part in the page's flow rather than pinning. There is no column
+ * beside it to stay level with, and a rail holding a viewport's height of attendees would push
+ * the tables below it out of reach.
+ *
+ * This block sits AFTER the rule it overrides, and has to: a container query adds no
+ * specificity, so placed up with the other <=1023 rules it would simply lose to the base rule
+ * further down the file. Width is untouched — how the pool sizes itself when stacked is
+ * unchanged by the scroll work. */
+@container cs-page (max-width: 1023px) {
+  .seating-plan__pool {
+    position: static;
+    block-size: auto;
+    align-self: auto;
+  }
 }
 
 /* The sheet fills the resizable column rather than keeping its own fixed 320, the same
