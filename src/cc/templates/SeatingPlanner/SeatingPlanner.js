@@ -1652,7 +1652,26 @@
        * nothing is still refused. */
       if (!name && mode === 'add') name = nameInput ? nameInput.placeholder : '';
       if (!name) { setError('name', 'Table name is required.'); ok = false; }
-      if (!isFinite(seats) || seats < 1) { setError('seats', 'Enter a number of seats.'); ok = false; }
+      /* 6-12, matching the help copy this field has always shown (designer, 2026-09-11). It used
+       * to accept anything >= 1, so the help line promised a bound the form did not enforce and
+       * typing 3 submitted happily — which the stepper made obvious, since its buttons stop at 6
+       * and 12.
+       *
+       * The bounds are READ FROM THE INPUT rather than written here as literals, and the message
+       * is built from them. Two places holding the same pair is exactly how the field and its
+       * help line drifted apart in the first place; this way the markup's min/max is the single
+       * source and the sentence cannot contradict the control.
+       *
+       * The wording is Figma's own — it is the one bounded-field error the frames state, and
+       * create-plan already uses it verbatim for both empty and out-of-range. */
+      var seatsMin = seatsInput ? Number(seatsInput.getAttribute('min')) : NaN;
+      var seatsMax = seatsInput ? Number(seatsInput.getAttribute('max')) : NaN;
+      if (!isFinite(seatsMin)) seatsMin = 6;
+      if (!isFinite(seatsMax)) seatsMax = 12;
+      if (!isFinite(seats) || seats < seatsMin || seats > seatsMax) {
+        setError('seats', 'Seats per table must be between ' + seatsMin + ' and ' + seatsMax + '.');
+        ok = false;
+      }
       if (!ok) {
         var firstBad = overlay.querySelector('.input--error .input__control');
         if (firstBad) firstBad.focus();
