@@ -889,6 +889,41 @@
   }, { passive: false });
 })();
 
+/* ══ Minimise header ═════════════════════════════════════════════════
+ * The overflow menu's "Minimise header" row holds the screen in the state a scroll already
+ * reaches. All the geometry is CSS — see `.is-header-minimised` in SeatingPlanner.css, which
+ * reuses the sticky rule's own offset so the two views cannot drift apart. This is only the
+ * toggle, the label and the state.
+ *
+ * The row is desktop-only and CSS hides it below 1023, so no width check is needed here: a hidden
+ * row cannot be clicked. Scrolling still works exactly as before in either state.
+ *
+ * TODO(backend:SeatingPlanner): in-memory only. The choice should persist per user so a reload
+ * returns to the view they were working in — see seating-header-minimised.
+ */
+(function () {
+  'use strict';
+
+  var page = document.querySelector('.cc-control__page--seating');
+  if (!page) return;
+
+  var MINIMISED = 'is-header-minimised';
+
+  /* Delegated. The menu row is authored in the page, but the plan header is re-rendered by
+   * `seating-app.js`, so a direct binding would be lost the first time a plan changed. */
+  document.addEventListener('click', function (event) {
+    var btn = event.target.closest ? event.target.closest('[data-sp-minimise-header]') : null;
+    if (!btn) return;
+
+    var on = page.classList.toggle(MINIMISED);
+
+    /* The label and glyph swap in CSS off the same class; only the accessible name has to be
+     * said here, because a hidden span is still the button's name to some ATs and the two would
+     * otherwise be read together. */
+    btn.setAttribute('aria-label', on ? 'Expand header' : 'Minimise header');
+  });
+})();
+
 /* ══ Chrome shadow on scroll ══════════════════════════════════════════════════════════════
  * This screen deliberately has no header block and no chrome hairline (both designer calls), so
  * nothing separates the chrome from content sliding under it. A `--ai-shadow-sm` that appears

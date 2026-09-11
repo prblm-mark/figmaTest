@@ -188,6 +188,33 @@
    * Figma draws opening 48px BELOW the header's bottom edge — paint over them and over the card
    * grid passing underneath. */
   z-index: 2;
+  /* On the REST state, not on `.is-header-minimised` — a transition declared only on the active
+   * state animates the way in and snaps on the way out. Same rule as the hover-transition pattern
+   * the component guide records. */
+  transition: margin-block-start var(--ai-transition-slow);
+}
+
+/* ══ Minimise header ═════════════════════════════════════════════════
+ * An ADDITION with no Figma node (designer, 2026-09-11), but not a new look: it holds the screen
+ * in the state `3615:110611` already draws — the event bar and carousel gone under the chrome, the
+ * toolbar flush at the top, the three sheets at full height. Scrolling reaches that state; this
+ * keeps you in it.
+ *
+ * The offset is the SAME expression the sticky inset uses two rules above, and deliberately so:
+ * retire the header by its own upper rows, then the page's padding on top so the toolbar lands
+ * flush rather than a padding's width below the chrome. Sharing the expression is what keeps the
+ * scrolled view and the minimised view identical instead of nearly identical.
+ *
+ * NOTHING ELSE IS NEEDED. The sheets already stand at `--sp-rail-h`, the height they have when the
+ * toolbar is pinned — that is the whole basis of the sticky model — so freeing the header's space
+ * does not resize them, it just stops the page needing to scroll to show them. Page travel goes
+ * from ~253px to ~1px (the header's bottom border), which is why there is no separate rule here
+ * turning the scroll off.
+ *
+ * The sticky rule above stays live and does not fight this: minimised, the header's natural
+ * position is already above its own sticky threshold, so sticky has nothing to pin. */
+.cc-control__page--seating.is-header-minimised > .seating-header:has(.seating-header__toolbar) {
+  margin-block-start: calc(-1 * (var(--sp-header-retire, 0px) + var(--sp-page-pad)));
 }
 
 /* NO scrolled-shadow on this header (designer, 2026-09-11). It was added when the listing grew
@@ -820,6 +847,17 @@
    * longer differs from the wide one in how it scrolls, only in how it is arranged. */
   .cc-control__page--seating > .seating-header:has(.seating-header__toolbar) {
     position: static;
+  }
+
+  /* ...and the minimised state goes with it. The class is only reachable from a desktop-only menu
+   * row, but it SURVIVES the layout changing underneath it: minimise on a wide column, then dock
+   * the SidebarMenu, and the column drops below 1023 with the class still set. Without this the
+   * header would sit shifted up by its own upper rows in a layout that never pins it, clipped
+   * against the top of a page that scrolls normally. Reverting the margin here rather than
+   * clearing the class in JS keeps the condition with the layout it belongs to — and means the
+   * state is still there, unchanged, when the column widens again. */
+  .cc-control__page--seating.is-header-minimised > .seating-header:has(.seating-header__toolbar) {
+    margin-block-start: 0;
   }
 
   /* The listing is a plain block again: nothing sits beside it to stay level with, and a sheet
