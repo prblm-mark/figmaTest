@@ -1357,6 +1357,41 @@ gradient under the chrome rather than an edge.
 "chrome boundary" step. It is the right value and a real token rather than an invented one, but if
 this treatment stays it deserves a name that says what it does.
 
+### ...plus a 1px line in the page's own colour, both modes (2026-09-11)
+
+Added alongside the shadow at the designer's request: a bottom line on the chrome in
+`var(--cc-ui-primary-bg)`. Because that is the page's *own* background, it reads as a hairline gap
+below the chrome rather than as a rule drawn on it — `#0f172a` against the chrome's `#1e293b` in
+dark, `#e7edf0` against the navy bar in light. Applied in **both** modes, since a colour taken
+from the page cannot clash with either theme.
+
+**Drawn as a shadow, not a border**, and that is the point rather than a detail. A real
+`border-block-end: 1px` measures the chrome at **49** against Figma's 48 — measured, not recalled:
+
+| | chrome height |
+|---|---|
+| as shipped (`border-block-end: 0`) | 48 |
+| with a real 1px border | **49** |
+| with `box-shadow: 0 1px 0` | 48 |
+
+That 1px is exactly what this file already records fixing, so adding it back as a border would
+undo a correction someone had already made. A shadow paints the same pixel and occupies no space.
+Box-shadow pixel offsets are a documented raw-`px` exception in CLAUDE.md, so `0 1px 0` needs no
+token.
+
+The line is **re-stated in every rule that sets `box-shadow`** — the base, `.is-scrolled`, and the
+dark rule — because the property replaces rather than accumulates: naming only the scroll shadow
+in one of them would silently drop the line in that state.
+
+Verified in all four combinations, chrome height 48 throughout:
+
+| | `box-shadow` |
+|---|---|
+| light, rest | `rgb(231,237,240) 0 1px 0` |
+| light, scrolled | line + `--ai-shadow-sm` |
+| dark, rest | line + `--ai-shadow-card` |
+| dark, scrolled | line + `--ai-shadow-card` |
+
 Both the base and `.is-scrolled` selectors are named, because the two rules would otherwise tie at
 (0,4,0) and source order alone would settle it. In dark the boundary is the same problem whether
 the page has scrolled or not.
