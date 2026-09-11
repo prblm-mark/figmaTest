@@ -90,46 +90,17 @@
   box-shadow: 0 1px 0 var(--cc-ui-primary-bg), var(--ai-shadow-sm);
 }
 
-/* ── Dark mode needs the hairline back (designer, 2026-09-11) ───────────────
- * MEASURED, because the cause is not obvious from the markup: in dark mode the top nav bar, the
- * header toolbar and the three sheets all paint the SAME colour — `rgb(30, 41, 59)`. Nothing in
- * dark separates by fill at all; every boundary on this screen is a border.
+/* ── The dark boundary is the gap line alone (designer, 2026-09-11) ─────────
+ * A soft `--ai-shadow-card` sat here as well, and was dropped: "drop the shadow and keep the
+ * border". Recorded rather than simply deleted, because the problem it solved is real and easy
+ * to rediscover — in dark the top nav, the header toolbar and all three sheets paint the SAME
+ * colour, `rgb(30, 41, 59)`, so nothing on this screen separates by fill there. Minimised or
+ * scrolled, the visible top edge is the toolbar ROW clipped mid-header, and a middle row has no
+ * top border of its own, so the chrome and the pinned bar merged into one block.
  *
- * The header carries its own border on all four sides, so at rest it is fine — that top border
- * plus the page's 24px padding sits between it and the chrome. But scrolled or minimised, the
- * visible top edge is the TOOLBAR ROW, clipped mid-header, and a middle row has no top border of
- * its own. So the chrome and the pinned bar merge into one block, which is what the designer's
- * screenshot shows.
- *
- * The shadow above cannot cover it either: minimised, the page has ~1px of travel, so
- * `is-scrolled` never turns on — and a shadow is close to invisible against these fills anyway.
- *
- * DARK ONLY, and that is not a hedge: in light the chrome is `rgb(11, 44, 62)` against a white
- * toolbar, so it separates by luminance with room to spare and anything added there would be
- * noise. This covers the case the 2026-08-27 decision to drop the hairline stops working in,
- * rather than reversing that decision.
- *
- * A SHADOW, not a rule (designer, 2026-09-11 — "i dont like the solid line"), and then a SOFTER
- * shadow than the `--ai-shadow-md` that first replaced it ("can we add a softer shadow").
- *
- * `--ai-shadow-card`, picked by rendering the whole scale against these actual fills rather than
- * stepping down the ladder by name. What matters here is BLUR, not weight: `base` and `sm` are
- * 2-3px blurs, so however light they are they still resolve into a defined edge — the hard line
- * the designer rejected, only fainter. `xxs` disappears entirely. `card` is
- * `0 0 10px rgba(0,0,0,.125)` in dark: no offset, ten pixels of blur, an eighth opacity — it
- * reads as a soft gradient under the chrome instead of an edge, which is what "softer" asks for.
- *
- * NAMING CAVEAT, flagged: `--ai-shadow-card` is named for cards and the scale has no
- * "chrome boundary" step. It is the right VALUE and a real token rather than an invented one, but
- * if this treatment stays it deserves a name that says what it does.
- *
- * Both selectors, because the specificity would otherwise TIE with the `is-scrolled` rule above
- * ((0,4,0) each) and order alone would decide. Naming the scrolled state too settles it: in dark
- * the boundary is the same problem whether the page has scrolled or not. */
-[data-theme="dark"] .cc-control__main:has(.cc-control__page--seating) .cc-control__chrome,
-[data-theme="dark"] .cc-control__main:has(.cc-control__page--seating) .cc-control__chrome.is-scrolled {
-  box-shadow: 0 1px 0 var(--cc-ui-primary-bg), var(--ai-shadow-card);
-}
+ * The `0 1px 0 var(--cc-ui-primary-bg)` line above is what answers that now, in both modes. It
+ * works in dark precisely because the page background (`#0f172a`) is DARKER than the chrome
+ * (`#1e293b`) — the separation comes from the page colour itself, not from a shadow over it. */
 
 /* ── Top nav keeps its 48px on THIS screen, at every width ──────────────────
  * TopNavigation.css drops the bar to `--ai-spacing-8` (40px) below a 767px container. The

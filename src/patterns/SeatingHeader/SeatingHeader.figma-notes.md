@@ -1327,35 +1327,35 @@ is the **toolbar row**, clipped mid-header, and a middle row has no top border o
 two merge. The `is-scrolled` shadow cannot cover it either: minimised, the page has ~1px of travel
 so the class never turns on, and a shadow is close to invisible against these fills anyway.
 
-Fixed with a **shadow on the chrome, in dark only**. A 1px rule was tried first and rejected —
-*"i dont like the solid line"* — then `--ai-shadow-md`, which was still too strong: *"can we add a
-softer shadow"*. It is `--ai-shadow-card`.
+**Settled as a 1px line in `var(--cc-ui-primary-bg)`, both modes, and no shadow at all.** It took
+four passes to get there, and the route is worth keeping because three of the four are things not
+to try again.
 
 Dark only is not a hedge but a measurement: in light the chrome is `rgb(11, 44, 62)` against a
 `rgb(255, 255, 255)` toolbar, which separates by luminance with room to spare, and anything added
 there would be noise. This covers the case the 2026-08-27 decision to drop the hairline stops
 working in, rather than reversing that decision.
 
-**Which shadow took two passes, both settled by rendering the scale against the real fills rather
-than stepping down it by name.** `--ai-shadow-md` first; the designer then asked for softer, and
-the answer was not the next rung down.
+### What was tried, and why each was dropped
 
-| token (dark) | value | reads as |
+| pass | treatment | outcome |
 |---|---|---|
-| `md` | `0 3px 10px .255`, `0 1px 4px .4` | clear, but heavier than wanted |
-| **`card`** | **`0 0 10px .125`** | **soft gradient — chosen** |
-| `base` | `0 1px 2px/3px` slate `.251` | a defined edge, only fainter |
-| `sm` | `0 1px 2px .149`, `0 1px 3px .255` | a defined edge, fainter still |
-| `xxs` | `0 1px 0.5px` slate `.047` | invisible |
+| 1 | `border-block-end: 1px solid var(--ai-border-secondary)`, dark only | *"i dont like the solid line"* |
+| 2 | `--ai-shadow-md`, dark only | too strong |
+| 3 | `--ai-shadow-card` (`0 0 10px .125`), dark only | *"can we add a softer shadow"* satisfied, then dropped in pass 4 |
+| 4 | **`0 1px 0 var(--cc-ui-primary-bg)`, both modes, no shadow** | **kept** |
 
-What matters here is **blur, not weight**. `base` and `sm` are 2–3px blurs, so however light they
-get they still resolve into a line — which is the thing that was rejected in the first place, just
-quieter. `card` has no offset and ten pixels of blur at an eighth opacity, so it reads as a
-gradient under the chrome rather than an edge.
+Pass 2 → 3 is the one worth remembering: when a shadow is too strong, the next rung down the scale
+is not automatically the answer, because **what matters for a boundary is blur, not weight**.
+`base` and `sm` are 2–3px blurs, so however light they get they still resolve into a defined edge
+— the solid line rejected in pass 1, only fainter — and `xxs` disappears entirely. Only `card`, at
+`0 0 10px` with no offset, reads as a gradient rather than an edge. All of them were rendered
+against the real fills rather than chosen off the scale by name.
 
-**Naming caveat, flagged:** `--ai-shadow-card` is named for cards, and the scale has no
-"chrome boundary" step. It is the right value and a real token rather than an invented one, but if
-this treatment stays it deserves a name that says what it does.
+The shadow then went entirely (*"drop the shadow and keep the border"*), which the line can carry
+alone for a reason specific to this palette: the page background `#0f172a` is **darker** than the
+chrome's `#1e293b`, so the separation comes from the page's own colour rather than from anything
+laid over it.
 
 ### ...plus a 1px line in the page's own colour, both modes (2026-09-11)
 
