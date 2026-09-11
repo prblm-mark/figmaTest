@@ -516,7 +516,8 @@
    * Input's sm field. Three classes deliberately: Input.css's own `.input--stepper
    * .input__control` is only two and loads EARLIER than this file, so it cannot defend itself
    * against the rule above — exactly the collision the padding comment below describes. */
-  .create-plan__grid .input--stepper .input__control {
+  .create-plan__grid .input--stepper .input__control,
+  .table-form__fields .input--stepper .input__control {
     line-height: var(--ai-leading-md);      /* 24px */
   }
 
@@ -526,12 +527,14 @@
    * The padding reset matters just as much: `.create-plan__grid .input__wrap` above has the
    * same specificity as Input.css's `.input--stepper .input__wrap` but loads later, so it
    * would win and re-introduce the 8px side padding that the flush buttons need at zero. */
-  .create-plan__grid .input--stepper .input__wrap {
+  .create-plan__grid .input--stepper .input__wrap,
+  .table-form__fields .input--stepper .input__wrap {
     padding: 0;
     gap: 0;
   }
 
-  .create-plan__grid .input--stepper .input__step {
+  .create-plan__grid .input--stepper .input__step,
+  .table-form__fields .input--stepper .input__step {
     inline-size: var(--ai-spacing-7);
   }
 

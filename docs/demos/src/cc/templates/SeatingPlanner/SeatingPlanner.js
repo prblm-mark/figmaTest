@@ -33,8 +33,19 @@
   ].join(',');
 
   var overlay = document.querySelector('[data-seating-picker]');
-  var trigger = document.querySelector('[data-seating-select-event]');
-  if (!overlay || !trigger) return;
+
+  /* querySelectorAll, not querySelector (2026-09-11). There is more than one way into this
+   * dialog and only the first was ever bound: the No Event gate's "Select Event" button worked,
+   * while the "Switch event" control in the header — which is the one you reach once an event
+   * IS chosen, so the one most used — did nothing at all. A singular lookup silently binds the
+   * first match and gives no sign the others exist. */
+  var triggers = document.querySelectorAll('[data-seating-select-event]');
+  if (!overlay || !triggers.length) return;
+
+  /* Which trigger opened it, so focus returns to the control the user actually pressed rather
+   * than to whichever one happens to be first in the document. Seeded so `close()` always has
+   * somewhere to go even if it is ever called before an open. */
+  var trigger = triggers[0];
 
   var dialog = overlay.querySelector('[role="dialog"]');
   var returnFocusTo = null;
@@ -102,7 +113,7 @@
     if (isOpen()) return;
     returnFocusTo = document.activeElement;
     overlay.classList.add(OPEN_CLASS);
-    trigger.setAttribute('aria-expanded', 'true');
+    setExpanded('true');
 
     /* The search field, not the first focusable. Typing is what you came to do, and it is
      * also inside the picker root, so EventPicker's own Escape handler starts working
@@ -115,7 +126,7 @@
   function close() {
     if (!isOpen()) return;
     overlay.classList.remove(OPEN_CLASS);
-    trigger.setAttribute('aria-expanded', 'false');
+    setExpanded('false');
 
     /* Back where they came from, falling back to the trigger.
      *
@@ -131,7 +142,20 @@
     target.focus();
   }
 
-  trigger.addEventListener('click', open);
+  /* Every trigger states the dialog's state, not just the one that opened it: they all control
+   * the same dialog, so a screen reader landing on the other one must not be told it is closed. */
+  function setExpanded(value) {
+    Array.prototype.forEach.call(triggers, function (btn) {
+      btn.setAttribute('aria-expanded', value);
+    });
+  }
+
+  Array.prototype.forEach.call(triggers, function (btn) {
+    btn.addEventListener('click', function () {
+      trigger = btn;        /* the focus-return target for THIS open */
+      open();
+    });
+  });
 
   /* Both bubble from the picker root. */
   overlay.addEventListener('event-picker:close', close);

@@ -504,7 +504,9 @@
           <div class="seating-header__details">
             <div class="seating-header__title-row">
               <h2 class="seating-header__title">The Card &amp; Payments Awards 2026</h2>
-              <button type="button" class="btn btn--secondary btn--icon btn--xs" aria-label="Switch event">
+              <button type="button" class="btn btn--secondary btn--icon btn--xs" aria-label="Switch event"
+                      data-seating-select-event aria-haspopup="dialog" aria-expanded="false"
+                      aria-controls="seating-picker">
                 <i data-lucide="arrow-left-right" aria-hidden="true"></i>
               </button>
             </div>
@@ -563,7 +565,9 @@
           <div class="seating-header__details">
             <div class="seating-header__title-row">
               <h2 class="seating-header__title">The Card &amp; Payments Awards 2026</h2>
-              <button type="button" class="btn btn--secondary btn--icon btn--xs" aria-label="Switch event">
+              <button type="button" class="btn btn--secondary btn--icon btn--xs" aria-label="Switch event"
+                      data-seating-select-event aria-haspopup="dialog" aria-expanded="false"
+                      aria-controls="seating-picker">
                 <i data-lucide="arrow-left-right" aria-hidden="true"></i>
               </button>
             </div>
@@ -2368,10 +2372,28 @@
               <p class="input__help" data-tf-help>Optional when a table host is required</p>
             </div>
 
-            <div class="input table-form__half" data-tf-field="seats">
+            <!-- Stepper, matching create-plan (designer, 2026-09-11). Same reasoning as there:
+                 a bounded quantity, so the - / + buttons disable at the bounds and the field
+                 cannot reach an invalid value by clicking at all. `min`/`max` are 6/12, taken
+                 from this field's own help copy below, which is the same derivation create-plan
+                 used. Input.js is loaded at the foot of this page and binds by delegation, so
+                 there is no per-field init.
+
+                 As with create-plan, NO Figma node backs the stepper — `3515:178563` draws a
+                 plain Input. Flagged in figma-notes rather than silently diverged. -->
+            <div class="input input--stepper table-form__half" data-tf-field="seats">
               <label class="input__label" for="tf-seats"><span class="table-form__label-wide">Seats (capacity)</span><span class="table-form__label-narrow">Seats / table</span></label>
               <div class="input__wrap">
-                <input id="tf-seats" type="number" min="1" required class="input__control" value="10">
+                <button type="button" class="input__step input__step--dec" data-input-step="-1"
+                        aria-controls="tf-seats" aria-label="Fewer seats">
+                  <i data-lucide="minus" aria-hidden="true"></i>
+                </button>
+                <input id="tf-seats" type="number" min="6" max="12" step="1" required
+                       class="input__control" value="10">
+                <button type="button" class="input__step input__step--inc" data-input-step="1"
+                        aria-controls="tf-seats" aria-label="More seats">
+                  <i data-lucide="plus" aria-hidden="true"></i>
+                </button>
               </div>
               <p class="input__help" data-tf-help>Seats per table must be between 6 and 12.</p>
             </div>
