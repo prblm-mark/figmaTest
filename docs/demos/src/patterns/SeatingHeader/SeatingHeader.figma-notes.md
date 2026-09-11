@@ -1146,3 +1146,69 @@ Rows 1–3 are all against the same mobile frame `3515:213426`, so one frame upd
 the six. Rows 5 and 6 are the two that ADD something Figma does not draw at all, rather than
 changing a value it does — and they are one feature in two halves, so they should be designed into
 Figma together if they are adopted there.
+
+---
+
+## The overflow menu is Size=xs, like Export (2026-09-11) — Figma `3585:110482`
+
+Asked for as a design change — *"can we use the same size dropdown menu for the main header
+overflow menu, as we do for the export dropdown menu"* — but it turned out to be a **code
+correction**. Figma has drawn it this way all along:
+
+| | Figma `3585:110482` | Was in code | Now |
+|---|---|---|---|
+| Instance | 176 wide | — | — |
+| List `3393:27558` | **160** (`--ai-size-2`) at **8** (`--ai-spacing-3`) padding | Dropdown's 240 / 12 default | 160 / 8 |
+| Rows | 4 × `DropdownItem` at **32** | 40 (Size=Default) | 32 (`dropdown-item--xs`) |
+
+`get_variable_defs` on the node confirms the row bindings are the xs set exactly:
+`--ai-font-fixed-2xs` (13), `--ai-font-medium`, `--ai-spacing-1`/`--ai-spacing-3` (4/8),
+`--ai-icon-size-xs` (12).
+
+The rows carry `dropdown-item--xs` in the markup rather than being forced from the panel: xs is a
+formal DropdownItem variant (`3393:29188`), so the row should say which size it is. That variant
+reached the design system through the Export menu, which is why Export already had it and this
+menu did not — the two were built in different sessions from the same List node.
+
+### Icon colour — same contextual override Export already carries
+
+`3585:110482` binds `--ai-icon-secondary` on the row icons, where DropdownItem's own xs variant
+binds `--ai-icon-primary` (`3393:29188`). Both come from Figma. Applied here scoped to
+`.seating-header__menu` rather than re-raised, because the decision was already taken for this
+screen on 2026-09-09 (Case B: scope it, flag it, rather than give one row component a third icon
+colour). Recorded in both places so the two menus read as one override, not one override and one
+accident.
+
+### Open — the LABEL colour does not match either component or Export
+
+`get_variable_defs` on `3585:110482` also returns **`--ai-text-secondary`** (`#335562`), where
+DropdownItem's xs variant binds `--ai-text-primary` (`3393:29188`) — which is what both this menu
+and Export render today. **Not applied**, deliberately: it is a third contextual override with no
+precedent, and taking it would make this menu differ from Export, which is the opposite of what
+was asked for. Needs a designer call — most likely the same Figma drift as the icon colour, in
+which case both menus want fixing in Figma rather than in code.
+
+I could not compare Export's own binding directly: its frames (`1:32273` / `1:43681`) live in a
+different Figma file, so the node is not reachable with this file key.
+
+### A missing stylesheet, found on the way
+
+`SeatingHeader.html` linked `Dropdown.css` but never `DropdownItem.css`, so the overflow menu's
+rows had been rendering with **no DropdownItem styling at all** in this demo — browser-default
+13.33px/400 in black. Invisible until something made the rows' size the question. Added.
+
+This is the failure mode `feedback_resolve_asset_paths_dont_grep` describes: a stylesheet that is
+absent (or linked at the wrong depth) shows up as default UA typography on correct markup, which
+reads as a styling bug rather than a missing file.
+
+### Verified
+
+Both menus opened and measured in the screen at 1440×900:
+
+| | panel | rows | icon | row padding |
+|---|---|---|---|---|
+| Overflow | 160 | 32 | 12 | 4px 8px |
+| Export | 160 | 32 | 12 | 4px 8px |
+
+Row icons resolve to `rgb(102, 127, 137)` in both. The overflow menu's Room Layout row measures 0
+because it is `display: none` above 1200 by design — Table Types, the visible row, measures 32.
