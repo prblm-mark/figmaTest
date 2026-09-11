@@ -115,19 +115,19 @@
   --sp-page-pad: var(--ai-spacing-6);
   padding: var(--sp-page-pad);
   gap: var(--ai-spacing-5);
-  /* The shell reserves a stable 15px scrollbar gutter so a scrollbar appearing cannot shift the
-   * layout. This page released it because it never scrolled — its single child filled it and
-   * owned its own scrolling — so a stable gutter would have reserved room for a scrollbar that
-   * could not appear, which is precisely the 15px that left the card at 1537 instead of Figma's
-   * 1552.
+  /* `stable` — restored to the shell's own value (designer, 2026-09-11).
    *
-   * STILL `auto` after the one-scroller change (2026-09-11), but the reasoning has inverted and
-   * is now a trade rather than a free win: in the plan state the scrollbar is always present, so
-   * the 15px is spent either way and `stable` would buy nothing; in the No Event / No Plan
-   * states nothing scrolls, so `auto` means those two are 15px wider than the plan state. Only
-   * visible when switching between them. `stable` would make the three consistent at the cost of
-   * 15px in the empty states, which are designer-signed-off as they stand — flagged, not taken. */
-  scrollbar-gutter: auto;
+   * This page had released it, and the reasoning was sound at the time: nothing here scrolled, its
+   * single child filled it and owned its own scrolling, so a stable gutter would have reserved room
+   * for a scrollbar that could not appear — precisely the 15px that left the card at 1537 instead
+   * of Figma's 1552.
+   *
+   * The sticky-scroll work inverted that. The plan state now always scrolls, so the scrollbar is
+   * always present and the 15px is spent there either way; `auto` bought nothing back and instead
+   * made No Event and No Plan 15px WIDER than the plan state, so choosing an event visibly shifted
+   * the layout. `stable` costs those two states the 15px they were saving and makes all three agree,
+   * which is the point of the property. */
+  scrollbar-gutter: stable;
 
   /* ── Sticky-scroll metrics (2026-09-11) ───────────────────────────────────
    * Both are MEASURED at runtime by SeatingPlanner.js, not designed, because neither is a
