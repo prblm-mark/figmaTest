@@ -1222,3 +1222,74 @@ because it is `display: none` above 1200 by design — Table Types, the visible 
 
 Labels after the 2026-09-11 change: overflow `rgb(51, 85, 98)` (`--ai-text-secondary`), Export
 `rgb(0, 34, 47)` (`--ai-text-primary`) — the one remaining difference between them, above.
+
+---
+
+## "Minimise header" in the overflow menu (2026-09-11) — an addition, desktop only
+
+Asked for directly: *"can we add a minimise header option to the overflow menu (desktop only) that
+collapses the header to the sticky scroll view."*
+
+**No Figma node backs the menu row.** The state it produces is not new though — it is exactly what
+`3615:110611` draws: the event bar and room carousel gone under the chrome, the toolbar flush at
+the top, the three sheets at full height. A page scroll already reaches that view; this holds you
+in it. Flagged as an addition rather than treated as a spec'd control.
+
+### Why it costs almost nothing
+
+The sheets already stand at `--sp-rail-h`, the height they have once the toolbar is pinned — that
+is the whole basis of the sticky model. So collapsing the header does not resize anything; it just
+removes the need to scroll. Page travel goes from ~253px to ~1px (the header's own bottom border),
+which is why there is no separate rule switching the scroll off.
+
+The offset is the **same expression the sticky inset uses** —
+`calc(-1 * (var(--sp-header-retire) + var(--sp-page-pad)))`. Sharing it is deliberate: it is what
+keeps the minimised view and the scrolled view identical rather than nearly identical.
+
+### Desktop only, and the class survives the layout changing
+
+Below a 1023px content column the header does not pin at all — Figma's mobile frames scroll it
+away outright — so there is no state for this to hold and the row is hidden. `@container cs-page`,
+not `@media`: a docked SidebarMenu shrinks the column with no window resize, so a viewport query
+would leave the row offering a state the layout has already left (CLAUDE.md §4a).
+
+The stacked block **also reverts the margin**, which matters for a case the hidden row does not
+cover: minimise on a wide column, then dock the SidebarMenu. The class is still set, and without
+that rule the header would sit shifted up by its own upper rows in a layout that never pins it.
+Reverting in CSS rather than clearing the class in JS keeps the condition with the layout it
+belongs to — and means the state is still there, unchanged, when the column widens again.
+
+### Both labels and both glyphs live in the markup
+
+Lucide replaces `<i data-lucide>` with an `<svg>` at init, so swapping the icon in script means
+rebuilding the node and re-running `createIcons()` (`feedback_lucide_svg_selector`). Both states
+are authored instead and CSS shows one — one hidden span and one hidden svg, and they cannot fall
+out of step. JS only toggles the class and updates `aria-label`.
+
+**The labels needed `span[data-text]` in the selector, and it was measured, not guessed.**
+DropdownItem.css sets `.dropdown-item span[data-text] { display: inline-flex }` at (0,2,1) for the
+width-reservation `::before`. A plain `.is-header-minimised .seating-header__menu-word--min` is
+(0,2,0) and loses to it — so the first version swapped the icon correctly and left **both** labels
+on screen, the row reading "Minimise header Expand header". Matching the component's own shape
+outranks it without `!important`, and the shown value has to be `inline-flex` rather than `inline`
+or the reservation collapses. The glyphs needed none of this: Lucide preserves the class onto the
+`<svg>`, and nothing else sets `display` on them.
+
+Worth noting how it was found — `offsetParent` is useless here, because **SVG elements do not
+implement it**, so a visibility probe written that way reports every glyph as visible. Computed
+`display` is the measurement that actually distinguishes them.
+
+### Verified
+
+At 1440×800: row visible; minimising takes page travel 253 → 1 and the toolbar from y=252 to
+**y=0**, flush under the chrome, with sheet height unchanged at 648; the label and glyph swap to
+"Expand header" / `chevrons-down`; toggling back restores all of it. Row width holds at 142 across
+both labels, so the panel does not jump. At a 980px column the row is hidden and the class has no
+effect — travel and toolbar position are unchanged whether it is set or not.
+
+### Open
+
+In-memory only, flagged as `seating-header-minimised` in the manifest and HANDOVER: the choice
+should persist per user so a reload returns to the view they were working in. A UI preference
+alongside `seating-last-used-event`, not a property of the plan — two people working the same
+event should be able to disagree about it.

@@ -628,6 +628,62 @@
   display: none;
 }
 
+/* ── Minimise header ────────────────────────────────────────────────────────
+ * DESKTOP ONLY. Below 1023 the header does not pin at all — Figma's mobile frames scroll it away
+ * outright and the page is the scroller — so there is no minimised state for this to hold, and an
+ * item that does nothing is worse than no item. The threshold is the one the whole screen changes
+ * mode at, not a new one.
+ *
+ * `cs-page`, not `@media`: the docked SidebarMenu shrinks the content column with no window resize
+ * at all, so a viewport query would leave this offering a state the layout has already left
+ * (CLAUDE.md §4a). The menu is a child of the page, so it may query that container freely. */
+@container cs-page (max-width: 1023px) {
+  .seating-header__menu-item--minimise {
+    display: none;
+  }
+}
+
+/* One row, two labels and two glyphs, swapped by CSS rather than rewritten by JS. Lucide replaces
+ * `<i data-lucide>` with an `<svg>` at init, so changing the icon in script means rebuilding the
+ * node and re-running `createIcons()` — both states being present costs one hidden span and one
+ * hidden svg, and cannot fall out of step. The state class sits on the PAGE, which is why these
+ * are written as descendant rules rather than on the item itself. */
+.seating-header__menu-glyph--max {
+  display: none;
+}
+
+.is-header-minimised .seating-header__menu-glyph--min {
+  display: none;
+}
+
+.is-header-minimised .seating-header__menu-glyph--max {
+  display: block;
+}
+
+/* The LABELS need `span[data-text]` in the selector and the component's own `inline-flex` as the
+ * shown value — both measured, not guessed. DropdownItem.css sets `.dropdown-item span[data-text]
+ * { display: inline-flex }` for the width-reservation `::before`, which is (0,2,1); a plain
+ * `.is-header-minimised .seating-header__menu-word--min` is (0,2,0) and loses to it, so the first
+ * version of this swapped the icon and left both labels on screen — the row read "Minimise header
+ * Expand header". Matching the component's own shape outranks it without `!important`, and
+ * re-stating `inline-flex` keeps the reservation working rather than collapsing the cell to
+ * `inline`. */
+.dropdown-item span[data-text].seating-header__menu-word--max {
+  display: none;
+}
+
+.is-header-minimised .dropdown-item span[data-text].seating-header__menu-word--min {
+  display: none;
+}
+
+.is-header-minimised .dropdown-item span[data-text].seating-header__menu-word--max {
+  display: inline-flex;
+}
+
+/* `--xs` sizes the leading icon with `[data-lucide]:not(.dropdown-item__check)`, which matches an
+ * `<i>` before Lucide swaps it and the `<svg>` after — so both glyphs are covered without naming
+ * them. Only the layout rules above are needed here. */
+
 .seating-header__more {
   position: relative;
   display: flex;
