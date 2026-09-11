@@ -592,38 +592,50 @@
 
         <!-- One room card: both frames for THIS screen show a single plan. The 4-card carousel
              appears in 3515:210144, which is a later state. -->
-        <div class="seating-header__rooms">
-          <article class="room-card room-card--selected" data-backend-todo="seating-room-list">
-            <div class="room-card__header">
-              <h3 class="room-card__name">
-                <button type="button" class="room-card__select">Main Ballroom</button>
-              </h3>
-              <div class="room-card__actions">
-                <!-- Opens the Edit Plan modal, pre-filled from this card. An explicit hook rather
-                     than matching the pencil icon or the aria-label: `data-lucide` is CONSUMED by
-                     `createIcons()` (the <i> becomes <svg class="lucide-pencil">), so an
-                     icon-attribute selector silently stops matching after init, and
-                     `aria-label^="Edit"` would also catch all twelve TableCard pencils below. -->
-                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Main Ballroom"
-                        data-ep-open>
-                  <i data-lucide="pencil" aria-hidden="true"></i>
-                </button>
-                <!-- Opens the Delete Plan modal. Same reasoning as `data-ep-open` above for why
-                     this is an explicit hook and not an icon or aria-label selector. -->
-                <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Main Ballroom"
-                        data-dp-open>
-                  <i data-lucide="trash" aria-hidden="true"></i>
-                </button>
+        <div class="seating-header__carousel">
+          <div class="seating-header__rooms">
+            <article class="room-card room-card--selected" data-backend-todo="seating-room-list">
+              <div class="room-card__header">
+                <h3 class="room-card__name">
+                  <button type="button" class="room-card__select">Main Ballroom</button>
+                </h3>
+                <div class="room-card__actions">
+                  <!-- Opens the Edit Plan modal, pre-filled from this card. An explicit hook rather
+                       than matching the pencil icon or the aria-label: `data-lucide` is CONSUMED by
+                       `createIcons()` (the <i> becomes <svg class="lucide-pencil">), so an
+                       icon-attribute selector silently stops matching after init, and
+                       `aria-label^="Edit"` would also catch all twelve TableCard pencils below. -->
+                  <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Edit Main Ballroom"
+                          data-ep-open>
+                    <i data-lucide="pencil" aria-hidden="true"></i>
+                  </button>
+                  <!-- Opens the Delete Plan modal. Same reasoning as `data-ep-open` above for why
+                       this is an explicit hook and not an icon or aria-label selector. -->
+                  <button type="button" class="btn btn--secondary btn--icon btn--2xs" aria-label="Delete Main Ballroom"
+                          data-dp-open>
+                    <i data-lucide="trash" aria-hidden="true"></i>
+                  </button>
+                </div>
               </div>
-            </div>
-            <div class="room-card__meta">
-              <p class="room-card__counts">12 tables · 6/148<span class="room-card__seated"> seated</span></p>
-              <p class="room-card__free">142 seats free</p>
-            </div>
-            <div class="room-card__progress" aria-hidden="true">
-              <div class="room-card__progress-fill"></div>
-            </div>
-          </article>
+              <div class="room-card__meta">
+                <p class="room-card__counts">12 tables · 6/148<span class="room-card__seated"> seated</span></p>
+                <p class="room-card__free">142 seats free</p>
+              </div>
+              <div class="room-card__progress" aria-hidden="true">
+                <div class="room-card__progress-fill"></div>
+              </div>
+            </article>
+          </div>
+          <!-- Arrows sit AFTER the rail: CSS has no preceding-sibling selector and they are
+               shown by the rail's own `has-fade-*` classes. Absolutely positioned, so this
+               source order is invisible. Outside the rail deliberately — inside, the mask would
+               fade them and seating-app.js's `rooms.innerHTML = ...` would delete them. -->
+          <button type="button" class="btn btn--secondary btn--icon btn--sm seating-header__arrow seating-header__arrow--prev" aria-label="Scroll to previous plans">
+            <i data-lucide="chevron-left" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="btn btn--secondary btn--icon btn--sm seating-header__arrow seating-header__arrow--next" aria-label="Scroll to next plans">
+            <i data-lucide="chevron-right" aria-hidden="true"></i>
+          </button>
         </div>
 
         <div class="seating-header__toolbar">

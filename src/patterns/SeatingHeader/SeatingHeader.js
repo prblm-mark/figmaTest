@@ -1,14 +1,17 @@
 /* SeatingHeader — drag-to-scroll for the room-plans carousel.
  * Include once per page; binds nothing per element.
  *
- * The carousel (`.seating-header__rooms`) hides its scrollbar, so this supplies the two
- * affordances that replace it — a directional EDGE FADE for every input, and click-and-drag
- * for the mouse:
+ * The carousel (`.seating-header__rooms`) hides its scrollbar, so this supplies the affordances
+ * that replace it — a directional EDGE FADE for every input, click-and-drag for the mouse, and
+ * desktop-only ARROW buttons:
  *
  *   - The FADE is the always-visible half, and the only one touch ever sees. This file just
  *     toggles `has-fade-start` / `has-fade-end` from scrollLeft; the mask itself is CSS.
  *     Added 2026-09-11, because `cursor: grab` alone is hover-only and mouse-only, so a
  *     touch user had no signal that the rail scrolled at all.
+ *   - The ARROWS are the pointer-only *control*, added 2026-09-11: dragging works but is
+ *     undiscoverable. Their visibility is pure CSS, keyed off the fade's classes; this file only
+ *     handles the click. Desktop only — touch swipes natively.
  *   - The DRAG is the pointer-only half:
  *
  *       - TOUCH needs nothing here. A native overflow-x container already swipes, with the
@@ -167,6 +170,57 @@
   } else {
     syncAll();
   }
+
+  /* ── Arrows ───────────────────────────────────────────────────────────────
+   *
+   * Desktop-only prev/next buttons (designer, 2026-09-11), the pointer-only half of the pair the
+   * edge fade opened: dragging works but nothing advertises it until you happen to press on the
+   * rail, so these give a plain click target.
+   *
+   * WHEN THEY SHOW IS NOT DECIDED HERE. The CSS keys them off the rail's own `has-fade-start` /
+   * `has-fade-end`, which already mean "there is more content this way" — so an arrow can never
+   * disagree with the fade beside it, and the whole ends-behaviour (no prev arrow at the start,
+   * no next arrow at the end) needs no code at all. All that is left is the click.
+   *
+   * A drag cannot start from an arrow: the pointerdown handler above tests
+   * `closest('.seating-header__rooms')`, and an arrow is the rail's SIBLING, not its descendant —
+   * which is the same structural fact that keeps it out of the mask and out of the renderer's
+   * `innerHTML` rewrite. And a drag that happens to END on an arrow is swallowed by the capture
+   * handler below before this bubble-phase listener ever runs. */
+
+  /* One card plus one gap, measured rather than assumed: the card width is a token that differs
+   * per breakpoint (280 desktop, a flexed floor on mobile) and the gap changes with it, so a
+   * constant here would page by the wrong amount at one of the two. Falls back to the visible
+   * width when there is no card to measure. */
+  function stepOf(rail) {
+    var card = rail.querySelector('.room-card');
+    if (!card) return rail.clientWidth;
+    var gap = parseFloat(getComputedStyle(rail).columnGap);
+    return card.getBoundingClientRect().width + (gap || 0);
+  }
+
+  /* `matchMedia` is correct HERE and is not the layout-state use CLAUDE.md §4a forbids: this is a
+   * motion PREFERENCE, not a width. Smooth scrolling started from script is not covered by the
+   * CSS `scroll-behavior` the preference normally suppresses, so it has to be checked explicitly
+   * or the arrows animate for someone who asked for no animation. */
+  function reduced() {
+    return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  }
+
+  document.addEventListener('click', function (event) {
+    var arrow = event.target.closest ? event.target.closest('.seating-header__arrow') : null;
+    if (!arrow) return;
+
+    var wrap = arrow.closest('.seating-header__carousel');
+    var rail = wrap && wrap.querySelector(RAIL);
+    if (!rail) return;
+
+    var back = arrow.classList.contains('seating-header__arrow--prev');
+    rail.scrollBy({
+      left: (back ? -1 : 1) * stepOf(rail),
+      behavior: reduced() ? 'auto' : 'smooth'
+    });
+  });
 
   /* Scroll does not bubble — but it DOES pass through the CAPTURE phase, so a single
    * document-level listener covers every rail, including any added later, with no
