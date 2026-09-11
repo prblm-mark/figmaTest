@@ -236,6 +236,45 @@
   /* Keeps a swipe past the end from chaining to the page — on iOS and in Chrome that
    * otherwise triggers back-navigation. */
   overscroll-behavior-x: contain;
+
+  /* ── EDGE FADE — the overflow affordance (designer, 2026-09-11) ──────────────────────────
+   *
+   * With the scrollbar hidden above, the only remaining signal that this rail scrolls was
+   * `cursor: grab`, which is hover-only AND mouse-only: a touch user got nothing at all, and
+   * nobody got anything before moving a pointer onto the rail. The fade is the input-agnostic
+   * half of that pair — always visible, on whichever side actually has more content.
+   *
+   * A MASK, NOT A GRADIENT PAINT. Two reasons, the first being the one that matters:
+   *   1. `mask-image` works in the ALPHA channel, so `black` / `transparent` below are mask
+   *      coverage values, not design colours. There is no paint value to tokenise, so the
+   *      gradient-token rule (CLAUDE.md §8) has nothing to bite on. The obvious alternative —
+   *      an overlay of `linear-gradient(transparent, var(--ai-surface-primary))` — would
+   *      instead hardcode a relationship to this row's background, and break silently the day
+   *      the header bg changes or the row is themed.
+   *   2. It fades the CARDS rather than painting a rectangle over them, so it stays correct
+   *      across `border-block-end` and needs no stacking-order work.
+   *
+   * NOT IN FIGMA, and verified so rather than assumed (2026-09-11): a screenshot of the mobile
+   * variant `3484:186300` cuts "Overflow Annex" with a HARD edge, and `get_variable_defs` on
+   * `3474:90518` returns no gradient variable at all. A deliberate divergence — see the
+   * divergence table in the figma-notes.
+   *
+   * WIDTH tracks this breakpoint's own `padding-inline`, so the fade spans exactly the gutter
+   * and a card is never dimmed while fully inside the content box. Figma specifies no width
+   * (it draws no fade), which makes this the one value here with no Figma authority — change
+   * `--fade-w` alone to make it softer or tighter. */
+  --fade-w: var(--ai-spacing-6); /* = padding-inline above; overridden with it at ≤767 */
+  --fade-start: 0px;
+  --fade-end: 0px;
+  --fade-mask: linear-gradient(
+    to right,
+    transparent 0,
+    black var(--fade-start),
+    black calc(100% - var(--fade-end)),
+    transparent 100%
+  );
+  -webkit-mask-image: var(--fade-mask);
+  mask-image: var(--fade-mask);
 }
 
 .seating-header__rooms::-webkit-scrollbar {
@@ -253,6 +292,21 @@
   cursor: grabbing;
   /* Without this a drag across the cards selects their text instead. */
   user-select: none;
+}
+
+/* Only the side that genuinely has more content fades — a fade on both edges of a rail
+ * scrolled to its end would claim content that is not there. `SeatingHeader.js` toggles these
+ * from `scrollLeft`, so: at rest, a fade on the right only; scrolled to the end, on the left
+ * only; mid-rail, both; and with a single plan in the rail, neither.
+ *
+ * Both default to `0px` on the rule above rather than being unset, so the mask is always a
+ * valid four-stop gradient and the un-faded state costs no separate declaration. */
+.seating-header__rooms.has-fade-start {
+  --fade-start: var(--fade-w);
+}
+
+.seating-header__rooms.has-fade-end {
+  --fade-end: var(--fade-w);
 }
 
 /* Figma draws the desktop card at 290px, which has no token; --ai-size-5 (280px) is the
@@ -600,6 +654,9 @@
   .seating-header__rooms {
     gap: var(--ai-spacing-3);
     padding: var(--ai-spacing-4);
+    /* Kept beside the padding deliberately: the fade is sized to the gutter, so the two must
+     * change together or the fade starts dimming cards inside the content box. */
+    --fade-w: var(--ai-spacing-4);
   }
 
   /* Figma switches the cards to flex-1 here, so a single plan fills the width while two

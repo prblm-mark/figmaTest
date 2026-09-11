@@ -819,3 +819,141 @@ It asked to make this toggle `xs` "so it matches the only free seats toggle" —
 a no-op and the stated goal would have gone unmet. Confirmed by measuring both before touching
 either, and the direction was settled with the designer rather than guessed: both options diverged
 from Figma, in opposite directions.
+
+## The plans carousel gets an edge fade (designer, 2026-09-11)
+
+The scrollbar was removed on 2026-08-26 to match Figma, which leaves `cursor: grab` as the only
+signal that the rail scrolls — and a cursor is **hover-only and mouse-only**. A touch user got
+nothing at all, and nobody got anything before moving a pointer onto the rail. The designer asked
+what the convention is; the answer given was that a **fade** is the input-agnostic half of the
+standard pair (fade as the always-on signal, arrow buttons as the pointer-only *control*), and
+that the fade is the half worth having first because it is the one that fixes touch.
+
+Pagination dots were considered and rejected: they are for *paged* content where each dot is a
+discrete destination, they stop scaling past six or eight, and plans are a variable-length list.
+
+### It is genuinely not in Figma — verified, not assumed
+
+The CSS comment already claimed "Figma draws the second card simply clipped". That comment is a
+prior session's assertion, and source-of-truth rule 1 says the component's own CSS is not a spec,
+so it was re-checked before anything was built:
+
+| Check | Result |
+|---|---|
+| Screenshot of mobile `3484:186300` | Cuts "Overflow Annex" with a **hard edge** — no fade, no scrollbar, no arrows |
+| Screenshot of desktop `3474:90518` | One plan, no overflow at all, so it says nothing either way |
+| `get_variable_defs` on `3474:90518` | **No gradient variable of any kind** |
+
+So the comment was right, and the fade is a **deliberate divergence** — the newest row in the
+Figma-behind-code list at the end of this file.
+
+### A mask, not a gradient paint
+
+`mask-image` operates in the **alpha channel**, so the `black` / `transparent` stops are mask
+coverage values, not design colours. There is no paint value to tokenise and CLAUDE.md §8's
+gradient-token rule has nothing to bite on. The obvious alternative — overlaying
+`linear-gradient(transparent, var(--ai-surface-primary))` — would instead hardcode a relationship
+to this row's background and break silently the day the header bg changes or the row is themed.
+The mask also fades the *cards* rather than painting a rectangle over them, so it stays correct
+across `border-block-end` with no stacking-order work.
+
+### The width is `padding-inline`, and that turned out to be load-bearing
+
+Figma draws no fade, so it specifies no width — this is the one value in the component with no
+Figma authority. It is set to each breakpoint's own `padding-inline` (`--ai-spacing-6` = 24
+desktop, `--ai-spacing-4` = 12 at ≤767, declared next to the padding so the two cannot drift),
+which started as an aesthetic choice — the fade spans exactly the gutter, so a card is never
+dimmed while fully inside the content box.
+
+Measuring the **keyboard** path showed it is more than aesthetic. When Tab moves focus to an
+off-screen card the browser scrolls it flush to the **padding** edge, not the border edge:
+measured `cardRightInset: 24` against a `fadeWpx: 24`. A focused card therefore lands exactly
+where the mask reaches full opacity and is never dimmed.
+
+**This is the constraint to know about if the fade is ever widened.** A fade wider than the
+padding *would* dim a Tab-focused card. The fix in that case is `scroll-padding-inline` on the
+rail, not a smaller fade — but as long as the two match, nothing is needed.
+
+### Directional, because a fade on a finished edge lies
+
+| `scrollLeft` | Classes | Reads as |
+|---|---|---|
+| at 0 | `has-fade-end` | more to the right |
+| mid-rail | `has-fade-start has-fade-end` | more both ways |
+| at max | `has-fade-start` | more to the left |
+| no overflow | neither | nothing to scroll |
+
+Both are gated on the same overflow test as `is-scrollable`, so a rail holding one plan
+advertises neither, and both default to `0px` on the base rule so the mask is always a valid
+four-stop gradient with no separate un-faded declaration.
+
+`SeatingHeader.js` toggles them from `scrollLeft` with the same **1px tolerance** `overflows()`
+uses, and for the same reason: sub-pixel layout routinely leaves `scrollLeft` a fraction short of
+its own maximum at the true end of the rail, and an exact comparison would strand the end fade
+lit with nothing left to reach.
+
+What drives it is a **capture-phase** `scroll` listener on `document`. Scroll does not bubble but
+it does pass through capture, so one listener covers every rail including any added later, with
+nothing to tear down. That matters for more than tidiness: it is what makes the fade follow
+scrolling the module does not initiate — wheel, trackpad, momentum, and the browser's own
+focus-scroll — rather than only the drag path.
+
+### Verified (headless Chrome over HTTP, 2026-09-11)
+
+| Case | Result |
+|---|---|
+| 4 plans in a 1000px container | `--fade-w` 1.5rem = 24px = `padding-inline` 24px ✓ |
+| 3 plans in a 700px container (≤767, so mobile) | `--fade-w` 0.75rem = 12px = `padding-inline` 12px ✓ |
+| At 0 / mid / max | end only · both · start only ✓ |
+| Single plan, no overflow | neither class, and not `is-scrollable` ✓ |
+| `mask-image` computed | resolves to the four-stop gradient, not `none` ✓ |
+| Scroll with **no** explicit sync call, read after a tick | stale → corrected ✓ — the capture listener is doing the work |
+| Tab to an off-screen card | lands at inset 24 against a 24px fade — **not dimmed** ✓ |
+| The real demo at 1200px | 2-plan rail: no classes · 5-plan rail: `is-scrollable has-fade-end` ✓ |
+
+The demo needed no new markup: its existing *many plans* section already holds five plans, which
+overflow and show the fade. Overflow in the probes was forced with a **fixed-width wrapper**, never
+a narrow viewport — headless `--window-size` clamps at ~500px, so a narrow window would have been
+a crop of a 500px render.
+
+### Two known limitations, both deliberate
+
+1. **The gradient axis is physical (`to right`), not logical.** There is no logical equivalent for
+   a gradient direction, so under `dir="rtl"` the fades would sit on the wrong sides. The rest of
+   this file is written in logical properties, so this is a real inconsistency — the fix is a
+   `[dir="rtl"]` override, deliberately not written here because there is no RTL surface to verify
+   it against, and shipping unverified RTL is worse than recording the gap.
+2. **The rail's own `border-block-end` softens over the last 24px at each end.** The mask applies
+   to the element, so its bottom hairline fades with everything else. Checked on the real backdrop
+   rather than argued: `.seating-header__rooms` and its parent `.seating-header` are both
+   `rgb(255,255,255)`, so the background fade is invisible and only the cards visibly soften — the
+   1px border's soft terminus is imperceptible at the column edge. Worth knowing it exists if the
+   row ever sits on a contrasting surface, where the whole row edge would start to look soft.
+
+### Still open
+
+- **The fade width** is the one value with no Figma authority. One token (`--fade-w`) to change.
+- **Arrow buttons** were the other half of the recommendation and are *not* built. The precedent if
+  they are wanted is `SourcesCarousel` — `[disabled]` arrows hidden at the ends, shown only from
+  1024px, with the disabled state recomputed on scroll, which doubles as a position indicator.
+
+---
+
+## Figma-behind-code: every divergence in one place
+
+Each of these was **designer-directed** and is intentional. They were recorded in their own
+sections as they happened, which meant five of them scattered across 900 lines with no single place
+to look — so this table is the index. **The next audit should read these as intentional, not as
+drift to correct back.** Delete a row once the Figma side is updated.
+
+| # | What | Code | Figma | Directed | Detail |
+|---|---|---|---|---|---|
+| 1 | `.seating-header__meta` `row-gap` | `--ai-spacing-1` (4) | 6px | 2026-08-28 | *Two designer-directed divergences from the mobile frame* |
+| 2 | `.seating-header__bar` `gap` (≤767) | `--ai-spacing-5` (16) | 12px | 2026-08-28 | same section |
+| 3 | `.seating-header__toolbar-actions` `gap` | `--ai-spacing-3` (8) | 16px | 2026-08-28 | *Toolbar tightened…* — frame `3515:213426` still draws 16 |
+| 4 | Show-unassigned toggle size | `toggle--xxs` | binds `toggle--xs` | 2026-09-10 | *The toggle is `xxs`…* — `xxs` is a real variant, not invented |
+| 5 | Plans-carousel **edge fade** | mask fade, `--fade-w` = `padding-inline` | **nothing** — hard clip | 2026-09-11 | *The plans carousel gets an edge fade* — no gradient variable exists on the node |
+
+Rows 1–3 are all against the same mobile frame `3515:213426`, so one frame update clears three of
+the five. Row 5 is the only one that adds something Figma does not draw at all, rather than
+changing a value it does.

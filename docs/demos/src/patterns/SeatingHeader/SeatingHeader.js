@@ -1,16 +1,23 @@
 /* SeatingHeader — drag-to-scroll for the room-plans carousel.
  * Include once per page; binds nothing per element.
  *
- * The carousel (`.seating-header__rooms`) hides its scrollbar, so this supplies the
- * affordance that replaces it:
+ * The carousel (`.seating-header__rooms`) hides its scrollbar, so this supplies the two
+ * affordances that replace it — a directional EDGE FADE for every input, and click-and-drag
+ * for the mouse:
  *
- *   - TOUCH needs nothing from this file. A native overflow-x container already swipes,
- *     with the platform's own momentum and rubber-banding, and re-implementing that in JS
- *     is how carousels end up feeling wrong. Only `pointerType === 'mouse'` is handled.
- *   - MOUSE gets click-and-drag, which no browser gives natively.
- *   - KEYBOARD needs nothing either: the cards inside are real <button>s, so tabbing to one
- *     that is off-screen scrolls it into view. That is why the rail itself is deliberately
- *     NOT given a tabindex — it would add a focus stop that announces nothing.
+ *   - The FADE is the always-visible half, and the only one touch ever sees. This file just
+ *     toggles `has-fade-start` / `has-fade-end` from scrollLeft; the mask itself is CSS.
+ *     Added 2026-09-11, because `cursor: grab` alone is hover-only and mouse-only, so a
+ *     touch user had no signal that the rail scrolled at all.
+ *   - The DRAG is the pointer-only half:
+ *
+ *       - TOUCH needs nothing here. A native overflow-x container already swipes, with the
+ *         platform's own momentum and rubber-banding, and re-implementing that in JS is how
+ *         carousels end up feeling wrong. Only `pointerType === 'mouse'` is handled.
+ *       - MOUSE gets click-and-drag, which no browser gives natively.
+ *       - KEYBOARD needs nothing either: the cards inside are real <button>s, so tabbing to
+ *         one that is off-screen scrolls it into view. That is why the rail itself is
+ *         deliberately NOT given a tabindex — it would add a focus stop announcing nothing.
  *
  * `is-scrollable` is added only when the content actually overflows, so a bar holding one
  * plan does not offer a grab cursor that does nothing.
@@ -43,7 +50,23 @@
   }
 
   function syncOne(rail) {
-    rail.classList.toggle('is-scrollable', overflows(rail));
+    var scrollable = overflows(rail);
+    rail.classList.toggle('is-scrollable', scrollable);
+
+    /* The edge fade (see SeatingHeader.css) is DIRECTIONAL — a fade on both edges of a rail
+     * scrolled hard to its end would advertise content that is not there. Both classes are
+     * gated on `scrollable`, so a rail holding a single plan shows neither.
+     *
+     * Same 1px tolerance as `overflows`, and for the same reason: sub-pixel layout routinely
+     * leaves scrollLeft a fraction short of its own maximum at the true end of the rail, and
+     * an exact comparison would strand the end fade lit with nothing left to reach.
+     *
+     * scrollWidth is read straight rather than cached. It is a forced layout, and this runs on
+     * every frame of a drag — but it is two integer reads on a three-card flex row, and a
+     * cached maximum is precisely the kind of state that goes stale when a plan is added. */
+    var max = rail.scrollWidth - rail.clientWidth;
+    rail.classList.toggle('has-fade-start', scrollable && rail.scrollLeft > 1);
+    rail.classList.toggle('has-fade-end', scrollable && rail.scrollLeft < max - 1);
   }
 
   function syncAll() {
@@ -144,6 +167,19 @@
   } else {
     syncAll();
   }
+
+  /* Scroll does not bubble — but it DOES pass through the CAPTURE phase, so a single
+   * document-level listener covers every rail, including any added later, with no
+   * per-element binding and nothing to tear down.
+   *
+   * Deliberately not coalesced into scheduleSync: this must not lag the scroll it describes,
+   * and the drag handler above writes `scrollLeft` directly, which fires this — so the fades
+   * follow a mouse drag exactly as they follow a touch swipe. */
+  document.addEventListener('scroll', function (event) {
+    var el = event.target;
+    /* Document-level scroll reports `document` (nodeType 9) as its target, not an element. */
+    if (el && el.nodeType === 1 && el.matches && el.matches(RAIL)) syncOne(el);
+  }, true);
 
   /* Width changes flip overflow on and off. */
   window.addEventListener('resize', scheduleSync);
