@@ -94,19 +94,26 @@
  * noise. This covers the case the 2026-08-27 decision to drop the hairline stops working in,
  * rather than reversing that decision.
  *
- * A SHADOW, not a rule (designer, 2026-09-11 — "i dont like the solid line"). `--ai-shadow-md`
- * rather than the `--ai-shadow-sm` this screen already uses for `is-scrolled`, and the step up is
- * measured: rendered side by side against these fills, `sm` is barely perceptible — its dark
- * values are `rgba(0,0,0,.149)` / `rgba(0,0,0,.255)` over a surface that is already dark — while
- * `lg` spreads 20px and reads heavy for what is a boundary, not an elevation. `md` separates
- * clearly and stays quiet.
+ * A SHADOW, not a rule (designer, 2026-09-11 — "i dont like the solid line"), and then a SOFTER
+ * shadow than the `--ai-shadow-md` that first replaced it ("can we add a softer shadow").
+ *
+ * `--ai-shadow-card`, picked by rendering the whole scale against these actual fills rather than
+ * stepping down the ladder by name. What matters here is BLUR, not weight: `base` and `sm` are
+ * 2-3px blurs, so however light they are they still resolve into a defined edge — the hard line
+ * the designer rejected, only fainter. `xxs` disappears entirely. `card` is
+ * `0 0 10px rgba(0,0,0,.125)` in dark: no offset, ten pixels of blur, an eighth opacity — it
+ * reads as a soft gradient under the chrome instead of an edge, which is what "softer" asks for.
+ *
+ * NAMING CAVEAT, flagged: `--ai-shadow-card` is named for cards and the scale has no
+ * "chrome boundary" step. It is the right VALUE and a real token rather than an invented one, but
+ * if this treatment stays it deserves a name that says what it does.
  *
  * Both selectors, because the specificity would otherwise TIE with the `is-scrolled` rule above
  * ((0,4,0) each) and order alone would decide. Naming the scrolled state too settles it: in dark
  * the boundary is the same problem whether the page has scrolled or not. */
 [data-theme="dark"] .cc-control__main:has(.cc-control__page--seating) .cc-control__chrome,
 [data-theme="dark"] .cc-control__main:has(.cc-control__page--seating) .cc-control__chrome.is-scrolled {
-  box-shadow: var(--ai-shadow-md);
+  box-shadow: var(--ai-shadow-card);
 }
 
 /* ── Top nav keeps its 48px on THIS screen, at every width ──────────────────

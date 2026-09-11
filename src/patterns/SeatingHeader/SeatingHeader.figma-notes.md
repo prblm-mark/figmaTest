@@ -1327,20 +1327,35 @@ is the **toolbar row**, clipped mid-header, and a middle row has no top border o
 two merge. The `is-scrolled` shadow cannot cover it either: minimised, the page has ~1px of travel
 so the class never turns on, and a shadow is close to invisible against these fills anyway.
 
-Fixed with a **shadow on the chrome, in dark only**. A 1px rule was tried first and rejected by the
-designer — *"i dont like the solid line"* — so the boundary is `--ai-shadow-md` instead.
+Fixed with a **shadow on the chrome, in dark only**. A 1px rule was tried first and rejected —
+*"i dont like the solid line"* — then `--ai-shadow-md`, which was still too strong: *"can we add a
+softer shadow"*. It is `--ai-shadow-card`.
 
 Dark only is not a hedge but a measurement: in light the chrome is `rgb(11, 44, 62)` against a
 `rgb(255, 255, 255)` toolbar, which separates by luminance with room to spare, and anything added
 there would be noise. This covers the case the 2026-08-27 decision to drop the hairline stops
 working in, rather than reversing that decision.
 
-**`md`, not the `sm` this screen already uses for `is-scrolled`** — chosen by rendering all of them
-against the real fills rather than by picking off the scale. `sm` in dark is
-`rgba(0,0,0,.149)` / `rgba(0,0,0,.255)` over a surface that is already dark, and is barely
-perceptible; `lg` spreads 20px and reads as elevation rather than a boundary. `md` resolves to
-`rgba(0,0,0,.255) 0 3px 10px, rgba(0,0,0,.4) 0 1px 4px` in dark and separates clearly while
-staying quiet.
+**Which shadow took two passes, both settled by rendering the scale against the real fills rather
+than stepping down it by name.** `--ai-shadow-md` first; the designer then asked for softer, and
+the answer was not the next rung down.
+
+| token (dark) | value | reads as |
+|---|---|---|
+| `md` | `0 3px 10px .255`, `0 1px 4px .4` | clear, but heavier than wanted |
+| **`card`** | **`0 0 10px .125`** | **soft gradient — chosen** |
+| `base` | `0 1px 2px/3px` slate `.251` | a defined edge, only fainter |
+| `sm` | `0 1px 2px .149`, `0 1px 3px .255` | a defined edge, fainter still |
+| `xxs` | `0 1px 0.5px` slate `.047` | invisible |
+
+What matters here is **blur, not weight**. `base` and `sm` are 2–3px blurs, so however light they
+get they still resolve into a line — which is the thing that was rejected in the first place, just
+quieter. `card` has no offset and ten pixels of blur at an eighth opacity, so it reads as a
+gradient under the chrome rather than an edge.
+
+**Naming caveat, flagged:** `--ai-shadow-card` is named for cards, and the scale has no
+"chrome boundary" step. It is the right value and a real token rather than an invented one, but if
+this treatment stays it deserves a name that says what it does.
 
 Both the base and `.is-scrolled` selectors are named, because the two rules would otherwise tie at
 (0,4,0) and source order alone would settle it. In dark the boundary is the same problem whether
