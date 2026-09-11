@@ -3003,20 +3003,36 @@ same pair is precisely how the field and its help line drifted apart to begin wi
 The wording is Figma's own: it is the one bounded-field error the frames state, and create-plan
 already uses it verbatim for both the empty and the out-of-range case.
 
-### Two handlers validate this one form
+### The duplicate handler was dead code, and is gone (2026-09-11)
 
-Worth knowing before touching it again, because the first fix landed in the wrong one and the
-browser showed no change at all.
+Worth knowing before touching this again, because the bounds fix above landed in the wrong file
+first and the browser showed no change at all.
 
-`SeatingPlanner.js` binds **the form**; `seating-app.js` binds **the document** and calls
-`stopImmediatePropagation()`. Bubbling starts at the target, so SeatingPlanner.js runs *first* —
-and then seating-app.js runs, calls `clearErrors()` and re-validates, overwriting whatever the
-first one decided. So `seating-app.js` is the only copy that determines whether the dialog saves,
-while the other looks authoritative and is inert.
+**Correcting what this file said an hour earlier.** It claimed SeatingPlanner.js ran first and
+seating-app.js overwrote the result. That was wrong. seating-app.js registers its `submit`
+listener on the **document in the CAPTURE phase** (`}, true)`) and calls
+`stopImmediatePropagation()` on both its paths, so the capture pass never reaches the target and
+nothing bound to the form itself ever ran at all. Verified rather than reasoned: a probe listener
+attached to the form was never reached when a submit was dispatched.
 
-Both are now at 6–12 and both derive the pair from the markup, so they cannot disagree. The
-duplication itself predates this change and is left alone — untangling which module owns the table
-form is a bigger change than a bounds fix, but it is a trap for the next person.
+So `SeatingPlanner.js` held **354 lines of dead code** — a full validate-and-save path that
+rewrote the card's markup, the seat rows, and the plan totals with a regex over
+`"13 tables · 124/148"`. seating-app.js's own comment describes retiring exactly that path when
+the model arrived; the interception did retire it, and the code was simply never deleted.
+
+Deleted, along with the `setError` helper that existed only to serve it (the only declaration the
+removal orphaned — checked, rather than assumed). Dead code that *looks* authoritative is worse
+than none: it cost a wrong fix and a wrong note before anyone measured which copy ran.
+
+**Ownership is now stated once.** `seating-app.js` owns the save and the validation.
+`SeatingPlanner.js` owns everything around it: open/close, the focus trap, the help toggle, the
+sponsor lookup, the reduced-capacity warning and the tier menu.
+
+**Regression-checked after the deletion**, since 354 lines went: open fills from the model
+(name, seats, sponsor, tier) with focus inside the dialog; help toggle; the reduced-capacity
+warning at 6 seats; 3 still rejected; sponsor lookup filters (`"monz"` → Monzo, 1 of 3); a valid
+save persists through the model (`Table 1 [7 / 10 seated]` → `Renamed Table [7 / 12 seated]`);
+close returns focus to the opener; Add mode still titles "Add Table" and offers `Table 14`.
 
 **Verified** by submitting across the range: empty, 3, 5, 13 and 99 rejected with the message;
 6, 10 and 12 accepted and saved.
