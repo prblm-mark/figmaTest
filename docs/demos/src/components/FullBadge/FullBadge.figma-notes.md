@@ -2,37 +2,129 @@
 
 **Tier:** Component
 **Built:** 2026-08-25 (extracted during Seating Planner wave 3)
-**Files:** `FullBadge.css`, `FullBadge.html`, `FullBadge.figma-notes.md`
+**Files:** `FullBadge.css`, `FullBadge.html`, `FullBadge.figma.ts`, `FullBadge.figma-notes.md`
 **Consumed by:** RoomCard, TableCard
 **JS:** none
 
-## There is no Figma component for this
+## It is a real Figma component now (2026-09-11)
 
-That is the whole reason this file needs reading. FullBadge was **extracted from code**, not built
-from a component set. Figma draws it as an inline `Full-Badge` frame in two separate places:
+It was not, for the first two and a half weeks of its life — the section this replaces existed to
+warn that FullBadge had been **extracted from code**, and that Figma drew it as four hand-drawn
+`Full-Badge` frames across RoomCard and TableCard rather than one component with four instances.
+The designer has now promoted it, which closes all three consequences that note listed.
 
-| Consumer | Figma node | Notes |
+### Figma node
+
+- **File key:** `Lus07xi8pPXLN87sQIyrEt`
+- **Component set:** `3615:110610` — [Full-Badge](https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino---Design-System?node-id=3615-110610)
+
+### Variant matrix (1 variant)
+
+| Node ID | Variant | Size | Notes |
+|---|---|---|---|
+| `3615:110609` | `Tier=Component` | 45×15 | the only variant |
+
+`Tier` is single-valued and produces no CSS, so **there are no modifiers** — the same shape as
+TableType, RoomCard and TableCard in this module. There is also **no TEXT property**: "Full" is a
+static text layer (`3615:110607`), so the label is fixed in markup rather than mapped with
+`figma.string`. If the badge ever needs other words, that has to become a Figma property first.
+
+### Code Connect is live
+
+`FullBadge.figma.ts` exists as of this build — it could not before, because `figma.connect` needs a
+component to attach to and a frame-targeted mapping would have been worse than none. Parses clean
+against all 75 files.
+
+### The audit found two mismatches
+
+Both were real, and both compound in the same direction: the badge rendered about **49px wide
+against Figma's 45**.
+
+| Property | Figma `3615:110609` | Code was | Resolution |
+|---|---|---|---|
+| gap | `border/width/border-3` = 3px | `--ai-spacing-1` = 4px | **Figma binding fixed** — see below |
+| check icon | 7px | 10px, hardcoded | **new token** — see below |
+
+Everything else matched exactly: `--ai-surface-success`, `--ai-spacing-2` inline, `--ai-spacing-0-5`
+block, `--ai-radius-full`, and the full type stack (`--ai-font-title` / `--ai-font-bold` /
+`--ai-font-fixed-6xs` / `--ai-text-invert` / uppercase / `leading: normal`). `--ai-surface-success`
+is `#30a46c` in **all three modes** — light, dark and CC — so the green is theme-invariant and
+matches Figma's value precisely.
+
+#### The gap was a Figma-side binding slip
+
+Figma bound **`border/width/border-3`** — a *border-width* primitive — as the flex gap. A border
+width driving spacing is semantically wrong, and it is why the code deviated to `--ai-spacing-1` in
+the first place. Designer's call (2026-09-11): **fix the binding in Figma** to `--ai-spacing-1`
+rather than propagate 3px into code. **No code change** — the CSS was already right, and it is the
+source that moves.
+
+#### The icon needs a 7px token that does not exist yet
+
+Figma draws the check at **7px**. Nothing on the `--ai-*` scale is 7px; the nearest icon token is
+`--ai-icon-size-xs` at 12px, which is visibly larger. The code meanwhile carried a **hardcoded
+10px**, which was a governance violation predating this audit.
+
+Designer's call: **add a 7px token** (`--ai-icon-size-2xs`) so the value matches Figma *and* stops
+being hardcoded.
+
+> **BLOCKED — this is the one item not done.** A token cannot be added from code:
+> `FigmaTokens/*.json` and `css/tokens*.css` are generated, and CLAUDE.md forbids editing either by
+> hand. The sequence is **Figma variable → re-export → `npm run tokens` → then** the icon rule
+> becomes:
+>
+> ```css
+> .full-badge [data-lucide],
+> .full-badge svg {
+>   inline-size: var(--ai-icon-size-2xs);
+>   block-size: var(--ai-icon-size-2xs);
+> }
+> ```
+>
+> The rule is deliberately **left at 10px until then** — writing `var(--ai-icon-size-2xs)` against a
+> token that does not exist resolves to nothing and would size the icon by its intrinsic default,
+> which is worse than the known-wrong 10px. Badge width goes 49 → 45 when it lands.
+
+#### Shrinking to 7px MUST raise the stroke to 5.7, or it undoes the 2026-08-25 fix
+
+This nearly went wrong. The 10px was not sloppiness — it was a deliberate legibility decision
+(see *Two places the CSS leads Figma*): Lucide draws on a 24-unit viewBox, so the stroke thins in
+proportion to the rendered size, and at 7px the default all but vanished against the green. Moving
+to 7px without touching the stroke would quietly reintroduce exactly that, on a badge whose
+contrast **already fails AA at 3.16:1**.
+
+Rendered stroke is `stroke-width × size ÷ 24`. Measured at true 1× (a scaled vector preview hides
+this, which is why the original decision was verified the same way):
+
+| Size | `stroke-width` | Rendered stroke |
 |---|---|---|
-| RoomCard | `3470:84969` | Full / Default, desktop |
-| RoomCard | `3474:90697` | Full / Selected, desktop |
-| TableCard | `3472:85703` | Full / Default, desktop |
-| TableCard | `3484:186684` | Full / Default, mobile — 46px wide, 1px off the others |
+| 10px (current) | 4 | **1.67px** |
+| 7px | 4 | **1.17px** ← the hairline |
+| 7px | 5 | 1.46px |
+| **7px** | **5.7** | **1.66px** ← matches today exactly |
+| 7px | 7 | 2.04px |
 
-`get_metadata` reports every one of them as `<frame>`, never `<instance>` — so they are four hand-drawn
-copies of the same thing, not a component with four usages. They are identical apart from that 1px.
+So the two changes are **a pair and must land together**:
 
-**Consequences, in order of how likely they are to bite:**
+```css
+.full-badge [data-lucide],
+.full-badge svg {
+  inline-size: var(--ai-icon-size-2xs);   /* 7px, once the token exists */
+  block-size: var(--ai-icon-size-2xs);
+  stroke-width: 5.7px;                     /* was 4 — keeps the rendered stroke at 1.67px */
+}
+```
 
-1. **No Code Connect.** `figma.connect` needs a component to attach to. Until Figma makes one, a
-   designer clicking the badge sees nothing. There is deliberately no `FullBadge.figma.ts` — an
-   empty or frame-targeted one would be worse than none.
-2. **Figma can drift from itself.** Four copies means four things to keep in step; the mobile one is
-   already 1px out.
-3. **The variant matrix is empty.** No Type, State, Size or Device axes exist, so there are no
-   modifiers here and none should be added without a Figma counterpart.
+Applying either alone is a regression: 7px with stroke 4 is a hairline, and 10px with stroke 5.7 is
+too heavy. `stroke-width` stays a raw number by the same reasoning as border widths — it is an
+optical unit, and the existing `4px` was already documented on that basis.
 
-> **Ask the designer to promote it to a real component**, then add the `.figma.ts` and replace the
-> four frames with instances. This note can go when that happens.
+### Also worth knowing: the Figma file has been renamed
+
+The URL the designer supplied reads `Affino---Design-System`, where every existing `.figma.ts` in
+this repo carries the older `Affino-AI---Design-System` slug. Code Connect matches on the **file
+key**, not the slug, so all 85 existing mappings still resolve and nothing is broken — but they now
+carry a stale name. This file uses the current slug. Worth a sweep if the inconsistency ever grates.
 
 ## Why it was extracted
 
@@ -64,7 +156,7 @@ Resolved with the designer 2026-08-25 rather than invented.
 | `gap` bound to `border/width/border-3` (3px) | **`--ai-spacing-1`** (4px). A border-width token driving a flex gap, and 3px matches no spacing step. Figma updated. |
 | label `9px`, unbound | **New token `--ai-font-fixed-6xs`**, created in Figma and re-exported the same day. |
 | `Grey/0` primitive (`#ffffff`) | **`--ai-text-invert`**, which is exactly `#ffffff`. |
-| check icon `7×7` | **Raw 10×10** — see below. No icon token fits: the smallest, `--ai-icon-size-xs`, is 12px and will not sit in a 15px badge. |
+| check icon `7×7` | **Was raw 10×10** — no icon token fitted, the smallest (`--ai-icon-size-xs`) being 12px. **SUPERSEDED 2026-09-11**: designer approved a new `--ai-icon-size-2xs` (7px) to match Figma and remove the hardcoded value. Blocked on the Figma variable + re-export, and must land together with `stroke-width: 5.7` — see the component section above. |
 
 ## Two places the CSS leads Figma
 
