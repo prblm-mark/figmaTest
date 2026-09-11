@@ -608,6 +608,20 @@
   color: var(--ai-icon-secondary);
 }
 
+/* The LABEL, on the same terms (designer, 2026-09-11). `3585:110482` binds --ai-text-secondary
+ * where DropdownItem's xs variant binds --ai-text-primary (`3393:29188`).
+ *
+ * Safe as one declaration: DropdownItem's hover only moves `background-color` for a normal row
+ * — `color` changes on hover for `--warning` rows only, which these are not — so there is no
+ * state further down the cascade to re-assert the primary. It inherits into the label span and
+ * its `::before` width-reservation pseudo, so neither needs naming.
+ *
+ * `.seating-header__menu .dropdown-item` is (0,2,0) against the component's (0,1,0) base, so the
+ * override wins without !important and without touching DropdownItem. */
+.seating-header__menu .dropdown-item {
+  color: var(--ai-text-secondary);
+}
+
 /* Room Layout lives in the toolbar above 1200 and in this menu below it, so exactly one of the
  * two is visible at any width. Default state is the >=1200 one: button shown, menu item hidden. */
 .seating-header__menu-item--layout {
