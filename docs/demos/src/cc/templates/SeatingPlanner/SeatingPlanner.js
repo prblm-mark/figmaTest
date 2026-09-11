@@ -898,8 +898,9 @@
  * The row is desktop-only and CSS hides it below 1023, so no width check is needed here: a hidden
  * row cannot be clicked. Scrolling still works exactly as before in either state.
  *
- * TODO(backend:SeatingPlanner): in-memory only. The choice should persist per user so a reload
- * returns to the view they were working in — see seating-header-minimised.
+ * TODO(backend:SeatingPlanner): `localStorage` only, so the choice follows the BROWSER rather than
+ * the user — a second machine starts expanded again. The real home is a per-user UI preference
+ * alongside the last-used event; see seating-header-minimised.
  */
 (function () {
   'use strict';
@@ -908,6 +909,34 @@
   if (!page) return;
 
   var MINIMISED = 'is-header-minimised';
+  /* Same `sp:` namespace the prototype's `sp:lastEventId` uses. */
+  var KEY = 'sp:headerMinimised';
+
+  /* Every read and write is guarded. `localStorage` is not merely empty in a private window or
+   * with site data blocked — the accessor itself THROWS, so an unguarded read here would take the
+   * whole module down and with it the toggle it is trying to restore. */
+  function remember(on) {
+    try { localStorage.setItem(KEY, on ? '1' : '0'); } catch (e) {}
+  }
+
+  function restore() {
+    var saved = null;
+    try { saved = localStorage.getItem(KEY); } catch (e) {}
+    /* Only ever ADD the class. Absent storage means "no preference", which is the expanded
+     * default the markup already renders — removing it here would be the same outcome by a
+     * longer route, and would fight anything else that set it before this ran. */
+    if (saved === '1') page.classList.add(MINIMISED);
+    syncLabel(page.classList.contains(MINIMISED));
+  }
+
+  /* The visible label and glyph swap in CSS off the page class, so a restored state needs nothing
+   * here — but the accessible name is an attribute and does. Split out so restore and toggle
+   * cannot disagree about it. */
+  function syncLabel(on) {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-sp-minimise-header]'), function (b) {
+      b.setAttribute('aria-label', on ? 'Expand header' : 'Minimise header');
+    });
+  }
 
   /* Delegated. The menu row is authored in the page, but the plan header is re-rendered by
    * `seating-app.js`, so a direct binding would be lost the first time a plan changed. */
@@ -916,12 +945,11 @@
     if (!btn) return;
 
     var on = page.classList.toggle(MINIMISED);
-
-    /* The label and glyph swap in CSS off the same class; only the accessible name has to be
-     * said here, because a hidden span is still the button's name to some ATs and the two would
-     * otherwise be read together. */
-    btn.setAttribute('aria-label', on ? 'Expand header' : 'Minimise header');
+    syncLabel(on);
+    remember(on);
   });
+
+  restore();
 })();
 
 /* ══ Chrome shadow on scroll ══════════════════════════════════════════════════════════════

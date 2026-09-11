@@ -1287,9 +1287,49 @@ At 1440×800: row visible; minimising takes page travel 253 → 1 and the toolba
 both labels, so the panel does not jump. At a 980px column the row is hidden and the class has no
 effect — travel and toolbar position are unchanged whether it is set or not.
 
+### Persisted to `localStorage` (2026-09-11)
+
+`sp:headerMinimised`, the same `sp:` namespace as the prototype's `sp:lastEventId`. Every read and
+write is guarded, and not defensively: `localStorage` does not merely come back empty in a private
+window or with site data blocked — **the accessor itself throws**, so an unguarded read here would
+take down the module and with it the toggle it is restoring.
+
+Absent storage means "no preference", so the restore only ever ADDS the class and never removes
+it: the expanded default is what the markup already renders, and removing it would be the same
+outcome by a longer route while fighting anything else that set it first.
+
+Verified across separate document loads rather than an in-place reload (which races the document
+swap and gives nonsense): fresh load expanded with nothing stored → toggle writes `"1"` → a new
+load comes back minimised with the toolbar at y=0 and the row reading "Expand header" → toggle
+writes `"0"` → the next load is expanded again.
+
 ### Open
 
-In-memory only, flagged as `seating-header-minimised` in the manifest and HANDOVER: the choice
-should persist per user so a reload returns to the view they were working in. A UI preference
-alongside `seating-last-used-event`, not a property of the plan — two people working the same
-event should be able to disagree about it.
+Still flagged as `seating-header-minimised`: `localStorage` follows the BROWSER, so the same user
+on a second machine starts expanded again and clearing site data loses the choice. The real home
+is a per-user UI preference alongside `seating-last-used-event`, not a property of the plan — two
+people working the same event should be able to disagree about it.
+
+---
+
+## Dark mode needs the chrome hairline back (2026-09-11) — designer screenshot
+
+Reported with a screenshot: minimised, in dark mode, the CC chrome and the pinned toolbar read as
+one block with no boundary.
+
+**Measured, because the cause is not visible in the markup.** In dark mode the top nav bar, the
+header toolbar and all three sheets paint the *same* colour — `rgb(30, 41, 59)`. Nothing on this
+screen separates by fill in dark; every boundary is a border.
+
+The header carries a border on all four sides, so at rest it is fine: that top border plus the
+page's 24px padding sits between it and the chrome. But scrolled or minimised the visible top edge
+is the **toolbar row**, clipped mid-header, and a middle row has no top border of its own — so the
+two merge. The `is-scrolled` shadow cannot cover it either: minimised, the page has ~1px of travel
+so the class never turns on, and a shadow is close to invisible against these fills anyway.
+
+Fixed by restoring `border-block-end` on the chrome **in dark only**. Not a hedge — measured: in
+light the chrome is `rgb(11, 44, 62)` against a `rgb(255, 255, 255)` toolbar, which separates by
+luminance with room to spare, and a hairline there would be noise. This restores the border
+exactly where the 2026-08-27 decision to drop it stops working rather than reversing that decision.
+`--ai-border-secondary` is the token the header's own border already uses; in dark it resolves to
+`#334155` against `rgb(30, 41, 59)` — a visible step, confirmed rather than assumed.
