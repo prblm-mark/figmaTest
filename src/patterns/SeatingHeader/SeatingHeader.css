@@ -585,6 +585,27 @@
 .seating-header__menu .dropdown__panel {
   inset-inline-start: auto;
   inset-inline-end: 0;
+  /* Size=xs panel, matching the Export menu (designer, 2026-09-11) — and matching Figma, which
+   * had it this way all along. `3585:110482` draws this menu as a 176-wide instance holding a
+   * 160 List (--ai-size-2) at 8px padding, with 32px DropdownItem rows; the code had it at
+   * Dropdown's own 240/12 default with 40px rows. So this is a correction, not a restyle.
+   *
+   * The rows carry `dropdown-item--xs` in the markup rather than being forced from here: xs is a
+   * formal DropdownItem variant (Figma `3393:29188`), so the row should say which size it is. */
+  min-width: var(--ai-size-2);    /* 160 */
+  padding: var(--ai-spacing-3);   /* 8 */
+}
+
+/* CONTEXTUAL OVERRIDE, and the SAME one the Export menu already carries — `3585:110482` binds
+ * --ai-icon-secondary on these row icons where DropdownItem's own xs variant binds
+ * --ai-icon-primary (`3393:29188`). Both come from Figma.
+ *
+ * Applied here rather than re-raised because the decision was already taken for this screen on
+ * 2026-09-09 (Case B: scope it, flag it, do not give one row component a third icon colour). It
+ * is recorded again in SeatingPlanner.figma-notes.md so the two menus are not read as one
+ * override and one accident. */
+.seating-header__menu .dropdown-item [data-lucide]:not(.dropdown-item__check) {
+  color: var(--ai-icon-secondary);
 }
 
 /* Room Layout lives in the toolbar above 1200 and in this menu below it, so exactly one of the

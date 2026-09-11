@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="../../components/FullBadge/FullBadge.css">
   <link rel="stylesheet" href="../../components/RoomCard/RoomCard.css">
   <link rel="stylesheet" href="../../components/Dropdown/Dropdown.css">
+  <link rel="stylesheet" href="../../components/DropdownItem/DropdownItem.css">
   <link rel="stylesheet" href="SeatingHeader.css">
   <script>
     /* ?frame=mobile marks this document as the one INSIDE the mobile preview iframe, so the
@@ -226,7 +227,7 @@
         <div class="dropdown__panel" role="menu" aria-label="More seating actions">
           <ul class="dropdown__list">
             <li role="none" class="seating-header__menu-item--layout">
-              <button type="button" class="dropdown-item" role="menuitem">
+              <button type="button" class="dropdown-item dropdown-item--xs" role="menuitem">
                 <i data-lucide="grid-3x3" aria-hidden="true"></i><span data-text="Room Layout">Room Layout</span>
               </button>
             </li>
@@ -239,7 +240,7 @@
                  the work here is wiring, and persistence is already tracked on those two manifest
                  rows — do NOT log a third. -->
             <li role="none" data-backend-todo="seating-table-types">
-              <button type="button" class="dropdown-item" role="menuitem">
+              <button type="button" class="dropdown-item dropdown-item--xs" role="menuitem">
                 <i data-lucide="file-text" aria-hidden="true"></i><span data-text="Table Types">Table Types</span>
               </button>
             </li>
