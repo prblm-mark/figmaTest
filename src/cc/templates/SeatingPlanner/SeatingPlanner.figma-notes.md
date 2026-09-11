@@ -2963,9 +2963,10 @@ The sheets are meant to expand over the viewport (designer, 2026-09-11). Reverte
 scroll, which is one mechanism, has no threshold, and behaves identically at every size.
 
 Open alongside it:
-1. **`scrollbar-gutter` is still `auto`.** The page now always scrolls in the plan state, so that
-   15px is spent either way; No Event / No Plan do not scroll and so sit 15px wider. Only visible
-   when switching between states. `stable` makes all three agree at the cost of 15px in the two
-   empty states.
+1. ~~**`scrollbar-gutter` is `auto`.**~~ **Settled 2026-09-11: `stable`.** The page always scrolls
+   in the plan state now, so the scrollbar is always there and the 15px is spent regardless —
+   `auto` bought nothing back and made No Event / No Plan 15px wider than the plan state, so
+   choosing an event visibly shifted the layout. The two empty states give up the 15px they were
+   saving; all three now agree.
 2. **The page scrolls on tall monitors too**, by the header's own height rather than anything
    about the screen — consistent everywhere, but the event bar retires even when there was room.
