@@ -59,65 +59,70 @@ the first place. Designer's call (2026-09-11): **fix the binding in Figma** to `
 rather than propagate 3px into code. **No code change** — the CSS was already right, and it is the
 source that moves.
 
-#### The icon needs a 7px token that does not exist yet
+#### The icon is now 7px, as an explicitly approved raw value
 
-Figma draws the check at **7px**. Nothing on the `--ai-*` scale is 7px; the nearest icon token is
-`--ai-icon-size-xs` at 12px, which is visibly larger. The code meanwhile carried a **hardcoded
-10px**, which was a governance violation predating this audit.
+Figma draws the check at **7px**. Nothing on the `--ai-*` scale is 7px, and the smallest icon token
+(`--ai-icon-size-xs`) is 12px, which will not sit inside a 15px badge. The code meanwhile carried a
+**hardcoded 10px**, which was a governance violation predating this audit.
 
-Designer's call: **add a 7px token** (`--ai-icon-size-2xs`) so the value matches Figma *and* stops
-being hardcoded.
+The first decision (2026-09-11) was to add an `--ai-icon-size-2xs` token. That was then **revised the
+same day**: the designer approved a **raw 7px** instead, on the grounds that it is a single use.
+That is a legitimate resolution of the hardcoded-dimension rule — the rule's own remedies are
+"add a token / approve a `calc()` / **approve as a primitive**", and the stop exists to force the
+question, not to forbid the answer. Recorded here rather than left as an unexplained literal,
+because an *unrecorded* one-off is exactly how hardcoded dimensions accumulate.
 
-> **BLOCKED — this is the one item not done.** A token cannot be added from code:
-> `FigmaTokens/*.json` and `css/tokens*.css` are generated, and CLAUDE.md forbids editing either by
-> hand. The sequence is **Figma variable → re-export → `npm run tokens` → then** the icon rule
-> becomes:
->
-> ```css
-> .full-badge [data-lucide],
-> .full-badge svg {
->   inline-size: var(--ai-icon-size-2xs);
->   block-size: var(--ai-icon-size-2xs);
-> }
-> ```
->
-> The rule is deliberately **left at 10px until then** — writing `var(--ai-icon-size-2xs)` against a
-> token that does not exist resolves to nothing and would size the icon by its intrinsic default,
-> which is worse than the known-wrong 10px. Badge width goes 49 → 45 when it lands.
+```css
+inline-size: 7px;     /* Figma 3615:110605 — approved raw, designer 2026-09-11 */
+stroke-width: 5.7px;  /* was 4 — see below, these are a pair */
+```
 
-#### Shrinking to 7px MUST raise the stroke to 5.7, or it undoes the 2026-08-25 fix
+If a second component ever needs 7px, that is the signal to promote it to a token rather than copy
+the literal.
 
-This nearly went wrong. The 10px was not sloppiness — it was a deliberate legibility decision
-(see *Two places the CSS leads Figma*): Lucide draws on a 24-unit viewBox, so the stroke thins in
-proportion to the rendered size, and at 7px the default all but vanished against the green. Moving
-to 7px without touching the stroke would quietly reintroduce exactly that, on a badge whose
-contrast **already fails AA at 3.16:1**.
+#### The stroke HAD to go 4 → 5.7, or the resize would have undone the 2026-08-25 fix
 
-Rendered stroke is `stroke-width × size ÷ 24`. Measured at true 1× (a scaled vector preview hides
-this, which is why the original decision was verified the same way):
+This nearly went wrong, and it is the reason the two values are a pair. The 10px was **not**
+sloppiness — it was a deliberate legibility decision (see *Two places the CSS leads Figma*): Lucide
+draws on a 24-unit viewBox, so the stroke thins in proportion to the rendered size, and at 7px the
+default all but vanished against the green. Shrinking the icon without touching the stroke would
+have quietly reintroduced exactly that, on a badge whose contrast **already fails AA at 3.16:1**.
+
+Rendered stroke is `stroke-width × size ÷ 24`. Measured at true 1×, because a scaled vector preview
+hides this — the same method the original decision was verified with:
 
 | Size | `stroke-width` | Rendered stroke |
 |---|---|---|
-| 10px (current) | 4 | **1.67px** |
+| 10px (old) | 4 | 1.67px |
 | 7px | 4 | **1.17px** ← the hairline |
 | 7px | 5 | 1.46px |
-| **7px** | **5.7** | **1.66px** ← matches today exactly |
+| **7px (now)** | **5.7** | **1.66px** ← matches the old weight |
 | 7px | 7 | 2.04px |
 
-So the two changes are **a pair and must land together**:
+So the check got **smaller, not thinner**. Applying either value alone is a regression in one
+direction or the other. `stroke-width` stays raw by the same reasoning as border widths — it is an
+optical unit, the SVG analogue of a border, and the `4px` it replaces was already documented so.
 
-```css
-.full-badge [data-lucide],
-.full-badge svg {
-  inline-size: var(--ai-icon-size-2xs);   /* 7px, once the token exists */
-  block-size: var(--ai-icon-size-2xs);
-  stroke-width: 5.7px;                     /* was 4 — keeps the rendered stroke at 1.67px */
-}
-```
+#### Where that leaves the measurements
 
-Applying either alone is a regression: 7px with stroke 4 is a hairline, and 10px with stroke 5.7 is
-too heavy. `stroke-width` stays a raw number by the same reasoning as border widths — it is an
-optical unit, and the existing `4px` was already documented on that basis.
+Measured on the component's own demo, with Inter actually loaded:
+
+| | Figma | Code |
+|---|---|---|
+| badge | 45 × 15 | **46.9 × 15** |
+| icon | 7 | **7** |
+| rendered stroke | — | **1.66px** |
+
+Height is now exact. The badge was **49.9** wide before this change, so the icon accounts for the
+full 3px improvement. The residual ~1.9px is entirely the two documented *CSS-leads-Figma* items:
+the gap is 4px against Figma's 3px (and Figma is being corrected to 4, which closes 1px of it), and
+`--ai-tracking-7` adds letter-spacing Figma does not set. Once the gap binding lands, Figma reads 46
+and code 46.9.
+
+> **Beware measuring this in a bare probe.** A minimal test page without the real font stack
+> reported the badge as 14px tall rather than 15 — the fallback font's `normal` line-height at 9px
+> is a pixel shorter than Inter's, and the text box is what drives the height, not the icon. Measure
+> on the demo page.
 
 ### Also worth knowing: the Figma file has been renamed
 
@@ -156,13 +161,13 @@ Resolved with the designer 2026-08-25 rather than invented.
 | `gap` bound to `border/width/border-3` (3px) | **`--ai-spacing-1`** (4px). A border-width token driving a flex gap, and 3px matches no spacing step. Figma updated. |
 | label `9px`, unbound | **New token `--ai-font-fixed-6xs`**, created in Figma and re-exported the same day. |
 | `Grey/0` primitive (`#ffffff`) | **`--ai-text-invert`**, which is exactly `#ffffff`. |
-| check icon `7×7` | **Was raw 10×10** — no icon token fitted, the smallest (`--ai-icon-size-xs`) being 12px. **SUPERSEDED 2026-09-11**: designer approved a new `--ai-icon-size-2xs` (7px) to match Figma and remove the hardcoded value. Blocked on the Figma variable + re-export, and must land together with `stroke-width: 5.7` — see the component section above. |
+| check icon `7×7` | **Raw 7×7 + `stroke-width: 5.7`, designer-approved 2026-09-11.** Was a raw 10×10; no icon token fits, the smallest (`--ai-icon-size-xs`) being 12px. A token (`--ai-icon-size-2xs`) was briefly agreed and then revised the same day to an approved raw value, on the grounds of a single use. The stroke change is not optional — see the component section above. |
 
 ## Two places the CSS leads Figma
 
 | Property | Figma | CSS |
 |---|---|---|
-| check icon | `7×7`, default stroke | **`10×10`, `stroke-width: 4`** |
+| check icon | `7×7`, default stroke | `7×7`, **`stroke-width: 5.7`** — size now MATCHES Figma (2026-09-11); only the stroke leads |
 | label `letter-spacing` | **not set** | **`--ai-tracking-7`** (0.05em) |
 
 **The check had to grow to stay legible.** Lucide renders on a 24-unit viewBox, so its default
@@ -175,8 +180,9 @@ the `<svg>`; both `[data-lucide]` and `svg` are targeted because `createIcons()`
 **The tracking is an addition** — 9px bold uppercase sets very tight, and it matches the treatment
 TableType's uppercase micro-label was given.
 
-Together these render the badge at **49.9×15 against Figma's 45×15**. If Figma is brought into line,
-the frame wants to be about 50px.
+**Superseded 2026-09-11.** The icon now matches Figma at 7px, so only the stroke and the tracking
+lead. The badge renders **46.9×15 against Figma's 45×15** — height exact, and the residual width is
+the 1px gap difference (Figma being corrected to 4px) plus the letter-spacing Figma does not set.
 
 ## Accessibility — one open item
 
