@@ -2970,3 +2970,73 @@ Open alongside it:
    saving; all three now agree.
 2. **The page scrolls on tall monitors too**, by the header's own height rather than anything
    about the screen — consistent everywhere, but the event bar retires even when there was room.
+
+---
+
+## Table form: Seats is a stepper (2026-09-11)
+
+Reported as *"the edit table popup doesnt use the new counter input type for the seat qty"* — and
+correct: `#tf-seats` was a plain `type="number"` while create-plan's equivalent had been a
+`.input--stepper` since 2026-08-27. The two were built in different sessions and only one picked
+it up, the same way the overflow menu missed `dropdown-item--xs`.
+
+**No Figma node backs this**, exactly as with create-plan. `get_metadata` on the Edit Table frame
+`3515:178044` shows the modal's six fields as plain `Input` instances — the Seats half
+(`3515:178563`, 225×64) has a 40px Field whose Content is text plus two hidden icons, with no
+minus/plus anywhere. Flagged here rather than silently diverged, which is the same treatment the
+create-plan steppers got.
+
+**Bounds are `min=6 max=12`**, taken from this field's own help copy — "Seats per table must be
+between 6 and 12." — which is the identical derivation create-plan used. It was `min="1"` with no
+max, so the copy and the control disagreed.
+
+The form's own validation is deliberately **untouched**, again matching the create-plan decision:
+`SeatingPlanner.js` still errors only on `seats < 1`, so typing 3 is still accepted even though
+the buttons cannot reach it. Worth a designer call on its own — either the validation should say
+6–12 like the help copy, or the help copy is advisory and the bounds should be looser.
+
+### Mobile needed the same three rules create-plan needed
+
+The `@media (max-width: 639px)` block replicates `input--sm` geometry by media query rather than by
+the class, so `.input--sm .input__step` in Input.css never fires and `.table-form__fields
+.input__wrap` outranks `.input--stepper .input__wrap` by loading later. Both traps are already
+documented against create-plan; the three rules simply gained `.table-form__fields` alongside
+`.create-plan__grid` rather than being written twice.
+
+Measured at 600px after: wrap 233×32, padding 0, step buttons 32px, control line-height 24px, no
+horizontal overflow. Desktop: stepping up stops at 12 and disables `+`, stepping down stops at 6
+and disables `−`.
+
+---
+
+## "Switch event" did nothing (2026-09-11)
+
+Both header "Switch event" buttons — the one in the No Plan header and the one in the plan
+header — were inert. The picker's host code did:
+
+```js
+var trigger = document.querySelector('[data-seating-select-event]');
+```
+
+**Singular.** Only the No Event gate's "Select Event" button carried that attribute, so it was the
+only way in; the header control, which is the one you reach *once an event is chosen* and
+therefore the one actually used day to day, had no hook and no listener.
+
+Two things were wrong and both are fixed:
+
+1. The two header buttons now carry `data-seating-select-event`, plus the `aria-haspopup="dialog"`
+   / `aria-expanded` / `aria-controls` the gate button already had.
+2. The host binds `querySelectorAll` and iterates. A singular lookup binds the first match and
+   gives no sign the others exist, which is exactly how this survived.
+
+`aria-expanded` is now set on **every** trigger rather than the one that opened the dialog: they
+all control the same dialog, so a screen reader landing on the other one must not be told it is
+closed. Focus still returns to the control the user actually pressed — the clicked button is
+recorded on the way in, rather than defaulting to whichever is first in the document.
+
+The button is left inert in `SeatingHeader.html`, deliberately: EventPicker "emits CustomEvents so
+the host app owns persistence and routing", and the pattern demo has no picker to open.
+
+**Verified** in both states — click opens the overlay, focus lands inside the dialog,
+`event-picker:close` closes it, focus returns to the button that opened it, and `aria-expanded`
+tracks true/false throughout.
