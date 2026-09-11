@@ -734,98 +734,135 @@
   makeResizable(poolHandle, pool, '--sp-pool-w');
 })();
 
-/* ══ Header condense ════════════════════════════════════════════════
- * Scrolling any sheet slides the header's two upper rows away under the chrome and gives that
- * height to the sheets; scrolling all of them back to the top brings it down again. The CSS note
- * beside `.is-condensed` covers why it is a margin rather than a page scroll.
+/* ══ Sticky scroll metrics ════════════════════════════════════════════
+ * Publishes the three numbers SeatingPlanner.css needs for the sticky model and cannot express
+ * on its own. All three are MEASURED, never designed — see the block comment on
+ * `.cc-control__page--seating` for why each one has to be:
  *
- * The trigger is the SHEETS' scrollers, not the page's — the page does not scroll. A capture-phase
- * `scroll` listener on the row catches all three without naming their classes, which matters
- * because they belong to three different patterns (`.table-listing__grid`, TableDetail's list,
- * Unassigned's list) and `scroll` does not bubble. Anything that fires a scroll event is by
- * definition a scroller, so the set is collected as they announce themselves rather than found by
- * walking the DOM — which would mean re-walking several hundred cards on every scroll.
+ *   --sp-header-retire   how far the header may slide up before its toolbar pins = header
+ *                        height minus toolbar height, i.e. the event bar plus the room carousel
+ *   --sp-toolbar-h       the toolbar's own height, which is padding + content and grows if the
+ *                        room name wraps
+ *   --sp-scrollport-h    the page's visible height, so the rails need no arithmetic about how
+ *                        tall the chrome happens to be
+ *
+ * A ResizeObserver rather than `matchMedia` or a resize listener, because every one of these
+ * changes without the window changing at all: docking the SidebarMenu narrows the column, which
+ * rewraps the toolbar, which changes the retire distance (CLAUDE.md §4a).
  */
 (function () {
   'use strict';
 
-  var CONDENSED = 'is-condensed';
-  /* Far enough that a rubber-band or a stray pixel is not a state change. */
-  var THRESHOLD = 8;
+  var page = document.querySelector('.cc-control__page--seating');
+  if (!page) return;
+
+  /* The header that HAS a toolbar — Type=No Plans has none and never pins, which is the same
+   * condition the CSS selector states. */
+  var header = page.querySelector('.seating-header:has(.seating-header__toolbar)')
+            || page.querySelector('.seating-header .seating-header__toolbar');
+  if (header && !header.classList.contains('seating-header')) header = header.closest('.seating-header');
+  var toolbar = header && header.querySelector('.seating-header__toolbar');
+  if (!header || !toolbar) return;
+
+  var last = '';
+  function sync() {
+    var toolbarRect = toolbar.getBoundingClientRect();
+    var headerRect = header.getBoundingClientRect();
+    var toolbarH = toolbarRect.height;
+    var headerH = headerRect.height;
+    var portH = page.clientHeight;
+
+    /* The retire distance is the gap between the two boxes' TOPS, not `headerH - toolbarH`.
+     * Those differ by the header's bottom border — 1px, which is exactly enough to leave the
+     * pinned toolbar a pixel clear of the chrome (measured: toolbar landed at -1 with the
+     * subtracted form). Reading the distance directly is also border-agnostic, so a change to
+     * the header's stroke cannot silently reintroduce the offset. */
+    var retire = toolbarRect.top - headerRect.top;
+
+    /* Guard against a hidden header measuring 0: `data-seating-state` keeps the plan markup in
+     * the document while another state is showing, and writing a 0 retire there would leave a
+     * stale 0 behind when it comes back. Nothing to publish until it has a size. */
+    if (!toolbarH || !headerH) return;
+
+    /* `Math.max(0, ...)` because the retire distance is a slide, not a push: if the toolbar ever
+     * measured taller than its own header, a positive inset would pin the header BELOW the
+     * chrome and leave a gap the page scrolls behind. */
+    var key = toolbarH + '|' + headerH + '|' + portH + '|' + retire;
+    if (key === last) return;     /* the observer fires on every layout; only write on a change */
+    last = key;
+
+    page.style.setProperty('--sp-toolbar-h', toolbarH + 'px');
+    page.style.setProperty('--sp-header-retire', Math.max(0, retire) + 'px');
+    page.style.setProperty('--sp-scrollport-h', portH + 'px');
+  }
+
+  if (window.ResizeObserver) {
+    var ro = new ResizeObserver(sync);
+    ro.observe(page);
+    ro.observe(header);
+    ro.observe(toolbar);
+  }
+
+  sync();
+})();
+
+/* ══ Scroll handoff ═════════════════════════════════════════════════
+ * Side by side, this screen has FOUR scrollers: the page, and one inside each of the three
+ * pinned sheets. The page's own travel is small and fixed — the part of the header that retires,
+ * around 250px — and until it is spent the sheets hang that far below the fold, because they
+ * stand at the height they will have once the toolbar pins.
+ *
+ * Left to the browser, that travel is close to unreachable. Scroll chaining runs inner-first, so
+ * a wheel over the card grid scrolls the grid and only reaches the page once the grid hits its
+ * end: with a long plan you would scroll through every table before the header retired and the
+ * bottoms of all three sheets came into view.
+ *
+ * So downward wheel is spent on the page first, wherever the pointer is. One or two notches
+ * retires the header, everything lines up, and from then on the sheets scroll normally. UPWARD
+ * is left entirely alone — native chaining already does the right thing there, returning the
+ * page only once the inner scroller is back at its top, which is the symmetric behaviour.
+ *
+ * Touch is not intercepted. Below 1023 the page is the only scroller anyway, which is every
+ * touch device this screen is used on; a wide touchscreen falls back to native chaining.
+ */
+(function () {
+  'use strict';
 
   var page = document.querySelector('.cc-control__page--seating');
   var plan = document.querySelector('[data-sp-plan]');
   if (!page || !plan) return;
 
-  var header = page.querySelector('.seating-header:has(.seating-header__toolbar)');
-  var toolbar = header && header.querySelector('.seating-header__toolbar');
-  if (!header || !toolbar) return;
-
-  /* ── The one measured value ──────────────────────────────────────────────
-   * How far the header may slide: the distance from its top to its toolbar's top, so the toolbar
-   * ends up where the row above it began. NOT `headerH - toolbarH` — those differ by the header's
-   * bottom border, 1px, which is exactly enough to leave the result a pixel out. Reading between
-   * the two tops is also border-agnostic.
-   *
-   * Not a token, and could not be: the two rows above the toolbar are content-sized and the
-   * carousel's height moves with the RoomCards in it. */
-  var retire = 0;
-  function measure() {
-    /* Only readable while the header is at rest — condensed, the margin is the thing being
-     * measured. `data-seating-state` also keeps this markup in the document while another state
-     * is showing, where both boxes measure 0; nothing to publish until it has a size. */
-    if (page.classList.contains(CONDENSED)) return;
-    var next = toolbar.getBoundingClientRect().top - header.getBoundingClientRect().top;
-    if (!next || next === retire) return;
-    retire = next;
-    page.style.setProperty('--sp-header-retire', retire + 'px');
-  }
-
-  /* A ResizeObserver rather than a resize listener: the distance changes with no window resize at
-   * all, because docking the SidebarMenu narrows the column and rewraps the rows (CLAUDE.md §4a). */
-  if (window.ResizeObserver) {
-    var ro = new ResizeObserver(measure);
-    ro.observe(header);
-    ro.observe(toolbar);
-  }
+  /* Same threshold as the CSS and as the selection code's STACK_MAX, measured off the container
+   * rather than the viewport for the reason CLAUDE.md §4a gives — a docked SidebarMenu shrinks
+   * this column with no window resize at all. */
+  var STACK_MAX = 1023;
+  var stacked = false;
+  function measure() { stacked = page.getBoundingClientRect().width <= STACK_MAX; }
+  if (window.ResizeObserver) new ResizeObserver(measure).observe(page);
   measure();
 
-  /* ── The trigger ─────────────────────────────────────────────────────────
-   * Synchronous, not deferred to a frame. Both branches return immediately unless the state is
-   * actually flipping, so the layout work happens twice per gesture rather than once per event.
-   */
-  var scrollers = [];
-
-  function atTop(el) { return el.scrollTop <= THRESHOLD; }
-
-  function sync(event) {
-    var target = event.target;
-    if (!target || target.nodeType !== 1) return;
-    if (scrollers.indexOf(target) === -1) scrollers.push(target);
-
-    if (!page.classList.contains(CONDENSED)) {
-      if (atTop(target)) return;
-      /* Would condensing remove the very scroll that asked for it? Condensing makes every sheet
-       * taller, which REDUCES each scroller's travel; if a sheet only just overflowed, that can
-       * wipe out the overflow, snap scrollTop back to 0 and expand the header again — a visible
-       * bounce. Below that much content it simply scrolls, which is the right outcome. */
-      if (target.scrollHeight - target.clientHeight <= retire + THRESHOLD) return;
-      page.classList.add(CONDENSED);
-      return;
-    }
-
-    /* Expand only when every sheet that has ever scrolled is back at its top — otherwise
-     * returning the tables to the top would drop the header back onto a scrolled attendee list. */
-    for (var i = 0; i < scrollers.length; i++) {
-      if (!atTop(scrollers[i])) return;
-    }
-    page.classList.remove(CONDENSED);
-    /* Readable again, and it may have changed while it was up. The class has landed, and
-     * `getBoundingClientRect` forces the layout it needs. */
-    measure();
+  /* Wheel deltas arrive in three units. Lines are what Firefox sends; 16 is a conventional line,
+   * and the exact figure does not matter because the value is handed straight to a scroll
+   * position that clamps itself. */
+  function pixels(event) {
+    if (event.deltaMode === 1) return event.deltaY * 16;
+    if (event.deltaMode === 2) return event.deltaY * page.clientHeight;
+    return event.deltaY;
   }
 
-  plan.addEventListener('scroll', sync, true);
+  plan.addEventListener('wheel', function (event) {
+    if (stacked) return;          /* one scroller already; nothing to hand off */
+    if (event.ctrlKey) return;    /* pinch-zoom, not a scroll */
+
+    var delta = pixels(event);
+    if (delta <= 0) return;       /* upward: native chaining is already correct */
+
+    var remaining = (page.scrollHeight - page.clientHeight) - page.scrollTop;
+    if (remaining <= 0.5) return; /* page spent — the sheet under the pointer takes it */
+
+    event.preventDefault();
+    page.scrollTop += Math.min(delta, remaining);
+  }, { passive: false });
 })();
 
 /* ══ Chrome shadow on scroll ══════════════════════════════════════════════════════════════
@@ -834,8 +871,10 @@
  * only once the page has actually scrolled gives the separation without adding permanent chrome.
  *
  * Keyed off the PAGE's scrollTop, because that is the scroller that moves content under the
- * chrome. When the layout is side by side the sheets scroll inside their own boxes instead and
- * nothing passes under the chrome, so no shadow — which is correct, not an omission.
+ * chrome — now the only one, at every width (2026-09-11). It used to be qualified: side by side,
+ * the card grid scrolled inside its own box and nothing passed under the chrome, so no shadow
+ * appeared there. With one scroller the shadow is live on every layout, which is what this was
+ * written for.
  */
 (function () {
   'use strict';
