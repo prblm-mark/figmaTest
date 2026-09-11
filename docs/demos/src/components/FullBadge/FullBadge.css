@@ -43,8 +43,22 @@
  * and CSS stroke-width overrides the presentation attribute Lucide writes on it. */
 .full-badge [data-lucide],
 .full-badge svg {
-  inline-size: 10px;
-  block-size: 10px;
+  /* 7px — Figma `3615:110605`. A RAW VALUE, explicitly approved by the designer 2026-09-11 in
+   * preference to adding an `--ai-icon-size-2xs` token. Nothing on the `--ai-*` scale is 7px, and
+   * the smallest icon token (`--ai-icon-size-xs`) is 12px, which will not sit inside a 15px badge.
+   *
+   * Recorded as an APPROVED EXCEPTION, not inlined on a "one-off" judgement — the distinction
+   * matters, because an unrecorded one-off is exactly how hardcoded dimensions accumulate. The
+   * decision, the alternatives and who took it are in the figma-notes. */
+  inline-size: 7px;
+  block-size: 7px;
   flex-shrink: 0;
-  stroke-width: 4px;
+  /* 5.7, NOT 4 — this and the 7px above are a PAIR, and either alone is a regression.
+   * Lucide draws on a 24-unit viewBox, so the rendered stroke is `stroke-width x size / 24`:
+   * 10px at stroke 4 gave 1.67px, and shrinking to 7px while leaving stroke 4 would have left
+   * 1.17px — a hairline, on a badge whose contrast already fails AA at 3.16:1. 5.7 restores
+   * exactly 1.67px, so the check gets smaller rather than thinner and the 2026-08-25 legibility
+   * decision survives the resize. Measured at true 1x; a scaled vector preview hides this.
+   * Raw like the 4 it replaces: stroke width is an optical unit, the SVG analogue of a border. */
+  stroke-width: 5.7px;
 }
