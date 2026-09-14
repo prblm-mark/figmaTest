@@ -640,7 +640,15 @@
      * of them dereferences `plan()`, which is null until the first plan exists. `plan-created`
      * sets `state.planId` and `state.tableId` before it calls render, so the first plan paints
      * normally on the way through. */
-    if (!D.plans.length) { rooms.innerHTML = ''; return; }
+    if (!D.plans.length) {
+      /* The GRID too, not just the strip. Deleting the last plan leaves the state machine showing
+       * the No Plan screen, so this is out of sight — but leaving the previous plan's table cards
+       * in the DOM means creating the next plan paints into a listing that still holds the old
+       * one's, for however long it takes the new render to replace them. Clear both. */
+      rooms.innerHTML = '';
+      grid.innerHTML = '';
+      return;
+    }
 
     renderRooms();
     /* The plans rail decides whether it is scrollable by measuring, and this screen rebuilds its
@@ -1411,6 +1419,42 @@
    * inside a hidden panel gives zeroes, which would leave `alignHeaders()` unable to align the row
    * it has just built. The model is written synchronously so anything reading it is correct
    * immediately; only the paint waits for the panel to exist. */
+  /* ══ Deleting a plan ════════════════════════════════════════════════
+   * The confirm dialog announces, this removes. Before 2026-09-14 the dialog did it by DOM
+   * surgery and the model never heard: `D.plans` kept the plan, so the next repaint put its card
+   * straight back. Measured — model 4, DOM 3, model 4 again after one `render()`.
+   *
+   * Occupants need no handling. "Assigned" is derived by scanning plan seats, so removing the
+   * plan returns everyone who sat in it to the pool by arithmetic rather than by a cleanup pass.
+   */
+  document.addEventListener('seating-planner:plan-deleted', function (e) {
+    var id = (e && e.detail && e.detail.planId) || null;
+    if (!id) return;
+
+    var i = -1;
+    for (var n = 0; n < D.plans.length; n++) if (D.plans[n].id === id) { i = n; break; }
+    if (i === -1) return;                    /* already gone — a double-fire must not shift state */
+
+    D.plans.splice(i, 1);
+
+    /* Re-point only if the deleted plan was the OPEN one. Deleting a background plan must leave
+     * the listing showing what it was showing, which is the same rule the dialog's old
+     * `wasSelected` check was reaching for. */
+    if (state.planId === id) {
+      var next = D.plans[0] || null;
+      state.planId = next ? next.id : null;
+      state.tableId = next ? next.tables[0].id : null;
+    }
+
+    render();
+
+    /* Said once the list is genuinely empty, rather than making the state machine count
+     * survivors from the other side of the event. */
+    if (!D.plans.length) {
+      document.dispatchEvent(new CustomEvent('seating-planner:plans-empty', { bubbles: true }));
+    }
+  });
+
   document.addEventListener('seating-planner:plan-created', function (e) {
     var d = (e && e.detail) || {};
 

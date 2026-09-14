@@ -84,6 +84,21 @@
     setState('plan');
   });
 
+  /* ...and the way back. Deleting the last plan returns the screen to "No seating plans yet"
+   * (designer, 2026-09-14) rather than leaving the plan state up with an empty header.
+   *
+   * `seating-app.js` owns the model and announces this once the list is actually empty, for the
+   * same reason the create path works this way: the modal and the model report what happened,
+   * this owns what the page shows. Listening for the DELETE event instead would mean counting the
+   * survivors from here and racing whoever removes them.
+   *
+   * Deliberately NOT `no-event`: the event is still chosen. `no-plan` is the state that already
+   * exists for "this event has no plans", which is exactly where deleting the last one lands you
+   * — so this reuses a frame (`3515:176082`) rather than inventing a state. */
+  document.addEventListener('seating-planner:plans-empty', function () {
+    setState('no-plan');
+  });
+
   var requested = /[?&]state=([a-z-]+)/.exec(window.location.search);
   if (requested) {
     var want = requested[1];
@@ -1373,24 +1388,29 @@
       var card = deletingCard;
       if (!card) { close(); return; }
 
-      var wasSelected = card.classList.contains('room-card--selected');
       var rooms = card.parentNode;
-      card.parentNode.removeChild(card);
+      var planId = card.getAttribute('data-sp-plan-card');
 
-      /* TODO(backend:SeatingPlanner): DOM-only. This removes the card, and the open plan's table
-       * cards with it — see seating-delete-plan for the single transaction that must delete the
-       * SeatingPlan plus its Table and TableSeat rows and return the occupants to the event pool.
+      /* THE MODEL DELETES IT, not this (2026-09-14). This used to remove the card element and,
+       * when it was the selected plan, its table cards too — and that was a lie the next render
+       * undid: `D.plans` still held the plan, so anything that repainted (selecting a table,
+       * searching, creating a plan) brought it straight back. Measured before fixing: model 4,
+       * DOM 3, then 4 again after one `render()`.
        *
-       * The tables are cleared only when the deleted plan was the SELECTED one, because the
-       * listing shows the selected plan's tables and nothing else: deleting a background plan must
-       * leave the visible list alone. */
-      if (wasSelected) {
-        var listing = document.querySelector('[data-sp-grid], .table-listing__grid');
-        if (listing) {
-          Array.prototype.forEach.call(listing.querySelectorAll('.table-card'), function (t) {
-            t.parentNode.removeChild(t);
-          });
-        }
+       * The same division the Table form already uses — announce what happened and let
+       * `seating-app.js` own the data. It removes the plan, re-points the selection, re-derives
+       * every count (the deleted plan's occupants return to the pool with nothing to reset) and
+       * repaints. `dispatchEvent` is synchronous, so by the line after this the strip is rebuilt
+       * and the focus lookup below reads the real survivors.
+       *
+       * The DOM fallback survives for a page that has the modal but no model — the SeatingHeader
+       * pattern demo — where nothing would otherwise remove the card. */
+      if (planId && window.SeatingData) {
+        document.dispatchEvent(new CustomEvent('seating-planner:plan-deleted', {
+          bubbles: true, detail: { planId: planId }
+        }));
+      } else if (card.parentNode) {
+        card.parentNode.removeChild(card);
       }
 
       /* Land focus on the next surviving plan, or on the plans region itself when the last one has
@@ -1402,10 +1422,11 @@
         next = rooms;
       }
 
-      /* TODO(backend:SeatingPlanner): deleting the LAST plan should restore the "No plans yet"
-       * hint and fold the workspace away — behaviour the prototype has (newplan-no-plans.html) but
-       * which has no Figma frame for THIS template, so it is deliberately not invented here. The
-       * screen currently just empties. Tracked on seating-delete-plan. */
+      /* Deleting the LAST plan now returns the screen to "No seating plans yet" — `seating-app.js`
+       * announces `plans-empty` and the state machine at the top of this file switches. The old
+       * note here said this was "deliberately not invented" for want of a Figma frame; that was
+       * the wrong reading. Screen 3 (`3515:176082`) IS that state, already built and already in
+       * this page — nothing needed inventing, only wiring back to it. */
       close(next);
     });
   }

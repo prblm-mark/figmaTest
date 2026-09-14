@@ -3146,3 +3146,59 @@ Populated re-checked and unchanged: 4 plans, 13 tables, detail rail on Table 1, 
 A fourth card, **Set-up journey**, points at the bare URL. It duplicates "No event"'s URL
 deliberately: that card reads as a *state to review*, this one as a *flow to walk*, and they are
 opened for different reasons. The other three labels now name their dataset.
+
+---
+
+## Deleting a plan (2026-09-14) — two bugs, one root
+
+Reported: *"If i delete a plan it shows no plans in the header, but if there is only one plan in
+event, then it should revert back to 'no seating plans yet' screen."* The reported symptom was
+real, and looking for it turned up a second, worse one underneath.
+
+### 1. Deletion never reached the model
+
+The confirm dialog removed the **card element** — and, when the deleted plan was the open one, its
+table cards too. `D.plans` kept the plan. So anything that repainted put it straight back:
+selecting a table, searching, creating another plan. Measured before touching it:
+
+| | model | DOM |
+|---|---|---|
+| before | 4 | Main Ballroom, Overflow Annex, VIP Lounge, Press Room |
+| after delete | **4** | Main Ballroom, VIP Lounge, Press Room |
+| after one `render()` | **4** | Main Ballroom, **Overflow Annex**, VIP Lounge, Press Room |
+
+Same shape as the Table form before 2026-09-11: DOM surgery written before the model existed,
+left in place after it arrived. Fixed the same way — the dialog announces
+`seating-planner:plan-deleted`, `seating-app.js` owns the data.
+
+**Occupants need no handling at all.** "Assigned" is derived by scanning plan seats rather than
+stored on people, so deleting a plan returns everyone in it to the pool by arithmetic: across the
+four deletions the unassigned count ran 72 → 113 → 151 → 183 with no cleanup pass anywhere.
+
+### 2. The last plan left the screen empty instead of going back
+
+`seating-app.js` announces `seating-planner:plans-empty` once the list is genuinely empty, and the
+state machine switches to `no-plan`. Said from the model side rather than having the state machine
+count survivors from the other side of the event — which would mean racing whoever removes them.
+
+**The old TODO here was wrong, not just unfinished.** It read: *"deleting the LAST plan should
+restore the 'No plans yet' hint … which has no Figma frame for THIS template, so it is
+deliberately not invented here."* But Screen 3 (`3515:176082`) **is** that state, already built and
+already in this page. Nothing needed inventing; it needed wiring back to. Not `no-event` either —
+the event is still chosen.
+
+`render()` now clears the grid as well as the plans strip when the list is empty. Out of sight
+behind the No Plan screen, but otherwise the next plan paints into a listing still holding the old
+one's cards.
+
+### Verified
+
+Deleting a **background** plan leaves the listing alone and survives a `render()`. Deleting the
+**selected** plan re-points to the first survivor. Deleting all four lands on `no-plan` with the
+visible panel titled "No seating plans yet", no stale room or table cards, New Plan reachable —
+and creating one returns to the plan state with 1 plan and its tables.
+
+One probe note worth keeping: the first run reported the empty title as "No event selected". That
+was an unscoped `querySelector` hitting the hidden `no-event` sibling, not a wrong state — exactly
+the trap `feedback_scope_probes_to_the_visible_element` records. Scoping to the panel that is not
+`hidden` gives the real answer.
