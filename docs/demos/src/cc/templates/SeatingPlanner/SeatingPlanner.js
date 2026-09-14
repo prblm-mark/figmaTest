@@ -1900,7 +1900,16 @@
         : dialog);
     returnFocusTo = null;
     deletingCard = null;
-    if (target) target.focus();
+    /* `preventScroll`, because this close is the one that hands focus to a DIFFERENT element — a
+     * surviving table's delete button — rather than back to the trigger, whose card has just been
+     * removed. Focusing scrolls the target into view, which threw the page most of the way back
+     * up: measured, scrollTop 900 before deleting a table and 207 after, all of it from this line
+     * rather than from the re-render, which holds its position.
+     *
+     * The a11y intent is unchanged — focus still lands in the list, so a keyboard user carries on
+     * from a real control instead of being dropped to <body>. It just no longer drags the viewport
+     * with it, which for a pointer user who deleted a table two screens up was the whole problem. */
+    if (target) target.focus({ preventScroll: true });
   }
 
   /* Delegated, so a table added by the Table form is deletable without re-binding. */
