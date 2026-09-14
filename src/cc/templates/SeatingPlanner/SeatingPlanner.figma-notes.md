@@ -3670,3 +3670,42 @@ component is what settles it.
 Nothing Copy-Plans-specific remains, which is the right answer: the two pickers on this screen
 should not differ. Verified at 402px — both now read title 16, name 14/24, Cancel 13, count 12/16,
 meta 12/20; both unchanged at 1400px.
+
+---
+
+## A new plan scrolls into the room strip on mobile (2026-09-14)
+
+Asked for: a new plan should scroll into view and take the lead position in the header strip.
+
+A new plan is appended, and the strip is a horizontal carousel — so on a phone it lands off the
+right-hand edge and the screen looks unchanged apart from a toast. `revealPlan()` now scrolls the
+rail after the render.
+
+**Stacked only**, and for a reason beyond matching `revealTable`: the strip has prev/next arrows on
+desktop and deliberately none below 1200, so a desktop user can already reach a card that is out of
+view and a mobile user cannot.
+
+**It scrolls the rail, not the page.** `scrollIntoView` would do both — the rail horizontally *and*
+the page vertically to bring the header into view — and the page position is the user's own, which
+`render()` now works to preserve. Measuring the delta between the two boxes and adding it to
+`scrollLeft` moves exactly one axis of exactly one element. `getBoundingClientRect` rather than
+`offsetLeft`, since offsets are relative to the nearest positioned ancestor and that is not
+reliably the rail.
+
+### It cannot literally lead, and that is geometry
+
+Measured at 402px with five plans: the card sits 1004px along a rail with **947px** of travel left.
+The browser clamps, and the new plan ends **57px** from the leading edge — fully visible, selected
+and highlighted, but not first.
+
+That is not a shortfall in the scroll: a scroller stops when its content ends, and the new plan is
+the **last** card. Making it genuinely lead means ordering new plans **first** in the strip, which
+is a data decision rather than a scroll one. **Open for the designer** — say the word and
+`plan-created` can unshift instead of push.
+
+### Verified
+
+At 402px: one `scrollBy` on `.seating-header__rooms`, `left: 1004`, `behavior: smooth`, and the
+page's `scrollTop` untouched with zero `scrollIntoView` calls. At 1400px: no call at all, and the
+rail does not overflow there anyway. Applying the scroll instantly (smooth does not progress under
+headless virtual time) lands the rail at its maximum with the new card in view.

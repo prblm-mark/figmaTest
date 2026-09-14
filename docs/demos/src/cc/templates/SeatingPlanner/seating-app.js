@@ -146,6 +146,40 @@
     });
   }
 
+  /* ── Bring a plan to the lead of the room strip, stacked only ────────────────────
+   * A new plan is appended, and the strip is a horizontal carousel — so on a phone it lands off
+   * the right-hand edge and the screen looks unchanged apart from a toast (designer, 2026-09-14).
+   *
+   * STACKED ONLY, and for a reason beyond matching `revealTable`: the strip has prev/next arrows
+   * on desktop and deliberately none below 1200, so a desktop user can already reach a card that
+   * is out of view and a mobile user cannot. Scroll the rail for the one who has no other way.
+   *
+   * SCROLLS THE RAIL, NOT THE PAGE. `scrollIntoView` would do both — the rail horizontally and
+   * the page vertically to bring the header into view — and the page position is the user's own
+   * (`render()` works to preserve it). Measuring the delta between the two boxes and adding it to
+   * `scrollLeft` moves exactly one axis of exactly one element.
+   *
+   * `getBoundingClientRect`, not `offsetLeft`: offsets are relative to the nearest positioned
+   * ancestor, which for a card inside this rail is not reliably the rail itself.
+   *
+   * IT CANNOT ACTUALLY LEAD, and that is the rail's geometry rather than a shortfall here. A new
+   * plan is appended, so it is the LAST card, and a scroller stops when its content ends: asking
+   * for 1004px of scroll on a rail with 947px left of travel lands the card 57px in, not at 0.
+   * The browser clamps and the card is fully visible, which is the useful half of the ask. Making
+   * it genuinely lead would mean ordering new plans FIRST in the strip — a data decision, not a
+   * scroll one. Raised with the designer. */
+  function revealPlan(id) {
+    if (!isStacked() || !id || !rooms) return;
+    setTimeout(function () {
+      var card = rooms.querySelector('[data-sp-plan-card="' + id + '"]');
+      if (!card) return;
+      var delta = card.getBoundingClientRect().left - rooms.getBoundingClientRect().left;
+      if (!delta) return;
+      if (rooms.scrollBy) rooms.scrollBy({ left: delta, behavior: 'smooth' });
+      else rooms.scrollLeft += delta;
+    }, 0);
+  }
+
   /* Desktop pre-selects the first table so the detail is never empty; mobile selects nothing,
    * because the detail would take too much of the screen (designer, 2026-08-27). Re-applied on
    * every breakpoint crossing, so resizing down and back behaves. */
@@ -1740,6 +1774,8 @@
 
     setTimeout(function () {
       render();
+      /* ...and on a phone, bring it to the lead of the strip so the toast is not the only sign. */
+      revealPlan(plan.id);
       /* Named, and named as new — "created" rather than "updated", because the room strip gaining
        * a card is easy to miss when the page has just changed state underneath it. */
       toast([{ text: plan.name, strong: true },
