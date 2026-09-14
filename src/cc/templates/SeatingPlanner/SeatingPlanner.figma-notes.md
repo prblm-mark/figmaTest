@@ -3462,6 +3462,33 @@ detail visible inline directly after Table 2 → tap Table 3, it moves → tap T
 closes → survives a `render()` → reopen Table 1. Desktop (1288px): pre-selects Table 1, tapping
 the open card does **not** deselect, the detail stays in the aside, selection survives widening.
 
+### Scroll-to-top came back with it (2026-09-14)
+
+*"table in focus should scroll to top of chrome/header group"* (designer, 2026-08-27) lived in the
+same legacy block and went out with it — an unflagged regression in the commit before this one,
+caught when the designer asked for the same behaviour on **add**.
+
+It is one helper now, `revealTable(id)`, used by both:
+
+| | |
+|---|---|
+| tapping a card | the rule as it was — the tapped card to the top, its detail opening beneath it, which is what `3515:228026` draws with the listing at `y=-79` |
+| **adding a table** | new — a new table is appended to the end of the grid, well below the fold on a phone, so without it the toast says it was added and the list looks unchanged |
+
+Stacked only: side by side the grid is a fixed sheet the page does not scroll to, and moving the
+page under a rail already in view would be motion for nothing. It does **not** fire when a tap
+*closes* the open card — scrolling on the way out would move the list under a tap meant to dismiss
+something.
+
+`setTimeout(…, 0)` rather than `requestAnimationFrame`: the caller has just re-rendered, so the
+card is a new node and the grid's height has changed under it, and rAF does not fire at all under
+headless virtual time — which would have made this the one behaviour on the screen that could not
+be tested.
+
+Verified by spying on `Element.prototype.scrollIntoView`, since smooth scrolling does not progress
+under virtual time so the resulting offset proves nothing. At a 788px column: add → one call on
+the new card, select → one call on that card, close → none. At 1288px: none in any of the three.
+
 **Not verifiable headless:** the breakpoint *crossing*. `ResizeObserver` does not fire for an
 iframe resize under `--virtual-time-budget` (`feedback_headless_http_and_transitions`), so
 narrowing the frame leaves the selection uncleared in a probe and would read as a bug. The same
