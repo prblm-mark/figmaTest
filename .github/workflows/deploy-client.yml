@@ -1,0 +1,84 @@
+# Client preview — a SEPARATE Pages site containing only the Seating Planner.
+#
+# The main deploy (deploy.yml) publishes the whole library, internal hub included, which is right
+# for the team and wrong for a link sent to a client. This publishes `dist-client/` — the preview
+# page plus the planner's dependency closure, ~105 files, no other demo — to a second repository,
+# so the internal pages are not merely unlinked but absent.
+#
+# ── ONE-OFF SETUP (needs a GitHub account, so it is not done here) ────────────────────────────
+# 1. Create the target repo, e.g. `prblm-mark/affino-seating-preview`. It can be empty.
+# 2. Generate a key pair locally:
+#        ssh-keygen -t ed25519 -C "client-pages" -f client-pages -N ""
+# 3. TARGET repo -> Settings -> Deploy keys -> Add:
+#        paste `client-pages.pub`, tick "Allow write access"
+# 4. THIS repo -> Settings -> Secrets and variables -> Actions -> New repository secret:
+#        name  CLIENT_PAGES_DEPLOY_KEY
+#        value the contents of `client-pages` (the PRIVATE half)
+# 5. TARGET repo -> Settings -> Pages -> Source: "Deploy from a branch", branch `gh-pages`, `/`.
+# 6. Delete both local key files.
+#
+# Until step 4 exists the deploy step is skipped rather than failing, so adding this workflow
+# cannot break the build before the secret is in place. Set `TARGET_REPO` below to the repo from
+# step 1.
+name: Deploy client preview
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  TARGET_REPO: prblm-mark/affino-seating-preview
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # The planner reads css/tokens*.css, which are generated rather than committed — the client
+      # build would copy stale or missing files without this.
+      - name: Generate token CSS
+        run: npm run tokens
+
+      - name: Build the client preview
+        run: npm run build:client
+
+      # Fails the run if an internal page ever reaches the client tree — cheaper than noticing it
+      # in a client's browser. The client build should contain exactly two HTML files.
+      - name: Check no internal pages leaked
+        run: |
+          count=$(find dist-client -name '*.html' | wc -l | tr -d ' ')
+          echo "HTML files in dist-client: $count"
+          find dist-client -name '*.html'
+          if [ "$count" -ne 2 ]; then
+            echo "::error::Expected 2 HTML files (preview + planner), found $count"
+            exit 1
+          fi
+
+      - name: Deploy to the client repository
+        if: env.DEPLOY_KEY != ''
+        env:
+          DEPLOY_KEY: ${{ secrets.CLIENT_PAGES_DEPLOY_KEY }}
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          deploy_key: ${{ secrets.CLIENT_PAGES_DEPLOY_KEY }}
+          external_repository: ${{ env.TARGET_REPO }}
+          publish_branch: gh-pages
+          publish_dir: ./dist-client
+          commit_message: 'Seating Planner preview'
+
+      - name: Note when the secret is missing
+        if: env.DEPLOY_KEY == ''
+        env:
+          DEPLOY_KEY: ${{ secrets.CLIENT_PAGES_DEPLOY_KEY }}
+        run: |
+          echo "::notice::Built dist-client but did not publish — CLIENT_PAGES_DEPLOY_KEY is not set. See the setup steps at the top of this workflow."
