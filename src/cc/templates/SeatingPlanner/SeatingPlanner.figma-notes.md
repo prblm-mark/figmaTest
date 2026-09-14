@@ -3371,3 +3371,41 @@ document, and anything iterating `cards` iterates dead nodes. Harmless *today* �
 owns selection and re-derives the same values — which is exactly why it is worth writing down: it
 is invisible until someone relies on it. A third failure mode alongside the two already known
 (overwritten by a render; never reaching the model), and the likely shape of the next bug here.
+
+---
+
+## Room Layout remove buttons: transparent at rest, but only at rest (2026-09-14)
+
+Reported: the remove button's background was set to transparent, and that left it with no hover
+feedback either.
+
+The override existed for a real reason — `tokens-cc.css` sets `--ai-btn-tertiary-bg` to a solid
+`#e5e9eb`, so every tertiary button in the Control Centre paints a grey box at rest where Figma
+binds transparent (`1:29441`, `1:25922`). What was wrong was its reach. The comment beside it
+claimed *"only the REST state is touched — hover, pressed and focus still come from the
+component"*, and that was not true:
+
+| selector | specificity | |
+|---|---|---|
+| `.btn--tertiary:hover` / `:active` / `:focus-visible` | (0,2,0) | Button.css |
+| `.room-layout__file .btn--tertiary` | **(0,2,0)** | SeatingPlanner.css, **loads later** |
+
+Three ties, all won by the later file — so the button was transparent in *every* state: no hover,
+no pressed, no focus fill.
+
+Fixed by excluding the three states from the rest override rather than re-stating their values
+here. That makes the original claim true instead of merely intended: the component owns the whole
+ladder, nothing here duplicates a token that could drift from it, and deleting this rule once the
+CC token is corrected still changes nothing.
+
+Verified by walking the cascade rather than by eye, since a hover cannot be forced headless — at
+rest only `.btn--tertiary` and this override match, so transparent wins; in the three states the
+override no longer matches at all and Button.css is unopposed. Resolved values:
+
+| | rest | hover | pressed |
+|---|---|---|---|
+| CC light | transparent (was `#e5e9eb`) | `#f2f4f5` | `#e5e9eb` |
+| CC dark | transparent (was `#334155`) | `#475569` | `#334155` |
+
+Still flagged, unchanged: the CC hover is *lighter* than its pressed value in both modes, so the
+affordance is inverted against every other mode. That is a token fix in Figma, not a code one.

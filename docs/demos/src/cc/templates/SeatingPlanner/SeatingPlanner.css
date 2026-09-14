@@ -1980,10 +1980,21 @@
  *
  * Scoped here rather than fixed at source: `css/tokens-cc.css` is generated and
  * `FigmaTokens/*.json` is not editable by hand (CLAUDE.md §8, §11), so the value has to change in
- * Figma. Only the REST state is touched — hover, pressed and focus still come from the component,
- * so the fix disappears on its own once the token is corrected. */
-.room-layout__doc-actions .btn--tertiary,
-.room-layout__file .btn--tertiary {
+ * Figma.
+ *
+ * THE `:not()` CHAIN IS LOAD-BEARING (designer, 2026-09-14: the button had no hover at all).
+ * This rule used to be a plain `.room-layout__file .btn--tertiary`, and the comment here claimed
+ * "only the REST state is touched — hover, pressed and focus still come from the component".
+ * That was wrong. Button.css sets the background for `:hover`, `:active` AND `:focus-visible`,
+ * and each of those selectors is (0,2,0) — the SAME specificity as the plain override above.
+ * SeatingPlanner.css loads later, so the transparent rest value won all three ties and the button
+ * was transparent in every state: no hover feedback, no pressed, no focus fill.
+ *
+ * Excluding the three states makes the claim true instead of merely intended. The component owns
+ * the whole ladder again, nothing here re-states a token that could drift from it, and deleting
+ * this rule once the CC token is corrected still changes nothing. */
+.room-layout__doc-actions .btn--tertiary:not(:hover):not(:active):not(:focus-visible),
+.room-layout__file .btn--tertiary:not(:hover):not(:active):not(:focus-visible) {
   background-color: transparent;
 }
 
