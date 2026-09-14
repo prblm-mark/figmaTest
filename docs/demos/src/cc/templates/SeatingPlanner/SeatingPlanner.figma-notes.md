@@ -3264,3 +3264,46 @@ Table form (2026-09-11), plan delete and table delete (both 2026-09-14) were all
 written before the model existed and left in place after it arrived. Anything on this screen that
 still edits the DOM directly should be assumed to have the same bug until checked against a
 `render()`.
+
+---
+
+## Export preview panels take `.modal__scroll` (2026-09-14)
+
+Reported: *"all of the export modals pdf etc dont apply our standard styling pattern for the
+scrollbar."* Correct — they were the last scroll regions on this screen still rolling their own, a
+plain `overflow: auto` with whatever scrollbar the platform draws, sitting next to an Assign modal
+using the system's thin transparent-track treatment.
+
+`.modal__scroll` is the convention for any modal scroll area (CLAUDE.md; designer 2026-09-10,
+*"apply it to all overflow modal scrolls moving forward"*), so the class goes in the markup and
+this file keeps only each panel's own cap.
+
+### What each panel stopped declaring
+
+| panel | was | now |
+|---|---|---|
+| `--doc` (PDF) | `block-size: 384` + `overflow-y: auto` | `block-size: 384`; scroll from `.modal__scroll` |
+| `--table` (CSV/xlsx) | `flex` + `min-*` + `overflow: auto` | `flex` + `min-inline-size`; **both axes come from elsewhere** |
+
+The table one is the interesting case. It still scrolls both ways — 100 rows down and six columns
+across on a phone, which is what frame `1:46486` draws — but neither axis is declared here now:
+`overflow-x` comes from `.table-wrap__scroll` in **Table.css**, the component's own, and
+`overflow-y` from `.modal__scroll`. The `overflow: auto` shorthand that used to sit here was
+re-declaring the component's horizontal scroll to the same value, which is why removing it changes
+nothing.
+
+`min-block-size: 0` arrives with the class, and the doc panel needs it for a reason worth keeping:
+it is what sets that flex item's automatic minimum to zero, so on a short phone the panel shrinks
+out of its 384 rather than pushing the dialog past `max-block-size: 100%`. The old
+`overflow-y: auto` was doing that as a side effect; the class states it.
+
+### Verified
+
+Both panels now measure identical to `.assign__results`, the existing reference:
+`scrollbar-width: thin`, `scrollbar-color: rgb(231, 237, 240) rgba(0, 0, 0, 0)`
+(`--ai-surface-secondary` thumb, transparent track), `min-block-size: 0`, both still scrolling and
+the table keeping `overflow-x: auto`.
+
+Swept the rest of the screen: the only `overflow-y: auto` left in this file is
+`.table-listing__grid`, and in ControlScreen `.cc-control__page` — both page scrollers, correctly
+not modal.

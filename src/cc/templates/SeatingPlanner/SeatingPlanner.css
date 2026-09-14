@@ -1633,32 +1633,45 @@
  * so a reset would silently clobber the value. */
 .export-preview__panel--doc {
   block-size: var(--ai-size-7);   /* 384 */
-  overflow-y: auto;
+  /* `overflow-y` and `min-block-size` now come from `.modal__scroll` in the markup, with the
+   * system's scrollbar treatment — see the note below. Only the cap and the paint are set here. */
   padding: var(--ai-spacing-6);   /* 24 — Figma draws p-25: 24px inside a 1px stroke */
   background-color: var(--ai-surface-primary);
   border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-md);
 }
 
-/* `overflow-y: auto` is doing double duty: it is how the document scrolls, and it is what sets
- * this flex item's automatic minimum size to zero, so on a short phone the panel SHRINKS out of
- * the 384 rather than pushing the dialog past `max-block-size: 100%` (the mechanism Modal.css
- * documents for `.event-picker__list`). */
+/* ── Both preview panels take `.modal__scroll` (designer, 2026-09-14) ──────────────────
+ * They were the last scroll regions on this screen still rolling their own — a plain
+ * `overflow: auto` and whatever scrollbar the platform draws, next to an Assign modal using the
+ * system's thin transparent-track treatment. `.modal__scroll` IS the convention for any modal
+ * scroll area (CLAUDE.md, designer 2026-09-10: "apply it to all overflow modal scrolls moving
+ * forward"), so the class goes in the markup and this file keeps only each panel's own cap.
+ *
+ * The class carries `min-block-size: 0` with it, which the doc panel needs for a reason worth
+ * keeping: it is what sets this flex item's automatic minimum to zero, so on a short phone the
+ * panel SHRINKS out of its 384 rather than pushing the dialog past `max-block-size: 100%` (the
+ * mechanism Modal.css documents for `.event-picker__list`). The old `overflow-y: auto` was doing
+ * that job as a side effect; `.modal__scroll` states it. */
 
 .export-preview__panel--table {
   block-size: var(--ai-size-8);   /* 448 */
   display: flex;                  /* let the scroller fill the pinned height */
 }
 
-/* `.table-wrap` supplies the bg, border, radius and corner clipping; only the scrolling is
- * scoped here. BOTH axes: 100 rows down, and six columns across on a phone — the sideways
- * scroll is exactly what frame 1:46486 draws, with TABLE/TYPE/SEAT visible and
- * NAME/COMPANY/ROLE clipped off the right edge. */
+/* `.table-wrap` supplies the bg, border, radius and corner clipping; only the sizing is scoped
+ * here. BOTH axes still scroll — 100 rows down, and six columns across on a phone, which is
+ * exactly what frame 1:46486 draws with TABLE/TYPE/SEAT visible and NAME/COMPANY/ROLE clipped off
+ * the right edge — but neither axis is declared here any more:
+ *
+ *   overflow-x  ← `.table-wrap__scroll` in Table.css, the component's own
+ *   overflow-y  ← `.modal__scroll`, with the scrollbar treatment
+ *
+ * The `overflow: auto` shorthand that used to sit here was re-declaring the component's own
+ * horizontal scroll to the same value, which is why losing it changes nothing. */
 .export-preview__panel--table .table-wrap__scroll {
   flex: 1;
   min-inline-size: 0;
-  min-block-size: 0;
-  overflow: auto;
 }
 
 /* ADDITION, not in Figma: the column headers stick. Figma clips the whole table, header
