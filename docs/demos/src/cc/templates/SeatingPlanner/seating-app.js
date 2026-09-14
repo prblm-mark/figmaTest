@@ -31,12 +31,18 @@
   var rooms   = document.querySelector('.seating-header__rooms');
   if (!grid || !rooms) return;              /* not the plan panel — nothing to paint */
 
+  /* NULL-SAFE, because `plans` is empty in the from-scratch dataset (seating-data.js). This used
+   * to read `(... || D.plans[0]).tables[0].id` outright, which throws on an empty list and would
+   * take the whole module down before the No Event gate had even been shown. */
+  var opening = D.plans.filter(function (p) { return p.id === D.activePlanId; })[0] ||
+                D.plans[0] || null;
+
   var state = {
-    planId: D.activePlanId,
+    planId: opening ? opening.id : null,
     /* The frame opens with Table 1 selected and its detail panel populated, so the baseline does
-     * too — an empty detail rail on load would look like a broken screen rather than a choice. */
-    tableId: (D.plans.filter(function (p) { return p.id === D.activePlanId; })[0] || D.plans[0])
-               .tables[0].id,
+     * too — an empty detail rail on load would look like a broken screen rather than a choice.
+     * With no plans there is nothing to select yet; `plan-created` sets both. */
+    tableId: opening ? opening.tables[0].id : null,
     query: '',
     onlyFree: false,
     showUnassigned: false,
@@ -65,7 +71,8 @@
   }
 
   function plan(id) {
-    return D.plans.filter(function (p) { return p.id === (id || state.planId); })[0] || D.plans[0];
+    return D.plans.filter(function (p) { return p.id === (id || state.planId); })[0] ||
+           D.plans[0] || null;
   }
 
   function tableById(id) {
@@ -625,6 +632,16 @@
   }
 
   function render() {
+    /* NOTHING TO PAINT WITH NO PLANS. The from-scratch dataset starts with an empty list, and the
+     * panel these functions write into is hidden behind the No Event / No Plan states anyway — so
+     * this is not a special case being tolerated, it is the state the screen is genuinely in.
+     *
+     * Returning here rather than hardening each renderer keeps the guard in ONE place: every one
+     * of them dereferences `plan()`, which is null until the first plan exists. `plan-created`
+     * sets `state.planId` and `state.tableId` before it calls render, so the first plan paints
+     * normally on the way through. */
+    if (!D.plans.length) { rooms.innerHTML = ''; return; }
+
     renderRooms();
     /* The plans rail decides whether it is scrollable by measuring, and this screen rebuilds its
      * contents — so it is told directly rather than left to the MutationObserver SeatingHeader.js
