@@ -93,7 +93,7 @@
       margin: var(--ai-spacing-4) 0 0;
       max-width: var(--ai-size-11);        /* 768 — a comfortable measure */
       font-size: var(--ai-font-fluid-sm);
-      line-height: var(--ai-leading-lg);
+      line-height: var(--ai-leading-md);      /* 24 (designer, 2026-09-14) */
       color: var(--ai-text-secondary);
     }
 
@@ -120,6 +120,11 @@
     .card:hover {
       border-color: var(--ai-border-brand);
       box-shadow: var(--ai-shadow-md);
+      /* base.css gives every `a:hover` an underline, and `text-decoration` INHERITS — so on a card
+         that is itself the anchor, the title and both paragraphs underline together. The border and
+         shadow above are the hover signal; the rule has to be restated here because the base one is
+         on the same pseudo-class. */
+      text-decoration: none;
     }
 
     .card:focus-visible {
@@ -154,7 +159,7 @@
     .card__text {
       margin: 0;
       font-size: var(--ai-font-fixed-xs);
-      line-height: var(--ai-leading-md);
+      line-height: var(--ai-leading-sm);      /* 20 (designer, 2026-09-14) */
       color: var(--ai-text-secondary);
     }
 
@@ -203,7 +208,7 @@
     </header>
 
     <nav class="cards" aria-label="Seating Planner previews">
-      <a class="card" href="../src/cc/templates/SeatingPlanner/SeatingPlanner.html?data=populated&amp;state=plan">
+      <a class="card" href="../src/cc/templates/SeatingPlanner/SeatingPlanner.html?data=populated&amp;state=plan&amp;theme=dark">
         <span class="card__icon"><i data-lucide="calendar" aria-hidden="true"></i></span>
         <h2 class="card__title">A planned event</h2>
         <p class="card__text">
@@ -213,7 +218,7 @@
         </p>
       </a>
 
-      <a class="card" href="../src/cc/templates/SeatingPlanner/SeatingPlanner.html">
+      <a class="card" href="../src/cc/templates/SeatingPlanner/SeatingPlanner.html?theme=dark">
         <span class="card__icon"><i data-lucide="rocket" aria-hidden="true"></i></span>
         <h2 class="card__title">Start from scratch</h2>
         <p class="card__text">
