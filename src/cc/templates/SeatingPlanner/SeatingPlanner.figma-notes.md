@@ -3082,3 +3082,67 @@ the host app owns persistence and routing", and the pattern demo has no picker t
 **Verified** in both states — click opens the overlay, focus lands inside the dialog,
 `event-picker:close` closes it, focus returns to the button that opened it, and `aria-expanded`
 tracks true/false throughout.
+
+---
+
+## Two datasets: the populated fixture and the from-scratch journey (2026-09-14)
+
+Reported: *"if i create a new plan, the header section shows lots of plans, not just the first. It
+looks like its using the state=plan version."* The screenshot shows a first plan called **Main**
+sitting beside Main Ballroom, Overflow Annex, VIP Lounge and Press Room — five plans after
+creating one.
+
+**Cause.** `seating-data.js` exported the four "Populated" fixture plans on *every* load, whatever
+screen state you entered on. `plan-created` pushes correctly into `D.plans`; there were simply
+already four in it. So the set-up journey could not be tested at all — which is the one thing it
+exists for.
+
+### The two fixtures
+
+| | what it is | when it loads |
+|---|---|---|
+| **populated** | four plans, 13 tables, 72 unassigned — the Figma "Populated" frames | `?state=plan`, or `?data=populated` |
+| **empty** | no plans at all | everything else, including a bare URL |
+
+`?data=populated` / `?data=empty` decides outright; with neither, it follows the screen state.
+That keeps the review entry point on the URL it has always had, and makes the **bare URL walk the
+real journey** — which is how the flow was being tested when the bug was found.
+
+**The roster is shared; only `plans` differs.** An event has signed-up attendees whether or not
+anyone has drawn a plan, so empty mode still has all 183 — and because "assigned" is *derived* by
+scanning plan seats rather than stored on people, dropping the plans makes every one of them
+unassigned with nothing to reset. That is the derived-counts rule in `seating-data.js`'s header
+paying off: a stored `seated` flag would have needed unpicking here.
+
+### What had to change in `seating-app.js`
+
+Three null-safety points, because the module had never seen an empty list:
+
+- `state.tableId` read `(… || D.plans[0]).tables[0].id` outright, which **throws** on an empty
+  array — taking the module down before the No Event gate was even shown.
+- `plan()` fell back to `D.plans[0]`, i.e. `undefined`.
+- `render()` now returns early when there are no plans. One guard rather than hardening five
+  renderers, since every one of them dereferences `plan()`; and it is not a special case being
+  tolerated — with no plans the panel it paints into is hidden behind the gate anyway.
+
+### Verified
+
+The journey, from a bare URL:
+
+| step | screen | plans | room cards |
+|---|---|---|---|
+| landing | `no-event` | 0 | — |
+| event chosen | `no-plan` | 0 | — |
+| first plan created | `plan` | **1** | **[Main]** |
+
+…with 6 tables painted, the active plan set to the new one, and **183 unassigned** — the whole
+roster, since nothing is seated yet.
+
+Populated re-checked and unchanged: 4 plans, 13 tables, detail rail on Table 1, 72 unassigned,
+72 pool rows.
+
+### In the demo hub
+
+A fourth card, **Set-up journey**, points at the bare URL. It duplicates "No event"'s URL
+deliberately: that card reads as a *state to review*, this one as a *flow to walk*, and they are
+opened for different reasons. The other three labels now name their dataset.

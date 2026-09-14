@@ -269,13 +269,43 @@
     venue: 'Grosvenor House, London'
   };
 
+  /* ══ Two datasets, one file ════════════════════════════════════════════
+   * There are two things to test on this screen and they want opposite fixtures:
+   *
+   *   POPULATED  the built UI under real load — four plans, 12 tables, 72 unassigned. What the
+   *              Figma "Populated" frames draw, and what every review of the listing, the detail
+   *              rail and the pool needs.
+   *   EMPTY      the set-up journey — no event, choose one, no plans, create your first. What a
+   *              real user sees on day one.
+   *
+   * Until 2026-09-14 there was only the first, so walking the from-scratch flow created a plan
+   * and dropped you into a header showing FIVE plans: the four fixtures plus yours. The journey
+   * could not actually be tested, which is the point of having it.
+   *
+   * SELECTION. `?data=populated` / `?data=empty` decides it outright. With neither, it follows
+   * the screen state: `?state=plan` is the review entry point and gets the fixtures; everything
+   * else — including a bare URL, which lands on the No Event gate — starts empty. So the default
+   * URL now walks the real journey, and the populated review keeps the URL it always had.
+   *
+   * THE ROSTER IS SHARED. Only `plans` differs. An event has signed-up attendees whether or not
+   * anybody has drawn a seating plan yet, so empty mode still has all 183 — and because
+   * "assigned" is derived by scanning plan seats, dropping the plans makes every one of them
+   * unassigned with nothing to reset. Create a 6-table plan and the pool falls by what you seat. */
+  var QS = window.location.search;
+  var DATA_PARAM  = (/[?&]data=([a-z-]+)/.exec(QS) || [])[1];
+  var STATE_PARAM = (/[?&]state=([a-z-]+)/.exec(QS) || [])[1];
+  var populated = DATA_PARAM ? DATA_PARAM === 'populated' : STATE_PARAM === 'plan';
+
   window.SeatingData = {
     ROLES: ROLES,
     TYPES: TYPES,
     CRM: CRM,
     EVENT: EVENT,
     roster: roster,
-    plans: PLANS,
-    activePlanId: 'main-ballroom'
+    /* Exposed so a console session can tell which fixture it is looking at without reverse
+     * engineering it from the plan count. */
+    mode: populated ? 'populated' : 'empty',
+    plans: populated ? PLANS : [],
+    activePlanId: populated ? 'main-ballroom' : null
   };
 }());

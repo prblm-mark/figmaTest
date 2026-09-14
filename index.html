@@ -1355,7 +1355,7 @@
         <a href="src/cc/templates/SeatingPlanner/SeatingPlanner.html?state=plan" class="ds-card" data-category="seating" data-tier="template" data-name="Seating Planner">
           <div class="ds-card__icon"><i data-lucide="armchair" aria-hidden="true"></i></div>
           <div class="ds-card__body">
-            <p class="ds-card__label">Seating Planner · populated</p>
+            <p class="ds-card__label">Seating Planner · populated fixture</p>
             <h3 class="ds-card__name">Seating Planner</h3>
           </div>
         </a>
@@ -1363,7 +1363,7 @@
         <a href="src/cc/templates/SeatingPlanner/SeatingPlanner.html?state=no-plan" class="ds-card" data-category="seating" data-tier="template" data-name="Seating Planner no plans">
           <div class="ds-card__icon"><i data-lucide="calendar-plus" aria-hidden="true"></i></div>
           <div class="ds-card__body">
-            <p class="ds-card__label">Seating Planner · no plans yet</p>
+            <p class="ds-card__label">Seating Planner · no plans yet (empty)</p>
             <h3 class="ds-card__name">No plans</h3>
           </div>
         </a>
@@ -1371,8 +1371,21 @@
         <a href="src/cc/templates/SeatingPlanner/SeatingPlanner.html?state=no-event" class="ds-card" data-category="seating" data-tier="template" data-name="Seating Planner no event">
           <div class="ds-card__icon"><i data-lucide="calendar-x" aria-hidden="true"></i></div>
           <div class="ds-card__body">
-            <p class="ds-card__label">Seating Planner · event gate</p>
+            <p class="ds-card__label">Seating Planner · event gate (empty)</p>
             <h3 class="ds-card__name">No event</h3>
+          </div>
+        </a>
+
+        <!-- The set-up journey end to end, on the EMPTY dataset: no event -> choose one -> no
+             plans -> create your first, and the header then shows that one plan and nothing else.
+             Same URL as "No event" above, which also starts empty; this card exists because the
+             card above reads as a STATE to review and this one as a FLOW to walk, and they are
+             tested for different reasons. See seating-data.js for how the dataset is chosen. -->
+        <a href="src/cc/templates/SeatingPlanner/SeatingPlanner.html" class="ds-card" data-category="seating" data-tier="template" data-name="Seating Planner from scratch setup journey">
+          <div class="ds-card__icon"><i data-lucide="footprints" aria-hidden="true"></i></div>
+          <div class="ds-card__body">
+            <p class="ds-card__label">Seating Planner · from scratch</p>
+            <h3 class="ds-card__name">Set-up journey</h3>
           </div>
         </a>
 
