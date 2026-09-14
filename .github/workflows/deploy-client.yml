@@ -33,6 +33,12 @@ env:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    # JOB level, not step level. A step's own `env:` is NOT in scope for that step's `if:` — the
+    # condition is evaluated before the step's environment is built — so `if: env.DEPLOY_KEY != ''`
+    # alongside a step-level `env:` reads empty every time and the deploy is skipped even when the
+    # secret is set. That is exactly what happened on run 34890775518. Job-level env IS in scope.
+    env:
+      DEPLOY_KEY: ${{ secrets.CLIENT_PAGES_DEPLOY_KEY }}
     steps:
       - uses: actions/checkout@v5
 
@@ -66,8 +72,6 @@ jobs:
 
       - name: Deploy to the client repository
         if: env.DEPLOY_KEY != ''
-        env:
-          DEPLOY_KEY: ${{ secrets.CLIENT_PAGES_DEPLOY_KEY }}
         uses: peaceiris/actions-gh-pages@v4
         with:
           deploy_key: ${{ secrets.CLIENT_PAGES_DEPLOY_KEY }}
@@ -78,7 +82,5 @@ jobs:
 
       - name: Note when the secret is missing
         if: env.DEPLOY_KEY == ''
-        env:
-          DEPLOY_KEY: ${{ secrets.CLIENT_PAGES_DEPLOY_KEY }}
         run: |
           echo "::notice::Built dist-client but did not publish — CLIENT_PAGES_DEPLOY_KEY is not set. See the setup steps at the top of this workflow."
