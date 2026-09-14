@@ -6,7 +6,7 @@
 # so the internal pages are not merely unlinked but absent.
 #
 # ── ONE-OFF SETUP (needs a GitHub account, so it is not done here) ────────────────────────────
-# 1. Create the target repo, e.g. `prblm-mark/affino-seating-preview`. It can be empty.
+# 1. Create the target repo. This one publishes to `prblm-mark/affino-seating-planner`.
 # 2. Generate a key pair locally:
 #        ssh-keygen -t ed25519 -C "client-pages" -f client-pages -N ""
 # 3. TARGET repo -> Settings -> Deploy keys -> Add:
@@ -28,7 +28,7 @@ on:
   workflow_dispatch:
 
 env:
-  TARGET_REPO: prblm-mark/affino-seating-preview
+  TARGET_REPO: prblm-mark/affino-seating-planner
 
 jobs:
   build-and-deploy:
