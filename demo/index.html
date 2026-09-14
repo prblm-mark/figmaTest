@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Affino Seating Planner</title>
+  <meta name="description" content="Interactive preview of the Affino Seating Planner.">
+
+  <!-- Tokens and base type. Relative, never root-absolute: this is served from a PROJECT
+       Pages path (/figmaTest/), where a leading slash resolves to the user site root and 404s
+       silently — the failure mode feedback_resolve_asset_paths_dont_grep records. -->
+  <link rel="stylesheet" href="../src/styles/base.css">
+  <link rel="icon" href="../favicon.ico" sizes="any">
+  <link rel="icon" href="../icon.svg" type="image/svg+xml">
+
+  <!-- CLIENT-FACING. No link to index.html, and nothing naming the internal library, the Figma
+       nodes or the handover. Anything added here is something a client will read. -->
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-color: var(--ai-surface-minimal);
+      font-family: var(--ai-font-body);
+      color: var(--ai-text-primary);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page {
+      width: 100%;
+      max-width: var(--ai-size-12);        /* 960 */
+      margin-inline: auto;
+      padding: var(--ai-spacing-9) var(--ai-spacing-6);
+      flex: 1 1 auto;
+    }
+
+    .masthead { margin-block-end: var(--ai-spacing-9); }
+
+    .masthead__brand {
+      display: flex;
+      align-items: center;
+      gap: var(--ai-spacing-3);
+      margin-block-end: var(--ai-spacing-6);
+    }
+
+    /* The wordmark's own intrinsic size, 167x38 — the logo/brand-asset exception to the
+       token rule (CLAUDE.md §8), since these trace to the SVG and fit no spacing step. */
+    .masthead__mark { width: 167px; height: 38px; }
+
+    .masthead__eyebrow {
+      margin: 0;
+      font-family: var(--ai-font-title);
+      font-size: var(--ai-font-fixed-xxs);
+      font-weight: var(--ai-font-semibold);
+      line-height: var(--ai-leading-xs);
+      letter-spacing: var(--ai-tracking-6);
+      text-transform: uppercase;
+      color: var(--ai-text-brand);
+    }
+
+    .masthead__title {
+      margin: var(--ai-spacing-2) 0 0;
+      font-family: var(--ai-font-title);
+      font-size: var(--ai-font-fluid-3xl);
+      font-weight: var(--ai-font-bold);
+      line-height: var(--ai-leading-2xl);
+    }
+
+    .masthead__intro {
+      margin: var(--ai-spacing-4) 0 0;
+      max-width: var(--ai-size-11);        /* 768 — a comfortable measure */
+      font-size: var(--ai-font-fluid-sm);
+      line-height: var(--ai-leading-lg);
+      color: var(--ai-text-secondary);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(var(--ai-size-4), 1fr));
+      gap: var(--ai-spacing-5);
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ai-spacing-3);
+      padding: var(--ai-spacing-6);
+      background-color: var(--ai-surface-primary);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-lg);
+      color: inherit;
+      text-decoration: none;
+      transition: border-color var(--ai-transition-default),
+                  box-shadow var(--ai-transition-default);
+    }
+
+    .card:hover {
+      border-color: var(--ai-border-brand);
+      box-shadow: var(--ai-shadow-md);
+    }
+
+    .card:focus-visible {
+      outline: 2px solid var(--ai-surface-brand);
+      outline-offset: 2px;
+    }
+
+    .card__icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      inline-size: var(--ai-spacing-9);
+      block-size: var(--ai-spacing-9);
+      border-radius: var(--ai-radius-md);
+      background-color: var(--ai-surface-brand-soft);
+      color: var(--ai-icon-brand);
+    }
+
+    .card__icon [data-lucide] {
+      inline-size: var(--ai-icon-size-lg);
+      block-size: var(--ai-icon-size-lg);
+    }
+
+    .card__title {
+      margin: var(--ai-spacing-2) 0 0;
+      font-family: var(--ai-font-title);
+      font-size: var(--ai-font-fixed-md);
+      font-weight: var(--ai-font-semibold);
+      line-height: var(--ai-leading-md);
+    }
+
+    .card__text {
+      margin: 0;
+      font-size: var(--ai-font-fixed-xs);
+      line-height: var(--ai-leading-md);
+      color: var(--ai-text-secondary);
+    }
+
+    .note {
+      margin-block-start: var(--ai-spacing-9);
+      padding: var(--ai-spacing-5);
+      border-inline-start: 2px solid var(--ai-border-brand);
+      background-color: var(--ai-surface-primary);
+      border-start-end-radius: var(--ai-radius-md);
+      border-end-end-radius: var(--ai-radius-md);
+    }
+
+    .note p {
+      margin: 0;
+      font-size: var(--ai-font-fixed-xs);
+      line-height: var(--ai-leading-md);
+      color: var(--ai-text-secondary);
+    }
+
+    .note p + p { margin-block-start: var(--ai-spacing-3); }
+
+    .footer {
+      padding: var(--ai-spacing-6);
+      text-align: center;
+      font-size: var(--ai-font-fixed-xxs);
+      line-height: var(--ai-leading-xs);
+      color: var(--ai-text-contrast);
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <header class="masthead">
+      <div class="masthead__brand">
+        <img class="masthead__mark" src="../img/affinoLogo.svg" alt="Affino">
+      </div>
+      <p class="masthead__eyebrow">Interactive preview</p>
+      <h1 class="masthead__title">Seating Planner</h1>
+      <p class="masthead__intro">
+        Plan the seating for an event: lay out tables, assign attendees to seats, and keep track of
+        who is still to be placed. These are working previews — click into them and try it.
+      </p>
+    </header>
+
+    <nav class="cards" aria-label="Seating Planner previews">
+      <a class="card" href="../src/cc/templates/SeatingPlanner/SeatingPlanner.html?data=populated&amp;state=plan">
+        <span class="card__icon"><i data-lucide="armchair" aria-hidden="true"></i></span>
+        <h2 class="card__title">A planned event</h2>
+        <p class="card__text">
+          An event mid-way through planning, with four rooms, thirteen tables and attendees already
+          seated. Select a table to see who is on it, drag someone to a different seat, or search
+          the list of people still to be placed.
+        </p>
+      </a>
+
+      <a class="card" href="../src/cc/templates/SeatingPlanner/SeatingPlanner.html">
+        <span class="card__icon"><i data-lucide="footprints" aria-hidden="true"></i></span>
+        <h2 class="card__title">Start from scratch</h2>
+        <p class="card__text">
+          The same planner with nothing set up yet. Choose an event, create your first seating plan,
+          and watch the tables and attendee list build up around it.
+        </p>
+      </a>
+    </nav>
+
+    <aside class="note">
+      <p>
+        Both previews run entirely in your browser — nothing you change is saved, and reloading the
+        page puts everything back. Feel free to click anything.
+      </p>
+      <p>
+        The planner is built to work on a phone as well as a desktop. To see the difference, narrow
+        your browser window: the layout stacks, and the table detail opens beneath the table you tap.
+      </p>
+    </aside>
+  </main>
+
+  <footer class="footer">Affino</footer>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+
+</html>
