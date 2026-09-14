@@ -1,5 +1,12 @@
 <!doctype html>
-<html lang="en">
+<!-- DARK BY DEFAULT (designer, 2026-09-14). `data-theme` is how this system switches
+     theme, so every `--ai-*` colour below resolves to its dark value with nothing else to
+     change; the sizes, type and radii are theme-independent and unaffected.
+
+     Set on the element rather than left to `prefers-color-scheme`: a client opening the
+     link should see the same thing whatever their laptop is set to, which is the point of
+     sending a preview. -->
+<html lang="en" data-theme="dark">
 
 <head>
   <meta charset="utf-8">
@@ -182,7 +189,7 @@
 
     <nav class="cards" aria-label="Seating Planner previews">
       <a class="card" href="../src/cc/templates/SeatingPlanner/SeatingPlanner.html?data=populated&amp;state=plan">
-        <span class="card__icon"><i data-lucide="armchair" aria-hidden="true"></i></span>
+        <span class="card__icon"><i data-lucide="calendar" aria-hidden="true"></i></span>
         <h2 class="card__title">A planned event</h2>
         <p class="card__text">
           An event mid-way through planning, with four rooms, thirteen tables and attendees already
@@ -192,7 +199,7 @@
       </a>
 
       <a class="card" href="../src/cc/templates/SeatingPlanner/SeatingPlanner.html">
-        <span class="card__icon"><i data-lucide="footprints" aria-hidden="true"></i></span>
+        <span class="card__icon"><i data-lucide="rocket" aria-hidden="true"></i></span>
         <h2 class="card__title">Start from scratch</h2>
         <p class="card__text">
           The same planner with nothing set up yet. Choose an event, create your first seating plan,
