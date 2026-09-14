@@ -3307,3 +3307,67 @@ the table keeping `overflow-x: auto`.
 Swept the rest of the screen: the only `overflow-y: auto` left in this file is
 `.table-listing__grid`, and in ControlScreen `.cc-control__page` — both page scrollers, correctly
 not modal.
+
+---
+
+## The DOM-surgery sweep (2026-09-14)
+
+After three of these in a row — Table form save, plan delete, table delete — the whole screen was
+swept for the same class: **a legacy handler editing the DOM directly, which the model-driven
+renderer then undoes.** The test is the same every time: do the thing, call `render()`, see whether
+it survives.
+
+### One more found: Edit Plan renamed nothing
+
+| | |
+|---|---|
+| after save | DOM `RENAMED BALLROOM`, model **`Main Ballroom`** |
+| after one `render()` | **`Main Ballroom`** — the rename is gone |
+
+It was careful work: the handler renamed the card, re-labelled its Edit and Delete buttons, and
+updated the toolbar when the renamed plan was the active one, matching on the previous name so a
+stale label could not be overwritten with the wrong plan's. All of it undone by the next repaint.
+
+**None of that bookkeeping is replaced.** `renderRooms()` builds the card, both aria-labels and the
+toolbar from the plan, so one model write carries to all of them and they cannot disagree.
+
+It also fixed a second-order bug in the same dialog. The room field pre-filled from `data-ep-room`
+on the card — an attribute the old save wrote back and the renderer never sets, so it opened blank
+however many times a room had been saved. That mattered more once Save read the form: a blank field
+would write `room: null` over a real value whenever the dialog was used to change only the name.
+Edit Plan now fills from the model, exactly as `fillForm` does for the Table form.
+
+### Verified clean
+
+Each performed, then `render()` called, then re-read:
+
+| | result |
+|---|---|
+| select a table | sticks |
+| search filter | sticks |
+| "Only free seats" toggle | sticks |
+| add table (Table form) | sticks |
+| edit table (rename) | sticks |
+| unassigned pool count | sticks |
+
+**Copy Plans is DOM-only and correctly so.** It updates a plan count on *another event's* row in
+the picker — modal content this model does not render — and its own note says it "reports what a
+copy would do". Not the same bug.
+
+### Flagged, not fixed: stale references in the legacy module
+
+The plan IIFE captures elements at load, and the renderer replaces some of them. After one
+`render()`:
+
+| reference | |
+|---|---|
+| `[data-sp-grid]`, `[data-sp-aside]`, `[data-sp-detail]`, `[data-sp-detail-name]`, `[data-sp-pool-region]`, `.seating-header__rooms`, `.table-detail__seats` | live |
+| `[data-sp-detail-count]` | **detached** |
+| the `[data-sp-card]` snapshot (`var cards = …querySelectorAll`) | **detached** |
+| seat-row `.attendee-card` nodes | **detached** |
+
+So `countEl.textContent = …` in the legacy `select()` writes to a node that is no longer in the
+document, and anything iterating `cards` iterates dead nodes. Harmless *today* — `seating-app.js`
+owns selection and re-derives the same values — which is exactly why it is worth writing down: it
+is invisible until someone relies on it. A third failure mode alongside the two already known
+(overwritten by a render; never reaching the model), and the likely shape of the next bug here.

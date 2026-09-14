@@ -1182,33 +1182,30 @@
         return;
       }
 
-      /* TODO(backend:SeatingPlanner): DOM-only — this renames the card and nothing else. The plan
-       * record it should PATCH is tracked on seating-room-list; the room/location has nowhere to be
-       * stored client-side at all, which is why it is not written back here. */
+      /* THE MODEL OWNS THE RENAME (2026-09-14). This wrote the new name onto the card, re-labelled
+       * its Edit and Delete buttons, and updated the toolbar when the renamed plan was the active
+       * one — carefully, matching on the previous name so a stale label could not be overwritten
+       * with the wrong plan's. All of it was undone by the next repaint, because `D.plans` still
+       * held the old name. Measured: DOM "RENAMED BALLROOM", model "Main Ballroom", and one
+       * `render()` put the old name back.
+       *
+       * None of that bookkeeping is replaced. `renderRooms()` builds the card, both aria-labels
+       * and the toolbar from the plan, so a single model write carries to every one of them and
+       * they cannot disagree.
+       *
+       * The room/location now has somewhere to go, which it did not when this was written: plans
+       * created since 2026-08-27 carry `room`, so the field is written back rather than dropped. */
       if (editingCard) {
-        var wasSelected = editingCard.classList.contains('room-card--selected');
-        var nameEl = editingCard.querySelector('.room-card__select');
-        var previousName = nameEl ? nameEl.textContent.trim() : '';
-        if (nameEl) nameEl.textContent = name;
-        editingCard.setAttribute('data-ep-room', room);
-
-        /* The edit and delete buttons name the plan in their aria-labels, so a rename has to carry
-         * to them or the accessible names go stale and point at the old plan. */
-        Array.prototype.forEach.call(editingCard.querySelectorAll('[aria-label]'), function (el) {
-          var label = el.getAttribute('aria-label');
-          if (/^Edit /.test(label)) el.setAttribute('aria-label', 'Edit ' + name);
-          if (/^Delete /.test(label)) el.setAttribute('aria-label', 'Delete ' + name);
-        });
-
-        /* The toolbar names the ACTIVE plan, so renaming the selected card has to update it too —
-         * otherwise the header and the card disagree about what the same plan is called. Guarded on
-         * `--selected` so renaming a card that is not active leaves the toolbar alone, and matched
-         * on the previous name so a stale label is never overwritten with the wrong plan's. */
-        if (wasSelected) {
-          var toolbarName = document.querySelector('.seating-header__room-name');
-          if (toolbarName && toolbarName.textContent.trim() === previousName) {
-            toolbarName.textContent = name;
-          }
+        var planId = editingCard.getAttribute('data-sp-plan-card');
+        if (planId && window.SeatingData) {
+          document.dispatchEvent(new CustomEvent('seating-planner:plan-updated', {
+            bubbles: true, detail: { planId: planId, name: name, room: room }
+          }));
+        } else {
+          /* No model on the page — the SeatingHeader pattern demo. Keep the card readable. */
+          var nameEl = editingCard.querySelector('.room-card__select');
+          if (nameEl) nameEl.textContent = name;
+          editingCard.setAttribute('data-ep-room', room);
         }
       }
 
