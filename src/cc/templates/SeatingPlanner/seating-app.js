@@ -1419,6 +1419,69 @@
    * inside a hidden panel gives zeroes, which would leave `alignHeaders()` unable to align the row
    * it has just built. The model is written synchronously so anything reading it is correct
    * immediately; only the paint waits for the panel to exist. */
+  /* ══ Deleting a table ═══════════════════════════════════════════════
+   * Same division as the plan: the dialog announces, this removes.
+   *
+   * WHY THE OLD DOM-ONLY VERSION LOOKED LIKE IT WORKED AND DID NOT. It removed the card, patched
+   * the plan totals with a regex, and then — when the deleted table was the SELECTED one — moved
+   * the seat panel on by CLICKING the next card's select button. That click goes through the
+   * delegated selection path, which calls `render()`, which repaints the grid from a model that
+   * still had the table. So the card came back and only the toast showed anything had happened,
+   * which is exactly how it was reported. Measured: the card really was detached
+   * (`isConnected === false`), then one grid rebuild put a fresh one in its place.
+   *
+   * Nothing here patches a count. Plan totals, seats free and the pool are all derived, so they
+   * follow from the splice. */
+  document.addEventListener('seating-planner:table-deleted', function (e) {
+    var id = (e && e.detail && e.detail.tableId) || null;
+    if (!id) return;
+
+    var owner = null, idx = -1;
+    for (var a = 0; a < D.plans.length && idx === -1; a++) {
+      for (var b = 0; b < D.plans[a].tables.length; b++) {
+        if (D.plans[a].tables[b].id === id) { owner = D.plans[a]; idx = b; break; }
+      }
+    }
+    if (!owner) return;                      /* already gone — a double-fire must not shift state */
+
+    var removed = owner.tables[idx];
+    var wasSelected = state.tableId === id;
+    owner.tables.splice(idx, 1);
+
+    /* The seat panel follows the table, not the click. Next surviving table by position, falling
+     * back to the one before it when the last was deleted, and null when the plan is empty — which
+     * `renderDetail` already draws as "No table selected". */
+    if (wasSelected) {
+      var heir = owner.tables[idx] || owner.tables[idx - 1] || null;
+      state.tableId = heir ? heir.id : null;
+    }
+
+    render();
+
+    var planName = owner.name || 'this plan';
+    document.dispatchEvent(new CustomEvent('sp:toast', {
+      detail: {
+        /* Type=ERROR, not success — Figma 1:43029 / 1:44173 place TriangleAlert with the
+         * --ai-border-error ring where the create and edit toasts use BadgeCheck. A removal is
+         * reported as a warning. Copy keeps the bold-subject / plain-verb / bold-object shape. */
+        type: 'error',
+        parts: [
+          { text: (removed.name || 'This table') + ' ', strong: true },
+          { text: 'has been removed from ' },
+          { text: planName + '.', strong: true }
+        ],
+        /* A REAL undo now, not a re-insertion of saved markup: the table goes back at its original
+         * index with its seats — so its occupants return with it and every count re-derives. The
+         * old version restored `outerHTML` and the model had never changed in the first place. */
+        undo: function () {
+          owner.tables.splice(idx, 0, removed);
+          if (wasSelected) state.tableId = removed.id;
+          render();
+        }
+      }
+    }));
+  });
+
   /* ══ Deleting a plan ════════════════════════════════════════════════
    * The confirm dialog announces, this removes. Before 2026-09-14 the dialog did it by DOM
    * surgery and the model never heard: `D.plans` kept the plan, so the next repaint put its card
