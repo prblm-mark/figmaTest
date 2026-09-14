@@ -330,4 +330,28 @@
   .event-picker__empty {
     padding: var(--ai-spacing-5);
   }
+
+  /* ══ Mobile type (2026-09-14) ════════════════════════════════════════════
+   * Read off this component's OWN Mobile variant, `3108:6658` — which is not what this file's
+   * notes have said. They recorded the event name as `--ai-font-fixed-sm` (16) at BOTH sizes; the
+   * variant actually draws **14**, and has done in every row. Corrected here and in the notes.
+   *
+   * The variant is internally inconsistent on ONE point and it is worth knowing which way it was
+   * read: the pinned first row's name sits in a 20-tall box (`3087:5961`) where every other row is
+   * 24 (`3087:6000`), i.e. leading-sm against leading-md. Both are 14px, so the SIZE is not in
+   * doubt; only the first row's leading differs, which reads as drift on that one row rather than
+   * a rule. Leading is left at `--ai-leading-md` for all of them.
+   *
+   * The Cancel button is `--ai-font-fixed-2xs` (13) in the variant's footer (`3087:6173`), where
+   * Modal's own mobile block takes footer buttons to `--ai-font-fluid-xxs` (12). Scoped to this
+   * pattern's footer rather than changed in Modal, because 13 is what EventPicker's frames show
+   * and nothing was read for the other dialogs — and 13 is no Button size at all, so it is a
+   * contextual override either way. Flagged in the notes. */
+  .event-picker__event-name {
+    font-size: var(--ai-font-fixed-xs);   /* 14 — was --ai-font-fixed-sm (16) */
+  }
+
+  .event-picker__footer .btn {
+    font-size: var(--ai-font-fixed-2xs);  /* 13 — Modal's mobile footer gives 12 */
+  }
 }

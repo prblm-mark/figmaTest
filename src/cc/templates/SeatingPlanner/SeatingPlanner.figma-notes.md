@@ -3646,3 +3646,27 @@ Event at the same width is untouched at 16, 16/24, 12. At 1400px both are identi
 Whether the frame is the spec or has drifted. If it is the spec, all three belong in EventPicker,
 Modal and Button, and this block goes; the frame wants re-attaching either way, so the next reader
 is not auditing a detached copy.
+
+
+---
+
+## Copy Plans mobile type — resolved into EventPicker (2026-09-14)
+
+The three `.copy-plans` overrides added earlier the same day are gone. The designer pointed at
+EventPicker's own Mobile variant `3108:6658`, which settles what the detached Copy Plans frame
+(`3515:214844`) could not:
+
+| | detached frame | component variant | outcome |
+|---|---|---|---|
+| event name | 14 / 20 | **14** | real — promoted to EventPicker at ≤639 |
+| Cancel | 13 | **13** | real — promoted to `.event-picker__footer .btn` |
+| modal title | 18 | **16** | **drift** — the detached copy had kept the desktop size. Override deleted, not moved. |
+
+So two of the three were genuine and one was exactly the drift the detachment suggested. The guess
+recorded here yesterday — that the frame "may have drifted rather than specifying a change" — was
+half right, which is the useful lesson: a detached frame is not wrong, it is *unreliable*, and the
+component is what settles it.
+
+Nothing Copy-Plans-specific remains, which is the right answer: the two pickers on this screen
+should not differ. Verified at 402px — both now read title 16, name 14/24, Cancel 13, count 12/16,
+meta 12/20; both unchanged at 1400px.
