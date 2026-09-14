@@ -730,6 +730,22 @@
   }
 
   function render() {
+    /* ── Hold the page's scroll position across the rebuild ────────────────────────
+     * Assigning somebody on a phone threw the page back to near the top — measured, scrollTop 900
+     * before and 96 after.
+     *
+     * Nothing scrolls it. The page SHRINKS underneath it: `parkDetail()` lifts the open detail out
+     * of the grid, and that detail is tall (a seat row per seat), so the document briefly loses
+     * most of its height. The browser clamps `scrollTop` to the new maximum, and putting the
+     * detail back afterwards restores the height but not the position — a clamp is not undone by
+     * the content coming back.
+     *
+     * So the position is read before the shrink and written after the layout is whole again. The
+     * assignment only made it obvious: every render did it, so unseating, reordering, renaming or
+     * deleting anything jumped the page too. Restoring past a genuinely shorter document just
+     * clamps again, which is correct. */
+    var keepScroll = pageEl ? pageEl.scrollTop : 0;
+
     /* FIRST, before anything rebuilds the grid — see `parkDetail()`. */
     parkDetail();
 
@@ -770,6 +786,11 @@
     if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
     /* After the cards exist and after createIcons(), which changes their content height. */
     alignHeaders();
+
+    /* LAST — after `alignHeaders()`, which is itself a height change. Only written when it has
+     * actually moved, so a render that scrolled nothing does not touch the scroller and cancel a
+     * smooth scroll already in flight (`revealTable` defers past this on purpose). */
+    if (pageEl && pageEl.scrollTop !== keepScroll) pageEl.scrollTop = keepScroll;
   }
 
   /* ── Mutation ──────────────────────────────────────────────────────────────────────────────

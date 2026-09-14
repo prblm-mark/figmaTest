@@ -3493,3 +3493,51 @@ the new card, select → one call on that card, close → none. At 1288px: none 
 iframe resize under `--virtual-time-budget` (`feedback_headless_http_and_transitions`), so
 narrowing the frame leaves the selection uncleared in a probe and would read as a bug. The same
 `onContainerResize()` runs at init, which the 788px load exercises and passes.
+
+---
+
+## Mobile: the page kept its scroll position (2026-09-14)
+
+Reported: *"on mobile after i assign an attendee, the scroll position is lost."* Measured at a
+788px column — **scrollTop 900 before, 96 after**. Two separate causes, found because fixing the
+first left one case still jumping.
+
+### 1. The document shrinks mid-render
+
+Nothing scrolls the page. It gets *shorter* underneath it: `parkDetail()` lifts the open detail
+out of the grid before `renderListing()` rewrites it, and that detail is tall — a seat row per
+seat. The document briefly loses most of its height, the browser clamps `scrollTop` to the new
+maximum, and putting the detail back restores the height but **not** the position. A clamp is not
+undone by the content coming back.
+
+`render()` now reads the position before the shrink and writes it after the layout is whole again
+— after `alignHeaders()`, which is itself a height change — and only when it has actually moved,
+so a render that scrolled nothing cannot cancel a smooth scroll already in flight.
+
+**Assigning only made it visible.** Every render did this, so unseating, reordering, renaming and
+deleting jumped the page too.
+
+### 2. Deleting a table: `focus()` scrolls
+
+With the render holding its position, delete still threw the page back — 900 → 207. Not the
+re-render: the delete dialog's close hands focus to a **different** element, a surviving table's
+delete button, because the one it came from has just been removed. Focusing scrolls the target
+into view.
+
+`focus({ preventScroll: true })`, so the a11y intent survives unchanged — focus still lands in the
+list rather than dropping to `<body>` — without dragging the viewport with it. Verified that focus
+still lands on `"Delete Table 1"` afterwards.
+
+### Verified
+
+At a 788px column, scrollTop 900 before each:
+
+| | after |
+|---|---|
+| unseat | 900 |
+| assign | 900 |
+| delete table | 900 |
+| edit table (rename) | 900 |
+
+And the *intentional* scrolls still win, because `revealTable()` defers past the restore on
+purpose: selecting a card and adding a table each still call `scrollIntoView` exactly once.
