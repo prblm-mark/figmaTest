@@ -1419,6 +1419,57 @@
    * inside a hidden panel gives zeroes, which would leave `alignHeaders()` unable to align the row
    * it has just built. The model is written synchronously so anything reading it is correct
    * immediately; only the paint waits for the panel to exist. */
+  /* Edit Plan opens FROM THE MODEL. The legacy `open()` pre-fills the room from `data-ep-room` on
+   * the card — an attribute the old DOM-surgery save wrote back and the model-driven renderer
+   * never sets, so the field opened blank however many times a room had been saved. Exactly the
+   * trap `fillForm` already documents for the Table form's tier and sponsor, and it matters more
+   * now that Save reads the form: a blank field would have written `room: null` back over a real
+   * value every time the dialog was used to change only the name.
+   *
+   * Deferred, because the legacy open() runs on this same click and fills the fields itself. */
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest) return;
+    var open = e.target.closest('[data-ep-open]');
+    if (!open) return;
+    var card = open.closest('[data-sp-plan-card]');
+    var id = card ? card.getAttribute('data-sp-plan-card') : null;
+    if (!id) return;
+    setTimeout(function () {
+      var p = null;
+      for (var i = 0; i < D.plans.length; i++) if (D.plans[i].id === id) { p = D.plans[i]; break; }
+      if (!p) return;
+      var nameEl = document.querySelector('#ep-name');
+      var roomEl = document.querySelector('#ep-room');
+      if (nameEl) nameEl.value = p.name || '';
+      if (roomEl) roomEl.value = p.room || '';
+    }, 0);
+  }, true);
+
+  /* ══ Renaming a plan ═══════════════════════════════════════════════
+   * Edit Plan used to rename the card, re-label its Edit and Delete buttons, and update the
+   * toolbar when the renamed plan was the active one — all by hand, and all undone by the next
+   * repaint because the model kept the old name. Measured: DOM "RENAMED BALLROOM", model
+   * "Main Ballroom", reverted by one render().
+   *
+   * One write here replaces all of that bookkeeping: `renderRooms()` builds the name, both
+   * aria-labels and the toolbar from the plan, so they cannot disagree with each other.
+   */
+  document.addEventListener('seating-planner:plan-updated', function (e) {
+    var det = (e && e.detail) || {};
+    var p = null;
+    for (var i = 0; i < D.plans.length; i++) if (D.plans[i].id === det.planId) { p = D.plans[i]; break; }
+    if (!p) return;
+
+    var name = String(det.name || '').trim();
+    if (name) p.name = name;
+    /* `room` is carried but not drawn — see seating-new-plan-unrendered-fields. Written back
+     * anyway, for the reason create-plan already gives: discarding what somebody typed is worse
+     * than carrying a field nobody reads yet. */
+    if (det.room != null) p.room = String(det.room).trim() || null;
+
+    render();
+  });
+
   /* ══ Deleting a table ═══════════════════════════════════════════════
    * Same division as the plan: the dialog announces, this removes.
    *
