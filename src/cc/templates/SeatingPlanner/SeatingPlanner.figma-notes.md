@@ -3590,3 +3590,59 @@ Desktop is untouched, and was checked rather than assumed: all four still 12px a
 `.room-layout__hint` and `.room-layout__note` are **not** this pattern — body copy in the drop zone
 ("Upload a floor plan…") and a note about PDF previews, both `--ai-font-fixed-xs` (14px desktop,
 13px mobile). Different element, its own Figma size. Say if those should follow too.
+
+---
+
+## Copy Plans mobile type (2026-09-14) — Figma `3515:214844`
+
+Reported as wrong font sizes on the mobile Copy Plans modal. Measured the frame against our render
+at 402px: **three** values differ, and everything else already matched exactly.
+
+| | ours | frame | |
+|---|---|---|---|
+| modal title | 16 | **18** | Modal steps every title to 16 at ≤639 |
+| event name | 16 / 24 | **14 / 20** | EventPicker gives 16 at both sizes |
+| Cancel | 12 | **13** | Modal's mobile footer gives 12 |
+| intro | 13 / 20 | 13 / 20 | ✓ |
+| search | 14 | 14 | ✓ |
+| meta item | 12 / 20 | 12 / 20 | ✓ |
+| plans count | 12 / 16 Medium | 12 / 16 Medium | ✓ |
+| footer count | 12 / 16 Regular | 12 / 16 Regular | ✓ |
+
+### The frame is a detached copy, which is why this was a question and not a fix
+
+Its picker is a **`<frame>`**, where the Select Event frame beside it (`3515:228380`) still holds an
+**`<instance>`**. And all three differences disagree with the components the copy came from:
+
+- EventPicker's own notes record the event name as `--ai-font-fixed-sm` (16) at **both** sizes,
+  read from its own mobile frames (`3108:6658`).
+- Modal steps every dialog title to `--ai-font-fixed-sm` (16) at this width; the frame keeps the
+  desktop 18.
+- **13px is no Button size at all** — base is 14, sm is 12.
+
+Two of the three look like values a detached copy never inherited rather than values anyone chose.
+The component instance could not be audited to settle it: Code Connect intercepts
+`get_design_context` on it and returns this project's own snippet instead of the design, which
+EventPicker's notes already record as a trap.
+
+### Applied to `.copy-plans` only (designer's call, 2026-09-14)
+
+Scoped in `SeatingPlanner.css` at `≤639`, so Select Event and every other dialog keep the shared
+values, and this is one block to delete if the components are what should change instead.
+
+**Known cost, accepted:** the two pickers on this screen now differ at mobile — Copy Plans shows a
+14px event name under an 18px title, Select Event 16 under 16.
+
+Each override outranks its source on **specificity** rather than order — (0,2,0) and (0,3,0)
+against the components' (0,1,0) and (0,2,0) — so none of it depends on file sequence.
+
+### Verified
+
+At 402px: Copy Plans reads title 18, name 14/20, Cancel 13, meta 12/20 — the frame exactly. Select
+Event at the same width is untouched at 16, 16/24, 12. At 1400px both are identical and unchanged.
+
+### Open
+
+Whether the frame is the spec or has drifted. If it is the spec, all three belong in EventPicker,
+Modal and Button, and this block goes; the frame wants re-attaching either way, so the next reader
+is not auditing a detached copy.

@@ -589,6 +589,42 @@
     font-size: var(--ai-font-fixed-4xs);   /* 11px */
   }
 
+  /* ══ Copy Plans, mobile type (designer, 2026-09-14) ═══════════════════════════
+   * Figma `3515:214844`. Three sizes on this dialog differ from what the shared components give
+   * it at this width; everything else on the frame already matched exactly — intro 13/20, search
+   * 14, meta 12/20, plans 12/16 Medium, footer count 12/16 Regular.
+   *
+   * SCOPED TO `.copy-plans`, NOT PUSHED INTO THE COMPONENTS, and the reason is worth keeping
+   * because the frame is not a clean source. Its picker is a **detached frame**, where the Select
+   * Event frame beside it (`3515:228380`) is still an instance — and all three values disagree
+   * with the components they were copied from:
+   *
+   *   • EventPicker's own notes record the event name as --ai-font-fixed-sm (16) at BOTH sizes,
+   *     read from its own mobile frames (`3108:6658`).
+   *   • Modal steps every dialog title to --ai-font-fixed-sm (16) at this width; the frame keeps
+   *     the desktop 18.
+   *   • 13px is no Button size at all — base is 14, sm is 12.
+   *
+   * So this may be a detached copy that drifted rather than a spec change. The designer chose to
+   * apply it here only (2026-09-14), which keeps Select Event and every other dialog on the
+   * shared values and makes this trivially promotable if the component is what should change.
+   * KNOWN COST, accepted: the two pickers on this screen now differ at mobile.
+   *
+   * Each override outranks its source on specificity rather than order — (0,2,0) and (0,3,0)
+   * against the components' (0,1,0) and (0,2,0) — so none of this depends on file sequence. */
+  .copy-plans .modal__title {
+    font-size: var(--ai-font-fixed-md);        /* 18 — Modal gives 16 here */
+  }
+
+  .copy-plans .event-picker__event-name {
+    font-size: var(--ai-font-fixed-xs);        /* 14 — EventPicker gives 16 */
+    line-height: var(--ai-leading-sm);         /* 20 — from --ai-leading-md (24) */
+  }
+
+  .copy-plans .modal__footer .btn {
+    font-size: var(--ai-font-fixed-2xs);       /* 13 — Modal's mobile footer gives 12 */
+  }
+
   /* The Stepper keeps `--ai-leading-md` at both sizes (Figma 3567:105368), unlike a plain
    * Input's sm field. Three classes deliberately: Input.css's own `.input--stepper
    * .input__control` is only two and loads EARLIER than this file, so it cannot defend itself
