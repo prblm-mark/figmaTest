@@ -21,6 +21,10 @@ module.exports = merge(common, {
         { from: '404.html', to: '404.html' },
         { from: 'site.webmanifest', to: 'site.webmanifest' },
         { from: 'src', to: 'src' },
+        /* The client-facing Seating Planner preview. A folder rather than a root .html so the
+           shared link is `/demo/` — the internal path (`src/cc/templates/…`) never appears in
+           anything a client is sent. Copied, not templated: it has no bundle to inject. */
+        { from: 'demo', to: 'demo' },
       ],
     }),
   ],
