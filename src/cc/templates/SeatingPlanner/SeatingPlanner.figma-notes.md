@@ -3409,3 +3409,60 @@ override no longer matches at all and Button.css is unopposed. Resolved values:
 
 Still flagged, unchanged: the CC hover is *lighter* than its pressed value in both modes, so the
 affordance is inverted against every other mode. That is a token fix in Figma, not a code one.
+
+---
+
+## Mobile selection and the inline detail (2026-09-14)
+
+Reported: on mobile a new plan selects Table 1 although the rule is desktop-only, and tapping a
+table does not reveal the detail at all.
+
+Both are the same seam. The stacked rules were written in `SeatingPlanner.js` when that module
+owned selection. It does not any more — `seating-app.js` does — and the two halves had come apart.
+**`seating-app.js` had no notion of "stacked" anywhere in it.**
+
+### What was actually happening
+
+| | |
+|---|---|
+| new plan on a 788px column | `state.tableId` set, one card `--selected` |
+| tapping a card | `document.querySelector('[data-sp-detail]')` returned **null** |
+
+The second is worse than "the detail did not show": the element **left the document**. The legacy
+`placeDetail()` positions the detail relative to `selected`, a node captured at click time from a
+`cards` snapshot taken at load. The renderer replaces those nodes, so `insertBefore` was inserting
+into a **detached** subtree. `renderDetail()` then found no host and returned early, and nothing
+could bring it back without a reload.
+
+### Where the rules live now
+
+All in `seating-app.js`, beside the selection state and the render:
+
+- `isStacked()` — measured off the page **container** at 1023, never the viewport, for the reason
+  CLAUDE.md §4a gives (a docked SidebarMenu leaves an 820px column at a 2239px viewport).
+- `applyStackedDefault()` — desktop pre-selects the first table, stacked selects nothing.
+- `selectTable()` — tapping the open card again closes it, **stacked only**: the mobile frame draws
+  no close control, and on desktop deselecting would just empty a permanent rail.
+- `plan-created` — `isStacked() ? null : plan.tables[0].id`. It was unconditional.
+- `placeDetail()` — called from `render()` **after** the grid is rebuilt, so it always positions
+  against live nodes. That ordering is the fix.
+
+### `parkDetail()` — the second half of the same bug
+
+`renderListing()` writes `grid.innerHTML`, which destroys every child — and when stacked the
+detail is one of them. So `render()` moves it back to the aside **first**, then rebuilds, then
+repositions. Without it the detail survived being opened and was torn out by the next repaint:
+same failure as the old code, reached from the other direction — there by positioning against a
+dead node, here by being a child of something rewritten wholesale.
+
+### Verified
+
+Stacked (788px column), from a fresh plan: nothing selected and the detail hidden → tap Table 2,
+detail visible inline directly after Table 2 → tap Table 3, it moves → tap Table 3 again, it
+closes → survives a `render()` → reopen Table 1. Desktop (1288px): pre-selects Table 1, tapping
+the open card does **not** deselect, the detail stays in the aside, selection survives widening.
+
+**Not verifiable headless:** the breakpoint *crossing*. `ResizeObserver` does not fire for an
+iframe resize under `--virtual-time-budget` (`feedback_headless_http_and_transitions`), so
+narrowing the frame leaves the selection uncleared in a probe and would read as a bug. The same
+`onContainerResize()` runs at init, which the 788px load exercises and passes.

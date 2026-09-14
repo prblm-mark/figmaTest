@@ -60,6 +60,79 @@
     assignSeat: null
   };
 
+  /* ══ Stacked (mobile) awareness ══════════════════════════════════════════
+   * These rules used to live in SeatingPlanner.js, written when that module owned selection. It
+   * does not any more, and the two halves had come apart: a new plan selected its first table on
+   * mobile (where nothing should be selected), and tapping a card moved the detail relative to a
+   * card the renderer had already replaced — which put `[data-sp-detail]` inside a DETACHED
+   * subtree, so it left the document entirely and could not come back without a reload.
+   *
+   * Measured on a 788px column: `state.tableId` set after Create Plan with one card carrying
+   * `--selected`, and after tapping a card `document.querySelector('[data-sp-detail]')` returned
+   * null.
+   *
+   * So they live here, where the selection and the render are. STACK_MAX must stay in step with
+   * the CSS value — `@container cs-page (max-width: 1023px)` — and it is measured off the page
+   * CONTAINER, never the viewport: a docked SidebarMenu leaves an 820px column at a 2239px
+   * viewport, where every viewport query says desktop (CLAUDE.md §4a). */
+  var STACK_MAX = 1023;
+  var pageEl = document.querySelector('.cc-control__page') || document.body;
+
+  function isStacked() {
+    return pageEl.getBoundingClientRect().width <= STACK_MAX;
+  }
+
+  /* Move the detail OUT of the grid before anything rebuilds the grid.
+   *
+   * `renderListing()` writes `grid.innerHTML`, which destroys every child — and when stacked the
+   * detail is one of them. Without this it is torn out on the first repaint after being opened:
+   * `document.querySelector('[data-sp-detail]')` returns null, `renderDetail()` finds no host and
+   * returns early, and the element never comes back without a reload. Same class of failure as
+   * the old `placeDetail()`, reached from the other direction — there by positioning against a
+   * dead node, here by being a child of something rewritten wholesale.
+   *
+   * The aside is always present and never rebuilt, so it is the safe place to park it. */
+  function parkDetail() {
+    var detail = document.querySelector('[data-sp-detail]');
+    var aside  = document.querySelector('[data-sp-aside]');
+    if (detail && aside && detail.parentNode !== aside) aside.appendChild(detail);
+  }
+
+  /* The detail is ONE element that moves, not two copies — two would drift apart the moment
+   * either changed. Desktop: it lives in the aside. Stacked: it sits directly after the selected
+   * card, which is what the mobile frame draws (3515:228026 puts it between two Table Cards).
+   *
+   * Called from `render()`, AFTER the grid is rebuilt, so it always positions against live nodes.
+   * That ordering is the whole fix: the old version ran on a click, against whatever card object
+   * it had captured earlier. */
+  function placeDetail() {
+    var detail = document.querySelector('[data-sp-detail]');
+    var aside  = document.querySelector('[data-sp-aside]');
+    if (!detail) return;
+
+    var card = state.tableId
+      ? grid.querySelector('[data-sp-card][data-sp-table="' + state.tableId + '"]')
+      : null;
+
+    if (!isStacked() || !card) {
+      if (aside && detail.parentNode !== aside) aside.appendChild(detail);
+      return;
+    }
+    if (card.nextSibling !== detail) card.parentNode.insertBefore(detail, card.nextSibling);
+  }
+
+  /* Desktop pre-selects the first table so the detail is never empty; mobile selects nothing,
+   * because the detail would take too much of the screen (designer, 2026-08-27). Re-applied on
+   * every breakpoint crossing, so resizing down and back behaves. */
+  function applyStackedDefault() {
+    var p = plan();
+    if (isStacked()) {
+      state.tableId = null;
+    } else if (!state.tableId && p && p.tables.length) {
+      state.tableId = p.tables[0].id;
+    }
+  }
+
   /* ── Derivation ────────────────────────────────────────────────────────────────────────────
    * Every number the screen shows comes from one of these. None of them is cached, because a
    * cached count is exactly the thing that drifts from what it describes. */
@@ -632,6 +705,9 @@
   }
 
   function render() {
+    /* FIRST, before anything rebuilds the grid — see `parkDetail()`. */
+    parkDetail();
+
     /* NOTHING TO PAINT WITH NO PLANS. The from-scratch dataset starts with an empty list, and the
      * panel these functions write into is hidden behind the No Event / No Plan states anyway — so
      * this is not a special case being tolerated, it is the state the screen is genuinely in.
@@ -663,6 +739,9 @@
     renderPool();
     renderChrome();
     decoratePick();
+    /* After the grid exists — it positions against a live card — and before `alignHeaders()`,
+     * which measures a row the detail may now be sitting in. */
+    placeDetail();
     if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
     /* After the cards exist and after createIcons(), which changes their content height. */
     alignHeaders();
@@ -672,7 +751,10 @@
    * Each of these changes the model and re-renders. Nothing writes a count anywhere. */
 
   function selectTable(id) {
-    state.tableId = id;
+    /* Tapping the open card again closes it, but only when stacked — otherwise a mobile user has
+     * no way back to the plain list, since the frame draws no close control on the inline detail.
+     * On desktop the detail is a permanent rail and deselecting would just empty it. */
+    state.tableId = (isStacked() && state.tableId === id) ? null : id;
     render();
   }
 
@@ -1603,7 +1685,9 @@
 
     D.plans.push(plan);
     state.planId = plan.id;
-    state.tableId = plan.tables[0].id;
+    /* Not on mobile — same rule as the initial load. This line was unconditional, which is why a
+     * plan created on a phone opened with Table 1 selected and its detail already expanded. */
+    state.tableId = isStacked() ? null : plan.tables[0].id;
 
     setTimeout(function () {
       render();
@@ -2005,6 +2089,27 @@
       renderChrome();
     }
   });
+
+  /* ResizeObserver, not `resize`: the column changes width when the SidebarMenu docks or the
+   * rail appears, with no window resize at all — the whole reason this screen uses container
+   * queries. Guarded so it only re-runs when the stacked state actually flips, since RO fires on
+   * every pixel. */
+  var wasStacked = null;
+  function onContainerResize() {
+    var now = isStacked();
+    if (now === wasStacked) return;
+    wasStacked = now;
+    applyStackedDefault();
+    render();
+  }
+
+  if (window.ResizeObserver) new ResizeObserver(onContainerResize).observe(pageEl);
+  else window.addEventListener('resize', onContainerResize);
+
+  /* Seeds `wasStacked` and applies the rule for the width we actually loaded at — the markup
+   * ships Table 1 pre-selected so a no-JS render matches the desktop frame, which means on a
+   * phone there is a selected card nothing has cleared yet. */
+  onContainerResize();
 
   render();
   window.SeatingApp = { render: render, state: state };

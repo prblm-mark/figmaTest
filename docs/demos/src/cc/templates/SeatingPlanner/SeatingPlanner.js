@@ -528,9 +528,11 @@
   var handle  = plan.querySelector('[data-sp-handle]');
   var pool       = plan.querySelector('[data-sp-pool-region]');
   var poolHandle = plan.querySelector('[data-sp-pool-handle]');
-  var nameEl  = plan.querySelector('[data-sp-detail-name]');
-  var countEl = plan.querySelector('[data-sp-detail-count]');
-  var cards   = Array.prototype.slice.call(plan.querySelectorAll('[data-sp-card]'));
+  /* `nameEl`, `countEl` and a `cards` snapshot used to be captured here for the selection code
+   * that has moved to seating-app.js. The snapshot in particular is the thing not to reintroduce:
+   * `querySelectorAll` at load returns nodes the renderer later replaces, so it was a list of
+   * detached elements from the first repaint onwards, and `[data-sp-detail-count]` went the same
+   * way. Anything on this screen that needs a rendered node must look it up when it needs it. */
 
   /* The CSS stacks this row at `@container cs-page (max-width: 1023px)`. JS cannot read a
    * container query, and `matchMedia` would reintroduce the exact bug the CSS just fixed — a
@@ -544,105 +546,24 @@
     return pageEl.getBoundingClientRect().width <= STACK_MAX;
   }
 
-  /* ── Selection ─────────────────────────────────────────────────────────── */
+  /* ── Selection and the mobile inline detail are NOT here any more (2026-09-14) ────────
+   * `seating-app.js` owns them, because it owns the selection state and the render.
+   *
+   * What stood here: `selected`, `placeDetail()`, `select()`, a grid click listener, an
+   * `applyDefault()` holding the desktop-pre-selects / mobile-selects-nothing rule, and a
+   * ResizeObserver to re-apply it on every breakpoint crossing. All of it worked against
+   * `cards` — a `querySelectorAll` snapshot taken at load — and a `selected` node taken from it.
+   *
+   * The renderer replaces those nodes, so both went stale on the first repaint, and the damage
+   * was worse than dead code. `placeDetail()` positions the detail relative to `selected`: with
+   * that pointing at a DETACHED card, `insertBefore` moved `[data-sp-detail]` into a subtree no
+   * longer in the document. The element left the page entirely — `document.querySelector` for it
+   * returned null — so the mobile detail could not be shown again without a reload. Meanwhile an
+   * unconditional `state.tableId` on plan-created selected Table 1 on phones, against the
+   * designer's 2026-08-27 rule that mobile selects nothing.
+   *
+   * `isStacked()` and `STACK_MAX` stay below: both resize handles still read them. */
 
-  /* Seeded from the markup rather than starting null: the HTML pre-selects Table 1 so a
-   * no-JS render matches the desktop frame. */
-  var selected = plan.querySelector('.table-card--selected');
-
-  /* The detail is ONE element that moves, not two copies. On desktop it lives in the aside;
-   * on mobile it is inserted straight after the selected card so it lands between two cards
-   * exactly as the frame draws it. Two instances would drift apart the moment either changed. */
-  function placeDetail() {
-    if (!selected || !isStacked()) {
-      if (detail.parentNode !== aside) aside.appendChild(detail);
-      return;
-    }
-    if (selected.nextSibling !== detail) {
-      selected.parentNode.insertBefore(detail, selected.nextSibling);
-    }
-  }
-
-  function select(card, opts) {
-    var scroll = opts && opts.scroll;
-
-    if (selected === card && isStacked()) {
-      /* Tapping the open card again closes it — otherwise a mobile user has no way back to
-       * the plain list, since there is no close control in the frame. */
-      selected = null;
-      card.classList.remove('table-card--selected');
-      placeDetail();
-      return;
-    }
-
-    cards.forEach(function (c) { c.classList.remove('table-card--selected'); });
-    card.classList.add('table-card--selected');
-    selected = card;
-
-    /* The card's OWN name, not 'Table ' + data-sp-table. The number and the name were always the
-     * same string until the Table form let either be edited; now a card renamed to "Headline
-     * Sponsors" would open a panel headed "Table 14". The attribute stays as the stable id. */
-    var nameSrc = card.querySelector('.table-card__select');
-    if (nameEl) nameEl.textContent = nameSrc
-      ? nameSrc.textContent.trim()
-      : 'Table ' + card.getAttribute('data-sp-table');
-    /* TODO(backend:SeatingPlanner): the seat rows are static markup for one empty table — the
-     * real panel must load THIS table's seats and its own seated count. See
-     * seating-table-detail. Only the title and count are updated here. */
-    if (countEl) countEl.textContent = card.querySelector('.table-card__count').textContent;
-
-    placeDetail();
-
-    /* "table in focus should scroll to top of chrome/header group" (designer, 2026-08-27),
-     * which is what the mobile frame shows: the listing offset so the card sits at the top.
-     * The page is the scroller, so scrollIntoView on the card is the whole behaviour. */
-    if (scroll && isStacked() && card.scrollIntoView) {
-      card.scrollIntoView({ block: 'start', behavior: 'smooth' });
-    }
-  }
-
-  grid.addEventListener('click', function (event) {
-    var trigger = event.target.closest && event.target.closest('.table-card__select');
-    if (!trigger) return;
-    var card = trigger.closest('[data-sp-card]');
-    if (card) select(card, { scroll: true });
-  });
-
-  /* Desktop pre-selects the first table so the detail panel is never empty; mobile does not,
-   * because the detail would take too much of the screen (designer, 2026-08-27). Re-applied on
-   * every breakpoint crossing, so resizing a desktop window down and back behaves. */
-  function applyDefault() {
-    if (isStacked()) {
-      /* Clear the class off EVERY card, not just the one `selected` points at. The markup
-       * ships Table 1 pre-selected so a static render (or a Figma capture) matches the
-       * desktop frame without JS — which means on mobile there is a selected card that this
-       * function has never seen, and checking `selected` alone left it highlighted. */
-      cards.forEach(function (c) { c.classList.remove('table-card--selected'); });
-      selected = null;
-    } else if (!selected && cards.length) {
-      select(cards[0], { scroll: false });
-    }
-    placeDetail();
-  }
-
-  /* ResizeObserver, not a resize listener: the column changes width when the SidebarMenu docks
-   * or the rail appears, with no window resize at all — which is the whole reason this screen
-   * needed container queries. Guarded so it only re-runs when the stacked/side-by-side state
-   * actually flips, since RO fires on every pixel. */
-  var wasStacked = null;
-  function onContainerResize() {
-    var now = isStacked();
-    if (now === wasStacked) return;
-    wasStacked = now;
-    applyDefault();
-  }
-
-  if (window.ResizeObserver) {
-    new ResizeObserver(onContainerResize).observe(pageEl);
-  } else {
-    window.addEventListener('resize', onContainerResize);
-  }
-  onContainerResize();
 
   /* ── Resize: BOTH sheets ────────────────────────────────────────────────────
    * Was written for one handle with `aside` and `--sp-aside-w` closed over. The Unassigned sheet
