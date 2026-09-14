@@ -3202,3 +3202,65 @@ One probe note worth keeping: the first run reported the empty title as "No even
 was an unscoped `querySelector` hitting the hidden `no-event` sibling, not a wrong state — exactly
 the trap `feedback_scope_probes_to_the_visible_element` records. Scoping to the panel that is not
 `hidden` gives the real answer.
+
+---
+
+## Deleting a table (2026-09-14) — the toast fired and nothing was deleted
+
+Reported: *"when i click delete table (in the set up workflow) it doesnt delete, even though the
+toast fires to indicate it has."* Both halves were literally true, which is what made it worth
+measuring rather than reasoning about.
+
+### What was happening
+
+The card **was** removed — the original node came back `isConnected === false`. Then one grid
+rebuild put a fresh one in its place:
+
+| | |
+|---|---|
+| open dialog | no rebuild, card still connected |
+| after confirm | card detached, **1 grid rebuild**, DOM back to 13 |
+
+The rebuild was self-inflicted. When the deleted table was the **selected** one, the handler moved
+the seat panel on by *clicking the next card's select button* — a deliberate choice, recorded at
+the time as keeping selection "on the single delegated selection path rather than duplicating it".
+But that path calls `render()`, which repaints from a model that still held the table. The card
+came back in the same frame it left.
+
+It is not specific to the set-up workflow; that is just where it always bites, because the first
+table is selected by default and deleting it is the obvious thing to try. Deleting a *background*
+table appeared to work until the next repaint.
+
+### The fix is the same division as the plan delete
+
+The dialog announces `seating-planner:table-deleted`; `seating-app.js` splices the table, moves
+the selection to a surviving one, and repaints. **147 lines of DOM surgery went**: the card
+removal, a regex patch over `"13 tables · 124/148"`, the seat-panel clearing, the `outerHTML`
+snapshot and the next-sibling id it needed to re-insert in the right place.
+
+None of it is replaced by anything. Plan totals, seats free and the pool are derived, so they
+follow from the splice — and **Undo is now a real undo**: the table goes back into the plan at its
+original index with its seats, so its occupants return with it. The old one re-inserted saved
+markup into a model that had never changed.
+
+### Verified
+
+Set-up workflow, deleting the selected Table 1 of four:
+
+| | model | DOM | selection |
+|---|---|---|---|
+| created | 4 | Table 1–4 | `…-t1` |
+| after delete | 3 | Table 2,3,4 | `…-t2` |
+| after `render()` | 3 | Table 2,3,4 | — |
+| after Undo | 4 | **Table 1**,2,3,4 | — |
+
+Populated, deleting a background table: model 26 → 25, counts re-derived from
+`13 tables · 38/130 seated` to `12 tables · 28/120 seated`, selection untouched, and the ten
+occupants returned to the pool (72 → 82 unassigned) with no cleanup pass.
+
+### Three of these now
+
+Table form (2026-09-11), plan delete and table delete (both 2026-09-14) were all DOM surgery
+written before the model existed and left in place after it arrived. Anything on this screen that
+still edits the DOM directly should be assumed to have the same bug until checked against a
+`render()`.
