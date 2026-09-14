@@ -566,6 +566,29 @@
     line-height: var(--ai-leading-xs);      /* 16px */
   }
 
+  /* ── Help text drops to 4xs on mobile (designer, 2026-09-14) ────────────────────
+   * `.input__help` is 12px at both Input sizes — Input.css says so explicitly: "The help text is
+   * NOT part of this step — Figma keeps `body/xxs` (12px) at both sizes, so there is deliberately
+   * no `.input--sm .input__help` rule here." That reading is about the COMPONENT, and it stands;
+   * this is a screen-level call for these dialogs on a phone, where 12px sat too close to the
+   * 13px field text above it to read as secondary.
+   *
+   * Scoped to `.modal` rather than listed per grid, for two reasons: it is every dialog on this
+   * screen, not three of them — the sweep found `.input__help` in create-plan, edit-plan, the
+   * Table form AND Assign, and the first three would have been an easy list to leave incomplete
+   * — and a new dialog gets it without anyone remembering to add a fourth selector.
+   *
+   * ERRORS COME WITH IT, and that is correct: `.input--error .input__help` is the same element,
+   * so a hint and the error that replaces it stay the same size. Splitting them would make an
+   * error message smaller or larger than the line it overwrites.
+   *
+   * Scoped in this file rather than in Input.css because the component's own note is a Figma
+   * reading. If the designer wants 4xs everywhere at `--sm`, that belongs in the component and
+   * this block disappears. */
+  .modal .input__help {
+    font-size: var(--ai-font-fixed-4xs);   /* 11px */
+  }
+
   /* The Stepper keeps `--ai-leading-md` at both sizes (Figma 3567:105368), unlike a plain
    * Input's sm field. Three classes deliberately: Input.css's own `.input--stepper
    * .input__control` is only two and loads EARLIER than this file, so it cannot defend itself

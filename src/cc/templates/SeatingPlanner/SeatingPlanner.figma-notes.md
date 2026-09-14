@@ -3541,3 +3541,52 @@ At a 788px column, scrollTop 900 before each:
 
 And the *intentional* scrolls still win, because `revealTable()` defers past the restore on
 purpose: selecting a card and adding a table each still call `scrollIntoView` exactly once.
+
+---
+
+## Modal help text is 4xs on mobile (2026-09-14)
+
+Reported against the Edit table dialog, with *"you might need to do a sweep on that"* — so the
+whole screen was measured at 600px rather than the one dialog fixed.
+
+### What the sweep found
+
+| modal | help text at 600px | now |
+|---|---|---|
+| Create plan | 12px ×5 | **11px** |
+| Edit plan | 12px ×2 | **11px** |
+| Table form | 12px ×5 | **11px** |
+| Assign person | 12px ×1 | **11px** |
+| Room layout | — | — (see below) |
+
+Four dialogs, not one. Assign in particular is the kind that gets missed: it carries a single
+`.input__help` and its own comment already notes *"why it is `.input__help` rather than a paragraph
+of this modal's own"*.
+
+### Scoped to `.modal`, not to three grids
+
+The `@media (max-width: 639px)` block already lists `.create-plan__grid`, `.edit-plan__fields` and
+`.table-form__fields` by name for the `input--sm` replication — and a fourth dialog is exactly what
+such a list loses. `.modal .input__help` covers every dialog on the screen and a future one gets it
+without anyone remembering to add a selector.
+
+**Errors come with it, and that is correct.** `.input--error .input__help` is the same element, so
+a hint and the error that replaces it stay the same size; splitting them would make an error
+message a different size from the line it overwrites.
+
+### Why it is here and not in Input.css
+
+Input.css is explicit that this is deliberate: *"The help text is NOT part of this step — Figma
+keeps `body/xxs` (12px) at both sizes, so there is deliberately no `.input--sm .input__help` rule
+here."* That reading is about the **component**, and it stands. This is a screen-level call for
+these dialogs on a phone, where 12px sat too close to the 13px field text above it to read as
+secondary. If 4xs is wanted everywhere at `--sm`, it belongs in the component and this block
+disappears.
+
+Desktop is untouched, and was checked rather than assumed: all four still 12px at 1400px.
+
+### Left alone, flagged
+
+`.room-layout__hint` and `.room-layout__note` are **not** this pattern — body copy in the drop zone
+("Upload a floor plan…") and a note about PDF previews, both `--ai-font-fixed-xs` (14px desktop,
+13px mobile). Different element, its own Figma size. Say if those should follow too.
