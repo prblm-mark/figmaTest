@@ -121,6 +121,31 @@
     if (card.nextSibling !== detail) card.parentNode.insertBefore(detail, card.nextSibling);
   }
 
+  /* ── Bring a table to the top of the list, stacked only ─────────────────────────
+   * "table in focus should scroll to top of chrome/header group" (designer, 2026-08-27), which is
+   * what the mobile frame draws: 3515:228026 has the listing at y=-79, scrolled so the tapped card
+   * sits at the top with its detail opened beneath it.
+   *
+   * STACKED ONLY. Side by side the grid is a fixed sheet the page does not scroll to, and moving
+   * the page under a rail that is already in view would be motion for nothing.
+   *
+   * Deferred: the caller has just re-rendered, so the card is a brand new node and the grid's
+   * height has changed under it. Scrolling before layout settles aims at where the card used to
+   * be. `setTimeout(…, 0)` rather than rAF, matching the deferral this module already uses for
+   * `fillForm` and the plan-created render — and rAF does not fire at all under headless virtual
+   * time, which would make this the one behaviour on the screen that could not be tested.
+   *
+   * `block: 'start'` aligns to the top of the scrollport, which is below the fixed chrome — the
+   * page is the scroller, so the chrome is never scrolled under. */
+  function revealTable(id) {
+    if (!isStacked() || !id) return;
+    setTimeout(function () {
+      var card = grid.querySelector('[data-sp-card][data-sp-table="' + id + '"]');
+      if (!card || !card.scrollIntoView) return;
+      card.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    });
+  }
+
   /* Desktop pre-selects the first table so the detail is never empty; mobile selects nothing,
    * because the detail would take too much of the screen (designer, 2026-08-27). Re-applied on
    * every breakpoint crossing, so resizing down and back behaves. */
@@ -756,6 +781,9 @@
      * On desktop the detail is a permanent rail and deselecting would just empty it. */
     state.tableId = (isStacked() && state.tableId === id) ? null : id;
     render();
+    /* Only when it OPENED. Closing should leave the page where it is — scrolling on the way out
+     * would move the list under a tap that was meant to dismiss something. */
+    if (state.tableId === id) revealTable(id);
   }
 
   function unseat(seatNo) {
@@ -1992,6 +2020,11 @@
      * so it stays true after any later render. */
     var added = formMode === 'add';
     var renamed = before && before.name !== name;
+
+    /* A new table is appended to the end of the grid, which on a phone is well below the fold —
+     * so without this the toast says it was added and the list looks unchanged. Same rule and
+     * same helper as tapping a card (designer, 2026-09-14). */
+    if (added) revealTable(t.id);
     var parts = added
       ? [{ text: name + ' ', strong: true }, { text: 'added to ' },
          { text: p.name + '.', strong: true }]
