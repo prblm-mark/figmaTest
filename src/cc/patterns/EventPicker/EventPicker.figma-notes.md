@@ -109,7 +109,7 @@ dark (`#212123` vs `#1b1b1f`), and Figma has no dark variant.
 | `--ai-size-6` | same | no-results description max-width (320px) |
 | `--ai-size-7` | same | list scroll cap — see Token Gaps |
 | `--ai-font-fixed-md` | same | modal title (18px) |
-| `--ai-font-fixed-sm` | same | event name (16px) |
+| `--ai-font-fixed-sm` | **`--ai-font-fixed-xs` at ≤639** | event name — 16px desktop, **14px mobile** (corrected 2026-09-14; this row said "same" and was wrong) |
 | `--ai-font-fixed-xs` | same | checkbox label, no-results title, button text (14px) |
 | `--ai-font-fixed-xxs` | same | meta, plans, seated, count, badges, group label (12px) |
 | `--ai-leading-md` / `--ai-leading-sm` / `--ai-leading-xs` | same | title + name / meta + desc / labels |
@@ -277,3 +277,49 @@ driven by markup (`data-group="pinned"`), and persistence belongs to the host. S
   and border compensation) and are not implemented.
 - Badges appear only in the "all statuses" state: when the list is filtered to live events a
   per-row "Live" badge would be redundant.
+
+
+---
+
+## Mobile type was wrong in this file (2026-09-14)
+
+The event name was recorded above as `--ai-font-fixed-sm` (16px) at **both** sizes. The component's
+own Mobile variant `3108:6658` draws **14px**, and does so in every row — so the note was wrong,
+not merely imprecise, and the CSS followed it. Both consumers rendered a 16px event name on a
+402px-wide dialog.
+
+Found from the other end: the Seating Planner's Copy Plans frame showed 14px, which looked like
+drift in a detached copy until the designer pointed at this variant and it agreed.
+
+### What the variant actually specifies at Device=Mobile
+
+| | |
+|---|---|
+| modal title | `--ai-font-fixed-sm` (16), leading 24 |
+| event name | **`--ai-font-fixed-xs` (14)**, semibold |
+| meta item | `--ai-font-fixed-xxs` (12), leading 20 |
+| plans count | `--ai-font-fixed-xxs` (12), Medium, leading 16 |
+| footer count | `--ai-font-fixed-xxs` (12), Regular, leading 16 |
+| Cancel | **`--ai-font-fixed-2xs` (13)**, semibold, leading 16 |
+
+Everything but the name and Cancel already matched.
+
+### Two things the variant says that were NOT taken
+
+**The pinned row's leading.** The first row's name sits in a 20-tall box (`3087:5961`) where every
+other row is 24 (`3087:6000`). Both are 14px, so the size is not in doubt — only that one row's
+leading differs, which reads as drift on a single row rather than a rule. All rows keep
+`--ai-leading-md`.
+
+**The title's leading.** The variant draws 16px on `--ai-leading-md` (24). Modal renders its title
+`leading-none` at every size, and that is a designer call from 2026-08-27 with its own reading:
+*"Figma's ModalHeader renders the title `leading-none` in BOTH Base and sm — its title row is
+`h-[18px]` against an 18px font"*. Two Figma sources disagree; the resolved decision wins until
+someone settles it. **Flagged.**
+
+### Cancel at 13px is a contextual override
+
+Modal's own mobile block takes footer buttons to `--ai-font-fluid-xxs` (12), and **13px is no
+Button size at all** — base is 14, sm is 12. Scoped to `.event-picker__footer .btn` rather than
+changed in Modal or Button, because 13 is what this pattern's frames show and nothing was read for
+the other dialogs. Flagged as the kind of value that usually means a Figma text layer was nudged.
