@@ -99,22 +99,54 @@ await mkdir(OUT, { recursive: true });
 for (const e of ENTRIES) add(e, 'index.html');   /* resolved against the repo root */
 for (let i = 0; i < queue.length; i++) await walk(queue[i]);
 
+/* INTERNAL-ONLY SECTIONS. A demo page can carry a block that belongs to the team and not to a
+ * client — a design-review aid, a legibility check, an open question — while the rest of the page
+ * is documentation a client should read. Wrapping it says so:
+ *
+ *     <!-- internal:start -->  …  <!-- internal:end -->
+ *
+ * A MARKER, NOT A PROSE MATCH. Stripping client-unsuitable content by pattern-matching the words
+ * in it is how the FullBadge contrast note survived the first pass: the filter looked for "error"
+ * and "src/", the section said "issue" and "docs/". A marker cannot be phrased around — it is
+ * either there or it is not — and it keeps the source page whole for the internal hub, which is
+ * built from the same file.
+ *
+ * Unbalanced markers throw rather than shipping: a start with no end would otherwise silently
+ * swallow the rest of the page, and an end with no start would leave the block in. */
+function stripInternal(html, rel) {
+  const starts = (html.match(/<!--\s*internal:start\b/g) || []).length;
+  const ends = (html.match(/<!--\s*internal:end\s*-->/g) || []).length;
+  if (starts !== ends) {
+    throw new Error(`${rel}: ${starts} internal:start vs ${ends} internal:end — markers must pair`);
+  }
+  return html.replace(/[ \t]*<!--\s*internal:start\b[\s\S]*?<!--\s*internal:end\s*-->\n?/g, '');
+}
+
 /* Copy the closure, preserving paths so nothing needs rewriting.
  *
  * `demo/index.html` is an ENTRY, not an output: it is walked for its references and then written
  * to the site root below instead. Copying it as well would ship the same page at two URLs, one of
  * them with broken `../` paths. */
+let stripped = 0;
 for (const rel of seen) {
   if (rel === path.normalize('demo/index.html')) continue;
   const dest = path.join(OUT, rel);
   await mkdir(path.dirname(dest), { recursive: true });
-  await cp(path.join(ROOT, rel), dest);
+
+  if (path.extname(rel).toLowerCase() === '.html') {
+    const src = await readFile(path.join(ROOT, rel), 'utf8');
+    const out = stripInternal(src, rel);
+    if (out !== src) { stripped++; console.log('  stripped internal section(s):', rel); }
+    await writeFile(dest, out, 'utf8');
+  } else {
+    await cp(path.join(ROOT, rel), dest);
+  }
 }
 
 /* The preview page becomes the site root, so its `../` references become `./`. One uniform
    transformation rather than a per-path rewrite — verified below that every `../` in the file is
    an asset reference, so there is nothing else for it to catch. */
-const demo = await readFile(path.join(ROOT, 'demo/index.html'), 'utf8');
+const demo = stripInternal(await readFile(path.join(ROOT, 'demo/index.html'), 'utf8'), 'demo/index.html');
 const rootIndex = demo.replace(/(href|src)=(["'])\.\.\//g, '$1=$2');
 await writeFile(path.join(OUT, 'index.html'), rootIndex, 'utf8');
 
@@ -122,7 +154,7 @@ await writeFile(path.join(OUT, 'index.html'), rootIndex, 'utf8');
 await writeFile(path.join(OUT, 'robots.txt'), 'User-agent: *\nDisallow: /\n', 'utf8');
 
 const kb = (n) => Math.round(n / 1024);
-console.log(`\nclient build: ${seen.size} files -> dist-client/`);
+console.log(`\nclient build: ${seen.size} files -> dist-client/ (${stripped} page(s) had internal sections removed)`);
 console.log('  entry: dist-client/index.html (the preview page, at the site root)');
 const leaked = [...seen].filter((f) => f === 'index.html' || f.startsWith('docs'));
 console.log(leaked.length ? `  !! internal pages leaked: ${leaked}` : '  no internal pages included');
