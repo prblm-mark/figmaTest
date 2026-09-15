@@ -2330,36 +2330,17 @@
   if (!overlay) return;
 
   var dialog = overlay.querySelector('[role="dialog"]');
-  var countEl = overlay.querySelector('[data-cp-count]');
-  var sourceEl = overlay.querySelector('[data-cp-source]');
   var returnFocusTo = null;
 
   function isOpen() { return overlay.classList.contains(OPEN_CLASS); }
 
-  function plural(n, one, many) { return n === 1 ? one : many; }
-
-  /* Read off the page rather than hardcoded, which is the documented requirement: the sentence
-   * cannot then disagree with the header it sits under, and it follows a plan being added or
-   * deleted without anyone remembering to update it. */
-  function syncIntro() {
-    var plans = document.querySelectorAll('.room-card').length;
-    if (countEl) countEl.textContent = plans + ' ' + plural(plans, 'plan', 'plans');
-
-    /* `.seating-header__title` and nothing else. A comma-separated fallback chain was wrong here:
-     * querySelector returns the first match in DOCUMENT ORDER, not the first selector that
-     * matches, so a broader selector earlier in the page would have won and named the wrong
-     * thing. There are two of these titles, one per header section, and both carry the same
-     * event. */
-    var title = document.querySelector('.seating-header__title');
-    if (sourceEl && title && title.textContent.trim()) {
-      sourceEl.textContent = title.textContent.trim();
-    }
-  }
+  /* There is no `syncIntro()` any more. The old sentence named THIS event and counted ITS plans,
+   * because those were what was being sent; the new copy (Figma 3515:185093) is the same sentence
+   * whoever opens it, so there is nothing to keep in step and nothing to read off the page. */
 
   function open(trigger) {
     if (isOpen()) return;
     returnFocusTo = trigger || document.activeElement;
-    syncIntro();
     overlay.classList.add(OPEN_CLASS);
     var search = overlay.querySelector('[data-ep-search]');
     if (search) search.focus();
@@ -2393,40 +2374,35 @@
    * The Select-an-event glue listens on ITS own overlay, so neither dialog hears the other. */
   overlay.addEventListener('event-picker:close', close);
 
+  /* The picked event is the SOURCE. Nothing about it changes — an import copies, so its own plan
+   * count stays where it is; the row used to be incremented because the plans were going the other
+   * way. What the row supplies is the SHAPE of what arrives: how many plans, and how many tables of
+   * what capacity each one holds.
+   *
+   * THIS MODULE DOES NOT WRITE THE MODEL. It reports what was asked for and `seating-app.js` owns
+   * `window.SeatingData` — the same division `seating-planner:plan-created` already uses, and the
+   * reason that one exists: a version of this that edited the DOM directly would be undone by the
+   * next render, which is the bug class this screen has hit four times. The toast is raised there
+   * too, so it describes what the model actually gained rather than what was requested. */
   overlay.addEventListener('event-picker:select', function (event) {
     var detail = event.detail || {};
-    var name = detail.name || 'that event';
-
-    var plans = document.querySelectorAll('.room-card').length;
-
-    /* Bump the destination row's plan count — the documented behaviour. The count is the number
-     * of plans that event now has, so it is read, added to and rewritten rather than incremented
-     * by one: copying two plans moves it by two. */
     var row = overlay.querySelector('[data-ep-event][data-id="' + (detail.id || '') + '"]');
     var planEl = row && row.querySelector('[data-cp-plans]');
-    if (planEl) {
-      var before = parseInt(planEl.getAttribute('data-cp-plans'), 10) || 0;
-      var after = before + plans;
-      planEl.setAttribute('data-cp-plans', String(after));
-      /* The icon is the first child and must survive, so only the trailing text node is
-       * rewritten — `textContent =` here would delete the <i>. */
-      planEl.lastChild.textContent = after + ' ' + plural(after, 'plan', 'plans');
-    }
+    if (!planEl) { close(); return; }
+
+    var attr = function (name, fallback) {
+      var v = parseInt(planEl.getAttribute(name), 10);
+      return (v > 0) ? v : fallback;
+    };
 
     close();
 
-    /* TODO(backend:SeatingPlanner): DOM-only — see seating-copy-plans, which asks for the cloned
-     * SeatingPlan + Table rows to be inserted under the target event in ONE transaction with
-     * TableSeat occupants left EMPTY: tables, capacities, types and sponsors carried, attendees
-     * not. Nothing here creates anything; it reports what a copy would do. */
-    document.dispatchEvent(new CustomEvent('sp:toast', {
+    document.dispatchEvent(new CustomEvent('seating-planner:plans-imported', {
       detail: {
-        type: 'success',
-        parts: [
-          { text: plans + ' ' + plural(plans, 'plan', 'plans') + ' ', strong: true },
-          { text: 'copied to ' },
-          { text: name + '.', strong: true }
-        ]
+        source: detail.name || 'that event',
+        plans: attr('data-cp-plans', 0),
+        tables: attr('data-cp-tables', 1),
+        capacity: attr('data-cp-capacity', 10)
       }
     }));
   });

@@ -1847,6 +1847,64 @@
     }, 0);
   });
 
+  /* ── Plans imported from another event ─────────────────────────────────────────────────────
+   * Figma 3515:185093. The Import Plan modal picks a SOURCE event and this adds its plans here.
+   * `SeatingPlanner.js` reports what was chosen; the model is written here, the same division
+   * `seating-planner:plan-created` uses and for the same reason — a handler that edited the room
+   * strip directly would be undone by the next render.
+   *
+   * SEATS ARRIVE EMPTY, which is not a shortcut: the modal's own copy promises "tables and
+   * capacities are kept; seated attendees are cleared", so an imported plan holds its tables and
+   * nobody in them. Every count on the screen derives from those seats, so "0 / N seated", the
+   * seats-free figure and the unassigned pool all follow with nothing to set.
+   *
+   * NAMED AFTER THE SOURCE EVENT, numbered only when more than one arrives. The fixture has no
+   * room names for any event but this one, so the event name is the most honest label available —
+   * inventing "Main Ballroom" for somebody else's event would read as real data.
+   *
+   * TODO(backend:SeatingPlanner): the shape comes from `data-cp-*` on the picked row — mock, and
+   * the thing a real import replaces. See seating-copy-plans: the source event's own SeatingPlan +
+   * Table rows, cloned in ONE transaction with TableSeat occupants left empty. */
+  document.addEventListener('seating-planner:plans-imported', function (e) {
+    var d = (e && e.detail) || {};
+    var source = String(d.source || '').trim() || 'another event';
+    var count = Math.min(99, Math.max(0, parseInt(d.plans, 10) || 0));
+    if (!count) return;                       /* a 0-plan event is not listed, so this is a guard */
+
+    var tableCount = Math.min(99, Math.max(1, parseInt(d.tables, 10) || 1));
+    var capacity = Math.min(12, Math.max(6, parseInt(d.capacity, 10) || 10));
+
+    var slug = source.toLowerCase().replace(/\W+/g, '-').replace(/^-|-$/g, '');
+    var first = null;
+
+    for (var n = 1; n <= count; n++) {
+      var id = 'plan-' + slug + '-' + (D.plans.length + 1);
+      var tables = [];
+      for (var i = 1; i <= tableCount; i++) {
+        var seats = [];
+        for (var j = 0; j < capacity; j++) seats.push(null);
+        tables.push({ id: id + '-t' + i, name: 'Table ' + i, typeId: null, sponsor: null,
+                      capacity: capacity, seats: seats });
+      }
+      var plan = { id: id, name: count === 1 ? source : source + ' (' + n + ')',
+                   tables: tables, room: null, shape: null, importedFrom: source };
+      D.plans.push(plan);
+      if (!first) first = plan;
+    }
+
+    state.planId = first.id;
+    /* Same rule as a created plan and as the initial load: a stacked layout opens no detail. */
+    state.tableId = isStacked() ? null : first.tables[0].id;
+
+    setTimeout(function () {
+      render();
+      revealPlan(first.id);
+      toast([{ text: count + ' ' + (count === 1 ? 'plan' : 'plans') + ' ', strong: true },
+             { text: 'imported from ' },
+             { text: source + '.', strong: true }], 'success');
+    }, 0);
+  });
+
   /* ── Assign-person modal wiring ────────────────────────────────────────────────────────────
    * Delegated like everything else, so re-rendering the list never leaves a dead listener. */
 

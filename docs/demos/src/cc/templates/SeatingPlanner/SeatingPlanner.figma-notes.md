@@ -3709,3 +3709,60 @@ At 402px: one `scrollBy` on `.seating-header__rooms`, `left: 1004`, `behavior: s
 page's `scrollTop` untouched with zero `scrollIntoView` calls. At 1400px: no call at all, and the
 rail does not overflow there anyway. Applying the scroll instantly (smooth does not progress under
 headless virtual time) lands the rail at its maximum with the new card in view.
+
+## Copy Plans becomes Import Plan — the direction inverts (2026-09-15) — Figma `3515:185093`
+
+The dialog used to send THIS event's plans OUT to an event you picked. It now copies the PICKED
+event's plans IN. The list is therefore a list of **sources**, not destinations, and the picked
+event is left untouched — an import copies, so its own plan count no longer moves. The header
+button is renamed **Import Plan** (both instances in the template, all three in SeatingHeader).
+
+### Copy, transcribed from the frame
+
+| Slot | Node | Copy |
+|---|---|---|
+| Title | `I3515:185093;3456:37668` | Import all plans from another event |
+| Intro | `…;3515:185085` | Copy all plans from another event. Tables and capacities are kept; seated attendees are cleared. |
+| Footer | `I3515:185093;3456:37919` | *n* events |
+
+The intro loses both emphasised runs. The old sentence named this event and counted its plans
+because those were what was being sent; nothing in the new copy is specific to either event, so
+`data-cp-count`, `data-cp-source`, `syncIntro()` and `.copy-plans__intro strong` are all gone.
+Its own tokens were already right and unchanged: `--ai-font-body`, `--ai-font-fixed-2xs` (13),
+`--ai-font-regular`, `--ai-leading-sm` (20), `--ai-text-contrast` — verified against the node.
+
+**Figma keeps the verb "Copy" in the body while the title says "Import".** Transcribed as drawn
+rather than harmonised; worth a decision in Figma.
+
+### Events with no plans are not listed (designer, later than the frame)
+
+There is nothing to import from them. **This diverges from `3515:185093`**, which still draws
+Global Payments Forum, FinTech Summit 2026 and Members' Dinner — Spring at 0 plans and a "6
+events" footer. The instruction is later than the frame, so the three rows are gone and the
+footer reads 2.
+
+Enforced by **leaving them out of the markup**, not by hiding them at runtime: `event-picker.js`
+owns `row.hidden` and rewrites it on every search keystroke, so anything this template hid would
+come back on the next one. The footer count needs no work — the picker counts the rows it can see.
+
+### Where the imported plan comes from
+
+The fixture holds plan data for this event only, so the shape of an import is authored on the row
+it comes from — `data-cp-plans` / `data-cp-tables` / `data-cp-capacity` — beside the mock event
+rather than invented in JS, where a designer can change it. Mock, and flagged as what a real
+import replaces (`seating-copy-plans`).
+
+`SeatingPlanner.js` reports the choice as `seating-planner:plans-imported`; **`seating-app.js`
+writes the model**, the same division `seating-planner:plan-created` uses. A handler that added
+room cards to the DOM would be undone by the next render — the bug class this screen has hit four
+times. Seats arrive empty, which is the modal's own promise ("seated attendees are cleared"), and
+every count derives from them. Plans are named after the source event, numbered only when more
+than one arrives: there are no room names for other events, and inventing "Main Ballroom" for
+somebody else's event would read as real data.
+
+### Verified
+
+Desktop: 4 plans → 5; imported plan is 12 tables × 10 seats with every seat empty; the source
+row still reads "1 plan"; toast "1 plan imported from Retail Innovation Summit."; the strip shows
+5 cards with the import selected. Mobile at 390px: the same import lands with **no** table
+selected and the detail parked in the aside, per the stacked rule.

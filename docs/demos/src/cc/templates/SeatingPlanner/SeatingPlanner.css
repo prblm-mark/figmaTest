@@ -1510,15 +1510,6 @@
   color: var(--ai-text-contrast);
 }
 
-/* The plan count and the source event name. Emphasised by COLOUR and WEIGHT: the mobile frame
- * marks both runs `Inter:Semi_Bold` over --ai-text-primary, and while the desktop export omits
- * the weight on its spans, both crops render bold — so mobile's explicit spec is taken as the
- * intent rather than the desktop export's omission. */
-.copy-plans__intro strong {
-  font-weight: var(--ai-font-semibold);
-  color: var(--ai-text-primary);
-}
-
 /* The filters block becomes a column here: the picker lays its search and Live checkbox out for
  * its own arrangement, and this dialog stacks a sentence above a full-width search instead. */
 .copy-plans__filters {
