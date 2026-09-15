@@ -6,6 +6,8 @@
   <title>SeatingToast — Affino Design System</title>
   <script src="../../styles/theme-param.js"></script>
   <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/ThemeToggle/ThemeToggle.css">
+  <link rel="stylesheet" href="../../styles/demo-head.css">
   <link rel="stylesheet" href="../Button/Button.css">
   <link rel="stylesheet" href="SeatingToast.css">
   <style>
@@ -33,7 +35,21 @@
   </style>
 </head>
 <body>
-  <h1>SeatingToast</h1>
+  <div class="demo-head">
+    <h1>SeatingToast</h1>
+    <div class="demo-head__theme">
+      <div class="theme-toggle">
+        <button class="theme-toggle__btn" type="button" data-theme-value="light" aria-pressed="true">
+          <i data-lucide="sun" aria-hidden="true"></i>
+          <span>Light</span>
+        </button>
+        <button class="theme-toggle__btn" type="button" data-theme-value="dark" aria-pressed="false">
+          <i data-lucide="moon" aria-hidden="true"></i>
+          <span>Dark</span>
+        </button>
+      </div>
+    </div>
+  </div>
   <p class="lede">The Seating Planner's action confirmation and warning pill.
   <strong>Tier: Component.</strong> Composes <strong>Button</strong>
   (<code>btn--secondary btn--xs</code>) for the Undo action.</p>
@@ -106,6 +122,7 @@
     </div>
   </div>
 
+  <script src="../../components/ThemeToggle/ThemeToggle.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>if (window.lucide) lucide.createIcons();</script>
 </body>

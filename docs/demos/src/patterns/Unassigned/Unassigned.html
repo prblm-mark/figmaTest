@@ -6,6 +6,8 @@
   <title>Unassigned — Affino Design System</title>
   <script src="../../styles/theme-param.js"></script>
   <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/ThemeToggle/ThemeToggle.css">
+  <link rel="stylesheet" href="../../styles/demo-head.css">
   <link rel="stylesheet" href="../../components/Input/Input.css">
   <link rel="stylesheet" href="../../components/AttendeeCard/AttendeeCard.css">
   <link rel="stylesheet" href="Unassigned.css">
@@ -27,7 +29,21 @@
   </style>
 </head>
 <body>
-  <h1>Unassigned</h1>
+  <div class="demo-head">
+    <h1>Unassigned</h1>
+    <div class="demo-head__theme">
+      <div class="theme-toggle">
+        <button class="theme-toggle__btn" type="button" data-theme-value="light" aria-pressed="true">
+          <i data-lucide="sun" aria-hidden="true"></i>
+          <span>Light</span>
+        </button>
+        <button class="theme-toggle__btn" type="button" data-theme-value="dark" aria-pressed="false">
+          <i data-lucide="moon" aria-hidden="true"></i>
+          <span>Dark</span>
+        </button>
+      </div>
+    </div>
+  </div>
   <p class="lede">Tray of attendees not yet seated, for the Seating Planner.</p>
   <p class="lede">Composes <strong>AttendeeCard</strong> with <em>both</em> of its booleans off — no
   seat number and no row actions, since an unseated person has no seat to number and nothing to
@@ -252,6 +268,7 @@
   <code>--ai-size-6</code> (320px) rail at every width, like TableDetail. On a narrow screen the
   planner stacks it beneath the tables rather than re-drawing it.</p>
 
+  <script src="../../components/ThemeToggle/ThemeToggle.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>if (window.lucide) lucide.createIcons();</script>
 </body>
