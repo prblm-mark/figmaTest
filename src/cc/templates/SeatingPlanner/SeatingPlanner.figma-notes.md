@@ -3736,10 +3736,25 @@ rather than harmonised; worth a decision in Figma.
 
 ### Events with no plans are not listed (designer, later than the frame)
 
-There is nothing to import from them. **This diverges from `3515:185093`**, which still draws
-Global Payments Forum, FinTech Summit 2026 and Members' Dinner — Spring at 0 plans and a "6
-events" footer. The instruction is later than the frame, so the three rows are gone and the
-footer reads 2.
+There is nothing to import from them.
+
+Frame `3515:185093` draws Global Payments Forum, FinTech Summit 2026 and Members' Dinner — Spring
+at "0 plans", which under this rule left a **two-row picker** demonstrating very little. The
+designer's call (2026-09-15) was to give them plans rather than drop them, so all five are listed
+and the footer reads 5. A deliberate divergence from the frame, and fixture data rather than
+design. Counts are scaled to each event's own attendee figure so the list reads as data rather
+than filler:
+
+| Event | Attendees | Plans | Shape | Seats |
+|---|---|---|---|---|
+| Global Payments Forum | 640 | 3 | 16 × 10 | 480 |
+| Retail Innovation Summit | 820 | 1 | 12 × 10 | 120 |
+| Insurance Leaders Dinner | 180 | 1 | 8 × 8 | 64 |
+| FinTech Summit 2026 | 1,200 | 4 | 20 × 10 | 800 |
+| Members' Dinner — Spring | 90 | 1 | 9 × 10 | 90 |
+
+The rule itself stands: a row listed here is a row with plans, and a `data-cp-plans="0"` row must
+not be added.
 
 Enforced by **leaving them out of the markup**, not by hiding them at runtime: `event-picker.js`
 owns `row.hidden` and rewrites it on every search keystroke, so anything this template hid would
@@ -3762,7 +3777,12 @@ somebody else's event would read as real data.
 
 ### Verified
 
-Desktop: 4 plans → 5; imported plan is 12 tables × 10 seats with every seat empty; the source
-row still reads "1 plan"; toast "1 plan imported from Retail Innovation Summit."; the strip shows
-5 cards with the import selected. Mobile at 390px: the same import lands with **no** table
+Desktop, single plan: 4 plans → 5; the import is 12 tables × 10 seats with every seat empty; the
+source row still reads "1 plan"; toast "1 plan imported from Retail Innovation Summit."; the strip
+shows 5 cards with the import selected. Mobile at 390px: the same import lands with **no** table
 selected and the detail parked in the aside, per the stacked rule.
+
+Desktop, multi-plan: FinTech Summit 2026 takes 4 plans → 8, named "FinTech Summit 2026 (1)" …
+"(4)", each 20 × 10 and entirely empty; the source row still reads "4 plans"; toast "4 plans
+imported from FinTech Summit 2026."; the strip shows 8 cards. Search still filters the five rows
+and the footer follows it ("Fin" → 1 row, "1 event").

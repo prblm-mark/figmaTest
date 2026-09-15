@@ -2797,9 +2797,14 @@
        because event-picker.js owns `row.hidden` — it rewrites it on every search keystroke, so
        anything this file hid would come straight back on the next one. A row listed here is a row
        with plans; do not add a `data-cp-plans="0"` one. The footer count follows automatically,
-       since the picker counts the rows it can see. NOTE this diverges from frame 3515:185093,
-       which still draws three 0-plan events and a "6 events" footer — the instruction is later
-       than the frame.
+       since the picker counts the rows it can see.
+
+       ALL FIVE HAVE PLANS (designer, 2026-09-15). Frame 3515:185093 draws Global Payments Forum,
+       FinTech Summit 2026 and Members' Dinner — Spring at "0 plans", which under the rule above
+       left a two-row picker demonstrating very little. They were given plans rather than dropped:
+       a deliberate divergence from the frame, and fixture data rather than design. Counts are
+       scaled to each event's own attendee figure so the list reads as data rather than filler —
+       640 attendees -> 3x16x10 = 480 seats, 1,200 -> 4x20x10 = 800, 90 -> 1x9x10 = 90.
 
        `data-cp-tables` / `data-cp-capacity` alongside `data-cp-plans` are the SHAPE of what an
        import brings: the fixture has no plan data for any event but this one, so the numbers an
@@ -2839,6 +2844,23 @@
            current event, with a debounced ?q= search and a plans>0 filter. -->
       <div class="event-picker__list" data-ep-list>
         <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-gpf" data-name="Global Payments Forum" data-status="live">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">Global Payments Forum</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>12 Nov 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>Hilton Metropole, Birmingham</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>640 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans" data-cp-plans="3" data-cp-tables="16" data-cp-capacity="10"><i data-lucide="layout-grid" aria-hidden="true"></i>3 plans</span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
                 data-ep-event data-id="evt-ris" data-name="Retail Innovation Summit" data-status="live">
           <span class="event-picker__event-main">
             <span class="event-picker__event-head">
@@ -2872,10 +2894,44 @@
           </span>
           <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
         </button>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-fts" data-name="FinTech Summit 2026" data-status="live">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">FinTech Summit 2026</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>14 May 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>ExCeL London</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>1,200 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans" data-cp-plans="4" data-cp-tables="20" data-cp-capacity="10"><i data-lucide="layout-grid" aria-hidden="true"></i>4 plans</span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+        <button class="action-card action-card--chevron event-picker__event" type="button"
+                data-ep-event data-id="evt-mds" data-name="Members&#39; Dinner — Spring" data-status="live">
+          <span class="event-picker__event-main">
+            <span class="event-picker__event-head">
+              <span class="event-picker__event-name">Members&#39; Dinner — Spring</span>
+            </span>
+            <span class="event-picker__meta">
+              <span class="event-picker__meta-item"><i data-lucide="calendar" aria-hidden="true"></i>20 Mar 2026</span>
+              <span class="event-picker__meta-item"><i data-lucide="map-pin" aria-hidden="true"></i>The Ivy, London</span>
+              <span class="event-picker__meta-item"><i data-lucide="users" aria-hidden="true"></i>90 attendees</span>
+            </span>
+          </span>
+          <span class="event-picker__stats">
+            <span class="event-picker__plans" data-cp-plans="1" data-cp-tables="9" data-cp-capacity="10"><i data-lucide="layout-grid" aria-hidden="true"></i>1 plan</span>
+          </span>
+          <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
       </div>
 
       <div class="modal__footer event-picker__footer">
-        <span class="event-picker__count" data-ep-count aria-live="polite">2 events</span>
+        <span class="event-picker__count" data-ep-count aria-live="polite">5 events</span>
         <button class="btn btn--secondary" type="button" data-ep-close>Cancel</button>
       </div>
 
