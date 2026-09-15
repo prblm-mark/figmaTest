@@ -41,8 +41,11 @@
       font-weight: var(--ai-font-medium); color: var(--ai-text-secondary);
     }
     .panel--dark .count { color: var(--ai-text-invert-secondary); }
-    .zoom { display: flex; align-items: flex-end; gap: var(--ai-spacing-6); }
-    .zoom > div { transform-origin: bottom left; }
+    /* `zoom`, not `transform: scale()`. A transform paints at the new size but leaves the box
+       at its ORIGINAL size, so the 3x and 6x copies overflowed the panel and painted over the
+       paragraphs above and below it. `zoom` is a used-value change, so the flex row reserves the
+       space each copy actually occupies and the panel grows to hold them. */
+    .zoom { display: flex; align-items: flex-end; gap: var(--ai-spacing-6); flex-wrap: wrap; }
   </style>
 </head>
 <body>
@@ -80,17 +83,9 @@
   real rendering, the others are scaled copies.</p>
   <div class="panel zoom">
     <div><span class="full-badge"><i data-lucide="check" aria-hidden="true"></i>Full</span></div>
-    <div style="transform: scale(3)"><span class="full-badge"><i data-lucide="check" aria-hidden="true"></i>Full</span></div>
-    <div style="transform: scale(6)"><span class="full-badge"><i data-lucide="check" aria-hidden="true"></i>Full</span></div>
+    <div style="zoom: 3"><span class="full-badge"><i data-lucide="check" aria-hidden="true"></i>Full</span></div>
+    <div style="zoom: 6"><span class="full-badge"><i data-lucide="check" aria-hidden="true"></i>Full</span></div>
   </div>
-
-  <h2>Known contrast issue</h2>
-  <p class="lede">White on <code>--ai-surface-success</code> measures <strong>3.16:1</strong>, under
-  the 4.5:1 that WCAG AA requires for 9px bold text. This needs a palette answer — a darker success
-  or a dark label — rather than a component fix, so it is
-  <strong>deliberately open</strong> at the designer's direction, tracked in
-  <code>docs/contrast-audit.md</code>. Fixing it here now fixes it for both consumers at once,
-  which is part of why this was extracted.</p>
 
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>if (window.lucide) lucide.createIcons();</script>
