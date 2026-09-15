@@ -2431,6 +2431,19 @@
  * stock Modal; stepping at a different width would leave the footer's button and its inputs
  * disagreeing between 640 and 767. */
 @media (max-width: 639px) {
+  /* 24 -> 12 all round (designer, 2026-09-15). The footer carries a two-field row plus the Add
+     button, and at 24px of side padding the fields were being squeezed by a quarter of the
+     dialog's width before they started. */
+  .assign__footer {
+    padding: var(--ai-spacing-4);
+  }
+
+  /* 8 -> 4 between the columns (designer, 2026-09-15). COLUMN gap only: `row-gap` is what
+     separates the fields from the button once the row wraps, and it should not tighten with it. */
+  .assign__manual {
+    column-gap: var(--ai-spacing-1);
+  }
+
   .assign__manual-field .input__wrap {
     min-block-size: var(--ai-spacing-7);
   }
