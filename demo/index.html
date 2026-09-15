@@ -120,10 +120,11 @@
     .card:hover {
       border-color: var(--ai-border-brand);
       box-shadow: var(--ai-shadow-md);
-      /* base.css gives every `a:hover` an underline, and `text-decoration` INHERITS — so on a card
-         that is itself the anchor, the title and both paragraphs underline together. The border and
-         shadow above are the hover signal; the rule has to be restated here because the base one is
-         on the same pseudo-class. */
+      /* base.css styles every `a:hover` with a brand colour AND an underline, and both INHERIT —
+         so on a card that is itself the anchor, the title and paragraphs turn brand and underline
+         together. `.card` sets `color: inherit` but that loses to `a:hover` on specificity, so it
+         has to be restated on the same pseudo-class. The border and shadow are the hover signal. */
+      color: inherit;
       text-decoration: none;
     }
 
@@ -196,12 +197,13 @@
       color: var(--ai-text-secondary);
     }
 
-    /* `auto-fill`, not `auto-fit`: with six tiles and then four, `auto-fit` collapses the empty
-       tracks and stretches the last row's tiles to full width, so the two rows disagree about
-       tile size. `auto-fill` keeps the track count and both rows line up. */
+    /* `auto-fill`, not `auto-fit`: these are two separate grids with six tiles and four, so at a
+       width where more tracks fit than one of them has tiles, `auto-fit` would collapse the empty
+       tracks and stretch that grid's tiles while the other kept its own width — the two blocks
+       would disagree about tile size. `auto-fill` keeps the track count and they line up. */
     .parts {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(var(--ai-size-3), 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(var(--ai-size-4), 1fr));
       gap: var(--ai-spacing-3);
     }
 
@@ -222,7 +224,8 @@
     .part:hover {
       border-color: var(--ai-border-brand);
       box-shadow: var(--ai-shadow-sm);
-      text-decoration: none;          /* see `.card:hover` — `text-decoration` inherits */
+      color: inherit;                 /* see `.card:hover` — both of these inherit from `a:hover` */
+      text-decoration: none;
     }
 
     .part:focus-visible {
@@ -268,7 +271,7 @@
     .part__text {
       display: block;
       margin: 0;
-      font-size: var(--ai-font-fixed-2xs);
+      font-size: var(--ai-font-fixed-3xs);
       line-height: var(--ai-leading-xs);
       color: var(--ai-text-secondary);
     }
