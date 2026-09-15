@@ -113,6 +113,24 @@ for (let i = 0; i < queue.length; i++) await walk(queue[i]);
  *
  * Unbalanced markers throw rather than shipping: a start with no end would otherwise silently
  * swallow the rest of the page, and an end with no start would leave the block in. */
+/* DARK IS THE CLIENT DEFAULT. The preview page is authored dark; these demo pages are authored
+ * light, because the internal library they also belong to is light. Rather than fork the source,
+ * the client build stamps `data-theme-default="dark"` onto every page it emits, and both theme
+ * resolvers (src/styles/theme-param.js on the demos, src/components/dark-mode-toggle.js on the
+ * planner) honour it as a DEFAULT: it applies when the visitor has no stored preference, and the
+ * toggle overrides it from then on.
+ *
+ * Stamped here rather than written into the source so the internal hub keeps its light default.
+ * Idempotent — demo/index.html already declares it, and pages are matched on the opening <html>
+ * tag only, so a page with the attribute is left alone. */
+function defaultDark(html, rel) {
+  const tag = /<html\b[^>]*>/i.exec(html);
+  if (!tag) throw new Error(`${rel}: no <html> tag to stamp the client theme default onto`);
+  if (/\bdata-theme-default\s*=/i.test(tag[0])) return html;
+  const stamped = tag[0].replace(/^<html\b/i, '<html data-theme-default="dark"');
+  return html.slice(0, tag.index) + stamped + html.slice(tag.index + tag[0].length);
+}
+
 function stripInternal(html, rel) {
   const starts = (html.match(/<!--\s*internal:start\b/g) || []).length;
   const ends = (html.match(/<!--\s*internal:end\s*-->/g) || []).length;
@@ -135,9 +153,9 @@ for (const rel of seen) {
 
   if (path.extname(rel).toLowerCase() === '.html') {
     const src = await readFile(path.join(ROOT, rel), 'utf8');
-    const out = stripInternal(src, rel);
-    if (out !== src) { stripped++; console.log('  stripped internal section(s):', rel); }
-    await writeFile(dest, out, 'utf8');
+    const cut = stripInternal(src, rel);
+    if (cut !== src) { stripped++; console.log('  stripped internal section(s):', rel); }
+    await writeFile(dest, defaultDark(cut, rel), 'utf8');
   } else {
     await cp(path.join(ROOT, rel), dest);
   }
@@ -146,7 +164,10 @@ for (const rel of seen) {
 /* The preview page becomes the site root, so its `../` references become `./`. One uniform
    transformation rather than a per-path rewrite — verified below that every `../` in the file is
    an asset reference, so there is nothing else for it to catch. */
-const demo = stripInternal(await readFile(path.join(ROOT, 'demo/index.html'), 'utf8'), 'demo/index.html');
+const demo = defaultDark(
+  stripInternal(await readFile(path.join(ROOT, 'demo/index.html'), 'utf8'), 'demo/index.html'),
+  'demo/index.html',
+);
 const rootIndex = demo.replace(/(href|src)=(["'])\.\.\//g, '$1=$2');
 await writeFile(path.join(OUT, 'index.html'), rootIndex, 'utf8');
 
