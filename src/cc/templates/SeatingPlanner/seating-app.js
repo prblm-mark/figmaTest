@@ -1437,12 +1437,19 @@
       var id = planCard.getAttribute('data-sp-plan-card');
       if (id !== state.planId) {
         state.planId = id;
-        /* Select the new plan's first table rather than clearing. Clearing was the first
-         * attempt and it left the detail rail empty every time you changed room — including
-         * on the way BACK to a plan you had been looking at, which read as the panel breaking
-         * rather than as a deliberate "nothing selected". Matches the load behaviour. */
-        var first = plan(id).tables[0];
-        state.tableId = first ? first.id : null;
+        /* Clear, then re-apply the ONE default rule rather than restating it. On desktop that
+         * selects the new plan's first table — clearing outright was the first attempt and it
+         * left the rail empty every time you changed room, including on the way BACK to a plan
+         * you had been looking at, which read as the panel breaking rather than as a deliberate
+         * "nothing selected". When STACKED it selects nothing, which is the established rule:
+         * a narrow layout opens no table detail until a table is tapped.
+         *
+         * This line used to take the first table unconditionally, so changing room on a phone
+         * opened Table 1's detail every time. The clear is needed before the call because
+         * `state.tableId` still points into the plan we just left, and applyStackedDefault only
+         * fills an EMPTY selection. */
+        state.tableId = null;
+        applyStackedDefault();
         render();
       }
       return;

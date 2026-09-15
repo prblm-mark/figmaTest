@@ -2129,11 +2129,18 @@
     if (target) target.focus();
   }
 
-  /* Opened from the Table form's link, and the form is CLOSED first: both frames draw Table types
-   * over the plain screen with no form behind it, and stacking two dialogs would trap focus in
-   * the wrong one. */
+  /* TWO TRIGGERS. The Table form's "Manage table types" link, and the header overflow menu's
+   * Table Types item (`data-tt-open`) — which had no hook at all, so it opened nothing while the
+   * same modal worked from the form. Same shape as Room Layout, which binds both of its triggers
+   * in one selector for the same reason.
+   *
+   * The form is CLOSED first: both frames draw Table types over the plain screen with no form
+   * behind it, and stacking two dialogs would trap focus in the wrong one. Harmless from the menu,
+   * where no form is open. The menu panel closes itself — Dropdown.js closes on any item click. */
   document.addEventListener('click', function (event) {
-    var link = event.target.closest ? event.target.closest('[data-tf-manage-types]') : null;
+    var link = event.target.closest
+      ? event.target.closest('[data-tf-manage-types], [data-tt-open]')
+      : null;
     if (!link) return;
     event.preventDefault();
     var form = document.querySelector('[data-table-form]');
