@@ -1,0 +1,1 @@
+!function(){var t=document.documentElement,e=(/[?&]theme=(dark|light)\b/.exec(window.location.search)||[])[1];if(!e&&window.parent!==window)try{e=window.parent.document.documentElement.getAttribute("data-theme")}catch(t){}"dark"!==e&&"light"!==e||t.setAttribute("data-theme",e)}();

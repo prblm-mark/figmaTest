@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>TableCard — Affino Design System</title>
+  <script src="../../styles/theme-param.js"></script>
   <link rel="stylesheet" href="../../styles/base.css">
   <link rel="stylesheet" href="../Button/Button.css">
   <link rel="stylesheet" href="../TableType/TableType.css">
@@ -85,8 +86,7 @@
   <strong>TableType</strong>, <strong>FullBadge</strong> and <strong>Button</strong>.</p>
   <p class="lede lede--intro">The capacity bar is <strong>proportional to the seat counts</strong>: each segment
   carries its count in a <code>--seg</code> custom property and divides the track by
-  <code>flex-grow</code>. Figma draws the segments at fixed widths that contradict its own legend, so
-  those widths are not ported.</p>
+  <code>flex-grow</code>, so a table's mix of roles is always drawn to scale.</p>
 
   <h2>State=Default</h2>
 <p class="lede">Three Types. <strong>The whole Type axis is data, not CSS</strong> — Empty, Populated and Full differ only in how many bar segments and legend rows the caller supplies, and whether the FullBadge is present. Nothing branches on Type, so there are no <code>--empty</code> / <code>--populated</code> / <code>--full</code> modifiers.</p>
@@ -546,7 +546,7 @@
   </article>
   </div>
   <h2>Optional sponsor and tier pill</h2>
-<p class="lede">Both are optional in Figma, but see the notes: on the Default variant a single <code>Show Sponsor</code> boolean hides <em>both</em>, which is almost certainly a Figma error — the Selected variant models them as two separate booleans. Built as two independent options.</p>
+<p class="lede">Both are optional and independent: a table can show a sponsor, a tier pill, both or neither.</p>
   <div class="table-grid">
   <article class="table-card">
     <div class="table-card__header">
@@ -677,7 +677,7 @@
   </article>
   </div>
   <h2>Long names</h2>
-<p class="lede">This is what the header restructure is for. The table name <strong>wraps</strong> rather than truncating — Figma dropped its <code>nowrap</code> — and the sponsor row now spans the full card width instead of the narrow strip left beside the pill, so a long sponsor name has room. The pill holds its width and stays on the first line.</p>
+<p class="lede">Long names are handled rather than cut off. The table name <strong>wraps</strong> rather than truncating, and the sponsor row spans the full card width instead of the narrow strip beside the pill, so a long sponsor name has room. The pill holds its width and stays on the first line.</p>
   <div class="table-grid">
   <article class="table-card">
     <div class="table-card__header">

@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Unassigned — Affino Design System</title>
+  <script src="../../styles/theme-param.js"></script>
   <link rel="stylesheet" href="../../styles/base.css">
   <link rel="stylesheet" href="../../components/Input/Input.css">
   <link rel="stylesheet" href="../../components/AttendeeCard/AttendeeCard.css">
@@ -27,9 +28,7 @@
 </head>
 <body>
   <h1>Unassigned</h1>
-  <p class="lede">Tray of attendees not yet seated, for the Seating Planner. <strong>Tier:
-  Pattern</strong> — Figma defines no Tier property on this set, unlike the rest of the module, but
-  it composes two components so §4 puts it here.</p>
+  <p class="lede">Tray of attendees not yet seated, for the Seating Planner.</p>
   <p class="lede">Composes <strong>AttendeeCard</strong> with <em>both</em> of its booleans off — no
   seat number and no row actions, since an unseated person has no seat to number and nothing to
   reorder — and <strong>Input</strong> (<code>input input--sm</code>, label-less, leading search
@@ -249,10 +248,9 @@
   </div>
 
   <h2>No mobile variant</h2>
-  <p class="lede">Figma defines <strong>no Device axis</strong> on this set — only Type — and the
-  word &ldquo;mobile&rdquo; appears nowhere in its design context or variables, so there is no
-  mobile layout to implement. The panel is a fixed <code>--ai-size-6</code> (320px) rail at every
-  width, like TableDetail.</p>
+  <p class="lede">The panel has <strong>no separate mobile layout</strong> — it is a fixed
+  <code>--ai-size-6</code> (320px) rail at every width, like TableDetail. On a narrow screen the
+  planner stacks it beneath the tables rather than re-drawing it.</p>
 
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>if (window.lucide) lucide.createIcons();</script>

@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SeatingHeader — Affino Design System</title>
+  <script src="../../styles/theme-param.js"></script>
   <link rel="stylesheet" href="../../styles/base.css">
   <link rel="stylesheet" href="../../components/Button/Button.css">
   <link rel="stylesheet" href="../../components/Toggle/Toggle.css">
@@ -73,9 +74,7 @@
   <strong>Tier: Pattern.</strong> Composes <strong>Button</strong>, <strong>Toggle</strong>
   (<code>toggle--xs</code>, label-less) and <strong>RoomCard</strong> — one per plan, in the
   Room-Selector-Bar slot.</p>
-  <p class="lede lede--intro">Figma calls this component <strong>Header</strong>. It is filed as
-  SeatingHeader because <code>src/patterns/Header</code> is a different, unrelated component (the
-  AI-Chat header).</p>
+  
   <p class="lede lede--intro">The <strong>Type</strong> axis is data, not CSS:
   <code>No Plans</code> is the event bar on its own and <code>Has Plans</code> adds the room
   selector and the toolbar, so which one renders is markup the caller supplies. There are no Type
@@ -346,10 +345,8 @@
   </section>
 
   <h2 class="demo-heading">Many plans — the room selector scrolls</h2>
-  <p class="lede">Figma's own mobile variant overflows its frame with two cards, so more plans than
-  fit is the drawn state. The bar scrolls horizontally rather than wrapping, and
-  <strong>shows no scrollbar</strong> &mdash; which is what Figma draws. Three affordances replace
-  it. An <strong>edge fade</strong> on whichever side has more content, which every input sees.
+  <p class="lede">More plans than fit is the normal state. The bar scrolls horizontally rather than
+  wrapping, and <strong>shows no scrollbar</strong>. Three affordances replace it. An <strong>edge fade</strong> on whichever side has more content, which every input sees.
   <strong>Arrow buttons</strong> on desktop only, since touch swipes natively &mdash; they appear
   and disappear with the fade, because both are driven by the same two classes, so an arrow can
   never point somewhere the fade says is empty. And <strong>mouse drag</strong> (the cursor turns to
@@ -484,7 +481,7 @@
   </section>
 
   <h2 class="demo-heading">768&ndash;1023px &mdash; the toolbar stays compact</h2>
-  <p class="lede"><strong>Not a Figma variant.</strong> The toolbar carries far more than the bars
+  <p class="lede">The toolbar carries far more than the bars
   above it &mdash; room name, count, the switch, a divider, three buttons and the kebab &mdash; so it
   runs out of room long before the event bar does. It therefore keeps its compact form (stacked room
   label, no toggle or divider, two buttons) all the way to 1023px, while the event bar is already

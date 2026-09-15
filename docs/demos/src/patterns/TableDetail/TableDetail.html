@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>TableDetail — Affino Design System</title>
+  <script src="../../styles/theme-param.js"></script>
   <link rel="stylesheet" href="../../styles/base.css">
   <link rel="stylesheet" href="../../components/Button/Button.css">
   <link rel="stylesheet" href="../../components/TableType/TableType.css">
@@ -74,8 +75,8 @@
   <strong>Presentational only</strong> — the seat rows are drop targets whose
   <code>--dragged-over</code> the parent module toggles; nothing here drags, and there is no JS.</p>
   <p class="lede lede--intro"><strong>The panel fills its column and the seat list scrolls</strong> inside a
-  fixed header. Figma pins the desktop panel at 698px, but that is just how tall it drew ten seats —
-  a twenty-seat table has to work too, so the height comes from the container instead. Each demo
+  fixed header. The height comes from the container rather than being pinned, so a twenty-seat
+  table works as well as a ten-seat one. Each demo
   below is bounded to 560px to show that scroll.</p>
   <p class="lede lede--intro"><strong>The whole Type axis is data, not CSS.</strong> Default, 2 Roles, All Roles
   and Full differ only in how many roles the legend lists and how many seats are filled — so there
