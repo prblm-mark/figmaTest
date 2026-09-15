@@ -163,6 +163,116 @@
       color: var(--ai-text-secondary);
     }
 
+    /* PARTS. A second, denser grid: these are reference pages rather than the two things a
+       client is meant to click first, so they are visually subordinate to `.cards` — smaller
+       tiles, a smaller icon, no lead paragraph — while still reading as the same family. */
+    .section {
+      margin-block-start: var(--ai-spacing-9);
+    }
+
+    .section__title {
+      margin: 0;
+      font-family: var(--ai-font-title);
+      font-size: var(--ai-font-fixed-lg);
+      font-weight: var(--ai-font-semibold);
+      line-height: var(--ai-leading-lg);
+    }
+
+    .section__intro {
+      margin: var(--ai-spacing-3) 0 0;
+      max-width: var(--ai-size-11);
+      font-size: var(--ai-font-fixed-xs);
+      line-height: var(--ai-leading-md);
+      color: var(--ai-text-secondary);
+    }
+
+    .section__label {
+      margin: var(--ai-spacing-6) 0 var(--ai-spacing-3);
+      font-size: var(--ai-font-fixed-xxs);
+      font-weight: var(--ai-font-semibold);
+      line-height: var(--ai-leading-xs);
+      letter-spacing: var(--ai-tracking-6);
+      text-transform: uppercase;
+      color: var(--ai-text-secondary);
+    }
+
+    /* `auto-fill`, not `auto-fit`: with six tiles and then four, `auto-fit` collapses the empty
+       tracks and stretches the last row's tiles to full width, so the two rows disagree about
+       tile size. `auto-fill` keeps the track count and both rows line up. */
+    .parts {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(var(--ai-size-3), 1fr));
+      gap: var(--ai-spacing-3);
+    }
+
+    .part {
+      display: flex;
+      align-items: center;
+      gap: var(--ai-spacing-3);
+      padding: var(--ai-spacing-4);
+      background-color: var(--ai-surface-primary);
+      border: 1px solid var(--ai-border-secondary);
+      border-radius: var(--ai-radius-md);
+      color: inherit;
+      text-decoration: none;
+      transition: border-color var(--ai-transition-default),
+                  box-shadow var(--ai-transition-default);
+    }
+
+    .part:hover {
+      border-color: var(--ai-border-brand);
+      box-shadow: var(--ai-shadow-sm);
+      text-decoration: none;          /* see `.card:hover` — `text-decoration` inherits */
+    }
+
+    .part:focus-visible {
+      outline: 2px solid var(--ai-surface-brand);
+      outline-offset: 2px;
+    }
+
+    .part__icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: none;
+      inline-size: var(--ai-spacing-8);
+      block-size: var(--ai-spacing-8);
+      border-radius: var(--ai-radius-sm);
+      background-color: var(--ai-surface-brand-soft);
+      color: var(--ai-icon-brand);
+    }
+
+    .part__icon [data-lucide] {
+      inline-size: var(--ai-icon-size-md);
+      block-size: var(--ai-icon-size-md);
+    }
+
+    /* `min-inline-size: 0` so a long name ellipsises instead of pushing the tile wider than its
+       track — the intrinsic fix CLAUDE.md §4a prefers to a breakpoint. */
+    .part__body { min-inline-size: 0; }
+
+    /* `display: block` on both: these are <span>s inside an <a>, and only phrasing content is
+       valid there — a <p> or <h3> would be invalid markup in an anchor. Left inline they run
+       together on one line ("Table Card One table in the grid"). */
+    .part__name {
+      display: block;
+      margin: 0;
+      font-size: var(--ai-font-fixed-xs);
+      font-weight: var(--ai-font-semibold);
+      line-height: var(--ai-leading-sm);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .part__text {
+      display: block;
+      margin: 0;
+      font-size: var(--ai-font-fixed-2xs);
+      line-height: var(--ai-leading-xs);
+      color: var(--ai-text-secondary);
+    }
+
     .note {
       margin-block-start: var(--ai-spacing-9);
       padding: var(--ai-spacing-5);
@@ -227,6 +337,112 @@
         </p>
       </a>
     </nav>
+
+    <!-- THE PARTS. Same structure the internal library uses — components, then patterns — because
+         that IS the build, and a client asking "what is this made of?" should get the real answer
+         rather than a marketing summary. Each page is the component's own demo: every variant it
+         has, at every size, live rather than screenshotted.
+
+         Descriptions are one line and in plain English. The demo pages themselves carry the
+         detail. -->
+    <section class="section" aria-labelledby="parts-title">
+      <h2 class="section__title" id="parts-title">How it is built</h2>
+      <p class="section__intro">
+        The planner is assembled from a small set of reusable parts, each built once and used
+        everywhere it appears. Every part has its own page below showing all of its states — open
+        one to see the variations the design covers.
+      </p>
+
+      <p class="section__label">Components</p>
+      <nav class="parts" aria-label="Components">
+
+        <a class="part" href="../src/components/TableCard/TableCard.html?theme=dark">
+          <span class="part__icon"><i data-lucide="layout-grid" aria-hidden="true"></i></span>
+          <span class="part__body">
+            <span class="part__name">Table Card</span>
+            <span class="part__text">One table in the grid</span>
+          </span>
+        </a>
+
+        <a class="part" href="../src/components/TableType/TableType.html?theme=dark">
+          <span class="part__icon"><i data-lucide="tag" aria-hidden="true"></i></span>
+          <span class="part__body">
+            <span class="part__name">Table Type</span>
+            <span class="part__text">VIP, Gold, Silver…</span>
+          </span>
+        </a>
+
+        <a class="part" href="../src/components/AttendeeCard/AttendeeCard.html?theme=dark">
+          <span class="part__icon"><i data-lucide="user-round" aria-hidden="true"></i></span>
+          <span class="part__body">
+            <span class="part__name">Attendee Card</span>
+            <span class="part__text">One person and their seat</span>
+          </span>
+        </a>
+
+        <a class="part" href="../src/components/RoomCard/RoomCard.html?theme=dark">
+          <span class="part__icon"><i data-lucide="door-open" aria-hidden="true"></i></span>
+          <span class="part__body">
+            <span class="part__name">Room Card</span>
+            <span class="part__text">A room, with its capacity</span>
+          </span>
+        </a>
+
+        <a class="part" href="../src/components/FullBadge/FullBadge.html?theme=dark">
+          <span class="part__icon"><i data-lucide="badge-check" aria-hidden="true"></i></span>
+          <span class="part__body">
+            <span class="part__name">Full Badge</span>
+            <span class="part__text">Marks a table as full</span>
+          </span>
+        </a>
+
+        <a class="part" href="../src/components/SeatingToast/SeatingToast.html?theme=dark">
+          <span class="part__icon"><i data-lucide="bell" aria-hidden="true"></i></span>
+          <span class="part__body">
+            <span class="part__name">Toast</span>
+            <span class="part__text">Confirms an action, with Undo</span>
+          </span>
+        </a>
+
+      </nav>
+
+      <p class="section__label">Patterns</p>
+      <nav class="parts" aria-label="Patterns">
+
+        <a class="part" href="../src/patterns/SeatingHeader/SeatingHeader.html?theme=dark">
+          <span class="part__icon"><i data-lucide="panel-top" aria-hidden="true"></i></span>
+          <span class="part__body">
+            <span class="part__name">Header</span>
+            <span class="part__text">Event, plans and controls</span>
+          </span>
+        </a>
+
+        <a class="part" href="../src/patterns/TableListing/TableListing.html?theme=dark">
+          <span class="part__icon"><i data-lucide="grid-2x2" aria-hidden="true"></i></span>
+          <span class="part__body">
+            <span class="part__name">Table Listing</span>
+            <span class="part__text">The grid of tables, with search</span>
+          </span>
+        </a>
+
+        <a class="part" href="../src/patterns/TableDetail/TableDetail.html?theme=dark">
+          <span class="part__icon"><i data-lucide="panel-right" aria-hidden="true"></i></span>
+          <span class="part__body">
+            <span class="part__name">Table Detail</span>
+            <span class="part__text">Who is seated at one table</span>
+          </span>
+        </a>
+
+        <a class="part" href="../src/patterns/Unassigned/Unassigned.html?theme=dark">
+          <span class="part__icon"><i data-lucide="users-round" aria-hidden="true"></i></span>
+          <span class="part__body">
+            <span class="part__name">Unassigned</span>
+            <span class="part__text">People still to be placed</span>
+          </span>
+        </a>
+
+      </nav>
+    </section>
 
     <aside class="note">
       <p>

@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>TableListing — Affino Design System</title>
+  <script src="../../styles/theme-param.js"></script>
   <link rel="stylesheet" href="../../styles/base.css">
   <link rel="stylesheet" href="../../components/Button/Button.css">
   <link rel="stylesheet" href="../../components/Input/Input.css">
@@ -69,10 +70,9 @@
   (<code>toggle--xxs</code>) and <strong>Input</strong> (<code>input--sm</code>, label-less).
   <strong>Presentational only</strong> — filtering, search and the free-seats toggle are the parent
   module's job, and there is no JS here.</p>
-  <p class="lede lede--intro">The grid is <code>repeat(auto-fill, minmax(var(--ai-size-4), 1fr))</code>
-  rather than Figma's literal four columns. TableCard has a 240px min-width, so four fixed columns
-  need ~984px and would overflow between 768px and about 1000px; auto-fill lands on 4 columns at
-  Figma's drawn width and 1 at mobile, stepping through 3 and 2 in between. <strong>Resize this page
+  <p class="lede lede--intro">The grid <strong>fits as many columns as the width allows</strong>
+  rather than fixing a count. TableCard has a 240px minimum, so the listing lands on 4 columns at a
+  full desktop width and 1 on a phone, stepping through 3 and 2 in between. <strong>Resize this page
   to watch the column count change.</strong></p>
 
   <h2 class="demo-heading">Tier=Pattern, Device=Desktop</h2>

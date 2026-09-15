@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SeatingToast — Affino Design System</title>
+  <script src="../../styles/theme-param.js"></script>
   <link rel="stylesheet" href="../../styles/base.css">
   <link rel="stylesheet" href="../Button/Button.css">
   <link rel="stylesheet" href="SeatingToast.css">
@@ -36,11 +37,9 @@
   <p class="lede">The Seating Planner's action confirmation and warning pill.
   <strong>Tier: Component.</strong> Composes <strong>Button</strong>
   (<code>btn--secondary btn--xs</code>) for the Undo action.</p>
-  <p class="lede"><strong>This is not the <code>Toast</code> component.</strong>
-  <code>src/components/Toast/</code> is the general-purpose notification <em>card</em> — 384px,
-  <code>--ai-radius-lg</code>, an icon chip, a close button, 10 variants. This is a
-  <em>pill</em>: <code>--ai-radius-full</code>, a bare 20px icon, a status-coloured border on a
-  white ground, an Undo CTA and no close affordance. Figma names it just "Toast".</p>
+  <p class="lede"><strong>A pill, not a notification card.</strong> A bare 20px icon, a
+  status-coloured border on a white ground, an Undo action and no close button — it confirms what
+  just happened and offers to reverse it, rather than sitting on screen waiting to be dismissed.</p>
 
   <h2 class="demo-heading">Type=Success / Type=Error</h2>
   <p class="lede">The only axis. It sets the border colour and the icon colour — the ground stays
@@ -84,8 +83,7 @@
   </div>
 
   <h2 class="demo-heading">A long message wraps</h2>
-  <p class="lede">Figma marks the message <code>whitespace-nowrap</code>, which only holds because
-  its sample strings happen to fit. Attendee and table names are not length-bounded, so the message
+  <p class="lede">Attendee and table names have no length limit, so the message
   wraps and the pill grows instead of overflowing. The full radius keeps a two-line pill looking
   deliberate.</p>
   <div class="demo-stack">

@@ -59,14 +59,34 @@ jobs:
         run: npm run build:client
 
       # Fails the run if an internal page ever reaches the client tree — cheaper than noticing it
-      # in a client's browser. The client build should contain exactly two HTML files.
+      # in a client's browser.
+      #
+      # An EXACT SET, not a count. A count catches an extra page but not a SUBSTITUTION: the
+      # internal hub arriving while a component demo drops out leaves the total unchanged and the
+      # guard green. Comparing the sorted path list catches both, and it fails loudly the next
+      # time a card is added to demo/index.html without being added here.
       - name: Check no internal pages leaked
         run: |
-          count=$(find dist-client -name '*.html' | wc -l | tr -d ' ')
-          echo "HTML files in dist-client: $count"
-          find dist-client -name '*.html'
-          if [ "$count" -ne 2 ]; then
-            echo "::error::Expected 2 HTML files (preview + planner), found $count"
+          find dist-client -name '*.html' | sort > /tmp/actual.txt
+          cat > /tmp/expected.txt <<'EOF'
+          dist-client/index.html
+          dist-client/src/cc/templates/SeatingPlanner/SeatingPlanner.html
+          dist-client/src/components/AttendeeCard/AttendeeCard.html
+          dist-client/src/components/FullBadge/FullBadge.html
+          dist-client/src/components/RoomCard/RoomCard.html
+          dist-client/src/components/SeatingToast/SeatingToast.html
+          dist-client/src/components/TableCard/TableCard.html
+          dist-client/src/components/TableType/TableType.html
+          dist-client/src/patterns/SeatingHeader/SeatingHeader.html
+          dist-client/src/patterns/TableDetail/TableDetail.html
+          dist-client/src/patterns/TableListing/TableListing.html
+          dist-client/src/patterns/Unassigned/Unassigned.html
+          EOF
+          sed -i 's/^ *//' /tmp/expected.txt
+          echo "HTML files in dist-client:"
+          cat /tmp/actual.txt
+          if ! diff -u /tmp/expected.txt /tmp/actual.txt; then
+            echo "::error::dist-client HTML does not match the expected set (see the diff above)"
             exit 1
           fi
 

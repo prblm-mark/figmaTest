@@ -25,8 +25,34 @@ import path from 'node:path';
 const ROOT = process.cwd();
 const OUT = path.join(ROOT, 'dist-client');
 
-/* Entry points. The preview page is the site root; the planner is what it links to. */
-const ENTRIES = ['demo/index.html', 'src/cc/templates/SeatingPlanner/SeatingPlanner.html'];
+/* Entry points. The preview page is the site root; everything else is something it links to.
+ *
+ * WHY THESE ARE LISTED AND NOT WALKED. The crawler counts <link>, <script src>, <img src>,
+ * @import and inline module imports — the forms that make a page RENDER. It deliberately does
+ * NOT follow <a href>, because on the internal hub that would drag the entire library in behind
+ * one link. So a page reached by navigation has to be named here, and the preview page's own
+ * links are the list: the two planner previews, then the ten component demos it now shows.
+ *
+ * If a card is added to demo/index.html, add its page here too — otherwise the card ships as a
+ * 404. The workflow's file-count assertion is the backstop. */
+const ENTRIES = [
+  'demo/index.html',
+  'src/cc/templates/SeatingPlanner/SeatingPlanner.html',
+
+  /* Components */
+  'src/components/TableCard/TableCard.html',
+  'src/components/TableType/TableType.html',
+  'src/components/AttendeeCard/AttendeeCard.html',
+  'src/components/RoomCard/RoomCard.html',
+  'src/components/FullBadge/FullBadge.html',
+  'src/components/SeatingToast/SeatingToast.html',
+
+  /* Patterns */
+  'src/patterns/SeatingHeader/SeatingHeader.html',
+  'src/patterns/TableListing/TableListing.html',
+  'src/patterns/TableDetail/TableDetail.html',
+  'src/patterns/Unassigned/Unassigned.html',
+];
 
 const seen = new Set();
 const queue = [];
