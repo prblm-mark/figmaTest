@@ -691,9 +691,8 @@
      *
      * `isStacked()` rather than clearing `state.showUnassigned`, so the choice SURVIVES the
      * layout changing underneath it: narrow the column and the sheet goes, widen it and the sheet
-     * the user asked for is still there. Same reasoning the minimised-header rule records for
-     * reverting its margin in CSS instead of dropping the class in JS — keep the condition with
-     * the layout it belongs to, and the state stays the user's.
+     * the user asked for is still there — keep the condition with the layout it belongs to, and
+     * the state stays the user's.
      *
      * `render()` runs on every stacked-state flip (see onContainerResize), so this is re-evaluated
      * exactly when it can change. */

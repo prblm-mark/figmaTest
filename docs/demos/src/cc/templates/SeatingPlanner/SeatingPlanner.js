@@ -699,8 +699,6 @@
  * on its own. All three are MEASURED, never designed — see the block comment on
  * `.cc-control__page--seating` for why each one has to be:
  *
- *   --sp-header-retire   how far the header may slide up before its toolbar pins = header
- *                        height minus toolbar height, i.e. the event bar plus the room carousel
  *   --sp-toolbar-h       the toolbar's own height, which is padding + content and grows if the
  *                        room name wraps
  *   --sp-scrollport-h    the page's visible height, so the rails need no arithmetic about how
@@ -742,13 +740,6 @@
     var headerH = headerRect.height;
     var portH = page.clientHeight;
 
-    /* The retire distance is the gap between the two boxes' TOPS, not `headerH - toolbarH`.
-     * Those differ by the header's bottom border — 1px, which is exactly enough to leave the
-     * pinned toolbar a pixel clear of the chrome (measured: toolbar landed at -1 with the
-     * subtracted form). Reading the distance directly is also border-agnostic, so a change to
-     * the header's stroke cannot silently reintroduce the offset. */
-    var retire = toolbarRect.top - headerRect.top;
-
     /* Guard against a hidden header measuring 0: `data-seating-state` keeps the plan markup in
      * the document while another state is showing, and writing a 0 retire there would leave a
      * stale 0 behind when it comes back. Nothing to publish until it has a size. */
@@ -757,12 +748,11 @@
     /* `Math.max(0, ...)` because the retire distance is a slide, not a push: if the toolbar ever
      * measured taller than its own header, a positive inset would pin the header BELOW the
      * chrome and leave a gap the page scrolls behind. */
-    var key = toolbarH + '|' + headerH + '|' + portH + '|' + retire;
+    var key = toolbarH + '|' + headerH + '|' + portH;
     if (key === last) return;     /* the observer fires on every layout; only write on a change */
     last = key;
 
     page.style.setProperty('--sp-toolbar-h', toolbarH + 'px');
-    page.style.setProperty('--sp-header-retire', Math.max(0, retire) + 'px');
     page.style.setProperty('--sp-scrollport-h', portH + 'px');
   }
 
@@ -835,68 +825,6 @@
   }, { passive: false });
 })();
 
-/* ══ Minimise header ═════════════════════════════════════════════════
- * The overflow menu's "Minimise header" row holds the screen in the state a scroll already
- * reaches. All the geometry is CSS — see `.is-header-minimised` in SeatingPlanner.css, which
- * reuses the sticky rule's own offset so the two views cannot drift apart. This is only the
- * toggle, the label and the state.
- *
- * The row is desktop-only and CSS hides it below 1023, so no width check is needed here: a hidden
- * row cannot be clicked. Scrolling still works exactly as before in either state.
- *
- * TODO(backend:SeatingPlanner): `localStorage` only, so the choice follows the BROWSER rather than
- * the user — a second machine starts expanded again. The real home is a per-user UI preference
- * alongside the last-used event; see seating-header-minimised.
- */
-(function () {
-  'use strict';
-
-  var page = document.querySelector('.cc-control__page--seating');
-  if (!page) return;
-
-  var MINIMISED = 'is-header-minimised';
-  /* Same `sp:` namespace the prototype's `sp:lastEventId` uses. */
-  var KEY = 'sp:headerMinimised';
-
-  /* Every read and write is guarded. `localStorage` is not merely empty in a private window or
-   * with site data blocked — the accessor itself THROWS, so an unguarded read here would take the
-   * whole module down and with it the toggle it is trying to restore. */
-  function remember(on) {
-    try { localStorage.setItem(KEY, on ? '1' : '0'); } catch (e) {}
-  }
-
-  function restore() {
-    var saved = null;
-    try { saved = localStorage.getItem(KEY); } catch (e) {}
-    /* Only ever ADD the class. Absent storage means "no preference", which is the expanded
-     * default the markup already renders — removing it here would be the same outcome by a
-     * longer route, and would fight anything else that set it before this ran. */
-    if (saved === '1') page.classList.add(MINIMISED);
-    syncLabel(page.classList.contains(MINIMISED));
-  }
-
-  /* The visible label and glyph swap in CSS off the page class, so a restored state needs nothing
-   * here — but the accessible name is an attribute and does. Split out so restore and toggle
-   * cannot disagree about it. */
-  function syncLabel(on) {
-    Array.prototype.forEach.call(document.querySelectorAll('[data-sp-minimise-header]'), function (b) {
-      b.setAttribute('aria-label', on ? 'Expand header' : 'Minimise header');
-    });
-  }
-
-  /* Delegated. The menu row is authored in the page, but the plan header is re-rendered by
-   * `seating-app.js`, so a direct binding would be lost the first time a plan changed. */
-  document.addEventListener('click', function (event) {
-    var btn = event.target.closest ? event.target.closest('[data-sp-minimise-header]') : null;
-    if (!btn) return;
-
-    var on = page.classList.toggle(MINIMISED);
-    syncLabel(on);
-    remember(on);
-  });
-
-  restore();
-})();
 
 /* ══ Chrome shadow on scroll ══════════════════════════════════════════════════════════════
  * This screen deliberately has no header block and no chrome hairline (both designer calls), so

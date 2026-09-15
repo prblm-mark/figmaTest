@@ -1483,3 +1483,52 @@ all, which is what the mobile frames draw.
   toolbar — so the build is unchanged, but the variants look stale.
 - **`No Plans, Desktop` still says "Copy Plans"** where `Has Plans` says "Import Plan". The code
   says Import Plan in both.
+
+## The pinned card keeps its 6px, and Minimise header is retired (2026-09-15)
+
+**A 6px gap above the pinned Table Header.** It pinned flush against the chrome, which made the
+group look welded to the top edge on scroll while still breathing at the bottom. The same
+`--ai-spacing-2` on both sides reads as one group held clear of the chrome.
+
+Three expressions moved together, and they stay written out separately on purpose:
+
+```
+inset-block-start: calc(var(--ai-spacing-2) - var(--sp-page-pad));
+--sp-rail-top:     6 (above the card) + toolbar-h + 6 (card -> sheets) - page-pad
+--sp-rail-h:       scrollport - 6 - toolbar-h - 6 - page-pad
+```
+
+Both 6s are `--ai-spacing-2` today. Collapsing them to `* 2` would hide that they are *different
+gaps* — one above the pinned card, one between it and the sheets — and that changing one should
+not move the other.
+
+**Minimise header is gone** (designer, 2026-09-15). It held the screen in the state a scroll
+already reached; with the toolbar detached and pinning on its own, the state it held is a scroll
+away and the row was a second way to reach it. Removed entirely rather than hidden: the menu row
+and its comment in both the template and this demo, the `is-header-minimised` CSS here and in
+SeatingPlanner.css, the toggle module and its `localStorage` key, the `--sp-header-retire` custom
+property and the JS that measured it, and the `seating-header-minimised` rows in
+`docs/handover-manifest.json` and `HANDOVER.md` — the backend item went with the surface.
+
+`--sp-header-retire` had already lost its last consumer when the toolbar detached; this is what
+collected it.
+
+### A removal that went wrong twice, and what the shape of it was
+
+Cutting the menu row and its explanatory comment as **two separate operations** destroyed
+surrounding markup both times. Removing the `<li>` first left the comment's `-->` far below its
+`<!--`, because the comment and the row were adjacent: the second cut then ran from the comment's
+opening to a `-->` that by then belonged to different markup entirely — 446 lines of the template,
+and an unrelated Room Layout / Table Types TODO in this demo.
+
+Both were caught by diffing against HEAD (`git diff --numstat` reporting 446 deletions for a
+twelve-line comment is not subtle) and redone as **one cut spanning comment and row together**,
+with an assertion that the span is under 30 lines and does not contain the neighbouring TODO.
+The rule: when markup and the comment documenting it are adjacent, they are one edit.
+
+### Verified
+
+Desktop at 1728×1139, scrolled 500: chrome → pinned card **6**, card → sheets **6**, `--sp-rail-top`
+54 (= 6 + 66 + 6 − 24), sheets ending 24 above the fold on the page's own bottom padding. Mobile
+402: the card stays `static` and the header → group gap is still 16. The pattern demo keeps all
+five sections, its one Table Header variant and its Room Layout row, with no minimise leftovers.
