@@ -97,8 +97,12 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   font-family: var(--ai-font-title);
-  font-size: var(--ai-font-fixed-md);
-  font-weight: var(--ai-font-bold);
+  /* 16px semibold (designer, 2026-09-15), was 18px bold. The three sheet titles and the
+     room card now share one weight, so the plan reads as a set of panels rather than a
+     stack of competing headings. A DIVERGENCE from Figma, which still draws 18/bold —
+     applied on instruction and recorded so a later audit reads it as intent, not drift. */
+  font-size: var(--ai-font-fixed-sm);
+  font-weight: var(--ai-font-semibold);
   line-height: normal;
   color: var(--ai-text-primary);
 }
