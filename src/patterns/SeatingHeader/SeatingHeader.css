@@ -446,6 +446,31 @@
   flex: 0 0 var(--ai-size-5);
 }
 
+/* ── Type=Table Header (3636:116321 desktop / 3636:116212 mobile) ───────────
+ * The toolbar DETACHED, standing as its own card (designer + team, 2026-09-15). It used to be
+ * this pattern's bottom row; the meeting moved it down beside the tables it acts on, so the
+ * actions sit next to the plan they change rather than under the event they belong to.
+ *
+ * NOTHING INSIDE IT CHANGES. Every rule below this block — the padding, the 8px gaps, the room
+ * name's ellipsis, the 1023px compaction, Room Layout moving into the overflow menu — applies
+ * to this variant exactly as it did when the row lived upstairs. That is the point: the split is
+ * a visual separation, not a reconfiguration, so there is one toolbar implementation and not two
+ * that can drift.
+ *
+ * ONLY THE CARD EDGE IS NEW. As the root's sole child the toolbar is both `:first-child` and
+ * `:last-child`, so the rule above already rounds its BOTTOM corners and drops its rule; the top
+ * pair is all that is missing. It needs them because the toolbar paints its own
+ * `--ai-surface-primary`, and a square white corner over the root's rounded border is the
+ * corner-bleed failure SystemRole already recorded — the event bar upstairs gets away without
+ * them only because it paints no background of its own.
+ *
+ * Scoped to the variant rather than added to a general `> :first-child` rule for exactly that
+ * reason: on Type=Has Plans the first child IS the event bar, which must keep square corners. */
+.seating-header--table > .seating-header__toolbar {
+  border-start-start-radius: var(--ai-radius-lg);
+  border-start-end-radius: var(--ai-radius-lg);
+}
+
 /* ── Toolbar ────────────────────────────────────────────────────────────────
  * The active room, the unassigned switch, and the table actions. */
 .seating-header__toolbar {

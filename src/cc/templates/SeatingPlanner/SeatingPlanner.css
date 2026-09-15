@@ -141,7 +141,11 @@
    * and the two must never drift — see `--sp-sticky-origin`. */
   --sp-page-pad: var(--ai-spacing-6);
   padding: var(--sp-page-pad);
-  gap: var(--ai-spacing-5);
+  /* 24px, measured on 3515:203890: Header ends at y=258, Frame 279 starts at 282. Was 16 when
+     the toolbar was the header's own bottom row and this gap only had to separate a card from a
+     row of sheets; it now separates the EVENT from the PLAN, which the team asked to read as two
+     things. The tighter 6px that binds the toolbar to its sheets is `.seating-group`'s gap. */
+  gap: var(--ai-spacing-6);
   /* `stable` — restored to the shell's own value (designer, 2026-09-11).
    *
    * This page had released it, and the reasoning was sound at the time: nothing here scrolled, its
@@ -168,11 +172,11 @@
    * the STUCK state. That is the whole trick — the rails already stand at their final height, so
    * scrolling moves them into the space the event bar vacates instead of resizing anything. No
    * height transition, and no relayout of the card grid per frame. */
-  --sp-rail-top: calc(var(--sp-toolbar-h, var(--ai-spacing-11)) + var(--ai-spacing-5)
+  --sp-rail-top: calc(var(--sp-toolbar-h, var(--ai-spacing-11)) + var(--ai-spacing-2)
                       - var(--sp-page-pad));   /* see --sp-sticky-origin */
   --sp-rail-h: calc(var(--sp-scrollport-h, calc(100dvh - var(--ai-spacing-9)))
                     - var(--sp-toolbar-h, var(--ai-spacing-11))
-                    - var(--ai-spacing-5)      /* the page gap, header -> row */
+                    - var(--ai-spacing-2)      /* the GROUP gap, table header -> sheet row */
                     - var(--sp-page-pad));     /* the page's own padding-block-end */
 }
 
@@ -205,12 +209,20 @@
  *
  * `:has(.seating-header__toolbar)` rather than a data attribute because it names the real
  * condition — Type=No Plans has no toolbar, so it has nothing to retire TO and must not pin. */
-.cc-control__page--seating > .seating-header:has(.seating-header__toolbar) {
+/* THE TABLE HEADER IS WHAT PINS, since 2026-09-15. It used to be the header's bottom row, so the
+ * header itself was the sticky element and slid up by exactly its two upper rows — that is what
+ * `--sp-header-retire` bought. Detached, the arithmetic goes away: the event card is an ordinary
+ * block that scrolls off, and this card pins on its own at the top of the scrollport.
+ *
+ * The inset is still NEGATIVE by the page's padding, for the reason `--sp-sticky-origin` records:
+ * sticky resolves against the scroll container's CONTENT box, so `0` would pin it a padding's
+ * width below the chrome rather than flush under it. */
+.cc-control__page--seating .seating-header--table {
   position: sticky;
+  inset-block-start: calc(-1 * var(--sp-page-pad));
   /* Minus the page padding as well — see `--sp-sticky-origin` above. The `0px` fallback then
    * resolves to exactly `-{page padding}`, which pins the whole header flush under the chrome:
    * without JS nothing retires, but nothing is misplaced either. */
-  inset-block-start: calc(-1 * (var(--sp-header-retire, 0px) + var(--sp-page-pad)));
   /* Above the two rails (1) so the toolbar's dropdowns — Export, and the overflow kebab, which
    * Figma draws opening 48px BELOW the header's bottom edge — paint over them and over the card
    * grid passing underneath. */
@@ -219,6 +231,23 @@
    * state animates the way in and snaps on the way out. Same rule as the hover-transition pattern
    * the component guide records. */
   transition: margin-block-start var(--ai-transition-slow);
+}
+
+/* ── The plan group ─────────────────────────────────────────────────────────
+ * Figma 3636:125908 desktop / 3636:125907 mobile. The Table Header and the three-sheet row,
+ * bound together by a 6px gap so they read as one thing (measured: Table Header 0..64, sheets at
+ * y=70 on desktop; 0..62 and y=68 on mobile — 6px at both, so no breakpoint).
+ *
+ * `--ai-spacing-2` is 6px. It is a real token, not a rounded guess: the same value the toolbar's
+ * own icon gaps bind.
+ *
+ * NO height rules. The sheets set their own `--sp-rail-h` and pin themselves there, which is the
+ * whole basis of the sticky model — a `flex: 1` here would take that away from them and start
+ * resizing the rails on scroll, which is exactly what the one-scroller work removed. */
+.seating-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-2);
 }
 
 /* ══ Minimise header ═════════════════════════════════════════════════
@@ -240,7 +269,7 @@
  *
  * The sticky rule above stays live and does not fight this: minimised, the header's natural
  * position is already above its own sticky threshold, so sticky has nothing to pin. */
-.cc-control__page--seating.is-header-minimised > .seating-header:has(.seating-header__toolbar) {
+.cc-control__page--seating.is-header-minimised > .seating-header:not(.seating-header--table) {
   margin-block-start: calc(-1 * (var(--sp-header-retire, 0px) + var(--sp-page-pad)));
 }
 
@@ -399,7 +428,9 @@
   .cc-control__page--seating {
     --sp-page-pad: var(--ai-spacing-4);
     padding: var(--sp-page-pad);
-    gap: var(--ai-spacing-4);
+    /* 16px, measured on 3515:213580: Header ends at y=291, Frame 278 starts at 307. Padding stays
+       12, which the same frame confirms (children at x=12). */
+    gap: var(--ai-spacing-5);
   }
 
   .seating-screen__empty-title {
@@ -909,7 +940,7 @@
    * `flex: 0 0 auto` on the row and the grid's `overflow: visible` used to live here. They are
    * unconditional now — the page is the only scroller at every width — so the stacked layout no
    * longer differs from the wide one in how it scrolls, only in how it is arranged. */
-  .cc-control__page--seating > .seating-header:has(.seating-header__toolbar) {
+  .cc-control__page--seating .seating-header--table {
     position: static;
   }
 
@@ -920,7 +951,7 @@
    * against the top of a page that scrolls normally. Reverting the margin here rather than
    * clearing the class in JS keeps the condition with the layout it belongs to — and means the
    * state is still there, unchanged, when the column widens again. */
-  .cc-control__page--seating.is-header-minimised > .seating-header:has(.seating-header__toolbar) {
+  .cc-control__page--seating.is-header-minimised > .seating-header:not(.seating-header--table) {
     margin-block-start: 0;
   }
 

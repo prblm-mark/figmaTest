@@ -91,13 +91,16 @@
   (<code>toggle--xs</code>, label-less) and <strong>RoomCard</strong> — one per plan, in the
   Room-Selector-Bar slot.</p>
   
-  <p class="lede lede--intro">The <strong>Type</strong> axis is data, not CSS:
+  <p class="lede lede--intro">The <strong>Type</strong> axis is mostly data, not CSS:
   <code>No Plans</code> is the event bar on its own and <code>Has Plans</code> adds the room
-  selector and the toolbar, so which one renders is markup the caller supplies. There are no Type
-  modifiers — the fifth component in this module where that holds.</p>
+  selector, so which one renders is markup the caller supplies. <code>Table Header</code> is the
+  third: the toolbar standing alone as its own card. It is the one Type that carries a modifier
+  — <code>--table</code>, for its top two corners — because as the root’s only child the
+  toolbar has a card edge to draw that it never had as a middle row.</p>
 
   <h2 class="demo-heading">Tier=Pattern, Type=Has Plans, Device=Desktop</h2>
-  <p class="lede">The full header. Two plans, the first selected.</p>
+  <p class="lede">The event bar and the room selector. Two plans, the first selected. The toolbar
+  that used to close this card is now <code>Type=Table Header</code>, below.</p>
   <!-- TODO(backend:SeatingPlanner): the event details, the plan list and the unassigned count are
        all hardcoded. Needs: GET the event (name, date, attendee count, venue) for the info bar;
        the plan list reuses seating-room-list for the per-card contract; the active room's
@@ -195,6 +198,15 @@
       </button>
     </div>
 
+  </section>
+
+  <h2 class="demo-heading">Tier=Pattern, Type=Table Header, Device=Desktop</h2>
+  <p class="lede">The toolbar as its own card. It was the bottom row of the header above until
+  2026-09-15, when the team moved it down beside the tables it acts on — so the actions read
+  against the plan they change rather than against the event. <strong>Nothing inside it
+  changed</strong>: same controls, same 8px gaps, same 1023px compaction, same Room Layout move
+  into the overflow menu. The only new CSS is the card’s top two corners.</p>
+  <section class="seating-header seating-header--table" aria-label="Plan actions">
     <div class="seating-header__toolbar">
       <div class="seating-header__toolbar-actions">
         <div class="seating-header__room">

@@ -1402,3 +1402,84 @@ the page has scrolled or not.
 the probe read the start of a transition from `none`. The tokens resolved correctly all along.
 Killing transitions in the probe is what made the real value readable; the same trap cost a
 misreading of the minimise margin earlier the same day.
+
+## Type=Table Header — the toolbar detaches (2026-09-15)
+
+Figma `3636:116321` (Desktop, 1552×64) / `3636:116212` (Mobile, 392×62). Applied on
+`3515:203890` (desktop) and `3515:213580` (mobile).
+
+The team's call after reviewing the build: the toolbar should not close the event header. It now
+stands as its own card next to the tables it acts on, so the actions read against the plan they
+change rather than against the event above them.
+
+### The variant matrix gains two rows
+
+| Node | Variant | Size |
+|---|---|---|
+| 3474:90518 | Has Plans, Desktop | 1552 × 226 — **was 251; the toolbar row is gone** |
+| 3474:90517 | No Plans, Desktop | 1552 × 99 |
+| 3484:186300 | Has Plans, Mobile | 392 × 255 |
+| 3484:186449 | No Plans, Mobile | 392 × 146 |
+| 3585:110311 | Menu >1200, Desktop | 1552 × 288 |
+| 3585:110436 | Menu <1024, Desktop | 1100 × 288 |
+| **3636:116321** | **Table Header, Desktop** | **1552 × 64** |
+| **3636:116212** | **Table Header, Mobile** | **392 × 62** |
+
+### One toolbar implementation, not two
+
+Every existing toolbar rule applies to the new variant untouched — the asymmetric 24/12 inline
+padding, the 8px gaps, the room name's ellipsis guard, the 12px flat padding below 767, the 1023px
+compaction, Room Layout moving into the overflow menu. That was the designer's requirement
+("all config should stay the same … it's just a visual separation") and it is also why the split
+is safe: there is one implementation to change, not two that drift.
+
+**The only new CSS is `.seating-header--table > .seating-header__toolbar`**, which rounds the top
+two corners. As the root's sole child the toolbar is both `:first-child` and `:last-child`, so the
+existing last-child rule already gives it the bottom pair. It needs them at all because the
+toolbar paints its own `--ai-surface-primary` — the corner-bleed failure SystemRole recorded. The
+event bar upstairs gets away without them only because it paints no background of its own.
+
+### The sticky model got simpler
+
+`--sp-header-retire` used to buy the header a partial slide: the toolbar was its bottom row, so
+the header itself was sticky and rose by exactly its two upper rows. Detached, that arithmetic
+disappears — the event card is an ordinary block that scrolls off and the Table Header pins on its
+own at `calc(-1 * var(--sp-page-pad))`.
+
+The JS barely changed, and for a reason worth keeping: `retire` is read as the distance between
+the two boxes' **tops**, which was the header's upper rows when they were nested and is now the
+header's height plus the page gap. Reading a distance rather than subtracting heights made the
+split a no-op there.
+
+**A real trap on the way.** The first version looked up the event header as
+`.seating-header:not(.seating-header--table)`. There are three headers in the document — No Plans,
+the plan one, and now the Table Header — and `data-seating-state` keeps them all in the DOM while
+one state shows. `:not()` returned the **hidden** No Plans header, which measures 0, so the guard
+bailed and nothing was ever published: `--sp-toolbar-h` and `--sp-header-retire` came back empty
+and the rails fell to their fallbacks. Now scoped to `[data-seating-panel="plan"]` — name the
+panel, do not describe what it is not.
+
+### Measured against the applied frames
+
+| | Figma desktop | built | Figma mobile | built |
+|---|---|---|---|---|
+| header → group gap | 24 | **24** | 16 | **16** |
+| Table Header → sheets | 6 | **6** | 6 | **6** |
+| Table Header height | 64 | 66 | 62 | 63 |
+
+Height is +1–2 on the 1px border. Card widths read 1553/311 against Figma's 1552/326 because the
+page pads 24 where the frames pad 32 and `scrollbar-gutter: stable` reserves 15 — a **pre-existing**
+divergence, not introduced here.
+
+Scroll verified: at a 1728×1139 viewport the page scrolls 276px, the Table Header pins exactly at
+the chrome's lower edge (48) and the event header leaves the screen. Below 1023 it does not pin at
+all, which is what the mobile frames draw.
+
+### Flagged in Figma
+
+- **`Menu >1200` / `Menu <1024` still draw the toolbar attached to the header** (both 288 tall,
+  event bar + strip + toolbar). If the toolbar has left the header, those two contradict it. The
+  overflow menu itself is unaffected — it is anchored to the kebab, which travelled with the
+  toolbar — so the build is unchanged, but the variants look stale.
+- **`No Plans, Desktop` still says "Copy Plans"** where `Has Plans` says "Import Plan". The code
+  says Import Plan in both.

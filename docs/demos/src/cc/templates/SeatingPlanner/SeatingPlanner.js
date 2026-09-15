@@ -716,12 +716,22 @@
   var page = document.querySelector('.cc-control__page--seating');
   if (!page) return;
 
-  /* The header that HAS a toolbar — Type=No Plans has none and never pins, which is the same
-   * condition the CSS selector states. */
-  var header = page.querySelector('.seating-header:has(.seating-header__toolbar)')
-            || page.querySelector('.seating-header .seating-header__toolbar');
-  if (header && !header.classList.contains('seating-header')) header = header.closest('.seating-header');
-  var toolbar = header && header.querySelector('.seating-header__toolbar');
+  /* TWO CARDS SINCE 2026-09-15, not one element with two rows. `header` is the event card that
+   * scrolls away; `toolbar` is the Table Header card that pins. The names are kept because every
+   * published variable below still means what it meant — and, more usefully, so does the
+   * arithmetic: `retire` is read as the distance between the two TOPS, which was the header's own
+   * upper rows when they were nested and is now the header's height plus the page gap. Reading a
+   * distance rather than subtracting heights is what makes the split a no-op here.
+   *
+   * Type=No Plans has no Table Header at all, so there is nothing to pin and nothing to publish —
+   * the same condition the CSS states. */
+  var toolbar = page.querySelector('.seating-header--table');
+  /* `[data-seating-panel="plan"]`, NOT `:not(--table)`. There are THREE headers in this document
+   * — the No Plans one, the plan one, and now the Table Header — and `data-seating-state` keeps
+   * all of them in the DOM while one state is showing. A `:not()` selector returns the first in
+   * document order, which is the HIDDEN No Plans header: it measures 0, the guard below bails, and
+   * nothing is ever published. Name the panel instead of describing what it is not. */
+  var header = page.querySelector('.seating-header[data-seating-panel="plan"]');
   if (!header || !toolbar) return;
 
   var last = '';
