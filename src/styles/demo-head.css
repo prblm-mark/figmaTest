@@ -1,0 +1,22 @@
+/* Demo page heading row — the <h1> with the theme toggle beside it.
+ *
+ * A flex row rather than a fixed-position control in the corner: the demo pages are read at
+ * every width, and a fixed toggle would sit on top of a long component name on a phone. Wrapping
+ * puts it on its own line instead.
+ *
+ * The <h1> keeps whatever the page's own stylesheet gives it — this file only places it.
+ */
+.demo-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--ai-spacing-4);
+}
+
+.demo-head > h1 { margin-block-end: 0; }
+
+/* Hidden inside the 390px self-preview. That frame exists to show the component's narrow
+   layout, and a theme control in it is chrome the reader would mistake for part of the
+   component. `data-frame` is set in each page's own <head> script. */
+[data-frame="mobile"] .demo-head__theme { display: none; }

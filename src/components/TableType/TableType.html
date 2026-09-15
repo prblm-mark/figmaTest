@@ -6,6 +6,8 @@
   <title>TableType — Affino Design System</title>
   <script src="../../styles/theme-param.js"></script>
   <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../components/ThemeToggle/ThemeToggle.css">
+  <link rel="stylesheet" href="../../styles/demo-head.css">
   <link rel="stylesheet" href="TableType.css">
   <style>
     body {
@@ -52,7 +54,21 @@
   </style>
 </head>
 <body>
-  <h1>TableType</h1>
+  <div class="demo-head">
+    <h1>TableType</h1>
+    <div class="demo-head__theme">
+      <div class="theme-toggle">
+        <button class="theme-toggle__btn" type="button" data-theme-value="light" aria-pressed="true">
+          <i data-lucide="sun" aria-hidden="true"></i>
+          <span>Light</span>
+        </button>
+        <button class="theme-toggle__btn" type="button" data-theme-value="dark" aria-pressed="false">
+          <i data-lucide="moon" aria-hidden="true"></i>
+          <span>Dark</span>
+        </button>
+      </div>
+    </div>
+  </div>
   <p class="lede">Table tier label for the Seating Planner. The tier colour is picked by the user
   at runtime — one custom property (<code>--table-type-color</code>) drives the background,
   border and text, so any colour produces a coherent pill.</p>
@@ -104,6 +120,7 @@
     <span class="table-type table-type--gold">Head Table Reserved</span>
   </div>
 
+  <script src="../../components/ThemeToggle/ThemeToggle.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>
     if (window.lucide) lucide.createIcons();

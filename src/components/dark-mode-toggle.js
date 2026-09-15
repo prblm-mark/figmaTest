@@ -161,7 +161,11 @@
       var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
       if (isDark) {
         document.documentElement.removeAttribute('data-theme');
-        localStorage.removeItem('demo-theme');
+        /* Store 'light' rather than removing the key. Every reader of 'demo-theme' compares to
+           'dark', so this is inert for them — but src/styles/theme-param.js distinguishes "chose
+           light" from "has no preference yet", and an absent key read as the latter. The gear and
+           ThemeToggle write the same key, so they have to agree on how light is spelled. */
+        localStorage.setItem('demo-theme', 'light');
       } else {
         document.documentElement.setAttribute('data-theme', 'dark');
         localStorage.setItem('demo-theme', 'dark');
