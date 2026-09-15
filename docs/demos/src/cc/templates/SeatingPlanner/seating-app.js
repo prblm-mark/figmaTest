@@ -684,8 +684,21 @@
     var attEl = document.querySelector('[data-sp-attendee-count]');
     if (attEl) attEl.textContent = D.roster.length + ' attendees';
 
+    /* NEVER WHEN STACKED, whatever the toggle says (designer, 2026-09-15). The unassigned sheet
+     * is a desktop rail; the mobile frames draw no such panel and the mobile toolbar carries no
+     * "Show unassigned" control to turn it back off with. Turning it on at a wide width and then
+     * narrowing the column left it on screen with no way to dismiss it.
+     *
+     * `isStacked()` rather than clearing `state.showUnassigned`, so the choice SURVIVES the
+     * layout changing underneath it: narrow the column and the sheet goes, widen it and the sheet
+     * the user asked for is still there. Same reasoning the minimised-header rule records for
+     * reverting its margin in CSS instead of dropping the class in JS — keep the condition with
+     * the layout it belongs to, and the state stays the user's.
+     *
+     * `render()` runs on every stacked-state flip (see onContainerResize), so this is re-evaluated
+     * exactly when it can change. */
     var aside = document.querySelector('[data-sp-pool-region]');
-    if (aside) aside.hidden = !state.showUnassigned;
+    if (aside) aside.hidden = isStacked() || !state.showUnassigned;
   }
 
   /* ── Header alignment across a row ─────────────────────────────────────────────────────────

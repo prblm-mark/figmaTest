@@ -2140,6 +2140,23 @@
  * further down the file. Width is untouched — how the pool sizes itself when stacked is
  * unchanged by the scroll work. */
 @container cs-page (max-width: 1023px) {
+  /* NOT SHOWN AT ALL WHEN STACKED (designer, 2026-09-15). The unassigned sheet is a desktop rail;
+   * the mobile frames draw no such panel, and the mobile toolbar carries no "Show unassigned"
+   * control to dismiss it with — so turning it on at a wide width and then narrowing the column
+   * stranded it on screen.
+   *
+   * BOTH HERE AND IN JS, and deliberately: the two halves of the condition belong to different
+   * owners. "Only when the toggle is on" is state, and `renderChrome()` owns it. "Never when
+   * stacked" is layout, and a container query owns it — it is enforced at layout time, so it
+   * cannot be late the way a ResizeObserver callback can. Neither can drift, because neither
+   * expresses the other's half. CLAUDE.md 4a. */
+  .seating-plan__pool {
+    display: none;
+  }
+
+  /* Kept for the widths where it IS shown — the rules below 1023 that make it a normal block
+   * rather than a pinned rail. Inert while `display: none` holds, and correct the moment the
+   * rule above is ever relaxed. */
   .seating-plan__pool {
     position: static;
     block-size: auto;
