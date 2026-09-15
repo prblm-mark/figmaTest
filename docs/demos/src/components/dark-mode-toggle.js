@@ -25,6 +25,14 @@
     var saved = localStorage.getItem('demo-theme');
     if (saved === 'dark') {
       document.documentElement.setAttribute('data-theme', 'dark');
+    } else if (!saved && document.documentElement.getAttribute('data-theme-default') === 'dark') {
+      /* No preference yet, and the page declares a dark default — the client build stamps this
+         onto every page it emits so the preview opens dark however it is entered. Stored, so it
+         becomes the preference and the rest of the site agrees; src/styles/theme-param.js reads
+         the same attribute and the same key on the component demos. Internal pages carry no such
+         attribute, so this branch never runs for them and light stays the default. */
+      document.documentElement.setAttribute('data-theme', 'dark');
+      try { localStorage.setItem('demo-theme', 'dark'); } catch (e) { /* storage unavailable */ }
     }
   }
 
