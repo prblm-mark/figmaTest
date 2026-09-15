@@ -41,6 +41,22 @@
   var moonIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>';
   var settingsIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>';
 
+  /* CLIENT PREVIEW: apply the theme, build no toolbar. The fixed gear tab on the right edge is a
+   * demo affordance for the team — it says "Demo settings" and sits on top of the screen a client
+   * is being shown. The theme work above has already run by this point, which is the part that
+   * matters; the planner offers the real control in its user menu (ThemeToggle, same storage key).
+   *
+   * `window.demoToolbar` is still defined, as no-ops, so a page that registers extra controls does
+   * not throw when it is served this way. Nothing in the client tree does today — checked — but
+   * an API that exists on one build and not the other is a trap for whoever adds the next page.
+   *
+   * The attribute is stamped by scripts/build-client.mjs and never appears in the source, so the
+   * internal hub keeps its toolbar. */
+  if (document.documentElement.hasAttribute('data-client-preview')) {
+    window.demoToolbar = { addControls: function () {}, setActive: function () {} };
+    return;
+  }
+
   // Pending controls from pages that call addControls before DOMContentLoaded
   var pendingControls = [];
   var popoverEl = null;
