@@ -841,15 +841,60 @@
     if (state.tableId === id) revealTable(id);
   }
 
+  /* Put a seat occupant back where they were. Shared by the trash button and the drag to the
+   * tray, which are the same operation by two gestures and must undo the same way.
+   *
+   * RE-RESOLVES BY ID rather than closing over the table object, and re-checks the seat. The
+   * toast is on screen for seconds, and in those seconds the table can be deleted, its capacity
+   * cut below this seat by the Edit Table form, or the seat taken by somebody else — all three
+   * reachable while the Undo button is still there. Writing the slot back regardless would
+   * either resurrect a seat on a deleted table or silently overwrite whoever now holds it.
+   *
+   * Refusing SAYS so rather than failing quietly: the undo was a deliberate act, and a button
+   * that appears to do nothing is worse than one that explains why it could not. */
+  function reseat(tableId, seatNo, slot) {
+    var t = tableById(tableId);
+
+    if (!t || seatNo < 1 || seatNo > t.seats.length) {
+      toast([{ text: nameOf(slot), strong: true },
+             { text: ' could not be put back — that seat is gone. They are still unassigned.' }],
+            'error');
+      return;
+    }
+    if (t.seats[seatNo - 1]) {
+      toast([{ text: 'Seat ' + seatNo + ' at ' }, { text: t.name, strong: true },
+             { text: ' is taken now, so ' }, { text: nameOf(slot), strong: true },
+             { text: ' stays unassigned.' }],
+            'error');
+      return;
+    }
+
+    t.seats[seatNo - 1] = slot;
+    render();
+  }
+
   function unseat(seatNo) {
     var t = tableById(state.tableId);
     if (!t) return;
     var slot = t.seats[seatNo - 1];
     if (!slot) return;
     var p = person(slot.personId);
+    var tableId = t.id;
     t.seats[seatNo - 1] = null;
     render();
-    toast([{ text: p.name, strong: true }, { text: ' returned to the unassigned pool.' }], 'success');
+
+    /* UNDO, because the trash icon is a single unconfirmed click on a row of six-odd people
+     * (designer, 2026-09-15). Dispatched directly rather than through `toast()` because that
+     * helper only carries parts and type; the toast host already supports an undo callback, which
+     * is what Delete Table uses. The slot is restored WHOLE — it carries the role as well as the
+     * person, so undoing does not quietly reseat them as an Attendee. */
+    document.dispatchEvent(new CustomEvent('sp:toast', {
+      detail: {
+        type: 'success',
+        parts: [{ text: p.name, strong: true }, { text: ' returned to the unassigned pool.' }],
+        undo: function () { reseat(tableId, seatNo, slot); }
+      }
+    }));
   }
 
   /* Assign takes the first person in the pool — the tray is the queue, so "next up" is the
@@ -1138,8 +1183,13 @@
     if (target.kind === 'pool') {
       if (src.kind !== 'seat') { clearPick(); return; }      /* pool -> pool is a no-op */
       tableById(src.tableId).seats[src.seatNo - 1] = null;
+      /* Undoable for the same reason the trash button is, and it has to be the SAME offer: this
+       * produces the identical outcome and the identical sentence, so an Undo on one gesture and
+       * not the other would read as the toast being unreliable rather than as a rule. */
+      var fromTable = src.tableId, fromSeat = src.seatNo;
       finish([{ text: nameOf(moving), strong: true },
-              { text: ' returned to the unassigned pool.' }]);
+              { text: ' returned to the unassigned pool.' }],
+             function () { reseat(fromTable, fromSeat, moving); });
       return;
     }
 
@@ -1183,9 +1233,15 @@
    * stay lit after the drop.
    *
    * `state.pickedViaDrag` was leaking the same way, from the same line. */
-  function finish(parts) {
+  function finish(parts, undo) {
     clearPick();
     render();
+    if (undo) {
+      document.dispatchEvent(new CustomEvent('sp:toast', {
+        detail: { type: 'success', parts: parts, undo: undo }
+      }));
+      return;
+    }
     toast(parts, 'success');
   }
 
