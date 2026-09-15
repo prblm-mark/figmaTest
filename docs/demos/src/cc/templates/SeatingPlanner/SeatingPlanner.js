@@ -264,8 +264,8 @@
    * `querySelector` returns only the first. So the listener bound to the no-plan button and the
    * one actually on screen in the `?state=plan` view did nothing at all.
    *
-   * Exactly the bug the Copy Plans pair already had, whose fix is delegated and whose comment
-   * says so: "there are two Copy Plans buttons in the header, one per section, and both were
+   * Exactly the bug the Import Plan pair already had, whose fix is delegated and whose comment
+   * says so: "there are two Import Plan buttons in the header, one per section, and both were
    * unwired". The same mistake, one element along, and it survived because the no-plan state is
    * the one you land on by default — so the button appears to work until you have a plan.
    *
@@ -2376,7 +2376,7 @@
     if (target) target.focus();
   }
 
-  /* Delegated: there are two Copy Plans buttons in the header, one per section, and both were
+  /* Delegated: there are two Import Plan buttons in the header, one per section, and both were
    * unwired. */
   document.addEventListener('click', function (event) {
     var btn = event.target.closest ? event.target.closest('[data-cp-open]') : null;

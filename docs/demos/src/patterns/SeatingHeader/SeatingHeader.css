@@ -855,7 +855,7 @@
   }
 
   /* Figma REVERSES the two global actions on mobile, leading with the primary "New Plan"
-   * where desktop leads with the secondary "Copy Plans". Built as drawn. Worth
+   * where desktop leads with the secondary "Import Plan". Built as drawn. Worth
    * confirming it is deliberate rather than a layer-order slip — see figma-notes. */
   .seating-header__actions > .btn--primary {
     order: -1;
