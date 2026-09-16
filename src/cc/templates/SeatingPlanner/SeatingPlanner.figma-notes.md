@@ -3786,3 +3786,44 @@ Desktop, multi-plan: FinTech Summit 2026 takes 4 plans → 8, named "FinTech Sum
 "(4)", each 20 × 10 and entirely empty; the source row still reads "4 plans"; toast "4 plans
 imported from FinTech Summit 2026."; the strip shows 8 cards. Search still filters the five rows
 and the footer follows it ("Fin" → 1 row, "1 event").
+
+## A 48px band where the detail vanished, and the inline panel moved to the row (2026-09-16)
+
+### The band: a container query and `isStacked()` measured different boxes
+
+Tapping a table between roughly 1140 and 1200 viewport showed nothing at all.
+
+`@container cs-page (max-width: 1023px)` measures the **content** box. `isStacked()` measured
+`getBoundingClientRect().width`, the **border** box — wider by the page's own inline padding, 48px.
+So across a 48px band the two disagreed outright: at a 1028px border box the content box is 980,
+the container query fired and hid the aside, while `isStacked()` returned false and parked the
+detail in it.
+
+Measured before: dead at container 1028 and 1048, alive at 1088. After: alive at every step of
+1100 / 1140 / 1160 / 1200 / 1240 / 1300 / 1400.
+
+`clientWidth` minus the inline padding is the content box exactly. This is the same trap already
+recorded for a 1px border shifting breakpoints by 2 — the same mismatch at 48px instead of 2, and
+big enough to be a dead zone rather than an off-by-one.
+
+### The inline panel now follows the ROW
+
+The detail is a full-width grid item (`grid-column: 1 / -1`). Inserted directly after the selected
+card it forced everything remaining in that row below it, so at three or four columns the grid
+visibly came apart — one card on a line of its own with a hole beside it.
+
+It now goes after the **last card sharing the selected card's row**. Rows above are untouched, rows
+below move down as a block, and the selected card's `--selected` colour is what ties the panel to
+its table.
+
+Row membership comes from the layout, not from arithmetic: cards sharing a rounded `top` are on a
+row. The grid is `auto-fit`, so nothing in JS knows the column count — which is exactly why
+`alignHeaders()` already groups this way.
+
+Safe to measure because the grid holds only cards at that moment: `render()` parks the detail,
+rebuilds the grid, then places it. Measuring with a previously inserted detail still in flow would
+read the rows it had itself displaced.
+
+Verified at 1, 2 and 3 columns: the cards preceding the panel always form complete rows (2 at one
+column with the second card selected, 2 at two columns, 3 at three), and the panel spans the full
+grid width.
