@@ -1532,3 +1532,36 @@ Desktop at 1728×1139, scrolled 500: chrome → pinned card **6**, card → shee
 54 (= 6 + 66 + 6 − 24), sheets ending 24 above the fold on the page's own bottom padding. Mobile
 402: the card stays `static` and the header → group gap is still 16. The pattern demo keeps all
 five sections, its one Table Header variant and its Room Layout row, with no minimise leftovers.
+
+## The Table Header pins at every width (2026-09-16)
+
+Reported as "<1200 the table header is not sticky", and it was: a `position: static` revert inside
+`@container cs-page (max-width: 1023px)` un-pinned it. Measured before the fix — static and
+scrolling off at viewport 402 / 760 / 1100 / 1160, sticky only from 1200.
+
+**Why 1200 and not 1023.** The rule is a container query and the report is a viewport number. The
+page's content box is roughly 175px narrower than the viewport — two 56px rails, 48px of page
+padding and the 15px scrollbar gutter — so a 1023px content box is a ~1198px window. The two
+numbers describe the same threshold.
+
+**Why the revert existed, and why it no longer applies.** It was written when the toolbar was the
+event header's bottom row: Figma's mobile frames scroll that header away outright, and pinning one
+row of a card that is itself leaving would have been a new design rather than the same one
+narrower. Detaching the toolbar changed the subject — it is now its own card holding the actions
+for the plan beneath it, and that is worth *more* on a narrow screen than a wide one. A phone
+shows three cards at a time, so without this the plan name and Add Table are gone by the fourth.
+
+Nothing else was needed. The sticky rule and its offset are unconditional, and the offset is
+expressed in the page's own padding, which already steps to 12 when stacked — so it pins 6px below
+the chrome at every width, the same 6 the card keeps from the sheets.
+
+### Verified
+
+Sticky at 402 / 760 / 1100 / 1160 / 1200 / 1300, each pinning at top 54 against a chrome ending at
+48. Hit-tested with `elementFromPoint` rather than reasoned from the cascade (the trap
+`feedback_container_type_no_stacking` records): with a table open so the inline detail is in the
+grid too, and the page scrolled 700, both the centre and the kebab edge of the pinned card return
+the card itself at 402, 760 and 1100 — nothing passes over it.
+
+**Flagged:** this diverges from Figma's mobile frames, which scroll the whole header group away.
+Applied on instruction and recorded so a later audit reads it as intent.
