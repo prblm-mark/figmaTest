@@ -3827,3 +3827,50 @@ read the rows it had itself displaced.
 Verified at 1, 2 and 3 columns: the cards preceding the panel always form complete rows (2 at one
 column with the second card selected, 2 at two columns, 3 at three), and the panel spans the full
 grid width.
+
+## Closing the inline detail animates (2026-09-16)
+
+Tapping the open card set the state and re-rendered in the same tick, so the panel vanished
+between two frames and every row below it snapped up. It now collapses first; the render runs
+after.
+
+**Height AND one row gap.** Animating the height to 0 is not enough on its own: a 0-height grid
+item still occupies a row with a gap either side, so the panel would fade away and the list would
+*still* jump by one `--ai-spacing-3` when the element finally left. A negative top margin cancels
+exactly that gap, so the final frame of the animation already IS the final layout and removing the
+element changes nothing. The gap is read off the grid rather than named, so it cannot drift from
+TableListing's own `gap`.
+
+**250ms, `--ai-transition-slow`** — the token's own "panel reveals" step, and this is a panel. The
+class carries only the timing; the geometry stays in the JS that measured it. `COLLAPSE_MS` in the
+fallback timer must stay in step.
+
+**`offsetHeight`, not `requestAnimationFrame`,** to flush the start height: synchronous, so there
+is no frame where the element has the class but no transition to run — and rAF does not fire at
+all under headless virtual time, which would have made this the one behaviour on this screen that
+could not be tested.
+
+**It always finishes.** `transitionend` can fail to arrive — a display change, a cancelled
+transition — and a state change must never be hostage to an animation, so a timer completes it
+regardless. Whichever fires first disarms the other.
+
+**An interrupted collapse cancels rather than completes.** Tapping a different card mid-animation
+used to be a real hazard: the first close's timer would fire later and set `tableId = null`,
+throwing away the selection the second tap had just made. `cancelCollapse()` cleans up *without*
+running the callback. `parkDetail()` calls it too, so a render from any other source cannot carry
+a half-collapsed element's inline sizing into the aside.
+
+`matchMedia` is used here for **reduced motion**, which is not the thing CLAUDE.md §4a bans it for
+— that rule is about layout state, where a docked SidebarMenu changes the column with no window
+resize. A motion preference has no container equivalent.
+
+### Verified
+
+Transitions do not advance under `--virtual-time-budget`, so this was verified structurally rather
+than by watching it: on close the class is added, `block-size` goes to `0px`, `margin-block-start`
+to `-8px` (the grid's measured row gap), the transition reads
+`block-size, margin-block-start, opacity / 0.25s` with `overflow: hidden`, and the element is
+still in the grid. After: parked in the aside, every inline style cleared, class removed, nothing
+selected. Interrupting mid-collapse keeps the new selection (Table 5) with no stale styles or
+class. Desktop is untouched — re-clicking the selected card leaves it selected and the detail in
+the aside.
