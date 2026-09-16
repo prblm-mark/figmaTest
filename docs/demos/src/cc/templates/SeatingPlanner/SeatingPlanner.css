@@ -971,16 +971,16 @@
     min-inline-size: 0;
   }
 
-  /* Closing the inline detail. `seating-app.js` sets the start height, adds this class, then
-   * writes the end values; the class carries only the timing, so the token lives in CSS and the
-   * geometry in the code that measured it.
+  /* Opening and closing the inline detail. `seating-app.js` writes the start values, adds this
+   * class, then writes the end values; the class carries only the timing, so the token lives in
+   * CSS and the geometry in the code that measured it.
    *
    * `overflow: hidden` is what makes a height transition legible rather than a clipped jump —
-   * without it the seat list would spill out of the shrinking box.
+   * without it the seat list would spill out of the box as it grows or shrinks.
    *
-   * `--ai-transition-slow` (250ms) is the "panel reveals" step, and this is a panel. COLLAPSE_MS
+   * `--ai-transition-slow` (250ms) is the "panel reveals" step, and this is a panel. DETAIL_MS
    * in the JS fallback timer must stay in step with it. */
-  .table-listing__grid > .table-detail.is-collapsing {
+  .table-listing__grid > .table-detail.is-animating {
     overflow: hidden;
     transition: block-size var(--ai-transition-slow),
                 margin-block-start var(--ai-transition-slow),
@@ -2484,11 +2484,11 @@
 }
 
 /* ── Reduced motion ─────────────────────────────────────────────────────────
- * `collapseDetail()` already skips the animation and closes immediately when this is set, so this
- * block is the belt to that braces: if the class is ever added by some other path, it must not
- * animate here either. */
+ * `animateDetail()` already skips the animation in both directions when this is set, so this block
+ * is the belt to that braces: if the class is ever added by some other path, it must not animate
+ * here either. */
 @media (prefers-reduced-motion: reduce) {
-  .table-listing__grid > .table-detail.is-collapsing {
+  .table-listing__grid > .table-detail.is-animating {
     transition: none;
   }
 }

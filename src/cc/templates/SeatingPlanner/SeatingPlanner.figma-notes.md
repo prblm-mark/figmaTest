@@ -3828,7 +3828,7 @@ Verified at 1, 2 and 3 columns: the cards preceding the panel always form comple
 column with the second card selected, 2 at two columns, 3 at three), and the panel spans the full
 grid width.
 
-## Closing the inline detail animates (2026-09-16)
+## Opening and closing the inline detail animate (2026-09-16)
 
 Tapping the open card set the state and re-rendered in the same tick, so the panel vanished
 between two frames and every row below it snapped up. It now collapses first; the render runs
@@ -3874,3 +3874,30 @@ still in the grid. After: parked in the aside, every inline style cleared, class
 selected. Interrupting mid-collapse keeps the new selection (Table 5) with no stale styles or
 class. Desktop is untouched — re-clicking the selected card leaves it selected and the detail in
 the aside.
+
+### Opening made symmetric (same day)
+
+One function, both directions, with the endpoints swapped — written that way because two
+near-copies are how the two ends acquire different durations or a different idea of the gap.
+
+**The class goes on AFTER the start values.** Opening starts from 0, which is a real change from
+the natural height; with the transition already armed that jump would animate too, so the panel
+would visibly collapse and then expand. Closing did not expose this, because its start value is
+the height the panel already had.
+
+**Natural height is measured before anything is written**, and it is the animation's open end in
+both directions. On open the element is already in the grid at its real height, because `render()`
+put it there — which is why opening renders *first* and then expands, the mirror of closing, which
+animates first and renders after.
+
+**Switching tables does not re-expand.** Moving from one open table to another swaps the contents
+of a panel that is already the right height; animating from 0 there would read as the panel
+closing and reopening, which is not what happened. Guarded on whether a table was already open.
+
+**Cleanup clears the inline sizing rather than writing the measured value back**, so the panel
+returns to sizing itself — assigning a seat while it is open still grows it.
+
+Verified: mid-open the class is on with `block-size` at the natural 625px, `margin-block-start: 0`,
+`opacity: 1` and a 0.25s transition; settled, every inline style is cleared, the class is gone and
+the height is natural. Switching tables leaves no class and no inline sizing, and selects the new
+table.
