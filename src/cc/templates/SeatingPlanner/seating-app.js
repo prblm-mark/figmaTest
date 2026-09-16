@@ -113,81 +113,100 @@
     var aside  = document.querySelector('[data-sp-aside]');
     /* A collapse in flight has inline sizing on this element; parking it would carry those styles
      * into the aside, where a 0-height detail rail is not a state anyone asked for. */
-    if (cancelCollapse) cancelCollapse();
+    if (cancelDetailAnim) cancelDetailAnim();
     if (detail && aside && detail.parentNode !== aside) aside.appendChild(detail);
   }
 
-  /* ── Closing the inline detail, smoothly ───────────────────────────────────────────────────
-   * Tapping the open card again used to set the state and re-render in the same tick: the panel
-   * vanished between two frames and every row below it snapped up. Now it collapses first and the
-   * render happens after.
+  /* ── Opening and closing the inline detail, smoothly ──────────────────────────────────────
+   * Both directions, one function, because they are the same animation with the endpoints
+   * swapped — and because writing them separately is how the two would end up with different
+   * durations or a different idea of the gap.
    *
-   * HEIGHT PLUS ONE ROW GAP. Animating the height to 0 is not enough on its own — a 0-height grid
-   * item still sits in a row with a gap either side of it, so the panel would fade to nothing and
-   * the list would still jump by one `--ai-spacing-3` when the element finally left. The negative
-   * top margin cancels exactly that gap, so the last frame of the animation is already the final
-   * layout and removing the element changes nothing.
+   * HEIGHT PLUS ONE ROW GAP. Animating the height alone is not enough: a 0-height grid item still
+   * sits in a row with a gap either side, so a close would fade to nothing and the list would
+   * STILL jump by one `--ai-spacing-3` as the element left, and an open would start 8px tall
+   * rather than flush. The margin cancels exactly that gap, so the closed end of the animation is
+   * byte-for-byte the layout with no panel in it.
    *
    * The gap is READ off the grid rather than named, so it cannot drift from TableListing's own
    * `gap` the way a second copy of the value would.
    *
-   * `offsetHeight` rather than `requestAnimationFrame` to flush the start height: it is
+   * NATURAL HEIGHT IS MEASURED FIRST, before anything is written. On open the element is already
+   * in the grid at its real height (`render()` put it there); on close it is at the height it has
+   * been showing. Either way that measurement is the animation's "open" end.
+   *
+   * `offsetHeight` rather than `requestAnimationFrame` to flush the start values: it is
    * synchronous, so there is no frame where the element has a class but no transition to run —
    * and rAF does not fire at all under headless virtual time, which would have made this the one
    * behaviour on the screen that could not be tested.
    *
-   * `matchMedia` here is REDUCED MOTION, not layout. CLAUDE.md 4a bans it for layout state because
-   * a docked SidebarMenu changes the column with no window resize; a motion preference is a
-   * genuine user/device setting and has no container equivalent.
+   * THE CLASS GOES ON AFTER THE START VALUES. Opening starts from 0, which is a real change from
+   * the natural height; with the transition already armed that jump would animate too and the
+   * panel would visibly collapse before expanding.
+   *
+   * `matchMedia` here is REDUCED MOTION, not layout. CLAUDE.md §4a bans it for layout state
+   * because a docked SidebarMenu changes the column with no window resize; a motion preference is
+   * a genuine device setting and has no container equivalent.
    *
    * ALWAYS FINISHES. `transitionend` can fail to arrive — a display change, a cancelled
-   * transition, an interrupted tap — and the state change must not be hostage to an animation, so
-   * a timer finishes it regardless. Whichever runs first wins; the other is disarmed. */
-  var COLLAPSE_MS = 250;              /* keep in step with --ai-transition-slow */
-  var COLLAPSING = 'is-collapsing';
-  var cancelCollapse = null;
+   * transition, an interrupted tap — and a state change must never be hostage to an animation, so
+   * a timer finishes it regardless. Whichever runs first disarms the other. */
+  var DETAIL_MS = 250;                /* keep in step with --ai-transition-slow */
+  var ANIMATING = 'is-animating';
+  var cancelDetailAnim = null;
 
-  function collapseDetail(done) {
-    /* A second tap during a collapse: abandon the first cleanly rather than letting its timer
-     * fire later and clobber the selection the new tap just made. */
-    if (cancelCollapse) cancelCollapse();
+  function animateDetail(opening, done) {
+    /* A second tap mid-animation: abandon the first cleanly rather than letting its timer fire
+     * later and clobber the selection the new tap just made. */
+    if (cancelDetailAnim) cancelDetailAnim();
 
     var detail = document.querySelector('[data-sp-detail]');
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!detail || !grid || !grid.contains(detail) || reduce) { done(); return; }
+    if (!detail || !grid || !grid.contains(detail) || reduce) { if (done) done(); return; }
 
-    var height = detail.getBoundingClientRect().height;
     var gap = parseFloat(window.getComputedStyle(grid).rowGap) || 0;
+    var natural = detail.getBoundingClientRect().height;
+    var shut = { h: 0, m: -gap, o: '0' };
+    var open = { h: natural, m: 0, o: '1' };
+    var from = opening ? shut : open;
+    var to   = opening ? open : shut;
 
-    detail.style.blockSize = height + 'px';
-    detail.classList.add(COLLAPSING);
+    detail.classList.remove(ANIMATING);
+    detail.style.blockSize = from.h + 'px';
+    detail.style.marginBlockStart = from.m + 'px';
+    detail.style.opacity = from.o;
     void detail.offsetHeight;                       /* flush, so the next write animates */
-    detail.style.blockSize = '0px';
-    detail.style.marginBlockStart = (-gap) + 'px';
-    detail.style.opacity = '0';
+
+    detail.classList.add(ANIMATING);
+    detail.style.blockSize = to.h + 'px';
+    detail.style.marginBlockStart = to.m + 'px';
+    detail.style.opacity = to.o;
 
     var timer = null;
 
     function cleanup() {
       if (timer) { window.clearTimeout(timer); timer = null; }
       detail.removeEventListener('transitionend', onEnd);
-      detail.classList.remove(COLLAPSING);
+      detail.classList.remove(ANIMATING);
+      /* Cleared, not set to the measured value: the panel goes back to sizing itself, so a seat
+       * being assigned while it is open still grows it. */
       detail.style.blockSize = '';
       detail.style.marginBlockStart = '';
       detail.style.opacity = '';
-      cancelCollapse = null;
+      cancelDetailAnim = null;
     }
 
     function onEnd(e) {
       if (e.target !== detail || e.propertyName !== 'block-size') return;
       cleanup();
-      done();
+      if (done) done();
     }
 
     detail.addEventListener('transitionend', onEnd);
-    timer = window.setTimeout(function () { cleanup(); done(); }, COLLAPSE_MS + 60);
-    cancelCollapse = cleanup;                       /* cancel = clean up WITHOUT running done */
+    timer = window.setTimeout(function () { cleanup(); if (done) done(); }, DETAIL_MS + 60);
+    cancelDetailAnim = cleanup;                     /* cancel = clean up WITHOUT running done */
   }
+
 
   /* The detail is ONE element that moves, not two copies — two would drift apart the moment
    * either changed. Desktop: it lives in the aside. Stacked: it sits directly after the selected
@@ -961,20 +980,25 @@
     /* Tapping the open card again closes it, but only when stacked — otherwise a mobile user has
      * no way back to the plain list, since the frame draws no close control on the inline detail.
      * On desktop the detail is a permanent rail and deselecting would just empty it. */
-    /* CLOSING ANIMATES FIRST, then re-renders — see `collapseDetail`. Everything else is
-     * unchanged: opening still renders immediately, because there is nothing on screen yet to
-     * animate away and a delay would just make the tap feel slow. */
+    /* BOTH DIRECTIONS ANIMATE — see `animateDetail`. Closing runs the animation and re-renders
+     * after it; opening renders first, because the panel has to exist at its natural height
+     * before there is anything to expand TO, and then expands from nothing. */
     if (isStacked() && state.tableId === id) {
-      collapseDetail(function () {
+      animateDetail(false, function () {
         state.tableId = null;
         render();
       });
       return;
     }
 
+    var wasOpen = !!state.tableId;
     state.tableId = id;
     render();
-    /* Only when it OPENED. Closing should leave the page where it is — scrolling on the way out
+    /* Expand only when the panel is ARRIVING. Moving from one open table to another swaps the
+     * contents of a panel that is already the right height — animating from 0 there would read as
+     * the panel closing and reopening, which is not what happened. */
+    if (!wasOpen) animateDetail(true, null);
+    /* Only on the way IN. Closing should leave the page where it is — scrolling on the way out
      * would move the list under a tap that was meant to dismiss something. */
     revealTable(id);
   }
