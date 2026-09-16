@@ -887,10 +887,16 @@
 
 /* ── Device: Mobile ────────────────────────────────────────────────────────
  * Both mobile frames drop the side panel entirely: the listing is full width, there is no
- * pill, and a tapped table's detail appears INSIDE the card grid directly beneath it
- * (3515:228026 puts a Table Detail instance between two Table Cards). SeatingPlanner.js
- * moves the one detail element between here and the aside, so there is a single instance
- * rather than two copies to keep in sync.
+ * pill, and a tapped table's detail appears INSIDE the card grid (3515:228026 puts a Table
+ * Detail instance between two Table Cards). `seating-app.js` moves the one detail element
+ * between here and the aside, so there is a single instance rather than two copies to keep in
+ * sync.
+ *
+ * BENEATH THE ROW, not beneath the card (designer, 2026-09-16). Figma only ever draws this at one
+ * column, where the two are the same thing; at three or four the full-width panel inserted after
+ * the card itself broke the row apart, stranding its remaining cards below with a hole beside the
+ * selected one. `placeDetail()` groups cards by their rendered `top` and inserts after the last of
+ * that row — the selected card's own colour is what ties the panel to it.
  *
  * Nothing is needed to hide the detail's header on mobile — TableDetail's own Device=Mobile
  * variants already drop it, and that is already in TableDetail.css. The card above supplies

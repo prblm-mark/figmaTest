@@ -78,8 +78,24 @@
   var STACK_MAX = 1023;
   var pageEl = document.querySelector('.cc-control__page') || document.body;
 
+  /* THE CONTENT BOX, not the border box — the box a container query actually measures.
+   *
+   * `getBoundingClientRect()` returns the BORDER box, so this used to read ~48px wider than the
+   * CSS did (the page's own inline padding). That is not a rounding difference, it is a 48px band
+   * where the two disagreed outright: at a 1028px border box the content box is 980, so
+   * `@container cs-page (max-width: 1023px)` fired — hiding the aside — while this returned false
+   * and parked the detail in it. Tapping a table in that band showed nothing at all. Measured:
+   * dead at container 1028 and 1048, alive again at 1088.
+   *
+   * `clientWidth` is the padding box (no border, no scrollbar), so subtracting the inline padding
+   * gives exactly the content box. Same trap as the 1px-border one already recorded — this is the
+   * same mismatch at 48px instead of 2. */
   function isStacked() {
-    return pageEl.getBoundingClientRect().width <= STACK_MAX;
+    var cs = window.getComputedStyle(pageEl);
+    var w = pageEl.clientWidth
+          - (parseFloat(cs.paddingInlineStart) || 0)
+          - (parseFloat(cs.paddingInlineEnd) || 0);
+    return w <= STACK_MAX;
   }
 
   /* Move the detail OUT of the grid before anything rebuilds the grid.
@@ -118,7 +134,31 @@
       if (aside && detail.parentNode !== aside) aside.appendChild(detail);
       return;
     }
-    if (card.nextSibling !== detail) card.parentNode.insertBefore(detail, card.nextSibling);
+
+    /* AFTER THE ROW, not after the card (designer, 2026-09-16). The detail is a full-width grid
+     * item, so inserting it straight after the selected card pushed every remaining card in that
+     * row below it — at three or four columns the grid visibly broke apart, with one card stranded
+     * on a line of its own and a hole beside it.
+     *
+     * Dropping it after the LAST card sharing the selected card's row keeps the row intact and
+     * still reads as belonging to it: the rows above are untouched, the rows below move down as a
+     * block, and the selected card's own `--selected` colour is what ties the panel to the table.
+     *
+     * Row membership comes from the LAYOUT, not from arithmetic on a column count — cards sharing
+     * a rounded `top` are on a row. Exactly the grouping `alignHeaders()` already does, and for
+     * the same reason: the column count here is `auto-fit`, so nothing in JS knows it.
+     *
+     * Safe to measure because the grid holds only cards at this point: `render()` parks the detail
+     * in the aside, rebuilds the grid, and only then calls this. Measuring with a previously
+     * inserted detail still in the flow would read the rows it had itself displaced. */
+    var cards = grid.querySelectorAll('[data-sp-card]');
+    var rowTop = Math.round(card.getBoundingClientRect().top);
+    var last = card;
+    for (var i = 0; i < cards.length; i++) {
+      if (Math.round(cards[i].getBoundingClientRect().top) === rowTop) last = cards[i];
+    }
+
+    if (last.nextSibling !== detail) last.parentNode.insertBefore(detail, last.nextSibling);
   }
 
   /* ── Bring a table to the top of the list, stacked only ─────────────────────────
