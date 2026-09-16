@@ -914,18 +914,21 @@
     flex-direction: column;
   }
 
-  /* The header does NOT retire when stacked. Figma's mobile frames show it scrolling away
-   * outright — the listing sits at y=-79 in the tapped frame with no bar left behind — and the
-   * toolbar is a different shape at this width, so pinning it would be a new design rather than
-   * the same one narrower. `position` is reverted explicitly rather than left to the negative
-   * inset having nothing to do: sticky also creates a stacking context, and that should go too.
+  /* THE TABLE HEADER PINS AT EVERY WIDTH (designer, 2026-09-16). It used to be reverted to
+   * `static` here, and the reasoning was sound for what it was then: the toolbar was the event
+   * header's bottom row, Figma's mobile frames scroll that header away outright, and pinning a
+   * row of a card that is itself scrolling away would have been a new design rather than the same
+   * one narrower.
    *
-   * `flex: 0 0 auto` on the row and the grid's `overflow: visible` used to live here. They are
-   * unconditional now — the page is the only scroller at every width — so the stacked layout no
-   * longer differs from the wide one in how it scrolls, only in how it is arranged. */
-  .cc-control__page--seating .seating-header--table {
-    position: static;
-  }
+   * Detaching it changed the subject. It is now its own card holding the actions for the plan
+   * below it, and that is worth more on a narrow screen than a wide one — a phone shows three
+   * cards at a time, so without this the plan name and Add Table are gone by the fourth.
+   *
+   * Nothing else is needed: the sticky rule and its offset are unconditional, and the offset is
+   * expressed in the page's own padding, which already steps to 12 here. The sheets below stay
+   * static when stacked — they are not rails at this width — so the cards simply pass under it. */
+
+
 
 
 
