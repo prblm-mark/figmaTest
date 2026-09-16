@@ -231,6 +231,42 @@
    * Figma draws opening 48px BELOW the header's bottom edge — paint over them and over the card
    * grid passing underneath. */
   z-index: 2;
+  /* Declared on the REST state so the shadow fades in AND out. On `.is-stuck` alone it would
+   * animate in and snap away — the same rule the hover-transition pattern records. */
+  transition: box-shadow var(--ai-transition-default);
+}
+
+/* Only once it has actually STUCK, not merely once the page has moved (designer, 2026-09-16).
+ * `SeatingPlanner.js` sets the class by comparing this card's top with its group's; the two
+ * coincide at rest and part the moment it pins.
+ *
+ * `--ai-shadow-sm` is the same weight the chrome uses for the same job on the same screen —
+ * separating something pinned from the content passing under it. */
+.cc-control__page--seating .seating-header--table.is-stuck {
+  box-shadow: var(--ai-shadow-sm);
+}
+
+/* ── Scrolling a card clear of the pinned Table Header ──────────────────────
+ * `revealTable()` uses `scrollIntoView({ block: 'start' })`, which aligns a card's top with the
+ * top of the SCROLLPORT — and the Table Header is pinned over exactly that spot, so the tapped
+ * card's name and tier landed underneath it.
+ *
+ * `scroll-margin-block-start` is what `scrollIntoView` offers for this: it shifts the landing
+ * point without moving the element or touching the JS, and it applies to any future caller —
+ * keyboard navigation, a deep link to a table — rather than only the one call site.
+ *
+ * THE VALUE IS THE PINNED CARD'S FOOTPRINT: the 6px above it, its own measured height, and the
+ * 6px it keeps from what follows. `--sp-toolbar-h` is published on the page by SeatingPlanner.js
+ * and inherits down to here, so the landing point follows the card growing — a wrapped plan name
+ * makes it taller and this moves with it. The `--ai-spacing-11` fallback is the one the rail
+ * offsets already use, for the no-JS case.
+ *
+ * The two 6s are written separately for the reason `--sp-rail-top` records: different gaps that
+ * happen to share a value today. */
+.table-listing__grid > .table-card {
+  scroll-margin-block-start: calc(var(--ai-spacing-2)
+                                  + var(--sp-toolbar-h, var(--ai-spacing-11))
+                                  + var(--ai-spacing-2));
 }
 
 /* ── The plan group ─────────────────────────────────────────────────────────

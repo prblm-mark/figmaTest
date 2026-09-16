@@ -1563,5 +1563,49 @@ Sticky at 402 / 760 / 1100 / 1160 / 1200 / 1300, each pinning at top 54 against 
 grid too, and the page scrolled 700, both the centre and the kebab edge of the pinned card return
 the card itself at 402, 760 and 1100 — nothing passes over it.
 
-**Flagged:** this diverges from Figma's mobile frames, which scroll the whole header group away.
-Applied on instruction and recorded so a later audit reads it as intent.
+Figma is being updated to match (designer, 2026-09-16).
+
+## A shadow when stuck, and a landing offset for the card below (2026-09-16)
+
+### The shadow
+
+`--ai-shadow-sm` on the pinned card — the same weight the chrome uses for the same job on this
+screen: separating something pinned from the content passing under it.
+
+**Only once it has actually STUCK**, which is a different question from the chrome's. The chrome
+cares whether the page has moved at all; this card only pins a couple of hundred pixels later,
+once the event header above it has gone. Showing the shadow from the first pixel of scroll would
+put it under a card still travelling down the page.
+
+**The test is arithmetic-free.** The card is its group's first child with no margin, so at rest
+their tops are identical; once it sticks the group keeps scrolling while the card holds, and the
+card's top rises above the group's. Comparing the two sidesteps the content-box question the
+sticky inset itself has to deal with — no padding, no border, no breakpoint in it.
+
+The transition is declared on the REST state so the shadow fades in *and* out; on `.is-stuck`
+alone it would animate in and snap away.
+
+### The landing offset
+
+`revealTable()` calls `scrollIntoView({ block: 'start' })`, which aligns a card's top with the top
+of the scrollport — exactly where the Table Header is now pinned, so a tapped card's name and tier
+landed underneath it.
+
+`scroll-margin-block-start` on the card is what `scrollIntoView` offers for this: it moves the
+landing point without moving the element or touching the JS, and it applies to any future caller
+— keyboard navigation, a deep link to a table — not just the one call site.
+
+The value is the pinned card's whole footprint: the 6px above it, its own measured height, and the
+6px it keeps from what follows. `--sp-toolbar-h` is published on the page and inherits down, so
+the landing point follows the card growing — a wrapped plan name makes it taller and this moves
+with it.
+
+### Verified
+
+Shadow: absent at rest and at 40px of scroll (the header is still on screen), present at 600 with
+the class set, and gone again at the top. With the transition taken out of the picture the settled
+value reads `rgba(0,0,0,0.06) 0 1px 2px, rgba(0,0,0,0.1) 0 1px 3px` — `--ai-shadow-sm` exactly.
+
+Offset at 402: `scroll-margin-block-start` computes to 75px against a measured 63px card (63 + 12),
+and after a `scrollIntoView` the tapped card's top sits at 123 against the pinned card's bottom of
+117 — **6px clear**, the same gap as everywhere else in the group.

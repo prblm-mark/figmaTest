@@ -844,12 +844,34 @@
   var chrome = document.querySelector('.cc-control__chrome');
   if (!page || !chrome) return;
 
+  /* The Table Header gets its own shadow, and it needs a different question answered: the chrome
+   * cares whether the page has moved at all, this cares whether the card has actually STUCK —
+   * which happens a couple of hundred pixels later, once the event header above it has gone.
+   *
+   * ARITHMETIC-FREE TEST. The card is the group's first child with no margin, so at rest their
+   * tops are identical; once it sticks the group keeps scrolling up while the card holds, so the
+   * card's top rises above the group's. Comparing the two is immune to the content-box question
+   * that the sticky inset has to deal with — no padding, no border, no breakpoint in it. */
+  var stickyCard = page.querySelector('.seating-header--table');
+  var group = page.querySelector('.seating-group');
+
   var on = null;
+  var stuckOn = null;
+
   function sync() {
     var scrolled = page.scrollTop > 0;
-    if (scrolled === on) return;      /* scroll fires continuously; only touch the DOM on a flip */
-    on = scrolled;
-    chrome.classList.toggle('is-scrolled', scrolled);
+    if (scrolled !== on) {            /* scroll fires continuously; only touch the DOM on a flip */
+      on = scrolled;
+      chrome.classList.toggle('is-scrolled', scrolled);
+    }
+
+    if (stickyCard && group) {
+      var stuck = stickyCard.getBoundingClientRect().top - group.getBoundingClientRect().top > 1;
+      if (stuck !== stuckOn) {
+        stuckOn = stuck;
+        stickyCard.classList.toggle('is-stuck', stuck);
+      }
+    }
   }
 
   /* `passive` because this never calls preventDefault — without it the listener can block the
