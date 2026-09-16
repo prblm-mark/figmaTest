@@ -242,6 +242,17 @@
   gap: var(--ai-spacing-5);
   padding-inline: var(--ai-spacing-6);
   padding-block: var(--ai-spacing-5);
+  /* 16px leading (designer, 2026-09-16), so the rail's first card sits the same distance from the
+   * card edge as it does from the top and bottom — the block padding is already 16. The trailing
+   * side stays 24: nothing is flush against it, and the carousel's fade and arrows live there.
+   *
+   * ORDER IS LOAD-BEARING, the same trap `.seating-header__toolbar` documents: `padding-inline`
+   * above sets BOTH sides, so this must stay after it. Reversed, the shorthand would reset the
+   * start back to 24. It reads like a redundant pair and is not.
+   *
+   * Desktop only, with no query needed: the 767 block below re-declares the whole `padding`
+   * shorthand, which resets this along with everything else. */
+  padding-inline-start: var(--ai-spacing-5);
   border-block-end: 1px solid var(--ai-border-secondary);
   background-color: var(--ai-surface-primary);
   overflow-x: auto;
