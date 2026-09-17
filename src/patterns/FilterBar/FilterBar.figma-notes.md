@@ -254,6 +254,56 @@ timer that separates single-click-select from double-click-rename, so a test
 that waits less than that will see the panel still open and wrongly conclude the
 path is broken.
 
+## Export is a split control (2026-09-17)
+
+Export was a single `btn btn--secondary`. It is now the same split control the
+Seating Planner toolbar uses (designer: "use the same style as we did for the
+seating planner") — the label half runs the default export, the chevron half
+opens a format menu of **PDF / Excel (.xlsx) / CSV**.
+
+**Figma formalised the look, not the behaviour.** On the same day the designer
+added a Button Type `Secondary / Action` — base `3679:17496`, sm `3679:99941` —
+a *single* button with a full-height divider before a trailing icon, and
+supplied it as a **visual reference only**. The behaviour built here is the
+split control, which one button cannot provide: it needs two separate targets.
+
+The new Type's spec, recorded because it is what the look traces to:
+
+| | base `3679:17496` | sm `3679:99941` |
+|---|---|---|
+| height | `--ai-spacing-8` (40) | `--ai-spacing-7` (32) |
+| gap | `--ai-spacing-4` (12) | `--ai-spacing-3` (8) |
+| padding-inline | `--ai-spacing-4` (12) | `--ai-spacing-4` (12) |
+| text | `--ai-font-fluid-xs` (14) | `--ai-font-fluid-xxs` (12) |
+
+Both are `--ai-btn-secondary-bg` / `--ai-btn-secondary-border` / `--ai-radius-md`
+with a 16px trailing icon. Base and sm were fetched separately and **do differ
+beyond size** — the gap steps 12 → 8, which reading the base node alone would
+have missed.
+
+**The divider is not an element.** It is the shared border: the halves are
+pulled together by `-1px` so two adjacent 1px borders collapse into the single
+rule Figma draws instead of stacking to 2px. The hovered/focused half is lifted
+with `z-index: 1` so it paints its whole outline including that collapsed edge.
+
+### Open, on the Figma side
+
+- **No interactive states.** `Secondary / Action` exists only as `State=Default`
+  at two sizes — no Hover / Focus / Pressed / Disabled, where plain Secondary
+  has all five. The halves inherit `btn--secondary`'s states here.
+- **The two variants disagree on the Type name**: base is `Secondary / Action`
+  (spaces), sm is `Secondary/Action` (none). In Figma those are two distinct
+  Type values, so the axis currently reads as two types rather than one.
+- **The listing screens still draw a plain Export button** with no divider, so
+  the Listings page and the Button set now disagree.
+
+### Duplication, flagged
+
+`.seating-header__export-split` in `SeatingPlanner.css` is the same six rules.
+Two consumers now, and Figma has made it a formal Button Type — so it wants
+promoting to Button as a shared modifier rather than copied a third time. Not
+done here: that is a change to a core component, not to this pattern.
+
 ## Notes
 
 - Composition: Dropdown-as-views-trigger, Input search, no invented hover/focus (WCAG `:focus-visible` only).

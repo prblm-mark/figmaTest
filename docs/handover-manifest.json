@@ -841,9 +841,9 @@
         {
           "id": "listing-export",
           "category": "needs-backend",
-          "element": ".filter-bar__export (data-backend-todo=\"listing-export\")",
-          "current": "Export button renders and does nothing.",
-          "needs": "POST /control/<screen>/export { view, filters, sort } → a file URL or job id; should honour the current filter/sort state rather than exporting the unfiltered set."
+          "element": ".filter-bar__export split control (data-backend-todo=\"listing-export\")",
+          "current": "Split control: the label half and three menu rows (PDF / Excel .xlsx / CSV) all carry data-filter-export but nothing is wired — no handler, no request, no download.",
+          "needs": "POST /control/<screen>/export { view, filters, sort, format } -> a file URL or job id. `format` is new: the control offers pdf | xlsx | csv, and the label half runs the default (pdf). Must honour the current filter/sort state rather than exporting the unfiltered set. Same shape the Seating Planner export needs (seating-export), so one endpoint contract should cover both."
         }
       ]
     }
