@@ -387,9 +387,10 @@ more`) and the drop back to Default on an empty list. So the chip's selected
 state, its label and its separator all fall out of that one call — the bar
 computes none of them.
 
-Option rows commit immediately (those types have no Apply); a single-select
-also closes, a multi-select stays open. Checkbox lists and plain fields commit
-on Apply.
+**Everything commits on Apply** — every FilterDropdowns type but More Filters
+has the button (3039:5639). Picking an option row closes the MENU and fills the
+field; the chip changes only when Apply is pressed. Nothing in the bar listens
+to `filter-dropdown-item:toggle` for that reason.
 
 **Gotcha — the option rows are a separate component.** `FilterDropdowns.js`
 only CONSTRAINS `.filter-dropdown-item` to single-select; the click handler
@@ -400,7 +401,18 @@ hit exactly this.
 ## Adding a filter to the bar
 
 Clicking a facet in the More Filters panel emits `filter-bar:add-filter`
-(bubbles, `detail: { name }`) and closes the panel. The bar deliberately does
+(bubbles, `detail: { name }`). More Filters is the one type with no Apply, so
+the click IS the commit — and the panel stays OPEN: the facets are a pick-list
+several of which are usually wanted, and the picked one leaves the list as it
+goes. It closes on the outside click, like any panel.
+
+That last part needs `composedPath()`, not `root.contains(e.target)`: the
+facet has been removed from the DOM by the time the document-level click
+listener runs, so the live-DOM check reports the click as OUTSIDE the bar and
+closes the panel the user is still picking from. The path is captured at
+dispatch and still remembers where the click came from.
+
+The bar deliberately does
 **not** build the chip: it does not know what picker that filter wants. The
 screen owns the filter config, so it listens and splices the chip in before the
 Add Filters chip, then removes the facet from the panel.

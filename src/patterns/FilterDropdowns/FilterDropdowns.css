@@ -220,6 +220,18 @@
 }
 
 /* The options menu floats below the field like a real dropdown */
+/* The option menu hangs off the FIELD, not off the card.
+ *
+ * Every type except More Filters carries an Apply button (3039:5639 — the
+ * card is 136px tall in all of them, which is exactly label + field + Apply),
+ * and Figma anchors the menu 4px under the field, letting it OVERLAY Apply
+ * while open. Anchoring to the card instead would push the menu below the
+ * button. So `.input` is the containing block, and the menu is a child of it
+ * rather than a sibling. */
+.filter-dropdowns--select .input {
+  position: relative;
+}
+
 .filter-dropdowns__menu {
   position: absolute;
   top: 100%;

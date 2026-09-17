@@ -128,30 +128,36 @@
 
   var FILTER_PANELS = {
     /* Type=Select Options w/subtext (3039:5628) — a field that opens a
-       single-select option list; no Apply, per the pattern. */
+       single-select option list, then Apply. Picking an option closes the
+       MENU and fills the field; Apply commits it to the chip. */
     'select-options': function (f) {
       return '<div class="filter-dropdowns filter-dropdowns--select" data-filter-dropdowns data-select>' +
         '<div class="input"><label class="input__label">' + esc(f.label) + '</label>' +
           '<div class="input__wrap filter-dropdowns__trigger" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="false" aria-label="' + esc(f.name) + '" data-select-trigger>' +
             '<span class="filter-dropdowns__value filter-dropdowns__value--placeholder" data-select-value>' + esc(f.placeholder) + '</span>' +
             '<i data-lucide="chevron-down" class="input__icon filter-dropdowns__chevron" aria-hidden="true"></i>' +
+          '</div>' +
+          '<div class="filter-dropdown-item-group filter-dropdowns__menu" role="listbox" aria-multiselectable="false" aria-label="' + esc(f.name) + ' options" hidden data-select-menu>' +
+            optionRows(f.options, false) +
           '</div></div>' +
-        '<div class="filter-dropdown-item-group filter-dropdowns__menu" role="listbox" aria-multiselectable="false" aria-label="' + esc(f.name) + ' options" hidden data-select-menu>' +
-          optionRows(f.options, false) +
-        '</div></div>';
+        '<button type="button" class="btn btn--primary filter-dropdowns__apply" data-filter-dropdowns-apply>Apply</button>' +
+      '</div>';
     },
 
-    /* Type=Predictive Text Options (3039:5625). Figma's plain Predictive Text
-       is consolidated into this one — predictive always reveals options. */
+    /* Type=Predictive Text Options (3039:5625), then Apply. Figma's plain
+       Predictive Text is consolidated into this one — predictive always
+       reveals options. */
     predictive: function (f) {
       return '<div class="filter-dropdowns filter-dropdowns--select" data-filter-dropdowns data-predictive>' +
         '<div class="input"><label class="input__label">' + esc(f.label) + '</label>' +
           '<div class="input__wrap">' +
             '<input class="input__control" type="text" placeholder="' + esc(f.placeholder) + '" aria-label="' + esc(f.name) + '" data-predictive-input>' +
+          '</div>' +
+          '<div class="filter-dropdown-item-group filter-dropdowns__menu" role="listbox" aria-label="' + esc(f.name) + ' options" hidden data-select-menu>' +
+            optionRows(f.options, false) +
           '</div></div>' +
-        '<div class="filter-dropdown-item-group filter-dropdowns__menu" role="listbox" aria-label="' + esc(f.name) + ' options" hidden data-select-menu>' +
-          optionRows(f.options, false) +
-        '</div></div>';
+        '<button type="button" class="btn btn--primary filter-dropdowns__apply" data-filter-dropdowns-apply>Apply</button>' +
+      '</div>';
     },
 
     /* Type=Multi Select (3039:5629) — checkbox list + Apply. `--list` is the

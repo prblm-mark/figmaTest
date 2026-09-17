@@ -274,8 +274,19 @@ function wireChipPanels(root) {
     }
   });
 
+  /* "Was this click inside the bar?" — asked of the event's PATH, not of the
+     live DOM. Picking a More Filters facet removes that facet (it has moved to
+     the bar), so by the time this document-level listener runs the target is
+     detached and `root.contains(target)` reads false — closing the panel the
+     user is still picking from. composedPath() is captured at dispatch, so it
+     still remembers where the click came from. */
+  const cameFromBar = (e) => {
+    const path = typeof e.composedPath === 'function' ? e.composedPath() : null;
+    return path && path.length ? path.indexOf(root) !== -1 : root.contains(e.target);
+  };
+
   document.addEventListener('click', (e) => {
-    if (!root.contains(e.target)) closeAll(null);
+    if (!cameFromBar(e)) closeAll(null);
   });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeAll(null);
@@ -315,18 +326,11 @@ function wireChipPanels(root) {
     }
   };
 
-  /* Option rows commit immediately — there is no Apply on those types. A single
-     select also closes, since the choice is made; a multi-select must stay open
-     so more can be ticked. */
-  root.addEventListener('filter-dropdown-item:toggle', (e) => {
-    const panel = e.target.closest('.filter-bar__panel');
-    if (!panel) return;
-    sync(panel);
-    const menu = e.target.closest('[data-select-menu]');
-    if (menu && menu.getAttribute('aria-multiselectable') !== 'true') closeAll(null);
-  });
-
-  /* Checkbox lists and plain fields commit on Apply. */
+  /* EVERY picker commits on Apply — 3039:5639 gives all of them the button,
+     More Filters alone excepted. So picking an option is not yet a filter: it
+     closes the MENU and fills the field, and the chip changes only when Apply
+     is pressed. Nothing listens to `filter-dropdown-item:toggle` here for that
+     reason. */
   root.addEventListener('filter-dropdowns:apply', (e) => {
     const panel = e.target.closest('.filter-bar__panel');
     if (!panel) return;
@@ -352,13 +356,18 @@ function wireChipPanels(root) {
   /* Add Filters: picking a facet inside the More Filters panel should put that
      filter on the bar. The bar cannot build the new chip — it does not know
      what picker the filter wants — so it reports the choice and the screen,
-     which owns the config, re-renders. */
+     which owns the config, builds it.
+
+     More Filters is the one type with no Apply (3039:5637), so a click IS the
+     commit. The panel deliberately stays open afterwards: the facets are a
+     pick-list several of which are usually wanted, and the picked one leaves
+     the list as it goes, so the remaining choices stay in front of the user.
+     It closes on the outside click / Escape handled above, like any panel. */
   root.addEventListener('click', (e) => {
     const facet = e.target.closest('.filter-bar__panel .filter-item');
     if (!facet) return;
     const name = facet.getAttribute('data-filter-name');
     if (!name) return;
-    closeAll(null);
     root.dispatchEvent(new CustomEvent('filter-bar:add-filter', {
       bubbles: true,
       detail: { name },
