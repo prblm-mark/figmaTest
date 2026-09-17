@@ -1,0 +1,63 @@
+/* Listing Screen — Control Centre template
+ * Figma: page "Listings" 3644:125909
+ *        Default · Desktop 3645:148870 / Default · Mobile 3648:161126
+ *
+ * The template behind ~400 Control Centre screens. Each screen differs
+ * only in its datatable Type and its default filter set, both of which
+ * are data (listing-data.js), not CSS.
+ *
+ * SCOPE OF THIS FILE
+ * Deliberately small. The shell (sidebar, chrome, scrolling page) is
+ * ControlScreen's — this template reuses `.cc-control__*` wholesale
+ * rather than forking it, exactly as SeatingPlanner does, because in
+ * Figma both screens are instances of the same "CC Shell" component.
+ * The datatable's Orders styling lives with its component in
+ * Datatables.css (`.datatables--orders`), since Type=Orders is a
+ * variant of Datatables, not of this template.
+ *
+ * So all that is left here is the content column itself.
+ */
+
+/* ── Page content column ─────────────────────────────────
+ * Figma "Frame 1" (I3645:147421;4291:8836;3645:147644): a plain
+ * vertical stack, FilterBar then Datatables, 12px apart.
+ *
+ * This wrapper exists because `.cc-control__page` sets gap
+ * --ai-spacing-7 (32px) for ControlScreen's multi-section dashboard,
+ * and the listing needs --ai-spacing-4 (12px). Overriding the page's
+ * own gap would change it for anything else dropped on the page, so
+ * the listing owns its spacing in its own box.
+ *
+ * `min-inline-size: 0` so the table can shrink inside the flex column
+ * instead of forcing the page to scroll sideways — the intrinsic fix
+ * CLAUDE.md §4a asks for, applied before any breakpoint.
+ */
+
+.cc-listing {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-4);
+  min-inline-size: 0;
+}
+
+/* The page already establishes the `cs-page` container and
+ * `isolation: isolate`; the listing adds no stacking context of its
+ * own, so an open FilterBar dropdown still paints above the table. */
+
+.cc-control__page--listing {
+  /* Figma inset is --ai-spacing-6 (24px), which .cc-control__page
+   * already applies — no override. This modifier exists as the hook
+   * for per-screen tweaks and to name the page in the markup. */
+  padding: var(--ai-spacing-6);
+}
+
+/* ── FilterBar in the listing context ────────────────────
+ * FilterBar is a full pattern already; it needs no restyling here.
+ * It must not shrink away from the table it filters, though — without
+ * this the flex column can compress the two-row bar when the chip row
+ * wraps.
+ */
+
+.cc-listing .filter-bar {
+  flex: 0 0 auto;
+}

@@ -439,6 +439,7 @@
       <button class="ds-sidebar__item" data-filter="chat">AI Chat <span class="ds-sidebar__count" id="sidebarChatCount"></span></button>
       <button class="ds-sidebar__item" data-filter="cc">Control Centre <span class="ds-sidebar__count" id="sidebarCcCount"></span></button>
       <button class="ds-sidebar__item" data-filter="seating">Seating Planner <span class="ds-sidebar__count" id="sidebarSeatingCount"></span></button>
+      <button class="ds-sidebar__item" data-filter="listing">Listing Screens <span class="ds-sidebar__count" id="sidebarListingCount"></span></button>
       <button class="ds-sidebar__item" data-filter="proto">Prototypes <span class="ds-sidebar__count" id="sidebarProtoCount"></span></button>
     </div>
   </aside>
@@ -1393,6 +1394,24 @@
       </div>
     </div>
 
+    <div class="ds-section" data-section="listing">
+      <p class="ds-section__label">Listing Screens <span class="ds-section__label-count" id="listingCount"></span></p>
+      <div class="ds-subsection">
+        <p class="ds-subsection__label">Templates</p>
+        <nav class="ds-grid" aria-label="Listing Screen templates">
+
+        <a href="src/cc/templates/ListingScreen/ListingScreen.html" class="ds-card" data-category="listing" data-tier="template" data-name="Listing Screen · Orders">
+            <div class="ds-card__icon"><i data-lucide="table-2" aria-hidden="true"></i></div>
+            <div class="ds-card__body">
+              <p class="ds-card__label">Listing Screens</p>
+              <h3 class="ds-card__name">Listing Screen · Orders</h3>
+            </div>
+          </a>
+
+        </nav>
+      </div>
+    </div>
+
     <div class="ds-section" data-section="proto">
       <p class="ds-section__label">Prototypes <span class="ds-section__label-count" id="protoCount"></span></p>
       <nav class="ds-grid" aria-label="Prototypes">
@@ -1478,6 +1497,7 @@
       'chat': 'AI Chat',
       'cc': 'Control Centre',
       'seating': 'Seating Planner',
+      'listing': 'Listing Screens',
       'proto': 'Prototypes'
     };
 
@@ -1489,13 +1509,14 @@
     };
 
     function updateCounts() {
-      var ds = 0, chat = 0, cc = 0, seating = 0, proto = 0;
+      var ds = 0, chat = 0, cc = 0, seating = 0, listing = 0, proto = 0;
       cards.forEach(function (c) {
         if (!c.hidden) {
           if (c.dataset.category === 'ds') ds++;
           else if (c.dataset.category === 'chat') chat++;
           else if (c.dataset.category === 'cc') cc++;
           else if (c.dataset.category === 'seating') seating++;
+          else if (c.dataset.category === 'listing') listing++;
           else if (c.dataset.category === 'proto') proto++;
         }
       });
@@ -1503,12 +1524,14 @@
       document.getElementById('chatCount').textContent = '(' + chat + ')';
       document.getElementById('ccCount').textContent = '(' + cc + ')';
       document.getElementById('seatingCount').textContent = '(' + seating + ')';
+      document.getElementById('listingCount').textContent = '(' + listing + ')';
       document.getElementById('protoCount').textContent = '(' + proto + ')';
-      document.getElementById('sidebarAllCount').textContent = '(' + (ds + chat + cc + seating + proto) + ')';
+      document.getElementById('sidebarAllCount').textContent = '(' + (ds + chat + cc + seating + listing + proto) + ')';
       document.getElementById('sidebarDsCount').textContent = '(' + ds + ')';
       document.getElementById('sidebarChatCount').textContent = '(' + chat + ')';
       document.getElementById('sidebarCcCount').textContent = '(' + cc + ')';
       document.getElementById('sidebarSeatingCount').textContent = '(' + seating + ')';
+      document.getElementById('sidebarListingCount').textContent = '(' + listing + ')';
       document.getElementById('sidebarProtoCount').textContent = '(' + proto + ')';
     }
 

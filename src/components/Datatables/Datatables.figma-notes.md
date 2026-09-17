@@ -7,7 +7,7 @@
 - **Tier:** `Component` → built into `src/components/Datatables/`
 - URL: https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2562-8289
 
-## Variant matrix (9 variants)
+## Variant matrix (11 variants)
 
 Properties: **Type × Device × Overflow Content**.
 
@@ -22,8 +22,33 @@ Properties: **Type × Device × Overflow Content**.
 | 2764:2397 | Whos Online | Desktop | Scroll | ✅ via Avatar + Button cells in body rows |
 | 2764:2715 | Whos Online | Mobile | Scroll | ✅ via `.datatables--mobile-scroll` + 2-column row (User, Account) |
 | 2764:2980 | Whos Online | Mobile | Trigger | ✅ via 2-column row (User, Login) + kebab expand for Account/Touch |
+| 3648:164786 | **Orders** | Desktop | Scroll | ✅ via `.datatables--orders`, rendered from config |
+| 3648:164467 | **Orders** | Mobile | Trigger | ✅ via `.datatables--orders` + container query (ORDER + CUSTOMER only) |
 
 Type × Device are pure layout/style differences. Overflow Content is a markup difference: Scroll uses normal table rows; Trigger uses paired `<tr>` rows where the second row holds a hidden `<dl>` revealed when its sibling row's kebab checkbox is checked.
+
+The **Orders** type (added 2026-09-17 for the Listing Screen template) is the first
+Type driven by a **data renderer** rather than hand-authored rows — see
+`src/cc/templates/ListingScreen/`. It has no Desktop-Trigger or Mobile-Scroll variant in
+Figma, so the set is 11, not 12.
+
+Everything Orders-specific is scoped to `.datatables--orders`. That is deliberate: the
+Orders design disagrees with the values the earlier three Types were built from, and the
+designer's call (2026-09-17) was to scope rather than migrate so Pagination / Search /
+Whos Online keep the rendering they were signed off with. The deltas:
+
+| Element | Types 1–3 | Orders |
+|---|---|---|
+| Toolbar background | `--ai-datatable-table-header-bg` | `--ai-surface-primary` (desktop only; mobile reverts) |
+| Footer background | `--ai-datatable-table-footer-bg` | `--ai-surface-primary` (desktop only) |
+| `__user-name` weight | `--ai-font-bold` | `--ai-font-semibold` |
+| `__user-role` | `--ai-font-body` / medium / `--ai-text-contrast` | `--ai-font-title` / regular / `--ai-text-secondary` |
+| `__user-cell` gap | `--ai-spacing-3` | `--ai-spacing-4` |
+| `__page-btn--active` bg | `--ai-datatable-table-border` | `--ai-datatable-table-footer-bg` |
+| `__select` height | `--ai-spacing-8` (40px) | `--ai-spacing-7` (32px) |
+
+Only the toolbar background difference is invisible in CC light — the two tokens both
+resolve to `#ffffff` there and diverge only in CC dark.
 
 The **Whos Online** type combines the page-size selector AND the search input in a single toolbar (no action buttons). Body rows compose Avatar + Portraits in the USER cell and a tertiary Button in the ACCOUNT cell; the TOUCH column (Desktop only) shows a centred Lucide `fingerprint` icon and is **not sortable**.
 

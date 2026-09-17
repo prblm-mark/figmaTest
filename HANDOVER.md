@@ -306,6 +306,42 @@ Reads/writes `SeatingPlan`, `Table`, `TableSeat` (data model on the parent task)
 
 `grep -rn "TODO(backend:SeatingPlanner)" src/`
 
+## Surface: ListingScreen
+
+`src/cc/templates/ListingScreen/` — **the template behind roughly 400 Control Centre
+screens**. They share one layout (FilterBar above a datatable) and differ in only two
+things: which **datatable Type** renders and which **default filters** show.
+
+The single most useful thing to know before wiring this: **the screen is already data-driven.**
+`ListingScreen.js` reads only `columns`, `rows` and `page` from a config object, and builds the
+header, the body, the mobile detail rows and the pagination from it. The mock lives in
+`listing-data.js` under `LISTING_SCREENS.orders`. Replacing it with a real payload is a data
+change — there is no hand-authored `<tr>` to delete, and no markup to touch.
+
+So the endpoint should be **per screen, not per entity** (`/control/<screen>`), or you will
+write it 400 times. Orders is the first and one of the more complicated ones, which is why it
+was chosen: live at <https://www.affino.com/control/orders>.
+
+| Marker | Element | Current | Needs | Status |
+|---|---|---|---|---|
+| `listing-orders-rows` | `.datatables--orders` | 10 rows, the 296 total, the `1–10` range and 3 pages are mock constants transcribed from Figma. The sort, page-size and pagination controls all render but change nothing | `GET /control/orders?view=&filters[]=&sort=&dir=&page=&per_page=` → `{ columns[], rows[], page:{ from,to,total,current,pages } }`. Row shape already matches the renderer: `{ orderNo, customer:{ name, role?, avatar?, initials? }, account, accountCode, qty, orderTotal }` | needs-backend |
+| `listing-default-filters` | `.filter-bar` | The five chips (Customer, User Code, Account, Account Code, Order No.) are hard-coded as `LISTING_ORDERS_FILTERS`. Chips render but open nothing; **Save view** is inert | `GET /control/<screen>/filters` → `[{ name, type, options? }]` — the backend already decides the first five filters per screen. Plus saved-view CRUD for the *All Orders / My Orders* menu, and filter state persisted per user per screen | needs-backend |
+| `listing-export` | `.filter-bar__export` | Renders, does nothing | `POST /control/<screen>/export { view, filters, sort }` → file URL or job id. Must honour current filter/sort state, not export the unfiltered set | needs-backend |
+
+Two notes that will otherwise cost someone time:
+
+- **`customer` is a shape, not a string.** It carries an optional `role` (several rows have
+  none, by design) and either an `avatar` URL or `initials`. The initials form is what renders
+  the brand-tinted letter avatar. Don't flatten it to a name.
+- **Which columns survive on mobile is CSS, not data.** Columns marked `primary` stay; the rest
+  are moved into the kebab detail row by a **container query** against the table's own width.
+  Do not reintroduce `matchMedia` to do this — the CC content column changes width with no
+  window resize at all when the SidebarMenu docks (CLAUDE.md §4a).
+
+`grep -rn "TODO(backend:Listing)" src/`
+
+---
+
 ---
 
 ## Scope of this document
