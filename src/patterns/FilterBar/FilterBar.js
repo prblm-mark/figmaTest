@@ -141,6 +141,24 @@ function wireViews(root) {
     if (moreBtn) moreBtn.setAttribute('aria-expanded', 'false');
   };
 
+  /* Collapse EVERY row's … menu. Used when the saved-views panel itself
+     closes: a row menu left open is still open on the next open, so the
+     panel reappears showing Rename/Copy/Delete for a row the user may not
+     even have been acting on. */
+  const closeAllRowMenus = () => {
+    views.querySelectorAll('li').forEach(closeRowMenu);
+  };
+
+  /* Watch the panel's own open class rather than calling the above from each
+     close path. There are five: FilterBar's closeDropdowns() and selectView(),
+     plus Dropdown.js's trigger toggle, outside-click and Escape. Dropdown.js
+     owns three of them and emits no close event — it only removes the class —
+     so hooking the class is the one place that catches all five without
+     reaching into the shared component. */
+  new MutationObserver(() => {
+    if (!views.classList.contains('is-open')) closeAllRowMenus();
+  }).observe(views, { attributes: true, attributeFilter: ['class'] });
+
   views.addEventListener('click', (e) => {
     const renameBtn = e.target.closest('[data-filter-rename]');
     if (renameBtn && views.contains(renameBtn)) {

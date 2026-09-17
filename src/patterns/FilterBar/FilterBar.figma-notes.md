@@ -227,6 +227,33 @@ components patching one token says the token is wrong, not the components.
 in CC that it already has in the base theme, and let hover carry the grey. That
 makes all four blocks redundant — delete them when it lands.
 
+## Row menus collapse with the panel (2026-09-17)
+
+A saved-view row's … menu (Rename / Copy / Delete) stayed open when the panel
+around it closed, so re-opening the saved-views dropdown showed the menu still
+hanging off a row the user may not have been acting on.
+
+Every row menu is now collapsed whenever the panel loses `is-open`, watched with
+a **MutationObserver on the panel's class attribute** rather than by calling a
+close helper from each exit.
+
+That choice is deliberate: there are **five** ways this panel closes, and
+`FilterBar.js` owns only two of them (`closeDropdowns()` and `selectView()`).
+The other three — trigger toggle, outside click and Escape — belong to
+`Dropdown.js`, which emits **no close event**; it only removes the class. So
+hooking the class is the single place that catches all five without reaching
+into the shared Dropdown component.
+
+Verified against all five paths by driving real clicks and key events, and by
+re-running with the observer removed to confirm the test actually fails without
+it (Escape and trigger-toggle both leave the menu open, and the stale state then
+corrupts the next interaction).
+
+One gotcha for anyone testing this: selecting a row runs through a **220ms**
+timer that separates single-click-select from double-click-rename, so a test
+that waits less than that will see the panel still open and wrongly conclude the
+path is broken.
+
 ## Notes
 
 - Composition: Dropdown-as-views-trigger, Input search, no invented hover/focus (WCAG `:focus-visible` only).
