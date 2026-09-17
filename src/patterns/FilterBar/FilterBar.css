@@ -189,6 +189,47 @@
   padding: var(--ai-spacing-3);
 }
 
+/* ── Ghost buttons inside the saved-views menu ───────────
+ * The row menu (Rename / Copy / Delete) and the "New view" footer are
+ * `btn--tertiary`, which in the CC theme is NOT a ghost button: the CC token
+ * set gives `--ai-btn-tertiary-bg` a solid #e7edf0 at REST and a *lighter*
+ * #f2f4f5 on hover, so the ladder runs backwards and every one of these
+ * rendered as a permanent grey pill (designer, 2026-09-17: "none of the
+ * buttons in the view dropdown should have a bg by default, they should only
+ * be visible on mouseover").
+ *
+ * Restored here to the behaviour the `.dropdown-item` rows in the same panel
+ * already have — transparent at rest, `--ai-surface-secondary` on hover, which
+ * is the same #e7edf0 the buttons were showing at rest. So the grey is not
+ * removed, it is moved to where it belongs.
+ *
+ * Focus-visible is aligned to hover deliberately: left alone it would inherit
+ * the lighter `--ai-btn-tertiary-bg-hover`, so a keyboard user would get a
+ * weaker highlight than a mouse user on the same control.
+ *
+ * SCOPED, and it should not have to be. The real issue is the CC values for
+ * the tertiary ladder — every `btn--tertiary` in the Control Centre has it,
+ * not just these seven.
+ *
+ * This is now the FOURTH independent workaround for the same token bug:
+ * `.cc-header .btn--tertiary` (Header.css) and two selector groups in
+ * AiAssistant.css already force transparent, and AiAssistant restores the
+ * grey on hover with `var(--ai-btn-tertiary-bg)` — the same move as here,
+ * arrived at separately. Four components patching one token is the signal
+ * that the token is wrong, not the components. Flagged for the designer:
+ * giving `--ai-btn-tertiary-bg` the transparent value in CC that it already
+ * has in the base theme, and letting hover carry the grey, makes all four
+ * blocks redundant. That is the outcome to aim for. */
+
+.filter-bar__views .btn--tertiary {
+  background-color: transparent;
+}
+
+.filter-bar__views .btn--tertiary:hover,
+.filter-bar__views .btn--tertiary:focus-visible {
+  background-color: var(--ai-surface-secondary);
+}
+
 /* ── Chips row (row2) ────────────────────────────────── */
 .filter-bar__chips {
   display: flex;

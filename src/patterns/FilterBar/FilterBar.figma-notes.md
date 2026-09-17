@@ -191,6 +191,42 @@ it needed, so it wrapped and the row measured 60px instead of 36px. At Size=xs
 (13px text, 12px icon) it clears at either padding — the 8px is kept because it
 matches Figma, not because it is still holding the layout up.
 
+## Ghost buttons in the saved-views menu (2026-09-17)
+
+The row menu (Rename / Copy / Delete) and the "New view" footer are
+`btn btn--tertiary btn--sm`, and every one of them rendered as a **permanent
+grey pill**. Designer: "none of the buttons in the view dropdown should have a
+bg by default, they should only be visible on mouseover."
+
+The cause is not the FilterBar. In the **CC theme** the tertiary ladder runs
+backwards:
+
+| Token | Base theme | CC theme |
+|---|---|---|
+| `--ai-btn-tertiary-bg` (rest) | `transparent` | **#e7edf0** — visible |
+| `--ai-btn-tertiary-bg-hover` | #f8fafc | **#f2f4f5** — *lighter than rest* |
+
+So in CC a tertiary button is filled at rest and gets **lighter** on hover.
+Outside CC it behaves as the ghost button it is meant to be.
+
+Fixed by scoping `.filter-bar__views .btn--tertiary` to transparent, with
+`--ai-surface-secondary` on hover — the same `#e7edf0` the buttons were showing
+at rest, and the same value `.dropdown-item:hover` uses in the panel directly
+above. **The grey is not removed, it is moved to where it belongs.**
+`:focus-visible` is aligned to hover on purpose: left alone it inherits the
+lighter hover token, so a keyboard user would get a weaker highlight than a
+mouse user on the same control.
+
+**This is the fourth independent workaround for the same token bug.**
+`Header.css` forces `.cc-header .btn--tertiary` transparent, and `AiAssistant.css`
+does it for two more selector groups — restoring the grey on hover with
+`var(--ai-btn-tertiary-bg)`, the same move arrived at separately. Four
+components patching one token says the token is wrong, not the components.
+
+**The real fix is in Figma**: give `--ai-btn-tertiary-bg` the transparent value
+in CC that it already has in the base theme, and let hover carry the grey. That
+makes all four blocks redundant — delete them when it lands.
+
 ## Notes
 
 - Composition: Dropdown-as-views-trigger, Input search, no invented hover/focus (WCAG `:focus-visible` only).
