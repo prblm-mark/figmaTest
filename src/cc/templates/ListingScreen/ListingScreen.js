@@ -339,6 +339,21 @@
     return values.some(function (v) { return actual === v; });
   }
 
+  /* What the free-text search looks at: the text the table actually SHOWS.
+     Derived from the column config rather than from the row object, so it
+     cannot accidentally match a field the user cannot see — a row's avatar URL
+     would otherwise make every row a hit for "photos". By the same rule a
+     hidden field like `userCode` is not searchable; its own filter chip is. */
+  function searchableText(row, columns) {
+    return columns.map(function (col) {
+      var v = row[col.key];
+      if (v === null || v === undefined) return '';
+      if (col.type === 'user') return [v.name, v.role].filter(Boolean).join(' ');
+      if (col.type === 'text' || col.type === 'chip') return String(v);
+      return '';
+    }).join(' ').toLowerCase();
+  }
+
   function applyFilters(config) {
     var byName = {};
     config.defaultFilters.forEach(function (f) { byName[f.name] = f; });
@@ -351,11 +366,15 @@
       return (config.filterValues[name] || []).length &&
              byName[name] && byName[name].field;
     });
-    if (!active.length) return { rows: config.rows, filtered: false };
+    var query = (config.query || '').toLowerCase();
+    if (!active.length && !query) return { rows: config.rows, filtered: false };
 
     return {
       filtered: true,
       rows: config.rows.filter(function (row) {
+        /* Search and chips narrow together — a search inside a filtered view
+           searches that view, not the whole listing. */
+        if (query && searchableText(row, config.columns).indexOf(query) === -1) return false;
         return active.every(function (name) {
           return matches(row, byName[name], config.filterValues[name]);
         });
@@ -460,6 +479,7 @@
     config = Object.assign({}, config, {
       defaultFilters: (config.defaultFilters || []).slice(),
       moreFilters: (config.moreFilters || []).slice(),
+      query: '',
       /* name -> the values that chip currently holds. The bar reports these;
          they cannot be read back off a chip, whose label rolls 4+ values up
          into "<first>, and 3 more". */
@@ -552,6 +572,17 @@
       /* A row with no snapshot is one of the shipped mock views (or a brand-new
          empty one), which stand for the unfiltered listing. */
       restore(view && views.has(view) ? views.get(view) : baseline);
+    });
+
+    /* Free text from either search field. FilterBar holds the 3-character
+       threshold and reports '' below it, so there is nothing to re-check here.
+
+       Deliberately NOT part of a saved view: a view is a filter set, and the
+       search is a transient look inside whichever view is open. It survives
+       switching views for the same reason. */
+    document.addEventListener('filter-bar:search', function (e) {
+      config.query = (e.detail && e.detail.query) || '';
+      renderResults(root, config);
     });
 
     /* A chip committed (Apply) or was cleared — narrow the table. */

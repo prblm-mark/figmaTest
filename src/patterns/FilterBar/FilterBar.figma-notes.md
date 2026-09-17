@@ -465,3 +465,22 @@ screen keeps the snapshots, keyed by row element, and restores on select.
 
 TODO(backend:Filters): saved views are in memory — a reload restores the
 shipped set.
+
+
+## Search
+
+Both search fields — the persistent desktop one and the mobile takeover — are
+the same search, so they mirror each other and either drives it.
+
+`filter-bar:search` (bubbles, `{ query }`) fires on input. The bar owns the
+**3-character threshold** and reports `''` below it, so a consumer never has to
+re-check: one or two characters match most of a listing, and the table would
+thrash on the first keystroke then settle, which reads as a bug rather than a
+search. Typing within the threshold emits nothing at all.
+
+Leaving the mobile takeover (`search-exit`) clears the query via
+`root.clearSearch()` — otherwise a field that is no longer on screen would keep
+filtering.
+
+TODO(backend:Filters): the query belongs in the listing request, not in a
+client-side scan.

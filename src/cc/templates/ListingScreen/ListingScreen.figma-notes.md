@@ -350,3 +350,23 @@ Also fixed here: FilterBar's empty-view rule hid `.filter-bar__chips > .filter-i
 but a chip with a picker is WRAPPED in `.filter-bar__chip`, so the listing's
 chips stayed visible in an empty view. The wrapper now carries
 `.filter-bar__chip--add` so the rule can spare the Add Filters chip.
+
+
+## Search (pass 2e)
+
+Free text narrows the table alongside the chips — a search inside a filtered
+view searches that view, not the whole listing. The threshold lives in
+FilterBar; the screen just reacts to `filter-bar:search`.
+
+**What it looks at is derived from the COLUMN config, not the row object.**
+Scanning the row would match things the table never shows: every row would be a
+hit for "photos", because that is in the avatar URL. So `searchableText()` walks
+the columns and reads `text` / `chip` values plus a `user` cell's name and role.
+
+By the same rule the hidden `userCode` is **not** searchable — it is not on
+screen, and it has its own filter chip. Worth a check with the designer if the
+expectation is that search reaches fields the listing does not display.
+
+**Search is not part of a saved view**, and survives switching between them: a
+view is a filter set, and the search is a transient look inside whichever view
+is open. It therefore does not make the Save view CTA appear either.

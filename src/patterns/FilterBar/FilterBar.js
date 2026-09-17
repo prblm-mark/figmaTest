@@ -248,6 +248,45 @@ function wireViews(root) {
  * `.filter-bar__panel` sibling. The screen supplies the panel content, so the
  * same bar serves every listing screen.
  */
+/* Below this, a query is treated as no query at all. Short terms match most of
+   a listing, so the table would thrash on the first keystroke and then settle —
+   which reads as a bug rather than a search. */
+const SEARCH_MIN = 3;
+
+/* The bar has TWO search fields — the persistent desktop one and the mobile
+   takeover — and they are the same search, so they mirror each other. */
+function wireSearch(root) {
+  const fields = Array.from(root.querySelectorAll(
+    '.filter-bar__search .input__control, .filter-bar__search-bar .input__control'
+  ));
+  if (!fields.length) return;
+
+  let last = '';
+  const emit = (raw) => {
+    const query = raw.trim().length >= SEARCH_MIN ? raw.trim() : '';
+    if (query === last) return;   // typing within the threshold changes nothing
+    last = query;
+    root.dispatchEvent(new CustomEvent('filter-bar:search', {
+      bubbles: true,
+      detail: { query },
+    }));
+  };
+
+  fields.forEach((field) => {
+    field.addEventListener('input', () => {
+      fields.forEach((other) => { if (other !== field) other.value = field.value; });
+      emit(field.value);
+    });
+  });
+
+  /* Leaving the mobile takeover cancels the search. Without this the query
+     would keep filtering from a field that is no longer on screen. */
+  root.clearSearch = () => {
+    fields.forEach((f) => { f.value = ''; });
+    emit('');
+  };
+}
+
 function wireChipPanels(root) {
   const panelOf = (chip) => {
     if (!chip) return null;
@@ -469,6 +508,8 @@ function init(root) {
 
   wireChipPanels(root);
 
+  wireSearch(root);
+
   // Save View is revealed by wireChipPanels' refreshSaveView, from the real
   // signal — a chip holding values, or a filter added from More Filters. It
   // used to be faked here by merely OPENING the Add Filters chip, which showed
@@ -490,6 +531,7 @@ function init(root) {
         break;
       case 'search-exit':
         setMode(root, null);
+        if (typeof root.clearSearch === 'function') root.clearSearch();
         break;
       case 'new-view':
         closeDropdowns(root);
