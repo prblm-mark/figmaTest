@@ -78,10 +78,10 @@ var LISTING_ORDERS_FILTERS = [
     name: 'Account', type: 'multi-select',
     label: 'Filter by Account',
     options: [
-      { name: 'Jacobs Media', checked: true },
+      { name: 'Jacobs Media' },
       { name: 'Beckenham FC' },
       { name: 'The Stage' },
-      { name: 'The Creative Hub', checked: true },
+      { name: 'The Creative Hub' },
       { name: 'Innovate Solutions' },
       { name: 'Synergy Dynamics' }
     ]
@@ -102,11 +102,32 @@ var LISTING_ORDERS_FILTERS = [
 
 /* The "Add Filters" chip opens FilterDropdowns Type=More Filters (3039:5637):
  * the filters NOT already on the bar, as empty chips. Order-domain facets —
- * the pattern's own demo already ships this exact set. */
+ * the pattern's own demo already ships this exact set.
+ *
+ * These are full filter configs, not bare names, because picking one MOVES it
+ * onto the bar — where it needs the same `type` + `options` as any default
+ * filter to open a working dropdown.
+ *
+ * TODO(design:Listing): the five default filters have designer-assigned
+ * dropdown types (Customer = Selection Options, User Code / Account Code =
+ * Predictive, Account = Multi Select, Order No. = Text). These nine have not
+ * been assigned one, so each carries `type: 'text'` — the only type that needs
+ * no invented option list. Three of them clearly want a date picker, which
+ * FilterDropdowns already provides (Type=Date Range / Date In the last / Date
+ * Equal To) but this screen does not yet build; the status/method/type facets
+ * want Multi Select once their real option lists are known. Changing a type
+ * here is a one-word edit — no template change.
+ */
 var LISTING_ORDERS_MORE_FILTERS = [
-  'Order Date', 'Payment Date', 'External Order ID', 'Order Status',
-  'Order Method', 'Order Type', 'Sub Order Type', 'Payment Status',
-  'Catalogue Item'
+  { name: 'Order Date',         type: 'text', label: 'Filter by Order Date',         placeholder: 'Enter a date' },
+  { name: 'Payment Date',       type: 'text', label: 'Filter by Payment Date',       placeholder: 'Enter a date' },
+  { name: 'External Order ID',  type: 'text', label: 'Filter by External Order ID',  placeholder: 'Enter an ID' },
+  { name: 'Order Status',       type: 'text', label: 'Filter by Order Status',       placeholder: 'Enter a status' },
+  { name: 'Order Method',       type: 'text', label: 'Filter by Order Method',       placeholder: 'Enter a method' },
+  { name: 'Order Type',         type: 'text', label: 'Filter by Order Type',         placeholder: 'Enter a type' },
+  { name: 'Sub Order Type',     type: 'text', label: 'Filter by Sub Order Type',     placeholder: 'Enter a type' },
+  { name: 'Payment Status',     type: 'text', label: 'Filter by Payment Status',     placeholder: 'Enter a status' },
+  { name: 'Catalogue Item',     type: 'text', label: 'Filter by Catalogue Item',     placeholder: 'Enter an item' }
 ];
 
 /* Rows — transcribed from Figma 3648:164786 so the built screen and the

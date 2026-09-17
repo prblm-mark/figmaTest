@@ -280,6 +280,90 @@ function wireChipPanels(root) {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeAll(null);
   });
+
+  /* Read the picked values out of a panel WITHOUT knowing its type. The shape
+     of the panel tells us where its value lives, so the bar stays generic:
+       - a menu present  -> the selected option rows ARE the value. Predictive
+         panels also contain a text input, but that is a SEARCH field, not the
+         value, so the menu must win.
+       - checkboxes      -> every checked label.
+       - neither         -> a plain field, so its text is the value. */
+  const valuesIn = (panel) => {
+    const pick = (nodes) => Array.from(nodes).map((n) => n.textContent.trim()).filter(Boolean);
+
+    if (panel.querySelector('[data-select-menu]')) {
+      return pick(panel.querySelectorAll('.filter-dropdown-item--selected .filter-dropdown-item__name'));
+    }
+    const checked = panel.querySelectorAll('.checkbox__input:checked');
+    if (panel.querySelector('.checkbox__input')) {
+      return pick(Array.from(checked).map((c) => c.closest('.checkbox').querySelector('.checkbox__label-text')));
+    }
+    const field = panel.querySelector('.input__control');
+    const text = field ? field.value.trim() : '';
+    return text ? [text] : [];
+  };
+
+  /* Push the panel's values onto the chip. FilterItem.setFilterValues owns the
+     rollup Figma specifies — 1–3 list in full, 4+ becomes "<first>, and N more"
+     — and drops the chip back to Default when the list is empty, so the chip's
+     selected state and its label both fall out of this one call. */
+  const sync = (panel) => {
+    const wrap = panel.closest('.filter-bar__chip');
+    const chip = wrap && wrap.querySelector('.filter-item');
+    if (chip && typeof chip.setFilterValues === 'function') {
+      chip.setFilterValues(valuesIn(panel));
+    }
+  };
+
+  /* Option rows commit immediately — there is no Apply on those types. A single
+     select also closes, since the choice is made; a multi-select must stay open
+     so more can be ticked. */
+  root.addEventListener('filter-dropdown-item:toggle', (e) => {
+    const panel = e.target.closest('.filter-bar__panel');
+    if (!panel) return;
+    sync(panel);
+    const menu = e.target.closest('[data-select-menu]');
+    if (menu && menu.getAttribute('aria-multiselectable') !== 'true') closeAll(null);
+  });
+
+  /* Checkbox lists and plain fields commit on Apply. */
+  root.addEventListener('filter-dropdowns:apply', (e) => {
+    const panel = e.target.closest('.filter-bar__panel');
+    if (!panel) return;
+    sync(panel);
+    closeAll(null);
+  });
+
+  /* Clearing the chip must clear its picker too, or reopening shows values the
+     chip no longer claims. */
+  root.addEventListener('filter-item:clear', (e) => {
+    const panel = panelOf(e.target.closest('.filter-item'));
+    if (!panel) return;
+    panel.querySelectorAll('.filter-dropdown-item--selected').forEach((i) => {
+      i.classList.remove('filter-dropdown-item--selected');
+      i.setAttribute('aria-pressed', 'false');
+    });
+    panel.querySelectorAll('.checkbox__input:checked').forEach((c) => { c.checked = false; });
+    panel.querySelectorAll('.input__control').forEach((f) => { f.value = ''; });
+    const value = panel.querySelector('[data-select-value]');
+    if (value) value.classList.add('filter-dropdowns__value--placeholder');
+  });
+
+  /* Add Filters: picking a facet inside the More Filters panel should put that
+     filter on the bar. The bar cannot build the new chip — it does not know
+     what picker the filter wants — so it reports the choice and the screen,
+     which owns the config, re-renders. */
+  root.addEventListener('click', (e) => {
+    const facet = e.target.closest('.filter-bar__panel .filter-item');
+    if (!facet) return;
+    const name = facet.getAttribute('data-filter-name');
+    if (!name) return;
+    closeAll(null);
+    root.dispatchEvent(new CustomEvent('filter-bar:add-filter', {
+      bubbles: true,
+      detail: { name },
+    }));
+  });
 }
 
 function init(root) {

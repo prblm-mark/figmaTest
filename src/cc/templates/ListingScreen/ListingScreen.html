@@ -1305,6 +1305,11 @@
 
   <!-- FilterDropdowns pattern glue (select / predictive / search / apply).
        Exposes window.initFilterDropdowns(scope) for re-init. -->
+  <!-- The option ROWS are their own component and carry their own click
+       handler. FilterDropdowns.js only CONSTRAINS them to single-select; it
+       does not wire them, so without this the pickers open and nothing
+       can be picked. -->
+  <script src="../../../components/FilterDropdownItem/FilterDropdownItem.js"></script>
   <script src="../../../patterns/FilterDropdowns/FilterDropdowns.js"></script>
 
   <!-- Listing data + renderer. Loaded last so the table is built after
@@ -1323,6 +1328,7 @@
     document.addEventListener('listing:rendered', function (e) {
       var scope = e.detail && e.detail.root ? e.detail.root : document;
       initFilterItems(scope);
+      if (window.initFilterDropdownItems) window.initFilterDropdownItems(scope);
       if (window.initFilterDropdowns) window.initFilterDropdowns(scope);
       if (window.lucide) window.lucide.createIcons();
     });

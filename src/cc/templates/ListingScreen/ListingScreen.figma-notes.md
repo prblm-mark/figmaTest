@@ -243,3 +243,29 @@ Contract sketch in `listing-data.js`; rows are shaped from the live
   CC **light** resolves to the same white as the pagination container — so weight alone
   carries the state. `aria-current="page"` is set, but this is a contrast question for
   the designer, not something to "fix" in code.
+
+
+## Filter selection + Add Filters (pass 2b)
+
+- **Account starts fully deselected.** Its chip therefore renders Default, and
+  ticking 1–3 boxes lists them, 4+ rolls up to `<first>, and N more` — the
+  rollup is FilterItem's, not this screen's (see FilterBar notes).
+- **Add Filters moves a facet onto the bar.** `LISTING_ORDERS_MORE_FILTERS` is
+  now a list of full filter configs rather than bare names, because a chosen
+  facet needs the same `type`/`options` as a default filter to open a working
+  dropdown. `init()` works on a shallow copy of both filter arrays so
+  `LISTING_SCREENS` still describes a *fresh* screen afterwards.
+- **`FilterDropdownItem.js` must be loaded.** It carries the option rows' click
+  handler; FilterDropdowns.js does not. Without it the pickers open and nothing
+  can be selected, silently.
+
+### Open with the designer
+
+The five default filters have assigned dropdown types (Customer = Selection
+Options, User Code / Account Code = Predictive, Account = Multi Select,
+Order No. = Text). The nine More Filters facets have **not** been assigned one,
+so each carries `type: 'text'` — the only type needing no invented option list.
+Three clearly want a date picker, which FilterDropdowns already provides
+(Date Range / Date In the last / Date Equal To) but this screen does not yet
+build; the status/method/type facets want Multi Select once their real option
+lists are known. Each is a one-word change in `listing-data.js`.

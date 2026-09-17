@@ -183,11 +183,11 @@
     /* Type=More Filters (3039:5637) — the filters NOT on the bar, as empty
        chips. No Apply: picking one adds it to the bar. */
     'more-filters': function (f) {
-      var chips = (f.options || []).map(function (name) {
-        return '<div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="' + esc(name) + '">' +
+      var chips = (f.options || []).map(function (o) {
+        return '<div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="' + esc(o.name) + '">' +
           '<button type="button" class="filter-item__trigger" aria-expanded="false">' +
             '<i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i>' +
-            '<span class="filter-item__name">' + esc(name) + '</span>' +
+            '<span class="filter-item__name">' + esc(o.name) + '</span>' +
           '</button></div>';
       }).join('');
       return '<div class="filter-dropdowns"><div class="filter-dropdowns__facets">' + chips + '</div></div>';
@@ -335,10 +335,52 @@
       : null;
     if (!config) return;
 
+    /* Work on a shallow copy of the filter lists: adding a filter moves it
+       from one to the other, and LISTING_SCREENS is the screen DEFINITION,
+       which should still describe a fresh screen after the user has played
+       with this one. */
+    config = Object.assign({}, config, {
+      defaultFilters: (config.defaultFilters || []).slice(),
+      moreFilters: (config.moreFilters || []).slice()
+    });
+
     render(root, config);
 
-    /* Exposed so the next pass (filter dropdowns, sort, paging) can
-     * re-render from a mutated config without reloading. */
+    /* Add Filters: FilterBar reports which facet was picked; the screen owns
+       what that filter IS, so it builds the chip here.
+
+       This SPLICES rather than re-rendering the bar. A full re-render would be
+       one line, but it would also rebuild every other chip — discarding the
+       selections already made on them, which is the opposite of what adding a
+       sixth filter should do. */
+    document.addEventListener('filter-bar:add-filter', function (e) {
+      var name = e.detail && e.detail.name;
+      var i = config.moreFilters.findIndex(function (f) { return f.name === name; });
+      if (i === -1) return;
+
+      var filter = config.moreFilters.splice(i, 1)[0];
+      config.defaultFilters.push(filter);
+
+      var host = document.querySelector('[data-listing-filters]');
+      var addChip = host && host.querySelector('.filter-bar__add');
+      var anchor = addChip && addChip.closest('.filter-bar__chip');
+      if (!anchor) return;
+
+      var holder = document.createElement('div');
+      holder.innerHTML = chip(filter);
+      var added = holder.firstChild;
+      anchor.parentNode.insertBefore(added, anchor);
+
+      /* Drop the facet from the More Filters panel — it is on the bar now. */
+      var facet = anchor.querySelector('.filter-item[data-filter-name="' + name.replace(/"/g, '\\"') + '"]');
+      if (facet) facet.remove();
+
+      /* Same contract the first render uses, scoped to just the new chip. */
+      document.dispatchEvent(new CustomEvent('listing:rendered', { detail: { root: added } }));
+    });
+
+    /* Exposed so the next pass (sort, paging) can re-render from a mutated
+     * config without reloading. */
     window.listingScreen = { config: config, render: function () { render(root, config); } };
   }
 

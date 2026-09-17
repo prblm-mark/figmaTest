@@ -360,3 +360,51 @@ reading the code.
 
 Dropdown (+ DropdownItem), FilterItem, Input, Button. Lucide: `chevron-down`, `download`, `search`,
 `ellipsis-vertical`, `arrow-left`, `plus`, `x`, `check`, `ellipsis`, `copy`, `trash-2`.
+
+
+## Chip ↔ picker: committing a selection
+
+The bar joins two event contracts it does not own:
+
+| Event | From | Meaning |
+|---|---|---|
+| `filter-dropdown-item:toggle` | FilterDropdownItem | an option row was picked |
+| `filter-dropdowns:apply` | FilterDropdowns | the panel's Apply was pressed |
+| `filter-item:clear` | FilterItem | the chip's × was pressed |
+
+`valuesIn(panel)` reads the picked values **from the panel's shape**, never from
+a type name, so the bar stays generic and a new picker type needs no change here:
+
+1. a `[data-select-menu]` present → the selected option rows are the value.
+   Predictive panels also contain a text input, but that is a SEARCH field —
+   the menu must win, or a half-typed query would become the filter value.
+2. checkboxes present → every checked label.
+3. neither → a plain field, so its text is the value.
+
+The values go to `chip.setFilterValues()`, which is FilterItem's own API and
+already implements the Figma rollup (1–3 listed in full, 4+ → `<first>, and N
+more`) and the drop back to Default on an empty list. So the chip's selected
+state, its label and its separator all fall out of that one call — the bar
+computes none of them.
+
+Option rows commit immediately (those types have no Apply); a single-select
+also closes, a multi-select stays open. Checkbox lists and plain fields commit
+on Apply.
+
+**Gotcha — the option rows are a separate component.** `FilterDropdowns.js`
+only CONSTRAINS `.filter-dropdown-item` to single-select; the click handler
+lives in `FilterDropdownItem.js`. A page that loads FilterDropdowns without it
+gets pickers that open and cannot be picked from, with no error. ListingScreen
+hit exactly this.
+
+## Adding a filter to the bar
+
+Clicking a facet in the More Filters panel emits `filter-bar:add-filter`
+(bubbles, `detail: { name }`) and closes the panel. The bar deliberately does
+**not** build the chip: it does not know what picker that filter wants. The
+screen owns the filter config, so it listens and splices the chip in before the
+Add Filters chip, then removes the facet from the panel.
+
+Splice, not re-render: rebuilding the chip row would discard the selections
+already made on the other chips, which is the opposite of what adding a sixth
+filter should do.
