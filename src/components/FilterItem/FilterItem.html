@@ -39,7 +39,7 @@
   <h1 style="font-size: var(--ai-font-fixed-4xl); font-weight: var(--ai-font-bold); color: var(--ai-text-primary); margin: 0 0 var(--ai-spacing-6);">Filter Item</h1>
 
   <p style="font-size: var(--ai-font-fixed-xs); color: var(--ai-text-secondary); margin: 0 0 var(--ai-spacing-5);">
-    Faceted filter chip. 6 states × 2 shapes. Selected chips are live — click a chip to toggle open (chevron flips), click the × to clear it. Toggle dark mode to verify colour behaviour.
+    Faceted filter chip. 8 states × 2 shapes. Selected chips are live — click a chip to toggle open (chevron flips), click the × to clear it. Toggle dark mode to verify colour behaviour.
   </p>
 
   <!-- ── Rounded=False ─────────────────────────────────── -->
@@ -191,6 +191,34 @@
         <span class="filter-item__name">Name</span>
         <span class="filter-item__sep" aria-hidden="true">·</span>
         <span class="filter-item__values">Affino, and 3 more</span>
+        <i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Interactive states (Figma State axis) ─────────── -->
+  <div class="demo-section">
+    <p class="demo-section__title">Interactive states — Rounded = True</p>
+    <p class="demo-section__sub">Figma adds two states on the Rounded&nbsp;=&nbsp;True shape only: <strong>MOuseover</strong> (Desktop&nbsp;3664:14429 / Mobile&nbsp;3664:14425) and <strong>Filter Dropdown Active</strong> (Desktop&nbsp;3664:14437 / Mobile&nbsp;3664:14441). Hover the first chip to see Mouseover live — it is a real <code>:hover</code>, not a class. The second carries <code>.filter-item--open</code>, which <code>FilterItem.js</code> toggles when the picker opens.</p>
+
+    <div class="filter-item filter-item--rounded" data-filter-name="Hover me">
+      <button type="button" class="filter-item__clear" aria-label="Clear Hover me filter"><i data-lucide="x" aria-hidden="true"></i></button>
+      <button type="button" class="filter-item__trigger" aria-haspopup="listbox" aria-expanded="false">
+        <i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i>
+        <span class="filter-item__name">Hover me</span>
+        <span class="filter-item__sep" aria-hidden="true">·</span>
+        <span class="filter-item__values"></span>
+        <i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div class="filter-item filter-item--rounded filter-item--open" data-filter-name="Picker open">
+      <button type="button" class="filter-item__clear" aria-label="Clear Picker open filter"><i data-lucide="x" aria-hidden="true"></i></button>
+      <button type="button" class="filter-item__trigger" aria-haspopup="listbox" aria-expanded="true">
+        <i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i>
+        <span class="filter-item__name">Picker open</span>
+        <span class="filter-item__sep" aria-hidden="true">·</span>
+        <span class="filter-item__values"></span>
         <i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i>
       </button>
     </div>

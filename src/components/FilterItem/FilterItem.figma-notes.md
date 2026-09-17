@@ -11,7 +11,7 @@ A faceted filter chip: a resting "+ Name" affordance that opens a value picker, 
 selected treatment that lists the chosen values (`× Name · Affino, Display ⌄`) with a count
 rollup at 4+.
 
-## Variant matrix (12 = 6 State × 2 Rounded)
+## Variant matrix (22 = 8 State × Rounded × Device)
 
 | Node ID | State | Rounded | bg | border | content | Built |
 |---|---|---|---|---|---|---|
@@ -27,6 +27,10 @@ rollup at 4+.
 | 2972:1218 | 3 Selected | True | `surface-info-soft` | `border-info` solid | `× Name · Affino, Display, QA9 ⌄` | ✅ |
 | 2972:1242 | 4+ Selected | False | `surface-info-soft` | `border-info` solid | `× Name · Affino, and 3 more ⌄` | ✅ |
 | 2972:1233 | 4+ Selected | True | `surface-info-soft` | `border-info` solid | `× Name · Affino, and 3 more ⌄` | ✅ |
+| 3664:14429 | **MOuseover** | True | **`surface-minimal`** | `border-secondary` solid | `+ Name` | ✅ `:hover` |
+| 3664:14425 | **MOuseover** | True *(Mobile)* | **`surface-minimal`** | `border-secondary` solid | `+ Name` | ⚠ paint ✅ / geometry ✗ |
+| 3664:14437 | **Filter Dropdown Active** | True | **`surface-info-soft`** | **`border-info`** solid | `+ Name` | ✅ `.filter-item--open` |
+| 3664:14441 | **Filter Dropdown Active** | True *(Mobile)* | **`surface-info-soft`** | **`border-info`** solid | `+ Name` | ⚠ paint ✅ / geometry ✗ |
 
 **Axis independence (verified, not assumed):** `Rounded` changes only the radius — confirmed on
 Default False (`--ai-radius-md`) vs Default True (`--ai-radius-full`); design context is otherwise
@@ -34,6 +38,44 @@ identical. `State` changes only fill/border/content — confirmed across the Fal
 (Default / Empty / 1 / 4+ fetched in full). The True selected variants therefore compose as
 `--rounded` + `--selected` + value text. CSS represents the cross-product via two independent
 modifier classes rather than 12 rules.
+
+### Mouseover and Filter Dropdown Active (added 2026-09-17)
+
+Figma added two states on the **Rounded=True shape only** — there is no
+Rounded=False counterpart for either, so the shape axis and these two states do
+not cross in the design.
+
+| State | What moves | Implemented as |
+|---|---|---|
+| `MOuseover` *(Figma's typo, kept here so the name matches)* | background only → `--ai-surface-minimal`. Border, text, icon, padding, radius all unchanged — verified on Desktop **and** Mobile, not carried across | `:hover` |
+| `Filter Dropdown Active` | `--ai-surface-info-soft` + `--ai-border-info` | `.filter-item--open` |
+
+**Hover is scoped with `:not()`** to exclude `--selected`, `--open` and `--empty`.
+The first two carry the info palette in Figma and a hover passing over them must
+not wash it out; `--empty` is excluded because Figma defines no Empty+Mouseover
+variant and its Mouseover chip draws a **solid** border where `--empty` is
+dashed — they are not the same chip. The `transition` sits on the companion rest
+rule, not inside `:hover`, so it plays on the way out too.
+
+**`Filter Dropdown Active` needed its own rule** even though `--selected`
+already paints this way: Figma's Active variant shows an **unselected** chip —
+leading `+`, no values — wearing the info palette, so a chip takes it the moment
+its picker opens, whether or not anything is chosen.
+
+Two combinations Figma does not define, and what the code does:
+- **Empty + hover** — no hover feedback (excluded, as above). The "Add Filters"
+  chip is a button, so this may be worth a Figma variant.
+- **Empty + open** — `--open` wins the paint (it is later in the file) but
+  `--empty`'s dashed border survives, giving a dashed chip in the info palette.
+
+### Device=Mobile is NOT implemented (pre-existing gap)
+
+The set carries 10 `Device=Mobile` variants — height `--ai-spacing-6` (24px) vs
+32, gap `--ai-spacing-0-5` (2px) vs `--ai-spacing-1`, padding
+`--ai-spacing-2`/`--ai-spacing-3` vs `--ai-spacing-3`/`--ai-spacing-4`, and font
+`--ai-font-fixed-4xs` (11px) vs `--ai-font-fixed-xxs` (12px). `FilterItem.css`
+has **no `@media` or `@container` block at all**, so chips render at desktop
+geometry on every screen. Predates this change and is not addressed by it.
 
 ## Interaction (confirmed with user, 2026-06-22)
 
