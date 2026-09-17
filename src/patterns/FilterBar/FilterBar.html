@@ -15,7 +15,17 @@
   <!-- Component -->
   <link rel="stylesheet" href="FilterBar.css">
   <style>
-    body { padding: var(--ai-spacing-7); background: var(--ai-surface-secondary); min-height: 100vh; }
+    /* FilterBar's size rules are @container cs-page — in the app that container
+       is ControlScreen's .cc-control__page. A standalone demo has no shell, so
+       it must establish cs-page itself or the narrow rules can never fire and
+       this page would silently misrepresent the component (CLAUDE.md §4a). */
+    body {
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-secondary);
+      min-height: 100vh;
+      container-type: inline-size;
+      container-name: cs-page;
+    }
     .demo-section {
       margin-bottom: var(--ai-spacing-5);
     }
@@ -82,7 +92,7 @@
     Resize below 768px — the Export button collapses out of the bar (per Figma).
   </p>
 
-  <!-- Demo-only: preview the bar at desktop or mobile width (mobile renders in a 384px iframe so the @media rules apply) -->
+  <!-- Demo-only: preview the bar at desktop or mobile width (mobile renders in a 384px iframe, whose body establishes cs-page so the container rules apply) -->
   <div class="device-toggle demo-chrome" role="radiogroup" aria-label="Preview width">
     <button type="button" class="device-toggle__btn device-toggle__btn--active" data-view="desktop" aria-pressed="true"><i data-lucide="monitor" aria-hidden="true"></i>Desktop</button>
     <button type="button" class="device-toggle__btn" data-view="mobile" aria-pressed="false"><i data-lucide="smartphone" aria-hidden="true"></i>Mobile</button>

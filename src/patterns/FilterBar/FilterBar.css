@@ -50,7 +50,18 @@
 /* ── Saved-views control (Dropdown w/ field-styled trigger) ── */
 .filter-bar__views {
   position: relative;
-  flex-shrink: 0;
+  /* THE CAP LIVES HERE, not on the trigger. This element is the flex item of
+   * the row, so flex-basis resolves against the INLINE axis. The trigger is a
+   * child of .dropdown, which is `flex-direction: column` — putting
+   * `flex: 0 1 192px` there sized the trigger's BLOCK axis instead and drew a
+   * 192x192 square (measured 2026-09-17).
+   *
+   * Why a cap at all: with `flex-shrink: 0` the 192px trigger overflowed this
+   * box and painted over the Export button — trigger ran to 569px while its
+   * own box ended at 499.5 in a 562px content column. */
+  flex: 0 1 var(--ai-size-3);
+  max-inline-size: var(--ai-size-3); /* 192px */
+  min-inline-size: 0;
 }
 
 .filter-bar__views-trigger {
@@ -58,7 +69,10 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--ai-spacing-3);
-  width: var(--ai-size-3); /* 192px */
+  /* Fills the capped wrapper above. No flex shorthand here — .dropdown is a
+   * column, so a basis would size the wrong axis. The label ellipsises. */
+  inline-size: 100%;
+  min-inline-size: 0;
   min-height: var(--ai-spacing-8); /* 40px */
   padding: 0 var(--ai-spacing-5); /* 0 16px */
   margin: 0;
@@ -227,11 +241,13 @@
   display: none;
 }
 
-@media (min-width: 768px) {
+@container cs-page (min-width: 768px) {
   .filter-bar__search-bar {
     display: block;
-    width: var(--ai-size-3); /* 192px */
-    flex-shrink: 0;
+    flex: 0 1 var(--ai-size-3);
+    inline-size: var(--ai-size-3); /* 192px */
+    max-inline-size: var(--ai-size-3);
+    min-inline-size: 0;
   }
 
   /* The search icon is mobile-only — the persistent field replaces it on desktop. */
@@ -243,8 +259,10 @@
 /* ── New View mode ───────────────────────────────────── */
 .filter-bar__new-view {
   display: none;
-  flex-shrink: 0;
-  width: var(--ai-size-3); /* 192px */
+  flex: 0 1 var(--ai-size-3);
+  inline-size: var(--ai-size-3); /* 192px */
+  max-inline-size: var(--ai-size-3);
+  min-inline-size: 0;
 }
 
 .filter-bar__create {
@@ -303,7 +321,7 @@
 }
 
 /* ── Mobile (Device=Mobile): Export collapses out of the bar (per Figma) ── */
-@media (max-width: 767px) {
+@container cs-page (max-width: 767px) {
   .filter-bar__export {
     display: none;
   }

@@ -110,6 +110,46 @@ raw `#364153` (Gray/700) — replaced here with a proper **FilterItem `--empty`*
 Outer frame width is `970px` in Figma (no token) — built **fluid**
 (`width: 100%`, consumer-controlled), so the arbitrary 970 is not hardcoded.
 
+## Responsive — container queries, not viewport (changed 2026-09-17)
+
+The Device=Mobile treatment (Export collapses out of the bar, the search field
+becomes an icon) keys on **`@container cs-page`**, not `@media`. `cs-page` is
+ControlScreen's `.cc-control__page` — the content column.
+
+This was a real bug, not a tidy-up. With the SidebarMenu docked, a **954px
+viewport** leaves the content column at **562px**: the datatable collapsed
+correctly (it already used container queries) but the FilterBar kept its widest
+layout, because 954 > 767. Two failures compounded:
+
+1. **Wrong query type.** Export and the 192px search field stayed visible in a
+   column that could not hold them.
+2. **An intrinsic floor.** `.filter-bar__lead` is `flex: 1 0 0; min-width: 0`,
+   so its box may shrink below its content — but `.filter-bar__views-trigger`
+   carried a hard `width: 192px`. The trigger escaped its parent's box and
+   painted **over** the Export button (measured: lead box ended at 499.5, the
+   trigger ran to 569, Export started at 515.5).
+
+Both are fixed. Fixed widths on the views control, the search field and the
+new-view field are now **caps, not floors** (`flex: 0 1 <size>` +
+`max-inline-size` + `min-inline-size: 0`), so the bar degrades gracefully in the
+band above the breakpoint too.
+
+**The cap sits on `.filter-bar__views`, never on the trigger.** `.filter-bar__views`
+is also a `.dropdown`, which is `flex-direction: column` — putting `flex: 0 1 192px`
+on the trigger sized its **block** axis and drew a 192×192 square. Same trap applies
+to `.input` (also a column): `.filter-bar__search-bar` and `.filter-bar__new-view`
+are safe because they *are* the `.input` element and are themselves row items.
+
+`@media (hover: none)` is untouched — that is a device capability, not a size.
+
+**The standalone demo establishes `cs-page` on `body`.** Without it none of the
+narrow rules could ever fire and the demo would silently misrepresent the
+component (CLAUDE.md §4a). The device-toggle's 384px iframe works because that
+iframe's own body establishes the container.
+
+Verified with no overlap and no table overflow at viewport widths 1700, 1400,
+1200, 1024, 954, 860, 800, 700, 600, 500 and 390, plus the demo's 384px embed.
+
 ## Notes
 
 - Composition: Dropdown-as-views-trigger, Input search, no invented hover/focus (WCAG `:focus-visible` only).
