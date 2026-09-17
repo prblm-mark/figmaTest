@@ -180,12 +180,12 @@
    * where the generic .dropdown__panel uses --ai-spacing-4 (12px). Scoped
    * rather than changed on the shared panel, which every other dropdown uses.
    *
-   * It is load-bearing, not cosmetic: the rows carry a leading 16px icon and
-   * the label's `data-text` reserve is measured at the BOLD weight, so at 12px
-   * padding "Generate Shipping Labels" had 168px of room against the ~172px
-   * the bold string needs and wrapped to a second line (item 60px instead of
-   * 36px, measured 2026-09-17). 8px padding gives 176px and it sits on one
-   * line, which is what Figma draws. */
+   * It was load-bearing while the rows were Size=sm: a 16px leading icon plus
+   * a `data-text` reserve measured at the BOLD weight left "Generate Shipping
+   * Labels" 168px against the ~172px it needed, so it wrapped to two lines
+   * (60px row instead of 36px). The rows are Size=xs now — 13px text and a
+   * 12px icon — so it clears comfortably at either padding. Kept because 8px
+   * is what Figma draws, not because it is still holding the layout up. */
   padding: var(--ai-spacing-3);
 }
 

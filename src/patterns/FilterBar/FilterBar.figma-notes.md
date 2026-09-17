@@ -150,38 +150,46 @@ iframe's own body establishes the container.
 Verified with no overlap and no table overflow at viewport widths 1700, 1400,
 1200, 1024, 954, 860, 800, 700, 600, 500 and 390, plus the demo's 384px embed.
 
-## Overflow (kebab) actions menu — Size=sm + leading icons
+## Overflow (kebab) actions menu — Size=xs + leading icons
 
 Built to Figma's "Actions Menu" screen on the Listings page
 (`3645:157810` desktop, list frame `3645:158885`, rows `3645:158886/158887`).
 Corrected 2026-09-17; it had been base-size with no icons.
 
-| Property | Figma | Class |
+| Property | Figma | Built as |
 |---|---|---|
-| Row height | 36px (`py --ai-spacing-2`, `px --ai-spacing-4`) | `dropdown-item--sm` |
-| Gap | `--ai-spacing-3` (8px) | base `.dropdown-item` |
-| Label | `--ai-font-title` · `--ai-font-fixed-xs` · `--ai-leading-md` | base |
-| Weight | regular at rest, **medium** on hover/selected | base + `--selected` |
-| Leading icon | 16px | base (`--ai-icon-size-sm`) |
-| Panel | `p --ai-spacing-3` (8px), `--ai-radius-md`, `--ai-border-secondary`, drop-shadow | scoped, see below |
+| Row height | 36px | **32px** — `dropdown-item--xs` |
+| Padding | `py --ai-spacing-2` / `px --ai-spacing-4` | `--ai-spacing-1` / `--ai-spacing-3` |
+| Label | `--ai-font-fixed-xs` (14px), regular | `--ai-font-fixed-2xs` (13px), medium |
+| Leading icon | 16px | 12px (`--ai-icon-size-xs`) |
+| Panel | `p --ai-spacing-3` (8px), `--ai-radius-md`, `--ai-border-secondary`, drop-shadow | as Figma, scoped — see below |
 
-`dropdown-item--sm` needed no change — it already encodes exactly this (its own
-comment cites Figma `2955:6736`, the same component family as these rows), and
-the saved-views menu in the same bar was already using it. The kebab was simply
-the odd one out.
+**Size=xs is a deliberate divergence from Figma** (designer, 2026-09-17: "make
+them xs on the dropdown__panel"). Figma draws these rows at 36px, i.e.
+`dropdown-item--sm`, and that is what was built first. Note xs is not simply a
+shorter row — it changes four properties at once (both padding axes, 14px
+regular → 13px medium, 16px icon → 12px), which is why the table above lists
+Figma and built values separately rather than as a single spec.
+
+The **saved-views menu in the same bar stays `--sm`**, which is what Figma gives
+it — so the two menus in this component are now deliberately different sizes.
+The chrome's menus (Zone Selector, User Menu) are `40px` base per Figma and were
+left alone.
 
 Icons are Lucide **`sheet`** and **`file-spreadsheet`**. Note the Figma layers
 are both *named* `Icon/24px/Star` — stale layer names; the exported assets are
 the two above, so go by the asset, not the layer name.
 
-**The panel padding is scoped, and it is load-bearing.** Figma's list frame
-binds `--ai-spacing-3` (8px) where the shared `.dropdown__panel` uses
+**The panel padding is scoped to this menu.** Figma's list frame binds
+`--ai-spacing-3` (8px) where the shared `.dropdown__panel` uses
 `--ai-spacing-4` (12px), so `.filter-bar__menu .dropdown__panel` overrides it
-rather than changing the panel every other dropdown uses. At 12px the row had
-168px for its label against the ~172px the **bold** `data-text` reserve needs —
-so "Generate Shipping Labels" wrapped to a second line and the row measured
-60px instead of 36px. The 16px icon is what pushed it over, which is why this
-only appeared once the icons were added.
+rather than changing the panel every other dropdown uses.
+
+It was load-bearing at Size=sm: a 16px icon plus a `data-text` reserve measured
+at the **bold** weight left "Generate Shipping Labels" 168px against the ~172px
+it needed, so it wrapped and the row measured 60px instead of 36px. At Size=xs
+(13px text, 12px icon) it clears at either padding — the 8px is kept because it
+matches Figma, not because it is still holding the layout up.
 
 ## Notes
 
