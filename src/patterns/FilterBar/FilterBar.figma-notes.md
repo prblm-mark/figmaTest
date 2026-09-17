@@ -150,6 +150,39 @@ iframe's own body establishes the container.
 Verified with no overlap and no table overflow at viewport widths 1700, 1400,
 1200, 1024, 954, 860, 800, 700, 600, 500 and 390, plus the demo's 384px embed.
 
+## Overflow (kebab) actions menu — Size=sm + leading icons
+
+Built to Figma's "Actions Menu" screen on the Listings page
+(`3645:157810` desktop, list frame `3645:158885`, rows `3645:158886/158887`).
+Corrected 2026-09-17; it had been base-size with no icons.
+
+| Property | Figma | Class |
+|---|---|---|
+| Row height | 36px (`py --ai-spacing-2`, `px --ai-spacing-4`) | `dropdown-item--sm` |
+| Gap | `--ai-spacing-3` (8px) | base `.dropdown-item` |
+| Label | `--ai-font-title` · `--ai-font-fixed-xs` · `--ai-leading-md` | base |
+| Weight | regular at rest, **medium** on hover/selected | base + `--selected` |
+| Leading icon | 16px | base (`--ai-icon-size-sm`) |
+| Panel | `p --ai-spacing-3` (8px), `--ai-radius-md`, `--ai-border-secondary`, drop-shadow | scoped, see below |
+
+`dropdown-item--sm` needed no change — it already encodes exactly this (its own
+comment cites Figma `2955:6736`, the same component family as these rows), and
+the saved-views menu in the same bar was already using it. The kebab was simply
+the odd one out.
+
+Icons are Lucide **`sheet`** and **`file-spreadsheet`**. Note the Figma layers
+are both *named* `Icon/24px/Star` — stale layer names; the exported assets are
+the two above, so go by the asset, not the layer name.
+
+**The panel padding is scoped, and it is load-bearing.** Figma's list frame
+binds `--ai-spacing-3` (8px) where the shared `.dropdown__panel` uses
+`--ai-spacing-4` (12px), so `.filter-bar__menu .dropdown__panel` overrides it
+rather than changing the panel every other dropdown uses. At 12px the row had
+168px for its label against the ~172px the **bold** `data-text` reserve needs —
+so "Generate Shipping Labels" wrapped to a second line and the row measured
+60px instead of 36px. The 16px icon is what pushed it over, which is why this
+only appeared once the icons were added.
+
 ## Notes
 
 - Composition: Dropdown-as-views-trigger, Input search, no invented hover/focus (WCAG `:focus-visible` only).
