@@ -268,6 +268,43 @@
   background-color: var(--ai-surface-secondary);
 }
 
+/* ── Chip picker (the dropdown a chip opens) ────────────
+ * FilterItem owns only the chip's own visual state; its contract says
+ * outright: "Mount your own value picker on this event." The bar is that
+ * consumer, so the mounting lives here.
+ *
+ * The picker is a SIBLING of the chip inside a positioning wrapper, not a
+ * measured overlay. The chips row wraps, so a JS-positioned panel would have
+ * to be recomputed on every reflow — and the CC content column reflows with
+ * no window resize at all when the SidebarMenu docks (CLAUDE.md §4a).
+ * Anchoring in CSS costs nothing and cannot drift.
+ *
+ * `.filter-dropdowns` brings its own card chrome — background, border,
+ * radius and shadow — so this wrapper deliberately adds none. Nesting the
+ * card inside a `.dropdown__panel` would draw both.
+ *
+ * Offset and layer match `.dropdown__panel` (`--ai-spacing-3`, z-index 10)
+ * so every popover in the bar sits on one convention. */
+
+.filter-bar__chip {
+  position: relative;
+  display: inline-flex;
+}
+
+.filter-bar__panel {
+  position: absolute;
+  inset-block-start: calc(100% + var(--ai-spacing-3));
+  inset-inline-start: 0;
+  z-index: 10;
+}
+
+/* Flipped when the 320px card would overrun the bar's end edge — set by
+ * FilterBar.js after the panel is shown, since only then can it be measured. */
+.filter-bar__panel--end {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+}
+
 /* ── Chips row (row2) ────────────────────────────────── */
 .filter-bar__chips {
   display: flex;

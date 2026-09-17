@@ -37,14 +37,76 @@ var LISTING_ORDERS_COLUMNS = [
   { key: 'kebab',       type: 'kebab',  label: '',             hug: true, primary: true }
 ];
 
-/* The five filters the backend surfaces for this screen, in order,
- * followed by the always-present "Add Filters" affordance. */
+/* The five filters the backend surfaces for this screen, in order, followed by
+ * the always-present "Add Filters" affordance.
+ *
+ * `type` names the FilterDropdowns Type each chip opens (designer, 2026-09-17).
+ * The renderer maps it to that pattern's markup — see ListingScreen.js
+ * FILTER_PANELS. Every Type here is already built in
+ * src/patterns/FilterDropdowns/; nothing new was drawn for this screen.
+ *
+ *   select-options  -> Type=Select Options w/subtext  (3039:5628)
+ *   predictive      -> Type=Predictive Text Options   (3039:5625)
+ *   multi-select    -> Type=Multi Select              (3039:5629)
+ *   text            -> Type=Text                      (3039:5633)
+ *
+ * TODO(backend:Listing): every option list below is mock. Each is a lookup the
+ * backend owns -> GET /control/orders/filters/<name>/options?q= returning
+ * [{ value, label, sub? }]. The predictive ones should query on keystroke
+ * rather than ship the list up front. */
 var LISTING_ORDERS_FILTERS = [
-  'Customer',
-  'User Code',
-  'Account',
-  'Account Code',
-  'Order No.'
+  {
+    name: 'Customer', type: 'select-options',
+    label: 'Filter by Customer', placeholder: 'Select customer',
+    options: [
+      { name: 'Maria Mellor',     sub: 'Jacobs Media · 1201' },
+      { name: 'David Jacobson',   sub: 'Beckenham FC · 1129' },
+      { name: 'Sophia Anderson',  sub: 'The Stage · 902' },
+      { name: 'Emma Thompson',    sub: 'The Creative Hub · 1881' },
+      { name: 'Michael Thompson', sub: 'Innovate Solutions · 1755' }
+    ]
+  },
+  {
+    name: 'User Code', type: 'predictive',
+    label: 'Filter by User Code', placeholder: 'Type to search',
+    options: [
+      { name: 'USR-1201' }, { name: 'USR-1129' }, { name: 'USR-0902' },
+      { name: 'USR-1881' }, { name: 'USR-1755' }
+    ]
+  },
+  {
+    name: 'Account', type: 'multi-select',
+    label: 'Filter by Account',
+    options: [
+      { name: 'Jacobs Media', checked: true },
+      { name: 'Beckenham FC' },
+      { name: 'The Stage' },
+      { name: 'The Creative Hub', checked: true },
+      { name: 'Innovate Solutions' },
+      { name: 'Synergy Dynamics' }
+    ]
+  },
+  {
+    name: 'Account Code', type: 'predictive',
+    label: 'Filter by Account Code', placeholder: 'Type to search',
+    options: [
+      { name: '1201' }, { name: '1129' }, { name: '902' },
+      { name: '1881' }, { name: '1755' }, { name: '749' }
+    ]
+  },
+  {
+    name: 'Order No.', type: 'text',
+    label: 'Filter by Order No.', placeholder: 'Enter order number'
+  }
+];
+
+/* The "Add Filters" chip opens FilterDropdowns Type=More Filters (3039:5637):
+ * the filters NOT already on the bar, as empty chips. Order-domain facets —
+ * the pattern's own demo already ships this exact set. */
+var LISTING_ORDERS_MORE_FILTERS = [
+  'Order Date', 'Payment Date', 'External Order ID', 'Order Status',
+  'Order Method', 'Order Type', 'Sub Order Type', 'Payment Status',
+  'Catalogue Item'
 ];
 
 /* Rows — transcribed from Figma 3648:164786 so the built screen and the
@@ -72,6 +134,7 @@ var LISTING_SCREENS = {
     view: 'All Orders',
     columns: LISTING_ORDERS_COLUMNS,
     defaultFilters: LISTING_ORDERS_FILTERS,
+    moreFilters: LISTING_ORDERS_MORE_FILTERS,
     rows: LISTING_ORDERS_ROWS,
     page: { from: 1, to: 10, total: 296, current: 1, pages: 3 }
   }

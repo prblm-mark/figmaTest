@@ -313,6 +313,40 @@ the 160/8 panel sizing.
 `ButtonGroup.css` is now linked by this demo, ListingScreen and SeatingPlanner
 — none of the three loaded it before.
 
+## Chip pickers (2026-09-17)
+
+Clicking a chip opens the FilterDropdowns it is assigned. `FilterItem` emits
+`filter-item:toggle` and its contract says outright *"Mount your own value
+picker on this event"* — the bar is that consumer, so the mounting lives here.
+
+**The bar stays generic.** It never knows which dropdown Type a chip has, only
+that a chip *may* have a `.filter-bar__panel` sibling inside a
+`.filter-bar__chip` wrapper. The screen supplies the panel content, so one bar
+serves every listing screen. A chip with no panel simply no-ops — which is why
+this demo's 35 chips are unaffected.
+
+Positioning is CSS, not measurement: the panel is a sibling inside a
+`position: relative` wrapper. The chips row **wraps**, so a JS-positioned panel
+would need recomputing on every reflow — and this column reflows with no window
+resize at all when the SidebarMenu docks. The one thing JS does measure is
+overflow: after showing, if the 320px card would overrun the bar's end edge it
+gets `.filter-bar__panel--end` to flip sides. That cannot be done before showing,
+since a hidden element has no box.
+
+`.filter-dropdowns` brings its own card chrome, so the wrapper adds none —
+nesting it in a `.dropdown__panel` would draw the border and shadow twice.
+Offset and layer match `.dropdown__panel` (`--ai-spacing-3`, z-index 10) so
+every popover in the bar sits on one convention.
+
+### The nested-chip trap
+
+**Type=More Filters is itself built from `.filter-item` chips**, and those bubble
+`filter-item:toggle` exactly like a bar chip. Without a guard, clicking "Order
+Date" inside the Add Filters panel walks up to the Add Filters wrapper and
+closes the very panel it lives in. `panelOf()` returns null for any chip that is
+`.closest('.filter-bar__panel')`. Caught by testing the nested click, not by
+reading the code.
+
 ## Notes
 
 - Composition: Dropdown-as-views-trigger, Input search, no invented hover/focus (WCAG `:focus-visible` only).

@@ -221,11 +221,74 @@ function wireViews(root) {
   }, true);
 }
 
+/* Chip pickers — show the dropdown a chip is assigned when it opens.
+ *
+ * FilterItem emits `filter-item:toggle` and explicitly leaves mounting the
+ * picker to its consumer; this is that consumer. The bar stays generic: it
+ * never knows WHICH dropdown a chip has, only that a chip may have a
+ * `.filter-bar__panel` sibling. The screen supplies the panel content, so the
+ * same bar serves every listing screen.
+ */
+function wireChipPanels(root) {
+  const panelOf = (chip) => {
+    if (!chip) return null;
+    /* A chip INSIDE a picker is not a picker owner. The More Filters type is
+       built from `.filter-item` chips, and those bubble `filter-item:toggle`
+       exactly like a bar chip — without this guard, clicking "Order Date"
+       inside the Add Filters panel would walk up to the Add Filters wrapper
+       and toggle the very panel it lives in. */
+    if (chip.closest('.filter-bar__panel')) return null;
+    const wrap = chip.closest('.filter-bar__chip');
+    return wrap ? wrap.querySelector('.filter-bar__panel') : null;
+  };
+
+  /* Only one picker open at a time. Closing a chip means closing its panel AND
+     clearing the chip's own open state, which FilterItem set. */
+  const closeAll = (keep) => {
+    root.querySelectorAll('.filter-bar__chip').forEach((wrap) => {
+      const panel = wrap.querySelector('.filter-bar__panel');
+      if (!panel || panel === keep) return;
+      panel.hidden = true;
+      panel.classList.remove('filter-bar__panel--end');
+      const chip = wrap.querySelector('.filter-item--open');
+      if (!chip) return;
+      chip.classList.remove('filter-item--open');
+      const trigger = chip.querySelector('.filter-item__trigger');
+      if (trigger) trigger.setAttribute('aria-expanded', 'false');
+    });
+  };
+
+  root.addEventListener('filter-item:toggle', (e) => {
+    const panel = panelOf(e.target.closest('.filter-item'));
+    if (!panel) return;                       // chip with no assigned picker
+    if (!e.detail || !e.detail.open) { panel.hidden = true; return; }
+
+    closeAll(panel);
+    panel.hidden = false;
+
+    /* Flip to the end edge if the 320px card would overrun the bar. Measured
+       after showing, because a hidden element has no box to measure. */
+    panel.classList.remove('filter-bar__panel--end');
+    if (panel.getBoundingClientRect().right > root.getBoundingClientRect().right) {
+      panel.classList.add('filter-bar__panel--end');
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!root.contains(e.target)) closeAll(null);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeAll(null);
+  });
+}
+
 function init(root) {
   if (root.dataset.filterBarInit === '1') return;
   root.dataset.filterBarInit = '1';
 
   wireViews(root);
+
+  wireChipPanels(root);
 
   // Save View: a filter being added/amended reveals the "Save view" CTA. Mock —
   // here we trigger it from the "Add Filters" chip's toggle (FilterItem bubbles

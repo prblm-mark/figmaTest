@@ -835,8 +835,8 @@
           "id": "listing-default-filters",
           "category": "needs-backend",
           "element": ".filter-bar (data-backend-todo=\"listing-default-filters\")",
-          "current": "The five default chips (Customer, User Code, Account, Account Code, Order No.) are hard-coded in listing-data.js as LISTING_ORDERS_FILTERS. Chips render but open nothing; Save view is inert.",
-          "needs": "The backend supplies the first five filters shown per screen → GET /control/<screen>/filters → [{ name, type, options? }]. Also needs saved-view CRUD for the All Orders / My Orders menu (GET list, POST create, PATCH rename, POST copy, DELETE) and filter state persisted per user per screen."
+          "current": "The five chips and the Add Filters set are config in listing-data.js, each naming the FilterDropdowns Type it opens. The pickers now open and are interactive, but every option list is mock and nothing is applied: choosing a value changes no rows.",
+          "needs": "Two endpoints. (1) GET /control/<screen>/filters -> [{ name, type, label, placeholder? }] — the backend already decides the first five filters per screen, and `type` names the dropdown (select-options | predictive | multi-select | text | more-filters). (2) GET /control/<screen>/filters/<name>/options?q= -> [{ value, label, sub? }] for the option lists; the predictive types should query per keystroke rather than ship the list up front. Applying a filter then re-queries the rows endpoint. Plus saved-view CRUD and per-user persistence of the filter set."
         },
         {
           "id": "listing-export",

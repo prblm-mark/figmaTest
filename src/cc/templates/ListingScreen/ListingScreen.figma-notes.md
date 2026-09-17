@@ -173,6 +173,50 @@ specificity as `.cc-control__page` but loads later, so a shorthand there wins
 and silently restores the untrimmed right padding — which is exactly how the
 39px right gap arose on 2026-09-17.
 
+## Filter pickers — which dropdown each chip opens (2026-09-17)
+
+Figma `3681:99951` ("Filter Dropdown / Options") shows a chip's picker anchored
+under it. The assignment per filter is the designer's (2026-09-17), and every
+Type is **already built** in `src/patterns/FilterDropdowns/` — nothing new was
+drawn or written for this screen.
+
+| Filter | Asked for | FilterDropdowns Type | Node | `type` in config |
+|---|---|---|---|---|
+| Customer | selection options w/subset | Select Options w/subtext | `3039:5628` | `select-options` |
+| User Code | predictive text | Predictive Text Options | `3039:5625` | `predictive` |
+| Account | multi select | Multi Select | `3039:5629` | `multi-select` |
+| Account Code | predictive text | Predictive Text Options | `3039:5625` | `predictive` |
+| Order No. | text | Text | `3039:5633` | `text` |
+| Add Filters | more filters | More Filters | `3039:5637` | `more-filters` |
+
+Two notes on the mapping:
+
+- **"w/subset" → w/subtext.** Figma has no "subset" type; `Select Options
+  w/subtext` is the one that renders a name plus a secondary line, which is what
+  the Customer rows need (name + account · code). Read as a typo.
+- **Plain `Predictive Text` (`3039:5638`) does not exist in code.** The pattern
+  consolidated it into `Predictive Text Options` on the grounds that predictive
+  always reveals options — so both predictive filters get that Type.
+
+**It is config, not markup.** Each filter in `listing-data.js` names its `type`;
+`ListingScreen.js` `FILTER_PANELS` maps that to the pattern's markup. Assigning a
+different picker to a filter is a one-word change, which is what makes this
+survivable across ~400 screens.
+
+### Initialisation order
+
+The chips are rendered by `ListingScreen.js` on `DOMContentLoaded`, which is
+**after** `FilterItem.js` and `FilterDropdowns.js` have already auto-initialised
+whatever was in the static markup. The rendered nodes would therefore be inert.
+`ListingScreen.js` dispatches `listing:rendered` and a module listener
+re-initialises — **scoped to the new nodes**, because `FilterItem.init` has no
+idempotency guard and re-running it over the document would bind every existing
+chip twice. (`FilterDropdowns` does guard, via `__filterDropdowns`.)
+
+`Type=More Filters` carries no `data-filter-dropdowns` attribute and is not
+initialised — correct, not a miss: it is chips only, with no select, predictive,
+search or apply behaviour. The pattern's own demo has it the same way.
+
 ## Files
 
 | File | Role |

@@ -103,6 +103,131 @@
     }
   };
 
+  /* ── Filter chips and their pickers ──────────────────────────────
+   * Each chip opens a FilterDropdowns Type, named by `type` in the config.
+   * The markup below is that pattern's, not new: FilterDropdowns.js auto-inits
+   * every [data-filter-dropdowns] and owns the select / predictive / search
+   * behaviour, so the panels only have to be present and correctly shaped.
+   *
+   * FilterBar positions and toggles them — it looks for a `.filter-bar__panel`
+   * inside a `.filter-bar__chip` wrapper and knows nothing about which Type is
+   * inside, which is what keeps one bar serving every listing screen.
+   */
+  function optionRows(options, selectedFirst) {
+    return (options || []).map(function (o, i) {
+      var sel = (selectedFirst && i === 0) ? ' filter-dropdown-item--selected' : '';
+      return '<button type="button" class="filter-dropdown-item' + sel + '" data-filter-dropdown-item>' +
+        '<span class="filter-dropdown-item__text">' +
+          '<span class="filter-dropdown-item__name">' + esc(o.name) + '</span>' +
+          (o.sub ? '<span class="filter-dropdown-item__sub">' + esc(o.sub) + '</span>' : '') +
+        '</span>' +
+        '<span class="filter-dropdown-item__check"><i data-lucide="circle-check" aria-hidden="true"></i></span>' +
+      '</button>';
+    }).join('');
+  }
+
+  var FILTER_PANELS = {
+    /* Type=Select Options w/subtext (3039:5628) — a field that opens a
+       single-select option list; no Apply, per the pattern. */
+    'select-options': function (f) {
+      return '<div class="filter-dropdowns filter-dropdowns--select" data-filter-dropdowns data-select>' +
+        '<div class="input"><label class="input__label">' + esc(f.label) + '</label>' +
+          '<div class="input__wrap filter-dropdowns__trigger" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="false" aria-label="' + esc(f.name) + '" data-select-trigger>' +
+            '<span class="filter-dropdowns__value filter-dropdowns__value--placeholder" data-select-value>' + esc(f.placeholder) + '</span>' +
+            '<i data-lucide="chevron-down" class="input__icon filter-dropdowns__chevron" aria-hidden="true"></i>' +
+          '</div></div>' +
+        '<div class="filter-dropdown-item-group filter-dropdowns__menu" role="listbox" aria-multiselectable="false" aria-label="' + esc(f.name) + ' options" hidden data-select-menu>' +
+          optionRows(f.options, false) +
+        '</div></div>';
+    },
+
+    /* Type=Predictive Text Options (3039:5625). Figma's plain Predictive Text
+       is consolidated into this one — predictive always reveals options. */
+    predictive: function (f) {
+      return '<div class="filter-dropdowns filter-dropdowns--select" data-filter-dropdowns data-predictive>' +
+        '<div class="input"><label class="input__label">' + esc(f.label) + '</label>' +
+          '<div class="input__wrap">' +
+            '<input class="input__control" type="text" placeholder="' + esc(f.placeholder) + '" aria-label="' + esc(f.name) + '" data-predictive-input>' +
+          '</div></div>' +
+        '<div class="filter-dropdown-item-group filter-dropdowns__menu" role="listbox" aria-label="' + esc(f.name) + ' options" hidden data-select-menu>' +
+          optionRows(f.options, false) +
+        '</div></div>';
+    },
+
+    /* Type=Multi Select (3039:5629) — checkbox list + Apply. `--list` is the
+       pattern's own modifier for the wider gap and capped scrolling body. */
+    'multi-select': function (f) {
+      var rows = (f.options || []).map(function (o) {
+        return '<label class="checkbox"><input type="checkbox" class="checkbox__input"' + (o.checked ? ' checked' : '') + '>' +
+          '<span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>' +
+          '<span class="checkbox__label"><span class="checkbox__label-text">' + esc(o.name) + '</span></span></label>';
+      }).join('');
+      return '<div class="filter-dropdowns filter-dropdowns--list" data-filter-dropdowns>' +
+        '<div class="input"><label class="input__label">' + esc(f.label) + '</label></div>' +
+        '<div class="filter-dropdowns__checklist">' + rows + '</div>' +
+        '<button type="button" class="btn btn--primary filter-dropdowns__apply" data-filter-dropdowns-apply>Apply</button>' +
+      '</div>';
+    },
+
+    /* Type=Text (3039:5633) — a single field + Apply. */
+    text: function (f) {
+      return '<div class="filter-dropdowns" data-filter-dropdowns>' +
+        '<div class="input"><label class="input__label">' + esc(f.label) + '</label>' +
+          '<div class="input__wrap">' +
+            '<input class="input__control" type="text" placeholder="' + esc(f.placeholder) + '" aria-label="' + esc(f.name) + '">' +
+          '</div></div>' +
+        '<button type="button" class="btn btn--primary filter-dropdowns__apply" data-filter-dropdowns-apply>Apply</button>' +
+      '</div>';
+    },
+
+    /* Type=More Filters (3039:5637) — the filters NOT on the bar, as empty
+       chips. No Apply: picking one adds it to the bar. */
+    'more-filters': function (f) {
+      var chips = (f.options || []).map(function (name) {
+        return '<div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="' + esc(name) + '">' +
+          '<button type="button" class="filter-item__trigger" aria-expanded="false">' +
+            '<i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i>' +
+            '<span class="filter-item__name">' + esc(name) + '</span>' +
+          '</button></div>';
+      }).join('');
+      return '<div class="filter-dropdowns"><div class="filter-dropdowns__facets">' + chips + '</div></div>';
+    }
+  };
+
+  /* One chip: the FilterItem markup plus its picker, wrapped so the picker can
+     anchor to it. The full slot set is always rendered — FilterItem's contract
+     is that CSS hides what the current state does not use. */
+  function chip(f, extraClass) {
+    var build = FILTER_PANELS[f.type];
+    return '<div class="filter-bar__chip">' +
+      '<div class="filter-item filter-item--rounded' + (extraClass || '') + '" data-filter-name="' + esc(f.name) + '">' +
+        '<button type="button" class="filter-item__clear" aria-label="Clear ' + esc(f.name) + ' filter"><i data-lucide="x" aria-hidden="true"></i></button>' +
+        '<button type="button" class="filter-item__trigger" aria-haspopup="listbox" aria-expanded="false">' +
+          '<i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i>' +
+          '<span class="filter-item__name">' + esc(f.name) + '</span>' +
+          '<span class="filter-item__sep" aria-hidden="true">·</span>' +
+          '<span class="filter-item__values"></span>' +
+          '<i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i>' +
+        '</button>' +
+      '</div>' +
+      (build ? '<div class="filter-bar__panel" hidden>' + build(f) + '</div>' : '') +
+    '</div>';
+  }
+
+  function renderFilters(config) {
+    var html = (config.defaultFilters || []).map(function (f) { return chip(f); }).join('');
+    html += chip(
+      { name: 'Add Filters', type: 'more-filters', options: config.moreFilters || [] },
+      ' filter-item--empty filter-bar__add'
+    );
+    /* The Save view CTA is rendered here rather than left in the markup so the
+       chips stay DIRECT children of `.filter-bar__chips` — that row is a flex
+       container, and a wrapper element around the chips would break its wrap. */
+    html += '<button type="button" class="btn btn--primary btn--sm filter-bar__save"' +
+            ' data-filter-action="save-view">Save view</button>';
+    return html;
+  }
+
   function renderHead(columns) {
     return '<tr>' + columns.map(function (col) {
       /* Label-less columns (checkbox, edit, kebab) name themselves with
@@ -177,6 +302,9 @@
   function render(root, config) {
     var page = config.page;
 
+    var chipsHost = document.querySelector('[data-listing-filters]');
+    if (chipsHost) chipsHost.innerHTML = renderFilters(config);
+
     root.querySelector('[data-listing-head]').innerHTML = renderHead(config.columns);
     root.querySelector('[data-listing-body]').innerHTML = renderRows(config.columns, config.rows);
     root.querySelector('[data-listing-total]').textContent = String(page.total);
@@ -187,6 +315,15 @@
     if (window.lucide && typeof window.lucide.createIcons === 'function') {
       window.lucide.createIcons();
     }
+
+    /* Tell the page the chips and pickers now exist. They are rendered here,
+       which is after FilterItem.js and FilterDropdowns.js have already
+       auto-initialised the static markup — so without this the chips would be
+       inert. The listener is scoped to what was just rendered rather than the
+       document, because FilterItem.init has no idempotency guard. */
+    document.dispatchEvent(new CustomEvent('listing:rendered', {
+      detail: { root: chipsHost || root }
+    }));
   }
 
   function init() {

@@ -39,6 +39,7 @@
   <link rel="stylesheet" href="../../../components/FilterItem/FilterItem.css">
   <link rel="stylesheet" href="../../../components/FilterDropdownItem/FilterDropdownItem.css">
   <link rel="stylesheet" href="../../../components/FilterDropdownItemGroup/FilterDropdownItemGroup.css">
+  <link rel="stylesheet" href="../../../patterns/FilterDropdowns/FilterDropdowns.css">
 
   <!-- DS-tier patterns -->
   <link rel="stylesheet" href="../../../patterns/Modal/Modal.css">
@@ -570,15 +571,12 @@
           </div>
 
           <div class="filter-bar__row">
-            <div class="filter-bar__chips">
-          <div class="filter-item filter-item--rounded" data-filter-name="Customer"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Customer</span></button></div>
-          <div class="filter-item filter-item--rounded" data-filter-name="User Code"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">User Code</span></button></div>
-          <div class="filter-item filter-item--rounded" data-filter-name="Account"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Account</span></button></div>
-          <div class="filter-item filter-item--rounded" data-filter-name="Account Code"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Account Code</span></button></div>
-          <div class="filter-item filter-item--rounded" data-filter-name="Order No."><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Order No.</span></button></div>
-              <div class="filter-item filter-item--rounded filter-item--empty filter-bar__add" data-filter-name="Add Filters"><button type="button" class="filter-item__trigger" aria-haspopup="listbox"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Add Filters</span></button></div>
-              <button type="button" class="btn btn--primary btn--sm filter-bar__save" data-filter-action="save-view">Save view</button>
-            </div>
+            <!-- Chips and their pickers are rendered by ListingScreen.js from
+                 listing-data.js: each filter names the FilterDropdowns Type it
+                 opens, so assigning a different picker is a config change. The
+                 Save view CTA is rendered with them — the chips must stay direct
+                 children of this flex row. -->
+            <div class="filter-bar__chips" data-listing-filters></div>
           </div>
         </div>
 
@@ -1305,9 +1303,29 @@
     initFilterBars();
   </script>
 
+  <!-- FilterDropdowns pattern glue (select / predictive / search / apply).
+       Exposes window.initFilterDropdowns(scope) for re-init. -->
+  <script src="../../../patterns/FilterDropdowns/FilterDropdowns.js"></script>
+
   <!-- Listing data + renderer. Loaded last so the table is built after
        lucide is available; the renderer re-runs createIcons() itself. -->
   <script src="listing-data.js"></script>
   <script src="ListingScreen.js"></script>
+
+  <!-- The chips and their pickers are rendered by ListingScreen.js, which runs
+       on DOMContentLoaded — AFTER the module above has already auto-initialised
+       whatever was in the static markup. So the freshly rendered nodes have to
+       be initialised explicitly, scoped to just them (FilterItem.init has no
+       idempotency guard, so re-running it over the whole document would bind
+       every existing chip twice). -->
+  <script type="module">
+    import { initAll as initFilterItems } from '../../../components/FilterItem/FilterItem.js';
+    document.addEventListener('listing:rendered', function (e) {
+      var scope = e.detail && e.detail.root ? e.detail.root : document;
+      initFilterItems(scope);
+      if (window.initFilterDropdowns) window.initFilterDropdowns(scope);
+      if (window.lucide) window.lucide.createIcons();
+    });
+  </script>
 </body>
 </html>
