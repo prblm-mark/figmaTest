@@ -305,14 +305,74 @@
     return out;
   }
 
-  function render(root, config) {
-    var page = config.page;
+  /* ── Filtering ────────────────────────────────────────────────
+     Front-end only, and only because the rows are mock: the real screen
+     filters server-side. See the TODO(backend:Listing) in listing-data.js.
 
-    var chipsHost = document.querySelector('[data-listing-filters]');
-    if (chipsHost) chipsHost.innerHTML = renderFilters(config);
+     Config-driven — a filter's `field` names the row property it tests, so
+     nothing here knows an Orders column from a Contacts one. */
 
-    root.querySelector('[data-listing-head]').innerHTML = renderHead(config.columns);
-    root.querySelector('[data-listing-body]').innerHTML = renderRows(config.columns, config.rows);
+  function valueAt(row, path) {
+    return String(path.split('.').reduce(function (o, k) {
+      return (o === null || o === undefined) ? '' : o[k];
+    }, row) || '');
+  }
+
+  /* A Text filter is a SEARCH — one typed fragment, matched loosely. Every
+     other type is a PICK-LIST — the values came from the row data itself, so
+     they must match it exactly, and several picks mean "any of these". */
+  function matches(row, filter, values) {
+    if (!values.length) return true;
+    var actual = valueAt(row, filter.field);
+    if (filter.type === 'text') {
+      return actual.toLowerCase().indexOf(values[0].toLowerCase()) !== -1;
+    }
+    return values.some(function (v) { return actual === v; });
+  }
+
+  function applyFilters(config) {
+    var byName = {};
+    config.defaultFilters.forEach(function (f) { byName[f.name] = f; });
+
+    /* A filter with no `field` cannot narrow anything, so it does not count as
+       active: it must neither empty the table nor make the footer claim a
+       result count it did not produce. The More Filters facets are all in that
+       position until a designer assigns them types and fields. */
+    var active = Object.keys(config.filterValues).filter(function (name) {
+      return (config.filterValues[name] || []).length &&
+             byName[name] && byName[name].field;
+    });
+    if (!active.length) return { rows: config.rows, filtered: false };
+
+    return {
+      filtered: true,
+      rows: config.rows.filter(function (row) {
+        return active.every(function (name) {
+          return matches(row, byName[name], config.filterValues[name]);
+        });
+      })
+    };
+  }
+
+  /* Re-render only what filtering changes: the body, the counts and the
+     pagination. The chips are left alone — rebuilding them would discard the
+     very selections that caused this. */
+  function renderResults(root, config) {
+    var result = applyFilters(config);
+    var rows = result.rows;
+
+    root.querySelector('[data-listing-body]').innerHTML = rows.length
+      ? renderRows(config.columns, rows)
+      : renderEmpty(config.columns);
+
+    /* Unfiltered, the mock `page` block stands in for a backend that reports
+       296 orders across 3 pages. Once a filter narrows the 10 mock rows those
+       numbers would be a lie, so the counts switch to describing what is
+       actually on screen. */
+    var page = result.filtered
+      ? { from: rows.length ? 1 : 0, to: rows.length, total: rows.length, current: 1, pages: 1 }
+      : config.page;
+
     root.querySelector('[data-listing-total]').textContent = String(page.total);
     root.querySelector('[data-listing-range]').textContent = page.from + '–' + page.to;
     root.querySelector('[data-listing-footer-total]').textContent = String(page.total);
@@ -321,6 +381,32 @@
     if (window.lucide && typeof window.lucide.createIcons === 'function') {
       window.lucide.createIcons();
     }
+  }
+
+  /* TODO(design:Listing): Datatables has no empty state in Figma. This mirrors
+     EventPicker's `no results` treatment (3108:6659) token for token, since
+     that is the established one on the CC surface, but it wants a Figma
+     Datatables variant of its own. */
+  function renderEmpty(columns) {
+    /* The flex column lives in a DIV inside the cell, not on the cell itself:
+       `display: flex` on a <td> takes it out of table layout, and a cell that
+       is no longer a cell ignores its own colspan — it collapsed to the first
+       column's width. */
+    return '<tr class="cc-listing__empty-row"><td class="cc-listing__empty-cell" colspan="' + columns.length + '">' +
+      '<div class="cc-listing__empty">' +
+        '<span class="cc-listing__empty-icon"><i data-lucide="search-x" aria-hidden="true"></i></span>' +
+        '<p class="cc-listing__empty-title">No matching orders</p>' +
+        '<p class="cc-listing__empty-desc">No orders match the filters you have applied. Try removing one, or clearing them all.</p>' +
+      '</div>' +
+    '</td></tr>';
+  }
+
+  function render(root, config) {
+    var chipsHost = document.querySelector('[data-listing-filters]');
+    if (chipsHost) chipsHost.innerHTML = renderFilters(config);
+
+    root.querySelector('[data-listing-head]').innerHTML = renderHead(config.columns);
+    renderResults(root, config);
 
     /* Tell the page the chips and pickers now exist. They are rendered here,
        which is after FilterItem.js and FilterDropdowns.js have already
@@ -347,7 +433,11 @@
        with this one. */
     config = Object.assign({}, config, {
       defaultFilters: (config.defaultFilters || []).slice(),
-      moreFilters: (config.moreFilters || []).slice()
+      moreFilters: (config.moreFilters || []).slice(),
+      /* name -> the values that chip currently holds. The bar reports these;
+         they cannot be read back off a chip, whose label rolls 4+ values up
+         into "<first>, and 3 more". */
+      filterValues: {}
     });
 
     render(root, config);
@@ -383,6 +473,14 @@
 
       /* Same contract the first render uses, scoped to just the new chip. */
       document.dispatchEvent(new CustomEvent('listing:rendered', { detail: { root: added } }));
+    });
+
+    /* A chip committed (Apply) or was cleared — narrow the table. */
+    document.addEventListener('filter-bar:change', function (e) {
+      var d = e.detail || {};
+      if (!d.name) return;
+      config.filterValues[d.name] = d.values || [];
+      renderResults(root, config);
     });
 
     /* Exposed so the next pass (sort, paging) can re-render from a mutated

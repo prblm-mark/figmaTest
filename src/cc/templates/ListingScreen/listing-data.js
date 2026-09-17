@@ -54,9 +54,18 @@ var LISTING_ORDERS_COLUMNS = [
  * backend owns -> GET /control/orders/filters/<name>/options?q= returning
  * [{ value, label, sub? }]. The predictive ones should query on keystroke
  * rather than ship the list up front. */
+/* `field` names the ROW property the filter tests, so filtering is config, not
+ * code: the renderer never mentions "Account" or "orderNo". Dotted paths walk
+ * into an object ('customer.name'). A filter with no `field` cannot narrow the
+ * table — see the More Filters TODO below.
+ *
+ * TODO(backend:Listing): this front-end filtering exists so the screen is
+ * demonstrable on mock rows. The real /control/orders filters SERVER-side and
+ * returns both the rows and the counts; when it is wired, `field` becomes the
+ * query-parameter name and applyFilters() goes away. */
 var LISTING_ORDERS_FILTERS = [
   {
-    name: 'Customer', type: 'select-options',
+    name: 'Customer', type: 'select-options', field: 'customer.name',
     label: 'Filter by Customer', placeholder: 'Select customer',
     options: [
       { name: 'Maria Mellor',     sub: 'Jacobs Media · 1201' },
@@ -67,15 +76,11 @@ var LISTING_ORDERS_FILTERS = [
     ]
   },
   {
-    name: 'User Code', type: 'predictive',
-    label: 'Filter by User Code', placeholder: 'Type to search',
-    options: [
-      { name: 'USR-1201' }, { name: 'USR-1129' }, { name: 'USR-0902' },
-      { name: 'USR-1881' }, { name: 'USR-1755' }
-    ]
+    name: 'User Code', type: 'text', field: 'userCode',
+    label: 'Filter by User Code', placeholder: 'Enter user code'
   },
   {
-    name: 'Account', type: 'multi-select',
+    name: 'Account', type: 'multi-select', field: 'account',
     label: 'Filter by Account',
     options: [
       { name: 'Jacobs Media' },
@@ -87,15 +92,11 @@ var LISTING_ORDERS_FILTERS = [
     ]
   },
   {
-    name: 'Account Code', type: 'predictive',
-    label: 'Filter by Account Code', placeholder: 'Type to search',
-    options: [
-      { name: '1201' }, { name: '1129' }, { name: '902' },
-      { name: '1881' }, { name: '1755' }, { name: '749' }
-    ]
+    name: 'Account Code', type: 'text', field: 'accountCode',
+    label: 'Filter by Account Code', placeholder: 'Enter account code'
   },
   {
-    name: 'Order No.', type: 'text',
+    name: 'Order No.', type: 'text', field: 'orderNo',
     label: 'Filter by Order No.', placeholder: 'Enter order number'
   }
 ];
@@ -133,18 +134,23 @@ var LISTING_ORDERS_MORE_FILTERS = [
 /* Rows — transcribed from Figma 3648:164786 so the built screen and the
  * design can be compared cell for cell. `customer.initials` renders the
  * letter avatar (Figma row 2); `customer.avatar` renders a photo.
- * `customer.role` is optional — several rows omit it by design. */
+ * `customer.role` is optional — several rows omit it by design.
+ *
+ * `userCode` has NO column — it exists only so the User Code filter has
+ * something to test. Real listings do filter on fields they do not show, but
+ * these particular codes are derived from the account code and are mock like
+ * everything else here. */
 var LISTING_ORDERS_ROWS = [
-  { orderNo: '100412', customer: { name: 'Maria Mellor',     role: 'Digital Project Manager', avatar: 'https://picsum.photos/seed/female1/96' }, account: 'Jacobs Media',          accountCode: '1201', qty: '1', orderTotal: '£15.00'  },
-  { orderNo: '100413', customer: { name: 'David Jacobson',   initials: 'D' },                                                                    account: 'Beckenham FC',          accountCode: '1129', qty: '1', orderTotal: '£99.00'  },
-  { orderNo: '100414', customer: { name: 'Sophia Anderson',  avatar: 'https://picsum.photos/seed/female2/96' },                                   account: 'The Stage',             accountCode: '902',  qty: '1', orderTotal: '£595.00' },
-  { orderNo: '100415', customer: { name: 'Emma Thompson',    role: 'Creative Director',       avatar: 'https://picsum.photos/seed/female3/96' },  account: 'The Creative Hub',      accountCode: '1881', qty: '1', orderTotal: '£41.95'  },
-  { orderNo: '100416', customer: { name: 'Michael Thompson', role: 'Marketing Executive',     avatar: 'https://picsum.photos/seed/male1/96' },    account: 'Innovate Solutions',    accountCode: '1755', qty: '1', orderTotal: '£9.95'   },
-  { orderNo: '100417', customer: { name: 'James Anderson',   role: 'CEO/Owner',               avatar: 'https://picsum.photos/seed/male2/96' },    account: 'The System Hive',       accountCode: '749',  qty: '1', orderTotal: '£144.00' },
-  { orderNo: '100418', customer: { name: 'Robert Johnson',   avatar: 'https://picsum.photos/seed/male3/96' },                                     account: 'Synergy Dynamics',      accountCode: '207',  qty: '1', orderTotal: '£95.40'  },
-  { orderNo: '100419', customer: { name: 'William Smith',    role: 'Digital Lead',            avatar: 'https://picsum.photos/seed/male4/96' },    account: 'Pinnacle Technologies', accountCode: '449',  qty: '1', orderTotal: '£119.40' },
-  { orderNo: '100420', customer: { name: 'David Williams',   avatar: 'https://picsum.photos/seed/male5/96' },                                     account: 'Nexus Innovations',     accountCode: '2099', qty: '1', orderTotal: '£108.00' },
-  { orderNo: '100420', customer: { name: 'Olivia Martinez',  avatar: 'https://picsum.photos/seed/female4/96' },                                   account: 'Catalyst Enterprises',  accountCode: '972',  qty: '1', orderTotal: '£12.00'  }
+  { orderNo: '100412', customer: { name: 'Maria Mellor',     role: 'Digital Project Manager', avatar: 'https://picsum.photos/seed/female1/96' }, account: 'Jacobs Media',          accountCode: '1201', userCode: 'USR-1201', qty: '1', orderTotal: '£15.00'  },
+  { orderNo: '100413', customer: { name: 'David Jacobson',   initials: 'D' },                                                                    account: 'Beckenham FC',          accountCode: '1129', userCode: 'USR-1129', qty: '1', orderTotal: '£99.00'  },
+  { orderNo: '100414', customer: { name: 'Sophia Anderson',  avatar: 'https://picsum.photos/seed/female2/96' },                                   account: 'The Stage',             accountCode: '902', userCode: 'USR-0902',  qty: '1', orderTotal: '£595.00' },
+  { orderNo: '100415', customer: { name: 'Emma Thompson',    role: 'Creative Director',       avatar: 'https://picsum.photos/seed/female3/96' },  account: 'The Creative Hub',      accountCode: '1881', userCode: 'USR-1881', qty: '1', orderTotal: '£41.95'  },
+  { orderNo: '100416', customer: { name: 'Michael Thompson', role: 'Marketing Executive',     avatar: 'https://picsum.photos/seed/male1/96' },    account: 'Innovate Solutions',    accountCode: '1755', userCode: 'USR-1755', qty: '1', orderTotal: '£9.95'   },
+  { orderNo: '100417', customer: { name: 'James Anderson',   role: 'CEO/Owner',               avatar: 'https://picsum.photos/seed/male2/96' },    account: 'The System Hive',       accountCode: '749', userCode: 'USR-0749',  qty: '1', orderTotal: '£144.00' },
+  { orderNo: '100418', customer: { name: 'Robert Johnson',   avatar: 'https://picsum.photos/seed/male3/96' },                                     account: 'Synergy Dynamics',      accountCode: '207', userCode: 'USR-0207',  qty: '1', orderTotal: '£95.40'  },
+  { orderNo: '100419', customer: { name: 'William Smith',    role: 'Digital Lead',            avatar: 'https://picsum.photos/seed/male4/96' },    account: 'Pinnacle Technologies', accountCode: '449', userCode: 'USR-0449',  qty: '1', orderTotal: '£119.40' },
+  { orderNo: '100420', customer: { name: 'David Williams',   avatar: 'https://picsum.photos/seed/male5/96' },                                     account: 'Nexus Innovations',     accountCode: '2099', userCode: 'USR-2099', qty: '1', orderTotal: '£108.00' },
+  { orderNo: '100420', customer: { name: 'Olivia Martinez',  avatar: 'https://picsum.photos/seed/female4/96' },                                   account: 'Catalyst Enterprises',  accountCode: '972', userCode: 'USR-0972',  qty: '1', orderTotal: '£12.00'  }
 ];
 
 /* One screen = one config. Adding a listing screen means adding an

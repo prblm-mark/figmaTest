@@ -318,12 +318,24 @@ function wireChipPanels(root) {
      rollup Figma specifies — 1–3 list in full, 4+ becomes "<first>, and N more"
      — and drops the chip back to Default when the list is empty, so the chip's
      selected state and its label both fall out of this one call. */
+  /* Announce what a chip now holds. FilterItem's rollup is LOSSY — four values
+     render as "<first>, and 3 more" — so a consumer that needs the values
+     cannot read them back off the chip. This is how the listing learns what to
+     filter by. */
+  const announce = (chip, values) => {
+    root.dispatchEvent(new CustomEvent('filter-bar:change', {
+      bubbles: true,
+      detail: { name: chip.getAttribute('data-filter-name'), values },
+    }));
+  };
+
   const sync = (panel) => {
     const wrap = panel.closest('.filter-bar__chip');
     const chip = wrap && wrap.querySelector('.filter-item');
-    if (chip && typeof chip.setFilterValues === 'function') {
-      chip.setFilterValues(valuesIn(panel));
-    }
+    if (!chip) return;
+    const values = valuesIn(panel);
+    if (typeof chip.setFilterValues === 'function') chip.setFilterValues(values);
+    announce(chip, values);
   };
 
   /* EVERY picker commits on Apply — 3039:5639 gives all of them the button,
@@ -341,7 +353,11 @@ function wireChipPanels(root) {
   /* Clearing the chip must clear its picker too, or reopening shows values the
      chip no longer claims. */
   root.addEventListener('filter-item:clear', (e) => {
-    const panel = panelOf(e.target.closest('.filter-item'));
+    const chip = e.target.closest('.filter-item');
+    if (!chip) return;
+    announce(chip, []);
+
+    const panel = panelOf(chip);
     if (!panel) return;
     panel.querySelectorAll('.filter-dropdown-item--selected').forEach((i) => {
       i.classList.remove('filter-dropdown-item--selected');

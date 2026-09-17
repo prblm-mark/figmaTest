@@ -269,3 +269,52 @@ Three clearly want a date picker, which FilterDropdowns already provides
 (Date Range / Date In the last / Date Equal To) but this screen does not yet
 build; the status/method/type facets want Multi Select once their real option
 lists are known. Each is a one-word change in `listing-data.js`.
+
+
+## Table filtering (pass 2c)
+
+Front-end filtering over the mock rows, so the screen is demonstrable before a
+backend exists. `TODO(backend:Listing)` in `listing-data.js` marks the seam:
+the real `/control/orders` filters server-side and returns the counts with the
+rows, at which point `field` becomes the query-parameter name and
+`applyFilters()` goes away.
+
+**Config, not code.** Each filter carries a `field` naming the row property it
+tests (`customer.name` walks into the object), so nothing in the renderer knows
+an Orders column from a Contacts one.
+
+| Filter | Type | Field | Match |
+|---|---|---|---|
+| Customer | Selection Options | `customer.name` | exact, any of |
+| User Code | Text | `userCode` | contains |
+| Account | Multi Select | `account` | exact, any of |
+| Account Code | Text | `accountCode` | contains |
+| Order No. | Text | `orderNo` | contains |
+
+A **Text** filter is a search — one typed fragment, matched loosely. Every
+other type is a pick-list whose values came from the row data itself, so they
+match exactly, and several picks mean "any of these". Filters combine with AND.
+
+`User Code` and `Account Code` were Predictive; the designer moved both to
+plain Text on 2026-09-17. `userCode` has no column — it exists only so that
+filter has something to test.
+
+**Values arrive by event, not by reading the chip.** `FilterItem`'s label rolls
+4+ values up into `<first>, and 3 more`, which is lossy, so the bar announces
+`filter-bar:change` (`{ name, values }`) on every commit and clear.
+
+**A field-less filter is not active.** It cannot narrow the table, so it must
+also not make the footer report a count it did not produce — the nine More
+Filters facets are all in that position until they get types and fields.
+
+### Empty state — flagged
+
+`TODO(design:Listing)`: **Datatables has no empty state in Figma.**
+`.cc-listing__empty` mirrors EventPicker's `Type=Event Picker (no results)`
+(3108:6659) token for token, that being the established treatment on the CC
+surface, rather than inventing a second one. It wants a Datatables variant of
+its own.
+
+Note the cell keeps table display and the flex column is a `div` inside it: a
+`<td>` set to `display: flex` leaves table layout and then ignores its own
+`colspan`, collapsing the empty state into the first column.
