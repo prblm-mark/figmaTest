@@ -411,15 +411,12 @@ function wireChipPanels(root) {
     refreshSaveView();
 
     const panel = panelOf(chip);
-    if (!panel) return;
-    panel.querySelectorAll('.filter-dropdown-item--selected').forEach((i) => {
-      i.classList.remove('filter-dropdown-item--selected');
-      i.setAttribute('aria-pressed', 'false');
-    });
-    panel.querySelectorAll('.checkbox__input:checked').forEach((c) => { c.checked = false; });
-    panel.querySelectorAll('.input__control').forEach((f) => { f.value = ''; });
-    const value = panel.querySelector('[data-select-value]');
-    if (value) value.classList.add('filter-dropdowns__value--placeholder');
+    const card = panel && panel.querySelector('[data-filter-dropdowns]');
+    /* The card resets itself — it is the only thing that knows what unset
+       looks like for its type. Clearing it from out here got the selections
+       but left the chosen name sitting in the field, greyed, reading like a
+       placeholder that could not be chosen again. */
+    if (card && typeof card.resetFilterDropdown === 'function') card.resetFilterDropdown();
   });
 
   /* Add Filters: picking a facet inside the More Filters panel should put that

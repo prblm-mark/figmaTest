@@ -127,3 +127,24 @@ All 17 Figma types now represented (Select and Predictive Text consolidated per 
   `.filter-dropdowns__title` instead of an Input label.
 - **Width:** all bodies are 320px (`--ai-size-6`) except the pending Table (671px) and Modal
   (960px) which will not fit this shell — they are separate layouts in phase 2.
+
+
+## Resetting a card
+
+`root.resetFilterDropdown()` is public on every `[data-filter-dropdowns]`,
+like FilterItem's `setFilterValues`. A consuming bar clears the chip and the
+card together, and only the card knows what "unset" means per type: drop the
+selected rows, untick the checkboxes, empty the fields — **and put the select
+field back to its placeholder**, which lives in a closure, not in the markup.
+
+FilterBar used to do this from outside and could only manage the first half.
+The chosen name stayed in the field, greyed by the placeholder class, so a
+cleared Customer filter looked like it still had a value that could not be
+chosen again.
+
+**`data-placeholder` on `[data-select-value]`** is what makes the restore
+correct. `wireSelect` previously took the placeholder from whatever the field
+said at init — fine when a card is always rendered empty, wrong now that one
+can be rendered with a value already in it (restoring a saved view), because
+the placeholder became that value and clearing put it straight back. The
+attribute is the placeholder; the text is the state.

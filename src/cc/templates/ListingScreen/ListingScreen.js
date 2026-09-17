@@ -136,7 +136,7 @@
       return '<div class="filter-dropdowns filter-dropdowns--select" data-filter-dropdowns data-select>' +
         '<div class="input"><label class="input__label">' + esc(f.label) + '</label>' +
           '<div class="input__wrap filter-dropdowns__trigger" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="false" aria-label="' + esc(f.name) + '" data-select-trigger>' +
-            '<span class="filter-dropdowns__value' + (picked.length ? '' : ' filter-dropdowns__value--placeholder') + '" data-select-value>' + esc(picked.length ? picked.join(', ') : f.placeholder) + '</span>' +
+            '<span class="filter-dropdowns__value' + (picked.length ? '' : ' filter-dropdowns__value--placeholder') + '" data-select-value data-placeholder="' + esc(f.placeholder) + '">' + esc(picked.length ? picked.join(', ') : f.placeholder) + '</span>' +
             '<i data-lucide="chevron-down" class="input__icon filter-dropdowns__chevron" aria-hidden="true"></i>' +
           '</div>' +
           '<div class="filter-dropdown-item-group filter-dropdowns__menu" role="listbox" aria-multiselectable="false" aria-label="' + esc(f.name) + ' options" hidden data-select-menu>' +
