@@ -422,23 +422,46 @@ already made on the other chips, which is the opposite of what adding a sixth
 filter should do.
 
 
-## Save view — when it appears
+## Save view — when it appears, and what it does
 
-`.filter-bar--save-view` reveals the CTA. The state means *the bar is ahead of
-the saved view*, so there is something to save. Two things make that true:
+`.filter-bar--save-view` reveals the CTA. The state means **the bar no longer
+matches the view it names** — a difference, not "a filter is set". A saved view
+full of filters is not dirty, and the CTA must vanish the moment its own view
+is saved, so "any chip has values" cannot be the test.
 
-1. a chip holds values (`.filter-item--selected` on a chip's own FilterItem —
-   not on a More Filters facet inside a picker, which would mark every bar
-   dirty), or
-2. a filter has been ADDED from More Filters. Adding is one-way — a chip can be
-   cleared but not taken off the bar — so this condition latches.
+The comparison is a signature of the chips on the bar and the values each
+holds. Both halves matter: adding a filter changes the view before it has a
+value. Values come from `announce`, never from the chip's label, which rolls
+4+ up into `<first>, and 3 more` and would call two different four-value
+selections identical. Reverting a change hides the CTA again, for free.
 
-Clearing the last populated chip hides it again. Pressing Save view hides it
-and drops the latch: the current filters ARE the saved view now, and without
-the reset the CTA would spring back on the next change to a view just saved.
+`root.resetSaveView(valuesByName)` re-baselines — the screen calls it after the
+first render, and after a view is selected or saved. It takes the values rather
+than trusting the bar's cache, because those chips are brand new.
 
 This replaced a mock that revealed the CTA when the Add Filters chip was merely
 OPENED — a look that changes nothing was enough to offer a save.
 
-TODO(backend:Filters): the real signal is a persisted filter-set diff, not a
-DOM scan.
+### Saving
+
+The CTA does not save on the spot; a view needs a name, so it opens the naming
+field. That field is **New View's** (2977:3799) — the only naming UI Figma
+defines — under a second class, `--saving-view`, because New View also collapses
+row 2 to just Add Filters and a view being SAVED is being saved *because of* the
+chips on the bar. In that mode the Create button reads **Save** and the CTA that
+opened it is hidden (that last rule sits after `--save-view`'s, since both are
+one class + one class and the cascade is decided by order).
+
+Create then:
+
+1. marks the row non-empty, so selecting it keeps the chips;
+2. dispatches `filter-bar:save-view` `{ name, view }` **before** selecting it —
+   the screen snapshots its filter set against that row, and selecting would
+   otherwise ask it to restore a view it has not recorded yet;
+3. selects the row, which dispatches `filter-bar:select-view` `{ name, view }`.
+
+The bar owns the list and the rows; it never learns what a view MEANS. The
+screen keeps the snapshots, keyed by row element, and restores on select.
+
+TODO(backend:Filters): saved views are in memory — a reload restores the
+shipped set.

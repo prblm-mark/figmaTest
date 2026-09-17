@@ -318,3 +318,35 @@ its own.
 Note the cell keeps table display and the flex column is a `div` inside it: a
 `<td>` set to `display: flex` leaves table layout and then ignores its own
 `colspan`, collapsing the empty state into the first column.
+
+
+## Saved views (pass 2d)
+
+A view IS a filter set: which filters are on the bar, in what order, holding
+what values. FilterBar owns the list and its rows; the screen owns what a row
+MEANS, so snapshots live here in a `WeakMap` keyed by the row element.
+
+- **Save view** → names the view → the snapshot is taken and the row selected.
+- **Selecting** a view restores its snapshot: the filter list, the More Filters
+  remainder, and every value. Chips are rebuilt (this is the one case where a
+  full chip re-render is right) with their pickers already showing the restored
+  state — ticked checkboxes, filled fields, selected option rows — which is why
+  the panel builders take the values.
+- A row with **no snapshot** — the shipped mock views, or a brand-new empty one
+  — stands for the unfiltered listing.
+- After restoring, `bar.resetSaveView(values)` re-baselines, so the Save view
+  CTA is not owed. Change something and it returns; undo the change and it goes
+  again.
+
+The bar establishes its baseline before these chips exist, so the screen also
+calls `resetSaveView` after the FIRST render — otherwise the bar reads the
+initial chips as a change and offers to save the view it just opened on.
+
+TODO(backend:Listing): in memory, like the rest of the saved-views mocking.
+→ `POST /control/orders/views { name, filters:[{name,values}] }` and
+`GET /control/orders/views`.
+
+Also fixed here: FilterBar's empty-view rule hid `.filter-bar__chips > .filter-item`,
+but a chip with a picker is WRAPPED in `.filter-bar__chip`, so the listing's
+chips stayed visible in an empty view. The wrapper now carries
+`.filter-bar__chip--add` so the rule can spare the Add Filters chip.

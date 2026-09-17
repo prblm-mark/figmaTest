@@ -19,6 +19,20 @@ import { initAll as initDropdowns } from '../../components/Dropdown/Dropdown.js'
 function setMode(root, mode) {
   root.classList.toggle('filter-bar--search', mode === 'search');
   root.classList.toggle('filter-bar--new-view', mode === 'new-view');
+  /* Naming a view to SAVE reuses New View's field + Create, because that is
+     the only naming UI Figma defines (2977:3799) — but it must not collapse
+     row 2 the way New View does. A new view starts empty; a saved one is being
+     saved BECAUSE of the chips currently on the bar. */
+  root.classList.toggle('filter-bar--saving-view', mode === 'saving-view');
+
+  const field = root.querySelector('.filter-bar__new-view .input__control');
+  if (field) {
+    const saving = mode === 'saving-view';
+    field.placeholder = saving ? 'Save view as' : 'New view';
+    field.setAttribute('aria-label', saving ? 'Name for the saved view' : 'New view name');
+  }
+  const create = root.querySelector('.filter-bar__create');
+  if (create) create.textContent = mode === 'saving-view' ? 'Save' : 'Create';
 }
 
 function closeDropdowns(root) {
@@ -42,6 +56,11 @@ function selectView(root, item) {
   // New (empty) view → show only "Add Filters"; existing views keep their chips.
   // Non-destructive: chips stay in the DOM, hidden by CSS while this class is on.
   root.classList.toggle('filter-bar--view-empty', item.dataset.viewEmpty === '1');
+  /* A view carries a filter set; only the screen knows how to restore it. */
+  root.dispatchEvent(new CustomEvent('filter-bar:select-view', {
+    bubbles: true,
+    detail: { name: text ? text.textContent.trim() : '', view: item },
+  }));
   let check = views.querySelector('.dropdown-item__check');
   if (!check) {
     check = document.createElement('i');
@@ -322,25 +341,34 @@ function wireChipPanels(root) {
      render as "<first>, and 3 more" — so a consumer that needs the values
      cannot read them back off the chip. This is how the listing learns what to
      filter by. */
-  /* Save view (Type=Save View) appears once the bar no longer shows the saved
-     view — i.e. there is something to save. Two things make that true: a chip
-     now holds values, or a filter has been ADDED from More Filters. Adding is
-     one-way (a chip can be cleared but not taken off the bar), so that second
-     condition latches.
+  /* Save view (Type=Save View) appears when the bar no longer matches the view
+     it claims to be showing — i.e. there is something to save. That is a
+     DIFFERENCE, not "any filter is set": a saved view full of filters is not
+     dirty, and the CTA has to disappear the moment its own view is saved.
 
-     The CSS for this state already existed and nothing ever turned it on. */
-  let filterAdded = false;
+     The comparison is a signature of the chips on the bar and the values each
+     holds. Both halves matter — adding a filter changes the view even before
+     it has a value. Values come from `announce`, not from the chip's label,
+     which rolls 4+ up into "<first>, and 3 more" and would call two different
+     four-value selections identical. */
+  const current = new Map();
+
+  const signature = () => JSON.stringify(
+    Array.from(root.querySelectorAll('.filter-bar__chips > .filter-bar__chip'))
+      /* The chip's OWN FilterItem — not a More Filters facet inside its
+         picker, which would make every bar look different from itself. */
+      .map((wrap) => wrap.querySelector(':scope > .filter-item'))
+      .filter(Boolean)
+      .map((chip) => {
+        const name = chip.getAttribute('data-filter-name');
+        return [name, current.get(name) || []];
+      })
+  );
+
+  let baseline = signature();
 
   const refreshSaveView = () => {
-    const dirty = filterAdded || Array.from(
-      root.querySelectorAll('.filter-bar__chips > .filter-bar__chip')
-    ).some((wrap) => {
-      /* The chip's OWN FilterItem — not one inside its picker, where the More
-         Filters facets live and would report every bar as dirty. */
-      const chip = wrap.querySelector(':scope > .filter-item');
-      return chip && chip.classList.contains('filter-item--selected');
-    });
-    root.classList.toggle('filter-bar--save-view', dirty);
+    root.classList.toggle('filter-bar--save-view', signature() !== baseline);
   };
 
   const announce = (chip, values) => {
@@ -356,6 +384,7 @@ function wireChipPanels(root) {
     if (!chip) return;
     const values = valuesIn(panel);
     if (typeof chip.setFilterValues === 'function') chip.setFilterValues(values);
+    current.set(chip.getAttribute('data-filter-name'), values);
     announce(chip, values);
     refreshSaveView();
   };
@@ -377,6 +406,7 @@ function wireChipPanels(root) {
   root.addEventListener('filter-item:clear', (e) => {
     const chip = e.target.closest('.filter-item');
     if (!chip) return;
+    current.set(chip.getAttribute('data-filter-name'), []);
     announce(chip, []);
     refreshSaveView();
 
@@ -407,21 +437,28 @@ function wireChipPanels(root) {
     if (!facet) return;
     const name = facet.getAttribute('data-filter-name');
     if (!name) return;
-    filterAdded = true;
-    refreshSaveView();
+    /* The chip does not exist yet — the screen builds it — so settle the CTA
+       once it does. */
+    setTimeout(refreshSaveView, 0);
     root.dispatchEvent(new CustomEvent('filter-bar:add-filter', {
       bubbles: true,
       detail: { name },
     }));
   });
 
-  /* Saving makes the current filters the saved view, so the bar is no longer
-     ahead of it: drop the latch, or the CTA would spring back on the next
-     change to a view that has just been saved. The class itself is removed by
-     the save-view action. */
-  root.addEventListener('click', (e) => {
-    if (e.target.closest('[data-filter-action="save-view"]')) filterAdded = false;
-  });
+  /* Public, like FilterItem.setFilterValues. The screen calls resetSaveView()
+     once the bar shows a view as saved — after selecting one, or after saving
+     the current filters as a new one — passing the values it just restored, so
+     the new baseline is the values themselves and not a stale cache of them. */
+  root.refreshSaveView = refreshSaveView;
+  root.resetSaveView = (valuesByName) => {
+    if (valuesByName) {
+      current.clear();
+      Object.keys(valuesByName).forEach((n) => current.set(n, valuesByName[n]));
+    }
+    baseline = signature();
+    refreshSaveView();
+  };
 
   /* Chips can be rendered already selected, so settle the state up front. */
   refreshSaveView();
@@ -464,16 +501,31 @@ function init(root) {
         break;
       case 'new-view-exit':
         setMode(root, null);
+        /* Abandoning the name leaves the filters as they were, so the CTA is
+           owed again. */
+        if (typeof root.refreshSaveView === 'function') root.refreshSaveView();
         break;
       case 'new-view-create': {
+        const saving = root.classList.contains('filter-bar--saving-view');
         const input = root.querySelector('.filter-bar__new-view .input__control');
         const name = input ? input.value.trim() : '';
         if (name) {
           const row = addView(root, name);
           if (row) {
+            /* Saving keeps the chips that are on the bar; New View starts
+               empty. addView() assumes the latter, so undo that here. */
+            if (saving) {
+              row.dataset.viewEmpty = '0';
+              /* Snapshot BEFORE selecting — selectView asks the screen to
+                 restore this view, and there would be nothing to restore. */
+              root.dispatchEvent(new CustomEvent('filter-bar:save-view', {
+                bubbles: true,
+                detail: { name, view: row },
+              }));
+            }
             if (typeof window !== 'undefined' && window.lucide) window.lucide.createIcons();
             initDropdowns(root);
-            selectView(root, row); // selects + applies --view-empty (only Add Filters shows)
+            selectView(root, row);
           }
         }
         if (input) input.value = '';
@@ -481,14 +533,20 @@ function init(root) {
         break;
       }
       case 'save-view': {
-        // Mock "save" — dismiss the CTA and close the Add Filters chip it came from.
-        root.classList.remove('filter-bar--save-view');
+        /* Saving needs a name, so the CTA opens the naming field rather than
+           saving on the spot. */
+        closeDropdowns(root);
         const add = root.querySelector('.filter-bar__add');
         if (add) {
           add.classList.remove('filter-item--open');
           const t = add.querySelector('.filter-item__trigger');
           if (t) t.setAttribute('aria-expanded', 'false');
+          const panel = add.closest('.filter-bar__chip');
+          const p = panel && panel.querySelector('.filter-bar__panel');
+          if (p) p.hidden = true;
         }
+        setMode(root, 'saving-view');
+        focusEl('.filter-bar__new-view .input__control');
         break;
       }
       default:

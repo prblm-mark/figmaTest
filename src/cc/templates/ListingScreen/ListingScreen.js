@@ -113,9 +113,10 @@
    * inside a `.filter-bar__chip` wrapper and knows nothing about which Type is
    * inside, which is what keeps one bar serving every listing screen.
    */
-  function optionRows(options, selectedFirst) {
-    return (options || []).map(function (o, i) {
-      var sel = (selectedFirst && i === 0) ? ' filter-dropdown-item--selected' : '';
+  function optionRows(options, selected) {
+    var picked = selected || [];
+    return (options || []).map(function (o) {
+      var sel = picked.indexOf(o.name) !== -1 ? ' filter-dropdown-item--selected' : '';
       return '<button type="button" class="filter-dropdown-item' + sel + '" data-filter-dropdown-item>' +
         '<span class="filter-dropdown-item__text">' +
           '<span class="filter-dropdown-item__name">' + esc(o.name) + '</span>' +
@@ -130,15 +131,16 @@
     /* Type=Select Options w/subtext (3039:5628) — a field that opens a
        single-select option list, then Apply. Picking an option closes the
        MENU and fills the field; Apply commits it to the chip. */
-    'select-options': function (f) {
+    'select-options': function (f, values) {
+      var picked = values || [];
       return '<div class="filter-dropdowns filter-dropdowns--select" data-filter-dropdowns data-select>' +
         '<div class="input"><label class="input__label">' + esc(f.label) + '</label>' +
           '<div class="input__wrap filter-dropdowns__trigger" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="false" aria-label="' + esc(f.name) + '" data-select-trigger>' +
-            '<span class="filter-dropdowns__value filter-dropdowns__value--placeholder" data-select-value>' + esc(f.placeholder) + '</span>' +
+            '<span class="filter-dropdowns__value' + (picked.length ? '' : ' filter-dropdowns__value--placeholder') + '" data-select-value>' + esc(picked.length ? picked.join(', ') : f.placeholder) + '</span>' +
             '<i data-lucide="chevron-down" class="input__icon filter-dropdowns__chevron" aria-hidden="true"></i>' +
           '</div>' +
           '<div class="filter-dropdown-item-group filter-dropdowns__menu" role="listbox" aria-multiselectable="false" aria-label="' + esc(f.name) + ' options" hidden data-select-menu>' +
-            optionRows(f.options, false) +
+            optionRows(f.options, values) +
           '</div></div>' +
         '<button type="button" class="btn btn--primary filter-dropdowns__apply" data-filter-dropdowns-apply>Apply</button>' +
       '</div>';
@@ -147,14 +149,14 @@
     /* Type=Predictive Text Options (3039:5625), then Apply. Figma's plain
        Predictive Text is consolidated into this one — predictive always
        reveals options. */
-    predictive: function (f) {
+    predictive: function (f, values) {
       return '<div class="filter-dropdowns filter-dropdowns--select" data-filter-dropdowns data-predictive>' +
         '<div class="input"><label class="input__label">' + esc(f.label) + '</label>' +
           '<div class="input__wrap">' +
-            '<input class="input__control" type="text" placeholder="' + esc(f.placeholder) + '" aria-label="' + esc(f.name) + '" data-predictive-input>' +
+            '<input class="input__control" type="text" value="' + esc((values || [])[0] || '') + '" placeholder="' + esc(f.placeholder) + '" aria-label="' + esc(f.name) + '" data-predictive-input>' +
           '</div>' +
           '<div class="filter-dropdown-item-group filter-dropdowns__menu" role="listbox" aria-label="' + esc(f.name) + ' options" hidden data-select-menu>' +
-            optionRows(f.options, false) +
+            optionRows(f.options, values) +
           '</div></div>' +
         '<button type="button" class="btn btn--primary filter-dropdowns__apply" data-filter-dropdowns-apply>Apply</button>' +
       '</div>';
@@ -162,9 +164,10 @@
 
     /* Type=Multi Select (3039:5629) — checkbox list + Apply. `--list` is the
        pattern's own modifier for the wider gap and capped scrolling body. */
-    'multi-select': function (f) {
+    'multi-select': function (f, values) {
       var rows = (f.options || []).map(function (o) {
-        return '<label class="checkbox"><input type="checkbox" class="checkbox__input"' + (o.checked ? ' checked' : '') + '>' +
+        var on = (values || []).indexOf(o.name) !== -1;
+        return '<label class="checkbox"><input type="checkbox" class="checkbox__input"' + (on ? ' checked' : '') + '>' +
           '<span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>' +
           '<span class="checkbox__label"><span class="checkbox__label-text">' + esc(o.name) + '</span></span></label>';
       }).join('');
@@ -176,11 +179,11 @@
     },
 
     /* Type=Text (3039:5633) — a single field + Apply. */
-    text: function (f) {
+    text: function (f, values) {
       return '<div class="filter-dropdowns" data-filter-dropdowns>' +
         '<div class="input"><label class="input__label">' + esc(f.label) + '</label>' +
           '<div class="input__wrap">' +
-            '<input class="input__control" type="text" placeholder="' + esc(f.placeholder) + '" aria-label="' + esc(f.name) + '">' +
+            '<input class="input__control" type="text" value="' + esc((values || [])[0] || '') + '" placeholder="' + esc(f.placeholder) + '" aria-label="' + esc(f.name) + '">' +
           '</div></div>' +
         '<button type="button" class="btn btn--primary filter-dropdowns__apply" data-filter-dropdowns-apply>Apply</button>' +
       '</div>';
@@ -188,7 +191,7 @@
 
     /* Type=More Filters (3039:5637) — the filters NOT on the bar, as empty
        chips. No Apply: picking one adds it to the bar. */
-    'more-filters': function (f) {
+    'more-filters': function (f, values) {
       var chips = (f.options || []).map(function (o) {
         return '<div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="' + esc(o.name) + '">' +
           '<button type="button" class="filter-item__trigger" aria-expanded="false">' +
@@ -203,9 +206,9 @@
   /* One chip: the FilterItem markup plus its picker, wrapped so the picker can
      anchor to it. The full slot set is always rendered — FilterItem's contract
      is that CSS hides what the current state does not use. */
-  function chip(f, extraClass) {
+  function chip(f, extraClass, wrapClass, values) {
     var build = FILTER_PANELS[f.type];
-    return '<div class="filter-bar__chip">' +
+    return '<div class="filter-bar__chip' + (wrapClass || '') + '">' +
       '<div class="filter-item filter-item--rounded' + (extraClass || '') + '" data-filter-name="' + esc(f.name) + '">' +
         '<button type="button" class="filter-item__clear" aria-label="Clear ' + esc(f.name) + ' filter"><i data-lucide="x" aria-hidden="true"></i></button>' +
         '<button type="button" class="filter-item__trigger" aria-haspopup="listbox" aria-expanded="false">' +
@@ -216,15 +219,21 @@
           '<i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i>' +
         '</button>' +
       '</div>' +
-      (build ? '<div class="filter-bar__panel" hidden>' + build(f) + '</div>' : '') +
+      (build ? '<div class="filter-bar__panel" hidden>' + build(f, values) + '</div>' : '') +
     '</div>';
   }
 
   function renderFilters(config) {
-    var html = (config.defaultFilters || []).map(function (f) { return chip(f); }).join('');
+    var html = (config.defaultFilters || []).map(function (f) {
+      return chip(f, '', '', config.filterValues[f.name] || []);
+    }).join('');
+    /* `--add` marks the WRAPPER so an empty view can hide the other chips:
+       a chip with a picker is wrapped, so FilterBar's bare-chip selector
+       cannot reach it. */
     html += chip(
       { name: 'Add Filters', type: 'more-filters', options: config.moreFilters || [] },
-      ' filter-item--empty filter-bar__add'
+      ' filter-item--empty filter-bar__add',
+      ' filter-bar__chip--add'
     );
     /* The Save view CTA is rendered here rather than left in the markup so the
        chips stay DIRECT children of `.filter-bar__chips` — that row is a flex
@@ -401,21 +410,38 @@
     '</td></tr>';
   }
 
-  function render(root, config) {
+  /* Rebuild the WHOLE chip row. Used on first render and when a saved view
+     replaces the current filters — never for an everyday change, where
+     rebuilding a chip would discard the selection that caused it. */
+  function renderChips(config) {
     var chipsHost = document.querySelector('[data-listing-filters]');
-    if (chipsHost) chipsHost.innerHTML = renderFilters(config);
+    if (!chipsHost) return;
+    chipsHost.innerHTML = renderFilters(config);
 
-    root.querySelector('[data-listing-head]').innerHTML = renderHead(config.columns);
-    renderResults(root, config);
+    if (window.lucide && typeof window.lucide.createIcons === 'function') {
+      window.lucide.createIcons();
+    }
 
     /* Tell the page the chips and pickers now exist. They are rendered here,
        which is after FilterItem.js and FilterDropdowns.js have already
        auto-initialised the static markup — so without this the chips would be
        inert. The listener is scoped to what was just rendered rather than the
        document, because FilterItem.init has no idempotency guard. */
-    document.dispatchEvent(new CustomEvent('listing:rendered', {
-      detail: { root: chipsHost || root }
-    }));
+    document.dispatchEvent(new CustomEvent('listing:rendered', { detail: { root: chipsHost } }));
+
+    /* Only now does a chip have setFilterValues, so its label goes on last. */
+    chipsHost.querySelectorAll('.filter-bar__chip > .filter-item').forEach(function (el) {
+      var values = config.filterValues[el.getAttribute('data-filter-name')];
+      if (values && values.length && typeof el.setFilterValues === 'function') {
+        el.setFilterValues(values);
+      }
+    });
+  }
+
+  function render(root, config) {
+    renderChips(config);
+    root.querySelector('[data-listing-head]').innerHTML = renderHead(config.columns);
+    renderResults(root, config);
   }
 
   function init() {
@@ -440,7 +466,14 @@
       filterValues: {}
     });
 
+    var bar = root.querySelector('.filter-bar');
+
     render(root, config);
+
+    /* The bar establishes its baseline before these chips exist, so it would
+       read the first render as a change and offer to save the view the screen
+       opened on. Hand it the real starting point. */
+    if (bar && typeof bar.resetSaveView === 'function') bar.resetSaveView(config.filterValues);
 
     /* Add Filters: FilterBar reports which facet was picked; the screen owns
        what that filter IS, so it builds the chip here.
@@ -473,6 +506,52 @@
 
       /* Same contract the first render uses, scoped to just the new chip. */
       document.dispatchEvent(new CustomEvent('listing:rendered', { detail: { root: added } }));
+    });
+
+    /* ── Saved views ─────────────────────────────────────────
+       A view IS a filter set: which filters are on the bar, in what order,
+       holding what values. The bar owns the list and its rows; the screen owns
+       what a row MEANS, so the snapshot is kept here, keyed by the row element.
+
+       TODO(backend:Listing): in memory, like the rest of the saved-views
+       mocking — a reload restores the shipped set.
+         → POST /control/orders/views  { name, filters:[{name,values}] }
+         → GET  /control/orders/views */
+    var views = new WeakMap();
+
+    function snapshot() {
+      return {
+        defaultFilters: config.defaultFilters.slice(),
+        moreFilters: config.moreFilters.slice(),
+        filterValues: JSON.parse(JSON.stringify(config.filterValues))
+      };
+    }
+
+    /* The view the screen opened on — what the pre-existing rows mean, and
+       what an unsaved view falls back to. */
+    var baseline = snapshot();
+
+    function restore(snap) {
+      config.defaultFilters = snap.defaultFilters.slice();
+      config.moreFilters = snap.moreFilters.slice();
+      config.filterValues = JSON.parse(JSON.stringify(snap.filterValues));
+      renderChips(config);
+      renderResults(root, config);
+      /* The bar now matches the view it names, so the Save view CTA is owed
+         nothing. It is handed the values rather than left to remember them —
+         these chips are brand new. */
+      if (bar && typeof bar.resetSaveView === 'function') bar.resetSaveView(config.filterValues);
+    }
+
+    document.addEventListener('filter-bar:save-view', function (e) {
+      if (e.detail && e.detail.view) views.set(e.detail.view, snapshot());
+    });
+
+    document.addEventListener('filter-bar:select-view', function (e) {
+      var view = e.detail && e.detail.view;
+      /* A row with no snapshot is one of the shipped mock views (or a brand-new
+         empty one), which stand for the unfiltered listing. */
+      restore(view && views.has(view) ? views.get(view) : baseline);
     });
 
     /* A chip committed (Apply) or was cleared — narrow the table. */

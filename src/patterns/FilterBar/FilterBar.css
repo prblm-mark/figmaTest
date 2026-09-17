@@ -403,23 +403,36 @@
   visibility: visible;
 }
 
-.filter-bar--new-view .filter-bar__views {
+/* Naming a view to SAVE borrows New View's field + Create — the only naming UI
+ * Figma defines — but not its collapsed chip row: a view is being saved
+ * BECAUSE of the chips on the bar. Hence the second class rather than reusing
+ * `--new-view` for both. */
+.filter-bar--new-view .filter-bar__views,
+.filter-bar--saving-view .filter-bar__views {
   display: none;
 }
 
-.filter-bar--new-view .filter-bar__new-view {
+.filter-bar--new-view .filter-bar__new-view,
+.filter-bar--saving-view .filter-bar__new-view {
   display: block;
 }
 
-.filter-bar--new-view .filter-bar__create {
+.filter-bar--new-view .filter-bar__create,
+.filter-bar--saving-view .filter-bar__create {
   display: inline-flex;
 }
+
 
 /* New-view mode — and a freshly created (empty) view — collapse row 2 to just the
  * "Add Filters" chip. Add Filters now lives inside __chips (last in the flow), so
  * hide only the OTHER chips. Existing views keep their full chip set. */
 .filter-bar--new-view .filter-bar__chips > .filter-item:not(.filter-bar__add),
-.filter-bar--view-empty .filter-bar__chips > .filter-item:not(.filter-bar__add) {
+.filter-bar--view-empty .filter-bar__chips > .filter-item:not(.filter-bar__add),
+/* A chip with a picker is WRAPPED (`.filter-bar__chip` holds chip + panel), so
+   the bare-chip selectors above never reach it and the listing's chips stayed
+   visible in an empty view. */
+.filter-bar--new-view .filter-bar__chips > .filter-bar__chip:not(.filter-bar__chip--add),
+.filter-bar--view-empty .filter-bar__chips > .filter-bar__chip:not(.filter-bar__chip--add) {
   display: none;
 }
 
@@ -436,6 +449,14 @@
 .filter-bar--save-view .filter-bar__save {
   display: inline-flex;
   margin-left: auto; /* desktop: pin to the right edge of the chip row */
+}
+
+/* While the name is being typed, the CTA that opened the field would offer the
+ * same action twice. Placed AFTER the rule above deliberately: both selectors
+ * are one class + one class, so the cascade is decided by order — written
+ * earlier, this lost and the CTA stayed on screen beside the field. */
+.filter-bar--saving-view .filter-bar__save {
+  display: none;
 }
 
 /* ── Focus (a11y) ────────────────────────────────────── */
