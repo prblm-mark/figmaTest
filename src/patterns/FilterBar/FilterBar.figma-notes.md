@@ -297,12 +297,21 @@ with `z-index: 1` so it paints its whole outline including that collapsed edge.
 - **The listing screens still draw a plain Export button** with no divider, so
   the Listings page and the Button set now disagree.
 
-### Duplication, flagged
+### Resolved: the split is `.btn-group` (2026-09-17)
 
-`.seating-header__export-split` in `SeatingPlanner.css` is the same six rules.
-Two consumers now, and Figma has made it a formal Button Type — so it wants
-promoting to Button as a shared modifier rather than copied a third time. Not
-done here: that is a change to a core component, not to this pattern.
+The duplication flagged when this was built is gone. The split mechanics were
+never FilterBar's to own — **ButtonGroup already had all three rules**: the
+`-1px` collapsed edge, the first/last radius rounding, and the hover/focus
+`z-index`. Both this pattern and `SeatingPlanner.css` had hand-written their
+own copy before anyone checked whether a component existed.
+
+`.filter-bar__export-split` was deleted and the wrapper is now `.btn-group`.
+Geometry measured identical before and after. What remains here is only what is
+genuinely FilterBar's: the chevron half's `--ai-spacing-4` inline padding and
+the 160/8 panel sizing.
+
+`ButtonGroup.css` is now linked by this demo, ListingScreen and SeatingPlanner
+— none of the three loaded it before.
 
 ## Notes
 

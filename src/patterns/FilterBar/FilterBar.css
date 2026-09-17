@@ -140,61 +140,42 @@
 
 /* ── Export: split control ─────────────────────────────
  * The same control the Seating Planner toolbar uses (designer,
- * 2026-09-17: "use the same style as we did for the seating planner").
- * Two buttons that read as one: the label half runs the default export,
- * the chevron half opens the format menu.
+ * 2026-09-17). The label half runs the default export; the chevron half
+ * opens the format menu.
  *
- * Figma formalised the LOOK on 2026-09-17 as a new Button Type,
- * `Secondary / Action` (base 3679:17496, sm 3679:99941) — a single
- * button with a full-height divider before a trailing icon. That was
- * supplied as a visual reference only; the behaviour here is the split
- * control, which one button cannot give (two separate targets).
+ * THE SPLIT ITSELF IS `.btn-group` — ButtonGroup already owned every part
+ * of it: collapsed borders (`.btn + .btn { margin-left: -1px }`), the
+ * first/last radius rounding, and the hover/focus `z-index` that stops the
+ * lifted half painting a broken outline. This pattern had been written out
+ * by hand twice — here and in SeatingPlanner.css — before anyone checked
+ * whether a component for it existed. It did.
  *
- * The divider is not drawn. It IS the shared border: the halves are
- * pulled together by -1px so two adjacent 1px borders collapse into the
- * single rule Figma draws, rather than stacking to 2px.
+ * The MENU stays on `.dropdown` / `.dropdown__panel` / `.dropdown-item--xs`.
+ * ButtonGroup ships its own older `.btn-group__menu`, but the Dropdown set
+ * is the one both consumers already use and the one Figma's menu maps to,
+ * so the split takes the geometry from ButtonGroup and the menu from
+ * Dropdown rather than adopting a second menu system.
  *
- * DUPLICATION, FLAGGED: `.seating-header__export-split` in
- * SeatingPlanner.css is the same six rules. Two consumers now, and Figma
- * has made it a formal Button Type — so it wants promoting to Button as a
- * shared modifier rather than copied a third time. Left alone here
- * because that is a change to a core component, not to this pattern. */
+ * Figma formalised the LOOK on 2026-09-17 as Button Type
+ * `Secondary / Action` (base 3679:17496, sm 3679:99941) — one button with a
+ * divider. Supplied as a visual reference only; the behaviour here needs
+ * two targets. Designer 2026-09-17: Figma will be updated to follow.
+ *
+ * What remains below is only what is genuinely FilterBar's. */
 
 .filter-bar__export {
   flex-shrink: 0;
 }
 
-.filter-bar__export-split {
-  display: flex;
-  align-items: stretch;
-}
-
-.filter-bar__export-split > .btn:first-child {
-  border-start-end-radius: 0;
-  border-end-end-radius: 0;
-}
-
+/* The chevron half carries an icon and no label, so it does not want the
+ * label half's inline padding. --ai-spacing-4 matches what Figma binds on
+ * Secondary / Action. */
 .filter-bar__export-more.btn {
-  margin-inline-start: -1px;
-  border-start-start-radius: 0;
-  border-end-start-radius: 0;
-  /* Figma binds --ai-spacing-4 on Secondary / Action; this half carries a
-   * chevron and no label, so the same inline padding applies on both sides. */
   padding-inline: var(--ai-spacing-4);
 }
 
-/* The hovered / focused half must paint its whole outline, including the
- * edge the -1px pull collapsed, or its border reads as broken. */
-.filter-bar__export-split > .btn:hover,
-.filter-bar__export-split > .btn:focus-visible {
-  position: relative;
-  z-index: 1;
-}
-
 /* Panel sized as Figma's export list (160 wide, 8px padding) rather than
- * Dropdown's 240/12 default. Scoped here rather than reusing
- * SeatingPlanner's `.dropdown__panel--export`, which is defined in that
- * template's CSS and is not loaded on a listing screen. */
+ * Dropdown's 240/12 default. */
 .filter-bar__export .dropdown__panel {
   min-width: var(--ai-size-2);
   padding: var(--ai-spacing-3);
