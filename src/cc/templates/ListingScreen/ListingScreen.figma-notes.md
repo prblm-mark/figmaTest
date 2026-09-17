@@ -128,6 +128,51 @@ Figma also shortens the ORDER NO header to "Order" on mobile. CSS cannot swap te
 JS must not read a container query, so both strings are rendered and the container query
 picks one (`.datatables__label--full` / `--short`).
 
+## Demo chrome: no theme cog on this screen
+
+This template loads **`src/styles/theme-param.js`**, not
+`src/components/dark-mode-toggle.js` — the only CC screen that does.
+
+Both apply the saved theme from `<head>` before first paint, using the same
+`demo-theme` localStorage key, so the light/dark choice still follows a visitor
+here from any other page. The difference is that `dark-mode-toggle.js` also
+injects the **demo toolbar** — the fixed gear tab pinned to the right edge.
+Dropped at the designer's request (2026-09-17): this template is the shell for
+~400 real Control Centre screens, and a demo affordance floating over it reads
+as part of the product rather than as demo furniture.
+
+The in-product control is unaffected — the **User Menu dropdown still carries
+its ThemeToggle** (Figma HeaderGroup `4146:6685`), driven by `ThemeToggle.js`.
+That is the real light/dark switch for this surface; only the demo tab is gone.
+
+Other CC screens keep their cog; nothing shared was changed.
+
+## Page padding and the scrollbar gutter
+
+`.cc-control__page` scrolls and sets `scrollbar-gutter: stable`, which reserves
+a 15px gutter on the **end edge only**. ControlScreen compensates by trimming
+`padding-right` at both breakpoints, so the content sits evenly against it.
+
+| Breakpoint | padding L | padding R | + gutter | visual L / R |
+|---|---|---|---|---|
+| Desktop (≥768) | `--ai-spacing-6` (24) | `--ai-spacing-4` (12) | 15 | 24 / 27 |
+| Mobile (≤767) | `--ai-spacing-4` (12) | `--ai-spacing-0` (0) | 15 | 12 / 15 |
+
+The mobile row was `--ai-spacing-2` (6px) until 2026-09-17, which read as
+**12 / 21** — a 9px lean, three times the desktop tolerance, and present on
+every CC screen rather than just this one. Fixed in `ControlScreen.css` so all
+of them benefit.
+
+**Exactly even is not reachable by trimming at mobile**: the reserved gutter
+(15px) is already wider than the 12px left padding, so the only symmetric
+option is `scrollbar-gutter: stable both-edges`, which costs 15px of content on
+each side of a 390px screen. Deliberately not taken.
+
+**Do not re-declare `padding` on `.cc-control__page--listing`.** It has the same
+specificity as `.cc-control__page` but loads later, so a shorthand there wins
+and silently restores the untrimmed right padding — which is exactly how the
+39px right gap arose on 2026-09-17.
+
 ## Files
 
 | File | Role |

@@ -3,7 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="../../../components/dark-mode-toggle.js"></script>
+  <!-- Theme resolution only — NOT components/dark-mode-toggle.js.
+       That script also injects the demo toolbar (the fixed gear tab on the
+       right edge), which the designer asked to drop from this screen: the
+       listing template is the shell for ~400 real CC screens, and a demo
+       affordance floating over it reads as part of the product.
+       theme-param.js applies the saved theme from <head> before first paint
+       using the same 'demo-theme' key, so the light/dark choice still follows
+       the visitor here from any other page — and the User Menu's own
+       ThemeToggle (Figma HeaderGroup 4146:6685) remains the in-product
+       control, driven by ThemeToggle.js at the foot of this file. -->
+  <script src="../../../styles/theme-param.js"></script>
   <title>Listing Screen · Orders — Affino Control Centre</title>
 
   <!-- Base + tokens -->
