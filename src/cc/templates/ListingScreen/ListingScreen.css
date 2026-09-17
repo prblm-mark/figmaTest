@@ -44,12 +44,25 @@
  * `isolation: isolate`; the listing adds no stacking context of its
  * own, so an open FilterBar dropdown still paints above the table. */
 
-.cc-control__page--listing {
-  /* Figma inset is --ai-spacing-6 (24px), which .cc-control__page
-   * already applies — no override. This modifier exists as the hook
-   * for per-screen tweaks and to name the page in the markup. */
-  padding: var(--ai-spacing-6);
-}
+/* NOTE — deliberately no `padding` here.
+ *
+ * `.cc-control__page` already applies the Figma inset (--ai-spacing-6), and
+ * then TRIMS padding-right to --ai-spacing-4 so the content sits evenly
+ * against the scrollbar gutter, which `scrollbar-gutter: stable` reserves on
+ * the right edge only. 12px padding + a 15px gutter reads as 27 against the
+ * 24 on the left — the closest the spacing scale gets to even.
+ *
+ * Re-declaring `padding: var(--ai-spacing-6)` on this modifier defeated that:
+ * same specificity (one class), but ListingScreen.css loads after
+ * ControlScreen.css, so the shorthand won and restored a full 24px right
+ * padding. With the gutter on top the right gap measured 39 against 24 —
+ * which is exactly the asymmetry this comment exists to prevent recurring.
+ *
+ * `scrollbar-gutter: stable both-edges` looks like the tidier fix and is not:
+ * it reserves a gutter on BOTH edges, so the left gap becomes 24+15=39 while
+ * the trimmed right stays 27, making the imbalance worse in the other
+ * direction. The trim is the house solution — leave the page's padding alone.
+ */
 
 /* ── FilterBar in the listing context ────────────────────
  * FilterBar is a full pattern already; it needs no restyling here.
