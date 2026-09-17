@@ -322,6 +322,27 @@ function wireChipPanels(root) {
      render as "<first>, and 3 more" — so a consumer that needs the values
      cannot read them back off the chip. This is how the listing learns what to
      filter by. */
+  /* Save view (Type=Save View) appears once the bar no longer shows the saved
+     view — i.e. there is something to save. Two things make that true: a chip
+     now holds values, or a filter has been ADDED from More Filters. Adding is
+     one-way (a chip can be cleared but not taken off the bar), so that second
+     condition latches.
+
+     The CSS for this state already existed and nothing ever turned it on. */
+  let filterAdded = false;
+
+  const refreshSaveView = () => {
+    const dirty = filterAdded || Array.from(
+      root.querySelectorAll('.filter-bar__chips > .filter-bar__chip')
+    ).some((wrap) => {
+      /* The chip's OWN FilterItem — not one inside its picker, where the More
+         Filters facets live and would report every bar as dirty. */
+      const chip = wrap.querySelector(':scope > .filter-item');
+      return chip && chip.classList.contains('filter-item--selected');
+    });
+    root.classList.toggle('filter-bar--save-view', dirty);
+  };
+
   const announce = (chip, values) => {
     root.dispatchEvent(new CustomEvent('filter-bar:change', {
       bubbles: true,
@@ -336,6 +357,7 @@ function wireChipPanels(root) {
     const values = valuesIn(panel);
     if (typeof chip.setFilterValues === 'function') chip.setFilterValues(values);
     announce(chip, values);
+    refreshSaveView();
   };
 
   /* EVERY picker commits on Apply — 3039:5639 gives all of them the button,
@@ -356,6 +378,7 @@ function wireChipPanels(root) {
     const chip = e.target.closest('.filter-item');
     if (!chip) return;
     announce(chip, []);
+    refreshSaveView();
 
     const panel = panelOf(chip);
     if (!panel) return;
@@ -384,11 +407,24 @@ function wireChipPanels(root) {
     if (!facet) return;
     const name = facet.getAttribute('data-filter-name');
     if (!name) return;
+    filterAdded = true;
+    refreshSaveView();
     root.dispatchEvent(new CustomEvent('filter-bar:add-filter', {
       bubbles: true,
       detail: { name },
     }));
   });
+
+  /* Saving makes the current filters the saved view, so the bar is no longer
+     ahead of it: drop the latch, or the CTA would spring back on the next
+     change to a view that has just been saved. The class itself is removed by
+     the save-view action. */
+  root.addEventListener('click', (e) => {
+    if (e.target.closest('[data-filter-action="save-view"]')) filterAdded = false;
+  });
+
+  /* Chips can be rendered already selected, so settle the state up front. */
+  refreshSaveView();
 }
 
 function init(root) {
@@ -399,15 +435,10 @@ function init(root) {
 
   wireChipPanels(root);
 
-  // Save View: a filter being added/amended reveals the "Save view" CTA. Mock —
-  // here we trigger it from the "Add Filters" chip's toggle (FilterItem bubbles
-  // `filter-item:toggle`). TODO(backend:Filters): real trigger is a persisted
-  // filter-set change.
-  root.addEventListener('filter-item:toggle', (e) => {
-    if (e.target.closest('.filter-bar__add') && e.detail && e.detail.open) {
-      root.classList.add('filter-bar--save-view');
-    }
-  });
+  // Save View is revealed by wireChipPanels' refreshSaveView, from the real
+  // signal — a chip holding values, or a filter added from More Filters. It
+  // used to be faked here by merely OPENING the Add Filters chip, which showed
+  // the CTA for a look that changed nothing.
 
   const focusEl = (sel) => {
     const el = root.querySelector(sel);

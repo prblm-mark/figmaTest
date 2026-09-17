@@ -420,3 +420,25 @@ Add Filters chip, then removes the facet from the panel.
 Splice, not re-render: rebuilding the chip row would discard the selections
 already made on the other chips, which is the opposite of what adding a sixth
 filter should do.
+
+
+## Save view — when it appears
+
+`.filter-bar--save-view` reveals the CTA. The state means *the bar is ahead of
+the saved view*, so there is something to save. Two things make that true:
+
+1. a chip holds values (`.filter-item--selected` on a chip's own FilterItem —
+   not on a More Filters facet inside a picker, which would mark every bar
+   dirty), or
+2. a filter has been ADDED from More Filters. Adding is one-way — a chip can be
+   cleared but not taken off the bar — so this condition latches.
+
+Clearing the last populated chip hides it again. Pressing Save view hides it
+and drops the latch: the current filters ARE the saved view now, and without
+the reset the CTA would spring back on the next change to a view just saved.
+
+This replaced a mock that revealed the CTA when the Add Filters chip was merely
+OPENED — a look that changes nothing was enough to offer a save.
+
+TODO(backend:Filters): the real signal is a persisted filter-set diff, not a
+DOM scan.
