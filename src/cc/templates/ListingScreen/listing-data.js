@@ -143,9 +143,12 @@ function opts(names) {
 /* The six filters the live screen shows by default — its "Simple Search"
  * form (StoreOrderSearch.cfm #SimpleSearch). Only the FIRST FIVE reach the
  * bar: every listing screen shows five chips and offers the rest behind "Add
- * Filters" (designer, 2026-09-18), so Order Owner heads the More Filters
- * panel rather than being dropped. The limit lives in ListingScreen.js
+ * Filters" (designer, 2026-09-18), so Order Owner joins the More Filters panel
+ * rather than being dropped. The limit lives in ListingScreen.js
  * (DEFAULT_CHIPS) because it applies to all ~400 screens, not to this config.
+ *
+ * The panel lists its facets ALPHABETICALLY, so the order of the arrays here
+ * is provenance — the order the live screen declares them — not running order.
  *
  * Customer and Order Owner are
  * jQuery-UI autocompletes against AjaxCustomerAutoComplete.cfm, which maps
