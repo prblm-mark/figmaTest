@@ -145,6 +145,12 @@
 }
 
 .dropdown__panel--columns {
+  /* The rows are draggable, and a drag that starts anywhere but the grip
+     otherwise sweeps a text selection across the list — which reads as the
+     drag failing rather than as having missed the handle. Nothing in this
+     panel is worth copying, so selection is off for the whole thing. */
+  user-select: none;
+  -webkit-user-select: none;   /* Safari */
   left: auto;
   inset-inline-end: 0;
   min-width: var(--ai-size-4);           /* 240px */
