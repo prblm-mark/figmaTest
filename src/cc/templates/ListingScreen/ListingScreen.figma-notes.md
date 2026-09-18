@@ -666,3 +666,17 @@ dragging across the heading has to mean what it looks like it means.
 Note a column switched OFF stays above the line: the heading is about room, not
 about the tick. Hiding a fitting column promotes the next one above the line,
 since the freed width is immediately re-fit.
+
+
+## Five default chips, for every screen
+
+`DEFAULT_CHIPS = 5` in ListingScreen.js. A screen's config may list more
+filters as defaults — Orders lists the six its Simple Search form shows — and
+the extras move to the FRONT of the More Filters panel rather than being
+dropped. Order Owner is the first thing offered there, and adding it puts it
+straight back on the bar.
+
+The split happens once at init, not at render time, so everything downstream —
+adding a filter, saving a view, restoring one — works on the real arrays and
+never has to know about the limit. The limit lives in the template rather than
+in `listing-data.js` because it applies to all ~400 screens.

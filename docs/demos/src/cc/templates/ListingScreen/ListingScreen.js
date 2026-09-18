@@ -23,6 +23,12 @@
 
   var ICON_SORT = 'chevrons-up-down';
 
+  /* How many filters a screen shows on the bar before the rest move behind
+     "Add Filters". A house rule for every listing screen, not an Orders one
+     (designer, 2026-09-18) — a screen config may list more, and the extras are
+     offered first in the More Filters panel rather than lost. */
+  var DEFAULT_CHIPS = 5;
+
   /* Escapes text before it reaches innerHTML. Row values are mock today
    * but will be API data tomorrow, and this is the seam they arrive
    * through — so it is escaped from the start rather than retrofitted. */
@@ -908,9 +914,15 @@
        from one to the other, and LISTING_SCREENS is the screen DEFINITION,
        which should still describe a fresh screen after the user has played
        with this one. */
+    /* Split once, here, rather than capping at render time: everything
+       downstream — adding a filter, saving a view, restoring one — then works
+       on the real arrays and never has to know about the limit. */
+    var defaults = (config.defaultFilters || []).slice();
+    var overflow = defaults.splice(DEFAULT_CHIPS);
+
     config = Object.assign({}, config, {
-      defaultFilters: (config.defaultFilters || []).slice(),
-      moreFilters: (config.moreFilters || []).slice(),
+      defaultFilters: defaults,
+      moreFilters: overflow.concat(config.moreFilters || []),
       query: '',
       hiddenColumns: [],
       /* Live state, separate from the shipped defaults so the config object
