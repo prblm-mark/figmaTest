@@ -557,3 +557,41 @@ Verified round trip: hide a column → CTA appears; restore it → CTA goes
 reorder → CTA appears; save → CTA goes and the layout sticks; switch to All
 Orders → the original column order returns; switch back → the saved layout
 returns, CTA still hidden.
+
+
+## Cell truncation and rhythm (pass 7)
+
+Designer, 2026-09-18: Customer too wide, long enumerated values should
+truncate, tighter line heights.
+
+- **Customer's preferred width 320px → 240px.**
+- **Enumerated values truncate** rather than wrap. The cap lives on an INNER
+  span, not on the cell: `max-inline-size` on a `td` is advisory under
+  `table-layout: auto`, so the column still sizes to max-content and nothing
+  truncates. A block inside the cell has a max-content of its own, which is
+  what actually caps the column. The full value stays in the `title`, and the
+  kebab detail row deliberately does NOT truncate — it exists to show values
+  in full.
+- **Line heights**: `th` → `--ai-leading-xs` (16px), `td` → `--ai-leading-sm`
+  (20px). Scoped to `.datatables--orders` rather than changed in `Table.css`,
+  since the Seating Planner's tables use that component and were not part of
+  this ask.
+
+### Tier thresholds, re-measured (again)
+
+Switching the enumerated columns from wrapping to truncating made them
+**wider**, not narrower — a 160px cap plus padding beats a two-line wrap — so
+the previous thresholds overflowed the table at every width past tier 4. That
+does not present as overflow so much as Customer silently collapsing back to
+127px, which is the same symptom as the original bug and a good reason to
+measure rather than nudge.
+
+Thresholds are now the measured cumulative width of every column up to that
+tier, relaxed by ~55px. That 55 is the dial between "more columns" and
+"roomier Customer" — the only number in the set that is a judgement rather
+than a measurement. At a 1500px page it is the difference between 9 columns
+with Customer at 199px and 7 columns with Customer at 240px.
+
+Measured after: no overflow from 420px to 3800px; 6 columns at 420px, 23 at
+3800px; Customer at its 240px preference everywhere except where space is
+genuinely tight.

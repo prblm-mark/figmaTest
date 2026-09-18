@@ -374,7 +374,16 @@
     return rows.map(function (row, i) {
       var cells = columns.map(function (col) {
         var fn = CELL[col.type] || CELL.text;
-        return '<td' + colClass(col, col.cellClass) + '>' + fn(row, col, i) + '</td>';
+        var content = fn(row, col, i);
+        /* Snug columns truncate rather than set their own width. The cap has
+           to sit on a block INSIDE the cell — see `__truncate` in
+           Datatables.css. The detail row below deliberately does not do this:
+           it exists to show the values in full. */
+        if (col.snug) {
+          content = '<span class="datatables__truncate" title="' +
+            esc(String(row[col.key] === undefined ? '' : row[col.key])) + '">' + content + '</span>';
+        }
+        return '<td' + colClass(col, col.cellClass) + '>' + content + '</td>';
       }).join('');
 
       /* Paired detail row carrying the columns the mobile layout drops.
