@@ -611,13 +611,6 @@ function init(root) {
         setMode(root, null);
         break;
       }
-      case 'discard-view':
-        /* The bar does not know what the view held — the screen does — so it
-           only reports the intent. Nothing is confirmed first: the change
-           being discarded is visible on screen, and re-applying a filter is
-           cheaper than a dialog. */
-        root.dispatchEvent(new CustomEvent('filter-bar:discard-view', { bubbles: true }));
-        break;
       case 'save-view': {
         /* Saving needs a name, so the CTA opens the naming field rather than
            saving on the spot. */

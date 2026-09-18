@@ -527,33 +527,19 @@ Measured at a 378px page: a 351px panel sat at left -56. Verified inside the bar
 at 430px, 900px and 1600px pages.
 
 
-## Discard changes
+## Discard changes — built, then removed
 
-Sits beside Save view, shown and hidden by the same `--save-view` state — both
-appear exactly when the bar differs from the view it names.
+A tertiary "Discard changes" sat beside Save view, sharing its visibility and
+restoring the selected view's snapshot. Removed 2026-09-18 ("we may add back in
+later"), so this is the record of what it was:
 
-It puts the bar back to that view. The capability already existed: re-picking
-the current view from the saved-views dropdown does precisely this. But it was
-buried behind a menu whose current row is already ticked, which does not look
-like an action, so nobody would find it.
-
-Tertiary, next to the primary Save. Two things about the pair had to be fixed
-after the designer saw it (2026-09-18):
-
-- **They are ONE flex item**, wrapped in `.filter-bar__view-actions`. Left as
-  siblings in the wrapping chip row they broke apart — Discard stayed on the
-  chips line while Save view dropped to a line of its own, because each wraps
-  independently and only one carried the auto-margin. Wrapped together they
-  move together, and the margin belongs to the pair.
-- **Discard rendered as a solid grey pill**, the CC tertiary token bug again.
-  It is the FIFTH consumer of that one bug and the first outside a menu, where
-  it read as a second competing button rather than the quiet option. Folded
-  into the same scoped override as the saved-views buttons.
-
-Nothing is confirmed first: what is being discarded is visible on screen, and
-re-applying a filter is cheaper than a dialog.
-
-`filter-bar:discard-view` (bubbles, no detail). The bar does not know what the
-view held, so it only reports the intent; the screen restores its snapshot.
-
-TODO(design:FilterBar): not in Figma — Type=Save View draws the one CTA.
+- `filter-bar:discard-view` (bubbles, no detail) — the bar reported the intent,
+  the screen restored its snapshot of the CURRENTLY SELECTED view, not the
+  baseline.
+- The capability still exists without the button: re-picking the current view
+  from the saved-views dropdown restores it. The button only made that
+  discoverable.
+- Two things it needed, worth knowing if it comes back: the pair had to be ONE
+  flex item or Discard stayed on the chips line while Save view dropped below
+  it, and Discard needed the CC tertiary ghost override or it rendered as a
+  solid grey pill next to the primary.

@@ -249,7 +249,7 @@
  * the tertiary ladder — every `btn--tertiary` in the Control Centre has it,
  * not just these seven.
  *
- * This is now the FIFTH independent workaround for the same token bug:
+ * This is now the FOURTH independent workaround for the same token bug:
  * `.cc-header .btn--tertiary` (Header.css) and two selector groups in
  * AiAssistant.css already force transparent, and AiAssistant restores the
  * grey on hover with `var(--ai-btn-tertiary-bg)` — the same move as here,
@@ -259,19 +259,12 @@
  * has in the base theme, and letting hover carry the grey, makes all four
  * blocks redundant. That is the outcome to aim for. */
 
-.filter-bar__views .btn--tertiary,
-/* FIFTH consumer of the same bug, and the first outside a menu: "Discard
-   changes" sits beside the primary "Save view" and rendered as a solid grey
-   pill, which read as a second, competing button rather than as the quiet
-   option. Same fix, same reason. */
-.filter-bar__discard.btn--tertiary {
+.filter-bar__views .btn--tertiary {
   background-color: transparent;
 }
 
 .filter-bar__views .btn--tertiary:hover,
-.filter-bar__views .btn--tertiary:focus-visible,
-.filter-bar__discard.btn--tertiary:hover,
-.filter-bar__discard.btn--tertiary:focus-visible {
+.filter-bar__views .btn--tertiary:focus-visible {
   background-color: var(--ai-surface-secondary);
 }
 
@@ -449,32 +442,20 @@
  * is dropped (see media query) so it flows right after "Add Filters" in the wrapping
  * chips. Hidden until the bar enters the save-view state. */
 .filter-bar__save {
-  flex-shrink: 0;
-}
-
-/* The two buttons are ONE flex item, not two.
- *
- * Left as siblings in the wrapping chip row they broke apart: Discard stayed
- * on the chips line while Save view dropped to a line of its own, because each
- * wraps independently and only one of them carried the auto-margin. Wrapped
- * together they move together, and the margin belongs to the pair. */
-.filter-bar__view-actions {
   display: none;
-  align-items: center;
-  gap: var(--ai-spacing-3);
   flex-shrink: 0;
 }
 
-.filter-bar--save-view .filter-bar__view-actions {
+.filter-bar--save-view .filter-bar__save {
   display: inline-flex;
-  margin-left: auto;   /* desktop: pin the pair to the right edge */
+  margin-left: auto; /* desktop: pin to the right edge of the chip row */
 }
 
 /* While the name is being typed, the CTA that opened the field would offer the
  * same action twice. Placed AFTER the rule above deliberately: both selectors
  * are one class + one class, so the cascade is decided by order — written
  * earlier, this lost and the CTA stayed on screen beside the field. */
-.filter-bar--saving-view .filter-bar__view-actions {
+.filter-bar--saving-view .filter-bar__save {
   display: none;
 }
 
@@ -516,7 +497,7 @@
 
   /* Save View: on mobile the CTA sits after "Add Filters" in the wrapping chip flow
    * (Figma mobile 2989:6242) — drop the desktop auto-margin that pins it right. */
-  .filter-bar--save-view .filter-bar__view-actions {
+  .filter-bar--save-view .filter-bar__save {
     margin-left: 0;
   }
 
