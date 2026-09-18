@@ -149,7 +149,22 @@ var LOOKUP = {
      attached in two places can appear twice.)
 
      GROUP and PAYMENT METHODS are invented — the picker matches them by name
-     but no membership data was available. */
+     but no membership data was available.
+
+     NAMES RENDER VERBATIM. The live query strips commas out of the name
+     (`Replace(Name, ',', ' ')`), and it would be easy to read that as a naming
+     rule and copy it. It is not: the legacy picker's unit of selection is a
+     `code,name` PAIR posted as one comma-delimited checkbox value, so a comma
+     in a name desyncs a positional CSV that has no escaping. The encoding is
+     the bug and the strip is its workaround — done twice, inconsistently, at
+     that (the SQL replaces with a space, the form strips to nothing), which is
+     the tell that it is defensive plumbing rather than anything designed.
+
+     A component holding structured selection has no CSV to protect, so
+     copying the strip would corrupt a legitimate name ("Glass, Frosted" →
+     "Glass Frosted") to defend against a problem it does not have. If this
+     ever has to write back into the old bar's paired inputs, that belongs in a
+     compatibility shim at the seam, where it is obviously removable. */
   catalogueItemRows: [
     { name: 'Quick Store', code: 'Qui9006027', zone: 'Affino', group: 'Services', paymentMethods: ['Credit Card', 'Invoice'] },
     { name: 'ttt', code: 'ttt1899512', zone: 'Video Store', group: 'Content', paymentMethods: ['Credit Card'] },
