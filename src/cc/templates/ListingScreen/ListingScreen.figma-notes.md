@@ -595,3 +595,55 @@ with Customer at 199px and 7 columns with Customer at 240px.
 Measured after: no overflow from 420px to 3800px; 6 columns at 420px, 23 at
 3800px; Customer at its 240px preference everywhere except where space is
 genuinely tight.
+
+
+## Adaptive column fill (pass 8) — replaces the tier system
+
+Designer, 2026-09-18: dead space where another column would have fitted, and
+"I really want to make this a strong feature of the new listing screens."
+
+The tier steps could never deliver it. CSS can only reveal a column at a width
+chosen in advance, so between two steps the table always carried slack — ~400px
+on a 780px table, room for two more columns. Deciding what fits means knowing
+how wide each column WANTS to be, and only layout can answer that.
+
+So the fit is measured:
+
+1. **Measure** — show every column and put the TABLE at `width: max-content`,
+   read each column's width, restore. One task, so nothing is painted.
+2. **Fill** — walk the columns in order, adding each while it still fits.
+   Stop at the FIRST that does not rather than skipping to a narrower one
+   further down: order is priority, and a table showing column 8 but not
+   column 5 reads as a bug.
+3. **Verify and correct** — measure the result and drop the last column while
+   the table is still over. A column's measured width is what it wants alone;
+   beside different neighbours it can round a few pixels wider, which left one
+   width 13px over. Checking the actual outcome beats padding the budget with a
+   tolerance that would be wrong somewhere else.
+
+Driven by a `ResizeObserver` on the table body, never `matchMedia` — the CC
+sidebar changes this width with no window resize (CLAUDE.md §4a). This is the
+case §4a allows JS for; a container query genuinely cannot express it.
+
+### Two traps worth recording
+
+- **Measuring with every column shown gives MIN-content, not natural width.**
+  Twenty columns over-constrain a container-width table and each collapses:
+  a column that renders at 125px measured 74px, so the fit let two more columns
+  in than actually fit. The table has to go to `max-content` for the pass.
+- **`width: 1%` on the enumerated columns had to go.** Shrink-wrapping every
+  column means any width the fit does not use must pool somewhere — in Customer,
+  which ballooned, or in a spacer column, which read as a gap. They are now
+  `auto` and share the leftover between them, so there is never a visible gap;
+  their content is still capped by `__truncate`, so a long value cannot dictate
+  the width. **The spacer column is gone**, and with it the trailing dead space.
+
+### Result
+
+Gap is 0 at every width from 420px to 3800px: 2 columns at the narrowest, 20 at
+the widest, and the table always exactly fills its container.
+
+Both column controls feed it. Hiding Order Total promotes Account into the
+freed space; dragging Invoices Sent to the top brings it on screen immediately
+and pushes the last one off. `tier` is gone from the config — **order is
+priority**, which makes the drag handle the control for "show me this first".

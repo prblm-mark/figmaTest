@@ -529,8 +529,16 @@
  * the Customer column truncating to "Mari…" was this, not a share-of-slack
  * problem. Wrapping keeps the whole value readable and hands the slack back
  * to Customer. */
+/* Snug columns take a SHARE of the table rather than shrink-wrapping.
+ *
+ * `width: 1%` made every one of them hug its content, which meant any width
+ * the fit did not use had to pool somewhere — in Customer, which ballooned, or
+ * in a spacer, which read as a gap. Letting them be auto spreads the leftover
+ * across the text columns instead, so there is never a visible gap and the
+ * columns simply breathe. Their content is capped by `__truncate`, so a long
+ * value still cannot dictate the width. */
 .datatables--orders .datatables__col--snug {
-  width: 1%;
+  width: auto;
 }
 
 /* ORDER NO is the row's identifier — semibold, unlike the other
@@ -727,83 +735,29 @@
 }
 
 
-/* ── Progressive columns (Type=Orders) ────────────────────
- * "Show as many columns as the container will allow" — Mark, 2026-09-18.
- * The live Orders grid has twenty-odd columns; rather than pick a fixed
- * subset per breakpoint, every column carries a TIER and the tiers reveal
- * as the table gets wider. Tier 1 is the identity of a row and is always
- * present; whatever is still hidden stays reachable in the kebab detail
- * row, which the renderer builds from the same column list.
+/* ── Adaptive columns (Type=Orders) ──────────────────────
+ * "Show as many columns as the container will allow" — and leave NO gap where
+ * another column would have fitted.
  *
- * These are CONTAINER queries against the datatable's own inline size —
- * `.datatables` already establishes a container, and the table's width is
- * the thing that decides how many columns fit. A viewport query would be
- * wrong twice over: the CC sidebar changes this width with no window
- * resize (CLAUDE.md §4a), and the same table can appear in a narrow panel
- * on a wide screen.
+ * This was a set of `@container` tier steps, which could not deliver that:
+ * CSS can only reveal columns at widths chosen in advance, so between two
+ * steps the table always carried dead space — measured at ~400px on a 780px
+ * table, enough for two more columns.
  *
- * The steps are NOT evenly spaced — they are the measured CUMULATIVE width
- * of every column up to and including that tier, so a tier only appears when
- * its columns fit AND Customer can still hold its 240px preference. Measured
- * again after the enumerated columns changed from wrapping to truncating:
- * truncation makes them WIDER (a 160px cap plus padding, rather than a
- * two-line wrap), and the old thresholds then overflowed the table at every
- * width past tier 4 — which does not show as overflow so much as Customer
- * silently collapsing back to 127px.
+ * So the fit is computed instead: ListingScreen measures each column's natural
+ * width and adds columns in order until the next one would not fit. CSS cannot
+ * do that — it has no way to ask "how wide would this column be?" — and this
+ * is the case CLAUDE.md §4a allows JS for, driven by a ResizeObserver on the
+ * table rather than a media query, because the CC sidebar changes this width
+ * with no window resize.
  *
- * Each is then relaxed by ~55px: holding Customer rigidly at 240 costs a
- * whole tier at some widths, and letting it flex down to ~190 — still a
- * comfortable name and role — buys those columns back. That 55 is the dial
- * between "more columns" and "roomier Customer"; it is the only number here
- * that is a judgement rather than a measurement.
- *
- * Re-measure these if the truncation cap or the cell padding changes.
- * Cumulative, for reference: t1 477, t2 793, t3 1097, t4 1348, t5 1639,
- * t6 1863, t7 2112, t8 2365, t9 2811.
- *
- * Originally: Each threshold is
- * the width at which that tier's columns fit AND leave Customer room to
- * breathe, Customer being the only fluid column and the one carrying a
- * name, a role and an avatar. Revealing a tier 100px too early does not
- * overflow the table, it silently starves Customer to its min-content
- * width — which reads as "Mari…" rather than as a layout bug, and is why
- * these are measured rather than picked.
+ * Column ORDER is the priority order, which makes the Edit Columns drag handle
+ * the control for "show me this one first".
  */
 
-.datatables--orders .datatables__col--t2,
-.datatables--orders .datatables__col--t3,
-.datatables--orders .datatables__col--t4,
-.datatables--orders .datatables__col--t5,
-.datatables--orders .datatables__col--t6,
-.datatables--orders .datatables__col--t7,
-.datatables--orders .datatables__col--t8,
-.datatables--orders .datatables__col--t9 {
+/* Measured not to fit at the current width. */
+.datatables--orders .datatables__col--nofit {
   display: none;
-}
-
-@container (min-width: 750px) {
-  .datatables--orders .datatables__col--t2 { display: table-cell; }
-}
-@container (min-width: 1045px) {
-  .datatables--orders .datatables__col--t3 { display: table-cell; }
-}
-@container (min-width: 1300px) {
-  .datatables--orders .datatables__col--t4 { display: table-cell; }
-}
-@container (min-width: 1590px) {
-  .datatables--orders .datatables__col--t5 { display: table-cell; }
-}
-@container (min-width: 1820px) {
-  .datatables--orders .datatables__col--t6 { display: table-cell; }
-}
-@container (min-width: 2070px) {
-  .datatables--orders .datatables__col--t7 { display: table-cell; }
-}
-@container (min-width: 2320px) {
-  .datatables--orders .datatables__col--t8 { display: table-cell; }
-}
-@container (min-width: 2760px) {
-  .datatables--orders .datatables__col--t9 { display: table-cell; }
 }
 
 /* A column the user has switched OFF in Edit Columns stays off at every
@@ -816,6 +770,22 @@
  * wins on source order. It must therefore stay LAST in this file. */
 .datatables--orders .datatables__col--off {
   display: none;
+}
+
+/* During the measuring pass every column is shown so its natural width can be
+ * read. It happens inside a single task, so the browser never paints it.
+ *
+ * The TABLE must go to `max-content` for the same pass. Showing every column
+ * in a container-width table over-constrains it and each column collapses to
+ * MIN-content — which measures 74px for a column that renders at 125px, so
+ * the fit thinks two more columns will fit than actually do. At max-content
+ * each column reports the width it actually wants. */
+.datatables--orders .datatables__col--measuring {
+  display: table-cell;
+}
+
+.datatables--orders .table.datatables__table--measuring {
+  width: max-content;
 }
 
 /* ── Order No. cell: two lines ────────────────────────────
@@ -887,10 +857,7 @@
   width: var(--ai-size-4);                /* 240px preferred */
 }
 
-.datatables--orders .datatables__col--spacer {
-  width: auto;
-  padding-inline: 0;
-}
+
 
 
 /* ── Cell truncation + rhythm (Type=Orders) ──────────────

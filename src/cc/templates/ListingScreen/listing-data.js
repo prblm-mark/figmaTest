@@ -61,38 +61,37 @@
  *           OrderProcessings.cfm and an unrecognised `hs` silently falls
  *           through, so Qty / Order Total / Tax are NOT sortable however
  *           much they look it. Default is Date, descending.
- * tier      progressive reveal. 1 is always visible; higher tiers appear
- *           as the CONTAINER widens (Mark: "show as many columns as the
- *           container will allow"). Not a viewport query — the CC sidebar
- *           changes the column width with no window resize (CLAUDE.md §4a).
+ *
+ * ORDER IS PRIORITY. There is no tier field: the screen measures how wide each
+ * column wants to be and fills the table in this order until the next one
+ * would not fit, so the list below is the order columns earn their place in.
+ * Dragging a column up in Edit Columns is therefore how a user says "show me
+ * this one first".
  */
 var LISTING_ORDERS_COLUMNS = [
-  { key: 'select',        type: 'select', label: '',                hug: true, tier: 1 },
-  { key: 'orderNo',       type: 'order',  label: 'Order No.',       hug: true, tier: 1, sort: 'OrderNo.', cellClass: 'datatables__order-no', shortLabel: 'Order' },
-  { key: 'customer',      type: 'user',   label: 'Customer',                   tier: 1, sort: 'Customer' },
-  { key: 'orderTotal',    type: 'text',   label: 'Order Total',     hug: true, tier: 2, sort: 'Value' },
-  { key: 'orderStatus',   type: 'text',   label: 'Order Status',    snug: true, tier: 2, sort: 'Status' },
-  { key: 'account',       type: 'chip',   label: 'Account',         snug: true, tier: 3, sort: 'Account' },
-  { key: 'created',       type: 'text',   label: 'Created',         hug: true, tier: 3, sort: 'Date' },
-  { key: 'paymentStatus', type: 'text',   label: 'Payment Status',  snug: true, tier: 4, sort: 'PaymentStatus' },
-  { key: 'qty',           type: 'text',   label: 'Qty',             hug: true, tier: 4 },
-  { key: 'accountCode',   type: 'text',   label: 'Account Code',    hug: true, tier: 5 },
-  { key: 'paymentMethod', type: 'text',   label: 'Payment Method',  snug: true, tier: 5 },
-  { key: 'orderType',     type: 'text',   label: 'Order Type',      snug: true, tier: 6 },
-  { key: 'subtotal',      type: 'text',   label: 'Subtotal',        hug: true, tier: 6 },
-  { key: 'tax',           type: 'text',   label: 'Tax',             hug: true, tier: 7 },
-  { key: 'catalogueItem', type: 'text',   label: 'Catalogue Item', snug: true,             tier: 7 },
-  { key: 'userCode',      type: 'text',   label: 'User Code',       hug: true, tier: 8 },
-  { key: 'endUser',       type: 'text',   label: 'End User',        snug: true, tier: 8 },
-  { key: 'proformaId',    type: 'text',   label: 'Pro Forma ID',    hug: true, tier: 9 },
-  { key: 'coupon',        type: 'text',   label: 'Coupon',          hug: true, tier: 9 },
-  { key: 'discount',      type: 'text',   label: 'Discount',        hug: true, tier: 9 },
-  { key: 'invoicesSent',  type: 'text',   label: 'Invoices Sent',   hug: true, tier: 9 },
-  /* Takes whatever width is left over so no real column has to stretch to
-     fill the table — see `--spacer` in Datatables.css. */
-  { key: 'spacer',        type: 'spacer', label: '',                           tier: 1 },
-  { key: 'edit',          type: 'edit',   label: '',                hug: true, tier: 1, mobileOnly: true },
-  { key: 'kebab',         type: 'kebab',  label: '',                hug: true, tier: 1 }
+  { key: 'select',        type: 'select', label: '',                hug: true },
+  { key: 'orderNo',       type: 'order',  label: 'Order No.',       hug: true, sort: 'OrderNo.', cellClass: 'datatables__order-no', shortLabel: 'Order' },
+  { key: 'customer',      type: 'user',   label: 'Customer', sort: 'Customer' },
+  { key: 'orderTotal',    type: 'text',   label: 'Order Total',     hug: true, sort: 'Value' },
+  { key: 'orderStatus',   type: 'text',   label: 'Order Status',    snug: true, sort: 'Status' },
+  { key: 'account',       type: 'chip',   label: 'Account',         snug: true, sort: 'Account' },
+  { key: 'created',       type: 'text',   label: 'Created',         hug: true, sort: 'Date' },
+  { key: 'paymentStatus', type: 'text',   label: 'Payment Status',  snug: true, sort: 'PaymentStatus' },
+  { key: 'qty',           type: 'text',   label: 'Qty',             hug: true },
+  { key: 'accountCode',   type: 'text',   label: 'Account Code',    hug: true },
+  { key: 'paymentMethod', type: 'text',   label: 'Payment Method',  snug: true },
+  { key: 'orderType',     type: 'text',   label: 'Order Type',      snug: true },
+  { key: 'subtotal',      type: 'text',   label: 'Subtotal',        hug: true },
+  { key: 'tax',           type: 'text',   label: 'Tax',             hug: true },
+  { key: 'catalogueItem', type: 'text',   label: 'Catalogue Item', snug: true },
+  { key: 'userCode',      type: 'text',   label: 'User Code',       hug: true },
+  { key: 'endUser',       type: 'text',   label: 'End User',        snug: true },
+  { key: 'proformaId',    type: 'text',   label: 'Pro Forma ID',    hug: true },
+  { key: 'coupon',        type: 'text',   label: 'Coupon',          hug: true },
+  { key: 'discount',      type: 'text',   label: 'Discount',        hug: true },
+  { key: 'invoicesSent',  type: 'text',   label: 'Invoices Sent',   hug: true },
+  { key: 'edit',          type: 'edit',   label: '',                hug: true, mobileOnly: true },
+  { key: 'kebab',         type: 'kebab',  label: '',                hug: true }
 ];
 
 /* Static option lists — REAL values, from the CFC/CFM enums.

@@ -46,11 +46,6 @@
     if (col.hug) out.push('datatables__col--hug');
     if (col.snug) out.push('datatables__col--snug');
     if (!col.hug && !col.snug && col.label) out.push('datatables__col--fluid');
-    if (col.type === 'spacer') out.push('datatables__col--spacer');
-    /* Progressive reveal: tier 1 is always present, higher tiers appear as
-       the CONTAINER widens. The class goes on both th and td so one
-       container query can hide the whole column. */
-    out.push('datatables__col--t' + (col.tier || 1));
     if (col.mobileOnly) out.push('datatables__col--mobile');
     if (STRUCTURAL[col.type]) out.push('datatables__col--' + col.type);
     if (extra) out.push(extra);
@@ -94,9 +89,6 @@
       return '<button type="button" class="btn btn--tertiary btn--sm datatables__account-chip"' +
         ' title="' + v + '">' + v + '</button>';
     },
-
-    /* Layout only — absorbs the table's leftover width. */
-    spacer: function () { return ''; },
 
     select: function (row) {
       return '<label class="checkbox">' +
@@ -339,9 +331,6 @@
        * .visually-hidden utility lives in css/style.css, which
        * components are not allowed to import (CLAUDE.md §8). */
       if (!col.label) {
-        /* The spacer is layout, not a column of data — it gets no accessible
-           name, so screen readers do not announce an empty column. */
-        if (col.type === 'spacer') return '<th' + colClass(col) + ' role="presentation"></th>';
         var name = col.key === 'select' ? 'Select' : 'Actions';
         return '<th scope="col" aria-label="' + name + '"' + colClass(col) + '></th>';
       }
@@ -591,8 +580,9 @@
     if (window.lucide && typeof window.lucide.createIcons === 'function') {
       window.lucide.createIcons();
     }
-    /* The body was just rebuilt, so the hidden-column marks went with it. */
+    /* The body was just rebuilt, so the column marks went with it. */
     applyColumnVisibility(root, config);
+    fitColumns(root, config);
   }
 
   /* TODO(design:Listing): Datatables has no empty state in Figma. This mirrors
@@ -699,8 +689,7 @@
       var th = heads[index];
       var note = input.closest('.cc-listing__column').querySelector('[data-column-note]');
       if (!th || !note) return;
-      var hiddenByTier = getComputedStyle(th).display === 'none' &&
-                         !th.classList.contains('datatables__col--off');
+      var hiddenByTier = th.classList.contains('datatables__col--nofit');
       note.textContent = (input.checked && hiddenByTier) ? 'No room at this width' : '';
     });
   }
@@ -727,7 +716,6 @@
     labelled.splice(before ? to : to + 1, 0, moved);
 
     labelled.forEach(function (col, i) {
-      col.tier = Math.min(9, Math.floor(i / 2) + 1);
       config.columns[slots[i]] = col;
     });
     /* The first two are the row's identity and are always shown, whatever was
@@ -737,6 +725,125 @@
       if (at !== -1) config.hiddenColumns.splice(at, 1);
     });
     return true;
+  }
+
+  /* ── Adaptive column fill ─────────────────────────────────
+     Show as many columns as the table can actually hold, in order, with no
+     gap left where the next one would have fitted.
+
+     CSS cannot do this. A container query can only reveal a column at a width
+     chosen in advance, so between two steps the table always carried dead
+     space — ~400px on a 780px table, room for two more columns. Deciding what
+     fits means knowing how wide each column WANTS to be, which only layout can
+     answer. This is the case CLAUDE.md §4a allows JS for, and it is driven by
+     a ResizeObserver rather than a media query because the CC sidebar changes
+     this width with no window resize at all.
+
+     Column ORDER is the priority order, so the Edit Columns drag handle is
+     also the control for "show me this one first". */
+
+  /* Natural width of every column, read with all of them present. The table
+     overflows during the pass, which is what makes each column report the
+     width it actually wants rather than a share of the container. It all
+     happens in one task, so the browser never paints it. */
+  function measureColumns(root, config) {
+    var heads = root.querySelectorAll('[data-listing-head] th');
+    var table = root.querySelector('.datatables .table');
+    var shown = [];
+
+    config.columns.forEach(function (col, i) {
+      /* A column switched off in Edit Columns stays off — it must not be
+         measured back into view. */
+      if (heads[i] && config.hiddenColumns.indexOf(col.key) === -1) {
+        heads[i].classList.add('datatables__col--measuring');
+        shown.push(heads[i]);
+      }
+    });
+    /* Without this the table stays at container width, twenty columns
+       over-constrain it, and every column reports MIN-content — 74px for a
+       column that renders at 125px, so the fit lets two more columns in than
+       actually fit. */
+    if (table) table.classList.add('datatables__table--measuring');
+
+    var natural = config.columns.map(function (col, i) {
+      return heads[i] ? heads[i].getBoundingClientRect().width : 0;
+    });
+
+    if (table) table.classList.remove('datatables__table--measuring');
+    shown.forEach(function (th) { th.classList.remove('datatables__col--measuring'); });
+    return natural;
+  }
+
+  function fitColumns(root, config) {
+    var body = root.querySelector('.datatables__body');
+    var heads = root.querySelectorAll('[data-listing-head] th');
+    if (!body || !heads.length) return;
+
+    var natural = measureColumns(root, config);
+    var available = body.clientWidth;
+    var used = 0;
+    var identity = 0;
+    var full = false;
+    var hidden = {};
+
+    config.columns.forEach(function (col, i) {
+      if (config.hiddenColumns.indexOf(col.key) !== -1) return;   // off: costs nothing
+
+      /* The checkbox, edit and kebab columns are structure — always present
+         and always part of the budget. */
+      if (!col.label) { used += natural[i]; return; }
+
+      /* The first two columns identify a row and are shown even if they do not
+         fit; a table of anonymous values is worse than one that scrolls. */
+      identity += 1;
+      if (identity <= 2) { used += natural[i]; return; }
+
+      /* Stop at the FIRST column that does not fit rather than skipping to a
+         narrower one further down — order is priority, and a table that shows
+         column 8 but not column 5 reads as a bug. */
+      if (full || used + natural[i] > available) {
+        full = true;
+        hidden[col.key] = true;
+        return;
+      }
+      used += natural[i];
+    });
+
+    function apply() {
+      config.columns.forEach(function (col, i) {
+        var off = !!hidden[col.key];
+        if (heads[i]) heads[i].classList.toggle('datatables__col--nofit', off);
+        root.querySelectorAll('[data-listing-body] tr.datatables__row').forEach(function (tr) {
+          var cell = tr.children[i];
+          if (cell) cell.classList.toggle('datatables__col--nofit', off);
+        });
+      });
+    }
+    apply();
+
+    /* Verify, then correct. A column's measured width is what it wants on its
+       own; put beside different neighbours it can round or reflow a few pixels
+       wider, which left the table ~13px over at one width. Rather than pad the
+       budget with a tolerance — a number that would be wrong at some other
+       width — the fit checks the result it actually produced and drops the
+       last column until the table fits.
+
+       Bounded by the number of columns, and it never removes the two that
+       identify a row. */
+    var table = root.querySelector('.datatables .table');
+    var guard = config.columns.length;
+    while (table && guard-- > 0 && table.getBoundingClientRect().width > available + 1) {
+      var last = null;
+      var seen = 0;
+      config.columns.forEach(function (col) {
+        if (!col.label || hidden[col.key] || config.hiddenColumns.indexOf(col.key) !== -1) return;
+        seen += 1;
+        if (seen > 2) last = col.key;
+      });
+      if (!last) break;
+      hidden[last] = true;
+      apply();
+    }
   }
 
   function applyColumnVisibility(root, config) {
@@ -1038,6 +1145,7 @@
       if (input.checked) { if (at !== -1) config.hiddenColumns.splice(at, 1); }
       else if (at === -1) { config.hiddenColumns.push(key); }
       applyColumnVisibility(root, config);
+      fitColumns(root, config);
       annotateColumnRoom(root, config);
       announceColumns();
     });
@@ -1046,9 +1154,12 @@
        the CC sidebar resizes the table with no window resize at all — so the
        panel's notes are refreshed from a ResizeObserver on the table
        (CLAUDE.md §4a), never from matchMedia. */
-    var table = root.querySelector('.datatables');
+    var table = root.querySelector('.datatables__body');
     if (table && typeof ResizeObserver === 'function') {
-      new ResizeObserver(function () { annotateColumnRoom(root, config); }).observe(table);
+      new ResizeObserver(function () {
+        fitColumns(root, config);
+        annotateColumnRoom(root, config);
+      }).observe(table);
     }
 
     /* Free text from either search field. FilterBar holds the 3-character
