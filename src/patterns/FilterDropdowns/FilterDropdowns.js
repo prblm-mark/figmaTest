@@ -173,6 +173,46 @@
     });
   }
 
+  /* Drag the table sideways with a mouse.
+     The picker keeps every column and overflows rather than dropping any, so
+     at narrow widths there is always something off-screen. Touch and trackpads
+     scroll an overflowing box already; a mouse does not, and a scrollbar under
+     a list you are reading is easy to miss. */
+  function wireDragScroll(root) {
+    var scroller = own(root, '.datatables__body');
+    if (!scroller) return;
+
+    var down = false, moved = false, startX = 0, startLeft = 0;
+
+    scroller.addEventListener('pointerdown', function (e) {
+      /* Never hijack a control — the rows are full of checkboxes and links. */
+      if (e.target.closest('input, button, a, label')) return;
+      down = true;
+      moved = false;
+      startX = e.clientX;
+      startLeft = scroller.scrollLeft;
+    });
+
+    scroller.addEventListener('pointermove', function (e) {
+      if (!down) return;
+      var dx = e.clientX - startX;
+      /* A few pixels of travel before it counts as a drag, so a click that
+         wobbles is still a click. */
+      if (!moved && Math.abs(dx) < 4) return;
+      moved = true;
+      scroller.classList.add('is-dragging');
+      scroller.scrollLeft = startLeft - dx;
+      e.preventDefault();
+    });
+
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (type) {
+      scroller.addEventListener(type, function () {
+        down = false;
+        scroller.classList.remove('is-dragging');
+      });
+    });
+  }
+
   function wireApply(root) {
     var apply = own(root, '[data-filter-dropdowns-apply]');
     if (!apply) return;
@@ -205,6 +245,7 @@
       wirePredictive(root);
       wireApply(root);
       wireSelectAll(root);
+      wireDragScroll(root);
       wireReset(root);
     });
   }

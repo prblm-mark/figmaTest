@@ -317,23 +317,16 @@ function wireChipPanels(root) {
     });
   };
 
-  root.addEventListener('filter-item:toggle', (e) => {
-    const panel = panelOf(e.target.closest('.filter-item'));
-    if (!panel) return;                       // chip with no assigned picker
-    if (!e.detail || !e.detail.open) { panel.hidden = true; return; }
+  /* Keep a picker inside the bar. Measured, so it can only run on a panel that
+     is already showing — a hidden element has no box.
 
-    closeAll(panel);
-    panel.hidden = false;
-
-    /* Keep the picker inside the bar. Measured after showing, because a hidden
-       element has no box to measure.
-
-       Two steps, because neither alone is enough. The flip handles a panel
-       hanging off the right. But a panel anchors to its CHIP, and the chips
-       wrap — so a wide one (More Filters runs to 640px) can hang off the LEFT
-       even after flipping, simply because its chip sits mid-row. Measured at a
-       378px page: a 351px panel sat at left -56. So after flipping, whatever
-       still sticks out is nudged back with a translate. */
+     Two steps, because neither alone is enough. The flip handles a panel
+     hanging off the right. But a panel anchors to its CHIP, and the chips
+     wrap — so a wide one (More Filters runs to 640px) can hang off the LEFT
+     even after flipping, simply because its chip sits mid-row. Measured at a
+     378px page: a 351px panel sat at left -56. So after flipping, whatever
+     still sticks out is nudged back with a translate. */
+  const placePanel = (panel) => {
     panel.classList.remove('filter-bar__panel--end');
     panel.style.transform = '';
 
@@ -347,7 +340,34 @@ function wireChipPanels(root) {
       : box.right > bar.right ? bar.right - box.right
       : 0;
     if (shift) panel.style.transform = 'translateX(' + Math.round(shift) + 'px)';
+  };
+
+  root.addEventListener('filter-item:toggle', (e) => {
+    const panel = panelOf(e.target.closest('.filter-item'));
+    if (!panel) return;                       // chip with no assigned picker
+    if (!e.detail || !e.detail.open) { panel.hidden = true; return; }
+
+    closeAll(panel);
+    panel.hidden = false;
+    placePanel(panel);
   });
+
+  /* An OPEN panel has to be re-placed when the bar changes shape, not only
+     when it is opened. Its position was computed once and then kept, so
+     resizing the window or docking the sidebar left it stranded — off the
+     left-hand edge and under the menu — until it was closed and reopened.
+
+     A ResizeObserver on the bar, not a window resize listener: the CC sidebar
+     changes this width with no window resize at all (CLAUDE.md §4a). It also
+     catches the bar growing a row when chips wrap, which moves every panel
+     below it. */
+  if (typeof ResizeObserver === 'function') {
+    new ResizeObserver(() => {
+      root.querySelectorAll('.filter-bar__chip .filter-bar__panel').forEach((panel) => {
+        if (!panel.hidden) placePanel(panel);
+      });
+    }).observe(root);
+  }
 
   /* "Did this click land on a chip or inside its picker?" — asked of the
      event's PATH, not of the live DOM. Picking a More Filters facet removes

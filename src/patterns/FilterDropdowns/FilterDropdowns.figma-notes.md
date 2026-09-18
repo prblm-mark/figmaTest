@@ -233,3 +233,27 @@ this was a fidelity fix, not a departure (designer, 2026-09-18).
 Rows use `--ai-leading-sm`, matching the listing's own table. The shared Table
 default is `leading-md`, which leaves a picker you are scanning for one item
 looking airy. Scoped here rather than changed in Table.css.
+
+
+## Multi Select Table scrolls rather than dropping columns
+
+It used to shed Zone at 520px and Catalogue ID at 380px. That was wrong for
+THIS table: those two columns are how you tell two similarly named items apart,
+so hiding them at narrow widths removes the reason to use a table (designer,
+2026-09-18). Every column is kept and the table overflows instead.
+
+`min-inline-size: var(--ai-size-10)` is what forces that. With cells wrapping,
+the table would otherwise squash to fit any width rather than overflow — and
+640px is the card's own design width, so it never renders narrower than it was
+drawn. Measured at an 820px page: card 377, table 640, 280px of scroll.
+
+Mouse **drag-to-scroll** comes with it. Touch and trackpads already scroll an
+overflowing box; a mouse has no gesture for it and a scrollbar under a list you
+are reading is easy to miss. A drag never starts on an input, button, link or
+label, and needs 4px of travel before it counts — so a click that wobbles is
+still a click.
+
+Note this is the opposite call from the LISTING's table, which drops columns
+rather than scrolling. The difference is what the table is for: the listing is
+a view of many records where the far columns are extra, and the picker is a
+disambiguator where they are the point.

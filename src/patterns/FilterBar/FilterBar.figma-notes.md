@@ -552,3 +552,16 @@ carries its own sub-filter pickers, so the panel contains a `[data-select-menu]`
 and a checkbox list belonging to controls that narrow the TABLE rather than name
 the filter's value — and the menu branch happily read one of those instead.
 `[data-row-value]` is therefore tested before any shape test.
+
+
+## An open picker is re-placed when the bar changes shape
+
+`placePanel()` runs on open AND from a `ResizeObserver` on the bar. Its
+position used to be computed once and kept, so resizing the window or docking
+the sidebar left an open panel stranded — off the left-hand edge and under the
+menu — until it was closed and reopened.
+
+A ResizeObserver on the bar rather than a window resize listener: the CC
+sidebar changes this width with no window resize at all (CLAUDE.md §4a). It
+also catches the bar gaining a row when chips wrap, which moves every panel
+hanging below it.
