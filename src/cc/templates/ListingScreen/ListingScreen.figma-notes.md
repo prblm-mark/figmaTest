@@ -688,15 +688,17 @@ Adding used to be one-way. The chip's face has no room for a remove control:
 FilterItem's leading slot holds `+` while empty and `×` once values are set, so
 a filter that is on the bar but has no value has nowhere to put one, and a
 second `×` on the right would fight the chevron (designer, 2026-09-18 — "feels
-clunky"). So removal lives in the two places that need no new affordance:
+clunky"). So removal lives in More Filters, which needs no new affordance:
 
-1. **More Filters toggles.** The panel is now a stable CATALOGUE: a facet no
-   longer leaves it when added, it turns solid with a check. Clicking it again
-   takes the filter off the bar. Add and remove are the same gesture in the
-   same place.
-2. **Remove filter, inside the chip's own picker** — under Apply, quiet
-   tertiary. You are already there to set a value. Only on filters the user
-   added; the screen's five have no such action.
+**More Filters toggles.** The panel is a stable CATALOGUE: a facet no longer
+leaves it when added, it turns solid with a check. Clicking it again takes the
+filter off the bar. Add and remove are the same gesture in the same place.
+
+A second route — a `Remove filter` action under Apply inside the chip's own
+picker — was built and then taken out (designer, 2026-09-18: "just keep more
+filters toggle for now"). One way in and out is enough while the pattern
+settles; worth revisiting if removing turns out to be common enough that
+opening Add Filters each time grates.
 
 Removing drops that filter's values with it and re-filters the table — verified:
 Order Status narrowed 20 rows to 9, removing it restored 20.
@@ -713,5 +715,3 @@ snapshot `added` rather than the arrays, since the arrays no longer move.
 - **FilterItem has no "already added" state.** Its slot is `+` or `×`, and
   neither means "on the bar, click to remove". Implemented as the solid Default
   treatment with a check; it wants a real variant.
-- **`Remove filter` is not in Figma either** — it is the affordance the chip's
-  face has no room for.
