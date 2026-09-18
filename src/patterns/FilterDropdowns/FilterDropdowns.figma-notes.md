@@ -263,3 +263,21 @@ Note this is the opposite call from the LISTING's table, which drops columns
 rather than scrolling. The difference is what the table is for: the listing is
 a view of many records where the far columns are extra, and the picker is a
 disambiguator where they are the point.
+
+
+## Multi Select Table type matches the Orders datatable
+
+Same tokens, same switch. Wide: `--ai-font-fixed-xxs` headers, `--ai-font-fixed-xs`
+cells — the Table defaults. Cramped: `4xs` and `2xs`, the same two the Orders
+table steps down to.
+
+The threshold is read from **`cs-page`**, not from the card. Keyed to its own
+box the picker could never agree with the listing: the card is never wider than
+640 and the listing switches below 767, so at a 1200px page the listing sat at
+11/13 while the picker was still at 12/14 — two tables on screen at once, in
+different sizes. `cs-page` is the signal the listing is really responding to
+(its datatable is the page column less its padding), so at ~800 the two switch
+together.
+
+Measured at 1900 / 1500 / 1250 / 1150 / 900 / 820: identical in both tables at
+every width.
