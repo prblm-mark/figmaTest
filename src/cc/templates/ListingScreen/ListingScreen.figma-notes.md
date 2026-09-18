@@ -751,3 +751,19 @@ separators so "£1,204.95" compares.
 
 Measured: 20–28 Sep gives 18 rows, all within range; "up to 5 Sep" gives 94,
 the latest being 2026-09-05.
+
+
+## A removed facet kept looking active
+
+Toggling a filter off in More Filters left its facet wearing FilterItem's
+`--open` palette — highlighted, but with no tick. It alternated, which is why it
+only appeared every other time: FilterItem toggles `--open` on every trigger
+click, so the add left it on and the remove cleared it, or the other way round
+depending on where the sequence started.
+
+`markFacet` now clears `--open` and `aria-expanded` on both paths. A facet is a
+BUTTON, not a chip with a picker of its own — it should never carry that state
+at all, whichever way it is being toggled.
+
+Verified across four consecutive toggles: every removed state is identical to
+the initial one, class, background and border.
