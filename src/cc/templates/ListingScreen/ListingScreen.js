@@ -149,7 +149,10 @@
 
   /* One row of a Multi Select Table. Shared by the first render and by every
      redraw the card's sub-filters trigger, so the two cannot drift. */
-  var PICKER_DROPPABLE = ['', 'datatables__col--code', 'datatables__col--zone'];
+  /* Column classes for the picker's table, in order. Named so the CSS can hold
+     each one's minimum width — the name column needs room to wrap, the code
+     and zone columns need to not be squeezed. */
+  var PICKER_DROPPABLE = ['datatables__col--name', 'datatables__col--code', 'datatables__col--zone'];
 
   function pickerRow(o, f, picked) {
     var on = (picked || []).indexOf(o.name) !== -1;
