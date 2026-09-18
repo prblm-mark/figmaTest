@@ -212,6 +212,41 @@
   max-height: var(--ai-size-7);          /* 384px */
   overflow-y: auto;
 }
+
+/* Cells WRAP in this table, so every column stays on screen.
+ *
+ * Table.css sets `white-space: nowrap` on every th and td so a wide table
+ * scrolls rather than squashing. In a 640px picker that is the wrong trade:
+ * one long real name — "Affino Innovation Briefing 2019 - Actionable
+ * Intelligence, Case Study and 2020 Roadmap" — took the Name column to 602px
+ * and pushed the table to 885 inside a 623 body, so Catalogue ID and Zone were
+ * off the right-hand edge behind a horizontal scroll. Wrapping costs row
+ * height and shows everything; scrolling hid the two columns that tell two
+ * similarly named items apart, which is the whole reason this picker is a
+ * table. */
+.filter-dropdowns--table .table thead th,
+.filter-dropdowns--table .table tbody td {
+  white-space: normal;
+}
+
+/* The two short columns get a preferred width; Name takes what is left.
+ *
+ * Auto table layout shares width by content, and the long names took so much
+ * that the codes were squeezed to breaking point — "Aff9882376" rendered as
+ * "Aff98823 / 76", which is unreadable and, for an operator-typed SKU, looks
+ * like a different value. Naming a width for the two predictable columns lets
+ * the unpredictable one absorb the variation, which is the right way round. */
+.filter-dropdowns--table .datatables__col--code,
+.filter-dropdowns--table .datatables__col--zone {
+  width: var(--ai-size-1);               /* 128px */
+}
+
+/* Still a safety net: a Catalogue ID is free text and could be longer than
+ * anything here, and without a break opportunity it would set the column's
+ * min-content width and bring the scroll back. */
+.filter-dropdowns--table .datatables__col--code {
+  overflow-wrap: anywhere;
+}
 .filter-dropdowns__table-region .datatables {
   border: none;
   border-radius: 0;
