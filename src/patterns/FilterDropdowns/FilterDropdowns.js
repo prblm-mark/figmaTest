@@ -11,14 +11,38 @@
 (function () {
   'use strict';
 
+  /* This card's OWN element, not one belonging to a card nested inside it.
+     `root.querySelector('[data-filter-dropdowns-apply]')` reaches straight
+     through a nested picker: the Multi Select Table's sub-filters are
+     `.filter-dropdowns` cards of their own, so the outer card bound its Apply
+     to the FIRST apply button in the subtree — a sub-filter's. Clicking that
+     then fired an apply for the outer card too, which committed an empty value
+     and closed the whole picker.
+
+     Every lookup here uses this. A pattern that can contain itself cannot use
+     descendant queries. */
+  function own(root, selector) {
+    var found = root.querySelectorAll(selector);
+    for (var i = 0; i < found.length; i++) {
+      if (found[i].closest('[data-filter-dropdowns]') === root) return found[i];
+    }
+    return null;
+  }
+
+  function ownAll(root, selector) {
+    return Array.prototype.filter.call(root.querySelectorAll(selector), function (el) {
+      return el.closest('[data-filter-dropdowns]') === root;
+    });
+  }
+
   function labelText(row) {
     var el = row.querySelector('.checkbox__label-text, .filter-dropdown-item__name');
     return (el ? el.textContent : row.textContent).trim().toLowerCase();
   }
 
   function wireSearch(root) {
-    var input = root.querySelector('[data-filter-dropdowns-search]');
-    var list = root.querySelector('[data-filter-dropdowns-list]');
+    var input = own(root, '[data-filter-dropdowns-search]');
+    var list = own(root, '[data-filter-dropdowns-list]');
     if (!input || !list) return;
     input.addEventListener('input', function () {
       var q = input.value.trim().toLowerCase();
@@ -29,9 +53,9 @@
   }
 
   function wireSelect(root) {
-    var trigger = root.querySelector('[data-select-trigger]');
-    var menu = root.querySelector('[data-select-menu]');
-    var valueEl = root.querySelector('[data-select-value]');
+    var trigger = own(root, '[data-select-trigger]');
+    var menu = own(root, '[data-select-menu]');
+    var valueEl = own(root, '[data-select-value]');
     if (!trigger || !menu) return;
     /* `data-placeholder` wins over the rendered text: a card can be rendered
        with a value already in the field (restoring a saved view), and reading
@@ -90,8 +114,8 @@
   }
 
   function wirePredictive(root) {
-    var input = root.querySelector('[data-predictive-input]');
-    var menu = root.querySelector('[data-select-menu]');
+    var input = own(root, '[data-predictive-input]');
+    var menu = own(root, '[data-select-menu]');
     if (!input || !menu) return;
 
     function open() { root.classList.add('filter-dropdowns--open'); menu.hidden = false; }
@@ -131,9 +155,9 @@
   /* Select-all in a Multi Select Table header. Without this the header
      checkbox is decoration. */
   function wireSelectAll(root) {
-    var all = root.querySelector('[data-select-all]');
+    var all = own(root, '[data-select-all]');
     if (!all) return;
-    var rows = function () { return root.querySelectorAll('[data-row-value]'); };
+    var rows = function () { return ownAll(root, '[data-row-value]'); };
 
     all.addEventListener('change', function () {
       rows().forEach(function (c) { c.checked = all.checked; });
@@ -150,7 +174,7 @@
   }
 
   function wireApply(root) {
-    var apply = root.querySelector('[data-filter-dropdowns-apply]');
+    var apply = own(root, '[data-filter-dropdowns-apply]');
     if (!apply) return;
     apply.addEventListener('click', function () {
       root.dispatchEvent(new CustomEvent('filter-dropdowns:apply', { bubbles: true }));
@@ -162,12 +186,12 @@
      and only the card knows what "unset" looks like per type. */
   function wireReset(root) {
     root.resetFilterDropdown = function () {
-      root.querySelectorAll('.filter-dropdown-item--selected').forEach(function (item) {
+      ownAll(root, '.filter-dropdown-item--selected').forEach(function (item) {
         item.classList.remove('filter-dropdown-item--selected');
         item.setAttribute('aria-pressed', 'false');
       });
-      root.querySelectorAll('.checkbox__input:checked').forEach(function (c) { c.checked = false; });
-      root.querySelectorAll('.input__control').forEach(function (f) { f.value = ''; });
+      ownAll(root, '.checkbox__input:checked').forEach(function (c) { c.checked = false; });
+      ownAll(root, '.input__control').forEach(function (f) { f.value = ''; });
       (root.__resets || []).forEach(function (fn) { fn(); });
     };
   }

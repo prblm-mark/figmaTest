@@ -1525,7 +1525,12 @@
 
       var chip = facet.querySelector('.filter-item');
       if (chip && typeof chip.setFilterValues === 'function') chip.setFilterValues(values);
-      panel.hidden = true;
+      /* The sub-picker STAYS OPEN. Narrowing this table is usually an
+         iteration — try a term, see what comes back, adjust — and closing the
+         control after every attempt makes the user re-open it to do the next
+         one. The result is behind it and updates live, so there is nothing to
+         get out of the way for. It closes on a click elsewhere in the card,
+         like any other picker. */
       redrawPickerRows(card, filter);
     }, true);
 

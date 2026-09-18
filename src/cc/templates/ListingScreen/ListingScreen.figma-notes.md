@@ -869,3 +869,14 @@ so the table responds to the CARD's width rather than the page's — what fits i
 the card is a different question from what fits on screen. Zone drops below
 520px, Catalogue ID below 380px; Name never drops, or the picker is a list of
 codes. Measured inside the bar at 1700 / 1100 / 820 / 620px pages.
+
+
+## A sub-filter does not close its picker
+
+Applying a sub-filter narrows the table and leaves the sub-picker open.
+Narrowing is an iteration — try a term, see what comes back, adjust — and
+closing the control after each attempt makes the user re-open it to make the
+next one. The result is behind it and updates live. It closes on a click
+elsewhere in the card, like any picker.
+
+The OUTER picker's Apply still closes, because that one commits.
