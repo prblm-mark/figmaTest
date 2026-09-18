@@ -504,8 +504,17 @@
   .cc-control__page {
     padding: var(--ai-spacing-4);
     /* Trim the right padding (as on desktop) so the reserved scrollbar gutter
-       doesn't make the right side look heavier than the left. */
-    padding-right: var(--ai-spacing-2);
+       doesn't make the right side look heavier than the left.
+       --ai-spacing-2 (6px) undershot: 6 + the 15px gutter read as 21 against
+       12 on the left, a 9px lean measured on every CC screen 2026-09-17.
+       --ai-spacing-0 brings it to 15 against 12 — the same 3px tolerance the
+       desktop rule lands on (24 vs 27), so both breakpoints now lean by the
+       same amount instead of mobile leaning three times as hard.
+       Exactly even is not reachable by trimming here: the reserved gutter
+       (15px) is already wider than the 12px left padding, so the only way to
+       match it would be `scrollbar-gutter: stable both-edges`, which costs
+       15px of content on each side of a 390px screen. */
+    padding-right: var(--ai-spacing-0);
   }
 }
 

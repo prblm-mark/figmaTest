@@ -1601,30 +1601,13 @@
   flex-shrink: 0;
 }
 
-/* Two buttons that have to read as one control. The shared edge is collapsed with a -1px pull
- * so a single 1px rule divides the halves instead of two adjacent borders stacking to 2px. */
-.seating-header__export-split {
-  display: flex;
-  align-items: stretch;
-}
-
-.seating-header__export-split > .btn:first-child {
-  border-start-end-radius: 0;
-  border-end-end-radius: 0;
-}
+/* Two buttons that read as one control. The split is `.btn-group` — ButtonGroup already owned
+ * the collapsed shared edge, the first/last radius rounding and the hover/focus z-index, so the
+ * hand-written copy that used to live here was deleted on 2026-09-17 rather than duplicated a
+ * third time when the FilterBar needed the same control. */
 
 .seating-header__export-more.btn {
-  margin-inline-start: -1px;
-  border-start-start-radius: 0;
-  border-end-start-radius: 0;
   padding-inline: var(--ai-spacing-2);   /* 6 — this half carries a chevron and no label */
-}
-
-/* The hovered/focused half must paint its full outline, including the collapsed edge. */
-.seating-header__export-split > .btn:hover,
-.seating-header__export-split > .btn:focus-visible {
-  position: relative;
-  z-index: 1;
 }
 
 /* Figma's List node 3393:27558: 160 wide (--ai-size-2) with 8px padding, where Dropdown's own
@@ -1671,7 +1654,10 @@
     display: none;
   }
 
-  .seating-header__export-split > .btn:first-child {
+  /* With the chevron half hidden the label half must round both ends again.
+     ButtonGroup's own `.btn:only-child` rule cannot do it: the chevron is
+     `display: none`, not removed, so the label is still :first-child of two. */
+  .seating-header__export .btn-group > .btn:first-child {
     border-radius: var(--ai-radius-md);
   }
 }

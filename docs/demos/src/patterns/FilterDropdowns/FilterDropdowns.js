@@ -33,7 +33,12 @@
     var menu = root.querySelector('[data-select-menu]');
     var valueEl = root.querySelector('[data-select-value]');
     if (!trigger || !menu) return;
-    var placeholder = valueEl ? valueEl.textContent : 'Select';
+    /* `data-placeholder` wins over the rendered text: a card can be rendered
+       with a value already in the field (restoring a saved view), and reading
+       the placeholder off the DOM would then adopt that VALUE as the
+       placeholder — clearing the filter would put it straight back. */
+    var placeholder = (valueEl && valueEl.dataset.placeholder)
+      || (valueEl ? valueEl.textContent : 'Select');
 
     function open() { root.classList.add('filter-dropdowns--open'); menu.hidden = false; trigger.setAttribute('aria-expanded', 'true'); }
     function close() { root.classList.remove('filter-dropdowns--open'); menu.hidden = true; trigger.setAttribute('aria-expanded', 'false'); }
@@ -77,6 +82,10 @@
     });
     updateValue(); // reflect any server-rendered selection into the field
 
+    /* Resetting the card is not just "drop the selections": the FIELD has to
+       go back to its placeholder, which only this closure knows. */
+    (root.__resets = root.__resets || []).push(function () { updateValue(); close(); });
+
     document.addEventListener('click', function (e) { if (!root.contains(e.target)) close(); });
   }
 
@@ -114,6 +123,8 @@
       }
     });
 
+    (root.__resets = root.__resets || []).push(function () { input.value = ''; filter(); close(); });
+
     document.addEventListener('click', function (e) { if (!root.contains(e.target)) close(); });
   }
 
@@ -125,6 +136,21 @@
     });
   }
 
+  /* Put the card back to its unset state. Public, like FilterItem's
+     setFilterValues — a consuming bar clears the chip and the card together,
+     and only the card knows what "unset" looks like per type. */
+  function wireReset(root) {
+    root.resetFilterDropdown = function () {
+      root.querySelectorAll('.filter-dropdown-item--selected').forEach(function (item) {
+        item.classList.remove('filter-dropdown-item--selected');
+        item.setAttribute('aria-pressed', 'false');
+      });
+      root.querySelectorAll('.checkbox__input:checked').forEach(function (c) { c.checked = false; });
+      root.querySelectorAll('.input__control').forEach(function (f) { f.value = ''; });
+      (root.__resets || []).forEach(function (fn) { fn(); });
+    };
+  }
+
   function initFilterDropdowns(scope) {
     (scope || document).querySelectorAll('[data-filter-dropdowns]').forEach(function (root) {
       if (root.__filterDropdowns) return;
@@ -133,6 +159,7 @@
       wireSelect(root);
       wirePredictive(root);
       wireApply(root);
+      wireReset(root);
     });
   }
 

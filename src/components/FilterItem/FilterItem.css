@@ -44,6 +44,42 @@
   border-color: var(--ai-border-info);
 }
 
+/* ── Mouseover (Figma State=MOuseover — sic, the typo is Figma's) ──
+ * Desktop 3664:14429 / Mobile 3664:14425. Exactly ONE property moves:
+ * the background. Border, text colour, icon, padding and radius are all
+ * identical to Default — checked on both devices rather than assumed
+ * from the desktop node.
+ *
+ * Scoped away from --selected and --open, which Figma paints with the
+ * info palette; a hover passing over those must not wash them out.
+ * --empty is excluded as well: Figma defines no Empty + Mouseover
+ * variant, and its Mouseover chip draws a SOLID border where --empty is
+ * dashed, so the two are not the same chip. Flagged in the notes.
+ *
+ * The transition lives on the companion REST rule rather than inside
+ * :hover, so it plays on the way out as well as in. */
+.filter-item:not(.filter-item--selected):not(.filter-item--open):not(.filter-item--empty) {
+  transition: background-color var(--ai-transition-default),
+              border-color var(--ai-transition-default);
+}
+
+.filter-item:not(.filter-item--selected):not(.filter-item--open):not(.filter-item--empty):hover {
+  background: var(--ai-surface-minimal);
+}
+
+/* ── Filter Dropdown Active (Figma State=Filter Dropdown Active) ──
+ * Desktop 3664:14437 / Mobile 3664:14441. The chip while its picker is
+ * open, and the same paint --selected already carries.
+ *
+ * It needs its own rule rather than leaning on --selected because
+ * Figma's Active variant shows an UNSELECTED chip — leading "+" icon,
+ * no values — wearing the info palette. So a chip picks this up the
+ * moment its dropdown opens, whether or not anything is chosen yet. */
+.filter-item--open {
+  background: var(--ai-surface-info-soft);
+  border-color: var(--ai-border-info);
+}
+
 /* ── Trigger (name · values + chevron; opens the picker) ── */
 .filter-item__trigger {
   display: inline-flex;

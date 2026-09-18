@@ -65,6 +65,47 @@ Groups buttons with collapsed borders and shared border-radius. A layout wrapper
 
 - **Button** (`src/components/Button/`) — all buttons inside the group are Button component instances
 
+## Split controls use this (2026-09-17)
+
+A "split button" — one label half plus a chevron half that opens a menu — **is
+`.btn-group` with two buttons**. Everything such a control needs was already
+here:
+
+| Need | ButtonGroup rule |
+|---|---|
+| halves read as one control | `.btn + .btn { margin-left: -1px }` collapses the shared edge to a single 1px rule instead of two stacking to 2px |
+| outer corners only | `.btn { border-radius: 0 }` + `:first-child` / `:last-child` / `:only-child` |
+| hovered half paints its whole outline | `.btn:hover, .btn:focus-visible { z-index: 1 }` |
+
+**It had been hand-written twice before anyone checked.** `SeatingPlanner.css`
+and then `FilterBar.css` each carried their own copy of those three rules. Both
+were deleted on 2026-09-17 and now use `.btn-group`; geometry measured
+identical before and after (label half 102.5×40, chevron 42×40, join −1px,
+radii 8/0 and 0/8).
+
+**Consumers keep only what is genuinely theirs** — the chevron half's inline
+padding, which differs by surface (`--ai-spacing-4` on the FilterBar,
+`--ai-spacing-2` on the Seating Planner toolbar), and any panel sizing.
+
+### The menu is Dropdown's, not ButtonGroup's
+
+These consumers pair `.btn-group` with `.dropdown` / `.dropdown__panel` /
+`.dropdown-item--xs`, **not** with this component's own `.btn-group__menu`.
+That is deliberate: the Dropdown set is what both surfaces already used, what
+Figma's menus map to, and what carries the `data-text` bold-reserve and the
+size axis. `.btn-group__menu` predates it and now overlaps it — two menu
+systems in the design system, flagged here rather than resolved, since
+retiring one is a migration of its own.
+
+### Figma
+
+Figma formalised the split *look* on 2026-09-17 as Button Type
+`Secondary / Action` (base `3679:17496`, sm `3679:99941`) — a **single** button
+with a divider, which cannot provide two click targets. The designer supplied
+it as a visual reference and confirmed Figma will be updated to follow the
+product: this is a deliberate expansion beyond the current Figma, not a
+divergence to reconcile.
+
 ## Notes
 
 - The group CSS only handles layout (radius stripping, border collapse, direction, colour override). All button styling (padding, height, font, interactive states) comes from Button.css.

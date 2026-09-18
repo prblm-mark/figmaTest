@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="../../styles/base.css">
   <!-- Dependencies -->
   <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/ButtonGroup/ButtonGroup.css">
   <link rel="stylesheet" href="../../components/Input/Input.css">
   <link rel="stylesheet" href="../../components/DropdownItem/DropdownItem.css">
   <link rel="stylesheet" href="../../components/Dropdown/Dropdown.css">
@@ -15,7 +16,17 @@
   <!-- Component -->
   <link rel="stylesheet" href="FilterBar.css">
   <style>
-    body { padding: var(--ai-spacing-7); background: var(--ai-surface-secondary); min-height: 100vh; }
+    /* FilterBar's size rules are @container cs-page — in the app that container
+       is ControlScreen's .cc-control__page. A standalone demo has no shell, so
+       it must establish cs-page itself or the narrow rules can never fire and
+       this page would silently misrepresent the component (CLAUDE.md §4a). */
+    body {
+      padding: var(--ai-spacing-7);
+      background: var(--ai-surface-secondary);
+      min-height: 100vh;
+      container-type: inline-size;
+      container-name: cs-page;
+    }
     .demo-section {
       margin-bottom: var(--ai-spacing-5);
     }
@@ -82,7 +93,7 @@
     Resize below 768px — the Export button collapses out of the bar (per Figma).
   </p>
 
-  <!-- Demo-only: preview the bar at desktop or mobile width (mobile renders in a 384px iframe so the @media rules apply) -->
+  <!-- Demo-only: preview the bar at desktop or mobile width (mobile renders in a 384px iframe, whose body establishes cs-page so the container rules apply) -->
   <div class="device-toggle demo-chrome" role="radiogroup" aria-label="Preview width">
     <button type="button" class="device-toggle__btn device-toggle__btn--active" data-view="desktop" aria-pressed="true"><i data-lucide="monitor" aria-hidden="true"></i>Desktop</button>
     <button type="button" class="device-toggle__btn" data-view="mobile" aria-pressed="false"><i data-lucide="smartphone" aria-hidden="true"></i>Mobile</button>
@@ -151,15 +162,32 @@
         </div>
 
         <div class="filter-bar__actions">
-          <button type="button" class="btn btn--secondary filter-bar__export"><i data-lucide="download" aria-hidden="true"></i>Export</button>
+          <div class="dropdown filter-bar__export" data-dropdown>
+            <div class="btn-group">
+              <button type="button" class="btn btn--secondary filter-bar__export-main" data-filter-export="pdf">
+                <i data-lucide="download" aria-hidden="true"></i>Export
+              </button>
+              <button type="button" class="btn btn--secondary filter-bar__export-more dropdown__trigger"
+                      aria-haspopup="menu" aria-expanded="false" aria-label="Other export formats">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="dropdown__panel" role="menu" aria-label="Export format">
+              <ul class="dropdown__list">
+                <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-export="pdf"><i data-lucide="file-text" aria-hidden="true"></i><span data-text="PDF">PDF</span></button></li>
+                <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-export="xlsx"><i data-lucide="sheet" aria-hidden="true"></i><span data-text="Excel (.xlsx)">Excel (.xlsx)</span></button></li>
+                <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-export="csv"><i data-lucide="file-spreadsheet" aria-hidden="true"></i><span data-text="CSV">CSV</span></button></li>
+              </ul>
+            </div>
+          </div>
           <div class="input filter-bar__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
           <button type="button" class="filter-bar__icon-btn" data-filter-action="search" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
           <div class="dropdown filter-bar__menu" data-dropdown>
             <button type="button" class="dropdown__trigger filter-bar__icon-btn" aria-haspopup="menu" aria-expanded="false" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
             <div class="dropdown__panel" role="menu" aria-label="Actions">
               <ul class="dropdown__list">
-                <li role="none"><button type="button" class="dropdown-item" role="menuitem"><span data-text="Some action">Some action</span></button></li>
-                <li role="none"><button type="button" class="dropdown-item" role="menuitem"><span data-text="Generate Shipping Labels">Generate Shipping Labels</span></button></li>
+                <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem"><i data-lucide="sheet" aria-hidden="true"></i><span data-text="Some action">Some action</span></button></li>
+                <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem"><i data-lucide="file-spreadsheet" aria-hidden="true"></i><span data-text="Generate Shipping Labels">Generate Shipping Labels</span></button></li>
               </ul>
             </div>
           </div>
@@ -192,7 +220,24 @@
           </div>
         </div>
         <div class="filter-bar__actions">
-          <button type="button" class="btn btn--secondary filter-bar__export"><i data-lucide="download" aria-hidden="true"></i>Export</button>
+          <div class="dropdown filter-bar__export" data-dropdown>
+            <div class="btn-group">
+              <button type="button" class="btn btn--secondary filter-bar__export-main" data-filter-export="pdf">
+                <i data-lucide="download" aria-hidden="true"></i>Export
+              </button>
+              <button type="button" class="btn btn--secondary filter-bar__export-more dropdown__trigger"
+                      aria-haspopup="menu" aria-expanded="false" aria-label="Other export formats">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="dropdown__panel" role="menu" aria-label="Export format">
+              <ul class="dropdown__list">
+                <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-export="pdf"><i data-lucide="file-text" aria-hidden="true"></i><span data-text="PDF">PDF</span></button></li>
+                <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-export="xlsx"><i data-lucide="sheet" aria-hidden="true"></i><span data-text="Excel (.xlsx)">Excel (.xlsx)</span></button></li>
+                <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-export="csv"><i data-lucide="file-spreadsheet" aria-hidden="true"></i><span data-text="CSV">CSV</span></button></li>
+              </ul>
+            </div>
+          </div>
           <div class="input filter-bar__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
           <button type="button" class="filter-bar__icon-btn" data-filter-action="search" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
           <button type="button" class="filter-bar__icon-btn" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
@@ -225,7 +270,24 @@
           </div>
         </div>
         <div class="filter-bar__actions">
-          <button type="button" class="btn btn--secondary filter-bar__export"><i data-lucide="download" aria-hidden="true"></i>Export</button>
+          <div class="dropdown filter-bar__export" data-dropdown>
+            <div class="btn-group">
+              <button type="button" class="btn btn--secondary filter-bar__export-main" data-filter-export="pdf">
+                <i data-lucide="download" aria-hidden="true"></i>Export
+              </button>
+              <button type="button" class="btn btn--secondary filter-bar__export-more dropdown__trigger"
+                      aria-haspopup="menu" aria-expanded="false" aria-label="Other export formats">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="dropdown__panel" role="menu" aria-label="Export format">
+              <ul class="dropdown__list">
+                <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-export="pdf"><i data-lucide="file-text" aria-hidden="true"></i><span data-text="PDF">PDF</span></button></li>
+                <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-export="xlsx"><i data-lucide="sheet" aria-hidden="true"></i><span data-text="Excel (.xlsx)">Excel (.xlsx)</span></button></li>
+                <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-export="csv"><i data-lucide="file-spreadsheet" aria-hidden="true"></i><span data-text="CSV">CSV</span></button></li>
+              </ul>
+            </div>
+          </div>
           <div class="input filter-bar__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
           <button type="button" class="filter-bar__icon-btn" data-filter-action="search" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
           <button type="button" class="filter-bar__icon-btn" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
@@ -259,7 +321,24 @@
           </div>
         </div>
         <div class="filter-bar__actions">
-          <button type="button" class="btn btn--secondary filter-bar__export"><i data-lucide="download" aria-hidden="true"></i>Export</button>
+          <div class="dropdown filter-bar__export" data-dropdown>
+            <div class="btn-group">
+              <button type="button" class="btn btn--secondary filter-bar__export-main" data-filter-export="pdf">
+                <i data-lucide="download" aria-hidden="true"></i>Export
+              </button>
+              <button type="button" class="btn btn--secondary filter-bar__export-more dropdown__trigger"
+                      aria-haspopup="menu" aria-expanded="false" aria-label="Other export formats">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="dropdown__panel" role="menu" aria-label="Export format">
+              <ul class="dropdown__list">
+                <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-export="pdf"><i data-lucide="file-text" aria-hidden="true"></i><span data-text="PDF">PDF</span></button></li>
+                <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-export="xlsx"><i data-lucide="sheet" aria-hidden="true"></i><span data-text="Excel (.xlsx)">Excel (.xlsx)</span></button></li>
+                <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-export="csv"><i data-lucide="file-spreadsheet" aria-hidden="true"></i><span data-text="CSV">CSV</span></button></li>
+              </ul>
+            </div>
+          </div>
           <div class="input filter-bar__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
           <button type="button" class="filter-bar__icon-btn" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
           <button type="button" class="filter-bar__icon-btn" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
@@ -326,7 +405,24 @@
           </div>
         </div>
         <div class="filter-bar__actions">
-          <button type="button" class="btn btn--secondary filter-bar__export"><i data-lucide="download" aria-hidden="true"></i>Export</button>
+          <div class="dropdown filter-bar__export" data-dropdown>
+            <div class="btn-group">
+              <button type="button" class="btn btn--secondary filter-bar__export-main" data-filter-export="pdf">
+                <i data-lucide="download" aria-hidden="true"></i>Export
+              </button>
+              <button type="button" class="btn btn--secondary filter-bar__export-more dropdown__trigger"
+                      aria-haspopup="menu" aria-expanded="false" aria-label="Other export formats">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="dropdown__panel" role="menu" aria-label="Export format">
+              <ul class="dropdown__list">
+                <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-export="pdf"><i data-lucide="file-text" aria-hidden="true"></i><span data-text="PDF">PDF</span></button></li>
+                <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-export="xlsx"><i data-lucide="sheet" aria-hidden="true"></i><span data-text="Excel (.xlsx)">Excel (.xlsx)</span></button></li>
+                <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-export="csv"><i data-lucide="file-spreadsheet" aria-hidden="true"></i><span data-text="CSV">CSV</span></button></li>
+              </ul>
+            </div>
+          </div>
           <div class="input filter-bar__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
           <button type="button" class="filter-bar__icon-btn" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
           <button type="button" class="filter-bar__icon-btn" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
@@ -360,7 +456,24 @@
           <button type="button" class="btn btn--primary filter-bar__create" data-filter-action="new-view-create">Create</button>
         </div>
         <div class="filter-bar__actions">
-          <button type="button" class="btn btn--secondary filter-bar__export"><i data-lucide="download" aria-hidden="true"></i>Export</button>
+          <div class="dropdown filter-bar__export" data-dropdown>
+            <div class="btn-group">
+              <button type="button" class="btn btn--secondary filter-bar__export-main" data-filter-export="pdf">
+                <i data-lucide="download" aria-hidden="true"></i>Export
+              </button>
+              <button type="button" class="btn btn--secondary filter-bar__export-more dropdown__trigger"
+                      aria-haspopup="menu" aria-expanded="false" aria-label="Other export formats">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="dropdown__panel" role="menu" aria-label="Export format">
+              <ul class="dropdown__list">
+                <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-export="pdf"><i data-lucide="file-text" aria-hidden="true"></i><span data-text="PDF">PDF</span></button></li>
+                <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-export="xlsx"><i data-lucide="sheet" aria-hidden="true"></i><span data-text="Excel (.xlsx)">Excel (.xlsx)</span></button></li>
+                <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-export="csv"><i data-lucide="file-spreadsheet" aria-hidden="true"></i><span data-text="CSV">CSV</span></button></li>
+              </ul>
+            </div>
+          </div>
           <div class="input filter-bar__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
           <button type="button" class="filter-bar__icon-btn" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
           <button type="button" class="filter-bar__icon-btn" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
@@ -393,7 +506,24 @@
           </div>
         </div>
         <div class="filter-bar__actions">
-          <button type="button" class="btn btn--secondary filter-bar__export"><i data-lucide="download" aria-hidden="true"></i>Export</button>
+          <div class="dropdown filter-bar__export" data-dropdown>
+            <div class="btn-group">
+              <button type="button" class="btn btn--secondary filter-bar__export-main" data-filter-export="pdf">
+                <i data-lucide="download" aria-hidden="true"></i>Export
+              </button>
+              <button type="button" class="btn btn--secondary filter-bar__export-more dropdown__trigger"
+                      aria-haspopup="menu" aria-expanded="false" aria-label="Other export formats">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="dropdown__panel" role="menu" aria-label="Export format">
+              <ul class="dropdown__list">
+                <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-export="pdf"><i data-lucide="file-text" aria-hidden="true"></i><span data-text="PDF">PDF</span></button></li>
+                <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-export="xlsx"><i data-lucide="sheet" aria-hidden="true"></i><span data-text="Excel (.xlsx)">Excel (.xlsx)</span></button></li>
+                <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-export="csv"><i data-lucide="file-spreadsheet" aria-hidden="true"></i><span data-text="CSV">CSV</span></button></li>
+              </ul>
+            </div>
+          </div>
           <div class="input filter-bar__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
           <button type="button" class="filter-bar__icon-btn" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
           <button type="button" class="filter-bar__icon-btn" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
@@ -427,7 +557,24 @@
           </div>
         </div>
         <div class="filter-bar__actions">
-          <button type="button" class="btn btn--secondary filter-bar__export"><i data-lucide="download" aria-hidden="true"></i>Export</button>
+          <div class="dropdown filter-bar__export" data-dropdown>
+            <div class="btn-group">
+              <button type="button" class="btn btn--secondary filter-bar__export-main" data-filter-export="pdf">
+                <i data-lucide="download" aria-hidden="true"></i>Export
+              </button>
+              <button type="button" class="btn btn--secondary filter-bar__export-more dropdown__trigger"
+                      aria-haspopup="menu" aria-expanded="false" aria-label="Other export formats">
+                <i data-lucide="chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="dropdown__panel" role="menu" aria-label="Export format">
+              <ul class="dropdown__list">
+                <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-export="pdf"><i data-lucide="file-text" aria-hidden="true"></i><span data-text="PDF">PDF</span></button></li>
+                <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-export="xlsx"><i data-lucide="sheet" aria-hidden="true"></i><span data-text="Excel (.xlsx)">Excel (.xlsx)</span></button></li>
+                <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-export="csv"><i data-lucide="file-spreadsheet" aria-hidden="true"></i><span data-text="CSV">CSV</span></button></li>
+              </ul>
+            </div>
+          </div>
           <div class="input filter-bar__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
           <button type="button" class="filter-bar__icon-btn" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
           <div class="dropdown filter-bar__menu" data-dropdown>

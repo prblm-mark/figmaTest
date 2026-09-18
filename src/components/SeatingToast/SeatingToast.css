@@ -137,6 +137,14 @@
  * 767px is the project's component breakpoint (CLAUDE.md). The modals on this screen switch at
  * 639 instead, because that is where Modal's own sm treatment switches — a toast is not in a
  * modal, so it follows the component rule. */
+/* GENUINELY @media — do not "convert" this one (tried and reverted 2026-09-17).
+ * Its only real consumer mounts it in `.sp-toast-host`, which is
+ * `position: fixed` and sits OUTSIDE `.cc-control__main` as a sibling of
+ * <main>. The toast is therefore not a descendant of cs-page or cs-main and
+ * can match neither: an `@container cs-page` rule here would silently never
+ * fire in the Seating Planner while still working in this component's own
+ * demo, which is the worst kind of failure. A fixed overlay is sized by the
+ * viewport, so the viewport is also the correct signal (CLAUDE.md §4a). */
 @media (max-width: 767px) {
   .seating-toast__message {
     font-size: var(--ai-font-fixed-2xs);   /* 13px */

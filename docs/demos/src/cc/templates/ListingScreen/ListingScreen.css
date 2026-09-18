@@ -1,0 +1,235 @@
+/* Listing Screen — Control Centre template
+ * Figma: page "Listings" 3644:125909
+ *        Default · Desktop 3645:148870 / Default · Mobile 3648:161126
+ *
+ * The template behind ~400 Control Centre screens. Each screen differs
+ * only in its datatable Type and its default filter set, both of which
+ * are data (listing-data.js), not CSS.
+ *
+ * SCOPE OF THIS FILE
+ * Deliberately small. The shell (sidebar, chrome, scrolling page) is
+ * ControlScreen's — this template reuses `.cc-control__*` wholesale
+ * rather than forking it, exactly as SeatingPlanner does, because in
+ * Figma both screens are instances of the same "CC Shell" component.
+ * The datatable's Orders styling lives with its component in
+ * Datatables.css (`.datatables--orders`), since Type=Orders is a
+ * variant of Datatables, not of this template.
+ *
+ * So all that is left here is the content column itself.
+ */
+
+/* ── Page content column ─────────────────────────────────
+ * Figma "Frame 1" (I3645:147421;4291:8836;3645:147644): a plain
+ * vertical stack, FilterBar then Datatables, 12px apart.
+ *
+ * This wrapper exists because `.cc-control__page` sets gap
+ * --ai-spacing-7 (32px) for ControlScreen's multi-section dashboard,
+ * and the listing needs --ai-spacing-4 (12px). Overriding the page's
+ * own gap would change it for anything else dropped on the page, so
+ * the listing owns its spacing in its own box.
+ *
+ * `min-inline-size: 0` so the table can shrink inside the flex column
+ * instead of forcing the page to scroll sideways — the intrinsic fix
+ * CLAUDE.md §4a asks for, applied before any breakpoint.
+ */
+
+.cc-listing {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-4);
+  min-inline-size: 0;
+}
+
+/* The page already establishes the `cs-page` container and
+ * `isolation: isolate`; the listing adds no stacking context of its
+ * own, so an open FilterBar dropdown still paints above the table. */
+
+/* NOTE — deliberately no `padding` here.
+ *
+ * `.cc-control__page` already applies the Figma inset (--ai-spacing-6), and
+ * then TRIMS padding-right to --ai-spacing-4 so the content sits evenly
+ * against the scrollbar gutter, which `scrollbar-gutter: stable` reserves on
+ * the right edge only. 12px padding + a 15px gutter reads as 27 against the
+ * 24 on the left — the closest the spacing scale gets to even.
+ *
+ * Re-declaring `padding: var(--ai-spacing-6)` on this modifier defeated that:
+ * same specificity (one class), but ListingScreen.css loads after
+ * ControlScreen.css, so the shorthand won and restored a full 24px right
+ * padding. With the gutter on top the right gap measured 39 against 24 —
+ * which is exactly the asymmetry this comment exists to prevent recurring.
+ *
+ * `scrollbar-gutter: stable both-edges` looks like the tidier fix and is not:
+ * it reserves a gutter on BOTH edges, so the left gap becomes 24+15=39 while
+ * the trimmed right stays 27, making the imbalance worse in the other
+ * direction. The trim is the house solution — leave the page's padding alone.
+ */
+
+/* ── FilterBar in the listing context ────────────────────
+ * FilterBar is a full pattern already; it needs no restyling here.
+ * It must not shrink away from the table it filters, though — without
+ * this the flex column can compress the two-row bar when the chip row
+ * wraps.
+ */
+
+.cc-listing .filter-bar {
+  flex: 0 0 auto;
+}
+
+/* ── Empty state ─────────────────────────────────────────
+ * TODO(design:Listing): Datatables defines no empty state in Figma. This
+ * mirrors EventPicker's `Type=Event Picker (no results)` (3108:6659) token
+ * for token — the established treatment on the CC surface — rather than
+ * inventing a second one. It should become a Datatables Figma variant.
+ */
+
+/* The cell stays a cell so colspan holds; the flex column is the div inside. */
+.cc-listing__empty-cell {
+  padding: 0;
+}
+
+.cc-listing__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  padding: var(--ai-spacing-9) var(--ai-spacing-6);
+  text-align: center;
+}
+
+.cc-listing__empty-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-8);            /* 40px */
+  height: var(--ai-spacing-8);
+  border-radius: var(--ai-radius-full);
+  background: var(--ai-surface-minimal);
+  color: var(--ai-icon-contrast);
+}
+
+.cc-listing__empty-icon [data-lucide] {
+  width: var(--ai-icon-size-md);
+  height: var(--ai-icon-size-md);
+}
+
+.cc-listing__empty-title {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+}
+
+.cc-listing__empty-desc {
+  margin: 0;
+  max-width: var(--ai-size-6);           /* 320px */
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-secondary);
+}
+
+/* ── Edit Columns ────────────────────────────────────────
+ * A NEW capability, not a reproduction — the live Orders screen has no
+ * column picker and no per-user preference (verified in its source,
+ * 2026-09-18). Built as a working prototype at Mark's direction; the
+ * choices are in memory, like the saved views.
+ *
+ * The panel is the shared Dropdown; only the list inside is ours.
+ */
+
+.cc-listing__columns {
+  position: relative;
+}
+
+.dropdown__panel--columns {
+  left: auto;
+  inset-inline-end: 0;
+  min-width: var(--ai-size-4);           /* 240px */
+  max-height: var(--ai-size-7);          /* 384px */
+  overflow-y: auto;
+}
+
+.cc-listing__columns-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-2);
+}
+
+.cc-listing__column {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ai-spacing-2);
+  padding: var(--ai-spacing-2) var(--ai-spacing-3);
+  border-radius: var(--ai-radius-sm);
+  /* The insertion line is drawn as a border so it takes no layout space —
+     a margin or an inserted element would make the list jump while dragging. */
+  border-block: 1px solid transparent;
+}
+
+.cc-listing__column:hover {
+  background-color: var(--ai-surface-minimal);
+}
+
+.cc-listing__column .checkbox {
+  flex: 1;
+  min-inline-size: 0;
+}
+
+/* Drag handle. The row is only made draggable while the pointer is on this,
+ * so the checkbox stays clickable. */
+.cc-listing__column-grip {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  color: var(--ai-icon-contrast);
+  cursor: grab;
+}
+
+.cc-listing__column-grip [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+.cc-listing__column--dragging {
+  opacity: var(--ai-opacity-disabled, 0.5);
+}
+
+.cc-listing__column--over-before {
+  border-block-start-color: var(--ai-border-brand);
+}
+
+.cc-listing__column--over-after {
+  border-block-end-color: var(--ai-border-brand);
+}
+
+/* Order No. and Customer identify the row; without them the table is a
+ * list of anonymous numbers, so their checkboxes are disabled rather than
+ * absent — the user can see WHY they cannot be removed. */
+.cc-listing__column--locked {
+  cursor: default;
+  opacity: var(--ai-opacity-disabled, 0.5);
+}
+
+/* A column can be wanted and still have no room at this width. Saying so
+ * beats showing a tick against something the user cannot see. */
+.cc-listing__column-note:not(:empty) {
+  display: block;
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-contrast);
+}
+
+/* ── Rows-per-page menu ──────────────────────────────────
+ * The "Show 20" control is the shared Dropdown; it only needs to hug its
+ * short numeric options rather than take Dropdown's 240px default. */
+.cc-listing__per-page {
+  position: relative;
+}
+
+.dropdown__panel--per-page {
+  min-width: var(--ai-size-1);
+  padding: var(--ai-spacing-3);
+}

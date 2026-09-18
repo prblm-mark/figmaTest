@@ -4,8 +4,10 @@
  * Two Type axes:
  *   - Default:   "Zone name > Level 1"
  *   - Multizone: "Zone Selector ▾ > Level 1 > Level 2" (with Dropdown)
- * Device responsiveness via @media (max-width: 767px): mobile hides the user
- * name and chevron, leaving only the portrait.
+ * Device responsiveness via `@container (max-width: 767px)` against this
+ * component's own inline-size (it declares container-type below): mobile
+ * hides the user name and chevron, leaving only the portrait. The comment
+ * said `@media` long after the code stopped using it — corrected 2026-09-17.
  */
 
 .cc-top-navigation {

@@ -27,15 +27,15 @@ existing design-system components for each of 17 filter types.
 | 3039:5626 | Checkbox | title + single Checkbox | ✅ |
 | 3039:5629 | Multi Select | label + Checkbox list (gap-5, max-h 384px) | ✅ |
 | 3039:5623 | Multi Select w/search | Input (search) + scrolling Checkbox list | ✅ |
-| 3039:5634 | Select Options | Input (chevron) + FilterDropdownItemGroup, **no Apply** (open state) | ✅ |
-| 3039:5628 | Select Options w/subtext | Input (chevron) + FilterDropdownItemGroup (subtext), **no Apply** | ✅ |
+| 3039:5634 | Select Options | Input (chevron) + FilterDropdownItemGroup + Apply (open state) | ✅ |
+| 3039:5628 | Select Options w/subtext | Input (chevron) + FilterDropdownItemGroup (subtext) + Apply | ✅ |
 | 3039:5636 | Date In the last | Input (operator) + [number + unit select] | ✅ |
 | 3039:5635 | Date Range | Input (operator) + [DatePicker "and" DatePicker] | ✅ |
 | 3039:5631 | Date Equal To | Input (operator) + corner + DatePicker | ✅ |
 | 3039:5637 | More Filters | FilterItem empty/rounded chips (no Apply) | ✅ |
 | 3039:5638 | Predictive Text | *consolidated* → Predictive Text Options (predictive always reveals options) | 🔁 |
-| 3039:5625 | Predictive Text Options | text Input + type-to-reveal single-select menu | ✅ |
-| 3039:5622 | Predictive text Options w/subtext | same, with subtext rows | ✅ |
+| 3039:5625 | Predictive Text Options | text Input + type-to-reveal single-select menu + Apply | ✅ |
+| 3039:5622 | Predictive text Options w/subtext | same, with subtext rows + Apply | ✅ |
 | 3039:5624 | Multi Select Table | 640px card: label + FilterItem chips + Datatables (checkbox/Name/Catalogue ID/Zone, row-link) + Apply | ✅ |
 | 3039:5630 | Multi Select Modal | 960px Modal: title + 7 FilterItem chips + Datatables (adds Price) + Cancel/Apply | ✅ |
 
@@ -43,8 +43,20 @@ existing design-system components for each of 17 filter types.
 `w/Placeholder` variants are NOT shown as standalone panels. Per the reference, the Select
 is represented as **two versions of its open state** — the select field + the
 `FilterDropdownItemGroup` dropping below it, one without sub text (`Select Options`) and one
-with (`Select Options w/subtext`). These two omit the Apply button: choosing an option is
-the action.
+with (`Select Options w/subtext`).
+
+**Apply is on EVERY type but More Filters (corrected 2026-09-17).** These four option types
+were originally built without it, on the reading that choosing an option is the action.
+Figma disagrees: the card is **136px** in every type — label (16) + gap (8) + field (40) +
+gap (8) + Apply (40) + padding (2×12) — and the screenshot of `3039:5639` shows the teal
+button on all sixteen. Only `More Filters` (3039:5637) has none, because there a chip click
+IS the commit.
+
+So **picking an option is not yet a filter**: it closes the menu and fills the field, and
+Apply commits. Note what this means for layout — Figma anchors the menu 4px under the FIELD,
+so an open menu **overlays** the Apply button rather than pushing it below. The menu is
+therefore a child of `.input` (which carries `position: relative` in `--select`), not a
+sibling of it; anchoring to the card would drop the menu under the button.
 
 **Predictive types (built, user direction 2026-07-07):** consolidated to **2** — a text
 Input whose suggestion menu reveals *as characters are typed* (like Select on click), then
@@ -115,3 +127,24 @@ All 17 Figma types now represented (Select and Predictive Text consolidated per 
   `.filter-dropdowns__title` instead of an Input label.
 - **Width:** all bodies are 320px (`--ai-size-6`) except the pending Table (671px) and Modal
   (960px) which will not fit this shell — they are separate layouts in phase 2.
+
+
+## Resetting a card
+
+`root.resetFilterDropdown()` is public on every `[data-filter-dropdowns]`,
+like FilterItem's `setFilterValues`. A consuming bar clears the chip and the
+card together, and only the card knows what "unset" means per type: drop the
+selected rows, untick the checkboxes, empty the fields — **and put the select
+field back to its placeholder**, which lives in a closure, not in the markup.
+
+FilterBar used to do this from outside and could only manage the first half.
+The chosen name stayed in the field, greyed by the placeholder class, so a
+cleared Customer filter looked like it still had a value that could not be
+chosen again.
+
+**`data-placeholder` on `[data-select-value]`** is what makes the restore
+correct. `wireSelect` previously took the placeholder from whatever the field
+said at init — fine when a card is always rendered empty, wrong now that one
+can be rendered with a value already in it (restoring a saved view), because
+the placeholder became that value and clearing put it straight back. The
+attribute is the placeholder; the text is the state.

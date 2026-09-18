@@ -448,3 +448,444 @@
   width: var(--ai-icon-size-md);
   height: var(--ai-icon-size-md);
 }
+
+/* ── Type=Orders ─────────────────────────────────────────
+ * Figma: 3648:164786 (Device=Desktop, Overflow Content=Scroll)
+ *        3648:164467 (Device=Mobile,  Overflow Content=Trigger)
+ *
+ * Added 2026-09-17 for the Listing Screen template. Orders is the
+ * fourth Type on this component set (after Pagination / Search /
+ * Whos Online) and the first one driven by a data renderer rather
+ * than hand-authored rows — see src/cc/templates/ListingScreen/.
+ *
+ * WHY EVERYTHING HERE IS SCOPED TO `--orders`
+ * The Orders variant disagrees with the values the earlier three
+ * Types were built from (toolbar/footer paint, user-name weight,
+ * user-role family+colour, user-cell gap, active-page paint, the
+ * rows-per-page control height). Designer's call 2026-09-17 was to
+ * scope rather than migrate, so Pagination / Search / Whos Online
+ * keep exactly the rendering they were signed off with.
+ *
+ * COLUMN WIDTHS ARE INTRINSIC, NOT THE FIGMA PIXELS
+ * Figma fixes ORDER NO 114, QTY 100, kebab 48, checkbox 32 and sets
+ * min-widths of 250 (CUSTOMER) / 170 (ACCOUNT). None of those map to
+ * an --ai-* token, so writing them would breach the hardcoded-
+ * dimension rule. `.datatables__col--hug` shrink-wraps the narrow
+ * columns instead and the wide ones take the remainder, which
+ * reproduces the design AND holds at any column width — the point of
+ * CLAUDE.md §4a, and it matters here because ~400 screens share this
+ * template inside a shell whose content column resizes with no
+ * window resize at all.
+ */
+
+/* Toolbar paints white rather than the shared header-bg. Identical in
+ * CC light (both #ffffff); they diverge in CC dark (#1e293b vs
+ * #293548), which is the only reason this override exists. */
+.datatables--orders .datatables__toolbar {
+  background-color: var(--ai-surface-primary);
+}
+
+/* "of 296" — Figma colours the bold count a step darker than the
+ * label it sits in. Figma cannot bind a variable to a text RANGE, so
+ * the design context reports it as a raw hex; it resolves to
+ * --ai-text-secondary in every mode. */
+.datatables--orders .datatables__meta strong {
+  color: var(--ai-text-secondary);
+}
+
+/* Rows-per-page control is 32px here, not the 40px the Pagination
+ * type uses. */
+.datatables--orders .datatables__select {
+  height: var(--ai-spacing-7);
+}
+
+/* Column headers: medium weight on primary text, where the base
+ * Table component uses semibold on secondary. */
+.datatables--orders .table thead th {
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-primary);
+}
+
+/* 64px minimum row. `height` on a table cell behaves as a minimum, so
+ * this grows with content instead of clipping it. */
+.datatables--orders .table tbody td {
+  height: var(--ai-spacing-11);
+}
+
+/* Shrink-to-fit column (ORDER NO, QTY, checkbox, kebab). `width: 1%`
+ * is the table-layout idiom for "take only what the content needs";
+ * the remaining columns absorb the slack. */
+.datatables--orders .datatables__col--hug {
+  width: 1%;
+  white-space: nowrap;
+}
+
+/* Shrink-wrap WITHOUT nowrap, for the enumerated columns.
+ *
+ * `--hug`'s nowrap is right for a code or a money value, which have no
+ * wrap point worth taking. It is wrong for "Awaiting Payment Confirmation":
+ * that one value forced the table wider than its container, so the table
+ * overflowed to the right AND every fluid column collapsed to min-content —
+ * the Customer column truncating to "Mari…" was this, not a share-of-slack
+ * problem. Wrapping keeps the whole value readable and hands the slack back
+ * to Customer. */
+/* Snug columns take a SHARE of the table rather than shrink-wrapping.
+ *
+ * `width: 1%` made every one of them hug its content, which meant any width
+ * the fit did not use had to pool somewhere — in Customer, which ballooned, or
+ * in a spacer, which read as a gap. Letting them be auto spreads the leftover
+ * across the text columns instead, so there is never a visible gap and the
+ * columns simply breathe. Their content is capped by `__truncate`, so a long
+ * value still cannot dictate the width. */
+.datatables--orders .datatables__col--snug {
+  width: auto;
+}
+
+/* ORDER NO is the row's identifier — semibold, unlike the other
+ * plain-text cells which stay regular. */
+.datatables--orders .datatables__order-no {
+  font-weight: var(--ai-font-semibold);
+}
+
+/* Customer cell deltas vs the Whos Online rendering. */
+.datatables--orders .datatables__user-cell {
+  gap: var(--ai-spacing-4);
+}
+
+.datatables--orders .datatables__user-name {
+  font-weight: var(--ai-font-semibold);
+}
+
+.datatables--orders .datatables__user-role {
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-regular);
+  color: var(--ai-text-secondary);
+}
+
+/* Initials avatar uses the BRAND soft palette here; the Avatar
+ * component's own --initials variant is the info palette. Contextual
+ * override (Case B) applied by analogy with the account chip below —
+ * flagged for the designer to formalise as an Avatar variant if it
+ * turns out to be the house style rather than a one-off. */
+.datatables--orders .avatar--initials {
+  background-color: var(--ai-surface-brand-soft-extra);
+  color: var(--ai-text-brand);
+}
+
+/* Account chip — `btn btn--tertiary btn--sm` plus a visible border.
+ * Tertiary's own border token is transparent in every mode, so the
+ * border is a contextual override (Case B, designer's call
+ * 2026-09-17) rather than a new Button variant. */
+.datatables__account-chip {
+  border-color: var(--ai-border-secondary);
+}
+
+/* Footer matches the toolbar: white, not the shared footer-bg. */
+.datatables--orders .datatables__footer {
+  background-color: var(--ai-surface-primary);
+}
+
+/* Current page is painted footer-bg rather than the border grey the
+ * other Types use. NOTE: in CC LIGHT that resolves to the same white
+ * as the pagination container, so weight alone carries the state —
+ * which is why the markup also sets aria-current="page". Flagged to
+ * the designer; do not "fix" it here without a Figma change. */
+.datatables--orders .datatables__page-btn--active {
+  background-color: var(--ai-datatable-table-footer-bg);
+}
+
+.datatables--orders .datatables__page-btn--active:hover {
+  background-color: var(--ai-datatable-table-footer-bg);
+}
+
+/* Edit column exists only in the mobile (Trigger) design. */
+.datatables--orders .datatables__col--mobile {
+  display: none;
+}
+
+/* Per-row edit affordance. Sizing comes entirely from the shared
+ * `btn--icon btn--xs` variant (24x24, 12px icon, radius-sm) — Figma's
+ * node 2926:3566 is that exact variant, so there is nothing to
+ * override here. The class is kept purely as a semantic hook. */
+.datatables__row-edit {
+  flex: none;
+}
+
+/* Header label pair. Figma shortens some headers on mobile; both
+ * strings ship and the container query below chooses. */
+.datatables__label--short {
+  display: none;
+}
+
+/* ── Type=Orders · mobile (Overflow Content=Trigger) ─────
+ * Figma 3648:164467. Container-query driven, so it fires whenever the
+ * table's own column narrows past 768px — including a wide viewport
+ * with the SidebarMenu docked, which is exactly the case a viewport
+ * media query misses (CLAUDE.md §4a).
+ *
+ * Mobile keeps only ORDER + CUSTOMER; the other four columns move
+ * into the kebab detail row. Note the toolbar/footer paints revert to
+ * the shared header-bg/footer-bg — the white override above is
+ * desktop-only in Figma, not a global Orders trait.
+ */
+
+@container (max-width: 767px) {
+  .datatables--orders .datatables__toolbar,
+  .datatables--orders .datatables__footer {
+    padding: var(--ai-spacing-3) var(--ai-spacing-4);
+  }
+
+  .datatables--orders .datatables__toolbar {
+    background-color: var(--ai-datatable-table-header-bg);
+  }
+
+  .datatables--orders .datatables__footer {
+    background-color: var(--ai-datatable-table-footer-bg);
+  }
+
+  /* The word "Show" is dropped; the control and count carry it. */
+  .datatables--orders .datatables__meta-label {
+    display: none;
+  }
+
+  .datatables--orders .datatables__meta,
+  .datatables--orders .datatables__select,
+  .datatables--orders .datatables__footer {
+    font-size: var(--ai-font-fixed-2xs);
+  }
+
+  /* Cells hug the left edge and hand every spare pixel to CUSTOMER. */
+  .datatables--orders .table thead th,
+  .datatables--orders .table tbody td {
+    padding: var(--ai-spacing-3) var(--ai-spacing-0)
+             var(--ai-spacing-3) var(--ai-spacing-4);
+  }
+
+  .datatables--orders .table thead th {
+    font-size: var(--ai-font-fixed-4xs);
+    font-weight: var(--ai-font-semibold);
+    letter-spacing: var(--ai-tracking-7);
+  }
+
+  /* Mobile rows divide on the lighter border-secondary, not the
+     datatable border. */
+  .datatables--orders .table thead th,
+  .datatables--orders .table tbody td {
+    border-bottom-color: var(--ai-border-secondary);
+  }
+
+  .datatables--orders .datatables__order-no {
+    font-size: var(--ai-font-fixed-2xs);
+    font-weight: var(--ai-font-medium);
+  }
+
+  .datatables--orders .datatables__user-cell {
+    gap: var(--ai-spacing-2);
+  }
+
+  .datatables--orders .datatables__user-name {
+    font-size: var(--ai-font-fixed-2xs);
+  }
+
+  /* Figma leaves this size unbound (raw 12px); normalised to the
+     token per the designer's 2026-09-17 ruling on unbound values. */
+  .datatables--orders .datatables__user-role {
+    font-size: var(--ai-font-fixed-xxs);
+    line-height: var(--ai-leading-none);
+  }
+
+  /* Row height relaxes — the 64px desktop minimum would leave the
+     two-column layout looking gappy. */
+  .datatables--orders .table tbody td {
+    height: auto;
+  }
+
+  .datatables--orders .datatables__col--mobile {
+    display: table-cell;
+  }
+
+  .datatables--orders .datatables__page-btn {
+    min-width: var(--ai-spacing-7);
+    height: var(--ai-spacing-7);
+  }
+
+  /* Short header labels ("Order" for "Order No"), per Figma. */
+  .datatables--orders .datatables__label--full {
+    display: none;
+  }
+
+  .datatables--orders .datatables__label--short {
+    display: inline;
+  }
+
+  /* Figma gives the mobile kebab cell px: --ai-spacing-0 — it sits
+     flush to the row edge. Without this the 12px inline padding the
+     rule above applies to every cell pushes the column past the card,
+     which is how it first rendered (measured 320px of table in a
+     273px container at 390px viewport).
+
+     `.table` is in the selector to out-specify the blanket cell rule
+     above: that one is (0,2,2) and `.datatables--orders td.<class>`
+     would only be (0,2,1) — equal class count, more elements, so the
+     blanket rule wins and the padding silently stays. */
+  .datatables--orders .table td.datatables__col--kebab,
+  .datatables--orders .table th.datatables__col--kebab {
+    padding-inline: var(--ai-spacing-0);
+  }
+}
+
+
+/* ── Adaptive columns (Type=Orders) ──────────────────────
+ * "Show as many columns as the container will allow" — and leave NO gap where
+ * another column would have fitted.
+ *
+ * This was a set of `@container` tier steps, which could not deliver that:
+ * CSS can only reveal columns at widths chosen in advance, so between two
+ * steps the table always carried dead space — measured at ~400px on a 780px
+ * table, enough for two more columns.
+ *
+ * So the fit is computed instead: ListingScreen measures each column's natural
+ * width and adds columns in order until the next one would not fit. CSS cannot
+ * do that — it has no way to ask "how wide would this column be?" — and this
+ * is the case CLAUDE.md §4a allows JS for, driven by a ResizeObserver on the
+ * table rather than a media query, because the CC sidebar changes this width
+ * with no window resize.
+ *
+ * Column ORDER is the priority order, which makes the Edit Columns drag handle
+ * the control for "show me this one first".
+ */
+
+/* Measured not to fit at the current width. */
+.datatables--orders .datatables__col--nofit {
+  display: none;
+}
+
+/* A column the user has switched OFF in Edit Columns stays off at every
+ * width. The tier decides whether there is ROOM for a column; this decides
+ * whether it is WANTED. Wanted-but-no-room still hides — which is why the
+ * Edit Columns panel marks those as unavailable rather than pretending.
+ *
+ * No `!important` needed: an @container block does not raise specificity,
+ * so this one-class-plus-one-class rule ties with every tier rule above and
+ * wins on source order. It must therefore stay LAST in this file. */
+.datatables--orders .datatables__col--off {
+  display: none;
+}
+
+/* During the measuring pass every column is shown so its natural width can be
+ * read. It happens inside a single task, so the browser never paints it.
+ *
+ * The TABLE must go to `max-content` for the same pass. Showing every column
+ * in a container-width table over-constrains it and each column collapses to
+ * MIN-content — which measures 74px for a column that renders at 125px, so
+ * the fit thinks two more columns will fit than actually do. At max-content
+ * each column reports the width it actually wants. */
+.datatables--orders .datatables__col--measuring {
+  display: table-cell;
+}
+
+.datatables--orders .table.datatables__table--measuring {
+  width: max-content;
+}
+
+/* ── Order No. cell: two lines ────────────────────────────
+ * The live query builds this cell as
+ * CAST(OrderCode AS VARCHAR) + '<br>' + ISNULL(ExternalCode,''), so the
+ * external code belongs under the order code rather than in a column of
+ * its own. */
+.datatables__order {
+  display: block;
+}
+
+.datatables__order-ext {
+  display: block;
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-regular);
+  color: var(--ai-text-contrast);
+}
+
+/* ── Sort + pagination state ─────────────────────────────
+ * The header's sort control is a chevron pair at rest and a single
+ * direction chevron once a column is the active sort, so the state reads
+ * without having to compare icons across headers.
+ */
+
+.datatables__sort--active {
+  color: var(--ai-text-primary);
+}
+
+.datatables__sort--active [data-lucide] {
+  color: var(--ai-icon-brand);
+}
+
+/* Elided page numbers. Not a button — there is nothing to click. */
+.datatables__page-gap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--ai-spacing-8);
+  color: var(--ai-text-contrast);
+}
+
+
+/* The account chip is a Button, and buttons do not wrap — so a long account
+ * name ("Pinnacle Technologies") set the column's MIN-content width and, with
+ * twenty columns in play, pushed the whole table past its container. Capping
+ * it lets the column compress; the full name stays in the title. */
+.datatables--orders .datatables__account-chip {
+  display: inline-block;
+  max-inline-size: var(--ai-size-2);     /* 160px */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+
+
+/* Customer was the only column that could grow, so ALL the slack pooled in
+ * it: hiding a column in Edit Columns stretched it to 372px and left a
+ * visible gap between the name and the next column.
+ *
+ * `max-inline-size` does not fix it — a max-width on a table cell is advisory
+ * at best under `table-layout: auto`, and the column stayed at 372.
+ *
+ * So Customer gets a PREFERRED width rather than being the fluid one (auto
+ * layout treats `width` as a preference, so it still shrinks when space is
+ * tight), and a trailing spacer column absorbs whatever is left over. Nothing
+ * real stretches, the columns stay closed up, and the row rules still run the
+ * full width of the table. */
+.datatables--orders .datatables__col--fluid {
+  width: var(--ai-size-4);                /* 240px preferred */
+}
+
+
+
+
+/* ── Cell truncation + rhythm (Type=Orders) ──────────────
+ * A long enumerated value ("Awaiting Payment Confirmation") must not set its
+ * column's width. Wrapping it was the first attempt and made rows uneven, so
+ * it truncates instead.
+ *
+ * The cap lives on an INNER span, not on the cell. `max-inline-size` on a td
+ * is advisory under `table-layout: auto` — the column still sizes to
+ * max-content and nothing truncates. A block inside the cell has a real
+ * max-content of its own, which is what actually caps the column.
+ */
+.datatables__truncate {
+  display: block;
+  max-inline-size: var(--ai-size-2);     /* 160px */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Tighter vertical rhythm than the shared Table default (leading-md), which
+ * left the rows airy once there were twenty columns to scan across. Scoped to
+ * Orders rather than changed in Table.css — the Seating Planner's tables use
+ * that component too and were not part of this ask. */
+.datatables--orders .table thead th {
+  line-height: var(--ai-leading-xs);     /* 16px */
+}
+
+.datatables--orders .table tbody td {
+  line-height: var(--ai-leading-sm);     /* 20px */
+}
