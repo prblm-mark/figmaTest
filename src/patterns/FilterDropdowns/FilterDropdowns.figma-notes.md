@@ -148,3 +148,21 @@ said at init — fine when a card is always rendered empty, wrong now that one
 can be rendered with a value already in it (restoring a saved view), because
 the placeholder became that value and clearing put it straight back. The
 attribute is the placeholder; the text is the state.
+
+
+## Type=More Filters is the one type that is not a fixed 320
+
+`.filter-dropdowns--more` sizes to its contents between a floor and a ceiling
+(designer, 2026-09-18: min `--ai-size-6`, max `--ai-size-10`). Figma draws it at
+the shared 320px, which suits the nine facets it shows; a real screen carries
+far more — Orders has 47 — and at 320 they wrap into a tall narrow column that
+is hard to scan.
+
+`max-content` on a wrapping flex row resolves to the width the chips would take
+on ONE line, so the rule reads as "as wide as it wants, within bounds".
+
+The ceiling is `min(var(--ai-size-10), 100cqi)`, not a flat 640. The base
+panel's `max-width: 100%` cannot cap it: the panel is absolutely positioned, so
+its containing block is the chip it hangs off, and 100% of that is a chip's
+width. Measured without the cap, a 640px panel on a 378px page sat at left
+-345 — off screen entirely.
