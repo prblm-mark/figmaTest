@@ -229,6 +229,13 @@
   white-space: normal;
 }
 
+/* Tighter rows, matching the listing's own table. The shared Table default is
+ * leading-md, which leaves a picker you are scanning for one item looking airy.
+ * Scoped here rather than changed in Table.css, which other surfaces use. */
+.filter-dropdowns--table .table tbody td {
+  line-height: var(--ai-leading-sm);     /* 20px */
+}
+
 /* The two short columns get a preferred width; Name takes what is left.
  *
  * Auto table layout shares width by content, and the long names took so much

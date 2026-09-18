@@ -315,8 +315,12 @@
          system rather than inventing a second kind of control. */
       var facets = (f.facets || []).map(function (sub) {
         var build = FILTER_PANELS[sub.type];
+        /* SOLID, not dashed. Figma 3039:5624 draws these as the Default
+           FilterItem, the same as the bar's own chips; dashed is the "not yet
+           added" idiom that belongs to Add Filters and the More Filters
+           facets. These are controls that are already here. */
         return '<div class="filter-dropdowns__facet" data-subfilter="' + esc(sub.name) + '">' +
-          '<div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="' + esc(sub.name) + '">' +
+          '<div class="filter-item filter-item--rounded" data-filter-name="' + esc(sub.name) + '">' +
             '<button type="button" class="filter-item__clear" aria-label="Clear ' + esc(sub.name) + '">' +
               '<i data-lucide="x" aria-hidden="true"></i></button>' +
             '<button type="button" class="filter-item__trigger" data-subfilter-trigger aria-expanded="false">' +

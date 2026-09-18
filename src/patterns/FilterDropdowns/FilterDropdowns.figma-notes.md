@@ -220,3 +220,16 @@ Two events, one click, and only the second looked wrong. The fix is at the
 component, not the consumer: the same trap was waiting in `wireSearch`,
 `wireSelect`, `wirePredictive`, `wireSelectAll` and `wireReset`, all of which
 used the same descendant query.
+
+
+## Multi Select Table: solid chips, tighter rows
+
+Its four sub-filter chips are the **Default** FilterItem — solid, like the
+bar's own chips. They had been built with `--empty`, which is the dashed "not
+yet added" idiom and belongs to Add Filters and the More Filters facets; these
+are controls that are already present. Figma 3039:5624 draws them solid, so
+this was a fidelity fix, not a departure (designer, 2026-09-18).
+
+Rows use `--ai-leading-sm`, matching the listing's own table. The shared Table
+default is `leading-md`, which leaves a picker you are scanning for one item
+looking airy. Scoped here rather than changed in Table.css.
