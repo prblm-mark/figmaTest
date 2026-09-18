@@ -910,13 +910,34 @@
      Column ORDER is the priority order, so the Edit Columns drag handle is
      also the control for "show me this one first". */
 
+  /* THE LISTING'S OWN datatable, never a picker's.
+     A Multi Select Table picker contains a `.datatables` of its own, and it
+     lives in the filter bar — which comes FIRST in the DOM. So
+     `root.querySelector('.datatables__body')` returned the picker's body the
+     moment a Catalogue Item chip existed, and the column fit measured against
+     it: 623px while the picker was open, 0 when it was closed. The listing
+     collapsed from nine columns to six with the slack pooling in whatever
+     column could take it.
+
+     Anchored on `[data-listing-body]`, which only the listing's table has. */
+  function listingTable(root) {
+    var tbody = root.querySelector('[data-listing-body]');
+    if (!tbody) return null;
+    return {
+      table: tbody.closest('table'),
+      body: tbody.closest('.datatables__body'),
+      datatable: tbody.closest('.datatables')
+    };
+  }
+
   /* Natural width of every column, read with all of them present. The table
      overflows during the pass, which is what makes each column report the
      width it actually wants rather than a share of the container. It all
      happens in one task, so the browser never paints it. */
   function measureColumns(root, config) {
     var heads = root.querySelectorAll('[data-listing-head] th');
-    var table = root.querySelector('.datatables .table');
+    var parts = listingTable(root);
+    var table = parts && parts.table;
     var shown = [];
 
     config.columns.forEach(function (col, i) {
@@ -943,7 +964,8 @@
   }
 
   function fitColumns(root, config) {
-    var body = root.querySelector('.datatables__body');
+    var parts = listingTable(root);
+    var body = parts && parts.body;
     var heads = root.querySelectorAll('[data-listing-head] th');
     if (!body || !heads.length) return;
 
@@ -998,7 +1020,7 @@
 
        Bounded by the number of columns, and it never removes the two that
        identify a row. */
-    var table = root.querySelector('.datatables .table');
+    var table = parts.table;
     var guard = config.columns.length;
     while (table && guard-- > 0 && table.getBoundingClientRect().width > available + 1) {
       var last = null;
@@ -1567,7 +1589,8 @@
        the CC sidebar resizes the table with no window resize at all — so the
        panel's notes are refreshed from a ResizeObserver on the table
        (CLAUDE.md §4a), never from matchMedia. */
-    var table = root.querySelector('.datatables__body');
+    var observed = listingTable(root);
+    var table = observed && observed.body;
     if (table && typeof ResizeObserver === 'function') {
       new ResizeObserver(function () {
         fitColumns(root, config);
