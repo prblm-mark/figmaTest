@@ -201,3 +201,22 @@ room that the codes broke mid-string — "Aff9882376" rendered as "Aff98823 /
 `overflow-wrap: anywhere` stays on the code column as a safety net: a Catalogue
 ID is free text and a longer one with no break opportunity would otherwise set
 the column's min-content width and bring the scroll back.
+
+
+## A card can contain a card, so no descendant queries
+
+Every wiring lookup goes through `own()` / `ownAll()`, which keep only elements
+whose nearest `[data-filter-dropdowns]` ancestor IS this root.
+
+The Multi Select Table's sub-filters are `.filter-dropdowns` cards in their own
+right, so the pattern can now contain itself — and
+`root.querySelector('[data-filter-dropdowns-apply]')` reached straight through
+one. The outer card bound its Apply to the FIRST apply button in its subtree,
+which was a sub-filter's. Clicking that fired an apply for the OUTER card as
+well: it committed an empty value to the chip and closed the whole picker,
+while the sub-filter appeared to work.
+
+Two events, one click, and only the second looked wrong. The fix is at the
+component, not the consumer: the same trap was waiting in `wireSearch`,
+`wireSelect`, `wirePredictive`, `wireSelectAll` and `wireReset`, all of which
+used the same descendant query.
