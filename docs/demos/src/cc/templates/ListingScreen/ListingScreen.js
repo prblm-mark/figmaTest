@@ -477,9 +477,46 @@
   /* A Text filter is a SEARCH — one typed fragment, matched loosely. Every
      other type is a PICK-LIST — the values came from the row data itself, so
      they must match it exactly, and several picks mean "any of these". */
+  var MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+
+  /* Two date formats have to meet here: the rows carry ISO (`2026-09-28`,
+     which is what a backend returns) and DatePicker writes what it shows
+     (`28 Sep 2026`). Parsing both keeps the comparison honest rather than
+     making one side pretend to be the other. */
+  function toDate(text) {
+    var iso = /^(\d{4})-(\d{2})-(\d{2})$/.exec(text);
+    if (iso) return new Date(+iso[1], +iso[2] - 1, +iso[3]);
+
+    var human = /^(\d{1,2})\s+([A-Za-z]{3})[a-z]*\s+(\d{4})$/.exec(text);
+    if (human) {
+      var month = MONTHS.indexOf(human[2].toLowerCase());
+      if (month !== -1) return new Date(+human[3], month, +human[1]);
+    }
+    return null;
+  }
+
+  /* Money and counts arrive with symbols and separators — "£1,204.95". */
+  function toNumber(text) {
+    var n = parseFloat(String(text).replace(/[^0-9.-]/g, ''));
+    return isNaN(n) ? null : n;
+  }
+
   function matches(row, filter, values) {
     if (!values.length) return true;
     var actual = valueAt(row, filter.field);
+
+    /* Either end may be blank — an open-ended range is still a range. */
+    if (filter.type === 'date-range' || filter.type === 'range') {
+      var read = filter.type === 'date-range' ? toDate : toNumber;
+      var here = read(actual);
+      if (here === null) return false;          // unparseable rows cannot match
+      var from = read(values[0] || '');
+      var to = read(values[1] || '');
+      if (from !== null && here < from) return false;
+      if (to !== null && here > to) return false;
+      return true;
+    }
+
     if (filter.type === 'text') {
       return actual.toLowerCase().indexOf(values[0].toLowerCase()) !== -1;
     }

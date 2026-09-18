@@ -99,3 +99,16 @@ Range single/dual are the same calendar with `mode=range` and 1 or 2 panels.
   (Figma shows day 11 bold on the soft band while neighbours are medium).
 - `new Date()` is used for "today" — runs in the browser, so real current date drives the highlight.
 - Dual-month range hides the redundant nav arrow on each panel (prev only on left, next only on right).
+
+
+## The calendar toggle is delegated
+
+`[data-datepicker-toggle]` is a Lucide `<i>`, and `lucide.createIcons()`
+REPLACES it with an `<svg>` — a listener bound to the original node dies with
+it. The toggle therefore listens on the picker's ROOT and matches the target,
+rather than binding to the icon found at init.
+
+This is silent when it goes wrong: the panel is built, the day cells respond,
+the field accepts a value — only the trigger does nothing. Found on the Listing
+Screen, where icons are re-created after the pickers are initialised (the chips
+and their pickers render late, so `createIcons` runs more than once).

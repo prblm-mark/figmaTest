@@ -37,6 +37,7 @@
   <link rel="stylesheet" href="../../../components/Datatables/Datatables.css">
   <link rel="stylesheet" href="../../../components/Checkbox/Checkbox.css">
   <link rel="stylesheet" href="../../../components/FilterItem/FilterItem.css">
+  <link rel="stylesheet" href="../../../components/DatePicker/DatePicker.css">
   <link rel="stylesheet" href="../../../components/FilterDropdownItem/FilterDropdownItem.css">
   <link rel="stylesheet" href="../../../components/FilterDropdownItemGroup/FilterDropdownItemGroup.css">
   <link rel="stylesheet" href="../../../patterns/FilterDropdowns/FilterDropdowns.css">
@@ -1329,6 +1330,9 @@
        handler. FilterDropdowns.js only CONSTRAINS them to single-select; it
        does not wire them, so without this the pickers open and nothing
        can be picked. -->
+  <!-- Date filters (Order Date, Payment Date, Delivery Date) need the real
+       DatePicker; without it the panel renders two inert readonly fields. -->
+  <script src="../../../components/DatePicker/DatePicker.js"></script>
   <script src="../../../components/FilterDropdownItem/FilterDropdownItem.js"></script>
   <script src="../../../patterns/FilterDropdowns/FilterDropdowns.js"></script>
 
@@ -1349,6 +1353,7 @@
       var scope = e.detail && e.detail.root ? e.detail.root : document;
       initFilterItems(scope);
       if (window.initFilterDropdownItems) window.initFilterDropdownItems(scope);
+      if (window.initDatePickers) window.initDatePickers(scope);
       if (window.initFilterDropdowns) window.initFilterDropdowns(scope);
       if (window.lucide) window.lucide.createIcons();
     });
