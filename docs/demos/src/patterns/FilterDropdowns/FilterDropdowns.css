@@ -155,10 +155,38 @@
 /* ── Multi Select Table (wide, Datatables body) ───────── */
 /* Figma is 671px wide; snapped to --ai-size-10 (640px) per design direction. */
 .filter-dropdowns--table {
-  width: var(--ai-size-10);              /* 640px */
+  /* 640 where there is room, the container's width where there is not. The
+     same cap the More Filters card uses: `max-width: 100%` cannot do it,
+     because a picker is absolutely positioned and 100% resolves against the
+     chip it hangs off. `cqi` is the nearest container's inline size, which is
+     the space the card really has. */
+  width: min(var(--ai-size-10), 100cqi); /* 640px */
   padding: 0;                             /* each section owns its padding */
   gap: 0;
   overflow: hidden;                       /* clip the table to the rounded corners */
+  /* So the table inside can respond to the CARD's width rather than the
+     page's — the card is capped by its container, and what fits in it is a
+     different question from what fits on screen. */
+  container-type: inline-size;
+  container-name: fd-table;
+}
+
+/* Columns drop as the card narrows, the same principle as the listing's own
+ * table: keep what identifies a row. Name is never dropped — without it the
+ * picker is a list of codes.
+ *
+ * Measured against the real columns: Name ~180, Catalogue ID ~150, Zone ~110,
+ * plus the checkbox and link cells at ~48 each. */
+@container fd-table (max-width: 520px) {
+  .filter-dropdowns--table .datatables__col--zone {
+    display: none;
+  }
+}
+
+@container fd-table (max-width: 380px) {
+  .filter-dropdowns--table .datatables__col--code {
+    display: none;
+  }
 }
 
 /* Label header used by the table + modal types */
@@ -271,4 +299,29 @@
 }
 .filter-dropdowns__menu[hidden] {
   display: none;
+}
+
+/* ── A picker's own sub-filters ──────────────────────────
+ * The Multi Select Table's facet chips open pickers that narrow ITS table.
+ * Each chip anchors its own panel, the same arrangement the FilterBar uses for
+ * a chip and its picker — so the card is consistent with the system rather
+ * than introducing a second kind of control.
+ */
+.filter-dropdowns__facet {
+  position: relative;
+  display: inline-flex;
+}
+
+.filter-dropdowns__subpanel {
+  position: absolute;
+  inset-block-start: calc(100% + var(--ai-spacing-2));
+  inset-inline-start: 0;
+  z-index: 20;   /* above the table body it overlaps */
+}
+
+/* Nothing matched the sub-filters. */
+.filter-dropdowns__empty {
+  padding: var(--ai-spacing-7) var(--ai-spacing-4);
+  text-align: center;
+  color: var(--ai-text-contrast);
 }

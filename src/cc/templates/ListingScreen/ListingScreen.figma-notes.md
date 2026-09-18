@@ -807,3 +807,65 @@ have, and would have come back empty.
 
 Measured: two rows selected gives "Annual Membership, Quarterly Pass" and 47
 matching orders; select-all ticks all six and returns the full 140.
+
+
+## Catalogue Item picker: real data, working sub-filters, responsive
+
+### Real data
+
+Name and Catalogue ID are the REAL CatalogueItem table from Affino's own
+affino.com instance — all 42 rows, supplied 2026-09-18. Affino's own store
+rather than a client's, deliberately, since this is heading into a prototype.
+
+**Catalogue ID is operator-entered free text**, not a composed string. The real
+values are `CRZAF5001`, `1`, `444`, `Cat ID`, `glass-3`, `1243264364326` —
+someone typed "Cat ID" into the field. Figma's `affino-ai-123-0-4` is an
+invented shape and using it would have misrepresented the column. Duplicate
+names are real and normal too: Glass v2…v6, "Affino Social" twice, one course
+under both Zen-1 and Zen-2 — which is precisely why this picker is a table and
+not a list of names.
+
+The orders' `catalogueItem` values are drawn from this same catalogue, so
+picking an item actually matches orders. They were mock names before, and the
+filter found nothing.
+
+**Zone is NOT real per row** and is flagged as such in the config. The picker
+derives it through a five-table chain (item → SKC → article or media item →
+section → channel → zone) that cannot be run from here; these are real zone
+NAMES spread across the rows so the sub-filter has something to bite on.
+Group and payment methods are invented — the picker matches them by name but no
+membership data was available.
+
+### Sub-filters
+
+All four are **free text**, each a substring match. Two corrections this
+carried, both of which I had guessed wrong:
+
+- **"Name" is a text box, not an A–Z strip.** The underlying param is called
+  `Letter`, which is only a variable name.
+- **"Payment Method" here is a text box**, matching the method's name. It is
+  NOT the Payment Method multi-select modal used from the Orders bar — a
+  different lookup entirely. Same words, two different controls.
+
+Each chip opens its own picker, the same gesture as a chip on the bar.
+**A chosen row survives the sub-filters**: filtering after choosing must not
+hide what you chose, which is what the live picker's second query is for.
+
+Only **Name and Zone** carry a sort control; Catalogue ID is displayed but is
+not a sort key.
+
+### One thing NOT built, deliberately
+
+**The live picker has no paging.** It runs 20 rows with an N+1 probe for "there
+is more" — no offset, no cursor. Narrowing the sub-filters is the only
+navigation there is. Our picker scrolls the whole 42 instead. Adding a pager
+would show something the engine cannot currently do, so it is a design decision
+rather than a fidelity detail — raised with Mark rather than assumed.
+
+### Responsive
+
+The card is `min(var(--ai-size-10), 100cqi)` and establishes its own container,
+so the table responds to the CARD's width rather than the page's — what fits in
+the card is a different question from what fits on screen. Zone drops below
+520px, Catalogue ID below 380px; Name never drops, or the picker is a list of
+codes. Measured inside the bar at 1700 / 1100 / 820 / 620px pages.
