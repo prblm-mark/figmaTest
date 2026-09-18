@@ -44,7 +44,10 @@
   function colClass(col, extra) {
     var out = [];
     if (col.hug) out.push('datatables__col--hug');
-    if (!col.primary) out.push('datatables__col--secondary');
+    /* Progressive reveal: tier 1 is always present, higher tiers appear as
+       the CONTAINER widens. The class goes on both th and td so one
+       container query can hide the whole column. */
+    out.push('datatables__col--t' + (col.tier || 1));
     if (col.mobileOnly) out.push('datatables__col--mobile');
     if (STRUCTURAL[col.type]) out.push('datatables__col--' + col.type);
     if (extra) out.push(extra);
@@ -68,6 +71,16 @@
           '<span class="datatables__user-name">' + esc(u.name) + '</span>' +
           (u.role ? '<span class="datatables__user-role">' + esc(u.role) + '</span>' : '') +
         '</div></div>';
+    },
+
+    /* Order No. is two lines on the live screen —
+       CAST(OrderCode AS VARCHAR) + '<br>' + ISNULL(ExternalCode,'') — so the
+       external code sits beneath the order code when there is one. */
+    order: function (row) {
+      return '<span class="datatables__order">' + esc(row.orderNo) + '</span>' +
+        (row.externalCode
+          ? '<span class="datatables__order-ext">' + esc(row.externalCode) + '</span>'
+          : '');
     },
 
     /* Account chip — tertiary button plus the contextual border. */
@@ -189,6 +202,73 @@
       '</div>';
     },
 
+    /* Type=Date Range (3039:5635) — operator + a DatePicker pair. The live
+       screen renders one shared component per date field, each taking
+       <Name>RangeFrom / <Name>RangeTo. */
+    'date-range': function (f, values) {
+      var v = values || [];
+      function picker(which, placeholder, value) {
+        return '<div class="datepicker" data-datepicker data-mode="single">' +
+          '<div class="input"><div class="input__wrap">' +
+            '<input class="input__control" type="text" readonly placeholder="' + esc(placeholder) + '"' +
+            ' value="' + esc(value || '') + '" data-datepicker-input data-range="' + which + '"' +
+            ' aria-label="' + esc(placeholder) + ' date">' +
+            '<i data-lucide="calendar" class="input__icon" data-datepicker-toggle aria-hidden="true"></i>' +
+          '</div></div></div>';
+      }
+      return '<div class="filter-dropdowns" data-filter-dropdowns>' +
+        '<div class="input"><label class="input__label">' + esc(f.label) + '</label>' +
+          '<div class="input__wrap">' +
+            '<input class="input__control" type="text" readonly value="Between" aria-label="Date operator">' +
+            '<i data-lucide="chevron-down" class="input__icon" aria-hidden="true"></i>' +
+          '</div></div>' +
+        '<div class="filter-dropdowns__date-row">' +
+          picker('from', 'Start', v[0]) +
+          '<span class="filter-dropdowns__date-sep">and</span>' +
+          picker('to', 'End', v[1]) +
+        '</div>' +
+        '<button type="button" class="btn btn--primary filter-dropdowns__apply" data-filter-dropdowns-apply>Apply</button>' +
+      '</div>';
+    },
+
+    /* A numeric between — the live Order No. and Price range pairs
+       (OrderFrom/OrderTo, PriceFrom/PriceTo). Same shape as Date Range
+       without the calendars. */
+    range: function (f, values) {
+      var v = values || [];
+      function field(which, placeholder, value) {
+        return '<div class="input"><div class="input__wrap">' +
+          '<input class="input__control" type="text" placeholder="' + esc(placeholder) + '"' +
+          ' value="' + esc(value || '') + '" data-range="' + which + '"' +
+          ' aria-label="' + esc(f.name) + ' ' + esc(placeholder) + '"></div></div>';
+      }
+      return '<div class="filter-dropdowns" data-filter-dropdowns>' +
+        '<div class="input"><label class="input__label">' + esc(f.label) + '</label></div>' +
+        '<div class="filter-dropdowns__date-row">' +
+          field('from', f.fromPlaceholder || 'From', v[0]) +
+          '<span class="filter-dropdowns__date-sep">and</span>' +
+          field('to', f.toPlaceholder || 'To', v[1]) +
+        '</div>' +
+        '<button type="button" class="btn btn--primary filter-dropdowns__apply" data-filter-dropdowns-apply>Apply</button>' +
+      '</div>';
+    },
+
+    /* Type=Checkbox (3039:5626) — a titled single checkbox. The live
+       screen's YN flags (ExcludeTax, FirstTimeBuyer, ZeroValueOrder …). */
+    checkbox: function (f, values) {
+      var on = (values || []).length > 0;
+      return '<div class="filter-dropdowns" data-filter-dropdowns>' +
+        '<div class="filter-dropdowns__checkbox-body">' +
+          '<p class="filter-dropdowns__title">' + esc(f.label) + '</p>' +
+          '<label class="checkbox"><input type="checkbox" class="checkbox__input"' + (on ? ' checked' : '') + '>' +
+            '<span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>' +
+            '<span class="checkbox__label"><span class="checkbox__label-text">' + esc(f.checkboxLabel) + '</span></span>' +
+          '</label>' +
+        '</div>' +
+        '<button type="button" class="btn btn--primary filter-dropdowns__apply" data-filter-dropdowns-apply>Apply</button>' +
+      '</div>';
+    },
+
     /* Type=More Filters (3039:5637) — the filters NOT on the bar, as empty
        chips. No Apply: picking one adds it to the bar. */
     'more-filters': function (f, values) {
@@ -263,8 +343,10 @@
           '<span class="datatables__label--short">' + esc(col.shortLabel) + '</span>'
         : esc(col.label);
 
-      var inner = col.sortable
-        ? '<button type="button" class="datatables__sort">' + label +
+      /* `col.sort` is the live screen's `hs` token, and only the seven
+         columns it actually sorts by carry one. */
+      var inner = col.sort
+        ? '<button type="button" class="datatables__sort" data-sort="' + esc(col.sort) + '">' + label +
           '<i data-lucide="' + ICON_SORT + '" aria-hidden="true"></i></button>'
         : label;
       return '<th scope="col"' + colClass(col) + '>' + inner + '</th>';
@@ -282,7 +364,7 @@
        * Built from the same `columns` array, so it can never list a
        * field the table does not have. */
       var hidden = columns.filter(function (col) {
-        return !col.primary && col.label;
+        return (col.tier || 1) > 1 && col.label;
       });
       var detail = hidden.map(function (col) {
         var fn = CELL[col.type] || CELL.text;

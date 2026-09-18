@@ -679,13 +679,6 @@
     height: auto;
   }
 
-  /* Orders keeps ORDER + CUSTOMER on mobile; the other four columns
-     move into the kebab detail row, which the renderer builds from this
-     same column list so the two can never disagree. */
-  .datatables--orders .datatables__col--secondary {
-    display: none;
-  }
-
   .datatables--orders .datatables__col--mobile {
     display: table-cell;
   }
@@ -718,4 +711,88 @@
   .datatables--orders .table th.datatables__col--kebab {
     padding-inline: var(--ai-spacing-0);
   }
+}
+
+
+/* ── Progressive columns (Type=Orders) ────────────────────
+ * "Show as many columns as the container will allow" — Mark, 2026-09-18.
+ * The live Orders grid has twenty-odd columns; rather than pick a fixed
+ * subset per breakpoint, every column carries a TIER and the tiers reveal
+ * as the table gets wider. Tier 1 is the identity of a row and is always
+ * present; whatever is still hidden stays reachable in the kebab detail
+ * row, which the renderer builds from the same column list.
+ *
+ * These are CONTAINER queries against the datatable's own inline size —
+ * `.datatables` already establishes a container, and the table's width is
+ * the thing that decides how many columns fit. A viewport query would be
+ * wrong twice over: the CC sidebar changes this width with no window
+ * resize (CLAUDE.md §4a), and the same table can appear in a narrow panel
+ * on a wide screen.
+ *
+ * The steps are ~180px, one column-pair's worth, so each one earns its
+ * reveal rather than cramming two columns into the space for one.
+ */
+
+.datatables--orders .datatables__col--t2,
+.datatables--orders .datatables__col--t3,
+.datatables--orders .datatables__col--t4,
+.datatables--orders .datatables__col--t5,
+.datatables--orders .datatables__col--t6,
+.datatables--orders .datatables__col--t7,
+.datatables--orders .datatables__col--t8,
+.datatables--orders .datatables__col--t9 {
+  display: none;
+}
+
+@container (min-width: 560px) {
+  .datatables--orders .datatables__col--t2 { display: table-cell; }
+}
+@container (min-width: 720px) {
+  .datatables--orders .datatables__col--t3 { display: table-cell; }
+}
+@container (min-width: 900px) {
+  .datatables--orders .datatables__col--t4 { display: table-cell; }
+}
+@container (min-width: 1080px) {
+  .datatables--orders .datatables__col--t5 { display: table-cell; }
+}
+@container (min-width: 1260px) {
+  .datatables--orders .datatables__col--t6 { display: table-cell; }
+}
+@container (min-width: 1440px) {
+  .datatables--orders .datatables__col--t7 { display: table-cell; }
+}
+@container (min-width: 1620px) {
+  .datatables--orders .datatables__col--t8 { display: table-cell; }
+}
+@container (min-width: 1800px) {
+  .datatables--orders .datatables__col--t9 { display: table-cell; }
+}
+
+/* A column the user has switched OFF in Edit Columns stays off at every
+ * width. The tier decides whether there is ROOM for a column; this decides
+ * whether it is WANTED. Wanted-but-no-room still hides — which is why the
+ * Edit Columns panel marks those as unavailable rather than pretending.
+ *
+ * No `!important` needed: an @container block does not raise specificity,
+ * so this one-class-plus-one-class rule ties with every tier rule above and
+ * wins on source order. It must therefore stay LAST in this file. */
+.datatables--orders .datatables__col--off {
+  display: none;
+}
+
+/* ── Order No. cell: two lines ────────────────────────────
+ * The live query builds this cell as
+ * CAST(OrderCode AS VARCHAR) + '<br>' + ISNULL(ExternalCode,''), so the
+ * external code belongs under the order code rather than in a column of
+ * its own. */
+.datatables__order {
+  display: block;
+}
+
+.datatables__order-ext {
+  display: block;
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-regular);
+  color: var(--ai-text-contrast);
 }
