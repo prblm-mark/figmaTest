@@ -665,34 +665,50 @@
           '<input type="checkbox" class="checkbox__input" data-column="' + esc(col.key) + '"' +
             (off ? '' : ' checked') + (locked ? ' disabled' : '') + '>' +
           '<span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>' +
-          '<span class="checkbox__label"><span class="checkbox__label-text">' + esc(col.label) + '</span>' +
-            '<span class="cc-listing__column-note" data-column-note></span>' +
-          '</span></label>' +
+          '<span class="checkbox__label"><span class="checkbox__label-text">' + esc(col.label) + '</span></span>' +
+        '</label>' +
       '</div>';
     }).join('');
 
     if (window.lucide && typeof window.lucide.createIcons === 'function') {
       window.lucide.createIcons();
     }
-    annotateColumnRoom(root, config);
+    placeRoomHeading(root, config);
   }
 
-  /* Say which ticked columns have no room at the current width. */
-  function annotateColumnRoom(root, config) {
+  /* Divide the list where the columns stop fitting.
+
+     The fit fills in order, so everything with no room is the TAIL of the
+     list — one heading at the cut says it once, where a note on every row said
+     it up to sixteen times. It is the same `dropdown__label` as the "Columns"
+     heading above it.
+
+     The heading is PLACED rather than the list regrouped, so the rows keep
+     their order and dragging across the heading means what it looks like it
+     means: above the line is shown, below it is not. */
+  function placeRoomHeading(root, config) {
     var host = document.querySelector('[data-listing-columns]');
     if (!host) return;
-    var heads = root.querySelectorAll('[data-listing-head] th');
 
-    host.querySelectorAll('[data-column]').forEach(function (input, i) {
-      void i;
-      var key = input.getAttribute('data-column');
-      var index = config.columns.findIndex(function (c) { return c.key === key; });
-      var th = heads[index];
-      var note = input.closest('.cc-listing__column').querySelector('[data-column-note]');
-      if (!th || !note) return;
-      var hiddenByTier = th.classList.contains('datatables__col--nofit');
-      note.textContent = (input.checked && hiddenByTier) ? 'No room at this width' : '';
+    var existing = host.querySelector('[data-column-heading]');
+    if (existing) existing.remove();
+
+    var heads = root.querySelectorAll('[data-listing-head] th');
+    var firstOut = null;
+    config.columns.forEach(function (col, i) {
+      if (firstOut || !col.label) return;
+      if (heads[i] && heads[i].classList.contains('datatables__col--nofit')) firstOut = col.key;
     });
+    if (!firstOut) return;
+
+    var row = host.querySelector('[data-column-row="' + firstOut + '"]');
+    if (!row) return;
+
+    var heading = document.createElement('p');
+    heading.className = 'dropdown__label cc-listing__column-heading';
+    heading.setAttribute('data-column-heading', '');
+    heading.textContent = 'No room at this width';
+    row.parentNode.insertBefore(heading, row);
   }
 
   /* Move a column in front of / behind another.
@@ -1147,7 +1163,7 @@
       else if (at === -1) { config.hiddenColumns.push(key); }
       applyColumnVisibility(root, config);
       fitColumns(root, config);
-      annotateColumnRoom(root, config);
+      placeRoomHeading(root, config);
       announceColumns();
     });
 
@@ -1159,7 +1175,7 @@
     if (table && typeof ResizeObserver === 'function') {
       new ResizeObserver(function () {
         fitColumns(root, config);
-        annotateColumnRoom(root, config);
+        placeRoomHeading(root, config);
       }).observe(table);
     }
 

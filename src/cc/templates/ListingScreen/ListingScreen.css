@@ -213,13 +213,11 @@
   opacity: var(--ai-opacity-disabled, 0.5);
 }
 
-/* A column can be wanted and still have no room at this width. Saying so
- * beats showing a tick against something the user cannot see. */
-.cc-listing__column-note:not(:empty) {
-  display: block;
-  font-size: var(--ai-font-fixed-xxs);
-  line-height: var(--ai-leading-sm);
-  color: var(--ai-text-contrast);
+/* Where the columns stop fitting. The fit fills in order, so everything below
+ * this heading is the tail that has no room — said once here rather than on
+ * every row. */
+.cc-listing__column-heading {
+  margin-block: var(--ai-spacing-3) var(--ai-spacing-1);
 }
 
 /* ── Rows-per-page menu ──────────────────────────────────
