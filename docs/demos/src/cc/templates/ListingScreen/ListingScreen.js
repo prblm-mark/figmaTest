@@ -330,9 +330,13 @@
     html += chip(
       {
         name: 'Add Filters', type: 'more-filters',
+        /* Alphabetical. `config.moreFilters` keeps its own order — it is the
+           catalogue, and the added set is looked up by name, so sorting a copy
+           for display changes nothing but the reading order. Nearly fifty
+           facets is a list you scan for a name, not one you read. */
         options: (config.moreFilters || []).map(function (o) {
           return { name: o.name, added: added.indexOf(o.name) !== -1 };
-        })
+        }).sort(function (a, b) { return a.name.localeCompare(b.name); })
       },
       ' filter-item--empty filter-bar__add',
       ' filter-bar__chip--add'

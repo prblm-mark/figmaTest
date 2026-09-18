@@ -767,3 +767,17 @@ at all, whichever way it is being toggled.
 
 Verified across four consecutive toggles: every removed state is identical to
 the initial one, class, background and border.
+
+
+## More Filters is listed alphabetically
+
+Forty-eight facets is a list you scan for a name, not one you read, so the
+panel sorts them (designer, 2026-09-18).
+
+A COPY is sorted for display. `config.moreFilters` keeps its own order, which
+is provenance — the order the live screen declares its filters — and the added
+set is looked up by name, so the sort changes nothing but the reading order.
+
+Side effect worth knowing: the overflow default (Order Owner, the sixth filter
+the live Simple Search shows) no longer heads the panel. It sits under O with
+everything else.
