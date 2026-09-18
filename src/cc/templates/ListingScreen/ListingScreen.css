@@ -183,3 +183,15 @@
   line-height: var(--ai-leading-sm);
   color: var(--ai-text-contrast);
 }
+
+/* ── Rows-per-page menu ──────────────────────────────────
+ * The "Show 20" control is the shared Dropdown; it only needs to hug its
+ * short numeric options rather than take Dropdown's 240px default. */
+.cc-listing__per-page {
+  position: relative;
+}
+
+.dropdown__panel--per-page {
+  min-width: var(--ai-size-1);
+  padding: var(--ai-spacing-3);
+}

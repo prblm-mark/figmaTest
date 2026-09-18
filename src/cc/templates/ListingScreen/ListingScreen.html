@@ -592,10 +592,16 @@
           <div class="datatables__toolbar">
             <span class="datatables__meta">
               <span class="datatables__meta-label">Show</span>
-              <button type="button" class="datatables__select" aria-label="Rows per page">
-                <span>10</span>
-                <i data-lucide="chevron-down" aria-hidden="true"></i>
-              </button>
+              <div class="dropdown cc-listing__per-page" data-dropdown>
+                <button type="button" class="datatables__select dropdown__trigger"
+                        aria-label="Rows per page" aria-haspopup="menu" aria-expanded="false">
+                  <span data-listing-per-page>20</span>
+                  <i data-lucide="chevron-down" aria-hidden="true"></i>
+                </button>
+                <div class="dropdown__panel dropdown__panel--per-page" role="menu" aria-label="Rows per page">
+                  <ul class="dropdown__list" data-listing-per-page-options></ul>
+                </div>
+              </div>
               <span>of <strong data-listing-total>296</strong></span>
             </span>
             <!-- Edit Columns is a NEW capability, not a reproduction: the live

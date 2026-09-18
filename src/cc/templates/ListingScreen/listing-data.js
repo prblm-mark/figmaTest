@@ -44,7 +44,18 @@
  * key       row property
  * type      how the cell renders (see ListingScreen.js CELL renderers)
  * label     header text, as OrderProcessingDef.cfm labels it
- * hug       shrink-to-fit column
+ * snug      shrink-to-fit, but the text may WRAP. For the enumerated
+ *           columns — Order Status, Payment Method and so on. `hug` also
+ *           sets `white-space: nowrap`, and a single long value
+ *           ("Awaiting Payment Confirmation") then forces the whole table
+ *           wider than its container: it overflowed to the right AND left
+ *           Customer at its min-content width, which is what "Mari…" was.
+ * hug       shrink-to-fit column. Nearly every column is one: they hold a
+ *           code, a short enum or a money value, and `width: 1%` makes each
+ *           take only what it needs. CUSTOMER is deliberately left fluid so
+ *           it absorbs the slack — with eight fluid columns it was getting an
+ *           eighth of the table and truncating to "Mari…" while Order Status
+ *           and Account sat in space they did not need.
  * sort      the live screen's `hs` token — PRESENT ONLY ON THE SEVEN
  *           COLUMNS IT ACTUALLY SORTS BY. The whitelist is explicit in
  *           OrderProcessings.cfm and an unrecognised `hs` silently falls
@@ -60,19 +71,19 @@ var LISTING_ORDERS_COLUMNS = [
   { key: 'orderNo',       type: 'order',  label: 'Order No.',       hug: true, tier: 1, sort: 'OrderNo.', cellClass: 'datatables__order-no', shortLabel: 'Order' },
   { key: 'customer',      type: 'user',   label: 'Customer',                   tier: 1, sort: 'Customer' },
   { key: 'orderTotal',    type: 'text',   label: 'Order Total',     hug: true, tier: 2, sort: 'Value' },
-  { key: 'orderStatus',   type: 'text',   label: 'Order Status',               tier: 2, sort: 'Status' },
-  { key: 'account',       type: 'chip',   label: 'Account',                    tier: 3, sort: 'Account' },
+  { key: 'orderStatus',   type: 'text',   label: 'Order Status',    snug: true, tier: 2, sort: 'Status' },
+  { key: 'account',       type: 'chip',   label: 'Account',         snug: true, tier: 3, sort: 'Account' },
   { key: 'created',       type: 'text',   label: 'Created',         hug: true, tier: 3, sort: 'Date' },
-  { key: 'paymentStatus', type: 'text',   label: 'Payment Status',             tier: 4, sort: 'PaymentStatus' },
+  { key: 'paymentStatus', type: 'text',   label: 'Payment Status',  snug: true, tier: 4, sort: 'PaymentStatus' },
   { key: 'qty',           type: 'text',   label: 'Qty',             hug: true, tier: 4 },
   { key: 'accountCode',   type: 'text',   label: 'Account Code',    hug: true, tier: 5 },
-  { key: 'paymentMethod', type: 'text',   label: 'Payment Method',             tier: 5 },
-  { key: 'orderType',     type: 'text',   label: 'Order Type',                 tier: 6 },
+  { key: 'paymentMethod', type: 'text',   label: 'Payment Method',  snug: true, tier: 5 },
+  { key: 'orderType',     type: 'text',   label: 'Order Type',      snug: true, tier: 6 },
   { key: 'subtotal',      type: 'text',   label: 'Subtotal',        hug: true, tier: 6 },
   { key: 'tax',           type: 'text',   label: 'Tax',             hug: true, tier: 7 },
-  { key: 'catalogueItem', type: 'text',   label: 'Catalogue Item',             tier: 7 },
+  { key: 'catalogueItem', type: 'text',   label: 'Catalogue Item', snug: true,             tier: 7 },
   { key: 'userCode',      type: 'text',   label: 'User Code',       hug: true, tier: 8 },
-  { key: 'endUser',       type: 'text',   label: 'End User',                   tier: 8 },
+  { key: 'endUser',       type: 'text',   label: 'End User',        snug: true, tier: 8 },
   { key: 'proformaId',    type: 'text',   label: 'Pro Forma ID',    hug: true, tier: 9 },
   { key: 'coupon',        type: 'text',   label: 'Coupon',          hug: true, tier: 9 },
   { key: 'discount',      type: 'text',   label: 'Discount',        hug: true, tier: 9 },
@@ -217,7 +228,7 @@ var LISTING_ORDERS_MORE_FILTERS = [
  * is a two-line cell on the live screen: the order code with the external
  * code beneath it, which is why `externalCode` is a row field rather than
  * a column of its own. */
-var LISTING_ORDERS_ROWS = [
+var ORDER_SEED_ROWS = [
   { orderNo: '100412', externalCode: 'EXT-0412', proformaId: 'PF-0412', customer: { name: 'Maria Mellor', role: 'Digital Project Manager', avatar: 'https://picsum.photos/seed/female1/96' }, endUser: 'Sarah Kent',
     userCode: 'USR-1201', account: 'Jacobs Media', accountCode: '1201', catalogueItem: 'Annual Membership', qty: '1',
     subtotal: '£12.00', tax: '£3.00', orderTotal: '£15.00', orderStatus: 'Paid Full', orderType: 'New Business',
@@ -270,6 +281,58 @@ var LISTING_ORDERS_ROWS = [
     created: '2026-09-10', paymentDate: '', coupon: 'No', discount: 'No', invoicesSent: '0' }
 ];
 
+/* Expanded so paging, sorting and filtering are all demonstrable — ten rows
+ * cannot show a second page. Deterministic: same rows every load, so a
+ * screenshot or a test is reproducible.
+ *
+ * Only the fields that should VARY do: order number, dates, and the
+ * enumerated values that filters target. Names, accounts and avatars rotate
+ * through the seed so the data still looks like a customer base rather than
+ * noise. */
+var LISTING_ORDERS_ROWS = (function (seed) {
+  var rows = [];
+  var PASSES = 14;   // 14 x 10 = 140 orders, seven pages at the default 20
+
+  for (var pass = 0; pass < PASSES; pass++) {
+    for (var i = 0; i < seed.length; i++) {
+      var base = seed[i];
+      var n = pass * seed.length + i;
+      var day = 28 - (n % 28);
+      var month = 9 - Math.floor(n / 28) % 3;
+      var date = '2026-0' + month + '-' + (day < 10 ? '0' + day : day);
+
+      var row = {};
+      for (var k in base) { if (Object.prototype.hasOwnProperty.call(base, k)) row[k] = base[k]; }
+
+      row.orderNo = String(100412 + n);
+      row.externalCode = base.externalCode ? 'EXT-' + row.orderNo.slice(-4) : '';
+      row.proformaId = base.proformaId ? 'PF-' + row.orderNo.slice(-4) : '';
+      row.created = date;
+      row.paymentDate = base.paymentDate ? date : '';
+      row.orderStatus = ORDER_STATUSES[n % ORDER_STATUSES.length];
+      row.paymentStatus = PAYMENT_STATUSES[n % PAYMENT_STATUSES.length];
+      row.orderType = ORDER_TYPES[n % ORDER_TYPES.length];
+      row.subOrderType = SUB_ORDER_TYPES[n % SUB_ORDER_TYPES.length];
+      row.paymentMethod = LOOKUP.paymentMethod[n % LOOKUP.paymentMethod.length];
+      row.catalogueItem = LOOKUP.catalogueItem[n % LOOKUP.catalogueItem.length];
+      row.currency = LOOKUP.currency[n % LOOKUP.currency.length];
+      row.store = LOOKUP.store[n % LOOKUP.store.length];
+      row.qty = String((n % 4) + 1);
+
+      /* Spread the values so sorting by Order Total is visibly doing
+         something, and keep subtotal/tax consistent with it. */
+      var total = 9.95 + ((n * 37) % 940);
+      row.orderTotal = '\u00a3' + total.toFixed(2);
+      row.subtotal = '\u00a3' + (total * 0.8).toFixed(2);
+      row.tax = '\u00a3' + (total * 0.2).toFixed(2);
+
+      rows.push(row);
+    }
+  }
+  return rows;
+}(ORDER_SEED_ROWS));
+
+
 /* One screen = one config. Adding a listing screen means adding an
  * entry here, not touching the template. */
 var LISTING_SCREENS = {
@@ -280,11 +343,13 @@ var LISTING_SCREENS = {
     defaultFilters: LISTING_ORDERS_FILTERS,
     moreFilters: LISTING_ORDERS_MORE_FILTERS,
     rows: LISTING_ORDERS_ROWS,
-    /* The live default is 20 per page, not 10, and the query is capped at
-       500 rows — ListingPerPage pages within that cap. */
+    /* 20 is the live default and the page sizes are the live ones. The live
+       query's SELECT TOP 500 cap is deliberately NOT reproduced — Mark,
+       2026-09-18: the data is what we replicate, the display follows best
+       practice, and paging that silently stops at 500 is not that. Here it
+       pages the whole result set. */
     perPage: 20,
     perPageOptions: [20, 50, 100, 200],
-    sort: { by: 'Date', dir: 'desc' },
-    page: { from: 1, to: 10, total: 296, current: 1, pages: 3 }
+    sort: { by: 'Date', dir: 'desc' }
   }
 };

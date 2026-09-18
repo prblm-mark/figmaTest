@@ -432,3 +432,62 @@ Order No. and Customer are locked in the picker — without them the table is
 a list of anonymous rows.
 
 TODO(backend:Listing): column choices are in memory, like the saved views.
+
+
+## Sort, paging and column widths (pass 4)
+
+Display follows best practice, not the live screen — Mark, 2026-09-18: "we
+dont need to follow what the old one does in terms of display. its just about
+the data." So the live `SELECT TOP 500` cap is deliberately NOT reproduced;
+paging here covers the whole result set.
+
+**Order of operations: filter → sort → page.** Paging first would sort only
+the visible slice; sorting first would page a list the filter is about to
+change. Any of the three resetting to page 1 where the old page number stops
+meaning anything (a new filter, a new search, a re-sort) — except rows-per-page,
+which recomputes the page so the first visible row stays on screen: 20 → 50
+while reading page 4 should widen the view around where you were.
+
+**Sorting** is by VALUE, not rendered text — "£1,000.00" sorts before "£9.95"
+as a string. A value counts as numeric only if the whole of it is one, so
+"£9.95" and "100412" are numbers while "EXT-0412" and "Paid Full" are not. A
+second click on the same column reverses; a first click on a new one starts
+descending, which is what a date or a value is usually wanted by.
+
+**Pagination is windowed** — first, last, current ± 1, gaps elided, constant
+width so the control does not resize as you page: `1 2 3 4 … 14`,
+`1 … 6 7 8 … 14`, `1 … 11 12 13 14`.
+
+**140 mock rows**, generated deterministically from the ten seed rows, so
+paging and sorting are demonstrable and a screenshot stays reproducible.
+
+### The Customer column squeeze — what it actually was
+
+Not a share-of-slack problem. `Table.css` sets `white-space: nowrap` on every
+`th` and `td` so a wide table scrolls rather than squashes. Right for a code
+or a date; wrong for "Awaiting Payment Confirmation", which on its own made
+the table 1281px inside a 1055px container. Once the table overflows there is
+no slack at all, and every fluid column collapses to min-content — Customer
+rendering as "Mari…" was that, not a width share.
+
+Three changes, in the order they mattered:
+
+1. **`--snug`**: shrink-to-fit that unsets the nowrap, for the enumerated
+   columns. Setting `width: 1%` alone did nothing, because the nowrap it was
+   meant to escape comes from the Table component, not from Datatables.css.
+   Payment Status 240px → 118px, Order Status 173 → 105.
+2. **Customer is the only fluid column** — everything else hugs or snugs, so
+   it absorbs all the slack rather than an eighth of it.
+3. **Tier thresholds re-tuned against measured widths** rather than an even
+   180px step. Revealing a tier ~100px too early does not overflow the table,
+   it silently starves Customer — which reads as a truncation bug rather than
+   as a breakpoint being wrong, and is why these are measured.
+
+Measured after: no overflow at any width from 420px to 2600px, Customer
+between 169px and 569px, 5 columns up to 16.
+
+**Known limitation:** the tier is width-only, so switching columns OFF in Edit
+Columns does not promote the remaining ones into the freed space. Someone who
+wants Pro Forma ID on a 1500px screen cannot get it by turning others off.
+Making the reveal respond to how many columns are ON would fix it, and is a
+bigger change than it looks — worth doing deliberately rather than now.

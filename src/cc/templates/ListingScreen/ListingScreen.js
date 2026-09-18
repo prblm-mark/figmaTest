@@ -44,6 +44,7 @@
   function colClass(col, extra) {
     var out = [];
     if (col.hug) out.push('datatables__col--hug');
+    if (col.snug) out.push('datatables__col--snug');
     /* Progressive reveal: tier 1 is always present, higher tiers appear as
        the CONTAINER widens. The class goes on both th and td so one
        container query can hide the whole column. */
@@ -85,8 +86,11 @@
 
     /* Account chip — tertiary button plus the contextual border. */
     chip: function (row, col) {
-      return '<button type="button" class="btn btn--tertiary btn--sm datatables__account-chip">' +
-        esc(row[col.key]) + '</button>';
+      var v = esc(row[col.key]);
+      /* The chip truncates when the column is tight, so the full value has to
+         stay reachable. */
+      return '<button type="button" class="btn btn--tertiary btn--sm datatables__account-chip"' +
+        ' title="' + v + '">' + v + '</button>';
     },
 
     select: function (row) {
@@ -323,7 +327,7 @@
     return html;
   }
 
-  function renderHead(columns) {
+  function renderHead(columns, sort) {
     return '<tr>' + columns.map(function (col) {
       /* Label-less columns (checkbox, edit, kebab) name themselves with
        * aria-label rather than hidden text: the project's
@@ -345,11 +349,16 @@
 
       /* `col.sort` is the live screen's `hs` token, and only the seven
          columns it actually sorts by carry one. */
+      var active = sort && sort.by === col.sort;
+      var icon = active ? (sort.dir === 'asc' ? 'chevron-up' : 'chevron-down') : ICON_SORT;
       var inner = col.sort
-        ? '<button type="button" class="datatables__sort" data-sort="' + esc(col.sort) + '">' + label +
-          '<i data-lucide="' + ICON_SORT + '" aria-hidden="true"></i></button>'
+        ? '<button type="button" class="datatables__sort' + (active ? ' datatables__sort--active' : '') +
+          '" data-sort="' + esc(col.sort) + '">' + label +
+          '<i data-lucide="' + icon + '" aria-hidden="true"></i></button>'
         : label;
-      return '<th scope="col"' + colClass(col) + '>' + inner + '</th>';
+      /* aria-sort belongs on the header cell, not the button. */
+      var ariaSort = active ? ' aria-sort="' + (sort.dir === 'asc' ? 'ascending' : 'descending') + '"' : '';
+      return '<th scope="col"' + ariaSort + colClass(col) + '>' + inner + '</th>';
     }).join('') + '</tr>';
   }
 
@@ -377,20 +386,49 @@
     }).join('');
   }
 
+  /* Which page numbers to show. Listing every page is fine for three and
+     unusable for fifty, so the list is windowed: first, last, the current
+     page and its neighbours, with gaps elided. Returns 0 for a gap. */
+  function pageWindow(current, pages) {
+    if (pages <= 7) {
+      var all = [];
+      for (var i = 1; i <= pages; i++) all.push(i);
+      return all;
+    }
+    var out = [1];
+    var from = Math.max(2, current - 1);
+    var to = Math.min(pages - 1, current + 1);
+    /* Keep the window a constant width at both ends, so the control does
+       not change size as you page through. */
+    if (current <= 3) to = 4;
+    if (current >= pages - 2) from = pages - 3;
+    if (from > 2) out.push(0);
+    for (var p = from; p <= to; p++) out.push(p);
+    if (to < pages - 1) out.push(0);
+    out.push(pages);
+    return out;
+  }
+
   function renderPagination(page) {
     var out = '<button type="button" class="datatables__page-btn" aria-label="Previous page"' +
+      ' data-page="' + (page.current - 1) + '"' +
       (page.current === 1 ? ' disabled' : '') +
       '><i data-lucide="chevron-left" aria-hidden="true"></i></button>';
-    for (var p = 1; p <= page.pages; p++) {
+    pageWindow(page.current, page.pages).forEach(function (p) {
+      if (!p) {
+        out += '<span class="datatables__page-gap" aria-hidden="true">…</span>';
+        return;
+      }
       var active = p === page.current;
       out += '<button type="button" class="datatables__page-btn' +
-        (active ? ' datatables__page-btn--active' : '') + '"' +
+        (active ? ' datatables__page-btn--active' : '') + '" data-page="' + p + '"' +
         /* aria-current carries the state for assistive tech AND for
          * sighted users in CC light, where the active paint resolves to
          * the same white as the container (see Datatables.css). */
         (active ? ' aria-current="page"' : '') + '>' + p + '</button>';
-    }
+    });
     out += '<button type="button" class="datatables__page-btn" aria-label="Next page"' +
+      ' data-page="' + (page.current + 1) + '"' +
       (page.current === page.pages ? ' disabled' : '') +
       '><i data-lucide="chevron-right" aria-hidden="true"></i></button>';
     return out;
@@ -436,6 +474,43 @@
     }).join(' ').toLowerCase();
   }
 
+  /* ── Sorting ──────────────────────────────────────────────
+     A column sorts only if it carries a `sort` token — the live screen's
+     `hs` value — so the seven sortable columns are data, not a guess here.
+
+     Comparison is by VALUE not by rendered text: "£1,000.00" sorts before
+     "£9.95" as a string, and 100412 before 99999. Dates are ISO in the mock
+     data and so compare correctly as strings, but going through the same
+     numeric path keeps one rule. */
+  function sortValue(row, col) {
+    var raw = valueAt(row, col.key === 'customer' ? 'customer.name' : col.key);
+    var num = raw.replace(/[^0-9.-]/g, '');
+    /* Only treat it as a number when the WHOLE value is one — "100412" and
+       "£9.95" yes, "EXT-0412" and "Paid Full" no. */
+    if (num !== '' && /^[^0-9]*[0-9][0-9.,\s-]*$/.test(raw)) {
+      var n = parseFloat(num);
+      if (!isNaN(n)) return n;
+    }
+    return raw.toLowerCase();
+  }
+
+  function sortRows(rows, config) {
+    var by = config.sort && config.sort.by;
+    if (!by) return rows;
+    var col = config.columns.filter(function (c) { return c.sort === by; })[0];
+    if (!col) return rows;                      // an unknown token sorts nothing
+
+    var dir = config.sort.dir === 'asc' ? 1 : -1;
+    /* Copy first — Array.sort is in place, and mutating config.rows would
+       make the next sort operate on the previous one's output. */
+    return rows.slice().sort(function (a, b) {
+      var x = sortValue(a, col), y = sortValue(b, col);
+      if (x < y) return -1 * dir;
+      if (x > y) return 1 * dir;
+      return 0;
+    });
+  }
+
   function applyFilters(config) {
     var byName = {};
     config.defaultFilters.forEach(function (f) { byName[f.name] = f; });
@@ -468,20 +543,28 @@
      pagination. The chips are left alone — rebuilding them would discard the
      very selections that caused this. */
   function renderResults(root, config) {
-    var result = applyFilters(config);
-    var rows = result.rows;
+    var matched = sortRows(applyFilters(config).rows, config);
+
+    /* Filter, then sort, then page — in that order. Paging first would sort
+       only the visible slice, and sorting first would page a list the filter
+       is about to change. */
+    var total = matched.length;
+    var pages = Math.max(1, Math.ceil(total / config.perPage));
+    if (config.page > pages) config.page = pages;     // a filter can strand you past the end
+    var start = (config.page - 1) * config.perPage;
+    var rows = matched.slice(start, start + config.perPage);
 
     root.querySelector('[data-listing-body]').innerHTML = rows.length
       ? renderRows(config.columns, rows)
       : renderEmpty(config.columns);
 
-    /* Unfiltered, the mock `page` block stands in for a backend that reports
-       296 orders across 3 pages. Once a filter narrows the 10 mock rows those
-       numbers would be a lie, so the counts switch to describing what is
-       actually on screen. */
-    var page = result.filtered
-      ? { from: rows.length ? 1 : 0, to: rows.length, total: rows.length, current: 1, pages: 1 }
-      : config.page;
+    var page = {
+      from: total ? start + 1 : 0,
+      to: start + rows.length,
+      total: total,
+      current: config.page,
+      pages: pages
+    };
 
     root.querySelector('[data-listing-total]').textContent = String(page.total);
     root.querySelector('[data-listing-range]').textContent = page.from + '–' + page.to;
@@ -611,9 +694,22 @@
     });
   }
 
+  function renderPerPageOptions(config) {
+    var host = document.querySelector('[data-listing-per-page-options]');
+    if (!host) return;
+    host.innerHTML = (config.perPageOptions || [20, 50, 100, 200]).map(function (n) {
+      var on = n === config.perPage;
+      return '<li role="none"><button type="button" class="dropdown-item dropdown-item--sm"' +
+        ' role="menuitemradio" aria-checked="' + (on ? 'true' : 'false') + '" data-per-page="' + n + '">' +
+        n + (on ? '<i data-lucide="check" class="dropdown-item__check" aria-hidden="true"></i>' : '') +
+        '</button></li>';
+    }).join('');
+    if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
+  }
+
   function render(root, config) {
     renderChips(config);
-    root.querySelector('[data-listing-head]').innerHTML = renderHead(config.columns);
+    root.querySelector('[data-listing-head]').innerHTML = renderHead(config.columns, config.sort);
     renderResults(root, config);
     renderColumnPicker(root, config);
   }
@@ -636,6 +732,11 @@
       moreFilters: (config.moreFilters || []).slice(),
       query: '',
       hiddenColumns: [],
+      /* Live state, separate from the shipped defaults so the config object
+         still describes a fresh screen. */
+      sort: Object.assign({ by: 'Date', dir: 'desc' }, config.sort || {}),
+      perPage: config.perPage || 20,
+      page: 1,
       /* name -> the values that chip currently holds. The bar reports these;
          they cannot be read back off a chip, whose label rolls 4+ values up
          into "<first>, and 3 more". */
@@ -644,6 +745,7 @@
 
     var bar = root.querySelector('.filter-bar');
 
+    renderPerPageOptions(config);
     render(root, config);
 
     /* The bar establishes its baseline before these chips exist, so it would
@@ -730,6 +832,59 @@
       restore(view && views.has(view) ? views.get(view) : baseline);
     });
 
+    /* Sorting. A second click on the same column reverses it; a first click
+       on a new one starts descending, which is what people expect from a
+       date or a value — the two things anyone sorts a listing by first. */
+    root.addEventListener('click', function (e) {
+      var btn = e.target.closest('.datatables__sort');
+      if (!btn) return;
+      var token = btn.getAttribute('data-sort');
+      if (config.sort.by === token) {
+        config.sort.dir = config.sort.dir === 'asc' ? 'desc' : 'asc';
+      } else {
+        config.sort.by = token;
+        config.sort.dir = 'desc';
+      }
+      /* Re-sorting reorders the whole result, so the current page number no
+         longer means anything — page 3 of a different order is a different
+         set of rows. Back to the top. */
+      config.page = 1;
+      root.querySelector('[data-listing-head]').innerHTML = renderHead(config.columns, config.sort);
+      renderResults(root, config);
+      if (window.lucide) window.lucide.createIcons();
+    });
+
+    /* Paging. */
+    root.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-page]');
+      if (!btn || btn.disabled) return;
+      var to = parseInt(btn.getAttribute('data-page'), 10);
+      if (!to || to === config.page) return;
+      config.page = to;
+      renderResults(root, config);
+    });
+
+    /* Rows per page. Recomputing the page so the FIRST row stays on screen
+       beats resetting to 1 — going 20 → 50 while reading page 4 should widen
+       the view around where you were, not throw you back to the start. */
+    root.addEventListener('click', function (e) {
+      var opt = e.target.closest('[data-per-page]');
+      if (!opt) return;
+      var firstRow = (config.page - 1) * config.perPage;
+      config.perPage = parseInt(opt.getAttribute('data-per-page'), 10);
+      config.page = Math.floor(firstRow / config.perPage) + 1;
+      var label = document.querySelector('[data-listing-per-page]');
+      if (label) label.textContent = String(config.perPage);
+      renderPerPageOptions(config);
+      renderResults(root, config);
+      var dd = opt.closest('.dropdown');
+      if (dd) {
+        dd.classList.remove('is-open');
+        var t = dd.querySelector('.dropdown__trigger');
+        if (t) t.setAttribute('aria-expanded', 'false');
+      }
+    });
+
     /* Edit Columns: toggling a column. */
     document.addEventListener('change', function (e) {
       var input = e.target.closest('[data-column]');
@@ -759,6 +914,7 @@
        switching views for the same reason. */
     document.addEventListener('filter-bar:search', function (e) {
       config.query = (e.detail && e.detail.query) || '';
+      config.page = 1;
       renderResults(root, config);
     });
 
@@ -767,6 +923,7 @@
       var d = e.detail || {};
       if (!d.name) return;
       config.filterValues[d.name] = d.values || [];
+      config.page = 1;   // a narrower result makes the old page number meaningless
       renderResults(root, config);
     });
 

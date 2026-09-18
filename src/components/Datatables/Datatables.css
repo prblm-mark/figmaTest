@@ -520,6 +520,25 @@
   white-space: nowrap;
 }
 
+/* Shrink-wrap WITHOUT nowrap, for the enumerated columns.
+ *
+ * `--hug`'s nowrap is right for a code or a money value, which have no
+ * wrap point worth taking. It is wrong for "Awaiting Payment Confirmation":
+ * that one value forced the table wider than its container, so the table
+ * overflowed to the right AND every fluid column collapsed to min-content —
+ * the Customer column truncating to "Mari…" was this, not a share-of-slack
+ * problem. Wrapping keeps the whole value readable and hands the slack back
+ * to Customer. */
+.datatables--orders .datatables__col--snug {
+  width: 1%;
+  /* Table.css sets `white-space: nowrap` on every th and td so a wide table
+     scrolls rather than squashing. That is right for a code or a date and
+     wrong for "Awaiting Payment Confirmation", so it is unset HERE — the
+     `width: 1%` alone did nothing, because the nowrap it was meant to escape
+     comes from the Table component, not from this file. */
+  white-space: normal;
+}
+
 /* ORDER NO is the row's identifier — semibold, unlike the other
  * plain-text cells which stay regular. */
 .datatables--orders .datatables__order-no {
@@ -729,8 +748,13 @@
  * resize (CLAUDE.md §4a), and the same table can appear in a narrow panel
  * on a wide screen.
  *
- * The steps are ~180px, one column-pair's worth, so each one earns its
- * reveal rather than cramming two columns into the space for one.
+ * The steps are NOT evenly spaced — they are measured. Each threshold is
+ * the width at which that tier's columns fit AND leave Customer room to
+ * breathe, Customer being the only fluid column and the one carrying a
+ * name, a role and an avatar. Revealing a tier 100px too early does not
+ * overflow the table, it silently starves Customer to its min-content
+ * width — which reads as "Mari…" rather than as a layout bug, and is why
+ * these are measured rather than picked.
  */
 
 .datatables--orders .datatables__col--t2,
@@ -744,28 +768,28 @@
   display: none;
 }
 
-@container (min-width: 560px) {
+@container (min-width: 640px) {
   .datatables--orders .datatables__col--t2 { display: table-cell; }
 }
-@container (min-width: 720px) {
+@container (min-width: 960px) {
   .datatables--orders .datatables__col--t3 { display: table-cell; }
 }
-@container (min-width: 900px) {
+@container (min-width: 1160px) {
   .datatables--orders .datatables__col--t4 { display: table-cell; }
 }
-@container (min-width: 1080px) {
+@container (min-width: 1440px) {
   .datatables--orders .datatables__col--t5 { display: table-cell; }
 }
-@container (min-width: 1260px) {
+@container (min-width: 1680px) {
   .datatables--orders .datatables__col--t6 { display: table-cell; }
 }
-@container (min-width: 1440px) {
+@container (min-width: 1940px) {
   .datatables--orders .datatables__col--t7 { display: table-cell; }
 }
-@container (min-width: 1620px) {
+@container (min-width: 2180px) {
   .datatables--orders .datatables__col--t8 { display: table-cell; }
 }
-@container (min-width: 1800px) {
+@container (min-width: 2600px) {
   .datatables--orders .datatables__col--t9 { display: table-cell; }
 }
 
@@ -795,4 +819,40 @@
   font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-regular);
   color: var(--ai-text-contrast);
+}
+
+/* ── Sort + pagination state ─────────────────────────────
+ * The header's sort control is a chevron pair at rest and a single
+ * direction chevron once a column is the active sort, so the state reads
+ * without having to compare icons across headers.
+ */
+
+.datatables__sort--active {
+  color: var(--ai-text-primary);
+}
+
+.datatables__sort--active [data-lucide] {
+  color: var(--ai-icon-brand);
+}
+
+/* Elided page numbers. Not a button — there is nothing to click. */
+.datatables__page-gap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--ai-spacing-8);
+  color: var(--ai-text-contrast);
+}
+
+
+/* The account chip is a Button, and buttons do not wrap — so a long account
+ * name ("Pinnacle Technologies") set the column's MIN-content width and, with
+ * twenty columns in play, pushed the whole table past its container. Capping
+ * it lets the column compress; the full name stays in the title. */
+.datatables--orders .datatables__account-chip {
+  display: inline-block;
+  max-inline-size: var(--ai-size-2);     /* 160px */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
 }
