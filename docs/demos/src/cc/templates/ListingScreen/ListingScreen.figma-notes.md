@@ -680,3 +680,38 @@ The split happens once at init, not at render time, so everything downstream —
 adding a filter, saving a view, restoring one — works on the real arrays and
 never has to know about the limit. The limit lives in the template rather than
 in `listing-data.js` because it applies to all ~400 screens.
+
+
+## Removing a filter you added
+
+Adding used to be one-way. The chip's face has no room for a remove control:
+FilterItem's leading slot holds `+` while empty and `×` once values are set, so
+a filter that is on the bar but has no value has nowhere to put one, and a
+second `×` on the right would fight the chevron (designer, 2026-09-18 — "feels
+clunky"). So removal lives in the two places that need no new affordance:
+
+1. **More Filters toggles.** The panel is now a stable CATALOGUE: a facet no
+   longer leaves it when added, it turns solid with a check. Clicking it again
+   takes the filter off the bar. Add and remove are the same gesture in the
+   same place.
+2. **Remove filter, inside the chip's own picker** — under Apply, quiet
+   tertiary. You are already there to set a value. Only on filters the user
+   added; the screen's five have no such action.
+
+Removing drops that filter's values with it and re-filters the table — verified:
+Order Status narrowed 20 rows to 9, removing it restored 20.
+
+### Model change
+
+`moreFilters` is a fixed catalogue and `config.added` holds the names the user
+has put on the bar, in order. `defaultFilters` — what the bar renders and what
+filtering looks names up in — is DERIVED from `baseFilters + added`. Saved views
+snapshot `added` rather than the arrays, since the arrays no longer move.
+
+### Flagged for Figma
+
+- **FilterItem has no "already added" state.** Its slot is `+` or `×`, and
+  neither means "on the bar, click to remove". Implemented as the solid Default
+  treatment with a check; it wants a real variant.
+- **`Remove filter` is not in Figma either** — it is the affordance the chip's
+  face has no room for.

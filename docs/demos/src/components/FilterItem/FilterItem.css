@@ -171,3 +171,22 @@
   outline-offset: 2px;
   border-radius: var(--ai-radius-sm);
 }
+
+/* ── Added (More Filters) ────────────────────────────────
+ * TODO(design:FilterItem): Figma defines no "already added" state. Its leading
+ * slot is `+` while empty and `×` once values are held, so a facet that is on
+ * the bar but holds no value has no variant to use.
+ *
+ * Implemented as the solid Default treatment with a check in that slot, which
+ * reads as "this one is on the bar — click to take it off" beside its dashed
+ * neighbours. It wants a real Figma variant.
+ */
+.filter-item--added {
+  border-style: solid;
+  border-color: var(--ai-border-brand);
+  color: var(--ai-text-primary);
+}
+
+.filter-item--added .filter-item__add {
+  color: var(--ai-icon-brand);
+}

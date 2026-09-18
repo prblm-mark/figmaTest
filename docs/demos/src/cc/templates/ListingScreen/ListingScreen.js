@@ -280,9 +280,16 @@
        chips. No Apply: picking one adds it to the bar. */
     'more-filters': function (f, values) {
       var chips = (f.options || []).map(function (o) {
-        return '<div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="' + esc(o.name) + '">' +
-          '<button type="button" class="filter-item__trigger" aria-expanded="false">' +
-            '<i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i>' +
+        /* Solid means already on the bar — click to take it off. Dashed with a
+           plus means click to add. The facet never leaves this list, so adding
+           and removing are the same gesture in the same place. */
+        return '<div class="filter-item filter-item--rounded ' +
+          (o.added ? 'filter-item--added' : 'filter-item--empty') +
+          '" data-filter-name="' + esc(o.name) + '">' +
+          '<button type="button" class="filter-item__trigger" aria-expanded="false"' +
+            ' aria-pressed="' + (o.added ? 'true' : 'false') + '"' +
+            ' aria-label="' + (o.added ? 'Remove ' : 'Add ') + esc(o.name) + ' filter">' +
+            '<i data-lucide="' + (o.added ? 'check' : 'plus') + '" class="filter-item__add" aria-hidden="true"></i>' +
             '<span class="filter-item__name">' + esc(o.name) + '</span>' +
           '</button></div>';
       }).join('');
@@ -294,8 +301,21 @@
   /* One chip: the FilterItem markup plus its picker, wrapped so the picker can
      anchor to it. The full slot set is always rendered — FilterItem's contract
      is that CSS hides what the current state does not use. */
-  function chip(f, extraClass, wrapClass, values) {
+  function chip(f, extraClass, wrapClass, values, removable) {
     var build = FILTER_PANELS[f.type];
+    var card = build ? build(f, values) : '';
+    /* A filter the user added can be taken off from inside its own picker —
+       they are already here to set a value. The base chips are the screen's
+       and have no such action.
+
+       Spliced in before the card's closing tag so it sits INSIDE the panel
+       rather than under it; every builder returns one `.filter-dropdowns`
+       element, so the last `</div>` is reliably the card's. */
+    if (card && removable && /<\/div>$/.test(card)) {
+      card = card.slice(0, -6) +
+        '<button type="button" class="filter-dropdowns__remove" data-filter-remove="' +
+        esc(f.name) + '">Remove filter</button></div>';
+    }
     return '<div class="filter-bar__chip' + (wrapClass || '') + '">' +
       '<div class="filter-item filter-item--rounded' + (extraClass || '') + '" data-filter-name="' + esc(f.name) + '">' +
         '<button type="button" class="filter-item__clear" aria-label="Clear ' + esc(f.name) + ' filter"><i data-lucide="x" aria-hidden="true"></i></button>' +
@@ -307,19 +327,25 @@
           '<i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i>' +
         '</button>' +
       '</div>' +
-      (build ? '<div class="filter-bar__panel" hidden>' + build(f, values) + '</div>' : '') +
+      (card ? '<div class="filter-bar__panel" hidden>' + card + '</div>' : '') +
     '</div>';
   }
 
   function renderFilters(config) {
+    var added = config.added || [];
     var html = (config.defaultFilters || []).map(function (f) {
-      return chip(f, '', '', config.filterValues[f.name] || []);
+      return chip(f, '', '', config.filterValues[f.name] || [], added.indexOf(f.name) !== -1);
     }).join('');
     /* `--add` marks the WRAPPER so an empty view can hide the other chips:
        a chip with a picker is wrapped, so FilterBar's bare-chip selector
        cannot reach it. */
     html += chip(
-      { name: 'Add Filters', type: 'more-filters', options: config.moreFilters || [] },
+      {
+        name: 'Add Filters', type: 'more-filters',
+        options: (config.moreFilters || []).map(function (o) {
+          return { name: o.name, added: added.indexOf(o.name) !== -1 };
+        })
+      },
       ' filter-item--empty filter-bar__add',
       ' filter-bar__chip--add'
     );
@@ -921,8 +947,16 @@
     var overflow = defaults.splice(DEFAULT_CHIPS);
 
     config = Object.assign({}, config, {
-      defaultFilters: defaults,
+      /* The screen's own chips. Fixed — these cannot be taken off the bar. */
+      baseFilters: defaults,
+      /* Everything else, as a STABLE catalogue. Filters no longer move out of
+         this list when added: More Filters is where you both add and remove,
+         so an added one stays listed and shows as already on the bar. */
       moreFilters: overflow.concat(config.moreFilters || []),
+      /* Names the user has added, in the order they added them. */
+      added: [],
+      /* Derived: baseFilters + added. Rebuilt by rebuildFilters(). */
+      defaultFilters: defaults.slice(),
       query: '',
       hiddenColumns: [],
       /* Live state, separate from the shipped defaults so the config object
@@ -955,31 +989,122 @@
        one line, but it would also rebuild every other chip — discarding the
        selections already made on them, which is the opposite of what adding a
        sixth filter should do. */
+    /* Picking a facet TOGGLES it. The facet stays in the panel either way, so
+       the same click that put a filter on the bar takes it off again. */
     document.addEventListener('filter-bar:add-filter', function (e) {
       var name = e.detail && e.detail.name;
-      var i = config.moreFilters.findIndex(function (f) { return f.name === name; });
-      if (i === -1) return;
+      if (config.added.indexOf(name) !== -1) { removeFilter(name); return; }
 
-      var filter = config.moreFilters.splice(i, 1)[0];
-      config.defaultFilters.push(filter);
+      var filter = config.moreFilters.filter(function (f) { return f.name === name; })[0];
+      if (!filter) return;
+      config.added.push(name);
+      rebuildFilters();
 
       var host = document.querySelector('[data-listing-filters]');
       var addChip = host && host.querySelector('.filter-bar__add');
       var anchor = addChip && addChip.closest('.filter-bar__chip');
       if (!anchor) return;
 
+      /* Spliced in rather than re-rendering the row, which would discard the
+         selections already made on the other chips. */
       var holder = document.createElement('div');
-      holder.innerHTML = chip(filter);
+      /* `true` = removable. A chip spliced in here is by definition one the
+         user added, so its picker carries the Remove action — the same as it
+         would on a full render. */
+      holder.innerHTML = chip(filter, '', '', config.filterValues[name] || [], true);
       var added = holder.firstChild;
       anchor.parentNode.insertBefore(added, anchor);
 
-      /* Drop the facet from the More Filters panel — it is on the bar now. */
-      var facet = anchor.querySelector('.filter-item[data-filter-name="' + name.replace(/"/g, '\\"') + '"]');
-      if (facet) facet.remove();
+      markFacet(anchor.querySelector('.filter-item[data-filter-name="' +
+        name.replace(/"/g, '\\"') + '"]'), true);
 
       /* Same contract the first render uses, scoped to just the new chip. */
       document.dispatchEvent(new CustomEvent('listing:rendered', { detail: { root: added } }));
+      announceFilters();
     });
+
+    /* Remove filter, from inside the chip's own picker. */
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-filter-remove]');
+      if (btn) removeFilter(btn.getAttribute('data-filter-remove'));
+    });
+
+    /* `defaultFilters` is what the bar renders and what filtering looks names
+       up in, so it is recomputed whenever the added set changes. */
+    /* Adding or removing a chip changes the view, so the bar re-checks its
+       Save view CTA. The chip list is already half of its signature, so it
+       only needs prompting once the DOM has changed. */
+    function announceFilters() {
+      if (bar && typeof bar.refreshSaveView === 'function') bar.refreshSaveView();
+    }
+
+    function rebuildFilters() {
+      var byName = {};
+      config.moreFilters.forEach(function (f) { byName[f.name] = f; });
+      config.defaultFilters = config.baseFilters.concat(
+        config.added.map(function (n) { return byName[n]; }).filter(Boolean)
+      );
+    }
+
+    /* Show a More Filters facet as on-the-bar or not. The chip keeps
+       FilterItem's vocabulary: dashed-and-empty means "add me", solid means
+       "already on the bar, click to take it off".
+
+       TODO(design:Listing): Figma's FilterItem has no "already added" state —
+       its leading slot is `+` when empty and `×` when it holds values. A check
+       is the clearest thing to put there for this meaning, but it wants a real
+       variant. */
+    function markFacet(facet, on) {
+      if (!facet) return;
+      facet.classList.toggle('filter-item--empty', !on);
+      facet.classList.toggle('filter-item--added', on);
+      var icon = facet.querySelector('.filter-item__add');
+      if (!icon) icon = facet.querySelector('[data-lucide]');
+      if (icon) {
+        icon.setAttribute('data-lucide', on ? 'check' : 'plus');
+        /* Lucide has already replaced <i> with <svg>; re-running it only
+           rewrites elements that still carry the attribute, so the icon is
+           reset to an <i> first. */
+        var fresh = document.createElement('i');
+        fresh.setAttribute('data-lucide', on ? 'check' : 'plus');
+        /* getAttribute, not `.className`: by now Lucide has swapped the <i>
+           for an <svg>, whose className is an SVGAnimatedString — assigning it
+           stringifies to "[object SVGAnimatedString]" and the icon loses the
+           class the CSS and the next toggle both look for. */
+        fresh.setAttribute('class', icon.getAttribute('class') || 'filter-item__add');
+        fresh.setAttribute('aria-hidden', 'true');
+        icon.replaceWith(fresh);
+      }
+      var trigger = facet.querySelector('.filter-item__trigger');
+      var label = facet.getAttribute('data-filter-name');
+      if (trigger) {
+        trigger.setAttribute('aria-pressed', on ? 'true' : 'false');
+        trigger.setAttribute('aria-label', (on ? 'Remove ' : 'Add ') + label + ' filter');
+      }
+      if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+      }
+    }
+
+    function removeFilter(name) {
+      var at = config.added.indexOf(name);
+      if (at === -1) return;                       // a base filter cannot go
+      config.added.splice(at, 1);
+      delete config.filterValues[name];            // its filtering goes with it
+      rebuildFilters();
+
+      var host = document.querySelector('[data-listing-filters]');
+      var wrap = host && host.querySelector('.filter-bar__chip .filter-item[data-filter-name="' +
+        name.replace(/"/g, '\\"') + '"]');
+      if (wrap) wrap.closest('.filter-bar__chip').remove();
+
+      markFacet(document.querySelector('.filter-bar__panel .filter-item[data-filter-name="' +
+        name.replace(/"/g, '\\"') + '"]'), false);
+
+      config.page = 1;
+      renderResults(root, config);
+      announceFilters();
+    }
 
     /* ── Saved views ─────────────────────────────────────────
        A view IS a filter set: which filters are on the bar, in what order,
@@ -1010,8 +1135,9 @@
 
     function snapshot() {
       return {
-        defaultFilters: config.defaultFilters.slice(),
-        moreFilters: config.moreFilters.slice(),
+        /* The added NAMES, not the filter arrays — `moreFilters` is a fixed
+           catalogue now, and `defaultFilters` is derived from these. */
+        added: config.added.slice(),
         filterValues: JSON.parse(JSON.stringify(config.filterValues)),
         /* Copied, not referenced: reordering rewrites each column's tier in
            place, so a stored reference would follow the live table. */
@@ -1025,8 +1151,8 @@
     var baseline = snapshot();
 
     function restore(snap) {
-      config.defaultFilters = snap.defaultFilters.slice();
-      config.moreFilters = snap.moreFilters.slice();
+      config.added = (snap.added || []).slice();
+      rebuildFilters();
       config.filterValues = JSON.parse(JSON.stringify(snap.filterValues));
       if (snap.columns) {
         config.columns = snap.columns.map(function (c) { return Object.assign({}, c); });

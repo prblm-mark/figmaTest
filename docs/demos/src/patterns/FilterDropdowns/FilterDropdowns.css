@@ -272,3 +272,36 @@
 .filter-dropdowns__menu[hidden] {
   display: none;
 }
+
+/* ── Remove filter ───────────────────────────────────────
+ * Only on a picker whose filter the user added from More Filters — the
+ * screen's own chips cannot be taken off the bar. A quiet tertiary action
+ * under Apply: destructive enough to want playing down, cheap enough to undo
+ * by re-adding, which is one click away in the same panel.
+ *
+ * TODO(design:FilterDropdowns): not in Figma — this is the affordance the
+ * chip's face has no room for, since `+` and `×` share one slot.
+ */
+.filter-dropdowns__remove {
+  align-self: center;
+  margin: 0;
+  padding: var(--ai-spacing-1) var(--ai-spacing-2);
+  background: none;
+  border: 0;
+  border-radius: var(--ai-radius-sm);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-contrast);
+  cursor: pointer;
+}
+
+.filter-dropdowns__remove:hover {
+  color: var(--ai-text-error);
+  background-color: var(--ai-surface-minimal);
+}
+
+.filter-dropdowns__remove:focus-visible {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: 2px;
+}
