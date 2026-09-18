@@ -448,14 +448,30 @@
 
 .filter-bar--save-view .filter-bar__save {
   display: inline-flex;
-  margin-left: auto; /* desktop: pin to the right edge of the chip row */
+}
+
+/* Discard sits with Save, and carries the auto-margin for the pair so the two
+ * stay together at the right edge rather than drifting apart. */
+.filter-bar__discard {
+  display: none;
+  flex-shrink: 0;
+}
+
+.filter-bar--save-view .filter-bar__discard,
+.filter-bar--save-view .filter-bar__discard + .filter-bar__save {
+  display: inline-flex;
+}
+
+.filter-bar--save-view .filter-bar__discard {
+  margin-left: auto;
 }
 
 /* While the name is being typed, the CTA that opened the field would offer the
  * same action twice. Placed AFTER the rule above deliberately: both selectors
  * are one class + one class, so the cascade is decided by order — written
  * earlier, this lost and the CTA stayed on screen beside the field. */
-.filter-bar--saving-view .filter-bar__save {
+.filter-bar--saving-view .filter-bar__save,
+.filter-bar--saving-view .filter-bar__discard {
   display: none;
 }
 
@@ -497,7 +513,8 @@
 
   /* Save View: on mobile the CTA sits after "Add Filters" in the wrapping chip flow
    * (Figma mobile 2989:6242) — drop the desktop auto-margin that pins it right. */
-  .filter-bar--save-view .filter-bar__save {
+  .filter-bar--save-view .filter-bar__save,
+  .filter-bar--save-view .filter-bar__discard {
     margin-left: 0;
   }
 

@@ -727,3 +727,12 @@ as having missed the handle (designer, 2026-09-18).
 Scoped to this panel rather than set globally: nothing in it is worth copying,
 whereas a table of orders obviously is. Checkbox clicks and grip drags are
 unaffected — both re-verified after the change.
+
+
+## Discard changes
+
+Restores the snapshot of the view currently selected — NOT the baseline. Saving
+"One order" (Order No. 100412, one row), then adding Account Code 999 (no rows),
+then discarding goes back to the one row with Order No. still set, rather than
+back to an unfiltered listing. A view with no snapshot — the shipped mock rows,
+or a brand-new empty one — discards to the baseline, which is what it means.

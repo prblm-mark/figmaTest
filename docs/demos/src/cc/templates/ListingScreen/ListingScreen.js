@@ -340,6 +340,8 @@
     /* The Save view CTA is rendered here rather than left in the markup so the
        chips stay DIRECT children of `.filter-bar__chips` — that row is a flex
        container, and a wrapper element around the chips would break its wrap. */
+    html += '<button type="button" class="btn btn--tertiary btn--sm filter-bar__discard"' +
+            ' data-filter-action="discard-view">Discard changes</button>';
     html += '<button type="button" class="btn btn--primary btn--sm filter-bar__save"' +
             ' data-filter-action="save-view">Save view</button>';
     return html;
@@ -1155,11 +1157,23 @@
       if (e.detail && e.detail.view) views.set(e.detail.view, snapshot());
     });
 
+    /* The view the bar is currently showing — what "discard" goes back to. */
+    var currentView = null;
+
     document.addEventListener('filter-bar:select-view', function (e) {
       var view = e.detail && e.detail.view;
+      currentView = view || null;
       /* A row with no snapshot is one of the shipped mock views (or a brand-new
          empty one), which stand for the unfiltered listing. */
       restore(view && views.has(view) ? views.get(view) : baseline);
+    });
+
+    /* Discard: put the bar back to the view it claims to be showing. The
+       capability already existed — re-picking the current view from the
+       dropdown does exactly this — but it was buried behind a menu whose
+       current row is already ticked, which does not look like an action. */
+    document.addEventListener('filter-bar:discard-view', function () {
+      restore(currentView && views.has(currentView) ? views.get(currentView) : baseline);
     });
 
     /* Drag to reorder. The row is only made draggable while the pointer is on

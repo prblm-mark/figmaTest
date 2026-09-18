@@ -525,3 +525,25 @@ CHIP, though, and the chips wrap — so a wide one (More Filters runs to 640px)
 can hang off the LEFT even after flipping, simply because its chip sits mid-row.
 Measured at a 378px page: a 351px panel sat at left -56. Verified inside the bar
 at 430px, 900px and 1600px pages.
+
+
+## Discard changes
+
+Sits beside Save view, shown and hidden by the same `--save-view` state — both
+appear exactly when the bar differs from the view it names.
+
+It puts the bar back to that view. The capability already existed: re-picking
+the current view from the saved-views dropdown does precisely this. But it was
+buried behind a menu whose current row is already ticked, which does not look
+like an action, so nobody would find it.
+
+Tertiary, next to the primary Save — the pair carries one auto-margin on
+Discard so they stay together at the right edge instead of drifting apart.
+
+Nothing is confirmed first: what is being discarded is visible on screen, and
+re-applying a filter is cheaper than a dialog.
+
+`filter-bar:discard-view` (bubbles, no detail). The bar does not know what the
+view held, so it only reports the intent; the screen restores its snapshot.
+
+TODO(design:FilterBar): not in Figma — Type=Save View draws the one CTA.
