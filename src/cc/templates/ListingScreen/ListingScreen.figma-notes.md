@@ -781,3 +781,29 @@ set is looked up by name, so the sort changes nothing but the reading order.
 Side effect worth knowing: the overflow default (Order Owner, the sixth filter
 the live Simple Search shows) no longer heads the panel. It sits under O with
 everything else.
+
+
+## Catalogue Item uses the Multi Select Table
+
+Designer, 2026-09-18: a flat checkbox list was the wrong widget. The live
+picker is paged and letter-filtered with its own Catalogue ID / Payment Method
+/ Zone sub-filters, so an item needs more than a name to tell two apart.
+
+Now `type: 'multi-select-table'` — FilterDropdowns Type=Multi Select Table
+(3039:5624), verified against the Figma screenshot: 640px card, four facet
+chips (Name / Catalogue Group / Catalogue Item Code / Payment Method), a
+Datatables body with Name / Catalogue ID / Zone and a row-link column, Apply.
+
+TODO(backend:Listing): the four sub-filter chips are visual only.
+
+**The table's facet chips are not bar filters.** They are FilterItems inside a
+picker, and FilterBar's add-filter click was scoped to any
+`.filter-bar__panel .filter-item` — so clicking "Name" in this card would have
+put a Name filter on the bar. Scoped to `.filter-dropdowns--more` now.
+
+**Values come from `data-row-value`**, read before the generic checkbox branch:
+that branch looks for a `.checkbox__label-text`, which a table row does not
+have, and would have come back empty.
+
+Measured: two rows selected gives "Annual Membership, Quarterly Pass" and 47
+matching orders; select-all ticks all six and returns the full 140.

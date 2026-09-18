@@ -128,6 +128,27 @@
     document.addEventListener('click', function (e) { if (!root.contains(e.target)) close(); });
   }
 
+  /* Select-all in a Multi Select Table header. Without this the header
+     checkbox is decoration. */
+  function wireSelectAll(root) {
+    var all = root.querySelector('[data-select-all]');
+    if (!all) return;
+    var rows = function () { return root.querySelectorAll('[data-row-value]'); };
+
+    all.addEventListener('change', function () {
+      rows().forEach(function (c) { c.checked = all.checked; });
+    });
+
+    root.addEventListener('change', function (e) {
+      if (!e.target.matches('[data-row-value]')) return;
+      var list = Array.prototype.slice.call(rows());
+      var on = list.filter(function (c) { return c.checked; }).length;
+      all.checked = on === list.length;
+      /* Some but not all — the header says "partly", not "none". */
+      all.indeterminate = on > 0 && on < list.length;
+    });
+  }
+
   function wireApply(root) {
     var apply = root.querySelector('[data-filter-dropdowns-apply]');
     if (!apply) return;
@@ -159,6 +180,7 @@
       wireSelect(root);
       wirePredictive(root);
       wireApply(root);
+      wireSelectAll(root);
       wireReset(root);
     });
   }

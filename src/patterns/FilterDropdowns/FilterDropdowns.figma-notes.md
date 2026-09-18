@@ -166,3 +166,18 @@ panel's `max-width: 100%` cannot cap it: the panel is absolutely positioned, so
 its containing block is the chip it hangs off, and 100% of that is a chip's
 width. Measured without the cap, a 640px panel on a 378px page sat at left
 -345 — off screen entirely.
+
+
+## Multi Select Table: select-all and row values
+
+Two attributes make this type work for a consumer, added 2026-09-18 when the
+Listing Screen started using it:
+
+- `data-select-all` on the header checkbox — `wireSelectAll` ticks and unticks
+  every row from it, and reflects partial selection back as `indeterminate`.
+  Without it the header checkbox was decoration.
+- `data-row-value="<name>"` on each row checkbox — the row's checkbox has no
+  label of its own (the name is a sibling cell), so a consuming bar has no way
+  to read what was selected without this.
+
+The demo carries both, so the component's own gallery exercises them.

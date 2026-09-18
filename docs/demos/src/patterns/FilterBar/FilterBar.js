@@ -389,6 +389,15 @@ function wireChipPanels(root) {
     if (panel.querySelector('[data-select-menu]')) {
       return pick(panel.querySelectorAll('.filter-dropdown-item--selected .filter-dropdown-item__name'));
     }
+    /* A Multi Select Table names its value on the row, because the checkbox
+       has no label of its own — the name is a sibling cell. Checked first,
+       since the generic checkbox branch below would find these and come back
+       with nothing. */
+    if (panel.querySelector('[data-row-value]')) {
+      return Array.from(panel.querySelectorAll('[data-row-value]:checked'))
+        .map((c) => c.getAttribute('data-row-value')).filter(Boolean);
+    }
+
     const checked = panel.querySelectorAll('.checkbox__input:checked');
     if (panel.querySelector('.checkbox__input')) {
       return pick(Array.from(checked).map((c) => c.closest('.checkbox').querySelector('.checkbox__label-text')));
@@ -513,7 +522,12 @@ function wireChipPanels(root) {
      the list as it goes, so the remaining choices stay in front of the user.
      It closes on the outside click / Escape handled above, like any panel. */
   root.addEventListener('click', (e) => {
-    const facet = e.target.closest('.filter-bar__panel .filter-item');
+    /* Scoped to the More Filters card, not to any panel. Multi Select Table
+       pickers carry their OWN FilterItem chips (Catalogue Item has Name /
+       Catalogue Group / Catalogue Item Code / Payment Method), and an
+       unscoped selector read a click on one of those as "add this filter to
+       the bar". */
+    const facet = e.target.closest('.filter-dropdowns--more .filter-item');
     if (!facet) return;
     const name = facet.getAttribute('data-filter-name');
     if (!name) return;
