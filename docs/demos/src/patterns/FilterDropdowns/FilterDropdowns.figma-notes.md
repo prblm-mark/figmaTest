@@ -242,10 +242,16 @@ THIS table: those two columns are how you tell two similarly named items apart,
 so hiding them at narrow widths removes the reason to use a table (designer,
 2026-09-18). Every column is kept and the table overflows instead.
 
-`min-inline-size: var(--ai-size-10)` is what forces that. With cells wrapping,
-the table would otherwise squash to fit any width rather than overflow — and
-640px is the card's own design width, so it never renders narrower than it was
-drawn. Measured at an 820px page: card 377, table 640, 280px of scroll.
+The minimum that forces that lives on the COLUMNS, not on the table. Putting
+640 — the card's own width — on the table over-shot by 17px and clipped the
+last column on a desktop with room to spare: 640 is the card's OUTER width,
+and the scrolling body's inner width is 623. Summing what each column actually
+needs instead (32 + 192 + 128 + 128 + 32 = 512) fits comfortably at 623 and
+still overflows when the card is genuinely narrow.
+
+Measured: no scroll at all down to a 620px page; 72px of scroll at 900 and
+152px at 820, which are the widths where the sidebar squeezes the card to 457
+and 377.
 
 Mouse **drag-to-scroll** comes with it. Touch and trackpads already scroll an
 overflowing box; a mouse has no gesture for it and a scrollbar under a list you
