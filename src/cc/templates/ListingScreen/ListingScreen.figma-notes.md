@@ -491,3 +491,45 @@ Columns does not promote the remaining ones into the freed space. Someone who
 wants Pro Forma ID on a 1500px screen cannot get it by turning others off.
 Making the reveal respond to how many columns are ON would fix it, and is a
 bigger change than it looks — worth doing deliberately rather than now.
+
+
+## Edit Columns: reordering, and the gap (pass 5)
+
+### Drag to reorder
+
+Each row in the panel has a grip. The row is made `draggable` only while the
+pointer is on that grip, so the checkbox stays clickable and a stray drag on
+the label does not start a reorder.
+
+Only the LABELLED columns move — the checkbox, spacer, edit and kebab columns
+are structure. The reorder happens on the labelled subset and is written back
+into the slots those columns occupied, so structure stays put.
+
+**Reordering also re-tiers.** A column's position IS its priority, so dragging
+one to the front is how you say "show me this first". Without it, dragging a
+tier-9 column to the top would leave it hidden until 2600px, which reads as
+broken. Tiers are reassigned in pairs (`floor(i / 2) + 1`) to match the
+thresholds in Datatables.css, and the first two columns — whatever they now
+are — become the locked pair and are un-hidden if they had been switched off.
+This also answers the limitation flagged in pass 4: a column you want on a
+narrow screen is now reachable by dragging it up, rather than unreachable.
+
+### The gap after hiding a column
+
+Customer was the only column that could grow, so ALL the freed width pooled in
+it: hiding one column stretched Customer from 267px to 372px, leaving a visible
+gap between the name and the next column.
+
+`max-inline-size` does **not** fix this — a max-width on a table cell is
+advisory under `table-layout: auto`, and the column stayed at 372. Two changes
+did:
+
+1. Customer gets a **preferred** width (`width: var(--ai-size-6)`), not `auto`.
+   Auto layout treats `width` as a preference, so it still shrinks when space
+   is tight but stops growing at 320px.
+2. A **spacer column** before the actions absorbs whatever is left. Nothing
+   real stretches, the columns stay closed up, and the row rules still run the
+   full width of the table.
+
+The spacer is `role="presentation"` with no accessible name, so screen readers
+do not announce an empty column.

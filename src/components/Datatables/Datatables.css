@@ -856,3 +856,25 @@
   text-overflow: ellipsis;
   vertical-align: middle;
 }
+
+
+/* Customer was the only column that could grow, so ALL the slack pooled in
+ * it: hiding a column in Edit Columns stretched it to 372px and left a
+ * visible gap between the name and the next column.
+ *
+ * `max-inline-size` does not fix it — a max-width on a table cell is advisory
+ * at best under `table-layout: auto`, and the column stayed at 372.
+ *
+ * So Customer gets a PREFERRED width rather than being the fluid one (auto
+ * layout treats `width` as a preference, so it still shrinks when space is
+ * tight), and a trailing spacer column absorbs whatever is left over. Nothing
+ * real stretches, the columns stay closed up, and the row rules still run the
+ * full width of the table. */
+.datatables--orders .datatables__col--fluid {
+  width: var(--ai-size-6);                /* 320px preferred */
+}
+
+.datatables--orders .datatables__col--spacer {
+  width: auto;
+  padding-inline: 0;
+}

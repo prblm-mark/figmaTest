@@ -45,6 +45,8 @@
     var out = [];
     if (col.hug) out.push('datatables__col--hug');
     if (col.snug) out.push('datatables__col--snug');
+    if (!col.hug && !col.snug && col.label) out.push('datatables__col--fluid');
+    if (col.type === 'spacer') out.push('datatables__col--spacer');
     /* Progressive reveal: tier 1 is always present, higher tiers appear as
        the CONTAINER widens. The class goes on both th and td so one
        container query can hide the whole column. */
@@ -92,6 +94,9 @@
       return '<button type="button" class="btn btn--tertiary btn--sm datatables__account-chip"' +
         ' title="' + v + '">' + v + '</button>';
     },
+
+    /* Layout only — absorbs the table's leftover width. */
+    spacer: function () { return ''; },
 
     select: function (row) {
       return '<label class="checkbox">' +
@@ -334,6 +339,9 @@
        * .visually-hidden utility lives in css/style.css, which
        * components are not allowed to import (CLAUDE.md §8). */
       if (!col.label) {
+        /* The spacer is layout, not a column of data — it gets no accessible
+           name, so screen readers do not announce an empty column. */
+        if (col.type === 'spacer') return '<th' + colClass(col) + ' role="presentation"></th>';
         var name = col.key === 'select' ? 'Select' : 'Actions';
         return '<th scope="col" aria-label="' + name + '"' + colClass(col) + '></th>';
       }
@@ -642,19 +650,25 @@
     if (!host) return;
 
     host.innerHTML = config.columns.filter(function (col) {
-      return col.label;   // the checkbox / edit / kebab columns are structure
-    }).map(function (col) {
+      return col.label;   // the checkbox / spacer / edit / kebab are structure
+    }).map(function (col, i) {
       var off = config.hiddenColumns.indexOf(col.key) !== -1;
-      /* Tier 1 is the identity of a row — order number and customer. Letting
-         those be switched off leaves a table of anonymous rows. */
-      var locked = (col.tier || 1) === 1;
-      return '<label class="checkbox cc-listing__column' + (locked ? ' cc-listing__column--locked' : '') + '">' +
-        '<input type="checkbox" class="checkbox__input" data-column="' + esc(col.key) + '"' +
-          (off ? '' : ' checked') + (locked ? ' disabled' : '') + '>' +
-        '<span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>' +
-        '<span class="checkbox__label"><span class="checkbox__label-text">' + esc(col.label) + '</span>' +
-          '<span class="cc-listing__column-note" data-column-note></span>' +
-        '</span></label>';
+      /* The first two columns identify a row. Whichever they ARE — the order
+         is draggable — they cannot be switched off, or the table becomes a
+         list of anonymous values. */
+      var locked = i < 2;
+      return '<div class="cc-listing__column' + (locked ? ' cc-listing__column--locked' : '') + '"' +
+        ' data-column-row="' + esc(col.key) + '">' +
+        '<span class="cc-listing__column-grip" data-column-grip title="Drag to reorder"' +
+          ' aria-hidden="true"><i data-lucide="grip-vertical"></i></span>' +
+        '<label class="checkbox">' +
+          '<input type="checkbox" class="checkbox__input" data-column="' + esc(col.key) + '"' +
+            (off ? '' : ' checked') + (locked ? ' disabled' : '') + '>' +
+          '<span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>' +
+          '<span class="checkbox__label"><span class="checkbox__label-text">' + esc(col.label) + '</span>' +
+            '<span class="cc-listing__column-note" data-column-note></span>' +
+          '</span></label>' +
+      '</div>';
     }).join('');
 
     if (window.lucide && typeof window.lucide.createIcons === 'function') {
@@ -674,12 +688,46 @@
       var key = input.getAttribute('data-column');
       var index = config.columns.findIndex(function (c) { return c.key === key; });
       var th = heads[index];
-      var note = input.closest('.checkbox').querySelector('[data-column-note]');
+      var note = input.closest('.cc-listing__column').querySelector('[data-column-note]');
       if (!th || !note) return;
       var hiddenByTier = getComputedStyle(th).display === 'none' &&
                          !th.classList.contains('datatables__col--off');
       note.textContent = (input.checked && hiddenByTier) ? 'No room at this width' : '';
     });
+  }
+
+  /* Move a column in front of / behind another.
+     Only the LABELLED columns reorder — the checkbox, spacer, edit and kebab
+     columns are structure and stay where they are, so the reorder is done on
+     the labelled subset and written back into the slots they occupied.
+
+     Reordering also re-tiers: a column's position IS its priority, so dragging
+     one to the front is how you say "show me this one first". Without that,
+     dragging a tier-9 column to the top would leave it hidden until 2600px,
+     which would look broken. Pairs, to match the thresholds in Datatables.css. */
+  function moveColumn(config, fromKey, toKey, before) {
+    var slots = [];
+    config.columns.forEach(function (c, i) { if (c.label) slots.push(i); });
+    var labelled = slots.map(function (i) { return config.columns[i]; });
+
+    var from = labelled.findIndex(function (c) { return c.key === fromKey; });
+    if (from === -1) return false;
+    var moved = labelled.splice(from, 1)[0];
+    var to = labelled.findIndex(function (c) { return c.key === toKey; });
+    if (to === -1) return false;
+    labelled.splice(before ? to : to + 1, 0, moved);
+
+    labelled.forEach(function (col, i) {
+      col.tier = Math.min(9, Math.floor(i / 2) + 1);
+      config.columns[slots[i]] = col;
+    });
+    /* The first two are the row's identity and are always shown, whatever was
+       switched off before they were dragged there. */
+    labelled.slice(0, 2).forEach(function (col) {
+      var at = config.hiddenColumns.indexOf(col.key);
+      if (at !== -1) config.hiddenColumns.splice(at, 1);
+    });
+    return true;
   }
 
   function applyColumnVisibility(root, config) {
@@ -830,6 +878,61 @@
       /* A row with no snapshot is one of the shipped mock views (or a brand-new
          empty one), which stand for the unfiltered listing. */
       restore(view && views.has(view) ? views.get(view) : baseline);
+    });
+
+    /* Drag to reorder. The row is only made draggable while the pointer is on
+       its grip, so the checkbox stays clickable and a stray drag on the label
+       does not start a reorder. */
+    var dragKey = null;
+
+    document.addEventListener('pointerdown', function (e) {
+      var grip = e.target.closest('[data-column-grip]');
+      if (!grip) return;
+      grip.closest('.cc-listing__column').draggable = true;
+    });
+
+    document.addEventListener('dragstart', function (e) {
+      var row = e.target.closest('[data-column-row]');
+      if (!row) return;
+      dragKey = row.getAttribute('data-column-row');
+      row.classList.add('cc-listing__column--dragging');
+      if (e.dataTransfer) e.dataTransfer.effectAllowed = 'move';
+    });
+
+    document.addEventListener('dragover', function (e) {
+      var row = e.target.closest('[data-column-row]');
+      if (!row || !dragKey) return;
+      e.preventDefault();                      // without this there is no drop
+      var box = row.getBoundingClientRect();
+      var before = (e.clientY - box.top) < box.height / 2;
+      document.querySelectorAll('[data-column-row]').forEach(function (r) {
+        r.classList.remove('cc-listing__column--over-before', 'cc-listing__column--over-after');
+      });
+      row.classList.add(before ? 'cc-listing__column--over-before' : 'cc-listing__column--over-after');
+    });
+
+    document.addEventListener('drop', function (e) {
+      var row = e.target.closest('[data-column-row]');
+      if (!row || !dragKey) return;
+      e.preventDefault();
+      var box = row.getBoundingClientRect();
+      var before = (e.clientY - box.top) < box.height / 2;
+      var target = row.getAttribute('data-column-row');
+      if (target !== dragKey && moveColumn(config, dragKey, target, before)) {
+        root.querySelector('[data-listing-head]').innerHTML = renderHead(config.columns, config.sort);
+        renderResults(root, config);
+        renderColumnPicker(root, config);
+      }
+      dragKey = null;
+    });
+
+    document.addEventListener('dragend', function () {
+      dragKey = null;
+      document.querySelectorAll('[data-column-row]').forEach(function (r) {
+        r.draggable = false;
+        r.classList.remove('cc-listing__column--dragging',
+          'cc-listing__column--over-before', 'cc-listing__column--over-after');
+      });
     });
 
     /* Sorting. A second click on the same column reverses it; a first click

@@ -88,6 +88,9 @@ var LISTING_ORDERS_COLUMNS = [
   { key: 'coupon',        type: 'text',   label: 'Coupon',          hug: true, tier: 9 },
   { key: 'discount',      type: 'text',   label: 'Discount',        hug: true, tier: 9 },
   { key: 'invoicesSent',  type: 'text',   label: 'Invoices Sent',   hug: true, tier: 9 },
+  /* Takes whatever width is left over so no real column has to stretch to
+     fill the table — see `--spacer` in Datatables.css. */
+  { key: 'spacer',        type: 'spacer', label: '',                           tier: 1 },
   { key: 'edit',          type: 'edit',   label: '',                hug: true, tier: 1, mobileOnly: true },
   { key: 'kebab',         type: 'kebab',  label: '',                hug: true, tier: 1 }
 ];

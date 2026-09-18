@@ -159,12 +159,50 @@
 }
 
 .cc-listing__column {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ai-spacing-2);
   padding: var(--ai-spacing-2) var(--ai-spacing-3);
   border-radius: var(--ai-radius-sm);
+  /* The insertion line is drawn as a border so it takes no layout space —
+     a margin or an inserted element would make the list jump while dragging. */
+  border-block: 1px solid transparent;
 }
 
 .cc-listing__column:hover {
   background-color: var(--ai-surface-minimal);
+}
+
+.cc-listing__column .checkbox {
+  flex: 1;
+  min-inline-size: 0;
+}
+
+/* Drag handle. The row is only made draggable while the pointer is on this,
+ * so the checkbox stays clickable. */
+.cc-listing__column-grip {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  color: var(--ai-icon-contrast);
+  cursor: grab;
+}
+
+.cc-listing__column-grip [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+.cc-listing__column--dragging {
+  opacity: var(--ai-opacity-disabled, 0.5);
+}
+
+.cc-listing__column--over-before {
+  border-block-start-color: var(--ai-border-brand);
+}
+
+.cc-listing__column--over-after {
+  border-block-end-color: var(--ai-border-brand);
 }
 
 /* Order No. and Customer identify the row; without them the table is a
