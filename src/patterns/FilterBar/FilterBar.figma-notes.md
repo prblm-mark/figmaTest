@@ -490,3 +490,24 @@ filtering.
 
 TODO(backend:Filters): the query belongs in the listing request, not in a
 client-side scan.
+
+
+## One thing open at a time
+
+Every menu on the bar closes when a click lands anywhere else — including on
+another control WITHIN the bar. Two things were stopping that:
+
+1. **Dropdown's trigger called `stopPropagation()`**, so a click that opened one
+   dropdown never reached `document` and no other dropdown heard it. Opening the
+   kebab while the saved-views list was open left both on screen. It is safe to
+   remove: each dropdown's own outside-click handler ignores clicks inside
+   itself, so letting the event through cannot close the one being opened.
+2. **The bar's chip-panel handler asked "was this click inside the BAR?"** — so
+   clicking the views control, the kebab, Export, the search field or bare space
+   in the bar left an open picker hanging. It now asks "was this click on a CHIP
+   or inside its picker?", which is the question that actually matters.
+
+Verified as a chain — chip picker → views → kebab → Edit Columns → rows-per-page
+→ bare bar space — with exactly one open at every step and none at the end.
+Clicking INSIDE an open picker still does not close it, and More Filters still
+stays open while facets are being picked.

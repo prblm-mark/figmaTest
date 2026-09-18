@@ -134,8 +134,12 @@ function init(root) {
     else open();
   };
 
-  trigger.addEventListener('click', (e) => {
-    e.stopPropagation();
+  trigger.addEventListener('click', () => {
+    /* No stopPropagation here. The click has to reach `document` so that any
+       OTHER open dropdown closes — without it, opening a second dropdown left
+       the first one on screen. This dropdown's own outside-click handler below
+       already ignores clicks inside itself, so letting the event through
+       cannot close the one being opened. */
     toggle();
   });
 
