@@ -67,8 +67,17 @@
       this.input.addEventListener('focus', open);
       this.input.addEventListener('click', toggle);
     }
-    var icon = this.root.querySelector('[data-datepicker-toggle]');
-    if (icon) icon.addEventListener('click', toggle);
+    /* Delegated, NOT bound to the icon element found right now.
+       `[data-datepicker-toggle]` is a Lucide `<i>`, and `lucide.createIcons()`
+       REPLACES it with an `<svg>` — any listener bound to the original node
+       dies with it. A screen that renders a picker and then re-runs
+       createIcons (for icons added later, say) silently ends up with a
+       calendar button that does nothing: the panel is built, the day cells
+       respond, the trigger just never fires. Listening on the root survives
+       the swap. */
+    this.root.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('[data-datepicker-toggle]')) toggle(e);
+    });
 
     document.addEventListener('click', function (e) {
       if (!self.root.contains(e.target)) close();

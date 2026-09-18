@@ -393,6 +393,18 @@ function wireChipPanels(root) {
     if (panel.querySelector('.checkbox__input')) {
       return pick(Array.from(checked).map((c) => c.closest('.checkbox').querySelector('.checkbox__label-text')));
     }
+
+    /* A two-field range — the date pickers, and the numeric from/to pairs.
+       Positions are KEPT, empty included: ['', '28 Sep 2026'] means "up to",
+       and collapsing it to one value would be read as "from". A range with
+       neither end set is simply not set. FilterItem drops the empty half from
+       the chip's label itself. */
+    const ends = panel.querySelectorAll('[data-range]');
+    if (ends.length) {
+      const values = Array.from(ends).map((f) => f.value.trim());
+      return values.some(Boolean) ? values : [];
+    }
+
     const field = panel.querySelector('.input__control');
     const text = field ? field.value.trim() : '';
     return text ? [text] : [];

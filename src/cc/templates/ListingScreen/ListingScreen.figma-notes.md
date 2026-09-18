@@ -727,3 +727,27 @@ as having missed the handle (designer, 2026-09-18).
 Scoped to this panel rather than set globally: nothing in it is worth copying,
 whereas a table of orders obviously is. Checkbox clicks and grip drags are
 unaffected — both re-verified after the change.
+
+
+## Date filters
+
+Order Date / Payment Date / Delivery Date use the real DatePicker. The screen
+now loads `DatePicker.css` + `DatePicker.js` and initialises pickers on
+`listing:rendered` alongside the other late-rendered components — without that
+the panel drew two inert readonly fields.
+
+**Two date formats meet in the comparison** and both are parsed rather than one
+pretending to be the other: rows carry ISO (`2026-09-28`, what a backend
+returns) and DatePicker writes what it displays (`28 Sep 2026`).
+
+**Either end may be blank** — an open-ended range is still a range. `valuesIn`
+keeps both positions, empty included, because collapsing `['', '5 Sep 2026']`
+to one value would be read as "from" rather than "up to". FilterItem drops the
+empty half from the chip's label by itself.
+
+The same code serves the numeric ranges (Order No. Range, Price Range), which
+use the identical two-field widget — `toNumber` strips currency symbols and
+separators so "£1,204.95" compares.
+
+Measured: 20–28 Sep gives 18 rows, all within range; "up to 5 Sep" gives 94,
+the latest being 2026-09-05.
