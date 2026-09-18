@@ -392,7 +392,13 @@ function wireChipPanels(root) {
      four-value selections identical. */
   const current = new Map();
 
-  const signature = () => JSON.stringify(
+  /* Anything ELSE about the view that the bar cannot see. The listing puts
+     its column layout here: editing the columns is a change to the view in
+     exactly the way adding a filter is, so it has to reach the same CTA —
+     but the bar has no business knowing what a column is. */
+  let extra = '';
+
+  const signature = () => JSON.stringify([extra,
     Array.from(root.querySelectorAll('.filter-bar__chips > .filter-bar__chip'))
       /* The chip's OWN FilterItem — not a More Filters facet inside its
          picker, which would make every bar look different from itself. */
@@ -402,7 +408,7 @@ function wireChipPanels(root) {
         const name = chip.getAttribute('data-filter-name');
         return [name, current.get(name) || []];
       })
-  );
+  ]);
 
   let baseline = signature();
 
@@ -487,6 +493,14 @@ function wireChipPanels(root) {
      the current filters as a new one — passing the values it just restored, so
      the new baseline is the values themselves and not a stale cache of them. */
   root.refreshSaveView = refreshSaveView;
+
+  /* The consumer's half of the view state, as an opaque string — the bar
+     compares it, never reads it. */
+  root.setViewExtra = (value) => {
+    extra = value || '';
+    refreshSaveView();
+  };
+
   root.resetSaveView = (valuesByName) => {
     if (valuesByName) {
       current.clear();

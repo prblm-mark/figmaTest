@@ -533,3 +533,27 @@ did:
 
 The spacer is `role="presentation"` with no accessible name, so screen readers
 do not announce an empty column.
+
+
+## Columns are part of the view (pass 6)
+
+Mark, 2026-09-18: editing the table "constitutes a possible new view
+(workflow)" — so a column change is a view change and must surface the same
+Save view CTA as a filter change.
+
+The bar owns the CTA but must not learn what a column is, so it exposes
+`setViewExtra(string)`: an opaque value folded into the signature it already
+compares. The screen sends `columnState()` — the column key order plus the
+hidden set — on every visibility toggle and every reorder, and before
+re-baselining on a view switch.
+
+Snapshots carry `columns` and `hiddenColumns` alongside the filters, COPIED
+rather than referenced: reordering rewrites each column's tier in place, so a
+stored reference would quietly follow the live table instead of preserving the
+layout as saved.
+
+Verified round trip: hide a column → CTA appears; restore it → CTA goes
+(the signature is back at baseline, not merely "something happened");
+reorder → CTA appears; save → CTA goes and the layout sticks; switch to All
+Orders → the original column order returns; switch back → the saved layout
+returns, CTA still hidden.

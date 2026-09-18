@@ -435,6 +435,12 @@ value. Values come from `announce`, never from the chip's label, which rolls
 4+ up into `<first>, and 3 more` and would call two different four-value
 selections identical. Reverting a change hides the CTA again, for free.
 
+`root.setViewExtra(string)` lets the CONSUMER put its own half of the view
+state into the same comparison. The listing uses it for the table layout:
+editing the columns is a change to the view in exactly the way adding a filter
+is, and has to reach the same CTA — but the bar has no business knowing what a
+column is, so the value is opaque and only ever compared.
+
 `root.resetSaveView(valuesByName)` re-baselines — the screen calls it after the
 first render, and after a view is selected or saved. It takes the values rather
 than trusting the bar's cache, because those chips are brand new.

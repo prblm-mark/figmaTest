@@ -798,7 +798,9 @@
 
     /* The bar establishes its baseline before these chips exist, so it would
        read the first render as a change and offer to save the view the screen
-       opened on. Hand it the real starting point. */
+       opened on. Hand it the real starting point — the columns included, or
+       the first column edit would be measured against an empty layout. */
+    if (bar && typeof bar.setViewExtra === 'function') bar.setViewExtra(columnState());
     if (bar && typeof bar.resetSaveView === 'function') bar.resetSaveView(config.filterValues);
 
     /* Add Filters: FilterBar reports which facet was picked; the screen owns
@@ -845,11 +847,31 @@
          → GET  /control/orders/views */
     var views = new WeakMap();
 
+    /* A view is the filter set AND the table layout. Editing the columns is a
+       change to the view in the same way adding a filter is — the two are one
+       workflow — so the columns travel with the snapshot and reach the same
+       Save view CTA. */
+    function columnState() {
+      return config.columns.map(function (c) { return c.key; }).join(',') +
+        '|' + config.hiddenColumns.slice().sort().join(',');
+    }
+
+    /* Tell the bar the table layout changed, so the CTA appears. The bar
+       compares this string and never reads it — it has no business knowing
+       what a column is. */
+    function announceColumns() {
+      if (bar && typeof bar.setViewExtra === 'function') bar.setViewExtra(columnState());
+    }
+
     function snapshot() {
       return {
         defaultFilters: config.defaultFilters.slice(),
         moreFilters: config.moreFilters.slice(),
-        filterValues: JSON.parse(JSON.stringify(config.filterValues))
+        filterValues: JSON.parse(JSON.stringify(config.filterValues)),
+        /* Copied, not referenced: reordering rewrites each column's tier in
+           place, so a stored reference would follow the live table. */
+        columns: config.columns.map(function (c) { return Object.assign({}, c); }),
+        hiddenColumns: config.hiddenColumns.slice()
       };
     }
 
@@ -861,8 +883,17 @@
       config.defaultFilters = snap.defaultFilters.slice();
       config.moreFilters = snap.moreFilters.slice();
       config.filterValues = JSON.parse(JSON.stringify(snap.filterValues));
+      if (snap.columns) {
+        config.columns = snap.columns.map(function (c) { return Object.assign({}, c); });
+        config.hiddenColumns = (snap.hiddenColumns || []).slice();
+      }
       renderChips(config);
+      root.querySelector('[data-listing-head]').innerHTML = renderHead(config.columns, config.sort);
       renderResults(root, config);
+      renderColumnPicker(root, config);
+      /* Set the column half of the signature BEFORE re-baselining, or the
+         baseline would be taken against the previous view's layout. */
+      announceColumns();
       /* The bar now matches the view it names, so the Save view CTA is owed
          nothing. It is handed the values rather than left to remember them —
          these chips are brand new. */
@@ -922,6 +953,7 @@
         root.querySelector('[data-listing-head]').innerHTML = renderHead(config.columns, config.sort);
         renderResults(root, config);
         renderColumnPicker(root, config);
+        announceColumns();
       }
       dragKey = null;
     });
@@ -998,6 +1030,7 @@
       else if (at === -1) { config.hiddenColumns.push(key); }
       applyColumnVisibility(root, config);
       annotateColumnRoom(root, config);
+      announceColumns();
     });
 
     /* Whether a column has ROOM changes with the container, not the window —
