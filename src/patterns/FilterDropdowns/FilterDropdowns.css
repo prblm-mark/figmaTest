@@ -238,6 +238,30 @@
   white-space: normal;
 }
 
+/* Type sizes track the Orders datatable, including its switch.
+ *
+ * Wide, both use the Table defaults — headers at `--ai-font-fixed-xxs`, cells
+ * at `--ai-font-fixed-xs`. Cramped, both step down to the same two tokens the
+ * Orders table uses on a narrow container: 4xs for the header, 2xs for the
+ * cells (designer, 2026-09-18).
+ *
+ * The THRESHOLD is read from the PAGE COLUMN, not from the card. Keyed to its
+ * own box the picker could never agree with the listing: the card is never
+ * wider than 640 and the listing switches below 767, so at a 1200px page the
+ * listing sat at 11/13 while the picker was still at 12/14 — two tables on
+ * screen at once, in different sizes. `cs-page` is the same signal the listing
+ * is really responding to (its datatable is the page column less its padding),
+ * so at ~800 the two switch together. */
+@container cs-page (max-width: 800px) {
+  .filter-dropdowns--table .table thead th {
+    font-size: var(--ai-font-fixed-4xs);
+  }
+
+  .filter-dropdowns--table .table tbody td {
+    font-size: var(--ai-font-fixed-2xs);
+  }
+}
+
 /* Tighter rows, matching the listing's own table. The shared Table default is
  * leading-md, which leaves a picker you are scanning for one item looking airy.
  * Scoped here rather than changed in Table.css, which other surfaces use. */
