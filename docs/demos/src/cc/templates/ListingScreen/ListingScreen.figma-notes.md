@@ -715,3 +715,15 @@ snapshot `added` rather than the arrays, since the arrays no longer move.
 - **FilterItem has no "already added" state.** Its slot is `+` or `×`, and
   neither means "on the bar, click to remove". Implemented as the solid Default
   treatment with a check; it wants a real variant.
+
+
+## Edit Columns: no text selection
+
+`user-select: none` on the whole `dropdown__panel--columns`. The rows are
+draggable, and a drag that starts anywhere but the grip otherwise sweeps a text
+selection across the list — which reads as the drag having failed rather than
+as having missed the handle (designer, 2026-09-18).
+
+Scoped to this panel rather than set globally: nothing in it is worth copying,
+whereas a table of orders obviously is. Checkbox clicks and grip drags are
+unaffected — both re-verified after the change.
