@@ -276,6 +276,64 @@
       '</div>';
     },
 
+    /* Type=Multi Select Table (3039:5624) — a 640px card with its own facet
+       chips and a Datatables body, for pickers whose options need more than a
+       name to choose between. The live Catalogue Item picker is paged and
+       letter-filtered with its own sub-filters (confirmed against the Affino
+       source), which is why a flat checkbox list was the wrong widget for it.
+
+       The facet chips here are NOT filters for the bar. FilterBar scopes its
+       add-filter click to `--more`, so clicking "Name" in this card does not
+       put a Name filter on the bar.
+       TODO(backend:Listing): those sub-filters are visual only. */
+    'multi-select-table': function (f, values) {
+      var picked = values || [];
+
+      var facets = (f.facets || []).map(function (name) {
+        return '<div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="' + esc(name) + '">' +
+          '<button type="button" class="filter-item__trigger" aria-expanded="false">' +
+            '<i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i>' +
+            '<span class="filter-item__name">' + esc(name) + '</span>' +
+          '</button></div>';
+      }).join('');
+
+      var head = (f.tableColumns || []).map(function (c) {
+        return '<th><button class="datatables__sort" type="button">' + esc(c) +
+          ' <i data-lucide="' + ICON_SORT + '" aria-hidden="true"></i></button></th>';
+      }).join('');
+
+      var rows = (f.options || []).map(function (o) {
+        var on = picked.indexOf(o.name) !== -1;
+        var cells = (o.cells || []).map(function (v) { return '<td>' + esc(v) + '</td>'; }).join('');
+        return '<tr>' +
+          '<td><label class="checkbox"><input type="checkbox" class="checkbox__input"' +
+            ' data-row-value="' + esc(o.name) + '"' + (on ? ' checked' : '') +
+            ' aria-label="Select ' + esc(o.name) + '"><span class="checkbox__indicator">' +
+            '<i data-lucide="check" aria-hidden="true"></i></span></label></td>' +
+          '<td>' + esc(o.name) + '</td>' + cells +
+          '<td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open ' + esc(o.name) + '">' +
+            '<i data-lucide="external-link" aria-hidden="true"></i></a></td>' +
+        '</tr>';
+      }).join('');
+
+      return '<div class="filter-dropdowns filter-dropdowns--table" data-filter-dropdowns>' +
+        '<div class="filter-dropdowns__header"><p class="filter-dropdowns__title">' + esc(f.label) + '</p></div>' +
+        '<div class="filter-dropdowns__facets">' + facets + '</div>' +
+        '<div class="filter-dropdowns__table-region"><div class="datatables"><div class="datatables__body">' +
+          '<table class="table"><thead><tr>' +
+            '<th class="datatables__col--tight"><label class="checkbox">' +
+              '<input type="checkbox" class="checkbox__input" data-select-all aria-label="Select all">' +
+              '<span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></th>' +
+            head +
+            '<th class="datatables__col--tight" aria-label="Open"></th>' +
+          '</tr></thead><tbody>' + rows + '</tbody></table>' +
+        '</div></div></div>' +
+        '<div class="filter-dropdowns__table-footer">' +
+          '<button type="button" class="btn btn--primary filter-dropdowns__apply" data-filter-dropdowns-apply>Apply</button>' +
+        '</div>' +
+      '</div>';
+    },
+
     /* Type=More Filters (3039:5637) — the filters NOT on the bar, as empty
        chips. No Apply: picking one adds it to the bar. */
     'more-filters': function (f, values) {

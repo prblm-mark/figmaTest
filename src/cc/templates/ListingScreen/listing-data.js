@@ -123,6 +123,17 @@ var LOOKUP = {
   zone: ['UK', 'EU', 'North America', 'Rest of World'],
   tradingZone: ['Default', 'Wholesale'],
   catalogueItem: ['Annual Membership', '1 Month Subs', 'Quarterly Pass', 'Student Plan', 'Corporate Seat', 'Trial Month'],
+  /* Catalogue Item is picked from a TABLE, not a list — an item needs its code
+     and zone to tell two similarly named ones apart. Columns per Figma
+     3039:5624: Name / Catalogue ID / Zone. */
+  catalogueItemRows: [
+    { name: 'Annual Membership', cells: ['affino-ai-123-0-4', 'Premium EU'] },
+    { name: '1 Month Subs',      cells: ['affino-ai-123-0-2', 'Default QA9'] },
+    { name: 'Quarterly Pass',    cells: ['affino-ai-123-0-3', 'Default QA9'] },
+    { name: 'Student Plan',      cells: ['affino-ai-123-0-6', 'Premium EU'] },
+    { name: 'Corporate Seat',    cells: ['affino-ai-123-0-7', 'Default QA9'] },
+    { name: 'Trial Month',       cells: ['affino-ai-123-0-8', 'Default QA9'] }
+  ],
   catalogueAttribute: ['Digital Access', 'Print Edition', 'Event Entry'],
   catalogueGroup: ['Memberships', 'Subscriptions', 'Events'],
   country: ['United Kingdom', 'Ireland', 'United States', 'Germany', 'France'],
@@ -189,7 +200,13 @@ var LISTING_ORDERS_MORE_FILTERS = [
   { name: 'Payment Status',    type: 'multi-select', field: 'paymentStatus',  label: 'Filter by Payment Status',   options: opts(PAYMENT_STATUSES) },
   { name: 'Sub Order Type',    type: 'multi-select', field: 'subOrderType',   label: 'Filter by Sub Order Type',   options: opts(SUB_ORDER_TYPES) },
   { name: 'Payment Method',    type: 'multi-select', field: 'paymentMethod',  label: 'Filter by Payment Method',   options: opts(LOOKUP.paymentMethod) },
-  { name: 'Catalogue Item',    type: 'multi-select', field: 'catalogueItem',  label: 'Filter by Catalogue Item',   options: opts(LOOKUP.catalogueItem) },
+  /* A TABLE, not a checkbox list: the live picker is paged and letter-filtered
+     with its own Catalogue ID / Payment Method / Zone sub-filters, so a flat
+     list of names was the wrong widget (designer, 2026-09-18). */
+  { name: 'Catalogue Item',    type: 'multi-select-table', field: 'catalogueItem', label: 'Filter by Catalogue Item',
+    facets: ['Name', 'Catalogue Group', 'Catalogue Item Code', 'Payment Method'],
+    tableColumns: ['Name', 'Catalogue ID', 'Zone'],
+    options: LOOKUP.catalogueItemRows },
   { name: 'Catalogue Attribute', type: 'multi-select', field: 'catalogueAttribute', label: 'Filter by Catalogue Attribute', options: opts(LOOKUP.catalogueAttribute) },
   { name: 'Countries',         type: 'multi-select', field: 'country',        label: 'Filter by Country',          options: opts(LOOKUP.country) },
   { name: 'Coupon',            type: 'multi-select', field: 'couponCode',     label: 'Filter by Coupon',           options: opts(LOOKUP.coupon) },
