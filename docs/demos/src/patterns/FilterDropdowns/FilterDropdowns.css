@@ -171,22 +171,30 @@
   container-name: fd-table;
 }
 
-/* Columns drop as the card narrows, the same principle as the listing's own
- * table: keep what identifies a row. Name is never dropped — without it the
- * picker is a list of codes.
+/* Columns are NEVER dropped here.
  *
- * Measured against the real columns: Name ~180, Catalogue ID ~150, Zone ~110,
- * plus the checkbox and link cells at ~48 each. */
-@container fd-table (max-width: 520px) {
-  .filter-dropdowns--table .datatables__col--zone {
-    display: none;
-  }
+ * They were, at 520 and 380px, and that was wrong for this table: Catalogue ID
+ * and Zone are how you tell two similarly named items apart, so hiding them at
+ * narrow widths removes the reason to use a table at all. The picker keeps
+ * every column and scrolls sideways instead (designer, 2026-09-18).
+ *
+ * `min-inline-size` is what forces the scroll: with cells wrapping, the table
+ * would otherwise squash to fit any width rather than overflow. 640px is the
+ * card's own design width, so it never renders narrower than it was drawn. */
+.filter-dropdowns--table .table {
+  min-inline-size: var(--ai-size-10);     /* 640px */
 }
 
-@container fd-table (max-width: 380px) {
-  .filter-dropdowns--table .datatables__col--code {
-    display: none;
-  }
+/* Drag to scroll with a mouse. Touch and trackpads already scroll a
+ * horizontally overflowing box; a mouse has no gesture for it, and a
+ * scrollbar under a list you are reading is easy to miss. */
+.filter-dropdowns--table .datatables__body {
+  cursor: grab;
+}
+
+.filter-dropdowns--table .datatables__body.is-dragging {
+  cursor: grabbing;
+  user-select: none;
 }
 
 /* Label header used by the table + modal types */
