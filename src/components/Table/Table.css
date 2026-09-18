@@ -36,7 +36,9 @@
 }
 
 .table thead th {
-  padding: var(--ai-spacing-3) var(--ai-spacing-5);
+  /* Designer, 2026-09-18: 16px all round, up from 8px vertical. Horizontal was
+     already --ai-spacing-5, so this only changes the header's height. */
+  padding: var(--ai-spacing-5) var(--ai-spacing-5);
   background-color: var(--ai-surface-minimal);
   border-bottom: 1px solid var(--ai-border-secondary);
   font-size: var(--ai-font-fixed-xxs);
