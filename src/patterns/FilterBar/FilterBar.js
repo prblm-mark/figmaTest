@@ -386,18 +386,21 @@ function wireChipPanels(root) {
   const valuesIn = (panel) => {
     const pick = (nodes) => Array.from(nodes).map((n) => n.textContent.trim()).filter(Boolean);
 
-    if (panel.querySelector('[data-select-menu]')) {
-      return pick(panel.querySelectorAll('.filter-dropdown-item--selected .filter-dropdown-item__name'));
-    }
-    /* A Multi Select Table names its value on the row, because the checkbox
-       has no label of its own — the name is a sibling cell. Checked first,
-       since the generic checkbox branch below would find these and come back
-       with nothing. */
+    /* A Multi Select Table FIRST, before any shape test.
+       Its value lives on the row, because the row's checkbox has no label of
+       its own — the name is a sibling cell. And it has to be checked first:
+       that card carries its own sub-filter pickers, so the panel contains a
+       `[data-select-menu]` and a checkbox list belonging to controls that
+       narrow the TABLE rather than name the filter's value. Shape alone
+       stopped being enough the moment panels could nest. */
     if (panel.querySelector('[data-row-value]')) {
       return Array.from(panel.querySelectorAll('[data-row-value]:checked'))
         .map((c) => c.getAttribute('data-row-value')).filter(Boolean);
     }
 
+    if (panel.querySelector('[data-select-menu]')) {
+      return pick(panel.querySelectorAll('.filter-dropdown-item--selected .filter-dropdown-item__name'));
+    }
     const checked = panel.querySelectorAll('.checkbox__input:checked');
     if (panel.querySelector('.checkbox__input')) {
       return pick(Array.from(checked).map((c) => c.closest('.checkbox').querySelector('.checkbox__label-text')));

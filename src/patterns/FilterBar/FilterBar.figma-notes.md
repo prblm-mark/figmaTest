@@ -543,3 +543,12 @@ later"), so this is the record of what it was:
   flex item or Discard stayed on the chips line while Save view dropped below
   it, and Discard needed the CC tertiary ghost override or it rendered as a
   solid grey pill next to the primary.
+
+
+## `valuesIn` checks the table FIRST
+
+Shape alone stopped being enough once panels could nest. A Multi Select Table
+carries its own sub-filter pickers, so the panel contains a `[data-select-menu]`
+and a checkbox list belonging to controls that narrow the TABLE rather than name
+the filter's value — and the menu branch happily read one of those instead.
+`[data-row-value]` is therefore tested before any shape test.

@@ -122,17 +122,77 @@ var LOOKUP = {
   store: ['Main Store', 'Trade Store'],
   zone: ['UK', 'EU', 'North America', 'Rest of World'],
   tradingZone: ['Default', 'Wholesale'],
-  catalogueItem: ['Annual Membership', '1 Month Subs', 'Quarterly Pass', 'Student Plan', 'Corporate Seat', 'Trial Month'],
   /* Catalogue Item is picked from a TABLE, not a list — an item needs its code
-     and zone to tell two similarly named ones apart. Columns per Figma
-     3039:5624: Name / Catalogue ID / Zone. */
+     to tell two similarly named ones apart, and the real data is full of them
+     ("Glass v2"…"v6", "Affino Social" twice, the same course under Zen-1 and
+     Zen-2).
+     Columns per Figma 3039:5624: Name / Catalogue ID / Zone.
+
+     ── PROVENANCE ────────────────────────────────────────────────
+     NAME and CATALOGUE ID are REAL — the whole CatalogueItem table from
+     Affino's own affino.com instance (Comrz), 42 rows, supplied 2026-09-18.
+     Affino's own store rather than a client's, deliberately, since this is
+     heading into a prototype.
+
+     CatalogueID is a free-text nvarchar the operator types. There is no
+     format and no validation: "CRZAF5001", "1", "444", "Cat ID", "glass-3".
+     Figma's `affino-ai-123-0-4` is an invented shape and using it would have
+     misrepresented the field.
+
+     ZONE is NOT real per row, and must not be presented as if it were. The
+     picker derives it through a five-table chain — catalogue item → SKC →
+     article or media item → section → channel → zone — which cannot be run
+     from here. These four are real Comrz zone NAMES spread across the rows so
+     the sub-filter has something to bite on. (Two real consequences of that
+     chain, if this is ever wired up: an item attached to no content appears in
+     NEITHER branch of the union and is invisible in the picker, and one
+     attached in two places can appear twice.)
+
+     GROUP and PAYMENT METHODS are invented — the picker matches them by name
+     but no membership data was available. */
   catalogueItemRows: [
-    { name: 'Annual Membership', cells: ['affino-ai-123-0-4', 'Premium EU'] },
-    { name: '1 Month Subs',      cells: ['affino-ai-123-0-2', 'Default QA9'] },
-    { name: 'Quarterly Pass',    cells: ['affino-ai-123-0-3', 'Default QA9'] },
-    { name: 'Student Plan',      cells: ['affino-ai-123-0-6', 'Premium EU'] },
-    { name: 'Corporate Seat',    cells: ['affino-ai-123-0-7', 'Default QA9'] },
-    { name: 'Trial Month',       cells: ['affino-ai-123-0-8', 'Default QA9'] }
+    { name: 'Quick Store', code: 'Qui9006027', zone: 'Affino', group: 'Services', paymentMethods: ['Credit Card', 'Invoice'] },
+    { name: 'ttt', code: 'ttt1899512', zone: 'Video Store', group: 'Content', paymentMethods: ['Credit Card'] },
+    { name: 'Affino Pro - Single Site Monthly Service', code: 'CRZAF5001', zone: 'Events', group: 'Events', paymentMethods: ['PayPal'] },
+    { name: 'Affino eCommerce - Single Site Monthly Service', code: 'eCommerce', zone: 'Intranet', group: 'Merchandise', paymentMethods: ['Invoice', 'Direct Debit'] },
+    { name: 'Affino eCommunity - Single Site Monthly Service', code: 'Aff9882376', zone: 'Affino', group: 'Services', paymentMethods: ['Credit Card', 'PayPal'] },
+    { name: 'Affino eMedia - Single Site Monthly Service', code: 'AfnEMediaSubs', zone: 'Video Store', group: 'Content', paymentMethods: ['Credit Card', 'Invoice'] },
+    { name: 'Affino Marketplace - Single Site Monthly Service', code: '1243264364326', zone: 'Events', group: 'Events', paymentMethods: ['Credit Card'] },
+    { name: 'Affino Pro - Multi Site Monthly Service', code: 'Aff6596096', zone: 'Intranet', group: 'Merchandise', paymentMethods: ['PayPal'] },
+    { name: 'Gorillaz Dare', code: '1', zone: 'Affino', group: 'Services', paymentMethods: ['Invoice', 'Direct Debit'] },
+    { name: 'Fashion', code: 'Fas9601882', zone: 'Video Store', group: 'Content', paymentMethods: ['Credit Card', 'PayPal'] },
+    { name: 'El Manana', code: 'El 3885657', zone: 'Events', group: 'Events', paymentMethods: ['Credit Card', 'Invoice'] },
+    { name: 'Beautiful Pen', code: 'Cat ID', zone: 'Intranet', group: 'Merchandise', paymentMethods: ['Credit Card'] },
+    { name: 'Cool Spa', code: 'Cool Spa 01', zone: 'Affino', group: 'Services', paymentMethods: ['PayPal'] },
+    { name: 'Saleable Article', code: 'saleablearticle1', zone: 'Video Store', group: 'Content', paymentMethods: ['Invoice', 'Direct Debit'] },
+    { name: 'Copy of Saleable Article', code: 'Cop9097968', zone: 'Events', group: 'Events', paymentMethods: ['Credit Card', 'PayPal'] },
+    { name: 'Eco Friendly Reindeer', code: 'Rudolf 1', zone: 'Intranet', group: 'Merchandise', paymentMethods: ['Credit Card', 'Invoice'] },
+    { name: 'Space Owl', code: 'Owl 1000000', zone: 'Affino', group: 'Services', paymentMethods: ['Credit Card'] },
+    { name: 'Viking Warriors', code: 'v1', zone: 'Video Store', group: 'Content', paymentMethods: ['PayPal'] },
+    { name: 'Self Ripping Cover', code: 'Riipping', zone: 'Events', group: 'Events', paymentMethods: ['Invoice', 'Direct Debit'] },
+    { name: 'New Age Meditation Course - Part Deux', code: 'Zen-1', zone: 'Intranet', group: 'Merchandise', paymentMethods: ['Credit Card', 'PayPal'] },
+    { name: 'New Age Meditation Course - Part Deux', code: 'Zen-2', zone: 'Affino', group: 'Services', paymentMethods: ['Credit Card', 'Invoice'] },
+    { name: 'Glass', code: 'glass-1', zone: 'Video Store', group: 'Content', paymentMethods: ['Credit Card'] },
+    { name: 'Glass v2', code: 'glass-2', zone: 'Events', group: 'Events', paymentMethods: ['PayPal'] },
+    { name: 'Glass v3', code: 'glass-3', zone: 'Intranet', group: 'Merchandise', paymentMethods: ['Invoice', 'Direct Debit'] },
+    { name: 'Glass v4', code: 'glass-4', zone: 'Affino', group: 'Services', paymentMethods: ['Credit Card', 'PayPal'] },
+    { name: 'Glass v5', code: 'glass-5', zone: 'Video Store', group: 'Content', paymentMethods: ['Credit Card', 'Invoice'] },
+    { name: 'Glass v6', code: 'glass-6', zone: 'Events', group: 'Events', paymentMethods: ['Credit Card'] },
+    { name: 'Good Vibes', code: 'Pledge1', zone: 'Intranet', group: 'Merchandise', paymentMethods: ['PayPal'] },
+    { name: 'Fur Ball', code: 'Pledge2', zone: 'Affino', group: 'Services', paymentMethods: ['Invoice', 'Direct Debit'] },
+    { name: 'Video Shoot', code: 'Pledge3', zone: 'Video Store', group: 'Content', paymentMethods: ['Credit Card', 'PayPal'] },
+    { name: 'A Better Mouse Trap', code: '898', zone: 'Events', group: 'Events', paymentMethods: ['Credit Card', 'Invoice'] },
+    { name: 'Affino Social', code: 'AFSOC01', zone: 'Intranet', group: 'Merchandise', paymentMethods: ['Credit Card'] },
+    { name: 'Affino Commerce', code: 'AFCOM01', zone: 'Affino', group: 'Services', paymentMethods: ['PayPal'] },
+    { name: 'Affino Marketplace', code: 'AFMAR01', zone: 'Video Store', group: 'Content', paymentMethods: ['Invoice', 'Direct Debit'] },
+    { name: 'Affino Social', code: 'AFSOC10', zone: 'Events', group: 'Events', paymentMethods: ['Credit Card', 'PayPal'] },
+    { name: 'Affino Commerce', code: 'AFCOM10', zone: 'Intranet', group: 'Merchandise', paymentMethods: ['Credit Card', 'Invoice'] },
+    { name: 'Affino Marketplace', code: 'AFMAR10', zone: 'Affino', group: 'Services', paymentMethods: ['Credit Card'] },
+    { name: 'Affino 7.3 Release', code: '4hddd', zone: 'Video Store', group: 'Content', paymentMethods: ['PayPal'] },
+    { name: 'Projects 2 Sept 2014', code: '90090009', zone: 'Events', group: 'Events', paymentMethods: ['Invoice', 'Direct Debit'] },
+    { name: 'All In', code: '444', zone: 'Intranet', group: 'Merchandise', paymentMethods: ['Credit Card', 'PayPal'] },
+    { name: 'Affino Innovation Briefing 2019 - Actionable Intelligence, Case Study and 2020 Roadmap', code: 'AIB2019', zone: 'Affino', group: 'Services', paymentMethods: ['Credit Card', 'Invoice'] },
+    { name: 'Affino Virtual Roundtable - Media Automation Innovations Roundtable - Postponed', code: 'ART2020-1', zone: 'Video Store', group: 'Content', paymentMethods: ['Credit Card'] }
   ],
   catalogueAttribute: ['Digital Access', 'Print Edition', 'Event Entry'],
   catalogueGroup: ['Memberships', 'Subscriptions', 'Events'],
@@ -204,8 +264,31 @@ var LISTING_ORDERS_MORE_FILTERS = [
      with its own Catalogue ID / Payment Method / Zone sub-filters, so a flat
      list of names was the wrong widget (designer, 2026-09-18). */
   { name: 'Catalogue Item',    type: 'multi-select-table', field: 'catalogueItem', label: 'Filter by Catalogue Item',
-    facets: ['Name', 'Catalogue Group', 'Catalogue Item Code', 'Payment Method'],
+    /* The picker's OWN sub-filters, which narrow its table rather than the
+       listing. Each names the row field it tests.
+
+       ALL FOUR ARE FREE TEXT — confirmed against MultipleLookup.cfm's
+       CatalogueItem case (lines 819-1119), 2026-09-18. None is a dropdown, an
+       option list or a nested modal; each is a `LIKE '%…%'` substring match,
+       case-insensitive, capped at 50 characters. Two traps this corrected:
+
+         - "Name" is a text box, not an A-Z strip. The param is called `Letter`,
+           which is only a variable name.
+         - "Payment Method" here is a text box matching the method's NAME. It is
+           NOT the Payment Method multi-select modal used from the Orders filter
+           bar — that is a different lookup case entirely. Same words, two
+           different controls. */
+    facets: [
+      { name: 'Name',                type: 'text', field: 'name',           placeholder: 'Search by name' },
+      { name: 'Catalogue Group',     type: 'text', field: 'group',          placeholder: 'Search by group' },
+      { name: 'Catalogue Item Code', type: 'text', field: 'code',           placeholder: 'Search by code' },
+      { name: 'Payment Method',      type: 'text', field: 'paymentMethods', placeholder: 'Search by payment method' }
+    ],
     tableColumns: ['Name', 'Catalogue ID', 'Zone'],
+    tableFields: ['code', 'zone'],
+    /* Only Name and Zone sort. The query orders on lowercased copies of those
+       two; Catalogue ID is displayed but is not a sort key. */
+    sortable: ['Name', 'Zone'],
     options: LOOKUP.catalogueItemRows },
   { name: 'Catalogue Attribute', type: 'multi-select', field: 'catalogueAttribute', label: 'Filter by Catalogue Attribute', options: opts(LOOKUP.catalogueAttribute) },
   { name: 'Countries',         type: 'multi-select', field: 'country',        label: 'Filter by Country',          options: opts(LOOKUP.country) },
@@ -342,7 +425,9 @@ var LISTING_ORDERS_ROWS = (function (seed) {
       row.orderType = ORDER_TYPES[n % ORDER_TYPES.length];
       row.subOrderType = SUB_ORDER_TYPES[n % SUB_ORDER_TYPES.length];
       row.paymentMethod = LOOKUP.paymentMethod[n % LOOKUP.paymentMethod.length];
-      row.catalogueItem = LOOKUP.catalogueItem[n % LOOKUP.catalogueItem.length];
+      /* Drawn from the REAL catalogue, so filtering orders by an item picked
+         in the Catalogue Item table actually matches something. */
+      row.catalogueItem = LOOKUP.catalogueItemRows[n % LOOKUP.catalogueItemRows.length].name;
       row.currency = LOOKUP.currency[n % LOOKUP.currency.length];
       row.store = LOOKUP.store[n % LOOKUP.store.length];
       row.qty = String((n % 4) + 1);

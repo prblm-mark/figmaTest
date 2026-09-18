@@ -147,6 +147,27 @@
     }).join('');
   }
 
+  /* One row of a Multi Select Table. Shared by the first render and by every
+     redraw the card's sub-filters trigger, so the two cannot drift. */
+  var PICKER_DROPPABLE = ['', 'datatables__col--code', 'datatables__col--zone'];
+
+  function pickerRow(o, f, picked) {
+    var on = (picked || []).indexOf(o.name) !== -1;
+    var cells = (f.tableFields || []).map(function (key, i) {
+      var cls = PICKER_DROPPABLE[i + 1] ? ' class="' + PICKER_DROPPABLE[i + 1] + '"' : '';
+      return '<td' + cls + '>' + esc(o[key]) + '</td>';
+    }).join('');
+    return '<tr>' +
+      '<td><label class="checkbox"><input type="checkbox" class="checkbox__input"' +
+        ' data-row-value="' + esc(o.name) + '"' + (on ? ' checked' : '') +
+        ' aria-label="Select ' + esc(o.name) + '"><span class="checkbox__indicator">' +
+        '<i data-lucide="check" aria-hidden="true"></i></span></label></td>' +
+      '<td>' + esc(o.name) + '</td>' + cells +
+      '<td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open ' + esc(o.name) + '">' +
+        '<i data-lucide="external-link" aria-hidden="true"></i></a></td>' +
+    '</tr>';
+  }
+
   var FILTER_PANELS = {
     /* Type=Select Options w/subtext (3039:5628) — a field that opens a
        single-select option list, then Apply. Picking an option closes the
@@ -289,32 +310,43 @@
     'multi-select-table': function (f, values) {
       var picked = values || [];
 
-      var facets = (f.facets || []).map(function (name) {
-        return '<div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="' + esc(name) + '">' +
-          '<button type="button" class="filter-item__trigger" aria-expanded="false">' +
-            '<i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i>' +
-            '<span class="filter-item__name">' + esc(name) + '</span>' +
-          '</button></div>';
+      /* Each sub-filter is a FilterItem that opens its own picker, the same
+         gesture as a chip on the bar — so the card is consistent with the
+         system rather than inventing a second kind of control. */
+      var facets = (f.facets || []).map(function (sub) {
+        var build = FILTER_PANELS[sub.type];
+        return '<div class="filter-dropdowns__facet" data-subfilter="' + esc(sub.name) + '">' +
+          '<div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="' + esc(sub.name) + '">' +
+            '<button type="button" class="filter-item__clear" aria-label="Clear ' + esc(sub.name) + '">' +
+              '<i data-lucide="x" aria-hidden="true"></i></button>' +
+            '<button type="button" class="filter-item__trigger" data-subfilter-trigger aria-expanded="false">' +
+              '<i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i>' +
+              '<span class="filter-item__name">' + esc(sub.name) + '</span>' +
+              '<span class="filter-item__sep" aria-hidden="true">·</span>' +
+              '<span class="filter-item__values"></span>' +
+              '<i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i>' +
+            '</button>' +
+          '</div>' +
+          (build ? '<div class="filter-dropdowns__subpanel" hidden>' +
+            build(Object.assign({ label: sub.name }, sub), []) + '</div>' : '') +
+        '</div>';
       }).join('');
 
-      var head = (f.tableColumns || []).map(function (c) {
-        return '<th><button class="datatables__sort" type="button">' + esc(c) +
-          ' <i data-lucide="' + ICON_SORT + '" aria-hidden="true"></i></button></th>';
+      /* The first column identifies the row and never drops; the rest are
+         tagged so the card's container query can shed them as it narrows. */
+      var sortable = f.sortable || [];
+      var head = (f.tableColumns || []).map(function (c, i) {
+        var cls = PICKER_DROPPABLE[i] ? ' class="' + PICKER_DROPPABLE[i] + '"' : '';
+        /* Catalogue ID is shown but not sortable — the query orders on
+           lowercased copies of Name and Zone only. */
+        var inner = sortable.indexOf(c) !== -1
+          ? '<button class="datatables__sort" type="button">' + esc(c) +
+            ' <i data-lucide="' + ICON_SORT + '" aria-hidden="true"></i></button>'
+          : esc(c);
+        return '<th' + cls + '>' + inner + '</th>';
       }).join('');
 
-      var rows = (f.options || []).map(function (o) {
-        var on = picked.indexOf(o.name) !== -1;
-        var cells = (o.cells || []).map(function (v) { return '<td>' + esc(v) + '</td>'; }).join('');
-        return '<tr>' +
-          '<td><label class="checkbox"><input type="checkbox" class="checkbox__input"' +
-            ' data-row-value="' + esc(o.name) + '"' + (on ? ' checked' : '') +
-            ' aria-label="Select ' + esc(o.name) + '"><span class="checkbox__indicator">' +
-            '<i data-lucide="check" aria-hidden="true"></i></span></label></td>' +
-          '<td>' + esc(o.name) + '</td>' + cells +
-          '<td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open ' + esc(o.name) + '">' +
-            '<i data-lucide="external-link" aria-hidden="true"></i></a></td>' +
-        '</tr>';
-      }).join('');
+      var rows = (f.options || []).map(function (o) { return pickerRow(o, f, picked); }).join('');
 
       return '<div class="filter-dropdowns filter-dropdowns--table" data-filter-dropdowns>' +
         '<div class="filter-dropdowns__header"><p class="filter-dropdowns__title">' + esc(f.label) + '</p></div>' +
@@ -1378,6 +1410,138 @@
         var t = dd.querySelector('.dropdown__trigger');
         if (t) t.setAttribute('aria-expanded', 'false');
       }
+    });
+
+    /* ── A picker's own sub-filters ───────────────────────────
+       The Multi Select Table carries FilterItem chips that narrow ITS table,
+       not the listing. Same gesture as a bar chip: click to open a picker,
+       Apply to commit.
+
+       Values are read here rather than by FilterBar. The bar reads a panel by
+       its SHAPE, which is the right contract for it, but these events must not
+       reach it at all — a sub-filter's Apply bubbling up would be taken as the
+       Catalogue Item chip committing, and the chip would show a group name
+       instead of the items chosen. They are stopped at the subpanel. */
+    function subValues(panel) {
+      if (panel.querySelector('[data-select-menu]')) {
+        return Array.from(panel.querySelectorAll('.filter-dropdown-item--selected .filter-dropdown-item__name'))
+          .map(function (n) { return n.textContent.trim(); });
+      }
+      if (panel.querySelector('.checkbox__input')) {
+        return Array.from(panel.querySelectorAll('.checkbox__input:checked')).map(function (c) {
+          var t = c.closest('.checkbox').querySelector('.checkbox__label-text');
+          return t ? t.textContent.trim() : '';
+        }).filter(Boolean);
+      }
+      var field = panel.querySelector('.input__control');
+      var text = field ? field.value.trim() : '';
+      return text ? [text] : [];
+    }
+
+    /* Which rows survive the card's own sub-filters. */
+    function subFilterRows(filter, state, chosen) {
+      var picked = chosen || [];
+      return (filter.options || []).filter(function (row) {
+        /* An item already ticked stays visible however the sub-filters are
+           set. The live picker does this with a second query — filtering after
+           choosing must not hide what you chose. */
+        if (picked.indexOf(row.name) !== -1) return true;
+        return (filter.facets || []).every(function (sub) {
+          var values = state[sub.name] || [];
+          if (!values.length) return true;
+          /* An array field joins for the match — Payment Method is a text
+             search over the methods an item accepts, not a pick from a list. */
+          var actual = row[sub.field];
+          actual = String(Array.isArray(actual) ? actual.join(' ') : (actual === undefined ? '' : actual));
+          if (sub.type === 'text') return actual.toLowerCase().indexOf(values[0].toLowerCase()) !== -1;
+          return values.some(function (v) { return actual === v; });
+        });
+      });
+    }
+
+    var subState = {};   // filter name -> { sub-filter name -> values[] }
+
+    function redrawPickerRows(card, filter) {
+      var body = card.querySelector('tbody');
+      if (!body) return;
+      var state = subState[filter.name] || {};
+      var chosen = config.filterValues[filter.name] || [];
+      var rows = subFilterRows(filter, state, chosen);
+
+      body.innerHTML = rows.length
+        ? rows.map(function (o) { return pickerRow(o, filter, chosen); }).join('')
+        : '<tr><td class="filter-dropdowns__empty" colspan="' +
+            ((filter.tableColumns || []).length + 2) + '">No matching items</td></tr>';
+
+      if (window.lucide) window.lucide.createIcons();
+      /* The header checkbox describes a set that just changed. */
+      var all = card.querySelector('[data-select-all]');
+      if (all) { all.checked = false; all.indeterminate = false; }
+    }
+
+    function pickerFilter(card) {
+      var wrap = card.closest('.filter-bar__chip');
+      var name = wrap && wrap.querySelector('.filter-item').getAttribute('data-filter-name');
+      return config.moreFilters.concat(config.baseFilters)
+        .filter(function (f) { return f.name === name; })[0];
+    }
+
+    /* Open one sub-picker at a time. */
+    document.addEventListener('click', function (e) {
+      var trigger = e.target.closest('[data-subfilter-trigger]');
+      var card = e.target.closest('.filter-dropdowns--table');
+      if (!card) return;
+
+      if (trigger) {
+        var facet = trigger.closest('.filter-dropdowns__facet');
+        var panel = facet.querySelector('.filter-dropdowns__subpanel');
+        var wasOpen = panel && !panel.hidden;
+        card.querySelectorAll('.filter-dropdowns__subpanel').forEach(function (p) { p.hidden = true; });
+        if (panel) panel.hidden = wasOpen;
+        return;
+      }
+      /* A click anywhere else in the card that is not inside an open
+         sub-picker closes them. */
+      if (!e.target.closest('.filter-dropdowns__subpanel')) {
+        card.querySelectorAll('.filter-dropdowns__subpanel').forEach(function (p) { p.hidden = true; });
+      }
+    });
+
+    document.addEventListener('filter-dropdowns:apply', function (e) {
+      var panel = e.target.closest('.filter-dropdowns__subpanel');
+      if (!panel) return;
+      /* Never let this reach the bar — see subValues above. */
+      e.stopPropagation();
+
+      var facet = panel.closest('.filter-dropdowns__facet');
+      var card = panel.closest('.filter-dropdowns--table');
+      var filter = pickerFilter(card);
+      if (!filter) return;
+
+      var name = facet.getAttribute('data-subfilter');
+      var values = subValues(panel);
+      subState[filter.name] = subState[filter.name] || {};
+      subState[filter.name][name] = values;
+
+      var chip = facet.querySelector('.filter-item');
+      if (chip && typeof chip.setFilterValues === 'function') chip.setFilterValues(values);
+      panel.hidden = true;
+      redrawPickerRows(card, filter);
+    }, true);
+
+    /* Clearing a sub-filter chip clears its narrowing too. */
+    document.addEventListener('filter-item:clear', function (e) {
+      var facet = e.target.closest('.filter-dropdowns__facet');
+      if (!facet) return;
+      var card = facet.closest('.filter-dropdowns--table');
+      var filter = pickerFilter(card);
+      if (!filter) return;
+      var name = facet.getAttribute('data-subfilter');
+      if (subState[filter.name]) subState[filter.name][name] = [];
+      var panel = facet.querySelector('.filter-dropdowns__subpanel');
+      var card2 = panel && panel.querySelector('[data-filter-dropdowns]');
+      if (card2 && typeof card2.resetFilterDropdown === 'function') card2.resetFilterDropdown();
+      redrawPickerRows(card, filter);
     });
 
     /* Edit Columns: toggling a column. */
