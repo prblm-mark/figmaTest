@@ -130,3 +130,56 @@
   line-height: var(--ai-leading-sm);
   color: var(--ai-text-secondary);
 }
+
+/* ── Edit Columns ────────────────────────────────────────
+ * A NEW capability, not a reproduction — the live Orders screen has no
+ * column picker and no per-user preference (verified in its source,
+ * 2026-09-18). Built as a working prototype at Mark's direction; the
+ * choices are in memory, like the saved views.
+ *
+ * The panel is the shared Dropdown; only the list inside is ours.
+ */
+
+.cc-listing__columns {
+  position: relative;
+}
+
+.dropdown__panel--columns {
+  left: auto;
+  inset-inline-end: 0;
+  min-width: var(--ai-size-4);           /* 240px */
+  max-height: var(--ai-size-7);          /* 384px */
+  overflow-y: auto;
+}
+
+.cc-listing__columns-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-2);
+}
+
+.cc-listing__column {
+  padding: var(--ai-spacing-2) var(--ai-spacing-3);
+  border-radius: var(--ai-radius-sm);
+}
+
+.cc-listing__column:hover {
+  background-color: var(--ai-surface-minimal);
+}
+
+/* Order No. and Customer identify the row; without them the table is a
+ * list of anonymous numbers, so their checkboxes are disabled rather than
+ * absent — the user can see WHY they cannot be removed. */
+.cc-listing__column--locked {
+  cursor: default;
+  opacity: var(--ai-opacity-disabled, 0.5);
+}
+
+/* A column can be wanted and still have no room at this width. Saying so
+ * beats showing a tick against something the user cannot see. */
+.cc-listing__column-note:not(:empty) {
+  display: block;
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-contrast);
+}

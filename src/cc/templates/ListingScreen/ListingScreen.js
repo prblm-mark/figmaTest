@@ -491,6 +491,8 @@
     if (window.lucide && typeof window.lucide.createIcons === 'function') {
       window.lucide.createIcons();
     }
+    /* The body was just rebuilt, so the hidden-column marks went with it. */
+    applyColumnVisibility(root, config);
   }
 
   /* TODO(design:Listing): Datatables has no empty state in Figma. This mirrors
@@ -539,10 +541,81 @@
     });
   }
 
+  /* ── Edit Columns ─────────────────────────────────────────
+     NEW capability — the live screen has no column picker (verified in
+     source, 2026-09-18). Choices live in `config.hiddenColumns` and are
+     lost on reload, like the saved views.
+
+     Two different questions decide whether a column is on screen:
+       tier  — is there ROOM for it at this container width?  (CSS)
+       here  — is it WANTED?                                  (this)
+     A column can be wanted with no room, so the panel says so rather than
+     showing a tick against a column the user cannot see. That state is read
+     back off the DOM — the th is hidden while not carrying `--off` — rather
+     than by re-deriving the tier thresholds in JS, which would drift from
+     the stylesheet the moment someone retuned a breakpoint. */
+  function renderColumnPicker(root, config) {
+    var host = document.querySelector('[data-listing-columns]');
+    if (!host) return;
+
+    host.innerHTML = config.columns.filter(function (col) {
+      return col.label;   // the checkbox / edit / kebab columns are structure
+    }).map(function (col) {
+      var off = config.hiddenColumns.indexOf(col.key) !== -1;
+      /* Tier 1 is the identity of a row — order number and customer. Letting
+         those be switched off leaves a table of anonymous rows. */
+      var locked = (col.tier || 1) === 1;
+      return '<label class="checkbox cc-listing__column' + (locked ? ' cc-listing__column--locked' : '') + '">' +
+        '<input type="checkbox" class="checkbox__input" data-column="' + esc(col.key) + '"' +
+          (off ? '' : ' checked') + (locked ? ' disabled' : '') + '>' +
+        '<span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>' +
+        '<span class="checkbox__label"><span class="checkbox__label-text">' + esc(col.label) + '</span>' +
+          '<span class="cc-listing__column-note" data-column-note></span>' +
+        '</span></label>';
+    }).join('');
+
+    if (window.lucide && typeof window.lucide.createIcons === 'function') {
+      window.lucide.createIcons();
+    }
+    annotateColumnRoom(root, config);
+  }
+
+  /* Say which ticked columns have no room at the current width. */
+  function annotateColumnRoom(root, config) {
+    var host = document.querySelector('[data-listing-columns]');
+    if (!host) return;
+    var heads = root.querySelectorAll('[data-listing-head] th');
+
+    host.querySelectorAll('[data-column]').forEach(function (input, i) {
+      void i;
+      var key = input.getAttribute('data-column');
+      var index = config.columns.findIndex(function (c) { return c.key === key; });
+      var th = heads[index];
+      var note = input.closest('.checkbox').querySelector('[data-column-note]');
+      if (!th || !note) return;
+      var hiddenByTier = getComputedStyle(th).display === 'none' &&
+                         !th.classList.contains('datatables__col--off');
+      note.textContent = (input.checked && hiddenByTier) ? 'No room at this width' : '';
+    });
+  }
+
+  function applyColumnVisibility(root, config) {
+    var heads = root.querySelectorAll('[data-listing-head] th');
+    config.columns.forEach(function (col, index) {
+      var off = config.hiddenColumns.indexOf(col.key) !== -1;
+      if (heads[index]) heads[index].classList.toggle('datatables__col--off', off);
+      root.querySelectorAll('[data-listing-body] tr.datatables__row').forEach(function (tr) {
+        var cell = tr.children[index];
+        if (cell) cell.classList.toggle('datatables__col--off', off);
+      });
+    });
+  }
+
   function render(root, config) {
     renderChips(config);
     root.querySelector('[data-listing-head]').innerHTML = renderHead(config.columns);
     renderResults(root, config);
+    renderColumnPicker(root, config);
   }
 
   function init() {
@@ -562,6 +635,7 @@
       defaultFilters: (config.defaultFilters || []).slice(),
       moreFilters: (config.moreFilters || []).slice(),
       query: '',
+      hiddenColumns: [],
       /* name -> the values that chip currently holds. The bar reports these;
          they cannot be read back off a chip, whose label rolls 4+ values up
          into "<first>, and 3 more". */
@@ -655,6 +729,27 @@
          empty one), which stand for the unfiltered listing. */
       restore(view && views.has(view) ? views.get(view) : baseline);
     });
+
+    /* Edit Columns: toggling a column. */
+    document.addEventListener('change', function (e) {
+      var input = e.target.closest('[data-column]');
+      if (!input) return;
+      var key = input.getAttribute('data-column');
+      var at = config.hiddenColumns.indexOf(key);
+      if (input.checked) { if (at !== -1) config.hiddenColumns.splice(at, 1); }
+      else if (at === -1) { config.hiddenColumns.push(key); }
+      applyColumnVisibility(root, config);
+      annotateColumnRoom(root, config);
+    });
+
+    /* Whether a column has ROOM changes with the container, not the window —
+       the CC sidebar resizes the table with no window resize at all — so the
+       panel's notes are refreshed from a ResizeObserver on the table
+       (CLAUDE.md §4a), never from matchMedia. */
+    var table = root.querySelector('.datatables');
+    if (table && typeof ResizeObserver === 'function') {
+      new ResizeObserver(function () { annotateColumnRoom(root, config); }).observe(table);
+    }
 
     /* Free text from either search field. FilterBar holds the 3-character
        threshold and reports '' below it, so there is nothing to re-check here.

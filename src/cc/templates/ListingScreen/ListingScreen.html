@@ -598,10 +598,24 @@
               </button>
               <span>of <strong data-listing-total>296</strong></span>
             </span>
+            <!-- Edit Columns is a NEW capability, not a reproduction: the live
+                 Orders screen has no column picker and no per-user column
+                 preference anywhere (verified in its source, 2026-09-18).
+                 Column visibility there is decided by the static definitions,
+                 CRM-profile flags and URL params.
+                 TODO(backend:Listing): choices are in memory only.
+                   → GET/PUT /control/orders/columns { hidden: [key] } -->
             <div class="datatables__actions">
-              <button type="button" class="btn btn--secondary btn--sm">
-                <i data-lucide="columns-3" aria-hidden="true"></i><span>Edit Columns</span>
-              </button>
+              <div class="dropdown cc-listing__columns" data-dropdown data-backend-todo="listing-column-prefs">
+                <button type="button" class="btn btn--secondary btn--sm dropdown__trigger"
+                        aria-haspopup="menu" aria-expanded="false">
+                  <i data-lucide="columns-3" aria-hidden="true"></i><span>Edit Columns</span>
+                </button>
+                <div class="dropdown__panel dropdown__panel--columns" role="menu" aria-label="Edit columns">
+                  <p class="dropdown__label">Columns</p>
+                  <div class="cc-listing__columns-list" data-listing-columns></div>
+                </div>
+              </div>
             </div>
           </div>
 

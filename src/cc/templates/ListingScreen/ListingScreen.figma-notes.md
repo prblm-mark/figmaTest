@@ -370,3 +370,65 @@ expectation is that search reaches fields the listing does not display.
 **Search is not part of a saved view**, and survives switching between them: a
 view is a filter set, and the search is a transient look inside whichever view
 is open. It therefore does not make the Save view CTA appear either.
+
+
+## Real Orders schema (pass 3)
+
+Columns and filters are now the live screen's, read from the Affino source
+(client_key Comrz). Provenance is recorded at the top of `listing-data.js`.
+Mark, 2026-09-18: replicate the DATA; the presentation and interaction move
+to the new design system — "that is the task".
+
+### What is a reproduction
+
+- **20 data columns** from `OrderProcessingDef.cfm` (`CProperties`, rows
+  flagged `l`), plus Account / Account Code which are present on the
+  standalone screen and suppressed only when embedded on an account record.
+- **Seven sortable columns**, the explicit `hs` whitelist from
+  `OrderProcessings.cfm`: `OrderNo.` `Date` `Customer` `Account` `Value`
+  `Status` `PaymentStatus`. Everything else silently falls through, so Qty,
+  Order Total and Tax carry no sort control however sortable they look.
+  Default `Date` descending.
+- **Six default filters** — the live "Simple Search" form. Customer and
+  Order Owner are autocompletes (→ Predictive); User Code, Account, Account
+  Code and Order No. are plain text. Customer and User Code are DIFFERENT
+  fields shown at once, as are Account and Account Code.
+- **47 advanced filters** with their real widget types and, where the source
+  defines them statically, their real option lists (Order Status ×16,
+  Payment Status ×3, Order Type ×2, Sub Order Type ×7, Order Method ×2 …).
+  DB-lookup option VALUES are mock; the names and types are not.
+- `TaxRule` is deliberately absent — accepted by the controller and used in
+  the query, but no form renders a control for it. Building one would be
+  inventing UI.
+
+### What is new, and says so
+
+- **The chip bar.** The live screen swaps a Simple form for an Advanced one
+  behind a `+`; it has no default-chips / Add-Filters model.
+- **The search field.** The live `Search` param is an `<input type="submit">`
+  — the code only tests `Len(Trim(url.Search))` to mean "a search was
+  submitted". There is no keyword box on that screen at all.
+- **Edit Columns.** No column picker and no per-user column preference exist
+  today. Built as a working prototype at Mark's direction.
+
+### Progressive columns
+
+Every column carries a `tier`; tiers reveal as the TABLE widens (~180px
+steps, `@container` on the datatable's own inline size). Tier 1 is the row's
+identity and is always present. Measured: 5 columns at a 420px page, 22 at
+2300px. At a 900px page the table is NARROWER than at 700px because the CC
+sidebar expands — a viewport query would show more columns in less space,
+which is the §4a failure mode exactly.
+
+Edit Columns answers a different question from the tier: the tier decides
+whether there is ROOM, the picker whether a column is WANTED. A wanted
+column with no room still hides, and the panel says "No room at this width"
+rather than showing a tick against something invisible. That state is read
+back off the DOM (hidden `th` without `--off`) rather than by re-deriving
+the breakpoints in JS, which would drift from the stylesheet. The notes
+refresh from a `ResizeObserver` on the table, never `matchMedia`.
+
+Order No. and Customer are locked in the picker — without them the table is
+a list of anonymous rows.
+
+TODO(backend:Listing): column choices are in memory, like the saved views.
