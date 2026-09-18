@@ -301,21 +301,9 @@
   /* One chip: the FilterItem markup plus its picker, wrapped so the picker can
      anchor to it. The full slot set is always rendered — FilterItem's contract
      is that CSS hides what the current state does not use. */
-  function chip(f, extraClass, wrapClass, values, removable) {
+  function chip(f, extraClass, wrapClass, values) {
     var build = FILTER_PANELS[f.type];
     var card = build ? build(f, values) : '';
-    /* A filter the user added can be taken off from inside its own picker —
-       they are already here to set a value. The base chips are the screen's
-       and have no such action.
-
-       Spliced in before the card's closing tag so it sits INSIDE the panel
-       rather than under it; every builder returns one `.filter-dropdowns`
-       element, so the last `</div>` is reliably the card's. */
-    if (card && removable && /<\/div>$/.test(card)) {
-      card = card.slice(0, -6) +
-        '<button type="button" class="filter-dropdowns__remove" data-filter-remove="' +
-        esc(f.name) + '">Remove filter</button></div>';
-    }
     return '<div class="filter-bar__chip' + (wrapClass || '') + '">' +
       '<div class="filter-item filter-item--rounded' + (extraClass || '') + '" data-filter-name="' + esc(f.name) + '">' +
         '<button type="button" class="filter-item__clear" aria-label="Clear ' + esc(f.name) + ' filter"><i data-lucide="x" aria-hidden="true"></i></button>' +
@@ -334,7 +322,7 @@
   function renderFilters(config) {
     var added = config.added || [];
     var html = (config.defaultFilters || []).map(function (f) {
-      return chip(f, '', '', config.filterValues[f.name] || [], added.indexOf(f.name) !== -1);
+      return chip(f, '', '', config.filterValues[f.name] || []);
     }).join('');
     /* `--add` marks the WRAPPER so an empty view can hide the other chips:
        a chip with a picker is wrapped, so FilterBar's bare-chip selector
@@ -1008,10 +996,7 @@
       /* Spliced in rather than re-rendering the row, which would discard the
          selections already made on the other chips. */
       var holder = document.createElement('div');
-      /* `true` = removable. A chip spliced in here is by definition one the
-         user added, so its picker carries the Remove action — the same as it
-         would on a full render. */
-      holder.innerHTML = chip(filter, '', '', config.filterValues[name] || [], true);
+      holder.innerHTML = chip(filter, '', '', config.filterValues[name] || []);
       var added = holder.firstChild;
       anchor.parentNode.insertBefore(added, anchor);
 
@@ -1023,11 +1008,6 @@
       announceFilters();
     });
 
-    /* Remove filter, from inside the chip's own picker. */
-    document.addEventListener('click', function (e) {
-      var btn = e.target.closest('[data-filter-remove]');
-      if (btn) removeFilter(btn.getAttribute('data-filter-remove'));
-    });
 
     /* `defaultFilters` is what the bar renders and what filtering looks names
        up in, so it is recomputed whenever the added set changes. */
