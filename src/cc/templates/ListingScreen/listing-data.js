@@ -90,7 +90,9 @@ var LISTING_ORDERS_COLUMNS = [
   { key: 'coupon',        type: 'text',   label: 'Coupon',          hug: true },
   { key: 'discount',      type: 'text',   label: 'Discount',        hug: true },
   { key: 'invoicesSent',  type: 'text',   label: 'Invoices Sent',   hug: true },
-  { key: 'edit',          type: 'edit',   label: '',                hug: true, mobileOnly: true },
+  /* Every width, not just mobile (designer, 2026-09-18) — editing an order
+     is a primary action on this screen, and it was reachable only on a phone. */
+  { key: 'edit',          type: 'edit',   label: '',                hug: true },
   { key: 'kebab',         type: 'kebab',  label: '',                hug: true }
 ];
 
@@ -218,7 +220,123 @@ var LOOKUP = {
   subscriptionPlan: ['Monthly', 'Quarterly', 'Annual'],
   edition: ['September 2026', 'August 2026', 'July 2026'],
   memberType: ['Individual', 'Corporate', 'Student'],
-  contactList: ['Newsletter', 'Event Invites', 'Product Updates'],
+  /* Contact Lists is a TABLE picker too, for a different reason from Catalogue
+     Item: the names are long, near-duplicate and untidy, so a flat list of
+     them cannot be read. "Think Tanks 2021", "Think Tanks 2021 - Messaging"
+     and "Think Tank 2021 - Messaging - Attendees" are three different lists
+     (and the third is Tank, singular); the longest name here is 78 characters,
+     so the Name column is built to WRAP — truncated at 40, the three 2019
+     Innovation Briefing download lists become indistinguishable.
+
+     ── PROVENANCE ────────────────────────────────────────────────
+     NAME, CODE and CREATED are REAL — the whole ContactList table from
+     Affino's own affino.com instance (Comrz), via MultipleLookup.cfm's
+     ContactLists case (lines 6128-6178), 2026-09-18. Two columns is the whole
+     table there: no owner, no member count, no code. The query joins nothing,
+     so unlike Catalogue Item there is no derived column to stand in for.
+
+     72 lists exist; 71 are here. Code 96 "Affino Team (2019) ID: 2" is
+     SystemYN = 1, and the query excludes system lists on both branches of its
+     union — auto-created lists are never selectable. That is also the answer
+     when a list exists in the CRM but cannot be found in this picker.
+
+     NAMES RENDER VERBATIM, WHITESPACE INCLUDED. "Prospects" carries three
+     trailing spaces and "Core50 170215" one; nothing trims them, so they sort
+     and match as typed and two lists that look identical are not. Same rule
+     for the double space in "Breakfast Briefing  Sept 2017" and the
+     "Donwloads" typo in code 87 — production data, not something to tidy.
+
+     CREATEDBY is real in its SHAPE, not per row. Comrz has only three distinct
+     creators across these 71 lists, and the SPLIT is real: 54 / 14 / 3, with
+     codes 23, 69 and 70 the three. Which of the other 68 belongs to which of
+     the two big creators was not available, so that assignment is
+     deterministic filler — the proportions are the part that matters.
+
+     They matter because they are what the "My Contact Lists" toggle really
+     does, and an even split would have flattered it: for the creator of 54 it
+     hides 17 rows and leaves a list that still needs the Name box, and for the
+     creator of 3 it collapses the picker to three. A control that is nearly a
+     no-op for the person most likely to press it, and near-total for everyone
+     else, is worth being able to SEE in the prototype. MINE is that toggle's
+     field, set from the 54-row creator as the signed-in user.
+
+     SORTING IS NEW. The live query is ORDER BY "Select" DESC, "Created" DESC,
+     hardcoded, with no sort control on the screen at all. Name and Created
+     sort here, and the default order is the live one — a deliberate
+     improvement, not fidelity. */
+  contactListRows: [
+    { name: 'AI for Charities — Webinar Leads Jun 2026', code: '2097', created: '2026-06-11', createdBy: '100000', mine: true },
+    { name: '2026 Smarter Events, Registrations, and Attendee Journeys Webinar', code: '2096', created: '2026-05-30', createdBy: '100000', mine: true },
+    { name: '2026 The Agentic Revolution for Content and Audience Engagement Webinar', code: '2095', created: '2026-05-30', createdBy: '100002', mine: false },
+    { name: '2026 Transforming Content with New AI Interactive Experiences Webinar', code: '2094', created: '2026-05-30', createdBy: '100000', mine: true },
+    { name: '2026 Smart Marketing with UTM and Customer Signals Webinar', code: '2093', created: '2026-05-30', createdBy: '100000', mine: true },
+    { name: '2026 Affino & Zapier - Connected Workflows Across the Ecosystem Webinar', code: '2092', created: '2026-05-30', createdBy: '100000', mine: true },
+    { name: '2026 Affino 9.0.11 - The Connected Platform Webinar', code: '2091', created: '2026-05-29', createdBy: '100000', mine: true },
+    { name: '2026 Feb Customer Contacts', code: '151', created: '2026-02-10', createdBy: '100002', mine: false },
+    { name: 'Affino Innovation Briefing Nov 2025 Attendees', code: '148', created: '2025-12-05', createdBy: '100000', mine: true },
+    { name: 'Affino Innovation Briefing Nov 2025', code: '147', created: '2025-10-15', createdBy: '100000', mine: true },
+    { name: '2025 Autumn Affino Users', code: '146', created: '2025-09-22', createdBy: '100000', mine: true },
+    { name: '2025 Affino Elevation Demo Webinar', code: '145', created: '2025-09-22', createdBy: '100000', mine: true },
+    { name: 'Introducing Gen 4 AI Services 2025', code: '144', created: '2025-03-19', createdBy: '100002', mine: false },
+    { name: 'Introducing New Control Centre 2025', code: '143', created: '2025-03-19', createdBy: '100000', mine: true },
+    { name: 'Introducing Commerce Enhancements 2025', code: '142', created: '2025-03-19', createdBy: '100000', mine: true },
+    { name: 'Affino Innovation Briefing Nov 2024 Attendees', code: '140', created: '2024-09-17', createdBy: '100000', mine: true },
+    { name: 'AI Webinar 18 Jul 2024', code: '139', created: '2024-06-14', createdBy: '100000', mine: true },
+    { name: 'AI Webinar 27 Jun 2024', code: '138', created: '2024-06-14', createdBy: '100002', mine: false },
+    { name: 'Affino Commerce Focus Group Nov 2023', code: '137', created: '2023-11-23', createdBy: '100000', mine: true },
+    { name: 'Affino Innovation Briefing Nov 2023 Attendees', code: '135', created: '2023-10-19', createdBy: '100000', mine: true },
+    { name: '2023 July Affino Clients', code: '134', created: '2023-07-13', createdBy: '100000', mine: true },
+    { name: 'MK', code: '133', created: '2023-06-21', createdBy: '100000', mine: true },
+    { name: '2023 PPA Awards Attendance', code: '131', created: '2023-06-16', createdBy: '100002', mine: false },
+    { name: 'Affino Marketing Focus Group', code: '130', created: '2023-05-02', createdBy: '100000', mine: true },
+    { name: '2023 CEO\'s and Digital Leads', code: '129', created: '2023-04-28', createdBy: '100000', mine: true },
+    { name: 'Affino Innovation Briefing Nov 2022 Attendees', code: '128', created: '2022-11-03', createdBy: '100000', mine: true },
+    { name: 'Future of Media Technology 2022', code: '127', created: '2022-10-26', createdBy: '100000', mine: true },
+    { name: 'Ten Top 1st Party Data Tips 2022', code: '126', created: '2022-10-26', createdBy: '100002', mine: false },
+    { name: 'PPA Awards 2022', code: '125', created: '2022-06-07', createdBy: '100000', mine: true },
+    { name: 'Publisher Podcast Awards 2022', code: '124', created: '2022-04-20', createdBy: '100000', mine: true },
+    { name: 'Affino Innovation Briefing Nov 2021 Attendees', code: '122', created: '2021-11-09', createdBy: '100000', mine: true },
+    { name: 'Think Tank 2021 - Subscription and Messaging', code: '120', created: '2021-09-05', createdBy: '100000', mine: true },
+    { name: 'Think Tank 2021 - Messaging - Attendees', code: '118', created: '2021-07-21', createdBy: '100002', mine: false },
+    { name: 'Think Tanks 2021', code: '119', created: '2021-07-12', createdBy: '100000', mine: true },
+    { name: 'Think Tanks 2021 - Messaging', code: '116', created: '2021-07-12', createdBy: '100000', mine: true },
+    { name: 'Users Accessing Affino Innovation Briefing Page', code: '115', created: '2021-03-30', createdBy: '100000', mine: true },
+    { name: 'Unable to Attend Affino Innovation Briefing 2021', code: '114', created: '2021-03-23', createdBy: '100000', mine: true },
+    { name: 'Affino Innovation Briefing March 2021 Attendees', code: '113', created: '2021-03-12', createdBy: '100002', mine: false },
+    { name: '2020 February Affino Roundtable Event', code: '112', created: '2020-01-02', createdBy: '100000', mine: true },
+    { name: '2019 Affino Innovation Briefing Article Read', code: '111', created: '2019-11-28', createdBy: '100000', mine: true },
+    { name: '2019 Affino Innovation Briefing Drewry Presentation Download List', code: '110', created: '2019-11-28', createdBy: '100000', mine: true },
+    { name: '2019 Affino Innovation Briefing Affino Presentation Download List', code: '109', created: '2019-11-28', createdBy: '100000', mine: true },
+    { name: 'Affino Customers and Subscribers Nov 2019', code: '108', created: '2019-11-12', createdBy: '100002', mine: false },
+    { name: 'Affino Innovation Briefing 2019 Attendees', code: '107', created: '2019-11-05', createdBy: '100000', mine: true },
+    { name: 'PPA Ads Breakfast Briefing 2019 Mailer', code: '104', created: '2019-10-14', createdBy: '100000', mine: true },
+    { name: 'PPA Ads Breakfast Briefing 2019', code: '99', created: '2019-10-08', createdBy: '100000', mine: true },
+    { name: 'Digital Leaders', code: '98', created: '2019-07-21', createdBy: '100000', mine: true },
+    { name: 'CEOs', code: '97', created: '2019-07-21', createdBy: '100002', mine: false },
+    { name: 'Affino Briefing Mailer Nov 2018', code: '94', created: '2018-11-23', createdBy: '100000', mine: true },
+    { name: 'Affino Briefing Nov 2018 Prospects', code: '93', created: '2018-11-19', createdBy: '100000', mine: true },
+    { name: 'Affino Customers Nov 2018', code: '92', created: '2018-11-19', createdBy: '100000', mine: true },
+    { name: 'Affino Briefing Nov 2018', code: '90', created: '2018-11-13', createdBy: '100000', mine: true },
+    { name: 'Affino 2017 In Review Reader', code: '89', created: '2018-01-08', createdBy: '100002', mine: false },
+    { name: 'Affino 2018 Roadmap Reader', code: '88', created: '2018-01-08', createdBy: '100000', mine: true },
+    { name: 'September Affino Briefing PDF Donwloads', code: '87', created: '2017-09-29', createdBy: '100000', mine: true },
+    { name: 'Breakfast Briefing  Sept 2017  Sales and Marketing Automation GDPR and Affino 8', code: '86', created: '2017-09-07', createdBy: '100000', mine: true },
+    { name: 'Email Test', code: '85', created: '2017-08-31', createdBy: '100000', mine: true },
+    { name: 'Professional Services Prospect', code: '84', created: '2017-06-12', createdBy: '100002', mine: false },
+    { name: 'Prospects   ', code: '83', created: '2017-05-19', createdBy: '100000', mine: true },
+    { name: 'Publishing and Media Prospects', code: '82', created: '2017-05-19', createdBy: '100000', mine: true },
+    { name: 'Insight Contacts', code: '81', created: '2017-05-17', createdBy: '100000', mine: true },
+    { name: 'Affino 8 Aware', code: '80', created: '2017-05-05', createdBy: '100000', mine: true },
+    { name: 'PPA Content Blocking Campaign', code: '75', created: '2015-03-12', createdBy: '100002', mine: false },
+    { name: 'Core50 170215 ', code: '70', created: '2015-02-10', createdBy: '105107', mine: false },
+    { name: 'Core50', code: '69', created: '2015-02-04', createdBy: '105107', mine: false },
+    { name: 'Stuck', code: '65', created: '2014-11-28', createdBy: '100000', mine: true },
+    { name: 'The Affino Team', code: '64', created: '2014-11-25', createdBy: '100000', mine: true },
+    { name: 'Accounts Payable Contacts', code: '23', created: '2014-07-24', createdBy: '105107', mine: false },
+    { name: 'Publisher Page Reader', code: '17', created: '2014-07-09', createdBy: '100000', mine: true },
+    { name: 'Sales Team', code: '7', created: '2014-05-21', createdBy: '100000', mine: true },
+    { name: 'Publishers', code: '2', created: '2014-05-11', createdBy: '100002', mine: false }
+  ],
   convertingArticle: ['Pricing page', 'Launch announcement', 'Case study']
 };
 
@@ -313,7 +431,40 @@ var LISTING_ORDERS_MORE_FILTERS = [
   { name: 'Subscription Plan', type: 'multi-select', field: 'subscriptionPlan', label: 'Filter by Subscription Plan', options: opts(LOOKUP.subscriptionPlan) },
   { name: 'Edition',           type: 'multi-select', field: 'edition',        label: 'Filter by Edition',          options: opts(LOOKUP.edition) },
   { name: 'Member Types',      type: 'multi-select', field: 'memberType',     label: 'Filter by Member Type',      options: opts(LOOKUP.memberType) },
-  { name: 'Contact Lists',     type: 'multi-select', field: 'contactList',    label: 'Filter by Contact List',     options: opts(LOOKUP.contactList) },
+  /* A TABLE, like Catalogue Item, and for the same reason: the choice cannot
+     be made from a name alone. Two columns and two sub-filters here, not four
+     and four — the live picker is a single query over one table (designer,
+     2026-09-18; MultipleLookup.cfm ContactLists case). */
+  { name: 'Contact Lists',     type: 'multi-select-table', field: 'contactList', label: 'Filter by Contact List',
+    /* Both re-query the picker's table, neither touches the bar.
+
+       NAME is free text — `Name LIKE '%…%'`, case-insensitive, capped at 50
+       characters. Its param is called `Letter`, which is a variable name and
+       not an A-Z strip; the same trap as Catalogue Item's.
+
+       MY CONTACT LISTS is a BINARY TOGGLE — `CreatedBy = <current user>` —
+       and so the first sub-filter in this system that is neither text nor a
+       list. The legacy screen hides its own label with an injected
+       `label[for="MyContactLists1"]{display:none}`; that is a patch around a
+       layout problem, not a design, so this one is labelled properly.
+
+       ONE DIVERGENCE, DELIBERATE. The live query applies the Name condition to
+       BOTH branches of its union, so searching by name there hides lists you
+       have already ticked — the opposite of the Catalogue Item picker, whose
+       selected rows survive every sub-filter. The asymmetry looks accidental
+       rather than designed. This picker keeps the Catalogue Item behaviour:
+       what you have chosen stays visible while you look for the next one.
+       Flagged for the designer. */
+    facets: [
+      { name: 'Name',             type: 'text',     field: 'name', placeholder: 'Search by name' },
+      { name: 'My Contact Lists', type: 'checkbox', field: 'mine', checkboxLabel: 'Only lists I created' }
+    ],
+    tableColumns: ['Name', 'Created'],
+    tableFields: ['created'],
+    /* Wrapping name, fixed-width date — see the provenance note on the rows. */
+    tableColClasses: ['datatables__col--name', 'datatables__col--date'],
+    sortable: ['Name', 'Created'],
+    options: LOOKUP.contactListRows },
   { name: 'Converting Articles', type: 'multi-select', field: 'convertingArticle', label: 'Filter by Converting Article', options: opts(LOOKUP.convertingArticle) },
 
   { name: 'Order Type',        type: 'select-options', field: 'orderType',    label: 'Filter by Order Type',       placeholder: 'All order types',    options: opts(ORDER_TYPES) },
@@ -443,6 +594,10 @@ var LISTING_ORDERS_ROWS = (function (seed) {
       /* Drawn from the REAL catalogue, so filtering orders by an item picked
          in the Catalogue Item table actually matches something. */
       row.catalogueItem = LOOKUP.catalogueItemRows[n % LOOKUP.catalogueItemRows.length].name;
+      /* Real lists too, so picking one in the table narrows the listing. One
+         list per order is a simplification — a customer is on several — but
+         the filter is "orders whose customer is on this list" either way. */
+      row.contactList = LOOKUP.contactListRows[n % LOOKUP.contactListRows.length].name;
       row.currency = LOOKUP.currency[n % LOOKUP.currency.length];
       row.store = LOOKUP.store[n % LOOKUP.store.length];
       row.qty = String((n % 4) + 1);

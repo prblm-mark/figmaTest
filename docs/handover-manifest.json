@@ -844,6 +844,13 @@
           "element": ".filter-bar__export split control (data-backend-todo=\"listing-export\")",
           "current": "Split control: the label half and three menu rows (PDF / Excel .xlsx / CSV) all carry data-filter-export but nothing is wired — no handler, no request, no download.",
           "needs": "POST /control/<screen>/export { view, filters, sort, format } -> a file URL or job id. `format` is new: the control offers pdf | xlsx | csv, and the label half runs the default (pdf). Must honour the current filter/sort state rather than exporting the unfiltered set. Same shape the Seating Planner export needs (seating-export), so one endpoint contract should cover both."
+        },
+        {
+          "id": "listing-row-routes",
+          "category": "needs-backend",
+          "element": ".datatables__row a[data-row-link] (order number) and a.datatables__row-edit (pencil), per row",
+          "current": "Two destinations per row, both placeholder hrefs built by ROUTE.view / ROUTE.edit in ListingScreen.js: '#order/<orderNo>/view' and '#order/<orderNo>/edit'. They are real anchors, so keyboard, middle-click and hover-preview all work; clicking anywhere else in the row follows the view link. Nothing is fetched and no screen exists at either address.",
+          "needs": "The two per-row URLs for the screen, ideally from the same payload as the rows so the template does not have to know a URL shape per screen: either a rows response carrying `viewUrl` and `editUrl` per row, or a screen-level template such as GET /control/<screen> -> { rowUrl: '/control/orders/{id}', editUrl: '/control/orders/{id}/edit' }. Replacing the two ROUTE functions is the whole change. Edit must respect the operator's permission on that record — the pencil should not be rendered for a row the user may not change."
         }
       ]
     }
