@@ -140,8 +140,14 @@ function opts(names) {
   return names.map(function (n) { return { name: n }; });
 }
 
-/* The SIX filters the live screen shows by default — its "Simple Search"
- * form (StoreOrderSearch.cfm #SimpleSearch). Customer and Order Owner are
+/* The six filters the live screen shows by default — its "Simple Search"
+ * form (StoreOrderSearch.cfm #SimpleSearch). Only the FIRST FIVE reach the
+ * bar: every listing screen shows five chips and offers the rest behind "Add
+ * Filters" (designer, 2026-09-18), so Order Owner heads the More Filters
+ * panel rather than being dropped. The limit lives in ListingScreen.js
+ * (DEFAULT_CHIPS) because it applies to all ~400 screens, not to this config.
+ *
+ * Customer and Order Owner are
  * jQuery-UI autocompletes against AjaxCustomerAutoComplete.cfm, which maps
  * to our Predictive type; the other four are plain text.
  *
