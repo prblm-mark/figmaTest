@@ -332,19 +332,28 @@ function wireChipPanels(root) {
     }
   });
 
-  /* "Was this click inside the bar?" — asked of the event's PATH, not of the
-     live DOM. Picking a More Filters facet removes that facet (it has moved to
-     the bar), so by the time this document-level listener runs the target is
-     detached and `root.contains(target)` reads false — closing the panel the
-     user is still picking from. composedPath() is captured at dispatch, so it
-     still remembers where the click came from. */
-  const cameFromBar = (e) => {
+  /* "Did this click land on a chip or inside its picker?" — asked of the
+     event's PATH, not of the live DOM. Picking a More Filters facet removes
+     that facet (it has moved to the bar), so by the time this document-level
+     listener runs the target is detached and a `contains` check reads false,
+     closing the panel the user is still picking from. composedPath() is
+     captured at dispatch, so it still remembers where the click came from.
+
+     Note this asks about the CHIP, not about the bar. Anything else closes the
+     picker — the saved-views control, the kebab, Export, the search field,
+     bare space in the bar. Clicking one control while a picker is open should
+     put the picker away, and testing "inside the bar" left it hanging open. */
+  const fromChip = (e) => {
     const path = typeof e.composedPath === 'function' ? e.composedPath() : null;
-    return path && path.length ? path.indexOf(root) !== -1 : root.contains(e.target);
+    if (path && path.length) {
+      return path.some((node) => node && node.classList &&
+        node.classList.contains('filter-bar__chip'));
+    }
+    return !!(e.target.closest && e.target.closest('.filter-bar__chip'));
   };
 
   document.addEventListener('click', (e) => {
-    if (!cameFromBar(e)) closeAll(null);
+    if (!fromChip(e)) closeAll(null);
   });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeAll(null);
