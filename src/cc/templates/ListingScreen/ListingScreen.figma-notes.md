@@ -880,3 +880,25 @@ next one. The result is behind it and updates live. It closes on a click
 elsewhere in the card, like any picker.
 
 The OUTER picker's Apply still closes, because that one commits.
+
+
+## The column fit was measuring the wrong table
+
+A Multi Select Table picker contains a `.datatables` of its own, and it lives
+in the FILTER BAR — which comes first in the DOM. So
+`root.querySelector('.datatables__body')` returned the PICKER's body the moment
+a Catalogue Item chip existed, and `fitColumns` measured against it: 623px with
+the picker open, 0 with it closed. The listing collapsed from nine columns to
+six, with the slack pooling in whichever column could take it.
+
+It only showed after the picker's Apply, because that is when `renderResults`
+next runs — which made it look like Apply was filtering the main table when it
+was not. The counts were right throughout; only the columns were wrong.
+
+Every lookup now goes through `listingTable(root)`, anchored on
+`[data-listing-body]` — the one thing only the listing's table has. The same
+trap caught my own test script, which is a fair sign of how easy it is to hit.
+
+Sibling of the `own()` fix in FilterDropdowns: once a component can appear
+inside another instance of itself, a descendant query is no longer a safe way
+to find "my" element.
