@@ -181,3 +181,23 @@ Listing Screen started using it:
   to read what was selected without this.
 
 The demo carries both, so the component's own gallery exercises them.
+
+
+## Multi Select Table: no horizontal scroll
+
+Cells WRAP in this table rather than inheriting Table.css's `white-space:
+nowrap`. That nowrap is right for a table that can scroll; in a 640px picker it
+is the wrong trade. One real catalogue name — "Affino Innovation Briefing 2019 -
+Actionable Intelligence, Case Study and 2020 Roadmap" — took the Name column to
+602px and the table to 885 inside a 623 body, putting Catalogue ID and Zone off
+the right-hand edge behind a scrollbar. Those are the two columns that tell two
+similarly named items apart, which is the whole reason this type is a table.
+
+The two predictable columns carry a preferred width (`--ai-size-1`) and Name
+absorbs the variation. Without that, auto layout gave the long names so much
+room that the codes broke mid-string — "Aff9882376" rendered as "Aff98823 /
+76", which for an operator-typed SKU reads as a different value.
+
+`overflow-wrap: anywhere` stays on the code column as a safety net: a Catalogue
+ID is free text and a longer one with no break opportunity would otherwise set
+the column's min-content width and bring the scroll back.
