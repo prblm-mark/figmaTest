@@ -152,3 +152,16 @@ None — every value maps to an existing `--ai-*` token.
 - `Input` (`src/components/Input/`) — Search variant's search field
 - `Avatar` + `Portraits` (`src/components/Avatar/`, `src/components/Portraits/`) — Whos Online USER cell (size-2 avatar with portrait image)
 - Lucide icons — `chevron-down`, `chevron-left`, `chevron-right`, `chevrons-up-down`, `arrow-up-narrow-wide`, `more-vertical`, `filter`, `download`, `search`, `eye`, `fingerprint`
+
+
+## Row controls: the kebab gained a hover border
+
+2026-09-18, designer. The kebab's hover was a background tint; it now also
+draws `1px solid var(--ai-border-secondary)` — the same line the table draws
+between its rows. The border is reserved as transparent at rest so the 32px box
+does not change size when the pointer arrives.
+
+This came from the Orders listing, where a borderless edit pencil was added
+beside the kebab and the two have to read as one set of row controls. The rule
+lives here rather than in the template because the pair belongs to the
+component: any change to one belongs on both.

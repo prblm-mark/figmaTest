@@ -281,3 +281,19 @@ together.
 
 Measured at 1900 / 1500 / 1250 / 1150 / 900 / 820: identical in both tables at
 every width.
+
+
+## Multi Select Table: a date column
+
+Contact Lists (2026-09-18) is the second filter to use this type, with Name +
+Created rather than Catalogue Item's Name / Catalogue ID / Zone. Two things
+followed:
+
+- The column classes are no longer fixed to that one table — the screen names
+  its own per filter. `--date` joins `--code` and `--zone` at the 128px
+  preferred width.
+- `--date` is the one column here that keeps `white-space: nowrap`. The picker
+  turns wrapping on for everything so no column is pushed off the edge, but a
+  date broken over two lines reads as two values. `.table` is in the selector
+  purely to out-specify that blanket rule, which names an element and would
+  otherwise win.

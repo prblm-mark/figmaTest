@@ -902,3 +902,211 @@ trap caught my own test script, which is a fair sign of how easy it is to hit.
 Sibling of the `own()` fix in FilterDropdowns: once a component can appear
 inside another instance of itself, a descendant query is no longer a safe way
 to find "my" element.
+
+
+## Contact Lists uses the Multi Select Table too
+
+Designer, 2026-09-18. The second picker on this screen to become a table, and
+it is worth saying why it is one, because the reason is not Catalogue Item's.
+There, a name is ambiguous (Glass v2…v6, "Affino Social" twice) and the code
+disambiguates it. Here the names are unique — but long, near-duplicate and
+untidy, and a flat list of them cannot be read:
+
+- "Think Tanks 2021", "Think Tanks 2021 - Messaging" and "Think Tank 2021 -
+  Messaging - Attendees" are three different lists, and the third is *Tank*,
+  singular.
+- The three 2019 Innovation Briefing download lists differ only after 40
+  characters.
+- The longest name is 78 characters, so the Name column WRAPS. Truncating it
+  would collapse exactly the rows a user is trying to tell apart.
+
+### Real data
+
+The whole `ContactList` table from Affino's own affino.com instance (Comrz),
+read from `MultipleLookup.cfm`'s `ContactLists` case, lines 6128–6178. **Two
+columns is the entire table there** — Name and Created. No owner, no member
+count, no code column. The query joins nothing, so unlike Catalogue Item there
+is no derived column standing in for something that cannot be run from here.
+
+**71 of 72 lists.** Code 96 "Affino Team (2019) ID: 2" is `SystemYN = 1`, and
+the query excludes system lists on BOTH branches of its union — auto-created
+lists are never selectable. That is also the answer when a list exists in the
+CRM but cannot be found in this picker.
+
+**Names render verbatim, whitespace included.** "Prospects" carries three
+trailing spaces and "Core50 170215" one; nothing trims them, so they sort and
+match as typed. Trimming on render would make two distinct lists look like one.
+Same rule for the double space in "Breakfast Briefing  Sept 2017" and the
+"Donwloads" typo in code 87 — production data, not something to tidy.
+
+Orders carry a `contactList` drawn from this same set, so picking a list
+actually narrows the listing.
+
+### Sub-filters: two, and one is a toggle
+
+| Chip | Control | Matches |
+|---|---|---|
+| Name | free text | `Name LIKE '%…%'`, capped at 50 chars |
+| My Contact Lists | **checkbox** | rows created by the current user |
+
+The toggle is the first sub-filter in this system that is neither text nor a
+list, so `subFilterRows` grew a boolean branch: ticked means "only rows where
+this is true", not "match this value" — the generic equality branch would have
+compared the row's field to the checkbox's own label text.
+
+**The toggle's data is shaped like the real thing, and that is the point.**
+Comrz has only three distinct creators across these 71 lists, split **54 / 14 /
+3** (codes 23, 69 and 70 are the three). Which of the other 68 belongs to which
+of the two big creators was not available, so that assignment is filler — the
+proportions are what matter, and an even split would have flattered the
+control. For the creator of 54 the toggle hides 17 rows and leaves a list that
+still needs the Name box; for the creator of 3 it collapses the picker to
+three. Nearly a no-op for the person most likely to press it, near-total for
+everyone else — worth being able to see in the prototype rather than
+discovering after it ships.
+
+The legacy screen injects `label[for="MyContactLists1"]{display:none}` to hide
+this checkbox's own label — a patch around a layout problem, not a design. Ours
+is labelled properly.
+
+### One deliberate divergence
+
+The live query applies the Name condition to **both** branches of its union, so
+searching by name there **hides lists you have already ticked**. That is the
+opposite of the Catalogue Item picker, whose selected rows survive every
+sub-filter (its second query carries none of them). Both readings were
+re-checked against the source; the two pickers really do differ, and the
+asymmetry looks accidental rather than designed.
+
+This picker keeps the Catalogue Item behaviour: what you have chosen stays
+visible while you look for the next one. Raised with Mark as "which is right?"
+rather than reproducing either by default.
+
+### Sorting is new — and it was silently breaking the listing
+
+The live query is `ORDER BY "Select" DESC, "Created" DESC`, hardcoded, with **no
+sort control on the screen at all**. Name and Created sort here, ascending on
+the first click (a picker is a lookup, where A–Z is the useful start; the
+listing starts descending because a date or a value is what you sort it by).
+The default order is still the live one.
+
+Wiring it up exposed a bug that had been sitting under Catalogue Item since it
+was built. Its headers were rendered as `.datatables__sort` buttons with no
+`data-sort` — decorative. But the listing's sort handler is bound to `root`,
+and the picker is inside it, so a click on the picker's "Name" header read
+`data-sort` as `null`, **cleared the listing's sort and re-rendered it**. Now
+the picker's headers carry `data-picker-sort="<row field>"` and sort their own
+table, and the listing's handler returns early for anything inside a
+`.filter-dropdowns`.
+
+Same shape as the `listingTable()` and `own()` fixes: a component that can
+contain another instance of a component breaks every "find my element" query
+that reaches downward.
+
+### Columns are per-picker now
+
+`PICKER_DROPPABLE` hard-coded Name / code / zone. A filter can now name its own
+`tableColClasses`, and Contact Lists uses `--name` + `--date` — a date is the
+one cell in this table that must not wrap, since a date broken over two lines
+reads as two values.
+
+### Measured
+
+71 rows at Name/Created; sorting by Name puts the three 2019 briefing lists
+first; "think" in the Name box returns exactly the four Think Tank(s) rows; the
+My Contact Lists toggle returns 54 of 71; picking a row and applying puts it on
+the chip and narrows the listing to its 2 orders, with the listing's own sort
+still on Created.
+
+### Not built, same as Catalogue Item
+
+`iMaxRows = 20` with an N+1 probe and no offset — the live picker has no paging
+at all. Nothing new to raise; it is the same design decision already with Mark.
+
+
+## Rows open; the pencil edits
+
+Designer, 2026-09-18. Two destinations per row, and they are different screens:
+the row opens the order to **look at**, the pencil opens it to **change**.
+
+### The edit icon is on every row now, and borderless
+
+It was `btn btn--secondary btn--icon btn--xs` (Figma node 2926:3566) and
+`mobileOnly` — so editing an order, a primary action on this screen, was
+reachable only on a phone. It now renders at every width.
+
+Borderless because of what sits next to it: the kebab is a bare icon, and a
+bordered control beside a bare one reads as two different kinds of thing. The
+pencil takes the kebab's treatment exactly — same 32px box, same radius, same
+hover tint — so the two read as one set of row controls. Any change to one
+belongs on both, which is why the CSS says so next to the rule.
+
+The `--mobile` column class went with it. Nothing else was mobile-only, and a
+class with no rules left behind is a trap for whoever sets `mobileOnly: true`
+next and finds it does nothing.
+
+### Anchors, not click handlers
+
+Both are real `<a href>`s built by `ROUTE.view` / `ROUTE.edit`, and the
+whole-row click just follows the row's own link. That is one code path instead
+of two, and it is what makes the row keyboard-reachable: the order number is a
+link, so Tab and Enter get to the same place the mouse does. Middle-click opens
+a tab and hover shows the destination, neither of which a click handler gives
+you.
+
+The pencil therefore needs no `stopPropagation` of its own. The row handler
+ignores any click that landed on `a, button, label, input, select, textarea`,
+which covers the pencil, the select checkbox, the account chip and the kebab's
+label in one rule — **a control inside a row owns its click; only the gaps
+between them belong to the row**. It also bails when there is a text selection,
+so selecting an order number does not navigate away from it.
+
+TODO(backend:Listing) `listing-row-routes`: the hrefs are placeholders
+(`#order/<orderNo>/view`, `#order/<orderNo>/edit`). Swapping the two `ROUTE`
+functions is the whole change. Flagged in the manifest: **the pencil should not
+render for a row the operator may not change** — that is a permission the
+payload has to carry, not something the template can infer.
+
+### A clickable row has to say so
+
+Pointer plus a hover tint, reusing the tint the expanded row and the kebab hover
+already use, so the table gains a state rather than a new colour. The paired
+detail row is excluded — it is the expansion of the row above, not a target.
+
+### Measured
+
+At 1400px the table now shows 8 columns where it showed 7, still filling the
+body exactly (955/955) with the same data columns — the pencil's 32px came out
+of the slack, not out of a column. At 1000px the count is unchanged. Row click
+→ `#order/100412/view`, pencil → `#order/100412/edit`, checkbox → neither.
+
+### The pair, tightened — and a hover border
+
+Designer, 2026-09-18, two refinements to the pencil/kebab pair:
+
+**Gap.** Default cell padding put `--ai-spacing-5` on each side of the join —
+32px between the two boxes and 48 between the glyphs, which read as two
+unrelated controls at opposite ends of the row rather than a set. The edit
+cell's right padding goes to 0 and the kebab cell's left padding to
+`--ai-spacing-1`, leaving **4px between the boxes and 20px between the
+glyphs**, with both 32px hit targets intact. The kebab keeps its right
+padding — that one is the row's edge, not the gap.
+
+**Hover border.** Both now draw the same line the table draws between its rows,
+`1px solid var(--ai-border-secondary)`. The border is **reserved as transparent
+at rest** rather than added on hover: with `box-sizing: border-box` the box
+stays 32px either way, so nothing shifts by a pixel as the pointer crosses it.
+
+Applied to the kebab as well as the pencil, at component level — they are one
+set, and a bordered pencil beside an unbordered kebab would undo the reason the
+pencil lost its border in the first place.
+
+Measured light and dark: hover border resolves to exactly the row's own border
+colour in both (`rgb(220,228,232)` / `rgb(51,65,85)`), box still 32×32.
+
+**Harness note.** Both properties are transitioned, and **CSS transitions never
+advance under `--virtual-time-budget`** — so a headless probe reads the
+*starting* value and reports `rgba(0,0,0,0)` for a hover colour that is
+perfectly correct in a real browser. Three probes chased a phantom before the
+`*{transition:none}` injection showed the real value. Already in the repo's
+headless notes; worth the reminder next to a hover rule.

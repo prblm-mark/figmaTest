@@ -40,7 +40,9 @@
 
   /* Class list for a cell/header in a given column. `--hug` shrink-wraps
    * the narrow columns; `--secondary` is what the mobile container query
-   * hides; `--mobile` is hidden at desktop. */
+   * hides. There is no `--mobile` any more: the edit column was the only
+   * mobile-only one and it now shows at every width, so the class and its two
+   * rules went with it rather than being left as a hook with no styles. */
   /* Structural columns get a type class so CSS can target them by
    * role (the kebab column sits flush on mobile, for instance). Data
    * columns don't — their styling is per-screen and belongs to the
@@ -52,11 +54,26 @@
     if (col.hug) out.push('datatables__col--hug');
     if (col.snug) out.push('datatables__col--snug');
     if (!col.hug && !col.snug && col.label) out.push('datatables__col--fluid');
-    if (col.mobileOnly) out.push('datatables__col--mobile');
     if (STRUCTURAL[col.type]) out.push('datatables__col--' + col.type);
     if (extra) out.push(extra);
     return out.length ? ' class="' + out.join(' ') + '"' : '';
   }
+
+  /* Where a row goes. Two destinations, and they are different screens: the
+     row opens the order to LOOK at, the pencil opens it to CHANGE.
+
+     TODO(backend:Listing) listing-row-routes: placeholder routes — the real
+     paths are the backend team's to supply, and swapping them is these two
+     functions. The pencil must not render for a row the operator may not
+     change; that permission has to come with the row. They are
+     hrefs on real anchors rather than JS navigation on purpose: the order
+     number and the pencil are then keyboard-reachable, open in a new tab on
+     middle-click, and show their destination on hover, none of which a click
+     handler gives you. */
+  var ROUTE = {
+    view: function (orderNo) { return '#order/' + encodeURIComponent(orderNo) + '/view'; },
+    edit: function (orderNo) { return '#order/' + encodeURIComponent(orderNo) + '/edit'; }
+  };
 
   var CELL = {
     text: function (row, col) {
@@ -81,7 +98,10 @@
        CAST(OrderCode AS VARCHAR) + '<br>' + ISNULL(ExternalCode,'') — so the
        external code sits beneath the order code when there is one. */
     order: function (row) {
-      return '<span class="datatables__order">' + esc(row.orderNo) + '</span>' +
+      /* The anchor IS the row's navigation — the whole-row click below just
+         follows it, so there is one destination and one code path. */
+      return '<a class="datatables__order" href="' + esc(ROUTE.view(row.orderNo)) + '"' +
+        ' data-row-link>' + esc(row.orderNo) + '</a>' +
         (row.externalCode
           ? '<span class="datatables__order-ext">' + esc(row.externalCode) + '</span>'
           : '');
@@ -103,14 +123,19 @@
         '</label>';
     },
 
-    /* Figma's row-edit button is node 2926:3566 — the Secondary
-     * `Icon Only=True, Size=xs` variant, i.e. the stock 24x24
-     * `btn--icon btn--xs` (24px box, 12px icon, radius-sm). Using the
-     * 40px `btn--icon` default instead cost 28px of table width and
-     * pushed the kebab column off-screen at 390px. */
+    /* Was Figma's Secondary `Icon Only=True, Size=xs` button (node 2926:3566),
+     * and mobile-only. Now on every row at every width, and BORDERLESS
+     * (designer, 2026-09-18): it sits next to the kebab, which is a bare icon,
+     * and two adjacent row controls drawn differently read as two different
+     * kinds of thing. It takes the kebab's treatment exactly — same box, same
+     * hover — so the pair reads as one set.
+     *
+     * An anchor, not a button: see ROUTE above. */
     edit: function (row) {
-      return '<button type="button" class="btn btn--secondary btn--icon btn--xs datatables__row-edit" ' +
-        'aria-label="Edit order ' + esc(row.orderNo) + '"><i data-lucide="pencil" aria-hidden="true"></i></button>';
+      return '<a class="datatables__row-edit" href="' + esc(ROUTE.edit(row.orderNo)) + '"' +
+        ' data-backend-todo="listing-row-routes"' +
+        ' aria-label="Edit order ' + esc(row.orderNo) + '">' +
+        '<i data-lucide="pencil" aria-hidden="true"></i></a>';
     },
 
     /* Kebab doubles as the mobile row-detail toggle. The reveal is pure
@@ -154,10 +179,21 @@
      and zone columns need to not be squeezed. */
   var PICKER_DROPPABLE = ['datatables__col--name', 'datatables__col--code', 'datatables__col--zone'];
 
+  /* Each picker names its own column classes when its columns are not
+     Catalogue Item's — Contact Lists is Name + a date, which wants the date
+     width rather than the code one. */
+  function pickerCols(f) { return f.tableColClasses || PICKER_DROPPABLE; }
+
+  /* Which row field each column shows. The first column is always the row's
+     name — it is what selection is keyed on — and the rest follow
+     tableFields in order, so the two lists cannot drift. */
+  function pickerFields(f) { return ['name'].concat(f.tableFields || []); }
+
   function pickerRow(o, f, picked) {
     var on = (picked || []).indexOf(o.name) !== -1;
+    var cols = pickerCols(f);
     var cells = (f.tableFields || []).map(function (key, i) {
-      var cls = PICKER_DROPPABLE[i + 1] ? ' class="' + PICKER_DROPPABLE[i + 1] + '"' : '';
+      var cls = cols[i + 1] ? ' class="' + cols[i + 1] + '"' : '';
       return '<td' + cls + '>' + esc(o[key]) + '</td>';
     }).join('');
     return '<tr>' +
@@ -342,12 +378,17 @@
       /* The first column identifies the row and never drops; the rest are
          tagged so the card's container query can shed them as it narrows. */
       var sortable = f.sortable || [];
+      var cols = pickerCols(f);
+      var fields = pickerFields(f);
       var head = (f.tableColumns || []).map(function (c, i) {
-        var cls = PICKER_DROPPABLE[i] ? ' class="' + PICKER_DROPPABLE[i] + '"' : '';
+        var cls = cols[i] ? ' class="' + cols[i] + '"' : '';
         /* Catalogue ID is shown but not sortable — the query orders on
-           lowercased copies of Name and Zone only. */
+           lowercased copies of Name and Zone only. The button carries the ROW
+           FIELD it sorts, not the label: without it the click reached the
+           listing's own sort handler with no token and cleared the listing's
+           sort instead. */
         var inner = sortable.indexOf(c) !== -1
-          ? '<button class="datatables__sort" type="button">' + esc(c) +
+          ? '<button class="datatables__sort" type="button" data-picker-sort="' + esc(fields[i] || '') + '">' + esc(c) +
             ' <i data-lucide="' + ICON_SORT + '" aria-hidden="true"></i></button>'
           : esc(c);
         return '<th' + cls + '>' + inner + '</th>';
@@ -508,7 +549,7 @@
         return '<dt>' + esc(col.label) + '</dt><dd>' + fn(row, col, i) + '</dd>';
       }).join('');
 
-      return '<tr class="datatables__row">' + cells + '</tr>' +
+      return '<tr class="datatables__row" data-order="' + esc(row.orderNo) + '">' + cells + '</tr>' +
         '<tr class="datatables__row-detail"><td class="datatables__row-detail__cell" colspan="' +
         columns.length + '"><dl class="datatables__detail-list">' + detail + '</dl></td></tr>';
     }).join('');
@@ -1388,12 +1429,42 @@
       });
     });
 
+    /* ── Opening a row ───────────────────────────────────────
+       Clicking anywhere in the row opens the order's DETAIL view; the pencil
+       opens the EDIT screen. Both are anchors, so the pencil needs no
+       stopPropagation of its own — the guard below is what keeps them apart,
+       and the same guard covers every other control a row contains: the select
+       checkbox, the account chip, the kebab's label, and any link a cell adds
+       later. A control inside a row owns its own click; only the gaps between
+       them belong to the row.
+
+       The row is a shortcut, not the only way in — the order number is a real
+       link, which is what a keyboard reaches. */
+    root.addEventListener('click', function (e) {
+      var tr = e.target.closest('tr.datatables__row');
+      /* Listing rows only. A Multi Select Table picker has rows of its own in
+         this same subtree; they are not `.datatables__row`, but anchoring on
+         the listing's own body says so rather than relying on that. */
+      if (!tr || !tr.closest('[data-listing-body]')) return;
+      if (e.target.closest('a, button, label, input, select, textarea')) return;
+      /* Let a text selection be a text selection. */
+      var picked = window.getSelection && window.getSelection();
+      if (picked && String(picked).length) return;
+
+      var link = tr.querySelector('[data-row-link]');
+      if (link) link.click();
+    });
+
     /* Sorting. A second click on the same column reverses it; a first click
        on a new one starts descending, which is what people expect from a
        date or a value — the two things anyone sorts a listing by first. */
     root.addEventListener('click', function (e) {
       var btn = e.target.closest('.datatables__sort');
       if (!btn) return;
+      /* A Multi Select Table has a Datatables of its own INSIDE the bar, so
+         this handler sees its headers too. Sorting the picker is not sorting
+         the listing. */
+      if (e.target.closest('.filter-dropdowns')) return;
       var token = btn.getAttribute('data-sort');
       if (config.sort.by === token) {
         config.sort.dir = config.sort.dir === 'asc' ? 'desc' : 'asc';
@@ -1483,25 +1554,69 @@
           var actual = row[sub.field];
           actual = String(Array.isArray(actual) ? actual.join(' ') : (actual === undefined ? '' : actual));
           if (sub.type === 'text') return actual.toLowerCase().indexOf(values[0].toLowerCase()) !== -1;
+          /* A toggle is not a value to match — ticked means "only rows where
+             this is true", unticked means it is not narrowing at all (which
+             the empty-values guard above has already handled). */
+          if (sub.type === 'checkbox') return !!row[sub.field];
           return values.some(function (v) { return actual === v; });
         });
       });
     }
 
     var subState = {};   // filter name -> { sub-filter name -> values[] }
+    var pickerSort = {};  // filter name -> { by: <row field>, dir: 'asc'|'desc' }
+
+    /* Sorting a picker's table, the same rule as the listing's: compare the
+       VALUE, and let an unsorted picker keep the order its data arrives in —
+       which for Contact Lists is the live query's own Created DESC. */
+    function sortPickerRows(rows, filter) {
+      var st = pickerSort[filter.name];
+      if (!st || !st.by) return rows;
+      var dir = st.dir === 'asc' ? 1 : -1;
+      return rows.slice().sort(function (a, b) {
+        var x = String(a[st.by] === undefined ? '' : a[st.by]).toLowerCase();
+        var y = String(b[st.by] === undefined ? '' : b[st.by]).toLowerCase();
+        if (x < y) return -1 * dir;
+        if (x > y) return 1 * dir;
+        return 0;
+      });
+    }
+
+    /* The header shows which column is sorting and which way, like the
+       listing's. Rewriting only the icon keeps the button's own listeners. */
+    function paintPickerHead(card, filter) {
+      var st = pickerSort[filter.name] || {};
+      card.querySelectorAll('[data-picker-sort]').forEach(function (btn) {
+        var on = btn.getAttribute('data-picker-sort') === st.by;
+        btn.classList.toggle('datatables__sort--active', on);
+        var icon = btn.querySelector('[data-lucide], svg');
+        if (!icon) return;
+        icon.setAttribute('data-lucide',
+          on ? (st.dir === 'asc' ? 'chevron-up' : 'chevron-down') : ICON_SORT);
+        /* Lucide replaced the <i> with an <svg> on the first pass; it only
+           redraws <i> elements, so the swapped node has to go back. */
+        if (icon.tagName.toLowerCase() === 'svg') {
+          var i = document.createElement('i');
+          i.setAttribute('data-lucide', icon.getAttribute('data-lucide'));
+          i.setAttribute('aria-hidden', 'true');
+          icon.parentNode.replaceChild(i, icon);
+        }
+      });
+    }
 
     function redrawPickerRows(card, filter) {
       var body = card.querySelector('tbody');
       if (!body) return;
       var state = subState[filter.name] || {};
       var chosen = config.filterValues[filter.name] || [];
-      var rows = subFilterRows(filter, state, chosen);
+      var rows = sortPickerRows(subFilterRows(filter, state, chosen), filter);
 
       body.innerHTML = rows.length
         ? rows.map(function (o) { return pickerRow(o, filter, chosen); }).join('')
         : '<tr><td class="filter-dropdowns__empty" colspan="' +
             ((filter.tableColumns || []).length + 2) + '">No matching items</td></tr>';
 
+      paintPickerHead(card, filter);
       if (window.lucide) window.lucide.createIcons();
       /* The header checkbox describes a set that just changed. */
       var all = card.querySelector('[data-select-all]');
@@ -1514,6 +1629,24 @@
       return config.moreFilters.concat(config.baseFilters)
         .filter(function (f) { return f.name === name; })[0];
     }
+
+    /* Sorting a picker's own table. A second click on the same column
+       reverses it; a first click starts ascending — a picker is a list you
+       are looking something up in, where A-Z and oldest-first are the useful
+       starting points, not the listing's newest-first. */
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-picker-sort]');
+      if (!btn) return;
+      var card = btn.closest('.filter-dropdowns--table');
+      var filter = card && pickerFilter(card);
+      if (!filter) return;
+      var by = btn.getAttribute('data-picker-sort');
+      var st = pickerSort[filter.name];
+      pickerSort[filter.name] = (st && st.by === by)
+        ? { by: by, dir: st.dir === 'asc' ? 'desc' : 'asc' }
+        : { by: by, dir: 'asc' };
+      redrawPickerRows(card, filter);
+    });
 
     /* Open one sub-picker at a time. */
     document.addEventListener('click', function (e) {

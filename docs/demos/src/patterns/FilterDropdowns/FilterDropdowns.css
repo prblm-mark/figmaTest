@@ -281,10 +281,23 @@
 }
 
 .filter-dropdowns--table .datatables__col--code,
-.filter-dropdowns--table .datatables__col--zone {
+.filter-dropdowns--table .datatables__col--zone,
+.filter-dropdowns--table .datatables__col--date {
   width: var(--ai-size-1);               /* 128px — preferred … */
   min-inline-size: var(--ai-size-1);     /* … and held, so they cannot be
                                             squeezed to breaking point */
+}
+
+/* A date is the one cell in this table that must NOT wrap. The picker turns
+ * wrapping on for everything (see above) so no column is pushed off the edge,
+ * but a date broken over two lines reads as two values. It is also the
+ * narrowest thing here, so holding it on one line costs the Name column
+ * nothing.
+ *
+ * `.table` is in the selector to out-specify the blanket `white-space: normal`
+ * above, which names an element and would otherwise win. */
+.filter-dropdowns--table .table .datatables__col--date {
+  white-space: nowrap;
 }
 
 /* Still a safety net: a Catalogue ID is free text and could be longer than
