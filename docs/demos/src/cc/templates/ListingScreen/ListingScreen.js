@@ -1075,6 +1075,14 @@
       if (!facet) return;
       facet.classList.toggle('filter-item--empty', !on);
       facet.classList.toggle('filter-item--added', on);
+
+      /* A facet is a BUTTON, not a chip with a picker of its own — it must
+         never hold FilterItem's open state. FilterItem adds `--open` on every
+         trigger click regardless, so a removed facet was left wearing the
+         active palette with no tick: it looked switched on while being off.
+         It alternated, because each click toggles that class, which is why it
+         only showed up every other time. */
+      facet.classList.remove('filter-item--open');
       var icon = facet.querySelector('.filter-item__add');
       if (!icon) icon = facet.querySelector('[data-lucide]');
       if (icon) {
@@ -1097,6 +1105,8 @@
       if (trigger) {
         trigger.setAttribute('aria-pressed', on ? 'true' : 'false');
         trigger.setAttribute('aria-label', (on ? 'Remove ' : 'Add ') + label + ' filter');
+        /* Same reason: it expands nothing. */
+        trigger.setAttribute('aria-expanded', 'false');
       }
       if (window.lucide && typeof window.lucide.createIcons === 'function') {
         window.lucide.createIcons();
