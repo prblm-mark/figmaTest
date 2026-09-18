@@ -112,6 +112,34 @@
 }
 
 /* ── More Filters (FilterItem chips) ──────────────────── */
+
+/* Type=More Filters grows with its contents.
+ *
+ * Figma draws it at the shared 320px, which is right for the nine facets it
+ * shows. A real screen can carry far more — Orders has 47 — and at 320 those
+ * wrap into a tall narrow column that is hard to scan. So it sizes to its
+ * content between a floor and a ceiling (designer, 2026-09-18: min size-6,
+ * max size-10).
+ *
+ * `max-content` on a wrapping flex row resolves to the width the chips would
+ * take on ONE line, so this reads as "as wide as it wants, within bounds": a
+ * few facets keep the 320px floor, many hit the 640px ceiling and wrap inside
+ * it. The `width: var(--ai-size-6)` on the base panel is overridden rather
+ * than removed, so every other type keeps Figma's fixed width. */
+.filter-dropdowns--more {
+  inline-size: max-content;
+  min-inline-size: var(--ai-size-6);      /* 320px */
+  /* The ceiling is 640 OR the space actually available, whichever is smaller.
+     The base panel's `max-width: 100%` cannot do this job: the panel is
+     absolutely positioned, so its containing block is the chip it hangs off
+     and 100% of that is a chip's width. Measured without the cap, a 640px
+     panel on a 378px page sat at left -345 — off the screen entirely, because
+     the bar's overflow flip had already pushed it as far left as it could go.
+     `cqi` is the inline size of the nearest container (`cs-page` in the CC
+     shell), which is the space the panel really has. */
+  max-inline-size: min(var(--ai-size-10), 100cqi);   /* 640px */
+}
+
 .filter-dropdowns__facets {
   display: flex;
   flex-wrap: wrap;

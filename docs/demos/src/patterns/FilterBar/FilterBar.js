@@ -308,6 +308,7 @@ function wireChipPanels(root) {
       if (!panel || panel === keep) return;
       panel.hidden = true;
       panel.classList.remove('filter-bar__panel--end');
+      panel.style.transform = '';
       const chip = wrap.querySelector('.filter-item--open');
       if (!chip) return;
       chip.classList.remove('filter-item--open');
@@ -324,12 +325,28 @@ function wireChipPanels(root) {
     closeAll(panel);
     panel.hidden = false;
 
-    /* Flip to the end edge if the 320px card would overrun the bar. Measured
-       after showing, because a hidden element has no box to measure. */
+    /* Keep the picker inside the bar. Measured after showing, because a hidden
+       element has no box to measure.
+
+       Two steps, because neither alone is enough. The flip handles a panel
+       hanging off the right. But a panel anchors to its CHIP, and the chips
+       wrap — so a wide one (More Filters runs to 640px) can hang off the LEFT
+       even after flipping, simply because its chip sits mid-row. Measured at a
+       378px page: a 351px panel sat at left -56. So after flipping, whatever
+       still sticks out is nudged back with a translate. */
     panel.classList.remove('filter-bar__panel--end');
-    if (panel.getBoundingClientRect().right > root.getBoundingClientRect().right) {
+    panel.style.transform = '';
+
+    const bar = root.getBoundingClientRect();
+    if (panel.getBoundingClientRect().right > bar.right) {
       panel.classList.add('filter-bar__panel--end');
     }
+
+    const box = panel.getBoundingClientRect();
+    const shift = box.left < bar.left ? bar.left - box.left
+      : box.right > bar.right ? bar.right - box.right
+      : 0;
+    if (shift) panel.style.transform = 'translateX(' + Math.round(shift) + 'px)';
   });
 
   /* "Did this click land on a chip or inside its picker?" — asked of the

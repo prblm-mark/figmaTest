@@ -511,3 +511,17 @@ Verified as a chain — chip picker → views → kebab → Edit Columns → row
 → bare bar space — with exactly one open at every step and none at the end.
 Clicking INSIDE an open picker still does not close it, and More Filters still
 stays open while facets are being picked.
+
+
+## Keeping a picker inside the bar
+
+Two steps, because neither alone is enough:
+
+1. **Flip** to the end edge when the panel hangs off the right.
+2. **Nudge** whatever still sticks out, with a translate.
+
+The flip alone was fine while every picker was 320px. A panel anchors to its
+CHIP, though, and the chips wrap — so a wide one (More Filters runs to 640px)
+can hang off the LEFT even after flipping, simply because its chip sits mid-row.
+Measured at a 378px page: a 351px panel sat at left -56. Verified inside the bar
+at 430px, 900px and 1600px pages.

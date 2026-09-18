@@ -280,7 +280,8 @@
             '<span class="filter-item__name">' + esc(o.name) + '</span>' +
           '</button></div>';
       }).join('');
-      return '<div class="filter-dropdowns"><div class="filter-dropdowns__facets">' + chips + '</div></div>';
+      return '<div class="filter-dropdowns filter-dropdowns--more">' +
+        '<div class="filter-dropdowns__facets">' + chips + '</div></div>';
     }
   };
 
