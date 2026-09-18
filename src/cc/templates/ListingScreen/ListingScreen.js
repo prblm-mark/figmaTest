@@ -340,10 +340,14 @@
     /* The Save view CTA is rendered here rather than left in the markup so the
        chips stay DIRECT children of `.filter-bar__chips` — that row is a flex
        container, and a wrapper element around the chips would break its wrap. */
-    html += '<button type="button" class="btn btn--tertiary btn--sm filter-bar__discard"' +
-            ' data-filter-action="discard-view">Discard changes</button>';
-    html += '<button type="button" class="btn btn--primary btn--sm filter-bar__save"' +
-            ' data-filter-action="save-view">Save view</button>';
+    /* Wrapped as one flex item so the pair cannot split across a wrapping
+       chip row — see `__view-actions` in FilterBar.css. */
+    html += '<div class="filter-bar__view-actions">' +
+      '<button type="button" class="btn btn--tertiary btn--sm filter-bar__discard"' +
+        ' data-filter-action="discard-view">Discard changes</button>' +
+      '<button type="button" class="btn btn--primary btn--sm filter-bar__save"' +
+        ' data-filter-action="save-view">Save view</button>' +
+    '</div>';
     return html;
   }
 
