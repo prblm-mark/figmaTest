@@ -647,3 +647,22 @@ Both column controls feed it. Hiding Order Total promotes Account into the
 freed space; dragging Invoices Sent to the top brings it on screen immediately
 and pushes the last one off. `tier` is gone from the config — **order is
 priority**, which makes the drag handle the control for "show me this first".
+
+
+## Edit Columns: one heading, not a note per row
+
+The panel used to put "No room at this width" on every affected row — up to
+sixteen repetitions of the same sentence. Because the fit fills in ORDER,
+everything without room is the tail of the list, so a single heading at the
+cut says it once: above the line is on screen, below it is not.
+
+It is the same `dropdown__label` as the "Columns" heading above it (designer,
+2026-09-18).
+
+The heading is PLACED into the list rather than the list being regrouped, so
+the rows keep their order — which matters, because they are draggable and
+dragging across the heading has to mean what it looks like it means.
+
+Note a column switched OFF stays above the line: the heading is about room, not
+about the tick. Hiding a fitting column promotes the next one above the line,
+since the freed width is immediately re-fit.
