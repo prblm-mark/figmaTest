@@ -1617,3 +1617,74 @@ The datatable keeps `datatables--orders`. Every listing rule in
 listing datatable Type". That is the right call today — Mark's instruction was
 to use the Orders datatable — but the class wants renaming to something like
 `--listing` the first time a second Type genuinely diverges.
+
+
+## The listing table is fixed-layout now
+
+Designer's call, 2026-09-21, after two bugs on Articles that were the same bug:
+the Section column flickered between hidden and shown while resizing below
+470px, and there was a wide band of empty space beside every title on a phone
+(measured 121px at a 309px table).
+
+Both came from one fact: under `table-layout: auto` a cell can always widen its
+own column. Everything downstream followed from it —
+
+1. An 84-character title demanded **436px** at max-content and left two
+   columns on a 1400px screen.
+2. The cap that stopped it then left the space, because the column is FLUID
+   and takes the slack while the capped text cannot use it.
+3. The cap was container-dependent, so the fit and the cap chased each other
+   across a resize — the flicker.
+
+**`table-layout: fixed` removes the cause.** Content can no longer affect a
+column, so text ellipsises at whatever width the fit gave it. The measuring
+pass still runs at `max-content` — that is where the fit learns what each
+column WANTS — and only the render is fixed. Scoped to `--orders`, so the
+Multi Select Table pickers keep auto layout; their widths are content-driven
+by design.
+
+### The fit now decides widths, not just visibility
+
+`sizeColumns` writes an explicit width per visible column, reading the same
+three roles the CSS used to express as behaviours:
+
+| Role | Width |
+|---|---|
+| hug / structural | its measured natural |
+| snug | its natural, capped at 224px so one long enumerated value cannot take half the table |
+| fluid | everything left over, never below its 192px floor |
+
+The rounding remainder goes to the fluid column, so the widths sum to the
+table exactly. **"No dead space" used to be the browser's to keep; it is
+arithmetic now** — which is the real cost of this change and the thing to
+check first if a gap ever appears at the right-hand edge.
+
+### Measured, both screens
+
+| | 1255 | 955 | 655 | 619 | 419 | 359 | 309 | 239 |
+|---|---|---|---|---|---|---|---|---|
+| Articles cols | 7 | 4 | 4 | 3 | 1 | 1 | 1 | 1 |
+| Title slack | 32 | 32 | 12 | 12 | 12 | 12 | 12 | 12 |
+
+Slack is now cell padding and nothing else — the band is gone. No overflow at
+any width. Orders re-checked: 4 columns at 955 and 2 at 309 as before, and 4
+rather than 3 at 619, because a fixed column no longer has to leave room for
+what its content might want.
+
+The flicker is addressed by removing its cause rather than by damping it:
+there is no container-dependent cap left to chase. That one is reasoned from
+the mechanism rather than reproduced — a ResizeObserver never fires for an
+iframe resize under a virtual time budget, so a resize sequence is not
+something this harness can drive.
+
+### One CSS edit that cost four rounds
+
+Mid-way through, several measurements made no sense — a span reported
+`display: inline` with the rule that sets `display: block` plainly present in
+the file. The cause was **a single orphan `}`** left by a programmatic edit:
+everything after it was dropped by the parser, so `.datatables__truncate` and
+every rule below it silently did nothing. Two of the "failed" approaches
+before it were probably fine.
+
+`grep -c '{'` against `grep -c '}'` is a two-second check and would have caught
+it immediately. Worth doing after any scripted CSS surgery.
