@@ -1688,3 +1688,35 @@ before it were probably fine.
 
 `grep -c '{'` against `grep -c '}'` is a two-second check and would have caught
 it immediately. Worth doing after any scripted CSS surgery.
+
+### The fit was measuring its own output
+
+Reported straight after the switch: resizing just removed columns, one after
+another, and they never came back.
+
+`sizeColumns` leaves an inline width on every `th`. `measureColumns` then read
+those back as the columns' "natural" widths — **the pass was measuring its own
+last output rather than the content**. Every re-fit during a drag therefore
+started from a narrower table than the one before, shed another column, and
+had no way to recover when the window widened again.
+
+One line fixes it: clear the inline widths before the measuring pass. It has to
+be there rather than at the end of `sizeColumns`, because the render between
+the two passes is what the user is looking at.
+
+**Tested for convergence and reversibility**, which is the property that was
+missing — the same widths walked down and back up must give the same answers:
+
+| Page | 1200 | 1000 | 800 | 600 | 500/400 | 600 | 800 | 1000 | 1200 |
+|---|---|---|---|---|---|---|---|---|---|
+| Articles | 6 | 5 | 5 | 3 | 3 | 3 | 5 | 5 | 6 |
+| Orders | 6 | 5 | 5 | 3 | 2 | 3 | 5 | 5 | 6 |
+
+Identical on the way back, no overflow at any step.
+
+**The harness note that matters here:** a ResizeObserver does not fire under
+`--virtual-time-budget`, so the resize path cannot be driven directly. The test
+above stands in for it by resizing the page column and then clicking a sort
+header, which re-renders and re-fits without changing the column set. Without
+that substitution the probe showed the table simply overflowing by 508px and
+looked like a different bug entirely.

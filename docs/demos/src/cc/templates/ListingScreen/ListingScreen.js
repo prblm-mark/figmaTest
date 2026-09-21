@@ -1084,6 +1084,15 @@
     var table = parts && parts.table;
     var shown = [];
 
+    /* Drop the widths this function's own last run wrote, FIRST.
+     *
+     * Under fixed layout `sizeColumns` leaves an inline width on every th. Left
+     * in place, the next measure reads those back as the columns' "natural"
+     * widths — the pass measures its own output, not the content. Each re-fit
+     * then starts from a narrower table than the last, so on a resize the
+     * columns walk off one by one and never come back. */
+    for (var c = 0; c < heads.length; c++) heads[c].style.width = '';
+
     config.columns.forEach(function (col, i) {
       /* A column switched off in Edit Columns stays off — it must not be
          measured back into view. */
