@@ -903,6 +903,17 @@
              var(--ai-spacing-3) var(--ai-spacing-4);
   }
 
+  /* The HEADER keeps a taller block padding than the rows — 12px against the
+     cells' 8. The compaction above is right for a data row, where the value is
+     the content and the row is one of twenty; a header is one line of small
+     uppercase type that has to read as a band, and at 8px it sat too close to
+     the first row to do that (designer, 2026-09-21).
+     `padding-block` after the shorthand, so only the vertical half is
+     overridden and the horizontal hug above survives. */
+  .datatables--orders .table thead th {
+    padding-block: var(--ai-spacing-4);
+  }
+
   .datatables--orders .table thead th {
     font-size: var(--ai-font-fixed-4xs);
     font-weight: var(--ai-font-semibold);
