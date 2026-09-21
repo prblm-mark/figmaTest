@@ -340,6 +340,22 @@
   font-size: var(--ai-font-fixed-xs);
 }
 
+/* One dt/dd pair, as a single thing to show or hide. `display: contents`
+ * keeps both halves in the list's own grid — a wrapper that laid out would
+ * break the two-column alignment the list is for. `[hidden]` in base.css
+ * carries `!important`, so hiding still wins over this. */
+.datatables__detail-item {
+  display: contents;
+}
+
+/* Nothing is missing from the row, so say so rather than opening an empty
+ * panel. It spans both grid columns. */
+.datatables__detail-empty {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--ai-text-contrast);
+}
+
 .datatables__detail-list dt {
   font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-semibold);

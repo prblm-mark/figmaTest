@@ -538,20 +538,35 @@
         return '<td' + colClass(col, col.cellClass) + '>' + content + '</td>';
       }).join('');
 
-      /* Paired detail row carrying the columns the mobile layout drops.
-       * Built from the same `columns` array, so it can never list a
-       * field the table does not have. */
-      var hidden = columns.filter(function (col) {
-        return (col.tier || 1) > 1 && col.label;
-      });
-      var detail = hidden.map(function (col) {
+      /* Paired detail row: what the kebab reveals is exactly what the row
+       * could not show.
+       *
+       * EVERY labelled column is rendered here, and which pairs are VISIBLE is
+       * decided later, by `syncRowDetail`, from the same flags that hide the
+       * columns themselves. It used to filter on `col.tier > 1` — a field that
+       * was removed when tiers gave way to the measured fit, so the filter
+       * matched nothing and the detail row had been silently empty ever since.
+       * Deciding it here at all was the mistake: what fits is a function of the
+       * container's width, which changes with no re-render (the CC sidebar
+       * docking is enough), so a list baked in at render time is wrong the
+       * moment the column does anything. */
+      var detail = columns.filter(function (col) {
+        return col.label && !STRUCTURAL[col.type];
+      }).map(function (col) {
         var fn = CELL[col.type] || CELL.text;
-        return '<dt>' + esc(col.label) + '</dt><dd>' + fn(row, col, i) + '</dd>';
+        /* The wrapper is `display: contents`, so the dt/dd still sit in the
+           list's own grid; it exists only to give the pair one thing to
+           toggle. A <div> around a dt/dd group is valid inside a <dl>. */
+        return '<div class="datatables__detail-item" data-detail-col="' +
+          esc(col.key) + '" hidden><dt>' + esc(col.label) + '</dt>' +
+          '<dd>' + fn(row, col, i) + '</dd></div>';
       }).join('');
 
       return '<tr class="datatables__row" data-order="' + esc(row.orderNo) + '">' + cells + '</tr>' +
         '<tr class="datatables__row-detail"><td class="datatables__row-detail__cell" colspan="' +
-        columns.length + '"><dl class="datatables__detail-list">' + detail + '</dl></td></tr>';
+        columns.length + '"><dl class="datatables__detail-list">' + detail +
+        '<p class="datatables__detail-empty" hidden>Every column is showing at this width.</p>' +
+        '</dl></td></tr>';
     }).join('');
   }
 
@@ -1082,6 +1097,39 @@
       hidden[last] = true;
       apply();
     }
+
+    /* Last, so it sees the fit that actually survived the correction loop. */
+    syncRowDetail(root, config);
+  }
+
+  /* Keep each row's detail list in step with the table.
+   *
+   * Read from the HEAD cells rather than recomputed: they already carry the
+   * verdict for both reasons a column can be missing, so the detail row cannot
+   * disagree with the table it is explaining.
+   *
+   *   --nofit  no room at this width   -> belongs in the detail row
+   *   --off    switched off in Edit Columns -> does NOT. The user said they did
+   *            not want it; repeating it behind the kebab would hand it back.
+   */
+  function syncRowDetail(root, config) {
+    var heads = root.querySelectorAll('[data-listing-head] th');
+    var show = {};
+    var any = false;
+    config.columns.forEach(function (col, i) {
+      var th = heads[i];
+      if (!col.label || !th) return;
+      var missing = th.classList.contains('datatables__col--nofit') &&
+                    !th.classList.contains('datatables__col--off');
+      show[col.key] = missing;
+      if (missing) any = true;
+    });
+    root.querySelectorAll('[data-listing-body] .datatables__detail-item').forEach(function (el) {
+      el.hidden = !show[el.getAttribute('data-detail-col')];
+    });
+    root.querySelectorAll('[data-listing-body] .datatables__detail-empty').forEach(function (el) {
+      el.hidden = any;
+    });
   }
 
   function applyColumnVisibility(root, config) {

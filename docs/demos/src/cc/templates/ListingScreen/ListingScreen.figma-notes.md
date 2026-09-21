@@ -1110,3 +1110,51 @@ advance under `--virtual-time-budget`** — so a headless probe reads the
 perfectly correct in a real browser. Three probes chased a phantom before the
 `*{transition:none}` injection showed the real value. Already in the repo's
 headless notes; worth the reminder next to a hover rule.
+
+
+## The kebab was revealing nothing
+
+Reported 2026-09-21: opening a row's kebab showed an empty band.
+
+The detail row was built from `col.tier > 1`. **`tier` was removed** when the
+measured greedy fit replaced the tier steps, so the filter matched no column
+and every detail row had been rendering empty ever since — silently, because an
+empty `<dl>` still lays out as a band and looks like a styling problem rather
+than a missing list.
+
+The deeper mistake was deciding the list at RENDER time at all. What fits is a
+function of the container's width, and that changes with no re-render — docking
+the CC sidebar is enough. Any list baked in when the rows are built is wrong
+the moment the fit moves.
+
+So every labelled column now renders a `dt`/`dd` pair, and `syncRowDetail`
+decides which are visible, reading the verdict off the HEAD cells:
+
+| Head class | Meaning | In the kebab? |
+|---|---|---|
+| `--nofit` | no room at this width | **yes** — this is what the kebab is for |
+| `--off` | switched off in Edit Columns | **no** — the user said they did not want it |
+
+Reading the head rather than recomputing means the detail row cannot disagree
+with the table it is explaining. It runs at the end of `fitColumns`, after the
+correction loop, so it sees the fit that actually survived — and because every
+path (render, Edit Columns, the ResizeObserver) ends in `fitColumns`, there is
+one call site rather than three to keep in step.
+
+Each pair is wrapped in a `display: contents` div so the two halves stay in the
+list's own grid while the pair toggles as one thing. `[hidden]` in base.css
+carries `!important`, so hiding still beats `display: contents`.
+
+When nothing is missing — possible once enough columns are switched off — the
+panel says so rather than opening empty. Hiding the kebab entirely would be the
+alternative; it would shift the row's right edge as the width changes, which
+seemed the worse trade.
+
+Measured: at a 955px table, 5 data columns in the row and the other 15 in the
+kebab; at 655px, 3 and 17. The two sets are complements at both widths, and
+Account renders as its chip inside the detail list, not as flat text.
+
+**Not verified headlessly:** the resize path. A ResizeObserver never fires for
+an iframe resize under `--virtual-time-budget`, so the two widths above are two
+separate loads. The RO handler calls `fitColumns`, which is the only thing
+`syncRowDetail` depends on.
