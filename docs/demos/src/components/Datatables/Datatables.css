@@ -571,16 +571,41 @@
   font-weight: var(--ai-font-semibold);
 }
 
-/* A whole row opens the order, so it has to say so — a pointer and a hover
+/* ── Clickable rows ──────────────────────────────────────
+ * Scoped to `--rows-clickable`, NOT to a Type: a row is a target because
+ * something wired it up, not because the table holds orders. The class is
+ * added by the code that binds the row click (ListingScreen.js), so the
+ * affordance and the thing it advertises cannot drift apart — a datatable
+ * whose rows do nothing never gets the pointer.
+ *
+ * A whole row opens the record, so it has to say so — a pointer and a hover
  * tint, the same tint an expanded row and the kebab already use, so the table
  * gains a state rather than a new colour. The DETAIL row is excluded: it is
  * the expansion of the row above, not a target of its own. */
-.datatables--orders .datatables__row {
+.datatables--rows-clickable .datatables__row {
   cursor: pointer;
 }
 
-.datatables--orders .datatables__row:hover {
+.datatables--rows-clickable .datatables__row:hover {
   background-color: var(--ai-datatable-table-expanded-bg);
+}
+
+/* The account chip vanished on a hovered row.
+ *
+ * `.btn--tertiary:hover` (0,2,0) out-specifies the chip's contextual border
+ * (0,1,0) and sets `--ai-btn-tertiary-border-hover`, which is transparent in
+ * every mode — so hovering the chip removed the only edge it had. Measured in
+ * Light and CC, the fill it falls back to is `rgb(242,244,245)` against a row
+ * tint of `rgb(243,246,247)`: a difference of one to two per channel. No
+ * border and no fill contrast left the chip unreadable, which is only visible
+ * now that the row paints on hover.
+ *
+ * Holding the border through hover and focus fixes it, in the same colour the
+ * edit icon and the kebab use — one line for all three row controls
+ * (designer, 2026-09-21). */
+.datatables--rows-clickable .datatables__account-chip:hover,
+.datatables--rows-clickable .datatables__account-chip:focus-visible {
+  border-color: var(--ai-border-secondary);
 }
 
 /* The order number is the row's real link — the keyboard path to the same

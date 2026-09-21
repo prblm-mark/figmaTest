@@ -1488,6 +1488,12 @@
 
        The row is a shortcut, not the only way in — the order number is a real
        link, which is what a keyboard reaches. */
+    /* Say so in the markup, here rather than in the HTML: the class that makes
+       a row LOOK clickable is added by the code that makes it clickable, so a
+       datatable can never advertise an affordance it does not have. */
+    var listing = listingTable(root);
+    if (listing && listing.datatable) listing.datatable.classList.add('datatables--rows-clickable');
+
     root.addEventListener('click', function (e) {
       var tr = e.target.closest('tr.datatables__row');
       /* Listing rows only. A Multi Select Table picker has rows of its own in
