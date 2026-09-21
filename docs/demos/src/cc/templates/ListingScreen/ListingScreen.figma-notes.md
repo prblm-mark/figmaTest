@@ -1764,3 +1764,25 @@ first time, convergence and reversibility:
 | Orders | 6 | 5 | 4 | 3 | 2 | 2 | 2 | 3 | 4 | 5 | 6 |
 
 Symmetric both ways, no overflow at any step.
+
+### Opening the kebab panel narrowed the table
+
+Reported 2026-09-21, once resizing was working. Two causes, both worth fixing.
+
+**The observer fired on HEIGHT.** A ResizeObserver reports any size change, and
+a table's height changes constantly — opening a row's detail panel is the
+obvious one. It now compares the width and returns early when only the height
+moved: nothing about a taller table changes what fits across it, so the re-fit
+was at best wasted work.
+
+**And the measure counted the open panel.** A detail row is a single cell
+spanning every column, so at `max-content` it hands its own width demand to all
+of them — the pass was measuring the panel rather than the columns, and the
+columns came back narrower than the table. Detail rows are now hidden for the
+duration of the pass, which also covers anything else that re-fits while one is
+open.
+
+Either fix alone would have hidden the symptom; both are real, so both are in.
+Measured on Articles and Orders at 1400 / 700 / 390: opening and closing the
+panel leaves the column count and the table width untouched, and the resize
+walk is still symmetric with the width guard in place.

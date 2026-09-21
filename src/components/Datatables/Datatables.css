@@ -343,6 +343,13 @@
   display: none;
 }
 
+/* Out of the way for the measuring pass — see measureColumns. A detail row is
+ * one cell spanning every column, so while it is open it would otherwise hand
+ * its own width demand to all of them. */
+.datatables__row-detail--measuring {
+  display: none;
+}
+
 .datatables__row:has(.datatables__kebab__input:checked) + .datatables__row-detail {
   display: table-row;
 }
