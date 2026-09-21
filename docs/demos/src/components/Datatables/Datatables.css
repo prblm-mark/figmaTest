@@ -343,7 +343,10 @@
 /* One dt/dd pair, as a single thing to show or hide. `display: contents`
  * keeps both halves in the list's own grid — a wrapper that laid out would
  * break the two-column alignment the list is for. `[hidden]` in base.css
- * carries `!important`, so hiding still wins over this. */
+ * carries `!important`, so hiding still wins over this.
+ *
+ * Orders overrides this below: with 15+ pairs the pair itself becomes the
+ * grid item so the panel can flow into columns. */
 .datatables__detail-item {
   display: contents;
 }
@@ -786,6 +789,13 @@
     letter-spacing: var(--ai-tracking-7);
   }
 
+  /* The detail panel's labels step down with the headers they stand in for
+     (designer, 2026-09-21) — they are the same labels, just read from behind
+     the kebab instead of across the row. */
+  .datatables--orders .datatables__detail-list dt {
+    font-size: var(--ai-font-fixed-4xs);
+  }
+
   /* Mobile rows divide on the lighter border-secondary, not the
      datatable border. */
   .datatables--orders .table thead th,
@@ -947,6 +957,76 @@
  * name ("Pinnacle Technologies") set the column's MIN-content width and, with
  * twenty columns in play, pushed the whole table past its container. Capping
  * it lets the column compress; the full name stays in the title. */
+/* ── Row detail panel: as many columns as fit ────────────
+ * The kebab reveals every column the row could not show — 15 of 20 on a wide
+ * table — and one pair per line made that a 425px scroll for a row whose
+ * point is to be glanced at. The panel now flows into as many columns as the
+ * table is wide enough for: one on a phone, four at ~955px (designer,
+ * 2026-09-21).
+ *
+ * `auto-fill`, not `auto-fit`: auto-fit collapses the empty tracks, so a row
+ * with a single hidden column would stretch that one pair across the whole
+ * panel. auto-fill holds the track width and leaves the rest empty, which is
+ * what a column layout should do.
+ *
+ * `--ai-size-3` (192px) is the minimum a pair needs: an uppercase label like
+ * PAYMENT METHOD plus values such as "Awaiting Payment Confirmation". Below
+ * that the count is what changes, never the legibility — which is why this is
+ * a minmax rather than a set of breakpoints. It needs no container query at
+ * all: the grid counts the space itself, so it is right at every width rather
+ * than at the three or four someone chose.
+ */
+.datatables--orders .datatables__detail-list {
+  grid-template-columns: repeat(auto-fill, minmax(var(--ai-size-3), 1fr));
+  /* 16px between pairs, against 0 inside one (designer, 2026-09-21) — the
+     grouping now comes entirely from this gap, so it has to be unambiguous. */
+  row-gap: var(--ai-spacing-5);
+  /* The detail cell is a <td>, and Table.css gives every cell
+     `white-space: nowrap` — which inherits straight into this list and would
+     push long values out of a 192px column. */
+  white-space: normal;
+}
+
+/* The pair is the grid item now, so it lays out rather than passing through,
+ * and the label sits ABOVE the value: side by side, labels could only align
+ * within their own column and the panel would read as ragged. */
+.datatables--orders .datatables__detail-item {
+  display: flex;
+  flex-direction: column;
+  /* No gap (designer, 2026-09-21). The label's own 16px leading already
+     carries the separation, and the 12px row-gap between pairs is what does
+     the grouping — so the 4px inside each pair was only height. */
+  gap: var(--ai-spacing-0);
+  min-inline-size: 0;
+}
+
+/* The base rule centres the label — correct in the two-column grid, where it
+ * centres the dt against its value on the same ROW. In a stacked pair the
+ * cross axis is horizontal, so the same declaration centred each label over
+ * its value and the panel read as ragged. */
+.datatables--orders .datatables__detail-list dt {
+  align-self: start;
+  /* The panel mirrors the TABLE's own rhythm, because that is what it is
+     standing in for: labels take the header's leading, values the cell's.
+     The label was inheriting the cell's 20px, which is loose for 12px
+     uppercase and was the slack worth taking out (designer, 2026-09-21).
+     The VALUE stays at 20px — 16px on 14px text is 1.14, too tight for the
+     wrapped lines a 192px column produces from a catalogue item name. */
+  line-height: var(--ai-leading-xs);     /* 16px, as .table thead th */
+}
+
+/* Stated rather than inherited, so the pair keeps its rhythm if the cell's
+ * line-height ever changes. */
+.datatables--orders .datatables__detail-list dd {
+  line-height: var(--ai-leading-sm);     /* 20px, as .table tbody td */
+}
+
+/* Long values wrap inside their column instead of widening it — catalogue
+ * item names here run past 80 characters. */
+.datatables--orders .datatables__detail-list dd {
+  overflow-wrap: break-word;
+}
+
 .datatables--orders .datatables__account-chip {
   display: inline-block;
   max-inline-size: var(--ai-size-2);     /* 160px */
