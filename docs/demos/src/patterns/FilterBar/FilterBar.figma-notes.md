@@ -623,3 +623,18 @@ compensation that overshoots where scrollbars are overlays (see
 `ControlScreen.figma-notes.md`). This one is a card wider than its bar. They
 compound — no right padding puts the bar's edge on the screen edge, so the
 overhang has nowhere to go.
+
+
+## Mobile row padding is 8px — designer override of Figma
+
+2026-09-21. `.filter-bar__row` goes `--ai-spacing-4` (12px) → `--ai-spacing-3`
+(8px) below a 767px page column. On a phone the chips ARE the content, and the
+frame around them was taking room they needed: the chip row gains 8px at every
+narrow width (296px in a 314px bar at a 393px viewport).
+
+**Figma's mobile frames still say 12.** An instruction that overrides them, not
+a reading of them — so the file wants updating rather than this line being
+"corrected" back. Desktop is untouched at 12/16.
+
+Re-checked after the change: every picker still sits inside the bar at 393px,
+none past the bar or the viewport.
