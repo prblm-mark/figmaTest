@@ -1510,3 +1510,110 @@ holding half the pattern.
 Measured across a real reload: a hidden column and a saved view both come back,
 selecting the restored view puts its filter back on the bar, and deleting it
 empties the store.
+
+
+# Articles — the second screen on this template
+
+Built 2026-09-21. `Articles.html` + `listing-data-articles.js`; the template,
+its CSS and its JS are the Orders ones untouched except for the two knobs
+below. Adding a listing screen really is adding a config.
+
+## What came from where
+
+Read from the live `/control/articles` (ControlProfileCode 1097) two ways: the
+CFML directly, and a second reading of the responsive controllers by
+`claudemain-04`, which is the authority for the definitions because **Articles
+is already a "cc2" screen** and declares them properly —
+`c-article-definition.cfc :: getTableDefinition()` for columns and
+`v-article-listing.cfc :: BuildFilters()` for filters.
+
+| Real | Invented (flagged in the data file) |
+|---|---|
+| Column set + order, filter catalogue + order, enums, default sort | Section / Style / Zone / Channel **per row** |
+| 50 rows: titles, publish dates, live flags, views, authors, IDs | — |
+| The ten largest section NAMES and their counts | Which article sits in which |
+
+The articles feed does not join section names and never exposes the
+presentation style; per-zone and per-style counts need a GROUP BY the read
+tools cannot run.
+
+## Two things the live screen already has
+
+Unlike Orders, Articles **already pages server-side against a real total**
+(`row_number() OVER(…)`, not `SELECT TOP 500`) and **already has a working
+Edit Columns with drag-reorder**. On this screen those are not new
+capabilities the prototype proposes — they are existing ones it re-dresses.
+Worth knowing before anyone repeats the Orders framing.
+
+## Sorting: no whitelist, and that IS the finding
+
+Orders gates `hs` to seven values. Articles has nothing equivalent — whatever
+the client sends as `SOColumn` is wrapped in quotes and interpolated into the
+`ORDER BY`, unvalidated. So every data column carries a `sort` token here,
+which is fidelity rather than laxity. Default is `PublishStart DESC`.
+
+## The five chips
+
+The live screen's first FOUR in declaration order — Title, Zone, Channel,
+Section — then **Presentation Style promoted from sixth** (designer,
+2026-09-21). Multi-displayed, which sits fifth live, moves into More Filters.
+
+Two control choices deliberately differ from the live screen, on the
+distribution rather than on taste:
+
+- **Section is a table picker.** 216 distinct sections across 3,570 articles,
+  top ten holding 63% and the other 206 averaging 6.4 each. A select with 216
+  options is the wrong control; the live screen opens a lookup for the same
+  reason. The picker shows the article count beside the name, which is what
+  tells two similar sections apart.
+- **Creator is a multi-select, where the live screen uses a type-ahead.** 22
+  distinct authors — at that size a list is legible and shows people the whole
+  set. Same control family as Section, opposite verdict, and the distribution
+  is what separates them.
+
+`Articles Per Screen` is NOT a chip: it is the page-size control, which this
+template already carries in the toolbar. Shipping both would be two controls
+for one setting. Note the live screen disagrees with itself — the filter offers
+10/20/50/100/300 and its DataTables `lengthMenu` offers 100/50/25/10; the
+toolbar follows the filter's list, which is the one an operator sees.
+
+## The two template knobs Articles needed
+
+Both are per-screen, both default to the Orders behaviour, and both came from
+a measurement rather than a preference.
+
+**1. `truncate` — a cap without snug's sizing.** Title is FLUID: it takes the
+slack the way Orders' Customer does. But it is free text, and one 84-character
+title measured **436px** at max-content and ate two columns' worth of budget
+on its own — the table showed two columns at 1400px. A column can now be snug,
+truncating, or both. The cap is 240px (the fluid column's own preferred width,
+so the two agree), dropping to 128 below a 560px table.
+
+**2. `identityColumns`.** The fit always shows the leading columns even if they
+do not fit, because a table of anonymous values is worse than one that
+scrolls. Orders' two are an order number and a name, which fit a phone
+together. Articles' two would be Title and Section — both long text — and
+forcing both overflowed a 309px table by 31px, pushing the KEBAB off the edge:
+the one control that reaches the other columns. Articles declares
+`identityColumns: 1`.
+
+## Measured
+
+| Table width | Columns | Overflow |
+|---|---|---|
+| 1255 | 6 | 0 |
+| 955 | 4 | 0 |
+| 655 / 619 | 3 | 0 |
+| 419 / 349 | 2 | 0 |
+| 309 / 279 / 239 | 1 | 0 |
+
+No dead space and the kebab visible at every width. Orders re-checked after
+both knobs: unchanged at 1400 (4 columns) and 390 (2).
+
+## Still Orders-classed in the markup
+
+The datatable keeps `datatables--orders`. Every listing rule in
+`Datatables.css` is scoped to it, so the class is doing double duty as "the
+listing datatable Type". That is the right call today — Mark's instruction was
+to use the Orders datatable — but the class wants renaming to something like
+`--listing` the first time a second Type genuinely diverges.

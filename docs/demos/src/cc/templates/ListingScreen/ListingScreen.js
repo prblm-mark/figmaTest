@@ -596,7 +596,12 @@
            to sit on a block INSIDE the cell — see `__truncate` in
            Datatables.css. The detail row below deliberately does not do this:
            it exists to show the values in full. */
-        if (col.snug) {
+        /* `truncate` is snug's cap without snug's sizing: the Articles title is
+           FLUID — it takes the slack the way Orders' Customer does — but its
+           content is free text that ran to 436px at max-content and ate two
+           columns' worth of budget on its own. A column can now be one, the
+           other, or both. */
+        if (col.snug || col.truncate) {
           content = '<span class="datatables__truncate" title="' +
             esc(String(row[col.key] === undefined ? '' : row[col.key])) + '">' + content + '</span>';
         }
@@ -1130,10 +1135,15 @@
         return;
       }
 
-      /* The first two columns identify a row and are shown even if they do not
-         fit; a table of anonymous values is worse than one that scrolls. */
+      /* The leading columns identify a row and are shown even if they do not
+         fit; a table of anonymous values is worse than one that scrolls.
+         HOW MANY is per screen. Orders' two are an order number and a name,
+         which fit a phone together. Articles' two would be Title and Section,
+         both long free text, and forcing both overflowed a 309px table by
+         31px — pushing the kebab, the only route to the other columns, off
+         the edge. One identity column is the honest answer there. */
       identity += 1;
-      if (identity <= 2) { used += natural[i]; return; }
+      if (identity <= (config.identityColumns || 2)) { used += natural[i]; return; }
 
       /* Stop at the FIRST column that does not fit rather than skipping to a
          narrower one further down — order is priority, and a table that shows
