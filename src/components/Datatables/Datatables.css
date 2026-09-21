@@ -235,8 +235,35 @@
   background-color: var(--ai-datatable-table-footer-bg);
 }
 
-.datatables__page-btn + .datatables__page-btn {
+/* Separators sit between the GROUP's children — the arrows, the number set
+ * and the position readout — rather than between buttons, because one of the
+ * last two is always hidden and `+` still counts a `display: none` sibling.
+ * Keyed to the buttons alone, the Next arrow lost its divider whenever the
+ * hidden member happened to sit in front of it. */
+.datatables__pagination > * + * {
   border-left: 1px solid var(--ai-datatable-table-border);
+}
+
+/* …and between the numbers inside their own wrapper. */
+.datatables__page-numbers {
+  display: inline-flex;
+  align-items: stretch;
+}
+
+.datatables__page-numbers .datatables__page-btn + .datatables__page-btn {
+  border-left: 1px solid var(--ai-datatable-table-border);
+}
+
+/* "Page 3 of 7" — what the numbers become when there is no room for them.
+ * Hidden until a container query asks for it. */
+.datatables__page-position {
+  display: none;
+  align-items: center;
+  padding: 0 var(--ai-spacing-4);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-primary);
+  white-space: nowrap;
 }
 
 .datatables__page-btn--active {
@@ -774,6 +801,37 @@
   .datatables--orders .datatables__select,
   .datatables--orders .datatables__footer {
     font-size: var(--ai-font-fixed-2xs);
+  }
+
+  /* ── Footer at narrow widths ───────────────────────────
+   * Seven page buttons plus two arrows cannot fit beside a count on a phone:
+   * measured at 390px, the pager ran off the right edge from page 6 onward and
+   * "Showing 1–20 of 140 results" wrapped to two lines.
+   *
+   * The industry-standard answer is to page SEQUENTIALLY on a small screen —
+   * Material's table pagination, Polaris and Carbon all drop numbered buttons
+   * for arrows plus a position readout, and GOV.UK keeps only a heavily
+   * windowed set. Jumping to page 5 is a desktop gesture; on a phone the
+   * next/previous pair is what gets used.
+   *
+   * So the numbers become "Page 3 of 7" — one line at any page count, where a
+   * windowed set still grows with the total. The count loses its two framing
+   * words for the same reason: the range and the total ARE the sentence.
+   *
+   * Both fit on one row afterwards (measured 251px of content in 374px), so
+   * the footer is not stacked. Stacking is the fallback for when compressing
+   * is not enough, and it costs a row of height on the screen with the least
+   * of it. */
+  .datatables__page-numbers {
+    display: none;
+  }
+
+  .datatables__page-position {
+    display: inline-flex;
+  }
+
+  .datatables__count-word {
+    display: none;
   }
 
   /* Cells hug the left edge and hand every spare pixel to CUSTOMER. */

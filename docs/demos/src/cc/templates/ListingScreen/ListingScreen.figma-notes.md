@@ -1270,3 +1270,12 @@ row — so a panel whose labels stayed 12px while the table's went to 11px would
 read as two different kinds of heading. Measured 12/12 at a 955px table and
 11/11 at 419px. Container query, not viewport, so it fires when the TABLE
 narrows — the docked sidebar does that with no window resize.
+
+
+## Mobile footer
+
+See `Datatables.figma-notes.md` — the pager collapses to "Page 3 of 7" and the
+count to "1–20 of 140" below a 767px container. The listing's own part is the
+markup: "Showing" and "results" are wrapped in `.datatables__count-word` spans
+so the container query can drop them, leaving the range and the total, which
+are the sentence.
