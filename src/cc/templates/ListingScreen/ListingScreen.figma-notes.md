@@ -1158,3 +1158,43 @@ Account renders as its chip inside the detail list, not as flat text.
 an iframe resize under `--virtual-time-budget`, so the two widths above are two
 separate loads. The RO handler calls `fitColumns`, which is the only thing
 `syncRowDetail` depends on.
+
+
+## The account chip vanished on a hovered row
+
+Reported 2026-09-21, and a direct consequence of the row hover tint.
+
+`.btn--tertiary:hover` out-specifies the chip's contextual border (0,2,0 vs
+0,1,0) and sets `--ai-btn-tertiary-border-hover` — **transparent in every
+mode**. So hovering the chip removed the only edge it had, and what it fell
+back to was `rgb(242,244,245)` against a row tint of `rgb(243,246,247)`: one to
+two per channel apart, in both Light and CC. No border, no fill contrast, no
+chip. Dark was survivable (`rgb(71,85,105)` on `rgb(41,53,72)`) but is fixed
+the same way.
+
+The chip now holds `--ai-border-secondary` through hover and focus — the same
+colour the edit icon and the kebab use, so all three row controls draw one
+line.
+
+### Scoped to clickable rows, not to Orders
+
+Per the designer: this only applies where a row is a target. The scope is a new
+`datatables--rows-clickable` modifier rather than `--orders`, because a row is
+clickable when something wired it up, not because the table holds orders — and
+the listing template is meant to serve ~400 screens.
+
+**The class is added by the code that binds the row click**, not written into
+the HTML. A datatable can then never advertise an affordance it does not have,
+which is the failure mode a hand-applied class invites. Verified: the listing
+carries the class and its rows read `cursor: pointer`; the Datatables component
+demo carries neither.
+
+### On verifying a `:hover` rule headlessly
+
+You cannot hover in headless Chrome, and forcing the state with a class tests
+your own class rather than the cascade. What settles it is enumerating every
+`border-color` rule that matches the chip and ranking them: three rules match,
+and `.datatables--rows-clickable .datatables__account-chip:hover` carries one
+more class than `.btn--tertiary:hover`, so it wins. Worth knowing the
+distinction — the earlier transition trap on this same pair of icons was a
+measurement artefact, and this one would have been too.
