@@ -183,10 +183,6 @@
   color: var(--ai-icon-contrast);
 }
 
-.datatables__sort--active [data-lucide] {
-  color: var(--ai-text-primary);
-}
-
 /* ── Pagination footer ───────────────────────────────── */
 
 .datatables__footer {
@@ -1094,8 +1090,20 @@
   color: var(--ai-text-primary);
 }
 
+/* The active chevron is the SAME family as the others, just darker — it was
+ * `--ai-icon-brand`, the one coloured thing in a row of grey, and it read as a
+ * link rather than as a state (designer, 2026-09-21).
+ *
+ * It does not need the colour: the control is a chevron PAIR at rest and a
+ * single direction chevron once a column is sorting, so the shape already
+ * carries the state, and `--ai-text-primary` matches the label sitting next to
+ * it — the two now darken together.
+ *
+ * This rule duplicated one 900 lines above that already said
+ * `--ai-text-primary`; the brand version was later and quietly won. The
+ * duplicate is gone with it. */
 .datatables__sort--active [data-lucide] {
-  color: var(--ai-icon-brand);
+  color: var(--ai-text-primary);
 }
 
 /* Elided page numbers. Not a button — there is nothing to click. */
