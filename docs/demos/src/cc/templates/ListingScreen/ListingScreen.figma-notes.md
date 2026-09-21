@@ -1279,3 +1279,81 @@ count to "1–20 of 140" below a 767px container. The listing's own part is the
 markup: "Showing" and "results" are wrapped in `.datatables__count-word` spans
 so the container query can drop them, leaving the range and the total, which
 are the sentence.
+
+
+## A floor under the Customer column
+
+Asked 2026-09-21, after the pencil column narrowed Customer by ~36px.
+
+Customer is the only column that can grow, so auto table layout takes all its
+slack from there. Measured with no floor: it sat at **124–163px at every
+desktop width**, and the NAME truncated on **half the rows** — "Michael
+Thompson" as "Michael Th…". The row's job is to identify a record; the role
+line beneath can truncate, the name cannot.
+
+`min-inline-size: var(--ai-size-3)` (192px) on the fluid column. 192 is what
+the cell needs: 24px avatar + 12px gap + ~124px for the longest name here +
+32px of cell padding. A floor, not a width — Customer still takes the slack
+above it, up to its 240px preference.
+
+### The cost, measured rather than assumed
+
+Where the floor bites, the fit's correction loop drops the last column instead
+of squeezing this one:
+
+| Table width | Before | After |
+|---|---|---|
+| 740px | 5 cols, names truncating | 4 cols, none truncating |
+| 940px | 5 cols, Customer 163 | 4 cols, Customer 240 |
+| 1040px | 6 cols | 5 cols |
+| 1240px | 7 cols | 6 cols |
+
+Zero truncated names at every width afterwards, no horizontal scroll, and the
+table still fills its body exactly — no dead space.
+
+### An option that was tried and is worse
+
+Making 192 the PREFERENCE as well as the floor keeps the same column counts but
+pools the freed slack into the snug columns — Order Status reached 333px and
+Account 270px — and 2 of 10 names still truncated, because zero truncation
+needs about 240. Rejected: same cost, worse result.
+
+### …and the floor comes off when the table is narrow
+
+Reported 2026-09-21: the kebab disappeared at the tight end. The floor was the
+cause — at a 390px viewport the table stood at 370px inside a 309px body and
+pushed the kebab off the right-hand edge.
+
+Removed below a **400px table**, not lowered: no fixed floor survives the
+bottom of the range, since at 320px there are 61px left for Customer after the
+other four columns.
+
+**400px, deliberately not the 767px the other narrow rules use.** Measured, the
+floor is safe down to a 419px table and only clips at 349 and below. Keyed to
+767 the override also fired on a DESKTOP with the sidebar docked — a 1000px
+window leaves a 555px table, narrow by container terms but with room to spare —
+and names truncated there for nothing. The threshold belongs where the damage
+starts, not where the mobile layout starts.
+
+The trade inverts on a phone, which is what makes this the right call rather
+than a compromise: wide, the name matters more than one more column; narrow,
+the kebab is the only route to the other eighteen columns, and a truncated name
+is still a name — the row is clickable either way.
+
+| Viewport | Table | Kebab | Names truncating |
+|---|---|---|---|
+| 320 | 239 | **clipped** | 5/10 |
+| 360 | 279 | visible | 5/10 |
+| 390 | 309 | visible | 4/10 |
+| 430 | 349 | visible | 0/10 |
+| 500–1700 | 419–1255 | visible | 0/10 |
+
+320px still clips, and cannot not: the table's min-content is 279px in a 239px
+body, so it scrolls. That is the intrinsic minimum of five columns, not the
+floor.
+
+**The override is its own container block, immediately after the rule it
+overrides.** A container query does NOT raise specificity, so written up with
+the other narrow rules it tied with the floor and lost on source order — and
+that failure is invisible: the measurements came back showing Customer still
+at 192 with the rule apparently in force.

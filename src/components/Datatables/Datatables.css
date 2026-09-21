@@ -1106,8 +1106,57 @@
  * tight), and a trailing spacer column absorbs whatever is left over. Nothing
  * real stretches, the columns stay closed up, and the row rules still run the
  * full width of the table. */
+/* The one column that can grow — and therefore the one that gets squeezed,
+ * because auto table layout takes its slack from whatever will yield.
+ *
+ * Measured without a floor: Customer sat at 124-163px across every desktop
+ * width and the NAME truncated on half the rows — "Michael Thompson" became
+ * "Michael Th…". A listing whose job is to identify a row cannot truncate the
+ * person's name; the role beneath it can, and does.
+ *
+ * 192px is what the cell actually needs: 24px avatar + 12px gap + ~124px for
+ * the longest name in the set + 32px of cell padding. It is a FLOOR, not a
+ * width — Customer still takes the slack above it.
+ *
+ * The cost is explicit and was measured rather than assumed: where the floor
+ * bites, the fit's correction loop drops the last column instead of squeezing
+ * this one, so a 940px table shows four data columns with a readable name
+ * where it showed five with an unreadable one. That is the trade the floor
+ * exists to make. */
 .datatables--orders .datatables__col--fluid {
-  width: var(--ai-size-4);                /* 240px preferred */
+  width: var(--ai-size-4);                /* 240px preferred … */
+  min-inline-size: var(--ai-size-3);      /* … never below 192px */
+}
+
+/* …but the floor comes off once the table is narrow.
+ *
+ * At that width the table is down to its two identity columns plus the three
+ * structural ones, and 192px of Customer no longer leaves room for them:
+ * measured at a 390px viewport the table stood at 370px in a 309px body and
+ * pushed the KEBAB off the right-hand edge. No fixed floor survives the bottom
+ * of the range — at 320px there are 61px left for Customer — so it is removed
+ * rather than lowered to a number that is wrong one step further down.
+ *
+ * The trade inverts on a phone. Wide, the name matters more than one more
+ * column. Narrow, the kebab is the only route to the other eighteen columns,
+ * and a truncated name is still a name — the row is clickable either way.
+ *
+ * 400px, not the 767px the rest of the narrow rules use, and the difference
+ * matters: measured, the floor is safe down to a 419px table and only clips
+ * at 349px and below. Keyed to 767 it also fired on a DESKTOP with the
+ * sidebar docked — a 1000px window leaves a 555px table, which is narrow by
+ * container terms but has room for the floor, and names truncated there for
+ * no reason. The threshold is where the damage starts, not where the mobile
+ * layout starts.
+ *
+ * Its own container block, immediately after the rule it overrides, because a
+ * container query does NOT raise specificity: written up with the other
+ * narrow rules it tied with the floor above and lost on source order, which
+ * measured as the override silently doing nothing. */
+@container (max-width: 400px) {
+  .datatables--orders .datatables__col--fluid {
+    min-inline-size: var(--ai-spacing-0);
+  }
 }
 
 
