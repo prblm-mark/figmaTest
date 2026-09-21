@@ -598,6 +598,11 @@
       ' data-page="' + (page.current - 1) + '"' +
       (page.current === 1 ? ' disabled' : '') +
       '><i data-lucide="chevron-left" aria-hidden="true"></i></button>';
+    /* The numbers are wrapped so a narrow container can swap the whole set for
+       the position readout below. BOTH are always rendered and CSS chooses —
+       the swap is a container-width question, and JS cannot read a container
+       query (CLAUDE.md §4a). */
+    out += '<span class="datatables__page-numbers">';
     pageWindow(page.current, page.pages).forEach(function (p) {
       if (!p) {
         out += '<span class="datatables__page-gap" aria-hidden="true">…</span>';
@@ -611,6 +616,12 @@
          * the same white as the container (see Datatables.css). */
         (active ? ' aria-current="page"' : '') + '>' + p + '</button>';
     });
+    out += '</span>';
+    /* What replaces the numbers when there is no room for them. Not
+       aria-hidden: whichever one is visible is the one a screen reader should
+       find, and the numbered buttons carry aria-current when they are. */
+    out += '<span class="datatables__page-position">Page ' + page.current +
+      ' of ' + page.pages + '</span>';
     out += '<button type="button" class="datatables__page-btn" aria-label="Next page"' +
       ' data-page="' + (page.current + 1) + '"' +
       (page.current === page.pages ? ' disabled' : '') +

@@ -634,7 +634,9 @@
           </div>
 
           <div class="datatables__footer">
-            <span>Showing <strong data-listing-range>1&#8211;10</strong> of <strong data-listing-footer-total>296</strong> results</span>
+            <!-- "Showing" and "results" are dropped on a narrow container: the
+                 range and the total are the sentence, the rest is padding. -->
+            <span class="datatables__count"><span class="datatables__count-word">Showing </span><strong data-listing-range>1&#8211;10</strong> of <strong data-listing-footer-total>296</strong><span class="datatables__count-word"> results</span></span>
             <div class="datatables__pagination" role="group" aria-label="Pagination" data-listing-pagination></div>
           </div>
         </div>

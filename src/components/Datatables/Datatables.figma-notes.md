@@ -165,3 +165,32 @@ This came from the Orders listing, where a borderless edit pencil was added
 beside the kebab and the two have to read as one set of row controls. The rule
 lives here rather than in the template because the pair belongs to the
 component: any change to one belongs on both.
+
+
+## Pagination collapses to a position readout at narrow widths
+
+2026-09-21, designer. Seven page buttons plus two arrows cannot fit beside a
+count on a phone: measured at 390px the pager ran off the right edge from page
+6 onward, and "Showing 1–20 of 140 results" wrapped to two lines.
+
+Below a 767px CONTAINER the numbered buttons are replaced by "Page 3 of 7" and
+the count drops its two framing words, leaving "1–20 of 140". Both fit on one
+row afterwards — 251px of content in 374px — so the footer is not stacked;
+stacking is the fallback for when compressing is not enough, and it costs a row
+of height on the screen with the least of it.
+
+This is the common pattern rather than a house one: Material's table
+pagination, Polaris and Carbon all drop numbered buttons for arrows plus a
+position readout at small sizes, and GOV.UK keeps only a heavily windowed set.
+Jumping to page 5 is a desktop gesture; on a phone it is next and previous that
+get used.
+
+**Both forms are always rendered and CSS picks one** — JS cannot read a
+container query, and the swap is a container-width question (CLAUDE.md §4a).
+
+One thing the swap broke and had to be fixed with it: the group's dividers were
+`.datatables__page-btn + .datatables__page-btn`, and `+` still counts a
+`display: none` sibling — so whichever of the two forms was hidden, the Next
+arrow lost its divider whenever the hidden member sat in front of it. The
+dividers now sit between the GROUP's children (arrow, number set, readout,
+arrow), with a second rule between the numbers inside their own wrapper.
