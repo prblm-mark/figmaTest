@@ -736,6 +736,28 @@
   color: var(--ai-text-primary);
 }
 
+/* The pencil comes off below a laptop.
+ *
+ * TEMPORARY, for the designer to look at (2026-09-21) — it may come back, and
+ * this block is the whole change.
+ *
+ * The case for dropping it: it costs 48px on a 311px table, the row itself
+ * already opens the record, and the kebab beside it is the only route to the
+ * other eighteen columns. Measured, it also bought back the one width that
+ * still overflowed — at a 320px viewport the table now fits its body instead
+ * of pushing the kebab off the edge.
+ *
+ * `@media`, at the same 1024 floor as Edit Columns, and for the same reason:
+ * "mobile" is a device, not a narrow table. Keyed to the table's own container
+ * this would have gone missing on a 1024px laptop with the SidebarMenu docked,
+ * which leaves a 579px table — the exact trap the Edit Columns rule was
+ * corrected for. A laptop keeps its pencil however the sidebar sits. */
+@media (max-width: 1023px) {
+  .datatables--orders .datatables__col--edit {
+    display: none;
+  }
+}
+
 /* The two sit as one pair. Default cell padding put 16px on each side of the
  * gap — 32px between the boxes and 48 between the glyphs, which read as two
  * unrelated controls at opposite ends of the row rather than a set (designer,

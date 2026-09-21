@@ -1384,3 +1384,32 @@ docked; a phone never has one.
 shown from 1024 up, and the 240px right-anchored panel sits inside the table at
 every width above that — including the 581px table a docked 1024px laptop
 produces.
+
+
+## The pencil is off below a laptop — TEMPORARY
+
+Designer, 2026-09-21, to look at: **it may come back**, and one `@media` block
+in `Datatables.css` is the whole change.
+
+The case for dropping it: it costs 48px on a 311px table, the row itself
+already opens the record, and the kebab beside it is the only route to the
+other eighteen columns.
+
+It also bought back the one width that still overflowed. **At a 320px viewport
+the table now fits its body** — 239px of table in a 239px body — where before
+it was 279px and pushed the kebab off the edge. Every width from 320 up now
+shows the kebab with zero dead space.
+
+`@media (max-width: 1023px)`, the same floor as Edit Columns, because "mobile"
+is a device and not a narrow table. Keyed to the table's own container this
+would have gone missing on a 1024px laptop with the sidebar docked (a 579px
+table) — the exact trap the Edit Columns rule had to be corrected for a few
+minutes earlier.
+
+### A structural column that hides no longer charges the budget
+
+`fitColumns` treats the checkbox, pencil and kebab as structure and always adds
+their width to what is used. A pencil hidden by a media query would still have
+cost a real column its place at some width. It now checks the column's computed
+display before charging for it — read back AFTER the measuring pass, which
+forces every column visible.

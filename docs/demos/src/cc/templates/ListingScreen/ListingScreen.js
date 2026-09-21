@@ -1054,8 +1054,16 @@
       if (config.hiddenColumns.indexOf(col.key) !== -1) return;   // off: costs nothing
 
       /* The checkbox, edit and kebab columns are structure — always present
-         and always part of the budget. */
-      if (!col.label) { used += natural[i]; return; }
+         and always part of the budget, EXCEPT when a container query has taken
+         one out (the pencil, on a phone). Charging the budget for a column
+         that is not drawn would cost a real column its place at some width;
+         the measuring pass forces every column visible, so this has to be read
+         back afterwards rather than from the measurement. */
+      if (!col.label) {
+        if (heads[i] && window.getComputedStyle(heads[i]).display === 'none') return;
+        used += natural[i];
+        return;
+      }
 
       /* The first two columns identify a row and are shown even if they do not
          fit; a table of anonymous values is worse than one that scrolls. */
