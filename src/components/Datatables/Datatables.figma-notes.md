@@ -194,3 +194,30 @@ One thing the swap broke and had to be fixed with it: the group's dividers were
 arrow lost its divider whenever the hidden member sat in front of it. The
 dividers now sit between the GROUP's children (arrow, number set, readout,
 arrow), with a second rule between the numbers inside their own wrapper.
+
+
+## The kebab gets the row's gutter
+
+2026-09-21, designer. Figma's mobile frame puts the kebab cell flush to the
+row edge (`--ai-spacing-0` both sides). Overruled: flush reads as the control
+falling off the table, and since the kebab is the last thing in the row, the
+row's right-hand gutter has to come from that cell or it does not exist.
+
+- **Right: `--ai-spacing-4` (12px)** at narrow container widths — the same
+  value the other cells use on their leading edge, so the gutter matches the
+  one down the left of the table.
+- **Left stays tight (4px)** where the pencil is beside it: the two are one
+  pair, and that was the point of tightening it.
+- **Left becomes 12px below 1024**, where the device rule hides the pencil.
+  With nothing to pair with, 4px is a collision with whatever data column
+  happens to end the row rather than a pairing.
+
+That last rule sits AFTER the container block on purpose: the two selectors
+carry the same specificity, so source order decides, and this one has to win
+where they overlap — a narrow container on a phone.
+
+An instruction that overrides the Figma frame, not a reading of it, so the file
+wants updating rather than this being "corrected" back to flush.
+
+Measured: 16px from the row edge at desktop with a 4px pair, 12px each side
+below 1024 with no pencil.

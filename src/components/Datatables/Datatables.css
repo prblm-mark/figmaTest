@@ -970,7 +970,31 @@
      blanket rule wins and the padding silently stays. */
   .datatables--orders .table td.datatables__col--kebab,
   .datatables--orders .table th.datatables__col--kebab {
-    padding-inline: var(--ai-spacing-0);
+    /* Figma's mobile frame puts this cell flush to the row edge
+       (--ai-spacing-0 both sides). The designer overruled it on 2026-09-21:
+       flush reads as the kebab falling off the table, and it is the last
+       control in the row, so the row's own gutter has to come from here.
+       LEFT stays tight — it pairs with the pencil when there is one; RIGHT
+       takes the 12px the other cells use on their leading edge, so the gutter
+       matches the one down the left of the table.
+       An instruction that overrides the frame, not a reading of it. */
+    padding-left: var(--ai-spacing-1);    /* 4px */
+    padding-right: var(--ai-spacing-4);   /* 12px */
+  }
+}
+
+/* With no pencil beside it there is nothing to pair with, so the kebab takes a
+ * full cell's padding on both sides. Below 1024 the device rule hides the
+ * pencil, and a 4px gap then sits between the kebab and whatever data column
+ * happens to end the row — which reads as a collision rather than a pair.
+ *
+ * After the container block above, deliberately: both selectors carry the same
+ * specificity, so source order is what decides, and this one has to win where
+ * the two overlap (a narrow container on a phone). */
+@media (max-width: 1023px) {
+  .datatables--orders .table td.datatables__col--kebab,
+  .datatables--orders .table th.datatables__col--kebab {
+    padding-left: var(--ai-spacing-4);    /* 12px */
   }
 }
 
