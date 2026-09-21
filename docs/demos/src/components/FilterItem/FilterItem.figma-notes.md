@@ -168,3 +168,44 @@ of the active filter are out of scope for this front-end chip. Wire them on the
 - Lucide icons via CDN — `plus`, `x`, `chevron-down`.
 - No project-component dependencies (the Figma "Icon/*" nodes are icon primitives, not components).
 - Button (`.btn--secondary .btn--sm`) is used **only in the demo** to drive the live `setFilterValues` example.
+
+
+## The value truncates; the count does not
+
+Reported on a phone, 2026-09-21: a chip reading "Countries · United Kingdom,
+and 3 more" ran past the filter bar and off the screen.
+
+A chip has to give somewhere, and WHERE matters. Ellipsising the whole rollup
+takes the count with it — "United Kingdom, and 3 …" reads as one country
+selected, which is worse than useless. So the rollup is now rendered as two
+spans:
+
+| Span | Behaviour |
+|---|---|
+| `.filter-item__values-lead` | the first value (or the 1–3 comma list) — **shrinks, ellipsises** |
+| `.filter-item__values-rest` | `, and N more` — **never shrinks** |
+
+`textContent` on `.filter-item__values` is still the whole rollup, so nothing
+that reads the chip changes, and a screen reader hears all of it.
+
+### The chain that makes it possible
+
+A flex item will not shrink below its content unless every box between it and
+the row says it may. Four rules, and it needs all four:
+
+- `.filter-item { max-inline-size: 100% }`
+- `.filter-item__trigger { min-inline-size: 0 }`
+- `.filter-item__values { min-inline-size: 0; overflow: hidden }`
+- `.filter-bar__chip { max-inline-size: 100%; min-inline-size: 0 }` (FilterBar)
+
+The last one is the one that was actually load-bearing: with the wrapper still
+at its default `min-width: auto`, the chip's own `max-inline-size: 100%`
+resolved against a box that had already grown to fit the text, so it measured
+501px inside a 314px bar and nothing else in the chain could bite.
+
+`.filter-item__name` is explicitly `flex: none` — a chip that truncates its own
+NAME says nothing at all.
+
+Measured at a 360px viewport: a four-value chip with a 51-character first value
+stops at 255px, the lead ellipsises, ", and 3 more" stays whole, and the name
+is intact. A short value is unaffected.

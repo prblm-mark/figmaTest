@@ -94,6 +94,12 @@
   gap: var(--ai-spacing-3);
   padding: var(--ai-spacing-9) var(--ai-spacing-6);
   text-align: center;
+  /* Table.css puts `white-space: nowrap` on every cell and it inherits
+     straight in here, so the description below never wrapped — it ran as one
+     line, ignored its own 320px cap and pushed the TABLE wider than the page.
+     Reported on a phone 2026-09-21, and just as wrong on a desktop with a
+     narrow column. Same inheritance trap as the row detail list. */
+  white-space: normal;
 }
 
 .cc-listing__empty-icon {
@@ -123,7 +129,10 @@
 
 .cc-listing__empty-desc {
   margin: 0;
-  max-width: var(--ai-size-6);           /* 320px */
+  /* A cap, and never a floor: `max-width` alone still let the cell's
+     min-content set the width. With wrapping restored above, 320 is a
+     measure, and 100% keeps it inside a column narrower than that. */
+  max-width: min(var(--ai-size-6), 100%);  /* 320px */
   font-family: var(--ai-font-title);
   font-size: var(--ai-font-fixed-xxs);
   font-weight: var(--ai-font-regular);

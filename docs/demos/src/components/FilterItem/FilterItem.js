@@ -28,9 +28,14 @@
  * and persistence are not part of this front-end chip → wire on `filter-item:toggle`.
  */
 
+/* The rollup, split into the part that may be TRUNCATED and the part that must
+ * not be. "United Kingdom, and 3 more" in a chip too wide for a phone has to
+ * lose characters somewhere, and losing them off the end takes the count with
+ * them — "United Kingdom, and 3 …" reads as one country. The lead shortens
+ * instead: "United King… and 3 more" still says four. */
 function rollup(values) {
-  if (values.length <= 3) return values.join(', ');
-  return `${values[0]}, and ${values.length - 1} more`;
+  if (values.length <= 3) return { lead: values.join(', '), rest: '' };
+  return { lead: values[0], rest: `, and ${values.length - 1} more` };
 }
 
 function setFilterValues(root, values) {
@@ -46,7 +51,23 @@ function setFilterValues(root, values) {
   root.classList.add('filter-item--selected');
   // A selected chip is never the dashed "empty" placeholder.
   root.classList.remove('filter-item--empty');
-  if (valuesEl) valuesEl.textContent = rollup(list);
+  if (!valuesEl) return;
+
+  /* Two spans, not one string: CSS can only ellipsis a box, so the lead needs
+     to be its own box for the count to survive. The element's textContent is
+     still the whole rollup, which is what a screen reader reads. */
+  const { lead, rest } = rollup(list);
+  valuesEl.textContent = '';
+  const leadEl = document.createElement('span');
+  leadEl.className = 'filter-item__values-lead';
+  leadEl.textContent = lead;
+  valuesEl.appendChild(leadEl);
+  if (rest) {
+    const restEl = document.createElement('span');
+    restEl.className = 'filter-item__values-rest';
+    restEl.textContent = rest;
+    valuesEl.appendChild(restEl);
+  }
 }
 
 function init(root) {

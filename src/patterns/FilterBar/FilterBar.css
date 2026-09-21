@@ -300,6 +300,15 @@
 .filter-bar__chip {
   position: relative;
   display: inline-flex;
+  /* A chip's value can be any length a customer typed, so the wrapper has to
+     let it shrink: a flex item's default `min-width: auto` refuses to go below
+     its content, and the chip's own `max-inline-size: 100%` then resolves
+     against a box that has already grown to fit. Measured on a phone
+     (2026-09-21) a four-country chip reached 501px inside a 314px bar and ran
+     off the screen. With these two, it stops at the row and FilterItem
+     ellipsises the value. */
+  max-inline-size: 100%;
+  min-inline-size: 0;
 }
 
 .filter-bar__panel {
