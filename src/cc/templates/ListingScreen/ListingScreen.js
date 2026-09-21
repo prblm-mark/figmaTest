@@ -1084,13 +1084,36 @@
     var table = parts && parts.table;
     var shown = [];
 
+    /* Drop the widths this function's own last run wrote, FIRST.
+     *
+     * Under fixed layout `sizeColumns` leaves an inline width on every th. Left
+     * in place, the next measure reads those back as the columns' "natural"
+     * widths — the pass measures its own output, not the content. Each re-fit
+     * then starts from a narrower table than the last, so on a resize the
+     * columns walk off one by one and never come back. */
+    for (var c = 0; c < heads.length; c++) heads[c].style.width = '';
+
+    /* Show the BODY cells for the pass as well, not just the headers.
+     *
+     * This is what made the select, edit and kebab columns come out cropped.
+     * `--measuring` was added to the th only, so during the pass the header row
+     * had all fourteen cells while the body rows had only the eight that were
+     * not `--nofit`. A table lays out one column structure for both, so the
+     * eight visible body cells were assigned to the first eight header slots —
+     * the kebab's cell measured under "Publish Start" and reported 155px, the
+     * pencil's 96px. Every structural column's measurement was somebody else's.
+     *
+     * A column switched off in Edit Columns stays off in both rows: that one is
+     * a user decision, not a fit, and it must not be measured back into view. */
+    var bodyRows = root.querySelectorAll('[data-listing-body] tr.datatables__row');
     config.columns.forEach(function (col, i) {
-      /* A column switched off in Edit Columns stays off — it must not be
-         measured back into view. */
-      if (heads[i] && config.hiddenColumns.indexOf(col.key) === -1) {
-        heads[i].classList.add('datatables__col--measuring');
-        shown.push(heads[i]);
-      }
+      if (!heads[i] || config.hiddenColumns.indexOf(col.key) !== -1) return;
+      heads[i].classList.add('datatables__col--measuring');
+      shown.push(heads[i]);
+      bodyRows.forEach(function (tr) {
+        var cell = tr.children[i];
+        if (cell) { cell.classList.add('datatables__col--measuring'); shown.push(cell); }
+      });
     });
     /* Without this the table stays at container width, twenty columns
        over-constrain it, and every column reports MIN-content — 74px for a
@@ -1098,12 +1121,29 @@
        actually fit. */
     if (table) table.classList.add('datatables__table--measuring');
 
+    /* Measure the HEADER and a BODY cell, and take the larger.
+     *
+     * The header alone is not the column: the select, edit and kebab headers
+     * are EMPTY, so they measured 16-20px while the 32px control beneath them
+     * needs about 48 — and under fixed layout a column gets exactly what it is
+     * given, so those three were cropped (designer, 2026-09-21). Under auto
+     * layout the browser silently corrected for the body cells; once the
+     * widths are ours to write, the measurement has to look where the content
+     * actually is.
+     *
+     * One body row is enough: every row of a column holds the same kind of
+     * thing, and the widest VALUE is already accounted for by the max-content
+     * pass this runs inside. */
+    var firstRow = root.querySelector('[data-listing-body] tr.datatables__row');
     var natural = config.columns.map(function (col, i) {
-      return heads[i] ? heads[i].getBoundingClientRect().width : 0;
+      var w = heads[i] ? heads[i].getBoundingClientRect().width : 0;
+      var cell = firstRow ? firstRow.children[i] : null;
+      if (cell) w = Math.max(w, cell.getBoundingClientRect().width);
+      return w;
     });
 
     if (table) table.classList.remove('datatables__table--measuring');
-    shown.forEach(function (th) { th.classList.remove('datatables__col--measuring'); });
+    shown.forEach(function (el) { el.classList.remove('datatables__col--measuring'); });
     return natural;
   }
 
@@ -1192,8 +1232,93 @@
       apply();
     }
 
+    /* The widths, now that the SET is settled.
+     *
+     * Under `table-layout: fixed` the browser stops deciding: every visible
+     * column has to be given a width, and what content wants no longer enters
+     * into it. That is the whole point — a cell can no longer widen its column,
+     * so text follows the column instead of the column following the text.
+     *
+     * The distribution reads the same three roles the CSS used to express as
+     * behaviours:
+     *   hug / structural — its measured natural width, as before
+     *   snug             — its natural width, capped so one long enumerated
+     *                      value cannot take half the table
+     *   fluid            — everything left over, and never below its floor
+     *
+     * Any rounding remainder goes to the fluid column, so the widths sum to
+     * the table exactly and there is no gap at the right-hand edge. That
+     * property used to be the browser's to keep; it is arithmetic now. */
+    sizeColumns(root, config, natural, hidden, available);
+
     /* Last, so it sees the fit that actually survived the correction loop. */
     syncRowDetail(root, config);
+  }
+
+  var SNUG_MAX = 224;          // px — a snug column's ceiling, see sizeColumns
+  var FLUID_MIN = 192;         // px — matches --ai-size-3, the Customer floor
+
+  function sizeColumns(root, config, natural, hidden, available) {
+    var heads = root.querySelectorAll('[data-listing-head] th');
+    var fluidAt = -1;
+    var used = 0;
+    var width = [];
+    /* The fluid floor comes off on a phone, exactly as the CSS rule it
+       replaces did (`@container (max-width: 400px)`): below that the table
+       cannot honour a 192px floor AND the columns that identify a row, and
+       what it loses by trying is the kebab — the one control that reaches
+       everything else. Measured before this: 88px over at a 239px table. */
+    var fluidFloor = available < 400 ? 0 : FLUID_MIN;
+
+    config.columns.forEach(function (col, i) {
+      if (!heads[i] || hidden[col.key] || config.hiddenColumns.indexOf(col.key) !== -1) {
+        width[i] = 0;
+        return;
+      }
+      var w = Math.ceil(natural[i]);
+      if (col.snug) w = Math.min(w, SNUG_MAX);
+      /* The LAST fluid column takes the remainder. There is normally one. */
+      if (!col.hug && !col.snug && col.label) { fluidAt = i; w = fluidFloor; }
+      width[i] = w;
+      used += w;
+    });
+
+    if (fluidAt !== -1) {
+      var spare = available - used;
+      if (spare > 0) {
+        width[fluidAt] += spare;
+      } else if (spare < 0) {
+        /* Over budget. Under fixed layout the table is exactly the sum of
+           these numbers, so anything left over is not "a bit of overflow" —
+           it is a horizontal scrollbar. Take it off the fluid column first,
+           down to its floor, then off the snug ones from the right, which are
+           the ones that truncate anyway. Measured before this: 13-18px over at
+           three widths. */
+        var owed = -spare;
+        var give = Math.min(owed, width[fluidAt] - fluidFloor);
+        if (give > 0) { width[fluidAt] -= give; owed -= give; }
+        for (var k = config.columns.length - 1; k >= 0 && owed > 0; k--) {
+          if (!width[k] || !config.columns[k].snug) continue;
+          var take = Math.min(owed, width[k] - Math.max(fluidFloor / 2, 48));
+          if (take > 0) { width[k] -= take; owed -= take; }
+        }
+      }
+    } else {
+      /* No fluid column on this screen: widen the last snug one rather than
+         leave the table short of its container. */
+      for (var j = config.columns.length - 1; j >= 0; j--) {
+        if (width[j] > 0 && config.columns[j].label) {
+          var left = available - used;
+          if (left > 0) width[j] += left;
+          break;
+        }
+      }
+    }
+
+    config.columns.forEach(function (col, i) {
+      if (!heads[i]) return;
+      heads[i].style.width = width[i] ? width[i] + 'px' : '';
+    });
   }
 
   /* Keep each row's detail list in step with the table.
