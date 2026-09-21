@@ -380,7 +380,13 @@
 
 /* ── Persistent search field (desktop) ───────────────────
  * Figma 2977:3803 desktop shows a 192px search Input always present in the
- * actions cluster (Export | Search | kebab). On mobile (Figma 2977:3804) it
+ * actions cluster. Figma orders it Export | Search | kebab; the listing screens
+ * order it SEARCH | Export | kebab (designer, 2026-09-21) — searching is the
+ * frequent act and exporting the occasional one, so the field sits nearer the
+ * filters it works with. A markup change only: this row is a plain flex with a
+ * gap and no positional selectors, so nothing here had to move.
+ * An instruction that overrides the frame, not a reading of it.
+ * On mobile (Figma 2977:3804) it
  * collapses to the search icon + full-width takeover (the --search mode above).
  * Mobile-first: hidden by default; the search icon shows. ≥768px: field shows,
  * icon hides. */
