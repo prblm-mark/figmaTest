@@ -1194,6 +1194,36 @@
  * max-content and nothing truncates. A block inside the cell has a real
  * max-content of its own, which is what actually caps the column.
  */
+/* An ARTICLE TITLE gets more room than the 160px default: it is the column
+ * that identifies the row, the set is full of question-form titles that share
+ * their opening words ("What is the…", "How do I…"), and the live screen's
+ * 250px ellipsis already makes several of them indistinguishable. 240px is the
+ * fluid column's own preferred width, so the cap and the column agree and the
+ * measuring pass reads 240 rather than the 436 one 84-character title was
+ * setting on its own. */
+.datatables--orders .datatables__article-title .datatables__truncate {
+  max-inline-size: var(--ai-size-4);     /* 240px */
+}
+
+/* …and a narrow table cannot afford 240 for one column. Articles' two
+ * identity columns are both long text (Title and Section), where Orders' are
+ * an order number and a name, so at phone width the pair overflowed the table
+ * by 175px. Both caps come down together.
+ *
+ * 560px, measured rather than guessed: the table still fits at 619 with three
+ * columns and overflows at 419 with two, so the boundary sits between them.
+ * Below it, fitting the columns matters more than the length of any one
+ * value. */
+@container (max-width: 560px) {
+  .datatables--orders .datatables__article-title .datatables__truncate {
+    max-inline-size: var(--ai-size-1);   /* 128px */
+  }
+
+  .datatables--orders .datatables__account-chip {
+    max-inline-size: var(--ai-size-1);   /* 128px, from 160 */
+  }
+}
+
 .datatables__truncate {
   display: block;
   max-inline-size: var(--ai-size-2);     /* 160px */
