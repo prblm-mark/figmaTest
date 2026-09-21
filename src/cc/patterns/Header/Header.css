@@ -194,7 +194,11 @@
 
 @container cc-header (max-width: 767px) {
   .cc-header {
-    min-height: var(--ai-spacing-10); /* 56px */
+    /* 48px, down from Figma's 56. Designer, 2026-09-21: the Header and the
+       TopNavigation above it take the SAME height on a phone. Figma's mobile
+       variant still says 56 — an instruction that overrides it, not a reading
+       of it, so Figma wants updating rather than this line "fixing" back. */
+    min-height: var(--ai-spacing-9); /* 48px on mobile */
     padding: var(--ai-spacing-3) var(--ai-spacing-4); /* 8px / 12px */
   }
 
