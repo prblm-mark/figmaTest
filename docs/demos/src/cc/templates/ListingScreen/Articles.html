@@ -538,6 +538,8 @@
             </div>
 
             <div class="filter-bar__actions">
+              <div class="input filter-bar__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
+              <button type="button" class="filter-bar__icon-btn" data-filter-action="search" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
               <!-- TODO(backend:Listing): Export produces nothing → POST /control/orders/export {view, filters, sort} → file URL. -->
               <div class="dropdown filter-bar__export" data-dropdown>
                 <div class="btn-group">
@@ -557,8 +559,6 @@
                   </ul>
                 </div>
               </div>
-              <div class="input filter-bar__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
-              <button type="button" class="filter-bar__icon-btn" data-filter-action="search" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
               <div class="dropdown filter-bar__menu" data-dropdown>
                 <button type="button" class="dropdown__trigger filter-bar__icon-btn" aria-haspopup="menu" aria-expanded="false" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
                 <div class="dropdown__panel" role="menu" aria-label="Actions">
