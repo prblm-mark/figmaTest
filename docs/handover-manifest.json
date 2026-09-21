@@ -851,6 +851,13 @@
           "element": ".datatables__row a[data-row-link] (order number) and a.datatables__row-edit (pencil), per row",
           "current": "Two destinations per row, both placeholder hrefs built by ROUTE.view / ROUTE.edit in ListingScreen.js: '#order/<orderNo>/view' and '#order/<orderNo>/edit'. They are real anchors, so keyboard, middle-click and hover-preview all work; clicking anywhere else in the row follows the view link. Nothing is fetched and no screen exists at either address.",
           "needs": "The two per-row URLs for the screen, ideally from the same payload as the rows so the template does not have to know a URL shape per screen: either a rows response carrying `viewUrl` and `editUrl` per row, or a screen-level template such as GET /control/<screen> -> { rowUrl: '/control/orders/{id}', editUrl: '/control/orders/{id}/edit' }. Replacing the two ROUTE functions is the whole change. Edit must respect the operator's permission on that record — the pencil should not be rendered for a row the user may not change."
+        },
+        {
+          "id": "listing-header-actions",
+          "category": "needs-backend",
+          "element": ".cc-header__actions .btn (Articles: the primary Add)",
+          "current": "Declared per screen in the config (`headerActions`) and rendered by ListingScreen.js into the CCHeader pattern's own actions cluster. Articles carries the primary Add from Figma 4105:3640 — plus icon, label, Primary/Base. It goes nowhere.",
+          "needs": "The screen's \"new record\" route, the sibling of listing-row-routes — e.g. a screen-level `newUrl: '/control/articles/new'` alongside the row and edit templates, so one payload carries all three. Permission applies here too: an operator who may not create should not be shown the button."
         }
       ]
     }

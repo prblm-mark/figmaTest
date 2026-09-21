@@ -339,6 +339,9 @@ LISTING_SCREENS.articles = {
   defaultFilters: LISTING_ARTICLES_FILTERS,
   moreFilters: LISTING_ARTICLES_MORE_FILTERS,
   rows: LISTING_ARTICLES_ROWS,
+  /* The primary action from the CCHeader pattern's own actions cluster
+     (Figma 4105:3640): plus icon, the word Add, Primary/Base. */
+  headerActions: [{ label: 'Add', icon: 'plus', variant: 'primary' }],
   /* Only the TITLE is guaranteed. Orders keeps two identity columns because
      its pair is an order number and a name; Articles' pair would be two long
      text columns, which does not fit a phone — see fitColumns. */

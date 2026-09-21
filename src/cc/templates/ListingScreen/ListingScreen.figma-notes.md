@@ -1803,3 +1803,29 @@ and a media query — and only the browser knows about all three.
 Measured on both screens at 1400 / 1024 / 900 / 700 / 500 / 390: the row fills
 the table with a panel open at every one. Empty state still spans the table,
 and the resize walk is still symmetric.
+
+
+## Header actions, per screen
+
+Designer, 2026-09-21: Articles gets the primary **Add** from the CCHeader
+pattern's own actions cluster (CC Hybrid `4105:3640`) — plus icon, the word
+Add, Primary/Base.
+
+The listing header has been a bare title since Pass 1, which is what Figma's
+listing frames draw, but the pattern has always carried the cluster. So this is
+not a new element, it is the one the pattern already defines.
+
+**Declared in the screen's config, not written into the page:**
+`headerActions: [{ label: 'Add', icon: 'plus', variant: 'primary' }]`. The next
+screen that needs one is a config entry like everything else here, and Orders —
+which declares none — renders nothing.
+
+**The pattern owns the responsive behaviour.** `.cc-header__actions` collapses
+a text+icon button to a 32px icon-only square on a narrow header and hides
+`__btn-label` to do it. Measured: 85×40 with the label at 1400px, 32×32 without
+it at 700 and 390. Nothing to add for that.
+
+TODO(backend:Listing) `listing-header-actions`: Add goes nowhere. It wants the
+screen's "new record" route — the sibling of `listing-row-routes`, ideally in
+the same payload — and the same permission caveat: an operator who may not
+create should not be shown the button.
