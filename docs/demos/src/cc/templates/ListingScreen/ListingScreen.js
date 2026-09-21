@@ -1485,6 +1485,42 @@
       config.hiddenColumns = (stored.columns.hidden || []).filter(function (k) { return byKey[k]; });
     }
 
+    /* Header actions, per screen.
+     *
+     * The listing header has been a bare title since Pass 1 — true of the
+     * screens Figma draws — but the CCHeader pattern has always carried an
+     * actions cluster (4105:3640), and Articles wants the primary Add from it
+     * (designer, 2026-09-21). Declared in the screen's config rather than
+     * written into the page, so the next screen that needs one is a config
+     * entry like everything else here.
+     *
+     * The pattern owns the behaviour: `.cc-header__actions` collapses a
+     * text+icon button to a 32px icon-only square on a narrow header, and
+     * `__btn-label` is the span it hides to do it. Nothing to add for that.
+     *
+     * TODO(backend:Listing) listing-header-actions: Add goes nowhere — it
+     * wants the screen's "new record" route, the sibling of listing-row-routes.
+     */
+    var headerActions = config.headerActions || [];
+    if (headerActions.length) {
+      var header = document.querySelector('.cc-header');
+      if (header) {
+        var slot = header.querySelector('.cc-header__actions');
+        if (!slot) {
+          slot = document.createElement('div');
+          slot.className = 'cc-header__actions';
+          header.appendChild(slot);
+        }
+        slot.innerHTML = headerActions.map(function (a) {
+          return '<button type="button" class="btn btn--' + esc(a.variant || 'primary') + '"' +
+            ' data-backend-todo="listing-header-actions">' +
+            (a.icon ? '<i data-lucide="' + esc(a.icon) + '" aria-hidden="true"></i>' : '') +
+            '<span class="cc-header__btn-label">' + esc(a.label) + '</span></button>';
+        }).join('');
+        if (window.lucide) window.lucide.createIcons();
+      }
+    }
+
     var bar = root.querySelector('.filter-bar');
 
     renderPerPageOptions(config);
