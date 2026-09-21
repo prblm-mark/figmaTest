@@ -1192,8 +1192,70 @@
       apply();
     }
 
+    /* The widths, now that the SET is settled.
+     *
+     * Under `table-layout: fixed` the browser stops deciding: every visible
+     * column has to be given a width, and what content wants no longer enters
+     * into it. That is the whole point — a cell can no longer widen its column,
+     * so text follows the column instead of the column following the text.
+     *
+     * The distribution reads the same three roles the CSS used to express as
+     * behaviours:
+     *   hug / structural — its measured natural width, as before
+     *   snug             — its natural width, capped so one long enumerated
+     *                      value cannot take half the table
+     *   fluid            — everything left over, and never below its floor
+     *
+     * Any rounding remainder goes to the fluid column, so the widths sum to
+     * the table exactly and there is no gap at the right-hand edge. That
+     * property used to be the browser's to keep; it is arithmetic now. */
+    sizeColumns(root, config, natural, hidden, available);
+
     /* Last, so it sees the fit that actually survived the correction loop. */
     syncRowDetail(root, config);
+  }
+
+  var SNUG_MAX = 224;          // px — a snug column's ceiling, see sizeColumns
+  var FLUID_MIN = 192;         // px — matches --ai-size-3, the Customer floor
+
+  function sizeColumns(root, config, natural, hidden, available) {
+    var heads = root.querySelectorAll('[data-listing-head] th');
+    var fluidAt = -1;
+    var used = 0;
+    var width = [];
+
+    config.columns.forEach(function (col, i) {
+      if (!heads[i] || hidden[col.key] || config.hiddenColumns.indexOf(col.key) !== -1) {
+        width[i] = 0;
+        return;
+      }
+      var w = Math.ceil(natural[i]);
+      if (col.snug) w = Math.min(w, SNUG_MAX);
+      /* The LAST fluid column takes the remainder. There is normally one. */
+      if (!col.hug && !col.snug && col.label) { fluidAt = i; w = FLUID_MIN; }
+      width[i] = w;
+      used += w;
+    });
+
+    if (fluidAt !== -1) {
+      var spare = available - used;
+      if (spare > 0) width[fluidAt] += spare;
+    } else {
+      /* No fluid column on this screen: widen the last snug one rather than
+         leave the table short of its container. */
+      for (var j = config.columns.length - 1; j >= 0; j--) {
+        if (width[j] > 0 && config.columns[j].label) {
+          var left = available - used;
+          if (left > 0) width[j] += left;
+          break;
+        }
+      }
+    }
+
+    config.columns.forEach(function (col, i) {
+      if (!heads[i]) return;
+      heads[i].style.width = width[i] ? width[i] + 'px' : '';
+    });
   }
 
   /* Keep each row's detail list in step with the table.
