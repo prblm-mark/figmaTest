@@ -219,9 +219,16 @@ where they overlap — a narrow container on a phone.
 An instruction that overrides the Figma frame, not a reading of it, so the file
 wants updating rather than this being "corrected" back to flush.
 
-Dialled back to **8px** on both a second look — 12 read as too much once it was
-on screen. Measured: 16px from the row edge at desktop with the 4px pair, 8-13px
-at narrow widths.
+Tuned down twice on screen, and the final values are **8px right at desktop**
+(down from the 16 every other cell takes) and **6px right when the container is
+narrow**. The kebab is a 32px box with its own internal breathing room, so the
+cell's padding is the only thing between the icon and the table edge — at 16 it
+read as a margin rather than a gutter. Left stays 4px beside the pencil, 8px
+below 1024 where there is no pencil to pair with.
+
+Measured: the kebab box sits 6-14px off the row edge depending on width, the
+variation being the fit giving that column its measured width rather than
+exactly the content's.
 
 ## …and the chip follows its column
 

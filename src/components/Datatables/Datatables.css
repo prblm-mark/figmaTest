@@ -810,6 +810,11 @@
 .datatables--orders .table td.datatables__col--kebab,
 .datatables--orders .table th.datatables__col--kebab {
   padding-left: var(--ai-spacing-1);
+  /* 8px, down from the 16px every other cell takes (designer, 2026-09-21).
+     The kebab is a 32px box with its own internal breathing room, so the
+     cell's padding is the only thing between the icon and the table edge —
+     and at 16 it read as a margin rather than a gutter. */
+  padding-right: var(--ai-spacing-3);
 }
 
 .datatables__row-edit [data-lucide] {
@@ -979,7 +984,7 @@
        matches the one down the left of the table.
        An instruction that overrides the frame, not a reading of it. */
     padding-left: var(--ai-spacing-1);    /* 4px */
-    padding-right: var(--ai-spacing-3);   /* 8px */
+    padding-right: var(--ai-spacing-2);   /* 6px */
   }
 }
 
