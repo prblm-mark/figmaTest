@@ -1198,3 +1198,75 @@ and `.datatables--rows-clickable .datatables__account-chip:hover` carries one
 more class than `.btn--tertiary:hover`, so it wins. Worth knowing the
 distinction — the earlier transition trap on this same pair of icons was a
 measurement artefact, and this one would have been too.
+
+### The panel flows into columns
+
+Designer, 2026-09-21. One pair per line made 15 hidden columns a 425px scroll
+for a row whose point is to be glanced at. The list is now
+`repeat(auto-fill, minmax(var(--ai-size-3), 1fr))`.
+
+**No container query, and no chosen breakpoints.** The grid counts the space
+itself, so the panel is right at every width rather than at the three or four
+someone picked. Measured: 5 columns at a 1155px table, 4 at 955, 2 at 619 and
+555, 1 at 419 — and the panel drops from 425px to 253 at the common desktop
+width. No horizontal overflow at any of them.
+
+`auto-fill`, not `auto-fit`: auto-fit collapses empty tracks, so a row with a
+single hidden column would stretch that one pair across the whole panel.
+
+192px is the minimum a pair needs — an uppercase label like PAYMENT METHOD over
+values such as "Awaiting Payment Confirmation". Below that the column COUNT
+changes, never the legibility.
+
+Two things the restructure needed:
+
+- The pair is the grid item now, not `display: contents`, and the label sits
+  **above** the value. Side by side, labels could only align within their own
+  column and the panel would read as ragged.
+- `align-self: center` on the `dt` had to be undone. It is correct in the base
+  two-column grid — it centres the label against its value on the same row —
+  but in a stacked pair the cross axis is horizontal, so the same declaration
+  centred every label over its value. Caught in the screenshot, not the
+  measurements, which is the argument for taking one.
+
+Also `white-space: normal` on the list: the detail cell is a `<td>`, and
+Table.css puts `nowrap` on every cell, which inherits straight in and would
+push long values out of a 192px column.
+
+Scoped to `--orders` rather than the component, since it changes the Whos
+Online detail row's look too. Worth promoting to the component default once
+the designer has seen it there.
+
+**Tightened, 2026-09-21** — the choice was "line-height to xs" or "drop the
+pair's 4px gap". Neither wholesale: the panel now mirrors the TABLE's own
+rhythm, which is what it stands in for.
+
+- **Label → `--ai-leading-xs` (16px), the same as `.table thead th`.** It was
+  inheriting the CELL's 20px, which is loose for 12px uppercase, and that was
+  the slack worth taking.
+- **Value stays at `--ai-leading-sm` (20px), the same as `.table tbody td`.**
+  16px on 14px text is a ratio of 1.14 — too tight for the wrapped lines a
+  192px column produces from a catalogue item name, and the panel's whole
+  argument is that long values stay readable.
+- **The 4px gap went too**, on the designer's call after seeing it: the
+  label's own 16px leading already separates it from its value, and the 12px
+  row-gap between pairs is what does the grouping — so the gap inside a pair
+  was only height. (I had argued to keep it as the binding signal; it is not
+  needed once the label's leading is tight.)
+
+The row-gap between pairs then went 12px → **16px** (`--ai-spacing-5`): with
+nothing inside a pair, that gap is the only thing grouping a label with its
+value, so it has to be unambiguous.
+
+Panel 253px → 237px on the leading alone, 221px with the pair gap out, 233px
+once the row-gap opened up; pair height 40px → 36px. Both leadings are now stated rather than inherited, so the pair
+keeps its rhythm if the cell's line-height moves.
+
+**Labels step down with the headers on mobile** (designer, 2026-09-21): the
+detail `dt` takes `--ai-font-fixed-4xs` in the same `@container (max-width:
+767px)` block that steps `.table thead th` down, so the two cannot drift.
+They are the same labels — read from behind the kebab rather than across the
+row — so a panel whose labels stayed 12px while the table's went to 11px would
+read as two different kinds of heading. Measured 12/12 at a 955px table and
+11/11 at 419px. Container query, not viewport, so it fires when the TABLE
+narrows — the docked sidebar does that with no window resize.
