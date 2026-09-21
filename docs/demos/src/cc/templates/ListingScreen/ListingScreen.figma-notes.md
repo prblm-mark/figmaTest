@@ -1357,3 +1357,30 @@ overrides.** A container query does NOT raise specificity, so written up with
 the other narrow rules it tied with the floor and lost on source order — and
 that failure is invisible: the measurements came back showing Customer still
 at 192 with the rule apparently in force.
+
+
+## Edit Columns is desktop-only
+
+Designer, 2026-09-21. There is nothing for it to do on a phone: the fit is down
+to the two columns that identify a row, everything else is already behind the
+kebab, and the panel is a 240px drag-and-drop list — choosing and REORDERING
+columns is a desktop task on a desktop-sized table. The toolbar keeps the
+page-size control, which means something at any width.
+
+### A deliberate `@media`, against the house rule
+
+The first cut keyed this to the datatable's own container at 767px, like every
+other narrow rule here. That was wrong for this one control, and the flag I
+raised became the answer: with the SidebarMenu docked, a **1024px laptop leaves
+a 557px table**, so the button vanished on a machine whose owner is perfectly
+able to use it (designer, 2026-09-21).
+
+The container asks *is there room*. This rule asks *what is the person working
+on* — a device question, which CLAUDE.md §4a names as the one case a viewport
+query is right for. A laptop keeps its column editor however the sidebar is
+docked; a phone never has one.
+
+`@media (max-width: 1023px)`. Measured: hidden at 390 / 768 / 1000 / 1023,
+shown from 1024 up, and the 240px right-anchored panel sits inside the table at
+every width above that — including the 581px table a docked 1024px laptop
+produces.

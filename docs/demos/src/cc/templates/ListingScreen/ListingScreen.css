@@ -144,6 +144,35 @@
   position: relative;
 }
 
+/* Not on a phone or a tablet (designer, 2026-09-21).
+ *
+ * There is nothing for it to do at those sizes: the fit is down to the columns
+ * that identify a row, everything else is already behind the kebab, and the
+ * panel is a 240px drag-and-drop list — choosing and REORDERING columns is a
+ * task for a pointer and a wide table. The toolbar keeps the page-size
+ * control, which means something at any width.
+ *
+ * ── A DELIBERATE @media, and the reason matters ──────────
+ * Everything else about this table keys on its own container, per CLAUDE.md
+ * §4a, and the first cut of this rule did too — `@container (max-width:
+ * 767px)`. That was wrong for this particular control. The table's width is
+ * not the question here: it asks "is there room", and with the SidebarMenu
+ * docked a 1024px LAPTOP leaves a 557px table, so the button vanished on a
+ * machine whose owner is very much able to use it (designer, 2026-09-21).
+ *
+ * The question this rule asks is "what is the person working on" — a device
+ * question, which §4a names as the one case a viewport query is right for.
+ * A laptop keeps its column editor however the sidebar is docked; a phone
+ * never has one. 1024 is the laptop floor.
+ *
+ * The panel is 240px and right-anchored, so it sits comfortably even in the
+ * narrowest table a 1024px laptop can produce. */
+@media (max-width: 1023px) {
+  .cc-listing__columns {
+    display: none;
+  }
+}
+
 .dropdown__panel--columns {
   /* The rows are draggable, and a drag that starts anywhere but the grip
      otherwise sweeps a text selection across the list — which reads as the
