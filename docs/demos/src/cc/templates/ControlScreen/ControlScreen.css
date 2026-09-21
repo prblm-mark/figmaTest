@@ -516,6 +516,28 @@
        15px of content on each side of a 390px screen. */
     padding-right: var(--ai-spacing-0);
   }
+
+  /* …UNLESS the scrollbar is an overlay one, in which case there is no gutter
+   * to compensate for and the trim above leaves the content flush against the
+   * screen edge.
+   *
+   * Reported from a real Android device, 2026-09-21: no right padding at all.
+   * Desktop Chrome cannot show this — it reserves a classic 15px gutter, so
+   * the trim looks correct there and the bug only exists on the devices the
+   * breakpoint is FOR. `scrollbar-gutter: stable` reserves nothing against an
+   * overlay scrollbar, by spec, so the 15px the rule above is paying for is
+   * simply absent.
+   *
+   * `pointer: coarse` is the proxy — a touch primary input is what ships
+   * overlay scrollbars, and CSS has no way to ask about the scrollbar itself.
+   * A touch laptop would get the untrimmed padding, which is the harmless
+   * direction to be wrong in: 12px of padding beside a 15px gutter, rather
+   * than nothing at all. */
+  @media (pointer: coarse) {
+    .cc-control__page {
+      padding-right: var(--ai-spacing-4);
+    }
+  }
 }
 
 /* Desktop (≥768px): trim the right padding to spacing-4 so the content sits
@@ -524,6 +546,15 @@
 @media (min-width: 768px) {
   .cc-control__page {
     padding-right: var(--ai-spacing-4);
+  }
+
+  /* Same overlay-scrollbar correction as the mobile block above — a tablet in
+     landscape has no gutter either, and the trim would leave it 12px on the
+     right against 24 on the left. */
+  @media (pointer: coarse) {
+    .cc-control__page {
+      padding-right: var(--ai-spacing-6);
+    }
   }
 }
 

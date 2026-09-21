@@ -24,6 +24,17 @@
    * and the inter-row divider sits mid-card (clear of the corners), so nothing
    * needs clipping. Clipping would crop the saved-views / kebab dropdown panels,
    * which must escape the card. */
+
+  /* The bar is a container so a PICKER can size itself against the space it
+     really has (2026-09-21). The pickers already used `100cqi`, but the
+     nearest container was `cs-page` — the whole page column, which is wider
+     than the bar by its own margins and padding. At a 393px viewport that
+     made the More Filters card's 320px floor 6px wider than the 314px bar,
+     and a card that cannot fit cannot be placed: placePanel has to choose an
+     edge to satisfy and picks the left, so the excess hangs off the right.
+     Named, so the `@container cs-page` rules in this file and in
+     FilterDropdowns.css still reach past it to the page column. */
+  container: fb-bar / inline-size;
 }
 
 /* ── Rows ──────────────────────────────────────────────── */

@@ -128,15 +128,21 @@
  * than removed, so every other type keeps Figma's fixed width. */
 .filter-dropdowns--more {
   inline-size: max-content;
-  min-inline-size: var(--ai-size-6);      /* 320px */
+  /* The floor is 320 OR the space available, whichever is SMALLER — a floor
+     that cannot be met is just an overflow. At a 393px viewport the bar is
+     314px, and a 320px card there hung 6px off the right whatever placePanel
+     did with it (2026-09-21). */
+  min-inline-size: min(var(--ai-size-6), 100cqi);   /* 320px */
   /* The ceiling is 640 OR the space actually available, whichever is smaller.
      The base panel's `max-width: 100%` cannot do this job: the panel is
      absolutely positioned, so its containing block is the chip it hangs off
      and 100% of that is a chip's width. Measured without the cap, a 640px
      panel on a 378px page sat at left -345 — off the screen entirely, because
      the bar's overflow flip had already pushed it as far left as it could go.
-     `cqi` is the inline size of the nearest container (`cs-page` in the CC
-     shell), which is the space the panel really has. */
+     `cqi` is the inline size of the nearest container — the FILTER BAR, which
+     declares one for exactly this (FilterBar.css). It was `cs-page` until
+     2026-09-21, and the page column is wider than the bar inside it, so the
+     ceiling was measured against space the panel does not have. */
   max-inline-size: min(var(--ai-size-10), 100cqi);   /* 640px */
 }
 

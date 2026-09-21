@@ -278,3 +278,35 @@ fill the screen.
 Verified at the S23's real visible box (360×543): shell 543, fits exactly, sheet bottom at 531,
 nothing cut off, no page overflow. Desktop unchanged — ControlScreen and the plan screen both
 report shell = viewport with no overflow and zero JS errors.
+
+
+## No right padding on a real device
+
+Reported from an Android phone, 2026-09-21: the page content ran flush to the
+right edge of the screen.
+
+The cause is a compensation that only works on one kind of scrollbar. The page
+reserves a gutter (`scrollbar-gutter: stable`) and the mobile rule trims
+`padding-right` to **0** so that 0 + a 15px gutter reads as roughly the 12px of
+padding on the left. Desktop does the same with a 12px trim.
+
+**On a device with OVERLAY scrollbars there is no gutter** — `stable` reserves
+nothing against one, by spec — so the trim subtracts padding that was never
+paid for and the content sits against the edge.
+
+Desktop Chrome cannot show this. It has a classic scrollbar, so the
+compensation looks right in every browser check, and the bug exists only on the
+devices the breakpoint is *for*. That is why it took real-device testing to
+find, and it is worth remembering for anything else that trims against a
+gutter.
+
+`@media (pointer: coarse)` restores the untrimmed padding, nested inside both
+the mobile and the desktop blocks (a tablet in landscape has no gutter either,
+and would have had 12px against 24). A touch primary input is the only proxy
+CSS offers — it cannot ask about the scrollbar itself — and a touch laptop
+getting the untrimmed padding is the harmless direction to be wrong in: 12px
+beside a 15px gutter, rather than nothing at all.
+
+Measured with the coarse blocks forced to match: padding symmetric at 12px
+(393px viewport) and 24px (900px). Fine-pointer behaviour unchanged — 12/0 and
+24/12, landing at the same 15px and 27px right-hand gaps as before.

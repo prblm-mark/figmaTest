@@ -565,3 +565,40 @@ A ResizeObserver on the bar rather than a window resize listener: the CC
 sidebar changes this width with no window resize at all (CLAUDE.md §4a). It
 also catches the bar gaining a row when chips wrap, which moves every panel
 hanging below it.
+
+
+## Pickers size against the BAR, not the page column
+
+Reported from a real device, 2026-09-21: the More Filters panel hung off the
+right of the screen.
+
+The pickers already sized themselves with `100cqi` — "the space available" —
+but the nearest container was `cs-page`, the whole page column, which is wider
+than the bar sitting inside it by the bar's own margins and padding. At a 393px
+viewport that is 329 against 314.
+
+Two consequences, and the first is the one that bites: the More Filters card's
+`min-inline-size` floor of 320px was then WIDER than the 314px bar. **A card
+that cannot fit cannot be placed** — `placePanel` has to choose which edge to
+satisfy and picks the left, so the excess hangs off the right no matter how
+good the placement logic is.
+
+Fixed at the source rather than in the placement:
+
+- `.filter-bar` declares `container: fb-bar / inline-size`, so `cqi` in a
+  picker now means the bar. Named, so the `@container cs-page` rules in this
+  file and in FilterDropdowns.css still reach past it to the page column.
+- The More Filters floor became `min(var(--ai-size-6), 100cqi)`. A floor that
+  cannot be met is just an overflow with a nicer name.
+
+Measured at 360 / 393 / 430 / 600 / 900 / 1400: the panel never exceeds the
+bar, no chip overflows it, and the 640px ceiling still applies where there is
+room. The Multi Select Table picker gained the same correction for free — it
+used the same `cqi` — and now stops at 312px on a 314px bar instead of 329.
+
+**Not the same bug as the missing page padding** reported the same morning,
+though they looked alike on the device: that one is a scrollbar-gutter
+compensation that overshoots where scrollbars are overlays (see
+`ControlScreen.figma-notes.md`). This one is a card wider than its bar. They
+compound — no right padding puts the bar's edge on the screen edge, so the
+overhang has nowhere to go.
