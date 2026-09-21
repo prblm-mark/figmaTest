@@ -1264,6 +1264,7 @@
   }
 
   var SNUG_MAX = 224;          // px — a snug column's ceiling, see sizeColumns
+  var SNUG_MIN = 128;          // px — and its floor, so a chip is never cropped
   var FLUID_MIN = 192;         // px — matches --ai-size-3, the Customer floor
 
   function sizeColumns(root, config, natural, hidden, available) {
@@ -1307,7 +1308,11 @@
         if (give > 0) { width[fluidAt] -= give; owed -= give; }
         for (var k = config.columns.length - 1; k >= 0 && owed > 0; k--) {
           if (!width[k] || !config.columns[k].snug) continue;
-          var take = Math.min(owed, width[k] - Math.max(fluidFloor / 2, 48));
+          /* …but never below what a snug column can usefully show. Taken too
+             far, the account/section chip in it gets cropped rather than
+             ellipsised — 128px keeps a chip legible and is the same floor the
+             picker's own columns use. */
+          var take = Math.min(owed, width[k] - Math.min(SNUG_MIN, width[k]));
           if (take > 0) { width[k] -= take; owed -= take; }
         }
       }

@@ -979,7 +979,7 @@
        matches the one down the left of the table.
        An instruction that overrides the frame, not a reading of it. */
     padding-left: var(--ai-spacing-1);    /* 4px */
-    padding-right: var(--ai-spacing-4);   /* 12px */
+    padding-right: var(--ai-spacing-3);   /* 8px */
   }
 }
 
@@ -994,7 +994,7 @@
 @media (max-width: 1023px) {
   .datatables--orders .table td.datatables__col--kebab,
   .datatables--orders .table th.datatables__col--kebab {
-    padding-left: var(--ai-spacing-4);    /* 12px */
+    padding-left: var(--ai-spacing-3);    /* 8px */
   }
 }
 
@@ -1168,7 +1168,11 @@
 
 .datatables--orders .datatables__account-chip {
   display: inline-block;
-  max-inline-size: var(--ai-size-2);     /* 160px */
+  /* 160px, or the column if that is narrower. Under fixed layout the cell has
+     a definite width, so a percentage resolves against it — the chip follows
+     its column the way the title does, instead of being cropped when the fit
+     hands that column less than 160px (designer, 2026-09-21). */
+  max-inline-size: min(var(--ai-size-2), 100%);
   overflow: hidden;
   text-overflow: ellipsis;
   vertical-align: middle;

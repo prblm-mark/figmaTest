@@ -219,5 +219,16 @@ where they overlap — a narrow container on a phone.
 An instruction that overrides the Figma frame, not a reading of it, so the file
 wants updating rather than this being "corrected" back to flush.
 
-Measured: 16px from the row edge at desktop with a 4px pair, 12px each side
-below 1024 with no pencil.
+Dialled back to **8px** on both a second look — 12 read as too much once it was
+on screen. Measured: 16px from the row edge at desktop with the 4px pair, 8-13px
+at narrow widths.
+
+## …and the chip follows its column
+
+Same change, same cause as the title: under fixed layout the account/section
+chip was CROPPED when the fit handed its column less than the chip's 160px cap.
+`max-inline-size: min(var(--ai-size-2), 100%)` — the percentage resolves,
+because a fixed-layout cell has a definite width — so the chip ellipsises at
+the column instead of overflowing it. `sizeColumns` also stops taking a snug
+column below 128px when it is trimming to fit, which is the width at which a
+chip is still worth reading.
