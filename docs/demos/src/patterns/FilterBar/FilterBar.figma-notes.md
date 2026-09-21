@@ -596,6 +596,27 @@ bar, no chip overflows it, and the 640px ceiling still applies where there is
 room. The Multi Select Table picker gained the same correction for free — it
 used the same `cqi` — and now stops at 312px on a 314px bar instead of 329.
 
+### …and then every OTHER picker, which was the same bug one layer down
+
+Reported straight after: More Filters was fixed, the rest still hung off. The
+base card is a flat `width: var(--ai-size-6)` — **320px, fixed** — which is
+6px wider than a 314px bar, so every ordinary picker had the same
+cannot-fit-cannot-be-placed problem the More Filters floor had.
+
+Now `width: min(var(--ai-size-6), 100cqi)`. The container resolves per context
+and is right in each: the BAR for a picker on the bar, the Multi Select Table
+card for a sub-filter inside one, and the viewport on the component's own demo
+page where there is no container at all (so the 320 still wins there).
+
+`max-width: 100%` was already on that rule and could never have done this job:
+the panel is absolutely positioned, so its containing block is the chip it
+hangs off, and 100% of a chip is not a constraint anyone wants.
+
+Measured at a 393px viewport, every default chip — Customer, User Code,
+Account, Account Code, Order No. — plus Add Filters and a date-range added
+from More Filters: all 312px inside a 314px bar, none past the bar or the
+viewport. At 1400px they are back to their Figma 320.
+
 **Not the same bug as the missing page padding** reported the same morning,
 though they looked alike on the device: that one is a scrollbar-gutter
 compensation that overshoots where scrollbars are overlays (see
