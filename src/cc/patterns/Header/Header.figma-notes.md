@@ -200,3 +200,20 @@ No additional CCHeader-specific gaps — all sizes and tokens map cleanly via th
   scoped class hides. Buttons in `.cc-header__actions` collapse from full-text to
   icon-only 32px square on mobile via the documented Mobile child-component sizing
   pattern.
+
+
+## Mobile height lowered to 48px — designer override of Figma
+
+2026-09-21. `min-height` on a narrow container goes `--ai-spacing-10` (56px) →
+`--ai-spacing-9` (48px), matching the TopNavigation above it, which comes up
+from 40 to meet it. Two stacked bars, one height.
+
+**Figma's mobile variant still says 56.** This is an instruction that overrides
+it, not a reading of it — so the file wants updating rather than this line
+being "corrected" back.
+
+Measured 48px at 360 / 390 / 500 / 760 viewport; 64px desktop unchanged. Note
+it is the header's own CONTAINER that decides, so a 1024px laptop with the
+SidebarMenu docked (a 632px header) also gets 48 — the same threshold at which
+the header already steps its type and padding down, so the height now follows
+the layout it belongs to.

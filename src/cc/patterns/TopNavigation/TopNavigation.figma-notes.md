@@ -188,3 +188,17 @@ Result: mobile shows only the portrait in the User block. Preview button stays v
   with `@media (max-width: 767px)` for mobile collapses. Token gaps documented:
   28px portrait → 32px, 18px mobile gap → 16px. Contextual override scoped to
   `.cc-top-navigation .breadcrumb__*` for invert colours on the dark navy bg.
+
+
+## Mobile height raised to 48px — designer override of Figma
+
+2026-09-21. `min-height` on a narrow container goes `--ai-spacing-8` (40px) →
+`--ai-spacing-9` (48px), so this bar and the Header below it are the SAME
+height on a phone; the Header comes down from 56 to meet it.
+
+**Figma's mobile variants (4099:3630 / 4099:3632) still say 40.** This is an
+instruction that overrides them, not a reading of them — so the file wants
+updating, and the line should not be "corrected" back to 40 by someone
+checking the code against Figma.
+
+Measured 48px at 360 / 390 / 500 / 760 viewport, desktop unchanged at 48.

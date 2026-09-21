@@ -145,7 +145,12 @@
 
 @container (max-width: 767px) {
   .cc-top-navigation {
-    min-height: var(--ai-spacing-8); /* 40px on mobile */
+    /* 48px, up from Figma's 40. Designer, 2026-09-21: the two stacked bars
+       take the SAME height on a phone, and the Header comes down to 48 to
+       meet this one. Figma's mobile variants (4099:3630 / 4099:3632) still
+       say 40 — an instruction that overrides them, not a reading of them, so
+       Figma wants updating rather than this line "fixing" back. */
+    min-height: var(--ai-spacing-9); /* 48px on mobile */
     /* 12px, from the mobile variants (4099:3630 / 4099:3632), where the Breadcrumb child sits at
      * x=12 with 12px clear on the right. Desktop keeps --ai-spacing-5 (16px), measured the same
      * way on 4099:3633 (Breadcrumb at x=16). This was missing until 2026-08-28 — mobile kept the
