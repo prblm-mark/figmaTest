@@ -239,3 +239,23 @@ because a fixed-layout cell has a definite width — so the chip ellipsises at
 the column instead of overflowing it. `sizeColumns` also stops taking a snug
 column below 128px when it is trimming to fit, which is the width at which a
 chip is still worth reading.
+
+
+## The active sort chevron is neutral, not brand
+
+2026-09-21, designer: it was the one coloured thing in a row of grey chevrons
+and read as a link rather than as a state.
+
+It does not need the colour. The control is a chevron PAIR at rest and a single
+direction chevron once a column is sorting, so the shape already carries the
+state — and `--ai-text-primary` matches the label sitting beside it, so the two
+now darken together.
+
+Worth knowing how it got there: **two rules 900 lines apart set the same
+property to different values**, `--ai-text-primary` first and `--ai-icon-brand`
+second, and the later one quietly won. The duplicate is gone with the fix.
+
+Measured, active / inactive / label: light `rgb(0,34,47)` / `rgb(153,170,177)` /
+`rgb(0,34,47)`; dark `rgb(241,245,249)` / `rgb(148,163,184)` / same; CC as
+light. Icon and label match in every mode, and the active one is plainly
+darker than the rest without being a different hue.
