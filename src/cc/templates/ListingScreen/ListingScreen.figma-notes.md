@@ -1434,3 +1434,79 @@ it inside a column narrower than that.
 Measured at 360 / 393 / 700 / 1400: wraps at every width, stays centred, and
 the table no longer exceeds its body. The description is 219px on a 279px table
 and 320px on a 955px one.
+
+
+## The picker pages, 20 at a time
+
+Designer, 2026-09-21. 20 is the live picker's own `iMaxRows` — the one part of
+its paging worth keeping, since it runs 20 with an N+1 probe and no offset, so
+"there is more" is all it can say and narrowing the sub-filters is the only way
+forward. This one can actually go there.
+
+The pager is the DATATABLE's footer markup, which buys the listing's styling
+and, for free, the collapse to "Page 3 of 4": that rule keys on the nearest
+container, and inside this card that IS the card, so a 640px picker gets the
+compact form without a second rule. It carries `data-picker-page`, not
+`data-page`, so the listing's own pager handler cannot pick the clicks up.
+With one page there is no pager at all — `:empty` hides the row.
+
+### A selection has to survive paging
+
+The bar reads a Multi Select Table by its CHECKED rows, so a row that scrolls
+out of the DOM takes its selection with it. Rather than add a parallel store to
+keep in step, **a selected row that is not on this page is rendered hidden** —
+the selection is still the checked set, exactly as FilterBar expects, and
+Apply needs no special case.
+
+That also forced a second rule: once a row has been ticked, the card is the
+source of truth for what is selected, not the chip's applied values. Without it
+the first redraw after a tick — paging, sorting, a sub-filter — would read back
+the applied set and silently undo the tick.
+
+Page resets to 1 whenever the list changes underneath it: a sort, a sub-filter
+applied, a sub-filter cleared. Page 3 of a different list is a different page.
+
+Measured on Contact Lists (71 rows): 4 pages of 20, "1–20 of 71" beside
+"Page 1 of 4"; a row ticked on page 1 survives to page 3 and applies correctly;
+narrowing to "affino" gives 2 pages and resets to the first; clearing restores
+4.
+
+
+## localStorage, for the demo
+
+TODO(backend:Listing) `listing-column-prefs` / `listing-default-filters`: saved
+views and the column layout belong to the user and the server, and both are
+already in the manifest. localStorage stands in so the prototype survives a
+reload — a demo that forgets what you set up two clicks ago cannot be walked
+through. Per browser, not per user, and not shared between devices.
+
+One key per screen, `affino.listing.<screen>`, holding the saved views and the
+column layout.
+
+- **Every call is wrapped.** Storage throws in a private window and can be
+  switched off entirely; a screen that will not render because it could not
+  read a preference is a worse failure than one that forgets it.
+- **Views are keyed by NAME**, not by the row element the in-memory map uses —
+  an element does not survive a reload, and a name is what the user typed and
+  what the endpoint will key on. Duplicate names collapse to one entry; the bar
+  allows them, and last-saved-wins beats inventing a second identity scheme for
+  a demo store.
+- **Columns are restored before the first paint**, so the table is never drawn
+  in one layout and rearranged into another.
+- **A column added to the screen since the layout was saved still appears.**
+  The stored order is applied first, then anything it does not mention — a
+  stale preference that hid new data is exactly what makes people distrust
+  saved layouts. Hidden keys that no longer exist are dropped on the way in.
+
+### Two events the FilterBar had to start dispatching
+
+The bar owns the view ROW; this screen owns what a row means. Deleting or
+renaming was DOM-only, so the store would have kept views the bar no longer
+showed. `filter-bar:delete-view` and `filter-bar:rename-view` now say so, and
+`root.addSavedView(name)` puts a persisted view back — doing the icon and
+row-menu wiring itself, because a caller that had to know about those would be
+holding half the pattern.
+
+Measured across a real reload: a hidden column and a saved view both come back,
+selecting the restored view puts its filter back on the bar, and deleting it
+empties the store.

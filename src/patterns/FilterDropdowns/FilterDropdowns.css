@@ -344,6 +344,20 @@
   height: var(--ai-icon-size-sm);
 }
 
+/* Pager row, between the table and the Apply button. It renders the
+ * DATATABLE's own footer markup, so it inherits that styling — including the
+ * collapse to "Page 3 of 4", which keys on the nearest container and inside
+ * this card that IS the card. Empty (and so invisible) when there is only one
+ * page. */
+.filter-dropdowns__table-pager:empty {
+  display: none;
+}
+
+.filter-dropdowns__table-pager .datatables__footer {
+  border-top: 1px solid var(--ai-border-secondary);
+  border-bottom: 1px solid var(--ai-border-secondary);
+}
+
 /* Table footer (full-width Apply) */
 .filter-dropdowns__table-footer {
   padding: var(--ai-spacing-3) var(--ai-spacing-4);  /* 8px 12px */
