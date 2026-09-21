@@ -1786,3 +1786,20 @@ Either fix alone would have hidden the symptom; both are real, so both are in.
 Measured on Articles and Orders at 1400 / 700 / 390: opening and closing the
 panel leaves the column count and the table width untouched, and the resize
 walk is still symmetric with the width guard in place.
+
+**…and a third cause, below 1024 only.** The panel still shortened the row on
+the narrow side. `colspan` declares how many column slots exist, and the detail
+cell carried the FULL column count — so opening a panel brought every hidden
+column back as a real slot, and under fixed layout each one took its assigned
+width out of the table. Below 1024px, where the device rule hides the pencil,
+that was a 44px gap at the end of every row. Above it the pencil is visible,
+which is exactly why the bug lived on one side of that line.
+
+The detail and empty-state cells now carry the count of columns actually
+showing, read from the computed display rather than from the fit's own
+bookkeeping: three separate things hide a column here — the fit, Edit Columns
+and a media query — and only the browser knows about all three.
+
+Measured on both screens at 1400 / 1024 / 900 / 700 / 500 / 390: the row fills
+the table with a panel open at every one. Empty state still spans the table,
+and the resize walk is still symmetric.

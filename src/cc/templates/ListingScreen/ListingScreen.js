@@ -1327,6 +1327,27 @@
       if (!heads[i]) return;
       heads[i].style.width = width[i] ? width[i] + 'px' : '';
     });
+
+    /* Keep the detail row's colspan to the columns that are actually SHOWING.
+     *
+     * A `colspan` declares that many column slots exist. With the full column
+     * count, opening a row's panel brought back every hidden column as a real
+     * slot — and under fixed layout each one then took its assigned width out
+     * of the table. Below 1024px, where the pencil column is hidden by the
+     * device rule, that left a 44px gap at the end of every row the moment a
+     * panel opened. Above it the pencil is visible, which is exactly why this
+     * only ever showed on the narrow side (designer, 2026-09-21).
+     *
+     * Read from the computed display rather than from the fit's own bookkeeping
+     * because three different things hide a column here — the fit, Edit
+     * Columns, and a media query — and only the browser knows about all
+     * three. */
+    var showing = 0;
+    for (var v = 0; v < heads.length; v++) {
+      if (window.getComputedStyle(heads[v]).display !== 'none') showing += 1;
+    }
+    root.querySelectorAll('[data-listing-body] .cc-listing__empty-cell, [data-listing-body] .datatables__row-detail__cell')
+      .forEach(function (cell) { cell.colSpan = showing || 1; });
   }
 
   /* Keep each row's detail list in step with the table.
