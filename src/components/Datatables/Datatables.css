@@ -569,36 +569,8 @@
 /* Shrink-to-fit column (ORDER NO, QTY, checkbox, kebab). `width: 1%`
  * is the table-layout idiom for "take only what the content needs";
  * the remaining columns absorb the slack. */
-/* ── Fixed layout, from 2026-09-21 ───────────────────────
- * The listing table's widths come from ListingScreen.js (`sizeColumns`), not
- * from its content. Under auto layout a cell could always widen its own
- * column, and three bugs came out of that single fact: an 84-character
- * article title demanded 436px and left two columns on a 1400px screen; the
- * cap that stopped it then left a band of empty space beside every title,
- * because the column took the slack and the capped text could not use it; and
- * because the cap was itself container-dependent, the fit and the cap chased
- * each other across a resize and a column flickered.
- *
- * Fixed layout removes the cause rather than each symptom: content cannot
- * affect a column, so the text simply ellipsises at whatever width the fit
- * gave it. The measuring pass still runs at `max-content` — that is where the
- * fit learns what each column WANTS — and only the render is fixed.
- *
- * Scoped to `--orders` so the Multi Select Table pickers keep auto layout;
- * their widths are content-driven by design. */
-.datatables--orders .table {
-  table-layout: fixed;
-}
-
-/* …except while measuring, which is the one pass that has to ask the content
-   what it wants. */
-.datatables--orders .datatables__table--measuring {
-  table-layout: auto;
-}
-
-/* The three column roles are now WIDTHS, written by sizeColumns. What remains
- * here is the wrapping behaviour each one implies. */
 .datatables--orders .datatables__col--hug {
+  width: 1%;
   white-space: nowrap;
 }
 
@@ -1222,21 +1194,34 @@
  * max-content and nothing truncates. A block inside the cell has a real
  * max-content of its own, which is what actually caps the column.
  */
-/* No cap at render: the column now has a width of its own, so the text fills
- * it and ellipsises there. The shared 160px default would undo exactly the
- * thing fixed layout was for — measured, it left 327px of empty space beside
- * a 459px title cell. */
+/* An ARTICLE TITLE gets more room than the 160px default: it is the column
+ * that identifies the row, the set is full of question-form titles that share
+ * their opening words ("What is the…", "How do I…"), and the live screen's
+ * 250px ellipsis already makes several of them indistinguishable. 240px is the
+ * fluid column's own preferred width, so the cap and the column agree and the
+ * measuring pass reads 240 rather than the 436 one 84-character title was
+ * setting on its own. */
 .datatables--orders .datatables__article-title .datatables__truncate {
-  max-inline-size: none;
+  max-inline-size: var(--ai-size-4);     /* 240px */
 }
 
-/* Only while MEASURING. At render the column has a width of its own and the
- * text ellipsises to it — which is what removed the empty band beside every
- * title. During the measure there is no column to follow, so free text would
- * report its whole 436px and eat two columns' budget; 240 is the fluid
- * column's own floor, so the two agree. */
-.datatables--orders .datatables__table--measuring .datatables__article-title .datatables__truncate {
-  max-inline-size: var(--ai-size-4);     /* 240px */
+/* …and a narrow table cannot afford 240 for one column. Articles' two
+ * identity columns are both long text (Title and Section), where Orders' are
+ * an order number and a name, so at phone width the pair overflowed the table
+ * by 175px. Both caps come down together.
+ *
+ * 560px, measured rather than guessed: the table still fits at 619 with three
+ * columns and overflows at 419 with two, so the boundary sits between them.
+ * Below it, fitting the columns matters more than the length of any one
+ * value. */
+@container (max-width: 560px) {
+  .datatables--orders .datatables__article-title .datatables__truncate {
+    max-inline-size: var(--ai-size-1);   /* 128px */
+  }
+
+  .datatables--orders .datatables__account-chip {
+    max-inline-size: var(--ai-size-1);   /* 128px, from 160 */
+  }
 }
 
 .datatables__truncate {
