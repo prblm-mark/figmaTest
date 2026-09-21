@@ -1115,6 +1115,13 @@
         if (cell) { cell.classList.add('datatables__col--measuring'); shown.push(cell); }
       });
     });
+    /* The paired DETAIL rows take no part in the measurement. Each is a single
+       cell spanning every column, so at max-content it hands its own width
+       demand to all of them — a measurement of the panel, not of the columns.
+       Hidden ones contribute nothing anyway; this is for the open ones. */
+    var details = root.querySelectorAll('[data-listing-body] tr.datatables__row-detail');
+    details.forEach(function (tr) { tr.classList.add('datatables__row-detail--measuring'); });
+
     /* Without this the table stays at container width, twenty columns
        over-constrain it, and every column reports MIN-content — 74px for a
        column that renders at 125px, so the fit lets two more columns in than
@@ -1142,6 +1149,7 @@
       return w;
     });
 
+    details.forEach(function (tr) { tr.classList.remove('datatables__row-detail--measuring'); });
     if (table) table.classList.remove('datatables__table--measuring');
     shown.forEach(function (el) { el.classList.remove('datatables__col--measuring'); });
     return natural;
@@ -2146,7 +2154,18 @@
     var observed = listingTable(root);
     var table = observed && observed.body;
     if (table && typeof ResizeObserver === 'function') {
+      /* WIDTH only. A ResizeObserver fires on any size change, and the table's
+         HEIGHT changes constantly — opening a row's kebab panel is the obvious
+         one. Re-fitting then is at best wasted work and at worst wrong: the
+         detail row is visible by the time the measure runs, and its single
+         `colspan` cell pushes its own width demand across every column it
+         spans, so the columns came back narrower than the table (designer,
+         2026-09-21). Nothing about a taller table changes what fits across it. */
+      var lastWidth = Math.round(table.clientWidth);
       new ResizeObserver(function () {
+        var now = Math.round(table.clientWidth);
+        if (now === lastWidth) return;
+        lastWidth = now;
         fitColumns(root, config);
         placeRoomHeading(root, config);
       }).observe(table);
