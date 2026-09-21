@@ -494,9 +494,14 @@
     display: none;
   }
 
-  /* Even --ai-spacing-4 (12px) padding on both rows at mobile (Figma mobile frames). */
+  /* Even padding on both rows at mobile. Figma's mobile frames say
+     --ai-spacing-4 (12px); the designer took it to --ai-spacing-3 (8px) on
+     2026-09-21 after seeing it on a phone, where the chips are the content and
+     the frame around them was taking room they needed. An instruction that
+     overrides the frames, not a reading of them — so Figma wants updating
+     rather than this line being "corrected" back to 12. */
   .filter-bar__row {
-    padding: var(--ai-spacing-4);
+    padding: var(--ai-spacing-3);
   }
 
   /* New View mode: let the field flex (basis 0, then grow) so it shrinks to make
