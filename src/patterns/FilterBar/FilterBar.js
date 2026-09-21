@@ -124,6 +124,7 @@ function wireViews(root) {
     input.select();
 
     let done = false;
+    const was = text.textContent.trim();
     const finish = (commit) => {
       if (done) return;
       done = true;
@@ -131,6 +132,14 @@ function wireViews(root) {
       if (commit && v) {
         text.textContent = v;
         if (item.getAttribute('aria-checked') === 'true' && label) label.textContent = v;
+        /* Said out loud, like the delete: a consumer keying state by NAME has
+           to be told the name moved. */
+        if (v !== was) {
+          root.dispatchEvent(new CustomEvent('filter-bar:rename-view', {
+            bubbles: true,
+            detail: { from: was, to: v, view: item },
+          }));
+        }
       }
       input.remove();
       li.classList.remove('filter-bar__li--renaming');
@@ -217,6 +226,13 @@ function wireViews(root) {
       const row = li.querySelector('.dropdown-item[role="menuitemradio"]');
       const wasSelected = row && row.getAttribute('aria-checked') === 'true';
       const list = li.parentElement;
+      const gone = row && row.querySelector('[data-text]');
+      /* Said out loud so a consumer holding state for this view can drop it.
+         The bar itself only owns the row. */
+      root.dispatchEvent(new CustomEvent('filter-bar:delete-view', {
+        bubbles: true,
+        detail: { name: gone ? gone.textContent.trim() : '', view: row },
+      }));
       li.remove();
       if (wasSelected) {
         const next = list && list.querySelector('.dropdown-item[role="menuitemradio"]');
@@ -567,6 +583,19 @@ function wireChipPanels(root) {
      once the bar shows a view as saved — after selecting one, or after saving
      the current filters as a new one — passing the values it just restored, so
      the new baseline is the values themselves and not a stale cache of them. */
+  /* Add a saved-view row from outside — what a consumer needs to put back
+     views it persisted. It does the whole job, icons and row-menu wiring
+     included, because those are the bar's internals and a caller that had to
+     know about them would be holding half the pattern. */
+  root.addSavedView = (name) => {
+    const row = addView(root, name);
+    if (!row) return null;
+    row.dataset.viewEmpty = '0';           // a restored view has filters
+    if (typeof window !== 'undefined' && window.lucide) window.lucide.createIcons();
+    initDropdowns(root);                   // wire its … menu (idempotent)
+    return row;
+  };
+
   root.refreshSaveView = refreshSaveView;
 
   /* The consumer's half of the view state, as an opaque string — the bar

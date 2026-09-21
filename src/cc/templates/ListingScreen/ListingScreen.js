@@ -189,6 +189,62 @@
      tableFields in order, so the two lists cannot drift. */
   function pickerFields(f) { return ['name'].concat(f.tableFields || []); }
 
+  /* 20 rows a page, which is the live picker's own `iMaxRows`. That number is
+     the one part of its paging worth keeping: it runs 20 with an N+1 probe and
+     no offset, so "there is more" is all it can say and narrowing the
+     sub-filters is the only way forward. This one can actually go there. */
+  var PICKER_PAGE_SIZE = 20;
+
+  /* ── Demo persistence ─────────────────────────────────────
+   * TODO(backend:Listing) listing-column-prefs / listing-default-filters:
+   * saved views and the column layout belong to the USER, on the server, and
+   * both are already in the handover manifest. localStorage is here so the
+   * prototype survives a reload — a demo that forgets what you set up two
+   * clicks ago cannot be walked through.
+   *
+   * Every call is wrapped: storage throws in a private window and can be
+   * disabled outright, and a screen that will not render because it could not
+   * read a preference is a worse failure than one that forgets it.
+   */
+  var STORE_PREFIX = 'affino.listing.';
+
+  function loadState(screen) {
+    try {
+      var raw = window.localStorage.getItem(STORE_PREFIX + screen);
+      var data = raw ? JSON.parse(raw) : null;
+      return (data && typeof data === 'object') ? data : {};
+    } catch (e) { return {}; }
+  }
+
+  function saveState(screen, state) {
+    try {
+      window.localStorage.setItem(STORE_PREFIX + screen, JSON.stringify(state));
+    } catch (e) { /* private window, quota, or storage switched off */ }
+  }
+
+  /* The picker's own pager. Deliberately the DATATABLE's footer markup: it
+     inherits the listing's pagination styling, and the collapse to
+     "Page 3 of 4" keys on the nearest container — which inside this card IS
+     the card, so a 640px picker gets the compact form without a second rule.
+     `data-picker-page` rather than `data-page`, so the listing's own pager
+     handler cannot pick these up. */
+  function renderPickerPager(page, pages, from, to, total) {
+    if (pages <= 1) return '';
+    var btn = function (to, label, icon, disabled) {
+      return '<button type="button" class="datatables__page-btn" aria-label="' + label + '"' +
+        ' data-picker-page="' + to + '"' + (disabled ? ' disabled' : '') +
+        '><i data-lucide="' + icon + '" aria-hidden="true"></i></button>';
+    };
+    return '<div class="datatables__footer">' +
+      '<span class="datatables__count"><strong>' + from + '\u2013' + to + '</strong> of <strong>' +
+        total + '</strong></span>' +
+      '<div class="datatables__pagination" role="group" aria-label="Pagination">' +
+        btn(page - 1, 'Previous page', 'chevron-left', page === 1) +
+        '<span class="datatables__page-position">Page ' + page + ' of ' + pages + '</span>' +
+        btn(page + 1, 'Next page', 'chevron-right', page === pages) +
+      '</div></div>';
+  }
+
   function pickerRow(o, f, picked) {
     var on = (picked || []).indexOf(o.name) !== -1;
     var cols = pickerCols(f);
@@ -394,7 +450,15 @@
         return '<th' + cls + '>' + inner + '</th>';
       }).join('');
 
-      var rows = (f.options || []).map(function (o) { return pickerRow(o, f, picked); }).join('');
+      /* First paint is the first page, so the card never renders 71 rows and
+         then throws 51 of them away. Everything after this goes through
+         redrawPickerRows, which owns the paging from then on. */
+      var all = f.options || [];
+      var firstPages = Math.max(1, Math.ceil(all.length / PICKER_PAGE_SIZE));
+      var rows = all.slice(0, PICKER_PAGE_SIZE)
+        .map(function (o) { return pickerRow(o, f, picked); }).join('');
+      var pager = renderPickerPager(1, firstPages, 1,
+        Math.min(PICKER_PAGE_SIZE, all.length), all.length);
 
       return '<div class="filter-dropdowns filter-dropdowns--table" data-filter-dropdowns>' +
         '<div class="filter-dropdowns__header"><p class="filter-dropdowns__title">' + esc(f.label) + '</p></div>' +
@@ -408,6 +472,7 @@
             '<th class="datatables__col--tight" aria-label="Open"></th>' +
           '</tr></thead><tbody>' + rows + '</tbody></table>' +
         '</div></div></div>' +
+        '<div class="filter-dropdowns__table-pager" data-picker-pager>' + pager + '</div>' +
         '<div class="filter-dropdowns__table-footer">' +
           '<button type="button" class="btn btn--primary filter-dropdowns__apply" data-filter-dropdowns-apply>Apply</button>' +
         '</div>' +
@@ -1226,6 +1291,31 @@
       filterValues: {}
     });
 
+    /* Demo persistence, read before the first paint so the table is never
+       drawn in one layout and then rearranged into another. */
+    var screenKey = root.getAttribute('data-listing') || 'listing';
+    var stored = loadState(screenKey);
+    if (!stored.views) stored.views = {};
+    if (!stored.viewOrder) stored.viewOrder = [];
+
+    function persist() { saveState(screenKey, stored); }
+
+    if (stored.columns && stored.columns.order) {
+      /* Ordered by the stored list, then anything it does not mention.
+         A column ADDED to the screen since the layout was saved must still
+         appear — dropping it would make a stale preference hide new data,
+         which is the failure mode that makes people distrust saved layouts. */
+      var byKey = {};
+      config.columns.forEach(function (c) { byKey[c.key] = c; });
+      var ordered = stored.columns.order.map(function (k) { return byKey[k]; }).filter(Boolean);
+      var seen = {};
+      ordered.forEach(function (c) { seen[c.key] = true; });
+      config.columns = ordered.concat(config.columns.filter(function (c) { return !seen[c.key]; }));
+      /* Only keys the screen still has: a hidden column that no longer exists
+         is noise, and would keep the list growing for ever. */
+      config.hiddenColumns = (stored.columns.hidden || []).filter(function (k) { return byKey[k]; });
+    }
+
     var bar = root.querySelector('.filter-bar');
 
     renderPerPageOptions(config);
@@ -1369,11 +1459,24 @@
        holding what values. The bar owns the list and its rows; the screen owns
        what a row MEANS, so the snapshot is kept here, keyed by the row element.
 
-       TODO(backend:Listing): in memory, like the rest of the saved-views
-       mocking — a reload restores the shipped set.
+       TODO(backend:Listing): per-user and server-side in the real screen.
+       localStorage stands in so the DEMO survives a reload.
          → POST /control/orders/views  { name, filters:[{name,values}] }
          → GET  /control/orders/views */
     var views = new WeakMap();
+
+    /* The persisted mirror of that WeakMap, keyed by NAME — a row element does
+       not survive a reload, and a name is what the user typed and what the
+       eventual endpoint will key on too. Duplicate names collapse into one
+       entry; the bar allows them and this is a demo store, so last-saved wins
+       rather than growing a second identity scheme to prevent it. */
+    function persistColumns() {
+      stored.columns = {
+        order: config.columns.map(function (c) { return c.key; }),
+        hidden: config.hiddenColumns.slice()
+      };
+      persist();
+    }
 
     /* A view is the filter set AND the table layout. Editing the columns is a
        change to the view in the same way adding a filter is — the two are one
@@ -1430,8 +1533,48 @@
     }
 
     document.addEventListener('filter-bar:save-view', function (e) {
-      if (e.detail && e.detail.view) views.set(e.detail.view, snapshot());
+      if (!e.detail || !e.detail.view) return;
+      var snap = snapshot();
+      views.set(e.detail.view, snap);
+      var name = e.detail.name || '';
+      if (!name) return;
+      if (stored.viewOrder.indexOf(name) === -1) stored.viewOrder.push(name);
+      stored.views[name] = snap;
+      persist();
     });
+
+    /* The bar owns the row; this screen owns what the row MEANS, so a deleted
+       or renamed row has to move the stored snapshot with it or the demo comes
+       back with views that no longer exist. */
+    document.addEventListener('filter-bar:delete-view', function (e) {
+      var name = e.detail && e.detail.name;
+      if (!name) return;
+      delete stored.views[name];
+      var at = stored.viewOrder.indexOf(name);
+      if (at !== -1) stored.viewOrder.splice(at, 1);
+      persist();
+    });
+
+    document.addEventListener('filter-bar:rename-view', function (e) {
+      var from = e.detail && e.detail.from, to = e.detail && e.detail.to;
+      if (!from || !to || !stored.views[from]) return;
+      stored.views[to] = stored.views[from];
+      delete stored.views[from];
+      var at = stored.viewOrder.indexOf(from);
+      if (at !== -1) stored.viewOrder[at] = to; else stored.viewOrder.push(to);
+      persist();
+    });
+
+    /* Put the persisted views back on the bar. After `baseline` is taken, so
+       restoring one still has the shipped listing to fall back to. */
+    if (bar && typeof bar.addSavedView === 'function') {
+      stored.viewOrder.forEach(function (name) {
+        var snap = stored.views[name];
+        if (!snap) return;
+        var row = bar.addSavedView(name);
+        if (row) views.set(row, snap);
+      });
+    }
 
     document.addEventListener('filter-bar:select-view', function (e) {
       var view = e.detail && e.detail.view;
@@ -1483,6 +1626,7 @@
         renderResults(root, config);
         renderColumnPicker(root, config);
         announceColumns();
+        persistColumns();
       }
       dragKey = null;
     });
@@ -1638,6 +1782,7 @@
 
     var subState = {};   // filter name -> { sub-filter name -> values[] }
     var pickerSort = {};  // filter name -> { by: <row field>, dir: 'asc'|'desc' }
+    var pickerPage = {};  // filter name -> 1-based page
 
     /* Sorting a picker's table, the same rule as the listing's: compare the
        VALUE, and let an unsorted picker keep the order its data arrives in —
@@ -1681,13 +1826,44 @@
       var body = card.querySelector('tbody');
       if (!body) return;
       var state = subState[filter.name] || {};
-      var chosen = config.filterValues[filter.name] || [];
+      /* What the card shows as ticked is what is ticked IN THE CARD, not what
+         the chip has committed — otherwise ticking a row on page 1 and paging
+         on would un-tick it, since the redraw would reach past the working
+         selection to the applied one. */
+      var chosen = Array.from(card.querySelectorAll('[data-row-value]:checked'))
+        .map(function (c) { return c.getAttribute('data-row-value'); });
+      if (!card.dataset.pickerTouched) chosen = config.filterValues[filter.name] || [];
       var rows = sortPickerRows(subFilterRows(filter, state, chosen), filter);
 
+      var pages = Math.max(1, Math.ceil(rows.length / PICKER_PAGE_SIZE));
+      var page = Math.min(Math.max(1, pickerPage[filter.name] || 1), pages);
+      pickerPage[filter.name] = page;
+      var start = (page - 1) * PICKER_PAGE_SIZE;
+      var shown = rows.slice(start, start + PICKER_PAGE_SIZE);
+
+      /* A selection must survive paging, and the simplest way to keep one
+         mechanism is to keep the row: anything ticked but not on this page is
+         rendered HIDDEN. FilterBar reads the card's checked set on Apply, so
+         off-page choices come back without a second store to keep in step. */
+      var onPage = {};
+      shown.forEach(function (o) { onPage[o.name] = true; });
+      var offPage = chosen.filter(function (name) { return !onPage[name]; })
+        .map(function (name) {
+          return (filter.options || []).filter(function (o) { return o.name === name; })[0];
+        }).filter(Boolean);
+
       body.innerHTML = rows.length
-        ? rows.map(function (o) { return pickerRow(o, filter, chosen); }).join('')
+        ? shown.map(function (o) { return pickerRow(o, filter, chosen); }).join('') +
+          offPage.map(function (o) { return pickerRow(o, filter, chosen).replace('<tr>', '<tr hidden>'); }).join('')
         : '<tr><td class="filter-dropdowns__empty" colspan="' +
             ((filter.tableColumns || []).length + 2) + '">No matching items</td></tr>';
+
+      var pager = card.querySelector('[data-picker-pager]');
+      if (pager) {
+        pager.innerHTML = rows.length
+          ? renderPickerPager(page, pages, start + 1, Math.min(start + PICKER_PAGE_SIZE, rows.length), rows.length)
+          : '';
+      }
 
       paintPickerHead(card, filter);
       if (window.lucide) window.lucide.createIcons();
@@ -1702,6 +1878,28 @@
       return config.moreFilters.concat(config.baseFilters)
         .filter(function (f) { return f.name === name; })[0];
     }
+
+    /* Ticking a row in the card makes the CARD the source of truth for what is
+       selected until Apply commits it. Without this the first redraw after a
+       tick — paging, sorting, a sub-filter — would fall back to the chip's
+       applied values and silently undo it. */
+    document.addEventListener('change', function (e) {
+      var box = e.target.closest('[data-row-value]');
+      if (!box) return;
+      var card = box.closest('.filter-dropdowns--table');
+      if (card) card.dataset.pickerTouched = '1';
+    });
+
+    /* The picker's own pager. */
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-picker-page]');
+      if (!btn || btn.disabled) return;
+      var card = btn.closest('.filter-dropdowns--table');
+      var filter = card && pickerFilter(card);
+      if (!filter) return;
+      pickerPage[filter.name] = parseInt(btn.getAttribute('data-picker-page'), 10) || 1;
+      redrawPickerRows(card, filter);
+    });
 
     /* Sorting a picker's own table. A second click on the same column
        reverses it; a first click starts ascending — a picker is a list you
@@ -1718,6 +1916,9 @@
       pickerSort[filter.name] = (st && st.by === by)
         ? { by: by, dir: st.dir === 'asc' ? 'desc' : 'asc' }
         : { by: by, dir: 'asc' };
+      /* A re-sorted list is a different list: page 3 of it is not the page 3
+         you were on. Same rule the listing follows. */
+      pickerPage[filter.name] = 1;
       redrawPickerRows(card, filter);
     });
 
@@ -1758,6 +1959,9 @@
       subState[filter.name] = subState[filter.name] || {};
       subState[filter.name][name] = values;
 
+      /* Narrowing produces a shorter list; whatever page you were on is gone. */
+      pickerPage[filter.name] = 1;
+
       var chip = facet.querySelector('.filter-item');
       if (chip && typeof chip.setFilterValues === 'function') chip.setFilterValues(values);
       /* The sub-picker STAYS OPEN. Narrowing this table is usually an
@@ -1778,6 +1982,7 @@
       if (!filter) return;
       var name = facet.getAttribute('data-subfilter');
       if (subState[filter.name]) subState[filter.name][name] = [];
+      pickerPage[filter.name] = 1;
       var panel = facet.querySelector('.filter-dropdowns__subpanel');
       var card2 = panel && panel.querySelector('[data-filter-dropdowns]');
       if (card2 && typeof card2.resetFilterDropdown === 'function') card2.resetFilterDropdown();
@@ -1796,6 +2001,7 @@
       fitColumns(root, config);
       placeRoomHeading(root, config);
       announceColumns();
+      persistColumns();
     });
 
     /* Whether a column has ROOM changes with the container, not the window —

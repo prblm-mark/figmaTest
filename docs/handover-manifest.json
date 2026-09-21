@@ -835,7 +835,7 @@
           "id": "listing-default-filters",
           "category": "needs-backend",
           "element": ".filter-bar (data-backend-todo=\"listing-default-filters\")",
-          "current": "The five chips and the Add Filters set are config in listing-data.js, each naming the FilterDropdowns Type it opens. The pickers now open and are interactive, but every option list is mock and nothing is applied: choosing a value changes no rows.",
+          "current": "The five chips and the Add Filters set are config in listing-data.js, each naming the FilterDropdowns Type it opens. The pickers now open and are interactive, but every option list is mock and nothing is applied: choosing a value changes no rows. Saved views are persisted to the same localStorage key, keyed by NAME, with create/rename/delete kept in step via the bar's filter-bar:save-view / :rename-view / :delete-view events.",
           "needs": "Two endpoints. (1) GET /control/<screen>/filters -> [{ name, type, label, placeholder? }] — the backend already decides the first five filters per screen, and `type` names the dropdown (select-options | predictive | multi-select | text | more-filters). (2) GET /control/<screen>/filters/<name>/options?q= -> [{ value, label, sub? }] for the option lists; the predictive types should query per keystroke rather than ship the list up front. Applying a filter then re-queries the rows endpoint. Plus saved-view CRUD and per-user persistence of the filter set."
         },
         {
