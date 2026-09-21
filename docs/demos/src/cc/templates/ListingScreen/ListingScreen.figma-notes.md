@@ -1617,3 +1617,150 @@ The datatable keeps `datatables--orders`. Every listing rule in
 listing datatable Type". That is the right call today — Mark's instruction was
 to use the Orders datatable — but the class wants renaming to something like
 `--listing` the first time a second Type genuinely diverges.
+
+
+## The listing table is fixed-layout now
+
+Designer's call, 2026-09-21, after two bugs on Articles that were the same bug:
+the Section column flickered between hidden and shown while resizing below
+470px, and there was a wide band of empty space beside every title on a phone
+(measured 121px at a 309px table).
+
+Both came from one fact: under `table-layout: auto` a cell can always widen its
+own column. Everything downstream followed from it —
+
+1. An 84-character title demanded **436px** at max-content and left two
+   columns on a 1400px screen.
+2. The cap that stopped it then left the space, because the column is FLUID
+   and takes the slack while the capped text cannot use it.
+3. The cap was container-dependent, so the fit and the cap chased each other
+   across a resize — the flicker.
+
+**`table-layout: fixed` removes the cause.** Content can no longer affect a
+column, so text ellipsises at whatever width the fit gave it. The measuring
+pass still runs at `max-content` — that is where the fit learns what each
+column WANTS — and only the render is fixed. Scoped to `--orders`, so the
+Multi Select Table pickers keep auto layout; their widths are content-driven
+by design.
+
+### The fit now decides widths, not just visibility
+
+`sizeColumns` writes an explicit width per visible column, reading the same
+three roles the CSS used to express as behaviours:
+
+| Role | Width |
+|---|---|
+| hug / structural | its measured natural |
+| snug | its natural, capped at 224px so one long enumerated value cannot take half the table |
+| fluid | everything left over, never below its 192px floor |
+
+The rounding remainder goes to the fluid column, so the widths sum to the
+table exactly. **"No dead space" used to be the browser's to keep; it is
+arithmetic now** — which is the real cost of this change and the thing to
+check first if a gap ever appears at the right-hand edge.
+
+### Measured, both screens
+
+| | 1255 | 955 | 655 | 619 | 419 | 359 | 309 | 239 |
+|---|---|---|---|---|---|---|---|---|
+| Articles cols | 7 | 4 | 4 | 3 | 1 | 1 | 1 | 1 |
+| Title slack | 32 | 32 | 12 | 12 | 12 | 12 | 12 | 12 |
+
+Slack is now cell padding and nothing else — the band is gone. No overflow at
+any width. Orders re-checked: 4 columns at 955 and 2 at 309 as before, and 4
+rather than 3 at 619, because a fixed column no longer has to leave room for
+what its content might want.
+
+The flicker is addressed by removing its cause rather than by damping it:
+there is no container-dependent cap left to chase. That one is reasoned from
+the mechanism rather than reproduced — a ResizeObserver never fires for an
+iframe resize under a virtual time budget, so a resize sequence is not
+something this harness can drive.
+
+### One CSS edit that cost four rounds
+
+Mid-way through, several measurements made no sense — a span reported
+`display: inline` with the rule that sets `display: block` plainly present in
+the file. The cause was **a single orphan `}`** left by a programmatic edit:
+everything after it was dropped by the parser, so `.datatables__truncate` and
+every rule below it silently did nothing. Two of the "failed" approaches
+before it were probably fine.
+
+`grep -c '{'` against `grep -c '}'` is a two-second check and would have caught
+it immediately. Worth doing after any scripted CSS surgery.
+
+### The fit was measuring its own output
+
+Reported straight after the switch: resizing just removed columns, one after
+another, and they never came back.
+
+`sizeColumns` leaves an inline width on every `th`. `measureColumns` then read
+those back as the columns' "natural" widths — **the pass was measuring its own
+last output rather than the content**. Every re-fit during a drag therefore
+started from a narrower table than the one before, shed another column, and
+had no way to recover when the window widened again.
+
+One line fixes it: clear the inline widths before the measuring pass. It has to
+be there rather than at the end of `sizeColumns`, because the render between
+the two passes is what the user is looking at.
+
+**Tested for convergence and reversibility**, which is the property that was
+missing — the same widths walked down and back up must give the same answers:
+
+| Page | 1200 | 1000 | 800 | 600 | 500/400 | 600 | 800 | 1000 | 1200 |
+|---|---|---|---|---|---|---|---|---|---|
+| Articles | 6 | 5 | 5 | 3 | 3 | 3 | 5 | 5 | 6 |
+| Orders | 6 | 5 | 5 | 3 | 2 | 3 | 5 | 5 | 6 |
+
+Identical on the way back, no overflow at any step.
+
+**The harness note that matters here:** a ResizeObserver does not fire under
+`--virtual-time-budget`, so the resize path cannot be driven directly. The test
+above stands in for it by resizing the page column and then clicking a sort
+header, which re-renders and re-fits without changing the column set. Without
+that substitution the probe showed the table simply overflowing by 508px and
+looked like a different bug entirely.
+
+### Second attempt: three things the first one got wrong
+
+Reinstated 2026-09-21 after a rollback. The approach was right; the
+implementation had three defects, each of which only shows once the widths are
+ours to write.
+
+**1. The measure looked only at the headers, so the controls were cropped.**
+`--measuring` was added to the `th` and not to the body cells, so during the
+pass the header row had all fourteen columns while the body rows had only the
+eight that were not `--nofit`. A table lays out ONE column structure for both,
+so the eight visible body cells were assigned to the first eight header slots:
+the kebab's cell was measured under "Publish Start" and reported 155px, the
+pencil's 96px, while their own empty headers reported 16 and 20. Under auto
+layout the browser quietly corrected for it. Under fixed layout those numbers
+are the column, and the select, pencil and kebab came out cropped.
+
+The pass now shows the body cells too, and the measurement takes
+`max(header, body cell)` — the header of a structural column is empty, so the
+content is only ever in the body.
+
+**2. Nothing clamped the sum.** Under fixed layout the table IS the sum of the
+widths, so a few pixels over is not "slight overflow", it is a horizontal
+scrollbar. Excess now comes off the fluid column first, down to its floor, then
+off the snug columns from the right, which truncate anyway. Measured before:
+13–18px over at three widths.
+
+**3. The fluid floor stayed at 192px on a phone.** The CSS rule it replaced
+lifted that floor below a 400px table; the JS did not, so at 239px the sum of
+the minima exceeded the table by 88px and the kebab went over the edge — the
+same control, lost the same way, for a different reason. `sizeColumns` now
+mirrors the rule it replaced.
+
+**Verified across both screens** — Articles and Orders, 320px to 1700px: no
+cropping of the checkbox, pencil or kebab at any width; no overflow and no dead
+space; the title's unused space is zero. And the property that was missing the
+first time, convergence and reversibility:
+
+| Page | 1200 | 1000 | 800 | 600 | 450 | 350 | 450 | 600 | 800 | 1000 | 1200 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Articles | 6 | 4 | 4 | 2 | 1 | 1 | 1 | 2 | 4 | 4 | 6 |
+| Orders | 6 | 5 | 4 | 3 | 2 | 2 | 2 | 3 | 4 | 5 | 6 |
+
+Symmetric both ways, no overflow at any step.
