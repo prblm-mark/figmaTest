@@ -25,6 +25,12 @@
   border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-md);
   box-sizing: border-box;
+  /* A chip never outgrows the row it sits in. Reported on a phone, 2026-09-21:
+     "Countries · United Kingdom, and 3 more" ran past the filter bar and off
+     the screen. Everything below is the chain that makes the truncation
+     possible — a flex item will not shrink below its content unless every box
+     between it and here says it may. */
+  max-inline-size: 100%;
 }
 
 /* ── Shape ─────────────────────────────────────────────── */
@@ -92,6 +98,7 @@
   font: inherit;
   color: inherit;
   cursor: pointer;
+  min-inline-size: 0;
 }
 
 /* ── Clear (×) — selected only ─────────────────────────── */
@@ -115,10 +122,34 @@
   line-height: var(--ai-leading-xs); /* 16px */
   color: var(--ai-text-primary);
   white-space: nowrap;
+  /* The only part of the chip that gives. The name says WHICH filter and the
+     count says how many are selected; the value is the one piece a reader can
+     still act on when it is cut short. */
+  display: inline-flex;
+  align-items: baseline;
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;          /* for markup that puts plain text here */
+}
+
+/* The first value shortens… */
+.filter-item__values-lead {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* …and ", and 3 more" does not, or the chip stops saying how many. */
+.filter-item__values-rest {
+  flex: none;
+  white-space: nowrap;
 }
 
 .filter-item__name {
   font-weight: var(--ai-font-medium);
+  /* Holds its ground: a chip that truncates its own NAME is unreadable. */
+  flex: none;
 }
 
 .filter-item__values {

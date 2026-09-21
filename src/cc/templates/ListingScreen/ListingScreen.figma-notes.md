@@ -1413,3 +1413,24 @@ their width to what is used. A pencil hidden by a media query would still have
 cost a real column its place at some width. It now checks the column's computed
 display before charging for it — read back AFTER the measuring pass, which
 forces every column visible.
+
+
+## The empty state did not wrap
+
+Reported 2026-09-21, on a phone and true on a narrow desktop column too: "No
+orders match the filters you have applied…" ran as one line, ignored its own
+320px cap and pushed the table wider than the page.
+
+`white-space: nowrap` on every `.table` cell, inheriting into the div inside
+the `colspan` cell. The description could not wrap, so its `max-width` was
+never reached and the cell's min-content set the table's width. The third time
+this inheritance has bitten in this template, after the row detail list and the
+picker's table.
+
+`white-space: normal` on `.cc-listing__empty`, and the description's cap became
+`min(var(--ai-size-6), 100%)` — 320px is a MEASURE, not a floor, and 100% keeps
+it inside a column narrower than that.
+
+Measured at 360 / 393 / 700 / 1400: wraps at every width, stays centred, and
+the table no longer exceeds its body. The description is 219px on a 279px table
+and 320px on a 955px one.
