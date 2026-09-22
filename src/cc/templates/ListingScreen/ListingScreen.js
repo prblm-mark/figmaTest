@@ -1371,6 +1371,42 @@
   var SNUG_MIN = 128;          // px — and its floor, so a chip is never cropped
   var FLUID_MIN = 192;         // px — matches --ai-size-3, the Customer floor
 
+  /* Hand `spare` out in equal shares to the columns that can use it — the
+     fluid one and the snug ones — and return whatever is left for the fluid
+     column to absorb.
+
+     Water-filling, because a snug column has a ceiling: everyone gets an equal
+     slice, anyone who hits SNUG_MAX takes only what fits and drops out, and the
+     rest is shared again among those still growing. Loops at most once per
+     column. The fluid column has no ceiling, so it is always still growing and
+     the remainder always has somewhere to go — which is what keeps the widths
+     summing to the table exactly, with no gap at the right-hand edge. */
+  function shareSpare(config, width, hidden, fluidAt, spare) {
+    var open = [];
+    config.columns.forEach(function (col, i) {
+      if (!width[i] || hidden[col.key]) return;
+      if (i === fluidAt || col.snug) open.push(i);
+    });
+    /* Only the fluid column can grow — nothing to share. */
+    if (open.length < 2) return spare;
+
+    var guard = open.length;
+    while (spare > 0 && open.length > 1 && guard-- > 0) {
+      var share = Math.floor(spare / open.length);
+      if (share < 1) break;                      // sub-pixel: let fluid take it
+      var still = [];
+      open.forEach(function (i) {
+        if (i === fluidAt) { still.push(i); return; }   // no ceiling
+        var room = SNUG_MAX - width[i];
+        var take = Math.min(share, Math.max(room, 0));
+        if (take > 0) { width[i] += take; spare -= take; }
+        if (take >= share) still.push(i);               // still has headroom
+      });
+      open = still;
+    }
+    return spare;
+  }
+
   function sizeColumns(root, config, natural, hidden, available) {
     var heads = root.querySelectorAll('[data-listing-head] th');
     var fluidAt = -1;
@@ -1390,8 +1426,15 @@
       }
       var w = Math.ceil(natural[i]);
       if (col.snug) w = Math.min(w, SNUG_MAX);
-      /* The LAST fluid column takes the remainder. There is normally one. */
-      if (!col.hug && !col.snug && col.label) { fluidAt = i; w = fluidFloor; }
+      /* The LAST fluid column. There is normally one.
+         Its base is its NATURAL width, the same as every other column, not its
+         floor. Basing it on the floor and then sharing the surplus equally made
+         the main column the NARROWEST text column on the screen — 193px of
+         Title beside 216px of Section — because everyone else started from
+         what their content wanted and it started from 192. It still absorbs
+         the rounding remainder and still gives width back first when the table
+         is over budget; what changed is only where it starts from. */
+      if (!col.hug && !col.snug && col.label) { fluidAt = i; w = Math.max(w, fluidFloor); }
       width[i] = w;
       used += w;
     });
@@ -1399,7 +1442,19 @@
     if (fluidAt !== -1) {
       var spare = available - used;
       if (spare > 0) {
-        width[fluidAt] += spare;
+        /* Spare width is SHARED, not handed to the fluid column (designer,
+           2026-09-22). Giving it all to one column is what left a 555px table
+           with a 331px Title beside a 78px Type — the title's own text ran out
+           long before its column did, so the row read as one wide column and
+           then a huddle on the right.
+
+           Equal shares, not proportional ones: proportional keeps the widest
+           column widest, which is the thing being complained about.
+
+           `hug` columns stay out of it on purpose. They are shrink-wrapped by
+           role — a date, an ID, a count — and their content is a fixed shape
+           that gains nothing from more room. */
+        width[fluidAt] += shareSpare(config, width, hidden, fluidAt, spare);
       } else if (spare < 0) {
         /* Over budget. Under fixed layout the table is exactly the sum of
            these numbers, so anything left over is not "a bit of overflow" —

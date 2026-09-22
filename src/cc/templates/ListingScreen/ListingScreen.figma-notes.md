@@ -2292,3 +2292,54 @@ The other half of `MediaLayOut`. Live renders it through
 rendering of the same query and the same filter catalogue — not a column
 variation. The filters, the page size and the row data built here are all
 reusable as-is; what is new is the card and the layout switch.
+
+
+## Spare width is shared, not dumped on the main column
+
+Designer, 2026-09-22, across all four screens. Under fixed layout the fit gave
+every column its measured width and then handed **all** the leftover to the
+single fluid column. At a 555px Media Items table that produced a **331px
+Title beside a 78px Type** — the title's own text ran out long before its
+column did, so the row read as one wide column and then a huddle on the right.
+
+`shareSpare()` now hands the surplus out in **equal shares** to the columns
+that can use it, and the fluid column absorbs only what is left.
+
+**Equal, not proportional.** Proportional shares keep the widest column widest,
+which is the thing being complained about.
+
+**`hug` columns stay out of it.** They are shrink-wrapped by role — a date, an
+ID, a count — and their content is a fixed shape that gains nothing from more
+room. Only the fluid column and the `snug` ones grow.
+
+**Water-filling, because `snug` has a ceiling.** Everyone takes an equal slice;
+anyone who reaches `SNUG_MAX` takes only what fits and drops out; the rest is
+shared again among those still growing. At most one pass per column. The fluid
+column has no ceiling, so there is always somewhere for the remainder to go —
+which is what keeps the widths summing to the table exactly, with no gap at the
+right-hand edge.
+
+### The first attempt made the main column the narrowest
+
+Worth recording because it looked right in the code and was obviously wrong on
+screen. The fluid column's base was `FLUID_MIN` (192) while every other column
+based on its measured natural width, so sharing equally *on top of that* left
+Media Items with a **193px Title beside a 216px Section**. Equal shares are only
+fair if everyone starts from the same kind of number.
+
+The fluid column now bases on its natural width like everything else,
+floored at `FLUID_MIN`. It still absorbs the rounding remainder and still gives
+width back first when the table is over budget; only its starting point moved.
+
+### Measured, before and after
+
+| Screen / table | Before | After |
+|---|---|---|
+| Media Items @555 | Title 331 · Type 78 | Title 289 · Type 121 |
+| Media Items @1155 | Title 283 · Type 92 · Section 192 · Created By 167 | Title 265 · Type 93 · Section 192 · Created By 176 |
+| Orders @555 | Customer took the slack | Order No 81 · Customer 267 · Order Total 126 |
+| Articles @555 | Title took the slack | Title 278 · Section 197 |
+
+All four screens re-checked at 1600 / 1400 / 1200 / 1000 / 700 / 480 / 390 /
+320: **no overflow, no right-edge gap, and the same column counts as before** —
+the change moves width between columns, never changes how many survive.
