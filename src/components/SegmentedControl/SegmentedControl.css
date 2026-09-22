@@ -1,7 +1,18 @@
 /* SegmentedControl — segmented toggle (radio-style, single select)
- * Figma node: 2162:5079 (ThemeToggle)
+ * Figma set: 2699:2052 (ThemeToggle) — re-read 2026-09-22
  * Tier: Component
- * Variants: State=Light / State=Dark (which button is active)
+ * Variants: State=Light | Dark  ×  Size=Default | sm
+ *
+ *   2699:2062  State=Light, Size=Default   172×40
+ *   2699:2053  State=Dark,  Size=Default   172×40
+ *   3729:25008 State=Light, Size=sm        146×32
+ *   3729:16713 State=Dark,  Size=sm        154×32
+ *
+ * NOTE this same Figma component is ALSO built as `src/components/ThemeToggle`,
+ * which is the Code-Connect-mapped one and what the Seating Planner patterns
+ * use. Two code components for one Figma component is a duplication worth
+ * resolving; `sm` is added here because this is the generic control the
+ * listing screens' Grid/Listing switch uses. ThemeToggle wants the same size.
  */
 
 /* ── Container ───────────────────────────────────────── */
@@ -25,7 +36,7 @@
   align-items: center;
   justify-content: center;
   gap: var(--ai-spacing-3);
-  height: 32px;
+  height: var(--ai-spacing-7);           /* 32px — was a hardcoded 32px */
   min-width: 0;
   padding: 0 var(--ai-spacing-4);
   background: transparent;
@@ -64,4 +75,48 @@
   outline: none;
   box-shadow: 0 0 0 1px var(--ai-surface-primary),
               0 0 0 3px var(--ai-surface-brand-soft);
+}
+
+/* ── Size=sm ─────────────────────────────────────────────
+ * 3729:25008 / 3729:16713. NOT a scaled-down Default: the button keeps every
+ * one of its own values — 32px tall, --ai-spacing-4 padding, --ai-spacing-3
+ * gap, 16px icon, the same `button/sm` type ramp. What changes is the
+ * CONTAINER, and with it the shape of the thing.
+ *
+ * Default:  40px tall, --ai-spacing-1 (4px) of padding, so the active segment
+ *           floats as a pill inside the box.
+ * sm:       32px tall and NO padding, so the active segment reaches the
+ *           container's own edge and the control reads as one joined bar.
+ *
+ * That is why the corners move too. Figma gives the sm active button
+ * --ai-radius-md on its OUTER corners only, matching the container it is now
+ * flush against, where the Default's pill is --ai-radius-sm all round.
+ *
+ * Corner radii per button rather than `overflow: hidden` on the container:
+ * the focus ring below is a box-shadow, and a clipped container would eat it.
+ *
+ * FLAGGED FOR FIGMA — the two sm variants disagree with each other. Light=sm
+ * is 146 wide with the buttons at pl 8 / pr 12; Dark=sm is 154 with 12 both
+ * sides, as the Default has. Same control, same size, 8px different depending
+ * on which half is active. Built at 12/12: two of the three datapoints agree
+ * on it, and a toggle that changes width when you press it is the bug.
+ */
+
+.seg-control--sm {
+  height: var(--ai-spacing-7);           /* 32px */
+  padding: 0;
+}
+
+.seg-control--sm .seg-control__btn {
+  border-radius: var(--ai-spacing-0);
+}
+
+.seg-control--sm .seg-control__btn:first-child {
+  border-start-start-radius: var(--ai-radius-md);
+  border-end-start-radius: var(--ai-radius-md);
+}
+
+.seg-control--sm .seg-control__btn:last-child {
+  border-start-end-radius: var(--ai-radius-md);
+  border-end-end-radius: var(--ai-radius-md);
 }

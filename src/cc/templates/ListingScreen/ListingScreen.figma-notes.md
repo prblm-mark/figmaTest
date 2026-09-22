@@ -2356,6 +2356,13 @@ exactly as live does, where both layouts run through the same
 `layouts: ['listing', 'grid']` in the config is what puts the switch in the
 toolbar. The other three screens declare nothing and get no control.
 
+The switch is **SegmentedControl at `--sm`** (designer, 2026-09-22, pointing at
+Figma `2699:2052`). That size did not exist in the component and was built for
+this — see `SegmentedControl.figma-notes.md`, including three things flagged
+back to Figma. 32px is also what the toolbar needed: it now matches the
+page-size control and Edit Columns exactly, where the Default's 40 stood proud
+of the row. Measured: all three controls h=32, same top.
+
 ## What live actually draws, and what changed
 
 A `<table class="gridtable">` of `<td width="140">` cells, wrapped every

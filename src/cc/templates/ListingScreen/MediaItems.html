@@ -598,13 +598,16 @@
             <div class="datatables__actions">
               <!-- The live screen's MediaLayOut control, which is a <select> of
                    Grid | Listing sitting in the search form's third row. A
-                   SegmentedControl instead: two mutually exclusive views is
-                   what that component is for, and it puts the switch next to
-                   the thing it switches rather than inside the filters.
+                   SegmentedControl at `--sm` instead (designer, 2026-09-22):
+                   two mutually exclusive views is what that component is for,
+                   and it puts the switch next to the thing it switches rather
+                   than inside the filters. `sm` is 32px, which matches the
+                   Edit Columns button beside it — the Default's 40 stood
+                   proud of the whole toolbar row.
                    NOTE the live default is GRID; this opens on Listing because
                    that is what the demo card is named. ?layout=grid opens the
                    other half. -->
-              <div class="seg-control cc-listing__layout" role="radiogroup"
+              <div class="seg-control seg-control--sm cc-listing__layout" role="radiogroup"
                    aria-label="Layout" data-listing-layout hidden>
                 <button class="seg-control__btn seg-control__btn--active" type="button"
                         role="radio" aria-checked="true" data-layout-value="listing">
