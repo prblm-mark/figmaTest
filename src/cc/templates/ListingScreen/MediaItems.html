@@ -624,13 +624,22 @@
                    other half. -->
               <div class="seg-control seg-control--sm cc-listing__layout" role="radiogroup"
                    aria-label="Layout" data-listing-layout hidden>
+                <!-- `aria-label` on each button, not just the visible text: the
+                     label span is hidden below 768px (see ListingScreen.css) and
+                     an accessible name that disappears with it would leave two
+                     unnamed radios. With both present the aria-label wins, so the
+                     name is the same either way. -->
                 <button class="seg-control__btn seg-control__btn--active" type="button"
-                        role="radio" aria-checked="true" data-layout-value="listing">
-                  <i data-lucide="list" aria-hidden="true"></i>Listing
+                        role="radio" aria-checked="true" aria-label="Listing"
+                        data-layout-value="listing">
+                  <i data-lucide="list" aria-hidden="true"></i>
+                  <span class="seg-control__btn-label">Listing</span>
                 </button>
                 <button class="seg-control__btn" type="button"
-                        role="radio" aria-checked="false" data-layout-value="grid">
-                  <i data-lucide="layout-grid" aria-hidden="true"></i>Grid
+                        role="radio" aria-checked="false" aria-label="Grid"
+                        data-layout-value="grid">
+                  <i data-lucide="layout-grid" aria-hidden="true"></i>
+                  <span class="seg-control__btn-label">Grid</span>
                 </button>
               </div>
             </div>

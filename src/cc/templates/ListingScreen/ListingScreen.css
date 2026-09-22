@@ -532,8 +532,32 @@
   }
 }
 
-/* The layout switch sits with Edit Columns in the toolbar's actions cluster. */
+/* The layout switch sits LAST in the toolbar's actions cluster, so Edit
+ * Columns appearing and disappearing happens to its left and the switch stays
+ * flush right — it used to slide 135px sideways the moment you pressed it. */
 .cc-listing__layout[hidden] { display: none; }
+
+/* Icons only when the column is narrow (designer, 2026-09-22). The toolbar has
+ * to hold a page-size control, a count and this; at 390px the two labels are
+ * the first thing that can go without losing a function.
+ *
+ * `@container`, matching every other responsive rule on this table: the
+ * question is how much room the CONTENT COLUMN has, and a docked SidebarMenu
+ * takes that away with no window resize at all.
+ *
+ * The accessible name does not change — each button carries an `aria-label`,
+ * so hiding the span takes away the visible text and nothing else. Gap goes
+ * with it, or the icon sits off-centre in a box still reserving room for a
+ * label that is not there. */
+@container (max-width: 767px) {
+  .cc-listing__layout .seg-control__btn-label {
+    display: none;
+  }
+
+  .cc-listing__layout .seg-control__btn {
+    gap: var(--ai-spacing-0);
+  }
+}
 
 @container (max-width: 767px) {
   .cc-listing__grid {

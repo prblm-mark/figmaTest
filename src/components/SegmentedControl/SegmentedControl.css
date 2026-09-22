@@ -86,6 +86,15 @@
   background-color: var(--ai-surface-minimal);
 }
 
+/* ── Label ───────────────────────────────────────────────
+ * OPTIONAL. The label can be a bare text node — the demo's Light/Dark pair
+ * are — but wrapping it gives a caller something to hide when the control has
+ * to collapse to its icons. Figma has no icon-only variant, so this carries no
+ * styling of its own; it is a hook, and the hiding belongs to whoever needs it
+ * (today: `.cc-listing__layout` in ListingScreen.css). If a second screen wants
+ * the same thing, that is the point at which it should become a real
+ * `--icon-only` variant here instead. */
+
 /* ── Icon ────────────────────────────────────────────── */
 
 .seg-control__btn [data-lucide] {

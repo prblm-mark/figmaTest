@@ -2363,6 +2363,26 @@ you pressed it, so the control you had just clicked was no longer under the
 pointer (designer, 2026-09-22). Flush right, it does not move: measured 0px of
 travel between the two views.
 
+**Icons only when the column is narrow** (designer, 2026-09-22). The toolbar
+has to hold a page-size control, a count and this; at a 338px column the two
+labels are the first thing that can go without losing a function. The switch
+drops 162px → 83px.
+
+`@container`, matching every other responsive rule on this table — the question
+is how much room the CONTENT COLUMN has, and a docked SidebarMenu takes that
+away with no window resize. Note the threshold reads oddly against a
+`getBoundingClientRect`: the labels are already gone at a 808px page, because a
+container query measures the CONTENT box and the page's own padding and
+scrollbar gutter put that at ~757.
+
+The accessible name does not change with the labels. Each button carries an
+`aria-label`, so hiding the span takes away the visible text and nothing else —
+without it, two radios would go unnamed exactly when the icons are all there is.
+The label wrapper is `.seg-control__btn-label`, a hook the component documents
+but does not style; if a second screen needs the same collapse, that is when it
+should become a real `--icon-only` variant of the component rather than a
+second contextual override.
+
 The switch is **SegmentedControl at `--sm`** (designer, 2026-09-22, pointing at
 Figma `2699:2052`). That size did not exist in the component and was built for
 this — see `SegmentedControl.figma-notes.md`, including three things flagged
