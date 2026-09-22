@@ -73,12 +73,34 @@ with `12` both sides, matching the Default. Same control, same size, 8px
 different depending on which half is active — a toggle that changes width when
 you press it. Built at **12/12**, which two of the three datapoints agree on.
 
-**2. The active segment's background does not match the code.** Figma binds
-`--ai-surface-secondary` on the active button in *every* variant, both sizes.
-The code has used `--ai-surface-minimal` since the original build. **Not
-changed here** — `.seg-control` is also used by StyleSettings and two
-EventBuilder prototypes, so correcting it is a decision with a blast radius,
-not a tidy-up. Needs a designer call.
+**2. ~~The active segment's background does not match the code.~~ RESOLVED
+2026-09-22 — and the two Figma sources were each right about a different
+surface.** The Design System's ThemeToggle binds `--ai-surface-secondary`; the
+code used `--ai-surface-minimal`, which is what the AI Chat SegmentedControl
+binds. Resolved per surface, the reason is plain:
+
+| surface | `--ai-surface-secondary` | container `--ai-surface-primary` | |
+|---|---|---|---|
+| base | `#e9eef4` | `#ffffff` | ✓ |
+| cc | `#e7edf0` | `#ffffff` | ✓ |
+| cc-dark | `#3d4b5f` | `#1e293b` | ✓ |
+| **chat** | **`#ffffff`** | `#ffffff` | ✗ invisible |
+| chat-dark | `#2e2e32` | `#212123` | ✓ |
+
+So `secondary` is now the rule, per the designer, and a
+`[data-surface="chat"]` guard keeps `minimal` on the one surface where
+`secondary` would make the active segment disappear into its own container —
+which is the surface this component's own demo page runs as. Both bindings
+kept, each where it is correct. Verified in all four combinations.
+
+**2b. The divider.** `sm` only: a 1px `--ai-border-secondary` on the ACTIVE
+segment's inner edge — its right when the left half is active, its left when
+the right half is (designer, 2026-09-22). Not in either Figma. The Default
+keeps 4px of container padding so its segments never touch, and a line between
+them would float in the gap; `sm` has none, so without a divider the bar reads
+as a box with a shaded end rather than two joined halves. On the active
+segment rather than always on the first button so it sits over the fill and
+stays a crisp 1px instead of being a seam between two backgrounds.
 
 **3. The duplication with ThemeToggle**, above.
 

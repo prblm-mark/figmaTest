@@ -56,9 +56,34 @@
 /* ── Active button ───────────────────────────────────── */
 
 .seg-control__btn--active {
-  background-color: var(--ai-surface-minimal);
+  /* The Design System's ThemeToggle (2699:2052) binds --ai-surface-secondary
+     on the active button in every variant of both sizes. Corrected here
+     2026-09-22 on the designer's call, from --ai-surface-minimal. */
+  background-color: var(--ai-surface-secondary);
   border-radius: var(--ai-radius-sm);
   cursor: default;
+}
+
+/* …except on the AI Chat surface, where that token is WHITE.
+ *
+ * Not a special case so much as the two Figma sources being right about
+ * different things. This control exists twice: as SegmentedControl in the AI
+ * Chat file (2162:5079), which is what this component's own demo page runs as
+ * (`data-surface="chat"`), and as ThemeToggle in the Design System file
+ * (2699:2052). Resolved per surface:
+ *
+ *   surface          --ai-surface-secondary   --ai-surface-primary (container)
+ *   base                     #e9eef4                  #ffffff   ✓
+ *   cc / cc-dark             #e7edf0 / #3d4b5f        #ffffff / #1e293b  ✓
+ *   chat                     #ffffff                  #ffffff   ✗ invisible
+ *   chat-dark                #2e2e32                  #212123   ✓
+ *
+ * So on the chat surface the active segment would disappear into its own
+ * container, which is why the original build used `minimal` — that IS #e2e2e3
+ * there, and the AI Chat Figma binds it. Both bindings kept, each on the
+ * surface it is correct for. */
+[data-surface="chat"] .seg-control__btn--active {
+  background-color: var(--ai-surface-minimal);
 }
 
 /* ── Icon ────────────────────────────────────────────── */
@@ -119,6 +144,29 @@
 /* Square: the container's own curve is what shapes the ends now. */
 .seg-control--sm .seg-control__btn {
   border-radius: var(--ai-spacing-0);
+}
+
+/* The divider between the two halves (designer, 2026-09-22).
+ *
+ * Only `sm` gets one. The Default keeps 4px of container padding, so its
+ * segments never touch and a line between them would float in the gap; `sm`
+ * has none, so without this the bar is a box with a shaded end rather than two
+ * joined halves.
+ *
+ * Drawn on the ACTIVE segment's inner edge, which is the same line either way
+ * — the right edge when the left half is active, the left edge when the right
+ * half is. Putting it on the active one rather than always on the first button
+ * means it sits on top of the fill and stays a crisp 1px, instead of being the
+ * seam between two backgrounds.
+ *
+ * `box-sizing: border-box` from base.css keeps the 1px inside the 32px box, so
+ * nothing moves. */
+.seg-control--sm .seg-control__btn--active:first-child {
+  border-inline-end: 1px solid var(--ai-border-secondary);
+}
+
+.seg-control--sm .seg-control__btn--active:last-child {
+  border-inline-start: 1px solid var(--ai-border-secondary);
 }
 
 /* Inside the button, so the clip above cannot eat it. CLAUDE.md §9's
