@@ -547,15 +547,13 @@
                    Export is a per-screen action rather than part of the FilterBar
                    pattern. ArchiveManagement.cfm declares
                    `CMethods = "list,change,viewonly"` — no export among them. -->
-              <div class="dropdown filter-bar__menu" data-dropdown>
-                <button type="button" class="dropdown__trigger filter-bar__icon-btn" aria-haspopup="menu" aria-expanded="false" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
-                <div class="dropdown__panel" role="menu" aria-label="Actions">
-                  <ul class="dropdown__list">
-                    <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem"><i data-lucide="sheet" aria-hidden="true"></i><span data-text="Import archived items">Import archived items</span></button></li>
-                    <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem"><i data-lucide="file-spreadsheet" aria-hidden="true"></i><span data-text="Generate Shipping Labels">Generate Shipping Labels</span></button></li>
-                  </ul>
-                </div>
-              </div>
+              <!-- NO kebab here either. It arrived carrying Orders' menu — Import
+                   orders / Generate Shipping Labels, drawn on the FilterBar's own
+                   Figma frame for the Orders listing — and the first build made it
+                   worse by renaming the import to "Import archived items", an
+                   action that does not exist: ArchiveManagementDef.cfm declares
+                   `CMethods = "list,change,viewonly"`, so there is no add and no
+                   import. Removed (designer, 2026-09-22). -->
             </div>
           </div>
 

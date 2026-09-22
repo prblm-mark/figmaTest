@@ -2070,13 +2070,44 @@ Export · kebab, the other two read Search · kebab, no gap left behind.
 
 `listing-export` in the manifest and HANDOVER.md is now scoped to Orders.
 
-### Still drifting: the kebab
+### The kebab went the same way
 
-The same problem, not yet fixed and **not** covered by this change. The "More
-actions" menu is Orders' — "Import orders" and "Generate Shipping Labels" —
-and Articles still carries both verbatim, while Article Archive carries
-"Generate Shipping Labels" beside a renamed import. Fixing it properly means
-reading each live screen's real action set, which is a separate piece of work
-and a separate decision: on Article Archive, for instance,
-`CMethods = "list,change,viewonly"` suggests the honest answer is no kebab at
-all.
+Designer, 2026-09-22, right after Export and for the same reason: **only Orders
+of the three needs it.** Removed from `Articles.html` and `ArticleArchive.html`.
+
+What was in it is worth recording, because it is the clearest example of the
+pattern this template keeps hitting. *Import orders* and *Generate Shipping
+Labels* are not template chrome that drifted — they are **Figma content**,
+drawn on the FilterBar's own frame, which was authored for the Orders listing.
+`FilterBar.figma-notes.md` still records measuring "Generate Shipping Labels"
+for width at Size=sm. Cloning the template carried them onto a screen full of
+articles, and onto an archive of unpublished 2008 test content.
+
+Article Archive was worse, and that one was this build's own doing: the import
+was *relabelled* to "Import archived items" rather than questioned. That action
+does not exist — `ArchiveManagementDef.cfm` declares
+`CMethods = "list,change,viewonly"`, so there is no add and no import. A
+plausible label is worse than an obviously wrong one, because it reads as
+researched. Removed rather than relabelled a second time: what those screens
+really offer has not been read, and until it has, nothing is the honest answer.
+
+Nothing else had to move — `.filter-bar__actions` is a plain flex row with a
+gap and no positional or `:last-child` selectors, so the two screens are left
+with the desktop search field alone, collapsing to the search icon below the
+container breakpoint. Measured at 1500 / 1000 / 700 / 390 on all three: no
+overflow anywhere, and the **mobile search takeover still works end to end** at
+390 with both its neighbours gone — icon → `--search` mode → exit.
+
+### Three per-screen things found living in a shared place
+
+Worth naming as a pattern rather than three incidents, because a fourth is
+likely:
+
+| What | Where it was | How it surfaced |
+|---|---|---|
+| Row identity (`orderNo`) | hard-coded in the renderer | blank aria-labels on every Articles row |
+| Export | markup in the cloned template | designer spotted it on two screens |
+| Kebab actions | Figma content on the shared FilterBar frame | designer spotted it on two screens |
+
+The shape is always the same: something true of Orders sitting somewhere every
+screen inherits. Worth a look before the fourth screen, not after.
