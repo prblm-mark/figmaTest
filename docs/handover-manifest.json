@@ -858,6 +858,27 @@
           "element": ".cc-header__actions .btn (Articles: the primary Add)",
           "current": "Declared per screen in the config (`headerActions`) and rendered by ListingScreen.js into the CCHeader pattern's own actions cluster. Articles carries the primary Add from Figma 4105:3640 — plus icon, label, Primary/Base. It goes nowhere.",
           "needs": "The screen's \"new record\" route, the sibling of listing-row-routes — e.g. a screen-level `newUrl: '/control/articles/new'` alongside the row and edit templates, so one payload carries all three. Permission applies here too: an operator who may not create should not be shown the button."
+        },
+        {
+          "id": "listing-article-archive-rows",
+          "category": "needs-backend",
+          "element": ".datatables--orders on ArticleArchive.html (data-backend-todo=\"listing-article-archive-rows\")",
+          "current": "Eight rows are REAL — every ArchivedYN = 1 item visible in the 200-row sample the read tools allow — and the rest of the Article set plus the whole Media set are synthesised in the shape those eight establish, flagged row by row in listing-data-article-archive.js. Paging, the total and the page count are all computed over that mock set.",
+          "needs": "GET /control/article-archive?Type=&FilterTerm=&FilterType=&DateRange=&Creator=&hs=&page=&per_page= returning { columns[], rows[], page:{ from, to, total, current, pages } }. Row shape matches the renderer: { type, itemId, title, channel, section, style, publishStart, publishEnd, createdBy }. NOTE the live screen does not page at all — it is SELECT TOP 500 — and its total is only counted when exactly 500 come back, from a WHERE (ArchivedYN = 1) that does NOT match the listing's own WHERE, so it silently omits the auto-archived branch. The endpoint should count the listing's real predicate."
+        },
+        {
+          "id": "archive-rows-media",
+          "category": "needs-backend",
+          "element": "Type=Media rows in listing-data-article-archive.js",
+          "current": "Synthesised in full. Zero of 200 sampled MediaItems carry ArchivedYN = 1, and every one has a NULL ArchivedSectionCode, which the query's second branch tests with `> 0` — NULL > 0 is UNKNOWN in T-SQL. The Media branch may return nothing at all on this instance.",
+          "needs": "The MediaItem half of the same endpoint (Type=26), and a decision on the NULL ArchivedSectionCode test — if media is meant to auto-archive, that branch is currently unreachable."
+        },
+        {
+          "id": "archive-date-presets",
+          "category": "not-built",
+          "element": "Date Range chip on ArticleArchive.html",
+          "current": "The Custom from/to pair only. The live CustomDateSelector also offers Any Time / Today / This Week / Last Week / This Month, kept as ARCHIVE_DATE_PRESETS in the data file. A preset row is a control the FilterBar has no Figma variant for.",
+          "needs": "A Figma variant for a preset row inside a date filter panel, then the presets map to from/to pairs client-side — the CFML already computes them that way (DateAdd on AffinoNow())."
         }
       ]
     }

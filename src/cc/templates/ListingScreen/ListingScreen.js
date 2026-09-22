@@ -71,9 +71,19 @@
      middle-click, and show their destination on hover, none of which a click
      handler gives you. */
   var ROUTE = {
-    view: function (orderNo) { return '#order/' + encodeURIComponent(orderNo) + '/view'; },
-    edit: function (orderNo) { return '#order/' + encodeURIComponent(orderNo) + '/edit'; }
+    view: function (id, noun) { return '#' + (noun || 'order') + '/' + encodeURIComponent(id) + '/view'; },
+    edit: function (id, noun) { return '#' + (noun || 'order') + '/' + encodeURIComponent(id) + '/edit'; }
   };
+
+  /* WHICH field identifies a row is per screen, and until Article Archive it
+     was hard-coded to `orderNo`. Articles has no such field, so every one of
+     its rows rendered `href="#order//edit"` and an aria-label reading
+     "Edit order " with nothing after it — a screen reader announcing eight
+     identical, empty controls. The screen declares `rowKey` and `routeNoun`;
+     both default to Orders' values, so Orders is unchanged. */
+  var ROW_ID = { key: 'orderNo', noun: 'order', spoken: 'order' };
+
+  function rowId(row) { return row[ROW_ID.key]; }
 
   var CELL = {
     text: function (row, col) {
@@ -100,8 +110,8 @@
     order: function (row) {
       /* The anchor IS the row's navigation — the whole-row click below just
          follows it, so there is one destination and one code path. */
-      return '<a class="datatables__order" href="' + esc(ROUTE.view(row.orderNo)) + '"' +
-        ' data-row-link>' + esc(row.orderNo) + '</a>' +
+      return '<a class="datatables__order" href="' + esc(ROUTE.view(rowId(row), ROW_ID.noun)) + '"' +
+        ' data-row-link>' + esc(rowId(row)) + '</a>' +
         (row.externalCode
           ? '<span class="datatables__order-ext">' + esc(row.externalCode) + '</span>'
           : '');
@@ -118,7 +128,7 @@
 
     select: function (row) {
       return '<label class="checkbox">' +
-        '<input type="checkbox" class="checkbox__input" aria-label="Select order ' + esc(row.orderNo) + '">' +
+        '<input type="checkbox" class="checkbox__input" aria-label="Select ' + esc(ROW_ID.spoken) + ' ' + esc(rowId(row)) + '">' +
         '<span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>' +
         '</label>';
     },
@@ -132,9 +142,9 @@
      *
      * An anchor, not a button: see ROUTE above. */
     edit: function (row) {
-      return '<a class="datatables__row-edit" href="' + esc(ROUTE.edit(row.orderNo)) + '"' +
+      return '<a class="datatables__row-edit" href="' + esc(ROUTE.edit(rowId(row), ROW_ID.noun)) + '"' +
         ' data-backend-todo="listing-row-routes"' +
-        ' aria-label="Edit order ' + esc(row.orderNo) + '">' +
+        ' aria-label="Edit ' + esc(ROW_ID.spoken) + ' ' + esc(rowId(row)) + '">' +
         '<i data-lucide="pencil" aria-hidden="true"></i></a>';
     },
 
@@ -143,7 +153,7 @@
     kebab: function (row, col, index) {
       return '<label class="datatables__kebab">' +
         '<input type="checkbox" class="datatables__kebab__input" ' +
-        'aria-label="Show details for order ' + esc(row.orderNo) + '" data-row="' + index + '">' +
+        'aria-label="Show details for ' + esc(ROW_ID.spoken) + ' ' + esc(rowId(row)) + '" data-row="' + index + '">' +
         '<i data-lucide="ellipsis-vertical" aria-hidden="true"></i></label>';
     }
   };
@@ -530,6 +540,13 @@
     /* `--add` marks the WRAPPER so an empty view can hide the other chips:
        a chip with a picker is wrapped, so FilterBar's bare-chip selector
        cannot reach it. */
+    /* No catalogue, no control. Article Archive declares six filters and the
+       sixth is the SORT, so its five chips use the catalogue up and there is
+       nothing left to add — and a dashed "Add Filters" that opens an empty
+       panel is worse than no chip at all. Orders and Articles both have a
+       catalogue, so both are unaffected. */
+    if (!(config.moreFilters || []).length) return html;
+
     html += chip(
       {
         name: 'Add Filters', type: 'more-filters',
@@ -632,7 +649,7 @@
           '<dd>' + fn(row, col, i) + '</dd></div>';
       }).join('');
 
-      return '<tr class="datatables__row" data-order="' + esc(row.orderNo) + '">' + cells + '</tr>' +
+      return '<tr class="datatables__row" data-order="' + esc(rowId(row)) + '">' + cells + '</tr>' +
         '<tr class="datatables__row-detail"><td class="datatables__row-detail__cell" colspan="' +
         columns.length + '"><dl class="datatables__detail-list">' + detail +
         '<p class="datatables__detail-empty" hidden>Every column is showing at this width.</p>' +
@@ -739,7 +756,20 @@
     return isNaN(n) ? null : n;
   }
 
-  function matches(row, filter, values) {
+  /* WHICH fields a term is matched against can itself be a control. Article
+     Archive's "Filter by" is three checkboxes — Section / Article / Channel —
+     and the live screen ORs a LIKE per ticked box (ArchiveManagementQDef.cfm).
+     So one chip reads another: `scopedBy` names it, `scopeFields` maps each of
+     its option names to a row field. No other screen sets either, and without
+     them this returns the filter's own single `field`. */
+  function scopeFields(filter, config) {
+    if (!filter.scopedBy || !filter.scopeFields) return [filter.field];
+    var picked = (config.filterValues || {})[filter.scopedBy] || [];
+    return picked.map(function (name) { return filter.scopeFields[name]; })
+                 .filter(Boolean);
+  }
+
+  function matches(row, filter, values, config) {
     if (!values.length) return true;
     var actual = valueAt(row, filter.field);
 
@@ -756,7 +786,13 @@
     }
 
     if (filter.type === 'text') {
-      return actual.toLowerCase().indexOf(values[0].toLowerCase()) !== -1;
+      var term = values[0].toLowerCase();
+      /* Untick every box and the live screen's `AND (1 = 0 …)` matches
+         nothing. Faithful: a term with no scope finds nothing, rather than
+         silently falling back to searching the title. */
+      return scopeFields(filter, config || {}).some(function (field) {
+        return valueAt(row, field).toLowerCase().indexOf(term) !== -1;
+      });
     }
     return values.some(function (v) { return actual === v; });
   }
@@ -800,7 +836,12 @@
     var by = config.sort && config.sort.by;
     if (!by) return rows;
     var col = config.columns.filter(function (c) { return c.sort === by; })[0];
-    if (!col) return rows;                      // an unknown token sorts nothing
+    /* A token with no column of its own leaves the rows in declaration order,
+       and Article Archive RELIES on that rather than tripping over it: its
+       live default is PublishStart DESC and PublishStart is not one of its six
+       columns, so the screen opens on an order no header can claim. Its rows
+       ship in that order. */
+    if (!col) return rows;
 
     var dir = config.sort.dir === 'asc' ? 1 : -1;
     /* Copy first — Array.sort is in place, and mutating config.rows would
@@ -835,7 +876,7 @@
            searches that view, not the whole listing. */
         if (query && searchableText(row, config.columns).indexOf(query) === -1) return false;
         return active.every(function (name) {
-          return matches(row, byName[name], config.filterValues[name]);
+          return matches(row, byName[name], config.filterValues[name], config);
         });
       })
     };
@@ -1433,6 +1474,17 @@
     /* Split once, here, rather than capping at render time: everything
        downstream — adding a filter, saving a view, restoring one — then works
        on the real arrays and never has to know about the limit. */
+    /* Before the first cell is rendered: the CELL renderers read ROW_ID. */
+    /* Two nouns, because they are read by different things: `routeNoun` is a
+       URL slug and `rowNoun` is what a screen reader says out loud. Article
+       Archive's slug is "archived-item" and announcing "Edit archived-item
+       5361" puts a hyphen in the middle of a spoken phrase. */
+    ROW_ID = {
+      key: config.rowKey || 'orderNo',
+      noun: config.routeNoun || 'order',
+      spoken: config.rowNoun || config.routeNoun || 'order'
+    };
+
     var defaults = (config.defaultFilters || []).slice();
     var overflow = defaults.splice(DEFAULT_CHIPS);
 
@@ -1458,6 +1510,19 @@
          they cannot be read back off a chip, whose label rolls 4+ values up
          into "<first>, and 3 more". */
       filterValues: {}
+    });
+
+    /* A chip can OPEN with a value. Orders and Articles both open empty, but
+       Article Archive's "Filter by" ships ticked as Section + Article and its
+       Type ships as Article — those are the live screen's own defaults
+       (`<cfparam name="FilterType" default="Section,Article">`, Type 1), not
+       a convenience. Seeded here rather than in the chip renderer so the
+       FilterBar's save-view baseline below counts them as the starting point
+       and does not offer to save a view the screen opened on. */
+    config.baseFilters.concat(config.moreFilters).forEach(function (f) {
+      if (f.defaultValues && f.defaultValues.length) {
+        config.filterValues[f.name] = f.defaultValues.slice();
+      }
     });
 
     /* Demo persistence, read before the first paint so the table is never

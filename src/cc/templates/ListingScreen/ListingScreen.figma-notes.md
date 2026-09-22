@@ -1829,3 +1829,199 @@ TODO(backend:Listing) `listing-header-actions`: Add goes nowhere. It wants the
 screen's "new record" route — the sibling of `listing-row-routes`, ideally in
 the same payload — and the same permission caveat: an operator who may not
 create should not be shown the button.
+
+
+# Article Archive — the third screen on this template
+
+Built 2026-09-22. `ArticleArchive.html` + `listing-data-article-archive.js`.
+Three knobs were added to the template, all per-screen and all defaulting to
+the Orders behaviour; the CSS was not touched at all.
+
+## What came from where
+
+`/control/article-archive` is ControlProfileCode **921**, under Content,
+security code 213, template `/AfoWave/CC/ArchiveManagement.cfm`. The important
+difference from Articles: **it is not a "cc2" screen.** `ResponsiveTemplatePath`
+is empty, so there are no responsive controllers to read a definition out of and
+the legacy CFML *is* the definition. Three files, read directly:
+
+| File | Gives |
+|---|---|
+| `ArchiveManagement.cfm` | the filter catalogue — the `aCS` array |
+| `ArchiveManagementDef.cfm` | the columns — the `CProperties` array, and `CMethods` |
+| `ArchiveManagementQDef.cfm` | the two queries, the sort whitelist, the paging |
+
+Real: the six columns and their order, all six filters with their control
+types / option lists / defaults, the sort whitelist, the default sort, the
+TOP 500 paging, the entity switch, the Presentation Style lists (63
+StandardTemplates, 3 MediaTemplates) and the Section and Channel names.
+Synthesised and flagged in the data file: rows 9+ of the Article set, and the
+whole Media set.
+
+## The five chips ARE the catalogue
+
+Six filters are declared, and the sixth is not a filter. Order By is assigned
+straight to the table's own sort parameter:
+
+```cfml
+if( Len(Trim(Form.Order)) AND NOT StructKeyExists(URL,"hs") ) url.hs = Form.Order;
+```
+
+So it ships as the sortable column headers this template already has — the same
+call Articles made for Articles Per Screen, one setting and one control. The
+house rule (the live screen's first five) therefore lands exactly on the
+boundary here rather than cutting anything, and **More Filters is empty**.
+
+That is a state neither sibling reaches, so the template now **hides the Add
+Filters chip when the catalogue is empty**. A dashed chip that opens a panel
+saying nothing is available is worse than no chip. Nothing was invented to fill
+the panel, which was the alternative and would have put invention next to a
+faithful catalogue.
+
+## One chip reading another — `scopedBy`
+
+"Filter by" (Section / Article / Channel, defaulting to Section+Article) is the
+first control on this template that is **not a row filter**. It decides which
+fields the Name term is matched against:
+
+```cfml
+AND ( 1 = 0
+  <cfif ListContains(Form.FilterType,"Section")> OR "StandardSection"."Name" LIKE …
+  <cfif ListContains(Form.FilterType,"Channel")> OR "Channel"."Name"         LIKE …
+  <cfif ListContains(Form.FilterType,"Article")> OR "StandardItem"."Title"   LIKE …
+)
+```
+
+A filter declares `scopedBy` (the chip to read) and `scopeFields` (that chip's
+option names → row fields). The `1 = 0` is reproduced rather than smoothed
+over: untick every box and a term matches **nothing**, instead of quietly
+falling back to searching the title. Measured on the eight real rows:
+
+| Name | Filter by | Rows |
+|---|---|---|
+| — | Section, Article | 8 |
+| Temp | Section, Article | 2 |
+| Temp | Section | 0 |
+| Add | Channel | 8 |
+| Add | *(none)* | 0 |
+
+Chips can now also **open with a value** (`defaultValues`), because
+Section+Article and Type=Article are the live screen's own defaults
+(`<cfparam name="FilterType" default="Section,Article">`), not a convenience.
+Seeded before the FilterBar takes its save-view baseline, so the screen does not
+offer to save the view it opened on.
+
+Note the Name chip is a plain **text** box, not the predictive Articles gives
+its Title. Not a distribution call — a semantic one: the term hits up to three
+different fields at once, and a type-ahead offering titles would hide the
+section and channel matches the same term is finding.
+
+## Type is an entity switch
+
+The one thing this screen does that neither sibling does. Type=1 queries
+`StandardItem`, Type=26 queries `MediaItem`, through two near-identical queries
+with the same six columns. Both row sets ship and the chip picks between them.
+
+The Media branch is worth showing because it looks nothing like the Article
+one: names are raw filenames, sections are forum-media buckets, Publish End is
+publish start **plus ten years**, and there are 3 presentation styles against
+63. A column sized to one branch is not sized to the other.
+
+**Known divergence:** live is a radio and always holds exactly one value; this
+chip can be cleared, which shows both entities at once — a state the live screen
+cannot reach.
+
+## Sorting: there IS a whitelist here
+
+Worth recording because Articles has none. `url.hs` goes through a `<cfswitch>`
+with seven cases — Title, Alphabetical, Channel, Section, PresentationStyle,
+CreatedBy, Chronological, PublishEnd — so the `sort` tokens are the whitelist,
+not every column.
+
+And the default is **PublishStart DESC on a column the screen never shows.**
+The one date it does show is Publish End; the Date Range chip filters
+PublishStart. The rows ship in PublishStart order and `sortRows` leaves an
+unknown token alone, so the screen opens on an order no header can claim —
+which is exactly what the live screen does.
+
+## `rowKey` — and the Articles bug it uncovered
+
+Row identity was hard-coded to `orderNo`. Articles has no such field, so every
+Articles row had been shipping:
+
+```html
+<a class="datatables__row-edit" href="#order//edit" aria-label="Edit order ">
+```
+
+— twenty identical, empty controls for a screen reader, on a screen that has
+been live in the demo since 2026-09-21. The screen now declares `rowKey`,
+`routeNoun` (the URL slug) and `rowNoun` (what is spoken). Two nouns because
+they are read by different things: Article Archive's slug is `archived-item`
+and announcing "Edit archived-item 5361" puts a hyphen in the middle of a
+spoken phrase. Articles was given `rowKey: 'articleId'` in the same pass.
+
+## The eight real rows are the point
+
+They are every `ArchivedYN = 1` item in the 200-row sample the read tools
+allow — `client_db_table_sample` caps at 200 and takes no WHERE clause, so the
+archive's own query cannot be run from here. They are not what a tidy archive
+looks like, and that is why they lead the file:
+
+- Every one is `Live = 0`. Archived content is unpublished content.
+- Seven were created by UserCode 3, whose FirstName is **empty** and LastName is
+  "Former Member". The query builds `FirstName + ' ' + LastName`, so the cell
+  really renders with a **leading space**. Kept verbatim — trimming it here
+  would hide exactly the kind of value a column has to survive.
+- The titles are 'Golf VI', 'Um Bongo', 'Temp Review', 'Temp Test' and 'meh',
+  and two are a record and its copy one second apart. The archive is where test
+  content goes to sit.
+- All eight share one section and one channel, both called "Add Review" — which
+  is what makes the scope chip demonstrable, since the same term hits both.
+- Their Presentation Style is 'Emojo Rated (Deprecated)'; 40 of the 63
+  StandardTemplates on this instance carry "(Deprecated)" in the name.
+
+A first theory — that the archive was the five sections named "…Archive"
+(Branding, News, Quick Smart, Careers, Affino Features), 50 articles between
+them — was **wrong**, and checking it rather than shipping it is the only
+reason this file is not 50 rows of confidently mislabelled data. Those are
+public archive *display* areas; not one of their articles is flagged archived.
+
+## Three defects in the live screen, recorded not reproduced
+
+1. **The total does not match the listing.** The count query runs
+   `WHERE ArchivedYN = 1`, but the listing's own WHERE also admits the
+   auto-archived branch — so on a site with more than 500 archived items the
+   footer under-reports. It is also only run when exactly 500 come back.
+2. **The Media branch may be unreachable.** Its second WHERE branch tests
+   `ArchivedSectionCode > 0`, and every sampled MediaItem has that column NULL;
+   `NULL > 0` is UNKNOWN in T-SQL. Zero of 200 sampled media items are archived
+   either way.
+3. **`Trim(Form.FilterTerm) GT 0`** is a numeric comparison against a string.
+   It happens to behave for most terms because CF falls back to a string
+   compare, but it is `Len()` that was meant.
+
+## Not built, deliberately
+
+The Date Range chip is the **Custom** from/to pair only. Live also offers five
+presets (Any Time / Today / This Week / Last Week / This Month), and a preset
+row is a control the FilterBar has no Figma variant for. The vocabulary is kept
+in `ARCHIVE_DATE_PRESETS` and the gap carries a `TODO(backend:Listing)`.
+
+## Measured
+
+| Table width | Data columns | Overflow |
+|---|---|---|
+| 1155 | 7 | 0 |
+| 955 | 5 | 0 |
+| 755 | 4 | 0 |
+| 619 / 555 | 3 | 0 |
+| 479 / 399 / 375 | 2 | 0 |
+| 309 / 239 | 1 | 0 |
+
+Kebab visible at every width. Orders and Articles re-measured after all three
+knobs and came back **byte-identical to HEAD** at 1400 and 390.
+
+One measurement trap worth recording: a bare `querySelector('table')` in the
+harness picked up a **hidden multi-select-table picker** on Articles, which
+measures 0 and reads exactly like a broken fit. Scope the probe to
+`[data-listing-head]`'s own table.
