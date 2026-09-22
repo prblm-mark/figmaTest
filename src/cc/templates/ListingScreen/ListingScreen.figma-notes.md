@@ -1905,11 +1905,37 @@ falling back to searching the title. Measured on the eight real rows:
 | Add | Channel | 8 |
 | Add | *(none)* | 0 |
 
-Chips can now also **open with a value** (`defaultValues`), because
-Section+Article and Type=Article are the live screen's own defaults
-(`<cfparam name="FilterType" default="Section,Article">`), not a convenience.
-Seeded before the FilterBar takes its save-view baseline, so the screen does not
-offer to save the view it opened on.
+Chips can **open with a value** (`defaultValues`), seeded before the FilterBar
+takes its save-view baseline so the screen does not offer to save the view it
+opened on. Only **Type** uses it.
+
+### The screen must not look filtered before anyone touches it
+
+Designer, 2026-09-22. Both chips originally opened with the live screen's own
+defaults — Section+Article and Article — and a screen that arrives already
+filtered is wrong even when the values are right.
+
+**Type keeps its default**, because Type is a mode rather than a filter: the
+live screen always holds one, a radio cannot be cleared, and clearing it here
+produces Articles and Media interleaved — a list the live screen has no way to
+produce, on a table that shows no Type column to tell them apart.
+
+**"Filter by" loses its visible default**, which costs nothing because it
+narrows nothing; it only scopes the Name term. But it cannot simply be dropped,
+or a fresh screen would find nothing the moment a term was typed. The fix is
+that **unset and empty are different states**, which is what the live screen
+does too:
+
+| Scope chip | Means | Name term matches |
+|---|---|---|
+| no value, never touched | `<cfparam default="Section,Article">` | section + title |
+| `['Channel']` | `ListContains(FilterType,"Channel")` | channel |
+| `[]`, explicitly emptied | `AND (1 = 0 …)` | nothing |
+
+So the default moved off the chip and onto the Name filter as `scopeDefault`.
+Collapsing the two with a plain `|| []` is the bug this avoids. Measured: opens
+on 8 with one chip filled; "Temp" untouched → 2; "Add" scoped to Channel → 8;
+"Add" with the scope explicitly emptied → 0.
 
 Note the Name chip is a plain **text** box, not the predictive Articles gives
 its Title. Not a distribution call — a semantic one: the term hits up to three

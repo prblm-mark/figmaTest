@@ -764,7 +764,16 @@
      them this returns the filter's own single `field`. */
   function scopeFields(filter, config) {
     if (!filter.scopedBy || !filter.scopeFields) return [filter.field];
-    var picked = (config.filterValues || {})[filter.scopedBy] || [];
+    var picked = (config.filterValues || {})[filter.scopedBy];
+    /* UNSET and EMPTY are different, and the live screen treats them
+       differently too. A scope chip nobody has touched holds no key at all, and
+       falls back to `scopeDefault` — the CFML's own
+       `<cfparam name="FilterType" default="Section,Article">`. A chip the user
+       has explicitly emptied holds `[]`, and matches nothing, which is the
+       `AND (1 = 0 …)` the query really builds. Collapsing the two with a plain
+       `|| []` would make a fresh screen find nothing the moment a term was
+       typed. */
+    if (picked === undefined) picked = filter.scopeDefault || [];
     return picked.map(function (name) { return filter.scopeFields[name]; })
                  .filter(Boolean);
   }
@@ -788,8 +797,9 @@
     if (filter.type === 'text') {
       var term = values[0].toLowerCase();
       /* Untick every box and the live screen's `AND (1 = 0 …)` matches
-         nothing. Faithful: a term with no scope finds nothing, rather than
-         silently falling back to searching the title. */
+         nothing. Faithful: a term with an explicitly emptied scope finds
+         nothing, rather than silently falling back to searching the title.
+         An UNTOUCHED scope is a different case — see scopeFields. */
       return scopeFields(filter, config || {}).some(function (field) {
         return valueAt(row, field).toLowerCase().indexOf(term) !== -1;
       });

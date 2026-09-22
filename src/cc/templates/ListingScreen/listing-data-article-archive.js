@@ -112,15 +112,21 @@ var LISTING_ARCHIVE_FILTERS = [
        on StandardItem.Title (or MediaItem.Name on the Media branch, where the
        box is still labelled "Article" — a live mislabel, left as found). */
     scopedBy: 'Filter by',
-    scopeFields: { Section: 'section', Article: 'title', Channel: 'channel' } },
+    scopeFields: { Section: 'section', Article: 'title', Channel: 'channel' },
+    /* What an UNTOUCHED "Filter by" means — the CFML's own
+       `<cfparam name="FilterType" default="Section,Article">`. It lives here
+       rather than on the chip as a `defaultValues` so the chip OPENS BARE: the
+       screen should not look filtered before anyone has touched it (designer,
+       2026-09-22). Emptying the chip deliberately is still a different thing
+       and still matches nothing. */
+    scopeDefault: ['Section', 'Article'] },
 
   /* 2. Filter by — Type=CheckBox, FieldName=FilterType,
         default "Section,Article".
      Not a row filter: it scopes the Name term above, which is why it carries
      no `field` and never narrows the table on its own. */
   { name: 'Filter by', type: 'multi-select',
-    label: 'Filter by field', options: [{ name: 'Section' }, { name: 'Article' }, { name: 'Channel' }],
-    defaultValues: ['Section', 'Article'] },
+    label: 'Filter by field', options: [{ name: 'Section' }, { name: 'Article' }, { name: 'Channel' }] },
 
   /* 3. Type — Type=Radio, FieldName=Type, CodeList "1,26", default 1.
      The one thing this screen does that neither sibling does: Type does not
@@ -128,6 +134,9 @@ var LISTING_ARCHIVE_FILTERS = [
      queries MediaItem, through two near-identical queries with the same six
      columns. Modelled as a filter over a `type` field so the existing
      machinery carries it.
+     This one DOES keep its default, unlike the scope chip above: Type is a
+     mode rather than a filter, the live screen always holds one, and opening
+     on Article is what it does (designer, 2026-09-22).
      KNOWN DIVERGENCE: live is a radio, so it always holds exactly one value.
      This chip can be cleared, which shows both entities at once — a state the
      live screen has no way to reach. */
