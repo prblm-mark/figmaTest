@@ -1317,3 +1317,79 @@
 .datatables--orders .table tbody td {
   line-height: var(--ai-leading-sm);     /* 20px */
 }
+
+/* ── Media Items: the thumbnail and the Type cell ─────────────
+ *
+ * Two cell treatments the other listing screens do not have. Both are scoped
+ * to the listing datatable, like every rule above.
+ *
+ * THE THUMBNAIL BOX. The live screen renders it at 60x60, which is off the
+ * spacing scale in both directions; the designer set it to spacing-11 (64px)
+ * on desktop and spacing-9 (48px) from mobile (2026-09-22). Square, because
+ * the source thumbnails are generated to a square and a listing row wants one
+ * predictable height.
+ *
+ * `@container`, not `@media`, and a max-width step rather than a min-width
+ * one — matching every other responsive rule in this file rather than being
+ * the single exception. The value is the designer's; the direction is the
+ * file's. */
+.datatables--orders .datatables__thumb {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--ai-spacing-11);     /* 64px */
+  block-size: var(--ai-spacing-11);
+  flex: 0 0 auto;
+  border-radius: var(--ai-radius-sm);
+  border: 1px solid var(--ai-border-secondary);
+  background-color: var(--ai-surface-secondary);
+  color: var(--ai-icon-contrast);
+  overflow: hidden;
+}
+
+.datatables--orders .datatables__thumb [data-lucide],
+.datatables--orders .datatables__thumb svg {
+  inline-size: var(--ai-icon-size-md);
+  block-size: var(--ai-icon-size-md);
+}
+
+/* An image row shows the box and nothing in it — the box IS the stand-in for
+ * the picture. Every other family shows its glyph, because for those rows
+ * there is no picture to stand in for. */
+.datatables--orders .datatables__thumb--image {
+  background-color: var(--ai-surface-secondary);
+}
+
+/* The thumbnail column hugs its box: it never grows, and it must not be the
+ * column that gives way when the table narrows. */
+.datatables--orders .datatables__col--thumb {
+  inline-size: var(--ai-spacing-11);
+  white-space: nowrap;
+}
+
+/* Type = family glyph + the format in words. */
+.datatables--orders .datatables__type-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  white-space: nowrap;
+}
+
+.datatables--orders .datatables__type-cell [data-lucide],
+.datatables--orders .datatables__type-cell svg {
+  inline-size: var(--ai-icon-size-sm);
+  block-size: var(--ai-icon-size-sm);
+  flex: 0 0 auto;
+  color: var(--ai-icon-contrast);
+}
+
+@container (max-width: 767px) {
+  .datatables--orders .datatables__thumb {
+    inline-size: var(--ai-spacing-9);    /* 48px */
+    block-size: var(--ai-spacing-9);
+  }
+
+  .datatables--orders .datatables__col--thumb {
+    inline-size: var(--ai-spacing-9);
+  }
+}

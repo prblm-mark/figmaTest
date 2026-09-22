@@ -126,6 +126,40 @@
         ' title="' + v + '">' + v + '</button>';
     },
 
+    /* Thumbnail — the Media Items listing's own first column, and its header
+       is deliberately blank, exactly as CProperties declares it.
+       TODO(backend:Listing) media-thumbnails: the live screen builds this from
+       MediaItem.ImageThumb through an internal DAM path; no read available
+       here returns a usable URL, so the box is a generated placeholder. Swap
+       `renderThumb` for an <img> when real URLs arrive — the box, its sizing
+       and its aspect are already right.
+
+       Image rows get the tinted box alone: it stands in for the picture.
+       Everything else gets its family glyph, because for those rows there is
+       no picture to stand in for. */
+    thumb: function (row) {
+      var glyph = { video: 'play', audio: 'music', document: 'file-text' }[row.family];
+      return '<span class="datatables__thumb datatables__thumb--' + esc(row.family) + '"' +
+        ' data-backend-todo="media-thumbnails" role="img"' +
+        ' aria-label="' + esc(row.family) + ' thumbnail">' +
+        (glyph ? '<i data-lucide="' + glyph + '" aria-hidden="true"></i>' : '') +
+      '</span>';
+    },
+
+    /* Type. Live picks one of 30 bespoke 40x40 format icons out of a 49-slot
+       array keyed on DocMimeTypeCode — and 19 of those slots are EMPTY, so
+       those rows render nothing at all. Four Lucide family glyphs plus the
+       format in words instead (designer, 2026-09-22): the families are not
+       invented, they are the same grouping the MediaType filter already makes
+       of the same mimetype codes. */
+    media: function (row) {
+      var glyph = { image: 'image', video: 'video', audio: 'music', document: 'file-text' }[row.family]
+        || 'file';
+      return '<span class="datatables__type-cell">' +
+        '<i data-lucide="' + glyph + '" aria-hidden="true"></i>' +
+        '<span>' + esc(row.format) + '</span></span>';
+    },
+
     select: function (row) {
       return '<label class="checkbox">' +
         '<input type="checkbox" class="checkbox__input" aria-label="Select ' + esc(ROW_ID.spoken) + ' ' + esc(rowId(row)) + '">' +
@@ -763,7 +797,17 @@
      its option names to a row field. No other screen sets either, and without
      them this returns the filter's own single `field`. */
   function scopeFields(filter, config) {
-    if (!filter.scopedBy || !filter.scopeFields) return [filter.field];
+    if (!filter.scopeFields) return [filter.field];
+    /* `scopeFields` with no `scopedBy` is a FIXED multi-field search — no chip
+       decides it. Media Items needs one: its Title box is LIKE-matched against
+       MediaItem.Name OR MediaFileItem.FileName, and against MediaItemCode when
+       the term is numeric, so searching only the displayed title would miss
+       the filename the operator is actually looking for. */
+    if (!filter.scopedBy) {
+      return Object.keys(filter.scopeFields).map(function (k) {
+        return filter.scopeFields[k];
+      });
+    }
     var picked = (config.filterValues || {})[filter.scopedBy];
     /* UNSET and EMPTY are different, and the live screen treats them
        differently too. A scope chip nobody has touched holds no key at all, and
@@ -1449,6 +1493,14 @@
   }
 
   function renderPerPageOptions(config) {
+    /* The trigger's LABEL is static markup reading "20", and until Media Items
+       every screen happened to open on 20 so nothing showed. It opens on 25,
+       and the table dutifully rendered 25 rows under a control claiming 20.
+       Set from the config at init, not only when the value changes — the
+       fourth per-screen value found living in the shared template. */
+    var label = document.querySelector('[data-listing-per-page]');
+    if (label) label.textContent = config.perPage;
+
     var host = document.querySelector('[data-listing-per-page-options]');
     if (!host) return;
     host.innerHTML = (config.perPageOptions || [20, 50, 100, 200]).map(function (n) {

@@ -2111,3 +2111,162 @@ likely:
 
 The shape is always the same: something true of Orders sitting somewhere every
 screen inherits. Worth a look before the fourth screen, not after.
+
+
+# Media Items — the fourth screen on this template
+
+Built 2026-09-22. `MediaItems.html` + `listing-data-media-items.js`. The first
+screen that is not purely config: it adds two CELL renderers and their CSS,
+because it is the first with a **thumbnail** and the first whose Type column is
+a glyph rather than text.
+
+## What came from where
+
+`/control/media-items` is ControlProfileCode **461**, under Media, security
+code 94, template `/AfcMediaLibrary/CC/MediaItems.cfm`. It is not a "cc2"
+screen — and unlike all three siblings it does not use the generic
+`ControlSearch` module either. It hand-rolls a three-row search form, so the
+form markup *is* the filter catalogue.
+
+| File | Gives |
+|---|---|
+| `MediaItems.cfm` | the 16-control search form |
+| `MediaInbox.cfm` | the Listing layout's `CProperties`, `CMethods`, paging, sort |
+
+Real: the six columns and their order, all sixteen filters with their control
+types and option lists, the Media Type groupings, the three MediaTemplate
+styles, the page sizes, the absence of header sorting, the default order, and
+all 50 rows. Not real: the thumbnail **images**, and the Topics tagging.
+
+## The thumbnail
+
+`--ai-spacing-11` (64px) on desktop, `--ai-spacing-9` (48px) from mobile — the
+designer's values, against the live screen's 60×60, which is off the spacing
+scale in both directions. `@container`, and a max-width step rather than a
+min-width one, because that is what every other responsive rule in
+`Datatables.css` does; the value is the designer's, the direction is the
+file's.
+
+**Its header is blank**, because `CProperties[1][2]` is an empty string. That
+is not cosmetic — the fit reads a label-less column as **structure**: always
+drawn, always charged to the budget, never dropped. Which is exactly what a
+thumbnail wants, and is also the reason for the next paragraph.
+
+### `identityColumns: 1`, for a new reason
+
+Because the thumbnail is structural, it is **not an identity column**, so
+`identityColumns` starts counting at Title. Setting it to 2 therefore forced
+Title *and Type* — measured, that overflowed a 239px table by **207px** and
+pushed the kebab off the edge, the same failure that gave Articles its 1. With
+1, Title is forced and Type becomes droppable.
+
+Worth recording as the general shape: `identityColumns` counts LABELLED
+columns. A screen whose leading column has no header gets one fewer than it
+looks like it has.
+
+### The image is the one thing that is not real
+
+The live screen builds the thumbnail from `MediaItem.ImageThumb` through an
+internal DAM path and no read available here returns a usable URL. Image rows
+therefore show the tinted box alone — it stands in for the picture — and every
+other family shows its glyph, because for those rows there is no picture to
+stand in for. Everything else about the box is real: size, aspect, position,
+and what it does when the table narrows. `TODO(backend:Listing)
+media-thumbnails` marks the swap.
+
+## Type: four glyphs instead of thirty
+
+Live picks one of 30 bespoke 40×40 format icons out of a 49-slot array keyed on
+`DocMimeTypeCode` — and **19 of those slots are empty strings**, so those rows
+render nothing at all. This shows one of four Lucide family glyphs plus the
+format in words (designer, 2026-09-22).
+
+The families are not invented. `MediaInbox.cfm`'s own `<cfswitch>` already
+groups the same mimetype codes into exactly Image / Video / Audio / Document
+for the Media Type filter:
+
+```
+Image     4,5,14,44,50
+Video     2,8,11,18,20,21,22,24,25,26,27,30,37,41,48
+Audio     9,13,19,23
+Document  15,16,17,29,33,34,40,42,45,46,47,49
+```
+
+So the column reads `image JPEG`, `file-text PDF`, `video MP4` — the family
+from a grouping the screen already makes, the format from the mimetype.
+
+## Title searches three fields
+
+The live query LIKEs the term against `MediaItem.Name` **or**
+`MediaFileItem.FileName`, and matches `MediaItemCode` outright when the term is
+numeric. The filename is the one that matters: every display name in this
+library is a tidied screenshot ("Screenshot 2023-09-01 at 11.15.17") while the
+file underneath keeps the original.
+
+`scopeFields` with **no** `scopedBy` is now a fixed multi-field text match —
+the generalisation of the Article Archive mechanism, where a chip picked the
+fields. Measured: a filename-only term finds its row, an item code finds its
+row, a display-name term finds two.
+
+## Sorting: the third different answer in four screens
+
+| Screen | Sorting |
+|---|---|
+| Orders | `hs` whitelisted to seven values |
+| Articles | no whitelist — anything sent is interpolated into the ORDER BY |
+| Article Archive | whitelisted to seven `<cfswitch>` cases |
+| Media Items | **none at all** — `headerSort = ""` |
+
+So not one column here carries a `sort` token. The order is fixed at
+`sOrderBy = "PublishStart"` DESC, and PublishStart is not one of the six
+columns, so — as on Article Archive — the screen opens on an order no header
+can claim.
+
+## Two of sixteen are not filters
+
+- **Media Per Screen** (`LimitBy`, 25/50/100/200/500) is the toolbar's page
+  size. Same call as Articles' Articles Per Screen.
+- **Layout** (`MediaLayOut`, Grid/Listing) is the view switch, and the Grid
+  half is the next screen — a chip that swaps to a view that does not exist
+  would be a dead control. Note **the live default is Grid**, not Listing; the
+  URL this was built from forces `MediaLayOut=Listing`.
+  `TODO(backend:Listing) media-layout-switch`.
+
+## The fourth per-screen value found in a shared place
+
+Page size is 25 here — the only one of the four not defaulting to 20 — and that
+is how it surfaced that the toolbar's page-size **label** is static markup
+reading `20`, updated only on change. Every screen so far happened to open on
+20, so it never showed; Media Items rendered 25 rows under a control claiming
+20. Now set from the config at init.
+
+That makes four, and the pattern is worth acting on rather than re-discovering:
+
+| What | Where it was living | How it surfaced |
+|---|---|---|
+| Row identity (`orderNo`) | hard-coded in the renderer | blank aria-labels on Articles |
+| Export | markup in the cloned template | designer |
+| Kebab actions | Figma content on the shared FilterBar frame | designer |
+| Page-size label | static `20` in the shared markup | a screen that opens on 25 |
+
+## Measured
+
+| Table width | Data columns | Thumb | Overflow |
+|---|---|---|---|
+| 1155 | 7 | 64 | 0 |
+| 955 | 5 | 64 | 0 |
+| 755 | 5 | 48 | 0 |
+| 619 | 4 | 48 | 0 |
+| 555 / 479 | 3 | 48 | 0 |
+| 399 / 309 / 239 | 2 | 48 | 0 |
+
+Thumbnail present at every width, no overflow anywhere. Orders, Articles and
+Article Archive all re-measured unchanged at 1400 and 390.
+
+## Next: the Grid view
+
+The other half of `MediaLayOut`. Live renders it through
+`MediaLightbox.cfm` rather than `ListForm.cfm`, so it is a genuinely different
+rendering of the same query and the same filter catalogue — not a column
+variation. The filters, the page size and the row data built here are all
+reusable as-is; what is new is the card and the layout switch.

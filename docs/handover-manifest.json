@@ -879,6 +879,34 @@
           "element": "Date Range chip on ArticleArchive.html",
           "current": "The Custom from/to pair only. The live CustomDateSelector also offers Any Time / Today / This Week / Last Week / This Month, kept as ARCHIVE_DATE_PRESETS in the data file. A preset row is a control the FilterBar has no Figma variant for.",
           "needs": "A Figma variant for a preset row inside a date filter panel, then the presets map to from/to pairs client-side — the CFML already computes them that way (DateAdd on AffinoNow())."
+        },
+        {
+          "id": "listing-media-items-rows",
+          "category": "needs-backend",
+          "element": ".datatables--orders on MediaItems.html (data-backend-todo=\"listing-media-items-rows\")",
+          "current": "50 REAL media items read from AffinoComrz 2026-09-22 (96,493 total) — names, filenames, item codes, sections, creators, created dates and mimetypes are live values. Paging, the total and the page count are computed over that fixed set.",
+          "needs": "GET /control/media-items?MediaLayOut=Listing&Title=&ZoneCode=&ChannelCode=&ccs=&MediaTemplateCode=&MediaType=&Live=&CreatorCode=&CreatedDateRangeFrom=&CreatedDateRangeTo=&Topics=&MyMedia=&ArchiveContent=&Outdated=&ShowOriginalImage=&StartRow=&LimitBy= returning { columns[], rows[], page:{…} }. Row shape: { itemId, title, fileName, family, format, section, channel, zone, style, createdBy, created, live }. `family` is one of image|video|audio|document — the backend already computes this grouping for the MediaType filter (MediaInbox.cfm <cfswitch>), so it should return it rather than making the client re-derive it from the mimetype. This screen ALREADY pages server-side (StartRow + ListXEntries), so unlike Orders that is not a new capability."
+        },
+        {
+          "id": "media-thumbnails",
+          "category": "needs-backend",
+          "element": ".datatables__thumb on MediaItems.html",
+          "current": "The box is a generated placeholder: image rows show the tinted box alone, other families show a Lucide glyph. The live screen builds the real thumbnail from MediaItem.ImageThumb through an internal DAM path (../AcuCustom/Sitename/DAM/<n>/) and no read available here returns a usable URL. Size, aspect, position and narrow-table behaviour are all real; only the picture is missing.",
+          "needs": "A resolvable thumbnail URL per row — `thumbUrl` on the row payload. The box is 64px desktop / 48px mobile and square; the live generator already renders to a square (60x60), so the same asset works. Swap the placeholder span for an <img> inside the same box; nothing about the layout changes."
+        },
+        {
+          "id": "media-layout-switch",
+          "category": "not-built",
+          "element": "MediaLayOut (Grid | Listing) on MediaItems.html",
+          "current": "Only the LISTING half is built. The live screen defaults to GRID and renders it through MediaLightbox.cfm rather than ListForm.cfm — a different rendering of the same query, not a column variation. The Layout control is deliberately absent rather than dead.",
+          "needs": "Nothing from the backend: the Grid view is a front-end build, next in the queue. The filters, page size and row payload are shared with the Listing view as-is."
+        },
+        {
+          "id": "media-topics",
+          "category": "needs-backend",
+          "element": "Topics facet in More Filters on MediaItems.html",
+          "current": "The option list is the first twenty of 437 REAL taxonomy categories, but no row carries topic tags, so the facet filters to nothing. It is present because it is in the live catalogue, not because the mock data exercises it.",
+          "needs": "Topic tags per row (`topics: []`) plus the full taxonomy for the picker. The live control is a webOS multi-select lookup over TaxonomyCategory."
         }
       ]
     }
