@@ -2671,6 +2671,19 @@ auto margin, so the break is deliberate and the row starts where the count
 does. Measured on all three: right-aligned and inline at 1600, left-aligned on
 its own line from ~1200 down, no table overflow at any width.
 
+And it becomes a **two-column grid** down there rather than a wrapping flex row
+(designer, 2026-09-22). Orders' three selects plus Apply made a 3-then-1 row
+that left a half-empty last line; a grid pairs them 2×2, and Articles' single
+select plus Apply gets one even row. `minmax(0, 1fr)` rather than `1fr`, so a
+long option label cannot push a column past its share — and the selects' 160px
+cap comes off, because in a grid cell it would leave the control short of its
+own column.
+
+The bar's inline padding also tightens from `--ai-spacing-5` to
+`--ai-spacing-4` below the breakpoint, matching the narrower gutters the rest
+of the table uses there; block padding is unchanged. Measured: 8/16 above,
+8/12 below.
+
 **Clearing the selection resets the selects.** Leaving "Delete" sitting in a
 select after the rows it applied to have gone is an accident waiting for the
 next tick.

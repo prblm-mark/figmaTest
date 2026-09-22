@@ -596,10 +596,29 @@
      one broken one. `flex-basis: 100%` makes the break deliberate instead of
      incidental, and the auto margin comes off so the row starts where the
      count does. */
+  /* Tighter inline padding to match the narrow gutters the rest of the table
+     uses down here — 16 to 12, block padding unchanged (designer,
+     2026-09-22). */
+  .cc-listing__selection {
+    padding: var(--ai-spacing-3) var(--ai-spacing-4);
+  }
+
+  /* Two columns down here (designer, 2026-09-22), not a wrapping flex row.
+     Orders' three selects plus Apply made a 3-then-1 row that left a
+     half-empty last line; a grid pairs them 2×2 and gives Articles' single
+     select + Apply one even row. `minmax(0, 1fr)` rather than `1fr` so a long
+     option label cannot push a column past its share. */
   .cc-listing__selection-actions {
     flex-basis: 100%;
     margin-inline-start: 0;
-    justify-content: flex-start;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* The 160px cap is a desktop measure — in a grid cell it would leave the
+     select short of its own column. */
+  .cc-listing__selection-select {
+    max-inline-size: none;
   }
 
   .cc-listing__layout .seg-control__btn-label {
