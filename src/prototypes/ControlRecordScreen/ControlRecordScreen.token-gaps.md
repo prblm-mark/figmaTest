@@ -37,3 +37,20 @@ the designer should get to disagree with it knowingly.
 
 `1px` / `2px` border and underline widths — optical values, pre-approved by `/build-prototype`.
 Used on the card border, the card head rule, the fact-block border and the active tab underline.
+
+---
+
+## Measured on the 2026-09-22 push (step 6b, `--theme cc`)
+
+Six desktop frames, ~490 paints rebound to Semantic. `nonSemanticRemaining` is **not** 0 — the
+skill's target — because of the following, all left deliberately on their primitive and reported
+rather than guessed. A wrong semantic looks correct forever; a primitive at least looks wrong in
+dark mode.
+
+| Unresolved | Count per frame | Whose | Verdict |
+|---|---|---|---|
+| `#CC4E00 as icon (currently orange/11)` | 9 (Article frames only) | **ours** | **The `--ai-icon-warning` gap above, confirmed by measurement.** The CSS settles what it is — `.crs-advice__item [data-lucide] { color: var(--ai-text-warning) }` — but the rebind picks the family from node type, and a Lucide icon is a stroked vector, so it looks in `icon/*` where this hex does not exist. Deliberately NOT bound to `text/warning`: that would be a cross-family binding that pre-empts the design decision and then looks correct forever. Needs the designer's call. |
+| `#F3F6F7 as icon (currently MId Blue/100)` | 12 | shell | SidebarMenu icons, inherited from the ControlScreen shell. Not this prototype's to resolve. |
+| `#000000 as border (unbound)` | 3–9 | capture artefact | Default black border the serialiser emits; no token, nothing to bind. |
+| `#FFFFFF as surface (unbound)` | 1 | ambiguous | `#FFFFFF` is surface-primary, surface-elevated-1 AND surface-elevated-2. Un-overridable by value. |
+| `#0094AD as border (currently Lagoon/10)` | 1 (Article frames) | shell | The hex is `icon/brand`; there is no border token at it. |

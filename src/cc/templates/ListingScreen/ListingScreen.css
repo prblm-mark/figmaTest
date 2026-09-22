@@ -318,7 +318,10 @@
 .cc-grid__card {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-2);
+  /* Picture to caption (designer, 2026-09-22). Twice the 4px INSIDE the
+     caption, which is what keeps the two text lines reading as one block
+     rather than as two more children of the card. */
+  gap: var(--ai-spacing-3);
   min-inline-size: 0;
 }
 
@@ -425,8 +428,8 @@
 /* Name and meta are ONE block, not two siblings of the picture. The card's own
  * gap separates the picture from the text; this pair is a caption and wants to
  * read as one thing, so it gets its own tighter gap (designer, 2026-09-22) —
- * --ai-spacing-1 (4px) against the card's --ai-spacing-2 (6px), the next step
- * down the scale rather than a number picked to look right.
+ * --ai-spacing-1 (4px) against the card's --ai-spacing-3 (8px), both steps on
+ * the scale rather than numbers picked to look right.
  *
  * `min-inline-size: 0` so both lines can still ellipsise: a flex child's
  * automatic minimum is its content, and without this the longest name would

@@ -2403,8 +2403,9 @@ Designer, 2026-09-22. Name and meta were siblings of the picture, so the card's
 single `gap` spaced all three equally and the two text lines read as two
 separate things rather than one caption. They now sit in `.cc-grid__text` with
 their own tighter gap — `--ai-spacing-1` (4px) inside, against the card's
-`--ai-spacing-2` (6px) between picture and text. The next step down the scale,
-not a number picked to look right.
+`--ai-spacing-3` (8px) between picture and text. Both steps on the scale, not
+numbers picked to look right, and the caption's gap is deliberately half the
+card's so the two lines read as one block rather than as two more children.
 
 Name is **13px semibold** (`--ai-font-fixed-2xs` / `--ai-font-semibold`) over
 12px regular meta, so the pair has a hierarchy of its own.
@@ -2413,7 +2414,7 @@ Name is **13px semibold** (`--ai-font-fixed-2xs` / `--ai-font-semibold`) over
 is its content: without it the longest name would set the column's width
 instead of truncating to it. Verified rather than assumed — a 340px name in a
 192px box still reports `scrollWidth > clientWidth`, so the ellipsis survived
-the extra wrapper. Measured: media→text 6px, name→meta 4px.
+the extra wrapper. Measured: media→text 8px, name→meta 4px.
 
 ## Reveal-on-hover is a bet that the device has a pointer
 
