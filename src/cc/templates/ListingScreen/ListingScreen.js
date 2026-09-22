@@ -1000,8 +1000,10 @@
             ' aria-label="Edit ' + esc(ROW_ID.spoken) + ' ' + esc(row.title) + '">' +
             '<i data-lucide="pencil" aria-hidden="true"></i></a>' +
         '</div>' +
-        '<p class="cc-grid__name" title="' + esc(row.title) + '">' + esc(row.title) + '</p>' +
-        '<p class="cc-grid__meta">' + esc(row.format) + ' · ' + esc(row.created) + '</p>' +
+        '<div class="cc-grid__text">' +
+          '<p class="cc-grid__name" title="' + esc(row.title) + '">' + esc(row.title) + '</p>' +
+          '<p class="cc-grid__meta">' + esc(row.format) + ' · ' + esc(row.created) + '</p>' +
+        '</div>' +
       '</div></li>';
   }
 

@@ -422,6 +422,22 @@
   box-shadow: var(--ai-shadow-xxs);
 }
 
+/* Name and meta are ONE block, not two siblings of the picture. The card's own
+ * gap separates the picture from the text; this pair is a caption and wants to
+ * read as one thing, so it gets its own tighter gap (designer, 2026-09-22) —
+ * --ai-spacing-1 (4px) against the card's --ai-spacing-2 (6px), the next step
+ * down the scale rather than a number picked to look right.
+ *
+ * `min-inline-size: 0` so both lines can still ellipsise: a flex child's
+ * automatic minimum is its content, and without this the longest name would
+ * set the column's width instead of truncating to it. */
+.cc-grid__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-1);
+  min-inline-size: 0;
+}
+
 .cc-grid__name {
   margin: 0;
   font-family: var(--ai-font-body);
@@ -429,7 +445,7 @@
      FIXED, not fluid — `--ai-font-fluid-*` steps down on a phone, and the card
      name is the one thing on a grid card that must stay readable there. */
   font-size: var(--ai-font-fixed-2xs);
-  font-weight: var(--ai-font-medium);
+  font-weight: var(--ai-font-semibold);
   line-height: var(--ai-leading-xs);
   color: var(--ai-text-primary);
   overflow: hidden;

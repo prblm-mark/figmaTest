@@ -2365,7 +2365,7 @@ Each cell holds **a thumbnail and nothing else.**
 
 | Live | Here | Why |
 |---|---|---|
-| Thumbnail only; name, W×H, file size and type in a jQuery hover tooltip (`trailOn`) | Thumbnail + name + `format · created` at rest | `sTempName` is computed AND truncated in the source, then never printed. A hover tooltip cannot be reached by keyboard or read by a screen reader, and 96,000 unlabelled thumbnails is not a library you can scan (designer) |
+| Thumbnail only; name, W×H, file size and type in a jQuery hover tooltip (`trailOn`) | Thumbnail + a caption block: name (13px semibold) over `format · created` (12px) | `sTempName` is computed AND truncated in the source, then never printed. A hover tooltip cannot be reached by keyboard or read by a screen reader, and 96,000 unlabelled thumbnails is not a library you can scan (designer) |
 | Fixed 140px cell, profile-driven column count | `repeat(auto-fill, minmax(--ai-size-2, 1fr))` | CLAUDE.md §4a — it has to reflow with the content column, not the window. 160px against live's off-scale 140, so the name has room to be read |
 | Permanent "Select all" above, permanent Move/Delete row below | One selection bar, shown only when something is ticked | Two pieces of chrome for a state that is usually empty |
 | Checkbox / View Album / Slideshow / Edit revealed on `mouseenter` only | Checkbox + Edit revealed on hover, on **focus**, and unconditionally where there is **no hover at all** | A hover-only control is unreachable by keyboard AND by finger — see below. View Album and Slideshow are not built |
@@ -2396,6 +2396,24 @@ second from the grid → "2 items selected"; Clear → both views empty.
   top-right when it is set — but the 50 rows came from `affino_list_media_items`,
   which does not return that field, so marking any of them as AI-generated
   would be inventing data. Left out rather than guessed.
+
+## The caption is one block, not two siblings
+
+Designer, 2026-09-22. Name and meta were siblings of the picture, so the card's
+single `gap` spaced all three equally and the two text lines read as two
+separate things rather than one caption. They now sit in `.cc-grid__text` with
+their own tighter gap — `--ai-spacing-1` (4px) inside, against the card's
+`--ai-spacing-2` (6px) between picture and text. The next step down the scale,
+not a number picked to look right.
+
+Name is **13px semibold** (`--ai-font-fixed-2xs` / `--ai-font-semibold`) over
+12px regular meta, so the pair has a hierarchy of its own.
+
+`min-inline-size: 0` on the wrapper, because a flex child's automatic minimum
+is its content: without it the longest name would set the column's width
+instead of truncating to it. Verified rather than assumed — a 340px name in a
+192px box still reports `scrollWidth > clientWidth`, so the ellipsis survived
+the extra wrapper. Measured: media→text 6px, name→meta 4px.
 
 ## Reveal-on-hover is a bet that the device has a pointer
 
