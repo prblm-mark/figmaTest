@@ -607,8 +607,10 @@ function screen(spec, mode, model) {
     )
     .replace('aria-current="page">Level 2</li>', `aria-current="page">${esc(trail[trail.length - 1])}</li>`);
 
+  const captureName = `${spec.name} — ${mode}${spec.hasEvidence ? ` — model ${model.toUpperCase()}` : ''}`;
+
   return `<!doctype html>
-<html lang="en" data-brand="cc">
+<html lang="en" data-brand="cc" data-capture-name="${esc(captureName)}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
