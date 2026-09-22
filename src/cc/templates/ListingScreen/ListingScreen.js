@@ -1062,12 +1062,40 @@
      a permanent action row below it, which is two pieces of chrome for a state
      that is usually empty.
      TODO(backend:Listing) listing-bulk-actions: Move and Delete do nothing. */
+  /* The actions themselves are per-screen, like `headerActions` and `layouts`,
+     because each live screen declares its own set and they are not the same
+     shape. Orders has three SELECTS and an Action submit; Articles has five
+     verbs; Media Items has two. A screen that declares none gets no bar at all
+     — and no select column either, since a checkbox that can lead to nothing
+     is the disagreement this bar exists to end. */
+  function renderBulkActions(config) {
+    return (config.bulkActions || []).map(function (a) {
+      if (a.type === 'select') {
+        return '<div class="sel cc-listing__selection-select" data-sel>' +
+          '<button class="sel__control sel__control--sm" type="button" data-sel-trigger' +
+            ' aria-label="' + esc(a.label) + '">' +
+            '<span class="sel__value">' + esc(a.label) + '</span>' +
+            '<span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>' +
+          '</button>' +
+          '<ul class="sel__menu" role="listbox" aria-label="' + esc(a.label) + '">' +
+            (a.options || []).map(function (o) {
+              return '<li><button type="button" class="sel__menu-item" role="option">' +
+                esc(o) + '</button></li>';
+            }).join('') +
+          '</ul></div>';
+      }
+      return '<button type="button" class="btn btn--' + esc(a.variant || 'secondary') + ' btn--sm">' +
+        (a.icon ? '<i data-lucide="' + esc(a.icon) + '" aria-hidden="true"></i>' : '') +
+        '<span>' + esc(a.label) + '</span></button>';
+    }).join('');
+  }
+
   function renderSelection(root, config) {
     var bar = root.querySelector('[data-listing-selection]');
     if (!bar) return;
     var n = Object.keys(SELECTED).length;
-    bar.hidden = n === 0;
-    if (!n) return;
+    bar.hidden = n === 0 || !(config.bulkActions || []).length;
+    if (bar.hidden) return;
     var count = bar.querySelector('[data-selection-count]');
     if (count) count.textContent = n + (n === 1 ? ' item selected' : ' items selected');
   }
@@ -1909,6 +1937,25 @@
       if (card) card.classList.toggle('cc-grid__card--selected', box.checked);
       renderSelection(root, config);
     });
+
+    /* Rendered once: the set is per screen and does not change with the
+       selection, only its visibility does. */
+    var actionHost = root.querySelector('[data-selection-actions]');
+    if (actionHost) {
+      actionHost.innerHTML = renderBulkActions(config);
+      /* Select.js binds at the document with delegation — one click listener
+         matching `[data-sel-trigger]` — so a select inserted after it loaded
+         works with no re-init. Only the icons need a second pass. */
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    /* A screen with no bulk actions has nothing to select FOR, so the column
+       goes too rather than leaving a checkbox that leads nowhere. */
+    if (!(config.bulkActions || []).length) {
+      config = Object.assign({}, config, {
+        columns: config.columns.filter(function (c) { return c.type !== 'select'; })
+      });
+    }
 
     var clearBtn = root.querySelector('[data-selection-clear]');
     if (clearBtn) clearBtn.addEventListener('click', function () {

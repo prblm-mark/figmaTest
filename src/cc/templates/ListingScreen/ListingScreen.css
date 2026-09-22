@@ -485,16 +485,24 @@
   gap: var(--ai-spacing-4);
   padding: var(--ai-spacing-3) var(--ai-spacing-5);
   border-block-end: 1px solid var(--ai-border-secondary);
-  /* `--ai-surface-brand-contrast` does NOT exist — the Apr 2026 rename took
-   * every `-contrast` brand/status surface to `-soft`, and the focus-ring
-   * examples still quoting the old name are stale. `-soft` is the tint,
-   * and it is defined per theme so the bar reads in dark mode too. */
-  background-color: var(--ai-surface-brand-soft);
+  /* The datatable's own expanded-row tint (designer, 2026-09-22), not a brand
+   * wash: this bar is a STATE OF THE TABLE, the same way an expanded row is,
+   * and it should read as the table reacting rather than as a notice pasted
+   * over it. Themed — #f3f6f7 on cc, #293548 on cc-dark.
+   *
+   * (It was `--ai-surface-brand-soft`. Worth keeping the note that
+   * `--ai-surface-brand-contrast` does NOT exist: the Apr 2026 rename took
+   * every `-contrast` brand and status surface to `-soft`, and the focus-ring
+   * examples still quoting the old name are stale.) */
+  background-color: var(--ai-datatable-table-expanded-bg);
 }
 
 .cc-listing__selection[hidden] { display: none; }
 
 .cc-listing__selection-count {
+  /* The count is a label, not a paragraph — wrapping "2 items selected" onto
+     two lines made the bar taller than the row it describes. */
+  white-space: nowrap;
   font-family: var(--ai-font-body);
   font-size: var(--ai-font-fluid-xxs);
   font-weight: var(--ai-font-semibold);
@@ -507,6 +515,21 @@
   align-items: center;
   gap: var(--ai-spacing-3);
   margin-inline-start: auto;
+  /* Orders carries three selects and a verb; at a narrow column they wrap
+     under the count rather than pushing the bar wider than the table. */
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+/* The selects are the Select component at `--sm`; only their width is ours,
+   so "Change Status" and "Add to List" do not each claim a different one. */
+.cc-listing__selection-select {
+  inline-size: var(--ai-size-2);            /* 160px */
+}
+
+.cc-listing__selection-select .sel__menu {
+  max-block-size: var(--ai-size-6);         /* 320px */
+  overflow-y: auto;
 }
 
 /* ── No hover, no reveal ──────────────────────────────────

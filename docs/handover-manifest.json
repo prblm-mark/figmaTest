@@ -911,9 +911,9 @@
         {
           "id": "listing-bulk-actions",
           "category": "needs-backend",
-          "element": ".cc-listing__selection Move / Delete on MediaItems.html",
-          "current": "Selection works across BOTH views and the bar counts correctly, but Move and Delete do nothing. The live Grid has the same two actions plus a Move-to-Section field; the live Listing has neither, and its row checkboxes are inert.",
-          "needs": "POST /control/media-items/bulk { action: \"move\"|\"delete\", ids[], sectionCode? }. Move needs a section picker — live uses the same lookup modal the Section filter opens. Permission applies per item: an operator who may not delete should not be offered it. CMethods for this screen is \"add,change,delete,list,view,all,comment,move\", so both actions are real here."
+          "element": ".cc-listing__selection on all four listing screens",
+          "current": "Shared bar, shown only when something is ticked, with the actions per screen from `bulkActions`. Real sets, read from each live screen: Orders three selects (Change Status / Add to List / Archive) from OrderProcessings.cfm sShowCustomButtons; Articles five verbs from v-article-listing.cfc CMethods \"copy,move,delete,listmakelive,listmakenotlive\"; Media Items Move + Delete from MediaLightbox.cfm directAction; Article Archive NONE, because ArchiveManagementDef.cfm declares CMethods = \"list,change,viewonly\" — so that screen has no bar and no checkbox column either. Selection works and counts correctly across both Media Items views; none of the actions do anything.",
+          "needs": "POST /control/<screen>/bulk { action, ids[], value? } — `value` carries the picked status, order-list code or archive direction for the select-type actions. Live pairs Orders' selects with a separate Action submit; this applies on pick. Add to List also needs a CREATE path: live has a free-text box beside the select for naming a new list. PERMISSION APPLIES PER ACTION — the CMethods string is exactly that list, so the backend should return the permitted verbs per screen per user rather than the client hardcoding them."
         },
         {
           "id": "media-card-actions",

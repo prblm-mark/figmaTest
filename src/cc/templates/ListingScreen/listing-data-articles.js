@@ -342,6 +342,17 @@ LISTING_SCREENS.articles = {
   /* The primary action from the CCHeader pattern's own actions cluster
      (Figma 4105:3640): plus icon, the word Add, Primary/Base. */
   headerActions: [{ label: 'Add', icon: 'plus', variant: 'primary' }],
+  /* REAL, and the whole list: `this.CMethods = "copy,move,delete,
+     listmakelive,listmakenotlive"` — the first line of v-article-listing.cfc.
+     Five verbs and no selects, which is why this screen's bar looks nothing
+     like Orders'. */
+  bulkActions: [
+    { label: 'Copy',          icon: 'copy' },
+    { label: 'Move',          icon: 'folder-input' },
+    { label: 'Make Live',     icon: 'eye' },
+    { label: 'Make Not Live', icon: 'eye-off' },
+    { label: 'Delete',        icon: 'trash-2' }
+  ],
   /* The article ID is what the row and pencil routes key on — this file said
      so from the start, but the template had `orderNo` hard-coded, so every
      Articles row shipped `href="#order//edit"` and an aria-label reading

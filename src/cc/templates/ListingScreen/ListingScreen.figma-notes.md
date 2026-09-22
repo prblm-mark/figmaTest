@@ -2572,3 +2572,72 @@ shows and vice versa, Edit Columns hides in grid (there are no columns), and
 the Section picker still opens with its 17 rows while in grid view. The other
 three screens re-measured at six widths — identical column counts, no overflow,
 no right-edge gap.
+
+
+# The selection bar, shared by all four screens
+
+Built 2026-09-22. One bar, one selection model, and the **actions are per-screen
+config** (`bulkActions`) read from each live screen's own declaration — because
+they are not the same shape, and two of the four disagree about whether
+selection means anything at all.
+
+## Where it goes, and why not the footer
+
+The designer asked whether bulk actions belong beneath the datatable (which is
+where live puts them) or folded into the footer. Neither: a dedicated bar
+between the toolbar and the table.
+
+- **The Media Items grid has no table footer**, so a footer-based pattern
+  cannot serve both views of one screen.
+- **The footer has a permanent job** — count and pagination. Selection is
+  transient, so the footer would change height as rows are ticked.
+- **Scope confusion.** "Delete" a few pixels from "next page" invites the
+  question of whether it applies to the page or the selection.
+- **It crowds.** Orders' three selects plus a verb, in a bar that already holds
+  a count and a pager, wrap below ~900px.
+- And live's own placement puts the response at the far end of a 500-row table
+  from the **select-all checkbox that starts it**.
+
+## What each screen actually declares
+
+| Screen | Bulk actions | Source |
+|---|---|---|
+| **Orders** | *Change Status* · *Add to List* · *Archive* — three SELECTS | `OrderProcessings.cfm`, the `sShowCustomButtons` savecontent |
+| **Articles** | Copy · Move · Make Live · Make Not Live · Delete — five verbs | `v-article-listing.cfc` line 1: `this.CMethods = "copy,move,delete,listmakelive,listmakenotlive"` |
+| **Media Items** | Move · Delete | `MediaLightbox.cfm`: `variables.directAction = "move,delete"` |
+| **Article Archive** | **none** | `ArchiveManagementDef.cfm`: `CMethods = "list,change,viewonly"` |
+
+Orders' option lists are real too: the sixteen statuses it already had, the
+`OrderList` table's own rows, and `variables.ArchiveOptions` (line 600) =
+`["Archive","Unarchive"]`. Twelve of the twenty order lists are called "Cats
+list" — kept, because an operator picking from that menu is exactly why a list
+picker needs more than a name, and a tidied demo hides it.
+
+## Article Archive loses its checkbox column
+
+It has nothing a selection could be **for**. So no bar, and the template drops
+the `select` column with it — a checkbox that can lead nowhere is precisely the
+dead control this bar exists to end, and the same complaint that started the
+whole exercise (the Listing view's checkboxes doing nothing while the Grid's
+did something). One column fewer at every width; re-measured, no overflow.
+
+## Details worth keeping
+
+- **Clear sits with the count, not among the actions.** It dismisses a state
+  rather than doing something to the rows, and on Articles' five-verb bar it
+  was stranding itself on a second line.
+- **`white-space: nowrap` on the count** — "2 items selected" was wrapping to
+  two lines and making the bar taller than the row it describes.
+- **The actions wrap, the bar does not grow sideways.** Five verbs at a 700px
+  column take two rows; one row from ~1100 up.
+- **Select.js needs no re-init.** It binds one delegated click listener at the
+  document, so a select rendered into the bar after load works — verified by
+  opening one and picking from it, not assumed.
+- **Background is `--ai-datatable-table-expanded-bg`** (designer), not a brand
+  wash: the bar is a *state of the table*, the same way an expanded row is, and
+  should read as the table reacting rather than a notice pasted over it.
+  Themed — `#f3f6f7` cc, `#293548` cc-dark.
+
+`TODO(backend:Listing) listing-bulk-actions` — nothing is wired. Live pairs
+Orders' three selects with an Action submit; here each applies on pick, one
+step instead of two for the same outcome.
