@@ -2631,6 +2631,46 @@ archive in one request.
 how you unset, and that is the only way back to "nothing chosen" once a value
 is showing.
 
+### Select all lives in the table header
+
+Designer, 2026-09-22. The `select` column's header cell carries the box, with
+**no visible label** — the column is a checkbox column and the header is a
+checkbox; the name is on the input for a screen reader. It ticks every row on
+the **current page**, which is what a header checkbox means in a paged table,
+and unticks itself the moment any row is unticked.
+
+A screen with no bulk actions has no select column, so this cannot appear
+anywhere selection would lead nowhere: Orders, Articles and Media Items have
+one; Article Archive does not.
+
+**No indeterminate state.** A partially selected page shows the header box
+unchecked. Checkbox has no Figma variant for a dash glyph and inventing one is
+not this change's to make — flagged rather than faked.
+
+**`data-listing-select-all`, not `data-select-all`.** FilterDropdowns already
+owns that name for the multi-select-table pickers' own header box, so the first
+cut had ticking the Section picker's select-all also tick every row in the
+table behind it. The lookups are scoped to `[data-listing-head]` for the same
+reason. Verified both ways: the header box ticks 20/20 table rows and none of
+the picker's; the picker's ticks its own 11 and leaves the table at 0.
+
+> **Third time a non-unique hook has bitten this template** — after
+> `.datatables__body` (every multi-select-table picker renders its own) and
+> `orderNo` (row identity hard-coded in a shared renderer). The pattern is a
+> name that reads as specific inside one component and is not, once two
+> components share a DOM. Check a hook is free before reusing it, and scope the
+> lookup even when it looks unambiguous.
+
+### The bar's actions take their own line on a narrow column
+
+Designer, 2026-09-22. They were wrapping under the count but keeping
+`margin-inline-start: auto`, so the select hung off to the right with a ragged
+gap beneath "2 items selected" — two half-rows reading as one broken one.
+Below the container's 767px the cluster gets `flex-basis: 100%` and loses the
+auto margin, so the break is deliberate and the row starts where the count
+does. Measured on all three: right-aligned and inline at 1600, left-aligned on
+its own line from ~1200 down, no table overflow at any width.
+
 **Clearing the selection resets the selects.** Leaving "Delete" sitting in a
 select after the rows it applied to have gone is an accident waiting for the
 next tick.
