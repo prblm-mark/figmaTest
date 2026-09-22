@@ -1,0 +1,25 @@
+  <!-- ━━━ Toast stack (top-right) — favourites save/remove feedback ━━━━━
+       Empty container; toasts are spawned into it by the rail IIFE (success on
+       save, interactive Undo on remove). Uses the Toast component markup. -->
+  <div class="cc-toast-stack" id="cc-toasts" aria-live="polite" aria-atomic="false"></div>
+
+  <!-- ━━━ "Save favourite as" modal (opened by the rail Favourite button) ━━━ -->
+  <div class="modal-overlay" id="modal-fav" role="dialog" aria-modal="true" aria-labelledby="modal-fav-title">
+    <div class="modal modal--sm">
+      <div class="modal__header">
+        <h2 class="modal__title" id="modal-fav-title">Save favourite as</h2>
+        <button class="modal__close" type="button" aria-label="Close" data-aa-modal-close><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+      <div class="modal__body">
+        <div class="input">
+          <div class="input__wrap">
+            <input id="cc-fav-name" type="text" class="input__control" placeholder="e.g. Q3 Campaign View" aria-label="Favourite name">
+          </div>
+        </div>
+      </div>
+      <div class="modal__footer">
+        <!-- TODO(backend:ControlScreen) [favourites-persistence]: saving only mutates the DOM in memory (lost on reload). Need favourites CRUD — POST {name, context, ts} here, GET on init, DELETE on remove. -->
+        <button class="btn btn--primary" type="button" data-aa-fav-save data-backend-todo="favourites-persistence">Save favourite</button>
+      </div>
+    </div>
+  </div>

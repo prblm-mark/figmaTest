@@ -333,6 +333,11 @@ LISTING_SCREENS['media-items'] = {
      kebab off the edge. 1 forces Title alone and Type becomes droppable,
      which is what the narrow widths need. */
   identityColumns: 1,
+  /* Both halves of the live MediaLayOut switch. Declaring `layouts` is what
+     puts the SegmentedControl in the toolbar; the other three screens have one
+     rendering and no control. First entry is the default — live's own default
+     is Grid, and the divergence is recorded in the HTML beside the switch. */
+  layouts: ['listing', 'grid'],
   /* The live LimitBy list, and 25 is its default — the only one of the four
      screens whose page size does not default to 20. */
   perPage: 25,

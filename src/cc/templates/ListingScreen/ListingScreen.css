@@ -275,3 +275,216 @@
   min-width: var(--ai-size-1);
   padding: var(--ai-spacing-3);
 }
+
+/* ── Grid view (Media Items) ──────────────────────────────
+ *
+ * The other half of the live screen's MediaLayOut switch. Live renders it
+ * through MediaLightbox.cfm as a bordered <table> of fixed 140px cells, with
+ * the column count coming from a per-client Media Library Profile setting
+ * (MEDIALIBRARYSLIDECOLUMNS) — so it does not respond to its container at all,
+ * and a docked sidebar simply crops it.
+ *
+ * `auto-fill` + `minmax` instead, so the grid reflows with the content column
+ * the way CLAUDE.md §4a asks. The minimum is --ai-size-2 (160px), the
+ * designer's call against live's off-scale 140: a touch wider, so the name has
+ * room to be read rather than truncated to two words.
+ *
+ * Which view is showing is an attribute on the listing root, not two screens.
+ * Both share the toolbar, the page size and the pager, because live shares
+ * them too — the Grid and the Listing are one query rendered twice.
+ */
+
+/* CHILD COMBINATORS, not a descendant match. `.datatables__body` is not
+ * unique inside the listing: every multi-select-table picker renders its own
+ * `<div class="datatables"><div class="datatables__body">` (ListingScreen.js
+ * line ~531), so a descendant selector hides the Channel and Section pickers'
+ * tables whenever the screen is in grid view — a control that silently stops
+ * working in one of two views. `listingTable()` already carries a comment
+ * about being caught by exactly this; the CSS needed the same care. */
+.cc-listing[data-layout="grid"] > .datatables > .datatables__body { display: none; }
+.cc-listing[data-layout="listing"] > .datatables > .cc-listing__grid { display: none; }
+
+.cc-listing__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--ai-size-2), 1fr));
+  gap: var(--ai-spacing-5);
+  padding: var(--ai-spacing-5);
+  margin: 0;
+  list-style: none;
+}
+
+.cc-grid__item { min-inline-size: 0; }
+
+.cc-grid__card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-2);
+  min-inline-size: 0;
+}
+
+/* The picture. Square, because the source thumbnails are generated square and
+ * a grid of mixed aspect ratios is a ragged grid. */
+.cc-grid__media {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  background-color: var(--ai-surface-secondary);
+  color: var(--ai-icon-contrast);
+  overflow: hidden;
+  transition: border-color var(--ai-transition-default),
+              box-shadow var(--ai-transition-default);
+}
+
+.cc-grid__link {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.cc-grid__media img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* A family glyph for the rows with no picture, sized like the listing's. */
+.cc-grid__media > [data-lucide],
+.cc-grid__media > svg {
+  inline-size: var(--ai-icon-size-lg);
+  block-size: var(--ai-icon-size-lg);
+}
+
+.cc-grid__card:hover .cc-grid__media,
+.cc-grid__card:focus-within .cc-grid__media {
+  border-color: var(--ai-border-brand);
+}
+
+.cc-grid__card--selected .cc-grid__media {
+  border-color: var(--ai-border-brand);
+  box-shadow: 0 0 0 1px var(--ai-border-brand);
+}
+
+/* Checkbox and pencil sit ON the picture, revealed on hover — the live grid's
+ * own idiom (`.MediaButtons`, visibility hidden until mouseenter, and kept
+ * visible while that item is checked). Kept visible on focus too, which the
+ * live one is not: a hover-only control cannot be reached by keyboard. */
+.cc-grid__select,
+.cc-grid__edit {
+  position: absolute;
+  inset-block-start: var(--ai-spacing-2);
+  opacity: 0;
+  transition: opacity var(--ai-transition-default);
+}
+
+.cc-grid__select { inset-inline-start: var(--ai-spacing-2); }
+
+.cc-grid__edit {
+  inset-inline-end: var(--ai-spacing-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--ai-spacing-7);
+  block-size: var(--ai-spacing-7);
+  border-radius: var(--ai-radius-sm);
+  background-color: var(--ai-surface-primary);
+  color: var(--ai-icon-contrast);
+  box-shadow: var(--ai-shadow-xxs);
+}
+
+.cc-grid__edit [data-lucide],
+.cc-grid__edit svg {
+  inline-size: var(--ai-icon-size-sm);
+  block-size: var(--ai-icon-size-sm);
+}
+
+.cc-grid__edit:hover { color: var(--ai-icon-brand); }
+
+.cc-grid__card:hover .cc-grid__select,
+.cc-grid__card:hover .cc-grid__edit,
+.cc-grid__card:focus-within .cc-grid__select,
+.cc-grid__card:focus-within .cc-grid__edit,
+.cc-grid__card--selected .cc-grid__select {
+  opacity: 1;
+}
+
+/* The checkbox needs its own backing so it reads against any photograph. */
+.cc-grid__select .checkbox__indicator {
+  background-color: var(--ai-surface-primary);
+  box-shadow: var(--ai-shadow-xxs);
+}
+
+.cc-grid__name {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fluid-xxs);
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cc-grid__meta {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The no-results card spans the whole grid rather than sitting in one cell. */
+.cc-grid__empty { grid-column: 1 / -1; }
+
+/* ── Selection bar ────────────────────────────────────────
+ * One bar for both views, shown only when something is ticked. The live Grid
+ * keeps a permanent "Select all" above it and a permanent Move/Delete row
+ * below — two pieces of chrome for a state that is usually empty.
+ */
+.cc-listing__selection {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-4);
+  padding: var(--ai-spacing-3) var(--ai-spacing-5);
+  border-block-end: 1px solid var(--ai-border-secondary);
+  /* `--ai-surface-brand-contrast` does NOT exist — the Apr 2026 rename took
+   * every `-contrast` brand/status surface to `-soft`, and the focus-ring
+   * examples still quoting the old name are stale. `-soft` is the tint,
+   * and it is defined per theme so the bar reads in dark mode too. */
+  background-color: var(--ai-surface-brand-soft);
+}
+
+.cc-listing__selection[hidden] { display: none; }
+
+.cc-listing__selection-count {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fluid-xxs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-primary);
+}
+
+.cc-listing__selection-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  margin-inline-start: auto;
+}
+
+/* The layout switch sits with Edit Columns in the toolbar's actions cluster. */
+.cc-listing__layout[hidden] { display: none; }
+
+@container (max-width: 767px) {
+  .cc-listing__grid {
+    gap: var(--ai-spacing-4);
+    padding: var(--ai-spacing-4);
+  }
+}

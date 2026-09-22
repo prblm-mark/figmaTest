@@ -2343,3 +2343,99 @@ width back first when the table is over budget; only its starting point moved.
 All four screens re-checked at 1600 / 1400 / 1200 / 1000 / 700 / 480 / 390 /
 320: **no overflow, no right-edge gap, and the same column counts as before** —
 the change moves width between columns, never changes how many survive.
+
+
+# Media Items · Grid — the other half of MediaLayOut
+
+Built 2026-09-22, from `/AfcMediaLibrary/CC/MediaLightbox.cfm`. Not a new
+screen: it is the same query rendered differently, so it lives inside the same
+`.datatables` block and shares the toolbar, the page size and the pager —
+exactly as live does, where both layouts run through the same
+`GetMediaItems` call and the same `BrowseListBar`.
+
+`layouts: ['listing', 'grid']` in the config is what puts the switch in the
+toolbar. The other three screens declare nothing and get no control.
+
+## What live actually draws, and what changed
+
+A `<table class="gridtable">` of `<td width="140">` cells, wrapped every
+`MEDIALIBRARYSLIDECOLUMNS` items — a per-client profile number, so the grid
+does not respond to its container at all and a docked sidebar simply crops it.
+Each cell holds **a thumbnail and nothing else.**
+
+| Live | Here | Why |
+|---|---|---|
+| Thumbnail only; name, W×H, file size and type in a jQuery hover tooltip (`trailOn`) | Thumbnail + name + `format · created` at rest | `sTempName` is computed AND truncated in the source, then never printed. A hover tooltip cannot be reached by keyboard or read by a screen reader, and 96,000 unlabelled thumbnails is not a library you can scan (designer) |
+| Fixed 140px cell, profile-driven column count | `repeat(auto-fill, minmax(--ai-size-2, 1fr))` | CLAUDE.md §4a — it has to reflow with the content column, not the window. 160px against live's off-scale 140, so the name has room to be read |
+| Permanent "Select all" above, permanent Move/Delete row below | One selection bar, shown only when something is ticked | Two pieces of chrome for a state that is usually empty |
+| Checkbox / View Album / Slideshow / Edit revealed on `mouseenter` only | Checkbox + Edit revealed on hover **and focus** | A hover-only control is unreachable by keyboard. View Album and Slideshow are not built — see below |
+
+## Selection is shared by both views
+
+Designer's call. The live Grid has Select all and a Move/Delete action row; the
+Listing's own row checkboxes render and do nothing at all. Two views of one
+screen disagreeing about whether selection means anything is the bug, not a
+feature.
+
+`SELECTED` is module state next to `ROW_ID`, for the same reason: the CELL
+renderers are pure functions of a row and cannot reach `config`. Ticking a row
+in the table updates its grid card and vice versa, without a re-render — a full
+re-render would lose scroll position mid-click. Measured: tick a table row →
+the grid card for the same id comes back checked and card-selected; tick a
+second from the grid → "2 items selected"; Clear → both views empty.
+
+`TODO(backend:Listing) listing-bulk-actions` — Move and Delete are inert.
+
+## Not built, deliberately
+
+- **View Album** (live shows it only when the item's section differs from the
+  one being browsed — i.e. on a search result). This prototype has no Browse
+  mode, so the condition can never be true.
+- **Slideshow / lightbox** (images only, via the jQuery lightbox plugin).
+- **The AI badge.** `AIGeneratedYN` is a real column and live floats an AI icon
+  top-right when it is set — but the 50 rows came from `affino_list_media_items`,
+  which does not return that field, so marking any of them as AI-generated
+  would be inventing data. Left out rather than guessed.
+
+## Two things caught by measuring
+
+**`.datatables__body` is not unique.** Every multi-select-table picker renders
+its own `<div class="datatables"><div class="datatables__body">`
+(`ListingScreen.js` ~line 531), so `.cc-listing[data-layout="grid"]
+.datatables__body { display: none }` hid the **Channel and Section pickers'
+tables** whenever the screen was in grid view — a control that silently stops
+working in one of two views. Child combinators fix it. `listingTable()` already
+carries a comment about being caught by exactly this trap; the CSS needed the
+same care.
+
+**`--ai-surface-brand-contrast` does not exist.** The Apr 2026 rename took every
+`-contrast` brand and status surface to `-soft`, and the focus-ring examples
+still quoting the old name are stale. The selection bar uses
+`--ai-surface-brand-soft`, which is defined per theme (`#d9f2f2` light,
+`#043840` dark) so the bar reads in both.
+
+### And one that was NOT a bug
+
+Reading `borderTopColor` after flipping `data-theme` returned the **light**
+value in both themes, which looked like a dark-mode failure. It is the headless
+transition freeze: `.cc-grid__media` transitions `border-color`, and under
+`--virtual-time-budget` a transition never advances, so the computed value
+stays at the start colour forever. With `transition: none` injected first, dark
+resolves to `#334155` correctly. The token itself flipped all along — reading
+the *token* and reading the *element* disagreed, and the token was right.
+
+## Measured
+
+| Content column | Cards per row | h-overflow |
+|---|---|---|
+| 1155 | 6 | 0 |
+| 755 | 4 | 0 |
+| 555 | 3 | 0 |
+| 428 / 399 | 2 | 0 |
+| 309 | 1 | 0 |
+
+Both views verified switching back and forth: the table hides and the grid
+shows and vice versa, Edit Columns hides in grid (there are no columns), and
+the Section picker still opens with its 17 rows while in grid view. The other
+three screens re-measured at six widths — identical column counts, no overflow,
+no right-edge gap.

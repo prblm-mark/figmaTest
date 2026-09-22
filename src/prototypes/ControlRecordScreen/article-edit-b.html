@@ -3,84 +3,58 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Theme resolution only — NOT components/dark-mode-toggle.js.
-       That script also injects the demo toolbar (the fixed gear tab on the
-       right edge), which the designer asked to drop from this screen: the
-       listing template is the shell for ~400 real CC screens, and a demo
-       affordance floating over it reads as part of the product.
-       theme-param.js applies the saved theme from <head> before first paint
-       using the same 'demo-theme' key, so the light/dark choice still follows
-       the visitor here from any other page — and the User Menu's own
-       ThemeToggle (Figma HeaderGroup 4146:6685) remains the in-product
-       control, driven by ThemeToggle.js at the foot of this file. -->
-  <script src="../../../styles/theme-param.js"></script>
-  <title>Listing Screen · Media Items — Affino Control Centre</title>
+  <!-- Theme resolution only — NOT components/dark-mode-toggle.js, which also
+       injects the fixed demo gear tab. Same reasoning as ListingScreen: this
+       screen is the shell for hundreds of real CC screens and a demo
+       affordance floating over it reads as part of the product. -->
+  <script src="../../styles/theme-param.js"></script>
+  <title>Article · Edit · Wide sidebar — Affino Control Centre</title>
 
   <!-- Base + tokens -->
-  <link rel="stylesheet" href="../../../styles/base.css">
+  <link rel="stylesheet" href="../../styles/base.css">
 
   <!-- Atom-tier components -->
-  <link rel="stylesheet" href="../../../components/Button/Button.css">
-  <link rel="stylesheet" href="../../../components/ButtonGroup/ButtonGroup.css">
-  <link rel="stylesheet" href="../../../components/Breadcrumb/Breadcrumb.css">
-  <link rel="stylesheet" href="../../../components/Dropdown/Dropdown.css">
-  <link rel="stylesheet" href="../../../components/DropdownItem/DropdownItem.css">
-  <link rel="stylesheet" href="../../../components/Portraits/Portraits.css">
-  <link rel="stylesheet" href="../../../components/Avatar/Avatar.css">
-  <link rel="stylesheet" href="../../../components/NotificationBadge/NotificationBadge.css">
-  <link rel="stylesheet" href="../../../components/Toggle/Toggle.css">
-  <link rel="stylesheet" href="../../../components/ThemeToggle/ThemeToggle.css">
-  <link rel="stylesheet" href="../../../components/Input/Input.css">
-  <link rel="stylesheet" href="../../../components/Select/Select.css">
-  <link rel="stylesheet" href="../../../components/Table/Table.css">
-  <link rel="stylesheet" href="../../../components/Alert/Alert.css">
-  <link rel="stylesheet" href="../../../components/Datatables/Datatables.css">
-  <link rel="stylesheet" href="../../../components/Checkbox/Checkbox.css">
-  <link rel="stylesheet" href="../../../components/SegmentedControl/SegmentedControl.css">
-  <link rel="stylesheet" href="../../../components/FilterItem/FilterItem.css">
-  <link rel="stylesheet" href="../../../components/DatePicker/DatePicker.css">
-  <link rel="stylesheet" href="../../../components/FilterDropdownItem/FilterDropdownItem.css">
-  <link rel="stylesheet" href="../../../components/FilterDropdownItemGroup/FilterDropdownItemGroup.css">
-  <link rel="stylesheet" href="../../../patterns/FilterDropdowns/FilterDropdowns.css">
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/Breadcrumb/Breadcrumb.css">
+  <link rel="stylesheet" href="../../components/Dropdown/Dropdown.css">
+  <link rel="stylesheet" href="../../components/DropdownItem/DropdownItem.css">
+  <link rel="stylesheet" href="../../components/Portraits/Portraits.css">
+  <link rel="stylesheet" href="../../components/Avatar/Avatar.css">
+  <link rel="stylesheet" href="../../components/NotificationBadge/NotificationBadge.css">
+  <link rel="stylesheet" href="../../components/Toggle/Toggle.css">
+  <link rel="stylesheet" href="../../components/ThemeToggle/ThemeToggle.css">
+  <link rel="stylesheet" href="../../components/Input/Input.css">
+  <link rel="stylesheet" href="../../components/Select/Select.css">
+  <link rel="stylesheet" href="../../components/Textarea/Textarea.css">
+  <link rel="stylesheet" href="../../components/Checkbox/Checkbox.css">
+  <link rel="stylesheet" href="../../components/Badge/Badge.css">
+  <link rel="stylesheet" href="../../components/Pill/Pill.css">
+  <link rel="stylesheet" href="../../components/Table/Table.css">
+  <link rel="stylesheet" href="../../components/Datatables/Datatables.css">
+  <link rel="stylesheet" href="../../components/DatePicker/DatePicker.css">
+  <link rel="stylesheet" href="../../components/Alert/Alert.css">
 
   <!-- DS-tier patterns -->
-  <link rel="stylesheet" href="../../../patterns/Modal/Modal.css">
-  <link rel="stylesheet" href="../../../patterns/StatCard/StatCard.css">
-  <link rel="stylesheet" href="../../../patterns/UpgradeCard/UpgradeCard.css">
-  <link rel="stylesheet" href="../../../patterns/Chart/Chart.css">
+  <link rel="stylesheet" href="../../patterns/Modal/Modal.css">
 
   <!-- CC-tier components + patterns -->
-  <link rel="stylesheet" href="../../components/MainMenuItem/MainMenuItem.css">
-  <link rel="stylesheet" href="../../patterns/Sidebar/Sidebar.css">
-  <link rel="stylesheet" href="../../patterns/Menu/Menu.css">
-  <link rel="stylesheet" href="../../patterns/SidebarMenu/SidebarMenu.css">
-  <link rel="stylesheet" href="../../patterns/TopNavigation/TopNavigation.css">
-  <link rel="stylesheet" href="../../patterns/Header/Header.css">
-  <link rel="stylesheet" href="../../patterns/HeaderGroup/HeaderGroup.css">
-  <link rel="stylesheet" href="../../patterns/IconNavigation/IconNavigation.css">
-  <link rel="stylesheet" href="../../patterns/ActionsMenu/ActionsMenu.css">
-  <link rel="stylesheet" href="../../patterns/ActionsInfoPanel/ActionsInfoPanel.css">
-  <link rel="stylesheet" href="../../components/FontSizeSlider/FontSizeSlider.css">
+  <link rel="stylesheet" href="../../cc/components/MainMenuItem/MainMenuItem.css">
+  <link rel="stylesheet" href="../../cc/patterns/Sidebar/Sidebar.css">
+  <link rel="stylesheet" href="../../cc/patterns/Menu/Menu.css">
+  <link rel="stylesheet" href="../../cc/patterns/SidebarMenu/SidebarMenu.css">
+  <link rel="stylesheet" href="../../cc/patterns/TopNavigation/TopNavigation.css">
+  <link rel="stylesheet" href="../../cc/patterns/Header/Header.css">
+  <link rel="stylesheet" href="../../cc/patterns/HeaderGroup/HeaderGroup.css">
+  <link rel="stylesheet" href="../../cc/patterns/IconNavigation/IconNavigation.css">
+  <link rel="stylesheet" href="../../cc/patterns/ActionsMenu/ActionsMenu.css">
+  <link rel="stylesheet" href="../../cc/patterns/ActionsInfoPanel/ActionsInfoPanel.css">
+  <link rel="stylesheet" href="../../cc/components/FontSizeSlider/FontSizeSlider.css">
+  <link rel="stylesheet" href="../../components/Toast/Toast.css">
 
-  <!-- AI Assistant panel (initial-state view only — mounted from src/cc/templates/AiAssistant) -->
-  <link rel="stylesheet" href="../../../components/ChatSidebarItem/ChatSidebarItem.css">
-  <link rel="stylesheet" href="../../../components/ChatSidebarMenu/ChatSidebarMenu.css">
-  <link rel="stylesheet" href="../../../patterns/MessageInput/MessageInput.css">
-  <link rel="stylesheet" href="../../../patterns/ChatSidebar/ChatSidebar.css">
-  <link rel="stylesheet" href="../../../patterns/ChatHeader/ChatHeader.css">
-  <link rel="stylesheet" href="../../../patterns/ChatMain/ChatMain.css">
-  <link rel="stylesheet" href="../AiAssistant/AiAssistant.css">
-  <link rel="stylesheet" href="../../patterns/AssistantPopover/AssistantPopover.css">
-  <link rel="stylesheet" href="../../../components/Toast/Toast.css">
-
-  <!-- Pattern -->
-  <link rel="stylesheet" href="../../../patterns/FilterBar/FilterBar.css">
-
-  <!-- Template. The shell is ControlScreen's: in Figma both screens are
-       instances of the same "CC Shell" component, so the CSS is shared
-       rather than forked (same approach as SeatingPlanner). -->
-  <link rel="stylesheet" href="../ControlScreen/ControlScreen.css">
-  <link rel="stylesheet" href="ListingScreen.css">
+  <!-- Template shell (read-only — this prototype adds no rule to it) then the
+       prototype's own CSS last. -->
+  <link rel="stylesheet" href="../../cc/templates/ControlScreen/ControlScreen.css">
+  <link rel="stylesheet" href="ControlRecordScreen.css">
 </head>
 <body class="cc-control">
 
@@ -356,9 +330,11 @@
                 </div>
               </li>
               <li class="breadcrumb__separator" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
-              <li class="breadcrumb__item"><a class="breadcrumb__link" href="#">Level 1</a></li>
+              <li class="breadcrumb__item"><a class="breadcrumb__link" href="#">Content</a></li>
+              <li class="breadcrumb__separator" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
+              <li class="breadcrumb__item"><a class="breadcrumb__link" href="#">Articles</a></li>
               <li class="breadcrumb__separator breadcrumb__separator--collapse" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
-              <li class="breadcrumb__item breadcrumb__item--current breadcrumb__item--collapse" aria-current="page">Level 2</li>
+              <li class="breadcrumb__item breadcrumb__item--current breadcrumb__item--collapse" aria-current="page">Article</li>
             </ol>
           </nav>
           <div class="cc-top-navigation__actions">
@@ -447,226 +423,509 @@
 
         <div class="cc-header-cq">
         <header class="cc-header cc-header--control">
-          <!-- Figma overrides the shared Chrome instance on every listing screen
-               down to a bare title. Worth knowing: get_design_context on this
-               node returns the CC Shell component's DEFAULT header (avatar,
-               user details, Logout / View Site) because that is what the
-               component defines — the rendered frame shows none of it. The
-               screenshot is authoritative here, not the code snippet. -->
           <div class="cc-header__title-block">
             <div class="cc-header__title-block-text">
-              <h1 class="cc-header__title" data-listing-title>Media Items</h1>
+              <h1 class="cc-header__title">Article</h1>
+              <p class="cc-header__subtitle">Affino 9.0.11.25 — The Refinement Update</p>
             </div>
+          </div>
+          <div class="cc-header__actions">
+            <button class="btn btn--tertiary" type="button">Cancel</button>
+            <button class="btn btn--primary" type="button"><i data-lucide="check" aria-hidden="true"></i> Save</button>
           </div>
         </header>
         </div>
 
+
       </div>
     </div>
 
-    <!-- Page content (scrolling area) -->
-    <!-- Page content (scrolling area) -->
-    <div class="cc-control__page cc-control__page--listing">
-
-      <!-- ━━━ Listing content column ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-           Figma "Frame 1" (I3645:147421;4291:8836;3645:147644):
-           FilterBar, 12px gap, Datatables. Nothing else. That is the
-           entire listing template — the ~400 screens built on it vary
-           only by datatable Type and default filter set, both of which
-           are config in listing-data.js. -->
-      <div class="cc-listing" data-listing="media-items">
-
-        <!-- ── FilterBar (pattern instance) ──────────────────────
-             Built previously from this same Listings page, so it is
-             used as-is. The five chips are the live Media Items search
-             form's first five controls — the whole of its top row bar the
-             trailing My Media checkbox. Two of the sixteen never become chips:
-             Media Per Screen is the toolbar's page size, and Layout is the
-             Grid/Listing switch, whose Grid half is the next screen.
-             TODO(backend:Listing): the default filter set is hard-coded
-             here. The backend supplies the first five filters per
-             screen → GET /control/<screen>/filters → [{name, type}].
-             Chip behaviour (dropdowns, apply, clear) is the next pass. -->
-        <div class="filter-bar" data-backend-todo="listing-default-filters">
-          <div class="filter-bar__row filter-bar__row--top">
-            <button type="button" class="filter-bar__back" data-filter-action="search-exit" aria-label="Exit search"><i data-lucide="arrow-left" aria-hidden="true"></i></button>
-            <div class="filter-bar__lead">
-              <div class="dropdown filter-bar__views" data-dropdown>
-                <button type="button" class="dropdown__trigger filter-bar__views-trigger" aria-haspopup="menu" aria-expanded="false">
-                  <span class="filter-bar__views-label">All Media Items</span>
-                  <i data-lucide="chevron-down" class="filter-bar__views-chevron" aria-hidden="true"></i>
+    <div class="cc-control__page">
+      <div class="crs-record crs-record--aside-all" data-mode="edit">
+        <div class="crs-main">
+      <section class="crs-card" aria-labelledby="crs-s-0">
+        <div class="crs-card__head">
+          <h2 class="crs-card__title" id="crs-s-0">Navigation</h2>
+        </div>
+        <div class="crs-card__body">
+          <div class="crs-fields">
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-1">Zone <span class="crs-field__req" aria-hidden="true">*</span></label>
+            <div class="crs-field__value"><div class="sel" data-sel>
+                <button id="crs-f-1" class="sel__control" type="button" data-sel-trigger>
+                  <span class="sel__value">Affino</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
                 </button>
-                <div class="dropdown__panel dropdown__panel--filter-views" role="menu" aria-label="Saved views">
-                  <p class="dropdown__label">Saved views</p>
-                  <ul class="dropdown__list dropdown__list--filter-views-top">
-                    <li role="none" class="dropdown__view">
-                      <button type="button" class="dropdown-item dropdown-item--sm" role="menuitemradio" aria-checked="true"><span data-text="All Media Items">All Media Items</span><i data-lucide="check" class="dropdown-item__check" aria-hidden="true"></i></button>
-                      <button type="button" class="dropdown-item__more" aria-label="All Media Items actions" aria-haspopup="menu" aria-expanded="false"><i data-lucide="ellipsis" aria-hidden="true"></i></button>
-                      <div class="dropdown__row-menu" role="menu" aria-label="All Media Items actions" hidden>
-                        <button type="button" class="btn btn--tertiary btn--sm" role="menuitem" data-filter-rename><i data-lucide="pencil" aria-hidden="true"></i>Rename</button>
-                        <button type="button" class="btn btn--tertiary btn--sm" role="menuitem" data-filter-copy><i data-lucide="copy" aria-hidden="true"></i>Copy</button>
-                        <button type="button" class="btn btn--tertiary btn--sm" role="menuitem" data-filter-delete><i data-lucide="trash-2" aria-hidden="true"></i>Delete</button>
-                      </div>
-                    </li>
-                    <li role="none" class="dropdown__view">
-                      <button type="button" class="dropdown-item dropdown-item--sm" role="menuitemradio" aria-checked="false"><span data-text="My Media">My Media</span></button>
-                      <button type="button" class="dropdown-item__more" aria-label="My Media actions" aria-haspopup="menu" aria-expanded="false"><i data-lucide="ellipsis" aria-hidden="true"></i></button>
-                      <div class="dropdown__row-menu" role="menu" aria-label="My Media actions" hidden>
-                        <button type="button" class="btn btn--tertiary btn--sm" role="menuitem" data-filter-rename><i data-lucide="pencil" aria-hidden="true"></i>Rename</button>
-                        <button type="button" class="btn btn--tertiary btn--sm" role="menuitem" data-filter-copy><i data-lucide="copy" aria-hidden="true"></i>Copy</button>
-                        <button type="button" class="btn btn--tertiary btn--sm" role="menuitem" data-filter-delete><i data-lucide="trash-2" aria-hidden="true"></i>Delete</button>
-                      </div>
-                    </li>
-                  </ul>
-                  <hr class="dropdown__divider">
-                  <div class="dropdown__filter-views-footer">
-                    <button type="button" class="btn btn--tertiary btn--sm" data-filter-action="new-view"><i data-lucide="plus" aria-hidden="true"></i>New view</button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="input filter-bar__new-view">
-                <div class="input__wrap">
-                  <input type="text" class="input__control" placeholder="New view" aria-label="New view name">
-                  <button type="button" class="input__clear" data-filter-action="new-view-exit" aria-label="Cancel new view"><i data-lucide="x" aria-hidden="true"></i></button>
-                </div>
-              </div>
-              <button type="button" class="btn btn--primary filter-bar__create" data-filter-action="new-view-create">Create</button>
-
-              <div class="input filter-bar__search">
-                <div class="input__wrap">
-                  <i data-lucide="search" class="input__icon" aria-hidden="true"></i>
-                  <input type="search" class="input__control" placeholder="Search" aria-label="Search">
-                </div>
-              </div>
-            </div>
-
-            <div class="filter-bar__actions">
-              <div class="input filter-bar__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
-              <button type="button" class="filter-bar__icon-btn" data-filter-action="search" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
-              <!-- NO Export and NO kebab. Only Orders of the screens built so
-                   far needs either (designer, 2026-09-22): the toolbar's
-                   actions vary per screen, so both are markup a screen opts
-                   into. The live Media Items toolbar carries neither — its own
-                   actions are the Grid/Listing switch and the Search/Browse
-                   pair, which are not these. -->
-            </div>
+                <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">Affino <i data-lucide="check"></i></button></li></ul>
+              </div></div>
           </div>
-
-          <div class="filter-bar__row">
-            <!-- Chips and their pickers are rendered by ListingScreen.js from
-                 listing-data.js: each filter names the FilterDropdowns Type it
-                 opens, so assigning a different picker is a config change. The
-                 Save view CTA is rendered with them — the chips must stay direct
-                 children of this flex row. -->
-            <div class="filter-bar__chips" data-listing-filters></div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-2">Section <span class="crs-field__req" aria-hidden="true">*</span></label>
+            <div class="crs-field__value"><div class="sel" data-sel>
+                <button id="crs-f-2" class="sel__control" type="button" data-sel-trigger>
+                  <span class="sel__value">Affino Social Commerce Blog</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">Affino Social Commerce Blog <i data-lucide="check"></i></button></li></ul>
+              </div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-3">Sort Order</label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-3" type="text" class="input__control" value="1"></div></div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-4">Multi Display</label>
+            <div class="crs-field__value"><div class="sel" data-sel-multi>
+                <ul class="sel__list" role="listbox" aria-multiselectable="true" aria-label="Multi Display"><li class="sel__list-item sel__list-item--selected" role="option" aria-selected="true" data-multi>Coronavirus Hub</li><li class="sel__list-item sel__list-item--selected" role="option" aria-selected="true" data-multi>AI</li><li class="sel__list-item sel__list-item--selected" role="option" aria-selected="true" data-multi>Insight &amp; Blogs</li><li class="sel__list-item" role="option" data-multi>Commercial Hub</li><li class="sel__list-item" role="option" data-multi>Events</li></ul>
+              </div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-5">Priority</label>
+            <div class="crs-field__value"><div class="sel" data-sel>
+                <button id="crs-f-5" class="sel__control" type="button" data-sel-trigger>
+                  <span class="sel__value">Select…</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item" role="option">High</button></li><li><button type="button" class="sel__menu-item" role="option">Normal</button></li><li><button type="button" class="sel__menu-item" role="option">Low</button></li></ul>
+              </div></div>
+          </div>
           </div>
         </div>
+      </section>
 
-        <!-- ── Datatables · Type=Orders ──────────────────────────
-             Figma 3648:164786 (Desktop) / 3648:164467 (Mobile).
-             thead / tbody / pagination are rendered by ListingScreen.js
-             from listing-data.js so that swapping in the real payload is
-             a data change and not a rewrite.
-             TODO(backend:Listing): rows, counts and paging are mock →
-             GET /control/media-items?...&MediaLayOut=Listing&page=&per_page= returning
-             { columns[], rows[], page:{from,to,total,current,pages} }. -->
-        <div class="datatables datatables--orders" data-backend-todo="listing-media-items-rows">
-          <div class="datatables__toolbar">
-            <span class="datatables__meta">
-              <span class="datatables__meta-label">Show</span>
-              <div class="dropdown cc-listing__per-page" data-dropdown>
-                <button type="button" class="datatables__select dropdown__trigger"
-                        aria-label="Rows per page" aria-haspopup="menu" aria-expanded="false">
-                  <span data-listing-per-page>20</span>
-                  <i data-lucide="chevron-down" aria-hidden="true"></i>
-                </button>
-                <div class="dropdown__panel dropdown__panel--per-page" role="menu" aria-label="Rows per page">
-                  <ul class="dropdown__list" data-listing-per-page-options></ul>
+      <section class="crs-card" aria-labelledby="crs-s-1">
+        <div class="crs-card__head">
+          <h2 class="crs-card__title" id="crs-s-1">Introduction</h2>
+        </div>
+        <div class="crs-card__body">
+          <div class="crs-fields">
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-6">Title <span class="crs-field__req" aria-hidden="true">*</span></label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-6" type="text" class="input__control" value="Affino 9.0.11.25 - The Refinement Update"></div></div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-7">Screen Name</label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-7" type="text" class="input__control" value="affino-901125-the-refinement-update"></div></div></div>
+            <p class="crs-field__help">Used in the article URL.</p>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-8">Alternative Title</label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-8" type="text" class="input__control" value=""></div></div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-9">Thumbnail</label>
+            <div class="crs-field__value"><div class="crs-media crs-media--edit">
+                <div class="crs-media__thumb" aria-hidden="true"><i data-lucide="image"></i></div>
+                <div class="crs-media__actions">
+                  <button class="btn btn--secondary btn--sm" type="button"><i data-lucide="upload" aria-hidden="true"></i> Replace</button>
+                  <button class="btn btn--tertiary btn--sm" type="button">Remove</button>
                 </div>
-              </div>
-              <span>of <strong data-listing-total>296</strong></span>
-            </span>
-            <!-- Edit Columns is a NEW capability, not a reproduction: the live
-                 Media Items screen has no column picker. Its six columns are
-                 fixed in MediaInbox.cfm's CProperties array, and the only
-                 thing that varies the display is the Layout switch, which
-                 swaps the whole rendering for a lightbox grid rather than
-                 changing the column set (verified in its source, 2026-09-22).
-                 TODO(backend:Listing): choices are in memory only.
-                   → GET/PUT /control/media-items/columns { hidden: [key] } -->
-            <div class="datatables__actions">
-              <!-- The live screen's MediaLayOut control, which is a <select> of
-                   Grid | Listing sitting in the search form's third row. A
-                   SegmentedControl instead: two mutually exclusive views is
-                   what that component is for, and it puts the switch next to
-                   the thing it switches rather than inside the filters.
-                   NOTE the live default is GRID; this opens on Listing because
-                   that is what the demo card is named. ?layout=grid opens the
-                   other half. -->
-              <div class="seg-control cc-listing__layout" role="radiogroup"
-                   aria-label="Layout" data-listing-layout hidden>
-                <button class="seg-control__btn seg-control__btn--active" type="button"
-                        role="radio" aria-checked="true" data-layout-value="listing">
-                  <i data-lucide="list" aria-hidden="true"></i>Listing
-                </button>
-                <button class="seg-control__btn" type="button"
-                        role="radio" aria-checked="false" data-layout-value="grid">
-                  <i data-lucide="layout-grid" aria-hidden="true"></i>Grid
-                </button>
-              </div>
-              <div class="dropdown cc-listing__columns" data-dropdown data-backend-todo="listing-column-prefs">
-                <button type="button" class="btn btn--secondary btn--sm dropdown__trigger"
-                        aria-haspopup="menu" aria-expanded="false">
-                  <i data-lucide="columns-3" aria-hidden="true"></i><span>Edit Columns</span>
-                </button>
-                <div class="dropdown__panel dropdown__panel--columns" role="menu" aria-label="Edit columns">
-                  <p class="dropdown__label">Columns</p>
-                  <div class="cc-listing__columns-list" data-listing-columns></div>
-                </div>
-              </div>
-            </div>
+              </div></div>
           </div>
-
-          <!-- Selection bar — one for both views, shown only when something is
-               ticked. Live keeps a permanent "Select all" above the grid and a
-               permanent Move/Delete row below it.
-               TODO(backend:Listing): Move and Delete do nothing →
-               POST /control/media-items/bulk { action, ids[], sectionCode? } -->
-          <div class="cc-listing__selection" data-listing-selection hidden
-               data-backend-todo="listing-bulk-actions">
-            <span class="cc-listing__selection-count" data-selection-count aria-live="polite">0 items selected</span>
-            <div class="cc-listing__selection-actions">
-              <button type="button" class="btn btn--tertiary btn--sm" data-selection-clear>Clear</button>
-              <button type="button" class="btn btn--secondary btn--sm">
-                <i data-lucide="folder-input" aria-hidden="true"></i><span>Move</span>
-              </button>
-              <button type="button" class="btn btn--secondary btn--sm">
-                <i data-lucide="trash-2" aria-hidden="true"></i><span>Delete</span>
-              </button>
-            </div>
-          </div>
-
-          <div class="datatables__body">
-            <table class="table">
-              <thead data-listing-head></thead>
-              <tbody data-listing-body></tbody>
-            </table>
-          </div>
-
-          <!-- The Grid half of MediaLayOut. Same query, same page size, same
-               pager — which is why it lives inside this same `.datatables`
-               block rather than being a second screen. -->
-          <ul class="cc-listing__grid" data-listing-grid></ul>
-
-          <div class="datatables__footer">
-            <!-- "Showing" and "results" are dropped on a narrow container: the
-                 range and the total are the sentence, the rest is padding. -->
-            <span class="datatables__count"><span class="datatables__count-word">Showing </span><strong data-listing-range>1&#8211;10</strong> of <strong data-listing-footer-total>296</strong><span class="datatables__count-word"> results</span></span>
-            <div class="datatables__pagination" role="group" aria-label="Pagination" data-listing-pagination></div>
           </div>
         </div>
+      </section>
 
+      <section class="crs-card" aria-labelledby="crs-s-2">
+        <div class="crs-card__head">
+          <h2 class="crs-card__title" id="crs-s-2">Main Body</h2>
+        </div>
+        <div class="crs-card__body">
+          <div class="crs-fields">
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-10">Alignment</label>
+            <div class="crs-field__value"><div class="sel" data-sel>
+                <button id="crs-f-10" class="sel__control" type="button" data-sel-trigger>
+                  <span class="sel__value">Center</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item" role="option">Left</button></li><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">Center <i data-lucide="check"></i></button></li><li><button type="button" class="sel__menu-item" role="option">Right</button></li></ul>
+              </div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-11">Main Image</label>
+            <div class="crs-field__value"><div class="crs-media crs-media--edit">
+                <div class="crs-media__thumb" aria-hidden="true"><i data-lucide="image"></i></div>
+                <div class="crs-media__actions">
+                  <button class="btn btn--secondary btn--sm" type="button"><i data-lucide="upload" aria-hidden="true"></i> Replace</button>
+                  <button class="btn btn--tertiary btn--sm" type="button">Remove</button>
+                </div>
+              </div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-12">Audio Version (MP3)</label>
+            <div class="crs-field__value"><div class="crs-media crs-media--edit">
+                <div class="crs-media__thumb" aria-hidden="true"><i data-lucide="music"></i></div>
+                <div class="crs-media__actions">
+                  <button class="btn btn--secondary btn--sm" type="button"><i data-lucide="upload" aria-hidden="true"></i> Replace</button>
+                  <button class="btn btn--tertiary btn--sm" type="button">Remove</button>
+                </div>
+              </div></div>
+          </div>
+          <div class="crs-field crs-field--full crs-field--textarea">
+            <label class="crs-field__label" for="crs-f-13">Blog Intro</label>
+            <div class="crs-field__value"><div class="textarea"><textarea class="textarea__control" id="crs-f-13" rows="4">Affino 9.0.11.25, The Refinement Update, puts the work into the platform you already run: exports and reports that finish on real data, screens that hold your place as you move through them, sharper defences in front of your site, a one-tap unsubscribe for your recipients, and a new Orders API your other systems can read.</textarea></div></div>
+          </div>
+          <div class="crs-field crs-field--full crs-field--textarea">
+            <label class="crs-field__label" for="crs-f-14">Blog Entry</label>
+            <div class="crs-field__value"><div class="textarea"><textarea class="textarea__control" id="crs-f-14" rows="10">Affino 9.0.11.25, The Refinement Update, puts the work into the platform you already run. Exports and reports finish on real data, screens hold your place as you move through them, the defences in front of your site are sharper, and your recipients get a one-tap unsubscribe.
+
+Five headline updates lead the release. We rebuilt more than twenty exports this release, spanning content, commerce, subscriptions, CRM, analytics, ad serving, events, and messaging, along with the listings and reports behind them.</textarea></div></div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="crs-card" aria-labelledby="crs-s-3">
+        <div class="crs-card__head">
+          <h2 class="crs-card__title" id="crs-s-3">Topics</h2>
+        </div>
+        <div class="crs-card__body">
+          <div class="crs-fields">
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-15">Category Topic</label>
+            <div class="crs-field__value"><div class="sel" data-sel>
+                <button id="crs-f-15" class="sel__control" type="button" data-sel-trigger>
+                  <span class="sel__value">Select…</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <ul class="sel__menu" role="listbox"></ul>
+              </div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-16">Topics and Keywords</label>
+            <div class="crs-field__value"><div class="sel" data-sel-multi>
+                <ul class="sel__list" role="listbox" aria-multiselectable="true" aria-label="Topics and Keywords"><li class="sel__list-item" role="option" data-multi>Platform</li><li class="sel__list-item" role="option" data-multi>Release</li><li class="sel__list-item" role="option" data-multi>Security</li></ul>
+              </div></div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="crs-card" aria-labelledby="crs-s-4">
+        <div class="crs-card__head">
+          <h2 class="crs-card__title" id="crs-s-4">SEO</h2>
+        </div>
+        <div class="crs-card__body">
+          <div class="crs-fields">
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-17">Page Title</label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-17" type="text" class="input__control" value="Affino 9.0.11.25 - The Refinement Update"></div></div></div>
+          </div>
+          <div class="crs-field crs-field--full crs-field--textarea">
+            <label class="crs-field__label" for="crs-f-18">Page Description</label>
+            <div class="crs-field__value"><div class="textarea"><textarea class="textarea__control" id="crs-f-18" rows="4">Exports and reports that finish on real data, screens that hold your place, sharper defences against bots and spoofing, a one-tap unsubscribe your recipients can actually find, and a new Orders API.</textarea></div></div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="crs-card" aria-labelledby="crs-s-5">
+        <div class="crs-card__head">
+          <h2 class="crs-card__title" id="crs-s-5">Social</h2>
+        </div>
+        <div class="crs-card__body">
+          <div class="crs-fields">
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-19">Shareline 1</label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-19" type="text" class="input__control" value=""></div></div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-20">Shareline 2</label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-20" type="text" class="input__control" value=""></div></div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-21">Shareline 3</label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-21" type="text" class="input__control" value=""></div></div></div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="crs-card" aria-labelledby="crs-s-6">
+        <div class="crs-card__head">
+          <h2 class="crs-card__title" id="crs-s-6">Article Questions</h2>
+        </div>
+        <div class="crs-card__body">
+          <div class="crs-fields">
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-22">Question 1</label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-22" type="text" class="input__control" value="What does the new Orders API let connected systems read and update?"></div></div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-23">Question 2</label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-23" type="text" class="input__control" value="How can recipients unsubscribe directly from Apple Mail, Gmail, or Yahoo?"></div></div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-24">Question 3</label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-24" type="text" class="input__control" value="Which bot detection changes help block spoofed or high-velocity scraper traffic?"></div></div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-25">Question 4</label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-25" type="text" class="input__control" value="How do per-award terms and shortlist notifications simplify awards management?"></div></div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-26">Question 5</label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-26" type="text" class="input__control" value="Which exports and reports were rebuilt to handle large datasets faster?"></div></div></div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="crs-card" aria-labelledby="crs-s-7">
+        <div class="crs-card__head">
+          <h2 class="crs-card__title" id="crs-s-7">Summary</h2>
+        </div>
+        <div class="crs-card__body">
+          <div class="crs-fields">
+          <div class="crs-field crs-field--full crs-field--textarea">
+            <label class="crs-field__label" for="crs-f-27">Summary</label>
+            <div class="crs-field__value"><div class="textarea"><textarea class="textarea__control" id="crs-f-27" rows="4">Affino 9.0.11.25 - The Refinement Update - puts the work into the platform you already run. The new Orders API opens your order book to the systems and agents you run alongside Affino.</textarea></div></div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="crs-card" aria-labelledby="crs-s-8">
+        <div class="crs-card__head">
+          <h2 class="crs-card__title" id="crs-s-8">Publication</h2>
+        </div>
+        <div class="crs-card__body">
+          <div class="crs-fields">
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-28">Creator</label>
+            <div class="crs-field__value"><div class="sel" data-sel>
+                <button id="crs-f-28" class="sel__control" type="button" data-sel-trigger>
+                  <span class="sel__value">Markus Karlsson</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">Markus Karlsson <i data-lucide="check"></i></button></li></ul>
+              </div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-29">Related Authors</label>
+            <div class="crs-field__value"><div class="sel" data-sel-multi>
+                <ul class="sel__list" role="listbox" aria-multiselectable="true" aria-label="Related Authors"><li class="sel__list-item" role="option" data-multi>Luis Montiel</li><li class="sel__list-item" role="option" data-multi>Quang Luong</li></ul>
+              </div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-30">Publish Start</label>
+            <div class="crs-field__value"><div class="input input--sm"><div class="input__wrap"><input id="crs-f-30" type="text" class="input__control" value="02/09/2026 17:03" placeholder="dd/mm/yyyy hh:mm"></div></div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-31">Publish End</label>
+            <div class="crs-field__value"><div class="input input--sm"><div class="input__wrap"><input id="crs-f-31" type="text" class="input__control" value="02/09/2126 17:03" placeholder="dd/mm/yyyy hh:mm"></div></div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-32">Embargo End</label>
+            <div class="crs-field__value"><div class="input input--sm"><div class="input__wrap"><input id="crs-f-32" type="text" class="input__control" value="01/01/1900 00:00" placeholder="dd/mm/yyyy hh:mm"></div></div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-33">Syndication</label>
+            <div class="crs-field__value"><div class="sel" data-sel>
+                <button id="crs-f-33" class="sel__control" type="button" data-sel-trigger>
+                  <span class="sel__value">Select…</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item" role="option">None</button></li><li><button type="button" class="sel__menu-item" role="option">Partial</button></li><li><button type="button" class="sel__menu-item" role="option">Full</button></li></ul>
+              </div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-34">Live</label>
+            <div class="crs-field__value"><button class="toggle toggle--active" type="button" role="switch" aria-checked="true" aria-label="Live"></button></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-35">Private</label>
+            <div class="crs-field__value"><button class="toggle" type="button" role="switch" aria-checked="false" aria-label="Private"></button></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-36">Send Via Content / Interest Subscription</label>
+            <div class="crs-field__value"><button class="toggle" type="button" role="switch" aria-checked="false" aria-label="Send Via Content / Interest Subscription"></button></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-37">Hide From Search Results</label>
+            <div class="crs-field__value"><button class="toggle" type="button" role="switch" aria-checked="false" aria-label="Hide From Search Results"></button></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-38">Exclude From AI Index</label>
+            <div class="crs-field__value"><button class="toggle" type="button" role="switch" aria-checked="false" aria-label="Exclude From AI Index"></button></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-39">Moderated</label>
+            <div class="crs-field__value"><button class="toggle" type="button" role="switch" aria-checked="false" aria-label="Moderated"></button></div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="crs-card" aria-labelledby="crs-s-9">
+        <div class="crs-card__head">
+          <h2 class="crs-card__title" id="crs-s-9">Security</h2>
+        </div>
+        <div class="crs-card__body">
+          <div class="crs-fields">
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-40">Content Security Right</label>
+            <div class="crs-field__value"><div class="sel" data-sel>
+                <button id="crs-f-40" class="sel__control" type="button" data-sel-trigger>
+                  <span class="sel__value">Select…</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item" role="option">Public</button></li><li><button type="button" class="sel__menu-item" role="option">Members</button></li><li><button type="button" class="sel__menu-item" role="option">Subscribers</button></li></ul>
+              </div></div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="crs-card" aria-labelledby="crs-s-10">
+        <div class="crs-card__head">
+          <h2 class="crs-card__title" id="crs-s-10">Advanced</h2>
+        </div>
+        <div class="crs-card__body">
+          <div class="crs-fields">
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-41">External Article ID</label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-41" type="text" class="input__control" value=""></div></div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-42">Article Type</label>
+            <div class="crs-field__value"><div class="sel" data-sel>
+                <button id="crs-f-42" class="sel__control" type="button" data-sel-trigger>
+                  <span class="sel__value">Blog</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">Blog <i data-lucide="check"></i></button></li><li><button type="button" class="sel__menu-item" role="option">News</button></li><li><button type="button" class="sel__menu-item" role="option">Feature</button></li><li><button type="button" class="sel__menu-item" role="option">Review</button></li></ul>
+              </div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-43">Multimedia</label>
+            <div class="crs-field__value"><div class="crs-media crs-media--edit">
+                <div class="crs-media__thumb" aria-hidden="true"><i data-lucide="film"></i></div>
+                <div class="crs-media__actions">
+                  <button class="btn btn--secondary btn--sm" type="button"><i data-lucide="upload" aria-hidden="true"></i> Replace</button>
+                  <button class="btn btn--tertiary btn--sm" type="button">Remove</button>
+                </div>
+              </div></div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="crs-card" aria-labelledby="crs-s-11">
+        <div class="crs-card__head">
+          <h2 class="crs-card__title" id="crs-s-11">Geo Targeting</h2>
+        </div>
+        <div class="crs-card__body">
+          <div class="crs-fields">
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-44">Geo Targeting Type</label>
+            <div class="crs-field__value"><div class="sel" data-sel>
+                <button id="crs-f-44" class="sel__control" type="button" data-sel-trigger>
+                  <span class="sel__value">None</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">None <i data-lucide="check"></i></button></li><li><button type="button" class="sel__menu-item" role="option">Include</button></li><li><button type="button" class="sel__menu-item" role="option">Exclude</button></li></ul>
+              </div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-45">Countries</label>
+            <div class="crs-field__value"><div class="sel" data-sel-multi>
+                <ul class="sel__list" role="listbox" aria-multiselectable="true" aria-label="Countries"><li class="sel__list-item" role="option" data-multi>United Kingdom</li><li class="sel__list-item" role="option" data-multi>United States</li><li class="sel__list-item" role="option" data-multi>Germany</li></ul>
+              </div></div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="crs-card" aria-labelledby="crs-s-12">
+        <div class="crs-card__head">
+          <h2 class="crs-card__title" id="crs-s-12">Comments And Ratings</h2>
+        </div>
+        <div class="crs-card__body">
+          <div class="crs-fields">
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-46">Hide Comments And Ratings</label>
+            <div class="crs-field__value"><button class="toggle" type="button" role="switch" aria-checked="false" aria-label="Hide Comments And Ratings"></button></div>
+          </div>
+          </div>
+        </div>
+      </section>
+        </div>
+
+      <aside class="crs-aside" aria-label="Record information">
+        <section class="crs-fact" aria-labelledby="crs-fact-perf">
+          <h2 class="crs-fact__title" id="crs-fact-perf">Performance</h2>
+<div class="crs-spark" role="img" aria-label="Impressions over the last 12 months, rising to 22 in the most recent month"><span style="height:9%"></span><span style="height:14%"></span><span style="height:9%"></span><span style="height:18%"></span><span style="height:14%"></span><span style="height:23%"></span><span style="height:18%"></span><span style="height:27%"></span><span style="height:23%"></span><span style="height:41%"></span><span style="height:64%"></span><span style="height:100%"></span></div>
+          <dl class="crs-fact__list">
+            <div class="crs-fact__item"><dt>Impressions</dt><dd>89</dd></div>
+            <div class="crs-fact__item"><dt>Per day</dt><dd>4.68</dd></div>
+            <div class="crs-fact__item"><dt>Consumed</dt><dd>48</dd></div>
+          </dl>
+          <a class="crs-fact__more" href="#">View full analytics<i data-lucide="arrow-right" aria-hidden="true"></i></a>
+        </section>
+
+        <section class="crs-fact" aria-labelledby="crs-fact-contacts">
+          <h2 class="crs-fact__title" id="crs-fact-contacts">Recent viewers</h2>
+          <ul class="crs-mini"><li class="crs-mini__row"><span class="crs-mini__name">David Delawa</span><span class="crs-mini__meta">4 days 12 hours ago</span></li><li class="crs-mini__row"><span class="crs-mini__name">Janice Johnston</span><span class="crs-mini__meta">7 days 12 hours ago</span></li><li class="crs-mini__row"><span class="crs-mini__name">Martin Stewart</span><span class="crs-mini__meta">7 days 12 hours ago</span></li></ul>
+          <a class="crs-fact__more" href="#">View all contacts<i data-lucide="arrow-right" aria-hidden="true"></i></a>
+        </section>
+
+        <section class="crs-fact" aria-labelledby="crs-fact-steps">
+          <h2 class="crs-fact__title" id="crs-fact-steps">Article steps</h2>
+          <ul class="crs-mini"><li class="crs-mini__row"><span class="crs-mini__name">Waiting Less - Faster Exports, Reports, and Listings</span><span class="crs-mini__meta">1</span></li><li class="crs-mini__row"><span class="crs-mini__name">Never Losing Your Place - Journeys That Remember</span><span class="crs-mini__meta">2</span></li><li class="crs-mini__row"><span class="crs-mini__name">Harder to Abuse - Stronger Defences Against Bots</span><span class="crs-mini__meta">3</span></li></ul>
+          <a class="crs-fact__more" href="#">View all 23 steps<i data-lucide="arrow-right" aria-hidden="true"></i></a>
+        </section>
+
+        <section class="crs-fact" aria-labelledby="crs-fact-rec">
+          <h2 class="crs-fact__title" id="crs-fact-rec">Record</h2>
+          <dl class="crs-fact__list">
+            <div class="crs-fact__item"><dt>Article Code</dt><dd>626353</dd></div>
+            <div class="crs-fact__item"><dt>Batch Reference</dt><dd><span class="crs-empty">—</span></dd></div>
+          </dl>
+        </section>
+
+        <section class="crs-fact" aria-labelledby="crs-fact-seo">
+          <h2 class="crs-fact__title" id="crs-fact-seo">SEO health</h2>
+          <ul class="crs-advice">
+            <li class="crs-advice__item"><i data-lucide="alert-circle" aria-hidden="true"></i>No social sharelines entered</li>
+            <li class="crs-advice__item"><i data-lucide="alert-circle" aria-hidden="true"></i>No topics selected</li>
+            <li class="crs-advice__item"><i data-lucide="alert-circle" aria-hidden="true"></i>Use subheadings (H2, H3) in the Main Body</li>
+          </ul>
+        </section>
+
+        <section class="crs-fact" aria-labelledby="crs-fact-meta">
+          <h2 class="crs-fact__title" id="crs-fact-meta">Meta information</h2>
+          <dl class="crs-fact__list">
+            <div class="crs-fact__item"><dt>Publisher</dt><dd>Affino</dd></div>
+            <div class="crs-fact__item"><dt>Creator</dt><dd>Markus Karlsson</dd></div>
+            <div class="crs-fact__item"><dt>Rights</dt><dd>© Comrz Ltd 2009 – 2026</dd></div>
+            <div class="crs-fact__item"><dt>Date</dt><dd>17:03 02 September 2026</dd></div>
+            <div class="crs-fact__item"><dt>Language</dt><dd>English</dd></div>
+          </dl>
+        </section>
+
+        <section class="crs-fact" aria-labelledby="crs-fact-idx">
+          <h2 class="crs-fact__title" id="crs-fact-idx">Index status</h2>
+          <dl class="crs-fact__list">
+            <div class="crs-fact__item"><dt>Site Search</dt><dd>03/09/2026 08:32</dd></div>
+            <div class="crs-fact__item"><dt>Affino.com Assistant</dt><dd>03/09/2026 08:33</dd></div>
+          </dl>
+        </section>
+
+        <section class="crs-fact" aria-labelledby="crs-fact-audit">
+          <h2 class="crs-fact__title" id="crs-fact-audit">Audit</h2>
+          <dl class="crs-fact__list">
+            <div class="crs-fact__item"><dt>Created</dt><dd>02/09/2026 17:03</dd></div>
+            <div class="crs-fact__item"><dt>Created by</dt><dd>Markus Karlsson</dd></div>
+            <div class="crs-fact__item"><dt>Last updated</dt><dd>03/09/2026 08:32</dd></div>
+            <div class="crs-fact__item"><dt>Last updated by</dt><dd>Luis Montiel</dd></div>
+            <div class="crs-fact__item"><dt>Last view</dt><dd>22/09/2026 03:21</dd></div>
+            <div class="crs-fact__item"><dt>Impressions</dt><dd>89</dd></div>
+          </dl>
+          <a class="crs-fact__more" href="#">View audit trail<i data-lucide="arrow-right" aria-hidden="true"></i></a>
+        </section>
+      </aside>
       </div>
     </div>
 
@@ -735,337 +994,6 @@
     </div>
   </div>
 
-  <!-- ━━━ AI Assistant panel (initial-state view) ━━━━━━━━━━━━━━━━━━
-       Mounted from src/cc/templates/AiAssistant — initial view only. The
-       processing/response states are demo-only and live on the standalone
-       AiAssistant page. Opened by the rail "AI Assistant" button; hidden by
-       default; shell behaviours wired via initAiAssistantShell(). -->
-  <!-- TODO(backend:ControlScreen) [ai-assistant]: initial-state view only — message send is inert,
-       chat history is static, pin/copy/delete menu actions are visual. Need a chat/AI backend
-       (send + stream response, chat-history CRUD, thumbs feedback). The processing/response
-       states are demo-only (GSAP) on the standalone AiAssistant page, NOT mounted here. -->
-  <div class="ai-assistant ai-assistant--hidden" id="ai-assistant">
-
-    <!-- Resize handles: 4 edges -->
-    <div class="ai-assistant__resize-handle ai-assistant__resize-handle--top" id="resize-handle-top" aria-hidden="true"></div>
-    <div class="ai-assistant__resize-handle ai-assistant__resize-handle--bottom" id="resize-handle-bottom" aria-hidden="true"></div>
-    <div class="ai-assistant__resize-handle ai-assistant__resize-handle--left" id="resize-handle-left" aria-hidden="true"></div>
-    <div class="ai-assistant__resize-handle ai-assistant__resize-handle--right" id="resize-handle-right" aria-hidden="true"></div>
-
-    <!-- ═══ ChatHeader — simplified for CC (no selector dropdown) ═══ -->
-    <div class="chat-header chat-header--minimised ai-assistant__header" id="drag-handle">
-      <div class="chat-header__container">
-        <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Toggle sidebar" id="sidebar-toggle">
-          <i data-lucide="panel-left" aria-hidden="true"></i>
-        </button>
-        <div class="ai-assistant__title">Affino Assistant</div>
-      </div>
-      <!-- Window buttons: maximise (visual only) + close -->
-      <div class="chat-header__window-buttons">
-        <button class="btn btn--tertiary btn--sm btn--icon chat-header__maximize" aria-label="Maximise" id="expand-btn">
-          <i data-lucide="maximize" aria-hidden="true"></i>
-        </button>
-        <button class="btn btn--tertiary btn--sm btn--icon" aria-label="Close" id="close-btn">
-          <i data-lucide="x" aria-hidden="true"></i>
-        </button>
-      </div>
-    </div>
-
-    <!-- ═══ MAIN CONTENT ═════════════════════════════ -->
-    <div class="ai-assistant__main">
-
-      <!-- ═══ SIDEBAR (overlay, slides in below header) ═══ -->
-      <div class="ai-assistant__overlay" id="sidebar-overlay"></div>
-      <aside class="ai-assistant__sidebar">
-        <div class="chat-sidebar" id="sidebar">
-
-          <!-- Logo -->
-          <div class="chat-sidebar__logo">
-            <img src="../../../../img/affinoLogo.svg" alt="Affino" width="167" height="38">
-          </div>
-
-          <!-- Actions -->
-          <div class="chat-sidebar__actions">
-            <div class="chat-sidebar-item chat-sidebar-item--action" tabindex="0">
-              <i data-lucide="message-square" class="chat-sidebar-item__icon" aria-hidden="true"></i>
-              <span class="chat-sidebar-item__text">New Chat</span>
-            </div>
-            <div class="chat-sidebar-item chat-sidebar-item--action" tabindex="0">
-              <i data-lucide="search" class="chat-sidebar-item__icon" aria-hidden="true"></i>
-              <span class="chat-sidebar-item__text">Search</span>
-            </div>
-          </div>
-
-          <!-- Sections -->
-          <div class="chat-sidebar__sections">
-
-            <!-- Pinned -->
-            <div class="chat-sidebar__section">
-              <span class="chat-sidebar__section-label">Pinned</span>
-
-              <div class="chat-sidebar-item chat-sidebar-item--pinned" tabindex="0">
-                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
-                <span class="chat-sidebar-item__text">Here's how to set up a themable gradient in Figma using your surface color tokens</span>
-                <div class="chat-sidebar-item__actions">
-                  <div class="chat-sidebar-item__fade"></div>
-                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
-                    <i data-lucide="ellipsis" aria-hidden="true"></i>
-                  </button>
-                </div>
-                <div class="chat-sidebar-menu">
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin-off" aria-hidden="true"></i> Unpin</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
-                </div>
-              </div>
-
-              <div class="chat-sidebar-item chat-sidebar-item--pinned" tabindex="0">
-                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
-                <span class="chat-sidebar-item__text">Both fills reference your design tokens, so when you swap themes, the gradient updates automatically.</span>
-                <div class="chat-sidebar-item__actions">
-                  <div class="chat-sidebar-item__fade"></div>
-                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
-                    <i data-lucide="ellipsis" aria-hidden="true"></i>
-                  </button>
-                </div>
-                <div class="chat-sidebar-menu">
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin-off" aria-hidden="true"></i> Unpin</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Recent -->
-            <div class="chat-sidebar__section">
-              <span class="chat-sidebar__section-label">Recent</span>
-
-              <div class="chat-sidebar-item" tabindex="0">
-                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
-                <span class="chat-sidebar-item__text">Here's how to set up a themable gradient in Figma using your surface color tokens</span>
-                <div class="chat-sidebar-item__actions">
-                  <div class="chat-sidebar-item__fade"></div>
-                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
-                    <i data-lucide="ellipsis" aria-hidden="true"></i>
-                  </button>
-                </div>
-                <div class="chat-sidebar-menu">
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
-                </div>
-              </div>
-
-              <div class="chat-sidebar-item chat-sidebar-item--selected" tabindex="0">
-                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
-                <span class="chat-sidebar-item__text">This way, the bottom fill shows through where the top fill is transparent,</span>
-                <div class="chat-sidebar-item__actions">
-                  <div class="chat-sidebar-item__fade"></div>
-                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
-                    <i data-lucide="ellipsis" aria-hidden="true"></i>
-                  </button>
-                </div>
-                <div class="chat-sidebar-menu">
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
-                </div>
-              </div>
-
-              <div class="chat-sidebar-item" tabindex="0">
-                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
-                <span class="chat-sidebar-item__text">Both fills reference your design tokens, so when you swap themes, the gradient updates automatically.</span>
-                <div class="chat-sidebar-item__actions">
-                  <div class="chat-sidebar-item__fade"></div>
-                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
-                    <i data-lucide="ellipsis" aria-hidden="true"></i>
-                  </button>
-                </div>
-                <div class="chat-sidebar-menu">
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
-                </div>
-              </div>
-
-              <div class="chat-sidebar-item" tabindex="0">
-                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
-                <span class="chat-sidebar-item__text">As of late 2024, Figma added support for variables in gradient stops.</span>
-                <div class="chat-sidebar-item__actions">
-                  <div class="chat-sidebar-item__fade"></div>
-                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
-                    <i data-lucide="ellipsis" aria-hidden="true"></i>
-                  </button>
-                </div>
-                <div class="chat-sidebar-menu">
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
-                </div>
-              </div>
-
-              <div class="chat-sidebar-item" tabindex="0">
-                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
-                <span class="chat-sidebar-item__text">How do i go about setting up a sitemap channel</span>
-                <div class="chat-sidebar-item__actions">
-                  <div class="chat-sidebar-item__fade"></div>
-                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
-                    <i data-lucide="ellipsis" aria-hidden="true"></i>
-                  </button>
-                </div>
-                <div class="chat-sidebar-menu">
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Older -->
-            <div class="chat-sidebar__section">
-              <span class="chat-sidebar__section-label">Older</span>
-
-              <div class="chat-sidebar-item" tabindex="0">
-                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
-                <span class="chat-sidebar-item__text">Here's how to set up a themable gradient in Figma using your surface color tokens</span>
-                <div class="chat-sidebar-item__actions">
-                  <div class="chat-sidebar-item__fade"></div>
-                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
-                    <i data-lucide="ellipsis" aria-hidden="true"></i>
-                  </button>
-                </div>
-                <div class="chat-sidebar-menu">
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
-                </div>
-              </div>
-
-              <div class="chat-sidebar-item" tabindex="0">
-                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
-                <span class="chat-sidebar-item__text">This way, the bottom fill shows through where the top fill is transparent,</span>
-                <div class="chat-sidebar-item__actions">
-                  <div class="chat-sidebar-item__fade"></div>
-                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
-                    <i data-lucide="ellipsis" aria-hidden="true"></i>
-                  </button>
-                </div>
-                <div class="chat-sidebar-menu">
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
-                </div>
-              </div>
-
-              <div class="chat-sidebar-item" tabindex="0">
-                <i data-lucide="pin" class="chat-sidebar-item__pin" aria-hidden="true"></i>
-                <span class="chat-sidebar-item__text">Both fills reference your design tokens, so when you swap themes, the gradient updates automatically.</span>
-                <div class="chat-sidebar-item__actions">
-                  <div class="chat-sidebar-item__fade"></div>
-                  <button class="chat-sidebar-item__menu-btn" type="button" aria-label="Chat options" aria-expanded="false">
-                    <i data-lucide="ellipsis" aria-hidden="true"></i>
-                  </button>
-                </div>
-                <div class="chat-sidebar-menu">
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="pin" aria-hidden="true"></i> Pin</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="copy" aria-hidden="true"></i> Copy</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="link" aria-hidden="true"></i> Copy Link</button>
-                  <button class="chat-sidebar-menu__item" type="button"><i data-lucide="trash-2" aria-hidden="true"></i> Delete</button>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </aside>
-
-      <div class="chat-main chat-main--initial" id="chat-main">
-
-        <!-- ═══ INITIAL VIEW — custom CC intro (no SuggestedQuestion grid) ═══ -->
-        <div class="chat-main__initial">
-          <div class="chat-main__initial-inner ai-assistant__initial-inner">
-
-            <!-- Welcome paragraphs — verbatim from Figma 4151:8248 -->
-            <div class="ai-assistant__welcome">
-              <p>Affino's Support AI is great at answering support questions, but can make mistakes when it doesn't have an exact answer for the question.</p>
-              <p>Ask one question at a time for the best response, and ask full questions, for important questions check the guides or the forums.</p>
-              <p>Help improve the AI by providing feedback with the thumbs up and down below.</p>
-            </div>
-
-            <!-- MessageInput (bottom of initial view) -->
-            <div class="chat-main__input-wrap">
-              <div class="msg-input">
-                <div class="msg-input__box">
-                  <textarea
-                    class="msg-input__textarea"
-                    rows="1"
-                    placeholder="Send a question"
-                  ></textarea>
-                  <div class="msg-input__actions">
-                    <div class="msg-input__filter-container">
-                      <button
-                        class="btn btn--tertiary btn--sm btn--icon msg-input__filter-btn"
-                        aria-label="Filter by recent content"
-                      >
-                        <i data-lucide="funnel" aria-hidden="true"></i>
-                      </button>
-                    </div>
-                    <button
-                      class="btn btn--primary btn--sm btn--icon msg-input__send-btn"
-                      aria-label="Send message"
-                      disabled
-                    >
-                      <i data-lucide="move-up" aria-hidden="true"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ━━━ AI Assistant coachmark (AssistantPopover) ━━━━━━━━━━━━━━━━━━
-       Bottom-right call-out promoting the Affino Assistant. Fades in a few
-       seconds after load on first visit; dismissing it (✕ or Launch) persists
-       via localStorage so it won't return. Launch opens the AiAssistant panel.
-       Behaviour wired in the end-of-body module; not AssistantPopover.js. -->
-  <div class="cc-assistant-popover" aria-label="Affino Assistant">
-    <div class="cc-assistant-popover__header">
-      <div class="cc-assistant-popover__brand">
-        <span class="cc-assistant-popover__badge">
-          <i data-lucide="sparkles" aria-hidden="true"></i>
-        </span>
-        <p class="cc-assistant-popover__title">Affino Assistant</p>
-      </div>
-      <button class="btn btn--tertiary btn--sm btn--icon cc-assistant-popover__close" type="button" aria-label="Close">
-        <i data-lucide="x" aria-hidden="true"></i>
-      </button>
-    </div>
-    <div class="cc-assistant-popover__body">
-      <div class="cc-assistant-popover__intro">
-        <p>Affino’s Assistant is great at providing in context support whilst you work in the control center.</p>
-        <p>Stuck on screen? Launch the Affino Assistant from the Actions Menu to get moving.</p>
-      </div>
-      <button class="btn btn--primary cc-assistant-popover__launch" type="button">
-        Launch
-        <i data-lucide="arrow-right" aria-hidden="true"></i>
-      </button>
-    </div>
-  </div>
-
   <!-- ━━━ Toast stack (top-right) — favourites save/remove feedback ━━━━━
        Empty container; toasts are spawned into it by the rail IIFE (success on
        save, interactive Undo on remove). Uses the Toast component markup. -->
@@ -1097,20 +1025,20 @@
   <script>lucide.createIcons();</script>
 
   <!-- Existing auto-binding interaction scripts -->
-  <script src="../../patterns/SidebarMenu/sidebar-menu.js"></script>
-  <script src="../../../components/ThemeToggle/ThemeToggle.js"></script>
-  <script src="../../../components/Toggle/Toggle.js"></script>
-  <script type="module" src="../../../components/Dropdown/Dropdown.js"></script>
+  <script src="../../cc/patterns/SidebarMenu/sidebar-menu.js"></script>
+  <script src="../../components/ThemeToggle/ThemeToggle.js"></script>
+  <script src="../../components/Toggle/Toggle.js"></script>
+  <script type="module" src="../../components/Dropdown/Dropdown.js"></script>
   <!-- Wires the User Menu "Icon Navigation" / "Hide Labels" toggles to the
        IconNavigation strip in this header group. -->
-  <script src="../../patterns/HeaderGroup/HeaderGroup.js"></script>
+  <script src="../../cc/patterns/HeaderGroup/HeaderGroup.js"></script>
   <!-- Alert dismiss: clicking the close icon removes the alert. -->
-  <script src="../../../components/Alert/Alert.js"></script>
+  <script src="../../components/Alert/Alert.js"></script>
   <!-- FontSizeSlider auto-inits its inputs (paints the track fill) on load -->
-  <script type="module" src="../../components/FontSizeSlider/FontSizeSlider.js"></script>
+  <script type="module" src="../../cc/components/FontSizeSlider/FontSizeSlider.js"></script>
 
   <!-- ActionsMenu rail popovers (Info, …). Generic toggle: one open at a time,
-       closes on Esc / click-outside. Add more by pairing a button
+
        [data-aa-toggle="X"] with a panel [data-aa-panel="X"]. -->
   <script>
     (function () {
@@ -1261,131 +1189,7 @@
     })();
   </script>
 
-  <!-- Select Zone dropdown — shared Select behaviour (open/choose/close). -->
-  <script src="../../../components/Select/Select.js"></script>
-
-
-  <!-- AI Assistant panel: shell behaviours + rail-button toggle. Initial-state
-       view only — no ChatMain / processing / response wiring (those are
-       demo-only and live on the standalone AiAssistant page). -->
-  <script type="module">
-    import { initAiAssistantShell } from '../AiAssistant/AiAssistant.js';
-
-    const panel = document.getElementById('ai-assistant');
-    const aiBtn = document.querySelector('[data-cc-ai-toggle]');
-
-    if (panel && aiBtn) {
-      const setExpanded = (open) => aiBtn.setAttribute('aria-expanded', String(open));
-
-      // Sidebar, drag, resize, close, input. Brand theme scoped to the panel so
-      // it never recolours the CC shell; close button syncs the rail button.
-      initAiAssistantShell(panel, {
-        brandThemeTarget: panel,
-        onClose: () => setExpanded(false),
-      });
-
-      // Open the panel (idempotent): close any open rail popover, reveal, sync
-      // aria. Shared by the rail button and the coachmark's Launch button.
-      const openAssistant = () => {
-        document.querySelectorAll('[data-aa-panel]:not([hidden])').forEach((p) => {
-          p.hidden = true;
-          const t = document.querySelector('[data-aa-toggle="' + p.dataset.aaPanel + '"]');
-          if (t) t.setAttribute('aria-expanded', 'false');
-        });
-        panel.classList.remove('ai-assistant--hidden');
-        setExpanded(true);
-        if (window.lucide) lucide.createIcons();
-      };
-
-      // Rail button toggles the panel. Deliberately NOT a generic
-      // [data-aa-toggle] popover: a large draggable panel shouldn't vanish on an
-      // outside click, so it is wired separately and exempt from the rail
-      // popovers' click-outside handler.
-      aiBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (panel.classList.contains('ai-assistant--hidden')) {
-          openAssistant();
-        } else {
-          panel.classList.add('ai-assistant--hidden');
-          setExpanded(false);
-        }
-      });
-
-      // ── AssistantPopover coachmark ──────────────────────────────────
-      // First visit only: slides up into view on load. ✕ or Launch dismiss it
-      // and persist the dismissal via localStorage so it won't return. Launch
-      // also opens the assistant. (No AssistantPopover.js here — that script's
-      // instant DOM-removal would fight the slide-out.)
-      const popover = document.querySelector('.cc-assistant-popover');
-      const DISMISS_KEY = 'cc-assistant-popover-dismissed';
-      if (popover) {
-        let dismissed = false;
-        try { dismissed = localStorage.getItem(DISMISS_KEY) === '1'; } catch (_) {}
-
-        if (dismissed) {
-          popover.remove();
-        } else {
-          const dismiss = () => {
-            try { localStorage.setItem(DISMISS_KEY, '1'); } catch (_) {}
-            popover.classList.remove('cc-assistant-popover--visible');
-            popover.addEventListener('transitionend', () => popover.remove(), { once: true });
-          };
-          // Reveal after a short beat so the slide-up transition plays.
-          const SHOW_DELAY_MS = 500; // brief delay before the coachmark slides up
-          setTimeout(() => popover.classList.add('cc-assistant-popover--visible'), SHOW_DELAY_MS);
-          popover.querySelector('.cc-assistant-popover__close')
-            .addEventListener('click', dismiss);
-          popover.querySelector('.cc-assistant-popover__launch')
-            .addEventListener('click', () => { openAssistant(); dismiss(); });
-        }
-      }
-    }
-  </script>
-
-  <!-- FilterBar + FilterItem + Dropdown behaviours (pattern-owned). -->
-  <script type="module">
-    import { initAll as initDropdowns }   from '../../../components/Dropdown/Dropdown.js';
-    import { initAll as initFilterItems } from '../../../components/FilterItem/FilterItem.js';
-    import { initAll as initFilterBars }  from '../../../patterns/FilterBar/FilterBar.js';
-    initDropdowns();
-    initFilterItems();
-    initFilterBars();
-  </script>
-
-  <!-- FilterDropdowns pattern glue (select / predictive / search / apply).
-       Exposes window.initFilterDropdowns(scope) for re-init. -->
-  <!-- The option ROWS are their own component and carry their own click
-       handler. FilterDropdowns.js only CONSTRAINS them to single-select; it
-       does not wire them, so without this the pickers open and nothing
-       can be picked. -->
-  <!-- Date filters (Order Date, Payment Date, Delivery Date) need the real
-       DatePicker; without it the panel renders two inert readonly fields. -->
-  <script src="../../../components/DatePicker/DatePicker.js"></script>
-  <script src="../../../components/FilterDropdownItem/FilterDropdownItem.js"></script>
-  <script src="../../../patterns/FilterDropdowns/FilterDropdowns.js"></script>
-
-  <!-- Listing data + renderer. Loaded last so the table is built after
-       lucide is available; the renderer re-runs createIcons() itself. -->
-  <script src="listing-data.js"></script>
-  <script src="listing-data-media-items.js"></script>
-  <script src="ListingScreen.js"></script>
-
-  <!-- The chips and their pickers are rendered by ListingScreen.js, which runs
-       on DOMContentLoaded — AFTER the module above has already auto-initialised
-       whatever was in the static markup. So the freshly rendered nodes have to
-       be initialised explicitly, scoped to just them (FilterItem.init has no
-       idempotency guard, so re-running it over the whole document would bind
-       every existing chip twice). -->
-  <script type="module">
-    import { initAll as initFilterItems } from '../../../components/FilterItem/FilterItem.js';
-    document.addEventListener('listing:rendered', function (e) {
-      var scope = e.detail && e.detail.root ? e.detail.root : document;
-      initFilterItems(scope);
-      if (window.initFilterDropdownItems) window.initFilterDropdownItems(scope);
-      if (window.initDatePickers) window.initDatePickers(scope);
-      if (window.initFilterDropdowns) window.initFilterDropdowns(scope);
-      if (window.lucide) window.lucide.createIcons();
-    });
-  </script>
+  <script src="../../components/Select/Select.js"></script>
+  <script src="ControlRecordScreen.js"></script>
 </body>
 </html>

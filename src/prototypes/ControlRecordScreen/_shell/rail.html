@@ -1,0 +1,63 @@
+  <!-- ━━━ Right action rail (ActionsMenu) ━━━━━━━━━━━━━━━━━━━━━
+       Figma node 4167:4879 — full-height rail docked to the right edge of
+       the Desktop Menu Open variant (4187:21253). Desktop only; hidden
+       below 768px per design (matches the sidebar device-class swap). -->
+  <div class="cc-control__actions">
+    <div class="actions-menu">
+      <button class="actions-menu__btn" type="button" aria-label="AI Assistant" aria-haspopup="dialog" aria-expanded="false" aria-controls="ai-assistant" data-cc-ai-toggle>
+        <i data-lucide="sparkles" aria-hidden="true"></i>
+      </button>
+      <span class="cc-control__rail-item">
+        <button class="actions-menu__btn" type="button" aria-label="Info" aria-haspopup="dialog" aria-expanded="false" aria-controls="cc-rail-info" data-aa-toggle="info">
+          <i data-lucide="info" aria-hidden="true"></i>
+        </button>
+        <div class="cc-control__rail-popover" id="cc-rail-info" data-aa-panel="info" role="dialog" aria-label="Information" hidden>
+          <div class="cc-actions-info-panel">
+            <section class="cc-actions-info-panel__section">
+              <h3 class="cc-actions-info-panel__heading">Description</h3>
+              <p class="cc-actions-info-panel__body">Your Control Centre home — monitor live activity, jump into key features, and switch zones from one place.</p>
+            </section>
+            <section class="cc-actions-info-panel__section">
+              <h3 class="cc-actions-info-panel__heading">Related</h3>
+              <div class="cc-actions-info-panel__pills">
+                <button type="button" class="btn btn--tertiary btn--sm">Analysis Dashboard</button>
+                <button type="button" class="btn btn--tertiary btn--sm">Zone Settings</button>
+              </div>
+            </section>
+            <section class="cc-actions-info-panel__section">
+              <h3 class="cc-actions-info-panel__heading">System Security Right</h3>
+              <div class="cc-actions-info-panel__pills">
+                <button type="button" class="btn btn--tertiary btn--sm">Control Access</button>
+                <button type="button" class="btn btn--tertiary btn--sm">Member Management</button>
+              </div>
+            </section>
+          </div>
+        </div>
+      </span>
+      <button class="actions-menu__btn" type="button" aria-label="Add to favourites" aria-haspopup="dialog" data-aa-modal="fav">
+        <i data-lucide="star" aria-hidden="true"></i>
+      </button>
+      <span class="cc-control__rail-item">
+        <button class="actions-menu__btn" type="button" aria-label="Text size" aria-haspopup="dialog" aria-expanded="false" aria-controls="cc-rail-textsize" data-aa-toggle="text-size">
+          <i data-lucide="a-large-small" aria-hidden="true"></i>
+        </button>
+        <div class="cc-control__rail-popover cc-control__rail-popover--card" id="cc-rail-textsize" data-aa-panel="text-size" role="dialog" aria-label="Text size" hidden>
+          <p class="cc-control__rail-popover-label">Text size</p>
+          <div class="font-size-slider">
+            <!-- TODO(backend:ControlScreen) [text-size]: emits input/change only — bind to a font-scale var site-wide and persist the preference per user. -->
+            <input class="font-size-slider__input" type="range" min="1" max="4" step="1" value="2" aria-label="Text size" data-backend-todo="text-size">
+          </div>
+        </div>
+      </span>
+      <!-- Minimise: visual-only for now (behaviour TBD) -->
+      <!-- TODO(backend:ControlScreen) [minimise]: toggle a condensed spacing view — apply data-layout="minimised" on the shell (minimised-mode tokens exist) + persist the preference. -->
+      <button class="actions-menu__btn" type="button" aria-label="Minimise" data-backend-todo="minimise">
+        <i data-lucide="minimize-2" aria-hidden="true"></i>
+      </button>
+      <!-- TODO(backend:ControlScreen) [print]: fe-wired — window.print() works natively; OK as-is unless a server-side print-to-PDF is wanted. -->
+      <button class="actions-menu__btn" type="button" aria-label="Print" data-aa-action="print" data-backend-todo="print">
+        <i data-lucide="printer" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+

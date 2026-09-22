@@ -85,6 +85,16 @@
 
   function rowId(row) { return row[ROW_ID.key]; }
 
+  /* Which rows are ticked. Module state for the same reason ROW_ID is: the CELL
+     renderers are pure functions of a row and cannot reach config. Shared by
+     BOTH views on purpose — the live Grid has Select all and a Move/Delete
+     action bar while the Listing's checkboxes do nothing at all, and two views
+     of one screen disagreeing about whether selection means anything is the
+     bug, not a feature (designer, 2026-09-22). */
+  var SELECTED = {};
+
+  function isSelected(row) { return !!SELECTED[rowId(row)]; }
+
   var CELL = {
     text: function (row, col) {
       return esc(row[col.key]);
@@ -171,7 +181,9 @@
 
     select: function (row) {
       return '<label class="checkbox">' +
-        '<input type="checkbox" class="checkbox__input" aria-label="Select ' + esc(ROW_ID.spoken) + ' ' + esc(rowId(row)) + '">' +
+        '<input type="checkbox" class="checkbox__input" data-select-row="' + esc(rowId(row)) + '"' +
+        (isSelected(row) ? ' checked' : '') +
+        ' aria-label="Select ' + esc(ROW_ID.spoken) + ' ' + esc(rowId(row)) + '">' +
         '<span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>' +
         '</label>';
     },
@@ -948,6 +960,77 @@
   /* Re-render only what filtering changes: the body, the counts and the
      pagination. The chips are left alone — rebuilding them would discard the
      very selections that caused this. */
+  /* ── Grid view ────────────────────────────────────────────
+     The live screen's other half: MediaLayOut=Grid, rendered through
+     MediaLightbox.cfm rather than ListForm.cfm. It is a different rendering of
+     the SAME query — same filters, same page size, same paging — which is why
+     it lives inside the same `.datatables` block and shares the toolbar and
+     the footer rather than being a second screen.
+
+     What live draws is a bordered <table> of 140px cells holding a thumbnail
+     and NOTHING ELSE; the name, pixel dimensions, file size and type are all
+     in a jQuery hover tooltip (`trailOn`), and `sTempName` is computed and
+     truncated in the source and then never printed. The card here carries the
+     name and a meta line at rest (designer, 2026-09-22): a wall of 96,000
+     unlabelled thumbnails cannot be read without a mouse, and a hover tooltip
+     is unreachable by keyboard or screen reader. */
+  function gridCard(row) {
+    var id = rowId(row);
+    var glyph = { audio: 'music', document: 'file-text' }[row.family] || 'file';
+    var media = row.thumbUrl
+      ? '<img src="' + esc(row.thumbUrl) + '" alt="" loading="lazy" decoding="async">'
+      : '<i data-lucide="' + glyph + '" aria-hidden="true"></i>';
+
+    return '<li class="cc-grid__item">' +
+      '<div class="cc-grid__card' + (isSelected(row) ? ' cc-grid__card--selected' : '') + '"' +
+        ' data-grid-card="' + esc(id) + '">' +
+        '<div class="cc-grid__media cc-grid__media--' + esc(row.family) + '">' +
+          /* The anchor IS the card's navigation — same route the table row
+             uses, so there is one destination and one code path. */
+          '<a class="cc-grid__link" href="' + esc(ROUTE.view(id, ROW_ID.noun)) + '"' +
+            ' aria-label="' + esc(row.title) + '">' + media + '</a>' +
+          '<label class="checkbox cc-grid__select">' +
+            '<input type="checkbox" class="checkbox__input" data-select-row="' + esc(id) + '"' +
+            (isSelected(row) ? ' checked' : '') +
+            ' aria-label="Select ' + esc(ROW_ID.spoken) + ' ' + esc(row.title) + '">' +
+            '<span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>' +
+          '</label>' +
+          '<a class="cc-grid__edit" href="' + esc(ROUTE.edit(id, ROW_ID.noun)) + '"' +
+            ' data-backend-todo="listing-row-routes"' +
+            ' aria-label="Edit ' + esc(ROW_ID.spoken) + ' ' + esc(row.title) + '">' +
+            '<i data-lucide="pencil" aria-hidden="true"></i></a>' +
+        '</div>' +
+        '<p class="cc-grid__name" title="' + esc(row.title) + '">' + esc(row.title) + '</p>' +
+        '<p class="cc-grid__meta">' + esc(row.format) + ' · ' + esc(row.created) + '</p>' +
+      '</div></li>';
+  }
+
+  function renderGrid(rows) {
+    if (!rows.length) {
+      return '<li class="cc-grid__empty"><div class="cc-listing__empty">' +
+        '<i data-lucide="search-x" aria-hidden="true"></i>' +
+        '<p class="cc-listing__empty-title">No results</p>' +
+        '<p class="cc-listing__empty-text">Try removing a filter or searching for something else.</p>' +
+        '</div></li>';
+    }
+    return rows.map(gridCard).join('');
+  }
+
+  /* The selection bar. One bar for both views, shown only when something is
+     ticked — the live screen keeps a permanent "Select all" above the grid and
+     a permanent action row below it, which is two pieces of chrome for a state
+     that is usually empty.
+     TODO(backend:Listing) listing-bulk-actions: Move and Delete do nothing. */
+  function renderSelection(root, config) {
+    var bar = root.querySelector('[data-listing-selection]');
+    if (!bar) return;
+    var n = Object.keys(SELECTED).length;
+    bar.hidden = n === 0;
+    if (!n) return;
+    var count = bar.querySelector('[data-selection-count]');
+    if (count) count.textContent = n + (n === 1 ? ' item selected' : ' items selected');
+  }
+
   function renderResults(root, config) {
     var matched = sortRows(applyFilters(config).rows, config);
 
@@ -963,6 +1046,9 @@
     root.querySelector('[data-listing-body]').innerHTML = rows.length
       ? renderRows(config.columns, rows)
       : renderEmpty(config.columns);
+
+    var gridHost = root.querySelector('[data-listing-grid]');
+    if (gridHost) gridHost.innerHTML = renderGrid(rows);
 
     var page = {
       from: total ? start + 1 : 0,
@@ -983,6 +1069,7 @@
     /* The body was just rebuilt, so the column marks went with it. */
     applyColumnVisibility(root, config);
     fitColumns(root, config);
+    renderSelection(root, config);
   }
 
   /* TODO(design:Listing): Datatables has no empty state in Figma. This mirrors
@@ -1600,6 +1687,10 @@
     /* Split once, here, rather than capping at render time: everything
        downstream — adding a filter, saving a view, restoring one — then works
        on the real arrays and never has to know about the limit. */
+    /* A fresh screen starts with nothing ticked. Module state, so it has to be
+       cleared here rather than relying on it never having been set. */
+    SELECTED = {};
+
     /* Before the first cell is rendered: the CELL renderers read ROW_ID. */
     /* Two nouns, because they are read by different things: `routeNoun` is a
        URL slug and `rowNoun` is what a screen reader says out loud. Article
@@ -1715,6 +1806,79 @@
     var bar = root.querySelector('.filter-bar');
 
     renderPerPageOptions(config);
+
+    /* ── Layout: listing or grid ──────────────────────────
+       Only a screen that declares `layouts` gets the switch; the other three
+       have one rendering and no control. The live screen defaults to GRID
+       (`<cfparam name="url.MediaLayOut" default="Grid">`) — this defaults to
+       LISTING because that is what the demo card is named and what a reviewer
+       arriving from the index expects, and `?layout=grid` lands directly on
+       the other half. Recorded rather than silently diverged from. */
+    var layouts = config.layouts || [];
+    var urlLayout = (new RegExp('[?&]layout=(grid|listing)').exec(location.search) || [])[1];
+    config.layout = (layouts.indexOf(urlLayout) !== -1 ? urlLayout : layouts[0]) || 'listing';
+
+    function applyLayout() {
+      root.setAttribute('data-layout', config.layout);
+      var group = root.querySelector('[data-listing-layout]');
+      if (group) {
+        group.querySelectorAll('[data-layout-value]').forEach(function (btn) {
+          var on = btn.getAttribute('data-layout-value') === config.layout;
+          btn.classList.toggle('seg-control__btn--active', on);
+          btn.setAttribute('aria-checked', on ? 'true' : 'false');
+        });
+      }
+      /* Edit Columns is meaningless in a grid — there are no columns. */
+      var cols = root.querySelector('.cc-listing__columns');
+      if (cols) cols.hidden = config.layout !== 'listing';
+    }
+
+    if (layouts.length > 1) {
+      var group = root.querySelector('[data-listing-layout]');
+      if (group) {
+        group.hidden = false;
+        group.addEventListener('click', function (e) {
+          var btn = e.target.closest('[data-layout-value]');
+          if (!btn) return;
+          var next = btn.getAttribute('data-layout-value');
+          if (next === config.layout) return;
+          config.layout = next;
+          applyLayout();
+          /* The table only measures correctly once it is on screen again. */
+          if (next === 'listing') fitColumns(root, config);
+        });
+      }
+    }
+    applyLayout();
+
+    /* Selection — one model, both views. A checkbox exists in the table row
+       and on the grid card; either can tick a row and both must agree, which
+       is why this listens on the whole screen rather than per view. */
+    root.addEventListener('change', function (e) {
+      var box = e.target.closest('[data-select-row]');
+      if (!box) return;
+      var id = box.getAttribute('data-select-row');
+      if (box.checked) SELECTED[id] = true; else delete SELECTED[id];
+      /* Keep the OTHER view's checkbox for this row in step without a full
+         re-render, which would lose scroll position mid-click. */
+      root.querySelectorAll('[data-select-row="' + id + '"]').forEach(function (other) {
+        other.checked = box.checked;
+      });
+      var card = root.querySelector('[data-grid-card="' + id + '"]');
+      if (card) card.classList.toggle('cc-grid__card--selected', box.checked);
+      renderSelection(root, config);
+    });
+
+    var clearBtn = root.querySelector('[data-selection-clear]');
+    if (clearBtn) clearBtn.addEventListener('click', function () {
+      SELECTED = {};
+      root.querySelectorAll('[data-select-row]').forEach(function (b) { b.checked = false; });
+      root.querySelectorAll('[data-grid-card]').forEach(function (c) {
+        c.classList.remove('cc-grid__card--selected');
+      });
+      renderSelection(root, config);
+    });
+
     render(root, config);
 
     /* The bar establishes its baseline before these chips exist, so it would

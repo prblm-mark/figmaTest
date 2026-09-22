@@ -1,0 +1,652 @@
+/* ControlRecordScreen — Control Centre v3 record screen (view + edit)
+ * ═══════════════════════════════════════════════════════════════════════════
+ * PROTOTYPE. Adds nothing to the shell: every rule here is scoped to a `crs-`
+ * class. ControlScreen.css is linked read-only and is not overridden.
+ *
+ * WHAT THIS IS TESTING
+ *   Split a record's content by whether it is VIEW-ONLY or VIEW-AND-EDIT.
+ *   View-only goes to a right-hand sidebar; view-and-edit stays in the main
+ *   column. The view screen and the edit screen then share one layout, and a
+ *   record's provenance and activity never move under the user.
+ *
+ *   View-only turned out not to be one thing, so there are two models:
+ *     A  sidebar = compact facts; wide evidence (chart, contacts table,
+ *        23-row child listing) becomes tabs at the top of the main column
+ *     B  sidebar = ALL view-only content, wider, with wide blocks compressed
+ *        to summaries plus a link out to the screen that already shows them
+ *   They only diverge on a screen that HAS wide evidence. Article Icon
+ *   renders identically under both, which is why it is built once.
+ *
+ * ─── NOTE: DO NOT DECLARE PADDING ON .cc-control__page ──────────────────────
+ *   ListingScreen.css:47-73 records the bug: a page-level modifier that
+ *   re-declares `padding` has the SAME specificity as the shell's rule but
+ *   loads after it, so the shorthand wins and silently undoes the deliberate
+ *   padding-right trim (ControlScreen.css:546-559) — measured 39px against the
+ *   intended 24. This file therefore declares no padding on the page at all
+ *   and adds no `--record` page modifier. Every record inset lives on
+ *   .crs-card. If you are here to "tidy" the inset onto the page, don't.
+ *
+ * ─── NOTE: the AI Assistant panel and AssistantPopover are deliberately absent
+ *   Both are position:fixed against the content area — the panel at
+ *   top/right (ControlScreen.css:413-419, z-index 60), the coachmark at
+ *   bottom/right (:428-438, z-index 55). That is exactly where .crs-aside
+ *   sits, and the coachmark auto-shows on a timer, so it would cover the
+ *   sidebar in every Figma capture. The rail's AI button is left inert.
+ *
+ * ─── TODO(design:Tabs) ──────────────────────────────────────────────────────
+ *   Model A needs a tab strip and the design system has no Tabs component.
+ *   .crs-tabs / .crs-tab below copy the token bindings of .fv-tabs / .fv-tab
+ *   (src/prototypes/FilterViews/FilterViews.css:31-70) verbatim so the two
+ *   prototypes agree and a future /build-component Tabs has two consistent
+ *   references rather than two inventions. SegmentedControl is NOT the answer:
+ *   it is a bordered pill track with flex:1 0 0 equal-width buttons,
+ *   semantically a 2-3 option radio group.
+ */
+
+/* ══ Record layout ════════════════════════════════════════════════════════
+ * Grid, not flex: the stacked <-> split change is one property, and the A/B
+ * width difference is one line.
+ *
+ * flex-shrink:0 for the same reason .cc-control__panel carries it
+ * (ControlScreen.css:240-244) — .cc-control__page is a definite-height flex
+ * column, so its children get compressed below their content height. NEVER
+ * add overflow:hidden here; that pairing is what turns the shrink into a crop.
+ *
+ * align-items:start so the aside is its own height — a stretched grid item can
+ * never position:sticky. That single line is what silently kills the sticky
+ * sidebar if it is removed while "simplifying" the wrapper.
+ */
+.crs-record {
+  --crs-aside-w: var(--ai-size-6);      /* 320px — model A */
+  --crs-col-gap: var(--ai-spacing-6);
+  --crs-label-w: var(--ai-size-3);      /* 192px label gutter */
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);   /* stacked by default (mobile-first) */
+  gap: var(--crs-col-gap);
+  align-items: start;
+  min-inline-size: 0;
+  flex-shrink: 0;
+}
+
+.crs-main,
+.crs-aside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+  min-inline-size: 0;
+}
+
+/* Model B: the aside carries every view-only block, so it is wider. A custom
+ * property rather than a modifier on .crs-aside, because the width is consumed
+ * by the PARENT's grid-template-columns — a class on the aside could not set
+ * it without :has(). */
+.crs-record--aside-all { --crs-aside-w: var(--ai-size-7); }   /* 384px */
+
+/* .cc-control__page ESTABLISHES cs-page, so it cannot query it for its own
+ * properties (the bug documented at ControlScreen.css:493-502). .crs-record is
+ * a CHILD, so for it cs-page is an ancestor and this is legal.
+ *
+ * 880 = 320 aside + 24 gap + 528 main. 528 is the narrowest main column that
+ * still reads: 192 gutter + 16 gap + 320 of value. No viewport @media appears
+ * anywhere in this file — a docked SidebarMenu changes this column with no
+ * window resize at all (CLAUDE.md §4a). */
+@container cs-page (min-width: 880px) {
+  .crs-record { grid-template-columns: minmax(0, 1fr) var(--crs-aside-w); }
+
+  /* Sticky only in model A, where the aside is a few short fact blocks. In B
+   * the aside IS the content and is taller than the scrollport, so sticking it
+   * would only pin a long column to the top. */
+  .crs-record:not(.crs-record--aside-all) .crs-aside {
+    position: sticky;
+    top: 0;
+  }
+}
+
+/* Model B stacks earlier: 960 = 384 + 24 + 552. MUST follow the block above —
+ * .crs-record--aside-all and .crs-record are both specificity 0,1,0, so source
+ * order is the only tie-break. */
+@container cs-page (max-width: 959px) {
+  .crs-record--aside-all { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ══ Section card ═════════════════════════════════════════════════════════
+ * NOT .cc-control__panel: that carries overflow:hidden for its rounded corners
+ * (ControlScreen.css:239), which would clip an open .sel__menu or DatePicker
+ * popover inside an edit card. Same token bindings, no overflow.
+ *
+ * Self-containers because the card spans its column and so genuinely tracks
+ * available space (CLAUDE.md §4a) — unlike TableCard/RoomCard, which are fixed
+ * boxes and would fire a narrow self-query permanently on desktop.
+ *
+ * The card's OWN padding must not live on this rule: an element cannot query
+ * the container it establishes. It goes on __head / __body, which are
+ * descendants and may query crs-card freely.
+ */
+.crs-card {
+  container-type: inline-size;
+  container-name: crs-card;
+
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+}
+
+.crs-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ai-spacing-4);
+  padding: var(--ai-spacing-5) var(--ai-spacing-6);
+  border-bottom: 1px solid var(--ai-border-secondary);
+}
+
+.crs-card__title {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-primary);
+}
+
+.crs-card__head-link,
+.crs-fact__more {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-brand);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.crs-card__head-link [data-lucide],
+.crs-fact__more [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+.crs-card__body { padding: var(--ai-spacing-6); }
+
+/* A body whose child brings its own edge treatment (a table, a tab panel). */
+.crs-card__body--flush { padding: 0; }
+
+/* The evidence panels stack inside the main column exactly like the cards do. */
+.crs-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+}
+
+/* ══ Field list ═══════════════════════════════════════════════════════════
+ * Element-agnostic ON PURPOSE. The view page renders dl/dt/dd and the edit
+ * page renders div/label/div, with the same classes on the same boxes — a <dt>
+ * cannot carry for=, so a <dl> wrapping form controls would lose the label
+ * association that makes the row usable. Do not add a dt/dd/label type
+ * selector anywhere in this block: that is what keeps one stylesheet serving
+ * both modes, and it is what makes the view/edit parity checkable.
+ */
+.crs-fields {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+}
+
+.crs-field {
+  display: grid;
+  grid-template-columns: var(--crs-label-w) minmax(0, 1fr);
+  column-gap: var(--ai-spacing-5);
+  row-gap: var(--ai-spacing-2);
+  align-items: start;
+}
+
+.crs-field__label {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-sm);
+  letter-spacing: var(--ai-tracking-7);
+  text-transform: uppercase;
+  color: var(--ai-text-contrast);
+  /* Optical: seats the 12px caps on the 14px value's first baseline. */
+  padding-block-start: var(--ai-spacing-0-5);
+}
+
+.crs-field__req { color: var(--ai-text-error); }
+
+.crs-field__value {
+  margin: 0;
+  min-inline-size: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-primary);
+  /* Long relation names and URLs wrap inside the column instead of widening
+     it — the failure Datatables.css:1188 fixes for catalogue names. */
+  overflow-wrap: break-word;
+  /* TOKEN GAP: reading measure. The --ai-size-* scale is px-only and the
+     system has no ch/measure token. See ControlRecordScreen.token-gaps.md. */
+  max-inline-size: 78ch;
+}
+
+.crs-field__value > p { margin: 0 0 var(--ai-spacing-4); }
+.crs-field__value > p:last-child { margin-bottom: 0; }
+
+.crs-field__help {
+  grid-column: 2;
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+}
+
+.crs-field--full { grid-template-columns: minmax(0, 1fr); }
+.crs-field--full .crs-field__help { grid-column: 1; }
+
+/* Edit: a 40px control needs the label nudged down to read as its label rather
+   than as a heading floating above it. align-items stays start, so a textarea
+   row does not drag the label to its middle. */
+[data-mode="edit"] .crs-field__label { padding-block-start: var(--ai-spacing-4); }
+[data-mode="edit"] .crs-field--full .crs-field__label,
+[data-mode="edit"] .crs-field--textarea .crs-field__label { padding-block-start: var(--ai-spacing-0-5); }
+
+/* Stack the label above the value.
+ *
+ * Keyed on the CARD, not on cs-page: at one page width the main column is
+ * 528px in model A and 552px in model B, and full-width when stacked —
+ * cs-page cannot tell this row which of those it is inside.
+ *
+ * 440 = 192 gutter + 16 gap + 232 of value. Below that the value is narrower
+ * than its own label, which is the point at which side-by-side stops meaning
+ * anything. Container queries measure the CONTENT box, so this fires at a card
+ * whose padding-box is 440 + 48 = 488. */
+@container crs-card (max-width: 439px) {
+  .crs-field { grid-template-columns: minmax(0, 1fr); }
+  .crs-field__help { grid-column: 1; }
+  .crs-field__label,
+  [data-mode="edit"] .crs-field__label { padding-block-start: 0; }
+  .crs-fields { gap: var(--ai-spacing-6); }
+}
+
+/* ══ Value treatments ═════════════════════════════════════════════════════ */
+
+.crs-empty { color: var(--ai-text-contrast); }
+
+.crs-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ai-spacing-2);
+}
+
+.crs-bool {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  color: var(--ai-text-contrast);
+}
+.crs-bool--on { color: var(--ai-text-primary); }
+.crs-bool [data-lucide] {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  color: var(--ai-icon-secondary);
+}
+.crs-bool--on [data-lucide] { color: var(--ai-icon-primary); }
+
+/* Media (thumbnail + its metadata). */
+.crs-media {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ai-spacing-4);
+  min-inline-size: 0;
+}
+
+.crs-media__thumb {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ai-spacing-10);
+  height: var(--ai-spacing-10);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-sm);
+  background: var(--ai-surface-minimal);
+}
+.crs-media__thumb [data-lucide] {
+  width: var(--ai-icon-size-md);
+  height: var(--ai-icon-size-md);
+  color: var(--ai-icon-secondary);
+}
+
+.crs-media__meta {
+  margin: 0;
+  min-inline-size: 0;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: var(--ai-spacing-4);
+  row-gap: var(--ai-spacing-1);
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-xs);
+}
+.crs-media__meta > div { display: contents; }
+.crs-media__meta dt { color: var(--ai-text-contrast); }
+/* A grid item's min-width defaults to auto = min-content, and a filename is
+ * one unbreakable token — so without these the max-content gutter plus the
+ * filename push the whole card 25px past the column. Measured at a 500px
+ * content column: .crs-main scrollWidth 474 against clientWidth 449.
+ * Fixed intrinsically rather than at a breakpoint, so it holds at every width
+ * (CLAUDE.md §4a). */
+.crs-media__meta dd {
+  margin: 0;
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+  color: var(--ai-text-primary);
+}
+
+.crs-media__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ai-spacing-2);
+}
+
+/* ══ Right sidebar ════════════════════════════════════════════════════════
+ * Read-only in BOTH modes, so it is dl/dt/dd in both and identical between
+ * view and edit within a model. That identity is the thing this prototype is
+ * testing — see the verification note in the plan.
+ */
+.crs-fact {
+  background: var(--ai-surface-minimal);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  padding: var(--ai-spacing-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-4);
+}
+
+.crs-fact__title {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  letter-spacing: var(--ai-tracking-7);
+  text-transform: uppercase;
+  color: var(--ai-text-contrast);
+}
+
+/* Reuses the .datatables__detail-list idiom verbatim — short labels, a
+ * max-content gutter, no per-pair variants. That is where it genuinely fits;
+ * it does NOT fit the main column, where the gutter must be constant ACROSS
+ * cards and each pair needs to carry its own modifiers. */
+.crs-fact__list {
+  margin: 0;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: var(--ai-spacing-4);
+  row-gap: var(--ai-spacing-3);
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-xs);
+}
+.crs-fact__item { display: contents; }
+.crs-fact__item dt { color: var(--ai-text-contrast); }
+.crs-fact__item dd {
+  margin: 0;
+  color: var(--ai-text-primary);
+  overflow-wrap: break-word;
+}
+
+.crs-fact__more { align-self: flex-start; }
+
+/* Advisory list (SEO health). */
+.crs-advice {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+}
+.crs-advice__item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ai-spacing-2);
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-primary);
+}
+.crs-advice__item [data-lucide] {
+  flex: 0 0 auto;
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+  /* TOKEN GAP: no --ai-icon-warning exists, so this borrows the text-family
+     warning. Logged in ControlRecordScreen.token-gaps.md — note that the
+     capture rebind picks a token family from node type (vector -> icon/*), so
+     this hex will not resolve inside the icon family. */
+  color: var(--ai-text-warning);
+}
+
+/* Compressed summary rows — model B's answer to a wide block. */
+.crs-mini {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+}
+.crs-mini__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--ai-spacing-4);
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-xs);
+}
+.crs-mini__name {
+  color: var(--ai-text-primary);
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.crs-mini__meta {
+  flex: 0 0 auto;
+  color: var(--ai-text-contrast);
+}
+
+/* ══ Tabs (model A) ═══════════════════════════════════════════════════════
+ * Token bindings copied verbatim from .fv-tabs / .fv-tab — see the
+ * TODO(design:Tabs) at the head of this file.
+ */
+.crs-tabs {
+  display: flex;
+  align-items: stretch;
+  gap: var(--ai-spacing-1);
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  padding: 0 var(--ai-spacing-5);
+  overflow-x: auto;
+}
+
+.crs-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  padding: var(--ai-spacing-3) var(--ai-spacing-4);
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-contrast);
+  white-space: nowrap;
+  transition: color var(--ai-transition-default),
+              border-color var(--ai-transition-default);
+}
+
+.crs-tab:hover { color: var(--ai-text-secondary); }
+
+.crs-tab--active {
+  color: var(--ai-text-brand);
+  border-bottom-color: var(--ai-surface-brand);
+  font-weight: var(--ai-font-medium);
+}
+
+.crs-tab:focus-visible {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: -2px;
+}
+
+.crs-tab__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--ai-spacing-6);
+  padding: 0 var(--ai-spacing-2);
+  border-radius: var(--ai-radius-full);
+  background: var(--ai-surface-minimal);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-contrast);
+}
+
+/* ══ Evidence panels ══════════════════════════════════════════════════════ */
+
+.crs-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ai-spacing-7);
+  margin-bottom: var(--ai-spacing-6);
+}
+
+.crs-metric__label {
+  margin: 0 0 var(--ai-spacing-1);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  letter-spacing: var(--ai-tracking-7);
+  text-transform: uppercase;
+  color: var(--ai-text-contrast);
+}
+
+/* The emphasised number. Not .chart__big (20px) and not .stat-card__value
+ * (16px) — neither is this, and .stat-card drags an icon tile with it. */
+.crs-stat {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-4xl);
+  font-weight: var(--ai-font-bold);
+  line-height: var(--ai-leading-lg);
+  color: var(--ai-text-primary);
+}
+
+.crs-spark {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--ai-spacing-2);
+  /* TOKEN GAP: sparkline height — see token-gaps.md. */
+  height: 72px;
+}
+.crs-spark > span {
+  flex: 1 1 0;
+  min-inline-size: 0;
+  background: var(--ai-surface-brand);
+  border-radius: var(--ai-radius-xs);
+}
+
+.crs-panel__note {
+  margin: var(--ai-spacing-3) 0 0;
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+}
+
+.crs-panel__sub {
+  margin: var(--ai-spacing-6) 0 var(--ai-spacing-4);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  letter-spacing: var(--ai-tracking-7);
+  text-transform: uppercase;
+  color: var(--ai-text-contrast);
+}
+
+.crs-person {
+  display: flex;
+  flex-direction: column;
+  /* Table.css sets nowrap and it inherits into anything placed in a cell —
+     both ListingScreen.css:114-120 and Datatables.css:1145-1150 had to undo
+     it. Same reset here. */
+  white-space: normal;
+}
+.crs-person__name { color: var(--ai-text-primary); }
+.crs-person__role {
+  font-size: var(--ai-font-fixed-xxs);
+  color: var(--ai-text-contrast);
+}
+
+/* The child listing scrolls in place rather than running the page to 23 rows. */
+.crs-scroll {
+  /* TOKEN GAP: the --ai-size-* scale jumps 384 -> 448 -> 640; ~10 rows wants
+     480. See token-gaps.md. */
+  max-height: 480px;
+  overflow-y: auto;
+}
+
+/* ══ Capture mode ═════════════════════════════════════════════════════════
+ * `?capture=tall` on any of these screens.
+ *
+ * The CC shell is a fixed-height app frame: .cc-control is height:100dvh and
+ * .cc-control__page is the scroll container (ControlScreen.css:29-32, :116-122).
+ * So document.scrollHeight is exactly ONE viewport however long the record is,
+ * and a Figma capture of an 19-section article would show only the first
+ * screenful with the rest sealed inside a scroll container.
+ *
+ * This unpicks the height model for the capture only, so the frame comes out
+ * at full record height — which is what the designer is reviewing, and what
+ * the existing v2 reference capture on the Prototypes page shows (1624×8371).
+ *
+ * It is a URL-triggered attribute rather than a separate stylesheet because
+ * the capture serialises the page AS RENDERED: whatever is not applied at
+ * render time does not exist as far as Figma is concerned.
+ *
+ * Nothing here is part of the design. Do not let it leak into a component.
+ */
+html[data-capture="tall"],
+html[data-capture="tall"] body.cc-control {
+  height: auto;
+  min-height: 0;
+}
+
+html[data-capture="tall"] .cc-control__sidebar {
+  /* height:auto lets align-items:stretch take it to the flex line height,
+     i.e. as tall as the record — rather than pinning it at one viewport. */
+  height: auto;
+}
+
+html[data-capture="tall"] .cc-control__main { min-height: 0; }
+
+html[data-capture="tall"] .cc-control__page {
+  overflow: visible;
+  /* scrollbar-gutter reserves space for a scrollbar that no longer exists,
+     which would shift the right edge by the gutter width in the frame. */
+  scrollbar-gutter: auto;
+}
+
+/* The sidebar would otherwise stick to the viewport top and render level with
+   the header instead of beside the content it belongs to. */
+html[data-capture="tall"] .crs-aside { position: static; }

@@ -896,10 +896,10 @@
         },
         {
           "id": "media-layout-switch",
-          "category": "not-built",
+          "category": "needs-backend",
           "element": "MediaLayOut (Grid | Listing) on MediaItems.html",
-          "current": "Only the LISTING half is built. The live screen defaults to GRID and renders it through MediaLightbox.cfm rather than ListForm.cfm — a different rendering of the same query, not a column variation. The Layout control is deliberately absent rather than dead.",
-          "needs": "Nothing from the backend: the Grid view is a front-end build, next in the queue. The filters, page size and row payload are shared with the Listing view as-is."
+          "current": "BUILT 2026-09-22. Both halves render: a SegmentedControl in the toolbar swaps between them, ?layout=grid opens the grid directly, and they share the toolbar, page size and pager because live shares them too. NOTE the live default is Grid; this opens on Listing. Not built from the live grid: View Album (only fires on a search result, and this prototype has no Browse mode), the jQuery lightbox slideshow, and the AI badge (AIGeneratedYN is real but the row feed does not return it, so flagging any row would be inventing data).",
+          "needs": "`layout` persisted per user the way the live MediaLayOut URL param is, and `aiGenerated` on the row payload so the AI badge can be built. The live screen renders the two layouts from one query, which is what this does."
         },
         {
           "id": "media-topics",
@@ -907,6 +907,13 @@
           "element": "Topics facet in More Filters on MediaItems.html",
           "current": "The option list is the first twenty of 437 REAL taxonomy categories, but no row carries topic tags, so the facet filters to nothing. It is present because it is in the live catalogue, not because the mock data exercises it.",
           "needs": "Topic tags per row (`topics: []`) plus the full taxonomy for the picker. The live control is a webOS multi-select lookup over TaxonomyCategory."
+        },
+        {
+          "id": "listing-bulk-actions",
+          "category": "needs-backend",
+          "element": ".cc-listing__selection Move / Delete on MediaItems.html",
+          "current": "Selection works across BOTH views and the bar counts correctly, but Move and Delete do nothing. The live Grid has the same two actions plus a Move-to-Section field; the live Listing has neither, and its row checkboxes are inert.",
+          "needs": "POST /control/media-items/bulk { action: \"move\"|\"delete\", ids[], sectionCode? }. Move needs a section picker — live uses the same lookup modal the Section filter opens. Permission applies per item: an operator who may not delete should not be offered it. CMethods for this screen is \"add,change,delete,list,view,all,comment,move\", so both actions are real here."
         }
       ]
     }
