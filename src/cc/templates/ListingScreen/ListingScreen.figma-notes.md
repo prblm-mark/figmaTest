@@ -2356,6 +2356,13 @@ exactly as live does, where both layouts run through the same
 `layouts: ['listing', 'grid']` in the config is what puts the switch in the
 toolbar. The other three screens declare nothing and get no control.
 
+The switch sits **last in the toolbar's actions cluster**, after Edit Columns.
+It started before it, which meant that in grid view — where Edit Columns is
+hidden, there being no columns — the switch slid **135px** sideways the moment
+you pressed it, so the control you had just clicked was no longer under the
+pointer (designer, 2026-09-22). Flush right, it does not move: measured 0px of
+travel between the two views.
+
 The switch is **SegmentedControl at `--sm`** (designer, 2026-09-22, pointing at
 Figma `2699:2052`). That size did not exist in the component and was built for
 this — see `SegmentedControl.figma-notes.md`, including three things flagged

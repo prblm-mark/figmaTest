@@ -596,6 +596,21 @@
                  TODO(backend:Listing): choices are in memory only.
                    → GET/PUT /control/media-items/columns { hidden: [key] } -->
             <div class="datatables__actions">
+              <div class="dropdown cc-listing__columns" data-dropdown data-backend-todo="listing-column-prefs">
+                <button type="button" class="btn btn--secondary btn--sm dropdown__trigger"
+                        aria-haspopup="menu" aria-expanded="false">
+                  <i data-lucide="columns-3" aria-hidden="true"></i><span>Edit Columns</span>
+                </button>
+                <div class="dropdown__panel dropdown__panel--columns" role="menu" aria-label="Edit columns">
+                  <p class="dropdown__label">Columns</p>
+                  <div class="cc-listing__columns-list" data-listing-columns></div>
+                </div>
+              </div>
+              <!-- LAST in the cluster, so it is flush right and stays put.
+                   It used to sit before Edit Columns, which is hidden in grid
+                   view — so the switch slid 135px sideways every time you used
+                   it, and the control you just pressed was no longer under the
+                   pointer (designer, 2026-09-22). -->
               <!-- The live screen's MediaLayOut control, which is a <select> of
                    Grid | Listing sitting in the search form's third row. A
                    SegmentedControl at `--sm` instead (designer, 2026-09-22):
@@ -617,16 +632,6 @@
                         role="radio" aria-checked="false" data-layout-value="grid">
                   <i data-lucide="layout-grid" aria-hidden="true"></i>Grid
                 </button>
-              </div>
-              <div class="dropdown cc-listing__columns" data-dropdown data-backend-todo="listing-column-prefs">
-                <button type="button" class="btn btn--secondary btn--sm dropdown__trigger"
-                        aria-haspopup="menu" aria-expanded="false">
-                  <i data-lucide="columns-3" aria-hidden="true"></i><span>Edit Columns</span>
-                </button>
-                <div class="dropdown__panel dropdown__panel--columns" role="menu" aria-label="Edit columns">
-                  <p class="dropdown__label">Columns</p>
-                  <div class="cc-listing__columns-list" data-listing-columns></div>
-                </div>
               </div>
             </div>
           </div>
