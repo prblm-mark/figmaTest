@@ -631,8 +631,25 @@
        * .visually-hidden utility lives in css/style.css, which
        * components are not allowed to import (CLAUDE.md §8). */
       if (!col.label) {
-        var name = col.key === 'select' ? 'Select' : 'Actions';
-        return '<th scope="col" aria-label="' + name + '"' + colClass(col) + '></th>';
+        /* The select column's header carries SELECT ALL. No visible label —
+           the column is a checkbox column and the header is a checkbox
+           (designer, 2026-09-22); the name is on the input for a screen
+           reader. A screen with no bulk actions has no select column at all,
+           so this cannot appear where selection would lead nowhere. */
+        if (col.key === 'select') {
+          return '<th scope="col"' + colClass(col) + '>' +
+            '<label class="checkbox">' +
+            /* `data-listing-select-all`, NOT `data-select-all`: FilterDropdowns
+               already owns that name for the multi-select-table pickers' own
+               header box. Sharing it meant ticking the Section picker's
+               select-all also ticked every row in the table behind it. */
+            '<input type="checkbox" class="checkbox__input" data-listing-select-all' +
+            ' aria-label="Select all rows on this page">' +
+            '<span class="checkbox__indicator">' +
+            '<i data-lucide="check" aria-hidden="true"></i></span>' +
+            '</label></th>';
+        }
+        return '<th scope="col" aria-label="Actions"' + colClass(col) + '></th>';
       }
       /* Figma shortens some headers on mobile ("Order No" -> "Order").
        * Both strings are rendered and the container query picks one:
@@ -1120,6 +1137,20 @@
     return out;
   }
 
+  /* The header box reflects the PAGE, not the whole selection: it is checked
+     when every row on screen is ticked. There is no indeterminate state —
+     Checkbox has no Figma variant for one, and inventing a dash glyph is not
+     this change's to make. Flagged rather than faked. */
+  function refreshSelectAll(root) {
+    /* Scoped to the listing's own head — the pickers render their own tables
+       inside this same root. */
+    var all = root.querySelector('[data-listing-head] [data-listing-select-all]');
+    if (!all) return;
+    var boxes = root.querySelectorAll('[data-listing-body] [data-select-row]');
+    all.checked = boxes.length > 0 &&
+      Array.prototype.every.call(boxes, function (b) { return b.checked; });
+  }
+
   function refreshApply(root) {
     var apply = root.querySelector('[data-selection-apply]');
     if (!apply) return;
@@ -1192,6 +1223,7 @@
     /* The body was just rebuilt, so the column marks went with it. */
     applyColumnVisibility(root, config);
     fitColumns(root, config);
+    refreshSelectAll(root);
     renderSelection(root, config);
   }
 
@@ -1989,6 +2021,26 @@
       });
       var card = root.querySelector('[data-grid-card="' + id + '"]');
       if (card) card.classList.toggle('cc-grid__card--selected', box.checked);
+      refreshSelectAll(root);
+      renderSelection(root, config);
+    });
+
+    /* Select all — every row on the CURRENT PAGE, which is what a header
+       checkbox means in a paged table. It runs before the per-row handler
+       above would see anything, so it drives the rows itself. */
+    root.addEventListener('change', function (e) {
+      var all = e.target.closest('[data-listing-select-all]');
+      if (!all) return;
+      root.querySelectorAll('[data-listing-body] [data-select-row]').forEach(function (b) {
+        b.checked = all.checked;
+        var id = b.getAttribute('data-select-row');
+        if (all.checked) SELECTED[id] = true; else delete SELECTED[id];
+        root.querySelectorAll('[data-select-row="' + id + '"]').forEach(function (o) {
+          o.checked = all.checked;
+        });
+        var card = root.querySelector('[data-grid-card="' + id + '"]');
+        if (card) card.classList.toggle('cc-grid__card--selected', all.checked);
+      });
       renderSelection(root, config);
     });
 
@@ -2036,6 +2088,7 @@
       root.querySelectorAll('[data-grid-card]').forEach(function (c) {
         c.classList.remove('cc-grid__card--selected');
       });
+      refreshSelectAll(root);
       renderSelection(root, config);
     });
 
