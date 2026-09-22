@@ -2602,10 +2602,38 @@ between the toolbar and the table.
 
 | Screen | Bulk actions | Source |
 |---|---|---|
-| **Orders** | *Change Status* · *Add to List* · *Archive* — three SELECTS | `OrderProcessings.cfm`, the `sShowCustomButtons` savecontent |
-| **Articles** | Copy · Move · Make Live · Make Not Live · Delete — five verbs | `v-article-listing.cfc` line 1: `this.CMethods = "copy,move,delete,listmakelive,listmakenotlive"` |
-| **Media Items** | Move · Delete | `MediaLightbox.cfm`: `variables.directAction = "move,delete"` |
+| **Orders** | three selects — *Change Status* · *Add to List* · *Archive* | `OrderProcessings.cfm`, the `sShowCustomButtons` savecontent |
+| **Articles** | one select — Copy · Move · Make Live · Make Not Live · Delete | `v-article-listing.cfc` line 1: `this.CMethods = "copy,move,delete,listmakelive,listmakenotlive"` |
+| **Media Items** | one select — Move · Delete | `MediaLightbox.cfm`: `variables.directAction = "move,delete"` |
 | **Article Archive** | **none** | `ArchiveManagementDef.cfm`: `CMethods = "list,change,viewonly"` |
+
+### Selects and an Apply, not rows of buttons
+
+The first cut rendered verbs as buttons — five of them on Articles — and that
+was wrong twice over (designer, 2026-09-22). It wrapped to four rows on a
+phone, and a row of five equal-weight buttons gives no clue that Delete is not
+Copy. One select costs a single tap to open and reads the same at every width:
+Articles' bar went from **173px to 93px** at a 338px column.
+
+It is also what live does. `directAction` renders as a select of verbs beside
+an **Action** submit; Orders simply adds two more selects alongside it. So the
+uniform shape — *n* selects plus one commit button — is the live model, not a
+departure from it.
+
+**Apply is disabled until something is chosen.** The entire point of a commit
+button is that the destructive step is deliberate; one that is always live is
+just a second click. And a single Apply can carry every set select at once,
+which is what live's one submit does — change status *and* add to a list *and*
+archive in one request.
+
+**The label repeats as the first menu row**, which is how the live selects work
+(`<option value="">Change Status</option>` heads each one). Picking it again is
+how you unset, and that is the only way back to "nothing chosen" once a value
+is showing.
+
+**Clearing the selection resets the selects.** Leaving "Delete" sitting in a
+select after the rows it applied to have gone is an accident waiting for the
+next tick.
 
 Orders' option lists are real too: the sixteen statuses it already had, the
 `OrderList` table's own rows, and `variables.ArchiveOptions` (line 600) =

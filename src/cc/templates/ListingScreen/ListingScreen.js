@@ -1062,40 +1062,94 @@
      a permanent action row below it, which is two pieces of chrome for a state
      that is usually empty.
      TODO(backend:Listing) listing-bulk-actions: Move and Delete do nothing. */
-  /* The actions themselves are per-screen, like `headerActions` and `layouts`,
-     because each live screen declares its own set and they are not the same
-     shape. Orders has three SELECTS and an Action submit; Articles has five
-     verbs; Media Items has two. A screen that declares none gets no bar at all
-     — and no select column either, since a checkbox that can lead to nothing
-     is the disagreement this bar exists to end. */
+  /* The actions are per-screen, like `headerActions` and `layouts`, because
+     each live screen declares its own set — and they are all SELECTS plus one
+     commit button, which is live's own model: `directAction` renders as a
+     select of verbs beside an "Action" submit, and Orders adds two more
+     selects alongside it.
+
+     Five verbs as five buttons was the first cut and it was wrong (designer,
+     2026-09-22): it wrapped to four rows on a phone, and a row of five
+     equal-weight buttons gives no clue that Delete is not Copy. One select
+     costs one tap to open and reads the same at every width.
+
+     The label repeats as the first menu row, which is how the live selects
+     work — `<option value="">Change Status</option>` heads each one — so
+     picking it again is how you unset. */
   function renderBulkActions(config) {
-    return (config.bulkActions || []).map(function (a) {
-      if (a.type === 'select') {
-        return '<div class="sel cc-listing__selection-select" data-sel>' +
-          '<button class="sel__control sel__control--sm" type="button" data-sel-trigger' +
-            ' aria-label="' + esc(a.label) + '">' +
-            '<span class="sel__value">' + esc(a.label) + '</span>' +
-            '<span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>' +
-          '</button>' +
-          '<ul class="sel__menu" role="listbox" aria-label="' + esc(a.label) + '">' +
-            (a.options || []).map(function (o) {
-              return '<li><button type="button" class="sel__menu-item" role="option">' +
-                esc(o) + '</button></li>';
-            }).join('') +
-          '</ul></div>';
-      }
-      return '<button type="button" class="btn btn--' + esc(a.variant || 'secondary') + ' btn--sm">' +
-        (a.icon ? '<i data-lucide="' + esc(a.icon) + '" aria-hidden="true"></i>' : '') +
-        '<span>' + esc(a.label) + '</span></button>';
+    var acts = config.bulkActions || [];
+    if (!acts.length) return '';
+
+    var html = acts.map(function (a) {
+      return '<div class="sel cc-listing__selection-select" data-sel' +
+        ' data-bulk-select="' + esc(a.label) + '">' +
+        '<button class="sel__control sel__control--sm" type="button" data-sel-trigger' +
+          ' aria-label="' + esc(a.label) + '">' +
+          '<span class="sel__value">' + esc(a.label) + '</span>' +
+          '<span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>' +
+        '</button>' +
+        '<ul class="sel__menu" role="listbox" aria-label="' + esc(a.label) + '">' +
+          '<li><button type="button" class="sel__menu-item" role="option">' +
+            esc(a.label) + '</button></li>' +
+          (a.options || []).map(function (o) {
+            return '<li><button type="button" class="sel__menu-item" role="option">' +
+              esc(o) + '</button></li>';
+          }).join('') +
+        '</ul></div>';
     }).join('');
+
+    /* Disabled until something is chosen — the whole point of a commit button
+       is that the destructive step is deliberate, and one that is always live
+       is just a second click.
+       TODO(backend:Listing) listing-bulk-actions: Apply does nothing. */
+    return html + '<button type="button" class="btn btn--primary btn--sm"' +
+      ' data-selection-apply disabled>Apply</button>';
+  }
+
+  /* What each select currently holds, or null when it is still showing its own
+     label. Reading the rendered value rather than keeping a parallel store:
+     Select.js owns that text, and a second copy of it would be the thing that
+     drifts. */
+  function bulkValues(root) {
+    var out = {};
+    root.querySelectorAll('[data-bulk-select]').forEach(function (sel) {
+      var label = sel.getAttribute('data-bulk-select');
+      var shown = sel.querySelector('.sel__value').textContent.trim();
+      out[label] = shown === label ? null : shown;
+    });
+    return out;
+  }
+
+  function refreshApply(root) {
+    var apply = root.querySelector('[data-selection-apply]');
+    if (!apply) return;
+    var v = bulkValues(root);
+    apply.disabled = !Object.keys(v).some(function (k) { return v[k]; });
+  }
+
+  /* Put every select back to its label. Called when the selection is cleared
+     or emptied — leaving "Delete" sitting in a select after the rows it
+     applied to have gone is an accident waiting for the next tick. */
+  function resetBulk(root) {
+    root.querySelectorAll('[data-bulk-select]').forEach(function (sel) {
+      sel.querySelector('.sel__value').textContent = sel.getAttribute('data-bulk-select');
+      sel.querySelectorAll('.sel__menu-item').forEach(function (i) {
+        i.classList.remove('sel__menu-item--selected');
+        i.removeAttribute('aria-selected');
+        var check = i.querySelector('[data-lucide], svg');
+        if (check) check.remove();
+      });
+    });
+    refreshApply(root);
   }
 
   function renderSelection(root, config) {
     var bar = root.querySelector('[data-listing-selection]');
     if (!bar) return;
     var n = Object.keys(SELECTED).length;
+    var was = bar.hidden;
     bar.hidden = n === 0 || !(config.bulkActions || []).length;
-    if (bar.hidden) return;
+    if (bar.hidden) { if (!was) resetBulk(root); return; }
     var count = bar.querySelector('[data-selection-count]');
     if (count) count.textContent = n + (n === 1 ? ' item selected' : ' items selected');
   }
@@ -1957,8 +2011,26 @@
       });
     }
 
+    /* Select.js owns the pick and dispatches nothing, so this listens for the
+       same click and re-reads the rendered value afterwards. `setTimeout 0`
+       because both handlers are on the document: without it this reads the
+       value Select.js has not written yet. */
+    root.addEventListener('click', function (e) {
+      if (!e.target.closest('[data-selection-actions] .sel__menu-item')) return;
+      setTimeout(function () { refreshApply(root); }, 0);
+    });
+
+    var applyBtn = root.querySelector('[data-selection-apply]');
+    if (applyBtn) applyBtn.addEventListener('click', function () {
+      /* TODO(backend:Listing) listing-bulk-actions — one request carrying every
+         set select, which is what live's single Action submit does: you can
+         change status AND add to a list AND archive in one go. */
+      resetBulk(root);
+    });
+
     var clearBtn = root.querySelector('[data-selection-clear]');
     if (clearBtn) clearBtn.addEventListener('click', function () {
+      resetBulk(root);
       SELECTED = {};
       root.querySelectorAll('[data-select-row]').forEach(function (b) { b.checked = false; });
       root.querySelectorAll('[data-grid-card]').forEach(function (c) {

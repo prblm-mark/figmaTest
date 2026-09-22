@@ -342,8 +342,7 @@ LISTING_SCREENS['media-items'] = {
      CMethods carries both. The live Grid shows these under the thumbnails
      with a Select-all above; here they are the shared selection bar. */
   bulkActions: [
-    { label: 'Move',   icon: 'folder-input' },
-    { label: 'Delete', icon: 'trash-2' }
+    { type: 'select', label: 'Actions', options: ['Move', 'Delete'] }
   ],
   /* The live LimitBy list, and 25 is its default — the only one of the four
      screens whose page size does not default to 20. */

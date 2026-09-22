@@ -344,14 +344,13 @@ LISTING_SCREENS.articles = {
   headerActions: [{ label: 'Add', icon: 'plus', variant: 'primary' }],
   /* REAL, and the whole list: `this.CMethods = "copy,move,delete,
      listmakelive,listmakenotlive"` — the first line of v-article-listing.cfc.
-     Five verbs and no selects, which is why this screen's bar looks nothing
-     like Orders'. */
+     ONE select rather than five buttons (designer, 2026-09-22): five
+     equal-weight buttons wrapped to four rows on a phone and gave no clue
+     that Delete is not Copy. It is also what live does — `directAction`
+     renders as a select beside an Action submit. */
   bulkActions: [
-    { label: 'Copy',          icon: 'copy' },
-    { label: 'Move',          icon: 'folder-input' },
-    { label: 'Make Live',     icon: 'eye' },
-    { label: 'Make Not Live', icon: 'eye-off' },
-    { label: 'Delete',        icon: 'trash-2' }
+    { type: 'select', label: 'Actions',
+      options: ['Copy', 'Move', 'Make Live', 'Make Not Live', 'Delete'] }
   ],
   /* The article ID is what the row and pencil routes key on — this file said
      so from the start, but the template had `orderNo` hard-coded, so every
