@@ -2368,7 +2368,7 @@ Each cell holds **a thumbnail and nothing else.**
 | Thumbnail only; name, W×H, file size and type in a jQuery hover tooltip (`trailOn`) | Thumbnail + a caption block: name (13px semibold) over `format · created` (12px) | `sTempName` is computed AND truncated in the source, then never printed. A hover tooltip cannot be reached by keyboard or read by a screen reader, and 96,000 unlabelled thumbnails is not a library you can scan (designer) |
 | Fixed 140px cell, profile-driven column count | `repeat(auto-fill, minmax(--ai-size-2, 1fr))` | CLAUDE.md §4a — it has to reflow with the content column, not the window. 160px against live's off-scale 140, so the name has room to be read |
 | Permanent "Select all" above, permanent Move/Delete row below | One selection bar, shown only when something is ticked | Two pieces of chrome for a state that is usually empty |
-| Checkbox / View Album / Slideshow / Edit revealed on `mouseenter` only | Checkbox + Edit revealed on hover, on **focus**, and unconditionally where there is **no hover at all** | A hover-only control is unreachable by keyboard AND by finger — see below. View Album and Slideshow are not built |
+| Checkbox / View Album / Slideshow / Edit revealed on `mouseenter` only | All four, revealed on hover, on **focus**, and unconditionally where there is **no hover at all** | A hover-only control is unreachable by keyboard AND by finger — see below |
 
 ## Selection is shared by both views
 
@@ -2386,16 +2386,49 @@ second from the grid → "2 items selected"; Clear → both views empty.
 
 `TODO(backend:Listing) listing-bulk-actions` — Move and Delete are inert.
 
-## Not built, deliberately
+## The card's hover bar is FOUR controls, not two
 
-- **View Album** (live shows it only when the item's section differs from the
-  one being browsed — i.e. on a search result). This prototype has no Browse
-  mode, so the condition can never be true.
-- **Slideshow / lightbox** (images only, via the jQuery lightbox plugin).
-- **The AI badge.** `AIGeneratedYN` is a real column and live floats an AI icon
-  top-right when it is set — but the 50 rows came from `affino_list_media_items`,
-  which does not return that field, so marking any of them as AI-generated
-  would be inventing data. Left out rather than guessed.
+Corrected 2026-09-22 after the designer pointed at the live screen: the first
+build shipped a checkbox and a pencil, and `.MediaButtons` in
+`MediaLightbox.cfm` actually holds a checkbox and **three** icons.
+
+| Live icon | Action | Built as | Shown |
+|---|---|---|---|
+| `MediaLibraryAlbumViewIcon` | View Album — go to the section holding it | `folder-open` | always |
+| `MEDIALIBRARYSLIDESHOWICON` | Slideshow — open it in the lightbox | `expand` | image rows only |
+| `MediaLibraryEditIcon` | Edit Details | `pencil` | always |
+
+All three are **Button at `btn--icon btn--xs`** (24×24, 12px icon) at the
+designer's instruction, and **secondary** rather than tertiary: they sit on top
+of a photograph, and tertiary's transparent background would leave them
+unreadable over half the library. The only thing the template adds is
+`--ai-shadow-xxs`, to lift them off the picture.
+
+Live's own conditions are kept rather than showing three unconditionally.
+Slideshow is `ImageYN`-gated there, so a PDF and a video each get two, not
+three. View Album is gated to a *search result* — the item's section differing
+from the one being browsed — which this prototype has no Browse mode to
+express, so it shows always. Measured: image 3, document 2, video 2.
+
+`TODO(backend:Listing) media-card-actions` — View Album and Slideshow go
+nowhere; Edit shares the row route.
+
+### Still not built
+
+**The AI badge.** `AIGeneratedYN` is a real column and live floats an AI icon
+top-right when it is set — but the 50 rows came from
+`affino_list_media_items`, which does not return that field, so marking any of
+them as AI-generated would be inventing data. Left out rather than guessed.
+
+### A bug the reference screenshot caught, not the code
+
+Every non-image card was drawing its family glyph in the **top-left corner**
+instead of the middle. `.cc-grid__media` centres its own children, but the
+glyph is a child of the LINK inside it, and the link was `display: block`. The
+sizing rule missed it for the same reason — it used `>` against the media box,
+so it matched nothing and the icon was 24px only because that is Lucide's
+default. The link now centres its contents and the rule is a descendant one.
+Measured after: the glyph's centre is 0,0 from the box's centre.
 
 ## The caption is one block, not two siblings
 

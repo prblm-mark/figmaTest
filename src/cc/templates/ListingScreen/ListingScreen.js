@@ -995,16 +995,51 @@
             ' aria-label="Select ' + esc(ROW_ID.spoken) + ' ' + esc(row.title) + '">' +
             '<span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>' +
           '</label>' +
-          '<a class="cc-grid__edit" href="' + esc(ROUTE.edit(id, ROW_ID.noun)) + '"' +
-            ' data-backend-todo="listing-row-routes"' +
-            ' aria-label="Edit ' + esc(ROW_ID.spoken) + ' ' + esc(row.title) + '">' +
-            '<i data-lucide="pencil" aria-hidden="true"></i></a>' +
+          '<div class="cc-grid__actions">' + gridActions(row) + '</div>' +
         '</div>' +
         '<div class="cc-grid__text">' +
           '<p class="cc-grid__name" title="' + esc(row.title) + '">' + esc(row.title) + '</p>' +
           '<p class="cc-grid__meta">' + esc(row.format) + ' · ' + esc(row.created) + '</p>' +
         '</div>' +
       '</div></li>';
+  }
+
+  /* The live card's hover bar is a checkbox and THREE icons, not one
+     (designer, 2026-09-22 — `.MediaButtons` in MediaLightbox.cfm):
+
+       View Album     MediaLibraryAlbumViewIcon   — go to the section holding it
+       Slideshow      MEDIALIBRARYSLIDESHOWICON   — open it in the lightbox
+       Edit Details   MediaLibraryEditIcon        — open the edit form
+
+     All three are Button at `btn--icon btn--xs` (24x24, 12px icon), and
+     SECONDARY rather than tertiary: these sit on top of a photograph, and
+     tertiary's transparent background would leave them unreadable over half
+     the library.
+
+     Live's own conditions are kept rather than showing three unconditionally:
+     Slideshow is `ImageYN`-gated there, so a PDF gets two. View Album is gated
+     to a search result — the item's section differing from the one being
+     browsed — which this prototype has no Browse mode to express, so it shows
+     always.
+     TODO(backend:Listing) media-card-actions: View Album and Slideshow go
+     nowhere; Edit shares the row route. */
+  function gridActions(row) {
+    var btn = 'btn btn--secondary btn--icon btn--xs cc-grid__action';
+    var out = '<a class="' + btn + '" href="#" data-backend-todo="media-card-actions"' +
+      ' aria-label="View the album holding ' + esc(row.title) + '">' +
+      '<i data-lucide="folder-open" aria-hidden="true"></i></a>';
+
+    if (row.family === 'image') {
+      out += '<a class="' + btn + '" href="#" data-backend-todo="media-card-actions"' +
+        ' aria-label="Open ' + esc(row.title) + ' in the slideshow">' +
+        '<i data-lucide="expand" aria-hidden="true"></i></a>';
+    }
+
+    out += '<a class="' + btn + '" href="' + esc(ROUTE.edit(rowId(row), ROW_ID.noun)) + '"' +
+      ' data-backend-todo="listing-row-routes"' +
+      ' aria-label="Edit ' + esc(ROW_ID.spoken) + ' ' + esc(row.title) + '">' +
+      '<i data-lucide="pencil" aria-hidden="true"></i></a>';
+    return out;
   }
 
   function renderGrid(rows) {

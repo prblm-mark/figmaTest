@@ -342,8 +342,15 @@
               box-shadow var(--ai-transition-default);
 }
 
+/* The link fills the box AND centres what is in it. It used to be
+ * `display: block`, which put the family glyph of every non-image card in the
+ * TOP-LEFT corner instead of the middle — `.cc-grid__media` centres its own
+ * children, and the glyph is the link's child, not the media box's. Visible on
+ * every PDF and ZIP card and caught from a screenshot, not from the code. */
 .cc-grid__link {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   inline-size: 100%;
   block-size: 100%;
 }
@@ -355,9 +362,13 @@
   display: block;
 }
 
-/* A family glyph for the rows with no picture, sized like the listing's. */
-.cc-grid__media > [data-lucide],
-.cc-grid__media > svg {
+/* A family glyph for the rows with no picture, sized like the listing's.
+ * Descendant, not child: the glyph sits inside the link, so the `>` this
+ * started with matched nothing and the icon fell back to Lucide's own 24px by
+ * coincidence rather than by instruction. Scoped past `.cc-grid__actions` so
+ * it cannot reach the buttons' own icons. */
+.cc-grid__link [data-lucide],
+.cc-grid__link svg {
   inline-size: var(--ai-icon-size-lg);
   block-size: var(--ai-icon-size-lg);
 }
@@ -381,7 +392,7 @@
  * `(hover: none)` block below. Reveal-on-hover is not a style, it is a bet
  * that the device has a pointer. */
 .cc-grid__select,
-.cc-grid__edit {
+.cc-grid__actions {
   position: absolute;
   inset-block-start: var(--ai-spacing-2);
   opacity: 0;
@@ -390,31 +401,24 @@
 
 .cc-grid__select { inset-inline-start: var(--ai-spacing-2); }
 
-.cc-grid__edit {
+/* Three of them on an image card, two on anything else — see `gridActions`. */
+.cc-grid__actions {
   inset-inline-end: var(--ai-spacing-2);
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  inline-size: var(--ai-spacing-7);
-  block-size: var(--ai-spacing-7);
-  border-radius: var(--ai-radius-sm);
-  background-color: var(--ai-surface-primary);
-  color: var(--ai-icon-contrast);
+  gap: var(--ai-spacing-1);
+}
+
+/* Button already gives `btn--icon btn--xs` its 24x24 box and 12px icon; all
+ * this adds is the lift off the photograph underneath. */
+.cc-grid__action {
   box-shadow: var(--ai-shadow-xxs);
 }
 
-.cc-grid__edit [data-lucide],
-.cc-grid__edit svg {
-  inline-size: var(--ai-icon-size-sm);
-  block-size: var(--ai-icon-size-sm);
-}
-
-.cc-grid__edit:hover { color: var(--ai-icon-brand); }
-
 .cc-grid__card:hover .cc-grid__select,
-.cc-grid__card:hover .cc-grid__edit,
+.cc-grid__card:hover .cc-grid__actions,
 .cc-grid__card:focus-within .cc-grid__select,
-.cc-grid__card:focus-within .cc-grid__edit,
+.cc-grid__card:focus-within .cc-grid__actions,
 .cc-grid__card--selected .cc-grid__select {
   opacity: 1;
 }
@@ -523,7 +527,7 @@
  */
 @media (hover: none), (pointer: coarse) {
   .cc-grid__select,
-  .cc-grid__edit {
+  .cc-grid__actions {
     opacity: 1;
   }
 }

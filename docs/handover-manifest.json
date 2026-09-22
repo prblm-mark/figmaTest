@@ -914,6 +914,13 @@
           "element": ".cc-listing__selection Move / Delete on MediaItems.html",
           "current": "Selection works across BOTH views and the bar counts correctly, but Move and Delete do nothing. The live Grid has the same two actions plus a Move-to-Section field; the live Listing has neither, and its row checkboxes are inert.",
           "needs": "POST /control/media-items/bulk { action: \"move\"|\"delete\", ids[], sectionCode? }. Move needs a section picker — live uses the same lookup modal the Section filter opens. Permission applies per item: an operator who may not delete should not be offered it. CMethods for this screen is \"add,change,delete,list,view,all,comment,move\", so both actions are real here."
+        },
+        {
+          "id": "media-card-actions",
+          "category": "needs-backend",
+          "element": ".cc-grid__action View Album / Slideshow on MediaItems.html grid cards",
+          "current": "Both render as Button `btn--icon btn--xs` and go nowhere. Edit shares the row route. Slideshow is shown on image rows only, matching the live ImageYN gate; View Album shows always because this prototype has no Browse mode, where live gates it to a search result.",
+          "needs": "View Album: the section listing route — live builds /AfcMediaLibrary/MediaItems.cfm?ZoneCode=&ChannelCode=&ccs=&Navigation=&MediaLayOut=. Slideshow: the full-size asset URL for a lightbox; live points the anchor at the master file path. Both want the row payload to carry the section/channel codes and the master file URL."
         }
       ]
     }
