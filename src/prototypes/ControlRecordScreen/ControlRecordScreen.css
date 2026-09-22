@@ -648,5 +648,8 @@ html[data-capture="tall"] .cc-control__page {
 }
 
 /* The sidebar would otherwise stick to the viewport top and render level with
-   the header instead of beside the content it belongs to. */
-html[data-capture="tall"] .crs-aside { position: static; }
+   the header instead of beside the content it belongs to.
+   Needs .crs-record in the selector to outrank the sticky rule above, which is
+   `.crs-record:not(.crs-record--aside-all) .crs-aside` = (0,3,0); this is
+   (0,3,1). Without the extra class it loses and the aside stays sticky. */
+html[data-capture="tall"] .crs-record .crs-aside { position: static; }

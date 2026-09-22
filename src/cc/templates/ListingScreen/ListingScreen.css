@@ -371,8 +371,12 @@
 
 /* Checkbox and pencil sit ON the picture, revealed on hover — the live grid's
  * own idiom (`.MediaButtons`, visibility hidden until mouseenter, and kept
- * visible while that item is checked). Kept visible on focus too, which the
- * live one is not: a hover-only control cannot be reached by keyboard. */
+ * visible while that item is checked). Kept visible on FOCUS too, which the
+ * live one is not: a hover-only control cannot be reached by keyboard.
+ *
+ * And revealed unconditionally where there is no hover at all — see the
+ * `(hover: none)` block below. Reveal-on-hover is not a style, it is a bet
+ * that the device has a pointer. */
 .cc-grid__select,
 .cc-grid__edit {
   position: absolute;
@@ -477,6 +481,29 @@
   align-items: center;
   gap: var(--ai-spacing-3);
   margin-inline-start: auto;
+}
+
+/* ── No hover, no reveal ──────────────────────────────────
+ *
+ * On a touch device the card's controls were unreachable: they sit at
+ * `opacity: 0` until `:hover`, and the picture is covered by the anchor that
+ * opens the item — so the first tap navigates away and there is no second
+ * one. `:focus-within` rescues the keyboard, not the finger. Nothing in the
+ * grid could be SELECTED on a phone, which also made the selection bar and its
+ * Move/Delete unreachable there (designer, 2026-09-22).
+ *
+ * `(hover: none)` and `(pointer: coarse)` rather than a width breakpoint,
+ * because this is not a question about size. A narrow desktop window still has
+ * a pointer and reveal-on-hover is right there; a tablet at 1100px does not
+ * and it is wrong. CLAUDE.md §4a names device capability as the case a
+ * viewport-level `@media` is actually FOR, and an input-capability query is
+ * that case exactly — a container query cannot ask this question at all.
+ */
+@media (hover: none), (pointer: coarse) {
+  .cc-grid__select,
+  .cc-grid__edit {
+    opacity: 1;
+  }
 }
 
 /* The layout switch sits with Edit Columns in the toolbar's actions cluster. */

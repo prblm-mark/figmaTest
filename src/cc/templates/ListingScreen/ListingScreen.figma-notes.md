@@ -2368,7 +2368,7 @@ Each cell holds **a thumbnail and nothing else.**
 | Thumbnail only; name, W×H, file size and type in a jQuery hover tooltip (`trailOn`) | Thumbnail + name + `format · created` at rest | `sTempName` is computed AND truncated in the source, then never printed. A hover tooltip cannot be reached by keyboard or read by a screen reader, and 96,000 unlabelled thumbnails is not a library you can scan (designer) |
 | Fixed 140px cell, profile-driven column count | `repeat(auto-fill, minmax(--ai-size-2, 1fr))` | CLAUDE.md §4a — it has to reflow with the content column, not the window. 160px against live's off-scale 140, so the name has room to be read |
 | Permanent "Select all" above, permanent Move/Delete row below | One selection bar, shown only when something is ticked | Two pieces of chrome for a state that is usually empty |
-| Checkbox / View Album / Slideshow / Edit revealed on `mouseenter` only | Checkbox + Edit revealed on hover **and focus** | A hover-only control is unreachable by keyboard. View Album and Slideshow are not built — see below |
+| Checkbox / View Album / Slideshow / Edit revealed on `mouseenter` only | Checkbox + Edit revealed on hover, on **focus**, and unconditionally where there is **no hover at all** | A hover-only control is unreachable by keyboard AND by finger — see below. View Album and Slideshow are not built |
 
 ## Selection is shared by both views
 
@@ -2396,6 +2396,37 @@ second from the grid → "2 items selected"; Clear → both views empty.
   top-right when it is set — but the 50 rows came from `affino_list_media_items`,
   which does not return that field, so marking any of them as AI-generated
   would be inventing data. Left out rather than guessed.
+
+## Reveal-on-hover is a bet that the device has a pointer
+
+Caught by the designer, 2026-09-22, and it was a real hole rather than a rough
+edge. The card's checkbox and pencil sat at `opacity: 0` until `:hover`, and the
+picture is covered by the anchor that opens the item — so on a phone the first
+tap navigates away and there is no second one. **Nothing in the grid could be
+selected on a touch device**, which also put the selection bar and its
+Move/Delete permanently out of reach there. `:focus-within` rescues the
+keyboard; it does nothing for a finger.
+
+```css
+@media (hover: none), (pointer: coarse) {
+  .cc-grid__select,
+  .cc-grid__edit { opacity: 1; }
+}
+```
+
+**An input-capability query, not a width breakpoint** — this is not a question
+about size. A narrow desktop window still has a pointer and reveal-on-hover is
+right there; a tablet at 1100px does not and it is wrong. CLAUDE.md §4a names
+device capability as the one case a viewport-level `@media` is actually for,
+and a container query cannot ask this question at all.
+
+Verified by emulating the capability rather than assuming the rule works:
+with a pointer, `(hover: none)` is false and both controls rest at opacity 0;
+under `--touch-events=enabled --blink-settings=primaryHoverType=1`,
+`(hover: none)` is true and both rest at opacity 1.
+
+The Listing view was already fine: its row pencil is `display: inline-flex`
+at all times and only its colour changes on hover.
 
 ## Two things caught by measuring
 
