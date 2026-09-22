@@ -275,3 +275,293 @@
   min-width: var(--ai-size-1);
   padding: var(--ai-spacing-3);
 }
+
+/* ── Grid view (Media Items) ──────────────────────────────
+ *
+ * The other half of the live screen's MediaLayOut switch. Live renders it
+ * through MediaLightbox.cfm as a bordered <table> of fixed 140px cells, with
+ * the column count coming from a per-client Media Library Profile setting
+ * (MEDIALIBRARYSLIDECOLUMNS) — so it does not respond to its container at all,
+ * and a docked sidebar simply crops it.
+ *
+ * `auto-fill` + `minmax` instead, so the grid reflows with the content column
+ * the way CLAUDE.md §4a asks. The minimum is --ai-size-2 (160px), the
+ * designer's call against live's off-scale 140: a touch wider, so the name has
+ * room to be read rather than truncated to two words.
+ *
+ * Which view is showing is an attribute on the listing root, not two screens.
+ * Both share the toolbar, the page size and the pager, because live shares
+ * them too — the Grid and the Listing are one query rendered twice.
+ */
+
+/* CHILD COMBINATORS, not a descendant match. `.datatables__body` is not
+ * unique inside the listing: every multi-select-table picker renders its own
+ * `<div class="datatables"><div class="datatables__body">` (ListingScreen.js
+ * line ~531), so a descendant selector hides the Channel and Section pickers'
+ * tables whenever the screen is in grid view — a control that silently stops
+ * working in one of two views. `listingTable()` already carries a comment
+ * about being caught by exactly this; the CSS needed the same care. */
+.cc-listing[data-layout="grid"] > .datatables > .datatables__body { display: none; }
+.cc-listing[data-layout="listing"] > .datatables > .cc-listing__grid { display: none; }
+
+.cc-listing__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--ai-size-2), 1fr));
+  gap: var(--ai-spacing-5);
+  padding: var(--ai-spacing-5);
+  margin: 0;
+  list-style: none;
+}
+
+.cc-grid__item { min-inline-size: 0; }
+
+.cc-grid__card {
+  display: flex;
+  flex-direction: column;
+  /* Picture to caption (designer, 2026-09-22). Twice the 4px INSIDE the
+     caption, which is what keeps the two text lines reading as one block
+     rather than as two more children of the card. */
+  gap: var(--ai-spacing-3);
+  min-inline-size: 0;
+}
+
+/* The picture. Square, because the source thumbnails are generated square and
+ * a grid of mixed aspect ratios is a ragged grid. */
+.cc-grid__media {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  background-color: var(--ai-surface-secondary);
+  color: var(--ai-icon-contrast);
+  overflow: hidden;
+  transition: border-color var(--ai-transition-default),
+              box-shadow var(--ai-transition-default);
+}
+
+/* The link fills the box AND centres what is in it. It used to be
+ * `display: block`, which put the family glyph of every non-image card in the
+ * TOP-LEFT corner instead of the middle — `.cc-grid__media` centres its own
+ * children, and the glyph is the link's child, not the media box's. Visible on
+ * every PDF and ZIP card and caught from a screenshot, not from the code. */
+.cc-grid__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.cc-grid__media img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* A family glyph for the rows with no picture, sized like the listing's.
+ * Descendant, not child: the glyph sits inside the link, so the `>` this
+ * started with matched nothing and the icon fell back to Lucide's own 24px by
+ * coincidence rather than by instruction. Scoped past `.cc-grid__actions` so
+ * it cannot reach the buttons' own icons. */
+.cc-grid__link [data-lucide],
+.cc-grid__link svg {
+  inline-size: var(--ai-icon-size-lg);
+  block-size: var(--ai-icon-size-lg);
+}
+
+.cc-grid__card:hover .cc-grid__media,
+.cc-grid__card:focus-within .cc-grid__media {
+  border-color: var(--ai-border-brand);
+}
+
+.cc-grid__card--selected .cc-grid__media {
+  border-color: var(--ai-border-brand);
+  box-shadow: 0 0 0 1px var(--ai-border-brand);
+}
+
+/* Checkbox and pencil sit ON the picture, revealed on hover — the live grid's
+ * own idiom (`.MediaButtons`, visibility hidden until mouseenter, and kept
+ * visible while that item is checked). Kept visible on FOCUS too, which the
+ * live one is not: a hover-only control cannot be reached by keyboard.
+ *
+ * And revealed unconditionally where there is no hover at all — see the
+ * `(hover: none)` block below. Reveal-on-hover is not a style, it is a bet
+ * that the device has a pointer. */
+.cc-grid__select,
+.cc-grid__actions {
+  position: absolute;
+  inset-block-start: var(--ai-spacing-2);
+  opacity: 0;
+  transition: opacity var(--ai-transition-default);
+}
+
+.cc-grid__select { inset-inline-start: var(--ai-spacing-2); }
+
+/* Three of them on an image card, two on anything else — see `gridActions`. */
+.cc-grid__actions {
+  inset-inline-end: var(--ai-spacing-2);
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-1);
+}
+
+/* Button already gives `btn--icon btn--xs` its 24x24 box and 12px icon; all
+ * this adds is the lift off the photograph underneath. */
+.cc-grid__action {
+  box-shadow: var(--ai-shadow-xxs);
+}
+
+.cc-grid__card:hover .cc-grid__select,
+.cc-grid__card:hover .cc-grid__actions,
+.cc-grid__card:focus-within .cc-grid__select,
+.cc-grid__card:focus-within .cc-grid__actions,
+.cc-grid__card--selected .cc-grid__select {
+  opacity: 1;
+}
+
+/* The checkbox needs its own backing so it reads against any photograph. */
+.cc-grid__select .checkbox__indicator {
+  background-color: var(--ai-surface-primary);
+  box-shadow: var(--ai-shadow-xxs);
+}
+
+/* Name and meta are ONE block, not two siblings of the picture. The card's own
+ * gap separates the picture from the text; this pair is a caption and wants to
+ * read as one thing, so it gets its own tighter gap (designer, 2026-09-22) —
+ * --ai-spacing-1 (4px) against the card's --ai-spacing-3 (8px), both steps on
+ * the scale rather than numbers picked to look right.
+ *
+ * `min-inline-size: 0` so both lines can still ellipsise: a flex child's
+ * automatic minimum is its content, and without this the longest name would
+ * set the column's width instead of truncating to it. */
+.cc-grid__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-1);
+  min-inline-size: 0;
+}
+
+.cc-grid__name {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  /* 13px (designer, 2026-09-22), a step up from the 12px meta line beneath it.
+     FIXED, not fluid — `--ai-font-fluid-*` steps down on a phone, and the card
+     name is the one thing on a grid card that must stay readable there. */
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cc-grid__meta {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The no-results card spans the whole grid rather than sitting in one cell. */
+.cc-grid__empty { grid-column: 1 / -1; }
+
+/* ── Selection bar ────────────────────────────────────────
+ * One bar for both views, shown only when something is ticked. The live Grid
+ * keeps a permanent "Select all" above it and a permanent Move/Delete row
+ * below — two pieces of chrome for a state that is usually empty.
+ */
+.cc-listing__selection {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-4);
+  padding: var(--ai-spacing-3) var(--ai-spacing-5);
+  border-block-end: 1px solid var(--ai-border-secondary);
+  /* `--ai-surface-brand-contrast` does NOT exist — the Apr 2026 rename took
+   * every `-contrast` brand/status surface to `-soft`, and the focus-ring
+   * examples still quoting the old name are stale. `-soft` is the tint,
+   * and it is defined per theme so the bar reads in dark mode too. */
+  background-color: var(--ai-surface-brand-soft);
+}
+
+.cc-listing__selection[hidden] { display: none; }
+
+.cc-listing__selection-count {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fluid-xxs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-primary);
+}
+
+.cc-listing__selection-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  margin-inline-start: auto;
+}
+
+/* ── No hover, no reveal ──────────────────────────────────
+ *
+ * On a touch device the card's controls were unreachable: they sit at
+ * `opacity: 0` until `:hover`, and the picture is covered by the anchor that
+ * opens the item — so the first tap navigates away and there is no second
+ * one. `:focus-within` rescues the keyboard, not the finger. Nothing in the
+ * grid could be SELECTED on a phone, which also made the selection bar and its
+ * Move/Delete unreachable there (designer, 2026-09-22).
+ *
+ * `(hover: none)` and `(pointer: coarse)` rather than a width breakpoint,
+ * because this is not a question about size. A narrow desktop window still has
+ * a pointer and reveal-on-hover is right there; a tablet at 1100px does not
+ * and it is wrong. CLAUDE.md §4a names device capability as the case a
+ * viewport-level `@media` is actually FOR, and an input-capability query is
+ * that case exactly — a container query cannot ask this question at all.
+ */
+@media (hover: none), (pointer: coarse) {
+  .cc-grid__select,
+  .cc-grid__actions {
+    opacity: 1;
+  }
+}
+
+/* The layout switch sits LAST in the toolbar's actions cluster, so Edit
+ * Columns appearing and disappearing happens to its left and the switch stays
+ * flush right — it used to slide 135px sideways the moment you pressed it. */
+.cc-listing__layout[hidden] { display: none; }
+
+/* Icons only when the column is narrow (designer, 2026-09-22). The toolbar has
+ * to hold a page-size control, a count and this; at 390px the two labels are
+ * the first thing that can go without losing a function.
+ *
+ * `@container`, matching every other responsive rule on this table: the
+ * question is how much room the CONTENT COLUMN has, and a docked SidebarMenu
+ * takes that away with no window resize at all.
+ *
+ * The accessible name does not change — each button carries an `aria-label`,
+ * so hiding the span takes away the visible text and nothing else. Gap goes
+ * with it, or the icon sits off-centre in a box still reserving room for a
+ * label that is not there. */
+@container (max-width: 767px) {
+  .cc-listing__layout .seg-control__btn-label {
+    display: none;
+  }
+
+  .cc-listing__layout .seg-control__btn {
+    gap: var(--ai-spacing-0);
+  }
+}
+
+@container (max-width: 767px) {
+  .cc-listing__grid {
+    gap: var(--ai-spacing-4);
+    padding: var(--ai-spacing-4);
+  }
+}

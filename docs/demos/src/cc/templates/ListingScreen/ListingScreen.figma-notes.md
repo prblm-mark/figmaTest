@@ -1829,3 +1829,746 @@ TODO(backend:Listing) `listing-header-actions`: Add goes nowhere. It wants the
 screen's "new record" route — the sibling of `listing-row-routes`, ideally in
 the same payload — and the same permission caveat: an operator who may not
 create should not be shown the button.
+
+
+# Article Archive — the third screen on this template
+
+Built 2026-09-22. `ArticleArchive.html` + `listing-data-article-archive.js`.
+Three knobs were added to the template, all per-screen and all defaulting to
+the Orders behaviour; the CSS was not touched at all.
+
+## What came from where
+
+`/control/article-archive` is ControlProfileCode **921**, under Content,
+security code 213, template `/AfoWave/CC/ArchiveManagement.cfm`. The important
+difference from Articles: **it is not a "cc2" screen.** `ResponsiveTemplatePath`
+is empty, so there are no responsive controllers to read a definition out of and
+the legacy CFML *is* the definition. Three files, read directly:
+
+| File | Gives |
+|---|---|
+| `ArchiveManagement.cfm` | the filter catalogue — the `aCS` array |
+| `ArchiveManagementDef.cfm` | the columns — the `CProperties` array, and `CMethods` |
+| `ArchiveManagementQDef.cfm` | the two queries, the sort whitelist, the paging |
+
+Real: the six columns and their order, all six filters with their control
+types / option lists / defaults, the sort whitelist, the default sort, the
+TOP 500 paging, the entity switch, the Presentation Style lists (63
+StandardTemplates, 3 MediaTemplates) and the Section and Channel names.
+Synthesised and flagged in the data file: rows 9+ of the Article set, and the
+whole Media set.
+
+## The five chips ARE the catalogue
+
+Six filters are declared, and the sixth is not a filter. Order By is assigned
+straight to the table's own sort parameter:
+
+```cfml
+if( Len(Trim(Form.Order)) AND NOT StructKeyExists(URL,"hs") ) url.hs = Form.Order;
+```
+
+So it ships as the sortable column headers this template already has — the same
+call Articles made for Articles Per Screen, one setting and one control. The
+house rule (the live screen's first five) therefore lands exactly on the
+boundary here rather than cutting anything, and **More Filters is empty**.
+
+That is a state neither sibling reaches, so the template now **hides the Add
+Filters chip when the catalogue is empty**. A dashed chip that opens a panel
+saying nothing is available is worse than no chip. Nothing was invented to fill
+the panel, which was the alternative and would have put invention next to a
+faithful catalogue.
+
+## One chip reading another — `scopedBy`
+
+"Filter by" (Section / Article / Channel, defaulting to Section+Article) is the
+first control on this template that is **not a row filter**. It decides which
+fields the Name term is matched against:
+
+```cfml
+AND ( 1 = 0
+  <cfif ListContains(Form.FilterType,"Section")> OR "StandardSection"."Name" LIKE …
+  <cfif ListContains(Form.FilterType,"Channel")> OR "Channel"."Name"         LIKE …
+  <cfif ListContains(Form.FilterType,"Article")> OR "StandardItem"."Title"   LIKE …
+)
+```
+
+A filter declares `scopedBy` (the chip to read) and `scopeFields` (that chip's
+option names → row fields). The `1 = 0` is reproduced rather than smoothed
+over: untick every box and a term matches **nothing**, instead of quietly
+falling back to searching the title. Measured on the eight real rows:
+
+| Name | Filter by | Rows |
+|---|---|---|
+| — | Section, Article | 8 |
+| Temp | Section, Article | 2 |
+| Temp | Section | 0 |
+| Add | Channel | 8 |
+| Add | *(none)* | 0 |
+
+Chips can **open with a value** (`defaultValues`), seeded before the FilterBar
+takes its save-view baseline so the screen does not offer to save the view it
+opened on. Only **Type** uses it.
+
+### The screen must not look filtered before anyone touches it
+
+Designer, 2026-09-22. Both chips originally opened with the live screen's own
+defaults — Section+Article and Article — and a screen that arrives already
+filtered is wrong even when the values are right.
+
+**Type keeps its default**, because Type is a mode rather than a filter: the
+live screen always holds one, a radio cannot be cleared, and clearing it here
+produces Articles and Media interleaved — a list the live screen has no way to
+produce, on a table that shows no Type column to tell them apart.
+
+**"Filter by" loses its visible default**, which costs nothing because it
+narrows nothing; it only scopes the Name term. But it cannot simply be dropped,
+or a fresh screen would find nothing the moment a term was typed. The fix is
+that **unset and empty are different states**, which is what the live screen
+does too:
+
+| Scope chip | Means | Name term matches |
+|---|---|---|
+| no value, never touched | `<cfparam default="Section,Article">` | section + title |
+| `['Channel']` | `ListContains(FilterType,"Channel")` | channel |
+| `[]`, explicitly emptied | `AND (1 = 0 …)` | nothing |
+
+So the default moved off the chip and onto the Name filter as `scopeDefault`.
+Collapsing the two with a plain `|| []` is the bug this avoids. Measured: opens
+on 8 with one chip filled; "Temp" untouched → 2; "Add" scoped to Channel → 8;
+"Add" with the scope explicitly emptied → 0.
+
+Note the Name chip is a plain **text** box, not the predictive Articles gives
+its Title. Not a distribution call — a semantic one: the term hits up to three
+different fields at once, and a type-ahead offering titles would hide the
+section and channel matches the same term is finding.
+
+## Type is an entity switch
+
+The one thing this screen does that neither sibling does. Type=1 queries
+`StandardItem`, Type=26 queries `MediaItem`, through two near-identical queries
+with the same six columns. Both row sets ship and the chip picks between them.
+
+The Media branch is worth showing because it looks nothing like the Article
+one: names are raw filenames, sections are forum-media buckets, Publish End is
+publish start **plus ten years**, and there are 3 presentation styles against
+63. A column sized to one branch is not sized to the other.
+
+**Known divergence:** live is a radio and always holds exactly one value; this
+chip can be cleared, which shows both entities at once — a state the live screen
+cannot reach.
+
+## Sorting: there IS a whitelist here
+
+Worth recording because Articles has none. `url.hs` goes through a `<cfswitch>`
+with seven cases — Title, Alphabetical, Channel, Section, PresentationStyle,
+CreatedBy, Chronological, PublishEnd — so the `sort` tokens are the whitelist,
+not every column.
+
+And the default is **PublishStart DESC on a column the screen never shows.**
+The one date it does show is Publish End; the Date Range chip filters
+PublishStart. The rows ship in PublishStart order and `sortRows` leaves an
+unknown token alone, so the screen opens on an order no header can claim —
+which is exactly what the live screen does.
+
+## `rowKey` — and the Articles bug it uncovered
+
+Row identity was hard-coded to `orderNo`. Articles has no such field, so every
+Articles row had been shipping:
+
+```html
+<a class="datatables__row-edit" href="#order//edit" aria-label="Edit order ">
+```
+
+— twenty identical, empty controls for a screen reader, on a screen that has
+been live in the demo since 2026-09-21. The screen now declares `rowKey`,
+`routeNoun` (the URL slug) and `rowNoun` (what is spoken). Two nouns because
+they are read by different things: Article Archive's slug is `archived-item`
+and announcing "Edit archived-item 5361" puts a hyphen in the middle of a
+spoken phrase. Articles was given `rowKey: 'articleId'` in the same pass.
+
+## The eight real rows are the point
+
+They are every `ArchivedYN = 1` item in the 200-row sample the read tools
+allow — `client_db_table_sample` caps at 200 and takes no WHERE clause, so the
+archive's own query cannot be run from here. They are not what a tidy archive
+looks like, and that is why they lead the file:
+
+- Every one is `Live = 0`. Archived content is unpublished content.
+- Seven were created by UserCode 3, whose FirstName is **empty** and LastName is
+  "Former Member". The query builds `FirstName + ' ' + LastName`, so the cell
+  really renders with a **leading space**. Kept verbatim — trimming it here
+  would hide exactly the kind of value a column has to survive.
+- The titles are 'Golf VI', 'Um Bongo', 'Temp Review', 'Temp Test' and 'meh',
+  and two are a record and its copy one second apart. The archive is where test
+  content goes to sit.
+- All eight share one section and one channel, both called "Add Review" — which
+  is what makes the scope chip demonstrable, since the same term hits both.
+- Their Presentation Style is 'Emojo Rated (Deprecated)'; 40 of the 63
+  StandardTemplates on this instance carry "(Deprecated)" in the name.
+
+A first theory — that the archive was the five sections named "…Archive"
+(Branding, News, Quick Smart, Careers, Affino Features), 50 articles between
+them — was **wrong**, and checking it rather than shipping it is the only
+reason this file is not 50 rows of confidently mislabelled data. Those are
+public archive *display* areas; not one of their articles is flagged archived.
+
+## Three defects in the live screen, recorded not reproduced
+
+1. **The total does not match the listing.** The count query runs
+   `WHERE ArchivedYN = 1`, but the listing's own WHERE also admits the
+   auto-archived branch — so on a site with more than 500 archived items the
+   footer under-reports. It is also only run when exactly 500 come back.
+2. **The Media branch may be unreachable.** Its second WHERE branch tests
+   `ArchivedSectionCode > 0`, and every sampled MediaItem has that column NULL;
+   `NULL > 0` is UNKNOWN in T-SQL. Zero of 200 sampled media items are archived
+   either way.
+3. **`Trim(Form.FilterTerm) GT 0`** is a numeric comparison against a string.
+   It happens to behave for most terms because CF falls back to a string
+   compare, but it is `Len()` that was meant.
+
+## Not built, deliberately
+
+The Date Range chip is the **Custom** from/to pair only. Live also offers five
+presets (Any Time / Today / This Week / Last Week / This Month), and a preset
+row is a control the FilterBar has no Figma variant for. The vocabulary is kept
+in `ARCHIVE_DATE_PRESETS` and the gap carries a `TODO(backend:Listing)`.
+
+## Measured
+
+| Table width | Data columns | Overflow |
+|---|---|---|
+| 1155 | 7 | 0 |
+| 955 | 5 | 0 |
+| 755 | 4 | 0 |
+| 619 / 555 | 3 | 0 |
+| 479 / 399 / 375 | 2 | 0 |
+| 309 / 239 | 1 | 0 |
+
+Kebab visible at every width. Orders and Articles re-measured after all three
+knobs and came back **byte-identical to HEAD** at 1400 and 390.
+
+One measurement trap worth recording: a bare `querySelector('table')` in the
+harness picked up a **hidden multi-select-table picker** on Articles, which
+measures 0 and reads exactly like a broken fit. Scope the probe to
+`[data-listing-head]`'s own table.
+
+
+## Export is per screen, not part of the bar
+
+Designer, 2026-09-22: **Articles and Article Archive have no Export.** Of the
+three screens built, only Orders offers one, and the toolbar's actions vary
+screen to screen.
+
+So the split control is not a FilterBar feature that screens opt out of — it is
+a per-screen action that a screen opts *in* to by carrying the markup. Removed
+from `Articles.html` and `ArticleArchive.html` outright; `ListingScreen.html`
+keeps it. Nothing else had to move: `.filter-bar__actions` is a plain flex row
+with a gap and no positional selectors, as its own CSS comment already
+promised, and no JS reads the export markup — `FilterBar.css` only styles it
+when it is there. Verified headless: Orders' toolbar still reads Search ·
+Export · kebab, the other two read Search · kebab, no gap left behind.
+
+`listing-export` in the manifest and HANDOVER.md is now scoped to Orders.
+
+### The kebab went the same way
+
+Designer, 2026-09-22, right after Export and for the same reason: **only Orders
+of the three needs it.** Removed from `Articles.html` and `ArticleArchive.html`.
+
+What was in it is worth recording, because it is the clearest example of the
+pattern this template keeps hitting. *Import orders* and *Generate Shipping
+Labels* are not template chrome that drifted — they are **Figma content**,
+drawn on the FilterBar's own frame, which was authored for the Orders listing.
+`FilterBar.figma-notes.md` still records measuring "Generate Shipping Labels"
+for width at Size=sm. Cloning the template carried them onto a screen full of
+articles, and onto an archive of unpublished 2008 test content.
+
+Article Archive was worse, and that one was this build's own doing: the import
+was *relabelled* to "Import archived items" rather than questioned. That action
+does not exist — `ArchiveManagementDef.cfm` declares
+`CMethods = "list,change,viewonly"`, so there is no add and no import. A
+plausible label is worse than an obviously wrong one, because it reads as
+researched. Removed rather than relabelled a second time: what those screens
+really offer has not been read, and until it has, nothing is the honest answer.
+
+Nothing else had to move — `.filter-bar__actions` is a plain flex row with a
+gap and no positional or `:last-child` selectors, so the two screens are left
+with the desktop search field alone, collapsing to the search icon below the
+container breakpoint. Measured at 1500 / 1000 / 700 / 390 on all three: no
+overflow anywhere, and the **mobile search takeover still works end to end** at
+390 with both its neighbours gone — icon → `--search` mode → exit.
+
+### Three per-screen things found living in a shared place
+
+Worth naming as a pattern rather than three incidents, because a fourth is
+likely:
+
+| What | Where it was | How it surfaced |
+|---|---|---|
+| Row identity (`orderNo`) | hard-coded in the renderer | blank aria-labels on every Articles row |
+| Export | markup in the cloned template | designer spotted it on two screens |
+| Kebab actions | Figma content on the shared FilterBar frame | designer spotted it on two screens |
+
+The shape is always the same: something true of Orders sitting somewhere every
+screen inherits. Worth a look before the fourth screen, not after.
+
+
+# Media Items — the fourth screen on this template
+
+Built 2026-09-22. `MediaItems.html` + `listing-data-media-items.js`. The first
+screen that is not purely config: it adds two CELL renderers and their CSS,
+because it is the first with a **thumbnail** and the first whose Type column is
+a glyph rather than text.
+
+## What came from where
+
+`/control/media-items` is ControlProfileCode **461**, under Media, security
+code 94, template `/AfcMediaLibrary/CC/MediaItems.cfm`. It is not a "cc2"
+screen — and unlike all three siblings it does not use the generic
+`ControlSearch` module either. It hand-rolls a three-row search form, so the
+form markup *is* the filter catalogue.
+
+| File | Gives |
+|---|---|
+| `MediaItems.cfm` | the 16-control search form |
+| `MediaInbox.cfm` | the Listing layout's `CProperties`, `CMethods`, paging, sort |
+
+Real: the six columns and their order, all sixteen filters with their control
+types and option lists, the Media Type groupings, the three MediaTemplate
+styles, the page sizes, the absence of header sorting, the default order, and
+all 50 rows. Not real: the thumbnail **images**, and the Topics tagging.
+
+## The thumbnail
+
+`--ai-spacing-11` (64px) on desktop, `--ai-spacing-9` (48px) from mobile — the
+designer's values, against the live screen's 60×60, which is off the spacing
+scale in both directions. `@container`, and a max-width step rather than a
+min-width one, because that is what every other responsive rule in
+`Datatables.css` does; the value is the designer's, the direction is the
+file's.
+
+**Its header is blank**, because `CProperties[1][2]` is an empty string. That
+is not cosmetic — the fit reads a label-less column as **structure**: always
+drawn, always charged to the budget, never dropped. Which is exactly what a
+thumbnail wants, and is also the reason for the next paragraph.
+
+### `identityColumns: 1`, for a new reason
+
+Because the thumbnail is structural, it is **not an identity column**, so
+`identityColumns` starts counting at Title. Setting it to 2 therefore forced
+Title *and Type* — measured, that overflowed a 239px table by **207px** and
+pushed the kebab off the edge, the same failure that gave Articles its 1. With
+1, Title is forced and Type becomes droppable.
+
+Worth recording as the general shape: `identityColumns` counts LABELLED
+columns. A screen whose leading column has no header gets one fewer than it
+looks like it has.
+
+### The image is the one thing that is not real
+
+The live screen builds the thumbnail from `MediaItem.ImageThumb` through an
+internal DAM path and no read available here returns a usable URL. The first
+build put a tinted box there; the designer's call (2026-09-22) was to **show
+real photographs instead** — a media library is browsed by eye, and a column of
+identical grey boxes tests nothing about the one thing this screen is for.
+
+**Lorem Picsum, because the repo already uses it.** The Orders avatars are
+`https://picsum.photos/seed/<seed>/96`, so this follows the same host rather
+than introducing a second one; Picsum serves real Unsplash photographs. The
+seed is the **item code**, so each row gets a stable, distinct picture across
+reloads — which matters here more than on most screens, because twelve of the
+fifty rows are near-duplicate screenshots taken minutes apart and telling them
+apart is exactly the thumbnail's job. Requested at 128 for a 64px box, so it
+stays sharp on a 2x display.
+
+**Photos go on image and video rows; audio and documents keep a glyph.** Not a
+shortcut — it is the same conclusion the live screen reaches, whose
+`MediaTypeAR` gives those families a format icon rather than a picture. A PDF
+has no thumbnail to show.
+
+`object-fit: cover`, not `contain`: the box is square and the sources are not,
+and letterboxing fifty mixed aspect ratios turns an even column into a ragged
+one. The background stays underneath as the loading and failure state. `alt` is
+**empty on purpose** — the Title column sits immediately beside the image and
+already names the item, so an alt would make a screen reader read every row's
+name twice.
+
+The seam for the real thing is `row.thumbUrl`: point it at the real asset and
+nothing else changes. `TODO(backend:Listing) media-thumbnails`.
+
+## Type: four glyphs instead of thirty
+
+Live picks one of 30 bespoke 40×40 format icons out of a 49-slot array keyed on
+`DocMimeTypeCode` — and **19 of those slots are empty strings**, so those rows
+render nothing at all. This shows one of four Lucide family glyphs plus the
+format in words (designer, 2026-09-22).
+
+The families are not invented. `MediaInbox.cfm`'s own `<cfswitch>` already
+groups the same mimetype codes into exactly Image / Video / Audio / Document
+for the Media Type filter:
+
+```
+Image     4,5,14,44,50
+Video     2,8,11,18,20,21,22,24,25,26,27,30,37,41,48
+Audio     9,13,19,23
+Document  15,16,17,29,33,34,40,42,45,46,47,49
+```
+
+So the column reads `image JPEG`, `file-text PDF`, `video MP4` — the family
+from a grouping the screen already makes, the format from the mimetype.
+
+## Title searches three fields
+
+The live query LIKEs the term against `MediaItem.Name` **or**
+`MediaFileItem.FileName`, and matches `MediaItemCode` outright when the term is
+numeric. The filename is the one that matters: every display name in this
+library is a tidied screenshot ("Screenshot 2023-09-01 at 11.15.17") while the
+file underneath keeps the original.
+
+`scopeFields` with **no** `scopedBy` is now a fixed multi-field text match —
+the generalisation of the Article Archive mechanism, where a chip picked the
+fields. Measured: a filename-only term finds its row, an item code finds its
+row, a display-name term finds two.
+
+## Sorting: the third different answer in four screens
+
+| Screen | Sorting |
+|---|---|
+| Orders | `hs` whitelisted to seven values |
+| Articles | no whitelist — anything sent is interpolated into the ORDER BY |
+| Article Archive | whitelisted to seven `<cfswitch>` cases |
+| Media Items | **none at all** — `headerSort = ""` |
+
+So not one column here carries a `sort` token. The order is fixed at
+`sOrderBy = "PublishStart"` DESC, and PublishStart is not one of the six
+columns, so — as on Article Archive — the screen opens on an order no header
+can claim.
+
+## Two of sixteen are not filters
+
+- **Media Per Screen** (`LimitBy`, 25/50/100/200/500) is the toolbar's page
+  size. Same call as Articles' Articles Per Screen.
+- **Layout** (`MediaLayOut`, Grid/Listing) is the view switch, and the Grid
+  half is the next screen — a chip that swaps to a view that does not exist
+  would be a dead control. Note **the live default is Grid**, not Listing; the
+  URL this was built from forces `MediaLayOut=Listing`.
+  `TODO(backend:Listing) media-layout-switch`.
+
+## The fourth per-screen value found in a shared place
+
+Page size is 25 here — the only one of the four not defaulting to 20 — and that
+is how it surfaced that the toolbar's page-size **label** is static markup
+reading `20`, updated only on change. Every screen so far happened to open on
+20, so it never showed; Media Items rendered 25 rows under a control claiming
+20. Now set from the config at init.
+
+That makes four, and the pattern is worth acting on rather than re-discovering:
+
+| What | Where it was living | How it surfaced |
+|---|---|---|
+| Row identity (`orderNo`) | hard-coded in the renderer | blank aria-labels on Articles |
+| Export | markup in the cloned template | designer |
+| Kebab actions | Figma content on the shared FilterBar frame | designer |
+| Page-size label | static `20` in the shared markup | a screen that opens on 25 |
+
+## Measured
+
+| Table width | Data columns | Thumb | Overflow |
+|---|---|---|---|
+| 1155 | 7 | 64 | 0 |
+| 955 | 5 | 64 | 0 |
+| 755 | 5 | 48 | 0 |
+| 619 | 4 | 48 | 0 |
+| 555 / 479 | 3 | 48 | 0 |
+| 399 / 309 / 239 | 2 | 48 | 0 |
+
+Thumbnail present at every width, no overflow anywhere. Orders, Articles and
+Article Archive all re-measured unchanged at 1400 and 390.
+
+## Next: the Grid view
+
+The other half of `MediaLayOut`. Live renders it through
+`MediaLightbox.cfm` rather than `ListForm.cfm`, so it is a genuinely different
+rendering of the same query and the same filter catalogue — not a column
+variation. The filters, the page size and the row data built here are all
+reusable as-is; what is new is the card and the layout switch.
+
+
+## Spare width is shared, not dumped on the main column
+
+Designer, 2026-09-22, across all four screens. Under fixed layout the fit gave
+every column its measured width and then handed **all** the leftover to the
+single fluid column. At a 555px Media Items table that produced a **331px
+Title beside a 78px Type** — the title's own text ran out long before its
+column did, so the row read as one wide column and then a huddle on the right.
+
+`shareSpare()` now hands the surplus out in **equal shares** to the columns
+that can use it, and the fluid column absorbs only what is left.
+
+**Equal, not proportional.** Proportional shares keep the widest column widest,
+which is the thing being complained about.
+
+**`hug` columns stay out of it.** They are shrink-wrapped by role — a date, an
+ID, a count — and their content is a fixed shape that gains nothing from more
+room. Only the fluid column and the `snug` ones grow.
+
+**Water-filling, because `snug` has a ceiling.** Everyone takes an equal slice;
+anyone who reaches `SNUG_MAX` takes only what fits and drops out; the rest is
+shared again among those still growing. At most one pass per column. The fluid
+column has no ceiling, so there is always somewhere for the remainder to go —
+which is what keeps the widths summing to the table exactly, with no gap at the
+right-hand edge.
+
+### The first attempt made the main column the narrowest
+
+Worth recording because it looked right in the code and was obviously wrong on
+screen. The fluid column's base was `FLUID_MIN` (192) while every other column
+based on its measured natural width, so sharing equally *on top of that* left
+Media Items with a **193px Title beside a 216px Section**. Equal shares are only
+fair if everyone starts from the same kind of number.
+
+The fluid column now bases on its natural width like everything else,
+floored at `FLUID_MIN`. It still absorbs the rounding remainder and still gives
+width back first when the table is over budget; only its starting point moved.
+
+### Measured, before and after
+
+| Screen / table | Before | After |
+|---|---|---|
+| Media Items @555 | Title 331 · Type 78 | Title 289 · Type 121 |
+| Media Items @1155 | Title 283 · Type 92 · Section 192 · Created By 167 | Title 265 · Type 93 · Section 192 · Created By 176 |
+| Orders @555 | Customer took the slack | Order No 81 · Customer 267 · Order Total 126 |
+| Articles @555 | Title took the slack | Title 278 · Section 197 |
+
+All four screens re-checked at 1600 / 1400 / 1200 / 1000 / 700 / 480 / 390 /
+320: **no overflow, no right-edge gap, and the same column counts as before** —
+the change moves width between columns, never changes how many survive.
+
+
+# Media Items · Grid — the other half of MediaLayOut
+
+Built 2026-09-22, from `/AfcMediaLibrary/CC/MediaLightbox.cfm`. Not a new
+screen: it is the same query rendered differently, so it lives inside the same
+`.datatables` block and shares the toolbar, the page size and the pager —
+exactly as live does, where both layouts run through the same
+`GetMediaItems` call and the same `BrowseListBar`.
+
+`layouts: ['listing', 'grid']` in the config is what puts the switch in the
+toolbar. The other three screens declare nothing and get no control.
+
+The switch sits **last in the toolbar's actions cluster**, after Edit Columns.
+It started before it, which meant that in grid view — where Edit Columns is
+hidden, there being no columns — the switch slid **135px** sideways the moment
+you pressed it, so the control you had just clicked was no longer under the
+pointer (designer, 2026-09-22). Flush right, it does not move: measured 0px of
+travel between the two views.
+
+**Icons only when the column is narrow** (designer, 2026-09-22). The toolbar
+has to hold a page-size control, a count and this; at a 338px column the two
+labels are the first thing that can go without losing a function. The switch
+drops 162px → 83px.
+
+`@container`, matching every other responsive rule on this table — the question
+is how much room the CONTENT COLUMN has, and a docked SidebarMenu takes that
+away with no window resize. Note the threshold reads oddly against a
+`getBoundingClientRect`: the labels are already gone at a 808px page, because a
+container query measures the CONTENT box and the page's own padding and
+scrollbar gutter put that at ~757.
+
+The accessible name does not change with the labels. Each button carries an
+`aria-label`, so hiding the span takes away the visible text and nothing else —
+without it, two radios would go unnamed exactly when the icons are all there is.
+The label wrapper is `.seg-control__btn-label`, a hook the component documents
+but does not style; if a second screen needs the same collapse, that is when it
+should become a real `--icon-only` variant of the component rather than a
+second contextual override.
+
+The switch is **SegmentedControl at `--sm`** (designer, 2026-09-22, pointing at
+Figma `2699:2052`). That size did not exist in the component and was built for
+this — see `SegmentedControl.figma-notes.md`, including three things flagged
+back to Figma. 32px is also what the toolbar needed: it now matches the
+page-size control and Edit Columns exactly, where the Default's 40 stood proud
+of the row. Measured: all three controls h=32, same top.
+
+## What live actually draws, and what changed
+
+A `<table class="gridtable">` of `<td width="140">` cells, wrapped every
+`MEDIALIBRARYSLIDECOLUMNS` items — a per-client profile number, so the grid
+does not respond to its container at all and a docked sidebar simply crops it.
+Each cell holds **a thumbnail and nothing else.**
+
+| Live | Here | Why |
+|---|---|---|
+| Thumbnail only; name, W×H, file size and type in a jQuery hover tooltip (`trailOn`) | Thumbnail + a caption block: name (13px semibold) over `format · created` (12px) | `sTempName` is computed AND truncated in the source, then never printed. A hover tooltip cannot be reached by keyboard or read by a screen reader, and 96,000 unlabelled thumbnails is not a library you can scan (designer) |
+| Fixed 140px cell, profile-driven column count | `repeat(auto-fill, minmax(--ai-size-2, 1fr))` | CLAUDE.md §4a — it has to reflow with the content column, not the window. 160px against live's off-scale 140, so the name has room to be read |
+| Permanent "Select all" above, permanent Move/Delete row below | One selection bar, shown only when something is ticked | Two pieces of chrome for a state that is usually empty |
+| Checkbox / View Album / Slideshow / Edit revealed on `mouseenter` only | All four, revealed on hover, on **focus**, and unconditionally where there is **no hover at all** | A hover-only control is unreachable by keyboard AND by finger — see below |
+
+## Selection is shared by both views
+
+Designer's call. The live Grid has Select all and a Move/Delete action row; the
+Listing's own row checkboxes render and do nothing at all. Two views of one
+screen disagreeing about whether selection means anything is the bug, not a
+feature.
+
+`SELECTED` is module state next to `ROW_ID`, for the same reason: the CELL
+renderers are pure functions of a row and cannot reach `config`. Ticking a row
+in the table updates its grid card and vice versa, without a re-render — a full
+re-render would lose scroll position mid-click. Measured: tick a table row →
+the grid card for the same id comes back checked and card-selected; tick a
+second from the grid → "2 items selected"; Clear → both views empty.
+
+`TODO(backend:Listing) listing-bulk-actions` — Move and Delete are inert.
+
+## The card's hover bar is FOUR controls, not two
+
+Corrected 2026-09-22 after the designer pointed at the live screen: the first
+build shipped a checkbox and a pencil, and `.MediaButtons` in
+`MediaLightbox.cfm` actually holds a checkbox and **three** icons.
+
+| Live icon | Action | Built as | Shown |
+|---|---|---|---|
+| `MediaLibraryAlbumViewIcon` | View Album — go to the section holding it | `folder-open` | always |
+| `MEDIALIBRARYSLIDESHOWICON` | Slideshow — open it in the lightbox | `expand` | image rows only |
+| `MediaLibraryEditIcon` | Edit Details | `pencil` | always |
+
+All three are **Button at `btn--icon btn--xs`** (24×24, 12px icon) and
+**tertiary**, both the designer's instruction (2026-09-22). The first build
+used secondary on the reasoning that these sit on a photograph and need a
+fill — which had it exactly backwards, and checking the resolved values rather
+than reasoning from the names would have caught it:
+
+| | `bg` base | `bg` cc-light | `bg` cc-dark |
+|---|---|---|---|
+| `btn--secondary` | `rgba(0,0,0,0)` | `rgba(0,0,0,0)` | `rgba(0,0,0,0)` |
+| `btn--tertiary` | `rgba(0,0,0,0)` | `#e7edf0` | `#334155` |
+
+So secondary was a bordered box with **no fill** over the picture. Tertiary is
+solid under the CC brand, which is what these demos run as.
+
+**One collision, flagged not fixed.** `--ai-btn-tertiary-bg` in cc-light is
+`#e7edf0` — the *same value* as `--ai-surface-secondary`, which is the empty
+box a non-image card shows. So on a PDF, ZIP or audio card the buttons are
+invisible but for their `--ai-shadow-xxs` hairline. It reads perfectly over a
+photograph and disappears over the ~10% of cards without one. Either the box
+wants `--ai-surface-minimal` instead, or those buttons want a different type;
+both are designer calls, so neither was taken unasked.
+
+Live's own conditions are kept rather than showing three unconditionally.
+Slideshow is `ImageYN`-gated there, so a PDF and a video each get two, not
+three. View Album is gated to a *search result* — the item's section differing
+from the one being browsed — which this prototype has no Browse mode to
+express, so it shows always. Measured: image 3, document 2, video 2.
+
+`TODO(backend:Listing) media-card-actions` — View Album and Slideshow go
+nowhere; Edit shares the row route.
+
+### Still not built
+
+**The AI badge.** `AIGeneratedYN` is a real column and live floats an AI icon
+top-right when it is set — but the 50 rows came from
+`affino_list_media_items`, which does not return that field, so marking any of
+them as AI-generated would be inventing data. Left out rather than guessed.
+
+### A bug the reference screenshot caught, not the code
+
+Every non-image card was drawing its family glyph in the **top-left corner**
+instead of the middle. `.cc-grid__media` centres its own children, but the
+glyph is a child of the LINK inside it, and the link was `display: block`. The
+sizing rule missed it for the same reason — it used `>` against the media box,
+so it matched nothing and the icon was 24px only because that is Lucide's
+default. The link now centres its contents and the rule is a descendant one.
+Measured after: the glyph's centre is 0,0 from the box's centre.
+
+## The caption is one block, not two siblings
+
+Designer, 2026-09-22. Name and meta were siblings of the picture, so the card's
+single `gap` spaced all three equally and the two text lines read as two
+separate things rather than one caption. They now sit in `.cc-grid__text` with
+their own tighter gap — `--ai-spacing-1` (4px) inside, against the card's
+`--ai-spacing-3` (8px) between picture and text. Both steps on the scale, not
+numbers picked to look right, and the caption's gap is deliberately half the
+card's so the two lines read as one block rather than as two more children.
+
+Name is **13px semibold** (`--ai-font-fixed-2xs` / `--ai-font-semibold`) over
+12px regular meta, so the pair has a hierarchy of its own.
+
+`min-inline-size: 0` on the wrapper, because a flex child's automatic minimum
+is its content: without it the longest name would set the column's width
+instead of truncating to it. Verified rather than assumed — a 340px name in a
+192px box still reports `scrollWidth > clientWidth`, so the ellipsis survived
+the extra wrapper. Measured: media→text 8px, name→meta 4px.
+
+## Reveal-on-hover is a bet that the device has a pointer
+
+Caught by the designer, 2026-09-22, and it was a real hole rather than a rough
+edge. The card's checkbox and pencil sat at `opacity: 0` until `:hover`, and the
+picture is covered by the anchor that opens the item — so on a phone the first
+tap navigates away and there is no second one. **Nothing in the grid could be
+selected on a touch device**, which also put the selection bar and its
+Move/Delete permanently out of reach there. `:focus-within` rescues the
+keyboard; it does nothing for a finger.
+
+```css
+@media (hover: none), (pointer: coarse) {
+  .cc-grid__select,
+  .cc-grid__edit { opacity: 1; }
+}
+```
+
+**An input-capability query, not a width breakpoint** — this is not a question
+about size. A narrow desktop window still has a pointer and reveal-on-hover is
+right there; a tablet at 1100px does not and it is wrong. CLAUDE.md §4a names
+device capability as the one case a viewport-level `@media` is actually for,
+and a container query cannot ask this question at all.
+
+Verified by emulating the capability rather than assuming the rule works:
+with a pointer, `(hover: none)` is false and both controls rest at opacity 0;
+under `--touch-events=enabled --blink-settings=primaryHoverType=1`,
+`(hover: none)` is true and both rest at opacity 1.
+
+The Listing view was already fine: its row pencil is `display: inline-flex`
+at all times and only its colour changes on hover.
+
+## Two things caught by measuring
+
+**`.datatables__body` is not unique.** Every multi-select-table picker renders
+its own `<div class="datatables"><div class="datatables__body">`
+(`ListingScreen.js` ~line 531), so `.cc-listing[data-layout="grid"]
+.datatables__body { display: none }` hid the **Channel and Section pickers'
+tables** whenever the screen was in grid view — a control that silently stops
+working in one of two views. Child combinators fix it. `listingTable()` already
+carries a comment about being caught by exactly this trap; the CSS needed the
+same care.
+
+**`--ai-surface-brand-contrast` does not exist.** The Apr 2026 rename took every
+`-contrast` brand and status surface to `-soft`, and the focus-ring examples
+still quoting the old name are stale. The selection bar uses
+`--ai-surface-brand-soft`, which is defined per theme (`#d9f2f2` light,
+`#043840` dark) so the bar reads in both.
+
+### And one that was NOT a bug
+
+Reading `borderTopColor` after flipping `data-theme` returned the **light**
+value in both themes, which looked like a dark-mode failure. It is the headless
+transition freeze: `.cc-grid__media` transitions `border-color`, and under
+`--virtual-time-budget` a transition never advances, so the computed value
+stays at the start colour forever. With `transition: none` injected first, dark
+resolves to `#334155` correctly. The token itself flipped all along — reading
+the *token* and reading the *element* disagreed, and the token was right.
+
+## Measured
+
+| Content column | Cards per row | h-overflow |
+|---|---|---|
+| 1155 | 6 | 0 |
+| 755 | 4 | 0 |
+| 555 | 3 | 0 |
+| 428 / 399 | 2 | 0 |
+| 309 | 1 | 0 |
+
+Both views verified switching back and forth: the table hides and the grid
+shows and vice versa, Edit Columns hides in grid (there are no columns), and
+the Section picker still opens with its 17 rows while in grid view. The other
+three screens re-measured at six widths — identical column counts, no overflow,
+no right-edge gap.

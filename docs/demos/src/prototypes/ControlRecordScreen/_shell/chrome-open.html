@@ -1,0 +1,112 @@
+  <!-- ━━━ Main column ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <main class="cc-control__main">
+
+    <!-- Top chrome: CC HeaderGroup (TopNavigation + Header) -->
+    <div class="cc-control__chrome">
+      <div class="cc-header-group">
+
+        <header class="cc-top-navigation">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <ol class="breadcrumb__list">
+              <li class="breadcrumb__item">
+                <div class="dropdown">
+                  <button class="breadcrumb__dropdown dropdown__trigger" type="button" aria-haspopup="menu" aria-expanded="false">Zone Selector<i data-lucide="chevron-down" aria-hidden="true"></i></button>
+                  <div class="dropdown__panel" role="menu" aria-label="Zone selector">
+                    <ul class="dropdown__list">
+                      <li role="none"><button type="button" class="dropdown__item" role="menuitem">Zone A</button></li>
+                      <li role="none"><button type="button" class="dropdown__item" role="menuitem">Zone B</button></li>
+                      <li role="none"><button type="button" class="dropdown__item dropdown__item--selected" role="menuitem" aria-current="page">Affino</button></li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              <li class="breadcrumb__separator" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
+              <li class="breadcrumb__item"><a class="breadcrumb__link" href="#">Level 1</a></li>
+              <li class="breadcrumb__separator breadcrumb__separator--collapse" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
+              <li class="breadcrumb__item breadcrumb__item--current breadcrumb__item--collapse" aria-current="page">Level 2</li>
+            </ol>
+          </nav>
+          <div class="cc-top-navigation__actions">
+            <!-- User Menu dropdown — mirrors HeaderGroup's "User Menu"
+                 Desktop variant (node 4146:6685). Composes ThemeToggle
+                 + Toggle rows + DropdownItem entries + Sign Out. -->
+            <div class="dropdown dropdown--user-menu">
+              <button class="cc-top-navigation__user dropdown__trigger" type="button" aria-haspopup="menu" aria-expanded="false">
+                <img class="portrait" src="https://i.pravatar.cc/64?u=derrick" alt="Derrick Jefferson" />
+                <span class="cc-top-navigation__user-name">Derrick Jefferson</span>
+                <span class="cc-top-navigation__user-chevron" aria-hidden="true"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <div class="dropdown__panel" role="menu" aria-label="User menu">
+                <div class="theme-toggle theme-toggle--fill">
+                  <button class="theme-toggle__btn" type="button" data-theme-value="light" aria-pressed="true">
+                    <i data-lucide="sun" aria-hidden="true"></i>
+                    <span>Light</span>
+                  </button>
+                  <button class="theme-toggle__btn" type="button" data-theme-value="dark" aria-pressed="false">
+                    <i data-lucide="moon" aria-hidden="true"></i>
+                    <span>Dark</span>
+                  </button>
+                </div>
+                <div class="dropdown__toggle-list">
+                  <div class="dropdown__toggle-row">
+                    <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" id="cs-user-menu-icon-nav" data-cc-toggle="icon-nav">
+                      <span class="toggle__track"><span class="toggle__knob"></span></span>
+                    </button>
+                    <label for="cs-user-menu-icon-nav" class="toggle__label">
+                      <span class="toggle__label-text">Icon Navigation</span>
+                    </label>
+                  </div>
+                  <div class="dropdown__toggle-row dropdown__toggle-row--reveal" data-reveal-by="cs-user-menu-icon-nav">
+                    <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" id="cs-user-menu-hide-labels" data-cc-toggle="hide-labels">
+                      <span class="toggle__track"><span class="toggle__knob"></span></span>
+                    </button>
+                    <label for="cs-user-menu-hide-labels" class="toggle__label">
+                      <span class="toggle__label-text">Hide Labels</span>
+                    </label>
+                  </div>
+                </div>
+                <hr class="dropdown__divider">
+                <ul class="dropdown__list">
+                  <li role="none">
+                    <button type="button" class="dropdown-item" role="menuitem">
+                      <i data-lucide="star" aria-hidden="true"></i>
+                      <span data-text="My Favourites">My Favourites</span>
+                    </button>
+                  </li>
+                  <li role="none">
+                    <button type="button" class="dropdown-item" role="menuitem">
+                      <i data-lucide="circle-user" aria-hidden="true"></i>
+                      <span data-text="My Content">My Content</span>
+                    </button>
+                  </li>
+                </ul>
+                <hr class="dropdown__divider">
+                <button type="button" class="dropdown-item dropdown-item--warning" role="menuitem">
+                  <i data-lucide="log-out" aria-hidden="true"></i>
+                  <span data-text="Sign Out">Sign Out</span>
+                </button>
+              </div>
+            </div>
+            <button class="cc-top-navigation__preview" type="button" aria-label="Preview as desktop"><i data-lucide="monitor" aria-hidden="true"></i></button>
+          </div>
+        </header>
+
+        <!-- IconNavigation strip (cc-icon-nav pattern). Hidden by default; the
+             User Menu "Icon Navigation" toggle shows it (HeaderGroup.js adds
+             .cc-header-group--icon-nav), and "Hide Labels" switches it to
+             icons-only (.cc-icon-nav--no-labels). Always hidden below 768 of the
+             header-group's width via @container cc-header-group. -->
+        <nav class="cc-icon-nav" aria-label="Module navigation">
+          <ul class="cc-icon-nav__list">
+            <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--publish" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Publish</span></a></li>
+            <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--promote" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Promote</span></a></li>
+            <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--social" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Social</span></a></li>
+            <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--media" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Media</span></a></li>
+            <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--structure" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Structure</span></a></li>
+            <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--design" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Design</span></a></li>
+            <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--commerce" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Commerce</span></a></li>
+            <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--analyse" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Analyse</span></a></li>
+            <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--settings" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Settings</span></a></li>
+          </ul>
+        </nav>
+

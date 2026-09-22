@@ -1,7 +1,18 @@
 /* SegmentedControl — segmented toggle (radio-style, single select)
- * Figma node: 2162:5079 (ThemeToggle)
+ * Figma set: 2699:2052 (ThemeToggle) — re-read 2026-09-22
  * Tier: Component
- * Variants: State=Light / State=Dark (which button is active)
+ * Variants: State=Light | Dark  ×  Size=Default | sm
+ *
+ *   2699:2062  State=Light, Size=Default   172×40
+ *   2699:2053  State=Dark,  Size=Default   172×40
+ *   3729:25008 State=Light, Size=sm        146×32
+ *   3729:16713 State=Dark,  Size=sm        154×32
+ *
+ * NOTE this same Figma component is ALSO built as `src/components/ThemeToggle`,
+ * which is the Code-Connect-mapped one and what the Seating Planner patterns
+ * use. Two code components for one Figma component is a duplication worth
+ * resolving; `sm` is added here because this is the generic control the
+ * listing screens' Grid/Listing switch uses. ThemeToggle wants the same size.
  */
 
 /* ── Container ───────────────────────────────────────── */
@@ -25,7 +36,7 @@
   align-items: center;
   justify-content: center;
   gap: var(--ai-spacing-3);
-  height: 32px;
+  height: var(--ai-spacing-7);           /* 32px — was a hardcoded 32px */
   min-width: 0;
   padding: 0 var(--ai-spacing-4);
   background: transparent;
@@ -45,10 +56,44 @@
 /* ── Active button ───────────────────────────────────── */
 
 .seg-control__btn--active {
-  background-color: var(--ai-surface-minimal);
+  /* The Design System's ThemeToggle (2699:2052) binds --ai-surface-secondary
+     on the active button in every variant of both sizes. Corrected here
+     2026-09-22 on the designer's call, from --ai-surface-minimal. */
+  background-color: var(--ai-surface-secondary);
   border-radius: var(--ai-radius-sm);
   cursor: default;
 }
+
+/* …except on the AI Chat surface, where that token is WHITE.
+ *
+ * Not a special case so much as the two Figma sources being right about
+ * different things. This control exists twice: as SegmentedControl in the AI
+ * Chat file (2162:5079), which is what this component's own demo page runs as
+ * (`data-surface="chat"`), and as ThemeToggle in the Design System file
+ * (2699:2052). Resolved per surface:
+ *
+ *   surface          --ai-surface-secondary   --ai-surface-primary (container)
+ *   base                     #e9eef4                  #ffffff   ✓
+ *   cc / cc-dark             #e7edf0 / #3d4b5f        #ffffff / #1e293b  ✓
+ *   chat                     #ffffff                  #ffffff   ✗ invisible
+ *   chat-dark                #2e2e32                  #212123   ✓
+ *
+ * So on the chat surface the active segment would disappear into its own
+ * container, which is why the original build used `minimal` — that IS #e2e2e3
+ * there, and the AI Chat Figma binds it. Both bindings kept, each on the
+ * surface it is correct for. */
+[data-surface="chat"] .seg-control__btn--active {
+  background-color: var(--ai-surface-minimal);
+}
+
+/* ── Label ───────────────────────────────────────────────
+ * OPTIONAL. The label can be a bare text node — the demo's Light/Dark pair
+ * are — but wrapping it gives a caller something to hide when the control has
+ * to collapse to its icons. Figma has no icon-only variant, so this carries no
+ * styling of its own; it is a hook, and the hiding belongs to whoever needs it
+ * (today: `.cc-listing__layout` in ListingScreen.css). If a second screen wants
+ * the same thing, that is the point at which it should become a real
+ * `--icon-only` variant here instead. */
 
 /* ── Icon ────────────────────────────────────────────── */
 
@@ -64,4 +109,80 @@
   outline: none;
   box-shadow: 0 0 0 1px var(--ai-surface-primary),
               0 0 0 3px var(--ai-surface-brand-soft);
+}
+
+/* ── Size=sm ─────────────────────────────────────────────
+ * 3729:25008 / 3729:16713. NOT a scaled-down Default: the button keeps every
+ * one of its own values — 32px tall, --ai-spacing-4 padding, --ai-spacing-3
+ * gap, 16px icon, the same `button/sm` type ramp. What changes is the
+ * CONTAINER, and with it the shape of the thing.
+ *
+ * Default:  40px tall, --ai-spacing-1 (4px) of padding, so the active segment
+ *           floats as a pill inside the box.
+ * sm:       32px tall and NO padding, so the active segment reaches the
+ *           container's own edge and the control reads as one joined bar.
+ *
+ * That is why the corners move too. Figma gives the sm active button
+ * --ai-radius-md on its OUTER corners only, matching the container it is now
+ * flush against, where the Default's pill is --ai-radius-sm all round.
+ *
+ * `overflow: hidden` on the container, and the reason is the whole of why the
+ * first attempt looked wrong. A 1px border makes a box's INNER curve 1px
+ * tighter than its outer one — an 8px container is 7px on the inside — so an
+ * 8px button sitting flush against it pokes its fill past the border's curve
+ * and the corner reads as a hard square edge with the stroke looping inside
+ * it. Setting per-button corner radii does not fix that; only clipping does,
+ * or a `calc(radius - 1px)` that hardcodes the relationship.
+ *
+ * The cost is that a clipped container eats an outward focus ring, so the sm
+ * focus below is drawn INSIDE the button with a negative outline-offset.
+ *
+ * FLAGGED FOR FIGMA — the two sm variants disagree with each other. Light=sm
+ * is 146 wide with the buttons at pl 8 / pr 12; Dark=sm is 154 with 12 both
+ * sides, as the Default has. Same control, same size, 8px different depending
+ * on which half is active. Built at 12/12: two of the three datapoints agree
+ * on it, and a toggle that changes width when you press it is the bug.
+ */
+
+.seg-control--sm {
+  height: var(--ai-spacing-7);           /* 32px */
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Square: the container's own curve is what shapes the ends now. */
+.seg-control--sm .seg-control__btn {
+  border-radius: var(--ai-spacing-0);
+}
+
+/* The divider between the two halves (designer, 2026-09-22).
+ *
+ * Only `sm` gets one. The Default keeps 4px of container padding, so its
+ * segments never touch and a line between them would float in the gap; `sm`
+ * has none, so without this the bar is a box with a shaded end rather than two
+ * joined halves.
+ *
+ * Drawn on the ACTIVE segment's inner edge, which is the same line either way
+ * — the right edge when the left half is active, the left edge when the right
+ * half is. Putting it on the active one rather than always on the first button
+ * means it sits on top of the fill and stays a crisp 1px, instead of being the
+ * seam between two backgrounds.
+ *
+ * `box-sizing: border-box` from base.css keeps the 1px inside the 32px box, so
+ * nothing moves. */
+.seg-control--sm .seg-control__btn--active:first-child {
+  border-inline-end: 1px solid var(--ai-border-secondary);
+}
+
+.seg-control--sm .seg-control__btn--active:last-child {
+  border-inline-start: 1px solid var(--ai-border-secondary);
+}
+
+/* Inside the button, so the clip above cannot eat it. CLAUDE.md §9's
+   `2px solid var(--ai-surface-brand)` rather than the double box-shadow ring
+   the Default uses, because a shadow is exactly what gets clipped. */
+.seg-control--sm .seg-control__btn:focus-visible {
+  box-shadow: none;
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: -2px;
 }

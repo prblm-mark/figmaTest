@@ -71,9 +71,29 @@
      middle-click, and show their destination on hover, none of which a click
      handler gives you. */
   var ROUTE = {
-    view: function (orderNo) { return '#order/' + encodeURIComponent(orderNo) + '/view'; },
-    edit: function (orderNo) { return '#order/' + encodeURIComponent(orderNo) + '/edit'; }
+    view: function (id, noun) { return '#' + (noun || 'order') + '/' + encodeURIComponent(id) + '/view'; },
+    edit: function (id, noun) { return '#' + (noun || 'order') + '/' + encodeURIComponent(id) + '/edit'; }
   };
+
+  /* WHICH field identifies a row is per screen, and until Article Archive it
+     was hard-coded to `orderNo`. Articles has no such field, so every one of
+     its rows rendered `href="#order//edit"` and an aria-label reading
+     "Edit order " with nothing after it — a screen reader announcing eight
+     identical, empty controls. The screen declares `rowKey` and `routeNoun`;
+     both default to Orders' values, so Orders is unchanged. */
+  var ROW_ID = { key: 'orderNo', noun: 'order', spoken: 'order' };
+
+  function rowId(row) { return row[ROW_ID.key]; }
+
+  /* Which rows are ticked. Module state for the same reason ROW_ID is: the CELL
+     renderers are pure functions of a row and cannot reach config. Shared by
+     BOTH views on purpose — the live Grid has Select all and a Move/Delete
+     action bar while the Listing's checkboxes do nothing at all, and two views
+     of one screen disagreeing about whether selection means anything is the
+     bug, not a feature (designer, 2026-09-22). */
+  var SELECTED = {};
+
+  function isSelected(row) { return !!SELECTED[rowId(row)]; }
 
   var CELL = {
     text: function (row, col) {
@@ -100,8 +120,8 @@
     order: function (row) {
       /* The anchor IS the row's navigation — the whole-row click below just
          follows it, so there is one destination and one code path. */
-      return '<a class="datatables__order" href="' + esc(ROUTE.view(row.orderNo)) + '"' +
-        ' data-row-link>' + esc(row.orderNo) + '</a>' +
+      return '<a class="datatables__order" href="' + esc(ROUTE.view(rowId(row), ROW_ID.noun)) + '"' +
+        ' data-row-link>' + esc(rowId(row)) + '</a>' +
         (row.externalCode
           ? '<span class="datatables__order-ext">' + esc(row.externalCode) + '</span>'
           : '');
@@ -116,9 +136,54 @@
         ' title="' + v + '">' + v + '</button>';
     },
 
+    /* Thumbnail — the Media Items listing's own first column, and its header
+       is deliberately blank, exactly as CProperties declares it.
+       TODO(backend:Listing) media-thumbnails: the live screen builds this from
+       MediaItem.ImageThumb through an internal DAM path and no read available
+       here returns a usable URL, so the demo rows carry a seeded Lorem Picsum
+       photo instead (the same host the Orders avatars use). The seam is
+       `row.thumbUrl` — point it at the real asset and nothing else changes. */
+    thumb: function (row) {
+      /* A row that HAS a picture shows it. `alt` is empty on purpose — the
+         Title column sits immediately beside it and already names the item, so
+         an alt would make a screen reader read every row's name twice. The box
+         keeps its background, which is what shows while the image loads and if
+         it never does. */
+      if (row.thumbUrl) {
+        return '<span class="datatables__thumb datatables__thumb--' + esc(row.family) + '"' +
+          ' data-backend-todo="media-thumbnails">' +
+          '<img src="' + esc(row.thumbUrl) + '" alt="" loading="lazy" decoding="async">' +
+        '</span>';
+      }
+      /* Audio and documents have no picture to show, which is also what the
+         live screen concludes — its MediaTypeAR gives those a format icon. */
+      var glyph = { audio: 'music', document: 'file-text' }[row.family] || 'file';
+      return '<span class="datatables__thumb datatables__thumb--' + esc(row.family) + '"' +
+        ' data-backend-todo="media-thumbnails" role="img"' +
+        ' aria-label="' + esc(row.family) + ' file">' +
+        '<i data-lucide="' + glyph + '" aria-hidden="true"></i>' +
+      '</span>';
+    },
+
+    /* Type. Live picks one of 30 bespoke 40x40 format icons out of a 49-slot
+       array keyed on DocMimeTypeCode — and 19 of those slots are EMPTY, so
+       those rows render nothing at all. Four Lucide family glyphs plus the
+       format in words instead (designer, 2026-09-22): the families are not
+       invented, they are the same grouping the MediaType filter already makes
+       of the same mimetype codes. */
+    media: function (row) {
+      var glyph = { image: 'image', video: 'video', audio: 'music', document: 'file-text' }[row.family]
+        || 'file';
+      return '<span class="datatables__type-cell">' +
+        '<i data-lucide="' + glyph + '" aria-hidden="true"></i>' +
+        '<span>' + esc(row.format) + '</span></span>';
+    },
+
     select: function (row) {
       return '<label class="checkbox">' +
-        '<input type="checkbox" class="checkbox__input" aria-label="Select order ' + esc(row.orderNo) + '">' +
+        '<input type="checkbox" class="checkbox__input" data-select-row="' + esc(rowId(row)) + '"' +
+        (isSelected(row) ? ' checked' : '') +
+        ' aria-label="Select ' + esc(ROW_ID.spoken) + ' ' + esc(rowId(row)) + '">' +
         '<span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>' +
         '</label>';
     },
@@ -132,9 +197,9 @@
      *
      * An anchor, not a button: see ROUTE above. */
     edit: function (row) {
-      return '<a class="datatables__row-edit" href="' + esc(ROUTE.edit(row.orderNo)) + '"' +
+      return '<a class="datatables__row-edit" href="' + esc(ROUTE.edit(rowId(row), ROW_ID.noun)) + '"' +
         ' data-backend-todo="listing-row-routes"' +
-        ' aria-label="Edit order ' + esc(row.orderNo) + '">' +
+        ' aria-label="Edit ' + esc(ROW_ID.spoken) + ' ' + esc(rowId(row)) + '">' +
         '<i data-lucide="pencil" aria-hidden="true"></i></a>';
     },
 
@@ -143,7 +208,7 @@
     kebab: function (row, col, index) {
       return '<label class="datatables__kebab">' +
         '<input type="checkbox" class="datatables__kebab__input" ' +
-        'aria-label="Show details for order ' + esc(row.orderNo) + '" data-row="' + index + '">' +
+        'aria-label="Show details for ' + esc(ROW_ID.spoken) + ' ' + esc(rowId(row)) + '" data-row="' + index + '">' +
         '<i data-lucide="ellipsis-vertical" aria-hidden="true"></i></label>';
     }
   };
@@ -530,6 +595,13 @@
     /* `--add` marks the WRAPPER so an empty view can hide the other chips:
        a chip with a picker is wrapped, so FilterBar's bare-chip selector
        cannot reach it. */
+    /* No catalogue, no control. Article Archive declares six filters and the
+       sixth is the SORT, so its five chips use the catalogue up and there is
+       nothing left to add — and a dashed "Add Filters" that opens an empty
+       panel is worse than no chip at all. Orders and Articles both have a
+       catalogue, so both are unaffected. */
+    if (!(config.moreFilters || []).length) return html;
+
     html += chip(
       {
         name: 'Add Filters', type: 'more-filters',
@@ -632,7 +704,7 @@
           '<dd>' + fn(row, col, i) + '</dd></div>';
       }).join('');
 
-      return '<tr class="datatables__row" data-order="' + esc(row.orderNo) + '">' + cells + '</tr>' +
+      return '<tr class="datatables__row" data-order="' + esc(rowId(row)) + '">' + cells + '</tr>' +
         '<tr class="datatables__row-detail"><td class="datatables__row-detail__cell" colspan="' +
         columns.length + '"><dl class="datatables__detail-list">' + detail +
         '<p class="datatables__detail-empty" hidden>Every column is showing at this width.</p>' +
@@ -739,7 +811,39 @@
     return isNaN(n) ? null : n;
   }
 
-  function matches(row, filter, values) {
+  /* WHICH fields a term is matched against can itself be a control. Article
+     Archive's "Filter by" is three checkboxes — Section / Article / Channel —
+     and the live screen ORs a LIKE per ticked box (ArchiveManagementQDef.cfm).
+     So one chip reads another: `scopedBy` names it, `scopeFields` maps each of
+     its option names to a row field. No other screen sets either, and without
+     them this returns the filter's own single `field`. */
+  function scopeFields(filter, config) {
+    if (!filter.scopeFields) return [filter.field];
+    /* `scopeFields` with no `scopedBy` is a FIXED multi-field search — no chip
+       decides it. Media Items needs one: its Title box is LIKE-matched against
+       MediaItem.Name OR MediaFileItem.FileName, and against MediaItemCode when
+       the term is numeric, so searching only the displayed title would miss
+       the filename the operator is actually looking for. */
+    if (!filter.scopedBy) {
+      return Object.keys(filter.scopeFields).map(function (k) {
+        return filter.scopeFields[k];
+      });
+    }
+    var picked = (config.filterValues || {})[filter.scopedBy];
+    /* UNSET and EMPTY are different, and the live screen treats them
+       differently too. A scope chip nobody has touched holds no key at all, and
+       falls back to `scopeDefault` — the CFML's own
+       `<cfparam name="FilterType" default="Section,Article">`. A chip the user
+       has explicitly emptied holds `[]`, and matches nothing, which is the
+       `AND (1 = 0 …)` the query really builds. Collapsing the two with a plain
+       `|| []` would make a fresh screen find nothing the moment a term was
+       typed. */
+    if (picked === undefined) picked = filter.scopeDefault || [];
+    return picked.map(function (name) { return filter.scopeFields[name]; })
+                 .filter(Boolean);
+  }
+
+  function matches(row, filter, values, config) {
     if (!values.length) return true;
     var actual = valueAt(row, filter.field);
 
@@ -756,7 +860,14 @@
     }
 
     if (filter.type === 'text') {
-      return actual.toLowerCase().indexOf(values[0].toLowerCase()) !== -1;
+      var term = values[0].toLowerCase();
+      /* Untick every box and the live screen's `AND (1 = 0 …)` matches
+         nothing. Faithful: a term with an explicitly emptied scope finds
+         nothing, rather than silently falling back to searching the title.
+         An UNTOUCHED scope is a different case — see scopeFields. */
+      return scopeFields(filter, config || {}).some(function (field) {
+        return valueAt(row, field).toLowerCase().indexOf(term) !== -1;
+      });
     }
     return values.some(function (v) { return actual === v; });
   }
@@ -800,7 +911,12 @@
     var by = config.sort && config.sort.by;
     if (!by) return rows;
     var col = config.columns.filter(function (c) { return c.sort === by; })[0];
-    if (!col) return rows;                      // an unknown token sorts nothing
+    /* A token with no column of its own leaves the rows in declaration order,
+       and Article Archive RELIES on that rather than tripping over it: its
+       live default is PublishStart DESC and PublishStart is not one of its six
+       columns, so the screen opens on an order no header can claim. Its rows
+       ship in that order. */
+    if (!col) return rows;
 
     var dir = config.sort.dir === 'asc' ? 1 : -1;
     /* Copy first — Array.sort is in place, and mutating config.rows would
@@ -835,7 +951,7 @@
            searches that view, not the whole listing. */
         if (query && searchableText(row, config.columns).indexOf(query) === -1) return false;
         return active.every(function (name) {
-          return matches(row, byName[name], config.filterValues[name]);
+          return matches(row, byName[name], config.filterValues[name], config);
         });
       })
     };
@@ -844,6 +960,118 @@
   /* Re-render only what filtering changes: the body, the counts and the
      pagination. The chips are left alone — rebuilding them would discard the
      very selections that caused this. */
+  /* ── Grid view ────────────────────────────────────────────
+     The live screen's other half: MediaLayOut=Grid, rendered through
+     MediaLightbox.cfm rather than ListForm.cfm. It is a different rendering of
+     the SAME query — same filters, same page size, same paging — which is why
+     it lives inside the same `.datatables` block and shares the toolbar and
+     the footer rather than being a second screen.
+
+     What live draws is a bordered <table> of 140px cells holding a thumbnail
+     and NOTHING ELSE; the name, pixel dimensions, file size and type are all
+     in a jQuery hover tooltip (`trailOn`), and `sTempName` is computed and
+     truncated in the source and then never printed. The card here carries the
+     name and a meta line at rest (designer, 2026-09-22): a wall of 96,000
+     unlabelled thumbnails cannot be read without a mouse, and a hover tooltip
+     is unreachable by keyboard or screen reader. */
+  function gridCard(row) {
+    var id = rowId(row);
+    var glyph = { audio: 'music', document: 'file-text' }[row.family] || 'file';
+    var media = row.thumbUrl
+      ? '<img src="' + esc(row.thumbUrl) + '" alt="" loading="lazy" decoding="async">'
+      : '<i data-lucide="' + glyph + '" aria-hidden="true"></i>';
+
+    return '<li class="cc-grid__item">' +
+      '<div class="cc-grid__card' + (isSelected(row) ? ' cc-grid__card--selected' : '') + '"' +
+        ' data-grid-card="' + esc(id) + '">' +
+        '<div class="cc-grid__media cc-grid__media--' + esc(row.family) + '">' +
+          /* The anchor IS the card's navigation — same route the table row
+             uses, so there is one destination and one code path. */
+          '<a class="cc-grid__link" href="' + esc(ROUTE.view(id, ROW_ID.noun)) + '"' +
+            ' aria-label="' + esc(row.title) + '">' + media + '</a>' +
+          '<label class="checkbox cc-grid__select">' +
+            '<input type="checkbox" class="checkbox__input" data-select-row="' + esc(id) + '"' +
+            (isSelected(row) ? ' checked' : '') +
+            ' aria-label="Select ' + esc(ROW_ID.spoken) + ' ' + esc(row.title) + '">' +
+            '<span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>' +
+          '</label>' +
+          '<div class="cc-grid__actions">' + gridActions(row) + '</div>' +
+        '</div>' +
+        '<div class="cc-grid__text">' +
+          '<p class="cc-grid__name" title="' + esc(row.title) + '">' + esc(row.title) + '</p>' +
+          '<p class="cc-grid__meta">' + esc(row.format) + ' · ' + esc(row.created) + '</p>' +
+        '</div>' +
+      '</div></li>';
+  }
+
+  /* The live card's hover bar is a checkbox and THREE icons, not one
+     (designer, 2026-09-22 — `.MediaButtons` in MediaLightbox.cfm):
+
+       View Album     MediaLibraryAlbumViewIcon   — go to the section holding it
+       Slideshow      MEDIALIBRARYSLIDESHOWICON   — open it in the lightbox
+       Edit Details   MediaLibraryEditIcon        — open the edit form
+
+     All three are Button at `btn--icon btn--xs` (24x24, 12px icon), TERTIARY
+     (designer, 2026-09-22). The first build used secondary on the reasoning
+     that these sit on a photograph and need a fill — which had it exactly
+     backwards: `--ai-btn-secondary-bg` is `rgba(0,0,0,0)` in every mode, so
+     secondary was a bordered box with NO fill over the picture, while
+     `--ai-btn-tertiary-bg` is solid under the CC brand (#e7edf0 light,
+     #334155 dark). Checked the resolved values this time instead of reasoning
+     from the names.
+
+     Live's own conditions are kept rather than showing three unconditionally:
+     Slideshow is `ImageYN`-gated there, so a PDF gets two. View Album is gated
+     to a search result — the item's section differing from the one being
+     browsed — which this prototype has no Browse mode to express, so it shows
+     always.
+     TODO(backend:Listing) media-card-actions: View Album and Slideshow go
+     nowhere; Edit shares the row route. */
+  function gridActions(row) {
+    var btn = 'btn btn--tertiary btn--icon btn--xs cc-grid__action';
+    var out = '<a class="' + btn + '" href="#" data-backend-todo="media-card-actions"' +
+      ' aria-label="View the album holding ' + esc(row.title) + '">' +
+      '<i data-lucide="folder-open" aria-hidden="true"></i></a>';
+
+    if (row.family === 'image') {
+      out += '<a class="' + btn + '" href="#" data-backend-todo="media-card-actions"' +
+        ' aria-label="Open ' + esc(row.title) + ' in the slideshow">' +
+        '<i data-lucide="expand" aria-hidden="true"></i></a>';
+    }
+
+    out += '<a class="' + btn + '" href="' + esc(ROUTE.edit(rowId(row), ROW_ID.noun)) + '"' +
+      ' data-backend-todo="listing-row-routes"' +
+      ' aria-label="Edit ' + esc(ROW_ID.spoken) + ' ' + esc(row.title) + '">' +
+      '<i data-lucide="pencil" aria-hidden="true"></i></a>';
+    return out;
+  }
+
+  function renderGrid(rows) {
+    if (!rows.length) {
+      return '<li class="cc-grid__empty"><div class="cc-listing__empty">' +
+        '<i data-lucide="search-x" aria-hidden="true"></i>' +
+        '<p class="cc-listing__empty-title">No results</p>' +
+        '<p class="cc-listing__empty-text">Try removing a filter or searching for something else.</p>' +
+        '</div></li>';
+    }
+    return rows.map(gridCard).join('');
+  }
+
+  /* The selection bar. One bar for both views, shown only when something is
+     ticked — the live screen keeps a permanent "Select all" above the grid and
+     a permanent action row below it, which is two pieces of chrome for a state
+     that is usually empty.
+     TODO(backend:Listing) listing-bulk-actions: Move and Delete do nothing. */
+  function renderSelection(root, config) {
+    var bar = root.querySelector('[data-listing-selection]');
+    if (!bar) return;
+    var n = Object.keys(SELECTED).length;
+    bar.hidden = n === 0;
+    if (!n) return;
+    var count = bar.querySelector('[data-selection-count]');
+    if (count) count.textContent = n + (n === 1 ? ' item selected' : ' items selected');
+  }
+
   function renderResults(root, config) {
     var matched = sortRows(applyFilters(config).rows, config);
 
@@ -859,6 +1087,9 @@
     root.querySelector('[data-listing-body]').innerHTML = rows.length
       ? renderRows(config.columns, rows)
       : renderEmpty(config.columns);
+
+    var gridHost = root.querySelector('[data-listing-grid]');
+    if (gridHost) gridHost.innerHTML = renderGrid(rows);
 
     var page = {
       from: total ? start + 1 : 0,
@@ -879,6 +1110,7 @@
     /* The body was just rebuilt, so the column marks went with it. */
     applyColumnVisibility(root, config);
     fitColumns(root, config);
+    renderSelection(root, config);
   }
 
   /* TODO(design:Listing): Datatables has no empty state in Figma. This mirrors
@@ -1267,6 +1499,42 @@
   var SNUG_MIN = 128;          // px — and its floor, so a chip is never cropped
   var FLUID_MIN = 192;         // px — matches --ai-size-3, the Customer floor
 
+  /* Hand `spare` out in equal shares to the columns that can use it — the
+     fluid one and the snug ones — and return whatever is left for the fluid
+     column to absorb.
+
+     Water-filling, because a snug column has a ceiling: everyone gets an equal
+     slice, anyone who hits SNUG_MAX takes only what fits and drops out, and the
+     rest is shared again among those still growing. Loops at most once per
+     column. The fluid column has no ceiling, so it is always still growing and
+     the remainder always has somewhere to go — which is what keeps the widths
+     summing to the table exactly, with no gap at the right-hand edge. */
+  function shareSpare(config, width, hidden, fluidAt, spare) {
+    var open = [];
+    config.columns.forEach(function (col, i) {
+      if (!width[i] || hidden[col.key]) return;
+      if (i === fluidAt || col.snug) open.push(i);
+    });
+    /* Only the fluid column can grow — nothing to share. */
+    if (open.length < 2) return spare;
+
+    var guard = open.length;
+    while (spare > 0 && open.length > 1 && guard-- > 0) {
+      var share = Math.floor(spare / open.length);
+      if (share < 1) break;                      // sub-pixel: let fluid take it
+      var still = [];
+      open.forEach(function (i) {
+        if (i === fluidAt) { still.push(i); return; }   // no ceiling
+        var room = SNUG_MAX - width[i];
+        var take = Math.min(share, Math.max(room, 0));
+        if (take > 0) { width[i] += take; spare -= take; }
+        if (take >= share) still.push(i);               // still has headroom
+      });
+      open = still;
+    }
+    return spare;
+  }
+
   function sizeColumns(root, config, natural, hidden, available) {
     var heads = root.querySelectorAll('[data-listing-head] th');
     var fluidAt = -1;
@@ -1286,8 +1554,15 @@
       }
       var w = Math.ceil(natural[i]);
       if (col.snug) w = Math.min(w, SNUG_MAX);
-      /* The LAST fluid column takes the remainder. There is normally one. */
-      if (!col.hug && !col.snug && col.label) { fluidAt = i; w = fluidFloor; }
+      /* The LAST fluid column. There is normally one.
+         Its base is its NATURAL width, the same as every other column, not its
+         floor. Basing it on the floor and then sharing the surplus equally made
+         the main column the NARROWEST text column on the screen — 193px of
+         Title beside 216px of Section — because everyone else started from
+         what their content wanted and it started from 192. It still absorbs
+         the rounding remainder and still gives width back first when the table
+         is over budget; what changed is only where it starts from. */
+      if (!col.hug && !col.snug && col.label) { fluidAt = i; w = Math.max(w, fluidFloor); }
       width[i] = w;
       used += w;
     });
@@ -1295,7 +1570,19 @@
     if (fluidAt !== -1) {
       var spare = available - used;
       if (spare > 0) {
-        width[fluidAt] += spare;
+        /* Spare width is SHARED, not handed to the fluid column (designer,
+           2026-09-22). Giving it all to one column is what left a 555px table
+           with a 331px Title beside a 78px Type — the title's own text ran out
+           long before its column did, so the row read as one wide column and
+           then a huddle on the right.
+
+           Equal shares, not proportional ones: proportional keeps the widest
+           column widest, which is the thing being complained about.
+
+           `hug` columns stay out of it on purpose. They are shrink-wrapped by
+           role — a date, an ID, a count — and their content is a fixed shape
+           that gains nothing from more room. */
+        width[fluidAt] += shareSpare(config, width, hidden, fluidAt, spare);
       } else if (spare < 0) {
         /* Over budget. Under fixed layout the table is exactly the sum of
            these numbers, so anything left over is not "a bit of overflow" —
@@ -1398,6 +1685,14 @@
   }
 
   function renderPerPageOptions(config) {
+    /* The trigger's LABEL is static markup reading "20", and until Media Items
+       every screen happened to open on 20 so nothing showed. It opens on 25,
+       and the table dutifully rendered 25 rows under a control claiming 20.
+       Set from the config at init, not only when the value changes — the
+       fourth per-screen value found living in the shared template. */
+    var label = document.querySelector('[data-listing-per-page]');
+    if (label) label.textContent = config.perPage;
+
     var host = document.querySelector('[data-listing-per-page-options]');
     if (!host) return;
     host.innerHTML = (config.perPageOptions || [20, 50, 100, 200]).map(function (n) {
@@ -1433,6 +1728,21 @@
     /* Split once, here, rather than capping at render time: everything
        downstream — adding a filter, saving a view, restoring one — then works
        on the real arrays and never has to know about the limit. */
+    /* A fresh screen starts with nothing ticked. Module state, so it has to be
+       cleared here rather than relying on it never having been set. */
+    SELECTED = {};
+
+    /* Before the first cell is rendered: the CELL renderers read ROW_ID. */
+    /* Two nouns, because they are read by different things: `routeNoun` is a
+       URL slug and `rowNoun` is what a screen reader says out loud. Article
+       Archive's slug is "archived-item" and announcing "Edit archived-item
+       5361" puts a hyphen in the middle of a spoken phrase. */
+    ROW_ID = {
+      key: config.rowKey || 'orderNo',
+      noun: config.routeNoun || 'order',
+      spoken: config.rowNoun || config.routeNoun || 'order'
+    };
+
     var defaults = (config.defaultFilters || []).slice();
     var overflow = defaults.splice(DEFAULT_CHIPS);
 
@@ -1458,6 +1768,19 @@
          they cannot be read back off a chip, whose label rolls 4+ values up
          into "<first>, and 3 more". */
       filterValues: {}
+    });
+
+    /* A chip can OPEN with a value. Orders and Articles both open empty, but
+       Article Archive's "Filter by" ships ticked as Section + Article and its
+       Type ships as Article — those are the live screen's own defaults
+       (`<cfparam name="FilterType" default="Section,Article">`, Type 1), not
+       a convenience. Seeded here rather than in the chip renderer so the
+       FilterBar's save-view baseline below counts them as the starting point
+       and does not offer to save a view the screen opened on. */
+    config.baseFilters.concat(config.moreFilters).forEach(function (f) {
+      if (f.defaultValues && f.defaultValues.length) {
+        config.filterValues[f.name] = f.defaultValues.slice();
+      }
     });
 
     /* Demo persistence, read before the first paint so the table is never
@@ -1524,6 +1847,79 @@
     var bar = root.querySelector('.filter-bar');
 
     renderPerPageOptions(config);
+
+    /* ── Layout: listing or grid ──────────────────────────
+       Only a screen that declares `layouts` gets the switch; the other three
+       have one rendering and no control. The live screen defaults to GRID
+       (`<cfparam name="url.MediaLayOut" default="Grid">`) — this defaults to
+       LISTING because that is what the demo card is named and what a reviewer
+       arriving from the index expects, and `?layout=grid` lands directly on
+       the other half. Recorded rather than silently diverged from. */
+    var layouts = config.layouts || [];
+    var urlLayout = (new RegExp('[?&]layout=(grid|listing)').exec(location.search) || [])[1];
+    config.layout = (layouts.indexOf(urlLayout) !== -1 ? urlLayout : layouts[0]) || 'listing';
+
+    function applyLayout() {
+      root.setAttribute('data-layout', config.layout);
+      var group = root.querySelector('[data-listing-layout]');
+      if (group) {
+        group.querySelectorAll('[data-layout-value]').forEach(function (btn) {
+          var on = btn.getAttribute('data-layout-value') === config.layout;
+          btn.classList.toggle('seg-control__btn--active', on);
+          btn.setAttribute('aria-checked', on ? 'true' : 'false');
+        });
+      }
+      /* Edit Columns is meaningless in a grid — there are no columns. */
+      var cols = root.querySelector('.cc-listing__columns');
+      if (cols) cols.hidden = config.layout !== 'listing';
+    }
+
+    if (layouts.length > 1) {
+      var group = root.querySelector('[data-listing-layout]');
+      if (group) {
+        group.hidden = false;
+        group.addEventListener('click', function (e) {
+          var btn = e.target.closest('[data-layout-value]');
+          if (!btn) return;
+          var next = btn.getAttribute('data-layout-value');
+          if (next === config.layout) return;
+          config.layout = next;
+          applyLayout();
+          /* The table only measures correctly once it is on screen again. */
+          if (next === 'listing') fitColumns(root, config);
+        });
+      }
+    }
+    applyLayout();
+
+    /* Selection — one model, both views. A checkbox exists in the table row
+       and on the grid card; either can tick a row and both must agree, which
+       is why this listens on the whole screen rather than per view. */
+    root.addEventListener('change', function (e) {
+      var box = e.target.closest('[data-select-row]');
+      if (!box) return;
+      var id = box.getAttribute('data-select-row');
+      if (box.checked) SELECTED[id] = true; else delete SELECTED[id];
+      /* Keep the OTHER view's checkbox for this row in step without a full
+         re-render, which would lose scroll position mid-click. */
+      root.querySelectorAll('[data-select-row="' + id + '"]').forEach(function (other) {
+        other.checked = box.checked;
+      });
+      var card = root.querySelector('[data-grid-card="' + id + '"]');
+      if (card) card.classList.toggle('cc-grid__card--selected', box.checked);
+      renderSelection(root, config);
+    });
+
+    var clearBtn = root.querySelector('[data-selection-clear]');
+    if (clearBtn) clearBtn.addEventListener('click', function () {
+      SELECTED = {};
+      root.querySelectorAll('[data-select-row]').forEach(function (b) { b.checked = false; });
+      root.querySelectorAll('[data-grid-card]').forEach(function (c) {
+        c.classList.remove('cc-grid__card--selected');
+      });
+      renderSelection(root, config);
+    });
+
     render(root, config);
 
     /* The bar establishes its baseline before these chips exist, so it would

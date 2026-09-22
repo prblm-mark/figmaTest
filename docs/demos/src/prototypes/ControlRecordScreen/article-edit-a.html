@@ -1,0 +1,1240 @@
+<!doctype html>
+<html lang="en" data-brand="cc" data-capture-name="Article — edit — model A">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Theme resolution only — NOT components/dark-mode-toggle.js, which also
+       injects the fixed demo gear tab. Same reasoning as ListingScreen: this
+       screen is the shell for hundreds of real CC screens and a demo
+       affordance floating over it reads as part of the product. -->
+  <script src="../../styles/theme-param.js"></script>
+  <title>Article · Edit · Tabs — Affino Control Centre</title>
+
+  <!-- Base + tokens -->
+  <link rel="stylesheet" href="../../styles/base.css">
+
+  <!-- Atom-tier components -->
+  <link rel="stylesheet" href="../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/Breadcrumb/Breadcrumb.css">
+  <link rel="stylesheet" href="../../components/Dropdown/Dropdown.css">
+  <link rel="stylesheet" href="../../components/DropdownItem/DropdownItem.css">
+  <link rel="stylesheet" href="../../components/Portraits/Portraits.css">
+  <link rel="stylesheet" href="../../components/Avatar/Avatar.css">
+  <link rel="stylesheet" href="../../components/NotificationBadge/NotificationBadge.css">
+  <link rel="stylesheet" href="../../components/Toggle/Toggle.css">
+  <link rel="stylesheet" href="../../components/ThemeToggle/ThemeToggle.css">
+  <link rel="stylesheet" href="../../components/Input/Input.css">
+  <link rel="stylesheet" href="../../components/Select/Select.css">
+  <link rel="stylesheet" href="../../components/Textarea/Textarea.css">
+  <link rel="stylesheet" href="../../components/Checkbox/Checkbox.css">
+  <link rel="stylesheet" href="../../components/Badge/Badge.css">
+  <link rel="stylesheet" href="../../components/Pill/Pill.css">
+  <link rel="stylesheet" href="../../components/Table/Table.css">
+  <link rel="stylesheet" href="../../components/Datatables/Datatables.css">
+  <link rel="stylesheet" href="../../components/DatePicker/DatePicker.css">
+  <link rel="stylesheet" href="../../components/Alert/Alert.css">
+
+  <!-- DS-tier patterns -->
+  <link rel="stylesheet" href="../../patterns/Modal/Modal.css">
+
+  <!-- CC-tier components + patterns -->
+  <link rel="stylesheet" href="../../cc/components/MainMenuItem/MainMenuItem.css">
+  <link rel="stylesheet" href="../../cc/patterns/Sidebar/Sidebar.css">
+  <link rel="stylesheet" href="../../cc/patterns/Menu/Menu.css">
+  <link rel="stylesheet" href="../../cc/patterns/SidebarMenu/SidebarMenu.css">
+  <link rel="stylesheet" href="../../cc/patterns/TopNavigation/TopNavigation.css">
+  <link rel="stylesheet" href="../../cc/patterns/Header/Header.css">
+  <link rel="stylesheet" href="../../cc/patterns/HeaderGroup/HeaderGroup.css">
+  <link rel="stylesheet" href="../../cc/patterns/IconNavigation/IconNavigation.css">
+  <link rel="stylesheet" href="../../cc/patterns/ActionsMenu/ActionsMenu.css">
+  <link rel="stylesheet" href="../../cc/patterns/ActionsInfoPanel/ActionsInfoPanel.css">
+  <link rel="stylesheet" href="../../cc/components/FontSizeSlider/FontSizeSlider.css">
+  <link rel="stylesheet" href="../../components/Toast/Toast.css">
+
+  <!-- Template shell (read-only — this prototype adds no rule to it) then the
+       prototype's own CSS last. -->
+  <link rel="stylesheet" href="../../cc/templates/ControlScreen/ControlScreen.css">
+  <link rel="stylesheet" href="ControlRecordScreen.css">
+</head>
+<body class="cc-control">
+
+  <!-- ━━━ Sidebar (Desktop composite) ━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <!-- TODO(backend:ControlScreen) [sidebar-nav-data, panel-search]: SidebarMenu submenu
+       links are static hardcoded <li>s — need a menu/structure API + permissioned navigation.
+       The panel search inputs ("Search Control/Favourites/CRM") have no handler — need a
+       per-panel search/filter API. Mirrored in the mobile sidebar below. See HANDOVER.md. -->
+  <aside class="cc-control__sidebar cc-control__sidebar--desktop">
+    <div class="cc-sidebar-menu" aria-label="Affino Control Centre">
+
+      <nav class="cc-sidebar" role="toolbar" aria-label="Workspace switcher">
+        <div class="cc-sidebar__brand" role="img" aria-label="Affino"></div>
+        <button type="button" class="cc-sidebar__btn cc-sidebar__btn--active" data-cc-target="control" aria-controls="cc-d-control" aria-current="true" aria-label="Workspace settings"><i data-lucide="sliders-vertical" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" data-cc-target="crm" aria-controls="cc-d-crm" aria-label="CRM"><i data-lucide="user-cog" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" data-cc-target="analysis" aria-controls="cc-d-analysis" aria-label="Analysis"><i data-lucide="chart-no-axes-combined" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" data-cc-target="favourites" aria-controls="cc-d-favourites" aria-label="Favourites"><i data-lucide="star" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" aria-label="Organisation"><i data-lucide="network" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" aria-label="Profile"><i data-lucide="circle-user" aria-hidden="true"></i></button>
+      </nav>
+
+      <!-- Panel: Control (docked open by default — Menu Open Desktop variant) -->
+      <nav class="cc-menu" id="cc-d-control" data-cc-panel="control" aria-label="Control menu" aria-hidden="false">
+        <div class="cc-menu__brand" role="img" aria-label="Affino"></div>
+        <label class="cc-menu__search">
+          <i data-lucide="search" aria-hidden="true"></i>
+          <input class="cc-menu__search-input" type="search" placeholder="Search Control" aria-label="Search Control">
+        </label>
+        <ul class="cc-menu__items">
+          <li>
+            <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="user-cog"></i></span><span class="cc-main-menu-item__label">CRM</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Accounts</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Contacts</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Opportunities</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Tasks</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Forums</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Sales Teams</span></li>
+            </ul>
+          </li>
+          <li>
+            <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="file-text"></i></span><span class="cc-main-menu-item__label">Content</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Archive</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Attributes</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Export</span></li>
+            </ul>
+          </li>
+          <li>
+            <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="megaphone"></i></span><span class="cc-main-menu-item__label">Marketing</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Ad Campaigns</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Mailing Lists</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Messages</span></li>
+            </ul>
+          </li>
+          <li>
+            <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="shopping-cart"></i></span><span class="cc-main-menu-item__label">Commerce</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Catalogue Items</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Orders</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Subscriptions</span></li>
+            </ul>
+          </li>
+          <li>
+            <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="sparkles"></i></span><span class="cc-main-menu-item__label">AI</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">AI Analyst</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">AI Report</span></li>
+            </ul>
+          </li>
+          <li>
+            <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="images"></i></span><span class="cc-main-menu-item__label">Media</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Media Items</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Media Inbox</span></li>
+            </ul>
+          </li>
+          <li>
+            <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="layout-panel-top"></i></span><span class="cc-main-menu-item__label">Structure</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Channels</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Sections</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Zones</span></li>
+            </ul>
+          </li>
+          <li>
+            <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="palette"></i></span><span class="cc-main-menu-item__label">Design</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Design Styles</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Fonts</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Skins</span></li>
+            </ul>
+          </li>
+          <li>
+            <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="settings"></i></span><span class="cc-main-menu-item__label">Settings</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">System Settings</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">About</span></li>
+            </ul>
+          </li>
+          <li>
+            <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="square-code"></i></span><span class="cc-main-menu-item__label">Custom</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Remote Error Log</span></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Panel: Analysis -->
+      <nav class="cc-menu" id="cc-d-analysis" data-cc-panel="analysis" aria-label="Analysis menu" hidden aria-hidden="true">
+        <div class="cc-menu__brand" role="img" aria-label="Affino"></div>
+        <ul class="cc-menu__items">
+          <li>
+            <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="layout-dashboard"></i></span><span class="cc-main-menu-item__label">Dashboards</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Analysis Dashboard</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Audience Dashboard</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Live Dashboard</span></li>
+            </ul>
+          </li>
+          <li>
+            <button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="user-cog"></i></span><span class="cc-main-menu-item__label">CRM</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <ul class="cc-menu__submenu" hidden>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">CRM Analysis</span></li>
+              <li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">User Analysis</span></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Panel: Favourites (opened by the ★ rail button; populated by the rail Favourite modal) -->
+      <nav class="cc-menu" id="cc-d-favourites" data-cc-panel="favourites" aria-label="Favourites menu" hidden aria-hidden="true">
+        <div class="cc-menu__brand" role="img" aria-label="Affino"></div>
+        <label class="cc-menu__search">
+          <i data-lucide="search" aria-hidden="true"></i>
+          <input class="cc-menu__search-input" type="search" placeholder="Search Favourites" aria-label="Search Favourites">
+        </label>
+        <ul class="cc-menu__submenu cc-control__fav-list">
+          <li class="cc-menu__submenu-item">
+            <span class="cc-menu__submenu-item-label">Analysis Dashboard</span>
+            <button class="cc-menu__submenu-item__action" type="button" aria-label="Remove from favourites"><i data-lucide="trash-2" aria-hidden="true"></i></button>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Panel: CRM -->
+      <nav class="cc-menu cc-menu--crm" id="cc-d-crm" data-cc-panel="crm" aria-label="CRM menu" hidden aria-hidden="true">
+        <div class="cc-menu__brand" role="img" aria-label="Affino"></div>
+        <label class="cc-menu__search">
+          <i data-lucide="search" aria-hidden="true"></i>
+          <input class="cc-menu__search-input" type="search" placeholder="Search CRM" aria-label="Search CRM">
+        </label>
+        <div class="cc-menu__crm-groups">
+          <div class="cc-menu__crm-group">
+            <button class="cc-menu__crm-btn"><span class="cc-menu__crm-btn__label">Contacts</span><span class="cc-menu__crm-btn__icon"><i data-lucide="square-plus"></i></span></button>
+            <button class="cc-menu__crm-btn"><span class="cc-menu__crm-btn__label">Accounts</span><span class="cc-menu__crm-btn__icon"><i data-lucide="square-plus"></i></span></button>
+            <button class="cc-menu__crm-btn"><span class="cc-menu__crm-btn__label">Opportunities</span><span class="cc-menu__crm-btn__icon"><i data-lucide="square-plus"></i></span></button>
+          </div>
+          <div class="cc-menu__crm-group">
+            <p class="cc-menu__recent-heading">Recent</p>
+            <button class="cc-menu__recent-item"><span class="cc-menu__recent-item__label">Daisy Smith, Jacobs Media</span><span class="cc-menu__recent-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <button class="cc-menu__recent-item"><span class="cc-menu__recent-item__label">Keisha Grant, Nova Designs</span><span class="cc-menu__recent-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+            <button class="cc-menu__recent-item"><span class="cc-menu__recent-item__label">Dev Sharma, Quantum Dynamics</span><span class="cc-menu__recent-item__chevron"><i data-lucide="chevron-down"></i></span></button>
+          </div>
+        </div>
+      </nav>
+
+    </div>
+  </aside>
+
+  <!-- ━━━ Sidebar (Mobile composite) ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <aside class="cc-control__sidebar cc-control__sidebar--mobile">
+    <div class="cc-sidebar-menu" aria-label="Affino Control Centre (mobile)">
+
+      <nav class="cc-sidebar cc-sidebar--mobile" role="toolbar" aria-label="Workspace switcher">
+        <div class="cc-sidebar__brand" role="img" aria-label="Affino"></div>
+        <button type="button" class="cc-sidebar__btn" data-cc-target="control" aria-controls="cc-m-control" aria-label="Workspace settings"><i data-lucide="sliders-vertical" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" data-cc-target="crm" aria-controls="cc-m-crm" aria-label="CRM"><i data-lucide="user-cog" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" data-cc-target="analysis" aria-controls="cc-m-analysis" aria-label="Analysis"><i data-lucide="chart-no-axes-combined" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" data-cc-target="favourites" aria-controls="cc-m-favourites" aria-label="Favourites"><i data-lucide="star" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" aria-label="Organisation"><i data-lucide="network" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" aria-label="Profile"><i data-lucide="circle-user" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" data-cc-toggle-extras aria-expanded="false" aria-label="More options"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" data-cc-rail-extra hidden aria-label="AI"><i data-lucide="sparkles" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" data-cc-rail-extra hidden aria-label="Info"><i data-lucide="info" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" data-cc-rail-extra hidden aria-label="Saved"><i data-lucide="star" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" data-cc-rail-extra hidden aria-label="Text size"><i data-lucide="a-large-small" aria-hidden="true"></i></button>
+        <!-- TODO(backend:ControlScreen) [minimise]: toggle a condensed spacing view — apply data-layout="minimised" on the shell (minimised-mode tokens exist) + persist the preference. -->
+        <button type="button" class="cc-sidebar__btn" data-cc-rail-extra hidden aria-label="Minimise" data-backend-todo="minimise"><i data-lucide="minimize-2" aria-hidden="true"></i></button>
+      </nav>
+
+      <!-- Panel: Control (mobile — hidden by default; tap rail to reveal) -->
+      <nav class="cc-menu" id="cc-m-control" data-cc-panel="control" aria-label="Control menu (mobile)" hidden aria-hidden="true">
+        <label class="cc-menu__search">
+          <i data-lucide="search" aria-hidden="true"></i>
+          <input class="cc-menu__search-input" type="search" placeholder="Search Control" aria-label="Search Control">
+        </label>
+        <ul class="cc-menu__items">
+          <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="user-cog"></i></span><span class="cc-main-menu-item__label">CRM</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button><ul class="cc-menu__submenu" hidden><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Accounts</span></li><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Contacts</span></li><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Opportunities</span></li></ul></li>
+          <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="file-text"></i></span><span class="cc-main-menu-item__label">Content</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button><ul class="cc-menu__submenu" hidden><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Archive</span></li><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Article Attributes</span></li></ul></li>
+          <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="megaphone"></i></span><span class="cc-main-menu-item__label">Marketing</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button><ul class="cc-menu__submenu" hidden><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Ad Campaigns</span></li><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Mailing Lists</span></li></ul></li>
+          <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="shopping-cart"></i></span><span class="cc-main-menu-item__label">Commerce</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button><ul class="cc-menu__submenu" hidden><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Catalogue Items</span></li><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Orders</span></li></ul></li>
+          <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="sparkles"></i></span><span class="cc-main-menu-item__label">AI</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button><ul class="cc-menu__submenu" hidden><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">AI Analyst</span></li></ul></li>
+          <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="images"></i></span><span class="cc-main-menu-item__label">Media</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button><ul class="cc-menu__submenu" hidden><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Media Items</span></li></ul></li>
+          <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="layout-panel-top"></i></span><span class="cc-main-menu-item__label">Structure</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button><ul class="cc-menu__submenu" hidden><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Channels</span></li></ul></li>
+          <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="palette"></i></span><span class="cc-main-menu-item__label">Design</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button><ul class="cc-menu__submenu" hidden><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Design Styles</span></li></ul></li>
+          <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="settings"></i></span><span class="cc-main-menu-item__label">Settings</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button><ul class="cc-menu__submenu" hidden><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">System Settings</span></li></ul></li>
+          <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="square-code"></i></span><span class="cc-main-menu-item__label">Custom</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button><ul class="cc-menu__submenu" hidden><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Remote Error Log</span></li></ul></li>
+        </ul>
+      </nav>
+
+      <!-- Panel: Analysis (mobile stub) -->
+      <nav class="cc-menu" id="cc-m-analysis" data-cc-panel="analysis" aria-label="Analysis menu (mobile)" hidden aria-hidden="true">
+        <ul class="cc-menu__items">
+          <li><button class="cc-main-menu-item" aria-expanded="false"><span class="cc-main-menu-item__icon"><i data-lucide="layout-dashboard"></i></span><span class="cc-main-menu-item__label">Dashboards</span><span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span></button><ul class="cc-menu__submenu" hidden><li class="cc-menu__submenu-item"><span class="cc-menu__submenu-item-label">Analysis Dashboard</span></li></ul></li>
+        </ul>
+      </nav>
+
+      <!-- Panel: Favourites (mobile) -->
+      <nav class="cc-menu" id="cc-m-favourites" data-cc-panel="favourites" aria-label="Favourites menu (mobile)" hidden aria-hidden="true">
+        <div class="cc-menu__brand" role="img" aria-label="Affino"></div>
+        <label class="cc-menu__search">
+          <i data-lucide="search" aria-hidden="true"></i>
+          <input class="cc-menu__search-input" type="search" placeholder="Search Favourites" aria-label="Search Favourites">
+        </label>
+        <ul class="cc-menu__submenu cc-control__fav-list">
+          <li class="cc-menu__submenu-item">
+            <span class="cc-menu__submenu-item-label">Analysis Dashboard</span>
+            <button class="cc-menu__submenu-item__action" type="button" aria-label="Remove from favourites"><i data-lucide="trash-2" aria-hidden="true"></i></button>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Panel: CRM (mobile stub) -->
+      <nav class="cc-menu cc-menu--crm" id="cc-m-crm" data-cc-panel="crm" aria-label="CRM menu (mobile)" hidden aria-hidden="true">
+        <label class="cc-menu__search">
+          <i data-lucide="search" aria-hidden="true"></i>
+          <input class="cc-menu__search-input" type="search" placeholder="Search CRM" aria-label="Search CRM">
+        </label>
+        <div class="cc-menu__crm-groups">
+          <div class="cc-menu__crm-group">
+            <button class="cc-menu__crm-btn"><span class="cc-menu__crm-btn__label">Contacts</span><span class="cc-menu__crm-btn__icon"><i data-lucide="square-plus"></i></span></button>
+            <button class="cc-menu__crm-btn"><span class="cc-menu__crm-btn__label">Accounts</span><span class="cc-menu__crm-btn__icon"><i data-lucide="square-plus"></i></span></button>
+          </div>
+        </div>
+      </nav>
+
+    </div>
+  </aside>
+
+  <!-- ━━━ Main column ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <main class="cc-control__main">
+
+    <!-- Top chrome: CC HeaderGroup (TopNavigation + Header) -->
+    <div class="cc-control__chrome">
+      <div class="cc-header-group">
+
+        <header class="cc-top-navigation">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <ol class="breadcrumb__list">
+              <li class="breadcrumb__item">
+                <div class="dropdown">
+                  <button class="breadcrumb__dropdown dropdown__trigger" type="button" aria-haspopup="menu" aria-expanded="false">Zone Selector<i data-lucide="chevron-down" aria-hidden="true"></i></button>
+                  <div class="dropdown__panel" role="menu" aria-label="Zone selector">
+                    <ul class="dropdown__list">
+                      <li role="none"><button type="button" class="dropdown__item" role="menuitem">Zone A</button></li>
+                      <li role="none"><button type="button" class="dropdown__item" role="menuitem">Zone B</button></li>
+                      <li role="none"><button type="button" class="dropdown__item dropdown__item--selected" role="menuitem" aria-current="page">Affino</button></li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              <li class="breadcrumb__separator" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
+              <li class="breadcrumb__item"><a class="breadcrumb__link" href="#">Content</a></li>
+              <li class="breadcrumb__separator" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
+              <li class="breadcrumb__item"><a class="breadcrumb__link" href="#">Articles</a></li>
+              <li class="breadcrumb__separator breadcrumb__separator--collapse" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
+              <li class="breadcrumb__item breadcrumb__item--current breadcrumb__item--collapse" aria-current="page">Article</li>
+            </ol>
+          </nav>
+          <div class="cc-top-navigation__actions">
+            <!-- User Menu dropdown — mirrors HeaderGroup's "User Menu"
+                 Desktop variant (node 4146:6685). Composes ThemeToggle
+                 + Toggle rows + DropdownItem entries + Sign Out. -->
+            <div class="dropdown dropdown--user-menu">
+              <button class="cc-top-navigation__user dropdown__trigger" type="button" aria-haspopup="menu" aria-expanded="false">
+                <img class="portrait" src="https://i.pravatar.cc/64?u=derrick" alt="Derrick Jefferson" />
+                <span class="cc-top-navigation__user-name">Derrick Jefferson</span>
+                <span class="cc-top-navigation__user-chevron" aria-hidden="true"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <div class="dropdown__panel" role="menu" aria-label="User menu">
+                <div class="theme-toggle theme-toggle--fill">
+                  <button class="theme-toggle__btn" type="button" data-theme-value="light" aria-pressed="true">
+                    <i data-lucide="sun" aria-hidden="true"></i>
+                    <span>Light</span>
+                  </button>
+                  <button class="theme-toggle__btn" type="button" data-theme-value="dark" aria-pressed="false">
+                    <i data-lucide="moon" aria-hidden="true"></i>
+                    <span>Dark</span>
+                  </button>
+                </div>
+                <div class="dropdown__toggle-list">
+                  <div class="dropdown__toggle-row">
+                    <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" id="cs-user-menu-icon-nav" data-cc-toggle="icon-nav">
+                      <span class="toggle__track"><span class="toggle__knob"></span></span>
+                    </button>
+                    <label for="cs-user-menu-icon-nav" class="toggle__label">
+                      <span class="toggle__label-text">Icon Navigation</span>
+                    </label>
+                  </div>
+                  <div class="dropdown__toggle-row dropdown__toggle-row--reveal" data-reveal-by="cs-user-menu-icon-nav">
+                    <button class="toggle toggle--xs" type="button" role="switch" aria-checked="false" id="cs-user-menu-hide-labels" data-cc-toggle="hide-labels">
+                      <span class="toggle__track"><span class="toggle__knob"></span></span>
+                    </button>
+                    <label for="cs-user-menu-hide-labels" class="toggle__label">
+                      <span class="toggle__label-text">Hide Labels</span>
+                    </label>
+                  </div>
+                </div>
+                <hr class="dropdown__divider">
+                <ul class="dropdown__list">
+                  <li role="none">
+                    <button type="button" class="dropdown-item" role="menuitem">
+                      <i data-lucide="star" aria-hidden="true"></i>
+                      <span data-text="My Favourites">My Favourites</span>
+                    </button>
+                  </li>
+                  <li role="none">
+                    <button type="button" class="dropdown-item" role="menuitem">
+                      <i data-lucide="circle-user" aria-hidden="true"></i>
+                      <span data-text="My Content">My Content</span>
+                    </button>
+                  </li>
+                </ul>
+                <hr class="dropdown__divider">
+                <button type="button" class="dropdown-item dropdown-item--warning" role="menuitem">
+                  <i data-lucide="log-out" aria-hidden="true"></i>
+                  <span data-text="Sign Out">Sign Out</span>
+                </button>
+              </div>
+            </div>
+            <button class="cc-top-navigation__preview" type="button" aria-label="Preview as desktop"><i data-lucide="monitor" aria-hidden="true"></i></button>
+          </div>
+        </header>
+
+        <!-- IconNavigation strip (cc-icon-nav pattern). Hidden by default; the
+             User Menu "Icon Navigation" toggle shows it (HeaderGroup.js adds
+             .cc-header-group--icon-nav), and "Hide Labels" switches it to
+             icons-only (.cc-icon-nav--no-labels). Always hidden below 768 of the
+             header-group's width via @container cc-header-group. -->
+        <nav class="cc-icon-nav" aria-label="Module navigation">
+          <ul class="cc-icon-nav__list">
+            <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--publish" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Publish</span></a></li>
+            <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--promote" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Promote</span></a></li>
+            <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--social" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Social</span></a></li>
+            <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--media" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Media</span></a></li>
+            <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--structure" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Structure</span></a></li>
+            <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--design" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Design</span></a></li>
+            <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--commerce" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Commerce</span></a></li>
+            <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--analyse" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Analyse</span></a></li>
+            <li class="cc-icon-nav__item"><a class="cc-icon-nav__link" href="#"><span class="cc-icon-nav__icon-box"><span class="cc-icon-nav__icon cc-icon-nav__icon--settings" aria-hidden="true"></span></span><span class="cc-icon-nav__label">Settings</span></a></li>
+          </ul>
+        </nav>
+
+        <div class="cc-header-cq">
+        <header class="cc-header cc-header--control">
+          <div class="cc-header__title-block">
+            <div class="cc-header__title-block-text">
+              <h1 class="cc-header__title">Article</h1>
+              <p class="cc-header__subtitle">Affino 9.0.11.25 — The Refinement Update</p>
+            </div>
+          </div>
+          <div class="cc-header__actions">
+            <button class="btn btn--tertiary" type="button">Cancel</button>
+            <button class="btn btn--primary" type="button"><i data-lucide="check" aria-hidden="true"></i> Save</button>
+          </div>
+        </header>
+        </div>
+
+
+      </div>
+    </div>
+
+    <div class="cc-control__page">
+      <div class="crs-record" data-mode="edit">
+        <div class="crs-main">
+      <div class="crs-tabs" role="tablist" aria-label="Record sections">
+            <button class="crs-tab crs-tab--active" type="button" role="tab" id="crs-tab-details" aria-controls="crs-panel-details" aria-selected="true">Details</button>
+            <button class="crs-tab" type="button" role="tab" id="crs-tab-perf" aria-controls="crs-panel-perf" aria-selected="false">Performance</button>
+            <button class="crs-tab" type="button" role="tab" id="crs-tab-contacts" aria-controls="crs-panel-contacts" aria-selected="false">Recent viewers <span class="crs-tab__count">5</span></button>
+            <button class="crs-tab" type="button" role="tab" id="crs-tab-steps" aria-controls="crs-panel-steps" aria-selected="false">Article steps <span class="crs-tab__count">23</span></button>
+      </div>
+
+      <div class="crs-panel" id="crs-panel-details" role="tabpanel" aria-labelledby="crs-tab-details">
+      <section class="crs-card" aria-labelledby="crs-s-0">
+        <div class="crs-card__head">
+          <h2 class="crs-card__title" id="crs-s-0">Navigation</h2>
+        </div>
+        <div class="crs-card__body">
+          <div class="crs-fields">
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-1">Zone <span class="crs-field__req" aria-hidden="true">*</span></label>
+            <div class="crs-field__value"><div class="sel" data-sel>
+                <button id="crs-f-1" class="sel__control" type="button" data-sel-trigger>
+                  <span class="sel__value">Affino</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">Affino <i data-lucide="check"></i></button></li></ul>
+              </div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-2">Section <span class="crs-field__req" aria-hidden="true">*</span></label>
+            <div class="crs-field__value"><div class="sel" data-sel>
+                <button id="crs-f-2" class="sel__control" type="button" data-sel-trigger>
+                  <span class="sel__value">Affino Social Commerce Blog</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">Affino Social Commerce Blog <i data-lucide="check"></i></button></li></ul>
+              </div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-3">Sort Order</label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-3" type="text" class="input__control" value="1"></div></div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-4">Multi Display</label>
+            <div class="crs-field__value"><div class="sel" data-sel-multi>
+                <ul class="sel__list" role="listbox" aria-multiselectable="true" aria-label="Multi Display"><li class="sel__list-item sel__list-item--selected" role="option" aria-selected="true" data-multi>Coronavirus Hub</li><li class="sel__list-item sel__list-item--selected" role="option" aria-selected="true" data-multi>AI</li><li class="sel__list-item sel__list-item--selected" role="option" aria-selected="true" data-multi>Insight &amp; Blogs</li><li class="sel__list-item" role="option" data-multi>Commercial Hub</li><li class="sel__list-item" role="option" data-multi>Events</li></ul>
+              </div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-5">Priority</label>
+            <div class="crs-field__value"><div class="sel" data-sel>
+                <button id="crs-f-5" class="sel__control" type="button" data-sel-trigger>
+                  <span class="sel__value">Select…</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item" role="option">High</button></li><li><button type="button" class="sel__menu-item" role="option">Normal</button></li><li><button type="button" class="sel__menu-item" role="option">Low</button></li></ul>
+              </div></div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="crs-card" aria-labelledby="crs-s-1">
+        <div class="crs-card__head">
+          <h2 class="crs-card__title" id="crs-s-1">Introduction</h2>
+        </div>
+        <div class="crs-card__body">
+          <div class="crs-fields">
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-6">Title <span class="crs-field__req" aria-hidden="true">*</span></label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-6" type="text" class="input__control" value="Affino 9.0.11.25 - The Refinement Update"></div></div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-7">Screen Name</label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-7" type="text" class="input__control" value="affino-901125-the-refinement-update"></div></div></div>
+            <p class="crs-field__help">Used in the article URL.</p>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-8">Alternative Title</label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-8" type="text" class="input__control" value=""></div></div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-9">Thumbnail</label>
+            <div class="crs-field__value"><div class="crs-media crs-media--edit">
+                <div class="crs-media__thumb" aria-hidden="true"><i data-lucide="image"></i></div>
+                <div class="crs-media__actions">
+                  <button class="btn btn--secondary btn--sm" type="button"><i data-lucide="upload" aria-hidden="true"></i> Replace</button>
+                  <button class="btn btn--tertiary btn--sm" type="button">Remove</button>
+                </div>
+              </div></div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="crs-card" aria-labelledby="crs-s-2">
+        <div class="crs-card__head">
+          <h2 class="crs-card__title" id="crs-s-2">Main Body</h2>
+        </div>
+        <div class="crs-card__body">
+          <div class="crs-fields">
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-10">Alignment</label>
+            <div class="crs-field__value"><div class="sel" data-sel>
+                <button id="crs-f-10" class="sel__control" type="button" data-sel-trigger>
+                  <span class="sel__value">Center</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item" role="option">Left</button></li><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">Center <i data-lucide="check"></i></button></li><li><button type="button" class="sel__menu-item" role="option">Right</button></li></ul>
+              </div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-11">Main Image</label>
+            <div class="crs-field__value"><div class="crs-media crs-media--edit">
+                <div class="crs-media__thumb" aria-hidden="true"><i data-lucide="image"></i></div>
+                <div class="crs-media__actions">
+                  <button class="btn btn--secondary btn--sm" type="button"><i data-lucide="upload" aria-hidden="true"></i> Replace</button>
+                  <button class="btn btn--tertiary btn--sm" type="button">Remove</button>
+                </div>
+              </div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-12">Audio Version (MP3)</label>
+            <div class="crs-field__value"><div class="crs-media crs-media--edit">
+                <div class="crs-media__thumb" aria-hidden="true"><i data-lucide="music"></i></div>
+                <div class="crs-media__actions">
+                  <button class="btn btn--secondary btn--sm" type="button"><i data-lucide="upload" aria-hidden="true"></i> Replace</button>
+                  <button class="btn btn--tertiary btn--sm" type="button">Remove</button>
+                </div>
+              </div></div>
+          </div>
+          <div class="crs-field crs-field--full crs-field--textarea">
+            <label class="crs-field__label" for="crs-f-13">Blog Intro</label>
+            <div class="crs-field__value"><div class="textarea"><textarea class="textarea__control" id="crs-f-13" rows="4">Affino 9.0.11.25, The Refinement Update, puts the work into the platform you already run: exports and reports that finish on real data, screens that hold your place as you move through them, sharper defences in front of your site, a one-tap unsubscribe for your recipients, and a new Orders API your other systems can read.</textarea></div></div>
+          </div>
+          <div class="crs-field crs-field--full crs-field--textarea">
+            <label class="crs-field__label" for="crs-f-14">Blog Entry</label>
+            <div class="crs-field__value"><div class="textarea"><textarea class="textarea__control" id="crs-f-14" rows="10">Affino 9.0.11.25, The Refinement Update, puts the work into the platform you already run. Exports and reports finish on real data, screens hold your place as you move through them, the defences in front of your site are sharper, and your recipients get a one-tap unsubscribe.
+
+Five headline updates lead the release. We rebuilt more than twenty exports this release, spanning content, commerce, subscriptions, CRM, analytics, ad serving, events, and messaging, along with the listings and reports behind them.</textarea></div></div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="crs-card" aria-labelledby="crs-s-3">
+        <div class="crs-card__head">
+          <h2 class="crs-card__title" id="crs-s-3">Topics</h2>
+        </div>
+        <div class="crs-card__body">
+          <div class="crs-fields">
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-15">Category Topic</label>
+            <div class="crs-field__value"><div class="sel" data-sel>
+                <button id="crs-f-15" class="sel__control" type="button" data-sel-trigger>
+                  <span class="sel__value">Select…</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <ul class="sel__menu" role="listbox"></ul>
+              </div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-16">Topics and Keywords</label>
+            <div class="crs-field__value"><div class="sel" data-sel-multi>
+                <ul class="sel__list" role="listbox" aria-multiselectable="true" aria-label="Topics and Keywords"><li class="sel__list-item" role="option" data-multi>Platform</li><li class="sel__list-item" role="option" data-multi>Release</li><li class="sel__list-item" role="option" data-multi>Security</li></ul>
+              </div></div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="crs-card" aria-labelledby="crs-s-4">
+        <div class="crs-card__head">
+          <h2 class="crs-card__title" id="crs-s-4">SEO</h2>
+        </div>
+        <div class="crs-card__body">
+          <div class="crs-fields">
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-17">Page Title</label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-17" type="text" class="input__control" value="Affino 9.0.11.25 - The Refinement Update"></div></div></div>
+          </div>
+          <div class="crs-field crs-field--full crs-field--textarea">
+            <label class="crs-field__label" for="crs-f-18">Page Description</label>
+            <div class="crs-field__value"><div class="textarea"><textarea class="textarea__control" id="crs-f-18" rows="4">Exports and reports that finish on real data, screens that hold your place, sharper defences against bots and spoofing, a one-tap unsubscribe your recipients can actually find, and a new Orders API.</textarea></div></div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="crs-card" aria-labelledby="crs-s-5">
+        <div class="crs-card__head">
+          <h2 class="crs-card__title" id="crs-s-5">Social</h2>
+        </div>
+        <div class="crs-card__body">
+          <div class="crs-fields">
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-19">Shareline 1</label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-19" type="text" class="input__control" value=""></div></div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-20">Shareline 2</label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-20" type="text" class="input__control" value=""></div></div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-21">Shareline 3</label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-21" type="text" class="input__control" value=""></div></div></div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="crs-card" aria-labelledby="crs-s-6">
+        <div class="crs-card__head">
+          <h2 class="crs-card__title" id="crs-s-6">Article Questions</h2>
+        </div>
+        <div class="crs-card__body">
+          <div class="crs-fields">
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-22">Question 1</label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-22" type="text" class="input__control" value="What does the new Orders API let connected systems read and update?"></div></div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-23">Question 2</label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-23" type="text" class="input__control" value="How can recipients unsubscribe directly from Apple Mail, Gmail, or Yahoo?"></div></div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-24">Question 3</label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-24" type="text" class="input__control" value="Which bot detection changes help block spoofed or high-velocity scraper traffic?"></div></div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-25">Question 4</label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-25" type="text" class="input__control" value="How do per-award terms and shortlist notifications simplify awards management?"></div></div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-26">Question 5</label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-26" type="text" class="input__control" value="Which exports and reports were rebuilt to handle large datasets faster?"></div></div></div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="crs-card" aria-labelledby="crs-s-7">
+        <div class="crs-card__head">
+          <h2 class="crs-card__title" id="crs-s-7">Summary</h2>
+        </div>
+        <div class="crs-card__body">
+          <div class="crs-fields">
+          <div class="crs-field crs-field--full crs-field--textarea">
+            <label class="crs-field__label" for="crs-f-27">Summary</label>
+            <div class="crs-field__value"><div class="textarea"><textarea class="textarea__control" id="crs-f-27" rows="4">Affino 9.0.11.25 - The Refinement Update - puts the work into the platform you already run. The new Orders API opens your order book to the systems and agents you run alongside Affino.</textarea></div></div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="crs-card" aria-labelledby="crs-s-8">
+        <div class="crs-card__head">
+          <h2 class="crs-card__title" id="crs-s-8">Publication</h2>
+        </div>
+        <div class="crs-card__body">
+          <div class="crs-fields">
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-28">Creator</label>
+            <div class="crs-field__value"><div class="sel" data-sel>
+                <button id="crs-f-28" class="sel__control" type="button" data-sel-trigger>
+                  <span class="sel__value">Markus Karlsson</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">Markus Karlsson <i data-lucide="check"></i></button></li></ul>
+              </div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-29">Related Authors</label>
+            <div class="crs-field__value"><div class="sel" data-sel-multi>
+                <ul class="sel__list" role="listbox" aria-multiselectable="true" aria-label="Related Authors"><li class="sel__list-item" role="option" data-multi>Luis Montiel</li><li class="sel__list-item" role="option" data-multi>Quang Luong</li></ul>
+              </div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-30">Publish Start</label>
+            <div class="crs-field__value"><div class="input input--sm"><div class="input__wrap"><input id="crs-f-30" type="text" class="input__control" value="02/09/2026 17:03" placeholder="dd/mm/yyyy hh:mm"></div></div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-31">Publish End</label>
+            <div class="crs-field__value"><div class="input input--sm"><div class="input__wrap"><input id="crs-f-31" type="text" class="input__control" value="02/09/2126 17:03" placeholder="dd/mm/yyyy hh:mm"></div></div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-32">Embargo End</label>
+            <div class="crs-field__value"><div class="input input--sm"><div class="input__wrap"><input id="crs-f-32" type="text" class="input__control" value="01/01/1900 00:00" placeholder="dd/mm/yyyy hh:mm"></div></div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-33">Syndication</label>
+            <div class="crs-field__value"><div class="sel" data-sel>
+                <button id="crs-f-33" class="sel__control" type="button" data-sel-trigger>
+                  <span class="sel__value">Select…</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item" role="option">None</button></li><li><button type="button" class="sel__menu-item" role="option">Partial</button></li><li><button type="button" class="sel__menu-item" role="option">Full</button></li></ul>
+              </div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-34">Live</label>
+            <div class="crs-field__value"><button class="toggle toggle--active" type="button" role="switch" aria-checked="true" aria-label="Live"></button></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-35">Private</label>
+            <div class="crs-field__value"><button class="toggle" type="button" role="switch" aria-checked="false" aria-label="Private"></button></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-36">Send Via Content / Interest Subscription</label>
+            <div class="crs-field__value"><button class="toggle" type="button" role="switch" aria-checked="false" aria-label="Send Via Content / Interest Subscription"></button></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-37">Hide From Search Results</label>
+            <div class="crs-field__value"><button class="toggle" type="button" role="switch" aria-checked="false" aria-label="Hide From Search Results"></button></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-38">Exclude From AI Index</label>
+            <div class="crs-field__value"><button class="toggle" type="button" role="switch" aria-checked="false" aria-label="Exclude From AI Index"></button></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-39">Moderated</label>
+            <div class="crs-field__value"><button class="toggle" type="button" role="switch" aria-checked="false" aria-label="Moderated"></button></div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="crs-card" aria-labelledby="crs-s-9">
+        <div class="crs-card__head">
+          <h2 class="crs-card__title" id="crs-s-9">Security</h2>
+        </div>
+        <div class="crs-card__body">
+          <div class="crs-fields">
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-40">Content Security Right</label>
+            <div class="crs-field__value"><div class="sel" data-sel>
+                <button id="crs-f-40" class="sel__control" type="button" data-sel-trigger>
+                  <span class="sel__value">Select…</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item" role="option">Public</button></li><li><button type="button" class="sel__menu-item" role="option">Members</button></li><li><button type="button" class="sel__menu-item" role="option">Subscribers</button></li></ul>
+              </div></div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="crs-card" aria-labelledby="crs-s-10">
+        <div class="crs-card__head">
+          <h2 class="crs-card__title" id="crs-s-10">Advanced</h2>
+        </div>
+        <div class="crs-card__body">
+          <div class="crs-fields">
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-41">External Article ID</label>
+            <div class="crs-field__value"><div class="input"><div class="input__wrap"><input id="crs-f-41" type="text" class="input__control" value=""></div></div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-42">Article Type</label>
+            <div class="crs-field__value"><div class="sel" data-sel>
+                <button id="crs-f-42" class="sel__control" type="button" data-sel-trigger>
+                  <span class="sel__value">Blog</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">Blog <i data-lucide="check"></i></button></li><li><button type="button" class="sel__menu-item" role="option">News</button></li><li><button type="button" class="sel__menu-item" role="option">Feature</button></li><li><button type="button" class="sel__menu-item" role="option">Review</button></li></ul>
+              </div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-43">Multimedia</label>
+            <div class="crs-field__value"><div class="crs-media crs-media--edit">
+                <div class="crs-media__thumb" aria-hidden="true"><i data-lucide="film"></i></div>
+                <div class="crs-media__actions">
+                  <button class="btn btn--secondary btn--sm" type="button"><i data-lucide="upload" aria-hidden="true"></i> Replace</button>
+                  <button class="btn btn--tertiary btn--sm" type="button">Remove</button>
+                </div>
+              </div></div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="crs-card" aria-labelledby="crs-s-11">
+        <div class="crs-card__head">
+          <h2 class="crs-card__title" id="crs-s-11">Geo Targeting</h2>
+        </div>
+        <div class="crs-card__body">
+          <div class="crs-fields">
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-44">Geo Targeting Type</label>
+            <div class="crs-field__value"><div class="sel" data-sel>
+                <button id="crs-f-44" class="sel__control" type="button" data-sel-trigger>
+                  <span class="sel__value">None</span>
+                  <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+                </button>
+                <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">None <i data-lucide="check"></i></button></li><li><button type="button" class="sel__menu-item" role="option">Include</button></li><li><button type="button" class="sel__menu-item" role="option">Exclude</button></li></ul>
+              </div></div>
+          </div>
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-45">Countries</label>
+            <div class="crs-field__value"><div class="sel" data-sel-multi>
+                <ul class="sel__list" role="listbox" aria-multiselectable="true" aria-label="Countries"><li class="sel__list-item" role="option" data-multi>United Kingdom</li><li class="sel__list-item" role="option" data-multi>United States</li><li class="sel__list-item" role="option" data-multi>Germany</li></ul>
+              </div></div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="crs-card" aria-labelledby="crs-s-12">
+        <div class="crs-card__head">
+          <h2 class="crs-card__title" id="crs-s-12">Comments And Ratings</h2>
+        </div>
+        <div class="crs-card__body">
+          <div class="crs-fields">
+          <div class="crs-field">
+            <label class="crs-field__label" for="crs-f-46">Hide Comments And Ratings</label>
+            <div class="crs-field__value"><button class="toggle" type="button" role="switch" aria-checked="false" aria-label="Hide Comments And Ratings"></button></div>
+          </div>
+          </div>
+        </div>
+      </section>
+      </div>
+
+      <section class="crs-card" role="tabpanel" id="crs-panel-perf" aria-labelledby="crs-tab-perf" hidden>
+        <div class="crs-card__head"><h2 class="crs-card__title">Performance</h2></div>
+        <div class="crs-card__body">
+        <div class="crs-metrics">
+          <div class="crs-metric"><p class="crs-metric__label">Total impressions</p><p class="crs-stat">89</p></div>
+          <div class="crs-metric"><p class="crs-metric__label">Impressions per day</p><p class="crs-stat">4.68</p></div>
+          <div class="crs-metric"><p class="crs-metric__label">Consumed</p><p class="crs-stat">48</p></div>
+          <div class="crs-metric"><p class="crs-metric__label">Bookmarked</p><p class="crs-stat">0</p></div>
+        </div>
+        <div class="crs-spark" role="img" aria-label="Impressions over the last 12 months, rising to 22 in the most recent month"><span style="height:9%"></span><span style="height:14%"></span><span style="height:9%"></span><span style="height:18%"></span><span style="height:14%"></span><span style="height:23%"></span><span style="height:18%"></span><span style="height:27%"></span><span style="height:23%"></span><span style="height:41%"></span><span style="height:64%"></span><span style="height:100%"></span></div>
+        <p class="crs-panel__note">Last 12 months</p>
+        <h3 class="crs-panel__sub">Top account impressions</h3>
+        <div class="crs-chips"><span class="pill pill--contrast"><span class="pill__label">Affino</span></span><span class="pill pill--contrast"><span class="pill__label">Tiger - Lucas Dev Instance</span></span><span class="pill pill--contrast"><span class="pill__label">Ocean Media Group Ltd</span></span><span class="pill pill--contrast"><span class="pill__label">CRM AgriCommodities</span></span><span class="pill pill--contrast"><span class="pill__label">Wyvex Media</span></span><span class="pill pill--contrast"><span class="pill__label">The Bookseller</span></span><span class="pill pill--contrast"><span class="pill__label">Green Star Media Ltd</span></span></div>
+        </div>
+      </section>
+
+      <section class="crs-card" role="tabpanel" id="crs-panel-contacts" aria-labelledby="crs-tab-contacts" hidden>
+        <div class="crs-card__head"><h2 class="crs-card__title">Recent viewers</h2><a class="crs-card__head-link" href="#">View all contacts<i data-lucide="arrow-right" aria-hidden="true"></i></a></div>
+        <div class="crs-card__body">
+        <div class="datatables">
+          <div class="datatables__body">
+            <table class="table">
+              <thead><tr><th scope="col">Name</th><th scope="col">Account</th><th scope="col">Viewed</th></tr></thead>
+              <tbody><tr><td><span class="crs-person"><span class="crs-person__name">David Delawa</span><span class="crs-person__role">Junior Digital Producer</span></span></td><td>Ocean Media Group Ltd</td><td>4 days 12 hours ago</td></tr><tr><td><span class="crs-person"><span class="crs-person__name">Janice Johnston</span><span class="crs-person__role">Commercial Manager</span></span></td><td>Wyvex Media</td><td>7 days 12 hours ago</td></tr><tr><td><span class="crs-person"><span class="crs-person__name">Martin Stewart</span><span class="crs-person__role">IT Systems Engineer</span></span></td><td>Wyvex Media</td><td>7 days 12 hours ago</td></tr><tr><td><span class="crs-person"><span class="crs-person__name">Jazz Aduhene</span><span class="crs-person__role">Digital Product Assistant</span></span></td><td>Ocean Media Group Ltd</td><td>7 days 12 hours ago</td></tr><tr><td><span class="crs-person"><span class="crs-person__name">Quang Luong</span><span class="crs-person__role">Product Director</span></span></td><td>Affino</td><td>14 Sept 2026 at 00:00</td></tr></tbody>
+            </table>
+          </div>
+          <div class="datatables__footer">
+            <p class="datatables__count">5 contacts</p>
+          </div>
+        </div>
+        </div>
+      </section>
+
+      <section class="crs-card" role="tabpanel" id="crs-panel-steps" aria-labelledby="crs-tab-steps" hidden>
+        <div class="crs-card__head"><h2 class="crs-card__title">Article steps</h2><a class="crs-card__head-link" href="#">View all 23 steps<i data-lucide="arrow-right" aria-hidden="true"></i></a></div>
+        <div class="crs-card__body">
+        <div class="datatables">
+          <div class="datatables__body crs-scroll">
+            <table class="table">
+              <thead><tr><th scope="col">Title</th><th scope="col">Type</th><th scope="col">Order</th><th scope="col">Created by</th></tr></thead>
+              <tbody><tr><td>Waiting Less - Faster Exports, Reports, and Listings</td><td>Content</td><td>1</td><td>Markus Karlsson</td></tr><tr><td>Never Losing Your Place - Journeys That Remember</td><td>Content</td><td>2</td><td>Markus Karlsson</td></tr><tr><td>Harder to Abuse - Stronger Defences Against Bots</td><td>Content</td><td>3</td><td>Markus Karlsson</td></tr><tr><td>Fewer Spam Complaints - One-Tap Unsubscribe</td><td>Content</td><td>4</td><td>Markus Karlsson</td></tr><tr><td>Awards and Dynamic Forms - Workflows That Fit</td><td>Content</td><td>5</td><td>Markus Karlsson</td></tr><tr><td>Upgrade Guidance</td><td>Content</td><td>6</td><td>Markus Karlsson</td></tr><tr><td>AI and Intelligence</td><td>Content</td><td>7</td><td>Markus Karlsson</td></tr><tr><td>Marketing</td><td>Content</td><td>8</td><td>Markus Karlsson</td></tr><tr><td>Content and Publishing</td><td>Content</td><td>9</td><td>Markus Karlsson</td></tr><tr><td>Commerce</td><td>Content</td><td>10</td><td>Markus Karlsson</td></tr></tbody>
+            </table>
+          </div>
+          <div class="datatables__footer">
+            <p class="datatables__count">1 – 10 of 23</p>
+            <nav class="datatables__pagination" aria-label="Article steps pages">
+              <button class="datatables__page-btn" type="button" aria-label="Previous"><i data-lucide="chevron-left" aria-hidden="true"></i></button>
+              <span class="datatables__page-numbers">
+                <button class="datatables__page-btn datatables__page-btn--active" type="button" aria-current="page">1</button>
+                <button class="datatables__page-btn" type="button">2</button>
+                <button class="datatables__page-btn" type="button">3</button>
+              </span>
+              <button class="datatables__page-btn" type="button" aria-label="Next"><i data-lucide="chevron-right" aria-hidden="true"></i></button>
+            </nav>
+          </div>
+        </div>
+        </div>
+      </section>
+        </div>
+
+      <aside class="crs-aside" aria-label="Record information">
+        <section class="crs-fact" aria-labelledby="crs-fact-rec">
+          <h2 class="crs-fact__title" id="crs-fact-rec">Record</h2>
+          <dl class="crs-fact__list">
+            <div class="crs-fact__item"><dt>Article Code</dt><dd>626353</dd></div>
+            <div class="crs-fact__item"><dt>Batch Reference</dt><dd><span class="crs-empty">—</span></dd></div>
+          </dl>
+        </section>
+
+        <section class="crs-fact" aria-labelledby="crs-fact-seo">
+          <h2 class="crs-fact__title" id="crs-fact-seo">SEO health</h2>
+          <ul class="crs-advice">
+            <li class="crs-advice__item"><i data-lucide="alert-circle" aria-hidden="true"></i>No social sharelines entered</li>
+            <li class="crs-advice__item"><i data-lucide="alert-circle" aria-hidden="true"></i>No topics selected</li>
+            <li class="crs-advice__item"><i data-lucide="alert-circle" aria-hidden="true"></i>Use subheadings (H2, H3) in the Main Body</li>
+          </ul>
+        </section>
+
+        <section class="crs-fact" aria-labelledby="crs-fact-meta">
+          <h2 class="crs-fact__title" id="crs-fact-meta">Meta information</h2>
+          <dl class="crs-fact__list">
+            <div class="crs-fact__item"><dt>Publisher</dt><dd>Affino</dd></div>
+            <div class="crs-fact__item"><dt>Creator</dt><dd>Markus Karlsson</dd></div>
+            <div class="crs-fact__item"><dt>Rights</dt><dd>© Comrz Ltd 2009 – 2026</dd></div>
+            <div class="crs-fact__item"><dt>Date</dt><dd>17:03 02 September 2026</dd></div>
+            <div class="crs-fact__item"><dt>Language</dt><dd>English</dd></div>
+          </dl>
+        </section>
+
+        <section class="crs-fact" aria-labelledby="crs-fact-idx">
+          <h2 class="crs-fact__title" id="crs-fact-idx">Index status</h2>
+          <dl class="crs-fact__list">
+            <div class="crs-fact__item"><dt>Site Search</dt><dd>03/09/2026 08:32</dd></div>
+            <div class="crs-fact__item"><dt>Affino.com Assistant</dt><dd>03/09/2026 08:33</dd></div>
+          </dl>
+        </section>
+
+        <section class="crs-fact" aria-labelledby="crs-fact-audit">
+          <h2 class="crs-fact__title" id="crs-fact-audit">Audit</h2>
+          <dl class="crs-fact__list">
+            <div class="crs-fact__item"><dt>Created</dt><dd>02/09/2026 17:03</dd></div>
+            <div class="crs-fact__item"><dt>Created by</dt><dd>Markus Karlsson</dd></div>
+            <div class="crs-fact__item"><dt>Last updated</dt><dd>03/09/2026 08:32</dd></div>
+            <div class="crs-fact__item"><dt>Last updated by</dt><dd>Luis Montiel</dd></div>
+            <div class="crs-fact__item"><dt>Last view</dt><dd>22/09/2026 03:21</dd></div>
+            <div class="crs-fact__item"><dt>Impressions</dt><dd>89</dd></div>
+          </dl>
+          <a class="crs-fact__more" href="#">View audit trail<i data-lucide="arrow-right" aria-hidden="true"></i></a>
+        </section>
+      </aside>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ━━━ Right action rail (ActionsMenu) ━━━━━━━━━━━━━━━━━━━━━
+       Figma node 4167:4879 — full-height rail docked to the right edge of
+       the Desktop Menu Open variant (4187:21253). Desktop only; hidden
+       below 768px per design (matches the sidebar device-class swap). -->
+  <div class="cc-control__actions">
+    <div class="actions-menu">
+      <button class="actions-menu__btn" type="button" aria-label="AI Assistant" aria-haspopup="dialog" aria-expanded="false" aria-controls="ai-assistant" data-cc-ai-toggle>
+        <i data-lucide="sparkles" aria-hidden="true"></i>
+      </button>
+      <span class="cc-control__rail-item">
+        <button class="actions-menu__btn" type="button" aria-label="Info" aria-haspopup="dialog" aria-expanded="false" aria-controls="cc-rail-info" data-aa-toggle="info">
+          <i data-lucide="info" aria-hidden="true"></i>
+        </button>
+        <div class="cc-control__rail-popover" id="cc-rail-info" data-aa-panel="info" role="dialog" aria-label="Information" hidden>
+          <div class="cc-actions-info-panel">
+            <section class="cc-actions-info-panel__section">
+              <h3 class="cc-actions-info-panel__heading">Description</h3>
+              <p class="cc-actions-info-panel__body">Your Control Centre home — monitor live activity, jump into key features, and switch zones from one place.</p>
+            </section>
+            <section class="cc-actions-info-panel__section">
+              <h3 class="cc-actions-info-panel__heading">Related</h3>
+              <div class="cc-actions-info-panel__pills">
+                <button type="button" class="btn btn--tertiary btn--sm">Analysis Dashboard</button>
+                <button type="button" class="btn btn--tertiary btn--sm">Zone Settings</button>
+              </div>
+            </section>
+            <section class="cc-actions-info-panel__section">
+              <h3 class="cc-actions-info-panel__heading">System Security Right</h3>
+              <div class="cc-actions-info-panel__pills">
+                <button type="button" class="btn btn--tertiary btn--sm">Control Access</button>
+                <button type="button" class="btn btn--tertiary btn--sm">Member Management</button>
+              </div>
+            </section>
+          </div>
+        </div>
+      </span>
+      <button class="actions-menu__btn" type="button" aria-label="Add to favourites" aria-haspopup="dialog" data-aa-modal="fav">
+        <i data-lucide="star" aria-hidden="true"></i>
+      </button>
+      <span class="cc-control__rail-item">
+        <button class="actions-menu__btn" type="button" aria-label="Text size" aria-haspopup="dialog" aria-expanded="false" aria-controls="cc-rail-textsize" data-aa-toggle="text-size">
+          <i data-lucide="a-large-small" aria-hidden="true"></i>
+        </button>
+        <div class="cc-control__rail-popover cc-control__rail-popover--card" id="cc-rail-textsize" data-aa-panel="text-size" role="dialog" aria-label="Text size" hidden>
+          <p class="cc-control__rail-popover-label">Text size</p>
+          <div class="font-size-slider">
+            <!-- TODO(backend:ControlScreen) [text-size]: emits input/change only — bind to a font-scale var site-wide and persist the preference per user. -->
+            <input class="font-size-slider__input" type="range" min="1" max="4" step="1" value="2" aria-label="Text size" data-backend-todo="text-size">
+          </div>
+        </div>
+      </span>
+      <!-- Minimise: visual-only for now (behaviour TBD) -->
+      <!-- TODO(backend:ControlScreen) [minimise]: toggle a condensed spacing view — apply data-layout="minimised" on the shell (minimised-mode tokens exist) + persist the preference. -->
+      <button class="actions-menu__btn" type="button" aria-label="Minimise" data-backend-todo="minimise">
+        <i data-lucide="minimize-2" aria-hidden="true"></i>
+      </button>
+      <!-- TODO(backend:ControlScreen) [print]: fe-wired — window.print() works natively; OK as-is unless a server-side print-to-PDF is wanted. -->
+      <button class="actions-menu__btn" type="button" aria-label="Print" data-aa-action="print" data-backend-todo="print">
+        <i data-lucide="printer" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ━━━ Toast stack (top-right) — favourites save/remove feedback ━━━━━
+       Empty container; toasts are spawned into it by the rail IIFE (success on
+       save, interactive Undo on remove). Uses the Toast component markup. -->
+  <div class="cc-toast-stack" id="cc-toasts" aria-live="polite" aria-atomic="false"></div>
+
+  <!-- ━━━ "Save favourite as" modal (opened by the rail Favourite button) ━━━ -->
+  <div class="modal-overlay" id="modal-fav" role="dialog" aria-modal="true" aria-labelledby="modal-fav-title">
+    <div class="modal modal--sm">
+      <div class="modal__header">
+        <h2 class="modal__title" id="modal-fav-title">Save favourite as</h2>
+        <button class="modal__close" type="button" aria-label="Close" data-aa-modal-close><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+      <div class="modal__body">
+        <div class="input">
+          <div class="input__wrap">
+            <input id="cc-fav-name" type="text" class="input__control" placeholder="e.g. Q3 Campaign View" aria-label="Favourite name">
+          </div>
+        </div>
+      </div>
+      <div class="modal__footer">
+        <!-- TODO(backend:ControlScreen) [favourites-persistence]: saving only mutates the DOM in memory (lost on reload). Need favourites CRUD — POST {name, context, ts} here, GET on init, DELETE on remove. -->
+        <button class="btn btn--primary" type="button" data-aa-fav-save data-backend-todo="favourites-persistence">Save favourite</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ━━━ Scripts ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+
+  <!-- Existing auto-binding interaction scripts -->
+  <script src="../../cc/patterns/SidebarMenu/sidebar-menu.js"></script>
+  <script src="../../components/ThemeToggle/ThemeToggle.js"></script>
+  <script src="../../components/Toggle/Toggle.js"></script>
+  <script type="module" src="../../components/Dropdown/Dropdown.js"></script>
+  <!-- Wires the User Menu "Icon Navigation" / "Hide Labels" toggles to the
+       IconNavigation strip in this header group. -->
+  <script src="../../cc/patterns/HeaderGroup/HeaderGroup.js"></script>
+  <!-- Alert dismiss: clicking the close icon removes the alert. -->
+  <script src="../../components/Alert/Alert.js"></script>
+  <!-- FontSizeSlider auto-inits its inputs (paints the track fill) on load -->
+  <script type="module" src="../../cc/components/FontSizeSlider/FontSizeSlider.js"></script>
+
+  <!-- ActionsMenu rail popovers (Info, …). Generic toggle: one open at a time,
+
+       [data-aa-toggle="X"] with a panel [data-aa-panel="X"]. -->
+  <script>
+    (function () {
+      function panelFor(key) { return document.querySelector('[data-aa-panel="' + key + '"]'); }
+      function toggleFor(key) { return document.querySelector('[data-aa-toggle="' + key + '"]'); }
+      function close(panel) {
+        if (!panel || panel.hidden) return;
+        panel.hidden = true;
+        var t = toggleFor(panel.dataset.aaPanel);
+        if (t) t.setAttribute('aria-expanded', 'false');
+      }
+      function closeAll(except) {
+        document.querySelectorAll('[data-aa-panel]').forEach(function (p) { if (p !== except) close(p); });
+      }
+      document.querySelectorAll('[data-aa-toggle]').forEach(function (btn) {
+        var panel = panelFor(btn.dataset.aaToggle);
+        if (!panel) return;
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var willOpen = panel.hidden;
+          closeAll(willOpen ? panel : null);
+          panel.hidden = !willOpen;
+          btn.setAttribute('aria-expanded', String(willOpen));
+          if (willOpen && window.lucide) lucide.createIcons();
+        });
+      });
+      document.addEventListener('click', function (e) {
+        document.querySelectorAll('[data-aa-panel]:not([hidden])').forEach(function (p) {
+          var t = toggleFor(p.dataset.aaPanel);
+          if (!p.contains(e.target) && !(t && t.contains(e.target))) close(p);
+        });
+      });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeAll(null); closeFav(); } });
+
+      // Print action
+      document.querySelectorAll('[data-aa-action="print"]').forEach(function (btn) {
+        btn.addEventListener('click', function () { window.print(); });
+      });
+
+      // ── Favourite → "Save favourite as" modal → Favourites sidebar panel ──
+      var favModal = document.getElementById('modal-fav');
+      var favInput = document.getElementById('cc-fav-name');
+      function openFav() {
+        if (!favModal) return;
+        closeAll(null);                       // close any open rail popover first
+        favModal.classList.add('modal-overlay--open');
+        document.body.style.overflow = 'hidden';
+        if (favInput) { favInput.value = ''; favInput.focus(); }
+      }
+      function closeFav() {
+        if (!favModal) return;
+        favModal.classList.remove('modal-overlay--open');
+        document.body.style.overflow = '';
+      }
+      // ── Feedback toasts (Toast component, spawned into #cc-toasts) ──
+      var toastStack = document.getElementById('cc-toasts');
+      var TOAST_MS = 4000;   // auto-dismiss delay
+
+      function dismissToast(toast) {
+        if (!toast || toast.dataset.leaving) return;
+        toast.dataset.leaving = '1';
+        if (toast._timer) clearTimeout(toast._timer);
+        toast.classList.remove('toast--in');
+        toast.classList.add('toast--leaving');
+        toast.addEventListener('transitionend', function () { toast.remove(); }, { once: true });
+      }
+      function showToast(toast, duration) {
+        if (!toastStack) return null;
+        toastStack.appendChild(toast);
+        if (window.lucide) lucide.createIcons();
+        // Reveal on the next frame so the slide-in transition plays.
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () { toast.classList.add('toast--in'); });
+        });
+        var closeBtn = toast.querySelector('.toast__close');
+        if (closeBtn) closeBtn.addEventListener('click', function () { dismissToast(toast); });
+        if (duration) toast._timer = setTimeout(function () { dismissToast(toast); }, duration);
+        return toast;
+      }
+      // Status toast (Info/Success/Danger/Warning + optional --color), message-only.
+      function statusToast(variant, icon, message) {
+        var t = document.createElement('div');
+        t.className = 'toast ' + variant;
+        t.setAttribute('role', 'status');
+        t.innerHTML =
+          '<span class="toast__icon"><i data-lucide="' + icon + '" aria-hidden="true"></i></span>' +
+          '<p class="toast__message"></p>' +
+          '<button type="button" class="toast__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>';
+        t.querySelector('.toast__message').textContent = message;   // textContent = safe
+        showToast(t, TOAST_MS);
+      }
+
+      // ── Favourite list helpers (mirrored across desktop + mobile lists) ──
+      function makeFavItem(name) {
+        var li = document.createElement('li');
+        li.className = 'cc-menu__submenu-item';
+        li.innerHTML =
+          '<span class="cc-menu__submenu-item-label"></span>' +
+          '<button class="cc-menu__submenu-item__action" type="button" aria-label="Remove from favourites"><i data-lucide="trash-2" aria-hidden="true"></i></button>';
+        li.querySelector('.cc-menu__submenu-item-label').textContent = name; // textContent = safe
+        return li;
+      }
+      // Remove every item matching `name` from both mirrored lists.
+      function removeFav(name) {
+        document.querySelectorAll('.cc-control__fav-list').forEach(function (list) {
+          Array.prototype.slice.call(list.children).forEach(function (li) {
+            var label = li.querySelector('.cc-menu__submenu-item-label');
+            if (label && label.textContent === name) li.remove();
+          });
+        });
+      }
+
+      // TODO(backend:ControlScreen) [favourites-persistence]: saveFav/removeFav mutate the DOM
+      // only — favourites are in-memory and lost on reload. Replace with a favourites API
+      // (GET on init, POST on save, DELETE on remove) and render from the response.
+      function saveFav() {
+        var name = (favInput.value || '').trim();
+        if (!name) { favInput.focus(); return; }
+        document.querySelectorAll('.cc-control__fav-list').forEach(function (list) {
+          list.appendChild(makeFavItem(name));
+        });
+        if (window.lucide) lucide.createIcons();
+        closeFav();
+        // reveal the Favourites panel on the desktop sidebar so the new item shows
+        var favBtn = document.querySelector('.cc-control__sidebar--desktop .cc-sidebar__btn[data-cc-target="favourites"]');
+        if (favBtn && !favBtn.classList.contains('cc-sidebar__btn--active')) favBtn.click();
+        statusToast('toast--success toast--color', 'check', '“' + name + '” added to favourites');
+      }
+      document.querySelectorAll('[data-aa-modal="fav"]').forEach(function (b) { b.addEventListener('click', openFav); });
+      if (favModal) {
+        favModal.querySelector('[data-aa-modal-close]').addEventListener('click', closeFav);
+        favModal.querySelector('[data-aa-fav-save]').addEventListener('click', saveFav);
+        favModal.addEventListener('click', function (e) { if (e.target === favModal) closeFav(); });
+        if (favInput) favInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') saveFav(); });
+      }
+      // Remove-from-favourites (delegated, both panels) → Danger toast.
+      document.querySelectorAll('.cc-control__fav-list').forEach(function (list) {
+        list.addEventListener('click', function (e) {
+          var rm = e.target.closest('.cc-menu__submenu-item__action');
+          if (!rm) return;
+          var li = rm.closest('.cc-menu__submenu-item');
+          var label = li && li.querySelector('.cc-menu__submenu-item-label');
+          var name = label ? label.textContent : '';
+          removeFav(name);
+          statusToast('toast--danger toast--color', 'trash-2', '“' + name + '” removed from favourites');
+        });
+      });
+    })();
+  </script>
+
+  <script src="../../components/Select/Select.js"></script>
+  <script src="ControlRecordScreen.js"></script>
+</body>
+</html>

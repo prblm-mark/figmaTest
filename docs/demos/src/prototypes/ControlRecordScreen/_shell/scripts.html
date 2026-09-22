@@ -1,0 +1,168 @@
+  <!-- ━━━ Scripts ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+
+  <!-- Existing auto-binding interaction scripts -->
+  <script src="../../cc/patterns/SidebarMenu/sidebar-menu.js"></script>
+  <script src="../../components/ThemeToggle/ThemeToggle.js"></script>
+  <script src="../../components/Toggle/Toggle.js"></script>
+  <script type="module" src="../../components/Dropdown/Dropdown.js"></script>
+  <!-- Wires the User Menu "Icon Navigation" / "Hide Labels" toggles to the
+       IconNavigation strip in this header group. -->
+  <script src="../../cc/patterns/HeaderGroup/HeaderGroup.js"></script>
+  <!-- Alert dismiss: clicking the close icon removes the alert. -->
+  <script src="../../components/Alert/Alert.js"></script>
+  <!-- FontSizeSlider auto-inits its inputs (paints the track fill) on load -->
+  <script type="module" src="../../cc/components/FontSizeSlider/FontSizeSlider.js"></script>
+
+  <!-- ActionsMenu rail popovers (Info, …). Generic toggle: one open at a time,
+
+       [data-aa-toggle="X"] with a panel [data-aa-panel="X"]. -->
+  <script>
+    (function () {
+      function panelFor(key) { return document.querySelector('[data-aa-panel="' + key + '"]'); }
+      function toggleFor(key) { return document.querySelector('[data-aa-toggle="' + key + '"]'); }
+      function close(panel) {
+        if (!panel || panel.hidden) return;
+        panel.hidden = true;
+        var t = toggleFor(panel.dataset.aaPanel);
+        if (t) t.setAttribute('aria-expanded', 'false');
+      }
+      function closeAll(except) {
+        document.querySelectorAll('[data-aa-panel]').forEach(function (p) { if (p !== except) close(p); });
+      }
+      document.querySelectorAll('[data-aa-toggle]').forEach(function (btn) {
+        var panel = panelFor(btn.dataset.aaToggle);
+        if (!panel) return;
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var willOpen = panel.hidden;
+          closeAll(willOpen ? panel : null);
+          panel.hidden = !willOpen;
+          btn.setAttribute('aria-expanded', String(willOpen));
+          if (willOpen && window.lucide) lucide.createIcons();
+        });
+      });
+      document.addEventListener('click', function (e) {
+        document.querySelectorAll('[data-aa-panel]:not([hidden])').forEach(function (p) {
+          var t = toggleFor(p.dataset.aaPanel);
+          if (!p.contains(e.target) && !(t && t.contains(e.target))) close(p);
+        });
+      });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeAll(null); closeFav(); } });
+
+      // Print action
+      document.querySelectorAll('[data-aa-action="print"]').forEach(function (btn) {
+        btn.addEventListener('click', function () { window.print(); });
+      });
+
+      // ── Favourite → "Save favourite as" modal → Favourites sidebar panel ──
+      var favModal = document.getElementById('modal-fav');
+      var favInput = document.getElementById('cc-fav-name');
+      function openFav() {
+        if (!favModal) return;
+        closeAll(null);                       // close any open rail popover first
+        favModal.classList.add('modal-overlay--open');
+        document.body.style.overflow = 'hidden';
+        if (favInput) { favInput.value = ''; favInput.focus(); }
+      }
+      function closeFav() {
+        if (!favModal) return;
+        favModal.classList.remove('modal-overlay--open');
+        document.body.style.overflow = '';
+      }
+      // ── Feedback toasts (Toast component, spawned into #cc-toasts) ──
+      var toastStack = document.getElementById('cc-toasts');
+      var TOAST_MS = 4000;   // auto-dismiss delay
+
+      function dismissToast(toast) {
+        if (!toast || toast.dataset.leaving) return;
+        toast.dataset.leaving = '1';
+        if (toast._timer) clearTimeout(toast._timer);
+        toast.classList.remove('toast--in');
+        toast.classList.add('toast--leaving');
+        toast.addEventListener('transitionend', function () { toast.remove(); }, { once: true });
+      }
+      function showToast(toast, duration) {
+        if (!toastStack) return null;
+        toastStack.appendChild(toast);
+        if (window.lucide) lucide.createIcons();
+        // Reveal on the next frame so the slide-in transition plays.
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () { toast.classList.add('toast--in'); });
+        });
+        var closeBtn = toast.querySelector('.toast__close');
+        if (closeBtn) closeBtn.addEventListener('click', function () { dismissToast(toast); });
+        if (duration) toast._timer = setTimeout(function () { dismissToast(toast); }, duration);
+        return toast;
+      }
+      // Status toast (Info/Success/Danger/Warning + optional --color), message-only.
+      function statusToast(variant, icon, message) {
+        var t = document.createElement('div');
+        t.className = 'toast ' + variant;
+        t.setAttribute('role', 'status');
+        t.innerHTML =
+          '<span class="toast__icon"><i data-lucide="' + icon + '" aria-hidden="true"></i></span>' +
+          '<p class="toast__message"></p>' +
+          '<button type="button" class="toast__close" aria-label="Dismiss"><i data-lucide="x" aria-hidden="true"></i></button>';
+        t.querySelector('.toast__message').textContent = message;   // textContent = safe
+        showToast(t, TOAST_MS);
+      }
+
+      // ── Favourite list helpers (mirrored across desktop + mobile lists) ──
+      function makeFavItem(name) {
+        var li = document.createElement('li');
+        li.className = 'cc-menu__submenu-item';
+        li.innerHTML =
+          '<span class="cc-menu__submenu-item-label"></span>' +
+          '<button class="cc-menu__submenu-item__action" type="button" aria-label="Remove from favourites"><i data-lucide="trash-2" aria-hidden="true"></i></button>';
+        li.querySelector('.cc-menu__submenu-item-label').textContent = name; // textContent = safe
+        return li;
+      }
+      // Remove every item matching `name` from both mirrored lists.
+      function removeFav(name) {
+        document.querySelectorAll('.cc-control__fav-list').forEach(function (list) {
+          Array.prototype.slice.call(list.children).forEach(function (li) {
+            var label = li.querySelector('.cc-menu__submenu-item-label');
+            if (label && label.textContent === name) li.remove();
+          });
+        });
+      }
+
+      // TODO(backend:ControlScreen) [favourites-persistence]: saveFav/removeFav mutate the DOM
+      // only — favourites are in-memory and lost on reload. Replace with a favourites API
+      // (GET on init, POST on save, DELETE on remove) and render from the response.
+      function saveFav() {
+        var name = (favInput.value || '').trim();
+        if (!name) { favInput.focus(); return; }
+        document.querySelectorAll('.cc-control__fav-list').forEach(function (list) {
+          list.appendChild(makeFavItem(name));
+        });
+        if (window.lucide) lucide.createIcons();
+        closeFav();
+        // reveal the Favourites panel on the desktop sidebar so the new item shows
+        var favBtn = document.querySelector('.cc-control__sidebar--desktop .cc-sidebar__btn[data-cc-target="favourites"]');
+        if (favBtn && !favBtn.classList.contains('cc-sidebar__btn--active')) favBtn.click();
+        statusToast('toast--success toast--color', 'check', '“' + name + '” added to favourites');
+      }
+      document.querySelectorAll('[data-aa-modal="fav"]').forEach(function (b) { b.addEventListener('click', openFav); });
+      if (favModal) {
+        favModal.querySelector('[data-aa-modal-close]').addEventListener('click', closeFav);
+        favModal.querySelector('[data-aa-fav-save]').addEventListener('click', saveFav);
+        favModal.addEventListener('click', function (e) { if (e.target === favModal) closeFav(); });
+        if (favInput) favInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') saveFav(); });
+      }
+      // Remove-from-favourites (delegated, both panels) → Danger toast.
+      document.querySelectorAll('.cc-control__fav-list').forEach(function (list) {
+        list.addEventListener('click', function (e) {
+          var rm = e.target.closest('.cc-menu__submenu-item__action');
+          if (!rm) return;
+          var li = rm.closest('.cc-menu__submenu-item');
+          var label = li && li.querySelector('.cc-menu__submenu-item-label');
+          var name = label ? label.textContent : '';
+          removeFav(name);
+          statusToast('toast--danger toast--color', 'trash-2', '“' + name + '” removed from favourites');
+        });
+      });
+    })();
+  </script>

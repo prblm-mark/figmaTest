@@ -46,7 +46,7 @@
 <body data-surface="chat">
 
   <div class="demo-section">
-    <h2>SegmentedControl — Theme Toggle</h2>
+    <h2>SegmentedControl — Size=Default</h2>
     <div class="demo-row">
       <span class="demo-label">Light active</span>
       <div class="seg-control" role="radiogroup" aria-label="Theme" style="width: 172px;">
@@ -70,6 +70,53 @@
         <button class="seg-control__btn seg-control__btn--active" type="button" role="radio" aria-checked="true">
           <i data-lucide="moon" aria-hidden="true"></i>
           Dark
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Size=sm — 3729:25008 / 3729:16713. Not a scaled-down Default: the
+       buttons are identical and the CONTAINER loses its 4px padding and 8px of
+       height, so the active segment reaches the edge and the control reads as
+       one joined bar. -->
+  <div class="demo-section">
+    <h2>SegmentedControl — Size=sm</h2>
+    <div class="demo-row">
+      <span class="demo-label">Light active</span>
+      <div class="seg-control seg-control--sm" role="radiogroup" aria-label="Theme">
+        <button class="seg-control__btn seg-control__btn--active" type="button" role="radio" aria-checked="true">
+          <i data-lucide="sun" aria-hidden="true"></i>
+          Light
+        </button>
+        <button class="seg-control__btn" type="button" role="radio" aria-checked="false">
+          <i data-lucide="moon" aria-hidden="true"></i>
+          Dark
+        </button>
+      </div>
+    </div>
+    <div class="demo-row">
+      <span class="demo-label">Dark active</span>
+      <div class="seg-control seg-control--sm" role="radiogroup" aria-label="Theme">
+        <button class="seg-control__btn" type="button" role="radio" aria-checked="false">
+          <i data-lucide="sun" aria-hidden="true"></i>
+          Light
+        </button>
+        <button class="seg-control__btn seg-control__btn--active" type="button" role="radio" aria-checked="true">
+          <i data-lucide="moon" aria-hidden="true"></i>
+          Dark
+        </button>
+      </div>
+    </div>
+    <div class="demo-row">
+      <span class="demo-label">Icon only</span>
+      <div class="seg-control seg-control--sm" role="radiogroup" aria-label="Layout">
+        <button class="seg-control__btn seg-control__btn--active" type="button" role="radio" aria-checked="true">
+          <i data-lucide="list" aria-hidden="true"></i>
+          Listing
+        </button>
+        <button class="seg-control__btn" type="button" role="radio" aria-checked="false">
+          <i data-lucide="layout-grid" aria-hidden="true"></i>
+          Grid
         </button>
       </div>
     </div>

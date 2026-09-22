@@ -540,34 +540,19 @@
             <div class="filter-bar__actions">
               <div class="input filter-bar__search-bar"><div class="input__wrap"><i data-lucide="search" class="input__icon" aria-hidden="true"></i><input type="search" class="input__control" placeholder="Search" aria-label="Search"></div></div>
               <button type="button" class="filter-bar__icon-btn" data-filter-action="search" aria-label="Search"><i data-lucide="search" aria-hidden="true"></i></button>
-              <!-- TODO(backend:Listing): Export produces nothing → POST /control/orders/export {view, filters, sort} → file URL. -->
-              <div class="dropdown filter-bar__export" data-dropdown>
-                <div class="btn-group">
-                  <button type="button" class="btn btn--secondary filter-bar__export-main" data-backend-todo="listing-export" data-filter-export="pdf">
-                    <i data-lucide="download" aria-hidden="true"></i>Export
-                  </button>
-                  <button type="button" class="btn btn--secondary filter-bar__export-more dropdown__trigger"
-                          aria-haspopup="menu" aria-expanded="false" aria-label="Other export formats">
-                    <i data-lucide="chevron-down" aria-hidden="true"></i>
-                  </button>
-                </div>
-                <div class="dropdown__panel" role="menu" aria-label="Export format">
-                  <ul class="dropdown__list">
-                    <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-export="pdf"><i data-lucide="file-text" aria-hidden="true"></i><span data-text="PDF">PDF</span></button></li>
-                    <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-export="xlsx"><i data-lucide="sheet" aria-hidden="true"></i><span data-text="Excel (.xlsx)">Excel (.xlsx)</span></button></li>
-                    <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem" data-filter-export="csv"><i data-lucide="file-spreadsheet" aria-hidden="true"></i><span data-text="CSV">CSV</span></button></li>
-                  </ul>
-                </div>
-              </div>
-              <div class="dropdown filter-bar__menu" data-dropdown>
-                <button type="button" class="dropdown__trigger filter-bar__icon-btn" aria-haspopup="menu" aria-expanded="false" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
-                <div class="dropdown__panel" role="menu" aria-label="Actions">
-                  <ul class="dropdown__list">
-                    <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem"><i data-lucide="sheet" aria-hidden="true"></i><span data-text="Import orders">Import orders</span></button></li>
-                    <li role="none"><button type="button" class="dropdown-item dropdown-item--xs" role="menuitem"><i data-lucide="file-spreadsheet" aria-hidden="true"></i><span data-text="Generate Shipping Labels">Generate Shipping Labels</span></button></li>
-                  </ul>
-                </div>
-              </div>
+              <!-- NO Export here. Only Orders of the screens built so far offers one
+                   (designer, 2026-09-22): the toolbar's actions vary per screen, so
+                   Export is a per-screen action rather than part of the FilterBar
+                   pattern. The live /control/articles has no export control in its
+                   listing toolbar either. -->
+              <!-- NO kebab here either. The "More actions" menu is Orders' — Import
+                   orders / Generate Shipping Labels, drawn on the FilterBar's own
+                   Figma frame, which was authored for the Orders listing. Cloning
+                   the template carried them onto a screen full of articles.
+                   Removed rather than relabelled: what /control/articles really
+                   offers in that menu has not been read, and a plausible label is
+                   worse than none because it reads as researched (designer,
+                   2026-09-22). -->
             </div>
           </div>
 

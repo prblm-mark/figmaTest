@@ -342,6 +342,13 @@ LISTING_SCREENS.articles = {
   /* The primary action from the CCHeader pattern's own actions cluster
      (Figma 4105:3640): plus icon, the word Add, Primary/Base. */
   headerActions: [{ label: 'Add', icon: 'plus', variant: 'primary' }],
+  /* The article ID is what the row and pencil routes key on — this file said
+     so from the start, but the template had `orderNo` hard-coded, so every
+     Articles row shipped `href="#order//edit"` and an aria-label reading
+     "Edit order " with nothing after it. Found while building Article
+     Archive, which needed the same knob. */
+  rowKey: 'articleId',
+  routeNoun: 'article',
   /* Only the TITLE is guaranteed. Orders keeps two identity columns because
      its pair is an order number and a name; Articles' pair would be two long
      text columns, which does not fit a phone — see fitColumns. */
