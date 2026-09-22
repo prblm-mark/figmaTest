@@ -1011,10 +1011,14 @@
        Slideshow      MEDIALIBRARYSLIDESHOWICON   — open it in the lightbox
        Edit Details   MediaLibraryEditIcon        — open the edit form
 
-     All three are Button at `btn--icon btn--xs` (24x24, 12px icon), and
-     SECONDARY rather than tertiary: these sit on top of a photograph, and
-     tertiary's transparent background would leave them unreadable over half
-     the library.
+     All three are Button at `btn--icon btn--xs` (24x24, 12px icon), TERTIARY
+     (designer, 2026-09-22). The first build used secondary on the reasoning
+     that these sit on a photograph and need a fill — which had it exactly
+     backwards: `--ai-btn-secondary-bg` is `rgba(0,0,0,0)` in every mode, so
+     secondary was a bordered box with NO fill over the picture, while
+     `--ai-btn-tertiary-bg` is solid under the CC brand (#e7edf0 light,
+     #334155 dark). Checked the resolved values this time instead of reasoning
+     from the names.
 
      Live's own conditions are kept rather than showing three unconditionally:
      Slideshow is `ImageYN`-gated there, so a PDF gets two. View Album is gated
@@ -1024,7 +1028,7 @@
      TODO(backend:Listing) media-card-actions: View Album and Slideshow go
      nowhere; Edit shares the row route. */
   function gridActions(row) {
-    var btn = 'btn btn--secondary btn--icon btn--xs cc-grid__action';
+    var btn = 'btn btn--tertiary btn--icon btn--xs cc-grid__action';
     var out = '<a class="' + btn + '" href="#" data-backend-todo="media-card-actions"' +
       ' aria-label="View the album holding ' + esc(row.title) + '">' +
       '<i data-lucide="folder-open" aria-hidden="true"></i></a>';

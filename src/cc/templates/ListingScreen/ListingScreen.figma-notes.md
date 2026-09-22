@@ -2405,11 +2405,27 @@ build shipped a checkbox and a pencil, and `.MediaButtons` in
 | `MEDIALIBRARYSLIDESHOWICON` | Slideshow — open it in the lightbox | `expand` | image rows only |
 | `MediaLibraryEditIcon` | Edit Details | `pencil` | always |
 
-All three are **Button at `btn--icon btn--xs`** (24×24, 12px icon) at the
-designer's instruction, and **secondary** rather than tertiary: they sit on top
-of a photograph, and tertiary's transparent background would leave them
-unreadable over half the library. The only thing the template adds is
-`--ai-shadow-xxs`, to lift them off the picture.
+All three are **Button at `btn--icon btn--xs`** (24×24, 12px icon) and
+**tertiary**, both the designer's instruction (2026-09-22). The first build
+used secondary on the reasoning that these sit on a photograph and need a
+fill — which had it exactly backwards, and checking the resolved values rather
+than reasoning from the names would have caught it:
+
+| | `bg` base | `bg` cc-light | `bg` cc-dark |
+|---|---|---|---|
+| `btn--secondary` | `rgba(0,0,0,0)` | `rgba(0,0,0,0)` | `rgba(0,0,0,0)` |
+| `btn--tertiary` | `rgba(0,0,0,0)` | `#e7edf0` | `#334155` |
+
+So secondary was a bordered box with **no fill** over the picture. Tertiary is
+solid under the CC brand, which is what these demos run as.
+
+**One collision, flagged not fixed.** `--ai-btn-tertiary-bg` in cc-light is
+`#e7edf0` — the *same value* as `--ai-surface-secondary`, which is the empty
+box a non-image card shows. So on a PDF, ZIP or audio card the buttons are
+invisible but for their `--ai-shadow-xxs` hairline. It reads perfectly over a
+photograph and disappears over the ~10% of cards without one. Either the box
+wants `--ai-surface-minimal` instead, or those buttons want a different type;
+both are designer calls, so neither was taken unasked.
 
 Live's own conditions are kept rather than showing three unconditionally.
 Slideshow is `ImageYN`-gated there, so a PDF and a video each get two, not

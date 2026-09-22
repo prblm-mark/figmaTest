@@ -92,8 +92,16 @@
  * --ai-radius-md on its OUTER corners only, matching the container it is now
  * flush against, where the Default's pill is --ai-radius-sm all round.
  *
- * Corner radii per button rather than `overflow: hidden` on the container:
- * the focus ring below is a box-shadow, and a clipped container would eat it.
+ * `overflow: hidden` on the container, and the reason is the whole of why the
+ * first attempt looked wrong. A 1px border makes a box's INNER curve 1px
+ * tighter than its outer one — an 8px container is 7px on the inside — so an
+ * 8px button sitting flush against it pokes its fill past the border's curve
+ * and the corner reads as a hard square edge with the stroke looping inside
+ * it. Setting per-button corner radii does not fix that; only clipping does,
+ * or a `calc(radius - 1px)` that hardcodes the relationship.
+ *
+ * The cost is that a clipped container eats an outward focus ring, so the sm
+ * focus below is drawn INSIDE the button with a negative outline-offset.
  *
  * FLAGGED FOR FIGMA — the two sm variants disagree with each other. Light=sm
  * is 146 wide with the buttons at pl 8 / pr 12; Dark=sm is 154 with 12 both
@@ -105,18 +113,19 @@
 .seg-control--sm {
   height: var(--ai-spacing-7);           /* 32px */
   padding: 0;
+  overflow: hidden;
 }
 
+/* Square: the container's own curve is what shapes the ends now. */
 .seg-control--sm .seg-control__btn {
   border-radius: var(--ai-spacing-0);
 }
 
-.seg-control--sm .seg-control__btn:first-child {
-  border-start-start-radius: var(--ai-radius-md);
-  border-end-start-radius: var(--ai-radius-md);
-}
-
-.seg-control--sm .seg-control__btn:last-child {
-  border-start-end-radius: var(--ai-radius-md);
-  border-end-end-radius: var(--ai-radius-md);
+/* Inside the button, so the clip above cannot eat it. CLAUDE.md §9's
+   `2px solid var(--ai-surface-brand)` rather than the double box-shadow ring
+   the Default uses, because a shadow is exactly what gets clipped. */
+.seg-control--sm .seg-control__btn:focus-visible {
+  box-shadow: none;
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: -2px;
 }
