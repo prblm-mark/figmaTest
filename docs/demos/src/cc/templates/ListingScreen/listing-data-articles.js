@@ -342,6 +342,16 @@ LISTING_SCREENS.articles = {
   /* The primary action from the CCHeader pattern's own actions cluster
      (Figma 4105:3640): plus icon, the word Add, Primary/Base. */
   headerActions: [{ label: 'Add', icon: 'plus', variant: 'primary' }],
+  /* REAL, and the whole list: `this.CMethods = "copy,move,delete,
+     listmakelive,listmakenotlive"` — the first line of v-article-listing.cfc.
+     ONE select rather than five buttons (designer, 2026-09-22): five
+     equal-weight buttons wrapped to four rows on a phone and gave no clue
+     that Delete is not Copy. It is also what live does — `directAction`
+     renders as a select beside an Action submit. */
+  bulkActions: [
+    { type: 'select', label: 'Actions',
+      options: ['Copy', 'Move', 'Make Live', 'Make Not Live', 'Delete'] }
+  ],
   /* The article ID is what the row and pencil routes key on — this file said
      so from the start, but the template had `orderNo` hard-coded, so every
      Articles row shipped `href="#order//edit"` and an aria-label reading

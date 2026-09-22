@@ -645,23 +645,22 @@
             </div>
           </div>
 
-          <!-- Selection bar — one for both views, shown only when something is
-               ticked. Live keeps a permanent "Select all" above the grid and a
-               permanent Move/Delete row below it.
-               TODO(backend:Listing): Move and Delete do nothing →
-               POST /control/media-items/bulk { action, ids[], sectionCode? } -->
+          <!-- Selection bar — ONE bar for every screen and, on Media Items,
+               for both its views. Shown only when something is ticked; live
+               keeps a permanent Select-all above and a permanent action row
+               below. The ACTIONS are per-screen config (`bulkActions`), read
+               from each live screen's own declaration, so this markup is the
+               same on all of them.
+               TODO(backend:Listing): the actions do nothing →
+               POST /control/<screen>/bulk { action, ids[], value? } -->
           <div class="cc-listing__selection" data-listing-selection hidden
                data-backend-todo="listing-bulk-actions">
             <span class="cc-listing__selection-count" data-selection-count aria-live="polite">0 items selected</span>
-            <div class="cc-listing__selection-actions">
-              <button type="button" class="btn btn--tertiary btn--sm" data-selection-clear>Clear</button>
-              <button type="button" class="btn btn--secondary btn--sm">
-                <i data-lucide="folder-input" aria-hidden="true"></i><span>Move</span>
-              </button>
-              <button type="button" class="btn btn--secondary btn--sm">
-                <i data-lucide="trash-2" aria-hidden="true"></i><span>Delete</span>
-              </button>
-            </div>
+            <!-- Clear sits with the COUNT, not among the actions: it dismisses a
+                 state rather than doing something to the rows, and on Articles'
+                 five-verb bar it was stranding itself on a second line. -->
+            <button type="button" class="btn btn--tertiary btn--sm" data-selection-clear>Clear</button>
+            <div class="cc-listing__selection-actions" data-selection-actions></div>
           </div>
 
           <div class="datatables__body">

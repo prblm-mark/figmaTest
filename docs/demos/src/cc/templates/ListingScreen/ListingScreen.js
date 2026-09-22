@@ -631,8 +631,25 @@
        * .visually-hidden utility lives in css/style.css, which
        * components are not allowed to import (CLAUDE.md §8). */
       if (!col.label) {
-        var name = col.key === 'select' ? 'Select' : 'Actions';
-        return '<th scope="col" aria-label="' + name + '"' + colClass(col) + '></th>';
+        /* The select column's header carries SELECT ALL. No visible label —
+           the column is a checkbox column and the header is a checkbox
+           (designer, 2026-09-22); the name is on the input for a screen
+           reader. A screen with no bulk actions has no select column at all,
+           so this cannot appear where selection would lead nowhere. */
+        if (col.key === 'select') {
+          return '<th scope="col"' + colClass(col) + '>' +
+            '<label class="checkbox">' +
+            /* `data-listing-select-all`, NOT `data-select-all`: FilterDropdowns
+               already owns that name for the multi-select-table pickers' own
+               header box. Sharing it meant ticking the Section picker's
+               select-all also ticked every row in the table behind it. */
+            '<input type="checkbox" class="checkbox__input" data-listing-select-all' +
+            ' aria-label="Select all rows on this page">' +
+            '<span class="checkbox__indicator">' +
+            '<i data-lucide="check" aria-hidden="true"></i></span>' +
+            '</label></th>';
+        }
+        return '<th scope="col" aria-label="Actions"' + colClass(col) + '></th>';
       }
       /* Figma shortens some headers on mobile ("Order No" -> "Order").
        * Both strings are rendered and the container query picks one:
@@ -1062,12 +1079,108 @@
      a permanent action row below it, which is two pieces of chrome for a state
      that is usually empty.
      TODO(backend:Listing) listing-bulk-actions: Move and Delete do nothing. */
+  /* The actions are per-screen, like `headerActions` and `layouts`, because
+     each live screen declares its own set — and they are all SELECTS plus one
+     commit button, which is live's own model: `directAction` renders as a
+     select of verbs beside an "Action" submit, and Orders adds two more
+     selects alongside it.
+
+     Five verbs as five buttons was the first cut and it was wrong (designer,
+     2026-09-22): it wrapped to four rows on a phone, and a row of five
+     equal-weight buttons gives no clue that Delete is not Copy. One select
+     costs one tap to open and reads the same at every width.
+
+     The label repeats as the first menu row, which is how the live selects
+     work — `<option value="">Change Status</option>` heads each one — so
+     picking it again is how you unset. */
+  function renderBulkActions(config) {
+    var acts = config.bulkActions || [];
+    if (!acts.length) return '';
+
+    var html = acts.map(function (a) {
+      return '<div class="sel cc-listing__selection-select" data-sel' +
+        ' data-bulk-select="' + esc(a.label) + '">' +
+        '<button class="sel__control sel__control--sm" type="button" data-sel-trigger' +
+          ' aria-label="' + esc(a.label) + '">' +
+          '<span class="sel__value">' + esc(a.label) + '</span>' +
+          '<span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>' +
+        '</button>' +
+        '<ul class="sel__menu" role="listbox" aria-label="' + esc(a.label) + '">' +
+          '<li><button type="button" class="sel__menu-item" role="option">' +
+            esc(a.label) + '</button></li>' +
+          (a.options || []).map(function (o) {
+            return '<li><button type="button" class="sel__menu-item" role="option">' +
+              esc(o) + '</button></li>';
+          }).join('') +
+        '</ul></div>';
+    }).join('');
+
+    /* Disabled until something is chosen — the whole point of a commit button
+       is that the destructive step is deliberate, and one that is always live
+       is just a second click.
+       TODO(backend:Listing) listing-bulk-actions: Apply does nothing. */
+    return html + '<button type="button" class="btn btn--primary btn--sm"' +
+      ' data-selection-apply disabled>Apply</button>';
+  }
+
+  /* What each select currently holds, or null when it is still showing its own
+     label. Reading the rendered value rather than keeping a parallel store:
+     Select.js owns that text, and a second copy of it would be the thing that
+     drifts. */
+  function bulkValues(root) {
+    var out = {};
+    root.querySelectorAll('[data-bulk-select]').forEach(function (sel) {
+      var label = sel.getAttribute('data-bulk-select');
+      var shown = sel.querySelector('.sel__value').textContent.trim();
+      out[label] = shown === label ? null : shown;
+    });
+    return out;
+  }
+
+  /* The header box reflects the PAGE, not the whole selection: it is checked
+     when every row on screen is ticked. There is no indeterminate state —
+     Checkbox has no Figma variant for one, and inventing a dash glyph is not
+     this change's to make. Flagged rather than faked. */
+  function refreshSelectAll(root) {
+    /* Scoped to the listing's own head — the pickers render their own tables
+       inside this same root. */
+    var all = root.querySelector('[data-listing-head] [data-listing-select-all]');
+    if (!all) return;
+    var boxes = root.querySelectorAll('[data-listing-body] [data-select-row]');
+    all.checked = boxes.length > 0 &&
+      Array.prototype.every.call(boxes, function (b) { return b.checked; });
+  }
+
+  function refreshApply(root) {
+    var apply = root.querySelector('[data-selection-apply]');
+    if (!apply) return;
+    var v = bulkValues(root);
+    apply.disabled = !Object.keys(v).some(function (k) { return v[k]; });
+  }
+
+  /* Put every select back to its label. Called when the selection is cleared
+     or emptied — leaving "Delete" sitting in a select after the rows it
+     applied to have gone is an accident waiting for the next tick. */
+  function resetBulk(root) {
+    root.querySelectorAll('[data-bulk-select]').forEach(function (sel) {
+      sel.querySelector('.sel__value').textContent = sel.getAttribute('data-bulk-select');
+      sel.querySelectorAll('.sel__menu-item').forEach(function (i) {
+        i.classList.remove('sel__menu-item--selected');
+        i.removeAttribute('aria-selected');
+        var check = i.querySelector('[data-lucide], svg');
+        if (check) check.remove();
+      });
+    });
+    refreshApply(root);
+  }
+
   function renderSelection(root, config) {
     var bar = root.querySelector('[data-listing-selection]');
     if (!bar) return;
     var n = Object.keys(SELECTED).length;
-    bar.hidden = n === 0;
-    if (!n) return;
+    var was = bar.hidden;
+    bar.hidden = n === 0 || !(config.bulkActions || []).length;
+    if (bar.hidden) { if (!was) resetBulk(root); return; }
     var count = bar.querySelector('[data-selection-count]');
     if (count) count.textContent = n + (n === 1 ? ' item selected' : ' items selected');
   }
@@ -1110,6 +1223,7 @@
     /* The body was just rebuilt, so the column marks went with it. */
     applyColumnVisibility(root, config);
     fitColumns(root, config);
+    refreshSelectAll(root);
     renderSelection(root, config);
   }
 
@@ -1907,16 +2021,74 @@
       });
       var card = root.querySelector('[data-grid-card="' + id + '"]');
       if (card) card.classList.toggle('cc-grid__card--selected', box.checked);
+      refreshSelectAll(root);
       renderSelection(root, config);
+    });
+
+    /* Select all — every row on the CURRENT PAGE, which is what a header
+       checkbox means in a paged table. It runs before the per-row handler
+       above would see anything, so it drives the rows itself. */
+    root.addEventListener('change', function (e) {
+      var all = e.target.closest('[data-listing-select-all]');
+      if (!all) return;
+      root.querySelectorAll('[data-listing-body] [data-select-row]').forEach(function (b) {
+        b.checked = all.checked;
+        var id = b.getAttribute('data-select-row');
+        if (all.checked) SELECTED[id] = true; else delete SELECTED[id];
+        root.querySelectorAll('[data-select-row="' + id + '"]').forEach(function (o) {
+          o.checked = all.checked;
+        });
+        var card = root.querySelector('[data-grid-card="' + id + '"]');
+        if (card) card.classList.toggle('cc-grid__card--selected', all.checked);
+      });
+      renderSelection(root, config);
+    });
+
+    /* Rendered once: the set is per screen and does not change with the
+       selection, only its visibility does. */
+    var actionHost = root.querySelector('[data-selection-actions]');
+    if (actionHost) {
+      actionHost.innerHTML = renderBulkActions(config);
+      /* Select.js binds at the document with delegation — one click listener
+         matching `[data-sel-trigger]` — so a select inserted after it loaded
+         works with no re-init. Only the icons need a second pass. */
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    /* A screen with no bulk actions has nothing to select FOR, so the column
+       goes too rather than leaving a checkbox that leads nowhere. */
+    if (!(config.bulkActions || []).length) {
+      config = Object.assign({}, config, {
+        columns: config.columns.filter(function (c) { return c.type !== 'select'; })
+      });
+    }
+
+    /* Select.js owns the pick and dispatches nothing, so this listens for the
+       same click and re-reads the rendered value afterwards. `setTimeout 0`
+       because both handlers are on the document: without it this reads the
+       value Select.js has not written yet. */
+    root.addEventListener('click', function (e) {
+      if (!e.target.closest('[data-selection-actions] .sel__menu-item')) return;
+      setTimeout(function () { refreshApply(root); }, 0);
+    });
+
+    var applyBtn = root.querySelector('[data-selection-apply]');
+    if (applyBtn) applyBtn.addEventListener('click', function () {
+      /* TODO(backend:Listing) listing-bulk-actions — one request carrying every
+         set select, which is what live's single Action submit does: you can
+         change status AND add to a list AND archive in one go. */
+      resetBulk(root);
     });
 
     var clearBtn = root.querySelector('[data-selection-clear]');
     if (clearBtn) clearBtn.addEventListener('click', function () {
+      resetBulk(root);
       SELECTED = {};
       root.querySelectorAll('[data-select-row]').forEach(function (b) { b.checked = false; });
       root.querySelectorAll('[data-grid-card]').forEach(function (c) {
         c.classList.remove('cc-grid__card--selected');
       });
+      refreshSelectAll(root);
       renderSelection(root, config);
     });
 

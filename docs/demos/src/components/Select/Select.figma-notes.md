@@ -110,3 +110,26 @@ Hit for real on the Seating Planner screen: its ported ControlScreen shell alrea
 and adding it again for the create-plan Table Shape select silently killed **every** Select on the
 page.
 
+
+
+## Size=sm: the menu was never sized with the control (2026-09-22)
+
+`.sel__control--sm` drops to `--ai-font-fixed-xxs` (12px), but `.sel__menu-item`
+stayed at `--ai-font-fixed-xs` (14px) — so every small select opened a menu
+whose text was **bigger than the field that summoned it**. Found by the
+designer on the listing screens' bulk-action selects; it affects every `--sm`
+select, not just those.
+
+The menu is a **sibling** of the control, not a child, so it never inherited
+the size. `:has()` is what lets the pair stay one component rather than
+needing a second modifier class on the wrapper:
+
+```css
+.sel:has(.sel__control--sm) .sel__menu-item {
+  font-size: var(--ai-font-fixed-3xs);
+}
+```
+
+`3xs` per the designer. Worth knowing that **`3xs` and `xxs` are both
+`0.75rem`** today — so this matches the trigger by value rather than by token.
+If the two ever diverge, the trigger is the one to keep it in step with.

@@ -2572,3 +2572,163 @@ shows and vice versa, Edit Columns hides in grid (there are no columns), and
 the Section picker still opens with its 17 rows while in grid view. The other
 three screens re-measured at six widths — identical column counts, no overflow,
 no right-edge gap.
+
+
+# The selection bar, shared by all four screens
+
+Built 2026-09-22. One bar, one selection model, and the **actions are per-screen
+config** (`bulkActions`) read from each live screen's own declaration — because
+they are not the same shape, and two of the four disagree about whether
+selection means anything at all.
+
+## Where it goes, and why not the footer
+
+The designer asked whether bulk actions belong beneath the datatable (which is
+where live puts them) or folded into the footer. Neither: a dedicated bar
+between the toolbar and the table.
+
+- **The Media Items grid has no table footer**, so a footer-based pattern
+  cannot serve both views of one screen.
+- **The footer has a permanent job** — count and pagination. Selection is
+  transient, so the footer would change height as rows are ticked.
+- **Scope confusion.** "Delete" a few pixels from "next page" invites the
+  question of whether it applies to the page or the selection.
+- **It crowds.** Orders' three selects plus a verb, in a bar that already holds
+  a count and a pager, wrap below ~900px.
+- And live's own placement puts the response at the far end of a 500-row table
+  from the **select-all checkbox that starts it**.
+
+## What each screen actually declares
+
+| Screen | Bulk actions | Source |
+|---|---|---|
+| **Orders** | three selects — *Change Status* · *Add to List* · *Archive* | `OrderProcessings.cfm`, the `sShowCustomButtons` savecontent |
+| **Articles** | one select — Copy · Move · Make Live · Make Not Live · Delete | `v-article-listing.cfc` line 1: `this.CMethods = "copy,move,delete,listmakelive,listmakenotlive"` |
+| **Media Items** | one select — Move · Delete | `MediaLightbox.cfm`: `variables.directAction = "move,delete"` |
+| **Article Archive** | **none** | `ArchiveManagementDef.cfm`: `CMethods = "list,change,viewonly"` |
+
+### Selects and an Apply, not rows of buttons
+
+The first cut rendered verbs as buttons — five of them on Articles — and that
+was wrong twice over (designer, 2026-09-22). It wrapped to four rows on a
+phone, and a row of five equal-weight buttons gives no clue that Delete is not
+Copy. One select costs a single tap to open and reads the same at every width:
+Articles' bar went from **173px to 93px** at a 338px column.
+
+It is also what live does. `directAction` renders as a select of verbs beside
+an **Action** submit; Orders simply adds two more selects alongside it. So the
+uniform shape — *n* selects plus one commit button — is the live model, not a
+departure from it.
+
+**Apply is disabled until something is chosen.** The entire point of a commit
+button is that the destructive step is deliberate; one that is always live is
+just a second click. And a single Apply can carry every set select at once,
+which is what live's one submit does — change status *and* add to a list *and*
+archive in one request.
+
+**The label repeats as the first menu row**, which is how the live selects work
+(`<option value="">Change Status</option>` heads each one). Picking it again is
+how you unset, and that is the only way back to "nothing chosen" once a value
+is showing.
+
+### Select all lives in the table header
+
+Designer, 2026-09-22. The `select` column's header cell carries the box, with
+**no visible label** — the column is a checkbox column and the header is a
+checkbox; the name is on the input for a screen reader. It ticks every row on
+the **current page**, which is what a header checkbox means in a paged table,
+and unticks itself the moment any row is unticked.
+
+A screen with no bulk actions has no select column, so this cannot appear
+anywhere selection would lead nowhere: Orders, Articles and Media Items have
+one; Article Archive does not.
+
+**No indeterminate state.** A partially selected page shows the header box
+unchecked. Checkbox has no Figma variant for a dash glyph and inventing one is
+not this change's to make — flagged rather than faked.
+
+**`data-listing-select-all`, not `data-select-all`.** FilterDropdowns already
+owns that name for the multi-select-table pickers' own header box, so the first
+cut had ticking the Section picker's select-all also tick every row in the
+table behind it. The lookups are scoped to `[data-listing-head]` for the same
+reason. Verified both ways: the header box ticks 20/20 table rows and none of
+the picker's; the picker's ticks its own 11 and leaves the table at 0.
+
+> **Third time a non-unique hook has bitten this template** — after
+> `.datatables__body` (every multi-select-table picker renders its own) and
+> `orderNo` (row identity hard-coded in a shared renderer). The pattern is a
+> name that reads as specific inside one component and is not, once two
+> components share a DOM. Check a hook is free before reusing it, and scope the
+> lookup even when it looks unambiguous.
+
+### The bar's actions take their own line on a narrow column
+
+Designer, 2026-09-22. They were wrapping under the count but keeping
+`margin-inline-start: auto`, so the select hung off to the right with a ragged
+gap beneath "2 items selected" — two half-rows reading as one broken one.
+Below the container's 767px the cluster gets `flex-basis: 100%` and loses the
+auto margin, so the break is deliberate and the row starts where the count
+does. Measured on all three: right-aligned and inline at 1600, left-aligned on
+its own line from ~1200 down, no table overflow at any width.
+
+And it becomes a **two-column grid** down there rather than a wrapping flex row
+(designer, 2026-09-22). Orders' three selects plus Apply made a 3-then-1 row
+that left a half-empty last line; a grid pairs them 2×2, and Articles' single
+select plus Apply gets one even row. `minmax(0, 1fr)` rather than `1fr`, so a
+long option label cannot push a column past its share — and the selects' 160px
+cap comes off, because in a grid cell it would leave the control short of its
+own column.
+
+The bar's inline padding also tightens from `--ai-spacing-5` to
+`--ai-spacing-4` below the breakpoint, matching the narrower gutters the rest
+of the table uses there; block padding is unchanged. Measured: 8/16 above,
+8/12 below.
+
+**Clearing the selection resets the selects.** Leaving "Delete" sitting in a
+select after the rows it applied to have gone is an accident waiting for the
+next tick.
+
+Orders' option lists are real too: the sixteen statuses it already had, the
+`OrderList` table's own rows, and `variables.ArchiveOptions` (line 600) =
+`["Archive","Unarchive"]`. Twelve of the twenty order lists are called "Cats
+list" — kept, because an operator picking from that menu is exactly why a list
+picker needs more than a name, and a tidied demo hides it.
+
+## Article Archive loses its checkbox column
+
+It has nothing a selection could be **for**. So no bar, and the template drops
+the `select` column with it — a checkbox that can lead nowhere is precisely the
+dead control this bar exists to end, and the same complaint that started the
+whole exercise (the Listing view's checkboxes doing nothing while the Grid's
+did something). One column fewer at every width; re-measured, no overflow.
+
+## Details worth keeping
+
+- **Clear sits with the count, not among the actions.** It dismisses a state
+  rather than doing something to the rows, and on Articles' five-verb bar it
+  was stranding itself on a second line.
+- **`white-space: nowrap` on the count** — "2 items selected" was wrapping to
+  two lines and making the bar taller than the row it describes.
+- **The whole BAR wraps, not just the actions inside it.** With only the inner
+  row wrapping, the count and Clear held their line and the three 160px selects
+  had nowhere to go — 34px of overflow at a 309px table, which dragged the
+  datatable wider than its column. The selects' 160px is a **cap, not a floor**
+  (`flex: 0 1` + `min-inline-size: 0`), so they give way on a phone.
+- **`flex: 1 1 auto` on the action cluster**, not the default `0 1 auto`. A
+  wrapping flex container that is itself a flex item sizes to its min-content,
+  so the moment the selects became shrinkable the cluster collapsed to ~341px
+  and wrapped to two rows *at 1600*, where it had been one. Caught by
+  re-measuring the wide end after fixing the narrow one.
+- Measured, both bars: one row to ~1200, then 2, then 3 at 390 and 4 for
+  Articles' five verbs at 320. No overflow at any width.
+- **Select.js needs no re-init.** It binds one delegated click listener at the
+  document, so a select rendered into the bar after load works — verified by
+  opening one and picking from it, not assumed.
+- **Background is `--ai-datatable-table-expanded-bg`** (designer), not a brand
+  wash: the bar is a *state of the table*, the same way an expanded row is, and
+  should read as the table reacting rather than a notice pasted over it.
+  Themed — `#f3f6f7` cc, `#293548` cc-dark.
+
+`TODO(backend:Listing) listing-bulk-actions` — nothing is wired. Live pairs
+Orders' three selects with an Action submit; here each applies on pick, one
+step instead of two for the same outcome.

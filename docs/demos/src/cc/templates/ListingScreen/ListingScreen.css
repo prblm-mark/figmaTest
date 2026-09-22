@@ -482,19 +482,32 @@
 .cc-listing__selection {
   display: flex;
   align-items: center;
+  /* The BAR wraps, not just the actions inside it. With only the inner row
+     wrapping, the count and Clear held their line and the three 160px selects
+     had nowhere to go — measured 34px of overflow at a 309px table, which
+     dragged the whole datatable wider than its column. */
+  flex-wrap: wrap;
   gap: var(--ai-spacing-4);
   padding: var(--ai-spacing-3) var(--ai-spacing-5);
   border-block-end: 1px solid var(--ai-border-secondary);
-  /* `--ai-surface-brand-contrast` does NOT exist — the Apr 2026 rename took
-   * every `-contrast` brand/status surface to `-soft`, and the focus-ring
-   * examples still quoting the old name are stale. `-soft` is the tint,
-   * and it is defined per theme so the bar reads in dark mode too. */
-  background-color: var(--ai-surface-brand-soft);
+  /* The datatable's own expanded-row tint (designer, 2026-09-22), not a brand
+   * wash: this bar is a STATE OF THE TABLE, the same way an expanded row is,
+   * and it should read as the table reacting rather than as a notice pasted
+   * over it. Themed — #f3f6f7 on cc, #293548 on cc-dark.
+   *
+   * (It was `--ai-surface-brand-soft`. Worth keeping the note that
+   * `--ai-surface-brand-contrast` does NOT exist: the Apr 2026 rename took
+   * every `-contrast` brand and status surface to `-soft`, and the focus-ring
+   * examples still quoting the old name are stale.) */
+  background-color: var(--ai-datatable-table-expanded-bg);
 }
 
 .cc-listing__selection[hidden] { display: none; }
 
 .cc-listing__selection-count {
+  /* The count is a label, not a paragraph — wrapping "2 items selected" onto
+     two lines made the bar taller than the row it describes. */
+  white-space: nowrap;
   font-family: var(--ai-font-body);
   font-size: var(--ai-font-fluid-xxs);
   font-weight: var(--ai-font-semibold);
@@ -506,7 +519,33 @@
   display: flex;
   align-items: center;
   gap: var(--ai-spacing-3);
+  /* `flex: 1 1 auto` and not the default `0 1 auto`. A wrapping flex container
+     that is itself a flex ITEM sizes to its min-content, so once the selects
+     below became shrinkable the cluster collapsed to ~341px and wrapped to two
+     rows at 1600 — where it had been one. Letting it take the remaining space
+     puts that back, and it still wraps when there genuinely is not room. */
+  flex: 1 1 auto;
+  min-inline-size: 0;
   margin-inline-start: auto;
+  /* Orders carries three selects and a verb; at a narrow column they wrap
+     under the count rather than pushing the bar wider than the table. */
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+/* The selects are the Select component at `--sm`; only their width is ours,
+   so "Change Status" and "Add to List" do not each claim a different one.
+   160px is a CAP, not a floor — `flex: 0 1` with `min-inline-size: 0` lets
+   them give way on a phone instead of forcing the bar past the table. */
+.cc-listing__selection-select {
+  flex: 0 1 var(--ai-size-2);               /* 160px */
+  max-inline-size: var(--ai-size-2);
+  min-inline-size: 0;
+}
+
+.cc-listing__selection-select .sel__menu {
+  max-block-size: var(--ai-size-6);         /* 320px */
+  overflow-y: auto;
 }
 
 /* ── No hover, no reveal ──────────────────────────────────
@@ -550,6 +589,38 @@
  * with it, or the icon sits off-centre in a box still reserving room for a
  * label that is not there. */
 @container (max-width: 767px) {
+  /* The actions take their OWN line and start at the left edge (designer,
+     2026-09-22). On a narrow column they were wrapping under the count but
+     keeping `margin-inline-start: auto`, so the select hung off to the right
+     with a ragged gap beneath "2 items selected" — two half-rows reading as
+     one broken one. `flex-basis: 100%` makes the break deliberate instead of
+     incidental, and the auto margin comes off so the row starts where the
+     count does. */
+  /* Tighter inline padding to match the narrow gutters the rest of the table
+     uses down here — 16 to 12, block padding unchanged (designer,
+     2026-09-22). */
+  .cc-listing__selection {
+    padding: var(--ai-spacing-3) var(--ai-spacing-4);
+  }
+
+  /* Two columns down here (designer, 2026-09-22), not a wrapping flex row.
+     Orders' three selects plus Apply made a 3-then-1 row that left a
+     half-empty last line; a grid pairs them 2×2 and gives Articles' single
+     select + Apply one even row. `minmax(0, 1fr)` rather than `1fr` so a long
+     option label cannot push a column past its share. */
+  .cc-listing__selection-actions {
+    flex-basis: 100%;
+    margin-inline-start: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* The 160px cap is a desktop measure — in a grid cell it would leave the
+     select short of its own column. */
+  .cc-listing__selection-select {
+    max-inline-size: none;
+  }
+
   .cc-listing__layout .seg-control__btn-label {
     display: none;
   }

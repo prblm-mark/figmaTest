@@ -338,6 +338,12 @@ LISTING_SCREENS['media-items'] = {
      rendering and no control. First entry is the default — live's own default
      is Grid, and the divergence is recorded in the HTML beside the switch. */
   layouts: ['listing', 'grid'],
+  /* `variables.directAction = "move,delete"` in MediaLightbox.cfm, and
+     CMethods carries both. The live Grid shows these under the thumbnails
+     with a Select-all above; here they are the shared selection bar. */
+  bulkActions: [
+    { type: 'select', label: 'Actions', options: ['Move', 'Delete'] }
+  ],
   /* The live LimitBy list, and 25 is its default — the only one of the four
      screens whose page size does not default to 20. */
   perPage: 25,

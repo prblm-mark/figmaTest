@@ -616,12 +616,39 @@ var LISTING_ORDERS_ROWS = (function (seed) {
 }(ORDER_SEED_ROWS));
 
 
+/* Bulk actions — REAL, from OrderProcessings.cfm's `sShowCustomButtons`
+ * savecontent: three selects and an Action submit, rendered under the table.
+ *
+ *   UpdateOrderStatus  "Change Status"  -> OrderStatusShowingAr (the 16 above)
+ *   OrderListCombo     "Add to List"    -> the OrderList table, PLUS a
+ *                                          free-text box to name a NEW list
+ *   ArchiveOrder       "Select Archive" -> variables.ArchiveOptions, line 600:
+ *                                          ["Archive","Unarchive"]
+ *
+ * The order-list names are the live rows. Note twelve of the twenty are
+ * called "Cats list" — kept, because an operator picking from this menu is
+ * exactly why a list picker needs more than a name, and a tidied demo hides
+ * that. */
+var ORDER_LISTS = ["Here's One I made Earlier", "MK's Orders", 'Chris Test List', 'Stef Test',
+  'Tuesday Orders', 'STef OL', "Cat's list", "Stef's List", 'Cats list', 'Cats list',
+  'Cats list', 'Cats list'];
+var ORDER_ARCHIVE_ACTIONS = ['Archive', 'Unarchive'];
+
+
 /* One screen = one config. Adding a listing screen means adding an
  * entry here, not touching the template. */
 var LISTING_SCREENS = {
   orders: {
     title: 'Orders',
     view: 'All Orders',
+    /* TODO(backend:Listing) listing-bulk-actions: none of these do anything.
+       Live pairs the three selects with an Action submit; here each applies
+       on pick, which is one step instead of two for the same outcome. */
+    bulkActions: [
+      { type: 'select', label: 'Change Status', options: ORDER_STATUSES },
+      { type: 'select', label: 'Add to List',   options: ORDER_LISTS },
+      { type: 'select', label: 'Archive',       options: ORDER_ARCHIVE_ACTIONS }
+    ],
     columns: LISTING_ORDERS_COLUMNS,
     defaultFilters: LISTING_ORDERS_FILTERS,
     moreFilters: LISTING_ORDERS_MORE_FILTERS,

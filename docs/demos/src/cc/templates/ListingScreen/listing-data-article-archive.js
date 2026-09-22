@@ -289,6 +289,14 @@ LISTING_SCREENS['article-archive'] = {
      `CMethods = "list,change,viewonly"`, with no `add`. You archive an item
      from the item, never from the archive. */
   headerActions: [],
+  /* NO bulk actions, read from the source rather than left out by oversight:
+     ArchiveManagementDef.cfm declares `CMethods = "list,change,viewonly"`. No
+     copy, no move, no delete, no make-live — nothing a selection could be FOR.
+     So this screen gets no selection bar, and the template drops its checkbox
+     column with it: a checkbox that can lead nowhere is exactly the dead
+     control the shared bar exists to end. Compare Articles' five verbs and
+     Orders' three selects. */
+  bulkActions: [],
   /* Title only. Title and Channel are both free text and forcing the pair
      overflows a phone, which is the same measurement that gave Articles its
      1 — see the Articles note in ListingScreen.figma-notes.md. */
