@@ -841,8 +841,8 @@
         {
           "id": "listing-export",
           "category": "needs-backend",
-          "element": ".filter-bar__export split control (data-backend-todo=\"listing-export\")",
-          "current": "Split control: the label half and three menu rows (PDF / Excel .xlsx / CSV) all carry data-filter-export but nothing is wired — no handler, no request, no download.",
+          "element": ".filter-bar__export split control on ListingScreen.html (Orders) only (data-backend-todo=\"listing-export\")",
+          "current": "Split control: the label half and three menu rows (PDF / Excel .xlsx / CSV) all carry data-filter-export but nothing is wired — no handler, no request, no download. ORDERS ONLY as of 2026-09-22: the toolbar's actions vary per screen, and of the three screens built only Orders has an export. Articles and Article Archive carry no export markup at all, so this is not a per-screen toggle to implement — a screen that should export adds the control.",
           "needs": "POST /control/<screen>/export { view, filters, sort, format } -> a file URL or job id. `format` is new: the control offers pdf | xlsx | csv, and the label half runs the default (pdf). Must honour the current filter/sort state rather than exporting the unfiltered set. Same shape the Seating Planner export needs (seating-export), so one endpoint contract should cover both."
         },
         {

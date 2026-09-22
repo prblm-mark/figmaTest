@@ -2025,3 +2025,32 @@ One measurement trap worth recording: a bare `querySelector('table')` in the
 harness picked up a **hidden multi-select-table picker** on Articles, which
 measures 0 and reads exactly like a broken fit. Scope the probe to
 `[data-listing-head]`'s own table.
+
+
+## Export is per screen, not part of the bar
+
+Designer, 2026-09-22: **Articles and Article Archive have no Export.** Of the
+three screens built, only Orders offers one, and the toolbar's actions vary
+screen to screen.
+
+So the split control is not a FilterBar feature that screens opt out of — it is
+a per-screen action that a screen opts *in* to by carrying the markup. Removed
+from `Articles.html` and `ArticleArchive.html` outright; `ListingScreen.html`
+keeps it. Nothing else had to move: `.filter-bar__actions` is a plain flex row
+with a gap and no positional selectors, as its own CSS comment already
+promised, and no JS reads the export markup — `FilterBar.css` only styles it
+when it is there. Verified headless: Orders' toolbar still reads Search ·
+Export · kebab, the other two read Search · kebab, no gap left behind.
+
+`listing-export` in the manifest and HANDOVER.md is now scoped to Orders.
+
+### Still drifting: the kebab
+
+The same problem, not yet fixed and **not** covered by this change. The "More
+actions" menu is Orders' — "Import orders" and "Generate Shipping Labels" —
+and Articles still carries both verbatim, while Article Archive carries
+"Generate Shipping Labels" beside a renamed import. Fixing it properly means
+reading each live screen's real action set, which is a separate piece of work
+and a separate decision: on Article Archive, for instance,
+`CMethods = "list,change,viewonly"` suggests the honest answer is no kebab at
+all.
