@@ -491,3 +491,20 @@
 .sel-category--sm .sel-category__value {
   padding: 0 var(--ai-spacing-3) 0 var(--ai-spacing-4);
 }
+
+
+/* ── Size=sm: the MENU was never sized with the control ──
+ *
+ * `.sel__control--sm` drops to --ai-font-fixed-xxs (12px) but the options
+ * stayed at --ai-font-fixed-xs (14px), so every small select opened a menu
+ * whose text was bigger than the field that summoned it (designer,
+ * 2026-09-22). The menu is a SIBLING of the control, not a child, so it never
+ * inherited the size — `:has()` is what lets the pair stay one component
+ * rather than needing a second modifier class on the wrapper.
+ *
+ * 3xs, per the designer. Note 3xs and xxs are BOTH 0.75rem today, so this
+ * matches the trigger by value; if the two ever diverge, the trigger above is
+ * the one to keep it in step with. */
+.sel:has(.sel__control--sm) .sel__menu-item {
+  font-size: var(--ai-font-fixed-3xs);
+}

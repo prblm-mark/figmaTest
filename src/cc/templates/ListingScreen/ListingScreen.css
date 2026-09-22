@@ -482,6 +482,11 @@
 .cc-listing__selection {
   display: flex;
   align-items: center;
+  /* The BAR wraps, not just the actions inside it. With only the inner row
+     wrapping, the count and Clear held their line and the three 160px selects
+     had nowhere to go — measured 34px of overflow at a 309px table, which
+     dragged the whole datatable wider than its column. */
+  flex-wrap: wrap;
   gap: var(--ai-spacing-4);
   padding: var(--ai-spacing-3) var(--ai-spacing-5);
   border-block-end: 1px solid var(--ai-border-secondary);
@@ -514,6 +519,13 @@
   display: flex;
   align-items: center;
   gap: var(--ai-spacing-3);
+  /* `flex: 1 1 auto` and not the default `0 1 auto`. A wrapping flex container
+     that is itself a flex ITEM sizes to its min-content, so once the selects
+     below became shrinkable the cluster collapsed to ~341px and wrapped to two
+     rows at 1600 — where it had been one. Letting it take the remaining space
+     puts that back, and it still wraps when there genuinely is not room. */
+  flex: 1 1 auto;
+  min-inline-size: 0;
   margin-inline-start: auto;
   /* Orders carries three selects and a verb; at a narrow column they wrap
      under the count rather than pushing the bar wider than the table. */
@@ -522,9 +534,13 @@
 }
 
 /* The selects are the Select component at `--sm`; only their width is ours,
-   so "Change Status" and "Add to List" do not each claim a different one. */
+   so "Change Status" and "Add to List" do not each claim a different one.
+   160px is a CAP, not a floor — `flex: 0 1` with `min-inline-size: 0` lets
+   them give way on a phone instead of forcing the bar past the table. */
 .cc-listing__selection-select {
-  inline-size: var(--ai-size-2);            /* 160px */
+  flex: 0 1 var(--ai-size-2);               /* 160px */
+  max-inline-size: var(--ai-size-2);
+  min-inline-size: 0;
 }
 
 .cc-listing__selection-select .sel__menu {

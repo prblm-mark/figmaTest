@@ -2628,8 +2628,18 @@ did something). One column fewer at every width; re-measured, no overflow.
   was stranding itself on a second line.
 - **`white-space: nowrap` on the count** — "2 items selected" was wrapping to
   two lines and making the bar taller than the row it describes.
-- **The actions wrap, the bar does not grow sideways.** Five verbs at a 700px
-  column take two rows; one row from ~1100 up.
+- **The whole BAR wraps, not just the actions inside it.** With only the inner
+  row wrapping, the count and Clear held their line and the three 160px selects
+  had nowhere to go — 34px of overflow at a 309px table, which dragged the
+  datatable wider than its column. The selects' 160px is a **cap, not a floor**
+  (`flex: 0 1` + `min-inline-size: 0`), so they give way on a phone.
+- **`flex: 1 1 auto` on the action cluster**, not the default `0 1 auto`. A
+  wrapping flex container that is itself a flex item sizes to its min-content,
+  so the moment the selects became shrinkable the cluster collapsed to ~341px
+  and wrapped to two rows *at 1600*, where it had been one. Caught by
+  re-measuring the wide end after fixing the narrow one.
+- Measured, both bars: one row to ~1200, then 2, then 3 at 390 and 4 for
+  Articles' five verbs at 320. No overflow at any width.
 - **Select.js needs no re-init.** It binds one delegated click listener at the
   document, so a select rendered into the bar after load works — verified by
   opening one and picking from it, not assumed.
