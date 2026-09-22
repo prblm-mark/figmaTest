@@ -129,20 +129,29 @@
     /* Thumbnail — the Media Items listing's own first column, and its header
        is deliberately blank, exactly as CProperties declares it.
        TODO(backend:Listing) media-thumbnails: the live screen builds this from
-       MediaItem.ImageThumb through an internal DAM path; no read available
-       here returns a usable URL, so the box is a generated placeholder. Swap
-       `renderThumb` for an <img> when real URLs arrive — the box, its sizing
-       and its aspect are already right.
-
-       Image rows get the tinted box alone: it stands in for the picture.
-       Everything else gets its family glyph, because for those rows there is
-       no picture to stand in for. */
+       MediaItem.ImageThumb through an internal DAM path and no read available
+       here returns a usable URL, so the demo rows carry a seeded Lorem Picsum
+       photo instead (the same host the Orders avatars use). The seam is
+       `row.thumbUrl` — point it at the real asset and nothing else changes. */
     thumb: function (row) {
-      var glyph = { video: 'play', audio: 'music', document: 'file-text' }[row.family];
+      /* A row that HAS a picture shows it. `alt` is empty on purpose — the
+         Title column sits immediately beside it and already names the item, so
+         an alt would make a screen reader read every row's name twice. The box
+         keeps its background, which is what shows while the image loads and if
+         it never does. */
+      if (row.thumbUrl) {
+        return '<span class="datatables__thumb datatables__thumb--' + esc(row.family) + '"' +
+          ' data-backend-todo="media-thumbnails">' +
+          '<img src="' + esc(row.thumbUrl) + '" alt="" loading="lazy" decoding="async">' +
+        '</span>';
+      }
+      /* Audio and documents have no picture to show, which is also what the
+         live screen concludes — its MediaTypeAR gives those a format icon. */
+      var glyph = { audio: 'music', document: 'file-text' }[row.family] || 'file';
       return '<span class="datatables__thumb datatables__thumb--' + esc(row.family) + '"' +
         ' data-backend-todo="media-thumbnails" role="img"' +
-        ' aria-label="' + esc(row.family) + ' thumbnail">' +
-        (glyph ? '<i data-lucide="' + glyph + '" aria-hidden="true"></i>' : '') +
+        ' aria-label="' + esc(row.family) + ' file">' +
+        '<i data-lucide="' + glyph + '" aria-hidden="true"></i>' +
       '</span>';
     },
 

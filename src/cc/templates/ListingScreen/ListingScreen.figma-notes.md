@@ -2167,12 +2167,34 @@ looks like it has.
 ### The image is the one thing that is not real
 
 The live screen builds the thumbnail from `MediaItem.ImageThumb` through an
-internal DAM path and no read available here returns a usable URL. Image rows
-therefore show the tinted box alone — it stands in for the picture — and every
-other family shows its glyph, because for those rows there is no picture to
-stand in for. Everything else about the box is real: size, aspect, position,
-and what it does when the table narrows. `TODO(backend:Listing)
-media-thumbnails` marks the swap.
+internal DAM path and no read available here returns a usable URL. The first
+build put a tinted box there; the designer's call (2026-09-22) was to **show
+real photographs instead** — a media library is browsed by eye, and a column of
+identical grey boxes tests nothing about the one thing this screen is for.
+
+**Lorem Picsum, because the repo already uses it.** The Orders avatars are
+`https://picsum.photos/seed/<seed>/96`, so this follows the same host rather
+than introducing a second one; Picsum serves real Unsplash photographs. The
+seed is the **item code**, so each row gets a stable, distinct picture across
+reloads — which matters here more than on most screens, because twelve of the
+fifty rows are near-duplicate screenshots taken minutes apart and telling them
+apart is exactly the thumbnail's job. Requested at 128 for a 64px box, so it
+stays sharp on a 2x display.
+
+**Photos go on image and video rows; audio and documents keep a glyph.** Not a
+shortcut — it is the same conclusion the live screen reaches, whose
+`MediaTypeAR` gives those families a format icon rather than a picture. A PDF
+has no thumbnail to show.
+
+`object-fit: cover`, not `contain`: the box is square and the sources are not,
+and letterboxing fifty mixed aspect ratios turns an even column into a ragged
+one. The background stays underneath as the loading and failure state. `alt` is
+**empty on purpose** — the Title column sits immediately beside the image and
+already names the item, so an alt would make a screen reader read every row's
+name twice.
+
+The seam for the real thing is `row.thumbUrl`: point it at the real asset and
+nothing else changes. `TODO(backend:Listing) media-thumbnails`.
 
 ## Type: four glyphs instead of thirty
 

@@ -1353,11 +1353,16 @@
   block-size: var(--ai-icon-size-md);
 }
 
-/* An image row shows the box and nothing in it — the box IS the stand-in for
- * the picture. Every other family shows its glyph, because for those rows
- * there is no picture to stand in for. */
-.datatables--orders .datatables__thumb--image {
-  background-color: var(--ai-surface-secondary);
+/* The picture fills the box and is cropped to it. `cover` rather than
+ * `contain` because the box is square and the sources are not: letterboxing 50
+ * rows of mixed aspect ratios turns an even column into a ragged one, and a
+ * thumbnail is a glance, not a proof. The background stays underneath — it is
+ * what shows while the image loads and if it never arrives. */
+.datatables--orders .datatables__thumb img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 /* The thumbnail column hugs its box: it never grows, and it must not be the

@@ -891,8 +891,8 @@
           "id": "media-thumbnails",
           "category": "needs-backend",
           "element": ".datatables__thumb on MediaItems.html",
-          "current": "The box is a generated placeholder: image rows show the tinted box alone, other families show a Lucide glyph. The live screen builds the real thumbnail from MediaItem.ImageThumb through an internal DAM path (../AcuCustom/Sitename/DAM/<n>/) and no read available here returns a usable URL. Size, aspect, position and narrow-table behaviour are all real; only the picture is missing.",
-          "needs": "A resolvable thumbnail URL per row — `thumbUrl` on the row payload. The box is 64px desktop / 48px mobile and square; the live generator already renders to a square (60x60), so the same asset works. Swap the placeholder span for an <img> inside the same box; nothing about the layout changes."
+          "current": "Image and video rows show a real photograph from Lorem Picsum, seeded on the item code so each row is stable and distinct (the same host the Orders avatars use). Audio and documents show a Lucide glyph, which is what the live screen does for those families too. The live thumbnail comes from MediaItem.ImageThumb through an internal DAM path no read here can resolve. Size, aspect, crop, position and narrow-table behaviour are all real; only the asset is stand-in.",
+          "needs": "A resolvable thumbnail URL per row, as `thumbUrl` — that is already the seam the renderer reads, so pointing it at the real asset changes nothing else. The box is 64px desktop / 48px mobile and square, and the live generator already renders square (60x60), so the same asset fits. Rows with no thumbnail should omit `thumbUrl` and will fall back to the family glyph."
         },
         {
           "id": "media-layout-switch",
