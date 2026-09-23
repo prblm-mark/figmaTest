@@ -31,8 +31,61 @@
   }
 
   ready(function () {
+    renderMenuData();
     document.querySelectorAll('.cc-sidebar-menu').forEach(initComposite);
   });
+
+  /* 0. Real menu data → the Control and Analysis panels ─────────────
+     When sidebar-menu-data.js is loaded (it declares CC_SIDEBAR_MENU), its
+     modules replace the hand-written groups in every Control panel and its
+     analysis groups replace the Analysis panels — desktop and mobile copies
+     alike. Runs BEFORE initComposite, because the behaviours below bind to
+     the items that exist when they run (toggles, search, pins).
+
+     Sections are flattened in order, without headings: the SidebarMenu
+     design has no heading row, so the live page's grouping is carried by
+     the order alone (see the data file). Markup is exactly the hand-written
+     markup's, so no style or behaviour changes. A page that does not load
+     the data keeps its own markup. */
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+
+  function groupHtml(name, icon, items) {
+    return '<li>' +
+      '<button class="cc-main-menu-item" aria-expanded="false">' +
+        '<span class="cc-main-menu-item__icon"><i data-lucide="' + esc(icon) + '"></i></span>' +
+        '<span class="cc-main-menu-item__label">' + esc(name) + '</span>' +
+        '<span class="cc-main-menu-item__chevron"><i data-lucide="chevron-down"></i></span>' +
+      '</button>' +
+      '<ul class="cc-menu__submenu" hidden>' +
+        items.map(function (it) {
+          return '<li class="cc-menu__submenu-item" data-control-link="' + esc(it.link) + '">' +
+            '<span class="cc-menu__submenu-item-label">' + esc(it.name) + '</span></li>';
+        }).join('') +
+      '</ul></li>';
+  }
+
+  function renderMenuData() {
+    var data = window.CC_SIDEBAR_MENU;
+    if (!data) return;
+    var control = (data.modules || []).map(function (m) {
+      var items = [];
+      (m.sections || []).forEach(function (s) { items = items.concat(s.items || []); });
+      return groupHtml(m.name, m.icon, items);
+    }).join('');
+    var analysis = (data.analysis || []).map(function (g) {
+      return groupHtml(g.name, g.icon, g.items || []);
+    }).join('');
+    document.querySelectorAll('.cc-menu[data-cc-panel="control"] > .cc-menu__items')
+      .forEach(function (ul) { ul.innerHTML = control; });
+    if (analysis) {
+      document.querySelectorAll('.cc-menu[data-cc-panel="analysis"] > .cc-menu__items')
+        .forEach(function (ul) { ul.innerHTML = analysis; });
+    }
+  }
 
   function initComposite(root) {
     if (root.dataset.ccInit === 'true') return;

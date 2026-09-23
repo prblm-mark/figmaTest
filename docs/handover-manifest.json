@@ -89,9 +89,9 @@
         {
           "id": "sidebar-nav-data",
           "category": "needs-backend",
-          "element": "Static submenu <li> links in the SidebarMenu panels (CRM/Content/Marketing/etc.)",
-          "current": "Hardcoded list items; no navigation, no permission filtering.",
-          "needs": "Menu/structure API to populate items; permission-based visibility; real navigation/routing on click."
+          "element": "SidebarMenu Control + Analysis panels on every CC screen (rendered from src/cc/patterns/SidebarMenu/sidebar-menu-data.js)",
+          "current": "Real structure, static snapshot: 404 visible Control Centre screens from affino.com (Hub control profiles, 2026-09-21) — 11 of the 12 modules in live order (System Management, Affino-internal, left out of the demo), each module's sections in order, screens by SortOrder. Analysis panel derived from the modules' analysis sections. Items carry their real /control/ link but do not navigate; no permission filtering.",
+          "needs": "GET /control/menu returning the same shape, filtered by the operator's security rights; make items real links to `link`."
         },
         {
           "id": "zone-selector",
