@@ -231,6 +231,8 @@ it.
 - Users can hide/show columns and drag to reorder (grip only). The first `identityColumns` rows
   are locked on (2 on Orders, 1 on Articles / Archive / Media).
 - "No room at this width" is one heading, placed where columns stop fitting.
+- The trigger is a **base-size** secondary button (40px, no `btn--sm`) on both templates
+  (designer, 2026-09-23).
 - Changes are part of the saved view.
 - **Only on viewports ≥ 1024px** — a deliberate `@media`: it's a device question ("is this a
   laptop?"), and keying it to the table would hide it on a 1024px laptop with the sidebar

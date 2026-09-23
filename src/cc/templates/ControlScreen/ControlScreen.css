@@ -152,6 +152,18 @@
   scrollbar-color: var(--cc-actions-menu-primary-bg) transparent;
 }
 
+/* Flush page (2026-09-23) — the full-width listing template, Figma 3788:16762:
+   padding 0 and a surface/primary fill, so the content runs edge to edge.
+   Two classes on purpose: at (0,2,0) it beats every single-class padding rule
+   in this file — the base, both viewport @media trims and their coarse-pointer
+   corrections — without having to repeat each of them. The scrollbar gutter
+   stays, so nothing shifts when the page starts to scroll. Toggled by
+   `applyTemplate()` in ListingScreen.js, never written into the markup. */
+.cc-control__page.cc-control__page--flush {
+  padding: 0;
+  background: var(--ai-surface-primary);
+}
+
 /* Desktop + hover-capable pointers only: hide the thumb at rest and fade it in
    on hover (overlay-subtle). Below 768px — and on any touch / no-hover device —
    the bar stays permanently visible (the base rule above). */

@@ -2009,6 +2009,35 @@
     renderColumnPicker(root, config);
   }
 
+  /* ── Template: standard or full width ─────────────────────
+     Two templates, ONE DOM (designer, 2026-09-23; Figma 3645:148870 standard,
+     3788:16762 full width). Full width is the same screen with the page inset
+     and the card chrome taken away for maximum space — every behaviour is the
+     shared code acting on the same markup, so nothing below knows or cares
+     which is on.
+
+     The whole switch is this attribute plus the page modifier; the CSS does
+     the rest (ListingScreen.css, "Full-width template"). It is chosen per
+     screen by `config.template` and overridable with `?template=full`, the
+     same way `?layout=grid` picks the Media Items grid.
+
+     TOGGLE-READY. A runtime toggle is still being agreed with the wider team;
+     when it lands it only has to call applyTemplate() and persist the choice.
+     The column fit re-runs by itself — its ResizeObserver sees the table
+     change width — and the sticky offsets follow a CSS variable.
+     Once the toggle exists the chosen template needs persisting per user.
+     Deliberately NOT yet a backend handover item — held back from the
+     handover notes until the designer says so (2026-09-23). */
+  var TEMPLATES = ['standard', 'full'];
+
+  function applyTemplate(root, name) {
+    var t = TEMPLATES.indexOf(name) !== -1 ? name : 'standard';
+    root.setAttribute('data-listing-template', t);
+    var page = root.closest('.cc-control__page');
+    if (page) page.classList.toggle('cc-control__page--flush', t === 'full');
+    return t;
+  }
+
   function init() {
     var root = document.querySelector('[data-listing]');
     if (!root) return;
@@ -2017,6 +2046,11 @@
       ? LISTING_SCREENS[root.getAttribute('data-listing')]
       : null;
     if (!config) return;
+
+    /* Before anything renders: the column fit measures the table, and the
+       full-width template makes it wider. */
+    var urlTemplate = (new RegExp('[?&]template=(standard|full)').exec(location.search) || [])[1];
+    config.template = applyTemplate(root, urlTemplate || config.template);
 
     /* Work on a shallow copy of the filter lists: adding a filter moves it
        from one to the other, and LISTING_SCREENS is the screen DEFINITION,
