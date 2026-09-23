@@ -2782,6 +2782,27 @@ bar at 0 and header exactly one bar-height below (49 / 133) when ticked;
 rows still 0px on tick; nothing stuck at the top of the page. Screenshots
 checked in light and dark.
 
+### Sticky on every listing screen — verified per screen
+
+2026-09-23. No per-screen work was needed: all four pages load the shared
+ListingScreen.css / .js and carry `.cc-listing`, `[data-listing-head]` and
+`[data-listing-selection]`, so the sticky bar and header came with the shared
+code. Measured in headless Chrome rather than assumed:
+
+| Screen | Header, nothing ticked | Row ticked | Rows move on tick |
+|---|---|---|---|
+| Orders, 1400 / 600 | 0.0px, shadow on | bar 0, header +49 / +133 | 0px |
+| Articles, 1400 / 600 | 0.0px, shadow on | bar 0, header +49 / +93 | 0px |
+| Media Items list, 1400 / 600 | 0.0px, shadow on | bar 0, header +49 / +93 | 0px |
+| Media Items grid, 1400 | no header in grid | bar pins at 0 with its shadow | cards 0px |
+| Article Archive, 1400 × 420 | 0.0px, shadow on | no selection on this screen | — |
+
+Nothing is pinned at the top of the page on any screen. Article Archive has 16
+rows, so an 800px-tall window cannot scroll far enough to pin anything; it was
+measured in a 420px-tall one. **A new listing screen gets this for free only if
+it keeps those three hooks and the `.cc-control__page` scroller** — see the
+backend handover (`docs/listing-screens-handover.md`).
+
 ## Article Archive loses its checkbox column
 
 It has nothing a selection could be **for**. So no bar, and the template drops

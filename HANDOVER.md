@@ -308,13 +308,20 @@ Reads/writes `SeatingPlan`, `Table`, `TableSeat` (data model on the parent task)
 
 ## Surface: ListingScreen
 
+> **Building or wiring listing screens? Read
+> [`docs/listing-screens-handover.md`](docs/listing-screens-handover.md) first** — every rule
+> and design decision the template encodes (the five-chip rule, column fitting, selection and
+> bulk actions, the sticky bar and header, responsive exceptions) and the known issues to fix
+> in the template before scaling out. This section is the data/API side only.
+
 `src/cc/templates/ListingScreen/` — **the template behind roughly 400 Control Centre
 screens**. They share one layout (FilterBar above a datatable) and differ in only two
 things: which **datatable Type** renders and which **default filters** show.
 
 The single most useful thing to know before wiring this: **the screen is already data-driven.**
-`ListingScreen.js` reads only `columns`, `rows` and `page` from a config object, and builds the
-header, the body, the mobile detail rows and the pagination from it. The mock lives in
+`ListingScreen.js` builds the header, the body, the kebab detail rows, the filters, the
+selection bar and the pagination from a per-screen config object (field reference in
+[`docs/listing-screens-handover.md` §3](docs/listing-screens-handover.md#3-screen-config-reference)). The mock lives in
 `listing-data.js` under `LISTING_SCREENS.orders`. Replacing it with a real payload is a data
 change — there is no hand-authored `<tr>` to delete, and no markup to touch.
 
@@ -324,8 +331,8 @@ was chosen: live at <https://www.affino.com/control/orders>.
 
 | Marker | Element | Current | Needs | Status |
 |---|---|---|---|---|
-| `listing-orders-rows` | `.datatables--orders` | 10 rows, the 296 total, the `1–10` range and 3 pages are mock constants transcribed from Figma. The sort, page-size and pagination controls all render but change nothing | `GET /control/orders?view=&filters[]=&sort=&dir=&page=&per_page=` → `{ columns[], rows[], page:{ from,to,total,current,pages } }`. Row shape already matches the renderer: `{ orderNo, customer:{ name, role?, avatar?, initials? }, account, accountCode, qty, orderTotal }` | needs-backend |
-| `listing-default-filters` | `.filter-bar` | Chips and their pickers are config in `listing-data.js`, each naming the FilterDropdowns Type it opens. Pickers **do** open and are interactive, but every option list is mock and applying changes no rows; **Save view** is inert | `GET /control/<screen>/filters` → `[{ name, type, label, placeholder? }]` — the backend already decides the first five filters per screen, and `type` names the dropdown (`select-options \| predictive \| multi-select \| text \| more-filters`). Plus `GET /control/<screen>/filters/<name>/options?q=` → `[{ value, label, sub? }]` for the option lists — predictive types should query per keystroke, not ship the list up front. Applying then re-queries the rows endpoint. Plus saved-view CRUD and per-user persistence | needs-backend |
+| `listing-orders-rows` | `.datatables--orders` | Rows are a mock set in `listing-data.js`. Sort, page size, pagination, filters and search all **work client-side over that mock set** (filter → sort → page) — the backend replaces the data, not the behaviour | `GET /control/orders?view=&filters[]=&sort=&dir=&page=&per_page=` → `{ columns[], rows[], page:{ from,to,total,current,pages } }`. Row shape already matches the renderer: `{ orderNo, customer:{ name, role?, avatar?, initials? }, account, accountCode, qty, orderTotal }` | needs-backend |
+| `listing-default-filters` | `.filter-bar` | Chips and their pickers are config in `listing-data.js`, each naming the FilterDropdowns Type it opens. Pickers open, apply and **filter the mock rows client-side**; every option list is mock. Save view works against local storage only (demo) — it must become per-user persistence | `GET /control/<screen>/filters` → `[{ name, type, label, placeholder? }]` — the backend already decides the first five filters per screen, and `type` names the dropdown (`select-options \| predictive \| multi-select \| text \| more-filters`). Plus `GET /control/<screen>/filters/<name>/options?q=` → `[{ value, label, sub? }]` for the option lists — predictive types should query per keystroke, not ship the list up front. Applying then re-queries the rows endpoint. Plus saved-view CRUD and per-user persistence | needs-backend |
 | `listing-export` | `.filter-bar__export` split control — **Orders only** | Label half + three menu rows (PDF / Excel&nbsp;.xlsx / CSV) all carry `data-filter-export`; none is wired. **Articles and Article Archive carry no export markup** (designer, 2026-09-22): toolbar actions vary per screen, so a screen that should export adds the control rather than a flag turning it off | `POST /control/<screen>/export { view, filters, sort, format }` → file URL or job id. **`format` is new** — `pdf \| xlsx \| csv`, label half runs the default (pdf). Must honour current filter/sort state. Same contract the Seating Planner export needs, so one endpoint should serve both | needs-backend |
 | `listing-row-routes` | `a[data-row-link]` (the order number) and `a.datatables__row-edit` (the pencil), per row | Two destinations per row, both placeholder hrefs from `ROUTE.view` / `ROUTE.edit` in `ListingScreen.js`: `#order/<orderNo>/view` and `#order/<orderNo>/edit`. Real anchors, so keyboard / middle-click / hover-preview work, and a click anywhere else in the row follows the view link. Nothing is fetched; no screen exists at either address | The two per-row URLs, ideally in the rows payload (`viewUrl` / `editUrl` per row) or as a screen-level template — `GET /control/<screen>` → `{ rowUrl: '/control/orders/{id}', editUrl: '/control/orders/{id}/edit' }`. Replacing the two `ROUTE` functions is the whole change. **Edit must respect record permission** — the pencil should not render for a row the operator may not change | needs-backend |
 | `listing-header-actions` | `.cc-header__actions .btn` (Articles: the primary **Add**) | Declared per screen in the config (`headerActions`) and rendered into the CCHeader pattern's own actions cluster; Articles carries the Add from Figma 4105:3640 (plus icon, label, Primary/Base). Goes nowhere | The screen's "new record" route — sibling of `listing-row-routes`, ideally the same payload: `newUrl: '/control/articles/new'`. **Permission applies**: an operator who may not create should not be shown the button | needs-backend |
@@ -337,6 +344,7 @@ was chosen: live at <https://www.affino.com/control/orders>.
 | `media-thumbnails` | `.datatables__thumb` | Image and video rows show a **real photograph** from Lorem Picsum seeded on the item code (the host the Orders avatars already use); audio and documents keep a Lucide glyph, as live does for those families. Live builds the real one from `MediaItem.ImageThumb` through an internal DAM path and no read returns a usable URL. Size, aspect, position and narrow-table behaviour are all real — only the picture is missing | A resolvable `thumbUrl` per row — already the seam the renderer reads, so pointing it at the real asset changes nothing else. Rows with no thumbnail omit it and fall back to the glyph. The box is 64px desktop / 48px mobile and square, and the live generator already renders square (60×60), so the same asset fits. Swap the placeholder span for an `<img>` in the same box; no layout changes | needs-backend |
 | `media-layout-switch` | `MediaLayOut` (Grid \| Listing) | **BUILT 2026-09-22 — both halves.** A SegmentedControl in the toolbar swaps between them and `?layout=grid` opens the grid directly; they share the toolbar, page size and pager because live shares them too. Live's own default is Grid; this opens on Listing. Not built: View Album (only fires on a search result, and there is no Browse mode here), the jQuery lightbox slideshow, and the AI badge — `AIGeneratedYN` is real but the row feed does not return it | `layout` persisted per user as the live URL param is, and `aiGenerated` on the row payload so the badge can be built | needs-backend |
 | `listing-bulk-actions` | `.cc-listing__selection` on **all four** listing screens | Shared bar, actions per screen from `bulkActions`, each read from the live source: **Orders** three selects (Change Status / Add to List / Archive, `sShowCustomButtons`); **Articles** one select of five verbs (`CMethods = "copy,move,delete,listmakelive,listmakenotlive"`); **Media Items** one select of Move + Delete (`directAction`); **Article Archive none** (`CMethods = "list,change,viewonly"`) so it has no bar and no checkbox column. Every screen uses the same shape — *n* selects plus one **Apply**, which is live's model. Apply is disabled until a select holds a value; picking the label row unsets it; clearing the selection resets the selects. Nothing is wired | `POST /control/<screen>/bulk { action, ids[], value? }` — `value` carries the picked status, order-list code or archive direction. Live pairs Orders' selects with a separate Action submit; this applies on pick. **Add to List also needs a CREATE path** — live has a free-text box beside the select for naming a new list. **Permission applies per action:** the `CMethods` string IS that list, so the backend should return the permitted verbs per screen per user rather than the client hardcoding them | needs-backend |
+| `listing-column-prefs` | Edit Columns dropdown (`data-backend-todo="listing-column-prefs"`) on all four listing screens | Hide/show and drag-reorder work and are part of a saved view, persisted to local storage only (demo) | `GET/PUT /control/<screen>/columns { order:[key], hidden:[key] }` per user, or carried inside the saved-view payload. Desktop (≥1024px viewport) only | needs-backend |
 | `media-topics` | Topics facet in More Filters | Option list is the first twenty of **437 real** taxonomy categories, but no row carries tags, so the facet filters to nothing. Present because it is in the live catalogue | Topic tags per row (`topics: []`) plus the full taxonomy for the picker. Live uses a webOS multi-select lookup over `TaxonomyCategory` | needs-backend |
 
 Two notes that will otherwise cost someone time:
@@ -344,10 +352,11 @@ Two notes that will otherwise cost someone time:
 - **`customer` is a shape, not a string.** It carries an optional `role` (several rows have
   none, by design) and either an `avatar` URL or `initials`. The initials form is what renders
   the brand-tinted letter avatar. Don't flatten it to a name.
-- **Which columns survive on mobile is CSS, not data.** Columns marked `primary` stay; the rest
-  are moved into the kebab detail row by a **container query** against the table's own width.
-  Do not reintroduce `matchMedia` to do this — the CC content column changes width with no
-  window resize at all when the SidebarMenu docks (CLAUDE.md §4a).
+- **Which columns survive on a narrow table is measured, not data.** Column order is
+  priority: `ListingScreen.js` measures every column and moves the ones that don't fit into the
+  kebab detail row, re-fitting from a `ResizeObserver` on the table. Do not reintroduce
+  `matchMedia` to do this — the CC content column changes width with no window resize at all
+  when the SidebarMenu docks (CLAUDE.md §4a).
 
 `grep -rn "TODO(backend:Listing)" src/`
 

@@ -822,13 +822,13 @@
     },
     "ListingScreen": {
       "file": "src/cc/templates/ListingScreen/ListingScreen.html",
-      "note": "Control Centre Listing Screen template — the layout behind ~400 CC screens, of which Orders is the first built. Screens differ only in datatable Type and default filter set, both of which are config in listing-data.js. The renderer (ListingScreen.js) reads only `columns`, `rows` and `page`, so a real payload can replace the mock without markup changes. Pass 1 is the Default view; filter dropdowns / sort / paging are Pass 2 and are NOT wired.",
+      "note": "Control Centre Listing Screen template — the layout behind ~400 CC screens; Orders, Articles, Article Archive and Media Items are built. Each screen is a config object (LISTING_SCREENS['<key>']) that ListingScreen.js renders: filters (first five as chips), columns (fitted by measurement), selection + bulk actions, sticky bar and header, pagination. Filtering, sorting, search and paging work client-side over mock rows; the backend replaces the data. Build rules: docs/listing-screens-handover.md.",
       "items": [
         {
           "id": "listing-orders-rows",
           "category": "needs-backend",
           "element": ".datatables--orders (data-backend-todo=\"listing-orders-rows\")",
-          "current": "Ten rows, the 296 total, the 1-10 range and the 3 pages are all mock constants in listing-data.js, transcribed from the Figma design. Sorting, paging and page-size are inert — the controls render but change nothing.",
+          "current": "Rows are a mock set in listing-data.js. Sort, page size, pagination, filters and search all work client-side over that mock set (filter -> sort -> page); the backend replaces the data, not the behaviour.",
           "needs": "GET /control/orders?view=&filters[]=&sort=&dir=&page=&per_page= returning { columns[], rows[], page:{ from, to, total, current, pages } }. Row shape already matches the renderer: { orderNo, customer:{ name, role?, avatar?, initials? }, account, accountCode, qty, orderTotal }. The live screen is https://www.affino.com/control/orders. Generalise the endpoint per screen (/control/<screen>) rather than per entity — the template is shared by ~400 of them."
         },
         {
@@ -921,8 +921,16 @@
           "element": ".cc-grid__action View Album / Slideshow on MediaItems.html grid cards",
           "current": "Both render as Button `btn--icon btn--xs` and go nowhere. Edit shares the row route. Slideshow is shown on image rows only, matching the live ImageYN gate; View Album shows always because this prototype has no Browse mode, where live gates it to a search result.",
           "needs": "View Album: the section listing route — live builds /AfcMediaLibrary/MediaItems.cfm?ZoneCode=&ChannelCode=&ccs=&Navigation=&MediaLayOut=. Slideshow: the full-size asset URL for a lightbox; live points the anchor at the master file path. Both want the row payload to carry the section/channel codes and the master file URL."
+        },
+        {
+          "id": "listing-column-prefs",
+          "category": "needs-backend",
+          "element": "Edit Columns dropdown (data-backend-todo=\"listing-column-prefs\") on all four listing screens",
+          "current": "Hide/show and drag-reorder work and are part of a saved view, persisted to local storage only (demo).",
+          "needs": "GET/PUT /control/<screen>/columns { order:[key], hidden:[key] } per user, or carried inside the saved-view payload. Desktop (>=1024px viewport) only."
         }
-      ]
+      ],
+      "guide": "docs/listing-screens-handover.md"
     }
   }
 }
