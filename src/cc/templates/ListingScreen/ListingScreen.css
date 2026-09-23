@@ -512,9 +512,10 @@
    * page. That only works because `.datatables` is `overflow: clip` — with
    * `hidden` it became the sticky's scroll container and nothing moved.
    *
-   * z-index 1: above the rows scrolling under it (no row control sets one),
-   * below an open dropdown or select panel (10/11), which should cover
-   * whatever it opens over.
+   * z-index 2: above the rows scrolling under it (no row control sets one)
+   * AND above the sticky table header (1), so this bar's own select menus
+   * open over the header rather than behind it; below an open dropdown or
+   * row menu (10/11), which should cover whatever it opens over.
    *
    * NEGATIVE top, not 0: a sticky is inset by its scroller's PADDING, so at
    * `top: 0` it pinned 24px below the header with rows showing through the
@@ -525,18 +526,90 @@
    * the page cannot query its own container). */
   position: sticky;
   inset-block-start: calc(var(--ai-spacing-6) * -1);
-  z-index: 1;
+  z-index: 2;
   transition: box-shadow var(--ai-transition-default);
 }
 
 /* Only while pinned — at rest inside the table the bar looks exactly as it
  * did. Set by `watchSelectionStuck` in ListingScreen.js; CSS cannot tell a
- * stuck sticky from a resting one. */
+ * stuck sticky from a resting one. It comes OFF while the table header is
+ * stuck beneath it: one shadow, at the bottom of whatever is pinned. */
 .cc-listing__selection--stuck {
   box-shadow: var(--ai-shadow-sm);
 }
 
 .cc-listing__selection[hidden] { display: none; }
+
+/* ── Sticky table header ──────────────────────────────────
+ * The column header pins too (designer, 2026-09-23), under the CC header —
+ * or under the selection bar when that is showing. Select-all lives in it, so
+ * pinning it keeps that reachable as well.
+ *
+ * TWO THINGS HAD TO GIVE for it to stick at all:
+ *
+ * 1. `.datatables__body` is `overflow-x: auto` (Datatables.css), and any
+ *    non-visible overflow makes it a scroll container — so a sticky inside it
+ *    sticks to the body, which never scrolls vertically. On the listing it is
+ *    `overflow-x: clip` instead. That is only safe because the column fit
+ *    already keeps the table inside its body: measured on all three listing
+ *    screens at 320, 390, 600, 768, 1024, 1280, 1600 and 1920, horizontal
+ *    overflow was 0 in all 24. If a future column set could overflow, it
+ *    would be clipped here rather than scroll — revisit this line first.
+ *
+ * 2. The sticky goes on the `th` cells, and the line under them cannot be the
+ *    cell border: with `border-collapse: collapse` (Table.css) the table
+ *    paints the border, so it stays behind when the cell moves — and
+ *    `box-shadow` does not apply to cells in that model either. So while
+ *    stuck, a pseudo-element in each cell draws the header's own line and
+ *    casts the shadow — see the note on `th::after` below for how the pieces
+ *    are made to read as one edge.
+ *
+ * The offset is the page's top padding (as for the bar) plus the bar's
+ * height, measured into `--cc-listing-bar-h` by ListingScreen.js because the
+ * bar wraps to different heights (49 / 133px) and is absent with nothing
+ * ticked. z-index 1 — under the bar (2), over the rows. */
+.cc-listing .datatables__body {
+  overflow-x: clip;
+}
+
+.cc-listing [data-listing-head] th {
+  position: sticky;
+  inset-block-start: calc(var(--cc-listing-bar-h, 0px) - var(--ai-spacing-6));
+  z-index: 1;
+}
+
+/* The shadow is cast by a box the FULL HEIGHT of the cell, the same size of
+ * box the bar casts from, rather than from a 1px line: a shadow's weight
+ * scales with the box casting it, and a 1px box under a 3px blur would read
+ * far lighter than the bar's shadow for the same token.
+ *
+ * Each box overhangs its neighbours by spacing-4 and is clipped back to its
+ * own cell, top and sides, so only the part BELOW the header shows. The
+ * overhang matters: a box's shadow fades towards its own ends, so cell-sized
+ * boxes would leave a light notch at every column seam. Overhung and clipped,
+ * every cell gets the full-strength middle of a wider shadow and the pieces
+ * tile into one edge. The clip reaches spacing-6 below, well past the shadow's
+ * 4px reach. The line is this box's bottom border, clipped the same way. */
+.cc-listing [data-listing-head] th::after {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline: calc(var(--ai-spacing-4) * -1);
+  border-block-end: 1px solid var(--ai-datatable-table-border);
+  box-shadow: var(--ai-shadow-sm);
+  clip-path: inset(0 var(--ai-spacing-4) calc(var(--ai-spacing-6) * -1));
+  opacity: 0;
+  transition: opacity var(--ai-transition-default);
+  pointer-events: none;
+}
+
+/* Matches the base rule's specificity plus the state class. As plain
+ * `.cc-listing__head--stuck th::after` it scored (0,1,2) against the base
+ * rule's (0,2,2), lost, and the shadow never appeared at all — the actual
+ * cause of "we need a shadow". Measured: the class was set, opacity stayed 0. */
+.cc-listing [data-listing-head].cc-listing__head--stuck th::after {
+  opacity: 1;
+}
 
 .cc-listing__selection-count {
   /* The count is a label, not a paragraph — wrapping "2 items selected" onto
@@ -694,5 +767,9 @@
 @media (max-width: 767px) {
   .cc-listing__selection {
     inset-block-start: calc(var(--ai-spacing-4) * -1);
+  }
+
+  .cc-listing [data-listing-head] th {
+    inset-block-start: calc(var(--cc-listing-bar-h, 0px) - var(--ai-spacing-4));
   }
 }

@@ -2740,6 +2740,48 @@ Chrome. It was the hidden checkbox INPUT being measured: it is absolutely
 positioned and sat 427px below its own row, so its rect does not follow the
 row. Measure the `tr`, never the visually hidden input.
 
+### The table header sticks too
+
+Designer, 2026-09-23. The column header pins under the CC header — or, with
+rows ticked, directly under the pinned selection bar — so the column names and
+Select-all stay in view while scrolling a long page.
+
+- **`.datatables__body` is `overflow-x: clip` on the listing** (Datatables
+  keeps `auto` everywhere else). `auto` made the body a scroll container and a
+  sticky header inside it stuck to the body, which never scrolls vertically.
+  Safe only because the column fit keeps the table inside its body: measured
+  on all three listing screens at 320, 390, 600, 768, 1024, 1280, 1600 and
+  1920 — horizontal overflow 0 in all 24. A column set that could overflow
+  would now be clipped, not scroll; revisit this first if that changes.
+- **Sticky on the `th` cells, with the line and shadow drawn by `th::after`.**
+  With `border-collapse: collapse` the table paints the cell border, so it
+  stays behind when the cell moves, and `box-shadow` does not apply to cells in
+  that model. While stuck, a pseudo-element the full height of each cell draws
+  the header's line (`--ai-datatable-table-border`) and casts `--ai-shadow-sm`.
+  Each overhangs its neighbours by spacing-4 and is clip-pathed back to its own
+  cell, top and sides, so only the shadow below shows and the pieces tile into
+  one edge with no notch at the column seams.
+- **The shadow first never appeared** ("we need a shadow"). The state rule
+  `.cc-listing__head--stuck th::after` scored (0,1,2) against the base rule's
+  (0,2,2) and always lost, so opacity stayed 0 with the class set. Now
+  `.cc-listing [data-listing-head].cc-listing__head--stuck th::after`. Verified
+  both ways: opacity 1 with the fix, 0 with only the old selector restored.
+  Note for probing: a pseudo-element's transition is not stopped by an inline
+  `transition: none` on its element, and transitions never advance under
+  headless virtual time — inject `*::after { transition: none !important }`.
+- **The offset clears the bar**, whose height is 49px, 133px when it wraps, or
+  0 with nothing ticked — measured into `--cc-listing-bar-h` on the listing
+  root, synchronously when the bar shows or hides and on any resize of it.
+- **One shadow, at the bottom of the stack.** Header stuck → the header has it
+  and the bar drops its own; the bar takes it back if the header leaves first.
+- **z-index:** bar 2, header 1, so the bar's select menus open over the pinned
+  header (hit-tested) and rows scroll under both.
+
+Measured at 1400 and 600: header 0.0px from the edge with nothing ticked;
+bar at 0 and header exactly one bar-height below (49 / 133) when ticked;
+rows still 0px on tick; nothing stuck at the top of the page. Screenshots
+checked in light and dark.
+
 ## Article Archive loses its checkbox column
 
 It has nothing a selection could be **for**. So no bar, and the template drops
