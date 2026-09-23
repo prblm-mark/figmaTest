@@ -1179,10 +1179,88 @@
     if (!bar) return;
     var n = Object.keys(SELECTED).length;
     var was = bar.hidden;
+    var hold = holdScrollAcross(bar);
     bar.hidden = n === 0 || !(config.bulkActions || []).length;
+    hold();
+    syncSelectionStuck();
     if (bar.hidden) { if (!was) resetBulk(root); return; }
     var count = bar.querySelector('[data-selection-count]');
     if (count) count.textContent = n + (n === 1 ? ' item selected' : ' items selected');
+  }
+
+  /* Keep the rows still when the selection bar appears or goes (designer,
+     2026-09-23). The bar is IN FLOW above the table, so showing it pushes
+     everything below it down by its height — 49px at desktop, 133px where it
+     wraps — and the row you just ticked would jump away from the pointer.
+
+     Chrome already prevents that with CSS scroll anchoring: measured, the
+     rows hold still with or without this function. It is for browsers that do
+     not anchor. With `overflow-anchor: none` forced on the scroller the row
+     moved 49px; with this function it moved 0, on tick and on Clear.
+
+     Call before the change; call the returned function after it. It measures
+     the first visible element after the bar and, if that moved, scrolls by
+     exactly the same amount. Measuring the actual movement rather than
+     assuming the bar's height is what stops it double-correcting where the
+     browser has already anchored.
+
+     Only while the bar's slot is ABOVE the viewport — i.e. you are scrolled
+     into the table. With the top of the table on screen the bar appearing in
+     place is the intended reveal, and scrolling there would push the toolbar
+     out of view instead. */
+  function holdScrollAcross(bar) {
+    var scroller = bar.closest('.cc-control__page');
+    var anchor = bar.nextElementSibling;
+    while (anchor && !anchor.getClientRects().length) anchor = anchor.nextElementSibling;
+    if (!scroller || !anchor) return function () {};
+
+    var edge = scroller.getBoundingClientRect().top + scroller.clientTop;
+    var before = anchor.getBoundingClientRect().top;
+    if (before >= edge) return function () {};
+
+    return function () {
+      var moved = anchor.getBoundingClientRect().top - before;
+      if (moved) scroller.scrollTop += moved;
+    };
+  }
+
+  /* Replaced by watchSelectionStuck once the scroller is known; a no-op until
+     then, so renderSelection can call it unconditionally. */
+  var syncSelectionStuck = function () {};
+
+  /* Shadow on the selection bar only while it is PINNED under the CC header.
+     The bar is `position: sticky` (ListingScreen.css); CSS alone cannot tell a
+     stuck sticky from one resting in the flow, so this compares the bar's top
+     with the scroller's. They coincide exactly when it is pinned — at rest the
+     bar sits below the page padding, and once the table has scrolled past its
+     end the bar goes up with it, above the edge.
+
+     Measured against `.cc-control__page`, which is what actually scrolls (the
+     chrome is outside it), and re-checked on scroll, on a resize of the
+     scroller, and whenever the bar is shown or hidden. */
+  function watchSelectionStuck(root) {
+    var bar = root.querySelector('[data-listing-selection]');
+    var scroller = root.closest('.cc-control__page');
+    if (!bar || !scroller) return;
+
+    var queued = false;
+    function sync() {
+      queued = false;
+      var edge = scroller.getBoundingClientRect().top + scroller.clientTop;
+      var stuck = !bar.hidden && scroller.scrollTop > 0 &&
+        Math.abs(bar.getBoundingClientRect().top - edge) < 1;
+      bar.classList.toggle('cc-listing__selection--stuck', stuck);
+    }
+    function queue() {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(sync);
+    }
+
+    scroller.addEventListener('scroll', queue, { passive: true });
+    if (typeof ResizeObserver === 'function') new ResizeObserver(queue).observe(scroller);
+    syncSelectionStuck = queue;
+    queue();
   }
 
   function renderResults(root, config) {
@@ -2776,6 +2854,8 @@
       announceColumns();
       persistColumns();
     });
+
+    watchSelectionStuck(root);
 
     /* Whether a column has ROOM changes with the container, not the window —
        the CC sidebar resizes the table with no window resize at all — so the

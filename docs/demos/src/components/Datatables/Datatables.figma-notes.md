@@ -259,3 +259,13 @@ Measured, active / inactive / label: light `rgb(0,34,47)` / `rgb(153,170,177)` /
 `rgb(0,34,47)`; dark `rgb(241,245,249)` / `rgb(148,163,184)` / same; CC as
 light. Icon and label match in every mode, and the active one is plainly
 darker than the rest without being a different hue.
+
+## The container clips with `overflow: clip`, not `hidden`
+
+2026-09-23. Both clip the children to the rounded corners, but `hidden` also
+makes `.datatables` a scroll container, so any `position: sticky` descendant
+sticks to it — and it never scrolls. That blocked ListingScreen's selection bar
+from pinning under the CC header. `clip` paints the same and creates no scroll
+container. `overflow: hidden` stays as the line before it, as a fallback for
+browsers without `clip` (where a sticky child simply does not stick).
+

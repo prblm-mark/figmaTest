@@ -2694,6 +2694,52 @@ Orders' option lists are real too: the sixteen statuses it already had, the
 list" — kept, because an operator picking from that menu is exactly why a list
 picker needs more than a name, and a tidied demo hides it.
 
+### The bar sticks under the CC header
+
+Designer, 2026-09-23. Select-all lives in the table head, so ticking a row far
+down the page produced a bar that had already scrolled away above you — the
+actions existed and could not be reached without scrolling back up. The bar is
+now `position: sticky` and pins to the underside of the CC header while any
+part of the table is still on screen; scroll past the table's end and it goes
+with it rather than floating over the page. It works in the Media Items grid
+view too, since the grid sits inside the same `.datatables`.
+
+- **`.datatables` had to become `overflow: clip`.** With `hidden` it was a
+  scroll container, the sticky stuck to it, and it never scrolls — nothing
+  moved. `clip` clips the rounded corners identically and creates no scroll
+  container. `hidden` is kept first as a fallback. See Datatables' notes.
+- **The offset is NEGATIVE — the page's own top padding.** A sticky is inset by
+  its scroller's padding, so `top: 0` pinned it 24px below the header with rows
+  showing through the gap (measured). `-spacing-6`, and `-spacing-4` below a
+  768px viewport, mirroring `.cc-control__page`'s padding on the same viewport
+  `@media`. Keep the two in step.
+- **`--ai-shadow-sm` only while pinned** (designer's choice over a border-only
+  version). CSS cannot tell a stuck sticky from a resting one, so
+  `watchSelectionStuck` in ListingScreen.js compares the bar's top with the
+  scroller's edge on scroll, on a scroller resize and whenever the bar is shown
+  or hidden, and toggles `.cc-listing__selection--stuck`.
+- **z-index 1** — above the rows (no row control sets one), below any open
+  dropdown or select panel (10/11).
+
+Measured in headless Chrome at 1400 and 600 wide: pinned exactly on the
+scroller's edge (0.0px), `--stuck` set while pinned, cleared at the top of the
+page, and `elementFromPoint` at the bar's centre lands inside the bar.
+
+**The rows hold still when the bar appears or goes.** The bar is in flow above
+the table, so showing it pushes everything below down by its height (49px at
+1400, 133px at 600 where it wraps). Chrome's CSS scroll anchoring already
+absorbs that; `holdScrollAcross` in ListingScreen.js covers browsers that do
+not anchor, by measuring how far the content below the bar actually moved and
+scrolling by the same amount — so it never double-corrects. It only acts when
+the bar's slot is above the viewport; with the table's top on screen the bar
+appearing in place is the intended reveal. Measured with `overflow-anchor:
+none` forced: 49px without it, 0 with it, on tick and on Clear, at both widths.
+
+**A probe trap worth keeping.** A first measurement reported a 49px jump in
+Chrome. It was the hidden checkbox INPUT being measured: it is absolutely
+positioned and sat 427px below its own row, so its rect does not follow the
+row. Measure the `tr`, never the visually hidden input.
+
 ## Article Archive loses its checkbox column
 
 It has nothing a selection could be **for**. So no bar, and the template drops

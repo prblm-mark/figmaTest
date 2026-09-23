@@ -500,6 +500,40 @@
    * every `-contrast` brand and status surface to `-soft`, and the focus-ring
    * examples still quoting the old name are stale.) */
   background-color: var(--ai-datatable-table-expanded-bg);
+  /* Sticky under the CC header (designer, 2026-09-23). Select-all lives in
+   * the table head, so ticking a row far down the page used to show a bar
+   * that had already scrolled away above you — the actions were there and
+   * unreachable. `top: 0` is the right edge because the header is OUTSIDE the
+   * scroller: `.cc-control__page` scrolls and the chrome sits above it, so the
+   * scroller's top edge IS the underside of the header.
+   *
+   * It sticks within its own parent, `.datatables`, so it leaves with the
+   * table when you scroll past the end of it rather than floating over the
+   * page. That only works because `.datatables` is `overflow: clip` — with
+   * `hidden` it became the sticky's scroll container and nothing moved.
+   *
+   * z-index 1: above the rows scrolling under it (no row control sets one),
+   * below an open dropdown or select panel (10/11), which should cover
+   * whatever it opens over.
+   *
+   * NEGATIVE top, not 0: a sticky is inset by its scroller's PADDING, so at
+   * `top: 0` it pinned 24px below the header with rows showing through the
+   * gap (measured). Pulling it up by the page's own top padding lands it on
+   * the scroller's edge. Keep in step with `.cc-control__page`'s padding in
+   * ControlScreen.css — spacing-6, and spacing-4 below a 768px viewport (the
+   * override is at the foot of this file, on the same viewport @media, since
+   * the page cannot query its own container). */
+  position: sticky;
+  inset-block-start: calc(var(--ai-spacing-6) * -1);
+  z-index: 1;
+  transition: box-shadow var(--ai-transition-default);
+}
+
+/* Only while pinned — at rest inside the table the bar looks exactly as it
+ * did. Set by `watchSelectionStuck` in ListingScreen.js; CSS cannot tell a
+ * stuck sticky from a resting one. */
+.cc-listing__selection--stuck {
+  box-shadow: var(--ai-shadow-sm);
 }
 
 .cc-listing__selection[hidden] { display: none; }
@@ -650,5 +684,15 @@
   .cc-listing__grid {
     gap: var(--ai-spacing-4);
     padding: var(--ai-spacing-4);
+  }
+}
+
+/* The selection bar's sticky offset follows the page's top padding, which
+ * drops to spacing-4 below a 768px VIEWPORT (ControlScreen.css). Same @media
+ * as that rule, for the reason given there: the page cannot query its own
+ * container, so its padding is viewport-keyed and this has to match it. */
+@media (max-width: 767px) {
+  .cc-listing__selection {
+    inset-block-start: calc(var(--ai-spacing-4) * -1);
   }
 }
