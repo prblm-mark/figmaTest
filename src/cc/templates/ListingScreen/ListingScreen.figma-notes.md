@@ -2925,6 +2925,17 @@ values → after a reload all six views are present and Copy of Buyers restores
 35. Independence of an edited copy follows from the clone; not separately
 exercised.
 
+### Numbers stay left-aligned in the demo — right alignment is a build-only direction
+
+2026-09-23. Markus (CEO) has asked for all prices and number formats to be
+right-aligned in the production datatables. The designer disagrees, so the demo
+is deliberately left as designed: **every column left-aligned**. Articles' Views,
+the one column that carried `table__cell--right`, has had it removed. The
+direction is recorded for the build team in `docs/listing-screens-handover.md`
+§8, marked as build-only, with the note that the template must also pass the
+alignment to the `<th>` for it to work. Do not "fix" the demo's alignment to
+match the handover.
+
 ## Article Archive loses its checkbox column
 
 It has nothing a selection could be **for**. So no bar, and the template drops

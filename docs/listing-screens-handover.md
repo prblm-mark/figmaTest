@@ -378,6 +378,24 @@ it.
   overrides. State classes on pseudo-elements must match the base selector's specificity (the
   sticky shadow was invisible for exactly this reason).
 
+### Right-align prices and numbers in the production build — direction from Markus (CEO), 2026-09-23
+
+**In the production screens, all prices and number formats are right-aligned in the datatables** —
+money, quantities, counts, percentages, totals. Text stays left-aligned. Identifiers that happen
+to be digits (order numbers, item IDs) are labels rather than quantities; confirm with Markus
+before right-aligning those.
+
+**This applies to the build only, not to the demo screens.** The designer does not agree with the
+direction and has deliberately kept every column in the demo left-aligned, Views included. So for
+alignment, **do not take the demo as the reference** — follow this note in the build.
+
+- **How:** give the column `cellClass: 'table__cell--right'` in the screen config (Table.css).
+- **The header must align with its figures.** `cellClass` reaches the body cells only, so a
+  right-aligned column would still have a left-aligned heading. The template needs to pass the
+  alignment to the `<th>` (and its sort button) as part of the build.
+- **Columns this covers on the four reference screens:** Orders — Order Total, Qty, Subtotal,
+  Tax; Articles — Views. Article Archive and Media Items carry no price or quantity columns.
+
 ---
 
 ## 9. Accessibility checklist per screen
@@ -421,6 +439,8 @@ the ~400 screens inherits them.
       boolean field in the row payload.
 - [ ] Columns ordered by priority; exactly one fluid column; sort tokens only where the live
       screen sorts.
+- [ ] Production build: every price / number column right-aligned (`table__cell--right`), header
+      included (§8). Not in the demo — the demo is deliberately left-aligned.
 - [ ] `bulkActions` = the operator's permitted verbs, or empty (⇒ no selection UI).
 - [ ] No horizontal overflow at 320 / 390 / 600 / 768 / 1024 / 1280 / 1600 / 1920.
 - [ ] Sticky bar and header pin flush under the CC header, with rows ticked and without, at
