@@ -197,7 +197,7 @@ function wireViews(root) {
       if (row) startRename(row);
       return;
     }
-    // "Copy" in a row's … menu — duplicate the view (mock; DOM only).
+    // "Copy" in a row's … menu — duplicate the view.
     const copyBtn = e.target.closest('[data-filter-copy]');
     if (copyBtn && views.contains(copyBtn)) {
       e.stopPropagation();
@@ -206,12 +206,31 @@ function wireViews(root) {
       const srcRow = li && li.querySelector('.dropdown-item[role="menuitemradio"]');
       const srcText = srcRow && srcRow.querySelector('[data-text]');
       if (srcRow && srcText) {
-        const copyRow = addView(root, 'Copy of ' + srcText.textContent.trim());
+        const from = srcText.textContent.trim();
+        /* Unique, because a consumer keys stored views by NAME: copying the
+           same view twice made two "Copy of X" rows, and the second save
+           overwrote the first. */
+        const taken = Array.from(views.querySelectorAll('.dropdown-item[role="menuitemradio"] [data-text]'))
+          .map((t) => t.textContent.trim());
+        let to = 'Copy of ' + from;
+        for (let n = 2; taken.indexOf(to) !== -1; n++) to = 'Copy of ' + from + ' (' + n + ')';
+        const copyRow = addView(root, to);
         if (copyRow) {
           // Mirror the source's filter state (addView defaults new rows to empty).
           copyRow.dataset.viewEmpty = srcRow.dataset.viewEmpty === '1' ? '1' : '0';
           if (typeof window !== 'undefined' && window.lucide) window.lucide.createIcons();
           initDropdowns(root); // wire the new row's … menu (idempotent)
+          /* Said out loud BEFORE the copy is selected, like rename and delete:
+             the bar only owns the row, and only the consumer knows what the
+             source view MEANS. Announcing first lets it clone the source's
+             filter set onto the copy, so selecting the copy restores that set
+             rather than an empty one. It used to dispatch nothing — the copy
+             had no snapshot, reopened as the shipped listing and was never
+             persisted (2026-09-23). */
+          root.dispatchEvent(new CustomEvent('filter-bar:copy-view', {
+            bubbles: true,
+            detail: { from: from, to: to, source: srcRow, view: copyRow },
+          }));
           selectView(root, copyRow);
         }
       }

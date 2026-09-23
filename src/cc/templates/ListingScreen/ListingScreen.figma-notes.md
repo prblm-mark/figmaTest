@@ -2904,6 +2904,27 @@ Verified through the UI: 50 suggestions; typing "api" shows 3; picking one and
 Apply → 44 to 1 row, that article. Orders' Customer type-ahead unaffected:
 "mar" → 2 suggestions, Maria Mellor → 140 to 14.
 
+### Copying a view copies its filters
+
+2026-09-23, found while writing the backend handover. The Views menu's Copy
+added and selected a "Copy of X" row but told nobody, so this screen had no
+snapshot for it: selecting the copy restored the unfiltered baseline, and the
+copy was never stored.
+
+FilterBar now dispatches `filter-bar:copy-view { from, to, source, view }`
+before it selects the copy (see FilterBar's notes), and this screen's handler
+clones the source's snapshot — or the baseline, for a shipped view — onto the
+copy and persists it under the copy's name. Deep-cloned, so editing the copy
+cannot rewrite the original. Names are unique ("Copy of X (2)"), since stored
+views are keyed by name.
+
+Verified on Orders: First Time Buyer saved as "Buyers" (35 rows) → All Orders
+(140) → Copy of Buyers shows 35 (the bug showed 140) → a second copy is "Copy of
+Buyers (2)" → Copy of All Orders shows 140 → all stored with their filter
+values → after a reload all six views are present and Copy of Buyers restores
+35. Independence of an edited copy follows from the clone; not separately
+exercised.
+
 ## Article Archive loses its checkbox column
 
 It has nothing a selection could be **for**. So no bar, and the template drops

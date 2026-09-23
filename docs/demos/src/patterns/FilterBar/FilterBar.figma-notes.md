@@ -638,3 +638,20 @@ a reading of them — so the file wants updating rather than this line being
 
 Re-checked after the change: every picker still sits inside the bar at 393px,
 none past the bar or the viewport.
+
+## Copy announces itself — `filter-bar:copy-view`
+
+2026-09-23. Rename and Delete each dispatched an event so a consumer holding
+state per view could follow; Copy dispatched nothing. It added the row and
+selected it, so a consumer keying filter snapshots to rows had no snapshot for
+the copy: the copy reopened as the unfiltered listing and was never persisted.
+
+Copy now dispatches `filter-bar:copy-view { from, to, source, view }` — the
+source and new rows plus their names — **before** it selects the copy, so the
+consumer can clone the source's state onto the copy first (the same ordering
+Save view uses). The copy's name is made unique: a second copy of "X" is
+"Copy of X (2)", because consumers key stored views by name and two identical
+names overwrote each other. The bar still owns only the row; what the view
+means stays with the consumer (ListingScreen's handler clones the snapshot and
+persists it).
+
