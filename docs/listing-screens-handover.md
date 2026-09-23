@@ -231,8 +231,8 @@ it.
 - Users can hide/show columns and drag to reorder (grip only). The first `identityColumns` rows
   are locked on (2 on Orders, 1 on Articles / Archive / Media).
 - "No room at this width" is one heading, placed where columns stop fitting.
-- The trigger is a **base-size** secondary button (40px, no `btn--sm`) on both templates
-  (designer, 2026-09-23).
+- The trigger is a **base-size** secondary button (40px, no `btn--sm`) (designer, 2026-09-23).
+  So is the **"Show [20]" page-size select** beside it: 40px, not the 32px the Orders frame drew.
 - Changes are part of the saved view.
 - **Only on viewports ≥ 1024px** — a deliberate `@media`: it's a device question ("is this a
   laptop?"), and keying it to the table would hide it on a 1024px laptop with the sidebar
@@ -320,8 +320,10 @@ it.
   table when you scroll past its end.
 - **The column header pins too** — directly under the CC header, or directly under the bar when
   rows are ticked. Select-all stays reachable.
-- **One shadow (`--ai-shadow-sm`) at the bottom of whatever is pinned.** If the header is pinned
-  it carries the shadow and the bar drops its own.
+- **No shadow on the pinned bar or header — for now** (designer, 2026-09-23; they carried
+  `--ai-shadow-sm` before). The pinned header still draws its own bottom line. The `--stuck` state
+  classes are still set, so a treatment can return as one CSS rule. Do not add shadows back on
+  your own.
 - **Rows don't jump** when the bar appears or goes: Chrome's scroll anchoring handles it, and
   `holdScrollAcross` covers browsers that don't anchor.
 - Verified on all four reference screens, 1400px and 600px wide, light and dark.
@@ -371,6 +373,8 @@ it.
 
 - **Tokens only** (`--ai-*`). Borders and shadow offsets may be raw px; nothing else.
 - **Shadows** use the 7-step scale (`--ai-shadow-2xs` … `2xl`); dark mode is derived (light × 2).
+  **None on the listing screens for now** (designer, 2026-09-23): no resting shadow on inputs,
+  secondary buttons, the views select or the grid card controls, and none on the sticky stack.
 - **Dark mode** works through `data-theme="dark"` — never write theme-specific values in a screen.
 - **Icons** are Lucide `<i data-lucide="…">`, sized with `--ai-icon-size-*`.
 - **`white-space: nowrap` is inherited by every table cell** (Table.css). Anything that must wrap

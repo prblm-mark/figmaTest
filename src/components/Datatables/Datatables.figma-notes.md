@@ -45,7 +45,7 @@ Whos Online keep the rendering they were signed off with. The deltas:
 | `__user-role` | `--ai-font-body` / medium / `--ai-text-contrast` | `--ai-font-title` / regular / `--ai-text-secondary` |
 | `__user-cell` gap | `--ai-spacing-3` | `--ai-spacing-4` |
 | `__page-btn--active` bg | `--ai-datatable-table-border` | `--ai-datatable-table-footer-bg` |
-| `__select` height | `--ai-spacing-8` (40px) | `--ai-spacing-7` (32px) |
+| `__select` height | `--ai-spacing-8` (40px) | ~~`--ai-spacing-7` (32px)~~ — back to 40px, the base button height, on the designer's call 2026-09-23 (the full-width Listings frame `3788:16762` also draws it at 40). No Orders override now |
 
 Only the toolbar background difference is invisible in CC light — the two tokens both
 resolve to `#ffffff` there and diverge only in CC dark.
@@ -61,7 +61,7 @@ The **Whos Online** type combines the page-size selector AND the search input in
 | Mobile-scroll wrap | `.datatables.datatables--mobile-scroll` | Adds `max-width: 24rem`; the inner `.datatables__body` handles the scroll. Inner `.table` grows to `width: max-content` with `nowrap` cells |
 | Toolbar | `.datatables__toolbar` | Flex row, white bg, bottom border. Padding `12/16` (vertical/horizontal) |
 | Toolbar meta (left side) | `.datatables__meta` | Inline flex with text + `.datatables__select` for the row-count picker |
-| Page-size select | `.datatables__select` | Button styled as a small select (32px tall, `--ai-radius-md`, chevron-down). Native `<select>` doesn't capture cleanly in Figma so this is a button |
+| Page-size select | `.datatables__select` | Button styled as a small select (40px tall on every Type since 2026-09-23, `--ai-radius-md`, chevron-down). Native `<select>` doesn't capture cleanly in Figma so this is a button |
 | Toolbar search field | `.datatables__search` | Wraps the existing Input component; constrains to ≤18rem on desktop, full-width on mobile |
 | Toolbar actions (right side) | `.datatables__actions` | Flex row of action buttons (uses Button component) |
 | Sortable column header | `<button class="datatables__sort">` | Slots inside `<th>`; `--active` modifier flips the chevron icon to dark |

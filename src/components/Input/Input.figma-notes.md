@@ -432,7 +432,10 @@ number on `--ai-font-title`; the designer repointed every non-title element to `
 `3567:105239` (sm number, 13px/body). This build already used `--ai-font-body` on both, so no code
 change was needed — the divergence closed from the Figma side.
 
-## Resting shadow — `shadow/2xs` (2026-09-23)
+## Resting shadow — `shadow/2xs` (2026-09-23) — REMOVED
+
+> **REMOVED for now — designer, 2026-09-23.** The designer took every shadow added on 2026-09-23 back off; this section is kept as the record of what was there. The CSS declaration is gone, so a return is one line.
+
 
 The designer added Figma's `shadow/2xs` (0 1px 0, black 5%; 10% in dark) to the
 filter bar elements in the Listings frame (`3645:148870`) and chose to make it
