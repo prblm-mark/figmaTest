@@ -414,12 +414,6 @@
   gap: var(--ai-spacing-1);
 }
 
-/* Button already gives `btn--icon btn--xs` its 24x24 box and 12px icon; all
- * this adds is the lift off the photograph underneath. */
-.cc-grid__action {
-  box-shadow: var(--ai-shadow-2xs);
-}
-
 .cc-grid__card:hover .cc-grid__select,
 .cc-grid__card:hover .cc-grid__actions,
 .cc-grid__card:focus-within .cc-grid__select,
@@ -431,7 +425,6 @@
 /* The checkbox needs its own backing so it reads against any photograph. */
 .cc-grid__select .checkbox__indicator {
   background-color: var(--ai-surface-primary);
-  box-shadow: var(--ai-shadow-2xs);
 }
 
 /* Name and meta are ONE block, not two siblings of the picture. The card's own
@@ -535,13 +528,9 @@
   transition: box-shadow var(--ai-transition-default);
 }
 
-/* Only while pinned — at rest inside the table the bar looks exactly as it
- * did. Set by `watchSelectionStuck` in ListingScreen.js; CSS cannot tell a
- * stuck sticky from a resting one. It comes OFF while the table header is
- * stuck beneath it: one shadow, at the bottom of whatever is pinned. */
-.cc-listing__selection--stuck {
-  box-shadow: var(--ai-shadow-sm);
-}
+/* `--stuck` (set by `watchSelectionStuck` in ListingScreen.js) carried a
+ * shadow/sm while pinned. Removed for now at the designer's call, 2026-09-23 —
+ * the class is still set, so a treatment can come back with one rule. */
 
 .cc-listing__selection[hidden] { display: none; }
 
@@ -601,7 +590,9 @@
   inset-block: 0;
   inset-inline: calc(var(--ai-spacing-4) * -1);
   border-block-end: 1px solid var(--ai-datatable-table-border);
-  box-shadow: var(--ai-shadow-sm);
+  /* No shadow for now (designer, 2026-09-23) — this pseudo-element now only
+   * carries the header's line while stuck. The overhang/clip set-up above is
+   * kept so a shadow can come back as one declaration: `box-shadow`. */
   clip-path: inset(0 var(--ai-spacing-4) calc(var(--ai-spacing-6) * -1));
   opacity: 0;
   transition: opacity var(--ai-transition-default);
@@ -796,8 +787,9 @@
  *   FilterBar     no radius; bottom stroke border/secondary only
  *   rows          pt 0 · px spacing-5 · pb spacing-4; no divider between them
  *   Datatables    radius md kept; bottom stroke only, table border colour
- * The top stroke on the content slot is the one `.cc-control__chrome` already
- * draws, so nothing adds it here.
+ * No line under the CC header: `.cc-control__chrome--flush` drops the chrome's
+ * bottom border (designer, 2026-09-23). Chips are FilterItem Rounded=False —
+ * `applyTemplate()` renders them without `filter-item--rounded`.
  *
  * CHILD combinators throughout: a Multi Select Table filter picker carries a
  * `.datatables` of its own inside the FilterBar, and a descendant selector

@@ -655,7 +655,10 @@ names overwrote each other. The bar still owns only the row; what the view
 means stays with the consumer (ListingScreen's handler clones the snapshot and
 persists it).
 
-## Filter bar shadows — `shadow/2xs` (2026-09-23)
+## Filter bar shadows — `shadow/2xs` (2026-09-23) — REMOVED
+
+> **REMOVED for now — designer, 2026-09-23.** The designer took every shadow added on 2026-09-23 back off; this section is kept as the record of what was there. The CSS declaration is gone, so a return is one line.
+
 
 Figma's Listings frame (`3645:148870`) puts `shadow/2xs` on the views select,
 the Export button, the search field and the filter chips; the dashed Add

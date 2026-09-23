@@ -558,11 +558,11 @@
   color: var(--ai-text-secondary);
 }
 
-/* Rows-per-page control is 32px here, not the 40px the Pagination
- * type uses. */
-.datatables--orders .datatables__select {
-  height: var(--ai-spacing-7);
-}
+/* Rows-per-page control: the base 40px (`--ai-spacing-8`, the base button
+ * height). Orders used to take it down to 32px from the Orders frame
+ * (3648:164786); the designer put it back to base height on both listing
+ * templates, 2026-09-23 — and the full-width Listings frame 3788:16762 draws
+ * it at 40. So there is no Orders override any more. */
 
 /* Column headers: medium weight on primary text, where the base
  * Table component uses semibold on secondary. */

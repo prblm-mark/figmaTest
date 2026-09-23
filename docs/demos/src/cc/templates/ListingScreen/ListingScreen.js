@@ -480,7 +480,7 @@
            added" idiom that belongs to Add Filters and the More Filters
            facets. These are controls that are already here. */
         return '<div class="filter-dropdowns__facet" data-subfilter="' + esc(sub.name) + '">' +
-          '<div class="filter-item filter-item--rounded" data-filter-name="' + esc(sub.name) + '">' +
+          '<div class="filter-item' + chipShape + '" data-filter-name="' + esc(sub.name) + '">' +
             '<button type="button" class="filter-item__clear" aria-label="Clear ' + esc(sub.name) + '">' +
               '<i data-lucide="x" aria-hidden="true"></i></button>' +
             '<button type="button" class="filter-item__trigger" data-subfilter-trigger aria-expanded="false">' +
@@ -551,7 +551,7 @@
         /* Solid means already on the bar — click to take it off. Dashed with a
            plus means click to add. The facet never leaves this list, so adding
            and removing are the same gesture in the same place. */
-        return '<div class="filter-item filter-item--rounded ' +
+        return '<div class="filter-item' + chipShape + ' ' +
           (o.added ? 'filter-item--added' : 'filter-item--empty') +
           '" data-filter-name="' + esc(o.name) + '">' +
           '<button type="button" class="filter-item__trigger" aria-expanded="false"' +
@@ -566,6 +566,11 @@
     }
   };
 
+  /* The FilterItem shape class every chip is rendered with — Rounded=True on
+     the standard template, none (Rounded=False) on full width. Set by
+     applyTemplate(), which runs before the first render. */
+  var chipShape = ' filter-item--rounded';
+
   /* One chip: the FilterItem markup plus its picker, wrapped so the picker can
      anchor to it. The full slot set is always rendered — FilterItem's contract
      is that CSS hides what the current state does not use. */
@@ -573,7 +578,7 @@
     var build = FILTER_PANELS[f.type];
     var card = build ? build(f, values) : '';
     return '<div class="filter-bar__chip' + (wrapClass || '') + '">' +
-      '<div class="filter-item filter-item--rounded' + (extraClass || '') + '" data-filter-name="' + esc(f.name) + '">' +
+      '<div class="filter-item' + chipShape + (extraClass || '') + '" data-filter-name="' + esc(f.name) + '">' +
         '<button type="button" class="filter-item__clear" aria-label="Clear ' + esc(f.name) + ' filter"><i data-lucide="x" aria-hidden="true"></i></button>' +
         '<button type="button" class="filter-item__trigger" aria-haspopup="listbox" aria-expanded="false">' +
           '<i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i>' +
@@ -2035,6 +2040,18 @@
     root.setAttribute('data-listing-template', t);
     var page = root.closest('.cc-control__page');
     if (page) page.classList.toggle('cc-control__page--flush', t === 'full');
+    /* …and no line under the CC header either (designer, 2026-09-23). */
+    var main = root.closest('.cc-control__main');
+    var chrome = main && main.querySelector('.cc-control__chrome');
+    if (chrome) chrome.classList.toggle('cc-control__chrome--flush', t === 'full');
+    /* FilterItem's Rounded axis: the standard listing uses Rounded=True, the
+       full-width one Rounded=False (designer, 2026-09-23). A real variant
+       class, not a CSS radius override — so the renderers read `chipShape`,
+       and any chip already on screen is switched here for a later toggle. */
+    chipShape = t === 'full' ? '' : ' filter-item--rounded';
+    root.querySelectorAll('.filter-item').forEach(function (el) {
+      el.classList.toggle('filter-item--rounded', t !== 'full');
+    });
     return t;
   }
 

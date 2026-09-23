@@ -271,6 +271,8 @@ Nothing in the JS branches on the template:
 | FilterBar | radius · stroke | none · bottom only, `--ai-border-secondary` |
 | FilterBar rows | padding | T `spacing/0`, L/R `spacing/5`, B `spacing/4`; no divider between the rows |
 | Datatables | radius · stroke | `--ai-radius-md` kept · bottom only, `--ai-datatable-table-border` |
+| CC header (chrome) | bottom border | **none** — `.cc-control__chrome--flush` (designer, 2026-09-23) |
+| Filter chips | FilterItem `Rounded` | **False** (`--ai-radius-md`) — rendered without `filter-item--rounded` via `chipShape` in `applyTemplate()`; standard stays Rounded=True |
 | Toolbar / footer | padding | unchanged from standard |
 
 The rules use **child combinators**. A Multi Select Table filter picker has a `.datatables` of
@@ -315,6 +317,39 @@ because the table is wider:
 
 **Edit Columns is base size on both templates.** It is 40px, with `btn--sm` removed on all four
 pages (designer, 2026-09-23).
+
+## Shadows off, 40px page-size select (2026-09-23)
+
+The designer's calls, applied to **both** templates:
+
+**Every shadow added on 2026-09-23 is removed for now.**
+- `shadow/2xs` came off the Input, the secondary Button and the views select. These were
+  component-wide, so every screen that uses them changed.
+- It also came off the Media grid's card buttons and card checkbox.
+- `shadow/sm` came off the pinned selection bar and the pinned table header.
+
+The pinned header keeps its own bottom line, because `th::after` still draws it. The `--stuck`
+classes are still set, so a shadow can come back as one declaration.
+
+**The "Show [20]" page-size select is 40px**, the base button height. The Orders override that
+made it 32px is gone from Datatables.css. The full-width frame `3788:16762` draws it at 40.
+
+**Flagged, and made worse by this change.** On a Media grid card with no image (PDF, ZIP,
+audio), the tertiary card buttons match the empty box behind them. `shadow/2xs` was their only
+edge, so on those cards they are now invisible until hovered. See "One collision, flagged not
+fixed" in the grid view section below.
+
+**Chips on full width are Rounded=False.** Figma defines `Mouseover` and `Filter Dropdown
+Active` on the Rounded=True shape only. The code applies the same hover and open paint to the
+square chips, because FilterItem's hover rule does not depend on the shape. This needs a
+Figma-side check.
+
+Verified headless on all four screens, in both templates and both themes:
+- no element inside the page has a box-shadow at rest
+- `th::after` has no box-shadow
+- the page-size select and Edit Columns are both 40px
+- chips measure 100px radius on standard and 8px on full
+- the chrome bottom border is 1px on standard and 0 on full
 
 ## Still open
 

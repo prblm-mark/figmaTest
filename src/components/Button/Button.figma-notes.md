@@ -180,7 +180,10 @@ Two things to know about it:
 > **Second consumer waiting:** AttendeeCard's `.attendee-card__action` is the same geometry
 > (24px box, 12px icon, `--ai-radius-sm`) built as scoped CSS — worth folding onto `btn--2xs`.
 
-## Resting shadow — `shadow/2xs` (2026-09-23)
+## Resting shadow — `shadow/2xs` (2026-09-23) — REMOVED
+
+> **REMOVED for now — designer, 2026-09-23.** The designer took every shadow added on 2026-09-23 back off; this section is kept as the record of what was there. The CSS declaration is gone, so a return is one line.
+
 
 The designer added Figma's `shadow/2xs` (0 1px 0, black 5%; 10% in dark) to the
 filter bar elements in the Listings frame (`3645:148870`) and chose to make it
