@@ -412,7 +412,7 @@
 /* Button already gives `btn--icon btn--xs` its 24x24 box and 12px icon; all
  * this adds is the lift off the photograph underneath. */
 .cc-grid__action {
-  box-shadow: var(--ai-shadow-xxs);
+  box-shadow: var(--ai-shadow-2xs);
 }
 
 .cc-grid__card:hover .cc-grid__select,
@@ -426,7 +426,7 @@
 /* The checkbox needs its own backing so it reads against any photograph. */
 .cc-grid__select .checkbox__indicator {
   background-color: var(--ai-surface-primary);
-  box-shadow: var(--ai-shadow-xxs);
+  box-shadow: var(--ai-shadow-2xs);
 }
 
 /* Name and meta are ONE block, not two siblings of the picture. The card's own

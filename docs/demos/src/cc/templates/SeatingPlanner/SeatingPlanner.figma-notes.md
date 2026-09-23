@@ -239,7 +239,7 @@ child means no gap is ever drawn. "It looked right" would have been a bad reason
 | | No Event card | No Plan card |
 |---|---|---|
 | border | solid | **dashed** |
-| shadow | none | **`--ai-shadow-xxs`** |
+| shadow | none | **`--ai-shadow-2xs`** |
 | background | `--ai-datatable-table-bg` → rebound | **`--ai-surface-primary`** (bound directly) |
 | radius | `--ai-radius-lg` | raw `rounded-[16px]` — the same 16px |
 

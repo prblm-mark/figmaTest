@@ -46,7 +46,7 @@
   background-color: var(--ai-surface-elevated-1);
   border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-xl);
-  box-shadow: var(--ai-shadow-lg);
+  box-shadow: var(--ai-shadow-xl);
   overflow: hidden;
   container-type: inline-size;                      /* enable container queries */
   container-name: system-role;                      /* named to avoid ambiguity */

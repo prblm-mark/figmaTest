@@ -164,7 +164,7 @@
   background-color: var(--ai-surface-secondary);
   border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-md);
-  box-shadow: var(--ai-shadow-lg);
+  box-shadow: var(--ai-shadow-xl);
   z-index: 30;
   overflow: hidden;
 }

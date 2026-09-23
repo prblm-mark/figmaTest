@@ -19,7 +19,7 @@ Floating popup chat widget (384px wide). Embeds the same chat UI as AiChat but i
 | Drag | None | Header acts as drag handle (`cursor: move`) |
 | Responsiveness | Desktop ↔ mobile via media queries | Always mobile-width; CSS overrides pin all breakpoints |
 | Border radius | None (edge-to-edge) | `--ai-radius-xl` rounded corners |
-| Shadow | Sidebar only (mobile open state) | `--ai-shadow-lg` on popup container |
+| Shadow | Sidebar only (mobile open state) | `--ai-shadow-xl` on popup container |
 | Sidebar logo | Visible | Hidden |
 | Sidebar search | Visible | Hidden |
 | Admin controls | Visible at xl breakpoint | Not included |
@@ -182,7 +182,7 @@ Every desktop escalation is pinned back to its mobile base value using scoped ov
 |---|---|
 | Popup background | `--ai-surface-primary` (via `data-surface="chat"`) |
 | Popup border radius | `--ai-radius-xl` |
-| Popup shadow | `--ai-shadow-lg` |
+| Popup shadow | `--ai-shadow-xl` |
 | Popup width | `--ai-size-7` (384px) |
 | Popup min-height | 320px |
 | Max width | `calc(100vw - spacing-5 × 2)` |

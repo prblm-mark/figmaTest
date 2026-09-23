@@ -72,7 +72,7 @@ custom Initial content.
 | Height | `var(--_panel-height, 668px)` | CSS variable set by resize JS. Min 320px. Max 100vh − 48px. |
 | Border-radius | `var(--ai-radius-xl)` (24px) | |
 | Background | `var(--ai-surface-primary)` | |
-| Shadow | `var(--ai-shadow-lg)` | |
+| Shadow | `var(--ai-shadow-xl)` | |
 | Header border-bottom | `1px solid var(--ai-border-secondary)` | |
 | Title font | `var(--ai-font-body)` semibold, `var(--ai-font-fixed-xs)` (14px), `var(--ai-leading-md)` | |
 | Title colour | `var(--ai-text-primary)` | |

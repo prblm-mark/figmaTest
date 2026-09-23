@@ -78,7 +78,7 @@ rows below.
 | `--ai-surface-primary` | panel `background-color` | |
 | `--ai-border-secondary` | panel + empty-state `border-color` | |
 | `--ai-radius-lg` | panel `border-radius` (16px) | |
-| `light/shadow-xxs` → `--ai-shadow-xxs` | panel `box-shadow` | |
+| `light/shadow-xxs` → `--ai-shadow-2xs` | panel `box-shadow` | |
 | `--ai-size-6` | panel `inline-size` (320px) | Figma draws 321 — see below |
 | `--ai-spacing-5` | header `padding`, body `padding-inline` + `padding-block-end`, empty `padding-inline` | |
 | `--ai-spacing-2` | header `gap`, empty `gap` | |

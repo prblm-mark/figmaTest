@@ -1040,7 +1040,7 @@ Correct on a plain surface, wrong for a button floating over room cards, where a
 | Inline inset | `0`, flush with the rail edge | `--ai-spacing-4` (12px) |
 | Default fill | `--ai-btn-secondary-bg` — **transparent** | `color-mix(in srgb, var(--ai-surface-primary) 90%, transparent)` |
 | Hover / active | Button's own | **unchanged** — Button's own |
-| Shadow | none | `--ai-shadow-base` |
+| Shadow | none | `--ai-shadow-sm` |
 | Fade width ≥1024 | `--ai-spacing-6` (24) | `--ai-spacing-9` (48) |
 
 #### The first attempt shifted the whole ladder, and that was wrong
@@ -1061,7 +1061,7 @@ Modal's brand mix). The `0.9` itself needs no token — the skill lists `opacity
 value.
 
 90% rather than solid is the point: the card beneath stays faintly legible, so the button reads as
-glass over the carousel rather than a patch cut out of it. `--ai-shadow-base` is what separates it
+glass over the carousel rather than a patch cut out of it. `--ai-shadow-sm` is what separates it
 from the card across the 10% where they show through each other.
 
 #### Widening the fade broke the keyboard protection, and needed a second line to fix

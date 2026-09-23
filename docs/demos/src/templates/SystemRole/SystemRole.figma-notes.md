@@ -172,7 +172,7 @@ Any change to the textarea (including loads from VH/PT) triggers dirty detection
 
 | Property | Figma value | Decision |
 |---|---|---|
-| Modal box-shadow | `--ai-shadow-lg` | Resolved — uses shadow token |
+| Modal box-shadow | `--ai-shadow-xl` | Resolved — uses shadow token |
 | Backdrop colour (light) | `rgba(27, 27, 31, 0.5)` | Approved — Neutral/900 at 50% opacity |
 | Backdrop colour (dark) | `rgba(0, 0, 0, 0.6)` | Approved — true black at 60% opacity |
 | Backdrop blur | Not specified in tokens | Approved as `blur(2px)` |

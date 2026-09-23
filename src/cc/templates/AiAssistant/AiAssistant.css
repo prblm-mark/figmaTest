@@ -34,7 +34,7 @@
   border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-xl);
   overflow: clip;
-  box-shadow: var(--ai-shadow-lg);
+  box-shadow: var(--ai-shadow-xl);
 }
 
 /* ── Resize handles (top edge + left edge) ──────────── */

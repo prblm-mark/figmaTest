@@ -419,7 +419,7 @@
  * The shadow is what separates it from the card at the 10% where they show through each other. */
 .seating-header__arrow.btn--secondary {
   background-color: color-mix(in srgb, var(--ai-surface-primary) 90%, transparent);
-  box-shadow: var(--ai-shadow-base);
+  box-shadow: var(--ai-shadow-sm);
 }
 
 @container seating-header (min-width: 1024px) {

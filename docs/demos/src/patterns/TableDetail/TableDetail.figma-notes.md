@@ -92,7 +92,7 @@ supplies the table name in its own sheet chrome. **See the accessibility note be
 | `--ai-surface-primary` | panel `background-color` | |
 | `--ai-border-secondary` | panel `border-color`, legend `border-color` | |
 | `--ai-radius-lg` | panel `border-radius` (16px) | |
-| `light/shadow-xxs` → `--ai-shadow-xxs` | panel `box-shadow` | |
+| `light/shadow-xxs` → `--ai-shadow-2xs` | panel `box-shadow` | |
 | `--ai-size-6` | panel `inline-size` (320px) | fixed at both breakpoints |
 | `--ai-spacing-5` | header `padding` + `gap`, list `padding` (desktop) | |
 | `--ai-spacing-3` | header-row `gap`, meta `gap`, list `gap`, seats `gap`, legend `padding`, swatch size, mobile list `padding` | |

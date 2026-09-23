@@ -39,7 +39,7 @@
   border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-lg);
   background-color: var(--ai-surface-primary);
-  box-shadow: var(--ai-shadow-xxs);
+  box-shadow: var(--ai-shadow-2xs);
 }
 
 /* ── Header: name + actions ───────────────────────────────────────────────────

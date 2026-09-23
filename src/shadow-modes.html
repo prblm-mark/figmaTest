@@ -96,11 +96,13 @@
     }
     .band--invert .chip__name { color: var(--ai-text-invert); }
 
-    .s-xxs     { box-shadow: var(--ai-shadow-xxs); }
-    .s-base    { box-shadow: var(--ai-shadow-base); }
+    .s-2xs     { box-shadow: var(--ai-shadow-2xs); }
+    .s-xs      { box-shadow: var(--ai-shadow-xs); }
     .s-sm      { box-shadow: var(--ai-shadow-sm); }
     .s-md      { box-shadow: var(--ai-shadow-md); }
     .s-lg      { box-shadow: var(--ai-shadow-lg); }
+    .s-xl      { box-shadow: var(--ai-shadow-xl); }
+    .s-2xl     { box-shadow: var(--ai-shadow-2xl); }
     .s-card    { box-shadow: var(--ai-shadow-card); }
     .s-cc-rail { box-shadow: var(--ai-shadow-cc-rail); }
 
@@ -189,11 +191,13 @@
     };
 
     const SHADOWS = [
-      ['--ai-shadow-xxs',     's-xxs',     'xxs'],
-      ['--ai-shadow-base',    's-base',    'base'],
+      ['--ai-shadow-2xs',     's-2xs',     '2xs'],
+      ['--ai-shadow-xs',      's-xs',      'xs'],
       ['--ai-shadow-sm',      's-sm',      'sm'],
       ['--ai-shadow-md',      's-md',      'md'],
       ['--ai-shadow-lg',      's-lg',      'lg'],
+      ['--ai-shadow-xl',      's-xl',      'xl'],
+      ['--ai-shadow-2xl',     's-2xl',     '2xl'],
       ['--ai-shadow-card',    's-card',    'card'],
       ['--ai-shadow-cc-rail', 's-cc-rail', 'cc-rail'],
     ];
@@ -224,11 +228,11 @@
       </section>`).join('');
 
     const NOTES = {
-      'ai-light':   'Baseline. xxs is deliberately almost invisible here — 0.02 alpha over 0.5px of blur.',
-      'ai-dark':    'Dark values are light x 2.5. cc-rail is the one deliberate exception: it stays none, because a directional edge shadow is invisible against a dark canvas.',
+      'ai-light':   'Baseline. The seven-step scale from the Figma shadow/* styles (2026-09-23): 2xs and xs at 0.05, sm to 2xl at 0.10 on both layers.',
+      'ai-dark':    'Dark values are light x 2 (lowered from x 2.5 on 2026-09-23). cc-rail is the one deliberate exception: it stays none, because a directional edge shadow is invisible against a dark canvas.',
       'cc-light':   'CC shares the AI shadow set. Only the surfaces differ, so any change you see here is the ground, not the shadow.',
       'cc-dark':    'CC dark inherits [data-theme="dark"] for shadows — there is no CC-specific shadow override.',
-      'chat-light': 'Chat kept the older warm-neutral greys while the default context moved to the slate ramp. The slate-tinted xxs and base shadows are sitting on a warm ground here — worth judging whether that reads correctly.',
+      'chat-light': 'Chat kept the older warm-neutral greys while the default context moved to the slate ramp. Every shadow is now pure black, so the tint no longer disagrees with the ground — only the ground itself differs.',
       'chat-dark':  'Chat dark also keeps the older greys. Note the surface collision: elevated-1, minimal and secondary are ALL #2E2E32 here, so a raised card on a minimal or secondary ground is invisible apart from its shadow. In ai-dark and cc-dark the collision is narrower — elevated-1 equals primary, so only the primary band goes flat.',
     };
 

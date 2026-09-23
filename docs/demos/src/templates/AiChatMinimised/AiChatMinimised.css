@@ -24,7 +24,7 @@
   background-color: var(--ai-surface-primary);
   border-radius: var(--ai-radius-xl);
   overflow: clip;
-  box-shadow: var(--ai-shadow-lg);
+  box-shadow: var(--ai-shadow-xl);
 }
 
 /* ── Top-edge resize handle ─────────────────────────── */
