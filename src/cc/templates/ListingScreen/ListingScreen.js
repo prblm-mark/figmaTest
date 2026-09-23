@@ -2521,6 +2521,21 @@
       persist();
     });
 
+    /* A copy starts as the SOURCE's filter set, cloned — not a reference, or
+       editing the copy would rewrite the original. A source with no snapshot is
+       a shipped view, which stands for the baseline. Stored under the copy's
+       name straight away, so it survives a reload like any saved view. */
+    document.addEventListener('filter-bar:copy-view', function (e) {
+      var d = e.detail || {};
+      if (!d.view || !d.to) return;
+      var src = (d.source && views.has(d.source)) ? views.get(d.source) : baseline;
+      var snap = JSON.parse(JSON.stringify(src));
+      views.set(d.view, snap);
+      if (stored.viewOrder.indexOf(d.to) === -1) stored.viewOrder.push(d.to);
+      stored.views[d.to] = snap;
+      persist();
+    });
+
     /* Put the persisted views back on the bar. After `baseline` is taken, so
        restoring one still has the shipped listing to fall back to. */
     if (bar && typeof bar.addSavedView === 'function') {

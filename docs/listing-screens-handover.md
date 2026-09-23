@@ -187,6 +187,10 @@ also the local persistence key (`affino.listing.<key>` in the demo).
   whenever a filter is set. The screen must call `resetSaveView()` after its first render.
 - Views menu: each row has Rename / Copy / Delete. Single click selects, double click renames
   (told apart by a 220ms timer).
+- **Copy** makes "Copy of <view>" (then "(2)", "(3)" — names are unique, because views are keyed
+  by name) carrying the **source view's filters and columns**, cloned, and stores it like any
+  saved view. The bar announces `filter-bar:copy-view` before selecting the copy; the screen
+  clones the snapshot. The real CRUD needs a copy endpoint (or a create-from-snapshot).
 - Demo persistence is local; the real CRUD contract is `filter-bar-views` / `listing-default-filters`.
 
 ### Search
@@ -400,7 +404,7 @@ the ~400 screens inherits them.
 | 3 | ~~Checkbox filters compared the row value to the checkbox's label text, so ticking one emptied the table~~ (reproduced: Articles 20 → 0). | **Fixed 2026-09-23**: per-filter `mode` (`only` / `exclude` / `include` / `display`) against a boolean field; `include` applies while unticked. All 14 checkbox filters verified through the UI against expected counts; × restores. Demo rows carry flagged mock booleans (`listing-checkbox-fields`). |
 | 4 | ~~Articles' Title filter was `predictive` with no `options`, so a typed title never became a value~~. | **Fixed 2026-09-23**: Title's suggestions are the article titles, derived from the rows; pick-list matching now ignores edge spaces. Verified: type "api" → 3 suggestions, pick one → 44 → 1 row; Orders' Customer type-ahead unaffected (140 → 14). |
 | 5 | ~~Edit Columns' locked rows, the drag-unhide and the fit's correction loop hard-coded 2~~, not `identityColumns`. | **Fixed 2026-09-23**: one `identityCount(config)` helper read in all four places. Verified: Orders locks 2 rows, the other three lock 1 and their second column now switches off; no horizontal overflow at 8 widths × 3 screens. |
-| 6 | **Copying a view** in the Views menu dispatches no save, so the copy has no snapshot and isn't persisted. | Suspected from code. |
+| 6 | ~~Copying a view dispatched nothing, so the copy had no snapshot and wasn't persisted~~ (confirmed in the code; the old behaviour was not run). | **Fixed 2026-09-23**: `filter-bar:copy-view` announced before the copy is selected; the screen clones the source snapshot and stores it; copy names are unique. Verified: copy of a 35-row saved view restores 35 (was 140), a second copy is "(2)", a copy of a shipped view is 140, all persist and restore after reload. |
 | 7 | **Selection is not cleared on filter/sort/page change**, so the count can include rows not on screen. Decide whether that is intended before bulk actions go live. | Behaviour decision needed. |
 | 8 | Designer flags still open: FilterItem has no "added" variant; Checkbox has no indeterminate variant; no Datatables empty state; pencil-below-1024 is temporary. | Waiting on design. |
 
