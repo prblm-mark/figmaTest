@@ -49,7 +49,7 @@ var LISTING_ARTICLES_COLUMNS = [
      question-form titles that share their opening words ("What is the…"), so
      that is exactly where it costs most. Fluid here, and the only column
      allowed to grow, so it takes the slack the way Customer does on Orders. */
-  { key: 'title',        type: 'text',   label: 'Title',              sort: 'Title', truncate: true, cellClass: 'datatables__article-title' },
+  { key: 'title',        type: 'text',   label: 'Title',              sort: 'Title', truncate: true, cellClass: 'datatables__article-title', link: true },
   { key: 'section',      type: 'chip',   label: 'Section',            snug: true, sort: 'StandardSection' },
   { key: 'style',        type: 'text',   label: 'Presentation Style', snug: true, sort: 'PresentationStyle', shortLabel: 'Style' },
   { key: 'live',         type: 'text',   label: 'Live',               hug: true, sort: 'Live' },

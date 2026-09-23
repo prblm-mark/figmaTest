@@ -56,7 +56,7 @@ var LISTING_ARCHIVE_COLUMNS = [
      way Orders' Customer and Articles' Title do. Truncating for the same
      reason Articles' Title truncates: an archived title is unbounded, and one
      long one otherwise eats two columns' worth of budget on its own. */
-  { key: 'title',        type: 'text',   label: 'Title',              sort: 'Title', truncate: true, cellClass: 'datatables__article-title' },
+  { key: 'title',        type: 'text',   label: 'Title',              sort: 'Title', truncate: true, cellClass: 'datatables__article-title', link: true },
   { key: 'channel',      type: 'chip',   label: 'Channel',            snug: true, sort: 'Channel' },
   { key: 'section',      type: 'chip',   label: 'Section',            snug: true, sort: 'Section' },
   { key: 'style',        type: 'text',   label: 'Presentation Style', snug: true, sort: 'PresentationStyle', shortLabel: 'Style' },

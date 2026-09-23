@@ -123,6 +123,7 @@ also the local persistence key (`affino.listing.<key>` in the demo).
 | *(neither)* | **Fluid** — normally exactly one; absorbs leftover width, floor 192px (floor removed under a 400px table). |
 | `truncate` | Truncate without snug's sizing — for title columns (cap 240px, 128 on a narrow table). |
 | `cellClass` | Extra class, e.g. `table__cell--right` for money. |
+| `link` | `true` makes this column the row's **record link** — its content is wrapped in the `[data-row-link]` anchor that the whole-row click and the keyboard follow. **Every screen needs exactly one** (usually the identity column: Title, or Orders' order number via `type: 'order'`). Text-like cells only — never a chip or a cell that already holds a link or button. |
 
 ### Filter fields
 
@@ -249,10 +250,14 @@ it.
 
 - **The whole row opens the record.** A click on any link, button, label or input inside the row
   belongs to that control; a click that ends a text selection is ignored.
-- **The record link is a real `<a>`** (`[data-row-link]`, the order number on Orders) — the
-  keyboard route, middle-click and hover preview. Every screen needs one (see §10, issue 1).
-- The pointer cursor and hover tint (`datatables--rows-clickable`) are added by the JS that binds
-  the row click — never write the class in HTML. **Only advertise a click that does something.**
+- **The record link is a real `<a>`** (`[data-row-link]`) — the keyboard route, middle-click and
+  hover preview. Declare it with `link: true` on one column (Title on Articles, Article Archive
+  and Media Items) or use the `order` cell type (Orders). It keeps the cell's colour; an underline
+  on hover and focus marks it as a link.
+- The pointer cursor and hover tint (`datatables--rows-clickable`) are added by the JS **only when
+  the screen declares a record link** — never write the class in HTML. A screen without one gets
+  rows that don't look clickable, which is correct: **only advertise a click that does
+  something.**
 - **Edit pencil**: borderless, same box as the kebab, on every row. **Hidden below a 1024px
   viewport** (temporary designer decision — the row click already opens the record, and it cost
   48px on a phone table). Must not render for a row the operator may not edit.
@@ -369,7 +374,7 @@ it.
 
 ## 9. Accessibility checklist per screen
 
-- [ ] A real `<a>` to each row's record (keyboard, middle-click).
+- [ ] A real `<a>` to each row's record (keyboard, middle-click) — the `link: true` column.
 - [ ] `aria-label`s on select, edit and kebab controls built from `rowNoun`.
 - [ ] `aria-sort` on sorted headers; `aria-current="page"` on the active page.
 - [ ] Select-all has an accessible name; the selection count is `aria-live`.
@@ -386,7 +391,7 @@ the ~400 screens inherits them.
 
 | # | Issue | Status |
 |---|---|---|
-| 1 | **Rows look clickable but aren't on Articles, Article Archive and Media Items.** They have no `type: 'order'` column, so no `[data-row-link]` — clicking a row does nothing and there is no keyboard route to the record, yet the rows still get the pointer and hover tint. The link column type is Orders-named; it needs to be a generic "record link" any screen can declare. | **Confirmed** in headless Chrome: 0 row links, `cursor: pointer`. |
+| 1 | ~~Rows looked clickable but weren't on Articles, Article Archive and Media Items~~ (no record link, yet pointer + hover tint). | **Fixed 2026-09-23**: generic `link: true` column flag, set on Title on all three; the clickable affordance is now only added when a record link exists. Verified: one link per row on all four screens, row click opens the record at 1400 and 390, long titles still truncate. |
 | 2 | **Orders-specific values in shared code**: empty-state copy ("No matching orders"), the `sort` fallback `Date`, the `rowKey`/`routeNoun` defaults, `CELL.user` reading `row.customer`, and the class `datatables--orders` doubling as the listing class. | Found in code; set the config fields explicitly on every screen until fixed. |
 | 3 | **Checkbox filters on the main bar** probably compare the row value to the checkbox's label text, so ticking one (e.g. Exclude Tax) may empty the table. | Suspected from code; not reproduced. |
 | 4 | **Articles' Title filter** is `predictive` with no `options`, so a typed title may never become a value. | Suspected from code. |
@@ -401,6 +406,8 @@ the ~400 screens inherits them.
 
 - [ ] Config declares `rowKey`, `routeNoun`, `rowNoun`, `sort`, `perPageOptions`,
       `identityColumns` explicitly (don't inherit Orders' defaults).
+- [ ] Exactly one column is the record link (`link: true`, or `type: 'order'`); rows open the
+      record by click and by keyboard.
 - [ ] `defaultFilters` = the live screen's first five (or a recorded promotion); the rest in
       `moreFilters`; every filter has a `field`.
 - [ ] Columns ordered by priority; exactly one fluid column; sort tokens only where the live

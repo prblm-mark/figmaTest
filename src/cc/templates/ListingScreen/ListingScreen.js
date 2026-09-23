@@ -681,6 +681,19 @@
       var cells = columns.map(function (col) {
         var fn = CELL[col.type] || CELL.text;
         var content = fn(row, col, i);
+        /* `link: true` makes this column the row's RECORD LINK: its content is
+           wrapped in the same `[data-row-link]` anchor that Orders' `order` cell
+           renders, so the whole-row click, the keyboard path and middle-click
+           all reach the record. Any screen can declare one — it used to exist
+           only on Orders, so Articles, Article Archive and Media Items rows
+           looked clickable and went nowhere (2026-09-23). For text-like cells
+           only: an anchor must not wrap a button (a chip) or another link.
+           Goes INSIDE the truncate span below, so a long title still clips. */
+        if (col.link) {
+          content = '<a class="datatables__record-link" href="' +
+            esc(ROUTE.view(rowId(row), ROW_ID.noun)) + '" data-row-link' +
+            ' data-backend-todo="listing-row-routes">' + content + '</a>';
+        }
         /* Snug columns truncate rather than set their own width. The cap has
            to sit on a block INSIDE the cell — see `__truncate` in
            Datatables.css. The detail row below deliberately does not do this:
@@ -2533,8 +2546,16 @@
     /* Say so in the markup, here rather than in the HTML: the class that makes
        a row LOOK clickable is added by the code that makes it clickable, so a
        datatable can never advertise an affordance it does not have. */
+    /* ...and only when the screen actually HAS a record link to follow —
+       an `order` cell or a column with `link: true`. Without one, the row
+       click has nowhere to go, so the row must not look clickable. */
+    var hasRecordLink = (config.columns || []).some(function (c) {
+      return c.type === 'order' || c.link;
+    });
     var listing = listingTable(root);
-    if (listing && listing.datatable) listing.datatable.classList.add('datatables--rows-clickable');
+    if (hasRecordLink && listing && listing.datatable) {
+      listing.datatable.classList.add('datatables--rows-clickable');
+    }
 
     root.addEventListener('click', function (e) {
       var tr = e.target.closest('tr.datatables__row');
