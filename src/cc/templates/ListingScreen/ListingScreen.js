@@ -1228,28 +1228,53 @@
      then, so renderSelection can call it unconditionally. */
   var syncSelectionStuck = function () {};
 
-  /* Shadow on the selection bar only while it is PINNED under the CC header.
-     The bar is `position: sticky` (ListingScreen.css); CSS alone cannot tell a
-     stuck sticky from one resting in the flow, so this compares the bar's top
-     with the scroller's. They coincide exactly when it is pinned — at rest the
-     bar sits below the page padding, and once the table has scrolled past its
-     end the bar goes up with it, above the edge.
+  /* The pinned stack: the selection bar and, under it, the table header, both
+     `position: sticky` (ListingScreen.css). Two jobs:
+
+     1. The header's sticky offset has to clear the bar, whose height is not a
+        constant — 49px on one line, 133px where it wraps, and 0 when nothing
+        is ticked. It is measured into `--cc-listing-bar-h` on the listing,
+        SYNCHRONOUSLY whenever the bar is shown or hidden (so the header never
+        spends a frame underneath it) and again whenever the bar resizes.
+
+     2. One shadow, at the bottom of whatever is pinned. CSS cannot tell a
+        stuck sticky from one resting in the flow, so this compares positions:
+        the bar is stuck when its top sits on the scroller's edge, the header
+        when its first cell sits on the edge plus the bar. If the header is
+        stuck it carries the shadow and the bar drops its own; near the end of
+        the table the header leaves first (its containing block is the table,
+        the bar's is the whole datatable), and the bar takes the shadow back.
 
      Measured against `.cc-control__page`, which is what actually scrolls (the
-     chrome is outside it), and re-checked on scroll, on a resize of the
-     scroller, and whenever the bar is shown or hidden. */
+     chrome is outside it). Re-checked on scroll, on a resize of the scroller
+     or the bar, and whenever the bar is shown or hidden. */
   function watchSelectionStuck(root) {
     var bar = root.querySelector('[data-listing-selection]');
+    var head = root.querySelector('[data-listing-head]');
     var scroller = root.closest('.cc-control__page');
     if (!bar || !scroller) return;
+
+    function barHeight() {
+      return bar.hidden ? 0 : bar.getBoundingClientRect().height;
+    }
+    function setOffset() {
+      root.style.setProperty('--cc-listing-bar-h', barHeight() + 'px');
+    }
 
     var queued = false;
     function sync() {
       queued = false;
       var edge = scroller.getBoundingClientRect().top + scroller.clientTop;
-      var stuck = !bar.hidden && scroller.scrollTop > 0 &&
+      var scrolled = scroller.scrollTop > 0;
+      var barStuck = !bar.hidden && scrolled &&
         Math.abs(bar.getBoundingClientRect().top - edge) < 1;
-      bar.classList.toggle('cc-listing__selection--stuck', stuck);
+      /* The first CELL, not the thead: the cells are what move. Re-queried
+         each time because the header is re-rendered. */
+      var cell = head && head.querySelector('th');
+      var headStuck = !!cell && cell.getClientRects().length > 0 && scrolled &&
+        Math.abs(cell.getBoundingClientRect().top - (edge + barHeight())) < 1;
+      if (head) head.classList.toggle('cc-listing__head--stuck', headStuck);
+      bar.classList.toggle('cc-listing__selection--stuck', barStuck && !headStuck);
     }
     function queue() {
       if (queued) return;
@@ -1258,9 +1283,12 @@
     }
 
     scroller.addEventListener('scroll', queue, { passive: true });
-    if (typeof ResizeObserver === 'function') new ResizeObserver(queue).observe(scroller);
-    syncSelectionStuck = queue;
-    queue();
+    if (typeof ResizeObserver === 'function') {
+      new ResizeObserver(queue).observe(scroller);
+      new ResizeObserver(function () { setOffset(); queue(); }).observe(bar);
+    }
+    syncSelectionStuck = function () { setOffset(); queue(); };
+    syncSelectionStuck();
   }
 
   function renderResults(root, config) {
