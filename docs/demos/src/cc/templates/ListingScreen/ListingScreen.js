@@ -928,7 +928,12 @@
         return valueAt(row, field).toLowerCase().indexOf(term) !== -1;
       });
     }
-    return values.some(function (v) { return actual === v; });
+    /* Trimmed on both sides: the bar reads a picked option from its rendered
+       text, which it trims, while real data keeps stray leading/trailing
+       spaces verbatim — so a type-ahead pick for such a record would silently
+       match nothing. */
+    var have = actual.trim();
+    return values.some(function (v) { return have === String(v).trim(); });
   }
 
   /* What the free-text search looks at: the text the table actually SHOWS.

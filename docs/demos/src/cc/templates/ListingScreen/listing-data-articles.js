@@ -332,6 +332,23 @@ var LISTING_ARTICLES_ROWS = [
     zone: 'Affino', channel: 'Video Store' }
 ];
 
+/* Title is a TYPE-AHEAD (Predictive Text Options): typing narrows a list of
+ * titles, you pick one, Apply filters to it. It shipped with no `options`, so
+ * there was nothing to narrow or pick and a typed title could never become a
+ * value (2026-09-23). The suggestions are the article titles themselves —
+ * DERIVED from the rows, not invented — alphabetised.
+ * TODO(backend:Listing) listing-default-filters: a real type-ahead should query
+ * GET /control/articles/filters/Title/options?q= per keystroke, not ship every
+ * title up front. */
+LISTING_ARTICLES_FILTERS.forEach(function (f) {
+  if (f.name !== 'Title') return;
+  f.options = LISTING_ARTICLES_ROWS
+    .map(function (row) { return row.title; })
+    .filter(function (title, i, all) { return title && all.indexOf(title) === i; })
+    .sort(function (a, b) { return a.localeCompare(b); })
+    .map(function (title) { return { name: title }; });
+});
+
 /* TODO(backend:Listing) listing-checkbox-fields: MOCK booleans for the
  * Multi-displayed and Archived Content checkboxes — the real values are not in
  * any read available here. Fixed intervals, so both boxes visibly work:
