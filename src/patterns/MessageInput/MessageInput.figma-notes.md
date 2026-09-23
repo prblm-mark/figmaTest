@@ -65,7 +65,7 @@ MessageInput is a pattern-tier component. It is the chat input bar containing a 
 | Filter popover bg | `--ai-surface-secondary` | #ffffff |
 | Filter popover border | `--ai-border-secondary` | #d1d5db |
 | Filter popover radius | `--ai-radius-md` | 8px |
-| Filter popover shadow | `--ai-shadow-lg` | card elevation |
+| Filter popover shadow | `--ai-shadow-xl` | card elevation |
 | Filter popover width | `--ai-size-1` | 128px (Figma: 120px, rounded to closest token) |
 | Filter popover padding | `1px` | thin inner border effect |
 | Filter item min-height | `--ai-spacing-7` | 32px (Figma: 35px, rounded to closest token) |

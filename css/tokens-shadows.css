@@ -3,58 +3,43 @@
  * Shadows cannot be exported as DTCG variables from Figma, so these are
  * transcribed by hand from the Figma effect styles.
  *
- * Naming: --ai-shadow-{xxs|sm|md|lg} plus two component-specific levels.
+ * Naming: --ai-shadow-{2xs|xs|sm|md|lg|xl|2xl} plus two component-specific levels
+ * (card, cc-rail).
  *
- * Source of truth: the `light/shadow-*` and `dark/shadow-*` effect styles on the
- * Foundations page (Drop Shadow frame `2334:9795`). Figma now defines a dark
- * family for sm/md/lg, so those are transcribed rather than derived.
- * Last synced from Figma: 2026-08-24.
+ * Source of truth: the `shadow/*` effect styles in the Design System file
+ * (Lus07xi8pPXLN87sQIyrEt, range frame `3730:26393`). The designer redefined the
+ * whole family on 2026-09-23 as a seven-step scale; it replaces the previous
+ * `light/shadow-*` / `dark/shadow-*` styles and the old xxs/base/sm/md/lg ladder.
+ * Last synced from Figma: 2026-09-23.
  *
- * Figma hex-alpha → rgba conversions used below:
- *   #…05 = 0.02   #…0D = 0.05   #…0F = 0.06   #…1A = 0.10
- *   #…26 = 0.15   #…29 = 0.16   #…40 = 0.25
+ * Every layer is pure black at one of two alphas:
+ *   #0000000D = 0.05 (2xs, xs)      #0000001A = 0.10 (sm → 2xl, both layers)
  *
  * Layer order matches the order Figma lists the effects, so a future style diff
  * reads straight across.
+ *
+ * Migration from the old ladder (2026-09-23):
+ *   xxs  → 2xs    base → sm    sm → sm    md → md    lg → xl  (consumers re-pointed)
+ * The old lg's consumers (modals, panels, popovers) moved to xl rather than the new
+ * lg, so they keep a clear step above md's menus and tooltips — judged side by side
+ * before the change.
  */
 
 :root {
-  /* Barely-there contact lift, used across the Seating Planner components
-   * (Attendee Card, Room Card, Table Card, Table Detail, Unassigned,
-   * Table Listing, SeatingHeader). Figma `light/shadow-xxs`.
-   * Note: this is the only shadow whose colour is slate-tinted (#1D293D)
-   * rather than pure black — it follows the new slate neutral ramp.
-   * Figma also sets spread 0.05, dropped here as sub-pixel noise. */
-  --ai-shadow-xxs: 0 1px 0.5px rgba(29, 41, 61, 0.02);
-  /* Figma style named plainly `shadow` — the Tailwind base shadow adopted with the
-   * slate tint. Two layers, both at 0.10, and note the NEGATIVE spread on layer 1.
-   * Geometrically identical to --ai-shadow-sm below (same offsets, same blurs); it
-   * differs only in tint, layer-1 alpha and that spread. See the note at the foot of
-   * this file about whether it supersedes sm. */
-  --ai-shadow-base: 0 1px 2px -1px rgba(29, 41, 61, 0.1), 0 1px 3px 0 rgba(29, 41, 61, 0.1);
-  --ai-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.1);
-  /* Contact layer is Figma's #00000029 (0.16), resynced 2026-08-24 — it had been
-   * held at 0.05 since 2026-07-27 as a deliberate designer softening. */
-  --ai-shadow-md: 0 3px 10px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.16);
-  /* lg was RE-WEIGHTED on 2026-08-24, not swapped with md.
-   *
-   * The scale read inverted: lg was wider than md (20px reach vs 13px) but lighter —
-   * peak 0.10 vs md's 0.16, and total ink 1.20 vs 1.64. Briefly swapping the two values
-   * fixed density but inverted reach instead, and left md's 44 consumers (tooltips,
-   * inputs, menus) rendering a wide halo while lg's 22 (modals, panels) got a tight one
-   * — backwards for those elements. So the assignment is restored and lg's alphas are
-   * raised instead, keeping its wide 2px-contact + 20px-halo character.
-   *
-   * Derivation: alphas chosen so lg's ink (2*a1 + 20*a2) lands ~1.32x md's 1.64, with
-   * peak just above md's 0.16. 0.18/0.09 gives peak 0.18, ink 2.16. lg now exceeds md
-   * on peak, ink AND reach, so the scale is monotonic on all three.
-   * No Figma style exists for these yet — Figma is to be updated from these values.
-   * Flagged for a refinement pass; see the footer. */
-  --ai-shadow-lg: 0 2px 2px rgba(0, 0, 0, 0.18), 0 0 20px rgba(0, 0, 0, 0.09);
+  --ai-shadow-2xs: 0 1px 0 rgba(0, 0, 0, 0.05);
+  --ai-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+  /* Note the NEGATIVE spreads from sm upward: the lower layer is pulled in so the
+   * shadow reads as cast downward rather than as an even halo. */
+  --ai-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --ai-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --ai-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --ai-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --ai-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+
   /* Soft even card halo. AudioPlayer "Card with waveform" (Figma 3055:5453)
-   * binds drop-shadow(0 0 10px rgba(0,0,0,0.05)) — no --ai-shadow-* matched
-   * (shadow-lg is 20px blur + a second layer), so this token was added.
-   * No Figma effect style exists for it, so it is not part of the sync. */
+   * binds drop-shadow(0 0 10px rgba(0,0,0,0.05)). No Figma effect style exists
+   * for it and it has no counterpart on the new scale (every step there is cast
+   * downward), so it stays a one-off outside the sync. */
   --ai-shadow-card: 0 0 10px rgba(0, 0, 0, 0.05);
   /* Directional right-edge shadow for the CC SidebarMenu composite when
    * its menu panel is docked open. Light mode only. Figma node 4167:4735
@@ -63,70 +48,27 @@
 }
 
 [data-theme="dark"] {
-  /* Dark is DERIVED, not transcribed: every light alpha x 2.5, keeping the light
-   * layer geometry unchanged. This is the project's long-standing rule, reinstated
-   * 2026-08-24 at the designer's instruction — it replaces a brief period where these
-   * were transcribed from the Figma `dark/shadow-*` styles instead.
+  /* Dark is DERIVED, not transcribed: every light alpha x 2, layer geometry
+   * unchanged. The multiplier was 2.5 until 2026-09-23, when the designer lowered
+   * it to 2 alongside the new scale. Covers CC-dark and chat-dark too, since they
+   * carry the same attribute.
    *
-   * Figma's current dark styles do NOT all follow the rule, so the values below are
-   * the intended ones and Figma is being updated to match (not the other way round).
-   * Alphas are chosen to round-trip exactly to the 8-digit hex given to the designer,
-   * so the two sides cannot drift apart:
-   *   0.047 = #1D293D0C   0.149 = #…26   0.255 = #…41
-   *   0.400 = #…66        0.125 = #…20   0.502 = #…80
-   *   0.251 = #1D293D40 (the slate-tinted `base`)
-   *   0.451 = #…73        0.224 = #…39   (the re-weighted lg)
+   * Alphas round-trip exactly to 8-digit hex, so a Figma dark style (if one is
+   * made) can match to the digit:
+   *   0.10 = #0000001A   0.20 = #00000033
    */
-  --ai-shadow-xxs: 0 1px 0.5px rgba(29, 41, 61, 0.047);
-  --ai-shadow-base: 0 1px 2px -1px rgba(29, 41, 61, 0.251), 0 1px 3px 0 rgba(29, 41, 61, 0.251);
-  --ai-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.149), 0 1px 3px rgba(0, 0, 0, 0.255);
-  /* Two layers at the light geometry. Figma currently has a single layer at
-   * `0 2px 10px #00000040`; under the 2.5x rule it should be this pair. */
-  --ai-shadow-md: 0 3px 10px rgba(0, 0, 0, 0.255), 0 1px 4px rgba(0, 0, 0, 0.4);
-  /* The re-weighted lg at 2.5x: 0.18 -> 0.451, 0.09 -> 0.224. */
-  --ai-shadow-lg: 0 2px 2px rgba(0, 0, 0, 0.451), 0 0 20px rgba(0, 0, 0, 0.224);
+  --ai-shadow-2xs: 0 1px 0 rgba(0, 0, 0, 0.1);
+  --ai-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.1);
+  --ai-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 2px -1px rgba(0, 0, 0, 0.2);
+  --ai-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+  --ai-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
+  --ai-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+  --ai-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
   /* No Figma style at either strength — derived from the light card value. */
-  --ai-shadow-card: 0 0 10px rgba(0, 0, 0, 0.125);
-  /* Deliberate exception to the 2.5x rule, reaffirmed by the designer 2026-08-24:
+  --ai-shadow-card: 0 0 10px rgba(0, 0, 0, 0.1);
+  /* Deliberate exception to the dark rule, reaffirmed by the designer 2026-08-24:
    * no rail shadow in dark mode. A directional edge shadow is invisible against the
-   * already-dark canvas, and the rule's 0.5 alpha would read as a black smear rather
-   * than depth. Override only if a future Figma dark variant specifies one. */
+   * already-dark canvas, and doubling it would read as a black smear rather than
+   * depth. Override only if a future Figma dark variant specifies one. */
   --ai-shadow-cc-rail: none;
 }
-
-/* Open questions, 2026-08-24
- * ---------------------------------------------------------------------------
- * 1. `--ai-shadow-base` vs `--ai-shadow-sm`. They share offsets and blur radii, so they
- *    occupy the same step on the scale. `shadow` is slate-tinted at 0.10/0.10 with a
- *    -1px spread on layer 1; `sm` is pure black at 0.06/0.10 with no spread. Keeping
- *    both means two names for one visual level. Does `shadow` supersede `sm`?
- *
- * 2. Tint is now split across the family. `xxs` and `shadow` are slate (#1D293D);
- *    `sm`, `md`, `lg`, `card` and `cc-rail` are still pure black. The two slate ones
- *    are the most recently authored, which suggests the rest are simply not yet
- *    updated — worth confirming whether the whole family should move to slate.
- *
- * 3. RESOLVED 2026-08-24: named `--ai-shadow-base` to keep this file's
- *    `--ai-shadow-{size}` convention. The Figma style is named plainly `shadow`, so
- *    this is the one place where the CSS name and the Figma style name differ.
- */
-
-/* REVISIT: shadow scale refinement
- * ---------------------------------------------------------------------------
- * lg's 0.18 / 0.09 alphas were derived to sit ~1.32x md's ink with a slightly higher
- * peak — enough to make the scale monotonic, but the ratio itself was chosen, not
- * designed. The designer wants a refinement pass over the whole ladder. Current light
- * measurements, for reference:
- *
- *     token   peak   ink    reach
- *     xxs     0.02   0.01     2px
- *     base    0.10   0.50     4px
- *     sm      0.10   0.42     4px     <- base and sm are the same step
- *     md      0.16   1.64    13px
- *     lg      0.18   2.16    20px
- *     card    0.05   0.50    10px
- *
- * Open with it: base vs sm (identical geometry, and base's ink is actually higher),
- * whether the steps should be perceptually even, and whether card belongs on the
- * ladder at all or stays a one-off.
- */

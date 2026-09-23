@@ -125,7 +125,7 @@ Bar, legend, swatches, badge and buttons are identical between breakpoints. Note
 | `--ai-border-secondary` / `--ai-border-brand` | `border-color` | per state |
 | `--ai-border-secondary` | the two rules | resolved via `get_variable_defs` on `3470:85258` |
 | `--ai-radius-lg` | card `border-radius` (16px) | |
-| `light/shadow-xxs` → `--ai-shadow-xxs` | card `box-shadow` | |
+| `light/shadow-xxs` → `--ai-shadow-2xs` | card `box-shadow` | |
 | `--ai-spacing-5` / `--ai-spacing-4` | card `padding` desktop / mobile | |
 | `--ai-spacing-4` | card `gap` (12px) | |
 | `--ai-size-4` | card `min-inline-size` (240px, both breakpoints) | |

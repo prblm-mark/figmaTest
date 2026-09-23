@@ -376,7 +376,7 @@
 }
 
 .cc-control__rail-popover .cc-actions-info-panel {
-  box-shadow: var(--ai-shadow-lg);
+  box-shadow: var(--ai-shadow-xl);
 }
 
 /* Popover variant that supplies its own surface card (for hosted controls that
@@ -389,7 +389,7 @@
   background-color: var(--ai-surface-primary);
   border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-lg);
-  box-shadow: var(--ai-shadow-lg);
+  box-shadow: var(--ai-shadow-xl);
 }
 
 .cc-control__rail-popover-label {

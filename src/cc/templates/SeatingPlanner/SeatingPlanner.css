@@ -316,7 +316,7 @@
 }
 
 /* The No Plan state's card is the same box with a different treatment: a DASHED border and
- * `--ai-shadow-xxs`, reading as a placeholder waiting to be filled rather than a populated
+ * `--ai-shadow-2xs`, reading as a placeholder waiting to be filled rather than a populated
  * surface. Same dashed-placeholder idea as Unassigned's empty state.
  *
  * Figma binds `--ai-surface-primary` directly here (not the Datatables token the No Event
@@ -324,7 +324,7 @@
  * exactly — so the base rule above already covers both. */
 .seating-screen--placeholder {
   border-style: dashed;
-  box-shadow: var(--ai-shadow-xxs);
+  box-shadow: var(--ai-shadow-2xs);
 }
 
 /* ── Empty states ───────────────────────────────────────────────────────────

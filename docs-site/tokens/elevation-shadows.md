@@ -44,19 +44,35 @@ Shadow tokens provide the visual depth cue in light mode and supplementary depth
 
 ### Shadow scale
 
-| Token | Light | Dark | Use |
-|---|---|---|---|
-| `--ai-shadow-sm` | `0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06)` | `0 1px 3px rgba(0,0,0,0.25), 0 1px 2px rgba(0,0,0,0.15)` | Small dropdowns, toggle thumbs |
-| `--ai-shadow-md` | `0 2px 10px rgba(0,0,0,0.1)` | `0 2px 10px rgba(0,0,0,0.25)` | Tooltips, inputs, menus |
-| `--ai-shadow-lg` | `0 0 20px rgba(0,0,0,0.05), 0 2px 2px rgba(0,0,0,0.1)` | `0 0 20px rgba(0,0,0,0.15), 0 2px 2px rgba(0,0,0,0.25)` | Modals, cards, panels |
+Seven steps, from the Figma `shadow/*` effect styles (redefined 2026-09-23). Every layer is pure
+black; from `sm` up the lower layer has a negative spread, so the shadow is cast downward.
 
-Dark mode uses **stronger opacities** to maintain visible depth on dark backgrounds.
+| Token | Light | Dark (× 2) | Use |
+|---|---|---|---|
+| `--ai-shadow-2xs` | `0 1px 0 rgba(0,0,0,0.05)` | `… 0.1` | Contact line — Seating Planner cards, listing grid cards |
+| `--ai-shadow-xs` | `0 1px 2px rgba(0,0,0,0.05)` | `… 0.1` | — |
+| `--ai-shadow-sm` | `0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px -1px rgba(0,0,0,0.1)` | `… 0.2` | Small dropdowns, toggle thumbs |
+| `--ai-shadow-md` | `0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1)` | `… 0.2` | Tooltips, inputs, menus, toasts |
+| `--ai-shadow-lg` | `0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1)` | `… 0.2` | — |
+| `--ai-shadow-xl` | `0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1)` | `… 0.2` | Modals, panels, popovers |
+| `--ai-shadow-2xl` | `0 25px 50px -12px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1)` | `… 0.2` | — |
+
+Two component-specific shadows sit off the scale: `--ai-shadow-card` (an even 10px halo, AudioPlayer)
+and `--ai-shadow-cc-rail` (the docked CC sidebar's edge, `none` in dark).
+
+### Dark mode
+
+Dark alphas are **light × 2**, geometry unchanged — a 5–10% black shadow almost vanishes on a dark
+surface, so the alpha is scaled to keep the same perceived depth. The one exception is
+`--ai-shadow-cc-rail`, which is `none` in dark.
 
 ### When to use
 
+- **`shadow-2xs`** — resting cards that only need a contact line
 - **`shadow-sm`** — small floating elements close to the surface
-- **`shadow-md`** — tooltips, input focus rings, filter popovers
-- **`shadow-lg`** — modals (SystemRole, StyleSettings), floating widgets (AiChatMinimised)
+- **`shadow-md`** — tooltips, inputs, menus, toasts
+- **`shadow-xl`** — modals (SystemRole), panels (AiAssistant, ControlScreen), popovers (DatePicker), floating widgets (AiChatMinimised)
+- **`xs`, `lg`, `2xl`** — on the scale, not yet used
 
 ### Source
 

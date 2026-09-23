@@ -38,7 +38,7 @@
   background: var(--ai-surface-primary);
   border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-md);
-  box-shadow: var(--ai-shadow-lg);
+  box-shadow: var(--ai-shadow-xl);
 }
 
 /* Row of month panels (two when dual-month range) */

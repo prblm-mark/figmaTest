@@ -118,7 +118,7 @@ while `textContent` still reads `"12 tables · 0/148 seated"`.
 | `--ai-surface-primary` / `--ai-surface-minimal` | `background-color` | per state |
 | `--ai-border-secondary` / `--ai-border-brand` | `border-color` | per state |
 | `--ai-radius-lg` | card `border-radius` (16px) | |
-| `light/shadow-xxs` → `--ai-shadow-xxs` | card `box-shadow` | |
+| `light/shadow-xxs` → `--ai-shadow-2xs` | card `box-shadow` | |
 | `--ai-spacing-5` / `--ai-spacing-4` | card `padding` desktop / mobile | |
 | `--ai-spacing-3` | card `gap` | header + meta `gap` too, but see below |
 | `--ai-spacing-1` | actions `gap` | |

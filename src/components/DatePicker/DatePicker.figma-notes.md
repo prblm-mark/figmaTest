@@ -74,7 +74,7 @@ Range single/dual are the same calendar with `mode=range` and 1 or 2 panels.
 | Property | Token |
 |---|---|
 | Calendar bg / border / radius | `--ai-surface-primary` / `--ai-border-secondary` (1px) / `--ai-radius-md` |
-| Calendar shadow | `--ai-shadow-lg` (Figma `0 0 10px .05, 0 2px 1px .1` — mapped to the standard card/popover token) |
+| Calendar shadow | `--ai-shadow-xl` (Figma `0 0 10px .05, 0 2px 1px .1` — mapped to the standard card/popover token) |
 | Calendar padding | `--ai-spacing-5` (16px) |
 | Month panel gap (dual) | `--ai-spacing-6` (24px) |
 | Cell size | `--ai-spacing-7` (32px), grid gap `--ai-spacing-1` (4px) |
@@ -87,7 +87,9 @@ Range single/dual are the same calendar with `mode=range` and 1 or 2 panels.
 ## Token Gaps / Decisions
 - **None.** Every colour, spacing, radius, and type value maps to an existing `--ai-*` token.
 - Calendar shadow: Figma specifies `0 0 10px rgba(0,0,0,.05), 0 2px 1px rgba(0,0,0,.1)`; used the
-  standard `--ai-shadow-lg` popover token (`0 0 20px …, 0 2px 2px …`) — optical, within tolerance.
+  standard popover token — originally `--ai-shadow-lg` (`0 0 20px …, 0 2px 2px …`), optical, within
+  tolerance. Re-pointed to `--ai-shadow-xl` (`0 20px 25px -5px …, 0 8px 10px -6px …`) in the
+  2026-09-23 shadow rework, where every old-`lg` consumer moved to the new `xl` step.
 
 ## Notes
 - **Icons (Lucide):** header nav = `chevron-left` / `chevron-right`; trigger field = `calendar`.

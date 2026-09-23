@@ -100,7 +100,7 @@ Empty's background is already `minimal`, so only its border changes — dashed g
 | `--ai-surface-primary` / `--ai-surface-minimal` | `background-color` | per state |
 | `--ai-border-secondary` / `--ai-border-brand` / `--ai-btn-secondary-border` | `border-color` | per state |
 | `--ai-radius-md` | card `border-radius` | |
-| `light/shadow-xxs` → `--ai-shadow-xxs` | `box-shadow` | the token added 2026-08-24 |
+| `light/shadow-xxs` → `--ai-shadow-2xs` | `box-shadow` | the token added 2026-08-24 |
 | `--ai-spacing-2` | card `padding-inline`, accent bar width, meta gap | |
 | `--ai-radius-full` | accent bar radius | |
 | `--ai-spacing-5` | seat badge box, Empty container gap | Figma draws 18px — see below |
@@ -205,7 +205,7 @@ separator are `aria-hidden`.
 - **No dark-mode variant** in Figma. The card uses theme-aware surface and border tokens
   throughout, so it will re-resolve under `[data-theme="dark"]` — but that has not been designed
   or reviewed. The `--sp-*` role colours are **not** theme-aware.
-- **`--ai-shadow-xxs` validated here.** Figma binds `light/shadow-xxs` on this card, which is the
+- **`--ai-shadow-2xs` validated here.** Figma binds `light/shadow-xxs` on this card, which is the
   token added 2026-08-24 — this is its first real consumer.
 
 ## Company font-size dropped to 11px (designer, 2026-09-10)

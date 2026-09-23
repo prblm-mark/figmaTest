@@ -213,102 +213,67 @@ The following tokens remain as explicit chat-specific values:
 
 ## Shadow
 
-Light values are transcribed by hand from the Figma `light/shadow-*` effect styles
-(shadows cannot be exported as DTCG variables). **Dark values are derived, not
-transcribed: every light alpha × 2.5, layer geometry unchanged.** Where Figma's
-`dark/shadow-*` styles disagree with that rule, the rule wins and Figma is corrected.
+Light values are transcribed by hand from the Figma `shadow/*` effect styles
+(range frame `3730:26393`; shadows cannot be exported as DTCG variables). **Dark values are
+derived, not transcribed: every light alpha × 2, layer geometry unchanged.**
 
-**Last synced 2026-08-24.**
+**Last synced 2026-09-23** — the designer redefined the whole family as a seven-step scale,
+replacing the old `light/shadow-*` / `dark/shadow-*` styles and the xxs/base/sm/md/lg ladder.
 
-| Variable | Light | Dark (light × 2.5) | Use |
+| Variable | Light | Dark (light × 2) | Use |
 |---|---|---|---|
-| `--ai-shadow-xxs` | `0 1px 0.5px rgba(29,41,61,0.02)` | `0 1px 0.5px rgba(29,41,61,0.047)` | Barely-there contact lift — Seating Planner components |
-| `--ai-shadow-base` | `0 1px 2px -1px rgba(29,41,61,0.1), 0 1px 3px 0 rgba(29,41,61,0.1)` | `0 1px 2px -1px rgba(29,41,61,0.251), 0 1px 3px 0 rgba(29,41,61,0.251)` | Tailwind base shadow, slate-tinted — **same step as `sm`**, see below |
-| `--ai-shadow-sm` | `0 1px 2px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.1)` | `0 1px 2px rgba(0,0,0,0.149), 0 1px 3px rgba(0,0,0,0.255)` | Small dropdowns, toggle thumbs |
-| `--ai-shadow-md` | `0 3px 10px rgba(0,0,0,0.1), 0 1px 4px rgba(0,0,0,0.16)` | `0 3px 10px rgba(0,0,0,0.255), 0 1px 4px rgba(0,0,0,0.4)` | Tooltips, inputs, menus |
-| `--ai-shadow-lg` | `0 2px 2px rgba(0,0,0,0.18), 0 0 20px rgba(0,0,0,0.09)` | `0 2px 2px rgba(0,0,0,0.451), 0 0 20px rgba(0,0,0,0.224)` | Modals, cards, panels |
-| `--ai-shadow-card` | `0 0 10px rgba(0,0,0,0.05)` | `0 0 10px rgba(0,0,0,0.125)` | Soft even halo (AudioPlayer waveform card) |
-| `--ai-shadow-cc-rail` | `4px 0 4px rgba(0,0,0,0.2)` | `none` — deliberate exception | CC SidebarMenu docked right edge |
+| `--ai-shadow-2xs` | `0 1px 0 rgba(0,0,0,0.05)` | `0 1px 0 rgba(0,0,0,0.1)` | Contact line — Seating Planner cards and panels, ListingScreen grid cards |
+| `--ai-shadow-xs` | `0 1px 2px rgba(0,0,0,0.05)` | `0 1px 2px rgba(0,0,0,0.1)` | — (no consumers yet) |
+| `--ai-shadow-sm` | `0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px -1px rgba(0,0,0,0.1)` | `… 0.2, … 0.2` | Small dropdowns, toggle thumbs, SeatingHeader |
+| `--ai-shadow-md` | `0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1)` | `… 0.2, … 0.2` | Tooltips, inputs, menus, toasts |
+| `--ai-shadow-lg` | `0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1)` | `… 0.2, … 0.2` | — (no consumers yet) |
+| `--ai-shadow-xl` | `0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1)` | `… 0.2, … 0.2` | Modals, panels, popovers (SystemRole, DatePicker, AiAssistant, ControlScreen, AiChatMinimised, StyleSettings, MessageInput) |
+| `--ai-shadow-2xl` | `0 25px 50px -12px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1)` | `… 0.2, … 0.2` | — (no consumers yet) |
+| `--ai-shadow-card` | `0 0 10px rgba(0,0,0,0.05)` | `0 0 10px rgba(0,0,0,0.1)` | Soft even halo (AudioPlayer waveform card) — not on the scale |
+| `--ai-shadow-cc-rail` | `4px 0 4px rgba(0,0,0,0.2)` | `none` — deliberate exception | CC SidebarMenu docked right edge — not on the scale |
 
 **Source:** `css/tokens-shadows.css` (static, manually maintained — *not* rebuilt by
-`npm run tokens`).
+`npm run tokens`). All modes side by side: `src/shadow-modes.html`.
 
-### The 2.5× dark rule
+Every layer on the scale is pure black at one of two alphas — `#0000000D` (0.05) for `2xs`/`xs`,
+`#0000001A` (0.10) for both layers of `sm` → `2xl`. From `sm` up the lower layer carries a
+**negative spread**, which is what makes the shadow read as cast downward rather than as an
+even halo.
 
-Dark alphas are always `light × 2.5`, with offsets and blur radii left alone. Alphas are
-picked to round-trip exactly to the 8-digit hex handed to the designer, so the CSS and the
-Figma styles cannot drift:
+### The dark rule — × 2
+
+Dark alphas are `light × 2`, with offsets, blur and spread left alone. The reason for a rule
+at all: a 5–10% black shadow almost disappears on a dark surface, because there is little
+luminance left beneath it to darken; scaling the alpha restores roughly the same perceived
+depth without changing the shape.
+
+The multiplier was **2.5 until 2026-09-23**, when the designer lowered it to 2 alongside the new
+scale. The two dark alphas round-trip exactly to 8-digit hex, so a Figma dark style, if one is
+made, can match the CSS to the digit:
 
 | Alpha | Figma hex |
 |---|---|
-| 0.047 | `#1D293D0C` |
-| 0.125 | `#00000020` |
-| 0.149 | `#00000026` |
-| 0.255 | `#00000041` |
-| 0.400 | `#00000066` |
-| 0.251 | `#1D293D40` (slate `base`) |
-| 0.451 | `#00000073` (re-weighted `lg`) |
-| 0.224 | `#00000039` (re-weighted `lg`) |
+| 0.10 | `#0000001A` |
+| 0.20 | `#00000033` |
 
-**Notes on the 2026-08-24 sync:**
+`--ai-shadow-cc-rail` is the **one deliberate exception**: it stays `none` in dark. A directional
+edge shadow is invisible against the already-dark canvas, and doubling it reads as a black smear
+rather than depth. Dark values apply under `[data-theme="dark"]`, which also covers CC-dark and
+chat-dark since those carry the same attribute.
 
-- `--ai-shadow-xxs` is new, and is the only shadow whose colour is **slate-tinted**
-  (`#1D293D`) rather than pure black — it follows the new slate neutral ramp. Figma also
-  sets a `0.05` spread on it, dropped as sub-pixel noise. At 0.02 alpha over 0.5px of blur
-  it is close to invisible in light mode.
-- `--ai-shadow-md`'s light contact layer went back to Figma's `0.16`. It had been held at
-  `0.05` since 2026-07-27 as a deliberate designer softening; that divergence is reverted.
-- `--ai-shadow-cc-rail` is the **one deliberate exception** to the 2.5× rule: it stays
-  `none` in dark. A directional edge shadow is invisible against the already-dark canvas,
-  and the rule's 0.5 alpha would read as a black smear rather than depth.
-- Dark values apply under `[data-theme="dark"]`, which also covers the CC-dark and
-  chat-dark contexts since those carry the same attribute.
-### lg was re-weighted on 2026-08-24
+### Migration from the old ladder (2026-09-23)
 
-The scale read inverted. `lg` was wider than `md` — 20px reach vs 13px — but **lighter**: peak
-0.10 against md's 0.16, and total ink 1.20 against 1.64. So "large" looked lighter than
-"medium".
+| Old token | Now | Why |
+|---|---|---|
+| `--ai-shadow-xxs` | `--ai-shadow-2xs` | Same contact lift; removed |
+| `--ai-shadow-base` | `--ai-shadow-sm` | Identical geometry — the old base/sm duplicate step is gone; removed |
+| `--ai-shadow-sm` | `--ai-shadow-sm` | Same offsets and blurs, new alphas |
+| `--ai-shadow-md` | `--ai-shadow-md` | Consumers kept; softer and cast downward |
+| `--ai-shadow-lg` | `--ai-shadow-xl` | Consumers **re-pointed** — the new `lg` is lighter than the old one, and modals/panels need a clear step above md's menus. Judged side by side before the change |
 
-Swapping the two values was tried first and rejected: it fixed density but inverted *reach*
-instead, and left md's 44 consumers (tooltips, inputs, menus) rendering a wide halo while lg's
-22 (modals, panels) got a tight one — backwards for those elements. **The assignment is
-unchanged; `lg`'s alphas were raised instead**, keeping its wide 2px-contact + 20px-halo
-character.
-
-Alphas were derived, not picked: chosen so lg's ink (`2·a1 + 20·a2`) lands ~1.32× md's 1.64
-with a peak just above md's 0.16. `0.18 / 0.09` gives peak 0.18, ink 2.16. The ladder is now
-monotonic on all three measures:
-
-| Token | Peak α | Ink | Reach |
-|---|---|---|---|
-| `xxs` | 0.02 | 0.01 | 2px |
-| `base` | 0.10 | 0.50 | 4px |
-| `sm` | 0.10 | 0.42 | 4px |
-| `md` | 0.16 | 1.64 | 13px |
-| `lg` | 0.18 | 2.16 | 20px |
-| `card` | 0.05 | 0.50 | 10px |
-
-No Figma style exists for the re-weighted `lg` — Figma is to be updated from these values:
-light `#0000002E` + `#00000017`, dark `#00000073` + `#00000039`.
-
-**Flagged for a refinement pass.** The 1.32× ratio was chosen to clear the inversion, not
-designed. Open questions for that pass: `base` vs `sm` (identical geometry, and base's ink is
-actually the higher of the two), whether the steps should be perceptually even, and whether
-`card` belongs on the ladder at all.
-
-**Two things to settle:**
-
-1. **`--ai-shadow-base` and `--ai-shadow-sm` occupy the same step.** Identical offsets and blur
-   radii; they differ only in tint (slate vs black), layer-1 alpha (0.10 vs 0.06) and a
-   `-1px` spread on `shadow`'s first layer. Two names for one visual level — does `shadow`
-   supersede `sm`?
-2. **Tint is split across the family.** `xxs` and `shadow` are slate (`#1D293D`); `sm`,
-   `md`, `lg`, `card` and `cc-rail` are still pure black. The slate pair are the most
-   recently authored, so the rest may simply be awaiting the same treatment.
-
-Note the name: the Figma style is called plainly `shadow`, but the CSS token is
-`--ai-shadow-base` so it keeps the `--ai-shadow-{size}` convention. This is the one shadow
-where the CSS name and the Figma style name deliberately differ.
+This also settles the open questions from the 2026-08-24 pass: base vs sm (merged), the split
+slate/black tint (all black now), and the lg re-weight (superseded). `card` stays a one-off off
+the scale — every scale step is cast downward, and it is an even halo.
 
 ## Gradient
 

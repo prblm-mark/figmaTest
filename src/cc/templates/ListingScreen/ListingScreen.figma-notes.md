@@ -2449,7 +2449,7 @@ solid under the CC brand, which is what these demos run as.
 **One collision, flagged not fixed.** `--ai-btn-tertiary-bg` in cc-light is
 `#e7edf0` — the *same value* as `--ai-surface-secondary`, which is the empty
 box a non-image card shows. So on a PDF, ZIP or audio card the buttons are
-invisible but for their `--ai-shadow-xxs` hairline. It reads perfectly over a
+invisible but for their `--ai-shadow-2xs` hairline. It reads perfectly over a
 photograph and disappears over the ~10% of cards without one. Either the box
 wants `--ai-surface-minimal` instead, or those buttons want a different type;
 both are designer calls, so neither was taken unasked.
