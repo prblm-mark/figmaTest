@@ -262,8 +262,10 @@ it.
   belongs to that control; a click that ends a text selection is ignored.
 - **The record link is a real `<a>`** (`[data-row-link]`) — the keyboard route, middle-click and
   hover preview. Declare it with `link: true` on one column (Title on Articles, Article Archive
-  and Media Items) or use the `order` cell type (Orders). It keeps the cell's colour; an underline
-  on hover and focus marks it as a link.
+  and Media Items) or use the `order` cell type (Orders). It keeps the cell's colour, is **semibold**
+  (the record link and ORDER NO match) and has **no underline, even on hover** — the whole row is
+  the target and already shows it with the pointer and hover tint (designer, 2026-09-23).
+  Keyboard focus still shows the standard `:focus-visible` outline.
 - The pointer cursor and hover tint (`datatables--rows-clickable`) are added by the JS **only when
   the screen declares a record link** — never write the class in HTML. A screen without one gets
   rows that don't look clickable, which is correct: **only advertise a click that does

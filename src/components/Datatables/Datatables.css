@@ -564,11 +564,26 @@
  * templates, 2026-09-23 — and the full-width Listings frame 3788:16762 draws
  * it at 40. So there is no Orders override any more. */
 
-/* Column headers: medium weight on primary text, where the base
- * Table component uses semibold on secondary. */
+/* Column headers: bold on contrast text (designer, 2026-09-23) — was medium
+ * on primary, from the Orders frame; the base Table component uses semibold
+ * on secondary. */
 .datatables--orders .table thead th {
-  font-weight: var(--ai-font-medium);
-  color: var(--ai-text-primary);
+  font-weight: var(--ai-font-bold);
+  color: var(--ai-text-contrast);
+}
+
+/* …and the ACTIVE sort column's label stays that colour too (designer,
+ * 2026-09-23). The base `.datatables__sort--active` darkens it to
+ * `--ai-text-primary`; on Orders every header label reads alike, and so does
+ * every chevron — the active one keeps the rest's `--ai-icon-contrast`
+ * rather than darkening to primary. The state is carried by SHAPE alone: a
+ * single direction chevron on the active column, the pair on the rest. */
+.datatables--orders .datatables__sort--active {
+  color: inherit;
+}
+
+.datatables--orders .datatables__sort--active [data-lucide] {
+  color: var(--ai-icon-contrast);
 }
 
 /* 64px minimum row. `height` on a table cell behaves as a minimum, so
@@ -678,23 +693,25 @@
 }
 
 /* The order number is the row's real link — the keyboard path to the same
- * place the row click goes. It keeps the cell's own colour and weight; an
- * underline on hover and focus is what marks it as a link, so the column does
- * not turn into a wall of blue. */
+ * place the row click goes. It keeps the cell's own colour, and NO underline,
+ * not even on hover (designer, 2026-09-23): the whole row is the click target
+ * and already says so with its pointer and hover tint, so a second cue on the
+ * text was redundant. Keyboard focus still gets the global `:focus-visible`
+ * outline from base.css, so the link stays findable without a mouse.
+ *
+ * `__record-link` is the same link on any other screen — a column declared
+ * `link: true` (ListingScreen.js), e.g. Title on Articles, Article Archive and
+ * Media Items. Same treatment, so every listing's record link reads alike. */
 .datatables--orders .datatables__order,
 .datatables--orders .datatables__record-link {
   color: inherit;
   text-decoration: none;
 }
 
-/* `__record-link` is the same link on any other screen — a column declared
- * `link: true` (ListingScreen.js), e.g. Title on Articles, Article Archive and
- * Media Items. Same treatment, so every listing's record link reads alike. */
-.datatables--orders .datatables__order:hover,
-.datatables--orders .datatables__order:focus-visible,
-.datatables--orders .datatables__record-link:hover,
-.datatables--orders .datatables__record-link:focus-visible {
-  text-decoration: underline;
+/* The record link is the row's identifier, like ORDER NO — so it takes the
+ * same semibold (designer, 2026-09-23), where the cell around it is regular. */
+.datatables--orders .datatables__record-link {
+  font-weight: var(--ai-font-semibold);
 }
 
 /* Customer cell deltas vs the Whos Online rendering. */
