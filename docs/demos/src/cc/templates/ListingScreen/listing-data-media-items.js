@@ -49,7 +49,7 @@ var LISTING_MEDIA_COLUMNS = [
   /* Header deliberately BLANK: CProperties[1][2] is an empty string. The live
      screen renders the thumbnail under no heading at all. */
   { key: 'thumb',     type: 'thumb',  label: '',            hug: true, cellClass: 'datatables__col--thumb' },
-  { key: 'title',     type: 'text',   label: 'Title',       truncate: true, cellClass: 'datatables__article-title' },
+  { key: 'title',     type: 'text',   label: 'Title',       truncate: true, cellClass: 'datatables__article-title', link: true },
   { key: 'format',    type: 'media',  label: 'Type',        snug: true },
   { key: 'section',   type: 'chip',   label: 'Section',     snug: true },
   { key: 'createdBy', type: 'text',   label: 'Created By',  snug: true },

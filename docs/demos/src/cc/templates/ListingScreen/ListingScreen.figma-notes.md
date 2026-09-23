@@ -2803,6 +2803,34 @@ measured in a 420px-tall one. **A new listing screen gets this for free only if
 it keeps those three hooks and the `.cc-control__page` scroller** — see the
 backend handover (`docs/listing-screens-handover.md`).
 
+### Every screen gets a record link — `link: true`
+
+2026-09-23, found while writing the backend handover. Only Orders had a way into
+a record: its `order` cell renders the `[data-row-link]` anchor that the
+whole-row click follows. Articles, Article Archive and Media Items had no such
+column, so their rows did nothing when clicked and offered no keyboard route —
+yet still got the pointer cursor and hover tint, because the class was added
+unconditionally. Measured: 0 row links, `cursor: pointer`, on all three.
+
+- **`link: true` on a column** wraps its content in the same anchor
+  (`a.datatables__record-link[data-row-link]`, `ROUTE.view` href, marker
+  `listing-row-routes`). Set on **Title** on all three screens — each one's
+  identity column, as the order number is on Orders. It goes inside the
+  truncate span, so long titles still clip with an ellipsis. Text-like cells
+  only: an anchor must not wrap a chip (a button) or another link. The detail
+  row does not repeat it.
+- **`datatables--rows-clickable` is now added only when the screen declares a
+  record link** (`type: 'order'` or `link: true`). A screen without one gets
+  rows that do not look clickable — the "never advertise an affordance" rule,
+  now enforced rather than assumed.
+- Styled with the order link: the cell's own colour, underline on hover and
+  focus (Datatables.css).
+
+Verified in headless Chrome: one link per row on all four screens (20 / 20 /
+8 / 25); clicking a non-control part of a row opens that row's record at 1400
+and 390 wide; titles still clip (11 of 20 at 390, 9 of 20 at 1400) with the
+link inline inside the ellipsis span; link colour equals the cell's.
+
 ## Article Archive loses its checkbox column
 
 It has nothing a selection could be **for**. So no bar, and the template drops

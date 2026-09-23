@@ -681,13 +681,19 @@
  * place the row click goes. It keeps the cell's own colour and weight; an
  * underline on hover and focus is what marks it as a link, so the column does
  * not turn into a wall of blue. */
-.datatables--orders .datatables__order {
+.datatables--orders .datatables__order,
+.datatables--orders .datatables__record-link {
   color: inherit;
   text-decoration: none;
 }
 
+/* `__record-link` is the same link on any other screen — a column declared
+ * `link: true` (ListingScreen.js), e.g. Title on Articles, Article Archive and
+ * Media Items. Same treatment, so every listing's record link reads alike. */
 .datatables--orders .datatables__order:hover,
-.datatables--orders .datatables__order:focus-visible {
+.datatables--orders .datatables__order:focus-visible,
+.datatables--orders .datatables__record-link:hover,
+.datatables--orders .datatables__record-link:focus-visible {
   text-decoration: underline;
 }
 
