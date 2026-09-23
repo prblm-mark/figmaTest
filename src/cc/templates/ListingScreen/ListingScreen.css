@@ -34,6 +34,11 @@
  */
 
 .cc-listing {
+  /* The page's top padding, which both sticky offsets pull back by (see
+   * `.cc-listing__selection`). ONE variable so the two stickies and the two
+   * templates cannot drift apart: spacing-6 here, spacing-4 below 768px (foot
+   * of file), 0 on the full-width template. */
+  --cc-listing-pad-top: var(--ai-spacing-6);
   display: flex;
   flex-direction: column;
   gap: var(--ai-spacing-4);
@@ -525,7 +530,7 @@
    * override is at the foot of this file, on the same viewport @media, since
    * the page cannot query its own container). */
   position: sticky;
-  inset-block-start: calc(var(--ai-spacing-6) * -1);
+  inset-block-start: calc(var(--cc-listing-pad-top) * -1);
   z-index: 2;
   transition: box-shadow var(--ai-transition-default);
 }
@@ -574,7 +579,7 @@
 
 .cc-listing [data-listing-head] th {
   position: sticky;
-  inset-block-start: calc(var(--cc-listing-bar-h, 0px) - var(--ai-spacing-6));
+  inset-block-start: calc(var(--cc-listing-bar-h, 0px) - var(--cc-listing-pad-top));
   z-index: 1;
 }
 
@@ -765,11 +770,68 @@
  * as that rule, for the reason given there: the page cannot query its own
  * container, so its padding is viewport-keyed and this has to match it. */
 @media (max-width: 767px) {
-  .cc-listing__selection {
-    inset-block-start: calc(var(--ai-spacing-4) * -1);
+  .cc-listing {
+    --cc-listing-pad-top: var(--ai-spacing-4);
   }
+}
 
-  .cc-listing [data-listing-head] th {
-    inset-block-start: calc(var(--cc-listing-bar-h, 0px) - var(--ai-spacing-4));
+/* ── Full-width template (Figma 3788:16762) ───────────────────────────────
+ * The same screen as the standard listing, with the shell spacing and card
+ * chrome taken out "to allow maximum space" (designer, 2026-09-23). Every
+ * behaviour — filters, views, search, column fit, selection, both stickies,
+ * row links, grid view — is shared, because the DOM is identical; only these
+ * rules differ.
+ *
+ * ONE ATTRIBUTE is the whole switch: `data-listing-template="full"` on the
+ * listing root, set by `applyTemplate()` in ListingScreen.js from
+ * `config.template` or `?template=full`. It ships as a separate template type
+ * for now; a runtime toggle later only has to call `applyTemplate` again.
+ * Deliberately NOT `data-layout`, which is taken twice already (Media's
+ * listing/grid switch, and chat minimised mode, which also shrinks fonts).
+ *
+ * Shell values, all from get_design_context on 3788:16762 (no token gaps):
+ *   page          padding 0, fill surface/primary  → .cc-control__page--flush
+ *                 (ControlScreen.css — it is the page's own modifier)
+ *   Frame 1       gap 0
+ *   FilterBar     no radius; bottom stroke border/secondary only
+ *   rows          pt 0 · px spacing-5 · pb spacing-4; no divider between them
+ *   Datatables    radius md kept; bottom stroke only, table border colour
+ * The top stroke on the content slot is the one `.cc-control__chrome` already
+ * draws, so nothing adds it here.
+ *
+ * CHILD combinators throughout: a Multi Select Table filter picker carries a
+ * `.datatables` of its own inside the FilterBar, and a descendant selector
+ * gave those hidden pickers the flush border too (measured). */
+.cc-listing[data-listing-template="full"] {
+  --cc-listing-pad-top: 0px;
+  gap: 0;
+}
+
+.cc-listing[data-listing-template="full"] > .filter-bar {
+  border: 0;
+  border-block-end: 1px solid var(--ai-border-secondary);
+  border-radius: 0;
+}
+
+.cc-listing[data-listing-template="full"] > .filter-bar > .filter-bar__row {
+  padding: 0 var(--ai-spacing-5) var(--ai-spacing-4);
+}
+
+.cc-listing[data-listing-template="full"] > .filter-bar > .filter-bar__row--top {
+  border-block-end: 0;
+}
+
+.cc-listing[data-listing-template="full"] > .datatables {
+  border: 0;
+  border-block-end: 1px solid var(--ai-datatable-table-border);
+}
+
+/* Figma draws this template at desktop only. Below 768px keep the designer's
+ * mobile row padding (spacing-3, FilterBar.css 2026-09-21) on the sides and
+ * bottom, with the full template's flush top. An extrapolation, not a frame —
+ * revisit if a mobile frame is drawn. */
+@container cs-page (max-width: 767px) {
+  .cc-listing[data-listing-template="full"] > .filter-bar > .filter-bar__row {
+    padding: 0 var(--ai-spacing-3) var(--ai-spacing-3);
   }
 }

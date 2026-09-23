@@ -12,6 +12,7 @@ Built 2026-09-17 (Pass 1 — Default view).
 | Built this pass | `3645:148870` (Default · Desktop) · `3648:161126` (Default · Mobile) |
 | Datatable type | `3648:164786` (Orders · Desktop · Scroll) · `3648:164467` (Orders · Mobile · Trigger) |
 | Shell | `3644:127733` — "CC Shell" (shared with ControlScreen) |
+| Full-width template | `3788:16762` (Default · Desktop, flush) — built 2026-09-23, see "Full-width template" below |
 
 ## Why this template exists
 
@@ -232,6 +233,88 @@ search or apply behaviour. The pattern's own demo has it the same way.
 Markers: `listing-default-filters`, `listing-export`, `listing-orders-rows`.
 Contract sketch in `listing-data.js`; rows are shaped from the live
 `/control/orders` screen so the mapping is one-to-one. See HANDOVER.md.
+
+## Full-width template (2026-09-23)
+
+Figma `3788:16762`, drawn "to allow maximum space". The review found it is **the same screen**:
+the same CC Shell, FilterBar, Datatables, rows, pager and title. Only the shell spacing and the
+card chrome differ. So it is built as one attribute on the same DOM. It is not a fork.
+
+**Designer decisions:**
+- Ship it as a separate template type now.
+- Build it so a toggle later is a one-line switch. The toggle is still being agreed with the
+  wider team.
+- Leave the menu alone. Figma draws it as a rail only; that is deferred.
+- Apply it to all four listing screens.
+
+### The switch
+
+| | |
+|---|---|
+| Attribute | `data-listing-template="standard\|full"` on `.cc-listing`, plus `.cc-control__page--flush` on the page for `full` |
+| Set by | `applyTemplate(root, name)` in `ListingScreen.js`, from `config.template` (default `'standard'`) or `?template=full` |
+| Toggle contract | a future control calls `applyTemplate` again and persists the choice. **Kept out of the backend handover notes** (no `TODO(backend)` marker, no HANDOVER / manifest entry) until the designer says to add it — 2026-09-23 |
+| Not `data-layout` | that name is taken twice already: Media's listing/grid switch, and chat minimised mode, which also shrinks the fluid fonts. This frame keeps them |
+
+Nothing in the JS branches on the template:
+- The column fit re-measures by itself, because its ResizeObserver sees the table widen.
+- The sticky offsets read `--cc-listing-pad-top`: spacing-6 by default, spacing-4 below 768px,
+  0 on full. That one variable replaced four hard-coded copies of the page padding.
+
+### Shell values (skill Step 3a) — all bound, no token gaps
+
+| Wrapper | Property | Token |
+|---|---|---|
+| Content slot (page) | fill · padding | `surface/primary` → `--ai-surface-primary` · 0 |
+| Content slot (page) | top stroke | `border/secondary`. `.cc-control__chrome` already draws it, so nothing is added |
+| Frame 1 (`.cc-listing`) | gap | 0 |
+| FilterBar | radius · stroke | none · bottom only, `--ai-border-secondary` |
+| FilterBar rows | padding | T `spacing/0`, L/R `spacing/5`, B `spacing/4`; no divider between the rows |
+| Datatables | radius · stroke | `--ai-radius-md` kept · bottom only, `--ai-datatable-table-border` |
+| Toolbar / footer | padding | unchanged from standard |
+
+The rules use **child combinators**. A Multi Select Table filter picker has a `.datatables` of
+its own inside the FilterBar. Measured: a descendant selector gave those hidden pickers the flush
+border too.
+
+### Extrapolated, not drawn
+
+**Below 768px.** Figma has no mobile frame for this template. The rows keep the designer's mobile
+row padding (spacing-3, 2026-09-21) on the sides and bottom, with the flush top. Revisit this if
+a mobile frame is drawn.
+
+### For the designer
+
+- **Right edge.** The page keeps its reserved scrollbar gutter (15px classic), so the content
+  stops 15px short of the ActionsMenu rail. Figma runs it to the rail. Dropping the gutter would
+  shift the layout whenever the page starts or stops scrolling.
+- **Dark mode.** The flush page is `--ai-surface-primary`. In dark that is a darker slate than
+  the CC header band above it, so there is a visible tone step at the chrome line. Light mode has
+  none, because both are white there. Figma has no dark frame to check this against.
+
+### Verified (headless, 2026-09-23)
+
+**Every screen, both templates, at 1400 / 1024 / 600:**
+- horizontal overflow is 0
+- the header and the selection bar pin at 0.0px from the scroller edge
+- the header sits 0.0px under the bar
+- a row does not move when you tick it
+
+**Column fit.** The full template shows as many columns as standard or more at the same width,
+because the table is wider:
+- Orders at 1024: 7 against 6
+- Articles at 1400: 8 against 7
+- Media at 1024: 7 against 6
+
+**Full template spot checks:**
+- search narrows the rows and restores them
+- select-all shows the bar ("20 items selected")
+- Edit Columns opens and lists its columns
+- the rows carry their record links
+- `?template=full&layout=grid` renders 25 tiles, flush
+
+**Edit Columns is base size on both templates.** It is 40px, with `btn--sm` removed on all four
+pages (designer, 2026-09-23).
 
 ## Still open
 
