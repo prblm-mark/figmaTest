@@ -102,7 +102,7 @@ also the local persistence key (`affino.listing.<key>` in the demo).
 | `rowKey` | `'orderNo'` | Row property that identifies a row — routes, selection ids, aria-labels. **Always set it** — the default is Orders'. |
 | `routeNoun` | `'order'` | URL slug for the row's view/edit routes. **Always set it.** |
 | `rowNoun` | `routeNoun` | What a screen reader says: "Edit archived item 5361", not "archived-item". |
-| `identityColumns` | `2` | Leading labelled columns that always show, even when they don't fit. Use **1** when the first column is long text (Articles, Archive, Media) — two long text columns pushed the kebab off a phone. Blank-headed columns (thumbnail, checkbox) don't count. |
+| `identityColumns` | `2` | Leading labelled columns that identify a row: always shown even when they don't fit, **locked on in Edit Columns**, never dropped by the fit. Use **1** when the first column is long text (Articles, Archive, Media) — two long text columns pushed the kebab off a phone. Blank-headed columns (thumbnail, checkbox) don't count. |
 | `perPage` | `20` | Initial page size. |
 | `perPageOptions` | `[20,50,100,200]` | The page-size menu. Take it from the live screen. |
 | `sort` | `{ by: 'Date', dir: 'desc' }` | Initial sort, `by` = a column's `sort` token. **Always set it** — the default is Orders'. An unknown token leaves rows in the order given. |
@@ -223,7 +223,8 @@ it.
 
 ### Edit Columns
 
-- Users can hide/show columns and drag to reorder (grip only). The first two rows are locked.
+- Users can hide/show columns and drag to reorder (grip only). The first `identityColumns` rows
+  are locked on (2 on Orders, 1 on Articles / Archive / Media).
 - "No room at this width" is one heading, placed where columns stop fitting.
 - Changes are part of the saved view.
 - **Only on viewports ≥ 1024px** — a deliberate `@media`: it's a device question ("is this a
@@ -397,7 +398,7 @@ the ~400 screens inherits them.
 | 2 | **Orders-specific values in shared code**: empty-state copy ("No matching orders"), the `sort` fallback `Date`, the `rowKey`/`routeNoun` defaults, `CELL.user` reading `row.customer`, and the class `datatables--orders` doubling as the listing class. | Found in code; set the config fields explicitly on every screen until fixed. |
 | 3 | ~~Checkbox filters compared the row value to the checkbox's label text, so ticking one emptied the table~~ (reproduced: Articles 20 → 0). | **Fixed 2026-09-23**: per-filter `mode` (`only` / `exclude` / `include` / `display`) against a boolean field; `include` applies while unticked. All 14 checkbox filters verified through the UI against expected counts; × restores. Demo rows carry flagged mock booleans (`listing-checkbox-fields`). |
 | 4 | **Articles' Title filter** is `predictive` with no `options`, so a typed title may never become a value. | Suspected from code. |
-| 5 | **Edit Columns' locked rows and the fit's correction loop use a hard-coded 2**, not `identityColumns`. | Suspected from code. |
+| 5 | ~~Edit Columns' locked rows, the drag-unhide and the fit's correction loop hard-coded 2~~, not `identityColumns`. | **Fixed 2026-09-23**: one `identityCount(config)` helper read in all four places. Verified: Orders locks 2 rows, the other three lock 1 and their second column now switches off; no horizontal overflow at 8 widths × 3 screens. |
 | 6 | **Copying a view** in the Views menu dispatches no save, so the copy has no snapshot and isn't persisted. | Suspected from code. |
 | 7 | **Selection is not cleared on filter/sort/page change**, so the count can include rows not on screen. Decide whether that is intended before bulk actions go live. | Behaviour decision needed. |
 | 8 | Designer flags still open: FilterItem has no "added" variant; Checkbox has no indeterminate variant; no Datatables empty state; pencil-below-1024 is temporary. | Waiting on design. |
