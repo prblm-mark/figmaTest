@@ -2866,6 +2866,23 @@ display options 140; Articles Multi-displayed 9, Archived Content 44 → 50;
 Media My Media 17, Show Original 10, Archive Content 44 → 50, Outdated 8.
 The chip's × restores the prior count and re-hides included rows.
 
+### `identityColumns` is read everywhere, not just by the fit
+
+2026-09-23, found while writing the backend handover. Four places protect the
+columns that identify a row, and only the fit's first pass read
+`identityColumns`; the other three hard-coded 2 — the Edit Columns lock
+(`i < 2`), the drag-unhide (`slice(0, 2)`) and the fit's correction loop
+(`seen > 2`). So on the three one-identity screens the SECOND column (Section,
+Channel, Type) could not be switched off in Edit Columns and could never be
+dropped when the table came out a few pixels over.
+
+All four now read `identityCount(config)` (`identityColumns`, default 2).
+Verified: Orders locks order number + customer; Articles, Article Archive and
+Media Items lock Title only, and unticking their second column removes it from
+the table. No horizontal overflow at 320–1920 on the three screens (24 of 24).
+The correction loop itself was not triggered directly — it only runs when a
+fit lands a few pixels over.
+
 ## Article Archive loses its checkbox column
 
 It has nothing a selection could be **for**. So no bar, and the template drops

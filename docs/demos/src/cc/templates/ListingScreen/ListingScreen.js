@@ -1451,6 +1451,19 @@
      back off the DOM — the th is hidden while not carrying `--off` — rather
      than by re-deriving the tier thresholds in JS, which would drift from
      the stylesheet the moment someone retuned a breakpoint. */
+  /* How many leading labelled columns identify a row — always shown, never
+     switched off, never dropped by the fit. Per screen: Orders' order number
+     and customer fit a phone together, but Articles' Title and Section are both
+     long free text, so Articles, Article Archive and Media Items use ONE. Every
+     place that protects the identity columns reads it from here; three of the
+     four used to hard-code 2, so on the one-identity screens the second column
+     could not be switched off in Edit Columns or dropped by the fit's
+     correction loop (2026-09-23). */
+  function identityCount(config) {
+    var n = config.identityColumns;
+    return (typeof n === 'number' && n >= 1) ? n : 2;
+  }
+
   function renderColumnPicker(root, config) {
     var host = document.querySelector('[data-listing-columns]');
     if (!host) return;
@@ -1459,10 +1472,10 @@
       return col.label;   // the checkbox / spacer / edit / kebab are structure
     }).map(function (col, i) {
       var off = config.hiddenColumns.indexOf(col.key) !== -1;
-      /* The first two columns identify a row. Whichever they ARE — the order
-         is draggable — they cannot be switched off, or the table becomes a
+      /* The leading identity columns (identityCount) cannot be switched off,
+         whichever they ARE — the order is draggable — or the table becomes a
          list of anonymous values. */
-      var locked = i < 2;
+      var locked = i < identityCount(config);
       return '<div class="cc-listing__column' + (locked ? ' cc-listing__column--locked' : '') + '"' +
         ' data-column-row="' + esc(col.key) + '">' +
         '<span class="cc-listing__column-grip" data-column-grip title="Drag to reorder"' +
@@ -1541,9 +1554,9 @@
     labelled.forEach(function (col, i) {
       config.columns[slots[i]] = col;
     });
-    /* The first two are the row's identity and are always shown, whatever was
-       switched off before they were dragged there. */
-    labelled.slice(0, 2).forEach(function (col) {
+    /* The leading identity columns are always shown, whatever was switched
+       off before it was dragged there. */
+    labelled.slice(0, identityCount(config)).forEach(function (col) {
       var at = config.hiddenColumns.indexOf(col.key);
       if (at !== -1) config.hiddenColumns.splice(at, 1);
     });
@@ -1702,7 +1715,7 @@
          31px — pushing the kebab, the only route to the other columns, off
          the edge. One identity column is the honest answer there. */
       identity += 1;
-      if (identity <= (config.identityColumns || 2)) { used += natural[i]; return; }
+      if (identity <= identityCount(config)) { used += natural[i]; return; }
 
       /* Stop at the FIRST column that does not fit rather than skipping to a
          narrower one further down — order is priority, and a table that shows
@@ -1734,8 +1747,8 @@
        width — the fit checks the result it actually produced and drops the
        last column until the table fits.
 
-       Bounded by the number of columns, and it never removes the two that
-       identify a row. */
+       Bounded by the number of columns, and it never removes the columns
+       that identify a row (identityCount). */
     var table = parts.table;
     var guard = config.columns.length;
     while (table && guard-- > 0 && table.getBoundingClientRect().width > available + 1) {
@@ -1744,7 +1757,7 @@
       config.columns.forEach(function (col) {
         if (!col.label || hidden[col.key] || config.hiddenColumns.indexOf(col.key) !== -1) return;
         seen += 1;
-        if (seen > 2) last = col.key;
+        if (seen > identityCount(config)) last = col.key;
       });
       if (!last) break;
       hidden[last] = true;
