@@ -515,6 +515,22 @@
   color: var(--ai-text-primary);
 }
 
+/* Clear — `btn btn--tertiary btn--sm` plus a visible border, the same
+ * contextual override as the account chip on the rows (Case B, designer
+ * 2026-09-23): `--ai-border-secondary`, the line the kebab, the edit pencil
+ * and the chip all use. Tertiary's own border token is transparent in every
+ * mode, and its hover fill is within a couple of points of the bar's
+ * expanded-row tint, so without the line Clear had no edge at all.
+ *
+ * The border is restated for hover and focus because `.btn--tertiary:hover`
+ * sets the transparent hover token at the same specificity — this sheet loads
+ * after Button.css, so it wins on order. */
+.cc-listing__selection-clear,
+.cc-listing__selection-clear:hover,
+.cc-listing__selection-clear:focus-visible {
+  border-color: var(--ai-border-secondary);
+}
+
 .cc-listing__selection-actions {
   display: flex;
   align-items: center;
