@@ -616,13 +616,14 @@
                    SegmentedControl at `--sm` instead (designer, 2026-09-22):
                    two mutually exclusive views is what that component is for,
                    and it puts the switch next to the thing it switches rather
-                   than inside the filters. `sm` is 32px, which matches the
-                   Edit Columns button beside it — the Default's 40 stood
-                   proud of the whole toolbar row.
+                   than inside the filters. It is the DEFAULT size, 40px, to
+                   match Edit Columns and the page-size select beside it now
+                   that both are base height (designer, 2026-09-23; it was
+                   `--sm` at 32 while they were 32).
                    NOTE the live default is GRID; this opens on Listing because
                    that is what the demo card is named. ?layout=grid opens the
                    other half. -->
-              <div class="seg-control seg-control--sm cc-listing__layout" role="radiogroup"
+              <div class="seg-control cc-listing__layout" role="radiogroup"
                    aria-label="Layout" data-listing-layout hidden>
                 <!-- `aria-label` on each button, not just the visible text: the
                      label span is hidden below 768px (see ListingScreen.css) and

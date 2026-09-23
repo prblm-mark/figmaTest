@@ -2508,6 +2508,11 @@ back to Figma. 32px is also what the toolbar needed: it now matches the
 page-size control and Edit Columns exactly, where the Default's 40 stood proud
 of the row. Measured: all three controls h=32, same top.
 
+**Now the Default size, 40px (designer, 2026-09-23).** Edit Columns and the
+page-size select both went to base height (40), so the switch followed them to
+SegmentedControl's Default rather than `--sm` — the three controls match again,
+at 40 this time. `--sm` stays in the component; nothing else here uses it.
+
 ## What live actually draws, and what changed
 
 A `<table class="gridtable">` of `<td width="140">` cells, wrapped every
@@ -2941,8 +2946,9 @@ unconditionally. Measured: 0 row links, `cursor: pointer`, on all three.
   record link** (`type: 'order'` or `link: true`). A screen without one gets
   rows that do not look clickable — the "never advertise an affordance" rule,
   now enforced rather than assumed.
-- Styled with the order link: the cell's own colour, underline on hover and
-  focus (Datatables.css).
+- Styled with the order link: the cell's own colour (Datatables.css). **Since
+  2026-09-23: semibold, to match ORDER NO, and no underline at all** — the row
+  click already advertises the link (designer). Focus keeps the global outline.
 
 Verified in headless Chrome: one link per row on all four screens (20 / 20 /
 8 / 25); clicking a non-control part of a row opens that row's record at 1400
