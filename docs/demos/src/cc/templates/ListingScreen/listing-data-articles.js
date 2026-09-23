@@ -55,7 +55,7 @@ var LISTING_ARTICLES_COLUMNS = [
   { key: 'live',         type: 'text',   label: 'Live',               hug: true, sort: 'Live' },
   { key: 'createdBy',    type: 'text',   label: 'Created By',         snug: true, sort: 'CreatedBy' },
   { key: 'publishStart', type: 'text',   label: 'Publish Start',      hug: true, sort: 'PublishStart' },
-  { key: 'views',        type: 'text',   label: 'Views',              hug: true, sort: 'Views', cellClass: 'table__cell--right' },
+  { key: 'views',        type: 'text',   label: 'Views',              hug: true, sort: 'Views' },
   /* Not on the live screen's list, and carried here because the template's
      own affordances need somewhere to live — the article ID is what the row
      and pencil routes key on. */
