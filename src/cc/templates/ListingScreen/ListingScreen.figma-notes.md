@@ -2883,6 +2883,27 @@ the table. No horizontal overflow at 320–1920 on the three screens (24 of 24).
 The correction loop itself was not triggered directly — it only runs when a
 fit lands a few pixels over.
 
+### Articles' Title type-ahead gets its titles
+
+2026-09-23, found while writing the backend handover. Title is deliberately a
+TYPE-AHEAD on Articles (Predictive Text Options — contrast Article Archive's
+plain text Name box, noted above), but it shipped with no `options`: nothing to
+narrow, nothing to pick, and FilterBar reads a predictive panel's value from
+the picked row, so a typed title never became a value.
+
+- **Options are the article titles, derived from the rows** (unique,
+  alphabetised) in `listing-data-articles.js` — not invented. Marked
+  `listing-default-filters`: a real type-ahead should query per keystroke.
+- **Pick-list matching now trims both sides.** FilterBar reads a picked option
+  from its rendered text, which it trims, while real data keeps stray
+  leading/trailing spaces verbatim; untrimmed, a pick for such a record would
+  match nothing. None of the 50 Articles titles has edge spaces — this is for
+  the real feeds.
+
+Verified through the UI: 50 suggestions; typing "api" shows 3; picking one and
+Apply → 44 to 1 row, that article. Orders' Customer type-ahead unaffected:
+"mar" → 2 suggestions, Maria Mellor → 140 to 14.
+
 ## Article Archive loses its checkbox column
 
 It has nothing a selection could be **for**. So no bar, and the template drops
