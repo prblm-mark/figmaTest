@@ -2831,6 +2831,41 @@ Verified in headless Chrome: one link per row on all four screens (20 / 20 /
 and 390 wide; titles still clip (11 of 20 at 390, 9 of 20 at 1400) with the
 link inline inside the ellipsis span; link colour equals the cell's.
 
+### Checkbox filters match by `mode`, not by label text
+
+2026-09-23, found while writing the backend handover. The bar reports a
+ticked checkbox by its LABEL ("Only first-time buyers"), and `matches()` fell
+through to the exact-match branch, comparing that sentence to the row field —
+which no row even carried. Reproduced through the UI: Articles, add
+Multi-displayed, tick, Apply → 20 rows to 0. All 14 checkbox filters on the
+three screens had the same fault.
+
+- **`mode` on every checkbox filter**, read off the live label's wording:
+  `only` (keep rows where the field is true), `exclude` (drop them), `include`
+  (those rows are hidden until ticked), `display` (changes what is shown, not
+  which rows — filters nothing). A missing mode filters nothing rather than
+  emptying the table.
+- **`include` acts while unticked**, in `applyFilters`, whether or not its chip
+  is on the bar — "Include archived content" means archived rows are not in the
+  listing until asked for. It is the listing's baseline, so it does not mark
+  the result as filtered. Articles and Media Items therefore open on 44 of 50.
+- **Booleans read by `flagAt`**, not `valueAt` (whose `String()` makes `false`
+  the truthy "false"). Absent reads as false.
+- **Demo data** (designer's choice: mock values on every screen): fixed-interval
+  booleans in each data file, flagged `TODO(backend:Listing)
+  listing-checkbox-fields`. Media Items' 50 real rows keep their real values;
+  only the flags are mock, and `hasOriginal` is set on images only. Orders'
+  `zeroValue` is derived from the total — false for every row, since the lowest
+  is 9.95. The Exclude Subscriptions field is now `isSubscription` (the row
+  fact), not `excludeSubs` (the filter's verb).
+
+Verified through the UI (add from Add Filters, tick, Apply), every count equal
+to the value computed from the data: Orders Invoice Sent 93, Store Credits 20,
+First Time Buyer 35, Exclude Subscriptions 112, Zero Value and the three
+display options 140; Articles Multi-displayed 9, Archived Content 44 → 50;
+Media My Media 17, Show Original 10, Archive Content 44 → 50, Outdated 8.
+The chip's × restores the prior count and re-hides included rows.
+
 ## Article Archive loses its checkbox column
 
 It has nothing a selection could be **for**. So no bar, and the template drops
