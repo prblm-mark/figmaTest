@@ -928,6 +928,13 @@
           "element": "Edit Columns dropdown (data-backend-todo=\"listing-column-prefs\") on all four listing screens",
           "current": "Hide/show and drag-reorder work and are part of a saved view, persisted to local storage only (demo).",
           "needs": "GET/PUT /control/<screen>/columns { order:[key], hidden:[key] } per user, or carried inside the saved-view payload. Desktop (>=1024px viewport) only."
+        },
+        {
+          "id": "listing-checkbox-fields",
+          "category": "needs-backend",
+          "element": "Checkbox filters on Orders (8), Articles (2) and Media Items (4)",
+          "current": "Matching works client-side by each filter's `mode` (only / exclude / include / display) against MOCK booleans added to the demo rows on fixed intervals, flagged in each data file. Orders' zeroValue is derived from the total. The display-mode checkboxes filter nothing yet.",
+          "needs": "One boolean per checkbox field on every row (invoiceSent, storeCredits, firstTimeBuyer, isSubscription, zeroValue, multiDisplayed, archived, myMedia, hasOriginal, outdated), or the checkbox applied server-side. myMedia needs the current user. Display options (Exclude Tax, Show Attendee No., Show Contact Details) are rendering changes still to be built."
         }
       ],
       "guide": "docs/listing-screens-handover.md"

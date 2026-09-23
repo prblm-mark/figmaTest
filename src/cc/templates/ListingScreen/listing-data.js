@@ -482,14 +482,14 @@ var LISTING_ORDERS_MORE_FILTERS = [
   { name: 'Order No. Range',   type: 'range', field: 'orderNo',     label: 'Order number between', fromPlaceholder: 'From', toPlaceholder: 'To' },
   { name: 'Price Range',       type: 'range', field: 'orderTotal',  label: 'Order value between',  fromPlaceholder: 'From', toPlaceholder: 'To' },
 
-  { name: 'Exclude Tax',       type: 'checkbox', field: 'excludeTax',      label: 'Excluding Tax',       checkboxLabel: 'Exclude tax from totals' },
-  { name: 'Invoice Sent',      type: 'checkbox', field: 'invoiceSent',     label: 'Invoice Sent',        checkboxLabel: 'Only orders with an invoice sent' },
-  { name: 'Store Credits Used', type: 'checkbox', field: 'storeCredits',   label: 'Store Credits',       checkboxLabel: 'Only orders using store credit' },
-  { name: 'First Time Buyer',  type: 'checkbox', field: 'firstTimeBuyer',  label: 'First Time Buyer',    checkboxLabel: 'Only first-time buyers' },
-  { name: 'Zero Value Orders', type: 'checkbox', field: 'zeroValue',       label: 'Zero Value Orders',   checkboxLabel: 'Include zero value orders' },
-  { name: 'Exclude Subscriptions', type: 'checkbox', field: 'excludeSubs', label: 'Subscriptions',       checkboxLabel: 'Exclude subscription orders' },
-  { name: 'Show Attendee No.', type: 'checkbox', field: 'showAttendees',   label: 'Attendees',           checkboxLabel: 'Show attendee numbers' },
-  { name: 'Show Contact Details', type: 'checkbox', field: 'showContact',  label: 'Contact Details',     checkboxLabel: 'Show email and telephone columns' },
+  { name: 'Exclude Tax',       type: 'checkbox', mode: 'display', field: 'excludeTax',      label: 'Excluding Tax',       checkboxLabel: 'Exclude tax from totals' },
+  { name: 'Invoice Sent',      type: 'checkbox', mode: 'only', field: 'invoiceSent',     label: 'Invoice Sent',        checkboxLabel: 'Only orders with an invoice sent' },
+  { name: 'Store Credits Used', type: 'checkbox', mode: 'only', field: 'storeCredits',   label: 'Store Credits',       checkboxLabel: 'Only orders using store credit' },
+  { name: 'First Time Buyer',  type: 'checkbox', mode: 'only', field: 'firstTimeBuyer',  label: 'First Time Buyer',    checkboxLabel: 'Only first-time buyers' },
+  { name: 'Zero Value Orders', type: 'checkbox', mode: 'include', field: 'zeroValue',       label: 'Zero Value Orders',   checkboxLabel: 'Include zero value orders' },
+  { name: 'Exclude Subscriptions', type: 'checkbox', mode: 'exclude', field: 'isSubscription', label: 'Subscriptions',       checkboxLabel: 'Exclude subscription orders' },
+  { name: 'Show Attendee No.', type: 'checkbox', mode: 'display', field: 'showAttendees',   label: 'Attendees',           checkboxLabel: 'Show attendee numbers' },
+  { name: 'Show Contact Details', type: 'checkbox', mode: 'display', field: 'showContact',  label: 'Contact Details',     checkboxLabel: 'Show email and telephone columns' },
 
   { name: 'External Code',     type: 'text', field: 'externalCode', label: 'Filter by External Code', placeholder: 'Enter external code' },
   { name: 'Payment ID',        type: 'text', field: 'paymentId',    label: 'Filter by Payment ID',    placeholder: 'Enter payment ID' },
@@ -608,6 +608,18 @@ var LISTING_ORDERS_ROWS = (function (seed) {
       row.orderTotal = '\u00a3' + total.toFixed(2);
       row.subtotal = '\u00a3' + (total * 0.8).toFixed(2);
       row.tax = '\u00a3' + (total * 0.2).toFixed(2);
+
+      /* TODO(backend:Listing) listing-checkbox-fields: MOCK booleans for the
+         checkbox filters — no live read supplies them. Spread on fixed
+         intervals so every "Only / Exclude" box visibly narrows the table.
+         `zeroValue` is the exception: DERIVED from the total, not invented,
+         so it is false for every row here (the lowest total is 9.95). The real
+         feed must carry one boolean per checkbox filter field. */
+      row.invoiceSent = n % 3 !== 0;
+      row.storeCredits = n % 7 === 0;
+      row.firstTimeBuyer = n % 4 === 0;
+      row.isSubscription = n % 5 === 0;
+      row.zeroValue = total === 0;
 
       rows.push(row);
     }

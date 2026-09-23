@@ -133,7 +133,8 @@ also the local persistence key (`affino.listing.<key>` in the demo).
 | `type` | `text` · `predictive` · `select-options` · `multi-select` · `multi-select-table` · `date-range` · `range` · `checkbox`. Changing which picker a filter uses is a one-word change. |
 | `field` | Row path it tests (dot-paths work: `customer.name`). **A filter with no `field` is never active.** |
 | `label`, `placeholder`, `options` | Panel heading, field hint, `[{ name, sub? }]`. |
-| `checkboxLabel` | For `checkbox`. |
+| `checkboxLabel` | For `checkbox`: the sentence beside the box. |
+| `mode` | **Required for `checkbox`** — what a tick means: `only` (keep rows where the field is true — "Only first-time buyers"), `exclude` (drop them — "Exclude subscription orders"), `include` (those rows are **hidden until ticked**, whether or not the chip is on the bar — "Include archived content"), `display` (changes what is shown, not which rows — "Show attendee numbers"; filters nothing). Read it off the live label's wording. The row field must be a **boolean**. |
 | `fromPlaceholder` / `toPlaceholder` | For `range`. |
 | `facets`, `tableColumns`, `tableFields`, `tableColClasses`, `sortable` | For `multi-select-table` (picker pages of 20, sorted ascending first). |
 | `defaultValues` | The chip opens already holding these (Archive's Type). |
@@ -173,6 +174,7 @@ also the local persistence key (`affino.listing.<key>` in the demo).
 
 - `text` — contains, case-insensitive.
 - `date-range` / `range` — either end may be blank; ISO and "28 Sep 2026" both parse.
+- `checkbox` — by its `mode` against a boolean row field (see §3); never by label text.
 - everything else — exact match, **any** of the picked values.
 - Filters combine with **AND**, and search is ANDed on top.
 
@@ -393,7 +395,7 @@ the ~400 screens inherits them.
 |---|---|---|
 | 1 | ~~Rows looked clickable but weren't on Articles, Article Archive and Media Items~~ (no record link, yet pointer + hover tint). | **Fixed 2026-09-23**: generic `link: true` column flag, set on Title on all three; the clickable affordance is now only added when a record link exists. Verified: one link per row on all four screens, row click opens the record at 1400 and 390, long titles still truncate. |
 | 2 | **Orders-specific values in shared code**: empty-state copy ("No matching orders"), the `sort` fallback `Date`, the `rowKey`/`routeNoun` defaults, `CELL.user` reading `row.customer`, and the class `datatables--orders` doubling as the listing class. | Found in code; set the config fields explicitly on every screen until fixed. |
-| 3 | **Checkbox filters on the main bar** probably compare the row value to the checkbox's label text, so ticking one (e.g. Exclude Tax) may empty the table. | Suspected from code; not reproduced. |
+| 3 | ~~Checkbox filters compared the row value to the checkbox's label text, so ticking one emptied the table~~ (reproduced: Articles 20 → 0). | **Fixed 2026-09-23**: per-filter `mode` (`only` / `exclude` / `include` / `display`) against a boolean field; `include` applies while unticked. All 14 checkbox filters verified through the UI against expected counts; × restores. Demo rows carry flagged mock booleans (`listing-checkbox-fields`). |
 | 4 | **Articles' Title filter** is `predictive` with no `options`, so a typed title may never become a value. | Suspected from code. |
 | 5 | **Edit Columns' locked rows and the fit's correction loop use a hard-coded 2**, not `identityColumns`. | Suspected from code. |
 | 6 | **Copying a view** in the Views menu dispatches no save, so the copy has no snapshot and isn't persisted. | Suspected from code. |
@@ -409,7 +411,8 @@ the ~400 screens inherits them.
 - [ ] Exactly one column is the record link (`link: true`, or `type: 'order'`); rows open the
       record by click and by keyboard.
 - [ ] `defaultFilters` = the live screen's first five (or a recorded promotion); the rest in
-      `moreFilters`; every filter has a `field`.
+      `moreFilters`; every filter has a `field`; every checkbox filter has a `mode` and a
+      boolean field in the row payload.
 - [ ] Columns ordered by priority; exactly one fluid column; sort tokens only where the live
       screen sorts.
 - [ ] `bulkActions` = the operator's permitted verbs, or empty (⇒ no selection UI).

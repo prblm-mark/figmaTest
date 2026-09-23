@@ -153,9 +153,9 @@ var LISTING_ARTICLES_MORE_FILTERS = [
   { name: 'Creator', type: 'multi-select', field: 'createdBy', label: 'Filter by Creator',
     options: articleOpts(ARTICLE_CREATORS) },
 
-  { name: 'Multi-displayed',  type: 'checkbox', field: 'multiDisplayed', label: 'Multi-displayed',
+  { name: 'Multi-displayed',  type: 'checkbox', mode: 'only', field: 'multiDisplayed', label: 'Multi-displayed',
     checkboxLabel: 'Only articles displayed in more than one place' },
-  { name: 'Archived Content', type: 'checkbox', field: 'archived',       label: 'Archived Content',
+  { name: 'Archived Content', type: 'checkbox', mode: 'include', field: 'archived',       label: 'Archived Content',
     checkboxLabel: 'Include archived content' },
 
   /* The live screen opens ContentLookup.cfm for these three — a different
@@ -331,6 +331,16 @@ var LISTING_ARTICLES_ROWS = [
     createdBy: 'Markus Karlsson', publishStart: '2026-05-30', created: '2026-05-30', views: '178',
     zone: 'Affino', channel: 'Video Store' }
 ];
+
+/* TODO(backend:Listing) listing-checkbox-fields: MOCK booleans for the
+ * Multi-displayed and Archived Content checkboxes — the real values are not in
+ * any read available here. Fixed intervals, so both boxes visibly work:
+ * Multi-displayed narrows to every fifth article, and Archived Content (an
+ * "include" box) hides every eighth until ticked. */
+LISTING_ARTICLES_ROWS.forEach(function (row, i) {
+  row.multiDisplayed = i % 5 === 0;
+  row.archived = i % 8 === 3;
+});
 
 LISTING_SCREENS.articles = {
   title: 'Articles',

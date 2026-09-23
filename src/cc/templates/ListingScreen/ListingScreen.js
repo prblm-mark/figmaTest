@@ -808,6 +808,15 @@
      Config-driven — a filter's `field` names the row property it tests, so
      nothing here knows an Orders column from a Contacts one. */
 
+  /* A boolean field, read without valueAt's String() — which turns `false`
+     into "false", a truthy string. Absent reads as false. */
+  function flagAt(row, path) {
+    var v = path.split('.').reduce(function (o, k) {
+      return (o === null || o === undefined) ? undefined : o[k];
+    }, row);
+    return v === true || v === 'true' || v === 1 || v === '1';
+  }
+
   function valueAt(row, path) {
     return String(path.split('.').reduce(function (o, k) {
       return (o === null || o === undefined) ? '' : o[k];
@@ -886,6 +895,26 @@
       var to = read(values[1] || '');
       if (from !== null && here < from) return false;
       if (to !== null && here > to) return false;
+      return true;
+    }
+
+    /* A checkbox is a boolean question about the row, not a pick-list. The bar
+       reports the ticked box by its LABEL TEXT ("Only first-time buyers"), and
+       this used to fall through to the exact-match line below, comparing that
+       sentence to the row's field — so ticking any checkbox emptied the table
+       (measured: Articles 20 rows -> 0). What a tick MEANS is declared by the
+       filter's `mode`, because the live screens use checkboxes four ways:
+         only     keep rows where the field is true      ("Only first-time buyers")
+         exclude  drop rows where the field is true      ("Exclude subscription orders")
+         include  rows where it is true are hidden UNTIL ticked — see
+                  applyFilters, which applies the unticked half
+         display  changes what is shown, not which rows  ("Show attendee numbers")
+       An unknown or missing mode filters nothing: better inert than a silently
+       emptied table. */
+    if (filter.type === 'checkbox') {
+      var on = flagAt(row, filter.field);
+      if (filter.mode === 'only') return on;
+      if (filter.mode === 'exclude') return !on;
       return true;
     }
 
@@ -972,11 +1001,28 @@
              byName[name] && byName[name].field;
     });
     var query = (config.query || '').toLowerCase();
-    if (!active.length && !query) return { rows: config.rows, filtered: false };
+
+    /* `mode: 'include'` checkboxes act while UNTICKED: "Include archived
+       content" means archived rows are not in the listing until you ask for
+       them, which is how the live filter forms behave. So they apply whether or
+       not their chip is on the bar — including one still sitting in Add
+       Filters. This is the listing's baseline, not a filter the user set, so it
+       does not mark the result as filtered (the footer does not claim "x of
+       y" for it). */
+    var hiddenUntilIncluded = config.defaultFilters.concat(config.moreFilters || [])
+      .filter(function (f) {
+        return f.type === 'checkbox' && f.mode === 'include' && f.field &&
+          !(config.filterValues[f.name] || []).length;
+      });
+
+    if (!active.length && !query && !hiddenUntilIncluded.length) {
+      return { rows: config.rows, filtered: false };
+    }
 
     return {
-      filtered: true,
+      filtered: !!(active.length || query),
       rows: config.rows.filter(function (row) {
+        if (hiddenUntilIncluded.some(function (f) { return flagAt(row, f.field); })) return false;
         /* Search and chips narrow together — a search inside a filtered view
            searches that view, not the whole listing. */
         if (query && searchableText(row, config.columns).indexOf(query) === -1) return false;

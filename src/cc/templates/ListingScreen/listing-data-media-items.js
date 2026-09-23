@@ -197,7 +197,7 @@ var LISTING_MEDIA_FILTERS = [
 /* The rest of the catalogue. The panel sorts itself alphabetically. */
 var LISTING_MEDIA_MORE_FILTERS = [
   /* Row 1's trailing checkbox. */
-  { name: 'My Media', type: 'checkbox', field: 'myMedia',
+  { name: 'My Media', type: 'checkbox', mode: 'only', field: 'myMedia',
     label: 'My Media', checkboxLabel: 'Only media I uploaded' },
 
   /* Row 2. */
@@ -207,16 +207,16 @@ var LISTING_MEDIA_MORE_FILTERS = [
        chip's placeholder carries it and the values are the four families
        behind it; picking All is clearing the chip. */
     options: mediaOpts(MEDIA_TYPES.slice(1)) },
-  { name: 'Show Original Image', type: 'checkbox', field: 'hasOriginal',
+  { name: 'Show Original Image', type: 'checkbox', mode: 'only', field: 'hasOriginal',
     label: 'Show Original Image',
     /* TASK-171948, named in the source: items that kept their original
        alongside the WebP master. */
     checkboxLabel: 'Only items keeping an original beside the WebP master' },
-  { name: 'Archive Content', type: 'checkbox', field: 'archived',
+  { name: 'Archive Content', type: 'checkbox', mode: 'include', field: 'archived',
     label: 'Archive Content', checkboxLabel: 'Include archived content' },
   { name: 'Live', type: 'select-options', field: 'live',
     label: 'Filter by Live', placeholder: 'All', options: mediaOpts(MEDIA_LIVE) },
-  { name: 'Outdated', type: 'checkbox', field: 'outdated',
+  { name: 'Outdated', type: 'checkbox', mode: 'only', field: 'outdated',
     label: 'Outdated', checkboxLabel: 'Only items past their publish end' },
 
   /* Row 3. */
@@ -304,6 +304,18 @@ var LISTING_MEDIA_ROWS = [
   { itemId: '113069', title: '2023-09-01 09 43 48', fileName: '2023-09-01094348.jpg', family: 'image', thumbUrl: 'https://picsum.photos/seed/media113069/128', format: 'JPEG', section: 'Affino Forum Media', channel: 'Affino Media', zone: 'Affino', style: 'Media Default Presentation Style', createdBy: 'Jose Claramunt', created: '2023-09-01', live: 'Live' },
   { itemId: '113068', title: 'Screenshot 2023-09-01 at 09-16-05 My second article dolor sit amet', fileName: 'Screenshot2023-09-01at09-16-05Mysecondarticledolorsitamet.png', family: 'image', thumbUrl: 'https://picsum.photos/seed/media113068/128', format: 'PNG', section: 'Affino Forum Media', channel: 'Affino Media', zone: 'Affino', style: 'Media Default Presentation Style', createdBy: 'Luis Montiel', created: '2023-09-01', live: 'Live' }
 ];
+
+/* TODO(backend:Listing) listing-checkbox-fields: MOCK booleans for the four
+ * checkbox filters. The 50 rows above are REAL media items; these flags are
+ * not — none of the reads returns them — and the real values are untouched.
+ * `hasOriginal` is only ever set on images, since only an image has an
+ * original beside its WebP master. */
+LISTING_MEDIA_ROWS.forEach(function (row, i) {
+  row.myMedia = i % 3 === 0;
+  row.hasOriginal = row.family === 'image' && i % 4 === 1;
+  row.archived = i % 9 === 4;
+  row.outdated = i % 6 === 2;
+});
 
 LISTING_SCREENS['media-items'] = {
   title: 'Media Items',
