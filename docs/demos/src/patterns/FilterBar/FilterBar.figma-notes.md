@@ -655,3 +655,18 @@ names overwrote each other. The bar still owns only the row; what the view
 means stays with the consumer (ListingScreen's handler clones the snapshot and
 persists it).
 
+## Filter bar shadows — `shadow/2xs` (2026-09-23)
+
+Figma's Listings frame (`3645:148870`) puts `shadow/2xs` on the views select,
+the Export button, the search field and the filter chips; the dashed Add
+Filters has none, and neither does the kebab. Applied component-wide at the
+designer's choice to Input and secondary Button (see their notes), plus here on
+`.filter-bar__views-trigger`, which is an Input instance in Figma but its own
+trigger in code. Measured on the Orders listing: all of them resolve to
+`0 1px 0 rgba(0,0,0,.05)` in light and `.1` in dark, both halves of the Export
+split button included.
+
+**Not on the filter chips** — the designer removed it from FilterItem after
+seeing it (2026-09-23), so the demo differs from the Listings frame there: the
+chips carry `shadow/2xs` in Figma and none in code.
+

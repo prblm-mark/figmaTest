@@ -90,6 +90,9 @@
   background: var(--ai-surface-primary);
   border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-md);
+  /* It is an Input instance in Figma, drawn here as its own trigger — so it
+   * carries the Input's shadow/2xs too (2026-09-23). */
+  box-shadow: var(--ai-shadow-2xs);
   font-family: var(--ai-font-body);
   font-size: var(--ai-font-fixed-xs); /* 14px */
   font-weight: var(--ai-font-regular); /* views trigger is regular weight */

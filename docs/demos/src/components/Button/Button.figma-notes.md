@@ -179,3 +179,14 @@ Two things to know about it:
 > agree, or resize RoomCard's instances to `xs`. Until then this row is code-ahead-of-Figma.
 > **Second consumer waiting:** AttendeeCard's `.attendee-card__action` is the same geometry
 > (24px box, 12px icon, `--ai-radius-sm`) built as scoped CSS — worth folding onto `btn--2xs`.
+
+## Resting shadow — `shadow/2xs` (2026-09-23)
+
+The designer added Figma's `shadow/2xs` (0 1px 0, black 5%; 10% in dark) to the
+filter bar elements in the Listings frame (`3645:148870`) and chose to make it
+**component-wide** rather than scoped to the filter bar, so every instance gets
+it: every `.btn--secondary`, icon-only included. In Figma it currently sits on the filter bar's instances (the
+sidebar's search Input has none), so Figma's component defaults trail this.
+
+Token: `--ai-shadow-2xs`. Only Secondary: Primary, Tertiary and the alert types are unchanged. The focus-visible ring replaces it while focused. A disabled Secondary keeps the shadow (the disabled rule does not reset box-shadow); Figma's disabled state has not been checked.
+

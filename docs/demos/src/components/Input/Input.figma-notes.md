@@ -431,3 +431,14 @@ number on `--ai-font-title`; the designer repointed every non-title element to `
 (label correctly stays `title`). Re-verified on `3567:105256` (Base number, 14px/body) and
 `3567:105239` (sm number, 13px/body). This build already used `--ai-font-body` on both, so no code
 change was needed — the divergence closed from the Figma side.
+
+## Resting shadow — `shadow/2xs` (2026-09-23)
+
+The designer added Figma's `shadow/2xs` (0 1px 0, black 5%; 10% in dark) to the
+filter bar elements in the Listings frame (`3645:148870`) and chose to make it
+**component-wide** rather than scoped to the filter bar, so every instance gets
+it: every `.input__wrap`. In Figma it currently sits on the filter bar's instances (the
+sidebar's search Input has none), so Figma's component defaults trail this.
+
+Token: `--ai-shadow-2xs`. The focus rings (brand and error) replace it while focused, as they replace any resting shadow. Other field-like controls (Select, DatePicker, Textarea) were NOT changed; confirm whether they should match.
+
