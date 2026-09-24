@@ -43,7 +43,7 @@ Whos Online keep the rendering they were signed off with. The deltas:
 | Footer background | `--ai-datatable-table-footer-bg` | `--ai-surface-primary` (desktop only) |
 | `__user-name` weight | `--ai-font-bold` | `--ai-font-semibold` |
 | `__user-role` | `--ai-font-body` / medium / `--ai-text-contrast` | `--ai-font-title` / regular / `--ai-text-secondary` |
-| Column header `th` | semibold / `--ai-text-secondary` (Table) | `--ai-font-bold` / `--ai-text-contrast` (designer, 2026-09-23; was medium / `--ai-text-primary` from the Orders frame). Mobile still steps the weight to semibold. The **active sort** label stays contrast too (`.datatables__sort--active` darkens it to primary on the other Types); its chevron keeps `--ai-icon-contrast` like the others, so the active column is marked by the single direction chevron's shape alone |
+| Column header `th` | semibold / `--ai-text-secondary` (Table) | `--ai-font-bold` / `--ai-text-contrast` (designer, 2026-09-23; was medium / `--ai-text-primary` from the Orders frame). Bold at mobile too (2026-09-24; only the size and tracking step down there). The **active sort** label stays contrast too (`.datatables__sort--active` darkens it to primary on the other Types); its chevron keeps `--ai-icon-contrast` like the others, so the active column is marked by the single direction chevron's shape alone |
 | `__user-cell` gap | `--ai-spacing-3` | `--ai-spacing-4` |
 | `__page-btn--active` bg | `--ai-datatable-table-border` | `--ai-datatable-table-footer-bg` |
 | `__select` height | `--ai-spacing-8` (40px) | ~~`--ai-spacing-7` (32px)~~ — back to 40px, the base button height, on the designer's call 2026-09-23 (the full-width Listings frame `3788:16762` also draws it at 40). No Orders override now |

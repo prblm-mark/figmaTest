@@ -140,6 +140,11 @@
   /* One name for the page's own padding, because the sticky insets below have to subtract it
    * and the two must never drift — see `--sp-sticky-origin`. */
   --sp-page-pad: var(--ai-spacing-6);
+  /* The two 6px gaps the sticky arithmetic below depends on, named so the full-width mode can
+   * take both to 0 without re-deriving the calcs (2026-09-24). `--sp-pin-gap` is the space above
+   * the pinned Table Header; `--sp-group-gap` the space between it and the sheets. */
+  --sp-pin-gap: var(--ai-spacing-2);
+  --sp-group-gap: var(--ai-spacing-2);
   padding: var(--sp-page-pad);
   /* 24px, measured on 3515:203890: Header ends at y=258, Frame 279 starts at 282. Was 16 when
      the toolbar was the header's own bottom row and this gap only had to separate a card from a
@@ -175,14 +180,14 @@
   /* Two 6s, and they are different gaps: one above the pinned card, one between it and the
      sheets. Both are `--ai-spacing-2` today, which is exactly why they are written separately —
      collapsing them to a single `* 2` would hide that changing one should not move the other. */
-  --sp-rail-top: calc(var(--ai-spacing-2)      /* the gap above the pinned card */
+  --sp-rail-top: calc(var(--sp-pin-gap)       /* the gap above the pinned card */
                       + var(--sp-toolbar-h, var(--ai-spacing-11))
-                      + var(--ai-spacing-2)    /* the GROUP gap, table header -> sheet row */
+                      + var(--sp-group-gap)    /* the GROUP gap, table header -> sheet row */
                       - var(--sp-page-pad));   /* see --sp-sticky-origin */
   --sp-rail-h: calc(var(--sp-scrollport-h, calc(100dvh - var(--ai-spacing-9)))
-                    - var(--ai-spacing-2)      /* the gap above the pinned card */
+                    - var(--sp-pin-gap)        /* the gap above the pinned card */
                     - var(--sp-toolbar-h, var(--ai-spacing-11))
-                    - var(--ai-spacing-2)      /* the GROUP gap, table header -> sheet row */
+                    - var(--sp-group-gap)      /* the GROUP gap, table header -> sheet row */
                     - var(--sp-page-pad));     /* the page's own padding-block-end */
 }
 
@@ -226,7 +231,7 @@
  * which is what keeps the sheets tucked directly under it. */
 .cc-control__page--seating .seating-header--table {
   position: sticky;
-  inset-block-start: calc(var(--ai-spacing-2) - var(--sp-page-pad));
+  inset-block-start: calc(var(--sp-pin-gap) - var(--sp-page-pad));
   /* Above the two rails (1) so the toolbar's dropdowns — Export, and the overflow kebab, which
    * Figma draws opening 48px BELOW the header's bottom edge — paint over them and over the card
    * grid passing underneath. */
@@ -264,9 +269,9 @@
  * The two 6s are written separately for the reason `--sp-rail-top` records: different gaps that
  * happen to share a value today. */
 .table-listing__grid > .table-card {
-  scroll-margin-block-start: calc(var(--ai-spacing-2)
+  scroll-margin-block-start: calc(var(--sp-pin-gap, var(--ai-spacing-2))
                                   + var(--sp-toolbar-h, var(--ai-spacing-11))
-                                  + var(--ai-spacing-2));
+                                  + var(--sp-group-gap, var(--ai-spacing-2)));
 }
 
 /* ── The plan group ─────────────────────────────────────────────────────────
@@ -283,7 +288,7 @@
 .seating-group {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-2);
+  gap: var(--sp-group-gap, var(--ai-spacing-2));
 }
 
 /* NO scrolled-shadow on this header (designer, 2026-09-11). It was added when the listing grew
@@ -2516,4 +2521,105 @@
   .table-listing__grid > .table-detail.is-animating {
     transition: none;
   }
+}
+
+/* ── Full-width mode (Figma 3808:125109, 2026-09-24) ─────────────────────────
+ * The Seating Planner following the Listing's full-width template (3788:16762): the same screen,
+ * with the page inset, the gaps and the card chrome taken out so every panel runs edge to edge.
+ * Switched by the shell's shared `ccWidth.apply()` (ControlScreen/control-width.js), which puts
+ * `.cc-control__page--flush` on the page and `.cc-control__chrome--flush` on the chrome; opened in
+ * the demo with `?template=full`. Every function stays — nothing here touches behaviour.
+ *
+ * Shell values, all read from the frame through the Plugin API (no token gaps):
+ *   Content slot    fill components/cc/ui/primary-bg · padding 0 · gap 0
+ *   Header          surface/primary · radius none
+ *     Event-Info    padding spacing/6 · TOP stroke border/secondary only
+ *     Room bar      padding spacing/5 all round · gap spacing/5 · no stroke
+ *   Table Header    surface/primary · radius none · Toolbar padding T/B spacing/5, L spacing/6,
+ *                   R spacing/4 · gap spacing/3 · stroke TOP + BOTTOM border/secondary
+ *   Frame 246       gap spacing/0
+ *   Table Listing   surface/primary · radius 0 · padding spacing/5 · gap spacing/3 · no stroke
+ *   Table Detail    surface/primary · width size/6 · LEFT stroke border/secondary only · its
+ *                   `light/shadow-xxs` drop shadow left OFF (designer: shadows off for now)
+ *
+ * ONLY THE PLAN STATE IS DRAWN. No Event and No Plan keep the standard inset in this mode, because
+ * their centred cards were never drawn flush — an extrapolation there would be a guess. */
+.cc-control__page--seating.cc-control__page--flush {
+  /* The flush modifier paints the page surface/primary (the Listing's content sits on it). This
+   * screen's Content slot is the PAGE colour, with each panel painting its own surface. */
+  background: var(--cc-ui-primary-bg);
+}
+
+.cc-control__page--seating.cc-control__page--flush:not([data-seating-state="plan"]) {
+  padding: var(--sp-page-pad);
+}
+
+/* All three to 0 in one place, and the sticky arithmetic follows: the Table Header pins flush
+ * under the chrome and the sheets directly under it (`--sp-rail-top` / `--sp-rail-h`). (0,3,0),
+ * so it also beats the narrow container rule that sets `--sp-page-pad` to spacing-4. */
+.cc-control__page--seating.cc-control__page--flush[data-seating-state="plan"] {
+  --sp-page-pad: 0px;
+  --sp-pin-gap: 0px;
+  --sp-group-gap: 0px;
+  gap: 0;
+}
+
+/* The standard screen draws a 1px page-colour line under the chrome (see the top of this file).
+ * Flush, the Event-Info-Bar's own top stroke is the line, so the extra one goes; the scrolled
+ * shadow stays as it is on the standard screen. */
+.cc-control__main:has(.cc-control__page--seating.cc-control__page--flush[data-seating-state="plan"]) .cc-control__chrome {
+  box-shadow: none;
+}
+
+.cc-control__main:has(.cc-control__page--seating.cc-control__page--flush[data-seating-state="plan"]) .cc-control__chrome.is-scrolled {
+  box-shadow: var(--ai-shadow-sm);
+}
+
+/* Header and Table Header: no card. Every corner rule in SeatingHeader.css is cancelled, since the
+ * first/last-child rows carry their own radii to follow the root's. */
+.cc-control__page--flush[data-seating-state="plan"] .seating-header,
+.cc-control__page--flush[data-seating-state="plan"] .seating-header > *,
+.cc-control__page--flush[data-seating-state="plan"] .seating-header .seating-header__rooms,
+.cc-control__page--flush[data-seating-state="plan"] .seating-header .seating-header__toolbar {
+  border-radius: 0;
+}
+
+.cc-control__page--flush[data-seating-state="plan"] .seating-header {
+  border: 0;
+}
+
+.cc-control__page--flush[data-seating-state="plan"] .seating-header .seating-header__bar {
+  border-block-start: 1px solid var(--ai-border-secondary);
+  border-block-end: 0;
+}
+
+.cc-control__page--flush[data-seating-state="plan"] .seating-header .seating-header__rooms {
+  padding-inline-end: var(--ai-spacing-5);
+  border-block-end: 0;
+}
+
+/* The Table Header's line above and below — the only rules between the room bar, the toolbar and
+ * the sheets in this mode. */
+.cc-control__page--flush[data-seating-state="plan"] .seating-header--table {
+  border-block: 1px solid var(--ai-border-secondary);
+}
+
+/* The sheet row: no gaps, no cards. */
+.cc-control__page--flush[data-seating-state="plan"] .seating-plan {
+  gap: 0;
+}
+
+.cc-control__page--flush[data-seating-state="plan"] .seating-plan > .table-listing {
+  border: 0;
+  border-radius: 0;
+}
+
+/* The two rails: a leading rule only. The Unassigned sheet is not in the frame; it takes the Table
+ * Detail's treatment because it is the same kind of rail in the same row (extrapolated). */
+.cc-control__page--flush[data-seating-state="plan"] .seating-plan__aside > .table-detail,
+.cc-control__page--flush[data-seating-state="plan"] .seating-plan__pool > .unassigned {
+  border: 0;
+  border-inline-start: 1px solid var(--ai-border-secondary);
+  border-radius: 0;
+  box-shadow: none;
 }

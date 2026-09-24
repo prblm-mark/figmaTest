@@ -941,9 +941,10 @@
     padding-block: var(--ai-spacing-4);
   }
 
+  /* Bold at every width (designer, 2026-09-24) — this step used to drop the
+     weight to semibold along with the size. */
   .datatables--orders .table thead th {
     font-size: var(--ai-font-fixed-4xs);
-    font-weight: var(--ai-font-semibold);
     letter-spacing: var(--ai-tracking-7);
   }
 

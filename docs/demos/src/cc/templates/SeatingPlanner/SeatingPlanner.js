@@ -67,6 +67,12 @@
   var page = document.querySelector('[data-seating-state]');
   var panels = document.querySelectorAll('[data-seating-panel]');
 
+  /* Full-width mode (Figma 3808:125109, 2026-09-24) — the shell's shared switch, the same one the
+   * Listing uses. `?template=full` opens it; everything it changes here is CSS keyed on
+   * `.cc-control__page--flush` (SeatingPlanner.css, "Full-width mode"). The sticky metrics below
+   * read `--sp-page-pad` and the two gap variables, so nothing in this file branches on it. */
+  if (window.ccWidth) window.ccWidth.apply(window.ccWidth.fromUrl() || 'standard');
+
   function setState(state) {
     if (!page) return;
     page.setAttribute('data-seating-state', state);
