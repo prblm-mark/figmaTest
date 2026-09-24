@@ -252,7 +252,7 @@ card chrome differ. So it is built as one attribute on the same DOM. It is not a
 | | |
 |---|---|
 | Attribute | `data-listing-template="standard\|full"` on `.cc-listing`, plus `.cc-control__page--flush` on the page for `full` |
-| Set by | `applyTemplate(root, name)` in `ListingScreen.js`, from `config.template` (default `'standard'`) or `?template=full` |
+| Set by | `applyTemplate(root, name)` in `ListingScreen.js`, from `config.template` (default `'standard'`) or `?template=full`. **Since 2026-09-24 the shell half (flush page, no chrome rule) is the shared `ccWidth.apply()` in `ControlScreen/control-width.js`**, which the Seating Planner uses too |
 | Toggle contract | a future control calls `applyTemplate` again and persists the choice. **Kept out of the backend handover notes** (no `TODO(backend)` marker, no HANDOVER / manifest entry) until the designer says to add it — 2026-09-23 |
 | Not `data-layout` | that name is taken twice already: Media's listing/grid switch, and chat minimised mode, which also shrinks the fluid fonts. This frame keeps them |
 

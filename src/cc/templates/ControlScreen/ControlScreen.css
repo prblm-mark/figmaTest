@@ -92,7 +92,7 @@
 
 /* Flush chrome (2026-09-23) — the full-width listing template, Figma
    3788:16762, has no line between the CC header and the content under it
-   (designer). Set by `applyTemplate()` in ListingScreen.js alongside
+   (designer). Set by `ccWidth.apply()` (control-width.js) alongside
    `.cc-control__page--flush`, never written into the markup. */
 .cc-control__chrome--flush {
   border-bottom: 0;
@@ -165,8 +165,10 @@
    Two classes on purpose: at (0,2,0) it beats every single-class padding rule
    in this file — the base, both viewport @media trims and their coarse-pointer
    corrections — without having to repeat each of them. The scrollbar gutter
-   stays, so nothing shifts when the page starts to scroll. Toggled by
-   `applyTemplate()` in ListingScreen.js, never written into the markup. */
+   stays, so nothing shifts when the page starts to scroll. Toggled by the
+   shared full-width switch, `ccWidth.apply()` in control-width.js, never
+   written into the markup. A screen whose content sits on the page colour
+   (the Seating Planner) sets its own background back. */
 .cc-control__page.cc-control__page--flush {
   padding: 0;
   background: var(--ai-surface-primary);

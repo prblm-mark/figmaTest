@@ -3901,3 +3901,72 @@ Verified: mid-open the class is on with `block-size` at the natural 625px, `marg
 `opacity: 1` and a 0.25s transition; settled, every inline style is cleared, the class is gone and
 the height is natural. Switching tables leaves no class and no inline sizing, and selects the new
 table.
+
+## Full-width mode (2026-09-24)
+
+Figma `3808:125109` (dark). It follows the Listing's full-width template (`3788:16762`): the same
+screen, with no page inset, no gaps and no card chrome, so every panel runs edge to edge. The
+designer's note is that it "might" become a **site-wide** full-width mode.
+
+The light twin, `3808:126291`, still lacks the Table Header toolbar. The designer added it to
+the dark frame during the build, so the dark frame is the spec. **Every function is kept.**
+
+### The switch is the shell's, shared with the Listing
+
+`ccWidth.apply('full' | 'standard')` in `ControlScreen/control-width.js` sets up everything in
+one call:
+- `data-cc-width` on `.cc-control`
+- `.cc-control__page--flush` on the page
+- `.cc-control__chrome--flush` on the chrome
+- a `cc:width` event
+
+`?template=full` opens it. The Listing's `applyTemplate()` now calls the same function, so a
+future site-wide toggle is one call for every screen. That toggle (and persisting the choice) is
+**kept out of the backend handover notes** until the designer says so.
+
+### Shell values (Step 3a), read through the Plugin API, no token gaps
+
+| Node | Values |
+|---|---|
+| Content slot | fill `components/cc/ui/primary-bg` (the page colour, **not** surface/primary as on the Listing), padding 0, gap 0 |
+| Header (Has Plans) | surface/primary, radius none |
+| Event-Info-Bar | padding spacing/6, **top** stroke border/secondary only |
+| Room-Selector-Bar | padding spacing/5 on all sides (standard is 24 at the end), gap spacing/5, no stroke |
+| Table Header toolbar | surface/primary, radius none, padding T/B spacing/5, L spacing/6, R spacing/4, gap spacing/3, stroke **top and bottom** border/secondary |
+| Frame 246 (sheet row) | gap spacing/0 |
+| Table Listing | surface/primary, radius 0, padding spacing/5, gap spacing/3, no stroke |
+| Table Detail | surface/primary, width size/6, **left** stroke border/secondary only |
+
+The Table Detail's `light/shadow-xxs` shadow is left off, as are the resting shadows that
+TableDetail and Unassigned carry on the standard screen. Shadows are off for now (designer).
+
+### How the sticky stack follows
+
+The sticky maths is unchanged. The two 6px gaps it used to hard-code are now variables:
+- `--sp-pin-gap` is the space above the pinned Table Header.
+- `--sp-group-gap` is the space between the header and the sheets.
+
+Full width sets both of those, and `--sp-page-pad`, to 0. Nothing in the JS branches on the
+mode.
+
+Measured at 1728:
+- the pinned toolbar sits 0.0px under the chrome
+- the sheets sit 0.0px under the toolbar
+- the sheets' bottoms sit on the scrollport's bottom edge
+- there is no horizontal overflow
+
+The standard screen measured unchanged: pin 6, sheets 6 below, page padding and gap 24.
+
+The page-colour hairline under the chrome is dropped in this mode, because the Event-Info-Bar's
+top stroke is now the line. The shadow that appears on the chrome on scroll is unchanged.
+
+### Extrapolated, not drawn
+
+- **No Event and No Plan keep the standard inset.** Only the plan state is drawn, and their
+  centred cards would need a design to go flush.
+- **Unassigned** takes the Table Detail's left-rule treatment: it is the same kind of rail in
+  the same row. Its drop-target state now shows a brand fill with only the leading rule tinted,
+  not a full brand border.
+- **Below 1024** (stacked), the same flush rules apply. The Table Detail shows as a card inside
+  the grid there, so it keeps its card chrome. No mobile frame exists.
+

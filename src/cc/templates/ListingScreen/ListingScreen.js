@@ -2038,12 +2038,10 @@
   function applyTemplate(root, name) {
     var t = TEMPLATES.indexOf(name) !== -1 ? name : 'standard';
     root.setAttribute('data-listing-template', t);
-    var page = root.closest('.cc-control__page');
-    if (page) page.classList.toggle('cc-control__page--flush', t === 'full');
-    /* …and no line under the CC header either (designer, 2026-09-23). */
-    var main = root.closest('.cc-control__main');
-    var chrome = main && main.querySelector('.cc-control__chrome');
-    if (chrome) chrome.classList.toggle('cc-control__chrome--flush', t === 'full');
+    /* The shell's half — flush page, no rule under the CC header — is the shared
+       full-width switch now (ControlScreen/control-width.js, 2026-09-24), so the
+       Seating Planner and every later screen use the same one. */
+    if (window.ccWidth) window.ccWidth.apply(t);
     /* FilterItem's Rounded axis: the standard listing uses Rounded=True, the
        full-width one Rounded=False (designer, 2026-09-23). A real variant
        class, not a CSS radius override — so the renderers read `chipShape`,
