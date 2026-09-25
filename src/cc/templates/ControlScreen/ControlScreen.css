@@ -511,7 +511,7 @@
  *
  * @container cs-page (max-width: 767px) fires when .cc-control__page
  * itself shrinks below 768px — independent of viewport. So the page
- * goes "mobile" the moment the docked SidebarMenu (rail + 280px panel)
+ * goes "mobile" the moment the docked SidebarMenu (rail + 240px panel)
  * eats enough horizontal room, even on a wide desktop. */
 /* Page padding scales at the 768px VIEWPORT breakpoint — not the
  * container breakpoint. The container query below queries `cs-page`,
