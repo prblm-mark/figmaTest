@@ -5,7 +5,7 @@
  *   Type=Favourites × State=Selected
  *   Type=CRM × State=Default | Expanded
  *
- * The 280-wide column that pairs with the Sidebar rail. Holds the Affino
+ * The 240-wide column (280 in Figma; narrowed 2026-09-25) that pairs with the Sidebar rail. Holds the Affino
  * wordmark, an optional Search input, and a list of menu items. Layout
  * differs between Types:
  *   Control / Analysis : search + MainMenuItem rows
@@ -19,7 +19,8 @@
   align-items: center;
   gap: var(--ai-spacing-3);                       /* 8 */
   padding: var(--ai-spacing-4);                   /* 12 */
-  width: var(--ai-size-5);                        /* 280 */
+  /* 240 (designer, 2026-09-25) — was --ai-size-5 (280) from the Figma panel. */
+  width: var(--ai-size-4);                        /* 240 */
   flex-shrink: 0;
   height: 100%;
   min-height: 0;                                  /* allow inner list to scroll */
@@ -202,7 +203,9 @@
   width: 100%;
   padding: var(--ai-spacing-1) var(--ai-spacing-4);   /* 4 / 12 */
   border-radius: var(--ai-radius-md);
-  font-size: var(--ai-font-fixed-xs);
+  /* 13px (designer, 2026-09-25) — was --ai-font-fixed-xs (14) from Figma. Paired with the
+   * panel going to 240: more of the long client screen names fit before the ellipsis. */
+  font-size: var(--ai-font-fixed-2xs);
   line-height: var(--ai-leading-md);
   color: var(--ai-text-invert-secondary);
   cursor: pointer;

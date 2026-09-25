@@ -45,7 +45,8 @@ Type controls layout; State controls which item is selected/expanded and whether
 | Property | Token |
 |---|---|
 | Panel bg | `--cc-mainmenu-secondary-bg` |
-| Panel width | `--ai-size-5` (280) |
+| Submenu item font size | `--ai-font-fixed-2xs` (13) — **was `--ai-font-fixed-xs` (14) from Figma; designer, 2026-09-25** |
+| Panel width | `--ai-size-4` (240) — **narrowed from Figma's `--ai-size-5` (280) by the designer, 2026-09-25**; Figma wants updating |
 | Panel padding | `--ai-spacing-4` (12 — Control/Analysis/Favourites); `10px` (CRM only) |
 | Panel gap | `--ai-spacing-3` (8 — Control/Analysis/Favourites); `10px` (CRM only) |
 | Items gap | `--ai-spacing-1` (4) |
