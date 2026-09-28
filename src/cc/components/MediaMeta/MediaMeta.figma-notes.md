@@ -41,3 +41,6 @@ Draft thumb bg was `--ai-btn-secondary-bg-hover` (borrowed) → `--ai-surface-mi
   right semantic tokens in Figma first and this code follows the kit, not the draft.
 - Markup comes from `src/cc/templates/RecordScreen/record_markup.py` — the demo and the templates are
   generated from the same function, so they cannot drift.
+
+## Component set (2026-09-28)
+MediaMeta is now a set `3905:140931`: `Layout=Default` (`3861:1922`, the original node — existing instances unchanged) + `Layout=Stacked` (`3905:140918`): facts under the thumbnail, divider on the list's top edge, `spacing/4` top padding. Stacked values are single-line + ellipsis in Figma because Terms and Values are separate columns there (a wrapped value would misalign the rows); code wraps, since its grid keeps rows aligned. Stacked is the RecordSection ≤559 container query — no class. Code Connect repointed to the set.
