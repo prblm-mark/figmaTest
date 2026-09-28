@@ -75,3 +75,12 @@
 [data-cc-width="full"] .record-screen__sidebar {
   padding: var(--ai-spacing-5);
 }
+
+/* One line under the header, not two. The RecordHeader draws its own bottom
+ * border (Figma 3867:2138), and the shell chrome draws another 1px below it in
+ * standard width — control-width.js only adds `--flush` in full width, so the
+ * standard screens showed a double rule (designer, 2026-09-28). The record
+ * header's border is the one Figma specifies, so the chrome's is dropped here. */
+.cc-control__chrome:has(.cc-header--record) {
+  border-bottom: 0;
+}

@@ -1,5 +1,5 @@
 /* StatCard — small stat tile with an accent-coloured icon block, label,
- * and value. 2 sizes × 5 type variants (Default / Chevron Down /
+ * and value. 3 sizes (Sm / Base / Lg) × 5 type variants (Default / Chevron Down /
  * Chevron Right / No card / Number First) × Fill.
  *
  * Fill = one of 21 accent colours (`.stat-card--<colour>`, default blue),
@@ -116,11 +116,30 @@
   height: var(--ai-icon-size-md);
 }
 
+/* ── Variant: Sm (designer, 2026-09-28 — Article Edit) ──
+ * Figma Size=Sm: gap + padding spacing/3, min-height spacing/10, title
+ * font/size-fixed/2xs. Icon block, value and radius are unchanged from Base. */
+
+.stat-card--sm {
+  gap: var(--ai-spacing-3);
+  min-height: var(--ai-spacing-10);
+  padding: var(--ai-spacing-3);
+}
+
+.stat-card--sm .stat-card__title {
+  font-size: var(--ai-font-fixed-2xs);
+}
+
 /* ── Variant: No card (transparent — no border, no pad) ── */
 
 .stat-card--no-card {
   background: transparent;
   border: none;
+  padding: 0;
+  min-height: var(--ai-spacing-8);
+}
+
+.stat-card--no-card.stat-card--sm {
   padding: 0;
   min-height: var(--ai-spacing-8);
 }

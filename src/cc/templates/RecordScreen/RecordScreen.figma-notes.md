@@ -64,7 +64,7 @@ TopNavigation, HeaderGroup, ActionsMenu rail, theme + width scripts). Page body:
 - **Tab count 8 vs table total 21** — the Figma draft disagrees with itself; both kept as drawn.
 - **Labels differ between View and Edit** as drawn: "Alt Title" / "Alternative Title",
   "Topic & Keywords" / "Topics and Keywords".
-- **Advisory descriptions** exist in the design for the first advisory only.
+- **Advisory descriptions** exist in the design for the first advisory only. The other two expanded blank, so they carry placeholder copy written in the same voice (2026-09-28) — replace with designer/backend copy (the real text comes from the SEO check, `data-backend-todo="seo-advisory-detail"` stays on empty descriptions).
 - **No narrow / mobile layout is designed.** The two columns rely on intrinsic sizing
   (`min-width: 0`); no container query was invented. Needs a design at the cs-page widths the docked
   SidebarMenu produces.

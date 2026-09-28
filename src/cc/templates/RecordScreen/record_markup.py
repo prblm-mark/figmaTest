@@ -239,8 +239,8 @@ def viewer_list():
 
 # ── AdvisoryItem / AdvisoryList ──────────────────────────────────────
 ADVISORIES = [("No social sharelines entered", "Enter alternative versions of the title for visitors to easily share your content.", True),
-              ("No topics selected", None, False),
-              ("Use subheadings (H2, H3) in the Main Body", None, False)]
+              ("No topics selected", "Add topics and keywords so this article appears in related listings and search.", False),  # placeholder copy — Figma draws only the first description
+              ("Use subheadings (H2, H3) in the Main Body", "Break the Main Body into sections with H2 and H3 headings to help readers and search engines scan it.", False)]  # placeholder copy
 
 
 def advisory_item(i, title, desc, expanded):
@@ -265,7 +265,7 @@ def advisory_list():
 
 # ── PerformanceSummary ───────────────────────────────────────────────
 def stat(title, value, colour, ico):
-    return f'''<div class="stat-card stat-card--{colour} stat-card--soft">
+    return f'''<div class="stat-card stat-card--sm stat-card--{colour} stat-card--soft">
                 <div class="stat-card__icon-wrap">{icon(ico)}</div>
                 <div class="stat-card__text"><p class="stat-card__title">{e(title)}</p><p class="stat-card__value">{e(value)}</p></div>
               </div>'''

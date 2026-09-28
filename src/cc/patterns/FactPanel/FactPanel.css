@@ -59,6 +59,14 @@
   gap: var(--ai-spacing-3);
 }
 
+/* Header badge (the Performance LIVE indicator) — 11px bold, smaller than the
+ * Badge base 12px semibold. Case B contextual override (designer, 2026-09-28);
+ * the Badge component is unchanged. */
+.fact-panel__trailing .badge {
+  font-size: var(--ai-font-fixed-4xs);
+  font-weight: var(--ai-font-bold);
+}
+
 /* ── FactList ─────────────────────────────────────── */
 
 .fact-list {

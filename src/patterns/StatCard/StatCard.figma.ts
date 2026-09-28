@@ -5,6 +5,7 @@ figma.connect(
   {
     props: {
       size: figma.enum('Size', {
+        Sm: 'stat-card--sm',
         Base: '',
         Lg: 'stat-card--lg',
       }),

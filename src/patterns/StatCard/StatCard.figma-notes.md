@@ -9,7 +9,7 @@
 
 ## Variant matrix
 
-47 Figma variants: 2 Sizes × 5 Types with `Fill=Blue`, plus all 38 Fill values (19 accents ×
+52 Figma variants: 3 Sizes (Sm added 2026-09-28) × 5 Types with `Fill=Blue`, plus all 38 Fill values (19 accents ×
 solid/soft) on **Base / Default**. Other Size × Type combos exist in Blue only in Figma; code
 supports every Fill on every Size × Type.
 
@@ -20,6 +20,11 @@ supports every Fill on every Size × Type.
 | `2758:3039` | Base | Chevron Right | + chevron-right 16 on right |
 | `2758:3049` | Base | No card | no border/shadow/padding, h-40 |
 | `2758:3057` | Base | Number First | value above title |
+| `3900:1754` | Sm | Default | h-56 (min spacing-10), gap + padding spacing-3, title 2xs (13px) |
+| `3900:1762` | Sm | Chevron Down | Sm + chevron |
+| `3900:1772` | Sm | Chevron Right | Sm + chevron |
+| `3900:1782` | Sm | No card | Sm + no card (h-40, padding 0) |
+| `3900:1790` | Sm | Number First | Sm + swapped order |
 | `2758:3076` | Lg | Default | h-80, icon-wrap 48, icon 20 |
 | `2758:3082` | Lg | Chevron Down | Lg + chevron |
 | `2758:3089` | Lg | Chevron Right | Lg + chevron |
@@ -50,6 +55,7 @@ Each colour modifier only re-points four component props (`--stat-card-solid`, `
 | Figma | CSS |
 |---|---|
 | Root frame | `.stat-card` (`<div>`) |
+| Sm size | `.stat-card--sm` |
 | Lg size | `.stat-card--lg` |
 | Type=No card | `.stat-card--no-card` |
 | Type=Number First | `.stat-card--number-first` (uses `order` to swap) |
@@ -75,6 +81,9 @@ For Chevron Down/Right variants, add `<div class="stat-card__chevron">` as a sib
 | Card shadow | `var(--ai-shadow-md)` | maps to Figma `light/shadow-md`; removed on `--no-card` |
 | Card radius | `var(--ai-radius-md)` | 8px (Figma bound `--ai-spacing-3` — designer-approved swap) |
 | Card gap (Base) | `var(--ai-spacing-4)` | 12px |
+| Card gap / padding (Sm) | `var(--ai-spacing-3)` | 8px |
+| Card min-height (Sm + card) | `var(--ai-spacing-10)` | 56px |
+| Title font-size (Sm) | `var(--ai-font-fixed-2xs)` | 13px |
 | Card gap (Lg) | `var(--ai-spacing-5)` | 16px |
 | Card padding (Base) | `var(--ai-spacing-4)` | 12px |
 | Card padding (Lg) | `var(--ai-spacing-5)` | 16px |
@@ -148,3 +157,7 @@ None — self-contained. Uses Lucide icons (`mail` default + `chevron-down` / `c
 
 - 2026-09-28: Fill axis — 21 accent colours × solid/soft via new `--ai-accent-*` tokens; all 42 fills added to Figma on Base/Default (51 variants); icon-wrap primitive gap resolved; Figma variants rebound to `accent/*`.
 - 2026-05-28: Initial build from Figma frame `2758:3020`. All 10 variants implemented. 4 STOPs resolved (icon-wrap bg primitive, radius rebind, consumer-controlled width, transparent no-card bg).
+
+
+## Sm size (designer, 2026-09-28)
+From the designer's live amends on Article Edit: gap + padding `--ai-spacing-3`, min-height `--ai-spacing-10`, title `--ai-font-fixed-2xs`. Icon block (32 / 16px icon), value and radius unchanged from Base. Built in Figma as 5 Blue variants like Lg; first consumer = the record screens' PerformanceSummary.

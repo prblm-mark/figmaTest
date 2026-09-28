@@ -41,3 +41,8 @@ Every sidebar panel is this one component with the standard header — the draft
   right semantic tokens in Figma first and this code follows the kit, not the draft.
 - Markup comes from `src/cc/templates/RecordScreen/record_markup.py` — the demo and the templates are
   generated from the same function, so they cannot drift.
+
+## Contextual override — header badge type (designer, 2026-09-28)
+`.fact-panel__trailing .badge` → `--ai-font-fixed-4xs` (11px) + `--ai-font-bold`, over the Badge base
+`fixed-xxs` / semibold. In Figma the FactPanel's Badge instance (`3896:16232`) text is overridden to
+`font/size-fixed/4xs` + Bold. The Badge component set is unchanged.
