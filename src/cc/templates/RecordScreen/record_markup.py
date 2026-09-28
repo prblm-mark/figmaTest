@@ -440,7 +440,7 @@ def steps_table(steps, total=21):
               <td>Content</td><td>None</td>
               <td><span class="steps-table__empty" aria-label="None">{icon("minus")}</span></td>
               <td><span class="steps-table__empty" aria-label="None">{icon("minus")}</span></td>
-              <td><a class="btn btn--tertiary btn--sm" href="#"><span>Markus Karlsson</span></a></td>
+              <td><a class="btn btn--tertiary btn--sm steps-table__author-chip" href="#"><span>Markus Karlsson</span></a></td>
               <td>20 Jul 2026</td>
               <td><span class="steps-table__live" aria-label="Live">{icon("check")}</span></td>
               <td class="datatables__col--tight"><a class="datatables__row-edit" href="#" aria-label="Edit step {i}">{icon("pencil")}</a></td>

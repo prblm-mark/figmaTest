@@ -50,3 +50,10 @@ Built on Datatables — no new table. Column widths follow the table resizing ru
   right semantic tokens in Figma first and this code follows the kit, not the draft.
 - Markup comes from `src/cc/templates/RecordScreen/record_markup.py` — the demo and the templates are
   generated from the same function, so they cannot drift.
+
+## Contextual override — author chip border (designer, 2026-09-28)
+The "Created By" chip is `btn btn--tertiary btn--sm` + `.steps-table__author-chip`, which holds
+`--ai-border-secondary` through rest / hover / focus — the same Case B line as the listing rows'
+account chip (`.datatables__account-chip`). In Figma both StepRow variants' `Created By` instances
+(`3881:4873`, `3881:4920`) carry a 1px inside stroke bound to `border/secondary`; the Button set
+itself is unchanged (tertiary border tokens stay transparent).

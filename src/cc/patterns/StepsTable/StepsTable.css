@@ -151,3 +151,13 @@
   width: var(--ai-icon-size-sm);
   height: var(--ai-icon-size-sm);
 }
+
+/* Author chip — `btn btn--tertiary btn--sm` plus the subtle `--ai-border-secondary` line the
+ * listing rows' account chip carries (Case B contextual override, designer 2026-09-28).
+ * Tertiary's own border tokens are transparent in every mode, so the border is restated for
+ * hover and focus: `.btn--tertiary:hover` sets the transparent hover token at (0,2,0). */
+.steps-table__author-chip,
+.steps-table__author-chip:hover,
+.steps-table__author-chip:focus-visible {
+  border-color: var(--ai-border-secondary);
+}

@@ -200,7 +200,7 @@
   font-size: var(--ai-font-fluid-xxs);
   font-weight: var(--ai-font-semibold);
   line-height: var(--ai-leading-xs);
-  border-radius: var(--ai-radius-sm);
+  border-radius: var(--ai-radius-md); /* designer, 2026-09-28 — was radius-sm */
 }
 
 .btn--xs [data-lucide] {
