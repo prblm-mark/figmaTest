@@ -45,13 +45,67 @@
   min-width: 0;
 }
 
+/* Width is resizable (designer, 2026-09-28 — "like the seating planner"): RecordScreen.js
+ * writes --rs-sidebar-w on the body from the drag handle; unset, Figma's 384 stands.
+ * 384 is also the floor, so the handle only widens it. */
 .record-screen__sidebar {
+  position: relative;               /* positioning context for the resize strip */
   display: flex;
-  flex: 0 1 var(--ai-size-7);
+  flex: 0 1 var(--rs-sidebar-w, var(--ai-size-7));
   flex-direction: column;
   gap: var(--ai-spacing-5);
-  min-width: 0;
-  max-width: var(--ai-size-7);
+  min-width: var(--ai-size-7);      /* never narrower than Figma's 384 (designer, 2026-09-28) */
+  max-width: var(--rs-sidebar-w, var(--ai-size-7));
+}
+
+/* ── Resize handle ────────────────────────────────────
+ * The Seating Planner's model (2026-09-10): no visible pill, a transparent strip on the
+ * sidebar's leading edge with a col-resize cursor. Standard width: the strip fills the
+ * spacing-5 gap between the columns. Full width: it straddles the main column's right border,
+ * which tints on hover/drag the way the seating sheets' edge does. Still a real element so it
+ * can take focus — role="separator", arrow keys, Home/End, double-click resets to 384. */
+.record-screen__handle {
+  position: absolute;
+  z-index: 1;
+  inset-block: 0;
+  inset-inline-start: calc(0px - var(--ai-spacing-5));
+  inline-size: var(--ai-spacing-5);
+  cursor: col-resize;
+  touch-action: none;
+}
+
+[data-cc-width="full"] .record-screen__handle {
+  inset-inline-start: calc(0px - var(--ai-spacing-5) / 2);
+}
+
+.record-screen__body:has(.record-screen__handle:hover) .record-screen__main,
+.record-screen__body:has(.record-screen__handle[data-dragging]) .record-screen__main {
+  border-right-color: var(--ai-surface-contrast);
+}
+
+/* While dragging, stop text selection across the page. */
+.record-screen__body:has(.record-screen__handle[data-dragging]) {
+  user-select: none;
+}
+
+.record-screen__handle-bar {
+  display: none;
+}
+
+.record-screen__handle:focus-visible {
+  outline: none;
+}
+
+/* Invisible at rest, so keyboard focus needs its own mark — same as the Seating Planner. */
+.record-screen__handle:focus-visible .record-screen__handle-bar {
+  display: block;
+  inline-size: var(--ai-spacing-1);
+  block-size: 100%;
+  margin-inline: auto;
+  border-radius: var(--ai-radius-full);
+  background-color: var(--ai-border-brand);
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: 2px;
 }
 
 /* ── Full width ───────────────────────────────────── */

@@ -86,7 +86,14 @@ def page(inner):
 def body(sections):
     return f'''<div class="record-screen__body">
           <div class="record-screen__main">{sections}</div>
-          <aside class="record-screen__sidebar" aria-label="Record information">{m.sidebar()}</aside>
+          <aside class="record-screen__sidebar" aria-label="Record information">
+            <div class="record-screen__handle" data-record-handle role="separator" aria-orientation="vertical"
+                 tabindex="0" aria-label="Resize the record information panel"
+                 aria-valuemin="384" aria-valuemax="0" aria-valuenow="384">
+              <span class="record-screen__handle-bar" aria-hidden="true"></span>
+            </div>
+            {m.sidebar()}
+          </aside>
         </div>'''
 
 

@@ -44,6 +44,7 @@ TopNavigation, HeaderGroup, ActionsMenu rail, theme + width scripts). Page body:
 | Element | Behaviour | Owner |
 |---|---|---|
 | Details / Article steps tabs | navigate between screens; menu open/closed and width persist | links + `RecordScreen.js` |
+| Sidebar edge (View / Edit) | drag to resize the sidebar (designer, 2026-09-28 — the Seating Planner model): invisible `role="separator"` strip on the sidebar's leading edge, col-resize cursor; full width tints the main column's border `--ai-surface-contrast` on hover/drag. Min `--ai-size-7` (384, Figma's width — designer), max half the row, ←/→ 16px, Home/End, double-click resets. Width kept per viewer (`localStorage cc-record-sidebar-w`) across View ↔ Edit | `RecordScreen.js` |
 | Actions-rail **Minimise** | toggles full width (designer, 2026-09-28): `aria-pressed`, rail active look, choice saved (`localStorage cc-width`) and followed on every record screen; `?template=` still wins when present | `control-width.js` (`data-cc-width-toggle`, opt-in per screen) |
 | Edit / Cancel | View ↔ Edit screens | links |
 | SEO Health ± / Expand all | expand inline | `AdvisoryItem.js` |
@@ -58,6 +59,8 @@ TopNavigation, HeaderGroup, ActionsMenu rail, theme + width scripts). Page body:
   all; tag remove; modal opens pre-ticked (2) and Apply writes 4 tags back; `?template=full` sets
   `data-cc-width="full"`, 6 `record-section--full`, flat tabs, and Edit keeps `?template=full`.
 - Measured: label column 192 / compact term 128; sidebar 384 in both widths.
+- Resize probe (both widths): drag −158px → 542; End → 384; Home → half the row; → −16; double-click → 384 + storage cleared; `elementFromPoint` on the edge hits the handle.
+- **Open:** max (half the row) and the 16px step are carried from the Seating Planner, not a Figma value; standard width has no hover paint (cursor only) — no edge line exists between the two card columns to tint.
 - Light and dark (CC Dark) screenshots checked.
 
 ## Open questions / known gaps

@@ -29,6 +29,85 @@
   document.addEventListener('cc:width', function (e) { mirror(e.detail.mode); });
   if (window.ccWidth) window.ccWidth.apply(window.ccWidth.resolve());
 
+  /* Resizable sidebar (designer, 2026-09-28) — the Seating Planner's handle model.
+   * MIN --ai-size-7 (384 — Figma's width is the floor, designer 2026-09-28), MAX half the row, 16px arrow step, double-click
+   * resets to Figma's 384. The chosen width is kept per viewer (localStorage, like cc-width) so
+   * it survives moving between View and Edit. No stacked layout exists for these screens yet,
+   * so there is no isStacked() guard. */
+  var body = document.querySelector('.record-screen__body');
+  var handle = document.querySelector('[data-record-handle]');
+  var side = document.querySelector('.record-screen__sidebar');
+  var KEY = 'cc-record-sidebar-w';
+
+  // Custom props resolve to the authored string ("17.5rem"), so convert through the root font size.
+  function tokenPx(name) {
+    var raw = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    var n = parseFloat(raw);
+    if (!isFinite(n)) return 0;
+    return raw.indexOf('rem') !== -1 ? n * parseFloat(getComputedStyle(document.documentElement).fontSize) : n;
+  }
+
+  if (body && handle && side) {
+    var bounds = function () {
+      var min = tokenPx('--ai-size-7');
+      return { min: min, max: Math.max(min, body.getBoundingClientRect().width / 2) };
+    };
+    var aria = function (w) {
+      var b = bounds();
+      handle.setAttribute('aria-valuenow', String(Math.round(w)));
+      handle.setAttribute('aria-valuemin', String(Math.round(b.min)));
+      handle.setAttribute('aria-valuemax', String(Math.round(b.max)));
+    };
+    var setWidth = function (px, save) {
+      var b = bounds();
+      var w = Math.min(b.max, Math.max(b.min, px));
+      body.style.setProperty('--rs-sidebar-w', w + 'px');
+      aria(w);
+      if (save) { try { localStorage.setItem(KEY, String(Math.round(w))); } catch (e) { /* session only */ } }
+      return w;
+    };
+    var from = 0, start = 0;
+
+    handle.addEventListener('pointerdown', function (ev) {
+      from = ev.clientX; start = side.getBoundingClientRect().width;
+      handle.setAttribute('data-dragging', '');
+      if (handle.setPointerCapture) handle.setPointerCapture(ev.pointerId);
+      ev.preventDefault();
+    });
+    handle.addEventListener('pointermove', function (ev) {
+      if (!handle.hasAttribute('data-dragging')) return;
+      setWidth(start - (ev.clientX - from), false);   // sidebar is right of its edge: drag left = wider
+    });
+    var end = function (ev) {
+      if (!handle.hasAttribute('data-dragging')) return;
+      handle.removeAttribute('data-dragging');
+      try { handle.releasePointerCapture(ev.pointerId); } catch (e) { /* already released */ }
+      setWidth(side.getBoundingClientRect().width, true);
+    };
+    handle.addEventListener('pointerup', end);
+    handle.addEventListener('pointercancel', end);
+
+    handle.addEventListener('keydown', function (ev) {
+      var b = bounds(), step = tokenPx('--ai-spacing-5'), w = side.getBoundingClientRect().width;
+      if (ev.key === 'ArrowLeft') setWidth(w + step, true);
+      else if (ev.key === 'ArrowRight') setWidth(w - step, true);
+      else if (ev.key === 'Home') setWidth(b.max, true);
+      else if (ev.key === 'End') setWidth(b.min, true);
+      else return;
+      ev.preventDefault();
+    });
+
+    handle.addEventListener('dblclick', function () {
+      body.style.removeProperty('--rs-sidebar-w');
+      try { localStorage.removeItem(KEY); } catch (e) { /* nothing stored */ }
+      aria(side.getBoundingClientRect().width);
+    });
+
+    var saved = null;
+    try { saved = parseFloat(localStorage.getItem(KEY)); } catch (e) { /* storage blocked */ }
+    if (saved > 0) setWidth(saved, false); else aria(side.getBoundingClientRect().width);
+  }
+
   // TODO(backend:RecordScreen): Performance figures + chart series are static → record analytics endpoint
   //   { impressions, consumed, bookmarked, topAccounts[], series: { labels[], impressions[], unique[] } }
   var canvas = document.getElementById('perf-chart');
