@@ -42,3 +42,32 @@
   margin: 0;
   padding: var(--ai-spacing-6);
 }
+
+/* ── Narrow: field rows stack label over value ─────────
+ * Designer-approved 2026-09-28. The section spans the main column, so its own width
+ * tracks the space available (docked menu, widened sidebar, narrow window) — a valid
+ * self-container. 559 = the 192 label + a ~45ch value (the low end of a readable
+ * 45–75ch measure at 14px) + the section's padding. Below it the label sits above its
+ * value at full width. No Figma frame exists for this: the 8px label→value gap is the
+ * DS Input's own label→control gap (`--ai-spacing-3`), so stacked rows read like the
+ * form fields everywhere else. Compact (sidebar) rows are untouched. */
+.record-section {
+  container: record-section / inline-size;
+}
+
+@container record-section (max-width: 559px) {
+  .field-row:not(.field-row--compact) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--ai-spacing-3);
+  }
+
+  .field-row:not(.field-row--compact) .field-row__label {
+    flex-basis: auto;
+  }
+
+  /* The label no longer sits beside a 40px control, so drop the centring offset. */
+  .field-row--edit .field-row__label {
+    padding-top: 0;
+  }
+}

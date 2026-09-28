@@ -39,3 +39,6 @@ Draft card bg/border were borrowed (`--cc-header-secondary-bg`, `--ai-datatable-
   right semantic tokens in Figma first and this code follows the kit, not the draft.
 - Markup comes from `src/cc/templates/RecordScreen/record_markup.py` — the demo and the templates are
   generated from the same function, so they cannot drift.
+
+## Narrow layout (designer-approved 2026-09-28)
+`.record-section` is a self-container (`record-section`). At ≤559 its non-compact FieldRows stack label over value with a `--ai-spacing-3` gap (the DS Input's label→control gap); the edit label's centring `padding-top` is dropped. No Figma frame — the threshold is 192 label + a ~45ch value + padding.

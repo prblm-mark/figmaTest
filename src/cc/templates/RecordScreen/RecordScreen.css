@@ -138,3 +138,41 @@
 .cc-control__chrome:has(.cc-header--record) {
   border-bottom: 0;
 }
+
+/* ── Narrow: stack the columns ─────────────────────────
+ * Designer-approved 2026-09-28. `cs-page` is the page's content box, so this fires on a
+ * docked menu or a narrow window alike (CLAUDE.md §4a) — 1023, the Seating Planner's
+ * stack point. Side by side needs 384 sidebar + 16 gap + ~600 of form ≈ 1000–1040.
+ * Stacked, the sidebar panels go BELOW the main content (DOM and reading order): two
+ * across while each can keep its 384, one across below that — intrinsic, via
+ * auto-fit/minmax, so there is no second breakpoint. The resize handle is removed:
+ * a stacked panel has no edge to drag, and the stored width is ignored (max-width none). */
+@container cs-page (max-width: 1023px) {
+  .record-screen__body {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .record-screen__main {
+    flex: none;
+  }
+
+  .record-screen__sidebar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--ai-size-7)), 1fr));
+    align-items: start;
+    flex: none;
+    min-width: 0;
+    max-width: none;
+  }
+
+  .record-screen__handle {
+    display: none;
+  }
+
+  /* Full width: the main column's divider moves from its right edge to under it. */
+  [data-cc-width="full"] .record-screen__main {
+    border-right: 0;
+    border-bottom: 1px solid var(--ai-border-secondary);
+  }
+}

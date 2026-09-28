@@ -218,3 +218,6 @@ it is the header's own CONTAINER that decides, so a 1024px laptop with the
 SidebarMenu docked (a 632px header) also gets 48 — the same threshold at which
 the header already steps its type and padding down, so the height now follows
 the layout it belongs to.
+
+## Type=Record on mobile (2026-09-28)
+The `cc-header` ≤767 icon-only collapse assumes every action has an icon. Record's Cancel / Add have none, so Record opts out: its actions take Button `sm` dress (padding `0 --ai-spacing-4`, gap `--ai-spacing-3`, `--ai-font-fluid-xxs`) at the same 32px height, labels kept.

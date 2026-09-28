@@ -68,8 +68,13 @@ TopNavigation, HeaderGroup, ActionsMenu rail, theme + width scripts). Page body:
 - **Labels differ between View and Edit** as drawn: "Alt Title" / "Alternative Title",
   "Topic & Keywords" / "Topics and Keywords".
 - **Advisory descriptions** exist in the design for the first advisory only. The other two expanded blank, so they carry placeholder copy written in the same voice (2026-09-28) — replace with designer/backend copy (the real text comes from the SEO check, `data-backend-todo="seo-advisory-detail"` stays on empty descriptions).
-- **No narrow / mobile layout is designed.** The two columns rely on intrinsic sizing
-  (`min-width: 0`); no container query was invented. Needs a design at the cs-page widths the docked
-  SidebarMenu produces.
+- **Narrow layout (designer-approved 2026-09-28, no Figma frames):** container queries only.
+  Tier 1 `@container cs-page (max-width: 1023px)` (the Seating Planner's stack point) stacks the
+  columns — sidebar panels go below main, two across while each keeps 384, one across under that
+  (`auto-fit`/`minmax`, no second breakpoint); the resize handle is hidden; in full width the main
+  divider moves from its right edge to under it. Tier 2 lives in RecordSection: a self-container
+  that stacks field rows label-over-value at ≤559 (192 label + ~45ch value + padding). The record
+  header keeps its button labels on mobile (Header.css). Verified 390 / 820 / 1024–1600:
+  no page h-scroll; Steps table scrolls inside `datatables__body`.
 - The dark top navigation bar in the Figma screens is still the drawn frame (CC TopNavigation lives
   in the CC file); code uses the real shell.
