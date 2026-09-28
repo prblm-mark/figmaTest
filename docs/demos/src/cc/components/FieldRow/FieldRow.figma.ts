@@ -2,7 +2,7 @@ import figma, { html } from '@figma/code-connect/html'
 
 figma.connect('https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino---Design-System?node-id=3861-1987', {
   props: {
-    layout: figma.enum('Layout', { Wide: '', Compact: 'field-row--compact' }),
+    layout: figma.enum('Layout', { Wide: '', Stacked: '', Compact: 'field-row--compact' }), // Stacked = the RecordSection ≤559 container query, no class
     type: figma.enum('Type', { Text: '', Tags: '', Paragraph: 'field-row--paragraph', Media: 'field-row--media',
       Input: 'field-row--edit', Select: 'field-row--edit', TagBox: 'field-row--edit', Textarea: 'field-row--edit', 'Media Picker': 'field-row--edit' }),
   },

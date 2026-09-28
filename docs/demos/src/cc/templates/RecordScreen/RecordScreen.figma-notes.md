@@ -78,3 +78,12 @@ TopNavigation, HeaderGroup, ActionsMenu rail, theme + width scripts). Page body:
   no page h-scroll; Steps table scrolls inside `datatables__body`.
 - The dark top navigation bar in the Figma screens is still the drawn frame (CC TopNavigation lives
   in the CC file); code uses the real shell.
+
+## Narrow frames in Figma (2026-09-28)
+| Frame | Node | Shows |
+|---|---|---|
+| Article View — Narrow (page ≤1023) | `3905:142428` | 1024 wide: columns stacked, rows side by side |
+| Article View — Mobile (390) | `3905:143091` | all stacked, FieldRow `Layout=Stacked`, actions rail hidden, header mobile dress |
+| Article Edit — Narrow (page ≤1023) | `3907:17461` | as View |
+| Article Edit — Mobile (390) | `3907:17632` | as View |
+Built from duplicates of the standard frames (kit instances kept). Mobile header: RecordHeader padding spacing/3 · spacing/4, title font/size-fixed/sm, buttons Size=sm; drawn top-nav breadcrumb clipped and user name hidden, as the code renders.
