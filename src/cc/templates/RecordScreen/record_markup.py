@@ -192,7 +192,7 @@ def fact_panel(title, content, subtitle=None, badge=None, action=None):
     sub = f'<p class="fact-panel__subtitle">{e(subtitle)}</p>' if subtitle else ""
     trail = ""
     if badge or action:
-        b = f'<span class="badge badge--pill badge--success">{e(badge)}</span>' if badge else ""
+        b = f'<span class="badge badge--pill badge--success"><span class="badge__dot"></span><span>{e(badge)}</span></span>' if badge else ""  # Badge Type=Indicator (designer, 2026-09-28)
         trail = f'<div class="fact-panel__trailing">{b}{action or ""}</div>'
     return f'''<section class="fact-panel" aria-labelledby="{pid}">
           <div class="fact-panel__header">

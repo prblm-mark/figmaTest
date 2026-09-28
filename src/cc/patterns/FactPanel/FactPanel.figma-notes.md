@@ -19,7 +19,7 @@
 | Panel (section) | `.fact-panel` |
 | Header | `.fact-panel__header (+ divider as its bottom border)` |
 | Title block | `.fact-panel__title-block / __title (h2) / __subtitle` |
-| Trailing | `.fact-panel__trailing → .badge.badge--pill.badge--success and/or action button` |
+| Trailing | `.fact-panel__trailing → .badge.badge--pill.badge--success` with `.badge__dot` (Badge Type=Indicator `2580:10516`, designer 2026-09-28 — was a plain Pill) and/or action button |
 | FactList (dl) | `.fact-list → .field-row--compact rows` |
 
 ## Token Mapping

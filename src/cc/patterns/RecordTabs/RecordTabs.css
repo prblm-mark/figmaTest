@@ -48,6 +48,11 @@
   white-space: nowrap;
 }
 
+/* Tabs are links, but base.css underlines a:hover — tabs never underline (designer) */
+.record-tab:hover {
+  text-decoration: none;
+}
+
 .record-tab--active {
   border-bottom-color: var(--ai-border-brand);
   color: var(--ai-text-brand);

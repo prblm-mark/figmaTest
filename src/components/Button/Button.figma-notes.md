@@ -46,6 +46,9 @@
 | `Size` | base | _(none — default)_ |
 | `Size` | sm | `.btn--sm` |
 | `Size` | xs | `.btn--xs` |
+
+> **2026-09-28:** Size=xs text is now **SemiBold** (`--ai-font-semibold`) — rebound in Figma on all 38 xs variants (`font/weight/SemiBold`, was Medium) at the designer's request.
+
 | `Size` | _(none — see below)_ | `.btn--icon.btn--2xs` |
 | `Icon Only` | True | `.btn--icon` |
 | `State` | Disabled | `disabled` attr / `.btn--disabled` |
