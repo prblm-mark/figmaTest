@@ -70,4 +70,20 @@
   .field-row--edit .field-row__label {
     padding-top: 0;
   }
+
+  /* MediaMeta: the file facts move UNDER the thumbnail (designer, 2026-09-28) — beside a
+   * 72px image in a narrow value column they wrapped word by word. Kept, not hidden: alt text
+   * is the accessibility-relevant value and the facts are what a record view is for. The
+   * divider turns from the list's left edge to its top, same token and spacing. */
+  .media-meta {
+    flex-direction: column;
+  }
+
+  .media-meta__list {
+    align-self: stretch;
+    padding-left: 0;
+    padding-top: var(--ai-spacing-4);
+    border-left: 0;
+    border-top: 1px solid var(--ai-border-secondary);
+  }
 }

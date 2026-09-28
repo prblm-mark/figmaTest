@@ -70,8 +70,8 @@ TopNavigation, HeaderGroup, ActionsMenu rail, theme + width scripts). Page body:
 - **Advisory descriptions** exist in the design for the first advisory only. The other two expanded blank, so they carry placeholder copy written in the same voice (2026-09-28) — replace with designer/backend copy (the real text comes from the SEO check, `data-backend-todo="seo-advisory-detail"` stays on empty descriptions).
 - **Narrow layout (designer-approved 2026-09-28, no Figma frames):** container queries only.
   Tier 1 `@container cs-page (max-width: 1023px)` (the Seating Planner's stack point) stacks the
-  columns — sidebar panels go below main, two across while each keeps 384, one across under that
-  (`auto-fit`/`minmax`, no second breakpoint); the resize handle is hidden; in full width the main
+  columns — sidebar panels go below main in ONE full-width column (a two-up grid left holes beside
+  short panels; masonry would make panels jump columns on expand — designer, 2026-09-28); the resize handle is hidden; in full width the main
   divider moves from its right edge to under it. Tier 2 lives in RecordSection: a self-container
   that stacks field rows label-over-value at ≤559 (192 label + ~45ch value + padding). The record
   header keeps its button labels on mobile (Header.css). Verified 390 / 820 / 1024–1600:
