@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" data-brand="cc">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../../components/dark-mode-toggle.js"></script>
+  <title>PerformanceSummary — Control Centre</title>
+  <link rel="stylesheet" href="../../../styles/base.css">
+  <link rel="stylesheet" href="../../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../../components/Badge/Badge.css">
+  <link rel="stylesheet" href="../../../patterns/StatCard/StatCard.css">
+  <link rel="stylesheet" href="../../../patterns/Chart/Chart.css">
+  <link rel="stylesheet" href="../FactPanel/FactPanel.css">
+  <link rel="stylesheet" href="PerformanceSummary.css">
+  <style>
+    body { margin: 0; padding: var(--ai-spacing-7); background: var(--cc-ui-primary-bg); min-height: 100vh; color: var(--ai-text-primary); font-family: var(--ai-font-body); }
+    .demo-section { max-width: var(--demo-w, none); padding: var(--ai-spacing-6); background: var(--ai-surface-primary); border: 1px solid var(--ai-border-secondary); border-radius: var(--ai-radius-lg); margin-bottom: var(--ai-spacing-5); }
+    .demo-section--bare { background: transparent; border: 0; padding: 0; }
+    .demo-section__title { font-size: var(--ai-font-fixed-xs); font-weight: var(--ai-font-semibold); color: var(--ai-text-contrast); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 var(--ai-spacing-5); }
+    .demo-note { margin: 0 0 var(--ai-spacing-5); font-size: var(--ai-font-fixed-xs); color: var(--ai-text-secondary); }
+    .demo-stack { display: flex; flex-direction: column; gap: var(--ai-spacing-5); }
+    .demo-narrow { max-width: var(--ai-size-7); }
+  </style>
+</head>
+<body>
+  <div class="demo-section demo-section--bare">
+    <p class="demo-section__title">In a FactPanel</p>
+    <div class="demo-narrow"><section class="fact-panel" aria-labelledby="panel-performance">
+          <div class="fact-panel__header">
+            <div class="fact-panel__title-block"><h2 class="fact-panel__title" id="panel-performance">Performance</h2><p class="fact-panel__subtitle">Last 12 Months</p></div><div class="fact-panel__trailing"><span class="badge badge--pill badge--success">LIVE</span></div>
+          </div>
+          <div class="performance-summary">
+            <div class="performance-summary__stats">
+              <div class="stat-card stat-card--violet-radix stat-card--soft">
+                <div class="stat-card__icon-wrap"><i data-lucide="chart-no-axes-combined" aria-hidden="true"></i></div>
+                <div class="stat-card__text"><p class="stat-card__title">Total Impressions</p><p class="stat-card__value">330</p></div>
+              </div>
+              <div class="performance-summary__stats-row">
+                <div class="stat-card stat-card--indigo stat-card--soft">
+                <div class="stat-card__icon-wrap"><i data-lucide="eye" aria-hidden="true"></i></div>
+                <div class="stat-card__text"><p class="stat-card__title">Consumed</p><p class="stat-card__value">4.68</p></div>
+              </div>
+                <div class="stat-card stat-card--jade stat-card--soft">
+                <div class="stat-card__icon-wrap"><i data-lucide="book-open" aria-hidden="true"></i></div>
+                <div class="stat-card__text"><p class="stat-card__title">Bookmarked</p><p class="stat-card__value">48</p></div>
+              </div>
+              </div>
+              <div class="performance-summary__accounts">
+                <p class="performance-summary__accounts-heading">Top Account Impressions</p>
+                <div class="performance-summary__account-chips"><a class="btn btn--secondary btn--xs" href="#"><span>Ocean Media Group</span></a><a class="btn btn--secondary btn--xs" href="#"><span>Playbook Media</span></a><a class="btn btn--secondary btn--xs" href="#"><span>Argutus</span></a></div>
+              </div>
+            </div>
+            <div class="performance-summary__chart">
+              <div class="chart"><div class="chart__canvas"><canvas id="perf-chart" aria-label="Impressions, last 7 days" role="img"></canvas></div></div>
+            </div>
+            <dl class="performance-summary__totals">
+              <div class="performance-summary__total"><dt>Total Impressions</dt><dd>89</dd></div>
+              <div class="performance-summary__total"><dt>Impression Per Day</dt><dd>4.68</dd></div>
+            </dl>
+            <!-- TODO(backend:RecordScreen): "View full analytics" → the record's analytics report URL -->
+            <a class="performance-summary__link" href="#" data-backend-todo="performance-full-analytics"><span>View full analytics</span><i data-lucide="arrow-right" aria-hidden="true"></i></a>
+          </div>
+        </section></div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="../../templates/RecordScreen/RecordScreen.js"></script>
+</body>
+</html>

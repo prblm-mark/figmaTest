@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en" data-brand="cc">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../../components/dark-mode-toggle.js"></script>
+  <title>RecordTabs — Control Centre</title>
+  <link rel="stylesheet" href="../../../styles/base.css">
+  <link rel="stylesheet" href="../../../components/Button/Button.css">
+  <link rel="stylesheet" href="RecordTabs.css">
+  <style>
+    body { margin: 0; padding: var(--ai-spacing-7); background: var(--cc-ui-primary-bg); min-height: 100vh; color: var(--ai-text-primary); font-family: var(--ai-font-body); }
+    .demo-section { max-width: var(--demo-w, none); padding: var(--ai-spacing-6); background: var(--ai-surface-primary); border: 1px solid var(--ai-border-secondary); border-radius: var(--ai-radius-lg); margin-bottom: var(--ai-spacing-5); }
+    .demo-section--bare { background: transparent; border: 0; padding: 0; }
+    .demo-section__title { font-size: var(--ai-font-fixed-xs); font-weight: var(--ai-font-semibold); color: var(--ai-text-contrast); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 var(--ai-spacing-5); }
+    .demo-note { margin: 0 0 var(--ai-spacing-5); font-size: var(--ai-font-fixed-xs); color: var(--ai-text-secondary); }
+    .demo-stack { display: flex; flex-direction: column; gap: var(--ai-spacing-5); }
+    .demo-narrow { max-width: var(--ai-size-7); }
+  </style>
+</head>
+<body>
+  <div class="demo-section demo-section--bare">
+    <p class="demo-section__title">Width=Standard · Details active</p>
+    <nav class="record-tabs" aria-label="Record sections">
+        <div class="record-tabs__list">
+          <a class="record-tab record-tab--active" href="ArticleView.html" aria-current="page" data-keep-width>Details</a>
+          <a class="record-tab" href="ArticleSteps.html" data-keep-width>Article steps<span class="record-tab__count" aria-label="8 steps">8</span></a>
+        </div>
+      </nav>
+  </div>
+  <div class="demo-section demo-section--bare">
+    <p class="demo-section__title">Width=Standard · Article steps active + actions (Lookup / Add)</p>
+    <nav class="record-tabs" aria-label="Record sections">
+        <div class="record-tabs__list">
+          <a class="record-tab" href="ArticleView.html" data-keep-width>Details</a>
+          <a class="record-tab record-tab--active" href="ArticleSteps.html" aria-current="page" data-keep-width>Article steps<span class="record-tab__count" aria-label="8 steps">8</span></a>
+        </div><div class="record-tabs__actions"><button type="button" class="btn btn--secondary btn--sm" data-backend-todo="steps-lookup"><span>Lookup</span></button><button type="button" class="btn btn--primary btn--sm" data-backend-todo="steps-add"><i data-lucide="plus" aria-hidden="true"></i><span>Add</span></button></div>
+      </nav>
+  </div>
+  <div class="demo-section ">
+    <p class="demo-section__title">Width=Full</p>
+    <nav class="record-tabs record-tabs--full" aria-label="Record sections">
+        <div class="record-tabs__list">
+          <a class="record-tab record-tab--active" href="ArticleView.html" aria-current="page" data-keep-width>Details</a>
+          <a class="record-tab" href="ArticleSteps.html" data-keep-width>Article steps<span class="record-tab__count" aria-label="8 steps">8</span></a>
+        </div>
+      </nav>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

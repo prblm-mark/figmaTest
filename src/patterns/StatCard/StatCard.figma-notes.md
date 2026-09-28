@@ -9,7 +9,9 @@
 
 ## Variant matrix
 
-10 variants: 2 Sizes × 5 Types.
+47 Figma variants: 2 Sizes × 5 Types with `Fill=Blue`, plus all 38 Fill values (19 accents ×
+solid/soft) on **Base / Default**. Other Size × Type combos exist in Blue only in Figma; code
+supports every Fill on every Size × Type.
 
 | Node | Size | Type | Notes |
 |---|---|---|---|
@@ -23,6 +25,23 @@
 | `2758:3089` | Lg | Chevron Right | Lg + chevron |
 | `2758:3096` | Lg | No card | Lg + no card (h-48) |
 | `2758:3102` | Lg | Number First | Lg + swapped order |
+| `3821:130490…` + `3850:185…465` | Base | Default, Fill=`<Colour>` / `<Colour> Soft` | 37 variants — Fill value = colour name (e.g. `Teal Radix Soft`) → `stat-card--teal-radix stat-card--soft` |
+
+All 10 `Fill=Blue` variants = `stat-card--blue` (the default — no modifier needed).
+
+### Fill axis (code)
+
+| Modifier | Square | Icon |
+|---|---|---|
+| `stat-card--<colour>` | `--ai-accent-<colour>-solid` | `--ai-accent-<colour>-solid-fg` |
+| `+ stat-card--soft` | `--ai-accent-<colour>-soft` | `--ai-accent-<colour>-soft-fg` |
+
+Colours (19): `blue` (default), `mid-blue`, `dark-blue`, `emerald`,
+`orange`, `pink`, `red`, `green`, `purple`, `indigo`, `blue-radix`, `teal-radix`, `green-radix`,
+`jade`, `lagoon`, `orange-radix`, `red-radix`, `violet-radix`, `lime-radix`.
+
+Each colour modifier only re-points four component props (`--stat-card-solid`, `-solid-fg`,
+`-soft`, `-soft-fg`); `.stat-card__icon-wrap` reads solid, `.stat-card--soft` switches it to soft.
 
 ---
 
@@ -34,6 +53,8 @@
 | Lg size | `.stat-card--lg` |
 | Type=No card | `.stat-card--no-card` |
 | Type=Number First | `.stat-card--number-first` (uses `order` to swap) |
+| Fill=<colour> | `.stat-card--<colour>` |
+| Fill=<colour> Soft | `.stat-card--<colour>.stat-card--soft` |
 | Brand icon square | `.stat-card__icon-wrap` |
 | Lucide icon (inside square) | `<i data-lucide="..." aria-hidden="true">` |
 | Text column | `.stat-card__text` |
@@ -61,8 +82,10 @@ For Chevron Down/Right variants, add `<div class="stat-card__chevron">` as a sib
 | Card min-height (Lg + card) | `var(--ai-spacing-13)` | 80px |
 | Card min-height (Base + no-card) | `var(--ai-spacing-8)` | 40px |
 | Card min-height (Lg + no-card) | `var(--ai-spacing-9)` | 48px |
-| Icon-wrap bg | `#2563eb` (Blue/600 primitive — approved) | no `--ai-*` token; documented in CSS |
-| Icon-wrap colour (icon) | `var(--ai-text-invert)` | white icon over blue square |
+| Icon-wrap bg (solid) | `var(--ai-accent-<colour>-solid)` | via `--stat-card-solid`; default `--ai-accent-blue-solid` |
+| Icon colour (solid) | `var(--ai-accent-<colour>-solid-fg)` | white, or Grey/850 on light squares |
+| Icon-wrap bg (soft) | `var(--ai-accent-<colour>-soft)` | via `--stat-card-soft` |
+| Icon colour (soft) | `var(--ai-accent-<colour>-soft-fg)` | |
 | Icon-wrap size (Base) | `var(--ai-spacing-8)` | 40px |
 | Icon-wrap size (Lg) | `var(--ai-spacing-9)` | 48px |
 | Icon-wrap radius | `var(--ai-radius-md)` | 8px |
@@ -84,7 +107,7 @@ For Chevron Down/Right variants, add `<div class="stat-card__chevron">` as a sib
 
 | # | Property | Figma | Resolution |
 |---|---|---|---|
-| 1 | Icon-wrap bg | `Blue/600` primitive `#2563eb` (no `--ai-*` semantic) | User-approved: use the primitive directly with a `/* Blue/600 */` comment in CSS. |
+| 1 | Icon-wrap bg | ~~`Blue/600` primitive `#2563eb`~~ | **RESOLVED 2026-09-28** — `accent/*` semantic set added to Figma (84 vars); Figma variants rebound; CSS uses `--ai-accent-*`. |
 | 2 | Card radius binding | Figma binds `--ai-spacing-3` (8px) | User-approved: use `--ai-radius-md` instead (same value, correct semantic). |
 | 3 | Card width | Figma frame width 339px (no token) | User-approved: width is consumer-controlled — `width: 100%`. |
 | 4 | No card bg | Figma keeps `--ai-surface-primary` (white) | User-approved: render as `background: transparent` so the "no card" variant has no chrome whatsoever (literally just icon + text on the parent bg). |
@@ -103,10 +126,25 @@ None — self-contained. Uses Lucide icons (`mail` default + `chevron-down` / `c
 - **Number First** swaps title and value order via CSS `order` (no HTML restructuring needed) — markup stays consistent across all variants.
 - **No card** transparent background diverges from Figma (which keeps the white surface-primary) so the variant works on any parent surface. User-approved.
 - Chevron variants are **static decorations** — no JS, no expand/collapse, no click handler. Consumer wraps the card in `<a>` or `<button>` if interaction is needed.
-- Icon-wrap brand colour (`#2563eb`) is the only token gap that landed as a raw primitive — documented in CSS with a `/* Blue/600 */` comment per the project convention. Worth re-binding to an `--ai-*` token in Figma later.
+- **Accent tokens** (`accent/<colour>/{solid,solid-fg,soft,soft-fg}`, Semantic collection) alias
+  primitives: Radix ramps use steps 9 / 3 / 11 (dark soft 12 / 9); the 100–900 ramps use 600 / 100 /
+  700 (dark soft 900 / 400). Contrast-driven exceptions: dark (Grey/850) icon on solid Orange Radix,
+  Lime Radix, Bright Teal, Green; soft icon 800 on Bright Teal, Green; dark soft square 13 on Orange
+  Radix; dark soft icon 8 on Violet Radix. All 42 fills ≥ 3:1 in all 6 modes (verified headless).
+- Solid squares keep the light value in dark mode; soft squares move to a dark step.
+- The Figma soft variants originally bound the external "Radix Full" collection (`purple`,
+  `crimson`, `grass` have no ramp of ours) — rebound to `purple` / `pink` / `green-radix`, and every
+  soft icon moved from step 9 (2.6–2.9:1, failing) to step 11. Fill values renamed to match the
+  code slugs: Blue Soft → Blue Radix Soft, Aqua Soft → Teal Radix Soft, Green Soft → Green Radix Soft.
+- Soft squares on the palest ramps moved up for legibility on a white card: `mid-blue`,
+  `dark-blue` → 200; `green` → 300.
+- **Muted Teal and Bright Teal removed** (2026-09-28) from StatCard in Figma and code — use `lagoon`
+  / `teal-radix`. Their `--ai-accent-*` tokens still exist (Lagoon-sourced) but nothing uses them.
+- Solid Blue changed colour: stale `#2563eb` → current `Blue/600` `#0071d8`.
 
 ---
 
 ## History
 
+- 2026-09-28: Fill axis — 21 accent colours × solid/soft via new `--ai-accent-*` tokens; all 42 fills added to Figma on Base/Default (51 variants); icon-wrap primitive gap resolved; Figma variants rebound to `accent/*`.
 - 2026-05-28: Initial build from Figma frame `2758:3020`. All 10 variants implemented. 4 STOPs resolved (icon-wrap bg primitive, radius rebind, consumer-controlled width, transparent no-card bg).

@@ -1,0 +1,106 @@
+/* FieldRow — one field on a record screen: label column + value.
+ *
+ * Layout=Wide (main column, 192px label) / Layout=Compact (sidebar, 128px term).
+ * View types:  Text · Tags · Paragraph · Media (MediaMeta)
+ * Edit types:  Input · Select · TagBox · Textarea · Media Picker — the value is
+ *              the real DS control; Required adds the red asterisk.
+ *
+ * View rows are <div class="field-row"> holding <dt>/<dd> inside a <dl>
+ * (RecordSection body / FactList). Edit rows hold <label> + control.
+ *
+ * Figma: Lus07xi8pPXLN87sQIyrEt · View & Edit page · set 3861:1987
+ */
+
+.field-row {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-5);
+  min-width: 0;
+}
+
+.field-row__label {
+  flex: 0 0 var(--ai-size-3);
+  min-width: 0;
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-medium);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-sm);
+  letter-spacing: var(--ai-tracking-4);
+  color: var(--ai-text-secondary);
+}
+
+.field-row__value {
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-primary);
+  overflow-wrap: anywhere;
+}
+
+.field-row__value p {
+  margin: 0;
+}
+
+.field-row__value p + p {
+  margin-top: var(--ai-leading-md);
+}
+
+/* Type=Tags — wrapping row of Button Tertiary xs links */
+.field-row__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ai-spacing-2);
+}
+
+/* Type=Paragraph / Media — multi-line values align to the top */
+.field-row--paragraph,
+.field-row--media {
+  align-items: flex-start;
+}
+
+/* ── Layout=Compact (sidebar) ─────────────────────── */
+
+.field-row--compact {
+  gap: var(--ai-spacing-4);
+}
+
+.field-row--compact .field-row__label {
+  flex-basis: var(--ai-size-1);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-xs);
+  letter-spacing: normal;
+  color: var(--ai-text-contrast);
+}
+
+.field-row--compact .field-row__value {
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-xs);
+}
+
+/* ── Edit types ───────────────────────────────────── */
+
+.field-row--edit {
+  align-items: flex-start;
+}
+
+/* Label padding centres the label on the 40px control */
+.field-row--edit .field-row__label {
+  display: flex;
+  gap: var(--ai-spacing-1);
+  padding-top: var(--ai-spacing-4);
+}
+
+.field-row__required {
+  color: var(--ai-text-error);
+}
+
+.field-row--edit .field-row__value {
+  display: flex;
+  flex-direction: column;
+}

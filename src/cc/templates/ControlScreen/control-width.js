@@ -7,6 +7,8 @@
  *
  *   window.ccWidth.apply('full' | 'standard')   → returns the mode applied
  *   window.ccWidth.fromUrl()                    → 'full' | 'standard' | null, from ?template=
+ *   window.ccWidth.stored()                     → the viewer's saved choice, or null
+ *   window.ccWidth.resolve()                    → URL, else saved choice, else 'standard'
  *
  * What `apply` does, and all it does:
  *   - `data-cc-width="<mode>"` on the shell root (`.cc-control`), for screens to scope against;
@@ -20,9 +22,12 @@
  *
  * `?template=full` is the demo's way in, kept from the Listing so existing links still work.
  *
- * TOGGLE-READY: there is no user toggle yet (still being agreed with the wider team). When there
- * is, it calls `apply()` and persists the choice. Kept out of the backend handover notes until the
- * designer says otherwise. */
+ * THE TOGGLE (2026-09-28): the actions-rail Minimise button (desktop rail + mobile sidebar rail),
+ * marked `data-cc-width-toggle` on EVERY CC screen — full width everywhere (designer). Clicking flips the mode,
+ * keeps `aria-pressed` in step, saves the choice (localStorage `cc-width`, a per-viewer
+ * convenience — it can be absent) so it follows the viewer between screens, and rewrites
+ * `?template=` in place so a reload keeps what they chose. A server-side per-user preference is
+ * the backend item (HANDOVER `full-width-preference`). */
 (function () {
   var MODES = ['standard', 'full'];
 
@@ -47,5 +52,40 @@
     return m ? m[1] : null;
   }
 
-  window.ccWidth = { apply: apply, fromUrl: fromUrl };
+  var KEY = 'cc-width';
+
+  function stored() {
+    try { var v = window.localStorage.getItem(KEY); return MODES.indexOf(v) !== -1 ? v : null; }
+    catch (e) { return null; }
+  }
+
+  function save(mode) {
+    try { window.localStorage.setItem(KEY, mode); } catch (e) { /* private window: session only */ }
+  }
+
+  function resolve() { return fromUrl() || stored() || 'standard'; }
+
+  function syncToggles(mode) {
+    document.querySelectorAll('[data-cc-width-toggle]').forEach(function (btn) {
+      btn.setAttribute('aria-pressed', String(mode === 'full'));
+    });
+  }
+
+  document.addEventListener('cc:width', function (e) { syncToggles(e.detail.mode); });
+
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-cc-width-toggle]');
+    if (!btn) return;
+    var shell = document.querySelector('.cc-control');
+    var next = shell && shell.getAttribute('data-cc-width') === 'full' ? 'standard' : 'full';
+    apply(next);
+    save(next);
+    if (fromUrl()) {
+      var url = new URL(window.location.href);
+      url.searchParams.set('template', next);
+      window.history.replaceState(null, '', url);
+    }
+  });
+
+  window.ccWidth = { apply: apply, fromUrl: fromUrl, stored: stored, resolve: resolve };
 })();

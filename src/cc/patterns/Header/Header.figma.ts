@@ -45,3 +45,25 @@ figma.connect(
     `,
   }
 )
+
+// Type=Record — record screen header (View / Edit / Steps). Its Figma component is the DS-file
+// RecordHeader (View & Edit kit), not a variant of the CC-file Header set, so it connects separately.
+figma.connect(
+  'https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino---Design-System?node-id=3867-2138',
+  {
+    example: () => html`
+      <div class="cc-header-cq">
+        <header class="cc-header cc-header--record">
+          <div class="cc-header__title-block"><div class="cc-header__title-block-text">
+            <p class="cc-header__record-type">Article</p>
+            <h1 class="cc-header__title">Affino 9.0.11.25 — The Refinement Update</h1>
+          </div></div>
+          <div class="cc-header__actions">
+            <button type="button" class="btn btn--secondary"><span>Add</span></button>
+            <a class="btn btn--primary" href="ArticleEdit.html"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></a>
+          </div>
+        </header>
+      </div>
+    `,
+  }
+)

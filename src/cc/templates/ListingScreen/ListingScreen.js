@@ -2026,22 +2026,23 @@
      screen by `config.template` and overridable with `?template=full`, the
      same way `?layout=grid` picks the Media Items grid.
 
-     TOGGLE-READY. A runtime toggle is still being agreed with the wider team;
-     when it lands it only has to call applyTemplate() and persist the choice.
+     THE TOGGLE (2026-09-28) is the actions-rail Minimise button: control-width.js flips the
+     shell, saves the choice per viewer, and the `cc:width` listener in init() applies this
+     half. Precedence at load: ?template= > saved choice > config.template.
      The column fit re-runs by itself — its ResizeObserver sees the table
      change width — and the sticky offsets follow a CSS variable.
-     Once the toggle exists the chosen template needs persisting per user.
-     Deliberately NOT yet a backend handover item — held back from the
-     handover notes until the designer says so (2026-09-23). */
+     Persisted per viewer in localStorage (`cc-width`); a per-user server-side
+     preference is a backend handover item (HANDOVER: `full-width-preference`). */
   var TEMPLATES = ['standard', 'full'];
 
-  function applyTemplate(root, name) {
+  function applyTemplate(root, name, fromShell) {
     var t = TEMPLATES.indexOf(name) !== -1 ? name : 'standard';
     root.setAttribute('data-listing-template', t);
     /* The shell's half — flush page, no rule under the CC header — is the shared
        full-width switch now (ControlScreen/control-width.js, 2026-09-24), so the
        Seating Planner and every later screen use the same one. */
-    if (window.ccWidth) window.ccWidth.apply(t);
+    /* fromShell: the shell already applied it (the rail toggle) — don't echo it back. */
+    if (window.ccWidth && !fromShell) window.ccWidth.apply(t);
     /* FilterItem's Rounded axis: the standard listing uses Rounded=True, the
        full-width one Rounded=False (designer, 2026-09-23). A real variant
        class, not a CSS radius override — so the renderers read `chipShape`,
@@ -2065,7 +2066,15 @@
     /* Before anything renders: the column fit measures the table, and the
        full-width template makes it wider. */
     var urlTemplate = (new RegExp('[?&]template=(standard|full)').exec(location.search) || [])[1];
-    config.template = applyTemplate(root, urlTemplate || config.template);
+    var saved = window.ccWidth && window.ccWidth.stored ? window.ccWidth.stored() : null;
+    config.template = applyTemplate(root, urlTemplate || saved || config.template);
+    /* The rail's Minimise button flips the shell at runtime; follow it with the listing's half
+       (the attribute + FilterItem shape). The column fit re-runs on its own ResizeObserver. */
+    document.addEventListener('cc:width', function (e) {
+      if (e.detail.mode !== root.getAttribute('data-listing-template')) {
+        config.template = applyTemplate(root, e.detail.mode, true);
+      }
+    });
 
     /* Work on a shallow copy of the filter lists: adding a filter moves it
        from one to the other, and LISTING_SCREENS is the screen DEFINITION,

@@ -1,0 +1,69 @@
+/* FactPanel — the one standard sidebar panel: title (+ optional subtitle,
+ * badge and action) / divider / content (FactList, ViewerList, AdvisoryList,
+ * PerformanceSummary).
+ * FactList — compact label/value rows (FieldRow Layout=Compact) in a <dl>.
+ *
+ * Figma: Lus07xi8pPXLN87sQIyrEt · View & Edit page
+ *   FactPanel 3865:2136 · FactList 3865:1944
+ */
+
+.fact-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-4);
+  min-width: 0;
+  padding: var(--ai-spacing-5);
+  background-color: var(--ai-surface-extra-minimal);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+}
+
+.fact-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ai-spacing-3);
+  padding-bottom: var(--ai-spacing-4);
+  border-bottom: 1px solid var(--ai-border-secondary);
+}
+
+.fact-panel__title-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-0-5);
+  min-width: 0;
+}
+
+.fact-panel__title {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-semibold);
+  font-size: var(--ai-font-fixed-sm);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-secondary);
+}
+
+.fact-panel__subtitle {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-4xs);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+}
+
+.fact-panel__trailing {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+}
+
+/* ── FactList ─────────────────────────────────────── */
+
+.fact-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+  margin: 0;
+}

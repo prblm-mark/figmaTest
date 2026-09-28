@@ -1,0 +1,77 @@
+/* RecordScreen — CC record screens: Article View, Article Edit, Article Steps.
+ * Shell = the ControlScreen/ListingScreen app shell; this file only lays out the page body.
+ *
+ * Figma: Lus07xi8pPXLN87sQIyrEt · View & Edit page (3842:146669)
+ *   View 3842:147640 (standard) / 3842:152666 (full) · Edit 3842:147155 / 3842:146670
+ *   Steps 3842:150779, 3852:65392, 3842:148092 (standard) / 3842:154798, 3842:153114 (full)
+ *
+ * Shell paint table (Step 3a, read from the frames 2026-09-28):
+ *   Standard  page bg        → shell --cc-ui-primary-bg (screen frame #E7EDF0; body fill hidden)
+ *             page padding   → spacing-5 top/sides, spacing-6 bottom; tabs → content gap spacing-5
+ *             columns        → gap spacing-5; sidebar max-width --ai-size-7 (384)
+ *             main / sidebar → gap spacing-5 / gap spacing-5
+ *   Full      page           → flush (ccWidth), --ai-surface-primary
+ *             columns        → gap 0; main column right border --ai-border-secondary
+ *             sidebar        → padding spacing-5, gap spacing-5, max-width --ai-size-7
+ * Width is the shell's one switch (control-width.js); RecordScreen.js puts the matching
+ * --full modifier on RecordTabs / RecordSection / StepsTable.
+ */
+
+.cc-control__page--record {
+  padding: 0;
+  gap: 0;
+}
+
+.record-screen {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+  min-width: 0;
+  padding: var(--ai-spacing-5) var(--ai-spacing-5) var(--ai-spacing-6);
+}
+
+.record-screen__body {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ai-spacing-5);
+  min-width: 0;
+}
+
+.record-screen__main {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+  min-width: 0;
+}
+
+.record-screen__sidebar {
+  display: flex;
+  flex: 0 1 var(--ai-size-7);
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+  min-width: 0;
+  max-width: var(--ai-size-7);
+}
+
+/* ── Full width ───────────────────────────────────── */
+
+[data-cc-width="full"] .record-screen {
+  gap: 0;
+  padding: 0;
+  background-color: var(--ai-surface-primary);
+}
+
+[data-cc-width="full"] .record-screen__body {
+  align-items: stretch;
+  gap: 0;
+}
+
+[data-cc-width="full"] .record-screen__main {
+  gap: 0;
+  border-right: 1px solid var(--ai-border-secondary);
+}
+
+[data-cc-width="full"] .record-screen__sidebar {
+  padding: var(--ai-spacing-5);
+}

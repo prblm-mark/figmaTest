@@ -43,6 +43,7 @@ Manager) hide on mobile via `.cc-header__user-details`.
 | Type=Default | (base — no modifier) |
 | Type=Sub Text | `.cc-header--sub-text` |
 | Type=Control | `.cc-header--control` |
+| Type=Record *(DS-file RecordHeader `3867:2138`, View & Edit kit)* | `.cc-header--record` — `.cc-header__record-type` above the title, record actions, bottom border `--ai-border-secondary`, title `--ai-leading-md` |
 | `Tilte Block` (typo) | `.cc-header__title-block` |
 | Title text column | `.cc-header__title-block-text` (used in Sub Text + Control) |
 | `Title` | `.cc-header__title` (`<h1>`) |

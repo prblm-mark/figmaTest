@@ -1,0 +1,153 @@
+/* StepsTable — a record's child list (Article steps) built on Datatables.
+ * Datatables supplies the toolbar, sortable header, rows, row-detail and the
+ * footer/pagination; this file only adds what the steps list needs on top:
+ *   - the Show details toggle in the toolbar
+ *   - the StepDetail panel (media chips, step body, "Read the full step")
+ *   - Width=Full (flat card for the full-width layout)
+ * Show details ON expands every row (.steps-table--details); there is no
+ * per-row expand in the design.
+ *
+ * Figma: Lus07xi8pPXLN87sQIyrEt · View & Edit page
+ *   StepsTable 3881:7518 (Details Off/On × Width Standard/Full) · StepRow 3881:4979
+ *   StepsToolbar 3881:4747 · StepsHeaderRow 3881:4768 · StepDetail 3881:4808 · StepsFooter 3881:4980
+ */
+
+.steps-table--full {
+  border-width: 0 0 1px;
+  border-radius: var(--ai-radius-none);
+}
+
+.steps-table__details-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-secondary);
+}
+
+/* Detail rows only show while Show details is on. Datatables hides row-detail by
+   default and reveals it per row from the kebab; Steps has no per-row expand, so the
+   toggle reveals them all. */
+.steps-table--details .datatables__row-detail {
+  display: table-row;
+}
+
+/* Detail spans every column; the panel starts under the Order column (Figma StepRow
+   Expanded: Detail padding-left spacing-9 = the checkbox column). StepDetail pads itself. */
+.steps-table .datatables__row-detail__cell {
+  padding: 0 0 0 var(--ai-spacing-9);
+  white-space: normal;
+  background-color: var(--ai-datatable-table-expanded-bg);
+}
+
+/* Column sizing (the table resizing rule): Title takes the spare width and ellipsises;
+   every other column is as wide as its content. Figma's fixed column widths are a
+   Figma-table limitation, not a spec. */
+.steps-table .table th,
+.steps-table .datatables__row > td {
+  white-space: nowrap;
+}
+
+.steps-table__title-cell {
+  width: 100%;
+  max-width: 0;
+}
+
+.steps-table__title {
+  display: block;
+  overflow: hidden;
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-primary);
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.steps-table__empty,
+.steps-table__live {
+  display: inline-flex;
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+.steps-table__empty { color: var(--ai-icon-contrast); }
+.steps-table__live { color: var(--ai-text-success); }
+
+/* ── StepDetail ───────────────────────────────────── */
+
+.step-detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+  padding: var(--ai-spacing-4) var(--ai-spacing-5);
+}
+
+.step-detail__media {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ai-spacing-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step-detail__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  padding: var(--ai-spacing-1) var(--ai-spacing-3);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-sm);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-contrast);
+}
+
+.step-detail__chip [data-lucide],
+.step-detail__chip svg {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+.step-detail__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-2);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+}
+
+.step-detail__body p {
+  margin: 0;
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-secondary);
+}
+
+.step-detail__body h4 {
+  margin: 0;
+  font-weight: var(--ai-font-semibold);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-lg);
+  color: var(--ai-text-primary);
+}
+
+.step-detail__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-semibold);
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-brand);
+  text-decoration: none;
+}
+
+.step-detail__link [data-lucide],
+.step-detail__link svg {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}

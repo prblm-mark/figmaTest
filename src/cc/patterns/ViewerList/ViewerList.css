@@ -1,0 +1,21 @@
+/* ViewerList — Recent Viewers panel content: ViewerItems + "Add to Contact List".
+ *
+ * Figma: Lus07xi8pPXLN87sQIyrEt · View & Edit page · component 3865:2008
+ */
+
+.viewer-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ai-spacing-5);
+}
+
+.viewer-list__items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-4);
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

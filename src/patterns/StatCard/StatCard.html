@@ -31,6 +31,14 @@
       font-size: var(--ai-font-fixed-xs);
       color: var(--ai-text-secondary);
     }
+    .demo-section--wide {
+      max-width: none;
+    }
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(var(--ai-size-4), 1fr));
+      gap: var(--ai-spacing-4);
+    }
     .demo-stack {
       display: flex;
       flex-direction: column;
@@ -139,6 +147,288 @@
         </div>
       </div>
 
+    </div>
+  </div>
+
+  <div class="demo-section demo-section--wide">
+    <h2>Fill — solid (21 accents)</h2>
+    <p class="demo-note">Colour modifier <code>stat-card--&lt;colour&gt;</code>: <code>--ai-accent-&lt;colour&gt;-solid</code> square, <code>-solid-fg</code> icon. Default (no modifier) is blue.</p>
+
+    <div class="demo-grid">
+      <div class="stat-card stat-card--blue">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Blue</p>
+          <p class="stat-card__value">stat-card--blue</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--mid-blue">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Mid Blue</p>
+          <p class="stat-card__value">stat-card--mid-blue</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--dark-blue">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Dark Blue</p>
+          <p class="stat-card__value">stat-card--dark-blue</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--emerald">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Emerald</p>
+          <p class="stat-card__value">stat-card--emerald</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--orange">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Orange</p>
+          <p class="stat-card__value">stat-card--orange</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--pink">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Pink</p>
+          <p class="stat-card__value">stat-card--pink</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--red">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Red</p>
+          <p class="stat-card__value">stat-card--red</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--green">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Green</p>
+          <p class="stat-card__value">stat-card--green</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--purple">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Purple</p>
+          <p class="stat-card__value">stat-card--purple</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--indigo">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Indigo</p>
+          <p class="stat-card__value">stat-card--indigo</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--blue-radix">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Blue Radix</p>
+          <p class="stat-card__value">stat-card--blue-radix</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--teal-radix">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Teal Radix</p>
+          <p class="stat-card__value">stat-card--teal-radix</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--green-radix">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Green Radix</p>
+          <p class="stat-card__value">stat-card--green-radix</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--jade">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Jade</p>
+          <p class="stat-card__value">stat-card--jade</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--lagoon">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Lagoon</p>
+          <p class="stat-card__value">stat-card--lagoon</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--orange-radix">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Orange Radix</p>
+          <p class="stat-card__value">stat-card--orange-radix</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--red-radix">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Red Radix</p>
+          <p class="stat-card__value">stat-card--red-radix</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--violet-radix">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Violet Radix</p>
+          <p class="stat-card__value">stat-card--violet-radix</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--lime-radix">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Lime Radix</p>
+          <p class="stat-card__value">stat-card--lime-radix</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-section demo-section--wide">
+    <h2>Fill — soft (21 accents)</h2>
+    <p class="demo-note">Add <code>stat-card--soft</code> with any colour modifier: <code>--ai-accent-&lt;colour&gt;-soft</code> square, <code>-soft-fg</code> icon.</p>
+
+    <div class="demo-grid">
+      <div class="stat-card stat-card--blue stat-card--soft">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Blue</p>
+          <p class="stat-card__value">stat-card--blue</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--mid-blue stat-card--soft">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Mid Blue</p>
+          <p class="stat-card__value">stat-card--mid-blue</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--dark-blue stat-card--soft">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Dark Blue</p>
+          <p class="stat-card__value">stat-card--dark-blue</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--emerald stat-card--soft">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Emerald</p>
+          <p class="stat-card__value">stat-card--emerald</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--orange stat-card--soft">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Orange</p>
+          <p class="stat-card__value">stat-card--orange</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--pink stat-card--soft">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Pink</p>
+          <p class="stat-card__value">stat-card--pink</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--red stat-card--soft">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Red</p>
+          <p class="stat-card__value">stat-card--red</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--green stat-card--soft">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Green</p>
+          <p class="stat-card__value">stat-card--green</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--purple stat-card--soft">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Purple</p>
+          <p class="stat-card__value">stat-card--purple</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--indigo stat-card--soft">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Indigo</p>
+          <p class="stat-card__value">stat-card--indigo</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--blue-radix stat-card--soft">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Blue Radix</p>
+          <p class="stat-card__value">stat-card--blue-radix</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--teal-radix stat-card--soft">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Teal Radix</p>
+          <p class="stat-card__value">stat-card--teal-radix</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--green-radix stat-card--soft">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Green Radix</p>
+          <p class="stat-card__value">stat-card--green-radix</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--jade stat-card--soft">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Jade</p>
+          <p class="stat-card__value">stat-card--jade</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--lagoon stat-card--soft">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Lagoon</p>
+          <p class="stat-card__value">stat-card--lagoon</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--orange-radix stat-card--soft">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Orange Radix</p>
+          <p class="stat-card__value">stat-card--orange-radix</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--red-radix stat-card--soft">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Red Radix</p>
+          <p class="stat-card__value">stat-card--red-radix</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--violet-radix stat-card--soft">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Violet Radix</p>
+          <p class="stat-card__value">stat-card--violet-radix</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card--lime-radix stat-card--soft">
+        <div class="stat-card__icon-wrap"><i data-lucide="mail" aria-hidden="true"></i></div>
+        <div class="stat-card__text">
+          <p class="stat-card__title">Lime Radix</p>
+          <p class="stat-card__value">stat-card--lime-radix</p>
+        </div>
+      </div>
     </div>
   </div>
 

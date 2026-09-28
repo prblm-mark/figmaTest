@@ -84,6 +84,35 @@ Theme-aware semantic tokens for alerts, banners, badges, and any UI that signals
 
 Soft backgrounds use a tinted dark in dark mode (e.g. Aqua/950 for success), keeping the same hue family as the light variant.
 
+## Accent (categorical colour)
+
+Added 2026-09-28. 21 colours × 4 roles in the Semantic collection (`accent/<colour>/<role>` →
+`--ai-accent-<colour>-<role>`), each aliased to a primitive. For colour-coding things that have
+no status meaning — StatCard fills, category chips, CC dashboard tiles. **Not** a status palette:
+use `--ai-surface-success` etc. for meaning.
+
+| Role | Use | Radix ramps | 100–900 ramps | Dark mode |
+|---|---|---|---|---|
+| `solid` | strong fill | step 9 | 600 | unchanged |
+| `solid-fg` | icon/text on `solid` | white | white | unchanged |
+| `soft` | tinted fill | step 3 | 100 | Radix 12 / ramp 900 |
+| `soft-fg` | icon/text on `soft` | step 11 | 700 | Radix 9 / ramp 400 |
+
+Colours: `blue`, `mid-blue`, `dark-blue`, `muted-teal`, `bright-teal`, `emerald`, `orange`, `pink`,
+`red`, `green`, `purple`, `indigo`, `blue-radix`, `teal-radix`, `green-radix`, `jade`, `lagoon`,
+`orange-radix`, `red-radix`, `violet-radix`, `lime-radix`.
+
+Contrast exceptions (every fg/bg pair ≥ 3:1 in all 6 modes): `solid-fg` is Grey/850 on
+`orange-radix`, `lime-radix`, `bright-teal`, `green`; `soft-fg` is 800 on `bright-teal`, `green`;
+dark `soft` is step 13 on `orange-radix`; dark `soft-fg` is step 8 on `violet-radix`.
+Legibility exceptions (light `soft`): 200 on `mid-blue`, `dark-blue`; 300 on `green` — their 100
+step was invisible on a white card.
+
+**`muted-teal` and `bright-teal` are sourced from Lagoon** (2026-09-28 — the Muted Teal / Bright
+Teal ramps are retired from use; nearest Lagoon step per role). `muted-teal`: solid Lagoon 10, white
+icon, soft 3 / 11, dark soft 12 / 6. `bright-teal`: solid Lagoon 8, Grey/850 icon, soft 4 / 11, dark
+soft 13 / 6. Names kept so no class or token breaks.
+
 ## Border Radius
 
 | Variable | Value | Use |
