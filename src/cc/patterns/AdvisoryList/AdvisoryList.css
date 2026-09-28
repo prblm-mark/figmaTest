@@ -1,0 +1,18 @@
+/* AdvisoryList — SEO Health content: AdvisoryItems separated by dividers.
+ *
+ * Figma: Lus07xi8pPXLN87sQIyrEt · View & Edit page · component 3865:2099
+ */
+
+.advisory-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.advisory-list > li + li {
+  padding-top: var(--ai-spacing-4);
+  border-top: 1px solid var(--ai-border-secondary);
+}

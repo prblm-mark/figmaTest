@@ -1,0 +1,39 @@
+/* TagBox — the selected values of a multi-value field (Multi Display,
+ * Topics & Keywords): removable Badge tags in a bordered box, plus "Select",
+ * which opens the FilterDropdowns Multi Select Modal to search and choose.
+ * Shows SELECTED items only.
+ *
+ * Figma: Lus07xi8pPXLN87sQIyrEt · View & Edit page · component 3875:3268
+ * Tags = Badges Type=Dismissible, State=Neutral (2580:10509) → .badge + .badge__close
+ */
+
+.tag-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ai-spacing-3);
+  min-width: 0;
+}
+
+.tag-box__tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  width: 100%;
+  min-height: var(--ai-spacing-8);
+  padding: var(--ai-spacing-3);
+  margin: 0;
+  list-style: none;
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+}
+
+.tag-box__tags:empty::before {
+  content: attr(data-empty);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-contrast);
+}

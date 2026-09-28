@@ -1,8 +1,12 @@
-/* StatCard — small stat tile with brand-coloured icon block, label,
- * and value. 2 sizes × 5 type variants (Default / Chevron Down /
- * Chevron Right / No card / Number First).
+/* StatCard — small stat tile with an accent-coloured icon block, label,
+ * and value. 3 sizes (Sm / Base / Lg) × 5 type variants (Default / Chevron Down /
+ * Chevron Right / No card / Number First) × Fill.
  *
- * Figma: nodes 2758:3019..3102 (Affino AI Design System — Tier=Pattern)
+ * Fill = one of 21 accent colours (`.stat-card--<colour>`, default blue),
+ * solid or soft (`.stat-card--soft`). Each colour modifier only re-points
+ * the four --stat-card-* props at its --ai-accent-<colour>-* tokens.
+ *
+ * Figma: set 2758:3020 (Affino AI Design System — Tier=Pattern)
  *
  * Width is consumer-controlled (100% of parent). The icon block keeps
  * a fixed square footprint per size; the text column fills the rest.
@@ -20,9 +24,14 @@
   background-color: var(--ai-surface-primary);
   border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-md);
+
+  --stat-card-solid: var(--ai-accent-blue-solid);
+  --stat-card-solid-fg: var(--ai-accent-blue-solid-fg);
+  --stat-card-soft: var(--ai-accent-blue-soft);
+  --stat-card-soft-fg: var(--ai-accent-blue-soft-fg);
 }
 
-/* ── Icon block (brand square with Lucide icon centred) ── */
+/* ── Icon block (accent square with Lucide icon centred) ── */
 
 .stat-card__icon-wrap {
   display: flex;
@@ -31,9 +40,14 @@
   flex-shrink: 0;
   width: var(--ai-spacing-8);
   height: var(--ai-spacing-8);
-  background-color: #2563eb; /* Blue/600 primitive — user-approved (no --ai-* token) */
+  background-color: var(--stat-card-solid);
   border-radius: var(--ai-radius-md);
-  color: var(--ai-text-invert);
+  color: var(--stat-card-solid-fg);
+}
+
+.stat-card--soft .stat-card__icon-wrap {
+  background-color: var(--stat-card-soft);
+  color: var(--stat-card-soft-fg);
 }
 
 .stat-card__icon-wrap [data-lucide] {
@@ -102,11 +116,30 @@
   height: var(--ai-icon-size-md);
 }
 
+/* ── Variant: Sm (designer, 2026-09-28 — Article Edit) ──
+ * Figma Size=Sm: gap + padding spacing/3, min-height spacing/10, title
+ * font/size-fixed/2xs. Icon block, value and radius are unchanged from Base. */
+
+.stat-card--sm {
+  gap: var(--ai-spacing-3);
+  min-height: var(--ai-spacing-10);
+  padding: var(--ai-spacing-3);
+}
+
+.stat-card--sm .stat-card__title {
+  font-size: var(--ai-font-fixed-2xs);
+}
+
 /* ── Variant: No card (transparent — no border, no pad) ── */
 
 .stat-card--no-card {
   background: transparent;
   border: none;
+  padding: 0;
+  min-height: var(--ai-spacing-8);
+}
+
+.stat-card--no-card.stat-card--sm {
   padding: 0;
   min-height: var(--ai-spacing-8);
 }
@@ -123,4 +156,139 @@
 
 .stat-card--number-first .stat-card__value {
   order: 1;
+}
+
+/* ── Fill: accent colour (default blue — set on .stat-card) ── */
+
+.stat-card--blue {
+  --stat-card-solid: var(--ai-accent-blue-solid);
+  --stat-card-solid-fg: var(--ai-accent-blue-solid-fg);
+  --stat-card-soft: var(--ai-accent-blue-soft);
+  --stat-card-soft-fg: var(--ai-accent-blue-soft-fg);
+}
+
+.stat-card--mid-blue {
+  --stat-card-solid: var(--ai-accent-mid-blue-solid);
+  --stat-card-solid-fg: var(--ai-accent-mid-blue-solid-fg);
+  --stat-card-soft: var(--ai-accent-mid-blue-soft);
+  --stat-card-soft-fg: var(--ai-accent-mid-blue-soft-fg);
+}
+
+.stat-card--dark-blue {
+  --stat-card-solid: var(--ai-accent-dark-blue-solid);
+  --stat-card-solid-fg: var(--ai-accent-dark-blue-solid-fg);
+  --stat-card-soft: var(--ai-accent-dark-blue-soft);
+  --stat-card-soft-fg: var(--ai-accent-dark-blue-soft-fg);
+}
+
+.stat-card--emerald {
+  --stat-card-solid: var(--ai-accent-emerald-solid);
+  --stat-card-solid-fg: var(--ai-accent-emerald-solid-fg);
+  --stat-card-soft: var(--ai-accent-emerald-soft);
+  --stat-card-soft-fg: var(--ai-accent-emerald-soft-fg);
+}
+
+.stat-card--orange {
+  --stat-card-solid: var(--ai-accent-orange-solid);
+  --stat-card-solid-fg: var(--ai-accent-orange-solid-fg);
+  --stat-card-soft: var(--ai-accent-orange-soft);
+  --stat-card-soft-fg: var(--ai-accent-orange-soft-fg);
+}
+
+.stat-card--pink {
+  --stat-card-solid: var(--ai-accent-pink-solid);
+  --stat-card-solid-fg: var(--ai-accent-pink-solid-fg);
+  --stat-card-soft: var(--ai-accent-pink-soft);
+  --stat-card-soft-fg: var(--ai-accent-pink-soft-fg);
+}
+
+.stat-card--red {
+  --stat-card-solid: var(--ai-accent-red-solid);
+  --stat-card-solid-fg: var(--ai-accent-red-solid-fg);
+  --stat-card-soft: var(--ai-accent-red-soft);
+  --stat-card-soft-fg: var(--ai-accent-red-soft-fg);
+}
+
+.stat-card--green {
+  --stat-card-solid: var(--ai-accent-green-solid);
+  --stat-card-solid-fg: var(--ai-accent-green-solid-fg);
+  --stat-card-soft: var(--ai-accent-green-soft);
+  --stat-card-soft-fg: var(--ai-accent-green-soft-fg);
+}
+
+.stat-card--purple {
+  --stat-card-solid: var(--ai-accent-purple-solid);
+  --stat-card-solid-fg: var(--ai-accent-purple-solid-fg);
+  --stat-card-soft: var(--ai-accent-purple-soft);
+  --stat-card-soft-fg: var(--ai-accent-purple-soft-fg);
+}
+
+.stat-card--indigo {
+  --stat-card-solid: var(--ai-accent-indigo-solid);
+  --stat-card-solid-fg: var(--ai-accent-indigo-solid-fg);
+  --stat-card-soft: var(--ai-accent-indigo-soft);
+  --stat-card-soft-fg: var(--ai-accent-indigo-soft-fg);
+}
+
+.stat-card--blue-radix {
+  --stat-card-solid: var(--ai-accent-blue-radix-solid);
+  --stat-card-solid-fg: var(--ai-accent-blue-radix-solid-fg);
+  --stat-card-soft: var(--ai-accent-blue-radix-soft);
+  --stat-card-soft-fg: var(--ai-accent-blue-radix-soft-fg);
+}
+
+.stat-card--teal-radix {
+  --stat-card-solid: var(--ai-accent-teal-radix-solid);
+  --stat-card-solid-fg: var(--ai-accent-teal-radix-solid-fg);
+  --stat-card-soft: var(--ai-accent-teal-radix-soft);
+  --stat-card-soft-fg: var(--ai-accent-teal-radix-soft-fg);
+}
+
+.stat-card--green-radix {
+  --stat-card-solid: var(--ai-accent-green-radix-solid);
+  --stat-card-solid-fg: var(--ai-accent-green-radix-solid-fg);
+  --stat-card-soft: var(--ai-accent-green-radix-soft);
+  --stat-card-soft-fg: var(--ai-accent-green-radix-soft-fg);
+}
+
+.stat-card--jade {
+  --stat-card-solid: var(--ai-accent-jade-solid);
+  --stat-card-solid-fg: var(--ai-accent-jade-solid-fg);
+  --stat-card-soft: var(--ai-accent-jade-soft);
+  --stat-card-soft-fg: var(--ai-accent-jade-soft-fg);
+}
+
+.stat-card--lagoon {
+  --stat-card-solid: var(--ai-accent-lagoon-solid);
+  --stat-card-solid-fg: var(--ai-accent-lagoon-solid-fg);
+  --stat-card-soft: var(--ai-accent-lagoon-soft);
+  --stat-card-soft-fg: var(--ai-accent-lagoon-soft-fg);
+}
+
+.stat-card--orange-radix {
+  --stat-card-solid: var(--ai-accent-orange-radix-solid);
+  --stat-card-solid-fg: var(--ai-accent-orange-radix-solid-fg);
+  --stat-card-soft: var(--ai-accent-orange-radix-soft);
+  --stat-card-soft-fg: var(--ai-accent-orange-radix-soft-fg);
+}
+
+.stat-card--red-radix {
+  --stat-card-solid: var(--ai-accent-red-radix-solid);
+  --stat-card-solid-fg: var(--ai-accent-red-radix-solid-fg);
+  --stat-card-soft: var(--ai-accent-red-radix-soft);
+  --stat-card-soft-fg: var(--ai-accent-red-radix-soft-fg);
+}
+
+.stat-card--violet-radix {
+  --stat-card-solid: var(--ai-accent-violet-radix-solid);
+  --stat-card-solid-fg: var(--ai-accent-violet-radix-solid-fg);
+  --stat-card-soft: var(--ai-accent-violet-radix-soft);
+  --stat-card-soft-fg: var(--ai-accent-violet-radix-soft-fg);
+}
+
+.stat-card--lime-radix {
+  --stat-card-solid: var(--ai-accent-lime-radix-solid);
+  --stat-card-solid-fg: var(--ai-accent-lime-radix-solid-fg);
+  --stat-card-soft: var(--ai-accent-lime-radix-soft);
+  --stat-card-soft-fg: var(--ai-accent-lime-radix-soft-fg);
 }

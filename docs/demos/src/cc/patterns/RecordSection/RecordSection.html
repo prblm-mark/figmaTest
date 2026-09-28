@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en" data-brand="cc">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../../components/dark-mode-toggle.js"></script>
+  <title>RecordSection — Control Centre</title>
+  <link rel="stylesheet" href="../../../styles/base.css">
+  <link rel="stylesheet" href="../../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../../components/Badge/Badge.css">
+  <link rel="stylesheet" href="../../../components/Input/Input.css">
+  <link rel="stylesheet" href="../../../components/Select/Select.css">
+  <link rel="stylesheet" href="../../../components/Textarea/Textarea.css">
+  <link rel="stylesheet" href="../../components/FieldRow/FieldRow.css">
+  <link rel="stylesheet" href="../../components/MediaMeta/MediaMeta.css">
+  <link rel="stylesheet" href="../../components/MediaPicker/MediaPicker.css">
+  <link rel="stylesheet" href="../TagBox/TagBox.css">
+  <link rel="stylesheet" href="RecordSection.css">
+  <style>
+    body { margin: 0; padding: var(--ai-spacing-7); background: var(--cc-ui-primary-bg); min-height: 100vh; color: var(--ai-text-primary); font-family: var(--ai-font-body); }
+    .demo-section { max-width: var(--demo-w, none); padding: var(--ai-spacing-6); background: var(--ai-surface-primary); border: 1px solid var(--ai-border-secondary); border-radius: var(--ai-radius-lg); margin-bottom: var(--ai-spacing-5); }
+    .demo-section--bare { background: transparent; border: 0; padding: 0; }
+    .demo-section__title { font-size: var(--ai-font-fixed-xs); font-weight: var(--ai-font-semibold); color: var(--ai-text-contrast); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 var(--ai-spacing-5); }
+    .demo-note { margin: 0 0 var(--ai-spacing-5); font-size: var(--ai-font-fixed-xs); color: var(--ai-text-secondary); }
+    .demo-stack { display: flex; flex-direction: column; gap: var(--ai-spacing-5); }
+    .demo-narrow { max-width: var(--ai-size-7); }
+  </style>
+</head>
+<body>
+  <div class="demo-section demo-section--bare">
+    <p class="demo-section__title">Width=Standard · view</p>
+    <section class="record-section" aria-labelledby="sec-navigation">
+          <div class="record-section__header"><h2 class="record-section__title" id="sec-navigation">Navigation</h2></div>
+          <dl class="record-section__body"><div class="field-row">
+            <dt class="field-row__label">Zone</dt>
+            <dd class="field-row__value"><div class="field-row__tags"><a class="btn btn--tertiary btn--xs" href="#"><span>Affino</span></a></div></dd>
+          </div><div class="field-row">
+            <dt class="field-row__label">Sort Order</dt>
+            <dd class="field-row__value">1</dd>
+          </div><div class="field-row">
+            <dt class="field-row__label">Priority</dt>
+            <dd class="field-row__value">-</dd>
+          </div></dl>
+        </section>
+  </div>
+  <div class="demo-section demo-section--bare">
+    <p class="demo-section__title">Width=Standard · edit</p>
+    <section class="record-section" aria-labelledby="sec-navigation">
+          <div class="record-section__header"><h2 class="record-section__title" id="sec-navigation">Navigation</h2></div>
+          <div class="record-section__body"><div class="field-row field-row--edit">
+            <span class="field-row__label" id="f-zone-9-label">Zone<span class="field-row__required" aria-hidden="true">*</span></span>
+            <div class="field-row__value"><div class="sel" data-sel>
+              <button id="f-zone-9" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox">
+                <span class="sel__value">Affino</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">Affino</button></li>
+              </ul>
+            </div></div>
+          </div><div class="field-row field-row--edit">
+            <label class="field-row__label" for="f-sortorder-10">Sort Order</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-sortorder-10" type="text" class="input__control" value="1"></div>
+              
+            </div></div>
+          </div><div class="field-row field-row--edit">
+            <span class="field-row__label" id="f-priority-11-label">Priority</span>
+            <div class="field-row__value"><div class="sel" data-sel>
+              <button id="f-priority-11" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox">
+                <span class="sel__value sel__value--placeholder">Select...</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item" role="option">Select...</button></li>
+              </ul>
+            </div></div>
+          </div></div>
+        </section>
+  </div>
+  <div class="demo-section demo-section--bare">
+    <p class="demo-section__title">Width=Full</p>
+    <section class="record-section record-section--full" aria-labelledby="sec-navigation">
+          <div class="record-section__header"><h2 class="record-section__title" id="sec-navigation">Navigation</h2></div>
+          <dl class="record-section__body"><div class="field-row">
+            <dt class="field-row__label">Zone</dt>
+            <dd class="field-row__value"><div class="field-row__tags"><a class="btn btn--tertiary btn--xs" href="#"><span>Affino</span></a></div></dd>
+          </div><div class="field-row">
+            <dt class="field-row__label">Sort Order</dt>
+            <dd class="field-row__value">1</dd>
+          </div><div class="field-row">
+            <dt class="field-row__label">Priority</dt>
+            <dd class="field-row__value">-</dd>
+          </div></dl>
+        </section>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script src="../../../components/Select/Select.js"></script>
+</body>
+</html>

@@ -46,6 +46,9 @@
 | `Size` | base | _(none — default)_ |
 | `Size` | sm | `.btn--sm` |
 | `Size` | xs | `.btn--xs` |
+
+> **2026-09-28:** Size=xs text is now **SemiBold** (`--ai-font-semibold`) — rebound in Figma on all 38 xs variants (`font/weight/SemiBold`, was Medium) at the designer's request. Radius is now `--ai-radius-md` (was `radius-sm`) — all 38 xs variants rebound to `border/radius/radius-md` the same day.
+
 | `Size` | _(none — see below)_ | `.btn--icon.btn--2xs` |
 | `Icon Only` | True | `.btn--icon` |
 | `State` | Disabled | `disabled` attr / `.btn--disabled` |
@@ -117,7 +120,7 @@ Figma default for all text-button variants has `showLeftIcon=true` — both slot
 
 - `button/base` typography: `--ai-font-fluid-xs` (14px), `--ai-font-semibold` (600), `--ai-leading-xs` (16px)
 - `button/sm` typography: `--ai-font-fluid-xxs` (12px), `--ai-font-semibold` (600), `--ai-leading-xs` (16px)
-- `button/xs` typography: `--ai-font-fluid-xxs` (12px), `--ai-font-medium` (500), `--ai-leading-xs` (16px). xs differs from sm: medium weight (not semibold), `--ai-radius-sm` (4px), `--ai-spacing-1` gap (4px), 12px icons (`--ai-icon-size-xs`), and explicit vertical padding (`--ai-spacing-2`) rather than a fixed-height token — 28px text / 24px icon-only have no spacing token, so xs uses Figma's `py-2` padding directly.
+- `button/xs` typography: `--ai-font-fluid-xxs` (12px), `--ai-font-semibold` (600, since 2026-09-28), `--ai-leading-xs` (16px). xs differs from sm: `--ai-spacing-1` gap (4px), 12px icons (`--ai-icon-size-xs`), and explicit vertical padding (`--ai-spacing-2`) rather than a fixed-height token — 28px text / 24px icon-only have no spacing token, so xs uses Figma's `py-2` padding directly.
 - Secondary = **transparent** bg + `--ai-btn-secondary-border` (visually outlined)
 - Tertiary = **transparent** bg + **no border** (ghost/text button); uses dedicated `--ai-btn-tertiary-*` tokens
 - Tertiary hover bg: `--ai-btn-tertiary-bg-hover` (#F3F4F6); focus ring: `0 0 0 2px --ai-border-secondary` (no inner white border)
@@ -138,7 +141,7 @@ icon size. Re-read from the set rather than assumed: every `Icon Only=True, Size
 measures 24x24 across all three Types and all five States (Secondary `2926:3565` +
 Hover `2926:3577` / Focus `2926:3613` / Pressed `2926:3593` / Disabled `2926:3595`; Primary
 `2926:3559`…; Tertiary `2926:3571`…), and `2926:3565` binds `--ai-spacing-6`,
-`--ai-icon-size-xs`, `--ai-radius-sm`.
+`--ai-icon-size-xs`, `--ai-radius-sm` (rebound to `--ai-radius-md` 2026-09-28).
 
 | Size | Icon-only, as drawn in the Button set (`53:2489`) |
 |---|---|
@@ -170,7 +173,7 @@ Two things to know about it:
   inventing one would be a variant with no Figma counterpart. Writing `btn btn--2xs` without
   `btn--icon` therefore does nothing — the rule is a two-class combination, matching the house
   style of `.btn--icon.btn--sm` / `.btn--icon.btn--xs`.
-- **Its radius is set explicitly**, unlike `--xs` which inherits `--ai-radius-sm` from the base
+- **Its radius is set explicitly**, unlike `--xs` which inherits `--ai-radius-md` (since 2026-09-28) from the base
   `.btn--xs` rule. There is no base `.btn--2xs`, so nothing would carry it.
 - The icon rule targets **both** `[data-lucide]` and `svg`. `lucide.createIcons()` replaces the
   `<i>` with an `<svg>`, so an `[data-lucide]`-only selector is fragile. Verified 12x12 rendered.

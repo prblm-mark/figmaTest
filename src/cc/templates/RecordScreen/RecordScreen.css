@@ -1,0 +1,178 @@
+/* RecordScreen — CC record screens: Article View, Article Edit, Article Steps.
+ * Shell = the ControlScreen/ListingScreen app shell; this file only lays out the page body.
+ *
+ * Figma: Lus07xi8pPXLN87sQIyrEt · View & Edit page (3842:146669)
+ *   View 3842:147640 (standard) / 3842:152666 (full) · Edit 3842:147155 / 3842:146670
+ *   Steps 3842:150779, 3852:65392, 3842:148092 (standard) / 3842:154798, 3842:153114 (full)
+ *
+ * Shell paint table (Step 3a, read from the frames 2026-09-28):
+ *   Standard  page bg        → shell --cc-ui-primary-bg (screen frame #E7EDF0; body fill hidden)
+ *             page padding   → spacing-5 top/sides, spacing-6 bottom; tabs → content gap spacing-5
+ *             columns        → gap spacing-5; sidebar max-width --ai-size-7 (384)
+ *             main / sidebar → gap spacing-5 / gap spacing-5
+ *   Full      page           → flush (ccWidth), --ai-surface-primary
+ *             columns        → gap 0; main column right border --ai-border-secondary
+ *             sidebar        → padding spacing-5, gap spacing-5, max-width --ai-size-7
+ * Width is the shell's one switch (control-width.js); RecordScreen.js puts the matching
+ * --full modifier on RecordTabs / RecordSection / StepsTable.
+ */
+
+.cc-control__page--record {
+  padding: 0;
+  gap: 0;
+}
+
+.record-screen {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+  min-width: 0;
+  padding: var(--ai-spacing-5) var(--ai-spacing-5) var(--ai-spacing-6);
+}
+
+.record-screen__body {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ai-spacing-5);
+  min-width: 0;
+}
+
+.record-screen__main {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+  min-width: 0;
+}
+
+/* Width is resizable (designer, 2026-09-28 — "like the seating planner"): RecordScreen.js
+ * writes --rs-sidebar-w on the body from the drag handle; unset, Figma's 384 stands.
+ * 384 is also the floor, so the handle only widens it. */
+.record-screen__sidebar {
+  position: relative;               /* positioning context for the resize strip */
+  display: flex;
+  flex: 0 1 var(--rs-sidebar-w, var(--ai-size-7));
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+  min-width: var(--ai-size-7);      /* never narrower than Figma's 384 (designer, 2026-09-28) */
+  max-width: var(--rs-sidebar-w, var(--ai-size-7));
+}
+
+/* ── Resize handle ────────────────────────────────────
+ * The Seating Planner's model (2026-09-10): no visible pill, a transparent strip on the
+ * sidebar's leading edge with a col-resize cursor. Standard width: the strip fills the
+ * spacing-5 gap between the columns. Full width: it straddles the main column's right border,
+ * which tints on hover/drag the way the seating sheets' edge does. Still a real element so it
+ * can take focus — role="separator", arrow keys, Home/End, double-click resets to 384. */
+.record-screen__handle {
+  position: absolute;
+  z-index: 1;
+  inset-block: 0;
+  inset-inline-start: calc(0px - var(--ai-spacing-5));
+  inline-size: var(--ai-spacing-5);
+  cursor: col-resize;
+  touch-action: none;
+}
+
+[data-cc-width="full"] .record-screen__handle {
+  inset-inline-start: calc(0px - var(--ai-spacing-5) / 2);
+}
+
+.record-screen__body:has(.record-screen__handle:hover) .record-screen__main,
+.record-screen__body:has(.record-screen__handle[data-dragging]) .record-screen__main {
+  border-right-color: var(--ai-surface-contrast);
+}
+
+/* While dragging, stop text selection across the page. */
+.record-screen__body:has(.record-screen__handle[data-dragging]) {
+  user-select: none;
+}
+
+.record-screen__handle-bar {
+  display: none;
+}
+
+.record-screen__handle:focus-visible {
+  outline: none;
+}
+
+/* Invisible at rest, so keyboard focus needs its own mark — same as the Seating Planner. */
+.record-screen__handle:focus-visible .record-screen__handle-bar {
+  display: block;
+  inline-size: var(--ai-spacing-1);
+  block-size: 100%;
+  margin-inline: auto;
+  border-radius: var(--ai-radius-full);
+  background-color: var(--ai-border-brand);
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: 2px;
+}
+
+/* ── Full width ───────────────────────────────────── */
+
+[data-cc-width="full"] .record-screen {
+  gap: 0;
+  padding: 0;
+  background-color: var(--ai-surface-primary);
+}
+
+[data-cc-width="full"] .record-screen__body {
+  align-items: stretch;
+  gap: 0;
+}
+
+[data-cc-width="full"] .record-screen__main {
+  gap: 0;
+  border-right: 1px solid var(--ai-border-secondary);
+}
+
+[data-cc-width="full"] .record-screen__sidebar {
+  padding: var(--ai-spacing-5);
+}
+
+/* One line under the header, not two. The RecordHeader draws its own bottom
+ * border (Figma 3867:2138), and the shell chrome draws another 1px below it in
+ * standard width — control-width.js only adds `--flush` in full width, so the
+ * standard screens showed a double rule (designer, 2026-09-28). The record
+ * header's border is the one Figma specifies, so the chrome's is dropped here. */
+.cc-control__chrome:has(.cc-header--record) {
+  border-bottom: 0;
+}
+
+/* ── Narrow: stack the columns ─────────────────────────
+ * Designer-approved 2026-09-28. `cs-page` is the page's content box, so this fires on a
+ * docked menu or a narrow window alike (CLAUDE.md §4a) — 1023, the Seating Planner's
+ * stack point. Side by side needs 384 sidebar + 16 gap + ~600 of form ≈ 1000–1040.
+ * Stacked, the sidebar panels go BELOW the main content (DOM and reading order), one
+ * full-width column. The resize handle is removed:
+ * a stacked panel has no edge to drag, and the stored width is ignored (max-width none). */
+@container cs-page (max-width: 1023px) {
+  .record-screen__body {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .record-screen__main {
+    flex: none;
+  }
+
+  /* ONE column (designer, 2026-09-28). A two-up grid left big holes beside short panels
+   * (Record next to Performance); a masonry column flow would close them but panels would
+   * jump columns whenever SEO Health or a viewer list expands. The sidebar's own flex
+   * column + spacing-5 gap stays; it just takes the full width. */
+  .record-screen__sidebar {
+    flex: none;
+    min-width: 0;
+    max-width: none;
+  }
+
+  .record-screen__handle {
+    display: none;
+  }
+
+  /* Full width: the main column's divider moves from its right edge to under it. */
+  [data-cc-width="full"] .record-screen__main {
+    border-right: 0;
+    border-bottom: 1px solid var(--ai-border-secondary);
+  }
+}

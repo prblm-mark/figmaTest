@@ -1,0 +1,53 @@
+/* MediaMeta — image thumbnail + its file facts (alt text, file name, size,
+ * dimensions). The view-mode value of an image field; MediaPicker is the
+ * edit-mode counterpart.
+ *
+ * Figma: Lus07xi8pPXLN87sQIyrEt · View & Edit page · component 3861:1922
+ */
+
+.media-meta {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ai-spacing-4);
+  min-width: 0;
+}
+
+.media-meta__thumb {
+  flex-shrink: 0;
+  width: var(--ai-spacing-12);
+  height: var(--ai-spacing-12);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-sm);
+  background-color: var(--ai-surface-minimal);
+  object-fit: cover;
+}
+
+.media-meta__list {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: var(--ai-spacing-4);
+  row-gap: var(--ai-spacing-0-5);
+  min-width: 0;
+  margin: 0;
+  padding-left: var(--ai-spacing-4);
+  border-left: 1px solid var(--ai-border-secondary);
+}
+
+.media-meta__term,
+.media-meta__value {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-xs);
+}
+
+.media-meta__term {
+  color: var(--ai-text-contrast);
+  white-space: nowrap;
+}
+
+.media-meta__value {
+  color: var(--ai-text-primary);
+  overflow-wrap: anywhere;
+}

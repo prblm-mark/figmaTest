@@ -98,7 +98,8 @@
 
 /* Active workspace button — bg highlight + brightened icon. */
 .cc-sidebar__btn--active,
-.cc-sidebar__btn[aria-current="true"] {
+.cc-sidebar__btn[aria-current="true"],
+.cc-sidebar__btn[aria-pressed="true"] {
   background-color: var(--cc-mainmenu-secondary-bg);
   color: var(--cc-mainmenu-icon);
 }

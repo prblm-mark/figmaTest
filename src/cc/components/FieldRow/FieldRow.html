@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en" data-brand="cc">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../../components/dark-mode-toggle.js"></script>
+  <title>FieldRow — Control Centre</title>
+  <link rel="stylesheet" href="../../../styles/base.css">
+  <link rel="stylesheet" href="../../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../../components/Badge/Badge.css">
+  <link rel="stylesheet" href="../../../components/Input/Input.css">
+  <link rel="stylesheet" href="../../../components/Select/Select.css">
+  <link rel="stylesheet" href="../../../components/Textarea/Textarea.css">
+  <link rel="stylesheet" href="../MediaMeta/MediaMeta.css">
+  <link rel="stylesheet" href="../MediaPicker/MediaPicker.css">
+  <link rel="stylesheet" href="../../patterns/TagBox/TagBox.css">
+  <link rel="stylesheet" href="FieldRow.css">
+  <style>
+    body { margin: 0; padding: var(--ai-spacing-7); background: var(--cc-ui-primary-bg); min-height: 100vh; color: var(--ai-text-primary); font-family: var(--ai-font-body); }
+    .demo-section { max-width: var(--demo-w, none); padding: var(--ai-spacing-6); background: var(--ai-surface-primary); border: 1px solid var(--ai-border-secondary); border-radius: var(--ai-radius-lg); margin-bottom: var(--ai-spacing-5); }
+    .demo-section--bare { background: transparent; border: 0; padding: 0; }
+    .demo-section__title { font-size: var(--ai-font-fixed-xs); font-weight: var(--ai-font-semibold); color: var(--ai-text-contrast); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 var(--ai-spacing-5); }
+    .demo-note { margin: 0 0 var(--ai-spacing-5); font-size: var(--ai-font-fixed-xs); color: var(--ai-text-secondary); }
+    .demo-stack { display: flex; flex-direction: column; gap: var(--ai-spacing-5); }
+    .demo-narrow { max-width: var(--ai-size-7); }
+  </style>
+</head>
+<body>
+  <div class="demo-section ">
+    <p class="demo-section__title">Layout=Wide · View types (Text, Tags, Paragraph, Media)</p>
+    <dl class="demo-stack" style="margin:0"><div class="field-row">
+            <dt class="field-row__label">Title</dt>
+            <dd class="field-row__value">Affino 9.0.11.25 - The Refinement Update</dd>
+          </div><div class="field-row">
+            <dt class="field-row__label">Multi Display</dt>
+            <dd class="field-row__value"><div class="field-row__tags"><a class="btn btn--tertiary btn--xs" href="#"><span>Coronavirus Hub</span></a><a class="btn btn--tertiary btn--xs" href="#"><span>AI</span></a><a class="btn btn--tertiary btn--xs" href="#"><span>Insight &amp; Blogs</span></a></div></dd>
+          </div><div class="field-row field-row--paragraph">
+            <dt class="field-row__label">Blog Intro</dt>
+            <dd class="field-row__value"><p>Affino 9.0.11.25, The Refinement Update, puts the work into the platform you already run: exports and reports that finish on real data, screens that hold your place as you move through them, sharper defences in front of your site, a one-tap unsubscribe for your recipients, and a new Orders API your other systems can read.</p></dd>
+          </div><div class="field-row field-row--media">
+            <dt class="field-row__label">Thumbnail</dt>
+            <dd class="field-row__value"><div class="media-meta">
+              <img class="media-meta__thumb" src="../../../../img/record/article-thumb.jpg" alt="Affino 9.0.11.25 - The Refinement Update">
+              <dl class="media-meta__list"><dt class="media-meta__term">Alt text</dt><dd class="media-meta__value">Affino 9.0.11.25 - The Refinement Update</dd><dt class="media-meta__term">File name</dt><dd class="media-meta__value">ai-1786980189773-12-4bd8a8.jpg</dd><dt class="media-meta__term">File size</dt><dd class="media-meta__value">108 KB</dd><dt class="media-meta__term">Dimensions</dt><dd class="media-meta__value">800 × 800</dd></dl>
+            </div></dd>
+          </div></dl>
+  </div>
+  <div class="demo-section ">
+    <p class="demo-section__title">Layout=Compact · Text, Tags</p><p class="demo-note">Sidebar rows: 12px on a 128px (--ai-size-1) term column.</p>
+    <dl class="demo-stack demo-narrow" style="margin:0"><div class="field-row field-row--compact">
+            <dt class="field-row__label">Publisher</dt>
+            <dd class="field-row__value">Affino</dd>
+          </div><div class="field-row field-row--compact">
+            <dt class="field-row__label">Creator</dt>
+            <dd class="field-row__value"><div class="field-row__tags"><a class="btn btn--tertiary btn--xs" href="#"><span>Markus Karlsson</span></a></div></dd>
+          </div></dl>
+  </div>
+  <div class="demo-section ">
+    <p class="demo-section__title">Layout=Wide · Edit types (Input, Select, TagBox, Textarea, Media Picker)</p><p class="demo-note">Required adds the red asterisk (--ai-text-error). Helper text is the Input's own help line.</p>
+    <div class="demo-stack"><div class="field-row field-row--edit">
+            <label class="field-row__label" for="f-title-1">Title<span class="field-row__required" aria-hidden="true">*</span></label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-title-1" type="text" class="input__control" value="Affino 9.0.11.25 - The Refinement Update" required aria-required="true"></div>
+              
+            </div></div>
+          </div><div class="field-row field-row--edit">
+            <label class="field-row__label" for="f-screenname-2">Screen Name</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-screenname-2" type="text" class="input__control" value="affino-901125-the-refinement-update" aria-describedby="f-screenname-2-help"></div>
+              <span class="input__help" id="f-screenname-2-help">Used in the article URL.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit">
+            <span class="field-row__label" id="f-zone-3-label">Zone<span class="field-row__required" aria-hidden="true">*</span></span>
+            <div class="field-row__value"><div class="sel" data-sel>
+              <button id="f-zone-3" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox">
+                <span class="sel__value">Affino</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">Affino</button></li>
+              </ul>
+            </div></div>
+          </div><div class="field-row field-row--edit">
+            <span class="field-row__label" id="f-priority-4-label">Priority</span>
+            <div class="field-row__value"><div class="sel" data-sel>
+              <button id="f-priority-4" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox">
+                <span class="sel__value sel__value--placeholder">Select...</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item" role="option">Select...</button></li>
+              </ul>
+            </div></div>
+          </div><div class="field-row field-row--edit">
+            <span class="field-row__label" id="f-multidisplay-5-label">Multi Display</span>
+            <div class="field-row__value"><div class="tag-box" data-tag-box>
+              <ul class="tag-box__tags" id="f-multidisplay-5" aria-label="Multi Display" data-empty="None selected"><li class="badge badge--neutral"><span>Coronavirus Hub</span><button type="button" class="badge__close" aria-label="Remove Coronavirus Hub"><i data-lucide="x" aria-hidden="true"></i></button></li><li class="badge badge--neutral"><span>AI</span><button type="button" class="badge__close" aria-label="Remove AI"><i data-lucide="x" aria-hidden="true"></i></button></li><li class="badge badge--neutral"><span>Insight &amp; Blogs</span><button type="button" class="badge__close" aria-label="Remove Insight &amp; Blogs"><i data-lucide="x" aria-hidden="true"></i></button></li></ul>
+              <button type="button" class="btn btn--secondary btn--sm" data-tag-box-select="modal-demo" aria-haspopup="dialog"><span>Select</span></button>
+            </div></div>
+          </div><div class="field-row field-row--edit">
+            <label class="field-row__label" for="f-blogentry-6">Blog Entry</label>
+            <div class="field-row__value"><div class="textarea">
+              <textarea class="textarea__control" id="f-blogentry-6" rows="8">Affino 9.0.11.25, The Refinement Update, puts the work into the platform you already run. Exports and reports finish on real data, screens hold your place as you move through them, the defences in front of your site are sharper, and your recipients get a one-tap unsubscribe.
+
+Five headline updates lead the release. We rebuilt more than twenty exports this release, spanning content, commerce, subscriptions, CRM, analytics, ad serving, events, and messaging, along with the listings and reports behind them.</textarea>
+            </div></div>
+          </div><div class="field-row field-row--edit">
+            <span class="field-row__label" id="f-thumbnail-7-label">Thumbnail</span>
+            <div class="field-row__value"><div class="media-picker">
+              <span class="media-picker__thumb"><i data-lucide="image" aria-hidden="true"></i></span>
+              <div class="media-picker__actions">
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Thumbnail"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Thumbnail"><i data-lucide="trash-2" aria-hidden="true"></i></button>
+              </div>
+            </div></div>
+          </div></div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script src="../../../components/Select/Select.js"></script>
+  <script src="../../patterns/TagBox/TagBox.js"></script>
+</body>
+</html>

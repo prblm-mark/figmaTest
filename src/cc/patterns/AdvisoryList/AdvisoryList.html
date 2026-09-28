@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en" data-brand="cc">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../../components/dark-mode-toggle.js"></script>
+  <title>AdvisoryList — Control Centre</title>
+  <link rel="stylesheet" href="../../../styles/base.css">
+  <link rel="stylesheet" href="../../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../components/AdvisoryItem/AdvisoryItem.css">
+  <link rel="stylesheet" href="AdvisoryList.css">
+  <style>
+    body { margin: 0; padding: var(--ai-spacing-7); background: var(--cc-ui-primary-bg); min-height: 100vh; color: var(--ai-text-primary); font-family: var(--ai-font-body); }
+    .demo-section { max-width: var(--demo-w, none); padding: var(--ai-spacing-6); background: var(--ai-surface-primary); border: 1px solid var(--ai-border-secondary); border-radius: var(--ai-radius-lg); margin-bottom: var(--ai-spacing-5); }
+    .demo-section--bare { background: transparent; border: 0; padding: 0; }
+    .demo-section__title { font-size: var(--ai-font-fixed-xs); font-weight: var(--ai-font-semibold); color: var(--ai-text-contrast); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 var(--ai-spacing-5); }
+    .demo-note { margin: 0 0 var(--ai-spacing-5); font-size: var(--ai-font-fixed-xs); color: var(--ai-text-secondary); }
+    .demo-stack { display: flex; flex-direction: column; gap: var(--ai-spacing-5); }
+    .demo-narrow { max-width: var(--ai-size-7); }
+  </style>
+</head>
+<body>
+  <div class="demo-section ">
+    <p class="demo-section__title">AdvisoryList</p>
+    <div class="demo-narrow"><ul class="advisory-list"><li class="advisory-item advisory-item--expanded">
+              <div class="advisory-item__row">
+                <i data-lucide="circle-alert" class="advisory-item__icon" aria-hidden="true"></i>
+                <p class="advisory-item__title">No social sharelines entered</p>
+                <button type="button" class="btn btn--secondary btn--xs btn--icon advisory-item__toggle" data-advisory-toggle aria-expanded="true" aria-controls="advisory-1" aria-label="Hide details: No social sharelines entered"><i data-lucide="plus" class="advisory-item__plus" aria-hidden="true"></i><i data-lucide="minus" class="advisory-item__minus" aria-hidden="true"></i></button>
+              </div>
+              <p class="advisory-item__description" id="advisory-1">Enter alternative versions of the title for visitors to easily share your content.</p>
+            </li><li class="advisory-item">
+              <div class="advisory-item__row">
+                <i data-lucide="circle-alert" class="advisory-item__icon" aria-hidden="true"></i>
+                <p class="advisory-item__title">No topics selected</p>
+                <button type="button" class="btn btn--secondary btn--xs btn--icon advisory-item__toggle" data-advisory-toggle aria-expanded="false" aria-controls="advisory-2" aria-label="Show details: No topics selected"><i data-lucide="plus" class="advisory-item__plus" aria-hidden="true"></i><i data-lucide="minus" class="advisory-item__minus" aria-hidden="true"></i></button>
+              </div>
+              <p class="advisory-item__description" id="advisory-2">Add topics and keywords so this article appears in related listings and search.</p>
+            </li><li class="advisory-item">
+              <div class="advisory-item__row">
+                <i data-lucide="circle-alert" class="advisory-item__icon" aria-hidden="true"></i>
+                <p class="advisory-item__title">Use subheadings (H2, H3) in the Main Body</p>
+                <button type="button" class="btn btn--secondary btn--xs btn--icon advisory-item__toggle" data-advisory-toggle aria-expanded="false" aria-controls="advisory-3" aria-label="Show details: Use subheadings (H2, H3) in the Main Body"><i data-lucide="plus" class="advisory-item__plus" aria-hidden="true"></i><i data-lucide="minus" class="advisory-item__minus" aria-hidden="true"></i></button>
+              </div>
+              <p class="advisory-item__description" id="advisory-3">Break the Main Body into sections with H2 and H3 headings to help readers and search engines scan it.</p>
+            </li></ul></div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script src="../../components/AdvisoryItem/AdvisoryItem.js"></script>
+</body>
+</html>

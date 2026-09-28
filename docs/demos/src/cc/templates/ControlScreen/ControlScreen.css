@@ -238,19 +238,6 @@
   }
 }
 
-/* CC brand: the two StatCard icon squares use distinct teal hues (Figma node
-   4183:14664) rather than the component default Blue/600. `teal/500` and
-   `muted-teal/600` are Figma primitives with no --ai-* semantic token.
-   USER-APPROVED (2026-06) as scoped, per-card template overrides — the two-tone
-   look is intentional and kept as primitives (NOT tokenised, NOT a StatCard
-   variant). Do not re-flag in audits. */
-.cc-control__cards .stat-card:nth-of-type(1) .stat-card__icon-wrap {
-  background-color: #14b8a6; /* teal/500 primitive — user-approved */
-}
-.cc-control__cards .stat-card:nth-of-type(2) .stat-card__icon-wrap {
-  background-color: #3391a4; /* muted-teal/600 primitive — user-approved */
-}
-
 /* Zone row: Select Zone (left) + Analysis Dashboard link (right). */
 /* Analysis panel — single bordered card wrapping the header bar + chart row
    (Figma node 4186:21107). */
@@ -421,8 +408,10 @@
   color: var(--ai-text-secondary);
 }
 
-/* Active look on the rail button while its popover is open */
-.cc-control__actions .actions-menu__btn[aria-expanded="true"] {
+/* Active look on the rail button while its popover is open, or while a toggle
+   button (the full-width Minimise) is on */
+.cc-control__actions .actions-menu__btn[aria-expanded="true"],
+.cc-control__actions .actions-menu__btn[aria-pressed="true"] {
   background-color: var(--cc-actions-menu-secondary-bg);
 }
 

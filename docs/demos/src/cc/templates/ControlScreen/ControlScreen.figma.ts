@@ -35,8 +35,8 @@ figma.connect(
           <div class="cc-control__page">
             <div class="alert alert--cta alert--warning"><!-- … --></div>
             <div class="cc-control__cards">
-              <div class="stat-card"><!-- Key Features --></div>
-              <div class="stat-card"><!-- Help Guides --></div>
+              <div class="stat-card stat-card--number-first stat-card--teal-radix"><!-- Key Features --></div>
+              <div class="stat-card stat-card--number-first stat-card--lagoon"><!-- Help Guides --></div>
               <div class="upgrade-card"><!-- Version + Update --></div>
             </div>
             <div class="cc-control__panel">

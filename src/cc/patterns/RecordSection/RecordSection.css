@@ -1,0 +1,89 @@
+/* RecordSection — main-column record card: title header + FieldRows.
+ * View mode: the body is a <dl>. Edit mode: the body is a <div> of edit rows.
+ * Width=Standard: white card. Width=Full: flat, bottom border only.
+ *
+ * Figma: Lus07xi8pPXLN87sQIyrEt · View & Edit page · set 3871:3259
+ */
+
+.record-section {
+  min-width: 0;
+  overflow: hidden;
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+}
+
+.record-section--full {
+  border-width: 0 0 1px;
+  border-radius: var(--ai-radius-none);
+}
+
+.record-section__header {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-4);
+  padding: var(--ai-spacing-5) var(--ai-spacing-6) var(--ai-spacing-5) var(--ai-spacing-5);
+  border-bottom: 1px solid var(--ai-border-secondary);
+}
+
+.record-section__title {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-semibold);
+  font-size: var(--ai-font-fixed-md);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-primary);
+}
+
+.record-section__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+  margin: 0;
+  padding: var(--ai-spacing-6);
+}
+
+/* ── Narrow: field rows stack label over value ─────────
+ * Designer-approved 2026-09-28. The section spans the main column, so its own width
+ * tracks the space available (docked menu, widened sidebar, narrow window) — a valid
+ * self-container. 559 = the 192 label + a ~45ch value (the low end of a readable
+ * 45–75ch measure at 14px) + the section's padding. Below it the label sits above its
+ * value at full width. No Figma frame exists for this: the 8px label→value gap is the
+ * DS Input's own label→control gap (`--ai-spacing-3`), so stacked rows read like the
+ * form fields everywhere else. Compact (sidebar) rows are untouched. */
+.record-section {
+  container: record-section / inline-size;
+}
+
+@container record-section (max-width: 559px) {
+  .field-row:not(.field-row--compact) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--ai-spacing-3);
+  }
+
+  .field-row:not(.field-row--compact) .field-row__label {
+    flex-basis: auto;
+  }
+
+  /* The label no longer sits beside a 40px control, so drop the centring offset. */
+  .field-row--edit .field-row__label {
+    padding-top: 0;
+  }
+
+  /* MediaMeta: the file facts move UNDER the thumbnail (designer, 2026-09-28) — beside a
+   * 72px image in a narrow value column they wrapped word by word. Kept, not hidden: alt text
+   * is the accessibility-relevant value and the facts are what a record view is for. The
+   * divider turns from the list's left edge to its top, same token and spacing. */
+  .media-meta {
+    flex-direction: column;
+  }
+
+  .media-meta__list {
+    align-self: stretch;
+    padding-left: 0;
+    padding-top: var(--ai-spacing-4);
+    border-left: 0;
+    border-top: 1px solid var(--ai-border-secondary);
+  }
+}

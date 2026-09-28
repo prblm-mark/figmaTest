@@ -1,10 +1,11 @@
 /* CCHeader — main page header (white bar) for the CC product.
  * Figma: ETKqleZdpertwFEo40YB5n (CC Hybrid). Component set 4105:3641.
  *
- * Three Type axes:
+ * Type axes:
  *   - Default:  title only
  *   - Sub Text: title + subtitle row
  *   - Control:  avatar + name + user details (Affino, Job title)
+ *   - Record:   record type + title + record actions (DS file RecordHeader 3867:2138)
  * Device responsiveness is CONTAINER-QUERY based: markup wraps the header in
  * `.cc-header-cq` (container: cc-header / inline-size) and rules use
  * `@container cc-header (max-width: 767px)`, so the header reflows on its own
@@ -140,6 +141,34 @@
   gap: var(--ai-spacing-1); /* 4px between title and subtitle */
 }
 
+/* ── Type=Record ─────────────────────────────────────── */
+/* Record screen header (View / Edit / Steps): record type above the title,
+ * Add + Edit (view) or Cancel + Save (edit) on the right, bottom border.
+ * Figma: Lus07xi8pPXLN87sQIyrEt · View & Edit page · RecordHeader 3867:2138 */
+
+.cc-header--record {
+  gap: var(--ai-spacing-5);
+  border-bottom: 1px solid var(--ai-border-secondary);
+}
+
+.cc-header--record .cc-header__title-block-text {
+  gap: var(--ai-spacing-1);
+}
+
+.cc-header__record-type {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-medium);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-contrast);
+}
+
+.cc-header--record .cc-header__title {
+  line-height: var(--ai-leading-md);
+  white-space: normal;
+}
+
 /* ── Type=Control ────────────────────────────────────── */
 
 .cc-header--control .cc-header__title-block {
@@ -255,5 +284,20 @@
   /* Tighter gap for Control mobile actions */
   .cc-header--control .cc-header__actions {
     gap: var(--ai-spacing-1); /* 4px on Control mobile per Figma */
+  }
+
+  /* Type=Record keeps its labels on mobile (2026-09-28). The icon-only collapse above
+   * assumes every action has an icon; Cancel and Add have none, so it crushed their
+   * text into a 32px square. They take Button's own `sm` size instead — the same 32px
+   * height the collapse targets, with the label kept. */
+  .cc-header--record .cc-header__actions .btn {
+    width: auto;
+    padding: 0 var(--ai-spacing-4);
+    gap: var(--ai-spacing-3);         /* the base .btn gap, which btn--sm keeps */
+    font-size: var(--ai-font-fluid-xxs);
+  }
+
+  .cc-header--record .cc-header__actions {
+    flex-shrink: 0;
   }
 }

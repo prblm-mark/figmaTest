@@ -1,0 +1,42 @@
+/* MediaPicker — edit-mode image field: thumbnail + Edit + delete.
+ * State=Empty shows the image icon; State=Filled shows the image.
+ *
+ * Figma: Lus07xi8pPXLN87sQIyrEt · View & Edit page · set 3875:3331
+ */
+
+.media-picker {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-4);
+}
+
+.media-picker__thumb {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: var(--ai-spacing-10);
+  height: var(--ai-spacing-10);
+  overflow: hidden;
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-sm);
+  background-color: var(--ai-surface-minimal);
+  color: var(--ai-icon-secondary);
+}
+
+.media-picker__thumb [data-lucide],
+.media-picker__thumb svg {
+  width: var(--ai-icon-size-md);
+  height: var(--ai-icon-size-md);
+}
+
+.media-picker__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.media-picker__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+}
