@@ -59,8 +59,8 @@ Each colour modifier only re-points four component props (`--stat-card-solid`, `
 | Lg size | `.stat-card--lg` |
 | Type=No card | `.stat-card--no-card` |
 | Type=Number First | `.stat-card--number-first` (uses `order` to swap) |
-| Fill=<colour> | `.stat-card--<colour>` |
-| Fill=<colour> Soft | `.stat-card--<colour>.stat-card--soft` |
+| `Fill=<colour>` | `.stat-card--<colour>` |
+| `Fill=<colour> Soft` | `.stat-card--<colour>.stat-card--soft` |
 | Brand icon square | `.stat-card__icon-wrap` |
 | Lucide icon (inside square) | `<i data-lucide="..." aria-hidden="true">` |
 | Text column | `.stat-card__text` |
