@@ -297,3 +297,7 @@ followed:
   date broken over two lines reads as two values. `.table` is in the selector
   purely to out-specify that blanket rule, which names an element and would
   otherwise win.
+
+## Scrollbars (2026-09-29)
+
+The checklist (Multi Select ±search) and the Multi Select Table / Modal table region carry the system scrollbar treatment (Modal `.modal__scroll`: transparent track, thin `--ai-surface-secondary` thumb), restated in FilterDropdowns.css because these cards are not always inside a modal. Figma draws no scrollbar, so this is a code convention (designer request).

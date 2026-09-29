@@ -244,6 +244,34 @@
   overflow-y: auto;
 }
 
+/* ── Scrollbars (designer, 2026-09-29) ──────────────────────
+ * The system's one scrollbar treatment — Modal's `.modal__scroll` (transparent track, thin
+ * `--ai-surface-secondary` thumb) — on this pattern's own scroll regions, so a checklist or
+ * picker table no longer shows the OS default bar. Restated rather than composed because these
+ * regions are not always inside a modal (the listing's FilterBar cards). Chrome honours
+ * `scrollbar-width: thin` (~11px) and ignores the webkit width; see Modal.css. */
+.filter-dropdowns--list .filter-dropdowns__checklist,
+.filter-dropdowns__table-region {
+  scrollbar-color: var(--ai-surface-secondary) transparent;
+  scrollbar-width: thin;
+}
+
+.filter-dropdowns--list .filter-dropdowns__checklist::-webkit-scrollbar,
+.filter-dropdowns__table-region::-webkit-scrollbar {
+  width: var(--ai-spacing-2);
+}
+
+.filter-dropdowns--list .filter-dropdowns__checklist::-webkit-scrollbar-track,
+.filter-dropdowns__table-region::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.filter-dropdowns--list .filter-dropdowns__checklist::-webkit-scrollbar-thumb,
+.filter-dropdowns__table-region::-webkit-scrollbar-thumb {
+  background-color: var(--ai-surface-secondary);
+  border-radius: var(--ai-radius-full);
+}
+
 /* Cells WRAP in this table, so every column stays on screen.
  *
  * Table.css sets `white-space: nowrap` on every th and td so a wide table
