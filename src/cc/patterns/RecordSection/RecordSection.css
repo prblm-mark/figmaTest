@@ -79,6 +79,10 @@
     flex-direction: column;
   }
 
+  .media-meta__details {
+    align-self: stretch;
+  }
+
   .media-meta__list {
     align-self: stretch;
     padding-left: 0;
