@@ -36,6 +36,7 @@ always the one being placed. The auto-scroll near the list's edges keeps a long 
 | Tile min | `--ai-size-1` (the Media Items grid's own is `--ai-size-2`; smaller because a picker wants more choices per screen) |
 | Sort thumb / position input | `--ai-spacing-8` square / `--ai-spacing-9` × `--ai-spacing-7` |
 | Hint bar | `--ai-surface-info-soft` |
+| Sort footer Reset (tertiary) | transparent at rest only; hover / pressed / focus keep the tertiary tokens (designer, 2026-09-29) |
 | Sort row move buttons (tertiary sm) | `--ai-border-secondary` border, the listing account chip's Case B override (designer, 2026-09-29), restated for hover / focus |
 
 ## Needs Figma
