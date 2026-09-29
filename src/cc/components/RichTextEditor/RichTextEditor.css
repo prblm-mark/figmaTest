@@ -69,6 +69,42 @@
   outline-offset: -2px;
 }
 
+/* The Styles dropdown is styled as our Select / Input field (designer, 2026-09-29): surface-primary
+ * fill, --ai-border-secondary line, brand border on hover / open, the Input's focus ring. It keeps
+ * TinyMCE's toolbar height (not the field's 40px) so the toolbar row does not grow. Replaces
+ * oxide's #f7f7f7 fill, which is not a token. Declared after the generic tbtn hover / enabled rules
+ * so it wins at equal specificity. */
+.rich-text .tox .tox-tbtn--select,
+.rich-text .tox .tox-tbtn--select:hover,
+.rich-text .tox .tox-tbtn--select[aria-expanded="true"] {
+  background: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  padding-inline: var(--ai-spacing-3);
+  transition: border-color var(--ai-transition-default), box-shadow var(--ai-transition-default);
+}
+
+/* Open = TinyMCE's aria-expanded="true" (it does not add --enabled to a dropdown). */
+.rich-text .tox .tox-tbtn--select:hover,
+.rich-text .tox .tox-tbtn--select[aria-expanded="true"] {
+  border-color: var(--ai-border-brand);
+}
+
+.rich-text .tox .tox-tbtn--select:focus-visible {
+  outline: none;
+  border-color: var(--ai-border-brand);
+  box-shadow: 0 0 0 1px var(--ai-surface-primary),
+              0 0 0 3px color-mix(in srgb, var(--ai-surface-brand-soft) 95%, transparent);
+}
+
+[data-theme="dark"] .rich-text .tox .tox-tbtn--select:focus-visible {
+  box-shadow: 0 0 0 1px var(--ai-surface-primary),
+              0 0 0 3px color-mix(in srgb, var(--ai-surface-brand-soft) 30%, transparent);
+}
+
+.rich-text .tox .tox-tbtn--select .tox-tbtn__select-chevron svg {
+  fill: var(--ai-icon-secondary);
+}
+
 .rich-text .tox .tox-tbtn--select .tox-tbtn__select-label {
   font-family: var(--ai-font-body);
   font-size: var(--ai-font-fixed-2xs);
