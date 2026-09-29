@@ -75,3 +75,110 @@
   color: var(--ai-text-primary);
   overflow-wrap: anywhere;
 }
+
+/* ══ Layout comparison (designer, 2026-09-29) — pick one, delete the other ══════════════════ */
+
+.media-meta__summary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ai-spacing-1);
+  min-width: 0;
+}
+
+.media-meta__name,
+.media-meta__facts,
+.media-meta__alt,
+.media-meta__caption {
+  margin: 0;
+  font-family: var(--ai-font-title);
+}
+
+/* ── A · Asset card ── */
+.media-meta--card {
+  align-items: center;
+  gap: var(--ai-spacing-4);
+  inline-size: 100%;
+  max-inline-size: var(--ai-size-8);
+  padding: var(--ai-spacing-3);
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+}
+
+.media-meta--card .media-meta__thumb {
+  width: var(--ai-spacing-10);
+  height: var(--ai-spacing-10);
+}
+
+.media-meta--card .media-meta__summary {
+  flex: 1 1 0;
+}
+
+.media-meta__name {
+  max-inline-size: 100%;
+  overflow: hidden;
+  font-weight: var(--ai-font-medium);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-primary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.media-meta__facts {
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+}
+
+.media-meta__alt {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-secondary);
+}
+
+.media-meta__alt-label {
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-contrast);
+}
+
+/* ── B · Preview + info popover ── */
+.media-meta--popover .media-meta__summary {
+  gap: var(--ai-spacing-3);
+}
+
+.media-meta__caption {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-secondary);
+}
+
+/* The popover anchors to the whole image block, not the button, so it can never run past
+ * the value column: `max-inline-size: 100%` resolves against `.media-meta`. */
+.media-meta--popover {
+  position: relative;
+}
+
+.media-meta--popover .media-meta__info {
+  position: static;
+}
+
+.media-meta__panel {
+  min-width: 0;
+  inline-size: max-content;
+  max-inline-size: 100%;
+}
+
+.media-meta__panel .media-meta__list {
+  padding: 0;
+  border: 0;   /* no divider in either layout — the panel's own border frames it */
+}

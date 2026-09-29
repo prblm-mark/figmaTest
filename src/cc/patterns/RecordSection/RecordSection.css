@@ -75,7 +75,7 @@
    * 72px image in a narrow value column they wrapped word by word. Kept, not hidden: alt text
    * is the accessibility-relevant value and the facts are what a record view is for. The
    * divider turns from the list's left edge to its top, same token and spacing. */
-  .media-meta {
+  .media-meta:not(.media-meta--card):not(.media-meta--popover) {
     flex-direction: column;
   }
 
