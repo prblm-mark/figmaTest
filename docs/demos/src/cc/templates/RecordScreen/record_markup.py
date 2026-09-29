@@ -227,7 +227,7 @@ def viewer_item(name, role, time, companies, seed):
               <div class="avatar"><img class="portrait" src="https://i.pravatar.cc/64?u={seed}" alt=""></div>
               <div class="viewer-item__body">
                 <div class="viewer-item__identity">
-                  <div class="viewer-item__who"><p class="viewer-item__name">{e(name)}</div><p class="viewer-item__role">{e(role)}</p></div>
+                  <div class="viewer-item__who"><p class="viewer-item__name">{e(name)}</p><p class="viewer-item__role">{e(role)}</p></div>
                   <p class="viewer-item__time">{e(time)}</p>
                 </div>
                 <div class="viewer-item__companies">{chips}</div>
