@@ -159,6 +159,8 @@
     });
     var empty = $(overlay, '[data-selector-empty]');
     if (empty) empty.hidden = shown > 0;
+    var more = $(overlay, '.selector__more');
+    if (more) more.hidden = shown === 0; // "Showing 24 of 43 · Load more" means nothing under no results
     var modal = $(overlay, '.selector');
     if (modal) modal.classList.toggle('selector--filtered', !!q || facets.length > 0);
     var hint = $(overlay, '[data-sort-hint]');

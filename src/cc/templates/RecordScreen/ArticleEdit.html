@@ -2317,7 +2317,11 @@ The current set is News AI, AI Assistants, AI Enhanced Search, Article Summaries
               <span class="selector__tile-text"><span class="selector__tile-name">Screenshot 2023-09-01 at 14-55-26 Recruitment</span><span class="selector__tile-meta">PNG · 2023-09-01</span></span>
             </button>
           </li></ul>
-        <p class="selector__empty" data-selector-empty hidden><i data-lucide="search-x" aria-hidden="true"></i><span>No matches. Try a different search.</span></p>
+        <div class="selector__empty selector__empty--action" data-selector-empty hidden>
+          <i data-lucide="image-off" aria-hidden="true"></i>
+          <p class="selector__empty-text">No media matches. Upload it, or try a different search or filter.</p>
+          <button type="button" class="btn btn--primary btn--sm" data-backend-todo="selector-media-upload"><i data-lucide="upload" aria-hidden="true"></i><span>Upload</span></button>
+        </div>
         <div class="selector__more"><span class="selector__more-count">Showing 24 of 43</span><button type="button" class="btn btn--secondary btn--sm" data-backend-todo="selector-media-source"><span>Load more</span></button></div>
       </div>
       <div class="modal__footer selector__footer">

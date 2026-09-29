@@ -606,7 +606,11 @@ def media_select_modal(mid, title, items, total):
       </div>
       <div class="selector__region modal__scroll" id="{mid}-results">
         <ul class="selector__grid" role="list">{tiles}</ul>
-        {selector_empty()}
+        <div class="selector__empty selector__empty--action" data-selector-empty hidden>
+          {icon("image-off")}
+          <p class="selector__empty-text">No media matches. Upload it, or try a different search or filter.</p>
+          {btn("Upload", "primary", "sm", icon_left="upload", attrs=' data-backend-todo="selector-media-upload"')}
+        </div>
         <div class="selector__more"><span class="selector__more-count">Showing {len(items)} of {total}</span>{btn("Load more", "secondary", "sm", attrs=' data-backend-todo="selector-media-source"')}</div>
       </div>
       <div class="modal__footer selector__footer">
