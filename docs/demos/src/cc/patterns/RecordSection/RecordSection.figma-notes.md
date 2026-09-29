@@ -42,4 +42,7 @@ Draft card bg/border were borrowed (`--cc-header-secondary-bg`, `--ai-datatable-
 
 ## Narrow layout (designer-approved 2026-09-28)
 `.record-section` is a self-container (`record-section`). At ≤559 its non-compact FieldRows stack label over value with a `--ai-spacing-3` gap (the DS Input's label→control gap); the edit label's centring `padding-top` is dropped. No Figma frame — the threshold is 192 label + a ~45ch value + padding.
-At the same ≤559, MediaMeta's file facts move under the thumbnail and its divider turns from the list's left edge to its top (designer, 2026-09-28). Kept rather than hidden on mobile: alt text is the a11y-relevant value.
+
+## Mobile density (designer amends, 2026-09-29)
+In the same `record-section ≤559` query: header padding `--ai-spacing-4` all round (was 16/24/16/16), title `--ai-font-fixed-xs` (was `fixed-md`), body padding `--ai-spacing-4` (was `spacing-6`); body gap unchanged. Figma: applied as instance overrides on the six RecordSections in each mobile frame (`3905:143091`, `3907:17632`).
+`overflow: hidden` removed from `.record-section` so the MediaMeta details panel is not clipped.

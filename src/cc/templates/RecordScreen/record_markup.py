@@ -80,47 +80,12 @@ MEDIA = [("Alt text", "Affino 9.0.11.25 - The Refinement Update"), ("File name",
          ("File size", "108 KB"), ("Dimensions", "800 × 800")]
 
 
-_media_ids = iter(range(1, 10_000))
-
-
-def media_meta(src=IMG, expanded=False):
-    """Details hidden by default behind a Show/Hide toggle (designer, 2026-09-29) — MediaMeta.js."""
-    mid = f"media-meta-{next(_media_ids)}"
+def media_meta(src=IMG):
+    """View-mode image value: thumbnail + alt-text caption; the file facts sit behind an
+    "Image details" button in a DS Dropdown panel (designer chose layout B, 2026-09-29 —
+    the Google Drive / Photos "details" pattern). Dropdown.js owns open / outside-click / Escape."""
     rows = "".join(f'<dt class="media-meta__term">{e(a)}</dt><dd class="media-meta__value">{e(b)}</dd>' for a, b in MEDIA)
-    label = "Hide details" if expanded else "Show details"
-    hidden = "" if expanded else " hidden"
     return f'''<div class="media-meta">
-              <img class="media-meta__thumb" src="{src}" alt="{e(MEDIA[0][1])}">
-              <div class="media-meta__details">
-                <button type="button" class="btn btn--secondary btn--xs media-meta__toggle" data-media-toggle aria-expanded="{'true' if expanded else 'false'}" aria-controls="{mid}"><span>{label}</span>{icon("chevron-down", "media-meta__chevron")}</button>
-                <dl class="media-meta__list" id="{mid}"{hidden}>{rows}</dl>
-              </div>
-            </div>'''
-
-
-# ── Image value: two layouts under comparison (designer asked, 2026-09-29) ──
-# A "card" — the asset-card pattern (Contentful / Shopify / WordPress media): name, one facts
-#   line, alt text; always visible because it is only three short lines.
-# B "popover" — preview + caption with the facts behind an info button (Google Drive / Photos
-#   "details"): reuses the DS Dropdown panel for outside-click / Escape.
-MEDIA_FACTS = "JPG · 108 KB · 800 × 800"
-
-
-def media_card(src=IMG):
-    name = MEDIA[1][1]
-    return f'''<div class="media-meta media-meta--card">
-              <img class="media-meta__thumb" src="{src}" alt="{e(MEDIA[0][1])}">
-              <div class="media-meta__summary">
-                <div class="media-meta__name" title="{e(name)}">{e(name)}</div>
-                <div class="media-meta__facts">{e(MEDIA_FACTS)}</div>
-                <div class="media-meta__alt"><span class="media-meta__alt-label">Alt</span> {e(MEDIA[0][1])}</div>
-              </div>
-            </div>'''
-
-
-def media_popover(src=IMG):
-    rows = "".join(f'<dt class="media-meta__term">{e(a)}</dt><dd class="media-meta__value">{e(b)}</dd>' for a, b in MEDIA)
-    return f'''<div class="media-meta media-meta--popover">
               <img class="media-meta__thumb" src="{src}" alt="{e(MEDIA[0][1])}">
               <div class="media-meta__summary">
                 <div class="media-meta__caption">{e(MEDIA[0][1])}</div>
@@ -155,7 +120,7 @@ def view_row(label, kind, value=None, compact=False):
     if kind == "tags":
         val = '<div class="field-row__tags">' + "".join(chip(t) for t in value) + '</div>'
     elif kind == "media":
-        val = {"card": media_card, "popover": media_popover}.get(value, media_meta)()
+        val = media_meta()
     elif kind == "paragraph":
         paras = value if isinstance(value, list) else [value]
         val = "".join(f"<p>{e(p)}</p>" for p in paras)
@@ -388,8 +353,8 @@ def view_sections():
                                       view_row("Sort Order", "text", "1"), view_row("Multi Display", "tags", ["Coronavirus Hub", "AI", "Insight & Blogs"]),
                                       view_row("Priority", "text", "-")], "view"),
         record_section("Introduction", [view_row("Title", "text", TITLE), view_row("Screen Name", "text", "affino-901125-the-refinement-update"),
-                                        view_row("Alt Title", "text", "-"), view_row("Thumbnail", "media", "card")], "view"),
-        record_section("Main Body", [view_row("Alignment", "text", "Center"), view_row("Main Image", "media", "popover"),
+                                        view_row("Alt Title", "text", "-"), view_row("Thumbnail", "media")], "view"),
+        record_section("Main Body", [view_row("Alignment", "text", "Center"), view_row("Main Image", "media"),
                                      view_row("Blog Intro", "paragraph", INTRO), view_row("Blog Entry", "paragraph", ENTRY)], "view"),
         record_section("Topics", [view_row("Category Topic", "tags", ["Affino"]),
                                   view_row("Topic & Keywords", "tags", ["Affino Social Commerce Blog", "Affino", "Saas"])], "view"),

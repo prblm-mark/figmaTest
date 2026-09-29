@@ -7,7 +7,8 @@
 
 .record-section {
   min-width: 0;
-  overflow: hidden;
+  /* No `overflow: hidden` (2026-09-29): it clipped the MediaMeta details popover on the last
+   * row. Nothing inside paints a background, so the radius needs no clip. */
   background-color: var(--ai-surface-primary);
   border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-md);
@@ -71,23 +72,16 @@
     padding-top: 0;
   }
 
-  /* MediaMeta: the file facts move UNDER the thumbnail (designer, 2026-09-28) — beside a
-   * 72px image in a narrow value column they wrapped word by word. Kept, not hidden: alt text
-   * is the accessibility-relevant value and the facts are what a record view is for. The
-   * divider turns from the list's left edge to its top, same token and spacing. */
-  .media-meta:not(.media-meta--card):not(.media-meta--popover) {
-    flex-direction: column;
+  /* Mobile density (designer amends, 2026-09-29): tighter header/body padding, smaller title. */
+  .record-section__header {
+    padding: var(--ai-spacing-4);
   }
 
-  .media-meta__details {
-    align-self: stretch;
+  .record-section__title {
+    font-size: var(--ai-font-fixed-xs);
   }
 
-  .media-meta__list {
-    align-self: stretch;
-    padding-left: 0;
-    padding-top: var(--ai-spacing-4);
-    border-left: 0;
-    border-top: 1px solid var(--ai-border-secondary);
+  .record-section__body {
+    padding: var(--ai-spacing-4);
   }
 }

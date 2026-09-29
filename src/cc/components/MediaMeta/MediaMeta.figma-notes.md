@@ -42,17 +42,16 @@ Draft thumb bg was `--ai-btn-secondary-bg-hover` (borrowed) → `--ai-surface-mi
 - Markup comes from `src/cc/templates/RecordScreen/record_markup.py` — the demo and the templates are
   generated from the same function, so they cannot drift.
 
-## Component set (2026-09-28)
-MediaMeta is now a set `3905:140931`: `Layout=Default` (`3861:1922`, the original node — existing instances unchanged) + `Layout=Stacked` (`3905:140918`): facts under the thumbnail, divider on the list's top edge, `spacing/4` top padding. Stacked values are single-line + ellipsis in Figma because Terms and Values are separate columns there (a wrapped value would misalign the rows); code wraps, since its grid keeps rows aligned. Stacked is the RecordSection ≤559 container query — no class. Code Connect repointed to the set.
-
-## Show / Hide details (designer, 2026-09-29)
-The file facts are **hidden by default** behind a toggle. View screens only — Edit uses MediaPicker.
-- Figma: set gains `State=Collapsed` (default — the original `3861:1922` / `3905:140918`, so every placed instance collapsed) and `State=Expanded` (`3910:18907` Default, `3910:18939` Stacked). A `Details` column holds a Button **Secondary xs** (`Show details` + ChevronDown / `Hide details` + ChevronUp) above the Definition List, gap `spacing/3`.
-- Code: `.media-meta__details` column; `.media-meta__toggle` = `btn btn--secondary btn--xs` (the same control as SEO Health's "Expand all" — tertiary is a filled grey chip in CC and read as another tag); `aria-expanded` + `aria-controls`, the list carries `hidden`; chevron rotates 180° when open. `MediaMeta.js` (delegated) flips it and swaps the label. `.media-meta__list[hidden]` restores `display: none` over the grid.
-- Narrow (RecordSection ≤559): the details column stretches under the thumbnail.
-
-## Layout comparison on the Article View demo (designer asked, 2026-09-29)
-The toggle layout above was rejected ("you can do better"). Two candidates are live for comparison — **code only, not in Figma until one is picked**:
-- **A · Asset card** (`.media-meta--card`) — Introduction › Thumbnail. The industry-standard asset-card pattern (Contentful / Shopify / WordPress media library): bordered card, 56px thumb, file name (primary, ellipsis + `title`), one facts line `JPG · 108 KB · 800 × 800`, alt text (2-line clamp). Always visible — three short lines, no disclosure needed. Stays a row at every width.
-- **B · Preview + info popover** (`.media-meta--popover`) — Main Body › Main Image. Google Drive / Photos "details" pattern: 72px thumb, alt text as caption, `Image details` (Secondary xs + info icon) opens the DS Dropdown panel (outside-click + Escape from Dropdown.js) holding the full list. Hidden by default. The panel anchors to the whole image block and is capped at its width, so it never runs off a phone.
-The Show/Hide toggle version stays in the code (`media_meta()`) until the choice is made; delete the losers then.
+## Current design — layout B (designer, 2026-09-29)
+Chosen over an always-visible asset card (A) and an inline Show/Hide toggle; both removed.
+- **Figma** set `3905:140931`, one axis **State**: `Collapsed` (`3861:1922`, default — every placed
+  instance) and `Expanded` (`3910:18907`). Thumbnail 72 · Summary (gap `spacing/3`): Caption (alt
+  text, bound to the `Alt text` property, `text/secondary`, `font/size-fixed/xs`, 2 lines) + Button
+  Secondary xs `Image details` with the Info icon left. Expanded adds an absolutely placed Panel
+  (Dropdown chrome: `surface/primary`, `border/secondary`, `radius-md`, `shadow/md`, padding
+  `spacing/4`) holding the Definition List. `Layout=Stacked` was removed — B keeps the row at every width.
+- **Code** `.media-meta` row; `.media-meta__caption` (2-line clamp); `.media-meta__info` is a DS
+  Dropdown (`data-dropdown="stay-open"`, trigger `aria-haspopup="dialog"`, panel `role="dialog"`);
+  Dropdown.js owns open / outside-click / Escape. The panel anchors to `.media-meta` (the Dropdown
+  root is `position: static`) and is capped at `max-inline-size: 100%`, so it never overruns a phone.
+  RecordSection dropped `overflow: hidden` so the panel is not clipped on a section's last row.

@@ -7,6 +7,7 @@
   <title>MediaMeta — Control Centre</title>
   <link rel="stylesheet" href="../../../styles/base.css">
   <link rel="stylesheet" href="../../../components/Button/Button.css">
+  <link rel="stylesheet" href="../../../components/Dropdown/Dropdown.css">
   <link rel="stylesheet" href="MediaMeta.css">
   <style>
     body { margin: 0; padding: var(--ai-spacing-7); background: var(--cc-ui-primary-bg); min-height: 100vh; color: var(--ai-text-primary); font-family: var(--ai-font-body); }
@@ -17,31 +18,25 @@
     .demo-stack { display: flex; flex-direction: column; gap: var(--ai-spacing-5); }
     .demo-narrow { max-width: var(--ai-size-7); }
   </style>
-</head>
+<script type="module" src="../../../components/Dropdown/Dropdown.js"></script></head>
 <body>
   <div class="demo-section ">
-    <p class="demo-section__title">State=Collapsed (default)</p><p class="demo-note">View-mode image value: 72px thumbnail; file facts hidden behind Show details (MediaMeta.js).</p>
-    <div class="media-meta">
+    <p class="demo-section__title">MediaMeta</p><p class="demo-note">View-mode image value: 72px thumbnail + alt-text caption; "Image details" opens the file facts in a Dropdown panel (hidden by default).</p>
+    <div class="demo-narrow"><div class="media-meta">
               <img class="media-meta__thumb" src="../../../../img/record/article-thumb.jpg" alt="Affino 9.0.11.25 - The Refinement Update">
-              <div class="media-meta__details">
-                <button type="button" class="btn btn--secondary btn--xs media-meta__toggle" data-media-toggle aria-expanded="false" aria-controls="media-meta-1"><span>Show details</span><i data-lucide="chevron-down" class="media-meta__chevron" aria-hidden="true"></i></button>
-                <dl class="media-meta__list" id="media-meta-1" hidden><dt class="media-meta__term">Alt text</dt><dd class="media-meta__value">Affino 9.0.11.25 - The Refinement Update</dd><dt class="media-meta__term">File name</dt><dd class="media-meta__value">ai-1786980189773-12-4bd8a8.jpg</dd><dt class="media-meta__term">File size</dt><dd class="media-meta__value">108 KB</dd><dt class="media-meta__term">Dimensions</dt><dd class="media-meta__value">800 × 800</dd></dl>
+              <div class="media-meta__summary">
+                <div class="media-meta__caption">Affino 9.0.11.25 - The Refinement Update</div>
+                <div class="dropdown media-meta__info" data-dropdown="stay-open">
+                  <button type="button" class="btn btn--secondary btn--xs dropdown__trigger" aria-expanded="false" aria-haspopup="dialog"><i data-lucide="info" aria-hidden="true"></i><span>Image details</span></button>
+                  <div class="dropdown__panel media-meta__panel" role="dialog" aria-label="Image details">
+                    <dl class="media-meta__list"><dt class="media-meta__term">Alt text</dt><dd class="media-meta__value">Affino 9.0.11.25 - The Refinement Update</dd><dt class="media-meta__term">File name</dt><dd class="media-meta__value">ai-1786980189773-12-4bd8a8.jpg</dd><dt class="media-meta__term">File size</dt><dd class="media-meta__value">108 KB</dd><dt class="media-meta__term">Dimensions</dt><dd class="media-meta__value">800 × 800</dd></dl>
+                  </div>
+                </div>
               </div>
-            </div>
-  </div>
-  <div class="demo-section ">
-    <p class="demo-section__title">State=Expanded</p>
-    <div class="media-meta">
-              <img class="media-meta__thumb" src="../../../../img/record/article-thumb.jpg" alt="Affino 9.0.11.25 - The Refinement Update">
-              <div class="media-meta__details">
-                <button type="button" class="btn btn--secondary btn--xs media-meta__toggle" data-media-toggle aria-expanded="true" aria-controls="media-meta-2"><span>Hide details</span><i data-lucide="chevron-down" class="media-meta__chevron" aria-hidden="true"></i></button>
-                <dl class="media-meta__list" id="media-meta-2"><dt class="media-meta__term">Alt text</dt><dd class="media-meta__value">Affino 9.0.11.25 - The Refinement Update</dd><dt class="media-meta__term">File name</dt><dd class="media-meta__value">ai-1786980189773-12-4bd8a8.jpg</dd><dt class="media-meta__term">File size</dt><dd class="media-meta__value">108 KB</dd><dt class="media-meta__term">Dimensions</dt><dd class="media-meta__value">800 × 800</dd></dl>
-              </div>
-            </div>
+            </div></div>
   </div>
 
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>lucide.createIcons();</script>
-  <script src="MediaMeta.js"></script>
 </body>
 </html>
