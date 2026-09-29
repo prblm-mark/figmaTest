@@ -208,6 +208,13 @@
   min-width: var(--ai-size-4);  /* 240px, as Edit Columns */
 }
 
+/* The heading sits flush with the radios, with a spacing-3 step down to them (designer amend,
+ * 2026-09-29). Scoped to this panel: the shared dropdown__label keeps its spacing-4 inset. */
+.dropdown__panel--settings .dropdown__label {
+  padding-left: 0;
+  padding-bottom: var(--ai-spacing-3);
+}
+
 .cc-listing__settings-options {
   display: flex;
   flex-direction: column;
