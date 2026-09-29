@@ -39,7 +39,7 @@
 .record-section__body {
   display: flex;
   flex-direction: column;
-  gap: var(--ai-spacing-5);
+  gap: var(--ai-spacing-6);              /* 24px between field rows — designer amend 2026-09-29 (was --ai-spacing-5) */
   margin: 0;
   padding: var(--ai-spacing-6);
 }
