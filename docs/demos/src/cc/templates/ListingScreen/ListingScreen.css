@@ -187,6 +187,33 @@
   }
 }
 
+/* ── Settings: "When columns don't fit" ─────────────────
+ * Luismi's team's design (Hub TASK-492924), built code-first 2026-09-29 — no Figma frame yet.
+ * Same Dropdown + secondary trigger as Edit Columns, right after it, and hidden on the same
+ * terms: below the 1024 laptop floor (the device question above) and in grid layout (JS).
+ * The panel holds the DS Radio component; the options stack with Radio's own spacing-3. */
+.cc-listing__settings {
+  position: relative;
+}
+
+@media (max-width: 1023px) {
+  .cc-listing__settings {
+    display: none;
+  }
+}
+
+.dropdown__panel--settings {
+  left: auto;
+  inset-inline-end: 0;          /* right-anchored so it stays inside the table card */
+  min-width: var(--ai-size-4);  /* 240px, as Edit Columns */
+}
+
+.cc-listing__settings-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+}
+
 .dropdown__panel--columns {
   /* The rows are draggable, and a drag that starts anywhere but the grip
      otherwise sweeps a text selection across the list — which reads as the
@@ -826,4 +853,45 @@
   .cc-listing[data-listing-template="full"] > .filter-bar > .filter-bar__row {
     padding: 0 var(--ai-spacing-3) var(--ai-spacing-3);
   }
+}
+
+/* ── Horizontal scroll mode ───────────────────────────────
+ * `data-overflow="scroll"` is set by ListingScreen.js ONLY while the mode is in force — the user
+ * chose it AND the viewport is ≥1024 AND the layout is listing — so none of this can leak into a
+ * phone or the grid, where the expanding-row fit always applies.
+ *
+ * 1. The body scrolls sideways. This undoes the `overflow-x: clip` above, which existed only so
+ *    the header could stick; a sideways scroller becomes the sticky's scroll container, so the
+ *    header stops sticking here. That is the agreed trade-off, not a bug.
+ * 2. The kebab column goes (designer, 2026-09-29): with every column on screen there is nothing
+ *    left for the row detail to reveal, so the toggle is redundant. Its detail rows go with it.
+ * 3. The empty state stays centred in the VISIBLE area, not across the scrolled width: it pins to
+ *    the scroller's left edge at the scroller's own width (`--cc-listing-view-w`, measured by JS). */
+[data-listing][data-overflow="scroll"] .datatables__body {
+  overflow-x: auto;
+}
+
+[data-listing][data-overflow="scroll"] [data-listing-head] th {
+  position: static;
+}
+
+[data-listing][data-overflow="scroll"] [data-listing-head] th::after {
+  content: none;
+}
+
+[data-listing][data-overflow="scroll"] .datatables__col--kebab,
+[data-listing][data-overflow="scroll"] .datatables__row-detail {
+  display: none;
+}
+
+/* The table's first-cell inset would push the pinned block 16px in and past the right edge. */
+[data-listing][data-overflow="scroll"] .cc-listing__empty-cell {
+  padding-inline: 0;
+}
+
+[data-listing][data-overflow="scroll"] .cc-listing__empty {
+  position: sticky;
+  inset-inline-start: 0;
+  box-sizing: border-box;
+  inline-size: var(--cc-listing-view-w, 100%);
 }

@@ -3098,3 +3098,26 @@ did something). One column fewer at every width; re-measured, no overflow.
 `TODO(backend:Listing) listing-bulk-actions` — nothing is wired. Live pairs
 Orders' three selects with an Action submit; here each applies on pick, one
 step instead of two for the same outcome.
+
+## Settings — "When columns don't fit" (2026-09-29, code-first)
+Designed by Luismi's team on the v3 listing screens (Hub TASK-492924, relayed by Shaz); built here
+code-first at Mark's direction — **no Figma frame yet**, flag for the designer.
+- **Settings** button after Edit Columns: `btn btn--secondary dropdown__trigger`, Lucide `settings`
+  + visible label. Dropdown panel `dropdown__panel--settings`, right-anchored, 240px. Hidden below a
+  1024 viewport and in grid layout, exactly like Edit Columns.
+- Panel: `dropdown__label` "When columns don't fit" + a `radiogroup` of the DS **Radio** component,
+  `name="cc-listing-overflow"`: **Expanding row** (`fit`, default — the adaptive fit + kebab detail)
+  and **Horizontal scroll** (`scroll`).
+- **Horizontal scroll** (`[data-listing][data-overflow="scroll"]`, set by JS only while in force):
+  no fit — every switched-on column at its natural width (snug keeps its cap), table as wide as
+  their sum, `.datatables__body { overflow-x: auto }`. The header does **not** stick (a sideways
+  scroller becomes the sticky's scroll container — agreed trade-off). The empty state pins to the
+  visible area (`--cc-listing-view-w`). **The kebab column is hidden** (designer, 2026-09-29): with
+  every column shown the row detail has nothing to reveal — this also settles Luismi's open
+  "pin the kebab?" question. Below 1024 / in grid the expanding-row fit always applies.
+- Persistence: `columns.scroll` in the stored layout; part of each saved view's snapshot and of the
+  column signature, so switching raises **Save view** and opening a view restores its mode.
+- Verified headless (Articles, 1280): fit 7 cols → scroll 13 cols (1847 table in an 875 body),
+  kebab hidden, header static; reload restores; 900 viewport forces fit; switching back restores
+  sticky + clip; empty state flush to the visible edges before/after scrolling; Media Items grid
+  hides Settings. (The 12px clipped overflow in fit mode pre-dates this change.)
