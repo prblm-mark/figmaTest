@@ -7,7 +7,8 @@
  *
  * Shell paint table (Step 3a, read from the frames 2026-09-28):
  *   Standard  page bg        → shell --cc-ui-primary-bg (screen frame #E7EDF0; body fill hidden)
- *             page padding   → spacing-5 top/sides, spacing-6 bottom; tabs → content gap spacing-5
+ *             page padding   → the Listing screen's (spacing-6 / spacing-4 <768) — designer override
+ *                              2026-09-29 of Figma's spacing-5/5/6; tabs → content gap spacing-5
  *             columns        → gap spacing-5; sidebar max-width --ai-size-7 (384)
  *             main / sidebar → gap spacing-5 / gap spacing-5
  *   Full      page           → flush (ccWidth), --ai-surface-primary
@@ -17,8 +18,13 @@
  * --full modifier on RecordTabs / RecordSection / StepsTable.
  */
 
+/* Page padding = the Listing screen's, at every width (designer, 2026-09-29 — "we need
+ * consistency"). The record page no longer zeroes `.cc-control__page`'s padding, so it gets
+ * exactly what `.cc-control__page--listing` gets from ControlScreen.css: `--ai-spacing-6` on
+ * desktop and `--ai-spacing-4` below 768, with the same right-edge scrollbar-gutter trims and
+ * their overlay-scrollbar corrections. `.record-screen` itself carries no padding any more
+ * (it was 16 / 16 / 24). Full width stays flush via `.cc-control__page--flush` (ccWidth). */
 .cc-control__page--record {
-  padding: 0;
   gap: 0;
 }
 
@@ -27,7 +33,6 @@
   flex-direction: column;
   gap: var(--ai-spacing-5);
   min-width: 0;
-  padding: var(--ai-spacing-5) var(--ai-spacing-5) var(--ai-spacing-6);
 }
 
 .record-screen__body {
