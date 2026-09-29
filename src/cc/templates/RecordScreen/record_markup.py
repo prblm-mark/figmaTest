@@ -55,13 +55,24 @@ def record_header(record_type, title, mode, view_href="ArticleView.html", edit_h
 
 
 # ── RecordTabs ───────────────────────────────────────────────────────
-def record_tabs(active, steps_count=8, actions=False, back="ArticleView.html"):
+def record_tabs(active, steps_count=8, actions=False, back="ArticleView.html", sidebar=None):
+    """sidebar: None = no toggle (Steps); True / False = the "Show sidebar" switch and its default
+    (View on, Edit off — designer, 2026-09-29). Desktop only (RecordTabs.css)."""
     def tab(label, href, is_active, count=None):
         cur = ' aria-current="page"' if is_active else ""
         cls = "record-tab record-tab--active" if is_active else "record-tab"
         c = f'<span class="record-tab__count" aria-label="{count} steps">{count}</span>' if count else ""
         return f'<a class="{cls}" href="{href}"{cur} data-keep-width>{e(label)}{c}</a>'
     acts = ""
+    if sidebar is not None:
+        on = "true" if sidebar else "false"
+        active_cls = " toggle--active" if sidebar else ""
+        acts = ('<div class="record-tabs__actions">'
+                '<span class="record-tabs__sidebar-toggle">'
+                f'<button class="toggle toggle--xxs{active_cls}" type="button" role="switch" aria-checked="{on}" '
+                'aria-labelledby="record-sidebar-label" aria-controls="record-sidebar" data-record-sidebar>'
+                '<span class="toggle__track"><span class="toggle__knob"></span></span></button>'
+                '<span id="record-sidebar-label">Show sidebar</span></span></div>')
     if actions:
         acts = ('<div class="record-tabs__actions">'
                 + btn("Lookup", "secondary", "sm", attrs=' data-backend-todo="steps-lookup"')

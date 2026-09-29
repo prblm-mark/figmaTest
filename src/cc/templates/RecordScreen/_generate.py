@@ -83,9 +83,10 @@ def build(page_title, header, page, scripts, modals="", listing=False):
     return s
 
 
-def page(inner):
+def page(inner, sidebar_on=True):
+    mod = "" if sidebar_on else " record-screen--no-sidebar"
     return f'''<div class="cc-control__page cc-control__page--record">
-      <div class="record-screen" data-record-screen>
+      <div class="record-screen{mod}" data-record-screen>
         {inner}
       </div>
     </div>'''
@@ -94,7 +95,7 @@ def page(inner):
 def body(sections, side=None):
     return f'''<div class="record-screen__body">
           <div class="record-screen__main">{sections}</div>
-          <aside class="record-screen__sidebar" aria-label="Record information">
+          <aside class="record-screen__sidebar" id="record-sidebar" aria-label="Record information">
             <div class="record-screen__handle" data-record-handle role="separator" aria-orientation="vertical"
                  tabindex="0" aria-label="Resize the record information panel"
                  aria-valuemin="384" aria-valuemax="0" aria-valuenow="384">
@@ -185,9 +186,9 @@ write_steps_config()
 # content stays in record_markup.py for the component demos; Figma itself still draws the draft.
 pages = {
     "ArticleView.html": build("Article · View", m.record_header("Article", rec.TITLE, "view"),
-                              page(m.record_tabs("details") + body(rec.view_sections(), rec.sidebar())), KIT_JS),
+                              page(m.record_tabs("details", sidebar=True) + body(rec.view_sections(), rec.sidebar())), KIT_JS),
     "ArticleEdit.html": build("Article · Edit", m.record_header("Article", rec.TITLE, "edit"),
-                              page(m.record_tabs("details", back="ArticleEdit.html") + body(rec.edit_sections(), rec.sidebar())), KIT_JS,
+                              page(m.record_tabs("details", back="ArticleEdit.html", sidebar=False) + body(rec.edit_sections(), rec.sidebar()), sidebar_on=False), KIT_JS,
                               modals=rec.modals()),
     "ArticleSteps.html": build("Article · Steps", m.record_header("Article", rec.TITLE, "view"),
                                page(m.record_tabs("steps", actions=True) + m.steps_listing()), KIT_JS, listing=True),
