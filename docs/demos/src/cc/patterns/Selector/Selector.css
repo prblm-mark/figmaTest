@@ -285,6 +285,14 @@
 
 .selector--sort.modal { width: var(--ai-size-11); }
 
+/* Reset — tertiary with NO fill at rest (designer, 2026-09-29), so it reads as the quieter
+ * sibling of Cancel / Save order. Only the DEFAULT is overridden: hover, pressed and focus keep
+ * Button's own tertiary ladder (a plain `background: transparent` here would out-rank
+ * `.btn--tertiary:hover`, as Selector.css loads after Button.css). */
+.selector--sort [data-sort-reset]:not(:hover, :active, :focus-visible) {
+  background-color: transparent;
+}
+
 .selector__hint {
   display: flex;
   align-items: center;
