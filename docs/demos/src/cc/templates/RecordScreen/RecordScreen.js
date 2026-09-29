@@ -108,13 +108,34 @@
     if (saved > 0) setWidth(saved, false); else aria(side.getBoundingClientRect().width);
   }
 
-  /* "Show sidebar" switch (View on / Edit off by default — the markup carries the default).
-   * Toggle.js owns the switch's own state and fires `toggle:change`; this only shows / hides. */
-  document.addEventListener('toggle:change', function (e) {
-    if (!e.target.closest('[data-record-sidebar]')) return;
-    var screen = document.querySelector('[data-record-screen]');
-    if (screen) screen.classList.toggle('record-screen--no-sidebar', !(e.detail && e.detail.active));
-  });
+  /* "Show sidebar" switch. The markup carries the mode's default (View on / Edit off); the viewer's
+   * own choice is remembered PER MODE (designer, 2026-09-29) and wins over it on load.
+   * Toggle.js owns the switch's own state and fires `toggle:change`; this shows / hides and saves.
+   * TODO(backend:RecordScreen) record-sidebar-preference: localStorage stands in for the per-user
+   *   preference → save { view: bool, edit: bool } with the user's CC settings. */
+  var recordScreen = document.querySelector('[data-record-screen]');
+  var sidebarSwitch = document.querySelector('[data-record-sidebar]');
+  var sidebarKey = recordScreen && recordScreen.getAttribute('data-record-mode')
+    ? 'cc-record-sidebar-' + recordScreen.getAttribute('data-record-mode') : null;
+
+  function showSidebar(on) {
+    recordScreen.classList.toggle('record-screen--no-sidebar', !on);
+    sidebarSwitch.classList.toggle('toggle--active', on);
+    sidebarSwitch.setAttribute('aria-checked', on ? 'true' : 'false');
+  }
+
+  if (recordScreen && sidebarSwitch && sidebarKey) {
+    var savedSidebar = null;
+    try { savedSidebar = localStorage.getItem(sidebarKey); } catch (e) { /* storage blocked */ }
+    if (savedSidebar === 'on' || savedSidebar === 'off') showSidebar(savedSidebar === 'on');
+
+    document.addEventListener('toggle:change', function (e) {
+      if (!e.target.closest('[data-record-sidebar]')) return;
+      var on = !!(e.detail && e.detail.active);
+      recordScreen.classList.toggle('record-screen--no-sidebar', !on);
+      try { localStorage.setItem(sidebarKey, on ? 'on' : 'off'); } catch (err) { /* session only */ }
+    });
+  }
 
   // TODO(backend:RecordScreen): Performance figures + chart series are static → record analytics endpoint
   //   { impressions, consumed, bookmarked, topAccounts[], series: { labels[], impressions[], unique[] } }

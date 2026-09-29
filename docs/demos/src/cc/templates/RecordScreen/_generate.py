@@ -83,10 +83,11 @@ def build(page_title, header, page, scripts, modals="", listing=False):
     return s
 
 
-def page(inner, sidebar_on=True):
+def page(inner, sidebar_on=True, mode=None):
     mod = "" if sidebar_on else " record-screen--no-sidebar"
+    mode_attr = f' data-record-mode="{mode}"' if mode else ""
     return f'''<div class="cc-control__page cc-control__page--record">
-      <div class="record-screen{mod}" data-record-screen>
+      <div class="record-screen{mod}" data-record-screen{mode_attr}>
         {inner}
       </div>
     </div>'''
@@ -186,9 +187,9 @@ write_steps_config()
 # content stays in record_markup.py for the component demos; Figma itself still draws the draft.
 pages = {
     "ArticleView.html": build("Article · View", m.record_header("Article", rec.TITLE, "view"),
-                              page(m.record_tabs("details", sidebar=True) + body(rec.view_sections(), rec.sidebar())), KIT_JS),
+                              page(m.record_tabs("details", sidebar=True) + body(rec.view_sections(), rec.sidebar()), mode="view"), KIT_JS),
     "ArticleEdit.html": build("Article · Edit", m.record_header("Article", rec.TITLE, "edit"),
-                              page(m.record_tabs("details", back="ArticleEdit.html", sidebar=False) + body(rec.edit_sections(), rec.sidebar()), sidebar_on=False), KIT_JS,
+                              page(m.record_tabs("details", back="ArticleEdit.html", sidebar=False) + body(rec.edit_sections(), rec.sidebar()), sidebar_on=False, mode="edit"), KIT_JS,
                               modals=rec.modals()),
     "ArticleSteps.html": build("Article · Steps", m.record_header("Article", rec.TITLE, "view"),
                                page(m.record_tabs("steps", actions=True) + m.steps_listing()), KIT_JS, listing=True),
