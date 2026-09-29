@@ -112,17 +112,17 @@ def media_meta(src=IMG, rows=None):
             </div>'''
 
 
-def media_picker(label, src=None):
+def media_picker(label, src=None, modal="modal-media", placeholder="image"):
     """Empty slot: placeholder + Choose file. Filled: the image + pencil (change) + trash (remove)
     (designer, 2026-09-29). Both action sets are rendered; `media-picker--empty` shows one, so
     choosing or removing an image flips it client-side (Selector.js / MediaPicker.js)."""
-    thumb = f'<img src="{src}" alt="">' if src else icon("image")
+    thumb = f'<img src="{src}" alt="">' if src else icon(placeholder)
     empty = "" if src else " media-picker--empty"
     return f'''<div class="media-picker{empty}" data-media-picker>
-              <button type="button" class="media-picker__thumb" aria-label="Choose {e(label)}" aria-haspopup="dialog" data-selector-open="modal-media">{thumb}</button>
+              <button type="button" class="media-picker__thumb" aria-label="Choose {e(label)}" aria-haspopup="dialog" data-selector-open="{modal}" data-placeholder-icon="{placeholder}">{thumb}</button>
               <div class="media-picker__actions">
-                {btn("Choose file", "secondary", "sm", icon_left="upload", attrs=f' aria-label="Choose {e(label)}" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose')}
-                {btn(f"Edit {label}", "secondary", "sm", icon_left="pencil", icon_only=True, attrs=' aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit')}
+                {btn("Choose file", "secondary", "sm", icon_left="upload", attrs=f' aria-label="Choose {e(label)}" aria-haspopup="dialog" data-selector-open="{modal}" data-media-choose')}
+                {btn(f"Edit {label}", "secondary", "sm", icon_left="pencil", icon_only=True, attrs=f' aria-haspopup="dialog" data-selector-open="{modal}" data-media-edit')}
                 {btn(f"Remove {label}", "secondary", "sm", icon_left="trash-2", icon_only=True, attrs=' data-media-remove')}
               </div>
             </div>'''
@@ -260,6 +260,9 @@ def edit_row(label, kind, value="", required=False, help_text=None, tags=None, m
         ctl = f'''<div class="textarea rich-text">
               <textarea class="textarea__control" id="{fid}" rows="10" data-rich-text>{e(html)}</textarea>
             </div>'''
+    elif kind == "multimedia":
+        # Multimedia — a MediaPicker slot whose Selector lists every media type (designer, 2026-09-29).
+        ctl = media_picker(label, modal="modal-multimedia", placeholder="film")
     elif kind == "file":
         ctl = f'''<div class="media-picker">
               <span class="media-picker__thumb">{icon("file-audio")}</span>
@@ -291,12 +294,43 @@ def _mini_select(value):
 
 
 # ── RecordSection ────────────────────────────────────────────────────
-def record_section(title, rows_html, mode):
+def prompt_modifier(pid, title, fills, prompt, outputs):
+    """PromptModifier (code-first, designer 2026-09-29) — the section's AI prompt: a one-line
+    preview + Generate always visible; Edit prompt discloses the prompt textarea and Copy.
+    `outputs` are the MOCK results Generate writes into the section's fields, in order."""
+    import json
+    return f'''<div class="prompt-modifier" data-prompt-modifier data-outputs="{e(json.dumps(outputs))}">
+            <div class="prompt-modifier__head">
+              <span class="prompt-modifier__icon">{icon("sparkles")}</span>
+              <div class="prompt-modifier__text">
+                <p class="prompt-modifier__title">{e(title)}<span class="prompt-modifier__fills">{e(fills)}</span></p>
+                <p class="prompt-modifier__preview" data-prompt-preview>{e(prompt)}</p>
+              </div>
+              <div class="prompt-modifier__actions">
+                {btn("Edit prompt", "tertiary", "sm", icon_left="chevron-down", attrs=f' aria-expanded="false" aria-controls="{pid}-body" data-prompt-toggle')}
+                {btn("Generate", "secondary", "sm", icon_left="sparkles", attrs=' data-prompt-generate data-backend-todo="record-prompt-generate"')}
+              </div>
+            </div>
+            <div class="prompt-modifier__body" id="{pid}-body" hidden>
+              <div class="textarea">
+                <label class="input__label" for="{pid}-prompt">Prompt modifier</label>
+                <textarea class="textarea__control" id="{pid}-prompt" rows="4" data-prompt-text>{e(prompt)}</textarea>
+              </div>
+              <div class="prompt-modifier__body-foot">
+                <span class="prompt-modifier__hint">Sent with the article's content each time you generate.</span>
+                {btn("Copy prompt", "tertiary", "sm", icon_left="copy", attrs=' data-prompt-copy')}
+              </div>
+            </div>
+            <p class="prompt-modifier__status" data-prompt-status aria-live="polite" hidden><span data-prompt-status-text></span>{btn("Undo", "tertiary", "sm", icon_left="undo-2", attrs=' data-prompt-undo')}</p>
+          </div>'''
+
+
+def record_section(title, rows_html, mode, prompt=""):
     sid = "sec-" + "".join(ch for ch in title.lower() if ch.isalnum())
     body_tag = "dl" if mode == "view" else "div"
     return f'''<section class="record-section" aria-labelledby="{sid}">
           <div class="record-section__header"><h2 class="record-section__title" id="{sid}">{e(title)}</h2></div>
-          <{body_tag} class="record-section__body">{''.join(rows_html)}</{body_tag}>
+          <{body_tag} class="record-section__body">{prompt}{''.join(rows_html)}</{body_tag}>
         </section>'''
 
 
@@ -600,17 +634,20 @@ def single_select_modal(mid, title, source, noun="section"):
     # TODO(backend:RecordScreen) selector-single-source: static rows → paged search over the field's source
 
 
-def media_select_modal(mid, title, items, total):
+GLYPH = {"image": "image", "video": "film", "document": "file-text", "audio": "file-audio"}
+
+
+def media_select_modal(mid, title, items, total, apply_label="Use image"):
     import json
     """Media item selector — the Media Items listing's grid, as a picker. One pick, then Use image."""
     facets = "".join(facet_chip(f)
                      for f in ["Media Type", "Section", "Creator"])
     tiles = "".join(f'''<li class="selector__tile-item" data-selector-item="{e(t)}" data-facets="{e(json.dumps({"Media Type": f, "Section": sec, "Creator": who}))}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="{e(u)}" data-meta="{e(f)} · {e(d)}">
-              <span class="selector__tile-media"><img src="{e(u)}" alt="" loading="lazy"><span class="selector__tile-check">{icon("check")}</span></span>
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="{e(u)}" data-icon="{GLYPH.get(fam, 'file')}" data-meta="{e(f)} · {e(d)}">
+              <span class="selector__tile-media">{f'<img src="{e(u)}" alt="" loading="lazy">' if u else f'<span class="selector__tile-glyph">{icon(GLYPH.get(fam, "file"))}</span>'}<span class="selector__tile-check">{icon("check")}</span></span>
               <span class="selector__tile-text"><span class="selector__tile-name">{e(t)}</span><span class="selector__tile-meta">{e(f)} · {e(d)}</span></span>
             </button>
-          </li>''' for t, u, f, d, sec, who in items)
+          </li>''' for t, u, f, d, sec, who, fam in items)
     return f'''<div class="modal-overlay" id="{mid}" role="presentation" data-selector="media">
     <div class="modal selector selector--media" role="dialog" aria-modal="true" aria-labelledby="{mid}-title">
       {_modal_head(mid, title)}
@@ -631,7 +668,7 @@ def media_select_modal(mid, title, items, total):
       <div class="modal__footer selector__footer">
         <span class="selector__status" data-selector-count aria-live="polite">Nothing selected</span>
         <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
-        <button type="button" class="btn btn--primary" data-selector-apply disabled>Use image</button>
+        <button type="button" class="btn btn--primary" data-selector-apply disabled>{e(apply_label)}</button>
       </div>
     </div>
   </div>'''

@@ -240,6 +240,21 @@
   object-fit: cover;
 }
 
+/* A document has no picture: its family glyph, centred in the square. */
+.selector__tile-glyph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 100%;
+  block-size: 100%;
+  color: var(--ai-icon-contrast);
+}
+
+.selector__tile-glyph svg {
+  inline-size: var(--ai-icon-size-xl);
+  block-size: var(--ai-icon-size-xl);
+}
+
 .selector__tile:hover .selector__tile-media { border-color: var(--ai-border-brand); }
 
 .selector__tile:focus-visible { outline: none; }

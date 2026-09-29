@@ -1110,6 +1110,27 @@
      "element": "MediaPicker trash (remove the image from a slot)",
      "current": "Client-side only: the slot empties and shows Choose file.",
      "needs": "Clear the field's MediaItemCode on save (and its alt / caption / alignment / width)."
+    },
+    {
+     "id": "record-prompt-generate",
+     "category": "needs-backend",
+     "element": "PromptModifier → Generate (Social, Article Questions, Summary)",
+     "current": "Canned demo outputs fill the section's fields after a 1.2s mock delay; Undo restores.",
+     "needs": "POST { prompt, article content } to the AI endpoint; return N sharelines / N questions / a summary for the fields."
+    },
+    {
+     "id": "record-prompt-save",
+     "category": "needs-backend",
+     "element": "PromptModifier → edited prompt",
+     "current": "Edits live in the page only.",
+     "needs": "Save per article as ShareLineGenerationPrompt / QuestionGenerationPrompt / SummaryGenerationPrompt (the live field names)."
+    },
+    {
+     "id": "record-multimedia",
+     "category": "needs-backend",
+     "element": "Multimedia → MediaPicker + Selector (all media types)",
+     "current": "21 demo items (video, documents, images) from the Media Items listing data; the slot fills client-side.",
+     "needs": "Media search across every family; save the chosen MediaItemCode."
     }
    ]
   }

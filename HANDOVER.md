@@ -398,6 +398,9 @@ build — a render from the record payload. Markers: `grep -rn "TODO(backend:Rec
 | `selector-media-upload` | Selector Type=Media → Upload | Button only. | Upload flow (DragDropFile) that creates a media item and selects it. | `needs-backend` |
 | `selector-sort-order` | Selector Type=Sort (Sort Order) | 73 real Insights articles (Hub, 2026-09-29) reordered in the DOM; Save writes the position number into the field. Thumbnails are placeholders. | GET the section's items in current order (id, title, thumbnail); Save PUTs the full ordered id list for the section. | `needs-backend` |
 | `record-media-remove` | MediaPicker trash (remove the image from a slot) | Client-side only: the slot empties and shows Choose file. | Clear the field's MediaItemCode on save (and its alt / caption / alignment / width). | `needs-backend` |
+| `record-prompt-generate` | PromptModifier → Generate (Social, Article Questions, Summary) | Canned demo outputs fill the section's fields after a 1.2s mock delay; Undo restores. | POST { prompt, article content } to the AI endpoint; return N sharelines / N questions / a summary for the fields. | `needs-backend` |
+| `record-prompt-save` | PromptModifier → edited prompt | Edits live in the page only. | Save per article as ShareLineGenerationPrompt / QuestionGenerationPrompt / SummaryGenerationPrompt (the live field names). | `needs-backend` |
+| `record-multimedia` | Multimedia → MediaPicker + Selector (all media types) | 21 demo items (video, documents, images) from the Media Items listing data; the slot fills client-side. | Media search across every family; save the chosen MediaItemCode. | `needs-backend` |
 
 ## Scope of this document
 

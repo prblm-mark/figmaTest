@@ -148,7 +148,7 @@ SECTIONS = [
         ("Info Box Title", "text", "-", "input", ""),
         ("Info Box Text", "text", "-", "textarea", ""),
         ("Info Box Auto Bullets",) + _yn(False),
-        ("Multimedia", "text", "-", "file", ""),
+        ("Multimedia", "text", "-", "multimedia", ""),
         ("Credits", "text", "-", "textarea", ""),
         ("Code", "text", "-", "textarea", ""),
     ]),
@@ -224,15 +224,24 @@ SECTION_SOURCE = [("Insight", "", "Insights", "Affino"), ("AI", "", "AI", "Affin
                   ("Affino for Membership Organisations", "", "Affino for Membership Organisations", "Affino")]
 
 
-def _media_source():
-    """Media selector tiles — the Media Items listing's image rows (listing-data-media-items.js)."""
+def _media_source(families=("image",)):
+    """Selector tiles from the Media Items listing's rows (listing-data-media-items.js). Each row is
+    read key by key, because documents carry no thumbUrl."""
     import re, os
     js = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../ListingScreen/listing-data-media-items.js"), encoding="utf-8").read()
-    rows = re.findall(r"\{ itemId: '(\d+)', title: '([^']*)',[^}]*?family: 'image', thumbUrl: '([^']*)', format: '([^']*)', section: '([^']*)'[^}]*?createdBy: '([^']*)', created: '([^']*)'", js)
-    return [(t, u.replace("/128", "/256"), f, d, sec, who) for _, t, u, f, sec, who, d in rows]
+    out = []
+    for row in re.findall(r"\{ itemId: '\d+'[^}]*\}", js):
+        f = dict(re.findall(r"(\w+): '([^']*)'", row))
+        if f.get("family") not in families:
+            continue
+        thumb = f.get("thumbUrl", "").replace("/128", "/256")
+        out.append((f["title"], thumb, f.get("format", ""), f.get("created", ""), f.get("section", ""), f.get("createdBy", ""), f["family"]))
+    return out
 
 
 MEDIA_SOURCE = _media_source()
+# Multimedia takes any media item — video and documents as well as images (designer, 2026-09-29).
+MULTIMEDIA_SOURCE = [r for r in _media_source(("video", "document"))] + _media_source()[:14]
 
 from record_sort_data import INSIGHTS
 SORT_SOURCE = [(c, t, m.IMG if c == int(CODE) else f"https://picsum.photos/seed/art{c}/80") for c, t in INSIGHTS]
@@ -259,8 +268,48 @@ def view_sections():
     return "".join(m.record_section(t, [_view(f) for f in fields], "view") for t, fields in SECTIONS)
 
 
+# AI prompt modifiers — live's own prompts (affino.com 626312, read 2026-09-29): ShareLineGenerationPrompt,
+# QuestionGenerationPrompt, SummaryGenerationPrompt. The outputs are MOCK Generate results.
+PROMPTS = {
+    "Social": ("social", "Shareline prompt", "Fills Shareline 1–3",
+               "Generate 3 promotional sharelines for the article below. Each shareline must be 11 words or fewer, "
+               "compelling, and encourage readers to click through to the original article.",
+               ["Give supporters instant answers without rebuilding your charity website.",
+                "Six AI plugins that lighten the load on small charity teams.",
+                "See how charities lift engagement with Affino's AI plugins."]),
+    "Article Questions": ("questions", "Question prompt", "Fills Question 1–5",
+               "Suggest 5 positive questions based on the key subjects of this article, keep each question no more than "
+               "twelve words, no introduction. Do not create questions like 'what do you think?', instead it is more a case "
+               "of 'how would this work'. Make sure that you ask a variety of different questions so that no two are similar. "
+               "The questions should be phrased in a way that an expert system could answer if it had the content available. "
+               "Check and update the questions to make sure they meet the criteria.",
+               ["How do Affino AI plugins work with an existing charity website?",
+                "Which plugin answers supporter questions on a charity's site?",
+                "How does AI-enhanced search improve finding charity content?",
+                "What do article summaries give readers of long reports?",
+                "How is charity data kept private when plugins run?"]),
+    "Summary": ("summary", "Summary prompt", "Fills Summary",
+               "Summarise the following article in two to three short paragraphs using a clear, journalistic tone.\n"
+               "Begin with one sentence summarising the main point (\u201cThe big picture\u201d).\n"
+               "Then highlight the key facts, figures, and context that explain why it matters.\n"
+               "Conclude with implications or next steps where relevant.\n\n"
+               "Keep the summary under 200 words, concise, factual, and readable \u2014 like an Axios \u201cSmart Brevity\u201d piece.\n"
+               "Avoid repetition, adjectives, or opinion; focus only on verified information.",
+               ["The big picture: Affino's AI plugins bring an assistant, AI search and article summaries to a charity's "
+                "existing website, with no migration.\n\nWhy it matters: small teams answer supporters faster and lift "
+                "engagement, and the full Affino platform is there to grow into."]),
+}
+
+
+def _prompt(title):
+    if title not in PROMPTS:
+        return ""
+    pid, name, fills, prompt, outputs = PROMPTS[title]
+    return m.prompt_modifier("prompt-" + pid, name, fills, prompt, outputs)
+
+
 def edit_sections():
-    return "".join(m.record_section(t, [_edit(f) for f in fields], "edit") for t, fields in SECTIONS)
+    return "".join(m.record_section(t, [_edit(f) for f in fields], "edit", prompt=_prompt(t)) for t, fields in SECTIONS)
 
 
 def sidebar():
@@ -271,6 +320,7 @@ def modals():
     return (m.single_select_modal("modal-section", "Select Section", SECTION_SOURCE)
             + m.single_select_modal("modal-creator", "Select Creator", AUTHORS_SOURCE, noun="creator")
             + m.media_select_modal("modal-media", "Select Media", MEDIA_SOURCE[:24], len(MEDIA_SOURCE))
+            + m.media_select_modal("modal-multimedia", "Select Multimedia", MULTIMEDIA_SOURCE, len(MULTIMEDIA_SOURCE), apply_label="Use media")
             + m.sort_order_modal("modal-sort", "Sort Order", "Insight", SORT_SOURCE, int(CODE))
             + m.multi_select_modal("modal-multi-display", "Select Multi Display", m.SECTIONS_SOURCE)
             + m.multi_select_modal("modal-topics", "Select Topics and Keywords", TOPICS_SOURCE)
