@@ -2045,9 +2045,9 @@
       el.hidden = !show[el.getAttribute('data-detail-col')];
     });
     root.querySelectorAll('[data-listing-body] .datatables__detail-empty').forEach(function (el) {
-      /* A row with its own detail content has something to show even when every column fits. */
-      var cell = el.closest('.datatables__row-detail__cell');
-      el.hidden = any || !!(cell && cell.querySelector('.datatables__detail-extra'));
+      /* The note belongs to the kebab's half of the row (the columns), so a screen's own detail
+         content never suppresses it — on Article Steps the kebab and Show details are separate. */
+      el.hidden = any;
     });
   }
 
