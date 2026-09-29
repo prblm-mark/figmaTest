@@ -3105,7 +3105,7 @@ code-first at Mark's direction — **no Figma frame yet**, flag for the designer
 - **Settings** button after Edit Columns: `btn btn--secondary dropdown__trigger`, Lucide `settings`
   + visible label. Dropdown panel `dropdown__panel--settings`, right-anchored, 240px. Hidden below a
   1024 viewport and in grid layout, exactly like Edit Columns.
-- Panel: `dropdown__label` "When columns don't fit" + a `radiogroup` of the DS **Radio** component,
+- Panel: `dropdown__label` "When columns don't fit" (padding-left 0, padding-bottom `--ai-spacing-3` in this panel — designer amend 2026-09-29) + a `radiogroup` of the DS **Radio** component,
   `name="cc-listing-overflow"`: **Expanding row** (`fit`, default — the adaptive fit + kebab detail)
   and **Horizontal scroll** (`scroll`).
 - **Horizontal scroll** (`[data-listing][data-overflow="scroll"]`, set by JS only while in force):
