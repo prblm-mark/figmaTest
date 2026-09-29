@@ -25,7 +25,7 @@
 | Property | Token |
 |---|---|
 | thumb size | --ai-spacing-10 (56) |
-| thumb bg / border / radius | --ai-surface-minimal / --ai-border-secondary / --ai-radius-sm |
+| thumb bg / border / radius | --ai-surface-minimal / --ai-border-secondary / --ai-radius-md (designer amend 2026-09-29, was -sm — flag for Figma) |
 | image icon | --ai-icon-size-md, --ai-icon-secondary |
 | gap thumb→actions / between buttons | --ai-spacing-4 / --ai-spacing-2 |
 
