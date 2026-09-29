@@ -117,7 +117,3 @@ Figma draws.
 ## Selectors (2026-09-29)
 
 Section, Creator and Sort Order (lookup rows) and every MediaPicker **Edit** open the Selector pattern (`src/cc/patterns/Selector/`, code-first): Type=Single / Media / Sort. Multi Display, Topics, Countries and Authors keep the TagBox Multi Select Modal, which now has search and a count. Account is still an inert lookup (`record-lookup`).
-
-## Sidebar chips border (designer, 2026-09-29)
-
-Tertiary chips in the sidebar (FactPanel values, Recent Viewers companies) carry the subtle `--ai-border-secondary` line of the listing account chip. This is a Case B override in RecordScreen.css, scoped to `.record-screen__sidebar` and restated for hover and focus.
