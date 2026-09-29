@@ -66,14 +66,26 @@
 }
 
 /* Rows a search has filtered out. */
-.selector [data-selector-item][hidden] { display: none; }
+[data-selector] [data-selector-item][hidden],
+[data-selector] tbody tr[hidden] { display: none; }
 
 /* A scroll region that is the modal's growable middle: the modal caps its own height at the
  * overlay (Modal.css), so this absorbs the difference and scrolls. */
+/* A FIXED preferred height, not a max: a search or facet that leaves one row would otherwise
+ * collapse the modal around it — the dialog jumps while typing, and an open facet panel (which
+ * hangs over the results) is clipped by the modal's own overflow. Still shrinks on a short
+ * viewport (flex-shrink + min 0 inside the modal's 100% height cap). */
 .selector__region {
-  flex: 1 1 auto;
+  flex: 1 1 var(--ai-size-10);
   min-block-size: 0;
-  max-block-size: var(--ai-size-10);
+}
+
+/* The same for the table pickers (single + multi): FilterDropdowns caps the region at 384;
+ * this makes 384 its height too. */
+[data-selector] .filter-dropdowns__table-region {
+  flex: 1 1 var(--ai-size-7);
+  block-size: var(--ai-size-7);
+  min-block-size: 0;
 }
 
 .selector__live {
@@ -83,6 +95,34 @@
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
+}
+
+/* Facet panel — a FilterDropdowns Multi Select card hung under its FilterItem chip. Inside the
+ * modal, so it layers over the results region rather than the page (the modal is its own
+ * stacking context via the overlay). */
+[data-selector] [data-selector-facet] { position: relative; }
+
+.selector__facet-panel {
+  position: absolute;
+  inset-block-start: calc(100% + var(--ai-spacing-2));
+  inset-inline-start: 0;
+  z-index: 2;
+  cursor: default;
+}
+
+.selector__facet-list .checkbox__label {
+  display: flex;
+  align-items: baseline;
+  gap: var(--ai-spacing-3);
+  inline-size: 100%;
+}
+
+/* How many rows each value would leave — so a facet never offers an empty result blind. */
+.selector__facet-count {
+  margin-inline-start: auto;
+  font-size: var(--ai-font-fixed-xxs);
+  color: var(--ai-text-secondary);
+  font-variant-numeric: tabular-nums;
 }
 
 /* ── Single ───────────────────────────────────────────── */
