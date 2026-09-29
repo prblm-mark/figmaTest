@@ -102,17 +102,35 @@
  * stacking context via the overlay). */
 [data-selector] [data-selector-facet] { position: relative; }
 
+/* Own width: FilterDropdowns caps a card at `max-width: 100%`, and an absolutely positioned
+ * card's containing block is the CHIP — so the panel shrank to the chip (~120px), wrapped every
+ * label and pushed the counts under them (designer screenshot, 2026-09-29). 280, and never wider
+ * than the modal; Selector.js nudges it left if it would cross the modal's right edge. */
 .selector__facet-panel {
   position: absolute;
   inset-block-start: calc(100% + var(--ai-spacing-2));
   inset-inline-start: 0;
   z-index: 2;
+  inline-size: var(--ai-size-5);
+  max-inline-size: none;
   cursor: default;
+}
+
+/* One line per value: the name ellipsises, the count stays. */
+.selector__facet-list .checkbox { display: flex; min-inline-size: 0; }
+.selector__facet-list .checkbox__label-text {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .selector__facet-list .checkbox__label {
   display: flex;
+  flex-direction: row;
+  flex: 1 1 auto;
   align-items: baseline;
+  min-inline-size: 0;
   gap: var(--ai-spacing-3);
   inline-size: 100%;
 }
@@ -120,6 +138,7 @@
 /* How many rows each value would leave — so a facet never offers an empty result blind. */
 .selector__facet-count {
   margin-inline-start: auto;
+  flex-shrink: 0;
   font-size: var(--ai-font-fixed-xxs);
   color: var(--ai-text-secondary);
   font-variant-numeric: tabular-nums;
