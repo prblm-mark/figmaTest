@@ -108,6 +108,14 @@
     if (saved > 0) setWidth(saved, false); else aria(side.getBoundingClientRect().width);
   }
 
+  /* "Show sidebar" switch (View on / Edit off by default — the markup carries the default).
+   * Toggle.js owns the switch's own state and fires `toggle:change`; this only shows / hides. */
+  document.addEventListener('toggle:change', function (e) {
+    if (!e.target.closest('[data-record-sidebar]')) return;
+    var screen = document.querySelector('[data-record-screen]');
+    if (screen) screen.classList.toggle('record-screen--no-sidebar', !(e.detail && e.detail.active));
+  });
+
   // TODO(backend:RecordScreen): Performance figures + chart series are static → record analytics endpoint
   //   { impressions, consumed, bookmarked, topAccounts[], series: { labels[], impressions[], unique[] } }
   var canvas = document.getElementById('perf-chart');

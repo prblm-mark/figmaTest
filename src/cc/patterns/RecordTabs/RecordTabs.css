@@ -84,3 +84,24 @@
   margin-left: auto;
   padding-right: var(--ai-spacing-4);
 }
+
+/* "Show sidebar" switch — far right of the tabs on View / Edit (designer, 2026-09-29; code-first,
+ * flag for Figma). DS Toggle xxs + label, dressed exactly like the Steps table's "Show details".
+ * Desktop only: below the 1024 page width the sidebar stacks under the content (RecordScreen.css),
+ * so there is nothing to hide and the switch goes. */
+.record-tabs__sidebar-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-secondary);
+  white-space: nowrap;
+}
+
+@container cs-page (max-width: 1023px) {
+  .record-tabs__sidebar-toggle {
+    display: none;
+  }
+}

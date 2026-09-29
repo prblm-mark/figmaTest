@@ -181,3 +181,16 @@
     border-bottom: 1px solid var(--ai-border-secondary);
   }
 }
+
+/* ── Sidebar off ("Show sidebar" switch, designer 2026-09-29) ──────────────
+ * View opens with it on, Edit with it off (the class is in the generated markup, so there is no
+ * flash). Only while side by side — at ≤1023 the sidebar stacks under the content and always shows. */
+@container cs-page (min-width: 1024px) {
+  .record-screen--no-sidebar .record-screen__sidebar {
+    display: none;
+  }
+
+  [data-cc-width="full"] .record-screen--no-sidebar .record-screen__main {
+    border-right: 0;
+  }
+}

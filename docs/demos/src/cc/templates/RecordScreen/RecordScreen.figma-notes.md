@@ -52,6 +52,7 @@ TopNavigation, HeaderGroup, ActionsMenu rail, theme + width scripts). Page body:
 | TagBox × / Select | remove tag · Multi Select Modal (pre-ticked, Apply writes back) | `TagBox.js` |
 | Show details | reveals the step body on every row (only) | `StepsTable.js` + `Toggle.js` |
 | Step kebab | reveals only that row's columns that did not fit | Datatables / `ListingScreen.js` |
+| **Show sidebar** switch (far right of the tabs, View / Edit) | hides / shows the sidebar; **View on, Edit off** by default (in the markup — no flash); desktop only — at a ≤1023 page the switch goes and the sidebar stacks under the content (designer, 2026-09-29; code-first, flag for Figma) | Toggle.js + `RecordScreen.js` (`.record-screen--no-sidebar`) |
 | Steps Edit Columns / Settings | the listing's own — the steps table runs on ListingScreen.js (`article-steps` config) | `ListingScreen.js` |
 | Step checkboxes, pencil, Read the full step, Lookup, + Add | visual only — backend later | HANDOVER |
 | View full analytics, Add to Contact List, Save | backend | HANDOVER |

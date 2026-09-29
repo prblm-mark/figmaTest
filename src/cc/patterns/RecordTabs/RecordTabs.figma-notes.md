@@ -46,3 +46,6 @@ Draft active underline was `Lagoon/10` (no token) → `--ai-border-brand` (desig
   right semantic tokens in Figma first and this code follows the kit, not the draft.
 - Markup comes from `src/cc/templates/RecordScreen/record_markup.py` — the demo and the templates are
   generated from the same function, so they cannot drift.
+
+## Show sidebar switch (2026-09-29, code-first — flag for Figma)
+On View / Edit only, in `.record-tabs__actions` (far right): DS Toggle xxs + "Show sidebar" label (`.record-tabs__sidebar-toggle`, dressed as StepsTable's "Show details"). `record_tabs(sidebar=True|False)` sets the default — View on, Edit off. Hidden at `@container cs-page (max-width: 1023px)`. Not in the RecordTabs Figma set.
