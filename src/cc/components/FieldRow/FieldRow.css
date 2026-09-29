@@ -27,7 +27,7 @@
   font-size: var(--ai-font-fixed-xs);
   line-height: var(--ai-leading-sm);
   letter-spacing: var(--ai-tracking-4);
-  color: var(--ai-text-secondary);
+  color: var(--ai-text-primary);   /* designer amend 2026-09-29 (was text-secondary) */
 }
 
 .field-row__value {
