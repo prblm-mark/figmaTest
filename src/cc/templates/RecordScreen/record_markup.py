@@ -113,12 +113,17 @@ def media_meta(src=IMG, rows=None):
 
 
 def media_picker(label, src=None):
+    """Empty slot: placeholder + Choose file. Filled: the image + pencil (change) + trash (remove)
+    (designer, 2026-09-29). Both action sets are rendered; `media-picker--empty` shows one, so
+    choosing or removing an image flips it client-side (Selector.js / MediaPicker.js)."""
     thumb = f'<img src="{src}" alt="">' if src else icon("image")
-    return f'''<div class="media-picker">
+    empty = "" if src else " media-picker--empty"
+    return f'''<div class="media-picker{empty}" data-media-picker>
               <button type="button" class="media-picker__thumb" aria-label="Choose {e(label)}" aria-haspopup="dialog" data-selector-open="modal-media">{thumb}</button>
               <div class="media-picker__actions">
-                {btn(f"Edit {label}", "secondary", "sm", icon_left="pencil", icon_only=True, attrs=' aria-haspopup="dialog" data-selector-open="modal-media"')}
-                {btn(f"Remove {label}", "secondary", "sm", icon_left="trash-2", icon_only=True)}
+                {btn("Choose file", "secondary", "sm", icon_left="upload", attrs=f' aria-label="Choose {e(label)}" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose')}
+                {btn(f"Edit {label}", "secondary", "sm", icon_left="pencil", icon_only=True, attrs=' aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit')}
+                {btn(f"Remove {label}", "secondary", "sm", icon_left="trash-2", icon_only=True, attrs=' data-media-remove')}
               </div>
             </div>'''
 
@@ -220,10 +225,9 @@ def edit_row(label, kind, value="", required=False, help_text=None, tags=None, m
               <div class="input"><div class="input__wrap"><input id="{fid}" type="text" class="input__control" value="{e(value)}" readonly placeholder="{e(placeholder)}" data-selector-value></div></div>
               {btn("Select", "secondary", attrs=f' aria-haspopup="dialog" aria-label="Select {e(label)}"' + (f' data-selector-open="{modal}"' if modal else ' data-backend-todo="record-lookup"'))}
             </div>'''
-    elif kind == "image" and not (value or {}).get("src"):
-        # No image yet: just the picker — alt / caption / alignment / width appear once one is chosen.
-        ctl = media_picker(label)
     elif kind == "image":
+        # One markup for filled and empty slots: the options are always rendered and CSS hides
+        # them while the picker is empty, so choosing an image reveals them (designer, 2026-09-29).
         opts = value or {}
         align = opts.get("align")
         # Alignment is a SegmentedControl with icon + text (designer, 2026-09-29; was three radios):

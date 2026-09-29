@@ -1103,6 +1103,13 @@
      "element": "Selector Type=Sort (Sort Order)",
      "current": "73 real Insights articles (Hub, 2026-09-29) reordered in the DOM; Save writes the position number into the field. Thumbnails are placeholders.",
      "needs": "GET the section's items in current order (id, title, thumbnail); Save PUTs the full ordered id list for the section."
+    },
+    {
+     "id": "record-media-remove",
+     "category": "needs-backend",
+     "element": "MediaPicker trash (remove the image from a slot)",
+     "current": "Client-side only: the slot empties and shows Choose file.",
+     "needs": "Clear the field's MediaItemCode on save (and its alt / caption / alignment / width)."
     }
    ]
   }
