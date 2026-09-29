@@ -26,7 +26,7 @@
 | Property | Token |
 |---|---|
 | card | --ai-surface-primary, 1px --ai-border-secondary, --ai-radius-md, --ai-shadow-2xs |
-| padding / gap | --ai-spacing-4 / --ai-spacing-4 |
+| padding / gap | --ai-spacing-4 / --ai-spacing-4 (card); body gap --ai-spacing-2 (designer amend 2026-09-29, was -4 — flag for Figma) |
 | name | --ai-font-fixed-2xs Bold --ai-text-primary |
 | role | --ai-font-fixed-xxs --ai-text-contrast |
 | time | --ai-font-fixed-5xs --ai-text-contrast |

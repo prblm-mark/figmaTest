@@ -20,7 +20,7 @@
   display: flex;
   flex: 1 1 0;
   flex-direction: column;
-  gap: var(--ai-spacing-4);
+  gap: var(--ai-spacing-2);              /* 6px — designer amend 2026-09-29 (was --ai-spacing-4) */
   min-width: 0;
 }
 
