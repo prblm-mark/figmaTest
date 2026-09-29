@@ -27,6 +27,23 @@
   color: var(--ai-text-secondary);
 }
 
+/* ── Two triggers, one detail row (designer, 2026-09-29) ──────────────────────────────────
+ * The KEBAB reveals only the row's columns that did not fit (the listing's own job).
+ * SHOW DETAILS reveals only the step body, on every row. Both on → both halves. So each half is
+ * gated by its own trigger, and the row shows when either is on. */
+.steps-table .datatables__detail-extra {
+  display: none;
+}
+
+.steps-table--details .datatables__detail-extra {
+  display: block;
+}
+
+/* The columns half needs this row's kebab ticked — Show details alone must not open it. */
+.steps-table .datatables__row:not(:has(.datatables__kebab__input:checked)) + .datatables__row-detail .datatables__detail-list {
+  display: none;
+}
+
 /* Detail rows only show while Show details is on. Datatables hides row-detail by
    default and reveals it per row from the kebab; Steps has no per-row expand, so the
    toggle reveals them all. */

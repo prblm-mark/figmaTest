@@ -65,9 +65,11 @@ The Steps table is now a **listing screen**: `LISTING_SCREENS['article-steps']`
 (`record_markup.listing_datatable()`), so it cannot drift from the listings. It gains, for free: the
 adaptive column fit, **Edit Columns** (show/hide + drag-reorder), **Settings** (Expanding row /
 Horizontal scroll), the kebab detail, paging, and per-user persistence.
-- **One detail row, both jobs** (designer): the columns that did not fit, then the step body
-  (engine hook `config.rowDetail`, rendered as `.datatables__detail-extra`). **Show details** opens every
-  row (`.steps-table--details`); the kebab opens one.
+- **One detail row, two separate triggers** (designer correction, 2026-09-29): the **kebab** reveals
+  ONLY that row's columns that did not fit (or the listing's "Every column is showing at this width"
+  note); **Show details** reveals ONLY the step body (engine hook `config.rowDetail` →
+  `.datatables__detail-extra`), on every row. Both on → both halves. The first build let the kebab open
+  the step body too — wrong: each half is now gated by its own trigger in StepsTable.css.
 - **Horizontal scroll:** kebab hidden (listing rule), Show details still works; the step body pins to
   the visible width (the cell inset moves inside the block; the scroll pass re-spans the cell).
 - Checkboxes kept with `selectable: true` — the step bulk actions are not designed yet.
