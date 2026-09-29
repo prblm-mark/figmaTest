@@ -34,13 +34,13 @@ def chip(label, kind="tertiary", size="xs"):
 
 
 # ── RecordHeader → CC Header Type=Record ─────────────────────────────
-def record_header(record_type, title, mode):
+def record_header(record_type, title, mode, view_href="ArticleView.html", edit_href="ArticleEdit.html"):
     if mode == "edit":
-        actions = (btn("Cancel", "secondary", tag="a", href="ArticleView.html", attrs=' data-keep-width')
+        actions = (btn("Cancel", "secondary", tag="a", href=view_href, attrs=' data-keep-width')
                    + btn("Save", "primary", icon_left="check"))
     else:
         actions = (btn("Add", "secondary")
-                   + btn("Edit", "primary", icon_left="pencil", tag="a", href="ArticleEdit.html", attrs=' data-keep-width'))
+                   + btn("Edit", "primary", icon_left="pencil", tag="a", href=edit_href, attrs=' data-keep-width'))
     return f'''<div class="cc-header-cq">
         <header class="cc-header cc-header--record">
           <div class="cc-header__title-block">
@@ -59,7 +59,7 @@ def record_tabs(active, steps_count=8, actions=False, back="ArticleView.html"):
     def tab(label, href, is_active, count=None):
         cur = ' aria-current="page"' if is_active else ""
         cls = "record-tab record-tab--active" if is_active else "record-tab"
-        c = f'<span class="record-tab__count" aria-label="{count} steps">{count}</span>' if count is not None else ""
+        c = f'<span class="record-tab__count" aria-label="{count} steps">{count}</span>' if count else ""
         return f'<a class="{cls}" href="{href}"{cur} data-keep-width>{e(label)}{c}</a>'
     acts = ""
     if actions:
@@ -80,15 +80,17 @@ MEDIA = [("Alt text", "Affino 9.0.11.25 - The Refinement Update"), ("File name",
          ("File size", "108 KB"), ("Dimensions", "800 × 800")]
 
 
-def media_meta(src=IMG):
+def media_meta(src=IMG, rows=None):
     """View-mode image value: thumbnail + alt-text caption; the file facts sit behind an
     "Image details" button in a DS Dropdown panel (designer chose layout B, 2026-09-29 —
     the Google Drive / Photos "details" pattern). Dropdown.js owns open / outside-click / Escape."""
-    rows = "".join(f'<dt class="media-meta__term">{e(a)}</dt><dd class="media-meta__value">{e(b)}</dd>' for a, b in MEDIA)
+    rows = rows or MEDIA
+    alt = rows[0][1]
+    rows = "".join(f'<dt class="media-meta__term">{e(a)}</dt><dd class="media-meta__value">{e(b)}</dd>' for a, b in rows)
     return f'''<div class="media-meta">
-              <img class="media-meta__thumb" src="{src}" alt="{e(MEDIA[0][1])}">
+              <img class="media-meta__thumb" src="{src}" alt="{e(alt)}">
               <div class="media-meta__summary">
-                <div class="media-meta__caption">{e(MEDIA[0][1])}</div>
+                <div class="media-meta__caption">{e(alt)}</div>
                 <div class="dropdown media-meta__info" data-dropdown="stay-open">
                   <button type="button" class="btn btn--secondary btn--xs dropdown__trigger" aria-expanded="false" aria-haspopup="dialog"><i data-lucide="info" aria-hidden="true"></i><span>Image details</span></button>
                   <div class="dropdown__panel media-meta__panel" role="dialog" aria-label="Image details">
@@ -115,12 +117,15 @@ def view_row(label, kind, value=None, compact=False):
     mods = ["field-row"]
     if compact:
         mods.append("field-row--compact")
-    if kind in ("paragraph", "media"):
-        mods.append(f"field-row--{kind}")
+    if kind in ("paragraph", "media", "rich"):
+        mods.append(f"field-row--{'paragraph' if kind == 'rich' else kind}")
     if kind == "tags":
         val = '<div class="field-row__tags">' + "".join(chip(t) for t in value) + '</div>'
     elif kind == "media":
-        val = media_meta()
+        val = media_meta(rows=value) if value else media_meta()
+    elif kind == "rich":
+        # Rich text (HTML body) — value is [(tag, text)]; code-first, flagged for Figma (2026-09-29)
+        val = '<div class="field-row__rich">' + "".join(f"<{t}>{e(x)}</{t}>" for t, x in value) + '</div>'
     elif kind == "paragraph":
         paras = value if isinstance(value, list) else [value]
         val = "".join(f"<p>{e(p)}</p>" for p in paras)
@@ -179,12 +184,80 @@ def edit_row(label, kind, value="", required=False, help_text=None, tags=None, m
             </div>'''
     elif kind == "media":
         ctl = media_picker(label)
-    lab_tag = "label" if kind in ("input", "textarea") else "span"
-    lab_for = f' for="{fid}"' if kind in ("input", "textarea") else f' id="{fid}-label"'
-    return f'''<div class="field-row field-row--edit">
+    # ── New edit types (Article 10007, code-first — flagged for Figma 2026-09-29) ──
+    elif kind == "checkbox":
+        # The row label IS the checkbox's label (aria-labelledby) — repeating it beside the box read twice.
+        ctl = f'''<label class="checkbox">
+              <input type="checkbox" class="checkbox__input" id="{fid}" aria-labelledby="{fid}-label"{' checked' if value else ''}>
+              <span class="checkbox__indicator">{icon("check")}</span>
+            </label>'''
+    elif kind in ("date", "datetime"):
+        ph = "Select date and time" if kind == "datetime" else "Select date"
+        ctl = f'''<div class="datepicker" data-datepicker data-mode="single">
+              <div class="input">
+                <div class="input__wrap">
+                  <input id="{fid}" class="input__control" type="text" readonly placeholder="{ph}" value="{e(value)}" data-datepicker-input aria-label="{e(label)}">
+                  {icon("calendar", "datepicker__field-icon")}
+                </div>
+              </div>
+            </div>'''
+        # TODO(backend:RecordScreen) record-datetime: DatePicker picks a date only — the time half of
+        #   Publish Start / End and Embargo End is not built yet → DatePicker + TimePicker pairing
+    elif kind == "lookup":
+        ctl = f'''<div class="field-row__lookup">
+              <div class="input"><div class="input__wrap"><input id="{fid}" type="text" class="input__control" value="{e(value)}" readonly placeholder="None selected"></div></div>
+              {btn("Select", "secondary", attrs=f' aria-haspopup="dialog" aria-label="Select {e(label)}" data-backend-todo="record-lookup"')}
+            </div>'''
+    elif kind == "image" and not (value or {}).get("src"):
+        # No image yet: just the picker — alt / caption / alignment / width appear once one is chosen.
+        ctl = media_picker(label)
+    elif kind == "image":
+        opts = value or {}
+        align = opts.get("align")
+        radios = "".join(f'''<label class="radio"><input type="radio" class="radio__input" name="{fid}-align" value="{a}"{' checked' if a == align else ''}><span class="radio__indicator"></span><span class="radio__label"><span class="radio__label-text">{a}</span></span></label>''' for a in ("Left", "Center", "Right"))
+        ctl = f'''<div class="field-row__image">
+              {media_picker(label, IMG if opts.get("src") else None)}
+              <div class="field-row__image-options">
+                {_mini_input("Alt text", opts.get("alt", ""), fid + "-alt")}
+                {_mini_input("Caption", opts.get("caption", ""), fid + "-cap")}
+                <div class="field-row__image-option" role="radiogroup" aria-label="{e(label)} alignment"><span class="input__label">Alignment</span><div class="field-row__options">{radios}</div></div>
+                <div class="field-row__image-option"><span class="input__label">Width</span>{_mini_select(opts.get("width") or "100%")}</div>
+              </div>
+            </div>'''
+    elif kind == "rich":
+        paras = [x for _, x in value] if value else [""]
+        ctl = f'''<div class="textarea">
+              <textarea class="textarea__control" id="{fid}" rows="10">{PARA_SEP.join(e(p) for p in paras)}</textarea>
+            </div>'''
+        # TODO(backend:RecordScreen) record-rich-text: plain textarea stands in for the rich-text editor
+    elif kind == "file":
+        ctl = f'''<div class="media-picker">
+              <span class="media-picker__thumb">{icon("file-audio")}</span>
+              <div class="media-picker__actions">
+                {btn("Choose file", "secondary", "sm", icon_left="upload", attrs=f' aria-label="Choose {e(label)}" data-backend-todo="record-media-file"')}
+              </div>
+            </div>'''
+    lab_tag = "label" if kind in ("input", "textarea", "rich", "lookup", "date", "datetime") else "span"
+    lab_for = f' for="{fid}"' if kind in ("input", "textarea", "rich", "lookup", "date", "datetime") else f' id="{fid}-label"'
+    row_mods = "field-row field-row--edit" + (" field-row--check" if kind == "checkbox" else "")
+    return f'''<div class="{row_mods}">
             <{lab_tag} class="field-row__label"{lab_for}>{e(label)}{req}</{lab_tag}>
             <div class="field-row__value">{ctl}</div>
           </div>'''
+
+
+def _mini_input(label, value, fid):
+    return f'''<div class="input">
+                  <label class="input__label" for="{fid}">{e(label)}</label>
+                  <div class="input__wrap"><input id="{fid}" type="text" class="input__control" value="{e(value)}"></div>
+                </div>'''
+
+
+def _mini_select(value):
+    return f'''<div class="sel" data-sel>
+                  <button class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox"><span class="sel__value">{e(value)}</span><span class="sel__chevron">{icon("chevron-down")}</span></button>
+                  <ul class="sel__menu" role="listbox">{''.join(f'<li><button type="button" class="sel__menu-item{" sel__menu-item--selected" if w == value else ""}" role="option">{w}</button></li>' for w in ("100%", "75%", "66%", "50%", "33%", "25%"))}</ul>
+                </div>'''
 
 
 # ── RecordSection ────────────────────────────────────────────────────

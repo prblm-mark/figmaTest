@@ -89,3 +89,18 @@ TopNavigation, HeaderGroup, ActionsMenu rail, theme + width scripts). Page body:
 | Article Edit — Narrow (page ≤1023) | `3907:17461` | as View |
 | Article Edit — Mobile (390) | `3907:17632` | as View |
 Built from duplicates of the standard frames (kit instances kept). Mobile header: RecordHeader padding spacing/3 · spacing/4, title font/size-fixed/sm, buttons Size=sm; drawn top-nav breadcrumb clipped and user name hidden, as the code renders.
+
+## Article 10007 — the framework on a real article (2026-09-29, code-first)
+`Article10007View.html` / `Article10007Edit.html`, generated from `record_10007.py` — every field of
+sf.affino.com Standard Item 10007 (Review Article, 13 sections, 76 fields; inventory
+`article-10007-fields.md`, read-only). One table drives both screens, so View and Edit cannot disagree.
+- **Result:** the framework holds the full set — RecordSection per live divider, FieldRow per field,
+  no horizontal scroll at 1440 / 390, no errors; the stacking container queries work unchanged.
+- **New FieldRow kinds, code-first — FLAG FOR FIGMA** (none exist in the FieldRow set `3861:1987`):
+  `rich` (view: HTML blocks p/h2/h3/blockquote; edit: textarea stand-in), `checkbox` (row label is the
+  box's label), `date` / `datetime` (DatePicker field), `lookup` (read-only value + Select), `image`
+  (MediaPicker + Alt text / Caption inputs + Alignment radios + Width select; empty slots show the
+  picker only), `file` (media file picker). View shows booleans as Yes / No and empties as "-".
+- **Not 10007's:** the sidebar (Performance, Viewers, Meta, Audit…) is still the Figma demo data — the
+  live screen's sidebar values were not read.
+- Handover: `record-lookup`, `record-datetime`, `record-rich-text`, `record-media-file`.
