@@ -204,3 +204,16 @@
 .record-screen__sidebar .btn--tertiary:focus-visible {
   border-color: var(--ai-border-secondary);
 }
+
+/* Edit screen buttons carry --ai-shadow-2xs (designer, 2026-09-29): every button in the page column
+ * (header Cancel / Save, tabs, fields, prompt panels) and in the modals; not the app shell's own
+ * chrome. Tertiary buttons are left out (no fill to lift, so a shadow reads as a stray underline),
+ * except those given the subtle border, which read as outlined buttons. `:not(:focus-visible)` keeps
+ * Button's focus ring, which is itself a box-shadow. */
+.record-page--edit .cc-control__main .btn:not(.btn--tertiary):not(:focus-visible),
+.record-page--edit .modal .btn:not(.btn--tertiary):not(:focus-visible),
+.record-page--edit .record-screen__sidebar .btn--tertiary:not(:focus-visible),
+.record-page--edit .prompt-modifier [data-prompt-toggle]:not(:focus-visible),
+.record-page--edit .selector__sort-actions .btn--tertiary:not(:focus-visible) {
+  box-shadow: var(--ai-shadow-2xs);
+}

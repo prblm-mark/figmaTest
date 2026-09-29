@@ -207,6 +207,9 @@ pages = {
 
 for name, html in pages.items():
     html = html.replace("<!doctype html>\n", "<!doctype html>\n" + HEAD_NOTE, 1)
+    if name == "ArticleEdit.html":
+        # A page-level marker for Edit-only styling that reaches the header and the modals too.
+        html = html.replace('<body class="cc-control">', '<body class="cc-control record-page--edit">', 1)
     open(os.path.join(HERE, name), "w", encoding="utf-8").write(html)
     print("wrote", name, len(html))
 
