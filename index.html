@@ -440,6 +440,7 @@
       <button class="ds-sidebar__item" data-filter="cc">Control Centre <span class="ds-sidebar__count" id="sidebarCcCount"></span></button>
       <button class="ds-sidebar__item" data-filter="seating">Seating Planner <span class="ds-sidebar__count" id="sidebarSeatingCount"></span></button>
       <button class="ds-sidebar__item" data-filter="listing">Listing Screens <span class="ds-sidebar__count" id="sidebarListingCount"></span></button>
+      <button class="ds-sidebar__item" data-filter="record">View / Edit Screens <span class="ds-sidebar__count" id="sidebarRecordCount"></span></button>
       <button class="ds-sidebar__item" data-filter="proto">Prototypes <span class="ds-sidebar__count" id="sidebarProtoCount"></span></button>
     </div>
   </aside>
@@ -1293,44 +1294,6 @@
         <p class="ds-subsection__label">Templates</p>
         <nav class="ds-grid" aria-label="Control Centre templates">
 
-          <a href="src/cc/templates/RecordScreen/ArticleView.html" class="ds-card" data-category="cc" data-tier="template" data-name="Record Screen · Article View">
-            <div class="ds-card__icon"><i data-lucide="file-text" aria-hidden="true"></i></div>
-            <div class="ds-card__body">
-              <p class="ds-card__label">Control Centre · Record</p>
-              <h3 class="ds-card__name">Record Screen · Article View</h3>
-            </div>
-          </a>
-
-          <a href="src/cc/templates/RecordScreen/ArticleEdit.html" class="ds-card" data-category="cc" data-tier="template" data-name="Record Screen · Article Edit">
-            <div class="ds-card__icon"><i data-lucide="file-pen" aria-hidden="true"></i></div>
-            <div class="ds-card__body">
-              <p class="ds-card__label">Control Centre · Record</p>
-              <h3 class="ds-card__name">Record Screen · Article Edit</h3>
-            </div>
-          </a>
-
-          <a href="src/cc/templates/RecordScreen/ArticleSteps.html" class="ds-card" data-category="cc" data-tier="template" data-name="Record Screen · Article Steps">
-            <div class="ds-card__icon"><i data-lucide="list-ordered" aria-hidden="true"></i></div>
-            <div class="ds-card__body">
-              <p class="ds-card__label">Control Centre · Record</p>
-              <h3 class="ds-card__name">Record Screen · Article Steps</h3>
-            </div>
-          </a>
-          <a href="src/cc/templates/RecordScreen/Article10007View.html" class="ds-card" data-category="cc" data-tier="template" data-name="Record Screen · Article 10007 View">
-            <div class="ds-card__icon"><i data-lucide="file-search" aria-hidden="true"></i></div>
-            <div class="ds-card__body">
-              <p class="ds-card__label">Control Centre · Record · real data (sf.affino.com)</p>
-              <h3 class="ds-card__name">Record Screen · Article 10007 View</h3>
-            </div>
-          </a>
-          <a href="src/cc/templates/RecordScreen/Article10007Edit.html" class="ds-card" data-category="cc" data-tier="template" data-name="Record Screen · Article 10007 Edit">
-            <div class="ds-card__icon"><i data-lucide="file-pen" aria-hidden="true"></i></div>
-            <div class="ds-card__body">
-              <p class="ds-card__label">Control Centre · Record · real data (sf.affino.com)</p>
-              <h3 class="ds-card__name">Record Screen · Article 10007 Edit</h3>
-            </div>
-          </a>
-
 
           <a href="src/cc/templates/AiAssistant/AiAssistant.html" class="ds-card" data-category="cc" data-tier="template" data-name="AiAssistant">
             <div class="ds-card__icon"><i data-lucide="sparkles" aria-hidden="true"></i></div>
@@ -1629,6 +1592,67 @@
       </div>
     </div>
 
+    <!-- View / Edit Screens — the CC record-screen framework (RecordScreen/_generate.py), grouped
+         like Listing Screens (designer, 2026-09-29). Article View / Edit carry Article 10007's full
+         field set from sf.affino.com; Steps runs on the listing engine. -->
+    <div class="ds-section" data-section="record">
+      <p class="ds-section__label">View / Edit Screens <span class="ds-section__label-count" id="recordCount"></span></p>
+      <div class="ds-subsection">
+        <p class="ds-subsection__label">Templates</p>
+        <nav class="ds-grid" aria-label="View and Edit Screen templates">
+
+        <a href="src/cc/templates/RecordScreen/ArticleView.html" class="ds-card" data-category="record" data-tier="template" data-name="Record Screen · Article · View">
+            <div class="ds-card__icon"><i data-lucide="eye" aria-hidden="true"></i></div>
+            <div class="ds-card__body">
+              <p class="ds-card__label">View / Edit Screens</p>
+              <h3 class="ds-card__name">Article · View</h3>
+            </div>
+          </a>
+
+        <a href="src/cc/templates/RecordScreen/ArticleEdit.html" class="ds-card" data-category="record" data-tier="template" data-name="Record Screen · Article · Edit">
+            <div class="ds-card__icon"><i data-lucide="pencil" aria-hidden="true"></i></div>
+            <div class="ds-card__body">
+              <p class="ds-card__label">View / Edit Screens</p>
+              <h3 class="ds-card__name">Article · Edit</h3>
+            </div>
+          </a>
+
+        <a href="src/cc/templates/RecordScreen/ArticleSteps.html" class="ds-card" data-category="record" data-tier="template" data-name="Record Screen · Article · Steps">
+            <div class="ds-card__icon"><i data-lucide="list-ordered" aria-hidden="true"></i></div>
+            <div class="ds-card__body">
+              <p class="ds-card__label">View / Edit Screens</p>
+              <h3 class="ds-card__name">Article · Steps</h3>
+            </div>
+          </a>
+
+        <a href="src/cc/templates/RecordScreen/ArticleView.html?template=full" class="ds-card" data-category="record" data-tier="template" data-name="Record Screen · Article · View · Full width">
+            <div class="ds-card__icon"><i data-lucide="eye" aria-hidden="true"></i></div>
+            <div class="ds-card__body">
+              <p class="ds-card__label">View / Edit Screens · full width</p>
+              <h3 class="ds-card__name">Article · View · Full width</h3>
+            </div>
+          </a>
+
+        <a href="src/cc/templates/RecordScreen/ArticleEdit.html?template=full" class="ds-card" data-category="record" data-tier="template" data-name="Record Screen · Article · Edit · Full width">
+            <div class="ds-card__icon"><i data-lucide="pencil" aria-hidden="true"></i></div>
+            <div class="ds-card__body">
+              <p class="ds-card__label">View / Edit Screens · full width</p>
+              <h3 class="ds-card__name">Article · Edit · Full width</h3>
+            </div>
+          </a>
+
+        <a href="src/cc/templates/RecordScreen/ArticleSteps.html?template=full" class="ds-card" data-category="record" data-tier="template" data-name="Record Screen · Article · Steps · Full width">
+            <div class="ds-card__icon"><i data-lucide="list-ordered" aria-hidden="true"></i></div>
+            <div class="ds-card__body">
+              <p class="ds-card__label">View / Edit Screens · full width</p>
+              <h3 class="ds-card__name">Article · Steps · Full width</h3>
+            </div>
+          </a>
+
+        </nav>
+      </div>
+    </div>
+
     <div class="ds-section" data-section="proto">
       <p class="ds-section__label">Prototypes <span class="ds-section__label-count" id="protoCount"></span></p>
       <nav class="ds-grid" aria-label="Prototypes">
@@ -1727,6 +1751,7 @@
       'cc': 'Control Centre',
       'seating': 'Seating Planner',
       'listing': 'Listing Screens',
+      'record': 'View / Edit Screens',
       'proto': 'Prototypes'
     };
 
@@ -1738,7 +1763,7 @@
     };
 
     function updateCounts() {
-      var ds = 0, chat = 0, cc = 0, seating = 0, listing = 0, proto = 0;
+      var ds = 0, chat = 0, cc = 0, seating = 0, listing = 0, record = 0, proto = 0;
       cards.forEach(function (c) {
         if (!c.hidden) {
           if (c.dataset.category === 'ds') ds++;
@@ -1746,6 +1771,7 @@
           else if (c.dataset.category === 'cc') cc++;
           else if (c.dataset.category === 'seating') seating++;
           else if (c.dataset.category === 'listing') listing++;
+          else if (c.dataset.category === 'record') record++;
           else if (c.dataset.category === 'proto') proto++;
         }
       });
@@ -1754,13 +1780,15 @@
       document.getElementById('ccCount').textContent = '(' + cc + ')';
       document.getElementById('seatingCount').textContent = '(' + seating + ')';
       document.getElementById('listingCount').textContent = '(' + listing + ')';
+      document.getElementById('recordCount').textContent = '(' + record + ')';
       document.getElementById('protoCount').textContent = '(' + proto + ')';
-      document.getElementById('sidebarAllCount').textContent = '(' + (ds + chat + cc + seating + listing + proto) + ')';
+      document.getElementById('sidebarAllCount').textContent = '(' + (ds + chat + cc + seating + listing + record + proto) + ')';
       document.getElementById('sidebarDsCount').textContent = '(' + ds + ')';
       document.getElementById('sidebarChatCount').textContent = '(' + chat + ')';
       document.getElementById('sidebarCcCount').textContent = '(' + cc + ')';
       document.getElementById('sidebarSeatingCount').textContent = '(' + seating + ')';
       document.getElementById('sidebarListingCount').textContent = '(' + listing + ')';
+      document.getElementById('sidebarRecordCount').textContent = '(' + record + ')';
       document.getElementById('sidebarProtoCount').textContent = '(' + proto + ')';
     }
 

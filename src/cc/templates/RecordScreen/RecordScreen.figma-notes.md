@@ -92,7 +92,9 @@ TopNavigation, HeaderGroup, ActionsMenu rail, theme + width scripts). Page body:
 Built from duplicates of the standard frames (kit instances kept). Mobile header: RecordHeader padding spacing/3 · spacing/4, title font/size-fixed/sm, buttons Size=sm; drawn top-nav breadcrumb clipped and user name hidden, as the code renders.
 
 ## Article 10007 — the framework on a real article (2026-09-29, code-first)
-`Article10007View.html` / `Article10007Edit.html`, generated from `record_10007.py` — every field of
+**`ArticleView.html` / `ArticleEdit.html` ARE this record** (designer, 2026-09-29 — they replaced the
+Figma draft's six-section 9.0.11.25 content, which stays in `record_markup.py` for the component demos
+and is still what Figma draws; the separate Article10007 pages were removed). Generated from `record_10007.py` — every field of
 sf.affino.com Standard Item 10007 (Review Article, 13 sections, 76 fields; inventory
 `article-10007-fields.md`, read-only). One table drives both screens, so View and Edit cannot disagree.
 - **Result:** the framework holds the full set — RecordSection per live divider, FieldRow per field,
@@ -105,3 +107,6 @@ sf.affino.com Standard Item 10007 (Review Article, 13 sections, 76 fields; inven
 - **Not 10007's:** the sidebar (Performance, Viewers, Meta, Audit…) is still the Figma demo data — the
   live screen's sidebar values were not read.
 - Handover: `record-lookup`, `record-datetime`, `record-rich-text`, `record-media-file`.
+
+**Demo hub:** a **View / Edit Screens** section (`data-category="record"`, sidebar filter) holds View,
+Edit and Steps in standard + full width — grouped like Listing Screens (designer, 2026-09-29).

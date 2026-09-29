@@ -180,23 +180,16 @@ LISTING_SCREENS['article-steps'] = {{
 
 write_steps_config()
 
+# ArticleView / ArticleEdit ARE Article 10007 (sf.affino.com) — the framework filled with a real
+# article's full field set (record_10007.py; designer, 2026-09-29). The Figma draft's six-section
+# content stays in record_markup.py for the component demos; Figma itself still draws the draft.
 pages = {
-    "ArticleView.html": build("Article · View", m.record_header("Article", TITLE, "view"),
-                              page(m.record_tabs("details") + body(m.view_sections())), KIT_JS),
-    "ArticleEdit.html": build("Article · Edit", m.record_header("Article", TITLE, "edit"),
-                              page(m.record_tabs("details", back="ArticleEdit.html") + body(m.edit_sections())), KIT_JS,
-                              modals=m.multi_select_modal("modal-multi-display", "Select Multi Display", m.SECTIONS_SOURCE)
-                              + m.multi_select_modal("modal-topics", "Select Topics and Keywords", m.TOPICS_SOURCE)),
-    # Article 10007 (sf.affino.com) — the framework filled with a REAL article's full field set
-    # (record_10007.py; code-first new row kinds, flagged for Figma).
-    "Article10007View.html": build("Article 10007 · View",
-                                   m.record_header("Article · Review", r10007.TITLE, "view", "Article10007View.html", "Article10007Edit.html"),
-                                   page(m.record_tabs("details", steps_count=None, back="Article10007View.html") + body(r10007.view_sections())), KIT_JS),
-    "Article10007Edit.html": build("Article 10007 · Edit",
-                                   m.record_header("Article · Review", r10007.TITLE, "edit", "Article10007View.html", "Article10007Edit.html"),
-                                   page(m.record_tabs("details", steps_count=None, back="Article10007Edit.html") + body(r10007.edit_sections())), KIT_JS,
-                                   modals=r10007.modals()),
-    "ArticleSteps.html": build("Article · Steps", m.record_header("Article", TITLE, "view"),
+    "ArticleView.html": build("Article · View", m.record_header("Article · Review", r10007.TITLE, "view"),
+                              page(m.record_tabs("details") + body(r10007.view_sections())), KIT_JS),
+    "ArticleEdit.html": build("Article · Edit", m.record_header("Article · Review", r10007.TITLE, "edit"),
+                              page(m.record_tabs("details", back="ArticleEdit.html") + body(r10007.edit_sections())), KIT_JS,
+                              modals=r10007.modals()),
+    "ArticleSteps.html": build("Article · Steps", m.record_header("Article · Review", r10007.TITLE, "view"),
                                page(m.record_tabs("steps", actions=True) + m.steps_listing()), KIT_JS, listing=True),
 }
 
