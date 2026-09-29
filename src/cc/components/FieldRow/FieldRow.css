@@ -104,3 +104,89 @@
   display: flex;
   flex-direction: column;
 }
+
+/* ══ Code-first row types (Article 10007, 2026-09-29) — NOT in Figma yet, flagged ══════════════
+ * Built to fill the framework with a real article's full field set. Each composes an existing DS
+ * component; only the arrangement below is new, and it reuses the row's own rhythm
+ * (--ai-spacing-3 between a control and its companion, as the edit label/control gap). */
+
+/* Type=Rich (view) — an HTML body: paragraphs, headings, quotes. */
+.field-row__rich > * {
+  margin: 0;
+}
+
+.field-row__rich > * + * {
+  margin-top: var(--ai-spacing-4);
+}
+
+.field-row__rich h2,
+.field-row__rich h3 {
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-primary);
+}
+
+.field-row__rich h2 {
+  font-size: var(--ai-font-fixed-sm);
+}
+
+.field-row__rich h3 {
+  font-size: var(--ai-font-fixed-xs);
+}
+
+.field-row__rich blockquote {
+  padding-left: var(--ai-spacing-4);
+  border-left: 2px solid var(--ai-border-brand);
+  color: var(--ai-text-secondary);
+}
+
+/* Type=Lookup (edit) — the current value + a Select that opens the picker. */
+.field-row__lookup {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  min-width: 0;
+}
+
+.field-row__lookup > .input {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Type=Image (edit) — MediaPicker, then its options: alt text, caption, alignment, width. */
+.field-row__image {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-4);
+  min-width: 0;
+}
+
+.field-row__image-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--ai-size-4)), 1fr));
+  gap: var(--ai-spacing-4);
+}
+
+.field-row__image-option {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+  min-width: 0;
+}
+
+
+.field-row__options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ai-spacing-5);
+}
+
+/* Type=Checkbox (edit) — the box sits on the label's line; no 40px control to centre against. */
+.field-row--check {
+  align-items: center;
+}
+
+.field-row--check .field-row__label {
+  padding-top: 0;
+}

@@ -1040,6 +1040,34 @@
      "element": "Step row checkboxes",
      "current": "Select + select-all work client-side; no bulk actions.",
      "needs": "Bulk actions not designed yet."
+    },
+    {
+     "id": "record-lookup",
+     "category": "needs-backend",
+     "element": "Lookup rows (Section, Sort Order, Creator, Account) → Select",
+     "current": "Current value in a read-only input; Select does nothing.",
+     "needs": "Lookup picker per field (section tree / member search / account search) returning { id, name }; the row shows the name, submits the id."
+    },
+    {
+     "id": "record-datetime",
+     "category": "needs-backend",
+     "element": "Date rows (Launch Date, Publish Start / End, Embargo End)",
+     "current": "DatePicker picks a DATE only; the time in Publish Start/End is shown as text.",
+     "needs": "Date + time value per field (DatePicker + TimePicker pairing, or a datetime control); timezone of the record."
+    },
+    {
+     "id": "record-rich-text",
+     "category": "needs-backend",
+     "element": "Rich text rows (Introduction, Main Body, Text 2–4)",
+     "current": "View renders the HTML blocks (p, h2, h3, blockquote); Edit shows the paragraphs in a plain textarea.",
+     "needs": "The platform's rich-text editor in Edit; the stored HTML is rendered on View (sanitised)."
+    },
+    {
+     "id": "record-media-file",
+     "category": "needs-backend",
+     "element": "Media file rows (Audio Version (MP3), Multimedia) → Choose file",
+     "current": "No-op.",
+     "needs": "Media file picker / upload for audio and multimedia items; shows the chosen file's name."
     }
    ]
   }

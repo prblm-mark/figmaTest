@@ -57,3 +57,13 @@ Designer decisions 2026-09-28: label weight Medium (draft mixed Medium/SemiBold)
 
 ## Layout=Stacked (2026-09-28)
 Nine Figma variants (`3904:16242`… one per Wide Type): label over value, gap `spacing/3`, label padding 0, children fill. **Not a class in code** — it is what `@container record-section (max-width: 559px)` does to a Wide row (RecordSection.css). Media keeps MediaMeta's row (layout B needs no stacked form). Code Connect maps Stacked → no modifier.
+
+## Code-first kinds from Article 10007 (2026-09-29) — FLAG FOR FIGMA
+Not in the Figma set yet; built to fill the framework with a real article (RecordScreen/record_10007.py):
+`Type=Rich` (view `.field-row__rich` — h2 `fixed-sm` / h3 `fixed-xs` semibold, blockquote 2px
+`--ai-border-brand` left rule + `spacing-4` inset, blocks `spacing-4` apart), `Type=Checkbox`
+(`.field-row--check`, label padding 0, centred), `Type=Date / Datetime` (DatePicker field), `Type=Lookup`
+(`.field-row__lookup`: input + Secondary Select, gap `spacing-3`), `Type=Image` (`.field-row__image`:
+MediaPicker then `.field-row__image-options` grid of Alt text / Caption / Alignment radios / Width select,
+gap `spacing-4`), `Type=File` (MediaPicker with a file icon + Choose file). Every value is an existing
+token; the arrangements are proposals for the designer.
