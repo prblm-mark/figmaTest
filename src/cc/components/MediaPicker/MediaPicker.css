@@ -18,7 +18,7 @@
   height: var(--ai-spacing-10);
   overflow: hidden;
   border: 1px solid var(--ai-border-secondary);
-  border-radius: var(--ai-radius-sm);
+  border-radius: var(--ai-radius-md);   /* designer amend 2026-09-29 (was radius-sm) — matches the inputs */
   background-color: var(--ai-surface-minimal);
   color: var(--ai-icon-secondary);
 }
