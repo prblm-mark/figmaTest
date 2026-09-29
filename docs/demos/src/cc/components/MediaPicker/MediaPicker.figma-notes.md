@@ -39,3 +39,7 @@ Figma image icon is bound to `--ai-border-primary`; code uses `--ai-icon-seconda
   right semantic tokens in Figma first and this code follows the kit, not the draft.
 - Markup comes from `src/cc/templates/RecordScreen/record_markup.py` — the demo and the templates are
   generated from the same function, so they cannot drift.
+
+## Edit button: icon only (designer, 2026-09-29)
+
+The Edit action is now `btn btn--secondary btn--sm btn--icon` with only the pencil and `aria-label="Edit <field>"`. The text label is dropped. It opens the Selector Type=Media (`data-selector-open="modal-media"`) on the record screens. **Figma still shows "Edit" with text, so flag it for Figma.**

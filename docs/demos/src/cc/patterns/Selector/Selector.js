@@ -359,7 +359,8 @@
     var input = valueInput(active.trigger);
     var changed = order(overlay).join() !== active.snapshot.join();
     if (input && cur && changed) {
-      input.value = 'Position ' + (all.indexOf(cur) + 1) + ' of ' + all.length;
+      // Just the number, matching the field's placeholder (the default position) — designer 2026-09-29.
+      input.value = String(all.indexOf(cur) + 1);
       input.dispatchEvent(new Event('change', { bubbles: true }));
     }
     close(false);

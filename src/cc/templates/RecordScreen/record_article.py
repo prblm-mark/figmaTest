@@ -18,6 +18,9 @@ Figma (record_markup.py, FieldRow.figma-notes.md).
 import record_markup as m
 
 CODE = "626312"
+# Its place in Insights' default (by title) order — the Sort Order field's placeholder.
+from record_sort_data import INSIGHTS as _INS
+SORT_POSITION = str([c for c, _ in _INS].index(int(CODE)) + 1)
 TITLE = "How charities can use Affino AI plugins"
 SCREEN_NAME = "how-charities-can-use-affino-ai-plugins"
 STYLE = "Advanced Article - Insights"
@@ -75,10 +78,11 @@ SECTIONS = [
     ("Navigation", [
         ("Zone", "tags", ["Affino"], "select", "Affino"),
         ("Section", "tags", ["Insight"], "lookup", "Insight", {"modal": "modal-section"}),
-        ("Sort Order", "text", "-", "lookup", "", {"modal": "modal-sort", "placeholder": "Default (by title)"}),
+        ("Sort Order", "text", "-", "lookup", "", {"modal": "modal-sort", "placeholder": SORT_POSITION}),
         ("Multi Display", "tags", ["Coronavirus Hub", "AI", "Insight & Blogs"], "tagbox",
          ["Coronavirus Hub", "AI", "Insight & Blogs"], "modal-multi-display"),
-        ("Priority", "text", "-", "select", ""),
+        # Live: blank + 1–30, nothing chosen on 626312 (read 2026-09-29).
+        ("Priority", "text", "-", "select", "", {"options": ["Select..."] + [str(i) for i in range(1, 31)]}),
     ]),
     ("Introduction", [
         ("Title", "text", TITLE, "input", TITLE, {"required": True}),
@@ -246,7 +250,8 @@ def _edit(f):
         return m.edit_row(label, "checkbox", value)
     opts = extra if isinstance(extra, dict) else {}
     return m.edit_row(label, kind, value, required=opts.get("required", False), help_text=opts.get("help"),
-                      modal=opts.get("modal"), placeholder=opts.get("placeholder", "None selected"))
+                      modal=opts.get("modal"), placeholder=opts.get("placeholder", "None selected"),
+                      options=opts.get("options"))
 
 
 def view_sections():
