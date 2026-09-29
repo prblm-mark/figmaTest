@@ -369,6 +369,17 @@
   flex-shrink: 0;
 }
 
+/* Move buttons — `btn btn--tertiary btn--sm` plus the subtle `--ai-border-secondary` line the
+ * listing rows' account chip and the Steps author chip carry (Case B contextual override,
+ * designer 2026-09-29): a borderless button disappears into the tinted current row and the
+ * hover tint. Restated for hover and focus because `.btn--tertiary:hover` sets the transparent
+ * hover border at (0,2,0). */
+.selector__sort-actions .btn--tertiary,
+.selector__sort-actions .btn--tertiary:hover,
+.selector__sort-actions .btn--tertiary:focus-visible {
+  border-color: var(--ai-border-secondary);
+}
+
 /* The first row cannot go up and the last cannot go down: disabled, not hidden, so the
  * columns of buttons stay aligned. */
 .selector__sort-actions .btn:disabled { visibility: hidden; }
