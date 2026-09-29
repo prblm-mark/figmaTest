@@ -57,6 +57,16 @@
 
 .selector__empty[hidden] { display: none; }
 
+/* Media's no-results state carries the one PRIMARY Upload (designer, 2026-09-29): when nothing
+ * matches, uploading is the way forward. The toolbar's Upload stays secondary, because the
+ * modal's primary is Use image. Stacked: icon, message, action. */
+.selector__empty--action {
+  flex-direction: column;
+  text-align: center;
+}
+
+.selector__empty-text { margin: 0; }
+
 .selector__empty svg,
 .selector__hint svg {
   inline-size: var(--ai-icon-size-sm);
@@ -302,6 +312,8 @@
 }
 
 .selector__mine { flex: 0 0 auto; }
+
+.selector__more[hidden] { display: none; }
 
 .selector__more {
   display: flex;
