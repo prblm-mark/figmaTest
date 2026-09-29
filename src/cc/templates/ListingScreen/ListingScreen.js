@@ -1689,11 +1689,67 @@
     return natural;
   }
 
+  /* ── "When columns don't fit" (Settings) ──────────────────
+     Luismi's team's design (Hub TASK-492924), code-first 2026-09-29. `fit` is everything below
+     this: the adaptive fill + the kebab detail. `scroll` keeps every switched-on column and lets
+     the body scroll sideways.
+
+     In force only at a ≥1024 viewport and in the listing layout — below that, and in grid, the
+     expanding-row fit ALWAYS applies whatever is saved. This one reads the VIEWPORT on purpose:
+     it is the same device question the Settings button's own @media answers (laptop floor), not
+     a layout-width question, and it is re-read on every fit, which the table's ResizeObserver
+     drives — so no matchMedia (CLAUDE.md §4a). */
+  var SCROLL_MIN_VIEWPORT = 1024;   // keep in step with the @media (max-width: 1023px) rules
+
+  function scrollActive(config) {
+    return config.overflow === 'scroll' && config.layout !== 'grid' &&
+      window.innerWidth >= SCROLL_MIN_VIEWPORT;
+  }
+
+  /* Scroll mode: nothing is dropped. Every column switched on in Edit Columns gets its natural
+     width (snug ones keep their cap), the table is as wide as their sum, and the body scrolls.
+     The kebab is hidden by CSS in this mode, so it reads as display:none and costs nothing. */
+  function scrollColumns(root, config) {
+    var parts = listingTable(root);
+    var heads = root.querySelectorAll('[data-listing-head] th');
+    var natural = measureColumns(root, config);
+    root.querySelectorAll('[data-listing-head] th, [data-listing-body] tr.datatables__row > *')
+      .forEach(function (el) { el.classList.remove('datatables__col--nofit'); });
+
+    var total = 0;
+    config.columns.forEach(function (col, i) {
+      var th = heads[i];
+      if (!th) return;
+      if (config.hiddenColumns.indexOf(col.key) !== -1 || window.getComputedStyle(th).display === 'none') {
+        th.style.width = '';
+        return;
+      }
+      var w = Math.ceil(natural[i]);
+      if (col.snug) w = Math.min(w, SNUG_MAX);
+      th.style.width = w + 'px';
+      total += w;
+    });
+
+    var view = parts.body.clientWidth;
+    /* Never narrower than the card: under fixed layout a table that is wider than its columns
+       shares the difference out, so a short column set still fills the body edge to edge. */
+    parts.table.style.width = Math.max(total, view) + 'px';
+    /* The empty state pins to the VISIBLE area, not the scrolled width. */
+    root.style.setProperty('--cc-listing-view-w', view + 'px');
+    syncRowDetail(root, config);
+  }
+
   function fitColumns(root, config) {
     var parts = listingTable(root);
     var body = parts && parts.body;
     var heads = root.querySelectorAll('[data-listing-head] th');
     if (!body || !heads.length) return;
+
+    var scroll = scrollActive(config);
+    root.setAttribute('data-overflow', scroll ? 'scroll' : 'fit');
+    if (scroll) { scrollColumns(root, config); return; }
+    /* Back from scroll: the table's own width is the container again. */
+    parts.table.style.width = '';
 
     var natural = measureColumns(root, config);
     var available = body.clientWidth;
@@ -2162,6 +2218,8 @@
          is noise, and would keep the list growing for ever. */
       config.hiddenColumns = (stored.columns.hidden || []).filter(function (k) { return byKey[k]; });
     }
+    /* Saved per user with the column layout (`columns.scroll`), as the live screens store it. */
+    config.overflow = (stored.columns && stored.columns.scroll) ? 'scroll' : 'fit';
 
     /* Header actions, per screen.
      *
@@ -2227,6 +2285,10 @@
       /* Edit Columns is meaningless in a grid — there are no columns. */
       var cols = root.querySelector('.cc-listing__columns');
       if (cols) cols.hidden = config.layout !== 'listing';
+      /* Settings too: a grid has no columns to fit, and the fit always applies there. */
+      var settings = root.querySelector('.cc-listing__settings');
+      if (settings) settings.hidden = config.layout !== 'listing';
+      if (config.layout !== 'listing') root.setAttribute('data-overflow', 'fit');
     }
 
     if (layouts.length > 1) {
@@ -2246,6 +2308,27 @@
       }
     }
     applyLayout();
+
+    /* Settings → "When columns don't fit". */
+    var overflowGroup = root.querySelector('[data-listing-overflow]');
+    function syncOverflow() {
+      if (!overflowGroup) return;
+      overflowGroup.querySelectorAll('input[name="cc-listing-overflow"]').forEach(function (input) {
+        input.checked = input.value === (config.overflow || 'fit');
+      });
+    }
+    syncOverflow();
+    if (overflowGroup) {
+      overflowGroup.addEventListener('change', function (e) {
+        var input = e.target.closest('input[name="cc-listing-overflow"]');
+        if (!input || !input.checked) return;
+        config.overflow = input.value === 'scroll' ? 'scroll' : 'fit';
+        fitColumns(root, config);
+        placeRoomHeading(root, config);
+        announceColumns();
+        persistColumns();
+      });
+    }
 
     /* Selection — one model, both views. A checkbox exists in the table row
        and on the grid card; either can tick a row and both must agree, which
@@ -2487,7 +2570,8 @@
     function persistColumns() {
       stored.columns = {
         order: config.columns.map(function (c) { return c.key; }),
-        hidden: config.hiddenColumns.slice()
+        hidden: config.hiddenColumns.slice(),
+        scroll: config.overflow === 'scroll'
       };
       persist();
     }
@@ -2498,7 +2582,9 @@
        Save view CTA. */
     function columnState() {
       return config.columns.map(function (c) { return c.key; }).join(',') +
-        '|' + config.hiddenColumns.slice().sort().join(',');
+        '|' + config.hiddenColumns.slice().sort().join(',') +
+        /* The overflow mode is part of the table layout, so changing it raises Save view too. */
+        '|' + (config.overflow || 'fit');
     }
 
     /* Tell the bar the table layout changed, so the CTA appears. The bar
@@ -2517,7 +2603,8 @@
         /* Copied, not referenced: reordering rewrites each column's tier in
            place, so a stored reference would follow the live table. */
         columns: config.columns.map(function (c) { return Object.assign({}, c); }),
-        hiddenColumns: config.hiddenColumns.slice()
+        hiddenColumns: config.hiddenColumns.slice(),
+        overflow: config.overflow || 'fit'
       };
     }
 
@@ -2533,6 +2620,9 @@
         config.columns = snap.columns.map(function (c) { return Object.assign({}, c); });
         config.hiddenColumns = (snap.hiddenColumns || []).slice();
       }
+      /* Opening a view restores its mode; a view saved before the setting existed is `fit`. */
+      config.overflow = snap.overflow || 'fit';
+      syncOverflow();
       renderChips(config);
       root.querySelector('[data-listing-head]').innerHTML = renderHead(config.columns, config.sort);
       renderResults(root, config);

@@ -937,6 +937,13 @@
      "needs": "GET/PUT /control/<screen>/columns { order:[key], hidden:[key] } per user, or carried inside the saved-view payload. Desktop (>=1024px viewport) only."
     },
     {
+     "id": "listing-overflow-mode",
+     "category": "needs-backend",
+     "element": "Settings dropdown → \"When columns don't fit\" (data-backend-todo=\"listing-overflow-mode\") on all four listing screens",
+     "current": "Expanding row (default) / Horizontal scroll work; the choice is saved with the column layout and inside each saved view, in local storage only (demo). Horizontal scroll hides the kebab column (designer, 2026-09-29).",
+     "needs": "Persist columns.scroll (boolean) in the per-user listing layout, alongside order/hidden, and in each saved view. Only honoured at a >=1024px viewport in listing layout; grid and smaller always use Expanding row. Design from Luismi's team, Hub TASK-492924."
+    },
+    {
      "id": "listing-checkbox-fields",
      "category": "needs-backend",
      "element": "Checkbox filters on Orders (8), Articles (2) and Media Items (4)",

@@ -24,6 +24,7 @@
   <link rel="stylesheet" href="../../../components/ButtonGroup/ButtonGroup.css">
   <link rel="stylesheet" href="../../../components/Breadcrumb/Breadcrumb.css">
   <link rel="stylesheet" href="../../../components/Dropdown/Dropdown.css">
+  <link rel="stylesheet" href="../../../components/Radio/Radio.css">
   <link rel="stylesheet" href="../../../components/DropdownItem/DropdownItem.css">
   <link rel="stylesheet" href="../../../components/Portraits/Portraits.css">
   <link rel="stylesheet" href="../../../components/Avatar/Avatar.css">
@@ -615,6 +616,24 @@
                 <div class="dropdown__panel dropdown__panel--columns" role="menu" aria-label="Edit columns">
                   <p class="dropdown__label">Columns</p>
                   <div class="cc-listing__columns-list" data-listing-columns></div>
+                </div>
+              </div>
+              <!-- Settings — "When columns don't fit" (Luismi's team, Hub TASK-492924; built code-first
+                   2026-09-29). Expanding row = the column fit + kebab detail (default); Horizontal
+                   scroll = every switched-on column stays and the body scrolls sideways.
+                   TODO(backend:Listing) listing-overflow-mode: saved with the column layout
+                     → columns.scroll in the listing layout + each saved view. -->
+              <div class="dropdown cc-listing__settings" data-dropdown="stay-open" data-backend-todo="listing-overflow-mode">
+                <button type="button" class="btn btn--secondary dropdown__trigger"
+                        aria-haspopup="menu" aria-expanded="false">
+                  <i data-lucide="settings" aria-hidden="true"></i><span>Settings</span>
+                </button>
+                <div class="dropdown__panel dropdown__panel--settings" role="menu" aria-label="Table settings">
+                  <p class="dropdown__label" id="cc-listing-overflow-label">When columns don't fit</p>
+                  <div class="cc-listing__settings-options" role="radiogroup" aria-labelledby="cc-listing-overflow-label" data-listing-overflow>
+                    <label class="radio"><input type="radio" class="radio__input" name="cc-listing-overflow" value="fit" checked><span class="radio__indicator"></span><span class="radio__label"><span class="radio__label-text">Expanding row</span></span></label>
+                    <label class="radio"><input type="radio" class="radio__input" name="cc-listing-overflow" value="scroll"><span class="radio__indicator"></span><span class="radio__label"><span class="radio__label-text">Horizontal scroll</span></span></label>
+                  </div>
                 </div>
               </div>
             </div>
