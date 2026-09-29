@@ -22,7 +22,7 @@ inserts the picked image at the cursor. Live's image plugin uses TinyMCE's URL d
 
 - **Chrome** (RichTextEditor.css), scoped under `.rich-text` to out-rank the oxide skin: the frame
   is the Textarea's `--ai-border-secondary` / `--ai-radius-md`, with a brand border on focus. The
-  toolbar is `--ai-surface-primary`, a hovered button `--ai-surface-minimal`, an active one
+  toolbar is `--ai-surface-primary`, toolbar controls (buttons, the Styles dropdown) have the input radius `--ai-radius-md`, a hovered button `--ai-surface-minimal`, an active one
   `--ai-surface-brand-soft` / `--ai-text-brand`. The statusbar uses `--ai-text-secondary` at
   `--ai-font-fixed-xxs`. Menus and dialogs keep oxide.
 - **Content** (RichTextEditor.content.css, inside the iframe): the token files are loaded into the
