@@ -49,3 +49,7 @@ Draft active underline was `Lagoon/10` (no token) → `--ai-border-brand` (desig
 
 ## Show sidebar switch (2026-09-29, code-first — flag for Figma)
 On View / Edit only, in `.record-tabs__actions` (far right): DS Toggle xxs + "Show sidebar" label (`.record-tabs__sidebar-toggle`, dressed as StepsTable's "Show details"). `record_tabs(sidebar=True|False)` sets the default — View on, Edit off. Hidden at `@container cs-page (max-width: 1023px)`. Not in the RecordTabs Figma set.
+
+## Active tab weight (designer, 2026-09-29)
+
+`.record-tab--active` is **SemiBold** (`--ai-font-semibold`); the other tabs stay Medium. Flag for Figma.

@@ -56,6 +56,7 @@
 .record-tab--active {
   border-bottom-color: var(--ai-border-brand);
   color: var(--ai-text-brand);
+  font-weight: var(--ai-font-semibold);   /* designer amend 2026-09-29 (was medium, as the rest) */
 }
 
 .record-tab:focus-visible {
