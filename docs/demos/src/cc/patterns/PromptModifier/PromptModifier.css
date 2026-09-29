@@ -1,0 +1,149 @@
+/* PromptModifier — a record section's AI prompt (Social, Article Questions, Summary).
+ * Tier: Pattern · CODE-FIRST (designer, 2026-09-29) — no Figma node; flagged in the notes.
+ * Composes: Button, Textarea.
+ *
+ * Tinted so it reads as TOOLING that writes the fields below it, not as one of the article's own
+ * fields. One line at rest (title, what it fills, a one-line prompt preview, Edit prompt, Generate);
+ * Edit prompt opens the full prompt.
+ */
+
+.prompt-modifier {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-4);
+  padding: var(--ai-spacing-4);
+  background-color: var(--ai-surface-brand-soft-extra);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+  /* Self-container: its width tracks the section body (fluid), so its descendants may query it. */
+  container: prompt-modifier / inline-size;
+}
+
+.prompt-modifier__head {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  min-inline-size: 0;
+}
+
+.prompt-modifier__icon {
+  display: flex;
+  flex-shrink: 0;
+  color: var(--ai-icon-brand);
+}
+
+.prompt-modifier__icon svg {
+  inline-size: var(--ai-icon-size-md);
+  block-size: var(--ai-icon-size-md);
+}
+
+.prompt-modifier__text {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-1);
+}
+
+.prompt-modifier__title {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--ai-spacing-3);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-primary);
+}
+
+.prompt-modifier__fills {
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-regular);
+  color: var(--ai-text-secondary);
+}
+
+/* One line of the prompt, so the section says what it will ask for without opening it. */
+.prompt-modifier__preview {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.prompt-modifier--open .prompt-modifier__preview { display: none; }
+
+.prompt-modifier__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  flex-shrink: 0;
+}
+
+.prompt-modifier [data-prompt-toggle] svg {
+  transition: transform var(--ai-transition-default);
+}
+
+.prompt-modifier--open [data-prompt-toggle] svg { transform: rotate(180deg); }
+
+/* Busy: the sparkles icon becomes a spinner while the (mock) generation runs. */
+.prompt-modifier--busy [data-prompt-generate] svg {
+  animation: prompt-modifier-spin 0.9s linear infinite;
+}
+
+@keyframes prompt-modifier-spin { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .prompt-modifier--busy [data-prompt-generate] svg { animation: none; }
+}
+
+.prompt-modifier__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+}
+
+.prompt-modifier__body[hidden] { display: none; }
+
+.prompt-modifier__body .textarea__control { background-color: var(--ai-surface-primary); }
+
+.prompt-modifier__body-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ai-spacing-3);
+  flex-wrap: wrap;
+}
+
+.prompt-modifier__hint {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  color: var(--ai-text-secondary);
+}
+
+.prompt-modifier__status {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  color: var(--ai-text-secondary);
+}
+
+.prompt-modifier__status[hidden] { display: none; }
+
+/* A field Generate just wrote, flashed so the eye finds what changed (cleared by the JS). */
+.prompt-modifier-filled { box-shadow: 0 0 0 2px var(--ai-surface-brand-soft); }
+
+/* Narrow: the actions drop under the text, full row, so the title and preview keep their room. */
+@container prompt-modifier (max-width: 479px) {
+  .prompt-modifier__head { flex-wrap: wrap; }
+  .prompt-modifier__text { flex-basis: calc(100% - var(--ai-icon-size-md) - var(--ai-spacing-3)); }
+  .prompt-modifier__actions { inline-size: 100%; justify-content: flex-end; }
+}

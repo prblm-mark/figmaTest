@@ -280,7 +280,7 @@
     var picker = active.trigger.closest('.media-picker');
     if (tile && picker) {
       if (window.mediaPicker) {
-        window.mediaPicker.fill(picker, tile.getAttribute('data-src')); // also flips --empty → filled
+        window.mediaPicker.fill(picker, tile.getAttribute('data-src'), tile.getAttribute('data-icon')); // also flips --empty → filled
       } else {
         var thumb = $(picker, '.media-picker__thumb');
         var img = document.createElement('img');
@@ -451,7 +451,7 @@
      the chosen image. */
   window.selector = {
     openMedia: function (returnFocus, onPick) {
-      var ov = document.querySelector('[data-selector="media"]');
+      var ov = document.getElementById('modal-media') || document.querySelector('[data-selector="media"]');
       if (!ov) return false;
       open(returnFocus, ov);
       active.onPick = onPick;

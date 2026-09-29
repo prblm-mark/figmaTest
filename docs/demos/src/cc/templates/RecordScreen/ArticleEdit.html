@@ -90,6 +90,7 @@
   <link rel="stylesheet" href="../../components/MediaMeta/MediaMeta.css">
   <link rel="stylesheet" href="../../components/MediaPicker/MediaPicker.css">
   <link rel="stylesheet" href="../../components/RichTextEditor/RichTextEditor.css">
+  <link rel="stylesheet" href="../../patterns/PromptModifier/PromptModifier.css">
   <link rel="stylesheet" href="../../components/ViewerItem/ViewerItem.css">
   <link rel="stylesheet" href="../../components/AdvisoryItem/AdvisoryItem.css">
   <link rel="stylesheet" href="../../patterns/RecordTabs/RecordTabs.css">
@@ -575,7 +576,7 @@
             <span class="field-row__label" id="f-thumbnail-10-label">Thumbnail</span>
             <div class="field-row__value"><div class="field-row__image">
               <div class="media-picker" data-media-picker>
-              <button type="button" class="media-picker__thumb" aria-label="Choose Thumbnail" aria-haspopup="dialog" data-selector-open="modal-media"><img src="../../../../img/record/article-thumb.jpg" alt=""></button>
+              <button type="button" class="media-picker__thumb" aria-label="Choose Thumbnail" aria-haspopup="dialog" data-selector-open="modal-media" data-placeholder-icon="image"><img src="../../../../img/record/article-thumb.jpg" alt=""></button>
               <div class="media-picker__actions">
                 <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Thumbnail" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Thumbnail" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
@@ -593,7 +594,7 @@
             <span class="field-row__label" id="f-alternativethumbnail-11-label">Alternative Thumbnail</span>
             <div class="field-row__value"><div class="field-row__image">
               <div class="media-picker media-picker--empty" data-media-picker>
-              <button type="button" class="media-picker__thumb" aria-label="Choose Alternative Thumbnail" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="image" aria-hidden="true"></i></button>
+              <button type="button" class="media-picker__thumb" aria-label="Choose Alternative Thumbnail" aria-haspopup="dialog" data-selector-open="modal-media" data-placeholder-icon="image"><i data-lucide="image" aria-hidden="true"></i></button>
               <div class="media-picker__actions">
                 <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Alternative Thumbnail" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Alternative Thumbnail" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
@@ -659,7 +660,7 @@
             <span class="field-row__label" id="f-mainimage-18-label">Main Image</span>
             <div class="field-row__value"><div class="field-row__image">
                   <div class="media-picker" data-media-picker>
-              <button type="button" class="media-picker__thumb" aria-label="Choose Main Image" aria-haspopup="dialog" data-selector-open="modal-media"><img src="../../../../img/record/article-thumb.jpg" alt=""></button>
+              <button type="button" class="media-picker__thumb" aria-label="Choose Main Image" aria-haspopup="dialog" data-selector-open="modal-media" data-placeholder-icon="image"><img src="../../../../img/record/article-thumb.jpg" alt=""></button>
               <div class="media-picker__actions">
                 <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Main Image" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Main Image" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
@@ -686,7 +687,7 @@
             <span class="field-row__label" id="f-labelimage-19-label">Label Image</span>
             <div class="field-row__value"><div class="field-row__image">
                   <div class="media-picker media-picker--empty" data-media-picker>
-              <button type="button" class="media-picker__thumb" aria-label="Choose Label Image" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="image" aria-hidden="true"></i></button>
+              <button type="button" class="media-picker__thumb" aria-label="Choose Label Image" aria-haspopup="dialog" data-selector-open="modal-media" data-placeholder-icon="image"><i data-lucide="image" aria-hidden="true"></i></button>
               <div class="media-picker__actions">
                 <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Label Image" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Label Image" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
@@ -726,7 +727,7 @@
             <span class="field-row__label" id="f-introimage-22-label">Intro Image</span>
             <div class="field-row__value"><div class="field-row__image">
                   <div class="media-picker media-picker--empty" data-media-picker>
-              <button type="button" class="media-picker__thumb" aria-label="Choose Intro Image" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="image" aria-hidden="true"></i></button>
+              <button type="button" class="media-picker__thumb" aria-label="Choose Intro Image" aria-haspopup="dialog" data-selector-open="modal-media" data-placeholder-icon="image"><i data-lucide="image" aria-hidden="true"></i></button>
               <div class="media-picker__actions">
                 <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Intro Image" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Intro Image" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
@@ -753,7 +754,7 @@
             <span class="field-row__label" id="f-imagetop-23-label">Image Top</span>
             <div class="field-row__value"><div class="field-row__image">
                   <div class="media-picker media-picker--empty" data-media-picker>
-              <button type="button" class="media-picker__thumb" aria-label="Choose Image Top" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="image" aria-hidden="true"></i></button>
+              <button type="button" class="media-picker__thumb" aria-label="Choose Image Top" aria-haspopup="dialog" data-selector-open="modal-media" data-placeholder-icon="image"><i data-lucide="image" aria-hidden="true"></i></button>
               <div class="media-picker__actions">
                 <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image Top" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Image Top" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
@@ -785,7 +786,7 @@
             <span class="field-row__label" id="f-image1-25-label">Image 1</span>
             <div class="field-row__value"><div class="field-row__image">
                   <div class="media-picker media-picker--empty" data-media-picker>
-              <button type="button" class="media-picker__thumb" aria-label="Choose Image 1" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="image" aria-hidden="true"></i></button>
+              <button type="button" class="media-picker__thumb" aria-label="Choose Image 1" aria-haspopup="dialog" data-selector-open="modal-media" data-placeholder-icon="image"><i data-lucide="image" aria-hidden="true"></i></button>
               <div class="media-picker__actions">
                 <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image 1" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Image 1" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
@@ -812,7 +813,7 @@
             <span class="field-row__label" id="f-image2-26-label">Image 2</span>
             <div class="field-row__value"><div class="field-row__image">
                   <div class="media-picker media-picker--empty" data-media-picker>
-              <button type="button" class="media-picker__thumb" aria-label="Choose Image 2" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="image" aria-hidden="true"></i></button>
+              <button type="button" class="media-picker__thumb" aria-label="Choose Image 2" aria-haspopup="dialog" data-selector-open="modal-media" data-placeholder-icon="image"><i data-lucide="image" aria-hidden="true"></i></button>
               <div class="media-picker__actions">
                 <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image 2" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Image 2" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
@@ -844,7 +845,7 @@
             <span class="field-row__label" id="f-image3-28-label">Image 3</span>
             <div class="field-row__value"><div class="field-row__image">
                   <div class="media-picker media-picker--empty" data-media-picker>
-              <button type="button" class="media-picker__thumb" aria-label="Choose Image 3" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="image" aria-hidden="true"></i></button>
+              <button type="button" class="media-picker__thumb" aria-label="Choose Image 3" aria-haspopup="dialog" data-selector-open="modal-media" data-placeholder-icon="image"><i data-lucide="image" aria-hidden="true"></i></button>
               <div class="media-picker__actions">
                 <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image 3" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Image 3" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
@@ -871,7 +872,7 @@
             <span class="field-row__label" id="f-image4-29-label">Image 4</span>
             <div class="field-row__value"><div class="field-row__image">
                   <div class="media-picker media-picker--empty" data-media-picker>
-              <button type="button" class="media-picker__thumb" aria-label="Choose Image 4" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="image" aria-hidden="true"></i></button>
+              <button type="button" class="media-picker__thumb" aria-label="Choose Image 4" aria-haspopup="dialog" data-selector-open="modal-media" data-placeholder-icon="image"><i data-lucide="image" aria-hidden="true"></i></button>
               <div class="media-picker__actions">
                 <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image 4" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Image 4" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
@@ -903,7 +904,7 @@
             <span class="field-row__label" id="f-image5-31-label">Image 5</span>
             <div class="field-row__value"><div class="field-row__image">
                   <div class="media-picker media-picker--empty" data-media-picker>
-              <button type="button" class="media-picker__thumb" aria-label="Choose Image 5" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="image" aria-hidden="true"></i></button>
+              <button type="button" class="media-picker__thumb" aria-label="Choose Image 5" aria-haspopup="dialog" data-selector-open="modal-media" data-placeholder-icon="image"><i data-lucide="image" aria-hidden="true"></i></button>
               <div class="media-picker__actions">
                 <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image 5" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Image 5" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
@@ -930,7 +931,7 @@
             <span class="field-row__label" id="f-image6-32-label">Image 6</span>
             <div class="field-row__value"><div class="field-row__image">
                   <div class="media-picker media-picker--empty" data-media-picker>
-              <button type="button" class="media-picker__thumb" aria-label="Choose Image 6" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="image" aria-hidden="true"></i></button>
+              <button type="button" class="media-picker__thumb" aria-label="Choose Image 6" aria-haspopup="dialog" data-selector-open="modal-media" data-placeholder-icon="image"><i data-lucide="image" aria-hidden="true"></i></button>
               <div class="media-picker__actions">
                 <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image 6" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Image 6" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
@@ -962,7 +963,7 @@
             <span class="field-row__label" id="f-baseimage-34-label">Base Image</span>
             <div class="field-row__value"><div class="field-row__image">
                   <div class="media-picker media-picker--empty" data-media-picker>
-              <button type="button" class="media-picker__thumb" aria-label="Choose Base Image" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="image" aria-hidden="true"></i></button>
+              <button type="button" class="media-picker__thumb" aria-label="Choose Base Image" aria-haspopup="dialog" data-selector-open="modal-media" data-placeholder-icon="image"><i data-lucide="image" aria-hidden="true"></i></button>
               <div class="media-picker__actions">
                 <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Base Image" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Base Image" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
@@ -994,7 +995,7 @@
             <span class="field-row__label" id="f-backgroundimage-36-label">Background Image</span>
             <div class="field-row__value"><div class="field-row__image">
                   <div class="media-picker media-picker--empty" data-media-picker>
-              <button type="button" class="media-picker__thumb" aria-label="Choose Background Image" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="image" aria-hidden="true"></i></button>
+              <button type="button" class="media-picker__thumb" aria-label="Choose Background Image" aria-haspopup="dialog" data-selector-open="modal-media" data-placeholder-icon="image"><i data-lucide="image" aria-hidden="true"></i></button>
               <div class="media-picker__actions">
                 <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Background Image" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Background Image" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
@@ -1156,10 +1157,12 @@
             </label></div>
           </div><div class="field-row field-row--edit">
             <span class="field-row__label" id="f-multimedia-54-label">Multimedia</span>
-            <div class="field-row__value"><div class="media-picker">
-              <span class="media-picker__thumb"><i data-lucide="file-audio" aria-hidden="true"></i></span>
+            <div class="field-row__value"><div class="media-picker media-picker--empty" data-media-picker>
+              <button type="button" class="media-picker__thumb" aria-label="Choose Multimedia" aria-haspopup="dialog" data-selector-open="modal-multimedia" data-placeholder-icon="film"><i data-lucide="film" aria-hidden="true"></i></button>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Multimedia" data-backend-todo="record-media-file"><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Multimedia" aria-haspopup="dialog" data-selector-open="modal-multimedia" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Multimedia" aria-haspopup="dialog" data-selector-open="modal-multimedia" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Multimedia" data-media-remove><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
             </div></div>
           </div><div class="field-row field-row--edit">
@@ -1175,7 +1178,30 @@
           </div></div>
         </section><section class="record-section" aria-labelledby="sec-social">
           <div class="record-section__header"><h2 class="record-section__title" id="sec-social">Social</h2></div>
-          <div class="record-section__body"><div class="field-row field-row--edit">
+          <div class="record-section__body"><div class="prompt-modifier" data-prompt-modifier data-outputs="[&quot;Give supporters instant answers without rebuilding your charity website.&quot;, &quot;Six AI plugins that lighten the load on small charity teams.&quot;, &quot;See how charities lift engagement with Affino&#x27;s AI plugins.&quot;]">
+            <div class="prompt-modifier__head">
+              <span class="prompt-modifier__icon"><i data-lucide="sparkles" aria-hidden="true"></i></span>
+              <div class="prompt-modifier__text">
+                <p class="prompt-modifier__title">Shareline prompt<span class="prompt-modifier__fills">Fills Shareline 1–3</span></p>
+                <p class="prompt-modifier__preview" data-prompt-preview>Generate 3 promotional sharelines for the article below. Each shareline must be 11 words or fewer, compelling, and encourage readers to click through to the original article.</p>
+              </div>
+              <div class="prompt-modifier__actions">
+                <button type="button" class="btn btn--tertiary btn--sm" aria-expanded="false" aria-controls="prompt-social-body" data-prompt-toggle><i data-lucide="chevron-down" aria-hidden="true"></i><span>Edit prompt</span></button>
+                <button type="button" class="btn btn--secondary btn--sm" data-prompt-generate data-backend-todo="record-prompt-generate"><i data-lucide="sparkles" aria-hidden="true"></i><span>Generate</span></button>
+              </div>
+            </div>
+            <div class="prompt-modifier__body" id="prompt-social-body" hidden>
+              <div class="textarea">
+                <label class="input__label" for="prompt-social-prompt">Prompt modifier</label>
+                <textarea class="textarea__control" id="prompt-social-prompt" rows="4" data-prompt-text>Generate 3 promotional sharelines for the article below. Each shareline must be 11 words or fewer, compelling, and encourage readers to click through to the original article.</textarea>
+              </div>
+              <div class="prompt-modifier__body-foot">
+                <span class="prompt-modifier__hint">Sent with the article's content each time you generate.</span>
+                <button type="button" class="btn btn--tertiary btn--sm" data-prompt-copy><i data-lucide="copy" aria-hidden="true"></i><span>Copy prompt</span></button>
+              </div>
+            </div>
+            <p class="prompt-modifier__status" data-prompt-status aria-live="polite" hidden><span data-prompt-status-text></span><button type="button" class="btn btn--tertiary btn--sm" data-prompt-undo><i data-lucide="undo-2" aria-hidden="true"></i><span>Undo</span></button></p>
+          </div><div class="field-row field-row--edit">
             <label class="field-row__label" for="f-shareline1-57">Shareline 1</label>
             <div class="field-row__value"><div class="input">
               <div class="input__wrap"><input id="f-shareline1-57" type="text" class="input__control" value=""></div>
@@ -1196,7 +1222,30 @@
           </div></div>
         </section><section class="record-section" aria-labelledby="sec-articlequestions">
           <div class="record-section__header"><h2 class="record-section__title" id="sec-articlequestions">Article Questions</h2></div>
-          <div class="record-section__body"><div class="field-row field-row--edit">
+          <div class="record-section__body"><div class="prompt-modifier" data-prompt-modifier data-outputs="[&quot;How do Affino AI plugins work with an existing charity website?&quot;, &quot;Which plugin answers supporter questions on a charity&#x27;s site?&quot;, &quot;How does AI-enhanced search improve finding charity content?&quot;, &quot;What do article summaries give readers of long reports?&quot;, &quot;How is charity data kept private when plugins run?&quot;]">
+            <div class="prompt-modifier__head">
+              <span class="prompt-modifier__icon"><i data-lucide="sparkles" aria-hidden="true"></i></span>
+              <div class="prompt-modifier__text">
+                <p class="prompt-modifier__title">Question prompt<span class="prompt-modifier__fills">Fills Question 1–5</span></p>
+                <p class="prompt-modifier__preview" data-prompt-preview>Suggest 5 positive questions based on the key subjects of this article, keep each question no more than twelve words, no introduction. Do not create questions like &#x27;what do you think?&#x27;, instead it is more a case of &#x27;how would this work&#x27;. Make sure that you ask a variety of different questions so that no two are similar. The questions should be phrased in a way that an expert system could answer if it had the content available. Check and update the questions to make sure they meet the criteria.</p>
+              </div>
+              <div class="prompt-modifier__actions">
+                <button type="button" class="btn btn--tertiary btn--sm" aria-expanded="false" aria-controls="prompt-questions-body" data-prompt-toggle><i data-lucide="chevron-down" aria-hidden="true"></i><span>Edit prompt</span></button>
+                <button type="button" class="btn btn--secondary btn--sm" data-prompt-generate data-backend-todo="record-prompt-generate"><i data-lucide="sparkles" aria-hidden="true"></i><span>Generate</span></button>
+              </div>
+            </div>
+            <div class="prompt-modifier__body" id="prompt-questions-body" hidden>
+              <div class="textarea">
+                <label class="input__label" for="prompt-questions-prompt">Prompt modifier</label>
+                <textarea class="textarea__control" id="prompt-questions-prompt" rows="4" data-prompt-text>Suggest 5 positive questions based on the key subjects of this article, keep each question no more than twelve words, no introduction. Do not create questions like &#x27;what do you think?&#x27;, instead it is more a case of &#x27;how would this work&#x27;. Make sure that you ask a variety of different questions so that no two are similar. The questions should be phrased in a way that an expert system could answer if it had the content available. Check and update the questions to make sure they meet the criteria.</textarea>
+              </div>
+              <div class="prompt-modifier__body-foot">
+                <span class="prompt-modifier__hint">Sent with the article's content each time you generate.</span>
+                <button type="button" class="btn btn--tertiary btn--sm" data-prompt-copy><i data-lucide="copy" aria-hidden="true"></i><span>Copy prompt</span></button>
+              </div>
+            </div>
+            <p class="prompt-modifier__status" data-prompt-status aria-live="polite" hidden><span data-prompt-status-text></span><button type="button" class="btn btn--tertiary btn--sm" data-prompt-undo><i data-lucide="undo-2" aria-hidden="true"></i><span>Undo</span></button></p>
+          </div><div class="field-row field-row--edit">
             <label class="field-row__label" for="f-question1-60">Question 1</label>
             <div class="field-row__value"><div class="input">
               <div class="input__wrap"><input id="f-question1-60" type="text" class="input__control" value="How do Affino AI plugins integrate without migrating your website?"></div>
@@ -1229,7 +1278,42 @@
           </div></div>
         </section><section class="record-section" aria-labelledby="sec-summary">
           <div class="record-section__header"><h2 class="record-section__title" id="sec-summary">Summary</h2></div>
-          <div class="record-section__body"><div class="field-row field-row--edit">
+          <div class="record-section__body"><div class="prompt-modifier" data-prompt-modifier data-outputs="[&quot;The big picture: Affino&#x27;s AI plugins bring an assistant, AI search and article summaries to a charity&#x27;s existing website, with no migration.\n\nWhy it matters: small teams answer supporters faster and lift engagement, and the full Affino platform is there to grow into.&quot;]">
+            <div class="prompt-modifier__head">
+              <span class="prompt-modifier__icon"><i data-lucide="sparkles" aria-hidden="true"></i></span>
+              <div class="prompt-modifier__text">
+                <p class="prompt-modifier__title">Summary prompt<span class="prompt-modifier__fills">Fills Summary</span></p>
+                <p class="prompt-modifier__preview" data-prompt-preview>Summarise the following article in two to three short paragraphs using a clear, journalistic tone.
+Begin with one sentence summarising the main point (“The big picture”).
+Then highlight the key facts, figures, and context that explain why it matters.
+Conclude with implications or next steps where relevant.
+
+Keep the summary under 200 words, concise, factual, and readable — like an Axios “Smart Brevity” piece.
+Avoid repetition, adjectives, or opinion; focus only on verified information.</p>
+              </div>
+              <div class="prompt-modifier__actions">
+                <button type="button" class="btn btn--tertiary btn--sm" aria-expanded="false" aria-controls="prompt-summary-body" data-prompt-toggle><i data-lucide="chevron-down" aria-hidden="true"></i><span>Edit prompt</span></button>
+                <button type="button" class="btn btn--secondary btn--sm" data-prompt-generate data-backend-todo="record-prompt-generate"><i data-lucide="sparkles" aria-hidden="true"></i><span>Generate</span></button>
+              </div>
+            </div>
+            <div class="prompt-modifier__body" id="prompt-summary-body" hidden>
+              <div class="textarea">
+                <label class="input__label" for="prompt-summary-prompt">Prompt modifier</label>
+                <textarea class="textarea__control" id="prompt-summary-prompt" rows="4" data-prompt-text>Summarise the following article in two to three short paragraphs using a clear, journalistic tone.
+Begin with one sentence summarising the main point (“The big picture”).
+Then highlight the key facts, figures, and context that explain why it matters.
+Conclude with implications or next steps where relevant.
+
+Keep the summary under 200 words, concise, factual, and readable — like an Axios “Smart Brevity” piece.
+Avoid repetition, adjectives, or opinion; focus only on verified information.</textarea>
+              </div>
+              <div class="prompt-modifier__body-foot">
+                <span class="prompt-modifier__hint">Sent with the article's content each time you generate.</span>
+                <button type="button" class="btn btn--tertiary btn--sm" data-prompt-copy><i data-lucide="copy" aria-hidden="true"></i><span>Copy prompt</span></button>
+              </div>
+            </div>
+            <p class="prompt-modifier__status" data-prompt-status aria-live="polite" hidden><span data-prompt-status-text></span><button type="button" class="btn btn--tertiary btn--sm" data-prompt-undo><i data-lucide="undo-2" aria-hidden="true"></i><span>Undo</span></button></p>
+          </div><div class="field-row field-row--edit">
             <label class="field-row__label" for="f-summary-65">Summary</label>
             <div class="field-row__value"><div class="textarea">
               <textarea class="textarea__control" id="f-summary-65" rows="4">Affino&#x27;s AI plugins bring high-impact AI to a charity&#x27;s existing website: an assistant that answers supporter questions, AI-enhanced search, article summaries, smart follow-on questions, and a personalised news catch-up. They lift engagement, give faster answers, and take real load off small teams, with no need to move your site. Shown in practice for charities, with the full Affino platform to grow into.</textarea>
@@ -2230,6 +2314,7 @@
   <script src="../../components/MediaPicker/MediaPicker.js"></script>
   <script src="../../patterns/Selector/Selector.js"></script>
   <script src="../../components/RichTextEditor/RichTextEditor.js"></script>
+  <script src="../../patterns/PromptModifier/PromptModifier.js"></script>
   <script src="../../../components/SegmentedControl/SegmentedControl.js"></script>
   <script src="../../patterns/StepsTable/StepsTable.js"></script>
   <script src="RecordScreen.js"></script>
@@ -2398,122 +2483,122 @@
       </div>
       <div class="selector__region modal__scroll" id="modal-media-results">
         <ul class="selector__grid" role="list"><li class="selector__tile-item" data-selector-item="StripeUS" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;The Payment Fintech Club&quot;, &quot;Creator&quot;: &quot;Laura Fanni&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130166/256" data-meta="WebP · 2026-09-21">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130166/256" data-icon="image" data-meta="WebP · 2026-09-21">
               <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130166/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
               <span class="selector__tile-text"><span class="selector__tile-name">StripeUS</span><span class="selector__tile-meta">WebP · 2026-09-21</span></span>
             </button>
           </li><li class="selector__tile-item" data-selector-item="StripeUK" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;The Payment Fintech Club&quot;, &quot;Creator&quot;: &quot;Laura Fanni&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130165/256" data-meta="WebP · 2026-09-21">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130165/256" data-icon="image" data-meta="WebP · 2026-09-21">
               <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130165/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
               <span class="selector__tile-text"><span class="selector__tile-name">StripeUK</span><span class="selector__tile-meta">WebP · 2026-09-21</span></span>
             </button>
           </li><li class="selector__tile-item" data-selector-item="image3" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;Charity Digital Forum Media&quot;, &quot;Creator&quot;: &quot;Laura Stanley&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130164/256" data-meta="WebP · 2026-09-21">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130164/256" data-icon="image" data-meta="WebP · 2026-09-21">
               <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130164/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
               <span class="selector__tile-text"><span class="selector__tile-name">image3</span><span class="selector__tile-meta">WebP · 2026-09-21</span></span>
             </button>
           </li><li class="selector__tile-item" data-selector-item="Screenshot 18 9 2026 162747 elitesoccercoaching.net" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;Green Star Media Forum Media&quot;, &quot;Creator&quot;: &quot;Kevin Barrow&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130163/256" data-meta="WebP · 2026-09-18">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130163/256" data-icon="image" data-meta="WebP · 2026-09-18">
               <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130163/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
               <span class="selector__tile-text"><span class="selector__tile-name">Screenshot 18 9 2026 162747 elitesoccercoaching.net</span><span class="selector__tile-meta">WebP · 2026-09-18</span></span>
             </button>
           </li><li class="selector__tile-item" data-selector-item="Screenshot 18 9 2026 162732 elitesoccercoaching.net" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;Green Star Media Forum Media&quot;, &quot;Creator&quot;: &quot;Kevin Barrow&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130162/256" data-meta="WebP · 2026-09-18">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130162/256" data-icon="image" data-meta="WebP · 2026-09-18">
               <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130162/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
               <span class="selector__tile-text"><span class="selector__tile-name">Screenshot 18 9 2026 162732 elitesoccercoaching.net</span><span class="selector__tile-meta">WebP · 2026-09-18</span></span>
             </button>
           </li><li class="selector__tile-item" data-selector-item="Screenshot 18 9 2026 162739 elitesoccercoaching.net" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;Green Star Media Forum Media&quot;, &quot;Creator&quot;: &quot;Kevin Barrow&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130161/256" data-meta="WebP · 2026-09-18">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130161/256" data-icon="image" data-meta="WebP · 2026-09-18">
               <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130161/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
               <span class="selector__tile-text"><span class="selector__tile-name">Screenshot 18 9 2026 162739 elitesoccercoaching.net</span><span class="selector__tile-meta">WebP · 2026-09-18</span></span>
             </button>
           </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 17091959" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;CRM AgriCommodities Forum Media&quot;, &quot;Creator&quot;: &quot;James Bolesworth&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130158/256" data-meta="WebP · 2026-09-17">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130158/256" data-icon="image" data-meta="WebP · 2026-09-17">
               <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130158/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
               <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 17091959</span><span class="selector__tile-meta">WebP · 2026-09-17</span></span>
             </button>
           </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 17085914" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;Charity Digital Forum Media&quot;, &quot;Creator&quot;: &quot;James Corcoran&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130157/256" data-meta="WebP · 2026-09-17">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130157/256" data-icon="image" data-meta="WebP · 2026-09-17">
               <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130157/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
               <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 17085914</span><span class="selector__tile-meta">WebP · 2026-09-17</span></span>
             </button>
           </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 16161248" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;CRM AgriCommodities Forum Media&quot;, &quot;Creator&quot;: &quot;James Bolesworth&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130156/256" data-meta="WebP · 2026-09-16">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130156/256" data-icon="image" data-meta="WebP · 2026-09-16">
               <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130156/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
               <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 16161248</span><span class="selector__tile-meta">WebP · 2026-09-16</span></span>
             </button>
           </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 16161236" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;CRM AgriCommodities Forum Media&quot;, &quot;Creator&quot;: &quot;James Bolesworth&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130155/256" data-meta="WebP · 2026-09-16">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130155/256" data-icon="image" data-meta="WebP · 2026-09-16">
               <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130155/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
               <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 16161236</span><span class="selector__tile-meta">WebP · 2026-09-16</span></span>
             </button>
           </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 16143300" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;The Payment Fintech Club&quot;, &quot;Creator&quot;: &quot;Laura Fanni&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130154/256" data-meta="WebP · 2026-09-16">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130154/256" data-icon="image" data-meta="WebP · 2026-09-16">
               <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130154/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
               <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 16143300</span><span class="selector__tile-meta">WebP · 2026-09-16</span></span>
             </button>
           </li><li class="selector__tile-item" data-selector-item="Screenshotfrom2026 09 1612 04 21" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;The Stage Forum Media&quot;, &quot;Creator&quot;: &quot;Zachariah Markusson&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130153/256" data-meta="WebP · 2026-09-16">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130153/256" data-icon="image" data-meta="WebP · 2026-09-16">
               <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130153/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
               <span class="selector__tile-text"><span class="selector__tile-name">Screenshotfrom2026 09 1612 04 21</span><span class="selector__tile-meta">WebP · 2026-09-16</span></span>
             </button>
           </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 16091012" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;CRM AgriCommodities Forum Media&quot;, &quot;Creator&quot;: &quot;James Bolesworth&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130152/256" data-meta="WebP · 2026-09-16">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130152/256" data-icon="image" data-meta="WebP · 2026-09-16">
               <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130152/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
               <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 16091012</span><span class="selector__tile-meta">WebP · 2026-09-16</span></span>
             </button>
           </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 15173234" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;CRM AgriCommodities Forum Media&quot;, &quot;Creator&quot;: &quot;James Bolesworth&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130151/256" data-meta="WebP · 2026-09-15">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130151/256" data-icon="image" data-meta="WebP · 2026-09-15">
               <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130151/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
               <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 15173234</span><span class="selector__tile-meta">WebP · 2026-09-15</span></span>
             </button>
           </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 15at16.28.54" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;Jacobs Media Forum Media Library&quot;, &quot;Creator&quot;: &quot;Maria Mellor&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130150/256" data-meta="WebP · 2026-09-15">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130150/256" data-icon="image" data-meta="WebP · 2026-09-15">
               <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130150/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
               <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 15at16.28.54</span><span class="selector__tile-meta">WebP · 2026-09-15</span></span>
             </button>
           </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 15142029" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;Wyvex forum media&quot;, &quot;Creator&quot;: &quot;Janice Johnston&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130149/256" data-meta="WebP · 2026-09-15">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130149/256" data-icon="image" data-meta="WebP · 2026-09-15">
               <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130149/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
               <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 15142029</span><span class="selector__tile-meta">WebP · 2026-09-15</span></span>
             </button>
           </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 15141611" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;Wyvex forum media&quot;, &quot;Creator&quot;: &quot;Janice Johnston&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130148/256" data-meta="WebP · 2026-09-15">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130148/256" data-icon="image" data-meta="WebP · 2026-09-15">
               <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130148/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
               <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 15141611</span><span class="selector__tile-meta">WebP · 2026-09-15</span></span>
             </button>
           </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 15141311" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;Charity Digital Forum Media&quot;, &quot;Creator&quot;: &quot;James Corcoran&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130147/256" data-meta="WebP · 2026-09-15">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130147/256" data-icon="image" data-meta="WebP · 2026-09-15">
               <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130147/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
               <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 15141311</span><span class="selector__tile-meta">WebP · 2026-09-15</span></span>
             </button>
           </li><li class="selector__tile-item" data-selector-item="Screenshotfrom2026 09 1513 51 38" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;The Stage Forum Media&quot;, &quot;Creator&quot;: &quot;Zachariah Markusson&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130146/256" data-meta="WebP · 2026-09-15">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130146/256" data-icon="image" data-meta="WebP · 2026-09-15">
               <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130146/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
               <span class="selector__tile-text"><span class="selector__tile-name">Screenshotfrom2026 09 1513 51 38</span><span class="selector__tile-meta">WebP · 2026-09-15</span></span>
             </button>
           </li><li class="selector__tile-item" data-selector-item="category topic withintopics" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;OMG Forum Media&quot;, &quot;Creator&quot;: &quot;Denise Rattray&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130143/256" data-meta="WebP · 2026-09-15">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130143/256" data-icon="image" data-meta="WebP · 2026-09-15">
               <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130143/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
               <span class="selector__tile-text"><span class="selector__tile-name">category topic withintopics</span><span class="selector__tile-meta">WebP · 2026-09-15</span></span>
             </button>
           </li><li class="selector__tile-item" data-selector-item="tbs2" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;The Bookseller Forum Media&quot;, &quot;Creator&quot;: &quot;Susan Kerrigan&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130142/256" data-meta="WebP · 2026-09-14">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130142/256" data-icon="image" data-meta="WebP · 2026-09-14">
               <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130142/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
               <span class="selector__tile-text"><span class="selector__tile-name">tbs2</span><span class="selector__tile-meta">WebP · 2026-09-14</span></span>
             </button>
           </li><li class="selector__tile-item" data-selector-item="tbs1" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;The Bookseller Forum Media&quot;, &quot;Creator&quot;: &quot;Susan Kerrigan&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130141/256" data-meta="WebP · 2026-09-14">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130141/256" data-icon="image" data-meta="WebP · 2026-09-14">
               <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130141/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
               <span class="selector__tile-text"><span class="selector__tile-name">tbs1</span><span class="selector__tile-meta">WebP · 2026-09-14</span></span>
             </button>
           </li><li class="selector__tile-item" data-selector-item="Screenshot 2023-09-01 at 15.48.23" data-facets="{&quot;Media Type&quot;: &quot;PNG&quot;, &quot;Section&quot;: &quot;Affino Forum Media&quot;, &quot;Creator&quot;: &quot;Quang Luong&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media113091/256" data-meta="PNG · 2023-09-01">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media113091/256" data-icon="image" data-meta="PNG · 2023-09-01">
               <span class="selector__tile-media"><img src="https://picsum.photos/seed/media113091/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
               <span class="selector__tile-text"><span class="selector__tile-name">Screenshot 2023-09-01 at 15.48.23</span><span class="selector__tile-meta">PNG · 2023-09-01</span></span>
             </button>
           </li><li class="selector__tile-item" data-selector-item="Screenshot 2023-09-01 at 14-55-26 Recruitment" data-facets="{&quot;Media Type&quot;: &quot;PNG&quot;, &quot;Section&quot;: &quot;Affino Forum Media&quot;, &quot;Creator&quot;: &quot;Luis Montiel&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media113090/256" data-meta="PNG · 2023-09-01">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media113090/256" data-icon="image" data-meta="PNG · 2023-09-01">
               <span class="selector__tile-media"><img src="https://picsum.photos/seed/media113090/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
               <span class="selector__tile-text"><span class="selector__tile-name">Screenshot 2023-09-01 at 14-55-26 Recruitment</span><span class="selector__tile-meta">PNG · 2023-09-01</span></span>
             </button>
@@ -2529,6 +2614,149 @@
         <span class="selector__status" data-selector-count aria-live="polite">Nothing selected</span>
         <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
         <button type="button" class="btn btn--primary" data-selector-apply disabled>Use image</button>
+      </div>
+    </div>
+  </div><div class="modal-overlay" id="modal-multimedia" role="presentation" data-selector="media">
+    <div class="modal selector selector--media" role="dialog" aria-modal="true" aria-labelledby="modal-multimedia-title">
+      <div class="modal__header">
+        <div class="modal__title-block"><h2 class="modal__title" id="modal-multimedia-title">Select Multimedia</h2></div>
+        <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets selector__toolbar">
+        <div class="search search--sm selector__search">
+          <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+          <input class="search__input" type="search" placeholder="Search media" aria-label="Search media" aria-controls="modal-multimedia-results" data-selector-search>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Media Type" data-selector-facet>
+          <button type="button" class="filter-item__clear" aria-label="Clear Media Type filter"><i data-lucide="x" aria-hidden="true"></i></button>
+          <button type="button" class="filter-item__trigger" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Media Type</span><span class="filter-item__sep" aria-hidden="true">·</span><span class="filter-item__values"></span><i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i></button>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Section" data-selector-facet>
+          <button type="button" class="filter-item__clear" aria-label="Clear Section filter"><i data-lucide="x" aria-hidden="true"></i></button>
+          <button type="button" class="filter-item__trigger" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Section</span><span class="filter-item__sep" aria-hidden="true">·</span><span class="filter-item__values"></span><i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i></button>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Creator" data-selector-facet>
+          <button type="button" class="filter-item__clear" aria-label="Clear Creator filter"><i data-lucide="x" aria-hidden="true"></i></button>
+          <button type="button" class="filter-item__trigger" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Creator</span><span class="filter-item__sep" aria-hidden="true">·</span><span class="filter-item__values"></span><i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i></button>
+        </div>
+        <label class="checkbox selector__mine"><input type="checkbox" class="checkbox__input"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span><span class="checkbox__label"><span class="checkbox__label-text">My media</span></span></label>
+        <button type="button" class="btn btn--secondary btn--sm" data-backend-todo="selector-media-upload"><i data-lucide="upload" aria-hidden="true"></i><span>Upload</span></button>
+      </div>
+      <div class="selector__region modal__scroll" id="modal-multimedia-results">
+        <ul class="selector__grid" role="list"><li class="selector__tile-item" data-selector-item="Screen Recording 2026 09 21 at 14" data-facets="{&quot;Media Type&quot;: &quot;MP4&quot;, &quot;Section&quot;: &quot;Athene Forum Media&quot;, &quot;Creator&quot;: &quot;Alexandra Lima&quot;}">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130167/256" data-icon="film" data-meta="MP4 · 2026-09-21">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130167/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screen Recording 2026 09 21 at 14</span><span class="selector__tile-meta">MP4 · 2026-09-21</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="People Project" data-facets="{&quot;Media Type&quot;: &quot;ZIP&quot;, &quot;Section&quot;: &quot;The Stage Forum Media&quot;, &quot;Creator&quot;: &quot;Simon Hassell&quot;}">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="" data-icon="file-text" data-meta="ZIP · 2026-09-18">
+              <span class="selector__tile-media"><span class="selector__tile-glyph"><i data-lucide="file-text" aria-hidden="true"></i></span><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">People Project</span><span class="selector__tile-meta">ZIP · 2026-09-18</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="People Project brief" data-facets="{&quot;Media Type&quot;: &quot;PDF&quot;, &quot;Section&quot;: &quot;The Stage Forum Media&quot;, &quot;Creator&quot;: &quot;Simon Hassell&quot;}">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="" data-icon="file-text" data-meta="PDF · 2026-09-18">
+              <span class="selector__tile-media"><span class="selector__tile-glyph"><i data-lucide="file-text" aria-hidden="true"></i></span><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">People Project brief</span><span class="selector__tile-meta">PDF · 2026-09-18</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="bandicam 2023-09-01 16-36-38-665 - Trim" data-facets="{&quot;Media Type&quot;: &quot;MP4&quot;, &quot;Section&quot;: &quot;Affino Forum Media&quot;, &quot;Creator&quot;: &quot;Jose Claramunt&quot;}">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media113092/256" data-icon="film" data-meta="MP4 · 2023-09-01">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media113092/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">bandicam 2023-09-01 16-36-38-665 - Trim</span><span class="selector__tile-meta">MP4 · 2023-09-01</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="The Stage Affino 64 GB Data Service Proposal Sep 2023 v2" data-facets="{&quot;Media Type&quot;: &quot;PDF&quot;, &quot;Section&quot;: &quot;Contracts&quot;, &quot;Creator&quot;: &quot;Markus Karlsson&quot;}">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="" data-icon="file-text" data-meta="PDF · 2023-09-01">
+              <span class="selector__tile-media"><span class="selector__tile-glyph"><i data-lucide="file-text" aria-hidden="true"></i></span><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">The Stage Affino 64 GB Data Service Proposal Sep 2023 v2</span><span class="selector__tile-meta">PDF · 2023-09-01</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="BASD Affino Service Renewal Proposal Sep v2" data-facets="{&quot;Media Type&quot;: &quot;PDF&quot;, &quot;Section&quot;: &quot;Contracts&quot;, &quot;Creator&quot;: &quot;Markus Karlsson&quot;}">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="" data-icon="file-text" data-meta="PDF · 2023-09-01">
+              <span class="selector__tile-media"><span class="selector__tile-glyph"><i data-lucide="file-text" aria-hidden="true"></i></span><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">BASD Affino Service Renewal Proposal Sep v2</span><span class="selector__tile-meta">PDF · 2023-09-01</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="UserPreferencesExport V2" data-facets="{&quot;Media Type&quot;: &quot;XLSX&quot;, &quot;Section&quot;: &quot;Affino Forum Media&quot;, &quot;Creator&quot;: &quot;Jose Claramunt&quot;}">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="" data-icon="file-text" data-meta="XLSX · 2023-09-01">
+              <span class="selector__tile-media"><span class="selector__tile-glyph"><i data-lucide="file-text" aria-hidden="true"></i></span><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">UserPreferencesExport V2</span><span class="selector__tile-meta">XLSX · 2023-09-01</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="StripeUS" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;The Payment Fintech Club&quot;, &quot;Creator&quot;: &quot;Laura Fanni&quot;}">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130166/256" data-icon="image" data-meta="WebP · 2026-09-21">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130166/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">StripeUS</span><span class="selector__tile-meta">WebP · 2026-09-21</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="StripeUK" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;The Payment Fintech Club&quot;, &quot;Creator&quot;: &quot;Laura Fanni&quot;}">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130165/256" data-icon="image" data-meta="WebP · 2026-09-21">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130165/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">StripeUK</span><span class="selector__tile-meta">WebP · 2026-09-21</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="image3" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;Charity Digital Forum Media&quot;, &quot;Creator&quot;: &quot;Laura Stanley&quot;}">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130164/256" data-icon="image" data-meta="WebP · 2026-09-21">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130164/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">image3</span><span class="selector__tile-meta">WebP · 2026-09-21</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshot 18 9 2026 162747 elitesoccercoaching.net" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;Green Star Media Forum Media&quot;, &quot;Creator&quot;: &quot;Kevin Barrow&quot;}">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130163/256" data-icon="image" data-meta="WebP · 2026-09-18">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130163/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot 18 9 2026 162747 elitesoccercoaching.net</span><span class="selector__tile-meta">WebP · 2026-09-18</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshot 18 9 2026 162732 elitesoccercoaching.net" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;Green Star Media Forum Media&quot;, &quot;Creator&quot;: &quot;Kevin Barrow&quot;}">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130162/256" data-icon="image" data-meta="WebP · 2026-09-18">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130162/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot 18 9 2026 162732 elitesoccercoaching.net</span><span class="selector__tile-meta">WebP · 2026-09-18</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshot 18 9 2026 162739 elitesoccercoaching.net" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;Green Star Media Forum Media&quot;, &quot;Creator&quot;: &quot;Kevin Barrow&quot;}">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130161/256" data-icon="image" data-meta="WebP · 2026-09-18">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130161/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot 18 9 2026 162739 elitesoccercoaching.net</span><span class="selector__tile-meta">WebP · 2026-09-18</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 17091959" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;CRM AgriCommodities Forum Media&quot;, &quot;Creator&quot;: &quot;James Bolesworth&quot;}">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130158/256" data-icon="image" data-meta="WebP · 2026-09-17">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130158/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 17091959</span><span class="selector__tile-meta">WebP · 2026-09-17</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 17085914" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;Charity Digital Forum Media&quot;, &quot;Creator&quot;: &quot;James Corcoran&quot;}">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130157/256" data-icon="image" data-meta="WebP · 2026-09-17">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130157/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 17085914</span><span class="selector__tile-meta">WebP · 2026-09-17</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 16161248" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;CRM AgriCommodities Forum Media&quot;, &quot;Creator&quot;: &quot;James Bolesworth&quot;}">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130156/256" data-icon="image" data-meta="WebP · 2026-09-16">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130156/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 16161248</span><span class="selector__tile-meta">WebP · 2026-09-16</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 16161236" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;CRM AgriCommodities Forum Media&quot;, &quot;Creator&quot;: &quot;James Bolesworth&quot;}">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130155/256" data-icon="image" data-meta="WebP · 2026-09-16">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130155/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 16161236</span><span class="selector__tile-meta">WebP · 2026-09-16</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 16143300" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;The Payment Fintech Club&quot;, &quot;Creator&quot;: &quot;Laura Fanni&quot;}">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130154/256" data-icon="image" data-meta="WebP · 2026-09-16">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130154/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 16143300</span><span class="selector__tile-meta">WebP · 2026-09-16</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshotfrom2026 09 1612 04 21" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;The Stage Forum Media&quot;, &quot;Creator&quot;: &quot;Zachariah Markusson&quot;}">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130153/256" data-icon="image" data-meta="WebP · 2026-09-16">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130153/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshotfrom2026 09 1612 04 21</span><span class="selector__tile-meta">WebP · 2026-09-16</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 16091012" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;CRM AgriCommodities Forum Media&quot;, &quot;Creator&quot;: &quot;James Bolesworth&quot;}">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130152/256" data-icon="image" data-meta="WebP · 2026-09-16">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130152/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 16091012</span><span class="selector__tile-meta">WebP · 2026-09-16</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 15173234" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;CRM AgriCommodities Forum Media&quot;, &quot;Creator&quot;: &quot;James Bolesworth&quot;}">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130151/256" data-icon="image" data-meta="WebP · 2026-09-15">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130151/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 15173234</span><span class="selector__tile-meta">WebP · 2026-09-15</span></span>
+            </button>
+          </li></ul>
+        <div class="selector__empty selector__empty--action" data-selector-empty hidden>
+          <i data-lucide="image-off" aria-hidden="true"></i>
+          <p class="selector__empty-text">No media matches. Upload it, or try a different search or filter.</p>
+          <button type="button" class="btn btn--primary btn--sm" data-backend-todo="selector-media-upload"><i data-lucide="upload" aria-hidden="true"></i><span>Upload</span></button>
+        </div>
+        <div class="selector__more"><span class="selector__more-count">Showing 21 of 21</span><button type="button" class="btn btn--secondary btn--sm" data-backend-todo="selector-media-source"><span>Load more</span></button></div>
+      </div>
+      <div class="modal__footer selector__footer">
+        <span class="selector__status" data-selector-count aria-live="polite">Nothing selected</span>
+        <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
+        <button type="button" class="btn btn--primary" data-selector-apply disabled>Use media</button>
       </div>
     </div>
   </div><div class="modal-overlay" id="modal-sort" role="presentation" data-selector="sort">

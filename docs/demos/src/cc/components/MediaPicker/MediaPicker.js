@@ -15,18 +15,25 @@
 
   function thumb(picker) { return picker.querySelector('.media-picker__thumb'); }
 
-  function fill(picker, src) {
+  // `icon` is the family glyph for an item with no picture (a document), used when src is empty.
+  function fill(picker, src, icon) {
     var t = thumb(picker);
-    var img = document.createElement('img');
-    img.src = src;
-    img.alt = '';
     t.innerHTML = '';
-    t.appendChild(img);
+    if (src) {
+      var img = document.createElement('img');
+      img.src = src;
+      img.alt = '';
+      t.appendChild(img);
+    } else {
+      t.innerHTML = '<i data-lucide="' + (icon || 'file') + '" aria-hidden="true"></i>';
+      if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+    }
     picker.classList.remove('media-picker--empty');
   }
 
   function empty(picker) {
-    thumb(picker).innerHTML = '<i data-lucide="image" aria-hidden="true"></i>';
+    var t = thumb(picker);
+    t.innerHTML = '<i data-lucide="' + (t.getAttribute('data-placeholder-icon') || 'image') + '" aria-hidden="true"></i>';
     picker.classList.add('media-picker--empty');
     if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
     var choose = picker.querySelector('[data-media-choose]');
