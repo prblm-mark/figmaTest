@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" data-brand="cc">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../../components/dark-mode-toggle.js"></script>
+  <title>RichTextEditor — Control Centre</title>
+  <link rel="stylesheet" href="../../../styles/base.css">
+  <link rel="stylesheet" href="../../../components/Textarea/Textarea.css">
+  <link rel="stylesheet" href="RichTextEditor.css">
+  <style>
+    body { margin: 0; padding: var(--ai-spacing-7); background: var(--cc-ui-primary-bg); min-height: 100vh; color: var(--ai-text-primary); font-family: var(--ai-font-body); }
+    .demo-section { padding: var(--ai-spacing-6); background: var(--ai-surface-primary); border: 1px solid var(--ai-border-secondary); border-radius: var(--ai-radius-lg); margin-bottom: var(--ai-spacing-5); max-width: var(--ai-size-12); }
+    .demo-section__title { font-size: var(--ai-font-fixed-xs); font-weight: var(--ai-font-semibold); color: var(--ai-text-contrast); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 var(--ai-spacing-3); }
+    .demo-note { margin: 0 0 var(--ai-spacing-5); font-size: var(--ai-font-fixed-xs); color: var(--ai-text-secondary); }
+  </style>
+</head>
+<body>
+  <h1>RichTextEditor</h1>
+  <div class="demo-section">
+    <p class="demo-section__title">TinyMCE 8.8.2 · live Control Centre config</p>
+    <p class="demo-note">The same toolbar, plugins and style formats as affino.com's article editor, themed from --ai-* tokens (frame, toolbar, statusbar here; the content through token files loaded into the iframe). Insert image appears only where the page has the Selector Type=Media (the record Edit screen), so this demo leaves it out. Toggle dark mode and reload to see the oxide-dark skin.</p>
+    <div class="textarea rich-text">
+      <textarea class="textarea__control" id="demo-rte" rows="10" data-rich-text aria-label="Main Body">&lt;h2&gt;How charities can use Affino AI plugins&lt;/h2&gt;&lt;p&gt;Affino offers a series of &lt;strong&gt;AI plugins&lt;/strong&gt; charities can add to their existing website.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Assistant&lt;/li&gt;&lt;li&gt;AI-enhanced search&lt;/li&gt;&lt;li&gt;Article summaries&lt;/li&gt;&lt;/ul&gt;&lt;div class="aos-ShortQuote"&gt;&lt;p&gt;A quote block, as the live "Quote" format renders it.&lt;/p&gt;&lt;/div&gt;</textarea>
+    </div>
+  </div>
+  <script src="RichTextEditor.js"></script>
+</body>
+</html>

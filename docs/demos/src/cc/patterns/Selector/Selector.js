@@ -269,6 +269,14 @@
 
   function applyMedia() {
     var tile = $(active.overlay, '.selector__tile[aria-pressed="true"]');
+    // Opened by code (window.selector.openMedia) rather than a picker slot: hand the choice back.
+    if (active.onPick) {
+      var pick = active.onPick;
+      var chosen = tile ? { src: tile.getAttribute('data-src'), name: tile.closest('[data-selector-item]').getAttribute('data-selector-item') } : null;
+      close(false);
+      if (chosen) pick(chosen.src, chosen.name);
+      return;
+    }
     var picker = active.trigger.closest('.media-picker');
     if (tile && picker) {
       if (window.mediaPicker) {
@@ -437,6 +445,19 @@
     dragRow = null;
     clearDrop();
   });
+
+  /* Public: open the media picker for a caller that is not a MediaPicker slot (the rich-text
+     editor's Insert image). `returnFocus` gets focus back on close; `onPick(src, name)` receives
+     the chosen image. */
+  window.selector = {
+    openMedia: function (returnFocus, onPick) {
+      var ov = document.querySelector('[data-selector="media"]');
+      if (!ov) return false;
+      open(returnFocus, ov);
+      active.onPick = onPick;
+      return true;
+    }
+  };
 
   /* ── Wiring ──────────────────────────────────────────── */
   document.addEventListener('click', function (e) {

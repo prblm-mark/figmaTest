@@ -33,6 +33,7 @@ CSS = """
   <link rel="stylesheet" href="../../components/FieldRow/FieldRow.css">
   <link rel="stylesheet" href="../../components/MediaMeta/MediaMeta.css">
   <link rel="stylesheet" href="../../components/MediaPicker/MediaPicker.css">
+  <link rel="stylesheet" href="../../components/RichTextEditor/RichTextEditor.css">
   <link rel="stylesheet" href="../../components/ViewerItem/ViewerItem.css">
   <link rel="stylesheet" href="../../components/AdvisoryItem/AdvisoryItem.css">
   <link rel="stylesheet" href="../../patterns/RecordTabs/RecordTabs.css">
@@ -115,6 +116,7 @@ KIT_JS = '''  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/char
   <script src="../../patterns/TagBox/TagBox.js"></script>
   <script src="../../components/MediaPicker/MediaPicker.js"></script>
   <script src="../../patterns/Selector/Selector.js"></script>
+  <script src="../../components/RichTextEditor/RichTextEditor.js"></script>
   <script src="../../../components/SegmentedControl/SegmentedControl.js"></script>
   <script src="../../patterns/StepsTable/StepsTable.js"></script>
   <script src="RecordScreen.js"></script>'''

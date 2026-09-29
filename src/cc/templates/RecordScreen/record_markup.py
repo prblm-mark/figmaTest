@@ -254,11 +254,12 @@ def edit_row(label, kind, value="", required=False, help_text=None, tags=None, m
                   </div>
                 </div>'''
     elif kind == "rich":
-        paras = [x for _, x in value] if value else [""]
-        ctl = f'''<div class="textarea">
-              <textarea class="textarea__control" id="{fid}" rows="10">{PARA_SEP.join(e(p) for p in paras)}</textarea>
+        # TinyMCE, as the live CC runs it (RichTextEditor, designer 2026-09-29). The textarea holds
+        # the field's HTML and stays the form value; without the CDN it is a plain textarea.
+        html = "".join(f"<{t}>{e(x)}</{t}>" for t, x in value) if value else ""
+        ctl = f'''<div class="textarea rich-text">
+              <textarea class="textarea__control" id="{fid}" rows="10" data-rich-text>{e(html)}</textarea>
             </div>'''
-        # TODO(backend:RecordScreen) record-rich-text: plain textarea stands in for the rich-text editor
     elif kind == "file":
         ctl = f'''<div class="media-picker">
               <span class="media-picker__thumb">{icon("file-audio")}</span>
