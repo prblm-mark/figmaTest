@@ -155,24 +155,30 @@
 }
 
 /* Type=Image (edit) — MediaPicker, then its options: alt text, caption, alignment, width. */
+/* A self-container: this block's width tracks the value column it sits in (fluid, not a
+ * fixed box, so a self-query is safe — CLAUDE.md §4a), and that column is what decides whether
+ * the options fit two across. The RecordSection width did not: at a 1459 viewport the section
+ * is ~1000 but a record's value column is ~360, so two columns gave 175px cells and the
+ * Alignment segments overlapped (designer screenshot, 2026-09-29). */
 .field-row__image {
   display: flex;
   flex-direction: column;
   gap: var(--ai-spacing-4);
   min-width: 0;
+  container: field-image / inline-size;
 }
 
-/* Two columns on desktop — Alt text | Caption over Alignment | Width (designer, 2026-09-29; was
- * auto-fit, which gave four across on a wide section). One column once the section is narrow:
- * keyed on the RecordSection container (its ≤559 stack), not the viewport (CLAUDE.md §4a). */
+/* One column by default; two — Alt text | Caption over Alignment | Width (designer, 2026-09-29)
+ * — once the image block itself is ≥560, i.e. every cell ≥ ~272, which is what the labelled
+ * Alignment control needs. Mobile-first min-width, like the tokens' breakpoints. */
 .field-row__image-options {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--ai-spacing-4);
 }
 
-@container record-section (max-width: 559px) {
-  .field-row__image-options { grid-template-columns: minmax(0, 1fr); }
+@container field-image (min-width: 560px) {
+  .field-row__image-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 .field-row__image-option {
@@ -195,6 +201,38 @@
 .field-row__align {
   inline-size: 100%;
   min-inline-size: 0;
+  container: field-align / inline-size;
+}
+
+/* A segment is never allowed to paint over its neighbour. */
+.field-row__align .seg-control__btn {
+  overflow: hidden;
+}
+
+/* Two narrow tiers, both on the control's own container (only its descendants read it).
+ * Thresholds are CONTENT-box widths — the control's 1px border + 4px padding make that 10px
+ * less than its measured width (feedback: container queries measure the content box).
+ * <270 (≈280 wide): the segments tighten (12 → 6 padding, 8 → 4 icon gap), keeping the labels
+ *      down to ~232 wide — every phone's value column. <222: icon only; the label stays in the
+ *      accessibility tree (visually hidden, not display:none), so each radio keeps its name. */
+@container field-align (max-width: 269px) {
+  .field-row__align .seg-control__btn {
+    padding-inline: var(--ai-spacing-2);
+    gap: var(--ai-spacing-1);
+  }
+}
+
+@container field-align (max-width: 221px) {
+  .field-row__align .seg-control__btn { padding-inline: 0; }
+
+  .field-row__align .seg-control__btn-label {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
 }
 
 /* Type=Checkbox (edit) — the box sits on the label's line; no 40px control to centre against. */
