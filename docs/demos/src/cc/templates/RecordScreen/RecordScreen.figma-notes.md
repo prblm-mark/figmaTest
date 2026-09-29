@@ -91,22 +91,24 @@ TopNavigation, HeaderGroup, ActionsMenu rail, theme + width scripts). Page body:
 | Article Edit — Mobile (390) | `3907:17632` | as View |
 Built from duplicates of the standard frames (kit instances kept). Mobile header: RecordHeader padding spacing/3 · spacing/4, title font/size-fixed/sm, buttons Size=sm; drawn top-nav breadcrumb clipped and user name hidden, as the code renders.
 
-## Article 10007 — the framework on a real article (2026-09-29, code-first)
-**`ArticleView.html` / `ArticleEdit.html` ARE this record** (designer, 2026-09-29 — they replaced the
-Figma draft's six-section 9.0.11.25 content, which stays in `record_markup.py` for the component demos
-and is still what Figma draws; the separate Article10007 pages were removed). Generated from `record_10007.py` — every field of
-sf.affino.com Standard Item 10007 (Review Article, 13 sections, 76 fields; inventory
-`article-10007-fields.md`, read-only). One table drives both screens, so View and Edit cannot disagree.
-- **Result:** the framework holds the full set — RecordSection per live divider, FieldRow per field,
-  no horizontal scroll at 1440 / 390, no errors; the stacking container queries work unchanged.
-- **New FieldRow kinds, code-first — FLAG FOR FIGMA** (none exist in the FieldRow set `3861:1987`):
-  `rich` (view: HTML blocks p/h2/h3/blockquote; edit: textarea stand-in), `checkbox` (row label is the
-  box's label), `date` / `datetime` (DatePicker field), `lookup` (read-only value + Select), `image`
-  (MediaPicker + Alt text / Caption inputs + Alignment radios + Width select; empty slots show the
-  picker only), `file` (media file picker). View shows booleans as Yes / No and empties as "-".
-- **Not 10007's:** the sidebar (Performance, Viewers, Meta, Audit…) is still the Figma demo data — the
-  live screen's sidebar values were not read.
+## The record: affino.com Article 626312 (2026-09-29, code-first)
+**`ArticleView.html` / `ArticleEdit.html` ARE affino.com Standard Item 626312**, "How charities can use
+Affino AI plugins" (designer, 2026-09-29 — it replaced sf.affino.com 10007 because it is fully written).
+Read from `/control/standard-item-edit?Action=view&StandardItemCode=626312` with a logged-in session,
+READ ONLY. Data + provenance: `record_article.py` (one table drives both screens). The Figma draft's
+six-section 9.0.11.25 content stays in `record_markup.py` for the component demos, and is still what
+Figma draws.
+- **Main column:** every live section in the live order — 15 sections, 79 fields (Presentation Style,
+  Navigation, Introduction, Topics, SEO, Main Body, Geo Targeting, Comments And Ratings, Options,
+  Advanced, Social, Article Questions, Summary, Security, Publication). Real copy throughout.
+- **Sidebar = the live side sections:** Performance (56 impressions · 28 consumed · 0 bookmarked, top
+  accounts Affino + Burning Nights CRPS Support), Recent Viewers (the 5 live viewers), Record (code
+  626312), Meta Information (Topics), Index Status (3), Audit. SEO Health stays demo (not on the live view).
+- Check-marks read from the live icons (TBY = yes, TBN = no): only **Live** is on. Embargo End's live
+  `01/01/1900 00:00` is the platform's "not set" and renders unset.
+- **Known gaps:** the thumbnail / main image is the repo placeholder (the real asset was not copied);
+  the Performance chart series is still the demo series (its scale does not match 56 impressions);
+  "Impression Per Day" 0.15 is derived (56 / 365). Viewer avatars are generated placeholders.
+- **New FieldRow kinds, code-first — FLAG FOR FIGMA:** `rich`, `checkbox`, `date` / `datetime`,
+  `lookup`, `image`, `file` (see FieldRow.figma-notes.md). FactPanel gained `.fact-panel__empty`.
 - Handover: `record-lookup`, `record-datetime`, `record-rich-text`, `record-media-file`.
-
-**Demo hub:** a **View / Edit Screens** section (`data-category="record"`, sidebar filter) holds View,
-Edit and Steps in standard + full width — grouped like Listing Screens (designer, 2026-09-29).

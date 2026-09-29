@@ -16,7 +16,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import record_markup as m  # noqa: E402
-import record_10007 as r10007  # noqa: E402
+import record_article as rec  # noqa: E402
 
 # Step content (titles + bodies) read from the Hub for Article 626347 — a copy of the ArticleSteps
 # prototype's data, kept here so the template does not depend on an uncommitted prototype.
@@ -91,7 +91,7 @@ def page(inner):
     </div>'''
 
 
-def body(sections):
+def body(sections, side=None):
     return f'''<div class="record-screen__body">
           <div class="record-screen__main">{sections}</div>
           <aside class="record-screen__sidebar" aria-label="Record information">
@@ -100,7 +100,7 @@ def body(sections):
                  aria-valuemin="384" aria-valuemax="0" aria-valuenow="384">
               <span class="record-screen__handle-bar" aria-hidden="true"></span>
             </div>
-            {m.sidebar()}
+            {side or m.sidebar()}
           </aside>
         </div>'''
 
@@ -180,16 +180,16 @@ LISTING_SCREENS['article-steps'] = {{
 
 write_steps_config()
 
-# ArticleView / ArticleEdit ARE Article 10007 (sf.affino.com) — the framework filled with a real
-# article's full field set (record_10007.py; designer, 2026-09-29). The Figma draft's six-section
+# ArticleView / ArticleEdit ARE affino.com Article 626312 — the framework filled with a real, fully
+# written article's whole field set + its own sidebar values (record_article.py; designer, 2026-09-29). The Figma draft's six-section
 # content stays in record_markup.py for the component demos; Figma itself still draws the draft.
 pages = {
-    "ArticleView.html": build("Article · View", m.record_header("Article · Review", r10007.TITLE, "view"),
-                              page(m.record_tabs("details") + body(r10007.view_sections())), KIT_JS),
-    "ArticleEdit.html": build("Article · Edit", m.record_header("Article · Review", r10007.TITLE, "edit"),
-                              page(m.record_tabs("details", back="ArticleEdit.html") + body(r10007.edit_sections())), KIT_JS,
-                              modals=r10007.modals()),
-    "ArticleSteps.html": build("Article · Steps", m.record_header("Article · Review", r10007.TITLE, "view"),
+    "ArticleView.html": build("Article · View", m.record_header("Article", rec.TITLE, "view"),
+                              page(m.record_tabs("details") + body(rec.view_sections(), rec.sidebar())), KIT_JS),
+    "ArticleEdit.html": build("Article · Edit", m.record_header("Article", rec.TITLE, "edit"),
+                              page(m.record_tabs("details", back="ArticleEdit.html") + body(rec.edit_sections(), rec.sidebar())), KIT_JS,
+                              modals=rec.modals()),
+    "ArticleSteps.html": build("Article · Steps", m.record_header("Article", rec.TITLE, "view"),
                                page(m.record_tabs("steps", actions=True) + m.steps_listing()), KIT_JS, listing=True),
 }
 

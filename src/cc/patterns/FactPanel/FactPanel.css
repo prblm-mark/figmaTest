@@ -75,3 +75,13 @@
   gap: var(--ai-spacing-3);
   margin: 0;
 }
+
+/* Empty content (code-first, 2026-09-29) — e.g. Recent Viewers on a record nobody has viewed.
+ * The same quiet text treatment as the FactList terms. */
+.fact-panel__empty {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-contrast);
+}

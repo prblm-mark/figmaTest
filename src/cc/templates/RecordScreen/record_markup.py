@@ -312,8 +312,12 @@ VIEWERS = [("Simon Hassell", "Principal, Argutus Consulting", "5 days, 18hrs", [
            ("David Delawa", "VP of Media, Ocean Media Group Ltd", "5 days, 18hrs", ["Ocean Media Group Ltd"], "david")]
 
 
-def viewer_list():
-    items = "".join(viewer_item(*v) for v in VIEWERS)
+def viewer_list(viewers=None):
+    viewers = VIEWERS if viewers is None else viewers
+    if not viewers:
+        # The live record can have no recent viewers — say so rather than show an empty list.
+        return '<p class="fact-panel__empty">No recent viewers yet.</p>'
+    items = "".join(viewer_item(*v) for v in viewers)
     return f'''<div class="viewer-list">
             <ul class="viewer-list__items">{items}</ul>
             <!-- TODO(backend:RecordScreen): "Add to Contact List" → add the viewers to a contact list (list picker + POST) -->
@@ -355,14 +359,19 @@ def stat(title, value, colour, ico):
               </div>'''
 
 
-def performance_summary(canvas_id="perf-chart"):
-    chips = "".join(chip(c, "secondary", "xs") for c in ["Ocean Media Group", "Playbook Media", "Argutus"])
+PERF = {"impressions": "330", "consumed": "4.68", "bookmarked": "48",
+        "accounts": ["Ocean Media Group", "Playbook Media", "Argutus"], "total": "89", "per_day": "4.68"}
+
+
+def performance_summary(canvas_id="perf-chart", perf=None):
+    p = perf or PERF
+    chips = "".join(chip(c, "secondary", "xs") for c in p["accounts"])
     return f'''<div class="performance-summary">
             <div class="performance-summary__stats">
-              {stat("Total Impressions", "330", "violet-radix", "chart-no-axes-combined")}
+              {stat("Total Impressions", p["impressions"], "violet-radix", "chart-no-axes-combined")}
               <div class="performance-summary__stats-row">
-                {stat("Consumed", "4.68", "indigo", "eye")}
-                {stat("Bookmarked", "48", "jade", "book-open")}
+                {stat("Consumed", p["consumed"], "indigo", "eye")}
+                {stat("Bookmarked", p["bookmarked"], "jade", "book-open")}
               </div>
               <div class="performance-summary__accounts">
                 <p class="performance-summary__accounts-heading">Top Account Impressions</p>
@@ -373,8 +382,8 @@ def performance_summary(canvas_id="perf-chart"):
               <div class="chart"><div class="chart__canvas"><canvas id="{canvas_id}" aria-label="Impressions, last 7 days" role="img"></canvas></div></div>
             </div>
             <dl class="performance-summary__totals">
-              <div class="performance-summary__total"><dt>Total Impressions</dt><dd>89</dd></div>
-              <div class="performance-summary__total"><dt>Impression Per Day</dt><dd>4.68</dd></div>
+              <div class="performance-summary__total"><dt>Total Impressions</dt><dd>{e(p["total"])}</dd></div>
+              <div class="performance-summary__total"><dt>Impression Per Day</dt><dd>{e(p["per_day"])}</dd></div>
             </dl>
             <!-- TODO(backend:RecordScreen): "View full analytics" → the record's analytics report URL -->
             <a class="performance-summary__link" href="#" data-backend-todo="performance-full-analytics"><span>View full analytics</span>{icon("arrow-right")}</a>
@@ -392,16 +401,17 @@ FACTS = {
 }
 
 
-def sidebar(canvas_id="perf-chart"):
+def sidebar(canvas_id="perf-chart", facts=None, perf=None, viewers=None):
+    facts = facts or FACTS
     expand = '<button type="button" class="btn btn--secondary btn--xs" data-advisory-expand-all aria-expanded="false"><span>Expand all</span></button>'
     return "".join([
-        fact_panel("Performance", performance_summary(canvas_id), subtitle="Last 12 Months", badge="LIVE"),
-        fact_panel("Recent Viewers", viewer_list()),
-        fact_panel("Record", fact_list(FACTS["Record"])),
+        fact_panel("Performance", performance_summary(canvas_id, perf), subtitle="Last 12 Months", badge="LIVE"),
+        fact_panel("Recent Viewers", viewer_list(viewers)),
+        fact_panel("Record", fact_list(facts["Record"])),
         fact_panel("SEO Health", advisory_list(), action=expand),
-        fact_panel("Meta Information", fact_list(FACTS["Meta Information"])),
-        fact_panel("Index Status", fact_list(FACTS["Index Status"])),
-        fact_panel("Audit", fact_list(FACTS["Audit"])),
+        fact_panel("Meta Information", fact_list(facts["Meta Information"])),
+        fact_panel("Index Status", fact_list(facts["Index Status"])),
+        fact_panel("Audit", fact_list(facts["Audit"])),
     ])
 
 
