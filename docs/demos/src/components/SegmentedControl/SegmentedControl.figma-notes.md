@@ -111,3 +111,15 @@ stays a crisp 1px instead of being a seam between two backgrounds.
   placed size. Lucide `sun` / `moon`.
 - Each button carries a hidden `Icon/20px/PanelLeft` instance in all four
   variants. Unused; not built.
+
+## Behaviour: SegmentedControl.js (added 2026-09-29)
+
+This is opt-in generic radiogroup behaviour for any `.seg-control[data-seg-control]`.
+- Click selects a segment.
+- Roving tabindex: only the checked segment is in the tab order.
+- ← → ↑ ↓ move and select, wrapping at the ends. Home and End jump to the ends.
+- The chosen value is kept in `data-value` and emitted as a bubbling `seg-control:change` event with `{ value }`.
+
+Controls without the attribute are untouched. That includes the listing's Grid / Listing switch, which ListingScreen.js wires itself.
+
+The first consumer is the record screens' image Alignment (FieldRow).

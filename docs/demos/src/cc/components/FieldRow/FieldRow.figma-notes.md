@@ -70,4 +70,4 @@ token; the arrangements are proposals for the designer.
 
 ## Image options layout (designer, 2026-09-29)
 
-`.field-row__image-options` is **2 columns** on desktop (Alt text | Caption, then Alignment | Width). It drops to 1 column at `@container record-section (max-width: 559px)`. The Alignment radios sit in a row with `min-block-size: --ai-spacing-8` (40px, the Input/Select height) and are centred, so they line up with the Width select beside them.
+`.field-row__image-options` is **2 columns** on desktop (Alt text | Caption, then Alignment | Width). It drops to 1 column at `@container record-section (max-width: 559px)`. **Alignment is a SegmentedControl** (`.seg-control.field-row__align`, `data-seg-control`) with icon + text: `align-left` / `align-center` / `align-right` plus Left / Center / Right. It replaced three radios (designer, 2026-09-29) and is the editor-standard alignment control. At 40px (`--ai-spacing-8`) it sits level with Width without any centring rule. It is still a radiogroup for assistive tech (roving tabindex, arrow keys). **Code-first: Figma still draws radios, so flag it for Figma.**

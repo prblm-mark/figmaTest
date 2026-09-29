@@ -226,13 +226,16 @@ def edit_row(label, kind, value="", required=False, help_text=None, tags=None, m
     elif kind == "image":
         opts = value or {}
         align = opts.get("align")
-        radios = "".join(f'''<label class="radio"><input type="radio" class="radio__input" name="{fid}-align" value="{a}"{' checked' if a == align else ''}><span class="radio__indicator"></span><span class="radio__label"><span class="radio__label-text">{a}</span></span></label>''' for a in ("Left", "Center", "Right"))
+        # Alignment is a SegmentedControl with icon + text (designer, 2026-09-29; was three radios):
+        # the editor-standard alignment control, and 40px tall so it sits level with Width.
+        segs = "".join(f'''<button class="seg-control__btn{' seg-control__btn--active' if a == align else ''}" type="button" role="radio" aria-checked="{'true' if a == align else 'false'}" data-value="{a}">{icon(ic)}<span class="seg-control__btn-label">{a}</span></button>'''
+                       for a, ic in (("Left", "align-left"), ("Center", "align-center"), ("Right", "align-right")))
         ctl = f'''<div class="field-row__image">
               {media_picker(label, IMG if opts.get("src") else None)}
               <div class="field-row__image-options">
                 {_mini_input("Alt text", opts.get("alt", ""), fid + "-alt")}
                 {_mini_input("Caption", opts.get("caption", ""), fid + "-cap")}
-                <div class="field-row__image-option" role="radiogroup" aria-label="{e(label)} alignment"><span class="input__label">Alignment</span><div class="field-row__options">{radios}</div></div>
+                <div class="field-row__image-option"><span class="input__label" id="{fid}-align">Alignment</span><div class="seg-control field-row__align" role="radiogroup" aria-labelledby="{fid}-align" data-seg-control>{segs}</div></div>
                 <div class="field-row__image-option"><span class="input__label">Width</span>{_mini_select(opts.get("width") or "100%")}</div>
               </div>
             </div>'''

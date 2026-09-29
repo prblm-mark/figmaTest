@@ -44,6 +44,7 @@ CSS = """
   <link rel="stylesheet" href="../../patterns/TagBox/TagBox.css">
   <link rel="stylesheet" href="../../../components/SearchInput/SearchInput.css">
   <link rel="stylesheet" href="../../patterns/Selector/Selector.css">
+  <link rel="stylesheet" href="../../../components/SegmentedControl/SegmentedControl.css">
   <link rel="stylesheet" href="../../patterns/StepsTable/StepsTable.css">
   <link rel="stylesheet" href="RecordScreen.css">
 </head>"""
@@ -113,6 +114,7 @@ KIT_JS = '''  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/char
   <script src="../../components/AdvisoryItem/AdvisoryItem.js"></script>
   <script src="../../patterns/TagBox/TagBox.js"></script>
   <script src="../../patterns/Selector/Selector.js"></script>
+  <script src="../../../components/SegmentedControl/SegmentedControl.js"></script>
   <script src="../../patterns/StepsTable/StepsTable.js"></script>
   <script src="RecordScreen.js"></script>'''
 

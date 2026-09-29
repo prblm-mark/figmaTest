@@ -189,12 +189,12 @@
   gap: var(--ai-spacing-5);
 }
 
-/* Alignment's radios sit on a row as tall as the Input / Select beside them (their 40px
- * --ai-spacing-8 min-height) and centre in it, so they line up with Width's control rather than
- * riding at the top of the cell (designer, 2026-09-29). */
-.field-row__image-option .field-row__options {
-  min-block-size: var(--ai-spacing-8);
-  align-items: center;
+/* Alignment — a SegmentedControl (icon + text, designer 2026-09-29; it replaced three radios).
+ * The control is 40px (--ai-spacing-8), the Input / Select height, so it sits level with Width
+ * with no centring rule. It fills its cell and the three segments share it equally. */
+.field-row__align {
+  inline-size: 100%;
+  min-inline-size: 0;
 }
 
 /* Type=Checkbox (edit) — the box sits on the label's line; no 40px control to centre against. */
