@@ -396,7 +396,7 @@ build — a render from the record payload. Markers: `grep -rn "TODO(backend:Rec
 | `selector-single-source` | Selector Type=Single (Section, Creator) | 24 static rows (the live picker's first page); click a row writes the NAME into the field. | Paged search over the field's source (section tree / member search) returning { id, name, parent, channel, zone }; the row shows the name, submits the id. | `needs-backend` |
 | `selector-media-source` | Selector Type=Media (Thumbnail, Main Image, …) | 24 demo tiles from the Media Items listing data; Use image swaps the picker thumbnail client-side. Filters, My media and Load more are inert. | Media search (title, type, section, creator, created range, My media) with paging; Use image submits the MediaItemCode and the server renders alt / caption / alignment / width. | `needs-backend` |
 | `selector-media-upload` | Selector Type=Media → Upload | Button only. | Upload flow (DragDropFile) that creates a media item and selects it. | `needs-backend` |
-| `selector-sort-order` | Selector Type=Sort (Sort Order) | 73 real Insights articles (Hub, 2026-09-29) reordered in the DOM; Save writes 'Position n of 73' into the field. Thumbnails are placeholders. | GET the section's items in current order (id, title, thumbnail); Save PUTs the full ordered id list for the section. | `needs-backend` |
+| `selector-sort-order` | Selector Type=Sort (Sort Order) | 73 real Insights articles (Hub, 2026-09-29) reordered in the DOM; Save writes the position number into the field. Thumbnails are placeholders. | GET the section's items in current order (id, title, thumbnail); Save PUTs the full ordered id list for the section. | `needs-backend` |
 
 ## Scope of this document
 

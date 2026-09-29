@@ -1101,7 +1101,7 @@
      "id": "selector-sort-order",
      "category": "needs-backend",
      "element": "Selector Type=Sort (Sort Order)",
-     "current": "73 real Insights articles (Hub, 2026-09-29) reordered in the DOM; Save writes 'Position n of 73' into the field. Thumbnails are placeholders.",
+     "current": "73 real Insights articles (Hub, 2026-09-29) reordered in the DOM; Save writes the position number into the field. Thumbnails are placeholders.",
      "needs": "GET the section's items in current order (id, title, thumbnail); Save PUTs the full ordered id list for the section."
     }
    ]

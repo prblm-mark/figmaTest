@@ -117,7 +117,7 @@ def media_picker(label, src=None):
     return f'''<div class="media-picker">
               <span class="media-picker__thumb">{thumb}</span>
               <div class="media-picker__actions">
-                {btn("Edit", "secondary", "sm", icon_left="pencil", attrs=f' aria-label="Choose {e(label)}" aria-haspopup="dialog" data-selector-open="modal-media"')}
+                {btn(f"Edit {label}", "secondary", "sm", icon_left="pencil", icon_only=True, attrs=' aria-haspopup="dialog" data-selector-open="modal-media"')}
                 {btn(f"Remove {label}", "secondary", "sm", icon_left="trash-2", icon_only=True)}
               </div>
             </div>'''
@@ -157,7 +157,7 @@ def _id(label):
     return "f-" + "".join(ch for ch in label.lower() if ch.isalnum())[:24] + f"-{_uid[0]}"
 
 
-def edit_row(label, kind, value="", required=False, help_text=None, tags=None, modal=None, placeholder="None selected"):
+def edit_row(label, kind, value="", required=False, help_text=None, tags=None, modal=None, placeholder="None selected", options=None):
     fid = _id(label)
     req = '<span class="field-row__required" aria-hidden="true">*</span>' if required else ""
     reqattr = " required aria-required=\"true\"" if required else ""
@@ -178,10 +178,11 @@ def edit_row(label, kind, value="", required=False, help_text=None, tags=None, m
                 <span class="sel__chevron">{icon("chevron-down")}</span>
               </button>
               <ul class="sel__menu" role="listbox">
-                <li><button type="button" class="sel__menu-item{' sel__menu-item--selected' if not placeholder else ''}" role="option">{e(shown)}</button></li>
+                {"".join(f'<li><button type="button" class="sel__menu-item{" sel__menu-item--selected" if o == shown else ""}" role="option">{e(o)}</button></li>' for o in (options or [shown]))}
               </ul>
             </div>'''
-        # TODO(backend:RecordScreen): select options are the current value only → option source per field
+        # TODO(backend:RecordScreen): select options are the current value only (unless the field
+        #   passes its own list, e.g. Priority 1–30) → option source per field
     elif kind == "textarea":
         paras = value if isinstance(value, list) else [value]
         ctl = f'''<div class="textarea">
