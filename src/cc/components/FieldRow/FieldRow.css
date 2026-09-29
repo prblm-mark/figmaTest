@@ -178,7 +178,7 @@
 }
 
 @container field-image (min-width: 560px) {
-  .field-row__image-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .field-row__image-options:not(.field-row__image-options--single) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 .field-row__image-option {

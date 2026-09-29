@@ -58,8 +58,9 @@ IMAGE_FILE = [("Alt text", IMAGE_ALT), ("File name", "ai-1781548787494-12-31536f
 def _img(align="Center", width="100%"):
     """The article's one real image (Thumbnail + Main Image carry the same asset live)."""
     rows = IMAGE_FILE + ([("Alignment", align), ("Width", width)] if align else [])
+    # A thumbnail (no align / width) is alt text only; a content image has all four options.
     return ("media", rows, "image", {"src": True, "alt": IMAGE_ALT, "caption": "", "align": align or "Center",
-                                     "width": width or "100%"})
+                                     "width": width or "100%", "alt_only": align is None})
 
 
 def _no_img(align="Center", width="100%"):
@@ -89,7 +90,7 @@ SECTIONS = [
         ("Screen Name", "text", SCREEN_NAME, "input", SCREEN_NAME, {"help": "Used in the article URL."}),
         ("Alternative Title", "text", "-", "input", ""),
         ("Thumbnail",) + _img(None, None),
-        ("Alternative Thumbnail",) + _no_img(),
+        ("Alternative Thumbnail",) + _no_img(None, None),
         ("Teaser", "paragraph", TEASER, "textarea", TEASER),
         ("Call to Action", "text", "Book your free consultation", "input", "Book your free consultation"),
     ]),
