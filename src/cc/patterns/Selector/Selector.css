@@ -243,18 +243,32 @@
   box-shadow: 0 0 0 1px var(--ai-border-brand);
 }
 
+/* The selected badge. A brand disc holding the check, in the PRIMARY BUTTON's own label colour
+ * — the approved on-brand pairing in every theme. It was `--ai-text-contrast` (the placeholder
+ * grey) with padding on the SVG itself, which shrank the tick to ~12px and left a plain teal dot
+ * on a photo (designer screenshot, 2026-09-29). The ring in the card colour separates it from
+ * any image behind it. */
 .selector__tile-check {
   position: absolute;
   inset-block-start: var(--ai-spacing-2);
   inset-inline-end: var(--ai-spacing-2);
-  inline-size: var(--ai-icon-size-md);
-  block-size: var(--ai-icon-size-md);
-  padding: var(--ai-spacing-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--ai-spacing-6);
+  block-size: var(--ai-spacing-6);
   border-radius: var(--ai-radius-full);
   background-color: var(--ai-surface-brand);
-  color: var(--ai-text-contrast);
+  box-shadow: 0 0 0 2px var(--ai-surface-primary);
+  color: var(--ai-btn-primary-text);
   opacity: 0;
   transition: opacity var(--ai-transition-default);
+}
+
+.selector__tile-check svg {
+  inline-size: var(--ai-icon-size-sm);
+  block-size: var(--ai-icon-size-sm);
+  stroke-width: 3;
 }
 
 .selector__tile[aria-pressed="true"] .selector__tile-check { opacity: 1; }

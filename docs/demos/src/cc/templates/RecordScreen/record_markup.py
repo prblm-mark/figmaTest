@@ -592,7 +592,7 @@ def media_select_modal(mid, title, items, total):
                      for f in ["Media Type", "Section", "Creator"])
     tiles = "".join(f'''<li class="selector__tile-item" data-selector-item="{e(t)}" data-facets="{e(json.dumps({"Media Type": f, "Section": sec, "Creator": who}))}">
             <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="{e(u)}" data-meta="{e(f)} · {e(d)}">
-              <span class="selector__tile-media"><img src="{e(u)}" alt="" loading="lazy">{icon("check", "selector__tile-check")}</span>
+              <span class="selector__tile-media"><img src="{e(u)}" alt="" loading="lazy"><span class="selector__tile-check">{icon("check")}</span></span>
               <span class="selector__tile-text"><span class="selector__tile-name">{e(t)}</span><span class="selector__tile-meta">{e(f)} · {e(d)}</span></span>
             </button>
           </li>''' for t, u, f, d, sec, who in items)
