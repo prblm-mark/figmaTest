@@ -12,7 +12,7 @@
   flex-direction: column;
   gap: var(--ai-spacing-4);
   padding: var(--ai-spacing-4);
-  background-color: var(--ai-surface-brand-soft-extra);
+  background-color: var(--ai-surface-extra-minimal);   /* designer amend 2026-09-29 (was brand-soft-extra) */
   border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-md);
   /* Self-container: its width tracks the section body (fluid), so its descendants may query it. */
@@ -83,6 +83,15 @@
   align-items: center;
   gap: var(--ai-spacing-2);
   flex-shrink: 0;
+}
+
+/* Edit prompt — `btn btn--tertiary btn--sm` plus the subtle `--ai-border-secondary` line the
+ * listing's account chip carries (Case B contextual override, designer 2026-09-29), restated for
+ * hover and focus because `.btn--tertiary:hover` sets the transparent hover border at (0,2,0). */
+.prompt-modifier [data-prompt-toggle],
+.prompt-modifier [data-prompt-toggle]:hover,
+.prompt-modifier [data-prompt-toggle]:focus-visible {
+  border-color: var(--ai-border-secondary);
 }
 
 .prompt-modifier [data-prompt-toggle] svg {

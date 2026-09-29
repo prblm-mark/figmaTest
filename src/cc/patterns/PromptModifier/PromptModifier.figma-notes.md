@@ -10,7 +10,7 @@ Live shows the full prompt textarea, a Generate button and Copy / Expand icons a
 
 ## Layout
 
-A tinted panel (`--ai-surface-brand-soft-extra`, `--ai-border-secondary`, `--ai-radius-md`,
+A tinted panel (`--ai-surface-extra-minimal`, designer amend 2026-09-29, was brand-soft-extra; `--ai-border-secondary`, `--ai-radius-md`,
 `--ai-spacing-4` padding) at the top of the section body. It reads as tooling that writes the fields
 below it, not as an article field.
 
