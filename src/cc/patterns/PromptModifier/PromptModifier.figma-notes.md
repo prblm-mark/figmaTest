@@ -25,7 +25,7 @@ below it, not as an article field.
   `--ai-surface-brand-soft` ring, and shows "Generated n fields just now." with **Undo**, because
   Generate overwrites.
 - **Narrow** (`@container prompt-modifier (max-width: 479px)`): the actions drop to their own
-  full-width row.
+  row, left-aligned with the title and preview, indented past the icon (designer, 2026-09-29).
 
 Live's per-field "Expand" arrows are not carried over: our textareas resize natively.
 

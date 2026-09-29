@@ -150,9 +150,15 @@
 /* A field Generate just wrote, flashed so the eye finds what changed (cleared by the JS). */
 .prompt-modifier-filled { box-shadow: 0 0 0 2px var(--ai-surface-brand-soft); }
 
-/* Narrow: the actions drop under the text, full row, so the title and preview keep their room. */
+/* Narrow: the actions drop under the text on their own row, LEFT-aligned with the title and
+ * preview — indented past the icon by its width + the head gap (designer, 2026-09-29; they were
+ * right-aligned). */
 @container prompt-modifier (max-width: 479px) {
   .prompt-modifier__head { flex-wrap: wrap; }
   .prompt-modifier__text { flex-basis: calc(100% - var(--ai-icon-size-md) - var(--ai-spacing-3)); }
-  .prompt-modifier__actions { inline-size: 100%; justify-content: flex-end; }
+  .prompt-modifier__actions {
+    inline-size: 100%;
+    justify-content: flex-start;
+    padding-inline-start: calc(var(--ai-icon-size-md) + var(--ai-spacing-3));
+  }
 }
