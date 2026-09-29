@@ -122,6 +122,3 @@ Section, Creator and Sort Order (lookup rows) and every MediaPicker **Edit** ope
 
 Tertiary chips in the sidebar (FactPanel values, Recent Viewers companies) carry the subtle `--ai-border-secondary` line of the listing account chip. This is a Case B override in RecordScreen.css, scoped to `.record-screen__sidebar` and restated for hover and focus.
 
-## Edit screen button shadow (designer, 2026-09-29)
-
-On ArticleEdit (`body.record-page--edit`), every button in the page column and the modals has `--ai-shadow-2xs`, except borderless tertiaries. The bordered tertiaries (sidebar chips, Edit prompt, sort move buttons) do have it. Focus keeps Button's ring. The app shell is untouched. Flag for Figma.
