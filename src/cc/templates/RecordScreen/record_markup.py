@@ -117,7 +117,7 @@ def media_picker(label, src=None):
     return f'''<div class="media-picker">
               <span class="media-picker__thumb">{thumb}</span>
               <div class="media-picker__actions">
-                {btn("Edit", "secondary", "sm", icon_left="pencil", attrs=f' aria-label="Choose {e(label)}"')}
+                {btn("Edit", "secondary", "sm", icon_left="pencil", attrs=f' aria-label="Choose {e(label)}" aria-haspopup="dialog" data-selector-open="modal-media"')}
                 {btn(f"Remove {label}", "secondary", "sm", icon_left="trash-2", icon_only=True)}
               </div>
             </div>'''
@@ -157,7 +157,7 @@ def _id(label):
     return "f-" + "".join(ch for ch in label.lower() if ch.isalnum())[:24] + f"-{_uid[0]}"
 
 
-def edit_row(label, kind, value="", required=False, help_text=None, tags=None, modal=None):
+def edit_row(label, kind, value="", required=False, help_text=None, tags=None, modal=None, placeholder="None selected"):
     fid = _id(label)
     req = '<span class="field-row__required" aria-hidden="true">*</span>' if required else ""
     reqattr = " required aria-required=\"true\"" if required else ""
@@ -216,8 +216,8 @@ def edit_row(label, kind, value="", required=False, help_text=None, tags=None, m
         #   Publish Start / End and Embargo End is not built yet → DatePicker + TimePicker pairing
     elif kind == "lookup":
         ctl = f'''<div class="field-row__lookup">
-              <div class="input"><div class="input__wrap"><input id="{fid}" type="text" class="input__control" value="{e(value)}" readonly placeholder="None selected"></div></div>
-              {btn("Select", "secondary", attrs=f' aria-haspopup="dialog" aria-label="Select {e(label)}" data-backend-todo="record-lookup"')}
+              <div class="input"><div class="input__wrap"><input id="{fid}" type="text" class="input__control" value="{e(value)}" readonly placeholder="{e(placeholder)}" data-selector-value></div></div>
+              {btn("Select", "secondary", attrs=f' aria-haspopup="dialog" aria-label="Select {e(label)}"' + (f' data-selector-open="{modal}"' if modal else ' data-backend-todo="record-lookup"'))}
             </div>'''
     elif kind == "image" and not (value or {}).get("src"):
         # No image yet: just the picker — alt / caption / alignment / width appear once one is chosen.
@@ -487,14 +487,14 @@ def multi_select_modal(mid, title, source):
                      for f in ["Name", "Parent Section", "Channel", "Zone"])
     cb = lambda lbl: f'<label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="{e(lbl)}"><span class="checkbox__indicator">{icon("check")}</span></label>'
     rows = "".join(f'<tr><td>{cb("Select " + n)}</td><td>{e(n)}</td><td>{e(p) or "—"}</td><td>{e(c)}</td><td>{e(z)}</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open {e(n)}">{icon("external-link")}</a></td></tr>' for n, p, c, z in source)
-    return f'''<div class="modal-overlay" id="{mid}" role="presentation">
+    return f'''<div class="modal-overlay" id="{mid}" role="presentation" data-selector="multi">
     <div class="modal filter-dropdowns__modal" role="dialog" aria-modal="true" aria-labelledby="{mid}-title">
       <div class="modal__header">
         <h2 class="modal__title" id="{mid}-title">{e(title)}</h2>
         <button class="modal__close" type="button" aria-label="Close">{icon("x")}</button>
       </div>
-      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets">{facets}</div>
-      <div class="filter-dropdowns__table-region">
+      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets">{selector_search(mid, "Search by name")}{facets}</div>
+      <div class="filter-dropdowns__table-region modal__scroll">
         <div class="datatables"><div class="datatables__body">
           <table class="table">
             <thead><tr>
@@ -507,14 +507,144 @@ def multi_select_modal(mid, title, source):
             </tr></thead>
             <tbody>{rows}</tbody>
           </table>
+          {selector_empty()}
         </div></div>
       </div>
-      <div class="modal__footer">
+      <div class="modal__footer selector__footer">
+        <span class="selector__status" data-selector-count aria-live="polite"></span>
         <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
         <button type="button" class="btn btn--primary" data-filter-dropdowns-apply>Apply</button>
       </div>
     </div>
   </div>'''
+
+
+# ── Selector (code-first, flagged for Figma 2026-09-29) ─────────────
+# Four pickers, one pattern (src/cc/patterns/Selector): single / multi / media / sort. The multi
+# mode IS the Multi Select Modal above (TagBox owns its Apply); Selector.js adds the search and
+# the count to it, and owns the other three outright.
+def selector_search(mid, placeholder):
+    return f'''<div class="search search--sm selector__search">
+          <span class="search__icon">{icon("search")}</span>
+          <input class="search__input" type="search" placeholder="{e(placeholder)}" aria-label="{e(placeholder)}" aria-controls="{mid}-results" data-selector-search>
+        </div>'''
+
+
+def selector_empty():
+    return f'<p class="selector__empty" data-selector-empty hidden>{icon("search-x")}<span>No matches. Try a different search.</span></p>'
+
+
+def _modal_head(mid, title, sub=None):
+    subline = f'<p class="modal__subtitle">{e(sub)}</p>' if sub else ""
+    return f'''<div class="modal__header">
+        <div class="modal__title-block"><h2 class="modal__title" id="{mid}-title">{e(title)}</h2>{subline}</div>
+        <button class="modal__close" type="button" aria-label="Close">{icon("x")}</button>
+      </div>'''
+
+
+def single_select_modal(mid, title, source, noun="section"):
+    """Single select — click a row to choose it and close (designer, 2026-09-29).
+    The current value is pinned to the top and ticked when the modal opens (Selector.js)."""
+    facets = "".join(f'''<div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="{e(f)}"><button type="button" class="filter-item__trigger" aria-expanded="false">{icon("plus", "filter-item__add")}<span class="filter-item__name">{e(f)}</span></button></div>'''
+                     for f in ["Parent Section", "Channel", "Zone"])
+    rows = "".join(f'''<tr class="selector__row" data-selector-item="{e(n)}">
+              <td><button type="button" class="selector__pick" data-selector-pick>{icon("check", "selector__tick")}<span>{e(n)}</span></button></td>
+              <td>{e(p) or "—"}</td><td>{e(c)}</td><td>{e(z)}</td></tr>''' for n, p, c, z in source)
+    return f'''<div class="modal-overlay" id="{mid}" role="presentation" data-selector="single">
+    <div class="modal filter-dropdowns__modal selector" role="dialog" aria-modal="true" aria-labelledby="{mid}-title">
+      {_modal_head(mid, title, f"Choose one {noun}. Click a row to select it.")}
+      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets">{selector_search(mid, "Search by name")}{facets}</div>
+      <div class="filter-dropdowns__table-region modal__scroll" id="{mid}-results">
+        <div class="datatables"><div class="datatables__body">
+          <table class="table selector__table">
+            <thead><tr><th>Name</th><th>Parent Section</th><th>Channel</th><th>Zone</th></tr></thead>
+            <tbody>{rows}</tbody>
+          </table>
+          {selector_empty()}
+        </div></div>
+      </div>
+      <div class="modal__footer selector__footer">
+        <span class="selector__status" data-selector-count aria-live="polite"></span>
+        <button type="button" class="btn btn--tertiary" data-selector-clear>Clear selection</button>
+        <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
+      </div>
+    </div>
+  </div>'''
+    # TODO(backend:RecordScreen) selector-single-source: static rows → paged search over the field's source
+
+
+def media_select_modal(mid, title, items, total):
+    """Media item selector — the Media Items listing's grid, as a picker. One pick, then Use image."""
+    facets = "".join(f'''<div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="{e(f)}"><button type="button" class="filter-item__trigger" aria-expanded="false">{icon("plus", "filter-item__add")}<span class="filter-item__name">{e(f)}</span></button></div>'''
+                     for f in ["Media Type", "Section", "Creator", "Created"])
+    tiles = "".join(f'''<li class="selector__tile-item" data-selector-item="{e(t)}">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="{e(u)}" data-meta="{e(f)} · {e(d)}">
+              <span class="selector__tile-media"><img src="{e(u)}" alt="" loading="lazy">{icon("check", "selector__tile-check")}</span>
+              <span class="selector__tile-text"><span class="selector__tile-name">{e(t)}</span><span class="selector__tile-meta">{e(f)} · {e(d)}</span></span>
+            </button>
+          </li>''' for t, u, f, d in items)
+    return f'''<div class="modal-overlay" id="{mid}" role="presentation" data-selector="media">
+    <div class="modal selector selector--media" role="dialog" aria-modal="true" aria-labelledby="{mid}-title">
+      {_modal_head(mid, title)}
+      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets selector__toolbar">
+        {selector_search(mid, "Search media")}{facets}
+        <label class="checkbox selector__mine"><input type="checkbox" class="checkbox__input"><span class="checkbox__indicator">{icon("check")}</span><span class="checkbox__label"><span class="checkbox__label-text">My media</span></span></label>
+        {btn("Upload", "secondary", "sm", icon_left="upload", attrs=' data-backend-todo="selector-media-upload"')}
+      </div>
+      <div class="selector__region modal__scroll" id="{mid}-results">
+        <ul class="selector__grid" role="list">{tiles}</ul>
+        {selector_empty()}
+        <div class="selector__more"><span class="selector__more-count">Showing {len(items)} of {total}</span>{btn("Load more", "secondary", "sm", attrs=' data-backend-todo="selector-media-source"')}</div>
+      </div>
+      <div class="modal__footer selector__footer">
+        <span class="selector__status" data-selector-count aria-live="polite">Nothing selected</span>
+        <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
+        <button type="button" class="btn btn--primary" data-selector-apply disabled>Use image</button>
+      </div>
+    </div>
+  </div>'''
+    # TODO(backend:RecordScreen) selector-media-source: 24 demo tiles → media search (filters + paging) and upload
+
+
+def sort_order_modal(mid, title, section, items, current):
+    """Sort order — drag by the grip (Edit Columns' handle), ↑ ↓ one place, ⤒ ⤓ to the ends, or
+    type a position. Search narrows the list (drag pauses while it does). The record being edited
+    is highlighted and scrolled into view on open (designer, 2026-09-29)."""
+    n = len(items)
+    rows = "".join(f'''<li class="selector__sort-row{' selector__sort-row--current' if code == current else ''}" data-selector-item="{e(t)}" data-sort-key="{code}">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true">{icon("grip-vertical")}</span>
+            <input class="selector__position" type="text" inputmode="numeric" value="{i}" aria-label="Position of {e(t)}, 1 to {n}" data-sort-position>
+            <span class="selector__sort-thumb"><img src="{e(u)}" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">{e(t)}{'<span class="badge badge--info badge--sm selector__this">This article</span>' if code == current else ''}</span>
+            <span class="selector__sort-actions">
+              {btn("Move to top", "tertiary", "sm", icon_left="arrow-up-to-line", icon_only=True, attrs=' data-sort-move="top"')}
+              {btn("Move up", "tertiary", "sm", icon_left="arrow-up", icon_only=True, attrs=' data-sort-move="up"')}
+              {btn("Move down", "tertiary", "sm", icon_left="arrow-down", icon_only=True, attrs=' data-sort-move="down"')}
+              {btn("Move to bottom", "tertiary", "sm", icon_left="arrow-down-to-line", icon_only=True, attrs=' data-sort-move="bottom"')}
+            </span>
+          </li>''' for i, (code, t, u) in enumerate(items, 1))
+    return f'''<div class="modal-overlay" id="{mid}" role="presentation" data-selector="sort">
+    <div class="modal selector selector--sort" role="dialog" aria-modal="true" aria-labelledby="{mid}-title">
+      {_modal_head(mid, title, f"{n} articles in {section}. Drag, use the arrows, or type a position.")}
+      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets selector__toolbar">
+        {selector_search(mid, "Find an article")}
+        {btn("Jump to this article", "tertiary", "sm", icon_left="locate-fixed", attrs=' data-sort-jump')}
+      </div>
+      <p class="selector__hint" data-sort-hint hidden>{icon("info")}<span>Dragging is paused while searching. The arrows and positions still work.</span></p>
+      <div class="selector__region modal__scroll" id="{mid}-results">
+        <ol class="selector__sort-list" data-sort-list>{rows}</ol>
+        {selector_empty()}
+      </div>
+      <p class="selector__live" aria-live="polite" data-sort-live></p>
+      <div class="modal__footer selector__footer">
+        <span class="selector__status" data-selector-count></span>
+        <button type="button" class="btn btn--tertiary" data-sort-reset>Reset</button>
+        <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
+        <button type="button" class="btn btn--primary" data-selector-apply>Save order</button>
+      </div>
+    </div>
+  </div>'''
+    # TODO(backend:RecordScreen) selector-sort-order: order kept in the DOM → PUT the section's ordered item ids
 
 
 # ── StepsTable ───────────────────────────────────────────────────────

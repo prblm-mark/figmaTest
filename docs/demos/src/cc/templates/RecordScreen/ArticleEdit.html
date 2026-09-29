@@ -98,6 +98,8 @@
   <link rel="stylesheet" href="../../patterns/AdvisoryList/AdvisoryList.css">
   <link rel="stylesheet" href="../../patterns/PerformanceSummary/PerformanceSummary.css">
   <link rel="stylesheet" href="../../patterns/TagBox/TagBox.css">
+  <link rel="stylesheet" href="../../../components/SearchInput/SearchInput.css">
+  <link rel="stylesheet" href="../../patterns/Selector/Selector.css">
   <link rel="stylesheet" href="../../patterns/StepsTable/StepsTable.css">
   <link rel="stylesheet" href="RecordScreen.css">
 </head>
@@ -520,14 +522,14 @@
           </div><div class="field-row field-row--edit">
             <label class="field-row__label" for="f-section-3">Section</label>
             <div class="field-row__value"><div class="field-row__lookup">
-              <div class="input"><div class="input__wrap"><input id="f-section-3" type="text" class="input__control" value="Insight" readonly placeholder="None selected"></div></div>
-              <button type="button" class="btn btn--secondary" aria-haspopup="dialog" aria-label="Select Section" data-backend-todo="record-lookup"><span>Select</span></button>
+              <div class="input"><div class="input__wrap"><input id="f-section-3" type="text" class="input__control" value="Insight" readonly placeholder="None selected" data-selector-value></div></div>
+              <button type="button" class="btn btn--secondary" aria-haspopup="dialog" aria-label="Select Section" data-selector-open="modal-section"><span>Select</span></button>
             </div></div>
           </div><div class="field-row field-row--edit">
             <label class="field-row__label" for="f-sortorder-4">Sort Order</label>
             <div class="field-row__value"><div class="field-row__lookup">
-              <div class="input"><div class="input__wrap"><input id="f-sortorder-4" type="text" class="input__control" value="" readonly placeholder="None selected"></div></div>
-              <button type="button" class="btn btn--secondary" aria-haspopup="dialog" aria-label="Select Sort Order" data-backend-todo="record-lookup"><span>Select</span></button>
+              <div class="input"><div class="input__wrap"><input id="f-sortorder-4" type="text" class="input__control" value="" readonly placeholder="Default (by title)" data-selector-value></div></div>
+              <button type="button" class="btn btn--secondary" aria-haspopup="dialog" aria-label="Select Sort Order" data-selector-open="modal-sort"><span>Select</span></button>
             </div></div>
           </div><div class="field-row field-row--edit">
             <span class="field-row__label" id="f-multidisplay-5-label">Multi Display</span>
@@ -573,7 +575,7 @@
               <div class="media-picker">
               <span class="media-picker__thumb"><img src="../../../../img/record/article-thumb.jpg" alt=""></span>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Thumbnail"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Thumbnail" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Thumbnail"><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
             </div>
@@ -598,7 +600,7 @@
             <div class="field-row__value"><div class="media-picker">
               <span class="media-picker__thumb"><i data-lucide="image" aria-hidden="true"></i></span>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Alternative Thumbnail"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Alternative Thumbnail" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Alternative Thumbnail"><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
             </div></div>
@@ -656,7 +658,7 @@
               <div class="media-picker">
               <span class="media-picker__thumb"><img src="../../../../img/record/article-thumb.jpg" alt=""></span>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Main Image"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Main Image" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Main Image"><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
             </div>
@@ -681,7 +683,7 @@
             <div class="field-row__value"><div class="media-picker">
               <span class="media-picker__thumb"><i data-lucide="image" aria-hidden="true"></i></span>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Label Image"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Label Image" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Label Image"><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
             </div></div>
@@ -703,7 +705,7 @@
             <div class="field-row__value"><div class="media-picker">
               <span class="media-picker__thumb"><i data-lucide="image" aria-hidden="true"></i></span>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Intro Image"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Intro Image" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Intro Image"><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
             </div></div>
@@ -712,7 +714,7 @@
             <div class="field-row__value"><div class="media-picker">
               <span class="media-picker__thumb"><i data-lucide="image" aria-hidden="true"></i></span>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image Top"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image Top" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Image Top"><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
             </div></div>
@@ -728,7 +730,7 @@ The current set is News AI, AI Assistants, AI Enhanced Search, Article Summaries
             <div class="field-row__value"><div class="media-picker">
               <span class="media-picker__thumb"><i data-lucide="image" aria-hidden="true"></i></span>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image 1"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image 1" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Image 1"><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
             </div></div>
@@ -737,7 +739,7 @@ The current set is News AI, AI Assistants, AI Enhanced Search, Article Summaries
             <div class="field-row__value"><div class="media-picker">
               <span class="media-picker__thumb"><i data-lucide="image" aria-hidden="true"></i></span>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image 2"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image 2" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Image 2"><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
             </div></div>
@@ -751,7 +753,7 @@ The current set is News AI, AI Assistants, AI Enhanced Search, Article Summaries
             <div class="field-row__value"><div class="media-picker">
               <span class="media-picker__thumb"><i data-lucide="image" aria-hidden="true"></i></span>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image 3"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image 3" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Image 3"><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
             </div></div>
@@ -760,7 +762,7 @@ The current set is News AI, AI Assistants, AI Enhanced Search, Article Summaries
             <div class="field-row__value"><div class="media-picker">
               <span class="media-picker__thumb"><i data-lucide="image" aria-hidden="true"></i></span>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image 4"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image 4" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Image 4"><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
             </div></div>
@@ -774,7 +776,7 @@ The current set is News AI, AI Assistants, AI Enhanced Search, Article Summaries
             <div class="field-row__value"><div class="media-picker">
               <span class="media-picker__thumb"><i data-lucide="image" aria-hidden="true"></i></span>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image 5"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image 5" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Image 5"><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
             </div></div>
@@ -783,7 +785,7 @@ The current set is News AI, AI Assistants, AI Enhanced Search, Article Summaries
             <div class="field-row__value"><div class="media-picker">
               <span class="media-picker__thumb"><i data-lucide="image" aria-hidden="true"></i></span>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image 6"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image 6" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Image 6"><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
             </div></div>
@@ -797,7 +799,7 @@ The current set is News AI, AI Assistants, AI Enhanced Search, Article Summaries
             <div class="field-row__value"><div class="media-picker">
               <span class="media-picker__thumb"><i data-lucide="image" aria-hidden="true"></i></span>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Base Image"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Base Image" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Base Image"><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
             </div></div>
@@ -811,7 +813,7 @@ The current set is News AI, AI Assistants, AI Enhanced Search, Article Summaries
             <div class="field-row__value"><div class="media-picker">
               <span class="media-picker__thumb"><i data-lucide="image" aria-hidden="true"></i></span>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Background Image"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Background Image" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i><span>Edit</span></button>
                 <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Background Image"><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
             </div></div>
@@ -1052,8 +1054,8 @@ The current set is News AI, AI Assistants, AI Enhanced Search, Article Summaries
           <div class="record-section__body"><div class="field-row field-row--edit">
             <label class="field-row__label" for="f-creator-67">Creator</label>
             <div class="field-row__value"><div class="field-row__lookup">
-              <div class="input"><div class="input__wrap"><input id="f-creator-67" type="text" class="input__control" value="Markus Karlsson" readonly placeholder="None selected"></div></div>
-              <button type="button" class="btn btn--secondary" aria-haspopup="dialog" aria-label="Select Creator" data-backend-todo="record-lookup"><span>Select</span></button>
+              <div class="input"><div class="input__wrap"><input id="f-creator-67" type="text" class="input__control" value="Markus Karlsson" readonly placeholder="None selected" data-selector-value></div></div>
+              <button type="button" class="btn btn--secondary" aria-haspopup="dialog" aria-label="Select Creator" data-selector-open="modal-creator"><span>Select</span></button>
             </div></div>
           </div><div class="field-row field-row--edit">
             <span class="field-row__label" id="f-relatedauthors-68-label">Related Authors</span>
@@ -1064,7 +1066,7 @@ The current set is News AI, AI Assistants, AI Enhanced Search, Article Summaries
           </div><div class="field-row field-row--edit">
             <label class="field-row__label" for="f-account-69">Account</label>
             <div class="field-row__value"><div class="field-row__lookup">
-              <div class="input"><div class="input__wrap"><input id="f-account-69" type="text" class="input__control" value="" readonly placeholder="None selected"></div></div>
+              <div class="input"><div class="input__wrap"><input id="f-account-69" type="text" class="input__control" value="" readonly placeholder="None selected" data-selector-value></div></div>
               <button type="button" class="btn btn--secondary" aria-haspopup="dialog" aria-label="Select Account" data-backend-todo="record-lookup"><span>Select</span></button>
             </div></div>
           </div><div class="field-row field-row--edit">
@@ -2025,6 +2027,7 @@ The current set is News AI, AI Assistants, AI Enhanced Search, Article Summaries
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="../../components/AdvisoryItem/AdvisoryItem.js"></script>
   <script src="../../patterns/TagBox/TagBox.js"></script>
+  <script src="../../patterns/Selector/Selector.js"></script>
   <script src="../../patterns/StepsTable/StepsTable.js"></script>
   <script src="RecordScreen.js"></script>
 
@@ -2045,14 +2048,1095 @@ The current set is News AI, AI Assistants, AI Enhanced Search, Article Summaries
       if (window.lucide) window.lucide.createIcons();
     });
   </script>
-<div class="modal-overlay" id="modal-multi-display" role="presentation">
+<div class="modal-overlay" id="modal-section" role="presentation" data-selector="single">
+    <div class="modal filter-dropdowns__modal selector" role="dialog" aria-modal="true" aria-labelledby="modal-section-title">
+      <div class="modal__header">
+        <div class="modal__title-block"><h2 class="modal__title" id="modal-section-title">Select Section</h2><p class="modal__subtitle">Choose one section. Click a row to select it.</p></div>
+        <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets"><div class="search search--sm selector__search">
+          <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+          <input class="search__input" type="search" placeholder="Search by name" aria-label="Search by name" aria-controls="modal-section-results" data-selector-search>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Parent Section"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Parent Section</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Channel"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Channel</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Zone"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Zone</span></button></div></div>
+      <div class="filter-dropdowns__table-region modal__scroll" id="modal-section-results">
+        <div class="datatables"><div class="datatables__body">
+          <table class="table selector__table">
+            <thead><tr><th>Name</th><th>Parent Section</th><th>Channel</th><th>Zone</th></tr></thead>
+            <tbody><tr class="selector__row" data-selector-item="Insight">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Insight</span></button></td>
+              <td>—</td><td>Insights</td><td>Affino</td></tr><tr class="selector__row" data-selector-item="AI">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>AI</span></button></td>
+              <td>—</td><td>AI</td><td>Affino</td></tr><tr class="selector__row" data-selector-item="Coronavirus Hub">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Coronavirus Hub</span></button></td>
+              <td>Insights</td><td>Insights</td><td>Affino</td></tr><tr class="selector__row" data-selector-item="Insight &amp; Blogs">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Insight &amp; Blogs</span></button></td>
+              <td>Insights</td><td>Insights</td><td>Affino</td></tr><tr class="selector__row" data-selector-item="2013 Featured Affino Sites">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>2013 Featured Affino Sites</span></button></td>
+              <td>Links</td><td>Links</td><td>Affino</td></tr><tr class="selector__row" data-selector-item="2020 Affino February Roundtable Tabs">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>2020 Affino February Roundtable Tabs</span></button></td>
+              <td>Event Assets</td><td>Event Assets</td><td>Affino</td></tr><tr class="selector__row" data-selector-item="About Resources">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>About Resources</span></button></td>
+              <td>Links</td><td>Links</td><td>Affino</td></tr><tr class="selector__row" data-selector-item="Active Affino Sites">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Active Affino Sites</span></button></td>
+              <td>Links</td><td>Links</td><td>Affino</td></tr><tr class="selector__row" data-selector-item="Add Review">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Add Review</span></button></td>
+              <td>—</td><td>Add Review</td><td>Affino</td></tr><tr class="selector__row" data-selector-item="Additional Services Links">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Additional Services Links</span></button></td>
+              <td>Links</td><td>Links</td><td>Affino</td></tr><tr class="selector__row" data-selector-item="Affino 9 Assets">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Affino 9 Assets</span></button></td>
+              <td>—</td><td>Affino 9 Assets</td><td>Affino</td></tr><tr class="selector__row" data-selector-item="Affino Beta Elements">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Affino Beta Elements</span></button></td>
+              <td>—</td><td>Affino Beta Elements</td><td>Affino</td></tr><tr class="selector__row" data-selector-item="Affino Case Studies">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Affino Case Studies</span></button></td>
+              <td>—</td><td>Affino Case Studies</td><td>Affino</td></tr><tr class="selector__row" data-selector-item="Affino Company Info">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Affino Company Info</span></button></td>
+              <td>—</td><td>Affino Company Info</td><td>Affino</td></tr><tr class="selector__row" data-selector-item="Affino Coverage">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Affino Coverage</span></button></td>
+              <td>—</td><td>Affino Coverage</td><td>Affino</td></tr><tr class="selector__row" data-selector-item="Affino Customer Quotes">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Affino Customer Quotes</span></button></td>
+              <td>—</td><td>Affino Customer Quotes</td><td>Affino</td></tr><tr class="selector__row" data-selector-item="Affino Deployment">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Affino Deployment</span></button></td>
+              <td>Affinovation</td><td>Affino Online Guides</td><td>Affino</td></tr><tr class="selector__row" data-selector-item="Affino Design Elements">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Affino Design Elements</span></button></td>
+              <td>—</td><td>Affino Design Elements</td><td>Affino</td></tr><tr class="selector__row" data-selector-item="Affino Featured Clients">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Affino Featured Clients</span></button></td>
+              <td>—</td><td>Affino Featured Clients</td><td>Affino</td></tr><tr class="selector__row" data-selector-item="Affino Features">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Affino Features</span></button></td>
+              <td>—</td><td>Affino Features</td><td>Affino</td></tr><tr class="selector__row" data-selector-item="Affino Features - Archived">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Affino Features - Archived</span></button></td>
+              <td>—</td><td>Affino Features - Archived</td><td>Affino</td></tr><tr class="selector__row" data-selector-item="Affino Features X">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Affino Features X</span></button></td>
+              <td>—</td><td>Affino Features X</td><td>Affino</td></tr><tr class="selector__row" data-selector-item="Affino for Event Organisers">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Affino for Event Organisers</span></button></td>
+              <td>—</td><td>Affino for Event Organisers</td><td>Affino</td></tr><tr class="selector__row" data-selector-item="Affino for Membership Organisations">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Affino for Membership Organisations</span></button></td>
+              <td>—</td><td>Affino for Membership Organisations</td><td>Affino</td></tr></tbody>
+          </table>
+          <p class="selector__empty" data-selector-empty hidden><i data-lucide="search-x" aria-hidden="true"></i><span>No matches. Try a different search.</span></p>
+        </div></div>
+      </div>
+      <div class="modal__footer selector__footer">
+        <span class="selector__status" data-selector-count aria-live="polite"></span>
+        <button type="button" class="btn btn--tertiary" data-selector-clear>Clear selection</button>
+        <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
+      </div>
+    </div>
+  </div><div class="modal-overlay" id="modal-creator" role="presentation" data-selector="single">
+    <div class="modal filter-dropdowns__modal selector" role="dialog" aria-modal="true" aria-labelledby="modal-creator-title">
+      <div class="modal__header">
+        <div class="modal__title-block"><h2 class="modal__title" id="modal-creator-title">Select Creator</h2><p class="modal__subtitle">Choose one creator. Click a row to select it.</p></div>
+        <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets"><div class="search search--sm selector__search">
+          <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+          <input class="search__input" type="search" placeholder="Search by name" aria-label="Search by name" aria-controls="modal-creator-results" data-selector-search>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Parent Section"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Parent Section</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Channel"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Channel</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Zone"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Zone</span></button></div></div>
+      <div class="filter-dropdowns__table-region modal__scroll" id="modal-creator-results">
+        <div class="datatables"><div class="datatables__body">
+          <table class="table selector__table">
+            <thead><tr><th>Name</th><th>Parent Section</th><th>Channel</th><th>Zone</th></tr></thead>
+            <tbody><tr class="selector__row" data-selector-item="Markus Karlsson">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Markus Karlsson</span></button></td>
+              <td>—</td><td>Authors</td><td>Affino</td></tr><tr class="selector__row" data-selector-item="Luis Montiel">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Luis Montiel</span></button></td>
+              <td>—</td><td>Authors</td><td>Affino</td></tr><tr class="selector__row" data-selector-item="Mark Foster">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Mark Foster</span></button></td>
+              <td>—</td><td>Authors</td><td>Affino</td></tr></tbody>
+          </table>
+          <p class="selector__empty" data-selector-empty hidden><i data-lucide="search-x" aria-hidden="true"></i><span>No matches. Try a different search.</span></p>
+        </div></div>
+      </div>
+      <div class="modal__footer selector__footer">
+        <span class="selector__status" data-selector-count aria-live="polite"></span>
+        <button type="button" class="btn btn--tertiary" data-selector-clear>Clear selection</button>
+        <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
+      </div>
+    </div>
+  </div><div class="modal-overlay" id="modal-media" role="presentation" data-selector="media">
+    <div class="modal selector selector--media" role="dialog" aria-modal="true" aria-labelledby="modal-media-title">
+      <div class="modal__header">
+        <div class="modal__title-block"><h2 class="modal__title" id="modal-media-title">Select Media</h2></div>
+        <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets selector__toolbar">
+        <div class="search search--sm selector__search">
+          <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+          <input class="search__input" type="search" placeholder="Search media" aria-label="Search media" aria-controls="modal-media-results" data-selector-search>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Media Type"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Media Type</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Section"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Section</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Creator"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Creator</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Created"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Created</span></button></div>
+        <label class="checkbox selector__mine"><input type="checkbox" class="checkbox__input"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span><span class="checkbox__label"><span class="checkbox__label-text">My media</span></span></label>
+        <button type="button" class="btn btn--secondary btn--sm" data-backend-todo="selector-media-upload"><i data-lucide="upload" aria-hidden="true"></i><span>Upload</span></button>
+      </div>
+      <div class="selector__region modal__scroll" id="modal-media-results">
+        <ul class="selector__grid" role="list"><li class="selector__tile-item" data-selector-item="StripeUS">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130166/256" data-meta="WebP · 2026-09-21">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130166/256" alt="" loading="lazy"><i data-lucide="check" class="selector__tile-check" aria-hidden="true"></i></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">StripeUS</span><span class="selector__tile-meta">WebP · 2026-09-21</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="StripeUK">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130165/256" data-meta="WebP · 2026-09-21">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130165/256" alt="" loading="lazy"><i data-lucide="check" class="selector__tile-check" aria-hidden="true"></i></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">StripeUK</span><span class="selector__tile-meta">WebP · 2026-09-21</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="image3">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130164/256" data-meta="WebP · 2026-09-21">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130164/256" alt="" loading="lazy"><i data-lucide="check" class="selector__tile-check" aria-hidden="true"></i></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">image3</span><span class="selector__tile-meta">WebP · 2026-09-21</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshot 18 9 2026 162747 elitesoccercoaching.net">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130163/256" data-meta="WebP · 2026-09-18">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130163/256" alt="" loading="lazy"><i data-lucide="check" class="selector__tile-check" aria-hidden="true"></i></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot 18 9 2026 162747 elitesoccercoaching.net</span><span class="selector__tile-meta">WebP · 2026-09-18</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshot 18 9 2026 162732 elitesoccercoaching.net">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130162/256" data-meta="WebP · 2026-09-18">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130162/256" alt="" loading="lazy"><i data-lucide="check" class="selector__tile-check" aria-hidden="true"></i></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot 18 9 2026 162732 elitesoccercoaching.net</span><span class="selector__tile-meta">WebP · 2026-09-18</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshot 18 9 2026 162739 elitesoccercoaching.net">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130161/256" data-meta="WebP · 2026-09-18">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130161/256" alt="" loading="lazy"><i data-lucide="check" class="selector__tile-check" aria-hidden="true"></i></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot 18 9 2026 162739 elitesoccercoaching.net</span><span class="selector__tile-meta">WebP · 2026-09-18</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 17091959">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130158/256" data-meta="WebP · 2026-09-17">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130158/256" alt="" loading="lazy"><i data-lucide="check" class="selector__tile-check" aria-hidden="true"></i></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 17091959</span><span class="selector__tile-meta">WebP · 2026-09-17</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 17085914">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130157/256" data-meta="WebP · 2026-09-17">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130157/256" alt="" loading="lazy"><i data-lucide="check" class="selector__tile-check" aria-hidden="true"></i></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 17085914</span><span class="selector__tile-meta">WebP · 2026-09-17</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 16161248">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130156/256" data-meta="WebP · 2026-09-16">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130156/256" alt="" loading="lazy"><i data-lucide="check" class="selector__tile-check" aria-hidden="true"></i></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 16161248</span><span class="selector__tile-meta">WebP · 2026-09-16</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 16161236">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130155/256" data-meta="WebP · 2026-09-16">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130155/256" alt="" loading="lazy"><i data-lucide="check" class="selector__tile-check" aria-hidden="true"></i></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 16161236</span><span class="selector__tile-meta">WebP · 2026-09-16</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 16143300">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130154/256" data-meta="WebP · 2026-09-16">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130154/256" alt="" loading="lazy"><i data-lucide="check" class="selector__tile-check" aria-hidden="true"></i></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 16143300</span><span class="selector__tile-meta">WebP · 2026-09-16</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshotfrom2026 09 1612 04 21">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130153/256" data-meta="WebP · 2026-09-16">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130153/256" alt="" loading="lazy"><i data-lucide="check" class="selector__tile-check" aria-hidden="true"></i></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshotfrom2026 09 1612 04 21</span><span class="selector__tile-meta">WebP · 2026-09-16</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 16091012">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130152/256" data-meta="WebP · 2026-09-16">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130152/256" alt="" loading="lazy"><i data-lucide="check" class="selector__tile-check" aria-hidden="true"></i></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 16091012</span><span class="selector__tile-meta">WebP · 2026-09-16</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 15173234">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130151/256" data-meta="WebP · 2026-09-15">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130151/256" alt="" loading="lazy"><i data-lucide="check" class="selector__tile-check" aria-hidden="true"></i></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 15173234</span><span class="selector__tile-meta">WebP · 2026-09-15</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 15at16.28.54">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130150/256" data-meta="WebP · 2026-09-15">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130150/256" alt="" loading="lazy"><i data-lucide="check" class="selector__tile-check" aria-hidden="true"></i></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 15at16.28.54</span><span class="selector__tile-meta">WebP · 2026-09-15</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 15142029">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130149/256" data-meta="WebP · 2026-09-15">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130149/256" alt="" loading="lazy"><i data-lucide="check" class="selector__tile-check" aria-hidden="true"></i></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 15142029</span><span class="selector__tile-meta">WebP · 2026-09-15</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 15141611">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130148/256" data-meta="WebP · 2026-09-15">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130148/256" alt="" loading="lazy"><i data-lucide="check" class="selector__tile-check" aria-hidden="true"></i></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 15141611</span><span class="selector__tile-meta">WebP · 2026-09-15</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 15141311">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130147/256" data-meta="WebP · 2026-09-15">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130147/256" alt="" loading="lazy"><i data-lucide="check" class="selector__tile-check" aria-hidden="true"></i></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 15141311</span><span class="selector__tile-meta">WebP · 2026-09-15</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshotfrom2026 09 1513 51 38">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130146/256" data-meta="WebP · 2026-09-15">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130146/256" alt="" loading="lazy"><i data-lucide="check" class="selector__tile-check" aria-hidden="true"></i></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshotfrom2026 09 1513 51 38</span><span class="selector__tile-meta">WebP · 2026-09-15</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="category topic withintopics">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130143/256" data-meta="WebP · 2026-09-15">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130143/256" alt="" loading="lazy"><i data-lucide="check" class="selector__tile-check" aria-hidden="true"></i></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">category topic withintopics</span><span class="selector__tile-meta">WebP · 2026-09-15</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="tbs2">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130142/256" data-meta="WebP · 2026-09-14">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130142/256" alt="" loading="lazy"><i data-lucide="check" class="selector__tile-check" aria-hidden="true"></i></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">tbs2</span><span class="selector__tile-meta">WebP · 2026-09-14</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="tbs1">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130141/256" data-meta="WebP · 2026-09-14">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130141/256" alt="" loading="lazy"><i data-lucide="check" class="selector__tile-check" aria-hidden="true"></i></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">tbs1</span><span class="selector__tile-meta">WebP · 2026-09-14</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshot 2023-09-01 at 15.48.23">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media113091/256" data-meta="PNG · 2023-09-01">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media113091/256" alt="" loading="lazy"><i data-lucide="check" class="selector__tile-check" aria-hidden="true"></i></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot 2023-09-01 at 15.48.23</span><span class="selector__tile-meta">PNG · 2023-09-01</span></span>
+            </button>
+          </li><li class="selector__tile-item" data-selector-item="Screenshot 2023-09-01 at 14-55-26 Recruitment">
+            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media113090/256" data-meta="PNG · 2023-09-01">
+              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media113090/256" alt="" loading="lazy"><i data-lucide="check" class="selector__tile-check" aria-hidden="true"></i></span>
+              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot 2023-09-01 at 14-55-26 Recruitment</span><span class="selector__tile-meta">PNG · 2023-09-01</span></span>
+            </button>
+          </li></ul>
+        <p class="selector__empty" data-selector-empty hidden><i data-lucide="search-x" aria-hidden="true"></i><span>No matches. Try a different search.</span></p>
+        <div class="selector__more"><span class="selector__more-count">Showing 24 of 43</span><button type="button" class="btn btn--secondary btn--sm" data-backend-todo="selector-media-source"><span>Load more</span></button></div>
+      </div>
+      <div class="modal__footer selector__footer">
+        <span class="selector__status" data-selector-count aria-live="polite">Nothing selected</span>
+        <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
+        <button type="button" class="btn btn--primary" data-selector-apply disabled>Use image</button>
+      </div>
+    </div>
+  </div><div class="modal-overlay" id="modal-sort" role="presentation" data-selector="sort">
+    <div class="modal selector selector--sort" role="dialog" aria-modal="true" aria-labelledby="modal-sort-title">
+      <div class="modal__header">
+        <div class="modal__title-block"><h2 class="modal__title" id="modal-sort-title">Sort Order</h2><p class="modal__subtitle">73 articles in Insight. Drag, use the arrows, or type a position.</p></div>
+        <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets selector__toolbar">
+        <div class="search search--sm selector__search">
+          <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+          <input class="search__input" type="search" placeholder="Find an article" aria-label="Find an article" aria-controls="modal-sort-results" data-selector-search>
+        </div>
+        <button type="button" class="btn btn--tertiary btn--sm" data-sort-jump><i data-lucide="locate-fixed" aria-hidden="true"></i><span>Jump to this article</span></button>
+      </div>
+      <p class="selector__hint" data-sort-hint hidden><i data-lucide="info" aria-hidden="true"></i><span>Dragging is paused while searching. The arrows and positions still work.</span></p>
+      <div class="selector__region modal__scroll" id="modal-sort-results">
+        <ol class="selector__sort-list" data-sort-list><li class="selector__sort-row" data-selector-item="10 Top Tips for Better Customer Engagement" data-sort-key="617996">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="1" aria-label="Position of 10 Top Tips for Better Customer Engagement, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art617996/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">10 Top Tips for Better Customer Engagement</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Affino AI Agents" data-sort-key="626114">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="2" aria-label="Position of Affino AI Agents, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art626114/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Affino AI Agents</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Affino AI Analyst" data-sort-key="626112">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="3" aria-label="Position of Affino AI Analyst, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art626112/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Affino AI Analyst</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Affino AI Chat" data-sort-key="626116">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="4" aria-label="Position of Affino AI Chat, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art626116/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Affino AI Chat</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Affino AI Copilot" data-sort-key="626115">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="5" aria-label="Position of Affino AI Copilot, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art626115/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Affino AI Copilot</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Affino AI Site Plugins" data-sort-key="626157">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="6" aria-label="Position of Affino AI Site Plugins, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art626157/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Affino AI Site Plugins</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Affino AI: What 2025 Taught Us — and What We’re Building for 2026" data-sort-key="626196">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="7" aria-label="Position of Affino AI: What 2025 Taught Us — and What We’re Building for 2026, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art626196/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Affino AI: What 2025 Taught Us — and What We’re Building for 2026</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Affino Data Breach Policy" data-sort-key="625100">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="8" aria-label="Position of Affino Data Breach Policy, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625100/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Affino Data Breach Policy</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Affino for Charities: Agentic Supporter Journeys, Audience CRM, and Connected Campaigns" data-sort-key="626282">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="9" aria-label="Position of Affino for Charities: Agentic Supporter Journeys, Audience CRM, and Connected Campaigns, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art626282/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Affino for Charities: Agentic Supporter Journeys, Audience CRM, and Connected Campaigns</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Affino GDPR Client / Supplier Questionnaire" data-sort-key="625099">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="10" aria-label="Position of Affino GDPR Client / Supplier Questionnaire, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625099/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Affino GDPR Client / Supplier Questionnaire</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Affino Gives you More AI Tokens" data-sort-key="626071">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="11" aria-label="Position of Affino Gives you More AI Tokens, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art626071/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Affino Gives you More AI Tokens</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Affino Intelligence Briefing - August 2020 Site traffic and Email campaigns Diverge" data-sort-key="625348">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="12" aria-label="Position of Affino Intelligence Briefing - August 2020 Site traffic and Email campaigns Diverge, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625348/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Affino Intelligence Briefing - August 2020 Site traffic and Email campaigns Diverge</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Affino Intelligence Briefing - June 2020 The End of the Coronavirus Traffic Surge" data-sort-key="625321">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="13" aria-label="Position of Affino Intelligence Briefing - June 2020 The End of the Coronavirus Traffic Surge, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625321/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Affino Intelligence Briefing - June 2020 The End of the Coronavirus Traffic Surge</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Affino Intelligence Briefing - June 2021 Tougher to Engage Audiences" data-sort-key="625474">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="14" aria-label="Position of Affino Intelligence Briefing - June 2021 Tougher to Engage Audiences, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625474/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Affino Intelligence Briefing - June 2021 Tougher to Engage Audiences</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Affino Intelligence Briefing - May 2020 Site Engagement Trends" data-sort-key="625301">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="15" aria-label="Position of Affino Intelligence Briefing - May 2020 Site Engagement Trends, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625301/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Affino Intelligence Briefing - May 2020 Site Engagement Trends</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Affino Intelligence Briefing - October 2020 Strong Growth on All Key Metrics" data-sort-key="625369">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="16" aria-label="Position of Affino Intelligence Briefing - October 2020 Strong Growth on All Key Metrics, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625369/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Affino Intelligence Briefing - October 2020 Strong Growth on All Key Metrics</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Affino Intelligence Briefing - September 2020 Site traffic down to Pre Covid Levels" data-sort-key="625360">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="17" aria-label="Position of Affino Intelligence Briefing - September 2020 Site traffic down to Pre Covid Levels, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625360/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Affino Intelligence Briefing - September 2020 Site traffic down to Pre Covid Levels</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Affino Mass Content AI" data-sort-key="626113">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="18" aria-label="Position of Affino Mass Content AI, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art626113/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Affino Mass Content AI</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Affino Ramps Up Services and Support throughout 2020 for a Deeper and More Connected Client Experience" data-sort-key="625388">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="19" aria-label="Position of Affino Ramps Up Services and Support throughout 2020 for a Deeper and More Connected Client Experience, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625388/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Affino Ramps Up Services and Support throughout 2020 for a Deeper and More Connected Client Experience</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Affino Support AI" data-sort-key="626111">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="20" aria-label="Position of Affino Support AI, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art626111/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Affino Support AI</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Affino&#x27;s GDPR Commitments and Timeline (Updated)" data-sort-key="620678">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="21" aria-label="Position of Affino&#x27;s GDPR Commitments and Timeline (Updated), 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art620678/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Affino&#x27;s GDPR Commitments and Timeline (Updated)</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Affino&#x27;s smart audience engagement natively extends GDPR-compliant customer record retention" data-sort-key="625588">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="22" aria-label="Position of Affino&#x27;s smart audience engagement natively extends GDPR-compliant customer record retention, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625588/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Affino&#x27;s smart audience engagement natively extends GDPR-compliant customer record retention</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Affino&#x27;s Smart Built-in Comprehensive Zero and First Party Data Capture Capabilities" data-sort-key="625509">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="23" aria-label="Position of Affino&#x27;s Smart Built-in Comprehensive Zero and First Party Data Capture Capabilities, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625509/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Affino&#x27;s Smart Built-in Comprehensive Zero and First Party Data Capture Capabilities</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="AI Advisory Service for Charities" data-sort-key="626310">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="24" aria-label="Position of AI Advisory Service for Charities, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art626310/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">AI Advisory Service for Charities</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Automation to Elevate your Subscription Model - PPA IPN Think Tank" data-sort-key="625390">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="25" aria-label="Position of Automation to Elevate your Subscription Model - PPA IPN Think Tank, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625390/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Automation to Elevate your Subscription Model - PPA IPN Think Tank</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Best Practice handling of customer data in preparation for GDPR" data-sort-key="620653">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="26" aria-label="Position of Best Practice handling of customer data in preparation for GDPR, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art620653/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Best Practice handling of customer data in preparation for GDPR</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Developing a Subscription and Membership Offering" data-sort-key="625291">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="27" aria-label="Position of Developing a Subscription and Membership Offering, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625291/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Developing a Subscription and Membership Offering</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Enhanced Affino Commerce &amp; Subscription Capabilities" data-sort-key="626125">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="28" aria-label="Position of Enhanced Affino Commerce &amp; Subscription Capabilities, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art626125/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Enhanced Affino Commerce &amp; Subscription Capabilities</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Five AI workflows every charity can start with" data-sort-key="626309">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="29" aria-label="Position of Five AI workflows every charity can start with, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art626309/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Five AI workflows every charity can start with</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Forget Everything You Know About CRM - Introducing the Affino Core-Connected CRM" data-sort-key="616651">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="30" aria-label="Position of Forget Everything You Know About CRM - Introducing the Affino Core-Connected CRM, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art616651/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Forget Everything You Know About CRM - Introducing the Affino Core-Connected CRM</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Full-Spectrum Customer Engagement Platform Gets You Closer Quicker" data-sort-key="615222">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="31" aria-label="Position of Full-Spectrum Customer Engagement Platform Gets You Closer Quicker, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art615222/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Full-Spectrum Customer Engagement Platform Gets You Closer Quicker</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="GDPR Implementation Checklist" data-sort-key="625030">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="32" aria-label="Position of GDPR Implementation Checklist, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625030/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">GDPR Implementation Checklist</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Generative AI, Temperature and Hallucinations" data-sort-key="625696">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="33" aria-label="Position of Generative AI, Temperature and Hallucinations, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625696/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Generative AI, Temperature and Hallucinations</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Google Analytics Declining in Effectiveness because of GDPR and Apple" data-sort-key="625375">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="34" aria-label="Position of Google Analytics Declining in Effectiveness because of GDPR and Apple, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625375/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Google Analytics Declining in Effectiveness because of GDPR and Apple</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Handy GDPR Definitions Guide" data-sort-key="620677">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="35" aria-label="Position of Handy GDPR Definitions Guide, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art620677/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Handy GDPR Definitions Guide</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Highlights from Affino&#x27;s Subscription and Membership Think Tank" data-sort-key="625503">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="36" aria-label="Position of Highlights from Affino&#x27;s Subscription and Membership Think Tank, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625503/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Highlights from Affino&#x27;s Subscription and Membership Think Tank</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="How Affino&#x27;s Full Service Fidelity Delivers More Zero and First Party Data Capture and Superior Analytics" data-sort-key="625566">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="37" aria-label="Position of How Affino&#x27;s Full Service Fidelity Delivers More Zero and First Party Data Capture and Superior Analytics, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625566/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">How Affino&#x27;s Full Service Fidelity Delivers More Zero and First Party Data Capture and Superior Analytics</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="How best to Tune your Expert AI Services" data-sort-key="625764">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="38" aria-label="Position of How best to Tune your Expert AI Services, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625764/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">How best to Tune your Expert AI Services</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="How charities are getting real value from AI" data-sort-key="626308">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="39" aria-label="Position of How charities are getting real value from AI, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art626308/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">How charities are getting real value from AI</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row selector__sort-row--current" data-selector-item="How charities can use Affino AI plugins" data-sort-key="626312">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="40" aria-label="Position of How charities can use Affino AI plugins, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="../../../../img/record/article-thumb.jpg" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">How charities can use Affino AI plugins<span class="badge badge--info badge--sm selector__this">This article</span></span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="How Drewry Combine Enterprise, Experts and Evidence for maximum Credentials Impact" data-sort-key="616053">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="41" aria-label="Position of How Drewry Combine Enterprise, Experts and Evidence for maximum Credentials Impact, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art616053/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">How Drewry Combine Enterprise, Experts and Evidence for maximum Credentials Impact</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="How to Deliver AI Prototypes and Proofs of Concept - The Key Questions Answered" data-sort-key="625703">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="42" aria-label="Position of How to Deliver AI Prototypes and Proofs of Concept - The Key Questions Answered, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625703/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">How to Deliver AI Prototypes and Proofs of Concept - The Key Questions Answered</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="How to Design and Build a Topic Hub - Video Guide" data-sort-key="625245">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="43" aria-label="Position of How to Design and Build a Topic Hub - Video Guide, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625245/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">How to Design and Build a Topic Hub - Video Guide</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="How to Improve and Leverage your Subscription and Membership Experiences" data-sort-key="625293">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="44" aria-label="Position of How to Improve and Leverage your Subscription and Membership Experiences, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625293/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">How to Improve and Leverage your Subscription and Membership Experiences</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="How to leverage engagement through Content Metering" data-sort-key="616590">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="45" aria-label="Position of How to leverage engagement through Content Metering, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art616590/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">How to leverage engagement through Content Metering</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="In the War for Attention - You have to Make Every Click Count" data-sort-key="617626">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="46" aria-label="Position of In the War for Attention - You have to Make Every Click Count, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art617626/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">In the War for Attention - You have to Make Every Click Count</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Introducing Affino&#x27;s Fourth Generation AI Services" data-sort-key="626124">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="47" aria-label="Position of Introducing Affino&#x27;s Fourth Generation AI Services, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art626124/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Introducing Affino&#x27;s Fourth Generation AI Services</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Introducing Affino&#x27;s new Control Centre" data-sort-key="626123">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="48" aria-label="Position of Introducing Affino&#x27;s new Control Centre, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art626123/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Introducing Affino&#x27;s new Control Centre</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Introducing Affino&#x27;s Six AI Engines" data-sort-key="626096">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="49" aria-label="Position of Introducing Affino&#x27;s Six AI Engines, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art626096/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Introducing Affino&#x27;s Six AI Engines</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Key Affino Insights 2024 Generated via AIs" data-sort-key="626092">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="50" aria-label="Position of Key Affino Insights 2024 Generated via AIs, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art626092/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Key Affino Insights 2024 Generated via AIs</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Key Affino Subscription and Membership Tools" data-sort-key="625287">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="51" aria-label="Position of Key Affino Subscription and Membership Tools, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625287/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Key Affino Subscription and Membership Tools</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Learnings from our first Affino Think Tank" data-sort-key="625490">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="52" aria-label="Position of Learnings from our first Affino Think Tank, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625490/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Learnings from our first Affino Think Tank</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Leverage social connectivity through social media embeds" data-sort-key="615026">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="53" aria-label="Position of Leverage social connectivity through social media embeds, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art615026/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Leverage social connectivity through social media embeds</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Making the most of Affino&#x27;s new Loyalty Scheme SaaS Solution" data-sort-key="625350">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="54" aria-label="Position of Making the most of Affino&#x27;s new Loyalty Scheme SaaS Solution, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625350/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Making the most of Affino&#x27;s new Loyalty Scheme SaaS Solution</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Migrating from Free to Paid Subscriptions and Memberships" data-sort-key="625292">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="55" aria-label="Position of Migrating from Free to Paid Subscriptions and Memberships, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625292/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Migrating from Free to Paid Subscriptions and Memberships</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="New Media and Events Revenue Opportunities" data-sort-key="625383">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="56" aria-label="Position of New Media and Events Revenue Opportunities, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625383/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">New Media and Events Revenue Opportunities</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="PPA Affino Roundtable - Sunsetting Of Cookies, First Party and Contextual Data Solutions and the Impact On Digital Marketing" data-sort-key="625544">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="57" aria-label="Position of PPA Affino Roundtable - Sunsetting Of Cookies, First Party and Contextual Data Solutions and the Impact On Digital Marketing, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625544/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">PPA Affino Roundtable - Sunsetting Of Cookies, First Party and Contextual Data Solutions and the Impact On Digital Marketing</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Procurement Leaders at the forefront of event engagement" data-sort-key="615508">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="58" aria-label="Position of Procurement Leaders at the forefront of event engagement, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art615508/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Procurement Leaders at the forefront of event engagement</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Professional Services Brands Succeeding on the Affino Platform" data-sort-key="615430">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="59" aria-label="Position of Professional Services Brands Succeeding on the Affino Platform, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art615430/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Professional Services Brands Succeeding on the Affino Platform</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Related Items Strategy" data-sort-key="617891">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="60" aria-label="Position of Related Items Strategy, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art617891/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Related Items Strategy</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Sales and Marketing Automation and Abraham Maslow&#x27;s Hierarchy of Needs" data-sort-key="617153">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="61" aria-label="Position of Sales and Marketing Automation and Abraham Maslow&#x27;s Hierarchy of Needs, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art617153/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Sales and Marketing Automation and Abraham Maslow&#x27;s Hierarchy of Needs</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Test Insights — Round-Trip Verification (2026-05-10)" data-sort-key="626263">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="62" aria-label="Position of Test Insights — Round-Trip Verification (2026-05-10), 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art626263/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Test Insights — Round-Trip Verification (2026-05-10)</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="The Affino AI Journey" data-sort-key="625762">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="63" aria-label="Position of The Affino AI Journey, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625762/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">The Affino AI Journey</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="The Complimentary nature of Zoom and Affino for delivering Webinars" data-sort-key="625246">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="64" aria-label="Position of The Complimentary nature of Zoom and Affino for delivering Webinars, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625246/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">The Complimentary nature of Zoom and Affino for delivering Webinars</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="The Essence of Customer Engagement" data-sort-key="618452">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="65" aria-label="Position of The Essence of Customer Engagement, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art618452/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">The Essence of Customer Engagement</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="The Evolved Web - Top Tips on how to use AI to transform the web experience" data-sort-key="626097">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="66" aria-label="Position of The Evolved Web - Top Tips on how to use AI to transform the web experience, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art626097/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">The Evolved Web - Top Tips on how to use AI to transform the web experience</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="The Great Leap Forward from Articles and Documents to Expert AI services" data-sort-key="625760">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="67" aria-label="Position of The Great Leap Forward from Articles and Documents to Expert AI services, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625760/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">The Great Leap Forward from Articles and Documents to Expert AI services</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="The Operator&#x27;s AI Playbook: Turning Proprietary Intelligence into Live Customer Value" data-sort-key="626303">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="68" aria-label="Position of The Operator&#x27;s AI Playbook: Turning Proprietary Intelligence into Live Customer Value, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art626303/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">The Operator&#x27;s AI Playbook: Turning Proprietary Intelligence into Live Customer Value</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="The Trifecta of Professional Services Credentials - Enterprise, Experts and Evidence" data-sort-key="614953">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="69" aria-label="Position of The Trifecta of Professional Services Credentials - Enterprise, Experts and Evidence, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art614953/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">The Trifecta of Professional Services Credentials - Enterprise, Experts and Evidence</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Tips for setting up your first Agentic AI Website" data-sort-key="626141">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="70" aria-label="Position of Tips for setting up your first Agentic AI Website, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art626141/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">Tips for setting up your first Agentic AI Website</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="UK Media Ad Blocking and Privacy Briefing June 2017" data-sort-key="617261">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="71" aria-label="Position of UK Media Ad Blocking and Privacy Briefing June 2017, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art617261/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">UK Media Ad Blocking and Privacy Briefing June 2017</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="What are the elements of Affino’s Enterprise-Grade Expert AI Service" data-sort-key="625761">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="72" aria-label="Position of What are the elements of Affino’s Enterprise-Grade Expert AI Service, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625761/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">What are the elements of Affino’s Enterprise-Grade Expert AI Service</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="What can and can’t you do with Affino’s Enterprise Expert AI Service" data-sort-key="625763">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="73" aria-label="Position of What can and can’t you do with Affino’s Enterprise Expert AI Service, 1 to 73" data-sort-position>
+            <span class="selector__sort-thumb"><img src="https://picsum.photos/seed/art625763/80" alt="" loading="lazy"></span>
+            <span class="selector__sort-title">What can and can’t you do with Affino’s Enterprise Expert AI Service</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li></ol>
+        <p class="selector__empty" data-selector-empty hidden><i data-lucide="search-x" aria-hidden="true"></i><span>No matches. Try a different search.</span></p>
+      </div>
+      <p class="selector__live" aria-live="polite" data-sort-live></p>
+      <div class="modal__footer selector__footer">
+        <span class="selector__status" data-selector-count></span>
+        <button type="button" class="btn btn--tertiary" data-sort-reset>Reset</button>
+        <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
+        <button type="button" class="btn btn--primary" data-selector-apply>Save order</button>
+      </div>
+    </div>
+  </div><div class="modal-overlay" id="modal-multi-display" role="presentation" data-selector="multi">
     <div class="modal filter-dropdowns__modal" role="dialog" aria-modal="true" aria-labelledby="modal-multi-display-title">
       <div class="modal__header">
         <h2 class="modal__title" id="modal-multi-display-title">Select Multi Display</h2>
         <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
       </div>
-      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets"><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Name"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Name</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Parent Section"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Parent Section</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Channel"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Channel</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Zone"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Zone</span></button></div></div>
-      <div class="filter-dropdowns__table-region">
+      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets"><div class="search search--sm selector__search">
+          <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+          <input class="search__input" type="search" placeholder="Search by name" aria-label="Search by name" aria-controls="modal-multi-display-results" data-selector-search>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Name"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Name</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Parent Section"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Parent Section</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Channel"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Channel</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Zone"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Zone</span></button></div></div>
+      <div class="filter-dropdowns__table-region modal__scroll">
         <div class="datatables"><div class="datatables__body">
           <table class="table">
             <thead><tr>
@@ -2065,21 +3149,26 @@ The current set is News AI, AI Assistants, AI Enhanced Search, Article Summaries
             </tr></thead>
             <tbody><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Coronavirus Hub"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Coronavirus Hub</td><td>—</td><td>Coronavirus Hub</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Coronavirus Hub"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select AI"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>AI</td><td>—</td><td>AI</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open AI"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Insight &amp; Blogs"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Insight &amp; Blogs</td><td>—</td><td>Insight &amp; Blogs</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Insight &amp; Blogs"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Commercial Hub"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Commercial Hub</td><td>—</td><td>Commercial Hub</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Commercial Hub"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Events"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Events</td><td>—</td><td>Events</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Events"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Affino Social Commerce Blog"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Affino Social Commerce Blog</td><td>—</td><td>Blog</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Affino Social Commerce Blog"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr></tbody>
           </table>
+          <p class="selector__empty" data-selector-empty hidden><i data-lucide="search-x" aria-hidden="true"></i><span>No matches. Try a different search.</span></p>
         </div></div>
       </div>
-      <div class="modal__footer">
+      <div class="modal__footer selector__footer">
+        <span class="selector__status" data-selector-count aria-live="polite"></span>
         <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
         <button type="button" class="btn btn--primary" data-filter-dropdowns-apply>Apply</button>
       </div>
     </div>
-  </div><div class="modal-overlay" id="modal-topics" role="presentation">
+  </div><div class="modal-overlay" id="modal-topics" role="presentation" data-selector="multi">
     <div class="modal filter-dropdowns__modal" role="dialog" aria-modal="true" aria-labelledby="modal-topics-title">
       <div class="modal__header">
         <h2 class="modal__title" id="modal-topics-title">Select Topics and Keywords</h2>
         <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
       </div>
-      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets"><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Name"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Name</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Parent Section"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Parent Section</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Channel"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Channel</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Zone"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Zone</span></button></div></div>
-      <div class="filter-dropdowns__table-region">
+      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets"><div class="search search--sm selector__search">
+          <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+          <input class="search__input" type="search" placeholder="Search by name" aria-label="Search by name" aria-controls="modal-topics-results" data-selector-search>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Name"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Name</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Parent Section"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Parent Section</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Channel"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Channel</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Zone"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Zone</span></button></div></div>
+      <div class="filter-dropdowns__table-region modal__scroll">
         <div class="datatables"><div class="datatables__body">
           <table class="table">
             <thead><tr>
@@ -2092,21 +3181,26 @@ The current set is News AI, AI Assistants, AI Enhanced Search, Article Summaries
             </tr></thead>
             <tbody><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Professional Services"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Professional Services</td><td>—</td><td>Sector</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Professional Services"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Featured"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Featured</td><td>—</td><td>Topics</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Featured"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Tip"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Tip</td><td>—</td><td>Type</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Tip"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Charity"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Charity</td><td>—</td><td>Topics</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Charity"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Funding"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Funding</td><td>—</td><td>Topics</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Funding"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select AI"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>AI</td><td>—</td><td>Topics</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open AI"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Insight"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Insight</td><td>—</td><td>Topics</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Insight"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr></tbody>
           </table>
+          <p class="selector__empty" data-selector-empty hidden><i data-lucide="search-x" aria-hidden="true"></i><span>No matches. Try a different search.</span></p>
         </div></div>
       </div>
-      <div class="modal__footer">
+      <div class="modal__footer selector__footer">
+        <span class="selector__status" data-selector-count aria-live="polite"></span>
         <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
         <button type="button" class="btn btn--primary" data-filter-dropdowns-apply>Apply</button>
       </div>
     </div>
-  </div><div class="modal-overlay" id="modal-countries" role="presentation">
+  </div><div class="modal-overlay" id="modal-countries" role="presentation" data-selector="multi">
     <div class="modal filter-dropdowns__modal" role="dialog" aria-modal="true" aria-labelledby="modal-countries-title">
       <div class="modal__header">
         <h2 class="modal__title" id="modal-countries-title">Select Countries</h2>
         <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
       </div>
-      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets"><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Name"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Name</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Parent Section"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Parent Section</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Channel"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Channel</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Zone"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Zone</span></button></div></div>
-      <div class="filter-dropdowns__table-region">
+      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets"><div class="search search--sm selector__search">
+          <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+          <input class="search__input" type="search" placeholder="Search by name" aria-label="Search by name" aria-controls="modal-countries-results" data-selector-search>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Name"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Name</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Parent Section"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Parent Section</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Channel"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Channel</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Zone"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Zone</span></button></div></div>
+      <div class="filter-dropdowns__table-region modal__scroll">
         <div class="datatables"><div class="datatables__body">
           <table class="table">
             <thead><tr>
@@ -2119,21 +3213,26 @@ The current set is News AI, AI Assistants, AI Enhanced Search, Article Summaries
             </tr></thead>
             <tbody><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select United Kingdom"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>United Kingdom</td><td>—</td><td>Countries</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open United Kingdom"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Ireland"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Ireland</td><td>—</td><td>Countries</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Ireland"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select United States"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>United States</td><td>—</td><td>Countries</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open United States"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Canada"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Canada</td><td>—</td><td>Countries</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Canada"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Australia"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Australia</td><td>—</td><td>Countries</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Australia"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Germany"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Germany</td><td>—</td><td>Countries</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Germany"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr></tbody>
           </table>
+          <p class="selector__empty" data-selector-empty hidden><i data-lucide="search-x" aria-hidden="true"></i><span>No matches. Try a different search.</span></p>
         </div></div>
       </div>
-      <div class="modal__footer">
+      <div class="modal__footer selector__footer">
+        <span class="selector__status" data-selector-count aria-live="polite"></span>
         <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
         <button type="button" class="btn btn--primary" data-filter-dropdowns-apply>Apply</button>
       </div>
     </div>
-  </div><div class="modal-overlay" id="modal-authors" role="presentation">
+  </div><div class="modal-overlay" id="modal-authors" role="presentation" data-selector="multi">
     <div class="modal filter-dropdowns__modal" role="dialog" aria-modal="true" aria-labelledby="modal-authors-title">
       <div class="modal__header">
         <h2 class="modal__title" id="modal-authors-title">Select Related Authors</h2>
         <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
       </div>
-      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets"><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Name"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Name</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Parent Section"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Parent Section</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Channel"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Channel</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Zone"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Zone</span></button></div></div>
-      <div class="filter-dropdowns__table-region">
+      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets"><div class="search search--sm selector__search">
+          <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+          <input class="search__input" type="search" placeholder="Search by name" aria-label="Search by name" aria-controls="modal-authors-results" data-selector-search>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Name"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Name</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Parent Section"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Parent Section</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Channel"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Channel</span></button></div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Zone"><button type="button" class="filter-item__trigger" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Zone</span></button></div></div>
+      <div class="filter-dropdowns__table-region modal__scroll">
         <div class="datatables"><div class="datatables__body">
           <table class="table">
             <thead><tr>
@@ -2146,9 +3245,11 @@ The current set is News AI, AI Assistants, AI Enhanced Search, Article Summaries
             </tr></thead>
             <tbody><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Markus Karlsson"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Markus Karlsson</td><td>—</td><td>Authors</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Markus Karlsson"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Luis Montiel"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Luis Montiel</td><td>—</td><td>Authors</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Luis Montiel"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Mark Foster"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Mark Foster</td><td>—</td><td>Authors</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Mark Foster"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr></tbody>
           </table>
+          <p class="selector__empty" data-selector-empty hidden><i data-lucide="search-x" aria-hidden="true"></i><span>No matches. Try a different search.</span></p>
         </div></div>
       </div>
-      <div class="modal__footer">
+      <div class="modal__footer selector__footer">
+        <span class="selector__status" data-selector-count aria-live="polite"></span>
         <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
         <button type="button" class="btn btn--primary" data-filter-dropdowns-apply>Apply</button>
       </div>

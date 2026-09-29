@@ -113,3 +113,7 @@ Figma draws.
 - **New FieldRow kinds, code-first — FLAG FOR FIGMA:** `rich`, `checkbox`, `date` / `datetime`,
   `lookup`, `image`, `file` (see FieldRow.figma-notes.md). FactPanel gained `.fact-panel__empty`.
 - Handover: `record-lookup`, `record-datetime`, `record-rich-text`, `record-media-file`.
+
+## Selectors (2026-09-29)
+
+Section, Creator and Sort Order (lookup rows) and every MediaPicker **Edit** open the Selector pattern (`src/cc/patterns/Selector/`, code-first): Type=Single / Media / Sort. Multi Display, Topics, Countries and Authors keep the TagBox Multi Select Modal, which now has search and a count. Account is still an inert lookup (`record-lookup`).

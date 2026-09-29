@@ -74,8 +74,8 @@ SECTIONS = [
     ]),
     ("Navigation", [
         ("Zone", "tags", ["Affino"], "select", "Affino"),
-        ("Section", "tags", ["Insight"], "lookup", "Insight"),
-        ("Sort Order", "text", "-", "lookup", ""),
+        ("Section", "tags", ["Insight"], "lookup", "Insight", {"modal": "modal-section"}),
+        ("Sort Order", "text", "-", "lookup", "", {"modal": "modal-sort", "placeholder": "Default (by title)"}),
         ("Multi Display", "tags", ["Coronavirus Hub", "AI", "Insight & Blogs"], "tagbox",
          ["Coronavirus Hub", "AI", "Insight & Blogs"], "modal-multi-display"),
         ("Priority", "text", "-", "select", ""),
@@ -156,7 +156,7 @@ SECTIONS = [
         ("Content Security Right", "text", "-", "select", ""),
     ]),
     ("Publication", [
-        ("Creator", "tags", ["Markus Karlsson"], "lookup", "Markus Karlsson"),
+        ("Creator", "tags", ["Markus Karlsson"], "lookup", "Markus Karlsson", {"modal": "modal-creator"}),
         ("Related Authors", "text", "-", "tagbox", [], "modal-authors"),
         ("Account", "text", "-", "lookup", ""),
         ("Publish Start", "text", "16/06/2026 12:23", "datetime", "16 Jun 2026 12:23"),
@@ -202,6 +202,37 @@ TOPICS_SOURCE = [("Professional Services", "", "Sector", "Affino"), ("Featured",
                  ("AI", "", "Topics", "Affino"), ("Insight", "", "Topics", "Affino")]
 
 
+# Single select (Section) — the live picker's first page (Zone Affino, by name, 2026-09-29), plus
+# the article's own section. Live labels it "Insight"; its channel is Insights.
+SECTION_SOURCE = [("Insight", "", "Insights", "Affino"), ("AI", "", "AI", "Affino"), ("Coronavirus Hub", "Insights", "Insights", "Affino"),
+                  ("Insight & Blogs", "Insights", "Insights", "Affino"),
+                  ("2013 Featured Affino Sites", "Links", "Links", "Affino"), ("2020 Affino February Roundtable Tabs", "Event Assets", "Event Assets", "Affino"),
+                  ("About Resources", "Links", "Links", "Affino"), ("Active Affino Sites", "Links", "Links", "Affino"),
+                  ("Add Review", "", "Add Review", "Affino"), ("Additional Services Links", "Links", "Links", "Affino"),
+                  ("Affino 9 Assets", "", "Affino 9 Assets", "Affino"), ("Affino Beta Elements", "", "Affino Beta Elements", "Affino"),
+                  ("Affino Case Studies", "", "Affino Case Studies", "Affino"), ("Affino Company Info", "", "Affino Company Info", "Affino"),
+                  ("Affino Coverage", "", "Affino Coverage", "Affino"), ("Affino Customer Quotes", "", "Affino Customer Quotes", "Affino"),
+                  ("Affino Deployment", "Affinovation", "Affino Online Guides", "Affino"), ("Affino Design Elements", "", "Affino Design Elements", "Affino"),
+                  ("Affino Featured Clients", "", "Affino Featured Clients", "Affino"), ("Affino Features", "", "Affino Features", "Affino"),
+                  ("Affino Features - Archived", "", "Affino Features - Archived", "Affino"), ("Affino Features X", "", "Affino Features X", "Affino"),
+                  ("Affino for Event Organisers", "", "Affino for Event Organisers", "Affino"),
+                  ("Affino for Membership Organisations", "", "Affino for Membership Organisations", "Affino")]
+
+
+def _media_source():
+    """Media selector tiles — the Media Items listing's image rows (listing-data-media-items.js)."""
+    import re, os
+    js = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../ListingScreen/listing-data-media-items.js"), encoding="utf-8").read()
+    rows = re.findall(r"\{ itemId: '(\d+)', title: '([^']*)',[^}]*?family: 'image', thumbUrl: '([^']*)', format: '([^']*)'[^}]*?created: '([^']*)'", js)
+    return [(t, u.replace("/128", "/256"), f, d) for _, t, u, f, d in rows]
+
+
+MEDIA_SOURCE = _media_source()
+
+from record_sort_data import INSIGHTS
+SORT_SOURCE = [(c, t, m.IMG if c == int(CODE) else f"https://picsum.photos/seed/art{c}/80") for c, t in INSIGHTS]
+
+
 def _view(f):
     return m.view_row(f[0], f[1], f[2])
 
@@ -214,7 +245,8 @@ def _edit(f):
     if kind == "checkbox":
         return m.edit_row(label, "checkbox", value)
     opts = extra if isinstance(extra, dict) else {}
-    return m.edit_row(label, kind, value, required=opts.get("required", False), help_text=opts.get("help"))
+    return m.edit_row(label, kind, value, required=opts.get("required", False), help_text=opts.get("help"),
+                      modal=opts.get("modal"), placeholder=opts.get("placeholder", "None selected"))
 
 
 def view_sections():
@@ -230,7 +262,11 @@ def sidebar():
 
 
 def modals():
-    return (m.multi_select_modal("modal-multi-display", "Select Multi Display", m.SECTIONS_SOURCE)
+    return (m.single_select_modal("modal-section", "Select Section", SECTION_SOURCE)
+            + m.single_select_modal("modal-creator", "Select Creator", AUTHORS_SOURCE, noun="creator")
+            + m.media_select_modal("modal-media", "Select Media", MEDIA_SOURCE[:24], len(MEDIA_SOURCE))
+            + m.sort_order_modal("modal-sort", "Sort Order", "Insight", SORT_SOURCE, int(CODE))
+            + m.multi_select_modal("modal-multi-display", "Select Multi Display", m.SECTIONS_SOURCE)
             + m.multi_select_modal("modal-topics", "Select Topics and Keywords", TOPICS_SOURCE)
             + m.multi_select_modal("modal-countries", "Select Countries", COUNTRIES_SOURCE)
             + m.multi_select_modal("modal-authors", "Select Related Authors", AUTHORS_SOURCE))
