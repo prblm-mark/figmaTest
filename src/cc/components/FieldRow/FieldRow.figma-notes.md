@@ -56,4 +56,4 @@ Designer decisions 2026-09-28: label weight Medium (draft mixed Medium/SemiBold)
   generated from the same function, so they cannot drift.
 
 ## Layout=Stacked (2026-09-28)
-Nine Figma variants (`3904:16242`… one per Wide Type): label over value, gap `spacing/3`, label padding 0, children fill. **Not a class in code** — it is what `@container record-section (max-width: 559px)` does to a Wide row (RecordSection.css). Media uses MediaMeta `Layout=Stacked`. Code Connect maps Stacked → no modifier.
+Nine Figma variants (`3904:16242`… one per Wide Type): label over value, gap `spacing/3`, label padding 0, children fill. **Not a class in code** — it is what `@container record-section (max-width: 559px)` does to a Wide row (RecordSection.css). Media keeps MediaMeta's row (layout B needs no stacked form). Code Connect maps Stacked → no modifier.
