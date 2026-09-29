@@ -37,8 +37,15 @@
   padding: 0 var(--ai-spacing-2);
 }
 
+/* Toolbar controls take the INPUT radius (--ai-radius-md, as the Input / Textarea field and this
+ * editor's own frame) rather than oxide's 4px (designer, 2026-09-29). Covers the icon buttons and
+ * the Styles dropdown (.tox-tbtn--select), plus split buttons. */
+.rich-text .tox .tox-tbtn,
+.rich-text .tox .tox-split-button {
+  border-radius: var(--ai-radius-md);
+}
+
 .rich-text .tox .tox-tbtn {
-  border-radius: var(--ai-radius-sm);
   color: var(--ai-icon-primary);
 }
 
