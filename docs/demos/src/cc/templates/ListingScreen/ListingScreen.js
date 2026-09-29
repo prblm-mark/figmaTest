@@ -82,6 +82,9 @@
      identical, empty controls. The screen declares `rowKey` and `routeNoun`;
      both default to Orders' values, so Orders is unchanged. */
   var ROW_ID = { key: 'orderNo', noun: 'order', spoken: 'order' };
+  /* A screen's OWN detail-row content (config.rowDetail(row) → HTML), shown under the columns
+     that did not fit. Article Steps uses it for the step's body (2026-09-29). */
+  var ROW_DETAIL = null;
 
   function rowId(row) { return row[ROW_ID.key]; }
 
@@ -125,6 +128,14 @@
         (row.externalCode
           ? '<span class="datatables__order-ext">' + esc(row.externalCode) + '</span>'
           : '');
+    },
+
+    /* Yes / none flag — a check or a dash, as the Steps table draws Live, Design frame and
+       Lookup. The label is spoken; the icon is decoration. */
+    flag: function (row, col) {
+      var on = !!row[col.key];
+      return '<span class="cc-listing__flag cc-listing__flag--' + (on ? 'on' : 'off') + '" aria-label="' +
+        (on ? 'Yes' : 'None') + '"><i data-lucide="' + (on ? 'check' : 'minus') + '" aria-hidden="true"></i></span>';
     },
 
     /* Account chip — tertiary button plus the contextual border. */
@@ -743,7 +754,8 @@
         '<tr class="datatables__row-detail"><td class="datatables__row-detail__cell" colspan="' +
         columns.length + '"><dl class="datatables__detail-list">' + detail +
         '<p class="datatables__detail-empty" hidden>Every column is showing at this width.</p>' +
-        '</dl></td></tr>';
+        '</dl>' + (ROW_DETAIL ? '<div class="datatables__detail-extra">' + ROW_DETAIL(row) + '</div>' : '') +
+        '</td></tr>';
     }).join('');
   }
 
@@ -1736,6 +1748,13 @@
     parts.table.style.width = Math.max(total, view) + 'px';
     /* The empty state pins to the VISIBLE area, not the scrolled width. */
     root.style.setProperty('--cc-listing-view-w', view + 'px');
+    /* Span every column now showing — the fit's last colspan covered only what fitted, which left
+       the detail / empty cells narrower than the scrolled table and cut their pinned content's
+       travel short. */
+    var showing = 0;
+    heads.forEach(function (h) { if (window.getComputedStyle(h).display !== 'none') showing += 1; });
+    root.querySelectorAll('[data-listing-body] .cc-listing__empty-cell, [data-listing-body] .datatables__row-detail__cell')
+      .forEach(function (cell) { cell.colSpan = showing || 1; });
     syncRowDetail(root, config);
   }
 
@@ -2026,7 +2045,9 @@
       el.hidden = !show[el.getAttribute('data-detail-col')];
     });
     root.querySelectorAll('[data-listing-body] .datatables__detail-empty').forEach(function (el) {
-      el.hidden = any;
+      /* A row with its own detail content has something to show even when every column fits. */
+      var cell = el.closest('.datatables__row-detail__cell');
+      el.hidden = any || !!(cell && cell.querySelector('.datatables__detail-extra'));
     });
   }
 
@@ -2148,6 +2169,7 @@
        URL slug and `rowNoun` is what a screen reader says out loud. Article
        Archive's slug is "archived-item" and announcing "Edit archived-item
        5361" puts a hyphen in the middle of a spoken phrase. */
+    ROW_DETAIL = typeof config.rowDetail === 'function' ? config.rowDetail : null;
     ROW_ID = {
       key: config.rowKey || 'orderNo',
       noun: config.routeNoun || 'order',
@@ -2381,7 +2403,9 @@
 
     /* A screen with no bulk actions has nothing to select FOR, so the column
        goes too rather than leaving a checkbox that leads nowhere. */
-    if (!(config.bulkActions || []).length) {
+    /* `selectable` keeps the checkboxes on a screen whose bulk actions are not designed yet
+       (Article Steps: the Figma draws them; the actions are a backend item). */
+    if (!(config.bulkActions || []).length && !config.selectable) {
       config = Object.assign({}, config, {
         columns: config.columns.filter(function (c) { return c.type !== 'select'; })
       });

@@ -11,6 +11,10 @@
   <link rel="stylesheet" href="../../../components/Toggle/Toggle.css">
   <link rel="stylesheet" href="../../../components/Table/Table.css">
   <link rel="stylesheet" href="../../../components/Datatables/Datatables.css">
+  <link rel="stylesheet" href="../../../components/Dropdown/Dropdown.css">
+  <link rel="stylesheet" href="../../../components/DropdownItem/DropdownItem.css">
+  <link rel="stylesheet" href="../../../components/Radio/Radio.css">
+  <link rel="stylesheet" href="../../templates/ListingScreen/ListingScreen.css">
   <link rel="stylesheet" href="StepsTable.css">
   <style>
     body { margin: 0; padding: var(--ai-spacing-7); background: var(--cc-ui-primary-bg); min-height: 100vh; color: var(--ai-text-primary); font-family: var(--ai-font-body); }
@@ -21,218 +25,103 @@
     .demo-stack { display: flex; flex-direction: column; gap: var(--ai-spacing-5); }
     .demo-narrow { max-width: var(--ai-size-7); }
   </style>
-</head>
+<script type="module" src="../../../components/Dropdown/Dropdown.js"></script></head>
 <body>
   <div class="demo-section demo-section--bare">
-    <p class="demo-section__title">Details=Off / On (click Show details) · Width=Standard</p><p class="demo-note">Rows, toolbar and footer are Datatables. Show details expands every row; the header checkbox selects all.</p>
-    <div class="datatables steps-table" data-steps-table>
-        <div class="datatables__toolbar">
-          <span class="datatables__meta"><span>Show</span>
-            <button type="button" class="datatables__select" aria-label="Rows per page"><span>20</span><i data-lucide="chevron-down" aria-hidden="true"></i></button>
-            <span>of <strong>21</strong></span></span>
-          <div class="datatables__actions">
-            <span class="steps-table__details-toggle">
-              <button class="toggle toggle--xxs" type="button" role="switch" aria-checked="false" aria-labelledby="steps-details-label" data-steps-details><span class="toggle__track"><span class="toggle__knob"></span></span></button>
-              <span id="steps-details-label">Show details</span>
+    <p class="demo-section__title">StepsTable · on the listing engine</p><p class="demo-note">Runs on ListingScreen.js (config: RecordScreen/listing-data-article-steps.js) — adaptive fit, Edit Columns, Settings (Expanding row / Horizontal scroll), kebab detail. Show details opens every row: the columns that did not fit, then the step body. Width=Full is the record screen with ?template=full.</p>
+    <!-- TODO(backend:RecordScreen) steps-rows: steps, paging and the step bodies are demo data (Hub article
+             626347) → the article's steps endpoint. Column prefs / overflow mode ride on the listing's
+             listing-column-prefs + listing-overflow-mode items. -->
+      <div class="cc-listing" data-listing="article-steps">
+        <div class="datatables datatables--orders steps-table" data-steps-table data-backend-todo="steps-rows">
+          <div class="datatables__toolbar">
+            <span class="datatables__meta">
+              <span class="datatables__meta-label">Show</span>
+              <div class="dropdown cc-listing__per-page" data-dropdown>
+                <button type="button" class="datatables__select dropdown__trigger"
+                        aria-label="Rows per page" aria-haspopup="menu" aria-expanded="false">
+                  <span data-listing-per-page>20</span>
+                  <i data-lucide="chevron-down" aria-hidden="true"></i>
+                </button>
+                <div class="dropdown__panel dropdown__panel--per-page" role="menu" aria-label="Rows per page">
+                  <ul class="dropdown__list" data-listing-per-page-options></ul>
+                </div>
+              </div>
+              <span>of <strong data-listing-total>296</strong></span>
             </span>
+            <!-- Edit Columns is a NEW capability, not a reproduction: the live
+                 Orders screen has no column picker and no per-user column
+                 preference anywhere (verified in its source, 2026-09-18).
+                 Column visibility there is decided by the static definitions,
+                 CRM-profile flags and URL params.
+                 TODO(backend:Listing): choices are in memory only.
+                   → GET/PUT /control/orders/columns { hidden: [key] } -->
+            <div class="datatables__actions">
+              <span class="steps-table__details-toggle">
+                <button class="toggle toggle--xxs" type="button" role="switch" aria-checked="false" aria-labelledby="steps-details-label" data-steps-details><span class="toggle__track"><span class="toggle__knob"></span></span></button>
+                <span id="steps-details-label">Show details</span>
+              </span>
+              <div class="dropdown cc-listing__columns" data-dropdown data-backend-todo="listing-column-prefs">
+                <button type="button" class="btn btn--secondary dropdown__trigger"
+                        aria-haspopup="menu" aria-expanded="false">
+                  <i data-lucide="columns-3" aria-hidden="true"></i><span>Edit Columns</span>
+                </button>
+                <div class="dropdown__panel dropdown__panel--columns" role="menu" aria-label="Edit columns">
+                  <p class="dropdown__label">Columns</p>
+                  <div class="cc-listing__columns-list" data-listing-columns></div>
+                </div>
+              </div>
+              <!-- Settings — "When columns don't fit" (Luismi's team, Hub TASK-492924; built code-first
+                   2026-09-29). Expanding row = the column fit + kebab detail (default); Horizontal
+                   scroll = every switched-on column stays and the body scrolls sideways.
+                   TODO(backend:Listing) listing-overflow-mode: saved with the column layout
+                     → columns.scroll in the listing layout + each saved view. -->
+              <div class="dropdown cc-listing__settings" data-dropdown="stay-open" data-backend-todo="listing-overflow-mode">
+                <button type="button" class="btn btn--secondary dropdown__trigger"
+                        aria-haspopup="menu" aria-expanded="false">
+                  <i data-lucide="settings" aria-hidden="true"></i><span>Settings</span>
+                </button>
+                <div class="dropdown__panel dropdown__panel--settings" role="menu" aria-label="Table settings">
+                  <p class="dropdown__label" id="cc-listing-overflow-label">When columns don't fit</p>
+                  <div class="cc-listing__settings-options" role="radiogroup" aria-labelledby="cc-listing-overflow-label" data-listing-overflow>
+                    <label class="radio"><input type="radio" class="radio__input" name="cc-listing-overflow" value="fit" checked><span class="radio__indicator"></span><span class="radio__label"><span class="radio__label-text">Expanding row</span></span></label>
+                    <label class="radio"><input type="radio" class="radio__input" name="cc-listing-overflow" value="scroll"><span class="radio__indicator"></span><span class="radio__label"><span class="radio__label-text">Horizontal scroll</span></span></label>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="datatables__body">
-          <table class="table">
-            <thead><tr><th class="datatables__col--tight"><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select all steps" data-steps-select-all><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></th><th><button class="datatables__sort datatables__sort--active" type="button">Order <i data-lucide="chevron-up" aria-hidden="true"></i></button></th><th><button class="datatables__sort" type="button">Title <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th><th><button class="datatables__sort" type="button">Type <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th><th><button class="datatables__sort" type="button">Float <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th><th>Design frame</th><th>Lookup</th><th><button class="datatables__sort" type="button">Created by <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th><th><button class="datatables__sort" type="button">Publish start <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th><th>Live</th><th class="datatables__col--tight" aria-label="Edit"></th></tr></thead>
-            <tbody><tr class="datatables__row">
-              <td class="datatables__col--tight"><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select step 1" data-steps-select><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td>
-              <td>1</td>
-              <td class="steps-table__title-cell"><a class="steps-table__title" href="#" title="Agent Access - Let Trusted AI Agents Operate Affino for You, in the Browser and Beyond">Agent Access - Let Trusted AI Agents Operate Affino for You, in the Browser and Beyond</a></td>
-              <td>Content</td><td>None</td>
-              <td><span class="steps-table__empty" aria-label="None"><i data-lucide="minus" aria-hidden="true"></i></span></td>
-              <td><span class="steps-table__empty" aria-label="None"><i data-lucide="minus" aria-hidden="true"></i></span></td>
-              <td><a class="btn btn--tertiary btn--sm steps-table__author-chip" href="#"><span>Markus Karlsson</span></a></td>
-              <td>20 Jul 2026</td>
-              <td><span class="steps-table__live" aria-label="Live"><i data-lucide="check" aria-hidden="true"></i></span></td>
-              <td class="datatables__col--tight"><a class="datatables__row-edit" href="#" aria-label="Edit step 1"><i data-lucide="pencil" aria-hidden="true"></i></a></td>
-            </tr>
-            <tr class="datatables__row-detail"><td colspan="11" class="datatables__row-detail__cell"><div class="step-detail">
-                <ul class="step-detail__media" aria-label="Step media"><li class="step-detail__chip"><i data-lucide="image-off" aria-hidden="true"></i>No step image</li><li class="step-detail__chip"><i data-lucide="image-off" aria-hidden="true"></i>No presentation image</li><li class="step-detail__chip"><i data-lucide="film" aria-hidden="true"></i>No multimedia</li></ul>
-                <div class="step-detail__body"><p>The headline of 9.0.11.24 - and the reason it is <strong>The Autonomy Update</strong> - is <strong>Agent Access</strong>: trusted AI agents can now operate Affino for you, signing in and working across your sites and your platform without a person having to drive every step.</p>
-<h4>Operate your sites in the browser, as a real member</h4>
-<p>Agent Access issues a genuine, signed, single-use member login, so an agent can sign in to your site and move through it exactly as a real member would - browsing, navigating, and completing member journeys in a real browser. Page views, journeys, and conversions behave just as they do for a signed-in person, which makes it ideal for automating and verifying live journeys end to end.</p>
-<h4>Work across your platform too, alongside the toolkit you already have</h4>
-<p>Browser operation sits alongside the programmatic control Affino already offers. The Affino MCP toolkit lets agents manage the platform itself - CRM, content, media, forums and more - as an attributed member of your team, and the Zapier integration moves data in and out across thousands of apps.</p>
-<h4>Works with your preferred agent tools</h4>
-<p>Agent Access is open to any capable agent client, so your team can use whatever they already work with - Claude Cowork, Codex, the ChatGPT app, or an equivalent agent platform - to reach directly into Affino.</p>
-<h4>Locked down, layer by layer</h4>
-<p>Agent Access is built to be secured tightly, and the controls stack. You combine an <strong>Access Profile</strong> and a <strong>Bot Access Profile</strong> - which can restrict an agent by <strong>IP address</strong> or <strong>user agent</strong> - with <strong>Agent Access Keys</strong> that carry the credential and can be rotated or revoked.</p></div>
-                <a class="step-detail__link" href="#" data-backend-todo="steps-read-full">Read the full step <i data-lucide="arrow-right" aria-hidden="true"></i></a>
-              </div></td></tr><tr class="datatables__row">
-              <td class="datatables__col--tight"><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select step 2" data-steps-select><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td>
-              <td>2</td>
-              <td class="steps-table__title-cell"><a class="steps-table__title" href="#" title="Awards &amp; Events - A Smoother Run From Entry to Judging to Event Day">Awards &amp; Events - A Smoother Run From Entry to Judging to Event Day</a></td>
-              <td>Content</td><td>None</td>
-              <td><span class="steps-table__empty" aria-label="None"><i data-lucide="minus" aria-hidden="true"></i></span></td>
-              <td><span class="steps-table__empty" aria-label="None"><i data-lucide="minus" aria-hidden="true"></i></span></td>
-              <td><a class="btn btn--tertiary btn--sm steps-table__author-chip" href="#"><span>Markus Karlsson</span></a></td>
-              <td>20 Jul 2026</td>
-              <td><span class="steps-table__live" aria-label="Live"><i data-lucide="check" aria-hidden="true"></i></span></td>
-              <td class="datatables__col--tight"><a class="datatables__row-edit" href="#" aria-label="Edit step 2"><i data-lucide="pencil" aria-hidden="true"></i></a></td>
-            </tr>
-            <tr class="datatables__row-detail"><td colspan="11" class="datatables__row-detail__cell"><div class="step-detail">
-                <ul class="step-detail__media" aria-label="Step media"><li class="step-detail__chip"><i data-lucide="image-off" aria-hidden="true"></i>No step image</li><li class="step-detail__chip"><i data-lucide="image-off" aria-hidden="true"></i>No presentation image</li><li class="step-detail__chip"><i data-lucide="film" aria-hidden="true"></i>No multimedia</li></ul>
-                <div class="step-detail__body"><p>Awards and events get a substantial operational lift in 9.0.11.24, making the whole cycle - from entry, through judging, to the event itself - smoother to run and better presented to entrants and attendees.</p>
-<h4>Cleaner judging</h4>
-<p>Shortlist judging now has its own dedicated route, so you can send judges straight to the right stage without shortlist and final judging blurring together. Rounds stay distinct, and judges see exactly the screen they need.</p>
-<h4>What's included:</h4>
-<ul><li><strong>Shortlist judging screen</strong> - judges can be sent to a dedicated shortlist judging screen.</li><li><strong>Award introduction categories</strong> - Awards can show category lists, expandable detail, breakpoint columns, and entry prices.</li><li><strong>Category icons</strong> - award categories can carry icons on the introduction screen.</li></ul></div>
-                <a class="step-detail__link" href="#" data-backend-todo="steps-read-full">Read the full step <i data-lucide="arrow-right" aria-hidden="true"></i></a>
-              </div></td></tr><tr class="datatables__row">
-              <td class="datatables__col--tight"><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select step 3" data-steps-select><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td>
-              <td>3</td>
-              <td class="steps-table__title-cell"><a class="steps-table__title" href="#" title="Commercial Flexibility - Sell for Different Entities and Under Different Terms From One Store">Commercial Flexibility - Sell for Different Entities and Under Different Terms From One Store</a></td>
-              <td>Content</td><td>None</td>
-              <td><span class="steps-table__empty" aria-label="None"><i data-lucide="minus" aria-hidden="true"></i></span></td>
-              <td><span class="steps-table__empty" aria-label="None"><i data-lucide="minus" aria-hidden="true"></i></span></td>
-              <td><a class="btn btn--tertiary btn--sm steps-table__author-chip" href="#"><span>Markus Karlsson</span></a></td>
-              <td>20 Jul 2026</td>
-              <td><span class="steps-table__live" aria-label="Live"><i data-lucide="check" aria-hidden="true"></i></span></td>
-              <td class="datatables__col--tight"><a class="datatables__row-edit" href="#" aria-label="Edit step 3"><i data-lucide="pencil" aria-hidden="true"></i></a></td>
-            </tr>
-            <tr class="datatables__row-detail"><td colspan="11" class="datatables__row-detail__cell"><div class="step-detail">
-                <ul class="step-detail__media" aria-label="Step media"><li class="step-detail__chip"><i data-lucide="image-off" aria-hidden="true"></i>No step image</li><li class="step-detail__chip"><i data-lucide="image-off" aria-hidden="true"></i>No presentation image</li><li class="step-detail__chip"><i data-lucide="film" aria-hidden="true"></i>No multimedia</li></ul>
-                <div class="step-detail__body"><p>The biggest commercial step in 9.0.11.24 is the ability to run several commercial entities through a single store, and to sell each product under its own terms.</p></div>
-                <a class="step-detail__link" href="#" data-backend-todo="steps-read-full">Read the full step <i data-lucide="arrow-right" aria-hidden="true"></i></a>
-              </div></td></tr><tr class="datatables__row">
-              <td class="datatables__col--tight"><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select step 4" data-steps-select><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td>
-              <td>4</td>
-              <td class="steps-table__title-cell"><a class="steps-table__title" href="#" title="Upgrade Guidance">Upgrade Guidance</a></td>
-              <td>Content</td><td>None</td>
-              <td><span class="steps-table__empty" aria-label="None"><i data-lucide="minus" aria-hidden="true"></i></span></td>
-              <td><span class="steps-table__empty" aria-label="None"><i data-lucide="minus" aria-hidden="true"></i></span></td>
-              <td><a class="btn btn--tertiary btn--sm steps-table__author-chip" href="#"><span>Markus Karlsson</span></a></td>
-              <td>20 Jul 2026</td>
-              <td><span class="steps-table__live" aria-label="Live"><i data-lucide="check" aria-hidden="true"></i></span></td>
-              <td class="datatables__col--tight"><a class="datatables__row-edit" href="#" aria-label="Edit step 4"><i data-lucide="pencil" aria-hidden="true"></i></a></td>
-            </tr>
-            <tr class="datatables__row-detail"><td colspan="11" class="datatables__row-detail__cell"><div class="step-detail">
-                <ul class="step-detail__media" aria-label="Step media"><li class="step-detail__chip"><i data-lucide="image-off" aria-hidden="true"></i>No step image</li><li class="step-detail__chip"><i data-lucide="image-off" aria-hidden="true"></i>No presentation image</li><li class="step-detail__chip"><i data-lucide="film" aria-hidden="true"></i>No multimedia</li></ul>
-                <div class="step-detail__body"><p>This is a priority update. More than one hundred platform and infrastructure updates land alongside this release, including important security hardening across member-facing forms, sessions, and the editing layer.</p></div>
-                <a class="step-detail__link" href="#" data-backend-todo="steps-read-full">Read the full step <i data-lucide="arrow-right" aria-hidden="true"></i></a>
-              </div></td></tr></tbody>
-          </table>
-        </div>
-        <div class="datatables__footer">
-          <span>Showing <strong>1–4</strong> of <strong>21</strong> results</span>
-          <div class="datatables__pagination" role="group" aria-label="Pagination">
-            <button class="datatables__page-btn" aria-label="Previous"><i data-lucide="chevron-left" aria-hidden="true"></i></button>
-            <button class="datatables__page-btn datatables__page-btn--active" aria-current="page">1</button>
-            <button class="datatables__page-btn">2</button>
-            <button class="datatables__page-btn" aria-label="Next"><i data-lucide="chevron-right" aria-hidden="true"></i></button>
+
+          <!-- Selection bar — ONE bar for every screen and, on Media Items,
+               for both its views. Shown only when something is ticked; live
+               keeps a permanent Select-all above and a permanent action row
+               below. The ACTIONS are per-screen config (`bulkActions`), read
+               from each live screen's own declaration, so this markup is the
+               same on all of them.
+               TODO(backend:Listing): the actions do nothing →
+               POST /control/<screen>/bulk { action, ids[], value? } -->
+          <div class="cc-listing__selection" data-listing-selection hidden
+               data-backend-todo="listing-bulk-actions">
+            <span class="cc-listing__selection-count" data-selection-count aria-live="polite">0 items selected</span>
+            <!-- Clear sits with the COUNT, not among the actions: it dismisses a
+                 state rather than doing something to the rows, and on Articles'
+                 five-verb bar it was stranding itself on a second line. -->
+            <button type="button" class="btn btn--tertiary btn--sm cc-listing__selection-clear" data-selection-clear>Clear</button>
+            <div class="cc-listing__selection-actions" data-selection-actions></div>
           </div>
-        </div>
-      </div>
-  </div>
-  <div class="demo-section demo-section--bare">
-    <p class="demo-section__title">Details=On · Width=Full</p>
-    <div class="datatables steps-table steps-table--details steps-table--full" data-steps-table>
-        <div class="datatables__toolbar">
-          <span class="datatables__meta"><span>Show</span>
-            <button type="button" class="datatables__select" aria-label="Rows per page"><span>20</span><i data-lucide="chevron-down" aria-hidden="true"></i></button>
-            <span>of <strong>21</strong></span></span>
-          <div class="datatables__actions">
-            <span class="steps-table__details-toggle">
-              <button class="toggle toggle--xxs toggle--active" type="button" role="switch" aria-checked="true" aria-labelledby="steps-details-label-2" data-steps-details><span class="toggle__track"><span class="toggle__knob"></span></span></button>
-              <span id="steps-details-label-2">Show details</span>
-            </span>
+
+          <div class="datatables__body">
+            <table class="table">
+              <thead data-listing-head></thead>
+              <tbody data-listing-body></tbody>
+            </table>
           </div>
-        </div>
-        <div class="datatables__body">
-          <table class="table">
-            <thead><tr><th class="datatables__col--tight"><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select all steps" data-steps-select-all><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></th><th><button class="datatables__sort datatables__sort--active" type="button">Order <i data-lucide="chevron-up" aria-hidden="true"></i></button></th><th><button class="datatables__sort" type="button">Title <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th><th><button class="datatables__sort" type="button">Type <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th><th><button class="datatables__sort" type="button">Float <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th><th>Design frame</th><th>Lookup</th><th><button class="datatables__sort" type="button">Created by <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th><th><button class="datatables__sort" type="button">Publish start <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th><th>Live</th><th class="datatables__col--tight" aria-label="Edit"></th></tr></thead>
-            <tbody><tr class="datatables__row">
-              <td class="datatables__col--tight"><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select step 1" data-steps-select><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td>
-              <td>1</td>
-              <td class="steps-table__title-cell"><a class="steps-table__title" href="#" title="Agent Access - Let Trusted AI Agents Operate Affino for You, in the Browser and Beyond">Agent Access - Let Trusted AI Agents Operate Affino for You, in the Browser and Beyond</a></td>
-              <td>Content</td><td>None</td>
-              <td><span class="steps-table__empty" aria-label="None"><i data-lucide="minus" aria-hidden="true"></i></span></td>
-              <td><span class="steps-table__empty" aria-label="None"><i data-lucide="minus" aria-hidden="true"></i></span></td>
-              <td><a class="btn btn--tertiary btn--sm steps-table__author-chip" href="#"><span>Markus Karlsson</span></a></td>
-              <td>20 Jul 2026</td>
-              <td><span class="steps-table__live" aria-label="Live"><i data-lucide="check" aria-hidden="true"></i></span></td>
-              <td class="datatables__col--tight"><a class="datatables__row-edit" href="#" aria-label="Edit step 1"><i data-lucide="pencil" aria-hidden="true"></i></a></td>
-            </tr>
-            <tr class="datatables__row-detail"><td colspan="11" class="datatables__row-detail__cell"><div class="step-detail">
-                <ul class="step-detail__media" aria-label="Step media"><li class="step-detail__chip"><i data-lucide="image-off" aria-hidden="true"></i>No step image</li><li class="step-detail__chip"><i data-lucide="image-off" aria-hidden="true"></i>No presentation image</li><li class="step-detail__chip"><i data-lucide="film" aria-hidden="true"></i>No multimedia</li></ul>
-                <div class="step-detail__body"><p>The headline of 9.0.11.24 - and the reason it is <strong>The Autonomy Update</strong> - is <strong>Agent Access</strong>: trusted AI agents can now operate Affino for you, signing in and working across your sites and your platform without a person having to drive every step.</p>
-<h4>Operate your sites in the browser, as a real member</h4>
-<p>Agent Access issues a genuine, signed, single-use member login, so an agent can sign in to your site and move through it exactly as a real member would - browsing, navigating, and completing member journeys in a real browser. Page views, journeys, and conversions behave just as they do for a signed-in person, which makes it ideal for automating and verifying live journeys end to end.</p>
-<h4>Work across your platform too, alongside the toolkit you already have</h4>
-<p>Browser operation sits alongside the programmatic control Affino already offers. The Affino MCP toolkit lets agents manage the platform itself - CRM, content, media, forums and more - as an attributed member of your team, and the Zapier integration moves data in and out across thousands of apps.</p>
-<h4>Works with your preferred agent tools</h4>
-<p>Agent Access is open to any capable agent client, so your team can use whatever they already work with - Claude Cowork, Codex, the ChatGPT app, or an equivalent agent platform - to reach directly into Affino.</p>
-<h4>Locked down, layer by layer</h4>
-<p>Agent Access is built to be secured tightly, and the controls stack. You combine an <strong>Access Profile</strong> and a <strong>Bot Access Profile</strong> - which can restrict an agent by <strong>IP address</strong> or <strong>user agent</strong> - with <strong>Agent Access Keys</strong> that carry the credential and can be rotated or revoked.</p></div>
-                <a class="step-detail__link" href="#" data-backend-todo="steps-read-full">Read the full step <i data-lucide="arrow-right" aria-hidden="true"></i></a>
-              </div></td></tr><tr class="datatables__row">
-              <td class="datatables__col--tight"><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select step 2" data-steps-select><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td>
-              <td>2</td>
-              <td class="steps-table__title-cell"><a class="steps-table__title" href="#" title="Awards &amp; Events - A Smoother Run From Entry to Judging to Event Day">Awards &amp; Events - A Smoother Run From Entry to Judging to Event Day</a></td>
-              <td>Content</td><td>None</td>
-              <td><span class="steps-table__empty" aria-label="None"><i data-lucide="minus" aria-hidden="true"></i></span></td>
-              <td><span class="steps-table__empty" aria-label="None"><i data-lucide="minus" aria-hidden="true"></i></span></td>
-              <td><a class="btn btn--tertiary btn--sm steps-table__author-chip" href="#"><span>Markus Karlsson</span></a></td>
-              <td>20 Jul 2026</td>
-              <td><span class="steps-table__live" aria-label="Live"><i data-lucide="check" aria-hidden="true"></i></span></td>
-              <td class="datatables__col--tight"><a class="datatables__row-edit" href="#" aria-label="Edit step 2"><i data-lucide="pencil" aria-hidden="true"></i></a></td>
-            </tr>
-            <tr class="datatables__row-detail"><td colspan="11" class="datatables__row-detail__cell"><div class="step-detail">
-                <ul class="step-detail__media" aria-label="Step media"><li class="step-detail__chip"><i data-lucide="image-off" aria-hidden="true"></i>No step image</li><li class="step-detail__chip"><i data-lucide="image-off" aria-hidden="true"></i>No presentation image</li><li class="step-detail__chip"><i data-lucide="film" aria-hidden="true"></i>No multimedia</li></ul>
-                <div class="step-detail__body"><p>Awards and events get a substantial operational lift in 9.0.11.24, making the whole cycle - from entry, through judging, to the event itself - smoother to run and better presented to entrants and attendees.</p>
-<h4>Cleaner judging</h4>
-<p>Shortlist judging now has its own dedicated route, so you can send judges straight to the right stage without shortlist and final judging blurring together. Rounds stay distinct, and judges see exactly the screen they need.</p>
-<h4>What's included:</h4>
-<ul><li><strong>Shortlist judging screen</strong> - judges can be sent to a dedicated shortlist judging screen.</li><li><strong>Award introduction categories</strong> - Awards can show category lists, expandable detail, breakpoint columns, and entry prices.</li><li><strong>Category icons</strong> - award categories can carry icons on the introduction screen.</li></ul></div>
-                <a class="step-detail__link" href="#" data-backend-todo="steps-read-full">Read the full step <i data-lucide="arrow-right" aria-hidden="true"></i></a>
-              </div></td></tr><tr class="datatables__row">
-              <td class="datatables__col--tight"><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select step 3" data-steps-select><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td>
-              <td>3</td>
-              <td class="steps-table__title-cell"><a class="steps-table__title" href="#" title="Commercial Flexibility - Sell for Different Entities and Under Different Terms From One Store">Commercial Flexibility - Sell for Different Entities and Under Different Terms From One Store</a></td>
-              <td>Content</td><td>None</td>
-              <td><span class="steps-table__empty" aria-label="None"><i data-lucide="minus" aria-hidden="true"></i></span></td>
-              <td><span class="steps-table__empty" aria-label="None"><i data-lucide="minus" aria-hidden="true"></i></span></td>
-              <td><a class="btn btn--tertiary btn--sm steps-table__author-chip" href="#"><span>Markus Karlsson</span></a></td>
-              <td>20 Jul 2026</td>
-              <td><span class="steps-table__live" aria-label="Live"><i data-lucide="check" aria-hidden="true"></i></span></td>
-              <td class="datatables__col--tight"><a class="datatables__row-edit" href="#" aria-label="Edit step 3"><i data-lucide="pencil" aria-hidden="true"></i></a></td>
-            </tr>
-            <tr class="datatables__row-detail"><td colspan="11" class="datatables__row-detail__cell"><div class="step-detail">
-                <ul class="step-detail__media" aria-label="Step media"><li class="step-detail__chip"><i data-lucide="image-off" aria-hidden="true"></i>No step image</li><li class="step-detail__chip"><i data-lucide="image-off" aria-hidden="true"></i>No presentation image</li><li class="step-detail__chip"><i data-lucide="film" aria-hidden="true"></i>No multimedia</li></ul>
-                <div class="step-detail__body"><p>The biggest commercial step in 9.0.11.24 is the ability to run several commercial entities through a single store, and to sell each product under its own terms.</p></div>
-                <a class="step-detail__link" href="#" data-backend-todo="steps-read-full">Read the full step <i data-lucide="arrow-right" aria-hidden="true"></i></a>
-              </div></td></tr><tr class="datatables__row">
-              <td class="datatables__col--tight"><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select step 4" data-steps-select><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td>
-              <td>4</td>
-              <td class="steps-table__title-cell"><a class="steps-table__title" href="#" title="Upgrade Guidance">Upgrade Guidance</a></td>
-              <td>Content</td><td>None</td>
-              <td><span class="steps-table__empty" aria-label="None"><i data-lucide="minus" aria-hidden="true"></i></span></td>
-              <td><span class="steps-table__empty" aria-label="None"><i data-lucide="minus" aria-hidden="true"></i></span></td>
-              <td><a class="btn btn--tertiary btn--sm steps-table__author-chip" href="#"><span>Markus Karlsson</span></a></td>
-              <td>20 Jul 2026</td>
-              <td><span class="steps-table__live" aria-label="Live"><i data-lucide="check" aria-hidden="true"></i></span></td>
-              <td class="datatables__col--tight"><a class="datatables__row-edit" href="#" aria-label="Edit step 4"><i data-lucide="pencil" aria-hidden="true"></i></a></td>
-            </tr>
-            <tr class="datatables__row-detail"><td colspan="11" class="datatables__row-detail__cell"><div class="step-detail">
-                <ul class="step-detail__media" aria-label="Step media"><li class="step-detail__chip"><i data-lucide="image-off" aria-hidden="true"></i>No step image</li><li class="step-detail__chip"><i data-lucide="image-off" aria-hidden="true"></i>No presentation image</li><li class="step-detail__chip"><i data-lucide="film" aria-hidden="true"></i>No multimedia</li></ul>
-                <div class="step-detail__body"><p>This is a priority update. More than one hundred platform and infrastructure updates land alongside this release, including important security hardening across member-facing forms, sessions, and the editing layer.</p></div>
-                <a class="step-detail__link" href="#" data-backend-todo="steps-read-full">Read the full step <i data-lucide="arrow-right" aria-hidden="true"></i></a>
-              </div></td></tr></tbody>
-          </table>
-        </div>
-        <div class="datatables__footer">
-          <span>Showing <strong>1–4</strong> of <strong>21</strong> results</span>
-          <div class="datatables__pagination" role="group" aria-label="Pagination">
-            <button class="datatables__page-btn" aria-label="Previous"><i data-lucide="chevron-left" aria-hidden="true"></i></button>
-            <button class="datatables__page-btn datatables__page-btn--active" aria-current="page">1</button>
-            <button class="datatables__page-btn">2</button>
-            <button class="datatables__page-btn" aria-label="Next"><i data-lucide="chevron-right" aria-hidden="true"></i></button>
+
+          <div class="datatables__footer">
+            <!-- "Showing" and "results" are dropped on a narrow container: the
+                 range and the total are the sentence, the rest is padding. -->
+            <span class="datatables__count"><span class="datatables__count-word">Showing </span><strong data-listing-range>1&#8211;10</strong> of <strong data-listing-footer-total>296</strong><span class="datatables__count-word"> results</span></span>
+            <div class="datatables__pagination" role="group" aria-label="Pagination" data-listing-pagination></div>
           </div>
         </div>
       </div>
@@ -241,6 +130,10 @@
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>lucide.createIcons();</script>
   <script src="../../../components/Toggle/Toggle.js"></script>
+  <script src="../../templates/ListingScreen/listing-data.js"></script>
+  <script src="../../templates/RecordScreen/listing-data-article-steps.js"></script>
+  <script src="../../templates/ControlScreen/control-width.js"></script>
+  <script src="../../templates/ListingScreen/ListingScreen.js"></script>
   <script src="StepsTable.js"></script>
 </body>
 </html>

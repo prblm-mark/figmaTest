@@ -34,12 +34,32 @@
   display: table-row;
 }
 
+/* …but never during the listing engine's measuring pass. The rule above out-specifies
+ * Datatables' `.datatables__row-detail--measuring { display: none }`, so with Show details on the
+ * open detail cells (colspan across every column) handed their width demand to every column and
+ * the fit / scroll widths came out inflated (a 2,477px scroll table for ~1,200px of columns). */
+.steps-table--details .datatables__row-detail.datatables__row-detail--measuring {
+  display: none;
+}
+
 /* Detail spans every column; the panel starts under the Order column (Figma StepRow
    Expanded: Detail padding-left spacing-9 = the checkbox column). StepDetail pads itself. */
 .steps-table .datatables__row-detail__cell {
   padding: 0 0 0 var(--ai-spacing-9);
   white-space: normal;
   background-color: var(--ai-datatable-table-expanded-bg);
+}
+
+/* Horizontal scroll: the step content is pinned to the visible width (ListingScreen.css), and a
+ * sticky block can only slide within its cell's CONTENT box — the 40px inset above cost it that
+ * much travel, so at full scroll it drifted off the left edge. The inset moves inside the block. */
+[data-overflow="scroll"] .steps-table .datatables__row-detail__cell {
+  padding-inline-start: 0;
+}
+
+[data-overflow="scroll"] .steps-table .datatables__detail-extra {
+  inline-size: var(--cc-listing-view-w, 100%);
+  padding-inline-start: var(--ai-spacing-9);
 }
 
 /* Column sizing (the table resizing rule): Title takes the spare width and ellipsises;

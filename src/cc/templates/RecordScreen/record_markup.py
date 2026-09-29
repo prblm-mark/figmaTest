@@ -437,51 +437,42 @@ def step_detail(body_html):
               </div>'''
 
 
-def steps_table(steps, total=21):
-    cb = lambda lbl, attr: f'<label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="{e(lbl)}" {attr}><span class="checkbox__indicator">{icon("check")}</span></label>'
-    head = "".join(
-        (f'<th><button class="datatables__sort{" datatables__sort--active" if i == 0 else ""}" type="button">{e(n)} {icon("chevron-up" if i == 0 else "chevrons-up-down")}</button></th>'
-         if s else f'<th>{e(n)}</th>') for i, (n, s) in enumerate(COLS))
-    rows = []
-    for i, (title, body) in enumerate(steps, 1):
-        rows.append(f'''<tr class="datatables__row">
-              <td class="datatables__col--tight">{cb("Select step " + str(i), "data-steps-select")}</td>
-              <td>{i}</td>
-              <td class="steps-table__title-cell"><a class="steps-table__title" href="#" title="{e(title)}">{e(title)}</a></td>
-              <td>Content</td><td>None</td>
-              <td><span class="steps-table__empty" aria-label="None">{icon("minus")}</span></td>
-              <td><span class="steps-table__empty" aria-label="None">{icon("minus")}</span></td>
-              <td><a class="btn btn--tertiary btn--sm steps-table__author-chip" href="#"><span>Markus Karlsson</span></a></td>
-              <td>20 Jul 2026</td>
-              <td><span class="steps-table__live" aria-label="Live">{icon("check")}</span></td>
-              <td class="datatables__col--tight"><a class="datatables__row-edit" href="#" aria-label="Edit step {i}">{icon("pencil")}</a></td>
-            </tr>
-            <tr class="datatables__row-detail"><td colspan="11" class="datatables__row-detail__cell">{step_detail(body)}</td></tr>''')
-    return f'''<div class="datatables steps-table" data-steps-table>
-        <div class="datatables__toolbar">
-          <span class="datatables__meta"><span>Show</span>
-            <button type="button" class="datatables__select" aria-label="Rows per page"><span>20</span>{icon("chevron-down")}</button>
-            <span>of <strong>{total}</strong></span></span>
-          <div class="datatables__actions">
-            <span class="steps-table__details-toggle">
-              <button class="toggle toggle--xxs" type="button" role="switch" aria-checked="false" aria-labelledby="steps-details-label" data-steps-details><span class="toggle__track"><span class="toggle__knob"></span></span></button>
-              <span id="steps-details-label">Show details</span>
-            </span>
-          </div>
-        </div>
-        <div class="datatables__body">
-          <table class="table">
-            <thead><tr><th class="datatables__col--tight">{cb("Select all steps", "data-steps-select-all")}</th>{head}<th class="datatables__col--tight" aria-label="Edit"></th></tr></thead>
-            <tbody>{''.join(rows)}</tbody>
-          </table>
-        </div>
-        <div class="datatables__footer">
-          <span>Showing <strong>1–{len(steps)}</strong> of <strong>{total}</strong> results</span>
-          <div class="datatables__pagination" role="group" aria-label="Pagination">
-            <button class="datatables__page-btn" aria-label="Previous">{icon("chevron-left")}</button>
-            <button class="datatables__page-btn datatables__page-btn--active" aria-current="page">1</button>
-            <button class="datatables__page-btn">2</button>
-            <button class="datatables__page-btn" aria-label="Next">{icon("chevron-right")}</button>
-          </div>
-        </div>
+# The static steps_table() was retired 2026-09-29: the steps table now runs on the listing engine.
+
+import os as _os
+_HERE = _os.path.dirname(_os.path.abspath(__file__))
+
+
+def _swap(src, old, new):
+    assert old in src, f"anchor not found: {old[:60]!r}"
+    return src.replace(old, new, 1)
+
+
+def _articles_html():
+    return open(_os.path.join(_HERE, "../ListingScreen/Articles.html"), encoding="utf-8").read()
+
+
+def listing_datatable():
+    ARTICLES = _articles_html()
+    a = ARTICLES.index('        <div class="datatables datatables--orders"')
+    b = ARTICLES.index("\n        </div>\n", a) + len("\n        </div>")
+    block = ARTICLES[a:b]
+    block = _swap(block, '<div class="datatables datatables--orders" data-backend-todo="listing-orders-rows">',
+                 '<div class="datatables datatables--orders steps-table" data-steps-table data-backend-todo="steps-rows">')
+    toggle = ('<span class="steps-table__details-toggle">\n'
+              '                <button class="toggle toggle--xxs" type="button" role="switch" aria-checked="false" '
+              'aria-labelledby="steps-details-label" data-steps-details><span class="toggle__track"><span class="toggle__knob"></span></span></button>\n'
+              '                <span id="steps-details-label">Show details</span>\n'
+              '              </span>\n              ')
+    block = _swap(block, '<div class="dropdown cc-listing__columns"', toggle + '<div class="dropdown cc-listing__columns"')
+    return block
+
+
+def steps_listing():
+    return f'''<!-- TODO(backend:RecordScreen) steps-rows: steps, paging and the step bodies are demo data (Hub article
+             626347) → the article's steps endpoint. Column prefs / overflow mode ride on the listing's
+             listing-column-prefs + listing-overflow-mode items. -->
+      <div class="cc-listing" data-listing="article-steps">
+{listing_datatable()}
       </div>'''
+
