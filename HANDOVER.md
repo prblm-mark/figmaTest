@@ -392,6 +392,7 @@ build — a render from the record payload. Markers: `grep -rn "TODO(backend:Rec
 | `record-datetime` | Date rows (Launch Date, Publish Start / End, Embargo End) | DatePicker picks a DATE only; the time in Publish Start/End is shown as text. | Date + time value per field (DatePicker + TimePicker pairing, or a datetime control); timezone of the record. | `needs-backend` |
 | `record-rich-text` | Rich text rows (Introduction, Main Body, Text 2–4) | View renders the HTML blocks (p, h2, h3, blockquote); Edit shows the paragraphs in a plain textarea. | The platform's rich-text editor in Edit; the stored HTML is rendered on View (sanitised). | `needs-backend` |
 | `record-media-file` | Media file rows (Audio Version (MP3), Multimedia) → Choose file | No-op. | Media file picker / upload for audio and multimedia items; shows the chosen file's name. | `needs-backend` |
+| `record-sidebar-preference` | Record tabs → "Show sidebar" switch (`data-record-sidebar`) on Article View / Edit | Remembered per mode (View / Edit) in localStorage (`cc-record-sidebar-view` / `-edit`); defaults View on, Edit off | Per-user preference `{ view, edit }` saved with the user's CC settings and rendered into the page (no default flash) | `needs-backend` |
 
 ## Scope of this document
 
