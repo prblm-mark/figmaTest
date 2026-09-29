@@ -48,6 +48,7 @@ TopNavigation, HeaderGroup, ActionsMenu rail, theme + width scripts). Page body:
 | Actions-rail **Minimise** | toggles full width (designer, 2026-09-28): `aria-pressed`, rail active look, choice saved (`localStorage cc-width`) and followed on every record screen; `?template=` still wins when present | `control-width.js` (`data-cc-width-toggle`, opt-in per screen) |
 | Edit / Cancel | View ↔ Edit screens | links |
 | SEO Health ± / Expand all | expand inline | `AdvisoryItem.js` |
+| Image Show / Hide details (View) | file facts hidden by default; toggle reveals them inline (designer, 2026-09-29) | `MediaMeta.js` |
 | TagBox × / Select | remove tag · Multi Select Modal (pre-ticked, Apply writes back) | `TagBox.js` |
 | Show details | expands every step row | `StepsTable.js` + `Toggle.js` |
 | Step checkboxes, pencil, Read the full step, Lookup, + Add | visual only — backend later | HANDOVER |

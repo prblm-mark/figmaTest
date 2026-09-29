@@ -80,11 +80,21 @@ MEDIA = [("Alt text", "Affino 9.0.11.25 - The Refinement Update"), ("File name",
          ("File size", "108 KB"), ("Dimensions", "800 × 800")]
 
 
-def media_meta(src=IMG):
+_media_ids = iter(range(1, 10_000))
+
+
+def media_meta(src=IMG, expanded=False):
+    """Details hidden by default behind a Show/Hide toggle (designer, 2026-09-29) — MediaMeta.js."""
+    mid = f"media-meta-{next(_media_ids)}"
     rows = "".join(f'<dt class="media-meta__term">{e(a)}</dt><dd class="media-meta__value">{e(b)}</dd>' for a, b in MEDIA)
+    label = "Hide details" if expanded else "Show details"
+    hidden = "" if expanded else " hidden"
     return f'''<div class="media-meta">
               <img class="media-meta__thumb" src="{src}" alt="{e(MEDIA[0][1])}">
-              <dl class="media-meta__list">{rows}</dl>
+              <div class="media-meta__details">
+                <button type="button" class="btn btn--secondary btn--xs media-meta__toggle" data-media-toggle aria-expanded="{'true' if expanded else 'false'}" aria-controls="{mid}"><span>{label}</span>{icon("chevron-down", "media-meta__chevron")}</button>
+                <dl class="media-meta__list" id="{mid}"{hidden}>{rows}</dl>
+              </div>
             </div>'''
 
 

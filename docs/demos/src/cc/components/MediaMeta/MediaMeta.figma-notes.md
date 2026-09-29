@@ -44,3 +44,9 @@ Draft thumb bg was `--ai-btn-secondary-bg-hover` (borrowed) → `--ai-surface-mi
 
 ## Component set (2026-09-28)
 MediaMeta is now a set `3905:140931`: `Layout=Default` (`3861:1922`, the original node — existing instances unchanged) + `Layout=Stacked` (`3905:140918`): facts under the thumbnail, divider on the list's top edge, `spacing/4` top padding. Stacked values are single-line + ellipsis in Figma because Terms and Values are separate columns there (a wrapped value would misalign the rows); code wraps, since its grid keeps rows aligned. Stacked is the RecordSection ≤559 container query — no class. Code Connect repointed to the set.
+
+## Show / Hide details (designer, 2026-09-29)
+The file facts are **hidden by default** behind a toggle. View screens only — Edit uses MediaPicker.
+- Figma: set gains `State=Collapsed` (default — the original `3861:1922` / `3905:140918`, so every placed instance collapsed) and `State=Expanded` (`3910:18907` Default, `3910:18939` Stacked). A `Details` column holds a Button **Secondary xs** (`Show details` + ChevronDown / `Hide details` + ChevronUp) above the Definition List, gap `spacing/3`.
+- Code: `.media-meta__details` column; `.media-meta__toggle` = `btn btn--secondary btn--xs` (the same control as SEO Health's "Expand all" — tertiary is a filled grey chip in CC and read as another tag); `aria-expanded` + `aria-controls`, the list carries `hidden`; chevron rotates 180° when open. `MediaMeta.js` (delegated) flips it and swaps the label. `.media-meta__list[hidden]` restores `display: none` over the grid.
+- Narrow (RecordSection ≤559): the details column stretches under the thumbnail.

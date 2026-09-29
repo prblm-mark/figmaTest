@@ -22,6 +22,30 @@
   object-fit: cover;
 }
 
+/* Details column: the Show/Hide toggle, then the facts when open. Hidden by default
+ * (designer, 2026-09-29) — MediaMeta.js flips `hidden` + aria-expanded. The toggle is
+ * Button Secondary xs, the same control as SEO Health's "Expand all". */
+.media-meta__details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ai-spacing-3);
+  min-width: 0;
+}
+
+.media-meta__chevron {
+  transition: transform var(--ai-transition-default);
+}
+
+.media-meta__toggle[aria-expanded="true"] .media-meta__chevron {
+  transform: rotate(180deg);
+}
+
+/* `display: grid` below would otherwise beat the UA's [hidden] rule. */
+.media-meta__list[hidden] {
+  display: none;
+}
+
 .media-meta__list {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
