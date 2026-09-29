@@ -1,0 +1,93 @@
+/* RichTextEditor — TinyMCE's chrome in design-system tokens.
+ * Tier: Component · CODE-FIRST (designer, 2026-09-29) — no Figma node; flagged in the notes.
+ *
+ * TinyMCE injects its oxide skin AFTER this file, so every override is scoped under
+ * `.rich-text` to out-rank the skin's own single-class selectors. Only the frame, toolbar,
+ * buttons and statusbar are restyled; menus and dialogs (attached to <body>) keep oxide.
+ */
+
+.rich-text {
+  min-inline-size: 0;
+}
+
+/* Frame — the Textarea's border and radius, so an editor reads as the same family of field. */
+.rich-text .tox.tox-tinymce {
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+}
+
+.rich-text .tox.tox-tinymce:focus-within {
+  border-color: var(--ai-border-brand);
+}
+
+/* Toolbar */
+.rich-text .tox .tox-editor-header {
+  box-shadow: none;
+  border-block-end: 1px solid var(--ai-border-secondary);
+  padding: 0;
+}
+
+.rich-text .tox .tox-toolbar,
+.rich-text .tox .tox-toolbar__primary,
+.rich-text .tox .tox-toolbar__overflow {
+  background: var(--ai-surface-primary);
+}
+
+.rich-text .tox .tox-toolbar__group {
+  padding: 0 var(--ai-spacing-2);
+}
+
+.rich-text .tox .tox-tbtn {
+  border-radius: var(--ai-radius-sm);
+  color: var(--ai-icon-primary);
+}
+
+.rich-text .tox .tox-tbtn svg {
+  fill: currentColor;
+}
+
+.rich-text .tox .tox-tbtn:hover {
+  background: var(--ai-surface-minimal);
+  color: var(--ai-icon-primary);
+}
+
+.rich-text .tox .tox-tbtn--enabled,
+.rich-text .tox .tox-tbtn--enabled:hover {
+  background: var(--ai-surface-brand-soft);
+  color: var(--ai-text-brand);
+}
+
+.rich-text .tox .tox-tbtn:focus-visible {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: -2px;
+}
+
+.rich-text .tox .tox-tbtn--select .tox-tbtn__select-label {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-2xs);
+  color: var(--ai-text-primary);
+}
+
+/* The editable area behind the iframe — the content CSS paints the iframe itself. */
+.rich-text .tox .tox-edit-area::before {
+  border: 0; /* oxide's blue focus ring; the frame's brand border carries focus instead */
+}
+
+.rich-text .tox .tox-edit-area__iframe {
+  background-color: var(--ai-surface-primary);
+}
+
+/* Statusbar (path + word count) */
+.rich-text .tox .tox-statusbar {
+  border-block-start: 1px solid var(--ai-border-secondary);
+  background-color: var(--ai-surface-primary);
+  color: var(--ai-text-secondary);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+}
+
+.rich-text .tox .tox-statusbar a,
+.rich-text .tox .tox-statusbar__path-item,
+.rich-text .tox .tox-statusbar__wordcount {
+  color: var(--ai-text-secondary);
+}

@@ -1059,8 +1059,8 @@
      "id": "record-rich-text",
      "category": "needs-backend",
      "element": "Rich text rows (Introduction, Main Body, Text 2–4)",
-     "current": "View renders the HTML blocks (p, h2, h3, blockquote); Edit shows the paragraphs in a plain textarea.",
-     "needs": "The platform's rich-text editor in Edit; the stored HTML is rendered on View (sanitised)."
+     "current": "TinyMCE 8.8.2 (as live) from jsDelivr, license_key 'gpl', with live's toolbar / plugins / style formats; Insert image uses the Selector. Content styled by the DS content CSS.",
+     "needs": "The product's own TinyMCE build, licence and config: content_css = the site's LiveEditForm.css + CustomFonts.css, autosave keys, image handling (MediaItemCode, not a URL)."
     },
     {
      "id": "record-media-file",
