@@ -162,10 +162,17 @@
   min-width: 0;
 }
 
+/* Two columns on desktop — Alt text | Caption over Alignment | Width (designer, 2026-09-29; was
+ * auto-fit, which gave four across on a wide section). One column once the section is narrow:
+ * keyed on the RecordSection container (its ≤559 stack), not the viewport (CLAUDE.md §4a). */
 .field-row__image-options {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--ai-size-4)), 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--ai-spacing-4);
+}
+
+@container record-section (max-width: 559px) {
+  .field-row__image-options { grid-template-columns: minmax(0, 1fr); }
 }
 
 .field-row__image-option {
@@ -180,6 +187,14 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--ai-spacing-5);
+}
+
+/* Alignment's radios sit on a row as tall as the Input / Select beside them (their 40px
+ * --ai-spacing-8 min-height) and centre in it, so they line up with Width's control rather than
+ * riding at the top of the cell (designer, 2026-09-29). */
+.field-row__image-option .field-row__options {
+  min-block-size: var(--ai-spacing-8);
+  align-items: center;
 }
 
 /* Type=Checkbox (edit) — the box sits on the label's line; no 40px control to centre against. */
