@@ -105,6 +105,12 @@
     chip.classList.add('filter-item--open');
     $(chip, '.filter-item__trigger').setAttribute('aria-expanded', 'true');
     icons();
+    // Keep the card inside the modal: shift it left by whatever crosses the right edge.
+    var modal = chip.closest('.modal');
+    if (modal) {
+      var over = panel.getBoundingClientRect().right - (modal.getBoundingClientRect().right - 8);
+      if (over > 0) panel.style.insetInlineStart = (-over) + 'px';
+    }
     var first = $(panel, '.checkbox__input');
     if (first) first.focus();
   }
