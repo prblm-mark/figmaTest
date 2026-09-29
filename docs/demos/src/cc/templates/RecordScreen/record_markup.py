@@ -115,7 +115,7 @@ def media_meta(src=IMG, rows=None):
 def media_picker(label, src=None):
     thumb = f'<img src="{src}" alt="">' if src else icon("image")
     return f'''<div class="media-picker">
-              <span class="media-picker__thumb">{thumb}</span>
+              <button type="button" class="media-picker__thumb" aria-label="Choose {e(label)}" aria-haspopup="dialog" data-selector-open="modal-media">{thumb}</button>
               <div class="media-picker__actions">
                 {btn(f"Edit {label}", "secondary", "sm", icon_left="pencil", icon_only=True, attrs=' aria-haspopup="dialog" data-selector-open="modal-media"')}
                 {btn(f"Remove {label}", "secondary", "sm", icon_left="trash-2", icon_only=True)}

@@ -43,3 +43,7 @@ Figma image icon is bound to `--ai-border-primary`; code uses `--ai-icon-seconda
 ## Edit button: icon only (designer, 2026-09-29)
 
 The Edit action is now `btn btn--secondary btn--sm btn--icon` with only the pencil and `aria-label="Edit <field>"`. The text label is dropped. It opens the Selector Type=Media (`data-selector-open="modal-media"`) on the record screens. **Figma still shows "Edit" with text, so flag it for Figma.**
+
+## Thumbnail opens the selector (designer, 2026-09-29)
+
+`.media-picker__thumb` is now a `<button>` (`aria-label="Choose <field>"`). Clicking the image or the empty placeholder opens the Selector Type=Media, the same as Edit. On hover it takes a `--ai-border-brand` border, and focus shows the standard ring. The file kind (audio) keeps a plain span thumb.

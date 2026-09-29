@@ -23,6 +23,25 @@
   color: var(--ai-icon-secondary);
 }
 
+/* The thumbnail is a button too — clicking the image, or the empty placeholder, opens the media
+ * selector just as Edit does (designer, 2026-09-29). A <button> rather than a clickable span so
+ * the keyboard reaches it. Reset the UA button chrome; the box above is unchanged. */
+button.media-picker__thumb {
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  transition: border-color var(--ai-transition-default);
+}
+
+button.media-picker__thumb:hover {
+  border-color: var(--ai-border-brand);
+}
+
+button.media-picker__thumb:focus-visible {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: 2px;
+}
+
 .media-picker__thumb [data-lucide],
 .media-picker__thumb svg {
   width: var(--ai-icon-size-md);
