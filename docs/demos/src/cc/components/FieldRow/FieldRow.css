@@ -23,7 +23,7 @@
   min-width: 0;
   margin: 0;
   font-family: var(--ai-font-title);
-  font-weight: var(--ai-font-medium);
+  font-weight: var(--ai-font-semibold);   /* designer amend 2026-09-29 (was medium) */
   font-size: var(--ai-font-fixed-xs);
   line-height: var(--ai-leading-sm);
   letter-spacing: var(--ai-tracking-4);

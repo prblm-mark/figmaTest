@@ -37,7 +37,7 @@
 |---|---|
 | label column | --ai-size-3 (192) Wide · --ai-size-1 (128) Compact |
 | gap | --ai-spacing-5 Wide · --ai-spacing-4 Compact |
-| label | --ai-font-fixed-xs Medium --ai-leading-sm --ai-text-secondary --ai-tracking-4 |
+| label | --ai-font-fixed-xs SemiBold (designer amend 2026-09-29, was Medium — flag for Figma) --ai-leading-sm --ai-text-secondary --ai-tracking-4 |
 | value | --ai-font-fixed-xs Regular --ai-leading-md --ai-text-primary |
 | compact text | --ai-font-fixed-xxs --ai-leading-xs (term --ai-text-contrast) |
 | edit label offset | padding-top --ai-spacing-4 (centres on the 40px control) |
