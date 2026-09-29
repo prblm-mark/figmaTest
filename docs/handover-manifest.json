@@ -1044,8 +1044,8 @@
     {
      "id": "record-lookup",
      "category": "needs-backend",
-     "element": "Lookup rows (Section, Sort Order, Creator, Account) → Select",
-     "current": "Current value in a read-only input; Select does nothing.",
+     "element": "Lookup rows → Select (Account only; Section, Creator and Sort Order now open a Selector)",
+     "current": "Account: current value in a read-only input; Select does nothing.",
      "needs": "Lookup picker per field (section tree / member search / account search) returning { id, name }; the row shows the name, submits the id."
     },
     {
@@ -1075,6 +1075,34 @@
      "element": "Record tabs → \"Show sidebar\" switch (data-record-sidebar) on Article View / Edit",
      "current": "Remembered per mode (View / Edit) in the browser's localStorage (cc-record-sidebar-view / -edit). Defaults: View on, Edit off.",
      "needs": "Per-user preference { view: bool, edit: bool } saved with the user's Control Centre settings and rendered into the page (so the default never flashes)."
+    },
+    {
+     "id": "selector-single-source",
+     "category": "needs-backend",
+     "element": "Selector Type=Single (Section, Creator)",
+     "current": "24 static rows (the live picker's first page); click a row writes the NAME into the field.",
+     "needs": "Paged search over the field's source (section tree / member search) returning { id, name, parent, channel, zone }; the row shows the name, submits the id."
+    },
+    {
+     "id": "selector-media-source",
+     "category": "needs-backend",
+     "element": "Selector Type=Media (Thumbnail, Main Image, …)",
+     "current": "24 demo tiles from the Media Items listing data; Use image swaps the picker thumbnail client-side. Filters, My media and Load more are inert.",
+     "needs": "Media search (title, type, section, creator, created range, My media) with paging; Use image submits the MediaItemCode and the server renders alt / caption / alignment / width."
+    },
+    {
+     "id": "selector-media-upload",
+     "category": "needs-backend",
+     "element": "Selector Type=Media → Upload",
+     "current": "Button only.",
+     "needs": "Upload flow (DragDropFile) that creates a media item and selects it."
+    },
+    {
+     "id": "selector-sort-order",
+     "category": "needs-backend",
+     "element": "Selector Type=Sort (Sort Order)",
+     "current": "73 real Insights articles (Hub, 2026-09-29) reordered in the DOM; Save writes 'Position n of 73' into the field. Thumbnails are placeholders.",
+     "needs": "GET the section's items in current order (id, title, thumbnail); Save PUTs the full ordered id list for the section."
     }
    ]
   }
