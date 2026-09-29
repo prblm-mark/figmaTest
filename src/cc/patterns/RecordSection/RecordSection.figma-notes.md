@@ -27,7 +27,7 @@
 | card | --ai-surface-primary, 1px --ai-border-secondary, --ai-radius-md; Full: radius-none, bottom border |
 | header padding | --ai-spacing-5 / --ai-spacing-6 right, bottom border |
 | title | --ai-font-fixed-md SemiBold --ai-leading-sm --ai-text-primary |
-| body | padding --ai-spacing-6, gap --ai-spacing-5 |
+| body | padding --ai-spacing-6, gap --ai-spacing-6 (designer amend 2026-09-29, was -5 — flag for Figma) |
 
 ## Token Gaps & Decisions
 Draft card bg/border were borrowed (`--cc-header-secondary-bg`, `--ai-datatable-table-border`) → `--ai-surface-primary` / `--ai-border-secondary` (designer). Row gap was 12 in one section, 16 in another → `--ai-spacing-5`.
