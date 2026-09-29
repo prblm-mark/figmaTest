@@ -50,7 +50,8 @@ TopNavigation, HeaderGroup, ActionsMenu rail, theme + width scripts). Page body:
 | SEO Health ± / Expand all | expand inline | `AdvisoryItem.js` |
 | Image details (View) | file facts hidden by default; "Image details" opens them in a Dropdown panel (layout B, designer 2026-09-29) | `Dropdown.js` |
 | TagBox × / Select | remove tag · Multi Select Modal (pre-ticked, Apply writes back) | `TagBox.js` |
-| Show details | expands every step row | `StepsTable.js` + `Toggle.js` |
+| Show details | expands every step row (the overflow columns + the step body) | `StepsTable.js` + `Toggle.js` |
+| Steps Edit Columns / Settings | the listing's own — the steps table runs on ListingScreen.js (`article-steps` config) | `ListingScreen.js` |
 | Step checkboxes, pencil, Read the full step, Lookup, + Add | visual only — backend later | HANDOVER |
 | View full analytics, Add to Contact List, Save | backend | HANDOVER |
 

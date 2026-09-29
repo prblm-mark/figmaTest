@@ -887,8 +887,17 @@
 }
 
 [data-listing][data-overflow="scroll"] .datatables__col--kebab,
-[data-listing][data-overflow="scroll"] .datatables__row-detail {
+[data-listing][data-overflow="scroll"] .datatables__row-detail:not(:has(.datatables__detail-extra)) {
   display: none;
+}
+
+/* A screen's own detail content (Article Steps' step body) survives scroll mode — Show details
+ * still opens it — and pins to the visible area like the empty state. */
+[data-listing][data-overflow="scroll"] .datatables__detail-extra {
+  position: sticky;
+  inset-inline-start: 0;
+  box-sizing: border-box;
+  max-inline-size: var(--cc-listing-view-w, 100%);
 }
 
 /* The table's first-cell inset would push the pinned block 16px in and past the right edge. */
@@ -901,4 +910,25 @@
   inset-inline-start: 0;
   box-sizing: border-box;
   inline-size: var(--cc-listing-view-w, 100%);
+}
+
+/* ── Flag cell (config type `flag`) ──────────────────────
+ * Check for yes, dash for none — the Steps table's Live / Design frame / Lookup, with the same
+ * tokens StepsTable used for them. */
+.cc-listing__flag {
+  display: inline-flex;
+}
+
+.cc-listing__flag [data-lucide],
+.cc-listing__flag svg {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+.cc-listing__flag--on {
+  color: var(--ai-text-success);
+}
+
+.cc-listing__flag--off {
+  color: var(--ai-icon-contrast);
 }
