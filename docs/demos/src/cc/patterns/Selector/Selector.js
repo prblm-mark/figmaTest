@@ -25,31 +25,145 @@
   function $$(root, sel) { return Array.prototype.slice.call(root.querySelectorAll(sel)); }
   function icons() { if (window.lucide && window.lucide.createIcons) window.lucide.createIcons(); }
 
+  /* ── Facets (FilterItem chips) ───────────────────────────
+     Each chip filters by one column. Its values are read from the rows themselves — a table
+     cell under the header of the same name, or a media tile's data-facets JSON — so a facet
+     can never offer a value that matches nothing. Chip click opens a FilterDropdowns
+     Multi Select card (checklist + Apply); Apply sets the chip's rollup and re-filters, the ×
+     clears it. OR within a facet, AND across facets and the search.
+     FilterItem.js is an ES module these pages do not load, so the chip's own states
+     (--open / --selected / rollup) are driven here. */
+  function items(overlay) {
+    var list = $$(overlay, '[data-selector-item]');
+    return list.length ? list : $$(overlay, 'tbody tr'); // the multi table's rows carry no data-selector-item
+  }
+
+  function facetValue(overlay, el, name) {
+    if (el.hasAttribute('data-facets')) {
+      try { return JSON.parse(el.getAttribute('data-facets'))[name] || 'None'; } catch (err) { return 'None'; }
+    }
+    var heads = $$(overlay, 'thead th').map(function (th) { return th.textContent.trim(); });
+    var i = heads.indexOf(name);
+    var td = i === -1 ? null : el.children[i];
+    var v = td ? td.textContent.trim() : '';
+    return v && v !== '—' ? v : 'None';
+  }
+
+  function facetState(chip) { return chip.__values || (chip.__values = []); }
+
+  function rollup(chip) {
+    var vals = facetState(chip);
+    var out = $(chip, '.filter-item__values');
+    chip.classList.toggle('filter-item--selected', vals.length > 0);
+    chip.classList.toggle('filter-item--empty', vals.length === 0);
+    out.textContent = '';
+    if (!vals.length) return;
+    var lead = document.createElement('span');
+    lead.className = 'filter-item__values-lead';
+    lead.textContent = vals.length <= 3 ? vals.join(', ') : vals[0];
+    out.appendChild(lead);
+    if (vals.length > 3) {
+      var rest = document.createElement('span');
+      rest.className = 'filter-item__values-rest';
+      rest.textContent = ', and ' + (vals.length - 1) + ' more';
+      out.appendChild(rest);
+    }
+  }
+
+  function closeFacet(chip) {
+    if (!chip) return;
+    chip.classList.remove('filter-item--open');
+    $(chip, '.filter-item__trigger').setAttribute('aria-expanded', 'false');
+    var panel = $(chip, '.selector__facet-panel');
+    if (panel) panel.remove();
+  }
+
+  function closeFacets(scope) { $$(scope, '[data-selector-facet].filter-item--open').forEach(closeFacet); }
+
+  function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+
+  function openFacet(chip) {
+    var overlay = chip.closest('.modal-overlay');
+    closeFacets(overlay);
+    var name = chip.getAttribute('data-filter-name');
+    var counts = {};
+    items(overlay).forEach(function (el) { var v = facetValue(overlay, el, name); counts[v] = (counts[v] || 0) + 1; });
+    var chosen = facetState(chip);
+    var values = Object.keys(counts).sort(function (a, b) { return a === 'None' ? 1 : b === 'None' ? -1 : a.localeCompare(b); });
+    var panel = document.createElement('div');
+    panel.className = 'filter-dropdowns filter-dropdowns--list selector__facet-panel';
+    panel.setAttribute('role', 'dialog');
+    panel.setAttribute('aria-label', 'Filter by ' + name);
+    panel.innerHTML = '<div class="input"><span class="input__label">Filter by ' + esc(name) + '</span></div>' +
+      '<div class="filter-dropdowns__checklist selector__facet-list">' + values.map(function (v) {
+        return '<label class="checkbox"><input type="checkbox" class="checkbox__input" value="' + esc(v) + '"' + (chosen.indexOf(v) !== -1 ? ' checked' : '') + '>' +
+          '<span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>' +
+          '<span class="checkbox__label"><span class="checkbox__label-text">' + esc(v) + '</span><span class="selector__facet-count">' + counts[v] + '</span></span></label>';
+      }).join('') + '</div>' +
+      '<button type="button" class="btn btn--primary filter-dropdowns__apply" data-facet-apply>Apply</button>';
+    chip.appendChild(panel);
+    chip.classList.add('filter-item--open');
+    $(chip, '.filter-item__trigger').setAttribute('aria-expanded', 'true');
+    icons();
+    var first = $(panel, '.checkbox__input');
+    if (first) first.focus();
+  }
+
+  function applyFacet(chip) {
+    chip.__values = $$(chip, '.selector__facet-panel .checkbox__input:checked').map(function (c) { return c.value; });
+    rollup(chip);
+    closeFacet(chip);
+    filter(chip.closest('.modal-overlay'));
+    $(chip, '.filter-item__trigger').focus();
+  }
+
+  function resetFacet(chip) {
+    chip.__values = [];
+    rollup(chip);
+    closeFacet(chip);
+    filter(chip.closest('.modal-overlay'));
+  }
+
+  document.addEventListener('filter-item:toggle', function (e) {
+    var chip = e.target.closest && e.target.closest('[data-selector-facet]');
+    if (!chip) return;
+    if (e.detail && e.detail.open) openFacet(chip); else closeFacet(chip);
+  });
+
+  document.addEventListener('filter-item:clear', function (e) {
+    var chip = e.target.closest && e.target.closest('[data-selector-facet]');
+    if (chip) resetFacet(chip);
+  });
+
+  function clearFacets(overlay) {
+    $$(overlay, '[data-selector-facet]').forEach(function (chip) { chip.__values = []; rollup(chip); closeFacet(chip); });
+  }
+
   /* ── Search (all four modes) ─────────────────────────── */
   function filter(overlay) {
     var input = $(overlay, '[data-selector-search]');
     var q = input ? input.value.trim().toLowerCase() : '';
-    var items = $$(overlay, '[data-selector-item]');
-    // The multi table's rows carry no data-selector-item — filter its tbody rows by their text.
-    if (!items.length) items = $$(overlay, 'tbody tr');
+    var facets = $$(overlay, '[data-selector-facet]').filter(function (c) { return facetState(c).length; });
     var shown = 0;
-    items.forEach(function (el) {
-      var hit = !q || (el.getAttribute('data-selector-item') || el.textContent).toLowerCase().indexOf(q) !== -1;
+    items(overlay).forEach(function (el) {
+      var hit = (!q || (el.getAttribute('data-selector-item') || el.textContent).toLowerCase().indexOf(q) !== -1) &&
+        facets.every(function (c) { return facetState(c).indexOf(facetValue(overlay, el, c.getAttribute('data-filter-name'))) !== -1; });
       el.hidden = !hit;
       if (hit) shown++;
     });
     var empty = $(overlay, '[data-selector-empty]');
     if (empty) empty.hidden = shown > 0;
     var modal = $(overlay, '.selector');
-    if (modal) modal.classList.toggle('selector--filtered', !!q);
+    if (modal) modal.classList.toggle('selector--filtered', !!q || facets.length > 0);
     var hint = $(overlay, '[data-sort-hint]');
-    if (hint) hint.hidden = !q;
+    if (hint) hint.hidden = !q && !facets.length;
     return shown;
   }
 
   function clearSearch(overlay) {
     var input = $(overlay, '[data-selector-search]');
     if (input) input.value = '';
+    clearFacets(overlay);
     filter(overlay);
   }
 
@@ -310,6 +424,20 @@
 
   /* ── Wiring ──────────────────────────────────────────── */
   document.addEventListener('click', function (e) {
+    var chip = e.target.closest('[data-selector-facet]');
+    if (chip) {
+      if (e.target.closest('[data-facet-apply]')) { applyFacet(chip); return; }
+      // Where FilterItem.js has bound the chip (the record shell loads it) it toggles --open and
+      // clears itself, and says so in filter-item:toggle / filter-item:clear (below). Where it
+      // has not (the Selector demo), this does both.
+      var owned = chip.dataset.filterItemInit === '1';
+      if (!owned && e.target.closest('.filter-item__clear')) { resetFacet(chip); return; }
+      if (!owned && e.target.closest('.filter-item__trigger')) { if (chip.classList.contains('filter-item--open')) closeFacet(chip); else openFacet(chip); }
+      return; // clicks inside the open panel (checkboxes) stay in the panel
+    }
+    // Any other click closes an open facet panel.
+    closeFacets(document);
+
     var opener = e.target.closest('[data-selector-open]');
     if (opener) {
       var ov = document.getElementById(opener.getAttribute('data-selector-open'));
@@ -365,6 +493,13 @@
     if (e.target.matches('[data-sort-position]')) commitPosition(e.target);
     if (e.target.closest('[data-selector="multi"]') && e.target.matches('.checkbox__input')) countMulti(e.target.closest('.modal-overlay'));
   });
+
+  // Capture phase: an open facet panel takes Escape before TagBox's / this file's modal close.
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    var open = document.querySelector('[data-selector-facet].filter-item--open');
+    if (open) { e.preventDefault(); e.stopPropagation(); closeFacet(open); $(open, '.filter-item__trigger').focus(); }
+  }, true);
 
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Enter' && e.target.matches('[data-sort-position]')) { e.preventDefault(); commitPosition(e.target); e.target.select(); return; }

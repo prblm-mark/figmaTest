@@ -482,9 +482,17 @@ TOPICS_SOURCE = [("Platform", "", "Topics", "Affino"), ("Release", "", "Topics",
                  ("Affino", "", "Topics", "Affino"), ("Saas", "", "Topics", "Affino"), ("Analytics", "", "Topics", "Affino")]
 
 
+def facet_chip(name):
+    """FilterItem (full slot set) as a Selector facet — Selector.js mounts its value checklist."""
+    return f'''<div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="{e(name)}" data-selector-facet>
+          <button type="button" class="filter-item__clear" aria-label="Clear {e(name)} filter">{icon("x")}</button>
+          <button type="button" class="filter-item__trigger" aria-haspopup="dialog" aria-expanded="false">{icon("plus", "filter-item__add")}<span class="filter-item__name">{e(name)}</span><span class="filter-item__sep" aria-hidden="true">·</span><span class="filter-item__values"></span>{icon("chevron-down", "filter-item__chevron")}</button>
+        </div>'''
+
+
 def multi_select_modal(mid, title, source):
-    facets = "".join(f'''<div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="{e(f)}"><button type="button" class="filter-item__trigger" aria-expanded="false">{icon("plus", "filter-item__add")}<span class="filter-item__name">{e(f)}</span></button></div>'''
-                     for f in ["Name", "Parent Section", "Channel", "Zone"])
+    facets = "".join(facet_chip(f)
+                     for f in ["Parent Section", "Channel", "Zone"])
     cb = lambda lbl: f'<label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="{e(lbl)}"><span class="checkbox__indicator">{icon("check")}</span></label>'
     rows = "".join(f'<tr><td>{cb("Select " + n)}</td><td>{e(n)}</td><td>{e(p) or "—"}</td><td>{e(c)}</td><td>{e(z)}</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open {e(n)}">{icon("external-link")}</a></td></tr>' for n, p, c, z in source)
     return f'''<div class="modal-overlay" id="{mid}" role="presentation" data-selector="multi">
@@ -545,7 +553,7 @@ def _modal_head(mid, title, sub=None):
 def single_select_modal(mid, title, source, noun="section"):
     """Single select — click a row to choose it and close (designer, 2026-09-29).
     The current value is pinned to the top and ticked when the modal opens (Selector.js)."""
-    facets = "".join(f'''<div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="{e(f)}"><button type="button" class="filter-item__trigger" aria-expanded="false">{icon("plus", "filter-item__add")}<span class="filter-item__name">{e(f)}</span></button></div>'''
+    facets = "".join(facet_chip(f)
                      for f in ["Parent Section", "Channel", "Zone"])
     rows = "".join(f'''<tr class="selector__row" data-selector-item="{e(n)}">
               <td><button type="button" class="selector__pick" data-selector-pick>{icon("check", "selector__tick")}<span>{e(n)}</span></button></td>
@@ -574,15 +582,16 @@ def single_select_modal(mid, title, source, noun="section"):
 
 
 def media_select_modal(mid, title, items, total):
+    import json
     """Media item selector — the Media Items listing's grid, as a picker. One pick, then Use image."""
-    facets = "".join(f'''<div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="{e(f)}"><button type="button" class="filter-item__trigger" aria-expanded="false">{icon("plus", "filter-item__add")}<span class="filter-item__name">{e(f)}</span></button></div>'''
-                     for f in ["Media Type", "Section", "Creator", "Created"])
-    tiles = "".join(f'''<li class="selector__tile-item" data-selector-item="{e(t)}">
+    facets = "".join(facet_chip(f)
+                     for f in ["Media Type", "Section", "Creator"])
+    tiles = "".join(f'''<li class="selector__tile-item" data-selector-item="{e(t)}" data-facets="{e(json.dumps({"Media Type": f, "Section": sec, "Creator": who}))}">
             <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="{e(u)}" data-meta="{e(f)} · {e(d)}">
               <span class="selector__tile-media"><img src="{e(u)}" alt="" loading="lazy">{icon("check", "selector__tile-check")}</span>
               <span class="selector__tile-text"><span class="selector__tile-name">{e(t)}</span><span class="selector__tile-meta">{e(f)} · {e(d)}</span></span>
             </button>
-          </li>''' for t, u, f, d in items)
+          </li>''' for t, u, f, d, sec, who in items)
     return f'''<div class="modal-overlay" id="{mid}" role="presentation" data-selector="media">
     <div class="modal selector selector--media" role="dialog" aria-modal="true" aria-labelledby="{mid}-title">
       {_modal_head(mid, title)}

@@ -223,8 +223,8 @@ def _media_source():
     """Media selector tiles — the Media Items listing's image rows (listing-data-media-items.js)."""
     import re, os
     js = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../ListingScreen/listing-data-media-items.js"), encoding="utf-8").read()
-    rows = re.findall(r"\{ itemId: '(\d+)', title: '([^']*)',[^}]*?family: 'image', thumbUrl: '([^']*)', format: '([^']*)'[^}]*?created: '([^']*)'", js)
-    return [(t, u.replace("/128", "/256"), f, d) for _, t, u, f, d in rows]
+    rows = re.findall(r"\{ itemId: '(\d+)', title: '([^']*)',[^}]*?family: 'image', thumbUrl: '([^']*)', format: '([^']*)', section: '([^']*)'[^}]*?createdBy: '([^']*)', created: '([^']*)'", js)
+    return [(t, u.replace("/128", "/256"), f, d, sec, who) for _, t, u, f, sec, who, d in rows]
 
 
 MEDIA_SOURCE = _media_source()
