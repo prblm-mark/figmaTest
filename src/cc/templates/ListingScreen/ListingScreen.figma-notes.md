@@ -3101,7 +3101,13 @@ step instead of two for the same outcome.
 
 ## Settings — "When columns don't fit" (2026-09-29, code-first)
 Designed by Luismi's team on the v3 listing screens (Hub TASK-492924, relayed by Shaz); built here
-code-first at Mark's direction — **no Figma frame yet**, flag for the designer.
+code-first at Mark's direction, then **added to Figma 2026-09-29** (Listings page `3644:125909`):
+  a **Settings** button (Button Secondary sm + `Icon/24px/Settings`) after Edit Columns in all 14
+  desktop listing frames, the two grouped in an `Actions` frame (gap `spacing/3` = `.datatables__actions`);
+  and a new state frame **Settings Dropdown** `3914:145849` with the open panel `3914:146835` (Dropdown
+  chrome — `surface/primary`, `border/secondary`, `radius-md`, `shadow/md`, padding `spacing/4`, width
+  `size/4` — label + two DS **Radio Button** `2030:1622` instances, Expanding row checked). Mobile frames
+  untouched (Settings is hidden below 1024). The Horizontal-scroll state itself is not drawn yet.
 - **Settings** button after Edit Columns: `btn btn--secondary dropdown__trigger`, Lucide `settings`
   + visible label. Dropdown panel `dropdown__panel--settings`, right-anchored, 240px. Hidden below a
   1024 viewport and in grid layout, exactly like Edit Columns.
