@@ -64,7 +64,7 @@ def _img(align="Center", width="100%"):
 
 
 def _no_img(align="Center", width="100%"):
-    return ("text", "-", "image", {"align": align, "width": width})
+    return ("text", "-", "image", {"align": align or "Center", "width": width or "100%", "alt_only": align is None})
 
 
 def _yn(on):

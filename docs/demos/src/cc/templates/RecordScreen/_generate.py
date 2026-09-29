@@ -113,6 +113,7 @@ def body(sections, side=None):
 KIT_JS = '''  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="../../components/AdvisoryItem/AdvisoryItem.js"></script>
   <script src="../../patterns/TagBox/TagBox.js"></script>
+  <script src="../../components/MediaPicker/MediaPicker.js"></script>
   <script src="../../patterns/Selector/Selector.js"></script>
   <script src="../../../components/SegmentedControl/SegmentedControl.js"></script>
   <script src="../../patterns/StepsTable/StepsTable.js"></script>
@@ -256,6 +257,7 @@ def write_selector_demo():
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>lucide.createIcons();</script>
   <script src="../TagBox/TagBox.js"></script>
+  <script src="../../components/MediaPicker/MediaPicker.js"></script>
   <script src="Selector.js"></script>
 </body>
 </html>

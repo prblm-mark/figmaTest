@@ -47,3 +47,12 @@ The Edit action is now `btn btn--secondary btn--sm btn--icon` with only the penc
 ## Thumbnail opens the selector (designer, 2026-09-29)
 
 `.media-picker__thumb` is now a `<button>` (`aria-label="Choose <field>"`). Clicking the image or the empty placeholder opens the Selector Type=Media, the same as Edit. On hover it takes a `--ai-border-brand` border, and focus shows the standard ring. The file kind (audio) keeps a plain span thumb.
+
+## Empty vs filled (designer, 2026-09-29)
+
+- **Empty slot** (`media-picker--empty`): the placeholder plus **Choose file** (secondary sm, upload icon).
+- **Filled slot**: the image plus the pencil (change) and trash (remove).
+
+Both action sets are in the markup and the modifier picks one. MediaPicker.js does the trash: it empties the slot and moves focus to Choose file. Choosing in the Selector fills the slot through `window.mediaPicker.fill`.
+
+On the record screens, FieldRow hides the image options while the slot is empty. Handover: `record-media-remove`. **Flag for Figma:** the empty state with Choose file is not drawn yet.

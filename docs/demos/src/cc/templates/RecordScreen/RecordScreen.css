@@ -194,3 +194,13 @@
     border-right: 0;
   }
 }
+
+/* Sidebar value chips (FactPanel values, Recent Viewers' companies) — `btn btn--tertiary` plus the
+ * subtle `--ai-border-secondary` line the listing's account chip and the Steps author chip carry
+ * (Case B contextual override, designer 2026-09-29). Restated for hover and focus because
+ * `.btn--tertiary:hover` sets the transparent hover border at (0,2,0). */
+.record-screen__sidebar .btn--tertiary,
+.record-screen__sidebar .btn--tertiary:hover,
+.record-screen__sidebar .btn--tertiary:focus-visible {
+  border-color: var(--ai-border-secondary);
+}

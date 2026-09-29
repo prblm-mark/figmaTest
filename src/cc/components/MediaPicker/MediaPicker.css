@@ -59,3 +59,12 @@ button.media-picker__thumb:focus-visible {
   align-items: center;
   gap: var(--ai-spacing-2);
 }
+
+/* Empty vs filled (designer, 2026-09-29): an empty slot offers Choose file; only a slot holding
+ * an image offers the pencil (change) and trash (remove). Both sets are in the markup and the
+ * `--empty` modifier picks one, so choosing / removing flips it with no re-render. */
+.media-picker--empty [data-media-edit],
+.media-picker--empty [data-media-remove],
+.media-picker:not(.media-picker--empty) [data-media-choose] {
+  display: none;
+}

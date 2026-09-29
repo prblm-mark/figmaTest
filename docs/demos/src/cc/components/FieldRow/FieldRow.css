@@ -177,6 +177,11 @@
   gap: var(--ai-spacing-4);
 }
 
+/* No image in the slot → no image options (alt / caption / alignment / width). */
+.field-row__image:has(.media-picker--empty) .field-row__image-options {
+  display: none;
+}
+
 @container field-image (min-width: 560px) {
   .field-row__image-options:not(.field-row__image-options--single) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

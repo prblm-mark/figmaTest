@@ -573,11 +573,12 @@
           </div><div class="field-row field-row--edit">
             <span class="field-row__label" id="f-thumbnail-10-label">Thumbnail</span>
             <div class="field-row__value"><div class="field-row__image">
-              <div class="media-picker">
+              <div class="media-picker" data-media-picker>
               <button type="button" class="media-picker__thumb" aria-label="Choose Thumbnail" aria-haspopup="dialog" data-selector-open="modal-media"><img src="../../../../img/record/article-thumb.jpg" alt=""></button>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Thumbnail" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Thumbnail"><i data-lucide="trash-2" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Thumbnail" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Thumbnail" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Thumbnail" data-media-remove><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
             </div>
               <div class="field-row__image-options field-row__image-options--single">
@@ -589,11 +590,20 @@
             </div></div>
           </div><div class="field-row field-row--edit">
             <span class="field-row__label" id="f-alternativethumbnail-11-label">Alternative Thumbnail</span>
-            <div class="field-row__value"><div class="media-picker">
+            <div class="field-row__value"><div class="field-row__image">
+              <div class="media-picker media-picker--empty" data-media-picker>
               <button type="button" class="media-picker__thumb" aria-label="Choose Alternative Thumbnail" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="image" aria-hidden="true"></i></button>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Alternative Thumbnail" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Alternative Thumbnail"><i data-lucide="trash-2" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Alternative Thumbnail" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Alternative Thumbnail" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Alternative Thumbnail" data-media-remove><i data-lucide="trash-2" aria-hidden="true"></i></button>
+              </div>
+            </div>
+              <div class="field-row__image-options field-row__image-options--single">
+                <div class="input">
+                  <label class="input__label" for="f-alternativethumbnail-11-alt">Alt text</label>
+                  <div class="input__wrap"><input id="f-alternativethumbnail-11-alt" type="text" class="input__control" value=""></div>
+                </div>
               </div>
             </div></div>
           </div><div class="field-row field-row--edit">
@@ -647,11 +657,12 @@
           <div class="record-section__body"><div class="field-row field-row--edit">
             <span class="field-row__label" id="f-mainimage-18-label">Main Image</span>
             <div class="field-row__value"><div class="field-row__image">
-                  <div class="media-picker">
+                  <div class="media-picker" data-media-picker>
               <button type="button" class="media-picker__thumb" aria-label="Choose Main Image" aria-haspopup="dialog" data-selector-open="modal-media"><img src="../../../../img/record/article-thumb.jpg" alt=""></button>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Main Image" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Main Image"><i data-lucide="trash-2" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Main Image" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Main Image" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Main Image" data-media-remove><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
             </div>
                   <div class="field-row__image-options">
@@ -672,13 +683,31 @@
                 </div></div>
           </div><div class="field-row field-row--edit">
             <span class="field-row__label" id="f-labelimage-19-label">Label Image</span>
-            <div class="field-row__value"><div class="media-picker">
+            <div class="field-row__value"><div class="field-row__image">
+                  <div class="media-picker media-picker--empty" data-media-picker>
               <button type="button" class="media-picker__thumb" aria-label="Choose Label Image" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="image" aria-hidden="true"></i></button>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Label Image" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Label Image"><i data-lucide="trash-2" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Label Image" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Label Image" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Label Image" data-media-remove><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
-            </div></div>
+            </div>
+                  <div class="field-row__image-options">
+                    <div class="input">
+                  <label class="input__label" for="f-labelimage-19-alt">Alt text</label>
+                  <div class="input__wrap"><input id="f-labelimage-19-alt" type="text" class="input__control" value=""></div>
+                </div>
+                    <div class="input">
+                  <label class="input__label" for="f-labelimage-19-cap">Caption</label>
+                  <div class="input__wrap"><input id="f-labelimage-19-cap" type="text" class="input__control" value=""></div>
+                </div>
+                    <div class="field-row__image-option"><span class="input__label" id="f-labelimage-19-align">Alignment</span><div class="seg-control field-row__align" role="radiogroup" aria-labelledby="f-labelimage-19-align" data-seg-control><button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="Left"><i data-lucide="align-left" aria-hidden="true"></i><span class="seg-control__btn-label">Left</span></button><button class="seg-control__btn seg-control__btn--active" type="button" role="radio" aria-checked="true" data-value="Center"><i data-lucide="align-center" aria-hidden="true"></i><span class="seg-control__btn-label">Center</span></button><button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="Right"><i data-lucide="align-right" aria-hidden="true"></i><span class="seg-control__btn-label">Right</span></button></div></div>
+                    <div class="field-row__image-option"><span class="input__label">Width</span><div class="sel" data-sel>
+                  <button class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox"><span class="sel__value">100%</span><span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span></button>
+                  <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">100%</button></li><li><button type="button" class="sel__menu-item" role="option">75%</button></li><li><button type="button" class="sel__menu-item" role="option">66%</button></li><li><button type="button" class="sel__menu-item" role="option">50%</button></li><li><button type="button" class="sel__menu-item" role="option">33%</button></li><li><button type="button" class="sel__menu-item" role="option">25%</button></li></ul>
+                </div></div>
+                  </div>
+                </div></div>
           </div><div class="field-row field-row--edit">
             <span class="field-row__label" id="f-audioversionmp3-20-label">Audio Version (MP3)</span>
             <div class="field-row__value"><div class="media-picker">
@@ -694,22 +723,58 @@
             </div></div>
           </div><div class="field-row field-row--edit">
             <span class="field-row__label" id="f-introimage-22-label">Intro Image</span>
-            <div class="field-row__value"><div class="media-picker">
+            <div class="field-row__value"><div class="field-row__image">
+                  <div class="media-picker media-picker--empty" data-media-picker>
               <button type="button" class="media-picker__thumb" aria-label="Choose Intro Image" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="image" aria-hidden="true"></i></button>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Intro Image" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Intro Image"><i data-lucide="trash-2" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Intro Image" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Intro Image" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Intro Image" data-media-remove><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
-            </div></div>
+            </div>
+                  <div class="field-row__image-options">
+                    <div class="input">
+                  <label class="input__label" for="f-introimage-22-alt">Alt text</label>
+                  <div class="input__wrap"><input id="f-introimage-22-alt" type="text" class="input__control" value=""></div>
+                </div>
+                    <div class="input">
+                  <label class="input__label" for="f-introimage-22-cap">Caption</label>
+                  <div class="input__wrap"><input id="f-introimage-22-cap" type="text" class="input__control" value=""></div>
+                </div>
+                    <div class="field-row__image-option"><span class="input__label" id="f-introimage-22-align">Alignment</span><div class="seg-control field-row__align" role="radiogroup" aria-labelledby="f-introimage-22-align" data-seg-control><button class="seg-control__btn seg-control__btn--active" type="button" role="radio" aria-checked="true" data-value="Left"><i data-lucide="align-left" aria-hidden="true"></i><span class="seg-control__btn-label">Left</span></button><button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="Center"><i data-lucide="align-center" aria-hidden="true"></i><span class="seg-control__btn-label">Center</span></button><button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="Right"><i data-lucide="align-right" aria-hidden="true"></i><span class="seg-control__btn-label">Right</span></button></div></div>
+                    <div class="field-row__image-option"><span class="input__label">Width</span><div class="sel" data-sel>
+                  <button class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox"><span class="sel__value">33%</span><span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span></button>
+                  <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item" role="option">100%</button></li><li><button type="button" class="sel__menu-item" role="option">75%</button></li><li><button type="button" class="sel__menu-item" role="option">66%</button></li><li><button type="button" class="sel__menu-item" role="option">50%</button></li><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">33%</button></li><li><button type="button" class="sel__menu-item" role="option">25%</button></li></ul>
+                </div></div>
+                  </div>
+                </div></div>
           </div><div class="field-row field-row--edit">
             <span class="field-row__label" id="f-imagetop-23-label">Image Top</span>
-            <div class="field-row__value"><div class="media-picker">
+            <div class="field-row__value"><div class="field-row__image">
+                  <div class="media-picker media-picker--empty" data-media-picker>
               <button type="button" class="media-picker__thumb" aria-label="Choose Image Top" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="image" aria-hidden="true"></i></button>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Image Top" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Image Top"><i data-lucide="trash-2" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image Top" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Image Top" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Image Top" data-media-remove><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
-            </div></div>
+            </div>
+                  <div class="field-row__image-options">
+                    <div class="input">
+                  <label class="input__label" for="f-imagetop-23-alt">Alt text</label>
+                  <div class="input__wrap"><input id="f-imagetop-23-alt" type="text" class="input__control" value=""></div>
+                </div>
+                    <div class="input">
+                  <label class="input__label" for="f-imagetop-23-cap">Caption</label>
+                  <div class="input__wrap"><input id="f-imagetop-23-cap" type="text" class="input__control" value=""></div>
+                </div>
+                    <div class="field-row__image-option"><span class="input__label" id="f-imagetop-23-align">Alignment</span><div class="seg-control field-row__align" role="radiogroup" aria-labelledby="f-imagetop-23-align" data-seg-control><button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="Left"><i data-lucide="align-left" aria-hidden="true"></i><span class="seg-control__btn-label">Left</span></button><button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="Center"><i data-lucide="align-center" aria-hidden="true"></i><span class="seg-control__btn-label">Center</span></button><button class="seg-control__btn seg-control__btn--active" type="button" role="radio" aria-checked="true" data-value="Right"><i data-lucide="align-right" aria-hidden="true"></i><span class="seg-control__btn-label">Right</span></button></div></div>
+                    <div class="field-row__image-option"><span class="input__label">Width</span><div class="sel" data-sel>
+                  <button class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox"><span class="sel__value">33%</span><span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span></button>
+                  <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item" role="option">100%</button></li><li><button type="button" class="sel__menu-item" role="option">75%</button></li><li><button type="button" class="sel__menu-item" role="option">66%</button></li><li><button type="button" class="sel__menu-item" role="option">50%</button></li><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">33%</button></li><li><button type="button" class="sel__menu-item" role="option">25%</button></li></ul>
+                </div></div>
+                  </div>
+                </div></div>
           </div><div class="field-row field-row--edit">
             <label class="field-row__label" for="f-mainbody-24">Main Body</label>
             <div class="field-row__value"><div class="textarea">
@@ -719,22 +784,58 @@ The current set is News AI, AI Assistants, AI Enhanced Search, Article Summaries
             </div></div>
           </div><div class="field-row field-row--edit">
             <span class="field-row__label" id="f-image1-25-label">Image 1</span>
-            <div class="field-row__value"><div class="media-picker">
+            <div class="field-row__value"><div class="field-row__image">
+                  <div class="media-picker media-picker--empty" data-media-picker>
               <button type="button" class="media-picker__thumb" aria-label="Choose Image 1" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="image" aria-hidden="true"></i></button>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Image 1" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Image 1"><i data-lucide="trash-2" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image 1" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Image 1" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Image 1" data-media-remove><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
-            </div></div>
+            </div>
+                  <div class="field-row__image-options">
+                    <div class="input">
+                  <label class="input__label" for="f-image1-25-alt">Alt text</label>
+                  <div class="input__wrap"><input id="f-image1-25-alt" type="text" class="input__control" value=""></div>
+                </div>
+                    <div class="input">
+                  <label class="input__label" for="f-image1-25-cap">Caption</label>
+                  <div class="input__wrap"><input id="f-image1-25-cap" type="text" class="input__control" value=""></div>
+                </div>
+                    <div class="field-row__image-option"><span class="input__label" id="f-image1-25-align">Alignment</span><div class="seg-control field-row__align" role="radiogroup" aria-labelledby="f-image1-25-align" data-seg-control><button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="Left"><i data-lucide="align-left" aria-hidden="true"></i><span class="seg-control__btn-label">Left</span></button><button class="seg-control__btn seg-control__btn--active" type="button" role="radio" aria-checked="true" data-value="Center"><i data-lucide="align-center" aria-hidden="true"></i><span class="seg-control__btn-label">Center</span></button><button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="Right"><i data-lucide="align-right" aria-hidden="true"></i><span class="seg-control__btn-label">Right</span></button></div></div>
+                    <div class="field-row__image-option"><span class="input__label">Width</span><div class="sel" data-sel>
+                  <button class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox"><span class="sel__value">100%</span><span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span></button>
+                  <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">100%</button></li><li><button type="button" class="sel__menu-item" role="option">75%</button></li><li><button type="button" class="sel__menu-item" role="option">66%</button></li><li><button type="button" class="sel__menu-item" role="option">50%</button></li><li><button type="button" class="sel__menu-item" role="option">33%</button></li><li><button type="button" class="sel__menu-item" role="option">25%</button></li></ul>
+                </div></div>
+                  </div>
+                </div></div>
           </div><div class="field-row field-row--edit">
             <span class="field-row__label" id="f-image2-26-label">Image 2</span>
-            <div class="field-row__value"><div class="media-picker">
+            <div class="field-row__value"><div class="field-row__image">
+                  <div class="media-picker media-picker--empty" data-media-picker>
               <button type="button" class="media-picker__thumb" aria-label="Choose Image 2" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="image" aria-hidden="true"></i></button>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Image 2" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Image 2"><i data-lucide="trash-2" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image 2" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Image 2" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Image 2" data-media-remove><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
-            </div></div>
+            </div>
+                  <div class="field-row__image-options">
+                    <div class="input">
+                  <label class="input__label" for="f-image2-26-alt">Alt text</label>
+                  <div class="input__wrap"><input id="f-image2-26-alt" type="text" class="input__control" value=""></div>
+                </div>
+                    <div class="input">
+                  <label class="input__label" for="f-image2-26-cap">Caption</label>
+                  <div class="input__wrap"><input id="f-image2-26-cap" type="text" class="input__control" value=""></div>
+                </div>
+                    <div class="field-row__image-option"><span class="input__label" id="f-image2-26-align">Alignment</span><div class="seg-control field-row__align" role="radiogroup" aria-labelledby="f-image2-26-align" data-seg-control><button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="Left"><i data-lucide="align-left" aria-hidden="true"></i><span class="seg-control__btn-label">Left</span></button><button class="seg-control__btn seg-control__btn--active" type="button" role="radio" aria-checked="true" data-value="Center"><i data-lucide="align-center" aria-hidden="true"></i><span class="seg-control__btn-label">Center</span></button><button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="Right"><i data-lucide="align-right" aria-hidden="true"></i><span class="seg-control__btn-label">Right</span></button></div></div>
+                    <div class="field-row__image-option"><span class="input__label">Width</span><div class="sel" data-sel>
+                  <button class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox"><span class="sel__value">100%</span><span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span></button>
+                  <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">100%</button></li><li><button type="button" class="sel__menu-item" role="option">75%</button></li><li><button type="button" class="sel__menu-item" role="option">66%</button></li><li><button type="button" class="sel__menu-item" role="option">50%</button></li><li><button type="button" class="sel__menu-item" role="option">33%</button></li><li><button type="button" class="sel__menu-item" role="option">25%</button></li></ul>
+                </div></div>
+                  </div>
+                </div></div>
           </div><div class="field-row field-row--edit">
             <label class="field-row__label" for="f-text2-27">Text 2</label>
             <div class="field-row__value"><div class="textarea">
@@ -742,22 +843,58 @@ The current set is News AI, AI Assistants, AI Enhanced Search, Article Summaries
             </div></div>
           </div><div class="field-row field-row--edit">
             <span class="field-row__label" id="f-image3-28-label">Image 3</span>
-            <div class="field-row__value"><div class="media-picker">
+            <div class="field-row__value"><div class="field-row__image">
+                  <div class="media-picker media-picker--empty" data-media-picker>
               <button type="button" class="media-picker__thumb" aria-label="Choose Image 3" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="image" aria-hidden="true"></i></button>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Image 3" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Image 3"><i data-lucide="trash-2" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image 3" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Image 3" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Image 3" data-media-remove><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
-            </div></div>
+            </div>
+                  <div class="field-row__image-options">
+                    <div class="input">
+                  <label class="input__label" for="f-image3-28-alt">Alt text</label>
+                  <div class="input__wrap"><input id="f-image3-28-alt" type="text" class="input__control" value=""></div>
+                </div>
+                    <div class="input">
+                  <label class="input__label" for="f-image3-28-cap">Caption</label>
+                  <div class="input__wrap"><input id="f-image3-28-cap" type="text" class="input__control" value=""></div>
+                </div>
+                    <div class="field-row__image-option"><span class="input__label" id="f-image3-28-align">Alignment</span><div class="seg-control field-row__align" role="radiogroup" aria-labelledby="f-image3-28-align" data-seg-control><button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="Left"><i data-lucide="align-left" aria-hidden="true"></i><span class="seg-control__btn-label">Left</span></button><button class="seg-control__btn seg-control__btn--active" type="button" role="radio" aria-checked="true" data-value="Center"><i data-lucide="align-center" aria-hidden="true"></i><span class="seg-control__btn-label">Center</span></button><button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="Right"><i data-lucide="align-right" aria-hidden="true"></i><span class="seg-control__btn-label">Right</span></button></div></div>
+                    <div class="field-row__image-option"><span class="input__label">Width</span><div class="sel" data-sel>
+                  <button class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox"><span class="sel__value">100%</span><span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span></button>
+                  <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">100%</button></li><li><button type="button" class="sel__menu-item" role="option">75%</button></li><li><button type="button" class="sel__menu-item" role="option">66%</button></li><li><button type="button" class="sel__menu-item" role="option">50%</button></li><li><button type="button" class="sel__menu-item" role="option">33%</button></li><li><button type="button" class="sel__menu-item" role="option">25%</button></li></ul>
+                </div></div>
+                  </div>
+                </div></div>
           </div><div class="field-row field-row--edit">
             <span class="field-row__label" id="f-image4-29-label">Image 4</span>
-            <div class="field-row__value"><div class="media-picker">
+            <div class="field-row__value"><div class="field-row__image">
+                  <div class="media-picker media-picker--empty" data-media-picker>
               <button type="button" class="media-picker__thumb" aria-label="Choose Image 4" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="image" aria-hidden="true"></i></button>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Image 4" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Image 4"><i data-lucide="trash-2" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image 4" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Image 4" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Image 4" data-media-remove><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
-            </div></div>
+            </div>
+                  <div class="field-row__image-options">
+                    <div class="input">
+                  <label class="input__label" for="f-image4-29-alt">Alt text</label>
+                  <div class="input__wrap"><input id="f-image4-29-alt" type="text" class="input__control" value=""></div>
+                </div>
+                    <div class="input">
+                  <label class="input__label" for="f-image4-29-cap">Caption</label>
+                  <div class="input__wrap"><input id="f-image4-29-cap" type="text" class="input__control" value=""></div>
+                </div>
+                    <div class="field-row__image-option"><span class="input__label" id="f-image4-29-align">Alignment</span><div class="seg-control field-row__align" role="radiogroup" aria-labelledby="f-image4-29-align" data-seg-control><button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="Left"><i data-lucide="align-left" aria-hidden="true"></i><span class="seg-control__btn-label">Left</span></button><button class="seg-control__btn seg-control__btn--active" type="button" role="radio" aria-checked="true" data-value="Center"><i data-lucide="align-center" aria-hidden="true"></i><span class="seg-control__btn-label">Center</span></button><button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="Right"><i data-lucide="align-right" aria-hidden="true"></i><span class="seg-control__btn-label">Right</span></button></div></div>
+                    <div class="field-row__image-option"><span class="input__label">Width</span><div class="sel" data-sel>
+                  <button class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox"><span class="sel__value">100%</span><span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span></button>
+                  <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">100%</button></li><li><button type="button" class="sel__menu-item" role="option">75%</button></li><li><button type="button" class="sel__menu-item" role="option">66%</button></li><li><button type="button" class="sel__menu-item" role="option">50%</button></li><li><button type="button" class="sel__menu-item" role="option">33%</button></li><li><button type="button" class="sel__menu-item" role="option">25%</button></li></ul>
+                </div></div>
+                  </div>
+                </div></div>
           </div><div class="field-row field-row--edit">
             <label class="field-row__label" for="f-text3-30">Text 3</label>
             <div class="field-row__value"><div class="textarea">
@@ -765,22 +902,58 @@ The current set is News AI, AI Assistants, AI Enhanced Search, Article Summaries
             </div></div>
           </div><div class="field-row field-row--edit">
             <span class="field-row__label" id="f-image5-31-label">Image 5</span>
-            <div class="field-row__value"><div class="media-picker">
+            <div class="field-row__value"><div class="field-row__image">
+                  <div class="media-picker media-picker--empty" data-media-picker>
               <button type="button" class="media-picker__thumb" aria-label="Choose Image 5" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="image" aria-hidden="true"></i></button>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Image 5" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Image 5"><i data-lucide="trash-2" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image 5" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Image 5" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Image 5" data-media-remove><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
-            </div></div>
+            </div>
+                  <div class="field-row__image-options">
+                    <div class="input">
+                  <label class="input__label" for="f-image5-31-alt">Alt text</label>
+                  <div class="input__wrap"><input id="f-image5-31-alt" type="text" class="input__control" value=""></div>
+                </div>
+                    <div class="input">
+                  <label class="input__label" for="f-image5-31-cap">Caption</label>
+                  <div class="input__wrap"><input id="f-image5-31-cap" type="text" class="input__control" value=""></div>
+                </div>
+                    <div class="field-row__image-option"><span class="input__label" id="f-image5-31-align">Alignment</span><div class="seg-control field-row__align" role="radiogroup" aria-labelledby="f-image5-31-align" data-seg-control><button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="Left"><i data-lucide="align-left" aria-hidden="true"></i><span class="seg-control__btn-label">Left</span></button><button class="seg-control__btn seg-control__btn--active" type="button" role="radio" aria-checked="true" data-value="Center"><i data-lucide="align-center" aria-hidden="true"></i><span class="seg-control__btn-label">Center</span></button><button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="Right"><i data-lucide="align-right" aria-hidden="true"></i><span class="seg-control__btn-label">Right</span></button></div></div>
+                    <div class="field-row__image-option"><span class="input__label">Width</span><div class="sel" data-sel>
+                  <button class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox"><span class="sel__value">100%</span><span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span></button>
+                  <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">100%</button></li><li><button type="button" class="sel__menu-item" role="option">75%</button></li><li><button type="button" class="sel__menu-item" role="option">66%</button></li><li><button type="button" class="sel__menu-item" role="option">50%</button></li><li><button type="button" class="sel__menu-item" role="option">33%</button></li><li><button type="button" class="sel__menu-item" role="option">25%</button></li></ul>
+                </div></div>
+                  </div>
+                </div></div>
           </div><div class="field-row field-row--edit">
             <span class="field-row__label" id="f-image6-32-label">Image 6</span>
-            <div class="field-row__value"><div class="media-picker">
+            <div class="field-row__value"><div class="field-row__image">
+                  <div class="media-picker media-picker--empty" data-media-picker>
               <button type="button" class="media-picker__thumb" aria-label="Choose Image 6" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="image" aria-hidden="true"></i></button>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Image 6" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Image 6"><i data-lucide="trash-2" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Image 6" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Image 6" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Image 6" data-media-remove><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
-            </div></div>
+            </div>
+                  <div class="field-row__image-options">
+                    <div class="input">
+                  <label class="input__label" for="f-image6-32-alt">Alt text</label>
+                  <div class="input__wrap"><input id="f-image6-32-alt" type="text" class="input__control" value=""></div>
+                </div>
+                    <div class="input">
+                  <label class="input__label" for="f-image6-32-cap">Caption</label>
+                  <div class="input__wrap"><input id="f-image6-32-cap" type="text" class="input__control" value=""></div>
+                </div>
+                    <div class="field-row__image-option"><span class="input__label" id="f-image6-32-align">Alignment</span><div class="seg-control field-row__align" role="radiogroup" aria-labelledby="f-image6-32-align" data-seg-control><button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="Left"><i data-lucide="align-left" aria-hidden="true"></i><span class="seg-control__btn-label">Left</span></button><button class="seg-control__btn seg-control__btn--active" type="button" role="radio" aria-checked="true" data-value="Center"><i data-lucide="align-center" aria-hidden="true"></i><span class="seg-control__btn-label">Center</span></button><button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="Right"><i data-lucide="align-right" aria-hidden="true"></i><span class="seg-control__btn-label">Right</span></button></div></div>
+                    <div class="field-row__image-option"><span class="input__label">Width</span><div class="sel" data-sel>
+                  <button class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox"><span class="sel__value">100%</span><span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span></button>
+                  <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">100%</button></li><li><button type="button" class="sel__menu-item" role="option">75%</button></li><li><button type="button" class="sel__menu-item" role="option">66%</button></li><li><button type="button" class="sel__menu-item" role="option">50%</button></li><li><button type="button" class="sel__menu-item" role="option">33%</button></li><li><button type="button" class="sel__menu-item" role="option">25%</button></li></ul>
+                </div></div>
+                  </div>
+                </div></div>
           </div><div class="field-row field-row--edit">
             <label class="field-row__label" for="f-text4-33">Text 4</label>
             <div class="field-row__value"><div class="textarea">
@@ -788,13 +961,31 @@ The current set is News AI, AI Assistants, AI Enhanced Search, Article Summaries
             </div></div>
           </div><div class="field-row field-row--edit">
             <span class="field-row__label" id="f-baseimage-34-label">Base Image</span>
-            <div class="field-row__value"><div class="media-picker">
+            <div class="field-row__value"><div class="field-row__image">
+                  <div class="media-picker media-picker--empty" data-media-picker>
               <button type="button" class="media-picker__thumb" aria-label="Choose Base Image" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="image" aria-hidden="true"></i></button>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Base Image" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Base Image"><i data-lucide="trash-2" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Base Image" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Base Image" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Base Image" data-media-remove><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
-            </div></div>
+            </div>
+                  <div class="field-row__image-options">
+                    <div class="input">
+                  <label class="input__label" for="f-baseimage-34-alt">Alt text</label>
+                  <div class="input__wrap"><input id="f-baseimage-34-alt" type="text" class="input__control" value=""></div>
+                </div>
+                    <div class="input">
+                  <label class="input__label" for="f-baseimage-34-cap">Caption</label>
+                  <div class="input__wrap"><input id="f-baseimage-34-cap" type="text" class="input__control" value=""></div>
+                </div>
+                    <div class="field-row__image-option"><span class="input__label" id="f-baseimage-34-align">Alignment</span><div class="seg-control field-row__align" role="radiogroup" aria-labelledby="f-baseimage-34-align" data-seg-control><button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="Left"><i data-lucide="align-left" aria-hidden="true"></i><span class="seg-control__btn-label">Left</span></button><button class="seg-control__btn seg-control__btn--active" type="button" role="radio" aria-checked="true" data-value="Center"><i data-lucide="align-center" aria-hidden="true"></i><span class="seg-control__btn-label">Center</span></button><button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="Right"><i data-lucide="align-right" aria-hidden="true"></i><span class="seg-control__btn-label">Right</span></button></div></div>
+                    <div class="field-row__image-option"><span class="input__label">Width</span><div class="sel" data-sel>
+                  <button class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox"><span class="sel__value">100%</span><span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span></button>
+                  <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">100%</button></li><li><button type="button" class="sel__menu-item" role="option">75%</button></li><li><button type="button" class="sel__menu-item" role="option">66%</button></li><li><button type="button" class="sel__menu-item" role="option">50%</button></li><li><button type="button" class="sel__menu-item" role="option">33%</button></li><li><button type="button" class="sel__menu-item" role="option">25%</button></li></ul>
+                </div></div>
+                  </div>
+                </div></div>
           </div><div class="field-row field-row--edit">
             <label class="field-row__label" for="f-text5-35">Text 5</label>
             <div class="field-row__value"><div class="textarea">
@@ -802,13 +993,31 @@ The current set is News AI, AI Assistants, AI Enhanced Search, Article Summaries
             </div></div>
           </div><div class="field-row field-row--edit">
             <span class="field-row__label" id="f-backgroundimage-36-label">Background Image</span>
-            <div class="field-row__value"><div class="media-picker">
+            <div class="field-row__value"><div class="field-row__image">
+                  <div class="media-picker media-picker--empty" data-media-picker>
               <button type="button" class="media-picker__thumb" aria-label="Choose Background Image" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="image" aria-hidden="true"></i></button>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Background Image" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Background Image"><i data-lucide="trash-2" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Background Image" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Background Image" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Background Image" data-media-remove><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
-            </div></div>
+            </div>
+                  <div class="field-row__image-options">
+                    <div class="input">
+                  <label class="input__label" for="f-backgroundimage-36-alt">Alt text</label>
+                  <div class="input__wrap"><input id="f-backgroundimage-36-alt" type="text" class="input__control" value=""></div>
+                </div>
+                    <div class="input">
+                  <label class="input__label" for="f-backgroundimage-36-cap">Caption</label>
+                  <div class="input__wrap"><input id="f-backgroundimage-36-cap" type="text" class="input__control" value=""></div>
+                </div>
+                    <div class="field-row__image-option"><span class="input__label" id="f-backgroundimage-36-align">Alignment</span><div class="seg-control field-row__align" role="radiogroup" aria-labelledby="f-backgroundimage-36-align" data-seg-control><button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="Left"><i data-lucide="align-left" aria-hidden="true"></i><span class="seg-control__btn-label">Left</span></button><button class="seg-control__btn seg-control__btn--active" type="button" role="radio" aria-checked="true" data-value="Center"><i data-lucide="align-center" aria-hidden="true"></i><span class="seg-control__btn-label">Center</span></button><button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="Right"><i data-lucide="align-right" aria-hidden="true"></i><span class="seg-control__btn-label">Right</span></button></div></div>
+                    <div class="field-row__image-option"><span class="input__label">Width</span><div class="sel" data-sel>
+                  <button class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox"><span class="sel__value">100%</span><span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span></button>
+                  <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">100%</button></li><li><button type="button" class="sel__menu-item" role="option">75%</button></li><li><button type="button" class="sel__menu-item" role="option">66%</button></li><li><button type="button" class="sel__menu-item" role="option">50%</button></li><li><button type="button" class="sel__menu-item" role="option">33%</button></li><li><button type="button" class="sel__menu-item" role="option">25%</button></li></ul>
+                </div></div>
+                  </div>
+                </div></div>
           </div></div>
         </section><section class="record-section" aria-labelledby="sec-geotargeting">
           <div class="record-section__header"><h2 class="record-section__title" id="sec-geotargeting">Geo Targeting</h2></div>
@@ -2019,6 +2228,7 @@ The current set is News AI, AI Assistants, AI Enhanced Search, Article Summaries
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="../../components/AdvisoryItem/AdvisoryItem.js"></script>
   <script src="../../patterns/TagBox/TagBox.js"></script>
+  <script src="../../components/MediaPicker/MediaPicker.js"></script>
   <script src="../../patterns/Selector/Selector.js"></script>
   <script src="../../../components/SegmentedControl/SegmentedControl.js"></script>
   <script src="../../patterns/StepsTable/StepsTable.js"></script>

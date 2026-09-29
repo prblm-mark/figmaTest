@@ -271,13 +271,20 @@
     var tile = $(active.overlay, '.selector__tile[aria-pressed="true"]');
     var picker = active.trigger.closest('.media-picker');
     if (tile && picker) {
-      var thumb = $(picker, '.media-picker__thumb');
-      var img = document.createElement('img');
-      img.src = tile.getAttribute('data-src');
-      img.alt = '';
-      thumb.innerHTML = '';
-      thumb.appendChild(img);
+      if (window.mediaPicker) {
+        window.mediaPicker.fill(picker, tile.getAttribute('data-src')); // also flips --empty → filled
+      } else {
+        var thumb = $(picker, '.media-picker__thumb');
+        var img = document.createElement('img');
+        img.src = tile.getAttribute('data-src');
+        img.alt = '';
+        thumb.innerHTML = '';
+        thumb.appendChild(img);
+        picker.classList.remove('media-picker--empty');
+      }
     }
+    // Focus returns to the slot's thumbnail: the Choose file button that opened it is now hidden.
+    if (picker && active.trigger && active.trigger.offsetParent === null) active.trigger = $(picker, '.media-picker__thumb');
     close(false);
   }
 

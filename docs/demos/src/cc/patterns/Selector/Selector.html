@@ -60,11 +60,12 @@
     <p class="demo-section__title">Type=Media</p><p class="demo-note">Thumbnail / Main Image. The Media Items grid as a one-pick picker: click a tile, then Use image (or double-click).</p>
     <div class="field-row field-row--edit">
             <span class="field-row__label" id="f-thumbnail-83-label">Thumbnail</span>
-            <div class="field-row__value"><div class="media-picker">
+            <div class="field-row__value"><div class="media-picker media-picker--empty" data-media-picker>
               <button type="button" class="media-picker__thumb" aria-label="Choose Thumbnail" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="image" aria-hidden="true"></i></button>
               <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Thumbnail" aria-haspopup="dialog" data-selector-open="modal-media"><i data-lucide="pencil" aria-hidden="true"></i></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Thumbnail"><i data-lucide="trash-2" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Thumbnail" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Thumbnail" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Thumbnail" data-media-remove><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
             </div></div>
           </div>
@@ -1358,6 +1359,7 @@
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>lucide.createIcons();</script>
   <script src="../TagBox/TagBox.js"></script>
+  <script src="../../components/MediaPicker/MediaPicker.js"></script>
   <script src="Selector.js"></script>
 </body>
 </html>
