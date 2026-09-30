@@ -51,7 +51,7 @@ TopNavigation, HeaderGroup, ActionsMenu rail, theme + width scripts). Page body:
 | Layout | Wrapper | Value |
 |---|---|---|
 | Standard | page bg | shell `--cc-ui-primary-bg` (screen frame `#E7EDF0`; the body's own white fill is hidden) |
-| Standard | page padding | **= the Listing screen's** (designer, 2026-09-29, for consistency): `.cc-control__page` base — `--ai-spacing-6` desktop, `--ai-spacing-4` <768, same scrollbar-gutter trims. Was `--ai-spacing-5`/5/6 on `.record-screen`. Figma content containers updated: `spacing/6` on the 7 desktop/narrow frames, `spacing/4` on the 2 mobile frames. Tabs → content gap `--ai-spacing-5` |
+| Standard | page padding | **= the Listing screen's** (designer, 2026-09-29, for consistency): `.cc-control__page` base — `--ai-spacing-6` desktop, `--ai-spacing-4` <768, same scrollbar-gutter trims. Was `--ai-spacing-5`/5/6 on `.record-screen`. Figma content containers updated: `spacing/6` on the 7 desktop/narrow frames, `spacing/4` on the 2 mobile frames. Tabs → content gap `--ai-spacing-5` (`--ai-spacing-4` below 768, designer amend 2026-09-30) |
 | Standard | columns | gap `--ai-spacing-5`; sidebar `max-width: --ai-size-7` (384) |
 | Standard | main / sidebar | section gap `--ai-spacing-5` / panel gap `--ai-spacing-5` |
 | Full | page | flush (ccWidth), `--ai-surface-primary` |

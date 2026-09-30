@@ -185,6 +185,14 @@
 /* ── Sidebar off ("Show sidebar" switch, designer 2026-09-29) ──────────────
  * View opens with it on, Edit with it off (the class is in the generated markup, so there is no
  * flash). Only while side by side — at ≤1023 the sidebar stacks under the content and always shows. */
+/* Mobile (designer amend, 2026-09-30): tabs → content, and section to section, tighten from
+ * spacing-5 to spacing-4. */
+@container cs-page (max-width: 767px) {
+  .record-screen {
+    gap: var(--ai-spacing-4);
+  }
+}
+
 @container cs-page (min-width: 1024px) {
   .record-screen--no-sidebar .record-screen__sidebar {
     display: none;

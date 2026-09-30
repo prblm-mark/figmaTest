@@ -57,4 +57,4 @@ On View / Edit only, in `.record-tabs__actions` (far right): DS Toggle xxs + "Sh
 
 ## Mobile (designer, 2026-09-30)
 
-`@container cs-page (max-width: 767px)`: the Steps actions hide **Import** (`.record-tabs__import`) and make **+ Add** icon-only (`.record-tabs__add-btn`, 32px square, label `.record-tabs__btn-label` hidden, `aria-label="Add a step"`) — at ~390 the tabs, Import and Add ran into each other.
+`@container cs-page (max-width: 767px)`: the Steps actions hide **Import** (`.record-tabs__import`) and make **+ Add** icon-only (`.record-tabs__add-btn`, 32px square, label `.record-tabs__btn-label` hidden, `aria-label="Add a step"`) — at ~390 the tabs, Import and Add ran into each other. The bar itself tightens to gap `--ai-spacing-3` and padding `--ai-spacing-0-5 --ai-spacing-4 0` (desktop `spacing-5` for both), and the gap between tabs (`.record-tabs__list`) to `--ai-spacing-3` (desktop `spacing-5`).

@@ -111,6 +111,17 @@
  * icon-only square (Button's own .btn--icon.btn--sm size); aria-label keeps its name. cs-page,
  * not a self-query: the bar's own padding + actions are what have to fit the page. */
 @container cs-page (max-width: 767px) {
+  /* Tighter bar on mobile (designer amend, 2026-09-30): gap spacing-3, side padding spacing-4
+   * (desktop spacing-5 / spacing-5). */
+  .record-tabs {
+    gap: var(--ai-spacing-3);
+    padding: var(--ai-spacing-0-5) var(--ai-spacing-4) 0;
+  }
+
+  .record-tabs__list {
+    gap: var(--ai-spacing-3);   /* between the tabs; desktop spacing-5 */
+  }
+
   .record-tabs__import {
     display: none;
   }
