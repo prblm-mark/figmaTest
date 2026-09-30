@@ -378,6 +378,9 @@ build — a render from the record payload. Markers: `grep -rn "TODO(backend:Rec
 |---|---|---|---|---|
 | `record-load` | All field values, sidebar facts, audit, index status | Static affino.com Article 626312 content (fields + sidebar) in record_article.py. | GET the record by code → { fields by section, meta, audit, indexStatus }; the templates render one section/row per field. | `needs-backend` |
 | `record-save` | Edit → Save (.cc-header__actions .btn--primary) | No-op. | PUT/POST the edited fields; surface field errors on the controls (Input/Select/Textarea error states). | `needs-backend` |
+| `record-live-view` | Header kebab → Live view | href="#" (new tab). | The record's public URL. | `needs-backend` |
+| `record-related-items` | Header kebab → Related items | href="#". | Related items screen for the record (legacy icon action). | `needs-backend` |
+| `record-copy` | Header kebab → Copy | href="#". | Duplicate the record, then open the copy in Edit. | `needs-backend` |
 | `performance-full-analytics` | .performance-summary__link | href="#"; figures and chart series static. | Record analytics endpoint { impressions, consumed, bookmarked, topAccounts[], series } + the analytics report URL. | `needs-backend` |
 | `viewers-add-to-contact-list` | Recent Viewers → Add to Contact List | No-op; viewers static. | Recent viewers endpoint; list picker + POST viewers to the chosen contact list. | `needs-backend` |
 | `seo-advisory-detail` | .advisory-list items | Static advisories; only the first has description copy. | SEO health check endpoint returning advisories with title + description. | `needs-backend` |

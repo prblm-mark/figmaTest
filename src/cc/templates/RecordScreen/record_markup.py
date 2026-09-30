@@ -40,7 +40,8 @@ def record_header(record_type, title, mode, view_href="ArticleView.html", edit_h
                    + btn("Save", "primary", icon_left="check"))
     else:
         actions = (btn("Add", "secondary")
-                   + btn("Edit", "primary", icon_left="pencil", tag="a", href=edit_href, attrs=' data-keep-width'))
+                   + btn("Edit", "primary", icon_left="pencil", tag="a", href=edit_href, attrs=' data-keep-width')
+                   + record_kebab())
     return f'''<div class="cc-header-cq">
         <header class="cc-header cc-header--record">
           <div class="cc-header__title-block">
@@ -52,6 +53,28 @@ def record_header(record_type, title, mode, view_href="ArticleView.html", edit_h
           <div class="cc-header__actions">{actions}</div>
         </header>
         </div>'''
+
+
+# The CC header rule (designer, 2026-09-30; Figma CC Header 4105:3640): the header carries at most
+# ONE primary and ONE secondary button — every other action goes in the kebab menu at its right
+# edge. The Article record's four icon actions from the live screen are those extra actions.
+RECORD_MORE = [
+    ("Live view", "external-link", ' href="#" target="_blank" rel="noopener" data-backend-todo="record-live-view"'),
+    ("Related items", "link-2", ' href="#" data-backend-todo="record-related-items"'),
+    ("Go to list", "list", ' href="../ListingScreen/Articles.html" data-keep-width'),
+    ("Copy", "copy", ' href="#" data-backend-todo="record-copy"'),
+]
+
+
+def record_kebab(items=RECORD_MORE):
+    rows = "".join(f'<li role="none"><a class="dropdown-item dropdown-item--sm" role="menuitem"{attrs}>{icon(ic)}<span data-text="{e(label)}">{e(label)}</span></a></li>'
+                   for label, ic, attrs in items)
+    return f'''<div class="dropdown">
+            <button class="cc-header__kebab dropdown__trigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="More actions">{icon("ellipsis-vertical")}</button>
+            <div class="dropdown__panel" role="menu" aria-label="More actions">
+              <ul class="dropdown__list">{rows}</ul>
+            </div>
+          </div>'''
 
 
 # ── RecordTabs ───────────────────────────────────────────────────────

@@ -972,6 +972,27 @@
      "needs": "PUT/POST the edited fields; surface field errors on the controls (Input/Select/Textarea error states)."
     },
     {
+     "id": "record-live-view",
+     "category": "needs-backend",
+     "element": "Header kebab → Live view",
+     "current": "href=\"#\" (new tab).",
+     "needs": "The record's public URL."
+    },
+    {
+     "id": "record-related-items",
+     "category": "needs-backend",
+     "element": "Header kebab → Related items",
+     "current": "href=\"#\".",
+     "needs": "Related items screen for the record (legacy icon action)."
+    },
+    {
+     "id": "record-copy",
+     "category": "needs-backend",
+     "element": "Header kebab → Copy",
+     "current": "href=\"#\".",
+     "needs": "Duplicate the record, then open the copy in Edit."
+    },
+    {
      "id": "performance-full-analytics",
      "category": "needs-backend",
      "element": ".performance-summary__link",

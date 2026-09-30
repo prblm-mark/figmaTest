@@ -7,6 +7,21 @@
 
 ---
 
+## Actions rule (designer, 2026-09-30) — applies to EVERY CC header
+
+**A header carries at most one primary and one secondary button. Every other action goes in the
+kebab menu** (`.cc-header__kebab`, `ellipsis-vertical`, a DS Dropdown of DropdownItems with icon +
+label), always the last item at the header's right edge. Figma: `4105:3640` (Desktop Default:
+Notification, Edit secondary, Add primary, kebab). Icon-only header buttons for extra actions are
+not allowed. The menu is right-anchored (`.cc-header__actions .dropdown__panel`) so it opens
+leftwards inside the page.
+
+First applied: the Article record screens (Type=Record, view mode) — Add + Edit, then the kebab
+with the live screen's four icon actions: **Live view**, **Related items**, **Go to list**,
+**Copy**. Edit mode keeps just Cancel + Save.
+
+---
+
 ## Variant matrix (verified from Figma `get_metadata` 2026-05-15)
 
 Two axes: **Type** × **Device** = 6 variants.
