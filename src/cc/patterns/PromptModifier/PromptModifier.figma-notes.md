@@ -1,6 +1,6 @@
 # PromptModifier (CC) — figma notes
 
-**Tier:** Pattern · **Status:** CODE-FIRST (designer, 2026-09-29). **No Figma node.** Flagged for Figma;
+**Tier:** Pattern · **Status:** CODE-FIRST (designer, 2026-09-29). **Drawn in Figma 2026-09-30** (`3938:22948`). Flagged for Figma;
 check with Mark before any push. Composes Button and Textarea.
 
 This is the AI prompt on the record sections that the live Control Centre generates: **Social**
@@ -38,3 +38,8 @@ Live's per-field "Expand" arrows are not carried over: our textareas resize nati
 
 PromptModifier.css and PromptModifier.js. `PromptModifier.html` is **generated** by
 `src/cc/templates/RecordScreen/_generate.py`.
+
+## Figma build 2026-09-30
+**PromptModifier `3938:22948`** — State Collapsed `3938:22781` | Expanded `3938:22815` (prompt Textarea + Copy prompt; chevron up)
+| Generating `3938:22868` | Generated `3938:22902` (status + Undo). Sparkles icon `--ai-icon-brand`; Edit prompt is tertiary sm
+with a `--ai-border-secondary` border, as in code.

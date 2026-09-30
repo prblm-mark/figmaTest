@@ -7,7 +7,7 @@ figma.connect('https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino---Desi
       Input: 'field-row--edit', Select: 'field-row--edit', TagBox: 'field-row--edit', Textarea: 'field-row--edit', 'Media Picker': 'field-row--edit',
       // code-first edit kinds, drawn 2026-09-30
       Lookup: 'field-row--edit', Checkbox: 'field-row--edit field-row--check', Date: 'field-row--edit', Datetime: 'field-row--edit',
-      Image: 'field-row--edit', Multimedia: 'field-row--edit', Colour: 'field-row--edit' }),
+      Image: 'field-row--edit', Multimedia: 'field-row--edit', Colour: 'field-row--edit', 'Rich Text': 'field-row--edit field-row--paragraph' }),
   },
   example: ({ layout, type }) => html`<div class="field-row ${layout} ${type}">
   <dt class="field-row__label">Title</dt>

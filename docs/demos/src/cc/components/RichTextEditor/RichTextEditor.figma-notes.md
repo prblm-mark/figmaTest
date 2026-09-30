@@ -1,6 +1,6 @@
 # RichTextEditor (CC) — figma notes
 
-**Tier:** Component · **Status:** CODE-FIRST (designer, 2026-09-29). **No Figma node.** The only match
+**Tier:** Component · **Status:** CODE-FIRST (designer, 2026-09-29). **Drawn in Figma 2026-09-30** (`3939:23167`). The only match
 is `TextEditor` in the old "Control Centre Presentation" library (2023). Flagged for Figma; check with
 Mark before any push.
 
@@ -39,3 +39,8 @@ textarea.
 
 `record-rich-text`: swap the jsDelivr build and `license_key: 'gpl'` for the product's own TinyMCE
 build, licence and config (content_css = the site's LiveEditForm.css + CustomFonts.css).
+
+## Figma build 2026-09-30
+**RichTextEditor `3939:23167`** (State Default | Focus = brand border) and **RichTextEditor / ToolbarButton `3939:22798`** (32px,
+Icon swap). Toolbar groups in the live order; Lucide equivalents stand in for TinyMCE's oxide icons (stroke icons, so they read a
+touch lighter than the file's filled ones). FieldRow gained **Type=Rich Text** (Wide `3941:149242`, Stacked `3941:149395`).

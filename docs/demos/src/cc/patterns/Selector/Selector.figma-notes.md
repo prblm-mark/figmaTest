@@ -1,6 +1,6 @@
 # Selector (CC) — figma notes
 
-**Tier:** Pattern · **Status:** CODE-FIRST (designer, 2026-09-29). **No Figma node yet.** Flagged for
+**Tier:** Pattern · **Status:** CODE-FIRST (designer, 2026-09-29). **Drawn in Figma 2026-09-30** (`3941:23874`). Flagged for
 Figma; check with Mark before any Figma push.
 
 The record screens' four pickers as one pattern. The mode is `data-selector` on the overlay:
@@ -66,3 +66,11 @@ and a Mobile variant. Media needs a tile (`State=Default|Hover|Selected`).
 Selector.css, Selector.js. `Selector.html` is **generated** by
 `src/cc/templates/RecordScreen/_generate.py` from the same builders as ArticleEdit (`record_markup.py`):
 edit the `.py`, not the HTML.
+
+## Figma build 2026-09-30
+View & Edit kit, "Code-first components": **Selector `3941:23874`** — Type=Single `3941:23050`, Paired `3941:23172` (Article ·
+Article step), Multi `3941:23243`, Media `3941:23429`, Sort `3941:23622` (960 wide; Sort 768). Built from **SelectorRow `3940:23025`**
+(Type Single | Paired × State Default | Selected), **SelectorTile `3940:23047`** (Default | Selected) and **SelectorSortRow
+`3940:23132`** (Default | Current). The modal shell copies the DS Modal's fill / border / radius / shadow; header, toolbar
+(SearchInput with its button hidden, Filter Item chips), table, footer are composed. Not drawn: the filtered-sort hint, the
+drag / drop-line states, the empty (no results) state, and Mobile.
