@@ -165,4 +165,54 @@
       },
     });
   }
+
+  /* ── Add a step chooser (designer, 2026-09-30; code-first) ──
+   * + Add opens a small modal of two ActionCards. Escape, the ×, or a click on the backdrop
+   * closes it and focus returns to + Add. `?form=exists` is the demo state for the legacy
+   * one-Dynamic-Form-Step-per-article rule: that card becomes unavailable and says why. */
+  var openModal = null, opener = null;
+  function closeModal() {
+    if (!openModal) return;
+    openModal.classList.remove('modal-overlay--open');
+    openModal = null;
+    if (opener) opener.focus();
+  }
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-record-modal-open]');
+    if (t) {
+      var ov = document.getElementById(t.getAttribute('data-record-modal-open'));
+      if (!ov) return;
+      opener = t; openModal = ov;
+      ov.classList.add('modal-overlay--open');
+      var first = ov.querySelector('.action-card:not(.action-card--disabled)') || ov.querySelector('.modal__close');
+      if (first) first.focus();
+      return;
+    }
+    if (openModal && (e.target === openModal || e.target.closest('.modal__close'))) closeModal();
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
+
+  // The modals sit after the scripts in the page, so wait for the whole document.
+  if (/[?&]form=exists\b/.test(location.search)) document.addEventListener('DOMContentLoaded', function () {
+    var formCard = document.querySelector('[data-step-type="form"]');
+    if (formCard) {
+      // A link cannot be disabled, so it becomes a plain box (ActionCard --disabled).
+      var box = document.createElement('div');
+      box.className = formCard.className + ' action-card--disabled';
+      box.setAttribute('aria-disabled', 'true');
+      box.setAttribute('data-step-type', 'form');
+      box.innerHTML = formCard.innerHTML;
+      box.querySelector('[data-step-desc]').textContent =
+        'This article already has a Dynamic Form Step. An article can only have one at present.';
+      formCard.replaceWith(box);
+    }
+  });
+
+  /* ColorPickerInput in edit rows — the swatch and hex follow the native picker. */
+  document.addEventListener('input', function (e) {
+    var wrap = e.target.closest && e.target.closest('[data-color-input]');
+    if (!wrap) return;
+    wrap.querySelector('.color-picker-input__swatch-inner').style.backgroundColor = e.target.value;
+    wrap.querySelector('.color-picker-input__value').textContent = e.target.value.toUpperCase();
+  });
 })();

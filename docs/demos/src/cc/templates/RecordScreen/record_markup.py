@@ -55,7 +55,7 @@ def record_header(record_type, title, mode, view_href="ArticleView.html", edit_h
 
 
 # ── RecordTabs ───────────────────────────────────────────────────────
-def record_tabs(active, steps_count=8, actions=False, back="ArticleView.html", sidebar=None, form=None):
+def record_tabs(active, steps_count=8, actions=False, back="ArticleView.html", sidebar=None, form=None, save_todo="steps-import-save"):
     """sidebar: None = no toggle (Steps); True / False = the "Show sidebar" switch and its default
     (View on, Edit off — designer, 2026-09-29). Desktop only (RecordTabs.css)."""
     def tab(label, href, is_active, count=None):
@@ -76,7 +76,7 @@ def record_tabs(active, steps_count=8, actions=False, back="ArticleView.html", s
     if actions:
         acts = ('<div class="record-tabs__actions">'
                 + btn("Import", "secondary", "sm", tag="a", href="ArticleStepImport.html", attrs=' data-keep-width')
-                + btn("Add", "primary", "sm", icon_left="plus", attrs=' data-backend-todo="steps-add"')
+                + btn("Add", "primary", "sm", icon_left="plus", attrs=' data-record-modal-open="modal-add-step" aria-haspopup="dialog"')
                 + '</div>')
     if form:
         # A form under the tabs (Import step, designer 2026-09-30): the tab actions become the
@@ -84,7 +84,7 @@ def record_tabs(active, steps_count=8, actions=False, back="ArticleView.html", s
         acts = ('<div class="record-tabs__actions">'
                 + btn("Cancel", "secondary", "sm", tag="a", href=form, attrs=' data-keep-width')
                 + btn("Save", "primary", "sm", icon_left="check", tag="a", href=form,
-                      attrs=' data-keep-width data-backend-todo="steps-import-save"')
+                      attrs=f' data-keep-width data-backend-todo="{save_todo}"')
                 + '</div>')
     return f'''<nav class="record-tabs" aria-label="Record sections">
         <div class="record-tabs__list">
@@ -268,6 +268,17 @@ def edit_row(label, kind, value="", required=False, help_text=None, tags=None, m
         ctl = f'''<div class="textarea rich-text">
               <textarea class="textarea__control" id="{fid}" rows="10" data-rich-text>{e(html)}</textarea>
             </div>'''
+    elif kind == "color":
+        # ColorPickerInput (DS component) — swatch + hex over a hidden native picker. Empty is
+        # allowed (legacy default ""), so it reads "None" until a colour is chosen; RecordScreen.js
+        # keeps the swatch and hex in step with the picker (code-first, 2026-09-30).
+        hexv = value or ""
+        ctl = f'''<label class="color-picker-input" data-color-input>
+              <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner"{f' style="background-color: {e(hexv)};"' if hexv else ''}></span></span>
+              <span class="color-picker-input__value">{e(hexv.upper()) if hexv else "None"}</span>
+              <input type="color" class="color-picker-input__native" id="{fid}" value="{e(hexv or '#000000')}" aria-label="{e(label)}">
+            </label>'''
+        # TODO(backend:RecordScreen) record-color: native picker cannot be emptied → a Clear action + hex text entry
     elif kind == "multimedia":
         # Multimedia — a MediaPicker slot whose Selector lists every media type (designer, 2026-09-29).
         ctl = media_picker(label, modal="modal-multimedia", placeholder="film")
@@ -731,6 +742,29 @@ def sort_order_modal(mid, title, section, items, current, noun="articles", this_
     </div>
   </div>'''
     # TODO(backend:RecordScreen) selector-sort-order: order kept in the DOM → PUT the section's ordered item ids
+
+
+def add_step_modal(mid="modal-add-step"):
+    """Add a step — which type? (designer, 2026-09-30: a modal of cards, not the legacy chooser
+    page). Two ActionCards (Right Chevron + description) link to the two Add screens. The
+    Dynamic Form card is disabled when the article already has one (the legacy one-per-article
+    rule) — RecordScreen.js applies that for the ?form=exists demo state."""
+    def card(title, desc, href, key):
+        return f'''<a class="action-card action-card--chevron" href="{href}" data-keep-width data-step-type="{key}">
+          <span class="action-card__text"><span class="action-card__title">{e(title)}</span><span class="action-card__desc" data-step-desc>{e(desc)}</span></span>
+          {icon("chevron-right", "action-card__chevron")}
+        </a>'''
+    return f'''<div class="modal-overlay" id="{mid}" role="presentation" data-record-modal>
+    <div class="modal modal--sm" role="dialog" aria-modal="true" aria-labelledby="{mid}-title">
+      {_modal_head(mid, "Add a step", "Select the type of step you want to add.")}
+      <div class="modal__body">
+        {card("Content Step", "Text, images and multimedia - the standard Article Step.", "ArticleStepContent.html", "content")}
+        {card("Dynamic Form Step", "Places a Dynamic Form inside the article flow.", "ArticleStepForm.html", "form")}
+      </div>
+    </div>
+  </div>'''
+    # TODO(backend:RecordScreen) steps-add-form-limit: ?form=exists is a demo switch → the article's
+    #   own "has a Dynamic Form Step" flag decides whether the Dynamic Form card is available
 
 
 # ── StepsTable ───────────────────────────────────────────────────────

@@ -104,6 +104,8 @@
   <link rel="stylesheet" href="../../patterns/Selector/Selector.css">
   <link rel="stylesheet" href="../../../components/SegmentedControl/SegmentedControl.css">
   <link rel="stylesheet" href="../../patterns/StepsTable/StepsTable.css">
+  <link rel="stylesheet" href="../../../components/ActionCard/ActionCard.css">
+  <link rel="stylesheet" href="../../../components/ColorPickerInput/ColorPickerInput.css">
   <link rel="stylesheet" href="RecordScreen.css">
 </head>
 <body class="cc-control">
@@ -493,7 +495,7 @@
         <div class="record-tabs__list">
           <a class="record-tab" href="ArticleView.html" data-keep-width>Details</a>
           <a class="record-tab record-tab--active" href="ArticleSteps.html" aria-current="page" data-keep-width>Article steps<span class="record-tab__count" aria-label="8 steps">8</span></a>
-        </div><div class="record-tabs__actions"><a class="btn btn--secondary btn--sm" href="ArticleStepImport.html" data-keep-width><span>Import</span></a><button type="button" class="btn btn--primary btn--sm" data-backend-todo="steps-add"><i data-lucide="plus" aria-hidden="true"></i><span>Add</span></button></div>
+        </div><div class="record-tabs__actions"><a class="btn btn--secondary btn--sm" href="ArticleStepImport.html" data-keep-width><span>Import</span></a><button type="button" class="btn btn--primary btn--sm" data-record-modal-open="modal-add-step" aria-haspopup="dialog"><i data-lucide="plus" aria-hidden="true"></i><span>Add</span></button></div>
       </nav><!-- TODO(backend:RecordScreen) steps-rows: steps, paging and the step bodies are demo data (Hub article
              626347) → the article's steps endpoint. Column prefs / overflow mode ride on the listing's
              listing-column-prefs + listing-overflow-mode items. -->
@@ -1322,5 +1324,23 @@
       if (window.lucide) window.lucide.createIcons();
     });
   </script>
+<div class="modal-overlay" id="modal-add-step" role="presentation" data-record-modal>
+    <div class="modal modal--sm" role="dialog" aria-modal="true" aria-labelledby="modal-add-step-title">
+      <div class="modal__header">
+        <div class="modal__title-block"><h2 class="modal__title" id="modal-add-step-title">Add a step</h2><p class="modal__subtitle">Select the type of step you want to add.</p></div>
+        <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+      <div class="modal__body">
+        <a class="action-card action-card--chevron" href="ArticleStepContent.html" data-keep-width data-step-type="content">
+          <span class="action-card__text"><span class="action-card__title">Content Step</span><span class="action-card__desc" data-step-desc>Text, images and multimedia - the standard Article Step.</span></span>
+          <i data-lucide="chevron-right" class="action-card__chevron" aria-hidden="true"></i>
+        </a>
+        <a class="action-card action-card--chevron" href="ArticleStepForm.html" data-keep-width data-step-type="form">
+          <span class="action-card__text"><span class="action-card__title">Dynamic Form Step</span><span class="action-card__desc" data-step-desc>Places a Dynamic Form inside the article flow.</span></span>
+          <i data-lucide="chevron-right" class="action-card__chevron" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

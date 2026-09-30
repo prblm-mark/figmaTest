@@ -58,6 +58,21 @@
     </div>
   </div>
 
+  <div class="demo-section">
+    <h2>Right Chevron + description · code-first</h2>
+    <p class="demo-row-label">Article steps "Add a step" chooser (2026-09-30). Optional <code>__desc</code> line; <code>--disabled</code> when a choice is unavailable, its description saying why. Not in Figma yet.</p>
+    <div class="demo-stack">
+      <a class="action-card action-card--chevron" href="#">
+        <span class="action-card__text"><span class="action-card__title">Content Step</span><span class="action-card__desc">Text, images and multimedia - the standard Article Step.</span></span>
+        <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+      </a>
+      <div class="action-card action-card--chevron action-card--disabled" aria-disabled="true">
+        <span class="action-card__text"><span class="action-card__title">Dynamic Form Step</span><span class="action-card__desc">This article already has a Dynamic Form Step. An article can only have one at present.</span></span>
+        <i class="action-card__chevron" data-lucide="chevron-right" aria-hidden="true"></i>
+      </div>
+    </div>
+  </div>
+
   <!-- Lucide via CDN for standalone demo (webpack handles this in the full build) -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>

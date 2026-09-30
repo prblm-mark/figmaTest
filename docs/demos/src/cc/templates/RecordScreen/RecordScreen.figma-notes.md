@@ -13,6 +13,9 @@ kit is generic so other record types (Shaz's inventory, ViewOnlyInventory protot
 | Article Steps | `3842:150779`, `3852:65392` | `3842:154798` | `ArticleSteps.html` |
 | Article Steps · Show Detail | `3842:148092` | `3842:153114` | `ArticleSteps.html` + Show details on |
 | Article · Import step | — (code-first, 2026-09-30; flag for Figma) | ← same switch | `ArticleStepImport.html` |
+| Article steps · Add a step chooser | — (code-first, 2026-09-30) | — | `ArticleSteps.html` modal (`?form=exists` = Dynamic Form unavailable) |
+| Article · Add content step | — (code-first, 2026-09-30) | ← same switch | `ArticleStepContent.html` |
+| Article · Add dynamic form step | — (code-first, 2026-09-30) | ← same switch | `ArticleStepForm.html` |
 
 Full width is the shell's ONE switch (`control-width.js`), not separate pages — driven by the rail's Minimise button, or `?template=full` for demo links.
 Every screen frame was swapped to kit instances in Figma on 2026-09-28; the pre-swap drafts are kept
@@ -33,6 +36,14 @@ TopNavigation, HeaderGroup, ActionsMenu rail, theme + width scripts). Page body:
   appended last and badged "Importing"; default position = steps + 1). The tabs stay — Details
   still leads back to the article — and the tab actions become **Cancel / Save** (both return to
   Article steps). Replaces the legacy "add Article Step Lookup" form + its two popups.
+- Add step (designer, 2026-09-30): **+ Add** opens "Add a step" — a Modal `--sm` of two **ActionCards**
+  (Right Chevron + the new code-first description line), Content Step / Dynamic Form Step with the
+  legacy descriptions. Each links to its screen: the Import frame (tabs stay, Cancel / Save) with four
+  stacked RecordSections — the legacy tabs Main / Layout / Background / Publication, the first titled
+  by the step type. Fields, order, required flags, defaults and options are affino.com's
+  `StepByStepFormDef.cfm` + `LiveEditStepByStepForm.cfm` (2026-09-30), built by `record_step.py`:
+  Content = 32 fields; Dynamic Form = Dynamic Form + the file's own shared list (12). Legacy's
+  one-Dynamic-Form-Step-per-article rule: `?form=exists` disables that card and says why.
 - Edit: two FilterDropdowns **Multi Select Modals** (Multi Display, Topics and Keywords) for TagBox
 
 ## Shell paint table (Step 3a — read from the frames 2026-09-28)
@@ -62,6 +73,9 @@ TopNavigation, HeaderGroup, ActionsMenu rail, theme + width scripts). Page body:
 | **Show sidebar** switch (far right of the tabs, View / Edit) | hides / shows the sidebar; **View on, Edit off** by default (in the markup — no flash), then the viewer's own choice **per mode** (localStorage `cc-record-sidebar-view` / `-edit`; handover `record-sidebar-preference`); desktop only — at a ≤1023 page the switch goes and the sidebar stacks under the content (designer, 2026-09-29; code-first, flag for Figma) | Toggle.js + `RecordScreen.js` (`.record-screen--no-sidebar`) |
 | Steps Edit Columns / Settings | the listing's own — the steps table runs on ListingScreen.js (`article-steps` config) | `ListingScreen.js` |
 | Import (Steps tab actions) | opens the Import step screen | link |
+| + Add (Steps tab actions) | opens the Add a step chooser; ×, Escape or backdrop closes, focus returns to + Add | `RecordScreen.js` (`data-record-modal-open`) |
+| Add step: Cancel / Save | return to Article steps; Save creates nothing (mock) | links + HANDOVER `steps-add-save` |
+| Colour rows | swatch + hex follow the native picker | `RecordScreen.js` |
 | Import step: Cancel / Save | return to Article steps; Save adds nothing (mock) | links + HANDOVER `steps-import-save` |
 | Step checkboxes, pencil, Read the full step, + Add | visual only — backend later | HANDOVER |
 | View full analytics, Add to Contact List, Save | backend | HANDOVER |
