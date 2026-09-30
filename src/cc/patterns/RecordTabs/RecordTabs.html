@@ -29,12 +29,21 @@
       </nav>
   </div>
   <div class="demo-section demo-section--bare">
-    <p class="demo-section__title">Width=Standard · Article steps active + actions (Lookup / Add)</p>
+    <p class="demo-section__title">Width=Standard · Article steps active + actions (Import / Add)</p>
     <nav class="record-tabs" aria-label="Record sections">
         <div class="record-tabs__list">
           <a class="record-tab" href="ArticleView.html" data-keep-width>Details</a>
           <a class="record-tab record-tab--active" href="ArticleSteps.html" aria-current="page" data-keep-width>Article steps<span class="record-tab__count" aria-label="8 steps">8</span></a>
-        </div><div class="record-tabs__actions"><button type="button" class="btn btn--secondary btn--sm" data-backend-todo="steps-lookup"><span>Lookup</span></button><button type="button" class="btn btn--primary btn--sm" data-backend-todo="steps-add"><i data-lucide="plus" aria-hidden="true"></i><span>Add</span></button></div>
+        </div><div class="record-tabs__actions"><a class="btn btn--secondary btn--sm" href="#" data-keep-width><span>Import</span></a><button type="button" class="btn btn--primary btn--sm" data-backend-todo="steps-add"><i data-lucide="plus" aria-hidden="true"></i><span>Add</span></button></div>
+      </nav>
+  </div>
+  <div class="demo-section demo-section--bare">
+    <p class="demo-section__title">Width=Standard · Article steps active + form actions (Cancel / Save) — Import step screen, code-first</p>
+    <nav class="record-tabs" aria-label="Record sections">
+        <div class="record-tabs__list">
+          <a class="record-tab" href="#" data-keep-width>Details</a>
+          <a class="record-tab record-tab--active" href="#" aria-current="page" data-keep-width>Article steps<span class="record-tab__count" aria-label="8 steps">8</span></a>
+        </div><div class="record-tabs__actions"><a class="btn btn--secondary btn--sm" href="#" data-keep-width><span>Cancel</span></a><a class="btn btn--primary btn--sm" href="#" data-keep-width data-backend-todo="steps-import-save"><i data-lucide="check" aria-hidden="true"></i><span>Save</span></a></div>
       </nav>
   </div>
   <div class="demo-section ">

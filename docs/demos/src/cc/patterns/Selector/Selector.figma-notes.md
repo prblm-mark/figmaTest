@@ -7,10 +7,21 @@ The record screens' four pickers as one pattern. The mode is `data-selector` on 
 
 | Type | Used by | Interaction |
 |---|---|---|
-| `single` | Section, Creator | Click a row to choose it and close. The current value is ticked and pinned to the top on open. **Clear selection** empties the field. The name cell is a `<button>`, so the keyboard reaches it. |
+| `single` | Section, Creator, Article Step (Import step) | Click a row to choose it and close. The current value is ticked and pinned to the top on open. **Clear selection** empties the field. The name cell is a `<button>`, so the keyboard reaches it. |
 | `multi` | Multi Display, Topics, Countries, Related Authors | The FilterDropdowns Multi Select Modal. TagBox.js still owns open / Apply; Selector.js adds the name search and the "n selected" count. |
 | `media` | Thumbnail, Main Image, Alternative Thumbnail, … (every MediaPicker **Edit**) | The Media Items listing's grid as a one-pick picker. Click a tile (brand ring + tick), then **Use image**, or double-click the tile. Filters, My media, Upload and Load more are inert (handover). The toolbar **Upload** is secondary. When a search or filter matches nothing, the no-results state shows a **primary Upload** (designer, 2026-09-29): there is nothing to pick, so uploading is the way forward. |
 | `sort` | Sort Order | **Drag** by the grip (Edit Columns' handle model: draggable only from the grip, and the insertion line is a border). **↑ ↓** moves one place; **⤒ ⤓** moves to the top or bottom; or **type a position** and press Enter. **Search** narrows the list, and drag pauses while it does (a hint says so) because a drop between non-neighbours means nothing. The arrows and positions still work. **This article** is tinted, badged, and scrolled into view on open, and **Jump to this article** brings it back. **Reset** restores the order it opened with; **Cancel** or Escape discards; **Save order** writes the new position number into the field (its placeholder is the default position, 40). |
+
+## Variations by field (builder parameters, `record_markup.py`)
+
+- **single** takes its `columns`, `facets`, search placeholder and a `value(row)`. The Article Step lookup
+  (Import step) is two columns, Article · Article step, with no facets; the field gets "Step — Article"
+  so search matches either column and two same-named steps stay distinct. Two columns get
+  `.selector__table--pair`: equal halves that wrap, because both are long free text. A `total` adds the
+  "Showing n of N" line.
+- **sort** takes the list noun, the badge label (`data-sort-this` on the overlay, which the status line
+  reads), and the Jump / Find labels. Rows without an image drop the thumbnail. On Import step the current
+  row is the step being imported, appended last and badged "Importing".
 
 ## Why these long-list aids (sort)
 
@@ -47,7 +58,7 @@ and a Mobile variant. Media needs a tile (`State=Default|Hover|Selected`).
 
 ## Handover
 
-`selector-single-source`, `selector-media-source`, `selector-media-upload`, `selector-sort-order`
+`selector-single-source`, `steps-import-source`, `selector-media-source`, `selector-media-upload`, `selector-sort-order`
 (HANDOVER.md, RecordScreen surface).
 
 ## Files

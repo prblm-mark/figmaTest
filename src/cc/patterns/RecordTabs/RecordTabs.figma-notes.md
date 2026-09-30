@@ -22,7 +22,8 @@
 | Tab list | `.record-tabs__list` |
 | Tab (a) | `.record-tab (+ --active, aria-current="page")` |
 | Count | `.record-tab__count` |
-| Actions (Show Actions) | `.record-tabs__actions → Lookup (secondary sm) + Add (primary sm)` |
+| Actions (Show Actions) | `.record-tabs__actions → Import (secondary sm) + Add (primary sm)` |
+| — (code-first, 2026-09-30) | Form actions on Import step: `.record-tabs__actions → Cancel (secondary sm) + Save (primary sm, check)` — `record_tabs(form=…)`; not in the RecordTabs Figma set |
 
 ## Token Mapping
 

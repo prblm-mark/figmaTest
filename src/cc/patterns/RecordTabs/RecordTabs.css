@@ -1,5 +1,5 @@
 /* RecordTabs — record screen section tabs (Details / Article steps) with an
- * optional count badge and optional right-hand actions (Lookup / + Add).
+ * optional count badge and optional right-hand actions (Import / + Add).
  * Tabs are links: each one is a separate screen, so the active tab carries
  * aria-current="page".
  *
@@ -83,7 +83,6 @@
   align-items: center;
   gap: var(--ai-spacing-3);
   margin-left: auto;
-  padding-right: var(--ai-spacing-4);
 }
 
 /* "Show sidebar" switch — far right of the tabs on View / Edit (designer, 2026-09-29; code-first,

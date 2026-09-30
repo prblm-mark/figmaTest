@@ -12,6 +12,7 @@ kit is generic so other record types (Shaz's inventory, ViewOnlyInventory protot
 | Article Edit | `3842:147155` | `3842:146670` | `ArticleEdit.html` |
 | Article Steps | `3842:150779`, `3852:65392` | `3842:154798` | `ArticleSteps.html` |
 | Article Steps · Show Detail | `3842:148092` | `3842:153114` | `ArticleSteps.html` + Show details on |
+| Article · Import step | — (code-first, 2026-09-30; flag for Figma) | ← same switch | `ArticleStepImport.html` |
 
 Full width is the shell's ONE switch (`control-width.js`), not separate pages — driven by the rail's Minimise button, or `?template=full` for demo links.
 Every screen frame was swapped to kit instances in Figma on 2026-09-28; the pre-swap drafts are kept
@@ -22,10 +23,16 @@ Shell = ControlScreen/ListingScreen app shell, ported as a bundle by `_generate.
 TopNavigation, HeaderGroup, ActionsMenu rail, theme + width scripts). Page body:
 
 - **CC Header Type=Record** (`.cc-header--record`) — Figma RecordHeader `3867:2138`
-- **RecordTabs** — Details / Article steps are links between screens; Steps adds Lookup / + Add
+- **RecordTabs** — Details / Article steps are links between screens; Steps adds Import / + Add
 - View / Edit: **RecordSection** × 6 (FieldRow view or edit types) + sidebar **FactPanel** × 7
   (PerformanceSummary, ViewerList, FactList × 4, AdvisoryList)
 - Steps: **StepsTable** (Datatables) — Show details expands every row
+- Import step (designer, 2026-09-30): the Steps screen with the table replaced by one edit-mode
+  **RecordSection** "Import step" — Article Step (lookup → Selector `single`, two columns Article ·
+  Article step) + Sort Order (lookup → Selector `sort` over this article's steps, the new step
+  appended last and badged "Importing"; default position = steps + 1). The tabs stay — Details
+  still leads back to the article — and the tab actions become **Cancel / Save** (both return to
+  Article steps). Replaces the legacy "add Article Step Lookup" form + its two popups.
 - Edit: two FilterDropdowns **Multi Select Modals** (Multi Display, Topics and Keywords) for TagBox
 
 ## Shell paint table (Step 3a — read from the frames 2026-09-28)
@@ -54,7 +61,9 @@ TopNavigation, HeaderGroup, ActionsMenu rail, theme + width scripts). Page body:
 | Step kebab | reveals only that row's columns that did not fit | Datatables / `ListingScreen.js` |
 | **Show sidebar** switch (far right of the tabs, View / Edit) | hides / shows the sidebar; **View on, Edit off** by default (in the markup — no flash), then the viewer's own choice **per mode** (localStorage `cc-record-sidebar-view` / `-edit`; handover `record-sidebar-preference`); desktop only — at a ≤1023 page the switch goes and the sidebar stacks under the content (designer, 2026-09-29; code-first, flag for Figma) | Toggle.js + `RecordScreen.js` (`.record-screen--no-sidebar`) |
 | Steps Edit Columns / Settings | the listing's own — the steps table runs on ListingScreen.js (`article-steps` config) | `ListingScreen.js` |
-| Step checkboxes, pencil, Read the full step, Lookup, + Add | visual only — backend later | HANDOVER |
+| Import (Steps tab actions) | opens the Import step screen | link |
+| Import step: Cancel / Save | return to Article steps; Save adds nothing (mock) | links + HANDOVER `steps-import-save` |
+| Step checkboxes, pencil, Read the full step, + Add | visual only — backend later | HANDOVER |
 | View full analytics, Add to Contact List, Save | backend | HANDOVER |
 
 ## Verified (headless Chrome, 2026-09-28)

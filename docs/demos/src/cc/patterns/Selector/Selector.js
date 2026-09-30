@@ -317,7 +317,7 @@
       $(r, '[data-sort-move="bottom"]').disabled = i === all.length - 1;
     });
     var cur = $(list(overlay), '.selector__sort-row--current');
-    if (cur) status(overlay, 'This article: position ' + (all.indexOf(cur) + 1) + ' of ' + all.length);
+    if (cur) status(overlay, (overlay.getAttribute('data-sort-this') || 'This article') + ': position ' + (all.indexOf(cur) + 1) + ' of ' + all.length);
   }
 
   function openSort(overlay) {
