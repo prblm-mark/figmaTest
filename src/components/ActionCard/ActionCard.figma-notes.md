@@ -31,6 +31,8 @@
 | Chevron icon | `.action-card__chevron` |
 | "+ add" button | `.btn.btn--tertiary.btn--xs` (composes the Button component) |
 
+| — (code-first, 2026-09-30) | `.action-card__text` wraps title + optional `.action-card__desc`; `.action-card--disabled` (`aria-disabled`, not a link). Built for the Article steps "Add a step" chooser. **Needs Figma:** a Description property and a State=Disabled |
+
 ## Token Mapping
 
 | Figma variable | CSS variable | Role |
@@ -70,3 +72,12 @@
   container `<div>` whose action is the inner "+ add" button; Action=Right Chevron is a whole-card
   `<a>` (chevron is a navigational affordance). Confirm against the Figma prototype if it differs.
 - Lucide names: Figma `Icon/24px/Plus` → `plus`; `Icon/24px/ChevronRight` → `chevron-right`.
+
+## Code-first additions (2026-09-30)
+
+| Element | Token |
+|---|---|
+| `__text` gap | `--ai-spacing-1` |
+| `__desc` | `--ai-font-title`, `--ai-font-fixed-2xs`, `--ai-font-regular`, `--ai-leading-sm`, `--ai-text-secondary` (the Modal subtitle's type, the nearest supporting line in the kit) |
+| `--disabled` | opacity 0.5, no hover border change, `cursor: not-allowed` |
+

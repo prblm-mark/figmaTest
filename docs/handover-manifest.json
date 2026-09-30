@@ -1022,10 +1022,10 @@
     },
     {
      "id": "steps-add",
-     "category": "needs-backend",
+     "category": "visual-only",
      "element": "Article steps → + Add",
-     "current": "No-op.",
-     "needs": "Create a step."
+     "current": "Opens the \"Add a step\" chooser (Content / Dynamic Form) — client-side.",
+     "needs": "Nothing beyond steps-add-save / steps-add-form-limit / steps-add-options."
     },
     {
      "id": "steps-import-source",
@@ -1040,6 +1040,34 @@
      "element": "Import step → Save (tab actions)",
      "current": "Link back to Article steps; nothing is added.",
      "needs": "POST the chosen step + sort position to this article's steps; return to Article steps with it in place; required-field errors on the two rows."
+    },
+    {
+     "id": "steps-add-save",
+     "category": "needs-backend",
+     "element": "Add step → Save (tab actions), Content / Dynamic Form",
+     "current": "Link back to Article steps; nothing is created.",
+     "needs": "POST the step (StepType 1 or 2 + its field set) to this article at the chosen Sort Order; return to Article steps with it in place; required-field errors (Title, Sort Order, Step Width; Dynamic Form on type 2)."
+    },
+    {
+     "id": "steps-add-form-limit",
+     "category": "needs-backend",
+     "element": "Add a step chooser → Dynamic Form Step card",
+     "current": "Available unless the demo URL has ?form=exists.",
+     "needs": "The article's own \"has a Dynamic Form Step\" flag (legacy: one per article, any form) — disable the card with the reason; the server still rejects a second one."
+    },
+    {
+     "id": "steps-add-options",
+     "category": "needs-backend",
+     "element": "Add step selects: Dynamic Form, Content Type",
+     "current": "Static lists read from affino.com 2026-09-30 (21 live forms; Content Type None / Quote).",
+     "needs": "DynamicFormItem (security-filtered, \"Name [code]\") and ContentType WHERE TypeCode = 1 per site."
+    },
+    {
+     "id": "record-color",
+     "category": "needs-backend",
+     "element": "Colour rows (Step Text Color, Background Color)",
+     "current": "ColorPickerInput over the native picker; cannot be emptied once set.",
+     "needs": "Hex value per field, empty allowed → a Clear action + typed hex."
     },
     {
      "id": "steps-read-full",

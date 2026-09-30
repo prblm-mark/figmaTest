@@ -17,6 +17,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import record_markup as m  # noqa: E402
 import record_article as rec  # noqa: E402
+import record_step as step  # noqa: E402
 
 # Step content (titles + bodies) read from the Hub for Article 626347 — a copy of the ArticleSteps
 # prototype's data, kept here so the template does not depend on an uncommitted prototype.
@@ -48,6 +49,8 @@ CSS = """
   <link rel="stylesheet" href="../../patterns/Selector/Selector.css">
   <link rel="stylesheet" href="../../../components/SegmentedControl/SegmentedControl.css">
   <link rel="stylesheet" href="../../patterns/StepsTable/StepsTable.css">
+  <link rel="stylesheet" href="../../../components/ActionCard/ActionCard.css">
+  <link rel="stylesheet" href="../../../components/ColorPickerInput/ColorPickerInput.css">
   <link rel="stylesheet" href="RecordScreen.css">
 </head>"""
 
@@ -202,7 +205,8 @@ pages = {
                               page(m.record_tabs("details", back="ArticleEdit.html", sidebar=False) + body(rec.edit_sections(), rec.sidebar()), sidebar_on=False, mode="edit"), KIT_JS,
                               modals=rec.modals()),
     "ArticleSteps.html": build("Article · Steps", m.record_header("Article", rec.TITLE, "view"),
-                               page(m.record_tabs("steps", actions=True) + m.steps_listing()), KIT_JS, listing=True),
+                               page(m.record_tabs("steps", actions=True) + m.steps_listing()), KIT_JS, listing=True,
+                               modals=m.add_step_modal()),
 }
 
 # ── Import step (designer, 2026-09-30; code-first, flag for Figma) ──
@@ -237,13 +241,18 @@ STEP_LOOKUP = [
     ("Self-guided Affino LX Demonstration", "10] Content Tree"),
 ]
 IMPORT_POS = str(len(sd.STEPS) + 1)  # a new step goes last by default (legacy: count + 1)
+
+
+def step_sort_modal(new_label, badge):
+    """Sort Order for a step being added or imported: this article's steps, the new one last."""
+    return m.sort_order_modal("modal-step-sort", "Sort Order", "this article",
+                              [(i, t, None) for i, (t, _) in enumerate(sd.STEPS, 1)] + [(0, new_label, None)], 0,
+                              noun="steps", this_label=badge, jump_label="Jump to the new step", find_label="Find a step")
 import_modals = (
     m.single_select_modal("modal-step-lookup", "Select Article Step", STEP_LOOKUP, noun="step",
                           columns=("Article", "Article step"), facets=(), search="Search articles and steps",
                           value=lambda r: f"{r[1]} — {r[0]}", total=4134)
-    + m.sort_order_modal("modal-step-sort", "Sort Order", "this article",
-                         [(i, t, None) for i, (t, _) in enumerate(sd.STEPS, 1)] + [(0, "The step you are importing", None)], 0,
-                         noun="steps", this_label="Importing", jump_label="Jump to the new step", find_label="Find a step"))
+    + step_sort_modal("The step you are importing", "Importing"))
 # TODO(backend:RecordScreen) steps-import-source: 24 static lookup rows → paged search over all article steps
 import_form = m.record_section("Import step", [
     m.edit_row("Article Step", "lookup", required=True, modal="modal-step-lookup"),
@@ -255,6 +264,25 @@ pages["ArticleStepImport.html"] = build(
          + f'''<div class="record-screen__body"><div class="record-screen__main">{import_form}</div></div>''',
          sidebar_on=False, mode="edit"),
     KIT_JS, modals=import_modals)
+
+# ── Add step (designer, 2026-09-30; code-first, flag for Figma) ──
+# + Add opens the "Add a step" chooser modal (ArticleSteps.html); each card leads to its screen.
+# Same frame as Import step: tabs stay, the tab actions are Cancel / Save, the form replaces the table.
+def add_step_page(kind, page_title):
+    modals = step_sort_modal("The step you are adding", "New step")
+    if kind == "content":
+        modals += (m.media_select_modal("modal-media", "Select Media", rec.MEDIA_SOURCE[:24], len(rec.MEDIA_SOURCE))
+                   + m.media_select_modal("modal-multimedia", "Select Multimedia", rec.MULTIMEDIA_SOURCE,
+                                          len(rec.MULTIMEDIA_SOURCE), apply_label="Use media"))
+    return build(page_title, m.record_header("Article", rec.TITLE, "view"),
+                 page(m.record_tabs("steps", form="ArticleSteps.html", save_todo="steps-add-save")
+                      + f'''<div class="record-screen__body"><div class="record-screen__main">{step.sections(kind, IMPORT_POS)}</div></div>''',
+                      sidebar_on=False, mode="edit"),
+                 KIT_JS, modals=modals)
+
+
+pages["ArticleStepContent.html"] = add_step_page("content", "Article · Add content step")
+pages["ArticleStepForm.html"] = add_step_page("form", "Article · Add dynamic form step")
 
 for name, html in pages.items():
     html = html.replace("<!doctype html>\n", "<!doctype html>\n" + HEAD_NOTE, 1)

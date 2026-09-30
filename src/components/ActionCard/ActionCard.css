@@ -45,3 +45,37 @@
   height: var(--ai-icon-size-sm);
   color: var(--ai-icon-secondary);
 }
+
+/* ── Description (code-first, 2026-09-30 — Article steps "Add a step" chooser; flag for Figma) ──
+ * Optional second line under the title. The title and description share a `__text` column, which
+ * takes the title's fill-the-row role; inside it the title keeps its own ellipsis, and the
+ * description wraps (it explains the choice, so it must not be cut off). Type tokens are the
+ * Modal subtitle's, the nearest existing "supporting line" in the kit. */
+.action-card__text {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: var(--ai-spacing-1);
+  min-width: 0;
+}
+
+/* In the column the title's row-fill `flex: 1 1 0` would become a zero height basis. */
+.action-card__text .action-card__title { flex: none; }
+
+.action-card__desc {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-regular);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-secondary);
+}
+
+/* Unavailable choice (code-first): stays readable so its description can say why, but takes
+ * no hover and no pointer. Rendered as a <div aria-disabled="true">, not a link. */
+.action-card--disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.action-card--disabled:hover { border-color: var(--ai-border-secondary); }
