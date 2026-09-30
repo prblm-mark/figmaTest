@@ -48,4 +48,4 @@ with a `--ai-border-secondary` border, as in code.
 Set `3938:22948` is now State × **Width (Wide | Narrow)**. Narrow = the ≤479 container query: icon + text on one line, the
 actions on the next, indented 28 (the code's `calc(icon-size-md + spacing-3)`; raw in Figma — no single token). Placed in the
 **Social** section of all four Article Edit frames (Standard / Full / Narrow = Wide, Mobile = Narrow) via RecordSection's new
-**Show Prompt** property. The Figma Edit screens have no Article Questions or Summary sections, so those two prompts are not drawn.
+**Show Prompt** property. The **Article Questions** (Question prompt; Question 1–5 as Inputs) and **Summary** (Summary prompt; Summary as a Textarea) sections were added after Social in all four Edit frames (2026-09-30), with the code's questions / summary / prompts. The two desktop Edit frames now hug their content (they were fixed at 2807 and clipped the lower sections).
