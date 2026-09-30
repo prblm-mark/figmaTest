@@ -102,7 +102,8 @@ TopNavigation, HeaderGroup, ActionsMenu rail, theme + width scripts). Page body:
   short panels; masonry would make panels jump columns on expand — designer, 2026-09-28); the resize handle is hidden; in full width the main
   divider moves from its right edge to under it. Tier 2 lives in RecordSection: a self-container
   that stacks field rows label-over-value at ≤559 (192 label + ~45ch value + padding). The record
-  header keeps its button labels on mobile (Header.css). Verified 390 / 820 / 1024–1600:
+  header goes icon-only below 768 like every CC header (2026-09-30: Add plus, Edit pencil, Cancel x,
+  Save check; labels in `.cc-header__btn-label`, names kept by `aria-label`; was labels-kept 2026-09-28). Verified 390 / 820 / 1024–1600:
   no page h-scroll; Steps table scrolls inside `datatables__body`.
 - The dark top navigation bar in the Figma screens is still the drawn frame (CC TopNavigation lives
   in the CC file); code uses the real shell.

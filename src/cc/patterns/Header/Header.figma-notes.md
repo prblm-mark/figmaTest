@@ -20,6 +20,11 @@ First applied: the Article record screens (Type=Record, view mode) — Add + Edi
 with the live screen's four icon actions: **Live view**, **Related items**, **Go to list**,
 **Copy**. Edit mode keeps just Cancel + Save.
 
+**Every header button carries an icon, and its label goes in `.cc-header__btn-label`** so the
+`@container cc-header (max-width: 767px)` collapse makes it a 32px icon-only square (Figma Mobile
+`4105:3637`); give it an `aria-label` so the name survives the hidden label. Record: Add `plus`,
+Edit `pencil`, Cancel `x`, Save `check` — its old labels-kept-on-mobile override is gone (2026-09-30).
+
 ---
 
 ## Variant matrix (verified from Figma `get_metadata` 2026-05-15)
