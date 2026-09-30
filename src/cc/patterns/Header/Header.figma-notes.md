@@ -25,6 +25,8 @@ with the live screen's four icon actions: **Live view**, **Related items**, **Go
 `4105:3637`); give it an `aria-label` so the name survives the hidden label. Record: Add `plus`,
 Edit `pencil`, Cancel `x`, Save `check` — its old labels-kept-on-mobile override is gone (2026-09-30).
 
+Record on mobile (designer amends, 2026-09-30): type → title gap `--ai-spacing-0-5` (desktop `spacing-1`); title `line-height` `--ai-leading-sm` (desktop `md`); record type `font-size` `--ai-font-fixed-2xs` + `line-height` `--ai-leading-xs` (desktop `xs` / `leading-sm`).
+
 ---
 
 ## Variant matrix (verified from Figma `get_metadata` 2026-05-15)

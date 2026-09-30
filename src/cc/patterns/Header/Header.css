@@ -301,6 +301,22 @@
     gap: var(--ai-spacing-1); /* 4px on Control mobile per Figma */
   }
 
+  /* Record title: leading-sm on mobile (designer amend, 2026-09-30; desktop keeps leading-md). */
+  .cc-header--record .cc-header__title-block-text {
+    gap: var(--ai-spacing-0-5);   /* designer amend, 2026-09-30; desktop spacing-1 */
+  }
+
+  .cc-header--record .cc-header__title {
+    line-height: var(--ai-leading-sm);
+  }
+
+  /* Record type label on mobile (designer amend, 2026-09-30): 2xs / leading-xs (desktop xs /
+   * leading-sm). Margin, family and weight are unchanged from the base rule. */
+  .cc-header__record-type {
+    font-size: var(--ai-font-fixed-2xs);
+    line-height: var(--ai-leading-xs);
+  }
+
   /* Type=Record follows the icon-only collapse above like every CC header (designer,
    * 2026-09-30). It used to keep its labels (2026-09-28) because Cancel and Add had no
    * icon; every header button now has one (Add plus, Cancel x). */
