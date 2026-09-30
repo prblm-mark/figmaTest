@@ -46,3 +46,7 @@ Draft card bg/border were borrowed (`--cc-header-secondary-bg`, `--ai-datatable-
 ## Mobile density (designer amends, 2026-09-29)
 In the same `record-section ≤559` query: header padding `--ai-spacing-4` all round (was 16/24/16/16), title `--ai-font-fixed-xs` (was `fixed-md`), body padding `--ai-spacing-4` (was `spacing-6`); body gap unchanged. Figma: a proper **`Device=Mobile`** variant (designer, 2026-09-29) — set `3871:3259` is now Width (Standard / Full) × Device (Desktop / Mobile). Mobile = `3912:18889` (Standard) / `3912:18931` (Full): header + body padding `spacing/4`, title `font/size-fixed/xs`, FieldRows `Layout=Stacked`, 343 wide. The mobile frames (`3905:143091`, `3907:17632`) use it. Note: cloning a variant drops its property bindings — `Title` and `Row 1–8` were re-bound on the Mobile variants by hand. Code Connect maps Device → no class.
 `overflow: hidden` removed from `.record-section` so the MediaMeta details panel is not clipped.
+
+## Figma 2026-09-30 — optional prompt
+Every variant of `3871:3259` has a **PromptModifier** as the Body's first child, shown by **Show Prompt** (boolean, off by default)
+— the code's `record_section(…, prompt=…)`. On in the Article Edit screens' Social section.

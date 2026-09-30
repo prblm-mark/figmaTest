@@ -43,3 +43,9 @@ PromptModifier.css and PromptModifier.js. `PromptModifier.html` is **generated**
 **PromptModifier `3938:22948`** — State Collapsed `3938:22781` | Expanded `3938:22815` (prompt Textarea + Copy prompt; chevron up)
 | Generating `3938:22868` | Generated `3938:22902` (status + Undo). Sparkles icon `--ai-icon-brand`; Edit prompt is tertiary sm
 with a `--ai-border-secondary` border, as in code.
+
+## Figma 2026-09-30 (later) — Width axis + placed
+Set `3938:22948` is now State × **Width (Wide | Narrow)**. Narrow = the ≤479 container query: icon + text on one line, the
+actions on the next, indented 28 (the code's `calc(icon-size-md + spacing-3)`; raw in Figma — no single token). Placed in the
+**Social** section of all four Article Edit frames (Standard / Full / Narrow = Wide, Mobile = Narrow) via RecordSection's new
+**Show Prompt** property. The Figma Edit screens have no Article Questions or Summary sections, so those two prompts are not drawn.
