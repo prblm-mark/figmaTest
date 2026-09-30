@@ -385,7 +385,9 @@ build — a render from the record payload. Markers: `grep -rn "TODO(backend:Rec
 | `select-options` | Edit selects (Zone, Section, Priority, Alignment, Category Topic) | Menu lists the current value only. | Option source per field. | `needs-backend` |
 | `media-picker` | .media-picker Edit / delete | No-op. | Media library picker + upload; delete clears the field. | `needs-backend` |
 | `steps-list` | StepsTable rows, Show n, pagination, sort | 20 static rows from the Hub (9.0.11.24 steps). | Steps list endpoint (paged, sortable) incl. step body for Show details. | `needs-backend` |
-| `steps-add` | Article steps → + Add / Lookup | No-op. | Create step / look up an existing step to attach. | `needs-backend` |
+| `steps-add` | Article steps → + Add | No-op. | Create a step. | `needs-backend` |
+| `steps-import-source` | Import step → Article Step Select (Selector single, Article · Article step) | 24 static rows (the legacy Content Lookup's first page for "affino"); search filters those only. | Paged search over all article steps { stepId, stepTitle, articleId, articleTitle }; the field shows "Step — Article", submits stepId. | `needs-backend` |
+| `steps-import-save` | Import step → Save (tab actions) | Link back to Article steps; nothing is added. | POST the chosen step + sort position to this article's steps; return to Article steps with it in place; required-field errors on the two rows. | `needs-backend` |
 | `steps-read-full` | Read the full step, step pencil, step title link | href="#". | Step view / edit URLs. | `needs-backend` |
 | `steps-bulk` | Step row checkboxes | Select + select-all work client-side; no bulk actions. | Bulk actions not designed yet. | `visual-only` |
 | `record-lookup` | Lookup rows → Select (Account only; Section, Creator and Sort Order now open a Selector) | Account: current value in a read-only input; Select does nothing. | Lookup picker per field (account search) returning { id, name }; the row shows the name, submits the id. | `needs-backend` |

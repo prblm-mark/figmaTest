@@ -193,6 +193,13 @@
 .selector__row--selected td { background-color: var(--ai-surface-brand-soft-extra); }
 .selector__row--selected .selector__tick { visibility: visible; }
 
+/* Paired columns (Article step lookup, 2026-09-30): both are long free text, so neither may
+ * push the other out of the modal. Equal halves, and both wrap (Table's cells are nowrap). */
+.selector__table--pair { table-layout: fixed; inline-size: 100%; }
+.table.selector__table--pair thead th,
+.table.selector__table--pair tbody td { inline-size: 50%; white-space: normal; overflow-wrap: anywhere; }
+.selector__table--pair .selector__pick { max-inline-size: 100%; }
+
 /* ── Media ────────────────────────────────────────────── */
 
 .selector--media.modal { width: var(--ai-size-12); }

@@ -55,7 +55,7 @@ def record_header(record_type, title, mode, view_href="ArticleView.html", edit_h
 
 
 # ── RecordTabs ───────────────────────────────────────────────────────
-def record_tabs(active, steps_count=8, actions=False, back="ArticleView.html", sidebar=None):
+def record_tabs(active, steps_count=8, actions=False, back="ArticleView.html", sidebar=None, form=None):
     """sidebar: None = no toggle (Steps); True / False = the "Show sidebar" switch and its default
     (View on, Edit off — designer, 2026-09-29). Desktop only (RecordTabs.css)."""
     def tab(label, href, is_active, count=None):
@@ -75,8 +75,16 @@ def record_tabs(active, steps_count=8, actions=False, back="ArticleView.html", s
                 '<span id="record-sidebar-label">Show sidebar</span></span></div>')
     if actions:
         acts = ('<div class="record-tabs__actions">'
-                + btn("Import", "secondary", "sm", attrs=' data-backend-todo="steps-import"')
+                + btn("Import", "secondary", "sm", tag="a", href="ArticleStepImport.html", attrs=' data-keep-width')
                 + btn("Add", "primary", "sm", icon_left="plus", attrs=' data-backend-todo="steps-add"')
+                + '</div>')
+    if form:
+        # A form under the tabs (Import step, designer 2026-09-30): the tab actions become the
+        # form's Cancel / Save, and the tabs stay so Details still leads back to the article.
+        acts = ('<div class="record-tabs__actions">'
+                + btn("Cancel", "secondary", "sm", tag="a", href=form, attrs=' data-keep-width')
+                + btn("Save", "primary", "sm", icon_left="check", tag="a", href=form,
+                      attrs=' data-keep-width data-backend-todo="steps-import-save"')
                 + '</div>')
     return f'''<nav class="record-tabs" aria-label="Record sections">
         <div class="record-tabs__list">
@@ -603,26 +611,34 @@ def _modal_head(mid, title, sub=None):
       </div>'''
 
 
-def single_select_modal(mid, title, source, noun="section"):
+def single_select_modal(mid, title, source, noun="section", columns=("Name", "Parent Section", "Channel", "Zone"),
+                        facets=("Parent Section", "Channel", "Zone"), search="Search by name", value=None, total=None):
     """Single select — click a row to choose it and close (designer, 2026-09-29).
-    The current value is pinned to the top and ticked when the modal opens (Selector.js)."""
-    facets = "".join(facet_chip(f)
-                     for f in ["Parent Section", "Channel", "Zone"])
-    rows = "".join(f'''<tr class="selector__row" data-selector-item="{e(n)}">
-              <td><button type="button" class="selector__pick" data-selector-pick>{icon("check", "selector__tick")}<span>{e(n)}</span></button></td>
-              <td>{e(p) or "—"}</td><td>{e(c)}</td><td>{e(z)}</td></tr>''' for n, p, c, z in source)
+    The current value is pinned to the top and ticked when the modal opens (Selector.js).
+    Each source row is (name, *other columns); `value(row)` is what the field receives and what
+    search matches (default: the name). The Article Step lookup passes "Step — Article", so a
+    search matches either column and two same-named steps stay distinguishable."""
+    value = value or (lambda r: r[0])
+    facets = "".join(facet_chip(f) for f in facets)
+    rows = "".join(f'''<tr class="selector__row" data-selector-item="{e(value(r))}">
+              <td><button type="button" class="selector__pick" data-selector-pick>{icon("check", "selector__tick")}<span>{e(r[0])}</span></button></td>
+              {"".join(f"<td>{e(c) or '—'}</td>" for c in r[1:])}</tr>''' for r in source)
+    head = "".join(f"<th>{e(c)}</th>" for c in columns)
+    more = (f'<div class="selector__more"><span class="selector__more-count">Showing {len(source)} of {total:,}</span></div>'
+            if total else "")
     return f'''<div class="modal-overlay" id="{mid}" role="presentation" data-selector="single">
     <div class="modal filter-dropdowns__modal selector" role="dialog" aria-modal="true" aria-labelledby="{mid}-title">
       {_modal_head(mid, title, f"Choose one {noun}. Click a row to select it.")}
-      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets">{selector_search(mid, "Search by name")}{facets}</div>
+      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets">{selector_search(mid, search)}{facets}</div>
       <div class="filter-dropdowns__table-region modal__scroll" id="{mid}-results">
         <div class="datatables"><div class="datatables__body">
-          <table class="table selector__table">
-            <thead><tr><th>Name</th><th>Parent Section</th><th>Channel</th><th>Zone</th></tr></thead>
+          <table class="table selector__table{' selector__table--pair' if len(columns) == 2 else ''}">
+            <thead><tr>{head}</tr></thead>
             <tbody>{rows}</tbody>
           </table>
           {selector_empty()}
         </div></div>
+        {more}
       </div>
       <div class="modal__footer selector__footer">
         <span class="selector__status" data-selector-count aria-live="polite"></span>
@@ -675,7 +691,8 @@ def media_select_modal(mid, title, items, total, apply_label="Use image"):
     # TODO(backend:RecordScreen) selector-media-source: 24 demo tiles → media search (filters + paging) and upload
 
 
-def sort_order_modal(mid, title, section, items, current):
+def sort_order_modal(mid, title, section, items, current, noun="articles", this_label="This article",
+                     jump_label="Jump to this article", find_label="Find an article"):
     """Sort order — drag by the grip (Edit Columns' handle), ↑ ↓ one place, ⤒ ⤓ to the ends, or
     type a position. Search narrows the list (drag pauses while it does). The record being edited
     is highlighted and scrolled into view on open (designer, 2026-09-29)."""
@@ -683,8 +700,8 @@ def sort_order_modal(mid, title, section, items, current):
     rows = "".join(f'''<li class="selector__sort-row{' selector__sort-row--current' if code == current else ''}" data-selector-item="{e(t)}" data-sort-key="{code}">
             <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true">{icon("grip-vertical")}</span>
             <input class="selector__position" type="text" inputmode="numeric" value="{i}" aria-label="Position of {e(t)}, 1 to {n}" data-sort-position>
-            <span class="selector__sort-thumb"><img src="{e(u)}" alt="" loading="lazy"></span>
-            <span class="selector__sort-title">{e(t)}{'<span class="badge badge--info badge--sm selector__this">This article</span>' if code == current else ''}</span>
+            {f'<span class="selector__sort-thumb"><img src="{e(u)}" alt="" loading="lazy"></span>' if u else ''}
+            <span class="selector__sort-title">{e(t)}{f'<span class="badge badge--info badge--sm selector__this">{e(this_label)}</span>' if code == current else ''}</span>
             <span class="selector__sort-actions">
               {btn("Move to top", "tertiary", "sm", icon_left="arrow-up-to-line", icon_only=True, attrs=' data-sort-move="top"')}
               {btn("Move up", "tertiary", "sm", icon_left="arrow-up", icon_only=True, attrs=' data-sort-move="up"')}
@@ -692,12 +709,12 @@ def sort_order_modal(mid, title, section, items, current):
               {btn("Move to bottom", "tertiary", "sm", icon_left="arrow-down-to-line", icon_only=True, attrs=' data-sort-move="bottom"')}
             </span>
           </li>''' for i, (code, t, u) in enumerate(items, 1))
-    return f'''<div class="modal-overlay" id="{mid}" role="presentation" data-selector="sort">
+    return f'''<div class="modal-overlay" id="{mid}" role="presentation" data-selector="sort" data-sort-this="{e(this_label)}">
     <div class="modal selector selector--sort" role="dialog" aria-modal="true" aria-labelledby="{mid}-title">
-      {_modal_head(mid, title, f"{n} articles in {section}. Drag, use the arrows, or type a position.")}
+      {_modal_head(mid, title, f"{n} {noun} in {section}. Drag, use the arrows, or type a position.")}
       <div class="filter-dropdowns__facets filter-dropdowns__modal-facets selector__toolbar">
-        {selector_search(mid, "Find an article")}
-        {btn("Jump to this article", "tertiary", "sm", icon_left="locate-fixed", attrs=' data-sort-jump')}
+        {selector_search(mid, find_label)}
+        {btn(jump_label, "tertiary", "sm", icon_left="locate-fixed", attrs=' data-sort-jump')}
       </div>
       <p class="selector__hint" data-sort-hint hidden>{icon("info")}<span>Dragging is paused while searching. The arrows and positions still work.</span></p>
       <div class="selector__region modal__scroll" id="{mid}-results">

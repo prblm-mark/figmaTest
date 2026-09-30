@@ -15,7 +15,7 @@
        ThemeToggle (Figma HeaderGroup 4146:6685) remains the in-product
        control, driven by ThemeToggle.js at the foot of this file. -->
   <script src="../../../styles/theme-param.js"></script>
-  <title>Article · Steps — Affino Control Centre</title>
+  <title>Article · Import step — Affino Control Centre</title>
 
   <!-- Base + tokens -->
   <link rel="stylesheet" href="../../../styles/base.css">
@@ -488,108 +488,28 @@
     <!-- Page content (scrolling area) -->
     <!-- Page content (scrolling area) -->
     <div class="cc-control__page cc-control__page--record">
-      <div class="record-screen" data-record-screen>
+      <div class="record-screen record-screen--no-sidebar" data-record-screen data-record-mode="edit">
         <nav class="record-tabs" aria-label="Record sections">
         <div class="record-tabs__list">
           <a class="record-tab" href="ArticleView.html" data-keep-width>Details</a>
           <a class="record-tab record-tab--active" href="ArticleSteps.html" aria-current="page" data-keep-width>Article steps<span class="record-tab__count" aria-label="8 steps">8</span></a>
-        </div><div class="record-tabs__actions"><a class="btn btn--secondary btn--sm" href="ArticleStepImport.html" data-keep-width><span>Import</span></a><button type="button" class="btn btn--primary btn--sm" data-backend-todo="steps-add"><i data-lucide="plus" aria-hidden="true"></i><span>Add</span></button></div>
-      </nav><!-- TODO(backend:RecordScreen) steps-rows: steps, paging and the step bodies are demo data (Hub article
-             626347) → the article's steps endpoint. Column prefs / overflow mode ride on the listing's
-             listing-column-prefs + listing-overflow-mode items. -->
-      <div class="cc-listing" data-listing="article-steps">
-        <div class="datatables datatables--orders steps-table" data-steps-table data-backend-todo="steps-rows">
-          <div class="datatables__toolbar">
-            <span class="datatables__meta">
-              <span class="datatables__meta-label">Show</span>
-              <div class="dropdown cc-listing__per-page" data-dropdown>
-                <button type="button" class="datatables__select dropdown__trigger"
-                        aria-label="Rows per page" aria-haspopup="menu" aria-expanded="false">
-                  <span data-listing-per-page>20</span>
-                  <i data-lucide="chevron-down" aria-hidden="true"></i>
-                </button>
-                <div class="dropdown__panel dropdown__panel--per-page" role="menu" aria-label="Rows per page">
-                  <ul class="dropdown__list" data-listing-per-page-options></ul>
-                </div>
-              </div>
-              <span>of <strong data-listing-total>296</strong></span>
-            </span>
-            <!-- Edit Columns is a NEW capability, not a reproduction: the live
-                 Orders screen has no column picker and no per-user column
-                 preference anywhere (verified in its source, 2026-09-18).
-                 Column visibility there is decided by the static definitions,
-                 CRM-profile flags and URL params.
-                 TODO(backend:Listing): choices are in memory only.
-                   → GET/PUT /control/orders/columns { hidden: [key] } -->
-            <div class="datatables__actions">
-              <span class="steps-table__details-toggle">
-                <button class="toggle toggle--xxs" type="button" role="switch" aria-checked="false" aria-labelledby="steps-details-label" data-steps-details><span class="toggle__track"><span class="toggle__knob"></span></span></button>
-                <span id="steps-details-label">Show details</span>
-              </span>
-              <div class="dropdown cc-listing__columns" data-dropdown data-backend-todo="listing-column-prefs">
-                <button type="button" class="btn btn--secondary dropdown__trigger"
-                        aria-haspopup="menu" aria-expanded="false">
-                  <i data-lucide="columns-3" aria-hidden="true"></i><span>Edit Columns</span>
-                </button>
-                <div class="dropdown__panel dropdown__panel--columns" role="menu" aria-label="Edit columns">
-                  <p class="dropdown__label">Columns</p>
-                  <div class="cc-listing__columns-list" data-listing-columns></div>
-                </div>
-              </div>
-              <!-- Settings — "When columns don't fit" (Luismi's team, Hub TASK-492924; built code-first
-                   2026-09-29). Expanding row = the column fit + kebab detail (default); Horizontal
-                   scroll = every switched-on column stays and the body scrolls sideways.
-                   TODO(backend:Listing) listing-overflow-mode: saved with the column layout
-                     → columns.scroll in the listing layout + each saved view. -->
-              <div class="dropdown cc-listing__settings" data-dropdown="stay-open" data-backend-todo="listing-overflow-mode">
-                <button type="button" class="btn btn--secondary dropdown__trigger"
-                        aria-haspopup="menu" aria-expanded="false">
-                  <i data-lucide="settings" aria-hidden="true"></i><span>Settings</span>
-                </button>
-                <div class="dropdown__panel dropdown__panel--settings" role="menu" aria-label="Table settings">
-                  <p class="dropdown__label" id="cc-listing-overflow-label">When columns don't fit</p>
-                  <div class="cc-listing__settings-options" role="radiogroup" aria-labelledby="cc-listing-overflow-label" data-listing-overflow>
-                    <label class="radio"><input type="radio" class="radio__input" name="cc-listing-overflow" value="fit" checked><span class="radio__indicator"></span><span class="radio__label"><span class="radio__label-text">Expanding row</span></span></label>
-                    <label class="radio"><input type="radio" class="radio__input" name="cc-listing-overflow" value="scroll"><span class="radio__indicator"></span><span class="radio__label"><span class="radio__label-text">Horizontal scroll</span></span></label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Selection bar — ONE bar for every screen and, on Media Items,
-               for both its views. Shown only when something is ticked; live
-               keeps a permanent Select-all above and a permanent action row
-               below. The ACTIONS are per-screen config (`bulkActions`), read
-               from each live screen's own declaration, so this markup is the
-               same on all of them.
-               TODO(backend:Listing): the actions do nothing →
-               POST /control/<screen>/bulk { action, ids[], value? } -->
-          <div class="cc-listing__selection" data-listing-selection hidden
-               data-backend-todo="listing-bulk-actions">
-            <span class="cc-listing__selection-count" data-selection-count aria-live="polite">0 items selected</span>
-            <!-- Clear sits with the COUNT, not among the actions: it dismisses a
-                 state rather than doing something to the rows, and on Articles'
-                 five-verb bar it was stranding itself on a second line. -->
-            <button type="button" class="btn btn--tertiary btn--sm cc-listing__selection-clear" data-selection-clear>Clear</button>
-            <div class="cc-listing__selection-actions" data-selection-actions></div>
-          </div>
-
-          <div class="datatables__body">
-            <table class="table">
-              <thead data-listing-head></thead>
-              <tbody data-listing-body></tbody>
-            </table>
-          </div>
-
-          <div class="datatables__footer">
-            <!-- "Showing" and "results" are dropped on a narrow container: the
-                 range and the total are the sentence, the rest is padding. -->
-            <span class="datatables__count"><span class="datatables__count-word">Showing </span><strong data-listing-range>1&#8211;10</strong> of <strong data-listing-footer-total>296</strong><span class="datatables__count-word"> results</span></span>
-            <div class="datatables__pagination" role="group" aria-label="Pagination" data-listing-pagination></div>
-          </div>
-        </div>
-      </div>
+        </div><div class="record-tabs__actions"><a class="btn btn--secondary btn--sm" href="ArticleSteps.html" data-keep-width><span>Cancel</span></a><a class="btn btn--primary btn--sm" href="ArticleSteps.html" data-keep-width data-backend-todo="steps-import-save"><i data-lucide="check" aria-hidden="true"></i><span>Save</span></a></div>
+      </nav><div class="record-screen__body"><div class="record-screen__main"><section class="record-section" aria-labelledby="sec-importstep">
+          <div class="record-section__header"><h2 class="record-section__title" id="sec-importstep">Import step</h2></div>
+          <div class="record-section__body"><div class="field-row field-row--edit">
+            <label class="field-row__label" for="f-articlestep-80">Article Step<span class="field-row__required" aria-hidden="true">*</span></label>
+            <div class="field-row__value"><div class="field-row__lookup">
+              <div class="input"><div class="input__wrap"><input id="f-articlestep-80" type="text" class="input__control" value="" readonly placeholder="None selected" data-selector-value></div></div>
+              <button type="button" class="btn btn--secondary" aria-haspopup="dialog" aria-label="Select Article Step" data-selector-open="modal-step-lookup"><span>Select</span></button>
+            </div></div>
+          </div><div class="field-row field-row--edit">
+            <label class="field-row__label" for="f-sortorder-81">Sort Order<span class="field-row__required" aria-hidden="true">*</span></label>
+            <div class="field-row__value"><div class="field-row__lookup">
+              <div class="input"><div class="input__wrap"><input id="f-sortorder-81" type="text" class="input__control" value="" readonly placeholder="22" data-selector-value></div></div>
+              <button type="button" class="btn btn--secondary" aria-haspopup="dialog" aria-label="Select Sort Order" data-selector-open="modal-step-sort"><span>Select</span></button>
+            </div></div>
+          </div></div>
+        </section></div></div>
       </div>
     </div>
 
@@ -1290,8 +1210,6 @@
 
   <!-- Listing data + renderer. Loaded last so the table is built after
        lucide is available; the renderer re-runs createIcons() itself. -->
-  <script src="../ListingScreen/listing-data.js"></script>
-  <script src="listing-data-article-steps.js"></script>
   <script src="../ControlScreen/control-width.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="../../components/AdvisoryItem/AdvisoryItem.js"></script>
@@ -1303,7 +1221,6 @@
   <script src="../../../components/SegmentedControl/SegmentedControl.js"></script>
   <script src="../../patterns/StepsTable/StepsTable.js"></script>
   <script src="RecordScreen.js"></script>
-  <script src="../ListingScreen/ListingScreen.js"></script>
 
   <!-- The chips and their pickers are rendered by ListingScreen.js, which runs
        on DOMContentLoaded — AFTER the module above has already auto-initialised
@@ -1322,5 +1239,348 @@
       if (window.lucide) window.lucide.createIcons();
     });
   </script>
+<div class="modal-overlay" id="modal-step-lookup" role="presentation" data-selector="single">
+    <div class="modal filter-dropdowns__modal selector" role="dialog" aria-modal="true" aria-labelledby="modal-step-lookup-title">
+      <div class="modal__header">
+        <div class="modal__title-block"><h2 class="modal__title" id="modal-step-lookup-title">Select Article Step</h2><p class="modal__subtitle">Choose one step. Click a row to select it.</p></div>
+        <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets"><div class="search search--sm selector__search">
+          <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+          <input class="search__input" type="search" placeholder="Search articles and steps" aria-label="Search articles and steps" aria-controls="modal-step-lookup-results" data-selector-search>
+        </div></div>
+      <div class="filter-dropdowns__table-region modal__scroll" id="modal-step-lookup-results">
+        <div class="datatables"><div class="datatables__body">
+          <table class="table selector__table selector__table--pair">
+            <thead><tr><th>Article</th><th>Article step</th></tr></thead>
+            <tbody><tr class="selector__row" data-selector-item="Comments &amp; Ratings — Affino eCommunity">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Affino eCommunity</span></button></td>
+              <td>Comments &amp; Ratings</td></tr><tr class="selector__row" data-selector-item="Ease-of-Use in Setup — How Affino is quite a different kind of proposition to WordPress and CMS solutions in general">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>How Affino is quite a different kind of proposition to WordPress and CMS solutions in general</span></button></td>
+              <td>Ease-of-Use in Setup</td></tr><tr class="selector__row" data-selector-item="Elements and Dependencies — Affino Social Connectors">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Affino Social Connectors</span></button></td>
+              <td>Elements and Dependencies</td></tr><tr class="selector__row" data-selector-item="Message Boards / Forums — Affino eCommunity">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Affino eCommunity</span></button></td>
+              <td>Message Boards / Forums</td></tr><tr class="selector__row" data-selector-item="MP3 Player / Store — Affino Media">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Affino Media</span></button></td>
+              <td>MP3 Player / Store</td></tr><tr class="selector__row" data-selector-item="Rósant Guðmundsson, Rarik (Iceland State Electricity) Head of PR and Marketing — Affino Testimonials">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Affino Testimonials</span></button></td>
+              <td>Rósant Guðmundsson, Rarik (Iceland State Electricity) Head of PR and Marketing</td></tr><tr class="selector__row" data-selector-item="‘Companies are starting to take ownership of their own data’ – Markus Karlsson, CEO of Affino — 5 Key Tips &amp; Takeaways from the recent Future of Media Technology Conference">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>5 Key Tips &amp; Takeaways from the recent Future of Media Technology Conference</span></button></td>
+              <td>‘Companies are starting to take ownership of their own data’ – Markus Karlsson, CEO of Affino</td></tr><tr class="selector__row" data-selector-item="1 : Contact Lists — Affino&#x27;s Marketing Services Automation Drives Superior Outcomes for Site Owners and Clients alike">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Affino&#x27;s Marketing Services Automation Drives Superior Outcomes for Site Owners and Clients alike</span></button></td>
+              <td>1 : Contact Lists</td></tr><tr class="selector__row" data-selector-item="1 : GDPR Links in Footer / Cookie Consent Bar — A 12 Step Visual Guide to Affino&#x27;s Fully Baked-In GDPR Solution">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>A 12 Step Visual Guide to Affino&#x27;s Fully Baked-In GDPR Solution</span></button></td>
+              <td>1 : GDPR Links in Footer / Cookie Consent Bar</td></tr><tr class="selector__row" data-selector-item="1 : Prime Content Area Settings — Upgrading from Affino 2.0 to Affino LX">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Upgrading from Affino 2.0 to Affino LX</span></button></td>
+              <td>1 : Prime Content Area Settings</td></tr><tr class="selector__row" data-selector-item="1: Configure the Site Security — Starting with Affino LX">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Starting with Affino LX</span></button></td>
+              <td>1: Configure the Site Security</td></tr><tr class="selector__row" data-selector-item="1: Make sure you have Status Updates Channel and Blog Channel set up — Affino Social Connectors">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Affino Social Connectors</span></button></td>
+              <td>1: Make sure you have Status Updates Channel and Blog Channel set up</td></tr><tr class="selector__row" data-selector-item="1] Prerequisites — Creating your first Affino Newsletter">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Creating your first Affino Newsletter</span></button></td>
+              <td>1] Prerequisites</td></tr><tr class="selector__row" data-selector-item="1] Red Zone — Self-guided Affino LX Demonstration">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Self-guided Affino LX Demonstration</span></button></td>
+              <td>1] Red Zone</td></tr><tr class="selector__row" data-selector-item="1] Silver Zone — Self-guided Affino NX Demonstration">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Self-guided Affino NX Demonstration</span></button></td>
+              <td>1] Silver Zone</td></tr><tr class="selector__row" data-selector-item="1] Use the absolute minimum of graphics and images in your design — Building an Accessible Affino Website">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Building an Accessible Affino Website</span></button></td>
+              <td>1] Use the absolute minimum of graphics and images in your design</td></tr><tr class="selector__row" data-selector-item="10 : Contact Permissions — A 12 Step Visual Guide to Affino&#x27;s Fully Baked-In GDPR Solution">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>A 12 Step Visual Guide to Affino&#x27;s Fully Baked-In GDPR Solution</span></button></td>
+              <td>10 : Contact Permissions</td></tr><tr class="selector__row" data-selector-item="10 : Update Settings for your Modules — Upgrading from Affino 2.0 to Affino LX">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Upgrading from Affino 2.0 to Affino LX</span></button></td>
+              <td>10 : Update Settings for your Modules</td></tr><tr class="selector__row" data-selector-item="10 Key Elements - Platform — Affino Unified Business Platform">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Affino Unified Business Platform</span></button></td>
+              <td>10 Key Elements - Platform</td></tr><tr class="selector__row" data-selector-item="10: Assign External Integration Profile to User Profile — Affino Social Connectors">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Affino Social Connectors</span></button></td>
+              <td>10: Assign External Integration Profile to User Profile</td></tr><tr class="selector__row" data-selector-item="10: Fine-tune User Profile and Settings — Starting with Affino LX">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Starting with Affino LX</span></button></td>
+              <td>10: Fine-tune User Profile and Settings</td></tr><tr class="selector__row" data-selector-item="10] Be careful of &#x27;adjacent&#x27; links and multiple links to the same destination — Building an Accessible Affino Website">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Building an Accessible Affino Website</span></button></td>
+              <td>10] Be careful of &#x27;adjacent&#x27; links and multiple links to the same destination</td></tr><tr class="selector__row" data-selector-item="10] Content Tree — Self-guided Affino NX Demonstration">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Self-guided Affino NX Demonstration</span></button></td>
+              <td>10] Content Tree</td></tr><tr class="selector__row" data-selector-item="10] Content Tree — Self-guided Affino LX Demonstration">
+              <td><button type="button" class="selector__pick" data-selector-pick><i data-lucide="check" class="selector__tick" aria-hidden="true"></i><span>Self-guided Affino LX Demonstration</span></button></td>
+              <td>10] Content Tree</td></tr></tbody>
+          </table>
+          <p class="selector__empty" data-selector-empty hidden><i data-lucide="search-x" aria-hidden="true"></i><span>No matches. Try a different search.</span></p>
+        </div></div>
+        <div class="selector__more"><span class="selector__more-count">Showing 24 of 4,134</span></div>
+      </div>
+      <div class="modal__footer selector__footer">
+        <span class="selector__status" data-selector-count aria-live="polite"></span>
+        <button type="button" class="btn btn--tertiary" data-selector-clear>Clear selection</button>
+        <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
+      </div>
+    </div>
+  </div><div class="modal-overlay" id="modal-step-sort" role="presentation" data-selector="sort" data-sort-this="Importing">
+    <div class="modal selector selector--sort" role="dialog" aria-modal="true" aria-labelledby="modal-step-sort-title">
+      <div class="modal__header">
+        <div class="modal__title-block"><h2 class="modal__title" id="modal-step-sort-title">Sort Order</h2><p class="modal__subtitle">22 steps in this article. Drag, use the arrows, or type a position.</p></div>
+        <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets selector__toolbar">
+        <div class="search search--sm selector__search">
+          <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+          <input class="search__input" type="search" placeholder="Find a step" aria-label="Find a step" aria-controls="modal-step-sort-results" data-selector-search>
+        </div>
+        <button type="button" class="btn btn--tertiary btn--sm" data-sort-jump><i data-lucide="locate-fixed" aria-hidden="true"></i><span>Jump to the new step</span></button>
+      </div>
+      <p class="selector__hint" data-sort-hint hidden><i data-lucide="info" aria-hidden="true"></i><span>Dragging is paused while searching. The arrows and positions still work.</span></p>
+      <div class="selector__region modal__scroll" id="modal-step-sort-results">
+        <ol class="selector__sort-list" data-sort-list><li class="selector__sort-row" data-selector-item="Agent Access - Let Trusted AI Agents Operate Affino for You, in the Browser and Beyond" data-sort-key="1">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="1" aria-label="Position of Agent Access - Let Trusted AI Agents Operate Affino for You, in the Browser and Beyond, 1 to 22" data-sort-position>
+            
+            <span class="selector__sort-title">Agent Access - Let Trusted AI Agents Operate Affino for You, in the Browser and Beyond</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Awards &amp; Events - A Smoother Run From Entry to Judging to Event Day" data-sort-key="2">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="2" aria-label="Position of Awards &amp; Events - A Smoother Run From Entry to Judging to Event Day, 1 to 22" data-sort-position>
+            
+            <span class="selector__sort-title">Awards &amp; Events - A Smoother Run From Entry to Judging to Event Day</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Commercial Flexibility - Sell for Different Entities and Under Different Terms From One Store" data-sort-key="3">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="3" aria-label="Position of Commercial Flexibility - Sell for Different Entities and Under Different Terms From One Store, 1 to 22" data-sort-position>
+            
+            <span class="selector__sort-title">Commercial Flexibility - Sell for Different Entities and Under Different Terms From One Store</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Upgrade Guidance" data-sort-key="4">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="4" aria-label="Position of Upgrade Guidance, 1 to 22" data-sort-position>
+            
+            <span class="selector__sort-title">Upgrade Guidance</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="AI and Intelligence" data-sort-key="5">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="5" aria-label="Position of AI and Intelligence, 1 to 22" data-sort-position>
+            
+            <span class="selector__sort-title">AI and Intelligence</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Marketing" data-sort-key="6">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="6" aria-label="Position of Marketing, 1 to 22" data-sort-position>
+            
+            <span class="selector__sort-title">Marketing</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Content and Publishing" data-sort-key="7">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="7" aria-label="Position of Content and Publishing, 1 to 22" data-sort-position>
+            
+            <span class="selector__sort-title">Content and Publishing</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Commerce" data-sort-key="8">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="8" aria-label="Position of Commerce, 1 to 22" data-sort-position>
+            
+            <span class="selector__sort-title">Commerce</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Automation" data-sort-key="9">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="9" aria-label="Position of Automation, 1 to 22" data-sort-position>
+            
+            <span class="selector__sort-title">Automation</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Subscriptions" data-sort-key="10">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="10" aria-label="Position of Subscriptions, 1 to 22" data-sort-position>
+            
+            <span class="selector__sort-title">Subscriptions</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Messaging" data-sort-key="11">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="11" aria-label="Position of Messaging, 1 to 22" data-sort-position>
+            
+            <span class="selector__sort-title">Messaging</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="CRM and Contacts" data-sort-key="12">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="12" aria-label="Position of CRM and Contacts, 1 to 22" data-sort-position>
+            
+            <span class="selector__sort-title">CRM and Contacts</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Analytics" data-sort-key="13">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="13" aria-label="Position of Analytics, 1 to 22" data-sort-position>
+            
+            <span class="selector__sort-title">Analytics</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Security and Privacy" data-sort-key="14">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="14" aria-label="Position of Security and Privacy, 1 to 22" data-sort-position>
+            
+            <span class="selector__sort-title">Security and Privacy</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Events" data-sort-key="15">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="15" aria-label="Position of Events, 1 to 22" data-sort-position>
+            
+            <span class="selector__sort-title">Events</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Platform, Security &amp; Performance" data-sort-key="16">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="16" aria-label="Position of Platform, Security &amp; Performance, 1 to 22" data-sort-position>
+            
+            <span class="selector__sort-title">Platform, Security &amp; Performance</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Removed" data-sort-key="17">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="17" aria-label="Position of Removed, 1 to 22" data-sort-position>
+            
+            <span class="selector__sort-title">Removed</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Integration Updates" data-sort-key="18">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="18" aria-label="Position of Integration Updates, 1 to 22" data-sort-position>
+            
+            <span class="selector__sort-title">Integration Updates</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Component Changes" data-sort-key="19">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="19" aria-label="Position of Component Changes, 1 to 22" data-sort-position>
+            
+            <span class="selector__sort-title">Component Changes</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Help Guides" data-sort-key="20">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="20" aria-label="Position of Help Guides, 1 to 22" data-sort-position>
+            
+            <span class="selector__sort-title">Help Guides</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row" data-selector-item="Help Guides" data-sort-key="21">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="21" aria-label="Position of Help Guides, 1 to 22" data-sort-position>
+            
+            <span class="selector__sort-title">Help Guides</span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li><li class="selector__sort-row selector__sort-row--current" data-selector-item="The step you are importing" data-sort-key="0">
+            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
+            <input class="selector__position" type="text" inputmode="numeric" value="22" aria-label="Position of The step you are importing, 1 to 22" data-sort-position>
+            
+            <span class="selector__sort-title">The step you are importing<span class="badge badge--info badge--sm selector__this">Importing</span></span>
+            <span class="selector__sort-actions">
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
+            </span>
+          </li></ol>
+        <p class="selector__empty" data-selector-empty hidden><i data-lucide="search-x" aria-hidden="true"></i><span>No matches. Try a different search.</span></p>
+      </div>
+      <p class="selector__live" aria-live="polite" data-sort-live></p>
+      <div class="modal__footer selector__footer">
+        <span class="selector__status" data-selector-count></span>
+        <button type="button" class="btn btn--tertiary" data-sort-reset>Reset</button>
+        <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
+        <button type="button" class="btn btn--primary" data-selector-apply>Save order</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

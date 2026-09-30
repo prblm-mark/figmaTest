@@ -205,6 +205,57 @@ pages = {
                                page(m.record_tabs("steps", actions=True) + m.steps_listing()), KIT_JS, listing=True),
 }
 
+# ── Import step (designer, 2026-09-30; code-first, flag for Figma) ──
+# The legacy "add Article Step Lookup" form, on the Steps screen: the tabs stay (Details leads back
+# to the article), the form replaces the table, and the tab actions become Cancel / Save.
+# Lookup rows are the legacy Content Lookup's first page for "affino" (refs screenshot 2026-09-30,
+# 50 of 4,134), as (Article, Article step).
+STEP_LOOKUP = [
+    ("Affino eCommunity", "Comments & Ratings"),
+    ("How Affino is quite a different kind of proposition to WordPress and CMS solutions in general", "Ease-of-Use in Setup"),
+    ("Affino Social Connectors", "Elements and Dependencies"),
+    ("Affino eCommunity", "Message Boards / Forums"),
+    ("Affino Media", "MP3 Player / Store"),
+    ("Affino Testimonials", "Rósant Guðmundsson, Rarik (Iceland State Electricity) Head of PR and Marketing"),
+    ("5 Key Tips & Takeaways from the recent Future of Media Technology Conference", "‘Companies are starting to take ownership of their own data’ – Markus Karlsson, CEO of Affino"),
+    ("Affino's Marketing Services Automation Drives Superior Outcomes for Site Owners and Clients alike", "1 : Contact Lists"),
+    ("A 12 Step Visual Guide to Affino's Fully Baked-In GDPR Solution", "1 : GDPR Links in Footer / Cookie Consent Bar"),
+    ("Upgrading from Affino 2.0 to Affino LX", "1 : Prime Content Area Settings"),
+    ("Starting with Affino LX", "1: Configure the Site Security"),
+    ("Affino Social Connectors", "1: Make sure you have Status Updates Channel and Blog Channel set up"),
+    ("Creating your first Affino Newsletter", "1] Prerequisites"),
+    ("Self-guided Affino LX Demonstration", "1] Red Zone"),
+    ("Self-guided Affino NX Demonstration", "1] Silver Zone"),
+    ("Building an Accessible Affino Website", "1] Use the absolute minimum of graphics and images in your design"),
+    ("A 12 Step Visual Guide to Affino's Fully Baked-In GDPR Solution", "10 : Contact Permissions"),
+    ("Upgrading from Affino 2.0 to Affino LX", "10 : Update Settings for your Modules"),
+    ("Affino Unified Business Platform", "10 Key Elements - Platform"),
+    ("Affino Social Connectors", "10: Assign External Integration Profile to User Profile"),
+    ("Starting with Affino LX", "10: Fine-tune User Profile and Settings"),
+    ("Building an Accessible Affino Website", "10] Be careful of 'adjacent' links and multiple links to the same destination"),
+    ("Self-guided Affino NX Demonstration", "10] Content Tree"),
+    ("Self-guided Affino LX Demonstration", "10] Content Tree"),
+]
+IMPORT_POS = str(len(sd.STEPS) + 1)  # a new step goes last by default (legacy: count + 1)
+import_modals = (
+    m.single_select_modal("modal-step-lookup", "Select Article Step", STEP_LOOKUP, noun="step",
+                          columns=("Article", "Article step"), facets=(), search="Search articles and steps",
+                          value=lambda r: f"{r[1]} — {r[0]}", total=4134)
+    + m.sort_order_modal("modal-step-sort", "Sort Order", "this article",
+                         [(i, t, None) for i, (t, _) in enumerate(sd.STEPS, 1)] + [(0, "The step you are importing", None)], 0,
+                         noun="steps", this_label="Importing", jump_label="Jump to the new step", find_label="Find a step"))
+# TODO(backend:RecordScreen) steps-import-source: 24 static lookup rows → paged search over all article steps
+import_form = m.record_section("Import step", [
+    m.edit_row("Article Step", "lookup", required=True, modal="modal-step-lookup"),
+    m.edit_row("Sort Order", "lookup", required=True, modal="modal-step-sort", placeholder=IMPORT_POS),
+], "edit")
+pages["ArticleStepImport.html"] = build(
+    "Article · Import step", m.record_header("Article", rec.TITLE, "view"),
+    page(m.record_tabs("steps", form="ArticleSteps.html")
+         + f'''<div class="record-screen__body"><div class="record-screen__main">{import_form}</div></div>''',
+         sidebar_on=False, mode="edit"),
+    KIT_JS, modals=import_modals)
+
 for name, html in pages.items():
     html = html.replace("<!doctype html>\n", "<!doctype html>\n" + HEAD_NOTE, 1)
     open(os.path.join(HERE, name), "w", encoding="utf-8").write(html)

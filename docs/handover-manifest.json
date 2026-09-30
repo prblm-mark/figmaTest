@@ -1023,9 +1023,23 @@
     {
      "id": "steps-add",
      "category": "needs-backend",
-     "element": "Article steps → + Add / Lookup",
+     "element": "Article steps → + Add",
      "current": "No-op.",
-     "needs": "Create step / look up an existing step to attach."
+     "needs": "Create a step."
+    },
+    {
+     "id": "steps-import-source",
+     "category": "needs-backend",
+     "element": "Import step → Article Step Select (Selector single, Article · Article step)",
+     "current": "24 static rows (the legacy Content Lookup's first page for \"affino\"); search filters those only.",
+     "needs": "Paged search over all article steps { stepId, stepTitle, articleId, articleTitle }; the field shows \"Step — Article\", submits stepId."
+    },
+    {
+     "id": "steps-import-save",
+     "category": "needs-backend",
+     "element": "Import step → Save (tab actions)",
+     "current": "Link back to Article steps; nothing is added.",
+     "needs": "POST the chosen step + sort position to this article's steps; return to Article steps with it in place; required-field errors on the two rows."
     },
     {
      "id": "steps-read-full",
