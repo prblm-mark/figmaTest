@@ -108,18 +108,21 @@ def record_tabs(active, steps_count=8, actions=False, back="ArticleView.html", s
     if actions:
         acts = ('<div class="record-tabs__actions">'
                 + '<a class="btn btn--secondary btn--sm record-tabs__import" href="ArticleStepImport.html" data-keep-width><span>Import</span></a>'
-                + ('<button type="button" class="btn btn--primary btn--sm record-tabs__add-btn" aria-label="Add a step" '
+                + ('<button type="button" class="btn btn--primary btn--sm" aria-label="Add a step" '
                    'data-record-modal-open="modal-add-step" aria-haspopup="dialog">'
                    f'{icon("plus")}<span class="record-tabs__btn-label">Add</span></button>')
                 + '</div>')
     if form:
         # A form under the tabs (Import step, designer 2026-09-30): the tab actions become the
         # form's Cancel / Save, and the tabs stay so Details still leads back to the article.
+        # Icon + label, the label hidden on mobile (RecordTabs.css) like + Add — at ~390 the tabs
+        # and Cancel / Save ran into each other (designer, 2026-09-30).
         acts = ('<div class="record-tabs__actions">'
-                + btn("Cancel", "secondary", "sm", tag="a", href=form, attrs=' data-keep-width')
-                + btn("Save", "primary", "sm", icon_left="check", tag="a", href=form,
-                      attrs=f' data-keep-width data-backend-todo="{save_todo}"')
-                + '</div>')
+                f'<a class="btn btn--secondary btn--sm" href="{form}" aria-label="Cancel" data-keep-width>'
+                f'{icon("x")}<span class="record-tabs__btn-label">Cancel</span></a>'
+                f'<a class="btn btn--primary btn--sm" href="{form}" aria-label="Save" data-keep-width data-backend-todo="{save_todo}">'
+                f'{icon("check")}<span class="record-tabs__btn-label">Save</span></a>'
+                '</div>')
     return f'''<nav class="record-tabs" aria-label="Record sections">
         <div class="record-tabs__list">
           {tab("Details", back, active == "details")}
