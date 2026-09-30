@@ -56,3 +56,6 @@ The Edit action is now `btn btn--secondary btn--sm btn--icon` with only the penc
 Both action sets are in the markup and the modifier picks one. MediaPicker.js does the trash: it empties the slot and moves focus to Choose file. Choosing in the Selector fills the slot through `window.mediaPicker.fill`.
 
 On the record screens, FieldRow hides the image options while the slot is empty. Handover: `record-media-remove`. **Flag for Figma:** the empty state with Choose file is not drawn yet.
+
+## Figma build 2026-09-30
+`3875:3331`: Empty = placeholder + **Choose file** (Upload icon `3932:145740`, new); Filled = icon-only pencil + trash; thumb radius md.

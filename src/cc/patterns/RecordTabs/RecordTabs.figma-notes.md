@@ -58,3 +58,9 @@ On View / Edit only, in `.record-tabs__actions` (far right): DS Toggle xxs + "Sh
 ## Mobile (designer, 2026-09-30)
 
 `@container cs-page (max-width: 767px)`: the Steps actions hide **Import** (`.record-tabs__import`) and make every icon + label tab action icon-only — **+ Add**, and **Cancel** (`x`) / **Save** (`check`) on the Import / Add step forms (32px square via `.record-tabs__actions .btn:has(> .record-tabs__btn-label)`, label hidden, `aria-label` kept) — at ~390 the tabs, Import and Add ran into each other. The bar itself tightens to gap `--ai-spacing-3` and padding `--ai-spacing-0-5 --ai-spacing-4 0` (desktop `spacing-5` for both), and the gap between tabs (`.record-tabs__list`) to `--ai-spacing-3` (desktop `spacing-5`). Tab labels (`.record-tab`) step down to `--ai-font-fixed-2xs` (desktop `xs`).
+
+## Figma build 2026-09-30
+Set `3871:3246` now: Width × **Actions (None | Steps | Form | Sidebar)** × **Device (Desktop | Mobile)** — 14 variants
+(Sidebar has no Mobile: the switch is hidden ≤1023). The `Show Actions` boolean is gone; its instances moved to Actions=Steps
+(Steps screens), Sidebar (View on / Edit off), None (Narrow + Mobile). Steps = Import + Add (Lookup renamed, actions right padding
+removed); Form = Cancel (x) + Save (Tick); Sidebar reuses the StepsToolbar "Show details" toggle group.

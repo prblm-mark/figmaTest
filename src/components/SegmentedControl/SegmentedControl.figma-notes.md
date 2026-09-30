@@ -123,3 +123,7 @@ This is opt-in generic radiogroup behaviour for any `.seg-control[data-seg-contr
 Controls without the attribute are untouched. That includes the listing's Grid / Listing switch, which ListingScreen.js wires itself.
 
 The first consumer is the record screens' image Alignment (FieldRow).
+
+## Figma build 2026-09-30 — SegmentedControl
+Drawn in the View & Edit kit ("Code-first components"): **SegmentedControl `3929:19302`** (3 options) from
+**SegmentedControlOption `3929:19301`** (State Default | Active; Label + Icon props) and Lucide align icons `3929:19278/19283/19288`.
