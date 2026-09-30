@@ -301,17 +301,9 @@
     gap: var(--ai-spacing-1); /* 4px on Control mobile per Figma */
   }
 
-  /* Type=Record keeps its labels on mobile (2026-09-28). The icon-only collapse above
-   * assumes every action has an icon; Cancel and Add have none, so it crushed their
-   * text into a 32px square. They take Button's own `sm` size instead — the same 32px
-   * height the collapse targets, with the label kept. */
-  .cc-header--record .cc-header__actions .btn {
-    width: auto;
-    padding: 0 var(--ai-spacing-4);
-    gap: var(--ai-spacing-3);         /* the base .btn gap, which btn--sm keeps */
-    font-size: var(--ai-font-fluid-xxs);
-  }
-
+  /* Type=Record follows the icon-only collapse above like every CC header (designer,
+   * 2026-09-30). It used to keep its labels (2026-09-28) because Cancel and Add had no
+   * icon; every header button now has one (Add plus, Cancel x). */
   .cc-header--record .cc-header__actions {
     flex-shrink: 0;
   }

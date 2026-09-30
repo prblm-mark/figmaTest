@@ -35,12 +35,21 @@ def chip(label, kind="tertiary", size="xs"):
 
 # ── RecordHeader → CC Header Type=Record ─────────────────────────────
 def record_header(record_type, title, mode, view_href="ArticleView.html", edit_href="ArticleEdit.html"):
+    # Every header button has an icon, and its label sits in .cc-header__btn-label, which the
+    # mobile container query hides — icon-only below 768 (the agreed CC header rule; Figma
+    # 4105:3637). aria-label keeps the name once the label is display:none.
+    def hbtn(label, kind, ic, tag="button", href="#", attrs=""):
+        inner = f'{icon(ic)}<span class="cc-header__btn-label">{e(label)}</span>'
+        cls = f"btn btn--{kind}"
+        if tag == "a":
+            return f'<a class="{cls}" href="{href}" aria-label="{e(label)}"{attrs}>{inner}</a>'
+        return f'<button type="button" class="{cls}" aria-label="{e(label)}"{attrs}>{inner}</button>'
     if mode == "edit":
-        actions = (btn("Cancel", "secondary", tag="a", href=view_href, attrs=' data-keep-width')
-                   + btn("Save", "primary", icon_left="check"))
+        actions = (hbtn("Cancel", "secondary", "x", tag="a", href=view_href, attrs=' data-keep-width')
+                   + hbtn("Save", "primary", "check"))
     else:
-        actions = (btn("Add", "secondary")
-                   + btn("Edit", "primary", icon_left="pencil", tag="a", href=edit_href, attrs=' data-keep-width')
+        actions = (hbtn("Add", "secondary", "plus")
+                   + hbtn("Edit", "primary", "pencil", tag="a", href=edit_href, attrs=' data-keep-width')
                    + record_kebab())
     return f'''<div class="cc-header-cq">
         <header class="cc-header cc-header--record">
