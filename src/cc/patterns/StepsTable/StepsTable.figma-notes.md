@@ -85,3 +85,7 @@ Horizontal scroll), the kebab detail, paging, and per-user persistence.
 - Verified headless: 20 of 21 rows, 12 cols at 1600 / 9 at 1280, Show details opens 20 rows with the
   step body, scroll mode 11 cols (1,208px table), step body pinned at full scroll, no errors; Articles
   and Media Items listings unchanged.
+
+## Mobile (designer amend, 2026-09-30)
+
+`@container cs-page (max-width: 767px)`: the "Show details" label (`.steps-table__details-toggle`) is `--ai-font-fixed-2xs` (desktop `xs`).

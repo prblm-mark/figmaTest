@@ -27,6 +27,13 @@
   color: var(--ai-text-secondary);
 }
 
+/* Mobile (designer amend, 2026-09-30): the label steps down to 2xs; the rest is unchanged. */
+@container cs-page (max-width: 767px) {
+  .steps-table__details-toggle {
+    font-size: var(--ai-font-fixed-2xs);
+  }
+}
+
 /* ── Two triggers, one detail row (designer, 2026-09-29) ──────────────────────────────────
  * The KEBAB reveals only the row's columns that did not fit (the listing's own job).
  * SHOW DETAILS reveals only the step body, on every row. Both on → both halves. So each half is

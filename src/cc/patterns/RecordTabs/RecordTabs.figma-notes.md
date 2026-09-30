@@ -54,3 +54,7 @@ On View / Edit only, in `.record-tabs__actions` (far right): DS Toggle xxs + "Sh
 ## Active tab weight (designer, 2026-09-29)
 
 `.record-tab--active` is **SemiBold** (`--ai-font-semibold`); the other tabs stay Medium. Flag for Figma.
+
+## Mobile (designer, 2026-09-30)
+
+`@container cs-page (max-width: 767px)`: the Steps actions hide **Import** (`.record-tabs__import`) and make **+ Add** icon-only (`.record-tabs__add-btn`, 32px square, label `.record-tabs__btn-label` hidden, `aria-label="Add a step"`) — at ~390 the tabs, Import and Add ran into each other.

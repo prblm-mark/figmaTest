@@ -105,3 +105,23 @@
     display: none;
   }
 }
+
+/* Mobile (designer, 2026-09-30): the tabs, Import and + Add did not fit one row at ~390 and ran
+ * into each other. Import goes (it stays reachable on a wider screen) and + Add becomes the sm
+ * icon-only square (Button's own .btn--icon.btn--sm size); aria-label keeps its name. cs-page,
+ * not a self-query: the bar's own padding + actions are what have to fit the page. */
+@container cs-page (max-width: 767px) {
+  .record-tabs__import {
+    display: none;
+  }
+
+  .record-tabs__add-btn {
+    width: var(--ai-spacing-7);
+    padding: 0;
+    gap: 0;
+  }
+
+  .record-tabs__btn-label {
+    display: none;
+  }
+}

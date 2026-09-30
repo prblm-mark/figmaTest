@@ -107,8 +107,10 @@ def record_tabs(active, steps_count=8, actions=False, back="ArticleView.html", s
                 '<span id="record-sidebar-label">Show sidebar</span></span></div>')
     if actions:
         acts = ('<div class="record-tabs__actions">'
-                + btn("Import", "secondary", "sm", tag="a", href="ArticleStepImport.html", attrs=' data-keep-width')
-                + btn("Add", "primary", "sm", icon_left="plus", attrs=' data-record-modal-open="modal-add-step" aria-haspopup="dialog"')
+                + '<a class="btn btn--secondary btn--sm record-tabs__import" href="ArticleStepImport.html" data-keep-width><span>Import</span></a>'
+                + ('<button type="button" class="btn btn--primary btn--sm record-tabs__add-btn" aria-label="Add a step" '
+                   'data-record-modal-open="modal-add-step" aria-haspopup="dialog">'
+                   f'{icon("plus")}<span class="record-tabs__btn-label">Add</span></button>')
                 + '</div>')
     if form:
         # A form under the tabs (Import step, designer 2026-09-30): the tab actions become the
