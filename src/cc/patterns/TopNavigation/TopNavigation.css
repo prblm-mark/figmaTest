@@ -42,6 +42,13 @@
   color: var(--ai-text-invert);
 }
 
+/* The crumb `<li>` is the ellipsis container, so the "…" takes the `<li>`'s colour — not the
+ * link's. Without this it inherited the default dark text and a truncated link crumb looked
+ * clipped flush on the dark bar (measured 2026-09-30: overflow + ellipsis set, nothing visible). */
+.cc-top-navigation .breadcrumb__item {
+  color: var(--ai-text-invert-secondary);
+}
+
 .cc-top-navigation .breadcrumb__item--current {
   color: var(--ai-text-invert);
 }
@@ -193,7 +200,8 @@
    * collapsed separator) takes the current-page colour, so the collapsed
    * breadcrumb reads "Zone Selector > Level 1" with Level 1 active — matching
    * the Figma mobile variant (4099:3630). */
+  .cc-top-navigation .breadcrumb__item:has(+ .breadcrumb__separator--collapse),
   .cc-top-navigation .breadcrumb__item:has(+ .breadcrumb__separator--collapse) .breadcrumb__link {
-    color: var(--ai-text-invert);
+    color: var(--ai-text-invert);   /* the <li> too, so its ellipsis matches the active crumb */
   }
 }
