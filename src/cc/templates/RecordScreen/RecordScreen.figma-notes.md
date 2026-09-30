@@ -73,6 +73,7 @@ TopNavigation, HeaderGroup, ActionsMenu rail, theme + width scripts). Page body:
 | **Show sidebar** switch (far right of the tabs, View / Edit) | hides / shows the sidebar; **View on, Edit off** by default (in the markup — no flash), then the viewer's own choice **per mode** (localStorage `cc-record-sidebar-view` / `-edit`; handover `record-sidebar-preference`); desktop only — at a ≤1023 page the switch goes and the sidebar stacks under the content (designer, 2026-09-29; code-first, flag for Figma) | Toggle.js + `RecordScreen.js` (`.record-screen--no-sidebar`) |
 | Steps Edit Columns / Settings | the listing's own — the steps table runs on ListingScreen.js (`article-steps` config) | `ListingScreen.js` |
 | Import (Steps tab actions) | opens the Import step screen | link |
+| Header kebab (View, Steps and its Import / Add screens) | the CC header rule — one primary + one secondary, the rest in the kebab: Live view, Related items, Go to list (→ Articles listing), Copy. Edit mode has none (Cancel + Save only) | `Dropdown.js`; `record_kebab()` in `record_markup.py`; HANDOVER `record-live-view` / `record-related-items` / `record-copy` |
 | + Add (Steps tab actions) | opens the Add a step chooser; ×, Escape or backdrop closes, focus returns to + Add | `RecordScreen.js` (`data-record-modal-open`) |
 | Add step: Cancel / Save | return to Article steps; Save creates nothing (mock) | links + HANDOVER `steps-add-save` |
 | Colour rows | swatch + hex follow the native picker | `RecordScreen.js` |

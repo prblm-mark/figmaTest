@@ -135,6 +135,21 @@
   height: var(--ai-icon-size-lg);
 }
 
+/* The kebab is always the last action at the header's right edge, so its menu opens leftwards —
+ * the DS Dropdown's default left:0 would run off the page (as the listing's Settings panel). */
+.cc-header__actions .dropdown__panel {
+  left: auto;
+  inset-inline-end: 0;
+}
+
+/* The panel hangs spacing-3 below its .dropdown box — which, round the 24px kebab, sits inside the
+ * 40px button row, so the open menu touched the Edit / Add buttons. The box stretches to the row
+ * (kebab re-centred) so the menu clears the buttons by the Dropdown's own spacing-3. */
+.cc-header__actions > .dropdown {
+  align-self: stretch;
+  justify-content: center;
+}
+
 /* ── Type=Sub Text ───────────────────────────────────── */
 
 .cc-header--sub-text .cc-header__title-block-text {
