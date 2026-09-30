@@ -126,7 +126,9 @@
     display: none;
   }
 
-  .record-tabs__add-btn {
+  /* Any tab action with an icon + a label wrapper (+ Add; Cancel / Save on the form screens)
+   * becomes the sm icon-only square. */
+  .record-tabs__actions .btn:has(> .record-tabs__btn-label) {
     width: var(--ai-spacing-7);
     padding: 0;
     gap: 0;
