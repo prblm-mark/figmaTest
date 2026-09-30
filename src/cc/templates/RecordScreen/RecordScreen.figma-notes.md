@@ -22,7 +22,7 @@ Shell = ControlScreen/ListingScreen app shell, ported as a bundle by `_generate.
 TopNavigation, HeaderGroup, ActionsMenu rail, theme + width scripts). Page body:
 
 - **CC Header Type=Record** (`.cc-header--record`) — Figma RecordHeader `3867:2138`
-- **RecordTabs** — Details / Article steps are links between screens; Steps adds Lookup / + Add
+- **RecordTabs** — Details / Article steps are links between screens; Steps adds Import / + Add
 - View / Edit: **RecordSection** × 6 (FieldRow view or edit types) + sidebar **FactPanel** × 7
   (PerformanceSummary, ViewerList, FactList × 4, AdvisoryList)
 - Steps: **StepsTable** (Datatables) — Show details expands every row
@@ -54,7 +54,7 @@ TopNavigation, HeaderGroup, ActionsMenu rail, theme + width scripts). Page body:
 | Step kebab | reveals only that row's columns that did not fit | Datatables / `ListingScreen.js` |
 | **Show sidebar** switch (far right of the tabs, View / Edit) | hides / shows the sidebar; **View on, Edit off** by default (in the markup — no flash), then the viewer's own choice **per mode** (localStorage `cc-record-sidebar-view` / `-edit`; handover `record-sidebar-preference`); desktop only — at a ≤1023 page the switch goes and the sidebar stacks under the content (designer, 2026-09-29; code-first, flag for Figma) | Toggle.js + `RecordScreen.js` (`.record-screen--no-sidebar`) |
 | Steps Edit Columns / Settings | the listing's own — the steps table runs on ListingScreen.js (`article-steps` config) | `ListingScreen.js` |
-| Step checkboxes, pencil, Read the full step, Lookup, + Add | visual only — backend later | HANDOVER |
+| Step checkboxes, pencil, Read the full step, Import, + Add | visual only — backend later | HANDOVER |
 | View full analytics, Add to Contact List, Save | backend | HANDOVER |
 
 ## Verified (headless Chrome, 2026-09-28)

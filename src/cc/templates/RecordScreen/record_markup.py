@@ -75,7 +75,7 @@ def record_tabs(active, steps_count=8, actions=False, back="ArticleView.html", s
                 '<span id="record-sidebar-label">Show sidebar</span></span></div>')
     if actions:
         acts = ('<div class="record-tabs__actions">'
-                + btn("Lookup", "secondary", "sm", attrs=' data-backend-todo="steps-lookup"')
+                + btn("Import", "secondary", "sm", attrs=' data-backend-todo="steps-import"')
                 + btn("Add", "primary", "sm", icon_left="plus", attrs=' data-backend-todo="steps-add"')
                 + '</div>')
     return f'''<nav class="record-tabs" aria-label="Record sections">

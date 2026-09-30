@@ -22,7 +22,7 @@
 | Tab list | `.record-tabs__list` |
 | Tab (a) | `.record-tab (+ --active, aria-current="page")` |
 | Count | `.record-tab__count` |
-| Actions (Show Actions) | `.record-tabs__actions → Lookup (secondary sm) + Add (primary sm)` |
+| Actions (Show Actions) | `.record-tabs__actions → Import (secondary sm) + Add (primary sm)` |
 
 ## Token Mapping
 
