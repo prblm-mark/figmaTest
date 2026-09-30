@@ -122,6 +122,10 @@
     gap: var(--ai-spacing-3);   /* between the tabs; desktop spacing-5 */
   }
 
+  .record-tab {
+    font-size: var(--ai-font-fixed-2xs);   /* designer amend, 2026-09-30; desktop xs */
+  }
+
   .record-tabs__import {
     display: none;
   }

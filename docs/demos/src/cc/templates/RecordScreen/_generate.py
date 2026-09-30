@@ -67,8 +67,10 @@ def build(page_title, header, page, scripts, modals="", listing=False):
     s = swap(s, 'href="ListingScreen.css"', 'href="../ListingScreen/ListingScreen.css"')
     s = swap(s, '<li class="breadcrumb__item"><a class="breadcrumb__link" href="#">Level 1</a></li>',
              '<li class="breadcrumb__item"><a class="breadcrumb__link" href="#">Content</a></li>\n'
-             '              <li class="breadcrumb__separator" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>\n'
-             '              <li class="breadcrumb__item"><a class="breadcrumb__link" href="#">Articles</a></li>')
+             # Articles collapses with the current crumb on mobile: the TopNavigation keeps two items
+             # there (zone + one level, Figma 4099:3632) — it hides every `--collapse` crumb.
+             '              <li class="breadcrumb__separator breadcrumb__separator--collapse" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>\n'
+             '              <li class="breadcrumb__item breadcrumb__item--collapse"><a class="breadcrumb__link" href="#">Articles</a></li>')
     s = swap(s, 'aria-current="page">Level 2</li>', 'aria-current="page">Article</li>')
     a = s.index('<div class="cc-header-cq">')
     b = s.index("</header>", a)

@@ -202,3 +202,12 @@ updating, and the line should not be "corrected" back to 40 by someone
 checking the code against Figma.
 
 Measured 48px at 360 / 390 / 500 / 760 viewport, desktop unchanged at 48.
+
+## Truncation colour fix (2026-09-30)
+
+The crumb `<li>` is the ellipsis container, so the "…" takes the `<li>`'s colour, not its link's.
+TopNavigation only coloured the links, so a truncated link crumb drew a dark ellipsis on the dark
+bar and looked clipped flush. `.cc-top-navigation .breadcrumb__item` now carries
+`--ai-text-invert-secondary`, and the last visible crumb on mobile carries `--ai-text-invert` on the
+`<li>` as well as the link. Record screens mark Articles `--collapse` too, so they collapse to the
+Figma mobile two (`4099:3632`): "Zone Selector > Content".
