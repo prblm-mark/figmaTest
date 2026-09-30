@@ -81,3 +81,6 @@
 | `__desc` | `--ai-font-title`, `--ai-font-fixed-2xs`, `--ai-font-regular`, `--ai-leading-sm`, `--ai-text-secondary` (the Modal subtitle's type, the nearest supporting line in the kit) |
 | `--disabled` | opacity 0.5, no hover border change, `cursor: not-allowed` |
 
+## Figma build 2026-09-30
+`2930:5757` Right Chevron variants: **Show Description** (boolean) + **Description** (text) props; new **State=Disabled**
+`3932:145803` (opacity 50%). Height is now min spacing-10, hugging the description.

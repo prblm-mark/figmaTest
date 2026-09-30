@@ -243,3 +243,11 @@ the layout it belongs to.
 
 ## Type=Record on mobile (2026-09-28)
 The `cc-header` ≤767 icon-only collapse assumes every action has an icon. Record's Cancel / Add have none, so Record opts out: its actions take Button `sm` dress (padding `0 --ai-spacing-4`, gap `--ai-spacing-3`, `--ai-font-fluid-xxs`) at the same 32px height, labels kept.
+
+## Figma build 2026-09-30 — RecordHeader is a variant set
+`Lus07xi8pPXLN87sQIyrEt` View & Edit kit: **RecordHeader `3925:19166`** = Mode (View | Edit) × Device (Desktop | Mobile).
+`3867:2138` (the original, still linked from every screen) is Mode=View, Device=Desktop; Edit/Desktop `3925:19069`,
+View/Mobile `3925:19103`, Edit/Mobile `3925:19138`. View has Add (plus) + Edit (pencil) + the kebab; Edit has Cancel (x) + Save
+(Tick). Mobile = icon-only sm buttons (the icon-only Button draws from its `rightArrow` slot), 2xs/leading-xs type, leading-sm
+title, gap spacing-0-5, padding spacing-3/4. All 13 screen instances moved to their Mode/Device. Figma's Related items icon is
+`Link` (the file has no Link2); code uses `link-2`.

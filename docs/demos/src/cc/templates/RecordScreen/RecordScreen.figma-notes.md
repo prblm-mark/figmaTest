@@ -147,3 +147,11 @@ Section, Creator and Sort Order (lookup rows) and every MediaPicker **Edit** ope
 
 Tertiary chips in the sidebar (FactPanel values, Recent Viewers companies) carry the subtle `--ai-border-secondary` line of the listing account chip. This is a Case B override in RecordScreen.css, scoped to `.record-screen__sidebar` and restated for hover and focus.
 
+## Figma build 2026-09-30 — ColorPickerInput
+**ColorPickerInput `3929:19338`** (State Empty | Filled), View & Edit kit "Code-first components". Empty reads None.
+
+## Figma build 2026-09-30 — the code-first screens
+View & Edit page, right of the kit: **Import step `3933:19459`**, **Add content step `3933:149547`** (its 20-row main section is a
+detached RecordSection — the set has 8 row slots), **Add dynamic form step `3933:150608`**, **Add a step chooser `3933:147201`** and
+its **Dynamic Form unavailable** state `3933:147334` (the modal is composed from ModalHeader + the Modal Small look: its slot cannot
+be laid out from an instance). Still not in Figma: Selector (all types), RichTextEditor, PromptModifier.

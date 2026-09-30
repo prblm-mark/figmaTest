@@ -4,7 +4,10 @@ figma.connect('https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino---Desi
   props: {
     layout: figma.enum('Layout', { Wide: '', Stacked: '', Compact: 'field-row--compact' }), // Stacked = the RecordSection ≤559 container query, no class
     type: figma.enum('Type', { Text: '', Tags: '', Paragraph: 'field-row--paragraph', Media: 'field-row--media',
-      Input: 'field-row--edit', Select: 'field-row--edit', TagBox: 'field-row--edit', Textarea: 'field-row--edit', 'Media Picker': 'field-row--edit' }),
+      Input: 'field-row--edit', Select: 'field-row--edit', TagBox: 'field-row--edit', Textarea: 'field-row--edit', 'Media Picker': 'field-row--edit',
+      // code-first edit kinds, drawn 2026-09-30
+      Lookup: 'field-row--edit', Checkbox: 'field-row--edit field-row--check', Date: 'field-row--edit', Datetime: 'field-row--edit',
+      Image: 'field-row--edit', Multimedia: 'field-row--edit', Colour: 'field-row--edit' }),
   },
   example: ({ layout, type }) => html`<div class="field-row ${layout} ${type}">
   <dt class="field-row__label">Title</dt>
