@@ -270,7 +270,9 @@
         <button type="button" class="cc-sidebar__btn" data-cc-rail-extra hidden aria-label="Info"><i data-lucide="info" aria-hidden="true"></i></button>
         <button type="button" class="cc-sidebar__btn" data-cc-rail-extra hidden aria-label="Saved"><i data-lucide="star" aria-hidden="true"></i></button>
         <button type="button" class="cc-sidebar__btn" data-cc-rail-extra hidden aria-label="Text size"><i data-lucide="a-large-small" aria-hidden="true"></i></button>
-        <button type="button" class="cc-sidebar__btn" data-cc-rail-extra hidden aria-label="Full width" aria-pressed="false" data-cc-width-toggle><i data-lucide="minimize-2" aria-hidden="true"></i></button>
+        <!-- TODO(backend:ControlScreen) [minimise]: toggle a condensed spacing view — apply data-layout="minimised" on the shell (minimised-mode tokens exist), set aria-pressed (CSS swaps fold-vertical → unfold-vertical) + persist the preference. -->
+        <button type="button" class="cc-sidebar__btn" data-cc-rail-extra hidden aria-label="Minimise" aria-pressed="false" data-backend-todo="minimise" data-cc-condensed-toggle><i data-lucide="fold-vertical" aria-hidden="true"></i><i data-lucide="unfold-vertical" aria-hidden="true"></i></button>
+        <button type="button" class="cc-sidebar__btn" data-cc-rail-extra hidden aria-label="Full width" aria-pressed="false" data-cc-width-toggle><i data-lucide="unfold-horizontal" aria-hidden="true"></i><i data-lucide="fold-horizontal" aria-hidden="true"></i></button>
       </nav>
 
       <!-- Panel: Control (mobile — hidden by default; tap rail to reveal) -->
@@ -728,10 +730,17 @@
           </div>
         </div>
       </span>
-      <!-- Minimise = the full-width toggle (designer, 2026-09-28): control-width.js flips
-           data-cc-width, keeps aria-pressed in step and remembers the choice. -->
+      <!-- TODO(backend:ControlScreen) [minimise]: toggle a condensed spacing view — apply data-layout="minimised" on the shell (minimised-mode tokens exist), set aria-pressed (CSS swaps fold-vertical → unfold-vertical) + persist the preference. -->
+      <button class="actions-menu__btn" type="button" aria-label="Minimise" aria-pressed="false" data-backend-todo="minimise" data-cc-condensed-toggle>
+        <i data-lucide="fold-vertical" aria-hidden="true"></i>
+        <i data-lucide="unfold-vertical" aria-hidden="true"></i>
+      </button>
+      <!-- Full-width toggle (designer, 2026-09-28; own icon 2026-10-01 — Minimise is the older
+           framework's condensed view): control-width.js flips data-cc-width, keeps aria-pressed
+           in step and remembers the choice. Both icons ship; CSS shows the one for the next action. -->
       <button class="actions-menu__btn" type="button" aria-label="Full width" aria-pressed="false" data-cc-width-toggle>
-        <i data-lucide="minimize-2" aria-hidden="true"></i>
+        <i data-lucide="unfold-horizontal" aria-hidden="true"></i>
+        <i data-lucide="fold-horizontal" aria-hidden="true"></i>
       </button>
       <!-- TODO(backend:ControlScreen) [print]: fe-wired — window.print() works natively; OK as-is unless a server-side print-to-PDF is wanted. -->
       <button class="actions-menu__btn" type="button" aria-label="Print" data-aa-action="print" data-backend-todo="print">

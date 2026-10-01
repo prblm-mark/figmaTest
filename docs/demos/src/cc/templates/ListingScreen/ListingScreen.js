@@ -2103,7 +2103,7 @@
      screen by `config.template` and overridable with `?template=full`, the
      same way `?layout=grid` picks the Media Items grid.
 
-     THE TOGGLE (2026-09-28) is the actions-rail Minimise button: control-width.js flips the
+     THE TOGGLE (2026-09-28) is the actions-rail full-width button: control-width.js flips the
      shell, saves the choice per viewer, and the `cc:width` listener in init() applies this
      half. Precedence at load: ?template= > saved choice > config.template.
      The column fit re-runs by itself — its ResizeObserver sees the table
@@ -2145,7 +2145,7 @@
     var urlTemplate = (new RegExp('[?&]template=(standard|full)').exec(location.search) || [])[1];
     var saved = window.ccWidth && window.ccWidth.stored ? window.ccWidth.stored() : null;
     config.template = applyTemplate(root, urlTemplate || saved || config.template);
-    /* The rail's Minimise button flips the shell at runtime; follow it with the listing's half
+    /* The rail's full-width button flips the shell at runtime; follow it with the listing's half
        (the attribute + FilterItem shape). The column fit re-runs on its own ResizeObserver. */
     document.addEventListener('cc:width', function (e) {
       if (e.detail.mode !== root.getAttribute('data-listing-template')) {

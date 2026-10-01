@@ -17,7 +17,7 @@ kit is generic so other record types (Shaz's inventory, ViewOnlyInventory protot
 | Article · Add content step | — (code-first, 2026-09-30) | ← same switch | `ArticleStepContent.html` |
 | Article · Add dynamic form step | — (code-first, 2026-09-30) | ← same switch | `ArticleStepForm.html` |
 
-Full width is the shell's ONE switch (`control-width.js`), not separate pages — driven by the rail's Minimise button, or `?template=full` for demo links.
+Full width is the shell's ONE switch (`control-width.js`), not separate pages — driven by the rail's full-width button, or `?template=full` for demo links.
 Every screen frame was swapped to kit instances in Figma on 2026-09-28; the pre-swap drafts are kept
 below them as "… — draft backup (pre-swap)".
 
@@ -63,7 +63,8 @@ TopNavigation, HeaderGroup, ActionsMenu rail, theme + width scripts). Page body:
 |---|---|---|
 | Details / Article steps tabs | navigate between screens; menu open/closed and width persist | links + `RecordScreen.js` |
 | Sidebar edge (View / Edit) | drag to resize the sidebar (designer, 2026-09-28 — the Seating Planner model): invisible `role="separator"` strip on the sidebar's leading edge, col-resize cursor; full width tints the main column's border `--ai-surface-contrast` on hover/drag. Min `--ai-size-7` (384, Figma's width — designer), max half the row, ←/→ 16px, Home/End, double-click resets. Width kept per viewer (`localStorage cc-record-sidebar-w`) across View ↔ Edit | `RecordScreen.js` |
-| Actions-rail **Minimise** | toggles full width (designer, 2026-09-28): `aria-pressed`, rail active look, choice saved (`localStorage cc-width`) and followed on every record screen; `?template=` still wins when present | `control-width.js` (`data-cc-width-toggle`, opt-in per screen) |
+| Actions-rail **Minimise** (`fold-vertical` / `unfold-vertical` when on, 2026-10-01) | visual only — the older framework's condensed spacing view (`data-layout="minimised"`); kept beside Full width (2026-10-01) | `TODO(backend:ControlScreen) [minimise]` |
+| Actions-rail **Full width** (`unfold-horizontal` / `fold-horizontal`, 2026-10-01) | toggles full width (designer, 2026-09-28): `aria-pressed`, rail active look, choice saved (`localStorage cc-width`) and followed on every record screen; `?template=` still wins when present | `control-width.js` (`data-cc-width-toggle`, opt-in per screen) |
 | Edit / Cancel | View ↔ Edit screens | links |
 | SEO Health ± / Expand all | expand inline | `AdvisoryItem.js` |
 | Image details (View) | file facts hidden by default; "Image details" opens them in a Dropdown panel (layout B, designer 2026-09-29) | `Dropdown.js` |

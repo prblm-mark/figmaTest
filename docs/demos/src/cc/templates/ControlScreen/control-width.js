@@ -22,7 +22,9 @@
  *
  * `?template=full` is the demo's way in, kept from the Listing so existing links still work.
  *
- * THE TOGGLE (2026-09-28): the actions-rail Minimise button (desktop rail + mobile sidebar rail),
+ * THE TOGGLE (2026-09-28): the actions-rail full-width button (desktop rail + mobile sidebar rail; its own
+ * unfold-horizontal / fold-horizontal icon since 2026-10-01 — `minimize-2` belongs to the older
+ * framework's condensed view),
  * marked `data-cc-width-toggle` on EVERY CC screen — full width everywhere (designer). Clicking flips the mode,
  * keeps `aria-pressed` in step, saves the choice (localStorage `cc-width`, a per-viewer
  * convenience — it can be absent) so it follows the viewer between screens, and rewrites
