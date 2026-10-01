@@ -374,6 +374,9 @@ Two notes that will otherwise cost someone time:
 data swap point is one place: the content constants and `steps_rows()` there, or — for the real
 build — a render from the record payload. Markers: `grep -rn "TODO(backend:RecordScreen)" src/`.
 
+> **v1 handed over 2026-10-01.** Build rules, agreed decisions and known issues:
+> **[`docs/record-screens-handover.md`](docs/record-screens-handover.md)**. Read it with this table.
+
 | id | Element | Now | Backend work needed | Category |
 |---|---|---|---|---|
 | `record-load` | All field values, sidebar facts, audit, index status | Static affino.com Article 626312 content (fields + sidebar) in record_article.py. | GET the record by code → { fields by section, meta, audit, indexStatus }; the templates render one section/row per field. | `needs-backend` |
