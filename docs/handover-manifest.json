@@ -144,10 +144,17 @@
     },
     {
      "id": "minimise",
+     "category": "needs-backend",
+     "element": "Rail Minimise button — fold-vertical, unfold-vertical when on (2026-10-01; was minimize-2)",
+     "current": "Visual only — no behaviour. Kept for the older framework's condensed view (restored 2026-10-01).",
+     "needs": "Toggle a condensed spacing view — apply data-layout=\"minimised\" on the shell (minimised-mode tokens already exist in css/tokens-minimised.css), set aria-pressed on [data-cc-condensed-toggle] (CSS swaps the icon) — and persist the preference per user."
+    },
+    {
+     "id": "full-width-toggle",
      "category": "fe-wired",
-     "element": "Rail Minimise button (desktop rail + mobile sidebar rail)",
+     "element": "Rail Full width button (desktop rail + mobile sidebar rail) — unfold-horizontal / fold-horizontal icon (2026-10-01)",
      "current": "Full-width toggle on every CC screen (designer, 2026-09-28): control-width.js flips data-cc-width, keeps aria-pressed in step, saves the choice in localStorage (cc-width), rewrites ?template=. Load precedence: ?template= > saved > screen default.",
-     "needs": "Nothing for the toggle. It no longer means the condensed-spacing view (dropped)."
+     "needs": "Nothing for the toggle. Its own button since 2026-10-01 — Minimise stays the condensed view."
     },
     {
      "id": "print",

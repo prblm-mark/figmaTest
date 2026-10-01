@@ -102,7 +102,7 @@ SegmentedControl, Dropdown, Modal, ActionCard, Button.
 - Main column + sidebar. Sidebar `max-width --ai-size-7` (384), gap `--ai-spacing-5`; sections
   and panels are `--ai-spacing-5` apart. Page padding **matches the listing screens**
   (`--ai-spacing-6`, `--ai-spacing-4` below 768; designer, 2026-09-29, for consistency).
-- **Full width** (rail **Minimise** button, or `?template=full`): the page goes flush on
+- **Full width** (rail **Full width** button — `unfold-horizontal`, `fold-horizontal` when on — or `?template=full`; the **Minimise** button beside it is the separate condensed view, visual only): the page goes flush on
   `--ai-surface-primary`, sections lose their radius (bottom border only), the main column gets a
   right border. It is the shell's one switch (`control-width.js`), not a separate page; the
   choice is saved and followed on every CC screen. Handover `full-width-preference` (ControlScreen).

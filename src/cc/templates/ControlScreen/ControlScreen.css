@@ -98,6 +98,22 @@
   border-bottom: 0;
 }
 
+/* Full-width toggle icon (2026-10-01) — the button carries both icons and
+   shows the one for the action it will take: unfold-horizontal at standard
+   width, fold-horizontal when full width is on. Keyed on `aria-pressed`,
+   which control-width.js keeps in step. Was `minimize-2`, freed up because
+   the older framework uses Minimise for its condensed view. Targets the
+   Lucide SVG class — createIcons() swaps the <i> for an <svg>.
+   Minimise (condensed view) follows the same pattern on the vertical axis —
+   fold-vertical off, unfold-vertical on (2026-10-01). Condensed is not built
+   here, so nothing sets its aria-pressed yet (TODO backend [minimise]). */
+[data-cc-width-toggle][aria-pressed="true"] .lucide-unfold-horizontal,
+[data-cc-width-toggle]:not([aria-pressed="true"]) .lucide-fold-horizontal,
+[data-cc-condensed-toggle][aria-pressed="true"] .lucide-fold-vertical,
+[data-cc-condensed-toggle]:not([aria-pressed="true"]) .lucide-unfold-vertical {
+  display: none;
+}
+
 /* Dark mode: hairline horizontal padding inside the chrome wrapper. */
 [data-theme="dark"] .cc-control__chrome {
   padding: 0 var(--ai-spacing-px);
