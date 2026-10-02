@@ -3133,7 +3133,7 @@ code-first at Mark's direction, then **added to Figma 2026-09-29** (Listings pag
 `.cc-listing__totals` (Orders demo only) replaces the live one-line "Paid Orders Inc Tax: Order
 Total – £47,618.25 / $1,000.00 / €2,115.00 / Payment Total – £1,774.95 / €705.00" strip the
 backend team added. **No Figma frame yet.** Two **StatCard Xl** tiles (a new variant, the designer's chosen compact "v2"; see
-StatCard figma-notes): Order total (blue solid, `receipt-pound-sterling`) and Payments received
+StatCard figma-notes): Order total (lagoon solid, `receipt-pound-sterling`; blue until 2026-10-02) and Payments received
 (jade solid, `badge-pound-sterling`; both soft until the designer's 2026-10-02 switch to solid). GBP is the headline value; other currencies sit in the
 ruled breakdown beside it. Grid gap `--ai-spacing-4` (= `.cc-listing` gap); 2 columns, 1 at `cs-page`
 ≤ 767px. Backend marker `listing-orders-totals` (HANDOVER.md).

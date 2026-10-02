@@ -398,7 +398,7 @@
     var value = sum(COUNTED, 'amount');
     var customers = new Set(COUNTED.map(function (c) { return c.accountCode; })).size;
     setKpis('overview',
-      kpi('xl', 'blue', 'receipt-pound-sterling', 'Total contract value', money(value), 'All time · ' + NUM.format(COUNTED.length) + ' contracts') +
+      kpi('xl', 'lagoon', 'receipt-pound-sterling', 'Total contract value', money(value), 'All time · ' + NUM.format(COUNTED.length) + ' contracts') +
       kpi('xl', 'jade', 'users', 'Customers', NUM.format(customers), 'Accounts with a contract') +
       kpi('xl', 'violet-radix', 'badge-pound-sterling', 'Ave. value per customer', money(customers ? value / customers : 0), 'Total value ÷ customers'));
 
@@ -439,7 +439,7 @@
       return a;
     });
     setKpis('top',
-      kpi('base', 'blue', 'building-2', 'Accounts', NUM.format(accts.length)) +
+      kpi('base', 'lagoon', 'building-2', 'Accounts', NUM.format(accts.length)) +
       kpi('base', 'jade', 'file-text', 'Contracts', NUM.format(rows.length)) +
       kpi('base', 'violet-radix', 'receipt-pound-sterling', 'Value', money(sum(rows, 'amount'))));
 
@@ -466,7 +466,7 @@
     var arrears = rows.filter(function (c) { return c.paymentStatus === 'In Arrears'; });
     setKpis('outstanding',
       kpi('base', 'orange', 'receipt-pound-sterling', 'Outstanding', money(sum(rows, 'outstanding'))) +
-      kpi('base', 'blue', 'file-text', 'Contracts', NUM.format(rows.length)) +
+      kpi('base', 'lagoon', 'file-text', 'Contracts', NUM.format(rows.length)) +
       kpi('base', 'red', 'circle-alert', 'In arrears', money(sum(arrears, 'outstanding'))));
     var cols = CONTRACT_COLS.slice();
     cols.splice(3, 0, { key: 'outstanding', label: 'Outstanding', num: true, sort: function (r) { return r.outstanding; },
