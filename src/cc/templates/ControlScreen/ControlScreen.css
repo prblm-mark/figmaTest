@@ -156,10 +156,12 @@
   gap: var(--ai-spacing-px);
 }
 
-/* …and no rule under the header group: the line under it is the chrome's own
-   border-bottom, dropped here so the header meets the page directly
-   (designer, 2026-10-02). */
-[data-theme="dark"] .cc-control:not([data-cc-width="full"]) .cc-control__chrome {
+/* …and no rule under the header group, so the header meets the page directly
+   (designer, 2026-10-02). Two sources: the chrome's own border-bottom on most
+   screens, and the RecordHeader's (View / Edit / Steps), which draws its own
+   (Figma 3867:2138) while RecordScreen.css drops the chrome's. */
+[data-theme="dark"] .cc-control:not([data-cc-width="full"]) .cc-control__chrome,
+[data-theme="dark"] .cc-control:not([data-cc-width="full"]) .cc-header--record {
   border-bottom: 0;
 }
 
