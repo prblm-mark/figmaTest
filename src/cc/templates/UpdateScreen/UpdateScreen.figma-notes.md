@@ -20,7 +20,7 @@ the backend has a concrete target, and approved confirmation before destructive 
 | Rows | FieldRow `--paragraph` + a third `<dd class="cc-update__run">` | Label = action, value = classic description (+ extras), trailing Button |
 | Actions | Button `--secondary --sm` | "Open" + external-link (new tab) for Release Notes / Updater; "Run" for the rest |
 | Counts | Badge `--sm --neutral` | Skins count, Guest / Bot cache counts, CDN version |
-| Zone | Select `sel__control--sm` | Clear Cache only; re-counts the badges |
+| Zone | Select `sel__control--sm`, `size-2` wide | Clear Cache only. Sits **inline beside Run** with no visible label (`aria-label="Zone to clear"`), Flowbite-style (designer, 2026-10-02; was stacked under the text with a "Zone" label). Re-counts the badges |
 | Confirm | Modal `--sm` | System, Re-Initialize, Clear Cache, CDN Files, Reset Scheduled Tasks |
 
 ## Running state (designer, 2026-10-02)
@@ -68,7 +68,8 @@ auto-opens the skins popup for `Action=UpdateAllSkins` / `UpdateZoneSkins`. Both
 | Page gap | `spacing-5` (0 in full width) | RecordScreen card gap |
 | Row value column gap | `spacing-3` | FieldRow stacked label → value gap |
 | Count badges gap | `spacing-2` | `.field-row__tags` |
-| Zone select cap | `size-4` | — |
+| Zone select width | `size-2` (160px) | — |
+| Action column gap (select ↔ Run) | `spacing-3` | the value column's gap |
 | Card border / shadow | `border/card`, `shadow/2xs` (standard only) | The CC top-level card rule |
 
 ## Backend (`TODO(backend:UpdateScreen)`, manifest `update-actions`)

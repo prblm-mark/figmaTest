@@ -35,8 +35,14 @@
   gap: var(--ai-spacing-3);
 }
 
+/* The action column. Usually just a Run button, but Clear Cache puts its zone picker
+ * inline beside it (Flowbite-style: the control sits with the action it scopes,
+ * rather than stacked under the description). The 8px gap is the value column's own. */
 .cc-update__run {
+  display: flex;
+  align-items: center;
   flex: 0 0 auto;
+  gap: var(--ai-spacing-3);
   margin: 0;
 }
 
@@ -47,11 +53,10 @@
   gap: var(--ai-spacing-2);
 }
 
-/* Clear Cache's zone picker: capped, not full width, so it reads as a filter on the
- * row rather than a form field. */
+/* Clear Cache's zone picker: a compact sm Select beside Run, with no visible label (the row
+ * says what it is, and the trigger carries aria-label="Zone to clear"). 160px = size-2. */
 .cc-update__zone {
-  inline-size: 100%;
-  max-inline-size: var(--ai-size-4);
+  inline-size: var(--ai-size-2);
 }
 
 /* The result banner slot takes no space until an update has run. */

@@ -517,9 +517,10 @@
                   <span class="badge badge--sm badge--neutral" data-update-count="guest">Guest 1,284</span>
                   <span class="badge badge--sm badge--neutral" data-update-count="bot">Bot 312</span>
                 </div>
+              </dd>
+              <dd class="cc-update__run">
                 <div class="sel cc-update__zone" data-sel data-update-zone>
-                  <label class="sel__label" for="cc-update-zone">Zone</label>
-                  <button id="cc-update-zone" class="sel__control sel__control--sm" type="button" data-sel-trigger>
+                  <button id="cc-update-zone" class="sel__control sel__control--sm" type="button" data-sel-trigger aria-haspopup="listbox" aria-label="Zone to clear">
                     <span class="sel__value">All Zones</span>
                     <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
                   </button>
@@ -530,8 +531,8 @@
                     <li><button type="button" class="sel__menu-item" role="option" data-zone-code="3">Events</button></li>
                   </ul>
                 </div>
+                <button class="btn btn--secondary btn--sm" type="button" data-update-action="ClearGuestCache" data-update-kind="popup" data-update-confirm aria-label="Run Clear Cache"><span>Run</span></button>
               </dd>
-              <dd class="cc-update__run"><button class="btn btn--secondary btn--sm" type="button" data-update-action="ClearGuestCache" data-update-kind="popup" data-update-confirm aria-label="Run Clear Cache"><span>Run</span></button></dd>
             </div>
           </dl>
         </section>
