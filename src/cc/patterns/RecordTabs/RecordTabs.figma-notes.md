@@ -64,3 +64,17 @@ Set `3871:3246` now: Width × **Actions (None | Steps | Form | Sidebar)** × **D
 (Sidebar has no Mobile: the switch is hidden ≤1023). The `Show Actions` boolean is gone; its instances moved to Actions=Steps
 (Steps screens), Sidebar (View on / Edit off), None (Narrow + Mobile). Steps = Import + Add (Lookup renamed, actions right padding
 removed); Form = Cancel (x) + Save (Tick); Sidebar reuses the StepsToolbar "Show details" toggle group.
+
+## Overflow navigation (designer, 2026-10-02)
+
+When the tabs don't fit the bar, `.record-tabs__list` scrolls sideways instead of clipping. There's no visible
+scrollbar, and the cursor is `grab` only while it overflows (`--scrollable`, kept in step by a ResizeObserver).
+`RecordTabs.js` (auto-init, idempotent) adds:
+- **Mouse drag** (4px threshold). The click that ends a drag is swallowed, so a drag never opens a tab.
+- **Vertical wheel** → horizontal scroll, only while it can move, so the page scrolls once it reaches an end.
+- **Keyboard focus** brings the focused tab into view.
+- The **active tab** is brought into view on load and whenever it changes in place (MutationObserver).
+
+Touch uses native swipe. Loaded on Contract Analysis, the RecordTabs demo and every record screen (via
+`_generate.py` KIT_JS). Verified at 390px on Contract Analysis (452px of tabs in a 285px list); no change at desktop
+widths, where nothing overflows.

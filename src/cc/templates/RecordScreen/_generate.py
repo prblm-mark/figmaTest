@@ -126,6 +126,7 @@ KIT_JS = '''  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/char
   <script src="../../patterns/PromptModifier/PromptModifier.js"></script>
   <script src="../../../components/SegmentedControl/SegmentedControl.js"></script>
   <script src="../../patterns/StepsTable/StepsTable.js"></script>
+  <script src="../../patterns/RecordTabs/RecordTabs.js"></script>
   <script src="RecordScreen.js"></script>'''
 
 TITLE = "Affino 9.0.11.25 — The Refinement Update"
