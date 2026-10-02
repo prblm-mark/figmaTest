@@ -110,6 +110,7 @@ A grid: head (48px icon block + title / meta) over the value (+ unit), with the 
 | Padding | `spacing-5` | `spacing-4` |
 | Icon block | `spacing-9`, icon `icon-size-lg` | `spacing-8`, icon `icon-size-md` |
 | Value | `font-fixed-xl` bold | `font-fixed-lg` |
+| Title ↔ meta gap | `0` (the text column's gap is removed on Xl only) | `0` |
 
 The full spec is in `src/patterns/StatCard/StatCard.figma-notes.md`. StatCard's default border is
 `border/secondary`; a screen sets `border/card` where the tile is top-level, as Orders does.
