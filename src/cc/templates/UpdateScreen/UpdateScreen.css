@@ -73,3 +73,52 @@
 .cc-control[data-cc-width="full"] .cc-control__page.cc-update {
   gap: 0;
 }
+
+/* ── Running state (designer, 2026-10-02) ────────────────────────────────
+ * While an action runs, its row shows a status block under the description:
+ * a Spinner (component) + "Updating skins… 34 of 128", plus, for actions that
+ * report progress, a bar. The bar is RoomCard's own Figma-built progress bar,
+ * token for token (spacing-2 tall, radius-full, surface-contrast track,
+ * surface-brand fill), so it adds no new values. The fill eases with the system
+ * transition, and freezes under prefers-reduced-motion like the Spinner. */
+.cc-update__status {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  /* 8px: the value column's own gap */
+  gap: var(--ai-spacing-3);
+}
+
+.cc-update__status-line {
+  display: flex;
+  align-items: center;
+  /* 6px: `.field-row__tags` */
+  gap: var(--ai-spacing-2);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.cc-update__progress {
+  display: flex;
+  inline-size: 100%;
+  block-size: var(--ai-spacing-2);
+  border-radius: var(--ai-radius-full);
+  background-color: var(--ai-surface-contrast);
+  overflow: hidden;
+}
+
+.cc-update__progress-fill {
+  inline-size: var(--cc-update-progress, 0%);
+  block-size: 100%;
+  background-color: var(--ai-surface-brand);
+  transition: inline-size var(--ai-transition-default);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cc-update__progress-fill {
+    transition: none;
+  }
+}

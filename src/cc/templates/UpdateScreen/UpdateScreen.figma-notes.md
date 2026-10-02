@@ -23,6 +23,23 @@ the backend has a concrete target, and approved confirmation before destructive 
 | Zone | Select `sel__control--sm` | Clear Cache only; re-counts the badges |
 | Confirm | Modal `--sm` | System, Re-Initialize, Clear Cache, CDN Files, Reset Scheduled Tasks |
 
+## Running state (designer, 2026-10-02)
+
+While an action runs, its row shows a status block under the description, and every other Run button is
+disabled so two updates can't overlap.
+
+| Actions | Shows | Cancel |
+|---|---|---|
+| Update All Skins, Update Internal Links (`data-update-total`) | Spinner `--sm --brand` + "Updating skins… 34 of 128" + progress bar | Yes: Run becomes **Cancel** |
+| The other eight | Spinner + "Running…" | No: each is a single server step, with nothing to stop part-way |
+
+- **Progress bar:** RoomCard's Figma-built bar, token for token (`spacing-2` tall, `radius-full`, `surface-contrast` track,
+  `surface-brand` fill). The fill eases with `--ai-transition-default`, and doesn't under reduced motion.
+- **Outcome banners:** success "… successful · 128 of 128 skins updated."; cancel (Alert `--warning`) "… cancelled · 34 of 128 skins
+  updated."; failure (Alert `--danger`) "… failed · 384 of 640 links updated before it stopped."
+- **a11y:** the status block is `role="status"`, the row gets `aria-busy`, the Cancel button is labelled "Cancel Update All Skins", and
+  focus returns to the button when the job ends.
+
 ## Rows (classic order and copy)
 
 | Key (`uKey`) | Label | SSC | Kind | Confirm |
@@ -66,8 +83,11 @@ auto-opens the skins popup for `Action=UpdateAllSkins` / `UpdateZoneSkins`. Both
 - **Flag:** classic's inline `uKey=ClearGuestCache` branch runs `DELETE FROM PageCache` with no zone filter,
   while the popup path takes the zone. Keep the zone-aware path.
 - Confirmation before the five destructive actions is **new behaviour** and needs Luismi's agreement.
+- **Progress + cancel is new and needs two endpoints:** a status feed for the long jobs (skins, internal links),
+  e.g. `GET …/status?job=<id>` → `{done, total, state}`, polled; and `POST …/cancel?job=<id>`, which stops after the
+  current item and reports `done`. Classic runs these in Boxy popups, so v3 shows the progress inline instead.
 
 ## Demo switches
 
-`?fail=<key>` previews a failure banner for that action. `?ssc=1` previews a user without SSC 2 (hides Release
+`?fail=<key>` previews a failure for that action (progressive ones stop at about 60%). `?ssc=1` previews a user without SSC 2 (hides Release
 Notes / Updater).

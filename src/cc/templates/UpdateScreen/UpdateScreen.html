@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="../../../components/Avatar/Avatar.css">
   <link rel="stylesheet" href="../../../components/NotificationBadge/NotificationBadge.css">
   <link rel="stylesheet" href="../../../components/Badge/Badge.css">
+  <link rel="stylesheet" href="../../../components/Spinner/Spinner.css">
   <link rel="stylesheet" href="../../components/FieldRow/FieldRow.css">
   <link rel="stylesheet" href="../../patterns/RecordSection/RecordSection.css">
   <link rel="stylesheet" href="../../../components/Toggle/Toggle.css">
@@ -499,7 +500,7 @@
                 <p>Please note that only the skins that have been assigned to a channel will be updated, so the number updated may not match the total number of skins on the site.</p>
                 <span class="badge badge--sm badge--neutral" data-update-count="skins">128 skins</span>
               </dd>
-              <dd class="cc-update__run"><button class="btn btn--secondary btn--sm" type="button" data-update-action="skins" data-update-kind="popup" aria-label="Run Update All Skins"><span>Run</span></button></dd>
+              <dd class="cc-update__run"><button class="btn btn--secondary btn--sm" type="button" data-update-action="skins" data-update-kind="popup" data-update-total="128" data-update-unit="skins" data-update-cancellable aria-label="Run Update All Skins"><span>Run</span></button></dd>
             </div>
             <div class="field-row field-row--paragraph cc-update__row" data-update-row="ReInitialize" data-ssc="1">
               <dt class="field-row__label">Re-Initialize</dt>
@@ -565,7 +566,7 @@
               <dd class="field-row__value">
                 <p>Run the Internal Links updater to update any links which point to the SourceURL (legacy link) and replace it with the internal link. We recommend using this tool when migrating content from an external platform to Affino after they were successfully imported using the Article Import.</p>
               </dd>
-              <dd class="cc-update__run"><button class="btn btn--secondary btn--sm" type="button" data-update-action="UpdateInternalLinks" data-update-kind="popup" aria-label="Run Update Internal Links"><span>Run</span></button></dd>
+              <dd class="cc-update__run"><button class="btn btn--secondary btn--sm" type="button" data-update-action="UpdateInternalLinks" data-update-kind="popup" data-update-total="640" data-update-unit="links" data-update-cancellable aria-label="Run Update Internal Links"><span>Run</span></button></dd>
             </div>
             <div class="field-row field-row--paragraph cc-update__row" data-update-row="UpdateAIPrompts" data-ssc="1">
               <dt class="field-row__label">Update AI Prompts</dt>
