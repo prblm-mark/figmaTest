@@ -132,6 +132,13 @@
   box-shadow: none;
 }
 
+/* The section header's divider matches its card's edge (designer, 2026-10-02).
+ * Standard width only, as above: in full width the sections are flush strips
+ * ruled in border/secondary, and the header divider stays in step with those. */
+.cc-control:not([data-cc-width="full"]) .record-screen .record-section__header {
+  border-bottom-color: var(--ai-border-card);
+}
+
 /* ── Full width ───────────────────────────────────── */
 
 [data-cc-width="full"] .record-screen {
