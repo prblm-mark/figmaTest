@@ -473,7 +473,7 @@ def advisory_list():
 
 # ── PerformanceSummary ───────────────────────────────────────────────
 def stat(title, value, colour, ico):
-    return f'''<div class="stat-card stat-card--sm stat-card--{colour} stat-card--soft">
+    return f'''<div class="stat-card stat-card--sm stat-card--{colour}">
                 <div class="stat-card__icon-wrap">{icon(ico)}</div>
                 <div class="stat-card__text"><p class="stat-card__title">{e(title)}</p><p class="stat-card__value">{e(value)}</p></div>
               </div>'''

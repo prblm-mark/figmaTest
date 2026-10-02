@@ -43,6 +43,7 @@ See **Status / feedback** below for `--ai-text-info`, `--ai-text-success`, `--ai
 | `--ai-border-brand` | `#30B6C2` | Brand-colored borders |
 | `--ai-border-primary` | `#64748B` | Strong dividers (Grey/500) |
 | `--ai-border-secondary` | `#E2E8F0` | Default input/card borders (Grey/200) |
+| `--ai-border-card` | `#E2E8F0` | Card outlines. Same as border-secondary in every mode except **CCDark**, where it is Grey/750 `#293548` (secondary is Grey/700) |
 | `--ai-border-contrast` | `#94A3B8` | Stronger borders (Grey/400) |
 | `--ai-border-invert` | `#1E293B` | Borders on inverted/dark surfaces (Grey/800) |
 
@@ -380,6 +381,7 @@ Only the solid status fills hold across themes: `surface-error`, `surface-succes
 | `--ai-text-invert` | `#FFFFFF` | `#E2E8F0` |
 | `--ai-border-primary` | `#64748B` | `#64748B` |
 | `--ai-border-secondary` | `#E2E8F0` | `#334155` |
+| `--ai-border-card` | `#E2E8F0` | `#334155` (CCDark: `#293548`) |
 | `--ai-border-contrast` | `#94A3B8` | `#475569` |
 | `--ai-border-invert` | `#1E293B` | `#F1F5F9` |
 | `--ai-icon-primary` | `#475569` | `#F1F5F9` |
@@ -465,6 +467,7 @@ is Lagoon teal (`#0094AD`), chat brand is Radix Blue (`#0588F0`).
 | `--ai-surface-secondary` | `#3D4B5F` | `#2E2E32` |
 | `--ai-surface-contrast` | `#64748B` | `#1B1B1F` |
 | `--ai-border-secondary` | `#334155` | `#3C3C3F` |
+| `--ai-border-card` | `#334155` | `#3C3C3F` |
 | `--ai-border-contrast` | `#475569` | `#1B1B1F` |
 | `--ai-surface-brand` | `#30B6C2` (Lagoon) | `#0588F0` (BlueRadix) |
 

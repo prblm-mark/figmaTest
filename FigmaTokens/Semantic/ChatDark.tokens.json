@@ -1068,6 +1068,34 @@
         }
       }
     },
+    "card": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.23529411852359772,
+          0.23529411852359772,
+          0.24705882370471954
+        ],
+        "alpha": 1,
+        "hex": "#3C3C3F"
+      },
+      "$extensions": {
+        "com.figma.variableId": "VariableID:3963:185",
+        "com.figma.scopes": [
+          "ALL_SCOPES"
+        ],
+        "com.figma.codeSyntax": {
+          "WEB": "--ai-border-card"
+        },
+        "com.figma.aliasData": {
+          "targetVariableId": "VariableID:abdfc97c923a8f708193fd962b0f0add9c07d10f/-1:-1",
+          "targetVariableName": "Neutral/600",
+          "targetVariableSetId": "VariableCollectionId:8f6c1c1faabbdf0817d5304f220b65ab37368977/-1:-1",
+          "targetVariableSetName": "Primitives"
+        }
+      }
+    },
     "contrast": {
       "$type": "color",
       "$value": {
