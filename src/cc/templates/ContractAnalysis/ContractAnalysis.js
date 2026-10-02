@@ -271,8 +271,20 @@
     return { label: label, data: data, borderColor: colour, backgroundColor: filled ? fill(colour) : colour, fill: !!filled,
              tension: 0.4, borderWidth: 2, pointRadius: 0, pointHoverRadius: 4 };
   }
+  /* One bar shape everywhere (designer, 2026-10-02), Flowbite-style: the outer end is rounded
+   * (the top, or the right on horizontal bars) and the base is flat. On stacked charts only the
+   * topmost visible segment of each column is rounded, so a stack reads as one bar, not a pile
+   * of pills. */
+  var BAR_RADIUS = 4;
   function bar(label, data, colour) {
-    return { label: label, data: data, backgroundColor: colour, borderRadius: 4, borderSkipped: false, maxBarThickness: 28 };
+    return { label: label, data: data, backgroundColor: colour, maxBarThickness: 28, borderSkipped: 'start',
+      borderRadius: function (ctx) {
+        var chart = ctx.chart, stacked = chart.options.scales && chart.options.scales.x && chart.options.scales.x.stacked;
+        if (!stacked) return BAR_RADIUS;
+        var i = ctx.dataIndex, sets = chart.data.datasets, top = -1;
+        for (var j = 0; j < sets.length; j++) if (chart.isDatasetVisible(j) && sets[j].data[i] > 0) top = j;
+        return ctx.datasetIndex === top ? BAR_RADIUS : 0;
+      } };
   }
 
   /* Buckets */
