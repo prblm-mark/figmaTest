@@ -11,9 +11,10 @@
   min-width: 0;
   padding: var(--ai-spacing-4);
   background-color: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-secondary);
+  border: 1px solid var(--ai-border-card);   /* border/card, as the Performance panel's boxes (2026-10-02) */
   border-radius: var(--ai-radius-md);
-  box-shadow: var(--ai-shadow-2xs);
+  /* No shadow (designer, 2026-10-02): it sits inside a FactPanel that now carries
+   * shadow/2xs itself. Figma 3865:1977 still binds shadow/2xs, so drop it there too. */
 }
 
 .viewer-item__body {
