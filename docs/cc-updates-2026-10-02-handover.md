@@ -1,6 +1,6 @@
 # Control Centre design updates: handover, 1–2 October 2026
 
-**From:** Mark (design), via Shaz · **To:** Luismi / Lynx (backend)
+**From:** Mark (design), sent directly to Lynx · **To:** Luismi / Lynx (backend)
 **Repo:** `prblm-mark/figmaTest`, branch `main`. Covers every commit from `0a27e8bda` to the commit
 that adds this file, made after the record-screens v1 handover (`b160f6f49`, see
 [`record-screens-handover.md`](record-screens-handover.md), sent as TASK-527675).
@@ -184,4 +184,4 @@ Full contracts are in `HANDOVER.md` and `docs/handover-manifest.json`.
 - **Full-width empty states (planner):** the no-event and no-plan screens keep 24px padding around their centred card
   in full width (24 / 36). That's deliberate; Figma only draws the plan view in full width.
 
-Questions back to Mark via Shaz.
+Questions back to Mark on the Lynx task this was sent as (message 917074).
