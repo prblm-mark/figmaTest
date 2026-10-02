@@ -3127,3 +3127,21 @@ code-first at Mark's direction, then **added to Figma 2026-09-29** (Listings pag
   kebab hidden, header static; reload restores; 900 viewport forces fit; switching back restores
   sticky + clip; empty state flush to the visible edges before/after scrolling; Media Items grid
   hides Settings. (The 12px clipped overflow in fit mode pre-dates this change.)
+
+## Order totals panel — code-first proposal (2026-10-02)
+
+`.cc-listing__totals` (Orders demo only) replaces the live one-line "Paid Orders Inc Tax: Order
+Total – £47,618.25 / $1,000.00 / €2,115.00 / Payment Total – £1,774.95 / €705.00" strip the
+backend team added. **No Figma frame yet.** Two **StatCard Xl** tiles (a new variant, the designer's chosen compact "v2"; see
+StatCard figma-notes): Order total (blue soft, `receipt-pound-sterling`) and Payments received
+(jade soft, `badge-pound-sterling`). GBP is the headline value; other currencies sit in the
+ruled breakdown beside it. Grid gap `--ai-spacing-4` (= `.cc-listing` gap); 2 columns, 1 at `cs-page`
+≤ 767px. Backend marker `listing-orders-totals` (HANDOVER.md).
+
+
+**Shadow + full-width (designer, 2026-10-02):** the top-level cards (FilterBar, totals tiles,
+Datatables) carry `--ai-shadow-2xs`, and none in the full-width template. In full width the totals
+become a **flush strip**: no outer card or radius, padding `spacing-4` × `spacing-5` (sides match the
+FilterBar rows), a `border-secondary` rule between the tiles and one beneath. Below 768px the strip
+stacks, the divider turns horizontal and padding drops to `spacing-3`. Code-first, with no Figma
+frame yet.

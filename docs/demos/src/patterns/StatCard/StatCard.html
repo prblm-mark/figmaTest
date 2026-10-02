@@ -8,7 +8,11 @@
   <link rel="stylesheet" href="../../styles/base.css" />
   <link rel="stylesheet" href="StatCard.css" />
   <style>
+    /* StatCard Xl's narrow rules query `cs-page`; a demo has no shell, so
+       establish it here or they can never fire (CLAUDE.md §4a). */
     body {
+      container-type: inline-size;
+      container-name: cs-page;
       margin: 0;
       padding: var(--ai-spacing-7);
       background: var(--ai-surface-secondary);
@@ -488,3 +492,34 @@
 
 </body>
 </html>
+
+  <div class="demo-section">
+    <h2>Xl — headline KPI (code-first)</h2>
+    <p class="demo-note">Grid: head (icon + title / meta) over headline value (+ unit) | ruled breakdown of label / value pairs. Breakdown drops under the value, and everything shrinks, below 768px (resize to see). Built for the Orders totals panel 2026-10-02, no Figma variant yet. GBP leads; other currencies go in the breakdown.</p>
+    <div class="demo-stack">
+      <div class="stat-card stat-card--xl stat-card--soft">
+        <div class="stat-card__head">
+          <div class="stat-card__icon-wrap"><i data-lucide="receipt-pound-sterling" aria-hidden="true"></i></div>
+          <div class="stat-card__text">
+            <p class="stat-card__title">Order total</p>
+            <p class="stat-card__meta">Paid orders · inc tax</p>
+          </div>
+        </div>
+        <p class="stat-card__value">£47,618.25 <span class="stat-card__unit">GBP</span></p>
+        <dl class="stat-card__breakdown" aria-label="Other currencies">
+          <div class="stat-card__breakdown-item"><dt class="stat-card__breakdown-label">USD</dt><dd class="stat-card__breakdown-value">$1,000.00</dd></div>
+          <div class="stat-card__breakdown-item"><dt class="stat-card__breakdown-label">EUR</dt><dd class="stat-card__breakdown-value">€2,115.00</dd></div>
+        </dl>
+      </div>
+      <div class="stat-card stat-card--xl stat-card--soft stat-card--jade">
+        <div class="stat-card__head">
+          <div class="stat-card__icon-wrap"><i data-lucide="badge-pound-sterling" aria-hidden="true"></i></div>
+          <div class="stat-card__text">
+            <p class="stat-card__title">Payments received</p>
+            <p class="stat-card__meta">Paid orders · inc tax</p>
+          </div>
+        </div>
+        <p class="stat-card__value">£1,774.95 <span class="stat-card__unit">GBP</span></p>
+      </div>
+    </div>
+  </div>

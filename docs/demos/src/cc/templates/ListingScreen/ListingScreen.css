@@ -80,6 +80,39 @@
   flex: 0 0 auto;
 }
 
+/* Listing form controls sit on surface/minimal (designer, 2026-10-02): the
+ * saved-views trigger, the search / new-view inputs in the FilterBar's top
+ * row, and the Datatables rows-per-page select. Scoped to the top row so the
+ * inputs inside the filter pickers keep their own fill. */
+.cc-listing > .filter-bar > .filter-bar__row--top .filter-bar__views-trigger,
+.cc-listing > .filter-bar > .filter-bar__row--top .input__wrap,
+.cc-listing > .datatables .datatables__select {
+  background-color: var(--ai-surface-minimal);
+}
+
+/* Top-level listing cards lift off the page with shadow/2xs (designer,
+ * 2026-10-02): FilterBar, the Orders totals tiles, Datatables. Child
+ * combinators, so the Datatables inside a Multi Select Table picker stays flat.
+ * The full-width template is flush to the page and drops it — see below. */
+.cc-listing > .filter-bar,
+.cc-listing > .datatables,
+.cc-listing > .cc-listing__totals > .stat-card {
+  box-shadow: var(--ai-shadow-2xs);
+}
+
+/* ── Order totals (proposal, code-first 2026-10-02) ───────
+ * Two StatCard Xl tiles; no Figma frame yet. The grid gap is `.cc-listing`'s
+ * own gap, to be confirmed when the designer formalises the frame. */
+.cc-listing__totals {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ai-spacing-4);
+}
+
+@container cs-page (max-width: 767px) {
+  .cc-listing__totals { grid-template-columns: minmax(0, 1fr); }
+}
+
 /* ── Empty state ─────────────────────────────────────────
  * TODO(design:Listing): Datatables defines no empty state in Figma. This
  * mirrors EventPicker's `Type=Event Picker (no results)` (3108:6659) token
@@ -852,6 +885,32 @@
   border-block-end: 1px solid var(--ai-datatable-table-border);
 }
 
+/* Orders totals as a flush strip (designer, 2026-10-02): no outer cards, a
+ * rule between the tiles and one beneath, the same as the FilterBar above it.
+ * Inline padding matches the FilterBar rows (spacing-5) so the icon blocks line
+ * up with the filter chips. */
+.cc-listing[data-listing-template="full"] > .cc-listing__totals {
+  gap: 0;
+  border-block-end: 1px solid var(--ai-border-secondary);
+}
+
+.cc-listing[data-listing-template="full"] > .cc-listing__totals > .stat-card {
+  border: 0;
+  border-radius: 0;
+  padding: var(--ai-spacing-4) var(--ai-spacing-5);
+}
+
+.cc-listing[data-listing-template="full"] > .cc-listing__totals > .stat-card + .stat-card {
+  border-inline-start: 1px solid var(--ai-border-secondary);
+}
+
+/* Flush cards cast no shadow (designer, 2026-10-02). */
+.cc-listing[data-listing-template="full"] > .filter-bar,
+.cc-listing[data-listing-template="full"] > .datatables,
+.cc-listing[data-listing-template="full"] > .cc-listing__totals > .stat-card {
+  box-shadow: none;
+}
+
 /* Figma draws this template at desktop only. Below 768px keep the designer's
  * mobile row padding (spacing-3, FilterBar.css 2026-09-21) on the sides and
  * bottom, with the full template's flush top. An extrapolation, not a frame —
@@ -859,6 +918,16 @@
 @container cs-page (max-width: 767px) {
   .cc-listing[data-listing-template="full"] > .filter-bar > .filter-bar__row {
     padding: 0 var(--ai-spacing-3) var(--ai-spacing-3);
+  }
+
+  /* Totals strip: stacked, so the divider turns horizontal; sides match the rows. */
+  .cc-listing[data-listing-template="full"] > .cc-listing__totals > .stat-card {
+    padding: var(--ai-spacing-3);
+  }
+
+  .cc-listing[data-listing-template="full"] > .cc-listing__totals > .stat-card + .stat-card {
+    border-inline-start: 0;
+    border-block-start: 1px solid var(--ai-border-secondary);
   }
 }
 

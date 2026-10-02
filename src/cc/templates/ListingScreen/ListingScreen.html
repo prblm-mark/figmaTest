@@ -583,6 +583,49 @@
           </div>
         </div>
 
+        <!-- ── Order totals (proposal, code-first 2026-10-02) ────
+             Replaces the live one-line strip "Paid Orders Inc Tax: Order
+             Total - £47,618.25 / $1,000.00 / €2,115.00 / Payment Total -
+             £1,774.95 / €705.00".
+             StatCard Xl (soft) per measure — a variant added for this panel:
+             GBP (the primary currency) is the headline figure, every further
+             currency sits in the ruled breakdown beneath it. No Figma frame
+             for this panel yet — pushed for the designer to formalise.
+             TODO(backend:Listing): totals are mock → return them with the
+             listing payload, already filtered: { totals: { scope:"paid",
+             incTax:bool, order:[{currency,amount}], payment:[{currency,amount}] } },
+             GBP first. The Exclude Tax filter flips incTax and the meta
+             line's "inc tax" → "ex tax". -->
+        <section class="cc-listing__totals" aria-label="Paid order totals" data-backend-todo="listing-orders-totals">
+          <div class="stat-card stat-card--xl stat-card--soft">
+            <div class="stat-card__head">
+              <div class="stat-card__icon-wrap"><i data-lucide="receipt-pound-sterling" aria-hidden="true"></i></div>
+              <div class="stat-card__text">
+                <p class="stat-card__title">Order total</p>
+                <p class="stat-card__meta">Paid orders · inc tax</p>
+              </div>
+            </div>
+            <p class="stat-card__value">£47,618.25 <span class="stat-card__unit">GBP</span></p>
+            <dl class="stat-card__breakdown" aria-label="Other currencies">
+              <div class="stat-card__breakdown-item"><dt class="stat-card__breakdown-label">USD</dt><dd class="stat-card__breakdown-value">$1,000.00</dd></div>
+              <div class="stat-card__breakdown-item"><dt class="stat-card__breakdown-label">EUR</dt><dd class="stat-card__breakdown-value">€2,115.00</dd></div>
+            </dl>
+          </div>
+          <div class="stat-card stat-card--xl stat-card--soft stat-card--jade">
+            <div class="stat-card__head">
+              <div class="stat-card__icon-wrap"><i data-lucide="badge-pound-sterling" aria-hidden="true"></i></div>
+              <div class="stat-card__text">
+                <p class="stat-card__title">Payments received</p>
+                <p class="stat-card__meta">Paid orders · inc tax</p>
+              </div>
+            </div>
+            <p class="stat-card__value">£1,774.95 <span class="stat-card__unit">GBP</span></p>
+            <dl class="stat-card__breakdown" aria-label="Other currencies">
+              <div class="stat-card__breakdown-item"><dt class="stat-card__breakdown-label">EUR</dt><dd class="stat-card__breakdown-value">€705.00</dd></div>
+            </dl>
+          </div>
+        </section>
+
         <!-- ── Datatables · Type=Orders ──────────────────────────
              Figma 3648:164786 (Desktop) / 3648:164467 (Mobile).
              thead / tbody / pagination are rendered by ListingScreen.js
