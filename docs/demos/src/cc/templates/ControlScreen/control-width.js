@@ -33,7 +33,10 @@
 (function () {
   var MODES = ['standard', 'full'];
 
-  function apply(name) {
+  /* `trigger` is optional: the rail toggle passes 'toggle', so listeners can tell a viewer
+     switching the mode from a page arriving in it (designer, 2026-10-02: switching ON full
+     width closes the SidebarMenu — sidebar-menu.js — but loading a full-width page does not). */
+  function apply(name, trigger) {
     var mode = MODES.indexOf(name) !== -1 ? name : 'standard';
     var full = mode === 'full';
     var shell = document.querySelector('.cc-control');
@@ -45,7 +48,7 @@
     shell.querySelectorAll('.cc-control__chrome').forEach(function (el) {
       el.classList.toggle('cc-control__chrome--flush', full);
     });
-    document.dispatchEvent(new CustomEvent('cc:width', { detail: { mode: mode } }));
+    document.dispatchEvent(new CustomEvent('cc:width', { detail: { mode: mode, trigger: trigger || null } }));
     return mode;
   }
 
@@ -80,7 +83,7 @@
     if (!btn) return;
     var shell = document.querySelector('.cc-control');
     var next = shell && shell.getAttribute('data-cc-width') === 'full' ? 'standard' : 'full';
-    apply(next);
+    apply(next, 'toggle');
     save(next);
     if (fromUrl()) {
       var url = new URL(window.location.href);

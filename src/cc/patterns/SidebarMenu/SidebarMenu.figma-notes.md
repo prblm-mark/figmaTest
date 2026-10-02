@@ -95,3 +95,9 @@ items, 11 group icons rendered, a pin on every item, 8 analysis groups; a group
 expands; searching "orders" finds Orders, Pro Forma Orders and Previous Orders
 Report.
 
+
+**Full width closes the menu (designer, 2026-10-02):** switching full width ON from the rail toggle closes
+any open panel, docked or flyout, in every composite. That's the same end state as clicking the active rail
+button again. `control-width.js` passes `trigger: 'toggle'` on its `cc:width` event, and `sidebar-menu.js`
+listens for it. Loading a page already in full width leaves the menu alone, and switching back to standard
+re-opens nothing. CC-wide, because every CC screen loads both scripts.

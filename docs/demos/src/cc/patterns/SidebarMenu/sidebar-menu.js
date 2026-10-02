@@ -13,6 +13,7 @@
  *   6. CRM show-toggle    → reveal/hide [data-cc-recent-extra] items
  *   8. Submenu pin       → pin a sub-item to the top of its list (filled
  *      pin icon = pinned; `order:-1` floats it up). In-memory only.
+ *   9. Full width ON (rail toggle) → close every open panel (cc:width event)
  *   7. Desktop hover-flyout → hover a rail target on Desktop shows the
  *      matching menu as a floating overlay; suppressed when the target
  *      panel is already docked-active. 150ms grace on mouse-leave so the
@@ -34,6 +35,30 @@
     renderMenuData();
     document.querySelectorAll('.cc-sidebar-menu').forEach(initComposite);
   });
+
+  /* 9. Full width closes the menu (designer, 2026-10-02) ──────────
+     Switching full width ON from the rail toggle closes any open panel,
+     docked or floating, in every composite on the page. That is the same end
+     state as clicking the active rail button again. Only on the toggle
+     (`trigger: 'toggle'`, control-width.js), not on a page that loads in
+     full width, and switching back to standard re-opens nothing. CC-wide,
+     because every CC screen loads both scripts. */
+  document.addEventListener('cc:width', function (e) {
+    if (!e.detail || e.detail.mode !== 'full' || e.detail.trigger !== 'toggle') return;
+    document.querySelectorAll('.cc-sidebar-menu').forEach(closeMenu);
+  });
+
+  function closeMenu(root) {
+    root.querySelectorAll('.cc-sidebar__btn[data-cc-target]').forEach(function (b) {
+      b.classList.remove('cc-sidebar__btn--active');
+      b.removeAttribute('aria-current');
+    });
+    root.querySelectorAll('.cc-menu[data-cc-panel]').forEach(function (panel) {
+      panel.hidden = true;
+      panel.setAttribute('aria-hidden', 'true');
+      panel.classList.remove('cc-menu--floating');
+    });
+  }
 
   /* 0. Real menu data → the Control and Analysis panels ─────────────
      When sidebar-menu-data.js is loaded (it declares CC_SIDEBAR_MENU), its
