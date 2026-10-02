@@ -205,8 +205,12 @@
   /* ── Charts ───────────────────────────────────────────────── */
   var charts = {};
   function tok(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
-  var SERIES = ['--ai-accent-blue-solid', '--ai-accent-jade-solid', '--ai-accent-violet-radix-solid', '--ai-accent-orange-solid',
-    '--ai-accent-pink-solid', '--ai-accent-lime-radix-solid', '--ai-text-contrast'];
+  /* Distinct hues, Flowbite-style (designer, 2026-10-02): blue + purple for any two-series
+   * chart, then pink, orange, lagoon and emerald for groups; grey for "Other". Brand teal and jade
+   * were too close to tell apart side by side. */
+  var PAIR = ['--ai-accent-blue-solid', '--ai-accent-purple-solid'];
+  var SERIES = ['--ai-accent-blue-solid', '--ai-accent-purple-solid', '--ai-accent-pink-solid', '--ai-accent-orange-solid',
+    '--ai-accent-lagoon-solid', '--ai-accent-emerald-solid', '--ai-text-contrast'];
 
   function chartCard(id, big, sub) {
     var host = page.querySelector('[data-chart="' + id + '"]');
@@ -302,14 +306,14 @@
   /* ── Tables (Datatables + Table) ──────────────────────────── */
   var tables = {};
   var STATUS_TONE = { 'Paid': 'success', 'In Arrears': 'danger', 'Written Off': 'neutral' };
-  function payBadge(s) { return '<span class="badge badge--sm badge--' + (STATUS_TONE[s] || 'warning') + '">' + esc(s) + '</span>'; }
+  function payBadge(s) { return '<span class="badge badge--' + (STATUS_TONE[s] || 'warning') + '">' + esc(s) + '</span>'; }
   function expiry(c) {
     if (!c.renewable || !c.endDate) return 'One-off';
     var days = Math.round((c.endDate - TODAY) / 86400000);
     return days < 0 ? 'Expired' : days <= 7 ? 'Imminent expiry' : days <= 30 ? 'Upcoming expiry' : 'OK';
   }
   var EXPIRY_TONE = { 'OK': 'success', 'One-off': 'neutral', 'Upcoming expiry': 'warning', 'Imminent expiry': 'danger', 'Expired': 'danger' };
-  function expiryBadge(c) { var s = expiry(c); return '<span class="badge badge--sm badge--' + EXPIRY_TONE[s] + '">' + s + '</span>'; }
+  function expiryBadge(c) { var s = expiry(c); return '<span class="badge badge--' + EXPIRY_TONE[s] + '">' + s + '</span>'; }
   function acctLink(c) {
     /* TODO(backend:ContractAnalysis): live → /control/accounts?Action=View&AccountCode=<code> */
     return '<a class="datatables__record-link" href="#account/' + c.accountCode + '">' + esc(c.account) + '</a>';
@@ -462,18 +466,18 @@
   function review() {
     var s = state.Review;
     var rows = applyFilters('Review', COUNTED);
-    var brand = tok('--ai-surface-brand'), muted = tok('--ai-text-contrast'), accent2 = tok('--ai-accent-jade-solid');
+    var first = tok(PAIR[0]), second = tok(PAIR[1]);
 
     var cur = byMonth(rows, 'amount'), prev = byMonth(rows, 'amount', 1);
     chartCard('rv-yoy', money(total(cur.data)), 'Contract value · last 12 months vs the year before (' + money(total(prev.data)) + ')');
     draw('rv-yoy', { type: 'line', labels: cur.labels, legend: true, money: true,
-      datasets: [line('Last 12 months', cur.data, brand, true), line('Year before', prev.data, muted, false)] });
+      datasets: [line('Last 12 months', cur.data, first, true), line('Year before', prev.data, second, false)] });
 
     var nb = byMonth(rows.filter(function (c) { return c.origin === 1; }), 'amount');
     var rn = byMonth(rows.filter(function (c) { return c.origin === 2; }), 'amount');
     chartCard('rv-mix', money(total(nb.data)) + ' new', 'New business vs renewal value · renewals ' + money(total(rn.data)));
     draw('rv-mix', { type: 'line', labels: nb.labels, legend: true, money: true,
-      datasets: [line('New business', nb.data, brand, true), line('Renewal', rn.data, accent2, false)] });
+      datasets: [line('New business', nb.data, first, true), line('Renewal', rn.data, second, true)] });
 
     /* Per-month 100% split (classic divided by the whole year, so no month summed to 100). */
     var pctNb = nb.data.map(function (v, i) { var t = v + rn.data[i]; return t ? 100 * v / t : 0; });
@@ -481,7 +485,7 @@
     var share = total(nb.data) + total(rn.data);
     chartCard('rv-split', (share ? Math.round(100 * total(nb.data) / share) : 0) + '% new business', 'Share of each month’s value · new business vs renewals');
     draw('rv-split', { type: 'bar', labels: nb.labels, stacked: true, percent: true, legend: true,
-      datasets: [bar('New business', pctNb, brand), bar('Renewals', pctRn, accent2)] });
+      datasets: [bar('New business', pctNb, first), bar('Renewals', pctRn, second)] });
 
     groupChart('rv-industry', rows, 'industry', 'Contract value by industry', !s.industry);
     groupChart('rv-owner', rows, 'owner', 'Contract value by opportunity owner', !s.owner);

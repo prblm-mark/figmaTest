@@ -17,10 +17,10 @@ Mark approved (2026-10-02): all four tabs in one pass; legacy errors fixed and f
 | Shell | ControlScreen. Breadcrumb Zone Selector › CRM › Contract Analysis (menu: CRM › Analysis); title only |
 | Tabs | RecordTabs. Hrefs keep classic's `?Navigation=Contract\|TopAccounts\|Outstanding\|Review`; switched in place (`replaceState`) |
 | KPIs | StatCard: Xl (Overview), Base (other tabs), solid fills, `*-pound-sterling` icons for money |
-| Charts | Chart pattern + Chart.js. The headline (`chart__big`) is the window total; colours from tokens (brand; `text-contrast` for comparisons; accent solids for groups); the tooltip uses `surface-invert` |
+| Charts | Chart pattern + Chart.js. The headline (`chart__big`) is the window total. Overview uses brand. **Monthly review (designer, 2026-10-02):** Flowbite-style distinct hues: two-series charts use accent **blue + purple**; groups use blue, purple, pink, orange, lagoon, emerald, plus `text-contrast` for Other (brand teal next to jade was too close to tell apart). Canvases are bigger there: `size-6` two-up, `size-7` full width. The tooltip uses `surface-invert` |
 | Filters | Input (search) + Select `--sm` + DatePicker (range), in one card per tab, inline (Flowbite-style), with a Reset |
 | Tables | Datatables `--orders` + Table (as every listing), `datatables__record-link`, sortable headers (`aria-sort`), "Show n more" |
-| Status | Badge `--sm`: payment (Paid success · In Arrears danger · Written Off neutral · else warning); expiry (OK success · One-off neutral · Upcoming warning · Imminent / Expired danger) |
+| Status | Badge, base size (designer, 2026-10-02; was `--sm`): payment (Paid success · In Arrears danger · Written Off neutral · else warning); expiry (OK success · One-off neutral · Upcoming warning · Imminent / Expired danger) |
 
 ## Tabs
 
@@ -78,6 +78,7 @@ only. **The backend must either convert, or scope the figures to one currency**,
 | Select width | `size-3` → `size-2` | FieldRow label width |
 | Search width | `size-3` → `size-6` cap | — |
 | Top 10 canvas height | `size-6` | — |
+| Monthly review canvases | `size-6` two-up, `size-7` wide | — |
 | Full width | page padding `spacing-4`, gaps `spacing-4` | Dashboard of cards, like SeatingPlanner's full-width empty states (not flush) |
 
 Numbers are tabular but **left-aligned**, per the designer's demo rule (right-aligned is build-only).
