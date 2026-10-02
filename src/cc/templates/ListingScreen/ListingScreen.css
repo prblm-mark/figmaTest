@@ -80,6 +80,19 @@
   flex: 0 0 auto;
 }
 
+/* ── Order totals (proposal, code-first 2026-10-02) ───────
+ * Two StatCard Xl tiles; no Figma frame yet. The grid gap is `.cc-listing`'s
+ * own gap, to be confirmed when the designer formalises the frame. */
+.cc-listing__totals {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ai-spacing-4);
+}
+
+@container cs-page (max-width: 767px) {
+  .cc-listing__totals { grid-template-columns: minmax(0, 1fr); }
+}
+
 /* ── Empty state ─────────────────────────────────────────
  * TODO(design:Listing): Datatables defines no empty state in Figma. This
  * mirrors EventPicker's `Type=Event Picker (no results)` (3108:6659) token

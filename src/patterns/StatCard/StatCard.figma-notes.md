@@ -161,3 +161,26 @@ None — self-contained. Uses Lucide icons (`mail` default + `chevron-down` / `c
 
 ## Sm size (designer, 2026-09-28)
 From the designer's live amends on Article Edit: gap + padding `--ai-spacing-3`, min-height `--ai-spacing-10`, title `--ai-font-fixed-2xs`. Icon block (32 / 16px icon), value and radius unchanged from Base. Built in Figma as 5 Blue variants like Lg; first consumer = the record screens' PerformanceSummary.
+
+## Size=Xl — code-first (2026-10-02)
+
+Added at the designer's request for the Orders totals panel (ListingScreen). The designer chose
+the compact "v2" layout. **No Figma variant yet**, so the next Figma pass should draw it from these
+values:
+
+| Part | Class | Desktop | Narrow (`cs-page` ≤ 767px) |
+|---|---|---|---|
+| Card | `stat-card--xl` | grid `head head / value breakdown`, gap `spacing-4` × `spacing-6`, padding `spacing-5` | single column, gap `spacing-3`, padding `spacing-4` |
+| Head | `stat-card__head` | gap `spacing-4` | gap `spacing-3` |
+| Text column | `__text` | gap `0` (title + meta tight) | — |
+| Icon block | `__icon-wrap` | `spacing-9` square, icon `icon-size-lg` | `spacing-8`, icon `icon-size-md` |
+| Title | `__title` | `font-fixed-sm` semibold, `leading-md`, `text-primary` | `font-fixed-xs`, `leading-sm` |
+| Meta | `stat-card__meta` | `font-fixed-2xs`, `leading-sm`, `text-contrast` | — |
+| Value | `__value` | `font-fixed-2xl` bold (title font), `leading-lg`, tabular nums, gap `spacing-2` to unit | `font-fixed-xl`, `leading-md` |
+| Unit | `stat-card__unit` | `font-fixed-xs` medium, `text-contrast` | — |
+| Breakdown | `stat-card__breakdown` (`<dl>`) | beside value: left rule `border-secondary`, padding-left `spacing-6`, gap `spacing-3` × `spacing-6` | under value: top rule, padding-top `spacing-3`, gap `spacing-3` × `spacing-5` |
+| Breakdown label | `__breakdown-label` (`<dt>`) | `font-fixed-xxs` semibold uppercase, 0.5px tracking, `text-contrast` | — |
+| Breakdown value | `__breakdown-value` (`<dd>`) | `font-fixed-sm` semibold, `leading-md`, tabular nums | `font-fixed-xs` |
+
+Breakdown and meta are optional. Money icons use `*-pound-sterling` Lucide variants (GBP is primary).
+The narrow rules key on `cs-page`, so the demo's body establishes that container.

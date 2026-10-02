@@ -846,6 +846,13 @@
      "needs": "GET /control/orders?view=&filters[]=&sort=&dir=&page=&per_page= returning { columns[], rows[], page:{ from, to, total, current, pages } }. Row shape already matches the renderer: { orderNo, customer:{ name, role?, avatar?, initials? }, account, accountCode, qty, orderTotal }. The live screen is https://www.affino.com/control/orders. Generalise the endpoint per screen (/control/<screen>) rather than per entity — the template is shared by ~400 of them."
     },
     {
+     "id": "listing-orders-totals",
+     "category": "needs-backend",
+     "element": ".cc-listing__totals (data-backend-todo=\"listing-orders-totals\")",
+     "current": "Proposed replacement for the live one-line 'Paid Orders Inc Tax: Order Total - ... / Payment Total - ...' strip: two StatCard Xl tiles (Order total, Payments received), GBP as the headline value and every further currency in the ruled breakdown. Figures are static mock HTML; nothing recalculates when filters change.",
+     "needs": "Return totals with the rows payload, computed over the SAME filtered set: { totals:{ scope:'paid', incTax:bool, order:[{currency, amount}], payment:[{currency, amount}] } }, GBP first. Render GBP as the headline value, the rest as breakdown items; a currency with no payments is simply omitted. The Exclude Tax filter flips incTax and the meta line's 'inc tax' to 'ex tax'. Format amounts server-side or pass ISO codes for Intl.NumberFormat."
+    },
+    {
      "id": "listing-default-filters",
      "category": "needs-backend",
      "element": ".filter-bar (data-backend-todo=\"listing-default-filters\")",
