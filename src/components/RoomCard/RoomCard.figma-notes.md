@@ -241,3 +241,8 @@ both under 767, so a self-query would fire permanently. Same reasoning as TableC
 Rationale and the decision rule live in **CLAUDE.md §4a**. The short version: a docked
 SidebarMenu shrinks the CC content column with no window resize, so a viewport query cannot see
 the real available width — measured 820px of column at a 2239px viewport, with no query firing.
+
+**Card border → `border/card` (designer, 2026-10-02):** the default outer edge is `--ai-border-card`, which
+equals `border/secondary` except in CCDark (Grey/750). It matches the Seating Planner sheets it sits in. The
+selected / empty variants keep their own borders, and inner dividers are unchanged. The Figma component still
+binds `border/secondary`, so rebind it there.

@@ -224,3 +224,8 @@ not the meta line, so it stays at 50px filled and 48px empty.
 at 11px with the role matching in TableDetail's seat rows and the Seating Planner's Assign-person
 list, and at 11px in the Unassigned tray. The tray has no role element to match — a separate gap
 already flagged, since the Seating Planner frames show the tray *with* roles.
+
+**Card border → `border/card` (designer, 2026-10-02):** the default outer edge is `--ai-border-card`, which
+equals `border/secondary` except in CCDark (Grey/750). It matches the Seating Planner sheets it sits in. The
+selected / empty variants keep their own borders, and inner dividers are unchanged. The Figma component still
+binds `border/secondary`, so rebind it there.

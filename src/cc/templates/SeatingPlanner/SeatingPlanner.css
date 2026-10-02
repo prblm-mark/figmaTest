@@ -251,6 +251,38 @@
   box-shadow: var(--ai-shadow-sm);
 }
 
+/* ── Top-level cards: border/card + shadow/2xs (designer, 2026-10-02) ───────
+ * The listing / record-screen card treatment, brought to this screen: the event
+ * header, the room bar, the Tables sheet, Table Detail and the empty-state card.
+ * The cards INSIDE them (Room / Table / Attendee) keep their own Figma shadows.
+ * Standard width only, because full width redraws these as flush sheets.
+ * TableDetail already had shadow/2xs (Figma), so it gains only the border.
+ * The pinned room bar's `.is-stuck` shadow/sm must still win over the 2xs at
+ * rest, so it is restated below at a higher specificity. */
+.cc-control:not([data-cc-width="full"]) .cc-control__page--seating .seating-header,
+.cc-control:not([data-cc-width="full"]) .cc-control__page--seating .table-listing,
+.cc-control:not([data-cc-width="full"]) .cc-control__page--seating .table-detail,
+.cc-control:not([data-cc-width="full"]) .cc-control__page--seating .seating-screen {
+  border-color: var(--ai-border-card);
+  box-shadow: var(--ai-shadow-2xs);
+}
+
+.cc-control:not([data-cc-width="full"]) .cc-control__page--seating .seating-header--table.is-stuck {
+  box-shadow: var(--ai-shadow-sm);
+}
+
+/* Full width: flush sheets, no card shadow, the listings' rule. The pinned
+ * bar's `.is-stuck` shadow is a scroll cue, not a card shadow, so it stays. */
+.cc-control[data-cc-width="full"] .cc-control__page--seating .table-detail,
+.cc-control[data-cc-width="full"] .cc-control__page--seating .seating-screen {
+  box-shadow: none;
+}
+
+/* The Find a table search sits on surface/minimal, as the listing search does. */
+.cc-control__page--seating .table-listing__search .input__wrap {
+  background-color: var(--ai-surface-minimal);
+}
+
 /* ── Scrolling a card clear of the pinned Table Header ──────────────────────
  * `revealTable()` uses `scrollIntoView({ block: 'start' })`, which aligns a card's top with the
  * top of the SCROLLPORT — and the Table Header is pinned over exactly that spot, so the tapped

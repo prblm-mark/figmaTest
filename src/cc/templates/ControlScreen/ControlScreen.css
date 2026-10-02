@@ -116,7 +116,10 @@
   transition: box-shadow var(--ai-transition-default);
 }
 
-.cc-control:not([data-cc-width="full"]) .cc-control__chrome--scrolled .cc-header-group {
+/* Only a group that holds a header block. The Seating Planner's group is the top
+   nav alone, and that screen already puts shadow/sm on the chrome itself when it
+   scrolls (SeatingPlanner.css, 2026-08-27). Without this guard it got both. */
+.cc-control:not([data-cc-width="full"]) .cc-control__chrome--scrolled .cc-header-group:has(.cc-header) {
   box-shadow: var(--ai-shadow-sm);
 }
 
