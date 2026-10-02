@@ -97,6 +97,20 @@ see the ControlScreen surface below. The items here are specific to ControlHub's
 
 ---
 
+## Surface: UpdateScreen
+
+`src/cc/templates/UpdateScreen/UpdateScreen.html` is `/control/update` on v3 (TASK-470993, `no-design`), composed
+from existing parts on the ControlScreen shell (shell items are inherited). Full spec:
+`UpdateScreen.figma-notes.md`.
+
+| id | Element | Now | Backend work needed | Category |
+|---|---|---|---|---|
+| `update-actions` | `.cc-update [data-update-action]` rows | 12 rows in classic order and copy. Run, the confirm modal (5 destructive actions, **new in v3**), the result banner, counts and the zone select are mock | `GET {thisDoc}?uKey=<key>&update=1` + server result banner; skins / clear-cache / internal-links popups stay dialogs; rows by SSC (`data-ssc`); live counts; zone re-count via `PageCache.cfc?method=GetClearCacheCount`; keep the `?Action=UpdateAllSkins/UpdateZoneSkins` entry points; use the zone-aware Clear Cache (the classic inline branch deletes all) | needs-backend |
+
+`grep -rn "TODO(backend:UpdateScreen)" src/`
+
+---
+
 ## Surface: Login
 
 `src/cc/templates/Login/Login.html` — the CC Control Centre login screen. A standalone

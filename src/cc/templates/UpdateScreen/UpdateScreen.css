@@ -1,0 +1,75 @@
+/* UpdateScreen — /control/update on the v3 framework (TASK-470993).
+ *
+ * Composed from existing parts only (Alert, RecordSection, FieldRow, Button, Badge,
+ * Select, Modal) on the ControlScreen shell. There is no Figma frame: the task is
+ * "no-design", so this file holds layout only, and every value is borrowed from a
+ * part already in the system (each one cites where from). Card border + shadow come
+ * from the shared CC card rule below, which matches the record screens.
+ */
+
+/* Gap between the warning, the result banner and the two sections. 16px is the
+ * record screens' card gap (RecordScreen.css). */
+.cc-control__page.cc-update {
+  gap: var(--ai-spacing-5);
+}
+
+/* Top-level cards: border/card + shadow/2xs in standard width, flat in full width.
+ * The same rule as RecordScreen.css, because this page reuses RecordSection. */
+.cc-control:not([data-cc-width="full"]) .cc-update .record-section {
+  border-color: var(--ai-border-card);
+  box-shadow: var(--ai-shadow-2xs);
+}
+
+.cc-control:not([data-cc-width="full"]) .cc-update .record-section__header {
+  border-bottom-color: var(--ai-border-card);
+}
+
+/* ── Action row: label | description | Run ───────────────────────────────
+ * A FieldRow (label + value) with a third <dd> for the action. FieldRow's own gap
+ * spaces the three, and its narrow container rule stacks them below 560px. */
+.cc-update__row .field-row__value {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* 8px: FieldRow's stacked label → value gap */
+  gap: var(--ai-spacing-3);
+}
+
+.cc-update__run {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+/* Live counts (Guest / Bot cache, skins, CDN version). 6px is `.field-row__tags`. */
+.cc-update__counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ai-spacing-2);
+}
+
+/* Clear Cache's zone picker: capped, not full width, so it reads as a filter on the
+ * row rather than a form field. */
+.cc-update__zone {
+  inline-size: 100%;
+  max-inline-size: var(--ai-size-4);
+}
+
+/* The result banner slot takes no space until an update has run. */
+.cc-update__result:empty {
+  display: none;
+}
+
+.cc-update__confirm-text {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-secondary);
+}
+
+/* Full width: flush, as on the record screens. The sections take RecordSection
+ * Width=Full and the warning becomes the Alert `--fixed` bar (UpdateScreen.js), so
+ * the gap between them goes, as RecordScreen.css does for its cards. */
+.cc-control[data-cc-width="full"] .cc-control__page.cc-update {
+  gap: 0;
+}

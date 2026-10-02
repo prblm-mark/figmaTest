@@ -61,6 +61,19 @@
     }
    ]
   },
+  "UpdateScreen": {
+   "file": "src/cc/templates/UpdateScreen/UpdateScreen.html",
+   "note": "/control/update on v3 (TASK-470993, no-design). Reuses the ControlScreen app-shell, so shell-level backend items are inherited from the ControlScreen surface.",
+   "items": [
+    {
+     "id": "update-actions",
+     "category": "needs-backend",
+     "element": ".cc-update [data-update-action] / [data-update-row] (data-backend-todo=\"update-actions\")",
+     "current": "12 action rows in classic order and copy (AfcControl/CC/Update.cfm). Run buttons, the confirm modal (System, Re-Initialize, Clear Cache, CDN, Reset Scheduled Tasks; new in v3), the result banner, count badges and the Clear Cache zone select are all mock in UpdateScreen.js.",
+     "needs": "Run -> GET {thisDoc}?uKey=<key>&update=1 with the server-rendered result banner; keep the skins / clear-cache / internal-links popups as dialogs; render rows by the user's SSC list (data-ssc); live counts (skins on channels, PageCache Guest/Bot, Site.CDNVersion); zone re-count via PageCache.cfc?method=GetClearCacheCount; keep the ?Action=UpdateAllSkins/UpdateZoneSkins entry points. Classic's inline ClearGuestCache branch deletes all PageCache regardless of zone, so use the zone-aware path. Confirmation is new behaviour for Luismi to agree."
+    }
+   ]
+  },
   "ControlScreen": {
    "file": "src/cc/templates/ControlScreen/ControlScreen.html",
    "note": "CC home/landing dashboard. Front-end complete; all data is hardcoded and most actions are mock. Composes many CC patterns — see docs/component-registry.md for per-component status.",
