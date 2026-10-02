@@ -108,6 +108,18 @@
   box-shadow: 0 1px 0 var(--ai-border-secondary);
 }
 
+/* Standard width, both themes (designer, 2026-10-02): once the page scrolls
+   under it, the header group lifts with shadow/sm. Full width keeps the flat
+   rule above instead. The chrome is z-index 1, so the shadow paints over the
+   page. The transition sits on the resting rule so it eases both ways. */
+.cc-control:not([data-cc-width="full"]) .cc-control__chrome .cc-header-group {
+  transition: box-shadow var(--ai-transition-default);
+}
+
+.cc-control:not([data-cc-width="full"]) .cc-control__chrome--scrolled .cc-header-group {
+  box-shadow: var(--ai-shadow-sm);
+}
+
 /* Full-width toggle icon (2026-10-01) — the button carries both icons and
    shows the one for the action it will take: unfold-horizontal at standard
    width, fold-horizontal when full width is on. Keyed on `aria-pressed`,

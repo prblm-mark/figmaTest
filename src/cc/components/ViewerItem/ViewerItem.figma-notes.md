@@ -25,7 +25,7 @@
 
 | Property | Token |
 |---|---|
-| card | --ai-surface-primary, 1px --ai-border-secondary, --ai-radius-md, --ai-shadow-2xs |
+| card | --ai-surface-primary, 1px --ai-border-card (was border-secondary), --ai-radius-md, no shadow (both 2026-10-02, see below) |
 | padding / gap | --ai-spacing-4 / --ai-spacing-4 (card); body gap --ai-spacing-2 (designer amend 2026-09-29, was -4 — flag for Figma) |
 | name | --ai-font-fixed-2xs Bold --ai-text-primary |
 | role | --ai-font-fixed-xxs --ai-text-contrast |
@@ -43,3 +43,8 @@ Draft shadow was the retired `light/shadow-xxs` → `shadow/2xs` (`--ai-shadow-2
   right semantic tokens in Figma first and this code follows the kit, not the draft.
 - Markup comes from `src/cc/templates/RecordScreen/record_markup.py` — the demo and the templates are
   generated from the same function, so they cannot drift.
+
+
+**Shadow removed, border → `border/card` (designer, 2026-10-02):** ViewerItems sit inside a FactPanel, which now carries `shadow/2xs`
+itself, so the item's own shadow is gone in code. **The Figma component 3865:1977 still binds `shadow/2xs`, and `border/secondary`, so
+remove the shadow and rebind the stroke to `border/card` there to match.**
