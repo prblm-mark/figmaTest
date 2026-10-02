@@ -242,7 +242,4 @@ Rationale and the decision rule live in **CLAUDE.md §4a**. The short version: a
 SidebarMenu shrinks the CC content column with no window resize, so a viewport query cannot see
 the real available width — measured 820px of column at a 2239px viewport, with no query firing.
 
-**Card border → `border/card` (designer, 2026-10-02):** the default outer edge is `--ai-border-card`, which
-equals `border/secondary` except in CCDark (Grey/750). It matches the Seating Planner sheets it sits in. The
-selected / empty variants keep their own borders, and inner dividers are unchanged. The Figma component still
-binds `border/secondary`, so rebind it there.
+**Border rule (designer, 2026-10-02):** top-level panels use `border/card`, and cards INSIDE a panel keep the more prominent `border/secondary`. This card sits inside a planner sheet, so it stays on `border/secondary`, matching Figma.

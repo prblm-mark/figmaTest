@@ -3981,3 +3981,6 @@ top stroke is now the line. The shadow that appears on the chrome on scroll is u
   screen has none and already shadows the chrome itself on scroll, so it no longer gets two.
 - **Shell rules this screen inherits from ControlScreen.css:** the scrollbar track rule in full width, and the
   dark chrome fixes.
+- **Border rule (2026-10-02):** top-level sheets use `border/card` and in-panel cards (Room / Table / Attendee)
+  keep `border/secondary`. The event header's `.seating-header__bar` divider is part of its top-level card, so
+  it is `border/card` in standard width. Full width keeps its flush top rule.

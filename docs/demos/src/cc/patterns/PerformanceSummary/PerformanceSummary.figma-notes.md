@@ -43,6 +43,4 @@ Draft panel padding was raw 20px → FactPanel `--ai-spacing-5`. Chart height is
 - Markup comes from `src/cc/templates/RecordScreen/record_markup.py` — the demo and the templates are
   generated from the same function, so they cannot drift.
 
-**Card borders (designer, 2026-10-02):** the accounts box and the Chart card's outer edge use `--ai-border-card`,
-matching the StatCards (which get it from StatCard). The Chart override is scoped to `.performance-summary`.
-Inner dividers (the accounts heading, the totals rows) keep `border-secondary`.
+**Border rule (designer, 2026-10-02):** top-level panels use `border/card`, and cards INSIDE a panel keep the more prominent `border/secondary`. The accounts box, the Chart and the StatCards are all in-panel, so all stay on `border/secondary`.

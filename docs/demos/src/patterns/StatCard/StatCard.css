@@ -22,9 +22,10 @@
   min-height: var(--ai-spacing-11);
   padding: var(--ai-spacing-4);
   background-color: var(--ai-surface-primary);
-  /* border/card (designer, 2026-10-02): = border/secondary everywhere except
-   * CCDark, where it is Grey/750 — one step darker, a quieter card edge. */
-  border: 1px solid var(--ai-border-card);
+  /* border/secondary: StatCard is usually a card INSIDE a panel, and in-panel
+   * cards keep the more prominent secondary edge (designer, 2026-10-02). Where
+   * it is a top-level card (the Orders totals) the screen sets border/card. */
+  border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-md);
 
   --stat-card-solid: var(--ai-accent-blue-solid);

@@ -3147,5 +3147,5 @@ stacks, the divider turns horizontal and padding drops to `spacing-3`. Code-firs
 frame yet.
 
 **Card border (2026-10-02):** the FilterBar and Datatables cards' OUTER edges use `--ai-border-card`
-(`border/card`), overridden here. Their inner dividers keep their own tokens. The totals tiles get it from
-StatCard. Full width's flush bottom rules are unchanged.
+(`border/card`), overridden here. Their inner dividers keep their own tokens. The totals tiles get it here too, because
+StatCard's own default is `border/secondary`. Full width's flush bottom rules are unchanged.
