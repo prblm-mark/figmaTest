@@ -3984,3 +3984,10 @@ top stroke is now the line. The shadow that appears on the chrome on scroll is u
 - **Border rule (2026-10-02):** top-level sheets use `border/card` and in-panel cards (Room / Table / Attendee)
   keep `border/secondary`. The event header's `.seating-header__bar` divider is part of its top-level card, so
   it is `border/card` in standard width. Full width keeps its flush top rule.
+- **Page padding (2026-10-02):** the right side now follows the shell's scrollbar-gutter trim (`spacing-4`, or
+  `spacing-0` when narrow, untrimmed on a coarse pointer). Content sits 24 / 27 like every other CC screen,
+  where it was 24 / 39. Full width owns its own padding.
+- **Full width (2026-10-02):** no scroll shadows. The chrome's `.is-scrolled` shadow (previously kept in full
+  width on purpose) and the pinned room bar's `.is-stuck` shadow are both off. In dark, the event bar's and the
+  stuck room bar's top borders go transparent so they no longer double the top nav's rule. The page
+  scrollbar's track is painted `surface/primary` to match the sheets.
