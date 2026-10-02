@@ -501,6 +501,30 @@
   }
 }
 
+/* ── Right padding: the shell's scrollbar-gutter trim (designer, 2026-10-02) ──
+ * `padding: var(--sp-page-pad)` above overrode ControlScreen's right-side trim, so
+ * this page sat 24 + the 15px reserved gutter = 39px on the right, against 27px on
+ * every other CC screen. These restate the shell's values (ControlScreen.css):
+ * spacing-4 on the right at the wide padding, spacing-0 at the narrow one, and no
+ * trim on a coarse pointer, whose overlay scrollbar reserves no gutter. Inline-end
+ * only, so `--sp-page-pad`, which the sticky offsets subtract, is untouched.
+ * Not on flush pages: full width owns its padding (the plan view is 0 on every side). */
+.cc-control__page--seating:not(.cc-control__page--flush) {
+  padding-inline-end: var(--ai-spacing-4);
+}
+
+@container cs-main (max-width: 767px) {
+  .cc-control__page--seating:not(.cc-control__page--flush) {
+    padding-inline-end: var(--ai-spacing-0);
+  }
+}
+
+@media (pointer: coarse) {
+  .cc-control__page--seating:not(.cc-control__page--flush) {
+    padding-inline-end: var(--sp-page-pad);
+  }
+}
+
 /* ── Create Plan modal form ─────────────────────────────────────────────────
  * Figma 3515:212885 / 3515:228092 (help off) and 3515:212593 / 3515:212739 (help on +
  * errors). The modal itself is Modal + ModalHeader/Body/Footer, all of which already
@@ -2603,15 +2627,43 @@
   gap: 0;
 }
 
-/* The standard screen draws a 1px page-colour line under the chrome (see the top of this file).
- * Flush, the Event-Info-Bar's own top stroke is the line, so the extra one goes; the scrolled
- * shadow stays as it is on the standard screen. */
-.cc-control__main:has(.cc-control__page--seating.cc-control__page--flush[data-seating-state="plan"]) .cc-control__chrome {
+/* ── Full width: shell fixes from 2026-10-02 (designer) ─────────────────────
+ * 1. No scroll shadows. The chrome's `.is-scrolled` shadow/sm and the pinned
+ *    room bar's `.is-stuck` one are standard-width cues; full width is flat,
+ *    as on every other CC screen. Both themes. */
+.cc-control__main:has(.cc-control__page--seating.cc-control__page--flush) .cc-control__chrome.is-scrolled {
   box-shadow: none;
 }
 
+.cc-control[data-cc-width="full"] .cc-control__page--seating .seating-header--table.is-stuck {
+  box-shadow: none;
+}
+
+/* 2. Dark only: one rule under the top nav, not two. Dark full width gives the
+ *    top nav its own bottom rule (ControlScreen.css), and the event bar's flush
+ *    top border, or the pinned room bar's top border once stuck, sat directly on
+ *    it. Made transparent rather than removed, so nothing moves 1px. */
+[data-theme="dark"] .cc-control__page--seating.cc-control__page--flush[data-seating-state="plan"] .seating-header .seating-header__bar,
+[data-theme="dark"] .cc-control[data-cc-width="full"] .cc-control__page--seating .seating-header--table.is-stuck {
+  border-block-start-color: transparent;
+}
+
+/* 3. The page scrollbar's track takes the panels' fill. This page paints the
+ *    PAGE colour behind its sheets, so the shell's transparent track showed as
+ *    a darker strip beside them. Same WebKit/Blink scope as the shell rule. */
+@supports selector(::-webkit-scrollbar) {
+  .cc-control__page--seating.cc-control__page--flush::-webkit-scrollbar-track {
+    background-color: var(--ai-surface-primary);
+  }
+}
+
+/* The standard screen draws a 1px page-colour line under the chrome (see the top of this file).
+ * Flush, the Event-Info-Bar's own top stroke is the line, so the extra one goes. The scrolled
+ * shadow went too (designer, 2026-10-02): it was kept here until then, but full width is flat on
+ * every CC screen. The `.is-scrolled` state is covered by the same `none`. */
+.cc-control__main:has(.cc-control__page--seating.cc-control__page--flush[data-seating-state="plan"]) .cc-control__chrome,
 .cc-control__main:has(.cc-control__page--seating.cc-control__page--flush[data-seating-state="plan"]) .cc-control__chrome.is-scrolled {
-  box-shadow: var(--ai-shadow-sm);
+  box-shadow: none;
 }
 
 /* Header and Table Header: no card. Every corner rule in SeatingHeader.css is cancelled, since the
