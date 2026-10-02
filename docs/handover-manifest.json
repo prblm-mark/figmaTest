@@ -74,6 +74,26 @@
     }
    ]
   },
+  "ContractAnalysis": {
+   "file": "src/cc/templates/ContractAnalysis/ContractAnalysis.html",
+   "note": "/control/contract-analysis on v3 (TASK-470978, no-design). Reuses the ControlScreen app-shell. Full spec + the classic errors fixed: ContractAnalysis.figma-notes.md.",
+   "items": [
+    {
+     "id": "contract-analysis-tabs",
+     "category": "needs-backend",
+     "element": ".cc-analysis [data-panel] (data-backend-todo=\"contract-analysis-tabs\")",
+     "current": "Four tabs (Contract overview, Top accounts, Outstanding amounts, Monthly review) switched in place under ?Navigation=. Every KPI, chart and table is computed client-side from contract-analysis-data.js (260 mock contracts); the filters filter it.",
+     "needs": "Server-render each tab from its classic include under ONE data rule (not cancelled, not archived; plus not-PaymentStatus-Cancelled on Top accounts; Outstanding = OutstandingAmount>0 and not Paid). Apply the classic fixes in figma-notes: per-customer average label, Top 10 as a bar, Contract Type / Account Type filters actually applied, per-month new/renewal split, top-6+Other group charts, one date-range param (preset or custom from/to), separate formatted Amount / Outstanding. Currency: convert or scope to one currency; classic sums all currencies under one prefix."
+    },
+    {
+     "id": "contract-analysis-data",
+     "category": "needs-backend",
+     "element": "contract-analysis-data.js",
+     "current": "Seeded mock contracts with a fixed demo today (26 Sep 2026).",
+     "needs": "Replace with the live queries. Also check on live: Outstanding may redirect via ContractQDef's AMethod default 'v'; the Account autocomplete writes the code into a Name LIKE filter; sorting Top Accounts drops the date range; Monthly Review's dead Highcharts call and its 60-80+ queries."
+    }
+   ]
+  },
   "ControlScreen": {
    "file": "src/cc/templates/ControlScreen/ControlScreen.html",
    "note": "CC home/landing dashboard. Front-end complete; all data is hardcoded and most actions are mock. Composes many CC patterns — see docs/component-registry.md for per-component status.",

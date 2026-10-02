@@ -111,6 +111,21 @@ from existing parts on the ControlScreen shell (shell items are inherited). Full
 
 ---
 
+## Surface: ContractAnalysis
+
+`src/cc/templates/ContractAnalysis/ContractAnalysis.html` is `/control/contract-analysis` on v3 (TASK-470978,
+`no-design`): four tabs composed from existing parts on the ControlScreen shell. The full spec, the data rule and
+the classic errors fixed are in `ContractAnalysis.figma-notes.md`.
+
+| id | Element | Now | Backend work needed | Category |
+|---|---|---|---|---|
+| `contract-analysis-tabs` | `.cc-analysis [data-panel]` | Four tabs under `?Navigation=`; every figure computed client-side from mock data, and the filters filter it | Server-render each tab under ONE data rule (not cancelled / not archived); match the fixes (per-customer average, Top 10 bar, Contract Type / Account Type filters applied, per-month split, top 6 + Other, one date-range param, formatted Amount + Outstanding); **currency: convert or scope**, never mix | needs-backend |
+| `contract-analysis-data` | `contract-analysis-data.js` | 260 seeded mock contracts, demo today 26 Sep 2026 | Live queries. Check on live: the Outstanding `AMethod` redirect, the autocomplete code-vs-name bug, sorting dropping the date range, the dead Highcharts call | needs-backend |
+
+`grep -rn "TODO(backend:ContractAnalysis)" src/`
+
+---
+
 ## Surface: Login
 
 `src/cc/templates/Login/Login.html` — the CC Control Centre login screen. A standalone
