@@ -184,3 +184,9 @@ values:
 
 Breakdown and meta are optional. Money icons use `*-pound-sterling` Lucide variants (GBP is primary).
 The narrow rules key on `cs-page`, so the demo's body establishes that container.
+
+## Card border → `border/card` (2026-10-02)
+
+All sizes: the card outline is `--ai-border-card` (new Semantic `border/card`, `VariableID:3963:185`).
+It equals `border/secondary` in every mode except CCDark, where it is Grey/750 `#293548`, one step
+darker than secondary's Grey/700. The Figma StatCard set still binds `border/secondary`, so rebind it there.

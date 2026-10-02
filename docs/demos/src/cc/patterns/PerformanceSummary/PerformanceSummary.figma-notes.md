@@ -17,7 +17,7 @@
 |---|---|
 | Root | `.performance-summary` |
 | Stats | `.performance-summary__stats / __stats-row (2-col grid)` |
-| StatCards | `stat-card --violet-radix / --indigo / --jade + --soft` |
+| StatCards | `stat-card --violet-radix / --indigo / --jade` (solid fill, designer 2026-10-02; was `+ --soft`) |
 | Accounts | `.performance-summary__accounts / __accounts-heading / __account-chips (btn--secondary btn--xs)` |
 | Chart | `.performance-summary__chart → .chart .chart__canvas (Chart.js)` |
 | Totals (dl) | `.performance-summary__totals / __total` |

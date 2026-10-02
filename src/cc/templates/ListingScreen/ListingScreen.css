@@ -100,6 +100,16 @@
   box-shadow: var(--ai-shadow-2xs);
 }
 
+/* …and their outer edge is border/card (designer, 2026-10-02), the same as
+ * border/secondary except in CCDark (Grey/750). Only the OUTER border: the
+ * FilterBar's row divider and the table's row rules keep their own colours.
+ * The totals tiles get it from StatCard itself. Full width redraws these
+ * edges as flush bottom rules (more specific, below), which stay as they are. */
+.cc-listing > .filter-bar,
+.cc-listing > .datatables {
+  border-color: var(--ai-border-card);
+}
+
 /* ── Order totals (proposal, code-first 2026-10-02) ───────
  * Two StatCard Xl tiles; no Figma frame yet. The grid gap is `.cc-listing`'s
  * own gap, to be confirmed when the designer formalises the frame. */
