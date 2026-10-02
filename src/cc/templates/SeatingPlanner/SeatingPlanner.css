@@ -271,6 +271,13 @@
   box-shadow: var(--ai-shadow-sm);
 }
 
+/* The event header's bar divider (title row | rooms row) is part of the
+ * top-level card, so it takes the card's edge colour (designer, 2026-10-02).
+ * Full width keeps its own flush top rule (below). */
+.cc-control:not([data-cc-width="full"]) .cc-control__page--seating .seating-header__bar {
+  border-block-end-color: var(--ai-border-card);
+}
+
 /* Full width: flush sheets, no card shadow, the listings' rule. The pinned
  * bar's `.is-stuck` shadow is a scroll cue, not a card shadow, so it stays. */
 .cc-control[data-cc-width="full"] .cc-control__page--seating .table-detail,

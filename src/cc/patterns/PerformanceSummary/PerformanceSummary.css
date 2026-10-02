@@ -29,7 +29,7 @@
   gap: var(--ai-spacing-4);
   padding: var(--ai-spacing-4);
   background-color: var(--ai-surface-primary);
-  border: 1px solid var(--ai-border-card);   /* border/card, as the StatCards beside it (2026-10-02) */
+  border: 1px solid var(--ai-border-secondary);
   border-radius: var(--ai-radius-md);
 }
 
@@ -48,12 +48,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--ai-spacing-3);
-}
-
-/* The Chart card's outer edge matches the StatCards and accounts box
- * (border/card, designer 2026-10-02). Scoped here so other Charts keep theirs. */
-.performance-summary .chart {
-  border-color: var(--ai-border-card);
 }
 
 .performance-summary__chart {

@@ -103,10 +103,12 @@
 /* …and their outer edge is border/card (designer, 2026-10-02), the same as
  * border/secondary except in CCDark (Grey/750). Only the OUTER border: the
  * FilterBar's row divider and the table's row rules keep their own colours.
- * The totals tiles get it from StatCard itself. Full width redraws these
- * edges as flush bottom rules (more specific, below), which stay as they are. */
+ * The totals tiles are top-level cards too, so they take it here: StatCard's own
+ * default is border/secondary, the in-panel edge. Full width redraws these
+ * edges as flush rules (more specific, below), which stay as they are. */
 .cc-listing > .filter-bar,
-.cc-listing > .datatables {
+.cc-listing > .datatables,
+.cc-listing > .cc-listing__totals > .stat-card {
   border-color: var(--ai-border-card);
 }
 
