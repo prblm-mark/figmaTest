@@ -98,6 +98,16 @@
   border-bottom: 0;
 }
 
+/* …but once the page scrolls under it, the rule comes back (designer,
+   2026-10-02), or scrolled content butts straight into the header.
+   `--scrolled` is kept in step by control-width.js. Drawn as a 1px shadow,
+   not a border: a border would add 1px to the chrome and nudge the page down
+   the moment scrolling starts. The chrome is z-index 1, so it paints over the
+   page beneath. */
+.cc-control__chrome--flush.cc-control__chrome--scrolled {
+  box-shadow: 0 1px 0 var(--ai-border-secondary);
+}
+
 /* Full-width toggle icon (2026-10-01) — the button carries both icons and
    shows the one for the action it will take: unfold-horizontal at standard
    width, fold-horizontal when full width is on. Keyed on `aria-pressed`,
@@ -112,6 +122,45 @@
 [data-cc-condensed-toggle][aria-pressed="true"] .lucide-fold-vertical,
 [data-cc-condensed-toggle]:not([aria-pressed="true"]) .lucide-unfold-vertical {
   display: none;
+}
+
+/* Full width, DARK only (designer, 2026-10-02). The CC header's fill,
+   cc/header/secondary-bg, is #1E293B in CCDark since the 2026-10-02 export
+   (was #334155), the same as the flush page — so header and content already
+   read as one surface and need no override here. But the sidebar menu, top
+   nav and flush page now all resolve to that one colour too, so nothing marks
+   where the menu ends: the content column gets a left rule. Light needs none,
+   because its menu is dark teal against a white page. */
+[data-theme="dark"] .cc-control[data-cc-width="full"] .cc-control__main {
+  border-inline-start: 1px solid var(--ai-border-secondary);
+}
+
+/* The top nav above the header is the same colour as it, so the two need a
+   rule between them. And the dark chrome's hairline
+   side padding (below) would leave a 1px gap at each end of the nav and
+   header in an edge-to-edge layout, so it is dropped here. */
+[data-theme="dark"] .cc-control[data-cc-width="full"] .cc-top-navigation {
+  border-block-end: 1px solid var(--ai-border-secondary);
+}
+
+[data-theme="dark"] .cc-control[data-cc-width="full"] .cc-control__chrome {
+  padding-inline: 0;
+}
+
+/* Dark, STANDARD width (designer, 2026-10-02): since the CCDark header fill
+   became #1E293B the top nav and header are one colour. A spacing-px gap
+   lets the backdrop show through between them as a line, the same hairline
+   the chrome's side padding (below) draws at each end. Full width uses a real
+   border on the top nav instead (above), because it drops that padding. */
+[data-theme="dark"] .cc-control:not([data-cc-width="full"]) .cc-header-group {
+  gap: var(--ai-spacing-px);
+}
+
+/* …and no rule under the header group: the line under it is the chrome's own
+   border-bottom, dropped here so the header meets the page directly
+   (designer, 2026-10-02). */
+[data-theme="dark"] .cc-control:not([data-cc-width="full"]) .cc-control__chrome {
+  border-bottom: 0;
 }
 
 /* Dark mode: hairline horizontal padding inside the chrome wrapper. */
@@ -200,6 +249,41 @@
   }
   .cc-control__page:hover {
     scrollbar-color: var(--cc-actions-menu-primary-bg) transparent;
+  }
+}
+
+/* Flush page scrollbar (designer, 2026-10-02): edge to edge, the gutter has
+   nothing to separate it from the content, so its track gets a left rule.
+   A track border is only reachable through ::-webkit-scrollbar, which Blink
+   ignores while `scrollbar-color` is set — so WebKit/Blink drop it here and
+   draw the bar themselves; Firefox (no such selector) keeps the rules above.
+   Same colours and the same hover-reveal as the standard bar. The 3px
+   transparent border insets the thumb from the track's edges (a border
+   width, so raw px). */
+@supports selector(::-webkit-scrollbar) {
+  .cc-control__page.cc-control__page--flush,
+  .cc-control__page.cc-control__page--flush:hover {
+    scrollbar-color: auto;
+    scrollbar-width: auto;
+  }
+  .cc-control__page--flush::-webkit-scrollbar {
+    width: var(--ai-spacing-4);
+  }
+  .cc-control__page--flush::-webkit-scrollbar-track {
+    background: transparent;
+    border-left: 1px solid var(--ai-border-secondary);
+  }
+  .cc-control__page--flush::-webkit-scrollbar-thumb {
+    background-color: var(--cc-actions-menu-primary-bg);
+    background-clip: padding-box;
+    border: 3px solid transparent;
+    border-radius: var(--ai-radius-full);
+  }
+  @media (hover: hover) and (min-width: 768px) {
+    .cc-control__page--flush::-webkit-scrollbar-thumb { background-color: transparent; }
+    .cc-control__page--flush:hover::-webkit-scrollbar-thumb {
+      background-color: var(--cc-actions-menu-primary-bg);
+    }
   }
 }
 

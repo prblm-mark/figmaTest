@@ -89,5 +89,30 @@
     }
   });
 
+  /* Scrolled state (designer, 2026-10-02). The flush chrome has no rule under it, which is right
+     at rest — but once content scrolls beneath the header it needs one to separate them. The
+     class is toggled at every width; the CSS only acts on it when the chrome is flush, so
+     standard width (which always has the rule) is unaffected. Passive listener, and it only
+     writes when the state actually changes. */
+  function bindScrolled() {
+    var shell = document.querySelector('.cc-control');
+    if (!shell) return;
+    var page = shell.querySelector('.cc-control__page');
+    var chromes = shell.querySelectorAll('.cc-control__chrome');
+    if (!page || !chromes.length) return;
+    var was = null;
+    function sync() {
+      var now = page.scrollTop > 0;
+      if (now === was) return;
+      was = now;
+      chromes.forEach(function (el) { el.classList.toggle('cc-control__chrome--scrolled', now); });
+    }
+    page.addEventListener('scroll', sync, { passive: true });
+    sync();
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bindScrolled);
+  else bindScrolled();
+
   window.ccWidth = { apply: apply, fromUrl: fromUrl, stored: stored, resolve: resolve };
 })();

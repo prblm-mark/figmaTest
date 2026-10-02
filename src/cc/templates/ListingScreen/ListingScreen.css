@@ -80,6 +80,16 @@
   flex: 0 0 auto;
 }
 
+/* Listing form controls sit on surface/minimal (designer, 2026-10-02): the
+ * saved-views trigger, the search / new-view inputs in the FilterBar's top
+ * row, and the Datatables rows-per-page select. Scoped to the top row so the
+ * inputs inside the filter pickers keep their own fill. */
+.cc-listing > .filter-bar > .filter-bar__row--top .filter-bar__views-trigger,
+.cc-listing > .filter-bar > .filter-bar__row--top .input__wrap,
+.cc-listing > .datatables .datatables__select {
+  background-color: var(--ai-surface-minimal);
+}
+
 /* Top-level listing cards lift off the page with shadow/2xs (designer,
  * 2026-10-02): FilterBar, the Orders totals tiles, Datatables. Child
  * combinators, so the Datatables inside a Multi Select Table picker stays flat.
