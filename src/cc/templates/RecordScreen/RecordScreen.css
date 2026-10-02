@@ -113,6 +113,25 @@
   outline-offset: 2px;
 }
 
+/* ── Top-level cards: border/card + shadow/2xs (designer, 2026-10-02) ──
+ * The same treatment as the listing cards: RecordTabs, every RecordSection and
+ * the sidebar FactPanels. Nested cards inside them (StatCards, the chart, form
+ * controls, PromptModifier) are left as they are.
+ * Standard width only for the tabs and sections, because full width redraws
+ * them as flush rules (their own CSS), and `:not(full)` keeps this from
+ * recolouring those rules. The FactPanels stay cards in full width, so they keep
+ * border/card there but lose the shadow, the listings' full-width rule. */
+.cc-control:not([data-cc-width="full"]) .record-screen .record-tabs,
+.cc-control:not([data-cc-width="full"]) .record-screen .record-section,
+.record-screen .fact-panel {
+  border-color: var(--ai-border-card);
+  box-shadow: var(--ai-shadow-2xs);
+}
+
+[data-cc-width="full"] .record-screen .fact-panel {
+  box-shadow: none;
+}
+
 /* ── Full width ───────────────────────────────────── */
 
 [data-cc-width="full"] .record-screen {

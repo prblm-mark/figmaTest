@@ -156,3 +156,9 @@ View & Edit page, right of the kit: **Import step `3933:19459`**, **Add content 
 detached RecordSection — the set has 8 row slots), **Add dynamic form step `3933:150608`**, **Add a step chooser `3933:147201`** and
 its **Dynamic Form unavailable** state `3933:147334` (the modal is composed from ModalHeader + the Modal Small look: its slot cannot
 be laid out from an instance). Still not in Figma: Selector (all types), RichTextEditor, PromptModifier.
+
+**Card border + shadow (designer, 2026-10-02):** RecordTabs, RecordSection and the sidebar FactPanels use
+`--ai-border-card` + `--ai-shadow-2xs` (RecordScreen.css), the same as the listing cards. In standard width
+only for tabs and sections, since full width keeps their flush rules. FactPanels keep `border/card` in full
+width but drop the shadow. Nested cards inside them are unchanged. The Steps table gets it from the listing
+rule (it sits in `.cc-listing`).
