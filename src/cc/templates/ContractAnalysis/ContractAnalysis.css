@@ -118,9 +118,11 @@
   min-height: var(--ai-size-6);
 }
 
-/* Monthly review: bigger charts, closer to the Flowbite benchmark (designer, 2026-10-02). Two-up
+/* Monthly review + Contract overview: bigger charts, closer to the Flowbite benchmark (designer,
+ * 2026-10-02). Two-up
  * charts at size-6 (20rem), full-width ones at size-7 (24rem); the Chart pattern's default is 12rem. */
-[data-panel="Review"] .chart__canvas {
+[data-panel="Review"] .chart__canvas,
+[data-panel="Contract"] .chart__canvas {
   min-height: var(--ai-size-6);
 }
 

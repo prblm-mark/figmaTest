@@ -402,23 +402,24 @@
       kpi('xl', 'jade', 'users', 'Customers', NUM.format(customers), 'Accounts with a contract') +
       kpi('xl', 'violet-radix', 'badge-pound-sterling', 'Ave. value per customer', money(customers ? value / customers : 0), 'Total value ÷ customers'));
 
-    var brand = tok('--ai-surface-brand');
+    /* The Monthly review pair (designer, 2026-10-02): value charts blue, count charts purple. */
+    var valueC = tok(PAIR[0]), countC = tok(PAIR[1]);
     var mv = byDayThisMonth(COUNTED, 'amount'), mc = byDayThisMonth(COUNTED);
     var yv = byMonth(COUNTED, 'amount'), yc = byMonth(COUNTED);
     var fv = byYear(COUNTED, 'amount'), fc = byYear(COUNTED);
     var mName = MONTH[TODAY.getMonth()];
     chartCard('ov-month-value', money(total(mv.data)), 'Contract value · ' + mName + ' to date');
-    draw('ov-month-value', { type: 'line', labels: mv.labels, datasets: [line('Value', mv.data, brand, true)], money: true });
+    draw('ov-month-value', { type: 'line', labels: mv.labels, datasets: [line('Value', mv.data, valueC, true)], money: true });
     chartCard('ov-month-count', NUM.format(total(mc.data)), 'Contracts · ' + mName + ' to date');
-    draw('ov-month-count', { type: 'bar', labels: mc.labels, datasets: [bar('Contracts', mc.data, brand)] });
+    draw('ov-month-count', { type: 'bar', labels: mc.labels, datasets: [bar('Contracts', mc.data, countC)] });
     chartCard('ov-12-value', money(total(yv.data)), 'Contract value · last 12 months');
-    draw('ov-12-value', { type: 'line', labels: yv.labels, datasets: [line('Value', yv.data, brand, true)], money: true });
+    draw('ov-12-value', { type: 'line', labels: yv.labels, datasets: [line('Value', yv.data, valueC, true)], money: true });
     chartCard('ov-12-count', NUM.format(total(yc.data)), 'Contracts · last 12 months');
-    draw('ov-12-count', { type: 'bar', labels: yc.labels, datasets: [bar('Contracts', yc.data, brand)] });
+    draw('ov-12-count', { type: 'bar', labels: yc.labels, datasets: [bar('Contracts', yc.data, countC)] });
     chartCard('ov-5-value', money(total(fv.data)), 'Contract value · last 5 years');
-    draw('ov-5-value', { type: 'line', labels: fv.labels, datasets: [line('Value', fv.data, brand, true)], money: true });
+    draw('ov-5-value', { type: 'line', labels: fv.labels, datasets: [line('Value', fv.data, valueC, true)], money: true });
     chartCard('ov-5-count', NUM.format(total(fc.data)), 'Contracts · last 5 years');
-    draw('ov-5-count', { type: 'bar', labels: fc.labels, datasets: [bar('Contracts', fc.data, brand)] });
+    draw('ov-5-count', { type: 'bar', labels: fc.labels, datasets: [bar('Contracts', fc.data, countC)] });
   }
 
   /* ── Tab: Top Accounts ────────────────────────────────────── */
