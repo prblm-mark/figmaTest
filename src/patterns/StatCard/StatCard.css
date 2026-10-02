@@ -181,7 +181,7 @@
   align-items: baseline;
   flex-wrap: wrap;
   gap: var(--ai-spacing-2);
-  font-size: var(--ai-font-fixed-2xl);
+  font-size: var(--ai-font-fixed-xl);
   line-height: var(--ai-leading-lg);
   font-variant-numeric: tabular-nums;
 }
@@ -258,7 +258,7 @@
   }
 
   .stat-card--xl .stat-card__value {
-    font-size: var(--ai-font-fixed-xl);
+    font-size: var(--ai-font-fixed-lg);
     line-height: var(--ai-leading-md);
   }
 

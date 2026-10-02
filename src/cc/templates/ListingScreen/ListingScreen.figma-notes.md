@@ -3138,3 +3138,10 @@ StatCard figma-notes): Order total (blue soft, `receipt-pound-sterling`) and Pay
 ruled breakdown beside it. Grid gap `--ai-spacing-4` (= `.cc-listing` gap); 2 columns, 1 at `cs-page`
 ≤ 767px. Backend marker `listing-orders-totals` (HANDOVER.md).
 
+
+**Shadow + full-width (designer, 2026-10-02):** the top-level cards (FilterBar, totals tiles,
+Datatables) carry `--ai-shadow-2xs`, and none in the full-width template. In full width the totals
+become a **flush strip**: no outer card or radius, padding `spacing-4` × `spacing-5` (sides match the
+FilterBar rows), a `border-secondary` rule between the tiles and one beneath. Below 768px the strip
+stacks, the divider turns horizontal and padding drops to `spacing-3`. Code-first, with no Figma
+frame yet.

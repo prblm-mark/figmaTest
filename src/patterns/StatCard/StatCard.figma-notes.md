@@ -176,7 +176,7 @@ values:
 | Icon block | `__icon-wrap` | `spacing-9` square, icon `icon-size-lg` | `spacing-8`, icon `icon-size-md` |
 | Title | `__title` | `font-fixed-sm` semibold, `leading-md`, `text-primary` | `font-fixed-xs`, `leading-sm` |
 | Meta | `stat-card__meta` | `font-fixed-2xs`, `leading-sm`, `text-contrast` | — |
-| Value | `__value` | `font-fixed-2xl` bold (title font), `leading-lg`, tabular nums, gap `spacing-2` to unit | `font-fixed-xl`, `leading-md` |
+| Value | `__value` | `font-fixed-xl` bold (title font), `leading-lg`, tabular nums, gap `spacing-2` to unit | `font-fixed-lg`, `leading-md` |
 | Unit | `stat-card__unit` | `font-fixed-xs` medium, `text-contrast` | — |
 | Breakdown | `stat-card__breakdown` (`<dl>`) | beside value: left rule `border-secondary`, padding-left `spacing-6`, gap `spacing-3` × `spacing-6` | under value: top rule, padding-top `spacing-3`, gap `spacing-3` × `spacing-5` |
 | Breakdown label | `__breakdown-label` (`<dt>`) | `font-fixed-xxs` semibold uppercase, 0.5px tracking, `text-contrast` | — |
