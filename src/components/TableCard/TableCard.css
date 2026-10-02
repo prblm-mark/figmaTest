@@ -34,7 +34,7 @@
   inline-size: 100%;
   min-inline-size: var(--ai-size-4);
   padding: var(--ai-spacing-5);
-  border: 1px solid var(--ai-border-secondary);
+  border: 1px solid var(--ai-border-card);   /* border/card, matching the sheets around it (2026-10-02) */
   border-radius: var(--ai-radius-lg);
   background-color: var(--ai-surface-primary);
   box-shadow: var(--ai-shadow-2xs);

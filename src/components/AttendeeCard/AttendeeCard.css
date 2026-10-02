@@ -30,7 +30,7 @@
    * Designer-confirmed 2026-08-25. */
   inline-size: 100%;
   padding-inline: var(--ai-spacing-2);
-  border: 1px solid var(--ai-border-secondary);
+  border: 1px solid var(--ai-border-card);   /* border/card, matching the sheets around it (2026-10-02) */
   border-radius: var(--ai-radius-md);
   background-color: var(--ai-surface-primary);
   box-shadow: var(--ai-shadow-2xs);

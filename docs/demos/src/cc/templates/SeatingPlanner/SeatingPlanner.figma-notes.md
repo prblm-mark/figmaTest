@@ -3970,3 +3970,14 @@ top stroke is now the line. The shadow that appears on the chrome on scroll is u
 - **Below 1024** (stacked), the same flush rules apply. The Table Detail shows as a card inside
   the grid there, so it keeps its card chrome. No mobile frame exists.
 
+
+**CC-wide updates brought to the planner (designer, 2026-10-02):**
+- **Top-level cards:** the event header, room bar, Tables sheet, Table Detail and empty-state card get
+  `--ai-border-card` + `--ai-shadow-2xs` in standard width. In full width they are flush sheets with no
+  shadow. The pinned room bar's `.is-stuck` `shadow-sm` is restated so it still wins. Nested Room / Table /
+  Attendee cards are unchanged.
+- **Find a table:** the search sits on `--ai-surface-minimal`, like the listing search.
+- **Scroll shadow:** the shell's header-group scroll shadow is limited to groups holding a `.cc-header`. This
+  screen has none and already shadows the chrome itself on scroll, so it no longer gets two.
+- **Shell rules this screen inherits from ControlScreen.css:** the scrollbar track rule in full width, and the
+  dark chrome fixes.
