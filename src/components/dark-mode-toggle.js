@@ -52,7 +52,9 @@
    *
    * The attribute is stamped by scripts/build-client.mjs and never appears in the source, so the
    * internal hub keeps its toolbar. */
-  if (document.documentElement.hasAttribute('data-client-preview')) {
+  /* FIGMA CAPTURE: same — the gear tab is team chrome, not part of the screen, and a capture would
+   * write it into every pushed frame (designer, 2026-10-03: "exclude the demo button"). */
+  if (document.documentElement.hasAttribute('data-client-preview') || isCapture) {
     window.demoToolbar = { addControls: function () {}, setActive: function () {} };
     return;
   }
