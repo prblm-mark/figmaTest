@@ -46,8 +46,9 @@ left-aligned).
 | **blue (`accent-blue-solid`) + orange (`accent-orange-solid`)** | **PASS** every check, light and dark: protan ΔE 27.6, tritan 34.4 |
 
 Today = blue, solid, gradient fill; Average = orange, dashed, no fill. Both are direct-labelled and in
-a line-style legend, so identity never rests on hue alone. Text stays in text tokens. **Contract
-Analysis's blue / purple pairs fail the same CVD check**, which is worth a designer call.
+a line-style legend, so identity never rests on hue alone. Text stays in text tokens. Contract
+Analysis's blue / purple pairs failed the same CVD check and were switched to blue / orange
+2026-10-05, so the two dashboards now share one pair.
 
 ## Layout values (all borrowed, no new tokens)
 

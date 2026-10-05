@@ -208,9 +208,11 @@
   /* Distinct hues, Flowbite-style (designer, 2026-10-02): blue + purple for any two-series
    * chart, then pink, orange, lagoon and emerald for groups; grey for "Other". Brand teal and jade
    * were too close to tell apart side by side. */
-  var PAIR = ['--ai-accent-blue-solid', '--ai-accent-purple-solid'];
-  var SERIES = ['--ai-accent-blue-solid', '--ai-accent-purple-solid', '--ai-accent-pink-solid', '--ai-accent-orange-solid',
-    '--ai-accent-lagoon-solid', '--ai-accent-emerald-solid', '--ai-text-contrast'];
+  /* Blue + orange: blue + purple was ΔE 2.5 to a deuteranope (dataviz validator). The group order is
+     the one that passes in both themes: emerald and pink are ΔE 1.1 deutan, so they never sit together. */
+  var PAIR = ['--ai-accent-blue-solid', '--ai-accent-orange-solid'];
+  var SERIES = ['--ai-accent-blue-solid', '--ai-accent-orange-solid', '--ai-accent-emerald-solid', '--ai-accent-purple-solid',
+    '--ai-accent-lagoon-solid', '--ai-accent-pink-solid', '--ai-text-contrast'];
 
   function chartCard(id, big, sub) {
     var host = page.querySelector('[data-chart="' + id + '"]');
