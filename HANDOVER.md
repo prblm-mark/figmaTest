@@ -201,6 +201,19 @@ the Live Dashboard on the ControlScreen shell (shell items are inherited). Full 
 
 ---
 
+## Surface: CrmAnalysis
+
+`src/cc/templates/CrmAnalysis/CrmAnalysis.html` is `/control/crm-analysis` on v3 (TASK-471015, `no-design`, `charts`), built on the Live
+Dashboard on the ControlScreen shell (shell items are inherited). Full spec: `CrmAnalysis.figma-notes.md`.
+
+| id | Element | Now | Backend work needed | Category |
+|---|---|---|---|---|
+| `crm-data` | Every figure on `.cc-crm` (glance pairs, contract and opportunity figures and charts, Top customers, Open pipeline by stage, notes and unsubscribes) | Mock counts in `crm-analysis-data.js` over the real opportunity stages; contracts are Contract Analysis's mock data (`contract-analysis-data.js`) under its counting rule | Classic's queries in CRMAnalysis.cfm (contacts, accounts, opportunities, wins; contracts this month / 12 months, value, customers; opportunities this month (Stage NOT IN 9,10) / 12 months; open value and count (Stage NOT IN 1,9,10,11); notes and unsubscribes per day), contracts under Contract Analysis's shared "counted" rule, plus the previous 30 days for notes / unsubscribes and open opportunities grouped by stage. Note: classic's "Contact notes" counts every note (no type filter) | needs-backend |
+
+`grep -rn "TODO(backend:CrmAnalysis)" src/`
+
+---
+
 ## Surface: Login
 
 `src/cc/templates/Login/Login.html` — the CC Control Centre login screen. A standalone

@@ -1,0 +1,576 @@
+/* CrmAnalysis — /control/crm-analysis on the v3 framework (TASK-471015).
+ *
+ * Built on the Live Dashboard and Sales Leaderboard: cards, card titles, ranked rows with share bars,
+ * table views and the full-width treatment all come from ../LiveDashboard/LiveDashboard.css (linked
+ * first). This file holds the page grid, the "at a glance" pairs, the pipeline cards' figures and
+ * charts, and the activity cards. No Figma frame ("no-design"): every value is borrowed and says
+ * where from.
+ */
+
+/* ── Page grid ───────────────────────────────────────────────
+   Two columns: the glance card across both, then Contracts | Opportunities, then the two activity
+   cards. Same 16px gap as the other dashboards (12px in full width). The grid is an inner wrapper:
+   the page is the cs-page container and cannot query itself. */
+.cc-crm__layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ai-spacing-5);
+  min-inline-size: 0;
+}
+
+.cc-crm__funnel {
+  grid-column: 1 / -1;
+}
+
+/* The two pipeline cards share their row heights (head, figures, chart, ranked list) through a
+   subgrid, so "Top customers" and "Open pipeline by stage" start on one line however the figure
+   labels wrap. The card keeps its own 16px rhythm (`row-gap`), full width included. */
+.cc-crm__pipe {
+  display: grid;
+  grid-row: span 4;
+  grid-template-rows: subgrid;
+  /* An explicit shrinkable column: the implicit one is sized to min-content, so a wide chart or row
+     made the card overflow its track (measured: 324 / 309 at 390). */
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--ai-spacing-5);
+}
+
+/* The figures' wrapper is the size container, not the card: a size container gets layout
+   containment, which switched the card's subgrid off (measured: the two cards' heads went 10px out
+   of line). The wrapper's width follows the card's, which follows the space available. */
+.cc-crm__figures-wrap {
+  container: cc-crm-pipe / inline-size;
+}
+
+/* A narrow card folds its figures to the lead over the other two: three across, a one-word label
+   such as "OPPORTUNITIES" ran into its neighbour (measured: ~350px figures box at a 1200 window);
+   three across fits at 456 (a 1440 window), so the fold is below 420. */
+@container cc-crm-pipe (max-width: 419px) {
+  .cc-crm__figures {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cc-crm__figure--lead {
+    grid-column: 1 / -1;
+  }
+
+  .cc-crm__figures .cc-crm__figure--lead + .cc-crm__figure {
+    padding-inline-start: 0;
+    border-inline-start: 0;
+  }
+}
+
+.cc-live--full .cc-crm__layout {
+  gap: var(--ai-spacing-4);
+}
+
+/* Card heads wrap: a title beside the period switch (or the "as of" line) is wider than a phone's
+   card (measured: the page scrolled sideways at 390). */
+.cc-crm .cc-live__card-head {
+  flex-wrap: wrap;
+}
+
+.cc-crm__meta {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-3xs);
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-contrast);
+  white-space: nowrap;
+}
+
+/* ── At a glance ────────────────────────────────────────────
+   Classic's two linked pairs. Each pair: stat — relation — stat; the relation is a neutral Badge on a
+   hairline that ends in an arrowhead, so it reads as "leads to", not as a divider. The pairs sit side
+   by side with a rule between them. */
+.cc-crm__pairs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ai-spacing-6);
+}
+
+.cc-crm__pair {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-4);
+  min-inline-size: 0;
+}
+
+.cc-crm__pair + .cc-crm__pair {
+  padding-inline-start: var(--ai-spacing-6);
+  border-inline-start: 1px solid var(--ai-border-secondary);
+}
+
+.cc-crm__stat {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas: "icon label" "icon value";
+  column-gap: var(--ai-spacing-4);
+  align-items: center;
+  flex: 0 1 auto;
+  min-inline-size: 0;
+  margin: calc(-1 * var(--ai-spacing-3));
+  padding: var(--ai-spacing-3);
+  border-radius: var(--ai-radius-md);
+  color: var(--ai-text-primary);
+  text-decoration: none;
+  transition: background-color var(--ai-transition-default);
+}
+
+/* Row-link hover: background only (the CC menu-link rule — no brand colour, no underline). */
+.cc-crm__stat:hover {
+  background-color: var(--ai-surface-secondary);
+  color: var(--ai-text-primary);
+  text-decoration: none;
+}
+
+/* StatCard's soft icon chip, size for size (`spacing-8`, `radius-md`, 16px icon), in the page's one
+   colour, lagoon; each icon is named by its label. */
+.cc-crm__stat-icon {
+  grid-area: icon;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  inline-size: var(--ai-spacing-8);
+  block-size: var(--ai-spacing-8);
+  border-radius: var(--ai-radius-md);
+}
+
+.cc-crm__stat-icon [data-lucide],
+.cc-crm__stat-icon svg {
+  inline-size: var(--ai-icon-size-sm);
+  block-size: var(--ai-icon-size-sm);
+}
+
+.cc-crm__stat-icon--lagoon { background-color: var(--ai-accent-lagoon-soft); color: var(--ai-accent-lagoon-soft-fg); }
+
+/* Label: StatCard's breakdown label. Value: StatCard Xl's value (title, bold, `fixed-xl`). */
+.cc-crm__stat-label,
+.cc-crm__figure-label {
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xxs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-xs);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--ai-text-contrast);
+}
+
+.cc-crm__stat-label {
+  grid-area: label;
+}
+
+.cc-crm__stat-value {
+  grid-area: value;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xl);
+  font-weight: var(--ai-font-bold);
+  line-height: var(--ai-leading-lg);
+  font-variant-numeric: tabular-nums;
+}
+
+.cc-crm__link {
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+  min-inline-size: var(--ai-spacing-8);
+}
+
+.cc-crm__link-line {
+  position: relative;
+  flex: 1 1 0;
+  min-inline-size: var(--ai-spacing-4);
+  border-block-start: 1px solid var(--ai-border-primary);
+}
+
+/* The arrowhead: two 1px strokes, drawn as a rotated corner. */
+.cc-crm__link-line--arrow::after {
+  content: "";
+  position: absolute;
+  inset-inline-end: 0;
+  inset-block-start: 0;
+  inline-size: var(--ai-spacing-3);
+  block-size: var(--ai-spacing-3);
+  border-block-start: 1px solid var(--ai-border-primary);
+  border-inline-end: 1px solid var(--ai-border-primary);
+  transform: translateY(-50%) rotate(45deg);
+  transform-origin: center;
+}
+
+.cc-crm__link-badge {
+  flex: 0 0 auto;
+  gap: var(--ai-spacing-2);
+  white-space: nowrap;
+}
+
+.cc-crm__link-badge [data-lucide],
+.cc-crm__link-badge svg {
+  inline-size: var(--ai-icon-size-sm);
+  block-size: var(--ai-icon-size-sm);
+}
+
+/* Win-rate gauge: the Wins chip as a ring filled to the rate (lagoon on its soft tint), the icon in a
+   card-coloured hole. The registered property lets the ring sweep up from 0 on load. */
+@property --cc-crm-pct {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
+.cc-crm__gauge {
+  position: relative;
+  border-radius: var(--ai-radius-full);
+  background: conic-gradient(var(--ai-accent-lagoon-solid) calc(var(--cc-crm-pct) * 1%), var(--ai-accent-lagoon-soft) 0);
+  color: var(--ai-accent-lagoon-soft-fg);
+  transition: --cc-crm-pct 900ms ease-out;
+}
+
+.cc-crm__gauge::before {
+  content: "";
+  position: absolute;
+  inset: var(--ai-spacing-1);
+  border-radius: inherit;
+  background-color: var(--ai-surface-primary);
+}
+
+.cc-crm__gauge [data-lucide],
+.cc-crm__gauge svg {
+  position: relative;
+}
+
+/* ── Pipeline cards ─────────────────────────────────────────
+   Figures across the top (the first one leads, at StatCard Xl's value size), then the chart, then a
+   ranked list. Each block separated by the card's own gap. */
+.cc-crm__figures {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) repeat(2, minmax(0, 1fr));
+  gap: var(--ai-spacing-4);
+  margin: 0;
+}
+
+.cc-crm__figure {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;   /* a label that wraps pushes nothing: values share a baseline row */
+  gap: var(--ai-spacing-1);
+  min-inline-size: 0;
+}
+
+.cc-crm__figure + .cc-crm__figure {
+  padding-inline-start: var(--ai-spacing-4);
+  border-inline-start: 1px solid var(--ai-border-secondary);
+}
+
+.cc-crm__figure-value {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-sm);
+  font-weight: var(--ai-font-bold);
+  line-height: var(--ai-leading-lg);   /* the lead's line box, so all three values sit on one line */
+  color: var(--ai-text-primary);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.cc-crm__figure--lead .cc-crm__figure-value {
+  font-size: var(--ai-font-fixed-xl);
+}
+
+.cc-crm__chart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-4);
+}
+
+.cc-crm__chart-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ai-spacing-3);
+}
+
+.cc-crm__chart-head .chart__sub {
+  margin: 0;
+}
+
+/* ── Calendar heatmap ("This month") ────────────────────────
+   A Mon–Sun table, one row per week. Shades are one hue (dataviz: sequential = one hue, light to dark):
+   `accent-lagoon-solid` mixed into the card surface at 35% and 65%, then solid, so they follow each
+   theme's card colour; no new tokens. "None" is a 12% neutral mix, not `surface-secondary`: on the
+   dark card that grey was LIGHTER than the first shade, so the scale ran backwards. Computed OKLab L,
+   none → most: light 0.95 / 0.86 / 0.76 / 0.65, dark 0.34 / 0.41 / 0.52 / 0.65, one direction each.
+   Day numbers are dark ink throughout (contrast below). Days to come are outlined; today is ringed. */
+.cc-crm__heat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+}
+
+.cc-crm__cal {
+  inline-size: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: var(--ai-spacing-1);
+  margin: calc(-1 * var(--ai-spacing-1));
+}
+
+.cc-crm__cal th {
+  padding: 0 0 var(--ai-spacing-1);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-3xs);
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+  text-align: center;
+}
+
+.cc-crm__cal abbr {
+  text-decoration: none;
+}
+
+.cc-crm__day {
+  position: relative;
+  block-size: var(--ai-spacing-7);
+  padding: 0;
+  border-radius: var(--ai-radius-sm);
+  text-align: center;
+  vertical-align: middle;
+}
+
+.cc-crm__day-num {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-3xs);
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.cc-crm__day--l0 { background-color: color-mix(in srgb, var(--ai-text-contrast) 12%, var(--ai-surface-primary)); color: var(--ai-text-secondary); }
+.cc-crm__day--l1 { background-color: color-mix(in srgb, var(--ai-accent-lagoon-solid) 35%, var(--ai-surface-primary)); color: var(--ai-text-primary); }
+.cc-crm__day--l2 { background-color: color-mix(in srgb, var(--ai-accent-lagoon-solid) 65%, var(--ai-surface-primary)); color: var(--ai-text-primary); }
+.cc-crm__day--l3 { background-color: var(--ai-accent-lagoon-solid); color: var(--ai-text-primary); }
+/* Dark ink on solid lagoon in both themes: its white `-fg` is 3.15:1, and dark mode's text-primary is
+   light (2.9:1), so dark mode takes the card colour instead (4.65:1). Light text-primary: 5.17:1. */
+[data-theme="dark"] .cc-crm__day--l3 { color: var(--ai-surface-primary); }
+
+.cc-crm__day--future {
+  background-color: transparent;
+  box-shadow: inset 0 0 0 1px var(--ai-border-secondary);
+  color: var(--ai-text-contrast);
+}
+
+.cc-crm__day--today {
+  box-shadow: inset 0 0 0 2px var(--ai-text-primary);
+}
+
+.cc-crm__day--pad {
+  background: none;
+}
+
+.cc-crm__heat-key {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-3xs);
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-contrast);
+}
+
+.cc-crm__swatch {
+  inline-size: var(--ai-spacing-4);
+  block-size: var(--ai-spacing-4);
+  border-radius: var(--ai-radius-sm);
+}
+
+.cc-crm__swatch.cc-crm__day--future {
+  margin-inline-start: var(--ai-spacing-4);
+}
+
+/* `size-3` (192px): the two cards' charts sit side by side, so each is half a hero's height. */
+.cc-crm__canvas {
+  position: relative;
+  block-size: var(--ai-size-3);
+}
+
+.cc-crm__sub {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-4);
+  align-self: start;
+  padding-block-start: var(--ai-spacing-5);
+  border-block-start: 1px solid var(--ai-border-secondary);
+}
+
+.cc-crm__sub-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ai-spacing-3);
+}
+
+/* RecordSection's sub-heading scale: title, semibold, `fixed-xs`. */
+.cc-crm__sub-title {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-primary);
+}
+
+.cc-crm__more {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-3xs);
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-secondary);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.cc-crm__more:hover {
+  color: var(--ai-text-primary);
+  text-decoration: none;
+}
+
+.cc-crm__more [data-lucide],
+.cc-crm__more svg {
+  inline-size: var(--ai-icon-size-sm);
+  block-size: var(--ai-icon-size-sm);
+}
+
+/* Share bars in the page's one data colour, lagoon (Mark, 2026-10-05: "one colour scheme on this page,
+   lagoon"). `accent-lagoon-solid`, the charts' token, rather than `surface-brand`, so a client brand
+   change cannot split the bars from the charts. Track: Live Dashboard's `surface-contrast`. */
+.cc-crm .cc-live__bar-fill {
+  background-color: var(--ai-accent-lagoon-solid);
+}
+
+.cc-crm__stage-figs {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--ai-spacing-4);
+  flex: 0 0 auto;
+}
+
+.cc-crm__stage-count {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-3xs);
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-contrast);
+  font-variant-numeric: tabular-nums;
+}
+
+.cc-crm__note,
+.cc-crm__activity-foot {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-3xs);
+  font-weight: var(--ai-font-medium);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-contrast);
+}
+
+.cc-crm__activity-foot strong {
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-primary);
+}
+
+/* ── Activity cards ─────────────────────────────────────────
+   Flowbite's KPI-with-chart card: icon + title, the total large with its change beside it, a small
+   bar chart of the 30 days, and the busiest day underneath. */
+.cc-crm__activity-title {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-4);
+  min-inline-size: 0;
+}
+
+.cc-crm__activity-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ai-spacing-3) var(--ai-spacing-4);
+}
+
+.cc-crm__activity-value {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-3xl);
+  font-weight: var(--ai-font-bold);
+  line-height: var(--ai-leading-xl);
+  color: var(--ai-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.cc-crm__activity-head .badge [data-lucide],
+.cc-crm__activity-head .badge svg,
+.cc-crm__pipe .badge [data-lucide] {
+  inline-size: var(--ai-icon-size-sm);
+  block-size: var(--ai-icon-size-sm);
+}
+
+/* `size-1` (128px): a sparkline, not a second hero. */
+.cc-crm__spark {
+  position: relative;
+  block-size: var(--ai-size-1);
+}
+
+/* ── Narrow page column ─────────────────────────────────────
+   Below 1023 (cs-page) the glance pairs stack, each keeping its stat — relation — stat line. Below
+   767 every card takes the full width (the pipeline figures fold on the card's own width, above).
+   Below 480 a pair stacks its stats with the relation between them, pointing down. */
+@container cs-page (max-width: 1023px) {
+  .cc-crm__pairs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cc-crm__pair + .cc-crm__pair {
+    padding-inline-start: 0;
+    padding-block-start: var(--ai-spacing-6);
+    border-inline-start: 0;
+    border-block-start: 1px solid var(--ai-border-secondary);
+  }
+}
+
+@container cs-page (max-width: 767px) {
+  .cc-crm__layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@container cs-page (max-width: 479px) {
+  .cc-crm__pair {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--ai-spacing-3);
+  }
+
+  .cc-crm__link {
+    justify-content: center;
+    padding-inline-start: var(--ai-spacing-5);
+  }
+
+  .cc-crm__link-line {
+    display: none;
+  }
+
+  .cc-crm__link-badge {
+    margin-inline-start: var(--ai-spacing-8);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cc-crm__stat,
+  .cc-crm__gauge {
+    transition: none;
+  }
+}
