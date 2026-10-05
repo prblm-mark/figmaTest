@@ -157,6 +157,22 @@ the classic errors fixed are in `ContractAnalysis.figma-notes.md`.
 
 ---
 
+## Surface: ApiProfileTestTool
+
+`src/cc/templates/ApiProfileTestTool/` holds `/control/api-profile-user-test-tool` (TASK-470999) and
+`/control/api-profile-crm-test-tool` (TASK-471000) on v3 (`no-design`), **generated** from the classic CFML by `_generate.py`
+on the API help pages' layout and the ControlScreen shell (shell items are inherited). Full spec: `ApiProfileTestTool.figma-notes.md`.
+
+| id | Element | Now | Backend work needed | Category |
+|---|---|---|---|---|
+| `api-test-send` | Send request on every endpoint form (`.cc-api-test__form [data-send]`) | Mock: answers with the API help's documented example for the endpoint, or the documented 401 when there is no API key; no request leaves the page. The request line, headers, query string and body shown are the ones classic would send | Send it: `method` to `/rest/<site>/…` + query, the form's fields as headers, JSON for POST / PUT (classic's `$.ajax`), and show the real status and body | needs-backend |
+| `api-test-sign` | Sign (each form) and Create signature | Computed in the browser (SHA-512 via Web Crypto, MD5 in JS) with the docs' example secret, so only the example key signs | POST `{thisDoc}?action=hash` `{APIKey, HTTPMethod, URIPattern, TimeStamp, Body}` → signature / timestamp / MD5; the secret stays on the server. Classic also sets `Access-Control-Allow-Origin: *` and trusts only the Referer — worth tightening | needs-backend |
+| `api-test-demo-key` | Shared credentials card (`[data-shared-creds]`) | API Key pre-filled with the API help's example key so the demo signs | Start empty on live | visual-only |
+
+`grep -rn "TODO(backend:ApiProfileTestTool)" src/`
+
+---
+
 ## Surface: Login
 
 `src/cc/templates/Login/Login.html` — the CC Control Centre login screen. A standalone

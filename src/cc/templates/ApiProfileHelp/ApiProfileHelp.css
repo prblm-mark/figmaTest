@@ -325,6 +325,19 @@
   .cc-api-help__jump .sel__control {
     inline-size: 100%;
   }
+
+  /* Pinned, the Select would let content show through the page's 24px top padding above it, and
+     beside it in the side padding. A backdrop in the page ground (`--cc-ui-primary-bg`, the page's
+     own background — ControlScreen) covers that band and 8px below (spacing-3), so scrolled content
+     passes cleanly under it. It paints behind the trigger: the Select's z-index makes it a stacking
+     context. */
+  .cc-api-help__jump::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: calc(-1 * var(--ai-spacing-6)) calc(-1 * var(--ai-spacing-6)) calc(-1 * var(--ai-spacing-3));
+    background-color: var(--cc-ui-primary-bg);
+  }
 }
 
 /* Name, then the count chip, then the tick: the name takes the slack so the chips line up at the

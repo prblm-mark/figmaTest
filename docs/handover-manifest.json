@@ -141,6 +141,33 @@
     }
    ]
   },
+  "ApiProfileTestTool": {
+   "file": "src/cc/templates/ApiProfileTestTool/ApiProfileUserTestTool.html, src/cc/templates/ApiProfileTestTool/ApiProfileCRMTestTool.html",
+   "note": "/control/api-profile-user-test-tool (TASK-470999) and /control/api-profile-crm-test-tool (TASK-471000) on v3, no-design, generated from the classic CFML by _generate.py on the API help layout. Reuses the ControlScreen app-shell, so shell-level backend items are inherited from the ControlScreen surface.",
+   "items": [
+    {
+     "id": "api-test-send",
+     "category": "needs-backend",
+     "element": "Send request on every endpoint form (.cc-api-test__form [data-send])",
+     "current": "Mock: answers with the API help's documented example for the endpoint, or the documented 401 when there is no API key; no request leaves the page. The request line, headers, query string and body shown are the ones classic would send",
+     "needs": "Send it: method to /rest/<site>/… + query, the form's fields as headers, JSON for POST / PUT (classic's $.ajax), and show the real status and body"
+    },
+    {
+     "id": "api-test-sign",
+     "category": "needs-backend",
+     "element": "Sign (each form) and Create signature",
+     "current": "Computed in the browser (SHA-512 via Web Crypto, MD5 in JS) with the docs' example secret, so only the example key signs",
+     "needs": "POST {thisDoc}?action=hash {APIKey, HTTPMethod, URIPattern, TimeStamp, Body} → signature / timestamp / MD5; the secret stays on the server. Classic also sets Access-Control-Allow-Origin: * and trusts only the Referer — worth tightening"
+    },
+    {
+     "id": "api-test-demo-key",
+     "category": "visual-only",
+     "element": "Shared credentials card ([data-shared-creds])",
+     "current": "API Key pre-filled with the API help's example key so the demo signs",
+     "needs": "Start empty on live"
+    }
+   ]
+  },
   "ControlScreen": {
    "file": "src/cc/templates/ControlScreen/ControlScreen.html",
    "note": "CC home/landing dashboard. Front-end complete; all data is hardcoded and most actions are mock. Composes many CC patterns — see docs/component-registry.md for per-component status.",
