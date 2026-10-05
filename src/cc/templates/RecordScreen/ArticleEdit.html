@@ -556,8 +556,8 @@
               </ul>
             </div></div>
           </div></div>
-        </section><section class="record-section" aria-labelledby="sec-introduction">
-          <div class="record-section__header"><h2 class="record-section__title" id="sec-introduction">Introduction</h2></div>
+        </section><section class="record-section" aria-labelledby="sec-introduction" aria-describedby="sec-introduction-desc">
+          <div class="record-section__header"><div class="record-section__title-block"><h2 class="record-section__title" id="sec-introduction">Introduction</h2><p class="record-section__description" id="sec-introduction-desc" data-backend-todo="record-section-help">The title and thumbnail appear wherever this article is listed. Keep the title under 70 characters.</p></div></div>
           <div class="record-section__body"><div class="field-row field-row--edit">
             <label class="field-row__label" for="f-title-7">Title<span class="field-row__required" aria-hidden="true">*</span></label>
             <div class="field-row__value"><div class="input">
@@ -3778,6 +3778,49 @@ Avoid repetition, adjectives, or opinion; focus only on verified information.</t
         <!-- TODO(backend:RecordScreen): Delete is mock (closes only) → v1 delete action for the article, then return to the listing -->
         <button type="button" class="btn btn--alert" data-modal-cancel data-backend-todo="record-delete"><i data-lucide="trash-2" aria-hidden="true"></i><span>Delete</span></button>
       </div>
+    </div>
+  </div><div class="modal-overlay" id="modal-duplicates" role="presentation" data-record-modal>
+    <div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="modal-duplicates-title" aria-describedby="modal-duplicates-desc">
+      <div class="modal__header">
+        <div class="modal__title-block"><h2 class="modal__title" id="modal-duplicates-title">Possible duplicates found</h2></div>
+        <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+      <div class="modal__body">
+        <p id="modal-duplicates-desc">This article looks like 2 that already exist. Check them before you save another.</p>
+        <ul class="record-duplicates"><li class="record-duplicates__item">
+              <a href="ArticleView.html" data-keep-width>Affino 9.0.11.25 – The Refinement Update</a>
+              <span class="record-duplicates__meta">Affino Social Commerce Blog · 02/09/2026</span>
+            </li><li class="record-duplicates__item">
+              <a href="ArticleView.html" data-keep-width>Affino 9.0.11 Release Notes</a>
+              <span class="record-duplicates__meta">Release Notes · 28/08/2026</span>
+            </li></ul>
+      </div>
+      <div class="modal__footer">
+        <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
+        <!-- TODO(backend:RecordScreen) record-workflow-duplicates: matches are demo rows → the workflow's duplicate check on Save; Save anyway resubmits with the check acknowledged -->
+        <button type="button" class="btn btn--primary" data-modal-cancel data-backend-todo="record-workflow-duplicates">Save anyway</button>
+      </div>
+    </div>
+  </div><div class="modal-overlay" id="modal-sector" role="presentation" data-record-modal>
+    <div class="modal modal--sm" role="dialog" aria-modal="true" aria-labelledby="modal-sector-title">
+      <div class="modal__header">
+        <div class="modal__title-block"><h2 class="modal__title" id="modal-sector-title">Choose a sector</h2><p class="modal__subtitle">The brief&#x27;s fields depend on the sector.</p></div>
+        <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+      <!-- TODO(backend:RecordScreen) record-sector-choose: demo sectors → RecruitmentSectorProfile list; the choice sets Form.SectorType and loads that sector's fields -->
+      <div class="modal__body"><a class="action-card action-card--chevron" href="#" data-modal-cancel data-backend-todo="record-sector-choose">
+          <span class="action-card__text"><span class="action-card__title">Technology</span><span class="action-card__desc">Software, data and digital roles.</span></span>
+          <i data-lucide="chevron-right" class="action-card__chevron" aria-hidden="true"></i>
+        </a><a class="action-card action-card--chevron" href="#" data-modal-cancel data-backend-todo="record-sector-choose">
+          <span class="action-card__text"><span class="action-card__title">Media &amp; Publishing</span><span class="action-card__desc">Editorial, commercial and production roles.</span></span>
+          <i data-lucide="chevron-right" class="action-card__chevron" aria-hidden="true"></i>
+        </a><a class="action-card action-card--chevron" href="#" data-modal-cancel data-backend-todo="record-sector-choose">
+          <span class="action-card__text"><span class="action-card__title">Finance</span><span class="action-card__desc">Banking, insurance and accountancy roles.</span></span>
+          <i data-lucide="chevron-right" class="action-card__chevron" aria-hidden="true"></i>
+        </a><a class="action-card action-card--chevron" href="#" data-modal-cancel data-backend-todo="record-sector-choose">
+          <span class="action-card__text"><span class="action-card__title">Healthcare</span><span class="action-card__desc">Clinical and care roles.</span></span>
+          <i data-lucide="chevron-right" class="action-card__chevron" aria-hidden="true"></i>
+        </a></div>
     </div>
   </div>
 </body>

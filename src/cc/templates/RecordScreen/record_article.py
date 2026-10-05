@@ -251,8 +251,12 @@ def _view(f):
     return m.view_row(f[0], f[1], f[2])
 
 
-def _edit(f):
+def _edit(f, errors=None):
     label, _, _, kind, value = f[:5]
+    if errors and label in errors:  # failed-Save demo: the submitted value + the validation message
+        value, msg = errors[label]
+        return m.edit_row(label, kind, value, required=(f[5] or {}).get("required", False) if len(f) > 5 and isinstance(f[5], dict) else False,
+                          error=msg)
     extra = f[5] if len(f) > 5 else None
     if kind == "tagbox":
         return m.edit_row(label, "tagbox", tags=value, modal=extra)
@@ -308,8 +312,20 @@ def _prompt(title):
     return m.prompt_modifier("prompt-" + pid, name, fills, prompt, outputs)
 
 
-def edit_sections():
-    return "".join(m.record_section(t, [_edit(f) for f in fields], "edit", prompt=_prompt(t)) for t, fields in SECTIONS)
+# Q3 demo content (code-first, 2026-10-05; Hub TASK-531782). The help line stands in for text a
+# workflow sets per section; 626312's own workflow sets none, so this copy is placeholder.
+SECTION_HELP = {"Introduction": "The title and thumbnail appear wherever this article is listed. Keep the title under 70 characters."}
+SAVE_ERRORS = {"Title": ("", "Enter a title."),
+               "Screen Name": ("Affino 9.0.11.25!", "Use lowercase letters, numbers and hyphens only.")}
+DUPLICATES = [("Affino 9.0.11.25 – The Refinement Update", "Affino Social Commerce Blog", "02/09/2026"),
+              ("Affino 9.0.11 Release Notes", "Release Notes", "28/08/2026")]
+SECTORS = [("Technology", "Software, data and digital roles."), ("Media & Publishing", "Editorial, commercial and production roles."),
+           ("Finance", "Banking, insurance and accountancy roles."), ("Healthcare", "Clinical and care roles.")]
+
+
+def edit_sections(errors=None, help_text=True):
+    return "".join(m.record_section(t, [_edit(f, errors) for f in fields], "edit", prompt=_prompt(t),
+                                    description=SECTION_HELP.get(t) if help_text else None) for t, fields in SECTIONS)
 
 
 def sidebar(analytics=False):

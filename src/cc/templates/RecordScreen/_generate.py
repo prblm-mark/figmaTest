@@ -201,12 +201,41 @@ write_steps_config()
 # ArticleView / ArticleEdit ARE affino.com Article 626312 — the framework filled with a real, fully
 # written article's whole field set + its own sidebar values (record_article.py; designer, 2026-09-29). The Figma draft's six-section
 # content stays in record_markup.py for the component demos; Figma itself still draws the draft.
+def edit_errors_main():
+    m.ERROR_TARGETS.clear()
+    sections = rec.edit_sections(errors=rec.SAVE_ERRORS)
+    return m.validation_summary(list(m.ERROR_TARGETS)) + sections
+
+
+def confirm_main(flagged):
+    if flagged:
+        words = '<ul class="alert__list"><li>Main Body: 2 words</li><li>Shareline 1: 1 word</li></ul>'
+        banner = m.alert("warning", "triangle-alert", "This article needs moderation.",
+                         "The profanity check flagged words in it. You can still confirm; it will go live once a moderator approves it.", words)
+    else:
+        # Warning, not info (designer, 2026-10-05): the article is not saved until Confirm, so leaving loses it.
+        banner = m.alert("warning", "triangle-alert", "Not saved yet.", "Check your article, then confirm to save it. Edit to make changes.")
+    # TODO(backend:RecordScreen) record-workflow-confirm: banner + flagged fields come from the workflow's confirmation step (profanity check) → Confirm submits, Edit returns to the form with values kept
+    return banner + rec.view_sections()
+
+
 pages = {
     "ArticleView.html": build("Article · View", m.record_header("Article", rec.TITLE, "view"),
                               page(m.record_tabs("details", sidebar=True) + body(rec.view_sections(), rec.sidebar(analytics=True)), mode="view"), KIT_JS),
     "ArticleEdit.html": build("Article · Edit", m.record_header("Article", rec.TITLE, "edit"),
                               page(m.record_tabs("details", back="ArticleEdit.html", sidebar=False) + body(rec.edit_sections(), rec.sidebar()), sidebar_on=False, mode="edit"), KIT_JS,
-                              modals=rec.modals() + m.delete_confirm_modal("modal-delete", "article", rec.TITLE)),
+                              modals=rec.modals() + m.delete_confirm_modal("modal-delete", "article", rec.TITLE)
+                                     + m.duplicates_modal("modal-duplicates", rec.DUPLICATES) + m.sector_modal("modal-sector", rec.SECTORS)),
+    # Q3 states the design doesn't draw (code-first, 2026-10-05; Hub TASK-531782). A failed Save is a
+    # server re-render, so it is its own page; the confirmation step is the View layout, read-only.
+    "ArticleEditErrors.html": build("Article · Edit", m.record_header("Article", rec.TITLE, "edit"),
+                                    page(m.record_tabs("details", back="ArticleEdit.html", sidebar=False)
+                                         + body(edit_errors_main(), rec.sidebar()), sidebar_on=False, mode="edit"), KIT_JS,
+                                    modals=rec.modals() + m.delete_confirm_modal("modal-delete", "article", rec.TITLE)),
+    "ArticleConfirm.html": build("Article · Confirm", m.record_header("Article", rec.TITLE, "confirm"),
+                                 page(body(confirm_main(False), rec.sidebar()), sidebar_on=False, mode="view"), KIT_JS),
+    "ArticleConfirmFlagged.html": build("Article · Confirm", m.record_header("Article", rec.TITLE, "confirm"),
+                                        page(body(confirm_main(True), rec.sidebar()), sidebar_on=False, mode="view"), KIT_JS),
     "ArticleSteps.html": build("Article · Steps", m.record_header("Article", rec.TITLE, "view"),
                                page(m.record_tabs("steps", actions=True) + m.steps_listing()), KIT_JS, listing=True,
                                modals=m.add_step_modal()),

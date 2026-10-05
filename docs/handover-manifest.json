@@ -1419,6 +1419,41 @@
      "element": "Sidebar → FactPanel headers (drag by the header, grab cursor; ↑/↓ on a focused header; pointer devices only)",
      "current": "Order saved in localStorage (cc-record-sidebar-order:article) and restored on load.",
      "needs": "Save the order per user profile and record type { recordType, panels: [panelId…] } and render the sidebar in that order server-side. Panel ids are the FactPanel title ids (panel-performance, panel-recentviewers…); unknown or new panels keep their default place."
+    },
+    {
+     "id": "record-validation-summary",
+     "category": "needs-backend",
+     "element": "Edit → failed Save: Alert danger summary + Input error state per field (ArticleEditErrors.html)",
+     "current": "Static demo page; Title and Screen Name shown failing.",
+     "needs": "Re-render the form after ItemLiveEdit.cfm validation with the submitted values kept, the summary listing each failing field (label, message, link to the field id) and each field in its error state with the message as its help line. Focus moves to the summary on load."
+    },
+    {
+     "id": "record-workflow-duplicates",
+     "category": "needs-backend",
+     "element": "Edit → Save → duplicates check dialog (ArticleEdit.html?state=duplicates)",
+     "current": "Two demo matches; Save anyway only closes the dialog.",
+     "needs": "When the workflow has CheckForDuplicatesYN, return the likely matches (title, section, date, link) instead of saving; Save anyway resubmits with the check acknowledged (v1's \"Yes, continue\")."
+    },
+    {
+     "id": "record-workflow-confirm",
+     "category": "needs-backend",
+     "element": "Workflow confirmation step: View layout read-only, header Edit + Confirm, Alert banner (ArticleConfirm.html, ArticleConfirmFlagged.html)",
+     "current": "Static pages; Confirm does nothing; the flagged words are demo.",
+     "needs": "Show the step when the workflow requires confirmation. Banner: always warning — \"Not saved yet\" by default; when flagged, a warning listing the flagged fields when the profanity check flags words (the article then goes to moderation). Confirm submits; Edit returns to the form with values kept."
+    },
+    {
+     "id": "record-sector-choose",
+     "category": "needs-backend",
+     "element": "Recruitment Brief → sector chooser dialog of ActionCards (ArticleEdit.html?state=sector)",
+     "current": "Four demo sectors; choosing one only closes the dialog.",
+     "needs": "List the RecruitmentSectorProfile options; the choice sets Form.SectorType and loads that sector's fields. Past ~6 sectors, use the single Selector dialog instead of cards."
+    },
+    {
+     "id": "record-section-help",
+     "category": "needs-backend",
+     "element": "RecordSection description line under the title (Edit)",
+     "current": "Placeholder copy on Introduction.",
+     "needs": "Per-section help text set by the workflow; render the line only when the workflow sets it."
     }
    ]
   }
