@@ -439,16 +439,16 @@ VIEWERS = [("Simon Hassell", "Principal, Argutus Consulting", "5 days, 18hrs", [
            ("David Delawa", "VP of Media, Ocean Media Group Ltd", "5 days, 18hrs", ["Ocean Media Group Ltd"], "david")]
 
 
-def viewer_list(viewers=None):
+def viewer_list(viewers=None, todo="viewers-add-to-contact-list", empty="No recent viewers yet."):
     viewers = VIEWERS if viewers is None else viewers
     if not viewers:
         # The live record can have no recent viewers — say so rather than show an empty list.
-        return '<p class="fact-panel__empty">No recent viewers yet.</p>'
+        return f'<p class="fact-panel__empty">{e(empty)}</p>'
     items = "".join(viewer_item(*v) for v in viewers)
     return f'''<div class="viewer-list">
             <ul class="viewer-list__items">{items}</ul>
-            <!-- TODO(backend:RecordScreen): "Add to Contact List" → add the viewers to a contact list (list picker + POST) -->
-            {btn("Add to Contact List", "secondary", "sm", attrs=' data-backend-todo="viewers-add-to-contact-list"')}
+            <!-- TODO(backend:RecordScreen): "Add to Contact List" → add these people to a contact list (list picker + POST) -->
+            {btn("Add to Contact List", "secondary", "sm", attrs=f' data-backend-todo="{todo}"')}
           </div>'''
 
 
@@ -517,6 +517,104 @@ def performance_summary(canvas_id="perf-chart", perf=None):
           </div>'''
 
 
+# ── v1 analytics panels (code-first, designer 2026-10-05; Hub TASK-531782 Q1) ──
+# v1 draws these six at the end of the Introduction section on View (LiveEditViewDisplay.cfm,
+# AfcStandard/CC/*Include.cfm). Here they sit in the sidebar after Audit as a starting point for
+# design, each built only from kit parts. v1 hides a panel that has no rows; so does the build.
+CONVERSIONS = {  # 12-month series per type — v1's Registration / Purchase switch (user setting)
+    "registration": {"total": "64", "per_day": "0.18", "rate": "1.94%",
+                     "series": [2, 4, 3, 6, 5, 7, 4, 8, 6, 9, 5, 5]},
+    "purchase": {"total": "17", "per_day": "0.05", "rate": "0.52%",
+                 "series": [0, 1, 2, 1, 0, 2, 3, 1, 2, 2, 1, 2]},
+}
+CONVERTERS = [("Hannah Roe", "Purchase · Order 104821", "2 days", ["Ocean Media Group Ltd"], "hannah"),
+              ("Tom Brierley", "Registration", "3 days, 4hrs", ["Playbook Media Trading Company"], "tom"),
+              ("Priya Nair", "Purchase · Order 104790", "6 days", ["Argutus"], "priya")]
+ITINERARY = [("Grace Okafor", "Head of Events, Argutus Consulting", "1 day, 2hrs", ["Argutus"], "grace"),
+             ("Leo Martins", "Marketing Director, Ocean Media Group Ltd", "4 days", ["Ocean Media Group Ltd"], "leo")]
+REFERRERS = [("linkedin.com/feed", "42"), ("google.com", "31"), ("news.ycombinator.com/item?id=41822", "12"),
+             ("bing.com", "6"), ("t.co/x8Kq2LmA", "4")]
+LINK_CLICKS = [("affino.com/pricing", "38"), ("affino.com/release-notes/9-0-11", "21"),
+               ("docs.affino.com/orders-api", "14")]
+CLICKERS = [("Simon Hassell", "affino.com/pricing", "5 days, 18hrs", ["Argutus"], "simon"),
+            ("Hannah Roe", "docs.affino.com/orders-api", "6 days", ["Ocean Media Group Ltd"], "hannah")]
+
+
+def converting_articles(canvas_id="conv-chart"):
+    c = CONVERSIONS["registration"]
+    switch = (f'<div class="seg-control seg-control--sm" role="radiogroup" aria-label="Conversion type" data-seg-control data-conv-switch>'
+              f'<button class="seg-control__btn seg-control__btn--active" type="button" role="radio" aria-checked="true" data-value="registration">Registration</button>'
+              f'<button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="purchase">Purchase</button></div>')
+    body = f'''<div class="performance-summary">
+            <div class="performance-summary__stats">
+              <div data-conv-stat="total">{stat("Conversions", c["total"], "violet-radix", "target")}</div>
+              <div class="performance-summary__stats-row">
+                <div data-conv-stat="per_day">{stat("Per Day", c["per_day"], "indigo", "calendar-days")}</div>
+                <div data-conv-stat="rate">{stat("Per Impression", c["rate"], "jade", "percent")}</div>
+              </div>
+            </div>
+            <div class="performance-summary__chart">
+              <div class="chart"><div class="chart__canvas"><canvas id="{canvas_id}" aria-label="Conversions per month, last 12 months" role="img"></canvas></div></div>
+            </div>
+          </div>'''
+    # TODO(backend:RecordScreen) record-analytics-conversions: Converting Articles → per-type totals + 12-month series (AppUser/OrderConvertingStandardItem)
+    return fact_panel("Converting Articles", body, subtitle="Last 12 Months", action=switch).replace(
+        '<section class="fact-panel"', '<section class="fact-panel" data-backend-todo="record-analytics-conversions"', 1)
+
+
+def ranked_table(caption, col, rows, todo, count="Clicks"):
+    trs = "".join(f'<tr><td class="record-screen__cell-truncate" title="{e(k)}">{e(k)}</td><td class="table__cell--right">{e(v)}</td></tr>' for k, v in rows)
+    return f'''<!-- TODO(backend:RecordScreen): {e(caption)} rows → {todo} -->
+          <div class="table-wrap" data-backend-todo="{todo}"><div class="table-wrap__scroll"><table class="table" aria-label="{e(caption)}">
+            <thead><tr><th scope="col">{e(col)}</th><th scope="col" class="table__cell--right">{e(count)}</th></tr></thead>
+            <tbody>{trs}</tbody>
+          </table></div></div>'''
+
+
+def referring_urls():
+    internal = ('<label class="checkbox"><input type="checkbox" class="checkbox__input" data-backend-todo="record-analytics-referrers">'
+                f'<span class="checkbox__indicator">{icon("check")}</span>'
+                '<span class="checkbox__label"><span class="checkbox__label-text">Show internal URLs</span></span></label>')
+    link = ('<a class="performance-summary__link" href="#" data-backend-todo="record-analytics-referrers">'
+            f'<span>Referral analysis</span>{icon("arrow-right")}</a>')
+    body = ranked_table("Referring URLs", "Referrer", REFERRERS, "record-analytics-referrers", count="Visits") + internal + link
+    return fact_panel("Referring URLs", body)
+
+
+def link_clicks():
+    # v1 shows one column per month for 12 months — too wide for the sidebar, so this shows the
+    # 12-month total per link (deviation; the monthly grid belongs in full analytics).
+    return fact_panel("Link Clicks", ranked_table("Link clicks", "Link", LINK_CLICKS, "record-analytics-link-clicks"), subtitle="Last 12 Months")
+
+
+def recent_clicks():
+    opts = ["All links"] + [l for l, _ in LINK_CLICKS]
+    def opt(i, o):
+        on = i == 0
+        cls = "sel__menu-item sel__menu-item--selected" if on else "sel__menu-item"
+        sel = ' aria-selected="true"' if on else ""
+        return f'<li><button type="button" class="{cls}" role="option"{sel}>{e(o)}{icon("check") if on else ""}</button></li>'
+    menu = "".join(opt(i, o) for i, o in enumerate(opts))
+    flt = f'''<div class="sel" data-sel data-backend-todo="record-analytics-recent-clicks-filter">
+            <label class="sel__label" for="recent-clicks-link">Link</label>
+            <button id="recent-clicks-link" class="sel__control" type="button" data-sel-trigger>
+              <span class="sel__value">All links</span><span class="sel__chevron">{icon("chevron-down")}</span>
+            </button>
+            <ul class="sel__menu" role="listbox">{menu}</ul>
+          </div>'''
+    return fact_panel("Recent Clicks", flt + viewer_list(CLICKERS, "record-analytics-people"))
+
+
+def analytics_panels(seminar=True):
+    out = [converting_articles(),
+           fact_panel("Recent Conversions", viewer_list(CONVERTERS, "record-analytics-people"))]
+    if seminar:  # v1: Advanced Seminar only (ContentTypeCode 17)
+        out.append(fact_panel("Added to Itinerary", viewer_list(ITINERARY, "record-analytics-people"),
+                              subtitle="Advanced Seminar only"))
+    out += [referring_urls(), link_clicks(), recent_clicks()]
+    return "".join(out)
+
+
 # ── Sidebar ──────────────────────────────────────────────────────────
 FACTS = {
     "Record": [("Article Code", "626353"), ("Batch Reference", "—")],
@@ -528,7 +626,7 @@ FACTS = {
 }
 
 
-def sidebar(canvas_id="perf-chart", facts=None, perf=None, viewers=None):
+def sidebar(canvas_id="perf-chart", facts=None, perf=None, viewers=None, analytics=False):
     facts = facts or FACTS
     expand = '<button type="button" class="btn btn--secondary btn--xs" data-advisory-expand-all aria-expanded="false"><span>Expand all</span></button>'
     return "".join([
@@ -539,6 +637,7 @@ def sidebar(canvas_id="perf-chart", facts=None, perf=None, viewers=None):
         fact_panel("Meta Information", fact_list(facts["Meta Information"])),
         fact_panel("Index Status", fact_list(facts["Index Status"])),
         fact_panel("Audit", fact_list(facts["Audit"])),
+        analytics_panels() if analytics else "",
     ])
 
 

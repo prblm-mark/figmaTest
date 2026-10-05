@@ -238,3 +238,16 @@
 .record-screen__sidebar .btn--tertiary:focus-visible {
   border-color: var(--ai-border-secondary);
 }
+
+/* ── Sidebar analytics tables (code-first, 2026-10-05) ──
+ * Referring URLs / Link Clicks put a URL beside a count in a 384px panel. A long URL would set the
+ * table's min-content and push the count out of the panel, so the URL cell yields: zero max width
+ * plus full inline size makes it take only the space left after the count, then ellipsis. The full
+ * URL is in the cell's title. */
+.record-screen__cell-truncate {
+  max-inline-size: 0;
+  inline-size: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

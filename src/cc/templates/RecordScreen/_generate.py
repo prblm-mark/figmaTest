@@ -203,7 +203,7 @@ write_steps_config()
 # content stays in record_markup.py for the component demos; Figma itself still draws the draft.
 pages = {
     "ArticleView.html": build("Article · View", m.record_header("Article", rec.TITLE, "view"),
-                              page(m.record_tabs("details", sidebar=True) + body(rec.view_sections(), rec.sidebar()), mode="view"), KIT_JS),
+                              page(m.record_tabs("details", sidebar=True) + body(rec.view_sections(), rec.sidebar(analytics=True)), mode="view"), KIT_JS),
     "ArticleEdit.html": build("Article · Edit", m.record_header("Article", rec.TITLE, "edit"),
                               page(m.record_tabs("details", back="ArticleEdit.html", sidebar=False) + body(rec.edit_sections(), rec.sidebar()), sidebar_on=False, mode="edit"), KIT_JS,
                               modals=rec.modals() + m.delete_confirm_modal("modal-delete", "article", rec.TITLE)),

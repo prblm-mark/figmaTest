@@ -67,6 +67,22 @@
   font-weight: var(--ai-font-bold);
 }
 
+/* Reorderable panels (code-first, 2026-10-05) — the page's script adds --sortable on pointer
+ * devices only (RecordScreen.js). The header is the drag area: a grab cursor and nothing else, so
+ * the layout is untouched. Controls in the header keep their own cursor. The dragged panel dims. */
+.fact-panel--sortable .fact-panel__header {
+  cursor: grab;
+}
+
+.fact-panel--dragging,
+.fact-panel--dragging .fact-panel__header {
+  cursor: grabbing;
+}
+
+.fact-panel--dragging {
+  opacity: 0.5;
+}
+
 /* ── FactList ─────────────────────────────────────── */
 
 .fact-list {

@@ -1357,6 +1357,48 @@
      "element": "Edit header → Delete (Button Alert) + Modal Confirmation",
      "current": "Delete opens a confirm; its Delete only closes the dialog.",
      "needs": "Call v1's article delete (permission-gated, render only when the user may delete), then return to the listing."
+    },
+    {
+     "id": "record-analytics-conversions",
+     "category": "needs-backend",
+     "element": "Sidebar → Converting Articles (SegmentedControl Registration/Purchase + StatCards + Chart)",
+     "current": "Static totals and 12-month series for both types in RecordScreen.js; the switch swaps them client-side.",
+     "needs": "Per type: total, per day (since publish), conversions ÷ impressions, 12 monthly counts (AppUserConvertingStandardItem / OrderConvertingStandardItem). Remember the chosen type per user, as v1 does. Hide the panel when both totals are 0."
+    },
+    {
+     "id": "record-analytics-people",
+     "category": "needs-backend",
+     "element": "Sidebar → Recent Conversions, Added to Itinerary, Recent Clicks (ViewerList)",
+     "current": "Demo people. Each panel's Add to Contact List does nothing.",
+     "needs": "v1's StandardItemView getRecentConversions / getUsersAddedToItinerary / getUsersRecentClicks with paging; Add to Contact List per panel. Added to Itinerary only for Advanced Seminar (ContentTypeCode 17). Hide a panel with no rows."
+    },
+    {
+     "id": "record-analytics-recent-clicks-filter",
+     "category": "needs-backend",
+     "element": "Sidebar → Recent Clicks → Link Select",
+     "current": "Lists the demo links; choosing one does nothing. v1's date-range filter is not drawn yet.",
+     "needs": "Filter by tracked link (StandardItemLinkTracking) and date range; reload the list."
+    },
+    {
+     "id": "record-analytics-referrers",
+     "category": "needs-backend",
+     "element": "Sidebar → Referring URLs (Table) + Show internal URLs + Referral analysis",
+     "current": "Five static referrers; the checkbox and link do nothing.",
+     "needs": "Top referrers by visit count with paging; Show internal URLs drops the zone-domain exclusion; link to ReferralAnalysis filtered to this item."
+    },
+    {
+     "id": "record-analytics-link-clicks",
+     "category": "needs-backend",
+     "element": "Sidebar → Link Clicks (Table)",
+     "current": "Three static links with 12-month totals.",
+     "needs": "Per tracked link, the 12-month click total. v1's per-month columns are not shown in the sidebar (deviation)."
+    },
+    {
+     "id": "record-sidebar-order",
+     "category": "needs-backend",
+     "element": "Sidebar → FactPanel headers (drag by the header, grab cursor; ↑/↓ on a focused header; pointer devices only)",
+     "current": "Order saved in localStorage (cc-record-sidebar-order:article) and restored on load.",
+     "needs": "Save the order per user profile and record type { recordType, panels: [panelId…] } and render the sidebar in that order server-side. Panel ids are the FactPanel title ids (panel-performance, panel-recentviewers…); unknown or new panels keep their default place."
     }
    ]
   }
