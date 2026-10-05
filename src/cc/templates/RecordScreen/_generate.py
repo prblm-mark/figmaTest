@@ -206,7 +206,7 @@ pages = {
                               page(m.record_tabs("details", sidebar=True) + body(rec.view_sections(), rec.sidebar()), mode="view"), KIT_JS),
     "ArticleEdit.html": build("Article · Edit", m.record_header("Article", rec.TITLE, "edit"),
                               page(m.record_tabs("details", back="ArticleEdit.html", sidebar=False) + body(rec.edit_sections(), rec.sidebar()), sidebar_on=False, mode="edit"), KIT_JS,
-                              modals=rec.modals()),
+                              modals=rec.modals() + m.delete_confirm_modal("modal-delete", "article", rec.TITLE)),
     "ArticleSteps.html": build("Article · Steps", m.record_header("Article", rec.TITLE, "view"),
                                page(m.record_tabs("steps", actions=True) + m.steps_listing()), KIT_JS, listing=True,
                                modals=m.add_step_modal()),

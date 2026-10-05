@@ -38,14 +38,21 @@ def record_header(record_type, title, mode, view_href="ArticleView.html", edit_h
     # Every header button has an icon, and its label sits in .cc-header__btn-label, which the
     # mobile container query hides — icon-only below 768 (the agreed CC header rule; Figma
     # 4105:3637). aria-label keeps the name once the label is display:none.
-    def hbtn(label, kind, ic, tag="button", href="#", attrs=""):
-        inner = f'{icon(ic)}<span class="cc-header__btn-label">{e(label)}</span>'
+    def hbtn(label, kind, ic, tag="button", href="#", attrs="", icon_cls=""):
+        inner = f'{icon(ic, icon_cls) if icon_cls else icon(ic)}<span class="cc-header__btn-label">{e(label)}</span>'
         cls = f"btn btn--{kind}"
         if tag == "a":
             return f'<a class="{cls}" href="{href}" aria-label="{e(label)}"{attrs}>{inner}</a>'
         return f'<button type="button" class="{cls}" aria-label="{e(label)}"{attrs}>{inner}</button>'
     if mode == "edit":
-        actions = (hbtn("Cancel", "secondary", "x", tag="a", href=view_href, attrs=' data-keep-width')
+        # Delete sits between Cancel and Save as Button Type=Alert (Figma 60:2407) and asks first
+        # (designer, 2026-10-05; Hub TASK-531782 Q2). It is the one Edit exception to the
+        # one-primary + one-secondary rule: Save stays the page's only primary. Cancel is a
+        # text-only tertiary on desktop; on mobile, where the labels collapse, it shows its icon and a
+        # Secondary border.
+        actions = (hbtn("Cancel", "tertiary cc-header__btn--bordered-mobile", "x", tag="a", href=view_href, attrs=' data-keep-width',
+                        icon_cls="cc-header__btn-icon--mobile")
+                   + hbtn("Delete", "alert", "trash-2", attrs=' aria-haspopup="dialog" data-record-modal-open="modal-delete"')
                    + hbtn("Save", "primary", "check"))
     else:
         actions = (hbtn("Add", "secondary", "plus")
@@ -631,6 +638,24 @@ def multi_select_modal(mid, title, source):
         <span class="selector__status" data-selector-count aria-live="polite"></span>
         <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
         <button type="button" class="btn btn--primary" data-filter-dropdowns-apply>Apply</button>
+      </div>
+    </div>
+  </div>'''
+
+
+# ── Delete confirm — Modal Type=Confirmation (2464:761), as the Modal demo draws it ──
+def delete_confirm_modal(mid, noun, name):
+    return f'''<div class="modal-overlay" id="{mid}" role="presentation">
+    <div class="modal modal--confirm" role="alertdialog" aria-modal="true" aria-labelledby="{mid}-title" aria-describedby="{mid}-desc">
+      <div class="modal__body">
+        <div class="modal__icon-wrap">{icon("triangle-alert")}</div>
+        <h2 class="modal__confirm-title" id="{mid}-title">Delete this {e(noun)}?</h2>
+        <p class="modal__confirm-desc" id="{mid}-desc">“{e(name)}” will be permanently deleted. This cannot be undone.</p>
+      </div>
+      <div class="modal__footer">
+        <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
+        <!-- TODO(backend:RecordScreen): Delete is mock (closes only) → v1 delete action for the article, then return to the listing -->
+        <button type="button" class="btn btn--alert" data-modal-cancel data-backend-todo="record-delete">{icon("trash-2")}<span>Delete</span></button>
       </div>
     </div>
   </div>'''

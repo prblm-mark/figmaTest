@@ -482,7 +482,7 @@
               <h1 class="cc-header__title">How charities can use Affino AI plugins</h1>
             </div>
           </div>
-          <div class="cc-header__actions"><a class="btn btn--secondary" href="ArticleView.html" aria-label="Cancel" data-keep-width><i data-lucide="x" aria-hidden="true"></i><span class="cc-header__btn-label">Cancel</span></a><button type="button" class="btn btn--primary" aria-label="Save"><i data-lucide="check" aria-hidden="true"></i><span class="cc-header__btn-label">Save</span></button></div>
+          <div class="cc-header__actions"><a class="btn btn--tertiary cc-header__btn--bordered-mobile" href="ArticleView.html" aria-label="Cancel" data-keep-width><i data-lucide="x" class="cc-header__btn-icon--mobile" aria-hidden="true"></i><span class="cc-header__btn-label">Cancel</span></a><button type="button" class="btn btn--alert" aria-label="Delete" aria-haspopup="dialog" data-record-modal-open="modal-delete"><i data-lucide="trash-2" aria-hidden="true"></i><span class="cc-header__btn-label">Delete</span></button><button type="button" class="btn btn--primary" aria-label="Save"><i data-lucide="check" aria-hidden="true"></i><span class="cc-header__btn-label">Save</span></button></div>
         </header>
         </div>
 
@@ -3764,6 +3764,19 @@ Avoid repetition, adjectives, or opinion; focus only on verified information.</t
         <span class="selector__status" data-selector-count aria-live="polite"></span>
         <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
         <button type="button" class="btn btn--primary" data-filter-dropdowns-apply>Apply</button>
+      </div>
+    </div>
+  </div><div class="modal-overlay" id="modal-delete" role="presentation">
+    <div class="modal modal--confirm" role="alertdialog" aria-modal="true" aria-labelledby="modal-delete-title" aria-describedby="modal-delete-desc">
+      <div class="modal__body">
+        <div class="modal__icon-wrap"><i data-lucide="triangle-alert" aria-hidden="true"></i></div>
+        <h2 class="modal__confirm-title" id="modal-delete-title">Delete this article?</h2>
+        <p class="modal__confirm-desc" id="modal-delete-desc">“How charities can use Affino AI plugins” will be permanently deleted. This cannot be undone.</p>
+      </div>
+      <div class="modal__footer">
+        <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
+        <!-- TODO(backend:RecordScreen): Delete is mock (closes only) → v1 delete action for the article, then return to the listing -->
+        <button type="button" class="btn btn--alert" data-modal-cancel data-backend-todo="record-delete"><i data-lucide="trash-2" aria-hidden="true"></i><span>Delete</span></button>
       </div>
     </div>
   </div>

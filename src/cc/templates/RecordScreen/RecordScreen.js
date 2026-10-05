@@ -184,11 +184,12 @@
       if (!ov) return;
       opener = t; openModal = ov;
       ov.classList.add('modal-overlay--open');
-      var first = ov.querySelector('.action-card:not(.action-card--disabled)') || ov.querySelector('.modal__close');
+      // A destructive confirm lands on Cancel, so Enter never deletes by accident.
+      var first = ov.querySelector('.action-card:not(.action-card--disabled)') || ov.querySelector('[data-modal-cancel], .modal__close');
       if (first) first.focus();
       return;
     }
-    if (openModal && (e.target === openModal || e.target.closest('.modal__close'))) closeModal();
+    if (openModal && (e.target === openModal || e.target.closest('.modal__close, [data-modal-cancel]'))) closeModal();
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
 
