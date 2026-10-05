@@ -1,0 +1,169 @@
+/* SalesLeaderboard — /control/sales-leaderboard on the v3 framework (TASK-471014).
+ *
+ * Built on the Live Dashboard: its page grid, cards, ranked lists, tables, KPI tiles, chart and full
+ * width treatment all come from ../LiveDashboard/LiveDashboard.css (linked first). This file holds
+ * only what this screen adds: the time frame / currency toolbar, the card meta, the table variants
+ * and the narrow-column rules for the second table. No Figma frame ("no-design").
+ */
+
+/* ── Toolbar ────────────────────────────────────────────────
+   Classic's Time Frame and Currency selects, Flowbite-style: no visible labels (each control is
+   named by aria-label), the window's dates beside them, and the last refresh at the far end. */
+.cc-sales__toolbar {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ai-spacing-4) var(--ai-spacing-5);
+  /* Anchors the visually-hidden announcer (see Live Dashboard's note on unanchored hidden text). */
+  position: relative;
+}
+
+.cc-sales__filters {
+  flex: 1 1 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ai-spacing-3) var(--ai-spacing-4);
+  min-inline-size: 0;
+}
+
+/* Preferred widths as caps, so the controls yield on a phone rather than overflow. */
+.cc-sales__sel--timeframe {
+  flex: 0 1 var(--ai-size-3);
+  max-inline-size: var(--ai-size-3);
+}
+
+.cc-sales__sel--currency {
+  flex: 0 1 var(--ai-size-1);
+  max-inline-size: var(--ai-size-1);
+}
+
+.cc-sales__range,
+.cc-sales__updated,
+.cc-sales__card-meta {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-3xs);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-contrast);
+  white-space: nowrap;
+  font-weight: var(--ai-font-medium);
+}
+
+.cc-sales__range {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+}
+
+.cc-sales__range [data-lucide],
+.cc-sales__range svg {
+  inline-size: var(--ai-icon-size-sm);
+  block-size: var(--ai-icon-size-sm);
+  color: var(--ai-icon-secondary);
+}
+
+/* ── Cards ──────────────────────────────────────────────────
+   The time frame repeats beside each leaderboard's title (`__card-meta`, styled with the toolbar's
+   meta text above), so a card read on its own still says what window it covers. */
+.cc-sales .datatables__toolbar {
+  justify-content: space-between;
+}
+
+.cc-sales__table-empty {
+  padding: var(--ai-spacing-5);
+}
+
+/* Tables: the wide text column takes the slack; values stay right-aligned and on one line. */
+.cc-sales__table .table th.cc-live__num {
+  text-align: end;
+}
+
+.cc-sales__table--person .cc-live__title-cell .cc-live__link,
+.cc-sales__table--recent .cc-live__title-cell .cc-live__link {
+  font-weight: var(--ai-font-medium);
+}
+
+/* Legend: the part-month key, dotted in this year's blue (the chart dots that segment). */
+.cc-sales__key--partial::before {
+  border-block-start: 2px dotted var(--ai-accent-blue-solid);
+}
+
+/* A line that arrived with the last refresh: Live Dashboard's changed-value wash, once. */
+.cc-sales__new td {
+  animation: cc-live-changed 1.6s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cc-sales__new td {
+    animation: none;
+  }
+}
+
+/* ── Narrow page column ─────────────────────────────────────
+   Below 1023 the teams card takes the full row under the chart, as Live Dashboard's online list
+   does. Below 767 the tables keep what answers "who sold how much" (measured: both overflowed their
+   cards at 390). Live Dashboard's rule already hides each table's third column (Business unit;
+   Ordered); this drops Sales team, and Order no., category and line from Most recent sales. The
+   toolbar becomes a tidy two-row grid. */
+@container cs-page (max-width: 1023px) {
+  .cc-sales__teams {
+    grid-column: 1 / -1;
+  }
+}
+
+@container cs-page (max-width: 767px) {
+  .cc-sales__table--person .table th:nth-child(2),
+  .cc-sales__table--person .table td:nth-child(2),
+  .cc-sales__table--recent .table th:nth-child(2),
+  .cc-sales__table--recent .table td:nth-child(2),
+  .cc-sales__table--recent .table th:nth-child(4),
+  .cc-sales__table--recent .table td:nth-child(4),
+  .cc-sales__table--recent .table th:nth-child(5),
+  .cc-sales__table--recent .table td:nth-child(5) {
+    display: none;
+  }
+
+  .cc-sales__table .cc-live__nowrap,
+  .cc-sales__table .table th {
+    white-space: normal;
+  }
+
+  .cc-sales__table .cc-live__num {
+    white-space: nowrap;
+  }
+
+  /* Toolbar: a two-column grid — the selects filling the row, flush with the cards' edges, then the
+     dates and "Updated" sharing one line (Mark, 2026-10-05: the wrapped toolbar left ragged widths
+     and three stray lines). The filters wrapper steps aside so its children join the grid. */
+  .cc-sales__toolbar {
+    display: grid;
+    /* The currency needs three letters, so it takes its usual 128px cap and the time frame the rest
+       ("Previous month" truncated at equal halves). */
+    grid-template-columns: minmax(0, 1fr) minmax(0, var(--ai-size-1));
+    gap: var(--ai-spacing-3) var(--ai-spacing-4);
+  }
+
+  .cc-sales__filters {
+    display: contents;
+  }
+
+  .cc-sales__sel--timeframe,
+  .cc-sales__sel--currency {
+    max-inline-size: none;
+  }
+
+  .cc-sales__range {
+    min-inline-size: 0;
+  }
+
+  .cc-sales__range > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .cc-sales__updated {
+    justify-self: end;
+  }
+}

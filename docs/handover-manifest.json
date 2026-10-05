@@ -188,6 +188,26 @@
     }
    ]
   },
+  "SalesLeaderboard": {
+   "file": "src/cc/templates/SalesLeaderboard/SalesLeaderboard.html",
+   "note": "/control/sales-leaderboard on v3 (TASK-471014, no-design, charts), built on the Live Dashboard. Reuses the ControlScreen app-shell, so shell-level backend items are inherited from the ControlScreen surface.",
+   "items": [
+    {
+     "id": "sales-data",
+     "category": "needs-backend",
+     "element": "Every figure on .cc-sales (KPIs, chart, teams, people, recent sales) and the Currency options",
+     "current": "Mock orders generated from a fixed seed in sales-leaderboard-data.js, over the real currency formats, product lines and categories, business unit and sales team",
+     "needs": "Classic's SalesLeaderboard.cfc: getZoneCurrencies, getTotalMonthlySales (this year + last by month, ex VAT), getTopSalesTeams / getTopSalesPeople / getMostRecentSales from the time frame's start with MaxRows paging (5 +5, capped at 100), excluding the CRM profile's order / payment statuses. Confirm Previous Month's end date (classic had none)"
+    },
+    {
+     "id": "sales-refresh",
+     "category": "needs-backend",
+     "element": "\"Updated n m ago\" in the toolbar",
+     "current": "Every 5 minutes (while visible) the mock sometimes adds an order and re-renders",
+     "needs": "Call getData&type=all with the time frame, currency and each list's MaxRows every 5 minutes while visible (classic's salesleaderboard.js) and re-render; keep the Access Denied redirect (security code 14)"
+    }
+   ]
+  },
   "ControlScreen": {
    "file": "src/cc/templates/ControlScreen/ControlScreen.html",
    "note": "CC home/landing dashboard. Front-end complete; all data is hardcoded and most actions are mock. Composes many CC patterns — see docs/component-registry.md for per-component status.",

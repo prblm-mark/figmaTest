@@ -187,6 +187,20 @@ existing parts on the ControlScreen shell (shell items are inherited). Full spec
 
 ---
 
+## Surface: SalesLeaderboard
+
+`src/cc/templates/SalesLeaderboard/SalesLeaderboard.html` is `/control/sales-leaderboard` on v3 (TASK-471014, `no-design`, `charts`), built on
+the Live Dashboard on the ControlScreen shell (shell items are inherited). Full spec: `SalesLeaderboard.figma-notes.md`.
+
+| id | Element | Now | Backend work needed | Category |
+|---|---|---|---|---|
+| `sales-data` | Every figure on `.cc-sales` (KPIs, chart, teams, people, recent sales) and the Currency options | Mock orders generated from a fixed seed in `sales-leaderboard-data.js`, over the real currency formats, product lines and categories, business unit and sales team | Classic's SalesLeaderboard.cfc: getZoneCurrencies, getTotalMonthlySales (this year + last by month, ex VAT), getTopSalesTeams / getTopSalesPeople / getMostRecentSales from the time frame's start with MaxRows paging (5 +5, capped at 100), excluding the CRM profile's order / payment statuses. Confirm Previous Month's end date (classic had none) | needs-backend |
+| `sales-refresh` | "Updated n m ago" in the toolbar | Every 5 minutes (while visible) the mock sometimes adds an order and re-renders | Call `getData&type=all` with the time frame, currency and each list's MaxRows every 5 minutes while visible (classic's salesleaderboard.js) and re-render; keep the Access Denied redirect (security code 14) | needs-backend |
+
+`grep -rn "TODO(backend:SalesLeaderboard)" src/`
+
+---
+
 ## Surface: Login
 
 `src/cc/templates/Login/Login.html` — the CC Control Centre login screen. A standalone
