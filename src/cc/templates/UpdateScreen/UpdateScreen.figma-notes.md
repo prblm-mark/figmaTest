@@ -15,7 +15,7 @@ the backend has a concrete target, and approved confirmation before destructive 
 |---|---|---|
 | Shell | ControlScreen (cloned from ControlHub.html) | Breadcrumb Zone Selector › System › Update; header title only, no actions |
 | Warning | Alert `--warning` (`--fixed` in full width) | Merges classic's two texts: run when usage is low, plus how long updates take |
-| Result banner | Alert `--success` / `--danger` | "<update type> successful / failed", classic's own wording (`sUpdateType`) |
+| Result banner | Alert `--success` / `--danger` | "&lt;update type&gt; successful / failed", classic's own wording (`sUpdateType`) |
 | Groups | RecordSection (`--full` in full width) | Classic's two blank "delimiter" rows become two sections. **Titles "Updates" / "Maintenance" are proposals.** Classic has none |
 | Rows | FieldRow `--paragraph` + a third `<dd class="cc-update__run">` | Label = action, value = classic description (+ extras), trailing Button |
 | Actions | Button `--secondary --sm` | "Open" + external-link (new tab) for Release Notes / Updater; "Run" for the rest |
