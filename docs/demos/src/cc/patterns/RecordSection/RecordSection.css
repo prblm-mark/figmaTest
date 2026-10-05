@@ -36,6 +36,25 @@
   color: var(--ai-text-primary);
 }
 
+/* Section description (code-first, 2026-10-05; Hub TASK-531782 Q3) — per-section help text a
+ * workflow can set, under the title. Same title-block stack as FactPanel's title + subtitle; the
+ * line is 12px body text rather than the subtitle's 11px because it can run to a full sentence. */
+.record-section__title-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-0-5);
+  min-width: 0;
+}
+
+.record-section__description {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-weight: var(--ai-font-regular);
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+}
+
 .record-section__body {
   display: flex;
   flex-direction: column;

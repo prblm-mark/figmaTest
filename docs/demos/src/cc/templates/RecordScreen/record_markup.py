@@ -44,7 +44,12 @@ def record_header(record_type, title, mode, view_href="ArticleView.html", edit_h
         if tag == "a":
             return f'<a class="{cls}" href="{href}" aria-label="{e(label)}"{attrs}>{inner}</a>'
         return f'<button type="button" class="{cls}" aria-label="{e(label)}"{attrs}>{inner}</button>'
-    if mode == "edit":
+    if mode == "confirm":
+        # Workflow confirmation step: the article as View draws it, read-only; Edit goes back to the
+        # form, Confirm submits (code-first, 2026-10-05; TASK-531782 Q3). Two buttons, no kebab.
+        actions = (hbtn("Edit", "secondary", "pencil", tag="a", href=edit_href, attrs=' data-keep-width')
+                   + hbtn("Confirm", "primary", "check", attrs=' data-backend-todo="record-workflow-confirm"'))
+    elif mode == "edit":
         # Delete sits between Cancel and Save as Button Type=Alert (Figma 60:2407) and asks first
         # (designer, 2026-10-05; Hub TASK-531782 Q2). It is the one Edit exception to the
         # one-primary + one-secondary rule: Save stays the page's only primary. Cancel is a
@@ -214,15 +219,24 @@ def _id(label):
     return "f-" + "".join(ch for ch in label.lower() if ch.isalnum())[:24] + f"-{_uid[0]}"
 
 
-def edit_row(label, kind, value="", required=False, help_text=None, tags=None, modal=None, placeholder="None selected", options=None):
+ERROR_TARGETS = []  # (label, message, field id) for the validation summary — filled by edit_row(error=…)
+
+
+def edit_row(label, kind, value="", required=False, help_text=None, tags=None, modal=None, placeholder="None selected", options=None, error=None):
     fid = _id(label)
+    if error:
+        ERROR_TARGETS.append((label, error, fid))
     req = '<span class="field-row__required" aria-hidden="true">*</span>' if required else ""
     reqattr = " required aria-required=\"true\"" if required else ""
     if kind == "input":
-        help_html = f'<span class="input__help" id="{fid}-help">{e(help_text)}</span>' if help_text else ""
-        desc = f' aria-describedby="{fid}-help"' if help_text else ""
-        ctl = f'''<div class="input">
-              <div class="input__wrap"><input id="{fid}" type="text" class="input__control" value="{e(value)}"{reqattr}{desc}></div>
+        # A failed Save re-renders the field in Input's error state with the message as its help line
+        # (code-first, 2026-10-05; Hub TASK-531782 Q3).
+        msg = error or help_text
+        help_html = f'<span class="input__help" id="{fid}-help">{e(msg)}</span>' if msg else ""
+        desc = f' aria-describedby="{fid}-help"' if msg else ""
+        invalid = ' aria-invalid="true"' if error else ""
+        ctl = f'''<div class="input{" input--error" if error else ""}">
+              <div class="input__wrap"><input id="{fid}" type="text" class="input__control" value="{e(value)}"{reqattr}{desc}{invalid}></div>
               {help_html}
             </div>'''
     elif kind == "select":
@@ -388,11 +402,16 @@ def prompt_modifier(pid, title, fills, prompt, outputs):
           </div>'''
 
 
-def record_section(title, rows_html, mode, prompt=""):
+def record_section(title, rows_html, mode, prompt="", description=None):
     sid = "sec-" + "".join(ch for ch in title.lower() if ch.isalnum())
     body_tag = "dl" if mode == "view" else "div"
-    return f'''<section class="record-section" aria-labelledby="{sid}">
-          <div class="record-section__header"><h2 class="record-section__title" id="{sid}">{e(title)}</h2></div>
+    # description: per-section help text a workflow can set (code-first, 2026-10-05; TASK-531782 Q3).
+    desc = f'<p class="record-section__description" id="{sid}-desc" data-backend-todo="record-section-help">{e(description)}</p>' if description else ""
+    described = f' aria-describedby="{sid}-desc"' if description else ""
+    head = (f'<div class="record-section__title-block"><h2 class="record-section__title" id="{sid}">{e(title)}</h2>{desc}</div>'
+            if description else f'<h2 class="record-section__title" id="{sid}">{e(title)}</h2>')
+    return f'''<section class="record-section" aria-labelledby="{sid}"{described}>
+          <div class="record-section__header">{head}</div>
           <{body_tag} class="record-section__body">{prompt}{''.join(rows_html)}</{body_tag}>
         </section>'''
 
@@ -738,6 +757,69 @@ def multi_select_modal(mid, title, source):
         <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
         <button type="button" class="btn btn--primary" data-filter-dropdowns-apply>Apply</button>
       </div>
+    </div>
+  </div>'''
+
+
+# ── Edit states the design doesn't draw (code-first, 2026-10-05; Hub TASK-531782 Q3) ──
+def alert(kind, ico, title, message="", body="", dismiss=False, attrs=""):
+    msg = f'<span class="alert__message"> {e(message)}</span>' if message else ""
+    close = f'<button type="button" class="alert__close" aria-label="Dismiss">{icon("x")}</button>' if dismiss else ""
+    body_html = f'<div class="alert__body">{body}</div>' if body else ""
+    role = "alert" if kind in ("danger", "warning") else "status"
+    return f'''<div class="alert alert--{kind}" role="{role}"{attrs}>
+          <div class="alert__header">
+            <span class="alert__icon">{icon(ico)}</span>
+            <div class="alert__text"><span class="alert__title">{e(title)}</span>{msg}</div>{close}
+          </div>{body_html}
+        </div>'''
+
+
+def validation_summary(errors):
+    """v1's "Warning!" box after a failed Save → Alert danger at the top of the main column, one
+    link per failing field that jumps to it. The fields carry Input's error state themselves."""
+    n = len(errors)
+    items = "".join(f'<li><a href="#{fid}">{e(label)}</a>: {e(msg)}</li>' for label, msg, fid in errors)
+    return alert("danger", "circle-alert", f"{n} field{'s' if n != 1 else ''} need{'' if n != 1 else 's'} attention.",
+                 "Your changes have not been saved.", f'<ul class="alert__list">{items}</ul>',
+                 attrs=' tabindex="-1" data-validation-summary data-backend-todo="record-validation-summary"')
+
+
+def duplicates_modal(mid, matches):
+    """Workflow duplicates check (CheckForDuplicatesYN) — a blocking yes/no after Save, so a dialog:
+    the likely matches as links, then Cancel / Save anyway (v1: "Yes, continue")."""
+    rows = "".join(f'''<li class="record-duplicates__item">
+              <a href="ArticleView.html" data-keep-width>{e(t)}</a>
+              <span class="record-duplicates__meta">{e(sec)} · {e(d)}</span>
+            </li>''' for t, sec, d in matches)
+    return f'''<div class="modal-overlay" id="{mid}" role="presentation" data-record-modal>
+    <div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="{mid}-title" aria-describedby="{mid}-desc">
+      {_modal_head(mid, "Possible duplicates found")}
+      <div class="modal__body">
+        <p id="{mid}-desc">This article looks like {len(matches)} that already exist. Check them before you save another.</p>
+        <ul class="record-duplicates">{rows}</ul>
+      </div>
+      <div class="modal__footer">
+        <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
+        <!-- TODO(backend:RecordScreen) record-workflow-duplicates: matches are demo rows → the workflow's duplicate check on Save; Save anyway resubmits with the check acknowledged -->
+        <button type="button" class="btn btn--primary" data-modal-cancel data-backend-todo="record-workflow-duplicates">Save anyway</button>
+      </div>
+    </div>
+  </div>'''
+
+
+def sector_modal(mid, sectors):
+    """Recruitment Brief: pick the sector profile before the form (its fields depend on it). A modal
+    of ActionCards, like Add a step — right for a handful; past ~6 sectors use the single Selector."""
+    cards = "".join(f'''<a class="action-card action-card--chevron" href="#" data-modal-cancel data-backend-todo="record-sector-choose">
+          <span class="action-card__text"><span class="action-card__title">{e(t)}</span><span class="action-card__desc">{e(d)}</span></span>
+          {icon("chevron-right", "action-card__chevron")}
+        </a>''' for t, d in sectors)
+    return f'''<div class="modal-overlay" id="{mid}" role="presentation" data-record-modal>
+    <div class="modal modal--sm" role="dialog" aria-modal="true" aria-labelledby="{mid}-title">
+      {_modal_head(mid, "Choose a sector", "The brief's fields depend on the sector.")}
+      <!-- TODO(backend:RecordScreen) record-sector-choose: demo sectors → RecruitmentSectorProfile list; the choice sets Form.SectorType and loads that sector's fields -->
+      <div class="modal__body">{cards}</div>
     </div>
   </div>'''
 

@@ -251,3 +251,54 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* ── Duplicates check dialog (code-first, 2026-10-05; Hub TASK-531782 Q3) ──
+ * The likely matches as a bordered list: the title links to the existing article, section and
+ * date sit under it in the quiet 12px meta treatment. */
+.record-duplicates {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+}
+
+.record-duplicates__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-0-5);
+  padding: var(--ai-spacing-3) var(--ai-spacing-4);
+  border-bottom: 1px solid var(--ai-border-secondary);
+}
+
+.record-duplicates__item:last-child {
+  border-bottom: 0;
+}
+
+.record-duplicates__meta {
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+}
+
+/* The failed-Save summary takes focus on load (tabindex="-1") so it is announced first. It is not
+ * interactive, so it needs no focus ring — its links keep theirs. */
+.record-screen [data-validation-summary]:focus {
+  outline: none;
+}
+
+/* Full width: page Alerts become Style=Fixed (RecordScreen.js FULL map), but Fixed's 3px TOP bar
+ * sits right under the RecordTabs' active underline and the two clash. Case B contextual override
+ * (designer, 2026-10-05): on this screen the bar moves to the bottom edge and is 2px, not 3px; the
+ * Alert component keeps Figma's 3px top bar everywhere else. Colours are Fixed's own per-type border tokens. */
+[data-cc-width="full"] .record-screen__main > .alert--fixed {
+  border-top: 0;
+  border-bottom: 2px solid var(--ai-border-info);
+}
+
+[data-cc-width="full"] .record-screen__main > .alert--fixed.alert--success { border-bottom-color: var(--ai-border-success); }
+[data-cc-width="full"] .record-screen__main > .alert--fixed.alert--danger { border-bottom-color: var(--ai-border-error); }
+[data-cc-width="full"] .record-screen__main > .alert--fixed.alert--warning { border-bottom-color: var(--ai-border-warning); }
+[data-cc-width="full"] .record-screen__main > .alert--fixed.alert--neutral { border-bottom-color: var(--ai-border-neutral); }

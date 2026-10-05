@@ -2,7 +2,7 @@
  *
  *   1. Width: applies the shell's width mode (?template=full, else the viewer's saved choice from
  *      the rail's Minimise toggle — control-width.js) and mirrors it onto the kit's
- *      own --full modifiers (RecordTabs, RecordSection, StepsTable), so each component owns
+ *      own --full modifiers (RecordTabs, RecordSection, StepsTable; page Alerts → Style=Fixed), so each component owns
  *      its flat style rather than this page restyling it.
  *   2. Keeps ?template= on the tab / Edit / Cancel links (marked data-keep-width) so the width
  *      survives moving between the three screens.
@@ -14,7 +14,10 @@
 (function () {
   'use strict';
 
-  var FULL = { '.record-tabs': 'record-tabs--full', '.record-section': 'record-section--full', '.steps-table': 'steps-table--full' };
+  // A page alert at the top of the main column (failed-Save summary, confirmation banner) becomes
+  // Alert Style=Fixed in full width — the bar Figma draws for it (2542:5854; designer, 2026-10-05).
+  var FULL = { '.record-tabs': 'record-tabs--full', '.record-section': 'record-section--full', '.steps-table': 'steps-table--full',
+               '.record-screen__main > .alert': 'alert--fixed' };
 
   function mirror(mode) {
     Object.keys(FULL).forEach(function (sel) {
@@ -306,21 +309,42 @@
     openModal = null;
     if (opener) opener.focus();
   }
+  function showModal(ov, from) {
+    opener = from; openModal = ov;
+    ov.classList.add('modal-overlay--open');
+    // A destructive confirm lands on Cancel, so Enter never deletes by accident.
+    var first = ov.querySelector('.action-card:not(.action-card--disabled)') || ov.querySelector('[data-modal-cancel]') || ov.querySelector('.modal__close');
+    if (first) first.focus();
+  }
   document.addEventListener('click', function (e) {
     var t = e.target.closest('[data-record-modal-open]');
     if (t) {
       var ov = document.getElementById(t.getAttribute('data-record-modal-open'));
-      if (!ov) return;
-      opener = t; openModal = ov;
-      ov.classList.add('modal-overlay--open');
-      // A destructive confirm lands on Cancel, so Enter never deletes by accident.
-      var first = ov.querySelector('.action-card:not(.action-card--disabled)') || ov.querySelector('[data-modal-cancel], .modal__close');
-      if (first) first.focus();
+      if (ov) showModal(ov, t);
       return;
     }
     if (openModal && (e.target === openModal || e.target.closest('.modal__close, [data-modal-cancel]'))) closeModal();
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
+
+  /* ── Edit states the design doesn't draw (code-first, 2026-10-05; Hub TASK-531782 Q3) ──
+   * Demo switches on ArticleEdit: ?state=duplicates — Save opens the duplicates check;
+   * ?state=sector — the Recruitment Brief sector chooser opens on load. ArticleEditErrors.html is a
+   * failed Save: focus moves to the summary so it is announced and is the next thing read. */
+  var demoState = (location.search.match(/[?&]state=([a-z]+)/) || [])[1];
+  document.addEventListener('DOMContentLoaded', function () {
+    var summary = document.querySelector('[data-validation-summary]');
+    if (summary) summary.focus();
+    if (demoState === 'sector') {
+      var sec = document.getElementById('modal-sector');
+      if (sec) showModal(sec, null);
+    }
+  });
+  if (demoState === 'duplicates') document.addEventListener('click', function (e) {
+    var save = e.target.closest('.cc-header [aria-label="Save"]');
+    var dup = document.getElementById('modal-duplicates');
+    if (save && dup) { e.preventDefault(); showModal(dup, save); }
+  });
 
   // The modals sit after the scripts in the page, so wait for the whole document.
   if (/[?&]form=exists\b/.test(location.search)) document.addEventListener('DOMContentLoaded', function () {
