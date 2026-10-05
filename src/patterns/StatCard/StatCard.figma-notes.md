@@ -165,8 +165,10 @@ From the designer's live amends on Article Edit: gap + padding `--ai-spacing-3`,
 ## Size=Xl — code-first (2026-10-02)
 
 Added at the designer's request for the Orders totals panel (ListingScreen). The designer chose
-the compact "v2" layout. **No Figma variant yet**, so the next Figma pass should draw it from these
-values:
+the compact "v2" layout. **Built in Figma 2026-10-02:** `Size=Xl, Type=Default` × Fill Lagoon `3976:1810` / Jade `3976:1830` / Violet Radix `3976:1850`,
+every value bound to its variable. New set booleans **Meta** (`Meta#3976:0`) and **Breakdown** (`Breakdown#3976:53`) toggle the
+optional parts; Title, Number and Icon reuse the set's properties. The set now hugs its width (500px). Code Connect has a
+separate `variant: { Size: 'Xl' }` mapping (published). Values:
 
 | Part | Class | Desktop | Narrow (`cs-page` ≤ 767px) |
 |---|---|---|---|

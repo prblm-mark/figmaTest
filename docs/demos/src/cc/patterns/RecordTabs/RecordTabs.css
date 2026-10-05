@@ -31,6 +31,28 @@
   align-items: stretch;
   gap: var(--ai-spacing-5);
   min-width: 0;
+  /* Overflow navigation (designer, 2026-10-02): when the tabs don't fit, the list scrolls
+   * sideways instead of clipping, by swipe (native), mouse drag / wheel and keyboard focus
+   * (RecordTabs.js). No visible scrollbar: the bar is too short for one, and drag is the cue. */
+  flex: 0 1 auto;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.record-tabs__list::-webkit-scrollbar {
+  display: none;
+}
+
+/* Only while there is somewhere to drag to. */
+.record-tabs__list--scrollable {
+  cursor: grab;
+}
+
+.record-tabs__list--dragging,
+.record-tabs__list--dragging .record-tab {
+  cursor: grabbing;
+  user-select: none;
 }
 
 .record-tab {

@@ -1,0 +1,218 @@
+/* ContractAnalysis — /control/contract-analysis on the v3 framework (TASK-470978).
+ *
+ * Layout only. The task is "no-design", so every part is an existing component
+ * (RecordTabs, StatCard, Chart, Input, Select, DatePicker, Badge, Datatables + Table)
+ * on the ControlScreen shell, and every value below is borrowed from one of them
+ * (each cites where from). Card border/shadow follow the CC top-level card rule.
+ */
+
+/* Tabs bar → panel: 16px, the record screens' card gap (RecordScreen.css). */
+.cc-control__page.cc-analysis {
+  gap: var(--ai-spacing-5);
+}
+
+/* The page is a fixed-height scrolling flex column. RecordTabs clips its overflow, so its
+ * automatic min-height is 0, and a tall panel squeezed the tab bar to nothing. Nothing
+ * here may shrink: the page scrolls instead. */
+.cc-analysis > * {
+  flex-shrink: 0;
+}
+
+.cc-analysis__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+  min-inline-size: 0;
+}
+
+.cc-analysis__panel[hidden] {
+  display: none;
+}
+
+/* ── Top-level cards: border/card + shadow/2xs, standard width only ──────
+ * The CC rule (listing / record screens): tabs bar, filter bar, KPI tiles, charts
+ * and tables. Full width flattens the shadows, as everywhere else. */
+.cc-control:not([data-cc-width="full"]) .cc-analysis .record-tabs,
+.cc-control:not([data-cc-width="full"]) .cc-analysis__filters,
+.cc-control:not([data-cc-width="full"]) .cc-analysis__kpis > .stat-card,
+.cc-control:not([data-cc-width="full"]) .cc-analysis .chart,
+.cc-control:not([data-cc-width="full"]) .cc-analysis .datatables {
+  border-color: var(--ai-border-card);
+  box-shadow: var(--ai-shadow-2xs);
+}
+
+/* ── KPI row: three StatCards ────────────────────────────────────────────
+ * 12px between them: the Orders totals tiles' gap (ListingScreen.css). */
+.cc-analysis__kpis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--ai-spacing-4);
+}
+
+/* ── Filter bar ──────────────────────────────────────────────────────────
+ * A card holding the tab's controls inline (Flowbite-style toolbar), on the
+ * FilterBar's own card values: surface/primary, radius-md, rows padded 12 / 16
+ * (FilterBar.css). Controls 8px apart, the Update screen's action gap. */
+.cc-analysis__filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  padding: var(--ai-spacing-4) var(--ai-spacing-5);
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+}
+
+/* The listing inputs' fill (ListingScreen.css: views trigger / search / per-page). */
+.cc-analysis__filters .input__wrap,
+.cc-analysis__filters .sel__control {
+  background-color: var(--ai-surface-minimal);
+}
+
+/* Search takes the slack, capped so a wide screen doesn't stretch it; selects sit
+ * at size-3 (192px), the FieldRow label width. */
+.cc-analysis__search {
+  flex: 1 1 var(--ai-size-3);
+  max-inline-size: var(--ai-size-6);
+}
+
+/* Up to size-3 (192px, the FieldRow label width), shrinking to size-2 (160) so a
+ * five-control row still fits on one line at desktop widths. */
+.cc-analysis__filter {
+  flex: 0 1 var(--ai-size-3);
+  min-inline-size: var(--ai-size-2);
+}
+
+.cc-analysis__range {
+  inline-size: var(--ai-size-4);
+}
+
+.cc-analysis__range[hidden],
+.cc-analysis__reset[hidden] {
+  display: none;
+}
+
+.cc-analysis__reset {
+  margin-inline-start: auto;
+}
+
+/* ── Charts: two-up grid; --wide spans both columns ──────────────────────
+ * 16px gap: the panel's own. */
+.cc-analysis__charts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ai-spacing-5);
+}
+
+.cc-analysis__chart--wide {
+  grid-column: 1 / -1;
+}
+
+.cc-analysis .chart[hidden] {
+  display: none;
+}
+
+/* Top 10 is a horizontal bar of ten account names: give it room. 20rem = size-6. */
+.cc-analysis__chart--tall .chart__canvas {
+  min-height: var(--ai-size-6);
+}
+
+/* Monthly review + Contract overview: bigger charts, closer to the Flowbite benchmark (designer,
+ * 2026-10-02). Two-up
+ * charts at size-6 (20rem), full-width ones at size-7 (24rem); the Chart pattern's default is 12rem. */
+[data-panel="Review"] .chart__canvas,
+[data-panel="Contract"] .chart__canvas {
+  min-height: var(--ai-size-6);
+}
+
+[data-panel="Review"] .cc-analysis__chart--wide .chart__canvas {
+  min-height: var(--ai-size-7);
+}
+
+/* ── Tables ──────────────────────────────────────────────────────────────── */
+.cc-analysis__months {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+}
+
+/* Cells stay on one line; a table wider than its card scrolls inside it rather than
+ * overlapping its own text. */
+.cc-analysis .datatables__body {
+  overflow-x: auto;
+}
+
+.cc-analysis .datatables .table {
+  table-layout: auto;
+}
+
+.cc-analysis .datatables td,
+.cc-analysis .datatables th {
+  white-space: nowrap;
+}
+
+.cc-analysis .datatables__meta {
+  gap: var(--ai-spacing-3);
+}
+
+.cc-analysis__table-title {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-sm);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-primary);
+}
+
+.cc-analysis__table-total {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-sm);
+  font-weight: var(--ai-font-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--ai-text-primary);
+}
+
+/* Money / counts keep tabular figures, but stay LEFT-aligned: the demo is all
+ * left-aligned by the designer's call (right-alignment is a build-only request). */
+.cc-analysis__num {
+  font-variant-numeric: tabular-nums;
+}
+
+.cc-analysis__empty {
+  color: var(--ai-text-contrast);
+}
+
+/* "Show n more": centred under the table, padded like the toolbar (12 / 16). */
+.cc-analysis__more {
+  display: flex;
+  justify-content: center;
+  padding: var(--ai-spacing-4) var(--ai-spacing-5);
+  border-top: 1px solid var(--ai-datatable-table-border);
+}
+
+/* ── Narrow: one column ─────────────────────────────────────────────────── */
+@container cs-page (max-width: 767px) {
+  .cc-analysis__kpis,
+  .cc-analysis__charts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cc-analysis__search,
+  .cc-analysis__filter,
+  .cc-analysis__range {
+    flex: 1 1 100%;
+    inline-size: 100%;
+    max-inline-size: none;
+  }
+
+  .cc-analysis__reset {
+    margin-inline-start: 0;
+  }
+}
+
+/* ── Full width: flush, as on the listings ───────────────────────────────
+ * The page loses its padding (shell), so the cards keep their own edges but the
+ * gaps tighten to the listing totals strip's 12px. */
+.cc-control[data-cc-width="full"] .cc-control__page.cc-analysis {
+  padding: var(--ai-spacing-4);
+  gap: var(--ai-spacing-4);
+}

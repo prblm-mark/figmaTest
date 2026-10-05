@@ -89,6 +89,13 @@
   display: inline;
 }
 
+/* An icon a header button shows only once its label is hidden — a text-only button on desktop that
+ * still needs an icon to be named on mobile (Article Edit's tertiary Cancel; designer, 2026-10-05).
+ * Lucide carries the class onto the <svg>. */
+.cc-header__btn-icon--mobile {
+  display: none;
+}
+
 /* Contextual override — NotificationBadge inside CCHeader uses the header bg
  * for its halo border so the badge separates cleanly from whatever colour the
  * header is rendering in (light/dark CC mode). Case B per CLAUDE.md. */
@@ -275,6 +282,36 @@
 
   .cc-header__actions .cc-header__btn-label {
     display: none;
+  }
+
+  .cc-header__actions .cc-header__btn-icon--mobile {
+    display: inline-block;
+  }
+
+  /* …and that same text-only (tertiary) button takes Button Secondary's paint on mobile, so the
+   * bare icon still reads as a button beside its filled neighbours (designer, 2026-10-05). */
+  .cc-header__actions .cc-header__btn--bordered-mobile {
+    background-color: var(--ai-btn-secondary-bg);
+    color: var(--ai-btn-secondary-text);
+    border-color: var(--ai-btn-secondary-border);
+  }
+
+  .cc-header__actions .cc-header__btn--bordered-mobile:hover {
+    background-color: var(--ai-btn-secondary-bg-hover);
+    border-color: var(--ai-btn-secondary-border-hover);
+    color: var(--ai-btn-secondary-text-hover);
+  }
+
+  .cc-header__actions .cc-header__btn--bordered-mobile:active {
+    background-color: var(--ai-btn-secondary-bg-pressed);
+    border-color: var(--ai-btn-secondary-border);
+  }
+
+  .cc-header__actions .cc-header__btn--bordered-mobile:focus-visible {
+    background-color: var(--ai-btn-secondary-bg-hover);
+    border-color: var(--ai-surface-primary);
+    box-shadow: 0 0 0 2px var(--ai-btn-secondary-border);
+    color: var(--ai-btn-secondary-text-hover);
   }
 
   /* Type=Control mobile adjustments */

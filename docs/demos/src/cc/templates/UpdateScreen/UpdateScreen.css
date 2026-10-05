@@ -1,0 +1,129 @@
+/* UpdateScreen — /control/update on the v3 framework (TASK-470993).
+ *
+ * Composed from existing parts only (Alert, RecordSection, FieldRow, Button, Badge,
+ * Select, Modal) on the ControlScreen shell. There is no Figma frame: the task is
+ * "no-design", so this file holds layout only, and every value is borrowed from a
+ * part already in the system (each one cites where from). Card border + shadow come
+ * from the shared CC card rule below, which matches the record screens.
+ */
+
+/* Gap between the warning, the result banner and the two sections. 16px is the
+ * record screens' card gap (RecordScreen.css). */
+.cc-control__page.cc-update {
+  gap: var(--ai-spacing-5);
+}
+
+/* Top-level cards: border/card + shadow/2xs in standard width, flat in full width.
+ * The same rule as RecordScreen.css, because this page reuses RecordSection. */
+.cc-control:not([data-cc-width="full"]) .cc-update .record-section {
+  border-color: var(--ai-border-card);
+  box-shadow: var(--ai-shadow-2xs);
+}
+
+.cc-control:not([data-cc-width="full"]) .cc-update .record-section__header {
+  border-bottom-color: var(--ai-border-card);
+}
+
+/* ── Action row: label | description | Run ───────────────────────────────
+ * A FieldRow (label + value) with a third <dd> for the action. FieldRow's own gap
+ * spaces the three, and its narrow container rule stacks them below 560px. */
+.cc-update__row .field-row__value {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* 8px: FieldRow's stacked label → value gap */
+  gap: var(--ai-spacing-3);
+}
+
+/* The action column. Usually just a Run button, but Clear Cache puts its zone picker
+ * inline beside it (Flowbite-style: the control sits with the action it scopes,
+ * rather than stacked under the description). The 8px gap is the value column's own. */
+.cc-update__run {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: var(--ai-spacing-3);
+  margin: 0;
+}
+
+/* Live counts (Guest / Bot cache, skins, CDN version). 6px is `.field-row__tags`. */
+.cc-update__counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ai-spacing-2);
+}
+
+/* Clear Cache's zone picker: a compact sm Select beside Run, with no visible label (the row
+ * says what it is, and the trigger carries aria-label="Zone to clear"). 160px = size-2. */
+.cc-update__zone {
+  inline-size: var(--ai-size-2);
+}
+
+/* The result banner slot takes no space until an update has run. */
+.cc-update__result:empty {
+  display: none;
+}
+
+.cc-update__confirm-text {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-secondary);
+}
+
+/* Full width: flush, as on the record screens. The sections take RecordSection
+ * Width=Full and the warning becomes the Alert `--fixed` bar (UpdateScreen.js), so
+ * the gap between them goes, as RecordScreen.css does for its cards. */
+.cc-control[data-cc-width="full"] .cc-control__page.cc-update {
+  gap: 0;
+}
+
+/* ── Running state (designer, 2026-10-02) ────────────────────────────────
+ * While an action runs, its row shows a status block under the description:
+ * a Spinner (component) + "Updating skins… 34 of 128", plus, for actions that
+ * report progress, a bar. The bar is RoomCard's own Figma-built progress bar,
+ * token for token (spacing-2 tall, radius-full, surface-contrast track,
+ * surface-brand fill), so it adds no new values. The fill eases with the system
+ * transition, and freezes under prefers-reduced-motion like the Spinner. */
+.cc-update__status {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  /* 8px: the value column's own gap */
+  gap: var(--ai-spacing-3);
+}
+
+.cc-update__status-line {
+  display: flex;
+  align-items: center;
+  /* 6px: `.field-row__tags` */
+  gap: var(--ai-spacing-2);
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.cc-update__progress {
+  display: flex;
+  inline-size: 100%;
+  block-size: var(--ai-spacing-2);
+  border-radius: var(--ai-radius-full);
+  background-color: var(--ai-surface-contrast);
+  overflow: hidden;
+}
+
+.cc-update__progress-fill {
+  inline-size: var(--cc-update-progress, 0%);
+  block-size: 100%;
+  background-color: var(--ai-surface-brand);
+  transition: inline-size var(--ai-transition-default);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cc-update__progress-fill {
+    transition: none;
+  }
+}

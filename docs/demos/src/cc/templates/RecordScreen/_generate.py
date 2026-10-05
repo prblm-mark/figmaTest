@@ -126,6 +126,7 @@ KIT_JS = '''  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/char
   <script src="../../patterns/PromptModifier/PromptModifier.js"></script>
   <script src="../../../components/SegmentedControl/SegmentedControl.js"></script>
   <script src="../../patterns/StepsTable/StepsTable.js"></script>
+  <script src="../../patterns/RecordTabs/RecordTabs.js"></script>
   <script src="RecordScreen.js"></script>'''
 
 TITLE = "Affino 9.0.11.25 — The Refinement Update"
@@ -202,10 +203,10 @@ write_steps_config()
 # content stays in record_markup.py for the component demos; Figma itself still draws the draft.
 pages = {
     "ArticleView.html": build("Article · View", m.record_header("Article", rec.TITLE, "view"),
-                              page(m.record_tabs("details", sidebar=True) + body(rec.view_sections(), rec.sidebar()), mode="view"), KIT_JS),
+                              page(m.record_tabs("details", sidebar=True) + body(rec.view_sections(), rec.sidebar(analytics=True)), mode="view"), KIT_JS),
     "ArticleEdit.html": build("Article · Edit", m.record_header("Article", rec.TITLE, "edit"),
                               page(m.record_tabs("details", back="ArticleEdit.html", sidebar=False) + body(rec.edit_sections(), rec.sidebar()), sidebar_on=False, mode="edit"), KIT_JS,
-                              modals=rec.modals()),
+                              modals=rec.modals() + m.delete_confirm_modal("modal-delete", "article", rec.TITLE)),
     "ArticleSteps.html": build("Article · Steps", m.record_header("Article", rec.TITLE, "view"),
                                page(m.record_tabs("steps", actions=True) + m.steps_listing()), KIT_JS, listing=True,
                                modals=m.add_step_modal()),

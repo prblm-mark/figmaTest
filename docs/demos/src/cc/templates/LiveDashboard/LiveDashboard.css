@@ -1,0 +1,592 @@
+/* LiveDashboard — /control/live-dashboard on the v3 framework (TASK-471013).
+ *
+ * Composed from existing parts only (StatCard Xl, Chart + Chart.js, Badge, Avatar, Button,
+ * Datatables + Table) on the ControlScreen shell, laid out on the Flowbite application-UI benchmark:
+ * KPI tiles across the top, one hero chart beside a people list, ranked lists with share bars, a
+ * compact table. No Figma frame ("no-design"): every value is borrowed and says where from.
+ */
+
+/* ── Page grid ───────────────────────────────────────────────
+   ONE three-column grid for the whole page; the KPI row, the hero row and the leaderboards are its
+   subgrids, so every column edge lines up top to bottom (measured before: the 2fr / 1fr hero row
+   sat 6px off the KPI and leaderboard columns either side). The chart spans two columns, the online
+   list one. The 16px gap is UpdateScreen's / the record screens' card gap; subgrids inherit it. The
+   grid is the inner `__layout`: the page is the cs-page container and cannot query itself. */
+.cc-live__layout {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--ai-spacing-5);
+  min-inline-size: 0;
+}
+
+.cc-live__kpis,
+.cc-live__main,
+.cc-live__boards {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  /* A subgrid inherits the parent's COLUMN gap only; its rows keep their own (0), so stacked tiles
+     touched (Mark, 2026-10-05). `inherit` takes the page grid's gap both ways, full width included. */
+  gap: inherit;
+  align-items: stretch;
+}
+
+.cc-live__chart {
+  grid-column: span 2;
+}
+
+.cc-live__window,
+.cc-live__articles {
+  grid-column: 1 / -1;
+}
+
+/* ── Cards ──────────────────────────────────────────────────
+   One card for lists: the Chart pattern's own chrome (padding 24, gap 16, surface-primary,
+   radius-md), so the chart card and the list cards are the same object. Top-level cards take the
+   CC card rule in standard width: border/card + shadow/2xs. */
+.cc-live__card {
+  /* Positioned so the visually-hidden "views" labels inside are anchored here. Unanchored, an
+     absolutely positioned label escapes the page scroller's clip and lengthens the DOCUMENT
+     (measured: 1,285px document in a 900px window — a second, window-level vertical scroll). */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+  min-inline-size: 0;
+  padding: var(--ai-spacing-6);
+  background-color: var(--ai-surface-primary);
+  border: 1px solid var(--ai-border-secondary);
+  border-radius: var(--ai-radius-md);
+}
+
+.cc-live:not(.cc-live--full) .cc-live__card,
+.cc-live:not(.cc-live--full) .chart,
+.cc-live:not(.cc-live--full) .stat-card,
+.cc-live:not(.cc-live--full) .datatables {
+  border-color: var(--ai-border-card);
+  box-shadow: var(--ai-shadow-2xs);
+}
+
+.cc-live__card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ai-spacing-3);
+}
+
+/* Card titles: RecordSection's title, token for token (title, semibold, md). */
+.cc-live__card-title {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-weight: var(--ai-font-semibold);
+  font-size: var(--ai-font-fixed-md);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-primary);
+}
+
+/* "Show more" sits at the foot, left-aligned under the list, as Flowbite's card links do. */
+.cc-live__card-foot {
+  margin-block-start: auto;
+}
+
+.cc-live__card-foot .btn [data-lucide],
+.cc-live__card-foot .btn svg {
+  inline-size: var(--ai-icon-size-sm);
+  block-size: var(--ai-icon-size-sm);
+}
+
+.cc-live__card-foot--table {
+  padding: var(--ai-spacing-4) var(--ai-spacing-5);
+  border-block-start: 1px solid var(--ai-datatable-table-border);
+}
+
+.cc-live__empty {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-contrast);
+}
+
+/* ── KPIs ───────────────────────────────────────────────────
+   Each tile's wrapper is a size container (its width is the grid track's, which follows the space
+   available, so it is a valid self-container). A narrow tile puts its breakdown under the value —
+   StatCard's own stacked arrangement and values — instead of squeezing it beside. */
+.cc-live__kpi {
+  container: cc-live-kpi / inline-size;
+  display: flex;
+}
+
+.cc-live__kpi > .stat-card {
+  flex: 1 1 auto;
+}
+
+@container cc-live-kpi (max-width: 383px) {
+  .stat-card--xl {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "head" "value" "breakdown";
+    gap: var(--ai-spacing-3);
+  }
+
+  .stat-card__breakdown {
+    gap: var(--ai-spacing-3) var(--ai-spacing-5);
+    padding-left: 0;
+    padding-top: var(--ai-spacing-3);
+    border-left: 0;
+    border-top: 1px solid var(--ai-border-secondary);
+  }
+}
+
+/* Only the "vs average" value takes the delta's direction colour, in text tokens (the dataviz rule:
+   text wears text tokens). Qualified with StatCard's class so it outranks StatCard's own breakdown
+   colour. (A stray, unopened comment line here once swallowed this rule: measured, the delta
+   rendered in text-primary.) */
+.stat-card__breakdown-value.cc-live__up {
+  color: var(--ai-text-success);
+}
+
+.stat-card__breakdown-value.cc-live__down {
+  color: var(--ai-text-error);
+}
+
+/* A value that just changed on a refresh: a brief secondary-surface wash, then nothing. */
+.cc-live__changed {
+  animation: cc-live-changed 1.2s ease-out;
+  border-radius: var(--ai-radius-sm);
+}
+
+@keyframes cc-live-changed {
+  from { background-color: var(--ai-surface-brand-soft); }
+  to { background-color: transparent; }
+}
+
+/* ── Chart ──────────────────────────────────────────────────
+   The Chart pattern; the canvas is at least 320px (`size-6`) and grows with the card when the online
+   list beside it is taller, so the card never carries empty space (Chart.js fills its box).
+   The badge carries the delta (success / danger with a trend icon). */
+.cc-live__chart {
+  min-inline-size: 0;
+}
+
+/* Title block and delta badge wrap rather than squeeze the subtitle into a narrow column. */
+.cc-live__chart .chart__head {
+  flex-wrap: wrap;
+}
+
+.cc-live__canvas {
+  position: relative;
+  flex: 1 1 auto;
+  min-block-size: var(--ai-size-6);
+}
+
+.cc-live__chart .badge [data-lucide],
+.cc-live__chart .badge svg {
+  inline-size: var(--ai-icon-size-sm);
+  block-size: var(--ai-icon-size-sm);
+}
+
+/* Legend: a short line in each series' colour before its name (solid for today, dashed for the
+   average), so identity never rests on hue alone. Text stays in text ink. */
+.cc-live__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ai-spacing-3) var(--ai-spacing-5);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-secondary);
+}
+
+.cc-live__key {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+}
+
+.cc-live__key::before {
+  content: "";
+  inline-size: var(--ai-spacing-5);
+  border-block-start: 2px solid var(--ai-accent-blue-solid);
+}
+
+.cc-live__key--average::before {
+  border-block-start: 2px dashed var(--ai-accent-orange-solid);
+}
+
+/* The chart's data as a table, for screen readers and anyone who wants the numbers. */
+.cc-live__summary {
+  inline-size: fit-content;
+  cursor: pointer;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-secondary);
+}
+
+.cc-live__summary:hover {
+  color: var(--ai-text-primary);
+}
+
+.cc-live__table-wrap {
+  max-block-size: var(--ai-size-6);
+  margin-block-start: var(--ai-spacing-4);
+  overflow-y: auto;
+}
+
+/* ── Online members ─────────────────────────────────────────
+   Flowbite's "latest customers" list: avatar, name over company. Rows are menu-style links:
+   hover is the row background only (no brand colour, no underline — the CC menu-link rule). */
+.cc-live__people {
+  /* One column in the side card; two or three when the card spans the page (stacked layout), so a
+     wide card never holds a single thin column. Tracks at least 280px (`size-5`). Intrinsic. */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--ai-size-5)), 1fr));
+  gap: var(--ai-spacing-1) var(--ai-spacing-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cc-live__person .cc-live__link {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-4);
+  /* 8 / 12: DropdownItem's row padding, pulled out by the same so names align with the title. */
+  margin-inline: calc(-1 * var(--ai-spacing-4));
+  padding: var(--ai-spacing-3) var(--ai-spacing-4);
+  border-radius: var(--ai-radius-md);
+}
+
+.cc-live__link {
+  color: var(--ai-text-primary);
+  text-decoration: none;
+  transition: background-color var(--ai-transition-default);
+  min-inline-size: 0;
+}
+
+.cc-live__link:hover {
+  color: var(--ai-text-primary);
+  text-decoration: none;
+}
+
+.cc-live__person .cc-live__link:hover {
+  background-color: var(--ai-surface-secondary);
+}
+
+.cc-live__who {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+
+.cc-live__name,
+.cc-live__row-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-primary);
+}
+
+.cc-live__sub {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+}
+
+/* ── Leaderboards ───────────────────────────────────────────
+   Rank, name (with avatar for authors), views right-aligned, and the item's share of the top one as
+   a bar beneath. The bar is RoomCard's Figma-built progress bar, token for token (spacing-2 tall,
+   radius-full, surface-contrast track, surface-brand fill): one hue, magnitude only. */
+.cc-live__rank {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cc-live__row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ai-spacing-4);
+}
+
+.cc-live__pos {
+  flex: 0 0 auto;
+  min-inline-size: var(--ai-spacing-5);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-contrast);
+  font-variant-numeric: tabular-nums;
+}
+
+.cc-live__row-main {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--ai-spacing-2);
+  min-inline-size: 0;
+}
+
+.cc-live__row-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ai-spacing-3);
+  min-inline-size: 0;
+}
+
+.cc-live__row-line .cc-live__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+}
+
+.cc-live__row-line .cc-live__link:hover .cc-live__row-name {
+  color: var(--ai-text-brand);
+}
+
+/* Right-aligned values on this dashboard (Mark, 2026-10-05: Flowbite's convention here; the
+   listing demos stay left-aligned). Tabular figures so columns of numbers line up. */
+.cc-live__views,
+.cc-live__num {
+  flex: 0 0 auto;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-primary);
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+}
+
+.cc-live__bar {
+  display: flex;
+  inline-size: 100%;
+  block-size: var(--ai-spacing-2);
+  border-radius: var(--ai-radius-full);
+  background-color: var(--ai-surface-contrast);
+  overflow: hidden;
+}
+
+.cc-live__bar-fill {
+  inline-size: var(--cc-live-share, 0%);
+  block-size: 100%;
+  border-radius: var(--ai-radius-full);
+  background-color: var(--ai-surface-brand);
+  transition: inline-size var(--ai-transition-default);
+}
+
+/* ── Top articles ───────────────────────────────────────────
+   Datatables + Table as on Contract Analysis (auto layout: no column fit to size it). */
+.cc-live__articles .table {
+  table-layout: auto;
+}
+
+/* Compact rows: the listing's 64px `--orders` row height is for a working list; a dashboard table
+   reads at the base Table's own density (its cell padding, no fixed height). */
+.cc-live__articles .table tbody td {
+  height: auto;
+}
+
+.cc-live__articles .table th.cc-live__num {
+  text-align: end;
+}
+
+/* Titles wrap: the base Table cell is `nowrap`, and an 84-character title then set the table's
+   width (measured: 779px in a 294px card at 390). The title column takes the slack. */
+.cc-live__articles .table td.cc-live__title-cell {
+  white-space: normal;
+  inline-size: 100%;
+}
+
+.cc-live__title-cell .cc-live__link {
+  font-weight: var(--ai-font-medium);
+}
+
+.cc-live__title-cell .cc-live__link:hover {
+  color: var(--ai-text-brand);
+}
+
+.cc-live__author {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  white-space: nowrap;
+}
+
+.cc-live__nowrap {
+  white-space: nowrap;
+}
+
+/* ── Sampled window ─────────────────────────────────────────
+   A meta line, Flowbite-style, not a card: clock icon, the window in bold, why in muted text. */
+.cc-live__window {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-secondary);
+}
+
+.cc-live__window [data-lucide],
+.cc-live__window svg {
+  inline-size: var(--ai-icon-size-sm);
+  block-size: var(--ai-icon-size-sm);
+  color: var(--ai-icon-secondary);
+}
+
+.cc-live__window strong {
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-primary);
+}
+
+.cc-live__window-why {
+  color: var(--ai-text-contrast);
+}
+
+/* ── Header: Live status + Pause ────────────────────────────
+   Badge success with a pulsing dot while live; neutral and still when paused. The dot is 8px
+   (`spacing-3`), the Badge's own icon slot scale. No pulse under reduced motion. */
+.cc-live__status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+}
+
+.cc-live__live {
+  gap: var(--ai-spacing-2);
+}
+
+.cc-live__dot {
+  position: relative;
+  inline-size: var(--ai-spacing-3);
+  block-size: var(--ai-spacing-3);
+  border-radius: var(--ai-radius-full);
+  background-color: currentColor;
+}
+
+.cc-live__dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: currentColor;
+  animation: cc-live-pulse 2s ease-out infinite;
+}
+
+.cc-live__live--paused .cc-live__dot::after {
+  animation: none;
+}
+
+@keyframes cc-live-pulse {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+
+.cc-live__updated {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Visually hidden, read aloud: FieldRow's visually-hidden rule, property for property. */
+.cc-live__status,
+.cc-header__actions:has(.cc-live__announce) {
+  position: relative;
+}
+
+.cc-live__announce,
+.cc-live__visually-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cc-live__dot::after,
+  .cc-live__changed {
+    animation: none;
+  }
+
+  .cc-live__bar-fill {
+    transition: none;
+  }
+}
+
+/* ── Narrow page column ─────────────────────────────────────
+   Below 1023 (cs-page) the chart and the online list each take the full row; the KPI tiles and the
+   leaderboards keep their three columns (a narrow KPI tile stacks its own breakdown). Below 767 the
+   grid is one column throughout. */
+@container cs-page (max-width: 1023px) {
+  .cc-live__chart,
+  .cc-live__online {
+    grid-column: 1 / -1;
+  }
+}
+
+@container cs-page (max-width: 767px) {
+  .cc-live__layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cc-live__canvas {
+    min-block-size: var(--ai-size-5);
+  }
+
+  /* Top articles fits a phone: Published goes (the least needed for "what is being read now"),
+     and the author name may wrap beside its avatar. Measured: the table overflowed its card at 390. */
+  .cc-live__articles .table th:nth-child(3),
+  .cc-live__articles .table td:nth-child(3) {
+    display: none;
+  }
+
+  .cc-live__author {
+    white-space: normal;
+  }
+}
+
+/* The header sits outside the page column, so it keys on `cs-main` (the whole content column). */
+@container cs-main (max-width: 767px) {
+  .cc-live__updated {
+    display: none;
+  }
+}
+
+/* Full width: Contract Analysis's dashboard treatment. The shell takes the page's padding away, so
+   the page keeps a 12px inset and the gaps tighten to 12px (`spacing-4`, the listing totals strip's);
+   the cards keep their own edges and radius, and lose the card shadow (full width is flat). */
+.cc-control[data-cc-width="full"] .cc-control__page.cc-live {
+  padding: var(--ai-spacing-4);
+}
+
+.cc-live--full .cc-live__layout {
+  gap: var(--ai-spacing-4);
+}
+
+.cc-live--full .cc-live__card,
+.cc-live--full .chart,
+.cc-live--full .stat-card,
+.cc-live--full .datatables {
+  box-shadow: none;
+}

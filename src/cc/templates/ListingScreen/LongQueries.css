@@ -1,0 +1,96 @@
+/* Long Running Queries — the screen's own additions to the Listing template (TASK-470994).
+ *
+ * No Figma node: the screen is composed from Figma-built parts (Listing template, Datatables,
+ * Table, Select, Badge, SegmentedControl, Modal, Toast). Every value below is borrowed from an
+ * existing treatment and says where from. No new tokens.
+ */
+
+/* ── Top 5 slowest queries ─────────────────────────────────
+   A second Datatables block in the listing column, so it inherits the card, toolbar and table
+   treatment and the column's Figma gap (`--ai-spacing-4`, `.cc-listing`). */
+
+/* The toolbar's meta is `nowrap`; the scope line can be long (three filter values), so the meta
+   yields and the scope truncates rather than pushing the Select off the card. */
+.cc-lq-top .datatables__meta {
+  min-inline-size: 0;
+}
+
+/* Contract Analysis's table title (`.cc-analysis__table-title`), token for token. */
+.cc-lq-top__title {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-sm);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-primary);
+}
+
+.cc-lq-top__scope {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Classic bolds the rank (in grey) and the average, the column the list is ordered by. */
+.cc-lq-top__rank {
+  color: var(--ai-text-contrast);
+  font-weight: var(--ai-font-semibold);
+}
+
+.cc-lq-top__exec {
+  font-weight: var(--ai-font-semibold);
+}
+
+/* `.cc-analysis__empty`. */
+.cc-lq-top__empty {
+  color: var(--ai-text-contrast);
+}
+
+/* ── Delete confirm ────────────────────────────────────────
+   `.cc-update__confirm-text`, token for token. */
+.cc-lq__confirm-text {
+  margin: 0;
+  font-family: var(--ai-font-body);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-secondary);
+}
+
+/* ── Template:Line: truncate from the START ─────────────────
+   "/AfcCommunityMgr/CC/ContractTopAccounts.cfm:96" clipped at its end loses the file and the
+   line, which is the value's whole point (and in Grouped, what defines the group). An RTL block
+   puts the ellipsis at the start; the `path` cell isolates the text LTR inside it so the
+   characters keep their order. The full value is in the cell's title. */
+.cc-lq__path .datatables__truncate {
+  direction: rtl;
+  text-align: left;
+}
+
+/* Contract Analysis's override (`.cc-analysis .datatables .table`): the Top 5 has no column fit to
+   size it, so its columns take their content's width instead of the listing's fixed layout. */
+.cc-lq-top .table {
+  table-layout: auto;
+}
+
+/* Template:Line takes the slack and truncates from the START (as in the grid): `max-inline-size: 0`
+   + `inline-size: 100%` is the auto-layout idiom for "the fluid column", so a long path can never
+   widen the table past its card. Intrinsic, so it holds at every width. */
+.cc-lq-top__path {
+  inline-size: 100%;
+  max-inline-size: 0;
+}
+
+.cc-lq-top__path > span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  direction: rtl;
+  text-align: left;
+}
+
+/* On a narrow screen: #, Template:Line and Avg Exec Time only — the columns classic bolds. Keyed
+   on `cs-page`, the screen-width signal (CLAUDE.md §4a), at the house mobile breakpoint. */
+@container cs-page (max-width: 767px) {
+  .cc-lq-top__extra {
+    display: none;
+  }
+}

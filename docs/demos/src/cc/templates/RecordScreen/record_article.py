@@ -312,8 +312,8 @@ def edit_sections():
     return "".join(m.record_section(t, [_edit(f) for f in fields], "edit", prompt=_prompt(t)) for t, fields in SECTIONS)
 
 
-def sidebar():
-    return m.sidebar(facts=FACTS, perf=PERF, viewers=VIEWERS)
+def sidebar(analytics=False):
+    return m.sidebar(facts=FACTS, perf=PERF, viewers=VIEWERS, analytics=analytics)
 
 
 def modals():

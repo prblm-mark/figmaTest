@@ -8,6 +8,7 @@ figma.connect(
         Sm: 'stat-card--sm',
         Base: '',
         Lg: 'stat-card--lg',
+        Xl: 'stat-card--xl',
       }),
       type: figma.enum('Type', {
         Default: '',
@@ -64,6 +65,45 @@ figma.connect(
           <p class="stat-card__title">Message Opens</p>
           <p class="stat-card__value">330</p>
         </div>
+      </div>
+    `,
+  }
+)
+
+/* Size=Xl (built in Figma 2026-10-02, variants 3976:1810 / 1830 / 1850): a headline KPI with a different
+ * structure (head + value + ruled breakdown), so it gets its own mapping. Fill keeps the same enum. */
+figma.connect(
+  'https://www.figma.com/design/Lus07xi8pPXLN87sQIyrEt/Affino-AI---Design-System?node-id=2758-3020',
+  {
+    variant: { Size: 'Xl' },
+    props: {
+      title: figma.string('Title'),
+      number: figma.string('Number'),
+      meta: figma.boolean('Meta', { true: html`<p class="stat-card__meta">Paid orders · inc tax</p>`, false: undefined }),
+      breakdown: figma.boolean('Breakdown', {
+        true: html`<dl class="stat-card__breakdown" aria-label="Other currencies">
+          <div class="stat-card__breakdown-item"><dt class="stat-card__breakdown-label">USD</dt><dd class="stat-card__breakdown-value">$1,000.00</dd></div>
+          <div class="stat-card__breakdown-item"><dt class="stat-card__breakdown-label">EUR</dt><dd class="stat-card__breakdown-value">€2,115.00</dd></div>
+        </dl>`,
+        false: undefined,
+      }),
+      fill: figma.enum('Fill', {
+        'Lagoon': 'stat-card--lagoon',
+        'Jade': 'stat-card--jade',
+        'Violet Radix': 'stat-card--violet-radix',
+      }),
+    },
+    example: ({ title, number, meta, breakdown, fill }) => html`
+      <div class="stat-card stat-card--xl ${fill}">
+        <div class="stat-card__head">
+          <div class="stat-card__icon-wrap"><i data-lucide="receipt-pound-sterling" aria-hidden="true"></i></div>
+          <div class="stat-card__text">
+            <p class="stat-card__title">${title}</p>
+            ${meta}
+          </div>
+        </div>
+        <p class="stat-card__value">${number} <span class="stat-card__unit">GBP</span></p>
+        ${breakdown}
       </div>
     `,
   }

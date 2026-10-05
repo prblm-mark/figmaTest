@@ -85,6 +85,10 @@
   /* A screen's OWN detail-row content (config.rowDetail(row) → HTML), shown under the columns
      that did not fit. Article Steps uses it for the step's body (2026-09-29). */
   var ROW_DETAIL = null;
+  /* A screen's OWN record-link target (config.rowHref(row) → URL), in place of ROUTE.view. Long
+     Running Queries' Grouped view uses it: a group's link is the Individual view filtered to that
+     Template:Line, not a record (2026-10-05). */
+  var ROW_HREF = null;
 
   function rowId(row) { return row[ROW_ID.key]; }
 
@@ -212,6 +216,24 @@
         ' data-backend-todo="listing-row-routes"' +
         ' aria-label="Edit ' + esc(ROW_ID.spoken) + ' ' + esc(rowId(row)) + '">' +
         '<i data-lucide="pencil" aria-hidden="true"></i></a>';
+    },
+
+    /* Badge — a status word in the DS Badge, base size (the Contract Analysis call, designer
+       2026-10-02). The column maps each value to a tone (`badges: { Slow: 'warning' }`); an
+       unmapped value is neutral rather than unstyled. */
+    badge: function (row, col) {
+      var v = row[col.key];
+      if (v === null || v === undefined || v === '') return '';
+      var tone = (col.badges || {})[v] || 'neutral';
+      return '<span class="badge badge--' + esc(tone) + '">' + esc(v) + '</span>';
+    },
+
+    /* Path — a file path whose END is the part that matters ("…/CC/Update.cfm:233"). The value is
+       isolated left-to-right in a <bdi> so a screen can truncate it from the START by setting
+       `direction: rtl` on the cell's truncate block (Long Running Queries, `.cc-lq__path`)
+       without the leading "/" jumping to the far end. Without that rule it is plain text. */
+    path: function (row, col) {
+      return '<bdi class="datatables__path" dir="ltr">' + esc(row[col.key]) + '</bdi>';
     },
 
     /* Kebab doubles as the mobile row-detail toggle. The reveal is pure
@@ -707,7 +729,7 @@
            Goes INSIDE the truncate span below, so a long title still clips. */
         if (col.link) {
           content = '<a class="datatables__record-link" href="' +
-            esc(ROUTE.view(rowId(row), ROW_ID.noun)) + '" data-row-link' +
+            esc(ROW_HREF ? ROW_HREF(row) : ROUTE.view(rowId(row), ROW_ID.noun)) + '" data-row-link' +
             ' data-backend-todo="listing-row-routes">' + content + '</a>';
         }
         /* Snug columns truncate rather than set their own width. The cap has
@@ -901,6 +923,9 @@
 
   function matches(row, filter, values, config) {
     if (!values.length) return true;
+    /* A filter can own its test. Long Running Queries needs two the types below cannot express:
+       Date Frame's buckets OVERLAP (Today is also in Last 7 Days) and Min Exec Time is "at least". */
+    if (typeof filter.match === 'function') return filter.match(row, values);
     var actual = valueAt(row, filter.field);
 
     /* Either end may be blank — an open-ended range is still a range. */
@@ -963,7 +988,7 @@
       var v = row[col.key];
       if (v === null || v === undefined) return '';
       if (col.type === 'user') return [v.name, v.role].filter(Boolean).join(' ');
-      if (col.type === 'text' || col.type === 'chip') return String(v);
+      if (col.type === 'text' || col.type === 'chip' || col.type === 'path' || col.type === 'badge') return String(v);
       return '';
     }).join(' ').toLowerCase();
   }
@@ -977,7 +1002,9 @@
      data and so compare correctly as strings, but going through the same
      numeric path keeps one rule. */
   function sortValue(row, col) {
-    var raw = valueAt(row, col.key === 'customer' ? 'customer.name' : col.key);
+    /* `sortKey`: sort on a raw field rather than the displayed one — "1,234ms" is not a number
+       to the test below, so Long Running Queries sorts its exec times on the milliseconds. */
+    var raw = valueAt(row, col.sortKey || (col.key === 'customer' ? 'customer.name' : col.key));
     var num = raw.replace(/[^0-9.-]/g, '');
     /* Only treat it as a number when the WHOLE value is one — "100412" and
        "£9.95" yes, "EXT-0412" and "Paid Full" no. */
@@ -1412,6 +1439,8 @@
     fitColumns(root, config);
     refreshSelectAll(root);
     renderSelection(root, config);
+    /* For page-level parts that follow the filters (Long Running Queries' Top 5). */
+    document.dispatchEvent(new CustomEvent('listing:results', { detail: { config: config, total: total } }));
   }
 
   /* TODO(design:Listing): Datatables has no empty state in Figma. This mirrors
@@ -2170,6 +2199,7 @@
        Archive's slug is "archived-item" and announcing "Edit archived-item
        5361" puts a hyphen in the middle of a spoken phrase. */
     ROW_DETAIL = typeof config.rowDetail === 'function' ? config.rowDetail : null;
+    ROW_HREF = typeof config.rowHref === 'function' ? config.rowHref : null;
     ROW_ID = {
       key: config.rowKey || 'orderNo',
       noun: config.routeNoun || 'order',
@@ -3204,7 +3234,13 @@
 
     /* Exposed so the next pass (sort, paging) can re-render from a mutated
      * config without reloading. */
-    window.listingScreen = { config: config, render: function () { render(root, config); } };
+    window.listingScreen = {
+      config: config,
+      render: function () { render(root, config); },
+      /* The rows the current filters let through, unpaged — Long Running Queries' mock
+         "Delete filtered" removes exactly these. */
+      matched: function () { return applyFilters(config).rows; }
+    };
   }
 
   if (document.readyState === 'loading') {

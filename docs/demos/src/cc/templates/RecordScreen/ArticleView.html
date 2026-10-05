@@ -901,7 +901,7 @@
                 <div class="viewer-item__companies"><a class="btn btn--tertiary btn--xs" href="#"><span>Burning Nights CRPS Support</span></a></div>
               </div>
             </li></ul>
-            <!-- TODO(backend:RecordScreen): "Add to Contact List" → add the viewers to a contact list (list picker + POST) -->
+            <!-- TODO(backend:RecordScreen): "Add to Contact List" → add these people to a contact list (list picker + POST) -->
             <button type="button" class="btn btn--secondary btn--sm" data-backend-todo="viewers-add-to-contact-list"><span>Add to Contact List</span></button>
           </div>
         </section><section class="fact-panel" aria-labelledby="panel-record">
@@ -986,6 +986,145 @@
             <dt class="field-row__label">Impressions</dt>
             <dd class="field-row__value">56</dd>
           </div></dl>
+        </section><section class="fact-panel" data-backend-todo="record-analytics-conversions" aria-labelledby="panel-convertingarticles">
+          <div class="fact-panel__header">
+            <div class="fact-panel__title-block"><h2 class="fact-panel__title" id="panel-convertingarticles">Converting Articles</h2><p class="fact-panel__subtitle">Last 12 Months</p></div><div class="fact-panel__trailing"><div class="seg-control seg-control--sm" role="radiogroup" aria-label="Conversion type" data-seg-control data-conv-switch><button class="seg-control__btn seg-control__btn--active" type="button" role="radio" aria-checked="true" data-value="registration">Registration</button><button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="purchase">Purchase</button></div></div>
+          </div>
+          <div class="performance-summary">
+            <div class="performance-summary__stats">
+              <div data-conv-stat="total"><div class="stat-card stat-card--sm stat-card--violet-radix">
+                <div class="stat-card__icon-wrap"><i data-lucide="target" aria-hidden="true"></i></div>
+                <div class="stat-card__text"><p class="stat-card__title">Conversions</p><p class="stat-card__value">64</p></div>
+              </div></div>
+              <div class="performance-summary__stats-row">
+                <div data-conv-stat="per_day"><div class="stat-card stat-card--sm stat-card--indigo">
+                <div class="stat-card__icon-wrap"><i data-lucide="calendar-days" aria-hidden="true"></i></div>
+                <div class="stat-card__text"><p class="stat-card__title">Per Day</p><p class="stat-card__value">0.18</p></div>
+              </div></div>
+                <div data-conv-stat="rate"><div class="stat-card stat-card--sm stat-card--jade">
+                <div class="stat-card__icon-wrap"><i data-lucide="percent" aria-hidden="true"></i></div>
+                <div class="stat-card__text"><p class="stat-card__title">Per Impression</p><p class="stat-card__value">1.94%</p></div>
+              </div></div>
+              </div>
+            </div>
+            <div class="performance-summary__chart">
+              <div class="chart"><div class="chart__canvas"><canvas id="conv-chart" aria-label="Conversions per month, last 12 months" role="img"></canvas></div></div>
+            </div>
+          </div>
+        </section><section class="fact-panel" aria-labelledby="panel-recentconversions">
+          <div class="fact-panel__header">
+            <div class="fact-panel__title-block"><h2 class="fact-panel__title" id="panel-recentconversions">Recent Conversions</h2></div>
+          </div>
+          <div class="viewer-list">
+            <ul class="viewer-list__items"><li class="viewer-item">
+              <div class="avatar"><img class="portrait" src="https://i.pravatar.cc/64?u=hannah" alt=""></div>
+              <div class="viewer-item__body">
+                <div class="viewer-item__identity">
+                  <div class="viewer-item__who"><p class="viewer-item__name">Hannah Roe</p><p class="viewer-item__role">Purchase · Order 104821</p></div>
+                  <p class="viewer-item__time">2 days</p>
+                </div>
+                <div class="viewer-item__companies"><a class="btn btn--tertiary btn--xs" href="#"><span>Ocean Media Group Ltd</span></a></div>
+              </div>
+            </li><li class="viewer-item">
+              <div class="avatar"><img class="portrait" src="https://i.pravatar.cc/64?u=tom" alt=""></div>
+              <div class="viewer-item__body">
+                <div class="viewer-item__identity">
+                  <div class="viewer-item__who"><p class="viewer-item__name">Tom Brierley</p><p class="viewer-item__role">Registration</p></div>
+                  <p class="viewer-item__time">3 days, 4hrs</p>
+                </div>
+                <div class="viewer-item__companies"><a class="btn btn--tertiary btn--xs" href="#"><span>Playbook Media Trading Company</span></a></div>
+              </div>
+            </li><li class="viewer-item">
+              <div class="avatar"><img class="portrait" src="https://i.pravatar.cc/64?u=priya" alt=""></div>
+              <div class="viewer-item__body">
+                <div class="viewer-item__identity">
+                  <div class="viewer-item__who"><p class="viewer-item__name">Priya Nair</p><p class="viewer-item__role">Purchase · Order 104790</p></div>
+                  <p class="viewer-item__time">6 days</p>
+                </div>
+                <div class="viewer-item__companies"><a class="btn btn--tertiary btn--xs" href="#"><span>Argutus</span></a></div>
+              </div>
+            </li></ul>
+            <!-- TODO(backend:RecordScreen): "Add to Contact List" → add these people to a contact list (list picker + POST) -->
+            <button type="button" class="btn btn--secondary btn--sm" data-backend-todo="record-analytics-people"><span>Add to Contact List</span></button>
+          </div>
+        </section><section class="fact-panel" aria-labelledby="panel-addedtoitinerary">
+          <div class="fact-panel__header">
+            <div class="fact-panel__title-block"><h2 class="fact-panel__title" id="panel-addedtoitinerary">Added to Itinerary</h2><p class="fact-panel__subtitle">Advanced Seminar only</p></div>
+          </div>
+          <div class="viewer-list">
+            <ul class="viewer-list__items"><li class="viewer-item">
+              <div class="avatar"><img class="portrait" src="https://i.pravatar.cc/64?u=grace" alt=""></div>
+              <div class="viewer-item__body">
+                <div class="viewer-item__identity">
+                  <div class="viewer-item__who"><p class="viewer-item__name">Grace Okafor</p><p class="viewer-item__role">Head of Events, Argutus Consulting</p></div>
+                  <p class="viewer-item__time">1 day, 2hrs</p>
+                </div>
+                <div class="viewer-item__companies"><a class="btn btn--tertiary btn--xs" href="#"><span>Argutus</span></a></div>
+              </div>
+            </li><li class="viewer-item">
+              <div class="avatar"><img class="portrait" src="https://i.pravatar.cc/64?u=leo" alt=""></div>
+              <div class="viewer-item__body">
+                <div class="viewer-item__identity">
+                  <div class="viewer-item__who"><p class="viewer-item__name">Leo Martins</p><p class="viewer-item__role">Marketing Director, Ocean Media Group Ltd</p></div>
+                  <p class="viewer-item__time">4 days</p>
+                </div>
+                <div class="viewer-item__companies"><a class="btn btn--tertiary btn--xs" href="#"><span>Ocean Media Group Ltd</span></a></div>
+              </div>
+            </li></ul>
+            <!-- TODO(backend:RecordScreen): "Add to Contact List" → add these people to a contact list (list picker + POST) -->
+            <button type="button" class="btn btn--secondary btn--sm" data-backend-todo="record-analytics-people"><span>Add to Contact List</span></button>
+          </div>
+        </section><section class="fact-panel" aria-labelledby="panel-referringurls">
+          <div class="fact-panel__header">
+            <div class="fact-panel__title-block"><h2 class="fact-panel__title" id="panel-referringurls">Referring URLs</h2></div>
+          </div>
+          <!-- TODO(backend:RecordScreen): Referring URLs rows → record-analytics-referrers -->
+          <div class="table-wrap" data-backend-todo="record-analytics-referrers"><div class="table-wrap__scroll"><table class="table" aria-label="Referring URLs">
+            <thead><tr><th scope="col">Referrer</th><th scope="col" class="table__cell--right">Visits</th></tr></thead>
+            <tbody><tr><td class="record-screen__cell-truncate" title="linkedin.com/feed">linkedin.com/feed</td><td class="table__cell--right">42</td></tr><tr><td class="record-screen__cell-truncate" title="google.com">google.com</td><td class="table__cell--right">31</td></tr><tr><td class="record-screen__cell-truncate" title="news.ycombinator.com/item?id=41822">news.ycombinator.com/item?id=41822</td><td class="table__cell--right">12</td></tr><tr><td class="record-screen__cell-truncate" title="bing.com">bing.com</td><td class="table__cell--right">6</td></tr><tr><td class="record-screen__cell-truncate" title="t.co/x8Kq2LmA">t.co/x8Kq2LmA</td><td class="table__cell--right">4</td></tr></tbody>
+          </table></div></div><label class="checkbox"><input type="checkbox" class="checkbox__input" data-backend-todo="record-analytics-referrers"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span><span class="checkbox__label"><span class="checkbox__label-text">Show internal URLs</span></span></label><a class="performance-summary__link" href="#" data-backend-todo="record-analytics-referrers"><span>Referral analysis</span><i data-lucide="arrow-right" aria-hidden="true"></i></a>
+        </section><section class="fact-panel" aria-labelledby="panel-linkclicks">
+          <div class="fact-panel__header">
+            <div class="fact-panel__title-block"><h2 class="fact-panel__title" id="panel-linkclicks">Link Clicks</h2><p class="fact-panel__subtitle">Last 12 Months</p></div>
+          </div>
+          <!-- TODO(backend:RecordScreen): Link clicks rows → record-analytics-link-clicks -->
+          <div class="table-wrap" data-backend-todo="record-analytics-link-clicks"><div class="table-wrap__scroll"><table class="table" aria-label="Link clicks">
+            <thead><tr><th scope="col">Link</th><th scope="col" class="table__cell--right">Clicks</th></tr></thead>
+            <tbody><tr><td class="record-screen__cell-truncate" title="affino.com/pricing">affino.com/pricing</td><td class="table__cell--right">38</td></tr><tr><td class="record-screen__cell-truncate" title="affino.com/release-notes/9-0-11">affino.com/release-notes/9-0-11</td><td class="table__cell--right">21</td></tr><tr><td class="record-screen__cell-truncate" title="docs.affino.com/orders-api">docs.affino.com/orders-api</td><td class="table__cell--right">14</td></tr></tbody>
+          </table></div></div>
+        </section><section class="fact-panel" aria-labelledby="panel-recentclicks">
+          <div class="fact-panel__header">
+            <div class="fact-panel__title-block"><h2 class="fact-panel__title" id="panel-recentclicks">Recent Clicks</h2></div>
+          </div>
+          <div class="sel" data-sel data-backend-todo="record-analytics-recent-clicks-filter">
+            <label class="sel__label" for="recent-clicks-link">Link</label>
+            <button id="recent-clicks-link" class="sel__control" type="button" data-sel-trigger>
+              <span class="sel__value">All links</span><span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+            </button>
+            <ul class="sel__menu" role="listbox"><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option" aria-selected="true">All links<i data-lucide="check" aria-hidden="true"></i></button></li><li><button type="button" class="sel__menu-item" role="option">affino.com/pricing</button></li><li><button type="button" class="sel__menu-item" role="option">affino.com/release-notes/9-0-11</button></li><li><button type="button" class="sel__menu-item" role="option">docs.affino.com/orders-api</button></li></ul>
+          </div><div class="viewer-list">
+            <ul class="viewer-list__items"><li class="viewer-item">
+              <div class="avatar"><img class="portrait" src="https://i.pravatar.cc/64?u=simon" alt=""></div>
+              <div class="viewer-item__body">
+                <div class="viewer-item__identity">
+                  <div class="viewer-item__who"><p class="viewer-item__name">Simon Hassell</p><p class="viewer-item__role">affino.com/pricing</p></div>
+                  <p class="viewer-item__time">5 days, 18hrs</p>
+                </div>
+                <div class="viewer-item__companies"><a class="btn btn--tertiary btn--xs" href="#"><span>Argutus</span></a></div>
+              </div>
+            </li><li class="viewer-item">
+              <div class="avatar"><img class="portrait" src="https://i.pravatar.cc/64?u=hannah" alt=""></div>
+              <div class="viewer-item__body">
+                <div class="viewer-item__identity">
+                  <div class="viewer-item__who"><p class="viewer-item__name">Hannah Roe</p><p class="viewer-item__role">docs.affino.com/orders-api</p></div>
+                  <p class="viewer-item__time">6 days</p>
+                </div>
+                <div class="viewer-item__companies"><a class="btn btn--tertiary btn--xs" href="#"><span>Ocean Media Group Ltd</span></a></div>
+              </div>
+            </li></ul>
+            <!-- TODO(backend:RecordScreen): "Add to Contact List" → add these people to a contact list (list picker + POST) -->
+            <button type="button" class="btn btn--secondary btn--sm" data-backend-todo="record-analytics-people"><span>Add to Contact List</span></button>
+          </div>
         </section>
           </aside>
         </div>
@@ -1706,6 +1845,7 @@
   <script src="../../patterns/PromptModifier/PromptModifier.js"></script>
   <script src="../../../components/SegmentedControl/SegmentedControl.js"></script>
   <script src="../../patterns/StepsTable/StepsTable.js"></script>
+  <script src="../../patterns/RecordTabs/RecordTabs.js"></script>
   <script src="RecordScreen.js"></script>
 
   <!-- The chips and their pickers are rendered by ListingScreen.js, which runs
