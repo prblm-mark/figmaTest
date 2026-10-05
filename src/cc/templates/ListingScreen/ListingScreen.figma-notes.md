@@ -3149,3 +3149,98 @@ frame yet.
 **Card border (2026-10-02):** the FilterBar and Datatables cards' OUTER edges use `--ai-border-card`
 (`border/card`), overridden here. Their inner dividers keep their own tokens. The totals tiles get it here too, because
 StatCard's own default is `border/secondary`. Full width's flush bottom rules are unchanged.
+
+---
+
+# Long Running Queries — the fifth screen (TASK-470994, 2026-10-05)
+
+`/control/long-running-queries` (ControlProfileCode 2172, menu **Custom**) for Lynx / Luismi,
+labelled `no-design`. Classic: `/AcuSystem/CC/LongQueryLog.cfm` + `LongQueryLog.js` +
+`/AcuSystem/cfc/LongQueryLog.cfc` on affino.com. A log of slow and large-result queries that
+**every** Affino instance writes to one shared table (`CF_LongQuery`, ComrzExtensions2 Postgres),
+so the screen exists only on affino.com.
+
+The task asked to "confirm whether it lists rows before treating it as design-free". It does: an
+AJAX jqGrid, two views, eight filters. That is this template, so it stays no-design. It is
+config plus one page file. Mark approved the scope (2026-10-05): listing only (the
+`LongQueryLogDetail.cfm` row detail is not built), the FilterBar, Top 5 as a compact table, both
+deletes in the header kebab with confirms.
+
+## Files
+
+| File | What |
+|---|---|
+| `LongQueries.html` | The page, cloned from MediaItems.html: breadcrumb Custom › Long Running Queries, header kebab, Top 5 card, Individual / Grouped switch, confirm modal |
+| `listing-data-long-queries.js` | Two configs (`long-queries`, `long-queries-grouped`), the eight filters, generated rows |
+| `LongQueries.js` | Runs before ListingScreen.js: picks the view from `?View=`, seeds chips from classic's GET params; then the Top 5 and the deletes |
+| `LongQueries.css` | Top 5 card, start-truncated paths, confirm text. All values borrowed, no new tokens |
+
+## Composition
+
+| Part | From |
+|---|---|
+| Shell, FilterBar, Datatables, pager, Edit Columns, Settings | The Listing template, unchanged |
+| View switch | SegmentedControl, where Media Items has Listing / Grid. **Navigates** (`?View=grouped`, classic's parameter): each view is a different query and column set. Carries Website / Client ID / DataSource / Date Frame / Min Exec Time / Type across, dropping Template (as classic's tab links do) |
+| Top 5 slowest queries | A second Datatables `--orders` block + Table + Select `--sm`, between the FilterBar and the grid (classic's order). Auto table layout (Contract Analysis's override). Individual view only, as classic |
+| Type / User Type | Badge, base size. Slow `warning`, Large `info`, Both `danger`; Guest `success`, Logged In `info` (classic's amber / blue / red / green / blue) |
+| Delete filtered / Delete all | Header kebab (CC header rule), `dropdown-item--warning`, then Modal `--sm` with Button `--alert`. Confirm states the count. Toast `--danger --color` after |
+
+## What the template gained (all opt-in; the other four screens are unchanged)
+
+| Addition | Why |
+|---|---|
+| `badge` cell (`col.badges` maps value → tone) | First listing with status words in a column |
+| `path` cell (value in an LTR `<bdi>`) | So a screen can truncate a path from the START with `direction: rtl` and keep the characters in order |
+| `config.rowHref(row)` | Grouped's record link is the Individual view filtered to that Template:Line, not a record |
+| `filter.match(row, values)` | Date Frame's buckets overlap (Today is in Last 7 Days); Min Exec Time is "at least" |
+| `col.sortKey` | "1,234ms" is not a number to the sort; sort on the milliseconds |
+| `listing:results` event | Page parts that follow the filters (the Top 5) |
+| `listingScreen.matched()` | The unpaged rows the filters pass, for the mock Delete filtered |
+| Search covers `path` and `badge` columns | So the toolbar search finds a template or a type |
+
+## Decisions that differ from classic
+
+- **Column order.** Column order is the fit's priority order. Classic's Individual order (Date,
+  Website, Client ID, User, Type, Exec Time, Template:Line) dropped Template:Line into the kebab
+  first, even at 1440. Now it's Date, Template:Line, Exec Time, Type, Website, Client ID, User.
+  Grouped's (Template:Line, User Type, Website, Client ID, Avg, Max, Count, Latest) dropped Avg
+  Exec Time at 820, and that's the column the view sorts by. Now it's Template:Line, Avg, Max,
+  Count, User Type, Website, Client ID, Latest. **Designer call to confirm.**
+- **Two identity columns on Individual** (Date + Template:Line), so a phone shows which query, not
+  just a timestamp. At 390 Template:Line gets about 90px ("…ox.cfm:188"). It's tight but it reads.
+  Grouped keeps one (Template:Line).
+- **Template:Line truncates from the start** in the grid and the Top 5: the file and line are the
+  value. The full path is in the title.
+- **The details icon column is gone.** Date is the record link and the whole row clicks through.
+- **Row shading by age is dropped.** Classic greys rows 1, 2, 3 and 4+ days old. The Date column
+  and the Date Frame filter already carry age.
+- **No number alignment.** Listing demos stay left-aligned (see the listing-number-alignment rule).
+- **The confirm states the count.** Classic used `window.confirm()` with no number.
+- **Top 5 timeframes.** This Week / This Month are read as rolling 7 / 30 days. Calendar periods
+  are possible; the backend should confirm.
+
+## Real vs mock
+
+Real: both column sets, every filter and option list, the defaults (Date Frame Last 7 Days, 50 per
+page, Individual Date ↓, Grouped Avg Exec Time ↓), both sort whitelists, the value formats, the
+Guest rule (`AppUser` empty or ending "(2)"), the empty text "No entries found for this
+timeframe.", and the "Filtered by Website: …, Client: …, DS: …" line. **Mock:** every row. The
+table is unreachable from here, so there are 260 generated rows with real template paths and client
+names, dated relative to today. Grouped rows are aggregated from them, so both views agree.
+
+## Measured (headless, 2026-10-05)
+
+- Individual opens at 118 rows with Date Frame = Last 7 Days. Website = www.affino.com → 20, and
+  the Top 5 scope reads "Filtered by Website: www.affino.com". Exec Time sorts numerically.
+- Delete filtered: the confirm reads "Delete 20", the grid shows 0, the toast reads "20 long query
+  entries deleted", and clearing the filter shows 98.
+- `?View=grouped&Website=www.thestage.co.uk&DateFilter=0` → Grouped is active, Website seeded, Date
+  Frame cleared, 15 groups, Top 5 hidden. The drill-down lands on Individual with Template +
+  Website + Client ID seeded → 3 rows.
+- 390: grid shows Date + Template:Line; Top 5 shows #, Template:Line, Avg and fits (309/309). The
+  grid body is 12px wider than its box at 390, the **same on Orders**, so that's existing template
+  behaviour and not this screen.
+- Dark mode checked at 1440.
+
+Backend markers: `long-queries-rows`, `long-queries-grouped-filters`, `long-queries-top5`,
+`long-queries-delete`, `long-queries-detail` (HANDOVER.md § Surface: ListingScreen).

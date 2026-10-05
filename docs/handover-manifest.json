@@ -1,6 +1,6 @@
 {
  "description": "Backend-developer handover manifest. Machine-readable index of front-end elements that are mock / visual-only / in-memory and need real backend implementation. Front-end-only repo (vanilla HTML/CSS/JS, no framework, no backend). See HANDOVER.md for the human-readable version and the TODO(backend:<Surface>) in-code marker convention.",
- "updated": "2026-09-17",
+ "updated": "2026-10-05",
  "categories": {
   "visual-only": "Rendered but no behaviour wired at all.",
   "fe-wired": "Works client-side; no backend required (may be fine as-is).",
@@ -869,7 +869,7 @@
   },
   "ListingScreen": {
    "file": "src/cc/templates/ListingScreen/ListingScreen.html",
-   "note": "Control Centre Listing Screen template — the layout behind ~400 CC screens; Orders, Articles, Article Archive and Media Items are built. Each screen is a config object (LISTING_SCREENS['<key>']) that ListingScreen.js renders: filters (first five as chips), columns (fitted by measurement), selection + bulk actions, sticky bar and header, pagination. Filtering, sorting, search and paging work client-side over mock rows; the backend replaces the data. Build rules: docs/listing-screens-handover.md.",
+   "note": "Control Centre Listing Screen template — the layout behind ~400 CC screens; Orders, Articles, Article Archive, Media Items and Long Running Queries are built. Each screen is a config object (LISTING_SCREENS['<key>']) that ListingScreen.js renders: filters (first five as chips), columns (fitted by measurement), selection + bulk actions, sticky bar and header, pagination. Filtering, sorting, search and paging work client-side over mock rows; the backend replaces the data. Build rules: docs/listing-screens-handover.md.",
    "items": [
     {
      "id": "listing-orders-rows",
@@ -996,6 +996,41 @@
      "element": "Checkbox filters on Orders (8), Articles (2) and Media Items (4)",
      "current": "Matching works client-side by each filter's `mode` (only / exclude / include / display) against MOCK booleans added to the demo rows on fixed intervals, flagged in each data file. Orders' zeroValue is derived from the total. The display-mode checkboxes filter nothing yet.",
      "needs": "One boolean per checkbox field on every row (invoiceSent, storeCredits, firstTimeBuyer, isSubscription, zeroValue, multiDisplayed, archived, myMedia, hasOriginal, outdated), or the checkbox applied server-side. myMedia needs the current user. Display options (Exclude Tax, Show Attendee No., Show Contact Details) are rendering changes still to be built."
+    },
+    {
+     "id": "long-queries-rows",
+     "category": "needs-backend",
+     "element": "`.datatables--orders` on LongQueries.html (both views)",
+     "current": "260 **generated** rows (`listing-data-long-queries.js`): real Affino template paths and client names, invented timings and users, dates relative to today. Grouped rows are aggregated from the same rows client-side. CF_LongQuery lives in ComrzExtensions2 (Postgres), which no read here reaches",
+     "needs": "Classic's own endpoints: `LongQueryLog.cfc?method=GetQueryData` (Individual) and `GetGroupedData` (Grouped), with Template, DataSource, Website, ClientID, LimitBy, DateFilter (0–4), MinExecTime, Type (0–3), Page, sidx, sord. Row shapes: `{ code, date, website, clientId, appUser, type, execTime, templateLine }` and `{ templateLine, userType, website, clientId, avgExecTime, maxExecTime, issueCount, latestDate }`. **Also send the raw numbers** (`execMs`, `avgMs`, `maxMs`, `created`) — the formatted \"1,234ms\" strings cannot be sorted. Website / Client ID / DataSource options from `GetUniqueValues`"
+    },
+    {
+     "id": "long-queries-grouped-filters",
+     "category": "needs-backend",
+     "element": "Date Frame / Min Exec Time / Type on the Grouped view",
+     "current": "A group passes if ANY of its rows matches; its Count / Avg / Max still cover all its rows",
+     "needs": "Nothing new: `GetGroupedData` already filters before it groups, so the aggregates cover only the matching rows. Swapping in the endpoint fixes it"
+    },
+    {
+     "id": "long-queries-top5",
+     "category": "needs-backend",
+     "element": "`.cc-lq-top` (Top 5 slowest queries, Individual view only)",
+     "current": "Computed client-side from the mock rows: GROUP BY Template:Line, ordered by average, over its own timeframe and the Website / Client ID / DataSource chips. This Week / This Month are read as rolling 7 / 30 days",
+     "needs": "`LongQueryLog.cfc?method=GetTopQueries {Timeframe 0–3, Website, ClientID, DataSource}` → `{ rows:[{ template, avgExecTime, maxExecTime, count, latest }] }`. Confirm whether This Week / This Month are calendar or rolling"
+    },
+    {
+     "id": "long-queries-delete",
+     "category": "needs-backend",
+     "element": "Header kebab → Delete filtered / Delete all, each behind a confirm",
+     "current": "Removes rows from the in-memory set, re-renders, shows a toast. The confirm states the count (new; classic used window.confirm)",
+     "needs": "Classic's GETs: `?DeleteFiltered=true&<current filters>` (cfc `DeleteFiltered`) and `?DeleteAll=true` (`DELETE FROM CF_LongQuery`). The confirm wants the matching count — the rows endpoint's `records` already gives it. Delete all empties a table **shared by every Affino instance**, so consider a permission check"
+    },
+    {
+     "id": "long-queries-detail",
+     "category": "needs-backend",
+     "element": "`a[data-row-link]` on Individual rows (the Date)",
+     "current": "Placeholder hash route `#long-query/<code>/view` from ROUTE.view",
+     "needs": "`LongQueryLogDetail.cfm?LongQueryCode=<code>` — classic's detail screen, **not built** in v3 yet (out of scope for TASK-470994)"
     }
    ],
    "guide": "docs/listing-screens-handover.md"
