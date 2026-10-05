@@ -94,6 +94,33 @@
     }
    ]
   },
+  "ExportSystem": {
+   "file": "src/cc/templates/ExportSystem/ExportSystem.html",
+   "note": "/control/export-system-json-and-css on v3 (TASK-470995, no-design). Reuses the ControlScreen app-shell, so shell-level backend items are inherited from the ControlScreen surface.",
+   "items": [
+    {
+     "id": "export-system-run",
+     "category": "needs-backend",
+     "element": ".cc-export Export card ([data-export-target], [data-export-go]) and the result banners",
+     "current": "Nine targets (lion's list, including ControlCentreCSS). Selection, the busy state, the success / issues / failure banners and the files' new dates are mock in ExportSystem.js",
+     "needs": "POST `{thisDoc}` `SystemDB=<1-based indexes into the sorted list>` (classic's form). Each target writes `AfcEngine/<Target>.json` (TextItem 13 files); ControlCentreCSS builds `cc-styles.css`, so confirm its path. Return results as data `[{target, files[], ok}]` and ControlProfileHelp issues as `[{profile, kind, items[]}]`. Keep the affino.com rule (ControlProfile + ControlProfileHelp only). **Output must stay byte-identical** — ControlProfile.json feeds the CC inventory tooling"
+    },
+    {
+     "id": "export-system-files",
+     "category": "needs-backend",
+     "element": ".cc-export__files table",
+     "current": "Classic's two files (ControlProfile.json, ControlProfileHelp.json) with lion's sizes and dates, static; Download is `#`",
+     "needs": "The two files' real size and DateLastModified from `AfcEngine/`; a Download route per file"
+    },
+    {
+     "id": "export-system-download-path",
+     "category": "needs-backend",
+     "element": "Download (classic ?fmAction=download&path=…&file=…)",
+     "current": "Not reproduced: the demo's Download links go nowhere",
+     "needs": "**Security.** Classic takes the folder AND the file name from the URL and serves that file, so it can read any file the server can. The v3 route must take a file name from a fixed allow-list and resolve it under `AfcEngine/` itself"
+    }
+   ]
+  },
   "ControlScreen": {
    "file": "src/cc/templates/ControlScreen/ControlScreen.html",
    "note": "CC home/landing dashboard. Front-end complete; all data is hardcoded and most actions are mock. Composes many CC patterns — see docs/component-registry.md for per-component status.",

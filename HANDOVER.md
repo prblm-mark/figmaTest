@@ -126,6 +126,22 @@ the classic errors fixed are in `ContractAnalysis.figma-notes.md`.
 
 ---
 
+## Surface: ExportSystem
+
+`src/cc/templates/ExportSystem/ExportSystem.html` is `/control/export-system-json-and-css` on v3 (TASK-470995,
+`no-design`), composed from existing parts on the ControlScreen shell (shell items are inherited). Full spec:
+`ExportSystem.figma-notes.md`.
+
+| id | Element | Now | Backend work needed | Category |
+|---|---|---|---|---|
+| `export-system-run` | `.cc-export` Export card (`[data-export-target]`, `[data-export-go]`) and the result banners | Nine targets (lion's list, including ControlCentreCSS). Selection, the busy state, the success / issues / failure banners and the files' new dates are mock in ExportSystem.js | POST `{thisDoc}` `SystemDB=<1-based indexes into the sorted list>` (classic's form). Each target writes `AfcEngine/<Target>.json` (TextItem 13 files); ControlCentreCSS builds `cc-styles.css`, so confirm its path. Return results as data `[{target, files[], ok}]` and ControlProfileHelp issues as `[{profile, kind, items[]}]`. Keep the affino.com rule (ControlProfile + ControlProfileHelp only). **Output must stay byte-identical** — ControlProfile.json feeds the CC inventory tooling | needs-backend |
+| `export-system-files` | `.cc-export__files` table | Classic's two files (ControlProfile.json, ControlProfileHelp.json) with lion's sizes and dates, static; Download is `#` | The two files' real size and DateLastModified from `AfcEngine/`; a Download route per file | needs-backend |
+| `export-system-download-path` | Download (classic `?fmAction=download&path=…&file=…`) | Not reproduced: the demo's Download links go nowhere | **Security.** Classic takes the folder AND the file name from the URL and serves that file, so it can read any file the server can. The v3 route must take a file name from a fixed allow-list and resolve it under `AfcEngine/` itself | needs-backend |
+
+`grep -rn "TODO(backend:ExportSystem)" src/`
+
+---
+
 ## Surface: Login
 
 `src/cc/templates/Login/Login.html` — the CC Control Centre login screen. A standalone

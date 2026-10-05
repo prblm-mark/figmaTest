@@ -1,0 +1,124 @@
+/* ExportSystem — /control/export-system-json-and-css on the v3 framework (TASK-470995).
+ *
+ * Composed from existing parts only (RecordSection, Checkbox, Button, Spinner, Alert, Table) on
+ * the ControlScreen shell. No Figma frame: the task is "no-design", so this file holds layout
+ * only and every value is borrowed from a part already in the system (each cites where from).
+ */
+
+/* Gap between the result banner and the two sections: UpdateScreen's (the record screens'
+ * card gap). */
+.cc-control__page.cc-export {
+  gap: var(--ai-spacing-5);
+}
+
+/* Top-level cards: border/card + shadow/2xs in standard width, flat in full width — the CC
+ * top-level card rule, as UpdateScreen and the record screens apply it. */
+.cc-control:not([data-cc-width="full"]) .cc-export .record-section {
+  border-color: var(--ai-border-card);
+  box-shadow: var(--ai-shadow-2xs);
+}
+
+.cc-control:not([data-cc-width="full"]) .cc-export .record-section__header {
+  border-bottom-color: var(--ai-border-card);
+}
+
+.cc-control[data-cc-width="full"] .cc-control__page.cc-export {
+  gap: 0;
+}
+
+/* The result banner slot takes no space until an export has run. */
+.cc-export__result:empty {
+  display: none;
+}
+
+.cc-export__result {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);   /* the page's own gap, so two banners space like the cards */
+}
+
+/* ── Targets ───────────────────────────────────────────────
+   Nine checkboxes in as many columns as fit, each at least 240px (`size-4`, the listing's fluid
+   column floor). Row gap 12px = the listing column's gap (`.cc-listing`); column gap 24px =
+   RecordSection's own body padding, so the columns sit as far apart as the card's edge. Intrinsic,
+   so the grid reflows with the docked menu and needs no breakpoint. */
+.cc-export__targets {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--ai-size-4)), 1fr));
+  gap: var(--ai-spacing-4) var(--ai-spacing-6);
+}
+
+/* Export + Select all. The 8px gap is the Button group spacing UpdateScreen uses beside Run. */
+.cc-export__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+}
+
+/* The Spinner inside the busy Export button sits like a leading icon. */
+.cc-export__actions .spinner {
+  flex: 0 0 auto;
+}
+
+/* ── Exported files ───────────────────────────────────────
+   The Table component inside the card, edge to edge: RecordSection pads its body for field rows,
+   and a table brings its own cell padding. */
+.cc-export__files {
+  padding: 0;
+  overflow-x: auto;
+}
+
+.cc-export__files .table td,
+.cc-export__files .table th {
+  white-space: nowrap;
+}
+
+/* The file name column takes the slack and may wrap; the rest hug their content. */
+.cc-export__files .table td:first-child {
+  inline-size: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* The visually-hidden header text is positioned against its own cell, so it can never escape
+   the table's scroll box and widen the page (measured: 538px document at 390 before this). */
+.cc-export__files .table th:last-child {
+  position: relative;
+}
+
+.cc-export__dl {
+  text-align: right;
+}
+
+/* The Download column needs a header cell for the table's structure but no visible word: every
+   row's button already says Download. Kept in the accessibility tree — FieldRow's own
+   visually-hidden rule (FieldRow.css), property for property. */
+.cc-export__th-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Narrow screen: the button keeps its icon and drops the word (its aria-label still says
+   Download), as the CC header does with `__btn-label`. `cs-page` is the screen-width signal (CLAUDE.md §4a); 767 = the house mobile
+   breakpoint. */
+@container cs-page (max-width: 767px) {
+  .cc-export__dl .btn span {
+    display: none;
+  }
+
+  /* Size is the column a phone can lose: the name says which file and the date says how fresh. */
+  .cc-export__files .table th:nth-child(2),
+  .cc-export__files .table td:nth-child(2) {
+    display: none;
+  }
+
+  /* The date and time break onto two lines rather than push the table past its card. */
+  .cc-export__files .table td:nth-child(3) {
+    white-space: normal;
+  }
+}
