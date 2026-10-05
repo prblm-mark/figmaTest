@@ -173,6 +173,20 @@ on the API help pages' layout and the ControlScreen shell (shell items are inher
 
 ---
 
+## Surface: LiveDashboard
+
+`src/cc/templates/LiveDashboard/LiveDashboard.html` is `/control/live-dashboard` on v3 (TASK-471013, `no-design`, `charts`), composed from
+existing parts on the ControlScreen shell (shell items are inherited). Full spec: `LiveDashboard.figma-notes.md`.
+
+| id | Element | Now | Backend work needed | Category |
+|---|---|---|---|---|
+| `live-data` | Every figure on `.cc-live` (KPIs, chart, lists, table) | Mock counts in `live-dashboard-data.js` over real names (affino.com's top articles, real channels, topics, authors and client companies); the hourly curves are a generated weekday shape | Classic's Dashboard.cfc: getOnlineUsers (Members, Guests, member list), getDayPageViews (today + average by hour), getTimeFrame (hours back to 2,000 views, max 24), getCreatorViews / getChannelViews / getTaxonomyCategoryViews / getArticleViews over that window with MaxRows paging (classic's steps: online 10+10, authors 4+8, channels 5+10, topics 5+10, articles 5+10) | needs-backend |
+| `live-refresh` | Live badge, Updated n s ago, Pause / Resume | Every 30s the mock drifts the counts and re-renders; Pause stops it | Poll the same data every 30s (classic's dashboard.js) and re-render; honour Pause; keep classic's Access Denied redirect (security code 14) | needs-backend |
+
+`grep -rn "TODO(backend:LiveDashboard)" src/`
+
+---
+
 ## Surface: Login
 
 `src/cc/templates/Login/Login.html` — the CC Control Centre login screen. A standalone

@@ -168,6 +168,26 @@
     }
    ]
   },
+  "LiveDashboard": {
+   "file": "src/cc/templates/LiveDashboard/LiveDashboard.html",
+   "note": "/control/live-dashboard on v3 (TASK-471013, no-design, charts). Reuses the ControlScreen app-shell, so shell-level backend items are inherited from the ControlScreen surface.",
+   "items": [
+    {
+     "id": "live-data",
+     "category": "needs-backend",
+     "element": "Every figure on .cc-live (KPIs, chart, lists, table)",
+     "current": "Mock counts in live-dashboard-data.js over real names (affino.com's top articles, real channels, topics, authors and client companies); the hourly curves are a generated weekday shape",
+     "needs": "Classic's Dashboard.cfc: getOnlineUsers (Members, Guests, member list), getDayPageViews (today + average by hour), getTimeFrame (hours back to 2,000 views, max 24), getCreatorViews / getChannelViews / getTaxonomyCategoryViews / getArticleViews over that window with MaxRows paging (classic's steps: online 10+10, authors 4+8, channels 5+10, topics 5+10, articles 5+10)"
+    },
+    {
+     "id": "live-refresh",
+     "category": "needs-backend",
+     "element": "Live badge, Updated n s ago, Pause / Resume",
+     "current": "Every 30s the mock drifts the counts and re-renders; Pause stops it",
+     "needs": "Poll the same data every 30s (classic's dashboard.js) and re-render; honour Pause; keep classic's Access Denied redirect (security code 14)"
+    }
+   ]
+  },
   "ControlScreen": {
    "file": "src/cc/templates/ControlScreen/ControlScreen.html",
    "note": "CC home/landing dashboard. Front-end complete; all data is hardcoded and most actions are mock. Composes many CC patterns — see docs/component-registry.md for per-component status.",
