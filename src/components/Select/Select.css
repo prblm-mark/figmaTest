@@ -221,6 +221,18 @@
   transition: background-color var(--ai-transition-default);
 }
 
+/* Option label. Long options (full URLs) truncate inside the menu rather than widening it past
+ * the field or scrolling it sideways; the full text is the option's `title`. The menu is as
+ * wide as the field, so give the field the width the options need — a full-width field in a
+ * panel, never an auto-width one that fits only its current value. */
+.sel__menu-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .sel__menu-item:hover {
   background-color: var(--ai-surface-minimal);
 }

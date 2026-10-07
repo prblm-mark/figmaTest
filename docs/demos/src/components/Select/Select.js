@@ -67,7 +67,7 @@
       var menu = item.closest('.sel__menu');
       var valueEl = selWrap && selWrap.querySelector('.sel__value');
       var label = item.firstChild ? item.firstChild.textContent.trim() : item.textContent.trim();
-      if (valueEl) valueEl.textContent = label;
+      if (valueEl) { valueEl.textContent = label; valueEl.title = label; }
       menu.querySelectorAll('.sel__menu-item').forEach(function (i) {
         i.classList.remove('sel__menu-item--selected');
         i.removeAttribute('aria-selected');

@@ -36,6 +36,7 @@ CSS = """
   <link rel="stylesheet" href="../../components/MediaPicker/MediaPicker.css">
   <link rel="stylesheet" href="../../components/RichTextEditor/RichTextEditor.css">
   <link rel="stylesheet" href="../../patterns/PromptModifier/PromptModifier.css">
+  <link rel="stylesheet" href="../../../components/AvatarGroup/AvatarGroup.css">
   <link rel="stylesheet" href="../../components/ViewerItem/ViewerItem.css">
   <link rel="stylesheet" href="../../components/AdvisoryItem/AdvisoryItem.css">
   <link rel="stylesheet" href="../../patterns/RecordTabs/RecordTabs.css">
@@ -127,6 +128,7 @@ KIT_JS = '''  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/char
   <script src="../../../components/SegmentedControl/SegmentedControl.js"></script>
   <script src="../../patterns/StepsTable/StepsTable.js"></script>
   <script src="../../patterns/RecordTabs/RecordTabs.js"></script>
+  <script src="../../../components/AvatarGroup/AvatarGroup.js"></script>
   <script src="RecordScreen.js"></script>'''
 
 TITLE = "Affino 9.0.11.25 — The Refinement Update"

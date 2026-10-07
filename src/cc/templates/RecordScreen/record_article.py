@@ -191,8 +191,10 @@ FACTS = {
 PERF = {"impressions": "56", "consumed": "28", "bookmarked": "0",
         "accounts": ["Affino", "Burning Nights CRPS Support"], "total": "56", "per_day": "0.15"}
 # Live Recent Viewers (name, job title, viewed, account).
-VIEWERS = [("Mark Foster", "Senior Creative", "20 Jul 2026", ["Affino"], "mark-foster"),
-           ("Chris Bristow", "Technical Manager", "02 Jul 2026", ["Affino"], "chris-bristow"),
+# Customer Signals on Recent Viewers only (Hub TASK-531782, 2026-10-07): one with 7 (4 + "+3"),
+# one with 2, the rest with none — the panel must read right in all three cases.
+VIEWERS = [("Mark Foster", "Senior Creative", "20 Jul 2026", ["Affino"], "mark-foster", m.SIGNALS),
+           ("Chris Bristow", "Technical Manager", "02 Jul 2026", ["Affino"], "chris-bristow", m.SIGNALS[1:3]),
            ("Stefan Karlsson", "CMO Founder", "25 Jun 2026", ["Affino"], "stefan-karlsson"),
            ("Markus Karlsson", "CEO Founder", "24 Jun 2026", ["Affino"], "markus-karlsson"),
            ("Victoria Abbott-Fleming", "Founder & Chair", "17 Jun 2026", ["Burning Nights CRPS Support"], "victoria-af")]

@@ -53,6 +53,14 @@
   color: var(--ai-text-primary);
 }
 
+/* The name links to the contact, but it is a name, not a call to action: it keeps the text
+ * colour (base.css paints every <a> brand teal) and only underlines on hover. Brand-coloured
+ * links are reserved for CTA links (designer, Hub TASK-531782, 2026-10-07). */
+.viewer-item__name a,
+.viewer-item__name a:hover {
+  color: inherit;
+}
+
 .viewer-item__role {
   font-weight: var(--ai-font-regular);
   font-size: var(--ai-font-fixed-xxs);
@@ -71,4 +79,10 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--ai-spacing-2);
+}
+
+/* Customer Signals — an AvatarGroup (src/components/AvatarGroup, Figma 4057:2759) under the
+ * company chips: one horizontal row of overlapping circles + "+N", never a vertical stack. */
+.viewer-item__signals {
+  align-self: flex-start;
 }

@@ -1,0 +1,36 @@
+# AvatarGroup — Figma Notes
+
+## Figma Node
+File `Lus07xi8pPXLN87sQIyrEt` · `4057:2759` "Avatar Group" (a single component symbol, no variant set).
+Members: `4082:2831`, `4082:2835`, `4082:2839`, `4082:2843` (Avatars Default Size=2), `4082:2847` "More" (Avatars Initials Size=2, "+2").
+Figma description: "Overlapping avatars: Avatars Default Size=2 with a 2px surface/primary ring (separates overlaps on any surface), Initials "+N" counter, -8 overlap. Amended 2026-10-06."
+
+## Variant × Size × State Matrix
+| Variant | Size | States |
+|---|---|---|
+| Default (4 photos + counter) | Size=2 (32px) | none — not interactive |
+
+## CSS Class Mapping
+| Figma | CSS |
+|---|---|
+| Avatar Group | `.avatar-group` |
+| Avatars (Default, Size=2) | `.avatar.avatar--size-2` |
+| More (Initials, Size=2) | `.avatar.avatar--size-2.avatar--initials.avatar-group__more` |
+
+## Token Mapping
+| Figma | CSS | Role |
+|---|---|---|
+| border-2 `surface/primary` | `2px solid var(--ai-surface-primary)` | ring on every member |
+| x step 24 on a 32 avatar | `calc(var(--ai-spacing-3) * -1)` | -8 overlap |
+| size 32 | `--ai-spacing-7` (via `.avatar--size-2`) | member size |
+| `surface/info-soft`, `text/info`, `font/fixed/xs` semibold | via `.avatar--initials` | "+N" counter |
+
+## Token Gaps
+None.
+
+## Notes
+- Ring and overlap live on the group (`.avatar-group > .avatar`), not on Avatar, so a lone Avatar is unchanged.
+- **Glyph members (code-first, 2026-10-07):** Customer Signals on the record sidebar use the group with Avatar Type=Placeholder members carrying a Lucide glyph, as a stand-in for each signal's own badge image. Live data puts the badge `<img>` in the circle. Glyphs are `--ai-icon-size-sm` (16px) inside a group, not Placeholder Size=2's md (designer, 2026-10-07). Not drawn in Figma.
+- Figma draws four members + counter. Customer Signals show **five** (designer, 2026-10-07), then "+N".
+- **Expandable counter (code-first, 2026-10-07, not in Figma):** when the counter is a `<button data-avatar-group-more>`, pressing it shows the members marked `data-avatar-group-extra hidden`; the button stays last and swaps "+N" for a `chevron-left` "show less" face (`aria-expanded`), and pressing again hides them (`AvatarGroup.js`, designer 2026-10-07). Hover fills the counter `--ai-surface-info` with `--ai-text-invert` text — no Figma hover state exists, so confirm or replace. The toggle's "+N" is `--ai-font-fixed-3xs` (designer, 2026-10-07); a static `<span>` counter keeps Initials Size=2's `--ai-font-fixed-xs`. A `<span>` counter stays static. The counter's `title`/`aria-label` lists the hidden names.
+- `.avatar-group--wrap` lets a long group wrap instead of overflowing its column.
