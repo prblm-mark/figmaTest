@@ -17,6 +17,7 @@
   // A page alert at the top of the main column (failed-Save summary, confirmation banner) becomes
   // Alert Style=Fixed in full width — the bar Figma draws for it (2542:5854; designer, 2026-10-05).
   var FULL = { '.record-tabs': 'record-tabs--full', '.record-section': 'record-section--full', '.steps-table': 'steps-table--full',
+               '.order-card': 'order-card--full',
                '.record-screen__main > .alert': 'alert--fixed' };
 
   function mirror(mode) {
@@ -315,8 +316,9 @@
   function showModal(ov, from) {
     opener = from; openModal = ov;
     ov.classList.add('modal-overlay--open');
-    // A destructive confirm lands on Cancel, so Enter never deletes by accident.
-    var first = ov.querySelector('.action-card:not(.action-card--disabled)') || ov.querySelector('[data-modal-cancel]') || ov.querySelector('.modal__close');
+    // A form modal lands on its [data-modal-autofocus] field; a destructive confirm on Cancel, so
+    // Enter never deletes by accident.
+    var first = ov.querySelector('[data-modal-autofocus]') || ov.querySelector('.action-card:not(.action-card--disabled)') || ov.querySelector('[data-modal-cancel]') || ov.querySelector('.modal__close');
     if (first) first.focus();
   }
   document.addEventListener('click', function (e) {

@@ -253,3 +253,25 @@ full-width cards; related cards pair up in `.contact-tab-grid` (two ≥512px col
   Live builds replace the circles with each signal's Badge On image.
 - **Rings follow the surface (2026-10-07):** the AvatarGroup ring and the timeline icon ring read `--ring-surface`,
   set by AvatarGroup.js from the surface they sit on (the timeline list carries `data-ring-surface`).
+
+## Order View (code-first "build first", 2026-10-07) — NOT in Figma yet
+
+`OrderView.html`, generated from `record_order.py` (content) + `OrderView.js` (processing flows).
+Structure from the live `/control/order-processing?OrderCode=100412`; the order, product and dates are
+the live order's, the **customer is invented** (Thomas Reid, Harbour Lane Publishing; Ofcom drama
+phone range, `.example` email, documentation IP range).
+
+- **Header:** Edit (primary) + Update status (secondary); the live receipt / invoice / label / despatch
+  links in the kebab, then Go to list (the Orders listing).
+- **Main column:** Order · Line items card (DatatablesFit table, attendee block "0 of 1 assigned" +
+  Add attendees, right-aligned totals) · Payment · Payment details card · Customer (+ end user) ·
+  Addresses (invoice / billing / delivery) · Delivery (AWB, Invoices sent) · Additional information.
+- **Sidebar:** Status (badge + Change, order facts) · Status history (trail timeline) · Customer ·
+  Contact notes · Next task · Audit.
+- **Processing modals (working demo, in memory):** Update status (all 16 listing statuses, note,
+  notify) · Send receipt · Send receipt with invoice · Send message with invoice · Despatch
+  notification (courier + AWB → Shipped) · Add attendee ("Use the customer's details" prefill).
+  Each validates required / email fields inline, closes, updates the page, appends history, toasts.
+- Status badge tones: done = success, waiting = warning, moving = info, stopped = neutral
+  (`STATUS_TONE` in both the .py and the .js).
+- Backend rows: `order-*` in HANDOVER.md.

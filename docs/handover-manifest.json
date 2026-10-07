@@ -1599,6 +1599,69 @@
      "element": "RecordSection description line under the title (Edit)",
      "current": "Placeholder copy on Introduction.",
      "needs": "Per-section help text set by the workflow; render the line only when the workflow sets it."
+    },
+    {
+     "id": "order-record",
+     "category": "needs-backend",
+     "element": "Order View → main column + Customer panel",
+     "current": "Static order facts, payment, payment rows, customer / end user, three addresses, delivery and additional information; invented customer.",
+     "needs": "The order (Orders, OrderPayment, OrderAddress) with its customer and end user; View contact links to the customer's contact record."
+    },
+    {
+     "id": "order-items",
+     "category": "needs-backend",
+     "element": "Order View → Line items + Add attendee",
+     "current": "Static line items and totals; Add attendee adds a row and \"1 of 1 assigned\" in memory only.",
+     "needs": "The order's OrderItem rows and totals, and per event line its attendee assignments; Add attendee POSTs an assignment (contact lookup or new contact)."
+    },
+    {
+     "id": "order-status",
+     "category": "needs-backend",
+     "element": "Order View → Update status modal",
+     "current": "Changes the status badges and appends to Status history in memory; the optional email is not sent.",
+     "needs": "POST the new status (+ note, + notify flag) to order processing; re-render the status and history from the response."
+    },
+    {
+     "id": "order-history",
+     "category": "needs-backend",
+     "element": "Order View → Status history panel",
+     "current": "Static three-entry history; new entries are added in memory.",
+     "needs": "The order's status log, newest first, with who made each change."
+    },
+    {
+     "id": "order-send",
+     "category": "needs-backend",
+     "element": "Order View → Send receipt / with invoice / message with invoice",
+     "current": "Validates the recipients, counts Invoices sent up, toasts; nothing is sent.",
+     "needs": "Send the receipt / invoice PDF / message via the order's email templates; return the new Invoices sent count."
+    },
+    {
+     "id": "order-despatch",
+     "category": "needs-backend",
+     "element": "Order View → Despatch notification",
+     "current": "Records courier + AWB on the page and sets Shipped in memory.",
+     "needs": "Save the courier and AWB, set the status to Shipped and send the despatch notification when ticked."
+    },
+    {
+     "id": "order-invoice",
+     "category": "needs-backend",
+     "element": "Order View → View invoice",
+     "current": "Link is #.",
+     "needs": "Open the order's invoice (PDF or invoice screen)."
+    },
+    {
+     "id": "order-shipping-label",
+     "category": "needs-backend",
+     "element": "Order View → Generate shipping label",
+     "current": "A toast only.",
+     "needs": "Generate and download the shipping label for the delivery address."
+    },
+    {
+     "id": "order-notes",
+     "category": "needs-backend",
+     "element": "Order View → Contact notes / Next task panels",
+     "current": "Empty states; Create note / Create task do nothing.",
+     "needs": "The customer's notes and next task for this order; open the note and task forms."
     }
    ]
   }
