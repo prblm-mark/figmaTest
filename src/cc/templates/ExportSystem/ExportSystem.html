@@ -549,8 +549,11 @@
       <section class="record-section" aria-labelledby="export-sec-files" data-backend-todo="export-system-files">
         <div class="record-section__header"><h2 class="record-section__title" id="export-sec-files">Exported files</h2></div>
         <div class="record-section__body cc-export__files">
-          <table class="table">
-            <thead><tr><th>File name</th><th>Size</th><th>Modified</th><th><span class="cc-export__th-hidden">Download</span></th></tr></thead>
+          <!-- Column fit (DatatablesFit.js, as the dashboards): File name and Download always show;
+               Size, then Modified, drop into the kebab's detail row when the row does not fit. -->
+          <div class="datatables datatables--orders cc-export__table"><div class="datatables__body">
+          <table class="table" data-fit="even">
+            <thead><tr><th data-keep data-fluid data-weight="2">File name</th><th data-drop="1">Size</th><th data-drop="2">Modified</th><th data-keep><span class="cc-export__th-hidden">Download</span></th></tr></thead>
             <tbody>
               <tr data-export-file="ControlProfile">
                 <td>ControlProfile.json</td>
@@ -566,6 +569,7 @@
               </tr>
             </tbody>
           </table>
+          </div></div>
         </div>
       </section>
 
@@ -1174,6 +1178,7 @@
 
   <!-- Select Zone dropdown — shared Select behaviour (open/choose/close). -->
   <script src="../../../components/Select/Select.js"></script>
+  <script src="../../../components/Datatables/DatatablesFit.js"></script>
   <script src="ExportSystem.js"></script>
 
   <!-- AI Assistant panel: shell behaviours + rail-button toggle. Initial-state

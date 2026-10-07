@@ -54,8 +54,8 @@ UpdateScreen).
 ## Responsive (`cs-page`, 767)
 
 The target grid reflows intrinsically (no breakpoint). Below 767 the Download buttons go icon-only
-(their aria-label still says it). The Size column hides below 520 and the modified date wraps below
-420 (measured thresholds — see the note at the end).
+(their aria-label still says it). The Exported files columns are fitted by DatatablesFit.js (see the
+note at the end), not by breakpoints.
 Measured at 390: document 390/390, files table 309/309. The first pass overflowed to 538px because
 the visually-hidden header was positioned outside the table's scroll box; it is now anchored to its
 own cell.
@@ -76,3 +76,10 @@ classic's (`serializeJSON` of the same SELECTs, with `],` followed by CRLF).
 wraps below 420px — measured thresholds, not the house 767. At 767 a ~660px card dropped Size and wrapped
 the date with room to spare: all four columns need 529px (name 185 · size 95 · modified 175 · icon-only
 Download 74) and the file name wraps below that. Swept 340–1600px: no overflow.
+
+**Superseded the same day — DatatablesFit (2026-10-07, Mark: "apply the same table fit to the export system
+table"):** the table is now Datatables markup (`datatables datatables--orders cc-export__table`, frame
+removed since it sits in the section card; rows at natural height) with `data-fit="even"`: File name
+(×2, wraps) and Download always show; Size then Modified drop into the kebab's detail row. The 519 / 419
+breakpoint rules above are gone. Swept 340–1600px: no overflow; at a 420px page the opened row shows
+Size and Modified.
