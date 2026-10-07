@@ -374,15 +374,17 @@
   }
 
   /* Classic ContractDef showed 10 columns. Type, Renewal and Media are dropped from the table: the
-   * contract name carries the type, Term says "One-off", and Media is on the contract itself. */
+   * contract name carries the type, Term says "One-off", and Media is on the contract itself.
+   * `fit`: Contract and Amount always show; Term, Created, Payment status, Account, Status drop
+   * into the kebab row in that order when the row does not fit (Mark, 2026-10-07). */
   var CONTRACT_COLS = [
-    { key: 'name', label: 'Contract', sort: function (r) { return r.name; }, html: contractLink },
-    { key: 'account', label: 'Account', sort: function (r) { return r.account; }, html: acctLink },
-    { key: 'amount', label: 'Amount', num: true, sort: function (r) { return r.amount; }, html: function (r) { return money(r.amount); } },
-    { key: 'paymentStatus', label: 'Payment status', sort: function (r) { return r.paymentStatus; }, html: function (r) { return payBadge(r.paymentStatus); } },
-    { key: 'term', label: 'Term', sort: function (r) { return r.startDate; }, html: function (r) { return d(r.startDate) + ' – ' + (r.renewable && r.endDate ? d(r.endDate) : 'One-off'); } },
-    { key: 'status', label: 'Status', sort: function (r) { return expiry(r); }, html: expiryBadge },
-    { key: 'created', label: 'Created', sort: function (r) { return r.created; }, html: function (r) { return d(r.created); } }
+    { key: 'name', label: 'Contract', fit: { keep: 1, weight: 2, fluid: 1 }, sort: function (r) { return r.name; }, html: contractLink },
+    { key: 'account', label: 'Account', fit: { drop: 4 }, sort: function (r) { return r.account; }, html: acctLink },
+    { key: 'amount', label: 'Amount', num: true, fit: { keep: 1 }, sort: function (r) { return r.amount; }, html: function (r) { return money(r.amount); } },
+    { key: 'paymentStatus', label: 'Payment status', fit: { drop: 3 }, sort: function (r) { return r.paymentStatus; }, html: function (r) { return payBadge(r.paymentStatus); } },
+    { key: 'term', label: 'Term', fit: { drop: 1 }, sort: function (r) { return r.startDate; }, html: function (r) { return d(r.startDate) + ' – ' + (r.renewable && r.endDate ? d(r.endDate) : 'One-off'); } },
+    { key: 'status', label: 'Status', fit: { drop: 5 }, sort: function (r) { return expiry(r); }, html: expiryBadge },
+    { key: 'created', label: 'Created', fit: { drop: 2 }, sort: function (r) { return r.created; }, html: function (r) { return d(r.created); } }
   ];
 
   function table(id, cols, rows, opts) {
@@ -400,7 +402,9 @@
       var active = c.key === t.sort;
       var icon = !active ? 'chevrons-up-down' : t.dir === 'asc' ? 'arrow-up-narrow-wide' : 'arrow-down-wide-narrow';
       var aria = active ? (t.dir === 'asc' ? 'ascending' : 'descending') : 'none';
-      return '<th' + (c.num ? ' class="cc-analysis__num"' : '') + ' aria-sort="' + aria + '"><button type="button" class="datatables__sort' +
+      var f = c.fit || {};
+      var fit = (f.keep ? ' data-keep' : '') + (f.drop ? ' data-drop="' + f.drop + '"' : '') + (f.weight ? ' data-weight="' + f.weight + '"' : '') + (f.fluid ? ' data-fluid' : '');
+      return '<th' + (c.num ? ' class="cc-analysis__num"' : '') + fit + ' aria-sort="' + aria + '"><button type="button" class="datatables__sort' +
         (active ? ' datatables__sort--active' : '') + '" data-sort="' + c.key + '">' + esc(c.label) + ' <i data-lucide="' + icon + '" aria-hidden="true"></i></button></th>';
     }).join('');
     var body = vis.length ? vis.map(function (r) {
@@ -412,9 +416,13 @@
           '<span>' + (opts.title ? NUM.format(rows.length) + ' contracts' : 'Showing <strong>' + NUM.format(vis.length) + '</strong> of <strong>' + NUM.format(rows.length) + '</strong>') + '</span></span>' +
         (opts.totalLabel ? '<span class="cc-analysis__table-total">' + esc(opts.totalLabel) + '</span>' : '') +
       '</div>' +
-      '<div class="datatables__body"><table class="table"><thead><tr>' + head + '</tr></thead><tbody>' + body + '</tbody></table></div>' +
+      '<div class="datatables__body"><table class="table" data-fit="even"><thead><tr>' + head + '</tr></thead><tbody>' + body + '</tbody></table></div>' +
       (sorted.length > vis.length ? '<div class="cc-analysis__more"><button type="button" class="btn btn--secondary btn--sm" data-more>Show ' +
         NUM.format(Math.min(opts.page, sorted.length - vis.length)) + ' more</button></div>' : '');
+    /* Column fit (DatatablesFit.js, as Live Dashboard / Sales Leaderboard): each column's `fit`
+     * says what always shows (keep), the order the rest drop into the kebab row (drop, 1 first) and
+     * extra shares of the even spread (weight). The whole table is rebuilt here, so attach the new one. */
+    if (window.DatatablesFit) window.DatatablesFit.init(host);
     /* Re-renders from a header or "Show more" keep the current paging; only a tab render (new
      * data, new filters) resets it. */
     var keep = Object.assign({}, opts, { resetPaging: false });
@@ -515,14 +523,14 @@
       datasets: [bar('Total value', top.map(function (a) { return a.total; }), tok('--ai-surface-brand'))], money: true });
 
     table('top', [
-      { key: 'account', label: 'Account', sort: function (r) { return r.account; }, html: acctLink },
-      { key: 'industry', label: 'Industry', sort: function (r) { return r.industry; }, html: function (r) { return esc(r.industry); } },
-      { key: 'accountType', label: 'Account type', sort: function (r) { return r.accountType; }, html: function (r) { return esc(r.accountType); } },
-      { key: 'contracts', label: 'Contracts', num: true, sort: function (r) { return r.contracts; }, html: function (r) { return NUM.format(r.contracts); } },
-      { key: 'first', label: 'First', sort: function (r) { return r.first; }, html: function (r) { return d(r.first); } },
-      { key: 'latest', label: 'Latest', sort: function (r) { return r.latest; }, html: function (r) { return d(r.latest); } },
-      { key: 'monthly', label: 'Monthly ave.', num: true, sort: function (r) { return r.monthly; }, html: function (r) { return money(r.monthly); } },
-      { key: 'total', label: 'Total', num: true, sort: function (r) { return r.total; }, html: function (r) { return money(r.total); } }
+      { key: 'account', label: 'Account', fit: { keep: 1, weight: 2, fluid: 1 }, sort: function (r) { return r.account; }, html: acctLink },
+      { key: 'industry', label: 'Industry', fit: { drop: 3 }, sort: function (r) { return r.industry; }, html: function (r) { return esc(r.industry); } },
+      { key: 'accountType', label: 'Account type', fit: { drop: 2 }, sort: function (r) { return r.accountType; }, html: function (r) { return esc(r.accountType); } },
+      { key: 'contracts', label: 'Contracts', num: true, fit: { drop: 5 }, sort: function (r) { return r.contracts; }, html: function (r) { return NUM.format(r.contracts); } },
+      { key: 'first', label: 'First', fit: { drop: 1 }, sort: function (r) { return r.first; }, html: function (r) { return d(r.first); } },
+      { key: 'latest', label: 'Latest', fit: { drop: 4 }, sort: function (r) { return r.latest; }, html: function (r) { return d(r.latest); } },
+      { key: 'monthly', label: 'Monthly ave.', num: true, fit: { drop: 6 }, sort: function (r) { return r.monthly; }, html: function (r) { return money(r.monthly); } },
+      { key: 'total', label: 'Total', num: true, fit: { keep: 1 }, sort: function (r) { return r.total; }, html: function (r) { return money(r.total); } }
     ], accts, { sort: 'total', dir: 'desc', page: 20, resetPaging: true });
   }
 
@@ -534,8 +542,10 @@
       kpi('base', 'orange', 'receipt-pound-sterling', 'Outstanding', money(sum(rows, 'outstanding'))) +
       kpi('base', 'lagoon', 'file-text', 'Contracts', NUM.format(rows.length)) +
       kpi('base', 'red', 'circle-alert', 'In arrears', money(sum(arrears, 'outstanding'))));
-    var cols = CONTRACT_COLS.slice();
-    cols.splice(3, 0, { key: 'outstanding', label: 'Outstanding', num: true, sort: function (r) { return r.outstanding; },
+    /* Outstanding is the value here, so Amount drops (last) rather than always showing: three
+       always-shown columns could not fit a phone. */
+    var cols = CONTRACT_COLS.map(function (c) { return c.key === 'amount' ? Object.assign({}, c, { fit: { drop: 6 } }) : c; });
+    cols.splice(3, 0, { key: 'outstanding', label: 'Outstanding', num: true, fit: { keep: 1 }, sort: function (r) { return r.outstanding; },
       html: function (r) { return '<strong>' + money(r.outstanding) + '</strong>'; } });
     table('outstanding', cols, rows, { sort: 'outstanding', dir: 'desc', page: 20, resetPaging: true });
   }
