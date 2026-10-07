@@ -26,6 +26,13 @@
  *      224px, the listings' SNUG_MAX, and what they cannot take goes to the others; when every
  *      sharer is capped (no long title), the rest is spread evenly across them all.
  *
+ * `data-fit="even"` swaps rule 3 for equal column widths: every visible column takes available ÷ n,
+ * except one whose content needs more (it keeps its natural width and the rest re-share). A header's
+ * `data-weight="n"` gives that column n shares (a long title column).
+ *
+ * The row's last column gets `datatables__col--end` when no kebab follows it (for the table's end
+ * gutter). Re-fits once web fonts and images have loaded: natural widths change with no resize.
+ *
  * Rows are decorated on their own: a MutationObserver on the tbody adds each row's kebab cell
  * and detail row whenever the page re-renders it (Show more, a live refresh), and an open detail
  * row stays open across a re-render (keyed on the first cell's text). A ResizeObserver re-fits
@@ -113,7 +120,18 @@
       ths[i].classList.toggle('datatables__col--nofit', off);
       rows.forEach(function (tr) { if (tr.cells[i]) tr.cells[i].classList.toggle('datatables__col--nofit', off); });
     }
+    // `--end` marks the row's last column when there is no kebab after it, so a table can give it
+    // the row's end gutter. It is ON while measuring (so the gutter is counted) and comes off if a
+    // kebab turns out to be needed — which only ever frees width, never takes it.
+    function end(i, on) {
+      ths.forEach(function (th) { th.classList.remove('datatables__col--end'); });
+      rows.forEach(function (tr) { Array.prototype.forEach.call(tr.cells, function (c) { c.classList.remove('datatables__col--end'); }); });
+      if (!on) return;
+      ths[i].classList.add('datatables__col--end');
+      rows.forEach(function (tr) { if (tr.cells[i]) tr.cells[i].classList.add('datatables__col--end'); });
+    }
     ths.forEach(function (th, i) { th.style.inlineSize = ''; mark(i, false); });
+    end(kebabAt - 1, true);
     details.forEach(function (tr) { tr.classList.add('datatables__row-detail--measuring'); });
     table.style.inlineSize = 'max-content';
     var natural = ths.map(function (th) { return th.getBoundingClientRect().width; });
@@ -141,6 +159,7 @@
         .forEach(function (c) { if (sum() > available) shown[c.i] = false; });
     }
     ths.forEach(function (_, i) { mark(i, !shown[i]); });
+    end(kebabAt - 1, !shown[kebabAt]);
 
     // Share what is left: water-filling, as the listings' shareSpare. Every visible, non-hug data
     // column takes an equal slice; a `data-snug` column (short text — a team, an account) stops at
@@ -148,6 +167,37 @@
     // remainder rather than a short column opening a gap.
     var spare = available - sum();
     var width = base.slice();
+    if (table.getAttribute('data-fit') === 'even') {
+      // Even mode (dashboards, Mark 2026-10-07): every visible column the SAME width where content
+      // allows. Water-fill toward available ÷ n: a column wider than the target keeps its natural
+      // width and drops out, the rest share what is left equally — so numbers no longer huddle
+      // at the right while the text columns take the room. hug / snug do not apply here.
+      var cols = [];
+      ths.forEach(function (_, i) { if (shown[i] && i !== kebabAt) cols.push(i); });
+      // `data-weight="n"` (default 1) gives a column n shares: long article titles get the room
+      // (Mark, 2026-10-07) while the other columns stay even with each other.
+      var weight = function (i) { return +ths[i].getAttribute('data-weight') || 1; };
+      var room = available - (shown[kebabAt] ? base[kebabAt] : 0), even = cols.slice(), changed = true;
+      var weights = function () { return even.reduce(function (a, i) { return a + weight(i); }, 0); };
+      while (changed && even.length) {
+        var unit = room / weights();
+        changed = false;
+        even = even.filter(function (i) {
+          if (base[i] > unit * weight(i)) { room -= base[i]; changed = true; return false; }
+          return true;
+        });
+      }
+      if (even.length && room / weights() >= 1) {
+        var share = room / weights();
+        even.forEach(function (i) { width[i] = share * weight(i); });
+        ths.forEach(function (th, i) { if (shown[i] && i !== kebabAt) th.style.inlineSize = width[i] + 'px'; });
+      }
+      table.querySelectorAll('.datatables__detail-item').forEach(function (el) {
+        el.hidden = shown[+el.getAttribute('data-detail-col')];
+      });
+      st.fitted = available;
+      return;
+    }
     var open = [];
     ths.forEach(function (th, i) { if (shown[i] && i !== kebabAt && !th.hasAttribute('data-hug')) open.push(i); });
     for (var guard = open.length; spare >= 1 && open.length && guard >= 0; guard--) {
@@ -202,6 +252,10 @@
       }).observe(table.parentElement);
     }
     run();
+    // Natural widths change when the web font (and avatars) arrive, with no resize to say so — the
+    // first fit ran on fallback metrics and a row that "fitted" was then clipped (Mark, 2026-10-07).
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { fit(table); });
+    window.addEventListener('load', function () { fit(table); });
   }
 
   function init(root) { (root || document).querySelectorAll('table[data-fit]').forEach(attach); }
