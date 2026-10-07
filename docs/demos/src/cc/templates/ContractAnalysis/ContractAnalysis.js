@@ -242,7 +242,8 @@
           tooltip: {
             backgroundColor: tok('--ai-surface-invert'), titleColor: tok('--ai-text-invert'), bodyColor: tok('--ai-text-invert'),
             padding: 10, cornerRadius: 6,
-            callbacks: { label: function (c) {
+            callbacks: { title: cfg.tooltipTitle ? function (items) { return items.length ? cfg.tooltipTitle(items[0].dataIndex) : ''; } : undefined,
+              label: function (c) {
               var v = horizontal ? c.parsed.x : c.parsed.y;
               return (c.dataset.label ? c.dataset.label + ': ' : '') + (cfg.percent ? v.toFixed(0) + '%' : cfg.money ? money(v) : NUM.format(v));
             } }
@@ -296,6 +297,40 @@
     for (var i = 1; i <= n; i++) out.push(0);
     rows.forEach(function (c) { if (c.created.getFullYear() === y && c.created.getMonth() === m) out[c.created.getDate() - 1] += k ? c[k] : 1; });
     return { labels: out.map(function (_, i) { return String(i + 1); }), data: out };
+  }
+  /* Month-to-date pace: the running count of contracts per day of this month, against last month's
+   * running count by the same day. This month stops at today (no flat line into the future); last
+   * month runs the full length of this month, so "by this day" always has a value to compare with. */
+  function paceThisMonth(rows) {
+    var y = TODAY.getFullYear(), m = TODAY.getMonth(), n = new Date(y, m + 1, 0).getDate();
+    var prev = new Date(y, m - 1, 1), py = prev.getFullYear(), pm = prev.getMonth();
+    var cur = [], last = [], a = 0, b = 0;
+    for (var d = 1; d <= n; d++) {
+      a += rows.filter(function (c) { return c.created.getFullYear() === y && c.created.getMonth() === m && c.created.getDate() === d; }).length;
+      b += rows.filter(function (c) { return c.created.getFullYear() === py && c.created.getMonth() === pm && c.created.getDate() === d; }).length;
+      cur.push(d <= TODAY.getDate() ? a : null);
+      last.push(b);
+    }
+    return { labels: cur.map(function (_, i) { return String(i + 1); }), current: cur, previous: last,
+             today: TODAY.getDate(), month: m, prevMonth: pm };
+  }
+  /* Running count of contracts month by month over the last n months (this month included, to
+   * date), against the n months before it, cut at the same day. Feeds the 12-month pace chart. */
+  function paceMonths(rows, n) {
+    function run(shift) {
+      var out = [], a = 0;
+      for (var i = n - 1; i >= 0; i--) {
+        var s = monthStart(TODAY.getFullYear(), TODAY.getMonth() - i - shift), e = monthStart(s.getFullYear(), s.getMonth() + 1);
+        // The last month is to date, so the comparison stops at the same day: like for like.
+        if (i === 0) e = new Date(s.getFullYear(), s.getMonth(), TODAY.getDate() + 1);
+        a += rows.filter(function (c) { return c.created >= s && c.created < e; }).length;
+        out.push(a);
+      }
+      return out;
+    }
+    var months = [];
+    for (var i = n - 1; i >= 0; i--) months.push(monthStart(TODAY.getFullYear(), TODAY.getMonth() - i));
+    return { months: months, current: run(0), previous: run(n) };
   }
   function byMonth(rows, k, offsetYears) {
     var labels = [], data = [];
@@ -407,20 +442,47 @@
 
     /* The Monthly review pair: value charts lagoon, count charts purple (designer, 2026-10-07). */
     var valueC = tok(PAIR[0]), countC = tok(PAIR[1]);
-    var mv = byDayThisMonth(COUNTED, 'amount'), mc = byDayThisMonth(COUNTED);
-    var yv = byMonth(COUNTED, 'amount'), yc = byMonth(COUNTED);
+    var mv = byDayThisMonth(COUNTED, 'amount');
+    var yv = byMonth(COUNTED, 'amount');
     var fv = byYear(COUNTED, 'amount'), fc = byYear(COUNTED);
     var mName = MONTH[TODAY.getMonth()];
     chartCard('ov-month-value', money(total(mv.data)), 'Contract value · ' + mName + ' to date');
     draw('ov-month-value', { type: 'line', labels: mv.labels, datasets: [line('Value', mv.data, valueC, true)], money: true });
-    chartCard('ov-month-count', NUM.format(total(mc.data)), 'Contracts · ' + mName + ' to date');
-    draw('ov-month-count', { type: 'bar', labels: mc.labels, datasets: [bar('Contracts', mc.data, countC)] });
+    /* Month-to-date contracts as a running total against last month by the same day (designer,
+     * 2026-10-07). A daily bar chart of a 0/1 count was six identical full-height bars; the pace
+     * line answers "ahead of or behind last month?". Last month is the recessive reference: grey,
+     * dashed, behind. */
+    var paceLine = function (label, data, colour, dashed) {
+      return { label: label, data: data, borderColor: colour, backgroundColor: colour, stepped: 'after', fill: false,
+               borderWidth: 2, borderDash: dashed ? [4, 4] : [], pointRadius: 0, pointHoverRadius: 4, spanGaps: false,
+               order: dashed ? 2 : 1 };
+    };
+    var pace = paceThisMonth(COUNTED), pName = MONTH[pace.prevMonth];
+    var soFar = pace.current[pace.today - 1], lastBy = pace.previous[pace.today - 1];
+    chartCard('ov-month-count', NUM.format(soFar), 'Contracts · ' + mName + ' to date · ' + pName + ' by day ' + pace.today + ': ' + NUM.format(lastBy));
+    draw('ov-month-count', { type: 'line', labels: pace.labels, legend: true,
+      tooltipTitle: function (i) { return (i + 1) + ' ' + MONTH[pace.month].slice(0, 3); },
+      datasets: [paceLine(mName, pace.current, countC), paceLine(pName, pace.previous, tok('--ai-text-contrast'), true)] });
     chartCard('ov-12-value', money(total(yv.data)), 'Contract value · last 12 months');
     draw('ov-12-value', { type: 'line', labels: yv.labels, datasets: [line('Value', yv.data, valueC, true)], money: true });
-    chartCard('ov-12-count', NUM.format(total(yc.data)), 'Contracts · last 12 months');
-    draw('ov-12-count', { type: 'bar', labels: yc.labels, datasets: [bar('Contracts', yc.data, countC)] });
+    /* The 12-month count uses the same pace form (designer, 2026-10-07): a running total
+     * against the previous period of the same length. The reference is drawn only when that period
+     * has contracts — an all-zero grey line would claim a comparison the data can't make. */
+    var grey = tok('--ai-text-contrast');
+    function paceChart(id, n, label, prevLabel) {
+      var p = paceMonths(COUNTED, n), now = p.current[n - 1], before = p.previous[n - 1];
+      chartCard(id, NUM.format(now), 'Contracts · ' + label + (before ? ' · ' + prevLabel + ': ' + NUM.format(before) : ''));
+      var sets = [paceLine(label.charAt(0).toUpperCase() + label.slice(1), p.current, countC)];
+      if (before) sets.push(paceLine(prevLabel.charAt(0).toUpperCase() + prevLabel.slice(1), p.previous, grey, true));
+      draw(id, { type: 'line', labels: p.months.map(function (d) { return MON[d.getMonth()] + ' ' + String(d.getFullYear()).slice(2); }),
+        legend: sets.length > 1,
+        tooltipTitle: function (i) { var d = p.months[i]; return MONTH[d.getMonth()] + ' ' + d.getFullYear() + (i === n - 1 ? ' (to date)' : ''); },
+        datasets: sets });
+    }
+    paceChart('ov-12-count', 12, 'last 12 months', 'previous 12 months');
     chartCard('ov-5-value', money(total(fv.data)), 'Contract value · last 5 years');
     draw('ov-5-value', { type: 'line', labels: fv.labels, datasets: [line('Value', fv.data, valueC, true)], money: true });
+    // 5 years stays a bar per year (designer, 2026-10-07): a five-year running total only climbs.
     chartCard('ov-5-count', NUM.format(total(fc.data)), 'Contracts · last 5 years');
     draw('ov-5-count', { type: 'bar', labels: fc.labels, datasets: [bar('Contracts', fc.data, countC)] });
   }
