@@ -418,7 +418,7 @@ def _signal_rank(signals):
                   key=lambda r: -r[1])
     top = rows[0][1] if rows else 1
     items = "".join(
-        f'<li class="signal-rank__row"><span class="avatar avatar--size-2 avatar--placeholder" aria-hidden="true">{m.icon(g)}</span>'
+        f'<li class="signal-rank__row"><span class="avatar avatar--size-2 avatar--placeholder {m.signal_hue(g)}" aria-hidden="true">{m.icon(g)}</span>'
         f'<span class="signal-rank__main"><span class="signal-rank__line"><span class="signal-rank__name">{e(n)}</span>'
         f'<span class="signal-rank__count">{k}</span></span>'
         f'<span class="signal-rank__bar" aria-hidden="true"><span class="signal-rank__fill" style="--signal-share:{max(2, round(k / top * 100))}%"></span></span>'

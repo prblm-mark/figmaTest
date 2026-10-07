@@ -17,7 +17,10 @@
 /* 2px ring — Figma: border-2 border/--ai-surface-primary on every member, counter included.
  * border-box keeps the member at 32px, so the photo is clipped inside the ring. */
 .avatar-group > .avatar {
-  border: 2px solid var(--ai-surface-primary);
+  /* The ring is the colour of the surface the group sits on, looked up by AvatarGroup.js
+     (--ring-surface), so it separates the overlaps on any card, tint or theme; surface-primary
+     until the script has run (designer, 2026-10-07). */
+  border: 2px solid var(--ring-surface, var(--ai-surface-primary));
 }
 
 /* -8 overlap — Figma places members at x = 0, 24, 48 … on a 32px avatar. */

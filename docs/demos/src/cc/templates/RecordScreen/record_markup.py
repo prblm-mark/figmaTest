@@ -456,6 +456,24 @@ def fact_list(rows):
     return f'<dl class="fact-list">{"".join(out)}</dl>'
 
 
+# ── Signal icon colours (demo only, 2026-10-07) ──────────────────────
+# Live data draws each customer signal's own badge image; until then the demo's glyph circles take
+# the StatCard soft scheme (accent-*-soft background, accent-*-soft-fg glyph) so the screens read as
+# they will with real badges (designer). Fixed per glyph, so a signal is the same colour everywhere;
+# assigned in this order so neighbouring signals differ. Lagoon first, blue last; red is left out
+# because it reads as an error.
+SIGNAL_HUES = ["lagoon", "jade", "violet-radix", "orange", "pink", "purple", "emerald", "indigo",
+               "bright-teal", "lime-radix", "orange-radix", "teal-radix", "mid-blue", "blue"]
+_GLYPH_ORDER = ["briefcase", "repeat", "mail-open", "send", "notebook-pen", "file-text", "log-in", "eye",
+                "search", "trophy", "calendar-check", "newspaper", "user-check", "map", "presentation",
+                "badge-pound-sterling", "file-down", "messages-square", "flask-conical", "mail", "book-open", "download"]
+GLYPH_HUE = {g: SIGNAL_HUES[i % len(SIGNAL_HUES)] for i, g in enumerate(_GLYPH_ORDER)}
+
+
+def signal_hue(glyph):
+    return "signal-icon signal-icon--" + GLYPH_HUE.get(glyph, "lagoon")
+
+
 # ── RecordList (code-first, Contact view 2026-10-07) ─────────────────
 def record_list(items, empty, more=None, todo=None, timeline=False):
     """A sidebar list of record rows: timeline events, tasks, notes, opportunities. Each item is
@@ -467,7 +485,7 @@ def record_list(items, empty, more=None, todo=None, timeline=False):
         # Optional 4th element: a Lucide glyph for the row's icon circle (a customer signal's stand-in
         # for its badge image, as the Customer signals AvatarGroup draws them).
         g = it[3] if len(it) > 3 else None
-        return f'<span class="avatar avatar--size-2 avatar--placeholder record-list__icon" aria-hidden="true">{icon(g)}</span>' if g else ""
+        return f'<span class="avatar avatar--size-2 avatar--placeholder record-list__icon {signal_hue(g)}" aria-hidden="true">{icon(g)}</span>' if g else ""
     if timeline:
         # Trail layout (Flowbite Timeline, designer 2026-10-07): the time sits above the title, and the
         # icons ride a line that runs down the list (CSS); no dividers between events.
@@ -479,7 +497,8 @@ def record_list(items, empty, more=None, todo=None, timeline=False):
     attr = f' data-backend-todo="{todo}"' if todo else ""
     cls = "record-list record-list--timeline" if timeline else "record-list"
     foot = f'<p class="record-list__more">{e(more)}</p>' if more else ""
-    return f'<ol class="{cls}"{attr}>{rows}</ol>{foot}'
+    ring = " data-ring-surface" if timeline else ""   # icon ring = the card's colour (AvatarGroup.js)
+    return f'<ol class="{cls}"{attr}{ring}>{rows}</ol>{foot}'
 
 
 # ── ViewerItem / ViewerList ──────────────────────────────────────────
@@ -495,7 +514,7 @@ def signal_group(signals):
         return ""
     def member(i, n, g):
         extra = ' data-avatar-group-extra hidden' if i >= SIGNALS_SHOWN else ""
-        return (f'<span class="avatar avatar--size-2 avatar--placeholder" role="listitem" title="{e(n)}" '
+        return (f'<span class="avatar avatar--size-2 avatar--placeholder {signal_hue(g)}" role="listitem" title="{e(n)}" '
                 f'aria-label="{e(n)}"{extra}>{icon(g)}</span>')
     items = "".join(member(i, n, g) for i, (n, g) in enumerate(signals))
     rest = signals[SIGNALS_SHOWN:]
