@@ -43,12 +43,18 @@ left-aligned).
 |---|---|
 | blue + slate (`text-contrast`) dashed | **FAIL**: normal-vision ΔE 13.9 (< 15) and the slate reads as grey |
 | blue + purple (the designer's two-series pair on Contract Analysis) | **FAIL**: deutan ΔE **2.5**, near-identical to a deuteranope |
-| **blue (`accent-blue-solid`) + orange (`accent-orange-solid`)** | **PASS** every check, light and dark: protan ΔE 27.6, tritan 34.4 |
+| blue (`accent-blue-solid`) + orange (`accent-orange-solid`) | PASS every check, light and dark: protan ΔE 27.6, tritan 34.4 (used 2026-10-05 → 10-07) |
+| **lagoon (`accent-lagoon-solid`, Lagoon/9) + purple (`accent-purple-solid`, Purple/600)** | **PASS** CVD in both themes: deutan ΔE 16.0, tritan 19.8, normal 28.6. Purple is 2.72:1 on the dark card (WARN) — relieved by the direct labels, the legend and the table view |
 
-Today = blue, solid, gradient fill; Average = orange, dashed, no fill. Both are direct-labelled and in
-a line-style legend, so identity never rests on hue alone. Text stays in text tokens. Contract
-Analysis's blue / purple pairs failed the same CVD check and were switched to blue / orange
-2026-10-05, so the two dashboards now share one pair.
+**Current (designer, 2026-10-07): Today = lagoon, solid, gradient fill; Average = purple, dashed, no fill**
+— the same pair as Contract Analysis. Both are direct-labelled and in a line-style legend, so identity
+never rests on hue alone. Text stays in text tokens.
+
+KPI tiles follow the house card rule — lead with lagoon, blue only after the other accents are used:
+Online now `lagoon`, Page views today `jade` (was blue), Busiest channel `violet-radix`.
+
+Leaderboard share bars fill with `accent-lagoon-solid` (was `surface-brand`), matching the Today line in both
+themes (`surface-brand-light` is the same hex in light but lightens in dark).
 
 ## Layout values (all borrowed, no new tokens)
 

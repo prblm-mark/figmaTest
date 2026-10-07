@@ -3,10 +3,10 @@
  *   1. Full width: the cards go flush, following `cc:width` (as UpdateScreen).
  *   2. KPIs (StatCard Xl): Online now (Members / Guests), Page views today (vs average to this hour,
  *      this hour), Busiest channel in the sampled window (views, share).
- *   3. Page views chart (Chart pattern + Chart.js): today (blue, filled) against the average day
- *      (orange, dashed), a "Now" marker, a hover crosshair + tooltip, direct labels at each line's
- *      end, a legend, and a table view. Blue / orange is the only accent pair that passes the
- *      palette validator in both themes (see the notes).
+ *   3. Page views chart (Chart pattern + Chart.js): today (lagoon, filled) against the average day
+ *      (purple, dashed), a "Now" marker, a hover crosshair + tooltip, direct labels at each line's
+ *      end, a legend, and a table view. Lagoon / purple (designer, 2026-10-07, as Contract Analysis)
+ *      passes the palette validator in both themes (see the notes).
  *   4. Lists with classic's paging (index.cfm strSettings): online 10 +10, authors 4 +8, channels
  *      5 +10, topics 5 +10, articles 5 +10. Leaderboards show each item's share of the top as a bar.
  *   5. Live: refreshes every 30s (classic's setTimeout 3E4); "Updated n s ago" ticks; Pause stops it.
@@ -132,15 +132,15 @@
   function drawChart() {
     if (!window.Chart) return;
     var canvas = $('[data-canvas]');
-    var blue = tok('--ai-accent-blue-solid'), orange = tok('--ai-accent-orange-solid');
+    var today = tok('--ai-accent-lagoon-solid'), average = tok('--ai-accent-purple-solid');
     Chart.defaults.font.family = 'Inter, sans-serif';
     Chart.defaults.font.size = 12;
     Chart.defaults.color = tok('--ai-text-contrast');
     var fill = function (ctx) {
       var c = ctx.chart, area = c.chartArea;
-      if (!area) return blue;
+      if (!area) return today;
       var g = c.ctx.createLinearGradient(0, area.top, 0, area.bottom);
-      g.addColorStop(0, blue + '40'); g.addColorStop(1, blue + '00');
+      g.addColorStop(0, today + '40'); g.addColorStop(1, today + '00');
       return g;
     };
     chart = new Chart(canvas, {
@@ -148,12 +148,12 @@
       data: {
         labels: HOURS,
         datasets: [
-          { label: 'Today', data: chartData(), borderColor: blue, backgroundColor: fill, fill: true, tension: 0.35,
+          { label: 'Today', data: chartData(), borderColor: today, backgroundColor: fill, fill: true, tension: 0.35,
             borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, pointHoverBorderWidth: 2,
-            pointHoverBorderColor: tok('--ai-surface-primary'), pointHoverBackgroundColor: blue, spanGaps: false },
-          { label: 'Average', data: LD.pageViews.average.slice(), borderColor: orange, backgroundColor: orange, fill: false,
+            pointHoverBorderColor: tok('--ai-surface-primary'), pointHoverBackgroundColor: today, spanGaps: false },
+          { label: 'Average', data: LD.pageViews.average.slice(), borderColor: average, backgroundColor: average, fill: false,
             borderDash: [5, 4], tension: 0.35, borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, pointHoverBorderWidth: 2,
-            pointHoverBorderColor: tok('--ai-surface-primary'), pointHoverBackgroundColor: orange }
+            pointHoverBorderColor: tok('--ai-surface-primary'), pointHoverBackgroundColor: average }
         ]
       },
       options: {

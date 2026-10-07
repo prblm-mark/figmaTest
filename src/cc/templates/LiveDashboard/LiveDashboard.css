@@ -205,11 +205,11 @@
 .cc-live__key::before {
   content: "";
   inline-size: var(--ai-spacing-5);
-  border-block-start: 2px solid var(--ai-accent-blue-solid);
+  border-block-start: 2px solid var(--ai-accent-lagoon-solid);
 }
 
 .cc-live__key--average::before {
-  border-block-start: 2px dashed var(--ai-accent-orange-solid);
+  border-block-start: 2px dashed var(--ai-accent-purple-solid);
 }
 
 /* The chart's data as a table, for screen readers and anyone who wants the numbers. */
@@ -383,7 +383,9 @@
   inline-size: var(--cc-live-share, 0%);
   block-size: 100%;
   border-radius: var(--ai-radius-full);
-  background-color: var(--ai-surface-brand);
+  /* Lagoon, the same accent as the chart's Today line (designer, 2026-10-07). Not
+   * surface-brand-light: equal in light mode, but it lightens to #30b6c2 in dark. */
+  background-color: var(--ai-accent-lagoon-solid);
   transition: inline-size var(--ai-transition-default);
 }
 
