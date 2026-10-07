@@ -205,14 +205,15 @@
   /* ── Charts ───────────────────────────────────────────────── */
   var charts = {};
   function tok(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
-  /* Distinct hues, Flowbite-style (designer, 2026-10-02): blue + purple for any two-series
-   * chart, then pink, orange, lagoon and emerald for groups; grey for "Other". Brand teal and jade
-   * were too close to tell apart side by side. */
-  /* Blue + orange: blue + purple was ΔE 2.5 to a deuteranope (dataviz validator). The group order is
-     the one that passes in both themes: emerald and pink are ΔE 1.1 deutan, so they never sit together. */
-  var PAIR = ['--ai-accent-blue-solid', '--ai-accent-orange-solid'];
-  var SERIES = ['--ai-accent-blue-solid', '--ai-accent-orange-solid', '--ai-accent-emerald-solid', '--ai-accent-purple-solid',
-    '--ai-accent-lagoon-solid', '--ai-accent-pink-solid', '--ai-text-contrast'];
+  /* Lagoon/9 + Purple/600 for any two-series chart (designer, 2026-10-07; was blue + orange, and
+   * blue + purple before that, which was ΔE 2.5 to a deuteranope). Lagoon + purple passes the dataviz
+   * validator in both themes (deutan ΔE 16.0). Groups continue emerald, orange, blue, pink, then grey
+   * for "Other": the order passes both themes (worst adjacent protan ΔE 10.1, normal 28.6). Emerald
+   * and pink are ΔE 1.1 deutan and emerald/lagoon 11.9 normal, so neither pair sits together.
+   * Purple is 2.72:1 on the dark card — relieved by the legend and the month tables. */
+  var PAIR = ['--ai-accent-lagoon-solid', '--ai-accent-purple-solid'];
+  var SERIES = ['--ai-accent-lagoon-solid', '--ai-accent-purple-solid', '--ai-accent-emerald-solid', '--ai-accent-orange-solid',
+    '--ai-accent-blue-solid', '--ai-accent-pink-solid', '--ai-text-contrast'];
 
   function chartCard(id, big, sub) {
     var host = page.querySelector('[data-chart="' + id + '"]');
@@ -404,7 +405,7 @@
       kpi('xl', 'jade', 'users', 'Customers', NUM.format(customers), 'Accounts with a contract') +
       kpi('xl', 'violet-radix', 'badge-pound-sterling', 'Ave. value per customer', money(customers ? value / customers : 0), 'Total value ÷ customers'));
 
-    /* The Monthly review pair (designer, 2026-10-02): value charts blue, count charts purple. */
+    /* The Monthly review pair: value charts lagoon, count charts purple (designer, 2026-10-07). */
     var valueC = tok(PAIR[0]), countC = tok(PAIR[1]);
     var mv = byDayThisMonth(COUNTED, 'amount'), mc = byDayThisMonth(COUNTED);
     var yv = byMonth(COUNTED, 'amount'), yc = byMonth(COUNTED);
