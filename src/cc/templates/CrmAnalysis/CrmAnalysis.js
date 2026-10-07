@@ -56,16 +56,9 @@
   var wins = OPPS.filter(function (o) { return o.stage === 9; }).length;
   var open = OPPS.filter(function (o) { return STAGE[o.stage].open; });
 
-  /* This month by day (to today), or the 12 months to this one, of whatever `rows` holds. */
-  function series(rows, period) {
-    var y = TODAY.getFullYear(), m = TODAY.getMonth();
-    if (period === 'month') {
-      var days = new Date(y, m + 1, 0).getDate(), out = [];
-      for (var d = 1; d <= days; d++) out.push({ label: String(d), long: DAY.format(new Date(y, m, d)), value: d <= TODAY.getDate() ? 0 : null });
-      rows.forEach(function (r) { if (r.created.getFullYear() === y && r.created.getMonth() === m && r.created <= TODAY) out[r.created.getDate() - 1].value++; });
-      return out;
-    }
-    var months = [];
+  /* The 12 months to this one (this month to date) of whatever `rows` holds. */
+  function series(rows) {
+    var y = TODAY.getFullYear(), m = TODAY.getMonth(), months = [];
     for (var i = 11; i >= 0; i--) { var dt = new Date(y, m - i, 1); months.push({ y: dt.getFullYear(), m: dt.getMonth(), label: MONTH_YY.format(dt), long: MONTH_LONG.format(dt), value: 0 }); }
     rows.forEach(function (r) {
       for (var k = 0; k < 12; k++) if (r.created.getFullYear() === months[k].y && r.created.getMonth() === months[k].m && r.created <= TODAY) { months[k].value++; break; }
@@ -141,12 +134,12 @@
     }).join('');
   }
 
-  /* One bar chart per card. Classic's "Opportunities this month" leaves out Closed Won and Closed
-     (Stage NOT IN 9, 10); its 12-month chart counts every opportunity. Both rules kept. */
+  /* One plain bar chart per card (Mark, 2026-10-07: "simpler charts"): created per month over the last
+     12 months, the current month marked "to date". Replaces the This month / 12 months switch, the
+     calendar heatmap and the area chart. Classic's 12-month chart counts every opportunity. */
   var PIPE = {
-    contracts: { rows: function () { return CONTRACTS; }, noun: 'contracts', period: 'month', chart: null },
-    opportunities: { rows: function (p) { return p === 'month' ? OPPS.filter(function (o) { return o.stage !== 9 && o.stage !== 10; }) : OPPS; },
-      noun: 'opportunities', period: 'month', chart: null }
+    contracts: { rows: function () { return CONTRACTS; }, noun: 'contracts', chart: null },
+    opportunities: { rows: function () { return OPPS; }, noun: 'opportunities', chart: null }
   };
   function chartDefaults() {
     Chart.defaults.font.family = 'Inter, sans-serif';
@@ -183,85 +176,48 @@
     }
   };
 
-  /* Calendar heatmap: a real <table> (weekday headers, one row per week), so it is its own table view.
-     Three shades of one hue by the day's share of the month's busiest day, an empty shade for none,
-     and days still to come outlined. */
-  var WEEKDAYS = [['M', 'Monday'], ['T', 'Tuesday'], ['W', 'Wednesday'], ['T', 'Thursday'], ['F', 'Friday'], ['S', 'Saturday'], ['S', 'Sunday']];
-  function heatmap(key, data, noun) {
-    var y = TODAY.getFullYear(), m = TODAY.getMonth();
-    var max = Math.max.apply(null, data.map(function (d) { return d.value || 0; })) || 1;
-    var lead = (new Date(y, m, 1).getDay() + 6) % 7, cells = [];
-    for (var i = 0; i < lead; i++) cells.push('<td class="cc-crm__day cc-crm__day--pad"></td>');
-    data.forEach(function (d, i) {
-      var day = i + 1, future = d.value === null, today = day === TODAY.getDate();
-      var level = future || !d.value ? 0 : Math.max(1, Math.ceil(d.value / max * 3));
-      var what = future ? 'still to come' : NUM.format(d.value) + ' ' + (d.value === 1 ? noun[0] : noun[1]);
-      cells.push('<td class="cc-crm__day cc-crm__day--l' + level + (future ? ' cc-crm__day--future' : '') + (today ? ' cc-crm__day--today' : '') +
-        '" title="' + esc(d.long + ': ' + what) + '"><span class="cc-crm__day-num" aria-hidden="true">' + day + '</span>' +
-        '<span class="cc-live__visually-hidden">' + esc(d.long + (today ? ', today' : '') + ': ' + what) + '</span></td>');
-    });
-    while (cells.length % 7) cells.push('<td class="cc-crm__day cc-crm__day--pad"></td>');
-    var rows = '';
-    for (var r = 0; r < cells.length; r += 7) rows += '<tr>' + cells.slice(r, r + 7).join('') + '</tr>';
-    $('[data-heat="' + key + '"]').innerHTML =
-      '<table class="cc-crm__cal"><caption class="cc-live__visually-hidden">' + esc(noun[1].charAt(0).toUpperCase() + noun[1].slice(1)) + ' created each day in ' + MONTH_LONG.format(TODAY) + '</caption>' +
-      '<thead><tr>' + WEEKDAYS.map(function (w) { return '<th scope="col"><abbr title="' + w[1] + '">' + w[0] + '</abbr></th>'; }).join('') + '</tr></thead>' +
-      '<tbody>' + rows + '</tbody></table>' +
-      '<div class="cc-crm__heat-key" aria-hidden="true"><span>None</span>' +
-        [0, 1, 2, 3].map(function (l) { return '<span class="cc-crm__swatch cc-crm__day--l' + l + '"></span>'; }).join('') +
-        '<span>Most (' + NUM.format(max) + ')</span><span class="cc-crm__swatch cc-crm__day--future"></span><span>To come</span></div>';
-  }
-
   function renderPipe(key) {
-    var p = PIPE[key], data = series(p.rows(p.period), p.period), month = p.period === 'month';
-    var total = data.reduce(function (s, d) { return s + (d.value || 0); }, 0);
-    $('[data-chart-sub="' + key + '"]').textContent = month
-      ? 'Created in ' + MONTH_LONG.format(TODAY) + ', by day' + (key === 'opportunities' ? ' · still in play' : '')
-      : 'Created in the last 12 months, by month';
-    var badge = $('[data-chart-count="' + key + '"]');
-    badge.textContent = NUM.format(total) + ' ' + (month ? 'this month' : 'in 12 months');
+    var p = PIPE[key], data = series(p.rows()), last = data.length - 1;
+    var total = data.reduce(function (s, d) { return s + d.value; }, 0);
+    var nouns = key === 'contracts' ? ['contract', 'contracts'] : ['opportunity', 'opportunities'];
+    $('[data-chart-sub="' + key + '"]').textContent = 'Created per month · last 12 months';
+    $('[data-chart-count="' + key + '"]').textContent = NUM.format(total) + ' in 12 months';
     var empty = $('[data-chart-empty="' + key + '"]');
     empty.hidden = total > 0;
-    empty.textContent = 'No ' + p.noun + ' created ' + (month ? 'this month' : 'in the last 12 months') + ' yet.';
-    $('[data-th-period="' + key + '"]').textContent = month ? 'Day' : 'Month';
-    $('[data-table="' + key + '"]').innerHTML = data.map(function (d) {
-      return '<tr><td>' + esc(d.long) + '</td><td class="cc-live__num">' + (d.value === null ? '—' : NUM.format(d.value)) + '</td></tr>';
+    empty.textContent = 'No ' + p.noun + ' created in the last 12 months yet.';
+    $('[data-th-period="' + key + '"]').textContent = 'Month';
+    $('[data-table="' + key + '"]').innerHTML = data.map(function (d, i) {
+      return '<tr><td>' + esc(d.long + (i === last ? ' (to date)' : '')) + '</td><td class="cc-live__num">' + NUM.format(d.value) + '</td></tr>';
     }).join('');
-    var canvas = $('[data-canvas="' + key + '"]'), heat = $('[data-heat="' + key + '"]');
-    var nouns = key === 'contracts' ? ['contract', 'contracts'] : ['opportunity', 'opportunities'];
-    heat.hidden = !month || total === 0;
-    canvas.parentElement.hidden = month || total === 0;
-    $('[data-table-view="' + key + '"]').hidden = month;      // the calendar is itself a table
+    var canvas = $('[data-canvas="' + key + '"]');
+    canvas.parentElement.hidden = total === 0;
     if (p.chart) { p.chart.destroy(); p.chart = null; }
-    if (month) { if (total) heatmap(key, data, nouns); return; }
-    canvas.setAttribute('aria-label', 'Area chart of ' + p.noun + ' created each month for the last 12 months, ' + total + ' in all');
+    canvas.setAttribute('aria-label', 'Bar chart of ' + p.noun + ' created each month for the last 12 months, ' + total +
+      ' in all; ' + data[last].long + ' is to date');
     if (!window.Chart) return;
-    var blue = tok('--ai-accent-lagoon-solid');
+    /* Lagoon bars, the house shape (4px top radius, flat base). The month still running is the soft
+       lagoon with a lagoon edge, so a part-month total does not read as a drop. */
+    var solid = tok('--ai-accent-lagoon-solid'), soft = tok('--ai-accent-lagoon-soft');
     p.chart = new Chart(canvas, {
-      type: 'line',
-      data: { labels: data.map(function (d) { return d.label; }), datasets: [area(data.map(function (d) { return d.value; }), blue, p.noun)] },
+      type: 'bar',
+      data: { labels: data.map(function (d) { return d.label; }), datasets: [{ label: p.noun, data: data.map(function (d) { return d.value; }),
+        backgroundColor: data.map(function (_, i) { return i === last ? soft : solid; }),
+        borderColor: solid, borderWidth: data.map(function (_, i) { return i === last ? 1 : 0; }),
+        borderRadius: 4, borderSkipped: 'start', maxBarThickness: 28 }] },
       options: {
         responsive: true, maintainAspectRatio: false, animation: REDUCED ? false : { duration: 400 },
-        interaction: { mode: 'index', intersect: false },
         plugins: { legend: { display: false }, tooltip: tooltip({
-          title: function (items) { return data[items[0].dataIndex].long; },
+          title: function (items) { var i = items[0].dataIndex; return data[i].long + (i === last ? ' (to date)' : ''); },
           label: function (c) { return ' ' + NUM.format(c.parsed.y) + ' ' + (c.parsed.y === 1 ? nouns[0] : nouns[1]); } }) },
         scales: {
           x: { grid: { display: false }, border: { display: false }, ticks: { maxRotation: 0, autoSkip: true, autoSkipPadding: 8 } },
           y: { beginAtZero: true, grid: { color: tok('--ai-border-secondary') }, border: { display: false }, ticks: { precision: 0, maxTicksLimit: 4 } }
         }
-      },
-      plugins: [crosshair]
+      }
     });
     charts = charts.filter(function (c) { return c !== p.old; });
     charts.push(p.chart); p.old = p.chart;
   }
-  page.addEventListener('seg-control:change', function (e) {
-    var key = e.target.getAttribute('data-period');
-    if (!PIPE[key]) return;
-    PIPE[key].period = e.detail.value;
-    renderPipe(key);
-  });
 
   /* ── 4. Activity ──────────────────────────────────────────────── */
   var ACT = {

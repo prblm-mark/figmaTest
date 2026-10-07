@@ -499,14 +499,11 @@
       </section>
 
       <!-- Contracts: classic's two contract charts (this month by day, last 12 months) become one
-           chart with a period switch, under the contract summary classic showed beneath them. -->
+           simple chart — contracts created per month over the last 12 months, the current month marked
+           "to date" (Mark, 2026-10-07: "simpler charts") — under the contract summary. -->
       <section class="cc-live__card cc-crm__pipe" aria-labelledby="crm-contracts-title">
         <div class="cc-live__card-head">
           <h2 class="cc-live__card-title" id="crm-contracts-title">Contracts</h2>
-          <div class="seg-control seg-control--sm cc-crm__seg" role="radiogroup" aria-label="Chart period" data-seg-control data-period="contracts">
-              <button class="seg-control__btn seg-control__btn--active" type="button" role="radio" aria-checked="true" data-value="month">This month</button>
-              <button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="year">12 months</button>
-            </div>
         </div>
         <div class="cc-crm__figures-wrap"><dl class="cc-crm__figures"><div class="cc-crm__figure cc-crm__figure--lead"><dt class="cc-crm__figure-label">Total contract value</dt><dd class="cc-crm__figure-value" data-fig="contractValue">—</dd></div><div class="cc-crm__figure"><dt class="cc-crm__figure-label">Customers</dt><dd class="cc-crm__figure-value" data-fig="customers">—</dd></div><div class="cc-crm__figure"><dt class="cc-crm__figure-label">Ave. value per customer</dt><dd class="cc-crm__figure-value" data-fig="contractAvg">—</dd></div></dl></div>
         <div class="cc-crm__chart">
@@ -514,7 +511,6 @@
               <p class="chart__sub" data-chart-sub="contracts"></p>
               <span class="badge badge--neutral" data-chart-count="contracts"></span>
             </div>
-            <div class="cc-crm__heat" data-heat="contracts"></div>
             <div class="cc-crm__canvas"><canvas role="img" aria-label="Bar chart of contracts created" data-canvas="contracts"></canvas></div>
             <p class="cc-live__empty" data-chart-empty="contracts" hidden></p>
             <details class="cc-live__table-view" data-table-view="contracts">
@@ -534,10 +530,6 @@
       <section class="cc-live__card cc-crm__pipe" aria-labelledby="crm-opps-title">
         <div class="cc-live__card-head">
           <h2 class="cc-live__card-title" id="crm-opps-title">Opportunities</h2>
-          <div class="seg-control seg-control--sm cc-crm__seg" role="radiogroup" aria-label="Chart period" data-seg-control data-period="opportunities">
-              <button class="seg-control__btn seg-control__btn--active" type="button" role="radio" aria-checked="true" data-value="month">This month</button>
-              <button class="seg-control__btn" type="button" role="radio" aria-checked="false" data-value="year">12 months</button>
-            </div>
         </div>
         <div class="cc-crm__figures-wrap"><dl class="cc-crm__figures"><div class="cc-crm__figure cc-crm__figure--lead"><dt class="cc-crm__figure-label">Open opportunity value</dt><dd class="cc-crm__figure-value" data-fig="oppValue">—</dd></div><div class="cc-crm__figure"><dt class="cc-crm__figure-label">Open opportunities</dt><dd class="cc-crm__figure-value" data-fig="oppCount">—</dd></div><div class="cc-crm__figure"><dt class="cc-crm__figure-label">Ave. opportunity value</dt><dd class="cc-crm__figure-value" data-fig="oppAvg">—</dd></div></dl></div>
         <div class="cc-crm__chart">
@@ -545,7 +537,6 @@
               <p class="chart__sub" data-chart-sub="opportunities"></p>
               <span class="badge badge--neutral" data-chart-count="opportunities"></span>
             </div>
-            <div class="cc-crm__heat" data-heat="opportunities"></div>
             <div class="cc-crm__canvas"><canvas role="img" aria-label="Bar chart of opportunities created" data-canvas="opportunities"></canvas></div>
             <p class="cc-live__empty" data-chart-empty="opportunities" hidden></p>
             <details class="cc-live__table-view" data-table-view="opportunities">

@@ -107,3 +107,15 @@ carry an icon and a sign, not colour alone.
 | id | What |
 |---|---|
 | `crm-data` | Every figure is mock. Live = classic's own queries in CRMAnalysis.cfm (listed in `crm-analysis-data.js`), contracts under Contract Analysis's shared "counted" rule, plus two small additions: the previous 30 days for notes / unsubscribes, and open opportunities grouped by stage |
+
+## Contracts / Opportunities charts simplified (2026-10-07)
+
+Mark: "can we go with simpler charts for the contracts and opportunities" — chose **12-month bars** over a
+month-pace line. Each card now has ONE plain bar chart: created per month over the last 12 months,
+`accent-lagoon-solid` bars in the house shape (4px top radius, flat base, ≤28px), the current month in
+`accent-lagoon-soft` with a 1px lagoon edge and "(to date)" in its tooltip and table row, so a part-month
+total does not read as a drop. Count badge "n in 12 months"; **View as table** always available.
+**Removed:** the This month / 12 months SegmentedControl, the calendar heatmap (and its CSS), and the
+12-month area chart from 2026-10-05. Opportunities counts every opportunity, as classic's 12-month chart.
+The notes above describing the period switch, calendar and area chart are superseded by this section.
+Dark mode: the soft fill (#043840) is faint on the dark card; the lagoon edge carries it.
