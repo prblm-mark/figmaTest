@@ -527,45 +527,30 @@
             <dd class="field-row__value">Europe/London</dd>
           </div><div class="field-row field-row--compact">
             <dt class="field-row__label">Contact by email</dt>
-            <dd class="field-row__value">Yes</dd>
+            <dd class="field-row__value"><span class="contact-pref"><span class="toggle toggle--xxs toggle--active" role="switch" aria-checked="true" aria-disabled="true" aria-label="Contact by email"><span class="toggle__track"><span class="toggle__knob"></span></span></span><span class="contact-pref__state">On</span></span></dd>
           </div><div class="field-row field-row--compact">
             <dt class="field-row__label">Contact by phone</dt>
             <dd class="field-row__value">-</dd>
           </div><div class="field-row field-row--compact">
             <dt class="field-row__label">Show in member directory</dt>
-            <dd class="field-row__value">No</dd>
+            <dd class="field-row__value"><span class="contact-pref"><span class="toggle toggle--xxs " role="switch" aria-checked="false" aria-disabled="true" aria-label="Show in member directory"><span class="toggle__track"><span class="toggle__knob"></span></span></span><span class="contact-pref__state">Off</span></span></dd>
           </div></dl></div>
         </section><section class="datatables datatables--orders contact-tab" aria-labelledby="tab-termsandconditions" data-backend-todo="contact-permissions">
           <div class="datatables__toolbar contact-tab__head">
             <h2 class="contact-tab__title" id="tab-termsandconditions">Terms and conditions <span class="badge badge--neutral" aria-label="1 terms and conditions">1</span></h2>
           </div>
-          <div class="datatables__body"><table class="table" data-fit="even"><thead><tr><th data-keep data-weight="2" data-fluid>Terms</th><th data-keep>Accepted</th></tr></thead><tbody><tr><td>2018 Affino General Terms and Conditions</td><td>26 Nov 2018, 13:40</td></tr></tbody></table></div>
+          <div class="datatables__body"><table class="table" data-fit="even"><thead><tr><th data-keep data-weight="2" data-fluid>Terms</th><th data-keep>Accepted</th></tr></thead><tbody><tr><td>2018 Affino General Terms and Conditions <span class="badge badge--success">Current</span></td><td>26 Nov 2018, 13:40</td></tr></tbody></table></div>
         </section></div><section class="datatables datatables--orders contact-tab" aria-labelledby="tab-userpermissions" data-backend-todo="contact-permissions">
           <div class="datatables__toolbar contact-tab__head">
             <h2 class="contact-tab__title" id="tab-userpermissions">User permissions <span class="badge badge--neutral" aria-label="0 user permissions">0</span></h2>
           </div>
           <p class="contact-tab__empty">No user permissions.</p>
-        </section><div class="contact-tab-grid"><section class="datatables datatables--orders contact-tab" aria-labelledby="tab-mailinglistsubscriptionhistory" data-backend-todo="contact-permissions">
+        </section><section class="datatables datatables--orders contact-tab" aria-labelledby="tab-subscriptionanddownloadhistory" data-backend-todo="contact-permissions">
           <div class="datatables__toolbar contact-tab__head">
-            <h2 class="contact-tab__title" id="tab-mailinglistsubscriptionhistory">Mailing list subscription history <span class="badge badge--neutral" aria-label="1 mailing list subscription history">1</span></h2>
+            <h2 class="contact-tab__title" id="tab-subscriptionanddownloadhistory">Subscription and download history <span class="badge badge--neutral" aria-label="1 subscription and download history">1</span></h2>
           </div>
-          <div class="datatables__body"><table class="table" data-fit="even"><thead><tr><th data-keep data-weight="2" data-fluid>Item</th><th data-drop="1">Action</th><th data-keep>Date</th></tr></thead><tbody><tr><td>Affino News</td><td>Subscribed</td><td>26 Nov 2018</td></tr></tbody></table></div>
-        </section><section class="datatables datatables--orders contact-tab" aria-labelledby="tab-contentsubscriptionhistory" data-backend-todo="contact-permissions">
-          <div class="datatables__toolbar contact-tab__head">
-            <h2 class="contact-tab__title" id="tab-contentsubscriptionhistory">Content subscription history <span class="badge badge--neutral" aria-label="0 content subscription history">0</span></h2>
-          </div>
-          <p class="contact-tab__empty">No content subscriptions.</p>
-        </section></div><div class="contact-tab-grid"><section class="datatables datatables--orders contact-tab" aria-labelledby="tab-mediadownloadhistory" data-backend-todo="contact-permissions">
-          <div class="datatables__toolbar contact-tab__head">
-            <h2 class="contact-tab__title" id="tab-mediadownloadhistory">Media download history <span class="badge badge--neutral" aria-label="0 media download history">0</span></h2>
-          </div>
-          <p class="contact-tab__empty">No media downloads.</p>
-        </section><section class="datatables datatables--orders contact-tab" aria-labelledby="tab-forumsubscriptionhistory" data-backend-todo="contact-permissions">
-          <div class="datatables__toolbar contact-tab__head">
-            <h2 class="contact-tab__title" id="tab-forumsubscriptionhistory">Forum subscription history <span class="badge badge--neutral" aria-label="0 forum subscription history">0</span></h2>
-          </div>
-          <p class="contact-tab__empty">No forum subscriptions.</p>
-        </section></div></div>
+          <div class="contact-tab__body"><ol class="record-list record-list--timeline"><li class="record-list__item"><span class="avatar avatar--size-2 avatar--placeholder record-list__icon" aria-hidden="true"><i data-lucide="mail" aria-hidden="true"></i></span><div class="record-list__main"><p class="record-list__meta">26 Nov 2018 · Mailing list</p><p class="record-list__title">Subscribed: Affino News</p></div></li></ol></div>
+        </section></div>
       </div>
     </div>
 
@@ -1287,6 +1272,7 @@
   <script src="../../../components/AvatarGroup/AvatarGroup.js"></script>
   <script src="RecordScreen.js"></script>
   <script src="../../../components/Datatables/DatatablesFit.js"></script>
+  <script src="ContactCharts.js"></script>
 
   <!-- The chips and their pickers are rendered by ListingScreen.js, which runs
        on DOMContentLoaded — AFTER the module above has already auto-initialised

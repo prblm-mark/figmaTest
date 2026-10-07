@@ -224,3 +224,25 @@ full-width cards; related cards pair up in `.contact-tab-grid` (two ≥512px col
 - **Fix:** the sidebar's saved panel order was keyed `:article` for every record type, so Contact's order rearranged
   Article's; it is now keyed per `data-record-type` (`page(record_type=)`).
 - Checked: all 20 contact pages at 390 / 1024 / 1600px in iframes: no overflow, matching head heights side by side.
+
+### Analysis made visual + equal panel heights (2026-10-07, designer)
+
+- **Equal heights:** cards in a `.contact-tab-grid` row stretch to the tallest (`align-items: stretch`), on every tab.
+- **Analysis:** four StatCard tiles (Logins 365 days, Page views 365 days, Message opens, Forum posts; lagoon-first
+  accents) · **Engagement points by type** as a sorted horizontal bar chart · **Activity by month** (customer-signal
+  events, 12 months, the current month soft + edged "to date") · **All customer signals** as a ranked list: each
+  signal's icon, name, count and a share-of-top bar (Live Dashboard's leaderboard) · **Latest activity** with each
+  event's signal icon · the remaining statistics as facts · Content views (empty state, as live).
+- Charts: `ContactCharts.js` draws any `canvas[data-contact-chart]` (one lagoon series, house bar shape, tooltip, no
+  legend; values in a "View as table" under each). Dataviz rules: single hue, sorted bars, no dual axis.
+- **Signal icons in timelines:** `record_list` takes an optional glyph per row; the sidebar's Latest activity uses it too.
+- Checked all 20 contact pages at 390 / 1024 / 1600: no overflow; side-by-side cards and heads match; all 12 charts draw.
+- **Trail layout (2026-10-07, designer, Flowbite Timeline):** Latest activity (sidebar + Analysis) is `record_list(timeline=True)`:
+  a 1px border-secondary line runs behind the 32px signal-icon circles (centred, first to last; the house VersionHistory
+  timeline pattern), the time sits above the event in contrast ink, no row dividers; each circle has a surface-primary
+  ring so the line reads as a trail between events. Measured: icon centres and the line share one x.
+- **Permissions reworked (2026-10-07, designer picked ideas 1, 2, 4):** yes / no preferences as read-only switches
+  (Toggle xxs, `aria-disabled` so Toggle.js leaves them, not greyed) with On / Off in words; Terms and conditions sorted
+  newest first, the latest badged **Current** and older versions muted; the four subscription / download histories
+  merged into one **Subscription and download history** trail (timeline layout, newest first, an icon per kind:
+  mailing list, content subscription, media download, forum subscription).

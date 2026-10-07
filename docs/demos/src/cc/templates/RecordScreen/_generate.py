@@ -264,7 +264,8 @@ for c in contact.CONTACTS:
                             secondary=contact.SECONDARY, more=contact.KEBAB),
             page(m.record_tabs(key, tabs=contact.tabs(c)) + f'<div class="contact-tab-page">{render(c)}</div>', mode="view",
                  record_type="contact"),
-            KIT_JS + '\n  <script src="../../../components/Datatables/DatatablesFit.js"></script>',
+            KIT_JS + '\n  <script src="../../../components/Datatables/DatatablesFit.js"></script>'
+                   + '\n  <script src="ContactCharts.js"></script>',
             crumbs=("CRM", "Contacts", "Contact"))
 
 # ── Import step (designer, 2026-09-30; code-first, flag for Figma) ──

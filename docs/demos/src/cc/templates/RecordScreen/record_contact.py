@@ -97,7 +97,8 @@ def sidebar(c):
     tasks = m.record_list([(t, mt, None) for t, mt in c["tasks"]], "No open tasks.", todo="contact-tasks")
     notes = m.record_list([(t, mt, _badge(kind, "neutral")) for t, mt, kind in c["notes"]], "No contact notes yet.",
                           more=c.get("notes_more"), todo="contact-notes")
-    activity = m.record_list(c["activity"], "No activity yet.", more=c.get("activity_more"), todo="contact-activity")
+    activity = m.record_list(_with_icons(c["activity"]), "No activity yet.", more=c.get("activity_more"), todo="contact-activity",
+                             timeline=True)
 
     # "View all" opens the matching CRM tab (Tasks, Communication, Commerce), not built yet.
     def more_link(what, tab=None):
@@ -391,23 +392,68 @@ def demographic(c):
     return "".join(secs) or _card("Demographic information", _empty("No demographic data."), todo="contact-demographic")
 
 
+def _with_icons(items):
+    """Timeline rows with their customer signal's icon (the same glyph the Customer signals group uses)."""
+    return [(t, mt, tr, SIG.get(t)) for t, mt, tr in items]
+
+
+def _chart(cid, kind, labels, values, label, unit, height="md", partial_last=False):
+    """A Chart.js canvas drawn by ContactCharts.js from its data attributes (one series, lagoon;
+    dataviz: one hue, sorted bars, no legend for one series, hover tooltip, a table view)."""
+    import json
+    data = json.dumps({"type": kind, "labels": labels, "values": values, "label": label, "unit": unit,
+                       "partialLast": partial_last})
+    rows = "".join(f"<tr><td>{e(l)}</td><td class=\"contact-tab__num\">{e(str(v))}</td></tr>" for l, v in zip(labels, values))
+    return (f'<div class="contact-chart contact-chart--{height}"><canvas id="{cid}" role="img" aria-label="{e(label)}" '
+            f"data-contact-chart='{data}'></canvas></div>"
+            f'<details class="contact-chart__table"><summary>View as table</summary>'
+            f'<table class="table"><thead><tr><th>{e(unit[0])}</th><th class="contact-tab__num">{e(unit[1])}</th></tr></thead>'
+            f'<tbody>{rows}</tbody></table></details>')
+
+
+def _signal_rank(signals):
+    """All customer signals as a ranked list: the signal's icon, its name, its count, and a bar for
+    its share of the most frequent (Live Dashboard's leaderboard treatment, lagoon)."""
+    rows = sorted(((n.rsplit(" (", 1)[0], int(n.rsplit("(", 1)[1].rstrip(")")), g) for n, g in signals),
+                  key=lambda r: -r[1])
+    top = rows[0][1] if rows else 1
+    items = "".join(
+        f'<li class="signal-rank__row"><span class="avatar avatar--size-2 avatar--placeholder" aria-hidden="true">{m.icon(g)}</span>'
+        f'<span class="signal-rank__main"><span class="signal-rank__line"><span class="signal-rank__name">{e(n)}</span>'
+        f'<span class="signal-rank__count">{k}</span></span>'
+        f'<span class="signal-rank__bar" aria-hidden="true"><span class="signal-rank__fill" style="--signal-share:{max(2, round(k / top * 100))}%"></span></span>'
+        f'</span></li>' for n, k, g in rows)
+    return f'<ol class="signal-rank">{items}</ol>'
+
+
 def analysis(c):
     a = c["analysis"]
-    pts = [[e(k), f'<span class="contact-tab__num">{e(v)}</span>'] for k, v in a["points"]]
-    sig = [[e(n.rsplit(" (", 1)[0]), f'<span class="contact-tab__num">{e(n.rsplit("(", 1)[1].rstrip(")"))}</span>'] for n, _ in c["signals"]]
-    # TODO(backend:RecordScreen) contact-analysis: points by type (time frame + view type), the statistics, signal counts and the content-view lists are static → the contact's analysis data
-    return (_grid(
-                _card("Activity statistics", _facts(a["stats"]), todo="contact-analysis"),
-                _rows_card("Engagement points by type", [("Type", dict(keep=True, weight=2, fluid=True)), ("Points", dict(keep=True))],
-                           pts, "No engagement points in this time frame.", "contact-analysis", count=a["points_total"]))
-            + _grid(
-                _rows_card("All customer signals", [("Signal", dict(keep=True, weight=2, fluid=True)), ("Count", dict(keep=True))],
-                           sig, "No customer signals yet.", "contact-signals", count=c["signal_total"]),
-                _card("Latest activity", f'<div class="contact-tab__body">{m.record_list(c["activity"], "No activity yet.", more=c.get("activity_more"))}</div>',
-                      todo="contact-activity"))
-            + _grid(
-                _card("Views per day", _empty("No content views in the last 30 days."), todo="contact-analysis"),
-                _card("Top views", _empty("No content views in the last 30 days."), todo="contact-analysis")))
+    key = dict(a["stats"])
+    tiles = (f'<div class="contact-tab__tiles">'
+             f'{m.stat("Logins (365 days)", key["Logins (365 days)"], "lagoon", "log-in")}'
+             f'{m.stat("Page views (365 days)", key["Page views (365 days)"], "jade", "eye")}'
+             f'{m.stat("Message opens", key["Message opens"], "violet-radix", "mail-open")}'
+             f'{m.stat("Forum posts", key["Forum posts"], "orange", "messages-square")}</div>')
+    pts = sorted(a["points"], key=lambda r: -int(r[1]))
+    rest = [r for r in a["stats"] if r[0] not in ("Logins (365 days)", "Page views (365 days)", "Message opens", "Forum posts")]
+    uid = c["code"]
+    # TODO(backend:RecordScreen) contact-analysis: the tiles, points by type (time frame + view type), activity by month, signal counts, statistics and content views are static → the contact's analysis data
+    return (tiles
+            + _grid(_card("Engagement points by type", f'<div class="contact-tab__body">' + _chart(
+                          f"pts-{uid}", "bar-h", [k for k, _ in pts], [int(v) for _, v in pts],
+                          "Engagement points by type, last 12 months", ("Type", "Points")) + '</div>',
+                          count=a["points_total"], todo="contact-analysis"),
+                    _card("Activity by month", f'<div class="contact-tab__body">' + _chart(
+                          f"act-{uid}", "bar", a["month_labels"], a["months"],
+                          "Customer signal events per month, last 12 months; the current month is to date",
+                          ("Month", "Events"), partial_last=True) + '</div>',
+                          count=str(sum(a["months"])), todo="contact-analysis"))
+            + _grid(_card("All customer signals", f'<div class="contact-tab__body">{_signal_rank(c["signals"]) if c["signals"] else ""}</div>'
+                          if c["signals"] else _empty("No customer signals yet."), count=c["signal_total"], todo="contact-signals"),
+                    _card("Latest activity", f'<div class="contact-tab__body">{m.record_list(_with_icons(c["activity"]), "No activity yet.", more=c.get("activity_more"), timeline=True)}</div>',
+                          todo="contact-activity"))
+            + _grid(_card("Activity statistics", _facts(rest), todo="contact-analysis"),
+                    _card("Content views", _empty("No content views in the last 30 days."), todo="contact-analysis")))
 
 
 def page_analysis(c):
@@ -443,22 +489,55 @@ def digital_assets(c):
                                                           ("Date", dict(drop=1))], credits, "No service credit entries.", "contact-digital-assets")))
 
 
+HISTORY_KIND = {"mailing": ("Mailing list", "mail"), "content": ("Content subscription", "book-open"),
+                "downloads": ("Media download", "download"), "forums": ("Forum subscription", "messages-square")}
+
+
+def _when(d):
+    from datetime import datetime
+    return datetime.strptime(d.split(",")[0].strip(), "%d %b %Y")
+
+
+def _switch(label, on):
+    """A read-only switch (Toggle xxs) for a yes / no preference (designer, 2026-10-07: preferences as
+    switches). aria-disabled keeps Toggle.js from flipping it; no --disabled class, so it is not greyed."""
+    state = "toggle--active" if on else ""
+    return (f'<span class="toggle toggle--xxs {state}" role="switch" aria-checked="{"true" if on else "false"}" '
+            f'aria-disabled="true" aria-label="{e(label)}"><span class="toggle__track"><span class="toggle__knob"></span></span></span>'
+            f'<span class="contact-pref__state">{"On" if on else "Off"}</span>')
+
+
 def permissions(c):
     p = c["permissions"]
-    terms = [[e(n), e(d)] for n, d in p["terms"]]
-    hist = lambda title, rows, empty: _rows_card(title, [("Item", dict(keep=True, weight=2, fluid=True)), ("Action", dict(drop=1)),
-                                                         ("Date", dict(keep=True))], [[e(a), e(b), e(d)] for a, b, d in rows], empty,
-                                                 "contact-permissions")
-    # TODO(backend:RecordScreen) contact-permissions: preferences, accepted terms, permissions and the four histories are static → the contact's preferences, T&C acceptances, user permissions and subscription / download histories
-    return (_grid(_card("User preferences", _facts(p["prefs"]), todo="contact-permissions"),
+    # 1. Preferences: yes / no as switches, the rest as text.
+    rows = []
+    for label, v in p["prefs"]:
+        if v in ("Yes", "No"):
+            rows.append(m.view_row(label, "html", f'<span class="contact-pref">{_switch(label, v == "Yes")}</span>', compact=True))
+        else:
+            rows.append(m.view_row(label, "text", v, compact=True))
+    prefs = f'<div class="contact-tab__body"><dl class="fact-list">{"".join(rows)}</dl></div>'
+
+    # 4. Terms: the latest accepted version is badged Current; older versions are muted.
+    terms = sorted(p["terms"], key=lambda t: _when(t[1]), reverse=True)
+    trows = [[(f'{e(n)} {_badge("Current", "success")}' if i == 0 else f'<span class="contact-tab__muted">{e(n)}</span>'),
+              (e(d) if i == 0 else f'<span class="contact-tab__muted">{e(d)}</span>')] for i, (n, d) in enumerate(terms)]
+
+    # 2. One history: the four subscription / download histories as a single trail, newest first.
+    hist = []
+    for kind, (noun, glyph) in HISTORY_KIND.items():
+        for item, action, d in p[kind]:
+            hist.append((_when(d), (f"{action}: {item}", f"{d} · {noun}", None, glyph)))
+    hist = [h for _, h in sorted(hist, key=lambda x: x[0], reverse=True)]
+    history = (f'<div class="contact-tab__body">{m.record_list(hist, "", timeline=True)}</div>' if hist
+               else _empty("No subscriptions or downloads yet."))
+    # TODO(backend:RecordScreen) contact-permissions: preferences, accepted terms, permissions and the merged subscription / download history are static → the contact's preferences, T&C acceptances (latest = Current), user permissions and the mailing-list, content-subscription, media-download and forum-subscription histories
+    return (_grid(_card("User preferences", prefs, todo="contact-permissions"),
                   _rows_card("Terms and conditions", [("Terms", dict(keep=True, weight=2, fluid=True)), ("Accepted", dict(keep=True))],
-                             terms, "No terms accepted.", "contact-permissions"))
+                             trows, "No terms accepted.", "contact-permissions"))
             + _rows_card("User permissions", [("Permission", dict(keep=True, weight=2, fluid=True)), ("Granted", dict(keep=True))],
                          [[e(a), e(b)] for a, b in p["perms"]], "No user permissions.", "contact-permissions")
-            + _grid(hist("Mailing list subscription history", p["mailing"], "No mailing list changes."),
-                    hist("Content subscription history", p["content"], "No content subscriptions."))
-            + _grid(hist("Media download history", p["downloads"], "No media downloads."),
-                    hist("Forum subscription history", p["forums"], "No forum subscriptions.")))
+            + _card("Subscription and download history", history, count=str(len(hist)), todo="contact-permissions"))
 
 
 TAB_PAGES = {"demographic": demographic, "tasks": tasks, "communication": communication, "commerce": commerce,
@@ -478,6 +557,8 @@ FULL.update({
                      ("Jobs", [("Interests", ["Content Management", "eCommerce", "eCommunity", "eMedia", "ePromotions", "Analysis", "Campaigns",
                                               "Commerce", "Control", "Media", "Promotion", "Publishing", "Security", "Social"])])],
     "analysis": {"points_total": "671",
+                 "month_labels": ["Oct 25", "Nov 25", "Dec 25", "Jan 26", "Feb 26", "Mar 26", "Apr 26", "May 26", "Jun 26", "Jul 26", "Aug 26", "Sep 26"],
+                 "months": [3, 2, 6, 4, 5, 1, 2, 3, 2, 5, 4, 0],
                  "points": [("Opportunities", "340"), ("Logins", "120"), ("Campaign messages", "95"), ("Contact notes", "48"),
                             ("Profile views", "30"), ("Events", "25"), ("Searches", "13")],
                  "stats": [("Latest login", "27 Aug 2026, 11:01"), ("Created", "08 Jan 2016, 15:19"), ("Logins (24 hours)", "0"),
@@ -491,14 +572,18 @@ FULL.update({
     "permissions": {"prefs": [("Email format", "HTML"), ("Language", "English"), ("Time zone", "Europe/London"),
                               ("Contact by email", "Yes"), ("Contact by phone", "No"), ("Show in member directory", "Yes")],
                     "terms": [("2018 Affino General Terms and Conditions", "19 Nov 2018, 17:55"), ("2009 Affino General Terms", "17 May 2018, 19:07")],
-                    "perms": [], "mailing": [("Affino News", "Subscribed", "08 Jan 2016")], "content": [],
-                    "downloads": [("Affino 9 platform overview.pdf", "Downloaded", "14 Oct 2025")], "forums": []},
+                    "perms": [], "mailing": [("Affino News", "Subscribed", "08 Jan 2016"), ("Affino Briefing", "Unsubscribed", "02 Mar 2024")],
+                    "content": [("Affino Insight Premium", "Subscribed", "01 Jan 2026")],
+                    "downloads": [("Affino 9 platform overview.pdf", "Downloaded", "14 Oct 2025"), ("AI plugins for publishers.pdf", "Downloaded", "18 Jun 2026")],
+                    "forums": [("Affino Product Updates", "Subscribed", "19 Feb 2026")]},
 })
 SPARSE.update({
     "task_rows": {"open": [], "closed": []},
     "event_rows": {"attendance": [("Affino Publishing Round Table", "26 Nov 2018", "Attended", "Guest")], "awards": []},
     "demographics": [],
     "analysis": {"points_total": "55",
+                 "month_labels": ["Oct 25", "Nov 25", "Dec 25", "Jan 26", "Feb 26", "Mar 26", "Apr 26", "May 26", "Jun 26", "Jul 26", "Aug 26", "Sep 26"],
+                 "months": [0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0],
                  "points": [("Campaign messages", "30"), ("Events", "15"), ("Contact notes", "10")],
                  "stats": [("Latest login", "15 Jun 2022, 15:24"), ("Created", "10 Jan 2016, 22:51"), ("Logins (24 hours)", "0"),
                            ("Logins (7 days)", "0"), ("Logins (30 days)", "0"), ("Logins (365 days)", "0"),

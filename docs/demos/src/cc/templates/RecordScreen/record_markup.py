@@ -457,17 +457,29 @@ def fact_list(rows):
 
 
 # ── RecordList (code-first, Contact view 2026-10-07) ─────────────────
-def record_list(items, empty, more=None, todo=None):
+def record_list(items, empty, more=None, todo=None, timeline=False):
     """A sidebar list of record rows: timeline events, tasks, notes, opportunities. Each item is
     (title, meta, trailing_html): the title in text ink, a meta line in contrast ink, and an
     optional trailing value or badge. `more` adds a foot line such as "58 more events"."""
     if not items:
         return f'<p class="fact-panel__empty">{e(empty)}</p>'
-    rows = "".join(f'<li class="record-list__item"><div class="record-list__main"><p class="record-list__title">{e(t)}</p>'
-                   f'<p class="record-list__meta">{e(mt)}</p></div>{tr or ""}</li>' for t, mt, tr in items)
+    def lead(it):
+        # Optional 4th element: a Lucide glyph for the row's icon circle (a customer signal's stand-in
+        # for its badge image, as the Customer signals AvatarGroup draws them).
+        g = it[3] if len(it) > 3 else None
+        return f'<span class="avatar avatar--size-2 avatar--placeholder record-list__icon" aria-hidden="true">{icon(g)}</span>' if g else ""
+    if timeline:
+        # Trail layout (Flowbite Timeline, designer 2026-10-07): the time sits above the title, and the
+        # icons ride a line that runs down the list (CSS); no dividers between events.
+        rows = "".join(f'<li class="record-list__item">{lead(it)}<div class="record-list__main"><p class="record-list__meta">{e(it[1])}</p>'
+                       f'<p class="record-list__title">{e(it[0])}</p></div>{it[2] or ""}</li>' for it in items)
+    else:
+        rows = "".join(f'<li class="record-list__item">{lead(it)}<div class="record-list__main"><p class="record-list__title">{e(it[0])}</p>'
+                       f'<p class="record-list__meta">{e(it[1])}</p></div>{it[2] or ""}</li>' for it in items)
     attr = f' data-backend-todo="{todo}"' if todo else ""
+    cls = "record-list record-list--timeline" if timeline else "record-list"
     foot = f'<p class="record-list__more">{e(more)}</p>' if more else ""
-    return f'<ol class="record-list"{attr}>{rows}</ol>{foot}'
+    return f'<ol class="{cls}"{attr}>{rows}</ol>{foot}'
 
 
 # ── ViewerItem / ViewerList ──────────────────────────────────────────
