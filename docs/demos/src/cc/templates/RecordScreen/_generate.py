@@ -18,6 +18,7 @@ sys.path.insert(0, HERE)
 import record_markup as m  # noqa: E402
 import record_article as rec  # noqa: E402
 import record_step as step  # noqa: E402
+import record_contact as contact  # noqa: E402
 
 # Step content (titles + bodies) read from the Hub for Article 626347 — a copy of the ArticleSteps
 # prototype's data, kept here so the template does not depend on an uncommitted prototype.
@@ -61,18 +62,18 @@ def swap(src, old, new, count=1):
     return src.replace(old, new, count)
 
 
-def build(page_title, header, page, scripts, modals="", listing=False):
+def build(page_title, header, page, scripts, modals="", listing=False, crumbs=("Content", "Articles", "Article")):
     s = SHELL
     s = re.sub(r"<title>.*?</title>", f"<title>{page_title} — Affino Control Centre</title>", s, count=1)
     s = swap(s, "</head>", CSS)
     s = swap(s, 'href="ListingScreen.css"', 'href="../ListingScreen/ListingScreen.css"')
     s = swap(s, '<li class="breadcrumb__item"><a class="breadcrumb__link" href="#">Level 1</a></li>',
-             '<li class="breadcrumb__item"><a class="breadcrumb__link" href="#">Content</a></li>\n'
+             f'<li class="breadcrumb__item"><a class="breadcrumb__link" href="#">{crumbs[0]}</a></li>\n'
              # Articles collapses with the current crumb on mobile: the TopNavigation keeps two items
              # there (zone + one level, Figma 4099:3632) — it hides every `--collapse` crumb.
              '              <li class="breadcrumb__separator breadcrumb__separator--collapse" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>\n'
-             '              <li class="breadcrumb__item breadcrumb__item--collapse"><a class="breadcrumb__link" href="#">Articles</a></li>')
-    s = swap(s, 'aria-current="page">Level 2</li>', 'aria-current="page">Article</li>')
+             f'              <li class="breadcrumb__item breadcrumb__item--collapse"><a class="breadcrumb__link" href="#">{crumbs[1]}</a></li>')
+    s = swap(s, 'aria-current="page">Level 2</li>', f'aria-current="page">{crumbs[2]}</li>')
     a = s.index('<div class="cc-header-cq">')
     b = s.index("</header>", a)
     c = s.index("</div>", b) + len("</div>")
@@ -242,6 +243,17 @@ pages = {
                                page(m.record_tabs("steps", actions=True) + m.steps_listing()), KIT_JS, listing=True,
                                modals=m.add_step_modal()),
 }
+
+# ── Contact View (code-first "build first", 2026-10-07): the kit as a second record type. Two
+# contacts — a fully filled one and a sparse one — whose structure is the live contact screen's.
+for c in contact.CONTACTS:
+    pages[c["file"]] = build(
+        "Contact · View",
+        m.record_header("Contact", c["name"], "view", view_href=c["file"], edit_href="#",
+                        secondary=contact.SECONDARY, more=contact.KEBAB),
+        page(m.record_tabs("details", sidebar=True, tabs=contact.tabs(c["file"]))
+             + body(contact.view_sections(c), contact.sidebar(c)), mode="view"),
+        KIT_JS, crumbs=("CRM", "Contacts", "Contact"))
 
 # ── Import step (designer, 2026-09-30; code-first, flag for Figma) ──
 # The legacy "add Article Step Lookup" form, on the Steps screen: the tabs stay (Details leads back
