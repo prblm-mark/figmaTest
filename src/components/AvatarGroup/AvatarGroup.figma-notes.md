@@ -34,3 +34,10 @@ None.
 - Figma draws four members + counter. Customer Signals show **five** (designer, 2026-10-07), then "+N".
 - **Expandable counter (code-first, 2026-10-07, not in Figma):** when the counter is a `<button data-avatar-group-more>`, pressing it shows the members marked `data-avatar-group-extra hidden`; the button stays last and swaps "+N" for a `chevron-left` "show less" face (`aria-expanded`), and pressing again hides them (`AvatarGroup.js`, designer 2026-10-07). Hover fills the counter `--ai-surface-info` with `--ai-text-invert` text — no Figma hover state exists, so confirm or replace. The toggle's "+N" is `--ai-font-fixed-3xs` (designer, 2026-10-07); a static `<span>` counter keeps Initials Size=2's `--ai-font-fixed-xs`. A `<span>` counter stays static. The counter's `title`/`aria-label` lists the hidden names.
 - `.avatar-group--wrap` lets a long group wrap instead of overflowing its column.
+
+**Ring = the surface underneath (2026-10-07, designer):** the 2px ring was fixed `--ai-surface-primary`, which is
+not every card's colour (the record sidebar panels are #f9fbfb in light). AvatarGroup.js now walks up to the first
+opaque ancestor and sets `--ring-surface` on each `.avatar-group` (and any `[data-ring-surface]` element, e.g. the
+record timeline's icon ring); the CSS reads `var(--ring-surface, var(--ai-surface-primary))`. Re-painted when
+`data-theme` / `class` changes on `<html>` or `<body>`. Verified light + dark: ring = surface on the contact sidebar,
+the timeline, Article View's viewer cards and this demo's tinted section.

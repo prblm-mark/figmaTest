@@ -639,7 +639,7 @@
 .record-list--timeline .record-list__icon {
   position: relative;
   background-color: var(--ai-surface-secondary);
-  box-shadow: 0 0 0 4px var(--ai-surface-primary);
+  box-shadow: 0 0 0 4px var(--ring-surface, var(--ai-surface-primary));   /* the card's own colour (AvatarGroup.js) */
 }
 
 .record-list--timeline .record-list__main {
@@ -672,3 +672,21 @@
 .contact-tab__muted {
   color: var(--ai-text-contrast);
 }
+
+/* Signal icon colours (demo only): the StatCard soft scheme per signal, until real badge images
+   replace the glyphs (record_markup.signal_hue). `.record-screen` + `.avatar` out-specify Avatar
+   Placeholder's grey and the timeline circle's surface fill. */
+.record-screen .avatar.signal-icon--lagoon { background-color: var(--ai-accent-lagoon-soft); color: var(--ai-accent-lagoon-soft-fg); }
+.record-screen .avatar.signal-icon--jade { background-color: var(--ai-accent-jade-soft); color: var(--ai-accent-jade-soft-fg); }
+.record-screen .avatar.signal-icon--violet-radix { background-color: var(--ai-accent-violet-radix-soft); color: var(--ai-accent-violet-radix-soft-fg); }
+.record-screen .avatar.signal-icon--orange { background-color: var(--ai-accent-orange-soft); color: var(--ai-accent-orange-soft-fg); }
+.record-screen .avatar.signal-icon--pink { background-color: var(--ai-accent-pink-soft); color: var(--ai-accent-pink-soft-fg); }
+.record-screen .avatar.signal-icon--purple { background-color: var(--ai-accent-purple-soft); color: var(--ai-accent-purple-soft-fg); }
+.record-screen .avatar.signal-icon--emerald { background-color: var(--ai-accent-emerald-soft); color: var(--ai-accent-emerald-soft-fg); }
+.record-screen .avatar.signal-icon--indigo { background-color: var(--ai-accent-indigo-soft); color: var(--ai-accent-indigo-soft-fg); }
+.record-screen .avatar.signal-icon--bright-teal { background-color: var(--ai-accent-bright-teal-soft); color: var(--ai-accent-bright-teal-soft-fg); }
+.record-screen .avatar.signal-icon--lime-radix { background-color: var(--ai-accent-lime-radix-soft); color: var(--ai-accent-lime-radix-soft-fg); }
+.record-screen .avatar.signal-icon--orange-radix { background-color: var(--ai-accent-orange-radix-soft); color: var(--ai-accent-orange-radix-soft-fg); }
+.record-screen .avatar.signal-icon--teal-radix { background-color: var(--ai-accent-teal-radix-soft); color: var(--ai-accent-teal-radix-soft-fg); }
+.record-screen .avatar.signal-icon--mid-blue { background-color: var(--ai-accent-mid-blue-soft); color: var(--ai-accent-mid-blue-soft-fg); }
+.record-screen .avatar.signal-icon--blue { background-color: var(--ai-accent-blue-soft); color: var(--ai-accent-blue-soft-fg); }

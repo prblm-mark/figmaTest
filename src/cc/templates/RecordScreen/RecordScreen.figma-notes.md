@@ -246,3 +246,10 @@ full-width cards; related cards pair up in `.contact-tab-grid` (two ≥512px col
   newest first, the latest badged **Current** and older versions muted; the four subscription / download histories
   merged into one **Subscription and download history** trail (timeline layout, newest first, an icon per kind:
   mailing list, content subscription, media download, forum subscription).
+- **Signal icon colours (demo only, 2026-10-07, designer):** the glyph circles standing in for customer-signal badge
+  images take the StatCard soft scheme (`accent-*-soft` background, `accent-*-soft-fg` glyph), one fixed hue per glyph
+  (`record_markup.signal_hue`, lagoon first, blue last, no red) so a signal is the same colour everywhere: the sidebar
+  AvatarGroup, the Analysis ranked list, the activity and history trails, and Article View's Recent Viewers signals.
+  Live builds replace the circles with each signal's Badge On image.
+- **Rings follow the surface (2026-10-07):** the AvatarGroup ring and the timeline icon ring read `--ring-surface`,
+  set by AvatarGroup.js from the surface they sit on (the timeline list carries `data-ring-surface`).
