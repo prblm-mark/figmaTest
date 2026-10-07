@@ -302,3 +302,86 @@
 [data-cc-width="full"] .record-screen__main > .alert--fixed.alert--danger { border-bottom-color: var(--ai-border-error); }
 [data-cc-width="full"] .record-screen__main > .alert--fixed.alert--warning { border-bottom-color: var(--ai-border-warning); }
 [data-cc-width="full"] .record-screen__main > .alert--fixed.alert--neutral { border-bottom-color: var(--ai-border-neutral); }
+
+/* ── Contact View (code-first, 2026-10-07) ─────────────────────────────
+   RecordList: the sidebar's timeline / tasks / notes / opportunities rows (record_markup.record_list).
+   Type and spacing are ViewerItem's (title 2xs medium in text ink, meta xxs in contrast ink, 2px
+   between them) and rows are divided by the card's own border, so nothing new is introduced. */
+.record-list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.record-list__item {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  padding-block: var(--ai-spacing-3);
+  border-block-end: 1px solid var(--ai-border-secondary);
+}
+
+.record-list__item:first-child {
+  padding-block-start: 0;
+}
+
+.record-list__item:last-child {
+  padding-block-end: 0;
+  border-block-end: 0;
+}
+
+.record-list__main {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: var(--ai-spacing-0-5);
+  min-inline-size: 0;
+}
+
+.record-list__title,
+.record-list__meta,
+.record-list__more {
+  margin: 0;
+  font-family: var(--ai-font-title);
+  line-height: var(--ai-leading-xs);
+}
+
+.record-list__title {
+  font-size: var(--ai-font-fixed-2xs);
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-primary);
+}
+
+.record-list__meta,
+.record-list__more {
+  font-size: var(--ai-font-fixed-xxs);
+  color: var(--ai-text-contrast);
+}
+
+.record-list__item > .badge {
+  flex-shrink: 0;
+}
+
+/* The contact's photo in the Contact section's Photo row: Avatar Size=4 (64px). */
+.contact-view__photo {
+  display: inline-flex;
+}
+
+/* Customer signals sit as one AvatarGroup row; the group wraps on a narrow sidebar. */
+.contact-view__signals .avatar-group {
+  flex-wrap: wrap;
+  row-gap: var(--ai-spacing-2);
+}
+
+/* A summary fact list above a record list (Opportunities): a divider and the panel's own row gap
+   between them, so the totals do not run into the first row. */
+.fact-list + .record-list {
+  margin-block-start: var(--ai-spacing-3);
+  border-block-start: 1px solid var(--ai-border-secondary);
+}
+
+.fact-list + .record-list > .record-list__item:first-child {
+  padding-block-start: var(--ai-spacing-3);
+}

@@ -1426,6 +1426,69 @@
      "needs": "v1's StandardItemView getRecentConversions / getUsersAddedToItinerary / getUsersRecentClicks with paging; Add to Contact List per panel. Added to Itinerary only for Advanced Seminar (ContentTypeCode 17). Hide a panel with no rows."
     },
     {
+     "id": "contact-record",
+     "category": "needs-backend",
+     "element": "Contact View \u2192 Contact / Accounts / Interests and lists sections",
+     "current": "Static invented contacts (record_contact.py); two demo pages, full and sparse.",
+     "needs": "The contact: name, job title, email, telephone, mobile, address, photo; current + former accounts and connections; topics, mailing lists and contact lists (chips link to each record). Empty fields render \"-\"."
+    },
+    {
+     "id": "contact-actions",
+     "category": "needs-backend",
+     "element": "Contact View header \u2192 Add note, Edit and the kebab (Add task, Add pro forma, Add to topic, Add to contact list, My contact, Send message, Send info, Relate content, Audit user, View profile, View account, Download vCard)",
+     "current": "Buttons do nothing; Edit goes nowhere (View only for now).",
+     "needs": "The live screen's quick actions and action links, each to its existing flow; Edit to the contact edit screen when it is built."
+    },
+    {
+     "id": "contact-signals",
+     "category": "needs-backend",
+     "element": "Contact View sidebar \u2192 Customer signals (AvatarGroup)",
+     "current": "Demo signals as Lucide glyphs with counts in their labels; five then a +N toggle.",
+     "needs": "The contact's customer signals with counts (live: All Customer Signals), each as its Badge On image; total in the panel subtitle."
+    },
+    {
+     "id": "contact-activity",
+     "category": "needs-backend",
+     "element": "Contact View sidebar \u2192 Latest activity",
+     "current": "Five static events and an \"n more events\" line.",
+     "needs": "The latest activity timeline (signal name + time), newest first, with the remaining count; link to the full timeline."
+    },
+    {
+     "id": "contact-tasks",
+     "category": "needs-backend",
+     "element": "Contact View sidebar \u2192 Open tasks",
+     "current": "Static tasks (none on the sparse contact).",
+     "needs": "The contact's open tasks: title, due date, owner. \"View all\" opens the Tasks tab."
+    },
+    {
+     "id": "contact-notes",
+     "category": "needs-backend",
+     "element": "Contact View sidebar \u2192 Contact notes",
+     "current": "Three static notes, a type badge each, and a count.",
+     "needs": "The latest contact notes (title, created date, author, type) and the total; \"View all\" opens the Communication tab."
+    },
+    {
+     "id": "contact-opportunities",
+     "category": "needs-backend",
+     "element": "Contact View sidebar \u2192 Opportunities",
+     "current": "Static open / closed counts, won value and three opportunities.",
+     "needs": "Open and closed counts, total won value, and the latest opportunities (name, stage, value, close date); \"View all\" opens the Commerce tab."
+    },
+    {
+     "id": "contact-crm-tabs",
+     "category": "needs-backend",
+     "element": "Contact View \u2192 the tabs other than Details, and each panel's View all",
+     "current": "Tab labels only; not built.",
+     "needs": "Demographic, Tasks, Communication, Commerce, Events, Analysis, Page analysis, Digital assets, Permissions and Badges as their own tab content (live: &showTab=\u2026)."
+    },
+    {
+     "id": "contact-sidebar",
+     "category": "needs-backend",
+     "element": "Contact View sidebar \u2192 Record, Events and Engagement facts",
+     "current": "Static facts.",
+     "needs": "User code, account type, engagement level, points, on-site contacts, followers, first/last touch (with the signal), last login; event attendance and award entries; engagement statistics (created, logins and page views over 365 days, forum posts, last forum view, message opens/clicks, media storage)."
+    },
+    {
      "id": "record-viewer-signals",
      "category": "needs-backend",
      "element": "Sidebar → Recent Viewers → Customer Signals (AvatarGroup under the company chips)",

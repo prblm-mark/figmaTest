@@ -34,7 +34,10 @@ def chip(label, kind="tertiary", size="xs"):
 
 
 # ── RecordHeader → CC Header Type=Record ─────────────────────────────
-def record_header(record_type, title, mode, view_href="ArticleView.html", edit_href="ArticleEdit.html"):
+def record_header(record_type, title, mode, view_href="ArticleView.html", edit_href="ArticleEdit.html",
+                  secondary=("Add", "plus", ""), more=None):
+    """secondary: the view header's one Secondary button (label, icon, attrs); more: its kebab items.
+    Defaults are the Article's; other record types pass their own (Contact, 2026-10-07)."""
     # Every header button has an icon, and its label sits in .cc-header__btn-label, which the
     # mobile container query hides — icon-only below 768 (the agreed CC header rule; Figma
     # 4105:3637). aria-label keeps the name once the label is display:none.
@@ -60,9 +63,9 @@ def record_header(record_type, title, mode, view_href="ArticleView.html", edit_h
                    + hbtn("Delete", "alert", "trash-2", attrs=' aria-haspopup="dialog" data-record-modal-open="modal-delete"')
                    + hbtn("Save", "primary", "check"))
     else:
-        actions = (hbtn("Add", "secondary", "plus")
+        actions = (hbtn(secondary[0], "secondary", secondary[1], attrs=secondary[2])
                    + hbtn("Edit", "primary", "pencil", tag="a", href=edit_href, attrs=' data-keep-width')
-                   + record_kebab())
+                   + record_kebab(more or RECORD_MORE))
     return f'''<div class="cc-header-cq">
         <header class="cc-header cc-header--record">
           <div class="cc-header__title-block">
@@ -99,7 +102,7 @@ def record_kebab(items=RECORD_MORE):
 
 
 # ── RecordTabs ───────────────────────────────────────────────────────
-def record_tabs(active, steps_count=8, actions=False, back="ArticleView.html", sidebar=None, form=None, save_todo="steps-import-save"):
+def record_tabs(active, steps_count=8, actions=False, back="ArticleView.html", sidebar=None, form=None, save_todo="steps-import-save", tabs=None):
     """sidebar: None = no toggle (Steps); True / False = the "Show sidebar" switch and its default
     (View on, Edit off — designer, 2026-09-29). Desktop only (RecordTabs.css)."""
     def tab(label, href, is_active, count=None):
@@ -135,10 +138,15 @@ def record_tabs(active, steps_count=8, actions=False, back="ArticleView.html", s
                 f'<a class="btn btn--primary btn--sm" href="{form}" aria-label="Save" data-keep-width data-backend-todo="{save_todo}">'
                 f'{icon("check")}<span class="record-tabs__btn-label">Save</span></a>'
                 '</div>')
+    # tabs: [(key, label, href)] for other record types (Contact's eleven, 2026-10-07); the list
+    # scrolls sideways when they do not fit (RecordTabs.js).
+    if tabs:
+        items = "\n          ".join(tab(label, href, active == key) for key, label, href in tabs)
+    else:
+        items = tab("Details", back, active == "details") + "\n          " + tab("Article steps", "ArticleSteps.html", active == "steps", steps_count)
     return f'''<nav class="record-tabs" aria-label="Record sections">
         <div class="record-tabs__list">
-          {tab("Details", back, active == "details")}
-          {tab("Article steps", "ArticleSteps.html", active == "steps", steps_count)}
+          {items}
         </div>{acts}
       </nav>'''
 
@@ -202,6 +210,8 @@ def view_row(label, kind, value=None, compact=False):
     elif kind == "paragraph":
         paras = value if isinstance(value, list) else [value]
         val = "".join(f"<p>{e(p)}</p>" for p in paras)
+    elif kind == "html":
+        val = value  # pre-built markup (Avatar, badges): the caller escapes its own text
     else:
         val = e(value)
     return f'''<div class="{' '.join(mods)}">
@@ -437,6 +447,20 @@ def fact_list(rows):
     for label, v in rows:
         out.append(view_row(label, "tags" if isinstance(v, list) else "text", v, compact=True))
     return f'<dl class="fact-list">{"".join(out)}</dl>'
+
+
+# ── RecordList (code-first, Contact view 2026-10-07) ─────────────────
+def record_list(items, empty, more=None, todo=None):
+    """A sidebar list of record rows: timeline events, tasks, notes, opportunities. Each item is
+    (title, meta, trailing_html): the title in text ink, a meta line in contrast ink, and an
+    optional trailing value or badge. `more` adds a foot line such as "58 more events"."""
+    if not items:
+        return f'<p class="fact-panel__empty">{e(empty)}</p>'
+    rows = "".join(f'<li class="record-list__item"><div class="record-list__main"><p class="record-list__title">{e(t)}</p>'
+                   f'<p class="record-list__meta">{e(mt)}</p></div>{tr or ""}</li>' for t, mt, tr in items)
+    attr = f' data-backend-todo="{todo}"' if todo else ""
+    foot = f'<p class="record-list__more">{e(more)}</p>' if more else ""
+    return f'<ol class="record-list"{attr}>{rows}</ol>{foot}'
 
 
 # ── ViewerItem / ViewerList ──────────────────────────────────────────
