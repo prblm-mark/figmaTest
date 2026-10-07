@@ -475,7 +475,7 @@
           <p class="stat-card__value" data-kpi="window">—</p>
           <dl class="stat-card__breakdown"><div class="stat-card__breakdown-item"><dt class="stat-card__breakdown-label">Orders</dt><dd class="stat-card__breakdown-value" data-kpi="orders">—</dd></div><div class="stat-card__breakdown-item"><dt class="stat-card__breakdown-label">Average order</dt><dd class="stat-card__breakdown-value" data-kpi="average">—</dd></div></dl>
         </div></div>
-        <div class="cc-live__kpi"><div class="stat-card stat-card--xl stat-card--blue stat-card--soft">
+        <div class="cc-live__kpi"><div class="stat-card stat-card--xl stat-card--jade stat-card--soft">
           <div class="stat-card__head"><div class="stat-card__icon-wrap"><i data-lucide="chart-line" aria-hidden="true"></i></div>
             <div class="stat-card__text"><p class="stat-card__title">Sales this year</p><p class="stat-card__meta" data-kpi-meta="year"></p></div></div>
           <p class="stat-card__value" data-kpi="year">—</p>
@@ -528,8 +528,8 @@
           <span class="cc-sales__card-meta" data-window-name></span>
         </div>
         <div class="datatables__body">
-          <table class="table">
-            <thead><tr><th>Sales representative</th><th>Sales team</th><th>Business unit</th><th class="cc-live__num">Orders</th><th class="cc-live__num">Total value</th></tr></thead>
+          <table class="table" data-fit>
+            <thead><tr><th data-keep data-fluid data-snug>Sales representative</th><th data-drop="2" data-snug>Sales team</th><th data-drop="1" data-snug>Business unit</th><th class="cc-live__num" data-drop="3" data-hug>Orders</th><th class="cc-live__num" data-keep data-hug>Total value</th></tr></thead>
             <tbody data-list="person"></tbody>
           </table>
         </div>
@@ -543,8 +543,8 @@
           <span class="cc-sales__card-meta" data-window-name></span>
         </div>
         <div class="datatables__body">
-          <table class="table">
-            <thead><tr><th>Product</th><th>Order no.</th><th>Ordered</th><th>Product category</th><th>Product line</th><th>Account</th><th class="cc-live__num">Value</th></tr></thead>
+          <table class="table" data-fit>
+            <thead><tr><th data-keep data-fluid data-snug>Product</th><th data-drop="3" data-hug>Order no.</th><th data-drop="5" data-hug>Ordered</th><th data-drop="2" data-snug>Product category</th><th data-drop="1" data-snug>Product line</th><th data-drop="4" data-snug>Account</th><th class="cc-live__num" data-keep data-hug>Value</th></tr></thead>
             <tbody data-list="recent"></tbody>
           </table>
         </div>
@@ -1160,6 +1160,7 @@
   <script src="../../../components/Select/Select.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="sales-leaderboard-data.js"></script>
+  <script src="../../../components/Datatables/DatatablesFit.js"></script>
   <script src="SalesLeaderboard.js"></script>
 
   <!-- AI Assistant panel: shell behaviours + rail-button toggle. Initial-state

@@ -10,8 +10,8 @@
  *      ?timeframe= / ?currency=, so a link opens the same view.
  *   3. KPIs (StatCard Xl): Sales in the time frame (orders, average order), Sales this year (vs the
  *      same months last year, best month), Top sales person in the time frame.
- *   4. Monthly sales chart (Chart pattern + Chart.js): this year (blue, filled) against last year
- *      (orange, dashed) — Live Dashboard's validated pair — with a hover crosshair + tooltip, direct
+ *   4. Monthly sales chart (Chart pattern + Chart.js): this year (lagoon, filled) against last year
+ *      (purple, dashed) — the house pair with Live Dashboard and Contract Analysis — with a hover crosshair + tooltip, direct
  *      labels, a legend and a table view. This year stops at the current month (classic plotted the
  *      months still to come as zero, a cliff that read as a collapse).
  *   5. Lists with classic's paging (strSettings: 5, +5 each, capped at 100): Top sales teams (ranked,
@@ -269,15 +269,15 @@
   function drawChart() {
     if (!window.Chart) return;
     var y = new Date().getFullYear();
-    var blue = tok('--ai-accent-blue-solid'), orange = tok('--ai-accent-orange-solid');
+    var thisYear = tok('--ai-accent-lagoon-solid'), lastYear = tok('--ai-accent-purple-solid');
     Chart.defaults.font.family = 'Inter, sans-serif';
     Chart.defaults.font.size = 12;
     Chart.defaults.color = tok('--ai-text-contrast');
     var fill = function (ctx) {
       var area = ctx.chart.chartArea;
-      if (!area) return blue;
+      if (!area) return thisYear;
       var g = ctx.chart.ctx.createLinearGradient(0, area.top, 0, area.bottom);
-      g.addColorStop(0, blue + '40'); g.addColorStop(1, blue + '00');
+      g.addColorStop(0, thisYear + '40'); g.addColorStop(1, thisYear + '00');
       return g;
     };
     var point = { pointRadius: 0, pointHoverRadius: 5, pointHoverBorderWidth: 2, pointHoverBorderColor: tok('--ai-surface-primary') };
@@ -288,11 +288,11 @@
         datasets: [
           /* The current month is only part-way through: its segment is dotted, so the drop to a
              part-month total does not read as a collapse. */
-          Object.assign({ label: String(y), data: thisYearData(), borderColor: blue, backgroundColor: fill, fill: true,
-            tension: 0.35, borderWidth: 2, pointHoverBackgroundColor: blue, spanGaps: false,
+          Object.assign({ label: String(y), data: thisYearData(), borderColor: thisYear, backgroundColor: fill, fill: true,
+            tension: 0.35, borderWidth: 2, pointHoverBackgroundColor: thisYear, spanGaps: false,
             segment: { borderDash: function (ctx) { return ctx.p1DataIndex === new Date().getMonth() ? [2, 3] : undefined; } } }, point),
-          Object.assign({ label: String(y - 1), data: monthly(y - 1), borderColor: orange, backgroundColor: orange, fill: false,
-            borderDash: [5, 4], tension: 0.35, borderWidth: 2, pointHoverBackgroundColor: orange }, point)
+          Object.assign({ label: String(y - 1), data: monthly(y - 1), borderColor: lastYear, backgroundColor: lastYear, fill: false,
+            borderDash: [5, 4], tension: 0.35, borderWidth: 2, pointHoverBackgroundColor: lastYear }, point)
         ]
       },
       options: {

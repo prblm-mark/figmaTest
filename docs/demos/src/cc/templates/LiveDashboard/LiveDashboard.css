@@ -406,10 +406,10 @@
 }
 
 /* Titles wrap: the base Table cell is `nowrap`, and an 84-character title then set the table's
-   width (measured: 779px in a 294px card at 390). The title column takes the slack. */
+   width (measured: 779px in a 294px card at 390). Column widths come from DatatablesFit.js (the
+   listings' fit: shared spare, low-priority columns into the kebab row), not from this cell. */
 .cc-live__articles .table td.cc-live__title-cell {
   white-space: normal;
-  inline-size: 100%;
 }
 
 .cc-live__title-cell .cc-live__link {
@@ -556,13 +556,8 @@
     min-block-size: var(--ai-size-5);
   }
 
-  /* Top articles fits a phone: Published goes (the least needed for "what is being read now"),
-     and the author name may wrap beside its avatar. Measured: the table overflowed its card at 390. */
-  .cc-live__articles .table th:nth-child(3),
-  .cc-live__articles .table td:nth-child(3) {
-    display: none;
-  }
-
+  /* Top articles' columns are fitted by DatatablesFit.js at every width. The author name may still
+     wrap beside its avatar (in the row, and in the kebab's detail row). */
   .cc-live__author {
     white-space: normal;
   }

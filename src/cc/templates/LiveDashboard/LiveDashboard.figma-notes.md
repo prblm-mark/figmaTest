@@ -115,3 +115,10 @@ hover (the menu-link rule).
 |---|---|
 | `live-data` | Every count is mock. Live = Dashboard.cfc: getOnlineUsers, getDayPageViews (today + average by hour), getTimeFrame, getCreatorViews, getChannelViews, getTaxonomyCategoryViews, getArticleViews, with MaxRows paging (classic's initial counts + steps are in `live-dashboard-data.js` → `paging`) |
 | `live-refresh` | Poll the same data every 30s (classic's dashboard.js) and re-render; honour Pause. Classic redirects on "Access Denied" (security code 14), so keep that |
+
+## Top articles — column fit (2026-10-07)
+
+`table[data-fit]` + **DatatablesFit.js** (`src/components/Datatables/`), the listings' fit: Article and Views
+always show; Published drops first, then Author, into the kebab's detail row; spare width is shared
+(Author `data-snug`, capped at 224px, so the long titles take the rest). Replaces the ≤767 rule that hid
+Published outright, and the title cell's `inline-size: 100%`.

@@ -20,7 +20,7 @@ Breadcrumb Zone Selector › Sales Analysis › Sales Leaderboard.
 |---|---|
 | Time Frame select (Current Week, 7 Days, Current Month, Previous Month, 30 Days, Current Year, 12 Months; default Current Week) | **Select** in a toolbar above the KPIs, no visible label (`aria-label`), the window's dates beside it, as short as they can be and still exact ("Mon 5 Oct", "1–30 Sept", "5 Sept – 5 Oct", "5 Nov 2025 – 5 Oct"). Re-runs the leaderboards and the two time-frame KPIs, as classic's change handler re-ran `getData('all')` |
 | Currency select (the zone's order currencies, store default first) — **reloaded the page** | **Select** beside it; re-renders everything in place. Both choices stay in the URL as classic's `?timeframe=` / `?currency=`, so a link opens the same view |
-| Total Monthly Sales (Chart.js line, this year vs last, Jan–Dec, "Order Value" axis, ex VAT) | **Monthly sales** hero card: this year blue + filled, last year orange + dashed (Live Dashboard's validated pair), delta Badge "+n% year to date", crosshair tooltip, direct labels, legend, **View as table**. This year stops at the current month, and that month's segment is **dotted** with a "October to date" legend key: classic drew the months still to come as 0, and a part-month total then reads as a collapse |
+| Total Monthly Sales (Chart.js line, this year vs last, Jan–Dec, "Order Value" axis, ex VAT) | **Monthly sales** hero card: this year lagoon + filled, last year purple + dashed (the house pair with Live Dashboard and Contract Analysis, designer 2026-10-07; was blue + orange), delta Badge "+n% year to date", crosshair tooltip, direct labels, legend, **View as table**. This year stops at the current month, and that month's segment is **dotted** with a "October to date" legend key: classic drew the months still to come as 0, and a part-month total then reads as a collapse |
 | Top Sales Teams list (order value + team), view more (5 +5) | Leaderboard card beside the chart: rank, team link, value right-aligned, **share-of-top bar**; Show more +5 |
 | Top Sales People table (Sales Representative, Sales Team, Business Unit, No. Orders, Total Value), view more (5 +5) | **Top sales people** Datatables + Table, rep with avatar; "Multiple" for a rep in several teams / units, as classic; Show more +5 |
 | Most Recent Sales table (Product, Order No., Product Category, Product Line, Value, Account), view more (5 +5) | **Most recent sales** table with the same columns plus **Ordered** (the date, which classic loaded but never showed); Value moved to the end so values line up with the other table; Show more +5 |
@@ -66,8 +66,10 @@ New here:
 | Time frame Select width | cap `size-3` (192px), `flex: 0 1` | — fits "Previous month"; a cap, so it yields on a phone |
 | Currency Select width | cap `size-1` (128px), `flex: 0 1`; the grid's second column below 767 | — |
 | Range / Updated / card meta text | title, `fixed-3xs`, medium, `leading-sm`, `text-contrast` | Mark, 2026-10-05 |
-| Part-month legend key | 2px **dotted** `accent-blue-solid` | Live Dashboard's legend keys |
+| Part-month legend key | 2px **dotted** `accent-lagoon-solid` | Live Dashboard's legend keys |
+| KPI tiles | `lagoon`, `jade` (was blue), `violet-radix` | card accents lead with lagoon, blue only after the other accents (designer, 2026-10-07) |
 | New-line highlight | Live Dashboard's `cc-live-changed` wash | — |
+| Table fit | **DatatablesFit.js** (`src/components/Datatables/`) — the listings' fit for dashboard tables: natural widths, spare shared (water-filling; `data-snug` capped at 224, then spread evenly when all are capped), and when a row does not fit a kebab appears and columns drop in `data-drop` order into the detail row. Top sales people: keep Sales representative + Total value; drop Business unit → Sales team → Orders. Most recent sales: keep Product + Value; drop Product line → Product category → Order no. → Account → Ordered. Replaces the ≤767 hide-column CSS and the earlier `spreadColumns()` | the listings' fit (designer 2026-09-18 → 22); Mark, 2026-10-07: "the tables aren't responsive friendly" |
 
 ## Responsive
 
