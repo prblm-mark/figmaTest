@@ -383,7 +383,7 @@
     paging('person', all.length);
     $('[data-list="person"]').innerHTML = all.slice(0, shown.person).map(function (r) {
       return '<tr><td class="cc-live__title-cell">' + link(LINKS.person(r.person.code),
-          '<span class="cc-live__author">' + avatar(r.person.avatar) + '<span>' + esc(r.person.name) + '</span></span>') + '</td>' +
+          '<span class="cc-live__author">' + avatar(r.person.avatar) + '<span class="cc-live__author-name" title="' + esc(r.person.name) + '">' + esc(r.person.name) + '</span></span>') + '</td>' +
         '<td class="cc-live__nowrap">' + esc(teamName(r.person.teams)) + '</td>' +
         '<td class="cc-live__nowrap">' + esc(unitName(r.person.teams)) + '</td>' +
         '<td class="cc-live__num">' + NUM.format(r.orders) + '</td>' +
