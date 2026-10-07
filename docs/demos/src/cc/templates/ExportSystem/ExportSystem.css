@@ -111,12 +111,21 @@
     display: none;
   }
 
+}
+
+/* Measured, not the house 767: with the Download button icon-only, all four columns need 529px
+   (name 185, size 95, modified 175, button 74) and the file name can wrap below that, so they fit
+   down to a ~520px page. At 767 Size was dropped and the date wrapped in a card with room to spare
+   (Mark, 2026-10-07). */
+@container cs-page (max-width: 519px) {
   /* Size is the column a phone can lose: the name says which file and the date says how fresh. */
   .cc-export__files .table th:nth-child(2),
   .cc-export__files .table td:nth-child(2) {
     display: none;
   }
+}
 
+@container cs-page (max-width: 419px) {
   /* The date and time break onto two lines rather than push the table past its card. */
   .cc-export__files .table td:nth-child(3) {
     white-space: normal;
