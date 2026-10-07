@@ -478,7 +478,8 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--ai-size-9)), 1fr));
   gap: var(--ai-spacing-5);
-  align-items: start;
+  /* Cards in a row match in height (designer, 2026-10-07): each stretches to the tallest. */
+  align-items: stretch;
 }
 
 /* A card whose body is not a table (facts, a timeline, stats, viewers): the toolbar's own inset. */
@@ -495,4 +496,179 @@
 .contact-tab__foot--links {
   justify-content: flex-start;
   flex-wrap: wrap;
+}
+
+/* ── Contact Analysis: tiles, charts, ranked signals (2026-10-07) ─────── */
+.contact-tab__tiles {
+  display: grid;
+  /* auto-fit, not auto-fill: four tiles share the row rather than leaving empty tracks after them. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--ai-size-3)), 1fr));
+  gap: var(--ai-spacing-5);
+}
+
+.contact-chart {
+  position: relative;
+  block-size: var(--ai-size-4);   /* 240px — the CRM / dashboard half-width chart height */
+}
+
+/* The chart's values for screen readers and anyone who wants the numbers (Live Dashboard's
+   "View as table" treatment). */
+.contact-chart__table {
+  margin-block-start: var(--ai-spacing-4);
+}
+
+.contact-chart__table summary {
+  inline-size: fit-content;
+  cursor: pointer;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-secondary);
+}
+
+.contact-chart__table summary:hover {
+  color: var(--ai-text-primary);
+}
+
+.contact-chart__table .table {
+  margin-block-start: var(--ai-spacing-3);
+}
+
+/* Ranked customer signals: icon, name, count, and a share-of-top bar (Live Dashboard's
+   leaderboard: an 8px track in surface-contrast, the fill in the charts' lagoon). */
+.signal-rank {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.signal-rank__row {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+}
+
+.signal-rank__main {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: var(--ai-spacing-2);
+  min-inline-size: 0;
+}
+
+.signal-rank__line {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--ai-spacing-3);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-2xs);
+  line-height: var(--ai-leading-xs);
+}
+
+.signal-rank__name {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: var(--ai-font-medium);
+  color: var(--ai-text-primary);
+}
+
+.signal-rank__count {
+  flex-shrink: 0;
+  font-weight: var(--ai-font-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--ai-text-primary);
+}
+
+.signal-rank__bar {
+  display: flex;
+  inline-size: 100%;
+  block-size: var(--ai-spacing-2);
+  border-radius: var(--ai-radius-full);
+  background-color: var(--ai-surface-contrast);
+  overflow: hidden;
+}
+
+.signal-rank__fill {
+  inline-size: var(--signal-share, 0%);
+  block-size: 100%;
+  border-radius: var(--ai-radius-full);
+  background-color: var(--ai-accent-lagoon-solid);
+}
+
+/* A timeline row's signal icon: the Customer signals group's circle (Avatar Placeholder Size=2),
+   its glyph at size-sm as in the group. */
+.record-list__icon {
+  flex-shrink: 0;
+}
+
+.record-list__icon svg {
+  inline-size: var(--ai-icon-size-sm);
+  block-size: var(--ai-icon-size-sm);
+}
+
+/* ── Trail layout: Latest activity as a timeline (Flowbite Timeline, designer 2026-10-07) ──
+   The house timeline pattern (VersionHistory): a 1px line in border-secondary runs behind the icon
+   circles, centred on them, from the first icon to the last; rows have no dividers, the time sits
+   above the event in contrast ink. */
+.record-list--timeline {
+  position: relative;
+  gap: var(--ai-spacing-5);
+}
+
+.record-list--timeline::before {
+  content: "";
+  position: absolute;
+  inset-block: var(--ai-spacing-4);                          /* from the first circle's centre … */
+  inset-inline-start: calc(var(--ai-spacing-7) / 2);         /* … centred on the 32px circles */
+  inline-size: 1px;                                          /* a 1px rule is an optical width */
+  background-color: var(--ai-border-secondary);
+}
+
+.record-list--timeline .record-list__item {
+  align-items: flex-start;
+  padding-block: 0;
+  border-block-end: 0;
+}
+
+/* The circle paints over the line, so the line reads as a trail between events. */
+.record-list--timeline .record-list__icon {
+  position: relative;
+  background-color: var(--ai-surface-secondary);
+  box-shadow: 0 0 0 4px var(--ai-surface-primary);
+}
+
+.record-list--timeline .record-list__main {
+  padding-block-start: var(--ai-spacing-1);
+}
+
+.record-list--timeline + .record-list__more {
+  margin-block-start: var(--ai-spacing-4);
+  padding-inline-start: calc(var(--ai-spacing-7) + var(--ai-spacing-3));
+}
+
+/* ── Permissions (2026-10-07, designer) ─────────────────────────────────
+   Yes / no preferences as read-only switches with their state in words; older terms muted. */
+.contact-pref {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+}
+
+.contact-pref .toggle {
+  cursor: default;
+}
+
+.contact-pref__state {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xxs);
+  color: var(--ai-text-contrast);
+}
+
+.contact-tab__muted {
+  color: var(--ai-text-contrast);
 }

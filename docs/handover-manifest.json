@@ -1492,8 +1492,8 @@
      "id": "contact-analysis",
      "category": "needs-backend",
      "element": "Contact View → Analysis tab",
-     "current": "Static activity statistics, engagement points by type, and empty Views per day / Top views cards.",
-     "needs": "Activity statistics (latest login, created, logins over 24h / 7 / 30 / 365 days, last forum view, page views 365 days, forum posts, message clicks / opens, media storage); engagement points by type with the live time-frame and view-type filters; views per day and top views for the last 30 days."
+     "current": "Static: four stat tiles; Engagement points by type (horizontal bar chart) and Activity by month (12-month bar chart, current month to date) drawn by ContactCharts.js; the remaining statistics as facts; an empty Content views card.",
+     "needs": "Logins / page views over 365 days, message opens, forum posts; engagement points by type with the live time-frame and view-type filters; customer-signal events per month for 12 months; the other statistics (latest login, created, logins 24h / 7 / 30 days, last forum view, message clicks, media storage); content views per day and top views for 30 days."
     },
     {
      "id": "contact-page-analysis",
@@ -1513,8 +1513,8 @@
      "id": "contact-permissions",
      "category": "needs-backend",
      "element": "Contact View → Permissions tab",
-     "current": "Static user preferences, accepted terms, user permissions and four histories.",
-     "needs": "The contact's preferences, terms-and-conditions acceptances (name, date), user permissions, and the mailing-list, content-subscription, media-download and forum-subscription histories."
+     "current": "Static: preferences (yes / no as read-only switches), accepted terms (latest badged Current, older muted), user permissions, and one merged subscription / download history trail.",
+     "needs": "The contact's preferences, T&C acceptances (newest = Current), user permissions, and the mailing-list, content-subscription, media-download and forum-subscription histories merged newest first with their kind."
     },
     {
      "id": "contact-sidebar",
