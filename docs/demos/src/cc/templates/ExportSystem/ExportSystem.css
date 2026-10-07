@@ -74,9 +74,23 @@
   white-space: nowrap;
 }
 
-/* The file name column takes the slack and may wrap; the rest hug their content. */
+/* The table is Datatables markup for the column fit (DatatablesFit.js: even widths, File name at two
+   shares, Size then Modified into the kebab row), but it already sits inside the section's card, so
+   the Datatables box draws no frame of its own. */
+.cc-export__table {
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+}
+
+/* Rows at the base Table's own density, not the listing's 64px working-list row (as Live
+   Dashboard's tables). */
+.cc-export__table .table tbody td {
+  height: auto;
+}
+
+/* The file name may wrap (`data-fluid`); the other cells stay on one line. */
 .cc-export__files .table td:first-child {
-  inline-size: 100%;
   white-space: normal;
   overflow-wrap: anywhere;
 }
@@ -110,24 +124,5 @@
   .cc-export__dl .btn span {
     display: none;
   }
-
 }
 
-/* Measured, not the house 767: with the Download button icon-only, all four columns need 529px
-   (name 185, size 95, modified 175, button 74) and the file name can wrap below that, so they fit
-   down to a ~520px page. At 767 Size was dropped and the date wrapped in a card with room to spare
-   (Mark, 2026-10-07). */
-@container cs-page (max-width: 519px) {
-  /* Size is the column a phone can lose: the name says which file and the date says how fresh. */
-  .cc-export__files .table th:nth-child(2),
-  .cc-export__files .table td:nth-child(2) {
-    display: none;
-  }
-}
-
-@container cs-page (max-width: 419px) {
-  /* The date and time break onto two lines rather than push the table past its card. */
-  .cc-export__files .table td:nth-child(3) {
-    white-space: normal;
-  }
-}
