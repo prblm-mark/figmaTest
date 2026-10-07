@@ -180,7 +180,10 @@
    *   render the sidebar in that order server-side. Unknown / new panels keep their default place. */
   var side = document.getElementById('record-sidebar');
   if (side) {
-    var ORDER_KEY = 'cc-record-sidebar-order:article';
+    /* One order per record type (data-record-type on the screen; Article when unset): Contact's
+       panels are a different set, and sharing the Article key let one reorder the other. */
+    var rs = side.closest('[data-record-screen]');
+    var ORDER_KEY = 'cc-record-sidebar-order:' + ((rs && rs.getAttribute('data-record-type')) || 'article');
     var panels = function () { return Array.prototype.slice.call(side.querySelectorAll(':scope > .fact-panel')); };
     var idOf = function (p) { return p.getAttribute('aria-labelledby'); };
     var CONTROLS = 'button, a, input, select, textarea, label, [role="radio"], [role="switch"]';

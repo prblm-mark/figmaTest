@@ -15,10 +15,26 @@ import record_markup as m
 e = m.e
 
 # The live screen's tab set. Only Details is built; the others are labels for now (as Article View's).
-def tabs(view_href):
+def page_for(c, tab):
+    """The file for a contact's tab: ContactView.html → ContactViewCommunication.html, etc."""
+    base = c["file"][:-len(".html")]
+    return c["file"] if tab == "details" else base + tab.title().replace("-", "") + ".html"
+
+
+BUILT = ("details", "demographic", "tasks", "communication", "commerce", "events", "analysis",
+         "page-analysis", "digital-assets", "permissions")   # every live tab (2026-10-07)
+
+
+def tabs(c):
+    # The live screen's ten tabs. "Badges" and "Assign customer signal" sit beside them there but are
+    # actions, not tabs: Badges is in the kebab, Assign on the Customer signals panel.
     names = ["Details", "Demographic", "Tasks", "Communication", "Commerce", "Events",
-             "Analysis", "Page analysis", "Digital assets", "Permissions", "Badges"]
-    return [(n.lower().replace(" ", "-"), n, view_href if n == "Details" else "#") for n in names]
+             "Analysis", "Page analysis", "Digital assets", "Permissions"]
+    out = []
+    for n in names:
+        key = n.lower().replace(" ", "-")
+        out.append((key, n, page_for(c, key) if key in BUILT else "#"))
+    return out
 
 
 # The live screen's quick actions and action links. Header rule: one primary (Edit) + one secondary
@@ -27,7 +43,7 @@ KEBAB = [(label, ico, f' href="#" data-backend-todo="contact-actions"') for labe
     ("Add task", "list-todo"), ("Add pro forma", "receipt-pound-sterling"), ("Add to topic", "tag"),
     ("Add to contact list", "list-plus"), ("My contact", "star"), ("Send message", "mail"),
     ("Send info", "send"), ("Relate content", "link-2"), ("Audit user", "history"),
-    ("View profile", "external-link"), ("View account", "building-2"), ("Download vCard", "contact")]]
+    ("View profile", "external-link"), ("View account", "building-2"), ("Badges", "award"), ("Download vCard", "contact")]]
 KEBAB.append(("Go to list", "list", ' href="../ListingScreen/ListingScreen.html" data-keep-width'))
 
 SECONDARY = ("Add note", "notebook-pen", ' data-backend-todo="contact-actions"')
@@ -84,16 +100,22 @@ def sidebar(c):
     activity = m.record_list(c["activity"], "No activity yet.", more=c.get("activity_more"), todo="contact-activity")
 
     # "View all" opens the matching CRM tab (Tasks, Communication, Commerce), not built yet.
-    more_link = lambda what: (f'<a class="btn btn--tertiary btn--xs" href="#" aria-label="View all {e(what)}" '
-                              f'data-backend-todo="contact-crm-tabs"><span>View all</span></a>')
+    def more_link(what, tab=None):
+        href = page_for(c, tab) if tab in BUILT else "#"
+        todo = "" if tab in BUILT else ' data-backend-todo="contact-crm-tabs"'
+        return (f'<a class="btn btn--tertiary btn--xs" href="{href}" aria-label="View all {e(what)}"{todo} data-keep-width>'
+                f'<span>View all</span></a>')
     # TODO(backend:RecordScreen) contact-sidebar: facts, signals, activity, tasks, notes, opportunities, events and engagement are static → the contact's CRM + analysis data (see HANDOVER rows contact-*)
     return "".join([
         m.fact_panel("Record", m.fact_list(facts)),
-        m.fact_panel("Customer signals", signals, subtitle=f'{c["signal_total"]} signals'),
+        m.fact_panel("Customer signals", signals, count=(c["signal_total"], f'{c["signal_total"]} signals'),
+                     action='<button type="button" class="btn btn--tertiary btn--xs" aria-label="Assign a customer signal" '
+                            'data-backend-todo="contact-actions"><span>Assign</span></button>'),
         m.fact_panel("Latest activity", activity),
-        m.fact_panel("Open tasks", tasks, action=more_link("tasks")),
-        m.fact_panel("Contact notes", notes, subtitle=c["notes_count"], action=more_link("contact notes")),
-        m.fact_panel("Opportunities", opp_summary + opp_rows, action=more_link("opportunities")),
+        m.fact_panel("Open tasks", tasks, action=more_link("tasks", "tasks")),
+        m.fact_panel("Contact notes", notes, count=(c["notes_count"].split()[0], c["notes_count"]),
+                     action=more_link("contact notes", "communication")),
+        m.fact_panel("Opportunities", opp_summary + opp_rows, action=more_link("opportunities", "commerce")),
         m.fact_panel("Events", m.fact_list(c["events"])),
         m.fact_panel("Engagement", m.fact_list(c["engagement"]), subtitle="All time unless stated"),
     ])
@@ -179,3 +201,313 @@ SPARSE = {
 }
 
 CONTACTS = [FULL, SPARSE]
+
+
+# ── Communication and Commerce tabs (2026-10-07) ─────────────────────
+# The live tabs are tables: Communication = the contact's notes, Commerce = its opportunities. Each is
+# a Datatables card fitted by DatatablesFit.js (even widths, the first column weighted; columns that do
+# not fit drop into the kebab's detail row), as the dashboards' tables.
+def _th(label, keep=False, drop=None, weight=None, fluid=False, num=False):
+    attrs = (" data-keep" if keep else "") + (f' data-drop="{drop}"' if drop else "") + \
+            (f' data-weight="{weight}"' if weight else "") + (" data-fluid" if fluid else "")
+    cls = ' class="contact-tab__num"' if num else ""
+    return f"<th{cls}{attrs}>{e(label)}</th>"
+
+
+def _card(title, body, count=None, todo=None, add=None, foot=""):
+    """A tab card: the table head's title (+ count chip, + Add) over any body (2026-10-07)."""
+    add_btn = (f'<button type="button" class="btn btn--secondary btn--sm" aria-label="{e(add)}" data-backend-todo="{todo}">'
+               f'{m.icon("plus")}<span class="contact-tab__btn-label">{e(add)}</span></button>') if add else ""
+    chip = (" " + m.count_chip(count, f"{count} {title.lower()}")) if count is not None else ""
+    tid = "tab-" + "".join(ch for ch in title.lower() if ch.isalnum())
+    attr = f' data-backend-todo="{todo}"' if todo else ""
+    return f'''<section class="datatables datatables--orders contact-tab" aria-labelledby="{tid}"{attr}>
+          <div class="datatables__toolbar contact-tab__head">
+            <h2 class="contact-tab__title" id="{tid}">{e(title)}{chip}</h2>{add_btn}
+          </div>
+          {body}{foot}
+        </section>'''
+
+
+def _facts(rows):
+    return f'<div class="contact-tab__body">{m.fact_list(rows)}</div>'
+
+
+def _empty(text):
+    return f'<p class="contact-tab__empty">{e(text)}</p>'
+
+
+def _grid(*cards):
+    return f'<div class="contact-tab-grid">{"".join(cards)}</div>'
+
+
+def _table_card(title, count, head, rows, empty, todo, add=None, shown=None):
+    add_btn = (f'<button type="button" class="btn btn--secondary btn--sm" aria-label="{e(add)}" data-backend-todo="{todo}">'
+               f'{m.icon("plus")}<span class="contact-tab__btn-label">{e(add)}</span></button>') if add else ""
+    if not rows:
+        body = f'<p class="contact-tab__empty">{e(empty)}</p>'
+        foot = ""
+    else:
+        body = (f'<div class="datatables__body"><table class="table" data-fit="even"><thead><tr>{head}</tr></thead>'
+                f'<tbody>{"".join(rows)}</tbody></table></div>')
+        more = (f'<button type="button" class="btn btn--tertiary btn--sm" data-backend-todo="{todo}">'
+                f'<span>Show more</span>{m.icon("chevron-down")}</button>') if shown and shown < int(count) else ""
+        foot = (f'<div class="contact-tab__foot"><span class="contact-tab__count">Showing {shown or len(rows)} of {e(count)}</span>'
+                f'{more}</div>')
+    tid = "tab-" + "".join(ch for ch in title.lower() if ch.isalnum())
+    return f'''<section class="datatables datatables--orders contact-tab" aria-labelledby="{tid}" data-backend-todo="{todo}">
+          <div class="datatables__toolbar contact-tab__head">
+            <h2 class="contact-tab__title" id="{tid}">{e(title)} {m.count_chip(count, f"{count} {title.lower()}")}</h2>{add_btn}
+          </div>
+          {body}{foot}
+        </section>'''
+
+
+NOTE_TONE = {"Email": "info", "Call": "success", "Meeting": "warning", "Review": "neutral"}
+
+
+def communication(c):
+    rows = []
+    for title, summary, kind, account, opp, created, by, updated, by2 in c.get("note_rows", []):
+        rows.append(
+            f'<tr><td><a class="datatables__record-link" href="#" data-backend-todo="contact-notes">{e(title)}</a>'
+            f'<p class="contact-tab__summary">{e(summary)}</p></td>'
+            f'<td>{_badge(kind, NOTE_TONE.get(kind, "neutral"))}</td><td>{e(account)}</td><td>{e(opp or "-")}</td>'
+            f'<td>{e(created)}</td><td>{e(by)}</td><td>{e(updated)}</td><td>{e(by2)}</td></tr>')
+    head = (_th("Note", keep=True, weight=3, fluid=True) + _th("Type", drop=6) + _th("Account", drop=4)
+            + _th("Opportunity", drop=3) + _th("Created", keep=True) + _th("By", drop=5)
+            + _th("Last updated", drop=2) + _th("Updated by", drop=1))
+    # TODO(backend:RecordScreen) contact-notes: the notes table is static → the contact's notes (ContactNote), newest first, paged; Add note opens the note form
+    return _table_card("Contact notes", c["notes_count"].split()[0], head, rows, "No contact notes yet.",
+                       "contact-notes", add="Add note", shown=len(rows))
+
+
+STAGE_TONE = {"Open": "info", "Closed Won": "success", "Closed": "neutral", "Proposal": "warning"}
+
+
+def _opp_rows(items):
+    return [f'<tr><td><a class="datatables__record-link" href="#" data-backend-todo="contact-opportunities">{e(n)}</a></td>'
+            f'<td>{_badge(st, STAGE_TONE.get(st, "neutral"))}</td><td>{e(owner)}</td><td class="contact-tab__num">{e(v)}</td>'
+            f'<td>{e(task or "-")}</td><td class="contact-tab__num">{e(notes or "-")}</td><td>{e(close)}</td>'
+            f'<td>{e(contract)}</td><td>{e(touch)}</td></tr>'
+            for n, st, owner, v, task, notes, close, contract, touch in items]
+
+
+def commerce(c):
+    head = (_th("Opportunity", keep=True, weight=2, fluid=True) + _th("Stage", keep=True) + _th("Owner", drop=3)
+            + _th("Value", keep=True, num=True) + _th("Next task", drop=1) + _th("Notes", drop=2, num=True)
+            + _th("Close date", drop=5) + _th("Contract", drop=4) + _th("Last touch", drop=6))
+    o = c.get("opp_rows", {"open": [], "closed": []})
+    # TODO(backend:RecordScreen) contact-opportunities: open + closed opportunities are static → the contact's opportunities (Opportunity via OpportunityContact), split by stage, paged
+    return (_table_card("Open opportunities", c["opps"]["open"], head, _opp_rows(o["open"]), "No open opportunities.",
+                        "contact-opportunities", add="Add opportunity")
+            + _table_card("Closed opportunities", c["opps"]["closed"], head, _opp_rows(o["closed"]),
+                          "No closed opportunities.", "contact-opportunities", shown=len(o["closed"])))
+
+
+TAB_PAGES = {"communication": communication, "commerce": commerce}
+
+
+# Rows for the tab tables (invented, shaped like the live tables).
+FULL["note_rows"] = [
+    ("Personal note on the Affino 9.0.11 release", "Sent the personal note on what the release means for Northbridge's newsroom.", "Email", "Northbridge Media", None, "6 Oct 2026", "Markus Karlsson", "6 Oct 2026", "Markus Karlsson"),
+    ("Email summary, June to September 2026", "Inbox sweep: renewal timing, the data-service scope and two support threads.", "Email", "Northbridge Media", None, "1 Oct 2026", "Markus Karlsson", "1 Oct 2026", "Markus Karlsson"),
+    ("Renewal scope call", "Agreed the 2027 scope: the platform, AI assistant and the newsletter module.", "Call", "Northbridge Media", "Northbridge Media service renewal Dec 2026", "18 Sep 2026", "Luis Montiel", "19 Sep 2026", "Luis Montiel"),
+    ("Data processing addendum received, ready to sign", "DPA reviewed against the standard terms; no changes needed.", "Review", "Northbridge Media", None, "27 Feb 2026", "Markus Karlsson", "27 Feb 2026", "Markus Karlsson"),
+    ("Pipeline review, opportunity closed", "Dedicated data service closed without a decision; revisit after the renewal.", "Review", "Northbridge Media", "Northbridge Media dedicated data service", "26 Feb 2026", "Markus Karlsson", "26 Feb 2026", "Markus Karlsson"),
+    ("Quarterly check-in", "Traffic up on last year; asked for a walkthrough of the analytics sidebar.", "Meeting", "Northbridge Media", None, "12 Jan 2026", "Luis Montiel", "12 Jan 2026", "Luis Montiel"),
+    ("Renewal signed", "2026 renewal signed on the standard terms.", "Email", "Northbridge Media", "Northbridge Media service renewal Dec 2025", "02 Dec 2025", "Markus Karlsson", "03 Dec 2025", "Markus Karlsson"),
+    ("Roadmap briefing", "Walked through the Control Centre roadmap and the new record screens.", "Meeting", "Northbridge Media", None, "14 Oct 2025", "Markus Karlsson", "14 Oct 2025", "Markus Karlsson"),
+]
+FULL["opp_rows"] = {
+    "open": [("Northbridge Media service renewal Dec 2026", "Open", "Markus Karlsson", "£18,200", "Send the 2027 renewal proposal", "2", "02 Dec 2026", "No", "27 Aug 2026")],
+    "closed": [
+        ("Northbridge Media dedicated data service", "Closed", "Markus Karlsson", "£14,400", None, "3", "26 Feb 2026", "No", "27 Aug 2026"),
+        ("Northbridge Media service renewal Dec 2025", "Closed Won", "Markus Karlsson", "£17,700", None, "3", "02 Dec 2025", "Yes", "27 Aug 2026"),
+        ("Northbridge Media service renewal Dec 2024", "Closed Won", "Markus Karlsson", "£16,404", None, "1", "12 Dec 2024", "Yes", "27 Aug 2026"),
+        ("Northbridge Media service renewal Dec 2023", "Closed Won", "Markus Karlsson", "£15,280", None, "1", "21 Dec 2023", "Yes", "27 Aug 2026"),
+        ("Northbridge Media service renewal Dec 2022", "Closed Won", "Markus Karlsson", "£14,220", None, "1", "01 Dec 2022", "Yes", "27 Aug 2026"),
+        ("Northbridge Media SSL certificate renewal Jan 2022", "Closed", "Markus Karlsson", "£120", None, None, "15 Dec 2021", "No", "27 Aug 2026"),
+        ("Northbridge Media service renewal Dec 2021", "Closed Won", "Markus Karlsson", "£14,220", None, "1", "15 Dec 2021", "Yes", "27 Aug 2026"),
+        ("Northbridge Media premium data service", "Closed", "Markus Karlsson", "£9,600", None, "2", "30 Jun 2021", "No", "27 Aug 2026"),
+    ],
+}
+SPARSE["note_rows"] = [
+    ("Introduced at the publishing round table", "Met at the round table; interested in the forum tools.", "Meeting", "Clearwater Publishing", None, "1 Oct 2019", "Markus Karlsson", "1 Oct 2019", "Markus Karlsson"),
+    ("Follow-up after the round table", "Sent the forum case studies.", "Email", "Clearwater Publishing", None, "3 Oct 2019", "Markus Karlsson", "3 Oct 2019", "Markus Karlsson"),
+]
+SPARSE["opp_rows"] = {"open": [], "closed": []}
+
+
+# ── The remaining tabs (2026-10-07) ──────────────────────────────────
+def _simple_table(head_cols, rows):
+    """head_cols: [(label, attrs-dict for _th)]; rows: [[cell html]]."""
+    head = "".join(_th(l, **a) for l, a in head_cols)
+    body = "".join("<tr>" + "".join(f"<td>{c}</td>" for c in r) + "</tr>" for r in rows)
+    return (f'<div class="datatables__body"><table class="table" data-fit="even"><thead><tr>{head}</tr></thead>'
+            f'<tbody>{body}</tbody></table></div>')
+
+
+def _rows_card(title, head_cols, rows, empty, todo, add=None, count=None):
+    n = count if count is not None else str(len(rows))
+    return _card(title, _simple_table(head_cols, rows) if rows else _empty(empty), count=n, todo=todo, add=add)
+
+
+PRIORITY = {"High": "danger", "Normal": "neutral", "Low": "info"}
+
+
+def tasks(c):
+    t = c.get("task_rows", {"open": [], "closed": []})
+    link = lambda x: f'<a class="datatables__record-link" href="#" data-backend-todo="contact-tasks">{e(x)}</a>'
+    open_rows = [[link(n), e(due), e(who), _badge(p, PRIORITY[p]), e(rel), e(made)] for n, due, who, p, rel, made in t["open"]]
+    closed_rows = [[link(n), e(done), e(who), _badge(p, PRIORITY[p]), e(rel), e(made)] for n, done, who, p, rel, made in t["closed"]]
+    cols = lambda second: [("Task", dict(keep=True, weight=3, fluid=True)), (second, dict(keep=True)),
+                           ("Assigned to", dict(drop=2)), ("Priority", dict(drop=3)), ("Related to", dict(drop=1)),
+                           ("Created", dict(drop=4))]
+    # TODO(backend:RecordScreen) contact-tasks: open + closed tasks are static → the contact's tasks (AppUserTask), paged; Add task opens the task form
+    return (_rows_card("Open tasks", cols("Due"), open_rows, "No open tasks.", "contact-tasks", add="Add task")
+            + _rows_card("Closed tasks", cols("Completed"), closed_rows, "No closed tasks.", "contact-tasks"))
+
+
+def events(c):
+    ev = c.get("event_rows", {"attendance": [], "awards": []})
+    att = [[e(n), e(d), _badge(st, "success" if st == "Attended" else "neutral"), e(t)] for n, d, st, t in ev["attendance"]]
+    aw = [[e(n), e(cat), e(d), _badge(r, "success" if r == "Shortlisted" else "neutral")] for n, cat, d, r in ev["awards"]]
+    # TODO(backend:RecordScreen) contact-events: attendance + award entries are static → the contact's event attendance (EventAttendee) and award entries
+    return _grid(
+        _rows_card("Event attendance", [("Event", dict(keep=True, weight=2, fluid=True)), ("Date", dict(keep=True)),
+                                        ("Status", dict(drop=2)), ("Ticket", dict(drop=1))], att, "No event attendance.", "contact-events"),
+        _rows_card("Award entries", [("Award", dict(keep=True, weight=2, fluid=True)), ("Category", dict(drop=2)),
+                                     ("Entered", dict(keep=True)), ("Result", dict(drop=1))], aw, "No award entries.", "contact-events"))
+
+
+def demographic(c):
+    # The live tab groups demographic data by the sites / areas it was collected for, each with an Edit link.
+    secs = []
+    for group, rows in c.get("demographics", []):
+        body = [m.view_row(label, "tags", v) if v else m.view_row(label, "text", "-") for label, v in rows]
+        secs.append(m.record_section(group, body, "view"))
+    # TODO(backend:RecordScreen) contact-demographic: the groups and their values are static → the contact's demographic data per demographic set; Edit opens that set's form
+    return "".join(secs) or _card("Demographic information", _empty("No demographic data."), todo="contact-demographic")
+
+
+def analysis(c):
+    a = c["analysis"]
+    pts = [[e(k), f'<span class="contact-tab__num">{e(v)}</span>'] for k, v in a["points"]]
+    sig = [[e(n.rsplit(" (", 1)[0]), f'<span class="contact-tab__num">{e(n.rsplit("(", 1)[1].rstrip(")"))}</span>'] for n, _ in c["signals"]]
+    # TODO(backend:RecordScreen) contact-analysis: points by type (time frame + view type), the statistics, signal counts and the content-view lists are static → the contact's analysis data
+    return (_grid(
+                _card("Activity statistics", _facts(a["stats"]), todo="contact-analysis"),
+                _rows_card("Engagement points by type", [("Type", dict(keep=True, weight=2, fluid=True)), ("Points", dict(keep=True))],
+                           pts, "No engagement points in this time frame.", "contact-analysis", count=a["points_total"]))
+            + _grid(
+                _rows_card("All customer signals", [("Signal", dict(keep=True, weight=2, fluid=True)), ("Count", dict(keep=True))],
+                           sig, "No customer signals yet.", "contact-signals", count=c["signal_total"]),
+                _card("Latest activity", f'<div class="contact-tab__body">{m.record_list(c["activity"], "No activity yet.", more=c.get("activity_more"))}</div>',
+                      todo="contact-activity"))
+            + _grid(
+                _card("Views per day", _empty("No content views in the last 30 days."), todo="contact-analysis"),
+                _card("Top views", _empty("No content views in the last 30 days."), todo="contact-analysis")))
+
+
+def page_analysis(c):
+    pa = c["page_analysis"]
+    stats = (f'<div class="contact-tab__body contact-tab__stats">{m.stat("Total impressions", pa["total"], "violet-radix", "chart-no-axes-combined")}'
+             f'{m.stat("Impressions per day", pa["per_day"], "indigo", "eye")}{m.stat("Last 12 months", pa["year"], "jade", "calendar")}</div>')
+    viewers = m.viewer_list(pa["viewers"], "contact-page-analysis", "No recent viewers.") if pa["viewers"] else _empty("No recent viewers.")
+    refs = [[f'<span class="record-screen__cell-truncate" title="{e(u)}">{e(u)}</span>', f'<span class="contact-tab__num">{e(n)}</span>'] for u, n in pa["referrers"]]
+    # TODO(backend:RecordScreen) contact-page-analysis: the profile page's impressions, recent viewers and referrers are static → the public profile's site analysis
+    return (_card("Profile page", stats, todo="contact-page-analysis",
+                  foot='<div class="contact-tab__foot"><span class="contact-tab__count">The contact\'s public profile page</span>'
+                       '<a class="btn btn--tertiary btn--sm" href="#" data-backend-todo="contact-page-analysis"><span>View on Site Analysis</span></a></div>')
+            + _grid(_card("Recent viewers", f'<div class="contact-tab__body">{viewers}</div>' if pa["viewers"] else viewers, todo="contact-page-analysis"),
+                    _rows_card("Referring URLs", [("URL", dict(keep=True, weight=3, fluid=True)), ("Visits", dict(keep=True))],
+                               refs, "No referring URLs.", "contact-page-analysis")))
+
+
+def digital_assets(c):
+    d = c.get("assets", {"subs": [], "assets": [], "credits": []})
+    sub_links = ('<div class="contact-tab__foot contact-tab__foot--links">'
+                 + "".join(f'<a class="btn btn--tertiary btn--sm" href="#" data-backend-todo="contact-digital-assets"><span>{e(x)}</span></a>'
+                           for x in ("Subscription history", "Edition circulation", "Service credits")) + '</div>')
+    subs = [[e(n), e(t), e(a), e(b), _badge(st, "success" if st == "Active" else "neutral")] for n, t, a, b, st in d["subs"]]
+    assets = [[e(n), e(t), e(dt)] for n, t, dt in d["assets"]]
+    credits = [[e(n), f'<span class="contact-tab__num">{e(v)}</span>', e(dt)] for n, v, dt in d["credits"]]
+    # TODO(backend:RecordScreen) contact-digital-assets: subscriptions, digital assets and service credits are static → the contact's content subscriptions (with reassigned toggle), assets and credit entries
+    return (_card("Subscriptions", (_simple_table([("Subscription", dict(keep=True, weight=2, fluid=True)), ("Type", dict(drop=2)),
+                                                   ("Start", dict(drop=1)), ("End", dict(keep=True)), ("Status", dict(drop=3))], subs)
+                                    if subs else _empty("No subscriptions.")), count=str(len(subs)), todo="contact-digital-assets", foot=sub_links)
+            + _grid(_rows_card("Digital assets", [("Asset", dict(keep=True, weight=2, fluid=True)), ("Type", dict(drop=1)),
+                                                  ("Added", dict(keep=True))], assets, "No digital assets.", "contact-digital-assets"),
+                    _rows_card("Service credit entries", [("Entry", dict(keep=True, weight=2, fluid=True)), ("Credits", dict(keep=True)),
+                                                          ("Date", dict(drop=1))], credits, "No service credit entries.", "contact-digital-assets")))
+
+
+def permissions(c):
+    p = c["permissions"]
+    terms = [[e(n), e(d)] for n, d in p["terms"]]
+    hist = lambda title, rows, empty: _rows_card(title, [("Item", dict(keep=True, weight=2, fluid=True)), ("Action", dict(drop=1)),
+                                                         ("Date", dict(keep=True))], [[e(a), e(b), e(d)] for a, b, d in rows], empty,
+                                                 "contact-permissions")
+    # TODO(backend:RecordScreen) contact-permissions: preferences, accepted terms, permissions and the four histories are static → the contact's preferences, T&C acceptances, user permissions and subscription / download histories
+    return (_grid(_card("User preferences", _facts(p["prefs"]), todo="contact-permissions"),
+                  _rows_card("Terms and conditions", [("Terms", dict(keep=True, weight=2, fluid=True)), ("Accepted", dict(keep=True))],
+                             terms, "No terms accepted.", "contact-permissions"))
+            + _rows_card("User permissions", [("Permission", dict(keep=True, weight=2, fluid=True)), ("Granted", dict(keep=True))],
+                         [[e(a), e(b)] for a, b in p["perms"]], "No user permissions.", "contact-permissions")
+            + _grid(hist("Mailing list subscription history", p["mailing"], "No mailing list changes."),
+                    hist("Content subscription history", p["content"], "No content subscriptions."))
+            + _grid(hist("Media download history", p["downloads"], "No media downloads."),
+                    hist("Forum subscription history", p["forums"], "No forum subscriptions.")))
+
+
+TAB_PAGES = {"demographic": demographic, "tasks": tasks, "communication": communication, "commerce": commerce,
+             "events": events, "analysis": analysis, "page-analysis": page_analysis,
+             "digital-assets": digital_assets, "permissions": permissions}
+
+
+# ── Tab data (invented, shaped like the live tabs) ───────────────────
+FULL.update({
+    "task_rows": {"open": [("Send the 2027 renewal proposal", "14 Oct 2026", "Markus Karlsson", "High", "Northbridge Media service renewal Dec 2026", "18 Sep 2026"),
+                           ("Book the data-service review call", "21 Oct 2026", "Luis Montiel", "Normal", "Northbridge Media", "1 Oct 2026")],
+                  "closed": [("Return the signed DPA", "02 Mar 2026", "Markus Karlsson", "Normal", "Northbridge Media", "27 Feb 2026"),
+                             ("Send the 2026 renewal invoice", "05 Dec 2025", "Luis Montiel", "High", "Northbridge Media service renewal Dec 2025", "02 Dec 2025"),
+                             ("Walk through the analytics sidebar", "20 Jan 2026", "Luis Montiel", "Low", "Northbridge Media", "12 Jan 2026")]},
+    "event_rows": {"attendance": [("Affino Innovation Briefing 2025", "18 Jun 2025", "Attended", "Delegate")], "awards": []},
+    "demographics": [("Intranet, Affino, Video Store, Events, Funding, Cookie Armageddon", [("Solution interests", ["Publishing", "Analytics", "Commerce"])]),
+                     ("Jobs", [("Interests", ["Content Management", "eCommerce", "eCommunity", "eMedia", "ePromotions", "Analysis", "Campaigns",
+                                              "Commerce", "Control", "Media", "Promotion", "Publishing", "Security", "Social"])])],
+    "analysis": {"points_total": "671",
+                 "points": [("Opportunities", "340"), ("Logins", "120"), ("Campaign messages", "95"), ("Contact notes", "48"),
+                            ("Profile views", "30"), ("Events", "25"), ("Searches", "13")],
+                 "stats": [("Latest login", "27 Aug 2026, 11:01"), ("Created", "08 Jan 2016, 15:19"), ("Logins (24 hours)", "0"),
+                           ("Logins (7 days)", "0"), ("Logins (30 days)", "0"), ("Logins (365 days)", "6"),
+                           ("Last forum view", "19 Feb 2026, 17:59"), ("Page views (365 days)", "45"), ("Forum posts", "6"),
+                           ("Message clicks", "3"), ("Message opens", "9"), ("Media storage", "0 bytes")]},
+    "page_analysis": {"total": "1", "per_day": "0.00", "year": "1", "viewers": [], "referrers": []},
+    "assets": {"subs": [("Affino Insight Premium", "Content subscription", "01 Jan 2026", "31 Dec 2026", "Active")],
+               "assets": [("Affino 9 platform overview.pdf", "Document", "14 Oct 2025")],
+               "credits": [("Support hours bundle (10)", "10", "06 Oct 2026")]},
+    "permissions": {"prefs": [("Email format", "HTML"), ("Language", "English"), ("Time zone", "Europe/London"),
+                              ("Contact by email", "Yes"), ("Contact by phone", "No"), ("Show in member directory", "Yes")],
+                    "terms": [("2018 Affino General Terms and Conditions", "19 Nov 2018, 17:55"), ("2009 Affino General Terms", "17 May 2018, 19:07")],
+                    "perms": [], "mailing": [("Affino News", "Subscribed", "08 Jan 2016")], "content": [],
+                    "downloads": [("Affino 9 platform overview.pdf", "Downloaded", "14 Oct 2025")], "forums": []},
+})
+SPARSE.update({
+    "task_rows": {"open": [], "closed": []},
+    "event_rows": {"attendance": [("Affino Publishing Round Table", "26 Nov 2018", "Attended", "Guest")], "awards": []},
+    "demographics": [],
+    "analysis": {"points_total": "55",
+                 "points": [("Campaign messages", "30"), ("Events", "15"), ("Contact notes", "10")],
+                 "stats": [("Latest login", "15 Jun 2022, 15:24"), ("Created", "10 Jan 2016, 22:51"), ("Logins (24 hours)", "0"),
+                           ("Logins (7 days)", "0"), ("Logins (30 days)", "0"), ("Logins (365 days)", "0"),
+                           ("Last forum view", "15 Jun 2022, 16:01"), ("Page views (365 days)", "0"), ("Forum posts", "523"),
+                           ("Message clicks", "-"), ("Message opens", "-"), ("Media storage", "10.05 MB")]},
+    "page_analysis": {"total": "0", "per_day": "0.00", "year": "0", "viewers": [], "referrers": []},
+    "assets": {"subs": [], "assets": [], "credits": []},
+    "permissions": {"prefs": [("Email format", "HTML"), ("Language", "English"), ("Time zone", "Europe/London"),
+                              ("Contact by email", "Yes"), ("Contact by phone", "-"), ("Show in member directory", "No")],
+                    "terms": [("2018 Affino General Terms and Conditions", "26 Nov 2018, 13:40")],
+                    "perms": [], "mailing": [("Affino News", "Subscribed", "26 Nov 2018")], "content": [], "downloads": [], "forums": []},
+})

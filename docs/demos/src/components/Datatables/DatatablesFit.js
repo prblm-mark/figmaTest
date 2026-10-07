@@ -16,7 +16,7 @@
  * The rules are the listings' (ListingScreen fitColumns / shareSpare, designer 2026-09-18 → 09-22):
  *   1. Every column starts at its natural width. `data-fluid` columns (a title that wraps) count
  *      at most `--ai-size-3` (192px), the listings' FLUID_MIN, so a long title cannot crowd the
- *      rest out.
+ *      rest out — and when nothing is left to drop, they wrap below that floor before overflowing.
  *   2. If they do not all fit, a kebab column appears and columns drop in `data-drop` order
  *      (1 first) until the row fits. A dropped column is shown in the row's detail panel, which
  *      the kebab opens (Datatables' pure-CSS :has(:checked) reveal) — so nothing is ever lost and
@@ -158,6 +158,16 @@
         .sort(function (a, b) { return a.p - b.p; })
         .forEach(function (c) { if (sum() > available) shown[c.i] = false; });
     }
+    // Nothing left to drop and still too wide (a phone): a fluid column gives up its --ai-size-3 floor
+    // and wraps further, down to its own narrowest width, before the row may overflow.
+    var over = sum() - available;
+    if (over > 0) {
+      ths.forEach(function (th, i) {
+        if (over <= 0 || !shown[i] || !th.hasAttribute('data-fluid')) return;
+        var give = Math.min(over, base[i] - least[i]);
+        if (give > 0) { base[i] -= give; over -= give; }
+      });
+    }
     ths.forEach(function (_, i) { mark(i, !shown[i]); });
     end(kebabAt - 1, !shown[kebabAt]);
 
@@ -190,8 +200,15 @@
       if (even.length && room / weights() >= 1) {
         var share = room / weights();
         even.forEach(function (i) { width[i] = share * weight(i); });
-        ths.forEach(function (th, i) { if (shown[i] && i !== kebabAt) th.style.inlineSize = width[i] + 'px'; });
+      } else if (!even.length && room >= 1) {
+        // Every column's content is wider than an even share: keep them at their natural widths and
+        // hand what is left out by weight. Leaving the widths unset let the browser split the row
+        // equally, kebab included (a 105px kebab column on a phone, Contact notes 2026-10-07).
+        var total = cols.reduce(function (a, i) { return a + weight(i); }, 0);
+        cols.forEach(function (i) { width[i] = base[i] + room * weight(i) / total; });
       }
+      ths.forEach(function (th, i) { if (shown[i] && i !== kebabAt) th.style.inlineSize = width[i] + 'px'; });
+      if (shown[kebabAt]) ths[kebabAt].style.inlineSize = base[kebabAt] + 'px';
       table.querySelectorAll('.datatables__detail-item').forEach(function (el) {
         el.hidden = shown[+el.getAttribute('data-detail-col')];
       });

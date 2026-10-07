@@ -173,8 +173,9 @@ No Figma frame yet.
 
 - **Header:** Record type "Contact" + name; **Edit** (primary) + **Add note** (secondary), the live screen's other twelve
   quick actions / action links in the kebab (CC header rule), plus Go to list.
-- **Tabs:** the live set: Details, Demographic, Tasks, Communication, Commerce, Events, Analysis, Page analysis, Digital
-  assets, Permissions, Badges. Only Details is built (View only, designer 2026-10-07); the list scrolls sideways.
+- **Tabs:** the live ten: Details, Demographic, Tasks, Communication, Commerce, Events, Analysis, Page analysis, Digital
+  assets, Permissions; all built (see below). "Badges" and "Assign customer signal" sit beside the live tabs but are
+  actions: Badges is in the kebab, Assign on the Customer signals panel. The list scrolls sideways when tight.
 - **Main:** Contact (Photo = Avatar Size=4, Name, Job title, Email, Telephone, Mobile, Address) · Accounts (Account,
   Former accounts, Connections as chips) · Interests and lists (Topics, Mailing lists, Contact lists). Empty = "-".
 - **Sidebar (CRM activity, designer 2026-10-07):** Record facts · Customer signals (AvatarGroup, five then +N) ·
@@ -186,3 +187,40 @@ No Figma frame yet.
 - **Backend:** `contact-record`, `-actions`, `-signals`, `-activity`, `-tasks`, `-notes`, `-opportunities`, `-crm-tabs`,
   `-sidebar` (HANDOVER.md, RecordScreen).
 - Checked: no overflow 340–1600px (page swept in 20px steps); kebab opens with the 13 actions.
+
+### Contact tabs: Communication and Commerce (2026-10-07)
+
+`ContactViewCommunication.html` / `ContactViewCommerce.html` (+ the `Sparse` pair for the empty states): the tab bar,
+then full-width Datatables cards (as Article Steps), each a `data-fit="even"` table (DatatablesFit.js). The sidebar
+panels' "View all" now link here; the other tabs are still labels.
+- **Communication** = "Contact notes 48" + Add note: Note (title + summary, keep, ×3), Created (keep); drop order
+  Updated by → Last updated → Opportunity → Account → By → Type. Footer "Showing 8 of 48" + Show more.
+- **Commerce** = "Open opportunities" + Add opportunity, then "Closed opportunities": Opportunity (keep, ×2), Stage
+  (badge), Value (keep); drop order Next task → Notes → Owner → Contract → Close date → Last touch.
+- DatatablesFit fixes found here: when every column's content is wider than an even share, keep natural widths and
+  share the rest by weight (unset widths had split the row equally, kebab included); the kebab always gets its own
+  width; and once nothing more can drop, a fluid column wraps below its 192px floor before the row overflows.
+  Re-swept Live Dashboard, Sales Leaderboard and Export System afterwards: no overflow at 340–1600px.
+
+### All ten contact tabs built (2026-10-07)
+
+`ContactView{Tab}.html` and `ContactViewSparse{Tab}.html` for Demographic, Tasks, Communication, Commerce, Events, Analysis,
+PageAnalysis, DigitalAssets, Permissions (content read from the live tabs, `&showTab=…`). Each tab page = the tab bar +
+full-width cards; related cards pair up in `.contact-tab-grid` (two ≥512px columns, one when narrow).
+- **Demographic:** a RecordSection per demographic set (named by the sites / areas it covers), values as chips.
+- **Tasks:** Open tasks (+ Add task) and Closed tasks tables: Task (keep ×3), Due / Completed (keep), Assigned to,
+  Priority (badge), Related to, Created.
+- **Events:** Event attendance + Award entries tables, side by side.
+- **Analysis:** Activity statistics (facts) + Engagement points by type; All customer signals + Latest activity;
+  Views per day + Top views (empty states, as live).
+- **Page analysis:** Profile page stats (three StatCards) with "View on Site Analysis"; Recent viewers + Referring URLs.
+- **Digital assets:** Subscriptions (+ Subscription history / Edition circulation / Service credits links); Digital
+  assets + Service credit entries.
+- **Permissions:** User preferences + Terms and conditions; User permissions; the four subscription / download histories.
+- **Card head:** title + **count chip** (house rule: a count sits in a neutral chip, never in running text; the sidebar's
+  Contact notes / Customer signals counts moved into chips too, via `fact_panel(count=)` + `count_chip()`), min-height
+  = the Add button's 32px so heads match with or without a button; the Add button goes icon-only below 767 (cs-page)
+  so it never wraps under the title.
+- **Fix:** the sidebar's saved panel order was keyed `:article` for every record type, so Contact's order rearranged
+  Article's; it is now keyed per `data-record-type` (`page(record_type=)`).
+- Checked: all 20 contact pages at 390 / 1024 / 1600px in iframes: no overflow, matching head heights side by side.

@@ -385,3 +385,114 @@
 .fact-list + .record-list > .record-list__item:first-child {
   padding-block-start: var(--ai-spacing-3);
 }
+
+/* ── Contact tabs: Communication / Commerce (2026-10-07) ──────────────
+   A Datatables card per table, stacked with the record screen's own block gap. The title is the
+   RecordSection title's type; the count beside it is its contrast ink. */
+.contact-tab-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-5);
+}
+
+.contact-tab__head {
+  justify-content: space-between;
+}
+
+/* At least the height of the Add button (Button sm, 32px), so a table head with no button is as
+   tall as one with (Open / Closed opportunities stacked one above the other, designer 2026-10-07). */
+.contact-tab__title {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  min-block-size: var(--ai-spacing-7);
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-md);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-primary);
+}
+
+.contact-tab .table tbody td {
+  height: auto;
+}
+
+.contact-tab .table td:first-child {
+  white-space: normal;
+}
+
+.contact-tab__summary {
+  margin: var(--ai-spacing-0-5) 0 0;
+  font-size: var(--ai-font-fixed-xxs);
+  line-height: var(--ai-leading-xs);
+  color: var(--ai-text-contrast);
+}
+
+.contact-tab__num {
+  font-variant-numeric: tabular-nums;
+}
+
+.contact-tab__empty {
+  margin: 0;
+  padding: var(--ai-spacing-5);
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  color: var(--ai-text-contrast);
+}
+
+.contact-tab__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ai-spacing-3);
+  padding: var(--ai-spacing-3) var(--ai-spacing-5);
+  border-block-start: 1px solid var(--ai-datatable-table-border);
+}
+
+.contact-tab__count {
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xxs);
+  color: var(--ai-text-contrast);
+}
+
+/* A count chip after a panel title sits on the title's line, centred with it. */
+.record-screen .fact-panel__title:has(.badge) {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+}
+
+/* Narrow: the table head's Add button keeps its + and drops the word (its aria-label still says it),
+   as the CC header and RecordTabs buttons do, so it stays on the title's line and every head is
+   the same height. */
+@container cs-page (max-width: 767px) {
+  .contact-tab__btn-label {
+    display: none;
+  }
+}
+
+/* Tab cards side by side where there is room: two 512px-plus columns (`size-9`), one when narrow.
+   `min(100%, …)` so a single column never overflows a phone. */
+.contact-tab-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--ai-size-9)), 1fr));
+  gap: var(--ai-spacing-5);
+  align-items: start;
+}
+
+/* A card whose body is not a table (facts, a timeline, stats, viewers): the toolbar's own inset. */
+.contact-tab__body {
+  padding: var(--ai-spacing-5);
+}
+
+.contact-tab__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--ai-size-3)), 1fr));
+  gap: var(--ai-spacing-4);
+}
+
+.contact-tab__foot--links {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
