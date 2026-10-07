@@ -75,7 +75,9 @@
   padding: var(--ai-spacing-5);
 }
 
-/* Tables: the wide text column takes the slack; values stay right-aligned and on one line. */
+/* Tables: column widths and what shows at each width come from DatatablesFit.js (the listings'
+   fit — shared spare width, low-priority columns into the kebab's detail row; priorities are the
+   `data-drop` attributes in the markup). Values stay right-aligned and on one line. */
 .cc-sales__table .table th.cc-live__num {
   text-align: end;
 }
@@ -85,9 +87,9 @@
   font-weight: var(--ai-font-medium);
 }
 
-/* Legend: the part-month key, dotted in this year's blue (the chart dots that segment). */
+/* Legend: the part-month key, dotted in this year's lagoon (the chart dots that segment). */
 .cc-sales__key--partial::before {
-  border-block-start: 2px dotted var(--ai-accent-blue-solid);
+  border-block-start: 2px dotted var(--ai-accent-lagoon-solid);
 }
 
 /* A line that arrived with the last refresh: Live Dashboard's changed-value wash, once. */
@@ -103,9 +105,7 @@
 
 /* ── Narrow page column ─────────────────────────────────────
    Below 1023 the teams card takes the full row under the chart, as Live Dashboard's online list
-   does. Below 767 the tables keep what answers "who sold how much" (measured: both overflowed their
-   cards at 390). Live Dashboard's rule already hides each table's third column (Business unit;
-   Ordered); this drops Sales team, and Order no., category and line from Most recent sales. The
+   does. The tables need no width rules: DatatablesFit.js fits them at every width. Below 767 the
    toolbar becomes a tidy two-row grid. */
 @container cs-page (max-width: 1023px) {
   .cc-sales__teams {
@@ -114,26 +114,6 @@
 }
 
 @container cs-page (max-width: 767px) {
-  .cc-sales__table--person .table th:nth-child(2),
-  .cc-sales__table--person .table td:nth-child(2),
-  .cc-sales__table--recent .table th:nth-child(2),
-  .cc-sales__table--recent .table td:nth-child(2),
-  .cc-sales__table--recent .table th:nth-child(4),
-  .cc-sales__table--recent .table td:nth-child(4),
-  .cc-sales__table--recent .table th:nth-child(5),
-  .cc-sales__table--recent .table td:nth-child(5) {
-    display: none;
-  }
-
-  .cc-sales__table .cc-live__nowrap,
-  .cc-sales__table .table th {
-    white-space: normal;
-  }
-
-  .cc-sales__table .cc-live__num {
-    white-space: nowrap;
-  }
-
   /* Toolbar: a two-column grid — the selects filling the row, flush with the cards' edges, then the
      dates and "Updated" sharing one line (Mark, 2026-10-05: the wrapped toolbar left ragged widths
      and three stray lines). The filters wrapper steps aside so its children join the grid. */

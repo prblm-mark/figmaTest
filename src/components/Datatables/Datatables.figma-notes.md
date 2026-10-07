@@ -270,3 +270,14 @@ from pinning under the CC header. `clip` paints the same and creates no scroll
 container. `overflow: hidden` stays as the line before it, as a fallback for
 browsers without `clip` (where a sticky child simply does not stick).
 
+
+## DatatablesFit.js (code-first, 2026-10-07)
+
+The listings' column fit (ListingScreen.js `fitColumns` / `shareSpare`) as a standalone, markup-driven helper
+for tables outside the Listing Screen — first used by Live Dashboard (Top articles) and Sales Leaderboard.
+Put `data-fit` on a `.datatables--orders` table and mark its `<th>`s: `data-keep` (never dropped),
+`data-drop="n"` (drop order, 1 first), `data-hug` (fixed-shape: takes no spare), `data-snug` (short text:
+spare capped at 224px), `data-fluid` (wrapping title: counts at most `--ai-size-3` when fitting). The helper
+adds the kebab column and each row's detail row itself (MutationObserver on the tbody, so re-renders are
+covered; open rows stay open), and re-fits on a ResizeObserver. Uses the existing Type=Orders kebab,
+`--nofit` and detail-panel styles; no new CSS.
