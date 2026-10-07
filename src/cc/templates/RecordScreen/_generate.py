@@ -95,9 +95,11 @@ def build(page_title, header, page, scripts, modals="", listing=False, crumbs=("
     return s
 
 
-def page(inner, sidebar_on=True, mode=None):
+def page(inner, sidebar_on=True, mode=None, record_type=None):
     mod = "" if sidebar_on else " record-screen--no-sidebar"
     mode_attr = f' data-record-mode="{mode}"' if mode else ""
+    if record_type:  # keys per-type state such as the sidebar's saved panel order (RecordScreen.js)
+        mode_attr += f' data-record-type="{record_type}"'
     return f'''<div class="cc-control__page cc-control__page--record">
       <div class="record-screen{mod}" data-record-screen{mode_attr}>
         {inner}
@@ -251,9 +253,19 @@ for c in contact.CONTACTS:
         "Contact · View",
         m.record_header("Contact", c["name"], "view", view_href=c["file"], edit_href="#",
                         secondary=contact.SECONDARY, more=contact.KEBAB),
-        page(m.record_tabs("details", sidebar=True, tabs=contact.tabs(c["file"]))
-             + body(contact.view_sections(c), contact.sidebar(c)), mode="view"),
+        page(m.record_tabs("details", sidebar=True, tabs=contact.tabs(c))
+             + body(contact.view_sections(c), contact.sidebar(c)), mode="view", record_type="contact"),
         KIT_JS, crumbs=("CRM", "Contacts", "Contact"))
+    # The contact's other tabs (2026-10-07): full-width cards under the tab bar, as Article Steps.
+    for key, render in contact.TAB_PAGES.items():
+        pages[contact.page_for(c, key)] = build(
+            "Contact · " + key.replace("-", " ").capitalize(),
+            m.record_header("Contact", c["name"], "view", view_href=c["file"], edit_href="#",
+                            secondary=contact.SECONDARY, more=contact.KEBAB),
+            page(m.record_tabs(key, tabs=contact.tabs(c)) + f'<div class="contact-tab-page">{render(c)}</div>', mode="view",
+                 record_type="contact"),
+            KIT_JS + '\n  <script src="../../../components/Datatables/DatatablesFit.js"></script>',
+            crumbs=("CRM", "Contacts", "Contact"))
 
 # ── Import step (designer, 2026-09-30; code-first, flag for Figma) ──
 # The legacy "add Article Step Lookup" form, on the Steps screen: the tabs stay (Details leads back

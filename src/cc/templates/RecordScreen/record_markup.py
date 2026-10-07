@@ -427,7 +427,14 @@ def record_section(title, rows_html, mode, prompt="", description=None):
 
 
 # ── FactPanel / FactList ─────────────────────────────────────────────
-def fact_panel(title, content, subtitle=None, badge=None, action=None):
+def count_chip(n, label):
+    """A count beside a title sits in a neutral chip, not in running text (house rule; as Live
+    Dashboard's "Online members 37"). `label` is what a screen reader hears, e.g. "48 notes"."""
+    return f'<span class="badge badge--neutral" aria-label="{e(label)}">{e(n)}</span>'
+
+
+def fact_panel(title, content, subtitle=None, badge=None, action=None, count=None):
+    """count: (n, spoken label) — a neutral count chip after the title (2026-10-07)."""
     pid = "panel-" + "".join(ch for ch in title.lower() if ch.isalnum())
     sub = f'<p class="fact-panel__subtitle">{e(subtitle)}</p>' if subtitle else ""
     trail = ""
@@ -436,7 +443,7 @@ def fact_panel(title, content, subtitle=None, badge=None, action=None):
         trail = f'<div class="fact-panel__trailing">{b}{action or ""}</div>'
     return f'''<section class="fact-panel" aria-labelledby="{pid}">
           <div class="fact-panel__header">
-            <div class="fact-panel__title-block"><h2 class="fact-panel__title" id="{pid}">{e(title)}</h2>{sub}</div>{trail}
+            <div class="fact-panel__title-block"><h2 class="fact-panel__title" id="{pid}">{e(title)}{(" " + count_chip(*count)) if count else ""}</h2>{sub}</div>{trail}
           </div>
           {content}
         </section>'''

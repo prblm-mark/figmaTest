@@ -1428,63 +1428,98 @@
     {
      "id": "contact-record",
      "category": "needs-backend",
-     "element": "Contact View \u2192 Contact / Accounts / Interests and lists sections",
+     "element": "Contact View → Contact / Accounts / Interests and lists sections",
      "current": "Static invented contacts (record_contact.py); two demo pages, full and sparse.",
      "needs": "The contact: name, job title, email, telephone, mobile, address, photo; current + former accounts and connections; topics, mailing lists and contact lists (chips link to each record). Empty fields render \"-\"."
     },
     {
      "id": "contact-actions",
      "category": "needs-backend",
-     "element": "Contact View header \u2192 Add note, Edit and the kebab (Add task, Add pro forma, Add to topic, Add to contact list, My contact, Send message, Send info, Relate content, Audit user, View profile, View account, Download vCard)",
+     "element": "Contact View header → Add note, Edit and the kebab (Add task, Add pro forma, Add to topic, Add to contact list, My contact, Send message, Send info, Relate content, Audit user, View profile, View account, Download vCard)",
      "current": "Buttons do nothing; Edit goes nowhere (View only for now).",
      "needs": "The live screen's quick actions and action links, each to its existing flow; Edit to the contact edit screen when it is built."
     },
     {
      "id": "contact-signals",
      "category": "needs-backend",
-     "element": "Contact View sidebar \u2192 Customer signals (AvatarGroup)",
+     "element": "Contact View sidebar → Customer signals (AvatarGroup)",
      "current": "Demo signals as Lucide glyphs with counts in their labels; five then a +N toggle.",
      "needs": "The contact's customer signals with counts (live: All Customer Signals), each as its Badge On image; total in the panel subtitle."
     },
     {
      "id": "contact-activity",
      "category": "needs-backend",
-     "element": "Contact View sidebar \u2192 Latest activity",
+     "element": "Contact View sidebar → Latest activity",
      "current": "Five static events and an \"n more events\" line.",
      "needs": "The latest activity timeline (signal name + time), newest first, with the remaining count; link to the full timeline."
     },
     {
      "id": "contact-tasks",
      "category": "needs-backend",
-     "element": "Contact View sidebar \u2192 Open tasks",
-     "current": "Static tasks (none on the sparse contact).",
-     "needs": "The contact's open tasks: title, due date, owner. \"View all\" opens the Tasks tab."
+     "element": "Contact View sidebar → Open tasks, and the Tasks tab (open + closed tables)",
+     "current": "Static tasks (task, due / completed, assigned to, priority, related to, created); Add task does nothing; none on the sparse contact.",
+     "needs": "The contact's open and closed tasks (AppUserTask), paged; Add task opens the task form; \"View all\" in the panel opens the tab."
     },
     {
      "id": "contact-notes",
      "category": "needs-backend",
-     "element": "Contact View sidebar \u2192 Contact notes",
-     "current": "Three static notes, a type badge each, and a count.",
-     "needs": "The latest contact notes (title, created date, author, type) and the total; \"View all\" opens the Communication tab."
+     "element": "Contact View sidebar → Contact notes, and the Communication tab (ContactViewCommunication.html)",
+     "current": "Static notes: three in the sidebar panel; eight rows of 48 in the tab table (Note + summary, Type, Account, Opportunity, Created, By, Last updated, Updated by); Show more and Add note do nothing.",
+     "needs": "The contact's notes (ContactNote), newest first and paged: title, summary, type, account, linked opportunity, created/updated and by whom; Add note opens the note form; \"View all\" in the panel opens the tab."
     },
     {
      "id": "contact-opportunities",
      "category": "needs-backend",
-     "element": "Contact View sidebar \u2192 Opportunities",
-     "current": "Static open / closed counts, won value and three opportunities.",
-     "needs": "Open and closed counts, total won value, and the latest opportunities (name, stage, value, close date); \"View all\" opens the Commerce tab."
+     "element": "Contact View sidebar → Opportunities, and the Commerce tab (ContactViewCommerce.html)",
+     "current": "Static counts and rows: sidebar summary + three; the tab has Open and Closed tables (Opportunity, Stage, Owner, Value, Next task, Notes, Close date, Contract, Last touch); Show more and Add opportunity do nothing.",
+     "needs": "The contact's opportunities (via OpportunityContact) split open / closed, paged, with stage, owner, value, next task, note count, close date, contract flag and last touch; Add opportunity opens the form."
     },
     {
-     "id": "contact-crm-tabs",
+     "id": "contact-demographic",
      "category": "needs-backend",
-     "element": "Contact View \u2192 the tabs other than Details, and each panel's View all",
-     "current": "Tab labels only; not built.",
-     "needs": "Demographic, Tasks, Communication, Commerce, Events, Analysis, Page analysis, Digital assets, Permissions and Badges as their own tab content (live: &showTab=\u2026)."
+     "element": "Contact View → Demographic tab",
+     "current": "Two static demographic groups (sites / areas and Jobs) with their values as chips; the sparse contact has none.",
+     "needs": "The contact's demographic data per demographic set, grouped as live (set name = the sites / areas it covers), each value set as chips; Edit opens that set's form."
+    },
+    {
+     "id": "contact-events",
+     "category": "needs-backend",
+     "element": "Contact View → Events tab",
+     "current": "Static event attendance (event, date, status, ticket) and award entries (award, category, entered, result).",
+     "needs": "The contact's event attendance (EventAttendee) and award entries."
+    },
+    {
+     "id": "contact-analysis",
+     "category": "needs-backend",
+     "element": "Contact View → Analysis tab",
+     "current": "Static activity statistics, engagement points by type, and empty Views per day / Top views cards.",
+     "needs": "Activity statistics (latest login, created, logins over 24h / 7 / 30 / 365 days, last forum view, page views 365 days, forum posts, message clicks / opens, media storage); engagement points by type with the live time-frame and view-type filters; views per day and top views for the last 30 days."
+    },
+    {
+     "id": "contact-page-analysis",
+     "category": "needs-backend",
+     "element": "Contact View → Page analysis tab",
+     "current": "Static profile-page impressions (total, per day, 12 months); empty Recent viewers and Referring URLs; View on Site Analysis does nothing.",
+     "needs": "The contact's public profile page analytics: impressions total / per day / 12 months, recent viewers, referring URLs; View on Site Analysis opens it filtered to the profile."
+    },
+    {
+     "id": "contact-digital-assets",
+     "category": "needs-backend",
+     "element": "Contact View → Digital assets tab",
+     "current": "Static subscriptions (with Subscription history / Edition circulation / Service credits links), digital assets and service credit entries.",
+     "needs": "The contact's content subscriptions (with the live Hide re-assigned toggle), subscription history, edition circulation, digital assets and service credit entries."
+    },
+    {
+     "id": "contact-permissions",
+     "category": "needs-backend",
+     "element": "Contact View → Permissions tab",
+     "current": "Static user preferences, accepted terms, user permissions and four histories.",
+     "needs": "The contact's preferences, terms-and-conditions acceptances (name, date), user permissions, and the mailing-list, content-subscription, media-download and forum-subscription histories."
     },
     {
      "id": "contact-sidebar",
      "category": "needs-backend",
-     "element": "Contact View sidebar \u2192 Record, Events and Engagement facts",
+     "element": "Contact View sidebar → Record, Events and Engagement facts",
      "current": "Static facts.",
      "needs": "User code, account type, engagement level, points, on-site contacts, followers, first/last touch (with the signal), last login; event attendance and award entries; engagement statistics (created, logins and page views over 365 days, forum posts, last forum view, message opens/clicks, media storage)."
     },
