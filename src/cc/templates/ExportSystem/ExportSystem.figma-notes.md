@@ -54,7 +54,8 @@ UpdateScreen).
 ## Responsive (`cs-page`, 767)
 
 The target grid reflows intrinsically (no breakpoint). Below 767 the Download buttons go icon-only
-(their aria-label still says it), the Size column hides, and the modified date wraps onto two lines.
+(their aria-label still says it). The Size column hides below 520 and the modified date wraps below
+420 (measured thresholds — see the note at the end).
 Measured at 390: document 390/390, files table 309/309. The first pass overflowed to 538px because
 the visually-hidden header was positioned outside the table's scroll box; it is now anchored to its
 own cell.
@@ -70,3 +71,8 @@ own cell.
 **Care (from the task):** this screen produces `ControlProfile.json`, which the CC inventory tooling
 reads. The demo changes no output. The backend must keep every file byte-for-byte the same as
 classic's (`serializeJSON` of the same SELECTs, with `],` followed by CRLF).
+
+**Exported files at narrow widths (2026-10-07, Mark):** Size hides below a 520px `cs-page` and Modified
+wraps below 420px — measured thresholds, not the house 767. At 767 a ~660px card dropped Size and wrapped
+the date with room to spare: all four columns need 529px (name 185 · size 95 · modified 175 · icon-only
+Download 74) and the file name wraps below that. Swept 340–1600px: no overflow.
