@@ -690,3 +690,118 @@
 .record-screen .avatar.signal-icon--teal-radix { background-color: var(--ai-accent-teal-radix-soft); color: var(--ai-accent-teal-radix-soft-fg); }
 .record-screen .avatar.signal-icon--mid-blue { background-color: var(--ai-accent-mid-blue-soft); color: var(--ai-accent-mid-blue-soft-fg); }
 .record-screen .avatar.signal-icon--blue { background-color: var(--ai-accent-blue-soft); color: var(--ai-accent-blue-soft-fg); }
+
+/* ── Order View (code-first, 2026-10-07) ──────────────────────────────
+   The order's line items and payment rows are Datatables cards in the main column, between its
+   RecordSections. The attendee block and the totals sit inside the Line items card. */
+.order-attendees {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-spacing-3);
+  padding: var(--ai-spacing-4) var(--ai-spacing-5);
+  border-block-start: 1px solid var(--ai-datatable-table-border);
+}
+
+.order-attendees__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ai-spacing-3);
+}
+
+.order-attendees__title {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-2);
+  margin: 0;
+  font-family: var(--ai-font-title);
+  font-size: var(--ai-font-fixed-xs);
+  font-weight: var(--ai-font-semibold);
+  line-height: var(--ai-leading-sm);
+  color: var(--ai-text-primary);
+}
+
+.order-attendees__empty {
+  margin: 0;
+  font-size: var(--ai-font-fixed-xxs);
+  color: var(--ai-text-contrast);
+}
+
+/* The attendee table sits inset in the card body, so it carries its own border and corners. */
+.order-attendees__table .datatables__body {
+  border: 1px solid var(--ai-datatable-table-border);
+  border-radius: var(--ai-radius-md);
+  overflow: hidden;
+}
+
+/* Totals: a right-aligned summary under the lines, the Total row in the title's weight. */
+.order-totals {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--ai-spacing-1);
+  margin: 0;
+  /* No rule above: the Attendees block already closes off the lines, and the Total row carries its own. */
+  padding: 0 var(--ai-spacing-5) var(--ai-spacing-4);
+}
+
+.order-totals__row {
+  display: grid;
+  grid-template-columns: var(--ai-size-1) var(--ai-size-1);
+  gap: var(--ai-spacing-4);
+  font-size: var(--ai-font-fixed-xs);
+  line-height: var(--ai-leading-md);
+  color: var(--ai-text-secondary);
+}
+
+.order-totals__row dt { text-align: start; }
+.order-totals__row dd { margin: 0; text-align: end; }
+
+.order-totals__row--total {
+  margin-block-start: var(--ai-spacing-1);
+  padding-block-start: var(--ai-spacing-2);
+  border-block-start: 1px solid var(--ai-border-secondary);
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-primary);
+}
+
+.order-address {
+  font-style: normal;
+}
+
+/* Sidebar Status panel: the status badge with its Change link, above the order facts. */
+.order-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ai-spacing-3);
+  padding-block-end: var(--ai-spacing-3);
+}
+
+/* Processing modals: stacked fields; two short fields share a row where there is room. */
+.order-modal__pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--ai-size-5)), 1fr));
+  gap: var(--ai-spacing-4);
+}
+
+.order-modal__prefill {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.order-modal__form .textarea__control {
+  resize: vertical;
+}
+
+/* A history line can carry an email or an AWB number: let it break rather than run off the panel. */
+[data-order-history] .record-list__title {
+  overflow-wrap: anywhere;
+}
+
+/* Full width: the order's table cards go flush like RecordSection--full (a bottom rule only, square),
+   so they don't add a second top border or side borders between the flush sections. */
+.order-card.order-card--full {
+  border-width: 0 0 1px;
+  border-radius: var(--ai-radius-none);
+}

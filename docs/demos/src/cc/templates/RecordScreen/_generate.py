@@ -19,6 +19,7 @@ import record_markup as m  # noqa: E402
 import record_article as rec  # noqa: E402
 import record_step as step  # noqa: E402
 import record_contact as contact  # noqa: E402
+import record_order as order  # noqa: E402
 
 # Step content (titles + bodies) read from the Hub for Article 626347 — a copy of the ArticleSteps
 # prototype's data, kept here so the template does not depend on an uncommitted prototype.
@@ -267,6 +268,18 @@ for c in contact.CONTACTS:
             KIT_JS + '\n  <script src="../../../components/Datatables/DatatablesFit.js"></script>'
                    + '\n  <script src="ContactCharts.js"></script>',
             crumbs=("CRM", "Contacts", "Contact"))
+
+# ── Order View (code-first "build first", 2026-10-07): the live order-processing screen on the kit —
+# view + the processing actions as working demo modals (OrderView.js). Invented customer.
+pages[order.FILE] = build(
+    "Order · View",
+    m.record_header("Order", "Order " + order.ORDER["code"], "view", view_href=order.FILE, edit_href="#",
+                    secondary=order.SECONDARY, more=order.KEBAB),
+    page(body(order.view_sections(order.ORDER, order.CUSTOMER), order.sidebar(order.ORDER, order.CUSTOMER)),
+         mode="view", record_type="order"),
+    KIT_JS + '\n  <script src="../../../components/Datatables/DatatablesFit.js"></script>'
+           + '\n  <script src="OrderView.js"></script>',
+    modals=order.modals(order.ORDER, order.CUSTOMER), crumbs=("Commerce", "Orders", "Order"))
 
 # ── Import step (designer, 2026-09-30; code-first, flag for Figma) ──
 # The legacy "add Article Step Lookup" form, on the Steps screen: the tabs stay (Details leads back
