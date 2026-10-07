@@ -1426,6 +1426,20 @@
      "needs": "v1's StandardItemView getRecentConversions / getUsersAddedToItinerary / getUsersRecentClicks with paging; Add to Contact List per panel. Added to Itinerary only for Advanced Seminar (ContentTypeCode 17). Hide a panel with no rows."
     },
     {
+     "id": "record-viewer-signals",
+     "category": "needs-backend",
+     "element": "Sidebar → Recent Viewers → Customer Signals (AvatarGroup under the company chips)",
+     "current": "Demo signals drawn as Lucide glyphs in grey circles. Five show, then a +N toggle that shows the rest and collapses again (AvatarGroup.js).",
+     "needs": "The viewer's Customer Signals, each as its Badge On image (<img alt=signal name>) inside the circle. Recent Viewers only, not the analytics panels. Keep five then +N."
+    },
+    {
+     "id": "record-viewer-contact",
+     "category": "needs-backend",
+     "element": "Sidebar → viewer name (Recent Viewers and the analytics people lists)",
+     "current": "The name is a link to #.",
+     "needs": "Link to the person's contact record. It keeps the text colour (not brand teal) and underlines only on hover."
+    },
+    {
      "id": "record-analytics-recent-clicks-filter",
      "category": "needs-backend",
      "element": "Sidebar → Recent Clicks → Link Select",

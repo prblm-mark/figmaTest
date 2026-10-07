@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../dark-mode-toggle.js"></script>
+  <title>AvatarGroup — Design System</title>
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../Portraits/Portraits.css">
+  <link rel="stylesheet" href="../Avatar/Avatar.css">
+  <link rel="stylesheet" href="AvatarGroup.css">
+  <style>
+    body { padding: var(--ai-spacing-7); background: var(--ai-surface-secondary); min-height: 100vh; }
+    .demo-section { padding: var(--ai-spacing-6); background: var(--ai-surface-primary); border-radius: var(--ai-radius-lg); margin-bottom: var(--ai-spacing-5); }
+    .demo-section--tint { background: var(--ai-surface-minimal); }
+    .demo-section__title { font-size: var(--ai-font-fixed-xs); font-weight: var(--ai-font-semibold); color: var(--ai-text-contrast); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 var(--ai-spacing-5); }
+    .demo-note { margin: 0 0 var(--ai-spacing-5); font-size: var(--ai-font-fixed-xs); color: var(--ai-text-secondary); }
+  </style>
+</head>
+<body>
+  <div class="demo-section">
+    <p class="demo-section__title">Avatar Group — Figma 4057:2759</p>
+    <div class="avatar-group" role="group" aria-label="6 people">
+      <div class="avatar avatar--size-2"><img class="portrait" src="https://i.pravatar.cc/64?u=female1" alt="Female 1"></div>
+      <div class="avatar avatar--size-2"><img class="portrait" src="https://i.pravatar.cc/64?u=male1" alt="Male 1"></div>
+      <div class="avatar avatar--size-2"><img class="portrait" src="https://i.pravatar.cc/64?u=female2" alt="Female 2"></div>
+      <div class="avatar avatar--size-2"><img class="portrait" src="https://i.pravatar.cc/64?u=male2" alt="Male 2"></div>
+      <span class="avatar avatar--size-2 avatar--initials avatar-group__more" aria-label="2 more">+2</span>
+    </div>
+  </div>
+
+  <div class="demo-section demo-section--tint">
+    <p class="demo-section__title">On a tinted surface</p>
+    <p class="demo-note">The ring is surface/primary, so it separates the overlaps on any background.</p>
+    <div class="avatar-group" role="group" aria-label="3 people">
+      <div class="avatar avatar--size-2"><img class="portrait" src="https://i.pravatar.cc/64?u=female3" alt="Female 3"></div>
+      <div class="avatar avatar--size-2"><img class="portrait" src="https://i.pravatar.cc/64?u=male1" alt="Male 1"></div>
+      <div class="avatar avatar--size-2"><img class="portrait" src="https://i.pravatar.cc/64?u=female4" alt="Female 4"></div>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <p class="demo-section__title">Glyph members, expandable — Customer Signals (record sidebar)</p>
+    <p class="demo-note">Same group, with Avatar Type=Placeholder members carrying the signal's glyph in place of a photo. Live data supplies each signal's own badge image as the &lt;img&gt;. Five show; press "+3" to show the rest, and the chevron to show less.</p>
+    <div class="avatar-group avatar-group--wrap" role="list" aria-label="Customer signals">
+      <span class="avatar avatar--size-2 avatar--placeholder" role="listitem" title="Webinar attendee" aria-label="Webinar attendee"><i data-lucide="presentation" aria-hidden="true"></i></span>
+      <span class="avatar avatar--size-2 avatar--placeholder" role="listitem" title="Newsletter reader" aria-label="Newsletter reader"><i data-lucide="mail-open" aria-hidden="true"></i></span>
+      <span class="avatar avatar--size-2 avatar--placeholder" role="listitem" title="Pricing page visitor" aria-label="Pricing page visitor"><i data-lucide="badge-pound-sterling" aria-hidden="true"></i></span>
+      <span class="avatar avatar--size-2 avatar--placeholder" role="listitem" title="Downloaded a whitepaper" aria-label="Downloaded a whitepaper"><i data-lucide="file-down" aria-hidden="true"></i></span>
+      <span class="avatar avatar--size-2 avatar--placeholder" role="listitem" title="Event registrant" aria-label="Event registrant"><i data-lucide="calendar-check" aria-hidden="true"></i></span>
+      <span class="avatar avatar--size-2 avatar--placeholder" role="listitem" title="Forum contributor" aria-label="Forum contributor" data-avatar-group-extra hidden><i data-lucide="messages-square" aria-hidden="true"></i></span>
+      <span class="avatar avatar--size-2 avatar--placeholder" role="listitem" title="Repeat purchaser" aria-label="Repeat purchaser" data-avatar-group-extra hidden><i data-lucide="repeat" aria-hidden="true"></i></span>
+      <span class="avatar avatar--size-2 avatar--placeholder" role="listitem" title="Trial user" aria-label="Trial user" data-avatar-group-extra hidden><i data-lucide="flask-conical" aria-hidden="true"></i></span>
+      <button type="button" class="avatar avatar--size-2 avatar--initials avatar-group__more" title="Forum contributor, Repeat purchaser, Trial user" aria-label="Show 3 more: Forum contributor, Repeat purchaser, Trial user" aria-expanded="false" data-avatar-group-more data-names="Forum contributor, Repeat purchaser, Trial user" data-label-more="Show 3 more: Forum contributor, Repeat purchaser, Trial user" data-label-less="Show fewer signals"><span class="avatar-group__more-count">+3</span><i data-lucide="chevron-left" class="avatar-group__more-less" aria-hidden="true"></i></button>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+  <script src="AvatarGroup.js"></script>
+</body>
+</html>

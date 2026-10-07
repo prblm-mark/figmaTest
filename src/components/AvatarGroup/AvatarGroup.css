@@ -1,0 +1,83 @@
+/* AvatarGroup — overlapping Avatars with a "+N" counter.
+ *
+ * Figma: Lus07xi8pPXLN87sQIyrEt · node 4057:2759 "Avatar Group" (amended 2026-10-06).
+ * Figma's own description: Avatars Default Size=2 with a 2px surface/primary ring, which keeps
+ * overlaps apart on any surface; an Initials "+N" counter; -8 overlap.
+ *
+ * Composes Avatar (.avatar--size-2, and .avatar--initials for the counter). The ring and the
+ * overlap belong to the group, not to Avatar, so they live here and only apply inside a group.
+ */
+
+.avatar-group {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+/* 2px ring — Figma: border-2 border/--ai-surface-primary on every member, counter included.
+ * border-box keeps the member at 32px, so the photo is clipped inside the ring. */
+.avatar-group > .avatar {
+  border: 2px solid var(--ai-surface-primary);
+}
+
+/* -8 overlap — Figma places members at x = 0, 24, 48 … on a 32px avatar. */
+.avatar-group > .avatar + .avatar {
+  margin-inline-start: calc(var(--ai-spacing-3) * -1);
+}
+
+/* The "+N" counter is Avatar Type=Initials; its text is the count, never initials. */
+.avatar-group__more {
+  cursor: default;
+}
+
+/* Expandable counter (code-first, 2026-10-07): a <button> that reveals the held-back members.
+ * Reset the UA button box; Avatar's Initials rules already set the type. */
+button.avatar-group__more {
+  padding: 0;
+  cursor: pointer;
+}
+
+/* The toggle's "+N" is smaller than the static counter's Initials Size=2 (14px) — designer,
+ * 2026-10-07. Specificity beats Avatar's `.avatar--size-2.avatar--initials`. */
+.avatar-group > button.avatar--size-2.avatar-group__more {
+  font-size: var(--ai-font-fixed-3xs);
+}
+
+button.avatar-group__more:hover {
+  background-color: var(--ai-surface-info);
+  color: var(--ai-text-invert);
+}
+
+button.avatar-group__more:focus-visible {
+  outline: 2px solid var(--ai-surface-brand);
+  outline-offset: 2px;
+}
+
+/* Glyph members (Placeholder type) draw their icon at size-sm inside a group, not Avatar's
+ * Size=2 default of md (designer, 2026-10-07). Targets the svg Lucide swaps in for the <i>. */
+.avatar-group > .avatar--size-2.avatar--placeholder svg {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* Toggle faces: "+N" when collapsed, a chevron ("show less") when expanded. */
+.avatar-group__more[aria-expanded="true"] .avatar-group__more-count,
+.avatar-group__more[aria-expanded="false"] .avatar-group__more-less {
+  display: none;
+}
+
+.avatar-group__more-less {
+  width: var(--ai-icon-size-sm);
+  height: var(--ai-icon-size-sm);
+}
+
+/* A long group wraps rather than overflowing its column. */
+.avatar-group--wrap {
+  flex-wrap: wrap;
+  row-gap: var(--ai-spacing-2);
+}
+
+/* Held-back members. `.avatar` sets display:inline-flex, which beats the UA's [hidden] rule. */
+.avatar-group > [hidden] {
+  display: none;
+}

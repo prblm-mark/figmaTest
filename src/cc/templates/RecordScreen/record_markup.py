@@ -440,22 +440,59 @@ def fact_list(rows):
 
 
 # ── ViewerItem / ViewerList ──────────────────────────────────────────
-def viewer_item(name, role, time, companies, seed):
+SIGNALS_SHOWN = 5  # designer, 2026-10-07: five signals, then the "+N" counter (Figma 4057:2759 draws four)
+
+
+def signal_group(signals):
+    """Customer Signals as an Avatar Group (Figma 4057:2759): overlapping Size=2 circles with a
+    surface/primary ring, then a "+N" counter that toggles the rest open and closed (AvatarGroup.js).
+    Members are Avatar Type=Placeholder carrying the signal's glyph; live data puts each signal's
+    own badge image in the circle instead."""
+    if not signals:
+        return ""
+    def member(i, n, g):
+        extra = ' data-avatar-group-extra hidden' if i >= SIGNALS_SHOWN else ""
+        return (f'<span class="avatar avatar--size-2 avatar--placeholder" role="listitem" title="{e(n)}" '
+                f'aria-label="{e(n)}"{extra}>{icon(g)}</span>')
+    items = "".join(member(i, n, g) for i, (n, g) in enumerate(signals))
+    rest = signals[SIGNALS_SHOWN:]
+    if rest:
+        names = ", ".join(n for n, _ in rest)
+        more_label = f"Show {len(rest)} more: {names}"
+        items += (f'<button type="button" class="avatar avatar--size-2 avatar--initials avatar-group__more" '
+                  f'title="{e(names)}" aria-label="{e(more_label)}" aria-expanded="false" data-avatar-group-more '
+                  f'data-names="{e(names)}" data-label-more="{e(more_label)}" data-label-less="Show fewer signals">'
+                  f'<span class="avatar-group__more-count">+{len(rest)}</span>'
+                  f'<i data-lucide="chevron-left" class="avatar-group__more-less" aria-hidden="true"></i></button>')
+    # TODO(backend:RecordScreen): signal glyphs are Lucide stand-ins → each signal's Badge On image as <img alt="{name}">
+    return (f'<div class="avatar-group avatar-group--wrap viewer-item__signals" role="list" aria-label="Customer signals" '
+            f'data-backend-todo="record-viewer-signals">{items}</div>')
+
+
+def viewer_item(name, role, time, companies, seed, signals=None):
     chips = "".join(chip(c) for c in companies)
+    # The name links to the contact, but it is a name, not a call to action: it keeps the text
+    # colour and only underlines on hover (brand teal is for CTA links only).
     return f'''<li class="viewer-item">
               <div class="avatar"><img class="portrait" src="https://i.pravatar.cc/64?u={seed}" alt=""></div>
               <div class="viewer-item__body">
                 <div class="viewer-item__identity">
-                  <div class="viewer-item__who"><p class="viewer-item__name">{e(name)}</p><p class="viewer-item__role">{e(role)}</p></div>
+                  <div class="viewer-item__who"><p class="viewer-item__name"><a href="#" data-backend-todo="record-viewer-contact">{e(name)}</a></p><p class="viewer-item__role">{e(role)}</p></div>
                   <p class="viewer-item__time">{e(time)}</p>
                 </div>
                 <div class="viewer-item__companies">{chips}</div>
+                {signal_group(signals)}
               </div>
             </li>'''
 
 
-VIEWERS = [("Simon Hassell", "Principal, Argutus Consulting", "5 days, 18hrs", ["Argutus", "Playbook Media Trading Company"], "simon"),
-           ("David Delawa", "VP of Media, Ocean Media Group Ltd", "5 days, 18hrs", ["Ocean Media Group Ltd"], "david")]
+# Customer Signals show on Recent Viewers only (Hub TASK-531782, 2026-10-07) — not on the analytics panels.
+SIGNALS = [("Webinar attendee", "presentation"), ("Newsletter reader", "mail-open"),
+           ("Pricing page visitor", "badge-pound-sterling"), ("Downloaded a whitepaper", "file-down"),
+           ("Event registrant", "calendar-check"), ("Forum contributor", "messages-square"),
+           ("Repeat purchaser", "repeat"), ("Trial user", "flask-conical")]
+VIEWERS = [("Simon Hassell", "Principal, Argutus Consulting", "5 days, 18hrs", ["Argutus", "Playbook Media Trading Company"], "simon", SIGNALS),
+           ("David Delawa", "VP of Media, Ocean Media Group Ltd", "5 days, 18hrs", ["Ocean Media Group Ltd"], "david", SIGNALS[:2])]
 
 
 def viewer_list(viewers=None, todo="viewers-add-to-contact-list", empty="No recent viewers yet."):
@@ -554,7 +591,8 @@ ITINERARY = [("Grace Okafor", "Head of Events, Argutus Consulting", "1 day, 2hrs
 REFERRERS = [("linkedin.com/feed", "42"), ("google.com", "31"), ("news.ycombinator.com/item?id=41822", "12"),
              ("bing.com", "6"), ("t.co/x8Kq2LmA", "4")]
 LINK_CLICKS = [("affino.com/pricing", "38"), ("affino.com/release-notes/9-0-11", "21"),
-               ("docs.affino.com/orders-api", "14")]
+               ("docs.affino.com/orders-api", "14"),
+               ("https://www.affino.com/events/advanced-seminar-2026/agenda?utm_source=newsletter&utm_medium=email", "6")]
 CLICKERS = [("Simon Hassell", "affino.com/pricing", "5 days, 18hrs", ["Argutus"], "simon"),
             ("Hannah Roe", "docs.affino.com/orders-api", "6 days", ["Ocean Media Group Ltd"], "hannah")]
 
@@ -612,7 +650,7 @@ def recent_clicks():
         on = i == 0
         cls = "sel__menu-item sel__menu-item--selected" if on else "sel__menu-item"
         sel = ' aria-selected="true"' if on else ""
-        return f'<li><button type="button" class="{cls}" role="option"{sel}>{e(o)}{icon("check") if on else ""}</button></li>'
+        return f'<li><button type="button" class="{cls}" role="option" title="{e(o)}"{sel}><span class="sel__menu-text">{e(o)}</span>{icon("check") if on else ""}</button></li>'
     menu = "".join(opt(i, o) for i, o in enumerate(opts))
     flt = f'''<div class="sel" data-sel data-backend-todo="record-analytics-recent-clicks-filter">
             <label class="sel__label" for="recent-clicks-link">Link</label>
