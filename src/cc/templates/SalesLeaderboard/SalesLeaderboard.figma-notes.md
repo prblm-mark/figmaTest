@@ -69,6 +69,7 @@ New here:
 | Part-month legend key | 2px **dotted** `accent-lagoon-solid` | Live Dashboard's legend keys |
 | KPI tiles | `lagoon`, `jade` (was blue), `violet-radix` | card accents lead with lagoon, blue only after the other accents (designer, 2026-10-07) |
 | New-line highlight | Live Dashboard's `cc-live-changed` wash | — |
+| Narrowest phones | `@container cs-page (max-width: 320px)` (≈ a 370px page): Top sales people's name ends in "…" with the full name in its `title` (`max-inline-size: 0` on the name cell takes it out of the min-content sum), and the tables' header labels wrap. Fixes the last overflow (18 / 8px at 340 / 350px pages) | Mark, 2026-10-07 |
 | Table fit | `data-fit="even"` — every column the same width where content allows (Mark, 2026-10-07), as Live Dashboard. **DatatablesFit.js** (`src/components/Datatables/`) — the listings' fit for dashboard tables: natural widths, spare shared (water-filling; `data-snug` capped at 224, then spread evenly when all are capped), and when a row does not fit a kebab appears and columns drop in `data-drop` order into the detail row. Top sales people: keep Sales representative + Total value; drop Business unit → Sales team → Orders. Most recent sales: keep Product + Value; drop Product line → Product category → Order no. → Account → Ordered. Replaces the ≤767 hide-column CSS and the earlier `spreadColumns()` | the listings' fit (designer 2026-09-18 → 22); Mark, 2026-10-07: "the tables aren't responsive friendly" |
 
 ## Responsive

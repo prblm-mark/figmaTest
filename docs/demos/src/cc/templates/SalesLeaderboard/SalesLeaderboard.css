@@ -107,6 +107,42 @@
    Below 1023 the teams card takes the full row under the chart, as Live Dashboard's online list
    does. The tables need no width rules: DatatablesFit.js fits them at every width. Below 767 the
    toolbar becomes a tidy two-row grid. */
+/* Narrowest phones only (a page of about 370px or less; cs-page is the content box inside the page
+   padding): a long representative name ends in "…" (full name in its title) instead of pushing the
+   row past the card. At a 340–350px page the kept columns alone — name, Total value and
+   the kebab — were 8–18px too wide, with nothing left to drop (Mark, 2026-10-07). Above this the
+   name wraps beside its avatar as before. DatatablesFit measures the name's narrowest width, which
+   this rule makes the avatar plus an ellipsis, so no JS needs to know the breakpoint. */
+@container cs-page (max-width: 320px) {
+  /* The header labels wrap too: "SALES REPRESENTATIVE" on one line alone held the column at 169px. */
+  .cc-sales__table .table thead th {
+    white-space: normal;
+  }
+
+  /* `max-inline-size: 0` takes the cell out of the table's min-content sum (a one-line name would
+     otherwise count at full length and hold the column open); the column then takes the width
+     DatatablesFit gives it, and the name truncates inside that. */
+  .cc-sales__table--person .table tbody td.cc-live__title-cell {
+    max-inline-size: 0;
+  }
+
+  .cc-sales__table--person .cc-live__title-cell .cc-live__link {
+    display: flex;
+    min-inline-size: 0;
+  }
+
+  .cc-sales__table--person .cc-live__author {
+    min-inline-size: 0;
+    white-space: nowrap;
+  }
+
+  .cc-sales__table--person .cc-live__author-name {
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
 @container cs-page (max-width: 1023px) {
   .cc-sales__teams {
     grid-column: 1 / -1;
