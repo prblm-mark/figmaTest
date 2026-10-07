@@ -137,8 +137,9 @@
   gap: var(--ai-spacing-5);
 }
 
-/* Cells stay on one line; a table wider than its card scrolls inside it rather than
- * overlapping its own text. */
+/* Cells stay on one line. Columns that do not fit drop into the kebab's detail row
+ * (DatatablesFit.js, data-fit="even"), so the table no longer needs to scroll; the overflow
+ * stays only as a safety net. */
 .cc-analysis .datatables__body {
   overflow-x: auto;
 }
@@ -150,6 +151,12 @@
 .cc-analysis .datatables td,
 .cc-analysis .datatables th {
   white-space: nowrap;
+}
+
+/* …except the first column (the contract or account name, `data-fluid`), which wraps when the
+   row is tight rather than holding the table wider than its card. */
+.cc-analysis .datatables tbody td:first-child {
+  white-space: normal;
 }
 
 .cc-analysis .datatables__meta {

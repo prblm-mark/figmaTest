@@ -87,3 +87,20 @@ Numbers are tabular but **left-aligned**, per the designer's demo rule (right-al
 
 `contract-analysis-data.js`: 260 seeded contracts across 45 accounts over 5 years, with a fixed demo "today" of
 26 Sep 2026 so "this month" has data. Everything on the page is computed from it in `ContractAnalysis.js`.
+
+## Tables — column fit (2026-10-07)
+
+All eight tables (Top accounts, Outstanding amounts, the six Monthly review month tables) use
+**DatatablesFit.js** with `data-fit="even"`, as Live Dashboard and Sales Leaderboard (Mark: "apply the same
+table fit to contract analysis tables"). Each column's `fit` in ContractAnalysis.js sets it:
+
+| Table | Always shown | Drop order (into the kebab row) | Weight |
+|---|---|---|---|
+| Contracts (month tables) | Contract, Amount | Term → Created → Payment status → Account → Status | Contract ×2 |
+| Outstanding amounts | Contract, Outstanding | Term → Created → Payment status → Account → Status → Amount | Contract ×2 |
+| Top accounts | Account, Total | First → Account type → Industry → Latest → Contracts → Monthly ave. | Account ×2 |
+
+The first column (contract / account name, `data-fluid`) now wraps; every other cell stays on one line.
+`table()` rebuilds the whole table on sort and Show more, so it re-attaches the helper each render. The
+body's `overflow-x: auto` stays only as a safety net. Measured 340–1600px in 10px steps on every table:
+no overflow.
