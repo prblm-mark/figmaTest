@@ -553,9 +553,10 @@
         </div>
         <div class="datatables__body">
           <!-- Column fit (DatatablesFit.js): Article + Views always show; Published drops first, then
-               Author, into the kebab's detail row. Spare width is shared; Published and Views hug. -->
-          <table class="table" data-fit>
-            <thead><tr><th data-keep data-fluid>Article</th><th data-drop="2" data-snug>Author</th><th data-drop="1" data-hug>Published</th><th class="cc-live__num" data-keep data-hug>Views</th></tr></thead>
+               Author, into the kebab's detail row. Columns are spread evenly (data-fit="even"),
+               Article taking three shares for its long titles (data-weight="3"). -->
+          <table class="table" data-fit="even">
+            <thead><tr><th data-keep data-fluid data-weight="3">Article</th><th data-drop="2" data-snug>Author</th><th data-drop="1" data-hug>Published</th><th class="cc-live__num" data-keep data-hug>Views</th></tr></thead>
             <tbody data-list="article"></tbody>
           </table>
         </div>

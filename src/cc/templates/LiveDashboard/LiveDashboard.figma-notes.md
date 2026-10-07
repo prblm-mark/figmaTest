@@ -120,5 +120,15 @@ hover (the menu-link rule).
 
 `table[data-fit]` + **DatatablesFit.js** (`src/components/Datatables/`), the listings' fit: Article and Views
 always show; Published drops first, then Author, into the kebab's detail row; spare width is shared
-(Author `data-snug`, capped at 224px, so the long titles take the rest). Replaces the ≤767 rule that hid
+**evenly across every column** — `data-fit="even"` (Mark, 2026-10-07: "spread it all evenly … looks odd
+having 2 to the right"): equal widths, except a column whose content needs more keeps its natural width.
+Article takes three shares (`data-weight="3"`, Mark 2026-10-07: "give that column a lot more width when
+available") — 467 / 168 / 156 / 156 at a 1000px page, 774 / 258 ×3 at 1600; the others stay even. Replaces the ≤767 rule that hid
 Published outright, and the title cell's `inline-size: 100%`.
+
+Table cards read as the other cards (Mark, 2026-10-07): the title is `cc-live__card-title` at its own
+weight/colour (semibold, text-primary — the Datatables meta had made it bold secondary), at the card's
+24px inset with no rule under it; the first column, the last column (`datatables__col--end`, set by
+DatatablesFit when no kebab follows) and Show more all sit on that 24px edge. Applies to Sales
+Leaderboard's tables too (same classes). DatatablesFit also re-fits after web fonts / images load: the
+first fit ran on fallback metrics and a "fitting" row was then clipped.

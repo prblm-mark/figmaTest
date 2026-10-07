@@ -96,8 +96,35 @@
 }
 
 .cc-live__card-foot--table {
-  padding: var(--ai-spacing-4) var(--ai-spacing-5);
+  padding: var(--ai-spacing-4) var(--ai-spacing-6);
   border-block-start: 1px solid var(--ai-datatable-table-border);
+}
+
+/* Table cards read as the other cards (Mark, 2026-10-07): the title is the card title — semibold,
+   text-primary, not the Datatables meta's bold secondary — at the card's 24px inset with no rule
+   under it, and the first and last columns line up on that same 24px edge, as does Show more.
+   `.datatables` in the selectors out-specifies Datatables' own toolbar / cell rules, including
+   its narrow-container ones. Shared by Sales Leaderboard (same classes). */
+.datatables.cc-live__articles .datatables__toolbar {
+  padding: var(--ai-spacing-6) var(--ai-spacing-6) var(--ai-spacing-1);
+  background-color: transparent;
+  border-block-end: 0;
+}
+
+.datatables.cc-live__articles .datatables__meta .cc-live__card-title {
+  font-weight: var(--ai-font-semibold);
+  color: var(--ai-text-primary);
+}
+
+.datatables.cc-live__articles .table thead th:first-child,
+.datatables.cc-live__articles .table tbody td:first-child {
+  padding-inline-start: var(--ai-spacing-6);
+}
+
+/* The last column when no kebab follows it (DatatablesFit sets the class). */
+.datatables.cc-live__articles .table thead th.datatables__col--end,
+.datatables.cc-live__articles .table tbody td.datatables__col--end {
+  padding-inline-end: var(--ai-spacing-6);
 }
 
 .cc-live__empty {
