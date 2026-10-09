@@ -15,7 +15,7 @@
        ThemeToggle (Figma HeaderGroup 4146:6685) remains the in-product
        control, driven by ThemeToggle.js at the foot of this file. -->
   <script src="../../../styles/theme-param.js"></script>
-  <title>Article · Add content step — Affino Control Centre</title>
+  <title>Account · Edit — Affino Control Centre</title>
 
   <!-- Base + tokens -->
   <link rel="stylesheet" href="../../../styles/base.css">
@@ -384,11 +384,11 @@
                 </div>
               </li>
               <li class="breadcrumb__separator" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
-              <li class="breadcrumb__item"><a class="breadcrumb__link" href="#">Content</a></li>
+              <li class="breadcrumb__item"><a class="breadcrumb__link" href="#">CRM</a></li>
               <li class="breadcrumb__separator breadcrumb__separator--collapse" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
-              <li class="breadcrumb__item breadcrumb__item--collapse"><a class="breadcrumb__link" href="#">Articles</a></li>
+              <li class="breadcrumb__item breadcrumb__item--collapse"><a class="breadcrumb__link" href="#">Accounts</a></li>
               <li class="breadcrumb__separator breadcrumb__separator--collapse" aria-hidden="true"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
-              <li class="breadcrumb__item breadcrumb__item--current breadcrumb__item--collapse" aria-current="page">Article</li>
+              <li class="breadcrumb__item breadcrumb__item--current breadcrumb__item--collapse" aria-current="page">Account</li>
             </ol>
           </nav>
           <div class="cc-top-navigation__actions">
@@ -479,16 +479,11 @@
         <header class="cc-header cc-header--record">
           <div class="cc-header__title-block">
             <div class="cc-header__title-block-text">
-              <p class="cc-header__record-type">Article</p>
-              <h1 class="cc-header__title">How charities can use Affino AI plugins</h1>
+              <p class="cc-header__record-type">Account</p>
+              <h1 class="cc-header__title">Northbridge Media</h1>
             </div>
           </div>
-          <div class="cc-header__actions"><button type="button" class="btn btn--secondary" aria-label="Add"><i data-lucide="plus" aria-hidden="true"></i><span class="cc-header__btn-label">Add</span></button><a class="btn btn--primary" href="ArticleEdit.html" aria-label="Edit" data-keep-width><i data-lucide="pencil" aria-hidden="true"></i><span class="cc-header__btn-label">Edit</span></a><div class="dropdown">
-            <button class="cc-header__kebab dropdown__trigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="More actions"><i data-lucide="ellipsis-vertical" aria-hidden="true"></i></button>
-            <div class="dropdown__panel" role="menu" aria-label="More actions">
-              <ul class="dropdown__list"><li role="none"><a class="dropdown-item dropdown-item--sm" role="menuitem" href="#" target="_blank" rel="noopener" data-backend-todo="record-live-view"><i data-lucide="external-link" aria-hidden="true"></i><span data-text="Live view">Live view</span></a></li><li role="none"><a class="dropdown-item dropdown-item--sm" role="menuitem" href="#" data-backend-todo="record-related-items"><i data-lucide="link-2" aria-hidden="true"></i><span data-text="Related items">Related items</span></a></li><li role="none"><a class="dropdown-item dropdown-item--sm" role="menuitem" href="../ListingScreen/Articles.html" data-keep-width><i data-lucide="list" aria-hidden="true"></i><span data-text="Go to list">Go to list</span></a></li><li role="none"><a class="dropdown-item dropdown-item--sm" role="menuitem" href="#" data-backend-todo="record-copy"><i data-lucide="copy" aria-hidden="true"></i><span data-text="Copy">Copy</span></a></li></ul>
-            </div>
-          </div></div>
+          <div class="cc-header__actions"><a class="btn btn--tertiary cc-header__btn--bordered-mobile" href="AccountView.html" aria-label="Cancel" data-keep-width><i data-lucide="x" class="cc-header__btn-icon--mobile" aria-hidden="true"></i><span class="cc-header__btn-label">Cancel</span></a><button type="button" class="btn btn--alert" aria-label="Delete" aria-haspopup="dialog" data-record-modal-open="modal-delete"><i data-lucide="trash-2" aria-hidden="true"></i><span class="cc-header__btn-label">Delete</span></button><button type="button" class="btn btn--primary" aria-label="Save"><i data-lucide="check" aria-hidden="true"></i><span class="cc-header__btn-label">Save</span></button></div>
         </header>
         </div>
 
@@ -498,289 +493,592 @@
     <!-- Page content (scrolling area) -->
     <!-- Page content (scrolling area) -->
     <div class="cc-control__page cc-control__page--record">
-      <div class="record-screen record-screen--no-sidebar" data-record-screen data-record-mode="edit">
+      <div class="record-screen record-screen--no-sidebar" data-record-screen data-record-mode="edit" data-help-mode="switch" data-record-type="account">
         <nav class="record-tabs" aria-label="Record sections">
         <div class="record-tabs__list">
-          <a class="record-tab" href="ArticleView.html" data-keep-width>Details</a>
-          <a class="record-tab record-tab--active" href="ArticleSteps.html" aria-current="page" data-keep-width>Article steps<span class="record-tab__count" aria-label="8 steps">8</span></a>
-        </div><div class="record-tabs__actions"><a class="btn btn--secondary btn--sm" href="ArticleSteps.html" aria-label="Cancel" data-keep-width><i data-lucide="x" aria-hidden="true"></i><span class="record-tabs__btn-label">Cancel</span></a><a class="btn btn--primary btn--sm" href="ArticleSteps.html" aria-label="Save" data-keep-width data-backend-todo="steps-add-save"><i data-lucide="check" aria-hidden="true"></i><span class="record-tabs__btn-label">Save</span></a></div>
-      </nav><div class="record-screen__body"><div class="record-screen__main"><section class="record-section" aria-labelledby="sec-contentstep">
-          <div class="record-section__header"><h2 class="record-section__title" id="sec-contentstep">Content step</h2></div>
-          <div class="record-section__body"><div class="field-row field-row--edit">
-            <label class="field-row__label" for="f-title-359">Title<span class="field-row__required" aria-hidden="true">*</span></label>
+          <a class="record-tab record-tab--active" href="AccountView.html" aria-current="page" data-keep-width>Details</a>
+          <a class="record-tab" href="AccountViewContacts.html" data-keep-width>Contacts</a>
+          <a class="record-tab" href="AccountViewTasks.html" data-keep-width>Tasks</a>
+          <a class="record-tab" href="AccountViewCommunication.html" data-keep-width>Communication</a>
+          <a class="record-tab" href="#" data-keep-width>Content</a>
+          <a class="record-tab" href="AccountViewCommerce.html" data-keep-width>Commerce</a>
+          <a class="record-tab" href="#" data-keep-width>Digital assets</a>
+          <a class="record-tab" href="#" data-keep-width>Projects</a>
+          <a class="record-tab" href="AccountViewEvents.html" data-keep-width>Events</a>
+          <a class="record-tab" href="#" data-keep-width>Campaign dashboards</a>
+          <a class="record-tab" href="#" data-keep-width>Engagement report</a>
+          <a class="record-tab" href="AccountViewUserAnalysis.html" data-keep-width>User analysis</a>
+          <a class="record-tab" href="AccountViewPageAnalysis.html" data-keep-width>Page analysis</a>
+        </div><div class="record-tabs__actions record-tabs__actions--help"><span class="record-tabs__sidebar-toggle record-tabs__help-toggle"><button class="toggle toggle--xxs" type="button" role="switch" aria-checked="false" aria-labelledby="record-help-label" data-record-help><span class="toggle__track"><span class="toggle__knob"></span></span></button><span id="record-help-label">Show help</span></span></div>
+      </nav><div class="record-screen__body"><div class="record-screen__main"><section class="record-section" aria-labelledby="sec-main">
+          <div class="record-section__header"><h2 class="record-section__title" id="sec-main">Main</h2></div>
+          <div class="record-section__body"><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-name-217">Name<span class="field-row__required" aria-hidden="true">*</span></label>
             <div class="field-row__value"><div class="input">
-              <div class="input__wrap"><input id="f-title-359" type="text" class="input__control" value="" required aria-required="true"></div>
-              
+              <div class="input__wrap"><input id="f-name-217" type="text" class="input__control" value="Northbridge Media" required aria-required="true" aria-describedby="f-name-217-help"></div>
+              <span class="input__help field-row__help" id="f-name-217-help">Enter Account&#x27;s name</span>
             </div></div>
-          </div><div class="field-row field-row--edit field-row--check">
-            <span class="field-row__label" id="f-showtitle-360-label">Show Title</span>
-            <div class="field-row__value"><label class="checkbox">
-              <input type="checkbox" class="checkbox__input" id="f-showtitle-360" aria-labelledby="f-showtitle-360-label" checked>
-              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
-            </label></div>
-          </div><div class="field-row field-row--edit">
-            <label class="field-row__label" for="f-sortorder-361">Sort Order<span class="field-row__required" aria-hidden="true">*</span></label>
-            <div class="field-row__value"><div class="field-row__lookup">
-              <div class="input"><div class="input__wrap"><input id="f-sortorder-361" type="text" class="input__control" value="" readonly placeholder="22" data-selector-value></div></div>
-              <button type="button" class="btn btn--secondary" aria-haspopup="dialog" aria-label="Select Sort Order" data-selector-open="modal-step-sort"><span>Select</span></button>
-            </div></div>
-          </div><div class="field-row field-row--edit">
-            <span class="field-row__label" id="f-stepimage-362-label">Step Image</span>
-            <div class="field-row__value"><div class="media-picker media-picker--empty" data-media-picker>
-              <button type="button" class="media-picker__thumb" aria-label="Choose Step Image" aria-haspopup="dialog" data-selector-open="modal-media" data-placeholder-icon="image"><i data-lucide="image" aria-hidden="true"></i></button>
-              <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Step Image" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Step Image" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Step Image" data-media-remove><i data-lucide="trash-2" aria-hidden="true"></i></button>
-              </div>
-            </div></div>
-          </div><div class="field-row field-row--edit">
-            <label class="field-row__label" for="f-altstepimage-363">Alt Step Image</label>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-screenname-218">Screen name<span class="field-row__required" aria-hidden="true">*</span></label>
             <div class="field-row__value"><div class="input">
-              <div class="input__wrap"><input id="f-altstepimage-363" type="text" class="input__control" value=""></div>
-              
+              <div class="input__wrap"><input id="f-screenname-218" type="text" class="input__control" value="northbridge-media" required aria-required="true" aria-describedby="f-screenname-218-help"></div>
+              <span class="input__help field-row__help" id="f-screenname-218-help">Enter a unique Screen Name for the Account - this should be SEO friendly.</span>
             </div></div>
-          </div><div class="field-row field-row--edit">
-            <label class="field-row__label" for="f-captiontext-364">Caption Text</label>
-            <div class="field-row__value"><div class="input">
-              <div class="input__wrap"><input id="f-captiontext-364" type="text" class="input__control" value=""></div>
-              
-            </div></div>
-          </div><div class="field-row field-row--edit">
-            <span class="field-row__label" id="f-imagealign-365-label">Image Align</span>
-            <div class="field-row__value"><div class="sel" data-sel>
-              <button id="f-imagealign-365" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox">
-                <span class="sel__value">Left</span>
-                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
-              </button>
-              <ul class="sel__menu" role="listbox">
-                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">Left</button></li><li><button type="button" class="sel__menu-item" role="option">Right</button></li><li><button type="button" class="sel__menu-item" role="option">Above</button></li>
-              </ul>
-            </div></div>
-          </div><div class="field-row field-row--edit">
-            <span class="field-row__label" id="f-presentationimage-366-label">Presentation Image</span>
-            <div class="field-row__value"><div class="media-picker media-picker--empty" data-media-picker>
-              <button type="button" class="media-picker__thumb" aria-label="Choose Presentation Image" aria-haspopup="dialog" data-selector-open="modal-media" data-placeholder-icon="image"><i data-lucide="image" aria-hidden="true"></i></button>
-              <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Presentation Image" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Presentation Image" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Presentation Image" data-media-remove><i data-lucide="trash-2" aria-hidden="true"></i></button>
-              </div>
-            </div></div>
-          </div><div class="field-row field-row--edit">
-            <label class="field-row__label" for="f-steptext-367">Step Text</label>
-            <div class="field-row__value"><div class="textarea rich-text">
-              <textarea class="textarea__control" id="f-steptext-367" rows="10" data-rich-text></textarea>
-            </div></div>
-          </div><div class="field-row field-row--edit">
-            <span class="field-row__label" id="f-contenttype-368-label">Content Type</span>
-            <div class="field-row__value"><div class="sel" data-sel>
-              <button id="f-contenttype-368" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox">
-                <span class="sel__value">None</span>
-                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
-              </button>
-              <ul class="sel__menu" role="listbox">
-                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">None</button></li><li><button type="button" class="sel__menu-item" role="option">Quote</button></li>
-              </ul>
-            </div></div>
-          </div><div class="field-row field-row--edit">
-            <span class="field-row__label" id="f-steptextcolor-369-label">Step Text Color</span>
-            <div class="field-row__value"><label class="color-picker-input" data-color-input>
-              <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner"></span></span>
-              <span class="color-picker-input__value">None</span>
-              <input type="color" class="color-picker-input__native" id="f-steptextcolor-369" value="#000000" aria-label="Step Text Color">
-            </label></div>
-          </div><div class="field-row field-row--edit">
-            <label class="field-row__label" for="f-link-370">Link</label>
-            <div class="field-row__value"><div class="input">
-              <div class="input__wrap"><input id="f-link-370" type="text" class="input__control" value=""></div>
-              
-            </div></div>
-          </div><div class="field-row field-row--edit">
-            <span class="field-row__label" id="f-openlinkoption-371-label">Open Link Option</span>
-            <div class="field-row__value"><div class="sel" data-sel>
-              <button id="f-openlinkoption-371" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox">
-                <span class="sel__value">New Tab</span>
-                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
-              </button>
-              <ul class="sel__menu" role="listbox">
-                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">New Tab</button></li><li><button type="button" class="sel__menu-item" role="option">Current Tab</button></li>
-              </ul>
-            </div></div>
-          </div><div class="field-row field-row--edit">
-            <span class="field-row__label" id="f-multimedia1-372-label">Multimedia 1</span>
-            <div class="field-row__value"><div class="media-picker media-picker--empty" data-media-picker>
-              <button type="button" class="media-picker__thumb" aria-label="Choose Multimedia 1" aria-haspopup="dialog" data-selector-open="modal-multimedia" data-placeholder-icon="film"><i data-lucide="film" aria-hidden="true"></i></button>
-              <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Multimedia 1" aria-haspopup="dialog" data-selector-open="modal-multimedia" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Multimedia 1" aria-haspopup="dialog" data-selector-open="modal-multimedia" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Multimedia 1" data-media-remove><i data-lucide="trash-2" aria-hidden="true"></i></button>
-              </div>
-            </div></div>
-          </div><div class="field-row field-row--edit">
-            <span class="field-row__label" id="f-multimedia2-373-label">Multimedia 2</span>
-            <div class="field-row__value"><div class="media-picker media-picker--empty" data-media-picker>
-              <button type="button" class="media-picker__thumb" aria-label="Choose Multimedia 2" aria-haspopup="dialog" data-selector-open="modal-multimedia" data-placeholder-icon="film"><i data-lucide="film" aria-hidden="true"></i></button>
-              <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Multimedia 2" aria-haspopup="dialog" data-selector-open="modal-multimedia" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Multimedia 2" aria-haspopup="dialog" data-selector-open="modal-multimedia" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Multimedia 2" data-media-remove><i data-lucide="trash-2" aria-hidden="true"></i></button>
-              </div>
-            </div></div>
-          </div><div class="field-row field-row--edit">
-            <span class="field-row__label" id="f-multimedia3-374-label">Multimedia 3</span>
-            <div class="field-row__value"><div class="media-picker media-picker--empty" data-media-picker>
-              <button type="button" class="media-picker__thumb" aria-label="Choose Multimedia 3" aria-haspopup="dialog" data-selector-open="modal-multimedia" data-placeholder-icon="film"><i data-lucide="film" aria-hidden="true"></i></button>
-              <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Multimedia 3" aria-haspopup="dialog" data-selector-open="modal-multimedia" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Multimedia 3" aria-haspopup="dialog" data-selector-open="modal-multimedia" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Multimedia 3" data-media-remove><i data-lucide="trash-2" aria-hidden="true"></i></button>
-              </div>
-            </div></div>
-          </div><div class="field-row field-row--edit">
-            <span class="field-row__label" id="f-multimedia4-375-label">Multimedia 4</span>
-            <div class="field-row__value"><div class="media-picker media-picker--empty" data-media-picker>
-              <button type="button" class="media-picker__thumb" aria-label="Choose Multimedia 4" aria-haspopup="dialog" data-selector-open="modal-multimedia" data-placeholder-icon="film"><i data-lucide="film" aria-hidden="true"></i></button>
-              <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Multimedia 4" aria-haspopup="dialog" data-selector-open="modal-multimedia" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Multimedia 4" aria-haspopup="dialog" data-selector-open="modal-multimedia" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Multimedia 4" data-media-remove><i data-lucide="trash-2" aria-hidden="true"></i></button>
-              </div>
-            </div></div>
-          </div><div class="field-row field-row--edit">
-            <span class="field-row__label" id="f-multimedia5-376-label">Multimedia 5</span>
-            <div class="field-row__value"><div class="media-picker media-picker--empty" data-media-picker>
-              <button type="button" class="media-picker__thumb" aria-label="Choose Multimedia 5" aria-haspopup="dialog" data-selector-open="modal-multimedia" data-placeholder-icon="film"><i data-lucide="film" aria-hidden="true"></i></button>
-              <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Multimedia 5" aria-haspopup="dialog" data-selector-open="modal-multimedia" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Multimedia 5" aria-haspopup="dialog" data-selector-open="modal-multimedia" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Multimedia 5" data-media-remove><i data-lucide="trash-2" aria-hidden="true"></i></button>
-              </div>
-            </div></div>
-          </div><div class="field-row field-row--edit">
-            <span class="field-row__label" id="f-multimedia6-377-label">Multimedia 6</span>
-            <div class="field-row__value"><div class="media-picker media-picker--empty" data-media-picker>
-              <button type="button" class="media-picker__thumb" aria-label="Choose Multimedia 6" aria-haspopup="dialog" data-selector-open="modal-multimedia" data-placeholder-icon="film"><i data-lucide="film" aria-hidden="true"></i></button>
-              <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Multimedia 6" aria-haspopup="dialog" data-selector-open="modal-multimedia" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Multimedia 6" aria-haspopup="dialog" data-selector-open="modal-multimedia" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Multimedia 6" data-media-remove><i data-lucide="trash-2" aria-hidden="true"></i></button>
-              </div>
-            </div></div>
-          </div><div class="field-row field-row--edit">
-            <span class="field-row__label" id="f-multimediaalign-378-label">Multimedia Align</span>
-            <div class="field-row__value"><div class="sel" data-sel>
-              <button id="f-multimediaalign-378" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox">
-                <span class="sel__value">Above</span>
-                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
-              </button>
-              <ul class="sel__menu" role="listbox">
-                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">Above</button></li><li><button type="button" class="sel__menu-item" role="option">Below</button></li>
-              </ul>
-            </div></div>
-          </div></div>
-        </section><section class="record-section" aria-labelledby="sec-layout">
-          <div class="record-section__header"><h2 class="record-section__title" id="sec-layout">Layout</h2></div>
-          <div class="record-section__body"><div class="field-row field-row--edit">
-            <span class="field-row__label" id="f-stepwidth-379-label">Step Width<span class="field-row__required" aria-hidden="true">*</span></span>
-            <div class="field-row__value"><div class="sel" data-sel>
-              <button id="f-stepwidth-379" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox">
-                <span class="sel__value">100%</span>
-                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
-              </button>
-              <ul class="sel__menu" role="listbox">
-                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">100%</button></li><li><button type="button" class="sel__menu-item" role="option">75%</button></li><li><button type="button" class="sel__menu-item" role="option">66%</button></li><li><button type="button" class="sel__menu-item" role="option">50%</button></li><li><button type="button" class="sel__menu-item" role="option">33%</button></li><li><button type="button" class="sel__menu-item" role="option">25%</button></li>
-              </ul>
-            </div></div>
-          </div><div class="field-row field-row--edit">
-            <span class="field-row__label" id="f-stepfloat-380-label">Step Float</span>
-            <div class="field-row__value"><div class="sel" data-sel>
-              <button id="f-stepfloat-380" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox">
-                <span class="sel__value">No Float</span>
-                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
-              </button>
-              <ul class="sel__menu" role="listbox">
-                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">No Float</button></li><li><button type="button" class="sel__menu-item" role="option">Left</button></li><li><button type="button" class="sel__menu-item" role="option">Right</button></li>
-              </ul>
-            </div></div>
-          </div><div class="field-row field-row--edit field-row--check">
-            <span class="field-row__label" id="f-designframe-381-label">Design Frame</span>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-contacted-219-label">Contacted</span>
             <div class="field-row__value"><label class="checkbox">
-              <input type="checkbox" class="checkbox__input" id="f-designframe-381" aria-labelledby="f-designframe-381-label">
+              <input type="checkbox" class="checkbox__input" id="f-contacted-219" aria-labelledby="f-contacted-219-label" checked aria-describedby="f-contacted-219-help">
               <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
-            </label></div>
-          </div><div class="field-row field-row--edit field-row--check">
-            <span class="field-row__label" id="f-topdivider-382-label">Top Divider</span>
-            <div class="field-row__value"><label class="checkbox">
-              <input type="checkbox" class="checkbox__input" id="f-topdivider-382" aria-labelledby="f-topdivider-382-label">
-              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
-            </label></div>
-          </div><div class="field-row field-row--edit field-row--check">
-            <span class="field-row__label" id="f-usemaincolumnwidthfeatur-383-label">Use Main Column Width [Feature Article]</span>
-            <div class="field-row__value"><label class="checkbox">
-              <input type="checkbox" class="checkbox__input" id="f-usemaincolumnwidthfeatur-383" aria-labelledby="f-usemaincolumnwidthfeatur-383-label">
-              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
-            </label></div>
-          </div></div>
-        </section><section class="record-section" aria-labelledby="sec-background">
-          <div class="record-section__header"><h2 class="record-section__title" id="sec-background">Background</h2></div>
-          <div class="record-section__body"><div class="field-row field-row--edit">
-            <span class="field-row__label" id="f-backgroundcolor-384-label">Background Color</span>
-            <div class="field-row__value"><label class="color-picker-input" data-color-input>
-              <span class="color-picker-input__swatch"><span class="color-picker-input__swatch-inner"></span></span>
-              <span class="color-picker-input__value">None</span>
-              <input type="color" class="color-picker-input__native" id="f-backgroundcolor-384" value="#000000" aria-label="Background Color">
-            </label></div>
-          </div><div class="field-row field-row--edit">
-            <span class="field-row__label" id="f-backgroundimage-385-label">Background Image</span>
-            <div class="field-row__value"><div class="media-picker media-picker--empty" data-media-picker>
-              <button type="button" class="media-picker__thumb" aria-label="Choose Background Image" aria-haspopup="dialog" data-selector-open="modal-media" data-placeholder-icon="image"><i data-lucide="image" aria-hidden="true"></i></button>
-              <div class="media-picker__actions">
-                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Background Image" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Background Image" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
-                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Background Image" data-media-remove><i data-lucide="trash-2" aria-hidden="true"></i></button>
-              </div>
-            </div></div>
-          </div><div class="field-row field-row--edit">
-            <label class="field-row__label" for="f-backgroundcss-386">Background CSS</label>
+            </label><p class="input__help field-row__help" id="f-contacted-219-help">Select if this Account has been contacted.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-notes-220">Notes</label>
             <div class="field-row__value"><div class="textarea">
-              <textarea class="textarea__control" id="f-backgroundcss-386" rows="4"></textarea>
-            </div></div>
-          </div><div class="field-row field-row--edit field-row--check">
-            <span class="field-row__label" id="f-backgroundparallaxscroll-387-label">Background Parallax Scrolling</span>
-            <div class="field-row__value"><label class="checkbox">
-              <input type="checkbox" class="checkbox__input" id="f-backgroundparallaxscroll-387" aria-labelledby="f-backgroundparallaxscroll-387-label">
-              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
-            </label></div>
-          </div></div>
-        </section><section class="record-section" aria-labelledby="sec-publication">
-          <div class="record-section__header"><h2 class="record-section__title" id="sec-publication">Publication</h2></div>
-          <div class="record-section__body"><div class="field-row field-row--edit">
-            <label class="field-row__label" for="f-publishstart-388">Publish Start</label>
-            <div class="field-row__value"><div class="datepicker" data-datepicker data-mode="single">
-              <div class="input">
-                <div class="input__wrap">
-                  <input id="f-publishstart-388" class="input__control" type="text" readonly placeholder="Select date and time" value="" data-datepicker-input aria-label="Publish Start">
-                  <i data-lucide="calendar" class="datepicker__field-icon" aria-hidden="true"></i>
-                </div>
+              <textarea class="textarea__control" id="f-notes-220" rows="4" aria-describedby="f-notes-220-help">Renewal runs December. Olivia signs; Priya handles invoices and the PO numbers.</textarea>
+            </div><p class="input__help field-row__help" id="f-notes-220-help">Enter in useful information you want to keep with this account record.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-topics-221-label">Topics</span>
+            <div class="field-row__value"><div class="tag-box" data-tag-box>
+              <ul class="tag-box__tags" id="f-topics-221" aria-label="Topics" data-empty="None selected" aria-describedby="f-topics-221-help"><li class="badge badge--neutral"><span>Analysis</span><button type="button" class="badge__close" aria-label="Remove Analysis"><i data-lucide="x" aria-hidden="true"></i></button></li><li class="badge badge--neutral"><span>Campaigns</span><button type="button" class="badge__close" aria-label="Remove Campaigns"><i data-lucide="x" aria-hidden="true"></i></button></li><li class="badge badge--neutral"><span>Commerce</span><button type="button" class="badge__close" aria-label="Remove Commerce"><i data-lucide="x" aria-hidden="true"></i></button></li><li class="badge badge--neutral"><span>Content Management</span><button type="button" class="badge__close" aria-label="Remove Content Management"><i data-lucide="x" aria-hidden="true"></i></button></li><li class="badge badge--neutral"><span>eMedia</span><button type="button" class="badge__close" aria-label="Remove eMedia"><i data-lucide="x" aria-hidden="true"></i></button></li></ul>
+              <button type="button" class="btn btn--secondary btn--sm" data-tag-box-select="modal-acc-topics" aria-haspopup="dialog"><span>Select</span></button>
+            </div><p class="input__help field-row__help" id="f-topics-221-help">Select the key terms which match this account.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-logo-222-label">Logo</span>
+            <div class="field-row__value"><div class="media-picker media-picker--empty" data-media-picker>
+              <button type="button" class="media-picker__thumb" aria-label="Choose Logo" aria-haspopup="dialog" data-selector-open="modal-media" data-placeholder-icon="image"><i data-lucide="image" aria-hidden="true"></i></button>
+              <div class="media-picker__actions">
+                <button type="button" class="btn btn--secondary btn--sm" aria-label="Choose Logo" aria-haspopup="dialog" data-selector-open="modal-media" data-media-choose><i data-lucide="upload" aria-hidden="true"></i><span>Choose file</span></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Edit Logo" aria-haspopup="dialog" data-selector-open="modal-media" data-media-edit><i data-lucide="pencil" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn--secondary btn--sm btn--icon" aria-label="Remove Logo" data-media-remove><i data-lucide="trash-2" aria-hidden="true"></i></button>
               </div>
+            </div><p class="input__help field-row__help" id="f-logo-222-help">Select the Account logo. This will be presented as appropriate and used in correspondence with regards to this account.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-accounttype-223-label">Account Type</span>
+            <div class="field-row__value"><div class="sel" data-sel>
+              <button id="f-accounttype-223" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox" aria-describedby="f-accounttype-223-help">
+                <span class="sel__value">Client</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">Client</button></li><li><button type="button" class="sel__menu-item" role="option">Prospect</button></li><li><button type="button" class="sel__menu-item" role="option">Partner</button></li><li><button type="button" class="sel__menu-item" role="option">Supplier</button></li>
+              </ul>
+            </div><p class="input__help field-row__help" id="f-accounttype-223-help">Select the Account Type for the account</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-parentaccount-224">Parent Account</label>
+            <div class="field-row__value"><div class="field-row__lookup">
+              <div class="input"><div class="input__wrap"><input id="f-parentaccount-224" type="text" class="input__control" value="" readonly placeholder="None selected" data-selector-value></div></div>
+              <button type="button" class="btn btn--secondary" aria-haspopup="dialog" aria-label="Select Parent Account" data-backend-todo="record-lookup"><span>Select</span></button>
+            </div><p class="input__help field-row__help" id="f-parentaccount-224-help">Select the Parent for this account</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-childaccounts-225-label">Child Accounts</span>
+            <div class="field-row__value"><div class="tag-box" data-tag-box>
+              <ul class="tag-box__tags" id="f-childaccounts-225" aria-label="Child Accounts" data-empty="None selected" aria-describedby="f-childaccounts-225-help"></ul>
+              <button type="button" class="btn btn--secondary btn--sm" data-tag-box-select="modal-acc-accounts" aria-haspopup="dialog"><span>Select</span></button>
+            </div><p class="input__help field-row__help" id="f-childaccounts-225-help">Select the accounts which are child accounts for this account.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-associatedaccounts-226-label">Associated Accounts</span>
+            <div class="field-row__value"><div class="tag-box" data-tag-box>
+              <ul class="tag-box__tags" id="f-associatedaccounts-226" aria-label="Associated Accounts" data-empty="None selected" aria-describedby="f-associatedaccounts-226-help"><li class="badge badge--neutral"><span>Carver Street Events</span><button type="button" class="badge__close" aria-label="Remove Carver Street Events"><i data-lucide="x" aria-hidden="true"></i></button></li></ul>
+              <button type="button" class="btn btn--secondary btn--sm" data-tag-box-select="modal-acc-accounts" aria-haspopup="dialog"><span>Select</span></button>
+            </div><p class="input__help field-row__help" id="f-associatedaccounts-226-help">Select Associated Accounts. This can be used to relate other Accounts as brands that not necessarily has a Parent/Child relationship. This will be reflected on the Public Account page under the Overview tab. This will be sort listed as alphabetical and the top 6 accounts will be shown first and users have the option to view all.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-accountcontacts-227-label">Account Contacts</span>
+            <div class="field-row__value"><div class="tag-box" data-tag-box>
+              <ul class="tag-box__tags" id="f-accountcontacts-227" aria-label="Account Contacts" data-empty="None selected" aria-describedby="f-accountcontacts-227-help"><li class="badge badge--neutral"><span>Olivia Bennett</span><button type="button" class="badge__close" aria-label="Remove Olivia Bennett"><i data-lucide="x" aria-hidden="true"></i></button></li><li class="badge badge--neutral"><span>James Okafor</span><button type="button" class="badge__close" aria-label="Remove James Okafor"><i data-lucide="x" aria-hidden="true"></i></button></li><li class="badge badge--neutral"><span>Priya Desai</span><button type="button" class="badge__close" aria-label="Remove Priya Desai"><i data-lucide="x" aria-hidden="true"></i></button></li><li class="badge badge--neutral"><span>Tom Hartley</span><button type="button" class="badge__close" aria-label="Remove Tom Hartley"><i data-lucide="x" aria-hidden="true"></i></button></li><li class="badge badge--neutral"><span>Sarah Lindqvist</span><button type="button" class="badge__close" aria-label="Remove Sarah Lindqvist"><i data-lucide="x" aria-hidden="true"></i></button></li><li class="badge badge--neutral"><span>Ben Asante</span><button type="button" class="badge__close" aria-label="Remove Ben Asante"><i data-lucide="x" aria-hidden="true"></i></button></li></ul>
+              <button type="button" class="btn btn--secondary btn--sm" data-tag-box-select="modal-acc-contacts" aria-haspopup="dialog"><span>Select</span></button>
+            </div><p class="input__help field-row__help" id="f-accountcontacts-227-help">Select all the account contacts. This is essential to surface the contacts, their tasks, orders, subscriptions analytics and much more. Also essential for main Account for assigning Tasks and Contact Notes to team members.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-primarycontacts-228-label">Primary Contacts</span>
+            <div class="field-row__value"><div class="tag-box" data-tag-box>
+              <ul class="tag-box__tags" id="f-primarycontacts-228" aria-label="Primary Contacts" data-empty="None selected" aria-describedby="f-primarycontacts-228-help"><li class="badge badge--neutral"><span>Olivia Bennett</span><button type="button" class="badge__close" aria-label="Remove Olivia Bennett"><i data-lucide="x" aria-hidden="true"></i></button></li></ul>
+              <button type="button" class="btn btn--secondary btn--sm" data-tag-box-select="modal-acc-contacts" aria-haspopup="dialog"><span>Select</span></button>
+            </div><p class="input__help field-row__help" id="f-primarycontacts-228-help">Select the primary contact for the account.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-marketingcontacts-229-label">Marketing Contacts</span>
+            <div class="field-row__value"><div class="tag-box" data-tag-box>
+              <ul class="tag-box__tags" id="f-marketingcontacts-229" aria-label="Marketing Contacts" data-empty="None selected" aria-describedby="f-marketingcontacts-229-help"><li class="badge badge--neutral"><span>James Okafor</span><button type="button" class="badge__close" aria-label="Remove James Okafor"><i data-lucide="x" aria-hidden="true"></i></button></li></ul>
+              <button type="button" class="btn btn--secondary btn--sm" data-tag-box-select="modal-acc-contacts" aria-haspopup="dialog"><span>Select</span></button>
+            </div><p class="input__help field-row__help" id="f-marketingcontacts-229-help">Select the marketing contacts for this Account.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-invoicecontacts-230-label">Invoice Contacts</span>
+            <div class="field-row__value"><div class="tag-box" data-tag-box>
+              <ul class="tag-box__tags" id="f-invoicecontacts-230" aria-label="Invoice Contacts" data-empty="None selected" aria-describedby="f-invoicecontacts-230-help"><li class="badge badge--neutral"><span>Priya Desai</span><button type="button" class="badge__close" aria-label="Remove Priya Desai"><i data-lucide="x" aria-hidden="true"></i></button></li></ul>
+              <button type="button" class="btn btn--secondary btn--sm" data-tag-box-select="modal-acc-contacts" aria-haspopup="dialog"><span>Select</span></button>
+            </div><p class="input__help field-row__help" id="f-invoicecontacts-230-help">Select the default invoicing contact for the Account. When selected this will populate the Contract Invoice Contact fields with the name and email address of this contact.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-accountforum-231">Account Forum</label>
+            <div class="field-row__value"><div class="field-row__lookup">
+              <div class="input"><div class="input__wrap"><input id="f-accountforum-231" type="text" class="input__control" value="Northbridge Media support" readonly placeholder="None selected" data-selector-value></div></div>
+              <button type="button" class="btn btn--secondary" aria-haspopup="dialog" aria-label="Select Account Forum" data-backend-todo="record-lookup"><span>Select</span></button>
+            </div><p class="input__help field-row__help" id="f-accountforum-231-help">Select the Forum related to this account.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-externalaccountid-232">External Account ID</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-externalaccountid-232" type="text" class="input__control" value="SAGE-NBM-0417" aria-describedby="f-externalaccountid-232-help"></div>
+              <span class="input__help field-row__help" id="f-externalaccountid-232-help">This can be used to store any external Account Id reference e.g. for Sage.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-companynumber-233">Company Number</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-companynumber-233" type="text" class="input__control" value="09481372" aria-describedby="f-companynumber-233-help"></div>
+              <span class="input__help field-row__help" id="f-companynumber-233-help">This is the UK Companies House number.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-taxexempt-234-label">Tax Exempt</span>
+            <div class="field-row__value"><label class="checkbox">
+              <input type="checkbox" class="checkbox__input" id="f-taxexempt-234" aria-labelledby="f-taxexempt-234-label" aria-describedby="f-taxexempt-234-help">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            </label><p class="input__help field-row__help" id="f-taxexempt-234-help">Select this if the Account is exempt from paying tax in your country (for example, International Accounts).</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-vatnumber-235">VAT Number</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-vatnumber-235" type="text" class="input__control" value="GB 291 4416 08" aria-describedby="f-vatnumber-235-help"></div>
+              <span class="input__help field-row__help" id="f-vatnumber-235-help">If the Client is registered for VAT then their number is stored here. This is also displayed on the Customer Invoice.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-telephone-236">Telephone</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-telephone-236" type="text" class="input__control" value="020 7946 0380" aria-describedby="f-telephone-236-help"></div>
+              <span class="input__help field-row__help" id="f-telephone-236-help">Enter the contact Telephone number</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-besttimetocall-237">Best time to Call</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-besttimetocall-237" type="text" class="input__control" value="Weekday mornings" aria-describedby="f-besttimetocall-237-help"></div>
+              <span class="input__help field-row__help" id="f-besttimetocall-237-help">Enter the best time to call the account.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-fax-238">Fax</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-fax-238" type="text" class="input__control" value="" aria-describedby="f-fax-238-help"></div>
+              <span class="input__help field-row__help" id="f-fax-238-help">Enter the Fax number</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-email-239">Email</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-email-239" type="text" class="input__control" value="hello@northbridge-media.example" aria-describedby="f-email-239-help"></div>
+              <span class="input__help field-row__help" id="f-email-239-help">Enter in the corporate email address.</span>
             </div></div>
           </div><div class="field-row field-row--edit">
-            <label class="field-row__label" for="f-publishend-389">Publish End</label>
-            <div class="field-row__value"><div class="datepicker" data-datepicker data-mode="single">
-              <div class="input">
-                <div class="input__wrap">
-                  <input id="f-publishend-389" class="input__control" type="text" readonly placeholder="Select date and time" value="" data-datepicker-input aria-label="Publish End">
-                  <i data-lucide="calendar" class="datepicker__field-icon" aria-hidden="true"></i>
-                </div>
-              </div>
+            <label class="field-row__label" for="f-website-240">Website</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-website-240" type="text" class="input__control" value="https://www.northbridge-media.example"></div>
+              
             </div></div>
-          </div><div class="field-row field-row--edit field-row--check">
-            <span class="field-row__label" id="f-live-390-label">Live</span>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-accountdirector-241">Account Director</label>
+            <div class="field-row__value"><div class="field-row__lookup">
+              <div class="input"><div class="input__wrap"><input id="f-accountdirector-241" type="text" class="input__control" value="Markus Karlsson" readonly placeholder="None selected" data-selector-value></div></div>
+              <button type="button" class="btn btn--secondary" aria-haspopup="dialog" aria-label="Select Account Director" data-backend-todo="record-lookup"><span>Select</span></button>
+            </div><p class="input__help field-row__help" id="f-accountdirector-241-help">Select the Account Director for the account</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-accountmanager-242">Account Manager</label>
+            <div class="field-row__value"><div class="field-row__lookup">
+              <div class="input"><div class="input__wrap"><input id="f-accountmanager-242" type="text" class="input__control" value="Luis Montiel" readonly placeholder="None selected" data-selector-value></div></div>
+              <button type="button" class="btn btn--secondary" aria-haspopup="dialog" aria-label="Select Account Manager" data-backend-todo="record-lookup"><span>Select</span></button>
+            </div><p class="input__help field-row__help" id="f-accountmanager-242-help">Select the Account Manager for the account</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-accountteam-243-label">Account Team</span>
+            <div class="field-row__value"><div class="tag-box" data-tag-box>
+              <ul class="tag-box__tags" id="f-accountteam-243" aria-label="Account Team" data-empty="None selected" aria-describedby="f-accountteam-243-help"><li class="badge badge--neutral"><span>Markus Karlsson</span><button type="button" class="badge__close" aria-label="Remove Markus Karlsson"><i data-lucide="x" aria-hidden="true"></i></button></li><li class="badge badge--neutral"><span>Luis Montiel</span><button type="button" class="badge__close" aria-label="Remove Luis Montiel"><i data-lucide="x" aria-hidden="true"></i></button></li></ul>
+              <button type="button" class="btn btn--secondary btn--sm" data-tag-box-select="modal-acc-contacts" aria-haspopup="dialog"><span>Select</span></button>
+            </div><p class="input__help field-row__help" id="f-accountteam-243-help">Select the Account Team Members. These will be default selected for any notifications.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-industry-244-label">Industry</span>
+            <div class="field-row__value"><div class="sel" data-sel>
+              <button id="f-industry-244" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox" aria-describedby="f-industry-244-help">
+                <span class="sel__value">Publishing</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">Publishing</button></li><li><button type="button" class="sel__menu-item" role="option">Media</button></li><li><button type="button" class="sel__menu-item" role="option">Events</button></li><li><button type="button" class="sel__menu-item" role="option">Charity</button></li><li><button type="button" class="sel__menu-item" role="option">Professional Services</button></li>
+              </ul>
+            </div><p class="input__help field-row__help" id="f-industry-244-help">Select the main Industry for the account</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-sizenumberofstaff-245">Size (Number of staff)</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-sizenumberofstaff-245" type="text" class="input__control" value="45" aria-describedby="f-sizenumberofstaff-245-help"></div>
+              <span class="input__help field-row__help" id="f-sizenumberofstaff-245-help">Enter the size of company (number of staff). This can be an alphanumeric value.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-annualturnover-246">Annual Turnover</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-annualturnover-246" type="text" class="input__control" value="£6.2m" aria-describedby="f-annualturnover-246-help"></div>
+              <span class="input__help field-row__help" id="f-annualturnover-246-help">Enter the annual company turnover. This can be an alphanumeric value.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-ownership-247-label">Ownership</span>
+            <div class="field-row__value"><div class="sel" data-sel>
+              <button id="f-ownership-247" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox" aria-describedby="f-ownership-247-help">
+                <span class="sel__value">Private</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">Private</button></li><li><button type="button" class="sel__menu-item" role="option">Public</button></li><li><button type="button" class="sel__menu-item" role="option">Partnership</button></li><li><button type="button" class="sel__menu-item" role="option">Charity</button></li>
+              </ul>
+            </div><p class="input__help field-row__help" id="f-ownership-247-help">Select the company ownership structure</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-active-248-label">Active</span>
             <div class="field-row__value"><label class="checkbox">
-              <input type="checkbox" class="checkbox__input" id="f-live-390" aria-labelledby="f-live-390-label" checked>
+              <input type="checkbox" class="checkbox__input" id="f-active-248" aria-labelledby="f-active-248-label" checked aria-describedby="f-active-248-help">
               <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
-            </label></div>
+            </label><p class="input__help field-row__help" id="f-active-248-help">Tick this box to make this Account Active</p></div>
+          </div></div>
+        </section><section class="record-section" aria-labelledby="sec-accountaddress">
+          <div class="record-section__header"><h2 class="record-section__title" id="sec-accountaddress">Account Address</h2></div>
+          <div class="record-section__body"><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-address1-249">Address 1</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-address1-249" type="text" class="input__control" value="3rd Floor, 12 Carver Street" aria-describedby="f-address1-249-help"></div>
+              <span class="input__help field-row__help" id="f-address1-249-help">Enter first line of Address</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-address2-250">Address 2</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-address2-250" type="text" class="input__control" value="" aria-describedby="f-address2-250-help"></div>
+              <span class="input__help field-row__help" id="f-address2-250-help">Enter second line of Address</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-address3-251">Address 3</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-address3-251" type="text" class="input__control" value="" aria-describedby="f-address3-251-help"></div>
+              <span class="input__help field-row__help" id="f-address3-251-help">Enter in any additional address information.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-towncity-252">Town / City</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-towncity-252" type="text" class="input__control" value="London" aria-describedby="f-towncity-252-help"></div>
+              <span class="input__help field-row__help" id="f-towncity-252-help">Enter the Town or City</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-countystate-253">County / State</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-countystate-253" type="text" class="input__control" value="Greater London" aria-describedby="f-countystate-253-help"></div>
+              <span class="input__help field-row__help" id="f-countystate-253-help">Enter the County or Region.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-postcodezip-254">Postcode / Zip</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-postcodezip-254" type="text" class="input__control" value="EC2A 4BX" aria-describedby="f-postcodezip-254-help"></div>
+              <span class="input__help field-row__help" id="f-postcodezip-254-help">Enter the PostCode or Zip</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-country-255-label">Country</span>
+            <div class="field-row__value"><div class="sel" data-sel>
+              <button id="f-country-255" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox" aria-describedby="f-country-255-help">
+                <span class="sel__value">United Kingdom</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">United Kingdom</button></li><li><button type="button" class="sel__menu-item" role="option">Ireland</button></li><li><button type="button" class="sel__menu-item" role="option">United States</button></li>
+              </ul>
+            </div><p class="input__help field-row__help" id="f-country-255-help">Select the Country</p></div>
+          </div></div>
+        </section><section class="record-section" aria-labelledby="sec-socialmedia">
+          <div class="record-section__header"><h2 class="record-section__title" id="sec-socialmedia">Social Media</h2></div>
+          <div class="record-section__body"><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-linkedinpagefullurl-256">LinkedIn Page (Full URL)</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-linkedinpagefullurl-256" type="text" class="input__control" value="https://www.linkedin.com/company/northbridge-media-example" aria-describedby="f-linkedinpagefullurl-256-help"></div>
+              <span class="input__help field-row__help" id="f-linkedinpagefullurl-256-help">Enter in the account&#x27;s LinkedIn URL.  Note this will be displayed on the Public page if this account is made public.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-facebookpagefullurl-257">Facebook Page (Full URL)</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-facebookpagefullurl-257" type="text" class="input__control" value="" aria-describedby="f-facebookpagefullurl-257-help"></div>
+              <span class="input__help field-row__help" id="f-facebookpagefullurl-257-help">Enter in the account&#x27;s Facebook URL.  Note this will be displayed on the Public page if this account is made public.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-xuser-258">X User</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-xuser-258" type="text" class="input__control" value="@northbridgemedia" aria-describedby="f-xuser-258-help"></div>
+              <span class="input__help field-row__help" id="f-xuser-258-help">Enter your account ID for X. Note this will be displayed on the Public page if this account is made public.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-instagramuser-259">Instagram User</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-instagramuser-259" type="text" class="input__control" value="" aria-describedby="f-instagramuser-259-help"></div>
+              <span class="input__help field-row__help" id="f-instagramuser-259-help">Enter in the account&#x27;s Instagram URL.  Note this will be displayed on the Public page if this account is made public.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-tiktokuser-260">TikTok User</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-tiktokuser-260" type="text" class="input__control" value="" aria-describedby="f-tiktokuser-260-help"></div>
+              <span class="input__help field-row__help" id="f-tiktokuser-260-help">Enter in the account&#x27;s TikTok URL.  Note this will be displayed on the Public page if this account is made public.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-youtubechannel-261">YouTube Channel</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-youtubechannel-261" type="text" class="input__control" value="" aria-describedby="f-youtubechannel-261-help"></div>
+              <span class="input__help field-row__help" id="f-youtubechannel-261-help">Enter in the account&#x27;s YouTube channel URL.  Note this will be displayed on the Public page if this account is made public.</span>
+            </div></div>
+          </div></div>
+        </section><section class="record-section" aria-labelledby="sec-publicinformation">
+          <div class="record-section__header"><h2 class="record-section__title" id="sec-publicinformation">Public Information</h2></div>
+          <div class="record-section__body"><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-public-262-label">Public</span>
+            <div class="field-row__value"><label class="checkbox">
+              <input type="checkbox" class="checkbox__input" id="f-public-262" aria-labelledby="f-public-262-label" checked aria-describedby="f-public-262-help">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            </label><p class="input__help field-row__help" id="f-public-262-help">Select to allow this Account to be listed publicly on the Account Listing and Search channels.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-publicname-263">Public Name</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-publicname-263" type="text" class="input__control" value="Northbridge Media" aria-describedby="f-publicname-263-help"></div>
+              <span class="input__help field-row__help" id="f-publicname-263-help">The Public Name is shown on the Display side when listing out account information, e.g. on Recruitment Briefs.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-priority-264-label">Priority</span>
+            <div class="field-row__value"><div class="sel" data-sel>
+              <button id="f-priority-264" class="sel__control" type="button" data-sel-trigger aria-haspopup="listbox" aria-describedby="f-priority-264-help">
+                <span class="sel__value">5</span>
+                <span class="sel__chevron"><i data-lucide="chevron-down" aria-hidden="true"></i></span>
+              </button>
+              <ul class="sel__menu" role="listbox">
+                <li><button type="button" class="sel__menu-item" role="option">1</button></li><li><button type="button" class="sel__menu-item" role="option">2</button></li><li><button type="button" class="sel__menu-item" role="option">3</button></li><li><button type="button" class="sel__menu-item" role="option">4</button></li><li><button type="button" class="sel__menu-item sel__menu-item--selected" role="option">5</button></li><li><button type="button" class="sel__menu-item" role="option">6</button></li><li><button type="button" class="sel__menu-item" role="option">7</button></li><li><button type="button" class="sel__menu-item" role="option">8</button></li><li><button type="button" class="sel__menu-item" role="option">9</button></li><li><button type="button" class="sel__menu-item" role="option">10</button></li>
+              </ul>
+            </div><p class="input__help field-row__help" id="f-priority-264-help">Select the priority for this Account, when selected, and depending on the default sort set on the listing, this Account will be listed based on the priority selected.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-teaser-265">Teaser</label>
+            <div class="field-row__value"><div class="textarea">
+              <textarea class="textarea__control" id="f-teaser-265" rows="4" aria-describedby="f-teaser-265-help">Independent B2B publisher covering media, marketing and events.</textarea>
+            </div><p class="input__help field-row__help" id="f-teaser-265-help">Enter the teaser information for this Account, displayed on the Account channel listing.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-description-266">Description</label>
+            <div class="field-row__value"><div class="textarea">
+              <textarea class="textarea__control" id="f-description-266" rows="4" aria-describedby="f-description-266-help">Northbridge Media publishes three B2B titles and runs the Carver Street events programme.</textarea>
+            </div><p class="input__help field-row__help" id="f-description-266-help">Enter a description for this Account. This is used on the Member Accounts channel.</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-sponsoredaccount-267-label">Sponsored Account</span>
+            <div class="field-row__value"><label class="checkbox">
+              <input type="checkbox" class="checkbox__input" id="f-sponsoredaccount-267" aria-labelledby="f-sponsoredaccount-267-label" aria-describedby="f-sponsoredaccount-267-help">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            </label><p class="input__help field-row__help" id="f-sponsoredaccount-267-help">Select to highlight this account on the Accounts Listing channel.</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-messageaccount-268-label">Message Account</span>
+            <div class="field-row__value"><label class="checkbox">
+              <input type="checkbox" class="checkbox__input" id="f-messageaccount-268" aria-labelledby="f-messageaccount-268-label" checked aria-describedby="f-messageaccount-268-help">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            </label><p class="input__help field-row__help" id="f-messageaccount-268-help">Select to show a Message Account button on the Account Detail page. If this Account is a Child Account, then the Message Account button will also show under the Offices tab. Please note, if you have Show Message Account (All) selected on the Account Profile, then that will apply across all Accounts, despite if you have this setting selected or not.</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-hidefromsitesearch-269-label">Hide From Site Search</span>
+            <div class="field-row__value"><label class="checkbox">
+              <input type="checkbox" class="checkbox__input" id="f-hidefromsitesearch-269" aria-labelledby="f-hidefromsitesearch-269-label" aria-describedby="f-hidefromsitesearch-269-help">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            </label><p class="input__help field-row__help" id="f-hidefromsitesearch-269-help">Select to hide this Account from Site Search.</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-hidelogo-270-label">Hide Logo</span>
+            <div class="field-row__value"><label class="checkbox">
+              <input type="checkbox" class="checkbox__input" id="f-hidelogo-270" aria-labelledby="f-hidelogo-270-label" aria-describedby="f-hidelogo-270-help">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            </label><p class="input__help field-row__help" id="f-hidelogo-270-help">Select to hide the Logo from the Account detail and listing screens, including on the Offices tab if this account is a child account.</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-hidetelephone-271-label">Hide Telephone</span>
+            <div class="field-row__value"><label class="checkbox">
+              <input type="checkbox" class="checkbox__input" id="f-hidetelephone-271" aria-labelledby="f-hidetelephone-271-label" aria-describedby="f-hidetelephone-271-help">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            </label><p class="input__help field-row__help" id="f-hidetelephone-271-help">Select to hide the Telephone from the Account screen, including on the Offices tab if this account is a child account.</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-hideemail-272-label">Hide Email</span>
+            <div class="field-row__value"><label class="checkbox">
+              <input type="checkbox" class="checkbox__input" id="f-hideemail-272" aria-labelledby="f-hideemail-272-label" checked aria-describedby="f-hideemail-272-help">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            </label><p class="input__help field-row__help" id="f-hideemail-272-help">Select to hide the Email from the Account screen, including on the Offices tab if this account is a child account.</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-hidewebsite-273-label">Hide Website</span>
+            <div class="field-row__value"><label class="checkbox">
+              <input type="checkbox" class="checkbox__input" id="f-hidewebsite-273" aria-labelledby="f-hidewebsite-273-label" aria-describedby="f-hidewebsite-273-help">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            </label><p class="input__help field-row__help" id="f-hidewebsite-273-help">Select to hide the Website from the Account screen, including on the Offices tab if this account is a child account.</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-hidesocialicons-274-label">Hide Social Icons</span>
+            <div class="field-row__value"><label class="checkbox">
+              <input type="checkbox" class="checkbox__input" id="f-hidesocialicons-274" aria-labelledby="f-hidesocialicons-274-label" aria-describedby="f-hidesocialicons-274-help">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            </label><p class="input__help field-row__help" id="f-hidesocialicons-274-help">Select to hide the Social Icons from the Account screen, including on the Offices tab if this account is a child account.</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-hideoverviewtab-275-label">Hide Overview Tab</span>
+            <div class="field-row__value"><label class="checkbox">
+              <input type="checkbox" class="checkbox__input" id="f-hideoverviewtab-275" aria-labelledby="f-hideoverviewtab-275-label" aria-describedby="f-hideoverviewtab-275-help">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            </label><p class="input__help field-row__help" id="f-hideoverviewtab-275-help">Select to hide the Overview tab from the Account screen.</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-hideofficestab-276-label">Hide Offices Tab</span>
+            <div class="field-row__value"><label class="checkbox">
+              <input type="checkbox" class="checkbox__input" id="f-hideofficestab-276" aria-labelledby="f-hideofficestab-276-label" checked aria-describedby="f-hideofficestab-276-help">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            </label><p class="input__help field-row__help" id="f-hideofficestab-276-help">Select to hide the Offices tab from the Account screen.</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-hidecontactstab-277-label">Hide Contacts Tab</span>
+            <div class="field-row__value"><label class="checkbox">
+              <input type="checkbox" class="checkbox__input" id="f-hidecontactstab-277" aria-labelledby="f-hidecontactstab-277-label" aria-describedby="f-hidecontactstab-277-help">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            </label><p class="input__help field-row__help" id="f-hidecontactstab-277-help">Select to hide the Contacts tab from the Account screen.</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-hidearticlestab-278-label">Hide Articles Tab</span>
+            <div class="field-row__value"><label class="checkbox">
+              <input type="checkbox" class="checkbox__input" id="f-hidearticlestab-278" aria-labelledby="f-hidearticlestab-278-label" aria-describedby="f-hidearticlestab-278-help">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            </label><p class="input__help field-row__help" id="f-hidearticlestab-278-help">Select to hide the Articles tab from the Account screen.</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-hideproducttab-279-label">Hide Product Tab</span>
+            <div class="field-row__value"><label class="checkbox">
+              <input type="checkbox" class="checkbox__input" id="f-hideproducttab-279" aria-labelledby="f-hideproducttab-279-label" checked aria-describedby="f-hideproducttab-279-help">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            </label><p class="input__help field-row__help" id="f-hideproducttab-279-help">Select to hide the Product tab from the Account screen.</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-hidevideotab-280-label">Hide Video Tab</span>
+            <div class="field-row__value"><label class="checkbox">
+              <input type="checkbox" class="checkbox__input" id="f-hidevideotab-280" aria-labelledby="f-hidevideotab-280-label" checked aria-describedby="f-hidevideotab-280-help">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            </label><p class="input__help field-row__help" id="f-hidevideotab-280-help">Select to hide the Video tab from the Account screen.</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-hideaudiotab-281-label">Hide Audio Tab</span>
+            <div class="field-row__value"><label class="checkbox">
+              <input type="checkbox" class="checkbox__input" id="f-hideaudiotab-281" aria-labelledby="f-hideaudiotab-281-label" checked aria-describedby="f-hideaudiotab-281-help">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            </label><p class="input__help field-row__help" id="f-hideaudiotab-281-help">Select to hide the Audio tab from the Account screen.</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-hidedirectorytab-282-label">Hide Directory Tab</span>
+            <div class="field-row__value"><label class="checkbox">
+              <input type="checkbox" class="checkbox__input" id="f-hidedirectorytab-282" aria-labelledby="f-hidedirectorytab-282-label" checked aria-describedby="f-hidedirectorytab-282-help">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            </label><p class="input__help field-row__help" id="f-hidedirectorytab-282-help">Select to hide the Directory tab from the Account screen.</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-hidelinktab-283-label">Hide Link Tab</span>
+            <div class="field-row__value"><label class="checkbox">
+              <input type="checkbox" class="checkbox__input" id="f-hidelinktab-283" aria-labelledby="f-hidelinktab-283-label" aria-describedby="f-hidelinktab-283-help">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            </label><p class="input__help field-row__help" id="f-hidelinktab-283-help">Select to hide the Link tab from the Account screen.</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-hideassociatedaccountsta-284-label">Hide Associated Accounts Tab</span>
+            <div class="field-row__value"><label class="checkbox">
+              <input type="checkbox" class="checkbox__input" id="f-hideassociatedaccountsta-284" aria-labelledby="f-hideassociatedaccountsta-284-label" aria-describedby="f-hideassociatedaccountsta-284-help">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            </label><p class="input__help field-row__help" id="f-hideassociatedaccountsta-284-help">Select to hide the Associated Accounts tab from the Account screen.</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-linktoaccountdetailfromo-285-label">Link to Account Detail From Offices Tab</span>
+            <div class="field-row__value"><label class="checkbox">
+              <input type="checkbox" class="checkbox__input" id="f-linktoaccountdetailfromo-285" aria-labelledby="f-linktoaccountdetailfromo-285-label" aria-describedby="f-linktoaccountdetailfromo-285-help">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            </label><p class="input__help field-row__help" id="f-linktoaccountdetailfromo-285-help">Select to link to the Account Detail screen from the Offices tab, if this account is a child account.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-featuredlinklabel-286">Featured Link Label</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-featuredlinklabel-286" type="text" class="input__control" value="Media pack" aria-describedby="f-featuredlinklabel-286-help"></div>
+              <span class="input__help field-row__help" id="f-featuredlinklabel-286-help">Enter a label for a featured link tab to be displayed on the Account.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-featuredlinkurl-287">Featured Link URL</label>
+            <div class="field-row__value"><div class="input">
+              <div class="input__wrap"><input id="f-featuredlinkurl-287" type="text" class="input__control" value="https://www.northbridge-media.example/media-pack" aria-describedby="f-featuredlinkurl-287-help"></div>
+              <span class="input__help field-row__help" id="f-featuredlinkurl-287-help">Enter a custom link for this Account. This will create a new tab on the Account linking to this custom URL.</span>
+            </div></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-openfeaturedlinkinnewtab-288-label">Open Featured Link In New Tab</span>
+            <div class="field-row__value"><label class="checkbox">
+              <input type="checkbox" class="checkbox__input" id="f-openfeaturedlinkinnewtab-288" aria-labelledby="f-openfeaturedlinkinnewtab-288-label" checked aria-describedby="f-openfeaturedlinkinnewtab-288-help">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            </label><p class="input__help field-row__help" id="f-openfeaturedlinkinnewtab-288-help">Select to open the Featured Link in a new browser tab.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-featuredcontacts-289-label">Featured Contacts</span>
+            <div class="field-row__value"><div class="tag-box" data-tag-box>
+              <ul class="tag-box__tags" id="f-featuredcontacts-289" aria-label="Featured Contacts" data-empty="None selected" aria-describedby="f-featuredcontacts-289-help"><li class="badge badge--neutral"><span>Olivia Bennett</span><button type="button" class="badge__close" aria-label="Remove Olivia Bennett"><i data-lucide="x" aria-hidden="true"></i></button></li><li class="badge badge--neutral"><span>James Okafor</span><button type="button" class="badge__close" aria-label="Remove James Okafor"><i data-lucide="x" aria-hidden="true"></i></button></li></ul>
+              <button type="button" class="btn btn--secondary btn--sm" data-tag-box-select="modal-acc-contacts" aria-haspopup="dialog"><span>Select</span></button>
+            </div><p class="input__help field-row__help" id="f-featuredcontacts-289-help">Select the Contacts to be featured on the Accounts channel, Overview tab, filter this list by those that are selected on Contacts field.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-featuredarticles-290-label">Featured Articles</span>
+            <div class="field-row__value"><div class="tag-box" data-tag-box>
+              <ul class="tag-box__tags" id="f-featuredarticles-290" aria-label="Featured Articles" data-empty="None selected" aria-describedby="f-featuredarticles-290-help"></ul>
+              <button type="button" class="btn btn--secondary btn--sm" data-tag-box-select="modal-acc-content" aria-haspopup="dialog"><span>Select</span></button>
+            </div><p class="input__help field-row__help" id="f-featuredarticles-290-help">Select the articles to be shown on the Featured Articles tab for this Account.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-featuredimages-291-label">Featured Images</span>
+            <div class="field-row__value"><div class="tag-box" data-tag-box>
+              <ul class="tag-box__tags" id="f-featuredimages-291" aria-label="Featured Images" data-empty="None selected" aria-describedby="f-featuredimages-291-help"></ul>
+              <button type="button" class="btn btn--secondary btn--sm" data-tag-box-select="modal-acc-content" aria-haspopup="dialog"><span>Select</span></button>
+            </div><p class="input__help field-row__help" id="f-featuredimages-291-help">Select the images to be shown on the Featured Images tab for this Account.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-featureddocuments-292-label">Featured Documents</span>
+            <div class="field-row__value"><div class="tag-box" data-tag-box>
+              <ul class="tag-box__tags" id="f-featureddocuments-292" aria-label="Featured Documents" data-empty="None selected" aria-describedby="f-featureddocuments-292-help"></ul>
+              <button type="button" class="btn btn--secondary btn--sm" data-tag-box-select="modal-acc-content" aria-haspopup="dialog"><span>Select</span></button>
+            </div><p class="input__help field-row__help" id="f-featureddocuments-292-help">Select the documents to be shown on the Featured Documents tab for this Account.</p></div>
+          </div></div>
+        </section><section class="record-section" aria-labelledby="sec-subscriptions">
+          <div class="record-section__header"><h2 class="record-section__title" id="sec-subscriptions">Subscriptions</h2></div>
+          <div class="record-section__body"><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-accountemaildomains-293">Account Email Domains</label>
+            <div class="field-row__value"><div class="textarea">
+              <textarea class="textarea__control" id="f-accountemaildomains-293" rows="4" aria-describedby="f-accountemaildomains-293-help">northbridge-media.example</textarea>
+            </div><p class="input__help field-row__help" id="f-accountemaildomains-293-help">Enter in a comma separated list of email domains, i.e. the part after the @ sign, for this account. This will be used in to assign users to this account and ultimately to also auto assign subscriptions if applicable. Note that users with matching emails for these domains will be sent a double-confirm email to confirm their ownership of the email address they are registering with, whether it is enabled on the Registration Profile or not. Once a user is associated with an account with a matching email domain then they can&#x27;t change their email address from the account, this can only be done by an administrator. Also note that users are not affect by the Restrict To IP Addresses in this scenario, so they can register from any IP address / IP Range.</p></div>
+          </div><div class="field-row field-row--edit field-row--has-help">
+            <label class="field-row__label" for="f-restricttoipaddresses-294">Restrict To IP Addresses</label>
+            <div class="field-row__value"><div class="textarea">
+              <textarea class="textarea__control" id="f-restricttoipaddresses-294" rows="4" aria-describedby="f-restricttoipaddresses-294-help"></textarea>
+            </div><p class="input__help field-row__help" id="f-restricttoipaddresses-294-help">Enter a comma or space separated list of IP Addresses or IP Range to restrict registration and subscription assignment (if applicable) from these IP Addresses, this will prevent registration to those located remotely or from different IP Addresses. Note that users matching an Account Email Domain will not be restricted to be located within these IP Addresses / Range. The following IP formats are supported: 10.0.0.0, 10.0.0.0/24, 2001:4860:4860::8888, 2001:0db8:85a3:0000:0000:8a2e:0370:7334</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-validateipaddressonlogin-295-label">Validate IP Address On Login</span>
+            <div class="field-row__value"><label class="checkbox">
+              <input type="checkbox" class="checkbox__input" id="f-validateipaddressonlogin-295" aria-labelledby="f-validateipaddressonlogin-295-label" aria-describedby="f-validateipaddressonlogin-295-help">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            </label><p class="input__help field-row__help" id="f-validateipaddressonlogin-295-help">Select to enforce logging in via authorised IP Addresses. set in the Restrict To IP Addresses field. Subscriptions will also be assigned if they don&#x27;t already have the subscription access, i.e. they were previously registered before the auto subscription assignment was enabled.</p></div>
+          </div><div class="field-row field-row--edit field-row--check field-row--has-help">
+            <span class="field-row__label" id="f-autoapproveusers-296-label">Auto Approve Users</span>
+            <div class="field-row__value"><label class="checkbox">
+              <input type="checkbox" class="checkbox__input" id="f-autoapproveusers-296" aria-labelledby="f-autoapproveusers-296-label" checked aria-describedby="f-autoapproveusers-296-help">
+              <span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span>
+            </label><p class="input__help field-row__help" id="f-autoapproveusers-296-help">Select to automatically approve the user if &#x27;Require Administrator Approval&#x27; is selected on Registration Profile or &#x27;Require User Approval&#x27; is selected on Member Type(s). This will upgrade the user to the Granted Content Security Right, add security group from Member Type, send the approval notification email, removes them from Pending Users and trigger Added to Security Group customer signals.</p></div>
+          </div></div>
+        </section><section class="record-section" aria-labelledby="sec-assignpaidsubscriptions">
+          <div class="record-section__header"><h2 class="record-section__title" id="sec-assignpaidsubscriptions">Assign Paid Subscriptions</h2></div>
+          <div class="record-section__body"><div class="edit-grid" id="acc-paid-grid" data-edit-grid>
+            
+            <div class="datatables"><div class="datatables__body"><table class="table" aria-label="Assign Paid Subscriptions">
+              <thead><tr><th>Order No.</th><th>Payment Status</th><th>Line Item</th><th>Zone</th><th>Subscription Plan</th><th>Start Date</th><th>End Date</th><th>Assignment Type</th><th>Max Subs</th><th>Assigned</th><th aria-label="Delete"></th></tr></thead>
+              <tbody><tr><td>100877</td><td>Paid</td><td>Affino Insight Premium × 10</td><td>Affino</td><td>Affino Insight Premium</td><td><div class="input"><div class="input__wrap"><input type="text" class="input__control" value="01 Jan 2026" aria-label="Start Date"></div></div></td><td><div class="input"><div class="input__wrap"><input type="text" class="input__control" value="31 Dec 2026" aria-label="End Date"></div></div></td><td><div class="input"><div class="input__wrap"><input type="text" class="input__control" value="Email domain" aria-label="Assignment Type"></div></div></td><td><div class="input"><div class="input__wrap"><input type="text" class="input__control" value="10" aria-label="Max Subs"></div></div></td><td>4</td><td class="datatables__col--tight"><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select row"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td></tr></tbody>
+            </table></div></div>
+            <div class="edit-grid__actions">
+              <button type="button" class="btn btn--secondary btn--sm" data-edit-grid-add><i data-lucide="plus" aria-hidden="true"></i><span>Add row</span></button>
+              <button type="button" class="btn btn--tertiary btn--sm" data-edit-grid-delete><i data-lucide="trash-2" aria-hidden="true"></i><span>Delete selected</span></button>
+            </div>
+            
+          </div></div>
+        </section><section class="record-section" aria-labelledby="sec-assignfreesubscriptions">
+          <div class="record-section__header"><h2 class="record-section__title" id="sec-assignfreesubscriptions">Assign Free Subscriptions</h2></div>
+          <div class="record-section__body"><div class="edit-grid" id="acc-free-grid" data-edit-grid>
+            
+            <div class="datatables"><div class="datatables__body"><table class="table" aria-label="Assign Free Subscriptions">
+              <thead><tr><th>Zone</th><th>Subscription Plan</th><th>Start Date</th><th>End Date</th><th>Assignment Type</th><th>Max Subs</th><th>Assigned</th><th aria-label="Delete"></th></tr></thead>
+              <tbody><tr><td><div class="input"><div class="input__wrap"><input type="text" class="input__control" value="Affino" aria-label="Zone"></div></div></td><td><div class="input"><div class="input__wrap"><input type="text" class="input__control" value="Affino Insight Premium" aria-label="Subscription Plan"></div></div></td><td><div class="input"><div class="input__wrap"><input type="text" class="input__control" value="01 Jan 2026" aria-label="Start Date"></div></div></td><td><div class="input"><div class="input__wrap"><input type="text" class="input__control" value="31 Dec 2026" aria-label="End Date"></div></div></td><td><div class="input"><div class="input__wrap"><input type="text" class="input__control" value="Email domain" aria-label="Assignment Type"></div></div></td><td><div class="input"><div class="input__wrap"><input type="text" class="input__control" value="10" aria-label="Max Subs"></div></div></td><td>4</td><td class="datatables__col--tight"><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select row"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td></tr></tbody>
+            </table></div></div>
+            <div class="edit-grid__actions">
+              <button type="button" class="btn btn--secondary btn--sm" data-edit-grid-add><i data-lucide="plus" aria-hidden="true"></i><span>Add row</span></button>
+              <button type="button" class="btn btn--tertiary btn--sm" data-edit-grid-delete><i data-lucide="trash-2" aria-hidden="true"></i><span>Delete selected</span></button>
+            </div>
+            
+          </div></div>
+        </section><section class="record-section" aria-labelledby="sec-overflownotifications">
+          <div class="record-section__header"><h2 class="record-section__title" id="sec-overflownotifications">Overflow Notifications</h2></div>
+          <div class="record-section__body"><div class="field-row field-row--edit field-row--has-help">
+            <span class="field-row__label" id="f-sendoverflownotification-297-label">Send Overflow Notifications</span>
+            <div class="field-row__value"><div class="tag-box" data-tag-box>
+              <ul class="tag-box__tags" id="f-sendoverflownotification-297" aria-label="Send Overflow Notifications" data-empty="None selected" aria-describedby="f-sendoverflownotification-297-help"><li class="badge badge--neutral"><span>Account primary contact</span><button type="button" class="badge__close" aria-label="Remove Account primary contact"><i data-lucide="x" aria-hidden="true"></i></button></li><li class="badge badge--neutral"><span>Account manager</span><button type="button" class="badge__close" aria-label="Remove Account manager"><i data-lucide="x" aria-hidden="true"></i></button></li></ul>
+              <button type="button" class="btn btn--secondary btn--sm" data-tag-box-select="modal-acc-overflow" aria-haspopup="dialog"><span>Select</span></button>
+            </div><p class="input__help field-row__help" id="f-sendoverflownotification-297-help">Select to send a message to the registrant, account primary contact, account manager and/or display an on-screen notice when a subscription level has been oversubscribed. The message settings are set on the Store Profile.</p></div>
+          </div></div>
+        </section><section class="record-section" aria-labelledby="sec-eventcredits">
+          <div class="record-section__header"><h2 class="record-section__title" id="sec-eventcredits">Event Credits</h2></div>
+          <div class="record-section__body"><div class="edit-grid" id="acc-credit-grid" data-edit-grid>
+            
+            <div class="datatables"><div class="datatables__body"><table class="table" aria-label="Event Credits">
+              <thead><tr><th>Catalogue Items</th><th>Product Lines</th><th>Total Credits</th><th>Used Credits</th><th>Max Credits per Item</th><th>Start Date</th><th>End Date</th><th>Security Group</th><th aria-label="Delete"></th></tr></thead>
+              <tbody><tr><td><div class="input"><div class="input__wrap"><input type="text" class="input__control" value="" aria-label="Catalogue Items"></div></div></td><td><div class="input"><div class="input__wrap"><input type="text" class="input__control" value="" aria-label="Product Lines"></div></div></td><td><div class="input"><div class="input__wrap"><input type="text" class="input__control" value="" aria-label="Total Credits"></div></div></td><td>-</td><td><div class="input"><div class="input__wrap"><input type="text" class="input__control" value="" aria-label="Max Credits per Item"></div></div></td><td><div class="input"><div class="input__wrap"><input type="text" class="input__control" value="" aria-label="Start Date"></div></div></td><td><div class="input"><div class="input__wrap"><input type="text" class="input__control" value="" aria-label="End Date"></div></div></td><td><div class="input"><div class="input__wrap"><input type="text" class="input__control" value="" aria-label="Security Group"></div></div></td><td class="datatables__col--tight"><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select row"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td></tr></tbody>
+            </table></div></div>
+            <div class="edit-grid__actions">
+              <button type="button" class="btn btn--secondary btn--sm" data-edit-grid-add><i data-lucide="plus" aria-hidden="true"></i><span>Add row</span></button>
+              <button type="button" class="btn btn--tertiary btn--sm" data-edit-grid-delete><i data-lucide="trash-2" aria-hidden="true"></i><span>Delete selected</span></button>
+            </div>
+            
           </div></div>
         </section></div></div>
       </div>
@@ -1522,272 +1820,222 @@
       if (window.lucide) window.lucide.createIcons();
     });
   </script>
-<div class="modal-overlay" id="modal-step-sort" role="presentation" data-selector="sort" data-sort-this="New step">
-    <div class="modal selector selector--sort" role="dialog" aria-modal="true" aria-labelledby="modal-step-sort-title">
+<div class="modal-overlay" id="modal-acc-topics" role="presentation" data-selector="multi">
+    <div class="modal filter-dropdowns__modal" role="dialog" aria-modal="true" aria-labelledby="modal-acc-topics-title">
       <div class="modal__header">
-        <div class="modal__title-block"><h2 class="modal__title" id="modal-step-sort-title">Sort Order</h2><p class="modal__subtitle">22 steps in this article. Drag, use the arrows, or type a position.</p></div>
+        <h2 class="modal__title" id="modal-acc-topics-title">Select Topics and Keywords</h2>
         <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
       </div>
-      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets selector__toolbar">
-        <div class="search search--sm selector__search">
+      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets"><div class="search search--sm selector__search">
           <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
-          <input class="search__input" type="search" placeholder="Find a step" aria-label="Find a step" aria-controls="modal-step-sort-results" data-selector-search>
-        </div>
-        <button type="button" class="btn btn--tertiary btn--sm" data-sort-jump><i data-lucide="locate-fixed" aria-hidden="true"></i><span>Jump to the new step</span></button>
+          <input class="search__input" type="search" placeholder="Search by name" aria-label="Search by name" aria-controls="modal-acc-topics-results" data-selector-search>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Parent Section" data-selector-facet>
+          <button type="button" class="filter-item__clear" aria-label="Clear Parent Section filter"><i data-lucide="x" aria-hidden="true"></i></button>
+          <button type="button" class="filter-item__trigger" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Parent Section</span><span class="filter-item__sep" aria-hidden="true">·</span><span class="filter-item__values"></span><i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i></button>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Channel" data-selector-facet>
+          <button type="button" class="filter-item__clear" aria-label="Clear Channel filter"><i data-lucide="x" aria-hidden="true"></i></button>
+          <button type="button" class="filter-item__trigger" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Channel</span><span class="filter-item__sep" aria-hidden="true">·</span><span class="filter-item__values"></span><i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i></button>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Zone" data-selector-facet>
+          <button type="button" class="filter-item__clear" aria-label="Clear Zone filter"><i data-lucide="x" aria-hidden="true"></i></button>
+          <button type="button" class="filter-item__trigger" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Zone</span><span class="filter-item__sep" aria-hidden="true">·</span><span class="filter-item__values"></span><i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i></button>
+        </div></div>
+      <div class="filter-dropdowns__table-region modal__scroll">
+        <div class="datatables"><div class="datatables__body">
+          <table class="table">
+            <thead><tr>
+              <th class="datatables__col--tight"><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select all"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></th>
+              <th><button class="datatables__sort datatables__sort--active" type="button">Name <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="datatables__sort" type="button">Parent Section <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="datatables__sort" type="button">Channel <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="datatables__sort" type="button">Zone <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th class="datatables__col--tight" aria-label="Open"></th>
+            </tr></thead>
+            <tbody><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Analysis"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Analysis</td><td>—</td><td>Topics</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Analysis"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Campaigns"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Campaigns</td><td>—</td><td>Topics</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Campaigns"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Commerce"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Commerce</td><td>—</td><td>Topics</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Commerce"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Content Management"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Content Management</td><td>—</td><td>Topics</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Content Management"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select eMedia"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>eMedia</td><td>—</td><td>Topics</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open eMedia"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Events"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Events</td><td>—</td><td>Topics</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Events"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Funding"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Funding</td><td>—</td><td>Topics</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Funding"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr></tbody>
+          </table>
+          <p class="selector__empty" data-selector-empty hidden><i data-lucide="search-x" aria-hidden="true"></i><span>No matches. Try a different search.</span></p>
+        </div></div>
       </div>
-      <p class="selector__hint" data-sort-hint hidden><i data-lucide="info" aria-hidden="true"></i><span>Dragging is paused while searching. The arrows and positions still work.</span></p>
-      <div class="selector__region modal__scroll" id="modal-step-sort-results">
-        <ol class="selector__sort-list" data-sort-list><li class="selector__sort-row" data-selector-item="Agent Access - Let Trusted AI Agents Operate Affino for You, in the Browser and Beyond" data-sort-key="1">
-            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
-            <input class="selector__position" type="text" inputmode="numeric" value="1" aria-label="Position of Agent Access - Let Trusted AI Agents Operate Affino for You, in the Browser and Beyond, 1 to 22" data-sort-position>
-            
-            <span class="selector__sort-title">Agent Access - Let Trusted AI Agents Operate Affino for You, in the Browser and Beyond</span>
-            <span class="selector__sort-actions">
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
-            </span>
-          </li><li class="selector__sort-row" data-selector-item="Awards &amp; Events - A Smoother Run From Entry to Judging to Event Day" data-sort-key="2">
-            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
-            <input class="selector__position" type="text" inputmode="numeric" value="2" aria-label="Position of Awards &amp; Events - A Smoother Run From Entry to Judging to Event Day, 1 to 22" data-sort-position>
-            
-            <span class="selector__sort-title">Awards &amp; Events - A Smoother Run From Entry to Judging to Event Day</span>
-            <span class="selector__sort-actions">
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
-            </span>
-          </li><li class="selector__sort-row" data-selector-item="Commercial Flexibility - Sell for Different Entities and Under Different Terms From One Store" data-sort-key="3">
-            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
-            <input class="selector__position" type="text" inputmode="numeric" value="3" aria-label="Position of Commercial Flexibility - Sell for Different Entities and Under Different Terms From One Store, 1 to 22" data-sort-position>
-            
-            <span class="selector__sort-title">Commercial Flexibility - Sell for Different Entities and Under Different Terms From One Store</span>
-            <span class="selector__sort-actions">
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
-            </span>
-          </li><li class="selector__sort-row" data-selector-item="Upgrade Guidance" data-sort-key="4">
-            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
-            <input class="selector__position" type="text" inputmode="numeric" value="4" aria-label="Position of Upgrade Guidance, 1 to 22" data-sort-position>
-            
-            <span class="selector__sort-title">Upgrade Guidance</span>
-            <span class="selector__sort-actions">
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
-            </span>
-          </li><li class="selector__sort-row" data-selector-item="AI and Intelligence" data-sort-key="5">
-            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
-            <input class="selector__position" type="text" inputmode="numeric" value="5" aria-label="Position of AI and Intelligence, 1 to 22" data-sort-position>
-            
-            <span class="selector__sort-title">AI and Intelligence</span>
-            <span class="selector__sort-actions">
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
-            </span>
-          </li><li class="selector__sort-row" data-selector-item="Marketing" data-sort-key="6">
-            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
-            <input class="selector__position" type="text" inputmode="numeric" value="6" aria-label="Position of Marketing, 1 to 22" data-sort-position>
-            
-            <span class="selector__sort-title">Marketing</span>
-            <span class="selector__sort-actions">
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
-            </span>
-          </li><li class="selector__sort-row" data-selector-item="Content and Publishing" data-sort-key="7">
-            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
-            <input class="selector__position" type="text" inputmode="numeric" value="7" aria-label="Position of Content and Publishing, 1 to 22" data-sort-position>
-            
-            <span class="selector__sort-title">Content and Publishing</span>
-            <span class="selector__sort-actions">
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
-            </span>
-          </li><li class="selector__sort-row" data-selector-item="Commerce" data-sort-key="8">
-            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
-            <input class="selector__position" type="text" inputmode="numeric" value="8" aria-label="Position of Commerce, 1 to 22" data-sort-position>
-            
-            <span class="selector__sort-title">Commerce</span>
-            <span class="selector__sort-actions">
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
-            </span>
-          </li><li class="selector__sort-row" data-selector-item="Automation" data-sort-key="9">
-            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
-            <input class="selector__position" type="text" inputmode="numeric" value="9" aria-label="Position of Automation, 1 to 22" data-sort-position>
-            
-            <span class="selector__sort-title">Automation</span>
-            <span class="selector__sort-actions">
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
-            </span>
-          </li><li class="selector__sort-row" data-selector-item="Subscriptions" data-sort-key="10">
-            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
-            <input class="selector__position" type="text" inputmode="numeric" value="10" aria-label="Position of Subscriptions, 1 to 22" data-sort-position>
-            
-            <span class="selector__sort-title">Subscriptions</span>
-            <span class="selector__sort-actions">
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
-            </span>
-          </li><li class="selector__sort-row" data-selector-item="Messaging" data-sort-key="11">
-            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
-            <input class="selector__position" type="text" inputmode="numeric" value="11" aria-label="Position of Messaging, 1 to 22" data-sort-position>
-            
-            <span class="selector__sort-title">Messaging</span>
-            <span class="selector__sort-actions">
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
-            </span>
-          </li><li class="selector__sort-row" data-selector-item="CRM and Contacts" data-sort-key="12">
-            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
-            <input class="selector__position" type="text" inputmode="numeric" value="12" aria-label="Position of CRM and Contacts, 1 to 22" data-sort-position>
-            
-            <span class="selector__sort-title">CRM and Contacts</span>
-            <span class="selector__sort-actions">
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
-            </span>
-          </li><li class="selector__sort-row" data-selector-item="Analytics" data-sort-key="13">
-            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
-            <input class="selector__position" type="text" inputmode="numeric" value="13" aria-label="Position of Analytics, 1 to 22" data-sort-position>
-            
-            <span class="selector__sort-title">Analytics</span>
-            <span class="selector__sort-actions">
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
-            </span>
-          </li><li class="selector__sort-row" data-selector-item="Security and Privacy" data-sort-key="14">
-            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
-            <input class="selector__position" type="text" inputmode="numeric" value="14" aria-label="Position of Security and Privacy, 1 to 22" data-sort-position>
-            
-            <span class="selector__sort-title">Security and Privacy</span>
-            <span class="selector__sort-actions">
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
-            </span>
-          </li><li class="selector__sort-row" data-selector-item="Events" data-sort-key="15">
-            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
-            <input class="selector__position" type="text" inputmode="numeric" value="15" aria-label="Position of Events, 1 to 22" data-sort-position>
-            
-            <span class="selector__sort-title">Events</span>
-            <span class="selector__sort-actions">
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
-            </span>
-          </li><li class="selector__sort-row" data-selector-item="Platform, Security &amp; Performance" data-sort-key="16">
-            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
-            <input class="selector__position" type="text" inputmode="numeric" value="16" aria-label="Position of Platform, Security &amp; Performance, 1 to 22" data-sort-position>
-            
-            <span class="selector__sort-title">Platform, Security &amp; Performance</span>
-            <span class="selector__sort-actions">
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
-            </span>
-          </li><li class="selector__sort-row" data-selector-item="Removed" data-sort-key="17">
-            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
-            <input class="selector__position" type="text" inputmode="numeric" value="17" aria-label="Position of Removed, 1 to 22" data-sort-position>
-            
-            <span class="selector__sort-title">Removed</span>
-            <span class="selector__sort-actions">
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
-            </span>
-          </li><li class="selector__sort-row" data-selector-item="Integration Updates" data-sort-key="18">
-            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
-            <input class="selector__position" type="text" inputmode="numeric" value="18" aria-label="Position of Integration Updates, 1 to 22" data-sort-position>
-            
-            <span class="selector__sort-title">Integration Updates</span>
-            <span class="selector__sort-actions">
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
-            </span>
-          </li><li class="selector__sort-row" data-selector-item="Component Changes" data-sort-key="19">
-            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
-            <input class="selector__position" type="text" inputmode="numeric" value="19" aria-label="Position of Component Changes, 1 to 22" data-sort-position>
-            
-            <span class="selector__sort-title">Component Changes</span>
-            <span class="selector__sort-actions">
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
-            </span>
-          </li><li class="selector__sort-row" data-selector-item="Help Guides" data-sort-key="20">
-            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
-            <input class="selector__position" type="text" inputmode="numeric" value="20" aria-label="Position of Help Guides, 1 to 22" data-sort-position>
-            
-            <span class="selector__sort-title">Help Guides</span>
-            <span class="selector__sort-actions">
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
-            </span>
-          </li><li class="selector__sort-row" data-selector-item="Help Guides" data-sort-key="21">
-            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
-            <input class="selector__position" type="text" inputmode="numeric" value="21" aria-label="Position of Help Guides, 1 to 22" data-sort-position>
-            
-            <span class="selector__sort-title">Help Guides</span>
-            <span class="selector__sort-actions">
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
-            </span>
-          </li><li class="selector__sort-row selector__sort-row--current" data-selector-item="The step you are adding" data-sort-key="0">
-            <span class="selector__grip" data-sort-grip title="Drag to reorder" aria-hidden="true"><i data-lucide="grip-vertical" aria-hidden="true"></i></span>
-            <input class="selector__position" type="text" inputmode="numeric" value="22" aria-label="Position of The step you are adding, 1 to 22" data-sort-position>
-            
-            <span class="selector__sort-title">The step you are adding<span class="badge badge--info badge--sm selector__this">New step</span></span>
-            <span class="selector__sort-actions">
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to top" data-sort-move="top"><i data-lucide="arrow-up-to-line" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move up" data-sort-move="up"><i data-lucide="arrow-up" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move down" data-sort-move="down"><i data-lucide="arrow-down" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn--tertiary btn--sm btn--icon" aria-label="Move to bottom" data-sort-move="bottom"><i data-lucide="arrow-down-to-line" aria-hidden="true"></i></button>
-            </span>
-          </li></ol>
-        <p class="selector__empty" data-selector-empty hidden><i data-lucide="search-x" aria-hidden="true"></i><span>No matches. Try a different search.</span></p>
-      </div>
-      <p class="selector__live" aria-live="polite" data-sort-live></p>
       <div class="modal__footer selector__footer">
-        <span class="selector__status" data-selector-count></span>
-        <button type="button" class="btn btn--tertiary" data-sort-reset>Reset</button>
+        <span class="selector__status" data-selector-count aria-live="polite"></span>
         <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
-        <button type="button" class="btn btn--primary" data-selector-apply>Save order</button>
+        <button type="button" class="btn btn--primary" data-filter-dropdowns-apply>Apply</button>
+      </div>
+    </div>
+  </div><div class="modal-overlay" id="modal-acc-accounts" role="presentation" data-selector="multi">
+    <div class="modal filter-dropdowns__modal" role="dialog" aria-modal="true" aria-labelledby="modal-acc-accounts-title">
+      <div class="modal__header">
+        <h2 class="modal__title" id="modal-acc-accounts-title">Select Accounts</h2>
+        <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets"><div class="search search--sm selector__search">
+          <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+          <input class="search__input" type="search" placeholder="Search by name" aria-label="Search by name" aria-controls="modal-acc-accounts-results" data-selector-search>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Parent Section" data-selector-facet>
+          <button type="button" class="filter-item__clear" aria-label="Clear Parent Section filter"><i data-lucide="x" aria-hidden="true"></i></button>
+          <button type="button" class="filter-item__trigger" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Parent Section</span><span class="filter-item__sep" aria-hidden="true">·</span><span class="filter-item__values"></span><i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i></button>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Channel" data-selector-facet>
+          <button type="button" class="filter-item__clear" aria-label="Clear Channel filter"><i data-lucide="x" aria-hidden="true"></i></button>
+          <button type="button" class="filter-item__trigger" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Channel</span><span class="filter-item__sep" aria-hidden="true">·</span><span class="filter-item__values"></span><i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i></button>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Zone" data-selector-facet>
+          <button type="button" class="filter-item__clear" aria-label="Clear Zone filter"><i data-lucide="x" aria-hidden="true"></i></button>
+          <button type="button" class="filter-item__trigger" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Zone</span><span class="filter-item__sep" aria-hidden="true">·</span><span class="filter-item__values"></span><i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i></button>
+        </div></div>
+      <div class="filter-dropdowns__table-region modal__scroll">
+        <div class="datatables"><div class="datatables__body">
+          <table class="table">
+            <thead><tr>
+              <th class="datatables__col--tight"><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select all"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></th>
+              <th><button class="datatables__sort datatables__sort--active" type="button">Name <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="datatables__sort" type="button">Parent Section <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="datatables__sort" type="button">Channel <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="datatables__sort" type="button">Zone <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th class="datatables__col--tight" aria-label="Open"></th>
+            </tr></thead>
+            <tbody><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Carver Street Events"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Carver Street Events</td><td>—</td><td>Accounts</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Carver Street Events"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Harbour Lane Publishing"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Harbour Lane Publishing</td><td>—</td><td>Accounts</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Harbour Lane Publishing"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Clearwater Publishing"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Clearwater Publishing</td><td>—</td><td>Accounts</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Clearwater Publishing"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr></tbody>
+          </table>
+          <p class="selector__empty" data-selector-empty hidden><i data-lucide="search-x" aria-hidden="true"></i><span>No matches. Try a different search.</span></p>
+        </div></div>
+      </div>
+      <div class="modal__footer selector__footer">
+        <span class="selector__status" data-selector-count aria-live="polite"></span>
+        <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
+        <button type="button" class="btn btn--primary" data-filter-dropdowns-apply>Apply</button>
+      </div>
+    </div>
+  </div><div class="modal-overlay" id="modal-acc-contacts" role="presentation" data-selector="multi">
+    <div class="modal filter-dropdowns__modal" role="dialog" aria-modal="true" aria-labelledby="modal-acc-contacts-title">
+      <div class="modal__header">
+        <h2 class="modal__title" id="modal-acc-contacts-title">Select Contacts</h2>
+        <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets"><div class="search search--sm selector__search">
+          <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+          <input class="search__input" type="search" placeholder="Search by name" aria-label="Search by name" aria-controls="modal-acc-contacts-results" data-selector-search>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Parent Section" data-selector-facet>
+          <button type="button" class="filter-item__clear" aria-label="Clear Parent Section filter"><i data-lucide="x" aria-hidden="true"></i></button>
+          <button type="button" class="filter-item__trigger" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Parent Section</span><span class="filter-item__sep" aria-hidden="true">·</span><span class="filter-item__values"></span><i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i></button>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Channel" data-selector-facet>
+          <button type="button" class="filter-item__clear" aria-label="Clear Channel filter"><i data-lucide="x" aria-hidden="true"></i></button>
+          <button type="button" class="filter-item__trigger" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Channel</span><span class="filter-item__sep" aria-hidden="true">·</span><span class="filter-item__values"></span><i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i></button>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Zone" data-selector-facet>
+          <button type="button" class="filter-item__clear" aria-label="Clear Zone filter"><i data-lucide="x" aria-hidden="true"></i></button>
+          <button type="button" class="filter-item__trigger" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Zone</span><span class="filter-item__sep" aria-hidden="true">·</span><span class="filter-item__values"></span><i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i></button>
+        </div></div>
+      <div class="filter-dropdowns__table-region modal__scroll">
+        <div class="datatables"><div class="datatables__body">
+          <table class="table">
+            <thead><tr>
+              <th class="datatables__col--tight"><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select all"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></th>
+              <th><button class="datatables__sort datatables__sort--active" type="button">Name <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="datatables__sort" type="button">Parent Section <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="datatables__sort" type="button">Channel <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="datatables__sort" type="button">Zone <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th class="datatables__col--tight" aria-label="Open"></th>
+            </tr></thead>
+            <tbody><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Olivia Bennett"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Olivia Bennett</td><td>—</td><td>Contacts</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Olivia Bennett"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select James Okafor"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>James Okafor</td><td>—</td><td>Contacts</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open James Okafor"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Priya Desai"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Priya Desai</td><td>—</td><td>Contacts</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Priya Desai"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Tom Hartley"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Tom Hartley</td><td>—</td><td>Contacts</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Tom Hartley"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Sarah Lindqvist"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Sarah Lindqvist</td><td>—</td><td>Contacts</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Sarah Lindqvist"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Ben Asante"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Ben Asante</td><td>—</td><td>Contacts</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Ben Asante"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Markus Karlsson"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Markus Karlsson</td><td>—</td><td>Contacts</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Markus Karlsson"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Luis Montiel"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Luis Montiel</td><td>—</td><td>Contacts</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Luis Montiel"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr></tbody>
+          </table>
+          <p class="selector__empty" data-selector-empty hidden><i data-lucide="search-x" aria-hidden="true"></i><span>No matches. Try a different search.</span></p>
+        </div></div>
+      </div>
+      <div class="modal__footer selector__footer">
+        <span class="selector__status" data-selector-count aria-live="polite"></span>
+        <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
+        <button type="button" class="btn btn--primary" data-filter-dropdowns-apply>Apply</button>
+      </div>
+    </div>
+  </div><div class="modal-overlay" id="modal-acc-content" role="presentation" data-selector="multi">
+    <div class="modal filter-dropdowns__modal" role="dialog" aria-modal="true" aria-labelledby="modal-acc-content-title">
+      <div class="modal__header">
+        <h2 class="modal__title" id="modal-acc-content-title">Select Content</h2>
+        <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets"><div class="search search--sm selector__search">
+          <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+          <input class="search__input" type="search" placeholder="Search by name" aria-label="Search by name" aria-controls="modal-acc-content-results" data-selector-search>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Parent Section" data-selector-facet>
+          <button type="button" class="filter-item__clear" aria-label="Clear Parent Section filter"><i data-lucide="x" aria-hidden="true"></i></button>
+          <button type="button" class="filter-item__trigger" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Parent Section</span><span class="filter-item__sep" aria-hidden="true">·</span><span class="filter-item__values"></span><i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i></button>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Channel" data-selector-facet>
+          <button type="button" class="filter-item__clear" aria-label="Clear Channel filter"><i data-lucide="x" aria-hidden="true"></i></button>
+          <button type="button" class="filter-item__trigger" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Channel</span><span class="filter-item__sep" aria-hidden="true">·</span><span class="filter-item__values"></span><i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i></button>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Zone" data-selector-facet>
+          <button type="button" class="filter-item__clear" aria-label="Clear Zone filter"><i data-lucide="x" aria-hidden="true"></i></button>
+          <button type="button" class="filter-item__trigger" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Zone</span><span class="filter-item__sep" aria-hidden="true">·</span><span class="filter-item__values"></span><i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i></button>
+        </div></div>
+      <div class="filter-dropdowns__table-region modal__scroll">
+        <div class="datatables"><div class="datatables__body">
+          <table class="table">
+            <thead><tr>
+              <th class="datatables__col--tight"><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select all"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></th>
+              <th><button class="datatables__sort datatables__sort--active" type="button">Name <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="datatables__sort" type="button">Parent Section <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="datatables__sort" type="button">Channel <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="datatables__sort" type="button">Zone <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th class="datatables__col--tight" aria-label="Open"></th>
+            </tr></thead>
+            <tbody><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Media pack 2026"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Media pack 2026</td><td>—</td><td>Content</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Media pack 2026"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Northbridge Media at a glance"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Northbridge Media at a glance</td><td>—</td><td>Content</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Northbridge Media at a glance"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr></tbody>
+          </table>
+          <p class="selector__empty" data-selector-empty hidden><i data-lucide="search-x" aria-hidden="true"></i><span>No matches. Try a different search.</span></p>
+        </div></div>
+      </div>
+      <div class="modal__footer selector__footer">
+        <span class="selector__status" data-selector-count aria-live="polite"></span>
+        <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
+        <button type="button" class="btn btn--primary" data-filter-dropdowns-apply>Apply</button>
+      </div>
+    </div>
+  </div><div class="modal-overlay" id="modal-acc-overflow" role="presentation" data-selector="multi">
+    <div class="modal filter-dropdowns__modal" role="dialog" aria-modal="true" aria-labelledby="modal-acc-overflow-title">
+      <div class="modal__header">
+        <h2 class="modal__title" id="modal-acc-overflow-title">Select Notifications</h2>
+        <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
+      </div>
+      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets"><div class="search search--sm selector__search">
+          <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
+          <input class="search__input" type="search" placeholder="Search by name" aria-label="Search by name" aria-controls="modal-acc-overflow-results" data-selector-search>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Parent Section" data-selector-facet>
+          <button type="button" class="filter-item__clear" aria-label="Clear Parent Section filter"><i data-lucide="x" aria-hidden="true"></i></button>
+          <button type="button" class="filter-item__trigger" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Parent Section</span><span class="filter-item__sep" aria-hidden="true">·</span><span class="filter-item__values"></span><i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i></button>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Channel" data-selector-facet>
+          <button type="button" class="filter-item__clear" aria-label="Clear Channel filter"><i data-lucide="x" aria-hidden="true"></i></button>
+          <button type="button" class="filter-item__trigger" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Channel</span><span class="filter-item__sep" aria-hidden="true">·</span><span class="filter-item__values"></span><i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i></button>
+        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Zone" data-selector-facet>
+          <button type="button" class="filter-item__clear" aria-label="Clear Zone filter"><i data-lucide="x" aria-hidden="true"></i></button>
+          <button type="button" class="filter-item__trigger" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Zone</span><span class="filter-item__sep" aria-hidden="true">·</span><span class="filter-item__values"></span><i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i></button>
+        </div></div>
+      <div class="filter-dropdowns__table-region modal__scroll">
+        <div class="datatables"><div class="datatables__body">
+          <table class="table">
+            <thead><tr>
+              <th class="datatables__col--tight"><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select all"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></th>
+              <th><button class="datatables__sort datatables__sort--active" type="button">Name <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="datatables__sort" type="button">Parent Section <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="datatables__sort" type="button">Channel <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th><button class="datatables__sort" type="button">Zone <i data-lucide="chevrons-up-down" aria-hidden="true"></i></button></th>
+              <th class="datatables__col--tight" aria-label="Open"></th>
+            </tr></thead>
+            <tbody><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Registrant"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Registrant</td><td>—</td><td>Notifications</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Registrant"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Account primary contact"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Account primary contact</td><td>—</td><td>Notifications</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Account primary contact"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select Account manager"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>Account manager</td><td>—</td><td>Notifications</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open Account manager"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr><tr><td><label class="checkbox"><input type="checkbox" class="checkbox__input" aria-label="Select On-screen notice"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span></label></td><td>On-screen notice</td><td>—</td><td>Notifications</td><td>Affino</td><td><a class="filter-dropdowns__linkcell" href="#" aria-label="Open On-screen notice"><i data-lucide="external-link" aria-hidden="true"></i></a></td></tr></tbody>
+          </table>
+          <p class="selector__empty" data-selector-empty hidden><i data-lucide="search-x" aria-hidden="true"></i><span>No matches. Try a different search.</span></p>
+        </div></div>
+      </div>
+      <div class="modal__footer selector__footer">
+        <span class="selector__status" data-selector-count aria-live="polite"></span>
+        <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
+        <button type="button" class="btn btn--primary" data-filter-dropdowns-apply>Apply</button>
+      </div>
+    </div>
+  </div><div class="modal-overlay" id="modal-delete" role="presentation">
+    <div class="modal modal--confirm" role="alertdialog" aria-modal="true" aria-labelledby="modal-delete-title" aria-describedby="modal-delete-desc">
+      <div class="modal__body">
+        <div class="modal__icon-wrap"><i data-lucide="triangle-alert" aria-hidden="true"></i></div>
+        <h2 class="modal__confirm-title" id="modal-delete-title">Delete this account?</h2>
+        <p class="modal__confirm-desc" id="modal-delete-desc">“Northbridge Media” will be permanently deleted. This cannot be undone.</p>
+      </div>
+      <div class="modal__footer">
+        <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
+        <!-- TODO(backend:RecordScreen): Delete is mock (closes only) → v1 delete action for the article, then return to the listing -->
+        <button type="button" class="btn btn--alert" data-modal-cancel data-backend-todo="record-delete"><i data-lucide="trash-2" aria-hidden="true"></i><span>Delete</span></button>
       </div>
     </div>
   </div><div class="modal-overlay" id="modal-media" role="presentation" data-selector="media">
@@ -1946,149 +2194,6 @@
         <span class="selector__status" data-selector-count aria-live="polite">Nothing selected</span>
         <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
         <button type="button" class="btn btn--primary" data-selector-apply disabled>Use image</button>
-      </div>
-    </div>
-  </div><div class="modal-overlay" id="modal-multimedia" role="presentation" data-selector="media">
-    <div class="modal selector selector--media" role="dialog" aria-modal="true" aria-labelledby="modal-multimedia-title">
-      <div class="modal__header">
-        <div class="modal__title-block"><h2 class="modal__title" id="modal-multimedia-title">Select Multimedia</h2></div>
-        <button class="modal__close" type="button" aria-label="Close"><i data-lucide="x" aria-hidden="true"></i></button>
-      </div>
-      <div class="filter-dropdowns__facets filter-dropdowns__modal-facets selector__toolbar">
-        <div class="search search--sm selector__search">
-          <span class="search__icon"><i data-lucide="search" aria-hidden="true"></i></span>
-          <input class="search__input" type="search" placeholder="Search media" aria-label="Search media" aria-controls="modal-multimedia-results" data-selector-search>
-        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Media Type" data-selector-facet>
-          <button type="button" class="filter-item__clear" aria-label="Clear Media Type filter"><i data-lucide="x" aria-hidden="true"></i></button>
-          <button type="button" class="filter-item__trigger" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Media Type</span><span class="filter-item__sep" aria-hidden="true">·</span><span class="filter-item__values"></span><i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i></button>
-        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Section" data-selector-facet>
-          <button type="button" class="filter-item__clear" aria-label="Clear Section filter"><i data-lucide="x" aria-hidden="true"></i></button>
-          <button type="button" class="filter-item__trigger" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Section</span><span class="filter-item__sep" aria-hidden="true">·</span><span class="filter-item__values"></span><i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i></button>
-        </div><div class="filter-item filter-item--empty filter-item--rounded" data-filter-name="Creator" data-selector-facet>
-          <button type="button" class="filter-item__clear" aria-label="Clear Creator filter"><i data-lucide="x" aria-hidden="true"></i></button>
-          <button type="button" class="filter-item__trigger" aria-haspopup="dialog" aria-expanded="false"><i data-lucide="plus" class="filter-item__add" aria-hidden="true"></i><span class="filter-item__name">Creator</span><span class="filter-item__sep" aria-hidden="true">·</span><span class="filter-item__values"></span><i data-lucide="chevron-down" class="filter-item__chevron" aria-hidden="true"></i></button>
-        </div>
-        <label class="checkbox selector__mine"><input type="checkbox" class="checkbox__input"><span class="checkbox__indicator"><i data-lucide="check" aria-hidden="true"></i></span><span class="checkbox__label"><span class="checkbox__label-text">My media</span></span></label>
-        <button type="button" class="btn btn--secondary btn--sm" data-backend-todo="selector-media-upload"><i data-lucide="upload" aria-hidden="true"></i><span>Upload</span></button>
-      </div>
-      <div class="selector__region modal__scroll" id="modal-multimedia-results">
-        <ul class="selector__grid" role="list"><li class="selector__tile-item" data-selector-item="Screen Recording 2026 09 21 at 14" data-facets="{&quot;Media Type&quot;: &quot;MP4&quot;, &quot;Section&quot;: &quot;Athene Forum Media&quot;, &quot;Creator&quot;: &quot;Alexandra Lima&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130167/256" data-icon="film" data-meta="MP4 · 2026-09-21">
-              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130167/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
-              <span class="selector__tile-text"><span class="selector__tile-name">Screen Recording 2026 09 21 at 14</span><span class="selector__tile-meta">MP4 · 2026-09-21</span></span>
-            </button>
-          </li><li class="selector__tile-item" data-selector-item="People Project" data-facets="{&quot;Media Type&quot;: &quot;ZIP&quot;, &quot;Section&quot;: &quot;The Stage Forum Media&quot;, &quot;Creator&quot;: &quot;Simon Hassell&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="" data-icon="file-text" data-meta="ZIP · 2026-09-18">
-              <span class="selector__tile-media"><span class="selector__tile-glyph"><i data-lucide="file-text" aria-hidden="true"></i></span><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
-              <span class="selector__tile-text"><span class="selector__tile-name">People Project</span><span class="selector__tile-meta">ZIP · 2026-09-18</span></span>
-            </button>
-          </li><li class="selector__tile-item" data-selector-item="People Project brief" data-facets="{&quot;Media Type&quot;: &quot;PDF&quot;, &quot;Section&quot;: &quot;The Stage Forum Media&quot;, &quot;Creator&quot;: &quot;Simon Hassell&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="" data-icon="file-text" data-meta="PDF · 2026-09-18">
-              <span class="selector__tile-media"><span class="selector__tile-glyph"><i data-lucide="file-text" aria-hidden="true"></i></span><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
-              <span class="selector__tile-text"><span class="selector__tile-name">People Project brief</span><span class="selector__tile-meta">PDF · 2026-09-18</span></span>
-            </button>
-          </li><li class="selector__tile-item" data-selector-item="bandicam 2023-09-01 16-36-38-665 - Trim" data-facets="{&quot;Media Type&quot;: &quot;MP4&quot;, &quot;Section&quot;: &quot;Affino Forum Media&quot;, &quot;Creator&quot;: &quot;Jose Claramunt&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media113092/256" data-icon="film" data-meta="MP4 · 2023-09-01">
-              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media113092/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
-              <span class="selector__tile-text"><span class="selector__tile-name">bandicam 2023-09-01 16-36-38-665 - Trim</span><span class="selector__tile-meta">MP4 · 2023-09-01</span></span>
-            </button>
-          </li><li class="selector__tile-item" data-selector-item="The Stage Affino 64 GB Data Service Proposal Sep 2023 v2" data-facets="{&quot;Media Type&quot;: &quot;PDF&quot;, &quot;Section&quot;: &quot;Contracts&quot;, &quot;Creator&quot;: &quot;Markus Karlsson&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="" data-icon="file-text" data-meta="PDF · 2023-09-01">
-              <span class="selector__tile-media"><span class="selector__tile-glyph"><i data-lucide="file-text" aria-hidden="true"></i></span><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
-              <span class="selector__tile-text"><span class="selector__tile-name">The Stage Affino 64 GB Data Service Proposal Sep 2023 v2</span><span class="selector__tile-meta">PDF · 2023-09-01</span></span>
-            </button>
-          </li><li class="selector__tile-item" data-selector-item="BASD Affino Service Renewal Proposal Sep v2" data-facets="{&quot;Media Type&quot;: &quot;PDF&quot;, &quot;Section&quot;: &quot;Contracts&quot;, &quot;Creator&quot;: &quot;Markus Karlsson&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="" data-icon="file-text" data-meta="PDF · 2023-09-01">
-              <span class="selector__tile-media"><span class="selector__tile-glyph"><i data-lucide="file-text" aria-hidden="true"></i></span><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
-              <span class="selector__tile-text"><span class="selector__tile-name">BASD Affino Service Renewal Proposal Sep v2</span><span class="selector__tile-meta">PDF · 2023-09-01</span></span>
-            </button>
-          </li><li class="selector__tile-item" data-selector-item="UserPreferencesExport V2" data-facets="{&quot;Media Type&quot;: &quot;XLSX&quot;, &quot;Section&quot;: &quot;Affino Forum Media&quot;, &quot;Creator&quot;: &quot;Jose Claramunt&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="" data-icon="file-text" data-meta="XLSX · 2023-09-01">
-              <span class="selector__tile-media"><span class="selector__tile-glyph"><i data-lucide="file-text" aria-hidden="true"></i></span><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
-              <span class="selector__tile-text"><span class="selector__tile-name">UserPreferencesExport V2</span><span class="selector__tile-meta">XLSX · 2023-09-01</span></span>
-            </button>
-          </li><li class="selector__tile-item" data-selector-item="StripeUS" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;The Payment Fintech Club&quot;, &quot;Creator&quot;: &quot;Laura Fanni&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130166/256" data-icon="image" data-meta="WebP · 2026-09-21">
-              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130166/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
-              <span class="selector__tile-text"><span class="selector__tile-name">StripeUS</span><span class="selector__tile-meta">WebP · 2026-09-21</span></span>
-            </button>
-          </li><li class="selector__tile-item" data-selector-item="StripeUK" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;The Payment Fintech Club&quot;, &quot;Creator&quot;: &quot;Laura Fanni&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130165/256" data-icon="image" data-meta="WebP · 2026-09-21">
-              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130165/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
-              <span class="selector__tile-text"><span class="selector__tile-name">StripeUK</span><span class="selector__tile-meta">WebP · 2026-09-21</span></span>
-            </button>
-          </li><li class="selector__tile-item" data-selector-item="image3" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;Charity Digital Forum Media&quot;, &quot;Creator&quot;: &quot;Laura Stanley&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130164/256" data-icon="image" data-meta="WebP · 2026-09-21">
-              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130164/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
-              <span class="selector__tile-text"><span class="selector__tile-name">image3</span><span class="selector__tile-meta">WebP · 2026-09-21</span></span>
-            </button>
-          </li><li class="selector__tile-item" data-selector-item="Screenshot 18 9 2026 162747 elitesoccercoaching.net" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;Green Star Media Forum Media&quot;, &quot;Creator&quot;: &quot;Kevin Barrow&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130163/256" data-icon="image" data-meta="WebP · 2026-09-18">
-              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130163/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
-              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot 18 9 2026 162747 elitesoccercoaching.net</span><span class="selector__tile-meta">WebP · 2026-09-18</span></span>
-            </button>
-          </li><li class="selector__tile-item" data-selector-item="Screenshot 18 9 2026 162732 elitesoccercoaching.net" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;Green Star Media Forum Media&quot;, &quot;Creator&quot;: &quot;Kevin Barrow&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130162/256" data-icon="image" data-meta="WebP · 2026-09-18">
-              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130162/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
-              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot 18 9 2026 162732 elitesoccercoaching.net</span><span class="selector__tile-meta">WebP · 2026-09-18</span></span>
-            </button>
-          </li><li class="selector__tile-item" data-selector-item="Screenshot 18 9 2026 162739 elitesoccercoaching.net" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;Green Star Media Forum Media&quot;, &quot;Creator&quot;: &quot;Kevin Barrow&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130161/256" data-icon="image" data-meta="WebP · 2026-09-18">
-              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130161/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
-              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot 18 9 2026 162739 elitesoccercoaching.net</span><span class="selector__tile-meta">WebP · 2026-09-18</span></span>
-            </button>
-          </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 17091959" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;CRM AgriCommodities Forum Media&quot;, &quot;Creator&quot;: &quot;James Bolesworth&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130158/256" data-icon="image" data-meta="WebP · 2026-09-17">
-              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130158/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
-              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 17091959</span><span class="selector__tile-meta">WebP · 2026-09-17</span></span>
-            </button>
-          </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 17085914" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;Charity Digital Forum Media&quot;, &quot;Creator&quot;: &quot;James Corcoran&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130157/256" data-icon="image" data-meta="WebP · 2026-09-17">
-              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130157/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
-              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 17085914</span><span class="selector__tile-meta">WebP · 2026-09-17</span></span>
-            </button>
-          </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 16161248" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;CRM AgriCommodities Forum Media&quot;, &quot;Creator&quot;: &quot;James Bolesworth&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130156/256" data-icon="image" data-meta="WebP · 2026-09-16">
-              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130156/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
-              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 16161248</span><span class="selector__tile-meta">WebP · 2026-09-16</span></span>
-            </button>
-          </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 16161236" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;CRM AgriCommodities Forum Media&quot;, &quot;Creator&quot;: &quot;James Bolesworth&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130155/256" data-icon="image" data-meta="WebP · 2026-09-16">
-              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130155/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
-              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 16161236</span><span class="selector__tile-meta">WebP · 2026-09-16</span></span>
-            </button>
-          </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 16143300" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;The Payment Fintech Club&quot;, &quot;Creator&quot;: &quot;Laura Fanni&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130154/256" data-icon="image" data-meta="WebP · 2026-09-16">
-              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130154/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
-              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 16143300</span><span class="selector__tile-meta">WebP · 2026-09-16</span></span>
-            </button>
-          </li><li class="selector__tile-item" data-selector-item="Screenshotfrom2026 09 1612 04 21" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;The Stage Forum Media&quot;, &quot;Creator&quot;: &quot;Zachariah Markusson&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130153/256" data-icon="image" data-meta="WebP · 2026-09-16">
-              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130153/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
-              <span class="selector__tile-text"><span class="selector__tile-name">Screenshotfrom2026 09 1612 04 21</span><span class="selector__tile-meta">WebP · 2026-09-16</span></span>
-            </button>
-          </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 16091012" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;CRM AgriCommodities Forum Media&quot;, &quot;Creator&quot;: &quot;James Bolesworth&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130152/256" data-icon="image" data-meta="WebP · 2026-09-16">
-              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130152/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
-              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 16091012</span><span class="selector__tile-meta">WebP · 2026-09-16</span></span>
-            </button>
-          </li><li class="selector__tile-item" data-selector-item="Screenshot2026 09 15173234" data-facets="{&quot;Media Type&quot;: &quot;WebP&quot;, &quot;Section&quot;: &quot;CRM AgriCommodities Forum Media&quot;, &quot;Creator&quot;: &quot;James Bolesworth&quot;}">
-            <button type="button" class="selector__tile" data-selector-pick aria-pressed="false" data-src="https://picsum.photos/seed/media130151/256" data-icon="image" data-meta="WebP · 2026-09-15">
-              <span class="selector__tile-media"><img src="https://picsum.photos/seed/media130151/256" alt="" loading="lazy"><span class="selector__tile-check"><i data-lucide="check" aria-hidden="true"></i></span></span>
-              <span class="selector__tile-text"><span class="selector__tile-name">Screenshot2026 09 15173234</span><span class="selector__tile-meta">WebP · 2026-09-15</span></span>
-            </button>
-          </li></ul>
-        <div class="selector__empty selector__empty--action" data-selector-empty hidden>
-          <i data-lucide="image-off" aria-hidden="true"></i>
-          <p class="selector__empty-text">No media matches. Upload it, or try a different search or filter.</p>
-          <button type="button" class="btn btn--primary btn--sm" data-backend-todo="selector-media-upload"><i data-lucide="upload" aria-hidden="true"></i><span>Upload</span></button>
-        </div>
-        <div class="selector__more"><span class="selector__more-count">Showing 21 of 21</span><button type="button" class="btn btn--secondary btn--sm" data-backend-todo="selector-media-source"><span>Load more</span></button></div>
-      </div>
-      <div class="modal__footer selector__footer">
-        <span class="selector__status" data-selector-count aria-live="polite">Nothing selected</span>
-        <button type="button" class="btn btn--secondary" data-modal-cancel>Cancel</button>
-        <button type="button" class="btn btn--primary" data-selector-apply disabled>Use media</button>
       </div>
     </div>
   </div>

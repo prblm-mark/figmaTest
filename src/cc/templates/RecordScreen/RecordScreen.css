@@ -476,7 +476,10 @@
    `min(100%, …)` so a single column never overflows a phone. */
 .contact-tab-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--ai-size-9)), 1fr));
+  /* auto-fit, not auto-fill (Mark, 2026-10-09): every grid holds a PAIR of cards, and auto-fill kept
+     an empty third track at wide widths, leaving a gap. auto-fit collapses it — two cards share the row,
+     and still stack once the column is narrower than two cards. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--ai-size-9)), 1fr));
   gap: var(--ai-spacing-5);
   /* Cards in a row match in height (designer, 2026-10-07): each stretches to the tallest. */
   align-items: stretch;
@@ -816,20 +819,20 @@
   margin: 0;
 }
 
-/* Payment / Refund Details grids (PaymentDetailsInclude.cfm): title, editable table, Add row /
-   Delete selected, help line. Status-driven (OrderEdit.js). */
-.order-edit__grid {
+/* Editable grid (record_markup.edit_grid): title, editable table, Add row / Delete selected, help
+   line — Order Payment / Refund Details, Account subscriptions and event credits. */
+.edit-grid {
   display: flex;
   flex-direction: column;
   gap: var(--ai-spacing-3);
   min-inline-size: 0;
 }
 
-.order-edit__grid[hidden] {
+.edit-grid[hidden] {
   display: none;
 }
 
-.order-edit__grid-title {
+.edit-grid__title {
   margin: 0;
   font-family: var(--ai-font-title);
   font-size: var(--ai-font-fixed-xs);
@@ -838,8 +841,49 @@
   color: var(--ai-text-primary);
 }
 
-.order-edit__grid-actions {
+.edit-grid__actions {
   display: flex;
   flex-wrap: wrap;
   gap: var(--ai-spacing-3);
+}
+
+/* Account View → Contacts tab: a contact cell, avatar beside name + job title (code-first, 2026-10-09). */
+.account-tab__person {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-spacing-3);
+  min-inline-size: 0;
+}
+
+.account-tab__person-text {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+
+/* Quick links (record_markup.quick_links, 2026-10-09): the live view's insight row — X, LinkedIn,
+   Google / ChatGPT / Perplexity searches, Google Maps — at the top of the sidebar Record panel. The
+   brand marks are 24px images (icon-size-lg), approved exception to Lucide-only. */
+.quick-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ai-spacing-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.quick-links__link {
+  display: flex;
+  border-radius: var(--ai-radius-sm);
+  transition: opacity var(--ai-transition-default);
+}
+
+.quick-links__link:hover {
+  opacity: 0.8;
+}
+
+.quick-links__link img {
+  width: var(--ai-icon-size-lg);
+  height: var(--ai-icon-size-lg);
 }

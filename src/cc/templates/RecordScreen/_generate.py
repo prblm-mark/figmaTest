@@ -20,6 +20,7 @@ import record_article as rec  # noqa: E402
 import record_step as step  # noqa: E402
 import record_contact as contact  # noqa: E402
 import record_order as order  # noqa: E402
+import record_account as account  # noqa: E402
 
 # Step content (titles + bodies) read from the Hub for Article 626347 — a copy of the ArticleSteps
 # prototype's data, kept here so the template does not depend on an uncommitted prototype.
@@ -277,13 +278,39 @@ for c in contact.CONTACTS:
     for key, render in contact.TAB_PAGES.items():
         pages[contact.page_for(c, key)] = build(
             "Contact · " + key.replace("-", " ").capitalize(),
-            m.record_header("Contact", c["name"], "view", view_href=c["file"], edit_href="#",
+            m.record_header("Contact", c["name"], "view", view_href=c["file"], edit_href=c.get("edit", "#"),
                             secondary=contact.SECONDARY, more=contact.KEBAB),
             page(m.record_tabs(key, tabs=contact.tabs(c)) + f'<div class="contact-tab-page">{render(c)}</div>', mode="view",
                  record_type="contact"),
             KIT_JS + '\n  <script src="../../../components/Datatables/DatatablesFit.js"></script>'
                    + '\n  <script src="ContactCharts.js"></script>',
             crumbs=("CRM", "Contacts", "Contact"))
+
+# ── Account View + Edit (code-first, 2026-10-09): the live account screens on the kit, reusing Contact
+# View's tab builders. Core tabs built (Mark); sidebar like Contact; Edit with every profile-gated section.
+A = account.ACCOUNT
+TAB_JS = ('\n  <script src="../../../components/Datatables/DatatablesFit.js"></script>'
+          '\n  <script src="ContactCharts.js"></script>')
+account_header = lambda: m.record_header("Account", A["name"], "view", view_href=account.VIEW, edit_href=account.EDIT,
+                                         secondary=account.SECONDARY, more=account.KEBAB)
+pages[account.VIEW] = build(
+    "Account · View", account_header(),
+    page(m.record_tabs("details", sidebar=True, tabs=account.tabs())
+         + body(account.view_sections(A), account.sidebar(A)), mode="view", record_type="account"),
+    KIT_JS + TAB_JS, crumbs=("CRM", "Accounts", "Account"))
+for key, render in account.TAB_PAGES.items():
+    pages[account.page_for(key)] = build(
+        "Account · " + key.replace("-", " ").capitalize(), account_header(),
+        page(m.record_tabs(key, tabs=account.tabs()) + f'<div class="contact-tab-page">{render(A)}</div>', mode="view",
+             record_type="account"),
+        KIT_JS + TAB_JS, crumbs=("CRM", "Accounts", "Account"))
+pages[account.EDIT] = build(
+    "Account · Edit", m.record_header("Account", A["name"], "edit", view_href=account.VIEW),
+    page(m.record_tabs("details", tabs=account.tabs(), help_toggle=True)
+         + '<div class="record-screen__body"><div class="record-screen__main">' + account.edit_sections(A) + '</div></div>',
+         sidebar_on=False, mode="edit", record_type="account", help_mode="switch"),
+    KIT_JS, modals=account.edit_modals(A) + m.media_select_modal("modal-media", "Select Media", rec.MEDIA_SOURCE[:24], len(rec.MEDIA_SOURCE)),
+    crumbs=("CRM", "Accounts", "Account"))
 
 # ── Order View (code-first "build first", 2026-10-07): the live order-processing screen on the kit —
 # view + the processing actions as working demo modals (OrderView.js). Invented customer.

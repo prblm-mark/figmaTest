@@ -1197,3 +1197,63 @@ def steps_listing():
 {listing_datatable()}
       </div>'''
 
+
+
+# ── Editable grid (edit screens, code-first 2026-10-09) ──────────────
+def edit_grid(gid, title, columns, rows, help_text=None, attrs="", show_title=True):
+    """An editable rows grid, as the live forms' include grids (Order Payment / Refund Details, Account
+    subscriptions and event credits): a title, a DS Table whose cells are inputs (or text, for a
+    column the row only displays), a Delete tick per row, then Add row / Delete selected, and the
+    help line. columns: [(label, editable)]; rows: [[value per column]]. show_title=False when the grid
+    is its section's only content (the section heading already names it). RecordScreen.js adds and
+    deletes rows in memory."""
+    def cell(v, label, editable):
+        if not editable:
+            return f"<td>{e(v) if v else '-'}</td>"
+        return (f'<td><div class="input"><div class="input__wrap"><input type="text" class="input__control" '
+                f'value="{e(v)}" aria-label="{e(label)}"></div></div></td>')
+    def row(r):
+        cells = "".join(cell(v, label, ed) for v, (label, ed) in zip(r, columns))
+        return (f'<tr>{cells}<td class="datatables__col--tight"><label class="checkbox"><input type="checkbox" class="checkbox__input" '
+                f'aria-label="Select row"><span class="checkbox__indicator">{icon("check")}</span></label></td></tr>')
+    described = f' aria-describedby="{gid}-help"' if help_text else ""
+    help_html = f'<p class="input__help field-row__help" id="{gid}-help">{e(help_text)}</p>' if help_text else ""
+    return f'''<div class="edit-grid" id="{gid}" data-edit-grid{attrs}>
+            {f'<h3 class="edit-grid__title" id="{gid}-title">{e(title)}</h3>' if show_title else ""}
+            <div class="datatables"><div class="datatables__body"><table class="table" {f'aria-labelledby="{gid}-title"' if show_title else f'aria-label="{e(title)}"'}{described}>
+              <thead><tr>{"".join(f"<th>{e(label)}</th>" for label, _ in columns)}<th aria-label="Delete"></th></tr></thead>
+              <tbody>{"".join(row(r) for r in rows)}</tbody>
+            </table></div></div>
+            <div class="edit-grid__actions">
+              {btn("Add row", "secondary", "sm", icon_left="plus", attrs=' data-edit-grid-add')}
+              {btn("Delete selected", "tertiary", "sm", icon_left="trash-2", attrs=' data-edit-grid-delete')}
+            </div>
+            {help_html}
+          </div>'''
+
+
+# ── Quick links (View screens, 2026-10-09) ───────────────────────────
+# The live view header's "quick insight" row (CRMUserView.cfm / CRMAccountView.cfm): the record's X and
+# LinkedIn when set, then a Google, ChatGPT and Perplexity search for it, and (accounts) its address on
+# Google Maps. Brand marks are the live /AfcIcon/Affino SVGs, copied to img/quick-links/ — an approved
+# exception to the Lucide-only icon rule (Mark, 2026-10-09). Each opens in a new tab.
+QUICK = "../../../../img/quick-links/"
+
+
+def quick_links(query, x=None, linkedin=None, address=None):
+    from urllib.parse import quote_plus
+    links = []
+    if x:
+        links.append(("x", f"X: {x}", "https://x.com/" + x.lstrip("@")))
+    if linkedin:
+        links.append(("linkedin", "LinkedIn page", linkedin))
+    q = quote_plus(query)
+    links += [("google", f"Search Google for {query}", f"https://www.google.com/search?q={q}"),
+              ("chatgpt", f"Ask ChatGPT about {query}", f"https://chat.openai.com/?q={q}"),
+              ("perplexity", f"Search Perplexity for {query}", f"https://www.perplexity.ai/search?q={q}")]
+    if address:
+        links.append(("map", f"Show {address} on Google Maps", f"https://maps.google.com/maps?q={quote_plus(address)}"))
+    items = "".join(f'<li><a class="quick-links__link" href="{e(href)}" target="_blank" rel="noopener noreferrer" '
+                    f'aria-label="{e(label)} (opens in a new tab)" title="{e(label)}">'
+                    f'<img src="{QUICK}{key}.svg" alt="" width="24" height="24"></a></li>' for key, label, href in links)
+    return f'<ul class="quick-links" aria-label="Quick links">{items}</ul>'

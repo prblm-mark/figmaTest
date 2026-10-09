@@ -309,30 +309,11 @@ EDIT_FILE = "OrderEdit.html"
 
 
 def _grid(kind, rows, help_text, visible):
-    """Payment / Refund Details (PaymentDetailsInclude.cfm): editable rows + Add row / Delete selected."""
-    gid = f"order-{kind}-grid"
+    """Payment / Refund Details (PaymentDetailsInclude.cfm): the kit's editable grid, shown by status."""
     refund = kind == "refund"
-    head = ["Date", "Amount", "Tax"] + (["Refund reason"] if refund else []) + [""]
-    def cell(v, label):
-        return (f'<td><div class="input"><div class="input__wrap"><input type="text" class="input__control" '
-                f'value="{e(v)}" aria-label="{e(label)}"></div></div></td>')
-    def row(r):
-        cells = cell(r[0], "Date") + cell(r[1], "Amount") + cell(r[2], "Tax") + (cell(r[3], "Refund reason") if refund else "")
-        return (f'<tr>{cells}<td class="datatables__col--tight"><label class="checkbox"><input type="checkbox" class="checkbox__input" '
-                f'aria-label="Select row"><span class="checkbox__indicator">{m.icon("check")}</span></label></td></tr>')
-    title = "Refund Details" if refund else "Payment Details"
-    return f'''<div class="order-edit__grid" id="{gid}" data-order-grid="{kind}"{"" if visible else " hidden"}>
-            <h3 class="order-edit__grid-title" id="{gid}-title">{title}</h3>
-            <div class="datatables"><div class="datatables__body"><table class="table" aria-labelledby="{gid}-title" aria-describedby="{gid}-help">
-              <thead><tr>{"".join(f"<th>{e(h)}</th>" for h in head)}</tr></thead>
-              <tbody>{"".join(row(r) for r in rows)}</tbody>
-            </table></div></div>
-            <div class="order-edit__grid-actions">
-              {m.btn("Add row", "secondary", "sm", icon_left="plus", attrs=' data-order-grid-add')}
-              {m.btn("Delete selected", "tertiary", "sm", icon_left="trash-2", attrs=' data-order-grid-delete')}
-            </div>
-            <p class="input__help field-row__help" id="{gid}-help">{e(help_text)}</p>
-          </div>'''
+    cols = [("Date", True), ("Amount", True), ("Tax", True)] + ([("Refund reason", True)] if refund else [])
+    return m.edit_grid(f"order-{kind}-grid", "Refund Details" if refund else "Payment Details", cols, rows, help_text,
+                       attrs=f' data-order-grid="{kind}"' + ("" if visible else " hidden"))
 
 
 def _address_rows(kind, c):

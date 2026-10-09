@@ -107,8 +107,12 @@ def sidebar(c):
         return (f'<a class="btn btn--tertiary btn--xs" href="{href}" aria-label="View all {e(what)}"{todo} data-keep-width>'
                 f'<span>View all</span></a>')
     # TODO(backend:RecordScreen) contact-sidebar: facts, signals, activity, tasks, notes, opportunities, events and engagement are static → the contact's CRM + analysis data (see HANDOVER rows contact-*)
+    # Quick links: the live view's search row (CRMUserView.cfm) — LinkedIn when set, then Google / ChatGPT /
+    # Perplexity on the contact's name and company.
+    links = m.quick_links(" ".join(x for x in (c["name"], (c.get("accounts") or [""])[0]) if x),
+                          x=c.get("x"), linkedin=c.get("linkedin"))
     return "".join([
-        m.fact_panel("Record", m.fact_list(facts)),
+        m.fact_panel("Record", links + m.fact_list(facts)),
         m.fact_panel("Customer signals", signals, count=(c["signal_total"], f'{c["signal_total"]} signals'),
                      action='<button type="button" class="btn btn--tertiary btn--xs" aria-label="Assign a customer signal" '
                             'data-backend-todo="contact-actions"><span>Assign</span></button>'),
@@ -137,7 +141,8 @@ def _signals(pairs):
 
 # ── The two contacts ─────────────────────────────────────────────────
 FULL = {
-    "file": "ContactView.html", "edit": "ContactEdit.html", "seed": "olivia-bennett", "name": "Olivia Bennett", "job": "Founder & CEO",
+    "file": "ContactView.html", "edit": "ContactEdit.html", "seed": "olivia-bennett",
+    "linkedin": "https://www.linkedin.com/in/olivia-bennett-example", "name": "Olivia Bennett", "job": "Founder & CEO",
     "email": "olivia.bennett@northbridge-media.example", "tel": "020 7946 0381", "mobile": "07700 900461",
     "address": "Northbridge Media Ltd, 3rd Floor, 12 Carver Street, London, EC2A 4BX, United Kingdom",
     "accounts": ["Northbridge Media"], "former": ["Harbour Retail Group"], "connections": [],

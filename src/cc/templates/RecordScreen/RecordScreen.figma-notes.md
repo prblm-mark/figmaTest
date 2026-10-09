@@ -314,3 +314,32 @@ single Details tab since Order View has no tab bar. There is no sidebar.
   2026-10-09 over one section with three columns or with tabs, which were built and removed.
 - **Left out for this order:** Pro Forma, Purchase Order, Delivery Date. Line items aren't editable
   on an order; they are edited on the Pro Forma.
+
+## Account View + Edit (code-first, 2026-10-09) — no Figma frame
+
+These pages are generated from `record_account.py`, built on the live account screens:
+`AfcCommunityMgr/CC/Accounts.cfm` routes AccountView to `CRMAccountView.cfm` and AccountEdit to
+`CRMAccountEdit.cfm`, both driven by `CRMAccountDef.cfm`. The account is Northbridge Media, Olivia
+Bennett's account on Contact View, with invented people.
+
+- **View:** all 13 live tabs, in their live order. Mark's core set is built:
+  - **Built:** Details, Contacts, Tasks, Communication, Commerce, Events, User Analysis and Page
+    Analysis. Tasks, Communication notes, Commerce opportunities, Events and Page Analysis reuse
+    Contact View's tab builders, with their markers retagged `account-*`.
+  - **New:** the Contacts tab (avatar, name and job cell, role chips) and User Analysis.
+  - **Labels only:** Content, Digital Assets, Projects, Campaign Dashboards and Engagement Report.
+  - **Defaults:** Details leads. Live defaults to Communication and remembers the last tab per user.
+  - **Sidebar, as Contact View:** the live header's info and data blocks become the Record, Contacts,
+    Open tasks, Contact notes, Opportunities and Engagement panels.
+- **Edit:** 81 fields with help verbatim from the source (80 have help; Website has none), behind
+  the Show help switch. Every CRM-profile-gated section is built (Mark). Advanced (DesignScript) is
+  not.
+- **New kit piece:** `record_markup.edit_grid()`. It is the editable grid now shared by the Order
+  Payment / Refund grids and the Account Paid / Free Subscriptions and Event Credits grids. Display
+  columns render as text, and Add row / Delete selected live in `RecordScreen.js`. Use
+  `show_title=False` when the grid is a section's only content.
+
+- **Quick links** (`record_markup.quick_links`, 2026-10-09) sit at the top of the sidebar Record
+  panel on Contact View and Account View. This is the live view header's insight row: X and LinkedIn
+  when set, Google / ChatGPT / Perplexity searches, and (accounts) Google Maps. The brand marks are
+  the live SVGs in `img/quick-links/`, an approved exception to Lucide-only (Mark).

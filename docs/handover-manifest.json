@@ -1433,6 +1433,111 @@
      "needs": "v1's StandardItemView getRecentConversions / getUsersAddedToItinerary / getUsersRecentClicks with paging; Add to Contact List per panel. Added to Itinerary only for Advanced Seminar (ContentTypeCode 17). Hide a panel with no rows."
     },
     {
+     "id": "record-quick-links",
+     "category": "needs-backend",
+     "element": "Contact View + Account View sidebar → Record panel quick links (X, LinkedIn, Google, ChatGPT, Perplexity, Google Maps)",
+     "current": "Built from the demo record's values. Brand marks are the live /AfcIcon/Affino SVGs copied to img/quick-links/ (approved exception to the Lucide-only rule, Mark 2026-10-09).",
+     "needs": "As the live views: X and LinkedIn only when the record has them (BuildSocialURL); the searches on the contact's search words (name + company) or the account name; Maps (accounts only) on the address string. Each opens in a new tab."
+    },
+    {
+     "id": "account-record",
+     "category": "needs-backend",
+     "element": "Account View → Details: Account, Social Media, Public Information, Subscriptions, Free Subscriptions, Overflow Notifications, Additional Addresses, Audit",
+     "current": "Static invented account Northbridge Media (record_account.py), shaped by the live CRMAccountView.cfm Details tab (CRMAccountDef.cfm view rows).",
+     "needs": "The account and its CRM-profile-gated panels (Public Information, Subscriptions, Event Credits); paid / free subscription grids and event credits hide when empty, as live."
+    },
+    {
+     "id": "account-sidebar",
+     "category": "needs-backend",
+     "element": "Account View sidebar → Record facts, Contacts, Open tasks, Contact notes, Opportunities, Engagement (the live view header's info and data blocks)",
+     "current": "Static.",
+     "needs": "The account's header facts (code, type, primary contact, manager, phone, email, website, address, industry, size, turnover, topics) and counts (total / active contacts, first / last touch, updated, created, public). View all links open the tabs."
+    },
+    {
+     "id": "account-actions",
+     "category": "needs-backend",
+     "element": "Account View header → Add contact (secondary) + kebab: Add topic, Add opportunity, Add pro forma, Add to account list, Merge account, Generate account security, Audit account, View public account",
+     "current": "Visual only.",
+     "needs": "Each action's live screen or popup (Merge needs extra rights; Generate account security only while the account has the default security right)."
+    },
+    {
+     "id": "account-contacts",
+     "category": "needs-backend",
+     "element": "Account View → Contacts tab: Account contacts (with Primary / Marketing / Invoice roles), Former contacts, Pending contacts; sidebar Contacts panel",
+     "current": "Static invented people.",
+     "needs": "The account's contacts (AccountUser) with their roles and last login, former and pending contacts; Add contact opens the account contact form. Child Account Contacts when the CRM profile enables it."
+    },
+    {
+     "id": "account-tasks",
+     "category": "needs-backend",
+     "element": "Account View → Tasks tab (Contact View's tasks builder)",
+     "current": "Static.",
+     "needs": "The account's open and closed tasks, paged; Add task opens the task form."
+    },
+    {
+     "id": "account-notes",
+     "category": "needs-backend",
+     "element": "Account View → Communication tab: Contact notes (Contact View's builder)",
+     "current": "Static.",
+     "needs": "The account's contact notes, newest first, paged; Add note opens the note form."
+    },
+    {
+     "id": "account-threads",
+     "category": "needs-backend",
+     "element": "Account View → Communication tab: Account threads",
+     "current": "Static. Account forms and Most recent AI questions (live) are not built.",
+     "needs": "The account's forum threads; plus account forms and recent AI questions."
+    },
+    {
+     "id": "account-opportunities",
+     "category": "needs-backend",
+     "element": "Account View → Commerce tab: Open / Closed opportunities (Contact View's builder); sidebar Opportunities",
+     "current": "Static.",
+     "needs": "The account's opportunities split by stage, paged; Add opportunity opens the form."
+    },
+    {
+     "id": "account-commerce",
+     "category": "needs-backend",
+     "element": "Account View → Commerce tab: Orders, Contracts",
+     "current": "Static. Pro forma orders, order line items, service credits and bills (live) are not built.",
+     "needs": "The account's orders and contracts (Add contract opens the contract form); the remaining live Commerce panels."
+    },
+    {
+     "id": "account-events",
+     "category": "needs-backend",
+     "element": "Account View → Events tab: Event attendance, Award entries (Contact View's builder)",
+     "current": "Static. Event speakers and award judges (live) are not built.",
+     "needs": "The account's event attendance, speakers, award entries and judges. The live tab needs security right 49."
+    },
+    {
+     "id": "account-analysis",
+     "category": "needs-backend",
+     "element": "Account View → User Analysis tab: stat tiles, Latest content views, Most viewed content",
+     "current": "Static.",
+     "needs": "The account's contacts' usage: stats, latest and most viewed content. With no contacts, the live message: \"You need to associate the account with active users to be able to track their usage.\""
+    },
+    {
+     "id": "account-page-analysis",
+     "category": "needs-backend",
+     "element": "Account View → Page Analysis tab: page stats, Recent viewers, Referring URLs (Contact View's builder)",
+     "current": "Static.",
+     "needs": "The public account page's site analysis (and Clicks, when there are any). The live tab shows only when the page has views."
+    },
+    {
+     "id": "account-edit",
+     "category": "needs-backend",
+     "element": "Account Edit (AccountEdit.html) → Main, Account Address, Social Media, Public Information, Subscriptions, Assign Paid / Free Subscriptions, Overflow Notifications, Event Credits",
+     "current": "Static. Fields, order, required marks (Name, Screen name) and help text verbatim from CRMAccountDef.cfm. Every CRM-profile-gated section shown. Advanced (DesignScript custom fields) not built. Option lists for Account Type, Industry, Ownership are stand-ins.",
+     "needs": "Values + option sources and lookups (contact lookups exclude contact types 1 and 8; Primary Contacts filtered to Account Contacts; Director / Manager / Team filtered to the CRM profile's own account; Parent / Child / Associated exclude the account itself on change). Save with the live validation: unique Screen Name, email domains cleaned and unused by another account, Auto Approve Users needs Email Domains, IP list checked; removed contacts can be marked as left. Keep the profile switches (AccountShowPublicPanelYN, AccountShowSubsPanelsYN, AccountShowEventPanelYN, AccountDesignScriptCode) and right 246 for add / change / delete."
+    },
+    {
+     "id": "record-edit-grid",
+     "category": "needs-backend",
+     "element": "Editable grids on edit screens (record_markup.edit_grid): Order Payment / Refund Details, Account Assign Paid / Free Subscriptions, Event Credits",
+     "current": "Add row / Delete selected work in memory (RecordScreen.js).",
+     "needs": "Post the rows with the form; each grid's own rules (refund rows at refund statuses ≤ order total; subscription max subs and dates)."
+    },
+    {
      "id": "order-edit",
      "category": "needs-backend",
      "element": "Order Edit (OrderEdit.html) → Order, Payment (+ Payment / Refund Details grids), Customer, End User, the three addresses, Delivery, Comments",
