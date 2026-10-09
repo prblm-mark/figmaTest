@@ -468,7 +468,7 @@
     </div>
 
     <!-- Page content (scrolling area) -->
-    <div class="cc-control__page">
+    <div class="cc-control__page cc-control__page--home">
 
       <!-- 1. Alert + card row share one container (Figma Frame 229,
            node 4183:14662) — stacked with a --ai-spacing-5 (16px) gap,
@@ -1359,7 +1359,16 @@
   <script src="../../../components/Toggle/Toggle.js"></script>
   <!-- Shared full-width switch; the rail's full-width button toggles it. -->
   <script src="../ControlScreen/control-width.js"></script>
-  <script>if (window.ccWidth) window.ccWidth.apply(window.ccWidth.resolve());</script>
+  <script>
+    /* Full width: the page alert takes Alert Style=Fixed (Figma 2542:5854), as on the record
+       screens. Bound before the first apply so a page that loads in full width gets it too. */
+    document.addEventListener('cc:width', function (e) {
+      document.querySelectorAll('.cc-control__alert-cards > .alert').forEach(function (a) {
+        a.classList.toggle('alert--fixed', e.detail.mode === 'full');
+      });
+    });
+    if (window.ccWidth) window.ccWidth.apply(window.ccWidth.resolve());
+  </script>
   <script type="module" src="../../../components/Dropdown/Dropdown.js"></script>
   <!-- Wires the User Menu "Icon Navigation" / "Hide Labels" toggles to the
        IconNavigation strip in this header group. -->

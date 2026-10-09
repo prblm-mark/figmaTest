@@ -732,6 +732,74 @@
   .cc-control__table--mobile { display: block; }
 }
 
+/* ───── Full width — the home page (2026-10-09) ─────
+ *
+ * No Figma frame draws the home in full width. These rules follow the full-width
+ * conventions the designer has set on the other screens: the Listing template
+ * (3788:16762) and its Orders totals strip (2026-10-02), plus page alerts → Style=Fixed.
+ * Every block becomes a flush band: no outer card, no radius, no shadow, a rule
+ * beneath, inline padding spacing-5. The page gap goes so the bands stack; cards
+ * INSIDE a band (the two charts) keep their own card look.
+ * Scoped on `--home`: the generic `--flush` page is shared by every CC screen. */
+.cc-control__page--flush.cc-control__page--home,
+.cc-control__page--flush.cc-control__page--home .cc-control__alert-cards,
+.cc-control__page--flush.cc-control__page--home .cc-control__cards {
+  gap: 0;
+}
+
+/* Card row as a flush strip: a rule between the cells and one beneath. */
+.cc-control__page--flush.cc-control__page--home .cc-control__cards {
+  border-block-end: 1px solid var(--ai-border-secondary);
+}
+
+.cc-control__page--flush.cc-control__page--home .cc-control__cards > .stat-card,
+.cc-control__page--flush.cc-control__page--home .cc-control__cards > .upgrade-card {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.cc-control__page--flush.cc-control__page--home .cc-control__cards > * + * {
+  border-inline-start: 1px solid var(--ai-border-secondary);
+}
+
+/* Analysis panel as a band; its head row already pads spacing-5 inline. */
+.cc-control__page--flush.cc-control__page--home .cc-control__panel {
+  border: 0;
+  border-block-end: 1px solid var(--ai-datatable-table-border);
+  border-radius: 0;
+}
+
+/* Who's Online: the heading gets the band's inline padding (it had none, so it
+   sat on the page edge), and the table goes flush as on the Listing. */
+.cc-control__page--flush.cc-control__page--home .cc-control__section-head {
+  padding: var(--ai-spacing-5) var(--ai-spacing-5) 0;
+}
+
+.cc-control__page--flush.cc-control__page--home .cc-control__section > .datatables {
+  border: 0;
+  border-block-start: 1px solid var(--ai-datatable-table-border);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Narrow column: rows pad spacing-3 (the Listing's full-width extrapolation),
+   and the stacked card strip turns its dividers horizontal. */
+@container cs-page (max-width: 767px) {
+  .cc-control__page--flush.cc-control__page--home .cc-control__cards > * + * {
+    border-inline-start: 0;
+  }
+  .cc-control__page--flush.cc-control__page--home .cc-control__cards > * {
+    border-block-start: 1px solid var(--ai-border-secondary);
+  }
+  .cc-control__page--flush.cc-control__page--home .cc-control__cards > .upgrade-card {
+    border-block-start: 0;
+  }
+  .cc-control__page--flush.cc-control__page--home .cc-control__section-head {
+    padding: var(--ai-spacing-4) var(--ai-spacing-3) 0;
+  }
+}
+
 /* ───── Device-class swap — stays on viewport @media ─────
  *
  * The Desktop and Mobile SidebarMenu composites are structurally

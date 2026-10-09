@@ -310,3 +310,23 @@ beside a 15px gutter, rather than nothing at all.
 Measured with the coarse blocks forced to match: padding symmetric at 12px
 (393px viewport) and 24px (900px). Fine-pointer behaviour unchanged — 12/0 and
 24/12, landing at the same 15px and 27px right-hand gaps as before.
+
+## Full width on the home page (2026-10-09)
+
+No Figma frame draws the home in full width. Before this change, the flush page only removed the
+page padding, so the rounded, bordered cards sat against the left edge with gaps between them, and
+the "Who's Online" heading had no padding at all. The home now follows the full-width conventions
+set on the other screens: the Listing template `3788:16762`, the Orders totals strip (designer,
+2026-10-02), and page alerts switching to Style=Fixed.
+
+| Block | Full width |
+|---|---|
+| Page (`.cc-control__page--home`, new modifier) | gap 0; the bands stack |
+| Dev-mode alert | `alert--fixed` (Figma `2542:5854`), toggled on `cc:width` by an inline script before the first `ccWidth.apply` |
+| Card row | flush strip: cards lose border, radius and shadow; `border-secondary` rule between cells and one beneath; vertical dividers turn horizontal below 768 of `cs-page` |
+| Analysis panel | no radius or side borders; bottom rule `--ai-datatable-table-border`. The chart cards inside keep their card look (border/card is top-level only) |
+| Who's Online | heading padded `spacing-5` inline (`spacing-3` narrow, the Listing's extrapolation); table flush with a top rule |
+
+Every rule is scoped on `.cc-control__page--flush.cc-control__page--home`, because `--flush` is
+shared by every CC screen. This is an extrapolation and should be confirmed by the designer if a
+full-width home frame is drawn.
