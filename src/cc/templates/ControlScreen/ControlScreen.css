@@ -130,8 +130,8 @@
    the older framework uses Minimise for its condensed view. Targets the
    Lucide SVG class — createIcons() swaps the <i> for an <svg>.
    Minimise (condensed view) follows the same pattern on the vertical axis —
-   fold-vertical off, unfold-vertical on (2026-10-01). Condensed is not built
-   here, so nothing sets its aria-pressed yet (TODO backend [minimise]). */
+   fold-vertical off, unfold-vertical on (2026-10-01). control-width.js keeps its
+   aria-pressed in step (condensed density, 2026-10-09). */
 [data-cc-width-toggle][aria-pressed="true"] .lucide-unfold-horizontal,
 [data-cc-width-toggle]:not([aria-pressed="true"]) .lucide-fold-horizontal,
 [data-cc-condensed-toggle][aria-pressed="true"] .lucide-fold-vertical,

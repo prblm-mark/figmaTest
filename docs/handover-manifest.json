@@ -304,10 +304,10 @@
     },
     {
      "id": "minimise",
-     "category": "needs-backend",
-     "element": "Rail Minimise button — fold-vertical, unfold-vertical when on (2026-10-01; was minimize-2)",
-     "current": "Visual only — no behaviour. Kept for the older framework's condensed view (restored 2026-10-01).",
-     "needs": "Toggle a condensed spacing view — apply data-layout=\"minimised\" on the shell (minimised-mode tokens already exist in css/tokens-minimised.css), set aria-pressed on [data-cc-condensed-toggle] (CSS swaps the icon) — and persist the preference per user."
+     "category": "fe-wired",
+     "element": "Rail Minimise button (condensed view) — fold-vertical, unfold-vertical when on (2026-10-01; was minimize-2)",
+     "current": "Wired client-side (2026-10-09): control-width.js sets data-cc-density=\"condensed\" on .cc-control, keeps aria-pressed on [data-cc-condensed-toggle] in step, saves the choice in localStorage (cc-density); ?density=condensed for demos. Load precedence: ?density= > saved > standard. Condensed is SPACING ONLY — rules in ControlScreen.css: table rows, Orders row minimum 48, record field rows/sections, panels, page padding/gap and the sidebar menu (fine pointers only). Fonts and control heights unchanged.",
+     "needs": "Nothing for the toggle. Do NOT use data-layout=\"minimised\" / css/tokens-minimised.css on CC screens — that set is the AI chat's compact mode (fluid font sizes only). Per-user persistence is condensed-preference."
     },
     {
      "id": "full-width-toggle",
@@ -322,6 +322,13 @@
      "element": "Rail Print button",
      "current": "Calls window.print() — works natively.",
      "needs": "None required. Only if a server-rendered print-to-PDF is wanted later."
+    },
+    {
+     "id": "condensed-preference",
+     "category": "needs-backend",
+     "element": "Condensed (Minimise) choice",
+     "current": "Per browser only (localStorage cc-density).",
+     "needs": "Save the choice per user on the server and render the shell with it (data-cc-density on .cc-control + ccDensity.apply(mode)), so it follows the user across devices."
     },
     {
      "id": "full-width-preference",
