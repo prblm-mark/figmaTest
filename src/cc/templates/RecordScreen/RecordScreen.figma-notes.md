@@ -63,7 +63,7 @@ TopNavigation, HeaderGroup, ActionsMenu rail, theme + width scripts). Page body:
 |---|---|---|
 | Details / Article steps tabs | navigate between screens; menu open/closed and width persist | links + `RecordScreen.js` |
 | Sidebar edge (View / Edit) | drag to resize the sidebar (designer, 2026-09-28 — the Seating Planner model): invisible `role="separator"` strip on the sidebar's leading edge, col-resize cursor; full width tints the main column's border `--ai-surface-contrast` on hover/drag. Min `--ai-size-7` (384, Figma's width — designer), max half the row, ←/→ 16px, Home/End, double-click resets. Width kept per viewer (`localStorage cc-record-sidebar-w`) across View ↔ Edit | `RecordScreen.js` |
-| Actions-rail **Minimise** (`fold-vertical` / `unfold-vertical` when on, 2026-10-01) | visual only — the older framework's condensed spacing view (`data-layout="minimised"`); kept beside Full width (2026-10-01) | `TODO(backend:ControlScreen) [minimise]` |
+| Actions-rail **Minimise** (`fold-vertical` / `unfold-vertical` when on, 2026-10-01) | condensed density, wired client-side (2026-10-09): `data-cc-density="condensed"` via control-width.js, spacing only (ControlScreen.css) | `TODO(backend:ControlScreen) [condensed-preference]` |
 | Actions-rail **Full width** (`unfold-horizontal` / `fold-horizontal`, 2026-10-01) | toggles full width (designer, 2026-09-28): `aria-pressed`, rail active look, choice saved (`localStorage cc-width`) and followed on every record screen; `?template=` still wins when present | `control-width.js` (`data-cc-width-toggle`, opt-in per screen) |
 | Edit / Cancel | View ↔ Edit screens | links |
 | SEO Health ± / Expand all | expand inline | `AdvisoryItem.js` |

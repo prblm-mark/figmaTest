@@ -130,8 +130,8 @@
    the older framework uses Minimise for its condensed view. Targets the
    Lucide SVG class — createIcons() swaps the <i> for an <svg>.
    Minimise (condensed view) follows the same pattern on the vertical axis —
-   fold-vertical off, unfold-vertical on (2026-10-01). Condensed is not built
-   here, so nothing sets its aria-pressed yet (TODO backend [minimise]). */
+   fold-vertical off, unfold-vertical on (2026-10-01). control-width.js keeps its
+   aria-pressed in step (condensed density, 2026-10-09). */
 [data-cc-width-toggle][aria-pressed="true"] .lucide-unfold-horizontal,
 [data-cc-width-toggle]:not([aria-pressed="true"]) .lucide-fold-horizontal,
 [data-cc-condensed-toggle][aria-pressed="true"] .lucide-fold-vertical,
@@ -730,6 +730,186 @@
   /* Whos Online: swap the 4-column Scroll table for the Trigger table. */
   .cc-control__table--desktop { display: none; }
   .cc-control__table--mobile { display: block; }
+}
+
+/* ───── Full width — the home page (2026-10-09) ─────
+ *
+ * No Figma frame draws the home in full width. These rules follow the full-width
+ * conventions the designer has set on the other screens: the Listing template
+ * (3788:16762) and its Orders totals strip (2026-10-02), plus page alerts → Style=Fixed.
+ * Every block becomes a flush band: no outer card, no radius, no shadow, a rule
+ * beneath, inline padding spacing-5. The page gap goes so the bands stack; cards
+ * INSIDE a band (the two charts) keep their own card look.
+ * Scoped on `--home`: the generic `--flush` page is shared by every CC screen. */
+.cc-control__page--flush.cc-control__page--home,
+.cc-control__page--flush.cc-control__page--home .cc-control__alert-cards,
+.cc-control__page--flush.cc-control__page--home .cc-control__cards {
+  gap: 0;
+}
+
+/* Card row as a flush strip: a rule between the cells and one beneath. */
+.cc-control__page--flush.cc-control__page--home .cc-control__cards {
+  border-block-end: 1px solid var(--ai-border-secondary);
+}
+
+.cc-control__page--flush.cc-control__page--home .cc-control__cards > .stat-card,
+.cc-control__page--flush.cc-control__page--home .cc-control__cards > .upgrade-card {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.cc-control__page--flush.cc-control__page--home .cc-control__cards > * + * {
+  border-inline-start: 1px solid var(--ai-border-secondary);
+}
+
+/* Analysis panel as a band; its head row already pads spacing-5 inline. */
+.cc-control__page--flush.cc-control__page--home .cc-control__panel {
+  border: 0;
+  border-block-end: 1px solid var(--ai-datatable-table-border);
+  border-radius: 0;
+}
+
+/* Who's Online: the heading gets the band's inline padding (it had none, so it
+   sat on the page edge), and the table goes flush as on the Listing. */
+.cc-control__page--flush.cc-control__page--home .cc-control__section-head {
+  padding: var(--ai-spacing-5) var(--ai-spacing-5) 0;
+}
+
+.cc-control__page--flush.cc-control__page--home .cc-control__section > .datatables {
+  border: 0;
+  border-block-start: 1px solid var(--ai-datatable-table-border);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Narrow column: rows pad spacing-3 (the Listing's full-width extrapolation),
+   and the stacked card strip turns its dividers horizontal. */
+@container cs-page (max-width: 767px) {
+  .cc-control__page--flush.cc-control__page--home .cc-control__cards > * + * {
+    border-inline-start: 0;
+  }
+  .cc-control__page--flush.cc-control__page--home .cc-control__cards > * {
+    border-block-start: 1px solid var(--ai-border-secondary);
+  }
+  .cc-control__page--flush.cc-control__page--home .cc-control__cards > .upgrade-card {
+    border-block-start: 0;
+  }
+  .cc-control__page--flush.cc-control__page--home .cc-control__section-head {
+    padding: var(--ai-spacing-4) var(--ai-spacing-3) 0;
+  }
+}
+
+/* ───── Condensed density (2026-10-09) ─────
+ *
+ * `data-cc-density="condensed"` on `.cc-control`, set by control-width.js from the rail's
+ * Minimise button. SPACING ONLY (Mark, 2026-10-09): first one step down the spacing scale, then a
+ * step tighter again the same day ("a little tighter") — so mostly two steps; font sizes, line heights and control heights stay, and so does inline padding,
+ * so band edges keep lining up. No Figma frame yet — a code trial for the designer to judge.
+ *
+ * All in the shell's CSS, because density is a shell mode: Table and Datatables are DS
+ * components also used outside CC. The `.cc-control[...]` prefix also out-specifies the
+ * components' own narrow-width compactions. Anything those already make tighter is guarded so
+ * condensed never makes it looser. */
+
+/* Table rows: 12 → 4 block padding; header 16 → 8. */
+.cc-control[data-cc-density="condensed"] .table tbody td {
+  padding-block: var(--ai-spacing-1);
+}
+
+.cc-control[data-cc-density="condensed"] .table thead th {
+  padding-block: var(--ai-spacing-3);
+}
+
+/* The Orders listing holds a 64px minimum row (Datatables.css), so padding alone does nothing
+   there: condensed steps the minimum to 48 (Mark, 2026-10-09) — a 40px avatar row + 4 × 2 padding,
+   so the rows stay even.
+   Same unnamed container query as Datatables' own `height: auto` below 768, so that still wins. */
+@container (min-width: 768px) {
+  .cc-control[data-cc-density="condensed"] .datatables--orders .table tbody td {
+    height: var(--ai-spacing-9);
+  }
+}
+
+/* Record field rows: 24 → 12 between rows; section body padding 24 → 12. Wide sections only —
+   below 560 of its own container RecordSection already pads spacing-4. */
+@container record-section (min-width: 560px) {
+  .cc-control[data-cc-density="condensed"] .record-section__body {
+    gap: var(--ai-spacing-4);
+    padding: var(--ai-spacing-4);
+  }
+}
+
+/* Panels: 16 → 8. */
+.cc-control[data-cc-density="condensed"] .fact-panel {
+  padding: var(--ai-spacing-3);
+}
+
+.cc-control[data-cc-density="condensed"] .cc-control__charts {
+  gap: var(--ai-spacing-3);
+  padding: var(--ai-spacing-3);
+}
+
+@container cs-page (min-width: 768px) {
+  .cc-control[data-cc-density="condensed"] .cc-control__cards .stat-card,
+  .cc-control[data-cc-density="condensed"] .cc-control__cards .upgrade-card {
+    padding: var(--ai-spacing-3);
+  }
+  /* Full width keeps the strip's inline spacing-5, so the cells line up with the bands. */
+  .cc-control[data-cc-density="condensed"] .cc-control__page--flush .cc-control__cards .stat-card,
+  .cc-control[data-cc-density="condensed"] .cc-control__page--flush .cc-control__cards .upgrade-card {
+    padding-inline: var(--ai-spacing-5);
+  }
+}
+
+/* Page gap between blocks: 32 → 12. Not on a flush page, which runs its own gaps. */
+.cc-control[data-cc-density="condensed"] .cc-control__page:not(.cc-control__page--flush) {
+  gap: var(--ai-spacing-4);
+}
+
+/* Page padding at standard width: 24 → 12. Desktop only — mobile already pads spacing-4, the
+   same value. The right side keeps the house trim against the reserved 15px scrollbar gutter:
+   spacing-0 gives 15 against 12 on the left (exactly the mobile rule), and coarse pointers,
+   which have no gutter, get the full spacing-4. The Listing's sticky offsets read the top padding
+   from --cc-listing-pad-top, so it follows. */
+@media (min-width: 768px) {
+  .cc-control[data-cc-density="condensed"] .cc-control__page:not(.cc-control__page--flush) {
+    padding: var(--ai-spacing-4) var(--ai-spacing-0) var(--ai-spacing-4) var(--ai-spacing-4);
+  }
+  .cc-control[data-cc-density="condensed"] .cc-listing:not([data-listing-template="full"]) {
+    --cc-listing-pad-top: var(--ai-spacing-4);
+  }
+  @media (pointer: coarse) {
+    .cc-control[data-cc-density="condensed"] .cc-control__page:not(.cc-control__page--flush) {
+      padding-right: var(--ai-spacing-4);
+    }
+  }
+}
+
+/* Sidebar menu (Mark, 2026-10-09): rows 40 → 32, item block padding 8 → 4, gaps 4 → 2,
+   submenu rows 4 → 2, submenu list 12 → 8, panel padding 12 → 8 and gap 8 → 6. The brand cell,
+   the search field (a control, kept at control height like the page's inputs) and the icon rail
+   are untouched. Fine pointers only: on touch the menu keeps its standard 40px rows, since 32
+   would fall further below the 44px touch-target guideline. */
+@media (pointer: fine) {
+  .cc-control[data-cc-density="condensed"] .cc-menu:not(.cc-menu--crm) {
+    gap: var(--ai-spacing-2);
+    padding: var(--ai-spacing-3);
+  }
+  .cc-control[data-cc-density="condensed"] .cc-menu__items {
+    gap: var(--ai-spacing-0-5);
+  }
+  .cc-control[data-cc-density="condensed"] .cc-main-menu-item {
+    min-height: var(--ai-spacing-7);
+    padding-block: var(--ai-spacing-1);
+  }
+  .cc-control[data-cc-density="condensed"] .cc-menu__submenu {
+    gap: var(--ai-spacing-0-5);
+    padding-block: var(--ai-spacing-3);
+  }
+  .cc-control[data-cc-density="condensed"] .cc-menu__submenu-item {
+    padding-block: var(--ai-spacing-0-5);
+  }
 }
 
 /* ───── Device-class swap — stays on viewport @media ─────

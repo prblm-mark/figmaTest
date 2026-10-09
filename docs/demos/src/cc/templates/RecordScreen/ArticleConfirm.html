@@ -297,8 +297,8 @@
         <button type="button" class="cc-sidebar__btn" data-cc-rail-extra hidden aria-label="Info"><i data-lucide="info" aria-hidden="true"></i></button>
         <button type="button" class="cc-sidebar__btn" data-cc-rail-extra hidden aria-label="Saved"><i data-lucide="star" aria-hidden="true"></i></button>
         <button type="button" class="cc-sidebar__btn" data-cc-rail-extra hidden aria-label="Text size"><i data-lucide="a-large-small" aria-hidden="true"></i></button>
-        <!-- TODO(backend:ControlScreen) [minimise]: toggle a condensed spacing view — apply data-layout="minimised" on the shell (minimised-mode tokens exist), set aria-pressed (CSS swaps fold-vertical → unfold-vertical) + persist the preference. -->
-        <button type="button" class="cc-sidebar__btn" data-cc-rail-extra hidden aria-label="Minimise" aria-pressed="false" data-backend-todo="minimise" data-cc-condensed-toggle><i data-lucide="fold-vertical" aria-hidden="true"></i><i data-lucide="unfold-vertical" aria-hidden="true"></i></button>
+        <!-- TODO(backend:ControlScreen) [condensed-preference]: Minimise toggles condensed density client-side (control-width.js → data-cc-density on .cc-control, saved in localStorage cc-density) → save the choice per user on the server and render the shell with it. -->
+        <button type="button" class="cc-sidebar__btn" data-cc-rail-extra hidden aria-label="Minimise" aria-pressed="false" data-backend-todo="condensed-preference" data-cc-condensed-toggle><i data-lucide="fold-vertical" aria-hidden="true"></i><i data-lucide="unfold-vertical" aria-hidden="true"></i></button>
         <button type="button" class="cc-sidebar__btn" data-cc-rail-extra hidden aria-label="Full width" aria-pressed="false" data-cc-width-toggle><i data-lucide="unfold-horizontal" aria-hidden="true"></i><i data-lucide="fold-horizontal" aria-hidden="true"></i></button>
       </nav>
 
@@ -1046,8 +1046,8 @@
           </div>
         </div>
       </span>
-      <!-- TODO(backend:ControlScreen) [minimise]: toggle a condensed spacing view — apply data-layout="minimised" on the shell (minimised-mode tokens exist), set aria-pressed (CSS swaps fold-vertical → unfold-vertical) + persist the preference. -->
-      <button class="actions-menu__btn" type="button" aria-label="Minimise" aria-pressed="false" data-backend-todo="minimise" data-cc-condensed-toggle>
+      <!-- TODO(backend:ControlScreen) [condensed-preference]: Minimise toggles condensed density client-side (control-width.js → data-cc-density on .cc-control, saved in localStorage cc-density) → save the choice per user on the server and render the shell with it. -->
+      <button class="actions-menu__btn" type="button" aria-label="Minimise" aria-pressed="false" data-backend-todo="condensed-preference" data-cc-condensed-toggle>
         <i data-lucide="fold-vertical" aria-hidden="true"></i>
         <i data-lucide="unfold-vertical" aria-hidden="true"></i>
       </button>

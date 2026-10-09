@@ -119,3 +119,71 @@
 
   window.ccWidth = { apply: apply, fromUrl: fromUrl, stored: stored, resolve: resolve };
 })();
+
+/* Control Centre density — the condensed view (2026-10-09). Lives here because every CC screen
+ * already loads this file; it is the same shape as the width switch, on the other axis.
+ *
+ *   window.ccDensity.apply('condensed' | 'standard')   → returns the mode applied
+ *
+ * `data-cc-density="<mode>"` on `.cc-control`, `aria-pressed` on every `data-cc-condensed-toggle`
+ * (the rail's Minimise button; CSS swaps fold-vertical / unfold-vertical on it), a `cc:density`
+ * event, and the choice saved per viewer (localStorage `cc-density`). `?density=condensed` is the
+ * demo's way in. Precedence at load: URL > saved > standard. Applied by this file on load — the
+ * screens need no call of their own.
+ *
+ * Condensed is SPACING ONLY (Mark, 2026-10-09): table rows, record field rows and sections,
+ * panels and the page tighten one step on the spacing scale; fonts and control heights stay.
+ * The rules are in ControlScreen.css. Deliberately NOT `data-layout="minimised"` — that token set
+ * is the AI chat's compact mode and only shrinks fluid font sizes, which CC screens barely use. */
+(function () {
+  var MODES = ['standard', 'condensed'];
+  var KEY = 'cc-density';
+
+  function apply(name, trigger) {
+    var mode = MODES.indexOf(name) !== -1 ? name : 'standard';
+    var shell = document.querySelector('.cc-control');
+    if (!shell) return mode;
+    shell.setAttribute('data-cc-density', mode);
+    document.querySelectorAll('[data-cc-condensed-toggle]').forEach(function (btn) {
+      btn.setAttribute('aria-pressed', String(mode === 'condensed'));
+    });
+    document.dispatchEvent(new CustomEvent('cc:density', { detail: { mode: mode, trigger: trigger || null } }));
+    return mode;
+  }
+
+  function fromUrl() {
+    var m = /[?&]density=(standard|condensed)/.exec(window.location.search);
+    return m ? m[1] : null;
+  }
+
+  function stored() {
+    try { var v = window.localStorage.getItem(KEY); return MODES.indexOf(v) !== -1 ? v : null; }
+    catch (e) { return null; }
+  }
+
+  function save(mode) {
+    try { window.localStorage.setItem(KEY, mode); } catch (e) { /* private window: session only */ }
+  }
+
+  function resolve() { return fromUrl() || stored() || 'standard'; }
+
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-cc-condensed-toggle]');
+    if (!btn) return;
+    var shell = document.querySelector('.cc-control');
+    var next = shell && shell.getAttribute('data-cc-density') === 'condensed' ? 'standard' : 'condensed';
+    apply(next, 'toggle');
+    save(next);
+    if (fromUrl()) {
+      var url = new URL(window.location.href);
+      url.searchParams.set('density', next);
+      window.history.replaceState(null, '', url);
+    }
+  });
+
+  function init() { apply(resolve()); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+
+  window.ccDensity = { apply: apply, fromUrl: fromUrl, stored: stored, resolve: resolve };
+})();
